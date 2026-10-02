@@ -1,6 +1,6 @@
 # HBEngine: 공식 문서 기반 제작 시스템 분석
 
-조사 기준일: 2026-10-02. 이 문서는 기능 이름을 모으는 목록이 아니라, 제작자가 작업을 시작해서 저장·실행·디버그·배포할 때 필요한 동작 기준이다. 세부 조작 규칙은 [편집기 인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 블루프린트별 구현 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)을 따른다.
+조사 기준일: 2026-10-02. 이 문서는 기능 이름을 모으는 목록이 아니라, 제작자가 작업을 시작해서 저장·실행·디버그·배포할 때 필요한 동작 기준이다. 분야 누락을 확인하는 공식 목차와 코드 대조는 [조사 범위](REFERENCE_COVERAGE.md), 세부 조작 규칙은 [편집기 인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 블루프린트별 구현 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)을 따른다.
 
 ## 조사 범위와 판단 구분
 
@@ -9,6 +9,8 @@
 - **문서 확인**: 아래 링크의 본문에서 확인한 동작. **HB 결정**: HBEngine에 적용할 자체 설계. **현재 상태**: 저장소에서 구현·검증한 범위. 세 가지를 섞지 않는다.
 - 개요 문서만 있는 항목은 개요 조사라고 표시한다. 엔진의 모든 API·소스 코드를 전부 분석했다는 뜻이 아니다. 구현에 들어가기 전에 해당 하위 시스템의 세부 문서와 실제 실행 조건을 추가 확인한다.
 - ‘무겁다·얇다·어렵다’는 사용자가 해결하려는 문제다. 두 엔진의 성능을 같은 프로젝트에서 측정하지 않았으므로 어느 쪽이 항상 빠르거나 느리다고 단정하지 않는다.
+
+분야 조사 인덱스에는 Unity 6000.0 매뉴얼 목차 3,127항목(34분야 개요 본문 확인)과 조사 당시 Unreal 5.8 문서 홈의 21분야 개요/398개 하위 주제 항목이 있다. `indexed/overview/detail`의 근거를 구분하고, 각 분야의 제작 요구·현재 코드·미구현 항목을 [전체 분야 대조표](REFERENCE_COVERAGE.md)에 적었다. 하위 API·패키지·소스 코드의 조사 상태는 이 숫자에 포함된 것처럼 표현하지 않는다.
 
 ## 제작 흐름의 단위
 
@@ -32,6 +34,8 @@ Unreal은 패키징에서 Build/Cook/Stage/Package를 구분한다. C++ 호출�
 **문서 확인:** Unity의 창은 탭으로 묶거나 제목을 드래그해 분할·도킹할 수 있고 레이아웃을 저장·복구한다. Unreal의 기본 편집기는 뷰포트, Outliner, 선택 대상의 Details, Content Browser, 로그를 연결한다. 블루프린트 편집기는 Components/My Blueprint/Graph/Details와 디버그·컴파일 결과 창을 갖는다. [Unity: Workspace](https://docs.unity3d.com/6000.0/Documentation/Manual/CustomizingYourWorkspace.html), [Epic: Editor interface](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-editor-interface), [Epic: Blueprint UI](https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-user-interface-for-blueprint-classes-in-unreal-engine)
 
 **HB 결정:** 기본 배치는 왼쪽 계층·제작 목록 / 가운데 문서 탭 / 오른쪽 Inspector / 아래 Project·Console이다. 문서 창은 상하좌우로 분할하고 동시에 열 수 있다. ‘Scene/Blueprint/Material’ 전환으로 전체 화면을 숨기던 구조를 문서 탭으로 바꾼다. Timeline을 더블클릭하면 충분한 높이의 문서 탭으로 열고 사용자가 아래쪽으로 도킹할 수 있게 한다. 작업 창별 포커스와 선택을 분리하며 Inspector는 활성 편집기의 선택 대상을 따른다.
+
+**현재 상태:** 파일별 BP/Material/Transform Animation/Curve/IA/IMC/Data/Scene 문서를 각각 열고 모델·Undo·dirty·배치를 보존한다. 위쪽 파일 탭과 내부 도킹 패널을 구분한다. 탭 재정렬·문서 전환/닫기·저장 보호와 클래스 컴포넌트 뷰포트를 연결했다. C++는 실제 파일을 외부 Visual Studio/VSCode에서 열며, 다른 에셋 화면에 내장 코드 편집기를 섞지 않는다. 창 분할과 여러 뷰포트는 브라우저 프로토타입 기능이고 OS 부동창은 별도다.
 
 **놓치기 쉬운 요구:** 탭 재정렬, 드롭 위치 미리보기, 닫은 창 다시 열기, 분할 경계 키보드 조절, 최대화/복원, 레이아웃 저장/초기화, 같은 종류의 여러 창, 닫힌 창의 업데이트 중지. OS의 별도 창은 브라우저 도킹과 별도 기능이며 네이티브 에디터에서 구현한다.
 
@@ -63,6 +67,8 @@ Unreal은 패키징에서 Build/Cook/Stage/Package를 구분한다. C++ 호출�
 
 **HB 결정:** 아무 작업 창에 외부 파일을 놓아도 임포트를 시작할 수 있다. 현재 Project 폴더를 목적지로 사용하되 내부 에셋 드래그와 구분한다. 여러 파일·하위 폴더를 한 번에 처리하고 원본 경로·엔진 ID·해시·임포터 버전·설정·의존성·결과·오류를 저장한다. 같은 이름을 덮어쓰지 않고 충돌을 해결한다. 파일 원본을 디스크에 보존하는 것, 미리보기를 표시하는 것, 엔진 형식으로 변환하는 것은 서로 다른 상태다.
 
+**현재 상태:** 실제 폴더 우클릭에서 BP/C++ 클래스·IA·IMC·머테리얼·Transform Animation·Curve·Data·레벨을 만든다. BP/C++는 부모 7종을 선택한다. rename은 열린 문서/참조와 배치를 갱신하고 영속 redirect로 구 디스크 참조를 해석한다. 에셋 의존성 viewer·redirect Fixup·임포터별 재가져오기/변환은 남아 있다. [Epic: Redirectors](https://dev.epicgames.com/documentation/en-us/unreal-engine/asset-redirectors-in-unreal-engine)
+
 | 에셋 | 필수 편집·변환 | 실패 시 동작 |
 | --- | --- | --- |
 | 이미지 | sRGB/Linear, 알파, Mipmap, 압축, 크기, Sprite 분할/Pivot | 원본 유지, 지원 디코더·원인 표시 |
@@ -80,6 +86,8 @@ Unreal Media Framework도 Source/Player/Texture/Sound와 플랫폼별 플레이�
 **문서 확인:** Unreal의 Blueprint는 C++ 공개 클래스·속성·함수로 확장하는 게임플레이 클래스다. Components는 Construction에 앞서 구성된다. My Blueprint는 이벤트·함수·매크로·변수·디스패처의 제작 목록이다. 함수는 입력·출력·접근 범위·Pure 여부를 가지며 매크로는 여러 실행 입출력을 가진다. 인터페이스는 구현 본문이 없는 계약이고 디스패처는 여러 구독자를 호출한다. [Epic: Foundations](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-foundations), [Epic: My Blueprint](https://dev.epicgames.com/documentation/unreal-engine/my-blueprint-panel-in-the-blueprints-visual-scripting-editor-for-unreal-engine), [Epic: Functions](https://dev.epicgames.com/documentation/en-us/unreal-engine/functions-in-unreal-engine), [Epic: Macros](https://dev.epicgames.com/documentation/en-us/unreal-engine/macros-in-unreal-engine), [Epic: Interfaces](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-interface-in-unreal-engine), [Epic: Dispatchers](https://dev.epicgames.com/documentation/en-us/unreal-engine/event-dispatchers-in-unreal-engine)
 
 **HB 결정:** Event Graph、Construction、Function、Macro는 그래프의 이름만 다른 것이 아니라 허용 노드와 실행 규칙이 다르다. 함수에는 지연 실행을 넣지 않는다. 매크로는 호출별 실행 상태와 경계 핀을 보존한다. 클래스 기본값은 인스턴스 초기값이고 실행 중 값은 별도 상태다. BP → BP 상속, 부모 호출, 로컬 변수, Struct/Enum/Set/Map/참조 종류, 라이브러리 에셋, 컴포넌트 클래스 뷰포트도 목표에 포함한다.
+
+**현재 상태:** Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent는 생성 템플릿·부모 관계·기본 컴포넌트와 C++ 기반형을 제공한다. 캐릭터 Capsule 미리보기와 이동 속성 입력은 실제 보행·점프·Possession 구현과 구분한다. 장면은 서로 다른 BP 파일을 오브젝트마다 참조하고 실행 인스턴스를 나눈다. BP→BP 상속·로컬 변수·전체 Gameplay Framework는 추가 대상이다. [Epic: Gameplay Framework](https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-framework-in-unreal-engine), [Epic: Blueprint Best Practices](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-best-practices-in-unreal-engine)
 
 ### 핀과 데이터
 
@@ -116,15 +124,23 @@ Unity Animation은 Dopesheet/Curve, 선택 키 F·전체 A 초점, 프레임·�
 
 **HB 결정:** Timeline 노드에는 제어 핀·출력만 두고 커브는 전용 문서에서 편집한다. 키 JSON 입력을 주요 편집 수단으로 쓰지 않는다. XYZ/RGBA는 채널별 색과 표시 토글을 갖는다. Event 트랙은 실행 출력으로 연결한다. 일반 Animation 창과 BP Timeline 창은 같은 커브 데이터 규칙을 재사용하되 서로 다른 대상과 실행 의미를 유지한다. 단일 도형 회전 미리보기를 스켈레탈 애니메이션 구현으로 표시하지 않는다.
 
+**현재 상태:** 독립 Animation 파일을 `Play Animation`/`Stop Animation`으로 실제 대상 오브젝트에 적용한다. 키가 있는 position/rotation/scale vec3 트랙만 지원하고 값은 대상 속성에 덮어쓴다. 회전은 XYZ Euler degree다. 노드 Loop와 에셋 `playRate/lastKeyframe/ignoreTimeDilation`을 적용하며 정지/완료는 마지막 값을 유지한다. 같은 이름의 모델 내장 클립을 우선한다. 선택적인 `readAsset` hook은 열린 편집본 공급을 지원하고 기본 경로는 Project 파일을 읽는다. 대상 파괴/서비스 종료는 재생 상태를 해제한다. 독립 Animation 이벤트 트랙·임의 속성·Skeleton/리타깃/상태 머신/블렌딩은 남아 있다.
+
+Unity의 속성 커브 문서는 시간별 키와 속성별 표시, Euler/Quaternion 회전 보간의 차이를 구분한다. HB의 세 Transform 트랙과 Euler 값 평가는 이 중 일부를 구현한 자체 규칙이다. Quaternion 최단 회전이나 Animator의 포즈/블렌딩 동작까지 구현한 것으로 해석하지 않는다. [Unity: Animation curves](https://docs.unity3d.com/6000.0/Documentation/Manual/animeditor-AnimationCurves.html)
+
 ## 머테리얼, 조명, 렌더링
 
 **문서 확인:** Unreal Material Editor는 미리보기 메시·그래프·선택 Details·Palette·컴파일 통계·플랫폼 오류·생성 HLSL 보기를 연결한다. PBR의 Base Color/Roughness/Metallic/Specular는 광원과 표면 반응을 설명하는 입력이다. Unity는 서로 다른 렌더 파이프라인을 제공하며 대상·품질에 따른 선택이 필요하다. [Epic: Material Editor UI](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-editor-ui), [Epic: PBR](https://dev.epicgames.com/documentation/en-us/unreal-engine/physically-based-materials-in-unreal-engine), [Unity: Render pipelines](https://docs.unity3d.com/6000.0/Documentation/Manual/render-pipelines-overview.html)
 
 **HB 결정:** 머테리얼 노드는 타입 검사 후 HLSL과 Shader 파이프라인에 연결해야 완성이다. 상수·Texture Sample·UV·연산·Normal·표면 출력, 함수·인스턴스 파라미터, Blend/Culling/Depth, 컴파일 위치·시간·비용이 필요하다. 태양·하늘·구름·안개·환경광·그림자·후처리·노출은 장면 설정과 실제 렌더러 입력을 공유한다. 기본 프리셋과 품질 단계는 준비하되 DX11에서 구현할 실제 지원 범위를 표시한다. PBR이라는 이름이 자동으로 현실과 같은 결과를 보장하지 않는다.
 
+**현재 상태:** 독립 머테리얼 파일은 그래프와 표면을 저장한다. 현재 색/스칼라 노드의 연결 결과를 제한된 표면 값으로 계산해 preview·장면 할당·`setMaterial`에 사용한다. HLSL/Texture/UV/Normal/Shader 컴파일은 아직 없다. Transform Animation과 Curve의 편집·저장은 별도 문서이며 Transform Animation의 대상 실행 범위는 앞 절에 적었다. 도형 preview와 Transform 실행을 Skeleton/AnimBP/상태 머신의 구현으로 표시하지 않는다.
+
 ## 입력, 충돌, 2D, 오디오, UI와 확장 영역
 
 **입력 — 본문 확인:** Enhanced Input은 Action/Context/Modifier/Trigger를 구분하고 문맥의 우선순위·실행 중 교체·Started/Triggered/Completed 같은 상태를 제공한다. HB도 물리 키와 ‘이동/상호작용’ 동작을 분리하고 BP/C++가 같은 입력 액션을 받게 한다. 게임 키와 편집기 단축키가 동시에 실행되지 않아야 한다. [Epic: Enhanced Input](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
+
+**입력 — 현재 상태:** IA의 bool/float/vec2/vec3·dead zone·pressed/held/released·소비와 IMC의 액션/키/축/배율/우선순위를 독립 에셋에서 편집한다. 클래스에 IMC를 지정하고 우클릭 검색에 IA 파일명 이벤트를 제공한다. 게임 VM은 Started/Triggered/Completed와 프레임 기반 held를 실행한다. Ongoing/Canceled·Hold/Tap/Chord·런타임 문맥 교체·게임패드/마우스 축·플레이어별 입력·C++ 직접 구독은 미구현이다.
 
 **충돌 — 본문 확인:** Unreal은 Object/Trace 반응과 Block/Overlap/Ignore, Hit/Overlap 이벤트 생성 조건을 구분한다. HB는 충돌 채널/마스크·트리거·리지드바디·고정 시간 단계·Ray/Shape Query·HitResult·힘/속도·마찰·반발·CCD·디버그 표시를 포함한다. 단순 박스 겹침만으로 물리 엔진 전체를 구현했다고 표시하지 않는다. [Epic: Collision overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview)
 
@@ -159,15 +175,19 @@ Unity Animation은 Dopesheet/Curve, 선택 키 F·전체 A 초점, 프레임·�
 | --- | --- | --- |
 | Timeline 글자 잘림 | Animation CSS 범위 제한·제목/핀/노드 폭 수정 | 화면에서 읽힘 확인 |
 | 좁은 아래 Timeline | 주 문서 탭에 열고 사용자가 도킹 | 키 선택·보간/시간 편집 확인 |
-| 창 하나만 전환 | 분할·탭·최대화/복원·추가 직교 카메라 | 다중 문서·분할·최대화 화면 확인, 배치 복원 모델 검사 |
+| 독립 Animation이 미리보기만 제공 | Play/Stop Animation에 저장 에셋의 position/rotation/scale·Loop/Rate/시간 배율 연결 | `test:runtime`: 실제 대상 값·정지/완료·반복·검증 실패/정리·모델 클립 우선 검사; Skeletal/상태 머신/Animation 이벤트는 남음 |
+| 창 하나만 전환 | 독립 에셋 문서·분할·탭·최대화/복원·추가 직교 카메라·클래스 컴포넌트 뷰포트 | 문서별 데이터/Undo/저장/닫기 보호; OS 부동창·전체 컴포넌트 preview는 남음 |
 | 가짜 에셋 카드·메모리 가져오기 | 실제 디스크 Project·파일 가져오기·내용 검색 | 다중 선택/가져오기/문서 화면 및 서버 재열기 검사 |
 | Play는 선 강조 | 전체 그래프 VM·실행 월드·Step/Continue | 중단점 뒤 Sequence·매크로 지연·반복·Timeline 재개 검사 |
 | C++는 헤더만 등록 | 실제 g++ 빌드·RPC wrapper·상태/이벤트 연결 | C++→BP 위치/회전 변경, Stop 원복 화면 확인 |
-| 기본 함수 부족 | 372개 등록, 공통 C++ 289개, 신규 함수 221개 | 각 신규 함수 C++/JS 결과·서명·JSON 검사 |
-| 노드 200개 제한 | 그래프당 1,000노드·5,000연결 | 372종 전체가 한 그래프에 저장되는 검사 |
+| 기본 함수 부족 | 373개 등록, 공통 C++ 289개, 추가 함수 221개·typed IA 이벤트 | 공통 함수 C++/JS 결과·서명·JSON·입력 실행 검사 |
+| 노드 200개 제한 | 그래프당 1,000노드·5,000연결 | 등록된 전체 노드가 한 그래프에 저장되는 검사 |
 | 잘못된 C++/SaveGame 출력 | 전체 타입/상태 검증 후 적용 | 비정상 반환/Transform 거부·원본 보존 검사 |
 | 포커스별 키 | 문서 포커스·텍스트·IME 가드 | 전 조작 프로필·설정 가능한 Shortcut Manager는 남음 |
 | 서비스별 실제 지원 | Mesh Raycast·기본 오디오/클립/표면/위젯/SaveGame | openScene은 명시적 오류, 강체·3D음향·native 서비스는 남음 |
+| 파일 제작 메뉴 없음 | 폴더 우클릭 JSON 에셋 8종·C++ 한 쌍·부모 7종 생성 | 생성/중복 거부·자료형/부모·실제 빌드 검사; 별도 Struct/Enum/Interface/UI/VFX/Audio 에셋은 남음 |
+| 여러 BP가 같은 실행 그래프를 사용 | 장면 `blueprintAsset`별 검증/인스턴스·입력 에셋 로드·native 빌드 소유 상태 격리 | 다중 BP 이벤트/입력 실행·다른 모듈의 공개 상태 보존 검사 |
+| 이름 변경 뒤 참조 손상 | 열린 문서/참조/배치 갱신·영속 redirect·실패 rollback | 서버 재시작 뒤 구 경로 해석 검사; 전체 디스크 참조 Fixup/의존성 UI는 남음 |
 | native 엔진·배포 | 아직 미구현 | DX11·셰이더 그래프·cooking·게임 배포가 장기 범위 |
 
 노드별 전체 서명과 실행 범위는 [노드 카탈로그](NODE_CATALOG.md)에 있다. 이 문서의 전체 범위는 장기 엔진 목표이며, 현재 작업을 완성된 Unreal/Unity 대체 엔진으로 부르지 않는다.

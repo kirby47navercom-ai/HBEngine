@@ -1,3 +1,4 @@
+import {blueprintClasses} from './class-types.js';
 import {validNative,nativePins,nativeMember} from './native-model.js';
 import {coreApi} from './core-api.js';
 const pin = (id,label,type='exec',array=false) => ({id,label,type,array});
@@ -9,7 +10,7 @@ export const catalog = [
   {key:'tick',title:'Event Tick',ko:'매 프레임',group:'이벤트',keywords:'event tick 이벤트 틱 델타 시간',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Delta seconds','float')]},
   {key:'beginOverlap',title:'Begin Overlap',ko:'겹침 시작',group:'이벤트',keywords:'actor component overlap begin 비긴 오버랩 충돌 트리거',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
   {key:'endOverlap',title:'End Overlap',ko:'겹침 종료',group:'이벤트',keywords:'end overlap 끝 엔드 충돌',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
-  {key:'input',title:'Input Action',ko:'입력 이벤트',group:'이벤트',keywords:'input key keyboard 입력 키보드 상호작용',kind:'event',inputs:[],outputs:[pin('then','Pressed')]},
+  {key:'input',title:'Keyboard Event',ko:'키보드 이벤트',group:'이벤트',keywords:'input key keyboard 입력 키보드 상호작용',kind:'event',inputs:[],outputs:[pin('then','Pressed')]},
   {key:'customEvent',title:'Custom Event',ko:'사용자 이벤트',group:'이벤트',keywords:'custom event 커스텀 사용자 정의',kind:'event',inputs:[],outputs:[pin('then','실행')]},
   {key:'branch',title:'Branch',ko:'조건 분기',group:'흐름 제어',keywords:'branch if 조건 분기 참 거짓',kind:'condition',inputs:[pin('exec','실행'),pin('condition','Condition','bool')],outputs:[pin('true','True'),pin('false','False')]},
   {key:'delay',title:'Delay',ko:'기다리기',group:'흐름 제어',keywords:'delay wait 딜레이 지연 대기',inputs:[pin('exec','실행'),pin('duration','Duration','float')],outputs:[pin('then','Completed')]},
@@ -113,6 +114,7 @@ catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').
 catalog.push(
   {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
   {key:'hitEvent',title:'Event Hit',ko:'충돌 이벤트',group:'이벤트',keywords:'hit collision 충돌 히트',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit')]},
+  {key:'inputAction',title:'Input Action',ko:'입력 액션 이벤트',group:'이벤트',keywords:'input action ia 입력 액션 started triggered completed',kind:'event',inputs:[],outputs:[pin('started','Started'),pin('triggered','Triggered'),pin('completed','Completed'),pin('value','Action value','bool')]},
   {key:'inputAxis',title:'Input Axis',ko:'축 입력',group:'이벤트',keywords:'input axis 입력 축 이동 마우스',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('value','Axis value','float')]},
   {key:'anyDamage',title:'Any Damage',ko:'피해 이벤트',group:'이벤트',keywords:'damage hit 피해 데미지',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('damage','Damage','float'),pin('instigator','Instigator','object')]},
   spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
@@ -128,6 +130,7 @@ export function validValue(type,value){
 }
 export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
+  if(node.key==='inputAction')return direction==='in'?[]:catalog.find(s=>s.key==='inputAction').outputs.map(p=>p.id==='value'?{...p,type:node.valueType||'bool'}:p);
   if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type==='event'?'exec':t.type))];}
   if(node.key==='reroute')return [pin('value',direction==='in'?'Input':'Output',node.valueType||'float',node.array??false)];
   if(node.key.startsWith('native'))return nativePins(graph,node,direction);
@@ -168,7 +171,7 @@ export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=g
   if(direction==='in'&&p){const fields=fieldsFor(p.type),value=n.inputValues?.[pinId]??defaultsFor(p.type);n.inputValues??={};if(recombine){const values=fields.map((f,i)=>n.inputValues[pinId+'.'+f.id]??(Array.isArray(value)?value[i]:value?.[f.id])??defaultsFor(f.type));n.inputValues[pinId]=Array.isArray(value)?values:Object.fromEntries(fields.map((f,i)=>[f.id,values[i]]));for(const id of Object.keys(n.inputValues))if(id.startsWith(pinId+'.'))delete n.inputValues[id];}else fields.forEach((f,i)=>n.inputValues[pinId+'.'+f.id]=Array.isArray(value)?value[i]:value?.[f.id]??defaultsFor(f.type));}
   graph.edges=graph.edges.filter(e=>{const end=direction==='out'?e.from:e.to;return !(end.node===nodeId&&(end.pin===pinId||end.pin.startsWith(pinId+'.')));});return true;
 }
-export function componentDefaults(type){return type==='Transform'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]}:type==='BoxCollider'?{center:[0,0,0],extent:[.5,.5,.5],trigger:true,enabled:true}:type==='MeshRenderer'?{mesh:'Stone_arch',material:'Moss_stone',visible:true,castShadow:true}:type==='PointLight'?{color:[1,.85,.65,1],intensity:8,radius:15,castShadow:false}:type==='SceneComponent'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}:{className:'MyComponent',enabled:true};}
+export function componentDefaults(type){if(type==='CapsuleCollider')return {radius:.35,height:1.8,enabled:true,trigger:false};if(type==='PawnMovement')return {speed:5,enabled:true};if(type==='CharacterMovement')return {speed:5,jumpSpeed:6,gravity:9.8,enabled:true};return type==='Transform'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]}:type==='BoxCollider'?{center:[0,0,0],extent:[.5,.5,.5],trigger:true,enabled:true}:type==='MeshRenderer'?{mesh:'Stone_arch',material:'Moss_stone',visible:true,castShadow:true}:type==='PointLight'?{color:[1,.85,.65,1],intensity:8,radius:15,castShadow:false}:type==='SceneComponent'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}:{className:'MyComponent',enabled:true};}
 
 export const defaultTimeline={length:1,loop:false,autoplay:false,playRate:1,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
 export const curveModes=['auto','user','break','linear','constant','step'];
@@ -265,10 +268,11 @@ export function validBlueprint(g){
   if(new Set(g.components.map(c=>c.id)).size!==g.components.length)return false;
   if(g.native!==undefined&&!validNative(g.native,validValue))return false;
   if(g.native?.header!==undefined&&(typeof g.native.header!=='string'||g.native.header.length>100000))return false;
+  if(g.settings?.inputMapping!==undefined&&(typeof g.settings.inputMapping!=='string'||g.settings.inputMapping.length>1000||g.settings.inputMapping.includes('..')))return false;
   if(g.settings?.nativeDefaults!==undefined){const values=g.settings.nativeDefaults;if(!values||typeof values!=='object'||Array.isArray(values))return false;for(const [key,value] of Object.entries(values)){const {p}=nativeMember(g,{nativeId:key});if(!p||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(p.type,v))):!validValue(p.type,value)))return false;}}
   if(g.watches!==undefined&&(!Array.isArray(g.watches)||g.watches.length>100||!g.watches.every(w=>w&&safeId(w.view)&&safeId(w.node)&&['in','out'].includes(w.direction)&&typeof w.pin==='string'&&/^[A-Za-z0-9_.-]{1,100}$/.test(w.pin))))return false;
   for(const c of g.components)if(c.properties!==undefined){const defaults=componentDefaults(c.type);if(!c.properties||typeof c.properties!=='object'||Array.isArray(c.properties))return false;for(const [key,v] of Object.entries(c.properties)){if(!Object.hasOwn(defaults,key))return false;const sample=defaults[key],type=Array.isArray(sample)?key==='color'?'color':'vec3':typeof sample==='boolean'?'bool':typeof sample==='number'?'float':'string';if(!validValue(type,v)||(['intensity','radius'].includes(key)&&v<0))return false;}}
-  if(g.settings!==undefined&&(!g.settings||typeof g.settings!=='object'||(g.settings.parentClass!==undefined&&!['Actor','Component','SceneComponent',...(g.native?.classes.filter(c=>c.blueprintable).map(c=>c.name)||[])].includes(g.settings.parentClass))||['tickEnabled','overlapEnabled'].some(k=>g.settings[k]!==undefined&&typeof g.settings[k]!=='boolean')||(g.settings.tickInterval!==undefined&&(!Number.isFinite(g.settings.tickInterval)||g.settings.tickInterval<0||g.settings.tickInterval>10000))))return false;
+  if(g.settings!==undefined&&(!g.settings||typeof g.settings!=='object'||(g.settings.parentClass!==undefined&&![...Object.keys(blueprintClasses),...(g.native?.classes.filter(c=>c.blueprintable).map(c=>c.name)||[])].includes(g.settings.parentClass))||['tickEnabled','overlapEnabled'].some(k=>g.settings[k]!==undefined&&typeof g.settings[k]!=='boolean')||(g.settings.tickInterval!==undefined&&(!Number.isFinite(g.settings.tickInterval)||g.settings.tickInterval<0||g.settings.tickInterval>10000))))return false;
   const definitions=[...(Array.isArray(g.functions)?g.functions:[]),...(Array.isArray(g.macros)?g.macros:[])];
   for(const key of ['functions','macros'])if(g[key]!==undefined&&(!Array.isArray(g[key])||g[key].length>50))return false;
   const validPorts=ports=>Array.isArray(ports)&&ports.length<=30&&new Set(ports.map(p=>p?.id)).size===ports.length&&ports.every(p=>p&&safeId(p.id)&&typeof p.label==='string'&&p.label.length<=80&&(p.type==='exec'||p.type==='any'||Object.hasOwn(variableTypes,p.type))&&typeof p.array==='boolean'&&!(p.type==='exec'&&p.array));
@@ -283,6 +287,7 @@ export function validBlueprint(g){
     if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||validNativeNode(n)||validSymbolNode(n)||(['getVariable','setVariable'].includes(n.key)&&g.variables.some(v=>v.id===n.variableId))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&definitions.some(d=>d.id===n.definitionId)))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&Math.abs(n.position[k])<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
     for(const n of context.nodes){if(n.key==='callFunction'&&!(g.functions||[]).some(d=>d.id===n.definitionId))return false;if(n.key==='callMacro'&&!(g.macros||[]).some(d=>d.id===n.definitionId))return false;}
     for(const n of context.nodes){
+      if(n.key==='inputAction'&&(!['bool','float','vec2','vec3'].includes(n.valueType||'bool')||(n.options?.action!==undefined&&(typeof n.options.action!=='string'||n.options.action.length>1000))))return false;
       if(n.key==='timeline'&&(context!==g||!validTimeline(n.timeline)))return false;
       if(n.array!==undefined&&typeof n.array!=='boolean')return false;
       if(n.valueType!==undefined&&!Object.hasOwn(variableTypes,n.valueType))return false;

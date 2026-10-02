@@ -13,12 +13,12 @@ export function validLayout(n,ids,seen=new Set(),depth=0){
 export class DockLayout {
   constructor(host,entries,onFocus){
     this.host=host;this.entries=new Map(entries.map(e=>[e.id,e]));this.onFocus=onFocus;this.parking=document.createElement('div');this.parking.hidden=true;host.after(this.parking);
-    this.tree={axis:'column',ratio:.68,a:leaf(['scene','material','animation','blueprint','code']),b:leaf(['project','console'])};
-    try{const ids=new Set(this.entries.keys()),saved=restoreLayout(JSON.parse(localStorage.getItem('hbengine.docks.v1')),ids);if(validLayout(saved,ids))this.tree=saved;}catch{}
+    this.tree={axis:'column',ratio:.68,a:leaf(['scene']),b:leaf(['project','console'])};
+    try{const ids=new Set(this.entries.keys()),saved=restoreLayout(JSON.parse(localStorage.getItem('hbengine.docks.v2')),ids);if(validLayout(saved,ids))this.tree=saved;}catch{}
     this.render();
   }
   leaves(n=this.tree){return n.tabs?[n]:[...this.leaves(n.a),...this.leaves(n.b)];}
-  save(){localStorage.setItem('hbengine.docks.v1',JSON.stringify(this.tree));}
+  save(){localStorage.setItem('hbengine.docks.v2',JSON.stringify(this.tree));}
   add(entry,target,zone='center'){this.entries.set(entry.id,entry);this.open(entry.id,target,zone);}
   open(id,target,zone='center'){
     if(!this.entries.has(id))return;const existing=this.leaves().find(l=>l.tabs.includes(id));
@@ -38,7 +38,7 @@ export class DockLayout {
   close(id){const l=this.leaves().find(l=>l.tabs.includes(id));if(!l)return;if(this.leaves().length===1&&l.tabs.length===1)return;l.tabs=l.tabs.filter(x=>x!==id);if(l.active===id)l.active=l.tabs[0];this.tree=this.clean();if(!this.leaves().includes(this.maximized))this.maximized=null;this.render();}
   remove(id){const pane=this.leaves().find(l=>l.tabs.includes(id));if(pane&&this.leaves().length===1&&pane.tabs.length===1&&id!=='scene')pane.tabs.push('scene');this.close(id);if(this.leaves().some(l=>l.tabs.includes(id)))return;this.entries.get(id)?.dispose?.();this.entries.get(id)?.element.remove();this.entries.delete(id);}
   visible(id){return (this.maximized?[this.maximized]:this.leaves()).some(l=>l.active===id);}
-  reset(){this.maximized=null;this.tree={axis:'column',ratio:.68,a:leaf(['scene','material','animation','blueprint','code']),b:leaf(['project','console'])};this.render();this.onFocus?.('scene');}
+  reset(){this.maximized=null;this.tree={axis:'column',ratio:.68,a:leaf(['scene']),b:leaf(['project','console'])};this.render();this.onFocus?.('scene');}
   render(){
     for(const e of this.entries.values()){e.element.classList.remove('active');this.parking.append(e.element);}this.host.replaceChildren();
     const build=n=>{

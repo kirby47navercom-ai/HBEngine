@@ -8,7 +8,7 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 엔진을 만든다. 알만�
 
 블루프린트 전체 제작 기능의 조사·상태·C++ 연결 설계는 [블루프린트 기능 기준](BLUEPRINT_SPEC.md)에 정리한다.
 
-전체 공식 분석은 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), UI/단축키 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 기본 372개 노드와 공통 C++ 289개 목록은 [노드 카탈로그](NODE_CATALOG.md)에 있다.
+전체 공식 분석은 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), UI/단축키 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 기본 373개 노드와 공통 C++ 289개 목록은 [노드 카탈로그](NODE_CATALOG.md)에 있다.
 
 ## 기능 범위
 

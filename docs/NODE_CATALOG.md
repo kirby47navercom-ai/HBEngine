@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **372개**, 실제 공통 C++ API **289개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **373개**, 실제 공통 C++ API **289개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -10,7 +10,7 @@
 
 | 분야 | 노드 | 공통 C++ |
 | --- | ---: | ---: |
-| 이벤트 | 11 | 0 |
+| 이벤트 | 12 | 0 |
 | 흐름 제어 | 16 | 0 |
 | 디버그 | 1 | 0 |
 | 변환 | 24 | 23 |
@@ -55,10 +55,11 @@
 | tick | Event Tick / 매 프레임 | — | then: exec, delta: float | — | VM 이벤트 진입점 |
 | beginOverlap | Begin Overlap / 겹침 시작 | — | then: exec, other: object | — | VM 이벤트 진입점 |
 | endOverlap | End Overlap / 겹침 종료 | — | then: exec, other: object | — | VM 이벤트 진입점 |
-| input | Input Action / 입력 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
+| input | Keyboard Event / 키보드 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | customEvent | Custom Event / 사용자 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
+| inputAction | Input Action / 입력 액션 이벤트 | — | started: exec, triggered: exec, completed: exec, value: bool | — | VM 이벤트 진입점 |
 | inputAxis | Input Axis / 축 입력 | — | then: exec, value: float | — | VM 이벤트 진입점 |
 | anyDamage | Any Damage / 피해 이벤트 | — | then: exec, damage: float, instigator: object | — | VM 이벤트 진입점 |
 

@@ -21,6 +21,11 @@ struct Transform { Vec3 position{},rotation{},scale{1,1,1}; };
 struct Library {};
 struct Actor { Transform transform{}; virtual ~Actor()=default; };
 struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
+struct Pawn : Actor {};
+struct Character : Pawn {};
+struct PlayerController : Actor {};
+struct GameMode : Actor {};
+struct SceneComponent : Component { Transform transform{}; };
 inline Vec3 operator+(Vec3 a,Vec3 b){return {a.x+b.x,a.y+b.y,a.z+b.z};}
 inline Vec3 operator-(Vec3 a,Vec3 b){return {a.x-b.x,a.y-b.y,a.z-b.z};}
 inline Vec3 operator*(Vec3 a,float s){return {a.x*s,a.y*s,a.z*s};}

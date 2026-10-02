@@ -11,18 +11,18 @@ const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'nati
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
 const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*'};
-const cppType=p=>p.array?`std::vector<${cpp[p.type]}>`:p.type==='object'?`${['Object','Actor','Component'].includes(p.className)?'hb::'+(p.className==='Component'?'Component':'Actor'):p.className||'hb::Actor'}*`:cpp[p.type];
+const cppType=p=>p.array?`std::vector<${cpp[p.type]}>`:p.type==='object'?`${['Object','Actor','Pawn','Character','PlayerController','GameMode','Component','SceneComponent'].includes(p.className)?'hb::'+(p.className==='Object'?'Actor':p.className):p.className||'hb::Actor'}*`:cpp[p.type];
 function unpack(p,expr){if(p.array&&p.type==='object')throw Error('객체 포인터 배열은 공개 함수에서 아직 지원하지 않아요.');return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
 function generatedWorker(meta){
   let definitions='',cases='',factory='';
   for(const c of meta.classes){
-    if(!['Actor','Component','Library'].includes(c.base))throw Error('실행 부모 클래스는 Actor·Component·Library를 지원해요.');
-    const actor=c.base==='Actor'?'return this;':c.base==='Component'?'return this->'+c.name+'::actor;':'return nullptr;';
+    if(!['Actor','Pawn','Character','PlayerController','GameMode','Component','SceneComponent','Library'].includes(c.base))throw Error('실행 부모 클래스는 Actor·Component·Library를 지원해요.');
+    const actor=['Actor','Pawn','Character','PlayerController','GameMode'].includes(c.base)?'return this;':['Component','SceneComponent'].includes(c.base)?'return this->'+c.name+'::actor;':'return nullptr;';
     const props=c.properties.map(p=>`j["${p.name}"]=hb::bridgeValue(this->${p.name});`).join('');
     const defaults=c.properties.map(p=>`if(j.contains("${p.name}"))this->${p.name}=${unpack(p,`j.at("${p.name}")`)};`).join('');
     const events=c.functions.filter(f=>f.event!=='none').map(f=>{const args=f.parameters.map(p=>`${p.cppType} ${p.name}`).join(','),id=c.name+'.'+f.name,payload=f.inputs.map(p=>`{"${p.id}",hb::bridgeValue(${p.id})}`).join(',');return `void ${f.name}(${args}) override {if(hb::overridden("${id}")){hb::bridgeEvents.push_back({{"nativeId","${id}"},{"target",this->id},{"args",hb::Json{${payload}}}});}else{${f.event==='native'?`${c.name}::${f.name}(${f.parameters.map(p=>p.name).join(',')});`:''}}}`;}).join('\n');
     definitions+=`struct HB_${c.name}: public ${c.name},public hb::BridgeCell {std::string id;${events} hb::Actor* actor() override {${actor}} hb::Json properties() override {hb::Json j=hb::Json::object();${props}return j;}void defaults(const hb::Json& j) override {${defaults}}};\n`;
-    factory+=`if(className=="${c.name}"){auto cell=std::make_unique<HB_${c.name}>();cell->id=id;${c.base==='Component'?'cell->'+c.name+'::actor=hb::bridgeActor(id);':''}${c.base==='Actor'?'hb::bridgeActors.erase(id);':''}hb::bridgeCells[id]=std::move(cell);return;}\n`;
+    factory+=`if(className=="${c.name}"){auto cell=std::make_unique<HB_${c.name}>();cell->id=id;${['Component','SceneComponent'].includes(c.base)?'cell->'+c.name+'::actor=hb::bridgeActor(id);':''}${['Actor','Pawn','Character','PlayerController','GameMode'].includes(c.base)?'hb::bridgeActors.erase(id);':''}hb::bridgeCells[id]=std::move(cell);return;}\n`;
     for(const p of c.properties){const id=c.name+'.'+p.name,target=`auto* target=dynamic_cast<HB_${c.name}*>(hb::bridgeCells.at(targetId).get());if(!target)throw std::runtime_error("C++ target class mismatch");`;
       cases+=`if(nativeId=="${id}"){ensure(targetId,"${c.name}");hb::bridgeSync(objects);${target}if(key=="nativeGet")out["value"]=hb::bridgeValue(target->${p.name});${!p.readOnly?`else if(key=="nativeSet")target->${p.name}=${unpack(p,'args.at("value")')};`:''}else throw std::runtime_error("invalid property operation");handled=true;}\n`;
     }

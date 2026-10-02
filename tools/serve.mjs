@@ -1,3 +1,4 @@
+import {findEditor,openExternal,createCppClass} from './external-editor.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,6 +18,9 @@ const server=http.createServer(async(req,res)=>{try{
   if(url.pathname.startsWith('/api/')){
     if(req.headers.origin&&!['http://127.0.0.1:'+port,'http://localhost:'+port].includes(req.headers.origin))return json(res,{error:'허용되지 않은 요청 출처'},403);
     if(req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'편집기 요청 헤더 필요'},403);
+    if(url.pathname==='/api/editor'&&req.method==='GET'){const editor=await findEditor();return json(res,{name:editor?.name||null});}
+    if(url.pathname==='/api/editor/open'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await openExternal(project,data.path));}
+    if(url.pathname==='/api/asset/create'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,data.kind==='code'?await createCppClass(project,data.folder||'Source',data.name,data.parent):await project.create(data.folder||'Assets',data.kind,data.name,data.parent));}
     if(url.pathname==='/api/project'&&req.method==='GET')return json(res,await project.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'}));
     if(url.pathname==='/api/file'&&req.method==='GET'){const info=await project.read(q.get('path'));return stream(req,res,info.file,info.size,true);}
     if(url.pathname==='/api/file'&&req.method==='PUT'){await project.write(q.get('path'),(await body(req)).toString('utf8'));return json(res,{ok:true});}

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import * as THREE from 'three';
+import {createAsset} from '../prototype/asset-documents.js';
 import {catalog,defaultBlueprint,makeNode,makeDefinition,validBlueprint,defaultTimeline,sampleTimeline,timelineLength} from '../prototype/blueprint-model.js';
 import {BlueprintRuntime,runtimeKeys} from '../prototype/blueprint-runtime.js';
 import {NativeHost} from './native-host.mjs';
@@ -38,6 +40,29 @@ g=root();messages=[];g.variables=[{id:'counter',name:'counter',type:'int',contai
 for(const [key,selection,cases] of [['switchInt',20,[10,20,30]],['switchString','b',['a','b','c']]]){g=root();messages=[];node(g,'beginPlay','begin');node(g,key,'switch',{selection,case0:cases[0],case1:cases[1],case2:cases[2]});node(g,'print','match',{message:'match'});node(g,'print','fallback',{message:'default'});edge(g,'begin','then','switch');edge(g,'switch','out1','match');edge(g,'switch','default','fallback');assert.ok(validBlueprint(g));vm=runtime(g,{log:v=>messages.push(v)});await vm.start();assert.deepEqual(messages,['match']);const n=vm.bindings[0].root.nodes.find(n=>n.id==='switch');n.inputValues.selection=key==='switchInt'?99:'missing';await vm.execute(n,vm.frame(vm.bindings[0]));assert.deepEqual(messages,['match','default']);await vm.stop();}
 g=root();messages=[];node(g,'beginPlay','begin');node(g,'forEachBreak','loop',{array:[10,20,30]});node(g,'print','body',{message:'first item'});node(g,'print','done',{message:'array done'});edge(g,'begin','then','loop');edge(g,'loop','body','body');edge(g,'body','then','loop','break');edge(g,'loop','completed','done');assert.ok(validBlueprint(g));vm=runtime(g,{log:v=>messages.push(v)});await vm.start();assert.deepEqual(messages,['first item','array done']);assert.equal(vm.values.get('loop').item,10);await vm.stop();
 
+
+// Saved transform-animation assets use the same Play/Stop Animation nodes as imported model clips.
+const motion=createAsset('animation','AN_Move');motion.timeline={...motion.timeline,length:5,lastKeyframe:true,playRate:2,tracks:[
+  {id:'position',name:'Position',type:'vec3',interpolation:'linear',keys:[{time:0,value:[0,0,0]},{time:2,value:[4,2,0]}]},
+  {id:'rotation',name:'Rotation',type:'vec3',interpolation:'linear',keys:[{time:0,value:[0,0,0]},{time:2,value:[0,180,0]}]},
+  {id:'scale',name:'Scale',type:'vec3',interpolation:'linear',keys:[{time:0,value:[1,1,1]},{time:2,value:[2,2,2]}]}
+]};
+const animationPath='Assets/Animations/AN_Move.hbanimation.json';let updateCount=0;
+const animationVM=(asset=motion,extra={})=>{
+  const graph=root();node(graph,'beginPlay','begin');node(graph,'playAnimation','play',{target:null,clip:'AN_Move',loop:false});edge(graph,'begin','then','play');
+  const services=engineOperations({mesh:()=>null,asset:async(name,kind)=>name==='AN_Move'&&kind==='animation'?animationPath:null,readAsset:async()=>structuredClone(asset),update:()=>updateCount++,remove:()=>{},...extra});
+  return {services,vm:runtime(graph,{operation:services.operation,physics:services.physics})};
+};
+let animation=animationVM();await animation.vm.start();assert.deepEqual(animation.vm.objects[0].position,[0,0,0]);await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[1,.5,0]);assert.deepEqual(animation.vm.objects[0].rotation,[0,45,0]);assert.deepEqual(animation.vm.objects[0].scale,[1.25,1.25,1.25]);await animation.vm.tick(.75);assert.deepEqual(animation.vm.objects[0].position,[4,2,0]);const completedUpdates=updateCount;await animation.vm.tick(1);assert.equal(updateCount,completedUpdates,'완료된 애니메이션을 계속 갱신하면 안 돼요.');
+await animation.services.operation('playAnimation',{target:null,clip:'AN_Move',loop:true},animation.vm.bindings[0],animation.vm);await animation.vm.tick(1.25);assert.deepEqual(animation.vm.objects[0].position,[1,.5,0],'반복은 남은 프레임 시간을 보존해야 해요.');await animation.services.operation('stopAnimation',{target:null},animation.vm.bindings[0],animation.vm);const stoppedPosition=[...animation.vm.objects[0].position];await animation.vm.tick(.5);assert.deepEqual(animation.vm.objects[0].position,stoppedPosition);animation.services.dispose();await animation.vm.stop();
+animation=animationVM();await animation.vm.start();animation.vm.core.scale=2;await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[2,1,0],'시간 배율과 재생 속도는 각각 한 번만 적용해요.');animation.vm.core.scale=0;await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[2,1,0]);animation.services.dispose();await animation.vm.stop();
+const undilated=structuredClone(motion);undilated.timeline.ignoreTimeDilation=true;animation=animationVM(undilated);await animation.vm.start();animation.vm.core.scale=0;await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[1,.5,0]);animation.vm.core.scale=2;await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[2,1,0],'시간 배율 무시는 원래 delta를 사용해요.');animation.services.dispose();const disposedPosition=[...animation.vm.objects[0].position];await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,disposedPosition);await animation.vm.stop();
+for(const invalid of [{...motion,version:2},{...motion,timeline:{...motion.timeline,tracks:[{id:'position',name:'Position',type:'float',interpolation:'linear',keys:[{time:0,value:1}]}]}}]){animation=animationVM(invalid);const original=structuredClone(animation.vm.objects[0]);await assert.rejects(animation.vm.start(),/검증|Vector/);assert.deepEqual(animation.vm.objects[0],original,'잘못된 에셋은 대상 트랜스폼을 변경하면 안 돼요.');animation.services.dispose();await animation.vm.stop();}
+animation=animationVM();await animation.vm.start();await animation.services.operation('destroy',{target:null},animation.vm.bindings[0],animation.vm);const replacement=object();animation.vm.objects.push(replacement);await animation.vm.tick(.5);assert.deepEqual(replacement.position,[1,2,3],'파괴한 대상의 애니메이션이 같은 ID의 새 대상에 남으면 안 돼요.');animation.services.dispose();await animation.vm.stop();
+const originalFetch=globalThis.fetch;try{let requested;globalThis.fetch=async(url,options)=>{requested={url,options};return {ok:true,json:async()=>structuredClone(motion)};};animation=animationVM(motion,{readAsset:undefined});await animation.vm.start();assert.equal(requested.url,'/api/file?path='+encodeURIComponent(animationPath));assert.equal(requested.options.headers['X-HB-Editor'],'1');await animation.vm.tick(.25);assert.deepEqual(animation.vm.objects[0].position,[1,.5,0]);animation.services.dispose();await animation.vm.stop();}finally{globalThis.fetch=originalFetch;}
+const animatedModel=new THREE.Group();animatedModel.userData.animations=[new THREE.AnimationClip('Walk',1,[new THREE.VectorKeyframeTrack('.position',[0,1],[0,0,0,2,0,0])])];
+animation=animationVM(motion,{mesh:()=>animatedModel,asset:()=>{throw Error('모델 클립이 있으면 에셋 검색이 필요 없어요.');}});await animation.services.operation('playAnimation',{target:null,clip:'Walk',loop:false},animation.vm.bindings[0],animation.vm);await animation.services.physics(.5,animation.vm);assert.equal(animatedModel.position.x,1);await animation.services.operation('stopAnimation',{target:null},animation.vm.bindings[0],animation.vm);const stoppedModelPosition=animatedModel.position.x;await animation.services.physics(.25,animation.vm);assert.equal(animatedModel.position.x,stoppedModelPosition);animation.services.dispose();
+
 const host=new NativeHost();
 try{
   const header=await fs.readFile(new URL('../prototype/examples/DoorController.h',import.meta.url),'utf8'),source=await fs.readFile(new URL('../prototype/examples/DoorController.cpp',import.meta.url),'utf8');
@@ -47,4 +72,4 @@ try{
   vm=runtime(g,{native:async request=>{const r=await host.call(built.token,{...request,objects});for(const state of r.objects){const o=objects.find(o=>o.id===state.id);if(o)Object.assign(o,state);}return r;}},objects);
   await vm.start();assert.deepEqual(objects[0].rotation,[0,45,0]);assert.deepEqual(objects[0].position,[1,4,3]);await vm.stop();
 }finally{host.close();}
-console.log('그래프 실행·중단점 이어가기·매크로 지연·Tick 간격·Timeline 이벤트·실제 C++→BP 검사 통과');
+console.log('그래프 실행·중단점 이어가기·매크로 지연·Tick 간격·Timeline 이벤트·트랜스폼 애니메이션 실행·실제 C++→BP 검사 통과');
