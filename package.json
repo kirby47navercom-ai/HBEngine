@@ -15,7 +15,11 @@
     "test:project": "node tools/check-project.mjs",
     "test:server": "node tools/check-project.mjs --server",
     "test:library": "node tools/prepare-native.mjs && node tools/check-library.mjs",
-    "test:assets": "node tools/check-assets.mjs"
+    "test:assets": "node tools/check-assets.mjs",
+    "desktop:build": "node tools/build-desktop.mjs",
+    "test:launcher": "node tools/check-launcher.mjs",
+    "test:session": "node tools/check-session.mjs",
+    "test:desktop": "node tools/check-desktop.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

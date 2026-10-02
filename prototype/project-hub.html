@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HBEngine — 프로젝트</title><link rel="stylesheet" href="/prototype/project-hub.css"></head>
+<body>
+  <header class="hub-header"><a class="hub-brand" href="/prototype/project-hub.html"><span class="brand-mark">HB</span>ENGINE</a><span>프로젝트</span></header>
+  <main class="hub">
+    <section class="project-list"><div class="section-heading"><h1>최근 프로젝트</h1><button id="refresh-projects" class="icon-button" aria-label="프로젝트 새로고침" data-icon="refresh"></button></div><div id="recent-projects" class="recent-projects" aria-label="최근 프로젝트"><p class="empty">불러오는 중…</p></div>
+      <form id="open-project" class="open-project"><label for="project-file">프로젝트 파일</label><div class="path-field"><input id="project-file" name="file" placeholder=".hbproject 경로" aria-label="프로젝트 파일 경로" required><button type="button" id="browse-project" class="icon-button" aria-label="프로젝트 파일 선택" data-icon="folder"></button></div><button class="open-button" data-icon="external">열기</button></form>
+    </section>
+    <section class="new-project"><div class="section-heading"><h2>새 프로젝트</h2><span class="section-symbol" data-icon="scene"></span></div><form id="create-project"><label for="project-name">이름</label><input id="project-name" name="name" placeholder="MyGame" maxlength="80" autocomplete="off" required><label for="project-directory">저장 위치</label><div class="path-field"><input id="project-directory" name="directory" aria-label="프로젝트 저장 위치" required><button type="button" id="browse-directory" class="icon-button" aria-label="저장 폴더 선택" data-icon="folder"></button></div><button class="primary-button" data-icon="plus">프로젝트 만들기</button></form></section>
+    <p id="hub-error" class="hub-error" role="alert" hidden></p>
+  </main>
+  <script type="module" src="/prototype/project-hub.js"></script>
+</body></html>

@@ -24,7 +24,7 @@
 | --- | --- | --- | --- |
 | [Manual](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityManual.html) | 분야별 도구·런타임·플랫폼을 한 프로젝트 흐름에 연결 | 이 문서·`ENGINE_PLAN.md` | 분야 간 완료 조건을 실제 게임 제작으로 검증 |
 | [What's new](https://docs.unity3d.com/6000.0/Documentation/Manual/WhatsNew.html) | 버전별 기능·변경 구분 | 버전 있는 JSON 검증 | 엔진 버전별 변경 기록·호환성 표 |
-| [Get started](https://docs.unity3d.com/6000.0/Documentation/Manual/get-started.html) | 설치·프로젝트 생성·설정·첫 실행 | `tools/project-service.mjs`의 실제 프로젝트 폴더 | 네이티브 설치·최근 프로젝트·프로젝트 선택기 |
+| [Get started](https://docs.unity3d.com/6000.0/Documentation/Manual/get-started.html) | 설치·프로젝트 생성·설정·첫 실행 | Win32/WebView2 EXE·프로젝트 허브·`.hbproject`·최근 목록·생성/열기 | 설치/업데이트·템플릿 선택·프로젝트 업그레이드/백업 |
 | [Upgrade](https://docs.unity3d.com/6000.0/Documentation/Manual/UpgradeGuides.html) | 순차 버전 변경·코드/에셋 호환성 | `validAsset`/`validBlueprint`의 버전 검사 | 백업·데이터 마이그레이션·실패 복원 |
 | [Building Blocks](https://docs.unity3d.com/6000.0/Documentation/Manual/building-blocks.html) | 반복 제작을 동작하는 구성으로 제공 | 클래스별 기본 컴포넌트 템플릿 | 조작 가능한 2D·3D 캐릭터/상호작용 템플릿; 서비스 구성은 별도 |
 | [Editor interface](https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html) | 창·포커스·검색·설정·자동화 | `app.js`·`dock-layout.js`·`editor-shell.css` | 단축키 재설정·명령 충돌 검사·설정 프로필 |
@@ -33,7 +33,7 @@
 | [2D](https://docs.unity3d.com/6000.0/Documentation/Manual/Unity2D.html) | Sprite·Tilemap·2D 물리·2D 조명 | XY 직교 뷰·이미지 미리보기 | Sprite 분할/Pivot/Sorting·타일 팔레트·2D 충돌 solver |
 | [XR](https://docs.unity3d.com/6000.0/Documentation/Manual/XR.html) | 장치·추적·양안 화면·입력·실행 | 미구현 | XR 장치 계층·스테레오 렌더·상호작용·빌드 |
 | [Multiplayer](https://docs.unity3d.com/6000.0/Documentation/Manual/multiplayer.html) | 접속·세션·상태 동기화·검증 | 미구현 | 권한·복제·RPC·지연/끊김 검사 |
-| [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows g++ 작업 프로세스 | Win32/DX11 게임 실행 파일·타깃 빌드 프로필 |
+| [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기 EXE·WebView2·Node 동봉·g++ worker | DX11 게임 실행 파일·다른 플랫폼·타깃 빌드 프로필 |
 | [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | `model.js`·`blueprint-model.js`·`engine-services.js` | 프리팹/Variant·인스턴스 오버라이드·컴포넌트 전체 생명주기 |
 | [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋 | 다중 장면 동시 월드·런타임 장면 전환·스트리밍 |
 | [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 독립 카메라 뷰포트·`OrbitControls` | Game View 카메라 지정·물리 카메라·culling·출력 텍스처 |
@@ -51,7 +51,7 @@
 | [Post-processing](https://docs.unity3d.com/6000.0/Documentation/Manual/post-processing-and-full-screen-effects.html) | 화면 효과의 렌더 경로·지원 차이 | 기본 노출/tone mapping | 볼륨·Bloom/AO/DOF·효과 순서·GPU 비용 |
 | [Programming](https://docs.unity3d.com/6000.0/Documentation/Manual/scripting.html) | 코드 작성·컴파일·재로딩·진단과 편집기 연결 | 공통 C++ API·native host·외부 IDE 열기 | 다중 번역 단위·IDE 프로젝트 생성·native 디버거·DLL 교체 |
 | [Optimization](https://docs.unity3d.com/6000.0/Documentation/Manual/analysis.html) | CPU/GPU/메모리 측정과 타깃 실험 | 로그·그래프 실행량 제한·숨긴 창 업데이트 가드 | Profiler·메모리/자원 추적·GPU 타이밍·캡처 |
-| [Build/publish](https://docs.unity3d.com/6000.0/Documentation/Manual/building-and-publishing.html) | Player·내용 출력·설정·캐시·재현 빌드 | 사용자 C++ 호출 worker 빌드 | 게임 build/cook/package·독립 폴더 실행·설치/출시 |
+| [Build/publish](https://docs.unity3d.com/6000.0/Documentation/Manual/building-and-publishing.html) | Player·내용 출력·설정·캐시·재현 빌드 | 사용자 C++ worker·편집기 EXE/배포 폴더 빌드 | 독립 게임 build/cook/package·설치/출시 |
 | [Services](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityServices.html) | 계정·세션·분석·배포 서비스와 게임 분리 | 미구현 | 엔진 확장 경계·서비스 오류/인증·사용자 선택 |
 | [Best practices](https://docs.unity3d.com/6000.0/Documentation/Manual/best-practice-guides.html) | 분야별 제작·운영·최적화 검증 기준 | 공통 API·저장 검증·재현 스크립트 | 예제 게임·실측·팀 제작/버전 관리 시나리오 |
 | [Troubleshooting](https://docs.unity3d.com/6000.0/Documentation/Manual/TroubleShooting.html) | 가져오기/코드/렌더/플랫폼 오류 원인과 복구 | 파일 검증·컴파일 오류·실행 오류 로그 | 분야별 진단 위치·실패 결과 복구·크래시 보고 |
@@ -62,7 +62,7 @@
 | 공식 분야 | 제작 흐름에서 확인할 요구 | 현재 코드 근거 | 남은 구현 |
 | --- | --- | --- | --- |
 | [What's New](https://dev.epicgames.com/documentation/unreal-engine/whats-new) | 릴리스·migration·실험/안정 기능 구분 | 버전 있는 에셋 형식 | 기능별 안정성/호환성·migration 기록 |
-| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 독립 문서·Project·클래스 생성·Play | 설정 가능한 키·프로젝트 선택·Prefab·패키징 |
+| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 프로젝트 허브/descriptor·독립 문서·클래스 생성·Play | 설정 가능한 키·프로젝트 설정/업그레이드·Prefab·게임 패키징 |
 | [Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine) | 외부 Mesh/Skeleton/Texture와 내부 에셋의 임포트 경계 | 원본 디스크 보존·OBJ/GLTF 미리보기 | FBX/Interchange 수준 변환·하위 에셋·축/단위·재가져오기 |
 | [Virtual Worlds](https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine) | 레벨·환경·조명·배치·큰 월드 제작 | 레벨 파일·기본 도형·환경 프리셋 | Landscape/Foliage·메시 편집·월드 분할/스트리밍 |
 | [Rendering/Graphics](https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine) | 표면·빛·그림자·품질·렌더 자원·진단 | Three 표면/광원·머테리얼 문서 | DX11/HLSL·LOD/culling·GPU 측정·GI/반사 |
@@ -80,7 +80,7 @@
 | [Media](https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine) | Source/Player·색 관리·동기·캡처/출력 | 파일 보존·지원 코덱 preview | 디코더/변환·영상 동기·캡처·영상 텍스처 |
 | [Production Pipeline](https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine) | 에셋 관리·캐시·버전 관리·redirect·자동화 | `.hbredirects.json`·파일 ID·Git | 의존성 viewer·redirect 정리·DDC·source control UI·자동화 |
 | [Testing/Optimization](https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content) | 성능 계측·로그·크래시·자동 검사 | `tools/check-*.mjs`·실행 제한·로그 | native/GPU Profiler·추적 캡처·크래시/메모리 진단 |
-| [Release](https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine) | Build/Cook/Package/Deploy와 타깃 차이 | 사용자 함수 worker 빌드 | DX11 Player·cook/chunk·배포·기기/타깃 프로필 |
+| [Release](https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine) | Build/Cook/Package/Deploy와 타깃 차이 | 사용자 함수 worker·Windows 편집기 EXE/동봉 배포 | DX11 Player·독립 게임 cook/chunk/package·기기/타깃 프로필 |
 | [Samples](https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine) | 동작하는 템플릿을 열고 분해·확장 | `prototype/examples` | 2D/2.5D/3D 제작→배포 전체 샘플 |
 
 ## 세부 본문 확인과 이번 변경의 대응
@@ -101,6 +101,15 @@
 | [Unity Project](https://docs.unity3d.com/6000.0/Documentation/Manual/ProjectView.html) | 실제 폴더/파일·생성 메뉴·검색 범위·타입/라벨 OR/AND·포커스 키 | `project-browser.js`의 폴더/다중 선택·생성·검색·내용 검색 | 라벨/즐겨찾기·OR 타입 필터·전체 트리 키/아이콘 크기 프로필 |
 | [Unity Shortcuts](https://docs.unity3d.com/6000.0/Documentation/Manual/ShortcutsManager.html) | 전역/문맥 명령·충돌·변경·프로필 | 텍스트/IME/게임 입력 포커스 가드·문서 단축키 | 검색/변경 가능한 키 설정·충돌 UI·사용자 프로필 |
 | [Unity Animation Curves](https://docs.unity3d.com/6000.0/Documentation/Manual/animeditor-AnimationCurves.html) | 속성 커브/키·Dopesheet/Curve 표현·여러 속성·Euler/Quaternion 보간 차이 | 같은 `sampleTimeline` 커브 평가로 position/rotation/scale 실행; HB 회전은 XYZ Euler degree | 임의 속성·Quaternion 보간·Skeleton/블렌드. HB 실행 규칙을 Unity Animator와 동일하다고 표현하지 않음 |
+| [Epic Project Creation](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-a-new-project-in-unreal-engine) | Project Browser·이름/위치/템플릿·생성 후 편집기 진입 | `project-hub.js`, `project-manifest.mjs:createProject`: 새 폴더·기본 예제·descriptor·열기 | 현재 기본 예제 한 종류; 템플릿 선택·플랫폼/품질 기본 설정 |
+| [Epic Project Opening](https://dev.epicgames.com/documentation/en-us/unreal-engine/opening-an-existing-unreal-engine-project) | 최근·Browse·프로젝트 파일 더블클릭·버전 호환성/변환 | 허브/실제 파일 선택기·최근 JSON·HKCU `.hbproject` 연결·비정상 파일 거부 | 엔진 버전 선택·프로젝트 변환/백업·최근 썸네일/타깃 정보 |
+| [Epic Project Descriptor](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Projects/FProjectDescriptor) | JSON descriptor의 버전·엔진 연결·Modules/Plugins·Read/Save | HB 전용 `.hbproject` 파일 버전/engineVersion/UUID·시작 에셋 상대경로 검증 | 모듈/플러그인/타깃 등록·업그레이드 schema·프로젝트 설정 UI |
+| [Microsoft WebView2 Win32](https://learn.microsoft.com/en-us/microsoft-edge/webview2/get-started/win32) | 환경/controller 비동기 생성·bounds·탐색·웹메시지 | `HBEngine.cpp`의 COM 콜백·Win32 창·WebView2 편집기·창 크기/포커스 | HTML/JS 편집기와 WebGL 렌더러를 유지; DX11/OS 부동 패널은 별도 구현 |
+| [Microsoft WebView2 Threading](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/threading-model) | STA UI 스레드·메시지 펌프·재진입/동기 대기 금지 | `CoInitializeEx`·UI 메시지 루프·비동기 콜백 | UI/서버 장기 작업 취소와 모든 실패 경로 반복 검증 |
+| [Microsoft WebView2 Distribution](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution) | Loader 아키텍처와 별도 Runtime·설치 확인·Evergreen/Fixed 구분 | `build-desktop.mjs`: x64 loader·Node/편집기 파일 동봉, Runtime 오류 표시 | Runtime 설치/업데이트 흐름·다른 아키텍처·오프라인 배포 |
+| [Microsoft WebView2 SDK License](https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.4258.31/License) | SDK/Loader 소스·바이너리 배포의 고지 보존 | 안정 SDK 1.0.4258.31의 LICENSE를 `licenses/WebView2-SDK.txt`에 포함 | Runtime 자체 재배포 시 해당 별도 조건 확인; SDK 고지와 혼용하지 않음 |
+| [Microsoft WebView2 Close](https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller#close) | controller.Close가 WebView를 정리하며 beforeunload를 발생시키지 않음 | `WM_CLOSE` → `hbEngineRequestClose` → 수정 확인/복구 → 메시지 → 종료·소유 Job 정리 | 미저장/저장 실패/취소·닫는 중 콜백의 실제 UI 시나리오 계속 검증 |
+| [Node Windows Runtime](https://nodejs.org/en/download/archive/v24.15.0)·[LICENSE](https://raw.githubusercontent.com/nodejs/node/v24.15.0/LICENSE) | 공식 Windows 배포·Node 및 번들 라이브러리 고지 | 빌드에 사용한 `process.execPath` 동봉·그 버전의 전체 LICENSE 복사 | 별도 Node 설치는 불필요; C++ 컴파일러는 별도 준비. Node 전체 API 조사로 계산하지 않음 |
 
 이전 세부 조사(변수·함수·통신·생명주기·Timeline·Animation·충돌·임포트·직렬화·오디오/UI)의 URL과 분석은 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md)에 유지한다. 과거 Blueprint 컴파일러 자료는 4.27임을 표시하고 현재 UE의 기본 nativization으로 해석하지 않는다. Unity의 일반 게임 스크립트 C#과 native C++ 플러그인/IL2CPP도 구분한다.
 
@@ -108,6 +117,9 @@
 
 | 흐름 | 코드 근거 | 재현 검사/다음 완료 조건 |
 | --- | --- | --- |
+| EXE → 허브 → 프로젝트 생성/열기 → 재실행 | `HBEngine.cpp`, `build-desktop.mjs`, `project-manifest.mjs`, `project-hub.js`, `serve.mjs` | `test:launcher`: descriptor/UUID·한글/공백·원본 보호·최근·동적 포트·두 프로젝트/진행 중 쓰기/C++ 전환. 템플릿 선택·업그레이드는 미구현 |
+| 프로젝트 ID → 편집기 복구/배치/게임 저장 | `project-session.js`·`project-storage.mjs`·`/api/storage`·`Saved/Editor/storage.json` | `test:session/test:launcher`: 세션 선행 로드·UUID 분리·기본 프로젝트 1회 이관·원본 보존·디스크 연결. 전환/종료는 저장 완료를 기다리고 포트/origin이 바뀌어도 복구한다. localStorage 백업은 유지 |
+| Windows 창 → WebView2/JS 준비 → 닫기 → 종료 | `HBEngine.cpp:windowProcedure/MessageHandler`·`app.js:hbEngineRequestClose` | `test:desktop`: 배포 허브/루트 EXE·다른 cwd·한글/공백 프로젝트·비정상 descriptor 보존·JS 준비 메시지·실제 닫기 핸들러/메시지·소유 서버 제거. 모든 편집 UI 조작 검증은 별도 |
 | 폴더 우클릭 → 에셋 만들기 | `project-browser.js:createDialog`, `project-service.mjs:create`, `external-editor.mjs:createCppClass` | `test:assets`: JSON 에셋 8종·부모 7종·C++ 쌍·중복 거부. 별도 Struct/Enum/Interface/Prefab/VFX/UI/Audio 제작 메뉴는 미구현 |
 | 여러 파일 → 각각 편집/Undo/저장/닫기 | `asset-documents.js:AssetDocuments`, `app.js:activateDocument/captureDocument/closeDocument` | `test:assets`: 편집 격리·저장 실패·저장 중 변경·닫기 보호. 화면 탭/분할/닫기 QA도 별도로 수행 |
 | C++ 파일 → 외부 IDE → BP로 감싸기 → 호출 | `openProjectAsset/wrapSource`, `external-editor.mjs`, `native-model.js`, `native-host.mjs` | `test:native/test:host/test:assets`: 부모형·공개 선언·실제 빌드/호출. 임의 프로젝트 전체 빌드는 미구현 |
@@ -117,7 +129,9 @@
 | Animation/Curve → 키 편집 → 파일 저장 → 대상 실행 | `asset-documents.js`, `TimelineEditor`, `engine-services.js:playAnimation/stopAnimation` | `test:runtime`: position/rotation/scale·정지/완료·반복·Rate/시간 배율·마지막 키 길이·검증 실패·대상 파괴·기본 파일 읽기·모델 클립 우선. 선택적 `readAsset`로 열린 편집본 공급; Skeletal/상태 머신/Animation 이벤트는 미지원 |
 | 에셋 이름 변경 → 구 참조 → 재열기 | `ProjectService.rename/resolve`·`.hbredirects.json` | `test:assets/test:project`: 서버 재시작 후 구 경로 해석·금지 경로·중복/실패 보존 |
 
-검사 명령의 존재와 실제 실행 결과는 별개다. 기능 변경 후 담당자가 해당 명령과 화면 시나리오를 실행하고 커밋 본문에 결과를 기록한다. 브라우저 UI·WebGL 실행·C++ worker를 Win32/DX11 네이티브 엔진/완성된 cooking/배포로 부르지 않는다.
+검사 명령의 존재와 실제 실행 결과는 별개다. 기능 변경 후 담당자가 해당 명령과 화면 시나리오를 실행하고 커밋 본문에 결과를 기록한다. Win32/WebView2 편집기 EXE·배포 폴더와 WebGL·C++ worker를 구현했다. DX11 렌더러·완성된 cooking·독립 게임 배포는 남아 있으며 편집기 배포와 같은 상태로 묶지 않는다.
+
+같은 프로젝트를 허브 창과 직접 열기 창에서 동시에 열 수 있으나 에셋 파일의 동시 편집 충돌 감지·병합은 미지원이다.
 
 ## 다음 분석/구현의 고정 점검 순서
 

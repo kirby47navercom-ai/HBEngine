@@ -1,3 +1,4 @@
+import {storageKey,storage} from './project-session.js';
 const leaf=(tabs,active=tabs[0])=>({tabs,active});
 export function restoreLayout(n,ids,depth=0){
   if(!n||depth>12)return null;
@@ -14,11 +15,11 @@ export class DockLayout {
   constructor(host,entries,onFocus){
     this.host=host;this.entries=new Map(entries.map(e=>[e.id,e]));this.onFocus=onFocus;this.parking=document.createElement('div');this.parking.hidden=true;host.after(this.parking);
     this.tree={axis:'column',ratio:.68,a:leaf(['scene']),b:leaf(['project','console'])};
-    try{const ids=new Set(this.entries.keys()),saved=restoreLayout(JSON.parse(localStorage.getItem('hbengine.docks.v2')),ids);if(validLayout(saved,ids))this.tree=saved;}catch{}
+    try{const ids=new Set(this.entries.keys()),saved=restoreLayout(JSON.parse(storage.getItem(storageKey('hbengine.docks.v2'))),ids);if(validLayout(saved,ids))this.tree=saved;}catch{}
     this.render();
   }
   leaves(n=this.tree){return n.tabs?[n]:[...this.leaves(n.a),...this.leaves(n.b)];}
-  save(){localStorage.setItem('hbengine.docks.v2',JSON.stringify(this.tree));}
+  save(){storage.setItem(storageKey('hbengine.docks.v2'),JSON.stringify(this.tree));}
   add(entry,target,zone='center'){this.entries.set(entry.id,entry);this.open(entry.id,target,zone);}
   open(id,target,zone='center'){
     if(!this.entries.has(id))return;const existing=this.leaves().find(l=>l.tabs.includes(id));

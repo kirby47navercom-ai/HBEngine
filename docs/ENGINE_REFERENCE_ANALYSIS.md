@@ -27,6 +27,24 @@
 
 Unreal은 패키징에서 Build/Cook/Stage/Package를 구분한다. C++ 호출용 프로그램이 컴파일됐다는 사실만으로 게임 배포가 완성된 것은 아니다. [Epic: Packaging](https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project)
 
+## 엔진 실행, 프로젝트 파일, 데스크톱 배포
+
+**문서 확인:** Unreal 실행은 Project Browser에서 최근 프로젝트·새 프로젝트·찾아 열기를 제공한다. 새 프로젝트는 이름·위치·템플릿·설정으로 생성한 뒤 편집기를 연다. 기존 프로젝트는 Browse로 `.uproject`를 선택하거나 프로젝트 루트의 파일을 더블클릭해 연다. `FProjectDescriptor`는 JSON의 파일 버전·엔진 연결·Modules·Plugins 등의 정보를 읽고 저장한다. 프로젝트 버전 변경에는 별도 호환성/변환 판단이 필요하다. [Epic: Creating a project](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-a-new-project-in-unreal-engine), [Epic: Opening a project](https://dev.epicgames.com/documentation/en-us/unreal-engine/opening-an-existing-unreal-engine-project), [Epic: Project descriptor](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Projects/FProjectDescriptor)
+
+**HB 결정/현재 상태:** `native/desktop/HBEngine.cpp`를 C++17/Win32 Windows x64 프로그램으로 빌드한다. 무인자 `HBEngine.exe`는 프로젝트 허브를 열고 `.hbproject` 인자는 해당 프로젝트를 연다. `tools/project-manifest.mjs`는 파일 버전 1·engine HBEngine·engineVersion 0.1.0·UUID·이름·상대경로 startupScene/startupBlueprint를 검증한다. 생성은 새 폴더를 먼저 확보한 뒤 기본 예제 에셋과 소스·descriptor를 저장하고 편집기에 들어간다. 이미 있는 프로젝트를 덮어쓰지 않는다. 최근 목록은 사용자 LocalAppData의 JSON에 최대 20개를 유지하고 존재/호환성을 다시 확인한다. 첫 dev 실행에서 기존 QuietGarden에도 descriptor를 생성한다. 최초 일반 EXE 실행 또는 `--register`는 HKCU에 `.hbproject`의 열기 명령·아이콘을 등록한다.
+
+`prototype/project-session.js`가 `/api/session`을 먼저 읽고 UUID로 문서 복구·장면·도킹·Project 폴더·SaveGame 키를 분리한다. `tools/project-storage.mjs`와 `/api/storage`는 이 상태의 변경 키를 프로젝트 루트의 `Saved/Editor/storage.json`에 반영한다. 허브로 열거나 EXE로 직접 열어 로컬 포트/origin이 달라져도 디스크 상태를 복원한다. 프로젝트 전환/종료는 pending 상태의 디스크 저장을 기다린다. localStorage 백업·복원과 기본 QuietGarden의 과거 데이터 1회 이관은 원본을 지우지 않고 유지한다. 세션이 유효하지 않으면 복구를 시작하지 않고 허브로 돌아간다. `serve.mjs`는 프로젝트 전환 시 native host를 교체하고 대기 중 파일 쓰기/빌드의 소유 세션을 확인한다. 잘못된 descriptor를 열어도 현재 프로젝트를 유지한다.
+
+**문서 확인:** WebView2 Win32는 STA UI 스레드와 메시지 펌프에서 환경 생성 → controller 생성 → CoreWebView2 획득 → bounds/탐색 순서로 초기화한다. 앱 아키텍처에 맞는 WebView2Loader를 배포하고 WebView2 Runtime 설치를 확인해야 한다. 일반 Microsoft Edge Stable을 제품 Runtime으로 사용하지 않는다. [Microsoft: Win32 시작](https://learn.microsoft.com/en-us/microsoft-edge/webview2/get-started/win32), [Microsoft: 스레드 모델](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/threading-model), [Microsoft: 배포](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
+
+**HB 현재 상태:** Win32 창 안에 기존 HTML/JS 편집기를 WebView2로 표시한다. `tools/build-desktop.mjs`는 공식 안정 SDK 1.0.4258.31의 `build/native/include/WebView2.h`와 x64 `WebView2Loader.dll`을 사용하고 동봉한다. 배포 폴더에는 빌드에 사용한 Node 실행 파일·편집기/서버·Three·예제 프로젝트도 포함한다. MSYS2의 외부 C++ 런타임 DLL 의존성은 빌드 결과에서 검사한다. 렌더러는 Three/WebGL이며 DX11 구현은 남아 있다. [공식 SDK 버전](https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.4258.31), [Node 공식 Windows 배포](https://nodejs.org/en/download/archive/v24.15.0)
+
+SDK의 `LICENSE.txt`는 바이너리 배포 시 저작권·조건·면책 고지 보존을 요구한다. 빌드는 SDK·동봉한 버전의 Node 전체 LICENSE·Three LICENSE를 `dist/HBEngine/licenses`에 복사한다. SDK/Loader와 WebView2 Runtime의 배포 조건은 각각 확인한다. [공식 SDK 라이선스](https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.4258.31/License), [Node 24.15.0 LICENSE](https://raw.githubusercontent.com/nodejs/node/v24.15.0/LICENSE)
+
+**종료/검증:** WebView2 `controller.Close`는 `beforeunload`를 발생시키지 않는다. HB의 `WM_CLOSE`는 먼저 웹 편집기의 `hbEngineRequestClose`로 수정 문서 확인·복구/디스크 저장을 요청하고 닫기 메시지 후 창을 닫는다. COM 참조·WebView·본인 Job의 서버 프로세스를 정리한다. `test:desktop`은 배포 EXE 허브·루트 EXE의 한글/공백 프로젝트·다른 작업 폴더·비정상 descriptor 원본 보존·내장 WebView2 탐색 뒤 JS의 `hbengine.ready` 메시지·실제 닫기 핸들러/`hbengine.close`·종료 뒤 소유 서버 제거를 검사한다. `test:launcher`는 프로젝트/API/전환·동적 포트·C++ 소유 상태, `test:session`은 프로젝트별 복구 이관/격리·디스크 연결을 검사한다. JS 초기화/닫기 smoke가 모든 편집 조작의 검증을 대신하지 않는다. [Microsoft: Close](https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller#close)
+
+**남은 범위:** 템플릿 선택·프로젝트 업그레이드/백업·여러 엔진 버전 연결·설치/업데이트 프로그램·OS 부동 패널·DX11 렌더러·독립 게임 cook/package. 같은 프로젝트를 허브 창과 직접 열기 창에서 동시에 열 수 있으나 에셋 파일의 동시 편집 충돌 감지·병합은 미지원이다. 동봉 편집기 EXE 실행과 게임 배포는 별도 완료 조건이다. 사용자 C++ 빌드에는 컴파일러가 별도로 필요하다.
+
 ## 편집기의 배치와 조작
 
 ### 작업 공간과 포커스
@@ -35,7 +53,7 @@ Unreal은 패키징에서 Build/Cook/Stage/Package를 구분한다. C++ 호출�
 
 **HB 결정:** 기본 배치는 왼쪽 계층·제작 목록 / 가운데 문서 탭 / 오른쪽 Inspector / 아래 Project·Console이다. 문서 창은 상하좌우로 분할하고 동시에 열 수 있다. ‘Scene/Blueprint/Material’ 전환으로 전체 화면을 숨기던 구조를 문서 탭으로 바꾼다. Timeline을 더블클릭하면 충분한 높이의 문서 탭으로 열고 사용자가 아래쪽으로 도킹할 수 있게 한다. 작업 창별 포커스와 선택을 분리하며 Inspector는 활성 편집기의 선택 대상을 따른다.
 
-**현재 상태:** 파일별 BP/Material/Transform Animation/Curve/IA/IMC/Data/Scene 문서를 각각 열고 모델·Undo·dirty·배치를 보존한다. 위쪽 파일 탭과 내부 도킹 패널을 구분한다. 탭 재정렬·문서 전환/닫기·저장 보호와 클래스 컴포넌트 뷰포트를 연결했다. C++는 실제 파일을 외부 Visual Studio/VSCode에서 열며, 다른 에셋 화면에 내장 코드 편집기를 섞지 않는다. 창 분할과 여러 뷰포트는 브라우저 프로토타입 기능이고 OS 부동창은 별도다.
+**현재 상태:** 파일별 BP/Material/Transform Animation/Curve/IA/IMC/Data/Scene 문서를 각각 열고 모델·Undo·dirty·배치를 보존한다. 위쪽 파일 탭과 내부 도킹 패널을 구분한다. 탭 재정렬·문서 전환/닫기·저장 보호와 클래스 컴포넌트 뷰포트를 연결했다. C++는 실제 파일을 외부 Visual Studio/VSCode에서 열며, 다른 에셋 화면에 내장 코드 편집기를 섞지 않는다. 도킹/여러 뷰포트는 WebView2 안의 HTML/JS 편집기에서 동작한다. 별도 OS 창으로 떼는 부동 패널은 남아 있다.
 
 **놓치기 쉬운 요구:** 탭 재정렬, 드롭 위치 미리보기, 닫은 창 다시 열기, 분할 경계 키보드 조절, 최대화/복원, 레이아웃 저장/초기화, 같은 종류의 여러 창, 닫힌 창의 업데이트 중지. OS의 별도 창은 브라우저 도킹과 별도 기능이며 네이티브 에디터에서 구현한다.
 
@@ -188,7 +206,8 @@ Unity의 속성 커브 문서는 시간별 키와 속성별 표시, Euler/Quater
 | 파일 제작 메뉴 없음 | 폴더 우클릭 JSON 에셋 8종·C++ 한 쌍·부모 7종 생성 | 생성/중복 거부·자료형/부모·실제 빌드 검사; 별도 Struct/Enum/Interface/UI/VFX/Audio 에셋은 남음 |
 | 여러 BP가 같은 실행 그래프를 사용 | 장면 `blueprintAsset`별 검증/인스턴스·입력 에셋 로드·native 빌드 소유 상태 격리 | 다중 BP 이벤트/입력 실행·다른 모듈의 공개 상태 보존 검사 |
 | 이름 변경 뒤 참조 손상 | 열린 문서/참조/배치 갱신·영속 redirect·실패 rollback | 서버 재시작 뒤 구 경로 해석 검사; 전체 디스크 참조 Fixup/의존성 UI는 남음 |
-| native 엔진·배포 | 아직 미구현 | DX11·셰이더 그래프·cooking·게임 배포가 장기 범위 |
+| 엔진 실행 파일·프로젝트 시작 흐름 없음 | Win32/WebView2 HBEngine.exe·Node 동봉·프로젝트 허브/descriptor·최근·생성/열기·프로젝트별 복구 | `test:desktop` 실제 EXE/내장 탐색/종료 정리, `test:launcher/test:session` 재현 검사; 설치/업데이트·템플릿 선택/업그레이드는 남음 |
+| native 렌더러·게임 배포 | Win32 편집기 호스트와 C++ worker까지 구현 | DX11·셰이더 그래프·cooking·독립 게임 배포가 장기 범위 |
 
 노드별 전체 서명과 실행 범위는 [노드 카탈로그](NODE_CATALOG.md)에 있다. 이 문서의 전체 범위는 장기 엔진 목표이며, 현재 작업을 완성된 Unreal/Unity 대체 엔진으로 부르지 않는다.
 
@@ -196,7 +215,7 @@ Unity의 속성 커브 문서는 시간별 키와 속성별 표시, Euler/Quater
 
 1. **기초 조작**: 읽히는 노드/속성, 포커스별 키, 선택·우클릭·이동·확대·Undo, 도킹·레이아웃 복구. 사용자가 별도 지시하지 않아도 전 편집기에서 점검한다.
 2. **실제 제작 연결**: 디스크 Project, 다중 임포트/선택/검색, 그래프 실행, 사용자 C++ 빌드/호출/이벤트/객체 상태 연결. 저장 후 서버/편집기 재시작까지 확인한다.
-3. **네이티브 기반**: Win32/DX11, 장면/컴포넌트·입력·고정 물리·수명·시간·렌더러 공통 API. 브라우저 서비스와 실제 엔진을 구분한다.
+3. **네이티브 기반**: 구현한 Win32 편집기 호스트에서 DX11 렌더러, 장면/컴포넌트·입력·고정 물리·수명·시간 공통 API로 이어간다. WebView2/WebGL·C++ worker와 완성된 게임 런타임을 구분한다.
 4. **전용 제작 도구**: Sprite/Tilemap, Mesh, Shader/Material, Clip/State Machine, UI/Audio, Prefab, 임포트 변환·재가져오기. 각 에셋은 만들기→편집→배치→게임 사용이 연결되어야 한다.
 5. **안정화/배포/확장**: 복구·성능·빌드·게임 패킹·AI/네트워크/대규모 프로젝트 도구. 작은 2D 게임과 2.5D/3D 장면을 외부 엔진 없이 제작·배포해 확인한다.
 

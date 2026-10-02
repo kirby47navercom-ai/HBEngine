@@ -1,3 +1,4 @@
+import {session,storageKey,storage,flushStorage} from './project-session.js';
 import {AssetDocuments,assetTypes,assetSuffix,assetTitle,materialGraph,createAsset,validAsset,loadSceneBindings,evaluateMaterial} from './asset-documents.js';
 import {blueprintClasses} from './class-types.js';
 import {renderDataEditor,closeChoice} from './asset-editor-ui.js';
@@ -17,7 +18,7 @@ import {TimelineEditor} from './timeline-editor.js';
 import {BlueprintRuntime} from './blueprint-runtime.js';
 import {ProjectBrowser,editorRequest,fileUrl,droppedFiles} from './project-browser.js';
 import {loadModel,engineOperations} from './engine-services.js';
-let dock,project,runtime,runtimeServices,editWorld,nativeBuild,runtimeFrame,focusedWindow='scene';let activeScenePath='Assets/Scenes/Garden.hbscene.json',activeBlueprintPath='Assets/Blueprints/BP_Garden.hbblueprint.json',codeHeaderPath='Source/DoorController.h',codeSourcePath='Source/DoorController.cpp';const documents=new Map();const assetDocs=new AssetDocuments();let switchingDocument=false;const assetPanes=new Map();const extraViewports=[];const timelineWindows=new Map();
+let dock,project,runtime,runtimeServices,editWorld,nativeBuild,runtimeFrame,focusedWindow='scene';let activeScenePath=session.startupScene,activeBlueprintPath=session.startupBlueprint,codeHeaderPath='Source/DoorController.h',codeSourcePath='Source/DoorController.cpp';const documents=new Map();const assetDocs=new AssetDocuments();let switchingDocument=false;const assetPanes=new Map();const extraViewports=[];const timelineWindows=new Map();
 
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
@@ -25,9 +26,11 @@ const previewText=value=>JSON.stringify(value,(_key,v)=>typeof v==='number'?Numb
 const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function icons(root = document) { $$('[data-icon]', root).forEach(el => { if (!el.querySelector(':scope > svg')) el.insertAdjacentHTML('afterbegin', icon(el.dataset.icon)); }); }
 icons();
+document.title=session.name+' — HBEngine';
+const projectTitle=$('.project-title'),projectName=document.createElement('span');projectName.textContent=session.name;projectName.title=session.projectFile;for(const child of [...projectTitle.childNodes])if(child.nodeType===Node.TEXT_NODE)child.remove();projectTitle.insertBefore(projectName,projectTitle.querySelector('.divider'));
 
-let objects = clone(defaultObjects), surface = clone(defaultSurface), selected = 'stone-arch', workspace = 'scene', dirty = false;
-let environment = clone(defaultEnvironment), sceneName = 'Garden', skyDome, cloudGroup, ambientLight, groundFloor;
+let objects = session.legacyStorage?clone(defaultObjects):[], surface = clone(defaultSurface), selected = 'stone-arch', workspace = 'scene', dirty = false;
+let environment = clone(defaultEnvironment), sceneName = assetTitle(activeScenePath), skyDome, cloudGroup, ambientLight, groundFloor;
 let savedBlueprint, selectedVariable='targetPosition', selectedNode='begin', palettePosition={x:60,y:60};
 let blueprintView='event', blueprintZoom=1, blueprintPan={x:30,y:30}, selectedNodes=new Set(['begin']), collapseKind='function', creatingDefinition=false;
 const quickNodeKeys={b:'branch',d:'delay',s:'sequence',g:'gate',f:'forEach',m:'multiGate',n:'doN',o:'doOnce',p:'beginPlay'};let heldNodeKey=null;
@@ -40,10 +43,12 @@ const corePreview=createCorePreview();
 corePreview.object=id=>objects.find(o=>o.id===(id==='self'?selected:id));
 corePreview.updateObject=o=>{applyObject(o);changed();};
 const undoLimit = 40; // ponytail: 40 snapshots; switch to command deltas if large-scene editing becomes necessary.
+let cachedScene=false;
 try {
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-  if (validScene(stored)) { objects = stored.objects; surface = stored.surface; environment=stored.environment||clone(defaultEnvironment); sceneName=stored.sceneName||'Garden'; savedBlueprint=stored.blueprint; lastSaved = stored.savedAt || ''; }
+  const stored = JSON.parse(storage.getItem(STORAGE_KEY) || 'null');
+  if (validScene(stored)) { cachedScene=true;objects = stored.objects; surface = stored.surface; environment=stored.environment||clone(defaultEnvironment); sceneName=stored.sceneName||assetTitle(activeScenePath); savedBlueprint=stored.blueprint; lastSaved = stored.savedAt || ''; }
 } catch { /* Invalid local data never replaces the default scene. */ }
+if(!cachedScene){try{const data=await(await editorRequest(fileUrl(activeScenePath))).json();if(!validScene(data))throw Error('시작 레벨 데이터 검증 실패');objects=data.objects;surface=data.surface;environment=data.environment||clone(defaultEnvironment);sceneName=data.sceneName||assetTitle(activeScenePath);}catch(error){location.replace('/prototype/project-hub.html?error='+encodeURIComponent(error.message));throw error;}}
 const sceneSnapshot=()=>({version:1,sceneName,objects:clone(objects),surface:clone(surface),environment:clone(environment)});
 const snapshot=()=>({kind:assetDocs.current?.kind||'scene',data:clone(captureDocumentData())});
 const remember = () => { future=[]; history.push(snapshot()); if (history.length > undoLimit) history.shift(); };
@@ -251,8 +256,8 @@ function createMap(){
   sun=null;selected=objects[0]?.id||null;rebuildWorld();applyEnvironment();updateSurface();renderHierarchy();setWorkspace('scene');setView(template==='2d'?'2d':'3d');if(camera){camera.position.set(8.6,7.2,10.5);orbit.target.set(0,.45,0);}$('#new-map-dialog').close();changed();notify(name+' 맵을 만들었어요. Ctrl Z로 이전 장면을 복원할 수 있어요.');
 }
 function setWorkspace(name,activate=true) {
-  if(name==='code'){openCodeExternal(codeHeaderPath);return;}
-  if(activate&&assetDocs.current?.kind!==name){const target=[...assetDocs.items.values()].reverse().find(d=>d.kind===name);if(target){activateDocument(target.path);return;}const defaults={blueprint:activeBlueprintPath,material:'Assets/Materials/Moss_stone.hbmaterial.json',scene:activeScenePath};if(defaults[name])openProjectAsset({kind:name,path:defaults[name],name:assetTitle(defaults[name])}).catch(e=>notify(e.message));else project?.createDialog(name);return;}
+  if(name==='code'){const path=assetDocs.current?.data.native?.headerPath||projectAssetFiles.find(f=>f.kind==='code'&&f.path===codeHeaderPath)?.path||projectAssetFiles.find(f=>f.kind==='code'&&/\.(h|hpp|cpp)$/i.test(f.path))?.path;if(path)openCodeExternal(path);else project?.createDialog('code');return;}
+  if(activate&&assetDocs.current?.kind!==name){const target=[...assetDocs.items.values()].reverse().find(d=>d.kind===name);if(target){activateDocument(target.path);return;}const defaults={blueprint:activeBlueprintPath,material:projectAssetFiles.find(f=>f.kind==='material')?.path,scene:activeScenePath};if(defaults[name])openProjectAsset({kind:name,path:defaults[name],name:assetTitle(defaults[name])}).catch(e=>notify(e.message));else project?.createDialog(name);return;}
   workspace=name;document.body.dataset.editor=name;$('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';
   const sceneMode=name==='scene';for(const el of $$('.hierarchy > .search-field,.hierarchy > .scene-root,.hierarchy > #hierarchy-list,.hierarchy > .hierarchy-footer'))el.hidden=!sceneMode;
   $('.hierarchy .panel-heading h2').textContent=name==='blueprint'?'블루프린트':sceneMode?'아웃라이너':'에셋';
@@ -581,7 +586,8 @@ function doAction(action,button){
     case 'copy-code':navigator.clipboard?.writeText($('#cpp-source').hidden?$('#cpp-code').value:$('#cpp-source').value).then(()=>notify('C++ 예시를 복사했어요.')).catch(()=>notify('이 브라우저에서 클립보드에 접근할 수 없어요.'));break;
     case 'add-component':setWorkspace('blueprint');$('#component-dialog').showModal();break;
     case 'graph-menu':openMenu(button,[['노드 추가','add-blueprint-node'],['블루프린트 JSON 불러오기','import-blueprint'],['JSON 내보내기','export-blueprint']]);break;
-    case 'file-menu':openMenu(button,[['새 맵 만들기','new-map'],['에셋 가져오기','import'],['에셋 만들기','create-asset'],['현재 에셋 저장','save','', 'Ctrl S'],['모두 저장','save-all','','Ctrl Shift S'],null,['사용 안내','help']]);break;
+    case 'project-hub':switchProject();break;
+    case 'file-menu':openMenu(button,[['프로젝트 선택','project-hub'],null,['새 맵 만들기','new-map'],['에셋 가져오기','import'],['에셋 만들기','create-asset'],['현재 에셋 저장','save','', 'Ctrl S'],['모두 저장','save-all','','Ctrl Shift S'],null,['사용 안내','help']]);break;
     case 'edit-menu':openMenu(button,[['실행 취소','undo','', 'Ctrl Z'],['다시 실행','redo','','Ctrl Y'],['명령 검색','command','', 'Ctrl K']]);break;
     case 'add-menu':openMenu(button,[['큐브','create:cube'],['구','create:sphere'],['원기둥','create:cylinder'],['평면','create:plane'],null,['점 광원','create:light']]);break;
     case 'view-menu':openMenu(button,[['레벨 편집기','scene'],['콘텐츠 브라우저','browse-document'],['Visual Studio에서 열기','code'],['레이아웃 초기화','reset-layout']]);break;case 'reset-layout':activateDocument(assetDocs.active,true);break;
@@ -768,7 +774,8 @@ function clearFileDrag(){fileDragDepth=0;$('#global-file-drop').hidden=true;$$('
 document.addEventListener('drop',async e=>{clearFileDrag();if(!e.dataTransfer?.types.includes('Files'))return;e.preventDefault();e.stopPropagation();try{queueFiles(await droppedFiles(e.dataTransfer),true);}catch(error){notify(error.message);}},true);
 document.addEventListener('dragend',clearFileDrag);
 window.addEventListener('blur',clearFileDrag);
-window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+let leavingProject=false;
+window.addEventListener('beforeunload',e=>{persistRecovery();if(dirty&&!leavingProject){e.preventDefault();e.returnValue='';}});
 window.addEventListener('pagehide',()=>objectUrls.forEach(url=>URL.revokeObjectURL(url)));
 let previous=performance.now();
 function animate(now){requestAnimationFrame(animate);const dt=Math.min((now-previous)/1000,.1);previous=now;
@@ -809,7 +816,10 @@ function captureDocument(){
   doc.layout=dock?clone(dock.tree):doc.layout;
   if(doc.kind==='blueprint')doc.view={...doc.view,blueprintView,blueprintPan:clone(blueprintPan),blueprintZoom,selectedNode,selectedVariable,selectedNodes:[...selectedNodes],selectedDetail:clone(selectedDetail),nativeBuild};
 }
-function queueRecovery(){clearTimeout(recoveryTimer);recoveryTimer=setTimeout(()=>{try{captureDocument();localStorage.setItem('hbengine.documents.v2',JSON.stringify({active:assetDocs.active,documents:[...assetDocs.items.values()].filter(d=>(assetSuffix[d.kind]||d.kind==='text')).map(d=>({path:d.path,kind:d.kind,data:d.data,saved:d.saved,dirty:d.dirty,view:{...d.view,nativeBuild:undefined},layout:d.layout}))}));}catch(error){log('복구 저장 실패: '+error.message,'ERROR');}},300);}
+function persistRecovery(){try{captureDocument();storage.setItem(storageKey('hbengine.documents.v2'),JSON.stringify({active:assetDocs.active,documents:[...assetDocs.items.values()].filter(d=>(assetSuffix[d.kind]||d.kind==='text')).map(d=>({path:d.path,kind:d.kind,data:d.data,saved:d.saved,dirty:d.dirty,view:{...d.view,nativeBuild:undefined},layout:d.layout}))}));return true;}catch(error){log('복구 저장 실패: '+error.message,'ERROR');return false;}}
+function queueRecovery(){clearTimeout(recoveryTimer);recoveryTimer=setTimeout(persistRecovery,300);}
+async function switchProject(){try{clearTimeout(recoveryTimer);if(!persistRecovery())return;await flushStorage();leavingProject=true;location.href='/prototype/project-hub.html';}catch(error){notify('프로젝트 전환 실패: '+error.message);}}
+window.addEventListener('hbengine-storage-error',event=>notify('복구 저장 실패: '+event.detail));
 function renderDocumentTabs(){
   dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;
   $('#document-tabs').innerHTML=[...assetDocs.items.values()].map(d=>`<div class="asset-tab ${d.path===assetDocs.active?'active':''}" data-kind="${d.kind}"><button role="tab" aria-selected="${d.path===assetDocs.active}" draggable="true" data-document="${escapeHtml(d.path)}" title="${escapeHtml(d.path)}">${icon(assetIcon(d.kind,d.data?.settings?.parentClass))}<span>${escapeHtml(assetTitle(d.path))}</span>${d.dirty?'<i class="modified" aria-label="저장하지 않은 변경"></i>':''}</button><button class="tab-close" data-close-document="${escapeHtml(d.path)}" aria-label="${escapeHtml(assetTitle(d.path))} 닫기">${icon('close')}</button></div>`).join('');
@@ -940,11 +950,23 @@ project=new ProjectBrowser($('#assets-content'),$('#asset-breadcrumb'),{open:ope
 renderHierarchy();renderInspector();renderGraph('material');renderGraph('blueprint');renderCommands();initRendering();updateSurface();
 assetDocs.open(activeScenePath,'scene',sceneSnapshot());
 let restoredPath;
-try{const recovery=JSON.parse(localStorage.getItem('hbengine.documents.v2')||'null');if(Array.isArray(recovery?.documents)){for(const record of recovery.documents){if(!(assetSuffix[record.kind]||record.kind==='text')||!validAsset(record.kind,record.data))continue;const doc=assetDocs.open(record.path,record.kind,record.data);Object.assign(doc,{data:record.data,saved:record.saved,dirty:!!record.dirty,view:record.view||{},layout:record.layout});}restoredPath=recovery.active;}}catch{}
+try{const recovery=JSON.parse(storage.getItem(storageKey('hbengine.documents.v2'))||'null');if(Array.isArray(recovery?.documents)){for(const record of recovery.documents){if(!(assetSuffix[record.kind]||record.kind==='text')||!validAsset(record.kind,record.data))continue;const doc=assetDocs.open(record.path,record.kind,record.data);Object.assign(doc,{data:record.data,saved:record.saved,dirty:!!record.dirty,view:record.view||{},layout:record.layout});}restoredPath=recovery.active;}}catch{}
 if(!restoredPath&&savedBlueprint){const legacy=assetDocs.open(activeBlueprintPath,'blueprint',savedBlueprint);legacy.dirty=true;}
 activateDocument(assetDocs.items.has(restoredPath)?restoredPath:activeScenePath);
 await refreshAssetIndex();
-if(!restoredPath&&!lastSaved){try{const data=await(await editorRequest(fileUrl(activeScenePath))).json();if(validScene(data)){const doc=assetDocs.current;doc.data=data;doc.saved=JSON.stringify(data);doc.dirty=false;installDocumentData(doc);}}catch(error){log(error.message,'ERROR');}}
+
 if(lastSaved)$('#save-status').textContent='이전 작업 복원';
 editorRequest('/api/editor').then(r=>r.json()).then(data=>$('#external-code-button').title=data.name||'Visual Studio / Visual Studio Code').catch(()=>{});
-log('프로젝트를 열었어요.');requestAnimationFrame(animate);
+let closingEngine=false;
+window.hbEngineRequestClose=async()=>{
+  if(closingEngine)return false;closingEngine=true;
+  try{if(running)await stopPlay();captureDocument();const modified=[...assetDocs.items.values()].filter(d=>d.dirty);
+    if(modified.length){const choice=await closeChoice(session.name);if(choice==='cancel')return false;if(choice==='save'){if(!await save(true)||[...assetDocs.items.values()].some(d=>d.dirty))return false;}else{
+      const saved=modified.map(doc=>{const data=JSON.parse(doc.saved);if(!validAsset(doc.kind,data))throw Error('저장 기준 데이터 검증 실패: '+doc.path);return {doc,data};});
+      for(const {doc,data} of saved){doc.data=data;doc.dirty=false;doc.history=[];doc.future=[];}
+      const worldDoc=assetDocs.items.get(activeScenePath);if(worldDoc?.kind==='scene')installDocumentData(worldDoc);if(assetDocs.current)installDocumentData(assetDocs.current);history=assetDocs.current?.history||[];future=assetDocs.current?.future||[];renderDocumentTabs();renderInspector();updateSurface();
+    }}
+    clearTimeout(recoveryTimer);if(!persistRecovery())return false;await flushStorage();window.chrome?.webview?.postMessage('hbengine.close');return true;
+  }catch(error){notify('종료 실패: '+error.message);return false;}finally{closingEngine=false;}
+};
+log('프로젝트를 열었어요.');requestAnimationFrame(animate);window.chrome?.webview?.postMessage('hbengine.ready.editor');

@@ -11,6 +11,27 @@
 5. 도움말은 F1/도움말 메뉴로 연다. 긴 안내문·기능 약속·개발 구현 설명을 상시 작업 화면에 넣지 않는다. 오류와 빈 검색 결과는 필요한 상태로 표시한다.
 6. 미구현 명령을 성공한 것처럼 처리하지 않는다. 실행 중 편집할 수 없는 속성은 명확히 비활성화한다.
 
+## 엔진 시작과 프로젝트
+
+프로젝트의 생성/열기 근거와 WebView2 수명·배포 조건은 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md#엔진-실행-프로젝트-파일-데스크톱-배포)에 있다. 현재 Windows x64 EXE는 Win32 창 안의 WebView2에서 편집기를 표시한다. 렌더링은 Three/WebGL이다.
+
+| 입력/상태 | HB 동작 | 검증 조건 |
+| --- | --- | --- |
+| HBEngine.exe 무인자 실행 | 최근·새 프로젝트·찾아 열기 허브 | 설치된 전역 Node/npm 없이 동봉 런타임 사용; WebView2 Runtime 필요 |
+| `.hbproject` 더블클릭/EXE로 드롭/인자 | descriptor를 검증하고 해당 프로젝트 열기 | 한글·공백·다른 작업 폴더; 잘못된 파일/버전/상대 경로 거부 |
+| 최초 일반 실행 / `--register` | 현재 사용자 HKCU에 파일 열기·아이콘 연결 | EXE 위치가 바뀌면 다시 등록; 관리자 권한 없이 동작 |
+| 새 프로젝트 | 이름·부모 폴더 → 새 폴더/예제 에셋/소스/descriptor → 편집기 | 이름 오류/같은 폴더 거부; 기존 파일을 덮어쓰지 않음 |
+| 찾기/최근 클릭 | 실제 `.hbproject`를 열고 최근 목록 갱신 | 실패 시 현재 선택 유지; 없는/비호환 프로젝트는 최근 목록에서 제외 |
+| 편집기 진입 | 세션 UUID·시작 에셋과 프로젝트 디스크 상태를 읽은 뒤 복구/배치/Project 폴더/SaveGame 로드 | 다른 프로젝트와 저장 키 분리; 같은 프로젝트의 허브/직접 실행 origin 차이에도 복원; QuietGarden 기존 복구는 한 번만 이관 |
+| 프로젝트 전환 | pending 상태 변경을 디스크에 반영한 뒤 다른 프로젝트 선택 | 저장 실패 시 기존 상태 보호; 늦게 도착한 파일 쓰기/빌드가 새 프로젝트를 수정하지 않음 |
+| Windows 닫기/Alt+F4 | Play 종료 → 수정 문서 저장/저장 안 함/취소 → 복구/디스크 저장 완료 → 창 종료 | 취소·저장/복구 실패 시 창 유지; 소유 서버와 C++ worker 정리 |
+
+`controller.Close`는 `beforeunload`를 발생시키지 않으므로 네이티브 닫기는 `hbEngineRequestClose`와 웹메시지를 통해 편집기의 결정을 기다린다. 생성 중/닫는 중 비동기 콜백이 늦게 와도 종료한 HWND를 재사용하지 않는다. EXE smoke는 WebView2 탐색 이후 JS 준비 메시지·실제 닫기 핸들러/메시지·프로젝트 경로·종료 후 서버 정리를 검사하며 수정/저장/취소 화면 시나리오는 따로 확인한다.
+
+복구·배치·Project 폴더·SaveGame은 `/api/storage`를 통해 프로젝트의 `Saved/Editor/storage.json`에 UUID별 변경 키를 반영한다. 브라우저 localStorage는 기존 백업·복원 경로를 유지한다. 같은 프로젝트를 허브 창과 직접 열기 창에서 동시에 열 수 있으나 에셋 파일의 동시 편집 충돌 감지·병합은 미지원이다.
+
+현재 생성은 기본 예제 한 종류다. 템플릿 선택·프로젝트 설정/업그레이드/백업·여러 엔진 버전 선택은 남아 있다.
+
 ## 창과 배치
 
 위쪽 파일 탭은 BP/Material/Animation/입력/레벨 등 **에셋 문서 선택**이고, 작업 영역 안의 탭은 해당 문서의 **그래프/컴포넌트 뷰포트/Timeline/Project/Console 배치**다. 문서마다 모델·선택·Undo·dirty·배치를 보존한다. 서로 다른 BP 파일에 한 그래프를 재사용해 내용을 바꾸면 안 된다. C++는 콘텐츠에서 열 때 외부 Visual Studio/VSCode로 보내며 BP 화면에 코드 편집기를 겹쳐 넣지 않는다.
@@ -150,14 +171,15 @@ RMB 이동과 RMB 메뉴는 이동 임계값으로 구분한다. Event 트랙은
 
 | 영역 | 구현/검증 | 아직 목표인 항목 |
 | --- | --- | --- |
+| 시작/프로젝트 | Win32/WebView2 EXE·Node 동봉·허브·`.hbproject`·최근·생성/열기·파일 연결·실제 EXE 탐색/종료 smoke | 템플릿 선택·프로젝트 설정/업그레이드·설치/업데이트·모든 닫기 화면 시나리오 |
 | 창 | 파일별 BP/Material/Animation/Curve/IA/IMC/Data/Scene 문서·배치/Undo; 탭 순서·전환·닫기 보호; 분할·최대화·독립 뷰포트 | OS 부동창·명명 레이아웃 프로필·창 전체 키 접근 검사 |
 | 그래프 | 다중/사각 선택·RMB/MMB 이동·확대·주석·핀·추출·빠른 생성키·부모/자식 이동·Ctrl+B·타입/저장 검사 | Shift휠·변수 드래그·Ctrl 핀 이동·선 더블클릭·북마크/정렬 전체 프로필 |
 | Project | 실제 폴더·다중 가져오기/선택/문서·우클릭 에셋/클래스 생성·이름 변경/영속 redirect·단일 타입 필터·파일 내용/하위 검색 | OR 타입/라벨 필터·즐겨찾기·재임포트·의존성 viewer/외부 감시·일괄 이름 변경 |
 | Timeline/Animation | 전용 문서·키 선택/시간/보간 편집·4종 트랙·접선·BP 실행 이벤트; 독립 Curve/Transform Animation 키 저장·미리보기·대상 Transform 재생/정지 | Curve 파일의 BP 참조·임의 속성/Animation 이벤트 트랙·Skeletal/상태 머신 |
 | Play/C++ | 실제 빌드/호출/이벤트/상태·Stop 복원·다중 BP 파일 바인딩·입력 에셋 실행·외부 IDE 열기 | 실행 객체 선택·Step Into/Out·프레임 명령·native 파일/줄 진단·IDE 프로젝트 생성 |
-| 저장 | 문서별 모델/Undo/dirty·복구; Material 그래프/Animation/Curve/IA/IMC/Data 저장; 저장 실패/동시 변경 보존 | 형식 migration·전체 편집기/프로젝트 복구 시나리오·삭제/의존성 복원 |
+| 저장 | 문서별 모델/Undo/dirty·프로젝트 UUID별 복구/도킹/폴더/SaveGame의 디스크 저장·localStorage 백업; 기본 프로젝트 1회 이관; Material/Animation/Curve/IA/IMC/Data 저장; 저장 실패/동시 변경 보존 | 형식 migration·전체 편집기/프로젝트 복구 화면 시나리오·동시 에셋 편집 충돌·삭제/의존성 복원 |
 | 장면 | 단일 선택·Transform·도형/광원·2D/3D·모델 미리보기/배치 | 다중 장면 선택·Hierarchy 부모 드래그·Fly 프로필·Prefab·모든 스냅 도구 |
 | 클래스 컴포넌트 | 부모 7종 템플릿·클래스별 컴포넌트 속성·Transform/기본 Mesh/충돌체 뷰포트 | 전체 컴포넌트 계층·Skeleton/카메라 preview·Possession/Character 이동 |
 | 머테리얼 | 독립 그래프/표면 문서·색/스칼라 연결·preview·장면 적용 | HLSL/GPU 컴파일·Texture/UV/Normal·전체 그래프 조작·재질 함수/인스턴스 |
 
-위 동작 표는 전체 목표 계약이다. 구현 코드는 `app.js`, `asset-documents.js`, `asset-editor-ui.js`, `project-browser.js`, `dock-layout.js`에 있고 문서 격리/실패 보존·입력·클래스 생성·다중 BP·rename 재열기는 `test:assets`로 검사한다. 화면 검증과 자동 검사 결과는 변경별 커밋 본문에 적는다. 남은 항목을 현재 도움말이나 성공 동작으로 표시하지 않는다. 화면 검증에는 실제 파일/입력을 사용하고 사용자 원본 장면을 덮어쓰지 않는다.
+위 동작 표는 전체 목표 계약이다. 편집기 구현은 `app.js`, `asset-documents.js`, `asset-editor-ui.js`, `project-browser.js`, `dock-layout.js`에 있고 문서 격리/실패 보존·입력·클래스 생성·다중 BP·rename 재열기는 `test:assets`로 검사한다. 프로젝트/창은 `HBEngine.cpp`, `project-manifest.mjs`, `project-session.js`, `project-storage.mjs`, `serve.mjs`와 `test:launcher/test:session/test:desktop`에 연결된다. 화면 검증과 자동 검사 결과는 변경별 커밋 본문에 적는다. 남은 항목을 현재 도움말이나 성공 동작으로 표시하지 않는다. 화면 검증에는 실제 파일/입력을 사용하고 사용자 원본 장면을 덮어쓰지 않는다.

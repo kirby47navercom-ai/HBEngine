@@ -4,3 +4,5 @@ prototype/screenshots/
 docs/index.bleve/
 native/build/
 prototype/core-api.js
+dist/
+/HBEngine.exe

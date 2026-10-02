@@ -1,6 +1,7 @@
+import {storageKey} from './project-session.js';
 import { validBlueprint } from './blueprint-model.js';
 
-export const STORAGE_KEY = 'hbengine-ui-scene-v1';
+export const STORAGE_KEY = storageKey('hbengine-ui-scene-v1');
 export const defaultSurface = { color: '#889878', roughness: 0.72, metalness: 0.08, light: 3.2 };
 export const defaultEnvironment = { preset: 'day', skyEnabled: true, sunEnabled: true, cloudsEnabled: true, fogEnabled: true, cloudDensity: 0.55, sunAzimuth: -30, sunElevation: 50, fogAmount: 0.25 };
 export const defaultObjects = [
