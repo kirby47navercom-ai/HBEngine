@@ -17,4 +17,4 @@ http.createServer((req, res) => {
     stream.on('error', () => res.destroy());
     stream.pipe(res);
   });
-}).listen(Number(process.env.PORT || 5173), '127.0.0.1', () => console.log('FRAME UI prototype: http://127.0.0.1:' + (process.env.PORT || 5173)));
+}).listen(Number(process.env.PORT || 5173), '127.0.0.1', () => console.log('HBEngine UI prototype: http://127.0.0.1:' + (process.env.PORT || 5173)));
