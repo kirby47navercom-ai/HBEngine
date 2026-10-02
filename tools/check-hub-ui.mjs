@@ -26,6 +26,7 @@ for(const match of html.matchAll(/<([a-z][\w-]*)\b([^>]*)>/g)){
   element.disabled=/\bdisabled\b/.test(match[2]);element.hidden=/\bhidden\b/.test(match[2]);const id=element.getAttribute('id');if(id){assert.equal(elements.has(id),false,'허브 ID가 중복되면 안 돼요: '+id);elements.set(id,element);}all.push(element);
 }
 const get=id=>{const element=elements.get(id);assert.ok(element,'실제 HTML에 필요한 항목이 없어요: '+id);return element;};
+get('project-template').value='2d';
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const document={body:new Element('body'),activeElement:null,querySelector:selector=>get(selector.slice(1)),createElement:tag=>new Element(tag),querySelectorAll:selector=>selector==='[data-icon]'?all.filter(element=>element.dataset.icon):selector==='button'?[...all,...descendants(get('recent-projects'))].filter(element=>element.tag==='button'):[]};
 const requests=[],messages=[],location={href:'',search:''};let failure=null,pending=null,browsePath=null;
@@ -46,7 +47,7 @@ get('open-selected').onclick();await settle();assert.equal(location.href,'/proto
 const dialog=get('new-project-dialog');get('new-project').onclick();assert.equal(dialog.open,true);assert.equal(document.activeElement,get('project-name'));get('cancel-new-project').onclick();assert.equal(dialog.open,false);get('new-project').onclick();assert.equal(dialog.cancel().prevented,false);assert.equal(dialog.open,false);
 get('new-project').onclick();get('project-name').value='  ';get('create-project').onsubmit(submit);await settle();assert.equal(dialog.open,true);assert.match(get('create-error').textContent,/이름/);assert.equal(get('create-error').hidden,false);assert.equal(get('cancel-new-project').disabled,false);
 get('project-name').value=' 새 게임 ';get('project-directory').value=' C:/게임 공백 폴더 ';failure='/api/launcher/create';get('create-project').onsubmit(submit);await settle();assert.equal(get('create-error').textContent,'검사 요청 실패');assert.equal(dialog.open,true);assert.equal(get('project-name').value,' 새 게임 ');assert.equal(get('project-directory').value,' C:/게임 공백 폴더 ');assert.equal(document.body.dataset.busy,undefined);failure=null;
-const createRequest=requests.find(request=>request.url==='/api/launcher/create');assert.deepEqual(JSON.parse(createRequest.body),{name:'새 게임',directory:'C:/게임 공백 폴더'});
+const createRequest=requests.find(request=>request.url==='/api/launcher/create');assert.deepEqual(JSON.parse(createRequest.body),{name:'새 게임',directory:'C:/게임 공백 폴더',template:'2d'});
 const gate={url:'/api/launcher/create'};pending=gate;get('create-project').onsubmit(submit);await settle();assert.equal(document.body.dataset.busy,'1');assert.equal(get('cancel-new-project').disabled,true);assert.equal(dialog.cancel().prevented,true);assert.equal(dialog.open,true);
 gate.resolve({ok:false,json:async()=>({error:'저장 거절'})});await settle();assert.equal(document.body.dataset.busy,undefined);assert.equal(get('cancel-new-project').disabled,false);assert.equal(get('create-error').textContent,'저장 거절');get('close-new-project').onclick();assert.equal(dialog.open,false);
 const beforeBrowse=requests.filter(request=>request.url==='/api/launcher/open').length;get('browse-project').onclick();await settle();assert.equal(requests.filter(request=>request.url==='/api/launcher/open').length,beforeBrowse,'파일 선택 취소는 프로젝트를 열면 안 돼요.');

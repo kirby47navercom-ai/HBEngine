@@ -1,5 +1,7 @@
 import {storageKey} from './project-session.js';
 import { validBlueprint } from './blueprint-model.js';
+import {validComponents} from './scene-components.js';
+import {validParent} from './scene-editor.js';
 
 export const STORAGE_KEY = storageKey('hbengine-ui-scene-v1');
 export const defaultSurface = { color: '#889878', roughness: 0.72, metalness: 0.08, light: 3.2 };
@@ -16,7 +18,9 @@ export const defaultObjects = [
   { id: 'scene-camera', name: 'Scene camera', kind: 'camera', group: 'ENVIRONMENT', position: [8.6, 7.2, 10.5], rotation: [0, 0, 0], scale: [1, 1, 1], visible: true }
 ];
 export const clone = value => JSON.parse(JSON.stringify(value));
-const kinds = new Set(['arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model']);
+const kinds = new Set(['arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model','empty','group','playerStart','character','character2d','sprite','tilemap','audio','directionalLight','pointLight','spotLight','controller','gameMode','gameState','playerState']);
+export const defaultRuntimeSettings={dimension:'3d',gameConfig:'',gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8};
+export function validRuntimeSettings(value){return value&&['2d','3d'].includes(value.dimension)&&typeof value.gameConfig==='string'&&value.gameConfig.length<=1000&&!value.gameConfig.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value.gameConfig)&&Array.isArray(value.gravity)&&value.gravity.length===3&&value.gravity.every(v=>Number.isFinite(v)&&Math.abs(v)<=1000)&&Number.isFinite(value.fixedDeltaTime)&&value.fixedDeltaTime>=1/240&&value.fixedDeltaTime<=.1&&Number.isInteger(value.maxSubsteps)&&value.maxSubsteps>=1&&value.maxSubsteps<=32;}
 export const validSurface = value => !!value && /^#[0-9a-f]{6}$/i.test(value.color)
   && ['roughness','metalness'].every(k=>Number.isFinite(value[k])&&value[k]>=0&&value[k]<=1)
   && Number.isFinite(value.light)&&value.light>=0&&value.light<=10;
@@ -27,6 +31,8 @@ export function validScene(value) {
       && (o.kind!=='model'||typeof o.asset==='string'&&o.asset.length<=1000&&!o.asset.includes('..')) && (o.blueprint===undefined||typeof o.blueprint==='string'&&o.blueprint.length<=80) && ['blueprintAsset','materialAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')) && (o.materialSurface===undefined||validSurface(o.materialSurface)) && kinds.has(o.kind) && typeof o.visible === 'boolean'
       && ['position', 'rotation', 'scale'].every(key => Array.isArray(o[key]) && o[key].length === 3 && o[key].every(n => Number.isFinite(n) && Math.abs(n) <= 10000))
       && o.scale.every(n => n >= 0.01))
+    && value.objects.every(o=>(o.components===undefined||validComponents(o.components))&&(o.parent===undefined||typeof o.parent==='string'&&validParent(value.objects,o.id,o.parent))&&(o.locked===undefined||typeof o.locked==='boolean')&&(o.tags===undefined||Array.isArray(o.tags)&&o.tags.length<=32&&o.tags.every(t=>typeof t==='string'&&t.length<=80))&&['spriteAsset','tilemapAsset','prefabAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')))
+    && (value.runtime===undefined||validRuntimeSettings(value.runtime))
     && validSurface(value.surface)
     && (value.sceneName === undefined || (typeof value.sceneName === 'string' && value.sceneName.length > 0 && value.sceneName.length <= 80))
     && (value.environment === undefined || validEnvironment(value.environment))

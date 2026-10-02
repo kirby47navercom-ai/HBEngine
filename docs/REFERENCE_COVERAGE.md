@@ -35,7 +35,7 @@
 | [Multiplayer](https://docs.unity3d.com/6000.0/Documentation/Manual/multiplayer.html) | 접속·세션·상태 동기화·검증 | 미구현 | 권한·복제·RPC·지연/끊김 검사 |
 | [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기 EXE·WebView2·Node 동봉·g++ worker | DX11 게임 실행 파일·다른 플랫폼·타깃 빌드 프로필 |
 | [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | `model.js`·`blueprint-model.js`·`engine-services.js` | 프리팹/Variant·인스턴스 오버라이드·컴포넌트 전체 생명주기 |
-| [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋 | 다중 장면 동시 월드·런타임 장면 전환·스트리밍 |
+| [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋·BP/C++ 런타임 단일 장면 전환 | 다중 장면 동시 월드·스트리밍 |
 | [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 독립 카메라 뷰포트·`OrbitControls` | Game View 카메라 지정·물리 카메라·culling·출력 텍스처 |
 | [World building](https://docs.unity3d.com/6000.0/Documentation/Manual/CreatingEnvironments.html) | 하늘·Terrain·환경 편집과 런타임 최적화 | 도형·태양/하늘/구름/안개 미리보기 | Terrain 페인트·식생·LOD·큰 월드 로딩 |
 | [Physics](https://docs.unity3d.com/6000.0/Documentation/Manual/PhysicsSection.html) | 2D/3D 물리의 다른 구현과 힘·충돌·시간 단계 | AABB 겹침/Hit·메시 Raycast·속도 갱신 | 강체 solver·고정 시간 단계·joint·CCD·2D 전용 물리 |
@@ -140,3 +140,8 @@
 3. 에셋 작성과 런타임 소비자를 함께 구현한다. 편집 화면만 존재하는 기능은 미리보기/편집 상태로 기록한다.
 4. 최소 정상 시나리오와 실패/복구 시나리오를 검증한다. 다른 열린 문서·사용자 원본·Stop 뒤 편집 월드를 보존한다.
 5. 조사 상태·구현 상태·재현 결과를 이 문서와 분야 명세에 반영한다. 사용자가 누락을 발견해야만 목록에 추가하는 방식으로 진행하지 않는다.
+
+
+## 2026-10-02 후속 대조
+
+컴포넌트·프레임워크·물리·2D·머테리얼·에셋 생명주기·AI 자동화의 본문 확인 자료, 적용 결정, 실행 검증과 남은 전체 분야는 [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md)에 연결했다. 문서 목록 수집 건수를 본문 전체 확인 수로 바꾸지 않는다.

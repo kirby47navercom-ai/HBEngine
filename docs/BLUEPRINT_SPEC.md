@@ -36,7 +36,7 @@
 | Timeline/Animation | 4종 트랙·커브/접선/키 편집·재생/역방향/스크럽·BP 실행 이벤트; 독립 Curve/Transform Animation 파일·미리보기·Play/Stop Animation 대상 실행 | Curve 에셋의 BP 참조·임의 속성/Animation 이벤트 트랙·Skeletal/상태 머신 |
 | 디스패처·인터페이스 | 시그니처, 구독·해제·이벤트·메시지 실제 실행; 장면의 서로 다른 BP 파일을 객체별 실행 | 독립 계약 에셋·다중 BP 클래스 간 정적 계약 검사 |
 | 디버거 | 실제 노드 중단점·Step/Continue·호출 스택 표기·계산 핀 값 | 실행 객체 선택, 프레임/Step Into/Out 구분·native 코드 디버거 |
-| 오브젝트/서비스 | 생성/제거/부모·기본 컴포넌트, Mesh Raycast, 표면/광원, 오디오·모델 클립/Transform Animation·기본 위젯·SaveGame | 강체 solver·3D 음향·장면 전환·AnimationBP·UI 바인딩 |
+| 오브젝트/서비스 | 생성/제거/부모·기본 컴포넌트, Mesh Raycast, 표면/광원, 오디오·모델 클립/Transform Animation·기본 위젯·SaveGame | 정밀 강체 solver·3D 음향·장면 스트리밍·AnimationBP·UI 바인딩 |
 | 빌드/배포 | 사용자 .h/.cpp 실제 g++ 빌드와 작업 프로세스 RPC | DX11 런타임·DLL 교체·cooking·Windows 게임 배포 |
 | 네트워크/확장 | 미구현 | 복제/RPC·권한·플러그인·에디터 도구 |
 
@@ -76,3 +76,15 @@
 Project 파일과 브라우저 복구 저장은 장면·환경·BP/함수/매크로/Construction·C++ 원문·기본값·통신·Timeline과 독립 머테리얼/애니메이션/커브/입력/데이터 문서를 유지한다. 각 파일은 선택/배치·Undo·dirty 상태를 따로 가지며 전환으로 다른 파일의 편집을 덮지 않는다. 저장 실패나 저장 중 추가 편집은 dirty를 유지하고, 닫기는 저장/저장 안 함/취소를 제공한다. BP 내보내기 파일은 안정적인 ID와 명시적 타입/핀/연결을 포함한다. 잘못된 JSON/타입/연결은 기존 편집값을 바꾸기 전에 거부한다.
 
 검사는 npm test, api:check, test:library, test:native, test:runtime, test:host, test:project, test:assets로 재현한다. `test:assets`는 문서 격리/저장 실패·에셋 8종·부모 7종·입력 우선순위·다중 BP 실행·rename 재열기·native 모듈 소유 상태를 확인한다. 화면 검증은 별도로 수행하고 커밋 본문에 결과를 적는다. 기존 화면 검증은 실제 C++ 빌드→함수 호출→C++ 이벤트→BP 이동과 Stop 복원, 파일 내부 검색, 다중 가져오기/선택/문서, 창 분할/최대화, OBJ 미리보기와 Timeline 키 편집을 포함한다. 완성된 Unreal/Unity 대체 엔진이라고 부르지 않는다.
+
+## 2026-10-02 실행·제작·AI 연계
+
+공통 `scene-components.js` 27종은 장면 Inspector와 Blueprint 컴포넌트 편집·기본값·검증·런타임을 공유한다. 클래스에는 Controller/PlayerController/AIController, GameMode/GameState/PlayerState/Pawn을 구분한다. Blueprint 컴포넌트를 설치한 뒤 렌더·타일 충돌을 준비하고 모든 Construction 이후 서비스 초기화, BeginPlay를 실행한다. Fixed Update는 누적된 고정 스텝마다 물리 적분 전에 실행하며 컴포넌트별 Begin/EndOverlap과 Hit를 구분한다. 2D는 XY 물리와 표시 깊이를 분리한다.
+
+기존 289개 코어 C++ API에 EngineService 19개(역할 조회/소유/이동/충격/힘/속도·월드/로컬 위치·장면 전환)를 실제 플레이 서비스로 연결했다. 정적 BP 카탈로그는 390개이며 사용자 C++ 노드는 등록된 함수에 따라 늘어난다. 노드 수만으로 기능 완료를 판단하지 않는다. C++ 변환·반환을 검증한 뒤 소유 실행 월드에 적용한다.
+
+Sprite/TileMap/SpriteAnimation, 물리/머테리얼 인스턴스, 게임 설정, 프리팹, 오디오 에셋도 독립 파일이다. 스프라이트 프레임 애니메이션은 기존 PlayAnimation 서비스로 실행된다. 머테리얼 33종 노드는 별도 타입 그래프와 GLSL 생성·실제 Three GPU 재질을 사용하며 BP 이벤트 그래프와 섞지 않는다. DX11/HLSL은 미구현 상태다.
+
+AI는 `/api/schema`의 공통 정의와 `document.get/patch/save`, Undo/Redo, native.build, Play/Stop/State를 사용한다. 사람의 저장 전 편집을 revision으로 보호하고 디스크 변경 시 저장을 거부·백업한다. `tools/run-project.mjs`는 같은 VM/물리/C++를 화면 없이 시나리오로 실행한다. 인터페이스와 한계는 [AI_ENGINE_API.md](AI_ENGINE_API.md), 실행 증거와 누적 미완료 분야는 [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md)에 이어 기록한다.
+
+Open Scene과 C++ `hb::Scene::Open`은 대상 장면 검증 후 프레임 경계에서 월드를 교체한다. 이전 인스턴스 EndPlay(reason=LevelTransition), 지연·타이머·입력·서비스 정리 이후 새 월드 Construction/BeginPlay를 실행한다. EndPlay 오류가 있어도 모든 인스턴스 종료와 정리를 수행한다. Stop은 편집 원본과 뷰/환경 설정을 복원한다. 중복 이름은 전체 경로를 요구하며 읽는 중 종료된 VM에는 새 전환 요청을 남기지 않는다.

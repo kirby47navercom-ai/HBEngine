@@ -28,6 +28,7 @@ export function parseNativeHeader(source){
       fn.returnType=f[3].trim();fn.parameters=[];
       if(/NodeKey\s*=/.test(flags))fn.nodeKey=metadata(flags,'NodeKey','');
       if(/KoreanName\s*=/.test(flags))fn.ko=metadata(flags,'KoreanName',fn.label);
+      if(/\bEngineService\b/.test(flags))fn.service=true;
       if(f[3].trim()!=='void')fn.outputs.push({id:metadata(flags,'ReturnPin','result'),label:'Return value',...cppType(f[3].trim())});
       for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn.parameters.push({name,cppType:type,out});fn[out?'outputs':'inputs'].push({id:name,label:name,...cppType(type)});}
       if(fn.event!=='none'&&fn.outputs.length)throw Error(fn.name+' 이벤트에는 반환·출력 매개변수를 둘 수 없어요.');c.functions.push(fn);

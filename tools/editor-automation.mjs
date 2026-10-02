@@ -1,0 +1,36 @@
+import {randomUUID} from 'node:crypto';
+import {assetTypes,assetSuffix,createAsset} from '../prototype/asset-documents.js';
+import {componentDefinitions} from '../prototype/scene-components.js';
+import {catalog,variableTypes} from '../prototype/blueprint-model.js';
+import {materialCatalog} from '../prototype/material-runtime.js';
+import {blueprintClasses} from '../prototype/class-types.js';
+
+export const editorMethods={
+  'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
+  'document.open':{params:{path:'프로젝트 상대 경로'}},
+  'document.get':{params:{path:'열린 문서 경로 (생략하면 활성 문서)'}},
+  'document.patch':{params:{path:'열린 문서 경로',expectedRevision:'document.get의 revision',operations:'JSON Patch test/add/replace/remove 배열'}},
+  'document.save':{params:{path:'열린 문서 경로',expectedRevision:'저장할 revision'}},
+  'editor.undo':{params:{path:'열린 문서 경로',expectedRevision:'되돌릴 revision'}},
+  'editor.redo':{params:{path:'열린 문서 경로',expectedRevision:'다시 실행할 revision'}},
+  'scene.select':{params:{ids:'오브젝트 ID 배열',focus:'선택 위치로 이동 여부'}},
+  'runtime.play':{params:{}},'runtime.stop':{params:{}},'runtime.pause':{params:{}},'runtime.resume':{params:{}},
+  'runtime.input':{params:{key:'키 이름',value:'-1~1 (생략하면 1, 놓기는 0)'}},
+  'runtime.openScene':{params:{path:'장면 에셋의 전체 프로젝트 상대 경로'}},
+  'runtime.state':{params:{}},'native.build':{params:{path:'C++이 연결된 블루프린트 경로'}}
+};
+export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},commands:editorMethods};}
+
+export class EditorAutomation {
+  constructor(){this.clients=new Map();this.commands=new Map();}
+  clean(){const now=Date.now();for(const [id,client] of this.clients)if(now-client.seen>15000)this.clients.delete(id);for(const [id,command] of this.commands){if(now-command.created>300000)this.commands.delete(id);else if(!['done','error'].includes(command.status)&&now-command.created>120000)Object.assign(command,{status:'error',error:{code:'TIMEOUT',message:'편집기 응답 시간이 초과됐어요.'}});}}
+  state(){this.clean();return {protocolVersion:1,clients:[...this.clients].map(([id,client])=>({id,...client})),methods:editorMethods};}
+  submit(data){this.clean();if(!data||!Object.hasOwn(editorMethods,data.method))throw Error('지원하지 않는 편집기 명령');if(!this.clients.has(data.clientId))throw Error('연결된 편집기 clientId가 필요해요.');if(data.requestId!==undefined&&(typeof data.requestId!=='string'||data.requestId.length>100))throw Error('requestId 형식 오류');if(data.params!==undefined&&(!data.params||typeof data.params!=='object'||Array.isArray(data.params)))throw Error('명령 인자 형식 오류');
+    const existing=data.requestId&&[...this.commands.values()].find(command=>command.clientId===data.clientId&&command.requestId===data.requestId);if(existing){if(existing.method!==data.method||JSON.stringify(existing.params)!==JSON.stringify(data.params||{}))throw Error('requestId를 다른 명령에 다시 사용할 수 없어요.');return existing;}
+    if([...this.commands.values()].filter(c=>!['done','error'].includes(c.status)).length>=50)throw Error('대기 명령 한도 초과');const command={id:randomUUID(),clientId:data.clientId,requestId:data.requestId,method:data.method,params:data.params||{},status:'queued',created:Date.now()};this.commands.set(command.id,command);return command;
+  }
+  get(id){this.clean();const command=this.commands.get(id);if(!command)throw Error('명령을 찾을 수 없어요.');return command;}
+  poll(data){this.clean();if(typeof data?.clientId!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(data.clientId)||!data.state||typeof data.state!=='object'||Array.isArray(data.state)||!Array.isArray(data.results)||data.results.length>50)throw Error('편집기 상태 형식 오류');this.clients.set(data.clientId,{seen:Date.now(),state:data.state});for(const result of data.results){const command=this.commands.get(result.id);if(command?.clientId===data.clientId&&command.status==='running')Object.assign(command,result.error?{status:'error',error:result.error}:{status:'done',result:result.result});}
+    const commands=[...this.commands.values()].filter(c=>c.clientId===data.clientId&&c.status==='queued');for(const command of commands)command.status='running';return {commands};
+  }
+}

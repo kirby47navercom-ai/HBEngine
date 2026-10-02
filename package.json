@@ -20,7 +20,16 @@
     "test:launcher": "node tools/check-launcher.mjs",
     "test:hub-ui": "node tools/check-hub-ui.mjs",
     "test:session": "node tools/check-session.mjs",
-    "test:desktop": "node tools/check-desktop.mjs"
+    "test:desktop": "node tools/check-desktop.mjs",
+    "test:windows": "node tools/check-window-workflow.mjs",
+    "test:scene": "node tools/check-scene-editor.mjs && node tools/check-scene-runtime.mjs",
+    "test:2d": "node tools/check-2d-workflow.mjs",
+    "test:material": "node tools/check-material-workflow.mjs",
+    "test:integration": "node tools/check-engine-integration.mjs",
+    "test:editor-api": "node tools/check-editor-api.mjs",
+    "engine": "node tools/hb.mjs",
+    "test:headless": "node tools/check-headless.mjs",
+    "run:project": "node tools/run-project.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { defaultObjects, defaultSurface, defaultEnvironment, validScene, fileKind, clone } from '../prototype/model.js';
 import { defaultBlueprint, validBlueprint, canConnect, connect, splitPin, effectivePins, makeNode, collapseNodes, graphContext, catalog, makeComment, makeDefinition } from '../prototype/blueprint-model.js';
 import {defaultDockRatio} from '../prototype/dock-layout.js';
-assert.equal(defaultDockRatio(720),.58,'작은 화면은 콘텐츠 목록 높이를 확보해요.');assert.equal(defaultDockRatio(900),.68,'큰 화면은 뷰포트를 넓게 배치해요.');
+assert.ok((720-110)*defaultDockRatio(720)>=360,'작은 화면도 주 작업창 높이를 360px 이상 확보해요.');assert.ok(defaultDockRatio(1080)>defaultDockRatio(720),'큰 화면은 주 작업창을 넓게 배치해요.');
 
 const scene = { version: 1, objects: clone(defaultObjects), surface: clone(defaultSurface) };
 assert.ok(validScene(JSON.parse(JSON.stringify(scene))), '기본 장면 저장/복원');
@@ -126,11 +126,12 @@ const completeCatalog=clone(defaultBlueprint);completeCatalog.nodes=catalog.map(
 // 표시 모드를 바꿔도 선택·Shift 기준과 카드 순서를 유지하고 프로젝트별로 복원한다.
 const {ProjectBrowser}=await import('../prototype/project-browser.js');
 const {storage,storageKey}=await import('../prototype/project-session.js');
-const viewKey=storageKey('hbengine.project.view'),savedView=storage.getItem(viewKey);
+const viewKey=storageKey('hbengine.project.view'),savedView=storage.getItem(viewKey),browserKey=storageKey('hbengine.project.browsers'),savedBrowsers=storage.getItem(browserKey);
 try{
   storage.removeItem(viewKey);
+  storage.removeItem(browserKey);
   const grid={dataset:{}},heading={},labels=[],buttons=['list','tiles'].map(view=>({dataset:{projectView:view},setAttribute(key,value){this[key]=value;}}));
-  const element={querySelector:selector=>selector==='#asset-grid'?grid:heading,querySelectorAll:selector=>selector==='[data-project-view]'?buttons:labels,addEventListener(){}};
+  const fields=new Map();const element={querySelector:selector=>selector==='[data-project-grid]'?grid:selector==='.project-list-heading'?heading:(fields.has(selector)?fields.get(selector):(fields.set(selector,{}),fields.get(selector))),querySelectorAll:selector=>selector==='[data-project-view]'?buttons:labels,addEventListener(){}};
   class BrowserCheck extends ProjectBrowser {refresh(){}}
   const browser=new BrowserCheck(element,{});assert.equal(browser.view,'list','파일 브라우저 기본 목록');assert.equal(heading.hidden,false);
   browser.entries=[{name:'Hero.hbblueprint.json',path:'Assets/Hero.hbblueprint.json'}];browser.selected.add(browser.entries[0].path);browser.anchor=0;labels.push({});const selected=browser.selected,entries=browser.entries;
@@ -138,5 +139,5 @@ try{
   assert.equal(browser.selected,selected);assert.equal(browser.entries,entries);assert.equal(browser.anchor,0);assert.equal(new BrowserCheck({...element,querySelectorAll:selector=>selector==='[data-project-view]'?buttons:[]},{}).view,'tiles','프로젝트 표시 방식 복원');
   browser.setView('list');assert.equal(labels[0].textContent,'Hero.hbblueprint.json');assert.equal(storage.getItem(viewKey),'list');assert.notEqual(storageKey('hbengine.project.view',{id:'one'}),storageKey('hbengine.project.view',{id:'two'}));
   browser.setView('invalid');assert.equal(browser.view,'list','손상된 표시 방식 무시');
-}finally{if(savedView===null)storage.removeItem(viewKey);else storage.setItem(viewKey,savedView);}
+}finally{if(savedView===null)storage.removeItem(viewKey);else storage.setItem(viewKey,savedView);if(savedBrowsers===null)storage.removeItem(browserKey);else storage.setItem(browserKey,savedBrowsers);}
 console.log('HBEngine Project: 목록·타일 전환, 선택 유지, 프로젝트별 표시 방식 복원 검사 통과');

@@ -7,9 +7,10 @@ import {randomUUID} from 'node:crypto';
 import {ProjectService} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {ProjectStorage,storageLimit} from './project-storage.mjs';
+import {EditorAutomation,engineSchema} from './editor-automation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
-let port=requestedPort,project=null,session=null,storage=null,native=new NativeHost(),defaultProject=null,ready=false,stopping=false;
+let port=requestedPort,project=null,session=null,storage=null,native=new NativeHost(),automation=new EditorAutomation(),defaultProject=null,ready=false,stopping=false;
 const quietCanonicalRoot=await fs.promises.realpath(quietRoot).catch(error=>{if(error.code!=='ENOENT')throw error;return quietRoot;});
 const sameRoot=(a,b)=>process.platform==='win32'?path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase():path.resolve(a)===path.resolve(b);
 async function writeReady(){
@@ -18,7 +19,7 @@ async function writeReady(){
   try{await fs.promises.writeFile(temp,JSON.stringify({port,pid:process.pid,projectFile:session?.projectFile||null}),{flag:'wx'});await fs.promises.rename(temp,file);}finally{await fs.promises.unlink(temp).catch(()=>{});}
 }
 async function selectProject(record){
-  if(stopping)throw Error('편집기가 종료 중이에요.');await rememberProject(record);native.close();native=new NativeHost();project=record.project;
+  if(stopping)throw Error('편집기가 종료 중이에요.');await rememberProject(record);native.close();native=new NativeHost();automation=new EditorAutomation();project=record.project;
   session={id:record.manifest.id,name:record.manifest.name,projectFile:record.file,startupScene:record.manifest.startupScene,startupBlueprint:record.manifest.startupBlueprint,legacyStorage:sameRoot(record.root,quietCanonicalRoot)};storage=new ProjectStorage(project,session.id);await writeReady();return session;
 }
 if(!desktop){
@@ -45,18 +46,26 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/launcher'&&req.method==='GET')return json(res,{projects:await recentProjects(defaultProject),defaultDirectory});
     if(url.pathname==='/api/launcher/browse'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,{path:await pickProjectPath(data.kind)});}
     if(url.pathname==='/api/launcher/open'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await selectProject(await readProjectManifest(data.file)));}
-    if(url.pathname==='/api/launcher/create'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await selectProject(await createProject(data.name,data.directory)));}
+    if(url.pathname==='/api/launcher/create'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,await selectProject(await createProject(data.name,data.directory,data.template)));}
     if(!project)return json(res,{error:'프로젝트를 먼저 선택하세요.'},409);
     // Each request retains its original project through body reads and native compilation.
     const owner=project,host=native,store=storage,projectId=session.id,readBody=async(limit)=>{const data=await body(req,limit);checkOwner(owner);return data;};
+    if(url.pathname==='/api/schema'&&req.method==='GET')return json(res,engineSchema());
+    if(url.pathname==='/api/automation'&&req.method==='GET')return json(res,automation.state());
+    if(url.pathname==='/api/automation/command'&&req.method==='GET')return json(res,automation.get(q.get('id')));
+    if(url.pathname==='/api/automation/command'&&req.method==='POST')return json(res,automation.submit(JSON.parse(await readBody())),202);
+    if(url.pathname==='/api/automation/poll'&&req.method==='POST'){const data=JSON.parse(await readBody(4194304));if(data.state?.projectId!==projectId)throw changedProject();return json(res,automation.poll(data));}
     if(url.pathname==='/api/storage'&&req.method==='GET'){if(q.get('project')!==projectId)throw changedProject();return json(res,await store.read(()=>checkOwner(owner)));}
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=JSON.parse(await readBody(storageLimit));if(data?.id!==projectId)throw changedProject();return json(res,await store.patch(data.items,()=>checkOwner(owner)));}
     if(url.pathname==='/api/editor'&&req.method==='GET'){const editor=await findEditor();checkOwner(owner);return json(res,{name:editor?.name||null});}
     if(url.pathname==='/api/editor/open'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await openExternal(owner,data.path));}
     if(url.pathname==='/api/asset/create'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,data.kind==='code'?await createCppClass(owner,data.folder||'Source',data.name,data.parent):await owner.create(data.folder||'Assets',data.kind,data.name,data.parent));}
+    if(url.pathname==='/api/asset/info'&&req.method==='GET'){const result=await owner.assetInfo(q.get('path'));checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/reimport'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.reimport(data.paths);checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(8388608)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/project'&&req.method==='GET'){const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/file'&&req.method==='GET'){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}
-    if(url.pathname==='/api/file'&&req.method==='PUT'){await owner.write(q.get('path'),(await readBody()).toString('utf8'));checkOwner(owner);return json(res,{ok:true});}
+    if(url.pathname==='/api/file'&&req.method==='PUT'){await owner.write(q.get('path'),(await readBody()).toString('utf8'),()=>checkOwner(owner));checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.import(q.get('folder')||'Assets',q.get('name'),await readBody(104857600));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/folder'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.mkdir(data.path);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/rename'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.rename(data.from,data.to);checkOwner(owner);return json(res,{ok:true});}

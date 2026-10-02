@@ -23,9 +23,37 @@ struct Actor { Transform transform{}; virtual ~Actor()=default; };
 struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
 struct Pawn : Actor {};
 struct Character : Pawn {};
-struct PlayerController : Actor {};
+struct Controller : Actor {};
+struct PlayerController : Controller {};
 struct GameMode : Actor {};
+struct GameState : Actor {};
+struct PlayerState : Actor {};
+struct AIController : Controller {};
 struct SceneComponent : Component { Transform transform{}; };
+// These services share the editor/game-world operation contract with Blueprint.
+// The native host supplies the implementation and applies commands after each call.
+HB_CLASS()
+class Gameplay : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getGameMode", KoreanName="게임 모드 가져오기", Category="게임플레이") static Actor* GetGameMode();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getGameState", KoreanName="게임 상태 가져오기", Category="게임플레이") static Actor* GetGameState();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getPlayerController", KoreanName="플레이어 컨트롤러 가져오기", Category="게임플레이") static Actor* GetPlayerController();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getPlayerState", KoreanName="플레이어 상태 가져오기", Category="게임플레이") static Actor* GetPlayerState();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getPlayerPawn", KoreanName="플레이어 폰 가져오기", Category="게임플레이") static Actor* GetPlayerPawn();
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="possess", KoreanName="폰 제어권 연결", Category="게임플레이") static void Possess(Actor* controller,Actor* pawn);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="unPossess", KoreanName="폰 제어권 해제", Category="게임플레이") static void UnPossess(Actor* controller);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="addMovementInput", KoreanName="이동 입력 더하기", Category="게임플레이") static void AddMovementInput(Actor* target,const Vec3& direction,float scale);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="jump", KoreanName="캐릭터 점프", Category="게임플레이") static void Jump(Actor* target);
+};
+HB_CLASS()
+class Physics : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getVelocity", KoreanName="속도 가져오기", Category="물리") static Vec3 GetVelocity(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setVelocity", KoreanName="속도 설정", Category="물리") static void SetVelocity(Actor* target,const Vec3& velocity);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="addForce", KoreanName="힘 더하기", Category="물리") static void AddForce(Actor* target,const Vec3& force);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="impulse", KoreanName="충격량 더하기", Category="물리") static void AddImpulse(Actor* target,const Vec3& impulse);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="collisionEnabled", KoreanName="충돌 활성화", Category="물리") static void SetCollisionEnabled(Actor* target,bool enabled);
+};
 inline Vec3 operator+(Vec3 a,Vec3 b){return {a.x+b.x,a.y+b.y,a.z+b.z};}
 inline Vec3 operator-(Vec3 a,Vec3 b){return {a.x-b.x,a.y-b.y,a.z-b.z};}
 inline Vec3 operator*(Vec3 a,float s){return {a.x*s,a.y*s,a.z*s};}
@@ -125,6 +153,11 @@ private:
 HB_CLASS()
 class Scene : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openScene", KoreanName="장면 열기", Category="장면") static void Open(const std::string& scene);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getWorldPosition", KoreanName="월드 위치 가져오기", Category="변환") static Vec3 GetWorldPosition(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setWorldPosition", KoreanName="월드 위치 설정", Category="변환") static void SetWorldPosition(Actor* target,const Vec3& position);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getLocalPosition", KoreanName="로컬 위치 가져오기", Category="변환") static Vec3 GetLocalPosition(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setLocalPosition", KoreanName="로컬 위치 설정", Category="변환") static void SetLocalPosition(Actor* target,const Vec3& position);
     HB_FUNCTION(BlueprintPure, NodeKey="location", KoreanName="위치 가져오기") static Vec3 GetPosition(Actor* target);
     HB_FUNCTION(BlueprintCallable, NodeKey="setPosition", KoreanName="위치 설정") static void SetPosition(Actor* target,const Vec3& position);
     HB_FUNCTION(BlueprintPure, NodeKey="getRotation", KoreanName="회전 가져오기") static Vec3 GetRotation(Actor* target);

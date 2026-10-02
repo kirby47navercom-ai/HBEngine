@@ -48,14 +48,14 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 
 | 명령 | 검사 |
 | --- | --- |
-| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·373종 한 그래프 저장 |
+| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·390종 한 그래프 저장 |
 | npm run api:check | 공통 선언·생성 헤더·노드 메타데이터 일치 |
 | npm run test:library | 새 221개 함수의 실제 C++/JS 결과 비교·배열/정수 오류 |
 | npm run test:native | 기존 공통 C++ 코어 실제 컴파일·호출 |
 | npm run test:runtime | 이벤트·반복·지연·Timeline·트랜스폼 애니메이션 재생/정지/반복/시간 배율·중단점 이어가기·실제 C++→BP |
 | npm run test:host | 사용자 C++ 빌드·함수/속성/객체/이벤트·잘못된 반환/컴파일 진단 |
 | npm run test:project | 실제 파일·다중 가져오기·폴더 드롭 열거·내용 검색·재열기·원본 보존 |
-| npm run test:assets | 에셋 8종·부모 7종 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
+| npm run test:assets | 확장 에셋·부모 클래스 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
 | npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
 | npm run test:hub-ui | 실제 허브 핸들러의 검색·선택·열기·모달·키보드·오류/입력 보존 |
 | npm run desktop:build | Windows x64 EXE·아이콘·Node/loader 동봉·라이선스·외부 MSYS2 런타임 DLL 의존성 검사 |
@@ -98,13 +98,23 @@ auto remaining = hb::Timers::GetTimerRemaining(timer);
 
 공통 API 289개는 C++에서 직접 사용할 수 있다. BP 이벤트/반복/변수 조작은 VM 실행 구조이며, 나머지 브라우저 게임 서비스 모두에 같은 native API가 존재하는 것은 아니다. 노드별 대응은 카탈로그에 적었다.
 
+## 확장된 제작 흐름과 AI
+
+2D Sprite crop/pivot/PPU·그리드 분할, Flipbook 프레임, Tilemap 브러시/지우기/사각형/채우기·레이어·충돌 편집을 독립 에디터로 연다. 2D 문서는 전용 캔버스·팔레트·속성을 사용하고 중복 전역 패널을 숨긴다. 장면의 27종 컴포넌트, Controller/Pawn/GameMode/State, 2D/3D 고정 물리·접촉·중력·입력·점프를 실제 플레이로 연결한다. 머테리얼 그래프 33종은 타입 검증과 GLSL 생성 후 GPU 재질에 적용한다.
+
+BP Open Scene과 C++ `hb::Scene::Open`은 다음 장면을 검증하고 프레임 경계에서 이전 월드의 EndPlay·타이머·입력 정리 후 새 월드를 시작한다. Stop하면 전환 전의 편집 장면과 환경을 복원한다. 화면 없는 실행기도 같은 준비/전환 경로를 사용하며 `sceneHistory`에 전환 장면과 프레임을 남긴다.
+
+AI도 현재 미저장 문서를 읽고 revision 조건부 부분 변경·Undo·저장·C++ 빌드·실행 상태 조회를 사용할 수 있다. `npm run engine -- clients`로 편집기를 찾고 `npm run engine -- schema`로 실제 에셋/컴포넌트/노드 정의를 읽는다. `npm run run:project -- <project.hbproject> [scenario.json]`은 같은 BP/물리/C++를 화면 없이 실행해 JSON 결과를 반환한다. 상세 명령은 [AI API](docs/AI_ENGINE_API.md), 공식 문서 대조와 남은 전체 작업은 [제작 흐름 분석](docs/ENGINE_WORKFLOW_RESEARCH.md)에 있다.
+
+추가 검사: `test:windows`, `test:scene`, `test:2d`, `test:material`, `test:integration`, `test:headless`, `test:editor-api`. 마지막 검사는 별도의 `integration-qa-*` 프로젝트를 연 편집기에서만 실행한다.
+
 ## 현재 한계
 
-Windows 엔진 실행 파일과 편집기 배포 폴더는 구현했다. 현재 WebView2가 HTML/JS 편집기를 표시하고 Node가 로컬 서버와 C++ 빌드 호스트를 제공한다. DirectX 11·HLSL/머테리얼 그래프 컴파일·native 물리/3D 음향·임의 형식의 엔진 변환·독립 게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 현재 기본 예제 템플릿을 사용하며 템플릿 선택·프로젝트 업그레이드/백업·여러 엔진 버전 선택은 미구현이다.
+Windows 엔진 실행 파일과 편집기 배포 폴더는 구현했다. 현재 WebView2가 HTML/JS 편집기를 표시하고 Node가 로컬 서버와 C++ 빌드 호스트를 제공한다. DirectX 11·HLSL backend·native 물리/3D 음향·임의 형식의 엔진 변환·독립 게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
 
-같은 프로젝트를 허브 창과 직접 열기 창에서 동시에 열 수 있지만 에셋 파일의 동시 편집 충돌 감지·병합은 아직 지원하지 않는다.
+문서 저장은 디스크의 이전 내용과 대조해 외부 변경을 거부하고 Saved/Backups에 원본을 보관한다. 자동 충돌 병합·다중 파일 트랜잭션은 지원하지 않는다.
 
-BP/Scene/Material/Animation/Curve/IA/IMC/Data는 파일마다 독립 문서 모델을 가지며 여러 이미지/모델/텍스트 문서와 뷰포트도 열 수 있다. BP→BP 상속, 사용자 Struct/Enum/Set/Map, 로컬 변수, 네트워크, Animation 상태 머신, Prefab은 계속 구현할 범위다. 트랜스폼 애니메이션은 position/rotation/scale만 적용하며 독립 Animation의 이벤트 트랙·임의 컴포넌트 속성·Skeletal/리타깃·블렌딩은 미지원이다. 추가 C++ 종속 파일·멀티 파일 프로젝트·DLL 핫 리로드는 미지원이다. C++→BP 이벤트는 C++ 호출 종료 후 전달하며 임의 반환값을 동기적으로 BP에서 C++에 돌려주는 override는 미지원이다.
+BP/Scene/Material/Animation/Curve/IA/IMC/Data는 파일마다 독립 문서 모델을 가지며 여러 이미지/모델/텍스트 문서와 뷰포트도 열 수 있다. BP→BP 상속, 사용자 Struct/Enum/Set/Map, 로컬 변수, 네트워크, Animation 상태 머신, 프리팹 중첩·override는 계속 구현할 범위다. 트랜스폼 애니메이션은 position/rotation/scale만 적용하며 독립 Animation의 이벤트 트랙·임의 컴포넌트 속성·Skeletal/리타깃·블렌딩은 미지원이다. 추가 C++ 종속 파일·멀티 파일 프로젝트·DLL 핫 리로드는 미지원이다. C++→BP 이벤트는 C++ 호출 종료 후 전달하며 임의 반환값을 동기적으로 BP에서 C++에 돌려주는 override는 미지원이다.
 
 ## Git
 

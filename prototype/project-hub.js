@@ -22,7 +22,7 @@ function initialize(){
   $('#new-project').onclick=()=>{showError('',$('#create-error'));dialog.showModal();$('#project-name').focus();};
   for(const id of ['close-new-project','cancel-new-project'])$('#'+id).onclick=()=>dialog.close();
   dialog.addEventListener('cancel',e=>{if(document.body.dataset.busy)e.preventDefault();});
-  $('#create-project').onsubmit=e=>{e.preventDefault();busy(async()=>{const name=$('#project-name').value.trim(),directory=$('#project-directory').value.trim();if(!name||!directory)throw Error('이름과 저장 위치를 입력하세요.');await request('/create',{name,directory});location.href='/prototype/index.html';});};
+  $('#create-project').onsubmit=e=>{e.preventDefault();busy(async()=>{const name=$('#project-name').value.trim(),directory=$('#project-directory').value.trim();if(!name||!directory)throw Error('이름과 저장 위치를 입력하세요.');await request('/create',{name,directory,template:$('#project-template').value});location.href='/prototype/index.html';});};
   $('#browse-project').onclick=()=>busy(async()=>{const result=await request('/browse',{kind:'project'});if(result.path)await open(result.path);});
   $('#browse-directory').onclick=()=>busy(async()=>{const result=await request('/browse',{kind:'folder'});if(result.path){$('#project-directory').value=result.path;$('#project-directory').focus();}});
   $('#refresh-projects').onclick=()=>busy(refresh);

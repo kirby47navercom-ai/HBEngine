@@ -3,6 +3,8 @@ import {runInNewContext} from 'node:vm';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {AssetDocuments,createAsset,validAsset,assetSuffix,loadSceneBindings,evaluateMaterial} from '../prototype/asset-documents.js';
+import {resolveMaterialAsset} from '../prototype/material-runtime.js';
+import {objectComponents,defaultsForObject} from '../prototype/scene-components.js';
 import {validScene} from '../prototype/model.js';
 import {blueprintClasses} from '../prototype/class-types.js';
 import {InputActions} from '../prototype/input-actions.js';
@@ -46,7 +48,7 @@ const pendingModel=runInNewContext(appSource.slice(modelStart,modelEnd)+"placeMo
 const assignStart=appSource.indexOf('async function assignObjectAsset(key,path){'),assignEnd=appSource.indexOf('\ndocument.addEventListener(\'change\',async e=>',assignStart),placeStart=appSource.indexOf('async function placeBlueprint(file){'),placeEnd=appSource.indexOf('\nfunction openComponentViewport()',placeStart);assert.ok(assignStart>=0&&assignEnd>assignStart&&placeStart>=0&&placeEnd>placeStart);
 function sceneOperationState(){
   const docs=new AssetDocuments(),owner=docs.open('AssignOwner','scene',createAsset('scene','AssignOwner')),other=docs.open('AssignOther','scene',createAsset('scene','AssignOther')),actor=id=>({id,name:id,kind:'cube',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true});owner.data.objects=[actor('owner-object')];other.data.objects=[actor('other-object')];docs.select(owner.path);
-  let release;const gate=new Promise(resolve=>release=resolve),state={assetDocs:docs,activeScenePath:owner.path,selected:'owner-object',running:false,objects:owner.data.objects,fileUrl:p=>p,editorRequest:async()=>({json:async()=>await gate}),validAsset,validBlueprint,blueprintClasses,evaluateMaterial,activateDocument:p=>{docs.select(p);state.activeScenePath=p;state.objects=docs.current.data.objects;},remember:()=>docs.current.history.push(structuredClone(docs.current.data)),changed:()=>docs.current.dirty=true,rebuildWorld(){},renderInspector(){},crypto:{randomUUID:()=> 'placed-blueprint'},buildObject(){},selectObject(){}};
+  let release;const gate=new Promise(resolve=>release=resolve),state={assetDocs:docs,activeScenePath:owner.path,selected:'owner-object',running:false,objects:owner.data.objects,fileUrl:p=>p,editorRequest:async()=>({json:async()=>await gate}),validAsset,validBlueprint,blueprintClasses,evaluateMaterial,resolveMaterialAsset,objectComponents,defaultsForObject,clone:structuredClone,readAsset:async()=>await gate,activateDocument:p=>{docs.select(p);state.activeScenePath=p;state.objects=docs.current.data.objects;},remember:()=>docs.current.history.push(structuredClone(docs.current.data)),changed:()=>docs.current.dirty=true,rebuildWorld(){},renderInspector(){},crypto:{randomUUID:()=> 'placed-blueprint'},buildObject(){},selectObject(){}};
   return {docs,owner,other,state,release,actor};
 }
 for(const kind of ['blueprint','material']){

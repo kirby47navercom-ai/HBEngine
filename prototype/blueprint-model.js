@@ -1,6 +1,8 @@
 import {blueprintClasses} from './class-types.js';
+import {componentDefaults,validComponents} from './scene-components.js';
+export {componentDefaults};
 import {validNative,nativePins,nativeMember} from './native-model.js';
-import {coreApi} from './core-api.js';
+import {coreApi,serviceApi} from './core-api.js';
 const pin = (id,label,type='exec',array=false) => ({id,label,type,array});
 export const variableTypes = { bool:'Boolean · 불리언', int:'Integer · 정수', float:'Float · 실수', string:'String · 문자열', vec2:'Vector2 · 벡터2', vec3:'Vector3 · 벡터3', color:'Color · 색상', transform:'Transform · 변환', object:'Object · 클래스 참조', hit:'HitResult · 구조체' };
 export const typeColors = { exec:'#d1dadd', bool:'#d88380', int:'#89c8c1', float:'#9dcc7f', string:'#dba0cd', vec2:'#e2bc71', vec3:'#e2bc71', color:'#99bfea', transform:'#d99f72', object:'#88b9e0', hit:'#ae9ece', any:'#aab9be' };
@@ -8,6 +10,7 @@ export const catalog = [
   {key:'construction',title:'Construction Script',ko:'생성 시 구성',group:'이벤트',keywords:'construction constructor 컨스트럭션 컨스트럭터 생성 구성',kind:'event',inputs:[],outputs:[pin('then','실행')]},
   {key:'beginPlay',title:'Begin Play',ko:'게임 시작',group:'이벤트',keywords:'beginplay 비긴 시작 플레이',kind:'event',inputs:[],outputs:[pin('then','실행')]},
   {key:'tick',title:'Event Tick',ko:'매 프레임',group:'이벤트',keywords:'event tick 이벤트 틱 델타 시간',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Delta seconds','float')]},
+  {key:'fixedTick',title:'Fixed Update',ko:'고정 물리 업데이트',group:'이벤트',keywords:'fixed update physics 물리 고정 틱 프레임',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Fixed delta seconds','float')]},
   {key:'beginOverlap',title:'Begin Overlap',ko:'겹침 시작',group:'이벤트',keywords:'actor component overlap begin 비긴 오버랩 충돌 트리거',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
   {key:'endOverlap',title:'End Overlap',ko:'겹침 종료',group:'이벤트',keywords:'end overlap 끝 엔드 충돌',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
   {key:'input',title:'Keyboard Event',ko:'키보드 이벤트',group:'이벤트',keywords:'input key keyboard 입력 키보드 상호작용',kind:'event',inputs:[],outputs:[pin('then','Pressed')]},
@@ -119,7 +122,7 @@ catalog.push(
   {key:'anyDamage',title:'Any Damage',ko:'피해 이벤트',group:'이벤트',keywords:'damage hit 피해 데미지',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('damage','Damage','float'),pin('instigator','Instigator','object')]},
   spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
 );
-for(const entry of coreApi){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
+for(const entry of [...coreApi,...serviceApi]){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
 export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float')],vec3:[pin('x','X','float'),pin('y','Y','float'),pin('z','Z','float')],color:[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],transform:[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],hit:[pin('hit','Blocking hit','bool'),pin('position','Impact point','vec3'),pin('normal','Normal','vec3'),pin('actor','Actor','object')]}[type]||[]);
 export function defaultsFor(type){ return {bool:false,int:0,float:0,string:'',vec2:[0,0],vec3:[0,0,0],color:[1,1,1,1],transform:{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},object:null,hit:{hit:false,position:[0,0,0],normal:[0,1,0],actor:null}}[type]; }
 export function validValue(type,value){
@@ -171,7 +174,6 @@ export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=g
   if(direction==='in'&&p){const fields=fieldsFor(p.type),value=n.inputValues?.[pinId]??defaultsFor(p.type);n.inputValues??={};if(recombine){const values=fields.map((f,i)=>n.inputValues[pinId+'.'+f.id]??(Array.isArray(value)?value[i]:value?.[f.id])??defaultsFor(f.type));n.inputValues[pinId]=Array.isArray(value)?values:Object.fromEntries(fields.map((f,i)=>[f.id,values[i]]));for(const id of Object.keys(n.inputValues))if(id.startsWith(pinId+'.'))delete n.inputValues[id];}else fields.forEach((f,i)=>n.inputValues[pinId+'.'+f.id]=Array.isArray(value)?value[i]:value?.[f.id]??defaultsFor(f.type));}
   graph.edges=graph.edges.filter(e=>{const end=direction==='out'?e.from:e.to;return !(end.node===nodeId&&(end.pin===pinId||end.pin.startsWith(pinId+'.')));});return true;
 }
-export function componentDefaults(type){if(type==='CapsuleCollider')return {radius:.35,height:1.8,enabled:true,trigger:false};if(type==='PawnMovement')return {speed:5,enabled:true};if(type==='CharacterMovement')return {speed:5,jumpSpeed:6,gravity:9.8,enabled:true};return type==='Transform'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]}:type==='BoxCollider'?{center:[0,0,0],extent:[.5,.5,.5],trigger:true,enabled:true}:type==='MeshRenderer'?{mesh:'Stone_arch',material:'Moss_stone',visible:true,castShadow:true}:type==='PointLight'?{color:[1,.85,.65,1],intensity:8,radius:15,castShadow:false}:type==='SceneComponent'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}:{className:'MyComponent',enabled:true};}
 
 export const defaultTimeline={length:1,loop:false,autoplay:false,playRate:1,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
 export const curveModes=['auto','user','break','linear','constant','step'];
@@ -264,14 +266,12 @@ export function validBlueprint(g){
   if(!g||g.version!==1||typeof g.name!=='string'||g.name.length>200||!Array.isArray(g.nodes)||g.nodes.length>1000||!Array.isArray(g.variables)||g.variables.length>100||!Array.isArray(g.components)||g.components.length>100||!Array.isArray(g.edges)||g.edges.length>5000)return false;
   if(new Set(g.nodes.map(n=>n?.id)).size!==g.nodes.length||new Set(g.variables.map(v=>v?.id)).size!==g.variables.length||new Set(g.variables.map(v=>v?.name)).size!==g.variables.length)return false;
   if(!g.variables.every(v=>v&&safeId(v.id)&&typeof v.name==='string'&&v.name.length>0&&v.name.length<=80&&Object.hasOwn(variableTypes,v.type)&&['single','array'].includes(v.container)&&(v.container==='array'?Array.isArray(v.value)&&v.value.length<=128&&v.value.every(x=>validValue(v.type,x)):validValue(v.type,v.value))))return false;
-  if(!g.components.every(c=>c&&safeId(c.id)&&typeof c.name==='string'&&c.name.length<=80&&typeof c.type==='string'&&c.type.length<=80))return false;
-  if(new Set(g.components.map(c=>c.id)).size!==g.components.length)return false;
+  if(!validComponents(g.components))return false;
   if(g.native!==undefined&&!validNative(g.native,validValue))return false;
   if(g.native?.header!==undefined&&(typeof g.native.header!=='string'||g.native.header.length>100000))return false;
   if(g.settings?.inputMapping!==undefined&&(typeof g.settings.inputMapping!=='string'||g.settings.inputMapping.length>1000||g.settings.inputMapping.includes('..')))return false;
   if(g.settings?.nativeDefaults!==undefined){const values=g.settings.nativeDefaults;if(!values||typeof values!=='object'||Array.isArray(values))return false;for(const [key,value] of Object.entries(values)){const {p}=nativeMember(g,{nativeId:key});if(!p||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(p.type,v))):!validValue(p.type,value)))return false;}}
   if(g.watches!==undefined&&(!Array.isArray(g.watches)||g.watches.length>100||!g.watches.every(w=>w&&safeId(w.view)&&safeId(w.node)&&['in','out'].includes(w.direction)&&typeof w.pin==='string'&&/^[A-Za-z0-9_.-]{1,100}$/.test(w.pin))))return false;
-  for(const c of g.components)if(c.properties!==undefined){const defaults=componentDefaults(c.type);if(!c.properties||typeof c.properties!=='object'||Array.isArray(c.properties))return false;for(const [key,v] of Object.entries(c.properties)){if(!Object.hasOwn(defaults,key))return false;const sample=defaults[key],type=Array.isArray(sample)?key==='color'?'color':'vec3':typeof sample==='boolean'?'bool':typeof sample==='number'?'float':'string';if(!validValue(type,v)||(['intensity','radius'].includes(key)&&v<0))return false;}}
   if(g.settings!==undefined&&(!g.settings||typeof g.settings!=='object'||(g.settings.parentClass!==undefined&&![...Object.keys(blueprintClasses),...(g.native?.classes.filter(c=>c.blueprintable).map(c=>c.name)||[])].includes(g.settings.parentClass))||['tickEnabled','overlapEnabled'].some(k=>g.settings[k]!==undefined&&typeof g.settings[k]!=='boolean')||(g.settings.tickInterval!==undefined&&(!Number.isFinite(g.settings.tickInterval)||g.settings.tickInterval<0||g.settings.tickInterval>10000))))return false;
   const definitions=[...(Array.isArray(g.functions)?g.functions:[]),...(Array.isArray(g.macros)?g.macros:[])];
   for(const key of ['functions','macros'])if(g[key]!==undefined&&(!Array.isArray(g[key])||g[key].length>50))return false;
