@@ -13,7 +13,7 @@ export function migrateLegacyStorage(storage,project){
 // Browser storage is a synchronous cache backed by project-owned disk data; the
 // qualified localStorage keys remain a backup of this origin's last editor state.
 export async function createProjectStorage(project,{backup,request=globalThis.fetch,debounce=350,onError=()=>{}}={}){
-  const suffix='.project.'+encodeURIComponent(project.id),bases=new Set(['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.project.folder','hbengine.storage-migrated.v1']);
+  const suffix='.project.'+encodeURIComponent(project.id),bases=new Set(['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.project.folder','hbengine.project.view','hbengine.storage-migrated.v1']);
   const owns=key=>{if(typeof key!=='string'||key.length>1000||!key.endsWith(suffix))return false;const base=key.slice(0,-suffix.length);return bases.has(base)||base.startsWith('hbengine.savegame.')&&base.length>18&&!/[\x00-\x1f]/.test(base);};
   const response=await request('/api/storage?project='+encodeURIComponent(project.id),{cache:'no-store'});
   if(!response.ok)throw Error('프로젝트 복구 저장소를 읽을 수 없어요.');

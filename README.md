@@ -10,7 +10,7 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 �
 - **블루프린트 실행**: Construction → BeginPlay → Tick·입력·Overlap → EndPlay, 함수·매크로, 조건·반복·중단, Delay·재시작 지연, 타이머·Timeline, 변수·배열, 디스패처·인터페이스 호출. 중단점·Step·Continue와 실제 계산한 핀 값을 지원한다. Stop은 편집 장면을 복원한다.
 - **사용자 C++ 실행**: Project에서 C++ 클래스를 만들고 설치된 Visual Studio(또는 VS Code)에서 .h/.cpp를 편집한다. C++ 클래스 기반 블루프린트에서 파일 변경을 다시 읽어 g++로 빌드한다. 공개 함수·속성·static 함수·반환·출력 참조·객체 ID를 연결하고 C++ 이벤트를 BP로 전달한다. C++ 변환 변경은 실행 월드에 반영한다. [실행 예제](prototype/examples/BP_NativeDoor.blueprint.json).
 - **그래프 제작**: 한글/영어 우클릭 검색, 핀 연결·분할·합치기·변수 승격, 다중/영역 선택, 복사·복제·Undo/Redo, 함수·매크로 추출, Construction, 주석·세부 속성·모든 내부 그래프 검색. 그래프당 1,000개 노드를 저장할 수 있다.
-- **실제 Project**: 디스크 폴더 트리·새 폴더·이름 변경·안정적인 에셋 ID, 파일명/타입/파일 내용·하위 폴더 검색, Ctrl/Shift 다중 선택과 선택 열기. 다중 파일·폴더 선택과 편집기 어디든 외부 파일/폴더 드롭을 지원한다. 드롭은 현재 Project 폴더에 즉시 가져온다. 중복 이름은 새 이름으로 보존한다.
+- **실제 Project**: 디스크 폴더 트리·이름/타입/경로 목록·타일 전환·새 폴더·이름 변경·안정적인 에셋 ID, 파일명/타입/파일 내용·하위 폴더 검색, Ctrl/Shift 다중 선택과 선택 열기. 표시 방식은 프로젝트별로 저장한다. 다중 파일·폴더 선택과 편집기 어디든 외부 파일/폴더 드롭을 지원한다. 드롭은 현재 Project 폴더에 즉시 가져온다. 중복 이름은 새 이름으로 보존한다.
 - **도킹**: 탭 이동, 상하좌우 분할, 경계 크기 변경, 최대화·복원·배치 초기화. 에셋마다 독립 문서 탭과 저장·Undo·복구 상태를 가진다. 활성 에셋의 그래프·컴포넌트 뷰포트·Timeline과 Project/Console을 분할해 볼 수 있다. C++ 편집은 외부 IDE로 연다. 추가 뷰포트는 독립 카메라와 Perspective/Top/Front를 제공한다. 이미지·모델·텍스트 파일은 각각 문서로 열린다.
 - **에셋 생성**: 폴더 우클릭에서 Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent 부모의 BP·C++ 클래스, Input Action·Input Mapping Context·머테리얼·트랜스폼 애니메이션·커브·데이터·레벨을 실제 파일로 만든다. 입력 에셋의 자료형·키/축/배율·컨텍스트 우선순위가 실행기에 연결된다.
 - **Timeline**: 별도 커브 편집기, Float/Vector/Color/Event 트랙, XYZ/RGBA, 키·시간·값·접선·보간, 스크럽·역방향·길이·Loop·Autoplay·Rate·시간 배율 무시. Play/Play from Start/Stop/Reverse/Reverse from End/Set New Time와 Update/Finished를 실행한다.
@@ -57,6 +57,7 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 | npm run test:project | 실제 파일·다중 가져오기·폴더 드롭 열거·내용 검색·재열기·원본 보존 |
 | npm run test:assets | 에셋 8종·부모 7종 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
 | npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
+| npm run test:hub-ui | 실제 허브 핸들러의 검색·선택·열기·모달·키보드·오류/입력 보존 |
 | npm run desktop:build | Windows x64 EXE·아이콘·Node/loader 동봉·라이선스·외부 MSYS2 런타임 DLL 의존성 검사 |
 | npm run test:launcher | 프로젝트 JSON/UUID·한글/공백 경로·원본 보호·허브/API·두 프로젝트 전환·동적 포트·프로젝트별 C++ 소유 상태 |
 | npm run test:session | 프로젝트 ID별 복구/도킹/폴더/SaveGame 분리·기존 기본 프로젝트의 1회 이관·원본 보존·디스크 복구 연결 |

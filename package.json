@@ -18,6 +18,7 @@
     "test:assets": "node tools/check-assets.mjs",
     "desktop:build": "node tools/build-desktop.mjs",
     "test:launcher": "node tools/check-launcher.mjs",
+    "test:hub-ui": "node tools/check-hub-ui.mjs",
     "test:session": "node tools/check-session.mjs",
     "test:desktop": "node tools/check-desktop.mjs"
   },

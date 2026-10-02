@@ -2,13 +2,18 @@
 <html lang="ko">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HBEngine — 프로젝트</title><link rel="stylesheet" href="/prototype/project-hub.css"></head>
 <body>
-  <header class="hub-header"><a class="hub-brand" href="/prototype/project-hub.html"><span class="brand-mark">HB</span>ENGINE</a><span>프로젝트</span></header>
+  <header class="hub-header"><a class="hub-brand" href="/prototype/project-hub.html"><span class="brand-mark" aria-hidden="true">HB</span><strong>HBEngine</strong></a><span class="header-title">프로젝트</span><span class="version">0.1.0</span></header>
   <main class="hub">
-    <section class="project-list"><div class="section-heading"><h1>최근 프로젝트</h1><button id="refresh-projects" class="icon-button" aria-label="프로젝트 새로고침" data-icon="refresh"></button></div><div id="recent-projects" class="recent-projects" aria-label="최근 프로젝트"><p class="empty">불러오는 중…</p></div>
-      <form id="open-project" class="open-project"><label for="project-file">프로젝트 파일</label><div class="path-field"><input id="project-file" name="file" placeholder=".hbproject 경로" aria-label="프로젝트 파일 경로" required><button type="button" id="browse-project" class="icon-button" aria-label="프로젝트 파일 선택" data-icon="folder"></button></div><button class="open-button" data-icon="external">열기</button></form>
+    <div class="section-heading"><div><h1>프로젝트</h1><span id="project-count" class="subtle">불러오는 중…</span></div><div class="heading-actions"><button id="browse-project" data-icon="folder">찾아 열기</button><button id="new-project" class="primary-button" data-icon="plus">새 프로젝트</button></div></div>
+    <section class="project-browser" aria-label="프로젝트 목록">
+      <div class="list-toolbar"><label class="search-field"><span data-icon="search"></span><input id="project-search" type="search" placeholder="이름 또는 경로 검색" aria-label="프로젝트 검색" autocomplete="off"></label><button id="refresh-projects" class="icon-button" aria-label="프로젝트 새로고침" title="새로고침" data-icon="refresh"></button></div>
+      <div class="list-columns" aria-hidden="true"><span>이름</span><span>프로젝트 파일</span></div>
+      <div id="recent-projects" class="recent-projects" role="listbox" aria-label="최근 프로젝트"><p class="empty">불러오는 중…</p></div>
+      <footer class="list-footer"><span id="selected-project-name" class="subtle">프로젝트 선택</span><button id="open-selected" class="primary-button" data-icon="external" disabled>프로젝트 열기</button></footer>
     </section>
-    <section class="new-project"><div class="section-heading"><h2>새 프로젝트</h2><span class="section-symbol" data-icon="scene"></span></div><form id="create-project"><label for="project-name">이름</label><input id="project-name" name="name" placeholder="MyGame" maxlength="80" autocomplete="off" required><label for="project-directory">저장 위치</label><div class="path-field"><input id="project-directory" name="directory" aria-label="프로젝트 저장 위치" required><button type="button" id="browse-directory" class="icon-button" aria-label="저장 폴더 선택" data-icon="folder"></button></div><button class="primary-button" data-icon="plus">프로젝트 만들기</button></form></section>
+    <details class="manual-open"><summary>경로로 열기</summary><form id="open-project"><input id="project-file" name="file" placeholder="C:\Games\MyGame\MyGame.hbproject" aria-label="프로젝트 파일 경로" required><button data-icon="external">열기</button></form></details>
     <p id="hub-error" class="hub-error" role="alert" hidden></p>
   </main>
+  <dialog id="new-project-dialog" aria-labelledby="new-project-title"><form id="create-project"><div class="dialog-heading"><h2 id="new-project-title">새 프로젝트</h2><button type="button" id="close-new-project" class="icon-button" aria-label="새 프로젝트 창 닫기" title="닫기" data-icon="close"></button></div><div class="dialog-fields"><label for="project-name">프로젝트 이름</label><input id="project-name" name="name" placeholder="MyGame" maxlength="80" autocomplete="off" required><label for="project-directory">저장 위치</label><div class="path-field"><input id="project-directory" name="directory" aria-label="프로젝트 저장 위치" required><button type="button" id="browse-directory" class="icon-button" aria-label="저장 폴더 선택" title="저장 폴더 선택" data-icon="folder"></button></div><p id="create-error" class="hub-error" role="alert" hidden></p></div><footer class="dialog-footer"><button type="button" id="cancel-new-project">취소</button><button class="primary-button" data-icon="plus">프로젝트 만들기</button></footer></form></dialog>
   <script type="module" src="/prototype/project-hub.js"></script>
 </body></html>

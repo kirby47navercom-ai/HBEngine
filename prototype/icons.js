@@ -5,7 +5,7 @@ export const paths = {
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
   cube: '<path d="m12 3 9 5v9l-9 5-9-5V8zM3 8l9 5 9-5M12 13v9"/>',
   sphere: '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
-  scene: '<path d="M3 5h18v14H3zM7 15l4-5 3 3 3-4 4 6"/><circle cx="7" cy="8" r="1"/>',
+  scene: '<path d="m3 8 9-5 9 5-9 5zM3 8v8l9 5 9-5V8M12 13v8M12 3v5m-9 8 5-3m13 3-5-3"/>',
   material: '<circle cx="12" cy="12" r="9"/><path d="M7 5c6 1 11 7 10 14M4 16c4-2 9-2 15 0"/>',
   animation: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 8h18M3 16h18M7 4v4M17 4v4M7 16v4M17 16v4m-7-6 5-3-5-3z"/>',
   nodes: '<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M9 6h5a4 4 0 0 1 4 4v5M6 9v5a4 4 0 0 0 4 4h5"/>',
@@ -54,6 +54,9 @@ Object.assign(paths, {
   data:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/>',
   link:'<path d="m9 15 6-6m-5-2 3-3a5 5 0 0 1 7 7l-3 3m-3 3-3 3a5 5 0 0 1-7-7l3-3"/>',
   texture:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18M12 3v18M3 3l18 18M3 21 21 3"/>',
-  model:'<path d="m12 3 9 5v9l-9 5-9-5V8zM3 8l9 5 9-5M12 13v9"/>'
+  model:'<path d="m12 2 10 10-10 10L2 12zM12 2v20M2 12h20M12 2l5 10-5 10-5-10z"/>',
+  media:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/>',
+  list:'<path d="M9 6h12M9 12h12M9 18h12M3 6h2M3 12h2M3 18h2"/>',
+  tiles:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'
 });
-export const assetIcon=(kind,parent)=>parent&&({Actor:'cube',Pawn:'pawn',Character:'character',PlayerController:'controller',GameMode:'game',Component:'component',SceneComponent:'layers'}[parent])||({blueprint:'blueprint',scene:'scene',material:'material',animation:'animation',inputaction:'inputaction',inputmapping:'inputmapping',code:'code',folder:'folder',texture:'texture',model:'model',media:'volume',data:'data',curve:'curve'}[kind]||'file');
+export const assetIcon=(kind,parent)=>parent&&({Actor:'cube',Pawn:'pawn',Character:'character',PlayerController:'controller',GameMode:'game',Component:'component',SceneComponent:'layers'}[parent])||({blueprint:'blueprint',scene:'scene',material:'material',animation:'animation',inputaction:'inputaction',inputmapping:'inputmapping',code:'code',folder:'folder',texture:'texture',model:'model',media:'media',data:'data',curve:'curve'}[kind]||'file');

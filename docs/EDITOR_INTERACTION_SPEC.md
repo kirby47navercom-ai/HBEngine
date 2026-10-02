@@ -183,3 +183,15 @@ RMB 이동과 RMB 메뉴는 이동 임계값으로 구분한다. Event 트랙은
 | 머테리얼 | 독립 그래프/표면 문서·색/스칼라 연결·preview·장면 적용 | HLSL/GPU 컴파일·Texture/UV/Normal·전체 그래프 조작·재질 함수/인스턴스 |
 
 위 동작 표는 전체 목표 계약이다. 편집기 구현은 `app.js`, `asset-documents.js`, `asset-editor-ui.js`, `project-browser.js`, `dock-layout.js`에 있고 문서 격리/실패 보존·입력·클래스 생성·다중 BP·rename 재열기는 `test:assets`로 검사한다. 프로젝트/창은 `HBEngine.cpp`, `project-manifest.mjs`, `project-session.js`, `project-storage.mjs`, `serve.mjs`와 `test:launcher/test:session/test:desktop`에 연결된다. 화면 검증과 자동 검사 결과는 변경별 커밋 본문에 적는다. 남은 항목을 현재 도움말이나 성공 동작으로 표시하지 않는다. 화면 검증에는 실제 파일/입력을 사용하고 사용자 원본 장면을 덮어쓰지 않는다.
+
+## 2026-10-02 사람을 위한 화면 정리
+
+[Unreal 편집기 인터페이스](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-editor-interface), [Unreal 프로젝트 브라우저](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-a-new-project-in-unreal-engine), [Unity Inspector](https://docs.unity3d.com/6000.0/Documentation/Manual/UsingTheInspector.html), [Unity Project 창](https://docs.unity3d.com/6000.0/Documentation/Manual/ProjectView.html)을 대조했다. 현재 문서의 도구와 선택 대상의 속성을 구별하고, 파일 탐색과 프로젝트 열기를 목록 중심으로 정리했다. 픽셀 수치는 HBEngine의 데스크톱 화면 검증으로 정한 값이며 공식 엔진의 규격이라고 주장하지 않는다.
+
+- 프로젝트 허브: 이름/경로 검색 → 선택 → 열기. 더블클릭/Enter 열기와 위아래 이동을 제공한다. 새 프로젝트는 이름/위치만 입력하는 별도 대화상자에 둔다. 실패하면 입력과 선택을 유지하며 오류를 해당 창에 표시한다.
+- 편집기: 로컬 Segoe UI/맑은 고딕 13px, 보조 정보 11–12px, 입력 30px, 중립 회색 패널과 파란 선택 상태를 사용한다. 파일 탭에는 종류별 아이콘/색과 수정 표시를 유지한다. 아이콘 버튼의 hover 이름/단축키와 키보드 포커스를 제공한다.
+- 문서/선택: 연결된 C++가 있는 BP에서만 해당 헤더/빌드 도구를 보여준다. 실행은 공통 툴바에서 하고, BP의 한 단계 버튼은 중단점에서만 활성화한다. 카메라/광원에 머테리얼 입력을 보여주지 않는다. 햇빛/그림자는 환경에 두고 그림자 상태도 저장/Undo/문서 전환에 연결한다. 이전 장면에서 그림자 필드가 없으면 켜진 상태로 읽는다.
+- 콘텐츠: 기본 목록에 확장자 포함 이름/타입/경로를 표시하고 타일로 전환할 수 있다. 기존 다중 선택/열기/우클릭/드래그를 재사용한다. 표시 방식은 프로젝트별 디스크 복구에 저장한다.
+- 배치: 작은 화면의 새 문서/초기화는 상단 58%, 큰 화면은 68%로 시작한다. 사용자가 저장한 배치를 우선한다. 1280×720과 1440×900에서 가로 넘침, 필드/핀 잘림, 목록 영역, 선택/재개 상태를 확인한다.
+
+자동 재현은 npm test, test:hub-ui, test:session, test:launcher, test:runtime, desktop:build, test:desktop을 사용한다. 시각 검증은 별도 검사 프로젝트에서 수행하며 사용자 QuietGarden의 원본/미저장 복구는 유지한다.

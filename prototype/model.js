@@ -3,7 +3,7 @@ import { validBlueprint } from './blueprint-model.js';
 
 export const STORAGE_KEY = storageKey('hbengine-ui-scene-v1');
 export const defaultSurface = { color: '#889878', roughness: 0.72, metalness: 0.08, light: 3.2 };
-export const defaultEnvironment = { preset: 'day', skyEnabled: true, sunEnabled: true, cloudsEnabled: true, fogEnabled: true, cloudDensity: 0.55, sunAzimuth: -30, sunElevation: 50, fogAmount: 0.25 };
+export const defaultEnvironment = { preset: 'day', skyEnabled: true, sunEnabled: true, shadowEnabled: true, cloudsEnabled: true, fogEnabled: true, cloudDensity: 0.55, sunAzimuth: -30, sunElevation: 50, fogAmount: 0.25 };
 export const defaultObjects = [
   { id: 'stone-arch', name: 'Stone arch', kind: 'arch', group: 'WORLD', position: [0, 0, -1.35], rotation: [0, 0, 0], scale: [1, 1, 1], visible: true },
   { id: 'floating-crystal', name: 'Floating crystal', kind: 'crystal', group: 'WORLD', position: [0, 1.4, -1.25], rotation: [0, 15, 0], scale: [1, 1, 1], visible: true },
@@ -35,6 +35,7 @@ export function validScene(value) {
 export function validEnvironment(env) {
   return env && ['day','overcast','sunset','night'].includes(env.preset)
     && ['skyEnabled','sunEnabled','cloudsEnabled','fogEnabled'].every(k => typeof env[k] === 'boolean')
+    && (env.shadowEnabled===undefined||typeof env.shadowEnabled==='boolean')
     && ['cloudDensity','fogAmount'].every(k => Number.isFinite(env[k]) && env[k] >= 0 && env[k] <= 1)
     && Number.isFinite(env.sunAzimuth) && env.sunAzimuth >= -180 && env.sunAzimuth <= 180
     && Number.isFinite(env.sunElevation) && env.sunElevation >= 0 && env.sunElevation <= 90;
