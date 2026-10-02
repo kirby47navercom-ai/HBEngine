@@ -1,3 +1,5 @@
+import {validNative,nativePins,nativeMember} from './native-model.js';
+import {coreApi} from './core-api.js';
 const pin = (id,label,type='exec',array=false) => ({id,label,type,array});
 export const variableTypes = { bool:'Boolean · 불리언', int:'Integer · 정수', float:'Float · 실수', string:'String · 문자열', vec2:'Vector2 · 벡터2', vec3:'Vector3 · 벡터3', color:'Color · 색상', transform:'Transform · 변환', object:'Object · 클래스 참조', hit:'HitResult · 구조체' };
 export const typeColors = { exec:'#d1dadd', bool:'#d88380', int:'#89c8c1', float:'#9dcc7f', string:'#dba0cd', vec2:'#e2bc71', vec3:'#e2bc71', color:'#99bfea', transform:'#d99f72', object:'#88b9e0', hit:'#ae9ece', any:'#aab9be' };
@@ -25,6 +27,86 @@ export const catalog = [
   {key:'sound',title:'Play Sound',ko:'효과음 재생',group:'오디오',keywords:'audio play sound 효과음 소리 재생',inputs:[pin('exec','실행'),pin('name','Sound','string')],outputs:[pin('then','다음')]},
   {key:'customFunction',title:'Custom Function',ko:'사용자 함수',group:'사용자 정의',keywords:'custom function 사용자 함수 커스텀',inputs:[pin('exec','실행')],outputs:[pin('then','다음')]}
 ];
+const spec=(key,title,ko,group,inputs,outputs,keywords='')=>({key,title,ko,group,inputs,outputs,keywords:title+' '+ko+' '+keywords});
+const flow=(key,title,ko,group,inputs=[],outputs=[])=>spec(key,title,ko,group,[pin('exec','실행'),...inputs],[pin('then','다음'),...outputs]);
+catalog.push(
+  spec('timeline','Timeline','타임라인','시간',[pin('play','Play'),pin('start','Play from start'),pin('stop','Stop'),pin('reverse','Reverse'),pin('time','New time','float')],[pin('update','Update'),pin('finished','Finished')]),
+  spec('reroute','Reroute','연결 정리','사용자 정의',[pin('value','Input','float')],[pin('value','Output','float')]),
+  spec('isValid','Is Valid','객체 유효성','오브젝트',[pin('target','Object','object')],[pin('return','Valid','bool')]),
+  flow('cast','Cast To Class','클래스 변환','오브젝트',[pin('target','Object','object'),pin('class','Class','string')],[pin('object','Object','object'),pin('failed','Cast failed')]),
+  ...[['multiply','Multiply','곱하기'],['subtract','Subtract','빼기'],['divide','Divide','나누기'],['min','Min','최솟값'],['max','Max','최댓값'],['power','Power','거듭제곱']].map(([k,en,ko])=>spec(k,en,ko,'수학',[pin('a','A','float'),pin('b','B','float')],[pin('return','Result','float')])),
+  ...[['abs','Abs','절댓값'],['sqrt','Sqrt','제곱근'],['sin','Sin','사인'],['cos','Cos','코사인'],['floor','Floor','내림'],['ceil','Ceil','올림'],['round','Round','반올림']].map(([k,en,ko])=>spec(k,en,ko,'수학',[pin('value','Value','float')],[pin('return','Result','float')])),
+  spec('clamp','Clamp','범위 제한','수학',[pin('value','Value','float'),pin('min','Min','float'),pin('max','Max','float')],[pin('return','Result','float')]),
+  spec('lerp','Lerp','선형 보간','수학',[pin('a','A','float'),pin('b','B','float'),pin('alpha','Alpha','float')],[pin('return','Result','float')]),
+  spec('random','Random Float in Range','범위 안 무작위','수학',[pin('min','Min','float'),pin('max','Max','float')],[pin('return','Value','float')]),
+  ...[['greater','Greater','크다'],['less','Less','작다'],['equal','Equal','같다'],['notEqual','Not Equal','다르다']].map(([k,en,ko])=>spec(k,en,ko,'비교',[pin('a','A','float'),pin('b','B','float')],[pin('return','Result','bool')])),
+  ...[['and','AND','그리고'],['or','OR','또는']].map(([k,en,ko])=>spec(k,en,ko,'논리',[pin('a','A','bool'),pin('b','B','bool')],[pin('return','Result','bool')])),
+  spec('not','NOT','반전','논리',[pin('value','Value','bool')],[pin('return','Result','bool')]),
+  spec('select','Select Float','조건 값 선택','논리',[pin('condition','Condition','bool'),pin('a','True value','float'),pin('b','False value','float')],[pin('return','Result','float')]),
+  ...[['vectorAdd','Add Vector','벡터 더하기'],['vectorSubtract','Subtract Vector','벡터 빼기']].map(([k,en,ko])=>spec(k,en,ko,'벡터',[pin('a','A','vec3'),pin('b','B','vec3')],[pin('return','Result','vec3')])),
+  spec('vectorScale','Scale Vector','벡터 배율','벡터',[pin('value','Vector','vec3'),pin('scale','Scale','float')],[pin('return','Result','vec3')]),
+  spec('vectorLength','Vector Length','벡터 길이','벡터',[pin('value','Vector','vec3')],[pin('return','Length','float')]),
+  spec('normalize','Normalize Vector','벡터 정규화','벡터',[pin('value','Vector','vec3')],[pin('return','Result','vec3')]),
+  spec('distance','Distance','거리','벡터',[pin('a','A','vec3'),pin('b','B','vec3')],[pin('return','Distance','float')]),
+  ...[['dot','Dot Product','내적','float'],['cross','Cross Product','외적','vec3']].map(([k,en,ko,t])=>spec(k,en,ko,'벡터',[pin('a','A','vec3'),pin('b','B','vec3')],[pin('return','Result',t)])),
+  spec('vectorLerp','Lerp Vector','벡터 보간','벡터',[pin('a','A','vec3'),pin('b','B','vec3'),pin('alpha','Alpha','float')],[pin('return','Result','vec3')]),
+  spec('makeTransform','Make Transform','트랜스폼 만들기','변환',[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],[pin('return','Transform','transform')]),
+  spec('getTransform','Get Transform','트랜스폼 가져오기','변환',[pin('target','Target','object')],[pin('return','Transform','transform')]),
+  flow('setTransform','Set Transform','트랜스폼 설정','변환',[pin('target','Target','object'),pin('value','Transform','transform')]),
+  ...[['getRotation','Get Rotation','회전 가져오기'],['getScale','Get Scale','크기 가져오기']].map(([k,en,ko])=>spec(k,en,ko,'변환',[pin('target','Target','object')],[pin('return','Value','vec3')])),
+  ...[['setRotation','Set Rotation','회전 설정'],['setScale','Set Scale','크기 설정'],['translate','Add Offset','위치 더하기'],['rotate','Add Rotation','회전 더하기']].map(([k,en,ko])=>flow(k,en,ko,'변환',[pin('target','Target','object'),pin('value','Value','vec3')])),
+  spec('self','Self','자기 자신','오브젝트',[],[pin('return','Self','object')]),
+  flow('spawn','Spawn Actor','액터 생성','오브젝트',[pin('class','Class','string'),pin('transform','Transform','transform')],[pin('actor','Actor','object')]),
+  flow('destroy','Destroy Actor','액터 제거','오브젝트',[pin('target','Target','object')]),
+  flow('visibility','Set Visibility','표시 설정','오브젝트',[pin('target','Target','object'),pin('visible','Visible','bool')]),
+  flow('attach','Attach To','부모에 연결','오브젝트',[pin('target','Target','object'),pin('parent','Parent','object')]),
+  spec('getComponent','Get Component','컴포넌트 찾기','컴포넌트',[pin('target','Target','object'),pin('class','Component class','string')],[pin('return','Component','object')]),
+  flow('addComponent','Add Component','컴포넌트 추가','컴포넌트',[pin('target','Target','object'),pin('class','Component class','string')],[pin('return','Component','object')]),
+  flow('componentEnabled','Set Component Enabled','컴포넌트 활성화','컴포넌트',[pin('target','Component','object'),pin('enabled','Enabled','bool')]),
+  spec('concat','Append String','문자열 합치기','문자열',[pin('a','A','string'),pin('b','B','string')],[pin('return','Result','string')]),
+  spec('stringLength','String Length','문자열 길이','문자열',[pin('value','String','string')],[pin('return','Length','int')]),
+  spec('contains','Contains','문자열 포함','문자열',[pin('value','String','string'),pin('search','Search','string')],[pin('return','Result','bool')]),
+  spec('toString','Float To String','실수를 문자열로','문자열',[pin('value','Value','float')],[pin('return','String','string')]),
+  spec('arrayGet','Array Get','배열 원소 읽기','배열',[pin('array','Array','float',true),pin('index','Index','int')],[pin('return','Item','float')]),
+  flow('arraySet','Array Set','배열 원소 설정','배열',[pin('array','Array','float',true),pin('index','Index','int'),pin('item','Item','float')]),
+  flow('arrayAdd','Array Add','배열 원소 추가','배열',[pin('array','Array','float',true),pin('item','Item','float')],[pin('index','Index','int')]),
+  flow('arrayRemove','Array Remove Index','배열 원소 삭제','배열',[pin('array','Array','float',true),pin('index','Index','int')]),
+  spec('arrayFind','Array Find','배열 원소 찾기','배열',[pin('array','Array','float',true),pin('item','Item','float')],[pin('return','Index','int')]),
+  spec('arrayContains','Array Contains','배열 원소 포함','배열',[pin('array','Array','float',true),pin('item','Item','float')],[pin('return','Contains','bool')]),
+  spec('forLoop','For Loop','반복 실행','흐름 제어',[pin('exec','실행'),pin('first','First index','int'),pin('last','Last index','int')],[pin('body','Loop body'),pin('index','Index','int'),pin('completed','Completed')]),
+  spec('forEach','For Each Loop','배열 반복','흐름 제어',[pin('exec','실행'),pin('array','Array','float',true)],[pin('body','Loop body'),pin('item','Item','float'),pin('index','Index','int'),pin('completed','Completed')]),
+  flow('doOnce','Do Once','한 번 실행','흐름 제어',[pin('reset','Reset')]),
+  spec('flipFlop','Flip Flop','번갈아 실행','흐름 제어',[pin('exec','실행')],[pin('a','A'),pin('b','B'),pin('isA','Is A','bool')]),
+  spec('gate','Gate','실행 게이트','흐름 제어',[pin('exec','Enter'),pin('open','Open'),pin('close','Close'),pin('toggle','Toggle')],[pin('then','Exit')]),
+  flow('timer','Set Timer','타이머 설정','시간',[pin('duration','Time','float'),pin('loop','Looping','bool'),pin('event','Event name','string')],[pin('handle','Handle','string')]),
+  flow('clearTimer','Clear Timer','타이머 해제','시간',[pin('handle','Handle','string')]),
+  spec('time','Get Game Time','게임 시간','시간',[],[pin('return','Seconds','float')]),
+  flow('lineTrace','Line Trace','선 충돌 검사','물리',[pin('start','Start','vec3'),pin('end','End','vec3'),pin('channel','Channel','string')],[pin('hit','Hit','hit')]),
+  flow('impulse','Add Impulse','충격량 추가','물리',[pin('target','Target','object'),pin('impulse','Impulse','vec3')]),
+  flow('collisionEnabled','Set Collision Enabled','충돌 활성화','물리',[pin('target','Target','object'),pin('enabled','Enabled','bool')]),
+  flow('playAnimation','Play Animation','애니메이션 재생','애니메이션',[pin('target','Target','object'),pin('clip','Clip','string'),pin('loop','Looping','bool')]),
+  flow('stopAnimation','Stop Animation','애니메이션 정지','애니메이션',[pin('target','Target','object')]),
+  flow('playSoundAt','Play Sound At Location','위치에서 소리 재생','오디오',[pin('sound','Sound','string'),pin('position','Position','vec3'),pin('volume','Volume','float')]),
+  flow('stopSound','Stop Sound','소리 정지','오디오',[pin('sound','Sound','string')]),
+  flow('setMaterial','Set Material','머테리얼 지정','렌더링',[pin('target','Target','object'),pin('material','Material','string'),pin('slot','Slot','int')]),
+  flow('materialFloat','Set Material Float','머테리얼 실수 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','float')]),
+  flow('lightIntensity','Set Light Intensity','광원 밝기 설정','렌더링',[pin('target','Light','object'),pin('value','Intensity','float')]),
+  flow('openScene','Open Scene','장면 열기','장면',[pin('scene','Scene','string')]),
+  flow('createWidget','Create Widget','위젯 생성','UI',[pin('class','Widget class','string')],[pin('widget','Widget','object')]),
+  flow('addViewport','Add To Viewport','뷰포트에 위젯 추가','UI',[pin('widget','Widget','object')]),
+  flow('setText','Set Text','텍스트 설정','UI',[pin('widget','Widget','object'),pin('text','Text','string')]),
+  flow('saveGame','Save Game','게임 저장','저장',[pin('slot','Slot','string')],[pin('success','Success','bool')]),
+  flow('loadGame','Load Game','게임 불러오기','저장',[pin('slot','Slot','string')],[pin('data','Data','object')])
+);
+catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').forEach(s=>s.arrayType=true);
+catalog.push(
+  {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
+  {key:'hitEvent',title:'Event Hit',ko:'충돌 이벤트',group:'이벤트',keywords:'hit collision 충돌 히트',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit')]},
+  {key:'inputAxis',title:'Input Axis',ko:'축 입력',group:'이벤트',keywords:'input axis 입력 축 이동 마우스',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('value','Axis value','float')]},
+  {key:'anyDamage',title:'Any Damage',ko:'피해 이벤트',group:'이벤트',keywords:'damage hit 피해 데미지',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('damage','Damage','float'),pin('instigator','Instigator','object')]},
+  spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
+);
+for(const entry of coreApi){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
 export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float')],vec3:[pin('x','X','float'),pin('y','Y','float'),pin('z','Z','float')],color:[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],transform:[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],hit:[pin('hit','Blocking hit','bool'),pin('position','Impact point','vec3'),pin('normal','Normal','vec3'),pin('actor','Actor','object')]}[type]||[]);
 export function defaultsFor(type){ return {bool:false,int:0,float:0,string:'',vec2:[0,0],vec3:[0,0,0],color:[1,1,1,1],transform:{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},object:null,hit:{hit:false,position:[0,0,0],normal:[0,1,0],actor:null}}[type]; }
 export function validValue(type,value){
@@ -33,7 +115,18 @@ export function validValue(type,value){
   if(type==='vec2')return vector(2);if(type==='vec3')return vector(3);if(type==='color')return vector(4)&&value.every(v=>v>=0&&v<=1);if(type==='object')return value===null||(typeof value==='string'&&value.length<=200);
   if(type==='transform')return value&&['position','rotation','scale'].every(k=>validValue('vec3',value[k]));if(type==='hit')return value&&validValue('bool',value.hit)&&validValue('vec3',value.position)&&validValue('vec3',value.normal)&&validValue('object',value.actor);return false;
 }
+export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
+  if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type))];}
+  if(node.key==='reroute')return [pin('value',direction==='in'?'Input':'Output',node.valueType||'float',node.array??false)];
+  if(node.key.startsWith('native'))return nativePins(graph,node,direction);
+  if(['dispatcherCall','dispatcherBind','dispatcherUnbind','dispatcherEvent','interfaceCall'].includes(node.key)){
+    const d=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===node.symbolId);if(!d)return [];
+    const target=pin('target','Target','object');
+    if(node.key==='dispatcherEvent')return direction==='out'?[pin('then','실행'),...d.inputs]:[];
+    if(node.key==='dispatcherBind'||node.key==='dispatcherUnbind')return direction==='in'?[pin('exec','실행'),target,pin('event','Event name','string')]:[pin('then','다음')];
+    return direction==='in'?[pin('exec','실행'),target,...d.inputs]:[pin('then','다음'),...(d.outputs||[])];
+  }
   if(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(node.key)){
     const definition=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===node.definitionId);if(!definition)return [];
     if(node.key.endsWith('Input'))return direction==='out'?definition.inputs:[];
@@ -41,12 +134,13 @@ export function basePins(node,direction,graph){
     return direction==='in'?definition.inputs:definition.outputs;
   }
   if(node.key==='getVariable'||node.key==='setVariable'){const v=graph.variables.find(v=>v.id===node.variableId);if(!v)return [];const value=pin('value',v.name,v.type,v.container==='array');return node.key==='getVariable'?(direction==='out'?[value]:[]):direction==='in'?[pin('exec','실행'),value]:[pin('then','다음')];}
-  return [...(catalog.find(s=>s.key===node.key)?.[direction==='out'?'outputs':'inputs']||[]),...(direction==='out'?node.customOutputs:node.customInputs)||[]];
+  const s=catalog.find(s=>s.key===node.key);return [...(s?.[direction==='out'?'outputs':'inputs']||[]).map(p=>s.arrayType&&p.type==='float'?{...p,type:node.valueType||'float'}:p),...(direction==='out'?node.customOutputs:node.customInputs)||[]];
 }
 export function effectivePins(node,direction,graph){
   const expand=p=>!p.array&&(node.splitPins||[]).includes(direction+':'+p.id)&&fieldsFor(p.type).length?fieldsFor(p.type).flatMap(f=>expand({...f,id:p.id+'.'+f.id,parent:p.id})): [p];
   return basePins(node,direction,graph).flatMap(expand);
 }
+function pinForId(node,direction,graph,id){const parts=id.split('.'),first=parts.shift();let p=basePins(node,direction,graph).find(p=>p.id===first);for(const field of parts)p=p&&fieldsFor(p.type).find(p=>p.id===field);return p;}
 export function canConnect(graph,from,to){
   if(from.node===to.node)return {ok:false,reason:'같은 노드에는 연결할 수 없어요.'};
   const a=graph.nodes.find(n=>n.id===from.node),b=graph.nodes.find(n=>n.id===to.node);const out=a&&effectivePins(a,'out',graph).find(p=>p.id===from.pin),input=b&&effectivePins(b,'in',graph).find(p=>p.id===to.pin);
@@ -56,31 +150,56 @@ export function canConnect(graph,from,to){
   if(reaches(to.node))return {ok:false,reason:'이 프로토타입에서는 순환 연결을 지원하지 않아요.'};return {ok:true};
 }
 export function connect(graph,from,to){const result=canConnect(graph,from,to);if(!result.ok)return result;graph.edges=graph.edges.filter(e=>!(e.to.node===to.node&&e.to.pin===to.pin)&&!(e.from.node===from.node&&e.from.pin===from.pin&&effectivePins(graph.nodes.find(n=>n.id===from.node),'out',graph).find(p=>p.id===from.pin).type==='exec'));graph.edges.push({from:{...from},to:{...to}});return result;}
-export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=graph.nodes.find(n=>n.id===nodeId);if(!n)return false;const pins=effectivePins(n,direction,graph),p=pins.find(p=>p.id===pinId),key=direction+':'+pinId;
+export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=graph.nodes.find(n=>n.id===nodeId);if(!n)return false;const pins=effectivePins(n,direction,graph),p=pins.find(p=>p.id===pinId)||pinForId(n,direction,graph,pinId),key=direction+':'+pinId;
   if(!recombine&&(!p||p.array||!fieldsFor(p.type).length))return false;n.splitPins=n.splitPins||[];if(recombine)n.splitPins=n.splitPins.filter(k=>k!==key&&!k.startsWith(key+'.'));else if(!n.splitPins.includes(key))n.splitPins.push(key);
+  if(direction==='in'&&p){const fields=fieldsFor(p.type),value=n.inputValues?.[pinId]??defaultsFor(p.type);n.inputValues??={};if(recombine){const values=fields.map((f,i)=>n.inputValues[pinId+'.'+f.id]??(Array.isArray(value)?value[i]:value?.[f.id])??defaultsFor(f.type));n.inputValues[pinId]=Array.isArray(value)?values:Object.fromEntries(fields.map((f,i)=>[f.id,values[i]]));for(const id of Object.keys(n.inputValues))if(id.startsWith(pinId+'.'))delete n.inputValues[id];}else fields.forEach((f,i)=>n.inputValues[pinId+'.'+f.id]=Array.isArray(value)?value[i]:value?.[f.id]??defaultsFor(f.type));}
   graph.edges=graph.edges.filter(e=>{const end=direction==='out'?e.from:e.to;return !(end.node===nodeId&&(end.pin===pinId||end.pin.startsWith(pinId+'.')));});return true;
 }
-export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(variableId?{variableId}:{})};}
-export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId);return n.title||(n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
+export function componentDefaults(type){return type==='Transform'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]}:type==='BoxCollider'?{center:[0,0,0],extent:[.5,.5,.5],trigger:true,enabled:true}:type==='MeshRenderer'?{mesh:'Stone_arch',material:'Moss_stone',visible:true,castShadow:true}:type==='PointLight'?{color:[1,.85,.65,1],intensity:8,radius:15,castShadow:false}:type==='SceneComponent'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}:{className:'MyComponent',enabled:true};}
+
+export const defaultTimeline={length:1,loop:false,autoplay:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
+export function validTimeline(t){return t&&Number.isFinite(t.length)&&t.length>0&&t.length<=10000&&typeof t.loop==='boolean'&&typeof t.autoplay==='boolean'&&Array.isArray(t.tracks)&&t.tracks.length<=16&&new Set(t.tracks.map(t=>t?.id)).size===t.tracks.length&&t.tracks.every(track=>track&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(track.id)&&!['update','finished'].includes(track.id)&&typeof track.name==='string'&&track.name.length<=80&&['float','vec3','color'].includes(track.type)&&['linear','step'].includes(track.interpolation)&&Array.isArray(track.keys)&&track.keys.length>0&&track.keys.length<=128&&track.keys.every((k,i)=>k&&Number.isFinite(k.time)&&k.time>=0&&k.time<=t.length&&(!i||track.keys[i-1].time<k.time)&&validValue(track.type,k.value)));}
+export function sampleTimeline(track,time){const a=[...track.keys].reverse().find(k=>k.time<=time)||track.keys[0],b=track.keys.find(k=>k.time>time);if(!b||track.interpolation==='step')return a.value;const alpha=Math.max(0,Math.min(1,(time-a.time)/(b.time-a.time)));return Array.isArray(a.value)?a.value.map((v,i)=>v+(b.value[i]-v)*alpha):a.value+(b.value-a.value)*alpha;}
+export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(variableId?{variableId}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
+export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
 export const defaultBlueprint={version:1,name:'BP_Garden',components:[{id:'transform',name:'Transform',type:'Transform'},{id:'mesh',name:'Mesh renderer',type:'MeshRenderer'},{id:'collider',name:'Box collider',type:'BoxCollider'}],variables:[
   {id:'hasKey',name:'hasKey',type:'bool',container:'single',value:false},{id:'doorName',name:'doorName',type:'string',container:'single',value:'GardenDoor'},
   {id:'targetPosition',name:'targetPosition',type:'vec3',container:'single',value:[0,0,0]},{id:'speed',name:'speed',type:'float',container:'single',value:3},{id:'waypoints',name:'waypoints',type:'vec3',container:'array',value:[[0,0,0],[1,0,1]]}],
   nodes:[{id:'begin',key:'beginPlay',position:{x:28,y:30},splitPins:[]},{id:'print',key:'print',position:{x:270,y:30},splitPins:[]},{id:'overlap',key:'beginOverlap',position:{x:28,y:205},splitPins:[]},{id:'branch',key:'branch',position:{x:270,y:205},splitPins:[]},{id:'door',key:'door',position:{x:512,y:205},splitPins:[]},{id:'tick',key:'tick',position:{x:28,y:410},splitPins:[]},{id:'location',key:'location',position:{x:512,y:410},splitPins:[]},{id:'getKey',key:'getVariable',variableId:'hasKey',position:{x:270,y:395},splitPins:[]}],
   edges:[{from:{node:'begin',pin:'then'},to:{node:'print',pin:'exec'}},{from:{node:'overlap',pin:'then'},to:{node:'branch',pin:'exec'}},{from:{node:'branch',pin:'true'},to:{node:'door',pin:'exec'}},{from:{node:'getKey',pin:'value'},to:{node:'branch',pin:'condition'}}],
-  functions:[],macros:[],construction:{nodes:[{id:'construction',key:'construction',position:{x:28,y:50},splitPins:[]},{id:'setup',key:'setPosition',position:{x:290,y:50},splitPins:[]}],edges:[{from:{node:'construction',pin:'then'},to:{node:'setup',pin:'exec'}}]}
+  functions:[],macros:[],comments:[],construction:{nodes:[{id:'construction',key:'construction',position:{x:28,y:50},splitPins:[]},{id:'setup',key:'setPosition',position:{x:290,y:50},splitPins:[]}],edges:[{from:{node:'construction',pin:'then'},to:{node:'setup',pin:'exec'}}],comments:[]}
 };
 // A view shares metadata, but writes node/link changes back to its own saved graph.
 export function graphContext(root,view='event'){
   const target=view==='event'?root:view==='construction'?root.construction:[...(root.functions||[]),...(root.macros||[])].find(d=>d.id===view)?.graph;
   if(!target)return root;if(target===root)return root;
-  return {variables:root.variables,components:root.components,functions:root.functions,macros:root.macros,get nodes(){return target.nodes;},set nodes(v){target.nodes=v;},get edges(){return target.edges;},set edges(v){target.edges=v;}};
+  return {variables:root.variables,components:root.components,functions:root.functions,macros:root.macros,native:root.native,settings:root.settings,dispatchers:root.dispatchers,interfaces:root.interfaces,get nodes(){return target.nodes;},set nodes(v){target.nodes=v;},get edges(){return target.edges;},set edges(v){target.edges=v;},get comments(){return target.comments||[];},set comments(v){target.comments=v;}};
 }
 export function allGraphContexts(root){return ['event',...(root.construction?['construction']:[]),...(root.functions||[]).map(d=>d.id),...(root.macros||[]).map(d=>d.id)].map(v=>graphContext(root,v));}
+export function pasteNodes(root,view,clipboard,position){
+  if(!clipboard||!Array.isArray(clipboard.nodes)||!clipboard.nodes.length||!Array.isArray(clipboard.edges))return {ok:false,reason:'복사한 노드가 없어요.'};
+  const candidate=JSON.parse(JSON.stringify(root)),graph=graphContext(candidate,view);if(graph.nodes.length+clipboard.nodes.length>200)return {ok:false,reason:'그래프의 노드 200개 제한이에요.'};
+  const ids=new Map(),left=Math.min(...clipboard.nodes.map(n=>n.position.x)),top=Math.min(...clipboard.nodes.map(n=>n.position.y));
+  const nodes=clipboard.nodes.map(n=>{const next=JSON.parse(JSON.stringify(n));next.id=makeNode(n.key).id;ids.set(n.id,next.id);next.position={x:Math.max(-10000,Math.min(10000,position.x+n.position.x-left)),y:Math.max(-10000,Math.min(10000,position.y+n.position.y-top))};return next;});
+  graph.nodes.push(...nodes);graph.edges.push(...clipboard.edges.map(e=>({from:{node:ids.get(e.from.node),pin:e.from.pin},to:{node:ids.get(e.to.node),pin:e.to.pin}})));
+  if(!validBlueprint(candidate))return {ok:false,reason:'이 그래프의 타입·이벤트·함수 규칙에 맞지 않는 노드예요.'};
+  const original=graphContext(root,view);original.nodes=graph.nodes;original.edges=graph.edges;return {ok:true,nodes};
+}
+export function makeDefinition(root,kind,name){
+  if(!['function','macro'].includes(kind)||!name?.trim()||name.length>80||[...(root.functions||[]),...(root.macros||[])].some(d=>d.name===name.trim()))return {ok:false,reason:'이름을 확인하세요.'};
+  const id='def_'+crypto.randomUUID().replaceAll('-',''),entry={...makeNode(kind+'Input',35,50),definitionId:id},exit={...makeNode(kind+'Output',370,50),definitionId:id};
+  const definition={id,name:name.trim(),inputs:[pin('exec','실행')],outputs:[pin('then','다음')],graph:{nodes:[entry,exit],edges:[{from:{node:entry.id,pin:'exec'},to:{node:exit.id,pin:'then'}}],comments:[]}};
+  root[kind==='function'?'functions':'macros']??=[];root[kind==='function'?'functions':'macros'].push(definition);return {ok:true,definition};
+}
+export function makeComment(graph,ids,position={x:40,y:40}){
+  const nodes=graph.nodes.filter(n=>ids.includes(n.id)),left=nodes.length?Math.min(...nodes.map(n=>n.position.x))-25:position.x,top=nodes.length?Math.min(...nodes.map(n=>n.position.y))-35:position.y;
+  return {id:'comment_'+crypto.randomUUID().replaceAll('-',''),text:'주석',position:{x:Math.max(-10000,left),y:Math.max(-10000,top)},size:{width:nodes.length?Math.min(10000,Math.max(...nodes.map(n=>n.position.x+205))-left):360,height:nodes.length?Math.min(10000,Math.max(...nodes.map(n=>n.position.y+85+Math.max(effectivePins(n,'in',graph).length,effectivePins(n,'out',graph).length)*27))-top):190},color:'#657b59',fontSize:14,moveNodes:true,nodeIds:nodes.map(n=>n.id)};
+}
 export function collapseNodes(root,graph,ids,kind,name){
   const selected=new Set(ids),nodes=graph.nodes.filter(n=>selected.has(n.id));
   if(!['function','macro'].includes(kind)||!name?.trim()||name.length>80)return {ok:false,reason:'이름을 1~80자로 입력하세요.'};
   if(!nodes.length)return {ok:false,reason:'먼저 묶을 노드를 선택하세요.'};
-  if(nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'||n.key.endsWith('Input')||n.key.endsWith('Output')))return {ok:false,reason:'이벤트와 Entry / Return은 묶음 밖에 두세요.'};
+  if(nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'||['nativeEvent','dispatcherEvent'].includes(n.key)||n.key.endsWith('Input')||n.key.endsWith('Output')))return {ok:false,reason:'이벤트와 Entry / Return은 묶음 밖에 두세요.'};
   if(kind==='function'&&nodes.some(n=>['delay','callMacro'].includes(n.key)))return {ok:false,reason:'Delay·매크로 호출이 있는 흐름은 매크로로 묶어주세요.'};
   if([...(root.functions||[]),...(root.macros||[])].some(d=>d.name===name.trim()))return {ok:false,reason:'이미 있는 함수·매크로 이름이에요.'};
   const incoming=graph.edges.filter(e=>!selected.has(e.from.node)&&selected.has(e.to.node)),outgoing=graph.edges.filter(e=>selected.has(e.from.node)&&!selected.has(e.to.node));
@@ -102,7 +221,7 @@ export function collapseNodes(root,graph,ids,kind,name){
   for(const e of outgoing)if(!edges.some(x=>x.to.node===exit.id&&x.to.pin===outputMap.get(e.from.node+':'+e.from.pin)))edges.push({from:{...e.from},to:{node:exit.id,pin:outputMap.get(e.from.node+':'+e.from.pin)}});
   for(const n of nodes)for(const p of effectivePins(n,'in',graph)){const port=inputMap.get(n.id+':'+p.id);if(port)edges.push({from:{node:entry.id,pin:port},to:{node:n.id,pin:p.id}});}
   for(const n of nodes)for(const p of effectivePins(n,'out',graph)){const port=outputMap.get(n.id+':'+p.id);if(port&&!edges.some(e=>e.to.node===exit.id&&e.to.pin===port))edges.push({from:{node:n.id,pin:p.id},to:{node:exit.id,pin:port}});}
-  const definition={id,name:name.trim(),inputs,outputs,graph:{nodes:[entry,...inside,exit],edges}};
+  const definition={id,name:name.trim(),inputs,outputs,graph:{nodes:[entry,...inside,exit],edges,comments:[]}};
   const call={...makeNode(kind==='function'?'callFunction':'callMacro',x,y),definitionId:id};
   const rewired=graph.edges.filter(e=>!selected.has(e.from.node)&&!selected.has(e.to.node));
   for(const e of incoming)if(!rewired.some(x=>x.to.node===call.id&&x.to.pin===inputMap.get(e.from.node+':'+e.from.pin)))rewired.push({from:{...e.from},to:{node:call.id,pin:inputMap.get(e.from.node+':'+e.from.pin)}});
@@ -118,14 +237,35 @@ export function validBlueprint(g){
   if(new Set(g.nodes.map(n=>n?.id)).size!==g.nodes.length||new Set(g.variables.map(v=>v?.id)).size!==g.variables.length||new Set(g.variables.map(v=>v?.name)).size!==g.variables.length)return false;
   if(!g.variables.every(v=>v&&safeId(v.id)&&typeof v.name==='string'&&v.name.length>0&&v.name.length<=80&&Object.hasOwn(variableTypes,v.type)&&['single','array'].includes(v.container)&&(v.container==='array'?Array.isArray(v.value)&&v.value.length<=128&&v.value.every(x=>validValue(v.type,x)):validValue(v.type,v.value))))return false;
   if(!g.components.every(c=>c&&safeId(c.id)&&typeof c.name==='string'&&c.name.length<=80&&typeof c.type==='string'&&c.type.length<=80))return false;
+  if(new Set(g.components.map(c=>c.id)).size!==g.components.length)return false;
+  if(g.native!==undefined&&!validNative(g.native,validValue))return false;
+  if(g.native?.header!==undefined&&(typeof g.native.header!=='string'||g.native.header.length>100000))return false;
+  if(g.settings?.nativeDefaults!==undefined){const values=g.settings.nativeDefaults;if(!values||typeof values!=='object'||Array.isArray(values))return false;for(const [key,value] of Object.entries(values)){const {p}=nativeMember(g,{nativeId:key});if(!p||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(p.type,v))):!validValue(p.type,value)))return false;}}
+  if(g.watches!==undefined&&(!Array.isArray(g.watches)||g.watches.length>100||!g.watches.every(w=>w&&safeId(w.view)&&safeId(w.node)&&['in','out'].includes(w.direction)&&typeof w.pin==='string'&&/^[A-Za-z0-9_.-]{1,100}$/.test(w.pin))))return false;
+  for(const c of g.components)if(c.properties!==undefined){const defaults=componentDefaults(c.type);if(!c.properties||typeof c.properties!=='object'||Array.isArray(c.properties))return false;for(const [key,v] of Object.entries(c.properties)){if(!Object.hasOwn(defaults,key))return false;const sample=defaults[key],type=Array.isArray(sample)?key==='color'?'color':'vec3':typeof sample==='boolean'?'bool':typeof sample==='number'?'float':'string';if(!validValue(type,v)||(['intensity','radius'].includes(key)&&v<0))return false;}}
+  if(g.settings!==undefined&&(!g.settings||typeof g.settings!=='object'||(g.settings.parentClass!==undefined&&!['Actor','Component','SceneComponent',...(g.native?.classes.filter(c=>c.blueprintable).map(c=>c.name)||[])].includes(g.settings.parentClass))||['tickEnabled','overlapEnabled'].some(k=>g.settings[k]!==undefined&&typeof g.settings[k]!=='boolean')||(g.settings.tickInterval!==undefined&&(!Number.isFinite(g.settings.tickInterval)||g.settings.tickInterval<0||g.settings.tickInterval>10000))))return false;
   const definitions=[...(Array.isArray(g.functions)?g.functions:[]),...(Array.isArray(g.macros)?g.macros:[])];
   for(const key of ['functions','macros'])if(g[key]!==undefined&&(!Array.isArray(g[key])||g[key].length>50))return false;
   const validPorts=ports=>Array.isArray(ports)&&ports.length<=30&&new Set(ports.map(p=>p?.id)).size===ports.length&&ports.every(p=>p&&safeId(p.id)&&typeof p.label==='string'&&p.label.length<=80&&(p.type==='exec'||p.type==='any'||Object.hasOwn(variableTypes,p.type))&&typeof p.array==='boolean'&&!(p.type==='exec'&&p.array));
+  for(const key of ['dispatchers','interfaces'])if(g[key]!==undefined&&(!Array.isArray(g[key])||g[key].length>50||new Set(g[key].map(d=>d?.id)).size!==g[key].length||!g[key].every(d=>d&&safeId(d.id)&&typeof d.name==='string'&&d.name.length>0&&d.name.length<=80&&validPorts(d.inputs)&&validPorts(d.outputs)&&![...d.inputs,...d.outputs].some(p=>p.type==='exec'||['exec','then','target','event'].includes(p.id))&&(key!=='dispatchers'||d.outputs.length===0))))return false;
+  const symbols=[...(g.dispatchers||[]),...(g.interfaces||[])];if(new Set(symbols.map(d=>d.id)).size!==symbols.length)return false;
+  const validNativeNode=n=>{const {c,f,p}=nativeMember(g,n);return n.key==='nativeMembers'?!!c:n.key==='nativeCall'?!!f:n.key==='nativeEvent'?!!f&&f.event!=='none'&&c.name===g.settings?.parentClass:n.key==='nativeGet'?!!p:n.key==='nativeSet'?!!p&&!p.readOnly:false;};
+  const validSymbolNode=n=>n.key==='interfaceCall'?(g.interfaces||[]).some(d=>d.id===n.symbolId):['dispatcherCall','dispatcherBind','dispatcherUnbind','dispatcherEvent'].includes(n.key)&&(g.dispatchers||[]).some(d=>d.id===n.symbolId);
   if(new Set(definitions.map(d=>d?.id)).size!==definitions.length||new Set(definitions.map(d=>d?.name)).size!==definitions.length||!definitions.every(d=>d&&safeId(d.id)&&typeof d.name==='string'&&d.name.length>0&&d.name.length<=80&&validPorts(d.inputs)&&validPorts(d.outputs)&&d.graph))return false;
   for(const context of allGraphContexts(g)){
     if(!Array.isArray(context.nodes)||context.nodes.length>200||!Array.isArray(context.edges)||context.edges.length>1000||new Set(context.nodes.map(n=>n?.id)).size!==context.nodes.length)return false;
-    if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||(['getVariable','setVariable'].includes(n.key)&&g.variables.some(v=>v.id===n.variableId))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&definitions.some(d=>d.id===n.definitionId)))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&n.position[k]>=0&&n.position[k]<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
+    if(context.comments!==undefined&&(!Array.isArray(context.comments)||context.comments.length>100||new Set(context.comments.map(c=>c?.id)).size!==context.comments.length||!context.comments.every(c=>c&&safeId(c.id)&&typeof c.text==='string'&&c.text.length<=2000&&c.position&&['x','y'].every(k=>Number.isFinite(c.position[k])&&Math.abs(c.position[k])<=10000)&&c.size&&Number.isFinite(c.size.width)&&c.size.width>=120&&c.size.width<=10000&&Number.isFinite(c.size.height)&&c.size.height>=80&&c.size.height<=10000&&/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.fontSize)&&c.fontSize>=10&&c.fontSize<=32&&typeof c.moveNodes==='boolean'&&Array.isArray(c.nodeIds)&&c.nodeIds.length<=200&&c.nodeIds.every(safeId))))return false;
+    if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||validNativeNode(n)||validSymbolNode(n)||(['getVariable','setVariable'].includes(n.key)&&g.variables.some(v=>v.id===n.variableId))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&definitions.some(d=>d.id===n.definitionId)))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&Math.abs(n.position[k])<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
     for(const n of context.nodes){if(n.key==='callFunction'&&!(g.functions||[]).some(d=>d.id===n.definitionId))return false;if(n.key==='callMacro'&&!(g.macros||[]).some(d=>d.id===n.definitionId))return false;}
+    for(const n of context.nodes){
+      if(n.key==='timeline'&&(context!==g||!validTimeline(n.timeline)))return false;
+      if(n.array!==undefined&&typeof n.array!=='boolean')return false;
+      if(n.valueType!==undefined&&!Object.hasOwn(variableTypes,n.valueType))return false;
+      if(n.comment!==undefined&&(typeof n.comment!=='string'||n.comment.length>2000))return false;
+      if(['enabled','breakpoint'].some(k=>n[k]!==undefined&&typeof n[k]!=='boolean'))return false;
+      if(n.options!==undefined&&(!n.options||typeof n.options!=='object'||(n.options.tickInterval!==undefined&&(!Number.isFinite(n.options.tickInterval)||n.options.tickInterval<0||n.options.tickInterval>10000))||['componentId','key','eventName'].some(k=>n.options[k]!==undefined&&(typeof n.options[k]!=='string'||n.options[k].length>80))))return false;
+      if(n.inputValues!==undefined){if(!n.inputValues||typeof n.inputValues!=='object'||Array.isArray(n.inputValues))return false;for(const [id,value] of Object.entries(n.inputValues)){const p=pinForId(n,'in',context,id);if(!p||p.type==='exec'||(p.array?!(Array.isArray(value)&&value.length<=128&&value.every(v=>p.type==='any'||validValue(p.type,v))):!validValue(p.type,value)))return false;}}
+    }
     for(const n of context.nodes)for(const key of ['customInputs','customOutputs'])if(n[key]!==undefined&&(!['customEvent','customFunction'].includes(n.key)||!Array.isArray(n[key])||n[key].length>20||!n[key].every(p=>p&&safeId(p.id)&&typeof p.label==='string'&&p.label.length<=80&&Object.hasOwn(variableTypes,p.type)&&typeof p.array==='boolean')))return false;
     for(const n of context.nodes)for(const direction of ['in','out']){const pins=basePins(n,direction,context);if(new Set(pins.map(p=>p.id)).size!==pins.length)return false;}
     const usedInputs=new Set(),usedExec=new Set();
@@ -133,7 +273,9 @@ export function validBlueprint(g){
   }
   for(const [collection,kind] of [['functions','function'],['macros','macro']])for(const d of g[collection]||[]){
     if(!['Input','Output'].every(s=>d.graph.nodes.filter(n=>n.key===kind+s&&n.definitionId===d.id).length===1))return false;
-    if(d.graph.nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'))return false;
+    if(d.graph.nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'||['nativeEvent','dispatcherEvent'].includes(n.key)))return false;
+    if(d.pure!==undefined&&typeof d.pure!=='boolean')return false;
+    if(d.pure&&[...d.inputs,...d.outputs].some(p=>p.type==='exec'))return false;
     if(kind==='function'&&(d.inputs.filter(p=>p.type==='exec').length>1||d.outputs.filter(p=>p.type==='exec').length>1||d.graph.nodes.some(n=>['delay','callMacro'].includes(n.key))))return false;
   }
   return true;

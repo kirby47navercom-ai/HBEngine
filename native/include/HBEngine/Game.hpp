@@ -1,0 +1,207 @@
+#pragma once
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+// Editor metadata; the prototype registration tool reads these declarations.
+#define HB_CLASS(...)
+#define HB_FUNCTION(...)
+#define HB_NODE(...)
+#define HB_PROPERTY(...)
+namespace hb {
+struct Vec2 { float x=0,y=0; };
+struct Vec3 { float x=0,y=0,z=0; };
+struct Color { float r=1,g=1,b=1,a=1; };
+struct Transform { Vec3 position{},rotation{},scale{1,1,1}; };
+struct Library {};
+struct Actor { Transform transform{}; virtual ~Actor()=default; };
+struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
+inline Vec3 operator+(Vec3 a,Vec3 b){return {a.x+b.x,a.y+b.y,a.z+b.z};}
+inline Vec3 operator-(Vec3 a,Vec3 b){return {a.x-b.x,a.y-b.y,a.z-b.z};}
+inline Vec3 operator*(Vec3 a,float s){return {a.x*s,a.y*s,a.z*s};}
+
+HB_CLASS()
+class Math : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, NodeKey="add", KoreanName="실수 더하기") static float AddFloat(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="subtract", KoreanName="빼기") static float Subtract(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="multiply", KoreanName="곱하기") static float Multiply(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="divide", KoreanName="나누기") static float Divide(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="min", KoreanName="최솟값") static float Min(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="max", KoreanName="최댓값") static float Max(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="power", KoreanName="거듭제곱") static float Power(float a,float b);
+    HB_FUNCTION(BlueprintPure, NodeKey="abs", KoreanName="절댓값") static float Abs(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="sqrt", KoreanName="제곱근") static float Sqrt(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="sin", KoreanName="사인") static float Sin(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="cos", KoreanName="코사인") static float Cos(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="floor", KoreanName="내림") static float Floor(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="ceil", KoreanName="올림") static float Ceil(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="round", KoreanName="반올림") static float Round(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="clamp", KoreanName="범위 제한") static float Clamp(float value,float min,float max);
+    HB_FUNCTION(BlueprintPure, NodeKey="lerp", KoreanName="선형 보간") static float Lerp(float a,float b,float alpha);
+    HB_FUNCTION(BlueprintPure, NodeKey="nearlyEqual", KoreanName="거의 같은 실수") static bool NearlyEqual(float a,float b,float tolerance);
+    HB_FUNCTION(BlueprintPure, NodeKey="mapRange", KoreanName="범위 변환") static float MapRange(float value,float inMin,float inMax,float outMin,float outMax);
+    HB_FUNCTION(BlueprintPure, NodeKey="smoothStep", KoreanName="부드러운 보간") static float SmoothStep(float min,float max,float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="degreesToRadians", KoreanName="도를 라디안으로") static float DegreesToRadians(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="radiansToDegrees", KoreanName="라디안을 도로") static float RadiansToDegrees(float value);
+    HB_FUNCTION(BlueprintPure, NodeKey="floatInterp", KoreanName="실수 따라가기 보간") static float FInterpTo(float current,float target,float delta,float speed);
+};
+HB_CLASS()
+class VectorMath : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, NodeKey="vec3", KoreanName="벡터3 만들기") static Vec3 MakeVector3(float x,float y,float z);
+    HB_FUNCTION(BlueprintPure, NodeKey="vec2", KoreanName="벡터2 만들기") static Vec2 MakeVector2(float x,float y);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorAdd", KoreanName="벡터 더하기") static Vec3 AddVector(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorSubtract", KoreanName="벡터 빼기") static Vec3 SubtractVector(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorScale", KoreanName="벡터 배율") static Vec3 ScaleVector(const Vec3& value,float scale);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorLength", KoreanName="벡터 길이") static float VectorLength(const Vec3& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorLengthSquared", KoreanName="벡터 길이 제곱") static float VectorLengthSquared(const Vec3& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="normalize", KoreanName="벡터 정규화 노멀벡터 단위벡터") static Vec3 NormalizeVector(const Vec3& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="distance", KoreanName="벡터 거리") static float Distance(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="distanceSquared", KoreanName="벡터 거리 제곱") static float DistanceSquared(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="dot", KoreanName="벡터 내적") static float DotProduct(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="cross", KoreanName="벡터 외적") static Vec3 CrossProduct(const Vec3& a,const Vec3& b);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorLerp", KoreanName="벡터 보간") static Vec3 LerpVector(const Vec3& a,const Vec3& b,float alpha);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorInterp", KoreanName="벡터 따라가기 보간 이동") static Vec3 VInterpTo(const Vec3& current,const Vec3& target,float delta,float speed);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorMoveTowards", KoreanName="목표로 벡터 이동 일정속도") static Vec3 MoveTowards(const Vec3& current,const Vec3& target,float distance);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorReflect", KoreanName="노멀벡터 반사") static Vec3 ReflectVector(const Vec3& value,const Vec3& normal);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorProject", KoreanName="벡터 투영") static Vec3 ProjectVector(const Vec3& value,const Vec3& onto);
+    HB_FUNCTION(BlueprintPure, NodeKey="vectorClampLength", KoreanName="벡터 길이 제한") static Vec3 ClampVectorLength(const Vec3& value,float maxLength);
+    HB_FUNCTION(BlueprintPure, NodeKey="vector2Length", KoreanName="벡터2 길이") static float Vector2Length(const Vec2& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="vector2Normalize", KoreanName="벡터2 정규화") static Vec2 NormalizeVector2(const Vec2& value);
+};
+HB_CLASS()
+class Clock : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, NodeKey="time", KoreanName="게임 시간 초 시간측정") static float GetGameTime();
+    HB_FUNCTION(BlueprintPure, NodeKey="deltaSeconds", KoreanName="프레임 델타 시간") static float GetWorldDeltaSeconds();
+    HB_FUNCTION(BlueprintPure, NodeKey="realTime", KoreanName="실제 경과 시간 초") static float GetRealTime();
+    HB_FUNCTION(BlueprintCallable, NodeKey="timeScale", KoreanName="게임 시간 배율") static void SetTimeScale(float scale);
+    HB_FUNCTION(BlueprintCallable, NodeKey="gamePaused", KoreanName="게임 시간 일시정지") static void SetPaused(bool paused);
+    static void Tick(float delta);
+    static void Reset();
+private:
+    inline static float seconds_=0,delta_=0,scale_=1;
+    inline static bool paused_=false;
+    inline static const auto epoch_=std::chrono::steady_clock::now();
+};
+HB_CLASS()
+class Timers : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, NodeKey="timer", ReturnPin="handle", KoreanName="타이머 설정") static std::string SetTimer(float duration,bool loop,const std::string& event);
+    HB_FUNCTION(BlueprintCallable, NodeKey="clearTimer", KoreanName="타이머 해제") static void ClearTimer(const std::string& handle);
+    HB_FUNCTION(BlueprintCallable, NodeKey="pauseTimer", KoreanName="타이머 일시정지") static void PauseTimer(const std::string& handle);
+    HB_FUNCTION(BlueprintCallable, NodeKey="resumeTimer", KoreanName="타이머 재개") static void ResumeTimer(const std::string& handle);
+    HB_FUNCTION(BlueprintPure, NodeKey="timerElapsed", KoreanName="타이머 경과 시간") static float GetTimerElapsed(const std::string& handle);
+    HB_FUNCTION(BlueprintPure, NodeKey="timerRemaining", KoreanName="타이머 남은 시간") static float GetTimerRemaining(const std::string& handle);
+    HB_FUNCTION(BlueprintPure, NodeKey="timerActive", KoreanName="타이머 활성 여부") static bool IsTimerActive(const std::string& handle);
+    HB_FUNCTION(BlueprintCallable, NodeKey="startStopwatch", ReturnPin="handle", KoreanName="시간측정 시작 스톱워치") static std::string StartStopwatch(const std::string& name);
+    HB_FUNCTION(BlueprintPure, NodeKey="stopwatchElapsed", KoreanName="시간측정 경과 스톱워치") static float GetStopwatchElapsed(const std::string& handle);
+    HB_FUNCTION(BlueprintCallable, NodeKey="stopStopwatch", KoreanName="시간측정 종료 스톱워치") static float StopStopwatch(const std::string& handle);
+    static void Tick(float delta);
+    static std::vector<std::string> TakeEvents();
+private:
+    struct Timer {float duration,elapsed=0;bool loop,paused=false,active=true;std::string event;};
+    struct Stopwatch {std::chrono::steady_clock::time_point start;float elapsed=0;bool running=true;};
+    inline static std::uint64_t next_=0;
+    // ponytail: keep completed handles for queries; ClearTimer frees them, world-owned lifecycle cleanup when instances exist.
+    inline static std::unordered_map<std::string,Timer> timers_;
+    inline static std::unordered_map<std::string,Stopwatch> watches_;
+    inline static std::vector<std::string> events_;
+};
+HB_CLASS()
+class Scene : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, NodeKey="location", KoreanName="위치 가져오기") static Vec3 GetPosition(Actor* target);
+    HB_FUNCTION(BlueprintCallable, NodeKey="setPosition", KoreanName="위치 설정") static void SetPosition(Actor* target,const Vec3& position);
+    HB_FUNCTION(BlueprintPure, NodeKey="getRotation", KoreanName="회전 가져오기") static Vec3 GetRotation(Actor* target);
+    HB_FUNCTION(BlueprintCallable, NodeKey="setRotation", KoreanName="회전 설정") static void SetRotation(Actor* target,const Vec3& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="getScale", KoreanName="크기 가져오기") static Vec3 GetScale(Actor* target);
+    HB_FUNCTION(BlueprintCallable, NodeKey="setScale", KoreanName="크기 설정") static void SetScale(Actor* target,const Vec3& value);
+    HB_FUNCTION(BlueprintPure, NodeKey="getTransform", KoreanName="트랜스폼 가져오기") static Transform GetTransform(Actor* target);
+    HB_FUNCTION(BlueprintCallable, NodeKey="setTransform", KoreanName="트랜스폼 설정") static void SetTransform(Actor* target,const Transform& value);
+    HB_FUNCTION(BlueprintCallable, NodeKey="translate", KoreanName="벡터로 위치 이동 오프셋") static void AddOffset(Actor* target,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, NodeKey="rotate", KoreanName="회전 더하기") static void AddRotation(Actor* target,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, NodeKey="moveActorTowards", KoreanName="오브젝트 목표로 이동") static bool MoveActorTowards(Actor* target,const Vec3& destination,float speed,float delta);
+};
+
+inline float Math::AddFloat(float a,float b){return a+b;}
+inline float Math::Subtract(float a,float b){return a-b;}
+inline float Math::Multiply(float a,float b){return a*b;}
+inline float Math::Divide(float a,float b){if(b==0)throw std::invalid_argument("division by zero");return a/b;}
+inline float Math::Min(float a,float b){return std::min(a,b);}
+inline float Math::Max(float a,float b){return std::max(a,b);}
+inline float Math::Power(float a,float b){return std::pow(a,b);}
+inline float Math::Abs(float value){return std::abs(value);}
+inline float Math::Sqrt(float value){if(value<0)throw std::invalid_argument("negative square root");return std::sqrt(value);}
+inline float Math::Sin(float value){return std::sin(value);}
+inline float Math::Cos(float value){return std::cos(value);}
+inline float Math::Floor(float value){return std::floor(value);}
+inline float Math::Ceil(float value){return std::ceil(value);}
+inline float Math::Round(float value){return std::round(value);}
+inline float Math::Clamp(float value,float min,float max){if(min>max)throw std::invalid_argument("invalid range");return std::clamp(value,min,max);}
+inline float Math::Lerp(float a,float b,float alpha){return a+(b-a)*alpha;}
+inline bool Math::NearlyEqual(float a,float b,float tolerance){return std::abs(a-b)<=std::max(0.f,tolerance);}
+inline float Math::MapRange(float value,float inMin,float inMax,float outMin,float outMax){return Lerp(outMin,outMax,Divide(value-inMin,inMax-inMin));}
+inline float Math::SmoothStep(float min,float max,float value){const float t=Clamp(Divide(value-min,max-min),0,1);return t*t*(3-2*t);}
+inline float Math::DegreesToRadians(float value){return value*0.017453292519943295f;}
+inline float Math::RadiansToDegrees(float value){return value*57.29577951308232f;}
+inline float Math::FInterpTo(float current,float target,float delta,float speed){return speed<=0?target:Lerp(current,target,Clamp(std::max(0.f,delta)*speed,0,1));}
+inline Vec3 VectorMath::MakeVector3(float x,float y,float z){return {x,y,z};}
+inline Vec2 VectorMath::MakeVector2(float x,float y){return {x,y};}
+inline Vec3 VectorMath::AddVector(const Vec3& a,const Vec3& b){return a+b;}
+inline Vec3 VectorMath::SubtractVector(const Vec3& a,const Vec3& b){return a-b;}
+inline Vec3 VectorMath::ScaleVector(const Vec3& value,float scale){return value*scale;}
+inline float VectorMath::VectorLengthSquared(const Vec3& value){return DotProduct(value,value);}
+inline float VectorMath::VectorLength(const Vec3& value){return std::sqrt(VectorLengthSquared(value));}
+inline Vec3 VectorMath::NormalizeVector(const Vec3& value){const float size=VectorLength(value);return size>1e-8f?value*(1/size):Vec3{};}
+inline float VectorMath::Distance(const Vec3& a,const Vec3& b){return VectorLength(a-b);}
+inline float VectorMath::DistanceSquared(const Vec3& a,const Vec3& b){return VectorLengthSquared(a-b);}
+inline float VectorMath::DotProduct(const Vec3& a,const Vec3& b){return a.x*b.x+a.y*b.y+a.z*b.z;}
+inline Vec3 VectorMath::CrossProduct(const Vec3& a,const Vec3& b){return {a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x};}
+inline Vec3 VectorMath::LerpVector(const Vec3& a,const Vec3& b,float alpha){return a+(b-a)*alpha;}
+inline Vec3 VectorMath::VInterpTo(const Vec3& current,const Vec3& target,float delta,float speed){return speed<=0?target:LerpVector(current,target,Math::Clamp(std::max(0.f,delta)*speed,0,1));}
+inline Vec3 VectorMath::MoveTowards(const Vec3& current,const Vec3& target,float distance){const Vec3 d=target-current;const float size=VectorLength(d);return size<=std::max(0.f,distance)||size<1e-8f?target:current+d*(std::max(0.f,distance)/size);}
+inline Vec3 VectorMath::ReflectVector(const Vec3& value,const Vec3& normal){const Vec3 n=NormalizeVector(normal);return value-n*(2*DotProduct(value,n));}
+inline Vec3 VectorMath::ProjectVector(const Vec3& value,const Vec3& onto){const float size=VectorLengthSquared(onto);return size>1e-16f?onto*(DotProduct(value,onto)/size):Vec3{};}
+inline Vec3 VectorMath::ClampVectorLength(const Vec3& value,float maxLength){const float size=VectorLength(value);return size>std::max(0.f,maxLength)&&size>1e-8f?value*(std::max(0.f,maxLength)/size):value;}
+inline float VectorMath::Vector2Length(const Vec2& value){return std::hypot(value.x,value.y);}
+inline Vec2 VectorMath::NormalizeVector2(const Vec2& value){const float size=Vector2Length(value);return size>1e-8f?Vec2{value.x/size,value.y/size}:Vec2{};}
+inline float Clock::GetGameTime(){return seconds_;}
+inline float Clock::GetWorldDeltaSeconds(){return delta_;}
+inline float Clock::GetRealTime(){return std::chrono::duration<float>(std::chrono::steady_clock::now()-epoch_).count();}
+inline void Clock::SetTimeScale(float scale){if(!std::isfinite(scale)||scale<0)throw std::invalid_argument("invalid time scale");scale_=scale;}
+inline void Clock::SetPaused(bool paused){paused_=paused;}
+inline void Clock::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw std::invalid_argument("invalid delta");delta_=paused_?0:delta*scale_;seconds_+=delta_;}
+inline void Clock::Reset(){seconds_=delta_=0;scale_=1;paused_=false;}
+inline std::string Timers::SetTimer(float duration,bool loop,const std::string& event){if(!std::isfinite(duration)||duration<=0)throw std::invalid_argument("invalid duration");const auto handle="timer_"+std::to_string(++next_);timers_.emplace(handle,Timer{duration,0,loop,false,true,event});return handle;}
+inline void Timers::ClearTimer(const std::string& handle){timers_.erase(handle);}
+inline void Timers::PauseTimer(const std::string& handle){const auto i=timers_.find(handle);if(i!=timers_.end())i->second.paused=true;}
+inline void Timers::ResumeTimer(const std::string& handle){const auto i=timers_.find(handle);if(i!=timers_.end())i->second.paused=false;}
+inline float Timers::GetTimerElapsed(const std::string& handle){const auto i=timers_.find(handle);return i==timers_.end()?0:i->second.elapsed;}
+inline float Timers::GetTimerRemaining(const std::string& handle){const auto i=timers_.find(handle);return i==timers_.end()?0:std::max(0.f,i->second.duration-i->second.elapsed);}
+inline bool Timers::IsTimerActive(const std::string& handle){const auto i=timers_.find(handle);return i!=timers_.end()&&i->second.active&&!i->second.paused;}
+inline void Timers::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw std::invalid_argument("invalid delta");for(auto& item:timers_){auto& t=item.second;if(!t.active||t.paused)continue;t.elapsed+=delta;if(t.elapsed>=t.duration){events_.push_back(t.event);if(t.loop)t.elapsed=std::fmod(t.elapsed,t.duration);else{t.elapsed=t.duration;t.active=false;}}}} // ponytail: one notification per frame; bounded catch-up if sub-frame timer events matter.
+inline std::vector<std::string> Timers::TakeEvents(){auto result=std::move(events_);events_.clear();return result;}
+inline std::string Timers::StartStopwatch(const std::string& name){const auto handle=name+"_"+std::to_string(++next_);watches_.emplace(handle,Stopwatch{std::chrono::steady_clock::now(),0,true});return handle;}
+inline float Timers::GetStopwatchElapsed(const std::string& handle){const auto i=watches_.find(handle);return i==watches_.end()?0:i->second.running?std::chrono::duration<float>(std::chrono::steady_clock::now()-i->second.start).count():i->second.elapsed;}
+inline float Timers::StopStopwatch(const std::string& handle){const auto i=watches_.find(handle);if(i==watches_.end())return 0;const float elapsed=GetStopwatchElapsed(handle);i->second.elapsed=elapsed;i->second.running=false;return elapsed;}
+inline Actor& checked(Actor* target){if(!target)throw std::invalid_argument("null actor");return *target;}
+inline Vec3 Scene::GetPosition(Actor* target){return checked(target).transform.position;}
+inline void Scene::SetPosition(Actor* target,const Vec3& position){checked(target).transform.position=position;}
+inline Vec3 Scene::GetRotation(Actor* target){return checked(target).transform.rotation;}
+inline void Scene::SetRotation(Actor* target,const Vec3& value){checked(target).transform.rotation=value;}
+inline Vec3 Scene::GetScale(Actor* target){return checked(target).transform.scale;}
+inline void Scene::SetScale(Actor* target,const Vec3& value){checked(target).transform.scale=value;}
+inline Transform Scene::GetTransform(Actor* target){return checked(target).transform;}
+inline void Scene::SetTransform(Actor* target,const Transform& value){checked(target).transform=value;}
+inline void Scene::AddOffset(Actor* target,const Vec3& value){SetPosition(target,GetPosition(target)+value);}
+inline void Scene::AddRotation(Actor* target,const Vec3& value){SetRotation(target,GetRotation(target)+value);}
+inline bool Scene::MoveActorTowards(Actor* target,const Vec3& destination,float speed,float delta){SetPosition(target,VectorMath::MoveTowards(GetPosition(target),destination,std::max(0.f,speed)*std::max(0.f,delta)));return VectorMath::DistanceSquared(GetPosition(target),destination)<1e-12f;}
+inline void AdvanceFrame(float delta){Clock::Tick(delta);Timers::Tick(Clock::GetWorldDeltaSeconds());}
+}

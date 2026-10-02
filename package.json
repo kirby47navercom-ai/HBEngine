@@ -4,8 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "prepare": "node tools/generate-api.mjs",
     "dev": "node tools/serve.mjs",
-    "test": "node tools/check.mjs"
+    "test": "node tools/check.mjs",
+    "api:generate": "node tools/generate-api.mjs",
+    "api:check": "node tools/generate-api.mjs --check",
+    "test:native": "node tools/check-native.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

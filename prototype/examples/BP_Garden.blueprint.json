@@ -189,6 +189,7 @@
   ],
   "functions": [],
   "macros": [],
+  "comments": [],
   "construction": {
     "nodes": [
       {
@@ -221,6 +222,7 @@
           "pin": "exec"
         }
       }
-    ]
+    ],
+    "comments": []
   }
 }

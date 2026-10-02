@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "classes": [
+    {
+      "name": "DoorController",
+      "base": "Actor",
+      "blueprintable": true,
+      "properties": [
+        {
+          "name": "OpenAngle",
+          "type": "float",
+          "array": false,
+          "readOnly": false,
+          "value": 90
+        }
+      ],
+      "functions": [
+        {
+          "name": "Open",
+          "label": "문 열기",
+          "category": "Door",
+          "pure": false,
+          "static": false,
+          "event": "none",
+          "inputs": [
+            {
+              "id": "Angle",
+              "label": "Angle",
+              "type": "float",
+              "array": false
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "name": "GetDoorPosition",
+          "label": "문 위치",
+          "category": "Door",
+          "pure": true,
+          "static": false,
+          "event": "none",
+          "inputs": [],
+          "outputs": [
+            {
+              "id": "result",
+              "label": "Return value",
+              "type": "vec3",
+              "array": false
+            }
+          ]
+        },
+        {
+          "name": "GetDoorTarget",
+          "label": "문 대상",
+          "category": "Door",
+          "pure": true,
+          "static": false,
+          "event": "none",
+          "inputs": [],
+          "outputs": [
+            {
+              "id": "result",
+              "label": "Return value",
+              "type": "object",
+              "array": false,
+              "className": "DoorController"
+            }
+          ]
+        },
+        {
+          "name": "OnOpened",
+          "label": "문이 열렸을 때",
+          "category": "Door",
+          "pure": false,
+          "static": false,
+          "event": "native",
+          "inputs": [
+            {
+              "id": "Position",
+              "label": "Position",
+              "type": "vec3",
+              "array": false
+            }
+          ],
+          "outputs": []
+        }
+      ]
+    }
+  ]
+}
