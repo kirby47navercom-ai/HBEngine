@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {parseNativeHeader} from '../prototype/native-model.js';
 import {updateLibrary} from './generate-library.mjs';
 export function generatedCore(){
-  const native=parseNativeHeader(fs.readFileSync('native/include/HBEngine/Game.hpp','utf8')+'\n'+fs.readFileSync('native/include/HBEngine/Library.hpp','utf8')),entries=[],services=[];
+  const native={classes:['Game','Library'].flatMap(name=>parseNativeHeader(fs.readFileSync('native/include/HBEngine/'+name+'.hpp','utf8')).classes)},entries=[],services=[];
   const group={Math:'수학',VectorMath:'벡터',Clock:'시간',Timers:'시간',Scene:'변환'};
   for(const c of native.classes)for(const f of c.functions){
     if(!f.nodeKey)throw Error(c.name+'.'+f.name+' 노드 ID 누락');

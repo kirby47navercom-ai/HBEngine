@@ -18,7 +18,7 @@ export const defaultObjects = [
   { id: 'scene-camera', name: 'Scene camera', kind: 'camera', group: 'ENVIRONMENT', position: [8.6, 7.2, 10.5], rotation: [0, 0, 0], scale: [1, 1, 1], visible: true }
 ];
 export const clone = value => JSON.parse(JSON.stringify(value));
-const kinds = new Set(['arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model','empty','group','playerStart','character','character2d','sprite','tilemap','audio','directionalLight','pointLight','spotLight','controller','gameMode','gameState','playerState']);
+const kinds = new Set(['particles','navigation','decal','arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model','empty','group','playerStart','character','character2d','sprite','tilemap','audio','directionalLight','pointLight','spotLight','controller','gameMode','gameState','playerState']);
 export const defaultRuntimeSettings={dimension:'3d',gameConfig:'',gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8};
 export function validRuntimeSettings(value){return value&&['2d','3d'].includes(value.dimension)&&typeof value.gameConfig==='string'&&value.gameConfig.length<=1000&&!value.gameConfig.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value.gameConfig)&&Array.isArray(value.gravity)&&value.gravity.length===3&&value.gravity.every(v=>Number.isFinite(v)&&Math.abs(v)<=1000)&&Number.isFinite(value.fixedDeltaTime)&&value.fixedDeltaTime>=1/240&&value.fixedDeltaTime<=.1&&Number.isInteger(value.maxSubsteps)&&value.maxSubsteps>=1&&value.maxSubsteps<=32;}
 export const validSurface = value => !!value && /^#[0-9a-f]{6}$/i.test(value.color)

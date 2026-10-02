@@ -25,6 +25,7 @@ inline bool overridden(const std::string& id){return std::find(bridgeOverrides.b
 inline Actor* bridgeActor(const Json& id){if(id.is_null())return nullptr;const std::string name=id.get<std::string>();auto c=bridgeCells.find(name);if(c!=bridgeCells.end())return c->second->actor();auto& a=bridgeActors[name];if(!a)a=std::make_unique<Actor>();return a.get();}
 inline Json bridgeId(const Actor* a){if(!a)return nullptr;for(const auto& c:bridgeCells)if(c.second->actor()==a)return c.first;for(const auto& c:bridgeActors)if(c.second.get()==a)return c.first;throw std::runtime_error("unregistered C++ object pointer");}
 template<class T> inline Json bridgeValue(const T& v){if constexpr(std::is_pointer_v<T>){if constexpr(std::is_base_of_v<Actor,std::remove_pointer_t<T>>){return bridgeId(v);}else{if(!v)return nullptr;const auto* cell=dynamic_cast<const BridgeCell*>(v);for(const auto& c:bridgeCells)if(c.second.get()==cell)return c.first;throw std::runtime_error("unregistered C++ component pointer");}}else{return Json(v);}}
+template<class T> inline Json bridgeValue(const std::vector<T>& values){Json result=Json::array();for(const auto& value:values)result.push_back(bridgeValue(value));return result;}
 inline void bridgeSync(const Json& objects){bridgeWorld=objects;std::unordered_set<std::string> ids;for(const auto& o:objects)ids.insert(o.at("id").get<std::string>());for(auto it=bridgeCells.begin();it!=bridgeCells.end();)if(!ids.count(it->first))it=bridgeCells.erase(it);else ++it;for(auto it=bridgeActors.begin();it!=bridgeActors.end();)if(!ids.count(it->first))it=bridgeActors.erase(it);else ++it;for(const auto& o:objects){Actor* a=bridgeActor(o.at("id"));if(a)a->transform=o.get<Transform>();auto c=bridgeCells.find(o.at("id").get<std::string>());if(c!=bridgeCells.end()&&o.contains("nativeProperties"))c->second->defaults(o.at("nativeProperties"));}}
 inline Json bridgeSnapshot(){Json values=Json::array();for(const auto& c:bridgeCells){Json o={{"id",c.first},{"nativeProperties",c.second->properties()}};if(c.second->actor()){const auto& t=c.second->actor()->transform;o["position"]=t.position;o["rotation"]=t.rotation;o["scale"]=t.scale;}values.push_back(o);}for(const auto& c:bridgeActors){const auto& t=c.second->transform;values.push_back({{"id",c.first},{"position",t.position},{"rotation",t.rotation},{"scale",t.scale}});}return values;}
 inline Json* bridgeState(Actor* actor){const auto id=bridgeId(actor);for(auto& state:bridgeWorld)if(state.at("id")==id)return &state;return nullptr;}
@@ -53,4 +54,62 @@ inline Vec3 Scene::GetWorldPosition(Actor* target){if(!target)throw std::runtime
 inline void Scene::SetWorldPosition(Actor* target,const Vec3& position){if(!target)throw std::runtime_error("null actor");target->transform.position=bridgeFromWorld(bridgeParent(target),position);engineCommand("setWorldPosition",{{"target",bridgeId(target)},{"position",position}});}
 inline Vec3 Scene::GetLocalPosition(Actor* target){return GetPosition(target);}
 inline void Scene::SetLocalPosition(Actor* target,const Vec3& position){SetPosition(target,position);engineCommand("setLocalPosition",{{"target",bridgeId(target)},{"position",position}});}
+
+inline Json& gameplayField(Actor* target,const char* field){auto* state=bridgeState(target);if(!state)throw std::runtime_error("missing game object");return (*state)["gameplayDebug"][field];}
+inline void AI::RunBehaviorTree(Actor* target,const std::string& asset){engineCommand("runBehaviorTree",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void AI::StopBehaviorTree(Actor* target){engineCommand("stopBehaviorTree",{{"target",bridgeId(target)}});}
+inline void Blackboard::SetBool(Actor* target,const std::string& key,bool value){engineCommand("blackboardSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"blackboard")[key]=Json(value);}
+inline bool Blackboard::GetBool(Actor* target,const std::string& key){return gameplayField(target,"blackboard").at(key).get<bool>();}
+inline void Blackboard::SetFloat(Actor* target,const std::string& key,float value){engineCommand("blackboardSetFloat",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"blackboard")[key]=Json(value);}
+inline float Blackboard::GetFloat(Actor* target,const std::string& key){return gameplayField(target,"blackboard").at(key).get<float>();}
+inline void Blackboard::SetInt(Actor* target,const std::string& key,int value){engineCommand("blackboardSetInt",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"blackboard")[key]=Json(value);}
+inline int Blackboard::GetInt(Actor* target,const std::string& key){return gameplayField(target,"blackboard").at(key).get<int>();}
+inline void Blackboard::SetString(Actor* target,const std::string& key,const std::string& value){engineCommand("blackboardSetString",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"blackboard")[key]=Json(value);}
+inline std::string Blackboard::GetString(Actor* target,const std::string& key){return gameplayField(target,"blackboard").at(key).get<std::string>();}
+inline void Blackboard::SetVector(Actor* target,const std::string& key,const Vec3& value){engineCommand("blackboardSetVector",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"blackboard")[key]=Json(value);}
+inline Vec3 Blackboard::GetVector(Actor* target,const std::string& key){return gameplayField(target,"blackboard").at(key).get<Vec3>();}
+inline void Blackboard::SetObject(Actor* target,const std::string& key,Actor* value){engineCommand("blackboardSetObject",{{"target",bridgeId(target)},{"key",key},{"value",bridgeId(value)}});gameplayField(target,"blackboard")[key]=bridgeId(value);}
+inline Actor* Blackboard::GetObject(Actor* target,const std::string& key){return bridgeActor(gameplayField(target,"blackboard").at(key));}
+inline void Blackboard::Clear(Actor* target,const std::string& key){engineCommand("blackboardClear",{{"target",bridgeId(target)},{"key",key}});}
+inline void States::Start(Actor* target,const std::string& asset){engineCommand("startStateMachine",{{"target",bridgeId(target)},{"asset",asset}});}
+inline std::string States::GetState(Actor* target){return gameplayField(target,"state").get<std::string>();}
+inline void States::SendEvent(Actor* target,const std::string& event){engineCommand("stateEvent",{{"target",bridgeId(target)},{"event",event}});}
+inline void States::Jump(Actor* target,const std::string& state){engineCommand("stateJump",{{"target",bridgeId(target)},{"state",state}});}
+inline void States::Stop(Actor* target){engineCommand("stateStop",{{"target",bridgeId(target)}});}
+inline void States::SetFloat(Actor* target,const std::string& key,float value){engineCommand("stateSetFloat",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
+inline void States::SetBool(Actor* target,const std::string& key,bool value){engineCommand("stateSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
+inline void States::SetString(Actor* target,const std::string& key,const std::string& value){engineCommand("stateSetString",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
+inline void Montage::Play(Actor* target,const std::string& asset,const std::string& section){engineCommand("playMontage",{{"target",bridgeId(target)},{"asset",asset},{"section",section}});}
+inline void Montage::Stop(Actor* target){engineCommand("montageStop",{{"target",bridgeId(target)}});}
+inline void Montage::Pause(Actor* target,bool paused){engineCommand("montagePause",{{"target",bridgeId(target)},{"paused",paused}});}
+inline void Montage::JumpToSection(Actor* target,const std::string& section){engineCommand("montageJump",{{"target",bridgeId(target)},{"section",section}});}
+inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}
+inline float Montage::GetPosition(Actor* target){auto& state=gameplayField(target,"montage");return state.is_null()?0.0f:state.at("time").get<float>();}
+inline void Montage::Seek(Actor* target,float time){engineCommand("montageSeek",{{"target",bridgeId(target)},{"time",time}});}
+inline void LevelSequence::Play(Actor* target,const std::string& asset){engineCommand("playSequence",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"target",bridgeId(target)}});}
+inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}
+inline void LevelSequence::Seek(Actor* target,float time){engineCommand("sequenceSeek",{{"target",bridgeId(target)},{"time",time}});}
+inline float LevelSequence::GetPosition(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0.0f:state.at("time").get<float>();}
+inline void Navigation::MoveTo(Actor* target,const Vec3& destination){engineCommand("navigationMove",{{"target",bridgeId(target)},{"destination",destination}});}
+inline void Navigation::Stop(Actor* target){engineCommand("navigationStop",{{"target",bridgeId(target)}});}
+inline std::string Navigation::GetStatus(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?"idle":state.value("status",std::string{"idle"});}
+inline std::vector<Vec3> Navigation::GetPath(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?std::vector<Vec3>{}:state.value("path",std::vector<Vec3>{});}
+inline std::vector<Actor*> Perception::GetTargets(Actor* target){std::vector<Actor*> result;auto& states=gameplayField(target,"perception");if(states.is_array())for(const auto& state:states)if(state.value("sensed",false))result.push_back(bridgeActor(state.at("id")));return result;}
+inline void Perception::Forget(Actor* target){engineCommand("perceptionForget",{{"target",bridgeId(target)}});gameplayField(target,"perception")=Json::array();}
+inline void Perception::ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag){engineCommand("reportNoise",{{"target",bridgeId(target)},{"position",position},{"loudness",loudness},{"radius",radius},{"tag",tag}});}
+inline void Particles::Play(Actor* target){engineCommand("particlePlay",{{"target",bridgeId(target)}});}
+inline void Particles::Stop(Actor* target,bool clear){engineCommand("particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
+inline void Particles::Pause(Actor* target,bool paused){engineCommand("particlePause",{{"target",bridgeId(target)},{"paused",paused}});}
+inline void Particles::Emit(Actor* target,int count){engineCommand("particleEmit",{{"target",bridgeId(target)},{"count",count}});}
+inline int Particles::GetCount(Actor* target){auto& state=gameplayField(target,"particles");return state.is_null()?0:state.value("count",0);}
+inline Json& bridgeTags(Actor* target){auto* state=bridgeState(target);if(!state)throw std::runtime_error("missing tag target");auto& tags=(*state)["tags"];if(tags.is_null())tags=Json::array();return tags;}
+inline std::vector<std::string> Tags::Get(Actor* target){return bridgeTags(target).get<std::vector<std::string>>();}
+inline void Tags::Add(Actor* target,const std::string& tag){engineCommand("tagAdd",{{"target",bridgeId(target)},{"tag",tag}});auto& tags=bridgeTags(target);if(std::find(tags.begin(),tags.end(),Json(tag))==tags.end())tags.push_back(tag);}
+inline void Tags::Remove(Actor* target,const std::string& tag){engineCommand("tagRemove",{{"target",bridgeId(target)},{"tag",tag}});auto& tags=bridgeTags(target);tags.erase(std::remove(tags.begin(),tags.end(),Json(tag)),tags.end());}
+inline bool Tags::Has(Actor* target,const std::string& tag,bool exact){for(const auto& value:Tags::Get(target))if(value==tag||!exact&&value.rfind(tag+".",0)==0)return true;return false;}
+inline bool Tags::HasAny(Actor* target,const std::vector<std::string>& tags,bool exact){for(const auto& tag:tags)if(Has(target,tag,exact))return true;return false;}
+inline bool Tags::HasAll(Actor* target,const std::vector<std::string>& tags,bool exact){for(const auto& tag:tags)if(!Has(target,tag,exact))return false;return true;}
+inline bool bridgeTagQuery(Actor* target,const Json& query,int depth,int& budget){if(--budget<0||depth>16||!query.is_object())throw std::runtime_error("tag query bounds");if(!query.value("tags",Json::array()).is_array()||!query.value("queries",Json::array()).is_array()||query.value("tags",Json::array()).size()>32||query.value("queries",Json::array()).size()>32)throw std::runtime_error("tag query shape");const auto op=query.at("op").get<std::string>();if(op!="any"&&op!="all"&&op!="none")throw std::runtime_error("tag query operator");std::vector<bool> results;for(const auto& tag:query.value("tags",Json::array()))results.push_back(Tags::Has(target,tag.get<std::string>(),query.value("exact",false)));for(const auto& child:query.value("queries",Json::array()))results.push_back(bridgeTagQuery(target,child,depth+1,budget));const bool any=std::any_of(results.begin(),results.end(),[](bool v){return v;}),all=std::all_of(results.begin(),results.end(),[](bool v){return v;});return op=="all"?all:op=="none"?!any:any;}
+inline bool Tags::MatchesQuery(Actor* target,const std::string& query){int budget=256;return bridgeTagQuery(target,Json::parse(query),0,budget);}
 }

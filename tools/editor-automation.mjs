@@ -3,6 +3,7 @@ import {assetTypes,assetSuffix,createAsset} from '../prototype/asset-documents.j
 import {componentDefinitions} from '../prototype/scene-components.js';
 import {catalog,variableTypes} from '../prototype/blueprint-model.js';
 import {materialCatalog} from '../prototype/material-runtime.js';
+import {gameplayTypes,behaviorNodes,boardTypes,comparisons} from '../prototype/gameplay-assets.js';
 import {blueprintClasses} from '../prototype/class-types.js';
 
 export const editorMethods={
@@ -19,7 +20,7 @@ export const editorMethods={
   'runtime.openScene':{params:{path:'장면 에셋의 전체 프로젝트 상대 경로'}},
   'runtime.state':{params:{}},'native.build':{params:{path:'C++이 연결된 블루프린트 경로'}}
 };
-export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},commands:editorMethods};}
+export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},gameplay:{assets:gameplayTypes,behaviorNodes,boardTypes,comparisons,sequenceTracks:['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale'],navigation:{solver:'collision-grid-A*',planes:['XY','XZ'],maxCells:40000},perception:{events:['OnTargetPerceptionUpdated'],eventParameters:{target:'object',sense:'string',sensed:'bool',location:'vec3',tag:'string'}},tags:{grammar:'dot-separated identifiers',query:{op:'all',tags:['State.Alive'],queries:[{op:'none',tags:['State.Stunned']}]}},limits:{montage:'single full-body clip per actor',fsm:'flat state machine',behavior:'interval-driven reactive selector'}},commands:editorMethods};}
 
 export class EditorAutomation {
   constructor(){this.clients=new Map();this.commands=new Map();}

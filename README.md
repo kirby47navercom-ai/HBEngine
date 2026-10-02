@@ -5,8 +5,8 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 �
 ## 현재 구현
 
 - **엔진 실행과 프로젝트**: HBEngine.exe를 실행하면 최근 프로젝트·새 프로젝트·찾아 열기가 있는 허브를 연다. 프로젝트 루트의 `.hbproject` JSON은 UUID·엔진/파일 버전·시작 레벨·시작 BP를 지정한다. 생성 후 바로 편집기에 들어가며 기존 폴더와 파일을 덮어쓰지 않는다. 프로젝트별 복구·도킹·Project 폴더·SaveGame을 `Saved/Editor/storage.json`에 보존해 실행 포트가 달라져도 이어간다. 최초 일반 실행 또는 `--register`로 현재 Windows 사용자에게 `.hbproject` 더블클릭 연결을 등록한다.
-- **373개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
-- **289개 공통 C++ API**: 실제 C++17 함수와 브라우저 실행을 제공한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
+- **444개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
+- **289개 코어 C++ API + 73개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
 - **블루프린트 실행**: Construction → BeginPlay → Tick·입력·Overlap → EndPlay, 함수·매크로, 조건·반복·중단, Delay·재시작 지연, 타이머·Timeline, 변수·배열, 디스패처·인터페이스 호출. 중단점·Step·Continue와 실제 계산한 핀 값을 지원한다. Stop은 편집 장면을 복원한다.
 - **사용자 C++ 실행**: Project에서 C++ 클래스를 만들고 설치된 Visual Studio(또는 VS Code)에서 .h/.cpp를 편집한다. C++ 클래스 기반 블루프린트에서 파일 변경을 다시 읽어 g++로 빌드한다. 공개 함수·속성·static 함수·반환·출력 참조·객체 ID를 연결하고 C++ 이벤트를 BP로 전달한다. C++ 변환 변경은 실행 월드에 반영한다. [실행 예제](prototype/examples/BP_NativeDoor.blueprint.json).
 - **그래프 제작**: 한글/영어 우클릭 검색, 핀 연결·분할·합치기·변수 승격, 다중/영역 선택, 복사·복제·Undo/Redo, 함수·매크로 추출, Construction, 주석·세부 속성·모든 내부 그래프 검색. 그래프당 1,000개 노드를 저장할 수 있다.
@@ -15,6 +15,8 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 �
 - **에셋 생성**: 폴더 우클릭에서 Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent 부모의 BP·C++ 클래스, Input Action·Input Mapping Context·머테리얼·트랜스폼 애니메이션·커브·데이터·레벨을 실제 파일로 만든다. 입력 에셋의 자료형·키/축/배율·컨텍스트 우선순위가 실행기에 연결된다.
 - **Timeline**: 별도 커브 편집기, Float/Vector/Color/Event 트랙, XYZ/RGBA, 키·시간·값·접선·보간, 스크럽·역방향·길이·Loop·Autoplay·Rate·시간 배율 무시. Play/Play from Start/Stop/Reverse/Reverse from End/Set New Time와 Update/Finished를 실행한다.
 - **트랜스폼 애니메이션 실행**: 독립 Animation 에셋의 position/rotation/scale Vector 트랙을 기존 Play Animation/Stop Animation 노드로 대상 오브젝트에 적용한다. 회전은 XYZ Euler degree이고 트랙 값은 가산 이동이 아니라 대상 속성에 덮어쓴다. 반복, 재생 속도, 마지막 키 길이, 시간 배율 무시를 적용한다. 같은 이름의 모델 내장 클립이 있으면 그 클립을 우선 재생한다. 독립 Animation의 이벤트 트랙·뼈/상태 머신은 아직 실행하지 않는다.
+- **AI·상태·연출 제작**: 블랙보드·행동트리·FSM·몽타주·레벨 시퀀스를 독립 파일과 전용 편집기로 만든다. 행동트리의 상태·현재 FSM 상태·블랙보드 실행 값을 플레이 중 확인한다. 몽타주 섹션/다음 섹션/Notify/슬롯과 시퀀스의 대상 바인딩·11종 트랙·키/클립·프레임 스냅·XYZ 속성·실제 장면 스크럽을 연결했다.
+- **내비게이션·인지·효과**: XY/XZ 격자 A*와 에이전트/장애물, 시야/차폐/소리/기억과 블랙보드 연동, 계층 태그/Any·All·None 질의, CPU 파티클의 Main/Emission/Shape/Velocity/Force/Color/Size/Renderer, 실제 표면 데칼 투영을 제공한다. 다각형 NavMesh·군중 회피·입자 충돌/트레일·뼈별 슬롯 블렌딩은 남아 있다.
 - **장면과 에셋 사용**: 도형·광원·Transform, 직교 2D와 3D 뷰, 하늘·햇빛·구름·안개·맵 템플릿. OBJ/GLTF/GLB/FBX 미리보기·배치, 모델에 포함된 애니메이션, 브라우저 지원 영상·오디오, 기본 PBR 표면·광원·위젯·게임 저장을 연결한다.
 
 Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포인터·창 배치의 공식 근거와 남은 범위는 [전체 분야 조사와 구현 대조](docs/REFERENCE_COVERAGE.md), [전체 엔진 분석](docs/ENGINE_REFERENCE_ANALYSIS.md), [인터랙션 계약과 검증 상태](docs/EDITOR_INTERACTION_SPEC.md), [BP/C++ 구현 기준](docs/BLUEPRINT_SPEC.md), [장기 엔진 기획](docs/ENGINE_PLAN.md)에 있다.
@@ -48,13 +50,15 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 
 | 명령 | 검사 |
 | --- | --- |
-| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·390종 한 그래프 저장 |
+| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·444종 한 그래프 저장 |
 | npm run api:check | 공통 선언·생성 헤더·노드 메타데이터 일치 |
 | npm run test:library | 새 221개 함수의 실제 C++/JS 결과 비교·배열/정수 오류 |
 | npm run test:native | 기존 공통 C++ 코어 실제 컴파일·호출 |
 | npm run test:runtime | 이벤트·반복·지연·Timeline·트랜스폼 애니메이션 재생/정지/반복/시간 배율·중단점 이어가기·실제 C++→BP |
 | npm run test:host | 사용자 C++ 빌드·함수/속성/객체/이벤트·잘못된 반환/컴파일 진단 |
 | npm run test:project | 실제 파일·다중 가져오기·폴더 드롭 열거·내용 검색·재열기·원본 보존 |
+| npm run test:gameplay | 행동트리·블랙보드·FSM·몽타주·11종 시퀀스·데칼 투영·C++ 서명/실행·실패 보존 |
+| npm run test:systems | 2D/3D A*·장애물/에이전트 크기·시야/소리·태그·파티클·C++ 명령/객체 배열·두 예제의 600프레임 실행 |
 | npm run test:assets | 확장 에셋·부모 클래스 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
 | npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
 | npm run test:hub-ui | 실제 허브 핸들러의 검색·선택·열기·모달·키보드·오류/입력 보존 |
@@ -100,7 +104,7 @@ auto remaining = hb::Timers::GetTimerRemaining(timer);
 
 ## 확장된 제작 흐름과 AI
 
-2D Sprite crop/pivot/PPU·그리드 분할, Flipbook 프레임, Tilemap 브러시/지우기/사각형/채우기·레이어·충돌 편집을 독립 에디터로 연다. 2D 문서는 전용 캔버스·팔레트·속성을 사용하고 중복 전역 패널을 숨긴다. 장면의 27종 컴포넌트, Controller/Pawn/GameMode/State, 2D/3D 고정 물리·접촉·중력·입력·점프를 실제 플레이로 연결한다. 머테리얼 그래프 33종은 타입 검증과 GLSL 생성 후 GPU 재질에 적용한다.
+2D Sprite crop/pivot/PPU·그리드 분할, Flipbook 프레임, Tilemap 브러시/지우기/사각형/채우기·레이어·충돌 편집을 독립 에디터로 연다. 2D 문서는 전용 캔버스·팔레트·속성을 사용하고 중복 전역 패널을 숨긴다. 장면의 39종 컴포넌트, Controller/Pawn/GameMode/State, 2D/3D 고정 물리·접촉·중력·입력·점프를 실제 플레이로 연결한다. 머테리얼 그래프 33종은 타입 검증과 GLSL 생성 후 GPU 재질에 적용한다.
 
 BP Open Scene과 C++ `hb::Scene::Open`은 다음 장면을 검증하고 프레임 경계에서 이전 월드의 EndPlay·타이머·입력 정리 후 새 월드를 시작한다. Stop하면 전환 전의 편집 장면과 환경을 복원한다. 화면 없는 실행기도 같은 준비/전환 경로를 사용하며 `sceneHistory`에 전환 장면과 프레임을 남긴다.
 
@@ -110,11 +114,11 @@ AI도 현재 미저장 문서를 읽고 revision 조건부 부분 변경·Undo·
 
 ## 현재 한계
 
-Windows 엔진 실행 파일과 편집기 배포 폴더는 구현했다. 현재 WebView2가 HTML/JS 편집기를 표시하고 Node가 로컬 서버와 C++ 빌드 호스트를 제공한다. DirectX 11·HLSL backend·native 물리/3D 음향·임의 형식의 엔진 변환·독립 게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
+Windows 엔진 실행 파일과 편집기 배포 폴더는 구현했다. 현재 WebView2가 HTML/JS 편집기를 표시하고 Node가 로컬 서버와 C++ 빌드 호스트를 제공한다. DirectX 11·HLSL backend·native 물리/3D 음향·임의 형식의 엔진 변환·독립 게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어·2D/3D AI와 효과 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
 
 문서 저장은 디스크의 이전 내용과 대조해 외부 변경을 거부하고 Saved/Backups에 원본을 보관한다. 자동 충돌 병합·다중 파일 트랜잭션은 지원하지 않는다.
 
-BP/Scene/Material/Animation/Curve/IA/IMC/Data는 파일마다 독립 문서 모델을 가지며 여러 이미지/모델/텍스트 문서와 뷰포트도 열 수 있다. BP→BP 상속, 사용자 Struct/Enum/Set/Map, 로컬 변수, 네트워크, Animation 상태 머신, 프리팹 중첩·override는 계속 구현할 범위다. 트랜스폼 애니메이션은 position/rotation/scale만 적용하며 독립 Animation의 이벤트 트랙·임의 컴포넌트 속성·Skeletal/리타깃·블렌딩은 미지원이다. 추가 C++ 종속 파일·멀티 파일 프로젝트·DLL 핫 리로드는 미지원이다. C++→BP 이벤트는 C++ 호출 종료 후 전달하며 임의 반환값을 동기적으로 BP에서 C++에 돌려주는 override는 미지원이다.
+BP/Scene/Material/Animation/Curve/IA/IMC/Data/Blackboard/BehaviorTree/FSM/Montage/Sequence 등은 파일마다 독립 문서 모델을 가지며 여러 이미지/모델/텍스트 문서와 뷰포트도 열 수 있다. BP→BP 상속, 사용자 Struct/Enum/Set/Map, 로컬 변수, 네트워크, 계층형 상태 머신·애니메이션 블렌드 트리, 프리팹 중첩·override는 계속 구현할 범위다. 트랜스폼 애니메이션은 position/rotation/scale만 적용하며 독립 Transform Animation의 이벤트 트랙·임의 컴포넌트 속성·뼈 저작/리타깃·포즈 블렌딩은 미지원이다. 가져온 모델의 내장 skeletal 클립은 재생하며 몽타주 시간으로 샘플링할 수 있다. 추가 C++ 종속 파일·멀티 파일 프로젝트·DLL 핫 리로드는 미지원이다. C++→BP 이벤트는 C++ 호출 종료 후 전달하며 임의 반환값을 동기적으로 BP에서 C++에 돌려주는 override는 미지원이다.
 
 ## Git
 

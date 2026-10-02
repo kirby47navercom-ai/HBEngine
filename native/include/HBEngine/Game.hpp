@@ -54,6 +54,97 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="impulse", KoreanName="충격량 더하기", Category="물리") static void AddImpulse(Actor* target,const Vec3& impulse);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="collisionEnabled", KoreanName="충돌 활성화", Category="물리") static void SetCollisionEnabled(Actor* target,bool enabled);
 };
+
+HB_CLASS()
+class AI : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="runBehaviorTree", KoreanName="행동트리 실행", Category="AI") static void RunBehaviorTree(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stopBehaviorTree", KoreanName="행동트리 정지", Category="AI") static void StopBehaviorTree(Actor* target);
+};
+HB_CLASS()
+class Blackboard : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetBool", KoreanName="블랙보드 불리언 지정", Category="AI") static void SetBool(Actor* target,const std::string& key,bool value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetBool", KoreanName="블랙보드 불리언 가져오기", Category="AI") static bool GetBool(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetFloat", KoreanName="블랙보드 실수 지정", Category="AI") static void SetFloat(Actor* target,const std::string& key,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetFloat", KoreanName="블랙보드 실수 가져오기", Category="AI") static float GetFloat(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetInt", KoreanName="블랙보드 정수 지정", Category="AI") static void SetInt(Actor* target,const std::string& key,int value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetInt", KoreanName="블랙보드 정수 가져오기", Category="AI") static int GetInt(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetString", KoreanName="블랙보드 문자열 지정", Category="AI") static void SetString(Actor* target,const std::string& key,const std::string& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetString", KoreanName="블랙보드 문자열 가져오기", Category="AI") static std::string GetString(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetVector", KoreanName="블랙보드 벡터 지정", Category="AI") static void SetVector(Actor* target,const std::string& key,const Vec3& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetVector", KoreanName="블랙보드 벡터 가져오기", Category="AI") static Vec3 GetVector(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardSetObject", KoreanName="블랙보드 오브젝트 지정", Category="AI") static void SetObject(Actor* target,const std::string& key,Actor* value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="blackboardGetObject", KoreanName="블랙보드 오브젝트 가져오기", Category="AI") static Actor* GetObject(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="blackboardClear", KoreanName="블랙보드 키 비우기", Category="AI") static void Clear(Actor* target,const std::string& key);
+};
+HB_CLASS()
+class States : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="startStateMachine", KoreanName="상태 머신 실행", Category="상태 머신") static void Start(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="stateGet", KoreanName="현재 상태 가져오기", Category="상태 머신") static std::string GetState(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateEvent", KoreanName="상태 이벤트 보내기", Category="상태 머신") static void SendEvent(Actor* target,const std::string& event);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateJump", KoreanName="상태 변경", Category="상태 머신") static void Jump(Actor* target,const std::string& state);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateStop", KoreanName="상태 머신 정지", Category="상태 머신") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetFloat", KoreanName="상태 파라미터 실수 지정", Category="상태 머신") static void SetFloat(Actor* target,const std::string& key,float value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetBool", KoreanName="상태 파라미터 불리언 지정", Category="상태 머신") static void SetBool(Actor* target,const std::string& key,bool value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetString", KoreanName="상태 파라미터 문자열 지정", Category="상태 머신") static void SetString(Actor* target,const std::string& key,const std::string& value);
+};
+HB_CLASS()
+class Montage : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playMontage", KoreanName="몽타주 재생", Category="몽타주") static void Play(Actor* target,const std::string& asset,const std::string& section);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStop", KoreanName="몽타주 정지", Category="몽타주") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montagePause", KoreanName="몽타주 일시 정지", Category="몽타주") static void Pause(Actor* target,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageJump", KoreanName="몽타주 섹션 이동", Category="몽타주") static void JumpToSection(Actor* target,const std::string& section);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageNext", KoreanName="다음 몽타주 섹션 지정", Category="몽타주") static void SetNextSection(Actor* target,const std::string& section,const std::string& next);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePosition", KoreanName="몽타주 재생 위치", Category="몽타주") static float GetPosition(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageSeek", KoreanName="몽타주 재생 위치 지정", Category="몽타주") static void Seek(Actor* target,float time);
+};
+HB_CLASS()
+class LevelSequence : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playSequence", KoreanName="레벨 시퀀스 재생", Category="시퀀스") static void Play(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceStop", KoreanName="레벨 시퀀스 정지", Category="시퀀스") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequencePause", KoreanName="레벨 시퀀스 일시 정지", Category="시퀀스") static void Pause(Actor* target,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSeek", KoreanName="레벨 시퀀스 시간 이동", Category="시퀀스") static void Seek(Actor* target,float time);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequencePosition", KoreanName="레벨 시퀀스 재생 위치", Category="시퀀스") static float GetPosition(Actor* target);
+};
+HB_CLASS()
+class Navigation : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="navigationMove", KoreanName="경로를 따라 이동", Category="AI 내비게이션") static void MoveTo(Actor* target,const Vec3& destination);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="navigationStop", KoreanName="경로 이동 정지", Category="AI 내비게이션") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationStatus", KoreanName="경로 이동 상태", Category="AI 내비게이션") static std::string GetStatus(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationPath", KoreanName="이동 경로 가져오기", Category="AI 내비게이션") static std::vector<Vec3> GetPath(Actor* target);
+};
+HB_CLASS()
+class Perception : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="perceptionTargets", KoreanName="감지한 오브젝트", Category="AI 감지") static std::vector<Actor*> GetTargets(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="perceptionForget", KoreanName="감지 기억 비우기", Category="AI 감지") static void Forget(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reportNoise", KoreanName="소리 자극 알림", Category="AI 감지") static void ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag);
+};
+HB_CLASS()
+class Particles : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particlePlay", KoreanName="파티클 재생", Category="파티클") static void Play(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleStop", KoreanName="파티클 정지", Category="파티클") static void Stop(Actor* target,bool clear);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particlePause", KoreanName="파티클 일시정지", Category="파티클") static void Pause(Actor* target,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleEmit", KoreanName="파티클 방출", Category="파티클") static void Emit(Actor* target,int count);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="particleCount", KoreanName="파티클 개수", Category="파티클") static int GetCount(Actor* target);
+};
+HB_CLASS()
+class Tags : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tagAdd", KoreanName="게임플레이 태그 추가", Category="게임플레이 태그") static void Add(Actor* target,const std::string& tag);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tagRemove", KoreanName="게임플레이 태그 제거", Category="게임플레이 태그") static void Remove(Actor* target,const std::string& tag);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tagGet", KoreanName="게임플레이 태그 목록", Category="게임플레이 태그") static std::vector<std::string> Get(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tagHas", KoreanName="게임플레이 태그 확인", Category="게임플레이 태그") static bool Has(Actor* target,const std::string& tag,bool exact);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tagAny", KoreanName="하나 이상의 태그 확인", Category="게임플레이 태그") static bool HasAny(Actor* target,const std::vector<std::string>& tags,bool exact);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tagAll", KoreanName="모든 태그 확인", Category="게임플레이 태그") static bool HasAll(Actor* target,const std::vector<std::string>& tags,bool exact);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tagQuery", KoreanName="태그 조건 쿼리", Category="게임플레이 태그") static bool MatchesQuery(Actor* target,const std::string& query);
+};
 inline Vec3 operator+(Vec3 a,Vec3 b){return {a.x+b.x,a.y+b.y,a.z+b.z};}
 inline Vec3 operator-(Vec3 a,Vec3 b){return {a.x-b.x,a.y-b.y,a.z-b.z};}
 inline Vec3 operator*(Vec3 a,float s){return {a.x*s,a.y*s,a.z*s};}

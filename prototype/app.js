@@ -27,6 +27,8 @@ import {sceneRendering} from './scene-rendering.js';
 import {MaterialEditor} from './material-editor.js';
 import {createThreeMaterial,resolveMaterialAsset,materialDefaults,validMaterialSurface} from './material-runtime.js';
 import {renderTwoDEditor} from './two-d-editor.js';
+import {GameplayEditor} from './gameplay-editor.js';
+import {gameplayTypes} from './gameplay-assets.js';
 import {make2DScene} from './scene-templates.js';
 let dock,project,runtime,runtimeServices,editWorld,nativeBuild,runtimeFrame,focusedWindow='scene';let activeScenePath=session.startupScene,activeBlueprintPath=session.startupBlueprint,codeHeaderPath='Source/DoorController.h',codeSourcePath='Source/DoorController.cpp';const documents=new Map();const assetDocs=new AssetDocuments();let switchingDocument=false;const assetPanes=new Map();const extraViewports=[];const timelineWindows=new Map();
 
@@ -53,7 +55,7 @@ let transformPivot,transformSelectionStart,transformPivotStart;
 let activeCamera, viewMode = '3d', toastTimer, transformBefore, playTime = 0, importCounter = 0;
 const meshMap = new Map(), objectUrls = [];
 const readAsset=async path=>clone(assetDocs.items.get(path)?.data||await(await editorRequest(fileUrl(path))).json());
-const visuals=sceneRendering({read:readAsset,fileUrl,loadModel,current:id=>meshMap.get(id),error:message=>log(String(message),'ERROR')});
+const visuals=sceneRendering({read:readAsset,fileUrl,loadModel,current:id=>meshMap.get(id),all:()=>[...meshMap.values()],error:message=>log(String(message),'ERROR')});
 let materialEditor,previewMaterialSignature='',renderGameView=true;
 const corePreview=createCorePreview();
 corePreview.object=id=>objects.find(o=>o.id===(id==='self'?selected:id));
@@ -213,7 +215,7 @@ function selectObject(id, refresh=true, event={}) {
   $('#selection-chip-name').textContent=o.name;$('.selection-chip [data-icon]').innerHTML=icon(kindIcon(o.kind));
   if(refresh){renderHierarchy();renderInspector();}
 }
-const kindIcon = kind => ({light:'sun',directionalLight:'sun',pointLight:'light',spotLight:'light',camera:'camera',grass:'leaf',water:'layers',ground:'grid',crystal:'diamond',sphere:'sphere',empty:'component',group:'folder',sprite:'image',tilemap:'tilemap',character:'character',character2d:'character',playerStart:'pawn',audio:'volume',controller:'controller'}[kind]||'cube');
+const kindIcon = kind => ({particles:'sun',navigation:'grid',decal:'material',light:'sun',directionalLight:'sun',pointLight:'light',spotLight:'light',camera:'camera',grass:'leaf',water:'layers',ground:'grid',crystal:'diamond',sphere:'sphere',empty:'component',group:'folder',sprite:'image',tilemap:'tilemap',character:'character',character2d:'character',playerStart:'pawn',audio:'volume',controller:'controller'}[kind]||'cube');
 function renderHierarchy() {
   sceneSelection=new Set([...sceneSelection].filter(id=>objects.some(o=>o.id===id)));if(!sceneSelection.size&&selected)sceneSelection.add(selected);
   $('#hierarchy-list').innerHTML=hierarchyMarkup(objects,sceneSelection,$('#hierarchy-search').value,collapsedObjects,kindIcon);
@@ -359,7 +361,7 @@ document.addEventListener('pointerdown',event=>{if(event.button===3||event.butto
 document.addEventListener('auxclick',event=>{if(event.button===3||event.button===4)event.preventDefault();},true);
 function createObject(kind) {
   if(assetDocs.current?.kind!=='scene')activateDocument(activeScenePath);if(running)return notify('실행을 종료한 뒤 오브젝트를 추가하세요.');if(objects.length>=500)return notify('프로토타입은 오브젝트 500개까지 편집할 수 있어요.');remember();
-  const names={cube:'Cube',sphere:'Sphere',cylinder:'Cylinder',plane:'Plane',light:'Directional Light',directionalLight:'Directional Light',pointLight:'Point Light',spotLight:'Spot Light',empty:'Empty',group:'Group',camera:'Camera',audio:'Audio Source',playerStart:'Player Start',character:'Character',character2d:'Character 2D',sprite:'Sprite',tilemap:'Tilemap'};
+  const names={particles:'Particle System',navigation:'Navigation Grid',decal:'Decal',cube:'Cube',sphere:'Sphere',cylinder:'Cylinder',plane:'Plane',light:'Directional Light',directionalLight:'Directional Light',pointLight:'Point Light',spotLight:'Spot Light',empty:'Empty',group:'Group',camera:'Camera',audio:'Audio Source',playerStart:'Player Start',character:'Character',character2d:'Character 2D',sprite:'Sprite',tilemap:'Tilemap'};
   const id=crypto.randomUUID();const o={id,name:names[kind]||'Object',kind,group:'WORLD',position:runtimeSettings.dimension==='2d'?[0,0,0]:[-1.7,.1,1],rotation:[0,0,0],scale:[1,1,1],visible:true,components:defaultsForObject(kind)};objects.push(o);if(scene)buildObject(o);selectObject(id);setWorkspace('scene');changed();
 }
 async function nativeCall(request,build){const owner=runtime,generation=owner.generation,services=runtimeServices;build??=runtimeBuilds.get(owner.objects.find(o=>o.id===request.self)?.blueprintAsset)||nativeBuild;if(!build)throw Error('C++을 먼저 빌드하세요.');const result=await (await editorRequest('/api/native/call',{method:'POST',body:JSON.stringify({token:build.token,request:{...request,objects:nativeWorld(owner.objects,new Set([...runtimeBuilds].filter(([,b])=>b.token===build.token).map(([path])=>path)))}})})).json();if(runtime!==owner||owner.generation!==generation)return {outputs:{},events:[],objects:[]};for(const state of result.objects||[]){const o=owner.objects.find(o=>o.id===state.id);if(o){if(state.position!==undefined&&(!validValue('transform',state)||!state.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>state[k].every(v=>Math.abs(v)<=10000))||(state.visible!==undefined&&typeof state.visible!=='boolean')))throw Error('C++ 객체 상태 범위 오류: '+state.id);Object.assign(o,state);if(running&&runtime===owner)applyObject(o);}}for(const operation of result.operations||[])await services.operation(operation.key,operation.args,owner.bindings.find(b=>b.self===request.self)||{self:request.self,root:{components:[]}},owner);if(result.clock){owner.core.scale=result.clock.scale;owner.core.paused=result.clock.paused;if(!request.command)owner.core.time=result.clock.time;}return result;}
@@ -377,7 +379,7 @@ async function startPlay(travel){
     playPresentation={surface:clone(surface),environment:clone(environment),runtimeSettings:clone(runtimeSettings),viewMode};runtimeScenePath=travel?.path||activeScenePath;editWorld=objects;objects=world;if(travel){surface=clone(travel.data.surface);environment=clone(travel.data.environment||defaultEnvironment);runtimeSettings=clone(travel.data.runtime||defaultRuntimeSettings);setView(runtimeSettings.dimension==='2d'?'2d':'3d');updateSurface();applyEnvironment();}
 
   const overlay=document.createElement('div');overlay.className='runtime-overlay';$('#scene-canvas-container').append(overlay);
-  rebuildWorld();await Promise.all([...meshMap.values()].map(group=>group.userData.ready));await visuals.preparePhysics(objects);runtimeServices=engineOperations({material:visuals.material,materialFloat:visuals.materialFloat,spriteFrame:visuals.spriteFrame,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions,listenerPosition:()=>activeCamera?.getWorldPosition(new THREE.Vector3()).toArray(),build:buildObject,remove:o=>{const group=meshMap.get(o.id);if(group){visuals.dispose(group);group.traverse(child=>child.geometry?.dispose());group.removeFromParent();}meshMap.delete(o.id);},update:applyObject,mesh:id=>meshMap.get(id),meshes:()=>[...meshMap.values()],scene:()=>scene,overlay:()=>overlay,readAsset,asset:async(name,kind)=>{const data=await (await editorRequest('/api/project?recursive=1')).json();return resolvePlayAsset(data.entries,name,kind);}});
+  rebuildWorld();await Promise.all([...meshMap.values()].map(group=>group.userData.ready));await visuals.preparePhysics(objects);runtimeServices=engineOperations({particleSnapshot:visuals.particleSnapshot,material:visuals.material,materialFloat:visuals.materialFloat,spriteFrame:visuals.spriteFrame,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions,listenerPosition:()=>activeCamera?.getWorldPosition(new THREE.Vector3()).toArray(),build:buildObject,remove:o=>{const group=meshMap.get(o.id);if(group){visuals.dispose(group);group.traverse(child=>child.geometry?.dispose());group.removeFromParent();}meshMap.delete(o.id);},update:applyObject,mesh:id=>meshMap.get(id),meshes:()=>[...meshMap.values()],scene:()=>scene,overlay:()=>overlay,readAsset,asset:async(name,kind)=>{const data=await (await editorRequest('/api/project?recursive=1')).json();return resolvePlayAsset(data.entries,name,kind);}});
   runtime=new BlueprintRuntime(objects,prepared.bindings,{...runtimeServices,inputAssets:prepared.inputAssets,updateObject:applyObject,log:v=>log(v),native:request=>nativeCall(request),trace:n=>{const el=$(`#blueprint-graph [data-node="${n.id}"]`);el?.classList.add('tracing');setTimeout(()=>el?.classList.remove('tracing'),200);},breakpoint:(n,f)=>{paused=true;const path=objects.find(o=>o.id===f.b.self)?.blueprintAsset;if(path&&path!==assetDocs.active){captureDocument();if(!assetDocs.items.has(path))assetDocs.open(path,'blueprint',f.b.root);switchingDocument=true;activateDocument(path);}const view=graphViews().find(([id])=>graphContext(graphs.blueprint,id).nodes.some(x=>x.id===n.id))?.[0]||'event';switchBlueprintView(view);selectedNode=n.id;selectedNodes=new Set([n.id]);selectedDetail={kind:'node',id:n.id};setWorkspace('blueprint');renderBlueprintGraph();renderBlueprintInspector();showBlueprintResults('debug');$('#graph-status').textContent='중단점 · '+[graphs.blueprint.name,...f.stack,nodeTitle(n,f.g)].join(' → ');updatePlayButtons();}});
   running=true;paused=false;playTime=0;runtimeFrame=null;queuedDelta=0;transform?.detach();if(selectionBox)selectionBox.visible=false;$('#play-banner').hidden=false;updatePlayButtons();
   for(const build of new Map([...runtimeBuilds.values()].map(b=>[b.token,b])).values())await nativeCall({command:'reset'},build);await runtime.start();if(!dock.visible('scene'))dock.open('scene');$('#scene-canvas').focus();notify('실행');}catch(error){log(error.message,'ERROR');await stopPlay();notify('실행 오류: '+error.message);}finally{startingPlay=false;}
@@ -392,7 +394,7 @@ function renderAssets(){for(const browser of projectBrowsers.values())browser.re
 async function openCodeExternal(path){try{const result=await (await editorRequest('/api/editor/open',{method:'POST',body:JSON.stringify({path})})).json();notify(result.editor+'에서 열었어요.');}catch(error){notify(error.message);}}
 async function openProjectAsset(file){
   if(file.kind==='code'){codeHeaderPath=/\.(h|hpp)$/i.test(file.path)?file.path:file.path.replace(/\.cpp$/i,'.h');codeSourcePath=file.path.replace(/\.(?:cpp|h|hpp)$/i,'.cpp');return openCodeExternal(file.path);}
-  if(running)throw Error('실행을 종료한 뒤 다른 에셋을 여세요.');
+  if(running&&!gameplayTypes[file.kind]&&file.path!==activeScenePath)throw Error('실행 중에는 현재 장면과 게임플레이 진단 에셋을 열 수 있어요.');
   if(assetDocs.items.has(file.path)){activateDocument(file.path);return;}
   if(assetSuffix[file.kind]){const data=await (await editorRequest(fileUrl(file.path))).json();assetDocs.open(file.path,file.kind,data);activateDocument(file.path);return;}
   const id='asset:'+file.path;if(documents.has(id)){activateDocument(file.path);return;}const element=document.createElement('div');element.className='workspace-view asset-document';const entry={id,title:file.name,element,path:file.path};
@@ -675,7 +677,7 @@ function doAction(action,button){
     case 'project-hub':switchProject();break;
     case 'file-menu':openMenu(button,[['프로젝트 선택','project-hub'],null,['새 맵 만들기','new-map'],['에셋 가져오기','import'],['에셋 만들기','create-asset'],['현재 에셋 저장','save','', 'Ctrl S'],['모두 저장','save-all','','Ctrl Shift S'],null,['사용 안내','help']]);break;
     case 'edit-menu':openMenu(button,[['실행 취소','undo','', 'Ctrl Z'],['다시 실행','redo','','Ctrl Y'],['명령 검색','command','', 'Ctrl K']]);break;
-    case 'add-menu':openMenu(button,[['빈 오브젝트','create:empty'],['그룹','create:group'],null,['2D 스프라이트','create:sprite'],['2D 캐릭터','create:character2d'],['타일맵','create:tilemap'],null,['큐브','create:cube'],['구','create:sphere'],['원기둥','create:cylinder'],['평면','create:plane'],['캐릭터','create:character'],['플레이어 시작점','create:playerStart'],null,['태양광','create:directionalLight'],['점 광원','create:pointLight'],['스포트 광원','create:spotLight'],['카메라','create:camera'],['오디오','create:audio']]);break;
+    case 'add-menu':openMenu(button,[['빈 오브젝트','create:empty'],['그룹','create:group'],null,['2D 스프라이트','create:sprite'],['2D 캐릭터','create:character2d'],['타일맵','create:tilemap'],null,['큐브','create:cube'],['구','create:sphere'],['원기둥','create:cylinder'],['평면','create:plane'],['캐릭터','create:character'],['플레이어 시작점','create:playerStart'],null,['태양광','create:directionalLight'],['점 광원','create:pointLight'],['스포트 광원','create:spotLight'],['카메라','create:camera'],['오디오','create:audio'],['데칼','create:decal'],['파티클','create:particles'],['경로 영역','create:navigation']]);break;
     case 'view-menu':openMenu(button,[['레벨 편집기','scene'],['콘텐츠 브라우저','browse-document'],['Visual Studio에서 열기','code'],['새 콘텐츠 브라우저','window:project'],['새 뷰포트','window:viewport'],['월드 설정','window:world'],['레이아웃 초기화','reset-layout']]);break;case 'reset-layout':activateDocument(assetDocs.active,true);break;
   }
 }
@@ -865,8 +867,8 @@ window.addEventListener('beforeunload',e=>{persistRecovery();if(dirty&&!leavingP
 window.addEventListener('pagehide',()=>objectUrls.forEach(url=>URL.revokeObjectURL(url)));
 let previous=performance.now();
 function animate(now){requestAnimationFrame(animate);const dt=Math.min((now-previous)/1000,.1);previous=now;
-  if(running&&!paused)tickGame(dt);else corePreview.delta=0;
-  if((!dock||dock.visible('scene'))&&mainRenderer&&scene){orbit?.update();if(selectionBox?.visible)selectionBox.update();const gameCamera=running&&renderGameView?visuals.gameCamera(objects,camera.aspect):null;grid.visible=!gameCamera;transform.getHelper().visible=!gameCamera;selectionBox.visible=!gameCamera&&!!transform.object;mainRenderer.render(scene,gameCamera||activeCamera);}
+  if(running&&!paused)tickGame(dt);else corePreview.delta=0;assetPanes.get(assetDocs.active)?.editor?.runtimeState?.(objects,running);
+  if((!dock||dock.visible('scene'))&&mainRenderer&&scene){orbit?.update();if(selectionBox?.visible)selectionBox.update();const gameCamera=running&&renderGameView?visuals.gameCamera(objects,camera.aspect,runtime?.sequenceCamera):null;grid.visible=!gameCamera;transform.getHelper().visible=!gameCamera;selectionBox.visible=!gameCamera&&!!transform.object;visuals.tickParticles(objects,dt,running);visuals.syncNavigation(objects);visuals.syncDecals();mainRenderer.render(scene,gameCamera||activeCamera);}
   for(const group of meshMap.values())group.traverse(child=>{for(const material of child.material?(Array.isArray(child.material)?child.material:[child.material]):[])material.userData.updateTime?.(now/1000);});
   for(const view of extraViewports)if(dock.visible(view.id)){view.controls.update();view.renderer.render(scene,view.camera);}
   if((!dock||dock.visible('material'))&&previewRenderer){previewSphere.rotation.y+=dt*.09;previewSphere.material.userData.updateTime?.(now/1000);previewRenderer.render(previewScene,previewCamera);}
@@ -896,6 +898,8 @@ async function placeAsset(file){
   if(['material','materialinstance'].includes(file.kind))return assignObjectAsset('materialAsset',file.path);
   const data=file.kind==='texture'?null:await readAsset(file.path);if(data&&!validAsset(file.kind,data))throw Error('에셋 검증 실패');
   activateDocument(activeScenePath);if(assetDocs.current?.kind!=='scene')throw Error('배치할 장면이 없어요.');remember();
+  const attached={behaviortree:'BehaviorTree',statemachine:'StateMachine',montage:'MontagePlayer',sequenceasset:'SequencePlayer'}[file.kind];
+  if(attached){const o=objects.find(o=>o.id===selected);if(!o)throw Error('장면에서 대상을 먼저 선택하세요.');const component=objectComponents(o).find(c=>c.type===attached)||addSceneComponent(o,attached);component.properties.asset=file.path;applyObject(o);renderInspector();changed();return;}
   if(file.kind==='prefab'){const created=pasteSceneObjects(objects,data.objects);for(const object of created)object.prefabAsset=file.path;rebuildWorld();sceneSelection=new Set(created.map(o=>o.id));selected=created[0]?.id;renderHierarchy();renderInspector();changed();return;}
   if(!['sprite','texture','tilemap','spriteanimation','audioasset'].includes(file.kind))throw Error('장면에 배치할 수 없는 에셋이에요.');
   if(objects.length>=500)throw Error('장면 오브젝트 한도 초과');const kind=file.kind==='audioasset'?'audio':file.kind==='tilemap'?'tilemap':'sprite',object={id:crypto.randomUUID(),name:assetTitle(file.path),kind,group:'WORLD',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,components:defaultsForObject(kind)};
@@ -920,7 +924,7 @@ function captureDocument(){
   if(doc.kind==='scene')doc.view.sceneNavigation={items:clone(sceneNavigation.items),index:sceneNavigation.index};
   if(doc.kind==='blueprint')doc.view={...doc.view,blueprintView,blueprintPan:clone(blueprintPan),blueprintZoom,selectedNode,selectedVariable,selectedNodes:[...selectedNodes],selectedDetail:clone(selectedDetail),nativeBuild};
 }
-function persistRecovery(){try{captureDocument();storage.setItem(storageKey('hbengine.documents.v2'),JSON.stringify({active:assetDocs.active,documents:[...assetDocs.items.values()].filter(d=>(assetSuffix[d.kind]||d.kind==='text')).map(d=>({path:d.path,kind:d.kind,data:d.data,saved:d.saved,dirty:d.dirty,view:{...d.view,nativeBuild:undefined},layout:d.layout}))}));return true;}catch(error){log('복구 저장 실패: '+error.message,'ERROR');return false;}}
+function persistRecovery(){try{captureDocument();storage.setItem(storageKey('hbengine.documents.v2'),JSON.stringify({active:assetDocs.active,scene:activeScenePath,documents:[...assetDocs.items.values()].filter(d=>(assetSuffix[d.kind]||d.kind==='text')).map(d=>({path:d.path,kind:d.kind,data:d.data,saved:d.saved,dirty:d.dirty,view:{...d.view,nativeBuild:undefined},layout:d.layout}))}));return true;}catch(error){log('복구 저장 실패: '+error.message,'ERROR');return false;}}
 function queueRecovery(){clearTimeout(recoveryTimer);recoveryTimer=setTimeout(persistRecovery,300);}
 async function switchProject(){try{clearTimeout(recoveryTimer);if(!persistRecovery())return;await flushStorage();leavingProject=true;location.href='/prototype/project-hub.html';}catch(error){notify('프로젝트 전환 실패: '+error.message);}}
 window.addEventListener('hbengine-storage-error',event=>notify('복구 저장 실패: '+event.detail));
@@ -943,7 +947,7 @@ function installDocumentData(doc){
   if(['animation','curve'].includes(doc.kind)){
     const pane=assetPanes.get(doc.path);if(pane?.editor){pane.editor.selection.clear();pane.editor.trackId=doc.data.timeline.tracks[0]?.id;pane.editor.render();}
   }
-  if(['sprite','tilemap','spriteanimation'].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
+  if(['sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
   else if(!['scene','blueprint','material','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
   updateSurface();renderInspector();
 }
@@ -971,16 +975,17 @@ function ensureAssetPane(doc){
       pane.dispose=()=>{pane.disposed=true;observer.disconnect();controls.dispose();renderer.dispose();cube.geometry.dispose();cube.material.dispose();};
     }
   }else if(['sprite','tilemap','spriteanimation'].includes(doc.kind))pane.editor=renderTwoDEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,read:readAsset,placeAsset:()=>placeAsset({path:doc.path,kind:doc.kind}),createAsset:async(kind,name,data)=>{const folder=doc.path.split('/').slice(0,-1).join('/');const result=await(await editorRequest('/api/asset/create',{method:'POST',body:JSON.stringify({folder,kind,name})})).json();await editorRequest(fileUrl(result.path),{method:'PUT',body:JSON.stringify(data,null,2)});renderAssets();return result;}});
+  else if(gameplayTypes[doc.kind]){pane.editor=new GameplayEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,running:()=>running,read:readAsset,asset:async(name,kind)=>{const data=await(await editorRequest('/api/project?recursive=1')).json();return resolvePlayAsset(data.entries,name,kind);},world:()=>({objects,groups:meshMap,selected,scene:runtimeScenePath||activeScenePath,dimension:runtimeSettings.dimension}),place:()=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))});pane.dispose=()=>pane.editor.dispose();}
   else renderDataEditor(element,doc,projectAssetFiles,dataEditorHooks());
   return id;
 }
 function activateDocument(path,reset=false){
-  if(running&&!switchingDocument)return notify('실행을 종료한 뒤 문서를 바꾸세요.');
+  if(running&&!switchingDocument&&!gameplayTypes[assetDocs.items.get(path)?.kind]&&path!==activeScenePath)return notify('실행 중에는 현재 장면과 게임플레이 진단 에셋을 열 수 있어요.');
   if(!assetDocs.items.has(path))return;
   if(assetDocs.active===path&&!reset){renderInspector();return;}
   captureDocument();switchingDocument=true;const doc=assetDocs.select(path);workspace=doc.kind;history=doc.history;future=doc.future;
   try{
-    installDocumentData(doc);const paneId=ensureAssetPane(doc);focusedWindow=doc.kind==='blueprint'?'blueprint':paneId;
+    if(!running||doc.kind!=='scene')installDocumentData(doc);const paneId=ensureAssetPane(doc);focusedWindow=doc.kind==='blueprint'?'blueprint':paneId;
     const ids=new Set(dock.entries.keys()),restored=!reset&&restoreLayout(doc.layout,ids);
     dock.maximized=null;dock.tree=restored&&validLayout(restored,ids)?restored:{axis:'column',ratio:defaultDockRatio(),a:{tabs:[paneId],active:paneId},b:{tabs:['project','console'],active:'project'}};
     // A document may only expose its own editor and its own auxiliary panels.
@@ -1058,8 +1063,9 @@ $('#scene-canvas').addEventListener('blur',()=>{if(running)runtime.releaseInput(
 project=new ProjectBrowser($('#assets-content'),$('#asset-breadcrumb'),projectHooks());projectBrowsers.set('project',project);dock.entries.get('project').browser=project;
 renderHierarchy();renderInspector();renderGraph('material');renderGraph('blueprint');renderCommands();initRendering();updateSurface();
 assetDocs.open(activeScenePath,'scene',sceneSnapshot()).saved=JSON.stringify(startupDiskData);
-let restoredPath;
-try{const recovery=JSON.parse(storage.getItem(storageKey('hbengine.documents.v2'))||'null');if(Array.isArray(recovery?.documents)){for(const record of recovery.documents){if(!(assetSuffix[record.kind]||record.kind==='text')||!validAsset(record.kind,record.data))continue;const doc=assetDocs.open(record.path,record.kind,record.data);Object.assign(doc,{data:record.data,saved:record.saved,dirty:!!record.dirty,view:record.view||{},layout:record.layout});}restoredPath=recovery.active;}}catch{}
+let restoredPath,restoredScene;
+try{const recovery=JSON.parse(storage.getItem(storageKey('hbengine.documents.v2'))||'null');if(Array.isArray(recovery?.documents)){for(const record of recovery.documents){if(!(assetSuffix[record.kind]||record.kind==='text')||!validAsset(record.kind,record.data))continue;const doc=assetDocs.open(record.path,record.kind,record.data);Object.assign(doc,{data:record.data,saved:record.saved,dirty:!!record.dirty,view:record.view||{},layout:record.layout});}restoredPath=recovery.active;restoredScene=recovery.scene;}}catch{}
+if(assetDocs.items.get(restoredScene)?.kind==='scene')installDocumentData(assetDocs.items.get(restoredScene));
 if(!restoredPath&&savedBlueprint){const legacy=assetDocs.open(activeBlueprintPath,'blueprint',savedBlueprint);legacy.dirty=true;}
 activateDocument(assetDocs.items.has(restoredPath)?restoredPath:activeScenePath);
 await refreshAssetIndex();
@@ -1079,11 +1085,11 @@ window.hbEngineRequestClose=async()=>{
   }catch(error){notify('종료 실패: '+error.message);return false;}finally{closingEngine=false;}
 };
 const automationState=()=>({projectId:session.id,projectName:session.name,activeDocument:assetDocs.active,focusedWindow,workspace,running,paused,startingPlay,selection:[...sceneSelection],documents:[...assetDocs.items.values()].map(doc=>({path:doc.path,kind:doc.kind,dirty:doc.dirty})),layout:clone(dock.tree)});
-function automationEditable(){if(running||startingPlay||stoppingPlay)throw Error('실행 종료 후 편집할 수 있어요.');if(transform?.dragging||$$('dialog').some(dialog=>dialog.open))throw Object.assign(Error('편집 중인 동작을 먼저 마무리하세요.'),{code:'EDITOR_BUSY'});}
+function automationEditable(inspect=false){if(running&&!inspect||startingPlay||stoppingPlay)throw Error('실행 종료 후 편집할 수 있어요.');if(transform?.dragging||$$('dialog').some(dialog=>dialog.open))throw Object.assign(Error('편집 중인 동작을 먼저 마무리하세요.'),{code:'EDITOR_BUSY'});}
 async function automationDocument(params,mutate=false){if(mutate)automationEditable();captureDocument();const doc=assetDocs.items.get(params.path||assetDocs.active);if(!doc)throw Error('문서를 먼저 여세요.');const before=JSON.stringify(doc.data),revision=await documentRevision(doc.data);captureDocument();if(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before||mutate&&params.expectedRevision!==revision)throw Object.assign(Error('문서가 변경됐어요. 최신 revision을 조회하세요.'),{code:'REVISION_CONFLICT'});return {doc,revision};}
 const disconnectAutomation=connectAutomation({request:editorRequest,state:automationState,methods:{
   'editor.state':()=>({...automationState(),logs:clone(logs.slice(-100))}),
-  'document.open':async({path})=>{automationEditable();if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},
+  'document.open':async({path})=>{automationEditable(true);if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.patch':async params=>{const {doc}=await automationDocument(params,true),next=patchAsset(doc.kind,doc.data,params.operations);if(params.dryRun)return {valid:true,revision:await documentRevision(next),data:next};activateDocument(doc.path);const previous=clone(doc.data),previousHistory=[...history],previousFuture=[...future],previousDirty=doc.dirty;remember();try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}log('AI 명령으로 에셋 수정: '+doc.path);return {path:doc.path,revision:await documentRevision(doc.data),dirty:true};},
   'document.save':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(!await save())throw Error('저장 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},

@@ -25,11 +25,13 @@
     "test:scene": "node tools/check-scene-editor.mjs && node tools/check-scene-runtime.mjs",
     "test:2d": "node tools/check-2d-workflow.mjs",
     "test:material": "node tools/check-material-workflow.mjs",
+    "test:gameplay": "node tools/check-gameplay-workflow.mjs",
     "test:integration": "node tools/check-engine-integration.mjs",
     "test:editor-api": "node tools/check-editor-api.mjs",
     "engine": "node tools/hb.mjs",
     "test:headless": "node tools/check-headless.mjs",
-    "run:project": "node tools/run-project.mjs"
+    "run:project": "node tools/run-project.mjs",
+    "test:systems": "node tools/check-scene-systems.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

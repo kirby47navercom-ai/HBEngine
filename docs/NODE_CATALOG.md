@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **390개**, 실제 공통 C++ API **308개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **444개**, 실제 공통 C++ API **362개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -36,6 +36,14 @@
 | 회전 | 9 | 9 |
 | 색상 | 10 | 10 |
 | 게임플레이 | 9 | 9 |
+| AI | 15 | 15 |
+| 상태 머신 | 8 | 8 |
+| 몽타주 | 7 | 7 |
+| 시퀀스 | 5 | 5 |
+| AI 내비게이션 | 4 | 4 |
+| AI 감지 | 3 | 3 |
+| 파티클 | 5 | 5 |
+| 게임플레이 태그 | 7 | 7 |
 
 ## 범위와 사용 규칙
 
@@ -565,3 +573,97 @@
 | unPossess | Un Possess / 폰 제어권 해제 | exec: exec, controller: object | then: exec | hb::Gameplay::UnPossess | 공통 C++ + VM |
 | addMovementInput | Add Movement Input / 이동 입력 더하기 | exec: exec, target: object, direction: vec3, scale: float | then: exec | hb::Gameplay::AddMovementInput | 공통 C++ + VM |
 | jump | Jump / 캐릭터 점프 | exec: exec, target: object | then: exec | hb::Gameplay::Jump | 공통 C++ + VM |
+
+## AI
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| runBehaviorTree | Run Behavior Tree / 행동트리 실행 | exec: exec, target: object, asset: string | then: exec | hb::AI::RunBehaviorTree | 공통 C++ + VM |
+| stopBehaviorTree | Stop Behavior Tree / 행동트리 정지 | exec: exec, target: object | then: exec | hb::AI::StopBehaviorTree | 공통 C++ + VM |
+| blackboardSetBool | Set Bool / 블랙보드 불리언 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::Blackboard::SetBool | 공통 C++ + VM |
+| blackboardGetBool | Get Bool / 블랙보드 불리언 가져오기 | target: object, key: string | return: bool | hb::Blackboard::GetBool | 공통 C++ + VM |
+| blackboardSetFloat | Set Float / 블랙보드 실수 지정 | exec: exec, target: object, key: string, value: float | then: exec | hb::Blackboard::SetFloat | 공통 C++ + VM |
+| blackboardGetFloat | Get Float / 블랙보드 실수 가져오기 | target: object, key: string | return: float | hb::Blackboard::GetFloat | 공통 C++ + VM |
+| blackboardSetInt | Set Int / 블랙보드 정수 지정 | exec: exec, target: object, key: string, value: int | then: exec | hb::Blackboard::SetInt | 공통 C++ + VM |
+| blackboardGetInt | Get Int / 블랙보드 정수 가져오기 | target: object, key: string | return: int | hb::Blackboard::GetInt | 공통 C++ + VM |
+| blackboardSetString | Set String / 블랙보드 문자열 지정 | exec: exec, target: object, key: string, value: string | then: exec | hb::Blackboard::SetString | 공통 C++ + VM |
+| blackboardGetString | Get String / 블랙보드 문자열 가져오기 | target: object, key: string | return: string | hb::Blackboard::GetString | 공통 C++ + VM |
+| blackboardSetVector | Set Vector / 블랙보드 벡터 지정 | exec: exec, target: object, key: string, value: vec3 | then: exec | hb::Blackboard::SetVector | 공통 C++ + VM |
+| blackboardGetVector | Get Vector / 블랙보드 벡터 가져오기 | target: object, key: string | return: vec3 | hb::Blackboard::GetVector | 공통 C++ + VM |
+| blackboardSetObject | Set Object / 블랙보드 오브젝트 지정 | exec: exec, target: object, key: string, value: object | then: exec | hb::Blackboard::SetObject | 공통 C++ + VM |
+| blackboardGetObject | Get Object / 블랙보드 오브젝트 가져오기 | target: object, key: string | return: object | hb::Blackboard::GetObject | 공통 C++ + VM |
+| blackboardClear | Clear / 블랙보드 키 비우기 | exec: exec, target: object, key: string | then: exec | hb::Blackboard::Clear | 공통 C++ + VM |
+
+## 상태 머신
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| startStateMachine | Start / 상태 머신 실행 | exec: exec, target: object, asset: string | then: exec | hb::States::Start | 공통 C++ + VM |
+| stateGet | Get State / 현재 상태 가져오기 | target: object | return: string | hb::States::GetState | 공통 C++ + VM |
+| stateEvent | Send Event / 상태 이벤트 보내기 | exec: exec, target: object, event: string | then: exec | hb::States::SendEvent | 공통 C++ + VM |
+| stateJump | Jump / 상태 변경 | exec: exec, target: object, state: string | then: exec | hb::States::Jump | 공통 C++ + VM |
+| stateStop | Stop / 상태 머신 정지 | exec: exec, target: object | then: exec | hb::States::Stop | 공통 C++ + VM |
+| stateSetFloat | Set Float / 상태 파라미터 실수 지정 | exec: exec, target: object, key: string, value: float | then: exec | hb::States::SetFloat | 공통 C++ + VM |
+| stateSetBool | Set Bool / 상태 파라미터 불리언 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::States::SetBool | 공통 C++ + VM |
+| stateSetString | Set String / 상태 파라미터 문자열 지정 | exec: exec, target: object, key: string, value: string | then: exec | hb::States::SetString | 공통 C++ + VM |
+
+## 몽타주
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| playMontage | Play / 몽타주 재생 | exec: exec, target: object, asset: string, section: string | then: exec | hb::Montage::Play | 공통 C++ + VM |
+| montageStop | Stop / 몽타주 정지 | exec: exec, target: object | then: exec | hb::Montage::Stop | 공통 C++ + VM |
+| montagePause | Pause / 몽타주 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::Montage::Pause | 공통 C++ + VM |
+| montageJump | Jump To Section / 몽타주 섹션 이동 | exec: exec, target: object, section: string | then: exec | hb::Montage::JumpToSection | 공통 C++ + VM |
+| montageNext | Set Next Section / 다음 몽타주 섹션 지정 | exec: exec, target: object, section: string, next: string | then: exec | hb::Montage::SetNextSection | 공통 C++ + VM |
+| montagePosition | Get Position / 몽타주 재생 위치 | target: object | return: float | hb::Montage::GetPosition | 공통 C++ + VM |
+| montageSeek | Seek / 몽타주 재생 위치 지정 | exec: exec, target: object, time: float | then: exec | hb::Montage::Seek | 공통 C++ + VM |
+
+## 시퀀스
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| playSequence | Play / 레벨 시퀀스 재생 | exec: exec, target: object, asset: string | then: exec | hb::LevelSequence::Play | 공통 C++ + VM |
+| sequenceStop | Stop / 레벨 시퀀스 정지 | exec: exec, target: object | then: exec | hb::LevelSequence::Stop | 공통 C++ + VM |
+| sequencePause | Pause / 레벨 시퀀스 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::LevelSequence::Pause | 공통 C++ + VM |
+| sequenceSeek | Seek / 레벨 시퀀스 시간 이동 | exec: exec, target: object, time: float | then: exec | hb::LevelSequence::Seek | 공통 C++ + VM |
+| sequencePosition | Get Position / 레벨 시퀀스 재생 위치 | target: object | return: float | hb::LevelSequence::GetPosition | 공통 C++ + VM |
+
+## AI 내비게이션
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| navigationMove | Move To / 경로를 따라 이동 | exec: exec, target: object, destination: vec3 | then: exec | hb::Navigation::MoveTo | 공통 C++ + VM |
+| navigationStop | Stop / 경로 이동 정지 | exec: exec, target: object | then: exec | hb::Navigation::Stop | 공통 C++ + VM |
+| navigationStatus | Get Status / 경로 이동 상태 | target: object | return: string | hb::Navigation::GetStatus | 공통 C++ + VM |
+| navigationPath | Get Path / 이동 경로 가져오기 | target: object | return: vec3[] | hb::Navigation::GetPath | 공통 C++ + VM |
+
+## AI 감지
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| perceptionTargets | Get Targets / 감지한 오브젝트 | target: object | return: object[] | hb::Perception::GetTargets | 공통 C++ + VM |
+| perceptionForget | Forget / 감지 기억 비우기 | exec: exec, target: object | then: exec | hb::Perception::Forget | 공통 C++ + VM |
+| reportNoise | Report Noise / 소리 자극 알림 | exec: exec, target: object, position: vec3, loudness: float, radius: float, tag: string | then: exec | hb::Perception::ReportNoise | 공통 C++ + VM |
+
+## 파티클
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| particlePlay | Play / 파티클 재생 | exec: exec, target: object | then: exec | hb::Particles::Play | 공통 C++ + VM |
+| particleStop | Stop / 파티클 정지 | exec: exec, target: object, clear: bool | then: exec | hb::Particles::Stop | 공통 C++ + VM |
+| particlePause | Pause / 파티클 일시정지 | exec: exec, target: object, paused: bool | then: exec | hb::Particles::Pause | 공통 C++ + VM |
+| particleEmit | Emit / 파티클 방출 | exec: exec, target: object, count: int | then: exec | hb::Particles::Emit | 공통 C++ + VM |
+| particleCount | Get Count / 파티클 개수 | target: object | return: int | hb::Particles::GetCount | 공통 C++ + VM |
+
+## 게임플레이 태그
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| tagAdd | Add / 게임플레이 태그 추가 | exec: exec, target: object, tag: string | then: exec | hb::Tags::Add | 공통 C++ + VM |
+| tagRemove | Remove / 게임플레이 태그 제거 | exec: exec, target: object, tag: string | then: exec | hb::Tags::Remove | 공통 C++ + VM |
+| tagGet | Get / 게임플레이 태그 목록 | target: object | return: string[] | hb::Tags::Get | 공통 C++ + VM |
+| tagHas | Has / 게임플레이 태그 확인 | target: object, tag: string, exact: bool | return: bool | hb::Tags::Has | 공통 C++ + VM |
+| tagAny | Has Any / 하나 이상의 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAny | 공통 C++ + VM |
+| tagAll | Has All / 모든 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAll | 공통 C++ + VM |
+| tagQuery | Matches Query / 태그 조건 쿼리 | target: object, query: string | return: bool | hb::Tags::MatchesQuery | 공통 C++ + VM |
