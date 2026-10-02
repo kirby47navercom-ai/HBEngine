@@ -98,7 +98,7 @@ const {generatedCore}=await import('./generate-api.mjs');
 const {readFileSync}=await import('node:fs');
 const {coreApi}=await import('../prototype/core-api.js');
 assert.equal(readFileSync('prototype/core-api.js','utf8'),generatedCore(),'C++ 선언과 생성 노드 정보 일치');
-assert.equal(coreApi.length,68,'공통 C++ 함수 등록');
+assert.ok(coreApi.length>=289,'공통 C++ 함수 등록');
 for(const api of coreApi){const registered=catalog.find(n=>n.key===api.key);assert.equal(registered.cppName,api.cppName);assert.deepEqual(registered.inputs,api.inputs);assert.deepEqual(registered.outputs,api.outputs);}
 const {createCorePreview,evaluateCore,evaluateCoreNode}=await import('../prototype/core-preview.js');
 let now=0;const runtime=createCorePreview(()=>now),call=(key,args={})=>evaluateCore(key,args,runtime);
@@ -117,4 +117,5 @@ const calculation=clone(defaultBlueprint),vector=makeNode('vec3'),normal=makeNod
 assert.ok(connect(calculation,{node:vector.id,pin:'return'},{node:normal.id,pin:'value'}).ok);closeVector(evaluateCoreNode(calculation,normal.id,runtime).return,[.6,.8,0]);
 assert.ok(splitPin(calculation,normal.id,'out','return'));assert.ok(splitPin(calculation,magnitude.id,'in','value'));assert.ok(connect(calculation,{node:normal.id,pin:'return.x'},{node:magnitude.id,pin:'value.x'}).ok);assert.ok(connect(calculation,{node:normal.id,pin:'return.y'},{node:magnitude.id,pin:'value.y'}).ok);assert.equal(evaluateCoreNode(calculation,magnitude.id,runtime).return,1,'분할 핀 재조합과 데이터 계산');
 const timerNode=makeNode('timer'),remainingNode=makeNode('timerRemaining');calculation.nodes.push(timerNode,remainingNode);assert.ok(connect(calculation,{node:timerNode.id,pin:'handle'},{node:remainingNode.id,pin:'handle'}).ok);assert.throws(()=>evaluateCoreNode(calculation,remainingNode.id,runtime),/먼저/);evaluateCoreNode(calculation,timerNode.id,runtime);assert.equal(evaluateCoreNode(calculation,remainingNode.id,runtime).return,1,'명시 호출의 반환 핸들을 소비하고 다시 실행하지 않음');
-console.log('HBEngine 공통 API: C++ 선언·68개 노드 서명 일치, 벡터·시간·타이머·측정·이동·연결된 계산 검사 통과');
+console.log('HBEngine 공통 API: C++ 선언·'+coreApi.length+'개 노드 서명 일치, 벡터·시간·타이머·측정·이동·연결된 계산 검사 통과');
+const completeCatalog=clone(defaultBlueprint);completeCatalog.nodes=catalog.map(s=>makeNode(s.key));completeCatalog.edges=[];assert.ok(validBlueprint(completeCatalog),'372종 노드 전체를 한 그래프에 저장할 수 있어요.');completeCatalog.nodes=Array.from({length:1001},()=>makeNode('print'));assert.equal(validBlueprint(completeCatalog),false,'그래프 크기 제한은 유지해요.');

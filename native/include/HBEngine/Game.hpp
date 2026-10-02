@@ -85,6 +85,8 @@ public:
     HB_FUNCTION(BlueprintCallable, NodeKey="gamePaused", KoreanName="게임 시간 일시정지") static void SetPaused(bool paused);
     static void Tick(float delta);
     static void Reset();
+    static float TimeScale(){return scale_;}
+    static bool IsPaused(){return paused_;}
 private:
     inline static float seconds_=0,delta_=0,scale_=1;
     inline static bool paused_=false;
@@ -105,6 +107,7 @@ public:
     HB_FUNCTION(BlueprintCallable, NodeKey="stopStopwatch", KoreanName="시간측정 종료 스톱워치") static float StopStopwatch(const std::string& handle);
     static void Tick(float delta);
     static std::vector<std::string> TakeEvents();
+    static void Reset(){timers_.clear();watches_.clear();events_.clear();next_=0;}
 private:
     struct Timer {float duration,elapsed=0;bool loop,paused=false,active=true;std::string event;};
     struct Stopwatch {std::chrono::steady_clock::time_point start;float elapsed=0;bool running=true;};
@@ -205,3 +208,5 @@ inline void Scene::AddRotation(Actor* target,const Vec3& value){SetRotation(targ
 inline bool Scene::MoveActorTowards(Actor* target,const Vec3& destination,float speed,float delta){SetPosition(target,VectorMath::MoveTowards(GetPosition(target),destination,std::max(0.f,speed)*std::max(0.f,delta)));return VectorMath::DistanceSquared(GetPosition(target),destination)<1e-12f;}
 inline void AdvanceFrame(float delta){Clock::Tick(delta);Timers::Tick(Clock::GetWorldDeltaSeconds());}
 }
+
+#include <HBEngine/Library.hpp>

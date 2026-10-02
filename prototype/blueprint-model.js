@@ -30,7 +30,7 @@ export const catalog = [
 const spec=(key,title,ko,group,inputs,outputs,keywords='')=>({key,title,ko,group,inputs,outputs,keywords:title+' '+ko+' '+keywords});
 const flow=(key,title,ko,group,inputs=[],outputs=[])=>spec(key,title,ko,group,[pin('exec','실행'),...inputs],[pin('then','다음'),...outputs]);
 catalog.push(
-  spec('timeline','Timeline','타임라인','시간',[pin('play','Play'),pin('start','Play from start'),pin('stop','Stop'),pin('reverse','Reverse'),pin('time','New time','float')],[pin('update','Update'),pin('finished','Finished')]),
+  spec('timeline','Timeline','타임라인','시간',[pin('play','Play'),pin('start','Play from Start'),pin('stop','Stop'),pin('reverse','Reverse'),pin('reverseEnd','Reverse from End'),pin('setTime','Set New Time'),pin('time','New Time','float')],[pin('update','Update'),pin('finished','Finished'),pin('direction','Direction','string')]),
   spec('reroute','Reroute','연결 정리','사용자 정의',[pin('value','Input','float')],[pin('value','Output','float')]),
   spec('isValid','Is Valid','객체 유효성','오브젝트',[pin('target','Object','object')],[pin('return','Valid','bool')]),
   flow('cast','Cast To Class','클래스 변환','오브젝트',[pin('target','Object','object'),pin('class','Class','string')],[pin('object','Object','object'),pin('failed','Cast failed')]),
@@ -98,6 +98,17 @@ catalog.push(
   flow('saveGame','Save Game','게임 저장','저장',[pin('slot','Slot','string')],[pin('success','Success','bool')]),
   flow('loadGame','Load Game','게임 불러오기','저장',[pin('slot','Slot','string')],[pin('data','Data','object')])
 );
+catalog.push(
+  spec('doN','Do N','정해진 횟수 실행','흐름 제어',[pin('exec','Enter'),pin('reset','Reset'),pin('count','N','int')],[pin('then','Exit'),pin('counter','Counter','int')]),
+  spec('multiGate','Multi Gate','여러 경로 순차 실행','흐름 제어',[pin('exec','Enter'),pin('reset','Reset'),pin('loop','Loop','bool'),pin('random','Random','bool'),pin('startIndex','Start index','int')],[pin('out0','Out 0'),pin('out1','Out 1'),pin('out2','Out 2'),pin('index','Index','int')]),
+  spec('whileLoop','While Loop','조건 반복','흐름 제어',[pin('exec','Enter'),pin('condition','Condition','bool')],[pin('body','Loop body'),pin('completed','Completed')]),
+  spec('forLoopBreak','For Loop With Break','중단 가능한 반복','흐름 제어',[pin('exec','Enter'),pin('break','Break'),pin('first','First index','int'),pin('last','Last index','int')],[pin('body','Loop body'),pin('index','Index','int'),pin('completed','Completed')]),
+  spec('forEachBreak','For Each With Break','중단 가능한 배열 반복','흐름 제어',[pin('exec','Enter'),pin('break','Break'),pin('array','Array','float',true)],[pin('body','Loop body'),pin('item','Item','float'),pin('index','Index','int'),pin('completed','Completed')]),
+  flow('retriggerDelay','Retriggerable Delay','다시 시작하는 지연','흐름 제어',[pin('duration','Duration','float')]),
+  ...[['switchInt','int','정수'],['switchString','string','문자열']].map(([key,type,ko])=>spec(key,'Switch '+(type==='int'?'Integer':'String'),ko+' 분기','흐름 제어',[pin('exec','Enter'),pin('selection','Selection',type),...Array.from({length:3},(_,i)=>pin('case'+i,'Case '+i,type))],[...Array.from({length:3},(_,i)=>pin('out'+i,'Case '+i)),pin('default','Default')]))
+);
+catalog.find(s=>s.key==='forEachBreak').arrayType=true;
+catalog.find(s=>s.key==='doN').defaults={count:1};
 catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').forEach(s=>s.arrayType=true);
 catalog.push(
   {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
@@ -111,13 +122,13 @@ export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float
 export function defaultsFor(type){ return {bool:false,int:0,float:0,string:'',vec2:[0,0],vec3:[0,0,0],color:[1,1,1,1],transform:{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},object:null,hit:{hit:false,position:[0,0,0],normal:[0,1,0],actor:null}}[type]; }
 export function validValue(type,value){
   const vector=(size)=>Array.isArray(value)&&value.length===size&&value.every(Number.isFinite);
-  if(type==='bool')return typeof value==='boolean';if(type==='int')return Number.isSafeInteger(value);if(type==='float')return Number.isFinite(value);if(type==='string')return typeof value==='string'&&value.length<=4096;
+  if(type==='bool')return typeof value==='boolean';if(type==='int')return Number.isInteger(value)&&value>=-2147483648&&value<=2147483647;if(type==='float')return Number.isFinite(value);if(type==='string')return typeof value==='string'&&value.length<=4096;
   if(type==='vec2')return vector(2);if(type==='vec3')return vector(3);if(type==='color')return vector(4)&&value.every(v=>v>=0&&v<=1);if(type==='object')return value===null||(typeof value==='string'&&value.length<=200);
   if(type==='transform')return value&&['position','rotation','scale'].every(k=>validValue('vec3',value[k]));if(type==='hit')return value&&validValue('bool',value.hit)&&validValue('vec3',value.position)&&validValue('vec3',value.normal)&&validValue('object',value.actor);return false;
 }
 export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
-  if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type))];}
+  if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type==='event'?'exec':t.type))];}
   if(node.key==='reroute')return [pin('value',direction==='in'?'Input':'Output',node.valueType||'float',node.array??false)];
   if(node.key.startsWith('native'))return nativePins(graph,node,direction);
   if(['dispatcherCall','dispatcherBind','dispatcherUnbind','dispatcherEvent','interfaceCall'].includes(node.key)){
@@ -142,11 +153,13 @@ export function effectivePins(node,direction,graph){
 }
 function pinForId(node,direction,graph,id){const parts=id.split('.'),first=parts.shift();let p=basePins(node,direction,graph).find(p=>p.id===first);for(const field of parts)p=p&&fieldsFor(p.type).find(p=>p.id===field);return p;}
 export function canConnect(graph,from,to){
-  if(from.node===to.node)return {ok:false,reason:'같은 노드에는 연결할 수 없어요.'};
+
   const a=graph.nodes.find(n=>n.id===from.node),b=graph.nodes.find(n=>n.id===to.node);const out=a&&effectivePins(a,'out',graph).find(p=>p.id===from.pin),input=b&&effectivePins(b,'in',graph).find(p=>p.id===to.pin);
   if(!out||!input)return {ok:false,reason:'연결할 핀을 찾을 수 없어요.'};
   if(out.array!==input.array||(out.type!==input.type&&out.type!=='any'&&input.type!=='any'))return {ok:false,reason:`타입이 달라요: ${out.type}${out.array?'[]':''} → ${input.type}${input.array?'[]':''}`};
-  const reaches=(id,seen=new Set())=>{if(id===from.node)return true;if(seen.has(id))return false;seen.add(id);return graph.edges.filter(e=>e.from.node===id).some(e=>reaches(e.to.node,seen));};
+  if(out.type==='exec'&&input.type==='exec'&&['break','reset','open','close','toggle'].includes(to.pin))return {ok:true};
+  if(from.node===to.node)return {ok:false,reason:'같은 노드에는 연결할 수 없어요.'};
+  const reaches=(id,seen=new Set())=>{if(id===from.node)return true;if(seen.has(id))return false;seen.add(id);return graph.edges.filter(e=>e.from.node===id&&!['break','reset','open','close','toggle'].includes(e.to.pin)).some(e=>reaches(e.to.node,seen));};
   if(reaches(to.node))return {ok:false,reason:'이 프로토타입에서는 순환 연결을 지원하지 않아요.'};return {ok:true};
 }
 export function connect(graph,from,to){const result=canConnect(graph,from,to);if(!result.ok)return result;graph.edges=graph.edges.filter(e=>!(e.to.node===to.node&&e.to.pin===to.pin)&&!(e.from.node===from.node&&e.from.pin===from.pin&&effectivePins(graph.nodes.find(n=>n.id===from.node),'out',graph).find(p=>p.id===from.pin).type==='exec'));graph.edges.push({from:{...from},to:{...to}});return result;}
@@ -157,9 +170,21 @@ export function splitPin(graph,nodeId,direction,pinId,recombine=false){const n=g
 }
 export function componentDefaults(type){return type==='Transform'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]}:type==='BoxCollider'?{center:[0,0,0],extent:[.5,.5,.5],trigger:true,enabled:true}:type==='MeshRenderer'?{mesh:'Stone_arch',material:'Moss_stone',visible:true,castShadow:true}:type==='PointLight'?{color:[1,.85,.65,1],intensity:8,radius:15,castShadow:false}:type==='SceneComponent'?{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}:{className:'MyComponent',enabled:true};}
 
-export const defaultTimeline={length:1,loop:false,autoplay:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
-export function validTimeline(t){return t&&Number.isFinite(t.length)&&t.length>0&&t.length<=10000&&typeof t.loop==='boolean'&&typeof t.autoplay==='boolean'&&Array.isArray(t.tracks)&&t.tracks.length<=16&&new Set(t.tracks.map(t=>t?.id)).size===t.tracks.length&&t.tracks.every(track=>track&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(track.id)&&!['update','finished'].includes(track.id)&&typeof track.name==='string'&&track.name.length<=80&&['float','vec3','color'].includes(track.type)&&['linear','step'].includes(track.interpolation)&&Array.isArray(track.keys)&&track.keys.length>0&&track.keys.length<=128&&track.keys.every((k,i)=>k&&Number.isFinite(k.time)&&k.time>=0&&k.time<=t.length&&(!i||track.keys[i-1].time<k.time)&&validValue(track.type,k.value)));}
-export function sampleTimeline(track,time){const a=[...track.keys].reverse().find(k=>k.time<=time)||track.keys[0],b=track.keys.find(k=>k.time>time);if(!b||track.interpolation==='step')return a.value;const alpha=Math.max(0,Math.min(1,(time-a.time)/(b.time-a.time)));return Array.isArray(a.value)?a.value.map((v,i)=>v+(b.value[i]-v)*alpha):a.value+(b.value-a.value)*alpha;}
+export const defaultTimeline={length:1,loop:false,autoplay:false,playRate:1,lastKeyframe:false,ignoreTimeDilation:false,tracks:[{id:'Alpha',name:'Alpha',type:'float',interpolation:'linear',keys:[{time:0,value:0},{time:1,value:1}]}]};
+export const curveModes=['auto','user','break','linear','constant','step'];
+export function validTimeline(t){
+  return t&&Number.isFinite(t.length)&&t.length>0&&t.length<=10000&&typeof t.loop==='boolean'&&typeof t.autoplay==='boolean'&&['lastKeyframe','ignoreTimeDilation'].every(k=>t[k]===undefined||typeof t[k]==='boolean')&&(t.playRate===undefined||Number.isFinite(t.playRate)&&t.playRate>0&&t.playRate<=100)&&Array.isArray(t.tracks)&&t.tracks.length<=16&&new Set(t.tracks.map(t=>t?.id)).size===t.tracks.length&&t.tracks.every(track=>track&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(track.id)&&!['update','finished','direction'].includes(track.id)&&typeof track.name==='string'&&track.name.length<=80&&['float','vec3','color','event'].includes(track.type)&&(track.type==='event'||curveModes.includes(track.interpolation))&&Array.isArray(track.keys)&&track.keys.length<=128&&track.keys.every((k,i)=>k&&Number.isFinite(k.time)&&k.time>=0&&k.time<=t.length&&(!i||track.keys[i-1].time<k.time)&&(track.type==='event'||validValue(track.type,k.value))&&(k.interpolation===undefined||curveModes.includes(k.interpolation))&&['arriveTangent','leaveTangent'].every(p=>k[p]===undefined||validValue(track.type,k[p]))));
+}
+export function timelineLength(t){return t.lastKeyframe?Math.max(.001,...t.tracks.flatMap(track=>track.keys.map(k=>k.time))):t.length;}
+export function sampleTimeline(track,time){
+  if(track.type==='event')return undefined;if(!track.keys.length)return defaultsFor(track.type);
+  let i=track.keys.findLastIndex(k=>k.time<=time);if(i<0)return structuredClone(track.keys[0].value);const a=track.keys[i],b=track.keys[i+1],mode=a.interpolation||track.interpolation;
+  if(!b||mode==='step'||mode==='constant')return structuredClone(a.value);const duration=b.time-a.time,u=Math.max(0,Math.min(1,(time-a.time)/duration));
+  const value=(v,c)=>Array.isArray(v)?v[c]:v;
+  const slope=(index,c)=>{const lo=track.keys[Math.max(0,index-1)],hi=track.keys[Math.min(track.keys.length-1,index+1)];return hi===lo?0:(value(hi.value,c)-value(lo.value,c))/(hi.time-lo.time);};
+  const interpolate=(v,c)=>{const end=value(b.value,c);if(mode==='linear')return v+(end-v)*u;const m0=value(a.leaveTangent,c)??slope(i,c),m1=value(b.arriveTangent,c)??slope(i+1,c);return (2*u**3-3*u*u+1)*v+(u**3-2*u*u+u)*duration*m0+(-2*u**3+3*u*u)*end+(u**3-u*u)*duration*m1;};
+  return Array.isArray(a.value)?a.value.map(interpolate):interpolate(a.value,0);
+}
 export function makeNode(key,x=40,y=40,variableId){return {id:'node_'+crypto.randomUUID().replaceAll('-',''),key,position:{x,y},splitPins:[],...(variableId?{variableId}:{}),...(key==='timeline'?{timeline:JSON.parse(JSON.stringify(defaultTimeline))}:{})};}
 export function nodeTitle(n,graph){const v=graph.variables.find(v=>v.id===n.variableId),d=[...(graph.functions||[]),...(graph.macros||[])].find(d=>d.id===n.definitionId),native=n.key.startsWith('native')?nativeMember(graph,n):null,s=[...(graph.dispatchers||[]),...(graph.interfaces||[])].find(d=>d.id===n.symbolId);return n.title||(native?(n.key==='nativeGet'?'Get ':n.key==='nativeSet'?'Set ':n.key==='nativeEvent'?'Event ':'')+(n.key==='nativeMembers'?'Members · '+native.c?.name:native.f?.label||native.p?.name||'C++'):s?({dispatcherCall:'Call ',dispatcherBind:'Bind ',dispatcherUnbind:'Unbind ',dispatcherEvent:'Event ',interfaceCall:'Message '}[n.key])+s.name:n.key.endsWith('Input')?'Entry · 입력':n.key.endsWith('Output')?'Return · 출력':d?.name||((n.key==='getVariable'?'Get ':n.key==='setVariable'?'Set ':'')+(v?.name||catalog.find(s=>s.key===n.key)?.title||'Node')));}
 export const defaultBlueprint={version:1,name:'BP_Garden',components:[{id:'transform',name:'Transform',type:'Transform'},{id:'mesh',name:'Mesh renderer',type:'MeshRenderer'},{id:'collider',name:'Box collider',type:'BoxCollider'}],variables:[
@@ -178,7 +203,7 @@ export function graphContext(root,view='event'){
 export function allGraphContexts(root){return ['event',...(root.construction?['construction']:[]),...(root.functions||[]).map(d=>d.id),...(root.macros||[]).map(d=>d.id)].map(v=>graphContext(root,v));}
 export function pasteNodes(root,view,clipboard,position){
   if(!clipboard||!Array.isArray(clipboard.nodes)||!clipboard.nodes.length||!Array.isArray(clipboard.edges))return {ok:false,reason:'복사한 노드가 없어요.'};
-  const candidate=JSON.parse(JSON.stringify(root)),graph=graphContext(candidate,view);if(graph.nodes.length+clipboard.nodes.length>200)return {ok:false,reason:'그래프의 노드 200개 제한이에요.'};
+  const candidate=JSON.parse(JSON.stringify(root)),graph=graphContext(candidate,view);if(graph.nodes.length+clipboard.nodes.length>1000)return {ok:false,reason:'그래프의 노드 1000개 제한이에요.'};
   const ids=new Map(),left=Math.min(...clipboard.nodes.map(n=>n.position.x)),top=Math.min(...clipboard.nodes.map(n=>n.position.y));
   const nodes=clipboard.nodes.map(n=>{const next=JSON.parse(JSON.stringify(n));next.id=makeNode(n.key).id;ids.set(n.id,next.id);next.position={x:Math.max(-10000,Math.min(10000,position.x+n.position.x-left)),y:Math.max(-10000,Math.min(10000,position.y+n.position.y-top))};return next;});
   graph.nodes.push(...nodes);graph.edges.push(...clipboard.edges.map(e=>({from:{node:ids.get(e.from.node),pin:e.from.pin},to:{node:ids.get(e.to.node),pin:e.to.pin}})));
@@ -200,7 +225,7 @@ export function collapseNodes(root,graph,ids,kind,name){
   if(!['function','macro'].includes(kind)||!name?.trim()||name.length>80)return {ok:false,reason:'이름을 1~80자로 입력하세요.'};
   if(!nodes.length)return {ok:false,reason:'먼저 묶을 노드를 선택하세요.'};
   if(nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'||['nativeEvent','dispatcherEvent'].includes(n.key)||n.key.endsWith('Input')||n.key.endsWith('Output')))return {ok:false,reason:'이벤트와 Entry / Return은 묶음 밖에 두세요.'};
-  if(kind==='function'&&nodes.some(n=>['delay','callMacro'].includes(n.key)))return {ok:false,reason:'Delay·매크로 호출이 있는 흐름은 매크로로 묶어주세요.'};
+  if(kind==='function'&&nodes.some(n=>['delay','retriggerDelay','callMacro'].includes(n.key)))return {ok:false,reason:'Delay·매크로 호출이 있는 흐름은 매크로로 묶어주세요.'};
   if([...(root.functions||[]),...(root.macros||[])].some(d=>d.name===name.trim()))return {ok:false,reason:'이미 있는 함수·매크로 이름이에요.'};
   const incoming=graph.edges.filter(e=>!selected.has(e.from.node)&&selected.has(e.to.node)),outgoing=graph.edges.filter(e=>selected.has(e.from.node)&&!selected.has(e.to.node));
   const inputs=[],outputs=[],inputMap=new Map(),outputMap=new Map();
@@ -233,7 +258,7 @@ export function collapseNodes(root,graph,ids,kind,name){
 }
 const safeId=s=>typeof s==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(s);
 export function validBlueprint(g){
-  if(!g||g.version!==1||typeof g.name!=='string'||g.name.length>200||!Array.isArray(g.nodes)||g.nodes.length>200||!Array.isArray(g.variables)||g.variables.length>100||!Array.isArray(g.components)||g.components.length>100||!Array.isArray(g.edges)||g.edges.length>1000)return false;
+  if(!g||g.version!==1||typeof g.name!=='string'||g.name.length>200||!Array.isArray(g.nodes)||g.nodes.length>1000||!Array.isArray(g.variables)||g.variables.length>100||!Array.isArray(g.components)||g.components.length>100||!Array.isArray(g.edges)||g.edges.length>5000)return false;
   if(new Set(g.nodes.map(n=>n?.id)).size!==g.nodes.length||new Set(g.variables.map(v=>v?.id)).size!==g.variables.length||new Set(g.variables.map(v=>v?.name)).size!==g.variables.length)return false;
   if(!g.variables.every(v=>v&&safeId(v.id)&&typeof v.name==='string'&&v.name.length>0&&v.name.length<=80&&Object.hasOwn(variableTypes,v.type)&&['single','array'].includes(v.container)&&(v.container==='array'?Array.isArray(v.value)&&v.value.length<=128&&v.value.every(x=>validValue(v.type,x)):validValue(v.type,v.value))))return false;
   if(!g.components.every(c=>c&&safeId(c.id)&&typeof c.name==='string'&&c.name.length<=80&&typeof c.type==='string'&&c.type.length<=80))return false;
@@ -253,8 +278,8 @@ export function validBlueprint(g){
   const validSymbolNode=n=>n.key==='interfaceCall'?(g.interfaces||[]).some(d=>d.id===n.symbolId):['dispatcherCall','dispatcherBind','dispatcherUnbind','dispatcherEvent'].includes(n.key)&&(g.dispatchers||[]).some(d=>d.id===n.symbolId);
   if(new Set(definitions.map(d=>d?.id)).size!==definitions.length||new Set(definitions.map(d=>d?.name)).size!==definitions.length||!definitions.every(d=>d&&safeId(d.id)&&typeof d.name==='string'&&d.name.length>0&&d.name.length<=80&&validPorts(d.inputs)&&validPorts(d.outputs)&&d.graph))return false;
   for(const context of allGraphContexts(g)){
-    if(!Array.isArray(context.nodes)||context.nodes.length>200||!Array.isArray(context.edges)||context.edges.length>1000||new Set(context.nodes.map(n=>n?.id)).size!==context.nodes.length)return false;
-    if(context.comments!==undefined&&(!Array.isArray(context.comments)||context.comments.length>100||new Set(context.comments.map(c=>c?.id)).size!==context.comments.length||!context.comments.every(c=>c&&safeId(c.id)&&typeof c.text==='string'&&c.text.length<=2000&&c.position&&['x','y'].every(k=>Number.isFinite(c.position[k])&&Math.abs(c.position[k])<=10000)&&c.size&&Number.isFinite(c.size.width)&&c.size.width>=120&&c.size.width<=10000&&Number.isFinite(c.size.height)&&c.size.height>=80&&c.size.height<=10000&&/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.fontSize)&&c.fontSize>=10&&c.fontSize<=32&&typeof c.moveNodes==='boolean'&&Array.isArray(c.nodeIds)&&c.nodeIds.length<=200&&c.nodeIds.every(safeId))))return false;
+    if(!Array.isArray(context.nodes)||context.nodes.length>1000||!Array.isArray(context.edges)||context.edges.length>5000||new Set(context.nodes.map(n=>n?.id)).size!==context.nodes.length)return false;
+    if(context.comments!==undefined&&(!Array.isArray(context.comments)||context.comments.length>100||new Set(context.comments.map(c=>c?.id)).size!==context.comments.length||!context.comments.every(c=>c&&safeId(c.id)&&typeof c.text==='string'&&c.text.length<=2000&&c.position&&['x','y'].every(k=>Number.isFinite(c.position[k])&&Math.abs(c.position[k])<=10000)&&c.size&&Number.isFinite(c.size.width)&&c.size.width>=120&&c.size.width<=10000&&Number.isFinite(c.size.height)&&c.size.height>=80&&c.size.height<=10000&&/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.fontSize)&&c.fontSize>=10&&c.fontSize<=32&&typeof c.moveNodes==='boolean'&&Array.isArray(c.nodeIds)&&c.nodeIds.length<=1000&&c.nodeIds.every(safeId))))return false;
     if(!context.nodes.every(n=>n&&safeId(n.id)&&typeof n.key==='string'&&(catalog.some(s=>s.key===n.key)||validNativeNode(n)||validSymbolNode(n)||(['getVariable','setVariable'].includes(n.key)&&g.variables.some(v=>v.id===n.variableId))||(['callFunction','callMacro','functionInput','functionOutput','macroInput','macroOutput'].includes(n.key)&&definitions.some(d=>d.id===n.definitionId)))&&n.position&&['x','y'].every(k=>Number.isFinite(n.position[k])&&Math.abs(n.position[k])<=10000)&&Array.isArray(n.splitPins)&&n.splitPins.length<=30&&n.splitPins.every(k=>typeof k==='string'&&/^(in|out):[a-zA-Z0-9_.-]+$/.test(k))&&(n.title===undefined||(typeof n.title==='string'&&n.title.length<=80))))return false;
     for(const n of context.nodes){if(n.key==='callFunction'&&!(g.functions||[]).some(d=>d.id===n.definitionId))return false;if(n.key==='callMacro'&&!(g.macros||[]).some(d=>d.id===n.definitionId))return false;}
     for(const n of context.nodes){
@@ -276,7 +301,7 @@ export function validBlueprint(g){
     if(d.graph.nodes.some(n=>catalog.find(s=>s.key===n.key)?.kind==='event'||['nativeEvent','dispatcherEvent'].includes(n.key)))return false;
     if(d.pure!==undefined&&typeof d.pure!=='boolean')return false;
     if(d.pure&&[...d.inputs,...d.outputs].some(p=>p.type==='exec'))return false;
-    if(kind==='function'&&(d.inputs.filter(p=>p.type==='exec').length>1||d.outputs.filter(p=>p.type==='exec').length>1||d.graph.nodes.some(n=>['delay','callMacro'].includes(n.key))))return false;
+    if(kind==='function'&&(d.inputs.filter(p=>p.type==='exec').length>1||d.outputs.filter(p=>p.type==='exec').length>1||d.graph.nodes.some(n=>['delay','retriggerDelay','callMacro'].includes(n.key))))return false;
   }
   return true;
 }

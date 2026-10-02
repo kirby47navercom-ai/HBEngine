@@ -9,7 +9,12 @@
     "test": "node tools/check.mjs",
     "api:generate": "node tools/generate-api.mjs",
     "api:check": "node tools/generate-api.mjs --check",
-    "test:native": "node tools/check-native.mjs"
+    "test:native": "node tools/check-native.mjs",
+    "test:runtime": "node tools/check-runtime.mjs",
+    "test:host": "node tools/check-host.mjs",
+    "test:project": "node tools/check-project.mjs",
+    "test:server": "node tools/check-project.mjs --server",
+    "test:library": "node tools/prepare-native.mjs && node tools/check-library.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

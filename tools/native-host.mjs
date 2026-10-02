@@ -1,0 +1,77 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {existsSync} from 'node:fs';
+import {spawn} from 'node:child_process';
+import {createHash,randomUUID} from 'node:crypto';
+import readline from 'node:readline';
+import {parseNativeHeader} from '../prototype/native-model.js';
+import {validValue} from '../prototype/blueprint-model.js';
+import {prepareNative,jsonInclude} from './prepare-native.mjs';
+const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
+const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
+const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
+const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*'};
+const cppType=p=>p.array?`std::vector<${cpp[p.type]}>`:p.type==='object'?`${['Object','Actor','Component'].includes(p.className)?'hb::'+(p.className==='Component'?'Component':'Actor'):p.className||'hb::Actor'}*`:cpp[p.type];
+function unpack(p,expr){if(p.array&&p.type==='object')throw Error('객체 포인터 배열은 공개 함수에서 아직 지원하지 않아요.');return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
+function generatedWorker(meta){
+  let definitions='',cases='',factory='';
+  for(const c of meta.classes){
+    if(!['Actor','Component','Library'].includes(c.base))throw Error('실행 부모 클래스는 Actor·Component·Library를 지원해요.');
+    const actor=c.base==='Actor'?'return this;':c.base==='Component'?'return this->'+c.name+'::actor;':'return nullptr;';
+    const props=c.properties.map(p=>`j["${p.name}"]=hb::bridgeValue(this->${p.name});`).join('');
+    const defaults=c.properties.map(p=>`if(j.contains("${p.name}"))this->${p.name}=${unpack(p,`j.at("${p.name}")`)};`).join('');
+    const events=c.functions.filter(f=>f.event!=='none').map(f=>{const args=f.parameters.map(p=>`${p.cppType} ${p.name}`).join(','),id=c.name+'.'+f.name,payload=f.inputs.map(p=>`{"${p.id}",hb::bridgeValue(${p.id})}`).join(',');return `void ${f.name}(${args}) override {if(hb::overridden("${id}")){hb::bridgeEvents.push_back({{"nativeId","${id}"},{"target",this->id},{"args",hb::Json{${payload}}}});}else{${f.event==='native'?`${c.name}::${f.name}(${f.parameters.map(p=>p.name).join(',')});`:''}}}`;}).join('\n');
+    definitions+=`struct HB_${c.name}: public ${c.name},public hb::BridgeCell {std::string id;${events} hb::Actor* actor() override {${actor}} hb::Json properties() override {hb::Json j=hb::Json::object();${props}return j;}void defaults(const hb::Json& j) override {${defaults}}};\n`;
+    factory+=`if(className=="${c.name}"){auto cell=std::make_unique<HB_${c.name}>();cell->id=id;${c.base==='Component'?'cell->'+c.name+'::actor=hb::bridgeActor(id);':''}${c.base==='Actor'?'hb::bridgeActors.erase(id);':''}hb::bridgeCells[id]=std::move(cell);return;}\n`;
+    for(const p of c.properties){const id=c.name+'.'+p.name,target=`auto* target=dynamic_cast<HB_${c.name}*>(hb::bridgeCells.at(targetId).get());if(!target)throw std::runtime_error("C++ target class mismatch");`;
+      cases+=`if(nativeId=="${id}"){ensure(targetId,"${c.name}");hb::bridgeSync(objects);${target}if(key=="nativeGet")out["value"]=hb::bridgeValue(target->${p.name});${!p.readOnly?`else if(key=="nativeSet")target->${p.name}=${unpack(p,'args.at("value")')};`:''}else throw std::runtime_error("invalid property operation");handled=true;}\n`;
+    }
+    for(const f of c.functions){const id=c.name+'.'+f.name,declarations=f.parameters.map(parameter=>{const p=[...f.inputs,...f.outputs].find(p=>p.id===parameter.name);if(!p)throw Error('공개 매개변수 정보가 없어요.');return `${cppType(p)} ${p.id}=${parameter.out?'{}':unpack(p,`args.at("${p.id}")`)};`;}).join(''),target=f.static?'':`ensure(targetId,"${c.name}");auto* target=dynamic_cast<HB_${c.name}*>(hb::bridgeCells.at(targetId).get());if(!target)throw std::runtime_error("C++ target class mismatch");`,receiver=f.static?c.name+'::':'target->';
+      const invoke=`${receiver}${f.name}(${f.parameters.map(p=>p.name).join(',')})`,result=f.returnType==='void'?`${invoke};`:`auto result=${invoke};out["${f.outputs.find(p=>!f.parameters.some(param=>param.out&&param.name===p.id)).id}"]=hb::bridgeValue(result);`;
+      cases+=`if(nativeId=="${id}"&&key=="nativeCall"){${target}hb::bridgeSync(objects);${declarations}${result}${f.parameters.filter(p=>p.out).map(p=>`out["${p.name}"]=hb::bridgeValue(${p.name});`).join('')}handled=true;}\n`;
+    }
+  }
+  return `#include <HBEngine/Bridge.hpp>\n#include "User.hpp"\n${definitions}
+void ensure(const std::string& id,const std::string& className){if(hb::bridgeCells.count(id))return;${factory}throw std::runtime_error("unknown C++ class");}
+int main(){std::string line;while(std::getline(std::cin,line)){hb::Json response;try{auto request=hb::Json::parse(line);hb::bridgeEvents=hb::Json::array();hb::bridgeOverrides=request.value("overrides",std::vector<std::string>{});const auto objects=request.value("objects",hb::Json::array());for(const auto& o:objects)if(o.contains("nativeClass")&&!o.at("nativeClass").is_null()&&o.at("nativeClass")!="Actor")ensure(o.at("id").get<std::string>(),o.at("nativeClass").get<std::string>());hb::bridgeSync(objects);
+if(request.value("command",std::string{})=="reset"){hb::bridgeCells.clear();hb::bridgeActors.clear();hb::Clock::Reset();hb::Timers::Reset();}
+else if(request.value("command",std::string{})=="frame"){if(request.contains("clock")){hb::Clock::SetTimeScale(request.at("clock").at("scale").get<float>());hb::Clock::SetPaused(request.at("clock").at("paused").get<bool>());}hb::AdvanceFrame(request.at("delta").get<float>());}
+else{const auto key=request.at("key").get<std::string>(),nativeId=request.at("nativeId").get<std::string>();const auto args=request.at("args");const auto targetId=args.value("target",request.value("self",std::string{}));hb::Json out=hb::Json::object();bool handled=false;${cases}if(!handled)throw std::runtime_error("unknown native function");response["outputs"]=out;}
+response["clock"]={{"time",hb::Clock::GetGameTime()},{"delta",hb::Clock::GetWorldDeltaSeconds()},{"scale",hb::Clock::TimeScale()},{"paused",hb::Clock::IsPaused()}};response["events"]=hb::bridgeEvents;response["objects"]=hb::bridgeSnapshot();response["timerEvents"]=hb::Timers::TakeEvents();response["ok"]=true;
+}catch(const std::exception& e){response={{"ok",false},{"error",e.what()}};}std::cout<<"HB_RESULT\\t"<<response.dump()<<std::endl;}return 0;}`;
+}
+export class NativeHost {
+  constructor(){this.sessions=new Map();}
+  async build(header,source){
+    if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header);if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
+    let compiledHeader=header.replace(/(HB_FUNCTION\([^)]*Blueprint(?:Native|Implementable)Event[^)]*\)\s*)(?!virtual\b)(void\s)/g,'$1virtual $2');
+    let compiledSource=source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,'');compiledSource='#include "User.hpp"\n'+compiledSource;
+    for(const c of metadata.classes)for(const f of c.functions.filter(f=>f.event==='implementable'))if(!new RegExp(`\\b${c.name}\\s*::\\s*${f.name}\\s*\\(`).test(source))compiledSource+=`\nvoid ${c.name}::${f.name}(${f.parameters.map(p=>p.cppType+' '+p.name).join(',')}){}\n`;
+    const worker=generatedWorker(metadata),headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update(compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    await Promise.all([fs.writeFile(path.join(dir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(dir,'User.cpp'),compiledSource),fs.writeFile(path.join(dir,'worker.cpp'),worker)]);
+    if(!existsSync(binary))await new Promise((resolve,reject)=>{const process=spawn(compiler,['-std=c++17','-O0','-I','native/include','-I',path.relative(root,jsonInclude),path.relative(root,path.join(dir,'worker.cpp')),path.relative(root,path.join(dir,'User.cpp')),'-o',path.relative(root,binary)],{env,cwd:root,windowsHide:true});let diagnostics='';const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};process.stderr.on('data',append);process.stdout.on('data',append);const timeout=setTimeout(()=>{process.kill();reject(Error('C++ 빌드 시간 제한 초과'));},60000);process.once('error',error=>{clearTimeout(timeout);reject(error);});process.once('exit',code=>{clearTimeout(timeout);code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
+    const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+  }
+  validate(session,request){
+    if(!request||typeof request!=='object')throw Error('잘못된 C++ 요청');if(!Array.isArray(request.objects)||request.objects.length>2000||new Set(request.objects.map(o=>o?.id)).size!==request.objects.length||request.objects.some(o=>!o||typeof o.id!=='string'||o.id.length>160||!validValue('transform',o)))throw Error('C++ 객체 상태 오류');for(const o of request.objects){const c=session.metadata.classes.find(c=>c.name===o.nativeClass);for(const [name,value] of Object.entries(o.nativeProperties||{})){const p=c?.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 속성 자료형 오류: '+name);}}if(['frame','reset'].includes(request.command)){if(request.command==='frame'&&(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean')))throw Error('프레임 시간 오류');return;}
+    const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name);if(!c||!['nativeCall','nativeGet','nativeSet'].includes(request.key)||!request.args)throw Error('등록되지 않은 C++ 함수');
+    const ports=request.key==='nativeCall'?f?.inputs:request.key==='nativeSet'&&!p?.readOnly?[{...p,id:'value'}]:request.key==='nativeGet'&&p?[]:null;if(!ports)throw Error('등록되지 않은 C++ 작업');for(const pin of ports){const value=request.args[pin.id];if(!(pin.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))throw Error('C++ 입력 자료형 오류: '+pin.id);}
+    for(const pin of ports.filter(p=>p.type==='object'))if(request.args[pin.id]!==null&&!request.objects.some(o=>o.id===request.args[pin.id]))throw Error('C++ 객체 참조 오류: '+pin.id);if(!f?.static&&(typeof request.args.target!=='string'||!request.objects?.some(o=>o.id===request.args.target)))throw Error('C++ 대상 오브젝트가 없어요.');
+  }
+  validateReply(session,request,result){
+    const known=id=>request.objects.some(o=>o.id===id),valid=(p,v)=>p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validValue(p.type,x)):validValue(p.type,v);
+    const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name),ports=request.key==='nativeCall'?f?.outputs:request.key==='nativeGet'&&p?[{...p,id:'value'}]:[];
+    for(const pin of ports||[]){const value=result.outputs?.[pin.id];if(!valid(pin,value)||(pin.type==='object'&&!pin.array&&value!==null&&!known(value)))throw Error('C++ 출력 자료형 오류: '+pin.id);}
+    if(!Array.isArray(result.objects)||result.objects.some(o=>!known(o?.id)||(o.position!==undefined?(!validValue('transform',o)||!o.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))):!session.metadata.classes.some(c=>c.name===request.objects.find(v=>v.id===o.id)?.nativeClass&&c.base!=='Actor'))))throw Error('C++ 객체 출력 범위 오류');
+    for(const o of result.objects)for(const [name,value] of Object.entries(o.nativeProperties||{})){const cl=session.metadata.classes.find(c=>c.name===request.objects.find(v=>v.id===o.id)?.nativeClass),property=cl?.properties.find(p=>p.name===name);if(!property||!valid(property,value))throw Error('C++ 속성 출력 자료형 오류: '+name);}
+    if(!Array.isArray(result.events))throw Error('C++ 이벤트 출력 오류');for(const e of result.events){const [cls,name]=String(e.nativeId).split('.'),event=session.metadata.classes.find(c=>c.name===cls)?.functions.find(f=>f.name===name&&f.event!=='none');if(!event||!known(e.target)||event.inputs.some(p=>!valid(p,e.args?.[p.id])))throw Error('C++ 이벤트 출력 자료형 오류');}
+    if(!result.clock||!['time','delta','scale'].every(k=>Number.isFinite(result.clock[k])&&result.clock[k]>=0)||typeof result.clock.paused!=='boolean')throw Error('C++ 시간 출력 오류');return result;
+  }
+  async call(token,request){const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');this.validate(session,request);session.lastUsed=Date.now();const job=session.queue.then(async()=>this.validateReply(session,request,await this.rpc(session,request)));session.queue=job.catch(()=>{});return job;}
+  rpc(session,request){
+    if(!session.process){session.process=spawn(session.binary,[],{env,windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>session.process=null);}
+    return new Promise((resolve,reject)=>{const child=session.process,lines=session.lines;const cleanup=()=>{clearTimeout(timeout);lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{cleanup();reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
+      const onLine=line=>{const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();result.ok?resolve(result):reject(Error(result.error));}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(JSON.stringify(request)+'\n',error=>{if(error)onError(error);});});
+  }
+  close(){for(const session of this.sessions.values())session.process?.kill();this.sessions.clear();}
+}

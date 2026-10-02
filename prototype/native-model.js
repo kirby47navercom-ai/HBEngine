@@ -4,7 +4,7 @@ const types=new Set(['bool','int','float','string','vec2','vec3','color','transf
 const portValid=p=>p&&id(p.id)&&typeof p.label==='string'&&p.label.length<=80&&types.has(p.type)&&typeof p.array==='boolean'&&(p.className===undefined||id(p.className));
 export function validNative(m,validValue){
   if(!m||m.version!==1||!Array.isArray(m.classes)||m.classes.length>32||new Set(m.classes.map(c=>c?.name)).size!==m.classes.length)return false;
-  return m.classes.every(c=>c&&id(c.name)&&id(c.base)&&typeof c.blueprintable==='boolean'&&Array.isArray(c.properties)&&c.properties.length<=100&&Array.isArray(c.functions)&&c.functions.length<=100&&new Set([...c.properties,...c.functions].map(x=>x?.name)).size===c.properties.length+c.functions.length&&c.properties.every(p=>p&&id(p.name)&&types.has(p.type)&&typeof p.array==='boolean'&&typeof p.readOnly==='boolean'&&(p.className===undefined||id(p.className))&&(p.value===undefined||!validValue||(p.array?Array.isArray(p.value)&&p.value.length<=128&&p.value.every(v=>validValue(p.type,v)):validValue(p.type,p.value))))&&c.functions.every(f=>f&&id(f.name)&&typeof f.label==='string'&&f.label.length<=80&&typeof f.category==='string'&&f.category.length<=80&&typeof f.pure==='boolean'&&typeof f.static==='boolean'&&['none','native','implementable'].includes(f.event)&&Array.isArray(f.inputs)&&Array.isArray(f.outputs)&&f.inputs.length<=30&&f.outputs.length<=30&&[f.inputs,f.outputs].every(ps=>ps.every(portValid)&&new Set(ps.map(p=>p.id)).size===ps.length)&&(!f.pure||f.event==='none')&&(f.event==='none'||!f.outputs.length)));
+  return m.classes.every(c=>c&&id(c.name)&&id(c.base)&&typeof c.blueprintable==='boolean'&&Array.isArray(c.properties)&&c.properties.length<=100&&Array.isArray(c.functions)&&c.functions.length<=500&&new Set([...c.properties,...c.functions].map(x=>x?.name)).size===c.properties.length+c.functions.length&&c.properties.every(p=>p&&id(p.name)&&types.has(p.type)&&typeof p.array==='boolean'&&typeof p.readOnly==='boolean'&&(p.className===undefined||id(p.className))&&(p.value===undefined||!validValue||(p.array?Array.isArray(p.value)&&p.value.length<=128&&p.value.every(v=>validValue(p.type,v)):validValue(p.type,p.value))))&&c.functions.every(f=>f&&id(f.name)&&typeof f.label==='string'&&f.label.length<=80&&typeof f.category==='string'&&f.category.length<=80&&typeof f.pure==='boolean'&&typeof f.static==='boolean'&&['none','native','implementable'].includes(f.event)&&Array.isArray(f.inputs)&&Array.isArray(f.outputs)&&f.inputs.length<=30&&f.outputs.length<=30&&[f.inputs,f.outputs].every(ps=>ps.every(portValid)&&new Set(ps.map(p=>p.id)).size===ps.length)&&(!f.pure||f.event==='none')&&(f.event==='none'||!f.outputs.length)));
 }
 function commaParts(s){let level=0,quoted=false,part='',parts=[];for(const c of s){if(c==='"')quoted=!quoted;if(!quoted){if(c==='<')level++;if(c==='>')level--;if(c===','&&level===0){parts.push(part.trim());part='';continue;}}part+=c;}if(part.trim())parts.push(part.trim());return parts;}
 function cppType(s){
@@ -23,10 +23,11 @@ export function parseNativeHeader(source){
     while((p=props.exec(body))){const declaration=p[2].trim().match(/^(.+?)\s+(\w+)\s*(?:=\s*(.+))?$/);if(!declaration)throw Error('속성 선언을 확인하세요: '+p[2]);const [,type,name,literal]=declaration,parsed=cppType(type),property={name,...parsed,readOnly:/\bBlueprintReadOnly\b/.test(p[1])};if(literal){try{property.value=JSON.parse(literal.replace(/([0-9.])f\b/g,'$1'));}catch{throw Error(name+' 기본값은 숫자·문자열·불리언 또는 JSON 배열로 적으세요.');}}c.properties.push(property);}
     const funcs=/HB_(?:FUNCTION|NODE)\(([^)]*)\)\s*((?:(?:static|virtual)\s+)*)([^;{}()]+?)\s+(\w+)\s*\(([^)]*)\)\s*(?:const\s*)?(?:override\s*)?;/g;let f;
     while((f=funcs.exec(body))){const flags=f[1],fn={name:f[4],label:metadata(flags,'DisplayName',f[4]),category:metadata(flags,'Category','C++'),pure:/\bBlueprintPure\b/.test(flags),static:/\bstatic\b/.test(f[2]),event:/BlueprintNativeEvent/.test(flags)?'native':/BlueprintImplementableEvent/.test(flags)?'implementable':'none',inputs:[],outputs:[]};
+      fn.returnType=f[3].trim();fn.parameters=[];
       if(/NodeKey\s*=/.test(flags))fn.nodeKey=metadata(flags,'NodeKey','');
       if(/KoreanName\s*=/.test(flags))fn.ko=metadata(flags,'KoreanName',fn.label);
       if(f[3].trim()!=='void')fn.outputs.push({id:metadata(flags,'ReturnPin','result'),label:'Return value',...cppType(f[3].trim())});
-      for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn[out?'outputs':'inputs'].push({id:name,label:name,...cppType(type)});}
+      for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn.parameters.push({name,cppType:type,out});fn[out?'outputs':'inputs'].push({id:name,label:name,...cppType(type)});}
       if(fn.event!=='none'&&fn.outputs.length)throw Error(fn.name+' 이벤트에는 반환·출력 매개변수를 둘 수 없어요.');c.functions.push(fn);
     }
     if((body.match(/HB_(?:FUNCTION|NODE)\(/g)||[]).length!==c.functions.length||(body.match(/HB_PROPERTY\(/g)||[]).length!==c.properties.length)throw Error('공개 멤버는 함수 본문 없이 헤더 선언으로 입력하세요.');
@@ -68,5 +69,5 @@ public:
     DoorController* GetDoorTarget() const;
 
     HB_FUNCTION(BlueprintNativeEvent, DisplayName="문이 열렸을 때", Category="Door")
-    void OnOpened(const Vec3& Position);
+    virtual void OnOpened(const Vec3& Position);
 };`;

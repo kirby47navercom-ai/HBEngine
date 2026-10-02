@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "name": "BP_NativeDoor",
+  "components": [
+    {
+      "id": "transform",
+      "name": "Transform",
+      "type": "Transform"
+    },
+    {
+      "id": "mesh",
+      "name": "Mesh renderer",
+      "type": "MeshRenderer"
+    },
+    {
+      "id": "collider",
+      "name": "Box collider",
+      "type": "BoxCollider"
+    }
+  ],
+  "variables": [
+    {
+      "id": "hasKey",
+      "name": "hasKey",
+      "type": "bool",
+      "container": "single",
+      "value": false
+    },
+    {
+      "id": "doorName",
+      "name": "doorName",
+      "type": "string",
+      "container": "single",
+      "value": "GardenDoor"
+    },
+    {
+      "id": "targetPosition",
+      "name": "targetPosition",
+      "type": "vec3",
+      "container": "single",
+      "value": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "speed",
+      "name": "speed",
+      "type": "float",
+      "container": "single",
+      "value": 3
+    },
+    {
+      "id": "waypoints",
+      "name": "waypoints",
+      "type": "vec3",
+      "container": "array",
+      "value": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "begin",
+      "key": "beginPlay",
+      "position": {
+        "x": 40,
+        "y": 40
+      },
+      "splitPins": [],
+      "inputValues": {}
+    },
+    {
+      "id": "open",
+      "key": "nativeCall",
+      "position": {
+        "x": 340,
+        "y": 40
+      },
+      "splitPins": [],
+      "inputValues": {
+        "Angle": 45
+      },
+      "nativeId": "DoorController.Open"
+    },
+    {
+      "id": "done",
+      "key": "print",
+      "position": {
+        "x": 650,
+        "y": 40
+      },
+      "splitPins": [],
+      "inputValues": {
+        "message": "C++ Open 실행 완료"
+      }
+    },
+    {
+      "id": "event",
+      "key": "nativeEvent",
+      "position": {
+        "x": 40,
+        "y": 240
+      },
+      "splitPins": [],
+      "inputValues": {},
+      "nativeId": "DoorController.OnOpened"
+    },
+    {
+      "id": "move",
+      "key": "translate",
+      "position": {
+        "x": 340,
+        "y": 240
+      },
+      "splitPins": [],
+      "inputValues": {
+        "target": null,
+        "value": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "eventLog",
+      "key": "print",
+      "position": {
+        "x": 650,
+        "y": 240
+      },
+      "splitPins": [],
+      "inputValues": {
+        "message": "C++ 이벤트 → Blueprint 실행 완료"
+      }
+    },
+    {
+      "id": "timeline",
+      "key": "timeline",
+      "position": {
+        "x": 40,
+        "y": 440
+      },
+      "splitPins": [],
+      "timeline": {
+        "length": 1,
+        "loop": false,
+        "autoplay": false,
+        "playRate": 1,
+        "lastKeyframe": false,
+        "ignoreTimeDilation": false,
+        "tracks": [
+          {
+            "id": "Alpha",
+            "name": "Alpha",
+            "type": "float",
+            "interpolation": "linear",
+            "keys": [
+              {
+                "time": 0,
+                "value": 0
+              },
+              {
+                "time": 1,
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "inputValues": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": {
+        "node": "begin",
+        "pin": "then"
+      },
+      "to": {
+        "node": "open",
+        "pin": "exec"
+      }
+    },
+    {
+      "from": {
+        "node": "open",
+        "pin": "then"
+      },
+      "to": {
+        "node": "done",
+        "pin": "exec"
+      }
+    },
+    {
+      "from": {
+        "node": "event",
+        "pin": "then"
+      },
+      "to": {
+        "node": "move",
+        "pin": "exec"
+      }
+    },
+    {
+      "from": {
+        "node": "move",
+        "pin": "then"
+      },
+      "to": {
+        "node": "eventLog",
+        "pin": "exec"
+      }
+    }
+  ],
+  "functions": [],
+  "macros": [],
+  "comments": [],
+  "construction": {
+    "nodes": [],
+    "edges": [],
+    "comments": []
+  },
+  "native": {
+    "version": 1,
+    "classes": [
+      {
+        "name": "DoorController",
+        "base": "Actor",
+        "blueprintable": true,
+        "properties": [
+          {
+            "name": "OpenAngle",
+            "type": "float",
+            "array": false,
+            "readOnly": false,
+            "value": 90
+          }
+        ],
+        "functions": [
+          {
+            "name": "Open",
+            "label": "문 열기",
+            "category": "Door",
+            "pure": false,
+            "static": false,
+            "event": "none",
+            "inputs": [
+              {
+                "id": "Angle",
+                "label": "Angle",
+                "type": "float",
+                "array": false
+              }
+            ],
+            "outputs": [],
+            "returnType": "void",
+            "parameters": [
+              {
+                "name": "Angle",
+                "cppType": "float",
+                "out": false
+              }
+            ]
+          },
+          {
+            "name": "GetDoorPosition",
+            "label": "문 위치",
+            "category": "Door",
+            "pure": true,
+            "static": false,
+            "event": "none",
+            "inputs": [],
+            "outputs": [
+              {
+                "id": "result",
+                "label": "Return value",
+                "type": "vec3",
+                "array": false
+              }
+            ],
+            "returnType": "Vec3",
+            "parameters": []
+          },
+          {
+            "name": "GetDoorTarget",
+            "label": "문 대상",
+            "category": "Door",
+            "pure": true,
+            "static": false,
+            "event": "none",
+            "inputs": [],
+            "outputs": [
+              {
+                "id": "result",
+                "label": "Return value",
+                "type": "object",
+                "array": false,
+                "className": "DoorController"
+              }
+            ],
+            "returnType": "DoorController*",
+            "parameters": []
+          },
+          {
+            "name": "OnOpened",
+            "label": "문이 열렸을 때",
+            "category": "Door",
+            "pure": false,
+            "static": false,
+            "event": "native",
+            "inputs": [
+              {
+                "id": "Position",
+                "label": "Position",
+                "type": "vec3",
+                "array": false
+              }
+            ],
+            "outputs": [],
+            "returnType": "void",
+            "parameters": [
+              {
+                "name": "Position",
+                "cppType": "const Vec3&",
+                "out": false
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "header": "#include <HBEngine/Game.hpp>\nusing namespace hb;\n\nHB_CLASS(Blueprintable)\nclass DoorController : public Actor {\npublic:\n    HB_PROPERTY(BlueprintReadWrite)\n    float OpenAngle = 90.0f;\n\n    HB_FUNCTION(BlueprintCallable, DisplayName=\"문 열기\", Category=\"Door\")\n    void Open(float Angle);\n\n    HB_FUNCTION(BlueprintPure, DisplayName=\"문 위치\", Category=\"Door\")\n    Vec3 GetDoorPosition() const;\n\n    HB_FUNCTION(BlueprintPure, DisplayName=\"문 대상\", Category=\"Door\")\n    DoorController* GetDoorTarget() const;\n\n    HB_FUNCTION(BlueprintNativeEvent, DisplayName=\"문이 열렸을 때\", Category=\"Door\")\n    void OnOpened(const Vec3& Position);\n};\n",
+    "source": "#include \"DoorController.h\"\n\nvoid DoorController::Open(float Angle) {\n    Scene::SetRotation(this, {0, Math::Clamp(Angle, 0, OpenAngle), 0});\n    OnOpened(Scene::GetPosition(this));\n}\n\nVec3 DoorController::GetDoorPosition() const { return transform.position; }\nDoorController* DoorController::GetDoorTarget() const { return const_cast<DoorController*>(this); }\nvoid DoorController::OnOpened(const Vec3&) { }\n"
+  },
+  "settings": {
+    "parentClass": "DoorController",
+    "tickEnabled": true,
+    "nativeDefaults": {
+      "DoorController.OpenAngle": 90
+    }
+  }
+}

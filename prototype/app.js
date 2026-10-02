@@ -2,12 +2,18 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { STORAGE_KEY, defaultObjects, defaultSurface, defaultEnvironment, clone, validScene, fileKind } from './model.js';
+import { STORAGE_KEY, defaultObjects, defaultSurface, defaultEnvironment,validSurface, clone, validScene, fileKind } from './model.js';
 import { catalog, variableTypes, typeColors, defaultBlueprint, defaultsFor, defaultInputValue, validValue, fieldsFor, effectivePins, basePins, canConnect, connect, splitPin, makeNode, nodeTitle, validBlueprint, graphContext, allGraphContexts, collapseNodes, makeDefinition, makeComment, pasteNodes, validTimeline, sampleTimeline } from './blueprint-model.js';
 
 import { detailsMarkup, componentDefaults } from './blueprint-details.js';
 import {parseNativeHeader,nativeExample,nativeEntries,nativeMember} from './native-model.js';
 import {createCorePreview,evaluateCoreNode} from './core-preview.js';
+import {DockLayout} from './dock-layout.js';
+import {TimelineEditor} from './timeline-editor.js';
+import {BlueprintRuntime} from './blueprint-runtime.js';
+import {ProjectBrowser,editorRequest,fileUrl,droppedFiles} from './project-browser.js';
+import {loadModel,engineOperations} from './engine-services.js';
+let dock,project,runtime,runtimeServices,editWorld,nativeBuild,runtimeFrame,focusedWindow='scene';let activeScenePath='Assets/Scenes/Garden.hbscene.json',activeBlueprintPath='Assets/Blueprints/BP_Garden.hbblueprint.json',codeHeaderPath='Source/DoorController.h',codeSourcePath='Source/DoorController.cpp';const documents=new Map();const extraViewports=[];const timelineWindows=new Map();
 
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
@@ -58,8 +64,9 @@ let objects = clone(defaultObjects), surface = clone(defaultSurface), selected =
 let environment = clone(defaultEnvironment), sceneName = 'Garden', skyDome, cloudGroup, ambientLight, groundFloor;
 let savedBlueprint, selectedVariable='targetPosition', selectedNode='begin', palettePosition={x:60,y:60};
 let blueprintView='event', blueprintZoom=1, blueprintPan={x:30,y:30}, selectedNodes=new Set(['begin']), collapseKind='function', creatingDefinition=false;
+const quickNodeKeys={b:'branch',d:'delay',s:'sequence',g:'gate',f:'forEach',m:'multiGate',n:'doN',o:'doOnce',p:'beginPlay'};let heldNodeKey=null;
 let selectedDetail={kind:'blueprint'}, lastGraphPointer={x:40,y:40}, graphPanActive=false;
-let running = false, paused = false, history = [], future = [], pendingFiles = [], logs = [], lastSaved = '', currentFilter = 'all';
+let running = false, paused = false, history = [], future = [], pendingFiles = [], importing = false, logs = [], lastSaved = '';
 let mainRenderer, scene, camera, orthoCamera, orbit, transform, grid, sun, selectionBox, previewRenderer, previewScene, previewCamera, previewSphere;
 let activeCamera, viewMode = '3d', toastTimer, transformBefore, playTime = 0, importCounter = 0;
 const meshMap = new Map(), objectUrls = [];
@@ -81,17 +88,19 @@ function log(message, kind = 'INFO') {
   $('#log-count').textContent = logs.length;
   $('#console-logs').innerHTML = logs.map(l => `<div class="log-row"><time>${l.time}</time><span class="log-kind">${l.kind}</span><span>${escapeHtml(l.message)}</span></div>`).join('');
 }
-function save() {
+async function save() {
   if (running) { notify('실행을 종료한 뒤 편집 장면을 저장하세요.'); return; }
   const data=snapshot();if(!validScene(data))return notify('저장 데이터 검증에 실패했어요. 기존 저장은 보존돼요. JSON으로 내용을 확인하세요.');
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...data, savedAt: new Date().toISOString() })); }
   catch { notify('브라우저 저장 공간을 사용할 수 없어요.'); return; }
+  try{await editorRequest(fileUrl(activeScenePath),{method:'PUT',body:JSON.stringify(data,null,2)});await editorRequest(fileUrl(activeBlueprintPath),{method:'PUT',body:JSON.stringify(graphs.blueprint,null,2)});}catch(error){notify('디스크 저장 실패: '+error.message);return;}
   dirty = false; $('#dirty-mark').hidden = true; $('#status-text').textContent = '준비됨';
-  $('#save-status').textContent = '방금 저장됨 · 이 브라우저'; notify('장면·환경·블루프린트를 이 브라우저에 저장했어요.');
+  $('#save-status').textContent = '방금 저장됨 · Project';project?.refresh();notify('프로젝트 파일을 저장했어요.');
 }
 function restoreEdit(data){
+  for(const id of timelineWindows.keys())dock?.remove(id);timelineWindows.clear();
   objects=data.objects;surface=data.surface;environment=data.environment;sceneName=data.sceneName;graphs.blueprint=data.blueprint;graphs.blueprint.dispatchers??=[];graphs.blueprint.interfaces??=[];
-  if(!['event','construction'].includes(blueprintView)&&![...graphs.blueprint.functions,...graphs.blueprint.macros].some(d=>d.id===blueprintView))blueprintView='event';pendingPin=null;rebuildWorld();updateSurface();applyEnvironment();renderHierarchy();renderInspector();renderBlueprintSidebar();renderBlueprintGraph();renderBlueprintInspector();renderNativeRegistry();$('#cpp-code').value=graphs.blueprint.native?.header||nativeExample;changed();
+  if(!['event','construction'].includes(blueprintView)&&![...graphs.blueprint.functions,...graphs.blueprint.macros].some(d=>d.id===blueprintView))blueprintView='event';pendingPin=null;rebuildWorld();updateSurface();applyEnvironment();renderHierarchy();renderInspector();renderBlueprintSidebar();renderBlueprintGraph();renderBlueprintInspector();renderNativeRegistry();$('#cpp-code').value=graphs.blueprint.native?.header||nativeExample;$('#cpp-source').value=graphs.blueprint.native?.source||'';nativeBuild=null;changed();
 }
 function undo(){if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.pop();if(!data)return notify('되돌릴 변경 사항이 없어요.');future.push(snapshot());restoreEdit(data);}
 function redo(){if(running)return;const data=future.pop();if(!data)return;history.push(snapshot());restoreEdit(data);}
@@ -114,7 +123,7 @@ function plant(group, x, z, scale = 1, seed = 0) {
   }
 }
 function buildObject(object) {
-  const g = new THREE.Group(); g.name = object.name; g.userData.objectId = object.id;
+  const g = new THREE.Group();if(object.kind==='model'&&object.asset)loadModel(object.asset).then(result=>{if(meshMap.get(object.id)!==g)return;g.add(result.object);g.userData.animations=result.animations;g.traverse(child=>child.userData.objectId=object.id);}).catch(error=>log(object.name+': '+error.message,'ERROR')); g.name = object.name; g.userData.objectId = object.id;
   switch (object.kind) {
     case 'arch': {
       for (const x of [-1.4, 1.4]) for (let j = 0; j < 4; j++) box(g, [.76, .48, .8], j === 3 ? surfaceMaterial : stoneMaterial, [x, .24 + j * .5, 0], [0, (j % 2 ? .015 : -.025), 0]);
@@ -160,7 +169,7 @@ function applyObject(o) { const g=meshMap.get(o.id); if(!g) return; g.position.s
 function rebuildWorld() {
   if(!scene) return;
   transform?.detach();
-  meshMap.forEach(g => { scene.remove(g); g.traverse(m => { m.geometry?.dispose(); if(m.isLight) m.dispose(); }); });
+  meshMap.forEach(g => { g.removeFromParent(); g.traverse(m => { m.geometry?.dispose(); if(m.isLight) m.dispose(); }); });
   meshMap.clear(); sun=null; objects.forEach(buildObject);
   if(!objects.some(o=>o.id===selected)) selected=objects[0]?.id || null;
   if(!selected){if(selectionBox)selectionBox.visible=false;$('#selection-chip-name').textContent='선택 없음';}
@@ -228,7 +237,7 @@ function renderInspector() {
   ${!material?`<section class="component-section"><h3>${icon('move')}Transform<span>Local</span></h3>${vectorRow('위치','position',o)}${vectorRow('회전','rotation',o)}${vectorRow('크기','scale',o)}</section>`:''}
   <section class="component-section"><h3>${icon('material')}${material?'표면 설정':'머테리얼'}<span>PBR</span></h3>${!material?`<button class="material-slot" data-action="open-material"><span class="mini-sphere"></span><span><strong>Moss stone</strong><span>Standard surface</span></span>${icon('chevron')}</button>`:''}${materialProperties()}</section>
   <section class="component-section" id="lighting-section"><h3>${icon('sun')}조명<span>Environment</span></h3><div class="range-property"><label for="light-intensity">태양 밝기 <output>${surface.light.toFixed(1)}</output></label><input type="range" id="light-intensity" min="0" max="10" step="0.1" value="${surface.light}" data-surface="light"></div><div class="property-row"><label for="shadow-toggle">그림자</label><label><input type="checkbox" id="shadow-toggle" ${sun?.castShadow!==false?'checked':''}> 부드러운 그림자</label></div></section>
-  <section class="component-section"><h3>${icon(workspace==='blueprint'?'nodes':'code')}게임 로직</h3><button class="material-slot" data-action="open-blueprint">${icon('nodes')}<span><strong>Door interaction</strong><span>노드 그래프 예시</span></span>${icon('chevron')}</button><div class="property-row"><span class="subtle">C++ 컴포넌트</span><button data-action="open-code" style="text-align:left;color:var(--accent);font-size:10px">DoorController →</button></div></section><div class="inspector-actions"><button data-action="add-component" data-icon="plus">컴포넌트 추가</button></div>`;
+  <section class="component-section"><h3>${icon(workspace==='blueprint'?'nodes':'code')}게임 로직</h3><button class="material-slot" data-action="open-blueprint">${icon('nodes')}<span><strong>${escapeHtml(graphs.blueprint.name)}</strong><span>블루프린트</span></span>${icon('chevron')}</button><div class="property-row"><label>자동 실행</label><input type="checkbox" data-object-blueprint aria-label="선택 블루프린트 자동 실행" ${o.blueprint===graphs.blueprint.name?'checked':''} ${running?'disabled':''}></div><div class="property-row"><span class="subtle">C++</span><button data-action="open-code" style="text-align:left;color:var(--accent);font-size:10px">DoorController →</button></div></section><div class="inspector-actions"><button data-action="add-component" data-icon="plus">컴포넌트 추가</button></div>`;
   icons($('#inspector-content'));
 }
 function updateSurface() {
@@ -275,9 +284,10 @@ function createMap(){
   else {objects=[{id:'map-ground',name:'Ground',kind:'plane',group:'WORLD',position:[0,0,0],rotation:[0,0,0],scale:[8,1,8],visible:true},clone(defaultObjects.find(o=>o.id==='sun-light')),clone(defaultObjects.find(o=>o.kind==='camera'))];if(template==='2d')Object.assign(environment,{skyEnabled:false,cloudsEnabled:false,fogEnabled:false});}
   sun=null;selected=objects[0]?.id||null;rebuildWorld();applyEnvironment();updateSurface();renderHierarchy();setWorkspace('scene');setView(template==='2d'?'2d':'3d');if(camera){camera.position.set(8.6,7.2,10.5);orbit.target.set(0,.45,0);}$('#new-map-dialog').close();changed();notify(name+' 맵을 만들었어요. Ctrl Z로 이전 장면을 복원할 수 있어요.');
 }
-function setWorkspace(name) {
+function setWorkspace(name,activate=true) {
+  if(!activate&&workspace===name)return;
   workspace=name; $$('.workspace-tab').forEach(b=>{b.classList.toggle('active',b.dataset.workspace===name);b.setAttribute('aria-selected',String(b.dataset.workspace===name));});
-  $$('.workspace-view').forEach(v=>v.classList.toggle('active',v.id===name+'-workspace'));
+  if(dock&&activate)dock.open(name);else if(!dock) $$('[id$=workspace].workspace-view').forEach(v=>v.classList.toggle('active',v.id===name+'-workspace'));
   $('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';$('.hierarchy .panel-heading h2').innerHTML=name==='blueprint'?'블루프린트 <span>My Blueprint</span>':'장면 구조 <span>Hierarchy</span>';
   $('.hierarchy .panel-heading .icon-button').dataset.action=name==='blueprint'?'add-blueprint-node':'add-menu';$('.hierarchy .panel-heading .icon-button').setAttribute('aria-label',name==='blueprint'?'노드 추가':'오브젝트 추가');
   const meta={scene:['Scenes',sceneName,'Scene view','scene'],material:['Materials','Moss stone','Material editor','material'],animation:['Animations','Float_loop','Animation editor','animation'],blueprint:['Blueprints',graphs.blueprint.name,'Graph editor','nodes'],code:['Source','Native API','C++','code']}[name];
@@ -285,44 +295,55 @@ function setWorkspace(name) {
   renderInspector();if(graphs[name])renderGraph(name);if(name==='blueprint')renderBlueprintSidebar();resize();drawWires();
 }
 function setView(mode) {
-  if(!orbit)return;viewMode=mode;activeCamera=mode==='2d'?orthoCamera:camera;
-  orbit.dispose();orbit=new OrbitControls(activeCamera,$('#scene-canvas'));orbit.enableDamping=true;orbit.enableRotate=mode==='3d';orbit.target.set(0,mode==='2d'?0:.45,0);orbit.minDistance=4;orbit.maxDistance=28;orbit.maxPolarAngle=Math.PI*.49;transform.camera=activeCamera;
-  $$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===mode));$('#scene-view-label').textContent=mode==='2d'?'Orthographic · Top':'Perspective · Lit';resize();
+  if(!orbit)return;viewMode=mode;activeCamera=mode==='3d'?camera:orthoCamera;if(mode!=='3d'){orthoCamera.up.set(0,1,0);orthoCamera.position.set(...(mode==='top'?[0,15,.01]:[0,0,15]));orthoCamera.lookAt(0,0,0);}
+  orbit.dispose();orbit=new OrbitControls(activeCamera,$('#scene-canvas'));orbit.enableDamping=true;orbit.enableRotate=mode==='3d';orbit.target.set(0,mode!=='3d'?0:.45,0);orbit.minDistance=4;orbit.maxDistance=28;orbit.maxPolarAngle=mode==='3d'?Math.PI*.49:Math.PI;transform.camera=activeCamera;
+  $$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===mode));$('#scene-view-label').textContent=mode==='top'?'Orthographic · Top':mode==='2d'?'Orthographic · XY':'Perspective · Lit';resize();
 }
-function focusObject() { const g=meshMap.get(selected);if(!g||!orbit)return;const center=new THREE.Box3().setFromObject(g).getCenter(new THREE.Vector3());if(!Number.isFinite(center.x))return;orbit.target.copy(center);if(viewMode==='3d')camera.position.copy(center).add(new THREE.Vector3(5,4,6));else orthoCamera.position.set(center.x,15,center.z+.01);orbit.update(); }
+function focusObject() { const g=meshMap.get(selected);if(!g||!orbit)return;const center=new THREE.Box3().setFromObject(g).getCenter(new THREE.Vector3());if(!Number.isFinite(center.x))return;orbit.target.copy(center);if(viewMode==='3d')camera.position.copy(center).add(new THREE.Vector3(5,4,6));else orthoCamera.position.copy(center).add(viewMode==='top'?new THREE.Vector3(0,15,.01):new THREE.Vector3(0,0,15));orbit.update(); }
 function createObject(kind) {
   if(running)return notify('실행을 종료한 뒤 오브젝트를 추가하세요.');if(objects.length>=500)return notify('프로토타입은 오브젝트 500개까지 편집할 수 있어요.');remember();
   const names={cube:'Cube',sphere:'Sphere',cylinder:'Cylinder',plane:'Plane',light:'Point light'};
   const id=crypto.randomUUID();const o={id,name:names[kind]||'Object',kind,group:'WORLD',position:[-1.7,.1,1],rotation:[0,0,0],scale:[1,1,1],visible:true};objects.push(o);if(scene)buildObject(o);selectObject(id);setWorkspace('scene');changed();notify(o.name+'를 장면에 추가했어요.');
 }
-function startPlay() {if(running){paused=!paused;return updatePlayButtons();}running=true;paused=false;playTime=0;transform?.detach();if(selectionBox)selectionBox.visible=false;$('#play-banner').hidden=false;updatePlayButtons();notify('실행');}
-function stopPlay(){running=false;paused=false;$('#play-banner').hidden=true;objects.forEach(applyObject);selectObject(selected);updatePlayButtons();}
+async function nativeCall(request){const owner=runtime;if(!nativeBuild)throw Error('C++을 먼저 빌드하세요.');const result=await (await editorRequest('/api/native/call',{method:'POST',body:JSON.stringify({token:nativeBuild.token,request:{...request,objects:owner.objects.filter(o=>!['widget','component'].includes(o.kind))}})})).json();for(const state of result.objects||[]){const o=owner.objects.find(o=>o.id===state.id);if(o){if(state.position!==undefined&&(!validValue('transform',state)||!state.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>state[k].every(v=>Math.abs(v)<=10000))||(state.visible!==undefined&&typeof state.visible!=='boolean')))throw Error('C++ 객체 상태 범위 오류: '+state.id);Object.assign(o,state);if(running&&runtime===owner)applyObject(o);}}if(result.clock){owner.core.scale=result.clock.scale;owner.core.paused=result.clock.paused;if(!request.command)owner.core.time=result.clock.time;}return result;}
+let stoppingPlay=false;
+async function startPlay(){
+  if(stoppingPlay)return;
+  if(running){if(runtime.pending)runtime.continue();else if(paused)runtime.continue();else runtime.pause();paused=runtime.paused;return updatePlayButtons();}
+  if(!validBlueprint(graphs.blueprint))return notify('블루프린트 검증 실패');
+  const needsNative=allGraphContexts(graphs.blueprint).some(g=>g.nodes.some(n=>n.key.startsWith('native')&&n.key!=='nativeEvent'));if(needsNative&&(!nativeBuild||nativeBuild.header!==graphs.blueprint.native?.header||nativeBuild.source!==graphs.blueprint.native?.source))return notify('현재 C++ 코드를 먼저 빌드하세요.');
+  editWorld=objects;objects=clone(objects);const attached=objects.filter(o=>o.blueprint===graphs.blueprint.name),targets=attached.length?attached:objects.filter(o=>o.id===selected);if(!targets.length){objects=editWorld;editWorld=null;return notify('블루프린트를 실행할 오브젝트를 선택하세요.');}
+  for(const o of targets){o.nativeClass=graphs.blueprint.settings?.parentClass||'Actor';if(graphs.blueprint.native?.classes.some(c=>c.name===o.nativeClass)){o.nativeProperties={};for(const p of graphs.blueprint.native.classes.find(c=>c.name===o.nativeClass).properties)o.nativeProperties[p.name]=clone(graphs.blueprint.settings?.nativeDefaults?.[o.nativeClass+'.'+p.name]??p.value??(p.array?[]:defaultsFor(p.type)));}}
+  const overlay=document.createElement('div');overlay.className='runtime-overlay';$('#scene-canvas-container').append(overlay);
+  runtimeServices=engineOperations({build:buildObject,remove:o=>{meshMap.get(o.id)?.removeFromParent();meshMap.delete(o.id);},update:applyObject,mesh:id=>meshMap.get(id),meshes:()=>[...meshMap.values()],scene:()=>scene,overlay:()=>overlay,asset:async(name,kind)=>{const data=await (await editorRequest('/api/project?recursive=1')).json();return data.entries.find(e=>e.kind===kind&&(e.path===name||e.name===name||e.name.replace(/\.[^.]+$/,'')===name))?.path;}});
+  runtime=new BlueprintRuntime(objects,targets.map(o=>({root:graphs.blueprint,self:o.id})),{...runtimeServices,updateObject:applyObject,log:v=>log(v),native:request=>nativeCall(request),trace:n=>{const el=$(`#blueprint-graph [data-node="${n.id}"]`);el?.classList.add('tracing');setTimeout(()=>el?.classList.remove('tracing'),200);},breakpoint:(n,f)=>{paused=true;const view=graphViews().find(([id])=>graphContext(graphs.blueprint,id).nodes.some(x=>x.id===n.id))?.[0]||'event';switchBlueprintView(view);selectedNode=n.id;selectedNodes=new Set([n.id]);selectedDetail={kind:'node',id:n.id};setWorkspace('blueprint');renderBlueprintGraph();renderBlueprintInspector();showBlueprintResults('debug');$('#graph-status').textContent='중단점 · '+[graphs.blueprint.name,...f.stack,nodeTitle(n,f.g)].join(' → ');updatePlayButtons();}});
+  running=true;paused=false;playTime=0;runtimeFrame=null;queuedDelta=0;transform?.detach();if(selectionBox)selectionBox.visible=false;$('#play-banner').hidden=false;updatePlayButtons();
+  try{if(nativeBuild)await nativeCall({command:'reset'});await runtime.start();notify('실행');}catch(error){log(error.message,'ERROR');await stopPlay();notify('실행 오류: '+error.message);}
+}
+async function stopPlay(){if(!running)return;stoppingPlay=true;running=false;try{await runtime.stop();}catch(error){log(error.message,'ERROR');}runtimeServices?.dispose();$('.runtime-overlay')?.remove();running=false;paused=false;objects=editWorld||objects;editWorld=null;$('#play-banner').hidden=true;rebuildWorld();applyEnvironment();selectObject(selected);updatePlayButtons();stoppingPlay=false;}
+let queuedDelta=0;async function tickGame(delta){if(!running||runtime.paused)return;queuedDelta=Math.min(1,queuedDelta+delta);if(runtimeFrame)return;delta=queuedDelta;queuedDelta=0;const current=runtime;runtimeFrame=(async()=>{if(nativeBuild){const result=await nativeCall({command:'frame',delta,clock:{scale:current.core.scale,paused:current.core.paused}});if(!running||runtime!==current)return;for(const event of result.timerEvents||[])for(const b of current.bindings)await current.custom(b,event);}if(!running||runtime!==current)return;await current.tick(delta);playTime=current.core.time;if(resultsMode==='debug')renderBlueprintResults();})().catch(error=>{log(error.message,'ERROR');stopPlay();notify('실행 오류: '+error.message);}).finally(()=>{if(runtime===current)runtimeFrame=null;});}
 function updatePlayButtons(){ $('#play-button').innerHTML=icon(running?(paused?'play':'pause'):'play')+(running?(paused?'계속':'실행 중'):'실행');$('#play-button').classList.toggle('running',running); $('[data-action="pause"]').disabled=!running;$('[data-action="stop"]').disabled=!running;renderInspector(); }
 
-const assetTypes={model:'Model',material:'Material',texture:'Texture',animation:'Animation',media:'Media'};
-const assets=[
-  {name:'Stone_arch',kind:'model',look:'stone',object:'stone-arch'}, {name:'Floating_crystal',kind:'model',look:'crystal',object:'floating-crystal'}, {name:'Garden_rock',kind:'model',look:'rock',object:'garden-rocks'}, {name:'Wild_grass',kind:'model',look:'plant',object:'wild-grass'},
-  {name:'Moss_stone',kind:'material',look:'surface'}, {name:'Copper',kind:'material',look:'surface copper'}, {name:'Garden_tiles',kind:'texture',look:'tiles'}, {name:'Grass_albedo',kind:'texture',look:'noise'},
-  {name:'Float_loop',kind:'animation',look:'',icon:'animation'}, {name:'Ambient_garden',kind:'media',look:'wave'}, {name:'Cloudy_sky',kind:'texture',look:'sky'}, {name:'Door_interaction',kind:'blueprint',look:'',icon:'nodes'}
-];
-function renderAssets() {
-  const query=$('#asset-search').value.toLowerCase();const filtered=assets.filter(a=>(currentFilter==='all'||a.kind===currentFilter)&&a.name.toLowerCase().includes(query));
-  $('#asset-grid').innerHTML=filtered.map(a=>`<button class="asset-card ${a.kind}" data-asset="${assets.indexOf(a)}" draggable="true" aria-label="${escapeHtml(a.name)} ${assetTypes[a.kind]||'Blueprint'}"><span class="asset-preview ${a.look||''}">${a.url?`<img src="${a.url}" alt="${escapeHtml(a.name)}">`:a.icon?icon(a.icon):''}<span class="asset-type-dot"></span></span><span class="asset-name">${escapeHtml(a.name)}</span><span class="asset-type">${assetTypes[a.kind]||'Blueprint'}</span></button>`).join('') || '';
-  $('#asset-count').textContent=assets.length;$('#asset-results').textContent=filtered.length+'개 에셋';
+const assets=[];
+function renderAssets(){project?.refresh();}
+async function openProjectAsset(file){
+  if(file.kind==='code'&&/\.(h|hpp|cpp)$/i.test(file.path)){if(running)throw Error('실행을 종료한 뒤 코드 파일을 여세요.');const header=/\.(h|hpp)$/i.test(file.path)?file.path:file.path.replace(/\.cpp$/i,'.h'),source=file.path.replace(/\.(?:cpp|h|hpp)$/i,'.cpp');$('#cpp-code').value=await (await editorRequest(fileUrl(header))).text();try{$('#cpp-source').value=await (await editorRequest(fileUrl(source))).text();}catch{$('#cpp-source').value='';}codeHeaderPath=header;codeSourcePath=source;setWorkspace('code');return;}
+  if(file.kind==='scene'){if(running)throw Error('실행을 종료한 뒤 장면을 여세요.');const data=await (await editorRequest(fileUrl(file.path))).json();if(!validScene(data))throw Error('장면 데이터 오류');remember();restoreEdit({...data,environment:data.environment||clone(defaultEnvironment),blueprint:data.blueprint||clone(defaultBlueprint)});activeScenePath=file.path;setWorkspace('scene');return;}
+  if(file.kind==='blueprint'){if(running)throw Error('실행을 종료한 뒤 블루프린트를 여세요.');const root=await (await editorRequest(fileUrl(file.path))).json();if(!validBlueprint(root))throw Error('블루프린트 데이터 오류');remember();restoreEdit({...snapshot(),blueprint:root});activeBlueprintPath=file.path;setWorkspace('blueprint');return;}
+  if(file.kind==='material'){const data=await (await editorRequest(fileUrl(file.path))).json();if(!validSurface(data.surface))throw Error('머테리얼 데이터 오류');remember();surface=data.surface;updateSurface();changed();setWorkspace('material');return;}
+  const id='asset:'+file.path;if(documents.has(id)){dock.open(id);return;}const element=document.createElement('div');element.className='workspace-view asset-document';
+  const toolbar=document.createElement('div');toolbar.className='document-toolbar';toolbar.textContent=file.path;element.append(toolbar);
+  if(file.kind==='texture'){const img=document.createElement('img');img.src=fileUrl(file.path);img.alt=file.name;element.append(img);}
+  else if(file.kind==='media'){const player=document.createElement(/\.(wav|mp3|ogg|flac)$/i.test(file.path)?'audio':'video');player.src=fileUrl(file.path);player.controls=true;player.onerror=()=>notify('브라우저 디코더가 이 파일을 재생하지 못해요.');element.append(player);}
+  else if(file.kind==='model'){const button=document.createElement('button');button.textContent='장면에 배치';toolbar.append(button);button.onclick=()=>placeModel(file).catch(error=>notify(error.message));const result=await loadModel(file.path),canvas=document.createElement('canvas');element.append(canvas);const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));const world=new THREE.Scene();world.background=new THREE.Color('#252f32');world.add(new THREE.HemisphereLight(0xffffff,0x46563e,2));const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(3,6,3);world.add(light);world.add(result.object);const bounds=new THREE.Box3().setFromObject(result.object),center=bounds.getCenter(new THREE.Vector3()),size=Math.max(...bounds.getSize(new THREE.Vector3()).toArray(),1),view=new THREE.PerspectiveCamera(45,1,.01,size*100);view.position.copy(center).add(new THREE.Vector3(size,size,size*1.5));const controls=new OrbitControls(view,canvas);controls.target.copy(center);new ResizeObserver(()=>{if(!canvas.clientWidth||!canvas.clientHeight)return;renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);view.aspect=canvas.clientWidth/canvas.clientHeight;view.updateProjectionMatrix();}).observe(element);const render=()=>{if(!element.isConnected)return;if(dock.visible(id)){controls.update();renderer.render(world,view);}requestAnimationFrame(render);};requestAnimationFrame(render);}
+  else if(file.text){const text=await (await editorRequest(fileUrl(file.path))).text();if(text.length>1048576)throw Error('편집 가능한 파일 크기 초과');const textarea=document.createElement('textarea');textarea.value=text;textarea.ariaLabel=file.name+' 내용';textarea.spellcheck=false;element.append(textarea);const saveButton=document.createElement('button');saveButton.textContent='저장';toolbar.append(saveButton);saveButton.onclick=()=>editorRequest(fileUrl(file.path),{method:'PUT',body:textarea.value}).then(()=>notify(file.name+' 저장됨')).catch(error=>notify(error.message));}
+  else throw Error('미리보기 임포터가 없는 파일: '+file.name);
+  documents.set(id,element);dock.add({id,title:file.name,element},dock.leaves().find(l=>l.tabs.includes('scene'))||dock.leaves()[0]);
 }
-function openAsset(index) {const a=assets[index];if(!a)return;$$('.asset-card').forEach(b=>b.classList.toggle('selected',Number(b.dataset.asset)===index));if(a.kind==='material'){setWorkspace('material');if(a.name==='Copper')preset('copper');}else if(a.kind==='animation')setWorkspace('animation');else if(a.kind==='blueprint')setWorkspace('blueprint');else if(a.object){setWorkspace('scene');selectObject(a.object);}else notify(a.name+' · '+(a.imported?'가져온 파일 UI 미리보기':'에셋 미리보기'));}
-function queueFiles(files,immediate=false) {
-  if(!immediate&&!$('#import-dialog').open)$('#import-dialog').showModal();
-  for(const file of files){if(pendingFiles.length>=20){notify('한 번에 20개 파일까지 미리볼 수 있어요.');break;}const kind=fileKind(file.name);pendingFiles.push({file,name:file.name,kind,size:file.size||0,demo:!!file.demo});}
-  renderImportQueue();
-  if(immediate){if(pendingFiles.some(f=>f.kind!=='unsupported'))confirmImport();else{if(!$('#import-dialog').open)$('#import-dialog').showModal();notify('지원하지 않는 파일 형식이에요.');}}
-}
-function renderImportQueue(){ $('#import-file-list').innerHTML=pendingFiles.map((f,i)=>`<div class="import-file">${icon(f.kind==='model'?'cube':f.kind==='texture'?'image':f.kind==='media'?'volume':'info')}<div class="file-details"><strong>${escapeHtml(f.name)}</strong><small>${f.demo?'예시 파일':(f.size/1024/1024).toFixed(2)+' MB'} · ${f.kind==='unsupported'?'지원 형식 확인 필요':assetTypes[f.kind]}</small></div><span class="import-state">${f.kind==='unsupported'?'미지원':'미리보기 대기'}</span><button class="remove-file" data-remove-file="${i}" aria-label="${escapeHtml(f.name)} 목록에서 삭제">${icon('close')}</button></div>`).join('');$('#confirm-import').disabled=!pendingFiles.some(f=>f.kind!=='unsupported'); }
-async function confirmImport(){
-  const button=$('#confirm-import');button.disabled=true;button.textContent='미리보기 준비 중…';
-  let count=0;
-  try {for(const f of pendingFiles){if(f.kind==='unsupported'){log(f.name+' 가져오기 생략: 지원하지 않는 형식','WARN');continue;}const a={name:f.name.replace(/\.[^.]+$/,''),kind:f.kind,look:f.kind==='model'?'rock':f.kind==='media'?'wave':'noise',imported:true};if(f.kind==='texture'&&!f.demo&&/^image\/(jpeg|png|webp|gif|bmp)/.test(f.file.type)){if(f.size>25*1024*1024){log(f.name+' 이미지 미리보기 생략: 25 MB 초과','WARN');}else{a.url=URL.createObjectURL(f.file);objectUrls.push(a.url);}}assets.push(a);count++;}pendingFiles=[];renderImportQueue();currentFilter='all';$$('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));renderAssets();$('#import-dialog').close();notify(`${count}개 에셋 추가됨`);}finally{button.textContent='가져오기';button.disabled=false;$('#file-input').value='';}
-}
+async function placeModel(file){if(running)throw Error('실행을 종료한 뒤 배치하세요.');await loadModel(file.path);remember();const object={id:crypto.randomUUID(),name:file.name,asset:file.path,kind:'model',group:'WORLD',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]};objects.push(object);buildObject(object);selectObject(object.id);changed();setWorkspace('scene');}
+function queueFiles(files,immediate=false){if(importing)return notify('가져오기가 끝난 뒤 다시 놓아 주세요.');for(const item of files){if(pendingFiles.length>=100){notify('한 번에 100개 파일까지 가져올 수 있어요.');break;}const file=item.file||item;pendingFiles.push({file,relativePath:item.relativePath,name:file.name,kind:fileKind(file.name),size:file.size||0});}renderImportQueue();if(immediate)confirmImport();else if(!$('#import-dialog').open)$('#import-dialog').showModal();}
+function renderImportQueue(){$('#import-file-list').innerHTML=pendingFiles.map((f,i)=>`<div class="import-file"><div class="file-details"><strong>${escapeHtml(f.name)}</strong><small>${(f.size/1024/1024).toFixed(2)} MB</small></div><span class="import-state">${f.state||'대기'}</span><button class="remove-file" data-remove-file="${i}" aria-label="${escapeHtml(f.name)} 목록에서 삭제">×</button></div>`).join('');$('#confirm-import').disabled=!pendingFiles.length;}
+async function confirmImport(){if(importing)return;importing=true;const button=$('#confirm-import');button.disabled=true;button.textContent='가져오는 중…';let count=0;const failed=[];try{for(const f of pendingFiles){try{if(f.size>104857600)throw Error('파일당 100 MB 제한 초과');let folder=project.folder||'Assets';const relative=f.relativePath||f.file.webkitRelativePath;if(relative){const parts=relative.split('/');parts.pop();folder+=(folder?'/':'')+parts.join('/');await editorRequest('/api/folder',{method:'POST',body:JSON.stringify({path:folder})});}await editorRequest('/api/import?'+new URLSearchParams({folder,name:f.name}),{method:'POST',body:f.file});count++;}catch(error){f.state='실패';failed.push(f);log(f.name+': '+error.message,'ERROR');}}pendingFiles=failed;renderImportQueue();await project.refresh();if(!failed.length)$('#import-dialog').close();else if(!$('#import-dialog').open)$('#import-dialog').showModal();notify(count+'개 파일 가져옴');}finally{importing=false;button.textContent='가져오기';button.disabled=!pendingFiles.length;$('#file-input').value='';$('#folder-input').value='';}}
 
 let nodeCounter=0,pendingPin=null;
 const graphs={
@@ -359,19 +380,15 @@ function renderGraph(name){if(name==='blueprint')return renderBlueprintGraph();c
 function drawWires(){drawBlueprintWires();for(const name of ['material']){const c=$('#'+name+'-graph');if(!c.clientWidth)continue;const base=c.getBoundingClientRect();let width=Math.max(c.clientWidth,600),height=Math.max(c.clientHeight,230);const wireMarkup=graphs[name].edges.map(([from,to,index])=>{const out=$(`[data-node-id="${from}"][data-pin="out"]`,c),input=$(`[data-node-id="${to}"][data-pin="in"][data-pin-index="${index}"]`,c);if(!out||!input)return '';const a=out.getBoundingClientRect(),b=input.getBoundingClientRect(),x1=a.left-base.left+c.scrollLeft+4,y1=a.top-base.top+c.scrollTop+4,x2=b.left-base.left+c.scrollLeft+4,y2=b.top-base.top+c.scrollTop+4;const bend=Math.max(40,Math.abs(x2-x1)*.5);width=Math.max(width,x1+100,x2+170);height=Math.max(height,y1+55,y2+75);return `<path d="M${x1} ${y1} C${x1+bend} ${y1},${x2-bend} ${y2},${x2} ${y2}" fill="none" stroke="${name==='material'?'#a7c58a':'#aebdbb'}" stroke-width="2" opacity=".8"/>`;}).join('');const svg=$('.node-wires',c);svg.setAttribute('width',width);svg.setAttribute('height',height);svg.style.width=width+'px';svg.style.height=height+'px';svg.innerHTML=wireMarkup;$('.graph-nodes',c).style.width=width+'px';$('.graph-nodes',c).style.height=height+'px';}}
 function connectPin(button){if(button.closest('#blueprint-graph'))return connectBlueprintPin(button);const name=button.closest('.node-graph').id.startsWith('material')?'material':'blueprint';if(button.dataset.pin==='out'){pendingPin={name,id:button.dataset.nodeId};$$('.pin.pending').forEach(p=>p.classList.remove('pending'));button.classList.add('pending');return;}
   if(!pendingPin||pendingPin.name!==name)return notify('먼저 연결할 출력 핀을 선택하세요.');const target=button.dataset.nodeId,index=Number(button.dataset.pinIndex);if(target===pendingPin.id)return notify('같은 노드에는 연결할 수 없어요.');const graph=graphs[name];const reaches=(start,end,seen=new Set())=>{if(start===end)return true;if(seen.has(start))return false;seen.add(start);return graph.edges.filter(e=>e[0]===start).some(e=>reaches(e[1],end,seen));};if(reaches(target,pendingPin.id))return notify('순환 연결은 이 UI 예제에서 지원하지 않아요.');graph.edges=graph.edges.filter(e=>!(e[1]===target&&e[2]===index));graph.edges.push([pendingPin.id,target,index]);pendingPin=null;$$('.pin.pending').forEach(p=>p.classList.remove('pending'));drawWires();$('#graph-status').textContent=`노드 ${graphs.blueprint.nodes.length}개 · 연결 ${graphs.blueprint.edges.length}개`;notify('노드를 연결했어요. 세션에서 연결 흐름을 미리볼 수 있어요.');}
-async function traceBlueprint(){
-  const graph=currentGraph(),visited=new Set(),start=graph.nodes.find(n=>n.id===selectedNode&&basePins(n,'in',graph).length===0)||graph.nodes.find(n=>['beginPlay','construction','functionInput','macroInput'].includes(n.key));
-  let id=start?.id; $('#graph-status').textContent='이벤트 실행 흐름 미리보기…';
-  while(id&&!visited.has(id)){visited.add(id);const node=graph.nodes.find(n=>n.id===id);if(!node)break;if(node.breakpoint){notify('중단점: '+nodeTitle(node,graph));break;}const element=$(`#blueprint-graph [data-node="${id}"]`);if(node.enabled!==false)element?.classList.add('tracing');await new Promise(r=>setTimeout(r,350));element?.classList.remove('tracing');id=graph.edges.find(e=>e.from.node===id&&effectivePins(graph.nodes.find(n=>n.id===id),'out',graph).find(p=>p.id===e.from.pin)?.type==='exec')?.to.node;}
-  $('#graph-status').textContent=`${visited.size}개 노드를 따라 실행 흐름 확인`;notify('흐름 확인 완료');
-}
+async function traceBlueprint(){if(running&&runtime.pending){runtime.continue(true);paused=false;updatePlayButtons();}else await startPlay();}
 function preset(name){remember();const values={moss:['#889878',.72,.08],copper:['#bb7959',.23,.93],ceramic:['#ded8c6',.24,.02],glass:['#91bfc6',.08,.30]}[name];[surface.color,surface.roughness,surface.metalness]=values;$$('[data-preset]').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));updateSurface();changed();}
 
 function renderBlueprintGraph(){
+  for(const [id] of timelineWindows)if(!graphs.blueprint.nodes.some(n=>'timeline:'+n.id===id)){dock?.remove(id);timelineWindows.delete(id);}
   const graph=currentGraph(),container=$('#blueprint-graph');
   selectedNodes=new Set([...selectedNodes].filter(id=>graph.nodes.some(n=>n.id===id)));updateGraphHeading();
   const pinMarkup=(p,n,direction)=>`<span class="pin-label" style="--pin-color:${typeColors[p.type]||typeColors.any}">${direction==='out'?escapeHtml(p.label):''}<button class="pin ${direction} ${p.type==='exec'?'exec':''} ${p.array?'array':''} ${pendingPin?.name==='blueprint'&&pendingPin.id===n.id&&pendingPin.pin===p.id?'pending':''}" data-pin="${direction}" data-node-id="${n.id}" data-pin-id="${p.id}" aria-label="${escapeHtml(nodeTitle(n,graph)+' '+p.label+' '+(direction==='out'?'출력':'입력')+' 핀')}"></button>${direction==='in'?escapeHtml(p.label):''}${p.type!=='exec'?`<span class="pin-type-label">${escapeHtml(p.className||p.type)}${p.array?'[]':''}</span>`:''}</span>`;
-  $('.graph-nodes',container).innerHTML=graph.nodes.map(n=>{const spec=catalog.find(s=>s.key===n.key)||nativeEntries(graphs.blueprint).find(s=>s.key===n.key&&s.nativeId===n.nativeId),inputs=effectivePins(n,'in',graph),outputs=effectivePins(n,'out',graph),caption=n.key==='callFunction'?'함수':n.key==='callMacro'?'매크로':n.key.endsWith('Input')||n.key.endsWith('Output')?'그래프 인터페이스':spec?.ko||(n.symbolId?'시그니처':'변수 ')+(n.key==='getVariable'?'읽기':'쓰기');return `<div class="graph-node bp-node ${spec?.kind||'function'} ${n.key} ${n.enabled===false?'disabled-node':''} ${n.breakpoint?'breakpoint':''} ${selectedNodes.has(n.id)?'selected':''}" data-node="${n.id}" style="left:${n.position.x}px;top:${n.position.y}px">${n.comment?`<div class="node-comment-bubble" title="${escapeHtml(n.comment)}">${escapeHtml(n.comment)}</div>`:''}<div class="node-title"><span><strong>${escapeHtml(nodeTitle(n,graph))}</strong><small>${escapeHtml(caption)}</small></span>${icon(spec?.kind==='event'?'play':'nodes')}</div><div class="node-body">${Array.from({length:Math.max(inputs.length,outputs.length)},(_,i)=>`<div class="pin-row">${inputs[i]?pinMarkup(inputs[i],n,'in'):'<span></span>'}${outputs[i]?pinMarkup(outputs[i],n,'out'):'<span></span>'}</div>`).join('')}</div></div>`;}).join('');
+  $('.graph-nodes',container).innerHTML=graph.nodes.map(n=>{const spec=catalog.find(s=>s.key===n.key)||nativeEntries(graphs.blueprint).find(s=>s.key===n.key&&s.nativeId===n.nativeId),inputs=effectivePins(n,'in',graph),outputs=effectivePins(n,'out',graph),caption=n.key==='callFunction'?'함수':n.key==='callMacro'?'매크로':n.key.endsWith('Input')||n.key.endsWith('Output')?'그래프 인터페이스':spec?.ko||(n.symbolId?'시그니처':'변수 ')+(n.key==='getVariable'?'읽기':'쓰기');return `<div class="graph-node bp-node ${spec?.kind||'function'} ${n.key} ${n.enabled===false?'disabled-node':''} ${n.breakpoint?'breakpoint':''} ${selectedNodes.has(n.id)?'selected':''}" data-node="${n.id}" style="left:${n.position.x}px;top:${n.position.y}px;width:${Math.max(n.key==='timeline'?350:230,Math.max(0,...inputs.map(p=>p.label.length))*6+Math.max(0,...outputs.map(p=>p.label.length))*6+75)}px">${n.comment?`<div class="node-comment-bubble" title="${escapeHtml(n.comment)}">${escapeHtml(n.comment)}</div>`:''}<div class="node-title"><span><strong>${escapeHtml(nodeTitle(n,graph))}</strong><small>${escapeHtml(caption)}</small></span>${icon(spec?.kind==='event'?'play':'nodes')}</div><div class="node-body">${Array.from({length:Math.max(inputs.length,outputs.length)},(_,i)=>`<div class="pin-row">${inputs[i]?pinMarkup(inputs[i],n,'in'):'<span></span>'}${outputs[i]?pinMarkup(outputs[i],n,'out'):'<span></span>'}</div>`).join('')}</div></div>`;}).join('');
   $$('.node-title',container).forEach(header=>header.addEventListener('pointerdown',e=>{
     if(e.button!==0)return;const el=header.parentElement,n=graph.nodes.find(n=>n.id===el.dataset.node),startX=e.clientX,startY=e.clientY;
     if(e.ctrlKey||e.metaKey||e.shiftKey){if(selectedNodes.has(n.id))selectedNodes.delete(n.id);else selectedNodes.add(n.id);}else if(!selectedNodes.has(n.id))selectedNodes=new Set([n.id]);
@@ -381,7 +398,21 @@ function renderBlueprintGraph(){
     const up=()=>{if(recorded)changed();header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',up);header.removeEventListener('pointercancel',up);};header.addEventListener('pointermove',move);header.addEventListener('pointerup',up);header.addEventListener('pointercancel',up);
   }));
   $$('.bp-node.callFunction .node-title,.bp-node.callMacro .node-title',container).forEach(header=>header.addEventListener('dblclick',()=>switchBlueprintView(graph.nodes.find(n=>n.id===header.parentElement.dataset.node).definitionId)));
+  $$('.bp-node.timeline',container).forEach(el=>el.addEventListener('dblclick',e=>{if(!e.target.closest('.pin'))openTimeline(el.dataset.node);}));
   renderGraphComments();$('#graph-status').textContent=`노드 ${graph.nodes.length} · 연결 ${graph.edges.length}`;drawBlueprintWires();
+}
+function openTimeline(id=selectedNode){
+  const root=graphs.blueprint,node=root.nodes.find(n=>n.id===id);if(!node||node.key!=='timeline')return;
+  const windowId='timeline:'+id,existing=timelineWindows.get(windowId);if(existing){existing.render();dock.open(windowId);return;}
+  const element=document.createElement('div');const editor=new TimelineEditor(element,()=>graphs.blueprint.nodes.find(n=>n.id===id),{before:remember,error:notify,change:()=>{changed();renderBlueprintGraph();if(workspace==='blueprint')renderBlueprintInspector();},removePin:pin=>{root.edges=root.edges.filter(e=>!(e.from.node===id&&(e.from.pin===pin||e.from.pin.startsWith(pin+'.'))));renderBlueprintGraph();}});
+  timelineWindows.set(windowId,editor);dock.add({id:windowId,title:node.title||'Timeline',element},dock.leaves().find(l=>l.tabs.includes('blueprint'))||dock.leaves()[0]);
+}
+function createViewportWindow(){
+  const id='viewport:'+crypto.randomUUID(),element=document.createElement('div');element.className='workspace-view';const content=document.createElement('div');content.className='extra-viewport';element.append(content);const canvas=document.createElement('canvas'),selector=document.createElement('select');selector.ariaLabel='추가 뷰포트 방향';selector.innerHTML='<option value="3d">Perspective</option><option value="top">Top</option><option value="front">Front</option>';content.append(canvas,selector);
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=mainRenderer.toneMapping;renderer.toneMappingExposure=mainRenderer.toneMappingExposure;renderer.shadowMap.enabled=true;const perspective=camera.clone(),ortho=new THREE.OrthographicCamera(-7,7,7,-7,.1,100),view={id,renderer,camera:perspective,controls:new OrbitControls(perspective,canvas)};view.controls.target.copy(orbit.target);view.controls.enableDamping=true;
+  const resizeView=()=>{const w=content.clientWidth,h=content.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);const c=view.camera;if(c.isOrthographicCamera){c.left=-7*w/h;c.right=7*w/h;}else c.aspect=w/h;c.updateProjectionMatrix();};
+  selector.onchange=()=>{view.controls.dispose();view.camera=selector.value==='3d'?perspective:ortho;if(selector.value!=='3d'){ortho.position.set(...(selector.value==='top'?[0,16,.001]:[0,0,16]));ortho.lookAt(0,0,0);}view.controls=new OrbitControls(view.camera,canvas);view.controls.enableRotate=selector.value==='3d';view.controls.enableDamping=true;view.controls.update();resizeView();};
+  const observer=new ResizeObserver(resizeView);observer.observe(content);extraViewports.push(view);dock.add({id,title:'뷰포트 '+(extraViewports.length+1),element,dispose:()=>{observer.disconnect();view.controls.dispose();renderer.dispose();extraViewports.splice(extraViewports.indexOf(view),1);}},dock.leaves()[0],'right');
 }
 function addGraphComment(){
   const graph=currentGraph();if((graph.comments||[]).length>=100)return notify('주석은 그래프마다 100개까지 만들 수 있어요.');remember();const c=makeComment(graph,[...selectedNodes],lastGraphPointer);graph.comments=[...(graph.comments||[]),c];selectedNode=null;selectedNodes.clear();selectedDetail={kind:'comment',id:c.id};renderBlueprintGraph();renderBlueprintInspector();drawBlueprintWires();changed();$('.bp-detail-group textarea')?.focus();
@@ -409,7 +440,7 @@ function connectBlueprintPin(button){
   if(!pendingPin||pendingPin.name!=='blueprint')return notify('먼저 연결할 출력 핀을 선택하세요.');const graph=currentGraph(),from={node:pendingPin.id,pin:pendingPin.pin},to={node:button.dataset.nodeId,pin:button.dataset.pinId};const result=canConnect(graph,from,to);if(!result.ok)return notify(result.reason);remember();connect(graph,from,to);pendingPin=null;renderBlueprintGraph();renderBlueprintInspector();changed();
 }
 const normalizeSearch=s=>s.toLowerCase().replace(/[\s_-]/g,'');
-function paletteEntries(){return [...catalog.filter(s=>blueprintView==='event'?s.key!=='construction':blueprintView==='construction'?s.kind!=='event'&&s.key!=='timeline':s.kind!=='event'&&s.key!=='timeline'&&(!(graphs.blueprint.functions||[]).some(d=>d.id===blueprintView)||s.key!=='delay')),...['functions','macros'].flatMap(kind=>(graphs.blueprint[kind]||[]).filter(d=>d.id!==blueprintView&&!(kind==='macros'&&graphs.blueprint.functions.some(d=>d.id===blueprintView))).map(d=>({key:kind==='functions'?'callFunction':'callMacro',definitionId:d.id,title:d.name,ko:kind==='functions'?'함수 호출':'매크로 호출',group:kind==='functions'?'함수':'매크로',keywords:d.name+' function macro 함수 매크로',inputs:d.inputs,outputs:d.outputs}))),...nativeEntries(graphs.blueprint).filter(s=>s.key!=='nativeEvent'||blueprintView==='event'),...symbolEntries(),...graphs.blueprint.variables.flatMap(v=>[{key:'getVariable',variableId:v.id,title:'Get '+v.name,ko:v.name+' 읽기',group:'변수',keywords:v.name+' get 읽기 변수',inputs:[],outputs:[{id:'value',type:v.type,array:v.container==='array'}]},{key:'setVariable',variableId:v.id,title:'Set '+v.name,ko:v.name+' 쓰기',group:'변수',keywords:v.name+' set 쓰기 변수',inputs:[{id:'exec',type:'exec',array:false},{id:'value',type:v.type,array:v.container==='array'}],outputs:[]}])];}
+function paletteEntries(){return [...catalog.filter(s=>blueprintView==='event'?s.key!=='construction':blueprintView==='construction'?s.kind!=='event'&&s.key!=='timeline':s.kind!=='event'&&s.key!=='timeline'&&(!(graphs.blueprint.functions||[]).some(d=>d.id===blueprintView)||!['delay','retriggerDelay'].includes(s.key))),...['functions','macros'].flatMap(kind=>(graphs.blueprint[kind]||[]).filter(d=>d.id!==blueprintView&&!(kind==='macros'&&graphs.blueprint.functions.some(d=>d.id===blueprintView))).map(d=>({key:kind==='functions'?'callFunction':'callMacro',definitionId:d.id,title:d.name,ko:kind==='functions'?'함수 호출':'매크로 호출',group:kind==='functions'?'함수':'매크로',keywords:d.name+' function macro 함수 매크로',inputs:d.inputs,outputs:d.outputs}))),...nativeEntries(graphs.blueprint).filter(s=>s.key!=='nativeEvent'||blueprintView==='event'),...symbolEntries(),...graphs.blueprint.variables.flatMap(v=>[{key:'getVariable',variableId:v.id,title:'Get '+v.name,ko:v.name+' 읽기',group:'변수',keywords:v.name+' get 읽기 변수',inputs:[],outputs:[{id:'value',type:v.type,array:v.container==='array'}]},{key:'setVariable',variableId:v.id,title:'Set '+v.name,ko:v.name+' 쓰기',group:'변수',keywords:v.name+' set 쓰기 변수',inputs:[{id:'exec',type:'exec',array:false},{id:'value',type:v.type,array:v.container==='array'}],outputs:[]}])];}
 function renderPalette(){
   const query=normalizeSearch($('#node-search').value),graph=currentGraph(),outNode=pendingPin?.name==='blueprint'&&graph.nodes.find(n=>n.id===pendingPin.id),out=outNode&&effectivePins(outNode,'out',graph).find(p=>p.id===pendingPin.pin);let group='';
   $('#palette-results').innerHTML=paletteEntries().filter(s=>normalizeSearch(s.title+' '+s.ko+' '+s.key+' '+s.keywords).includes(query)&&(!out||!$('#context-sensitive').checked||s.inputs.some(p=>p.array===out.array&&(p.type===out.type||p.type==='any')))).map(s=>{const heading=group!==s.group?`<div class="palette-group">${s.group}</div>`:'';group=s.group;return heading+`<button class="palette-result ${s.kind||''}" data-spawn-node="${s.key}" ${s.variableId?`data-variable-id="${s.variableId}"`:''} ${s.definitionId?`data-definition-id="${s.definitionId}"`:''} ${s.nativeId?`data-native-id="${escapeHtml(s.nativeId)}"`:''} ${s.symbolId?`data-symbol-id="${s.symbolId}"`:''}><span class="palette-dot"></span><span><strong>${escapeHtml(s.title)}</strong><small>${escapeHtml(s.ko)}</small></span><span>${s.group==='이벤트'?'Event':''}</span></button>`;}).join('')||'<p class="inspector-note" style="padding:12px">검색 결과 없음</p>';
@@ -420,7 +451,7 @@ function openNodePalette(x,y){
   const panel=$('#node-palette');panel.hidden=false;panel.style.left=Math.max(8,Math.min(x,innerWidth-330))+'px';panel.style.top=Math.max(8,Math.min(y,innerHeight-445))+'px';$('#node-search').value='';renderPalette();$('#node-search').focus();
 }
 function spawnBlueprintNode(key,variableId,definitionId,nativeId,symbolId){
-  const graph=currentGraph();if(graph.nodes.length>=200)return notify('프로토타입은 그래프마다 노드 200개까지 편집할 수 있어요.');remember();const n=makeNode(key,Math.max(-10000,Math.min(10000,palettePosition.x)),Math.max(-10000,Math.min(10000,palettePosition.y)),variableId);if(definitionId)n.definitionId=definitionId;if(nativeId)n.nativeId=nativeId;if(symbolId)n.symbolId=symbolId;graph.nodes.push(n);
+  const graph=currentGraph();if(graph.nodes.length>=1000)return notify('프로토타입은 그래프마다 노드 1000개까지 편집할 수 있어요.');remember();const n=makeNode(key,Math.max(-10000,Math.min(10000,palettePosition.x)),Math.max(-10000,Math.min(10000,palettePosition.y)),variableId);if(definitionId)n.definitionId=definitionId;if(nativeId)n.nativeId=nativeId;if(symbolId)n.symbolId=symbolId;graph.nodes.push(n);
   if(pendingPin?.name==='blueprint'){const from={node:pendingPin.id,pin:pendingPin.pin},input=effectivePins(n,'in',graph).find(p=>canConnect(graph,from,{node:n.id,pin:p.id}).ok);if(input)connect(graph,from,{node:n.id,pin:input.id});}
   pendingPin=null;selectedNode=n.id;selectedDetail={kind:'node',id:n.id};selectedNodes=new Set([n.id]);$('#node-palette').hidden=true;renderBlueprintGraph();renderBlueprintInspector();blueprintPan={x:30-n.position.x*blueprintZoom,y:30-n.position.y*blueprintZoom};drawBlueprintWires();changed();
 }
@@ -438,13 +469,13 @@ function downloadBlueprint(){
   const url=URL.createObjectURL(new Blob([$('#blueprint-json').value],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=graphs.blueprint.name+'.blueprint.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('JSON 파일 다운로드를 요청했어요. 이 브라우저에서 지원하지 않으면 복사를 사용하세요.');
 }
 function applyBlueprintData(data){
-  if(!validBlueprint(data))throw Error('노드·변수·내부 그래프·연결 데이터가 유효하지 않아요.');remember();graphs.blueprint=data;graphs.blueprint.functions??=[];graphs.blueprint.macros??=[];graphs.blueprint.construction??=clone(defaultBlueprint.construction);graphs.blueprint.comments??=[];graphs.blueprint.dispatchers??=[];graphs.blueprint.interfaces??=[];switchBlueprintView('event');changed();notify('검증한 블루프린트 JSON을 적용했어요. Ctrl Z로 되돌릴 수 있어요.');
+  if(running)throw Error('실행을 종료한 뒤 블루프린트를 불러오세요.');if(!validBlueprint(data))throw Error('블루프린트 데이터 검증 실패');remember();restoreEdit({...snapshot(),blueprint:{...data,functions:data.functions||[],macros:data.macros||[],construction:data.construction||clone(defaultBlueprint.construction),comments:data.comments||[]}});switchBlueprintView('event');notify('블루프린트를 불러왔어요.');
 }
 $('#variable-type').innerHTML=Object.entries(variableTypes).map(([key,label])=>`<option value="${key}">${label}</option>`).join('');
 $('#custom-pin-type').innerHTML=$('#variable-type').innerHTML;
 function renderBlueprintInspector(){
   $('#inspector-content').innerHTML=detailsMarkup(graphs.blueprint,currentGraph(),selectedDetail,objects,assets);
-  const output=corePreview.values.get(selectedDetail.id);if(output&&$('#node-api-result'))$('#node-api-result').textContent=previewText(output);
+  const output=(running?runtime.values:corePreview.values).get(selectedDetail.id);if(output&&$('#node-api-result'))$('#node-api-result').textContent=previewText(output);
 }
 function freeNodePosition(){const graph=currentGraph();let x=35,y=30;for(let i=0;i<graph.nodes.length+1;i++){const hit=graph.nodes.find(n=>x<n.position.x+200&&x+190>n.position.x&&y<n.position.y+75+Math.max(effectivePins(n,'in',graph).length,effectivePins(n,'out',graph).length)*27&&y+140>n.position.y);if(!hit)break;y=hit.position.y+100+Math.max(effectivePins(hit,'in',graph).length,effectivePins(hit,'out',graph).length)*27;}return {x,y:Math.min(10000,y)};}
 
@@ -461,8 +492,14 @@ function renderNativeRegistry(){
   $('[data-action="wrap-native"]').disabled=!classes.some(c=>c.blueprintable);if(workspace==='code')renderNativeInspector();
 }
 function registerNative(){
-  try{const source=$('#cpp-code').value,native={...parseNativeHeader(source),header:source},candidate={...graphs.blueprint,native};if(!validBlueprint(candidate))throw Error('기존 C++ 노드와 새 시그니처가 호환되지 않아요. 기존 노드·기본값을 먼저 수정하세요.');remember();graphs.blueprint.native=native;renderNativeRegistry();renderBlueprintSidebar();renderBlueprintGraph();changed();notify(native.classes.length+'개 C++ 클래스의 공개 노드를 등록했어요.');}catch(error){notify('등록 실패: '+error.message);}
+  try{const source=$('#cpp-code').value,native={...parseNativeHeader(source),header:source,source:$('#cpp-source').value},candidate={...graphs.blueprint,native};if(!validBlueprint(candidate))throw Error('기존 C++ 노드와 새 시그니처가 호환되지 않아요. 기존 노드·기본값을 먼저 수정하세요.');remember();graphs.blueprint.native=native;renderNativeRegistry();renderBlueprintSidebar();renderBlueprintGraph();changed();notify(native.classes.length+'개 C++ 클래스의 공개 노드를 등록했어요.');}catch(error){notify('등록 실패: '+error.message);}
 }
+async function buildNative(){
+  if(running)return notify('실행을 종료한 뒤 빌드하세요.');const button=$('[data-action="build-native"]'),diagnostics=$('#native-diagnostics');button.disabled=true;diagnostics.hidden=false;diagnostics.textContent='빌드 중…';
+  try{const header=$('#cpp-code').value,source=$('#cpp-source').value,metadata=parseNativeHeader(header),candidate={...graphs.blueprint,native:{...metadata,header,source}};if(!validBlueprint(candidate))throw Error('기존 노드와 새 C++ 시그니처가 호환되지 않아요.');const result=await (await editorRequest('/api/native/build',{method:'POST',body:JSON.stringify({header,source})})).json();remember();graphs.blueprint.native={...result.metadata,header,source};nativeBuild={...result,header,source};diagnostics.textContent='빌드 성공 · '+result.compiler;renderNativeRegistry();renderBlueprintSidebar();renderBlueprintGraph();changed();notify('C++ 빌드 성공');}
+  catch(error){diagnostics.textContent=error.message;notify('C++ 빌드 실패');}finally{button.disabled=false;}
+}
+async function saveCode(){try{await editorRequest(fileUrl(codeHeaderPath),{method:'PUT',body:$('#cpp-code').value});await editorRequest(fileUrl(codeSourcePath),{method:'PUT',body:$('#cpp-source').value});project.refresh();notify('C++ 파일 저장됨');}catch(error){notify(error.message);}}
 function wrapNative(){
   const name=$('#native-parent').value;if(!graphs.blueprint.native?.classes.some(c=>c.name===name&&c.blueprintable))return;
   if(allGraphContexts(graphs.blueprint).some(g=>g.nodes.some(n=>n.key==='nativeEvent'&&nativeMember(graphs.blueprint,n).c?.name!==name)))return notify('현재 부모의 재정의 이벤트를 먼저 제거하세요.');
@@ -480,7 +517,7 @@ function renderBlueprintResults(){
   }
   for(const [view,label] of graphViews())for(const n of graphContext(graphs.blueprint,view).nodes){const title=nodeTitle(n,graphs.blueprint);if(resultsMode==='debug'?!n.breakpoint:!normalizeSearch(title+' '+(n.comment||'')+' '+(n.nativeId||'')+' '+label).includes(q))continue;rows.push(`<button class="bp-result" data-find-node="${n.id}" data-find-view="${view}">${escapeHtml(title)}<span>${resultsMode==='debug'?'중단점':escapeHtml(label)}</span></button>`);}
   if(resultsMode==='find')for(const v of graphs.blueprint.variables.filter(v=>normalizeSearch(v.name).includes(q)))rows.push(`<button class="bp-result" data-find-variable="${v.id}">${escapeHtml(v.name)}<span>변수 · ${v.type}</span></button>`);
-  if(resultsMode==='debug')for(const w of graphs.blueprint.watches||[]){const g=graphContext(graphs.blueprint,w.view),n=g.nodes.find(n=>n.id===w.node);if(n){let value=w.direction==='out'?corePreview.values.get(n.id):undefined,type=basePins(n,w.direction,g).find(p=>p.id===w.pin.split('.')[0])?.type;const [base,...fields]=w.pin.split('.');value=value?.[base];for(const part of fields){const metadata=fieldsFor(type),index=metadata.findIndex(f=>f.id===part);value=Array.isArray(value)?value[index]:value?.[part];type=metadata[index]?.type;}rows.push(`<button class="bp-result" data-find-node="${n.id}" data-find-view="${w.view}">${escapeHtml(nodeTitle(n,g))} · ${escapeHtml(w.pin)}<span>${value===undefined?'미실행':escapeHtml(previewText(value))}</span></button>`);}}
+  if(resultsMode==='debug')for(const w of graphs.blueprint.watches||[]){const g=graphContext(graphs.blueprint,w.view),n=g.nodes.find(n=>n.id===w.node);if(n){let value=w.direction==='out'?(running?runtime.values:corePreview.values).get(n.id):undefined,type=basePins(n,w.direction,g).find(p=>p.id===w.pin.split('.')[0])?.type;const [base,...fields]=w.pin.split('.');value=value?.[base];for(const part of fields){const metadata=fieldsFor(type),index=metadata.findIndex(f=>f.id===part);value=Array.isArray(value)?value[index]:value?.[part];type=metadata[index]?.type;}rows.push(`<button class="bp-result" data-find-node="${n.id}" data-find-view="${w.view}">${escapeHtml(nodeTitle(n,g))} · ${escapeHtml(w.pin)}<span>${value===undefined?'미실행':escapeHtml(previewText(value))}</span></button>`);}}
   list.innerHTML=rows.join('')||'<div class="bp-results-message">항목 없음</div>';
 }
 function copyGraphNodes(){const g=currentGraph(),nodes=g.nodes.filter(n=>selectedNodes.has(n.id)&&!n.key.endsWith('Input')&&!n.key.endsWith('Output')&&n.key!=='construction');if(!nodes.length)return;const ids=new Set(nodes.map(n=>n.id));graphClipboard=clone({nodes,edges:g.edges.filter(e=>ids.has(e.from.node)&&ids.has(e.to.node))});}
@@ -499,7 +536,7 @@ function doAction(action,button){
   if(action.startsWith('bp:'))return blueprintContextAction(action);
   switch(action){
     case 'preview-api':{try{const n=detailTarget(),spec=catalog.find(s=>s.key===n?.key);if(spec?.group==='변환'&&!spec.pure){if(running)throw Error('장면 변경 미리보기는 실행을 멈춘 뒤 호출하세요.');remember();}const result=evaluateCoreNode(currentGraph(),n.id,corePreview);$('#node-api-result').textContent=Object.keys(result).length?previewText(result):'호출 완료';if(resultsMode==='debug')renderBlueprintResults();}catch(error){notify(error.message);}break;}
-    case 'register-native':registerNative();break;case 'wrap-native':wrapNative();break;case 'native-example':$('#cpp-code').value=nativeExample;break;
+    case 'register-native':registerNative();break;case 'wrap-native':wrapNative();break;case 'native-example':$('#cpp-code').value=nativeExample;fetch('/prototype/examples/DoorController.cpp').then(r=>r.text()).then(source=>$('#cpp-source').value=source);break;case 'build-native':buildNative();break;case 'save-code':saveCode();break;case 'choose-folders':$('#folder-input').click();break;
     case 'validate-blueprint':showBlueprintResults('validate');break;case 'find-blueprint':showBlueprintResults('find');break;case 'debug-blueprint':showBlueprintResults('debug');break;case 'close-blueprint-results':$('#blueprint-results').hidden=true;break;
     case 'copy-nodes':copyGraphNodes();break;case 'paste-nodes':pasteGraphNodes();break;case 'duplicate-nodes':copyGraphNodes();pasteGraphNodes();break;
     case 'create-symbol':{const name=$('#symbol-name').value.trim(),kind=$('#symbol-kind').value;if(!name||name.length>80)return notify('이름을 확인하세요.');const list=graphs.blueprint[kind];if(list.length>=50||list.some(d=>d.name===name))return notify('개수나 중복된 이름을 확인하세요.');remember();const id='symbol_'+crypto.randomUUID().replaceAll('-','');list.push({id,name,inputs:[],outputs:[]});$('#symbol-dialog').close();selectedDetail={kind:'symbol',id};renderBlueprintSidebar();renderBlueprintInspector();changed();break;}
@@ -511,14 +548,13 @@ function doAction(action,button){
     case 'blueprint-defaults':selectedDetail={kind:'blueprint'};renderBlueprintInspector();break;
     case 'new-function':openCollapse('function',true);break;case 'new-macro':openCollapse('macro',true);break;
     case 'add-comment':addGraphComment();break;
-    case 'save':save();break;case 'redo':redo();break;case 'undo':undo();break;case 'play':startPlay();break;case 'pause':paused=!paused;updatePlayButtons();break;case 'stop':stopPlay();break;
+    case 'save':save();break;case 'redo':redo();break;case 'undo':undo();break;case 'play':startPlay();break;case 'pause':if(paused)runtime.continue();else runtime.pause();paused=runtime.paused;updatePlayButtons();break;case 'stop':stopPlay();break;
     case 'focus':if(workspace==='blueprint')doAction('zoom-fit');else focusObject();break;case 'grid':if(grid){grid.visible=!grid.visible;$('#grid-button').setAttribute('aria-pressed',String(grid.visible));}break;
     case 'environment':setWorkspace('scene');$('#environment-panel').hidden=!$('#environment-panel').hidden;$('.environment-button').setAttribute('aria-expanded',String(!$('#environment-panel').hidden));break;
     case 'new-map':$('#new-map-dialog').showModal();break;case 'cancel-new-map':$('#new-map-dialog').close();break;case 'create-map':createMap();break;
     case 'lighting':$('#lighting-section')?.scrollIntoView({block:'nearest',behavior:'smooth'});$('#light-intensity')?.focus();break;
     case 'open-material':setWorkspace('material');break;case 'open-blueprint':setWorkspace('blueprint');break;case 'open-code':setWorkspace('code');break;
     case 'import':$('#import-dialog').showModal();break;case 'choose-files':$('#file-input').click();break;
-    case 'demo-import':queueFiles([{name:'Character.fbx',size:2516582,demo:true},{name:'Stone_albedo.jpg',size:522000,demo:true},{name:'Intro.avi',size:12500000,demo:true}]);break;
     case 'confirm-import':confirmImport();break;case 'asset-size':$('#asset-grid').classList.toggle('large');break;
     case 'command':$('#command-dialog').showModal();$('#command-input').value='';renderCommands();$('#command-input').focus();break;
     case 'help':$('#help-dialog').showModal();break;case 'close-help':$('#help-dialog').close();break;
@@ -540,7 +576,7 @@ function doAction(action,button){
     case 'download-blueprint-json':downloadBlueprint();break;
     case 'copy-blueprint-json':navigator.clipboard?.writeText($('#blueprint-json').value).then(()=>notify('블루프린트 JSON을 복사했어요.')).catch(()=>notify('복사 권한이 없어요. JSON 텍스트를 직접 선택해 복사하세요.'));break;
     case 'apply-blueprint-json':try{if($('#blueprint-json').value.length>1024*1024)throw Error('JSON은 1 MB 이하여야 해요.');applyBlueprintData(JSON.parse($('#blueprint-json').value));$('#blueprint-json-dialog').close();}catch(error){notify('적용 실패: '+error.message);}break;case 'import-blueprint':$('#blueprint-file-input').click();break;
-    case 'copy-code':navigator.clipboard?.writeText($('#cpp-code').value).then(()=>notify('C++ 예시를 복사했어요.')).catch(()=>notify('이 브라우저에서 클립보드에 접근할 수 없어요.'));break;
+    case 'copy-code':navigator.clipboard?.writeText($('#cpp-source').hidden?$('#cpp-code').value:$('#cpp-source').value).then(()=>notify('C++ 예시를 복사했어요.')).catch(()=>notify('이 브라우저에서 클립보드에 접근할 수 없어요.'));break;
     case 'add-component':setWorkspace('blueprint');$('#component-dialog').showModal();break;
     case 'file-menu':openMenu(button,[['새 맵 만들기','new-map'],['에셋 가져오기','import'],['장면 저장','save','', 'Ctrl S'],null,['사용 안내','help']]);break;
     case 'edit-menu':openMenu(button,[['실행 취소','undo','', 'Ctrl Z'],['다시 실행','redo','','Ctrl Y'],['명령 검색','command','', 'Ctrl K']]);break;
@@ -552,9 +588,8 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b){if(!e.target.closest('#floating-menu'))$('#floating-menu').hidden=true;return;}
   if(b.dataset.workspace)setWorkspace(b.dataset.workspace);else if(b.dataset.select)selectObject(b.dataset.select);else if(b.dataset.create)createObject(b.dataset.create);else if(b.dataset.view)setView(b.dataset.view);else if(b.dataset.tool){if(transform){transform.setMode({move:'translate',rotate:'rotate',scale:'scale'}[b.dataset.tool]);$$('[data-tool]').forEach(t=>t.classList.toggle('active',t===b));}}
   else if(b.dataset.bottom){$$('[data-bottom]').forEach(t=>t.classList.toggle('active',t===b));$('#assets-content').hidden=b.dataset.bottom!=='assets';$('#console-content').hidden=b.dataset.bottom!=='console';}
-  else if(b.dataset.filter){currentFilter=b.dataset.filter;$$('[data-filter]').forEach(t=>t.classList.toggle('active',t===b));renderAssets();}
   else if(b.dataset.asset!==undefined)openAsset(Number(b.dataset.asset));else if(b.dataset.preset)preset(b.dataset.preset);else if(b.dataset.pin){if(e.altKey&&b.closest('#blueprint-graph'))blueprintContextAction(`bp:disconnect:${b.dataset.nodeId}:${b.dataset.pin}:${b.dataset.pinId}`);else connectPin(b);}else if(b.dataset.keyTime){animationTime=Number(b.dataset.keyTime);updateAnimation();}
-  else if(b.dataset.removeFile!==undefined){pendingFiles.splice(Number(b.dataset.removeFile),1);renderImportQueue();}
+  else if(b.dataset.removeFile!==undefined&&!importing){pendingFiles.splice(Number(b.dataset.removeFile),1);renderImportQueue();}
   else if(b.dataset.command){$('#command-dialog').close();executeCommand(b.dataset.command);}
   else if(b.dataset.menuCommand){$('#floating-menu').hidden=true;executeCommand(b.dataset.menuCommand);}
   else if(b.dataset.action)doAction(b.dataset.action,b);
@@ -609,6 +644,8 @@ $('#blueprint-graph').addEventListener('contextmenu',e=>e.preventDefault());
 $('#blueprint-graph').addEventListener('auxclick',e=>e.preventDefault());
 $('#blueprint-graph').addEventListener('pointermove',e=>{const r=e.currentTarget.getBoundingClientRect();lastGraphPointer={x:(e.clientX-r.left-blueprintPan.x)/blueprintZoom,y:(e.clientY-r.top-blueprintPan.y)/blueprintZoom};});
 $('#blueprint-graph').addEventListener('pointerdown',e=>{
+  if(e.button===0&&heldNodeKey&&!e.target.closest('.bp-node,.graph-comment,.pin')){const rect=e.currentTarget.getBoundingClientRect();palettePosition={x:(e.clientX-rect.left-blueprintPan.x)/blueprintZoom,y:(e.clientY-rect.top-blueprintPan.y)/blueprintZoom};pendingPin=null;spawnBlueprintNode(heldNodeKey);heldNodeKey=null;e.preventDefault();e.stopImmediatePropagation();return;}
+
   if(![1,2].includes(e.button))return;e.preventDefault();const c=e.currentTarget,startX=e.clientX,startY=e.clientY,origin={...blueprintPan};let moved=false;graphPanActive=true;c.setPointerCapture(e.pointerId);$('#floating-menu').hidden=true;$('#node-palette').hidden=true;
   const move=ev=>{if(Math.hypot(ev.clientX-startX,ev.clientY-startY)>4)moved=true;if(!moved)return;blueprintPan={x:origin.x+ev.clientX-startX,y:origin.y+ev.clientY-startY};c.classList.add('panning');drawBlueprintWires();};
   const up=ev=>{c.removeEventListener('pointermove',move);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);graphPanActive=false;c.classList.remove('panning');if(!moved&&e.button===2&&ev.type!=='pointercancel')blueprintContextMenu({target:document.elementFromPoint(ev.clientX,ev.clientY),clientX:ev.clientX,clientY:ev.clientY});};c.addEventListener('pointermove',move);c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);
@@ -684,34 +721,36 @@ document.addEventListener('change',e=>{
 });
 document.addEventListener('pointerdown',e=>{if(e.target.dataset.surface||(e.target.dataset.environment&&e.target.type==='range'))remember();});
 document.addEventListener('focusin',e=>{if(e.target.dataset.transform||(e.target.dataset.surface&&e.target.type==='color'))remember();});
-document.addEventListener('input',e=>{const el=e.target;if(el.dataset.environment&&el.type==='range'){environment[el.dataset.environment]=Number(el.value);applyEnvironment();if(selected==='sun-light')renderInspector();changed();}else if(el.dataset.transform){const o=objects.find(o=>o.id===selected),n=Number(el.value);if(running||!o||el.value===''||!Number.isFinite(n)||Math.abs(n)>10000||(el.dataset.transform==='scale'&&n<.01))return;o[el.dataset.transform][Number(el.dataset.axis)]=n;applyObject(o);selectionBox?.update();changed();}else if(el.dataset.surface){const key=el.dataset.surface;surface[key]=key==='color'?el.value:Number(el.value);updateSurface();changed();}else if(el.id==='hierarchy-search')renderHierarchy();else if(el.id==='asset-search')renderAssets();else if(el.id==='command-input')renderCommands();else if(el.id==='timeline-scrubber'){animationTime=Number(el.value);updateAnimation();}});
+document.addEventListener('input',e=>{const el=e.target;if(el.id==='cpp-code'||el.id==='cpp-source'){changed();if(graphs.blueprint.native&&el.id==='cpp-source')graphs.blueprint.native.source=el.value;}else if(el.dataset.environment&&el.type==='range'){environment[el.dataset.environment]=Number(el.value);applyEnvironment();if(selected==='sun-light')renderInspector();changed();}else if(el.dataset.transform){const o=objects.find(o=>o.id===selected),n=Number(el.value);if(running||!o||el.value===''||!Number.isFinite(n)||Math.abs(n)>10000||(el.dataset.transform==='scale'&&n<.01))return;o[el.dataset.transform][Number(el.dataset.axis)]=n;applyObject(o);selectionBox?.update();changed();}else if(el.dataset.surface){const key=el.dataset.surface;surface[key]=key==='color'?el.value:Number(el.value);updateSurface();changed();}else if(el.id==='hierarchy-search')renderHierarchy();else if(el.id==='command-input')renderCommands();else if(el.id==='timeline-scrubber'){animationTime=Number(el.value);updateAnimation();}});
 $('#file-input').addEventListener('change',e=>queueFiles([...e.target.files]));
+$('#folder-input').addEventListener('change',e=>queueFiles([...e.target.files]));
 for(const zone of [$('#assets-content'),$('#file-drop-zone')]){zone.addEventListener('dragover',e=>{if(e.dataTransfer.types.includes('Files')){e.preventDefault();zone.classList.add('drag-over');}});zone.addEventListener('dragleave',e=>{if(!zone.contains(e.relatedTarget))zone.classList.remove('drag-over');});zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');if(e.dataTransfer.files.length)queueFiles([...e.dataTransfer.files]);});}
-$('#asset-grid').addEventListener('dragstart',e=>{const card=e.target.closest('[data-asset]');if(card)e.dataTransfer.setData('text/x-hbengine-asset',card.dataset.asset);});
-$('#scene-canvas-container').addEventListener('dragover',e=>e.preventDefault());$('#scene-canvas-container').addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files.length)return queueFiles([...e.dataTransfer.files]);const index=e.dataTransfer.getData('text/x-hbengine-asset');if(index==='')return;const a=assets[Number(index)];if(a?.object){selectObject(a.object);notify(a.name+' 오브젝트를 선택했어요. 이 에셋은 이미 장면에 있어요.');}else if(a?.kind==='material'){setWorkspace('material');notify('머테리얼 편집으로 이동했어요.');}else notify('이 파일은 에셋 목록 미리보기로만 제공돼요.');});
+$('#scene-canvas-container').addEventListener('dragover',e=>e.preventDefault());$('#scene-canvas-container').addEventListener('drop',e=>{e.preventDefault();const raw=e.dataTransfer.getData('application/x-hb-assets');if(raw)for(const file of JSON.parse(raw))if(file.kind==='model')placeModel(file).catch(error=>notify(error.message));});
+document.addEventListener('keyup',()=>heldNodeKey=null);window.addEventListener('blur',()=>heldNodeKey=null);
 document.addEventListener('keydown',e=>{
-  const editing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName),dialog=$$('dialog').some(d=>d.open);
+  if(!e.isComposing&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.closest('input,textarea,select,[contenteditable]')&&focusedWindow==='blueprint'&&quickNodeKeys[e.key.toLowerCase()])heldNodeKey=quickNodeKeys[e.key.toLowerCase()];
+  if(e.isComposing)return;const editing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable,dialog=$$('dialog').some(d=>d.open);
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();save();}
   else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();if(!dialog)doAction('command');}
   else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'&&!editing&&!dialog){e.preventDefault();redo();}
-  else if((e.ctrlKey||e.metaKey)&&workspace==='blueprint'&&!editing&&!dialog&&['c','v','x','d','f'].includes(e.key.toLowerCase())){e.preventDefault();const key=e.key.toLowerCase();if(key==='f')showBlueprintResults('find');else if(key==='v')pasteGraphNodes();else{copyGraphNodes();if(key==='d')pasteGraphNodes();if(key==='x'&&selectedNode)doAction('bp:delete:'+selectedNode);}}
-  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!editing&&!dialog){e.preventDefault();undo();}
-  else if((e.ctrlKey||e.metaKey)&&workspace==='blueprint'&&!editing&&!dialog&&['+','=','-','0','a'].includes(e.key.toLowerCase())){e.preventDefault();if(e.key.toLowerCase()==='a'){selectedNodes=new Set(currentGraph().nodes.map(n=>n.id));renderBlueprintGraph();}else setGraphZoom(e.key==='0'?1:blueprintZoom+(e.key==='-'?-.1:.1));}
+  else if((e.ctrlKey||e.metaKey)&&focusedWindow==='blueprint'&&!editing&&!dialog&&['c','v','x','d','f'].includes(e.key.toLowerCase())){e.preventDefault();const key=e.key.toLowerCase();if(key==='f')showBlueprintResults('find');else if(key==='v')pasteGraphNodes();else{copyGraphNodes();if(key==='d')pasteGraphNodes();if(key==='x'&&selectedNode)doAction('bp:delete:'+selectedNode);}}
+  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!editing&&!dialog){e.preventDefault();e.shiftKey?redo():undo();}
+  else if((e.ctrlKey||e.metaKey)&&focusedWindow==='blueprint'&&!editing&&!dialog&&['+','=','-','0','a'].includes(e.key.toLowerCase())){e.preventDefault();if(e.key.toLowerCase()==='a'){selectedNodes=new Set(currentGraph().nodes.map(n=>n.id));renderBlueprintGraph();}else setGraphZoom(e.key==='0'?1:blueprintZoom+(e.key==='-'?-.1:.1));}
   else if(e.key==='Escape'){pendingPin=null;$$('.pin.pending').forEach(p=>p.classList.remove('pending'));$('#floating-menu').hidden=true;$('#node-palette').hidden=true;$('#environment-panel').hidden=true;$('.environment-button').setAttribute('aria-expanded','false');if(running)stopPlay();}
   else if(!editing&&!dialog){
-    if(workspace==='blueprint'){
+    if(focusedWindow==='blueprint'){
       if(e.key.toLowerCase()==='c'&&!e.ctrlKey&&!e.metaKey){e.preventDefault();addGraphComment();}
       if(e.key==='Delete'){if(selectedDetail.kind==='comment')doAction('delete-comment');else if(selectedNode)doAction('bp:delete:'+selectedNode);}
       if(e.key==='Home'){e.preventDefault();focusGraph(true);}
       if(e.key==='F2'){e.preventDefault();const el=$('[data-detail-field="text"],[data-detail-field="title"],[data-detail-field="name"]');el?.focus();el?.select();}
-      if(e.key==='PageUp')switchBlueprintView('event');
-      if(e.key==='PageDown'){const n=currentGraph().nodes.find(n=>n.id===selectedNode);if(n?.definitionId)switchBlueprintView(n.definitionId);}
+      if(e.key==='PageUp'){e.preventDefault();setGraphZoom(blueprintZoom+.1);}
+      if(e.key==='PageDown'){e.preventDefault();setGraphZoom(blueprintZoom-.1);}
       if(e.key==='F7'){e.preventDefault();showBlueprintResults('validate');}
       if(e.key==='F9'&&e.ctrlKey&&e.shiftKey){e.preventDefault();remember();allGraphContexts(graphs.blueprint).forEach(g=>g.nodes.forEach(n=>n.breakpoint=false));renderBlueprintGraph();renderBlueprintInspector();changed();}
       else if(e.key==='F9'&&selectedNode){e.preventDefault();const n=currentGraph().nodes.find(n=>n.id===selectedNode);remember();n.breakpoint=!n.breakpoint;renderBlueprintGraph();renderBlueprintInspector();changed();}
       if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)&&selectedNodes.size){e.preventDefault();remember();const step=e.shiftKey?10:1;currentGraph().nodes.filter(n=>selectedNodes.has(n.id)).forEach(n=>{n.position.x=Math.max(-10000,Math.min(10000,n.position.x+(e.key==='ArrowRight'?step:e.key==='ArrowLeft'?-step:0)));n.position.y=Math.max(-10000,Math.min(10000,n.position.y+(e.key==='ArrowDown'?step:e.key==='ArrowUp'?-step:0)));});renderBlueprintGraph();changed();}
     }
-    if(e.key.toLowerCase()==='f')doAction('focus');if(workspace==='scene'&&'wer'.includes(e.key.toLowerCase())&&e.key.length===1){const tool={w:'move',e:'rotate',r:'scale'}[e.key.toLowerCase()];$(`[data-tool="${tool}"]`)?.click();}
+    if(e.key==='F1'){e.preventDefault();doAction('help');}if(e.key.toLowerCase()==='f'&&['scene','blueprint'].includes(focusedWindow))doAction('focus');if(focusedWindow==='scene'&&'wer'.includes(e.key.toLowerCase())&&e.key.length===1){const tool={w:'move',e:'rotate',r:'scale'}[e.key.toLowerCase()];$(`[data-tool="${tool}"]`)?.click();}
   }
 });
 let fileDragDepth=0;
@@ -719,17 +758,18 @@ document.addEventListener('dragenter',e=>{if(e.dataTransfer?.types.includes('Fil
 document.addEventListener('dragover',e=>{if(e.dataTransfer?.types.includes('Files')){e.preventDefault();e.dataTransfer.dropEffect='copy';}});
 document.addEventListener('dragleave',e=>{if(e.dataTransfer?.types.includes('Files')){fileDragDepth=Math.max(0,fileDragDepth-1);if(!fileDragDepth)$('#global-file-drop').hidden=true;}});
 function clearFileDrag(){fileDragDepth=0;$('#global-file-drop').hidden=true;$$('.drag-over').forEach(zone=>zone.classList.remove('drag-over'));}
-document.addEventListener('drop',e=>{clearFileDrag();if(!e.dataTransfer?.files.length)return;e.preventDefault();e.stopPropagation();queueFiles([...e.dataTransfer.files],true);},true);
+document.addEventListener('drop',async e=>{clearFileDrag();if(!e.dataTransfer?.types.includes('Files'))return;e.preventDefault();e.stopPropagation();try{queueFiles(await droppedFiles(e.dataTransfer),true);}catch(error){notify(error.message);}},true);
 document.addEventListener('dragend',clearFileDrag);
 window.addEventListener('blur',clearFileDrag);
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 window.addEventListener('pagehide',()=>objectUrls.forEach(url=>URL.revokeObjectURL(url)));
 let previous=performance.now();
 function animate(now){requestAnimationFrame(animate);const dt=Math.min((now-previous)/1000,.1);previous=now;
-  if(running&&!paused){corePreview.advance(dt);playTime=corePreview.time;for(const event of corePreview.events.splice(0))log('타이머 완료: '+event);}else corePreview.delta=0;
-  if(workspace==='scene'&&mainRenderer&&scene){orbit?.update();if(running&&!paused){const g=meshMap.get('floating-crystal'),o=objects.find(o=>o.id==='floating-crystal');if(g&&o){g.position.y=o.position[1]+Math.sin(playTime*1.6)*.22;g.rotation.y=THREE.MathUtils.degToRad(o.rotation[1])+playTime*.25;}}if(selectionBox?.visible)selectionBox.update();mainRenderer.render(scene,activeCamera);}
-  if(workspace==='material'&&previewRenderer){previewSphere.rotation.y+=dt*.09;previewRenderer.render(previewScene,previewCamera);}
-  if(workspace==='animation'&&animationPlaying){animationTime=(animationTime+dt*Number($('#animation-speed').value))%3;updateAnimation();}
+  if(running&&!paused)tickGame(dt);else corePreview.delta=0;
+  if((!dock||dock.visible('scene'))&&mainRenderer&&scene){orbit?.update();if(selectionBox?.visible)selectionBox.update();mainRenderer.render(scene,activeCamera);}
+  for(const view of extraViewports)if(dock.visible(view.id)){view.controls.update();view.renderer.render(scene,view.camera);}
+  if((!dock||dock.visible('material'))&&previewRenderer){previewSphere.rotation.y+=dt*.09;previewRenderer.render(previewScene,previewCamera);}
+  if((!dock||dock.visible('animation'))&&animationPlaying){animationTime=(animationTime+dt*Number($('#animation-speed').value))%3;updateAnimation();}
 }
 const layout=$('.editor-grid');
 layout.insertAdjacentHTML('beforeend','<button class="resize-grip" data-resize="left" aria-label="장면 구조 패널 폭 조절"></button><button class="resize-grip" data-resize="right" aria-label="속성 패널 폭 조절"></button><button class="resize-grip" data-resize="bottom" aria-label="에셋 패널 높이 조절"></button>');
@@ -746,8 +786,17 @@ $$('[data-resize]').forEach(handle=>{
   });
   handle.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();resizePanel(handle.dataset.resize,['ArrowRight','ArrowUp'].includes(e.key)?10:-10);}});
 });
-renderHierarchy();renderAssets();renderInspector();renderGraph('material');renderGraph('blueprint');renderKeys();updateAnimation();renderCommands();initRendering();updateSurface();
+const dockHost=document.createElement('div');dockHost.id='dock-host';$('.center-workspace').append(dockHost);$('.editor-grid').classList.add('docked');
+const assetPanel=$('.asset-panel'),consolePanel=$('#console-content');consolePanel.hidden=false;assetPanel.querySelector('.asset-panel-tabs').hidden=true;
+dock=new DockLayout(dockHost,[...['scene','material','animation','blueprint','code'].map(id=>({id,title:{scene:'뷰포트',material:'머테리얼',animation:'애니메이션',blueprint:'블루프린트',code:'C++'}[id],element:$('#'+id+'-workspace')})),{id:'project',title:'프로젝트',element:assetPanel},{id:'console',title:'콘솔',element:consolePanel}],id=>{focusedWindow=id;if(['scene','material','animation','blueprint','code'].includes(id))setWorkspace(id,false);});
+const windowMenu=document.createElement('select');windowMenu.className='window-selector';windowMenu.ariaLabel='작업창 추가';windowMenu.innerHTML='<option value="">창</option>'+[['scene','뷰포트'],['newViewport','추가 뷰포트'],['animation','애니메이션'],['blueprint','블루프린트'],['material','머테리얼'],['code','C++'],['project','프로젝트'],['console','콘솔'],['reset','배치 초기화']].map(([id,title])=>`<option value="${id}">${title}</option>`).join('');$('.workspace-bar').append(windowMenu);windowMenu.onchange=()=>{const id=windowMenu.value;windowMenu.value='';if(id==='newViewport')createViewportWindow();else if(id==='reset')dock.reset();else if(['scene','material','animation','blueprint','code'].includes(id))setWorkspace(id);else dock.open(id);};
+document.addEventListener('click',e=>{if(e.target.closest('[data-action="edit-timeline"]'))openTimeline();const b=e.target.closest('[data-code-tab]');if(b){$('#cpp-code').hidden=b.dataset.codeTab!=='header';$('#cpp-source').hidden=b.dataset.codeTab!=='source';$$('[data-code-tab]').forEach(el=>el.classList.toggle('active',el===b));}});
+document.addEventListener('change',e=>{if(e.target.matches('[data-object-blueprint]')){if(running)return;remember();const o=objects.find(o=>o.id===selected);if(e.target.checked)o.blueprint=graphs.blueprint.name;else delete o.blueprint;changed();}});
+$('#scene-canvas').tabIndex=0;$('#scene-canvas').addEventListener('keydown',e=>{if(running&&!e.isComposing&&e.key!=='Escape'){e.preventDefault();e.stopPropagation();if(runtime.paused)return;runtime.input(e.key,1).catch(error=>notify(error.message));}});$('#scene-canvas').addEventListener('keyup',e=>{if(running){e.preventDefault();e.stopPropagation();if(runtime.paused)return;runtime.input(e.key,0).catch(error=>notify(error.message));}});
+project=new ProjectBrowser($('#assets-content'),$('#asset-breadcrumb'),{open:openProjectAsset,error:notify,files:files=>{assets.splice(0,assets.length,...files);},select:file=>{$('#inspector-content').innerHTML='<div class="bp-detail-title"><h3>'+escapeHtml(file.name)+'</h3></div><div class="bp-readonly">'+escapeHtml(file.path)+'</div><div class="bp-readonly">'+escapeHtml(file.kind)+' · '+((file.size||0)/1024).toFixed(1)+' KB</div>';}});
+renderHierarchy();renderInspector();renderGraph('material');renderGraph('blueprint');renderKeys();updateAnimation();renderCommands();initRendering();updateSurface();
+const initialWindow=dock.leaves()[0].active;focusedWindow=initialWindow;setWorkspace(['scene','material','animation','blueprint','code'].includes(initialWindow)?initialWindow:'scene',false);
 if(lastSaved)$('#save-status').textContent='로컬 저장 장면을 불러왔어요';
 log('HBEngine 편집기 UI 프로토타입을 열었어요.');
-log('모델·영상은 파일 목록 미리보기로 표시해요.');
+$('#cpp-source').value=graphs.blueprint.native?.source||'';if(!graphs.blueprint.native)fetch('/prototype/examples/DoorController.cpp').then(r=>r.text()).then(s=>$('#cpp-source').value=s);
 requestAnimationFrame(animate);

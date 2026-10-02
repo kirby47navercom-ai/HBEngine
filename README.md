@@ -1,85 +1,83 @@
 # HBEngine
 
-C++ / Win32 / DirectX 11 기반 자체 게임 엔진을 위한 기획과 편집기 UI 프로토타입.
+C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **브라우저 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기**를 연결했다. 렌더링은 Three.js/WebGL이며 DirectX 엔진·게임 패키징은 아직 구현하지 않았다.
 
-목표는 쉽게 배치하고 편집하는 2D·2.5D·3D 제작 환경이다. 게임 로직은 C++와 노드를 함께 사용하며, 에셋 가져오기·머테리얼 그래프·애니메이션·조명을 편집기에서 다룬다.
+## 현재 구현
 
-## 현재 단계
+- **372개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
+- **289개 공통 C++ API**: 실제 C++17 함수와 브라우저 실행을 제공한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
+- **블루프린트 실행**: Construction → BeginPlay → Tick·입력·Overlap → EndPlay, 함수·매크로, 조건·반복·중단, Delay·재시작 지연, 타이머·Timeline, 변수·배열, 디스패처·인터페이스 호출. 중단점·Step·Continue와 실제 계산한 핀 값을 지원한다. Stop은 편집 장면을 복원한다.
+- **사용자 C++ 실행**: 편집기에서 .h/.cpp 편집·저장·g++ 빌드. 공개 함수·속성·static 함수·반환·출력 참조·객체 ID를 연결하고 C++ 이벤트를 BP로 전달한다. C++ 변환 변경은 실행 월드에 반영한다. [실행 예제](prototype/examples/BP_NativeDoor.blueprint.json).
+- **그래프 제작**: 한글/영어 우클릭 검색, 핀 연결·분할·합치기·변수 승격, 다중/영역 선택, 복사·복제·Undo/Redo, 함수·매크로 추출, Construction, 주석·세부 속성·모든 내부 그래프 검색. 그래프당 1,000개 노드를 저장할 수 있다.
+- **실제 Project**: 디스크 폴더 트리·새 폴더·이름 변경·안정적인 에셋 ID, 파일명/타입/파일 내용·하위 폴더 검색, Ctrl/Shift 다중 선택과 선택 열기. 다중 파일·폴더 선택과 편집기 어디든 외부 파일/폴더 드롭을 지원한다. 드롭은 현재 Project 폴더에 즉시 가져온다. 중복 이름은 새 이름으로 보존한다.
+- **도킹**: 탭 이동, 상하좌우 분할, 경계 크기 변경, 최대화·복원·배치 초기화. Scene/Animation/BP/C++/Project/Console을 동시에 볼 수 있다. 추가 뷰포트는 독립 카메라와 Perspective/Top/Front를 제공한다. 이미지·모델·텍스트 파일은 각각 문서로 열린다.
+- **Timeline**: 별도 커브 편집기, Float/Vector/Color/Event 트랙, XYZ/RGBA, 키·시간·값·접선·보간, 스크럽·역방향·길이·Loop·Autoplay·Rate·시간 배율 무시. Play/Play from Start/Stop/Reverse/Reverse from End/Set New Time와 Update/Finished를 실행한다.
+- **장면과 에셋 사용**: 도형·광원·Transform, 직교 2D와 3D 뷰, 하늘·햇빛·구름·안개·맵 템플릿. OBJ/GLTF/GLB/FBX 미리보기·배치, 모델에 포함된 애니메이션, 브라우저 지원 영상·오디오, 기본 PBR 표면·광원·위젯·게임 저장을 연결한다.
 
-편집기 작업 흐름과 공통 C++ API를 만드는 단계다. 브라우저 프로토타입은 DirectX 엔진이 아니다. 모델·영상 변환과 편집기에서 임의 C++ 프로젝트를 빌드하는 기능은 아직 구현하지 않았다. 공통 C++ 코어는 실제 컴파일·호출 검사를 제공한다. C++ 공개 헤더를 편집 메타데이터와 노드로 등록하는 작업은 실제 동작한다.
+Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포인터·창 배치의 공식 근거와 남은 범위는 [전체 엔진 분석](docs/ENGINE_REFERENCE_ANALYSIS.md), [인터랙션 계약과 검증 상태](docs/EDITOR_INTERACTION_SPEC.md), [BP/C++ 구현 기준](docs/BLUEPRINT_SPEC.md), [장기 엔진 기획](docs/ENGINE_PLAN.md)에 있다.
 
-전체 방향: [엔진 기획](docs/ENGINE_PLAN.md). Unreal 공식 조사와 전체 블루프린트 제작 목표·현재 상태: [블루프린트 기능 기준](docs/BLUEPRINT_SPEC.md).
+## 실행과 검사
 
-## 지금 체험할 수 있는 기능
-
-- **장면**: 실제 WebGL 정원, 3D/직교 2D 뷰, 선택·이동·회전·크기 변경, 기본 도형·광원 추가, 실행 미리보기, 실행 취소.
-- **맵 환경**: 빈 맵·기본 3D·2D·샘플 정원 템플릿. 하늘·햇빛·구름·안개, 낮·흐림·노을·밤, 태양 각도·밝기·밀도 조절.
-- **블루프린트**: 143개 기본 노드. 이벤트·수학·논리·벡터·배열·반복·변환·오브젝트·컴포넌트·물리·오디오·애니메이션·머테리얼·UI·저장 노드의 타입과 핀을 편집한다. 한글·영어 우클릭 검색, 타입에 맞는 핀 연결과 자동 연결 검색.
-- **C++ 연동**: 공개 헤더 직접 편집·노드 등록. Callable/Pure 함수, Get/Set 속성, static 함수, Native/Implementable 이벤트, C++ 부모로 확장·상속 기본값 편집. 등록된 클래스 포인터의 공개 멤버와 내장 구조체 반환 핀을 편집한다. 68개 공통 함수의 노드 서명은 실제 C++ 헤더에서 생성한다. 사용자 헤더 등록은 메타데이터 분석이며 임의 C++ 실행은 하지 않는다.
-- **통신·시간**: 디스패처와 인터페이스 인자·반환 시그니처, Call/Bind/Unbind/Event/Message 노드. Timeline Float/Vector/Color 트랙과 키프레임·보간·루프·값 스크럽. 공통 API의 게임 시간·델타·시간 배율, 타이머 설정·조회·정지·재개, 스톱워치는 C++와 브라우저 호출 미리보기를 제공한다. 타이머 완료는 로그로 표시하며 블루프린트 이벤트 그래프 자동 실행은 아직 없다.
-- **자료형**: bool / int / float / string / vec2 / vec3 / color / transform / object / hit. 단일·배열 변수, 기본값, Get/Set 노드, 벡터·구조체 필드 분할·합치기, 공개 클래스 멤버 읽기.
-- **그래프 편집**: 우클릭/휠 버튼 드래그 이동, 휠 확대·축소, Ctrl+휠 100% 이상 확대. Ctrl/Shift 다중 선택, 드래그 영역 선택, 그룹 이동. 선택 노드를 함수·매크로로 묶고 호출 노드를 두 번 클릭해 내부 편집. 외부 연결은 경계 핀으로 유지한다. 복사·붙여넣기·복제·다시 실행, 모든 내부 그래프 검색·위치 이동, 검증 결과·중단점·핀 관찰 목록을 지원한다.
-- **상세 속성**: 선택한 노드의 입력값·활성화·중단점·이벤트 설정, 변수 타입·배열·기본값·노출 옵션, 컴포넌트 속성, 클래스 기본값, 함수 인터페이스를 오른쪽에서 편집한다. 속성 검색과 접기 지원. 주석·입력값도 저장 JSON에 포함된다.
-- **주석**: C로 선택을 감싸는 주석 박스 생성. 내용·색·글자 크기·크기·그룹 이동 설정. 헤더로 이동, 모서리로 크기 변경, F2/두 번 클릭 편집, Delete 삭제. 개별 노드 주석도 표시한다.
-- **사용자 정의**: 컴포넌트 등록, 함수·이벤트 입력/반환 핀 추가, 별도 Construction Script 그래프. 함수는 단일 실행 입출력, 여러 실행 경로·Delay는 매크로로 구분한다.
-- **머테리얼·애니메이션**: PBR 구 미리보기와 실제 색·거칠기·금속성 변경, 노드 배치/연결, 애니메이션 재생·시간 이동·키 추가 UI.
-- **에셋**: 편집기 어디든 외부 파일 드롭 시 확인 창 없이 즉시 추가. 기존 파일 선택·가져오기 목록·필터·검색도 유지. 브라우저가 지원하는 이미지 파일은 실제 썸네일을 만든다.
-- **AI 편집**: 안정적인 노드/변수/핀 ID, 명시적인 타입과 연결을 담은 JSON 내보내기·검증 후 불러오기. [기본 예제](prototype/examples/BP_Garden.blueprint.json).
-
-## 조작과 저장
-
-| 조작 | 단축키/방법 |
-| --- | --- |
-| 저장 / 실행 취소 / 명령 검색 | Ctrl S / Ctrl Z / Ctrl K |
-| 그래프 이동 / 확대·축소 | 우클릭/휠 버튼 드래그 / 휠, Ctrl+휠, 툴바 +/− |
-| 전체 그래프 / 배율 초기화 | F 또는 전체 버튼 / Ctrl 0 |
-| 여러 노드 선택 | Ctrl/Shift 클릭, 빈 곳 드래그, Ctrl A |
-| 복사 / 붙여넣기 / 복제 / 잘라내기 | Ctrl C / Ctrl V / Ctrl D / Ctrl X |
-| 다시 실행 / 전체 검색 / 편집 데이터 검증 | Ctrl Y / Ctrl F / F7 |
-| 주석 / 이름 편집 / 중단점 | C / F2 / F9 |
-| 선택에 초점 / 내부·상위 그래프 | Home / PageDown·PageUp |
-| 함수·매크로 묶기 | 선택 후 툴바 또는 노드 우클릭 |
-| 내부 그래프 편집 | 호출 노드 두 번 클릭 또는 왼쪽 그래프 목록 |
-| 노드 생성 / 핀 작업 | 빈 곳 우클릭 검색 / 핀 우클릭 |
-| 장면 도구 / 선택 초점 | W E R / F |
-
-오브젝트·표면·맵 환경·블루프린트(함수·매크로 내부와 Construction 포함)는 Ctrl S로 **현재 브라우저 로컬 저장소**에 저장한다. 블루프린트 JSON은 파일로 내보내 다른 사람이거나 AI가 수정한 뒤 다시 불러올 수 있다. 손상된 JSON, 타입 불일치, 배열/단일 불일치, 순환 연결은 거부한다. 기존 저장 데이터는 새 선택 항목이 없어도 불러온다.
-
-가져온 파일·머테리얼 노드 배치·애니메이션 키는 세션에서만 유지된다. 머테리얼은 기본 표면 값을 반영하며 임의 그래프를 셰이더로 컴파일하지 않는다. 흐름 테스트는 연결을 따라 강조하는 UI 시뮬레이션이고, Tick·Overlap·Construction 생명주기·함수/매크로 게임 실행은 아직 없다. HB 메타데이터 매크로는 공개 헤더 선언을 노드로 등록하는 프로토타입 문법이다. 공통 코어의 독립 C++ 컴파일·호출은 검사했으며 브라우저는 같은 서명으로 JS 계산 미리보기를 제공한다. 사용자 C++ 함수의 native 호출·전체 게임 VM은 아직 없다. 헤더 분석기는 지원되는 선언·자료형만 받으며 함수 본문이나 초기화 표현식을 실행하지 않는다. 임의 구조체·enum·Set/Map·블루프린트 다중 클래스/자식 에셋·네트워크·실제 디버깅은 기능 기준 문서의 설계 대상이다. 하늘과 구름은 간단한 미리보기 표현이며 사실적인 대기·볼륨 구름 렌더러는 아니다.
-
-## 공통 C++ API
-
-`native/include/HBEngine/Game.hpp`는 C++17 표준 라이브러리만 사용하는 실제 구현이다. 수학 22개, 벡터 20개, 시간 5개, 타이머·스톱워치 10개, 오브젝트 변환 11개를 제공한다. 같은 헤더의 공개 선언으로 노드 이름·자료형·입출력을 생성한다. 143개 노드 중 나머지 엔진 시스템 노드는 편집 데이터이며 아직 native 구현이 없다.
-
-```cpp
-#include <HBEngine/Game.hpp>
-hb::Actor actor;
-auto direction = hb::VectorMath::NormalizeVector({3, 4, 0});
-hb::Scene::AddOffset(&actor, direction);
-auto timer = hb::Timers::SetTimer(1.0f, false, "OnTimer");
-hb::AdvanceFrame(0.25f);
-auto remaining = hb::Timers::GetTimerRemaining(timer); // 0.75초
-```
-
-편집기에서 공통 API 노드를 선택하면 오른쪽에 C++ 함수 이름과 값 계산/미리보기 호출 버튼이 나온다. 연결된 순수 함수·변수·분할 핀도 계산한다. 호출 노드의 반환 핸들은 마지막 미리보기 호출 결과를 사용한다. `Self`는 선택한 장면 오브젝트이며, 변경 호출은 실행을 멈춘 상태에서만 허용하고 실행 취소를 지원한다. 수치 결과는 JS/C++ 부동소수점 정밀도 차이가 있다.
-
-`npm run test:native`는 g++ 계열 C++17 컴파일러로 코어를 컴파일하고 실제 호출을 검사한다. Windows에서는 설치된 MSYS2 UCRT64 g++을 찾으며 다른 경로는 `CXX` 환경 변수로 지정한다. `npm run api:generate`는 노드 메타데이터를 재생성하고 `npm run api:check`는 변경 누락을 검사한다. `npm install`도 메타데이터를 생성한다. 생성 파일과 native 빌드 산출물은 Git에 넣지 않는다.
-
-## UI 개발 환경
-
-Node.js 20 이상에서:
+Node.js 22 이상:
 
 ```powershell
 npm install
 npm run dev
 ```
 
-미리보기 주소: http://127.0.0.1:5173
+주소는 http://127.0.0.1:5173 이다. 첫 실행은 Projects/QuietGarden에 예제 에셋과 소스를 만든다. 기존 파일은 덮어쓰지 않는다. HB_PROJECT_DIR로 다른 프로젝트 폴더를 지정할 수 있다. 프로젝트와 빌드 산출물은 Git에서 제외한다.
 
-검사: `npm test` (공통 C++ 생성 메타데이터 일치, 벡터·시간·타이머·스톱워치·이동·연결된 계산, 저장 검증, 143개 노드 등록, 타입 연결, 입력값 보존과 핀 분할, 함수·매크로 경계 연결 보존, Construction 분리, 주석·속성 저장, C++ 헤더/상속/공개 노드, 통신 시그니처, 타임라인 보간, 붙여넣기 검증). 문법 검사: `node --check prototype/app.js`.
+C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러를 찾고 다른 경로는 CXX로 지정한다. 최초 빌드 시 공식 nlohmann/json 3.12.0 단일 헤더를 내려받아 빌드 폴더에 둔다.
 
-Unreal 공식 [단축키 가이드](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-editor-cheat-sheet-in-unreal-engine), [주석 가이드](https://dev.epicgames.com/documentation/en-us/unreal-engine/comments-in-unreal-engine), [속성 패널 가이드](https://dev.epicgames.com/documentation/unreal-engine/details-panel-in-the-blueprints-visual-scriting-editor-for-unreal-engine)를 참고했다. 안내와 구현 범위는 편집기의 도움말에 모았다.
+| 명령 | 검사 |
+| --- | --- |
+| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·372종 한 그래프 저장 |
+| npm run api:check | 공통 선언·생성 헤더·노드 메타데이터 일치 |
+| npm run test:library | 새 221개 함수의 실제 C++/JS 결과 비교·배열/정수 오류 |
+| npm run test:native | 기존 공통 C++ 코어 실제 컴파일·호출 |
+| npm run test:runtime | 이벤트·반복·지연·Timeline·중단점 이어가기·실제 C++→BP |
+| npm run test:host | 사용자 C++ 빌드·함수/속성/객체/이벤트·잘못된 반환/컴파일 진단 |
+| npm run test:project | 실제 파일·다중 가져오기·폴더 드롭 열거·내용 검색·재열기·원본 보존 |
+| npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
 
-## Git 작업
+npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터를 재생성한다. Library.hpp는 추적하고 core-api.js는 설치 시 생성한다.
 
-저장소 계정: `kirby47navercom-ai`. 한글 커밋 제목과 본문에 변경 내용·검증 내용을 기록한다. author와 committer는 같은 계정으로 유지한다.
+## 조작과 저장
+
+| 작업 | 조작 |
+| --- | --- |
+| 저장 / Undo / Redo | Ctrl S / Ctrl Z / Ctrl Y 또는 Ctrl Shift Z |
+| 그래프 이동 / 확대 | RMB·MMB 드래그 / 휠, Ctrl+휠로 100% 초과 |
+| 노드 생성 / 빠른 생성 | 빈 곳 RMB / B·D·S·G·F·M·N·O·P를 누른 채 빈 곳 클릭 |
+| 다중 선택 / 복사·붙여넣기·복제 | Ctrl·Shift 클릭, 사각 선택, Ctrl A / Ctrl C·V·D |
+| 주석 / 이름 / 중단점 | C / F2 / F9 |
+| 검색 / 검증 / 내부 그래프 | Ctrl F / F7 / 호출 노드 두 번 클릭 |
+| 창 배치 | 탭 드래그·RMB 메뉴·경계 드래그·창 메뉴 |
+| 에셋 작업 | 외부 다중 드롭·선택 열기·Ctrl F·F2·Backspace |
+
+Ctrl S는 현재 장면과 BP를 **Project 파일**과 브라우저 복구 저장소에 저장한다. C++ 저장은 Source 파일을 저장한다. 열린 텍스트 문서는 자체 저장 버튼을 사용한다. BP는 JSON 내보내기·검증 후 불러오기가 가능하고 AI도 안정적인 ID·타입·연결을 편집할 수 있다. 코드/검색 입력에서는 문자 선택을 허용하고 그래프·도킹 조작에서는 브라우저 글자 선택을 차단한다.
+
+## 공통 C++ 사용
+
+```cpp
+#include <HBEngine/Game.hpp>
+hb::Actor actor;
+auto direction = hb::VectorMath::NormalizeVector({3, 4, 0});
+hb::Scene::AddOffset(&actor, direction);
+auto rotation = hb::Extended::LookAtRotation({0, 0, 0}, {1, 0, 1});
+auto timer = hb::Timers::SetTimer(1.0f, false, "OnTimer");
+hb::AdvanceFrame(0.25f);
+auto remaining = hb::Timers::GetTimerRemaining(timer);
+```
+
+공통 API 289개는 C++에서 직접 사용할 수 있다. BP 이벤트/반복/변수 조작은 VM 실행 구조이며, 나머지 브라우저 게임 서비스 모두에 같은 native API가 존재하는 것은 아니다. 노드별 대응은 카탈로그에 적었다.
+
+## 현재 한계
+
+DirectX 11·HLSL/머테리얼 그래프 컴파일·native 물리/3D 음향·임의 형식의 엔진 변환·게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다.
+
+BP/Scene/Material/Animation 주 편집 모델은 각각 하나다. 여러 이미지/모델/텍스트 문서와 뷰포트는 함께 열 수 있다. BP→BP 상속, 사용자 Struct/Enum/Set/Map, 로컬 변수, 네트워크, Animation 상태 머신, Prefab은 계속 구현할 범위다. 추가 C++ 종속 파일·멀티 파일 프로젝트·DLL 핫 리로드는 미지원이다. C++→BP 이벤트는 C++ 호출 종료 후 전달하며 임의 반환값을 동기적으로 BP에서 C++에 돌려주는 override는 미지원이다.
+
+## Git
+
+공개 저장소 계정은 kirby47navercom-ai이다. author와 committer를 같은 계정으로 유지하고 한글 제목·본문에 변경과 검증을 기록한다.
