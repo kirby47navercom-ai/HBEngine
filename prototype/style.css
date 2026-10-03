@@ -321,3 +321,29 @@ body { user-select:none; }
 input::placeholder,textarea::placeholder { color:#929dac; opacity:1; }
 .floating-menu button:hover:not(:disabled),.command-result:hover:not(:disabled) { background:var(--accent-dark); }
 input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-description { user-select:text; }
+:root .collider-geometry-controls {display:flex;flex-wrap:wrap;gap:7px;padding:12px 16px;border-top:1px solid #3c424a}
+.collider-geometry-controls>span {flex-basis:100%;color:#a9b3bf;font-size:11px}
+.collider-geometry-controls button {display:flex;align-items:center;gap:6px;padding:6px 9px}
+.collision-editor {width:min(1080px,94vw);max-width:94vw;padding:0;color:#dce1e7;background:#282d34;border:1px solid #515b68;border-radius:4px;overflow:hidden}
+.collision-editor-toolbar {display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #454d58;flex-wrap:wrap}
+.collision-editor-toolbar label {display:flex;align-items:center;gap:8px;margin-left:10px;font-size:12px}
+.collision-editor-toolbar input {width:70px}
+.collision-editor-toolbar output {margin-left:auto;color:#aebac8;font-size:12px}
+.collision-editor-body {display:grid;grid-template-columns:minmax(0,1fr) 290px;height:min(560px,65vh);min-height:250px}
+.collision-editor-body canvas {width:100%;height:100%;min-width:0;min-height:0;outline:none;touch-action:none;user-select:none}
+.collision-editor-body canvas:focus-visible {box-shadow:inset 0 0 0 1px #6195c8}
+.collision-editor-body aside {overflow:auto;border-left:1px solid #454d58;padding:12px}
+.collision-editor-body aside>label {display:block;margin-bottom:12px;font-size:12px}
+.collision-editor-body textarea {display:block;width:100%;height:200px;resize:vertical;margin-top:6px;font:11px/1.5 Consolas,monospace;overflow-wrap:anywhere}
+.collision-paths {display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.collision-paths label {display:flex;align-items:center;gap:8px;flex-basis:100%;font-size:12px}
+.collision-point-actions {display:flex;gap:6px;margin-bottom:12px}
+.collision-point {display:flex;align-items:center;gap:7px;padding:6px 4px;border-radius:3px}
+.collision-point.selected {background:#354c63}
+.collision-point>button {width:25px;flex-shrink:0;color:#bdd3e7}
+.collision-point label {display:flex;align-items:center;gap:4px;min-width:0;font-size:11px;color:#a9c4d5}
+.collision-point input {min-width:0;width:84px}
+.collision-editor-footer {display:flex;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid #454d58}
+.collision-editor-footer output {flex:1;min-width:0;font-size:12px;color:#e4a39a}
+.collision-editor-footer .primary-button {background:#386ca0;border-color:#4d82b6;color:#fff}
+@media(max-width:760px){.collision-editor-body{grid-template-columns:minmax(0,1fr) 230px}.collision-point input{width:58px}}

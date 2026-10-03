@@ -138,3 +138,9 @@ C++ 변경 명령은 호출 종료 후 소유 플레이 월드에서 검증·적
 16개 물리 서비스 선언에서 BP 핀을 생성해 공용 실행기로 연결했다. 각속도/질량/sleep, 네 힘 모드·작용점·토크·각 충격량, Raycast/All·Sphere/BoxCast·OverlapSphere/Box·ClosestPoint를 제공한다. 기본값 dimension=3·mask=-1·includeTriggers=false·ignore=null은 C++ 선언에서 가져오며 2D는 dimension=2를 지정한다. `hb::HitResult`와 BP hit/split pin·HitResult[]·Actor[]를 같은 JSON으로 연결한다.
 
 C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결과를 반환한다. 같은 함수의 Transform/collisionEnabled 수정은 질의에 보이고, 대기 중인 힘 적용의 solver 결과는 함수 반환 뒤 확인한다. receiver 핀과 인수 target을 구분하고 알려진 객체/파생 Actor 배열을 검증한다. 실제 강체·모터·CCD·단위·제한과 남은 물리 범위는 [물리 연구](PHYSICS_RUNTIME_RESEARCH.md)에 연결했다. 앞의 추가 당시 수치와 현재 수치를 구별한다.
+
+### 컴포넌트의 메시·2D 다각형·선분
+
+컴포넌트 목록은 46종이다. MeshCollider·PolygonCollider2D·EdgeCollider2D의 중첩 배열은 별도 형상 창에서 편집하고 BP 컴포넌트 상세에 수량과 편집/생성 버튼을 표시한다. 원본 모델에서 생성하는 경로는 Scene과 BP, AI collision.bake가 공유한다. BP 컴포넌트 뷰포트에도 실제 기본/메시/2D 경계를 렌더한다. Apply 한 작업을 문서 Undo/Redo로 복원한다. 몸체 형식/키네마틱 체크를 함께 갱신하고 Hinge/Slider에서 다른 관절로 바꿀 때 해당 모터/한계를 해제한 뒤 검증한다.
+
+기존 물리 질의 노드와 사용자 C++ Physics 호출은 같은 저장 형상을 검색한다. 오목한 polygon의 빈 영역, 삼각형 표면, open edge, convex hull을 구분한다. 실제 컴파일된 사용자 함수와 GUI/VM 검증은 [충돌 형상 연구](COLLISION_GEOMETRY_RESEARCH.md)에 기록했다. 기존 BP 473개·코어 289/서비스 102개 수치는 이번 형상 확장에서 바뀌지 않는다.

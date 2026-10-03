@@ -1,5 +1,7 @@
 # 강체·관절·공간 검색의 제작/실행 대조 — 2026-10-03
 
+이후 형상 추가와 검증은 [충돌 형상 연구](COLLISION_GEOMETRY_RESEARCH.md)에 연결했다. 실제 convex hull/triangle mesh·오목한 PolygonCollider2D/열린 EdgeCollider2D, 편집/생성/저장·AI revision·BP/C++ 동일 query가 추가됐다. 기본 강체 136개 검사와 형상 67개 검사를 각각 유지한다.
+
 사용자의 요구 범위는 Unreal/Unity 전 영역과 각 영역의 세부 동작이다. 이번 물리 구현은 그 범위의 일부다. 전체 매뉴얼·API·패키지를 모두 읽었거나 엔진 전체를 완성한 상태로 기록하지 않는다. [전체 영역 대조](REFERENCE_COVERAGE.md)와 [분야별 기존 연구](ENGINE_WORKFLOW_RESEARCH.md)를 함께 유지한다.
 
 ## 실제 읽은 자료와 적용 판단

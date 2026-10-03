@@ -131,3 +131,9 @@ C++ 실행 서비스는 호출 중 쌓인 명령을 호출 종료 후 실제 VM�
 Scene/BP 문서를 document.get → expectedRevision/dryRun 기반 document.patch → document.save로 수정하고 UI와 같은 검증·Undo를 사용한다. 실행 중에는 저작 변경이 거부된다. `runtime.state.physics`는 backend/fixedStep/elapsed와 차원별 bodies/joints를, objects[].gameplayDebug.physics는 mass/sleeping/velocity/angularVelocity/ccd/colliders를 제공한다. Stop 후 physics=null이며 편집 문서는 복구된다. 관측값을 기본값으로 덮지 않는다.
 
 C++ 공간 검색은 현재 C++ 변환/충돌 flags를 합친 읽기 전용 정확 형상 월드에서 동기 응답을 받는다. 다른 변경 명령의 solver 완료까지 동기라는 뜻은 아니다. 함수당 128질의/4 MB 메시지, 검색 결과 1,000개 등의 제한은 스키마에서 조회한다. 상세한 query-only/physics-only·레이어·단위·오류·수명·실제 검사는 [물리 연구](PHYSICS_RUNTIME_RESEARCH.md)와 tools/check-physics-editor.mjs에 있다. 이 도구는 authoring-qa에서만 새 검증 장면을 만든다.
+
+## 저장된 메시·다각형·선분 충돌
+
+`schema.physics.geometry`는 MeshCollider의 convex/mesh·4096 정점/8192 삼각형, PolygonCollider2D의 16개 분리 단순 경로/512점, EdgeCollider2D의 열린 선분/512점과 좌표·운동 형식 계약을 제공한다. component의 `json` 필드는 중첩 배열이다. 실제 값 형식은 [형상 계약](COLLISION_GEOMETRY_RESEARCH.md)에 있으며 일반 vec3로 취급하지 않는다. 사람의 형상 창과 AI document.patch가 같은 검증/Undo/저장 데이터를 사용한다.
+
+`collision.bake`는 `path`, `expectedRevision`, `object`(Scene), `component`, `dryRun`을 받는다. component는 MeshCollider다. sourceMesh가 있으면 실제 모델을 읽고, 없으면 장면의 준비된 렌더 메시에서 로컬 정점·삼각형을 생성한다. BP에는 sourceMesh가 필요하다. 반환 result는 component ID와 정점/삼각형 수다. dryRun의 data에서 실제 생성할 배열을 검사하고, 적용 후 별도로 document.save한다. 모달/Play 중 명령과 stale revision은 거부한다. sourceMesh 의존성과 이름 변경 참조도 갱신한다. 저장된 geometry는 Play/BP/C++ 질의에 그대로 사용한다.

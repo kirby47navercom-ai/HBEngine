@@ -1,9 +1,20 @@
 # HBEngine 작업 인계 — 2026-10-03
 
+## 최신 추가: 정확한 메시·2D 형상 제작과 공통 실행
+
+- MeshCollider(convex/triangle), PolygonCollider2D(오목/분리 경로), EdgeCollider2D(열린 선분)를 추가했다. 컴포넌트 46종. BP 473·코어 C++ 289/서비스 102 수치는 유지한다. prototype/collision-geometry.js가 저장 검증/분할/실제 Rapier descriptor/render bake를 공유한다.
+- 2D 형상 모달: 점/선분 드래그, 클릭 추가·Ctrl 삭제, XY 좌표, 다중 경로, 스냅, RMB/MMB 이동·휠 확대, 로컬 Undo/Redo·검증·Apply/Cancel. 3D: Orbit 미리보기, hull/triangle mode, 점/index JSON. Scene/BP Inspector가 같은 모달을 사용하며 BP 컴포넌트 뷰포트도 정확 outline을 표시한다. 일반 입력에 중첩 geometry 배열을 vec3로 펼치지 않는다.
+- `collision.bake`는 human/AI 공통 실제 source model/렌더 geometry 경로다. owner world pose/scale 제거, child pose 포함, weld/퇴화 삼각형 정리, 다른 actor/helper 제외. sourceMesh dependency/rename 연결. 저장된 데이터로 Play/BP/C++ 질의. source 변경은 명시적 bake 후 save. skinned/morph와 dynamic triangle/open edge는 거부한다. 2D compound 삼각화·질량/관성과 3D hull/trimesh를 실제 solver로 실행한다. grid navigation만 보수적 bounds다.
+- 컴포넌트 값 변경은 editComponentProperty를 공유한다. bodyType/isKinematic을 동기화하고 Hinge/Slider 밖으로 바꿀 때 motor/limit을 해제한 뒤 검증한다. 다중 Scene 컴포넌트 편집은 모두 검증한 후 적용한다. Scene/BP 조합 검증도 동적 nonconvex를 거부한다.
+- 실제 연구: docs/COLLISION_GEOMETRY_RESEARCH.md + detail-audit.json. Unity 6000.0 Mesh/Polygon/Edge/EditCollider 본문, Epic simple/complex·자동화 UE5.8 본문, Rapier Shapes/Mass 본문과 설치 0.21.0 d.ts 대조. 3D multi hull/UCX/LOD collision·2D composite/effector/edge radius/adjacent normals/세부 layer override는 연구 표에서 구별한다. 전 영역 누적 요구는 계속 유지한다.
+- 검증: test:collision-geometry **실제 WASM 67개**, 사용자 C++ 네 형상 query/빈 공간, unknown mode·float32 퇴화 triangle 거부. 동일 브라우저 검사 67개. test:physics 136 + 실제 C++/BP split. npm test/api:check/scene/2d/headless/systems/gameplay/authoring/integration/runtime 통과. desktop:build/test:desktop은 최신 배포 형상 67+물리136와 실제 EXE/WebView2/허브/경로/종료를 통과했다.
+- 실제 5182 API: tools/check-collision-editor.mjs(또는 test:collision-editor), 검증 root를 변경 전에 확인. bake/dryRun/revision/Undo/Redo/invalid patch/dynamic combo/디스크 저장/2D·3D 착지/Pause/Stop/BP source OBJ 통과. fixture Scene은 Geometry_UI_QA_<timestamp>, BP는 BP_Geometry_UI_QA_<timestamp>. 사용자 5181과 QuietGarden은 수정/새로고침하지 않았다.
+- 실제 GUI: 점 [-.1,.1] 드래그/로컬 Undo, 선분 추가/Ctrl삭제, duplicate point Apply 비활성화, 두 경로 Apply→AI문서→Undo/Redo/저장, 3D mode 전환, BP geometry Apply→Undo/저장과 BP viewport 확인. native/build/ui-collision-2d.png, ui-collision-bp-preview.png는 무시된 화면 증거다. 검증 전용 5182 편집기/형상 test 탭을 후속 작업용으로 유지한다. EXE/dist/Projects/native build/screenshot은 Git에 넣지 않는다.
+
 - 누적 요구: Unreal/Unity의 전체 제작 흐름을 근거로 자체 C++/Win32/DX11 2D·2.5D·3D 엔진 구현. 사용자 사례로 범위를 줄이지 않는다. 사람에게 편한 전용 편집기와 AI의 구조화된 편집·실행 경로를 함께 구현한다.
 - 2026-10-02 변경: 도킹 병합/분할과 브라우저별 탐색, 계층/다중 변환, 27종 컴포넌트와 고정 스텝 물리/게임 프레임워크, 실제 2D Sprite/Tile/Flipbook 제작/실행, 33노드 GLSL 머테리얼, C++ 서비스 19개, 에셋 ID/참조/재가져오기, revision 보호 편집 API/CLI, 같은 VM/C++를 사용하는 화면 없는 로직 실행기.
 - 공식·원저자 자료 대조는 docs/ENGINE_WORKFLOW_RESEARCH.md, AI 계약은 docs/AI_ENGINE_API.md. 문서 전체 확인이나 상용 엔진 완성을 주장하지 않는다. DX11 renderer/HLSL, 정밀 물리, 자동 변환/cooking, 독립 게임 패키지 등은 연구 기록의 전체 작업 지도로 계속 관리한다.
-- 기본 사용자 Projects/QuietGarden와 5173 서버는 건드리지 않는다. 5181 integration-qa-1790942483241은 사용자가 미저장 문서를 열어 둔 서버/탭이므로 현재는 검사·새로고침하지 않는다. 다음 UI 검증은 별도 5182 authoring-qa에서 한다. 아래 이전 단계의 서버/검사 상태보다 마지막 단계 기록을 우선한다.
+- 기본 사용자 Projects/QuietGarden와 5173 서버는 건드리지 않는다. 5181 integration-qa-1790942483241은 사용자가 미저장 문서를 열어 둔 서버/탭이므로 현재는 검사·새로고침하지 않는다. 다음 UI 검증은 별도 5182 authoring-qa에서 한다. 맨 위 최신 추가 절을 우선하고 아래 이전 단계 기록은 당시 상태로 읽는다.
 - 통과: npm test, api:check, test:runtime, test:native, test:host, test:library, test:project, test:assets, test:server, test:windows, test:scene, test:2d, test:material, test:integration, test:headless, test:editor-api, test:launcher, test:hub-ui, test:session, desktop:build, test:desktop. 최신 관련 변경 후 해당 검사를 재실행했다. 실제 배포/루트 EXE의 WebView2 준비와 종료·소유 서버 정리도 통과했다.
 - 실제 UI 확인: 타일 칠하기→Ctrl+Z→저장, Sprite atlas/crop/PPU/pivot, 머테리얼 100% 프레이밍과 프리셋 변경의 그래프/Inspector 동기화. 2D 전용 문서에서는 중복 전역 패널을 숨기고 도구·팔레트·캔버스·문서 속성을 사용한다. 화면 증거는 Git에서 제외한 native/build/ui-2d-integrated.png에 있다.
 - 실제 편집기 API 확인: revision 충돌·잘못된 데이터 거부, Undo·저장·2D 플레이/일시 정지/복구, 실패한 Play 복구, 사용자 C++ 빌드, 2D→3D 장면 전환과 Stop 시 원본 복구. 서버는 현재 프로젝트 ID와 다른 이전 창의 automation poll을 거부한다.

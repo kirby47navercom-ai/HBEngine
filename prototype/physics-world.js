@@ -1,10 +1,11 @@
 import {Vector3,Quaternion,Euler} from 'three';
 import {componentDefaults,objectComponents,enabledComponent,validComponentProperties} from './scene-components.js';
 import {sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
+import {geometryColliderTypes,geometryDescriptor,colliderGeometryRadius,geometryContract} from './collision-geometry.js';
 
-export const colliderTypes=new Set(['BoxCollider','SphereCollider','CapsuleCollider','BoxCollider2D','CircleCollider2D','CapsuleCollider2D']);
+export const colliderTypes=new Set(['BoxCollider','SphereCollider','CapsuleCollider','BoxCollider2D','CircleCollider2D','CapsuleCollider2D',...geometryColliderTypes]);
 export const physicsQueryKeys=new Set(['physicsRaycast','physicsRaycastAll','physicsSphereCast','physicsBoxCast','physicsOverlapSphere','physicsOverlapBox','physicsClosestPoint']);
-export const physicsContract={backend:'rapier',version:'0.21.0',dimensions:[2,3],units:{distance:'m',mass:'kg',transformRotation:'degree',jointAngle:'degree',jointAngularSpeed:'degree/s',angularVelocity:'rad/s',force:'N',torque:'N*m'},forceModes:['force','acceleration','impulse','velocityChange'],massBehavior:'automatic density mass with active shapes; configured mass without colliders; no shape-free inertia editing',queryKeys:[...physicsQueryKeys],queryDefaults:{dimension:3,mask:-1,includeTriggers:false,ignore:null},queryBehavior:{geometry:'exact box, sphere/circle, capsule; compound colliders',algorithm:'linear collider candidates, exact narrow phase',results:'HitResult or HitResult[]; overlaps deduplicate actor IDs',closestPointNormal:[0,0,0],teleports:'visible before next step',crossDimension:false},limits:{collidersPerDimension:8000,querySnapshotColliders:8000,querySnapshotObjects:2000,jointsPerDimension:512,queryResults:1000,cppQueriesPerCall:128,cppQueryBytes:4000000},cpp:{queries:'synchronous read-only world, current C++ transforms/collision flags',writes:'queued and applied by VM after function returns'},jointAxes:'positive relative owner movement; 2D Z rotation, XY translation',jointLimitations:['slider requires aligned local body frames','2D ball is an unconstrained revolute joint','no break force, plasticity, multi-body articulation or generic 6-DOF UI']};
+export const physicsContract={backend:'rapier',version:'0.21.0',dimensions:[2,3],geometry:geometryContract,units:{distance:'m',mass:'kg',transformRotation:'degree',jointAngle:'degree',jointAngularSpeed:'degree/s',angularVelocity:'rad/s',force:'N',torque:'N*m'},forceModes:['force','acceleration','impulse','velocityChange'],massBehavior:'automatic density mass with active shapes; configured mass without colliders; no shape-free inertia editing',queryKeys:[...physicsQueryKeys],queryDefaults:{dimension:3,mask:-1,includeTriggers:false,ignore:null},queryBehavior:{geometry:'exact primitive, convex/triangle mesh, concave 2D polygons and open edges',algorithm:'linear collider candidates, exact narrow phase',results:'HitResult or HitResult[]; overlaps deduplicate actor IDs',closestPointNormal:[0,0,0],teleports:'visible before next step',crossDimension:false},limits:{collidersPerDimension:8000,querySnapshotColliders:8000,querySnapshotObjects:2000,jointsPerDimension:512,queryResults:1000,cppQueriesPerCall:128,cppQueryBytes:4000000},cpp:{queries:'synchronous read-only world, current C++ transforms/collision flags',writes:'queued and applied by VM after function returns'},jointAxes:'positive relative owner movement; 2D Z rotation, XY translation',jointLimitations:['slider requires aligned local body frames','2D ball is an unconstrained revolute joint','no break force, plasticity, multi-body articulation or generic 6-DOF UI']};
 const copy=structuredClone,rad=Math.PI/180,vector=v=>Array.isArray(v)&&v.length===3&&v.every(Number.isFinite);
 const xyz=v=>({x:v[0],y:v[1],z:v[2]}),array=v=>[v.x,v.y,v.z??0],emptyHit=()=>({hit:false,position:[0,0,0],normal:[0,0,0],actor:null});
 const qValue=q=>({x:q.x,y:q.y,z:q.z,w:q.w});
@@ -41,6 +42,7 @@ export function createRigidPhysics(objects,options={}){
   const coefficients=(p,R)=>{const merged={...p,...materials.get(p.physicalMaterial)};return {...merged,frictionCombine:R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[merged.frictionCombine]||'Average']};};
   function shape(component,scale,R,dim){
     const p={...componentDefaults(component.type),...component.properties},s=scale.toArray().map(Math.abs);
+    if(geometryColliderTypes.has(component.type))return geometryDescriptor(component.type,p,s,R);
     if(component.type.includes('Sphere')||component.type.includes('Circle'))return R.ColliderDesc.ball(p.radius*Math.max(...s.slice(0,dim)));
     if(component.type.startsWith('Capsule')){const radius=p.radius*(dim===2?s[0]:Math.max(s[0],s[2]));return R.ColliderDesc.capsule(Math.max(0,p.height*s[1]/2-radius),radius);}
     return dim===2?R.ColliderDesc.cuboid(p.extent[0]*s[0],p.extent[1]*s[1]):R.ColliderDesc.cuboid(...p.extent.map((v,i)=>v*s[i]));
@@ -75,6 +77,7 @@ export function createRigidPhysics(objects,options={}){
         const activeColliders=new Set();
         for(const component of components){
           const cp={...componentDefaults(component.type),...component.properties},signature=JSON.stringify([cp,transform.scale.toArray(),materials.get(cp.physicalMaterial)]);activeColliders.add(component.id);
+          if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
           if(c?.signature===signature)continue;
           if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);}
@@ -83,7 +86,7 @@ export function createRigidPhysics(objects,options={}){
           desc.setFrictionCombineRule(material.frictionCombine).setRestitutionCombineRule(R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[material.restitutionCombine]||'Average']);
           desc.setDensity(p?.autoMass?(material.density??1):1);
           desc.setActiveHooks(R.ActiveHooks.FILTER_CONTACT_PAIRS|R.ActiveHooks.FILTER_INTERSECTION_PAIRS).setActiveCollisionTypes(R.ActiveCollisionTypes.ALL);
-          c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
+          c={object:o,component,p:cp,signature,collider:world.createCollider(desc,r.body),is2D:dim===2,radius:geometryColliderTypes.has(component.type)?colliderGeometryRadius(component.type,cp,transform.scale.toArray().map(Math.abs)):null};r.colliders.set(component.id,c);space.colliders.set(c.collider.handle,c);r.massDirty=true;
         }
         for(const [id,c] of r.colliders)if(!activeColliders.has(id)){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);r.colliders.delete(id);r.massDirty=true;}
         if(r.massDirty&&p){
@@ -138,7 +141,7 @@ export function createRigidPhysics(objects,options={}){
     // trigger/hit events with cached exact tests, using a conservative sweep.
     const fixed=[...space.colliders.values()].filter(c=>c.collider.parent().isFixed()),signature=JSON.stringify(fixed.map(c=>[c.collider.handle,c.signature,array(c.collider.translation()),c.collider.rotation()]));
     if(signature===space.fixedSignature)return space.fixedContacts;space.fixedSignature=signature;
-    const bounds=fixed.map(c=>{const p=c.collider.translation(),shape=c.collider.shape,radius=shape.radius!==undefined?shape.radius+(shape.halfHeight||0):Math.hypot(...array(shape.halfExtents).slice(0,dim));return {c,position:array(p),radius,min:p.x-radius,max:p.x+radius};}).sort((a,b)=>a.min-b.min),contacts=[];
+    const bounds=fixed.map(c=>{const p=c.collider.translation(),shape=c.collider.shape,radius=c.radius??(shape.radius!==undefined?shape.radius+(shape.halfHeight||0):Math.hypot(...array(shape.halfExtents).slice(0,dim)));return {c,position:array(p),radius,min:p.x-radius,max:p.x+radius};}).sort((a,b)=>a.min-b.min),contacts=[];
     for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length&&bounds[j].min<=bounds[i].max;j++){
       const a=bounds[i],b=bounds[j],c=a.c,d=b.c;if(!pairAllowed(space,c.collider.handle,d.collider.handle)||Math.hypot(...a.position.slice(0,dim).map((v,k)=>v-b.position[k]))>a.radius+b.radius)continue;
       const hit=c.collider.contactCollider(d.collider,0);if(!hit||hit.distance>0)continue;

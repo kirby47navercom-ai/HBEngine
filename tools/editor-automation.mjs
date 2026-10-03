@@ -28,6 +28,7 @@ export const editorMethods={
   'blueprint.connect':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'event / construction / 함수 ID',from:'{node,pin}',to:'{node,pin}',dryRun:'검증만'}},
   'blueprint.variable.drop':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'그래프 ID',variableId:'변수 ID',target:'{node,pin,direction: in/out} 또는 null',position:'{x,y}',mode:'get / set',dryRun:'검증만'}},
   'scene.place':{params:{path:'장면 문서',expectedRevision:'현재 revision',key:'배치 카탈로그 key',position:'[x,y,z]',dryRun:'검증만'}},
+  'collision.bake':{params:{path:'장면 또는 블루프린트 문서',expectedRevision:'현재 revision',object:'장면의 소유 오브젝트 ID',component:'MeshCollider ID',dryRun:'형상 생성·검증만; 원본 모델 또는 장면 렌더 메시를 로컬 정점으로 저장'}},
   'scene.select':{params:{ids:'오브젝트 ID 배열',focus:'선택 위치로 이동 여부'}},
   'runtime.play':{params:{}},'runtime.stop':{params:{}},'runtime.pause':{params:{}},'runtime.resume':{params:{}},
   'runtime.input':{params:{key:'키 이름',value:'-1~1 (생략하면 1, 놓기는 0)'}},

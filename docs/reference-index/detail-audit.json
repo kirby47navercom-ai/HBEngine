@@ -337,6 +337,103 @@
       "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
       "implementationStatus": "partial",
       "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-mesh-collider",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MeshCollider.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Unity 6000.0 본문 전체: convex/cooking/readability/layer 속성 표",
+      "topics": [
+        "physics.mesh",
+        "import.cooking"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-polygon-collider-2d",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/collider/polygon-collider-2d-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Unity 6000.0 본문 전체: polygon 편집/합성/삼각화/레이어 표",
+      "topics": [
+        "physics.polygon2d",
+        "editor.geometry"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-edge-collider-2d",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/collider/edge-collider-2d-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Unity 6000.0 본문 전체: 열린 형상/edge radius/adjacent/레이어/통지 표",
+      "topics": [
+        "physics.edge2d"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-edit-collider-mode",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/collider/edit-collider-mode-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Unity 6000.0 본문 전체: 점/선분 드래그·선분 클릭 추가·Ctrl/Cmd 삭제 조작 표",
+      "topics": [
+        "editor.geometry",
+        "editor.shortcuts"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-simple-complex-collision",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/simple-versus-complex-collision-in-unreal-engine?lang=en-US",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "조사 페이지 UE 5.8 본문 전체: simple/complex 질의와 시뮬레이션 구분",
+      "topics": [
+        "physics.mesh",
+        "physics.query"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-static-collision-automation",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/setting-up-collisions-with-static-meshes-in-blueprints-and-python-in-unreal-engine",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "조사 페이지 UE 5.8 본문 전체: primitive/convex decomposition/remove/LOD/custom import 자동화와 저장",
+      "topics": [
+        "editor.automation",
+        "import.cooking"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-collider-geometry",
+      "url": "https://rapier.rs/docs/user_guides/javascript/colliders/",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Shapes와 Mass properties 본문만 확인. 사이트 문서 버전과 설치 0.21.0 API는 별도로 대조",
+      "topics": [
+        "physics.geometry",
+        "physics.mass"
+      ],
+      "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
     }
   ]
 }

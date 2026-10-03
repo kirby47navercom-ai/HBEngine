@@ -1,4 +1,7 @@
 export const paths = {
+  edit:'<path d="m15 4 5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/>',
+  undo:'<path d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 0 14"/>',
+  redo:'<path d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0 0 14"/>',
   columns:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/>',
   trash:'<path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/>',
   text:'<path d="M4 5h16M12 5v15M8 20h8M4 5v3M20 5v3"/>',

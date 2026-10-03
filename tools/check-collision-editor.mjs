@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {editorCommand,engineRequest} from './hb.mjs';
+import {createAsset} from '../prototype/asset-documents.js';
+import {geometryObject,lPath} from '../prototype/tests/collision-geometry-cases.js';
+import {makeSceneComponent as c} from '../prototype/scene-components.js';
+import {defaultRuntimeSettings} from '../prototype/model.js';
+
+const base=process.argv[2]||'http://127.0.0.1:5182',clients=(await engineRequest(base,'/api/automation')).clients.sort((a,b)=>b.seen-a.seen);
+assert.ok(clients.length,'검증용 편집기를 먼저 연다');const call=(method,params)=>editorCommand(base,method,params,{clientId:clients[0].id,timeout:30000}),original=await call('editor.state');assert.equal(original.projectName,'authoring-qa');assert.equal(original.running,false);
+const project=(await engineRequest(base,'/api/project')).root;assert.equal(path.resolve(project),path.resolve(import.meta.dirname,'../native/build/authoring-qa'),'검증 전용 프로젝트만 변경한다');
+const schema=await engineRequest(base,'/api/schema');assert.equal(Object.keys(schema.components).length,46);assert.equal(schema.physics.geometry.mesh.dynamic,'convex only');
+const stamp=Date.now(),file=`Assets/Scenes/Geometry_UI_QA_${stamp}.hbscene.json`,data=createAsset('scene','Geometry UI QA');data.runtime={...defaultRuntimeSettings,dimension:'2d'};
+const polygon=geometryObject('Polygon','PolygonCollider2D',{paths:[lPath]});const edge=geometryObject('Edge','EdgeCollider2D',{points:[[-3,0],[3,0]]});edge.position=[-5,0,0];
+const floor=geometryObject('MeshFloor','MeshCollider',{mode:'mesh'});floor.kind='cube';floor.position=[5,-.5,0];floor.scale=[6,1,6];
+const fall2D=geometryObject('Ball2D','CircleCollider2D',{radius:.2},{useGravity:true,collisionDetection:'continuous'});fall2D.kind='sprite';fall2D.position=[.5,4,0];fall2D.components.unshift(c('SpriteRenderer',{width:.4,height:.4},'sprite'));
+const fall3D=geometryObject('Ball3D','SphereCollider',{radius:.2},{useGravity:true});fall3D.kind='sphere';fall3D.position=[5,3,0];fall3D.scale=[.4,.4,.4];fall3D.components[0].properties.radius=.5;
+data.objects=[polygon,edge,floor,fall2D,fall3D];
+const put=async(file,data)=>{const r=await fetch(base+'/api/file?path='+encodeURIComponent(file),{method:'PUT',headers:{'X-HB-Editor':'1'},body:JSON.stringify(data)});assert.ok(r.ok,await r.text());};
+await put(file,data);await call('document.open',{path:file});let before=await call('document.get',{path:file});const params={path:file,expectedRevision:before.revision,object:'MeshFloor',component:'shape'};
+const dry=await call('collision.bake',{...params,dryRun:true});assert.ok(dry.valid);assert.equal(dry.result.vertices,8);assert.equal((await call('document.get',{path:file})).revision,before.revision);
+const bake=await call('collision.bake',params);assert.equal(bake.result.triangles,12);await assert.rejects(call('collision.bake',params),e=>e.code==='REVISION_CONFLICT');
+const undone=await call('editor.undo',{path:file,expectedRevision:bake.revision});assert.equal(undone.revision,before.revision);const redone=await call('editor.redo',{path:file,expectedRevision:undone.revision});assert.equal(redone.revision,bake.revision);
+await assert.rejects(call('document.patch',{path:file,expectedRevision:redone.revision,operations:[{op:'replace',path:'/objects/0/components/0/properties/paths',value:[[[0,0],[1,1],[0,1],[1,0]]]}]}),/규칙|검증/);assert.equal((await call('document.get',{path:file})).revision,redone.revision);
+await assert.rejects(call('document.patch',{path:file,expectedRevision:redone.revision,operations:[{op:'add',path:'/objects/2/components/-',value:c('Rigidbody',{},'bad-body')}]}),/규칙|검증/);assert.equal((await call('document.get',{path:file})).revision,redone.revision);
+await call('document.save',{path:file,expectedRevision:redone.revision});const saved=await call('document.get',{path:file});assert.deepEqual(await(await fetch(base+'/api/file?path='+encodeURIComponent(file))).json(),saved.data);
+try{assert.equal((await call('runtime.play')).running,true);let state;for(let i=0;i<12;i++){state=await call('runtime.state');if(['Ball2D','Ball3D'].every(id=>state.objects.find(o=>o.id===id).grounded))break;}
+  const meshTop=Math.max(...saved.data.objects[2].components[0].properties.vertices.map(p=>p[1]))*floor.scale[1]+floor.position[1];assert.ok(Math.abs(state.objects.find(o=>o.id==='Ball2D').position[1]-2.2)<.04,'actual concave polygon landing');assert.ok(Math.abs(state.objects.find(o=>o.id==='Ball3D').position[1]-(meshTop+.2))<.04,'baked triangle mesh landing');assert.ok(state.objects.find(o=>o.id==='Ball2D').grounded&&state.objects.find(o=>o.id==='Ball3D').grounded);await call('runtime.pause');assert.ok((await call('runtime.state')).paused);await assert.rejects(call('collision.bake',{...params,expectedRevision:saved.revision}),/실행 종료/);
+}finally{await call('runtime.stop');}assert.deepEqual((await call('document.get',{path:file})).data,saved.data);
+const model='Assets/Models/Geometry_QA.obj';await fs.mkdir(path.join(project,'Assets/Models'),{recursive:true});await fs.writeFile(path.join(project,model),'v 0 0 0\nv 1 0 0\nv 0 1 0\nv 0 0 1\nf 1 3 2\nf 1 2 4\nf 1 4 3\nf 2 3 4');
+const bpfile=`Assets/Blueprints/BP_Geometry_UI_QA_${stamp}.hbblueprint.json`,bp=createAsset('blueprint','BP_Geometry_UI_QA');bp.components=[c('Transform',{},'transform'),c('MeshCollider',{sourceMesh:model},'mesh'),c('PolygonCollider2D',{paths:[lPath]},'polygon')];await put(bpfile,bp);await call('document.open',{path:bpfile});const bpbefore=await call('document.get',{path:bpfile}),bpBake=await call('collision.bake',{path:bpfile,expectedRevision:bpbefore.revision,component:'mesh'});assert.equal(bpBake.result.vertices,4);assert.equal(bpBake.result.triangles,4);await call('document.save',{path:bpfile,expectedRevision:bpBake.revision});
+if(process.argv.includes('--show')){await call('document.open',{path:file});await call('scene.select',{ids:['Polygon'],focus:true});}else if(original.activeDocument)await call('document.open',{path:original.activeDocument});
+console.log('실제 편집기: 메시 생성/원본 OBJ·revision/dryRun/Undo/Redo·잘못된 형상/동적 삼각형 거부·디스크 저장·2D/3D 착지·Pause/Stop 복구·BP 원본 모델 생성 검사 통과');

@@ -1,5 +1,7 @@
 # HBEngine 공식 문서 조사와 구현 대조
 
+2026-10-03 추가 대조: [충돌 형상 제작/실행](COLLISION_GEOMETRY_RESEARCH.md). Unity Mesh/Polygon2D/Edge2D/편집 조작과 Epic simple/complex·편집 자동화 본문, Rapier의 Shapes/Mass를 별도 세부 기록으로 연결했다. 실제 hull/삼각형/오목 경로/선분과 사람/AI/BP/C++ 동작을 검증했다. 다중 convex decomposition·UCX/LOD collision·Composite/effector·edge radius/adjacent normal·레이어 override 세부 조합은 해당 연구 표의 추가 항목으로 유지한다.
+
 기준일: 2026-10-03. 조사 단위는 기능 이름이 아니라 **만들기 → 편집 → 저장 → 배치/참조 → 실행 → 진단 → 재열기** 흐름이다. 전체 설계는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 조작 계약은 [편집기 기준](EDITOR_INTERACTION_SPEC.md), 그래프와 C++ 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)에 연결한다.
 
 ## 조사 상태의 의미

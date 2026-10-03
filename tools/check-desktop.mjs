@@ -27,6 +27,8 @@ async function run(name,executable,projectFile,ok=true){
 try{
   const {physicsCases}=await import(pathToFileURL(path.join(root,'dist/HBEngine/prototype/tests/physics-cases.js')).href);
   const physics=await physicsCases();assert.equal(physics.assertions,136);console.log('배포 폴더의 실제 2D·3D WASM 물리 검사 통과:',physics.assertions);
+  const {collisionGeometryCases}=await import(pathToFileURL(path.join(root,'dist/HBEngine/prototype/tests/collision-geometry-cases.js')).href);
+  const geometry=await collisionGeometryCases();assert.equal(geometry.assertions,67);console.log('배포 폴더의 실제 메시·2D 다각형/선분 형상 검사 통과:',geometry.assertions);
   const project=await createProject('한글 프로젝트',path.join(work,'프로젝트 공백 경로')),original=await fs.readFile(project.file,'utf8');
   await run('프로젝트 허브',path.join(root,'dist/HBEngine/HBEngine.exe'));
   await run('프로젝트 직접 열기',path.join(root,'HBEngine.exe'),project.file);

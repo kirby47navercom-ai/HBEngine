@@ -1,0 +1,6 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>HBEngine collision geometry verification</title>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<body><pre id="result">충돌 형상 검사 중</pre><script type="module">
+import {collisionGeometryCases} from './collision-geometry-cases.js';
+try{document.querySelector('#result').textContent=JSON.stringify({ok:true,...await collisionGeometryCases()},null,2);}catch(error){document.querySelector('#result').textContent=JSON.stringify({ok:false,error:error.stack},null,2);}
+</script></body></html>
