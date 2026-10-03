@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HBEngine 작업창</title><link rel="stylesheet" href="./detached-window.css"></head>
+<body class="detached-editor"><header class="detached-toolbar"><strong id="detached-title">작업창</strong><button data-owner-command="save" title="저장 · Ctrl+S">저장</button><button data-owner-command="undo" title="되돌리기 · Ctrl+Z">되돌리기</button><button data-owner-command="redo" title="다시 실행 · Ctrl+Y">다시 실행</button><button id="detached-return">편집기에 합치기</button></header><main id="detached-host"></main><div id="toast" role="status" hidden></div><script type="module">
+const id=new URL(location.href).searchParams.get('id');
+try{if(!opener||opener.location.origin!==location.origin||!opener.hbEngineAttachWindow)throw Error('원본 편집기를 찾을 수 없어요.');opener.hbEngineAttachWindow(id,window);}
+catch(error){document.querySelector('#detached-host').textContent=error.message;}
+</script></body></html>

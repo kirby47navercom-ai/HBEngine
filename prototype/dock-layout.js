@@ -1,4 +1,5 @@
 import {storageKey,storage} from './project-session.js';
+import {DetachedWindows} from './detached-window.js';
 const leaf=(tabs,active=tabs[0])=>({tabs,active});
 const zones=new Set(['center','left','right','top','bottom']);
 export const defaultDockRatio=(height=globalThis.innerHeight??900)=>Math.max(.60,Math.min(.82,1-300/Math.max(400,height-110)));
@@ -45,24 +46,35 @@ export class DockLayout {
     this.host=host;this.entries=new Map(entries.map(e=>[e.id,e]));this.onFocus=onFocus;this.options=options;this.parking=document.createElement('div');this.parking.hidden=true;host.after(this.parking);
     this.tree={axis:'column',ratio:defaultDockRatio(),a:leaf(['scene']),b:leaf(['project','console'])};
     try{const ids=new Set(this.entries.keys()),saved=restoreLayout(JSON.parse(storage.getItem(storageKey('hbengine.docks.v2'))),ids);if(validLayout(saved,ids))this.tree=saved;}catch{}
-    this.render();
+    this.detached=new DetachedWindows(this);this.render();
   }
   leaves(n=this.tree){return layoutLeaves(n);}
   paneFor(id){return this.leaves().find(n=>n.tabs.includes(id));}
-  focus(id){this.focused=id;this.onFocus?.(id);}
+  registerExternal(entry){this.entries.set(entry.id,{...entry,external:true,home:{parent:entry.element.parentElement,next:entry.element.nextSibling}});}
+  detach(id=this.focused){return this.detached.open(id);}
+  redock(id){this.detached.restore(id,{close:true});}
+  redockAll(){this.detached.restoreAll();}
+  get windowCount(){return this.detached.items.size;}
+  query(selector){return this.detached.query(selector);}
+  queryAll(selector){return this.detached.queryAll(selector);}
+  get activeElement(){return this.detached.activeElement;}
+  requestAnimationFrame(callback){return this.detached.requestAnimationFrame(callback);}
+  focus(id){if(this.focused===id)return;this.focused=id;this.onFocus?.(id);}
   save(){storage.setItem(storageKey('hbengine.docks.v2'),JSON.stringify(this.tree));this.options.onChange?.(this.tree);}
   add(entry,target,zone='center'){this.entries.set(entry.id,entry);this.open(entry.id,target,zone);}
   open(id,target,zone='center'){
-    if(!this.entries.has(id))return;const existing=this.paneFor(id);
+    if(!this.entries.has(id))return;if(this.entries.get(id).external&&!target){this.entries.get(id).detached?this.detached.open(id):this.entries.get(id).element.focus();this.focus(id);return;}if(this.entries.get(id).detached&&!target){this.detached.open(id);this.focus(id);return;}const existing=this.paneFor(id);
     if(this.maximized&&existing!==this.maximized)this.maximized=null;
     if(existing&&zone==='center'&&!target){existing.active=id;this.render();this.focus(id);return;}
     this.move(id,target||this.leaves()[0],zone);
   }
   move(id,target,zone='center'){
     if(!this.entries.has(id)||!zones.has(zone)||!this.leaves().includes(target))return;
+    if(this.entries.get(id).detached)this.redock(id);
     this.tree=moveLayoutTab(this.tree,id,target,zone);this.maximized=null;this.render();this.focus(id);
   }
   close(id){
+    if(this.entries.get(id)?.detached){this.redock(id);return;}
     const n=this.paneFor(id);if(!n||this.leaves().length===1&&n.tabs.length===1)return;
     n.tabs=n.tabs.filter(tab=>tab!==id);if(n.active===id)n.active=n.tabs[0];
     const clean=tree=>{if(tree.tabs)return tree.tabs.length?tree:null;const a=clean(tree.a),b=clean(tree.b);return a&&b?{...tree,a,b}:a||b;};
@@ -74,8 +86,8 @@ export class DockLayout {
     this.close(id);if(this.paneFor(id))return;
     this.entries.get(id)?.dispose?.();this.entries.get(id)?.element.remove();this.entries.delete(id);
   }
-  visible(id){return (this.maximized?[this.maximized]:this.leaves()).some(n=>n.active===id);}
-  reset(){this.maximized=null;this.tree={axis:'column',ratio:defaultDockRatio(),a:leaf(['scene']),b:leaf(['project','console'])};this.render();this.focus('scene');}
+  visible(id){return !!this.entries.get(id)?.detached||(this.maximized?[this.maximized]:this.leaves()).some(n=>n.active===id);}
+  reset(){this.redockAll();this.maximized=null;this.tree={axis:'column',ratio:defaultDockRatio(),a:leaf(['scene']),b:leaf(['project','console'])};this.render();this.focus('scene');}
   clearDrop(){
     this.host.classList.remove('dock-dragging');
     this.host.querySelectorAll('[data-drop]').forEach(el=>delete el.dataset.drop);
@@ -86,7 +98,7 @@ export class DockLayout {
   }
   render(){
     this.clearDrop();
-    for(const entry of this.entries.values()){entry.element.classList.remove('active');this.parking.append(entry.element);}this.host.replaceChildren();
+    for(const entry of this.entries.values()){if(entry.detached||entry.external)continue;entry.element.classList.remove('active');this.parking.append(entry.element);}this.host.replaceChildren();
     const build=n=>{
       const el=document.createElement('div');el.className=n.tabs?'dock-pane':'dock-split';
       if(!n.tabs){
@@ -100,16 +112,16 @@ export class DockLayout {
       el.oncontextmenu=event=>{if(event.defaultPrevented||!event.target.closest('.dock-tabs,.panel-heading,.asset-panel-top,.viewport-header,.document-toolbar'))return;event.preventDefault();event.stopPropagation();this.menu(n.active,n,event.clientX,event.clientY);};
       for(const id of n.tabs){
         const entry=this.entries.get(id),button=document.createElement('button');button.className='dock-tab'+(n.active===id?' active':'');button.textContent=entry.title;button.draggable=true;button.dataset.dock=id;button.role='tab';button.setAttribute('aria-selected',String(n.active===id));
-        button.onclick=()=>{n.active=id;this.focus(id);this.render();};
-        button.ondragstart=event=>{this.drag=id;event.dataTransfer.setData('application/x-hb-window',id);event.dataTransfer.effectAllowed='move';this.host.classList.add('dock-dragging');};
-        button.ondragend=()=>{this.drag=null;this.clearDrop();};
+        button.onclick=()=>{if(entry.detached){this.detached.open(id);this.focus(id);return;}n.active=id;this.focus(id);this.render();};
+        button.ondragstart=event=>{this.drag=id;this.dragCancelled=false;this.dragEscape=event=>{if(event.key==='Escape')this.dragCancelled=true;};document.addEventListener('keydown',this.dragEscape,true);event.dataTransfer.setData('application/x-hb-window',id);event.dataTransfer.effectAllowed='move';this.host.classList.add('dock-dragging');};
+        button.ondragend=event=>{document.removeEventListener('keydown',this.dragEscape,true);const rect=this.host.getBoundingClientRect(),outside=event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom;if(this.drag===id&&!this.dragCancelled&&event.dataTransfer.dropEffect==='none'&&outside)this.detach(id);this.drag=null;this.clearDrop();};
         button.ondblclick=()=>{this.maximized=this.maximized===n?null:n;this.render();};
         button.onauxclick=event=>{if(event.button===1){event.preventDefault();event.stopPropagation();this.close(id);}};
         button.oncontextmenu=event=>{event.preventDefault();event.stopPropagation();this.focus(id);this.menu(id,n,event.clientX,event.clientY);};
         bar.append(button);
       }
       const close=document.createElement('button');close.className='dock-close';close.textContent='×';close.ariaLabel='창 닫기';close.disabled=this.leaves().length===1&&n.tabs.length===1;close.onclick=()=>this.close(n.active);bar.append(close);el.append(bar);
-      const view=this.entries.get(n.active).element;view.classList.add('active');el.append(view);
+      const entry=this.entries.get(n.active);if(entry.detached){const placeholder=document.createElement('div');placeholder.className='detached-placeholder';const label=document.createElement('span');label.textContent=entry.title+' · 별도 창';const show=document.createElement('button');show.textContent='창 보기';show.onclick=()=>this.detached.open(n.active);const restore=document.createElement('button');restore.textContent='편집기에 합치기';restore.onclick=()=>this.redock(n.active);placeholder.append(label,show,restore);el.append(placeholder);}else{const view=entry.element;view.classList.add('active');el.append(view);}
       const guide=document.createElement('div');guide.className='dock-drop-guide';guide.setAttribute('aria-hidden','true');
       for(const [zone,label] of [['top','위'],['left','왼쪽'],['center','탭 합치기'],['right','오른쪽'],['bottom','아래']]){const target=document.createElement('span');target.dataset.dockZone=zone;target.textContent=label;guide.append(target);}el.append(guide);
       el.ondragover=event=>{
@@ -131,6 +143,7 @@ export class DockLayout {
     const dismiss=()=>{menu.remove();document.removeEventListener('pointerdown',outside);this.dismissMenu=null;};
     const outside=event=>{if(!menu.contains(event.target))dismiss();};this.dismissMenu=dismiss;
     const add=(label,action,disabled=false)=>{const button=document.createElement('button');button.role='menuitem';button.textContent=label;button.disabled=disabled;button.onclick=()=>{dismiss();action();};menu.append(button);};
+    add(this.entries.get(id)?.detached?'편집기에 합치기':'새 창으로 분리',()=>this.entries.get(id)?.detached?this.redock(id):this.detach(id));
     if(this.options.createWindow)for(const item of this.options.windows||[{kind:'project',title:'새 콘텐츠 브라우저'},{kind:'viewport',title:'새 뷰포트'},{kind:'console',title:'출력 로그'}])add(item.title,()=>this.options.createWindow(item.kind,{target:n,sourceId:id}));
     for(const target of this.leaves().filter(target=>target!==n))add('탭 합치기 → '+this.entries.get(target.active).title,()=>this.move(id,target,'center'));
     for(const [label,zone] of [['왼쪽으로 분할','left'],['오른쪽으로 분할','right'],['위로 분할','top'],['아래로 분할','bottom']])add(label,()=>this.move(id,n,zone),n.tabs.length===1);

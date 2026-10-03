@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {validSurface} from './model.js';
+import {enabledComponent} from './scene-components.js';
 export function scenePrimitives(surface,surfaceMaterial=new THREE.MeshStandardMaterial({color:surface.color,roughness:surface.roughness,metalness:surface.metalness})){
 const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0x9faa91, roughness: 0.86, flatShading: true });
 const darkStone = new THREE.MeshStandardMaterial({ color: 0x667c6d, roughness: 0.93, flatShading: true });
@@ -51,7 +52,10 @@ function buildObject(object) {
     }
     case 'rocks': [[-2.7,-2.4,.6],[2.8,-2.3,.6],[-3,1.9,.4],[3.5,.1,.5],[-1.9,-2.8,.36],[2.9,2.5,.42]].forEach(([x,z,s],i) => mesh(g, new THREE.DodecahedronGeometry(s), i%2 ? darkStone : stoneMaterial, [x,s*.4,z], [.3,i,0],[1.1,.8,.8])); break;
     case 'water': mesh(g, new THREE.CylinderGeometry(1.3,1.25,.06,28), new THREE.MeshPhysicalMaterial({color:0x567f83,roughness:.16,metalness:.3,clearcoat:1}), [0,.08,0], [0,0,0],[1.05,1,.76]); break;
-    case 'light': { const l = object.id === 'sun-light' ? new THREE.DirectionalLight(0xffeed7, surface.light) : new THREE.PointLight(0xffd6a0, 8, 15); g.add(l); if(object.id==='sun-light') { l.castShadow=true; l.shadow.mapSize.set(2048,2048); Object.assign(l.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:25}); l.shadow.bias=-.001; l.shadow.normalBias=.025; } break; }
+    case 'light': { const directional=object.id==='sun-light',p=enabledComponent(object,directional?'DirectionalLight':'PointLight')||(!directional?enabledComponent(object,'DirectionalLight'):null);if(!p)break;const l=directional?new THREE.DirectionalLight(new THREE.Color(...p.color.slice(0,3)),p.intensity):new THREE.PointLight(new THREE.Color(...p.color.slice(0,3)),p.intensity,p.radius??15,p.decay??2);g.add(l);if(directional){l.castShadow=p.castShadow;l.shadow.mapSize.set(2048,2048);Object.assign(l.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:25});l.shadow.bias=-.001;l.shadow.normalBias=.025;l.target.position.set(0,0,-1);g.add(l.target);}break; }
+    case 'skyAtmosphere':case 'skyLight':case 'volumetricCloud':case 'heightFog': {
+      const geometry=new THREE.EdgesGeometry(new THREE.OctahedronGeometry(.4)),material=new THREE.LineBasicMaterial({color:object.kind==='heightFog'?0x95afc0:object.kind==='volumetricCloud'?0xc4d5df:0xe5ca84,depthTest:false}),helper=new THREE.LineSegments(geometry,material);helper.userData.editorHelper=true;helper.userData.environmentHelper=true;helper.renderOrder=900;g.userData.resources=new Set([geometry,material]);g.add(helper);break;
+    }
     case 'camera': break;
     case 'cube': box(g, [1,1,1], surfaceMaterial, [0,.5,0]); break;
     case 'cone': mesh(g,new THREE.ConeGeometry(.6,1.2,32),surfaceMaterial,[0,.6,0]);break;

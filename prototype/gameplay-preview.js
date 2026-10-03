@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {createViewportControls} from './viewport-controls.js';
+import {fitViewportSelection} from './viewport-presentation.js';
+import {editorAnimationFrame,cancelEditorAnimationFrame} from './detached-window.js';
 import {clone as cloneSkeleton} from 'three/addons/utils/SkeletonUtils.js';
 import {BlueprintRuntime} from './blueprint-runtime.js';
 import {engineOperations} from './engine-services.js';
@@ -9,7 +11,7 @@ import {fileUrl} from './project-browser.js';
 // Preview runs the same services against a separate world, without user gameplay events.
 export function gameplayPreview(doc,files,hooks){
   const element=document.createElement('div');element.className='gameplay-preview';const canvas=document.createElement('canvas');canvas.ariaLabel='게임플레이 에셋 미리보기';element.append(canvas);const diagnostic=document.createElement('div');diagnostic.className='gameplay-preview-error';diagnostic.setAttribute('role','status');element.append(diagnostic);
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true}),camera=new THREE.PerspectiveCamera(45,1,.1,1000),controls=new OrbitControls(camera,canvas);camera.position.set(6,4,8);controls.target.set(0,1,0);controls.update();
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true}),camera=new THREE.PerspectiveCamera(45,1,.1,100000);camera.position.set(6,4,8);const controls=createViewportControls(camera,canvas,{target:new THREE.Vector3(0,1,0),onFocus:()=>{if(world)fitViewportSelection(camera,controls,new THREE.Box3().setFromObject(world));}});camera.lookAt(controls.target);controls.update(0);
   let vm,services,world,objects,groups,visuals,signature,disposed=false,pending=null,processing=false,frame,sampledTime=0;
   const observer=new ResizeObserver(()=>{if(!canvas.clientWidth||!canvas.clientHeight)return;renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();});observer.observe(element);
   const cleanup=()=>{if(vm)vm.active=false;services?.dispose();for(const group of groups?.values()||[])visuals?.dispose(group);vm=null;services=null;};
@@ -27,6 +29,6 @@ export function gameplayPreview(doc,files,hooks){
   async function process(){if(processing||disposed)return;processing=true;try{while(pending&&!disposed){const request=pending;pending=null;const next=JSON.stringify([doc.data,hooks.target?.(),hooks.world().scene]);if(next!==signature||request.time<sampledTime){target=await initialize();signature=next;diagnostic.textContent='';}if(disposed)break;const seek=async time=>playback&&services.operation(doc.kind==='montage'?'montageSeek':'sequenceSeek',{target,time:Math.min(time,doc.data.length-.000001)},{self:target},vm);
       // ponytail: replay at 60 Hz up to 4096 samples per scrub; long cuts use larger steps until a baked simulation cache exists.
       const stepSize=Math.max(1/60,(request.time-sampledTime)/4096);if(request.time===sampledTime){await seek(sampledTime);await services.physics(0,vm);}while(sampledTime<request.time&&!pending){const step=Math.min(stepSize,request.time-sampledTime);sampledTime+=step;await seek(sampledTime);await services.physics(step,vm);}visuals.tickParticles(objects,0,true);}}catch(error){signature=null;cleanup();diagnostic.textContent=error.message;hooks.error(error.message);}finally{processing=false;}}
-  function render(){if(disposed)return;if(element.isConnected&&element.clientWidth&&world){controls.update();visuals.tickParticles(objects,0,true);renderer.render(world,visuals.gameCamera(objects,camera.aspect,vm?.sequenceCamera)||camera);}frame=requestAnimationFrame(render);}frame=requestAnimationFrame(render);
-  return {element,sample(time){pending={time};process();},dispose(){disposed=true;pending=null;cleanup();observer.disconnect();controls.dispose();renderer.dispose();cancelAnimationFrame(frame);}};
+  function render(){if(disposed)return;if(element.isConnected&&element.clientWidth&&world){controls.update();visuals.tickParticles(objects,0,true);renderer.render(world,visuals.gameCamera(objects,camera.aspect,vm?.sequenceCamera)||camera);}frame=editorAnimationFrame(element,render);}frame=editorAnimationFrame(element,render);
+  return {element,sample(time){pending={time};process();},dispose(){disposed=true;pending=null;cleanup();observer.disconnect();controls.dispose();renderer.dispose();cancelEditorAnimationFrame(element,frame);}};
 }

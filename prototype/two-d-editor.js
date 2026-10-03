@@ -1,3 +1,4 @@
+import {editorAnimationFrame,cancelEditorAnimationFrame} from './detached-window.js';
 import {icon} from './icons.js';
 import {twoDTypes,valid2DAsset,spriteImage,sliceSpriteGrid,spriteAnimationFrame,spriteAnimationDuration,tileAtlasRect,applyTileTool} from './two-d-assets.js';
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -146,9 +147,9 @@ export class TwoDEditor {
   updatePlay(){const button=this.el.querySelector('[data-two-d-action=play]');if(button)button.innerHTML=icon(this.playing?'pause':'play')+' '+(this.playing?'일시정지':'재생');}
   togglePlay(){if(!this.doc.data.frames.length)return;this.playing=!this.playing;this.updatePlay();if(this.playing){const duration=spriteAnimationDuration(this.doc.data);if(this.time>=duration)this.time=0;this.startFrame();}else this.cancelFrame();}
   startFrame(){
-    this.cancelFrame();let last=performance.now();const tick=now=>{if(this.disposed||!this.playing)return;const data=this.doc.data,duration=spriteAnimationDuration(data);this.time+=Math.min(.1,(now-last)/1000)*data.playRate;last=now;if(this.time>=duration){if(data.loop)this.time%=duration;else{this.time=duration;this.playing=false;this.updatePlay();}}this.drawAnimation();if(this.playing)this.raf=requestAnimationFrame(tick);};this.raf=requestAnimationFrame(tick);
+    this.cancelFrame();let last=performance.now();const tick=now=>{if(this.disposed||!this.playing)return;const data=this.doc.data,duration=spriteAnimationDuration(data);this.time+=Math.min(.1,(now-last)/1000)*data.playRate;last=now;if(this.time>=duration){if(data.loop)this.time%=duration;else{this.time=duration;this.playing=false;this.updatePlay();}}this.drawAnimation();if(this.playing)this.raf=editorAnimationFrame(this.el,tick);};this.raf=editorAnimationFrame(this.el,tick);
   }
-  cancelFrame(){if(this.raf!==undefined)cancelAnimationFrame(this.raf);this.raf=undefined;}
+  cancelFrame(){if(this.raf!==undefined)cancelEditorAnimationFrame(this.el,this.raf);this.raf=undefined;}
   setZoom(value){this.zoom=clamp(value,.125,8);if(this.canvas){this.canvas.style.width=this.canvas.width*this.zoom+'px';this.canvas.style.height=this.canvas.height*this.zoom+'px';}const label=this.el.querySelector('[data-zoom]');if(label)label.textContent=Math.round(this.zoom*100)+'%';}
   fit(){if(!this.canvas.width||!this.scroll.clientWidth)return;this.setZoom(Math.min((this.scroll.clientWidth-24)/this.canvas.width,(this.scroll.clientHeight-24)/this.canvas.height));this.scroll.scrollLeft=0;this.scroll.scrollTop=0;}
   point(event){const bounds=this.canvas.getBoundingClientRect(),scale=this.doc.kind==='sprite'?(this.previewScale||1):1;return {x:(event.clientX-bounds.left)*this.canvas.width/Math.max(1,bounds.width)/scale,y:(event.clientY-bounds.top)*this.canvas.height/Math.max(1,bounds.height)/scale};}

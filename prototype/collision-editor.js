@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {createViewportControls} from './viewport-controls.js';
+import {fitViewportSelection} from './viewport-presentation.js';
 import {ConvexGeometry} from 'three/addons/geometries/ConvexGeometry.js';
 import {validColliderGeometry,geometryColliderTypes} from './collision-geometry.js';
 import {icon} from './icons.js';
@@ -24,7 +25,7 @@ export function editCollisionGeometry(type,properties,{apply,error}){
   function fit(){
     const all=is3D?draft.vertices:type==='PolygonCollider2D'?draft.paths.flat():draft.points;if(!all?.length)return;
     const bounds=new THREE.Box3().setFromPoints(all.map(p=>new THREE.Vector3(p[0],p[1],p[2]||0))),center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());
-    if(is3D){const distance=Math.max(size.length(),1);camera.position.copy(center).add(new THREE.Vector3(distance,distance,distance));camera.near=Math.max(.001,distance/1000);camera.far=Math.max(1000,distance*100);camera.updateProjectionMatrix();controls.target.copy(center);controls.update();}
+    if(is3D){const distance=Math.max(size.length(),1);camera.near=Math.max(.001,distance/1000);camera.far=Math.max(1000,distance*100);controls.setSettings({speed:distance});fitViewportSelection(camera,controls,bounds);}
     else{origin=[center.x,center.y];scale=Math.min(canvas.clientWidth/Math.max(size.x,1),canvas.clientHeight/Math.max(size.y,1))*.72;draw2D();}
   }
   function draw2D(){
@@ -80,6 +81,6 @@ export function editCollisionGeometry(type,properties,{apply,error}){
   }
   dialog.onclose=()=>{cancelAnimationFrame(frame);observer?.disconnect();controls?.dispose();if(mesh){mesh.geometry.dispose();mesh.material.dispose();}renderer?.dispose();dialog.remove();};
   dialog.showModal();
-  if(is3D){try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));world=new THREE.Scene();world.background=new THREE.Color('#1b1e22');camera=new THREE.PerspectiveCamera(45,1,.01,1000);controls=new OrbitControls(camera,canvas);const tick=()=>{if(!dialog.open)return;controls.update();renderer.render(world,camera);frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);}catch(reason){dialog.close();error?.(reason.message);return;}}
+  if(is3D){try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));world=new THREE.Scene();world.background=new THREE.Color('#1b1e22');camera=new THREE.PerspectiveCamera(45,Math.max(1,canvas.clientWidth)/Math.max(1,canvas.clientHeight),.01,1000);camera.position.set(1,1,1);controls=createViewportControls(camera,canvas,{onFocus:fit});const tick=()=>{if(!dialog.open)return;controls.update();renderer.render(world,camera);frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);}catch(reason){dialog.close();error?.(reason.message);return;}}
   observer=new ResizeObserver(()=>{if(is3D){renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();}else draw2D();});observer.observe(canvas);render();fit();canvas.focus();
 }

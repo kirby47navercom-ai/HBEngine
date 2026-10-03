@@ -39,6 +39,10 @@
 .dock-drop-guide [data-dock-zone=right] { grid-area:2 / 3; }
 .dock-drop-guide [data-dock-zone=bottom] { grid-area:3 / 2; }
 .window-selector { max-width:115px; font-size:12px; }
+.editor-grid.docked.detached-outliner { grid-template-columns:0 minmax(0,1fr) var(--right-panel); }
+.editor-grid.docked.detached-inspector { grid-template-columns:var(--left-panel) minmax(0,1fr) 0; }
+.editor-grid.docked.detached-outliner.detached-inspector { grid-template-columns:0 minmax(0,1fr) 0; }
+.editor-grid.docked.detached-outliner>.resize-grip[data-resize=left],.editor-grid.docked.detached-inspector>.resize-grip[data-resize=right] { display:none; }
 
 /* Curve tracks, key controls and the plot remain separate scroll surfaces. */
 .timeline-editor { display:flex; flex-direction:column; min-height:0; height:100%; background:var(--panel); overflow:auto; }
@@ -67,7 +71,7 @@
 .curve-footer input[type=range] { flex:1; }
 .extra-viewport { position:relative; flex:1; min-height:0; }
 .extra-viewport canvas { width:100%; height:100%; display:block; }
-.extra-viewport select { position:absolute; left:10px; top:10px; }
+.extra-viewport>select { position:absolute; left:10px; top:10px; }
 
 /* Content browser: compact file rows by default, optional thumbnail tiles. */
 .project-tree { width:175px; flex-shrink:0; overflow:auto; background:var(--panel); border-right:1px solid var(--line); padding:5px 4px; }

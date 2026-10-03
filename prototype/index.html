@@ -6,6 +6,7 @@
   <title>HBEngine</title>
   <link rel="stylesheet" href="/prototype/style.css">
   <link rel="stylesheet" href="/prototype/environment.css">
+  <link rel="stylesheet" href="/prototype/viewport-presentation.css">
   <link rel="stylesheet" href="/prototype/blueprint.css">
   <script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
   <link rel="stylesheet" href="/prototype/editor-windows.css">
@@ -109,7 +110,7 @@
     <div><strong>노드 연결과 배치</strong><p>이벤트 제목의 삼각형이 실행 출력이에요. 변수를 실행 핀에 놓으면 Set, 데이터 입력에 놓으면 Get이 연결돼요. Ctrl 드래그는 Get, Alt 드래그는 Set이며 빈 곳에 놓으면 선택 메뉴가 열려요. 호환 자료형은 실제 변환 노드를 삽입해요. 양쪽 핀에서 드래그 검색, Alt 클릭 연결 해제, 데이터 선 더블클릭으로 Reroute, 노드 우클릭에서 정렬·간격 조절을 지원해요.</p></div><div><strong>뷰포트·머테리얼</strong><p>Q 선택, W/E/R 이동·회전·크기, Space 도구 순환, Ctrl Space 작업창 확대예요. 스냅 간격과 월드/로컬을 툴바에서 선택해요. 선택한 콜라이더의 경계가 보이고 충돌 버튼은 전체 경계를 표시해요. 오브젝트 메뉴의 검색·분류 창에서 클릭 또는 뷰포트 드래그로 배치해요. 머테리얼 그래프 템플릿은 현재 그래프를 교체하며 Ctrl Z로 복원할 수 있어요.</p></div><div><strong>저장</strong><p>Ctrl S는 장면과 BP를 Project 파일과 브라우저 복구 저장소에 저장해요. C++와 열린 텍스트는 각 저장 버튼을 사용해요. BP JSON 내보내기/불러오기는 함수·매크로·변수·C++ 원문·Timeline을 포함해요. 애니메이션·머테리얼 그래프도 개별 에셋으로 저장해요.</p></div>
     <div><strong>충돌 형상 편집</strong><p>Polygon/Edge 2D는 점 드래그·좌표 입력으로 편집해요. 선분 클릭은 점 추가, Ctrl 클릭은 점 삭제, Shift 드래그는 선분 이동, Delete는 선택 점 삭제예요. 우클릭/휠 버튼 드래그로 이동하고 휠로 확대해요. 형상 창의 Ctrl Z/Shift Z와 버튼으로 초안을 복구하며 적용/취소 전에는 원본을 바꾸지 않아요. Mesh Collider의 메시에서 생성은 원본 모델 또는 장면 렌더 메시를 저장된 로컬 형상으로 만들어요.</p></div>
     <div><strong>지원 범위</strong><p>블루프린트 기본 노드 473개, 공통 C++ API 289개, 머테리얼 노드 54개예요. 사용자 코드 빌드는 헤더/구현 한 쌍을 지원해요. C++ 이벤트는 호출 종료 후 BP에 전달해요. 모델은 OBJ/GLTF/GLB/FBX, 영상·오디오는 브라우저 코덱을 사용해요. 미지원 파일도 원본을 보존해요. 현재 렌더러는 Three.js/WebGL이며 네이티브 호스트는 Win32/WebView2예요. 물리는 Rapier 2D/3D이며 정확한 기본 형상·볼록/삼각형 메시·2D 다각형/선분, 강체·관절·CCD·질의를 지원해요. 세부 실행 계약은 프로젝트의 물리·제작 문서에서 확인할 수 있어요.</p></div>
-    <div><strong>공통 키</strong><p>Ctrl K 명령 검색 · Ctrl S 저장 · Ctrl Z/Y 실행 취소/다시 실행 · W/E/R 장면 도구 · F 선택 초점 · Ctrl F 문맥 검색 · F7 BP 검증 · F1 도움말</p></div>
+    <div><strong>뷰포트 이동</strong><p>우클릭을 누른 채 WASD/QE로 이동하고 마우스로 둘러봐요. 우클릭+휠은 이동 속도, Shift는 가속, Z/C는 시야각이에요. Alt+좌클릭 회전, Alt+가운데클릭 패닝, Alt+우클릭 돌리, 직교 뷰의 휠은 커서 기준 확대예요. F 초점, G 게임 보기, Ctrl R 실시간, F11 몰입 보기, End 바닥 맞춤, Ctrl+숫자 북마크 저장/숫자 이동, Ctrl L+마우스는 햇빛 방향(Shift는 두 번째 광원)이에요.</p></div><div><strong>독립 창과 환경</strong><p>작업창 탭 우클릭의 새 창으로 분리나 상단 창 메뉴를 사용해요. 독립 창의 편집기에 합치기 또는 닫기로 원래 자리에 돌아와요. 환경은 오브젝트 배치에서 Sky Atmosphere·Sky Light·태양광·구름·높이 안개를 각각 배치하고 아웃라이너와 속성에서 편집해요. 기존 맵은 환경 메뉴에서 액터로 변환할 수 있어요.</p></div><div><strong>공통 키</strong><p>Ctrl K 명령 검색 · Ctrl S 저장 · Ctrl Z/Y 실행 취소/다시 실행 · W/E/R 장면 도구 · F 선택 초점 · Ctrl F 문맥 검색 · F7 BP 검증 · F1 도움말</p></div>
   </div><div class="dialog-footer"><button data-action="reset-prototype">초기 장면 복원</button><button class="primary-button" data-action="close-help">닫기</button></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <script type="module" src="/prototype/app.js"></script>

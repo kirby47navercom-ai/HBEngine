@@ -1,4 +1,5 @@
 import {defaultsForObject,addSceneComponent} from './scene-components.js';
+import {makeEnvironmentActor,environmentActorKinds} from './scene-environment.js';
 
 // The editor and automation schema expose the same serializable recipes.
 export const placementCatalog=[
@@ -18,6 +19,7 @@ export const placementCatalog=[
   ['physicsSphere','Physics Sphere · 물리 구','물리','sphere',{Rigidbody:{}}],
   ['trigger','Trigger Box · 감지 영역','물리','empty',{BoxCollider:{trigger:true}}],
   ['directionalLight','Directional Light · 태양광','조명'],['pointLight','Point Light · 점 광원','조명'],['spotLight','Spot Light · 스포트 광원','조명'],
+  ['skyAtmosphere','Sky Atmosphere · 하늘 대기','환경'],['skyLight','Sky Light · 주변광','환경'],['volumetricCloud','Volumetric Cloud · 구름','환경'],['heightFog','Exponential Height Fog · 높이 안개','환경'],
   ['camera','Camera · 카메라','시네마틱'],['sequence','Sequence Player · 시퀀스 재생','시네마틱','empty',{SequencePlayer:{}}],['audio','Audio Source · 오디오','오디오'],
   ['decal','Decal · 데칼','효과'],['particles','Particle System · 입자','효과'],
   ['navigation','Navigation Grid · 경로 영역','AI'],
@@ -26,6 +28,7 @@ export const placementCatalog=[
 
 export function createPlacedObject(key,{position=[0,0,0],id=crypto.randomUUID()}={}){
   const recipe=placementCatalog.find(entry=>entry.key===key);if(!recipe)throw Error('배치할 오브젝트 종류를 확인하세요.');
+  if(Object.hasOwn(environmentActorKinds,key))return makeEnvironmentActor(key,{position,id});
   const object={id,name:recipe.label.split(' · ')[0],kind:recipe.kind,group:'WORLD',position:[...position],rotation:[0,0,0],scale:[1,1,1],visible:true,components:defaultsForObject(recipe.kind)};
   for(const [type,properties] of Object.entries(recipe.components)){
     const component=object.components.find(c=>c.type===type)||addSceneComponent(object,type);Object.assign(component.properties,structuredClone(properties));

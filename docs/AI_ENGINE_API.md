@@ -14,6 +14,44 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 - `document.save`, `editor.undo`, `editor.redo`: 같은 revision 보호를 사용한다. 저장할 때 디스크의 이전 내용도 대조하고 `Saved/Backups`에 원본을 남긴다.
 - `scene.select`, `document.open`, `native.build`, `runtime.play/stop/pause/resume/input/openScene/state`: UI의 실제 편집·실행 함수를 사용한다. 런타임 상태는 현재/대기 장면, 차원, 뷰 모드, 환경, 오브젝트, 게임 프레임워크, 시간, 로그를 JSON으로 반환한다. 객체의 `gameplayDebug`에는 소유 에셋·blackboard/parameters·BT 상태·FSM 상태·montage/sequence 시간·navigation 경로/상태·perception 자극·particles 수가 포함된다.
 
+## 뷰포트와 독립 작업창
+
+`GET /api/schema`의 `viewport`는 `directions/modes/flags/defaults/positionLimit`을 제공한다. 방향은 `3d/2d/top/bottom/front/back/left/right`, 보기 모드는 `lit/unlit/wireframe/lighting/detailLighting/normals`다. 표시 이름 대신 이 key를 사용한다. `id`를 생략하면 기본 뷰포트 `scene`이며 추가 뷰포트 ID는 `editor.state.layout`의 작업창 ID에서 조회한다. 다른 에셋 편집기 ID를 레벨 뷰포트 ID로 사용하면 거부된다.
+
+| 편집 명령 | 입력과 결과 |
+| --- | --- |
+| `viewport.get` | `{id?}` → `id/direction/presentation/state/bookmarks/piloting`. state는 실제 카메라의 position/target/quaternion/up/projection/zoom/near/far 및 조작 settings, 원근에서는 fov도 포함한다. piloting은 편집기의 현재 Camera Actor 조종 ID다. |
+| `viewport.configure` | `{id?,direction?,presentation?,controls?,state?}`. presentation과 controls는 부분 설정이다. 반환값은 적용된 `id/state/presentation`이다. 잘못된 방향·보기 설정·카메라 상태를 거부하고 적용 도중 실패하면 이전 카메라·표시·조작 상태로 되돌린다. 복원 이벤트는 조종 중인 Actor를 쓰거나 탐색 이력을 추가하지 않는다. |
+| `viewport.action` | `{id?,action}`. 허용 값은 `focus/game/realtime/immersive/screenshot/pilot/unpilot/align-object/align-camera/camera/floor/pivot-center/pivot-reset/surface-snap/surface-normal`이다. 반환값은 editor.state와 같은 편집기 상태다. |
+| `viewport.bookmark` | `{id?,slot,action}`. slot은 정수 0~9, action은 `save/restore`; 결과는 `{slot,state}` 목록이다. 저장되지 않은 슬롯 복원은 거부된다. 같은 방향 복원도 Actor 조종을 먼저 종료한다. |
+| `window.detach` | `{id?}`. 생략하면 focusedWindow를 별도 OS 창으로 분리하고 편집기 상태를 반환한다. 알려진 작업창 ID만 허용하며 창을 열지 못하면 오류다. |
+| `window.redock` | `{id?}`. 해당 작업창을 합치고, 생략하면 모든 분리 창을 합친다. 편집기 상태를 반환한다. |
+
+`viewport.configure`에서 `state`를 전달하면 그 상태의 카메라 자세·FOV/clip을 복원한다. 이때 `presentation.camera`가 state를 덮어쓰지 않는다. `state`가 없는 `presentation.camera` 부분 변경은 대상 카메라의 실제 FOV/near/far와 합쳐 검증한다. state 복원 뒤 표시 설정에 남은 옛 far/near를 기준으로 잘못된 클립을 허용하거나 유효한 요청을 거부하지 않는다. `state.projection/direction`이 현재 뷰와 다르면 맞는 `direction`도 함께 지정한다. 회전 quaternion과 up은 검증 뒤 정규화한다. 카메라/표시 변경은 저작 에셋의 revision을 바꾸지 않지만 `camera`, `align-object`, `floor`처럼 오브젝트를 만드는/옮기는 동작은 Scene 편집 이력과 미저장 데이터에 반영된다. 그런 동작 후에는 `document.get`으로 새 revision을 조회한 뒤 `document.save`한다. 북마크 복원이나 시점 이동을 Scene 저장으로 대신하지 않는다.
+
+`game/realtime/surface-snap/surface-normal`은 토글이다. gameView·realtime을 특정 값으로 만들려면 `viewport.configure`의 presentation에 Boolean을 지정한다. `pilot/align-camera`는 선택 오브젝트의 Camera 컴포넌트를 사용하고 기본 뷰포트에서 동작한다. 추가 뷰포트의 조종을 지원한다고 가정하지 않는다. `screenshot`은 해당 캔버스의 PNG 다운로드를 요청하며 명령 결과에 이미지 바이트를 반환하지 않는다. `viewport.configure/action`은 Play 중이나 사람이 드래그·대화상자를 조작 중이면 변경을 거부한다.
+
+창 분리는 같은 문서·DOM·캔버스를 다른 Window/Document로 옮긴다. 별도 편집기 인스턴스나 문서 복사본을 만들지 않으므로 같은 clientId와 문서 revision을 사용한다. `editor.state.windows.detached`는 분리한 작업창 ID 목록, `windows.count`는 현재 분리 창 수다. 기본 콘텐츠 브라우저는 `project`, 사이드바는 `outliner/inspector`이며 에셋 편집기는 조회한 실제 ID를 사용한다. 창 닫기/합치기는 기존 문서와 편집 상태를 유지한다. 실제 별도 HWND는 Windows 데스크톱 호스트가 제공하고, 브라우저 실행에서는 허용된 팝업 창을 사용한다. 팝업 차단이나 native 창 생성 실패를 새 탭 성공으로 취급하지 않는다.
+
+```json
+{
+  "id": "scene",
+  "direction": "top",
+  "controls": {"speed": 60, "speedScalar": 1, "sensitivity": 0.003},
+  "presentation": {"mode": "wireframe", "flags": {"fog": false, "helpers": true}}
+}
+```
+
+이 JSON을 `node tools/hb.mjs viewport.configure @viewport.json --url <편집기 URL> --client <조회한 clientId>`로 전달한다. 명령 후 `viewport.get`으로 실제 state를 확인한다. 입력·보기 설정은 인간 툴바와 같은 정의를 사용한다. 하늘 환경의 Renderer별 캡처는 런타임 자원이므로 이 JSON에 GPU 텍스처나 캡처 핸들을 저장하지 않는다.
+
+## 환경 Actor 편집
+
+`schema.placement`의 `skyAtmosphere/skyLight/volumetricCloud/heightFog`를 `scene.place`에 전달하면 일반 Scene 오브젝트와 동일한 안정적인 ID·Transform·부모·표시·컴포넌트 데이터로 생성된다. 대응 컴포넌트는 `SkyAtmosphere/SkyLight/VolumetricCloud/ExponentialHeightFog`이며 태양/달은 `DirectionalLight`의 `atmosphereSunLight/atmosphereSunLightIndex`와 월드 회전으로 연결한다. 범위·기본값·색상 배열·select 형식은 `schema.components`에서 조회한다. 예를 들어 captureResolution은 숫자로 추측하지 않고 스키마의 문자열 선택값 `"64"/"128"/"256"/"512"`를 사용한다.
+
+생성은 `scene.place`의 `{path,expectedRevision,key,position,dryRun?}`를 사용한다. 반영 결과의 `result.object`가 오브젝트 ID이며 최종 revision과 dirty도 반환한다. 환경 종류를 배치하면 그 Scene의 `environment.mode`는 `actors`로 바뀐다. 하나만 배치해도 저장된 legacy 값은 이후 렌더 권한을 갖지 않으므로 기존 환경을 유지하며 변환하려면 Scene 전체와 기존 태양광을 읽고 네 환경 Actor·DirectionalLight를 함께 준비한다. 변환 데이터는 `environmentActorPreset`이 생성할 수 있지만 별도의 자동화 명령 이름은 아니다. 명시적인 한 번의 `document.patch`로 검증·Undo를 적용한다.
+
+컴포넌트 변경도 `document.get` → 오브젝트 ID 및 컴포넌트 ID를 `test`한 `document.patch` → `document.save` 경로다. 부모·회전·활성화·밝기·삭제는 같은 Scene 데이터에서 에디터와 Player가 읽는다. 마지막 환경 Actor를 삭제해도 actors 모드를 유지해 숨겨진 legacy 하늘이 되살아나지 않는다. 재질의 높이 안개 hook과 Renderer별 하늘 캡처는 저장 데이터에서 파생된 렌더 자원이다. `runtime.state.environment`는 실행 관측값이며 에디터 Scene 기본값으로 덮어쓰지 않는다. 저장·우선순위·부모 변환·개별 WebGL 캡처의 계약은 [환경 Actor 연구](ENVIRONMENT_ACTORS_RESEARCH.md)에 연결한다.
+
 ## CLI
 
 편집기를 연 상태에서 저장소 또는 배포 폴더에서 실행한다. 기본 포트는 5173이며 데스크톱의 동적 포트는 사용자 데이터 `Sessions/*.json`의 `port`에서 확인한다.
@@ -57,6 +95,8 @@ node tools/hb.mjs runtime.stop --url http://127.0.0.1:5181
 
 `npm run test:integration`은 패치 실패 시 원본 보존, 위험한 JSON 경로, 명령 중복·다른 창 응답 차단, 에셋 ID/참조/재가져오기, 디스크 충돌·백업을 검사한다. `npm run test:editor-api`는 별도 `integration-qa-*` 프로젝트를 연 실제 편집기에서 수정·충돌 거부·Undo·저장·2D 착지·종료 복구를 확인한다. 사용자 작업 프로젝트에서 변경 검사를 실행하지 않는다.
 
+`node tools/check-viewport-workflow.mjs <검증 전용 편집기 URL>`은 프로젝트 이름이 `viewport-qa`인 연결 하나만 허용한다. 같은 공용 명령으로 50,000/60,000 좌표의 선택 초점, 직교↔원근 북마크, 실패 시 카메라/설정 보존, 보기 모드와 에셋 revision 격리, Camera Actor 생성/조종 및 같은 방향 북마크의 조종 종료, 환경 Actor를 포함한 Play/Stop과 저장을 검사한다. 이 검사는 검증 프로젝트를 편집하므로 사용자 작업 프로젝트에 실행하지 않는다. 카메라 수학의 185개 검사와 환경의 33개 검사는 각각 [뷰포트 조작 연구](VIEWPORT_CONTROLS_RESEARCH.md), [환경 Actor 연구](ENVIRONMENT_ACTORS_RESEARCH.md)에 기록하고 실제 GPU/네이티브 창 검사와 구분한다.
+
 ## 화면 없이 게임 로직 검사
 
 ```powershell
@@ -74,7 +114,7 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 
 ## AI·상태·연출·효과 데이터
 
-`/api/schema`에 43종 컴포넌트, 473개 기본 BP 노드, 102개 C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
+`/api/schema`에 컴포넌트, 기본 BP 노드, C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 기능 수를 고정해 AI의 분기 기준으로 삼지 않고 현재 스키마를 조회한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
 
 - BB: `keys[{name,type,value}]`; `bool/int/float/string/vec3/object`. int32·벡터·객체 ID 검증을 적용한다.
 - BT: `blackboard`, `root`, `interval`, `nodes[{id,type,properties,children,services,x,y}]`. 순환/다중 부모·자료형·노드 수/깊이를 검증한다. 서비스는 이벤트/간격을 가진다.

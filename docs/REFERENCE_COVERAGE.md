@@ -4,6 +4,8 @@
 
 2026-10-03 추가 대조: [충돌 형상 제작/실행](COLLISION_GEOMETRY_RESEARCH.md). Unity Mesh/Polygon2D/Edge2D/편집 조작과 Epic simple/complex·편집 자동화 본문, Rapier의 Shapes/Mass를 별도 세부 기록으로 연결했다. 실제 hull/삼각형/오목 경로/선분과 사람/AI/BP/C++ 동작을 검증했다. 다중 convex decomposition·UCX/LOD collision·Composite/effector·edge radius/adjacent normal·레이어 override 세부 조합은 해당 연구 표의 추가 항목으로 유지한다.
 
+2026-10-03 추가 대조: [뷰포트](VIEWPORT_CONTROLS_RESEARCH.md), [환경 Actor](ENVIRONMENT_ACTORS_RESEARCH.md), [독립 작업창](DETACHED_WINDOWS_RESEARCH.md). Unreal 원근/직교 입력·툴바·Preferences/API 여섯 본문, 환경 여섯 본문과 Three PMREM API/설치 소스, Unreal 4.27/Unity 6.2 작업창 배치 본문을 실제 확인 범위대로 detail 기록에 추가한다. 큰 좌표 입력·북마크·Camera Actor·Ctrl+L·축 위젯·진단 보기·Renderer별 캡처·별도 HWND·사람/AI 공용 명령을 연결했다. 누적 2D·2.5D·3D 및 다른 모든 분야의 세부 요구를 유지하고 단일 분야의 검사로 전체 엔진을 완료 처리하지 않는다.
+
 기준일: 2026-10-03. 조사 단위는 기능 이름이 아니라 **만들기 → 편집 → 저장 → 배치/참조 → 실행 → 진단 → 재열기** 흐름이다. 전체 설계는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 조작 계약은 [편집기 기준](EDITOR_INTERACTION_SPEC.md), 그래프와 C++ 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)에 연결한다.
 
 ## 조사 상태의 의미
@@ -31,24 +33,24 @@
 | [Get started](https://docs.unity3d.com/6000.0/Documentation/Manual/get-started.html) | 설치·프로젝트 생성·설정·첫 실행 | EXE·프로젝트 허브·descriptor·최근·2D/3D 기본/AI 템플릿 | 설치/업데이트·엔진 버전 선택·변환/백업·타깃 설정 |
 | [Upgrade](https://docs.unity3d.com/6000.0/Documentation/Manual/UpgradeGuides.html) | 순차 버전 변경·코드/에셋 호환성 | `validAsset`/`validBlueprint`의 버전 검사 | 백업·데이터 마이그레이션·실패 복원 |
 | [Building Blocks](https://docs.unity3d.com/6000.0/Documentation/Manual/building-blocks.html) | 반복 제작을 동작하는 구성으로 제공 | 클래스 기본 컴포넌트·2D 플랫폼/탑다운·3D 제어·AI/효과 예제 | 프레임워크의 나머지 수명·확장 템플릿·완성 게임 제작/배포 검증 |
-| [Editor interface](https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html) | 창·포커스·검색·설정·자동화 | `app.js`·`dock-layout.js`·`editor-shell.css` | 단축키 재설정·명령 충돌 검사·설정 프로필 |
+| [Editor interface](https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html) | 창·포커스·검색·설정·자동화 | `app.js`·도킹/실제 별도 HWND·원본 DOM/context·분리 창 frame 예약·공용 AI 명령 | 단축키 재설정·명령 충돌 검사·명명 배치 import/export·분리 창 직접 도킹/일괄 재생성 |
 | [Packages](https://docs.unity3d.com/6000.0/Documentation/Manual/PackagesList.html) | 기능 묶음·의존성·버전·진단 | npm 개발 의존성만 사용 | 사용자 플러그인 등록·버전 잠금·의존성 충돌 UI |
 | [Assets and media](https://docs.unity3d.com/6000.0/Documentation/Manual/assets-and-media.html) | 원본·변환 결과·임포트 설정·런타임 로딩 분리 | 원본 보존·다중 파일/폴더 드롭·임포트 메타데이터/재가져오기·ID/redirect·참조 뷰어 | 전체 포맷 변환·하위 에셋·import preset·DDC·cook·동시 편집 충돌 |
 | [2D](https://docs.unity3d.com/6000.0/Documentation/Manual/Unity2D.html) | Sprite·Tilemap·2D 물리·2D 조명 | Sprite atlas/Pivot/Flip/Order·타일 팔레트/레이어/충돌·Flipbook·Rapier XY 회전/관절/CCD·9-slice Sliced/Tiled | SpriteMask·SortingLayer·Adaptive tiling·2D 조명·다각형 물리/전체 joint 세부·2D skeleton |
 | [XR](https://docs.unity3d.com/6000.0/Documentation/Manual/XR.html) | 장치·추적·양안 화면·입력·실행 | 미구현 | XR 장치 계층·스테레오 렌더·상호작용·빌드 |
 | [Multiplayer](https://docs.unity3d.com/6000.0/Documentation/Manual/multiplayer.html) | 접속·세션·상태 동기화·검증 | 미구현 | 권한·복제·RPC·지연/끊김 검사 |
 | [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기/독립 Game.exe·WebView2·Node 동봉·C++ worker·빌드 프로필 | DX11 게임 렌더러·다른 플랫폼/SDK·전체 타깃/Player 설정 |
-| [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | 43종 컴포넌트·38종 배치 조합·계층/그룹/복제·태그·Prefab 저장/인스턴스 생성 | Variant/오버라이드 재적용·전체 활성/비활성/파괴 콜백·SerializeReference 수준 타입 모델 |
+| [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | 50종 컴포넌트·42종 배치 조합·환경 Actor·계층/그룹/복제·태그·Prefab 저장/인스턴스 생성 | Variant/오버라이드 재적용·전체 활성/비활성/파괴 콜백·SerializeReference 수준 타입 모델 |
 | [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋·BP/C++ 런타임 단일 장면 전환 | 다중 장면 동시 월드·스트리밍 |
-| [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 직교/원근·독립 뷰포트·게임 카메라 우선순위/추적·시퀀스 카메라 | 물리 카메라·culling mask·RenderTexture·stack·시네마틱 카메라/블렌드 |
-| [World building](https://docs.unity3d.com/6000.0/Documentation/Manual/CreatingEnvironments.html) | 하늘·Terrain·환경 편집과 런타임 최적화 | 도형·태양/하늘/구름/안개 미리보기 | Terrain 페인트·식생·LOD·큰 월드 로딩 |
+| [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 원근/일곱 직교 방향·축 위젯·북마크·Camera 생성/조종/정렬 fieldOfView/near/far·게임/시퀀스 카메라 | 물리 카메라·culling mask·RenderTexture·stack·시네마틱 카메라/블렌드 |
+| [World building](https://docs.unity3d.com/6000.0/Documentation/Manual/CreatingEnvironments.html) | 하늘·Terrain·환경 편집과 런타임 최적화 | 도형·하늘/하늘광/구름/높이 안개 Actor·대기 태양 회전·큰 좌표/그리드/하늘 추적 | Terrain 페인트·식생·LOD·큰 월드 로딩·행성 대기/volume cloud 세부 |
 | [Physics](https://docs.unity3d.com/6000.0/Documentation/Manual/PhysicsSection.html) | 2D/3D 물리의 다른 구현과 힘·충돌·시간 단계 | Rapier 2D/3D·정확 primitive/회전·질량/관성·힘/토크·6종 관절/모터·CCD·32비트 필터·동기 C++/BP 질의·Hit/Overlap | mesh/convex/polygon·정밀 controller·관성/보간/solver 저작·전체 6-DOF/articulation·채널 응답·차량/cloth/파괴 |
 | [Input](https://docs.unity3d.com/6000.0/Documentation/Manual/Input.html) | 장치 입력과 게임 동작·UI/IME 문맥 분리 | `input-actions.js`·IA/IMC 전용 문서 | 게임패드/마우스 축·리바인딩·플레이어별 문맥·C++ 액션 구독 |
 | [UI systems](https://docs.unity3d.com/6000.0/Documentation/Manual/UIToolkits.html) | 편집기 UI와 게임 UI 제작/런타임 구분 | 14종 Widget Designer·계층·앵커/레이아웃·스타일·이벤트/변수 바인딩·DOM 실행·BP/C++·AI 명령 | 재사용 위젯/스타일·폰트/지역화·UI 애니메이션·세계 공간 UI·가상 목록·포커스/입력 모드 |
 | [Animation](https://docs.unity3d.com/6000.0/Documentation/Manual/AnimationSection.html) | 속성 커브·클립·Animator·상태/블렌드·리타깃 구분 | Transform/Curve·가져온 skeletal clip·Flipbook·평면 FSM·Montage 섹션/Notify·11종 Sequence 트랙 | Anim Graph·뼈별 blend/mask·IK/rig/retarget·root motion·겹치는 montage slot·임의 속성/Quaternion 커브 |
 | [Audio](https://docs.unity3d.com/6000.0/Documentation/Manual/Audio.html) | Clip/Source/Listener·공간음향·Mixer·효과·진단 | 실제 WebAudio 버스/필터/컴프레서·Mute/Solo/Bypass·RMS·snapshot/노출 파라미터·HRTF/거리 감쇠·BP/C++ | Send/return·reverb/delay/sidechain·Sound graph·우선순위/가상 음원·Doppler/커브·native backend |
 | [Video](https://docs.unity3d.com/6000.0/Documentation/Manual/Video.html) | 소스·디코더·플레이어·오디오·스트리밍·연출 | 파일 보존·브라우저 media 미리보기 | AVI 등 코덱별 변환·Seek/동기화·시퀀스 연출 |
-| [Lighting](https://docs.unity3d.com/6000.0/Documentation/Manual/LightingOverview.html) | 직접/간접광·그림자·반사·환경·품질 | Three 광원·환경·그림자 설정 | DX11 조명·GI/Lightmap·반사 probe·측정 가능한 품질 단계 |
+| [Lighting](https://docs.unity3d.com/6000.0/Documentation/Manual/LightingOverview.html) | 직접/간접광·그림자·반사·환경·품질 | Three 광원/그림자·환경 Actor·Renderer별 실제 PMREM·높이 밀도 shader | DX11 조명·GI/Lightmap·반사 probe·DF AO·측정 가능한 품질 단계 |
 | [Materials and shaders](https://docs.unity3d.com/6000.0/Documentation/Manual/materials-and-shaders.html) | 텍스처·표면·Shader·색 공간·HDR·진단 | 54종 노드·Texture/UV/Normal·GLSL 실제 GPU 실행·PBR/인스턴스·4종 템플릿 | Material function/layer·전체 shading model/domain·Substrate·HLSL/DX11·shader variant/cook |
 | [VFX](https://docs.unity3d.com/6000.0/Documentation/Manual/visual-effects.html) | 파티클·Decal·Trail·효과 그래프와 실행 | 모듈식 CPU ParticleSystem·seed/방출/힘/색/크기/텍스처·Points 셰이더·표면 DecalGeometry | VFX graph·GPU 시뮬레이션·충돌/trail/sub-emitter·mesh particle·volumetric 효과 |
 | [Render pipelines](https://docs.unity3d.com/6000.0/Documentation/Manual/render-pipelines.html) | 대상별 렌더 경로·재질/광원 호환성 | Three/WebGL 프로토타입 | Win32/DX11 패스·자원 수명·상태·품질/기능 계약 |
@@ -66,10 +68,10 @@
 | 공식 분야 | 제작 흐름에서 확인할 요구 | 현재 코드 근거 | 남은 구현 |
 | --- | --- | --- | --- |
 | [What's New](https://dev.epicgames.com/documentation/unreal-engine/whats-new) | 릴리스·migration·실험/안정 기능 구분 | 버전 있는 에셋 형식 | 기능별 안정성/호환성·migration 기록 |
-| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 허브·descriptor·파일별 문서·도킹/합치기·창별 탐색·배치/스냅·Play·2D/3D 템플릿·Windows Game.exe/프로필 | 설정 가능한 키/충돌·OS 부동창·프로젝트 버전 변환·플랫폼별 cook/설치/출시 |
+| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 허브·descriptor·파일별 문서·도킹/별도 HWND/합치기·창별 탐색·Unreal 원근/직교 입력·배치/스냅·Play·2D/3D 템플릿·Windows Game.exe/프로필 | 설정 가능한 키/충돌·명명 배치/분리 창 직접 도킹·프로젝트 버전 변환·플랫폼별 cook/설치/출시 |
 | [Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine) | 외부 Mesh/Skeleton/Texture와 내부 에셋의 임포트 경계 | 원본 임포트·OBJ/GLTF/FBX 미리보기·메타데이터·재가져오기·참조 그래프 | 전체 Interchange 변환·Skeleton 하위 에셋·축/단위/압축·import preset·DDC/cook |
-| [Virtual Worlds](https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine) | 레벨·환경·조명·배치·큰 월드 제작 | 레벨 파일·기본 도형·환경 프리셋 | Landscape/Foliage·메시 편집·월드 분할/스트리밍 |
-| [Rendering/Graphics](https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine) | 표면·빛·그림자·품질·렌더 자원·진단 | Three 표면/광원·머테리얼 문서 | DX11/HLSL·LOD/culling·GPU 측정·GI/반사 |
+| [Virtual Worlds](https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine) | 레벨·환경·조명·배치·큰 월드 제작 | 레벨 파일·도형·별도 환경 Actor·Ctrl+L 두 대기광원·큰 좌표 카메라/하늘/그리드 | Landscape/Foliage·메시 편집·월드 분할/스트리밍·환경 volume 세부 |
+| [Rendering/Graphics](https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine) | 표면·빛·그림자·품질·렌더 자원·진단 | Three 표면/광원·GPU 머테리얼·Renderer별 PMREM·높이 안개·6종 보기/Show Flags·진단재질 cache 해제 | DX11/HLSL·LOD/culling·GPU 측정·GI/반사 probe·전체 진단 buffer/volume renderer |
 | [AI Tools/Plugins](https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine) | 제작 자동화·검색·도구 연결과 게임 AI 구분 | 공용 스키마·안정 ID·revision/검증·dryRun·원자적 patch/Undo·실제 실행/프로파일 API | semantic 검색·플러그인 프로토콜/권한·멀티 창/작성자 충돌·전체 분야의 전용 AI 조작 |
 | [VFX](https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) | System/Emitter/Module·시뮬레이션·편집기·진단 | CPU 모듈/시뮬레이션·Points 셰이더·표면 데칼·BP/C++ Play/Stop/Emit/Count | Niagara 수준 System/Emitter/Module graph·GPU/충돌/trail·mesh renderer·디버그 |
 | [Gameplay Tutorials](https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine) | 실제 게임 메커니즘을 코드/노드로 재현 | 문 C++/BP 실행 예제 | 캐릭터·카메라·아이템·상호작용·2D 예제 게임 |
@@ -166,3 +168,14 @@
 ## 빌드 프로필·독립 Player 후속 대조 — 2026-10-03
 
 [BUILD_PLAYER_RESEARCH.md](BUILD_PLAYER_RESEARCH.md)는 실제 읽은 네 공식 본문의 범위, 설정·키·Scene 드롭/제외/순서, 파일 포함/참조/소스 일치 검증, 개발/배포 구성의 정확한 의미, 패키지 생성/취소/손상 검사, Scene/게임 저장/종료 수명과 AI API를 코드에 연결한다. 독립 게임 package가 추가되어 기존 `독립 게임 배포 미구현` 항목을 갱신했으며 raw 에셋 보존과 타깃 cook를 구분한다. 기존 물리·UI·오디오·블루프린트 등 다른 모든 분야의 누적 세부 요구는 이 변경으로 완료 처리하지 않는다. 실제 실행 결과는 CODEX_HANDOFF.md에 따로 기록하고 오디오 등 진행 중 검사 항목을 원문 재사용만으로 통과 처리하지 않는다.
+
+
+## 뷰포트·환경 Actor·독립 창 후속 대조 — 2026-10-04
+
+[뷰포트 조사](VIEWPORT_CONTROLS_RESEARCH.md), [환경 Actor 조사](ENVIRONMENT_ACTORS_RESEARCH.md), [독립 창 조사](DETACHED_WINDOWS_RESEARCH.md)에 실제 읽은 공식 본문의 버전/범위와 데이터·입력·렌더·자원 수명·저장/복구를 연결했다. 상위 색인과 실제 본문 확인은 detail-audit.json에서 구분한다.
+
+레벨·추가 뷰포트와 모델/BP 컴포넌트/머테리얼/트랜스폼 애니메이션/몽타주·시퀀스/메시 충돌 미리보기의 카메라 입력을 공유한다. 2D의 XY/직교 조작과 3D의 RMB 비행·Alt 탐색을 유지한다. 방향 위젯·카메라 생성/조종/정렬·fieldOfView/near/far·10개 북마크·보기/표시·스냅/피벗과 환경 Actor가 같은 Scene/Undo/API를 사용한다. AI의 잘못된 투영·클립·입력 설정은 현재 카메라와 조종 상태를 보존한다.
+
+각 HWND는 실제 원본 패널을 표시하며 같은 문서·선택·Undo·저장을 공유한다. Outliner/Inspector 포커스는 편집 중 입력 DOM을 교체하지 않는다. 모든 살아 있는 창의 frame 예약과 입력 ownerDocument를 관리한다. 별도 WebGL renderer마다 PMREM을 소유하고 진단용 재질 사본은 Scene에서 원본 참조가 사라질 때 해제한다.
+
+행성 대기 LUT·volume 구름 raymarch/그림자·공간 volumetric fog·Lightmass/DF AO·전체 진단 buffer·분리 창 간 직접 도킹/명명 배치 import/export·세계 스트리밍과 나머지 엔진 분야는 별도 세부 계약으로 유지한다. 현재 구름은 mesh 미리보기다. 위 항목의 구현으로 전체 Unreal/Unity 기능을 완료 처리하지 않는다.

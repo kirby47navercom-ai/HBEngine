@@ -17,12 +17,15 @@
 #include <string>
 #include <cwctype>
 #include <stdexcept>
+#include <memory>
+#include <map>
 namespace fs=std::filesystem;
 struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
     ICoreWebView2Controller* controller=nullptr; ICoreWebView2* view=nullptr;
-    fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true;
-    ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(job)CloseHandle(job);if(process)CloseHandle(process);}
+    ICoreWebView2Environment* environment=nullptr;
+    fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false;
+    ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
 } app;
 std::wstring quote(const std::wstring& value){
     std::wstring out=L"\"";size_t slashes=0;
@@ -31,11 +34,12 @@ std::wstring quote(const std::wstring& value){
 }
 std::wstring env(const wchar_t* name){DWORD size=GetEnvironmentVariableW(name,nullptr,0);if(!size)return {};std::wstring out(size,L'\0');GetEnvironmentVariableW(name,out.data(),size);out.resize(size-1);return out;}
 std::wstring wide(const std::string& value){int n=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,value.data(),int(value.size()),nullptr,0);std::wstring result(n,L'\0');MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,value.data(),int(value.size()),result.data(),n);return result;}
+std::string utf8(const std::wstring& value){const int n=WideCharToMultiByte(CP_UTF8,0,value.data(),int(value.size()),nullptr,0,nullptr,nullptr);std::string result(n,'\0');WideCharToMultiByte(CP_UTF8,0,value.data(),int(value.size()),result.data(),n,nullptr,nullptr);return result;}
 std::string read(const fs::path& file){std::ifstream in(file,std::ios::binary);return {std::istreambuf_iterator<char>(in),{}};}
 void write(const fs::path& file,const std::string& value){std::ofstream out(file,std::ios::binary);out<<value;if(!out)throw std::runtime_error("output file");}
 void error(const wchar_t* text,HRESULT code=E_FAIL){
     app.failed=true;
-    if(!app.smoke.empty()){try{write(app.smoke,"{\"ok\":false,\"hresult\":"+std::to_string(unsigned(code))+"}");}catch(...){}}
+    if(!app.smoke.empty()){try{write(app.smoke,"{\"ok\":false,\"hresult\":"+std::to_string(unsigned(code))+"}");write(fs::path(app.smoke.wstring()+L".error.txt"),utf8(text));}catch(...){}}
     else MessageBoxW(app.window,text,L"HBEngine",MB_OK|MB_ICONERROR);
     app.closing=true;if(app.window)DestroyWindow(app.window);
 }
@@ -51,6 +55,87 @@ public:
     ULONG STDMETHODCALLTYPE AddRef() override{return ++references;}
     ULONG STDMETHODCALLTYPE Release() override{const auto n=--references;if(!n)delete this;return n;}
 };
+#ifndef HB_GAME_PLAYER
+struct DetachedWindow {
+    HWND window=nullptr;ICoreWebView2Controller* controller=nullptr;ICoreWebView2* view=nullptr;std::wstring uri;bool closing=false;
+    ~DetachedWindow(){if(controller){controller->Close();controller->Release();}if(view)view->Release();}
+};
+std::map<HWND,std::shared_ptr<DetachedWindow>> detachedWindows;
+LRESULT CALLBACK detachedProcedure(HWND,UINT,WPARAM,LPARAM);
+void closeDetached(){while(!detachedWindows.empty())DestroyWindow(detachedWindows.begin()->first);}
+class DetachedMessage final:public Callback<ICoreWebView2WebMessageReceivedEventHandler>{
+    std::weak_ptr<DetachedWindow> owner;
+public:
+    explicit DetachedMessage(std::shared_ptr<DetachedWindow> value):Callback(L"{57213f19-00e6-49fa-8e07-898ea01ecbd2}"),owner(value){}
+    HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2WebMessageReceivedEventArgs* args) override{
+        const auto window=owner.lock();if(!window)return S_OK;LPWSTR source=nullptr,message=nullptr;args->get_Source(&source);args->TryGetWebMessageAsString(&message);
+        if(source&&message&&std::wstring(source)==window->uri&&std::wstring(message)==L"hbengine.detached.close"){window->closing=true;DestroyWindow(window->window);}
+        if(source&&message&&app.windowSmoke&&std::wstring(source)==window->uri&&std::wstring(message)==L"hbengine.detached.test.resize")SetWindowPos(window->window,nullptr,0,0,840,560,SWP_NOMOVE|SWP_NOZORDER);
+        CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;
+    }
+};
+class DetachedClose final:public Callback<ICoreWebView2WindowCloseRequestedEventHandler>{
+    std::weak_ptr<DetachedWindow> owner;
+public:
+    explicit DetachedClose(std::shared_ptr<DetachedWindow> value):Callback(L"{5c19e9e0-092f-486b-affa-ca8231913039}"),owner(value){}
+    HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,IUnknown*) override{if(const auto window=owner.lock())PostMessageW(window->window,WM_CLOSE,0,0);return S_OK;}
+};
+class DetachedTitle final:public Callback<ICoreWebView2DocumentTitleChangedEventHandler>{
+    std::weak_ptr<DetachedWindow> owner;
+public:
+    explicit DetachedTitle(std::shared_ptr<DetachedWindow> value):Callback(L"{f5f2b923-953e-4042-9f95-f3a118e1afd4}"),owner(value){}
+    HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2* sender,IUnknown*) override{if(const auto window=owner.lock()){LPWSTR title=nullptr;sender->get_DocumentTitle(&title);if(title)SetWindowTextW(window->window,title);CoTaskMemFree(title);}return S_OK;}
+};
+class DetachedNavigation final:public Callback<ICoreWebView2NavigationStartingEventHandler>{
+    std::weak_ptr<DetachedWindow> owner;
+public:
+    explicit DetachedNavigation(std::shared_ptr<DetachedWindow> value):Callback(L"{9adbe429-f36d-432b-9ddc-f8881fbd76e3}"),owner(value){}
+    HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2NavigationStartingEventArgs* args) override{const auto window=owner.lock();LPWSTR uri=nullptr;args->get_Uri(&uri);if(!window||!uri||std::wstring(uri)!=window->uri)args->put_Cancel(TRUE);CoTaskMemFree(uri);return S_OK;}
+};
+class NewWindowHandler;
+void attachNewWindow(ICoreWebView2*);
+class DetachedController final:public Callback<ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>{
+    std::shared_ptr<DetachedWindow> owner;ICoreWebView2NewWindowRequestedEventArgs* args;ICoreWebView2Deferral* deferral;
+public:
+    DetachedController(std::shared_ptr<DetachedWindow> value,ICoreWebView2NewWindowRequestedEventArgs* requested,ICoreWebView2Deferral* delayed):Callback(L"{6c4819f3-c9b7-4260-8127-c9f5bde7f68c}"),owner(value),args(requested),deferral(delayed){args->AddRef();deferral->AddRef();}
+    ~DetachedController(){args->Release();deferral->Release();}
+    HRESULT STDMETHODCALLTYPE Invoke(HRESULT status,ICoreWebView2Controller* controller) override{
+        if(app.closing||!IsWindow(owner->window)||FAILED(status)||!controller){if(controller)controller->Close();args->put_Handled(TRUE);deferral->Complete();if(IsWindow(owner->window))DestroyWindow(owner->window);return S_OK;}
+        owner->controller=controller;controller->AddRef();controller->get_CoreWebView2(&owner->view);RECT bounds;GetClientRect(owner->window,&bounds);controller->put_Bounds(bounds);controller->put_IsVisible(TRUE);
+        ICoreWebView2Settings* settings=nullptr;owner->view->get_Settings(&settings);if(settings){settings->put_IsZoomControlEnabled(FALSE);settings->put_AreDefaultContextMenusEnabled(FALSE);settings->Release();}
+        EventRegistrationToken token;auto message=new DetachedMessage(owner);owner->view->add_WebMessageReceived(message,&token);message->Release();auto closed=new DetachedClose(owner);owner->view->add_WindowCloseRequested(closed,&token);closed->Release();auto title=new DetachedTitle(owner);owner->view->add_DocumentTitleChanged(title,&token);title->Release();auto navigation=new DetachedNavigation(owner);owner->view->add_NavigationStarting(navigation,&token);navigation->Release();attachNewWindow(owner->view);
+        const auto result=args->put_NewWindow(owner->view);args->put_Handled(TRUE);deferral->Complete();if(FAILED(result)){DestroyWindow(owner->window);return S_OK;}ShowWindow(owner->window,SW_SHOW);SetForegroundWindow(owner->window);return S_OK;
+    }
+};
+class NewWindowHandler final:public Callback<ICoreWebView2NewWindowRequestedEventHandler>{
+public:
+    NewWindowHandler():Callback(L"{d4c185fe-c81c-4989-97af-2d3fa7ab5651}"){}
+    HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2* sender,ICoreWebView2NewWindowRequestedEventArgs* args) override{
+        args->put_Handled(TRUE);LPWSTR uri=nullptr,source=nullptr;args->get_Uri(&uri);sender->get_Source(&source);const auto target=uri?std::wstring(uri):L"",origin=source?std::wstring(source):L"";CoTaskMemFree(uri);CoTaskMemFree(source);
+        const auto prefix=app.url+L"prototype/detached-window.html?id=";
+        if(app.closing||!app.environment||detachedWindows.size()>=16||target.rfind(prefix,0)!=0||target.size()>prefix.size()+2048||(origin!=app.url&&origin!=app.url+L"prototype/index.html"&&origin.rfind(prefix,0)!=0))return S_OK;
+        ICoreWebView2Deferral* deferral=nullptr;if(FAILED(args->GetDeferral(&deferral)))return S_OK;
+        const auto value=std::make_shared<DetachedWindow>();value->uri=target;int width=1000,height=720,left=CW_USEDEFAULT,top=CW_USEDEFAULT;ICoreWebView2WindowFeatures* features=nullptr;
+        if(SUCCEEDED(args->get_WindowFeatures(&features))&&features){BOOL hasSize=FALSE,hasPosition=FALSE;features->get_HasSize(&hasSize);features->get_HasPosition(&hasPosition);UINT32 number;if(hasSize){features->get_Width(&number);width=std::clamp(int(number),420,7680);features->get_Height(&number);height=std::clamp(int(number),300,4320);}if(hasPosition){features->get_Left(&number);left=int(number);features->get_Top(&number);top=int(number);}features->Release();}
+        WNDCLASSW type{};type.hInstance=GetModuleHandleW(nullptr);type.lpszClassName=L"HBEngine.Detached";type.lpfnWndProc=detachedProcedure;type.hCursor=LoadCursorW(nullptr,IDC_ARROW);type.hIcon=LoadIconW(type.hInstance,MAKEINTRESOURCEW(101));RegisterClassW(&type);
+        RECT bounds{0,0,width,height};AdjustWindowRectEx(&bounds,WS_OVERLAPPEDWINDOW,FALSE,WS_EX_APPWINDOW);value->window=CreateWindowExW(WS_EX_APPWINDOW,type.lpszClassName,L"HBEngine 작업창",WS_OVERLAPPEDWINDOW,left,top,bounds.right-bounds.left,bounds.bottom-bounds.top,nullptr,nullptr,type.hInstance,nullptr);
+        if(!value->window){deferral->Complete();deferral->Release();return S_OK;}detachedWindows.emplace(value->window,value);BOOL dark=TRUE;DwmSetWindowAttribute(value->window,20,&dark,sizeof(dark));
+        auto handler=new DetachedController(value,args,deferral);const auto result=app.environment->CreateCoreWebView2Controller(value->window,handler);handler->Release();if(FAILED(result)){deferral->Complete();DestroyWindow(value->window);}deferral->Release();return S_OK;
+    }
+};
+void attachNewWindow(ICoreWebView2* view){EventRegistrationToken token;auto handler=new NewWindowHandler;view->add_NewWindowRequested(handler,&token);handler->Release();}
+LRESULT CALLBACK detachedProcedure(HWND window,UINT message,WPARAM wParam,LPARAM lParam){
+    const auto found=detachedWindows.find(window);if(found==detachedWindows.end())return DefWindowProcW(window,message,wParam,lParam);const auto value=found->second;
+    if(message==WM_SIZE&&value->controller){RECT bounds;GetClientRect(window,&bounds);value->controller->put_Bounds(bounds);}
+    else if(message==WM_SETFOCUS&&value->controller)value->controller->MoveFocus(COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC);
+    else if(message==WM_DPICHANGED){const auto bounds=reinterpret_cast<RECT*>(lParam);SetWindowPos(window,nullptr,bounds->left,bounds->top,bounds->right-bounds->left,bounds->bottom-bounds->top,SWP_NOZORDER|SWP_NOACTIVATE);}
+    else if(message==WM_CLOSE){if(!app.closing&&!value->closing&&value->view){const auto result=value->view->ExecuteScript(L"if(window.hbEngineRequestClose){window.hbEngineRequestClose();}else{window.chrome.webview.postMessage('hbengine.detached.close');}",nullptr);if(SUCCEEDED(result))return 0;}value->closing=true;DestroyWindow(window);return 0;}
+    else if(message==WM_NCDESTROY){value->window=nullptr;detachedWindows.erase(found);return 0;}
+    return DefWindowProcW(window,message,wParam,lParam);
+}
+#else
+class BlockNewWindow final:public Callback<ICoreWebView2NewWindowRequestedEventHandler>{public:BlockNewWindow():Callback(L"{d4c185fe-c81c-4989-97af-2d3fa7ab5651}"){}HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2NewWindowRequestedEventArgs* args) override{args->put_Handled(TRUE);return S_OK;}};
+#endif
 class MessageHandler final : public Callback<ICoreWebView2WebMessageReceivedEventHandler> {
 public:
     MessageHandler():Callback(L"{57213f19-00e6-49fa-8e07-898ea01ecbd2}"){}
@@ -58,10 +143,23 @@ public:
         LPWSTR source=nullptr,message=nullptr;args->get_Source(&source);args->TryGetWebMessageAsString(&message);
         const bool own=source&&std::wstring(source).rfind(app.url,0)==0;
         if(own&&message&&!app.smoke.empty()&&(std::wstring(message)==L"hbengine.ready.hub"||std::wstring(message)==L"hbengine.ready.editor"||std::wstring(message)==L"hbengine.ready.player")){
+#ifndef HB_GAME_PLAYER
+            if(app.windowSmoke&&!app.windowSmokeStarted){app.windowSmokeStarted=true;app.view->ExecuteScript(L"import('/prototype/tests/detached-window-cases.js').then(test=>test.detachedWindowCases()).catch(error=>window.chrome.webview.postMessage('hbengine.windows.failed:'+error.message));",nullptr);CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;}
+#endif
             const auto workspace=std::wstring(message)==L"hbengine.ready.hub"?"hub":std::wstring(message)==L"hbengine.ready.player"?"player":"editor";
             write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\""+std::string(workspace)+"\",\"port\":"+std::string(app.url.begin()+17,app.url.end()-1)+"}");app.smokeSuccess=true;
             const auto result=app.view->ExecuteScript(L"window.hbEngineRequestClose();",nullptr);if(FAILED(result))error(L"편집기를 종료하지 못했어요.",result);
         }
+        if(own&&message&&app.windowSmoke&&std::wstring(message)==L"hbengine.windows.passed"){
+            write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\"detached-windows\",\"nativeWindows\":"+
+#ifndef HB_GAME_PLAYER
+                std::to_string(detachedWindows.size())+
+#else
+                std::string("0")+
+#endif
+                "}");app.smokeSuccess=true;app.view->ExecuteScript(L"window.hbEngineRequestClose();",nullptr);
+        }
+        if(own&&message&&app.windowSmoke&&std::wstring(message).rfind(L"hbengine.windows.failed:",0)==0)error(message);
         if(own&&message&&std::wstring(message)==L"hbengine.close"){app.closing=true;DestroyWindow(app.window);}
         CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;
     }
@@ -103,6 +201,7 @@ public:
         EventRegistrationToken token;auto message=new MessageHandler;app.view->add_WebMessageReceived(message,&token);message->Release();
         auto navigation=new NavigationHandler;app.view->add_NavigationCompleted(navigation,&token);navigation->Release();
 #ifdef HB_GAME_PLAYER
+        auto blocked=new BlockNewWindow;app.view->add_NewWindowRequested(blocked,&token);blocked->Release();
         ICoreWebView2_13* extended=nullptr;ICoreWebView2Profile* profile=nullptr;ICoreWebView2Profile4* permissions=nullptr;
         HRESULT result=app.view->QueryInterface(IID_ICoreWebView2_13,reinterpret_cast<void**>(&extended));
         if(SUCCEEDED(result))result=extended->get_Profile(&profile);
@@ -111,6 +210,7 @@ public:
         if(permissions)permissions->Release();if(profile)profile->Release();if(extended)extended->Release();
         if(FAILED(result))error(L"게임 사운드를 초기화하지 못했어요. WebView2 Runtime을 업데이트하세요.",result);
 #else
+        attachNewWindow(app.view);
         const auto result=app.view->Navigate(app.url.c_str());if(FAILED(result))error(L"편집기 페이지를 열지 못했어요.",result);
 #endif
         return S_OK;
@@ -122,6 +222,7 @@ public:
     HRESULT STDMETHODCALLTYPE Invoke(HRESULT status,ICoreWebView2Environment* environment) override{
         if(app.closing)return S_OK;
         if(FAILED(status)||!environment){error(L"Microsoft WebView2 Runtime이 필요해요.\nhttps://developer.microsoft.com/microsoft-edge/webview2/",status);return S_OK;}
+        app.environment=environment;environment->AddRef();
         auto handler=new ControllerHandler;const auto result=environment->CreateCoreWebView2Controller(app.window,handler);handler->Release();
         if(FAILED(result))error(L"편집기 창 초기화에 실패했어요.",result);return S_OK;
     }
@@ -136,7 +237,11 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
     }else if(message==WM_TIMER){
         if(wParam==2){error(L"편집기 초기화 시간이 초과됐어요.");return 0;}
         if(app.process&&WaitForSingleObject(app.process,0)==WAIT_OBJECT_0){error(L"편집기 서버가 종료됐어요. 실행 로그를 확인해 주세요.");return 0;}
-    }else if(message==WM_DESTROY){app.window=nullptr;PostQuitMessage(0);return 0;}
+    }else if(message==WM_DESTROY){
+#ifndef HB_GAME_PLAYER
+        closeDetached();
+#endif
+        app.window=nullptr;PostQuitMessage(0);return 0;}
     return DefWindowProcW(window,message,wParam,lParam);
 }
 bool setRegistry(const std::wstring& path,const wchar_t* name,const std::wstring& value){
@@ -166,12 +271,12 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(!fs::exists(app.root/serverScript))throw std::runtime_error("engine files");
         app.userData=env(L"HB_USER_DATA_DIR");if(app.userData.empty())app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine";
         fs::create_directories(app.userData/L"Sessions");std::wstring project;bool registerOnly=false;int count;auto arguments=CommandLineToArgvW(GetCommandLineW(),&count);
-        for(int i=1;i<count;i++){const std::wstring value=arguments[i];if(value==L"--register")registerOnly=true;else if(value==L"--smoke-test"&&i+1<count)app.smoke=fs::absolute(arguments[++i]);else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");else if(project.empty())project=fs::absolute(value).wstring();else throw std::runtime_error("argument");}LocalFree(arguments);
+        for(int i=1;i<count;i++){const std::wstring value=arguments[i];if(value==L"--register")registerOnly=true;else if((value==L"--smoke-test"||value==L"--smoke-windows")&&i+1<count){app.windowSmoke=value==L"--smoke-windows";app.smoke=fs::absolute(arguments[++i]);}else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");else if(project.empty())project=fs::absolute(value).wstring();else throw std::runtime_error("argument");}LocalFree(arguments);
         if(!project.empty()&&(!fs::is_regular_file(project)||_wcsicmp(fs::path(project).extension().c_str(),L".hbproject")))throw std::runtime_error("project file");
         #ifndef HB_GAME_PLAYER
         if(app.smoke.empty())associateProject(executable);
         #else
-        if(!project.empty()||registerOnly)throw std::runtime_error("player argument");
+        if(!project.empty()||registerOnly||app.windowSmoke)throw std::runtime_error("player argument");
         const auto game=nlohmann::json::parse(read(app.root/L"game.hbpack.json"));app.development=game.value("configuration",std::string{})=="development";
         if(env(L"HB_USER_DATA_DIR").empty()){const auto id=game.at("id").get<std::string>();if(!std::regex_match(id,std::regex("[0-9a-f-]{36}")))throw std::runtime_error("game identity");app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine"/L"Games"/wide(id);fs::create_directories(app.userData/L"Sessions");}
         SetEnvironmentVariableW(L"HB_PLAYER_SMOKE",app.smoke.empty()?nullptr:L"1");
@@ -219,6 +324,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         const auto details=L"엔진을 시작하지 못했어요: "+wide(exception.what())+L"\n실행 로그: "+app.log.wstring();error(details.c_str());
     }
     app.closing=true;if(app.view){app.view->Release();app.view=nullptr;}if(app.controller){app.controller->Close();app.controller->Release();app.controller=nullptr;}
+    if(app.environment){app.environment->Release();app.environment=nullptr;}
     if(app.job){CloseHandle(app.job);app.job=nullptr;}if(loader)FreeLibrary(loader);if(single)CloseHandle(single);CoUninitialize();
     return app.smoke.empty()?(app.failed?1:0):(app.smokeSuccess&&!app.failed?0:1);
 }

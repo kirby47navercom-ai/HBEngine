@@ -44,9 +44,10 @@
 | Ctrl+S / Ctrl+Shift+S | 현재 문서/수정 문서 모두 저장 | 성공한 파일만 dirty 해제; 저장 중 추가 변경 보존 |
 | 탭 드래그 | 가운데는 탭 이동, 가장자리는 상하좌우 분할 | 미리보기 위치와 실제 위치 일치 |
 | 탭 더블클릭 | 작업 영역 최대화/복원 | 다른 창 크기·활성 탭 복원 |
-| 탭 우클릭 | 분할·닫기·최대화 | 마지막 필수 창을 닫아 복구 불가능하지 않음 |
+| 탭 우클릭 | 분할·닫기·최대화·별도 창으로 분리 | 마지막 필수 창을 닫아 복구 불가능하지 않음; 분리 시 같은 문서/DOM 유지 |
 | 분할 경계 드래그/방향키 | 두 영역 크기 조절 | 최소 크기·키보드 포커스 유지 |
-| 창 메뉴 | 닫힌 창 열기, 새 뷰포트, 레이아웃 초기화 | 여러 뷰포트가 독립 카메라 사용 |
+| 창 메뉴 | 닫힌 창 열기, 새 뷰포트/콘텐츠 브라우저, 현재 창/아웃라이너/속성 분리, 모두 합치기, 배치 초기화 | 여러 뷰포트가 독립 카메라·보기 설정 사용; 별도 HWND에서 선택/속성/저장 공유 |
+| 분리 창 닫기/합치기 | 기존 도킹 위치로 원본 패널 복귀 | 문서·Undo·선택·WebGL context 유지; 자식 입력/예약 정리 |
 | 종료/재열기 | 저장한 배치 복원 | 알 수 없는/삭제된 문서는 나머지 배치를 보존하며 제외 |
 
 ## 그래프
@@ -84,23 +85,32 @@
 
 ## 뷰포트와 Hierarchy
 
-[Unity 카메라 조작](https://docs.unity3d.com/6000.0/Documentation/Manual/SceneViewNavigation.html), [Epic 뷰포트](https://dev.epicgames.com/documentation/unreal-engine/viewport-controls-in-unreal-engine)를 비교한 HB 기본 프로필이다.
+[Unity 카메라 조작](https://docs.unity3d.com/6000.0/Documentation/Manual/SceneViewNavigation.html)과 [Epic 뷰포트](https://dev.epicgames.com/documentation/en-us/unreal-engine/viewport-controls-in-unreal-engine)의 조작을 비교하고, 2026-10-03에는 Unreal 원근/직교 조작을 공통 입력 모듈로 연결했다. 실제 본문 확인 범위와 수학/플랫폼 검사의 차이는 [뷰포트 연구](VIEWPORT_CONTROLS_RESEARCH.md)에 있다.
 
 | 입력 | HB 동작 |
 | --- | --- |
 | LMB / Ctrl·Shift LMB | 선택 / 토글·범위 다중 선택 |
-| MMB 드래그, 휠 | 카메라 Pan, 커서/관찰 대상 기준 Zoom |
-| Alt+LMB | 3D Orbit; 2D에서는 Pan |
-| RMB+WASD/QE, Shift | 3D Fly와 빠른 이동; 문자 입력 중에는 무시 |
+| 원근 RMB 드래그 / LMB 드래그 | 제자리 시선 회전 / 지면 방향 이동·수평 회전; 짧은 클릭과 구분 |
+| MMB 또는 LMB+RMB 드래그 | 원근 Pan; 직교 MMB/RMB는 화면 평면 Pan |
+| 휠 / RMB+휠 | 원근 전후 이동·직교 커서 중심 확대 / 원근 비행 속도 변경 |
+| Alt+LMB/MMB/RMB | 원근 초점 주위 Orbit/Pan/Dolly; 직교는 Pan/Zoom |
+| RMB+WASD/QE, Shift | 3D Fly와 HB의 4배 빠른 이동; 문자 입력 중에는 무시 |
+| RMB+R/F 또는 Z/C | 카메라 로컬 위아래 이동 / FOV 조절 후 RMB 해제 시 복귀 |
+| 직교 LMB/Shift+LMB/Ctrl+RMB 드래그 | 범위 선택 교체/추가/제거 |
 | Q/W/E/R, Space | 선택/이동/회전/크기, 도구 순환 |
 | F | 선택 대상에 초점; Inspector 입력칸에서는 문자 |
-| 방향 기즈모·뷰 선택 | Perspective/Top/Front/Side, 직교·원근 전환 |
+| 방향 축 위젯·뷰 선택 | 원근·2D XY·Top/Bottom/Front/Back/Left/Right 전환; 카메라 회전으로 축 위치 갱신 |
+| Ctrl+0~9 / 0~9 | 카메라 북마크 저장/복원; 같은 방향 복원도 Actor 조종 종료 |
+| Ctrl+L·포인터 이동 / Ctrl+Shift+L | 첫 번째/두 번째 대기 태양광 회전; 한 조작 Undo·Scene 저장 |
+| G / Ctrl+R / F11 | Game View / Realtime / Immersive |
+| Alt+G/H/J/K / Alt+1/2/4/5/6 | 원근/상단/정면/왼쪽 / Wireframe/Unlit/Lit/DetailLighting/LightingOnly |
+| End / V / Alt+MMB | 선택 바닥 맞춤 / 정점 스냅 보조 / 임시 피벗 위치 |
 | Ctrl+D / Delete / F2 | 오브젝트 복제 / 삭제 / 이름 변경 |
 | Hierarchy 드래그 | 부모/순서 변경; 순환 검사·월드 위치 유지 |
 | 눈/선택 잠금 | 편집 뷰포트 표시/선택 가능 변경; 게임 활성과 구분 |
 | Transform 값·스냅 | 단위 표시, Local/World, 이동/회전/크기 스냅 |
 
-뷰포트 카메라와 게임 카메라는 별개다. 2D XY, Top XZ, Front XY, Side YZ를 구분하고 각 뷰포트의 조작·기즈모·렌더 모드를 보존한다.
+뷰포트 카메라와 게임 카메라는 별개다. 2D XY, Top XZ, Front XY, Side YZ를 구분하고 각 뷰포트의 조작·기즈모·렌더 모드를 보존한다. RMB 비행 중 W/E/R/F는 카메라 입력이 먼저 소비한다. Play 중 편집 카메라 조작은 비활성화한다. 카메라 생성/정렬/조종은 Camera의 `fieldOfView/near/far/projection/orthographicSize`와 실제 월드 자세를 사용한다. 선택 초점·방향 변경·북마크는 조종을 먼저 종료해 Camera Actor를 의도치 않게 옮기지 않는다. 기존 4~28 거리 제한과 지면 위 반구 제한을 적용하지 않으며 큰 좌표 탐색과 월드 스트리밍 완료를 혼동하지 않는다.
 
 ## Project
 
@@ -172,13 +182,14 @@ RMB 이동과 RMB 메뉴는 이동 임계값으로 구분한다. Event 트랙은
 | 영역 | 구현/검증 | 아직 목표인 항목 |
 | --- | --- | --- |
 | 시작/프로젝트 | Win32/WebView2 EXE·Node 동봉·허브·`.hbproject`·최근·생성/열기·파일 연결·실제 EXE 탐색/종료 smoke | 템플릿 선택·프로젝트 설정/업그레이드·설치/업데이트·모든 닫기 화면 시나리오 |
-| 창 | 파일별 BP/Material/Animation/Curve/IA/IMC/Data/Scene 문서·배치/Undo; 탭 순서·전환·닫기 보호; 분할·최대화·독립 뷰포트 | OS 부동창·명명 레이아웃 프로필·창 전체 키 접근 검사 |
+| 창 | 파일별 문서·배치/Undo·분할/최대화; 실제 별도 HWND·원본 DOM/context 이동·아웃라이너/속성/검색/저장·닫기 복귀 검사 | 명명 레이아웃 import/export·분리 창끼리 직접 도킹·재실행 시 분리 창 일괄 재생성·창 전체 키 접근 검사 |
 | 그래프 | 다중/사각 선택·RMB/MMB 이동·확대·주석·핀·추출·빠른 생성키·부모/자식 이동·Ctrl+B·타입/저장 검사 | Shift휠·변수 드래그·Ctrl 핀 이동·선 더블클릭·북마크/정렬 전체 프로필 |
 | Project | 실제 폴더·다중 가져오기/선택/문서·우클릭 에셋/클래스 생성·이름 변경/영속 redirect·단일 타입 필터·파일 내용/하위 검색 | OR 타입/라벨 필터·즐겨찾기·재임포트·의존성 viewer/외부 감시·일괄 이름 변경 |
 | Timeline/Animation | 전용 문서·키 선택/시간/보간 편집·4종 트랙·접선·BP 실행 이벤트; 독립 Curve/Transform Animation 키 저장·미리보기·대상 Transform 재생/정지 | Curve 파일의 BP 참조·임의 속성/Animation 이벤트 트랙·Skeletal/상태 머신 |
 | Play/C++ | 실제 빌드/호출/이벤트/상태·Stop 복원·다중 BP 파일 바인딩·입력 에셋 실행·외부 IDE 열기 | 실행 객체 선택·Step Into/Out·프레임 명령·native 파일/줄 진단·IDE 프로젝트 생성 |
 | 저장 | 문서별 모델/Undo/dirty·프로젝트 UUID별 복구/도킹/폴더/SaveGame의 디스크 저장·localStorage 백업; 기본 프로젝트 1회 이관; Material/Animation/Curve/IA/IMC/Data 저장; 저장 실패/동시 변경 보존 | 형식 migration·전체 편집기/프로젝트 복구 화면 시나리오·동시 에셋 편집 충돌·삭제/의존성 복원 |
-| 장면 | 단일 선택·Transform·도형/광원·2D/3D·모델 미리보기/배치 | 다중 장면 선택·Hierarchy 부모 드래그·Fly 프로필·Prefab·모든 스냅 도구 |
+| 장면/뷰포트 | 다중 선택·계층/그룹·독립 카메라·Unreal 원근/직교 입력·축 위젯·북마크·보기/표시·Camera 생성/조종·표면/정점 스냅·환경 Actor | 동시 다중 Scene 월드·Terrain/Foliage/LOD/스트리밍·모든 변형/스냅의 전체 세부 조합 |
+| 환경/표시 | 하늘·하늘광·구름·높이 안개 별도 컴포넌트; Ctrl+L·두 대기광원·Renderer별 PMREM·높이 shader·진단재질 삭제 cache 해제 | 행성 대기 LUT·volume raymarch·구름 자체 그림자·공간 volumetric fog·Lightmass/DF AO·전체 진단 버퍼 |
 | 클래스 컴포넌트 | 부모 7종 템플릿·클래스별 컴포넌트 속성·Transform/기본 Mesh/충돌체 뷰포트 | 전체 컴포넌트 계층·Skeleton/카메라 preview·Possession/Character 이동 |
 | 머테리얼 | 독립 그래프/표면 문서·색/스칼라 연결·preview·장면 적용 | HLSL/GPU 컴파일·Texture/UV/Normal·전체 그래프 조작·재질 함수/인스턴스 |
 
@@ -195,3 +206,14 @@ RMB 이동과 RMB 메뉴는 이동 임계값으로 구분한다. Event 트랙은
 - 배치: 작은 화면의 새 문서/초기화는 상단 58%, 큰 화면은 68%로 시작한다. 사용자가 저장한 배치를 우선한다. 1280×720과 1440×900에서 가로 넘침, 필드/핀 잘림, 목록 영역, 선택/재개 상태를 확인한다.
 
 자동 재현은 npm test, test:hub-ui, test:session, test:launcher, test:runtime, desktop:build, test:desktop을 사용한다. 시각 검증은 별도 검사 프로젝트에서 수행하며 사용자 QuietGarden의 원본/미저장 복구는 유지한다.
+
+
+## 뷰포트·환경 Actor·독립 창 후속 대조 — 2026-10-04
+
+[뷰포트 조사](VIEWPORT_CONTROLS_RESEARCH.md), [환경 Actor 조사](ENVIRONMENT_ACTORS_RESEARCH.md), [독립 창 조사](DETACHED_WINDOWS_RESEARCH.md)에 실제 읽은 공식 본문의 버전/범위와 데이터·입력·렌더·자원 수명·저장/복구를 연결했다. 상위 색인과 실제 본문 확인은 detail-audit.json에서 구분한다.
+
+레벨·추가 뷰포트와 모델/BP 컴포넌트/머테리얼/트랜스폼 애니메이션/몽타주·시퀀스/메시 충돌 미리보기의 카메라 입력을 공유한다. 2D의 XY/직교 조작과 3D의 RMB 비행·Alt 탐색을 유지한다. 방향 위젯·카메라 생성/조종/정렬·fieldOfView/near/far·10개 북마크·보기/표시·스냅/피벗과 환경 Actor가 같은 Scene/Undo/API를 사용한다. AI의 잘못된 투영·클립·입력 설정은 현재 카메라와 조종 상태를 보존한다.
+
+각 HWND는 실제 원본 패널을 표시하며 같은 문서·선택·Undo·저장을 공유한다. Outliner/Inspector 포커스는 편집 중 입력 DOM을 교체하지 않는다. 모든 살아 있는 창의 frame 예약과 입력 ownerDocument를 관리한다. 별도 WebGL renderer마다 PMREM을 소유하고 진단용 재질 사본은 Scene에서 원본 참조가 사라질 때 해제한다.
+
+행성 대기 LUT·volume 구름 raymarch/그림자·공간 volumetric fog·Lightmass/DF AO·전체 진단 buffer·분리 창 간 직접 도킹/명명 배치 import/export·세계 스트리밍과 나머지 엔진 분야는 별도 세부 계약으로 유지한다. 현재 구름은 mesh 미리보기다. 위 항목의 구현으로 전체 Unreal/Unity 기능을 완료 처리하지 않는다.

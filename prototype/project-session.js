@@ -4,7 +4,7 @@ export function validSession(value){
   return value&&typeof value.id==='string'&&value.id.length>0&&value.id.length<=200&&typeof value.name==='string'&&value.name.length>0&&value.name.length<=120&&typeof value.projectFile==='string'&&value.projectFile.length>0&&value.projectFile.length<=2000&&relative(value.startupScene)&&relative(value.startupBlueprint)&&(value.legacyStorage===undefined||typeof value.legacyStorage==='boolean');
 }
 export function storageKey(key,project=session){return key+'.project.'+encodeURIComponent(project?.id||'standalone');}
-function legacyKeys(storage){const keys=['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.project.folder'];for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith('hbengine.savegame.')&&!key.includes('.project.'))keys.push(key);}return keys;}
+function legacyKeys(storage){const keys=['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.detached.windows','hbengine.viewport.presentation','hbengine.viewport.camera','hbengine.project.folder'];for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith('hbengine.savegame.')&&!key.includes('.project.'))keys.push(key);}return keys;}
 export function migrateLegacyStorage(storage,project){
   const marker=storageKey('hbengine.storage-migrated.v1',project);if(project?.legacyStorage!==true||storage.getItem(marker))return;
   for(const key of legacyKeys(storage)){const value=storage.getItem(key),next=storageKey(key,project);if(value!==null&&storage.getItem(next)===null)storage.setItem(next,value);}
@@ -13,7 +13,7 @@ export function migrateLegacyStorage(storage,project){
 // Browser storage is a synchronous cache backed by project-owned disk data; the
 // qualified localStorage keys remain a backup of this origin's last editor state.
 export async function createProjectStorage(project,{backup,request=globalThis.fetch,debounce=350,onError=()=>{}}={}){
-  const suffix='.project.'+encodeURIComponent(project.id),bases=new Set(['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.project.folder','hbengine.project.view','hbengine.project.browsers','hbengine.editor.preferences','hbengine.storage-migrated.v1']);
+  const suffix='.project.'+encodeURIComponent(project.id),bases=new Set(['hbengine-ui-scene-v1','hbengine.documents.v2','hbengine.docks.v2','hbengine.detached.windows','hbengine.viewport.presentation','hbengine.viewport.camera','hbengine.project.folder','hbengine.project.view','hbengine.project.browsers','hbengine.editor.preferences','hbengine.storage-migrated.v1']);
   const owns=key=>{if(typeof key!=='string'||key.length>1000||!key.endsWith(suffix))return false;const base=key.slice(0,-suffix.length);return bases.has(base)||base.startsWith('hbengine.savegame.')&&base.length>18&&!/[\x00-\x1f]/.test(base);};
   const response=await request('/api/storage?project='+encodeURIComponent(project.id),{cache:'no-store'});
   if(!response.ok)throw Error('프로젝트 복구 저장소를 읽을 수 없어요.');
