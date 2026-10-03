@@ -434,6 +434,103 @@
       "analysis": "docs/COLLISION_GEOMETRY_RESEARCH.md",
       "implementationStatus": "partial",
       "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "analysis": "docs/BUILD_PLAYER_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed",
+      "id": "unity-build-profiles",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/build-profiles.html",
+      "readScope": "Unity 6000.0 본문 전체: File 메뉴·Platform 공유 설정/독립 Build Profiles·이름·버전 관리 에셋",
+      "topics": [
+        "build.profiles",
+        "build.configuration",
+        "editor.menu"
+      ],
+      "applied": [
+        "독립 프로필·이름/ID·프로젝트 설정 JSON 저장·revision 충돌 확인"
+      ],
+      "remaining": [
+        "플랫폼 공유 설정/설치 SDK 목록",
+        "개별 프로필 에셋 형식과 전체 Player 설정"
+      ]
+    },
+    {
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "analysis": "docs/BUILD_PLAYER_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed",
+      "id": "unity-build-scene-list",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/build-profile-scene-list.html",
+      "readScope": "Unity 6000.0 본문 전체: Scene List·열린 장면/Project 드롭 추가·체크 제외·제거·드래그 순서 조작 표",
+      "topics": [
+        "build.scenes",
+        "editor.drag-drop",
+        "build.startup-scene"
+      ],
+      "applied": [
+        "Scene 추가/제외/제거/순서·첫 활성 시작 Scene·콘텐츠 브라우저 드롭"
+      ],
+      "remaining": [
+        "Scene 컨텍스트 메뉴/다중 행 조작",
+        "여러 장면 동시 로딩/스트리밍"
+      ]
+    },
+    {
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "analysis": "docs/BUILD_PLAYER_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed",
+      "id": "unity-build-profiles-reference",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/build-profiles-reference.html",
+      "readScope": "Unity 6000.0 본문 전체: Asset Import Overrides·Build/Clean/skip data/Build and Run·Scene override/defines·플랫폼 링크 표·개발/Profiler/Debugger/압축·Player override; 링크된 개별 API/플랫폼 본문은 미확인",
+      "topics": [
+        "build.options",
+        "build.debugging",
+        "build.cooking",
+        "build.player-settings",
+        "build.run"
+      ],
+      "applied": [
+        "프로필별 구성/창 크기·검사/빌드/실행·작업 결과와 취소"
+      ],
+      "remaining": [
+        "import overrides/압축/cook",
+        "clean/증분/scripts-only",
+        "defines/remote profiler/native debugger",
+        "전체 플랫폼/Player override"
+      ]
+    },
+    {
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "analysis": "docs/BUILD_PLAYER_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed",
+      "id": "epic-packaging-project",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project",
+      "readScope": "열람 페이지 UE 5.8 본문 전체: 패키징 목적/플랫폼·Build/Cook/Stage/Package/Deploy/Run·cooking/chunking·구성·Packaging 설정·기본 맵·Windows 패키지/취소/로그/종료·UAT/Launcher/배포 개요. 링크한 별도 매뉴얼/API/소스는 미확인",
+      "topics": [
+        "build.pipeline",
+        "build.cooking",
+        "build.configuration",
+        "build.startup-scene",
+        "build.diagnostics",
+        "build.distribution"
+      ],
+      "applied": [
+        "사전 참조 검증·C++ worker 사전 빌드·게임 전용 파일 집합·시작 Scene·진행/취소·실제 Game.exe/종료·AI API/CLI"
+      ],
+      "remaining": [
+        "플랫폼별 cook/압축/chunk/patch",
+        "DX11/HLSL renderer/다중 플랫폼",
+        "installer/서명/SDK·기기 deploy",
+        "UAT/Launcher 수준 전체 build graph"
+      ]
     }
   ]
 }

@@ -118,6 +118,8 @@ export function engineOperations(hooks){
     throw Error('실행 서비스가 없어요: '+key);
   };
   return {
+    audioState:()=>({state:soundRouting.context?.state||'idle',voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime}))}),
+    pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
     start:async vm=>{currentVM=vm;await ensurePhysics(vm).loadMaterials(readAsset);for(const o of [...vm.objects]){const b=vm.bindings.find(b=>b.self===o.id)||{self:o.id,root:{components:objectComponents(o)}};for(const c of objectComponents(o)){const p={...componentDefaults(c.type),...c.properties};if(p.enabled===false)continue;if(c.type==='AudioSource'&&p.playOnStart&&p.clip){await operation('playSoundAt',{sound:p.clip,position:sceneWorldPosition(o,vm.objects),volume:1,settings:{...p,refDistance:p.minDistance},source:o.id,voice:JSON.stringify([o.id,c.id])},b,vm);}if(c.type==='Animator'&&p.playOnStart&&p.clip)await operation('playAnimation',{target:o.id,clip:p.clip,loop:p.loop},b,vm);}}await systems.start(vm);},
     input:(key,value)=>physics?.input(key,value),releaseInput:()=>physics?.releaseInput(),contacts:()=>physics?.contacts(),

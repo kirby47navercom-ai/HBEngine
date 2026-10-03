@@ -1,3 +1,6 @@
+import {BuildPanel} from './build-panel.js';
+import {skyPresets,createSky,applySceneEnvironment} from './scene-environment.js';
+import {scenePrimitives} from './scene-primitives.js';
 import {CollisionPreview} from './collision-preview.js';
 import {placementCatalog,createPlacedObject} from './placement-catalog.js';
 import {session,storageKey,storage,flushStorage} from './project-session.js';
@@ -105,70 +108,10 @@ function restoreEdit(data){
 function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.pop();if(!data)return notify('되돌릴 변경 사항이 없어요.');future.push(snapshot());restoreEdit(data);}
 function redo(){if(running)return;const data=future.pop();if(!data)return;history.push(snapshot());restoreEdit(data);}
 
-const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0x9faa91, roughness: 0.86, flatShading: true });
-const darkStone = new THREE.MeshStandardMaterial({ color: 0x667c6d, roughness: 0.93, flatShading: true });
-const grassMaterial = new THREE.MeshStandardMaterial({ color: 0x7f9c61, roughness: 1, flatShading: true });
-const paleGrass = new THREE.MeshStandardMaterial({ color: 0xa4b97c, roughness: 1, flatShading: true });
-const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x607851, roughness: 1, flatShading: true });
-const crystalMaterial = new THREE.MeshPhysicalMaterial({ color: 0xc3e3b9, roughness: 0.13, metalness: 0.18, clearcoat: 1, emissive: 0x669853, emissiveIntensity: 0.13, flatShading: true });
-const surfaceMaterial = new THREE.MeshStandardMaterial({ color: surface.color, roughness: surface.roughness, metalness: surface.metalness });
-function mesh(group, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0], scale = [1, 1, 1]) {
-  const m = new THREE.Mesh(geometry, material); m.position.set(...position); m.rotation.set(...rotation); m.scale.set(...scale); m.castShadow = true; m.receiveShadow = true; group.add(m); return m;
-}
-const box = (group, size, material, pos, rot) => mesh(group, new THREE.BoxGeometry(...size), material, pos, rot);
-function plant(group, x, z, scale = 1, seed = 0) {
-  for (let i = 0; i < 5; i++) {
-    const leaf = mesh(group, new THREE.ConeGeometry(0.10 * scale, 0.73 * scale, 3), i % 2 ? grassMaterial : paleGrass, [x, .25 * scale, z]);
-    leaf.rotation.z = (i - 2) * .27; leaf.rotation.y = seed + i * 1.7;
-  }
-}
-function buildObject(object) {
-  const g = new THREE.Group();g.name = object.name;g.userData.objectId = object.id;
-  switch (object.kind) {
-    case 'arch': {
-      for (const x of [-1.4, 1.4]) for (let j = 0; j < 4; j++) box(g, [.76, .48, .8], j === 3 ? surfaceMaterial : stoneMaterial, [x, .24 + j * .5, 0], [0, (j % 2 ? .015 : -.025), 0]);
-      mesh(g, new THREE.TorusGeometry(1.4, .39, 4, 12, Math.PI), surfaceMaterial, [0, 1.78, 0]);
-      box(g, [1.12, .18, 1.06], darkStone, [-1.4, -.04, 0]); box(g, [1.12, .18, 1.06], darkStone, [1.4, -.04, 0]);
-      plant(g, -1.65, .1, .45, 0); plant(g, 1.52, -.15, .55, 1);
-      break;
-    }
-    case 'crystal': mesh(g, new THREE.OctahedronGeometry(.50), crystalMaterial, [0, 0, 0], [0, 0, .09], [.75, 1.45, .75]); break;
-    case 'ground': {
-      mesh(g, new THREE.CylinderGeometry(4.7, 4.45, .6, 8), darkStone, [0, -.40, 0], [0, Math.PI / 8, 0]);
-      mesh(g, new THREE.CylinderGeometry(4.6, 4.72, .22, 8), groundMaterial, [0, -.06, 0], [0, Math.PI / 8, 0]);
-      for (let x = -3; x <= 3; x++) for (let z = -3; z <= 3; z++) if (x * x + z * z < 15 && !(x > 1 && z > 0)) {
-        box(g, [.91, .075, .91], (x + z) % 3 ? groundMaterial : stoneMaterial, [x, .046, z], [0, Math.sin(x + z) * .025, 0]);
-      }
-      for (let i = 0; i < 12; i++) { const angle = i * Math.PI / 6; mesh(g, new THREE.DodecahedronGeometry(.42, 0), darkStone, [Math.cos(angle) * 4.2, -.32, Math.sin(angle) * 4.2], [.5, angle, 0], [1, .9, 1]); }
-      break;
-    }
-    case 'path': {
-      for (let i = 0; i < 5; i++) box(g, [1.25, .11, .64], stoneMaterial, [Math.sin(i * .8) * .15, .12, .25 + i * .72], [0, (i % 2 ? .025 : -.02), 0]);
-      for (let i = 0; i < 3; i++) box(g, [1.5, .20, .52], stoneMaterial, [0, -.08 - .12 * i, 4 + i * .4]);
-      break;
-    }
-    case 'grass': {
-      const points = [[-3,-2],[-2.8,-1],[-3.1,.5],[-2.5,2.4],[-1.4,2.7],[1.4,2.9],[2.9,-2.3],[3.5,-.4],[2.2,-2.8],[-1,-3.3],[-3.4,1.7],[3.4,2.4],[1.5,.6],[-1.7,.5]];
-      points.forEach(([x,z], i) => { plant(g, x, z, .8 + (i % 3) * .22, i); plant(g, x + .28, z + .17, .6, i + 1); });
-      [[-2,1.7],[2.8,-1.2],[-2.3,-2.6]].forEach(([x,z]) => { for (let j = 0; j < 3; j++) { mesh(g, new THREE.CylinderGeometry(.025,.025,.5,4), grassMaterial, [x+j*.2,.3,z+j*.12]); mesh(g,new THREE.IcosahedronGeometry(.105,0), new THREE.MeshStandardMaterial({color:0xf1d59a,roughness:1}), [x+j*.2,.58,z+j*.12]); } });
-      break;
-    }
-    case 'rocks': [[-2.7,-2.4,.6],[2.8,-2.3,.6],[-3,1.9,.4],[3.5,.1,.5],[-1.9,-2.8,.36],[2.9,2.5,.42]].forEach(([x,z,s],i) => mesh(g, new THREE.DodecahedronGeometry(s), i%2 ? darkStone : stoneMaterial, [x,s*.4,z], [.3,i,0],[1.1,.8,.8])); break;
-    case 'water': mesh(g, new THREE.CylinderGeometry(1.3,1.25,.06,28), new THREE.MeshPhysicalMaterial({color:0x567f83,roughness:.16,metalness:.3,clearcoat:1}), [0,.08,0], [0,0,0],[1.05,1,.76]); break;
-    case 'light': { const l = object.id === 'sun-light' ? new THREE.DirectionalLight(0xffeed7, surface.light) : new THREE.PointLight(0xffd6a0, 8, 15); g.add(l); if(object.id==='sun-light') { sun=l; l.castShadow=true; l.shadow.mapSize.set(2048,2048); Object.assign(l.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:25}); l.shadow.bias=-.001; l.shadow.normalBias=.025; } break; }
-    case 'camera': break;
-    case 'cube': box(g, [1,1,1], surfaceMaterial, [0,.5,0]); break;
-    case 'cone': mesh(g,new THREE.ConeGeometry(.6,1.2,32),surfaceMaterial,[0,.6,0]);break;
-    case 'capsule': mesh(g,new THREE.CapsuleGeometry(.35,.8,8,24),surfaceMaterial,[0,.75,0]);break;
-    case 'torus': mesh(g,new THREE.TorusGeometry(.6,.2,12,32),surfaceMaterial,[0,.8,0]);break;
-    case 'sphere': mesh(g, new THREE.SphereGeometry(.6,32,24), surfaceMaterial, [0,.6,0]); break;
-    case 'cylinder': mesh(g, new THREE.CylinderGeometry(.45,.45,1.2,24), surfaceMaterial, [0,.6,0]); break;
-    case 'plane': box(g,[1.5,.08,1.5],surfaceMaterial,[0,.04,0]); break;
-    case 'character': mesh(g,new THREE.CapsuleGeometry(.35,1.1,8,16),surfaceMaterial,[0,.9,0]);break;
-  }
-  if(object.materialSurface&&validSurface(object.materialSurface)){const m=new THREE.MeshStandardMaterial({color:object.materialSurface.color,roughness:object.materialSurface.roughness,metalness:object.materialSurface.metalness});g.traverse(child=>{if(child.isMesh)child.material=m;});}
-  g.traverse(child => child.userData.objectId = object.id);
-  meshMap.set(object.id, g); applyObject(object); scene.add(g);g.userData.ready=visuals.build(object,g);g.userData.ready.catch(error=>log(object.name+': '+error.message,'ERROR'));return g;
+const primitiveRendering=scenePrimitives(surface),surfaceMaterial=primitiveRendering.surfaceMaterial,mesh=primitiveRendering.mesh;
+function buildObject(object){
+  const g=primitiveRendering.build(object);if(object.id==='sun-light')sun=g.children.find(child=>child.isDirectionalLight);
+  meshMap.set(object.id,g);applyObject(object);scene.add(g);g.userData.ready=visuals.build(object,g);g.userData.ready.catch(error=>log(object.name+': '+error.message,'ERROR'));return g;
 }
 function applyObject(o) { let g=meshMap.get(o.id);if(!g)return;if(g.userData.componentSignature!==undefined&&g.userData.componentSignature!==JSON.stringify(o.components)){const old=g,parent=g.parent,children=g.children.filter(child=>child.userData.objectId&&child.userData.objectId!==o.id);visuals.dispose(old);old.removeFromParent();g=buildObject(o);if(parent)parent.add(g);for(const child of children)g.add(child);old.traverse(child=>child.geometry?.dispose());}g.position.set(...o.position); g.rotation.set(...o.rotation.map(THREE.MathUtils.degToRad)); g.scale.set(...o.scale); g.visible=o.visible; }
 function rebuildWorld() {
@@ -242,6 +185,7 @@ function vectorRow(label,key,o) { return `<div class="vector-row"><span>${label}
 function materialProperties() { const surface=editingSurface();return `<div class="property-row"><label for="surface-color">기본 색상</label><input type="color" id="surface-color" value="${surface.color}" data-surface="color" aria-label="기본 색상"></div><div class="range-property"><label for="roughness">거칠기 <output>${surface.roughness.toFixed(2)}</output></label><input type="range" id="roughness" min="0" max="1" step="0.01" value="${surface.roughness}" data-surface="roughness"></div><div class="range-property"><label for="metalness">금속성 <output>${surface.metalness.toFixed(2)}</output></label><input type="range" id="metalness" min="0" max="1" step="0.01" value="${surface.metalness}" data-surface="metalness"></div>`; }
 function materialSurfaceDetails(){const s=editingSurface();return `<div class="component-property"><label>혼합</label><select data-material-setting="blendMode" aria-label="혼합 모드">${[['opaque','불투명'],['masked','마스크'],['translucent','반투명']].map(([v,label])=>`<option value="${v}" ${s.blendMode===v?'selected':''}>${label}</option>`).join('')}</select></div><div class="component-property"><label>양면</label><input type="checkbox" data-material-setting="doubleSided" aria-label="양면" ${s.doubleSided?'checked':''}></div>`+[['emissive','발광 색상','color',0,1],['emissiveIntensity','발광 강도','number',0,10000],['opacity','불투명도','number',0,1],['alphaTest','마스크 기준','number',0,1],['ao','주변 차폐','number',0,1],['clearcoat','코팅','number',0,1],['clearcoatRoughness','코팅 거칠기','number',0,1],['transmission','투과','number',0,1],['ior','굴절률','number',1,2.5]].map(([key,label,type,min,max])=>`<div class="component-property"><label>${label}</label><input type="${type}" data-material-setting="${key}" aria-label="${label}" value="${s[key]??materialDefaults[key]}" min="${min}" max="${max}" step=".01"></div>`).join('');}
 function renderInspector() {
+  if(focusedWindow==='build-profiles'){$('#inspector-content').innerHTML='<div class="editor-asset-summary"><h3>빌드 프로필</h3><p>Windows x64</p><p>Settings/BuildProfiles.json</p></div>';return;}
   if(workspace==='blueprint')return renderBlueprintInspector();if(workspace==='code')return renderNativeInspector();
   if(workspace!=='scene'){renderAssetInspector();return;}
   const o=objects.find(o=>o.id===selected); if(!o){$('#inspector-content').innerHTML='<div class="inspector-empty">편집할 오브젝트를 선택하세요.</div>';return;}
@@ -263,31 +207,9 @@ function updateSurface() {
   $('#environment-light-value').textContent=surface.light.toFixed(1);
   $('#shadow-toggle').checked=environment.shadowEnabled!==false;
 }
-const skyPresets={
-  day:{top:0x548baf,horizon:0xc2d4cc,ground:0x536f70,cloud:0xe4eee8,ambient:1.1,exposure:.83,light:3.2,elevation:50},
-  overcast:{top:0x74858e,horizon:0xb9c8c6,ground:0x52666b,cloud:0xb8c9c8,ambient:1.25,exposure:.88,light:1.2,elevation:40},
-  sunset:{top:0x596487,horizon:0xe9b18b,ground:0x635858,cloud:0xeac5ae,ambient:.65,exposure:.9,light:3,elevation:15},
-  night:{top:0x111e37,horizon:0x415672,ground:0x293849,cloud:0x64788d,ambient:.3,exposure:1,light:.45,elevation:25}
-};
-function initSky(){
-  const skyMaterial=new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,uniforms:{topColor:{value:new THREE.Color()},horizonColor:{value:new THREE.Color()},sunDirection:{value:new THREE.Vector3()},sunColor:{value:new THREE.Color(0xffe5bd)}},
-    vertexShader:'varying vec3 skyDirection; void main(){ skyDirection=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
-    fragmentShader:'varying vec3 skyDirection; uniform vec3 topColor; uniform vec3 horizonColor; uniform vec3 sunDirection; uniform vec3 sunColor; void main(){ vec3 d=normalize(skyDirection); float h=smoothstep(-0.12,0.85,d.y); vec3 c=mix(horizonColor,topColor,h); c+=sunColor*pow(max(dot(d,normalize(sunDirection)),0.0),350.0)*0.55; gl_FragColor=vec4(c,1.0); }'});
-  skyDome=new THREE.Mesh(new THREE.SphereGeometry(80,32,16),skyMaterial);skyDome.renderOrder=-1000;scene.add(skyDome);
-  cloudGroup=new THREE.Group();const cloudMaterial=new THREE.MeshBasicMaterial({color:0xe4eee8,transparent:true,opacity:.60,depthWrite:false});
-  for(let i=0;i<10;i++){const cluster=new THREE.Group(),angle=i*Math.PI/5;cluster.position.set(Math.cos(angle)*16,4+Math.sin(i*2)*1.2,Math.sin(angle)*16);
-    for(let j=0;j<5;j++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.65+((i+j)%3)*.2,16,10),cloudMaterial);puff.position.set((j-2)*.8,Math.sin(j*2)*.23,Math.cos(j)*.3);puff.scale.set(1.3,.55,1);cluster.add(puff);}cluster.rotation.y=-angle;cloudGroup.add(cluster);
-  }scene.add(cloudGroup);
-}
+function initSky(){({skyDome,cloudGroup}=createSky(scene));}
 function applyEnvironment(){
-  const p=skyPresets[environment.preset];
-  if(scene){scene.background.set(environment.skyEnabled?p.ground:0x272f34);scene.fog=environment.fogEnabled?new THREE.Fog(p.ground,10,90-environment.fogAmount*66):null;scene.environmentIntensity=environment.skyEnabled?.6:.12;ambientLight.intensity=environment.skyEnabled?p.ambient:.25;ambientLight.color.set(p.horizon);mainRenderer.toneMappingExposure=p.exposure;groundFloor.material.color.set(p.ground);groundFloor.visible=runtimeSettings.dimension!=='2d';
-    skyDome.visible=environment.skyEnabled;skyDome.material.uniforms.topColor.value.set(p.top);skyDome.material.uniforms.horizonColor.value.set(p.horizon);
-    const az=THREE.MathUtils.degToRad(environment.sunAzimuth),el=THREE.MathUtils.degToRad(environment.sunElevation),direction=new THREE.Vector3(Math.sin(az)*Math.cos(el),Math.sin(el),Math.cos(az)*Math.cos(el));
-    skyDome.material.uniforms.sunDirection.value.copy(environment.sunEnabled?direction:new THREE.Vector3(0,-1,0));
-    if(sun){sun.castShadow=environment.shadowEnabled!==false;mainRenderer.shadowMap.needsUpdate=true;sun.intensity=environment.sunEnabled?surface.light:0;sun.color.set(environment.preset==='night'?0xa5b9e1:environment.preset==='sunset'?0xffbb80:0xffeed7);sun.parent.position.copy(direction.multiplyScalar(10));const o=objects.find(o=>o.id==='sun-light');if(o)o.position=sun.parent.position.toArray().map(n=>+n.toFixed(3));}
-    cloudGroup.visible=environment.cloudsEnabled;cloudGroup.children.forEach((c,i)=>{c.visible=i<Math.ceil(environment.cloudDensity*10);c.children[0].material.color.set(p.cloud);});
-  }
+  applySceneEnvironment({scene,environment,surface,runtimeSettings,ambientLight,mainRenderer,groundFloor,skyDome,cloudGroup,sun,objects});
   $$('[data-environment]').forEach(input=>{if(input.type==='checkbox')input.checked=input.dataset.environment==='shadowEnabled'?environment.shadowEnabled!==false:environment[input.dataset.environment];else input.value=environment[input.dataset.environment];});
   $$('[data-environment-value]').forEach(output=>{const key=output.dataset.environmentValue;output.textContent=['sunAzimuth','sunElevation'].includes(key)?environment[key]+'°':Math.round(environment[key]*100)+'%';});
   $('#scene-root-name').textContent=sceneName;$('#scene-file-name').textContent=assetTitle(assetDocs.active||activeScenePath);if(workspace==='scene')$('#workspace-name').textContent=sceneName;
@@ -390,6 +312,7 @@ async function reloadImportedAssets(result){
 function projectHooks(){return {references:file=>openReferenceViewer(file.path),open:openProjectAsset,reimport:reloadImportedAssets,error:notify,import:()=>doAction('import'),wrap:wrapSource,rename:renameDocumentPaths,files:files=>{assets.splice(0,assets.length,...files);refreshAssetIndex();},newBrowser:folder=>createProjectWindow({folder,target:dock.paneFor(focusedWindow)}),windowMenu:event=>openMenu({getBoundingClientRect:()=>({left:event.clientX,bottom:event.clientY})},[['오브젝트 배치','window:placement'],['콘텐츠 브라우저','window:project'],['뷰포트','window:viewport'],['출력 로그','window:console'],['월드 설정','window:world']]),select:file=>{$('#inspector-content').innerHTML='<div class="editor-asset-summary">'+icon(assetIcon(file.kind))+'<h3>'+escapeHtml(assetTitle(file.path))+'</h3><p>'+escapeHtml(file.path)+'</p><p>'+escapeHtml(assetTypes[file.kind]?.label||file.kind)+' · '+((file.size||0)/1024).toFixed(1)+' KB</p></div>';}};}
 function openReferenceViewer(path){const id='references:'+path;if(dock.entries.has(id))return dock.open(id);const element=document.createElement('div'),viewer=new ReferenceViewer(element,path,{open:openProjectAsset,error:notify});dock.add({id,kind:'references',title:'참조 · '+assetTitle(path),element,navigateHistory:direction=>viewer.navigateHistory(direction),dispose:()=>viewer.dispose()},dock.paneFor(focusedWindow));}
 function createProjectWindow({id,folder,target}={}){if(!id){let number=2;while(projectBrowsers.has('project:'+number)&&number<999)number++;id='project:'+number;}if(dock?.entries.has(id)){dock.open(id,target);return dock.entries.get(id);}const element=document.createElement('div');element.className='workspace-view extra-project-browser';const header=document.createElement('div');header.className='document-toolbar';const breadcrumb=document.createElement('span');header.append(breadcrumb);const content=document.createElement('div');content.className='assets-content';element.append(header,content);const browser=new ProjectBrowser(content,breadcrumb,projectHooks(),{id,folder});projectBrowsers.set(id,browser);const entry={id,kind:'project',title:'콘텐츠 브라우저 '+id.split(':')[1],element,browser,navigateHistory:direction=>browser.navigateHistory(direction),dispose:()=>{browser.dispose();projectBrowsers.delete(id);}};if(dock)dock.add(entry,target||dock.paneFor(focusedWindow)||dock.leaves().at(-1));return entry;}
+function openBuildProfiles(){if(dock.entries.has('build-profiles'))return dock.open('build-profiles');const element=document.createElement('div'),panel=new BuildPanel(element,{session,openScenes:()=>[...assetDocs.items.values()].filter(d=>d.kind==='scene').map(d=>d.path),saveAll:()=>save(true),error:error=>notify(error.message)});dock.add({id:'build-profiles',kind:'build',title:'빌드 프로필',element,buildPanel:panel,dispose:()=>panel.dispose()},dock.paneFor('scene'));}
 function openProfiler(target){if(dock.entries.has('profiler'))return dock.open('profiler',target);const element=document.createElement('div'),panel=new ProfilerPanel(element,profiler);dock.add({id:'profiler',kind:'profiler',title:'프로파일러',element,dispose:()=>panel.dispose()},target||dock.paneFor(focusedWindow),'bottom');}
 function createEditorWindow(kind,{target,sourceId}={}){if(kind==='profiler')return openProfiler(target);if(kind==='placement')return openPlacement(target);if(kind==='project')return createProjectWindow({folder:projectBrowsers.get(sourceId)?.folder||focusedProjectBrowser()?.folder,target});if(kind==='viewport')return createViewportWindow(target);if(kind==='console')return dock.open('console',target);if(kind==='world')return openWorldSettings(target);if(kind==='editor')return dock.open(ensureAssetPane(assetDocs.current),target);}
 function openWorldSettings(target){if(assetDocs.current?.kind!=='scene')activateDocument(activeScenePath);const id='world:'+activeScenePath;if(dock.entries.has(id)){dock.open(id,target);return;}const element=document.createElement('div');element.className='workspace-view world-settings';const render=()=>{element.innerHTML='<header class="asset-editor-heading"><h2>월드 설정</h2></header><div class="asset-form"><section><h3>게임플레이</h3><label>게임 설정<select data-world-field="gameConfig">'+assetOptions('gameconfig',runtimeSettings.gameConfig)+'</select></label><label>차원<select data-world-field="dimension"><option value="3d" '+(runtimeSettings.dimension==='3d'?'selected':'')+'>3D / 2.5D</option><option value="2d" '+(runtimeSettings.dimension==='2d'?'selected':'')+'>2D</option></select></label></section><section><h3>물리</h3>'+runtimeSettings.gravity.map((v,i)=>'<label>중력 '+['X','Y','Z'][i]+'<input type="number" step=".1" min="-1000" max="1000" data-world-gravity="'+i+'" value="'+v+'"></label>').join('')+'<label>고정 시간 간격<input type="number" data-world-field="fixedDeltaTime" min="0.004166667" max=".1" step=".001" value="'+runtimeSettings.fixedDeltaTime+'"></label><label>최대 하위 스텝<input type="number" data-world-field="maxSubsteps" min="1" max="32" value="'+runtimeSettings.maxSubsteps+'"></label></section></div>';};element.onchange=e=>{const next=clone(runtimeSettings);if(e.target.dataset.worldGravity!==undefined)next.gravity[Number(e.target.dataset.worldGravity)]=Number(e.target.value);else if(e.target.dataset.worldField)next[e.target.dataset.worldField]=e.target.type==='number'?Number(e.target.value):e.target.value;else return;if(!validRuntimeSettings(next)){notify('월드 설정 값의 범위를 확인하세요.');render();return;}remember();runtimeSettings=next;if(next.dimension==='2d')setView('2d');changed();render();};render();dock.add({id,kind:'world',title:'월드 설정',element,path:activeScenePath,render},target||dock.paneFor('scene'),'right');}
@@ -708,7 +631,7 @@ $('#blueprint-find').addEventListener('input',renderBlueprintResults);
 $('#cpp-code').value=graphs.blueprint.native?.header||nativeExample;
 renderNativeRegistry();
 
-const commands=[['장면 편집','scene','Workspace'],['머테리얼 편집','material','Workspace'],['애니메이션 편집','animation','Workspace'],['블루프린트 편집','blueprint','Workspace'],['C++ 공개 API','code','Workspace'],...placementCatalog.map(p=>[p.label,'create:'+p.key,p.category]),['프로파일러','window:profiler','Window'],['오브젝트 배치 창','window:placement','Window'],['새 콘텐츠 브라우저','window:project','Window'],['새 뷰포트','window:viewport','Window'],['에셋 가져오기','import','Assets'],['장면 저장','save','Ctrl S'],['실행 취소','undo','Ctrl Z'],['선택 오브젝트에 초점','focus','F'],['사용 안내','help','Help']];
+const commands=[['빌드 프로필','build-profiles','Project'],['장면 편집','scene','Workspace'],['머테리얼 편집','material','Workspace'],['애니메이션 편집','animation','Workspace'],['블루프린트 편집','blueprint','Workspace'],['C++ 공개 API','code','Workspace'],...placementCatalog.map(p=>[p.label,'create:'+p.key,p.category]),['프로파일러','window:profiler','Window'],['오브젝트 배치 창','window:placement','Window'],['새 콘텐츠 브라우저','window:project','Window'],['새 뷰포트','window:viewport','Window'],['에셋 가져오기','import','Assets'],['장면 저장','save','Ctrl S'],['실행 취소','undo','Ctrl Z'],['선택 오브젝트에 초점','focus','F'],['사용 안내','help','Help']];
 commands.push(['새 맵 만들기','new-map','World'],['하늘·햇빛·구름 설정','environment','World']);
 function renderCommands(){const query=$('#command-input').value.toLowerCase();$('#command-results').innerHTML=commands.filter(c=>c[0].toLowerCase().includes(query)||c[2].toLowerCase().includes(query)).map(c=>`<button class="command-result" data-command="${c[1]}">${c[0]}<span>${c[2]}</span></button>`).join('')||'<p class="inspector-note" style="padding:12px">일치하는 명령이 없어요.</p>';}
 function openMenu(button,items){const menu=$('#floating-menu');menu.innerHTML=items.map(item=>item?`<button ${item[2]||''} data-menu-command="${item[1]}">${item[0]}${item[3]?`<kbd>${item[3]}</kbd>`:''}</button>`:'<div class="menu-separator"></div>').join('');menu.hidden=false;const rect=button.getBoundingClientRect();menu.style.left=Math.min(rect.left,innerWidth-menu.offsetWidth-10)+'px';menu.style.top=Math.min(rect.bottom+5,innerHeight-menu.offsetHeight-10)+'px';}
@@ -763,7 +686,8 @@ function doAction(action,button){
     case 'add-component':setWorkspace('blueprint');$('#component-dialog').showModal();break;
     case 'graph-menu':openMenu(button,[['노드 추가','add-blueprint-node'],['블루프린트 JSON 불러오기','import-blueprint'],['JSON 내보내기','export-blueprint']]);break;
     case 'project-hub':switchProject();break;
-    case 'file-menu':openMenu(button,[['프로젝트 선택','project-hub'],null,['새 맵 만들기','new-map'],['에셋 가져오기','import'],['에셋 만들기','create-asset'],['현재 에셋 저장','save','', 'Ctrl S'],['모두 저장','save-all','','Ctrl Shift S'],null,['사용 안내','help']]);break;
+    case 'build-profiles':openBuildProfiles();break;
+    case 'file-menu':openMenu(button,[['프로젝트 선택','project-hub'],null,['새 맵 만들기','new-map'],['에셋 가져오기','import'],['에셋 만들기','create-asset'],['현재 에셋 저장','save','', 'Ctrl S'],['모두 저장','save-all','','Ctrl Shift S'],null,['빌드 프로필','build-profiles'],['사용 안내','help']]);break;
     case 'edit-menu':openMenu(button,[['실행 취소','undo','', 'Ctrl Z'],['다시 실행','redo','','Ctrl Y'],['명령 검색','command','', 'Ctrl K']]);break;
     case 'add-menu':openPlacement();break;
     case 'view-menu':openMenu(button,[['레벨 편집기','scene'],['오브젝트 배치','window:placement'],['콘텐츠 브라우저','browse-document'],['Visual Studio에서 열기','code'],['새 콘텐츠 브라우저','window:project'],['새 뷰포트','window:viewport'],['월드 설정','window:world'],['프로파일러','window:profiler'],['레이아웃 초기화','reset-layout']]);break;case 'reset-layout':activateDocument(assetDocs.active,true);break;
@@ -936,9 +860,9 @@ document.addEventListener('keydown',e=>{
   const widgetPane=assetPanes.get(assetDocs.active);if(!editing&&!dialog&&workspace==='widget'&&focusedWindow===widgetPane?.id&&!widgetPane.element.contains(e.target)){widgetPane.element.onkeydown?.(e);if(e.defaultPrevented)return;}
   if((e.ctrlKey||e.metaKey)&&e.key==='Tab'&&!dialog){e.preventDefault();const paths=[...assetDocs.items.keys()],i=paths.indexOf(assetDocs.active);activateDocument(paths[(i+(e.shiftKey?-1:1)+paths.length)%paths.length]);}
   else if((e.ctrlKey||e.metaKey)&&e.code==='Space'&&!editing&&!dialog){e.preventDefault();dock.maximized=dock.maximized?null:dock.paneFor(focusedWindow);dock.render();}
-  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'&&!dialog){e.preventDefault();browseDocument();}
-  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='w'&&!dialog){e.preventDefault();closeDocument(assetDocs.active);}
-  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&!dialog){e.preventDefault();save(e.shiftKey);}
+  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'&&!dialog){e.preventDefault();e.shiftKey?openBuildProfiles():browseDocument();}
+  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='w'&&!dialog){e.preventDefault();focusedWindow==='build-profiles'?dock.close(focusedWindow):closeDocument(assetDocs.active);}
+  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&!dialog){e.preventDefault();const buildPanel=dock.entries.get(focusedWindow)?.buildPanel;buildPanel?buildPanel.save().catch(error=>notify(error.message)):save(e.shiftKey);}
   else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();if(!dialog)doAction('command');}
   else if(focusedWindow==='scene'&&!editing&&!dialog&&!running&&((e.ctrlKey||e.metaKey)&&['c','x','v','d','g','a'].includes(e.key.toLowerCase())||['Delete','F2'].includes(e.key)||['h','l'].includes(e.key.toLowerCase()))){e.preventDefault();const key=e.key.toLowerCase();if(key==='a'){sceneSelection=new Set(objects.map(o=>o.id));renderHierarchy();renderInspector();}else sceneAction({c:'copy',x:'cut',v:'paste',d:'duplicate',g:e.shiftKey?'ungroup':'group',delete:'delete',f2:'rename',h:'hide',l:'lock'}[key]);}
   else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'&&!editing&&!dialog){e.preventDefault();redo();}
@@ -1185,7 +1109,7 @@ editorRequest('/api/editor').then(r=>r.json()).then(data=>$('#external-code-butt
 let closingEngine=false;
 window.hbEngineRequestClose=async()=>{
   if(closingEngine)return false;closingEngine=true;
-  try{if(running)await stopPlay();captureDocument();const modified=[...assetDocs.items.values()].filter(d=>d.dirty);
+  try{if(running)await stopPlay();const buildPanel=dock.entries.get('build-profiles')?.buildPanel;if(buildPanel?.dirty){const choice=await closeChoice('빌드 프로필');if(choice==='cancel')return false;if(choice==='save')await buildPanel.save();else await buildPanel.load();}captureDocument();const modified=[...assetDocs.items.values()].filter(d=>d.dirty);
     if(modified.length){const choice=await closeChoice(session.name);if(choice==='cancel')return false;if(choice==='save'){if(!await save(true)||[...assetDocs.items.values()].some(d=>d.dirty))return false;}else{
       const saved=modified.map(doc=>{const data=JSON.parse(doc.saved);if(!validAsset(doc.kind,data))throw Error('저장 기준 데이터 검증 실패: '+doc.path);return {doc,data};});
       for(const {doc,data} of saved){doc.data=data;doc.dirty=false;doc.history=[];doc.future=[];}

@@ -48,7 +48,7 @@ async function loadSession(){
   const response=await fetch('/api/session',{cache:'no-store'});if(!response.ok)throw Error('프로젝트 세션을 열 수 없어요.');const value=await response.json();if(value===null)throw Error('프로젝트를 선택하세요.');if(!validSession(value))throw Error('프로젝트 세션 정보를 확인하세요.');return value;
 }
 const browser=typeof window!=='undefined'&&typeof document!=='undefined';let loadedSession,loadedStorage;
-if(browser){try{loadedSession=await loadSession();loadedStorage=await createProjectStorage(loadedSession,{backup:localStorage,onError:issue=>window.dispatchEvent(new CustomEvent('hbengine-storage-error',{detail:issue.message}))});}catch(error){window.location.replace('/prototype/project-hub.html?error='+encodeURIComponent(error.message));throw error;}}
+if(browser){try{loadedSession=await loadSession();loadedStorage=await createProjectStorage(loadedSession,{backup:localStorage,onError:issue=>window.dispatchEvent(new CustomEvent('hbengine-storage-error',{detail:issue.message}))});}catch(error){if(!loadedSession?.player&&document.body?.dataset.hbPlayer!=='true')window.location.replace('/prototype/project-hub.html?error='+encodeURIComponent(error.message));throw error;}}
 export const session=loadedSession||null;
 export const storage=loadedStorage||nodeStorage;
 export const flushStorage=()=>storage.flush();

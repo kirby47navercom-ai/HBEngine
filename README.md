@@ -1,9 +1,10 @@
 # HBEngine
 
-C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 창 + 실제 C++ 빌드 호스트 + 블루프린트 실행기**를 연결했다. 편집기 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL이다. DirectX 렌더러·독립 게임 패키징은 아직 구현하지 않았다.
+C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
 
 ## 현재 구현
 
+- **독립 게임 빌드**: 파일 → 빌드 프로필(`Ctrl+Shift+B`)에서 프로필별 개발/배포 구성·게임 이름·창 크기·장면 목록을 저장한다. 열린 장면/콘텐츠 브라우저 드롭으로 추가하고 포함·제외·순서·시작 장면을 설정한다. 검사·모두 저장하고 빌드·취소·빌드 후 실행·출력 폴더를 제공한다. 게임 전용 파일과 사전 컴파일 C++ worker를 `Builds/<프로필>/<고유 빌드>`에 구성하며 Game.exe가 같은 BP/컴포넌트/게임 서비스를 실행한다. [설정·실행 계약과 조사 근거](docs/BUILD_PLAYER_RESEARCH.md).
 - **엔진 실행과 프로젝트**: HBEngine.exe를 실행하면 최근 프로젝트·새 프로젝트·찾아 열기가 있는 허브를 연다. 프로젝트 루트의 `.hbproject` JSON은 UUID·엔진/파일 버전·시작 레벨·시작 BP를 지정한다. 생성 후 바로 편집기에 들어가며 기존 폴더와 파일을 덮어쓰지 않는다. 프로젝트별 복구·도킹·Project 폴더·SaveGame을 `Saved/Editor/storage.json`에 보존해 실행 포트가 달라져도 이어간다. 최초 일반 실행 또는 `--register`로 현재 Windows 사용자에게 `.hbproject` 더블클릭 연결을 등록한다.
 - **473개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
 - **289개 코어 C++ API + 102개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
@@ -36,7 +37,7 @@ npm run desktop:build
 .\HBEngine.exe
 ```
 
-빌드는 `HBEngine.exe`와 `dist/HBEngine/HBEngine.exe`를 만든다. 빌드에 사용하는 Node 실행 파일을 동봉하고 공식 WebView2 SDK 1.0.4258.31의 x64 loader를 사용한다. Node·WebView2 SDK·Three·Rapier 고지는 `dist/HBEngine/licenses`에 포함한다. 실행 로그·최근 프로젝트·WebView2 데이터는 기본적으로 `%LOCALAPPDATA%/HBEngine`에 둔다. 파일 연결만 다시 등록하려면 `.\HBEngine.exe --register`를 실행한다.
+빌드는 `HBEngine.exe`, `dist/HBEngine/HBEngine.exe`와 게임 패키지에 쓰는 `dist/HBEngine/HBPlayer.exe`를 만든다. 빌드에 사용하는 Node 실행 파일을 동봉하고 공식 WebView2 SDK 1.0.4258.31의 x64 loader를 사용한다. Node·WebView2 SDK·Three·Rapier·nlohmann/json·사용한 MinGW 런타임 고지는 `dist/HBEngine/licenses`에 포함하고 게임 패키지에도 동봉한다. 실행 로그·최근 프로젝트·WebView2 데이터는 기본적으로 `%LOCALAPPDATA%/HBEngine`에 둔다. 파일 연결만 다시 등록하려면 `.\HBEngine.exe --register`를 실행한다.
 
 브라우저 개발 미리보기는 다음 명령으로 실행한다.
 
@@ -66,7 +67,8 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 | npm run test:assets | 확장 에셋·부모 클래스 실제 C++ 빌드·독립 문서 저장·참조 재열기·입력·다중 BP 실행 |
 | npm run test:server | 기본 Project의 dev 서버 실행 중 HTTP 범위 응답·Origin/헤더·에셋 실행 차단 |
 | npm run test:hub-ui | 실제 허브 핸들러의 검색·선택·열기·모달·키보드·오류/입력 보존 |
-| npm run desktop:build | Windows x64 EXE·아이콘·Node/loader 동봉·라이선스·외부 MSYS2 런타임 DLL 의존성 검사 |
+| npm run desktop:build | Windows x64 편집기/Player EXE·아이콘·Node/loader 동봉·라이선스·외부 MSYS2 런타임 DLL 의존성 검사 |
+| npm run test:package | 실제 2D 개발/3D 배포 Game.exe·GPU·BP→사전 컴파일 C++·AudioContext/음원 재생·EndPlay 저장/재열기·취소/충돌/손상 거부·소유 서버 종료 |
 | npm run test:launcher | 프로젝트 JSON/UUID·한글/공백 경로·원본 보호·허브/API·두 프로젝트 전환·동적 포트·프로젝트별 C++ 소유 상태 |
 | npm run test:session | 프로젝트 ID별 복구/도킹/폴더/SaveGame 분리·기존 기본 프로젝트의 1회 이관·원본 보존·디스크 복구 연결 |
 | npm run test:desktop | 실제 배포/루트 EXE의 WebView2 내 편집기/허브 JS 초기화·실제 닫기 흐름·다른 작업 폴더/프로젝트 경로·비정상 descriptor 거부·소유 서버 정리 |
@@ -74,6 +76,22 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터를 재생성한다. Library.hpp는 추적하고 core-api.js는 설치 시 생성한다.
 
 데스크톱 smoke는 내장 WebView2 탐색 이후 허브/편집기 JS의 준비 메시지와 실제 닫기 핸들러·종료 뒤 서버 정리를 확인한다. 모든 편집 조작은 별도의 화면 검증이 필요하다. 공식 실행/프로젝트 근거와 SDK 배포 범위는 [엔진 분석](docs/ENGINE_REFERENCE_ANALYSIS.md)에 적었다.
+
+## 만든 게임 빌드와 실행
+
+편집기에서 **파일 → 빌드 프로필**을 열고 실행할 장면을 포함한다. 첫 활성 장면이 시작 장면이며 목록 순서는 드래그나 위/아래 버튼으로 바꾼다. 프로필은 `Settings/BuildProfiles.json`에 저장한다. **모두 저장하고 빌드**는 열린 에셋을 저장한 뒤 실행하고, **검사**는 저장된 디스크 콘텐츠만 확인한다. 프로필 창에 포커스가 있으면 `Ctrl+S`는 프로필을 저장한다.
+
+완료한 `Builds/<profile id>/<build id>` **폴더 전체**를 옮겨 `Game.exe`를 실행한다. Node와 사전 빌드 C++ worker를 동봉하므로 게임 실행에는 별도 Node/npm/C++ 컴파일러가 필요하지 않다. Microsoft WebView2 Runtime은 필요하다. `Esc`로 계속·전체 화면·종료 메뉴를 열며 게임 저장은 패키지를 수정하지 않고 `%LOCALAPPDATA%/HBEngine/Games/<project UUID>`에 보관한다.
+
+디스크 프로젝트를 CLI로 검사/빌드할 수도 있다. C++가 연결된 프로젝트는 제작 단계에 C++17 컴파일러가 필요하다.
+
+```powershell
+npm run desktop:build
+npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows --dry-run
+npm run build:game -- C:/Games/MyGame/MyGame.hbproject windows
+```
+
+패키지는 활성 Scene과 모든 비장면 Assets를 포함하고 원본 미디어 형식을 유지한다. 없는 참조, 제외된 Scene 참조, 디스크와 BP 등록 C++ 소스의 불일치를 사전 검사한다. 플랫폼 변환·텍스처/음향 압축·미사용 에셋 제거·chunk/patch·installer는 추가 제작 대상이다. 개발 구성은 사용자 worker의 디버그 정보와 실행 보고를, 배포 구성은 worker 최적화/기호 제거를 적용한다. 두 구성 모두 현재 WebView2/WebGL2 실행 경로다.
 
 ## 조작과 저장
 
@@ -88,8 +106,9 @@ npm run api:generate는 공통 라이브러리 헤더와 노드 메타데이터�
 | 검색 / 검증 / 내부 그래프 | Ctrl F / F7 / 호출 노드 두 번 클릭 |
 | 창 배치 | 탭 드래그·RMB 메뉴·경계 드래그·창 메뉴 |
 | 에셋 작업 | 외부 다중 드롭·선택 열기·Ctrl F·F2·Backspace |
+| 빌드 프로필 / 프로필 저장 | Ctrl Shift B / 빌드 프로필 포커스에서 Ctrl S |
 
-Ctrl S는 현재 에셋 문서를 **Project 파일**에 저장하고 Ctrl Shift S는 수정된 열린 문서를 모두 저장한다. 문서 복구·배치·Project 폴더·SaveGame은 프로젝트 UUID별로 `Saved/Editor/storage.json`에 저장한다. 프로젝트 전환/종료는 디스크 반영을 기다리며 localStorage는 기존 백업·복원 경로로 유지한다. C++ 원문은 외부 IDE에서 저장하고 BP의 C++ 빌드로 다시 읽는다. 열린 일반 텍스트 문서는 현재 문서 저장이나 자체 저장 버튼을 사용한다. BP는 JSON 내보내기·검증 후 불러오기가 가능하고 AI도 안정적인 ID·타입·연결을 편집할 수 있다. 코드/검색 입력에서는 문자 선택을 허용하고 그래프·도킹 조작에서는 브라우저 글자 선택을 차단한다.
+에셋 창에서 Ctrl S는 현재 문서를 **Project 파일**에 저장하고 Ctrl Shift S는 수정된 열린 문서를 모두 저장한다. 빌드 프로필 창의 저장 단축키는 해당 프로필 설정에 적용한다. 문서 복구·배치·Project 폴더·SaveGame은 프로젝트 UUID별로 `Saved/Editor/storage.json`에 저장한다. 프로젝트 전환/종료는 디스크 반영을 기다리며 localStorage는 기존 백업·복원 경로로 유지한다. C++ 원문은 외부 IDE에서 저장하고 BP의 C++ 빌드로 다시 읽는다. 열린 일반 텍스트 문서는 현재 문서 저장이나 자체 저장 버튼을 사용한다. BP는 JSON 내보내기·검증 후 불러오기가 가능하고 AI도 안정적인 ID·타입·연결을 편집할 수 있다. 코드/검색 입력에서는 문자 선택을 허용하고 그래프·도킹 조작에서는 브라우저 글자 선택을 차단한다.
 
 ## 공통 C++ 사용
 
@@ -118,7 +137,7 @@ AI도 현재 미저장 문서를 읽고 revision 조건부 부분 변경·Undo·
 
 ## 현재 한계
 
-Windows 엔진 실행 파일과 편집기 배포 폴더는 구현했다. 현재 WebView2가 HTML/JS 편집기를 표시하고 Node가 로컬 서버와 C++ 빌드 호스트를 제공한다. DirectX 11·HLSL backend·native 물리/3D 음향·임의 형식의 엔진 변환·독립 게임 배포는 미구현이다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어·2D/3D AI와 효과 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
+Windows 편집기 실행 파일/배포 폴더와 독립 게임 Game.exe 패키지를 구현했다. 현재 WebView2가 편집기/게임을 표시하고 Node가 로컬 서버 및 제작 단계의 C++ 빌드 호스트를 제공한다. 독립 Player는 패키지에 등록된 C++ worker를 실행하며 새 사용자 소스를 컴파일하지 않는다. DirectX 11·HLSL backend·native 물리/음향·임의 형식의 엔진 변환·타깃 cook/압축/chunk·installer·다른 플랫폼 배포는 추가 구현 범위다. 미지원 모델/영상도 원본을 보존하지만 미리보기에는 해당 임포터/브라우저 코덱이 필요하다. 프로젝트 생성은 기본 예제·빈 3D·2D 플랫폼·3D 플레이어·2D/3D AI와 효과 템플릿을 제공한다. 전체 프로젝트 버전 업그레이드·여러 엔진 버전 선택은 미구현이다.
 
 문서 저장은 디스크의 이전 내용과 대조해 외부 변경을 거부하고 Saved/Backups에 원본을 보관한다. 자동 충돌 병합·다중 파일 트랜잭션은 지원하지 않는다.
 

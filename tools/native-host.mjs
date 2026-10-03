@@ -46,14 +46,27 @@ response["clock"]={{"time",hb::Clock::GetGameTime()},{"delta",hb::Clock::GetWorl
 }
 export class NativeHost {
   constructor(){this.sessions=new Map();}
-  async build(header,source){
+  registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
+  async build(header,source,{configuration='editor',signal}={}){
+    signal?.throwIfAborted();
+    if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
     if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header);if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
     let compiledHeader=header.replace(/(HB_FUNCTION\([^)]*Blueprint(?:Native|Implementable)Event[^)]*\)\s*)(?!virtual\b)(void\s)/g,'$1virtual $2');
     let compiledSource='#include <HBEngine/Bridge.hpp>\n'+source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,'');compiledSource='#include "User.hpp"\n'+compiledSource;
     for(const c of metadata.classes)for(const f of c.functions.filter(f=>f.event==='implementable'))if(!new RegExp(`\\b${c.name}\\s*::\\s*${f.name}\\s*\\(`).test(source))compiledSource+=`\nvoid ${c.name}::${f.name}(${f.parameters.map(p=>p.cppType+' '+p.name).join(',')}){}\n`;
-    const worker=generatedWorker(metadata),headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update(compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
-    await Promise.all([fs.writeFile(path.join(dir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(dir,'User.cpp'),compiledSource),fs.writeFile(path.join(dir,'worker.cpp'),worker)]);
-    if(!existsSync(binary))await new Promise((resolve,reject)=>{const process=spawn(compiler,['-std=c++17','-O0','-I','native/include','-I',path.relative(root,jsonInclude),path.relative(root,path.join(dir,'worker.cpp')),path.relative(root,path.join(dir,'User.cpp')),'-o',path.relative(root,binary)],{env,cwd:root,windowsHide:true});let diagnostics='';const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};process.stderr.on('data',append);process.stdout.on('data',append);const timeout=setTimeout(()=>{process.kill();reject(Error('C++ 빌드 시간 제한 초과'));},60000);process.once('error',error=>{clearTimeout(timeout);reject(error);});process.once('exit',code=>{clearTimeout(timeout);code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
+    const worker=generatedWorker(metadata),headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v1'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    if(!existsSync(binary)){
+      const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
+      await Promise.all([fs.writeFile(path.join(compileDir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(compileDir,'User.cpp'),compiledSource),fs.writeFile(path.join(compileDir,'worker.cpp'),worker)]);
+      try{
+        await new Promise((resolve,reject)=>{const child=spawn(compiler,['-std=c++17',...(configuration==='editor'?['-O0']:configuration==='release'?['-O2','-s','-static']:['-O0','-g','-static']),'-I','native/include','-I',path.relative(root,jsonInclude),path.relative(root,path.join(compileDir,'worker.cpp')),path.relative(root,path.join(compileDir,'User.cpp')),'-o',path.relative(root,temporary)],{env,cwd:root,windowsHide:true,signal});let diagnostics='',failure;const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};child.stderr.on('data',append);child.stdout.on('data',append);const timeout=setTimeout(()=>{failure=Error('C++ 빌드 시간 제한 초과');child.kill();},60000);child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timeout);failure?reject(failure):code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
+        signal?.throwIfAborted();
+        // Only a complete executable enters the shared cache. Other attempts may
+        // commit the same hash while this compiler runs; keep their complete file.
+        if(!existsSync(binary))await fs.rename(temporary,binary).catch(error=>{if(!existsSync(binary))throw error;});
+      }finally{await fs.unlink(temporary).catch(error=>{if(error.code!=='ENOENT')throw error;});}
+    }
+    signal?.throwIfAborted();
     const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
   validate(session,request){

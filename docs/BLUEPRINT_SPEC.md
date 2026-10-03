@@ -2,7 +2,7 @@
 
 조사 갱신: 2026-10-03. 전체 공식 근거와 엔진 범위는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 분야별 조사 상태와 코드 대조는 [조사 범위](REFERENCE_COVERAGE.md), 조작 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 노드별 핀·C++ 대응은 [노드 카탈로그](NODE_CATALOG.md)에 있다.
 
-**실행됨**은 브라우저 게임 실행기에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집/실행/네이티브 렌더러/배포의 상태를 구분한다.
+**실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. 현재 Game.exe의 렌더러는 WebView2/WebGL2이며 네이티브 DX11 렌더러와 동일하지 않다.
 
 ## 공식 근거
 
@@ -37,7 +37,7 @@
 | 디스패처·인터페이스 | 시그니처, 구독·해제·이벤트·메시지 실제 실행; 장면의 서로 다른 BP 파일을 객체별 실행 | 독립 계약 에셋·다중 BP 클래스 간 정적 계약 검사 |
 | 디버거 | 실제 노드 중단점·Step/Continue·호출 스택 표기·계산 핀 값 | 실행 객체 선택, 프레임/Step Into/Out 구분·native 코드 디버거 |
 | 오브젝트/서비스 | 생성/제거/부모·기본 컴포넌트, Mesh Raycast, 표면/광원, 오디오·모델 클립/Transform Animation·기본 위젯·SaveGame | 정밀 강체 solver·3D 음향·장면 스트리밍·AnimationBP·UI 바인딩 |
-| 빌드/배포 | 사용자 .h/.cpp 실제 g++ 빌드와 작업 프로세스 RPC | DX11 런타임·DLL 교체·cooking·Windows 게임 배포 |
+| 빌드/배포 | 사용자 .h/.cpp 실제 g++ 빌드/RPC·프로필·사전 컴파일 worker 동봉·독립 Windows Game.exe의 공용 BP 실행 | DX11/HLSL 런타임·DLL 교체/다중 번역 단위·타깃 cook/압축/chunk·installer·다른 플랫폼 |
 | 네트워크/확장 | 미구현 | 복제/RPC·권한·플러그인·에디터 도구 |
 
 ## 에셋과 입력 제작 흐름
@@ -144,3 +144,19 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 컴포넌트 목록은 46종이다. MeshCollider·PolygonCollider2D·EdgeCollider2D의 중첩 배열은 별도 형상 창에서 편집하고 BP 컴포넌트 상세에 수량과 편집/생성 버튼을 표시한다. 원본 모델에서 생성하는 경로는 Scene과 BP, AI collision.bake가 공유한다. BP 컴포넌트 뷰포트에도 실제 기본/메시/2D 경계를 렌더한다. Apply 한 작업을 문서 Undo/Redo로 복원한다. 몸체 형식/키네마틱 체크를 함께 갱신하고 Hinge/Slider에서 다른 관절로 바꿀 때 해당 모터/한계를 해제한 뒤 검증한다.
 
 기존 물리 질의 노드와 사용자 C++ Physics 호출은 같은 저장 형상을 검색한다. 오목한 polygon의 빈 영역, 삼각형 표면, open edge, convex hull을 구분한다. 실제 컴파일된 사용자 함수와 GUI/VM 검증은 [충돌 형상 연구](COLLISION_GEOMETRY_RESEARCH.md)에 기록했다. 기존 BP 473개·코어 289/서비스 102개 수치는 이번 형상 확장에서 바뀌지 않는다.
+
+## 독립 Windows 게임의 BP·C++ 실행 — 2026-10-03
+
+프로젝트의 빌드 프로필은 Scene 포함/제외·순서·첫 활성 시작 Scene, 게임 이름·창 크기·개발/배포 구성을 저장한다. 파일 → 빌드 프로필(`Ctrl+Shift+B`)의 검사/빌드/실행과 AI API/CLI가 같은 디스크 검증·빌드 함수를 사용한다. 현재 473개 기본 BP 노드·289개 코어/102개 서비스의 수치는 이 패키지 추가로 변하지 않는다.
+
+독립 Player는 `preparePlayWorld` → `BlueprintRuntime` → `engineOperations`와 `Game.hpp/Bridge.hpp`의 기존 C++ 서비스 경로를 사용한다. BP/C++의 별도 함수 목록이나 다른 수학/물리 규칙을 만들지 않는다. 도형·환경·머테리얼/스프라이트/모델 렌더링도 편집기와 공유한다. 실제 화면은 Three/WebGL2, 실제 2D/3D 물리는 Rapier WASM이다.
+
+1. 활성 Scene과 비장면 Assets를 검증한다. BP의 native metadata에 저장한 header/source와 디스크 Source가 같아야 한다. 다르면 편집기에서 다시 빌드하고 BP를 저장한다. 등록된 소스 서명별 worker를 제작 단계에서 개발/배포 구성으로 사전 컴파일한다.
+2. 패키지의 `/api/native/build`는 서명에 해당하는 worker/token/metadata를 조회한다. Player에서 새 소스를 컴파일하지 않으며 알려지지 않은 서명은 실패한다. C++17 컴파일러는 제작 환경에 필요하고 게임 실행에는 동봉 Node/worker를 사용한다.
+3. Scene의 BP/컴포넌트·입력·프레임워크를 준비해 Construction/서비스 초기화/BeginPlay를 실행하고 매 프레임 native clock/timer와 VM을 진행한다. 배포용 복사본의 breakpoint를 제거하므로 에디터 Step 대기로 정지하지 않는다. BP 그래프 원본 파일의 중단점을 삭제하는 작업과 다르다.
+4. `Open Scene`/`hb::Scene::Open`은 같은 검증/전환 요청을 사용한다. 포함되지 않은 Scene은 런타임에서 로드할 수 없다. 이전 월드의 EndPlay·타이머·입력·서비스/GPU 자원을 정리한 후 새 월드를 준비한다.
+5. 게임 종료는 진행 중 프레임을 기다린 후 EndPlay·서비스 정리·SaveGame 디스크 flush·Win32 창/소유 서버 종료로 이어진다. `Esc` 메뉴에 계속·전체 화면·종료가 있고 게임 입력칸/포커스 해제를 구분한다. 저장은 `%LOCALAPPDATA%/HBEngine/Games/<project UUID>`에 보존하며 에디터 복구 상태를 게임에 가져오지 않는다.
+
+실제 `test:package`는 2D 개발/3D 배포 Game.exe에서 GPU draw·BP BeginPlay→사용자 C++ 이동·AudioContext running/음원 voice playing·EndPlay SaveGame/재열기·컴파일러 없는 환경·서버 종료를 확인했다. Scene 참조·프로필 revision·취소·파일 손상·편집 API 차단도 검사한다. 음원 voice 상태는 모든 출력 장치/공간 음향/코덱의 품질을 증명하는 검사는 아니다.
+
+구체적인 프로필/수명/AI 계약은 [빌드 Player 연구](BUILD_PLAYER_RESEARCH.md), [AI API](AI_ENGINE_API.md)에 있다. Game.exe는 Win32/WebView2·Node·WebGL2를 묶은 독립 실행 파일이며 DirectX 11/HLSL·전체 에셋 cook/압축·installer·모든 타깃 SDK 구현과 구분한다. 기존 모든 엔진 분야와 BP/C++의 세부 확장 요구는 계속 유지한다.

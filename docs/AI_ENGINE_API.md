@@ -4,7 +4,7 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 
 ## 현재 연결
 
-- `GET /api/schema`: 생성 가능한 에셋의 예제, 컴포넌트 필드·범위·기본값, 클래스 상속, 블루프린트 노드와 핀, 머테리얼 노드, 편집기 명령. 실제 UI/런타임 정의를 가져오므로 별도 AI용 사본이 없다.
+- `GET /api/schema`: 생성 가능한 에셋의 예제, 컴포넌트 필드·범위·기본값, 클래스 상속, 블루프린트 노드와 핀, 머테리얼 노드, 편집기 명령과 build 타깃/구성/포함/출력/API 계약. 실제 UI/런타임 정의를 가져오므로 별도 AI용 사본이 없다.
 - `GET /api/project?recursive=1`: 파일, 폴더, 종류, 안정적인 에셋 UUID. 생성·이름 변경·가져오기는 기존 `/api/asset/create`, `/api/rename`, `/api/import`를 공유한다.
 - `GET /api/asset/info?path=...`: SHA-256, 재가져오기 revision, 직접 의존성과 역참조, 누락된 파일. `POST /api/asset/reimport`는 `{paths:[...]}`를 받고 간접 영향 목록을 돌려준다.
 - `GET /api/automation`: 연결된 편집기 인스턴스와 각 창의 프로젝트, 열린 문서, 선택, 실행 상태. 인스턴스가 여러 개면 `clientId`를 명시해야 한다.
@@ -51,7 +51,7 @@ node tools/hb.mjs runtime.stop --url http://127.0.0.1:5181
 
 이 API는 기존 로컬 서버의 loopback/Origin/편집기 헤더 검사를 그대로 사용한다. 임의 JavaScript 실행이나 외부 파일 접근 명령은 없다. C++ 빌드는 사용자가 작성한 로컬 코드를 실제 컴파일·실행한다.
 
-현재 JSON 데이터 검증과 편집 명령이 제공된다. 전체 JSON Schema 표준, 다중 문서 원자적 트랜잭션, 원격 협업 병합, C++ 코드 자동 수정, 독립 native 게임 플레이어, 전체 성능 프로파일러까지 완성했다는 뜻은 아니다. 새로운 엔진 기능은 구현과 함께 이 공통 명령·스키마·검증 경로에 노출해야 한다.
+현재 JSON 데이터 검증과 편집 명령이 제공된다. 전체 JSON Schema 표준, 다중 문서 원자적 트랜잭션, 원격 협업 병합, C++ 코드 자동 수정, DirectX native 게임 렌더러나 전체 성능 프로파일러까지 완성했다는 뜻은 아니다. Windows 독립 Game.exe 패키지는 아래 빌드 경로로 제공하며 Win32/WebView2·Node·Three/WebGL2·Rapier·사전 빌드 C++ worker를 사용한다. 새로운 엔진 기능은 구현과 함께 이 공통 명령·스키마·검증 경로에 노출해야 한다.
 
 ## 검증
 
@@ -137,3 +137,52 @@ C++ 공간 검색은 현재 C++ 변환/충돌 flags를 합친 읽기 전용 정�
 `schema.physics.geometry`는 MeshCollider의 convex/mesh·4096 정점/8192 삼각형, PolygonCollider2D의 16개 분리 단순 경로/512점, EdgeCollider2D의 열린 선분/512점과 좌표·운동 형식 계약을 제공한다. component의 `json` 필드는 중첩 배열이다. 실제 값 형식은 [형상 계약](COLLISION_GEOMETRY_RESEARCH.md)에 있으며 일반 vec3로 취급하지 않는다. 사람의 형상 창과 AI document.patch가 같은 검증/Undo/저장 데이터를 사용한다.
 
 `collision.bake`는 `path`, `expectedRevision`, `object`(Scene), `component`, `dryRun`을 받는다. component는 MeshCollider다. sourceMesh가 있으면 실제 모델을 읽고, 없으면 장면의 준비된 렌더 메시에서 로컬 정점·삼각형을 생성한다. BP에는 sourceMesh가 필요하다. 반환 result는 component ID와 정점/삼각형 수다. dryRun의 data에서 실제 생성할 배열을 검사하고, 적용 후 별도로 document.save한다. 모달/Play 중 명령과 stale revision은 거부한다. sourceMesh 의존성과 이름 변경 참조도 갱신한다. 저장된 geometry는 Play/BP/C++ 질의에 그대로 사용한다.
+
+## 빌드 프로필과 독립 게임 패키지
+
+사람의 **파일 → 빌드 프로필**(`Ctrl+Shift+B`)과 AI가 같은 `Settings/BuildProfiles.json`을 사용한다. `GET /api/schema`의 `build`는 현재 Windows x64, WebView2/WebGL2, 개발/배포 구성, 포함/출력과 API 계약을 제공한다. 프로필 ID와 Scene의 전체 프로젝트 상대 경로를 식별자로 사용한다.
+
+| 요청 | 입력/결과 |
+| --- | --- |
+| `GET /api/build/profiles` | `version/profiles/revision`과 설정 파일 조회; 없으면 시작 Scene을 가진 기본 windows 프로필 |
+| `PUT /api/build/profiles` | `{version:1,profiles,expectedRevision}`; 모든 프로필 검증 후 revision 조건부 저장 |
+| `POST /api/build` | `{profileId,expectedRevision,dryRun}`; HTTP 202로 비동기 작업 생성 |
+| `GET /api/build/job?id=...` | `status/stage/profileId/startedAt`; 완료 시 `result`, 실패/취소 시 `error`와 종료 시각 |
+| `POST /api/build/cancel` | `{id}`; 해당 프로젝트의 실행 중 작업 취소 |
+| `POST /api/build/open` | 완료된 `{id,action:"run"}` 또는 `"reveal"`; 검사만 한 작업이나 임의 경로 실행은 거부 |
+
+이 경로는 `/api/automation/command`의 편집 명령과 별도의 서버 API다. `tools/hb.mjs`에 없는 빌드 명령 이름을 만들어 호출하지 않는다. 쓰기 요청에는 기존 `X-HB-Editor: 1`과 JSON Content-Type을 사용한다. 프로필 충돌은 현재 HTTP 400의 `error` 메시지이며 편집 문서의 `REVISION_CONFLICT` 코드와 혼용하지 않는다. 새 revision을 조회하고 변경을 재계산한다.
+
+프로필의 각 항목은 `{id,name,configuration,productName,width,height,scenes:[{path,enabled}]}`이다. 설정 예제:
+
+```json
+{
+  "id": "windows",
+  "name": "Windows 개발",
+  "configuration": "development",
+  "productName": "MyGame",
+  "width": 1280,
+  "height": 720,
+  "scenes": [{"path":"Assets/Scenes/Main.hbscene.json","enabled":true}]
+}
+```
+
+프로필은 1~32개, Scene 목록은 1~256개이며 하나 이상의 Scene이 활성이어야 한다. 경로 중복·이탈을 거부하고 첫 활성 Scene이 시작 Scene이다. 너비는 320~7680, 높이는 240~4320의 정수다. 구성은 `development/release`이다. UI에서 열린 Scene 추가·드롭·체크 제외·제거·순서를 지원하고 AI는 같은 배열을 revision 보호로 저장한다.
+
+빌드는 **디스크에 저장된 에셋**을 소비한다. AI가 열린 문서를 변경했다면 `document.get` → 조건부 변경 → `document.save`를 먼저 완료한다. 프로필 저장과 에셋 저장을 한 원자적 트랜잭션으로 취급하지 않는다. UI의 모두 저장하고 빌드는 에셋 저장을 먼저 수행하고, 검사/CLI/직접 빌드 API는 열린 미저장 편집을 자동 반영하지 않는다. C++ 소스가 BP에 등록한 소스와 다르면 `native.build` 후 해당 BP를 저장한다.
+
+작업 상태는 `running/done/error/canceled`이다. 프로젝트당 실행 중 빌드는 하나이며 종료 상태를 확인하기 전 자동 재제출하지 않는다. 현재 프로젝트가 바뀌면 이전 프로젝트 작업의 조회/실행을 새 프로젝트에 적용하지 않는다. 작업 목록은 서버 메모리에 있고 결과의 `build-report.json`·실패의 `build-failed.json`은 출력 폴더에 남는다.
+
+화면 없는 CLI 검사/출력은 다음과 같다. 앞의 인수는 실제 descriptor 경로와 저장한 프로필 ID다.
+
+```powershell
+npm run desktop:build
+node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows --dry-run
+node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
+```
+
+`dryRun`은 참조/형식/소스 일치를 검사하고 출력 폴더를 만들지 않는다. 실제 빌드는 활성 Scene과 모든 비장면 Assets를 기본 포함하며, JSON/GLTF가 참조한 프로젝트 내부 파일을 폴더 위치와 관계없이 재귀 수집한다. BP의 native.header/source 코드 문자열은 경로로 해석하지 않으며 사용하는 C++ 소스 쌍은 따로 대조한다. 제외 Scene 참조와 프로젝트 밖 링크는 거부한다. 개발 worker는 디버그 정보, 배포 worker는 최적화/기호 제거를 적용하고 `Builds/<profile>/<unique build id>`를 생성한다. 타깃 에셋 변환/압축·미사용 에셋 제거·chunk/installer와는 구별한다.
+
+독립 `Game.exe`에는 Node와 이미 빌드한 C++ worker를 동봉하며 실행 환경에 별도 Node/CXX 설치가 필요하지 않다. WebView2 Runtime은 필요하다. Player의 `/api/native/build`는 헤더/소스 서명에 등록된 worker 조회이며 새 컴파일을 허용하지 않는다. 에셋 생성·쓰기·외부 IDE 실행 API는 제공하지 않는다. 게임 저장은 프로젝트 UUID의 사용자 데이터에 기록하고 에디터 복구/레이아웃을 패키지에 가져오지 않는다.
+
+`test:package`의 실제 2D 개발/3D 배포 검사는 Win32/WebView2 GPU 제출·BP→C++ 호출, 컴파일러 없는 PATH, AudioContext running/음원 voice playing, EndPlay의 SaveGame flush와 저장 재열기, 소유 서버 종료를 확인했다. 이는 native DX11·모든 코덱/장치·전체 엔진 기능의 완료 근거가 아니다. 공용 BP/서비스 수명과 원본 형식/배포 제약은 [빌드/Player 연구](BUILD_PLAYER_RESEARCH.md)에 연결한다.

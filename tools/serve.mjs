@@ -1,3 +1,5 @@
+import {BuildJobs} from './build-jobs.mjs';
+import {readBuildProfiles} from './build-game.mjs';
 import {findEditor,openExternal,createCppClass} from './external-editor.mjs';
 import {readProjectManifest,ensureProjectManifest,createProject,recentProjects,rememberProject,pickProjectPath,defaultDirectory} from './project-manifest.mjs';
 import http from 'node:http';
@@ -10,6 +12,7 @@ import {ProjectStorage,storageLimit} from './project-storage.mjs';
 import {EditorAutomation,engineSchema} from './editor-automation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
+const buildJobs=new BuildJobs();
 let port=requestedPort,project=null,session=null,storage=null,native=new NativeHost(),automation=new EditorAutomation(),defaultProject=null,ready=false,stopping=false;
 const quietCanonicalRoot=await fs.promises.realpath(quietRoot).catch(error=>{if(error.code!=='ENOENT')throw error;return quietRoot;});
 const sameRoot=(a,b)=>process.platform==='win32'?path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase():path.resolve(a)===path.resolve(b);
@@ -50,6 +53,15 @@ const server=http.createServer(async(req,res)=>{try{
     if(!project)return json(res,{error:'프로젝트를 먼저 선택하세요.'},409);
     // Each request retains its original project through body reads and native compilation.
     const owner=project,host=native,store=storage,projectId=session.id,readBody=async(limit)=>{const data=await body(req,limit);checkOwner(owner);return data;};
+    if(url.pathname.startsWith('/api/build')){
+      const record=await readProjectManifest(session.projectFile);checkOwner(owner);
+      if(url.pathname==='/api/build/profiles'&&req.method==='GET')return json(res,await readBuildProfiles(record));
+      if(url.pathname==='/api/build/profiles'&&req.method==='PUT'){const data=JSON.parse(await readBody());return json(res,await buildJobs.save(record,data,data.expectedRevision,()=>checkOwner(owner)));}
+      if(url.pathname==='/api/build'&&req.method==='POST')return json(res,await buildJobs.start(record,JSON.parse(await readBody())),202);
+      if(url.pathname==='/api/build/job'&&req.method==='GET')return json(res,buildJobs.get(record,q.get('id')));
+      if(url.pathname==='/api/build/open'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await buildJobs.open(record,data.id,data.action));}
+      if(url.pathname==='/api/build/cancel'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,buildJobs.cancel(record,data.id));}
+    }
     if(url.pathname==='/api/schema'&&req.method==='GET')return json(res,engineSchema());
     if(url.pathname==='/api/automation'&&req.method==='GET')return json(res,automation.state());
     if(url.pathname==='/api/automation/command'&&req.method==='GET')return json(res,automation.get(q.get('id')));
@@ -81,4 +93,4 @@ const server=http.createServer(async(req,res)=>{try{
   const stat=await fs.promises.stat(file);if(!stat.isFile())return res.writeHead(404).end();stream(req,res,file,stat.size);
 }catch(error){json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
 server.listen(requestedPort,'127.0.0.1',async()=>{try{port=server.address().port;ready=true;await writeReady();console.log('HBEngine: http://127.0.0.1:'+port+'\nProject: '+(project?.root||'프로젝트 허브'));}catch(error){console.error(error.message);close();process.exitCode=1;}});
-const close=()=>{if(stopping)return;stopping=true;native.close();server.close();server.closeAllConnections();};process.on('SIGINT',close);process.on('SIGTERM',close);
+const close=()=>{if(stopping)return;stopping=true;buildJobs.close();native.close();server.close();server.closeAllConnections();};process.on('SIGINT',close);process.on('SIGTERM',close);

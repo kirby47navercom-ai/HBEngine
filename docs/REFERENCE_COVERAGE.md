@@ -1,5 +1,7 @@
 # HBEngine 공식 문서 조사와 구현 대조
 
+2026-10-03 추가 대조: [빌드 프로필·독립 게임 실행](BUILD_PLAYER_RESEARCH.md). Unity 6000.0의 프로필/Scene List/창 설정 본문 3개와 Epic 패키징 UE 5.8 본문을 읽어 설정·장면 포함/순서·Build/Cook/Stage/Package/Run·진단/취소를 대조했다. 현재 Windows x64 Game.exe는 Win32/WebView2·Node·Three/WebGL2·Rapier와 사전 빌드 C++ worker를 사용한다. cook/압축/chunk·installer·다중 플랫폼·DX11/HLSL은 추가 제작 대상으로 유지한다.
+
 2026-10-03 추가 대조: [충돌 형상 제작/실행](COLLISION_GEOMETRY_RESEARCH.md). Unity Mesh/Polygon2D/Edge2D/편집 조작과 Epic simple/complex·편집 자동화 본문, Rapier의 Shapes/Mass를 별도 세부 기록으로 연결했다. 실제 hull/삼각형/오목 경로/선분과 사람/AI/BP/C++ 동작을 검증했다. 다중 convex decomposition·UCX/LOD collision·Composite/effector·edge radius/adjacent normal·레이어 override 세부 조합은 해당 연구 표의 추가 항목으로 유지한다.
 
 기준일: 2026-10-03. 조사 단위는 기능 이름이 아니라 **만들기 → 편집 → 저장 → 배치/참조 → 실행 → 진단 → 재열기** 흐름이다. 전체 설계는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 조작 계약은 [편집기 기준](EDITOR_INTERACTION_SPEC.md), 그래프와 C++ 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)에 연결한다.
@@ -35,7 +37,7 @@
 | [2D](https://docs.unity3d.com/6000.0/Documentation/Manual/Unity2D.html) | Sprite·Tilemap·2D 물리·2D 조명 | Sprite atlas/Pivot/Flip/Order·타일 팔레트/레이어/충돌·Flipbook·Rapier XY 회전/관절/CCD·9-slice Sliced/Tiled | SpriteMask·SortingLayer·Adaptive tiling·2D 조명·다각형 물리/전체 joint 세부·2D skeleton |
 | [XR](https://docs.unity3d.com/6000.0/Documentation/Manual/XR.html) | 장치·추적·양안 화면·입력·실행 | 미구현 | XR 장치 계층·스테레오 렌더·상호작용·빌드 |
 | [Multiplayer](https://docs.unity3d.com/6000.0/Documentation/Manual/multiplayer.html) | 접속·세션·상태 동기화·검증 | 미구현 | 권한·복제·RPC·지연/끊김 검사 |
-| [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기 EXE·WebView2·Node 동봉·g++ worker | DX11 게임 실행 파일·다른 플랫폼·타깃 빌드 프로필 |
+| [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기/독립 Game.exe·WebView2·Node 동봉·C++ worker·빌드 프로필 | DX11 게임 렌더러·다른 플랫폼/SDK·전체 타깃/Player 설정 |
 | [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | 43종 컴포넌트·38종 배치 조합·계층/그룹/복제·태그·Prefab 저장/인스턴스 생성 | Variant/오버라이드 재적용·전체 활성/비활성/파괴 콜백·SerializeReference 수준 타입 모델 |
 | [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋·BP/C++ 런타임 단일 장면 전환 | 다중 장면 동시 월드·스트리밍 |
 | [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 직교/원근·독립 뷰포트·게임 카메라 우선순위/추적·시퀀스 카메라 | 물리 카메라·culling mask·RenderTexture·stack·시네마틱 카메라/블렌드 |
@@ -53,7 +55,7 @@
 | [Post-processing](https://docs.unity3d.com/6000.0/Documentation/Manual/post-processing-and-full-screen-effects.html) | 화면 효과의 렌더 경로·지원 차이 | 기본 노출/tone mapping | 볼륨·Bloom/AO/DOF·효과 순서·GPU 비용 |
 | [Programming](https://docs.unity3d.com/6000.0/Documentation/Manual/scripting.html) | 코드 작성·컴파일·재로딩·진단과 편집기 연결 | 공통 C++ API·native host·외부 IDE 열기 | 다중 번역 단위·IDE 프로젝트 생성·native 디버거·DLL 교체 |
 | [Optimization](https://docs.unity3d.com/6000.0/Documentation/Manual/analysis.html) | CPU/GPU/메모리 측정과 타깃 실험 | 실측 프레임·BP/물리/AI/애니메이션 구간·C++ IPC·WebGL 제출·draw/triangle/resource 개수·기록/내보내기 | GPU 타이머·native 스레드/CPU exclusive·할당/메모리·파일/네트워크 profiler·타깃 캡처 |
-| [Build/publish](https://docs.unity3d.com/6000.0/Documentation/Manual/building-and-publishing.html) | Player·내용 출력·설정·캐시·재현 빌드 | 사용자 C++ worker·편집기 EXE/배포 폴더 빌드 | 독립 게임 build/cook/package·설치/출시 |
+| [Build/publish](https://docs.unity3d.com/6000.0/Documentation/Manual/building-and-publishing.html) | Player·내용 출력·설정·캐시·재현 빌드 | 사용자 C++ worker·편집기 EXE·Windows 독립 게임 build/package·프로필·AI 작업/CLI | 플랫폼별 cook/압축/chunk·증분/clean/기호·installer/서명/설치·스토어 출시 |
 | [Services](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityServices.html) | 계정·세션·분석·배포 서비스와 게임 분리 | 미구현 | 엔진 확장 경계·서비스 오류/인증·사용자 선택 |
 | [Best practices](https://docs.unity3d.com/6000.0/Documentation/Manual/best-practice-guides.html) | 분야별 제작·운영·최적화 검증 기준 | 공통 API·저장 검증·재현 스크립트 | 예제 게임·실측·팀 제작/버전 관리 시나리오 |
 | [Troubleshooting](https://docs.unity3d.com/6000.0/Documentation/Manual/TroubleShooting.html) | 가져오기/코드/렌더/플랫폼 오류 원인과 복구 | 파일 검증·컴파일 오류·실행 오류 로그 | 분야별 진단 위치·실패 결과 복구·크래시 보고 |
@@ -64,7 +66,7 @@
 | 공식 분야 | 제작 흐름에서 확인할 요구 | 현재 코드 근거 | 남은 구현 |
 | --- | --- | --- | --- |
 | [What's New](https://dev.epicgames.com/documentation/unreal-engine/whats-new) | 릴리스·migration·실험/안정 기능 구분 | 버전 있는 에셋 형식 | 기능별 안정성/호환성·migration 기록 |
-| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 허브·descriptor·파일별 문서·도킹/합치기·창별 탐색·배치/스냅·Play·2D/3D 템플릿 | 설정 가능한 키/충돌·OS 부동창·프로젝트 버전 변환·독립 게임 배포 |
+| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 허브·descriptor·파일별 문서·도킹/합치기·창별 탐색·배치/스냅·Play·2D/3D 템플릿·Windows Game.exe/프로필 | 설정 가능한 키/충돌·OS 부동창·프로젝트 버전 변환·플랫폼별 cook/설치/출시 |
 | [Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine) | 외부 Mesh/Skeleton/Texture와 내부 에셋의 임포트 경계 | 원본 임포트·OBJ/GLTF/FBX 미리보기·메타데이터·재가져오기·참조 그래프 | 전체 Interchange 변환·Skeleton 하위 에셋·축/단위/압축·import preset·DDC/cook |
 | [Virtual Worlds](https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine) | 레벨·환경·조명·배치·큰 월드 제작 | 레벨 파일·기본 도형·환경 프리셋 | Landscape/Foliage·메시 편집·월드 분할/스트리밍 |
 | [Rendering/Graphics](https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine) | 표면·빛·그림자·품질·렌더 자원·진단 | Three 표면/광원·머테리얼 문서 | DX11/HLSL·LOD/culling·GPU 측정·GI/반사 |
@@ -82,7 +84,7 @@
 | [Media](https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine) | Source/Player·색 관리·동기·캡처/출력 | 파일 보존·지원 코덱 preview | 디코더/변환·영상 동기·캡처·영상 텍스처 |
 | [Production Pipeline](https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine) | 에셋 관리·캐시·버전 관리·redirect·자동화 | ID/redirect·다중 임포트·재가져오기·양방향 참조 탐색·공용 schema/AI 명령·Git | redirect Fixup·source control UI·DDC·chunk/cook·asset manager bundle·동시 작성 충돌 |
 | [Testing/Optimization](https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content) | 성능 계측·로그·크래시·자동 검사 | 로직/실제 C++/GPU/DOM/PCM 검사·실측 프레임·render/resource 개수·JSON 기록 | native/GPU/스레드 profiler·alloc/file/network·타깃 캡처·crash report |
-| [Release](https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine) | Build/Cook/Package/Deploy와 타깃 차이 | 사용자 함수 worker·Windows 편집기 EXE/동봉 배포 | DX11 Player·독립 게임 cook/chunk/package·기기/타깃 프로필 |
+| [Release](https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine) | Build/Cook/Package/Deploy와 타깃 차이 | 사용자 함수 worker·Windows 편집기 EXE·독립 Game.exe/게임 폴더·구성/장면 프로필·진행/취소 | DX11/HLSL Player·cook/chunk/patch·기기 deploy·다중 타깃/SDK·installer/서명/출시 |
 | [Samples](https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine) | 동작하는 템플릿을 열고 분해·확장 | `prototype/examples` | 2D/2.5D/3D 제작→배포 전체 샘플 |
 
 ## 초기 세부 본문 확인과 대응 (당시 상태)
@@ -133,7 +135,7 @@
 | Animation/Curve → 키 편집 → 파일 저장 → 대상 실행 | `asset-documents.js`, `TimelineEditor`, `engine-services.js:playAnimation/stopAnimation` | `test:runtime`: position/rotation/scale·정지/완료·반복·Rate/시간 배율·마지막 키 길이·검증 실패·대상 파괴·기본 파일 읽기·모델 클립 우선. 선택적 `readAsset`로 열린 편집본 공급; Skeletal/상태 머신/Animation 이벤트는 미지원 |
 | 에셋 이름 변경 → 구 참조 → 재열기 | `ProjectService.rename/resolve`·`.hbredirects.json` | `test:assets/test:project`: 서버 재시작 후 구 경로 해석·금지 경로·중복/실패 보존 |
 
-검사 명령의 존재와 실제 실행 결과는 별개다. 기능 변경 후 담당자가 해당 명령과 화면 시나리오를 실행하고 커밋 본문에 결과를 기록한다. Win32/WebView2 편집기 EXE·배포 폴더와 WebGL·C++ worker를 구현했다. DX11 렌더러·완성된 cooking·독립 게임 배포는 남아 있으며 편집기 배포와 같은 상태로 묶지 않는다.
+검사 명령의 존재와 실제 실행 결과는 별개다. 기능 변경 후 담당자가 해당 명령과 화면 시나리오를 실행하고 커밋 본문에 결과를 기록한다. Win32/WebView2 편집기 EXE·배포 폴더와 WebGL·C++ worker를 구현했다. 2026-10-03에는 별도 Player/Game.exe와 빌드 프로필을 추가했다. 실제 렌더러는 WebGL2이며 DX11 렌더러·타깃 cooking·압축/chunk·installer/출시는 별도 남은 구현이다. 편집기 배포와 독립 게임 패키지의 검사 결과를 구분한다.
 
 같은 프로젝트를 허브 창과 직접 열기 창에서 동시에 열 수 있으나 에셋 파일의 동시 편집 충돌 감지·병합은 미지원이다.
 
@@ -160,3 +162,7 @@
 ## 강체·관절·공간 질의 후속 대조 — 2026-10-03
 
 [PHYSICS_RUNTIME_RESEARCH.md](PHYSICS_RUNTIME_RESEARCH.md)에 공식 속성/API 본문과 설치된 Rapier 0.21.0의 실제 선언/구현을 대조하고 2D·3D 공용 실행·단위·C++ 동기 검색·AI 스키마·작성/저장/Play/복구 검증을 기록했다. 확인 범위는 detail-audit.json에 추가했으며 전체 링크/문서/API 확인으로 계산하지 않는다. Primitive 물리의 추가로 mesh/controller/관절 전체·native backend나 다른 엔진 전 영역을 완료 처리하지 않는다.
+
+## 빌드 프로필·독립 Player 후속 대조 — 2026-10-03
+
+[BUILD_PLAYER_RESEARCH.md](BUILD_PLAYER_RESEARCH.md)는 실제 읽은 네 공식 본문의 범위, 설정·키·Scene 드롭/제외/순서, 파일 포함/참조/소스 일치 검증, 개발/배포 구성의 정확한 의미, 패키지 생성/취소/손상 검사, Scene/게임 저장/종료 수명과 AI API를 코드에 연결한다. 독립 게임 package가 추가되어 기존 `독립 게임 배포 미구현` 항목을 갱신했으며 raw 에셋 보존과 타깃 cook를 구분한다. 기존 물리·UI·오디오·블루프린트 등 다른 모든 분야의 누적 세부 요구는 이 변경으로 완료 처리하지 않는다. 실제 실행 결과는 CODEX_HANDOFF.md에 따로 기록하고 오디오 등 진행 중 검사 항목을 원문 재사용만으로 통과 처리하지 않는다.

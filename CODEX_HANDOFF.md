@@ -1,5 +1,21 @@
 # HBEngine 작업 인계 — 2026-10-03
 
+## 최신 추가: 빌드 프로필과 독립 Windows 게임
+
+- File → 빌드 프로필/Ctrl+Shift+B/명령 검색을 같은 dock 창에 추가했다. 프로필 이름/ID·개발/배포·게임 이름/창 크기·Scene 선택/열린 Scene/드롭/포함/제외/행 이동/복제/삭제·검사/빌드/취소/게임 실행/출력 폴더. 프로필 포커스 Ctrl+S 저장·Ctrl+W 해당 창 닫기·native 종료 시 미저장 프로필 선택을 지원한다. 오른쪽 Inspector는 빌드 문맥을 표시한다.
+- Settings/BuildProfiles.json 버전1·SHA256revision·서버 queue를 사용한다. 저장 중 새로 입력한 값/포커스를 보존하고 queued owner 변경 시 원자적 임시 파일을 정리한다. 성공한 프로젝트 내부 Builds/Game.exe만 실행하며 외부 junction 결과는 거부한다. AI schema.build, GET/PUT profiles·POST build·GET job·POST cancel/open API와 build:game CLI가 같은 계약을 소비한다.
+- 활성 Scene+모든 비장면 Assets와 참조된 프로젝트 내부 파일을 재귀 수집한다. 제외/잘못된 Scene·없는 GLTF sidecar·변경된 C++ 소스·경로 이탈을 검증한다. 폴더 redirect/구 Scene 경로/Source 경로/오디오 이름과 legacy BP 이름의 유일 경로 정규화는 복사본에 적용해 원본 descriptor/에셋을 보존한다. 원본 파일100MB/총 포함1GB 제한이며 포맷 변환/cook는 별도다.
+- 사용자 worker C++을 개발(-O0 -g)/배포(-O2 -s)로 미리 컴파일한다. 시도별 임시 소스/EXE→정상 종료/취소 확인→완성 cache rename으로 부분 실행 파일과 동시 빌드를 보호한다. 캐시 atomic-v1은 이전 불완전 캐시를 재사용하지 않는다.
+- Game.exe Win32/WebView2 shell + 게임 전용 Player server를 만든다. Node/WebView2Loader/Three/Rapier/사용 worker/라이선스를 동봉하고 SHA256 파일 무결성을 확인한다. 파일 결과는 Builds/profile/uniqueId, game.hbpack.json·build-report.json이며 실패 결과는 build-failed.json이다. 편집기 serve/app/hbproject/Saved는 패키지에서 제외한다. WebView2 Runtime 필요; renderer는 실제 WebGL2이며 DX11/HLSL이라고 주장하지 않는다.
+- preparePlayWorld/BlueprintRuntime/Game.hpp/Bridge.hpp와 sceneRendering을 공유한다. 도형/환경/런타임 UI CSS를 공통 모듈로 추출했다. Player 2D직교/3D원근/게임 카메라·native frame/timer·BP tick·장면 전환·입력/오디오/위젯/물리/효과를 실제 실행한다. 배포 native/build는 등록된 소스 서명→worker 조회다. 런타임 컴파일러는 필요 없다.
+- Esc 계속/전체 화면/종료, 입력칸 분리/blur 키 놓기, AudioSource 시작/일시정지와 브라우저 실제 입력 시작 경로, EndPlay/리소스 정리/게임 저장 flush/자식 서버 종료를 연결했다. 실패 중 close는 failureCleanup을 기다리고 중복 close를 억제하며 저장 실패를 재시도한다. 진단 실패는 게임 프레임을 멈추지 않는다. Player 초기 session 실패는 편집기 hub로 이동하지 않고 오류를 표시한다.
+- 실제 자료: docs/BUILD_PLAYER_RESEARCH.md와 detail-audit 4개 본문 추가(Unity6000.0 profiles/scene list/window, Epic 표시UE5.8 packaging). Microsoft WebView2 permission/flags와 Chromium visibility 경로도 확인했다. 배포에 진단 flags를 넣지 않는다. smoke만 화면 밖의 보이는 비활성 창/16ms clock, 일반 게임은 RAF다. 전체 엔진/세부 누적 요구는 계속 전체 지도에 유지한다.
+- 검사: test:package 실제 2D개발/3D배포 Game.exe GPU/BP→C++ [4,5,6]/컴파일러 없는 PATH/AudioContext running+무음 WAV voice playing/EndPlay SaveGame flush/재열기/서버 종료·한글/공백/따옴표 이름·제외 Scene/외부폴더 의존/redirect/손상 거부/원본 descriptor 불변 통과. test:native-cancel 실제 compiler 대역 취소→동일 해시 g++ 반환42와 동시 실제 g++ [42,42]/임시EXE0. test:build-profiles는 queued owner/원자적 임시 정리/Builds junction 거부/저장 중 편집·revision·실패 보존을 검사한다. test:player-lifecycle는 실제 함수 원문+메모리 의존 대역으로 실패/종료/EndPlay flush/재시도 순서를 검사한다. GUI/디스크 실행 검증과 대역 검증을 구별한다.
+- 최신 관련 회귀: npm test/api:check/windows/session/assets, desktop:build/test:desktop(실제 EXE/WebView2·배포 WASM 물리136/형상67) 통과. 이전 이 단계의 ui-audio/host/scene/2d/authoring/runtime/integration 검사도 통과했다. 실제 5184 UI에서 포함 Scene 변경→빌드 완료→게임 실행, 입력 중 Ctrl+S 디스크/포커스 보존·Ctrl+W 창 닫기를 확인했다. 5185 Player에서 F3 BP입력으로 2D→3D/GPU34 draw/native 이동, Esc 시간 고정/audio suspended→계속 running을 확인했다.
+- 소유 증거: native/build/package-proof.json 최신 dir 참조; ui-build-success.png/ui-player-3d.png/ui-player-paused.png. 5184 editor는 package-check-8yvxvN/배포 검증, 5185 player는 그 프로젝트의 two_d 결과다. 5182 authoring-qa와 물리/형상 탭은 보존했고 사용자 5181/QuietGarden은 수정/새로고침하지 않았다. native 창 screenshot은 GPU2D와 실제 제품명까지 확인했다. 별도 Python Windows 보안 알림이 겹쳐 native 입력 검사는 진행하지 않았으며 알림은 조작하지 않았다.
+- 후속 전 영역 유지: native DX11/HLSL·정밀 물리 세부·전체 import/cooking·Terrain/Foliage/LOD·NavMesh/EQS/StateTree·IK/blend/root motion·VFX graph·UI/audio 세부·네트워크/Profiler/플러그인/CI/기기 배포/installer/서명. 패키지 분야도 SDK/플랫폼, 빌드 캐시/증분/chunk, Player 설정/아이콘/해상도/입력 장치/저장 호환 등 세부를 연구 표에 유지한다. 이 목록은 기존 누적 요구를 축소하지 않는다. 아래 기록은 이전 단계 당시 상태다.
+
+
 ## 최신 추가: 정확한 메시·2D 형상 제작과 공통 실행
 
 - MeshCollider(convex/triangle), PolygonCollider2D(오목/분리 경로), EdgeCollider2D(열린 선분)를 추가했다. 컴포넌트 46종. BP 473·코어 C++ 289/서비스 102 수치는 유지한다. prototype/collision-geometry.js가 저장 검증/분할/실제 Rapier descriptor/render bake를 공유한다.
