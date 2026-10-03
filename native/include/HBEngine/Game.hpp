@@ -30,6 +30,27 @@ struct GameState : Actor {};
 struct PlayerState : Actor {};
 struct AIController : Controller {};
 struct SceneComponent : Component { Transform transform{}; };
+HB_CLASS()
+class UI : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiShow", KoreanName="위젯 UI 표시", Category="UI") static void Show(Actor* target,const std::string& asset,const std::string& instance);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiRemove", KoreanName="위젯 UI 제거", Category="UI") static void Remove(Actor* target,const std::string& instance);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetText", KoreanName="위젯 텍스트 지정", Category="UI") static void SetText(Actor* target,const std::string& instance,const std::string& element,const std::string& text);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="uiGetText", KoreanName="위젯 텍스트 가져오기", Category="UI") static std::string GetText(Actor* target,const std::string& instance,const std::string& element);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetValue", KoreanName="위젯 값 지정", Category="UI") static void SetValue(Actor* target,const std::string& instance,const std::string& element,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="uiGetValue", KoreanName="위젯 값 가져오기", Category="UI") static float GetValue(Actor* target,const std::string& instance,const std::string& element);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetVisible", KoreanName="위젯 표시 상태", Category="UI") static void SetVisible(Actor* target,const std::string& instance,const std::string& element,bool visible);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetEnabled", KoreanName="위젯 활성 상태", Category="UI") static void SetEnabled(Actor* target,const std::string& instance,const std::string& element,bool enabled);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiFocus", KoreanName="위젯 입력 포커스", Category="UI") static void Focus(Actor* target,const std::string& instance,const std::string& element);
+};
+HB_CLASS()
+class AudioMixer : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSet", KoreanName="믹서 파라미터 지정", Category="오디오") static void SetFloat(Actor* target,const std::string& asset,const std::string& parameter,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mixerGet", KoreanName="믹서 파라미터 가져오기", Category="오디오") static float GetFloat(Actor* target,const std::string& asset,const std::string& parameter);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerClear", KoreanName="믹서 파라미터 재정의 해제", Category="오디오") static void ClearFloat(Actor* target,const std::string& asset,const std::string& parameter);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSnapshot", KoreanName="믹서 스냅샷 전환", Category="오디오") static void TransitionTo(Actor* target,const std::string& asset,const std::string& snapshot,float duration);
+};
 // These services share the editor/game-world operation contract with Blueprint.
 // The native host supplies the implementation and applies commands after each call.
 HB_CLASS()

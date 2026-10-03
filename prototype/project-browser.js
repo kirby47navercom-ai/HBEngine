@@ -135,7 +135,7 @@ export class ProjectBrowser {
     const add=(label,ic,action)=>{const b=document.createElement('button');b.role='menuitem';b.innerHTML=icon(ic)+'<span>'+esc(label)+'</span>';b.onclick=()=>{this.dismissMenu?.();action();};menu.append(b);};
     if(this.hooks.newBrowser)add('새 콘텐츠 브라우저에서 열기','folder',()=>this.hooks.newBrowser(folder));
     if(this.hooks.windowMenu)add('다른 창 추가','layers',()=>this.hooks.windowMenu(e));
-    const selectedFiles=this.entries.filter(file=>this.selected.has(file.path)&&file.kind!=='folder');if(folder===this.folder&&selectedFiles.length){add('다시 가져오기','refresh',()=>this.reimport());if(selectedFiles.length===1)add('에셋 정보 · 참조 보기','nodes',()=>this.assetInfo(selectedFiles[0]));}
+    const selectedFiles=this.entries.filter(file=>this.selected.has(file.path)&&file.kind!=='folder');if(folder===this.folder&&selectedFiles.length){add('다시 가져오기','refresh',()=>this.reimport());if(selectedFiles.length===1){add('에셋 정보','data',()=>this.assetInfo(selectedFiles[0]));if(this.hooks.references)add('참조 뷰어','nodes',()=>this.hooks.references(selectedFiles[0]));}}
     if(this.selected.size&&folder===this.folder){add('열기','external',()=>this.openSelected());add('이름 변경','file',()=>this.nameDialog('rename'));const file=this.entries.find(f=>this.selected.has(f.path));if(this.selected.size===1&&file?.kind==='code')add('이 클래스로 블루프린트 생성','blueprint',()=>this.hooks.wrap?.(file));add('에셋 경로 복사','copy',()=>navigator.clipboard.writeText([...this.selected].join('\n')));}
     const label=document.createElement('div');label.className='menu-section';label.textContent='새로 만들기';menu.append(label);
     for(const [kind,type] of Object.entries(assetTypes))add(type.label,assetIcon(kind),async()=>{await this.navigate(folder);this.createDialog(kind);});

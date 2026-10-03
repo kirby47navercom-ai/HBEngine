@@ -1,3 +1,5 @@
+import {widgetTypes,widgetEvents,widgetDefaults} from '../prototype/ui-assets.js';
+import {mixerParameters,mixerDefaults} from '../prototype/audio-mixer.js';
 import {placementCatalog} from '../prototype/placement-catalog.js';
 import {randomUUID} from 'node:crypto';
 import {assetTypes,assetSuffix,createAsset} from '../prototype/asset-documents.js';
@@ -8,6 +10,13 @@ import {gameplayTypes,behaviorNodes,boardTypes,comparisons} from '../prototype/g
 import {blueprintClasses} from '../prototype/class-types.js';
 
 export const editorMethods={
+  'profiler.read':{description:'실측 프레임·샘플·렌더 통계 조회',params:{}},
+  'profiler.record':{params:{recording:'Boolean'}},
+  'profiler.clear':{params:{}},
+  'widget.add':{params:{path:'위젯 문서',expectedRevision:'현재 revision',type:'ui.widgets의 타입 key',parent:'부모 컨테이너 ID (생략: 루트)',name:'고유 이름 (선택)',dryRun:'검증만'}},
+  'widget.reparent':{params:{path:'위젯 문서',expectedRevision:'현재 revision',node:'위젯 ID',parent:'부모 컨테이너 ID',dryRun:'검증만'}},
+  'widget.duplicate':{params:{path:'위젯 문서',expectedRevision:'현재 revision',node:'위젯 ID',parent:'부모 컨테이너 ID (선택)',offset:'[x,y] (기본 16,16)',dryRun:'검증만'}},
+  'widget.remove':{params:{path:'위젯 문서',expectedRevision:'현재 revision',node:'위젯 ID (자식도 함께 삭제)',dryRun:'검증만'}},
   'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
   'document.open':{params:{path:'프로젝트 상대 경로'}},
   'document.get':{params:{path:'열린 문서 경로 (생략하면 활성 문서)'}},
@@ -24,7 +33,7 @@ export const editorMethods={
   'runtime.openScene':{params:{path:'장면 에셋의 전체 프로젝트 상대 경로'}},
   'runtime.state':{params:{}},'native.build':{params:{path:'C++이 연결된 블루프린트 경로'}}
 };
-export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,placement:placementCatalog,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},gameplay:{assets:gameplayTypes,behaviorNodes,boardTypes,comparisons,sequenceTracks:['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale'],navigation:{solver:'collision-grid-A*',planes:['XY','XZ'],maxCells:40000},perception:{events:['OnTargetPerceptionUpdated'],eventParameters:{target:'object',sense:'string',sensed:'bool',location:'vec3',tag:'string'}},tags:{grammar:'dot-separated identifiers',query:{op:'all',tags:['State.Alive'],queries:[{op:'none',tags:['State.Stunned']}]}},limits:{montage:'single full-body clip per actor',fsm:'flat state machine',behavior:'interval-driven reactive selector'}},commands:editorMethods};}
+export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),ui:{widgets:widgetTypes,events:widgetEvents,defaults:widgetDefaults,maxNodes:256,maxInstances:32,anchors:{fixed:'offset x/y/width/height',stretched:'offset left/top/right/bottom'},variables:['text','value','visible','enabled','checked']},audio:{busDefaults:mixerDefaults,parameters:mixerParameters,snapshotOverride:'SetFloat overrides snapshots until ClearFloat',maxBuses:64},components:componentDefinitions,placement:placementCatalog,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},gameplay:{assets:gameplayTypes,behaviorNodes,boardTypes,comparisons,sequenceTracks:['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale'],navigation:{solver:'collision-grid-A*',planes:['XY','XZ'],maxCells:40000},perception:{events:['OnTargetPerceptionUpdated'],eventParameters:{target:'object',sense:'string',sensed:'bool',location:'vec3',tag:'string'}},tags:{grammar:'dot-separated identifiers',query:{op:'all',tags:['State.Alive'],queries:[{op:'none',tags:['State.Stunned']}]}},limits:{montage:'single full-body clip per actor',fsm:'flat state machine',behavior:'interval-driven reactive selector'}},commands:editorMethods};}
 
 export class EditorAutomation {
   constructor(){this.clients=new Map();this.commands=new Map();}

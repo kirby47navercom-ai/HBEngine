@@ -66,7 +66,7 @@ export class BlueprintRuntime {
     else if(k==='arrayGet'){if(a.index<0||a.index>=a.array.length)throw Error('배열 인덱스 범위 초과');output={return:a.array[a.index]};}
     else if(k==='self')output={return:b.self};else if(k==='isValid')output={return:!!this.object(a.target,b)};
     else if(k==='members'){const o=this.object(a.target,b);if(!o)throw Error('오브젝트가 없어요.');output={position:o.position,rotation:o.rotation,scale:o.scale,name:o.name,visible:o.visible};}
-    else if(adapters.has(k)){if(!this.hooks.operation)throw Error('엔진 서비스가 없어요: '+k);output=await this.hooks.operation(k,a,b,this)||{};}
+    else if(adapters.has(k)||catalog.find(s=>s.key===k)?.service){if(!this.hooks.operation)throw Error('엔진 서비스가 없어요: '+k);output=await this.hooks.operation(k,a,b,this)||{};}
     else throw Error('실행 구현이 없는 노드: '+k);
     f.outputs.set(n.id,output);this.values.set(n.id,copy(output));return output;
   }

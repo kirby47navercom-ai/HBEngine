@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {editorCommand,engineRequest} from './hb.mjs';
+import {createAsset} from '../prototype/asset-documents.js';
+const base=process.argv[2]||'http://127.0.0.1:5182';
+const clients=(await engineRequest(base,'/api/automation')).clients.sort((a,b)=>b.seen-a.seen);
+assert.ok(clients.length,'검증 전용 편집기가 열려 있어야 한다');
+const call=(method,params)=>editorCommand(base,method,params,{clientId:clients[0].id,timeout:30000});
+assert.equal((await call('editor.state')).projectName,'authoring-qa','사용자 프로젝트에서는 변경 검사를 실행하지 않는다');
+await call('runtime.stop');
+const stamp=Date.now(),path=`Assets/W_API_${stamp}.hbwidget.json`;
+async function put(path,data){const binary=data instanceof Uint8Array,route=binary?'/api/import?folder=Assets&name='+encodeURIComponent(path.split('/').pop()):'/api/file?path='+encodeURIComponent(path);const response=await fetch(base+route,{method:binary?'POST':'PUT',headers:{'X-HB-Editor':'1'},body:typeof data==='string'||binary?data:JSON.stringify(data)});assert.ok(response.ok,await response.text());}
+await put(path,createAsset('widget','W_API'));await call('document.open',{path});
+const initial=await call('document.get',{path});
+const dry=await call('widget.add',{path,expectedRevision:initial.revision,type:'Panel',name:'Container',dryRun:true});assert.equal(dry.valid,true);assert.equal((await call('document.get',{path})).revision,initial.revision,'dryRun은 문서를 변경하지 않는다');
+const panel=await call('widget.add',{path,expectedRevision:initial.revision,type:'Panel',name:'Container'});
+await assert.rejects(call('widget.add',{path,expectedRevision:initial.revision,type:'Text'}),e=>e.code==='REVISION_CONFLICT');
+const child=await call('widget.add',{path,expectedRevision:panel.revision,type:'Button',parent:panel.result.node,name:'Confirm'});
+const before=await call('document.get',{path});
+await assert.rejects(call('widget.reparent',{path,expectedRevision:before.revision,node:panel.result.node,parent:child.result.node}));assert.equal((await call('document.get',{path})).revision,before.revision,'실패한 계층 변경은 데이터·Undo를 보존한다');
+const duplicate=await call('widget.duplicate',{path,expectedRevision:before.revision,node:panel.result.node});
+const copied=(await call('document.get',{path})).data.nodes;assert.ok(copied.some(n=>n.parent===duplicate.result.node&&n.type==='Button'));
+const removed=await call('widget.remove',{path,expectedRevision:duplicate.revision,node:duplicate.result.node});assert.equal(removed.result.removed.length,2);
+const undone=await call('editor.undo',{path,expectedRevision:removed.revision});assert.equal(undone.revision,duplicate.revision);
+const redone=await call('editor.redo',{path,expectedRevision:undone.revision});assert.equal(redone.revision,removed.revision);
+await call('document.save',{path,expectedRevision:redone.revision});const stored=await(await fetch(base+'/api/file?path='+encodeURIComponent(path),{headers:{'X-HB-Editor':'1'}})).json();assert.equal(stored.nodes.length,3);
+const mixerPath='Assets/MX_QA.hbaudiomixer.json',soundPath='Assets/S_QA.hbaudioasset.json',clip='Assets/QA_Tone.wav';
+const mixer=createAsset('audiomixer','MX_QA');mixer.exposed=[{name:'MusicVolume',bus:'music',parameter:'volumeDb'}];await put(mixerPath,mixer);
+const sound=createAsset('audioasset','S_QA');sound.clip=clip;sound.mixer=mixerPath;sound.bus='music';await put(soundPath,sound);
+const pcm=Buffer.alloc(44+48000*2);pcm.write('RIFF');pcm.writeUInt32LE(pcm.length-8,4);pcm.write('WAVEfmt ',8);pcm.writeUInt32LE(16,16);pcm.writeUInt16LE(1,20);pcm.writeUInt16LE(1,22);pcm.writeUInt32LE(48000,24);pcm.writeUInt32LE(96000,28);pcm.writeUInt16LE(2,32);pcm.writeUInt16LE(16,34);pcm.write('data',36);pcm.writeUInt32LE(pcm.length-44,40);for(let i=0;i<48000;i++)pcm.writeInt16LE(Math.round(Math.sin(i*2*Math.PI*440/48000)*16000),44+i*2);await put(clip,pcm);
+const registry=await engineRequest(base,'/api/asset/registry');assert.ok(registry.assets.find(a=>a.path===mixerPath).referencers.some(a=>a.path===soundPath));assert.ok(registry.assets.find(a=>a.path===soundPath).dependencies.some(a=>a.path===clip));
+await call('document.open',{path:'Assets/Scenes/Garden.hbscene.json'});await call('profiler.clear');await call('profiler.record',{recording:true});await call('runtime.play');
+let profile;for(let i=0;i<8;i++){profile=await call('profiler.read');if(profile.frames.some(f=>f.label==='게임 프레임')&&profile.frames.some(f=>f.counters.drawCalls>0))break;}
+await call('profiler.record',{recording:false});await call('runtime.stop');
+assert.ok(profile.frames.some(f=>f.label==='게임 프레임'&&f.samples.some(s=>s.name==='블루프린트')&&f.counters.objects>0));assert.ok(profile.frames.some(f=>f.counters.drawCalls>0&&f.counters.triangles>0));assert.ok(profile.frames.every(f=>f.duration>=0&&f.samples.every(s=>s.duration>=0)));assert.match(profile.timing,/not GPU duration/);
+await fs.writeFile('native/build/ui-audio-editor-evidence.json',JSON.stringify({widgetPath:path,revision:redone.revision,atomicFailurePreserved:true,undoRedo:true,reference:true,profile},null,2));
+await call('document.open',{path:mixerPath});
+console.log('실제 편집기: 위젯 검증·dryRun·리비전 충돌·원자적 실패·하위 복제/삭제·Undo/Redo·디스크 저장·참조·실제 게임/렌더 계측 통과');

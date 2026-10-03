@@ -4,6 +4,9 @@
 .docked .center-workspace { grid-column:2; }
 .docked .hierarchy { grid-column:1; }
 .docked .inspector { grid-column:3; }
+.editor-grid.docked.dedicated-editor { grid-template-columns:minmax(0,1fr); }
+.docked.dedicated-editor .center-workspace { grid-column:1; }
+.docked.dedicated-editor>.hierarchy,.docked.dedicated-editor>.inspector,.docked.dedicated-editor>.resize-grip { display:none; }
 .docked .resize-grip[data-resize=bottom] { display:none; }
 .docked .resize-grip[data-resize=left] { bottom:0; }
 #dock-host,.dock-split,.dock-pane { display:flex; flex:1; min-width:0; min-height:0; overflow:hidden; }

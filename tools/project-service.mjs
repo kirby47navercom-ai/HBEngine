@@ -6,7 +6,7 @@ import {createReadStream} from 'node:fs';
 import {fileKind,validScene,defaultObjects,defaultSurface,defaultEnvironment} from '../prototype/model.js';
 import {defaultBlueprint,validBlueprint} from '../prototype/blueprint-model.js';
 const textExtensions=new Set(['.h','.hpp','.cpp','.c','.json','.txt','.md','.hlsl','.glsl','.obj','.gltf','.csv','.yaml','.yml']);
-const referenceKeys=new Set(['asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','sprite','tileset','physicalMaterial','animation','clip','blackboard','audio','source','headerPath','sourcePath','inputMapping','action','parent','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn']);
+const referenceKeys=new Set(['asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','sprite','tileset','physicalMaterial','animation','clip','blackboard','mixer','widget','audio','source','headerPath','sourcePath','inputMapping','action','parent','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn']);
 export function assetReferences(data,filename){const result=new Set(),visit=(value,key)=>{if(typeof value==='string'&&referenceKeys.has(key)&&value&&!value.startsWith('data:')&&!/^[a-z]+:/i.test(value)&&value.includes('.'))result.add(value);else if(Array.isArray(value))value.forEach(item=>visit(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>visit(v,k));};visit(data,'');if(filename.endsWith('.gltf'))for(const item of [...data.buffers||[],...data.images||[]])if(item.uri&&!/^(?:[a-z]+:|\/)/i.test(item.uri))result.add(path.posix.normalize(path.posix.join(path.posix.dirname(filename),item.uri)));return [...result].sort();}
 export function assetKind(name){return Object.entries(assetSuffix).find(([,suffix])=>name.endsWith(suffix))?.[0]||(/\.(cpp|hpp|h|c|hlsl|glsl)$/i.test(name)?'code':fileKind(name)==='unsupported'?'file':fileKind(name));}
 export class ProjectService {
@@ -41,6 +41,12 @@ export class ProjectService {
     const changed=entry.hash!==digest;Object.assign(entry,{hash:digest,size:stat.size,modified:stat.mtimeMs,dependencies,error,status:error?'error':'ready'});if(force||changed){entry.revision=(entry.revision||0)+1;entry.importedAt=new Date().toISOString();}return entry;
   }
   async registry(){const files=(await this.files()).filter(file=>file.kind!=='folder');for(const file of files)await this.scanAsset(file.path);await this.saveIndex();return files;}
+  async assetRegistry(){
+    const files=await this.registry(),resolved=new Map(),records=new Map(files.map(f=>[f.path,{...this.index[f.path],path:f.path,kind:f.kind,dependencies:[],referencers:[]}]));
+    const resolve=async source=>{if(!resolved.has(source))resolved.set(source,(async()=>{try{const file=await this.resolve(source),name=path.relative(this.root,file).split(path.sep).join('/');return records.has(name)?{path:name,id:records.get(name).id,kind:records.get(name).kind,missing:false}:{path:source,missing:true};}catch{return {path:source,missing:true};}})());return resolved.get(source);};
+    for(const record of records.values())for(const source of this.index[record.path].dependencies||[]){const target=await resolve(source);record.dependencies.push(target);const owner=records.get(target.path);if(owner&&!owner.referencers.some(r=>r.path===record.path))owner.referencers.push({path:record.path,kind:record.kind,id:record.id});}
+    return {version:1,assets:[...records.values()]};
+  }
   async assetInfo(relative){
     const files=await this.registry(),file=await this.resolve(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=this.index[canonical];if(!entry)throw Error('에셋 파일을 선택하세요.');
     const resolve=async source=>{try{const file=await this.resolve(source),name=path.relative(this.root,file).split(path.sep).join('/');return {path:name,id:this.index[name]?.id,kind:assetKind(name),missing:false};}catch{return {path:source,missing:true};}};

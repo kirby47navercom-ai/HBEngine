@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {create2DAsset,valid2DAsset,spriteImage,sliceSpriteGrid,spriteAnimationDuration,spriteAnimationFrame,tileAtlasRect,tileLine,applyTileTool,tileCollisionBoxes,twoDSuffix} from '../prototype/two-d-assets.js';
+import {create2DAsset,valid2DAsset,spriteImage,spriteSlices,sliceSpriteGrid,spriteAnimationDuration,spriteAnimationFrame,tileAtlasRect,tileLine,applyTileTool,tileCollisionBoxes,twoDSuffix} from '../prototype/two-d-assets.js';
 import {TwoDEditor} from '../prototype/two-d-editor.js';
 import {AssetDocuments,assetSuffix,validAsset} from '../prototype/asset-documents.js';
 
@@ -16,6 +16,7 @@ const image={width:128,height:96},resolved=spriteImage(sprite,image);
 assert.deepEqual(resolved.rect,[16,32,32,16]);assert.deepEqual(resolved.size,[1,.5]);assert.deepEqual(resolved.offset,[.5,-.25]);assert.deepEqual(resolved.uv.repeat,[.25,1/6]);near(resolved.uv.offset[1],.5);
 assert.deepEqual(spriteImage({...sprite,rect:[0,0,0,0]},image).rect,[0,0,128,96]);
 assert.equal(spriteImage({...sprite,rect:[127,0,2,1]},image),null);
+const nine={...sprite,border:[8,4,8,4]},nineMesh=spriteSlices(nine,image,{size:[3,2]});assert.equal(nineMesh.positions.length,9*6*3);assert.deepEqual(nineMesh.offset,[1.5,-1]);near(nineMesh.positions[3]-nineMesh.positions[0],.25);near(nineMesh.positions[7]-nineMesh.positions[1],.125);assert.ok(nineMesh.uvs.every(v=>v>=0&&v<=1));assert.ok(spriteSlices(nine,image,{size:[3.1,2],mode:'tiled'}).positions.length>nineMesh.positions.length);const tiny=spriteSlices(nine,image,{size:[.1,.1]});near(Math.max(...tiny.positions.filter((_,i)=>i%3===0))-.05,0);assert.throws(()=>spriteSlices({...nine,border:[20,0,20,0]},image,{size:[1,1]}),/테두리/);assert.ok(valid2DAsset('sprite',{...sprite,border:undefined}),'기존 스프라이트 JSON 호환');
 for(const texture of ['../outside.png','C:/outside.png','/outside.png','Assets/\u0000.png'])assert.equal(valid2DAsset('sprite',{...sprite,texture}),false);
 assert.equal(valid2DAsset('sprite',{...sprite,pixelsPerUnit:0}),false);
 assert.equal(valid2DAsset('sprite',{...sprite,pivot:[-1,.5]}),false);

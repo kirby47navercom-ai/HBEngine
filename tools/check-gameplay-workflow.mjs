@@ -15,7 +15,7 @@ import {engineSchema} from './editor-automation.mjs';
 import {NativeHost} from './native-host.mjs';
 
 const schema=engineSchema();for(const kind of Object.keys(gameplayTypes)){assert.ok(validAsset(kind,createAsset(kind,'Example')));assert.ok(schema.assetTypes[kind]);}
-assert.ok(schema.components.Decal);assert.equal(catalog.length,444);
+assert.ok(schema.components.Decal);assert.ok(catalog.length>=444);assert.deepEqual(schema.blueprint.nodes.map(n=>n.key),catalog.map(n=>n.key));
 for(const [kind,array] of [['blackboard','keys'],['behaviortree','nodes'],['statemachine','states'],['montage','clips'],['sequenceasset','tracks']]){const malformed=createAsset(kind,'Malformed');malformed[array]=[null];assert.equal(validAsset(kind,malformed),false,kind+' 잘못된 요소는 예외 없이 거부한다');}const tooLargeInt=createAsset('blackboard','Integer');tooLargeInt.keys.push({name:'Value',type:'int',value:2147483648});assert.equal(validAsset('blackboard',tooLargeInt),false);
 for(const type of ['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale']){const doc=createAsset('sequenceasset','Test');doc.tracks=[makeSequenceTrack(type)];assert.ok(validAsset('sequenceasset',doc),type);}
 const bb=createAsset('blackboard','BB');bb.keys.push({name:'Score',type:'int',value:0},{name:'Goal',type:'vec3',value:[1,0,0]});const board=new Blackboard(bb.keys);assert.throws(()=>board.set('Score','0'),/자료형/);board.set('Score',7);board.clear('Score');assert.equal(board.get('Score'),0);const value=board.get('Goal');value[0]=99;assert.equal(board.get('Goal')[0],1);

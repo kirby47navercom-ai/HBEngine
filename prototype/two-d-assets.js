@@ -7,14 +7,14 @@ const reference=value=>typeof value==='string'&&value.length<=2000&&!/^(?:[A-Za-
 const name=value=>typeof value==='string'&&value.trim().length>0&&value.length<=120;
 export function create2DAsset(kind,title){
   if(!name(title))throw Error('에셋 이름을 확인하세요.');
-  if(kind==='sprite')return {version:1,name:title,texture:'',pixelsPerUnit:100,rect:[0,0,0,0],pivot:[.5,.5],filter:'nearest'};
+  if(kind==='sprite')return {version:1,name:title,texture:'',pixelsPerUnit:100,rect:[0,0,0,0],pivot:[.5,.5],filter:'nearest',border:[0,0,0,0]};
   if(kind==='tilemap')return {version:1,name:title,tileset:'',tileSize:[32,32],cellSize:[1,1],width:32,height:32,layers:[{id:'ground',name:'Ground',visible:true,collision:false,tiles:[]}]};
   if(kind==='spriteanimation')return {version:1,name:title,frames:[],loop:true,playRate:1};
   throw Error('2D 에셋 종류를 확인하세요.');
 }
 export function valid2DAsset(kind,data){
   if(!data||data.version!==1||!name(data.name))return false;
-  if(kind==='sprite')return reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter);
+  if(kind==='sprite')return reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
   if(kind==='spriteanimation')return typeof data.loop==='boolean'&&finite(data.playRate,.01,100)&&Array.isArray(data.frames)&&data.frames.length<=1000&&data.frames.every(frame=>frame&&reference(frame.sprite)&&frame.sprite.length>0&&finite(frame.duration,.001,3600));
   if(kind!=='tilemap'||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;
   const ids=new Set();
@@ -37,6 +37,20 @@ export function sliceSpriteGrid(sprite,image,{width=32,height=32,margin=0,spacin
   const [x,y,w,h]=source.rect,columns=Math.max(0,Math.floor((w-2*margin+spacing)/(width+spacing))),rows=Math.max(0,Math.floor((h-2*margin+spacing)/(height+spacing)));
   if(columns*rows>1000)throw Error('한 번에 1000개까지 자를 수 있어요.');
   return Array.from({length:columns*rows},(_,index)=>({...structuredClone(sprite),name:sprite.name.slice(0,115)+'_'+String(index+1).padStart(3,'0'),rect:[x+margin+(index%columns)*(width+spacing),y+margin+Math.floor(index/columns)*(height+spacing),width,height]}));
+}
+/** Borders use left/bottom/right/top pixels. UVs are local to the cropped sprite rectangle. */
+export function spriteSlices(sprite,image,{size,mode='sliced'}={}){
+  const layout=spriteImage(sprite,image);if(!layout||!vector(size,2,.001,10000)||!['sliced','tiled'].includes(mode))throw Error('스프라이트 크기·모드를 확인하세요.');
+  const [left,bottom,right,top]=sprite.border||[0,0,0,0],w=layout.rect[2],h=layout.rect[3],ppu=sprite.pixelsPerUnit;
+  if(left+right>w||bottom+top>h)throw Error('스프라이트 테두리가 원본 영역보다 커요.');
+  const segments=(length,start,end,pixels,first,last)=>{const scale=Math.min(1,length/Math.max(.00001,(start+end)/ppu)),a=start/ppu*scale,b=end/ppu*scale,inner=Math.max(0,length-a-b),tile=(pixels-start-end)/ppu,list=[];
+    if(a>0)list.push({from:0,to:a,u0:0,u1:first});
+    if(inner>0){if(mode==='tiled'&&tile>0){const count=Math.ceil(inner/tile);if(count>10000)throw Error('스프라이트 반복 수 제한 초과');for(let i=0;i<count;i++){const at=i*tile,span=Math.min(tile,inner-at);list.push({from:a+at,to:a+at+span,u0:first,u1:first+(last-first)*span/tile});}}else list.push({from:a,to:a+inner,u0:first,u1:last});}
+    if(b>0)list.push({from:length-b,to:length,u0:last,u1:1});return list;
+  };
+  const xs=segments(size[0],left,right,w,left/w,1-right/w),ys=segments(size[1],bottom,top,h,bottom/h,1-top/h);if(xs.length*ys.length>10000)throw Error('스프라이트 반복 면 제한 초과');
+  const positions=[],uvs=[],normals=[];for(const x of xs)for(const y of ys){const verts=[[x.from,y.from,x.u0,y.u0],[x.to,y.from,x.u1,y.u0],[x.to,y.to,x.u1,y.u1],[x.from,y.from,x.u0,y.u0],[x.to,y.to,x.u1,y.u1],[x.from,y.to,x.u0,y.u1]];for(const [vx,vy,u,v] of verts){positions.push(vx-size[0]/2,vy-size[1]/2,0);uvs.push(u,v);normals.push(0,0,1);}}
+  return {positions,uvs,normals,size,offset:[(.5-sprite.pivot[0])*size[0],(.5-sprite.pivot[1])*size[1]]};
 }
 export function spriteAnimationDuration(animation){return animation.frames.reduce((sum,frame)=>sum+frame.duration,0);}
 export function spriteAnimationFrame(animation,time,{loop=animation?.loop,rate=animation?.playRate}={}){

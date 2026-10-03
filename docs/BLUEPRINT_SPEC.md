@@ -122,3 +122,13 @@ C++ 변경 명령은 호출 종료 후 소유 플레이 월드에서 검증·적
 - 오브젝트 배치는 38개 실제 조합·검색·분류·도킹·드래그를 제공한다. 위치/회전/크기 스냅과 월드/로컬 변환, 선택 Q·이동 W·회전 E·크기 R·Space 순환·Ctrl+Space 창 최대화를 제공한다. 선택/전체 충돌 미리보기는 현 solver의 경계를 보여준다.
 - 머테리얼 54종 노드(21종 추가): 월드 위치/법선·시선·Fresnel, 채널 분해/조합, 외적/반사/거리, 절차적 패턴과 그라데이션, 추가 수학. CPU 평가와 GPU GLSL 실행을 연결했다. 네 가지 템플릿은 노드·핀·파라미터를 일반 머테리얼 에셋으로 저장한다.
 - `test:authoring`은 실제 VM 출력, 연결 보존, 실패 무변경, 배치 컴포넌트, 2D 부모 아래 충돌 경계, Fresnel 각도와 템플릿을 검증한다. 실제 UI/API 저장·Undo·파일 검증은 `node tools/check-authoring-editor.mjs URL`이며 전용 `authoring-qa` 프로젝트에서만 실행한다.
+
+## 위젯·믹서 실행 서비스 — 2026-10-03
+
+정적 카탈로그는 457종(289 코어+86 C++ 실행 서비스+기타 이벤트/제어 노드)이다. 이번 UI 9개와 Mixer 4개는 `Game.hpp` 선언에서 BP 핀을 생성하고 `Bridge.hpp`로 같은 실행 서비스에 연결한다. 생성 서비스 노드의 dispatch도 전체 공통 경로로 수정했다. 노드 수는 Unreal/Unity 전체 API 구현 완료 수가 아니다.
+
+- `hb::UI::Show/Remove/SetText/GetText/SetValue/GetValue/SetVisible/SetEnabled/Focus`: 소유 Actor와 위젯 instance, 요소 이름/ID로 조작한다. 위젯 파일의 click/changed/submit/focus/blur는 소유 BP의 custom event로 전달되며 widget/element/type/text/value를 제공한다. 변수 ID 또는 이름으로 text/value/visible/enabled/checked를 바인딩한다.
+- UI setter/getter는 실제 DOM과 런타임 상태에 연결된다. Checkbox value는 0/1이고 Slider/ProgressBar는 min/max로 제한한다. 부모 disabled는 자식 입력에도 적용한다. 현재 입력값으로 TextInput submit과 Checkbox click을 전달한다.
+- `hb::AudioMixer::SetFloat/GetFloat/ClearFloat/TransitionTo`: asset 경로와 노출 이름, snapshot/전환 시간으로 제어한다. SetFloat override는 ClearFloat까지 snapshot에 우선한다. 범위 밖·없는 이름·잘못된 bus/snapshot/계층은 실패한다. 실제 WebAudio 버스/필터/압축기/신호로 실행한다.
+- C++ 읽기는 호출에 전달된 snapshot이다. Show 이후 생성/삭제, snapshot 전환을 같은 호출에서 동기 완료로 취급하지 않는다. 다음 상태와 실행 이벤트로 확인한다.
+- `test:ui-audio`는 실제 BP/C++ 실행·공용 snapshot·값 범위·수명을 검사한다. `prototype/tests/ui-audio.html`은 실제 DOM 이벤트와 PCM 감쇠/필터/Mute/Solo/공간 노드를 검사한다. 별도 위젯 클래스/애니메이션/지역화, mixer send/reverb/voice priority/native backend 등은 남아 있다.

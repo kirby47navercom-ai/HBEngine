@@ -74,7 +74,7 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 
 ## AI·상태·연출·효과 데이터
 
-`/api/schema`에 39종 컴포넌트, 444개 기본 BP 노드, 73개 C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
+`/api/schema`에 39종 컴포넌트, 457개 기본 BP 노드, 86개 C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
 
 - BB: `keys[{name,type,value}]`; `bool/int/float/string/vec3/object`. int32·벡터·객체 ID 검증을 적용한다.
 - BT: `blackboard`, `root`, `interval`, `nodes[{id,type,properties,children,services,x,y}]`. 순환/다중 부모·자료형·노드 수/깊이를 검증한다. 서비스는 이벤트/간격을 가진다.
@@ -101,3 +101,25 @@ C++ 실행 서비스는 호출 중 쌓인 명령을 호출 종료 후 실제 VM�
 | `scene.place` | 스키마의 `key`, `position:[x,y,z]`. 실제 컴포넌트 기본값이 있는 객체를 생성하고 `result.object` ID를 반환한다. |
 
 자동 연결·변수 드롭은 UI와 `blueprint-connections.js`를 공유한다. 위치는 필요한 경우 기존 노드를 피한다. `dryRun`은 후보 데이터만 반환하므로 이를 최종 ID로 간주하지 말고 실제 변경 응답의 ID를 사용한다. 변경 후 `document.get`으로 읽거나 `editor.undo/redo`, `document.save`를 이어서 호출한다. 코드별 동작 확인은 `tools/check-authoring-editor.mjs`에 재현 가능한 실제 클라이언트 검증으로 보관한다.
+
+## 위젯·오디오·참조·프로파일
+
+현재 `/api/schema`는 457종 BP 노드와 86개 실행 서비스, `ui.widgets/events/defaults/anchors/variables`, `audio.busDefaults/parameters/snapshotOverride`를 제공한다. `.hbwidget.json`과 `.hbaudiomixer.json`은 UI 생성, 파일 검증, JSON Patch, 참조 registry, 저장·복구와 같은 스키마를 사용한다. 헤드리스 로직 실행은 실제 DOM/음향 서비스가 필요하면 명시적으로 실패하며 PCM/GPU 검증으로 표시하지 않는다.
+
+| 명령 | 추가 인수/동작 |
+|---|---|
+| `widget.add` | `type`, 선택적 `parent/name`. 새 ID는 `result.node`. 생략한 parent는 실제 Canvas root ID다. |
+| `widget.reparent` | `node,parent`. 순환·루트 이동·비컨테이너 부모를 거부한다. |
+| `widget.duplicate` | `node`, 선택적 `parent,offset:[x,y]`. 하위 트리를 새 ID/고유 이름으로 복제한다. |
+| `widget.remove` | `node`. 하위 트리를 함께 삭제하고 `result.removed`를 제공한다. |
+| `profiler.read` | bounded 실제 frame/sample/counter 기록. C++은 IPC 포함 elapsed 시간, WebGL 제출은 GPU 시간이 아니다. |
+| `profiler.record` | `recording:Boolean`. 실제 실행/렌더 프레임 계측을 시작/중지한다. |
+| `profiler.clear` | 기록을 지운다. |
+
+위젯 변경은 `path,expectedRevision,dryRun`을 받으며 UI와 `ui-assets.js`의 동일 계층 함수를 사용한다. 먼저 `document.get`으로 읽고 후보 변경을 검증한다. 실패 시 문서·Undo 기록 보존, 성공 후 Undo/Redo·저장·재열기를 실제 편집기에서 확인했다. 속성·이벤트·바인딩·mixer bus/snapshot/exposed는 `document.patch`로 공통 검증한다.
+
+`GET /api/asset/registry`는 현재 프로젝트의 path/id/kind/size/dependencies/referencers와 redirect로 해석한 참조를 제공한다. source 원본의 물리 JSON 경로를 자동으로 rewrite했다고 가정하지 않는다. 참조 뷰어와 AI는 같은 registry를 조회한다. registry는 대략 O(에셋+참조)로 한 번 구성하여 양방향 그래프 탐색에서 파일마다 전체 재검색하지 않는다.
+
+`runtime.state.objects[].gameplayDebug.ui[instance][element]`에는 type과 현재 위젯 값이, `audioMixers[asset][exposed]`에는 snapshot 전환/override의 현재 값이 들어간다. 읽은 디버그 값을 에셋 기본값으로 덮어쓰지 않는다. C++ Show 등의 비동기 결과는 다음 snapshot으로 확인한다.
+
+재현: `node tools/check-ui-audio-editor.mjs http://127.0.0.1:5182`는 `authoring-qa` 프로젝트 이름을 확인한 뒤 새 검증 파일만 만든다. 사용자 프로젝트에서는 실행하지 않는다. 실제 UI/PCM 검사 및 남은 세부 구현은 [위젯·오디오 연구](AUTHORING_UI_AUDIO_RESEARCH.md)에 기록했다.

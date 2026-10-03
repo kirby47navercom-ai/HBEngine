@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-03",
+  "scope": "이번 변경의 실제 본문 확인 기록. 기존 연구 문서의 다른 본문 확인 기록과 합쳐 조회한다. 전체 기능/본문/API/패키지 분석 완료가 아니다.",
+  "sources": [
+    {
+      "id": "epic-system-workflow",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engines-systems-and-workflows-overview-for-unity-developers",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "본문 전체 시스템/제작 비교; 본문 기준 UE 5.5.4 / Unity 6 6000.0.30f1",
+      "topics": [
+        "framework",
+        "physics",
+        "AI",
+        "animation",
+        "world",
+        "render",
+        "audio",
+        "UI"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-umg-anchors",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/umg-anchors-in-unreal-engine-ui",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "고정/늘이기 앵커·offset·화면 크기·중첩 Canvas 본문",
+      "topics": [
+        "widget.anchors",
+        "widget.layout"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-uib-hierarchy",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/UIB-structuring-ui-elements.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "계층 드롭/이름/복사/삭제·키·속성·template/shadow tree 본문",
+      "topics": [
+        "widget.tree",
+        "widget.clipboard",
+        "widget.properties"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-audio-mixer",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/AudioMixerOverview.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "routing/group·Mute/Solo/Bypass·meter·snapshot·exposed·source attenuation 본문",
+      "topics": [
+        "audio.routing",
+        "audio.mixer",
+        "audio.snapshots",
+        "audio.meter"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-audio-set-float",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Audio.AudioMixer.SetFloat.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "선언/인수/실패·노출 이름·SetFloat override/ClearFloat·초기화 주의 본문",
+      "topics": [
+        "audio.exposed",
+        "audio.snapshot-override",
+        "audio.cpp"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-reference-viewer",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reference-viewer-in-unreal-engine",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "양방향/depth/breadth·filters·이동/키/메뉴·내보내기·관리 참조 본문",
+      "topics": [
+        "assets.reference-viewer",
+        "editor.reference-navigation"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-profiler-cpu",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/ProfilerCPU.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "CPU module chart·timeline/hierarchy·frame/live·thread/flow·exclusive 시간 본문",
+      "topics": [
+        "profiler.frames",
+        "profiler.timeline",
+        "profiler.aggregate"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-sprite-renderer",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/renderer/sprite-renderer-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "컴포넌트 필드·Simple/Sliced/Tiled·Continuous/Adaptive·mask/sort 본문",
+      "topics": [
+        "2d.sprite-renderer",
+        "2d.nine-slice"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-sprite-draw-mode",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteRenderer-drawMode.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "API 선언·border/edge/center resize 의미 본문",
+      "topics": [
+        "2d.nine-slice"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-nine-slicing",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/9-slice/9-slicing.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "corner/edge/center Sliced/Tiled 동작·collider 차이 본문",
+      "topics": [
+        "2d.nine-slice"
+      ],
+      "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    }
+  ]
+}

@@ -101,3 +101,15 @@
 검증: `test:authoring`, `check-authoring-editor.mjs`(격리된 authoring-qa 프로젝트), runtime/scene/2d/material/integration/windows, 공통 C++ 함수 221종. 머테리얼은 21종 추가하여 54종이며 출력 노드를 제외한 53종이 실제 WebGL에서 컴파일됐다. 실제 편집기에서 이벤트 제목 연결, 변수 Get/Set 드롭, int→string 변환, 입력값 저장, 컴포넌트 2D 강체 검색·추가, 2D 스냅 드롭, 창 최대화, 머테리얼 템플릿 적용→Undo를 확인했다. 스크린샷은 `native/build/ui-authoring-blueprint.png`, `ui-authoring-material.png`에 저장한다.
 
 앞의 전체 확장 지도는 유지한다. 특히 네이티브 렌더러·셰이더, 정밀 물리, bone animation/IK/리타깃, UI 저작, terrain/foliage, VFX, import/cooking/패키징, profiler, 네트워크·플러그인은 이번 조작 개선으로 완료 처리하지 않는다.
+
+## 2026-10-03 위젯·믹서·참조·계측·2D 저작 확장
+
+큰 분야 이름만 구현하는 것으로 요구를 충족하지 않는다. 전체 분야 표를 현재 코드에 맞게 갱신하고, 실제 본문 확인과 기능별 조작/데이터/실행/미구현 차이를 [위젯·오디오 세부 대조](AUTHORING_UI_AUDIO_RESEARCH.md)와 `reference-index/detail-audit.json`에 추가했다. 목차 수집 상태는 본문 확인 상태로 올리지 않았다.
+
+- 위젯: 14종 palette/tree/canvas/properties·해상도/anchors·계층/drag/resize·subtree clipboard/복제/삭제·Undo/저장, 변수/이벤트 연결과 실제 DOM/소유 BP 실행. C++ UI 9종·AI 계층 명령·공통 검증을 연결했다.
+- 오디오: 독립 bus graph/속성/exposed/snapshot·실제 preview와 RMS·gain/filter/compressor와 실제 효과 우회·HRTF/거리·source 수명·C++ 4종/공통 BP 실행. 명시적 override와 snapshot, 동일 clip의 여러 컴포넌트, 늦은 play 정리를 검사했다.
+- 자산 참조: registry→양방향 그래프, 방향별 depth/breadth·누락/순환·filter·창 자체 history·pan/zoom/키·경로 복사/CSV. Profiler는 실측 frame 구간과 draw/resource 개수·검색/집계/기록/JSON·AI 명령이다. native exclusive/GPU 시간을 구현한 것으로 표시하지 않는다.
+- 2D: border 편집/가이드, SpriteRenderer Simple/Sliced/Tiled를 공통 asset/render 경로에 연결했다. 실제 WebGL에서 모서리 크기/중앙 색 픽셀과 Tiled geometry를 확인했다. Adaptive/SpriteMask/2D 조명/정밀 다각형 물리는 남아 있다.
+- 합계: 정적 BP 457종, 공통 C++ 289코어+86실행 서비스, 컴포넌트 39종. 모든 엔진 API의 구현 완료 수가 아니다.
+
+검사: 기본/API·ui-audio(실제 C++/VM/수명)·scene/2d/integration/assets/windows/server·headless·desktop 빌드/검사와 격리 편집기 명령 검사. 브라우저 fixture는 DOM 이벤트·실제 PannerNode·PCM −6dB/Mute/Solo/filter/Bypass·실제 2D GPU를 확인한다. 전체 시스템의 세부 기능과 미조사 매뉴얼/API/패키지는 계속 남아 있다.

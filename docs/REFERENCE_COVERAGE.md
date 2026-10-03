@@ -1,6 +1,6 @@
 # HBEngine 공식 문서 조사와 구현 대조
 
-기준일: 2026-10-02. 조사 단위는 기능 이름이 아니라 **만들기 → 편집 → 저장 → 배치/참조 → 실행 → 진단 → 재열기** 흐름이다. 전체 설계는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 조작 계약은 [편집기 기준](EDITOR_INTERACTION_SPEC.md), 그래프와 C++ 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)에 연결한다.
+기준일: 2026-10-03. 조사 단위는 기능 이름이 아니라 **만들기 → 편집 → 저장 → 배치/참조 → 실행 → 진단 → 재열기** 흐름이다. 전체 설계는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 조작 계약은 [편집기 기준](EDITOR_INTERACTION_SPEC.md), 그래프와 C++ 상태는 [블루프린트 기준](BLUEPRINT_SPEC.md)에 연결한다.
 
 ## 조사 상태의 의미
 
@@ -24,66 +24,68 @@
 | --- | --- | --- | --- |
 | [Manual](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityManual.html) | 분야별 도구·런타임·플랫폼을 한 프로젝트 흐름에 연결 | 이 문서·`ENGINE_PLAN.md` | 분야 간 완료 조건을 실제 게임 제작으로 검증 |
 | [What's new](https://docs.unity3d.com/6000.0/Documentation/Manual/WhatsNew.html) | 버전별 기능·변경 구분 | 버전 있는 JSON 검증 | 엔진 버전별 변경 기록·호환성 표 |
-| [Get started](https://docs.unity3d.com/6000.0/Documentation/Manual/get-started.html) | 설치·프로젝트 생성·설정·첫 실행 | Win32/WebView2 EXE·프로젝트 허브·`.hbproject`·최근 목록·생성/열기 | 설치/업데이트·템플릿 선택·프로젝트 업그레이드/백업 |
+| [Get started](https://docs.unity3d.com/6000.0/Documentation/Manual/get-started.html) | 설치·프로젝트 생성·설정·첫 실행 | EXE·프로젝트 허브·descriptor·최근·2D/3D 기본/AI 템플릿 | 설치/업데이트·엔진 버전 선택·변환/백업·타깃 설정 |
 | [Upgrade](https://docs.unity3d.com/6000.0/Documentation/Manual/UpgradeGuides.html) | 순차 버전 변경·코드/에셋 호환성 | `validAsset`/`validBlueprint`의 버전 검사 | 백업·데이터 마이그레이션·실패 복원 |
-| [Building Blocks](https://docs.unity3d.com/6000.0/Documentation/Manual/building-blocks.html) | 반복 제작을 동작하는 구성으로 제공 | 클래스별 기본 컴포넌트 템플릿 | 조작 가능한 2D·3D 캐릭터/상호작용 템플릿; 서비스 구성은 별도 |
+| [Building Blocks](https://docs.unity3d.com/6000.0/Documentation/Manual/building-blocks.html) | 반복 제작을 동작하는 구성으로 제공 | 클래스 기본 컴포넌트·2D 플랫폼/탑다운·3D 제어·AI/효과 예제 | 프레임워크의 나머지 수명·확장 템플릿·완성 게임 제작/배포 검증 |
 | [Editor interface](https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html) | 창·포커스·검색·설정·자동화 | `app.js`·`dock-layout.js`·`editor-shell.css` | 단축키 재설정·명령 충돌 검사·설정 프로필 |
 | [Packages](https://docs.unity3d.com/6000.0/Documentation/Manual/PackagesList.html) | 기능 묶음·의존성·버전·진단 | npm 개발 의존성만 사용 | 사용자 플러그인 등록·버전 잠금·의존성 충돌 UI |
-| [Assets and media](https://docs.unity3d.com/6000.0/Documentation/Manual/assets-and-media.html) | 원본·변환 결과·임포트 설정·런타임 로딩 분리 | `project-service.mjs`·`project-browser.js`·`asset-documents.js` | 임포터별 변환·재가져오기·하위 에셋·의존성 갱신 |
-| [2D](https://docs.unity3d.com/6000.0/Documentation/Manual/Unity2D.html) | Sprite·Tilemap·2D 물리·2D 조명 | XY 직교 뷰·이미지 미리보기 | Sprite 분할/Pivot/Sorting·타일 팔레트·2D 충돌 solver |
+| [Assets and media](https://docs.unity3d.com/6000.0/Documentation/Manual/assets-and-media.html) | 원본·변환 결과·임포트 설정·런타임 로딩 분리 | 원본 보존·다중 파일/폴더 드롭·임포트 메타데이터/재가져오기·ID/redirect·참조 뷰어 | 전체 포맷 변환·하위 에셋·import preset·DDC·cook·동시 편집 충돌 |
+| [2D](https://docs.unity3d.com/6000.0/Documentation/Manual/Unity2D.html) | Sprite·Tilemap·2D 물리·2D 조명 | Sprite atlas/Pivot/Flip/Order·타일 팔레트/레이어/충돌·Flipbook·XY 물리·9-slice Sliced/Tiled | SpriteMask·SortingLayer·Adaptive tiling·2D 조명·다각형/관절/회전 물리·2D skeleton |
 | [XR](https://docs.unity3d.com/6000.0/Documentation/Manual/XR.html) | 장치·추적·양안 화면·입력·실행 | 미구현 | XR 장치 계층·스테레오 렌더·상호작용·빌드 |
 | [Multiplayer](https://docs.unity3d.com/6000.0/Documentation/Manual/multiplayer.html) | 접속·세션·상태 동기화·검증 | 미구현 | 권한·복제·RPC·지연/끊김 검사 |
 | [Platforms](https://docs.unity3d.com/6000.0/Documentation/Manual/PlatformSpecific.html) | 플랫폼별 기능·SDK·출력·오류 | Windows x64 편집기 EXE·WebView2·Node 동봉·g++ worker | DX11 게임 실행 파일·다른 플랫폼·타깃 빌드 프로필 |
-| [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | `model.js`·`blueprint-model.js`·`engine-services.js` | 프리팹/Variant·인스턴스 오버라이드·컴포넌트 전체 생명주기 |
+| [GameObjects](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-gameobjects.html) | 컴포넌트·Transform·활성·태그·레이어·Prefab | 39종 컴포넌트·38종 배치 조합·계층/그룹/복제·태그·Prefab 저장/인스턴스 생성 | Variant/오버라이드 재적용·전체 활성/비활성/파괴 콜백·SerializeReference 수준 타입 모델 |
 | [Scenes](https://docs.unity3d.com/6000.0/Documentation/Manual/working-with-scenes.html) | 생성·저장·다중 장면·템플릿·텍스트 데이터 | 독립 Scene 문서·환경 프리셋·BP/C++ 런타임 단일 장면 전환 | 다중 장면 동시 월드·스트리밍 |
-| [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 독립 카메라 뷰포트·`OrbitControls` | Game View 카메라 지정·물리 카메라·culling·출력 텍스처 |
+| [Cameras](https://docs.unity3d.com/6000.0/Documentation/Manual/Cameras.html) | 직교/원근·여러 카메라·출력·종횡비 | 직교/원근·독립 뷰포트·게임 카메라 우선순위/추적·시퀀스 카메라 | 물리 카메라·culling mask·RenderTexture·stack·시네마틱 카메라/블렌드 |
 | [World building](https://docs.unity3d.com/6000.0/Documentation/Manual/CreatingEnvironments.html) | 하늘·Terrain·환경 편집과 런타임 최적화 | 도형·태양/하늘/구름/안개 미리보기 | Terrain 페인트·식생·LOD·큰 월드 로딩 |
-| [Physics](https://docs.unity3d.com/6000.0/Documentation/Manual/PhysicsSection.html) | 2D/3D 물리의 다른 구현과 힘·충돌·시간 단계 | AABB 겹침/Hit·메시 Raycast·속도 갱신 | 강체 solver·고정 시간 단계·joint·CCD·2D 전용 물리 |
+| [Physics](https://docs.unity3d.com/6000.0/Documentation/Manual/PhysicsSection.html) | 2D/3D 물리의 다른 구현과 힘·충돌·시간 단계 | 고정 스텝·중력/힘/질량/drag/축 고정·마찰/반발·Box/Sphere·캡슐 근사·Hit/Overlap·2D XY 이동 | 정밀 캡슐/mesh·각속도/회전 solver·joint/CCD·채널 응답·차량/cloth/파괴 |
 | [Input](https://docs.unity3d.com/6000.0/Documentation/Manual/Input.html) | 장치 입력과 게임 동작·UI/IME 문맥 분리 | `input-actions.js`·IA/IMC 전용 문서 | 게임패드/마우스 축·리바인딩·플레이어별 문맥·C++ 액션 구독 |
-| [UI systems](https://docs.unity3d.com/6000.0/Documentation/Manual/UIToolkits.html) | 편집기 UI와 게임 UI 제작/런타임 구분 | 편집기 DOM·기본 게임 위젯 서비스 | 게임 Widget Designer·Anchor/레이아웃·상태/데이터 바인딩 |
-| [Animation](https://docs.unity3d.com/6000.0/Documentation/Manual/AnimationSection.html) | 속성 커브·클립·Animator·상태/블렌드·리타깃 구분 | Timeline·Transform Animation/Curve 파일·미리보기·대상 Transform 재생/정지 | 임의 속성/Animation 이벤트 트랙·Skeleton·Anim Graph·상태 머신·블렌드/리타깃 |
-| [Audio](https://docs.unity3d.com/6000.0/Documentation/Manual/Audio.html) | Clip/Source/Listener·공간음향·Mixer·효과·진단 | 브라우저 오디오 재생/정지/음량 | 3D 감쇠·버스/믹서·DSP·네이티브 오디오 백엔드 |
+| [UI systems](https://docs.unity3d.com/6000.0/Documentation/Manual/UIToolkits.html) | 편집기 UI와 게임 UI 제작/런타임 구분 | 14종 Widget Designer·계층·앵커/레이아웃·스타일·이벤트/변수 바인딩·DOM 실행·BP/C++·AI 명령 | 재사용 위젯/스타일·폰트/지역화·UI 애니메이션·세계 공간 UI·가상 목록·포커스/입력 모드 |
+| [Animation](https://docs.unity3d.com/6000.0/Documentation/Manual/AnimationSection.html) | 속성 커브·클립·Animator·상태/블렌드·리타깃 구분 | Transform/Curve·가져온 skeletal clip·Flipbook·평면 FSM·Montage 섹션/Notify·11종 Sequence 트랙 | Anim Graph·뼈별 blend/mask·IK/rig/retarget·root motion·겹치는 montage slot·임의 속성/Quaternion 커브 |
+| [Audio](https://docs.unity3d.com/6000.0/Documentation/Manual/Audio.html) | Clip/Source/Listener·공간음향·Mixer·효과·진단 | 실제 WebAudio 버스/필터/컴프레서·Mute/Solo/Bypass·RMS·snapshot/노출 파라미터·HRTF/거리 감쇠·BP/C++ | Send/return·reverb/delay/sidechain·Sound graph·우선순위/가상 음원·Doppler/커브·native backend |
 | [Video](https://docs.unity3d.com/6000.0/Documentation/Manual/Video.html) | 소스·디코더·플레이어·오디오·스트리밍·연출 | 파일 보존·브라우저 media 미리보기 | AVI 등 코덱별 변환·Seek/동기화·시퀀스 연출 |
 | [Lighting](https://docs.unity3d.com/6000.0/Documentation/Manual/LightingOverview.html) | 직접/간접광·그림자·반사·환경·품질 | Three 광원·환경·그림자 설정 | DX11 조명·GI/Lightmap·반사 probe·측정 가능한 품질 단계 |
-| [Materials and shaders](https://docs.unity3d.com/6000.0/Documentation/Manual/materials-and-shaders.html) | 텍스처·표면·Shader·색 공간·HDR·진단 | 머테리얼 독립 그래프·색/스칼라 계산·장면 할당 | Texture/UV/Normal/연산 노드·HLSL 생성·GPU 컴파일·인스턴스 |
-| [VFX](https://docs.unity3d.com/6000.0/Documentation/Manual/visual-effects.html) | 파티클·Decal·Trail·효과 그래프와 실행 | 미구현 | emitter/system·모듈/노드 편집·CPU/GPU 시뮬레이션·진단 |
+| [Materials and shaders](https://docs.unity3d.com/6000.0/Documentation/Manual/materials-and-shaders.html) | 텍스처·표면·Shader·색 공간·HDR·진단 | 54종 노드·Texture/UV/Normal·GLSL 실제 GPU 실행·PBR/인스턴스·4종 템플릿 | Material function/layer·전체 shading model/domain·Substrate·HLSL/DX11·shader variant/cook |
+| [VFX](https://docs.unity3d.com/6000.0/Documentation/Manual/visual-effects.html) | 파티클·Decal·Trail·효과 그래프와 실행 | 모듈식 CPU ParticleSystem·seed/방출/힘/색/크기/텍스처·Points 셰이더·표면 DecalGeometry | VFX graph·GPU 시뮬레이션·충돌/trail/sub-emitter·mesh particle·volumetric 효과 |
 | [Render pipelines](https://docs.unity3d.com/6000.0/Documentation/Manual/render-pipelines.html) | 대상별 렌더 경로·재질/광원 호환성 | Three/WebGL 프로토타입 | Win32/DX11 패스·자원 수명·상태·품질/기능 계약 |
 | [Post-processing](https://docs.unity3d.com/6000.0/Documentation/Manual/post-processing-and-full-screen-effects.html) | 화면 효과의 렌더 경로·지원 차이 | 기본 노출/tone mapping | 볼륨·Bloom/AO/DOF·효과 순서·GPU 비용 |
 | [Programming](https://docs.unity3d.com/6000.0/Documentation/Manual/scripting.html) | 코드 작성·컴파일·재로딩·진단과 편집기 연결 | 공통 C++ API·native host·외부 IDE 열기 | 다중 번역 단위·IDE 프로젝트 생성·native 디버거·DLL 교체 |
-| [Optimization](https://docs.unity3d.com/6000.0/Documentation/Manual/analysis.html) | CPU/GPU/메모리 측정과 타깃 실험 | 로그·그래프 실행량 제한·숨긴 창 업데이트 가드 | Profiler·메모리/자원 추적·GPU 타이밍·캡처 |
+| [Optimization](https://docs.unity3d.com/6000.0/Documentation/Manual/analysis.html) | CPU/GPU/메모리 측정과 타깃 실험 | 실측 프레임·BP/물리/AI/애니메이션 구간·C++ IPC·WebGL 제출·draw/triangle/resource 개수·기록/내보내기 | GPU 타이머·native 스레드/CPU exclusive·할당/메모리·파일/네트워크 profiler·타깃 캡처 |
 | [Build/publish](https://docs.unity3d.com/6000.0/Documentation/Manual/building-and-publishing.html) | Player·내용 출력·설정·캐시·재현 빌드 | 사용자 C++ worker·편집기 EXE/배포 폴더 빌드 | 독립 게임 build/cook/package·설치/출시 |
 | [Services](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityServices.html) | 계정·세션·분석·배포 서비스와 게임 분리 | 미구현 | 엔진 확장 경계·서비스 오류/인증·사용자 선택 |
 | [Best practices](https://docs.unity3d.com/6000.0/Documentation/Manual/best-practice-guides.html) | 분야별 제작·운영·최적화 검증 기준 | 공통 API·저장 검증·재현 스크립트 | 예제 게임·실측·팀 제작/버전 관리 시나리오 |
 | [Troubleshooting](https://docs.unity3d.com/6000.0/Documentation/Manual/TroubleShooting.html) | 가져오기/코드/렌더/플랫폼 오류 원인과 복구 | 파일 검증·컴파일 오류·실행 오류 로그 | 분야별 진단 위치·실패 결과 복구·크래시 보고 |
 | [Glossary](https://docs.unity3d.com/6000.0/Documentation/Manual/Glossary.html) | 동명 용어의 역할·단위 구분 | 에셋 타입·BP/Clip/Timeline 구분 | 도움말의 한국어/영어 용어 사전·동작 단위 명시 |
-
+ |
 ## Unreal 21분야: 개요 본문과 HB 제작 요구
 
 | 공식 분야 | 제작 흐름에서 확인할 요구 | 현재 코드 근거 | 남은 구현 |
 | --- | --- | --- | --- |
 | [What's New](https://dev.epicgames.com/documentation/unreal-engine/whats-new) | 릴리스·migration·실험/안정 기능 구분 | 버전 있는 에셋 형식 | 기능별 안정성/호환성·migration 기록 |
-| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 프로젝트 허브/descriptor·독립 문서·클래스 생성·Play | 설정 가능한 키·프로젝트 설정/업그레이드·Prefab·게임 패키징 |
-| [Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine) | 외부 Mesh/Skeleton/Texture와 내부 에셋의 임포트 경계 | 원본 디스크 보존·OBJ/GLTF 미리보기 | FBX/Interchange 수준 변환·하위 에셋·축/단위·재가져오기 |
+| [Basics](https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine) | 창·키·프로젝트·콘텐츠·Actor·실행·패키징 연결 | 허브·descriptor·파일별 문서·도킹/합치기·창별 탐색·배치/스냅·Play·2D/3D 템플릿 | 설정 가능한 키/충돌·OS 부동창·프로젝트 버전 변환·독립 게임 배포 |
+| [Content](https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine) | 외부 Mesh/Skeleton/Texture와 내부 에셋의 임포트 경계 | 원본 임포트·OBJ/GLTF/FBX 미리보기·메타데이터·재가져오기·참조 그래프 | 전체 Interchange 변환·Skeleton 하위 에셋·축/단위/압축·import preset·DDC/cook |
 | [Virtual Worlds](https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine) | 레벨·환경·조명·배치·큰 월드 제작 | 레벨 파일·기본 도형·환경 프리셋 | Landscape/Foliage·메시 편집·월드 분할/스트리밍 |
 | [Rendering/Graphics](https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine) | 표면·빛·그림자·품질·렌더 자원·진단 | Three 표면/광원·머테리얼 문서 | DX11/HLSL·LOD/culling·GPU 측정·GI/반사 |
-| [AI Tools/Plugins](https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine) | 제작 자동화·검색·도구 연결과 게임 AI 구분 | 안정적인 텍스트 에셋/ID·검증 | 편집 명령 API·변경 검토·도구 프로토콜·semantic 검색 |
-| [VFX](https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) | System/Emitter/Module·시뮬레이션·편집기·진단 | 미구현 | 효과 에셋·모듈 그래프·preview·CPU/GPU 실행 |
+| [AI Tools/Plugins](https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine) | 제작 자동화·검색·도구 연결과 게임 AI 구분 | 공용 스키마·안정 ID·revision/검증·dryRun·원자적 patch/Undo·실제 실행/프로파일 API | semantic 검색·플러그인 프로토콜/권한·멀티 창/작성자 충돌·전체 분야의 전용 AI 조작 |
+| [VFX](https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) | System/Emitter/Module·시뮬레이션·편집기·진단 | CPU 모듈/시뮬레이션·Points 셰이더·표면 데칼·BP/C++ Play/Stop/Emit/Count | Niagara 수준 System/Emitter/Module graph·GPU/충돌/trail·mesh renderer·디버그 |
 | [Gameplay Tutorials](https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine) | 실제 게임 메커니즘을 코드/노드로 재현 | 문 C++/BP 실행 예제 | 캐릭터·카메라·아이템·상호작용·2D 예제 게임 |
-| [Blueprint](https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine) | 객체 클래스·그래프·통신·디버그·C++ 확장 | 373종 내장 노드·VM·문서별 BP | BP 상속/부모 호출·로컬 변수·Struct/Enum/Map/Set·라이브러리 |
-| [C++](https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine) | Reflection·클래스·컨테이너·Delegate·IDE/컴파일 | HB 메타데이터·289 공통 API·host | 추가 타입·다중 소스/라이브러리·IDE 프로젝트·DLL·동기 override |
-| [Gameplay Systems](https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine) | Framework·Input·Physics·AI/Nav·Ability·네트워크 | 부모 7종·입력 에셋·시간/기본 충돌 | Possession·게임 규칙·Character solver·Navigation/Behavior·Ability·복제 |
+| [Blueprint](https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine) | 객체 클래스·그래프·통신·디버그·C++ 확장 | 457종 정적 노드·타입/배열/struct split·함수/매크로/통신/Timeline·VM/디버그·C++ | BP 상속/부모 호출·로컬 변수·전체 Struct/Enum/Map/Set·tick 의존성·모든 엔진 API 노드화 |
+| [C++](https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine) | Reflection·클래스·컨테이너·Delegate·IDE/컴파일 | 289 코어+86 실행 서비스·헤더 메타데이터→BP 핀·외부 IDE·실제 worker 빌드/호출 | 다중 번역 단위·.sln/.vcxproj·DLL 교체·native debugger·포인터/객체/동기 override 수명 |
+| [Gameplay Systems](https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine) | Framework·Input·Physics·AI/Nav·Ability·네트워크 | 역할별 GameMode/State/Instance/Player/Controller/Pawn·possession·2D/3D 이동·입력·고정 물리·BT/FSM/BB·perception/grid A*·tags | Ability/attribute/effect·replication/RPC·EQS/계층 StateTree·정밀 NavMesh/RVO·PlayerLoop/tick group |
 | [Mobile](https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine) | SDK·장치·성능·플랫폼 서비스·출시 | 미구현 | 모바일 렌더/입력·SDK 빌드·실장치 검증 |
-| [Animation](https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine) | Skeletal/AnimBP·Sequencer·Control Rig·Paper2D 구분 | Timeline·Transform Animation/Curve 문서·대상 Transform 실행 | Animation 이벤트 트랙·Skeleton/포즈·상태/블렌드·Rig·다중 대상 Sequencer·Flipbook |
+| [Animation](https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine) | Skeletal/AnimBP·Sequencer·Control Rig·Paper2D 구분 | Transform/Flipbook/skeletal clip·Montage section/Notify·FSM·다중 대상 Sequence·복제 장면 preview | 뼈별 포즈/blend·AnimBP·Control Rig/IK·retarget/root motion·take recorder·slot blend |
 | [Motion Design](https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine) | 도형·cloner·리깅·재질·전환/연출 구성 | 기본 도형 배치 | 절차적 도형/복제·레이어 재질·연출 제어 |
-| [UI](https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine) | Designer/Widget·텍스트/폰트·접근성·최적화 | 기본 Widget 서비스·편집기 DOM | 게임 UI 에셋·Designer·바인딩·폰트/지역화·포커스 |
-| [Audio](https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine) | 소스·감쇠·버스·mix·메모리·진단 | 브라우저 음원 재생 | Sound graph·3D audio·Mixer/Submix·native backend |
+| [UI](https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine) | Designer/Widget·텍스트/폰트·접근성·최적화 | 14종 Designer/런타임·계층/앵커/스타일·입력/이벤트/바인딩·BP/C++·AI 편집 | 위젯 클래스 상속/재사용·Slate/native renderer·폰트/지역화·UI 애니메이션/세계 공간/가상 목록 |
+| [Audio](https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine) | 소스·감쇠·버스·mix·메모리·진단 | WebAudio bus graph·snapshot/노출·실측 RMS·필터/압축·HRTF 감쇠·독립 소스 재생 | MetaSounds/SoundCue·send/submix·reverb/duck·가상화/우선순위·native/DSP backend |
 | [Media](https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine) | Source/Player·색 관리·동기·캡처/출력 | 파일 보존·지원 코덱 preview | 디코더/변환·영상 동기·캡처·영상 텍스처 |
-| [Production Pipeline](https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine) | 에셋 관리·캐시·버전 관리·redirect·자동화 | `.hbredirects.json`·파일 ID·Git | 의존성 viewer·redirect 정리·DDC·source control UI·자동화 |
-| [Testing/Optimization](https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content) | 성능 계측·로그·크래시·자동 검사 | `tools/check-*.mjs`·실행 제한·로그 | native/GPU Profiler·추적 캡처·크래시/메모리 진단 |
+| [Production Pipeline](https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine) | 에셋 관리·캐시·버전 관리·redirect·자동화 | ID/redirect·다중 임포트·재가져오기·양방향 참조 탐색·공용 schema/AI 명령·Git | redirect Fixup·source control UI·DDC·chunk/cook·asset manager bundle·동시 작성 충돌 |
+| [Testing/Optimization](https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content) | 성능 계측·로그·크래시·자동 검사 | 로직/실제 C++/GPU/DOM/PCM 검사·실측 프레임·render/resource 개수·JSON 기록 | native/GPU/스레드 profiler·alloc/file/network·타깃 캡처·crash report |
 | [Release](https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine) | Build/Cook/Package/Deploy와 타깃 차이 | 사용자 함수 worker·Windows 편집기 EXE/동봉 배포 | DX11 Player·독립 게임 cook/chunk/package·기기/타깃 프로필 |
 | [Samples](https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine) | 동작하는 템플릿을 열고 분해·확장 | `prototype/examples` | 2D/2.5D/3D 제작→배포 전체 샘플 |
+ |
+## 초기 세부 본문 확인과 대응 (당시 상태)
 
-## 세부 본문 확인과 이번 변경의 대응
+아래 초기 표의 구현 차이는 2026-10-02 당시 기록이다. 이후 구현 상태는 위 분야 표, [제작 흐름 연구](ENGINE_WORKFLOW_RESEARCH.md), [세부 검증](AUTHORING_UI_AUDIO_RESEARCH.md)로 대조한다.
 
 아래 `detail`은 적힌 주제의 본문을 확인한 상태다. 전체 분야 개요와 별도로 관리한다.
 
@@ -110,10 +112,10 @@
 | [Microsoft WebView2 SDK License](https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.4258.31/License) | SDK/Loader 소스·바이너리 배포의 고지 보존 | 안정 SDK 1.0.4258.31의 LICENSE를 `licenses/WebView2-SDK.txt`에 포함 | Runtime 자체 재배포 시 해당 별도 조건 확인; SDK 고지와 혼용하지 않음 |
 | [Microsoft WebView2 Close](https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller#close) | controller.Close가 WebView를 정리하며 beforeunload를 발생시키지 않음 | `WM_CLOSE` → `hbEngineRequestClose` → 수정 확인/복구 → 메시지 → 종료·소유 Job 정리 | 미저장/저장 실패/취소·닫는 중 콜백의 실제 UI 시나리오 계속 검증 |
 | [Node Windows Runtime](https://nodejs.org/en/download/archive/v24.15.0)·[LICENSE](https://raw.githubusercontent.com/nodejs/node/v24.15.0/LICENSE) | 공식 Windows 배포·Node 및 번들 라이브러리 고지 | 빌드에 사용한 `process.execPath` 동봉·그 버전의 전체 LICENSE 복사 | 별도 Node 설치는 불필요; C++ 컴파일러는 별도 준비. Node 전체 API 조사로 계산하지 않음 |
-
+ |
 이전 세부 조사(변수·함수·통신·생명주기·Timeline·Animation·충돌·임포트·직렬화·오디오/UI)의 URL과 분석은 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md)에 유지한다. 과거 Blueprint 컴파일러 자료는 4.27임을 표시하고 현재 UE의 기본 nativization으로 해석하지 않는다. Unity의 일반 게임 스크립트 C#과 native C++ 플러그인/IL2CPP도 구분한다.
 
-## 현재 제작 연결: 코드와 검사
+## 초기 제작 연결: 코드와 검사 (2026-10-02 당시)
 
 | 흐름 | 코드 근거 | 재현 검사/다음 완료 조건 |
 | --- | --- | --- |
@@ -145,3 +147,10 @@
 ## 2026-10-02 후속 대조
 
 컴포넌트·프레임워크·물리·2D·머테리얼·에셋 생명주기·AI 자동화의 본문 확인 자료, 적용 결정, 실행 검증과 남은 전체 분야는 [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md)에 연결했다. 문서 목록 수집 건수를 본문 전체 확인 수로 바꾸지 않는다.
+
+
+## 전체 범위와 세부 완료 판정 — 2026-10-03
+
+사용자의 예시는 범위를 제한하지 않는다. 모든 분야와 하위 매뉴얼·API·패키지·조작·오류·플랫폼 차이를 조사/구현 대상으로 유지한다. 위 표는 현재 확인한 대응이며 엔진 전체 기능의 최종 목록이 아니다. 미조사 항목을 필요 없다고 판단하거나 완료 처리하지 않는다. 이름/메뉴만 추가한 항목은 구현 완료가 아니다.
+
+세부 기능은 생성·편집 속성·단축키/문맥 메뉴·자료형/파일 참조·저장/재열기·실행 순서/수명·오류 복구·BP/C++·AI 편집·실측 검증 각각을 확인한다. 한 항목이 추가되어도 같은 분야의 나머지 기능이 완료되지 않는다. Widget Designer와 Audio Mixer도 재사용/지역화/애니메이션/가상 목록 및 send/reverb/우선순위 등 남은 세부 구현을 계속 유지한다. 실제 본문 확인 기록은 `reference-index/detail-audit.json`에서 indexed 목차와 분리한다.

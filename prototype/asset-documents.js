@@ -4,12 +4,16 @@ import {blueprintClasses} from './class-types.js';
 import {materialGraph,materialDefaults,validMaterialGraph,validMaterialSurface,validAssetPath} from './material-runtime.js';
 import {twoDTypes,twoDSuffix,create2DAsset,valid2DAsset} from './two-d-assets.js';
 import {gameplayTypes,gameplaySuffix,createGameplayAsset,validGameplayAsset} from './gameplay-assets.js';
+import {createWidgetAsset,validWidgetAsset} from './ui-assets.js';
+import {createAudioMixer,validAudioMixer} from './audio-mixer.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
 export const assetTypes={blueprint:{label:'블루프린트 클래스',prefix:'BP_',group:'게임플레이'},code:{label:'C++ 클래스',prefix:'',group:'게임플레이'},inputaction:{label:'Input Action',prefix:'IA_',group:'입력'},inputmapping:{label:'Input Mapping Context',prefix:'IMC_',group:'입력'},material:{label:'머테리얼',prefix:'M_',group:'렌더링'},materialinstance:{label:'머테리얼 인스턴스',prefix:'MI_',group:'렌더링'},physicalmaterial:{label:'물리 머테리얼',prefix:'PM_',group:'물리'},prefab:{label:'프리팹',prefix:'PF_',group:'게임플레이'},gameconfig:{label:'게임 설정',prefix:'GS_',group:'프로젝트'},audioasset:{label:'오디오 에셋',prefix:'S_',group:'오디오'},animation:{label:'트랜스폼 애니메이션',prefix:'AN_',group:'애니메이션'},curve:{label:'커브',prefix:'Curve_',group:'애니메이션'},data:{label:'데이터 에셋',prefix:'DA_',group:'데이터'},scene:{label:'레벨',prefix:'L_',group:'월드'}};
 Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
+assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
+assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
 export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i,'');
 export async function loadSceneBindings(objects,read){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
@@ -24,6 +28,8 @@ export function createAsset(kind,name,parent='Actor'){
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
   if(kind in twoDTypes)return create2DAsset(kind,name);
   if(kind in gameplayTypes)return createGameplayAsset(kind,name);
+  if(kind==='widget')return createWidgetAsset(name);
+  if(kind==='audiomixer')return createAudioMixer(name);
   if(kind==='blueprint'){
     const type=blueprintClasses[parent];if(!type)throw Error('지원하지 않는 부모 클래스예요.');
     const root=copy(defaultBlueprint);root.name=name;root.nodes=['beginPlay','tick','endPlay'].map((key,i)=>({...makeNode(key,70,55+i*165),id:key}));root.edges=[];root.variables=[];root.functions=[];root.macros=[];root.comments=[];root.dispatchers=[];root.interfaces=[];delete root.native;
@@ -35,7 +41,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind==='physicalmaterial')return {version:1,name,friction:.5,restitution:.1,density:1,frictionCombine:'average',restitutionCombine:'average'};
   if(kind==='prefab')return {version:1,name,root:'root',objects:[{id:'root',name,kind:'cube',group:'PREFAB',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true}]};
   if(kind==='gameconfig')return {version:1,name,...copy(defaultGameConfig)};
-  if(kind==='audioasset')return {version:1,name,clip:'',volume:1,pitch:1,loop:false,spatial:false,autoplay:false,refDistance:1,maxDistance:100,rolloff:1};
+  if(kind==='audioasset')return {version:1,name,clip:'',volume:1,pitch:1,loop:false,spatial:false,autoplay:false,refDistance:1,maxDistance:100,rolloff:1,mixer:'',bus:'master'};
   if(kind==='inputaction')return {version:1,name,valueType:'bool',consumeInput:true,trigger:'pressed',deadZone:0};
   if(kind==='inputmapping')return {version:1,name,priority:0,mappings:[]};
   if(kind==='data')return {version:1,name,fields:[]};
@@ -46,6 +52,8 @@ export function createAsset(kind,name,parent='Actor'){
 export function validAsset(kind,data){
   if(kind in twoDTypes)return valid2DAsset(kind,data);
   if(kind in gameplayTypes)return validGameplayAsset(kind,data);
+  if(kind==='widget')return validWidgetAsset(data);
+  if(kind==='audiomixer')return validAudioMixer(data);
   if(kind==='text')return typeof data==='string'&&data.length<=1048576;
   if(kind==='blueprint')return validBlueprint(data);
   if(kind==='scene')return validScene(data);
@@ -60,7 +68,7 @@ export function validAsset(kind,data){
   if(kind==='physicalmaterial')return Number.isFinite(data.friction)&&data.friction>=0&&data.friction<=10&&Number.isFinite(data.restitution)&&data.restitution>=0&&data.restitution<=1&&Number.isFinite(data.density)&&data.density>0&&data.density<=10000&&['frictionCombine','restitutionCombine'].every(key=>['average','min','max','multiply'].includes(data[key]));
   if(kind==='prefab')return typeof data.root==='string'&&data.objects?.some(object=>object.id===data.root)&&validScene({version:1,objects:data.objects,surface:defaultSurface});
   if(kind==='gameconfig')return (data.dimension===undefined||['2d','3d'].includes(data.dimension))&&['startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn'].every(key=>validAssetPath(data[key]))&&['gravity','spawnPosition'].every(key=>Array.isArray(data[key])&&data[key].length===3&&data[key].every(v=>Number.isFinite(v)&&Math.abs(v)<=10000))&&typeof data.autoSpawnPlayer==='boolean'&&Number.isFinite(data.fixedDeltaTime)&&data.fixedDeltaTime>=.001&&data.fixedDeltaTime<=1&&Number.isInteger(data.maxSubsteps)&&data.maxSubsteps>=1&&data.maxSubsteps<=64&&data.window&&['width','height'].every(key=>Number.isInteger(data.window[key])&&data.window[key]>=320&&data.window[key]<=16384)&&['fullscreen','vsync'].every(key=>typeof data.window[key]==='boolean');
-  if(kind==='audioasset')return validAssetPath(data.clip)&&Number.isFinite(data.volume)&&data.volume>=0&&data.volume<=4&&Number.isFinite(data.pitch)&&data.pitch>=.1&&data.pitch<=4&&['loop','spatial','autoplay'].every(key=>typeof data[key]==='boolean')&&['refDistance','maxDistance','rolloff'].every(key=>Number.isFinite(data[key])&&data[key]>=0&&data[key]<=100000)&&data.refDistance>0&&data.maxDistance>=data.refDistance;
+  if(kind==='audioasset')return (data.mixer===undefined||validAssetPath(data.mixer))&&(data.bus===undefined||typeof data.bus==='string'&&data.bus.length>0&&data.bus.length<=80)&&validAssetPath(data.clip)&&Number.isFinite(data.volume)&&data.volume>=0&&data.volume<=4&&Number.isFinite(data.pitch)&&data.pitch>=.1&&data.pitch<=4&&['loop','spatial','autoplay'].every(key=>typeof data[key]==='boolean')&&['refDistance','maxDistance','rolloff'].every(key=>Number.isFinite(data[key])&&data[key]>=0&&data[key]<=100000)&&data.refDistance>0&&data.maxDistance>=data.refDistance;
   return true;
 }
 export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUID()}={}){
@@ -68,7 +76,7 @@ export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUI
   const objects=copy(data.objects).map(object=>{const old=object.id,parent=object.parent||object.parentId;object.id=ids.get(old);if(parent&&ids.has(parent)){object.parent=ids.get(parent);if(object.parentId!==undefined)object.parentId=object.parent;}else{delete object.parent;delete object.parentId;object.position=object.position.map((value,index)=>value+position[index]);}object.prefabRoot=ids.get(data.root);return object;});
   if(!validScene({version:1,objects,surface:defaultSurface}))throw Error('프리팹 계층 검증 실패');return objects;
 }
-export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','physicalMaterial','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sprite','tileset','blackboard']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
+export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','physicalMaterial','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sprite','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}

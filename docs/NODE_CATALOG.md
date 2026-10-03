@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **444개**, 실제 공통 C++ API **362개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **457개**, 실제 공통 C++ API **375개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -20,7 +20,7 @@
 | 물리 | 7 | 5 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 3 | 0 |
+| 오디오 | 7 | 4 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
@@ -29,7 +29,7 @@
 | 문자열 | 23 | 19 |
 | 애니메이션 | 2 | 0 |
 | 렌더링 | 3 | 0 |
-| UI | 3 | 0 |
+| UI | 12 | 9 |
 | 저장 | 2 | 0 |
 | 정수 | 14 | 14 |
 | 벡터2 | 20 | 20 |
@@ -367,6 +367,10 @@
 | sound | Play Sound / 효과음 재생 | exec: exec, name: string | then: exec | — | VM / 브라우저 서비스 |
 | playSoundAt | Play Sound At Location / 위치에서 소리 재생 | exec: exec, sound: string, position: vec3, volume: float | then: exec | — | 오디오 재생; 위치 음향 없음 |
 | stopSound | Stop Sound / 소리 정지 | exec: exec, sound: string | then: exec | — | VM / 브라우저 서비스 |
+| mixerSet | Set Float / 믹서 파라미터 지정 | exec: exec, target: object, asset: string, parameter: string, value: float | then: exec | hb::AudioMixer::SetFloat | 공통 C++ + VM |
+| mixerGet | Get Float / 믹서 파라미터 가져오기 | target: object, asset: string, parameter: string | return: float | hb::AudioMixer::GetFloat | 공통 C++ + VM |
+| mixerClear | Clear Float / 믹서 파라미터 재정의 해제 | exec: exec, target: object, asset: string, parameter: string | then: exec | hb::AudioMixer::ClearFloat | 공통 C++ + VM |
+| mixerSnapshot | Transition To / 믹서 스냅샷 전환 | exec: exec, target: object, asset: string, snapshot: string, duration: float | then: exec | hb::AudioMixer::TransitionTo | 공통 C++ + VM |
 
 ## 사용자 정의
 
@@ -479,6 +483,15 @@
 | createWidget | Create Widget / 위젯 생성 | exec: exec, class: string | then: exec, widget: object | — | VM / 브라우저 서비스 |
 | addViewport | Add To Viewport / 뷰포트에 위젯 추가 | exec: exec, widget: object | then: exec | — | VM / 브라우저 서비스 |
 | setText | Set Text / 텍스트 설정 | exec: exec, widget: object, text: string | then: exec | — | VM / 브라우저 서비스 |
+| uiShow | Show / 위젯 UI 표시 | exec: exec, target: object, asset: string, instance: string | then: exec | hb::UI::Show | 공통 C++ + VM |
+| uiRemove | Remove / 위젯 UI 제거 | exec: exec, target: object, instance: string | then: exec | hb::UI::Remove | 공통 C++ + VM |
+| uiSetText | Set Text / 위젯 텍스트 지정 | exec: exec, target: object, instance: string, element: string, text: string | then: exec | hb::UI::SetText | 공통 C++ + VM |
+| uiGetText | Get Text / 위젯 텍스트 가져오기 | target: object, instance: string, element: string | return: string | hb::UI::GetText | 공통 C++ + VM |
+| uiSetValue | Set Value / 위젯 값 지정 | exec: exec, target: object, instance: string, element: string, value: float | then: exec | hb::UI::SetValue | 공통 C++ + VM |
+| uiGetValue | Get Value / 위젯 값 가져오기 | target: object, instance: string, element: string | return: float | hb::UI::GetValue | 공통 C++ + VM |
+| uiSetVisible | Set Visible / 위젯 표시 상태 | exec: exec, target: object, instance: string, element: string, visible: bool | then: exec | hb::UI::SetVisible | 공통 C++ + VM |
+| uiSetEnabled | Set Enabled / 위젯 활성 상태 | exec: exec, target: object, instance: string, element: string, enabled: bool | then: exec | hb::UI::SetEnabled | 공통 C++ + VM |
+| uiFocus | Focus / 위젯 입력 포커스 | exec: exec, target: object, instance: string, element: string | then: exec | hb::UI::Focus | 공통 C++ + VM |
 
 ## 저장
 
