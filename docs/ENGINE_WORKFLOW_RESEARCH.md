@@ -10,12 +10,12 @@
 |---|---|---|
 | 에셋 생명주기 | Unity는 원본의 ID와 import 설정을 메타데이터에 보존하고 Library의 처리 결과와 구분한다. UE는 감시 디렉터리와 안정화 대기 후 원본 변경을 재가져온다. | 기존 `.hbassets.json`을 유지하며 UUID, 원본 해시, 의존성과 역참조, 누락 진단, 영향 전파를 추가. 원본 덮어쓰기 전 대조·백업. UI 우클릭 재가져오기/참조 보기. 자동 포맷 변환이나 폴더 감시까지 구현했다고 표시하지 않음. |
 | 에디터 문맥 | UE의 Content Browser·Outliner·Details와 Unity의 Project·Hierarchy·Inspector는 선택 대상과 작업 문맥을 유지한다. | 문서별 에디터/Undo, 여러 콘텐츠 브라우저 각각의 폴더·검색·필터·선택·탐색 기록. 탭줄에 놓기는 병합, 본문 가장자리는 분할. 머테리얼 전용 미리보기와 그래프. |
-| 오브젝트 구성 | Unity의 GameObject는 컴포넌트 구성으로 동작하고, UE는 Actor/Component와 Controller/Pawn의 역할을 구분한다. | `scene-components.js`의 39개 정의를 UI·검증·기본 오브젝트·실행이 공유. Controller 공통 부모, Player/AI Controller, GameMode/State/PlayerState/Pawn 연결. 컴포넌트 체크가 실제 렌더/물리 활성 상태에 반영됨. |
+| 오브젝트 구성 | Unity의 GameObject는 컴포넌트 구성으로 동작하고, UE는 Actor/Component와 Controller/Pawn의 역할을 구분한다. | `scene-components.js`의 43개 정의를 UI·검증·기본 오브젝트·실행이 공유. Controller 공통 부모, Player/AI Controller, GameMode/State/PlayerState/Pawn 연결. 컴포넌트 체크가 실제 렌더/물리 활성 상태에 반영됨. |
 | 실행 순서 | 생성/초기화/BeginPlay, 프레임 갱신과 고정 물리 갱신은 구분해야 한다. | 모든 Construction 이후 서비스 초기화, 이후 BeginPlay. 고정 스텝마다 FixedUpdate와 접촉 이벤트. 편집 원본을 복제한 플레이 월드, 종료/실패 복구. |
-| 물리와 제어 | 충돌 반응, trigger, 레이어, 물리 재질, 동적/키네마틱 바디, 입력과 접지 판단은 연동되어야 한다. | 2D/3D 바디·중력·힘·충격량·마찰·반발·질량·축 고정·mask, Overlap/Hit. 부모 아래 바디의 월드 이동. [Unity 물리 재질 혼합 순서](https://docs.unity3d.com/6000.0/Documentation/Manual/collider-surfaces-combine.html)에 따라 양쪽 순서와 무관한 average/min/multiply/max 적용. 캡슐은 현재 경계 상자로 근사하며 CCD/회전 동역학/정밀 경사 처리는 남음. |
+| 물리와 제어 | 충돌 반응, trigger, 레이어, 물리 재질, 동적/키네마틱 바디, 입력과 접지 판단은 연동되어야 한다. | 2D/3D 바디·중력·힘·충격량·마찰·반발·질량·축 고정·mask, Overlap/Hit. 부모 아래 바디의 월드 이동. [Unity 물리 재질 혼합 순서](https://docs.unity3d.com/6000.0/Documentation/Manual/collider-surfaces-combine.html)에 따라 양쪽 순서와 무관한 average/min/multiply/max 적용. 현재는 Rapier의 정확 primitive·회전·관성·6종 관절/모터·CCD와 실제 C++/BP 공간 질의를 연결했다. 정밀 controller/mesh·전체 joint 저작은 남음. [후속 물리 연구](PHYSICS_RUNTIME_RESEARCH.md). |
 | 2D 제작 | Paper2D는 Sprite/Flipbook/TileSet/TileMap을, Unity는 팔레트와 Brush/Erase/Fill 도구로 이미지→레벨 제작을 이어준다. | 스프라이트 crop·pivot·PPU·grid slicing, 프레임 애니메이션, 타일 팔레트·레이어·브러시/지우기/사각형/채우기, 레이어 충돌. 배치→실제 sprite/tile 렌더→고정 스텝 충돌. 2D 시작 템플릿과 추적 카메라. |
 | 머테리얼 | 그래프는 핀의 타입과 연결로 실행 가능한 셰이더를 만들고 인스턴스는 부모의 파라미터를 재사용한다. | 33개 노드, GLSL 생성, 실제 MeshPhysicalMaterial에 연결. UV/texture/math/normal/emissive/opacity/AO/coat/transmission/IOR. 인스턴스 상속·override 검증. HLSL/DX11 backend는 남음. |
-| C++와 BP | C++ 공개 클래스·속성·함수와 Blueprint는 같은 게임 객체를 제어해야 한다. | 기존 289개 코어 API에 73개 EngineService API를 연결. C++의 게임 역할 조회·Possess·힘·속도·월드/로컬 위치를 실제 플레이 VM에 적용. 정적 카탈로그 444개와 C++ 생성 서명 대조. |
+| C++와 BP | C++ 공개 클래스·속성·함수와 Blueprint는 같은 게임 객체를 제어해야 한다. | 기존 289개 코어 API에 102개 EngineService API를 연결. C++의 게임 역할 조회·Possess·힘·속도·월드/로컬 위치를 실제 플레이 VM에 적용. 정적 카탈로그 473개와 C++ 생성 서명 대조. |
 | 장면 전환 | UE Open Level과 Unity SceneManager는 다음 장면 로드와 기존 월드의 종료를 연결한다. | Open Scene 노드와 `hb::Scene::Open`은 같은 검증/전환 요청을 사용. 프레임 경계에서 EndPlay(LevelTransition)·타이머/입력/물리/오디오/위젯 정리 후 새 월드 Construction→BeginPlay. 종료 시 편집 원본의 장면·환경·2D/3D 설정 복구. |
 | 사람과 AI | 사람이 보는 라벨과 머신 식별자를 분리하고 저장되지 않은 상태도 관찰할 수 있어야 한다. | `/api/schema`가 실제 정의에서 생성됨. 현재 편집 데이터 revision 기반 patch·Undo·save·play·state API와 CLI. JSON 전체 치환에만 의존하지 않고 조건부 부분 변경 가능. `AI_ENGINE_API.md` 참조. |
 
@@ -28,7 +28,7 @@
 ## 실행 증거
 
 - `test:windows`: 탭 병합/분할, 기존 비율 보존, 독립 브라우저 상태와 폴더 이력.
-- `test:scene`: 계층 복사와 부모 없는 자식 복사의 월드 자세 보존, 다중 변환의 중복 이동 방지, 39종 컴포넌트와 2D/3D 접촉·제어·FixedUpdate.
+- `test:scene`: 계층 복사와 부모 없는 자식 복사의 월드 자세 보존, 다중 변환의 중복 이동 방지, 43종 컴포넌트와 2D/3D 접촉·제어·FixedUpdate.
 - `test:2d`: atlas 분할, 도구/레이어/충돌, 프레임 시간, 한 stroke의 Undo, 실제 디스크 저장/재열기.
 - `test:material`: 타입·순환 검증, 33개 노드와 GLSL 생성, 인스턴스·프리팹 참조. 별도 WebGL 검사는 32 expression 셰이더의 실제 컴파일과 픽셀 차이를 확인했다.
 - `test:host`: 실제 사용자 C++ 빌드, 클래스/이벤트/반환/배열, 프레임워크와 물리 명령, 회전·스케일 부모 아래 월드 위치의 C++/JS 일치.
@@ -48,7 +48,7 @@
 | 프로젝트/배포 | editor EXE와 `.hbproject`는 있음. 독립 게임 빌드, cooking, build profiles, 버전 업그레이드는 부족 | 편집기가 없는 컴퓨터에서 패키지 실행, 입력·장면 전환·세이브·오류 로그 확인 |
 | 에셋 파이프라인 | ID/참조/수동 재가져오기까지 연결. importer 설정·캐시·외부 디렉터리 감시·자동 변환 부족 | JPEG/AVI/모델 등 포맷별 실제 변환 결과와 실패 복구, 변경 dependency만 다시 처리 |
 | 월드/레벨 | 단일 월드 교체와 BP/C++ 장면 전환 연결. Additive/streaming·persistent manager·전환 중 로드 취소 UI 부족 | 레벨 열기/언로드·게임 상태 생명주기·persistent manager·참조 정리·로딩 중 취소 |
-| 물리/게임플레이 | 소규모 pair scan, 캡슐 AABB 근사, 정밀 controller·다각형 NavMesh/군중 회피 부족 | 경사/계단·빠른 물체·트리거 경계·복수 캐릭터·NavMesh 경로·AI 제어 시나리오 |
+| 물리/게임플레이 | Rapier primitive solver·관절/CCD 연결 후 mesh/convex·정밀 controller·전체 joint 저작·다각형 NavMesh/군중 회피 부족 | 경사/계단·빠른 물체·트리거 경계·복수 캐릭터·NavMesh 경로·AI 제어 시나리오 |
 | 2D | 기초 Sprite/Tile/Flipbook 실제 흐름 있음. 9-slice·자동 타일·polygon collider·2D 전용 AnimationBP/블렌드 트리 부족 | 다중 atlas와 실제 게임맵, 스프라이트 정렬/투명도·애니메이션 전이·타일 충돌 편집 |
 | 애니메이션 | transform curves, sprite clips, 가져온 모델 clip 재생. skeletal authoring·blend tree·retarget·IK 부족 | skeleton/clip/state machine 각각 독립 에디터, 전이·이벤트·root motion·리타깃 시각 검증 |
 | 렌더/제작 도구 | PBR 기초, 환경광/하늘, 원시 도형. terrain·foliage·LOD·occlusion·고급 파티클/VFX 그래프·postprocessing 부족 | 실제 레벨 저작, 표현 차이와 GPU 비용, drawcall/메모리 측정 |
@@ -94,7 +94,7 @@
 | [UE Placing Actors](https://dev.epicgames.com/documentation/unreal-engine/placing-actors-in-unreal-engine?lang=en-US), [Viewport Controls](https://dev.epicgames.com/documentation/en-us/unreal-engine/viewport-controls-in-unreal-engine), [Unity Grid Snapping](https://docs.unity.com/en-us/engine/6000.0/manual/working-with-scenes/scenes-manage-gameobjects/grid-snapping/grid-snap) | 검색/분류가 있는 도킹 배치 창과 38개 실제 컴포넌트 조합을 연결했다. 2D XY·3D XZ 평면 드롭, 이동/회전/크기 스냅 간격·월드/로컬 좌표계, Q/W/E/R와 Space 도구 전환, Ctrl+Space 작업창 최대화. 표면 법선 스냅·최근 배치 기록·전체 Class Viewer는 남아 있다. |
 | [UE Using Fresnel](https://dev.epicgames.com/documentation/en-us/unreal-engine/using-fresnel-in-your-unreal-engine-materials) | 월드 법선·시선·반사 지수/기본 반사율을 그래프로 계산하고 색상 파라미터와 곱해 발광으로 연결한다. Fresnel/소멸/체크/흐르는 텍스처 템플릿은 실제 저장 가능한 그래프다. 머테리얼 함수·레이어·전체 좌표 변환·HLSL backend는 추가 범위다. |
 | [UE Actor Lifecycle](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle), [Actor Ticking](https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-ticking-in-unreal-engine), [Unity Event Function Execution Order](https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html) | HB의 Construction → 서비스 시작 → BeginPlay, timer/latent/timeline → Tick → 물리/충돌 흐름을 실제 VM 코드와 대조했다. HB는 FixedTick과 Tick 간격을 제공하지만 UE TickGroup/Prerequisite, Unity의 전체 PlayerLoop·OnEnable/Awake/Start 순서와 동일하지 않다. 단계별 스케줄러·컴포넌트 활성/파괴 생명주기가 별도 구현 과제다. |
-| [UE Collision Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview) | 충돌 응답과 Hit/Overlap 통지를 별도 계약으로 확인했다. HB는 layer/mask/trigger와 Begin/EndOverlap/Hit를 유지하고 실제 solver 범위 미리보기를 추가했다. 현재 캡슐 AABB 근사, UE의 채널별 Block/Overlap/Ignore·독립 Hit 이벤트 설정·CCD와는 차이가 있다. |
+| [UE Collision Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview) | 충돌 응답과 Hit/Overlap 통지를 별도 계약으로 확인했다. HB는 layer/mask/trigger와 Begin/EndOverlap/Hit를 유지하고 실제 solver 범위 미리보기를 추가했다. 당시 캡슐 AABB 근사를 사용했다. 후속 Rapier primitive/CCD는 물리 연구에 갱신했다. UE의 채널별 Block/Overlap/Ignore·독립 Hit 이벤트 설정 전체는 남아 있다. |
 
 사람의 핀 드래그와 AI의 `blueprint.connect` / `blueprint.variable.drop`은 같은 모듈을 쓴다. 배치 UI와 `scene.place`도 같은 카탈로그·컴포넌트 기본값을 쓴다. JSON revision 검사, dry-run, Undo/Redo, 실패 원본 보존, 디스크 저장까지 실제 편집기에서 확인했다.
 
@@ -110,6 +110,10 @@
 - 오디오: 독립 bus graph/속성/exposed/snapshot·실제 preview와 RMS·gain/filter/compressor와 실제 효과 우회·HRTF/거리·source 수명·C++ 4종/공통 BP 실행. 명시적 override와 snapshot, 동일 clip의 여러 컴포넌트, 늦은 play 정리를 검사했다.
 - 자산 참조: registry→양방향 그래프, 방향별 depth/breadth·누락/순환·filter·창 자체 history·pan/zoom/키·경로 복사/CSV. Profiler는 실측 frame 구간과 draw/resource 개수·검색/집계/기록/JSON·AI 명령이다. native exclusive/GPU 시간을 구현한 것으로 표시하지 않는다.
 - 2D: border 편집/가이드, SpriteRenderer Simple/Sliced/Tiled를 공통 asset/render 경로에 연결했다. 실제 WebGL에서 모서리 크기/중앙 색 픽셀과 Tiled geometry를 확인했다. Adaptive/SpriteMask/2D 조명/정밀 다각형 물리는 남아 있다.
-- 합계: 정적 BP 457종, 공통 C++ 289코어+86실행 서비스, 컴포넌트 39종. 모든 엔진 API의 구현 완료 수가 아니다.
+- 이 추가 당시 합계: 정적 BP 457종, 공통 C++ 289코어+86실행 서비스, 컴포넌트 39종. 모든 엔진 API의 구현 완료 수가 아니다.
 
 검사: 기본/API·ui-audio(실제 C++/VM/수명)·scene/2d/integration/assets/windows/server·headless·desktop 빌드/검사와 격리 편집기 명령 검사. 브라우저 fixture는 DOM 이벤트·실제 PannerNode·PCM −6dB/Mute/Solo/filter/Bypass·실제 2D GPU를 확인한다. 전체 시스템의 세부 기능과 미조사 매뉴얼/API/패키지는 계속 남아 있다.
+
+## 강체·관절·공간 검색 추가
+
+현재 합계는 컴포넌트43·정적 BP473·C++289코어+102서비스다. [물리 연구](PHYSICS_RUNTIME_RESEARCH.md)는 실제 본문 확인/적용 판단과 남은 전체 세부 작업을 분리한다. 2D/3D 정확 primitive·회전/질량/관성·모터/관절·CCD·형상 질의를 UI/VM/헤드리스/C++/AI에 연결했다. query-only C++ 질의는 같은 함수의 변환/충돌 flag를 읽고, 일반 쓰기의 solver 완료를 가정하지 않는다. 전 영역의 작업 지도는 계속 유지한다.

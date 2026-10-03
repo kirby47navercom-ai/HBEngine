@@ -45,7 +45,8 @@ await fs.mkdir(path.join(output,'runtime'),{recursive:true});await fs.copyFile(p
 await fs.mkdir(path.join(output,'licenses'),{recursive:true});await fs.copyFile(path.join(sdk,'LICENSE.txt'),path.join(output,'licenses/WebView2-SDK.txt'));
 const nodeLicense=path.join(build,'Node-'+process.version+'-LICENSE.txt');await download('https://raw.githubusercontent.com/nodejs/node/'+process.version+'/LICENSE',nodeLicense);await fs.copyFile(nodeLicense,path.join(output,'licenses/Node.txt'));
 await fs.copyFile(path.join(root,'node_modules/three/LICENSE'),path.join(output,'licenses/Three.txt'));
-for(const name of ['prototype','tools','docs','native/include','node_modules/three'])await fs.cp(path.join(root,name),path.join(output,name),{recursive:true,filter:file=>!file.includes(path.sep+'screenshots'+path.sep)});
+for(const name of ['rapier2d-compat','rapier3d-compat'])await fs.copyFile(path.join(root,'node_modules/@dimforge',name,'LICENSE'),path.join(output,'licenses',name+'.txt'));
+for(const name of ['prototype','tools','docs','native/include','node_modules/three','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat'])await fs.cp(path.join(root,name),path.join(output,name),{recursive:true,filter:file=>!file.includes(path.sep+'screenshots'+path.sep)});
 await fs.copyFile(path.join(root,'package.json'),path.join(output,'package.json'));
 const {ProjectService}=await import('./project-service.mjs');const sample=path.join(output,'Projects/QuietGarden');await new ProjectService(sample).init(true);
 const {ensureProjectManifest}=await import('./project-manifest.mjs');await ensureProjectManifest(sample,'QuietGarden');

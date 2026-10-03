@@ -30,7 +30,7 @@ export function parseNativeHeader(source){
       if(/KoreanName\s*=/.test(flags))fn.ko=metadata(flags,'KoreanName',fn.label);
       if(/\bEngineService\b/.test(flags))fn.service=true;
       if(f[3].trim()!=='void')fn.outputs.push({id:metadata(flags,'ReturnPin','result'),label:'Return value',...cppType(f[3].trim())});
-      for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn.parameters.push({name,cppType:type,out});fn[out?'outputs':'inputs'].push({id:name,label:name,...cppType(type)});}
+      for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn.parameters.push({name,cppType:type,out});const pin={id:name,label:name,...cppType(type)},literal=param.includes('=')?param.slice(param.indexOf('=')+1).trim():undefined;if(literal!==undefined){try{pin.default=JSON.parse(literal==='nullptr'?'null':literal.replace(/([0-9.])f\b/g,'$1'));}catch{/* C++ expressions need a user-supplied pin value. */}}fn[out?'outputs':'inputs'].push(pin);}
       if(fn.event!=='none'&&fn.outputs.length)throw Error(fn.name+' 이벤트에는 반환·출력 매개변수를 둘 수 없어요.');c.functions.push(fn);
     }
     if((body.match(/HB_(?:FUNCTION|NODE)\(/g)||[]).length!==c.functions.length||(body.match(/HB_PROPERTY\(/g)||[]).length!==c.properties.length)throw Error('공개 멤버는 함수 본문 없이 헤더 선언으로 입력하세요.');
@@ -40,11 +40,12 @@ export function parseNativeHeader(source){
 }
 export function nativeMember(root,n){const [className,name]=(n.nativeId||'').split('.'),c=root.native?.classes.find(c=>c.name===className);return {c,f:c?.functions.find(f=>f.name===name),p:c?.properties.find(p=>p.name===name)};}
 const exec={id:'exec',label:'실행',type:'exec',array:false},then={id:'then',label:'다음',type:'exec',array:false},target={id:'target',label:'Target',type:'object',array:false};
+export function nativeTargetPin(f){const names=new Set(f?.inputs?.map(p=>p.id)||[]);let name='target',index=0;while(names.has(name))name='nativeTarget'+(index++||'');return name;}
 export function nativePins(root,n,direction){
   const {c,f,p}=nativeMember(root,n);let inputs=[],outputs=[];
   if(n.key==='nativeMembers'&&c){inputs=[{...target,className:c.name}];outputs=c.properties.map(p=>({id:p.name,label:p.name,type:p.type,array:p.array,...(p.className?{className:p.className}:{})}));}
   else if(n.key==='nativeEvent'&&f&&f.event!=='none'){outputs=[then,...f.inputs];}
-  else if(n.key==='nativeCall'&&f){inputs=[...(!f.pure?[exec]:[]),...(!f.static?[target]:[]),...f.inputs];outputs=[...(!f.pure?[then]:[]),...f.outputs];}
+  else if(n.key==='nativeCall'&&f){inputs=[...(!f.pure?[exec]:[]),...(!f.static?[{...target,id:nativeTargetPin(f)}]:[]),...f.inputs];outputs=[...(!f.pure?[then]:[]),...f.outputs];}
   else if(p&&n.key==='nativeGet'){inputs=[target];outputs=[{id:'value',label:p.name,type:p.type,array:p.array,...(p.className?{className:p.className}:{})}];}
   else if(p&&!p.readOnly&&n.key==='nativeSet'){inputs=[exec,target,{id:'value',label:p.name,type:p.type,array:p.array}];outputs=[then];}
   return direction==='in'?inputs:outputs;

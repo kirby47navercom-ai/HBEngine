@@ -131,7 +131,7 @@ export function validValue(type,value){
   if(type==='vec2')return vector(2);if(type==='vec3')return vector(3);if(type==='color')return vector(4)&&value.every(v=>v>=0&&v<=1);if(type==='object')return value===null||(typeof value==='string'&&value.length<=200);
   if(type==='transform')return value&&['position','rotation','scale'].every(k=>validValue('vec3',value[k]));if(type==='hit')return value&&validValue('bool',value.hit)&&validValue('vec3',value.position)&&validValue('vec3',value.normal)&&validValue('object',value.actor);return false;
 }
-export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??(p.array?[]:defaultsFor(p.type));}
+export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??p.default??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
   if(node.key==='inputAction')return direction==='in'?[]:catalog.find(s=>s.key==='inputAction').outputs.map(p=>p.id==='value'?{...p,type:node.valueType||'bool'}:p);
   if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type==='event'?'exec':t.type))];}

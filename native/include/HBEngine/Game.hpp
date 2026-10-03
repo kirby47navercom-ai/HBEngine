@@ -20,6 +20,7 @@ struct Color { float r=1,g=1,b=1,a=1; };
 struct Transform { Vec3 position{},rotation{},scale{1,1,1}; };
 struct Library {};
 struct Actor { Transform transform{}; virtual ~Actor()=default; };
+struct HitResult { bool hit=false; Vec3 position{},normal{}; Actor* actor=nullptr; };
 struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
 struct Pawn : Actor {};
 struct Character : Pawn {};
@@ -74,6 +75,22 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="addForce", KoreanName="힘 더하기", Category="물리") static void AddForce(Actor* target,const Vec3& force);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="impulse", KoreanName="충격량 더하기", Category="물리") static void AddImpulse(Actor* target,const Vec3& impulse);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="collisionEnabled", KoreanName="충돌 활성화", Category="물리") static void SetCollisionEnabled(Actor* target,bool enabled);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getAngularVelocity", KoreanName="각속도 가져오기", Category="물리") static Vec3 GetAngularVelocity(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setAngularVelocity", KoreanName="각속도 설정", Category="물리") static void SetAngularVelocity(Actor* target,const Vec3& velocity);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsMass", KoreanName="실제 질량 가져오기", Category="물리") static float GetMass(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsSleeping", KoreanName="수면 상태 가져오기", Category="물리") static bool IsSleeping(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsSleep", KoreanName="강체 수면 설정", Category="물리") static void SetSleeping(Actor* target,bool sleeping);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsForce", KoreanName="모드로 힘 적용", Category="물리") static void ApplyForce(Actor* target,const Vec3& force,const std::string& mode);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsForceAt", KoreanName="위치에 힘 적용", Category="물리") static void ApplyForceAtPosition(Actor* target,const Vec3& force,const Vec3& position,const std::string& mode);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsTorque", KoreanName="토크 적용", Category="물리") static void AddTorque(Actor* target,const Vec3& torque);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsAngularImpulse", KoreanName="각 충격량 적용", Category="물리") static void AddAngularImpulse(Actor* target,const Vec3& impulse);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsRaycast", KoreanName="충돌체 레이캐스트", Category="물리 질의") static HitResult Raycast(const Vec3& start,const Vec3& end,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsRaycastAll", KoreanName="모든 충돌체 레이캐스트", Category="물리 질의") static std::vector<HitResult> RaycastAll(const Vec3& start,const Vec3& end,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsSphereCast", KoreanName="구체 이동 충돌 검사", Category="물리 질의") static HitResult SphereCast(const Vec3& start,const Vec3& end,float radius,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsBoxCast", KoreanName="상자 이동 충돌 검사", Category="물리 질의") static HitResult BoxCast(const Vec3& start,const Vec3& end,const Vec3& extent,const Vec3& rotation,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsOverlapSphere", KoreanName="구체 겹침 검사", Category="물리 질의") static std::vector<Actor*> OverlapSphere(const Vec3& center,float radius,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsOverlapBox", KoreanName="상자 겹침 검사", Category="물리 질의") static std::vector<Actor*> OverlapBox(const Vec3& center,const Vec3& extent,const Vec3& rotation,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsClosestPoint", KoreanName="가장 가까운 충돌체 점", Category="물리 질의") static HitResult ClosestPoint(const Vec3& point,int dimension=3,int mask=-1,bool includeTriggers=false,Actor* ignore=nullptr);
 };
 
 HB_CLASS()

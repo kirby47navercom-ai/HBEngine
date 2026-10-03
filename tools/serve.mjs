@@ -28,7 +28,7 @@ if(!desktop){
 }
 if(!defaultProject){try{if((await fs.promises.stat(quietRoot)).isDirectory())defaultProject=await ensureProjectManifest(quietRoot,'QuietGarden');}catch(error){if(error.code!=='ENOENT')console.error('기본 프로젝트 확인: '+error.message);}}
 if(desktop&&process.env.HB_PROJECT_FILE)await selectProject(await readProjectManifest(process.env.HB_PROJECT_FILE));
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.gif':'image/gif','.mp4':'video/mp4','.webm':'video/webm','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.txt':'text/plain; charset=utf-8','.md':'text/plain; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.gif':'image/gif','.mp4':'video/mp4','.webm':'video/webm','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.txt':'text/plain; charset=utf-8','.md':'text/plain; charset=utf-8'};
 const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));
 const changedProject=()=>Object.assign(Error('프로젝트가 변경됐어요. 다시 작업하세요.'),{status:409});
 const checkOwner=owner=>{if(project!==owner||stopping)throw changedProject();};
@@ -77,7 +77,7 @@ const server=http.createServer(async(req,res)=>{try{
   const pathname=decodeURIComponent(url.pathname);
   if(desktop&&!project&&pathname==='/prototype/index.html')return res.writeHead(302,{Location:'/'}).end();
   const file=pathname==='/'?path.join(root,desktop&&!project?'prototype/project-hub.html':'prototype/index.html'):path.resolve(root,'.'+pathname);
-  if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/three\/)/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
+  if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/(three\/|@dimforge\/rapier[23]d-compat\/))/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
   const stat=await fs.promises.stat(file);if(!stat.isFile())return res.writeHead(404).end();stream(req,res,file,stat.size);
 }catch(error){json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
 server.listen(requestedPort,'127.0.0.1',async()=>{try{port=server.address().port;ready=true;await writeReady();console.log('HBEngine: http://127.0.0.1:'+port+'\nProject: '+(project?.root||'프로젝트 허브'));}catch(error){console.error(error.message);close();process.exitCode=1;}});

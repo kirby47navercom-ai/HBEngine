@@ -10,7 +10,7 @@
 
 ## 노드 라이브러리
 
-기본 노드 **444개**, 공통 C++ 코어 API **289개**와 실행 서비스 API **73개**를 제공한다. 라이브러리에는 수학/삼각/지수/보간, 정수/비트/비교, Vec2/Vec3, 회전·방향·Transform, 색상, 문자열, 자료형 변환, 8종 배열 × 11연산의 **221개 공통 함수**와 **8개 흐름 제어**가 추가되어 있다. 새 `inputAction`은 독립 IA 에셋의 값 타입과 Started/Triggered/Completed 실행 출력을 갖는 이벤트다. 노드마다 실제 계산/제어 코드와 서명 검사를 두었다. C++/JS 동등성 검사는 공통 함수의 실제 C++ 호출 결과를 비교한다. 모든 수치·경계 조합을 증명하는 검사는 아니다.
+기본 노드 **473개**, 공통 C++ 코어 API **289개**와 실행 서비스 API **102개**를 제공한다. 라이브러리에는 수학/삼각/지수/보간, 정수/비트/비교, Vec2/Vec3, 회전·방향·Transform, 색상, 문자열, 자료형 변환, 8종 배열 × 11연산의 **221개 공통 함수**와 **8개 흐름 제어**가 추가되어 있다. 새 `inputAction`은 독립 IA 에셋의 값 타입과 Started/Triggered/Completed 실행 출력을 갖는 이벤트다. 노드마다 실제 계산/제어 코드와 서명 검사를 두었다. C++/JS 동등성 검사는 공통 함수의 실제 C++ 호출 결과를 비교한다. 모든 수치·경계 조합을 증명하는 검사는 아니다.
 
 - bool/int/float/string/vec2/vec3/color/transform/object/hit, 단일·배열 변수와 내장 구조체 분할/합치기.
 - Branch, Sequence, ForLoop, ForEach, While, Break가 있는 반복, DoOnce/DoN, Gate/MultiGate, FlipFlop, Delay/재시작 지연, 정수/문자열 Switch.
@@ -27,7 +27,7 @@
 | My Blueprint / Inspector | 이벤트·함수·매크로·변수·통신·컴포넌트·클래스 상세 편집, JSON 저장; 클래스 전용 컴포넌트 뷰포트 | 전체 컴포넌트 계층·Skeletal/카메라 등 시각화 |
 | 함수·매크로 | 시그니처·내부 그래프·순수 함수·선택 추출·실제 호출, 매크로 지연 후 재개 | 로컬 변수·참조 매개변수 의미·독립 라이브러리 에셋 |
 | Construction | 별도 그래프, 실행 시작 때 BeginPlay 전에 실행 | 편집 중 속성 변경마다 재구성하는 native 생명주기 |
-| 이벤트 | Begin/End/Tick·키/축·typed IA 입력, AABB 기반 Overlap/Hit, 사용자 이벤트 | 전체 입력 Trigger/Modifier·장치/플레이어별 문맥·정밀 물리 이벤트 |
+| 이벤트 | Begin/End/Tick·키/축·typed IA 입력, 실제 2D/3D 콜라이더의 Overlap/Hit, 사용자 이벤트 | 전체 입력 Trigger/Modifier·장치/플레이어별 문맥·정밀 물리 이벤트 |
 | 핀/변수 | 단일/배열 검사·기본값·Get/Set·중첩 분할·관찰·변수 승격 | 사용자 Struct/Enum/Set/Map·soft/interface 참조·자동 변환 삽입 |
 | 클래스/상속 | Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent 템플릿·C++ 부모·공개 기본값·void 이벤트 재정의 | BP→BP 상속·부모 호출·인스턴스별 override·정밀 Character 이동 solver |
 | 편집 | RMB/MMB 이동·휠/Ctrl 확대·사각/다중 선택·복사/복제·주석·Undo/Redo·검색 | 북마크·정렬/분배·자동 배선·Diff |
@@ -132,3 +132,9 @@ C++ 변경 명령은 호출 종료 후 소유 플레이 월드에서 검증·적
 - `hb::AudioMixer::SetFloat/GetFloat/ClearFloat/TransitionTo`: asset 경로와 노출 이름, snapshot/전환 시간으로 제어한다. SetFloat override는 ClearFloat까지 snapshot에 우선한다. 범위 밖·없는 이름·잘못된 bus/snapshot/계층은 실패한다. 실제 WebAudio 버스/필터/압축기/신호로 실행한다.
 - C++ 읽기는 호출에 전달된 snapshot이다. Show 이후 생성/삭제, snapshot 전환을 같은 호출에서 동기 완료로 취급하지 않는다. 다음 상태와 실행 이벤트로 확인한다.
 - `test:ui-audio`는 실제 BP/C++ 실행·공용 snapshot·값 범위·수명을 검사한다. `prototype/tests/ui-audio.html`은 실제 DOM 이벤트와 PCM 감쇠/필터/Mute/Solo/공간 노드를 검사한다. 별도 위젯 클래스/애니메이션/지역화, mixer send/reverb/voice priority/native backend 등은 남아 있다.
+
+## 강체 서비스와 C++ 동기 질의
+
+16개 물리 서비스 선언에서 BP 핀을 생성해 공용 실행기로 연결했다. 각속도/질량/sleep, 네 힘 모드·작용점·토크·각 충격량, Raycast/All·Sphere/BoxCast·OverlapSphere/Box·ClosestPoint를 제공한다. 기본값 dimension=3·mask=-1·includeTriggers=false·ignore=null은 C++ 선언에서 가져오며 2D는 dimension=2를 지정한다. `hb::HitResult`와 BP hit/split pin·HitResult[]·Actor[]를 같은 JSON으로 연결한다.
+
+C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결과를 반환한다. 같은 함수의 Transform/collisionEnabled 수정은 질의에 보이고, 대기 중인 힘 적용의 solver 결과는 함수 반환 뒤 확인한다. receiver 핀과 인수 target을 구분하고 알려진 객체/파생 Actor 배열을 검증한다. 실제 강체·모터·CCD·단위·제한과 남은 물리 범위는 [물리 연구](PHYSICS_RUNTIME_RESEARCH.md)에 연결했다. 앞의 추가 당시 수치와 현재 수치를 구별한다.

@@ -74,7 +74,7 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 
 ## AI·상태·연출·효과 데이터
 
-`/api/schema`에 39종 컴포넌트, 457개 기본 BP 노드, 86개 C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
+`/api/schema`에 43종 컴포넌트, 473개 기본 BP 노드, 102개 C++ 실행 서비스와 새 에셋 예제를 함께 노출한다. 타입 ID는 `blackboard`, `behaviortree`, `statemachine`, `montage`, `sequenceasset`이다. UI 생성·파일 검증·JSON Patch·의존성 추출·실행기가 같은 정의를 사용한다. 표시 이름 대신 객체/노드/상태/트랙/클립의 안정적인 ID로 연결한다.
 
 - BB: `keys[{name,type,value}]`; `bool/int/float/string/vec3/object`. int32·벡터·객체 ID 검증을 적용한다.
 - BT: `blackboard`, `root`, `interval`, `nodes[{id,type,properties,children,services,x,y}]`. 순환/다중 부모·자료형·노드 수/깊이를 검증한다. 서비스는 이벤트/간격을 가진다.
@@ -104,7 +104,7 @@ C++ 실행 서비스는 호출 중 쌓인 명령을 호출 종료 후 실제 VM�
 
 ## 위젯·오디오·참조·프로파일
 
-현재 `/api/schema`는 457종 BP 노드와 86개 실행 서비스, `ui.widgets/events/defaults/anchors/variables`, `audio.busDefaults/parameters/snapshotOverride`를 제공한다. `.hbwidget.json`과 `.hbaudiomixer.json`은 UI 생성, 파일 검증, JSON Patch, 참조 registry, 저장·복구와 같은 스키마를 사용한다. 헤드리스 로직 실행은 실제 DOM/음향 서비스가 필요하면 명시적으로 실패하며 PCM/GPU 검증으로 표시하지 않는다.
+현재 `/api/schema`는 473종 BP 노드와 102개 실행 서비스, `ui.widgets/events/defaults/anchors/variables`, `audio.busDefaults/parameters/snapshotOverride`를 제공한다. `.hbwidget.json`과 `.hbaudiomixer.json`은 UI 생성, 파일 검증, JSON Patch, 참조 registry, 저장·복구와 같은 스키마를 사용한다. 헤드리스 로직 실행은 실제 DOM/음향 서비스가 필요하면 명시적으로 실패하며 PCM/GPU 검증으로 표시하지 않는다.
 
 | 명령 | 추가 인수/동작 |
 |---|---|
@@ -123,3 +123,11 @@ C++ 실행 서비스는 호출 중 쌓인 명령을 호출 종료 후 실제 VM�
 `runtime.state.objects[].gameplayDebug.ui[instance][element]`에는 type과 현재 위젯 값이, `audioMixers[asset][exposed]`에는 snapshot 전환/override의 현재 값이 들어간다. 읽은 디버그 값을 에셋 기본값으로 덮어쓰지 않는다. C++ Show 등의 비동기 결과는 다음 snapshot으로 확인한다.
 
 재현: `node tools/check-ui-audio-editor.mjs http://127.0.0.1:5182`는 `authoring-qa` 프로젝트 이름을 확인한 뒤 새 검증 파일만 만든다. 사용자 프로젝트에서는 실행하지 않는다. 실제 UI/PCM 검사 및 남은 세부 구현은 [위젯·오디오 연구](AUTHORING_UI_AUDIO_RESEARCH.md)에 기록했다.
+
+## 물리 저작과 실제 실행 관찰
+
+`/api/schema.physics`는 2D/3D 차원, 단위, 네 forceModes, 7개 queryKeys, queryDefaults, 결과 의미·실행 제한·C++ 적용 시점·관절 한계를 제공한다. component 스키마에서 Rigidbody/2D·PhysicsConstraint/2D·ConstantForce/2D와 Collider의 필드/기본값/범위를 읽는다. 객체 Transform/관절 각도는 도, 각속도는 rad/s이며 2D는 XY/Z다. UI의 축 체크박스는 JSON 0/1 벡터다. bodyType을 직접 수정할 때 구형 isKinematic 우선 규칙을 함께 확인한다.
+
+Scene/BP 문서를 document.get → expectedRevision/dryRun 기반 document.patch → document.save로 수정하고 UI와 같은 검증·Undo를 사용한다. 실행 중에는 저작 변경이 거부된다. `runtime.state.physics`는 backend/fixedStep/elapsed와 차원별 bodies/joints를, objects[].gameplayDebug.physics는 mass/sleeping/velocity/angularVelocity/ccd/colliders를 제공한다. Stop 후 physics=null이며 편집 문서는 복구된다. 관측값을 기본값으로 덮지 않는다.
+
+C++ 공간 검색은 현재 C++ 변환/충돌 flags를 합친 읽기 전용 정확 형상 월드에서 동기 응답을 받는다. 다른 변경 명령의 solver 완료까지 동기라는 뜻은 아니다. 함수당 128질의/4 MB 메시지, 검색 결과 1,000개 등의 제한은 스키마에서 조회한다. 상세한 query-only/physics-only·레이어·단위·오류·수명·실제 검사는 [물리 연구](PHYSICS_RUNTIME_RESEARCH.md)와 tools/check-physics-editor.mjs에 있다. 이 도구는 authoring-qa에서만 새 검증 장면을 만든다.

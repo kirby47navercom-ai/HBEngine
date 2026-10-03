@@ -46,7 +46,7 @@ assert.equal(createPlacedObject('topdown2d').components.find(c=>c.type==='Rigidb
 const parent=createPlacedObject('empty',{id:'parent',position:[3,4,5]}),child=createPlacedObject('trigger2d',{id:'child',position:[1,2,3]});child.parentId='parent';
 const world=new Scene(),preview=new CollisionPreview(world),worldObjects=[parent,child];
 preview.update(worldObjects,new Set(['child']));assert.equal(preview.items.size,1);
-const line=[...preview.items.values()][0];assert.deepEqual(line.position.toArray(),[4,6,8],'2D 부모 계층 아래 충돌 미리보기');assert.equal(line.scale.z,.01);assert.equal(line.material,preview.trigger);
+const line=[...preview.items.values()][0];assert.deepEqual(line.position.toArray(),[4,6,8],'2D 부모 계층 아래 충돌 미리보기');line.geometry.computeBoundingBox();assert.ok(line.geometry.boundingBox.max.z-line.geometry.boundingBox.min.z<=.01,'2D 미리보기의 실제 기하는 XY 평면이다');assert.equal(line.material,preview.trigger);
 preview.update(worldObjects,new Set());assert.equal(preview.items.size,0,'선택 해제 때 잔상 제거');
 preview.update(worldObjects,new Set(),{all:true});assert.equal(preview.items.size,1);
 child.collisionEnabled=false;preview.update(worldObjects,new Set(),{all:true});assert.equal(preview.items.size,0,'비활성 충돌은 미리보기에서 제외');

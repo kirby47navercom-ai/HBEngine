@@ -5,8 +5,8 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 �
 ## 현재 구현
 
 - **엔진 실행과 프로젝트**: HBEngine.exe를 실행하면 최근 프로젝트·새 프로젝트·찾아 열기가 있는 허브를 연다. 프로젝트 루트의 `.hbproject` JSON은 UUID·엔진/파일 버전·시작 레벨·시작 BP를 지정한다. 생성 후 바로 편집기에 들어가며 기존 폴더와 파일을 덮어쓰지 않는다. 프로젝트별 복구·도킹·Project 폴더·SaveGame을 `Saved/Editor/storage.json`에 보존해 실행 포트가 달라져도 이어간다. 최초 일반 실행 또는 `--register`로 현재 Windows 사용자에게 `.hbproject` 더블클릭 연결을 등록한다.
-- **444개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
-- **289개 코어 C++ API + 73개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
+- **473개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
+- **289개 코어 C++ API + 102개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
 - **블루프린트 실행**: Construction → BeginPlay → Tick·입력·Overlap → EndPlay, 함수·매크로, 조건·반복·중단, Delay·재시작 지연, 타이머·Timeline, 변수·배열, 디스패처·인터페이스 호출. 중단점·Step·Continue와 실제 계산한 핀 값을 지원한다. Stop은 편집 장면을 복원한다.
 - **사용자 C++ 실행**: Project에서 C++ 클래스를 만들고 설치된 Visual Studio(또는 VS Code)에서 .h/.cpp를 편집한다. C++ 클래스 기반 블루프린트에서 파일 변경을 다시 읽어 g++로 빌드한다. 공개 함수·속성·static 함수·반환·출력 참조·객체 ID를 연결하고 C++ 이벤트를 BP로 전달한다. C++ 변환 변경은 실행 월드에 반영한다. [실행 예제](prototype/examples/BP_NativeDoor.blueprint.json).
 - **그래프 제작**: 한글/영어 우클릭 검색, 핀 연결·분할·합치기·변수 승격, 다중/영역 선택, 복사·복제·Undo/Redo, 함수·매크로 추출, Construction, 주석·세부 속성·모든 내부 그래프 검색. 그래프당 1,000개 노드를 저장할 수 있다.
@@ -35,7 +35,7 @@ npm run desktop:build
 .\HBEngine.exe
 ```
 
-빌드는 `HBEngine.exe`와 `dist/HBEngine/HBEngine.exe`를 만든다. 빌드에 사용하는 Node 실행 파일을 동봉하고 공식 WebView2 SDK 1.0.4258.31의 x64 loader를 사용한다. Node·WebView2 SDK·Three 고지는 `dist/HBEngine/licenses`에 포함한다. 실행 로그·최근 프로젝트·WebView2 데이터는 기본적으로 `%LOCALAPPDATA%/HBEngine`에 둔다. 파일 연결만 다시 등록하려면 `.\HBEngine.exe --register`를 실행한다.
+빌드는 `HBEngine.exe`와 `dist/HBEngine/HBEngine.exe`를 만든다. 빌드에 사용하는 Node 실행 파일을 동봉하고 공식 WebView2 SDK 1.0.4258.31의 x64 loader를 사용한다. Node·WebView2 SDK·Three·Rapier 고지는 `dist/HBEngine/licenses`에 포함한다. 실행 로그·최근 프로젝트·WebView2 데이터는 기본적으로 `%LOCALAPPDATA%/HBEngine`에 둔다. 파일 연결만 다시 등록하려면 `.\HBEngine.exe --register`를 실행한다.
 
 브라우저 개발 미리보기는 다음 명령으로 실행한다.
 
@@ -50,9 +50,10 @@ C++17 g++이 필요하다. Windows에서는 설치된 MSYS2 UCRT64 컴파일러�
 
 | 명령 | 검사 |
 | --- | --- |
-| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·444종 한 그래프 저장 |
+| npm test | 전체 노드·타입·JSON·분할 핀·함수/매크로 추출·공통 API·473종 한 그래프 저장 |
 | npm run api:check | 공통 선언·생성 헤더·노드 메타데이터 일치 |
 | npm run test:library | 새 221개 함수의 실제 C++/JS 결과 비교·배열/정수 오류 |
+| npm run test:physics | 실제 2D/3D WASM 강체·회전·6종 관절/모터·CCD·형상 질의·실제 C++ 동기 검색·BP split pin |
 | npm run test:native | 기존 공통 C++ 코어 실제 컴파일·호출 |
 | npm run test:runtime | 이벤트·반복·지연·Timeline·트랜스폼 애니메이션 재생/정지/반복/시간 배율·중단점 이어가기·실제 C++→BP |
 | npm run test:host | 사용자 C++ 빌드·함수/속성/객체/이벤트·잘못된 반환/컴파일 진단 |
@@ -104,7 +105,7 @@ auto remaining = hb::Timers::GetTimerRemaining(timer);
 
 ## 확장된 제작 흐름과 AI
 
-2D Sprite crop/pivot/PPU·그리드 분할, Flipbook 프레임, Tilemap 브러시/지우기/사각형/채우기·레이어·충돌 편집을 독립 에디터로 연다. 2D 문서는 전용 캔버스·팔레트·속성을 사용하고 중복 전역 패널을 숨긴다. 장면의 39종 컴포넌트, Controller/Pawn/GameMode/State, 2D/3D 고정 물리·접촉·중력·입력·점프를 실제 플레이로 연결한다. 머테리얼 그래프 33종은 타입 검증과 GLSL 생성 후 GPU 재질에 적용한다.
+2D Sprite crop/pivot/PPU·그리드 분할, Flipbook 프레임, Tilemap 브러시/지우기/사각형/채우기·레이어·충돌 편집을 독립 에디터로 연다. 2D 문서는 전용 캔버스·팔레트·속성을 사용하고 중복 전역 패널을 숨긴다. 장면의 43종 컴포넌트, Controller/Pawn/GameMode/State, 2D/3D 고정 물리·접촉·중력·입력·점프를 실제 플레이로 연결한다. 머테리얼 그래프 54종은 타입 검증과 GLSL 생성 후 GPU 재질에 적용한다.
 
 BP Open Scene과 C++ `hb::Scene::Open`은 다음 장면을 검증하고 프레임 경계에서 이전 월드의 EndPlay·타이머·입력 정리 후 새 월드를 시작한다. Stop하면 전환 전의 편집 장면과 환경을 복원한다. 화면 없는 실행기도 같은 준비/전환 경로를 사용하며 `sceneHistory`에 전환 장면과 프레임을 남긴다.
 
@@ -123,3 +124,9 @@ BP/Scene/Material/Animation/Curve/IA/IMC/Data/Blackboard/BehaviorTree/FSM/Montag
 ## Git
 
 공개 저장소 계정은 kirby47navercom-ai이다. author와 committer를 같은 계정으로 유지하고 한글 제목·본문에 변경과 검증을 기록한다.
+
+## 강체와 공간 검색
+
+2D와 3D는 별도 Rapier 0.21.0 WASM 월드로 실행한다. 정확한 Box/Sphere/Capsule, 회전·복합 질량/관성, CCD, 32비트 충돌 필터, 여섯 관절 형식과 한계/모터, 지속 힘을 편집하고 실행한다. 회전 축 고정은 체크박스로 설정한다. C++/BP에서 Raycast/All·Sphere/BoxCast·Overlap·ClosestPoint·힘·토크·각속도·질량·sleep을 사용한다.
+
+C++ 공간 검색은 읽기 전용 실제 질의 월드에서 동기 응답을 받고, 나머지 변경 서비스는 함수 반환 후 VM에서 적용한다. AI 스키마에 단위·기본값·제한을 제공하고 runtime.state로 실제 물리 상태를 관찰한다. 전체 분석·API 단위·구현 한계·재현 검사는 [물리 제작/실행 연구](docs/PHYSICS_RUNTIME_RESEARCH.md)에 있다. `node tools/check-physics-editor.mjs http://127.0.0.1:5182`는 authoring-qa 전용 검증이다.

@@ -30,3 +30,5 @@
 .material-node .pin-row > small { display:none; }
 .material-node-menu .material-node-results > button { min-height:32px; }
 .material-node-menu .material-node-results > button span { flex:1; }
+
+.component-axis-lock{display:flex;gap:14px;align-items:center;justify-content:flex-end;flex:1}.component-axis-lock label{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:12px}.component-axis-lock input[type=checkbox]{width:14px;height:14px;accent-color:var(--accent);margin:0}

@@ -150,6 +150,193 @@
       "analysis": "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
       "implementationStatus": "partial",
       "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-rigidbody",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-Rigidbody.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "질량·감쇠·중력·키네마틱·관성·CCD·축 속성 표 본문",
+      "topics": [
+        "physics.body",
+        "physics.mass",
+        "physics.ccd"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-dynamic-2d",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/rigidbody/body-types/dynamic/dynamic-body-type-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Dynamic 본문 전체 속성 표·Transform 주의 문단",
+      "topics": [
+        "2d.physics",
+        "physics.inspector"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-kinematic-2d",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/rigidbody/body-types/kinematic/kinematic-body-type-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Kinematic 본문 전체 속성 표·Full Kinematic Contacts",
+      "topics": [
+        "2d.physics",
+        "physics.body-types",
+        "physics.events"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-static-2d",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2d-physics/rigidbody/body-types/static/static-body-type-reference.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Static 본문 전체 속성 표",
+      "topics": [
+        "2d.physics",
+        "physics.body-types"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-joints",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Joints.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "본문 전체: 관절 종류·월드/강체 연결·한계/drive·articulation",
+      "topics": [
+        "physics.joints",
+        "physics.articulation"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "unity-addforce",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody.AddForce.html",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "인수/설명·네 모드의 질량/시간 식·동적 바디/0 힘 sleep·FixedUpdate 예시",
+      "topics": [
+        "physics.force",
+        "physics.units",
+        "physics.cpp"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-constraint-reference",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/physics-constraint-reference-in-unreal-engine",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "UE 5.8 표시 페이지의 본문 전체 속성 표: 연결/각/선형 한계·drive·soft/break/plasticity/projection",
+      "topics": [
+        "physics.joints",
+        "physics.inspector"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "epic-collision-response",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/collision-response-reference-in-unreal-engine?lang=en-US",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "Collision Enabled 네 모드와 response 구분의 본문 부분; 전체 preset/API 문서 확인 아님",
+      "topics": [
+        "physics.query",
+        "physics.collision"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-getting-started",
+      "url": "https://rapier.rs/docs/user_guides/javascript/getting_started_js/",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "JavaScript getting started 본문: WASM init·World/body/collider·step",
+      "topics": [
+        "physics.backend"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-rigid-bodies",
+      "url": "https://rapier.rs/docs/user_guides/javascript/rigid_bodies/",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "바디 종류/초기 이동 부분과 Mass Properties 문단; 전체 긴 본문 확인 아님",
+      "topics": [
+        "physics.mass",
+        "physics.inertia",
+        "physics.body-types"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-joint-constraints",
+      "url": "https://rapier.rs/docs/user_guides/javascript/joint_constraints/",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "본문 전체: impulse constraints·multibody·cycles·오차/limit",
+      "topics": [
+        "physics.joints",
+        "physics.solver"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-advanced-collision",
+      "url": "https://www.rapier.rs/docs/user_guides/javascript/advanced_collision_detection_js/",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "본문 전체: events/EventQueue·contact/intersection graph·hooks·CCD",
+      "topics": [
+        "physics.collision",
+        "physics.events",
+        "physics.filters"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
+    },
+    {
+      "id": "rapier-installed-api",
+      "url": "node_modules/@dimforge/rapier3d-compat/dist/dynamics/impulse_joint.d.ts",
+      "status": "detail",
+      "readDate": "2026-10-03",
+      "readScope": "설치된 0.21.0의 해당 2D/3D joint/body/collider/shape 선언과 physics_pipeline 구현 분기; 패키지 전체 소스 읽음 아님",
+      "topics": [
+        "physics.native-contract",
+        "physics.units",
+        "physics.query-coordinate-space"
+      ],
+      "analysis": "docs/PHYSICS_RUNTIME_RESEARCH.md",
+      "implementationStatus": "partial",
+      "linkedPagesStatus": "별도 본문 확인 전까지 indexed"
     }
   ]
 }

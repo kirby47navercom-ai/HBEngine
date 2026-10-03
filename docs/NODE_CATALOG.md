@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **457개**, 실제 공통 C++ API **375개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **473개**, 실제 공통 C++ API **391개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -17,7 +17,7 @@
 | 벡터 | 34 | 34 |
 | 수학 | 52 | 50 |
 | 배열 | 95 | 88 |
-| 물리 | 7 | 5 |
+| 물리 | 16 | 14 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
 | 오디오 | 7 | 4 |
@@ -36,6 +36,7 @@
 | 회전 | 9 | 9 |
 | 색상 | 10 | 10 |
 | 게임플레이 | 9 | 9 |
+| 물리 질의 | 7 | 7 |
 | AI | 15 | 15 |
 | 상태 머신 | 8 | 8 |
 | 몽타주 | 7 | 7 |
@@ -340,6 +341,15 @@
 | getVelocity | Get Velocity / 속도 가져오기 | target: object | return: vec3 | hb::Physics::GetVelocity | 공통 C++ + VM |
 | setVelocity | Set Velocity / 속도 설정 | exec: exec, target: object, velocity: vec3 | then: exec | hb::Physics::SetVelocity | 공통 C++ + VM |
 | addForce | Add Force / 힘 더하기 | exec: exec, target: object, force: vec3 | then: exec | hb::Physics::AddForce | 공통 C++ + VM |
+| getAngularVelocity | Get Angular Velocity / 각속도 가져오기 | target: object | return: vec3 | hb::Physics::GetAngularVelocity | 공통 C++ + VM |
+| setAngularVelocity | Set Angular Velocity / 각속도 설정 | exec: exec, target: object, velocity: vec3 | then: exec | hb::Physics::SetAngularVelocity | 공통 C++ + VM |
+| physicsMass | Get Mass / 실제 질량 가져오기 | target: object | return: float | hb::Physics::GetMass | 공통 C++ + VM |
+| physicsSleeping | Is Sleeping / 수면 상태 가져오기 | target: object | return: bool | hb::Physics::IsSleeping | 공통 C++ + VM |
+| physicsSleep | Set Sleeping / 강체 수면 설정 | exec: exec, target: object, sleeping: bool | then: exec | hb::Physics::SetSleeping | 공통 C++ + VM |
+| physicsForce | Apply Force / 모드로 힘 적용 | exec: exec, target: object, force: vec3, mode: string | then: exec | hb::Physics::ApplyForce | 공통 C++ + VM |
+| physicsForceAt | Apply Force At Position / 위치에 힘 적용 | exec: exec, target: object, force: vec3, position: vec3, mode: string | then: exec | hb::Physics::ApplyForceAtPosition | 공통 C++ + VM |
+| physicsTorque | Add Torque / 토크 적용 | exec: exec, target: object, torque: vec3 | then: exec | hb::Physics::AddTorque | 공통 C++ + VM |
+| physicsAngularImpulse | Add Angular Impulse / 각 충격량 적용 | exec: exec, target: object, impulse: vec3 | then: exec | hb::Physics::AddAngularImpulse | 공통 C++ + VM |
 
 ## 오브젝트
 
@@ -586,6 +596,18 @@
 | unPossess | Un Possess / 폰 제어권 해제 | exec: exec, controller: object | then: exec | hb::Gameplay::UnPossess | 공통 C++ + VM |
 | addMovementInput | Add Movement Input / 이동 입력 더하기 | exec: exec, target: object, direction: vec3, scale: float | then: exec | hb::Gameplay::AddMovementInput | 공통 C++ + VM |
 | jump | Jump / 캐릭터 점프 | exec: exec, target: object | then: exec | hb::Gameplay::Jump | 공통 C++ + VM |
+
+## 물리 질의
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| physicsRaycast | Raycast / 충돌체 레이캐스트 | start: vec3, end: vec3, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: hit | hb::Physics::Raycast | 공통 C++ + VM |
+| physicsRaycastAll | Raycast All / 모든 충돌체 레이캐스트 | start: vec3, end: vec3, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: hit[] | hb::Physics::RaycastAll | 공통 C++ + VM |
+| physicsSphereCast | Sphere Cast / 구체 이동 충돌 검사 | start: vec3, end: vec3, radius: float, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: hit | hb::Physics::SphereCast | 공통 C++ + VM |
+| physicsBoxCast | Box Cast / 상자 이동 충돌 검사 | start: vec3, end: vec3, extent: vec3, rotation: vec3, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: hit | hb::Physics::BoxCast | 공통 C++ + VM |
+| physicsOverlapSphere | Overlap Sphere / 구체 겹침 검사 | center: vec3, radius: float, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: object[] | hb::Physics::OverlapSphere | 공통 C++ + VM |
+| physicsOverlapBox | Overlap Box / 상자 겹침 검사 | center: vec3, extent: vec3, rotation: vec3, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: object[] | hb::Physics::OverlapBox | 공통 C++ + VM |
+| physicsClosestPoint | Closest Point / 가장 가까운 충돌체 점 | point: vec3, dimension: int, mask: int, includeTriggers: bool, ignore: object | return: hit | hb::Physics::ClosestPoint | 공통 C++ + VM |
 
 ## AI
 

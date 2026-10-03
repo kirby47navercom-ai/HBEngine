@@ -4,16 +4,17 @@ import {existsSync} from 'node:fs';
 import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import readline from 'node:readline';
-import {parseNativeHeader} from '../prototype/native-model.js';
+import {parseNativeHeader,nativeTargetPin} from '../prototype/native-model.js';
 import {validValue} from '../prototype/blueprint-model.js';
 import {serviceApi} from '../prototype/core-api.js';
 import {prepareNative,jsonInclude} from './prepare-native.mjs';
+import {NativePhysicsQueries} from './native-physics-query.mjs';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
-const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*'};
-const cppType=p=>p.array?`std::vector<${cpp[p.type]}>`:p.type==='object'?`${['Object','Actor','Pawn','Character','Controller','PlayerController','GameMode','GameState','PlayerState','AIController','Component','SceneComponent'].includes(p.className)?'hb::'+(p.className==='Object'?'Actor':p.className):p.className||'hb::Actor'}*`:cpp[p.type];
-function unpack(p,expr){if(p.array&&p.type==='object')throw Error('객체 포인터 배열은 공개 함수에서 아직 지원하지 않아요.');return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
+const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*',hit:'hb::HitResult'};
+const cppType=p=>p.array?`std::vector<${cppType({...p,array:false})}>`:p.type==='object'?`${['Object','Actor','Pawn','Character','Controller','PlayerController','GameMode','GameState','PlayerState','AIController','Component','SceneComponent'].includes(p.className)?'hb::'+(p.className==='Object'?'Actor':p.className):p.className||'hb::Actor'}*`:cpp[p.type];
+function unpack(p,expr){if(p.array&&p.type==='object')return `hb::bridgeObjectArray<${cppType({...p,array:false}).slice(0,-1)}>(${expr})`;return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
 function generatedWorker(meta){
   let definitions='',cases='',factory='';
   for(const c of meta.classes){
@@ -27,9 +28,11 @@ function generatedWorker(meta){
     for(const p of c.properties){const id=c.name+'.'+p.name,target=`auto* target=dynamic_cast<HB_${c.name}*>(hb::bridgeCells.at(targetId).get());if(!target)throw std::runtime_error("C++ target class mismatch");`;
       cases+=`if(nativeId=="${id}"){ensure(targetId,"${c.name}");hb::bridgeSync(objects);${target}if(key=="nativeGet")out["value"]=hb::bridgeValue(target->${p.name});${!p.readOnly?`else if(key=="nativeSet")target->${p.name}=${unpack(p,'args.at("value")')};`:''}else throw std::runtime_error("invalid property operation");handled=true;}\n`;
     }
-    for(const f of c.functions){const id=c.name+'.'+f.name,declarations=f.parameters.map(parameter=>{const p=[...f.inputs,...f.outputs].find(p=>p.id===parameter.name);if(!p)throw Error('공개 매개변수 정보가 없어요.');return `${cppType(p)} ${p.id}=${parameter.out?'{}':unpack(p,`args.at("${p.id}")`)};`;}).join(''),target=f.static?'':`ensure(targetId,"${c.name}");auto* target=dynamic_cast<HB_${c.name}*>(hb::bridgeCells.at(targetId).get());if(!target)throw std::runtime_error("C++ target class mismatch");`,receiver=f.static?c.name+'::':'target->';
-      const invoke=`${receiver}${f.name}(${f.parameters.map(p=>p.name).join(',')})`,result=f.returnType==='void'?`${invoke};`:`auto result=${invoke};out["${f.outputs.find(p=>!f.parameters.some(param=>param.out&&param.name===p.id)).id}"]=hb::bridgeValue(result);`;
-      cases+=`if(nativeId=="${id}"&&key=="nativeCall"){${target}hb::bridgeSync(objects);${declarations}${result}${f.parameters.filter(p=>p.out).map(p=>`out["${p.name}"]=hb::bridgeValue(${p.name});`).join('')}handled=true;}\n`;
+    for(const f of c.functions){
+      const id=c.name+'.'+f.name,locals=f.parameters.map((_,i)=>'HB_arg_'+i),declarations=f.parameters.map((parameter,i)=>{const p=[...f.inputs,...f.outputs].find(p=>p.id===parameter.name);if(!p)throw Error('공개 매개변수 정보가 없어요.');return cppType(p)+' '+locals[i]+'='+(parameter.out?'{}':unpack(p,'args.at("'+p.id+'")'))+';';}).join('');
+      const receiverId=!f.static?'args.at("'+nativeTargetPin(f)+'").get<std::string>()':'targetId',target=f.static?'':'ensure('+receiverId+',"'+c.name+'");auto* HB_receiver=dynamic_cast<HB_'+c.name+'*>(hb::bridgeCells.at('+receiverId+').get());if(!HB_receiver)throw std::runtime_error("C++ target class mismatch");',receiver=f.static?c.name+'::':'HB_receiver->';
+      const invoke=receiver+f.name+'('+locals.join(',')+')',result=f.returnType==='void'?invoke+';':'auto HB_result='+invoke+';out["'+f.outputs.find(p=>!f.parameters.some(param=>param.out&&param.name===p.id)).id+'"]=hb::bridgeValue(HB_result);';
+      cases+='if(nativeId=="'+id+'"&&key=="nativeCall"){'+target+'hb::bridgeSync(objects);'+declarations+result+f.parameters.map((p,i)=>p.out?'out["'+p.name+'"]=hb::bridgeValue('+locals[i]+');':'').join('')+'handled=true;}\n';
     }
   }
   return `#include <HBEngine/Bridge.hpp>\n#include "User.hpp"\n${definitions}
@@ -57,10 +60,10 @@ export class NativeHost {
     if(!request||typeof request!=='object')throw Error('잘못된 C++ 요청');if(!Array.isArray(request.objects)||request.objects.length>2000||new Set(request.objects.map(o=>o?.id)).size!==request.objects.length||request.objects.some(o=>!o||typeof o.id!=='string'||o.id.length>160||!validValue('transform',o)))throw Error('C++ 객체 상태 오류');for(const o of request.objects){const c=session.metadata.classes.find(c=>c.name===o.nativeClass);for(const [name,value] of Object.entries(o.nativeProperties||{})){const p=c?.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 속성 자료형 오류: '+name);}}if(['frame','reset'].includes(request.command)){if(request.command==='frame'&&(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean')))throw Error('프레임 시간 오류');return;}
     const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name);if(!c||!['nativeCall','nativeGet','nativeSet'].includes(request.key)||!request.args)throw Error('등록되지 않은 C++ 함수');
     const ports=request.key==='nativeCall'?f?.inputs:request.key==='nativeSet'&&!p?.readOnly?[{...p,id:'value'}]:request.key==='nativeGet'&&p?[]:null;if(!ports)throw Error('등록되지 않은 C++ 작업');for(const pin of ports){const value=request.args[pin.id];if(!(pin.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))throw Error('C++ 입력 자료형 오류: '+pin.id);}
-    for(const pin of ports.filter(p=>p.type==='object'))if(request.args[pin.id]!==null&&!request.objects.some(o=>o.id===request.args[pin.id]))throw Error('C++ 객체 참조 오류: '+pin.id);if(!f?.static&&(typeof request.args.target!=='string'||!request.objects?.some(o=>o.id===request.args.target)))throw Error('C++ 대상 오브젝트가 없어요.');
+    for(const pin of ports.filter(p=>['object','hit'].includes(p.type)))for(const value of pin.array?request.args[pin.id]:[request.args[pin.id]]){const id=pin.type==='hit'?value.actor:value;if(id!==null&&!request.objects.some(o=>o.id===id))throw Error('C++ 객체 참조 오류: '+pin.id);}const receiver=request.args[request.key==='nativeCall'?nativeTargetPin(f):'target'];if(!f?.static&&(typeof receiver!=='string'||!request.objects?.some(o=>o.id===receiver)))throw Error('C++ 대상 오브젝트가 없어요.');
   }
   validateReply(session,request,result){
-    const known=id=>request.objects.some(o=>o.id===id),valid=(p,v)=>p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validValue(p.type,x)):validValue(p.type,v);
+    const known=id=>request.objects.some(o=>o.id===id),validOne=(p,v)=>validValue(p.type,v)&&(p.type!=='object'||v===null||known(v))&&(p.type!=='hit'||v.actor===null||known(v.actor)),valid=(p,v)=>p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validOne(p,x)):validOne(p,v);
     const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name),ports=request.key==='nativeCall'?f?.outputs:request.key==='nativeGet'&&p?[{...p,id:'value'}]:[];
     for(const pin of ports||[]){const value=result.outputs?.[pin.id];if(!valid(pin,value)||(pin.type==='object'&&!pin.array&&value!==null&&!known(value)))throw Error('C++ 출력 자료형 오류: '+pin.id);}
     if(!Array.isArray(result.objects)||result.objects.some(o=>!known(o?.id)||(o.position!==undefined?(!validValue('transform',o)||!o.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))):!session.metadata.classes.some(c=>c.name===request.objects.find(v=>v.id===o.id)?.nativeClass&&c.base!=='Actor'))))throw Error('C++ 객체 출력 범위 오류');
@@ -73,8 +76,11 @@ export class NativeHost {
   async call(token,request){const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');this.validate(session,request);session.lastUsed=Date.now();const job=session.queue.then(async()=>this.validateReply(session,request,await this.rpc(session,request)));session.queue=job.catch(()=>{});return job;}
   rpc(session,request){
     if(!session.process){session.process=spawn(session.binary,[],{env,windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>session.process=null);}
-    return new Promise((resolve,reject)=>{const child=session.process,lines=session.lines;const cleanup=()=>{clearTimeout(timeout);lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{cleanup();reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
-      const onLine=line=>{const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();result.ok?resolve(result):reject(Error(result.error));}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(JSON.stringify(request)+'\n',error=>{if(error)onError(error);});});
+    return new Promise((resolve,reject)=>{const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects);let finished=false;
+      const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
+      const onLine=async line=>{if(finished)return;
+        if(line.startsWith('HB_QUERY\t')){let reply;try{if(Buffer.byteLength(line,'utf8')>4000000)throw Error('C++ 물리 질의 크기 제한 초과');reply={ok:true,value:await queries.query(JSON.parse(line.slice(9)))};}catch(error){reply={ok:false,error:error.message};}if(!finished)child.stdin.write(JSON.stringify(reply)+'\n',error=>{if(error)onError(error);});return;}
+        const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();result.ok?resolve(result):reject(Error(result.error));}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(JSON.stringify(request)+'\n',error=>{if(error)onError(error);});});
   }
   close(){for(const session of this.sessions.values())session.process?.kill();this.sessions.clear();}
 }
