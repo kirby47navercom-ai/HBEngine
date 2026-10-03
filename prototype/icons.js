@@ -1,4 +1,5 @@
 export const paths = {
+  cursor: '<path d="m5 3 14 9-7 1-3 7z"/>',
   cloud: '<path d="M6 18a4 4 0 0 1 0-8 6 6 0 0 1 11-2 5 5 0 0 1 1 10z"/>',
   sky: '<path d="M3 17h18M5 13a7 7 0 0 1 14 0M12 2v2M3 6l2 2m14 0 2-2"/>',
   fog: '<path d="M3 8h18M5 12h14M3 16h18M7 20h10"/>',

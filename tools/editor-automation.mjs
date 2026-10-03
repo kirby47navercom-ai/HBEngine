@@ -1,3 +1,4 @@
+import {placementCatalog} from '../prototype/placement-catalog.js';
 import {randomUUID} from 'node:crypto';
 import {assetTypes,assetSuffix,createAsset} from '../prototype/asset-documents.js';
 import {componentDefinitions} from '../prototype/scene-components.js';
@@ -14,13 +15,16 @@ export const editorMethods={
   'document.save':{params:{path:'열린 문서 경로',expectedRevision:'저장할 revision'}},
   'editor.undo':{params:{path:'열린 문서 경로',expectedRevision:'되돌릴 revision'}},
   'editor.redo':{params:{path:'열린 문서 경로',expectedRevision:'다시 실행할 revision'}},
+  'blueprint.connect':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'event / construction / 함수 ID',from:'{node,pin}',to:'{node,pin}',dryRun:'검증만'}},
+  'blueprint.variable.drop':{params:{path:'블루프린트 문서',expectedRevision:'현재 revision',view:'그래프 ID',variableId:'변수 ID',target:'{node,pin,direction: in/out} 또는 null',position:'{x,y}',mode:'get / set',dryRun:'검증만'}},
+  'scene.place':{params:{path:'장면 문서',expectedRevision:'현재 revision',key:'배치 카탈로그 key',position:'[x,y,z]',dryRun:'검증만'}},
   'scene.select':{params:{ids:'오브젝트 ID 배열',focus:'선택 위치로 이동 여부'}},
   'runtime.play':{params:{}},'runtime.stop':{params:{}},'runtime.pause':{params:{}},'runtime.resume':{params:{}},
   'runtime.input':{params:{key:'키 이름',value:'-1~1 (생략하면 1, 놓기는 0)'}},
   'runtime.openScene':{params:{path:'장면 에셋의 전체 프로젝트 상대 경로'}},
   'runtime.state':{params:{}},'native.build':{params:{path:'C++이 연결된 블루프린트 경로'}}
 };
-export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},gameplay:{assets:gameplayTypes,behaviorNodes,boardTypes,comparisons,sequenceTracks:['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale'],navigation:{solver:'collision-grid-A*',planes:['XY','XZ'],maxCells:40000},perception:{events:['OnTargetPerceptionUpdated'],eventParameters:{target:'object',sense:'string',sensed:'bool',location:'vec3',tag:'string'}},tags:{grammar:'dot-separated identifiers',query:{op:'all',tags:['State.Alive'],queries:[{op:'none',tags:['State.Stunned']}]}},limits:{montage:'single full-body clip per actor',fsm:'flat state machine',behavior:'interval-driven reactive selector'}},commands:editorMethods};}
+export function engineSchema(){return {protocolVersion:1,assetTypes:Object.fromEntries(Object.entries(assetTypes).map(([kind,info])=>[kind,{...info,suffix:assetSuffix[kind],...(kind!=='code'?{example:createAsset(kind,info.prefix+'Example')}:{})}])),components:componentDefinitions,placement:placementCatalog,blueprint:{classes:blueprintClasses,variables:variableTypes,nodes:catalog},material:{nodes:materialCatalog},gameplay:{assets:gameplayTypes,behaviorNodes,boardTypes,comparisons,sequenceTracks:['position','rotation','scale','visible','event','camera','animation','audio','light','material','timeScale'],navigation:{solver:'collision-grid-A*',planes:['XY','XZ'],maxCells:40000},perception:{events:['OnTargetPerceptionUpdated'],eventParameters:{target:'object',sense:'string',sensed:'bool',location:'vec3',tag:'string'}},tags:{grammar:'dot-separated identifiers',query:{op:'all',tags:['State.Alive'],queries:[{op:'none',tags:['State.Stunned']}]}},limits:{montage:'single full-body clip per actor',fsm:'flat state machine',behavior:'interval-driven reactive selector'}},commands:editorMethods};}
 
 export class EditorAutomation {
   constructor(){this.clients=new Map();this.commands=new Map();}

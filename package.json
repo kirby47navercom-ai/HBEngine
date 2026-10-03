@@ -24,6 +24,7 @@
     "test:windows": "node tools/check-window-workflow.mjs",
     "test:scene": "node tools/check-scene-editor.mjs && node tools/check-scene-runtime.mjs",
     "test:2d": "node tools/check-2d-workflow.mjs",
+    "test:authoring": "node tools/check-authoring.mjs",
     "test:material": "node tools/check-material-workflow.mjs",
     "test:gameplay": "node tools/check-gameplay-workflow.mjs",
     "test:integration": "node tools/check-engine-integration.mjs",

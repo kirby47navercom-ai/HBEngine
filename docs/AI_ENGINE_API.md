@@ -89,3 +89,15 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 새 프로젝트 템플릿 ID는 `gameplay2d`, `gameplay3d`다. 허브에서 각각 2D/3D AI와 효과 예제를 생성하며 같은 `run-project.mjs`로 600프레임 시나리오를 실행할 수 있다. `test:systems`가 경로 도착·FSM·파티클·2D 탑다운 입력·원본 보존의 재현 예제다.
 
 C++ 실행 서비스는 호출 중 쌓인 명령을 호출 종료 후 실제 VM에 검증·적용한다. 조회 API는 C++ 호출의 전달 snapshot을 읽으므로 비동기 Start/Play/Move/Emit 완료를 같은 호출 안에서 새 상태로 읽을 수 있다고 가정하지 않는다. 성공 여부는 다음 `runtime.state`/이벤트로 확인한다. C++ tag 읽기의 Unicode 문법 오류 처리까지 JS와 모두 같다고 보장하지 않으며, 변경 적용은 공통 JS 검증을 거친다. 헤드리스 결과는 로직 증거이고 GPU 데칼/파티클 그림과 미리보기 품질은 별도 화면 검증 대상이다.
+
+## 사람이 쓰는 제작 동작과 같은 명령
+
+`/api/schema.placement`는 38개 배치 조합의 `key/label/category/kind/components`를 제공한다. `/api/schema.material.nodes`는 54종 실제 계산/출력 노드다. 다음 변경 명령 모두 `path`, `expectedRevision`, 선택적 `dryRun`을 받는다. 먼저 `document.get`을 조회하며 실패한 편집은 원본과 Undo 기록을 보존한다.
+
+| 명령 | 추가 인수와 결과 |
+|---|---|
+| `blueprint.connect` | `view`(event/construction/함수/매크로 ID), `from:{node,pin}`, `to:{node,pin}`. 호환 자료형은 명시적 변환 노드를 추가하고 `result.conversionNode` ID를 반환한다. |
+| `blueprint.variable.drop` | `variableId`, `target:{node,pin,direction:"in" 또는 "out"}` 또는 null, `position:{x,y}`, 빈 곳의 `mode:"get" 또는 "set"`. 데이터 입력은 Get, 실행 핀은 Set, 기존 실행선 보존. 새 노드 ID는 `result.node`. |
+| `scene.place` | 스키마의 `key`, `position:[x,y,z]`. 실제 컴포넌트 기본값이 있는 객체를 생성하고 `result.object` ID를 반환한다. |
+
+자동 연결·변수 드롭은 UI와 `blueprint-connections.js`를 공유한다. 위치는 필요한 경우 기존 노드를 피한다. `dryRun`은 후보 데이터만 반환하므로 이를 최종 ID로 간주하지 말고 실제 변경 응답의 ID를 사용한다. 변경 후 `document.get`으로 읽거나 `editor.undo/redo`, `document.save`를 이어서 호출한다. 코드별 동작 확인은 `tools/check-authoring-editor.mjs`에 재현 가능한 실제 클라이언트 검증으로 보관한다.

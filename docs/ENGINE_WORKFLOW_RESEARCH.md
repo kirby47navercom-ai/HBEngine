@@ -82,3 +82,22 @@
 실제 편집기에서는 두 장면의 Play, BT/FSM 실행 강조와 실행 대상/BB 값, 몽타주 실제 대상 미리보기, 시퀀스 정·역 스크럽, XYZ 키 편집→Undo, 진단 에셋이 열린 상태의 재실행 후 원래 작업 장면 복원을 확인했다. 진단 중 데이터 입력은 잠그고 View 조작은 유지한다. 화면 증거는 `native/build/ui-montage-integrated.png`, `ui-behavior-integrated.png`, `ui-sequence-integrated.png`에 보관한다.
 
 다음 확장 지도에는 위 구현 뒤에도 animation blend/IK/리타깃, AI EQS/계층 상태/다각형 navigation, VFX graph/입자 충돌, terrain/foliage/LOD, 게임 UI 저작/오디오 mixer, import/cooking/build profile, native RHI/physics, profiler/플러그인/네트워크가 포함된다. 사용자 예시만 채우거나 메뉴 수를 늘리는 것으로 이 영역을 완료 처리하지 않는다.
+
+## 2026-10-03 제작 조작·실행 구조 대조 추가
+
+튜토리얼만 조사 범위로 취급하지 않는다. 매뉴얼의 조작 표, 에디터 문서, 런타임 생명주기, API, 셰이더 구현 설명을 실제 본문에서 확인하고 아래와 같이 코드와 대조했다. 이 표는 이번에 읽고 적용한 범위이며 전체 공식 문서 열람 완료를 뜻하지 않는다.
+
+| 실제 확인 자료 | HB에 반영한 동작 / 구조와 남은 차이 |
+|---|---|
+| [UE Blueprint Editor Cheat Sheet](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-editor-cheat-sheet-in-unreal-engine), [Blueprint Variables](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprint-variables-in-unreal-engine) | 핀에 변수 드롭하여 Get/Set 결정, 빈 곳 선택 메뉴, Ctrl Get/Alt Set, 기존 실행선 보존. 이벤트 제목의 실제 실행 핀, 접이식 멤버 검색, 입력 기본값 직접 편집. 우클릭·휠·주석·F7/F9 등 기존 조작 유지. 변수 카테고리 재정렬과 Ctrl 핀 연결 묶음 이동은 추가 범위다. |
+| [UE Nodes](https://dev.epicgames.com/documentation/en-us/unreal-engine/nodes-in-unreal-engine) | 호환되는 수치/문자열/벡터 연결에 명시적 변환 노드 삽입. 실패·순환·참조·배열 변환은 원본 보존. 핀 드래그로 검색 후 자동 연결, 입력에서 거꾸로 연결, 데이터선 재배선 노드, 선택 정렬. 새 보조 노드는 기존 노드를 가리지 않는 가까운 공간에 배치한다. |
+| [UE Placing Actors](https://dev.epicgames.com/documentation/unreal-engine/placing-actors-in-unreal-engine?lang=en-US), [Viewport Controls](https://dev.epicgames.com/documentation/en-us/unreal-engine/viewport-controls-in-unreal-engine), [Unity Grid Snapping](https://docs.unity.com/en-us/engine/6000.0/manual/working-with-scenes/scenes-manage-gameobjects/grid-snapping/grid-snap) | 검색/분류가 있는 도킹 배치 창과 38개 실제 컴포넌트 조합을 연결했다. 2D XY·3D XZ 평면 드롭, 이동/회전/크기 스냅 간격·월드/로컬 좌표계, Q/W/E/R와 Space 도구 전환, Ctrl+Space 작업창 최대화. 표면 법선 스냅·최근 배치 기록·전체 Class Viewer는 남아 있다. |
+| [UE Using Fresnel](https://dev.epicgames.com/documentation/en-us/unreal-engine/using-fresnel-in-your-unreal-engine-materials) | 월드 법선·시선·반사 지수/기본 반사율을 그래프로 계산하고 색상 파라미터와 곱해 발광으로 연결한다. Fresnel/소멸/체크/흐르는 텍스처 템플릿은 실제 저장 가능한 그래프다. 머테리얼 함수·레이어·전체 좌표 변환·HLSL backend는 추가 범위다. |
+| [UE Actor Lifecycle](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle), [Actor Ticking](https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-ticking-in-unreal-engine), [Unity Event Function Execution Order](https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html) | HB의 Construction → 서비스 시작 → BeginPlay, timer/latent/timeline → Tick → 물리/충돌 흐름을 실제 VM 코드와 대조했다. HB는 FixedTick과 Tick 간격을 제공하지만 UE TickGroup/Prerequisite, Unity의 전체 PlayerLoop·OnEnable/Awake/Start 순서와 동일하지 않다. 단계별 스케줄러·컴포넌트 활성/파괴 생명주기가 별도 구현 과제다. |
+| [UE Collision Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/collision-in-unreal-engine---overview) | 충돌 응답과 Hit/Overlap 통지를 별도 계약으로 확인했다. HB는 layer/mask/trigger와 Begin/EndOverlap/Hit를 유지하고 실제 solver 범위 미리보기를 추가했다. 현재 캡슐 AABB 근사, UE의 채널별 Block/Overlap/Ignore·독립 Hit 이벤트 설정·CCD와는 차이가 있다. |
+
+사람의 핀 드래그와 AI의 `blueprint.connect` / `blueprint.variable.drop`은 같은 모듈을 쓴다. 배치 UI와 `scene.place`도 같은 카탈로그·컴포넌트 기본값을 쓴다. JSON revision 검사, dry-run, Undo/Redo, 실패 원본 보존, 디스크 저장까지 실제 편집기에서 확인했다.
+
+검증: `test:authoring`, `check-authoring-editor.mjs`(격리된 authoring-qa 프로젝트), runtime/scene/2d/material/integration/windows, 공통 C++ 함수 221종. 머테리얼은 21종 추가하여 54종이며 출력 노드를 제외한 53종이 실제 WebGL에서 컴파일됐다. 실제 편집기에서 이벤트 제목 연결, 변수 Get/Set 드롭, int→string 변환, 입력값 저장, 컴포넌트 2D 강체 검색·추가, 2D 스냅 드롭, 창 최대화, 머테리얼 템플릿 적용→Undo를 확인했다. 스크린샷은 `native/build/ui-authoring-blueprint.png`, `ui-authoring-material.png`에 저장한다.
+
+앞의 전체 확장 지도는 유지한다. 특히 네이티브 렌더러·셰이더, 정밀 물리, bone animation/IK/리타깃, UI 저작, terrain/foliage, VFX, import/cooking/패키징, profiler, 네트워크·플러그인은 이번 조작 개선으로 완료 처리하지 않는다.

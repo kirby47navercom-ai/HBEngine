@@ -83,7 +83,7 @@ Project 파일과 브라우저 복구 저장은 장면·환경·BP/함수/매크
 
 기존 289개 코어 C++ API에 EngineService 19개(역할 조회/소유/이동/충격/힘/속도·월드/로컬 위치·장면 전환)를 실제 플레이 서비스로 연결했다. 정적 BP 카탈로그는 390개이며 사용자 C++ 노드는 등록된 함수에 따라 늘어난다. 노드 수만으로 기능 완료를 판단하지 않는다. C++ 변환·반환을 검증한 뒤 소유 실행 월드에 적용한다.
 
-Sprite/TileMap/SpriteAnimation, 물리/머테리얼 인스턴스, 게임 설정, 프리팹, 오디오 에셋도 독립 파일이다. 스프라이트 프레임 애니메이션은 기존 PlayAnimation 서비스로 실행된다. 머테리얼 33종 노드는 별도 타입 그래프와 GLSL 생성·실제 Three GPU 재질을 사용하며 BP 이벤트 그래프와 섞지 않는다. DX11/HLSL은 미구현 상태다.
+Sprite/TileMap/SpriteAnimation, 물리/머테리얼 인스턴스, 게임 설정, 프리팹, 오디오 에셋도 독립 파일이다. 스프라이트 프레임 애니메이션은 기존 PlayAnimation 서비스로 실행된다. 머테리얼 54종 노드는 별도 타입 그래프와 GLSL 생성·실제 Three GPU 재질을 사용하며 BP 이벤트 그래프와 섞지 않는다. DX11/HLSL은 미구현 상태다.
 
 AI는 `/api/schema`의 공통 정의와 `document.get/patch/save`, Undo/Redo, native.build, Play/Stop/State를 사용한다. 사람의 저장 전 편집을 revision으로 보호하고 디스크 변경 시 저장을 거부·백업한다. `tools/run-project.mjs`는 같은 VM/물리/C++를 화면 없이 시나리오로 실행한다. 인터페이스와 한계는 [AI_ENGINE_API.md](AI_ENGINE_API.md), 실행 증거와 누적 미완료 분야는 [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md)에 이어 기록한다.
 
@@ -111,3 +111,14 @@ ParticleSystem은 seed 기반 CPU 시뮬레이션과 Three Points 셰이더를 �
 새 `2D · AI와 효과`, `3D · AI와 효과` 프로젝트는 위 흐름을 실제 에셋과 장면으로 생성한다. 2D에는 중력 없는 탑다운 입력을 별도 컴포넌트로 제공하고 기존 플랫폼 이동을 보존한다. `test:gameplay`, `test:systems`는 실행/실패 보존/실제 C++ 호출과 두 프로젝트의 600프레임 이동·상태·효과·원본 보존을 검사한다. UI 화면 검증에는 런타임 상태 선택, XYZ 편집→Undo, 시퀀스 정·역방향 스크럽과 재실행 후 장면 복원을 포함한다.
 
 C++ 변경 명령은 호출 종료 후 소유 플레이 월드에서 검증·적용한다. 상태 조회는 호출에 전달된 런타임 snapshot을 읽으며 모든 쓰기 직후 동기 조회를 보장하지 않는다. 일부 setter의 로컬 snapshot 반영과 실제 비동기 서비스 완료를 혼동하지 않는다. 몽타주/시퀀스 미리보기는 이벤트/음향을 실행하지 않고, 긴 스크럽은 최대 4,096 스텝 이후 큰 간격을 사용한다. 전체 프레임의 결정론적 bake는 추가 범위다.
+
+## 제작 UI와 공통 편집 명령 — 2026-10-03
+
+- 이벤트 제목 오른쪽 삼각형은 실제 실행 출력 핀이다. 중복 본문 실행 출력은 제거했다. Get 변수는 제목 옆 데이터 핀을 가진 작은 노드로 표시한다.
+- 변수 드래그: 실행 입력/출력은 Set 삽입과 이전 실행선 보존, 데이터 입력은 Get 연결. 빈 그래프는 Get/Set 메뉴, Ctrl Get, Alt Set이다. 배열·참조를 임의 스칼라로 변환하지 않는다.
+- 자동 변환은 공통 노드 `intToFloat/floatToInt/intToString/toString/boolToString/boolToInt/intToBool/vector2ToVector3/vector3ToVector2`를 사용한다. 실패와 순환 연결은 원자적으로 거절한다. 추가 노드는 기존 노드와 겹치지 않는 가까운 공간을 찾는다.
+- 입력→출력 역방향 드래그, 핀에서 검색 후 자동 연결, 방향키/Enter 검색, 선 더블클릭 데이터 재배선, 좌/상/간격 정렬, 노드 내부 숫자·bool·문자열 기본값 편집을 제공한다.
+- My Blueprint는 검색/접기/추가와 상세 Inspector를 함께 사용한다. 컴포넌트 추가는 2D/3D 공통 검색 창이며 사용자 C++ 컴포넌트 항목을 포함한다.
+- 오브젝트 배치는 38개 실제 조합·검색·분류·도킹·드래그를 제공한다. 위치/회전/크기 스냅과 월드/로컬 변환, 선택 Q·이동 W·회전 E·크기 R·Space 순환·Ctrl+Space 창 최대화를 제공한다. 선택/전체 충돌 미리보기는 현 solver의 경계를 보여준다.
+- 머테리얼 54종 노드(21종 추가): 월드 위치/법선·시선·Fresnel, 채널 분해/조합, 외적/반사/거리, 절차적 패턴과 그라데이션, 추가 수학. CPU 평가와 GPU GLSL 실행을 연결했다. 네 가지 템플릿은 노드·핀·파라미터를 일반 머테리얼 에셋으로 저장한다.
+- `test:authoring`은 실제 VM 출력, 연결 보존, 실패 무변경, 배치 컴포넌트, 2D 부모 아래 충돌 경계, Fresnel 각도와 템플릿을 검증한다. 실제 UI/API 저장·Undo·파일 검증은 `node tools/check-authoring-editor.mjs URL`이며 전용 `authoring-qa` 프로젝트에서만 실행한다.

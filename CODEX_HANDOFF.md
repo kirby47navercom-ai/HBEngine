@@ -16,3 +16,16 @@
 - 몽타주/시퀀스 preview는 실제 장면 GPU 객체와 world를 복제하고 공통 서비스로 시간 샘플링한다. CPU 파티클도 다시 계산한다. 에디터 원본 불변·이벤트/음향 muted·4,096 스텝 이후 큰 간격 한계. 실제 skeletal animation seek는 완료/일시정지 뒤 역방향 샘플도 검증했다. 실패한 몽타주 교체는 기존 재생을 보존한다.
 - 추가 실제 검증: test:gameplay, test:systems의 C++ 명령 VM 재생/Actor[] 반환과 두 새 프로젝트 600프레임, 2D/3D 실제 Play, BT/FSM 강조/BB 실행 값, XYZ 편집→Undo revision 복원, 시퀀스 정·역 스크럽·재실행 장면 복원. 최신 desktop:build/test:desktop 통과. 화면은 native/build/ui-montage-integrated.png, ui-behavior-integrated.png, ui-sequence-integrated.png(ignored)에 보존한다.
 - 남은 구현은 전체 지도 유지: DX11/HLSL·native 실행/게임 패키징, 다각형 NavMesh/경사/RVO, 계층 StateTree/EQS, animation bone blend/IK/리타깃/root motion, VFX graph/입자 충돌, terrain/foliage/LOD, UI 저작/audio mixer, import/cooking/build profiles, profiler/네트워크/플러그인. 완료와 메뉴 목록을 혼동하지 않는다. C++ 조회는 전달 snapshot이며 비동기 쓰기의 즉시 완료가 아니다.
+
+## 이번 추가: 제작 조작·머테리얼·배치 / AI 공용 경로
+
+- 사용자의 모든 누적 요구와 전체 확장 지도를 유지한다. 이번 완료는 상용 엔진 전체 완료가 아니다. 실제 자료 범위·적용/미구현은 ENGINE_WORKFLOW_RESEARCH 마지막 표에 기록했다.
+- 이벤트 제목 실행 핀, 작은 Get 노드, 변수 핀 드래그 자동 Get/Set·실행선 보존·공용 C++ 변환, 역방향 연결/검색, 입력값 직접 편집·검색/접기/정렬/재배선, 검색형 컴포넌트 추가.
+- placement-catalog의 38개 실제 조합, 2D/3D 평면 드래그·스냅, Q 선택·Space 도구 순환·CtrlSpace 창 최대화. collision-preview는 실제 solver bounds를 사용하고 부모/비활성/2D를 검사했다.
+- 머테리얼 21종 추가(총 54): Fresnel/월드좌표/법선/시선/채널/벡터·절차적 패턴·수학, 4종 실제 노드 템플릿. GPU 컴파일 53종과 색상 픽셀 확인.
+- API blueprint.connect / blueprint.variable.drop / scene.place는 revision/dryRun/원자성/Undo/저장과 UI 코드 공유. tools/check-authoring-editor.mjs는 authoring-qa 전용이며 실행할 때 새 검증 에셋을 생성한다.
+- 실제 화면 검사에서 자동 노드 겹침과 inline input 반영 누락을 찾아 수정했다. 입력은 UI에서 7로 바꾼 뒤 document.get의 inputValues.value=7까지 확인. 배치 창에서 2D 스냅 드롭은 [2,-2,0] 확인. 머테리얼 템플릿 적용→Undo와 실제 파란 Fresnel 가장자리 확인.
+- 회귀검증: npm test, test:authoring/runtime/scene/2d/material/integration/windows, test:library(실제 C++ 공용 함수 221종) 통과. Bridge.hpp Tags::Has의 기존 -Werror 괄호 경고 수정. 일반 test:editor-api는 기본 5181 서버가 없어 실행 전 실패했고 대신 이번 변경용 실제 authoring API 검사를 5182에서 통과했다.
+- 사용자 Projects/QuietGarden과 5181 브라우저의 미저장 문서는 수정하지 않았다. 연결이 끊긴 5181 서버는 화면에서 확인한 동일 integration-qa-1790942483241 프로젝트와 기존 integration-user-data로 재시작했다. 사용자 탭은 새로고침하지 않았다. 테스트 파일은 native/build/authoring-qa와 authoring-user-data에 격리. UI 증거는 native/build/ui-authoring-blueprint.png, ui-authoring-material.png.
+
+- desktop:build와 test:desktop(실제 EXE·WebView2·허브·한글 경로·자식 서버 종료), api:check까지 통과. Ctrl+K의 오브젝트 명령도 동일 배치 카탈로그 전체를 사용한다.
