@@ -7,6 +7,7 @@ import {gameplayTypes,gameplaySuffix,createGameplayAsset,validGameplayAsset} fro
 import {createWidgetAsset,validWidgetAsset} from './ui-assets.js';
 import {createAudioMixer,validAudioMixer} from './audio-mixer.js';
 import {validActionSettings} from './input-actions.js';
+import {createAnimationGraph,validAnimationGraph} from './animation-graph-assets.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
@@ -15,6 +16,7 @@ Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
+assetSuffix.animgraph='.hbanimgraph.json';assetTypes.animgraph={label:'애니메이션 그래프',prefix:'AG_',group:'애니메이션'};
 export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i,'');
 export async function loadSceneBindings(objects,read){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
@@ -32,6 +34,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind in gameplayTypes)return createGameplayAsset(kind,name);
   if(kind==='widget')return createWidgetAsset(name);
   if(kind==='audiomixer')return createAudioMixer(name);
+  if(kind==='animgraph')return createAnimationGraph(name);
   if(kind==='blueprint'){
     const type=blueprintClasses[parent];if(!type)throw Error('지원하지 않는 부모 클래스예요.');
     const root=copy(defaultBlueprint);root.name=name;root.nodes=['beginPlay','tick','endPlay'].map((key,i)=>({...makeNode(key,70,55+i*165),id:key}));root.edges=[];root.variables=[];root.functions=[];root.macros=[];root.comments=[];root.dispatchers=[];root.interfaces=[];delete root.native;
@@ -56,6 +59,7 @@ export function validAsset(kind,data){
   if(kind in gameplayTypes)return validGameplayAsset(kind,data);
   if(kind==='widget')return validWidgetAsset(data);
   if(kind==='audiomixer')return validAudioMixer(data);
+  if(kind==='animgraph')return validAnimationGraph(data);
   if(kind==='text')return typeof data==='string'&&data.length<=1048576;
   if(kind==='blueprint')return validBlueprint(data);
   if(kind==='scene')return validScene(data);

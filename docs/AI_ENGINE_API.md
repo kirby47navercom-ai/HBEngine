@@ -254,3 +254,5 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 독립 `Game.exe`에는 Node와 이미 빌드한 C++ worker를 동봉하며 실행 환경에 별도 Node/CXX 설치가 필요하지 않다. WebView2 Runtime은 필요하다. Player의 `/api/native/build`는 헤더/소스 서명에 등록된 worker 조회이며 새 컴파일을 허용하지 않는다. 에셋 생성·쓰기·외부 IDE 실행 API는 제공하지 않는다. 게임 저장은 프로젝트 UUID의 사용자 데이터에 기록하고 에디터 복구/레이아웃을 패키지에 가져오지 않는다.
 
 `test:package`의 실제 2D 개발/3D 배포 검사는 Win32/WebView2 GPU 제출·BP→C++ 호출, 컴파일러 없는 PATH, AudioContext running/음원 voice playing, EndPlay의 SaveGame flush와 저장 재열기, 소유 서버 종료를 확인했다. 이는 native DX11·모든 코덱/장치·전체 엔진 기능의 완료 근거가 아니다. 공용 BP/서비스 수명과 원본 형식/배포 제약은 [빌드/Player 연구](BUILD_PLAYER_RESEARCH.md)에 연결한다.
+
+애니메이션 그래프는 [포즈 계약](ANIMATION_GRAPH.md)의 animgraph/AnimationGraph/animationGraph schema를 사용해요. 9개 포즈 노드·Float/Bool 파라미터·공용 BP/C++7개·실행 active/weights/시간과 요청 시 runtime.state.animation 속성 포즈를 제공해요. 기존 revision/dryRun/patch/Undo/Save/잠금을 공유해요. named bone 필터·captured reference·우세 sprite 프레임과 아직 없는 headless model pose/IK/normalized sync를 혼동하지 않아요.

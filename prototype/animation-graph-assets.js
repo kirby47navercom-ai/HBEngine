@@ -1,0 +1,46 @@
+const numeric=v=>Number.isFinite(v)&&Math.abs(v)<=100000;
+const text=(v,max=1000)=>typeof v==='string'&&v.length<=max;
+const identifier=v=>text(v,80)&&/^[A-Za-z_가-힣][\w가-힣]*$/.test(v);
+export const animationGraphNodes={
+  output:{label:'Output Pose · 최종 포즈',inputs:['pose'],group:'출력'},
+  rest:{label:'Reference Pose · 기준 포즈',inputs:[],group:'포즈'},
+  clip:{label:'Sequence Player · 클립 재생',inputs:[],group:'포즈'},
+  blend:{label:'Blend · 두 포즈 혼합',inputs:['a','b'],group:'혼합'},
+  blend1d:{label:'Blend 1D · 1차원 혼합',inputs:[],group:'혼합'},
+  direct:{label:'Direct Blend · 직접 혼합',inputs:[],group:'혼합'},
+  select:{label:'Blend by Bool · 조건 혼합',inputs:['false','true'],group:'혼합'},
+  layer:{label:'Layered Blend · 뼈별 혼합',inputs:['base','overlay'],group:'레이어'},
+  additive:{label:'Apply Additive · 가산 포즈',inputs:['base','additive'],group:'레이어'}
+};
+export function animationInputs(node){return ['blend1d','direct'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
+export function makeAnimationNode(type,x=100,y=100){
+  if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
+  const properties={clip:{clip:'',loop:true,rate:1,offset:0},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
+  return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:structuredClone(properties)};
+}
+export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
+export function validAnimationGraph(data){
+  try{
+    if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!identifier(p?.name)||!['float','bool'].includes(p.type)||(p.type==='float'?!numeric(p.value):typeof p.value!=='boolean'))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;
+    const nodes=new Map(data.nodes.map(n=>[n?.id,n])),params=new Map(data.parameters.map(p=>[p.name,p.type]));if(nodes.size!==data.nodes.length||nodes.get(data.output)?.type!=='output'||data.nodes.filter(n=>n.type==='output').length!==1||data.nodes.filter(n=>n.type==='clip').length>64)return false;
+    const param=(p,type)=>p===''||params.get(p)===type;
+    for(const node of nodes.values()){
+      if(!text(node.id,120)||!node.id||!animationGraphNodes[node.type]||!text(node.name,80)||!numeric(node.x)||!numeric(node.y)||!node.inputs||typeof node.inputs!=='object'||Array.isArray(node.inputs)||!node.properties||typeof node.properties!=='object'||Array.isArray(node.properties))return false;
+      const p=node.properties;
+      if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0))return false;
+      if(['blend','layer','additive'].includes(node.type)&&(!numeric(p.alpha)||p.alpha<0||p.alpha>1||!param(p.parameter,'float')))return false;
+      if(node.type==='select'&&(params.get(p.parameter)!=='bool'||!numeric(p.duration)||p.duration<0||p.duration>60))return false;
+      if(['blend1d','direct'].includes(node.type)){
+        if(!Array.isArray(p.samples)||!p.samples.length||p.samples.length>64||new Set(p.samples.map(s=>s?.input)).size!==p.samples.length||p.samples.some(s=>!identifier(s?.input)))return false;
+        if(node.type==='blend1d'&&(params.get(p.parameter)!=='float'||new Set(p.samples.map(s=>s.threshold)).size!==p.samples.length||p.samples.some(s=>!numeric(s.threshold))))return false;
+        if(node.type==='direct'&&(typeof p.normalize!=='boolean'||p.samples.some(s=>!param(s.parameter,'float')||!numeric(s.weight)||s.weight<0||s.weight>1)))return false;
+      }
+      if(node.type==='layer'&&(!Array.isArray(p.filters)||!p.filters.length||p.filters.length>64||p.filters.some(f=>!text(f?.bone,120)||!f.bone||!Number.isInteger(f.depth)||Math.abs(f.depth)>128)))return false;
+      const allowed=animationInputs(node);if(Object.keys(node.inputs).some(k=>!allowed.includes(k))||Object.values(node.inputs).some(id=>!nodes.has(id)||nodes.get(id).type==='output'))return false;
+    }
+    const visiting=new Set(),heights=new Map();function height(id){if(visiting.has(id))return Infinity;if(heights.has(id))return heights.get(id);visiting.add(id);const value=1+Math.max(0,...Object.values(nodes.get(id).inputs).map(height));visiting.delete(id);heights.set(id,value);return value;}
+    return data.nodes.every(n=>height(n.id)<=65);
+  }catch{return false;}
+}
+export function validateAnimationProgram(data){if(!validAnimationGraph(data))throw Error('애니메이션 그래프 검증 실패');const nodes=new Map(data.nodes.map(n=>[n.id,n])),seen=new Set();function visit(id){if(seen.has(id))return;seen.add(id);const node=nodes.get(id);for(const input of animationInputs(node)){if(!node.inputs[input])throw Error(node.name+'의 '+input+' 포즈를 연결하세요.');visit(node.inputs[input]);}if(node.type==='clip'&&!node.properties.clip)throw Error(node.name+'의 클립을 지정하세요.');}visit(data.output);return seen;}
+export function distributeAnimationThresholds(node,min,max){if(node.type!=='blend1d'||!numeric(min)||!numeric(max)||max<=min)throw Error('임계값 범위를 확인하세요.');const samples=node.properties.samples;for(let i=0;i<samples.length;i++)samples[i].threshold=min+(max-min)*i/Math.max(1,samples.length-1);}

@@ -199,6 +199,13 @@ inline void States::SetBool(Actor* target,const std::string& key,bool value){eng
 inline void States::SetString(Actor* target,const std::string& key,const std::string& value){engineCommand("stateSetString",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
 inline void Montage::Play(Actor* target,const std::string& asset,const std::string& section){engineCommand("playMontage",{{"target",bridgeId(target)},{"asset",asset},{"section",section}});}
 inline void Montage::Stop(Actor* target){engineCommand("montageStop",{{"target",bridgeId(target)}});}
+inline void AnimationGraph::Play(Actor* target,const std::string& asset){engineCommand("animGraphPlay",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void AnimationGraph::Stop(Actor* target){engineCommand("animGraphStop",{{"target",bridgeId(target)}});}
+inline void AnimationGraph::Pause(Actor* target,bool paused){engineCommand("animGraphPause",{{"target",bridgeId(target)},{"paused",paused}});}
+inline void AnimationGraph::SetFloat(Actor* target,const std::string& key,float value){engineCommand("animGraphSetFloat",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}
+inline void AnimationGraph::SetBool(Actor* target,const std::string& key,bool value){engineCommand("animGraphSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}
+inline float AnimationGraph::GetFloat(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<float>();}
+inline bool AnimationGraph::GetBool(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<bool>();}
 inline void Montage::Pause(Actor* target,bool paused){engineCommand("montagePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Montage::JumpToSection(Actor* target,const std::string& section){engineCommand("montageJump",{{"target",bridgeId(target)},{"section",section}});}
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}

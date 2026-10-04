@@ -1,4 +1,5 @@
 export const paths = {
+  pose:'<path d="m8 4 10 8-10 8z"/>',
   arrowUp:'<path d="M12 20V4m-7 7 7-7 7 7"/>',
   arrowDown:'<path d="M12 4v16m-7-7 7 7 7-7"/>',
   download:'<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
@@ -81,4 +82,4 @@ Object.assign(paths, {
   list:'<path d="M9 6h12M9 12h12M9 18h12M3 6h2M3 12h2M3 18h2"/>',
   tiles:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'
 });
-export const assetIcon=(kind,parent)=>parent&&({Actor:'cube',Pawn:'pawn',Character:'character',PlayerController:'controller',GameMode:'game',Component:'component',SceneComponent:'layers'}[parent])||({widget:'layers',audiomixer:'sound',blackboard:'data',behaviortree:'blueprint',statemachine:'blueprint',montage:'animation',sequenceasset:'animation',sprite:'sprite',tilemap:'tilemap',spriteanimation:'animation',materialinstance:'material',physicalmaterial:'physics',prefab:'cube',gameconfig:'game',audioasset:'sound',blueprint:'blueprint',scene:'scene',material:'material',animation:'animation',inputaction:'inputaction',inputmapping:'inputmapping',code:'code',folder:'folder',texture:'texture',model:'model',media:'media',data:'data',curve:'curve'}[kind]||'file');
+export const assetIcon=(kind,parent)=>parent&&({Actor:'cube',Pawn:'pawn',Character:'character',PlayerController:'controller',GameMode:'game',Component:'component',SceneComponent:'layers'}[parent])||({animgraph:'animation',widget:'layers',audiomixer:'sound',blackboard:'data',behaviortree:'blueprint',statemachine:'blueprint',montage:'animation',sequenceasset:'animation',sprite:'sprite',tilemap:'tilemap',spriteanimation:'animation',materialinstance:'material',physicalmaterial:'physics',prefab:'cube',gameconfig:'game',audioasset:'sound',blueprint:'blueprint',scene:'scene',material:'material',animation:'animation',inputaction:'inputaction',inputmapping:'inputmapping',code:'code',folder:'folder',texture:'texture',model:'model',media:'media',data:'data',curve:'curve'}[kind]||'file');

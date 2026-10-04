@@ -1,5 +1,14 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 애니메이션 그래프의 검사·미리보기 보강 근거
+
+2026-10-05. test fixture 첫 assembler의 문자열 줄바꿈/출력 변수 이름 충돌은 실제 EXE 실행 전에 수정했어요. fEL3Se의 AI patch를 잘못된 op=set/dotted path로 작성해 실패한 부분은 기존 replace/JSON pointer 규약으로 수정했어요. yM3zev의 가중치 차트 클릭0은 속성 스크롤 밖 좌표여서 실제 scrollIntoView와 chart-hit 증거를 추가했고 이후 물리 차트 .5가 통과했어요.
+
+단위 의존성 검사에서 기존 model 참조 누락을 발견해 ProjectService referenceKeys에 model을 연결했어요. 사전 취소된 그래프는 아직 debug publication이 없는 상태로 dispose될 수 있어 guard를 보강했어요. 순환뿐 아니라 공유 DAG의 긴 경로도 height memo로 거절해요. 테스트 안의 미완료 pending clip lookup은 제거하고 실제 await되는 Reference 그래프 취소 검사를 사용해요.
+
+B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐브·부분 모델은 기능 assertion 통과와 별개인 UI 결함이에요. 전용 전체 폭·왼쪽 미리보기·적용 포즈 후 bounds·루트 카메라 추적으로 고쳤고 fAgxU4 PNG에서 읽을 수 있는 노드/큐브/두 삼각형을 확인했어요. 초기 glTF inverse bind 행렬 순서도[-2,-3,0]으로 보강했어요. 실제 Editor fAgxU4/Player72pITM은 양의 근거예요. headless의 imported skeletal pose·실제 bind pose/normalized sync·IK/retarget/root motion/다중 슬롯과 전체 잔여는 미검증/미구현으로 유지해요.
+
+
 ## 조건 감시·하위 트리 후속
 
 - 여러 AND 조건의 첫 감시 검사에서 아직 실행하지 않은 두 번째 조건의 변경을 놓쳤어요. 진입용 데코레이터 연결의 조건도 등록하고, 모두 유효할 때만 낮은 분기를 중단하게 고쳤어요. Observer 네 모드·결과/값·무관한 키·Abort→Start·병렬 정책 검사를 통과했어요.

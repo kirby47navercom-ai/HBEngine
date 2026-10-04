@@ -1,5 +1,16 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 포즈 애니메이션 그래프와 실제 Editor/Player 검증 후 계속
+
+주인님의 전체 누적 요구·active goal·다 할 때까지 계속 지시를 유지해요. 사용자 설치본/프로필/원본/창은 변경하지 않았어요. [애니메이션 그래프 계약](docs/ANIMATION_GRAPH.md)에 실제 공식 기술 본문 읽기·현재 의미·다른 엔진과의 차이·다음 세부를 기록해요.
+
+- animgraph 에셋·전용 탭/핀·검색/이동/확대/삭제·상세/파라미터·1D 가중치 도표/드래그/균등 배치, 격리된 장면/모델 미리보기와 루트 카메라 추적을 추가했어요. 중복 바깥 속성/요약으로 그래프가 작아지는 배치를 정리했어요.
+- 클립/기준/Blend/1D/Direct/Bool/뼈 레이어/가산/Output, quaternion·깊이/제외·스프라이트 우세 프레임·포즈 버퍼 재사용·사전 검사/취소를 공용 서비스에 연결했어요. AnimationGraph 컴포넌트, BP/C++7개 함수, AI schema/revision/patch/실행 값·요청 시 포즈 조회·의존성/rename/패키징도 연결했어요. BP전체526개예요.
+- 실제 최종 Editor fAgxU4의 물리 포즈/차트 핀·Undo/Redo·dryRun·저장·분리 미리보기/별도 glTF모델·잠금/강조·키 BP/C++파라미터/일시정지·실제 스켈레톤·원본/정상 종료/서버 정리 통과, 화면의 글씨와 큐브/상하체 두 삼각형을 PNG로 확인했어요. 실제 release Player72pITM도 키/C++Get/Set/뼈 필터/일시정지/원본/종료 통과예요. zero-weight1D 가지 평가 최적화는 그 뒤 작은 unit으로 확인했고 두 실제 fixture의0/.75구간은 바꾸지 않아요.
+- B6eEdQ는 초기 기능 검증이고 바깥 중복 패널·미리보기 이동/카메라 프레이밍 보강 전이에요. vtEV8v/CzRG9k/LXr3Ya는 중간 근거예요. glTF fixture inverse-bind 행렬도 올바른 조인트 순서로 보강했어요. 실패·한계는 DEBUG_HANDOFF에 유지해요.
+- animation graph/runtime/gameplay/integration/main526/API·diff 검사 통과예요. 전체 연구 gate를 승격하지 않아요. 다음은 headless 모델 포즈와 실제 reference/sync·2D rig/AnimGraph 상태·전이/IK·몽타주 슬롯 등, 이후 다른 모든 엔진 영역을 계속해요. 여기서 최종 답변을 보내거나 목표 완료로 표시하지 않아요.
+
+
 ## 최신 후속: 조건 감시·병렬 정책·정적 하위 트리 실제 검증 후 계속
 
 [조건/하위 트리 계약](docs/BEHAVIOR_OBSERVERS_SUBTREES.md)을 추가했어요. 전체 active goal·누적 요구·사용자 설치 보호를 유지하고 다음 엔진 구현을 계속해요.

@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three';
+import {createAsset,validAsset,renameAssetReferences} from '../prototype/asset-documents.js';
+import {createAnimationGraph,makeAnimationNode,validAnimationGraph,validateAnimationProgram,distributeAnimationThresholds} from '../prototype/animation-graph-assets.js';
+import {AnimationGraphPlayer} from '../prototype/animation-graph-runtime.js';
+import {engineOperations} from '../prototype/engine-services.js';
+import {BlueprintRuntime} from '../prototype/blueprint-runtime.js';
+import {makeSceneComponent} from '../prototype/scene-components.js';
+import {assetReferences,assetKind} from './project-service.mjs';
+
+const near=(actual,expected,reason)=>assert.ok(Math.abs(actual-expected)<1e-5,(reason||'')+' '+actual+' ≠ '+expected);
+const object=()=>({id:'actor',name:'Hero',kind:'empty',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],visible:true,components:[makeSceneComponent('Transform')]});
+const graph=(type,p={})=>{const data=createAnimationGraph('AG_Test'),a=makeAnimationNode('clip'),b=makeAnimationNode('clip'),blend=makeAnimationNode(type);a.properties.clip='A';b.properties.clip='B';a.properties.loop=b.properties.loop=false;Object.assign(blend.properties,p);blend.inputs=type==='blend1d'||type==='direct'?{pose0:a.id,pose1:b.id}:type==='select'?{false:a.id,true:b.id}:type==='layer'?{base:a.id,overlay:b.id}:type==='additive'?{base:a.id,additive:b.id}:{a:a.id,b:b.id};data.nodes=[a,b,blend,data.nodes.find(n=>n.type==='output')];data.nodes.at(-1).inputs.pose=blend.id;return {data,a,b,blend};};
+const asset=(name,position,angle=0)=>{const data=createAsset('animation',name);data.timeline.length=2;data.timeline.tracks=[{id:'position',type:'vec3',name:'Position',interpolation:'linear',keys:[{time:0,value:position},{time:2,value:position}]},{id:'rotation',type:'vec3',name:'Rotation',interpolation:'linear',keys:[{time:0,value:[0,0,angle]},{time:2,value:[0,0,angle]}]}];return data;};
+const assets={'Assets/A.hbanimation.json':asset('A',[0,0,0],170),'Assets/B.hbanimation.json':asset('B',[10,0,0],-170)},hooks=o=>({object:o,group:new THREE.Group(),update:()=>{},asset:async name=>Object.keys(assets).find(k=>k.split('/').pop().split('.')[0]===name)||null,readAsset:async name=>structuredClone(assets[name])});
+assert.ok(validAsset('animgraph',createAsset('animgraph','AG_Default')));assert.equal(assetKind('Assets/AG_Test.hbanimgraph.json'),'animgraph');
+{
+ const {data,a,blend}=graph('blend',{alpha:.25}),o=object(),player=await AnimationGraphPlayer.load(data,hooks(o));await player.tick(0);near(o.position[0],2.5);near(Math.abs(o.rotation[2]),175,'quaternion shortest rotation');assert.equal(player.active.size,4);assert.equal(player.slots.length,2);const buffer=player.poses.get(a.id)[0];await player.tick(.25);assert.equal(player.poses.get(a.id)[0],buffer,'pose buffers are reused');player.dispose();assert.equal(o.gameplayDebug.animationGraph,undefined);
+ const malformed=structuredClone(data);malformed.nodes.find(n=>n.id===blend.id).inputs.a=blend.id;assert.equal(validAnimationGraph(malformed),false,'cycle');const partial=structuredClone(data);delete partial.nodes.at(-1).inputs.pose;assert.ok(validAnimationGraph(partial),'unfinished authoring accepted');assert.throws(()=>validateAnimationProgram(partial),/포즈를 연결/);
+}
+{
+ const {data}=graph('blend1d'),o=object(),player=await AnimationGraphPlayer.load(data,hooks(o));player.setParameter('Speed',.7);await player.tick(0);near(o.position[0],7);player.setParameter('Speed',-50);await player.tick(0);near(o.position[0],0);player.setParameter('Speed',50);await player.tick(0);near(o.position[0],10);assert.throws(()=>player.setParameter('Speed',false),/자료형/);assert.throws(()=>player.setParameter('Unknown',1),/자료형/);
+}
+{
+ const {data,blend}=graph('direct');blend.properties.samples[0].weight=.25;blend.properties.samples[1].weight=.75;const o=object(),player=await AnimationGraphPlayer.load(data,hooks(o));await player.tick(0);near(o.position[0],7.5);blend.properties.normalize=false;blend.properties.samples[0].weight=0;blend.properties.samples[1].weight=.25;const half=await AnimationGraphPlayer.load(data,hooks(object()));await half.tick(0);near(half.object.position[0],2.5,'residual reference contribution');blend.properties.samples[0].weight=1;blend.properties.samples[1].weight=1;const sum=await AnimationGraphPlayer.load(data,hooks(object()));await sum.tick(0);near(sum.object.position[0],10,'unnormalized numeric sum');near(new THREE.Quaternion().setFromEuler(new THREE.Euler(...sum.object.rotation.map(THREE.MathUtils.degToRad))).length(),1);
+}
+{
+ const {data}=graph('select',{duration:.2}),o=object(),player=await AnimationGraphPlayer.load(data,hooks(o));await player.tick(0);near(o.position[0],0);player.setParameter('Moving',true);await player.tick(.1);near(o.position[0],5);player.setParameter('Moving',false);await player.tick(.1);near(o.position[0],2.5,'interrupt keeps current blend');await player.tick(.1);near(o.position[0],0);player.paused=true;const time=player.time;await player.tick(2);near(player.time,time);
+}
+{
+ const group=new THREE.Group(),spine=new THREE.Bone(),arm=new THREE.Bone(),leg=new THREE.Bone();spine.name='Spine';arm.name='Arm';leg.name='Leg';spine.add(arm);group.add(spine,leg);
+ const tracks=value=>[new THREE.VectorKeyframeTrack('Spine.position',[0,2],[0,value,0,0,value,0]),new THREE.VectorKeyframeTrack('Arm.position',[0,2],[value,0,0,value,0,0]),new THREE.VectorKeyframeTrack('Leg.position',[0,2],[0,value,0,0,value,0])];group.userData.animations=[new THREE.AnimationClip('A',2,tracks(2)),new THREE.AnimationClip('B',2,tracks(10))];const {data,blend}=graph('layer',{alpha:1,filters:[{bone:'Spine',depth:2}]});const player=await AnimationGraphPlayer.load(data,{...hooks(object()),group});await player.tick(0);near(spine.position.y,6,'depth2 root .5');near(arm.position.x,10,'depth2 child1');near(leg.position.y,2,'outside mask uses base');blend.properties.filters=[{bone:'Spine',depth:0},{bone:'Arm',depth:-1}];spine.position.set(0,0,0);arm.position.set(0,0,0);leg.position.set(0,0,0);const excluded=await AnimationGraphPlayer.load(data,{...hooks(object()),group});await excluded.tick(0);near(spine.position.y,10);near(arm.position.x,2,'negative filter excludes');near(leg.position.y,2);blend.properties.filters=[{bone:'Missing',depth:0}];await assert.rejects(()=>AnimationGraphPlayer.load(data,{...hooks(object()),group}),/뼈가 없어요/);
+}
+{
+ const {data}=graph('additive',{alpha:.5}),o=object();assets['Assets/A.hbanimation.json']=asset('A',[2,0,0]);assets['Assets/B.hbanimation.json']=asset('B',[10,0,0]);const player=await AnimationGraphPlayer.load(data,hooks(o));await player.tick(0);near(o.position[0],7,'base + bind-reference delta');
+}
+{
+ const sprite=createAsset('spriteanimation','SA_A');sprite.frames=[{sprite:'Assets/A.hbsprite.json',duration:1},{sprite:'Assets/B.hbsprite.json',duration:1}];const {data,a,b}=graph('blend',{alpha:.8});a.properties.clip='SA_A';b.properties.clip='SA_B';const other=structuredClone(sprite);other.frames[0].sprite='Assets/C.hbsprite.json';let selected;const player=await AnimationGraphPlayer.load(data,{...hooks(object()),asset:async name=>'Assets/'+name+'.hbspriteanimation.json',readAsset:async path=>path.includes('SA_B')?other:sprite,spriteFrame:async(o,path)=>{selected=path;}});await player.tick(0);assert.equal(selected,'Assets/C.hbsprite.json','sprite dominant contribution');await player.tick(1.1);assert.equal(selected,'Assets/B.hbsprite.json');
+}
+{
+ const {data,a}=graph('blend');a.properties.clip='Assets/A.hbanimation.json';data.model='Assets/Hero.glb';assert.deepEqual(assetReferences(data,'Assets/AG.hbanimgraph.json'),['Assets/A.hbanimation.json','Assets/Hero.glb']);assert.ok(renameAssetReferences(data,'Assets/A.hbanimation.json','Assets/Renamed.hbanimation.json'));assert.equal(a.properties.clip,'Assets/Renamed.hbanimation.json');
+}
+{
+ const {data}=graph('blend1d'),o=object(),group=new THREE.Group(),scene=new THREE.Scene();scene.add(group);o.components.push(makeSceneComponent('AnimationGraph',{asset:'Assets/AG.hbanimgraph.json',autoPlay:true}));const services=engineOperations({readAsset:async path=>path.endsWith('hbanimgraph.json')?data:assets[path],asset:async(name,kind)=>kind==='animgraph'?'Assets/AG.hbanimgraph.json':hooks(o).asset(name),mesh:()=>group,meshes:()=>[group],scene:()=>scene,update:()=>{},physicsOptions:{backend:'legacy'}}),vm=new BlueprintRuntime([o],[],{...services});await vm.start();await services.operation('animGraphSetFloat',{target:o.id,key:'Speed',value:.5},{self:o.id},vm);await services.physics(.1,vm);near(o.position[0],6,'autoPlay and shared runtime operation');assert.equal((await services.operation('animGraphGetFloat',{target:o.id,key:'Speed'},{self:o.id},vm)).return,.5);o.components.find(c=>c.type==='AnimationGraph').properties.enabled=false;await services.physics(.1,vm);assert.equal(o.gameplayDebug.animationGraph,undefined,'disabled stops graph');await vm.stop();services.dispose();
+}
+{
+ const data=createAnimationGraph('Depth');let child=data.nodes.find(n=>n.type==='rest');for(let i=0;i<63;i++){const parent=makeAnimationNode('blend');parent.inputs={a:child.id,b:child.id};data.nodes.push(parent);child=parent;}data.nodes.find(n=>n.type==='output').inputs.pose=child.id;assert.ok(validAnimationGraph(data));const extra=makeAnimationNode('blend');extra.inputs={a:child.id,b:child.id};data.nodes.push(extra);data.nodes.find(n=>n.type==='output').inputs.pose=extra.id;assert.equal(validAnimationGraph(data),false,'long shared branch depth cannot bypass memoization');const blend=makeAnimationNode('blend1d');blend.properties.samples.push({input:'pose2',threshold:3});distributeAnimationThresholds(blend,-1,1);assert.deepEqual(blend.properties.samples.map(s=>s.threshold),[-1,0,1]);
+}
+{
+ // A graph without clips proves canceled program disposal before its first publication.
+ const rest=createAnimationGraph('Rest');let release;const empty=engineOperations({readAsset:async()=>rest,asset:async()=>new Promise(resolve=>{release=resolve;}),mesh:()=>new THREE.Group(),update:()=>{},physicsOptions:{backend:'legacy'}}),idle=new BlueprintRuntime([object()],[],{...empty});const start=empty.operation('animGraphPlay',{target:'actor',asset:'Rest'},{self:'actor'},idle);await Promise.resolve();empty.dispose();release('Assets/Rest.hbanimgraph.json');await start;assert.equal(idle.objects[0].gameplayDebug?.animationGraph,undefined);
+}
+console.log('Animation graph: authoring, quaternion blend, 1D/direct/bool/additive, bone filters, sprites, references and shared execution passed');

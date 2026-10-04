@@ -192,6 +192,17 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetString", KoreanName="상태 파라미터 문자열 지정", Category="상태 머신") static void SetString(Actor* target,const std::string& key,const std::string& value);
 };
 HB_CLASS()
+class AnimationGraph : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphPlay", KoreanName="애니메이션 그래프 재생", Category="애니메이션 그래프") static void Play(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphStop", KoreanName="애니메이션 그래프 정지", Category="애니메이션 그래프") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphPause", KoreanName="애니메이션 그래프 일시 정지", Category="애니메이션 그래프") static void Pause(Actor* target,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetFloat", KoreanName="애니메이션 실수 파라미터 지정", Category="애니메이션 그래프") static void SetFloat(Actor* target,const std::string& key,float value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetBool", KoreanName="애니메이션 불리언 파라미터 지정", Category="애니메이션 그래프") static void SetBool(Actor* target,const std::string& key,bool value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetFloat", KoreanName="애니메이션 실수 파라미터 조회", Category="애니메이션 그래프") static float GetFloat(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetBool", KoreanName="애니메이션 불리언 파라미터 조회", Category="애니메이션 그래프") static bool GetBool(Actor* target,const std::string& key);
+};
+HB_CLASS()
 class Montage : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playMontage", KoreanName="몽타주 재생", Category="몽타주") static void Play(Actor* target,const std::string& asset,const std::string& section);

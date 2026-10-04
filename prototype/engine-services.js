@@ -18,6 +18,7 @@ import {spriteAnimationFrame,valid2DAsset} from './two-d-assets.js';
 import {gameplaySystems} from './gameplay-runtime.js';
 import {WidgetSystem} from './ui-runtime.js';
 import {AudioRouting} from './audio-mixer.js';
+import {AnimationGraphPlayer} from './animation-graph-runtime.js';
 import {ParticleSimulation,perceptionSystems,findNavigationPath,hasGameplayTag,matchTagQuery,validGameplayTag} from './scene-systems.js';
 export function validRuntimeSave(data,vm){
   return data?.version===1&&Array.isArray(data.objects)&&data.objects.length<=1000
@@ -36,13 +37,13 @@ export async function loadModel(asset){
   throw Error('미리보기 임포터가 없는 모델: '+extension);
 }
 export function engineOperations(hooks){
-  const audio=new Map(),mixers=new Map(),animations=new Map(),widgets=new Map();
+  const audio=new Map(),mixers=new Map(),animations=new Map(),graphs=new Map(),graphRequests=new Map(),widgets=new Map();
   const ui=new WidgetSystem({readAsset:path=>readAsset(path),overlay:hooks.overlay,fileUrl});
   const soundRouting=new AudioRouting({readAsset:path=>readAsset(path)});
-  let physics,audioEpoch=0;
+  let physics,audioEpoch=0,graphSerial=0;
   const readAsset=hooks.readAsset||(async(path)=>(await editorRequest(fileUrl(path))).json());
   const tilemaps=new RuntimeTilemaps({read:readAsset,render:hooks.tilemapFrame});
-  const stopAnimation=id=>{animations.delete(id);const mixer=mixers.get(id)?.mixer;if(mixer){mixer.stopAllAction();mixer.uncacheRoot(mixer.getRoot());mixers.delete(id);}};
+  const stopAnimation=id=>{graphRequests.delete(id);graphs.get(id)?.dispose();graphs.delete(id);animations.delete(id);const mixer=mixers.get(id)?.mixer;if(mixer){mixer.stopAllAction();mixer.uncacheRoot(mixer.getRoot());mixers.delete(id);}};
   const applyAnimation=(o,state)=>{for(const track of state.tracks)o[track.id]=sampleTimeline(track,state.time);hooks.update(o);};
   const target=(args,b,vm,key='target')=>{const o=vm.object(args[key]===null?b.self:args[key],b);if(!o)throw Error('대상 오브젝트가 없어요.');return o;};
   const ensurePhysics=vm=>physics??=(hooks.physicsOptions?.backend==='legacy'?createScenePhysics:createRigidPhysics)(vm.objects,{...hooks.physicsOptions,gameplay:hooks.gameplay,update:hooks.update});
@@ -63,9 +64,19 @@ export function engineOperations(hooks){
       if(c.type==='AudioSource'&&p.playOnStart&&p.clip)await operation('playSoundAt',{sound:p.clip,position:sceneWorldPosition(o,vm.objects),volume:1,settings:{...p,refDistance:p.minDistance},source:o.id,voice:JSON.stringify([o.id,c.id])},b,vm);
       if(c.type==='UIWidget'&&p.showOnStart&&p.asset)await operation('uiShow',{target:o.id,asset:p.asset,instance:p.instance},b,vm);
       if(c.type==='Animator'&&p.playOnStart&&p.clip)await operation('playAnimation',{target:o.id,clip:p.clip,loop:p.loop},b,vm);
+      if(c.type==='AnimationGraph'&&p.autoPlay&&p.asset)await operation('animGraphPlay',{target:o.id,asset:p.asset},b,vm);
     }
   }
   const operation=async(key,a,b,vm)=>{
+    if(key.startsWith('animGraph')){
+      const o=target(a,b,vm);if(key==='animGraphStop'){stopAnimation(o.id);return {};}
+      if(key==='animGraphPlay'){const request=++graphSerial;graphRequests.set(o.id,request);const path=await hooks.asset(a.asset,'animgraph');if(!path)throw Error('애니메이션 그래프가 없어요: '+a.asset);const player=await AnimationGraphPlayer.load(await readAsset(path),{object:o,group:hooks.mesh(o.id),readAsset,asset:hooks.asset,update:hooks.update,spriteFrame:hooks.spriteFrame});player.path=path;if(request!==graphRequests.get(o.id)||vm.object(o.id)!==o){player.dispose();return {};}stopAnimation(o.id);graphs.set(o.id,player);await player.tick(0);return {};}
+      const player=graphs.get(o.id);if(!player)throw Error('애니메이션 그래프가 실행 중이 아니에요.');
+      if(key==='animGraphSetFloat'||key==='animGraphSetBool'){player.setParameter(a.key,a.value);player.publish();return {};}
+      if(key==='animGraphGetFloat'||key==='animGraphGetBool'){const value=player.getParameter(a.key);if(typeof value!==(key==='animGraphGetFloat'?'number':'boolean'))throw Error('애니메이션 파라미터 자료형 오류');return {return:value};}
+      if(key==='animGraphPause'){player.paused=a.paused;player.publish();return {};}
+      throw Error('애니메이션 그래프 API 오류: '+key);
+    }
     if(physicsQueryKeys.has(key)){const system=ensurePhysics(vm);await system.ready?.();if(!system.query)throw Error('이 질의에는 Rapier 물리가 필요해요.');return {return:system.query(key,a)};}
     if(['getAngularVelocity','setAngularVelocity','physicsMass','physicsSleeping','physicsSleep','physicsForce','physicsForceAt','physicsTorque','physicsAngularImpulse'].includes(key)){
       const o=target(a,b,vm),system=ensurePhysics(vm);await system.ready?.();if(system.backend!=='rapier')throw Error('이 강체 기능에는 Rapier 물리가 필요해요.');
@@ -163,6 +174,7 @@ export function engineOperations(hooks){
     throw Error('실행 서비스가 없어요: '+key);
   };
   return {
+    animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
     audioState:()=>({state:soundRouting.context?.state||'idle',levels:Object.fromEntries([...soundRouting.graphs].map(([path,graph])=>[path,graph.levels()])),voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime}))}),
     pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
@@ -175,11 +187,11 @@ export function engineOperations(hooks){
       await senses.tick(delta,vm);
       for(const o of vm.objects){const p=enabledComponent(o,'ParticleSystem');if(p){if(!particles.has(o.id)){const state=particleState(o);state.playing=p.playOnStart;}const state=particles.get(o.id);state.advance(delta,sceneWorldMatrix(o,vm.objects));hooks.particleSnapshot?.(o,state);o.gameplayDebug={...o.gameplayDebug,particles:{count:state.particles.length,playing:state.playing,paused:state.paused}};}else particles.delete(o.id);}
       for(const [id,state] of navigation){const o=vm.object(id),p=o&&enabledComponent(o,'NavigationAgent');if(!p){navigation.delete(id);if(o)delete o.navigationControl;continue;}if(state.status==='moving'){state.elapsed+=delta;if(state.elapsed>=p.repathInterval){const path=findNavigationPath(vm.objects,sceneWorldPosition(o,vm.objects),state.destination,{gridId:p.grid,ignore:[o.id,o.controller].filter(Boolean),radius:p.radius,height:p.height,margin:p.stoppingDistance});state.path=path;state.index=0;state.elapsed=0;if(!path.length)state.status='failed';}const current=sceneWorldPosition(o,vm.objects);while(state.index<state.path.length&&Math.hypot(...state.path[state.index].map((v,i)=>v-current[i]))<=p.stoppingDistance)state.index++;if(state.index>=state.path.length)state.status=state.path.length?'arrived':'failed';else{const destination=state.path[state.index],distance=Math.hypot(...destination.map((v,i)=>v-current[i])),direction=destination.map((v,i)=>(v-current[i])/distance);if(['CharacterMovement','CharacterMovement2D','TopDownMovement2D','PawnMovement'].some(t=>enabledComponent(o,t)))o.navigationControl={direction,speed:p.speed};else{const step=Math.min(p.speed*delta,distance);setSceneWorldPosition(o,current.map((v,i)=>v+direction[i]*step),vm.objects);hooks.update(o);}}}if(state.status!=='moving')delete o.navigationControl;o.gameplayDebug={...o.gameplayDebug,navigation:{status:state.status,destination:structuredClone(state.destination),path:structuredClone(state.path),index:state.index}};}
-      for(const o of vm.objects){const speed=enabledComponent(o,'Animator')?.speed??1;const skeletal=mixers.get(o.id);if(skeletal&&!skeletal.controlled)skeletal.mixer.update(delta*speed);const state=animations.get(o.id);if(state){state.time+=(state.timeline?.ignoreTimeDilation?rawDelta:delta)*(state.timeline?.playRate??state.animation?.playRate??1)*speed;state.time=state.loop?state.time%state.length:Math.min(state.time,state.length);if(state.type==='sprite'){const frame=spriteAnimationFrame(state.animation,state.time,{loop:state.loop,rate:1});if(frame&&frame.index!==state.lastFrame){await hooks.spriteFrame(o,frame.sprite);state.lastFrame=frame.index;}}else applyAnimation(o,state);if(!state.controlled&&!state.loop&&state.time===state.length)animations.delete(o.id);}}
+      for(const o of vm.objects){const graph=graphs.get(o.id),graphComponent=enabledComponent(o,'AnimationGraph');if(graph){if(o.poolActive===false)continue;if(objectComponents(o).some(c=>c.type==='AnimationGraph')&&!graphComponent){stopAnimation(o.id);continue;}await graph.tick(delta*(graphComponent?.speed??1));continue;}const speed=enabledComponent(o,'Animator')?.speed??1;const skeletal=mixers.get(o.id);if(skeletal&&!skeletal.controlled)skeletal.mixer.update(delta*speed);const state=animations.get(o.id);if(state){state.time+=(state.timeline?.ignoreTimeDilation?rawDelta:delta)*(state.timeline?.playRate??state.animation?.playRate??1)*speed;state.time=state.loop?state.time%state.length:Math.min(state.time,state.length);if(state.type==='sprite'){const frame=spriteAnimationFrame(state.animation,state.time,{loop:state.loop,rate:1});if(frame&&frame.index!==state.lastFrame){await hooks.spriteFrame(o,frame.sprite);state.lastFrame=frame.index;}}else applyAnimation(o,state);if(!state.controlled&&!state.loop&&state.time===state.length)animations.delete(o.id);}}
       await systems.tick(delta,vm);await ensurePhysics(vm).advance(delta,dt=>vm.fixedTick(dt),()=>vm.collisions());
       const listener=hooks.listenerPosition?.()||vm.object(hooks.gameplay?.pawn)?.position||[0,0,0];
       soundRouting.update(delta,listener);for(const [id,player] of audio){let p=player.hbSettings,position=player.hbPosition;if(player.hbSource){const source=vm.object(player.hbSource);p=source&&enabledComponent(source,'AudioSource');if(!p){player.pause();soundRouting.disconnect(player);audio.delete(id);continue;}position=sceneWorldPosition(source,vm.objects);player.loop=p.loop;player.playbackRate=p.pitch;soundRouting.volume(player,p.volume);}if(position)soundRouting.position(player,position);}
     },
-    dispose(){audioEpoch++;soundRouting.dispose();ui.dispose();systems.dispose();senses.dispose();navigation.clear();particles.clear();currentVM=null;physics?.dispose();physics=null;audio.forEach(a=>a.pause());audio.clear();for(const id of [...mixers.keys()])stopAnimation(id);animations.clear();widgets.forEach(w=>w.remove());widgets.clear();}
+    dispose(){audioEpoch++;soundRouting.dispose();ui.dispose();systems.dispose();senses.dispose();navigation.clear();particles.clear();currentVM=null;physics?.dispose();physics=null;audio.forEach(a=>a.pause());audio.clear();for(const id of new Set([...graphs.keys(),...graphRequests.keys(),...mixers.keys()]))stopAnimation(id);animations.clear();widgets.forEach(w=>w.remove());widgets.clear();}
   };
 }

@@ -184,3 +184,7 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 ## 조건 감시·정적 하위 행동트리 — 2026-10-05
 
 조건 중단 네 모드·결과/값 감시, memory Selector/legacy reactive, 병렬 즉시/대기·키 비교·정적 하위 트리 실행을 공용 제작/검증/실행 경로에 연결했어요. 루트 조건의 감시·자식 독립 시간·경로 핸들·내부 그래프 진단을 제공하며 사용자 C++와 headless도 같은 서비스를 사용해요. 세부 한계와 실제 Editor/release Player/AI 증거는 [조건/하위 트리 계약](BEHAVIOR_OBSERVERS_SUBTREES.md)이에요. BP 기본 카탈로그는519개로 유지하며 행동트리 전용 노드 정의와 구분해요.
+
+### 포즈 애니메이션 그래프 추가(2026-10-05)
+
+[애니메이션 그래프 계약](ANIMATION_GRAPH.md)의 독립 animgraph 포즈 에셋/제작기·공용 실행기를 추가했어요. BP/C++ Play/Stop/Pause/SetFloat/SetBool/GetFloat/GetBool7개가 생성되어 전체 BP 노드는526개예요. 별도의9개 포즈 노드 카탈로그는 BP 수에 합치지 않아요. 실제 Editor/Player 키→BP→C++→포즈/파라미터/조회/뼈 레이어를 확인했고2D rig·AnimGraph 상태·IK·root motion·다중 슬롯·전체 잔여는 그대로 이어 구현해요.

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **519개**, 실제 공통 C++ API **437개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **526개**, 실제 공통 C++ API **444개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -44,6 +44,7 @@
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
+| 애니메이션 그래프 | 7 | 7 |
 | 몽타주 | 7 | 7 |
 | 시퀀스 | 5 | 5 |
 | AI 내비게이션 | 4 | 4 |
@@ -717,6 +718,18 @@
 | stateElapsed | Get Elapsed / 상태 경과 시간 | target: object | return: float | hb::States::GetElapsed | 공통 C++ + VM |
 | stateSetBool | Set Bool / 상태 파라미터 불리언 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::States::SetBool | 공통 C++ + VM |
 | stateSetString | Set String / 상태 파라미터 문자열 지정 | exec: exec, target: object, key: string, value: string | then: exec | hb::States::SetString | 공통 C++ + VM |
+
+## 애니메이션 그래프
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| animGraphPlay | Play / 애니메이션 그래프 재생 | exec: exec, target: object, asset: string | then: exec | hb::AnimationGraph::Play | 공통 C++ + VM |
+| animGraphStop | Stop / 애니메이션 그래프 정지 | exec: exec, target: object | then: exec | hb::AnimationGraph::Stop | 공통 C++ + VM |
+| animGraphPause | Pause / 애니메이션 그래프 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::AnimationGraph::Pause | 공통 C++ + VM |
+| animGraphSetFloat | Set Float / 애니메이션 실수 파라미터 지정 | exec: exec, target: object, key: string, value: float | then: exec | hb::AnimationGraph::SetFloat | 공통 C++ + VM |
+| animGraphSetBool | Set Bool / 애니메이션 불리언 파라미터 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::AnimationGraph::SetBool | 공통 C++ + VM |
+| animGraphGetFloat | Get Float / 애니메이션 실수 파라미터 조회 | target: object, key: string | return: float | hb::AnimationGraph::GetFloat | 공통 C++ + VM |
+| animGraphGetBool | Get Bool / 애니메이션 불리언 파라미터 조회 | target: object, key: string | return: bool | hb::AnimationGraph::GetBool | 공통 C++ + VM |
 
 ## 몽타주
 

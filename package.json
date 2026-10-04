@@ -64,7 +64,10 @@
     "test:authoring-window": "node tools/build-desktop.mjs && node tools/check-authoring-window.mjs",
     "test:pool": "node tools/check-actor-pool.mjs",
     "test:native-world": "node tools/check-native-world-patch.mjs && node tools/check-native-transport.mjs",
-    "test:player-acceptance": "node tools/check-player-acceptance.mjs"
+    "test:player-acceptance": "node tools/check-player-acceptance.mjs",
+    "test:animation-graph": "node tools/check-animation-graph.mjs",
+    "test:animation-graph-editor": "node tools/check-animation-graph-window.mjs --editor",
+    "test:animation-graph-player": "node tools/check-animation-graph-window.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",
