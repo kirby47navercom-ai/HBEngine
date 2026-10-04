@@ -17,7 +17,7 @@ export function valid2DAsset(kind,data){
   if(!data||data.version!==1||!name(data.name))return false;
   if(kind==='sprite')return (data.slices===undefined||validSpriteSlices(data.slices))&&(data.sheet===undefined||reference(data.sheet)&&typeof data.sliceId==='string'&&/^[\w-]{1,80}$/.test(data.sliceId))&&reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
   if(kind==='spriteanimation')return typeof data.loop==='boolean'&&finite(data.playRate,.01,100)&&Array.isArray(data.frames)&&data.frames.length<=1000&&data.frames.every(frame=>frame&&reference(frame.sprite)&&frame.sprite.length>0&&finite(frame.duration,.001,3600));
-  if(kind!=='tilemap'||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;
+  if(kind!=='tilemap'||data.layout!==undefined&&!['rectangular','isometric'].includes(data.layout)||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;
   const ids=new Set();
   return data.layers.every(layer=>{
     if(!layer||!name(layer.id)||ids.has(layer.id)||!name(layer.name)||typeof layer.visible!=='boolean'||typeof layer.collision!=='boolean'||!Array.isArray(layer.tiles)||layer.tiles.length>data.width*data.height)return false;
@@ -101,4 +101,15 @@ export function tileCollisionBoxes(map,depth=.1){
   }
   rectangles.push(...active.values());
   return rectangles.map(rect=>({...rect,center:[(rect.x+rect.width/2)*map.cellSize[0],-(rect.y+rect.height/2)*map.cellSize[1],0],size:[rect.width*map.cellSize[0],rect.height*map.cellSize[1],depth]}));
+}
+
+// One grid basis for authoring, rendering, VM coordinates and collision shapes.
+export function tileCellPoint(map,x,y){const [w,h]=map.cellSize;return map.layout==='isometric'?[(x-y)*w/2,-(x+y)*h/2,0]:[x*w,-y*h,0];}
+export function tileLocalToCell(map,point){const [w,h]=map.cellSize;return map.layout==='isometric'?[Math.floor(point[0]/w-point[1]/h),Math.floor(-point[0]/w-point[1]/h)]:[Math.floor(point[0]/w),Math.floor(-point[1]/h)];}
+export function tileCellPolygon(map,x,y,width=1,height=1){return [[x,y],[x+width,y],[x+width,y+height],[x,y+height]].map(([a,b])=>tileCellPoint(map,a,b));}
+export function tileRenderRect(map,tile){
+  const [w,h]=map.cellSize;
+  if(map.layout!=='isometric')return [tile.x*w,-(tile.y+1)*h,w,h];
+  const [x,y]=tileCellPoint(map,tile.x+.5,tile.y+.5),artHeight=w*map.tileSize[1]/map.tileSize[0];
+  return [x-w/2,y-h/2,w,artHeight];
 }

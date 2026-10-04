@@ -48,3 +48,25 @@ Windows 프로세스 표본에는 소유한 Game/Node/WebView2/C++ worker의 자
 측정 조건과 전후 수치는 [입력·모바일·풀 기록](INPUT_MOBILE_POOL.md)의 후속 C++ 경량화 절에 기록한다. 최초 새 EXE의 `awaitnativeWorldClient` 오타로 시작이 실패한 `9Sv81F`는 성공 근거에 포함하지 않는다. 단위 검사만으로 실행을 통과했다고 판단하지 않고 실제 창에서 발견/수정했다.
 
 남은 주 비용은 큰 장면의 변경 검색, host 검증, C++ 게임용 세계 동기화와 프로세스 왕복, 물리/렌더 제출이다. WebView2와 Node의 기본 메모리도 포함해 계속 측정한다. 이 변경으로 전체 엔진 성능 목표나 모든 누적 기능을 완료했다고 표시하지 않는다.
+
+## 2D 기능 확장 후 회귀 표본 — 2026-10-05
+
+release Player `native/build/player-acceptance-i3wHLE/acceptance.json`을 같은 Ryzen 7 7800X3D/Windows 조건의 직전 `ir3BYV`와 비교했어요. 별도 창의 스프라이트·한글·마우스/C++ 발사·멀티터치·WebAudio master 신호, 480개 활성 탄환 전부 이동, 35.227초/96회 풀 재사용과 예외 0을 확인했어요.
+
+| 조건 | 직전 실행 루프/초 | 추가 후 실행 루프/초 | 추가 후 작업 p95 |
+| --- | ---: | ---: | ---: |
+| C++ 없는 탄환 480 | 60.4 | 59.1 | 17.1 ms |
+| C++ Update/프레임 + 480 | 21.8 | 26.7 | 41.5 ms |
+| 같은 C++ + 480 지속 재사용 | 19.3 | 20.3 | 원자료에 기록 |
+
+이 표본에서 큰 C++ 장면의 실행 루프는 +22.9%, 작업 p95는 49.8→41.5ms였어요. 지속 시험은 +5.0%예요. C++ 0개 표본은 p95 14.3→17.2ms로 커졌고, 모든 부하 구간이 개선됐다고 해석하지 않아요. 단일 실행 간 편차가 있으며 특정 구현 한 가지가 개선의 원인이라고 단정하지 않아요. 새 2D 마스크 부하를 이 슈터 시험으로 측정한 것은 아니에요.
+
+소유한 Player/Node/WebView2/C++ 프로세스 트리의 전용 커밋 표본은 준비 584.3, 큰 C++ 장면 648.0, 지속 끝 676.6MiB예요. working set 합계는 715.6/844.3/873.9MiB이며 공유 페이지 중복을 포함해요. 모바일/발열/전체 무누수·피크/GPU 메모리의 증명은 아니에요.
+
+기존 비교 명령은 계속 10% 개선 게이트를 사용해요. 기능 추가 후 비교에는 `--no-regression`을 추가했으며, 큰 C++ 480개의 루프/작업 p95, C++ 없는 각 탄환 구간의 루프, 지속 재사용 루프에 10% 회귀 한도를 적용해요. 60회/초·16.7ms 목표와 구분해요. 새 모드는 그 목표나 기존 개선 게이트를 낮추지 않아요.
+
+```powershell
+node tools/check-performance-comparison.mjs native/build/player-acceptance-ir3BYV/acceptance.json native/build/player-acceptance-i3wHLE/acceptance.json native/build/performance-comparison-2d-2026-10-05.json --no-regression
+```
+
+위 회귀 게이트는 통과했어요. 기본 개선 모드도 기존 pVE0Gf→ir3BYV 자료로 다시 통과했어요. 마스크 없는 장면의 0 타깃, 빈 범위의 1×1 텍스처/0 패스, 사용 중인 집합 공유, 비활성 타깃과 sampler 참조 해제는 [2D 계약](2D_RENDERING_SHORTCUTS.md)의 실제 GPU 검사가 별도로 확인해요.

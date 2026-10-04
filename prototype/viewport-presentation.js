@@ -19,7 +19,7 @@ export class ViewportPresentation{
     else m=new THREE.MeshStandardMaterial({color:0xbfbfbf,roughness:.8,metalness:0,side:original.side,normalMap:mode==='detailLighting'?original.normalMap||null:null,bumpMap:mode==='detailLighting'?original.bumpMap||null:null,bumpScale:original.bumpScale??1});
     modes.set(mode,m);return m;
   }
-  render(renderer,scene,camera,{grid,helpers=[],selection,collision,sky=[],objects=[]}={}){
+  render(renderer,scene,camera,{grid,helpers=[],selection,collision,sky=[],objects=[],prepare2D}={}){
     const {flags,gameView,mode,exposure}=this.settings,changes=[],materials=[],oldFog=scene.fog,oldEnvironment=scene.environment,oldExposure=renderer.toneMappingExposure,fogEnabled=scene.userData.heightFogUniforms?.hbHeightFogEnabled,oldHeightFog=fogEnabled?.value;
     const hide=o=>{if(o&&o.visible){changes.push(o);o.visible=false;}},editorMaterials=new Set(),sceneMaterials=new Set();
     for(const root of [grid,...helpers,selection,collision,...sky].filter(Boolean))root.traverse(o=>editorMaterials.add(o));
@@ -36,7 +36,7 @@ export class ViewportPresentation{
       });
       // Only diagnostic copies belong to this viewport; source assets stay alive.
       for(const [original,modes] of this.cache)if(!sceneMaterials.has(original)){for(const material of modes.values())material.dispose();this.cache.delete(original);}
-      if(!flags.lights)scene.environment=null;renderer.toneMappingExposure=oldExposure*exposure;renderer.render(scene,camera);this.needsRender=false;
+      if(!flags.lights)scene.environment=null;renderer.toneMappingExposure=oldExposure*exposure;prepare2D?.();renderer.render(scene,camera);this.needsRender=false;
     }finally{for(const [o,m] of materials)o.material=m;for(const o of changes)o.visible=true;scene.fog=oldFog;scene.environment=oldEnvironment;renderer.toneMappingExposure=oldExposure;if(fogEnabled)fogEnabled.value=oldHeightFog;}
   }
   dispose(){for(const modes of this.cache.values())for(const m of modes.values())m.dispose();this.cache.clear();}

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **504개**, 실제 공통 C++ API **422개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **514개**, 실제 공통 C++ API **432개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -39,7 +39,7 @@
 | 오브젝트 풀 | 3 | 3 |
 | 입력 | 6 | 6 |
 | 입력 액션 | 6 | 6 |
-| 2D 스프라이트 | 4 | 4 |
+| 2D 스프라이트 | 14 | 14 |
 | 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
 | AI | 15 | 15 |
@@ -640,6 +640,16 @@
 | spriteGetFlip | Get Flip / 스프라이트 반전 가져오기 | target: object | flipX: bool, flipY: bool | hb::Sprites::GetFlip | 공통 C++ + VM |
 | spriteSet | Set Sprite / 스프라이트 지정 | exec: exec, target: object, sprite: string | then: exec | hb::Sprites::SetSprite | 공통 C++ + VM |
 | spriteGet | Get Sprite / 스프라이트 가져오기 | target: object | return: string | hb::Sprites::GetSprite | 공통 C++ + VM |
+| spriteSetColor | Set Color / 스프라이트 색상 지정 | exec: exec, target: object, color: color | then: exec | hb::Sprites::SetColor | 공통 C++ + VM |
+| spriteGetColor | Get Color / 스프라이트 색상 가져오기 | target: object | return: color | hb::Sprites::GetColor | 공통 C++ + VM |
+| spriteSetSize | Set Size / 스프라이트 크기 지정 | exec: exec, target: object, size: vec2 | then: exec | hb::Sprites::SetSize | 공통 C++ + VM |
+| spriteGetSize | Get Size / 스프라이트 설정 크기 가져오기 | target: object | return: vec2 | hb::Sprites::GetSize | 공통 C++ + VM |
+| spriteSetSorting | Set Sorting / 스프라이트 정렬 지정 | exec: exec, target: object, layer: string, order: int | then: exec | hb::Sprites::SetSorting | 공통 C++ + VM |
+| spriteGetSorting | Get Sorting / 스프라이트 정렬 가져오기 | target: object | layer: string, order: int | hb::Sprites::GetSorting | 공통 C++ + VM |
+| spriteSetMask | Set Mask Interaction / 스프라이트 마스크 지정 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetMaskInteraction | 공통 C++ + VM |
+| spriteGetMask | Get Mask Interaction / 스프라이트 마스크 가져오기 | target: object | return: string | hb::Sprites::GetMaskInteraction | 공통 C++ + VM |
+| spriteSetLit | Set Lit / 스프라이트 광원 적용 | exec: exec, target: object, lit: bool | then: exec | hb::Sprites::SetLit | 공통 C++ + VM |
+| spriteIsLit | Is Lit / 스프라이트 광원 적용 여부 | target: object | return: bool | hb::Sprites::IsLit | 공통 C++ + VM |
 
 ## 2D 타일맵
 

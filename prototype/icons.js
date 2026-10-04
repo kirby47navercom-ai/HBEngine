@@ -1,4 +1,7 @@
 export const paths = {
+  arrowUp:'<path d="M12 20V4m-7 7 7-7 7 7"/>',
+  arrowDown:'<path d="M12 4v16m-7-7 7 7 7-7"/>',
+  download:'<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
   edit:'<path d="m15 4 5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/>',
   undo:'<path d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 0 14"/>',
   redo:'<path d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0 0 14"/>',

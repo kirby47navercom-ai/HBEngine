@@ -65,7 +65,7 @@ function editorHarness(kind,data){
   return {editor,history,states,errors,captures};
 }
 const event=(x,y,button=0)=>({button,pointerId:1,clientX:x*24+12,clientY:y*24+12,preventDefault(){},stopPropagation(){}});
-const harness=editorHarness('tilemap',{...create2DAsset('tilemap','Stroke'),width:8,height:6}),editor=harness.editor;
+const harness=editorHarness('tilemap',{...create2DAsset('tilemap','Stroke'),width:8,height:6}),editor=harness.editor;editor.mapPreview={scale:24,minX:0,top:0};
 editor.pointerDown(event(0,0));editor.pointerMove(event(4,4));assert.equal(harness.history.length,1);assert.equal(harness.states.length,0);assert.equal(editor.doc.data.layers[0].tiles.length,5);
 editor.pointerUp(event(4,4));assert.equal(harness.states.length,1);assert.equal(harness.captures.size,0);assert.equal(editor.renderCount,undefined,'A brush stroke must retain canvas focus and scroll.');
 const after=clone(editor.doc.data);editor.doc.data=clone(harness.history[0]);assert.equal(editor.doc.data.layers[0].tiles.length,0);editor.doc.data=after;
@@ -84,7 +84,8 @@ function previewHarness(kind,data,source){
 }
 const largePreview=previewHarness('sprite',{...sprite,rect:[0,0,0,0]},{width:8192,height:4096});largePreview.editor.drawSprite();
 assert.deepEqual([largePreview.editor.canvas.width,largePreview.editor.canvas.height],[2048,1024]);assert.deepEqual(largePreview.scales,[[.25,.25]]);assert.deepEqual(largePreview.editor.point({clientX:512,clientY:256}),{x:2048,y:1024});
-const mapPreview=previewHarness('tilemap',{...create2DAsset('tilemap','Large'),width:256,height:256},{width:128,height:128});mapPreview.editor.drawMap();assert.equal(mapPreview.editor.canvas.width,2048);assert.equal(mapPreview.editor.mapCell,8);assert.deepEqual(mapPreview.editor.cell({clientX:12,clientY:20}),{x:1,y:2});
+const mapPreview=previewHarness('tilemap',{...create2DAsset('tilemap','Large'),width:256,height:256},{width:128,height:128});mapPreview.editor.drawMap();assert.equal(mapPreview.editor.canvas.width,2048);assert.equal(mapPreview.editor.mapPreview.scale,8);assert.deepEqual(mapPreview.editor.cell({clientX:12,clientY:20}),{x:1,y:2});
+const previousDpr=globalThis.devicePixelRatio;try{globalThis.devicePixelRatio=2;const zoomed=previewHarness('tilemap',{...create2DAsset('tilemap','Zoom'),width:4,height:3},{width:128,height:128});zoomed.editor.zoom=2;zoomed.editor.drawMap();assert.deepEqual([zoomed.editor.canvas.width,zoomed.editor.canvas.height],[384,288]);assert.deepEqual(zoomed.scales,[[4,4]]);zoomed.editor.canvas.getBoundingClientRect=()=>({left:0,top:0,width:parseFloat(zoomed.editor.canvas.style.width),height:parseFloat(zoomed.editor.canvas.style.height)});assert.deepEqual(zoomed.editor.cell({clientX:72,clientY:72}),{x:1,y:1},'high-DPI crisp grid must keep logical pointer cells');mapPreview.editor.zoom=8;mapPreview.editor.drawMap();assert.equal(mapPreview.editor.canvas.width,2048,'zoomed high-DPI preview retains its bitmap bound');}finally{if(previousDpr===undefined)delete globalThis.devicePixelRatio;else globalThis.devicePixelRatio=previousDpr;}
 const framePreview=previewHarness('spriteanimation',animation,null);Object.assign(framePreview.editor,{token:1,time:0});
 let resolveOld,calls=0;framePreview.editor.asset=()=>++calls===1?new Promise(resolve=>resolveOld=resolve):Promise.resolve({...sprite,texture:'New.png'});framePreview.editor.image=async texture=>({width:128,height:96,texture});
 const oldDraw=framePreview.editor.drawAnimation();await framePreview.editor.drawAnimation();resolveOld({...sprite,texture:'Old.png'});await oldDraw;

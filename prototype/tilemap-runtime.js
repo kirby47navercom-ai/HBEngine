@@ -1,10 +1,14 @@
 import * as THREE from 'three';
-import {valid2DAsset,applyTileTool,tileCollisionBoxes} from './two-d-assets.js';
+import {valid2DAsset,applyTileTool,tileCollisionBoxes,tileCellPoint,tileLocalToCell,tileCellPolygon} from './two-d-assets.js';
 import {enabledComponent,componentDefaults} from './scene-components.js';
 import {sceneWorldMatrix} from './scene-runtime.js';
 export const tilemapKeys=new Set(['tileGet','tileHas','tileSet','tileBoxFill','tileFloodFill','tileClear','tileWorldToCell','tileCellToWorld','tileRefresh','tileProcessChanges','tileHasChanges','tileLayerVisible']);
 const cellOK=(map,v)=>Array.isArray(v)&&v.length===2&&v.every(Number.isInteger)&&v[0]>=0&&v[1]>=0&&v[0]<map.width&&v[1]<map.height;
-export const tilemapColliders=map=>tileCollisionBoxes(map).map((box,i)=>({id:'tile_'+i,name:'Tile',type:'BoxCollider2D',properties:{...componentDefaults('BoxCollider2D'),center:box.center,extent:box.size.map(n=>n/2)}}));
+export const tilemapColliders=map=>tileCollisionBoxes(map).map((box,i)=>{
+  if(map.layout!=='isometric')return {id:'tile_'+i,name:'Tile',type:'BoxCollider2D',properties:{...componentDefaults('BoxCollider2D'),center:box.center,extent:box.size.map(n=>n/2)}};
+  const center=tileCellPoint(map,box.x+box.width/2,box.y+box.height/2),paths=[tileCellPolygon(map,box.x,box.y,box.width,box.height).map(p=>[p[0]-center[0],p[1]-center[1]])];
+  return {id:'tile_'+i,name:'Tile',type:'PolygonCollider2D',properties:{...componentDefaults('PolygonCollider2D'),center,paths}};
+});
 export class RuntimeTilemaps {
   constructor(hooks={}){this.hooks=hooks;this.dirty=new Set();this.loading=new Map();}
   async load(object){
@@ -20,8 +24,8 @@ export class RuntimeTilemaps {
   async operation(key,args,b,vm){
     if(!tilemapKeys.has(key))return;const object=vm.object(args.target==='self'?b.self:args.target);if(!object)throw Error('타일맵 오브젝트가 없어요.');const map=await this.load(object);
     if(key==='tileHasChanges')return {return:this.dirty.has(object.id)};if(key==='tileProcessChanges'){await this.process(object);return {};}
-    if(key==='tileWorldToCell'){if(!Array.isArray(args.position)||args.position.length!==3||!args.position.every(Number.isFinite))throw Error('월드 위치를 확인하세요.');const p=new THREE.Vector3(...args.position).applyMatrix4(sceneWorldMatrix(object,vm.objects).invert());return {return:[Math.floor(p.x/map.cellSize[0]),Math.floor(-p.y/map.cellSize[1])]};}
-    if(key==='tileCellToWorld'){if(!Array.isArray(args.cell)||args.cell.length!==2||!args.cell.every(Number.isInteger))throw Error('셀 좌표를 확인하세요.');const p=new THREE.Vector3((args.cell[0]+.5)*map.cellSize[0],-(args.cell[1]+.5)*map.cellSize[1],0).applyMatrix4(sceneWorldMatrix(object,vm.objects));return {return:p.toArray()};}
+    if(key==='tileWorldToCell'){if(!Array.isArray(args.position)||args.position.length!==3||!args.position.every(Number.isFinite))throw Error('월드 위치를 확인하세요.');const p=new THREE.Vector3(...args.position).applyMatrix4(sceneWorldMatrix(object,vm.objects).invert());return {return:tileLocalToCell(map,p.toArray())};}
+    if(key==='tileCellToWorld'){if(!Array.isArray(args.cell)||args.cell.length!==2||!args.cell.every(Number.isInteger))throw Error('셀 좌표를 확인하세요.');const p=new THREE.Vector3(...tileCellPoint(map,args.cell[0]+.5,args.cell[1]+.5)).applyMatrix4(sceneWorldMatrix(object,vm.objects));return {return:p.toArray()};}
     const layer=map.layers.find(l=>l.id===args.layer);if(!layer)throw Error('타일 레이어가 없어요: '+args.layer);
     if(['tileGet','tileHas'].includes(key)){if(!cellOK(map,args.cell))return {return:key==='tileGet'?-1:false};const tile=layer.tiles.find(t=>t.x===args.cell[0]&&t.y===args.cell[1]);return {return:key==='tileGet'?tile?.index??-1:!!tile};}
     let next=map,changed=false;

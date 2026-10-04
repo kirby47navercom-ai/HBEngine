@@ -1,4 +1,18 @@
-# HBEngine 작업 인계 — 2026-10-04
+# HBEngine 작업 인계 — 2026-10-05
+
+## 최신 추가: 실제 2D 정렬·마스크·광원·등각과 단축키 프로필
+
+주인님의 “다 해봐”와 추가 계속 지시를 전체 누적 엔진/사람 UI·AI/2D·2.5D·3D/PC·모바일/가벼움 범위에 이어 구현했어요. 기존 연구 선행 지시를 뒤집은 후속 구현 허가는 아래 기록대로 유지해요. 특정 나열만을 전체 범위로 한정하지 않으며, 전체 Unity/Unreal 본문/API를 분석하거나 엔진 전체를 완성했다고 표시하지 않아요.
+
+- 안정적 정렬 레이어·중첩 SortingGroup/루트/Y 정렬, SpriteMask 알파 내부/외부·그룹/범위, Sprite/Tilemap lit/unlit을 실제 GPU에 연결했어요. 타일 레이어별 마스크 uniform을 분리했어요. 마스크 없는 장면은 0 타깃, 빈 범위는 1×1 텍스처/0 패스, 같은 집합은 공유하고 미사용 타깃과 비활성 sampler 참조를 해제해요. 아직 많은 실제 마스크 조합 비용은 별도예요.
+- 등각 격자를 에셋/칠하기/미리보기/렌더/VM/C++/정확 PolygonCollider2D로 연결했어요. 부모 변환·역좌표·같은 C++ 함수 안 ProcessChanges 후 질의까지 확인했어요. 줌/DPI 비트맵은 선을 선명하게 다시 그리되 2048px 한도와 논리 포인터 좌표를 유지해요. 2D 배치와 Scene/BP 상세에서 새 속성을 편집해요.
+- hb::Sprites 10개 공용 함수를 실제 C++ 선언에서 BP로 생성해514개 노드/54개 컴포넌트예요. 같은 호출 안 쓰기 후 읽기·범위/형식 검사도 연결했어요. 이 숫자를 전체 기능 완료율로 쓰지 않아요.
+- 등록 명령33개: 문맥/IME/텍스트/게임/비행 격리·두 키·충돌 거절/명시 덮어쓰기·프로필/JSON·UI/AI revision/dryRun·프로젝트 디스크 저장. 새 키의 실제 저장과 옛 CtrlS 우회를 차단했어요. 클라이언트/서버 허용 키 누락은 실제 N3NIud 창에서 발견해 고쳤고, 저장 거절 시 프로필 메모리 복원도 추가했어요. 모든 고정 제스처가 재지정된 것은 아니에요.
+- 단위/실행 회귀: 2d-workflow/authoring/extensions, shortcuts/session, scene-runtime, input/input-authoring, main/API/integration, viewport228, native-transport/headless, 실제 Rapier144 통과. 실제 에디터 API mKpI6p의 C++→BP/입력/재실행·2D→3D·원본/종료, 배포 pRE4wk의2D·3D EXE/GPU/C++·컴파일러 없는 실행/정상 종료/무결성도 통과했어요. 실제 저작 창 VLbkOf는 등각/정렬/UI/새키실행/AI·저장과 GPU21개 검사예요. 최종 sampler 해제 뒤 성공 증거는 아래 후속 기록에 이어요.
+- release Player i3wHLE: 비C++480개59.1회/초, C++480개26.7/p9541.5ms,35.227초96회재사용20.3이에요. ir3BYV 대비 큰C++루프+22.9%/p95-16.7%/지속+5.0%, 10% 회귀 게이트 통과. C++0의p95는17.2로 이전14.3보다 커져 전체 개선으로 쓰지 않아요. 전용커밋584/648/677MiB·workingset716/844/874 표본의 의미/한도는 PERFORMANCE_BUDGETS에 기록했어요. 화면밖루프/음향신호와 실제 모니터/청취·모바일을 구분해요. 마스크 sampler 해제는 이후 마스크 경로만 바꾼 것으로 이 비마스크 측정의 조건을 바꾸지 않아요.
+- docs/2D_RENDERING_SHORTCUTS.md에 실제 읽은 공식 본문/미독 이미지/API 경계·UI/AI/CPP/비용/세부 미구현을 기록하고 기존AI/BLUEPRINT/INPUT/REFERENCE 문서에 연결했어요. 연구 pin/hash/전체 미독 원장과 전체 누적 요구를 보존해요. 사용자 기존 창은 건드리지 않고 고유 임시 프로젝트·프로필·화면밖 SW_SHOWNOACTIVATE 창만 사용했어요. 아직 2D skeleton/전용Light2D/ZasY·타일provider/파티클마스크/AnimGraph·IK·머테리얼도메인/큰월드·LOD/네트워크/모바일SDK·앱·제작기/nativeDX11 등 기존 범위가 남아 있어요.
+
+- 최종 저작 EXE `authoring-window-z8UKVX`는 sampler null/빈 패스/타일별 마스크까지GPU21개, 실제 CDP 마우스의 등각0,0 셀 칠하기→디스크 저장, 기존 분할/입력/Undo·Redo/AI/새 저장 키·프로필 디스크 검사/정상 종료를 모두 통과했어요. `pointer.json`과 isometric-editor/shortcuts-editor PNG가 있어요. 앞선 최종 sampler 검사1lUAkm도 성공했어요. HhTQiN/dCKrDp의 칠하기 실패는 테스트가 지도 대신 팔레트 썸네일 canvas를 고른 원인을 실제 hit/pointer 좌표로 확인해 selector를 data-preview로 고친 결과이며 제품 동작의 성공으로 세지 않아요. 최신 HBEngine.exe/dist의 제품 코드는 이 최종 검사와 같아요. 연구 전체 원장·나머지 누적 구현은 유지해요.
 
 ## 최신 후속: 중복 물리 동기화·C++ 작업용 장면 복사 감소
 

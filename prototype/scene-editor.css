@@ -32,3 +32,8 @@
 .material-node-menu .material-node-results > button span { flex:1; }
 
 .component-axis-lock{display:flex;gap:14px;align-items:center;justify-content:flex-end;flex:1}.component-axis-lock label{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:12px}.component-axis-lock input[type=checkbox]{width:14px;height:14px;accent-color:var(--accent);margin:0}
+.sorting-layer-row{display:flex;gap:4px;margin:6px 0;align-items:center}.sorting-layer-row input{flex:1;min-width:0}.sorting-layer-row button{padding:4px;flex:none}
+
+.shortcut-editor{display:flex;flex-direction:column;height:100%;min-width:0;background:var(--panel)}.shortcut-editor .two-d-toolbar{flex:0 0 auto;flex-wrap:wrap;gap:6px;padding:8px}.shortcut-editor .two-d-toolbar>select{flex:1;min-width:130px}.shortcut-editor .two-d-toolbar>button{margin-left:0}.shortcut-filter{display:flex;gap:8px;padding:8px;border-bottom:1px solid var(--line)}.shortcut-filter input{flex:1;min-width:0}.shortcut-list{overflow:auto;flex:1}.shortcut-list table{width:100%;min-width:410px;border-collapse:collapse}.shortcut-list th{position:sticky;top:0;background:var(--panel);text-align:left;color:var(--muted)}.shortcut-list td,.shortcut-list th{padding:6px 10px;border-bottom:1px solid var(--line)}.shortcut-list td small{display:block;color:var(--muted);font-size:10px}.shortcut-list td:not(:first-child){white-space:nowrap}.shortcut-list [data-shortcut-record]{min-width:105px;text-align:left}.shortcut-conflict{display:flex;gap:8px;align-items:center;padding:10px;background:#493d2a}.shortcut-conflict span{flex:1}
+
+.shortcut-list td:first-child,.shortcut-list th:first-child{min-width:105px;white-space:nowrap}

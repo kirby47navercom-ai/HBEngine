@@ -6,6 +6,8 @@ export const placementCatalog=[
   ['empty','Empty Actor · 빈 오브젝트','기본'],['group','Group · 그룹','기본'],
   ['cube','Cube · 큐브','도형'],['sphere','Sphere · 구','도형'],['cylinder','Cylinder · 원기둥','도형'],['cone','Cone · 원뿔','도형'],['capsule','Capsule · 캡슐','도형'],['torus','Torus · 고리','도형'],['plane','Plane · 평면','도형'],
   ['sprite','Sprite · 스프라이트','2D'],['character2d','Platform Character · 플랫포머 캐릭터','2D'],['tilemap','Tilemap · 타일맵','2D'],
+  ['sortingGroup','Sorting Group · 정렬 그룹','2D','empty',{SortingGroup:{}}],
+  ['spriteMask','Sprite Mask · 스프라이트 마스크','2D','empty',{SpriteMask:{}}],
   ['topdown2d','Top Down Character · 탑다운 캐릭터','2D','sprite',{TopDownMovement2D:{autoPossess:true},Rigidbody2D:{useGravity:false}}],
   ['physics2d','Physics Sprite · 물리 스프라이트','2D','sprite',{Rigidbody2D:{}}],
   ['trigger2d','Trigger 2D · 감지 영역','2D','empty',{BoxCollider2D:{trigger:true}}],

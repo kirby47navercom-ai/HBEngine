@@ -10,7 +10,7 @@ import {FBXLoader} from 'three/addons/loaders/FBXLoader.js';
 import {editorRequest,fileUrl} from './project-browser.js';
 import {componentDefaults,defaultsFor,validValue,sampleTimeline,timelineLength} from './blueprint-model.js';
 import {validSurface} from './model.js';
-import {componentDefinitions,objectComponents,addSceneComponent,enabledComponent} from './scene-components.js';
+import {componentDefinitions,objectComponents,addSceneComponent,enabledComponent,validComponentProperties} from './scene-components.js';
 import {createScenePhysics,sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
 import {createRigidPhysics,physicsQueryKeys} from './physics-world.js';
 import {resolveMaterialAsset,validMaterialSurface} from './material-runtime.js';
@@ -86,9 +86,12 @@ export function engineOperations(hooks){
       }
       const input=bindings[0].input,state=input.snapshot().find(s=>s.path===a.action);if(key==='actionState')return {return:state?.state||'none'};if(key==='actionElapsed')return {return:state?.elapsed||0};if(key==='actionEvent')return {return:state?.events.includes(a.event)||false};const v=state?.value??false;return {return:Array.isArray(v)?[v[0],v[1],v[2]||0]:[Number(v),0,0]};
     }
-    if(['spriteFlip','spriteGetFlip','spriteSet','spriteGet'].includes(key)){
+    if(['spriteFlip','spriteGetFlip','spriteSet','spriteGet','spriteSetColor','spriteGetColor','spriteSetSize','spriteGetSize','spriteSetSorting','spriteGetSorting','spriteSetMask','spriteGetMask','spriteSetLit','spriteIsLit'].includes(key)){
       const o=target(a,b,vm),component=objectComponents(o).find(c=>c.type==='SpriteRenderer');if(!component)throw Error('SpriteRenderer 컴포넌트가 필요해요.');const p=component.properties;
       if(key==='spriteGetFlip')return {flipX:!!p.flipX,flipY:!!p.flipY};if(key==='spriteGet')return {return:o.currentSprite||p.sprite||o.spriteAsset||''};
+      if(key==='spriteGetColor')return {return:p.color||[1,1,1,1]};if(key==='spriteGetSize')return {return:[p.width??1,p.height??1]};if(key==='spriteGetSorting')return {layer:p.sortingLayer||'default',order:p.sortingOrder||0};if(key==='spriteGetMask')return {return:p.maskInteraction||'none'};if(key==='spriteIsLit')return {return:p.shading==='lit'};
+      const writes={spriteSetColor:{color:a.color},spriteSetSize:{width:a.size?.[0],height:a.size?.[1],useCustomSize:true},spriteSetSorting:{sortingLayer:a.layer,sortingOrder:a.order},spriteSetMask:{maskInteraction:a.mode},spriteSetLit:{shading:a.lit?'lit':'unlit'}};
+      if(Object.hasOwn(writes,key)){if(key==='spriteSetLit'&&typeof a.lit!=='boolean'||!validComponentProperties('SpriteRenderer',writes[key]))throw Error('스프라이트 속성 값을 확인하세요.');Object.assign(p,structuredClone(writes[key]));await hooks.update?.(o);return {};}
       if(key==='spriteFlip'){p.flipX=a.flipX;p.flipY=a.flipY;hooks.spriteFlip?.(o,p);return {};}
       const path=await hooks.asset(a.sprite,'sprite');if(!path)throw Error('스프라이트 에셋을 확인하세요.');await resolveSprite(await readAsset(path),readAsset);if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;return {};
     }

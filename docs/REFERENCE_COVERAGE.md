@@ -1,5 +1,7 @@
 # HBEngine 공식 문서 조사와 구현 대조
 
+2026-10-05 구현 후속: [2D 정렬·마스크·등각 타일과 편집기 단축키](2D_RENDERING_SHORTCUTS.md)에 이번에 읽은 본문/이미지 미독 경계와 실제 구현·검증을 따로 기록했어요. 정렬 그룹/레이어, 마스크, 기본 lit 2D 표면, 등각 공용 좌표/충돌, 등록된 33개 편집기 명령의 프로필/충돌/재지정/AI·디스크 저장이 연결됐어요. 아래 과거 표와 연구 원장의 전체 미독/미구현 상태를 이번 부분 구현으로 완료 처리하지 않아요.
+
 이 문서는 **연구 단계 이전의 부분 조사·구현 대조 이력**이다. 현재는 [전체 본문·API 분석 선행](research/RESEARCH_STATUS.md)을 진행하며, 아래 `overview/detail`을 새 원장의 읽기·분석·검증 상태로 직접 매핑하지 않는다. 과거 실행 검사를 이번 연구에서 다시 실행한 것으로 해석하지 않는다.
 
 2026-10-03 추가 대조: [빌드 프로필·독립 게임 실행](BUILD_PLAYER_RESEARCH.md). Unity 6000.0의 프로필/Scene List/창 설정 본문 3개와 Epic 패키징 UE 5.8 본문을 읽어 설정·장면 포함/순서·Build/Cook/Stage/Package/Run·진단/취소를 대조했다. 현재 Windows x64 Game.exe는 Win32/WebView2·Node·Three/WebGL2·Rapier와 사전 빌드 C++ worker를 사용한다. cook/압축/chunk·installer·다중 플랫폼·DX11/HLSL은 추가 제작 대상으로 유지한다.

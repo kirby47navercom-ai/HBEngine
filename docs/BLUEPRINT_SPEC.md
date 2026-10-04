@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: `hb::Sprites`의 색상/크기/정렬/마스크/조명 설정과 읽기 10개를 공용 선언에서 생성했어요. 사용자 C++ 함수 안의 변경 후 읽기와 BP의 같은 서비스 검증을 확인했어요. 전체 카탈로그는 514개이며, 등각 Tilemaps 좌표/즉시 충돌 질의도 공용 격자 기준을 사용해요. 세부 동작·검증 범위는 [2D·단축키 계약](2D_RENDERING_SHORTCUTS.md)에 있어요. 노드 수를 전체 누적 엔진 완성으로 해석하지 않아요.
+
 조사 갱신: 2026-10-03. 전체 공식 근거와 엔진 범위는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 분야별 조사 상태와 코드 대조는 [조사 범위](REFERENCE_COVERAGE.md), 조작 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 노드별 핀·C++ 대응은 [노드 카탈로그](NODE_CATALOG.md)에 있다.
 
 **실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. 현재 Game.exe의 렌더러는 WebView2/WebGL2이며 네이티브 DX11 렌더러와 동일하지 않다.

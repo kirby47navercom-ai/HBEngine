@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {create2DAsset,valid2DAsset,tileCellPoint,tileLocalToCell,tileCellPolygon,tileRenderRect,applyTileTool} from '../prototype/two-d-assets.js';
+import {defaultSortingLayers,validSortingLayers,editSortingLayers,sortingLayerChoices} from '../prototype/sorting-layers.js';
+import {makeSceneComponent,validComponentProperties} from '../prototype/scene-components.js';
+import {tilemapColliders,RuntimeTilemaps} from '../prototype/tilemap-runtime.js';
+import {TwoDEditor} from '../prototype/two-d-editor.js';
+import {validRuntimeSettings,defaultRuntimeSettings} from '../prototype/model.js';
+import {engineOperations} from '../prototype/engine-services.js';
+import {NativeHost} from './native-host.mjs';
+import {nativeWorld} from '../prototype/native-model.js';
+import {createRigidPhysics} from '../prototype/physics-world.js';
+import {validColliderGeometry} from '../prototype/collision-geometry.js';
+import {engineSchema} from './editor-automation.mjs';
+const map={...create2DAsset('tilemap','Iso'),layout:'isometric',width:8,height:6,cellSize:[2,1],tileSize:[64,32]};
+assert.ok(valid2DAsset('tilemap',map));assert.ok(!valid2DAsset('tilemap',{...map,layout:'fake'}));assert.ok(valid2DAsset('tilemap',create2DAsset('tilemap','Legacy')));
+for(let y=-3;y<9;y++)for(let x=-3;x<12;x++)assert.deepEqual(tileLocalToCell(map,tileCellPoint(map,x+.5,y+.5)),[x,y]);
+assert.deepEqual(tileCellPolygon(map,0,0).map(p=>p.map(v=>v||0)),[[0,0,0],[1,-.5,0],[0,-1,0],[-1,-.5,0]]);assert.deepEqual(tileRenderRect(map,{x:0,y:0}),[-1,-1,2,1]);
+const tall={...map,tileSize:[64,96]};assert.deepEqual(tileRenderRect(tall,{x:0,y:0}),[-1,-1,2,3]);
+map.layers[0].collision=true;map.layers[0].tiles=[{x:0,y:0,index:0},{x:1,y:0,index:0}];let shapes=tilemapColliders(map);assert.equal(shapes.length,1);assert.equal(shapes[0].type,'PolygonCollider2D');assert.ok(validColliderGeometry(shapes[0].type,shapes[0].properties));
+const actor={id:'Map',kind:'tilemap',visible:true,position:[3,4,0],rotation:[0,0,90],scale:[2,2,1],components:[makeSceneComponent('TilemapRenderer',{tilemap:'Assets/Map.hbtilemap.json'})],tileColliders:shapes},sprite={id:'Sprite',kind:'sprite',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],components:[makeSceneComponent('SpriteRenderer')]};
+const physics=createRigidPhysics([actor]);await physics.ready();try{assert.equal(physics.query('physicsOverlapSphere',{center:[4,4,0],radius:.1,dimension:2,mask:-1,includeTriggers:false}).length,1);assert.equal(physics.query('physicsOverlapSphere',{center:[3.1,2.1,0],radius:.1,dimension:2}).length,0,'outside the diamond but inside its bounding box');}finally{physics.dispose();}
+let layers=editSortingLayers(defaultSortingLayers,'add');const id=layers[1].id;layers=editSortingLayers(layers,'name',1,'전경');layers=editSortingLayers(layers,'up',1);assert.equal(layers[0].id,id);assert.ok(validSortingLayers(layers));assert.ok(validRuntimeSettings({...defaultRuntimeSettings,sortingLayers:layers}));assert.throws(()=>editSortingLayers(layers,'remove',1),/Default/);assert.ok(!validSortingLayers([...layers,layers[0]]));assert.ok(!validSortingLayers([]));assert.equal(sortingLayerChoices(layers,'missing').at(-1)[0],'missing');assert.ok(!validComponentProperties('SpriteRenderer',{sortingLayer:'invalid.layer'}));
+const editor=Object.create(TwoDEditor.prototype);Object.assign(editor,{doc:{kind:'tilemap',data:map},mapPreview:{scale:24,minX:-6,top:0},canvas:{width:336,height:168,getBoundingClientRect:()=>({left:0,top:0,width:336,height:168})}});const local=tileCellPoint(map,2.5,1.5);assert.deepEqual(editor.cell({clientX:(local[0]+6)*24,clientY:-local[1]*24}),{x:2,y:1});assert.equal(editor.cell({clientX:0,clientY:0}),null);
+const vm={objects:[actor,sprite],object:id=>[actor,sprite].find(o=>o.id===id)},binding={self:sprite.id},services=engineOperations({readAsset:async()=>map,update(){},build(){},remove(){},physicsOptions:{backend:'legacy'}});const op=(key,args={})=>services.operation(key,{target:sprite.id,...args},binding,vm);
+try{
+  await op('spriteSetColor',{color:[.25,.5,.75,.8]});assert.deepEqual((await op('spriteGetColor')).return,[.25,.5,.75,.8]);await op('spriteSetSize',{size:[3,2]});assert.deepEqual((await op('spriteGetSize')).return,[3,2]);await op('spriteSetSorting',{layer:id,order:12});assert.deepEqual(await op('spriteGetSorting'),{layer:id,order:12});await op('spriteSetMask',{mode:'inside'});assert.equal((await op('spriteGetMask')).return,'inside');await op('spriteSetLit',{lit:true});assert.ok((await op('spriteIsLit')).return);await assert.rejects(op('spriteSetColor',{color:[2,0,0,1]}),/속성/);await assert.rejects(op('spriteSetSize',{size:[0,1]}),/속성/);await assert.rejects(op('spriteSetMask',{mode:'fake'}),/속성/);
+  const runtime=new RuntimeTilemaps({read:async()=>map,resolve:(id,b,vm)=>vm.object(id==='self'?b.self:id)});await runtime.load(actor);const context={self:actor.id},world=(await runtime.operation('tileCellToWorld',{target:actor.id,cell:[2,1]},context,vm)).return;assert.deepEqual((await runtime.operation('tileWorldToCell',{target:actor.id,position:world},context,vm)).return,[2,1]);
+  const host=new NativeHost();try{
+    const header='#include <HBEngine/Game.hpp>\nHB_CLASS() class SpriteIsoProbe : public hb::Library { public: HB_FUNCTION(BlueprintCallable) static bool Run(hb::Actor* sprite,hb::Actor* map,hb::Vec3& position,hb::Vec2& cell); };';
+    const source='bool SpriteIsoProbe::Run(hb::Actor* sprite,hb::Actor* map,hb::Vec3& position,hb::Vec2& cell){hb::Sprites::SetColor(sprite,{.25f,.5f,.75f,.8f});hb::Sprites::SetSize(sprite,{3,2});hb::Sprites::SetSorting(sprite,"default",12);hb::Sprites::SetMaskInteraction(sprite,"outside");hb::Sprites::SetLit(sprite,true);std::string layer;int order;hb::Sprites::GetSorting(sprite,layer,order);const auto color=hb::Sprites::GetColor(sprite);const auto size=hb::Sprites::GetSize(sprite);hb::Tilemaps::ClearTiles(map,"ground");hb::Tilemaps::SetTile(map,"ground",{2,1},0);hb::Tilemaps::ProcessTilemapChanges(map);position=hb::Tilemaps::GetCellCenterWorld(map,{2,1});cell=hb::Tilemaps::WorldToCell(map,position);const auto overlap=hb::Physics::OverlapSphere(position,.1f,2);return color.g==.5f&&size.x==3&&layer=="default"&&order==12&&hb::Sprites::IsLit(sprite)&&hb::Sprites::GetMaskInteraction(sprite)=="outside"&&overlap.size()==1&&overlap[0]==map;}';
+    const build=await host.build(header,source),reply=await host.call(build.token,{key:'nativeCall',nativeId:'SpriteIsoProbe.Run',args:{sprite:sprite.id,map:actor.id},objects:nativeWorld(vm.objects,new Set())});assert.ok(reply.outputs.result);assert.deepEqual(reply.outputs.cell,[2,1]);world.forEach((v,i)=>assert.ok(Math.abs(v-reply.outputs.position[i])<1e-5));for(const cmd of reply.operations)await services.operation(cmd.key,cmd.args,binding,vm);assert.equal((await op('spriteGetMask')).return,'outside');
+  }finally{host.close();}
+}finally{services.dispose();}
+assert.equal(engineSchema().render2d.sortingLayers.max,64);assert.ok(engineSchema().blueprint.nodes.some(n=>n.key==='spriteSetMask'));
+console.log('2D 확장: 레이어 ID/이동·정렬 속성·등각 칠하기/좌표/정확한 다각형 충돌·BP/C++ 같은 함수 안 읽기/쓰기/물리 질의 통과');

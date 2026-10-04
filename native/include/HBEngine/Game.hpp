@@ -97,6 +97,16 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetFlip", KoreanName="스프라이트 반전 가져오기", Category="2D 스프라이트") static void GetFlip(Actor* target,bool& flipX,bool& flipY);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSet", KoreanName="스프라이트 지정", Category="2D 스프라이트") static void SetSprite(Actor* target,const std::string& sprite);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGet", KoreanName="스프라이트 가져오기", Category="2D 스프라이트") static std::string GetSprite(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetColor", KoreanName="스프라이트 색상 지정", Category="2D 스프라이트") static void SetColor(Actor* target,const Color& color);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetColor", KoreanName="스프라이트 색상 가져오기", Category="2D 스프라이트") static Color GetColor(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetSize", KoreanName="스프라이트 크기 지정", Category="2D 스프라이트") static void SetSize(Actor* target,const Vec2& size);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetSize", KoreanName="스프라이트 설정 크기 가져오기", Category="2D 스프라이트") static Vec2 GetSize(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetSorting", KoreanName="스프라이트 정렬 지정", Category="2D 스프라이트") static void SetSorting(Actor* target,const std::string& layer,int order);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetSorting", KoreanName="스프라이트 정렬 가져오기", Category="2D 스프라이트") static void GetSorting(Actor* target,std::string& layer,int& order);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetMask", KoreanName="스프라이트 마스크 지정", Category="2D 스프라이트") static void SetMaskInteraction(Actor* target,const std::string& mode);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetMask", KoreanName="스프라이트 마스크 가져오기", Category="2D 스프라이트") static std::string GetMaskInteraction(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetLit", KoreanName="스프라이트 광원 적용", Category="2D 스프라이트") static void SetLit(Actor* target,bool lit);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteIsLit", KoreanName="스프라이트 광원 적용 여부", Category="2D 스프라이트") static bool IsLit(Actor* target);
 };
 HB_CLASS()
 class Tilemaps : public Library {
