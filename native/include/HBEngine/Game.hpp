@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 // Editor metadata; the prototype registration tool reads these declarations.
@@ -155,6 +156,8 @@ class AI : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="runBehaviorTree", KoreanName="행동트리 실행", Category="AI") static void RunBehaviorTree(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stopBehaviorTree", KoreanName="행동트리 정지", Category="AI") static void StopBehaviorTree(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="behaviorTaskHandle", KoreanName="실행 중 태스크 핸들", Category="AI") static std::string GetTaskHandle(Actor* target,const std::string& node);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="behaviorTaskFinish", KoreanName="태스크 완료", Category="AI") static void FinishTask(Actor* target,const std::string& task,bool success);
 };
 HB_CLASS()
 class Blackboard : public Library {
@@ -329,15 +332,20 @@ public:
     HB_FUNCTION(BlueprintCallable, NodeKey="stopStopwatch", KoreanName="시간측정 종료 스톱워치") static float StopStopwatch(const std::string& handle);
     static void Tick(float delta);
     static std::vector<std::string> TakeEvents();
-    static void Reset(){timers_.clear();watches_.clear();events_.clear();next_=0;}
+    struct Callback {std::string event,owner,scope,handle;};
+    static std::vector<Callback> TakeCallbacks();
+    static void SetContext(const std::string& owner,const std::string& scope){owner_=owner;scope_=scope;}
+    static void PruneScopes(const std::vector<std::string>& active);
+    static void Reset(){timers_.clear();watches_.clear();events_.clear();owner_.clear();scope_.clear();next_=0;}
 private:
-    struct Timer {float duration,elapsed=0;bool loop,paused=false,active=true;std::string event;};
+    struct Timer {float duration,elapsed=0;bool loop,paused=false,active=true;std::string event,owner,scope;};
     struct Stopwatch {std::chrono::steady_clock::time_point start;float elapsed=0;bool running=true;};
     inline static std::uint64_t next_=0;
-    // ponytail: keep completed handles for queries; ClearTimer frees them, world-owned lifecycle cleanup when instances exist.
+    // Completed unscoped handles remain queryable until ClearTimer or world reset.
     inline static std::unordered_map<std::string,Timer> timers_;
     inline static std::unordered_map<std::string,Stopwatch> watches_;
-    inline static std::vector<std::string> events_;
+    inline static std::vector<Callback> events_;
+    inline static std::string owner_,scope_;
 };
 HB_CLASS()
 class Scene : public Library {
@@ -409,15 +417,17 @@ inline void Clock::SetTimeScale(float scale){if(!std::isfinite(scale)||scale<0)t
 inline void Clock::SetPaused(bool paused){paused_=paused;}
 inline void Clock::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw std::invalid_argument("invalid delta");delta_=paused_?0:delta*scale_;seconds_+=delta_;}
 inline void Clock::Reset(){seconds_=delta_=0;scale_=1;paused_=false;}
-inline std::string Timers::SetTimer(float duration,bool loop,const std::string& event){if(!std::isfinite(duration)||duration<=0)throw std::invalid_argument("invalid duration");const auto handle="timer_"+std::to_string(++next_);timers_.emplace(handle,Timer{duration,0,loop,false,true,event});return handle;}
+inline std::string Timers::SetTimer(float duration,bool loop,const std::string& event){if(!std::isfinite(duration)||duration<=0)throw std::invalid_argument("invalid duration");const auto handle="timer_"+std::to_string(++next_);timers_.emplace(handle,Timer{duration,0,loop,false,true,event,owner_,scope_});return handle;}
 inline void Timers::ClearTimer(const std::string& handle){timers_.erase(handle);}
 inline void Timers::PauseTimer(const std::string& handle){const auto i=timers_.find(handle);if(i!=timers_.end())i->second.paused=true;}
 inline void Timers::ResumeTimer(const std::string& handle){const auto i=timers_.find(handle);if(i!=timers_.end())i->second.paused=false;}
 inline float Timers::GetTimerElapsed(const std::string& handle){const auto i=timers_.find(handle);return i==timers_.end()?0:i->second.elapsed;}
 inline float Timers::GetTimerRemaining(const std::string& handle){const auto i=timers_.find(handle);return i==timers_.end()?0:std::max(0.f,i->second.duration-i->second.elapsed);}
 inline bool Timers::IsTimerActive(const std::string& handle){const auto i=timers_.find(handle);return i!=timers_.end()&&i->second.active&&!i->second.paused;}
-inline void Timers::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw std::invalid_argument("invalid delta");for(auto& item:timers_){auto& t=item.second;if(!t.active||t.paused)continue;t.elapsed+=delta;if(t.elapsed>=t.duration){events_.push_back(t.event);if(t.loop)t.elapsed=std::fmod(t.elapsed,t.duration);else{t.elapsed=t.duration;t.active=false;}}}} // ponytail: one notification per frame; bounded catch-up if sub-frame timer events matter.
-inline std::vector<std::string> Timers::TakeEvents(){auto result=std::move(events_);events_.clear();return result;}
+inline void Timers::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw std::invalid_argument("invalid delta");for(auto& item:timers_){auto& t=item.second;if(!t.active||t.paused)continue;t.elapsed+=delta;if(t.elapsed>=t.duration){events_.push_back({t.event,t.owner,t.scope,item.first});if(t.loop)t.elapsed=std::fmod(t.elapsed,t.duration);else{t.elapsed=t.duration;t.active=false;}}}} // One notification per frame keeps catch-up bounded.
+inline std::vector<Timers::Callback> Timers::TakeCallbacks(){auto result=std::move(events_);events_.clear();return result;}
+inline std::vector<std::string> Timers::TakeEvents(){std::vector<std::string> result;for(const auto& event:TakeCallbacks())result.push_back(event.event);return result;}
+inline void Timers::PruneScopes(const std::vector<std::string>& active){const std::unordered_set<std::string> scopes(active.begin(),active.end());const auto alive=[&](const std::string& scope){return scope.empty()||scopes.count(scope);};for(auto it=timers_.begin();it!=timers_.end();)if(!alive(it->second.scope))it=timers_.erase(it);else ++it;events_.erase(std::remove_if(events_.begin(),events_.end(),[&](const Callback& c){return !alive(c.scope);}),events_.end());}
 inline std::string Timers::StartStopwatch(const std::string& name){const auto handle=name+"_"+std::to_string(++next_);watches_.emplace(handle,Stopwatch{std::chrono::steady_clock::now(),0,true});return handle;}
 inline float Timers::GetStopwatchElapsed(const std::string& handle){const auto i=watches_.find(handle);return i==watches_.end()?0:i->second.running?std::chrono::duration<float>(std::chrono::steady_clock::now()-i->second.start).count():i->second.elapsed;}
 inline float Timers::StopStopwatch(const std::string& handle){const auto i=watches_.find(handle);if(i==watches_.end())return 0;const float elapsed=GetStopwatchElapsed(handle);i->second.elapsed=elapsed;i->second.running=false;return elapsed;}

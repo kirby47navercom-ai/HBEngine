@@ -174,3 +174,8 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 실제 `test:package`는 2D 개발/3D 배포 Game.exe에서 GPU draw·BP BeginPlay→사용자 C++ 이동·AudioContext running/음원 voice playing·EndPlay SaveGame/재열기·컴파일러 없는 환경·서버 종료를 확인했다. Scene 참조·프로필 revision·취소·파일 손상·편집 API 차단도 검사한다. 음원 voice 상태는 모든 출력 장치/공간 음향/코덱의 품질을 증명하는 검사는 아니다.
 
 구체적인 프로필/수명/AI 계약은 [빌드 Player 연구](BUILD_PLAYER_RESEARCH.md), [AI API](AI_ENGINE_API.md)에 있다. Game.exe는 Win32/WebView2·Node·WebGL2를 묶은 독립 실행 파일이며 DirectX 11/HLSL·전체 에셋 cook/압축·installer·모든 타깃 SDK 구현과 구분한다. 기존 모든 엔진 분야와 BP/C++의 세부 확장 요구는 계속 유지한다.
+
+
+## 행동트리 태스크와 C++ 작업 수명 — 2026-10-05
+
+현재 카탈로그519개에 공용 AI 태스크 핸들 조회·완료 서비스를 연결했어요. 태스크 시작/갱신/완료/중단 이벤트와 시간 제한·쿨다운·키 대기·서비스 활성화/비활성화를 실제 게임 실행에 연결해요. 작업 scope는 BP 함수/매크로/인터페이스와 C++ 호출을 거쳐 Delay/Timer/Timeline/구독을 정리하고, C++ 타이머는 소유 Actor와 종료 수명을 확인해요. 같은 C++ 클래스의 다른 Actor로 방송하지 않아요. 상세 제작·AI·큐 처리·실제 Editor/release Player 증거와 아직 제공하지 않은 범위는 [행동트리 계약](BEHAVIOR_TASK_LIFECYCLE.md)이에요. 이 기능 수는 Unreal/Unity 전체 API 완료율이 아니에요.

@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 행동트리 태스크·서비스·BP/C++ 작업 수명 검증 후 계속
+
+주인님의 전체 누적 기능·세부 구현과 “다 할 때까지 끝내지 말고 계속”을 유지해요. [행동트리 계약](docs/BEHAVIOR_TASK_LIFECYCLE.md)에 공식 기술 본문/검색 API 읽기 경계·실제 구현·아직 제공하지 않은 기능을 기록했어요. 전체 목표는 active예요.
+
+- task Start/Tick/Finish/Abort·활성화 핸들·stale 완료 무시, Wait Blackboard/Time Limit/Cooldown/Force Success, 서비스 활성/비활성·초기 갱신/편차/예약 유지, 자식 실행 순서 편집·번호를 추가했어요. 최신 트리 시작과 콜백 재시작을 처리하며 같은 frame에서 교체 트리를 반복 tick하지 않아요.
+- BP 수명 scope가 Delay/Timer/Timeline/Dispatcher와 함수/매크로/native/interface를 거쳐 완료/중단 때 정리돼요. 실제 사용자 C++ GetTaskHandle/FinishTask는 같은 서비스예요. C++ Timer도 대상 Actor/scope로 전달하고 살아 있는 scope 목록으로 종료 타이머를 해제해요. legacy TakeEvents/timerEvents는 유지해요.
+- 실제 최종 Editor `native/build/behavior-editor-window-wJK2Gz`, release Player `behavior-player-window-2wt1oc`: 사람 UI/AI patch·Undo/저장·실행 표시·BP/C++ 완료·지연/C++ Timer 취소·재실행/원본·정상 종료/서버 정리 통과예요. 최초 hgrlaV/hX5zX9는 scope/타이머 전 근거라 최종으로 쓰지 않아요. 작은 별도 프로젝트·프로필·비활성 창만 사용했어요.
+- 다음은 조건 데코레이터의 Observer Aborts·감시 결과/값·하위 트리와 서비스/병렬 실행의 남은 세부를 구현해요. 기존 interval reactive selector를 완전한 Unreal event-driven BT로 표현하지 않아요. 이후 2D/애니메이션·렌더·월드/에셋·네트워크·모바일·전체 연구/가벼움 등 다른 누적 범위도 유지해요.
+
 ## 최신 후속: 계층 FSM 실제 Editor·release Player 검증 후 계속
 
 전체 누적 요구를 유지하고 다음 구현을 이어가요. [계층 FSM 계약](docs/HIERARCHICAL_FSM.md)에 부모/기본 자식/조건·진입/종료·전이 우선순위·재진입·최신 Start·사람/AI·BP/C++와 실제 근거를 기록했어요. 현재 공식 연구 전체 gate와 잔여 구현은 완료로 승격하지 않아요.

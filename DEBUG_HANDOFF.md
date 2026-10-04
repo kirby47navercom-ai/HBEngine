@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 행동트리 태스크 수명 실제 창 후속
+
+- Editor uWmdbi의 1초 Delay 이후 위치99는 완료 전 이미 Delay 시간이 지났을 가능성을 구분하지 않은 검사였어요. HfOa2i에서 3초로 늘려도 before 시간2.19/after6.21 사이 예약 시간이 지나며, 진단 필드를 editor.state에만 넣고 runtime.state에서 찾는 fixture 실패도 있었어요. 실패를 엔진 취소 오류의 증거나 성공으로 세지 않아요.
+- runtime.state에 읽기 전용 work 관측을 연결하고 Editor30초 pending Delay의 owner/scope/at를 먼저 확인한 뒤 완료 후 목록 제거를 검사했어요. UTy7TI에서 scopes/delays0·재실행을 통과했어요. release hX5zX9는 3초 Delay를 실제 키로 완료하고 예약 시간 이후에도 위치0을 확인했어요.
+- C++ Timer를 추가한 fixture의 첫 두 실패는 같은 실행 출력에서 두 개 연결을 만든 그래프 검증 거절, 다음은 CDP seq와 노드 seq의 변수명 충돌이에요. 제품 검증기를 완화하지 않고 BP Sequence first/second와 별도 fanout 이름으로 수정했어요. 최종 wJK2Gz/2wt1oc는 BP Delay와 C++ Timer를 모두 포함해 통과했어요.
+- 초기 Behavior lifecycle 검사 변수의 array:false는 현행 container:single 형식을 사용하지 않은 fixture 실패였어요. 수정 후 실제 VM 두 수명의 같은 Delay 독립성·취소·Timer/Timeline, 실제 C++ 완료/소유자/scope 타이머·stale 콜백을 검사해요. 제품 C++ 타이머의 소유자 방송 문제는 owner/scope 콜백과 worker prune·VM 검증으로 고쳤어요.
+- 전체 Unreal/Unity 문서/API gate·모바일 물리 기기·전체 엔진 완료로 확대하지 않아요. 원자료는 삭제하지 않고 주인님의 설치본/프로필/게임 원본/창은 건드리지 않았어요.
+
 ## UI SVG·배율 후속 — 2026-10-05
 
 계층 FSM의 JVfjVp/PAXEDY 더블클릭 실패는 stable ID 연속 포인터 판정으로 수정했고 최종 w2eNXC 실제 창에서 통과했어요. 작은 이동을 Undo로 만들지 않고, 중간/우클릭은 헤더에서도 이동하며 pointercancel은 두 번째 클릭으로 세지 않아요. nKNFO8의 상태 서비스 실패는 `target:'self'`를 문자열 그대로 lookup하던 공용 서비스가 원인이에요. 바인딩 소유자로 해석하고 null/누락/self 회귀와 실제 키 BP→FSM을 검사했어요. JVE8LS 성공의 숨겨진 실행 그래프 한계는 탭을 열어 표시/스크린샷까지 확인하는 0SLZmg/w2eNXC로 보강했어요. 최종 release WeiLVw는 실제 사용자 C++ 조회·이벤트/Jump도 통과했어요. 실패 원자료는 삭제하지 않아요.
