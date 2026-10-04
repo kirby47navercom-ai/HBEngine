@@ -1,0 +1,510 @@
+{
+  "schemaVersion": 1,
+  "id": "supplemental-registration-verification-019",
+  "phase": "research_only",
+  "verifier": "/root/research_report_audit",
+  "analysisAuthor": "root",
+  "evaluatedAt": "2026-10-04T07:28:20.170Z",
+  "scope": "bounded_registration_metadata_and_structural_link_provenance",
+  "analysisArtifacts": [
+    {
+      "file": "docs/research/SUPPLEMENTAL_SOURCE_REGISTRATION_019.md",
+      "sha256": "f216d4ab8cd2f2cd7f6af2d087f781b05a7e0f7c2a7d894ac3914ac07fa02638"
+    },
+    {
+      "file": "docs/research/supplemental-source-registration-019.json",
+      "sha256": "a6131862766bd8f1cc6558ccb886e725c4311cb71a18d8863c72e2ed0d215497"
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/mobile-editor-body-012.json",
+      "sha256": "a7ff0bd3c954570b482a099785ce9c453f34c783963dc05869b734eb5f34b5a2"
+    },
+    {
+      "file": "docs/research/android-editor-lifecycle-body-013.json",
+      "sha256": "57cfa1db2fa4ca15b332832931a4f068f928b3897f3550be988cdba36dbf4bfd"
+    },
+    {
+      "file": "docs/research/android-build-deploy-body-014.json",
+      "sha256": "fdca71ccd56ee0c02c7cf3536354bdd114924ad921228057a4fac693f84858ea"
+    },
+    {
+      "file": "docs/research/android-storage-api-body-015.json",
+      "sha256": "fb9dcd8fbcd6f7a55fb64713c812fdd7cdc973922eee665780def26981406054"
+    },
+    {
+      "file": "docs/research/SUPPLEMENTAL_SOURCE_REGISTRATION_019.md",
+      "sha256": "f216d4ab8cd2f2cd7f6af2d087f781b05a7e0f7c2a7d894ac3914ac07fa02638"
+    },
+    {
+      "file": "docs/research/CORPUS_MANIFEST.json",
+      "sha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888"
+    },
+    {
+      "file": "tools/reference-ledger.mjs",
+      "sha256": "bddd1606f30fd7ca10135e5703772196d481d4ad3fc73006d893ad711c001300"
+    },
+    {
+      "file": "tools/check-reference-ledger.mjs",
+      "sha256": "ea539ab3cd48d644f75183fced7c458cb75178fd4cbb873d9df11a28ca3ac45a"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/import-results.json",
+      "sha256": "9452f8a5085b44bb3c6e8203a2e19a5a18a281e0f60d7abde372bbb2d3e7175b"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/unity-new-package-roots-discovery-017.json",
+      "sha256": "88ae5ce1f55f8ea3bd09dbc0a73a9746612584a4aaee57cbc4fb961b2008e2e5"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/package-import-result-017.json",
+      "sha256": "728124c75a6608dd24703c6de98cf1f62ed3d466e05cea1bd6f83eaed914d611"
+    },
+    {
+      "file": "native/build/reference-corpus/gate-2026-10-04-019-pre-package-import.json",
+      "sha256": "3898b034a2dcfe4b2ab4dc10545852e4873e90567260d58f33369c3d575e3f74"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/android-platform-guides.import.json",
+      "sha256": "5c9863ba015b8419b6f7b4989331bd52c763bbf82bdf34d1d7830a1db191d942"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/android-platform-api.import.json",
+      "sha256": "8febf6a155360f7af240f8ab75273f80309408a4ce8f31d007591a89da2114de"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/godot-mobile-editor-supplement.import.json",
+      "sha256": "7c71bf5229688ca53659cc2ff9d39a9709f12ca2566fb7ad390c7a5116b76c8f"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/apple-platform-supplement.import.json",
+      "sha256": "028743c6f1e0779982ce7a16120f7a98634223434795986b2f4d8e68fffeda9b"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/platform-abi-specifications.import.json",
+      "sha256": "346bad62103401bdf599466a59151c97dc35976089980e27877b5d26d9b07f94"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/unclassified-outgoing.json",
+      "sha256": "d9c60432bfcc0361158d1cae5c31be219e2ccad57002e07972dac127b3068097"
+    },
+    {
+      "file": "native/build/reference-corpus/gate-2026-10-04-019.json",
+      "sha256": "4c5b2ddc4324f7894e6935d2718f0c6673b5789f4a0ca28d852e41a106ae0469"
+    },
+    {
+      "file": "docs/research/supplemental-source-registration-019.json",
+      "sha256": "a6131862766bd8f1cc6558ccb886e725c4311cb71a18d8863c72e2ed0d215497"
+    },
+    {
+      "file": "docs/research/SUPPLEMENTAL_SOURCE_REGISTRATION_VERIFICATION_019.md",
+      "sha256": "1a31f2801302cc4c7a5185ed272b29be97772054e5ccb9c406edfa9584a0b104"
+    }
+  ],
+  "sourceArtifactProofs": [
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-editor.source.html",
+      "sha256": "8055df7f35a48fa1256dd0e100889e4769901432371e558541b7f9de2c3692a9",
+      "url": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "actualSha256": "8055df7f35a48fa1256dd0e100889e4769901432371e558541b7f9de2c3692a9",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-compile.source.html",
+      "sha256": "7c2c7c4bf50d8921783e43ed8f5d584f6847a2145ae8ee9696b2fe3f783c88b0",
+      "url": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "actualSha256": "7c2c7c4bf50d8921783e43ed8f5d584f6847a2145ae8ee9696b2fe3f783c88b0",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.source.html",
+      "sha256": "976d7327e5a6cdba2cda94e81332667c6d64661444630848675c443a2f1c8233",
+      "url": "https://developer.android.com/ndk/guides/abis",
+      "actualSha256": "976d7327e5a6cdba2cda94e81332667c6d64661444630848675c443a2f1c8233",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/android-documents.source.html",
+      "sha256": "2605d52566027924b4645b53cd978b966a77e0bc9feb167376001f83d0cd5021",
+      "url": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "actualSha256": "2605d52566027924b4645b53cd978b966a77e0bc9feb167376001f83d0cd5021",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.source.html",
+      "sha256": "7652434b9ac9d042646d390f7721e5ee6badf40a056fa4d3ae74aab2c0ed6917",
+      "url": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+      "actualSha256": "7652434b9ac9d042646d390f7721e5ee6badf40a056fa4d3ae74aab2c0ed6917",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.source.html",
+      "sha256": "c3c06330e50bd4f3011be293c56ba4f297c30dcb6a7904ade41cb01ec1ffacf1",
+      "url": "https://developer.android.com/topic/libraries/architecture/saving-states",
+      "actualSha256": "c3c06330e50bd4f3011be293c56ba4f297c30dcb6a7904ade41cb01ec1ffacf1",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.source.html",
+      "sha256": "554d9e3361c9309bf93cb37cf1c28a14fa374103ac384f788f83b631049cf561",
+      "url": "https://developer.android.com/guide/components/activities/process-lifecycle",
+      "actualSha256": "554d9e3361c9309bf93cb37cf1c28a14fa374103ac384f788f83b631049cf561",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.source.html",
+      "sha256": "cbb9a74b9ab48807746961f24baa69530933c45ebf9ddedd6b88c8382329b8be",
+      "url": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+      "actualSha256": "cbb9a74b9ab48807746961f24baa69530933c45ebf9ddedd6b88c8382329b8be",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.source.html",
+      "sha256": "be6e05473d0f8332a5ecb043f5e6988624410ffe44f796df4223b0cab5b59c8a",
+      "url": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+      "actualSha256": "be6e05473d0f8332a5ecb043f5e6988624410ffe44f796df4223b0cab5b59c8a",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.source.html",
+      "sha256": "9cc24a188b58298bc19d15a1e8f3e7a32587c39e15011a5d36d6554754f3e753",
+      "url": "https://developer.android.com/build/building-cmdline",
+      "actualSha256": "9cc24a188b58298bc19d15a1e8f3e7a32587c39e15011a5d36d6554754f3e753",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.source.html",
+      "sha256": "a02e620daaab103c8cc3f1589039f725db94b021a6b675787af92704c321d741",
+      "url": "https://developer.android.com/studio/publish/app-signing",
+      "actualSha256": "a02e620daaab103c8cc3f1589039f725db94b021a6b675787af92704c321d741",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.source.html",
+      "sha256": "cefa4c92833cb89b9e12fde385dfb85f76986fb56d37ba6b6cf924671eefcc5a",
+      "url": "https://developer.android.com/tools/adb",
+      "actualSha256": "cefa4c92833cb89b9e12fde385dfb85f76986fb56d37ba6b6cf924671eefcc5a",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.source.html",
+      "sha256": "7ac162bec7b5ab6bd58941d735452bf43b1e93c4ca44a5a8fc9965f844347e32",
+      "url": "https://developer.android.com/tools/logcat",
+      "actualSha256": "7ac162bec7b5ab6bd58941d735452bf43b1e93c4ca44a5a8fc9965f844347e32",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.source.html",
+      "sha256": "71ffcdc18d7e0cbb2699dc4bb508272524d4632aaa11b6bcc391f7c3aacd4716",
+      "url": "https://developer.android.com/ndk/guides/abis",
+      "actualSha256": "71ffcdc18d7e0cbb2699dc4bb508272524d4632aaa11b6bcc391f7c3aacd4716",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.source.html",
+      "sha256": "2351b9d7af2a54492b21641087dc60f2b1b08141ab1c3faaddefe5c490431521",
+      "url": "https://developer.android.com/games/agdk/game-activity/get-started",
+      "actualSha256": "2351b9d7af2a54492b21641087dc60f2b1b08141ab1c3faaddefe5c490431521",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-storage-api-batch-015/resolver.source.html",
+      "sha256": "9c8c6c3c364262bdd45b80d9a8f0b96dc03333e5d899af8f96c57f31bb49eb83",
+      "url": "https://developer.android.com/reference/android/content/ContentResolver",
+      "actualSha256": "9c8c6c3c364262bdd45b80d9a8f0b96dc03333e5d899af8f96c57f31bb49eb83",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-storage-api-batch-015/intent.source.html",
+      "sha256": "fde80bdc11654ea6ee7659c34b9ff0c3613678f634fffc053b5a83ea26528ff3",
+      "url": "https://developer.android.com/reference/android/content/Intent",
+      "actualSha256": "fde80bdc11654ea6ee7659c34b9ff0c3613678f634fffc053b5a83ea26528ff3",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-storage-api-batch-015/document.source.html",
+      "sha256": "e411777445df09bf29843cc943fe095f2dce50cf25e7d67268008327a4f19971",
+      "url": "https://developer.android.com/reference/android/provider/DocumentsContract.Document",
+      "actualSha256": "e411777445df09bf29843cc943fe095f2dce50cf25e7d67268008327a4f19971",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-storage-api-batch-015/uripermission.source.html",
+      "sha256": "e0aced408b8f2a90f3ec66f707fa3f63d26ccc8d6beafa6a0f72b76b0228c19d",
+      "url": "https://developer.android.com/reference/android/content/UriPermission",
+      "actualSha256": "e0aced408b8f2a90f3ec66f707fa3f63d26ccc8d6beafa6a0f72b76b0228c19d",
+      "hashMatches": true
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/apple-guidelines.source.html",
+      "sha256": "32be6bc750cd9389732c0ed7bbbba39ece454ad5d53d8b0b4012254d811459d7",
+      "url": "https://developer.apple.com/app-store/review/guidelines/",
+      "actualSha256": "32be6bc750cd9389732c0ed7bbbba39ece454ad5d53d8b0b4012254d811459d7",
+      "hashMatches": true
+    }
+  ],
+  "methods": {
+    "metadata": "Read-only local Node comparison of bundle entries, exact proof hashes, target URL host/path, registered discovery hosts and actual ledger identity/provenance/state fields.",
+    "hrefStructure": "Read-only Python HTMLParser of the 20 earlier source HTML files; resolve a[href] relative to the recorded parent URL and remove fragments; compare all 544 linked URL occurrences. No prose/API meaning review.",
+    "toolCodeReadScope": [
+      "manifest/registered source validation",
+      "target canonical URL checks",
+      "cross-host discovery host/version guard",
+      "status provenance hash/host revalidation",
+      "source evidence and scopeExpansionPending gate guards",
+      "progress fields and exit-code guard",
+      "official import, complete gate and cross-host fixture sections"
+    ],
+    "readOnlyCalculationScriptsExecuted": true
+  },
+  "supplementalSources": [
+    {
+      "sourceId": "android-platform-guides",
+      "definitionMatchesManifest": true,
+      "inputEntries": 293,
+      "seedOccurrences": 13,
+      "linkedHrefOccurrences": 280,
+      "uniqueCanonicalUrlIdentities": 117,
+      "actualLedgerIdentities": 117,
+      "missingIdentityCount": 0,
+      "missingProvenanceCount": 0,
+      "invalidTargetCount": 0,
+      "invalidOriginHostCount": 0,
+      "statePromotingPages": 0
+    },
+    {
+      "sourceId": "android-platform-api",
+      "definitionMatchesManifest": true,
+      "inputEntries": 219,
+      "seedOccurrences": 4,
+      "linkedHrefOccurrences": 215,
+      "uniqueCanonicalUrlIdentities": 67,
+      "actualLedgerIdentities": 67,
+      "missingIdentityCount": 0,
+      "missingProvenanceCount": 0,
+      "invalidTargetCount": 0,
+      "invalidOriginHostCount": 0,
+      "statePromotingPages": 0
+    },
+    {
+      "sourceId": "godot-mobile-editor-supplement",
+      "definitionMatchesManifest": true,
+      "inputEntries": 34,
+      "seedOccurrences": 2,
+      "linkedHrefOccurrences": 32,
+      "uniqueCanonicalUrlIdentities": 10,
+      "actualLedgerIdentities": 10,
+      "missingIdentityCount": 0,
+      "missingProvenanceCount": 0,
+      "invalidTargetCount": 0,
+      "invalidOriginHostCount": 0,
+      "statePromotingPages": 0
+    },
+    {
+      "sourceId": "apple-platform-supplement",
+      "definitionMatchesManifest": true,
+      "inputEntries": 4,
+      "seedOccurrences": 1,
+      "linkedHrefOccurrences": 3,
+      "uniqueCanonicalUrlIdentities": 4,
+      "actualLedgerIdentities": 4,
+      "missingIdentityCount": 0,
+      "missingProvenanceCount": 0,
+      "invalidTargetCount": 0,
+      "invalidOriginHostCount": 0,
+      "statePromotingPages": 0
+    },
+    {
+      "sourceId": "platform-abi-specifications",
+      "definitionMatchesManifest": true,
+      "inputEntries": 14,
+      "seedOccurrences": 0,
+      "linkedHrefOccurrences": 14,
+      "uniqueCanonicalUrlIdentities": 7,
+      "actualLedgerIdentities": 7,
+      "missingIdentityCount": 0,
+      "missingProvenanceCount": 0,
+      "invalidTargetCount": 0,
+      "invalidOriginHostCount": 0,
+      "statePromotingPages": 0
+    }
+  ],
+  "structuralHrefComparison": {
+    "earlierSourceFilesHashChecked": 20,
+    "earlierSourceFilesHrefParsed": 20,
+    "linkedHrefOccurrencesCompared": 544,
+    "missingActualParentHref": 0,
+    "seedEntryOccurrences": 20,
+    "seedOriginMismatch": 0,
+    "semanticWholeBodyReading": false
+  },
+  "packageDiscovery": {
+    "bundle": {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/unity-new-package-roots-discovery-017.json",
+      "sha256": "88ae5ce1f55f8ea3bd09dbc0a73a9746612584a4aaee57cbc4fb961b2008e2e5"
+    },
+    "result": {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/package-import-result-017.json",
+      "sha256": "728124c75a6608dd24703c6de98cf1f62ed3d466e05cea1bd6f83eaed914d611"
+    },
+    "recordedResult": {
+      "command": "node tools/reference-ledger.mjs import native/build/reference-corpus/unity-package-catalog-batch-017/unity-new-package-roots-discovery-017.json",
+      "actualExitCode": 0,
+      "stdout": {
+        "sourceId": "unity-packages",
+        "added": 3612,
+        "inputEntries": 3612
+      },
+      "semanticReadingPromotions": 0,
+      "note": "Actual import observed by root; URL discovery only, no technical body/API reading."
+    },
+    "inputEntries": 3612,
+    "kinds": {
+      "package-api": 3344,
+      "package-support": 16,
+      "package-manual": 252
+    },
+    "missingIdentityCount": 0,
+    "missingProvenanceCount": 0,
+    "statePromotingEntries": 0,
+    "wholePackageBodyOrApiSemanticReading": false
+  },
+  "pendingOutgoing": {
+    "file": "native/build/reference-corpus/supplemental-registration-batch-019/unclassified-outgoing.json",
+    "sha256": "d9c60432bfcc0361158d1cae5c31be219e2ccad57002e07972dac127b3068097",
+    "actualOccurrences": 130,
+    "excludedFromWholeAnalysisScope": false
+  },
+  "observedLedger": {
+    "file": "native/build/reference-corpus/ledger.json",
+    "sha256": "22de6ac876c0c4a95fe43c76a6df6520d914d016902ef66658f2cacd0119c8b0",
+    "scopeNote": "This hash identifies the ledger bytes observed for the 205 supplemental and 3612 package discovery checks; subsequent ledger mutation does not make this a current-status claim."
+  },
+  "storedGate": {
+    "artifact": {
+      "file": "native/build/reference-corpus/gate-2026-10-04-019.json",
+      "sha256": "4c5b2ddc4324f7894e6935d2718f0c6673b5789f4a0ca28d852e41a106ae0469"
+    },
+    "progress": {
+      "scope": "registered_manifest_sources",
+      "evaluatedAt": "2026-10-04T07:20:56.435Z",
+      "manifestSha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888",
+      "evidenceGatePassed": false,
+      "percentage": null,
+      "percentageBasis": "No aggregate percentage while inventory, denominators or evidence remain unresolved",
+      "openInventorySources": [
+        "unity-manual",
+        "unity-scriptreference",
+        "unity-packages",
+        "unity-services",
+        "unity-services-rest",
+        "unity-manual-portal",
+        "unity-scriptreference-portal",
+        "unreal-manual",
+        "unreal-cpp",
+        "unreal-blueprint",
+        "unreal-python",
+        "unreal-node-reference",
+        "unreal-webapi",
+        "android-platform-guides",
+        "android-platform-api",
+        "godot-mobile-editor-supplement",
+        "apple-platform-supplement",
+        "platform-abi-specifications"
+      ],
+      "unknownPageDenominatorSources": [
+        "unity-manual",
+        "unity-scriptreference",
+        "unity-packages",
+        "unity-services",
+        "unity-services-rest",
+        "unity-manual-portal",
+        "unity-scriptreference-portal",
+        "unreal-manual",
+        "unreal-cpp",
+        "unreal-blueprint",
+        "unreal-python",
+        "unreal-node-reference",
+        "unreal-webapi",
+        "android-platform-guides",
+        "android-platform-api",
+        "godot-mobile-editor-supplement",
+        "apple-platform-supplement",
+        "platform-abi-specifications"
+      ],
+      "unknownApiDenominatorSources": [
+        "unity-scriptreference",
+        "unity-packages",
+        "unity-services",
+        "unity-services-rest",
+        "unity-scriptreference-portal",
+        "unreal-cpp",
+        "unreal-blueprint",
+        "unreal-python",
+        "unreal-node-reference",
+        "unreal-webapi",
+        "android-platform-guides",
+        "android-platform-api",
+        "godot-mobile-editor-supplement",
+        "apple-platform-supplement",
+        "platform-abi-specifications"
+      ],
+      "pendingScopeIssues": [
+        "Reconcile all functional outgoing platform/compiler/SDK/ABI references and register remaining official sources, including unresolved legacy HTTP specification links.",
+        "Complete the same-version/new-version and service/plugin source expansion; presently registered roots and supplemental seeds do not prove an exhaustive inventory.",
+        "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion."
+      ],
+      "limits": "Collection, declaration candidates and bounded comparisons are not whole-corpus reading. Newly discovered functional sources must be registered before this gate can cover them. This gate does not evaluate engine implementation."
+    },
+    "totals": {
+      "sources": 18,
+      "sourceUrlIdentities": 168940,
+      "packageUrlIdentities": 62873,
+      "bodySnapshots": 34877,
+      "strictVerifiedBodies": 2,
+      "staleOrInvalid": 0,
+      "allDiscoveryOpen": true,
+      "allPageDenominatorsUnknown": true,
+      "scopeExpansionPendingCount": 3
+    },
+    "processExecutedByVerifier": false,
+    "authorRecordedActualExitCode": 2
+  },
+  "historicalPrePackageGate": {
+    "artifact": {
+      "file": "native/build/reference-corpus/gate-2026-10-04-019-pre-package-import.json",
+      "sha256": "3898b034a2dcfe4b2ab4dc10545852e4873e90567260d58f33369c3d575e3f74"
+    },
+    "evaluatedAt": "2026-10-04T07:16:54.237Z",
+    "sourceUrlIdentities": 165328,
+    "usedAsCurrentGate": false
+  },
+  "toolTestAttribution": {
+    "testCommand": "node --test tools/check-reference-ledger.mjs",
+    "authorReportedPassedCases": 10,
+    "casesExecutedByVerifier": 0,
+    "apiInventoryPythonTestsExecutedByVerifier": 0,
+    "gateImportStatusCommandsExecutedByVerifier": 0,
+    "fixtureAndGuardSourceRead": true
+  },
+  "strictReadingPromotions": 0,
+  "newTechnicalBodiesActuallyRead": 0,
+  "newApiSectionsActuallyRead": 0,
+  "fullCorpusComplete": false,
+  "engineRuntimeGuiSdkDeviceWork": false,
+  "limitations": [
+    "Host membership does not bind an origin URL to one exact registered source/path and does not automatically prove the target href occurs in the source file. The current 544 href occurrences were independently structurally compared.",
+    "Removing one parent source is insufficient to invalidate provenance if another registered source still approves the same host.",
+    "Source URL identities, seed/link occurrences, package API index URLs and captured snapshots are not unique semantic pages, API members, overloads or complete inventory denominators.",
+    "The saved gate is a pinned author-executed snapshot, not a process rerun by this verifier.",
+    "All complete body/API/linked edition/media inventories, semantic analysis, accumulated HB contract mapping and actual platform execution remain unfinished."
+  ],
+  "findings": [],
+  "conclusion": {
+    "boundedRegistrationAndReportingConsistency": true,
+    "automaticDiscoveryPromotesReading": false,
+    "wholeCorpusGatePassed": false,
+    "engineImplementationComplete": false
+  }
+}

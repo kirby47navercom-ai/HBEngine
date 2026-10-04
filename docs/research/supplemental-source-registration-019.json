@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "phase": "research_only",
+  "id": "supplemental-registration-019",
+  "newSourceFamilies": 5,
+  "registeredSourceCount": 18,
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/mobile-editor-body-012.json",
+      "sha256": "a7ff0bd3c954570b482a099785ce9c453f34c783963dc05869b734eb5f34b5a2"
+    },
+    {
+      "file": "docs/research/android-editor-lifecycle-body-013.json",
+      "sha256": "57cfa1db2fa4ca15b332832931a4f068f928b3897f3550be988cdba36dbf4bfd"
+    },
+    {
+      "file": "docs/research/android-build-deploy-body-014.json",
+      "sha256": "fdca71ccd56ee0c02c7cf3536354bdd114924ad921228057a4fac693f84858ea"
+    },
+    {
+      "file": "docs/research/android-storage-api-body-015.json",
+      "sha256": "fb9dcd8fbcd6f7a55fb64713c812fdd7cdc973922eee665780def26981406054"
+    },
+    {
+      "file": "docs/research/SUPPLEMENTAL_SOURCE_REGISTRATION_019.md",
+      "sha256": "f216d4ab8cd2f2cd7f6af2d087f781b05a7e0f7c2a7d894ac3914ac07fa02638"
+    },
+    {
+      "file": "docs/research/CORPUS_MANIFEST.json",
+      "sha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888"
+    },
+    {
+      "file": "tools/reference-ledger.mjs",
+      "sha256": "bddd1606f30fd7ca10135e5703772196d481d4ad3fc73006d893ad711c001300"
+    },
+    {
+      "file": "tools/check-reference-ledger.mjs",
+      "sha256": "ea539ab3cd48d644f75183fced7c458cb75178fd4cbb873d9df11a28ca3ac45a"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/import-results.json",
+      "sha256": "9452f8a5085b44bb3c6e8203a2e19a5a18a281e0f60d7abde372bbb2d3e7175b"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/unity-new-package-roots-discovery-017.json",
+      "sha256": "88ae5ce1f55f8ea3bd09dbc0a73a9746612584a4aaee57cbc4fb961b2008e2e5"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/package-import-result-017.json",
+      "sha256": "728124c75a6608dd24703c6de98cf1f62ed3d466e05cea1bd6f83eaed914d611"
+    },
+    {
+      "file": "native/build/reference-corpus/gate-2026-10-04-019-pre-package-import.json",
+      "sha256": "3898b034a2dcfe4b2ab4dc10545852e4873e90567260d58f33369c3d575e3f74"
+    }
+  ],
+  "newTechnicalBodiesActuallyRead": 0,
+  "newApiSectionsActuallyRead": 0,
+  "automaticLinkExtractionIsSemanticReading": false,
+  "strictReadingPromotions": 0,
+  "fullCorpusComplete": false,
+  "sources": [
+    {
+      "id": "android-platform-guides",
+      "engine": "Android",
+      "version": "unversioned-public-web-snapshot-2026-10-04",
+      "locale": "en",
+      "roots": [
+        "https://developer.android.com/ndk/guides/abis",
+        "https://developer.android.com/training/data-storage/shared/documents-files",
+        "https://developer.android.com/guide/components/activities/activity-lifecycle",
+        "https://developer.android.com/topic/libraries/architecture/saving-states",
+        "https://developer.android.com/guide/components/activities/process-lifecycle",
+        "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+        "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+        "https://developer.android.com/build/building-cmdline",
+        "https://developer.android.com/studio/publish/app-signing",
+        "https://developer.android.com/tools/adb",
+        "https://developer.android.com/tools/logcat",
+        "https://developer.android.com/games/agdk/game-activity/get-started"
+      ],
+      "hosts": [
+        "developer.android.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "seedEntries": 13,
+        "derivedOutgoingOccurrences": 280,
+        "initialUniqueUrls": 117
+      },
+      "scopeNote": "Additional actual publication roots and functional links discovered in012–015; source lists, dependency editions, declarations/overloads, whole bodies/media and HB human/AI contract mapping remain open. The date label is not an Android API level, NDK/SDK release or Apple OS edition. Core Unity/Unreal sources remain in scope.",
+      "openIssues": [
+        "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
+        "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
+        "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ]
+    },
+    {
+      "id": "android-platform-api",
+      "engine": "Android",
+      "version": "unversioned-public-web-snapshot-2026-10-04",
+      "locale": "en",
+      "roots": [
+        "https://developer.android.com/reference/android/content/ContentResolver",
+        "https://developer.android.com/reference/android/content/Intent",
+        "https://developer.android.com/reference/android/provider/DocumentsContract.Document",
+        "https://developer.android.com/reference/android/content/UriPermission"
+      ],
+      "hosts": [
+        "developer.android.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "seedEntries": 4,
+        "derivedOutgoingOccurrences": 215,
+        "initialUniqueUrls": 67
+      },
+      "scopeNote": "Additional actual publication roots and functional links discovered in012–015; source lists, dependency editions, declarations/overloads, whole bodies/media and HB human/AI contract mapping remain open. The date label is not an Android API level, NDK/SDK release or Apple OS edition. Core Unity/Unreal sources remain in scope.",
+      "openIssues": [
+        "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
+        "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
+        "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ]
+    },
+    {
+      "id": "godot-mobile-editor-supplement",
+      "engine": "Godot",
+      "version": "4.5",
+      "locale": "en",
+      "roots": [
+        "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+        "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html"
+      ],
+      "hosts": [
+        "docs.godotengine.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "seedEntries": 2,
+        "derivedOutgoingOccurrences": 32,
+        "initialUniqueUrls": 10
+      },
+      "scopeNote": "Additional actual publication roots and functional links discovered in012–015; source lists, dependency editions, declarations/overloads, whole bodies/media and HB human/AI contract mapping remain open. The date label is not an Android API level, NDK/SDK release or Apple OS edition. Core Unity/Unreal sources remain in scope.",
+      "openIssues": [
+        "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
+        "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
+        "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ],
+      "pathPrefix": "/en/4.5/"
+    },
+    {
+      "id": "apple-platform-supplement",
+      "engine": "Apple",
+      "version": "unversioned-public-web-snapshot-2026-10-04",
+      "locale": "en",
+      "roots": [
+        "https://developer.apple.com/app-store/review/guidelines/"
+      ],
+      "hosts": [
+        "developer.apple.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "seedEntries": 1,
+        "derivedOutgoingOccurrences": 3,
+        "initialUniqueUrls": 4
+      },
+      "scopeNote": "Additional actual publication roots and functional links discovered in012–015; source lists, dependency editions, declarations/overloads, whole bodies/media and HB human/AI contract mapping remain open. The date label is not an Android API level, NDK/SDK release or Apple OS edition. Core Unity/Unreal sources remain in scope.",
+      "openIssues": [
+        "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
+        "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
+        "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ]
+    },
+    {
+      "id": "platform-abi-specifications",
+      "engine": "Platform ABI",
+      "version": "unversioned-public-web-snapshot-2026-10-04",
+      "locale": "en",
+      "roots": [
+        "https://developer.arm.com/64bit",
+        "https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics",
+        "https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/neon-programmers-guide-for-armv8-a",
+        "https://developer.arm.com/architectures/learn-the-architecture",
+        "https://developer.arm.com/architectures/system-architectures/software-standards/abi",
+        "https://developer.arm.com/documentation/102433/0100/Overview",
+        "https://documentation-service.arm.com/static/62bdb1d031ea212bb66257c5?token="
+      ],
+      "hosts": [
+        "developer.arm.com",
+        "documentation-service.arm.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "seedEntries": 0,
+        "derivedOutgoingOccurrences": 14,
+        "initialUniqueUrls": 7
+      },
+      "scopeNote": "Additional actual publication roots and functional links discovered in012–015; source lists, dependency editions, declarations/overloads, whole bodies/media and HB human/AI contract mapping remain open. The date label is not an Android API level, NDK/SDK release or Apple OS edition. Core Unity/Unreal sources remain in scope.",
+      "openIssues": [
+        "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
+        "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
+        "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ]
+    }
+  ],
+  "imports": [
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/android-platform-guides.import.json",
+      "sha256": "5c9863ba015b8419b6f7b4989331bd52c763bbf82bdf34d1d7830a1db191d942",
+      "sourceId": "android-platform-guides"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/android-platform-api.import.json",
+      "sha256": "8febf6a155360f7af240f8ab75273f80309408a4ce8f31d007591a89da2114de",
+      "sourceId": "android-platform-api"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/godot-mobile-editor-supplement.import.json",
+      "sha256": "7c71bf5229688ca53659cc2ff9d39a9709f12ca2566fb7ad390c7a5116b76c8f",
+      "sourceId": "godot-mobile-editor-supplement"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/apple-platform-supplement.import.json",
+      "sha256": "028743c6f1e0779982ce7a16120f7a98634223434795986b2f4d8e68fffeda9b",
+      "sourceId": "apple-platform-supplement"
+    },
+    {
+      "file": "native/build/reference-corpus/supplemental-registration-batch-019/platform-abi-specifications.import.json",
+      "sha256": "346bad62103401bdf599466a59151c97dc35976089980e27877b5d26d9b07f94",
+      "sourceId": "platform-abi-specifications"
+    }
+  ],
+  "pendingOutgoing": {
+    "file": "native/build/reference-corpus/supplemental-registration-batch-019/unclassified-outgoing.json",
+    "sha256": "d9c60432bfcc0361158d1cae5c31be219e2ccad57002e07972dac127b3068097",
+    "occurrences": 130
+  },
+  "wholeSourceDenominatorsKnown": false,
+  "sourceArtifactsHashChecked": 20,
+  "sourceHashCheckScope": "20 earlier source artifacts checked as exact bytes; no new technical-body or API reading, strict verified promotion or real execution is implied.",
+  "createdAt": "2026-10-04",
+  "importSummary": {
+    "inputEntries": 564,
+    "newPerSourceUrlIdentities": 205,
+    "actualSuccessfulImports": 5,
+    "fetchedPromotions": 0,
+    "analyzedPromotions": 0,
+    "verifiedPromotions": 0
+  },
+  "toolTests": {
+    "command": "node --test tools/check-reference-ledger.mjs",
+    "actualCasesPassed": 10,
+    "apiInventoryPythonTestsRerun": false,
+    "engineRuntimeGuiSdkDeviceTestsRun": false
+  },
+  "gateSnapshot": {
+    "file": "native/build/reference-corpus/gate-2026-10-04-019.json",
+    "sha256": "4c5b2ddc4324f7894e6935d2718f0c6673b5789f4a0ca28d852e41a106ae0469",
+    "evaluatedAt": "2026-10-04T07:20:56.435Z",
+    "manifestSha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888",
+    "actualExitCode": 2,
+    "evidenceGatePassed": false,
+    "percentage": null,
+    "registeredSourceCount": 18,
+    "ledgerUrlIdentities": 168940,
+    "bodySnapshots": 34877,
+    "strictVerifiedBodies": 2,
+    "scopeExpansionPendingCount": 3,
+    "packageDiscoveredUrlIdentities": 62873,
+    "staleOrInvalid": 0
+  },
+  "packageDiscoveryImport": {
+    "inputEntries": 3612,
+    "newPerSourceUrlIdentities": 3612,
+    "actualExitCode": 0,
+    "newApiIndexUrls": 3344,
+    "newManualIndexUrls": 252,
+    "newSupportIndexUrls": 16,
+    "technicalBodyOrApiReadingPromotions": 0,
+    "allImportedUrlsUnread": true
+  }
+}

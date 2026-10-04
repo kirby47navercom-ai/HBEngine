@@ -1,0 +1,3493 @@
+{
+  "schemaVersion": 1,
+  "batch": "unreal-root-coverage-body-verification-018",
+  "phase": "research_only",
+  "author": "unreal_root_expansion_018",
+  "verifier": "unity_package_catalog_017",
+  "createdAt": "2026-10-04T07:35:22.057695+00:00",
+  "engine": "Unreal",
+  "baselineVersion": "5.8",
+  "locale": "en-us",
+  "scopeVerdict": "pass_only_for_same_22_root_technical_text_and_overview_discovery_semantics",
+  "wholeCorpusVerdict": "incomplete",
+  "overallComplete": false,
+  "discoveryClosed": false,
+  "strictLedgerPromotions": 0,
+  "strictVerifiedPromotions": 0,
+  "newFetchedTechnicalBodies": 0,
+  "newDistinctTechnicalBodyURLsRead": 0,
+  "sameScopeTextRereadsAgainstAuthor": 22,
+  "childBodiesRead": 0,
+  "APIUnitsOrOverloadsRead": 0,
+  "mediaPixelsRead": 0,
+  "wholeVideoRead": false,
+  "wholeClientRead": false,
+  "newHTTPRequestsByVerifier": 0,
+  "scopeLimits": [
+    "All 22 technical root texts and list/table/include descriptions actually reread; not complete rawHTML/SSR metadata site or full client reading",
+    "Selected 3 client excerpts and videoDetails/captionTrack metadata only are partial reads",
+    "10 original image request records/hash/HTML failure payloads checked, no pixels",
+    "412 child bodies and all descendant/API contracts remain unread in this verification",
+    "First watch response raw not preserved: cannot independently verify that response"
+  ],
+  "summary": {
+    "roots": 22,
+    "technicalTextCharacters": 86264,
+    "sameHashRevalidated": 22,
+    "sourceSSRStructuralEqual": 22,
+    "sourceBodyTextDiscoveryHashesMatched": 88,
+    "authorEvidenceArtifactsHashMatched": 10,
+    "sourceTextSegmentsChecked": 1063,
+    "missingTextSegments": 0,
+    "blocksRecursive": 300,
+    "blockTypeCounts": {
+      "document_list": 126,
+      "paragraph": 88,
+      "header": 57,
+      "enhanced_table": 1,
+      "enhanced_table_header": 4,
+      "enhanced_list": 5,
+      "markdown": 6,
+      "image": 10,
+      "external_video": 1,
+      "include": 1,
+      "callout": 1
+    },
+    "homeFields": 21,
+    "legacyRelations": 398,
+    "additionalRelations": 25,
+    "perDomainManualSum": 422,
+    "manualChildUnion": 412,
+    "newManualURLs": 0,
+    "topicTokens": 5,
+    "relativeReferences": 4,
+    "publisher404": 1,
+    "bodyImageBlocks": 10,
+    "bodyImageUniqueKeys": 10,
+    "originalImage403Records": 10,
+    "imageDOMURLAttributes": 46,
+    "externalVideoBlocks": 1,
+    "pinnedWatchSourceSnapshotsCompared": 1
+  },
+  "sourceReport": {
+    "file": "docs/research/unreal-root-coverage-body-018.json",
+    "sha256": "e8be82bd3bb8c81d31f0c8c474332932d3a97647cebce4cbf16836da41bdf92d"
+  },
+  "sourceMarkdown": {
+    "file": "docs/research/UNREAL_ROOT_COVERAGE_BODY_018.md",
+    "sha256": "bba052e14d3c441fabd17514e2dbd42617bb738029a2699fbb20b9b78b04ff22"
+  },
+  "rules": {
+    "manifest": {
+      "file": "docs/research/CORPUS_MANIFEST.json",
+      "sha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888"
+    },
+    "protocol": {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76"
+    },
+    "agents": {
+      "file": "AGENTS.md",
+      "sha256": "5ed4fba7988853850cb3f28e4700201a368b8d6cb24e8599ec9d8accafc24f42"
+    },
+    "nonCircularHash": "this JSON pins own MD; MD links JSON without hash; author source artifacts have no reference back to verifier"
+  },
+  "roots": [
+    {
+      "id": "UR018-00",
+      "title": "Unreal Engine 5.8 Documentation",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-documentation?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.source.html",
+        "sha256": "d039438e755ccaf1d3b6ba0d88d8beac0f327b1a06699f71bd499822105c1ca5"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.ssr.json",
+        "sha256": "83aad2b70a5892d629cd068b67b526ea01e88676b471640a611394b586fd6921"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.read.txt",
+        "sha256": "1e049a231f207f5c2205efc4ba1b8b8c1966c891d0ae9c816afd82b3013c0dca"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.discovery.json",
+        "sha256": "0a51f8cc0e91b9af3df9149622925dcd3bbe6e31916cba9f93963437fc25d42e"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].items[0:21]",
+      "independentSemanticAssessment": "홈의 21분야와 실제 21개 분야 루트가 같아요. 각 소개·목적·하위 URL은 입구 범위이며 하위 본문 상태를 상속하지 않아요.",
+      "hbJudgmentAssessment": "전체 분야를 누적 범위에 보존하며 목록 제목으로 본문/API 분석을 대체하지 않아요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 21,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 42,
+      "missingTextSegments": [],
+      "blocks": {
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "21개 자식의 다음 단계 순회",
+        "C++/Blueprint/Python/Node Reference/WebAPI/플러그인 독립 목록",
+        "본문 배너·썸네일의 시각적 의미"
+      ],
+      "apiFamiliesPending": [],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-01",
+      "title": "What's New",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/whats-new?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.source.html",
+        "sha256": "8b5dabfd44fdaabd647ce3ef30b60b3151c56502b7a62041ae205d3f2240c601"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.ssr.json",
+        "sha256": "04041a6333e0e68c30d2af7f28721fbf190ae028519216968d5e9d20c122c258"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.read.txt",
+        "sha256": "a6e7bbefbafd09716d4255d453f90d37a931f1ea96b4fb7432464bd4a7d7784a"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.discovery.json",
+        "sha256": "21ef03ead7228a5927b08d6530dc786c8c1887d16ee4efb9a0f69d3eca5c9e82"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]"
+      ],
+      "semanticLocator": "blocks[0:2]",
+      "independentSemanticAssessment": "Beta와 Experimental의 배포/안정성 차이를 유지하고 UE4→UE5 migration을 별도 후속 계약으로 남겼어요.",
+      "hbJudgmentAssessment": "지원/실험 상태와 제작자 선택은 C++/노드/사람/AI의 공통 capability 데이터로 조사해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 4,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 9,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "5.8 release note 전체 변경점",
+        "Beta/Experimental 실제 기능 목록과 API",
+        "migration 세부·복구·호환성"
+      ],
+      "apiFamiliesPending": [
+        "release notes",
+        "migration"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-02",
+      "title": "Understanding the Basics",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.source.html",
+        "sha256": "cf912db1ed91b262a1c95c6a513b5615f0df95f84f77a5204d476a605ae9eb54"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.ssr.json",
+        "sha256": "1f392a3962f953b98c99e8ce3ab45d3b403091d7a3193199775c75dd564c648f"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.read.txt",
+        "sha256": "7c5d637a95d8b21f535d4e6e09fe1c03251402f50ffc48a5477a8a47964c9238"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.discovery.json",
+        "sha256": "6d2932f935ab9b5f25583d6b8ad506eb996817013f2365487b8f0a3fca86bde6"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[21]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[29]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[33]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[37]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]",
+        "blocks[44]"
+      ],
+      "semanticLocator": "blocks[0:45]",
+      "independentSemanticAssessment": "설치→Editor/Content Browser→project/template→Level/Asset→Actor/Component→Play/Simulate→Packaging의 연결, 최소 한 Level, Actor의 여러 Component 가능성을 대조했어요.",
+      "hbJudgmentAssessment": "프로젝트·참조·복구·재임포트·다중 편집의 공용 제작 흐름은 HB 설계이며 세부 계약 미확정이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 52,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 130,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 12,
+        "header": 10,
+        "document_list": 23
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "각 작업의 실제 메뉴·단축키·Undo/저장/실패",
+        "Recovery Hub·migration·reimport 계약",
+        "Actor/Component 선언과 수명"
+      ],
+      "apiFamiliesPending": [
+        "editor asset/project/level",
+        "actor/component"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-03",
+      "title": "Working with Content",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.source.html",
+        "sha256": "7ece2f69a2907a6a6a425f53a0b2f345c3b3103544797fb0d9af194235603141"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.ssr.json",
+        "sha256": "485728e20921f6daf50f97655b9976f0368f5acf2f266a18eef2e12080042ce7"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.read.txt",
+        "sha256": "36218b1cf5ef341b0caae7fd2b62b08c6b05890874626ea0242affae5441ba6b"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.discovery.json",
+        "sha256": "025b4104b564e560959f983d680b62a79e45b187d57354531abf5fac50991322"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[1].rows[0][0][0]",
+        "blocks[1].rows[0][1][0]",
+        "blocks[1].rows[1][0][0]",
+        "blocks[1].rows[1][1][0]",
+        "blocks[1].rows[2][0][0]",
+        "blocks[1].rows[2][0][0].items[0][0]",
+        "blocks[1].rows[2][0][0].items[1][0]",
+        "blocks[1].rows[2][0][0].items[2][0]",
+        "blocks[1].rows[2][0][0].items[3][0]",
+        "blocks[1].rows[2][0][0].items[4][0]",
+        "blocks[1].rows[2][0][0].items[5][0]",
+        "blocks[1].rows[2][0][0].items[6][0]",
+        "blocks[1].rows[2][0][0].items[7][0]",
+        "blocks[1].rows[2][1][0]",
+        "blocks[1].rows[2][1][0].items[0][0]",
+        "blocks[1].rows[2][1][0].items[1][0]",
+        "blocks[1].rows[2][1][0].items[2][0]",
+        "blocks[1].rows[2][1][0].items[3][0]",
+        "blocks[1].rows[2][1][0].items[4][0]",
+        "blocks[1].rows[2][1][0].items[5][0]",
+        "blocks[1].rows[2][1][0].items[6][0]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]"
+      ],
+      "semanticLocator": "blocks[1].rows[0:3]; blocks[0:6]",
+      "independentSemanticAssessment": "표의 Editor 내부 8종/외부 7종과 Mutable의 runtime 생성 설명을 확인했어요. APEX가 표에 남아 있다는 사실만으로 현행 지원을 확정하지 않아요.",
+      "hbJudgmentAssessment": "자동 importer와 사람 Import UI·노드/AI의 형식·변환·참조·재임포트 계약을 조사하는 판단이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 17,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 55,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 16,
+        "enhanced_table": 1,
+        "enhanced_table_header": 4,
+        "enhanced_list": 2,
+        "header": 2,
+        "document_list": 2
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "각 포맷·옵션·지원타깃·재임포트/실패",
+        "APEX의 현행 호환/폐기 여부",
+        "Mutable 및 import/export API"
+      ],
+      "apiFamiliesPending": [
+        "Interchange/import-export",
+        "mutable",
+        "localization"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-04",
+      "title": "Building Virtual Worlds",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.source.html",
+        "sha256": "f799c496752191c902ad74c96cf970eddf751b76a7c3d7de9272b0933a21f563"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.ssr.json",
+        "sha256": "5f67d1e565b7c8e292e61202bfa84e7a2b20d2faa782b17f7098748c3ae42441"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.read.txt",
+        "sha256": "6d1d40f93945ed5c28e85f02205741eb1b5cefd519fd40f3b05037d88e4044cd"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.discovery.json",
+        "sha256": "046c128d7f66530fa061bf0a676c7cf70dd6a8ec937b6d9b17688a9a7690a6bc"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html; block-dir-item-md attributes",
+      "independentSemanticAssessment": "작은 시각화 환경/큰 open world와 Level Streaming의 플레이 중 비동기 로드·언로드/메모리 절감 설명을 확인했어요. 설명 속 UE4 georeferencing은 버전 대조 대기예요.",
+      "hbJudgmentAssessment": "월드 조직·비동기 로딩의 C++/노드/AI 계약과 2D/2.5D/3D Level 편집을 함께 보존해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 13,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 30,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "streaming/PCG/terrain/water·대규모 월드 세부",
+        "actor 분리 저장과 동시편집",
+        "georeferencing·precision API"
+      ],
+      "apiFamiliesPending": [
+        "world/level streaming",
+        "PCG",
+        "large world"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-05",
+      "title": "Designing Visuals, Rendering, and Graphics",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.source.html",
+        "sha256": "e747e4a2bbe5f13abc803b5ba8504fba7557e17de2a5883f8d6ce4290bba7487"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.ssr.json",
+        "sha256": "cbf6fdefd6e6940029763171432c88343a3aa4689bfcb0409bacc5270ff6708d"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.read.txt",
+        "sha256": "dbb84457191ee0c700482bdd7ed296ef1687e4165660af8e80713aa6db71a330"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.discovery.json",
+        "sha256": "5e12bb6950d6f87d1741ed935b05fed44f0a5ba27e6e09dff9cd24ba384b86de"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[21]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[29]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[33]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[37]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]",
+        "blocks[44]",
+        "blocks[45]",
+        "blocks[46]",
+        "blocks[47]",
+        "blocks[48]",
+        "blocks[49]",
+        "blocks[50]",
+        "blocks[51]",
+        "blocks[52]",
+        "blocks[53]",
+        "blocks[54]",
+        "blocks[55]",
+        "blocks[56]",
+        "blocks[57]",
+        "blocks[58]",
+        "blocks[59]",
+        "blocks[60]",
+        "blocks[61]",
+        "blocks[62]",
+        "blocks[63]",
+        "blocks[64]",
+        "blocks[65]",
+        "blocks[66]",
+        "blocks[67]",
+        "blocks[68]",
+        "blocks[69]"
+      ],
+      "semanticLocator": "blocks[1:70]",
+      "independentSemanticAssessment": "Path Tracer의 최종 shot/기준, RDG 중간 리소스 dump, GPU 자원 추적과 orthographic/mobile/NNEngine을 모두 후속 목록에 보존해요. 상대 lighting href를 slug로 추정하지 않아요.",
+      "hbJudgmentAssessment": "HB DX11에서 동등 구현 가능성을 root만으로 단정하지 않으며 렌더/재질 노드·사람 진단·AI 설정을 이어 조사해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 60,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 147,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 2,
+        "header": 11,
+        "document_list": 57
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "Lumen/Nanite/Substrate·platform 제약",
+        "RDG/thread/GPU ownership·API",
+        "비정규 lighting 상대링크",
+        "NNEngine 추론·runtime 계약"
+      ],
+      "apiFamiliesPending": [
+        "renderer/shader/RDG",
+        "materials",
+        "NNE"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-06",
+      "title": "AI Features, Tools, and Plugins",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.source.html",
+        "sha256": "4b904589d2d50398ff85cb79bf2ae165f202d6079efb9623e888c2899f2996ec"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.ssr.json",
+        "sha256": "b1a904e42af3b107a71baf3a8008a6f7783a704aed8dddfd7498cb6490e30de3"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.read.txt",
+        "sha256": "91fc3ea9ba6d80a543ccb04874e04eefacf98bd5ccdd7be61b177904cf9834e5"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.discovery.json",
+        "sha256": "9f4160bedd0cf3dba75e771f0e4ed50aa9cabb5ce43204a933c8d76e5ecab82a"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]"
+      ],
+      "semanticLocator": "blocks[0:5]",
+      "independentSemanticAssessment": "세 항목은 Editor MCP, PCG/LLM workflow, Content Browser Semantic Search예요. runtime NPC AI와 역할을 구분한 저자 해석이 본문과 같아요.",
+      "hbJudgmentAssessment": "사람/AI 편집 공용 명령의 권한·트랜잭션·오류·취소는 HB 설계 대기예요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 3,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 8,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 1,
+        "header": 1,
+        "document_list": 3
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "MCP 실제 도구/스키마·권한·오류",
+        "PCG LLM workflow 세부",
+        "Semantic Search 지원/제약·데이터"
+      ],
+      "apiFamiliesPending": [
+        "Unreal MCP",
+        "PCG LLM",
+        "Semantic Search"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-07",
+      "title": "Creating Visual Effects",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.source.html",
+        "sha256": "02f54698c3d152637a1efcbf63ce065b364ac0b465c48cf8aa90ed5934aad952"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.ssr.json",
+        "sha256": "b6f22bba70ddedb03687d7ed2ab562e0b42bb0e595a636a1195945c5c0d1ee64"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.read.txt",
+        "sha256": "76812438aa2d0cff797d181859a7c6071286167ba2bfe4ead6d8473d7a622857"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.discovery.json",
+        "sha256": "e6993cc1ae3e89d62dcce15b02e964697918382f78701c7055391257d12c9729"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html",
+      "independentSemanticAssessment": "Niagara Script Editor의 module 수정/생성, experimental GPU raytracing collision과 Debugger를 대조했고 Getting Started 토큰 1개를 보존했어요.",
+      "hbJudgmentAssessment": "노드/module reference·성능·플랫폼 계약이 미독이며 HB VFX UI/C++/노드/AI 대응은 설계 판단이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 8,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 31,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "Getting Started 토큰의 실제 목적지",
+        "module/node 전체 reference",
+        "GPU collision 적용성·thread·성능"
+      ],
+      "apiFamiliesPending": [
+        "Niagara system/emitter/module",
+        "Niagara data channels"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-08",
+      "title": "Gameplay Tutorials",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.source.html",
+        "sha256": "ee9e9ef503877f1bea9b8fea283ff8b6706e3924cf5f79f82f04c119a1db51dd"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.ssr.json",
+        "sha256": "20b85f9ff7d7e3100a91ceb60dfe8d405b752c414a08c3282830ccbb541ce84e"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.read.txt",
+        "sha256": "089a65ba23410264ad2ce2f664b97c8cd1eb75e4c160124b2cf8fac02f5e1ae0"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.discovery.json",
+        "sha256": "af1b6a3058d03867a51dd75c277968765ecbc8227c99a5797fd3eaa57bd9a192"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html",
+      "independentSemanticAssessment": "튜토리얼 8개와 actor 찾기의 Blueprint/C++ 두 경로를 확인했어요. save/load·respawn·possession·OnHit의 세부 계약은 이 입구에 없어요.",
+      "hbJudgmentAssessment": "공용 실행 결과의 재현 후보이며 실제 튜토리얼 코드/실행 완료가 아니에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 8,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 17,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "8개 튜토리얼 전체 본문·코드",
+        "save/load schema·compatibility",
+        "possession/OnHit·lifetime API"
+      ],
+      "apiFamiliesPending": [
+        "gameplay actor/player/save"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-09",
+      "title": "Blueprints Visual Scripting",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.source.html",
+        "sha256": "79254a590c87def3a4f9b6bda9b48c88679ca69485159b0e457d302ce4b5530a"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.ssr.json",
+        "sha256": "a31c7839d88bb5f126fb1bbc5ebf82c3ae6c40423127698091bb4366a3e4be0b"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.read.txt",
+        "sha256": "a6f710b0d40ac3c5a2ed0cd5d9d028e460441d112a7432db6ac910a5e606a4a3"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.discovery.json",
+        "sha256": "fff41f0dd82e570213fa5c5dee7858b755cb46950da7952f06a5913b68016418"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html",
+      "independentSemanticAssessment": "OO class/object, C++ Blueprint markup, breakpoint와 변수 확인을 확인하고 미해결 topic 3개를 유지해요.",
+      "hbJudgmentAssessment": "HB 클래스/타입/통신/디버그와 C++·노드·사람·AI 대응은 후속 선언/UX 검증이 필요해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 11,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 36,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "미해결 topic 토큰 3개",
+        "node/schema/compiler·lifetime·pin/API",
+        "통신/namespace/breakpoint·편집 UX 세부"
+      ],
+      "apiFamiliesPending": [
+        "BlueprintGraph/K2",
+        "Blueprint API",
+        "node reference"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-10",
+      "title": "Programming with C++",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.source.html",
+        "sha256": "507871a637891e49af1ed1a7bb480c16358e636d9cac72ac4ce9bf7017786243"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.ssr.json",
+        "sha256": "40f83fb7e8b2cb449b8022ba6d3ad5d5edb8bf94774e9bf8c74889afa94ed23d"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.read.txt",
+        "sha256": "6b4eefe7c4b5a6c44562bea20f98fae4f58215e0ce2888fc9b080c3888419926"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.discovery.json",
+        "sha256": "abc5a8c9b915182457fb8d0b17f7e6d13636b717bb4f2f34e354419d9bf3be95"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html",
+      "independentSemanticAssessment": "C++ 경험 전제, reflection/metadata macro, compile 뒤 class 반영, type-safe delegate 소개를 확인했어요. Visual Studio href 자체가 /documentation/404예요.",
+      "hbJudgmentAssessment": "compile 실패/복구·hot reload·delegate 수명/thread는 root로 확정하지 않아요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 8,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 19,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [
+        "https://dev.epicgames.com/documentation/404?application_version=5.8"
+      ],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "publisher 404 link의 공식 대체",
+        "reflection/specifier/containers/delegates 전체 선언",
+        "compile/load/runtime 및 node exposure"
+      ],
+      "apiFamiliesPending": [
+        "UObject/reflection",
+        "delegates",
+        "gameplay architecture"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-11",
+      "title": "Gameplay Systems",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.source.html",
+        "sha256": "34748a84e7ac4c49d76ca07aae4644f37faf8d2f338ef639ad5c8988b280e0f7"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.ssr.json",
+        "sha256": "67bc0667c50ff160478e4975d77f477cc1423f139aa16d2d8387af17acf91f80"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.read.txt",
+        "sha256": "f477f5748a7b2ead69198acd99c3c02616a7c182004a0cba961d0ddbffac8e39"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.discovery.json",
+        "sha256": "c89cf8be293c11cf096392a4e613bde59da941de47acce87ea6eb36460314987"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[1].items[0][0]",
+        "blocks[1].items[1][0]",
+        "blocks[1].items[2][0]",
+        "blocks[1].items[3][0]",
+        "blocks[1].items[4][0]",
+        "blocks[1].items[5][0]",
+        "blocks[1].items[6][0]",
+        "blocks[1].items[7][0]",
+        "blocks[1].items[8][0]",
+        "blocks[2]",
+        "blocks[3]"
+      ],
+      "semanticLocator": "blocks[1].items[0:9]; blocks[3].items[0:14]",
+      "independentSemanticAssessment": "Runtime AI/physics·LWC double·data-driven gameplay·GAS cost/cooldown/level·network·Mover rollback과 본문 추가22관계를 확인했어요.",
+      "hbJudgmentAssessment": "runtime AI와 제작 AI를 구분하고 C++/노드/사람/AI의 상태·수명·권한·rollback 계약을 조사해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 36,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 39,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 10,
+        "enhanced_list": 1,
+        "header": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [
+        "https://dev.epicgames.com/documentation/unreal-engine/actors-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/ai-debugging-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/behavior-trees-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/cameras-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/chaos-destruction-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/cloth-simulation-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/collision-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/controllers-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/environment-query-system-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/game-features-and-modular-gameplay-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/game-mode-and-game-state-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/gameplay-timers-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/hair-physics-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/physical-materials-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/physics-bodies-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/smart-objects-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/state-tree-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/traces-with-raycasts-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/user-interfaces-and-huds-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/vehicles-in-unreal-engine?application_version=5.8"
+      ],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "AI/physics/ability/network 전체 API",
+        "Mass/Nav/Perception 비정규 링크의 공식 목적지",
+        "mover rollback·data/precision 계약"
+      ],
+      "apiFamiliesPending": [
+        "gameplay framework",
+        "runtime AI",
+        "Chaos physics",
+        "GAS",
+        "networking/Mover"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-12",
+      "title": "Mobile Development",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.source.html",
+        "sha256": "8c87cfaf75ee6d997319be46219360ee65c157eb03789c6457172934a8f41af4"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.ssr.json",
+        "sha256": "aa62ef19e6977d553180316b0c03ae9b8d6919e3fb4af8c85a6d0a6109fa1c4b"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.read.txt",
+        "sha256": "3e4340effc95a2abd44a43ad47c641ee52ec80246cdd0d6274f2c1ece834d8d6"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.discovery.json",
+        "sha256": "cb231223d40fffa435714819ce2e266a5cc41a801e2987253a7c085463738095"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[2].items[0][0]",
+        "blocks[2].items[1][0]",
+        "blocks[2].items[2][0]",
+        "blocks[2].items[3][0]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]"
+      ],
+      "semanticLocator": "blocks[0:45]",
+      "independentSemanticAssessment": "mobile platform의 setup→device/debug/profile→서명/store, preview와 LAN device input의 차이, ASIS/Multi-View HMI를 확인해요. 영상 내용과 이미지 UI는 읽은 것으로 세지 않아요.",
+      "hbJudgmentAssessment": "mobile 지원·SDK/서명·device profile과 사람/C++/노드/AI build 계약은 세부 대기예요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 70,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 171,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 16,
+        "enhanced_list": 1,
+        "header": 10,
+        "image": 8,
+        "document_list": 13,
+        "external_video": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "8개 본문 image 픽셀/의미",
+        "external video 전체 내용",
+        "70개 child 및 mobile API·platform 지원표"
+      ],
+      "apiFamiliesPending": [
+        "mobile/platform services",
+        "device/build tooling",
+        "automotive HMI"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-13",
+      "title": "Animating Characters and Objects",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.source.html",
+        "sha256": "909df3b62fac1c3a5f9eab842473d1ac99872ccb5de6adca3e8b7fb147e83e22"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.ssr.json",
+        "sha256": "3f2ff2fcde8ec2b250102b71a97bc075c487d412f28983786f5992a4b0bdb834"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.read.txt",
+        "sha256": "402aeb6b225f64a9b72e97443220a3333a1b03d10000a9c810fd8d8be17f18fd"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.discovery.json",
+        "sha256": "695044606876880340c6730c2625a1cfad1c69752eb38b9d69a217246773c08e"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]"
+      ],
+      "semanticLocator": "blocks[0:17]",
+      "independentSemanticAssessment": "skeletal import→Animation Blueprint, Control Rig의 Sequencer/standalone bake runtime 흐름과 Paper2D의 2D/3D hybrid 설명 및 추가3관계를 대조했어요.",
+      "hbJudgmentAssessment": "2D/2.5D/3D animation·rig/timeline/C++·노드·AI bake 계약은 후속 범위예요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 7,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 21,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 9,
+        "header": 4,
+        "document_list": 4
+      },
+      "additionalRelations": [
+        "https://dev.epicgames.com/documentation/unreal-engine/animation-blueprints-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/control-rig-editor-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-assets-in-unreal-engine?application_version=5.8"
+      ],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "animation blueprint/control rig/editor/skeletal mesh 자식 본문",
+        "bake/runtime·2D collision·sprite API",
+        "Sequencer 및 reference 전체"
+      ],
+      "apiFamiliesPending": [
+        "animation/ControlRig/Sequencer",
+        "Paper2D"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-14",
+      "title": "Motion Design",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.source.html",
+        "sha256": "419e329035ffdd106dad1c31baf9103d4f79cdd528db0c0f26ed413d270aa1d7"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.ssr.json",
+        "sha256": "412bec83b1ac804cb50bcae184a896a9406293991ca0c16fc3a2ad8dbb6d2a0b"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.read.txt",
+        "sha256": "529082998b53a25c4f218f9755b8384053195ef4d51ec83c15ef21bb9a128e3d"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.discovery.json",
+        "sha256": "e542c566dd17e1d08331a382efc5cd75f53a1a82d43806be541a7ce5ae4ab151"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]"
+      ],
+      "semanticLocator": "blocks[0:5]",
+      "independentSemanticAssessment": "2D/3D shapes, outliner/cloner/rig, layered Material Designer, Rundown/Transition Logic의 live broadcast 용도를 확인했어요.",
+      "hbJudgmentAssessment": "일반 Material graph와 동일 계약으로 간주하지 않고 사람/C++/노드/AI의 scene/transition 자료를 조사해요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 6,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 16,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 3,
+        "header": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "Rundown server/SceneState/transition·operator 계약",
+        "2D/3D shape/cloner/material API",
+        "변경·취소·저장·live update 의미"
+      ],
+      "apiFamiliesPending": [
+        "MotionDesign",
+        "Material Designer"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-15",
+      "title": "Creating User Interfaces",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.source.html",
+        "sha256": "1b4b581f60f9ba1062775342eb645fcdcaa9d337094b85a168700ba67b0198be"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.ssr.json",
+        "sha256": "fdd0f8eb116042d020434e48c9f8e3265fe711396a22da9bf6193f19289ad1a2"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.read.txt",
+        "sha256": "624ca10fa3ad1e3ba3e2b3632e0e1d9a1c6cd527568747e8bf3a1148d3c3ecc9"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.discovery.json",
+        "sha256": "8c1d6bd4f26f78a7a79bb3d9e97b891c359b76592512e4c97e0941b6792d5a6d"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]"
+      ],
+      "semanticLocator": "blocks[0].content_html",
+      "independentSemanticAssessment": "UMG/Slate·text/font/localization·optimization/debug의 목록을 확인했어요. Accessibility는 unresolved topic 1개예요.",
+      "hbJudgmentAssessment": "접근성 부재나 면제 판정이 아니며 focus/input·UI/C++/노드/AI 세부는 대기예요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 12,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 37,
+      "missingTextSegments": [],
+      "blocks": {
+        "markdown": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "Accessibility 실제 전체 목록",
+        "widget/text/font/Slate·editor API",
+        "focus/input/localization/performance UX"
+      ],
+      "apiFamiliesPending": [
+        "UMG/Slate",
+        "accessibility/localization"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-16",
+      "title": "Working with Audio",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.source.html",
+        "sha256": "1d5d7eb6f5070648e84e2634486cfb903ac19406a427c7c7f657c933140df164"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.ssr.json",
+        "sha256": "810c034a6a45bd42c8d6c8b1c69220e8bb3111f578f88c8fc9e36ec15fb997b2"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.read.txt",
+        "sha256": "0348e18b52b8fd271c77dcea829f0a0cae3ba4d11395e6e7b79efcd1144ecf8c"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.discovery.json",
+        "sha256": "6d7e69f91af8be68aeebc1f5a99473f1cb1028a3fe4259c34a0bb4da81957cd3"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[0].blocks[0]",
+        "blocks[0].blocks[1]",
+        "blocks[1]",
+        "blocks[2]"
+      ],
+      "semanticLocator": "blocks[0].blocks[0:2]; blocks[2].items[0:15]",
+      "independentSemanticAssessment": "include 안 두 paragraph를 실제 대조하고 외부 clean sound를 한 번 제작한 뒤 import→engine 내부 가공하는 흐름 및 audio15topic을 확인했어요.",
+      "hbJudgmentAssessment": "memory/thread/streaming·mix/spatial·C++/audio node/사람/AI의 실제 계약은 미독이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 15,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 33,
+      "missingTextSegments": [],
+      "blocks": {
+        "include": 1,
+        "paragraph": 2,
+        "header": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "audio memory/thread/streaming·실제 API",
+        "AudioLink/external control/music 전체",
+        "mixer/spatial/volume/reverb UI/runtime"
+      ],
+      "apiFamiliesPending": [
+        "audio engine/mix/spatial"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-17",
+      "title": "Working with Media",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.source.html",
+        "sha256": "c68b3ad1a22ba4964c8e7a12fbfeb3bec3a65699ed9686f254062964d28f138d"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.ssr.json",
+        "sha256": "3521c2d61f2522438eb7a8348e7b0796d672556eb9c27f02f095d996ce981365"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.read.txt",
+        "sha256": "8c2a4c5678e78514683da8642e07a2858b20e3d42f7d226e233c6e4dc2e21d16"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.discovery.json",
+        "sha256": "60689f4b2fffb294e21a9c452fb8045945e774be2e2f15e6a803621b79b65bb7"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]"
+      ],
+      "semanticLocator": "blocks[0:10]",
+      "independentSemanticAssessment": "prerecorded/live rendered frame·sync/color와 TextureShare의 GPU 공유/CPU 우회, nDisplay/DMX/Switchboard 등 virtual production을 보존했어요.",
+      "hbJudgmentAssessment": "일반 영상 재생으로 기능 범위를 축소하지 않으며 clock/color/GPU ownership API는 미독이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 20,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 46,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 2,
+        "header": 4,
+        "document_list": 4
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "video IO·clock/sync·color 정확한 계약",
+        "TextureShare GPU lifetime·API",
+        "remote/control/capture·plugin 세부"
+      ],
+      "apiFamiliesPending": [
+        "media/nDisplay/TextureShare",
+        "virtual production/DMX"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-18",
+      "title": "Setting Up Your Production Pipeline",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.source.html",
+        "sha256": "7aa1243a6ba64bc4ad779e2ee0714c5be26f9af5aa417499c69e710b801aef40"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.ssr.json",
+        "sha256": "55ab04f2f447a7c6c0c2bdc55ca4799b5229f7e6f23e27464191559e7b0ebbc0"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.read.txt",
+        "sha256": "57b18138d42796a8640ec3a2729f5881a00010df87eadf3a8d6323950846c6de"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.discovery.json",
+        "sha256": "f16b321a48d8fe8f9038ef5752bc7ac7655f247d186f494a01685f426ff19b68"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]"
+      ],
+      "semanticLocator": "blocks[0:3]",
+      "independentSemanticAssessment": "asset load/DDC/Turnkey/Zen/ushell/build, 협업/virtual assets/redirectors, BP/Python Editor automation과 Horde/ShotGrid 목록을 확인해요.",
+      "hbJudgmentAssessment": "Python Editor automation을 runtime 언어로 확대하지 않으며 공용 작업·참조·트랜잭션 설계는 미확정이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 17,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 36,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 1,
+        "header": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "DDC/Zen/Horde/Ushell·공식 도구 전체 문서/API",
+        "asset loading/reference/redirector serialization",
+        "multi-user conflict·automation transaction 계약"
+      ],
+      "apiFamiliesPending": [
+        "asset management/DDC/Zen",
+        "build/Horde",
+        "editor automation"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-19",
+      "title": "Testing and Optimizing Your Content",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.source.html",
+        "sha256": "ccce686ff127c5e788d66e44db3087edf4a296780be8b325b23b0372b25528ab"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.ssr.json",
+        "sha256": "a518b9ac8fafe382b50263d139f1fb43f50f7b1d75c0f3f2a3f5ec7677ab1196"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.read.txt",
+        "sha256": "415968e24492b572f3a79af2332de24cc20a102cb16b3383f86188e453a8a540"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.discovery.json",
+        "sha256": "f6acd1df80ba43898b6a061fa84d1a49e9a2af9649e0382129ad126f1ceb7068"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]"
+      ],
+      "semanticLocator": "blocks[0:4]",
+      "independentSemanticAssessment": "console preset/crash/debug/Insights/Zen runtime loader/PSO/Oodle와 low-level·automation tests, Android/Linux sanitizer를 구분했어요.",
+      "hbJudgmentAssessment": "연구 중 엔진/SDK/runtime/tests 실행은 없고 진단 UI/C++/노드/AI의 기록 계약만 후속 범위예요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 16,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 35,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 2,
+        "header": 1,
+        "document_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "각 tool의 recorder/상태/오류·API",
+        "profiling/timing·low-level/automation tests 조건",
+        "platform-specific sanitizer 지원"
+      ],
+      "apiFamiliesPending": [
+        "debug/profile/stats",
+        "tests/automation",
+        "runtime loader"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-20",
+      "title": "Sharing and Releasing Projects",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.source.html",
+        "sha256": "d52ef50863c109a784d5198aadea9e9a29bdbfb6b7d28f8b37a9e4f506aab6d9"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.ssr.json",
+        "sha256": "750acb51fd12afbb73f153731568d1c4f51cd846e9cc4fe5b03315c4db4d915d"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.read.txt",
+        "sha256": "2c992d24145fdce4d3723ec360780dd985842e17629586e1309ca92136f282c6"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.discovery.json",
+        "sha256": "54cbfb9a19754b0c65725ab16626b300734071fc5e709058337a1fbc5d5886b9"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]"
+      ],
+      "semanticLocator": "blocks[0:17]",
+      "independentSemanticAssessment": "platform별 publishing/debug/optimization 차이와 cook/chunk/multiprocess/versioned release, AutoSDK/ARM64/XR/PixelStreaming 전체 목록을 보존해요.",
+      "hbJudgmentAssessment": "사람 deploy/device UI·C++ cook·노드/AI build의 타깃·취소·실패·복구 계약은 미독이에요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 34,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 79,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 1,
+        "header": 8,
+        "document_list": 8
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "platform/cook/ARM64·XR/PixelStreaming 세부 API",
+        "restricted consoles 목록·권한 있는 공식 자료",
+        "각 build operation·취소/복구·지원타깃"
+      ],
+      "apiFamiliesPending": [
+        "cook/package/platform",
+        "XR/OpenXR",
+        "Pixel Streaming"
+      ],
+      "strictVerified": false
+    },
+    {
+      "id": "UR018-21",
+      "title": "Samples and Tutorials",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine?application_version=5.8",
+      "source": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.source.html",
+        "sha256": "11648bbaef5417acd3e8feaf3fc255dc5df688be2e41ac53c89bf2286fbb264e"
+      },
+      "body": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.ssr.json",
+        "sha256": "8c656758ade7b36ab13b53b7b299cf81cc478f34a815d5166c5f2164b7cf1edc"
+      },
+      "text": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.read.txt",
+        "sha256": "95ec4ccf1fd692900cab19888dc518907e3fae7e7f2a95c3e5e90abaa9e37605"
+      },
+      "discovery": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.discovery.json",
+        "sha256": "cdcd84465d1ba79793171ec29fed9330fce19b5aff2e79a884fa082686c7884c"
+      },
+      "sameHashFlags": {
+        "source": true,
+        "body": true,
+        "text": true,
+        "discovery": true
+      },
+      "sourceSSREqualsStoredJSON": true,
+      "readScope": "entire accessible technical text/list descriptions, nested table/include; media metadata only, no pixels/video/child/API",
+      "authorCoveredBlockLocatorsRechecked": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[7]",
+        "blocks[7].blocks[0]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[10].items[0][0]",
+        "blocks[10].items[1][0]",
+        "blocks[11]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]"
+      ],
+      "semanticLocator": "blocks[0:18]",
+      "independentSemanticAssessment": "template의 이미 구성된 controller/BP, 설치된 호환 engine 조건과 Fab 5.3+, 기존5.3/5.4의 별도 plugin 조건, Window>Fab/Content Drawer 흐름을 대조했어요.",
+      "hbJudgmentAssessment": "이미지2의 실제 UI·Fab 제품/catalog·sample runtime은 미독이며 예제 설치/실행을 하지 않았어요.",
+      "authorOverviewMeaningMatches": true,
+      "sourceFactsVersusHBDesignKeptDistinct": true,
+      "manualUniqueRecomputed": 5,
+      "manualInventoryMatches": true,
+      "textSegmentsChecked": 26,
+      "missingTextSegments": [],
+      "blocks": {
+        "paragraph": 10,
+        "header": 2,
+        "document_list": 5,
+        "image": 2,
+        "callout": 1,
+        "enhanced_list": 1
+      },
+      "additionalRelations": [],
+      "legacyNonManual": [],
+      "hidden": [],
+      "paging": [],
+      "draft": [],
+      "pending": [
+        "본문 이미지2개의 실제 픽셀/UI",
+        "Fab 제품 문서/catalog 및 sample full inventory",
+        "template/sample runtime·dependency·compatibility"
+      ],
+      "apiFamiliesPending": [
+        "templates/samples",
+        "Fab integration"
+      ],
+      "strictVerified": false
+    }
+  ],
+  "table": {
+    "root": "UR018-03",
+    "locator": "blocks[1]",
+    "rows": 3,
+    "cellContainers": 6,
+    "headerBlocks": 4,
+    "editorListItems": 8,
+    "externalListItems": 7,
+    "nestedParagraphs": 15,
+    "actualWholeTableRead": true
+  },
+  "include": {
+    "root": "UR018-16",
+    "locator": "blocks[0].blocks[0:2]",
+    "type": "include",
+    "nestedBlocks": 2,
+    "allParagraphs": true,
+    "actualWholeNestedTextRead": true
+  },
+  "imageChecks": [
+    {
+      "root": "UR018-12",
+      "locator": "blocks[5]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/7521f434-1d0d-4c13-8535-4c0b69938920?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-5.http-error",
+        "sha256": "c60ba781665f0af4d5ea95c38e06e15167c263a9684aba07ec68c47fccb85b4b"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[9]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/028f0e14-7d3e-4cb3-ac38-ca09023b7507?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 4,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-9.http-error",
+        "sha256": "cd84e1a1e68b99dbda38dd035736d099693fafe7483f661baccf76dc829c75f2"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[13]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/b7d89dd5-09b2-47b4-aad7-b002e6640374?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 4,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-13.http-error",
+        "sha256": "9daad0f3898c5100b6ec476268b22a7cb37204a8e83d5ec6ecdb0a86631c2fa6"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[17]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/e2f2ae09-2dc5-4809-b526-df2309d33f54?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-17.http-error",
+        "sha256": "39ebc438c13ef3c39d52534b9415df542ded07b02c1c72183d8d7d00e7ebbccf"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[21]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/60e14f78-0cf9-487e-8a47-1f79d4507956?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-21.http-error",
+        "sha256": "df99886999964527600326c5ca5869e9df486727ab1233380dd3cbd81a7432b7"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[29]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/856dd8bf-c43c-4904-aaf7-91917f28882b?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-29.http-error",
+        "sha256": "04ed6cefd00518f53e1ce8b2a630c7378b0c23f46330dbc1e5f8dc668da282b8"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[33]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/c6e72212-a44f-450a-83b8-90bf356cc09a?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 4,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-33.http-error",
+        "sha256": "2cc33a9ec81e826f3472f1a964a0bddf3fcdce2cf9c17aac7f87e51a10dd0028"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-12",
+      "locator": "blocks[37]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/1a29b423-d884-46ea-b623-ac82696a37f4?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 4,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-37.http-error",
+        "sha256": "ade186b4280a70f8273842c9a8b0fd1ca5ed1f5538619544418ea6d4b4d81d4d"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-21",
+      "locator": "blocks[6]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/3bb04e68-29e0-4878-97ec-15619df8cb6e?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.blocks-6.http-error",
+        "sha256": "ada320fd658c1c17ceb7a43a33befef632790ca9ee8e7ad5eaaea4bb59c6d954"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    },
+    {
+      "root": "UR018-21",
+      "locator": "blocks[12]",
+      "originalUrl": "https://dev.epicgames.com/community/api/documentation/image/ffebb86c-ae50-499f-9ab8-845d64dd4e41?resizing_type=fit",
+      "sourceDOMURLPresent": true,
+      "allAssociatedURLAttributesEqualPublished": true,
+      "associatedURLAttributeCount": 5,
+      "providedSameAPIEndpoint": true,
+      "SSRImageMetadataEqualPublished": true,
+      "httpStatusRecorded": 403,
+      "httpHeaderRecordingOnlyNotFreshRequest": true,
+      "errorBodyEvidence": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.blocks-12.http-error",
+        "sha256": "855f83b566c5a605b8ad5c0aebe7ede9db7695f44e73e4646b73a1782ae4b13d"
+      },
+      "errorBodyHashEqualsRecorded": true,
+      "errorBodyIsHTML": true,
+      "errorBodyNotPNG": true,
+      "errorBodyLengthEqualsRecorded": true,
+      "pixelsRead": 0,
+      "unread": true
+    }
+  ],
+  "video": {
+    "officialBlockEqualsReadMetadata": true,
+    "watchSource": {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/mobile-video-watch.source.html",
+      "sha256": "64cb02b5a5b68b880f2eb01b8e3f2b9563322432b5531478c1bc68bd79740f05"
+    },
+    "watchHashEqualsPublished": true,
+    "watchReadScope": "selected ytInitialPlayerResponse videoDetails/caption track metadata, not entire 1.3MB watch HTML",
+    "playerResponseStart": 713343,
+    "playerResponseCharacters": 34550,
+    "videoMetadata": {
+      "videoId": "nZlVkI3j7Xs",
+      "title": "Unreal for Mobile: Building AAA Cross-Platform Open Worlds | Unreal Fest 2024",
+      "author": "Unreal Engine",
+      "channelId": "UCBobmJyzsJ6Ll7UbfhI4iwQ",
+      "lengthSeconds": "2584",
+      "isLiveContent": false
+    },
+    "videoMetadataEqualsPublished": true,
+    "captionTrackMetadata": [
+      {
+        "name": {
+          "simpleText": "영어 (자동 생성됨)"
+        },
+        "vssId": "a.en",
+        "languageCode": "en",
+        "kind": "asr",
+        "isTranslatable": true,
+        "trackName": ""
+      }
+    ],
+    "captionMetadataEqualsPublished": true,
+    "ASRTrackCount": 1,
+    "noTrackBodyFetch": true,
+    "wholeVideoRead": false,
+    "transcriptBodyRead": false,
+    "captionTrackBodyRead": false,
+    "firstUnpreservedHTTPAttemptCannotIndependentlyVerify": true
+  },
+  "selectedClient": {
+    "source": {
+      "file": "native/build/reference-cache/unreal/app.raw.js",
+      "sha256": "97523c7a4f440a13fbb26e8b2e6465d16a61370b4fed7671ea65fce596c7288e"
+    },
+    "hashEqualsPublished": true,
+    "selectedExcerpts": [
+      {
+        "needle": "this.filteredBlockDocuments",
+        "recordedOffset": 461858,
+        "needleOffsetRecomputed": 461858,
+        "needleOffsetEqual": true,
+        "entireSelectedExcerptOccursInRawJS": true,
+        "excerptStart": 461638,
+        "readScope": "entire selected excerpt only, not full client JS"
+      },
+      {
+        "needle": "table_of_content.json",
+        "recordedOffset": 311006,
+        "needleOffsetRecomputed": 311006,
+        "needleOffsetEqual": true,
+        "entireSelectedExcerptOccursInRawJS": true,
+        "excerptStart": 310786,
+        "readScope": "entire selected excerpt only, not full client JS"
+      },
+      {
+        "needle": "showUnpublishedEntries",
+        "recordedOffset": 684167,
+        "needleOffsetRecomputed": 684167,
+        "needleOffsetEqual": true,
+        "entireSelectedExcerptOccursInRawJS": true,
+        "excerptStart": 683947,
+        "readScope": "entire selected excerpt only, not full client JS"
+      }
+    ],
+    "wholeClientRead": false,
+    "fullSiteClosureProved": false
+  },
+  "metadataChecks": [
+    {
+      "root": "UR018-00",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-01",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-02",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-03",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-04",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-05",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-06",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-07",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-08",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-09",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-10",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-11",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-12",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-13",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-14",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-15",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-16",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-17",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-18",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-19",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-20",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    },
+    {
+      "root": "UR018-21",
+      "locale": "en-us",
+      "applicationVersions": [
+        "5.5",
+        "5.6",
+        "5.7",
+        "5.8"
+      ],
+      "metadataMatchesPublished": true,
+      "canonicalHasVersion": false
+    }
+  ],
+  "homeURLsEqual21DomainRoots": true,
+  "tokens": [
+    {
+      "root": "UR018-07",
+      "raw": "%creating-visual-effects/getting-started-in-niagara:topic%",
+      "locator": "blocks[0].content_html"
+    },
+    {
+      "root": "UR018-09",
+      "raw": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Overview:Topic%",
+      "locator": "blocks[0].content_html"
+    },
+    {
+      "root": "UR018-09",
+      "raw": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Scripting:Topic%",
+      "locator": "blocks[0].content_html"
+    },
+    {
+      "root": "UR018-09",
+      "raw": "%programming-and-scripting/blueprints-visual-scripting/BP_HowTo:Topic%",
+      "locator": "blocks[0].content_html"
+    },
+    {
+      "root": "UR018-15",
+      "raw": "%creating-user-interfaces/accessibility:topic%",
+      "locator": "blocks[0].content_html"
+    }
+  ],
+  "relativeReferences": [
+    {
+      "rawUrl": "building-virtual-worlds/lighting-and-shadows",
+      "locator": "blocks[1].content/html",
+      "root": "UR018-05",
+      "classification": "unresolved_relative",
+      "normalized": null
+    },
+    {
+      "rawUrl": "making-interactive-experiences\\artificial-intelligence\\mass-entity",
+      "locator": "blocks[1].items[1][0].content/html",
+      "root": "UR018-11",
+      "classification": "unresolved_relative",
+      "normalized": null
+    },
+    {
+      "rawUrl": "making-interactive-experiences\\artificial-intelligence\\navigation",
+      "locator": "blocks[1].items[1][0].content/html",
+      "root": "UR018-11",
+      "classification": "unresolved_relative",
+      "normalized": null
+    },
+    {
+      "rawUrl": "making-interactive-experiences\\artificial-intelligence\\ai-perception",
+      "locator": "blocks[1].items[1][0].content/html",
+      "root": "UR018-11",
+      "classification": "unresolved_relative",
+      "normalized": null
+    }
+  ],
+  "publisher404": [
+    {
+      "rawUrl": "https://dev.epicgames.com/documentation/404",
+      "locator": "blocks[0].content_html/html",
+      "root": "UR018-10",
+      "classification": "publisher404",
+      "normalized": "https://dev.epicgames.com/documentation/404?application_version=5.8"
+    }
+  ],
+  "additionalRelations": [
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/actors-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/ai-debugging-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/behavior-trees-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/cameras-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/chaos-destruction-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/cloth-simulation-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/collision-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/controllers-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/environment-query-system-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/game-features-and-modular-gameplay-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/game-mode-and-game-state-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-timers-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/hair-physics-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/physical-materials-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/physics-bodies-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/smart-objects-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/state-tree-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/traces-with-raycasts-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/user-interfaces-and-huds-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-11",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/vehicles-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-13",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/animation-blueprints-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-13",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/control-rig-editor-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    },
+    {
+      "root": "UR018-13",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-assets-in-unreal-engine?application_version=5.8",
+      "inEarlier16216": true
+    }
+  ],
+  "baseline": {
+    "previousRequests": 59,
+    "previousActualBodies": 54,
+    "previousShells": 5,
+    "previousCandidates": 16216
+  },
+  "pending": {
+    "manualChildURLs": [
+      "https://dev.epicgames.com/documentation/unreal-engine/accessing-logs-and-crash-reports-on-ios-and-tvos-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/actor-editor-context-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/actor-mobility-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/actor-snapping-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/actors-and-geometry-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/adding-components-to-an-actor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/advanced-search-syntax-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/ai-debugging-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/alembic-file-importer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/anatomy-of-a-blueprint-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-development-basics-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-development-requirements-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-file-server-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-multiview-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-quick-start?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/android-single-instance-service-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/animation-blueprints-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/animation-budget-allocator-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/anti-aliasing-and-upscaling-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/artificial-intelligence-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/artist-quick-start-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/asset-management-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/asset-metadata-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/asset-redirectors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/asynccompute-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-analysis-and-visualization-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-debugging-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-gameplay-volumes-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-memory-management-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-mixing-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audio-volume-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/audiolink?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/automated-android-sdk-ndk-and-jdk-setup-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/automating-platform-and-sdk-management-with-unreal-turnkey?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/automation-test-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/basic-components-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/behavior-trees-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/beta-features?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/bink-video-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-best-practices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-communication-usage-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-debugger-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-editor-cheat-sheet-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-interface-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-namespaces-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/blueprint-splines-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/build-operations-cooking-packaging-deploying-and-running-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/building-packaging-and-publishing-unreal-engine-projects-for-ios-tvos-and-ipados?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/building-your-ui-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/camera-lens-calibration-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cameras-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/changing-the-default-level-of-an-unreal-engine-project?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/chaos-destruction-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cinematics-and-movie-making-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/class-creation-basics-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/class-viewer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cloth-simulation-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/collaboration-and-version-control-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/collision-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/collisions-in-niagara-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/color-correct-regions-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/color-management-with-opencolorio-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/color-picker-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/common-memory-and-cpu-performance-considerations-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/connecting-to-and-managing-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/connecting-to-tvos-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/console-variables-editor?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/consolidating-assets-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/containers-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/content-browser-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/content-browser-interface-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/content-browser-settings-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/content-examples-sample-project-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/control-rig-editor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/control-rig-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/controllers-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/converting-a-project-to-an-unreal-engine-template?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cooking-content-and-creating-chunks-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cooking-content-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/coordinate-system-and-spaces-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/cplusplus-cooking-development-reference?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/crash-reporting-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-a-new-global-shader-as-a-plugin-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-a-new-project-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-and-using-lods-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-bundled-pso-caches-for-android-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-custom-modules-in-niagara-effects-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/customizing-device-profiles-and-scalability-in-unreal-engine-projects-for-android?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/customizing-keyboard-shortcuts-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/customizing-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/data-channels-in-niagara-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/data-driven-gameplay-elements-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/datasmith-plugins-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-and-optimization-in-niagara-effects-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-for-android-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-ios-projects-with-xcode-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-unreal-engine-projects-for-android-in-visual-studio-with-the-agde-plugin?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-unreal-engine-projects-for-android-using-android-studio?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/debugging-unreal-engine-projects-with-virtual-devices-using-the-android-emulator?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/delegates-and-lambda-functions-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/deploying-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/design-user-interfaces-for-xr-experiences-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/developers-folder-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/developing-for-handheld-augmented-reality-experiences-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/developing-for-headmounted-experiences-with-openxr-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/developing-guides-for-android-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/development-tools-for-mobile-applications?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/displaying-your-ui-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/dmx-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/engine-feature-examples-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/environment-query-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/environmental-light-with-fog-clouds-sky-and-atmosphere-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/event-dispatchers-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/experimental-features?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/external-audio-control-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/fab-window-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/fbx-content-pipeline?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/features-and-properties-of-lights-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/filters-and-collections-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/finding-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/forward-shading-renderer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/frame-pacing-for-mobile-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/free-epic-games-content-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/fshadercache-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/game-features-and-modular-gameplay-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/game-mode-and-game-state-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-ability-system-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-camera-system?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-classes-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-targeting-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-timers-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gauntlet-automation-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/generating-lightmap-uvs-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/geographically-accurate-sun-positioning-tool-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/georeferencing-a-level-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/getting-started-and-setup-for-android-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-xr-development-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/global-asset-picker-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/global-illumination-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/gpudump-viewer-tool-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/graphics-programming-overview-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/grouping-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/hair-physics-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/hair-rendering-and-simulation-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/hdri-backdrop-visualization-tool-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/heterogeneous-volumes-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/hierarchical-level-of-detail-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/horde-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-use-android-manifest-control-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-use-inapp-purchases-in-unreal-engine-projects-on-android?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-use-inapp-purchases-in-unreal-engine-projects-on-ios?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-use-unreal-insights-to-profile-android-games-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-use-ushell-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/importing-assets-directly-into-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/in-camera-vfx-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/input-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/install-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/interchange-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/introduction-to-blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/introduction-to-performance-profiling-and-configuration-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/ios-ipados-and-tvos-development-requirements-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/ios-ipados-tvos-quick-start-guide-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/landscape-materials-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/landscape-outdoor-terrain-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/large-world-coordinates-in-unreal-engine-5?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/large-world-coordinates-rendering-in-unreal-engine-5?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/launching-unreal-engine-projects-on-devices?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/level-designer-quick-start-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/level-editor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/level-streaming-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/lidar-point-cloud-plugin-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/light-types-and-their-mobility-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/lighting-the-environment-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/local-notifications-for-android-and-ios-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/localizing-content-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/localizing-plist-and-nslocalizedstring-in-an-ios-project-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/low-latency-frame-syncing-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/lowlevel-tests-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/lumen-global-illumination-and-reflections-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/lumen-technical-details-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/making-interactive-xr-experiences-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/managing-multiple-levels-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/manual-android-sdk-setup-with-android-studio-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/materialx-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/media-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/media-viewer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/merging-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mesh-distance-fields-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mesh-drawing-pipeline-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/metadata-specifiers-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/migrating-assets-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mixed-reality-capture-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mobile-feature-levels-and-rendering-modes-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mobile-platform-integrations-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mobile-rendering-and-shading-modes-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mobile-rendering-features-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/modeling-and-geometry-scripting-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/motion-design-cloners-and-effectors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/motion-design-quickstart-guide-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mover-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/multi-user-editing-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/music-systems-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/mutable-skeletal-mesh-generation-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/nanite-virtualized-geometry-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/networking-and-multiplayer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/neural-network-engine-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/niagara-fluids-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/niagara-lightweight-emitters?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/one-file-per-actor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/online-subsystems-and-services-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/open-world-tools-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/opening-an-existing-unreal-engine-project?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/operator-stack-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimization-and-development-best-practices-for-mobile-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimization-guides-for-android-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimizing-and-debugging-projects-for-realtime-rendering-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimizing-packaged-game-size-for-ios-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimizing-rendering-with-pso-caches-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/optimizing-user-interfaces-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/orthographic-camera-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/overview-of-shaders-in-plugins-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/packaging-and-publishing-android-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/packaging-your-project?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/panoramic-capture-tool-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/paper-2d-overview-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/parallel-rendering-overview-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/path-tracer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/performance-and-optimization-for-mobile-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/performance-guidelines-for-mobile-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/physical-materials-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/physically-based-materials-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/physics-bodies-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/physics-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/pixel-streaming-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/placing-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/playing-and-simulating-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/plugins-for-ui-development-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/plugins-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/possessing-pawns-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/post-process-effects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/preparing-unreal-engine-projects-for-release?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/procedural-content-generation-framework-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/professional-video-io-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/profile-android-projects-with-platformnative-tools?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/profiling-ios-projects-with-platformnative-tools?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/programming-with-cpp-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/property-matrix-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/quick-start-guide-for-blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/ray-tracing-and-path-tracing-features-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/realtime-compositing-with-composure-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/recovery-hub-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reducing-android-binary-size-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reference-for-niagara-effects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reference-viewer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reflection-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reflections-environment-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reimporting-assets-automatically-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/remote-windows-deployment-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/render-dependency-graph-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/render-resource-viewer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/rendering-components-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/rendering-high-quality-frames-with-movie-render-queue-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/rendering-to-multiple-displays-with-ndisplay-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/resources-for-scaling-your-unreal-engine-team?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/respawning-a-player-character?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/reverb-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sample-game-projects-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/saving-and-loading-your-game-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/scene-state-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/scripting-and-automating-the-unreal-editor?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/selecting-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/semantic-search-in-unreal-enigne?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/set-up-ios-ipados-and-tvos-devices-for-development-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-a-game-mode-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-an-unreal-engine-project-for-mobile-platforms?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-android-launch-screens-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-android-virtual-keyboard-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-character-movement?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-device-profiles-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-ios-launch-storyboards-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-ios-tvos-and-ipados-provisioning-profiles-and-signing-certificates-for-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-rundown-server-for-motion-design-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-tv-safe-zone-debugging-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-android-device-for-developing-applications-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/shader-development-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/shaders-in-plugins-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/shadowing-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sharing-xr-experiences-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/significance-manager-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/signing-android-projects-for-release-on-the-google-play-store-with-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-animation-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-assets-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-rendering-paths-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/slate-user-interface-programming-framework-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/smart-objects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sound-sources-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/soundscape-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sources-panel-reference-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sparse-volume-textures-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/spatialization-and-sound-attenuation-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/specialized-blueprint-visual-scripting-node-groups-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/stage-monitor-with-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/stat-commands-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/state-tree-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/static-meshes?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/submixes-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/substrate-materials-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/sun-and-sky-actor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/supported-xr-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/switchboard-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/taking-screenshots-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/temporal-super-resolution-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/test-on-mac-with-designed-for-ipad-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/testing-and-debugging-user-interfaces-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/text-formatting-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/texture-share-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/texture-streaming-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/textures-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/the-gl-transmission-format-gltf-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/the-media-plate-actor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/third-party-rendering-tools-and-plugins-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/threaded-rendering-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/timed-data-monitor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/tools-and-editors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/traces-with-raycasts-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/transforming-actors-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/tutorials-and-examples-for-user-interfaces-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/tutorials-for-niagara-effects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/umg-best-practices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/umg-editor-reference-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/understanding-lightmapping-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/units-of-measurement-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/universal-scene-description-usd-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-editor-interface?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-editor-preferences?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-migration-guide?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-actors-reference?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-directory-structure?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-materials?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-stats-system-overview?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-templates-reference?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-terminology?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-insights-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/updating-projects-to-newer-versions-of-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/user-interfaces-and-huds-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-achievements-in-mobile-applications-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-ad-mob-for-in-game-ads-on-android-with-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-clang-sanitizers-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-derived-data-cache-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-fonts-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-google-play-achievements-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-google-play-asset-delivery-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-google-play-services-leaderboards-in-unreal-engine-projects?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-in-game-ads-in-unreal-engine-projects-on-mobile-platforms?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-inapp-purchases-in-unreal-engine-projects-for-mobile-devices?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-lumen-global-illumination-on-mobile-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-mesh-auto-instancing-on-mobile-devices-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-mobile-fsr-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-mobile-service-leaderboards-in-unreal-engine-projects-for-mobile-devices?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-multi-process-cooking-for-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-oodle-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-preview-platform-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-renderdoc-with-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-speedtree-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-android-configuration-rules-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-android-vulkan-mobile-renderer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-autosdk-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-desktop-renderer-on-mobile-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-gameplay-debugger-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-mobile-deferred-shading-mode-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-mobile-previewer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-onhit-event?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-project-launcher-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-unreal-engine-build-pipeline?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-unreal-frontend-tool?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-the-unreal-plugin-language-for-mobile-projects-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-unreal-engine-remote-with-remote-session?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/using-unreal-engine-with-autodesk-shotgrid?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/uv-editor-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/vehicles-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/virtual-assets-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/virtual-shadow-maps-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/virtual-texturing-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/visibility-and-occlusion-culling-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/visual-logger-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/water-system-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/widget-type-reference-for-umg-ui-designer-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/windows-arm64-support-in-unreal-engine-5-8?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-color-space-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-on-ios-projects-using-a-windows-machine-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-assets-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-cooked-content-in-the-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-ios-input-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-levels-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-pcg-and-llms-using-unreal-mcp-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-plugins-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-projects-and-templates-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/working-with-scene-variants-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/world-settings-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/your-first-graphic-with-motion-design-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/zen-loader-in-unreal-engine?application_version=5.8",
+      "https://dev.epicgames.com/documentation/unreal-engine/zen-storage-server-for-unreal-engine?application_version=5.8"
+    ],
+    "allDescendantBodies": true,
+    "apiFamilies": [
+      "C++ types/members/overloads",
+      "Blueprint actions/nodes/pins",
+      "Python contracts/inheritance",
+      "Editor API",
+      "official plugins/PluginIndex",
+      "NodeReference/WebAPI",
+      "official tools/services/Fab catalog/product"
+    ],
+    "topicTokens": [
+      {
+        "root": "UR018-07",
+        "raw": "%creating-visual-effects/getting-started-in-niagara:topic%",
+        "locator": "blocks[0].content_html"
+      },
+      {
+        "root": "UR018-09",
+        "raw": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Overview:Topic%",
+        "locator": "blocks[0].content_html"
+      },
+      {
+        "root": "UR018-09",
+        "raw": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Scripting:Topic%",
+        "locator": "blocks[0].content_html"
+      },
+      {
+        "root": "UR018-09",
+        "raw": "%programming-and-scripting/blueprints-visual-scripting/BP_HowTo:Topic%",
+        "locator": "blocks[0].content_html"
+      },
+      {
+        "root": "UR018-15",
+        "raw": "%creating-user-interfaces/accessibility:topic%",
+        "locator": "blocks[0].content_html"
+      }
+    ],
+    "relativeReferences": [
+      {
+        "rawUrl": "building-virtual-worlds/lighting-and-shadows",
+        "locator": "blocks[1].content/html",
+        "root": "UR018-05",
+        "classification": "unresolved_relative",
+        "normalized": null
+      },
+      {
+        "rawUrl": "making-interactive-experiences\\artificial-intelligence\\mass-entity",
+        "locator": "blocks[1].items[1][0].content/html",
+        "root": "UR018-11",
+        "classification": "unresolved_relative",
+        "normalized": null
+      },
+      {
+        "rawUrl": "making-interactive-experiences\\artificial-intelligence\\navigation",
+        "locator": "blocks[1].items[1][0].content/html",
+        "root": "UR018-11",
+        "classification": "unresolved_relative",
+        "normalized": null
+      },
+      {
+        "rawUrl": "making-interactive-experiences\\artificial-intelligence\\ai-perception",
+        "locator": "blocks[1].items[1][0].content/html",
+        "root": "UR018-11",
+        "classification": "unresolved_relative",
+        "normalized": null
+      }
+    ],
+    "publisher404Replacement": [
+      {
+        "rawUrl": "https://dev.epicgames.com/documentation/404",
+        "locator": "blocks[0].content_html/html",
+        "root": "UR018-10",
+        "classification": "publisher404",
+        "normalized": "https://dev.epicgames.com/documentation/404?application_version=5.8"
+      }
+    ],
+    "media": {
+      "imagesUnread": 10,
+      "externalVideoUnread": 1,
+      "thumbnailBannerAndSiteMediaInventory": "unknown"
+    },
+    "globalDenominators": {
+      "entireManualPages": "unknown",
+      "allCppTypesMembersOverloads": "unknown",
+      "allBlueprintNodes": "unknown",
+      "allPythonContracts": "unknown",
+      "allNodeReference": "unknown",
+      "allPluginsToolsServices": "unknown"
+    },
+    "fullTOCDiscoveryUnknown": true,
+    "dynamicGUIOrRoleVerification": false
+  },
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNREAL_ROOT_COVERAGE_BODY_VERIFICATION_018.md",
+      "sha256": "52257d029d83b57134bd594801cd1b6de6104b8377edb54f1c4cee8082382d8d"
+    },
+    {
+      "file": "docs/research/UNREAL_ROOT_COVERAGE_BODY_018.md",
+      "sha256": "bba052e14d3c441fabd17514e2dbd42617bb738029a2699fbb20b9b78b04ff22"
+    },
+    {
+      "file": "docs/research/unreal-root-coverage-body-018.json",
+      "sha256": "e8be82bd3bb8c81d31f0c8c474332932d3a97647cebce4cbf16836da41bdf92d"
+    },
+    {
+      "file": "docs/research/CORPUS_MANIFEST.json",
+      "sha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888"
+    },
+    {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76"
+    },
+    {
+      "file": "AGENTS.md",
+      "sha256": "5ed4fba7988853850cb3f28e4700201a368b8d6cb24e8599ec9d8accafc24f42"
+    },
+    {
+      "file": "docs/reference-index/unreal-sections.json",
+      "sha256": "7236e6deb820b60a92f70a97fa29d1a047ab41deeeb67f3777e90007a1416928"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/verify-018/independent-mechanical-018.json",
+      "sha256": "e88e8944e15d34f1afb6243d63c2517998af2d2c02c6a8ccbf5c834f5fc9c9b1"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/verify-018/independent-details-018.json",
+      "sha256": "7af5d82e54f010c0b0a6e166617928f36f960a1871a586f0a674f41aecae0f54"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/verify018.py",
+      "sha256": "7882b26d5b16ed11f354c1d53bae71d797af66e4349c8957b6786db3cf72c067"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-package-catalog-batch-017/verify018_details.py",
+      "sha256": "3c115b56d4bdea0d41d0dc29285eacc5345fe187ea733c4295bbd8b8a8d1d324"
+    },
+    {
+      "file": "docs/research/UNREAL_CORPUS_RESEARCH.md",
+      "sha256": "462918fa7e5a3c4aa92be1f935693141cdb43c0936ce794bbc1d7a1cec5db06d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/extracted-roots.json",
+      "sha256": "1412e1bf4a808eee3dc1ecf71c24f0c7ab62b420ce2bbb4932b43725cf461540"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/client-structure.json",
+      "sha256": "82769d96cd9ce0634f45b9d63fb00d59f01861e06ace615b5e310004bac51249"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/extract_roots.py",
+      "sha256": "36951b78447cd8ee9683a72f9f8654495690fc149f38f20d07688efbb38fa4ac"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-fetch.json",
+      "sha256": "f27aa16ec22bbf6ca5a1a52d0c1370afd1981900f9bd3e4a0ef7ef29b1604cc2"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/video-inspection.json",
+      "sha256": "c820091fa7f2a623165ea35240f28b65f707da0b0c4fe6e9ef54bb6e255c02a3"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-provided-urls.json",
+      "sha256": "035e49a3b4195177535e9d48b0a56334bb05edda884b25b41c47e9376b23ef25"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.source.html",
+      "sha256": "d039438e755ccaf1d3b6ba0d88d8beac0f327b1a06699f71bd499822105c1ca5"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.ssr.json",
+      "sha256": "83aad2b70a5892d629cd068b67b526ea01e88676b471640a611394b586fd6921"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.read.txt",
+      "sha256": "1e049a231f207f5c2205efc4ba1b8b8c1966c891d0ae9c816afd82b3013c0dca"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.discovery.json",
+      "sha256": "0a51f8cc0e91b9af3df9149622925dcd3bbe6e31916cba9f93963437fc25d42e"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.source.html",
+      "sha256": "8b5dabfd44fdaabd647ce3ef30b60b3151c56502b7a62041ae205d3f2240c601"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.ssr.json",
+      "sha256": "04041a6333e0e68c30d2af7f28721fbf190ae028519216968d5e9d20c122c258"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.read.txt",
+      "sha256": "a6e7bbefbafd09716d4255d453f90d37a931f1ea96b4fb7432464bd4a7d7784a"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.discovery.json",
+      "sha256": "21ef03ead7228a5927b08d6530dc786c8c1887d16ee4efb9a0f69d3eca5c9e82"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.source.html",
+      "sha256": "cf912db1ed91b262a1c95c6a513b5615f0df95f84f77a5204d476a605ae9eb54"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.ssr.json",
+      "sha256": "1f392a3962f953b98c99e8ce3ab45d3b403091d7a3193199775c75dd564c648f"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.read.txt",
+      "sha256": "7c5d637a95d8b21f535d4e6e09fe1c03251402f50ffc48a5477a8a47964c9238"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.discovery.json",
+      "sha256": "6d2932f935ab9b5f25583d6b8ad506eb996817013f2365487b8f0a3fca86bde6"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.source.html",
+      "sha256": "7ece2f69a2907a6a6a425f53a0b2f345c3b3103544797fb0d9af194235603141"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.ssr.json",
+      "sha256": "485728e20921f6daf50f97655b9976f0368f5acf2f266a18eef2e12080042ce7"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.read.txt",
+      "sha256": "36218b1cf5ef341b0caae7fd2b62b08c6b05890874626ea0242affae5441ba6b"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.discovery.json",
+      "sha256": "025b4104b564e560959f983d680b62a79e45b187d57354531abf5fac50991322"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.source.html",
+      "sha256": "f799c496752191c902ad74c96cf970eddf751b76a7c3d7de9272b0933a21f563"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.ssr.json",
+      "sha256": "5f67d1e565b7c8e292e61202bfa84e7a2b20d2faa782b17f7098748c3ae42441"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.read.txt",
+      "sha256": "6d1d40f93945ed5c28e85f02205741eb1b5cefd519fd40f3b05037d88e4044cd"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.discovery.json",
+      "sha256": "046c128d7f66530fa061bf0a676c7cf70dd6a8ec937b6d9b17688a9a7690a6bc"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.source.html",
+      "sha256": "e747e4a2bbe5f13abc803b5ba8504fba7557e17de2a5883f8d6ce4290bba7487"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.ssr.json",
+      "sha256": "cbf6fdefd6e6940029763171432c88343a3aa4689bfcb0409bacc5270ff6708d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.read.txt",
+      "sha256": "dbb84457191ee0c700482bdd7ed296ef1687e4165660af8e80713aa6db71a330"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.discovery.json",
+      "sha256": "5e12bb6950d6f87d1741ed935b05fed44f0a5ba27e6e09dff9cd24ba384b86de"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.source.html",
+      "sha256": "4b904589d2d50398ff85cb79bf2ae165f202d6079efb9623e888c2899f2996ec"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.ssr.json",
+      "sha256": "b1a904e42af3b107a71baf3a8008a6f7783a704aed8dddfd7498cb6490e30de3"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.read.txt",
+      "sha256": "91fc3ea9ba6d80a543ccb04874e04eefacf98bd5ccdd7be61b177904cf9834e5"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.discovery.json",
+      "sha256": "9f4160bedd0cf3dba75e771f0e4ed50aa9cabb5ce43204a933c8d76e5ecab82a"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.source.html",
+      "sha256": "02f54698c3d152637a1efcbf63ce065b364ac0b465c48cf8aa90ed5934aad952"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.ssr.json",
+      "sha256": "b6f22bba70ddedb03687d7ed2ab562e0b42bb0e595a636a1195945c5c0d1ee64"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.read.txt",
+      "sha256": "76812438aa2d0cff797d181859a7c6071286167ba2bfe4ead6d8473d7a622857"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.discovery.json",
+      "sha256": "e6993cc1ae3e89d62dcce15b02e964697918382f78701c7055391257d12c9729"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.source.html",
+      "sha256": "ee9e9ef503877f1bea9b8fea283ff8b6706e3924cf5f79f82f04c119a1db51dd"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.ssr.json",
+      "sha256": "20b85f9ff7d7e3100a91ceb60dfe8d405b752c414a08c3282830ccbb541ce84e"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.read.txt",
+      "sha256": "089a65ba23410264ad2ce2f664b97c8cd1eb75e4c160124b2cf8fac02f5e1ae0"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.discovery.json",
+      "sha256": "af1b6a3058d03867a51dd75c277968765ecbc8227c99a5797fd3eaa57bd9a192"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.source.html",
+      "sha256": "79254a590c87def3a4f9b6bda9b48c88679ca69485159b0e457d302ce4b5530a"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.ssr.json",
+      "sha256": "a31c7839d88bb5f126fb1bbc5ebf82c3ae6c40423127698091bb4366a3e4be0b"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.read.txt",
+      "sha256": "a6f710b0d40ac3c5a2ed0cd5d9d028e460441d112a7432db6ac910a5e606a4a3"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.discovery.json",
+      "sha256": "fff41f0dd82e570213fa5c5dee7858b755cb46950da7952f06a5913b68016418"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.source.html",
+      "sha256": "507871a637891e49af1ed1a7bb480c16358e636d9cac72ac4ce9bf7017786243"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.ssr.json",
+      "sha256": "40f83fb7e8b2cb449b8022ba6d3ad5d5edb8bf94774e9bf8c74889afa94ed23d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.read.txt",
+      "sha256": "6b4eefe7c4b5a6c44562bea20f98fae4f58215e0ce2888fc9b080c3888419926"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.discovery.json",
+      "sha256": "abc5a8c9b915182457fb8d0b17f7e6d13636b717bb4f2f34e354419d9bf3be95"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.source.html",
+      "sha256": "34748a84e7ac4c49d76ca07aae4644f37faf8d2f338ef639ad5c8988b280e0f7"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.ssr.json",
+      "sha256": "67bc0667c50ff160478e4975d77f477cc1423f139aa16d2d8387af17acf91f80"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.read.txt",
+      "sha256": "f477f5748a7b2ead69198acd99c3c02616a7c182004a0cba961d0ddbffac8e39"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.discovery.json",
+      "sha256": "c89cf8be293c11cf096392a4e613bde59da941de47acce87ea6eb36460314987"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.source.html",
+      "sha256": "8c87cfaf75ee6d997319be46219360ee65c157eb03789c6457172934a8f41af4"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.ssr.json",
+      "sha256": "aa62ef19e6977d553180316b0c03ae9b8d6919e3fb4af8c85a6d0a6109fa1c4b"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.read.txt",
+      "sha256": "3e4340effc95a2abd44a43ad47c641ee52ec80246cdd0d6274f2c1ece834d8d6"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.discovery.json",
+      "sha256": "cb231223d40fffa435714819ce2e266a5cc41a801e2987253a7c085463738095"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.source.html",
+      "sha256": "909df3b62fac1c3a5f9eab842473d1ac99872ccb5de6adca3e8b7fb147e83e22"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.ssr.json",
+      "sha256": "3f2ff2fcde8ec2b250102b71a97bc075c487d412f28983786f5992a4b0bdb834"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.read.txt",
+      "sha256": "402aeb6b225f64a9b72e97443220a3333a1b03d10000a9c810fd8d8be17f18fd"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.discovery.json",
+      "sha256": "695044606876880340c6730c2625a1cfad1c69752eb38b9d69a217246773c08e"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.source.html",
+      "sha256": "419e329035ffdd106dad1c31baf9103d4f79cdd528db0c0f26ed413d270aa1d7"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.ssr.json",
+      "sha256": "412bec83b1ac804cb50bcae184a896a9406293991ca0c16fc3a2ad8dbb6d2a0b"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.read.txt",
+      "sha256": "529082998b53a25c4f218f9755b8384053195ef4d51ec83c15ef21bb9a128e3d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.discovery.json",
+      "sha256": "e542c566dd17e1d08331a382efc5cd75f53a1a82d43806be541a7ce5ae4ab151"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.source.html",
+      "sha256": "1b4b581f60f9ba1062775342eb645fcdcaa9d337094b85a168700ba67b0198be"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.ssr.json",
+      "sha256": "fdd0f8eb116042d020434e48c9f8e3265fe711396a22da9bf6193f19289ad1a2"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.read.txt",
+      "sha256": "624ca10fa3ad1e3ba3e2b3632e0e1d9a1c6cd527568747e8bf3a1148d3c3ecc9"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.discovery.json",
+      "sha256": "8c1d6bd4f26f78a7a79bb3d9e97b891c359b76592512e4c97e0941b6792d5a6d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.source.html",
+      "sha256": "1d5d7eb6f5070648e84e2634486cfb903ac19406a427c7c7f657c933140df164"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.ssr.json",
+      "sha256": "810c034a6a45bd42c8d6c8b1c69220e8bb3111f578f88c8fc9e36ec15fb997b2"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.read.txt",
+      "sha256": "0348e18b52b8fd271c77dcea829f0a0cae3ba4d11395e6e7b79efcd1144ecf8c"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.discovery.json",
+      "sha256": "6d7e69f91af8be68aeebc1f5a99473f1cb1028a3fe4259c34a0bb4da81957cd3"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.source.html",
+      "sha256": "c68b3ad1a22ba4964c8e7a12fbfeb3bec3a65699ed9686f254062964d28f138d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.ssr.json",
+      "sha256": "3521c2d61f2522438eb7a8348e7b0796d672556eb9c27f02f095d996ce981365"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.read.txt",
+      "sha256": "8c2a4c5678e78514683da8642e07a2858b20e3d42f7d226e233c6e4dc2e21d16"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.discovery.json",
+      "sha256": "60689f4b2fffb294e21a9c452fb8045945e774be2e2f15e6a803621b79b65bb7"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.source.html",
+      "sha256": "7aa1243a6ba64bc4ad779e2ee0714c5be26f9af5aa417499c69e710b801aef40"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.ssr.json",
+      "sha256": "55ab04f2f447a7c6c0c2bdc55ca4799b5229f7e6f23e27464191559e7b0ebbc0"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.read.txt",
+      "sha256": "57b18138d42796a8640ec3a2729f5881a00010df87eadf3a8d6323950846c6de"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.discovery.json",
+      "sha256": "f16b321a48d8fe8f9038ef5752bc7ac7655f247d186f494a01685f426ff19b68"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.source.html",
+      "sha256": "ccce686ff127c5e788d66e44db3087edf4a296780be8b325b23b0372b25528ab"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.ssr.json",
+      "sha256": "a518b9ac8fafe382b50263d139f1fb43f50f7b1d75c0f3f2a3f5ec7677ab1196"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.read.txt",
+      "sha256": "415968e24492b572f3a79af2332de24cc20a102cb16b3383f86188e453a8a540"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.discovery.json",
+      "sha256": "f6acd1df80ba43898b6a061fa84d1a49e9a2af9649e0382129ad126f1ceb7068"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.source.html",
+      "sha256": "d52ef50863c109a784d5198aadea9e9a29bdbfb6b7d28f8b37a9e4f506aab6d9"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.ssr.json",
+      "sha256": "750acb51fd12afbb73f153731568d1c4f51cd846e9cc4fe5b03315c4db4d915d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.read.txt",
+      "sha256": "2c992d24145fdce4d3723ec360780dd985842e17629586e1309ca92136f282c6"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.discovery.json",
+      "sha256": "54cbfb9a19754b0c65725ab16626b300734071fc5e709058337a1fbc5d5886b9"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.source.html",
+      "sha256": "11648bbaef5417acd3e8feaf3fc255dc5df688be2e41ac53c89bf2286fbb264e"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.ssr.json",
+      "sha256": "8c656758ade7b36ab13b53b7b299cf81cc478f34a815d5166c5f2164b7cf1edc"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.read.txt",
+      "sha256": "95ec4ccf1fd692900cab19888dc518907e3fae7e7f2a95c3e5e90abaa9e37605"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.discovery.json",
+      "sha256": "cdcd84465d1ba79793171ec29fed9330fce19b5aff2e79a884fa082686c7884c"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-5.http-error",
+      "sha256": "c60ba781665f0af4d5ea95c38e06e15167c263a9684aba07ec68c47fccb85b4b"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-9.http-error",
+      "sha256": "cd84e1a1e68b99dbda38dd035736d099693fafe7483f661baccf76dc829c75f2"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-13.http-error",
+      "sha256": "9daad0f3898c5100b6ec476268b22a7cb37204a8e83d5ec6ecdb0a86631c2fa6"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-17.http-error",
+      "sha256": "39ebc438c13ef3c39d52534b9415df542ded07b02c1c72183d8d7d00e7ebbccf"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-21.http-error",
+      "sha256": "df99886999964527600326c5ca5869e9df486727ab1233380dd3cbd81a7432b7"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-29.http-error",
+      "sha256": "04ed6cefd00518f53e1ce8b2a630c7378b0c23f46330dbc1e5f8dc668da282b8"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-33.http-error",
+      "sha256": "2cc33a9ec81e826f3472f1a964a0bddf3fcdce2cf9c17aac7f87e51a10dd0028"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.blocks-37.http-error",
+      "sha256": "ade186b4280a70f8273842c9a8b0fd1ca5ed1f5538619544418ea6d4b4d81d4d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.blocks-6.http-error",
+      "sha256": "ada320fd658c1c17ceb7a43a33befef632790ca9ee8e7ad5eaaea4bb59c6d954"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.blocks-12.http-error",
+      "sha256": "855f83b566c5a605b8ad5c0aebe7ede9db7695f44e73e4646b73a1782ae4b13d"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/mobile-video-watch.source.html",
+      "sha256": "64cb02b5a5b68b880f2eb01b8e3f2b9563322432b5531478c1bc68bd79740f05"
+    },
+    {
+      "file": "native/build/reference-cache/unreal/app.raw.js",
+      "sha256": "97523c7a4f440a13fbb26e8b2e6465d16a61370b4fed7671ea65fce596c7288e"
+    }
+  ]
+}

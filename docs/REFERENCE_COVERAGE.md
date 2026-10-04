@@ -1,5 +1,7 @@
 # HBEngine 공식 문서 조사와 구현 대조
 
+이 문서는 **연구 단계 이전의 부분 조사·구현 대조 이력**이다. 현재는 [전체 본문·API 분석 선행](research/RESEARCH_STATUS.md)을 진행하며, 아래 `overview/detail`을 새 원장의 읽기·분석·검증 상태로 직접 매핑하지 않는다. 과거 실행 검사를 이번 연구에서 다시 실행한 것으로 해석하지 않는다.
+
 2026-10-03 추가 대조: [빌드 프로필·독립 게임 실행](BUILD_PLAYER_RESEARCH.md). Unity 6000.0의 프로필/Scene List/창 설정 본문 3개와 Epic 패키징 UE 5.8 본문을 읽어 설정·장면 포함/순서·Build/Cook/Stage/Package/Run·진단/취소를 대조했다. 현재 Windows x64 Game.exe는 Win32/WebView2·Node·Three/WebGL2·Rapier와 사전 빌드 C++ worker를 사용한다. cook/압축/chunk·installer·다중 플랫폼·DX11/HLSL은 추가 제작 대상으로 유지한다.
 
 2026-10-03 추가 대조: [충돌 형상 제작/실행](COLLISION_GEOMETRY_RESEARCH.md). Unity Mesh/Polygon2D/Edge2D/편집 조작과 Epic simple/complex·편집 자동화 본문, Rapier의 Shapes/Mass를 별도 세부 기록으로 연결했다. 실제 hull/삼각형/오목 경로/선분과 사람/AI/BP/C++ 동작을 검증했다. 다중 convex decomposition·UCX/LOD collision·Composite/effector·edge radius/adjacent normal·레이어 override 세부 조합은 해당 연구 표의 추가 항목으로 유지한다.

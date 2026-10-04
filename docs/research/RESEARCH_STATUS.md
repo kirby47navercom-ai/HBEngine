@@ -4,13 +4,13 @@
 
 ## 현재 실제 기록
 
-원장의 **165,123개 source별 URL identity**는 발견한 주소예요. 서로 다른 공식 host의 별칭·동일 본문을 대조하기 전이라 전체 고유 문서 분모가 아니에요. 별도 발견한 다른 Unity 판본 188,740개 주소도 캐시에 남겨 추가/변경/폐기 계약을 조사해야 해요. 현재 API/overload·모듈·package/plugin·media 전체 분모는 미확정이며 완료율은 계산하지 않아요.
+최종 실제 gate snapshot `gate-2026-10-04-019.json`(UTC2026-10-04T07:20:56.435Z, manifest SHA256 `61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888`) 기준으로 등록 원천은 **18개**, 원장의 **168,940개 source별 URL identity**는 발견한 주소예요. 013–016 당시 13개 원천/165,123개 기록에서 새 보조 원천 205개와 package index 3,612개 발견을 추가했어요. 서로 다른 공식 host의 별칭·동일 본문을 대조하기 전이라 전체 고유 문서 분모가 아니에요. 별도 발견한 다른 Unity 판본 188,740개 주소도 캐시에 남겨 추가/변경/폐기 계약을 조사해야 해요. 현재 API/overload·모듈·package/plugin·media 전체 분모는 미확정이며 완료율은 계산하지 않아요.
 
 | source | 발견 목록 주소 | 실제 body snapshot | 원장 의미 분석 이상 | 독립 verified |
 | --- | ---: | ---: | ---: | ---: |
 | Unity 6000.0 기존 Manual | 3,122 | 3,119 | 6 | 2 |
 | Unity 6000.0 기존 Scripting API | 31,710 | 31,706 | 9 | 0 |
-| Unity Packages | 59,261 | 0 | 0 | 0 |
+| Unity Packages | 62,873 | 0 | 0 | 0 |
 | Unity 제품·서비스 포털 | 8,599 | 0 | 0 | 0 |
 | Unity 서비스 REST/CLI 입구 | 26 | 0 | 0 | 0 |
 | Unity 6000.0 새 Manual 포털 | 3,123 | 0 | 0 | 0 |
@@ -21,6 +21,11 @@
 | Unreal 5.8 Python API | 11,678 | 2 | 0 | 0 |
 | Unreal Node Reference | 미확정 | 0 | 0 | 0 |
 | Unreal WebAPI | 미확정 | 0 | 0 | 0 |
+| Android 플랫폼 guide | 117 | 0 | 0 | 0 |
+| Android 플랫폼 API | 67 | 0 | 0 | 0 |
+| Godot 4.5 모바일 에디터 보조 | 10 | 0 | 0 | 0 |
+| Apple 플랫폼 보조 | 4 | 0 | 0 | 0 |
+| 공식 플랫폼 ABI 사양 | 7 | 0 | 0 | 0 |
 
 body snapshot 열은 `fetched/body_reviewed/analyzed/verified` 합계예요. 단지 ZIP/HTML이 존재하는 수와 달라요. 분석 이상 열에는 verified도 포함해요. package index의 검색용 텍스트는 해당 본문 가져오기로 계산하지 않아요. 서비스 포털·추가 개별 기술 본문의 실제 수집·부분 읽기는 아래 별도 연구 기록에 보존하며, version/구역/API/media inventory가 미완료면 원장의 전체 읽기 상태로 승격하지 않아요.
 
@@ -59,6 +64,18 @@ body snapshot 열은 `fetched/body_reviewed/analyzed/verified` 합계예요. 단
 
 이 후속에서도 guide 호출/CLI 예제·선택 member 구역·전체 owner·실제 기기 시험을 각각 구분해요. 독립 원문 대조가 전체 corpus/API의 폐쇄를 대신하지 않으며 엄격한 원장 승격/verified는 0개예요. 구현 gate는 계속 `research_only`, exit2/ready=false예요. 추가 플랫폼 분석은 원래 Unity·Unreal의 모든 분야/세부 분석에 더하는 일이에요. user 요구의 PC/mobile editor·game 출력과 사람/AI의 동일 결과를 유지하며 대상마다 별도 실제 제작·설치/플레이 검증을 요구해요.
 
+## 패키지·Unreal 전 분야 입구·전체 검사 범위 후속 017–019
+
+전체 분석은 끝나지 않았어요. 지정 원문과 분석의 독립 대조는 해당 범위만 확인하며 전체 목록/API/본문/media의 폐쇄를 대신하지 않아요. 아래 세 기록 모두 엄격한 원장 읽기 승격은 0이에요. 다른 묶음과 겹치는 재읽기를 신규 고유 본문 수로 합산하지 않아요.
+
+- [Unity 패키지 관리·목록·호환 본문 017](UNITY_PACKAGE_CATALOG_BODY_017.md), [기계 기록](unity-package-catalog-body-017.json): 실제 전체 기술 텍스트 27개(새 URL 21/기존 재읽기 6), heading 83개·표 24개(452행/975셀)·pre 예제 3개와 표의 JSON을 읽었어요. 이미지 133회/16 URL 중 15개 실제 pixels를 읽었으며 iconRel.png의 실제 404 때문에 114회 출현은 미확인이에요. wrapper 159개 확보 중 실제 본문 읽기는 5개/미독은 154개이고, Entities 1.5.0의 metadata record 1개 읽기도 전체 metadata/API 읽기와 구분해요. 표시 상태·feature set·기본 포함/선택 설치·호환 patch·숨은 dependency를 함께 조사했어요. live 27본문 중 이전 ZIP과 24개 동일/3개 차이가 있어 판본/hash별 읽기를 유지해요. 발견 목록의 합집합은 227 root/135 이름/1,778 영어 edition/62,873 index URL이에요. 새 4 root의 3,612 URL은 discovery로만 원장에 추가했고 API 멤버/overload 읽기는 0이에요. 목록 밖의 dependency 26개·이전 root 7개의 의미·모든 edition/API/xref와 후속 media는 미해결/미독으로 남겨요. [독립 대조](UNITY_PACKAGE_CATALOG_BODY_VERIFICATION_017.md)는 지정 source 범위를 따로 재확인해요.
+- [Unreal 홈과 21개 공식 분야 입구 018](UNREAL_ROOT_COVERAGE_BODY_018.md), [기계 기록](unreal-root-coverage-body-018.json): 홈 포함 22개 SSR의 실제 기술 텍스트·설명·중첩 표/include를 읽었어요. 신규 Unreal 본문 HTTP 확보는 0개이고, 기존 398관계를 보존하며 Gameplay 22/Animation 3개 본문 링크 관계를 추가했어요. 정상 관계의 분야별 합은 422(398-실제 publisher 404 1+25), 하위 URL 합집합은 412개이며 추가 25개 모두 기존 후보 안에 있어요. 이 batch의 하위 본문/API 읽기는 0이에요. 미해결 topic 토큰 5/비정규 상대 링크 4/실제 404 1과 Fab의 외부 공식 후속 목록도 보존해요. 원문이 제공한 이미지 10주소를 실제 요청했지만 모두 403/textHTML이어서 pixels 읽기는 0개예요. 다른 제공 DOM URL도 같은 API route이며 SSR에 별도 직접 CDN 주소는 없어요. 영상 1개의 watch metadata만 확인했고 재생/전체 영상/자막 본문 읽기는 0이에요. 월드·AI·VFX·Blueprint·C++·물리/네트워크·2D 혼합 애니메이션·UI·오디오·미디어·제작 파이프라인·테스트·출시·샘플 등 전 분야의 하위 계약을 이어 읽어야 해요. [독립 대조](UNREAL_ROOT_COVERAGE_BODY_VERIFICATION_018.md)도 이 루트 범위에 한정해요.
+- [보조 출처 등록·완료 오판 방지 019](SUPPLEMENTAL_SOURCE_REGISTRATION_019.md), [기계 기록](supplemental-source-registration-019.json): 012–015의 Android/Godot/Apple/ABI 기능 자료가 전체 gate 검사 목록에서 빠져 있던 문제를 고쳤어요. 새 원천 5개를 추가해 18개 원천의 전체 분모 미확정/목록 열림을 유지해요. 기존 source 파일 20개 hash 검사와 입력 링크 관계 564개/URL 신규 발견 205개는 새 본문 의미 읽기가 아니에요. 분류 대기 130회 출현과 전체 출처 확장/판본/누적 요구 대응의 3가지 문제도 gate 차단 조건으로 남겨요. 다른 공식 출처 간의 발견 관계는 등록된 parent host로 허용하고 target 검사는 유지해요. host guard가 정확한 본문 href나 parent 분야/판본을 자동 검증하지는 않아요. 별도 담당자가 후속 href 544개의 실제 부모 원문 일치를 독립 구조 대조했어요. [독립 등록 대조](SUPPLEMENTAL_SOURCE_REGISTRATION_VERIFICATION_019.md)는 수집/등록/도구 범위를 확인하며 전체 본문/API 의미 분석으로 확대하지 않아요.
+
+현행 gate는 exit 2/ready=false, `scope=registered_manifest_sources`, `percentage=null`이며 90개 차단 이유를 유지해요. body snapshot 합계 34,877·엄격한 verified 2개는 이전 지정 본문의 현행 상태예요. 이번 실제 읽기를 다운로드 수나 자동 원장 승격으로 세지 않아요. README/조사 개요/인계에서도 부분 범위·과거 구현 기록과 전체 분석을 구분하는 보고 규칙을 반영했어요. 전체 조건이 충족되기 전에는 일부 읽기/대조를 근거로 전체 완료라고 하지 않아요.
+
+다음 분석은 패키지 관리의 하위 작업·의존성/호환 edition·전체 package Manual/API/xref와 Unreal 21분야의 모든 하위 본문·메뉴/조작·타입/멤버/overload/node/pin·media로 이어져요. 빌드/게임 출력·PC/mobile 에디터의 실제 platform API/ABI/policy와 모든 기능의 사람 UI/C++/노드/AI 공용 데이터·실행·오류/복구 계약도 누적 범위에 유지해요. 본문/API/미디어 분모가 닫히기 전에는 완료율을 계산하지 않아요.
+
 ## API 전체 분석을 위한 구조 확인
 
 `tools/reference-api-inventory.py`는 실제 Unity 6000.0 API HTML **31,707개**를 모두 순회해 **25,778개 선언 후보**를 추출했어요. generic 타입·기본값·중첩 markup을 보존하고 코드 예제/다른 언어/탐색 내용을 선언으로 세지 않아요. **9,767개는 선언 후보가 없는 본문**이며, 그중 `signature-CS` block 자체가 없는 것은 **91개**, block이 있으나 전부 빈 것은 **9,676개**예요. 이전의 ‘9,767개 block 없음’ 표시는 잘못된 구분이라 실제 HTML 전체를 다시 순회해 바로잡았어요. class/enum/멤버 표, 상속과 overload, actual owner/module, 입력·반환·수명·실패·thread 계약까지 별도로 확인해야 해요.
@@ -67,7 +84,7 @@ body snapshot 열은 `fetched/body_reviewed/analyzed/verified` 합계예요. 단
 
 ## 구현을 재개하기 전에 남은 조건
 
-모든 source의 `discoveryClosed=false`예요. 새/기존 포털 별칭과 내용 대조, 모든 package/plugin/서비스 edition 고정, C++·Blueprint·Python·NodeReference·WebAPI·SDK·REST·CLI 계열의 전체 목록 확장, 본문·표·예제·그림·동적 탭, 타입/멤버/overload/오류·기본값·수명과 미해결 링크를 확인해야 해요. 공식 문서의 불완전한 enum·충돌하는 파라미터 설명도 unresolved로 남겼어요. 제한된 플랫폼 자료를 임의로 완료나 범위 밖으로 바꾸지 않아요.
+등록한 18개 모든 source의 `discoveryClosed=false`예요. 미등록 공식 후속 범위도 `scopeExpansionPending`으로 검사 실패 조건에 보존해요. 새/기존 포털 별칭과 내용 대조, 모든 package/plugin/서비스 edition 고정, C++·Blueprint·Python·NodeReference·WebAPI·SDK·REST·CLI 계열의 전체 목록 확장, 본문·표·예제·그림·동적 탭, 타입/멤버/overload/오류·기본값·수명과 미해결 링크를 확인해야 해요. 공식 문서의 불완전한 enum·충돌하는 파라미터 설명도 unresolved로 남겼어요. 제한된 플랫폼 자료를 임의로 완료나 범위 밖으로 바꾸지 않아요.
 
 현재 `node tools/reference-ledger.mjs gate`는 **exit 2, ready=false**예요. 부분 분석, ZIP 확보, 전체 선언 후보 추출이나 HBEngine의 과거 테스트가 이 조건을 대신하지 않아요. 분석 뒤에는 전체 누적 요구의 C++/노드·사람 UI·AI 명령·데이터/실행 대응으로 엔진 작업을 이어가요.
 
@@ -83,4 +100,6 @@ python -X utf8 tools/check-reference-api-inventory.py
 python -X utf8 tools/reference-api-inventory.py
 ```
 
-이전 연구 도구 검증에서 원장 검사는 **9개**, API 후보 추출 검사는 **4개**, 총 **13개** 통과했어요. 이번 009–016에서는 도구 구현을 바꾸지 않아 해당 13개를 재실행하지 않았어요. 이번에는 새 연구 source/body·analysis·verification artifact hash를 재대조하고 현재 gate를 실제 node process로 실행해 exit 2/ready=false를 확인했어요. 다른 버전/host·latest 별칭, source/body/analysis hash, 독립 검증, 구역/API/media coverage, source roots/locale 변경, 본문 변경, 빈 ID, 일부 실패한 대량 등록, 참조 Markdown·중첩 JSON 증거 변경, 추가 공식 발견 근거 보존과 빈 선언 슬롯/실제 block 부재를 검사했어요. [독립 감사와 수정 기록](RESEARCH_AUDIT_002.md)을 보존하며 수집 bundle 7개도 재대조했어요. **검사기는 증거 형식을 확인하며, 실제 의미·읽기 여부·목록 완전성은 별도 검증자가 원문과 대조해야 해요.** 엔진 런타임/GUI 검사는 이번 연구 단계에서 실행하지 않았어요.
+이전 연구 도구 검증에서 원장 검사는 **9개**, API 후보 추출 검사는 **4개**, 총 **13개** 통과했어요. 이번 009–016에서는 도구 구현을 바꾸지 않아 해당 13개를 재실행하지 않았어요. 009–016 당시에는 새 연구 source/body·analysis·verification artifact hash를 재대조하고 당시 gate를 실제 node process로 실행해 exit 2/ready=false를 확인했어요. 다른 버전/host·latest 별칭, source/body/analysis hash, 독립 검증, 구역/API/media coverage, source roots/locale 변경, 본문 변경, 빈 ID, 일부 실패한 대량 등록, 참조 Markdown·중첩 JSON 증거 변경, 추가 공식 발견 근거 보존과 빈 선언 슬롯/실제 block 부재를 검사했어요. [독립 감사와 수정 기록](RESEARCH_AUDIT_002.md)을 보존하며 수집 bundle 7개도 재대조했어요. **검사기는 증거 형식을 확인하며, 실제 의미·읽기 여부·목록 완전성은 별도 검증자가 원문과 대조해야 해요.** 엔진 런타임/GUI 검사는 이번 연구 단계에서 실행하지 않았어요.
+
+017–019에서는 원장 도구의 범위/판정시각/manifest hash/미확정 완료율과 교차 공식 host 발견 검사를 바꿨으므로 Node 원장 검사 **10개를 실제 재실행해 통과**했어요. 새 unknown 원천·범위 대기가 기존 완료 fixture를 다시 차단하고 유일 parent-host 등록 삭제가 발견 근거를 stale로 만드는 경우를 포함해요. Python API 후보 4검사는 이번에 재실행하지 않았어요. 실제 현재 gate snapshot은 위 UTC/hash·168,940개 발견/34,877개 snapshot·stale 0/ready=false이며 패키지 등록 전 165,328개의 별도 snapshot과 혼동하지 않아요. 이 검사는 엔진 실행이나 문서 전체 의미 분석을 대신하지 않아요.

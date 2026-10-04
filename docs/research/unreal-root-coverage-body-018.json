@@ -1,0 +1,3181 @@
+{
+  "schemaVersion": 1,
+  "batch": "unreal-root-coverage-body-018",
+  "phase": "research_only",
+  "engine": "Unreal",
+  "baselineVersion": "5.8",
+  "locale": "en-us",
+  "createdAt": "2026-10-04T07:16:25.228997+00:00",
+  "overallComplete": false,
+  "discoveryClosed": false,
+  "denominators": {
+    "entireManualPages": "unknown",
+    "allCppTypesMembersOverloads": "unknown",
+    "allBlueprintNodes": "unknown",
+    "allPythonContracts": "unknown",
+    "allNodeReference": "unknown",
+    "allPluginsToolsServices": "unknown"
+  },
+  "summary": {
+    "homeAndDomainRootCachedSnapshots": 22,
+    "domainRoots": 21,
+    "sameHashCachedSourceRevalidated": 22,
+    "fullAccessibleTextRootReviewsThisBatch": 22,
+    "homeTextRereadAfterDirectSSRJSONRead": 1,
+    "firstFullTextScopeRecordedForPreviouslyStructurallyInspectedDomainRoots": 21,
+    "strictBodyReviewedPromotions": 0,
+    "strictAnalyzedPromotions": 0,
+    "verifiedPromotions": 0,
+    "childBodiesReadInThisBatch": 0,
+    "APIUnitsOrOverloadsReadInThisBatch": 0,
+    "legacyTopicOccurrences": 398,
+    "sumPerDomainUniqueManualCandidates": 422,
+    "uniqueManualChildCandidateUnion": 412,
+    "nonMediaAbsoluteCandidateUnion": 417,
+    "legacyRelationsRetained": 398,
+    "missingLegacyRelations": 0,
+    "additionalManualRelationsVsLegacy": 25,
+    "newEngineManualURLCandidatesVs16216": 0,
+    "unresolvedTopicTokens": 5,
+    "unresolvedRelativeReferences": 4,
+    "unreviewedBodyImageBlocks": 10,
+    "unreviewedExternalVideoBlocks": 1,
+    "publisher404References": 1,
+    "newUnrealManualHTTPRequestBodies": 0,
+    "newOfficialImageRequests": 10,
+    "newImage403Responses": 10,
+    "newImagePixelsRead": 0,
+    "newExternalVideoWatchPageHTTPRequests": 2,
+    "externalVideoMetadataSnapshotsPinned": 1,
+    "videoWholeRead": 0,
+    "captionTranscriptBodiesRead": 0
+  },
+  "baselineConnection": {
+    "manifest": {
+      "file": "native/build/reference-cache/unreal/combined-manifest.json",
+      "sha256": "0ae37f56675d337ef46755ffc2312d2e427cce0d06e57c248d88daacf7eee13e"
+    },
+    "previousRequests": 59,
+    "previousActualFetchedBodies": 54,
+    "previousOpenCandidates": 16216,
+    "previousShellResponses": 5,
+    "candidateAndFetchedCountsAreNotReadCounts": true,
+    "noBaselineManifestOrLedgerModified": true
+  },
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76"
+    },
+    {
+      "file": "docs/research/CORPUS_MANIFEST.json",
+      "sha256": "61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888"
+    },
+    {
+      "file": "docs/research/UNREAL_CORPUS_RESEARCH.md",
+      "sha256": "462918fa7e5a3c4aa92be1f935693141cdb43c0936ce794bbc1d7a1cec5db06d"
+    },
+    {
+      "file": "docs/reference-index/unreal-sections.json",
+      "sha256": "7236e6deb820b60a92f70a97fa29d1a047ab41deeeb67f3777e90007a1416928"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/extracted-roots.json",
+      "sha256": "1412e1bf4a808eee3dc1ecf71c24f0c7ab62b420ce2bbb4932b43725cf461540"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/client-structure.json",
+      "sha256": "82769d96cd9ce0634f45b9d63fb00d59f01861e06ace615b5e310004bac51249"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/extract_roots.py",
+      "sha256": "36951b78447cd8ee9683a72f9f8654495690fc149f38f20d07688efbb38fa4ac"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-fetch.json",
+      "sha256": "f27aa16ec22bbf6ca5a1a52d0c1370afd1981900f9bd3e4a0ef7ef29b1604cc2"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/video-inspection.json",
+      "sha256": "c820091fa7f2a623165ea35240f28b65f707da0b0c4fe6e9ef54bb6e255c02a3"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-provided-urls.json",
+      "sha256": "035e49a3b4195177535e9d48b0a56334bb05edda884b25b41c47e9376b23ef25"
+    }
+  ],
+  "structureFindings": {
+    "rootSetMatchesOfficialHome": true,
+    "homeFields": 21,
+    "bodyDocumentListPaginationFieldsObserved": 0,
+    "bodyHiddenTrueSettingsObserved": 0,
+    "documentListDraftItemsObserved": 0,
+    "cachedSSRTransportHasTOCResponse": false,
+    "observedClientComponentHasDocumentListFetchPaging": false,
+    "claimScope": "Only the 22 pinned root snapshots and selected client component; not a universal site completeness claim",
+    "includeExpanded": "UR018-16 blocks[0].blocks[0:2]",
+    "enhancedTableRead": "UR018-03 blocks[1].rows[0:3]",
+    "futureDynamicBlockTypes": "client also advertises switch/link_group/rich_text/comparison_slider/sequence_slider/etc; not observed in these root bodies; full descendant extraction remains open",
+    "legacyRootSetEqualsOfficialHome": true
+  },
+  "externalCandidates": [
+    {
+      "locator": "blocks[44].url",
+      "rawUrl": "https://www.youtube-nocookie.com/embed/nZlVkI3j7Xs?feature=oembed",
+      "url": "https://www.youtube-nocookie.com/embed/nZlVkI3j7Xs?feature=oembed",
+      "classification": "external_reference_candidate",
+      "label": null,
+      "description": null
+    },
+    {
+      "locator": "blocks[44].original_url",
+      "rawUrl": "https://www.youtube.com/watch?v=nZlVkI3j7Xs",
+      "url": "https://www.youtube.com/watch?v=nZlVkI3j7Xs",
+      "classification": "external_reference_candidate",
+      "label": null,
+      "description": null
+    },
+    {
+      "locator": "blocks[5].content/html:a[1]/@href",
+      "rawUrl": "https://www.fab.com/",
+      "url": "https://www.fab.com/",
+      "classification": "official_linked_product_catalog_candidate",
+      "label": null,
+      "description": null
+    },
+    {
+      "locator": "blocks[13].content/html:a[1]/@href",
+      "rawUrl": "https://dev.epicgames.com/documentation/en-us/fab/purchasing-and-downloading-assets-in-fab",
+      "url": "https://dev.epicgames.com/documentation/en-us/fab/purchasing-and-downloading-assets-in-fab",
+      "classification": "other_epic_product_documentation",
+      "label": null,
+      "description": null
+    }
+  ],
+  "legacyShellFailures": [
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/BeginPlay?application_version=5.8",
+      "httpStatus": 200,
+      "classification": "HTTP_200_without_SSR_document_body_not_fetched",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "manualProbeNotAutomaticallyCorpusEntry": true
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor?application_version=5.8",
+      "httpStatus": 200,
+      "classification": "HTTP_200_without_SSR_document_body_not_fetched",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "manualProbeNotAutomaticallyCorpusEntry": true
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/BeginPlay?application_version=5.8",
+      "httpStatus": 200,
+      "classification": "HTTP_200_without_SSR_document_body_not_fetched",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "manualProbeNotAutomaticallyCorpusEntry": false
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/development-for-consoles-in-unreal-engine?application_version=5.8",
+      "httpStatus": 200,
+      "classification": "HTTP_200_without_SSR_document_body_not_fetched",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "manualProbeNotAutomaticallyCorpusEntry": true
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/WebAPI?application_version=5.8",
+      "httpStatus": 200,
+      "classification": "HTTP_200_without_SSR_document_body_not_fetched",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "manualProbeNotAutomaticallyCorpusEntry": false
+    }
+  ],
+  "accessIssues": {
+    "previousPublicTOCAndSitemapFirstShard403": "Reported in pinned UNREAL_CORPUS_RESEARCH.md; not retried or counted as new observed HTTP failures in this batch",
+    "internalSSRHost": "document transport u is http://documentation-app; metadata only, never an external access endpoint",
+    "restrictedDocs": "No permission changes, entitlement changes or restricted/private fetch attempted"
+  },
+  "independentVerificationRequired": [
+    "Recompute all 22 HTML/JSON/text/discovery hashes and semantic equality to HTML SSR",
+    "Read all 22 textual roots independently; validate per-block coverage and nuanced facts",
+    "Re-enumerate document_url/general a/custom block-dir-item href and table/include nested branches; compare complete URL/locator list",
+    "Recompute 398 retained / 422 per-domain / 412 union / 25 additional relation accounting",
+    "Inspect 5 unresolved topic tokens, 4 relative references, /documentation/404, Fab external official docs, images10/video1 and banner/thumbnail metadata",
+    "Confirm baseline 54/59/16216 remain acquisition/discovery only; API and whole corpus denominators unknown",
+    "Verify selected client excerpts/absence of TOC transfer state does not become site-wide closure claim"
+  ],
+  "roots": [
+    {
+      "id": "UR018-00",
+      "title": "Unreal Engine 5.8 Documentation",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-documentation?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-documentation?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-documentation?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-documentation?lang=en-US\" />"
+      ],
+      "rootLocator": "baselineRoot",
+      "fetchedAt": "2026-10-03T16:28:26.854831+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.source.html",
+      "sourceHash": "d039438e755ccaf1d3b6ba0d88d8beac0f327b1a06699f71bd499822105c1ca5",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.ssr.json",
+      "bodyHash": "83aad2b70a5892d629cd068b67b526ea01e88676b471640a611394b586fd6921",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.read.txt",
+      "textReadHash": "1e049a231f207f5c2205efc4ba1b8b8c1966c891d0ae9c816afd82b3013c0dca",
+      "metadata": {
+        "id": 4787790,
+        "hash_id": "WdnDdw",
+        "revision_hash_id": "6pz82G",
+        "revision_id": 4803004,
+        "updated_at": "2026-05-12T21:00:05.005Z",
+        "slug": "unreal-engine-5-8-documentation",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "3442143235",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 21,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 21
+      },
+      "legacyTopicCount": 0,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-00.discovery.json",
+        "sha256": "0a51f8cc0e91b9af3df9149622925dcd3bbe6e31916cba9f93963437fc25d42e"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].items[0:21]",
+          "fact": "공식 홈은 grouped document_list의 live 항목 21개로 분야 입구를 제공해요. 분야를 닫힌 문서 분모로 설명하거나 API 계열을 이 목록에 포함했다고 설명하지 않아요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "홈",
+        "humanCppNodeAi": "사람 UI는 이 탐색 순서를 보존하되 전체 기능 범위를 21개의 타일로 축소하지 않아요. C++·노드·AI API는 별도의 목록/선언 분석 대기열로 유지해야 해요."
+      },
+      "apiFamiliesPending": [],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "21개 자식의 다음 단계 순회",
+        "C++/Blueprint/Python/Node Reference/WebAPI/플러그인 독립 목록",
+        "본문 배너·썸네일의 시각적 의미"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    },
+    {
+      "id": "UR018-01",
+      "title": "What's New",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/whats-new?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/whats-new?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/whats-new?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/whats-new?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[0]",
+      "fetchedAt": "2026-10-03T16:28:26.935449+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.source.html",
+      "sourceHash": "8b5dabfd44fdaabd647ce3ef30b60b3151c56502b7a62041ae205d3f2240c601",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.ssr.json",
+      "bodyHash": "04041a6333e0e68c30d2af7f28721fbf190ae028519216968d5e9d20c122c258",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.read.txt",
+      "textReadHash": "a6e7bbefbafd09716d4255d453f90d37a931f1ea96b4fb7432464bd4a7d7784a",
+      "metadata": {
+        "id": 3222043,
+        "hash_id": "qKA2b",
+        "revision_hash_id": "a7evb8",
+        "revision_id": 4516575,
+        "updated_at": "2026-06-12T21:00:06.241Z",
+        "slug": "whats-new",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "3261098093",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]"
+      ],
+      "uniqueManualChildCandidates": 4,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 4
+      },
+      "legacyTopicCount": 4,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-01.discovery.json",
+        "sha256": "21ef03ead7228a5927b08d6530dc786c8c1887d16ee4efb9a0f69d3eca5c9e82"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:2]",
+          "fact": "Beta 목록 설명은 개발 중이지만 안정 상태인 기능, Experimental 설명은 변화 중이며 배포 프로젝트에 준비되지 않은 기능으로 구분해요. 이행 가이드의 대상은 UE4 프로젝트를 UE5로 옮기는 과정이라고 명시돼요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "새 기능·버전",
+        "humanCppNodeAi": "사람 UI와 AI 명령 모두 기능 성숙도·버전·이행 대상을 노출해야 해요. C++와 노드는 같은 적용성 표를 공유해야 하며 5.8 SSR 태그만으로 오래된 이행 문장을 현행 계약으로 확정하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "release notes",
+        "migration"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "5.8 release note 전체 변경점",
+        "Beta/Experimental 실제 기능 목록과 API",
+        "migration 세부·복구·호환성"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    },
+    {
+      "id": "UR018-02",
+      "title": "Understanding the Basics",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/understanding-the-basics-of-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[1]",
+      "fetchedAt": "2026-10-03T16:28:26.550608+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.source.html",
+      "sourceHash": "cf912db1ed91b262a1c95c6a513b5615f0df95f84f77a5204d476a605ae9eb54",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.ssr.json",
+      "bodyHash": "1f392a3962f953b98c99e8ce3ab45d3b403091d7a3193199775c75dd564c648f",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.read.txt",
+      "textReadHash": "7c5d637a95d8b21f535d4e6e09fe1c03251402f50ffc48a5477a8a47964c9238",
+      "metadata": {
+        "id": 3222141,
+        "hash_id": "kEOQL",
+        "revision_hash_id": "9Ape8L",
+        "revision_id": 4793435,
+        "updated_at": "2026-06-12T21:00:06.262Z",
+        "slug": "understanding-the-basics-of-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1599302992",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[21]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[29]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[33]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[37]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]",
+        "blocks[44]"
+      ],
+      "uniqueManualChildCandidates": 52,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 54
+      },
+      "legacyTopicCount": 52,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-02.discovery.json",
+        "sha256": "6d2932f935ab9b5f25583d6b8ad506eb996817013f2365487b8f0a3fca86bde6"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[2:45]",
+          "fact": "기초 흐름은 설치→용어/도구/설정→Content Browser→프로젝트/템플릿→Level→Asset→Actor/Component→Editor 내 Play/Simulate→Packaging으로 연결돼요. Asset은 프로젝트의 모든 콘텐츠를 지칭하고 모든 프로젝트에는 최소 한 Level이 있다는 설명을 확인했어요. Actor에 하나 이상의 Component를 붙일 수 있어요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "설치·기초 제작",
+        "humanCppNodeAi": "사람 제작 흐름에 탐색·다중 속성 편집·Reference Viewer·중복 통합·복구·자동 재임포트를 함께 남겨요. C++ 객체/컴포넌트 데이터와 노드 및 AI 편집 명령이 동일한 프로젝트/Level/Asset 참조 모델을 사용하도록 계약을 조사해야 해요."
+      },
+      "apiFamiliesPending": [
+        "editor asset/project/level",
+        "actor/component"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "각 작업의 실제 메뉴·단축키·Undo/저장/실패",
+        "Recovery Hub·migration·reimport 계약",
+        "Actor/Component 선언과 수명"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-03",
+      "title": "Working with Content",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/working-with-content-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[2]",
+      "fetchedAt": "2026-10-03T16:28:27.437817+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.source.html",
+      "sourceHash": "7ece2f69a2907a6a6a425f53a0b2f345c3b3103544797fb0d9af194235603141",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.ssr.json",
+      "bodyHash": "485728e20921f6daf50f97655b9976f0368f5acf2f266a18eef2e12080042ce7",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.read.txt",
+      "textReadHash": "36218b1cf5ef341b0caae7fd2b62b08c6b05890874626ea0242affae5441ba6b",
+      "metadata": {
+        "id": 3223199,
+        "hash_id": "4rvqG",
+        "revision_hash_id": "GEndBA",
+        "revision_id": 4803090,
+        "updated_at": "2026-05-19T17:30:07.339Z",
+        "slug": "working-with-content-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "3001274",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[1].rows[0][0][0]",
+        "blocks[1].rows[0][1][0]",
+        "blocks[1].rows[1][0][0]",
+        "blocks[1].rows[1][1][0]",
+        "blocks[1].rows[2][0][0]",
+        "blocks[1].rows[2][0][0].items[0][0]",
+        "blocks[1].rows[2][0][0].items[1][0]",
+        "blocks[1].rows[2][0][0].items[2][0]",
+        "blocks[1].rows[2][0][0].items[3][0]",
+        "blocks[1].rows[2][0][0].items[4][0]",
+        "blocks[1].rows[2][0][0].items[5][0]",
+        "blocks[1].rows[2][0][0].items[6][0]",
+        "blocks[1].rows[2][0][0].items[7][0]",
+        "blocks[1].rows[2][1][0]",
+        "blocks[1].rows[2][1][0].items[0][0]",
+        "blocks[1].rows[2][1][0].items[1][0]",
+        "blocks[1].rows[2][1][0].items[2][0]",
+        "blocks[1].rows[2][1][0].items[3][0]",
+        "blocks[1].rows[2][1][0].items[4][0]",
+        "blocks[1].rows[2][1][0].items[5][0]",
+        "blocks[1].rows[2][1][0].items[6][0]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]"
+      ],
+      "uniqueManualChildCandidates": 17,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 17
+      },
+      "legacyTopicCount": 17,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-03.discovery.json",
+        "sha256": "025b4104b564e560959f983d680b62a79e45b187d57354531abf5fac50991322"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:6]; table blocks[1].rows[0:3]",
+          "fact": "표는 Editor 내부 제작물(Level, Material, Particle, Sequence, Blueprint, Navmesh, 사전계산 light map, light)과 외부 제작물(mesh, animation, texture, WAV, IES, APEX)을 나눠요. 후속 목록에는 Interchange/glTF/USD/MaterialX, Datasmith, LiDAR, in-engine modeling, scene variants, localization이 있고 Mutable 설명은 런타임에 skeletal mesh/material/texture를 생성한다고 해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "콘텐츠 제작·가져오기",
+        "humanCppNodeAi": "자동 가져오기를 단순 파일 복사로 축소하지 않아요. 사람 Import UI·C++ importer·노드/AI 가져오기에는 형식/변환/참조/재임포트·런타임 생성 여부를 같은 데이터 계약으로 연결해야 해요. 표의 APEX 항목은 현행 지원을 입증하지 않으므로 버전별 대체 확인을 남겨요."
+      },
+      "apiFamiliesPending": [
+        "Interchange/import-export",
+        "mutable",
+        "localization"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "각 포맷·옵션·지원타깃·재임포트/실패",
+        "APEX의 현행 호환/폐기 여부",
+        "Mutable 및 import/export API"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-04",
+      "title": "Building Virtual Worlds",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/building-virtual-worlds-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[3]",
+      "fetchedAt": "2026-10-03T16:28:22.683798+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.source.html",
+      "sourceHash": "f799c496752191c902ad74c96cf970eddf751b76a7c3d7de9272b0933a21f563",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.ssr.json",
+      "bodyHash": "5f67d1e565b7c8e292e61202bfa84e7a2b20d2faa782b17f7098748c3ae42441",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.read.txt",
+      "textReadHash": "6d1d40f93945ed5c28e85f02205741eb1b5cefd519fd40f3b05037d88e4044cd",
+      "metadata": {
+        "id": 3224463,
+        "hash_id": "rPPaN",
+        "revision_hash_id": "k5kk1",
+        "revision_id": 3211234,
+        "updated_at": "2025-03-22T19:32:44.829Z",
+        "slug": "building-virtual-worlds-in-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "500531958",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 13,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 13
+      },
+      "legacyTopicCount": 13,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-04.discovery.json",
+        "sha256": "046c128d7f66530fa061bf0a676c7cf70dd6a8ec937b6d9b17688a9a7690a6bc"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html/html:h2[1:2]; directory items",
+          "fact": "본문은 작은 시각화 환경과 큰 open world 모두를 대상으로 해요. 디렉터리 설명에서 Level Streaming을 플레이 중 비동기 Level 로딩/언로딩으로 설명하며 메모리 사용 절감과 끊김 없는 월드를 연결해요. One File Per Actor·Actor Editor Context·PCG·georeferencing·HLOD·water·splines도 독립 후속 문서예요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "월드·레벨",
+        "humanCppNodeAi": "사람 Level 편집·조직화와 C++/노드/AI 월드 명령에는 비동기 로딩의 수명·실패·취소·참조 보존 계약이 필요해요. 2D/2.5D/3D에도 Level과 actor organization을 공용 기반으로 검토하되 실제 동작은 하위문서에서 확인해야 해요."
+      },
+      "apiFamiliesPending": [
+        "world/level streaming",
+        "PCG",
+        "large world"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "streaming/PCG/terrain/water·대규모 월드 세부",
+        "actor 분리 저장과 동시편집",
+        "georeferencing·precision API"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-05",
+      "title": "Designing Visuals, Rendering, and Graphics",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[4]",
+      "fetchedAt": "2026-10-03T16:28:23.335641+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.source.html",
+      "sourceHash": "e747e4a2bbe5f13abc803b5ba8504fba7557e17de2a5883f8d6ce4290bba7487",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.ssr.json",
+      "bodyHash": "cbf6fdefd6e6940029763171432c88343a3aa4689bfcb0409bacc5270ff6708d",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.read.txt",
+      "textReadHash": "dbb84457191ee0c700482bdd7ed296ef1687e4165660af8e80713aa6db71a330",
+      "metadata": {
+        "id": 3225669,
+        "hash_id": "oJ1OW",
+        "revision_hash_id": "53K8V9",
+        "revision_id": 3945769,
+        "updated_at": "2025-05-06T07:00:06.319Z",
+        "slug": "designing-visuals-rendering-and-graphics-with-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1799776004",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[21]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[29]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[33]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[37]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]",
+        "blocks[44]",
+        "blocks[45]",
+        "blocks[46]",
+        "blocks[47]",
+        "blocks[48]",
+        "blocks[49]",
+        "blocks[50]",
+        "blocks[51]",
+        "blocks[52]",
+        "blocks[53]",
+        "blocks[54]",
+        "blocks[55]",
+        "blocks[56]",
+        "blocks[57]",
+        "blocks[58]",
+        "blocks[59]",
+        "blocks[60]",
+        "blocks[61]",
+        "blocks[62]",
+        "blocks[63]",
+        "blocks[64]",
+        "blocks[65]",
+        "blocks[66]",
+        "blocks[67]",
+        "blocks[68]",
+        "blocks[69]"
+      ],
+      "uniqueManualChildCandidates": 60,
+      "linkOccurrences": {
+        "unresolved_relative_reference": 1,
+        "unreal_manual_candidate": 67
+      },
+      "legacyTopicCount": 60,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-05.discovery.json",
+        "sha256": "5e12bb6950d6f87d1741ed935b05fed44f0a5ba27e6e09dff9cd24ba384b86de"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [
+        {
+          "locator": "blocks[1].content/html:a[1]/@href",
+          "rawUrl": "building-virtual-worlds/lighting-and-shadows",
+          "url": null,
+          "classification": "unresolved_relative_reference",
+          "label": null,
+          "description": null,
+          "mechanicalHostJoinNotAccepted": "https://dev.epicgames.com/building-virtual-worlds/lighting-and-shadows",
+          "resolutionStatus": "unresolved_do_not_guess_current_document_slug"
+        }
+      ],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[2:70]",
+          "fact": "본문 목록은 real-time rendering뿐 아니라 Path Tracer의 최종 shot/비교 기준, Movie Render Queue, GPU dump의 RDG 중간 texture/buffer 디스크 기록, Render Resource Viewer의 GPU 자원/asset 추적을 함께 소개해요. Orthographic Camera와 mobile rendering, shader/plugin/threaded rendering, Large World Coordinates rendering, Neural Network Engine도 연결돼요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "렌더링·그래픽",
+        "humanCppNodeAi": "2D/2.5D 카메라·3D 재질/조명과 사람이 쓰는 렌더 디버깅을 함께 요구에 남겨요. C++ 렌더 graph/리소스 계약·머테리얼 노드·AI 설정/진단은 플랫폼/성능 차이를 공유해야 해요. 이 목록만으로 DX11에서 특정 Unreal 렌더 기능의 동등 구현 가능성을 확정하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "renderer/shader/RDG",
+        "materials",
+        "NNE"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "Lumen/Nanite/Substrate·platform 제약",
+        "RDG/thread/GPU ownership·API",
+        "비정규 lighting 상대링크",
+        "NNEngine 추론·runtime 계약"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-06",
+      "title": "AI Features, Tools, and Plugins",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/ai-features-tools-and-plugins-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[5]",
+      "fetchedAt": "2026-10-03T16:28:22.228406+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.source.html",
+      "sourceHash": "4b904589d2d50398ff85cb79bf2ae165f202d6079efb9623e888c2899f2996ec",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.ssr.json",
+      "bodyHash": "b1a904e42af3b107a71baf3a8008a6f7783a704aed8dddfd7498cb6490e30de3",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.read.txt",
+      "textReadHash": "91fc3ea9ba6d80a543ccb04874e04eefacf98bd5ccdd7be61b177904cf9834e5",
+      "metadata": {
+        "id": 4787921,
+        "hash_id": "V68pPa",
+        "revision_hash_id": "ANKPDv",
+        "revision_id": 5002100,
+        "updated_at": "2026-08-04T19:08:33.613Z",
+        "slug": "ai-features-tools-and-plugins-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "4286518213",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]"
+      ],
+      "uniqueManualChildCandidates": 3,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 3
+      },
+      "legacyTopicCount": 3,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-06.discovery.json",
+        "sha256": "9f4160bedd0cf3dba75e771f0e4ed50aa9cabb5ce43204a933c8d76e5ecab82a"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:5]",
+          "fact": "이 루트의 세 항목은 Unreal MCP(editor 기능을 구동하는 MCP 호환 workflow), PCG와 LLM의 MCP workflow, Content Browser에 AI search mode를 추가하는 Semantic Search예요. NPC용 runtime AI의 목록과 목적이 달라요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "AI 제작 도구",
+        "humanCppNodeAi": "사람 편집과 AI 요청이 같은 검증 가능한 편집 명령으로 합쳐지는 방향을 연구할 근거예요. C++/노드 노출, 쓰기 권한, 반환/오류, 트랜잭션·취소·재현은 이 루트가 제공하지 않으므로 별도 확인해야 해요."
+      },
+      "apiFamiliesPending": [
+        "Unreal MCP",
+        "PCG LLM",
+        "Semantic Search"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "MCP 실제 도구/스키마·권한·오류",
+        "PCG LLM workflow 세부",
+        "Semantic Search 지원/제약·데이터"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    },
+    {
+      "id": "UR018-07",
+      "title": "Creating Visual Effects",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[6]",
+      "fetchedAt": "2026-10-03T16:28:23.217267+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.source.html",
+      "sourceHash": "02f54698c3d152637a1efcbf63ce065b364ac0b465c48cf8aa90ed5934aad952",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.ssr.json",
+      "bodyHash": "b6f22bba70ddedb03687d7ed2ab562e0b42bb0e595a636a1195945c5c0d1ee64",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.read.txt",
+      "textReadHash": "76812438aa2d0cff797d181859a7c6071286167ba2bfe4ead6d8473d7a622857",
+      "metadata": {
+        "id": 3226869,
+        "hash_id": "oJ1vo",
+        "revision_hash_id": "4dgmb",
+        "revision_id": 3213642,
+        "updated_at": "2025-03-23T21:31:49.588Z",
+        "slug": "creating-visual-effects-in-niagara-for-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "584858535",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 8,
+      "linkOccurrences": {
+        "media_asset": 1,
+        "unreal_manual_candidate": 8
+      },
+      "legacyTopicCount": 8,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-07.discovery.json",
+        "sha256": "e6993cc1ae3e89d62dcce15b02e964697918382f78701c7055391257d12c9729"
+      },
+      "unresolvedTopicTokens": [
+        {
+          "locator": "blocks[0].content_html",
+          "token": "%creating-visual-effects/getting-started-in-niagara:topic%"
+        }
+      ],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html",
+          "fact": "본문은 Niagara를 UE5의 주요 VFX 도구로 설명하며 초보에게 editor overview/quick start/key concepts를 권해요. Script Editor로 기존 module을 수정하거나 새 module을 만들 수 있고 GPU raytracing collision은 experimental이라고 해요. Debug Drawing과 실시간 분석 Niagara Debugger도 소개해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "Niagara VFX",
+        "humanCppNodeAi": "사람 system/emitter/module 편집, C++·노드 module 계약, AI 생성/수정/검증을 연결해야 해요. data channel/lightweight emitter/fluids와 성능 분석을 누락하지 않으며 Getting Started 토큰을 URL로 추정하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "Niagara system/emitter/module",
+        "Niagara data channels"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "Getting Started 토큰의 실제 목적지",
+        "module/node 전체 reference",
+        "GPU collision 적용성·thread·성능"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-08",
+      "title": "Gameplay Tutorials",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[7]",
+      "fetchedAt": "2026-10-03T16:28:24.045587+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.source.html",
+      "sourceHash": "ee9e9ef503877f1bea9b8fea283ff8b6706e3924cf5f79f82f04c119a1db51dd",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.ssr.json",
+      "bodyHash": "20b85f9ff7d7e3100a91ceb60dfe8d405b752c414a08c3282830ccbb541ce84e",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.read.txt",
+      "textReadHash": "089a65ba23410264ad2ce2f664b97c8cd1eb75e4c160124b2cf8fac02f5e1ae0",
+      "metadata": {
+        "id": 3230199,
+        "hash_id": "4rQ0o",
+        "revision_hash_id": "Ok57X",
+        "revision_id": 3216966,
+        "updated_at": "2025-03-24T20:09:06.213Z",
+        "slug": "gameplay-tutorials-for-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "200938154",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 8,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 8
+      },
+      "legacyTopicCount": 8,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-08.discovery.json",
+        "sha256": "af1b6a3058d03867a51dd75c277968765ecbc8227c99a5797fd3eaa57bd9a192"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html",
+          "fact": "8개 링크는 actor component 추가, character movement, actor 찾기, respawn, save/load, pawn possession, game mode, OnHit를 재현하는 튜토리얼이에요. actor 찾기 설명은 Blueprint/C++ 두 경로를 명시해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "게임플레이 튜토리얼",
+        "humanCppNodeAi": "사람의 제작 결과와 C++/노드/AI의 동일 실행 효과를 비교할 재현 후보로 유지해요. 저장·respawn·possession·충돌은 각각 파일/객체 수명/권한/이벤트 계약을 세부 출처로 조사해야 해요."
+      },
+      "apiFamiliesPending": [
+        "gameplay actor/player/save"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "8개 튜토리얼 전체 본문·코드",
+        "save/load schema·compatibility",
+        "possession/OnHit·lifetime API"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-09",
+      "title": "Blueprints Visual Scripting",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/blueprints-visual-scripting-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[8]",
+      "fetchedAt": "2026-10-03T16:28:22.565185+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.source.html",
+      "sourceHash": "79254a590c87def3a4f9b6bda9b48c88679ca69485159b0e457d302ce4b5530a",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.ssr.json",
+      "bodyHash": "a31c7839d88bb5f126fb1bbc5ebf82c3ae6c40423127698091bb4366a3e4be0b",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.read.txt",
+      "textReadHash": "a6f710b0d40ac3c5a2ed0cd5d9d028e460441d112a7432db6ac910a5e606a4a3",
+      "metadata": {
+        "id": 3227503,
+        "hash_id": "6V054",
+        "revision_hash_id": "aL9Pn",
+        "revision_id": 3214275,
+        "updated_at": "2025-03-24T03:18:16.922Z",
+        "slug": "blueprints-visual-scripting-in-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1272415067",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 11,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 13
+      },
+      "legacyTopicCount": 11,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-09.discovery.json",
+        "sha256": "fff41f0dd82e570213fa5c5dee7858b755cb46950da7952f06a5913b68016418"
+      },
+      "unresolvedTopicTokens": [
+        {
+          "locator": "blocks[0].content_html",
+          "token": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Overview:Topic%"
+        },
+        {
+          "locator": "blocks[0].content_html",
+          "token": "%programming-and-scripting/blueprints-visual-scripting/GettingStarted/Scripting:Topic%"
+        },
+        {
+          "locator": "blocks[0].content_html",
+          "token": "%programming-and-scripting/blueprints-visual-scripting/BP_HowTo:Topic%"
+        }
+      ],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html",
+          "fact": "본문은 node 기반 gameplay scripting으로 OO class/object를 정의하고 C++의 Blueprint 전용 markup으로 디자이너가 확장 가능한 기반 시스템을 제공한다고 설명해요. debugger 항목 설명은 breakpoint로 실행을 멈추고 graph와 변수 값을 확인한다고 해요. Communication/Dispatcher/Interface/Namespace도 후속 목록에 있어요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "Blueprint",
+        "humanCppNodeAi": "노드 그림 외에 타입·클래스·통신·디버그·C++ 확장·사람 UI·AI graph 편집을 유지해야 해요. root의 미해결 GettingStarted/BP_HowTo 토큰 및 실제 node/member 목록을 해결하기 전에는 전체 Blueprint를 읽은 것으로 세지 않아요."
+      },
+      "apiFamiliesPending": [
+        "BlueprintGraph/K2",
+        "Blueprint API",
+        "node reference"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "미해결 topic 토큰 3개",
+        "node/schema/compiler·lifetime·pin/API",
+        "통신/namespace/breakpoint·편집 UX 세부"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-10",
+      "title": "Programming with C++",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/programming-with-cplusplus-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[9]",
+      "fetchedAt": "2026-10-03T16:28:25.614978+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.source.html",
+      "sourceHash": "507871a637891e49af1ed1a7bb480c16358e636d9cac72ac4ce9bf7017786243",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.ssr.json",
+      "bodyHash": "40f83fb7e8b2cb449b8022ba6d3ad5d5edb8bf94774e9bf8c74889afa94ed23d",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.read.txt",
+      "textReadHash": "6b4eefe7c4b5a6c44562bea20f98fae4f58215e0ce2888fc9b080c3888419926",
+      "metadata": {
+        "id": 3227217,
+        "hash_id": "0mw6m",
+        "revision_hash_id": "m19xB",
+        "revision_id": 3213989,
+        "updated_at": "2025-03-24T02:00:11.002Z",
+        "slug": "programming-with-cplusplus-in-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1756329732",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 8,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 13,
+        "publisher_404_reference": 1,
+        "media_asset": 5
+      },
+      "legacyTopicCount": 9,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [
+        "https://dev.epicgames.com/documentation/404"
+      ],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-10.discovery.json",
+        "sha256": "abc5a8c9b915182457fb8d0b17f7e6d13636b717bb4f2f34e354419d9bf3be95"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html/html:ul; Section Directory",
+          "fact": "본문은 C++ 경험을 전제해요. compile 뒤 class 변경이 editor에 반영된다고 설명하고 reflection/metadata macro로 Editor 기능을 제공해요. delegate는 임의 객체의 member를 type-safe하게 동적 바인딩하고 나중에 호출할 수 있다고 소개해요. Visual Studio 링크의 실제 href는 /documentation/404예요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "C++ 제작",
+        "humanCppNodeAi": "C++ 타입/메타데이터→사람 속성 편집→노드 노출→AI 스키마 대응을 같은 자료형 계약으로 조사해야 해요. root 설명만으로 hot reload·compile 실패/복구·delegate 수명·thread를 정하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "UObject/reflection",
+        "delegates",
+        "gameplay architecture"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "publisher 404 link의 공식 대체",
+        "reflection/specifier/containers/delegates 전체 선언",
+        "compile/load/runtime 및 node exposure"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-11",
+      "title": "Gameplay Systems",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/gameplay-systems-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[10]",
+      "fetchedAt": "2026-10-03T16:28:23.643738+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.source.html",
+      "sourceHash": "34748a84e7ac4c49d76ca07aae4644f37faf8d2f338ef639ad5c8988b280e0f7",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.ssr.json",
+      "bodyHash": "67bc0667c50ff160478e4975d77f477cc1423f139aa16d2d8387af17acf91f80",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.read.txt",
+      "textReadHash": "f477f5748a7b2ead69198acd99c3c02616a7c182004a0cba961d0ddbffac8e39",
+      "metadata": {
+        "id": 3228778,
+        "hash_id": "apVW2",
+        "revision_hash_id": "Vzpb0P",
+        "revision_id": 3958303,
+        "updated_at": "2025-06-03T13:00:06.304Z",
+        "slug": "gameplay-systems-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1594673451",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[1].items[0][0]",
+        "blocks[1].items[1][0]",
+        "blocks[1].items[2][0]",
+        "blocks[1].items[3][0]",
+        "blocks[1].items[4][0]",
+        "blocks[1].items[5][0]",
+        "blocks[1].items[6][0]",
+        "blocks[1].items[7][0]",
+        "blocks[1].items[8][0]",
+        "blocks[2]",
+        "blocks[3]"
+      ],
+      "uniqueManualChildCandidates": 36,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 44,
+        "unresolved_relative_reference": 3
+      },
+      "legacyTopicCount": 14,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [
+        "https://dev.epicgames.com/documentation/unreal-engine/actors-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/ai-debugging-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/behavior-trees-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/cameras-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/chaos-destruction-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/cloth-simulation-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/collision-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/controllers-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/environment-query-system-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/game-features-and-modular-gameplay-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/game-mode-and-game-state-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/gameplay-timers-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/gameplay-tutorials-for-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/hair-physics-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/physical-materials-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/physics-bodies-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/smart-objects-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/state-tree-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/traces-with-raycasts-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/user-interfaces-and-huds-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/vehicles-in-unreal-engine?application_version=5.8"
+      ],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-11.discovery.json",
+        "sha256": "c89cf8be293c11cf096392a4e613bde59da941de47acce87ea6eb36460314987"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [
+        {
+          "locator": "blocks[1].items[1][0].content/html:a[3]/@href",
+          "rawUrl": "making-interactive-experiences\\artificial-intelligence\\mass-entity",
+          "url": null,
+          "classification": "unresolved_relative_reference",
+          "label": null,
+          "description": null,
+          "mechanicalHostJoinNotAccepted": "https://dev.epicgames.com/making-interactive-experiences\\artificial-intelligence\\mass-entity",
+          "resolutionStatus": "unresolved_do_not_guess_current_document_slug"
+        },
+        {
+          "locator": "blocks[1].items[1][0].content/html:a[5]/@href",
+          "rawUrl": "making-interactive-experiences\\artificial-intelligence\\navigation",
+          "url": null,
+          "classification": "unresolved_relative_reference",
+          "label": null,
+          "description": null,
+          "mechanicalHostJoinNotAccepted": "https://dev.epicgames.com/making-interactive-experiences\\artificial-intelligence\\navigation",
+          "resolutionStatus": "unresolved_do_not_guess_current_document_slug"
+        },
+        {
+          "locator": "blocks[1].items[1][0].content/html:a[8]/@href",
+          "rawUrl": "making-interactive-experiences\\artificial-intelligence\\ai-perception",
+          "url": null,
+          "classification": "unresolved_relative_reference",
+          "label": null,
+          "description": null,
+          "mechanicalHostJoinNotAccepted": "https://dev.epicgames.com/making-interactive-experiences\\artificial-intelligence\\ai-perception",
+          "resolutionStatus": "unresolved_do_not_guess_current_document_slug"
+        }
+      ],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[1].items[0:9]; blocks[3].items[0:14]",
+          "fact": "본문은 Actor/Camera/Component/Controller/rules/input/timer/UI, Behavior Tree/Mass/State Tree/Nav/SmartObject/EQS/perception/debug, collision/raycast/destruction/cloth/hair physics를 설명해요. LWC의 double precision, 외부 data 기반 gameplay, ability의 cost/cooldown/level/effects, 많은 client의 동기화 및 Mover rollback networking도 소개해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "게임플레이 시스템",
+        "humanCppNodeAi": "runtime AI는 제작용 MCP와 별도 계약이에요. 사람 설정·C++ gameplay 시스템·노드·AI authoring 명령이 상태/수명/권한/rollback 및 정밀도 계약을 공유해야 해요. paragraph href 22개 관계를 기존분야목차에 추가로 보존하고 비정규 AI 상대링크 3개는 미해결로 남겨요."
+      },
+      "apiFamiliesPending": [
+        "gameplay framework",
+        "runtime AI",
+        "Chaos physics",
+        "GAS",
+        "networking/Mover"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "AI/physics/ability/network 전체 API",
+        "Mass/Nav/Perception 비정규 링크의 공식 목적지",
+        "mover rollback·data/precision 계약"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-12",
+      "title": "Mobile Development",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/getting-started-with-mobile-development-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[11]",
+      "fetchedAt": "2026-10-03T16:28:24.461717+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.source.html",
+      "sourceHash": "8c87cfaf75ee6d997319be46219360ee65c157eb03789c6457172934a8f41af4",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.ssr.json",
+      "bodyHash": "aa62ef19e6977d553180316b0c03ae9b8d6919e3fb4af8c85a6d0a6109fa1c4b",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.read.txt",
+      "textReadHash": "3e4340effc95a2abd44a43ad47c641ee52ec80246cdd0d6274f2c1ece834d8d6",
+      "metadata": {
+        "id": 4788193,
+        "hash_id": "YLQ8m5",
+        "revision_hash_id": "GEe5pz",
+        "revision_id": 5000390,
+        "updated_at": "2026-06-17T21:00:09.048Z",
+        "slug": "getting-started-with-mobile-development-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "214574320",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[2].items[0][0]",
+        "blocks[2].items[1][0]",
+        "blocks[2].items[2][0]",
+        "blocks[2].items[3][0]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[18]",
+        "blocks[19]",
+        "blocks[20]",
+        "blocks[22]",
+        "blocks[23]",
+        "blocks[24]",
+        "blocks[25]",
+        "blocks[26]",
+        "blocks[27]",
+        "blocks[28]",
+        "blocks[30]",
+        "blocks[31]",
+        "blocks[32]",
+        "blocks[34]",
+        "blocks[35]",
+        "blocks[36]",
+        "blocks[38]",
+        "blocks[39]",
+        "blocks[40]",
+        "blocks[41]",
+        "blocks[42]",
+        "blocks[43]"
+      ],
+      "uniqueManualChildCandidates": 70,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 70,
+        "external_reference_candidate": 2
+      },
+      "legacyTopicCount": 70,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-12.discovery.json",
+        "sha256": "cb231223d40fffa435714819ce2e266a5cc41a801e2987253a7c085463738095"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [
+        "blocks[5]",
+        "blocks[9]",
+        "blocks[13]",
+        "blocks[17]",
+        "blocks[21]",
+        "blocks[29]",
+        "blocks[33]",
+        "blocks[37]",
+        "blocks[44]"
+      ],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:45]",
+          "fact": "본문은 Android/iOS/iPadOS/tvOS의 환경 설정부터 device testing·서명/스토어·debug/profile까지 이어져요. preview rendering와 LAN을 통한 real-device input testing을 구별해요. Turnkey, AGDE, GooglePAD, Android File Server, PSO, animation budget, platform services와 automotive HMI의 ASIS/Multi-View도 후속 목록에 있어요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "모바일",
+        "humanCppNodeAi": "사람 project/device UI와 C++/노드/AI build 명령에 platform capability·SDK·서명·device profile·서비스 계약이 필요해요. mobile에서 일부 렌더 기능을 무조건 지원한다고 추론하지 않아요. 외부 영상은 제목만 읽고 내용을 읽은 것으로 세지 않아요."
+      },
+      "apiFamiliesPending": [
+        "mobile/platform services",
+        "device/build tooling",
+        "automotive HMI"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "8개 본문 image 픽셀/의미",
+        "external video 전체 내용",
+        "70개 child 및 mobile API·platform 지원표"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-13",
+      "title": "Animating Characters and Objects",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/animating-characters-and-objects-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[12]",
+      "fetchedAt": "2026-10-03T16:28:22.428299+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.source.html",
+      "sourceHash": "909df3b62fac1c3a5f9eab842473d1ac99872ccb5de6adca3e8b7fb147e83e22",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.ssr.json",
+      "bodyHash": "3f2ff2fcde8ec2b250102b71a97bc075c487d412f28983786f5992a4b0bdb834",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.read.txt",
+      "textReadHash": "402aeb6b225f64a9b72e97443220a3333a1b03d10000a9c810fd8d8be17f18fd",
+      "metadata": {
+        "id": 3230659,
+        "hash_id": "mW10a",
+        "revision_hash_id": "VzvA4P",
+        "revision_id": 4513803,
+        "updated_at": "2025-08-18T08:00:07.463Z",
+        "slug": "animating-characters-and-objects-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1250925246",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]"
+      ],
+      "uniqueManualChildCandidates": 7,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 12
+      },
+      "legacyTopicCount": 4,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [
+        "https://dev.epicgames.com/documentation/unreal-engine/animation-blueprints-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/control-rig-editor-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/skeletal-mesh-assets-in-unreal-engine?application_version=5.8"
+      ],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-13.discovery.json",
+        "sha256": "695044606876880340c6730c2625a1cfad1c69752eb38b9d69a217246773c08e"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:17]",
+          "fact": "skinned mesh를 skeletal mesh asset으로 import한 뒤 Animation Blueprint로 runtime animation logic을 구성하는 흐름이에요. Control Rig graph의 bone transform은 Sequencer에서 재생하거나 standalone asset으로 bake해 runtime animation에 사용할 수 있다고 해요. Paper2D는 sprite 기반 2D와 2D/3D hybrid를 modern light/world/physics와 연결해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "애니메이션·2D/3D",
+        "humanCppNodeAi": "2D·2.5D·3D를 삭제하지 않고 공용 scene/render/physics와 연결해요. 사람 rig/timeline editor·C++ animation runtime·animation node·AI rig/bake 명령에 데이터/수명/정밀도 계약이 필요해요. 본문 내부의 추가3개 링크도 탐색 관계에 보존해요."
+      },
+      "apiFamiliesPending": [
+        "animation/ControlRig/Sequencer",
+        "Paper2D"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "animation blueprint/control rig/editor/skeletal mesh 자식 본문",
+        "bake/runtime·2D collision·sprite API",
+        "Sequencer 및 reference 전체"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-14",
+      "title": "Motion Design",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/motion-design-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[13]",
+      "fetchedAt": "2026-10-03T16:28:25.191188+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.source.html",
+      "sourceHash": "419e329035ffdd106dad1c31baf9103d4f79cdd528db0c0f26ed413d270aa1d7",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.ssr.json",
+      "bodyHash": "412bec83b1ac804cb50bcae184a896a9406293991ca0c16fc3a2ad8dbb6d2a0b",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.read.txt",
+      "textReadHash": "529082998b53a25c4f218f9755b8384053195ef4d51ec83c15ef21bb9a128e3d",
+      "metadata": {
+        "id": 3232789,
+        "hash_id": "1vJGw",
+        "revision_hash_id": "q0EGvn",
+        "revision_id": 4515782,
+        "updated_at": "2025-11-12T17:00:14.286Z",
+        "slug": "motion-design-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1191651069",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]"
+      ],
+      "uniqueManualChildCandidates": 6,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 6
+      },
+      "legacyTopicCount": 6,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-14.discovery.json",
+        "sha256": "e542c566dd17e1d08331a382efc5cd75f53a1a82d43806be541a7ce5ae4ab151"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:5]",
+          "fact": "본문은 outliner/UI/rigging/cloner와 2D/3D shape, layered Material Designer를 하나의 제작 도구군으로 소개해요. Rundown과 Transition Logic을 함께 써서 live-updated broadcast graphics를 다루며 product/advertising visuals도 대상이에요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "Motion Design",
+        "humanCppNodeAi": "사람 outliner/operator stack·C++/노드 logic·AI authoring을 비교할 별도 계약으로 유지해요. layered material 편집을 일반 Material node 편집과 동일 기능이라고 가정하지 않아요. 실시간 broadcast state/version/transition 계약은 하위문서로 남겨요."
+      },
+      "apiFamiliesPending": [
+        "MotionDesign",
+        "Material Designer"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "Rundown server/SceneState/transition·operator 계약",
+        "2D/3D shape/cloner/material API",
+        "변경·취소·저장·live update 의미"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-15",
+      "title": "Creating User Interfaces",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/creating-user-interfaces-with-umg-and-slate-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[14]",
+      "fetchedAt": "2026-10-03T16:28:22.944236+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.source.html",
+      "sourceHash": "1b4b581f60f9ba1062775342eb645fcdcaa9d337094b85a168700ba67b0198be",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.ssr.json",
+      "bodyHash": "fdd0f8eb116042d020434e48c9f8e3265fe711396a22da9bf6193f19289ad1a2",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.read.txt",
+      "textReadHash": "624ca10fa3ad1e3ba3e2b3632e0e1d9a1c6cd527568747e8bf3a1148d3c3ecc9",
+      "metadata": {
+        "id": 3232310,
+        "hash_id": "eBmE4",
+        "revision_hash_id": "KXVEn",
+        "revision_id": 3219081,
+        "updated_at": "2025-03-25T09:36:24.693Z",
+        "slug": "creating-user-interfaces-with-umg-and-slate-in-unreal-engine",
+        "source": "external",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "820003951",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]"
+      ],
+      "uniqueManualChildCandidates": 12,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 12
+      },
+      "legacyTopicCount": 12,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-15.discovery.json",
+        "sha256": "8c1d6bd4f26f78a7a79bb3d9e97b891c359b76592512e4c97e0941b6792d5a6d"
+      },
+      "unresolvedTopicTokens": [
+        {
+          "locator": "blocks[0].content_html",
+          "token": "%creating-user-interfaces/accessibility:topic%"
+        }
+      ],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].content_html",
+          "fact": "본문 디렉터리는 UI build/display, UMG editor/widget, Slate, text/font/localization, optimization/debugging/plugin/examples를 구분해요. Accessibility 구역은 %creating-user-interfaces/accessibility:topic% 토큰이고 실제 하위 URL을 제공하지 않아요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "UI·접근성",
+        "humanCppNodeAi": "사람 UI 제작 도구, C++ Slate/widget 계약, UI 노드, AI 편집 스키마와 접근성은 모두 누적 요구예요. 링크 미해결을 접근성 기능 부재나 분석 면제로 처리하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "UMG/Slate",
+        "accessibility/localization"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "Accessibility 실제 전체 목록",
+        "widget/text/font/Slate·editor API",
+        "focus/input/localization/performance UX"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-16",
+      "title": "Working with Audio",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/working-with-audio-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[15]",
+      "fetchedAt": "2026-10-03T16:28:27.303937+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.source.html",
+      "sourceHash": "1d5d7eb6f5070648e84e2634486cfb903ac19406a427c7c7f657c933140df164",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.ssr.json",
+      "bodyHash": "810c034a6a45bd42c8d6c8b1c69220e8bb3111f578f88c8fc9e36ec15fb997b2",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.read.txt",
+      "textReadHash": "0348e18b52b8fd271c77dcea829f0a0cae3ba4d11395e6e7b79efcd1144ecf8c",
+      "metadata": {
+        "id": 3232788,
+        "hash_id": "ELQ8o",
+        "revision_hash_id": "kbnbkA",
+        "revision_id": 4603234,
+        "updated_at": "2026-08-26T13:46:26.166Z",
+        "slug": "working-with-audio-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "2337378173",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[0].blocks[0]",
+        "blocks[0].blocks[1]",
+        "blocks[1]",
+        "blocks[2]"
+      ],
+      "uniqueManualChildCandidates": 15,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 15
+      },
+      "legacyTopicCount": 15,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-16.discovery.json",
+        "sha256": "6d7e69f91af8be68aeebc1f5a99473f1cb1028a3fe4259c34a0bb4da81957cd3"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0].blocks[0:2]; blocks[2].items[0:15]",
+          "fact": "include 블록에 실제 두 paragraph가 중첩돼 있어요. 외부 앱에서 clean sound를 한번 제작·import하고 engine 내부 도구로 목표 결과를 만들 수 있다고 설명해요. 목록은 analysis/visualization/debug/memory/mixing/AudioLink/external control/music/source/Soundscape/spatial/submix/volume/reverb를 보존해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "오디오",
+        "humanCppNodeAi": "사람 오디오 import/mix·C++ runtime resource·audio node·AI sound 명령을 import부터 메모리/공간화까지 연결해야 해요. include를 링크나 빈 블록으로 버리지 않아요. 실제 pin/API/thread 계약은 이 루트에서 확인되지 않았어요."
+      },
+      "apiFamiliesPending": [
+        "audio engine/mix/spatial"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "audio memory/thread/streaming·실제 API",
+        "AudioLink/external control/music 전체",
+        "mixer/spatial/volume/reverb UI/runtime"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-17",
+      "title": "Working with Media",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/working-with-media-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[16]",
+      "fetchedAt": "2026-10-03T16:28:27.819760+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.source.html",
+      "sourceHash": "c68b3ad1a22ba4964c8e7a12fbfeb3bec3a65699ed9686f254062964d28f138d",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.ssr.json",
+      "bodyHash": "3521c2d61f2522438eb7a8348e7b0796d672556eb9c27f02f095d996ce981365",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.read.txt",
+      "textReadHash": "8c2a4c5678e78514683da8642e07a2858b20e3d42f7d226e233c6e4dc2e21d16",
+      "metadata": {
+        "id": 3233207,
+        "hash_id": "PejwB",
+        "revision_hash_id": "NpVO2p",
+        "revision_id": 5003857,
+        "updated_at": "2026-09-30T21:00:05.026Z",
+        "slug": "working-with-media-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1343002927",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]"
+      ],
+      "uniqueManualChildCandidates": 20,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 20
+      },
+      "legacyTopicCount": 20,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-17.discovery.json",
+        "sha256": "60689f4b2fffb294e21a9c452fb8045945e774be2e2f15e6a803621b79b65bb7"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:10]",
+          "fact": "본문은 prerecorded media와 live/recorded rendered frame을 설명하며 여러 media source 동기화와 end-to-end color management를 연결해요. 목록에는 professional IO/calibration/in-camera VFX/nDisplay/Composure, GPU data를 CPU 우회 공유하는 TextureShare, DMX/Switchboard/monitor/OpenColorIO/capture가 있어요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "미디어·가상 제작",
+        "humanCppNodeAi": "게임 영상 재생 외의 virtual production 기능도 누적 요구에 남겨요. 사람 timing/color/remote machine 도구·C++ media resource·노드·AI command에 synchronization/GPU ownership/error 계약이 필요해요."
+      },
+      "apiFamiliesPending": [
+        "media/nDisplay/TextureShare",
+        "virtual production/DMX"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "video IO·clock/sync·color 정확한 계약",
+        "TextureShare GPU lifetime·API",
+        "remote/control/capture·plugin 세부"
+      ],
+      "cachedTransferStateEndpoints": [
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-18",
+      "title": "Setting Up Your Production Pipeline",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/setting-up-your-production-pipeline-in-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[17]",
+      "fetchedAt": "2026-10-03T16:28:26.021905+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.source.html",
+      "sourceHash": "7aa1243a6ba64bc4ad779e2ee0714c5be26f9af5aa417499c69e710b801aef40",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.ssr.json",
+      "bodyHash": "55ab04f2f447a7c6c0c2bdc55ca4799b5229f7e6f23e27464191559e7b0ebbc0",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.read.txt",
+      "textReadHash": "57b18138d42796a8640ec3a2729f5881a00010df87eadf3a8d6323950846c6de",
+      "metadata": {
+        "id": 3234026,
+        "hash_id": "20krM",
+        "revision_hash_id": "DeBQn3",
+        "revision_id": 5003797,
+        "updated_at": "2026-09-29T21:00:04.241Z",
+        "slug": "setting-up-your-production-pipeline-in-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "3727475425",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]"
+      ],
+      "uniqueManualChildCandidates": 17,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 17
+      },
+      "legacyTopicCount": 17,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-18.discovery.json",
+        "sha256": "f16b321a48d8fe8f9038ef5752bc7ac7655f247d186f494a01685f426ff19b68"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:3]",
+          "fact": "목록은 asset load/unload, DDC, SDK 관리를 자동화하는 Turnkey, Ushell/Zen/build pipeline, deployment/version control/multi-user, virtual assets/redirectors, Blueprint/Python editor automation, ShotGrid/Horde/Remote Iteration을 연결해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "제작 파이프라인",
+        "humanCppNodeAi": "사람 협업·설치·캐시 UI와 C++ asset/build API·노드·AI editor automation의 공용 작업 모델이 필요해요. Python editor automation을 gameplay runtime 언어로 확대하지 않아요. 서비스/도구도 별도 corpus root 후보예요."
+      },
+      "apiFamiliesPending": [
+        "asset management/DDC/Zen",
+        "build/Horde",
+        "editor automation"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "DDC/Zen/Horde/Ushell·공식 도구 전체 문서/API",
+        "asset loading/reference/redirector serialization",
+        "multi-user conflict·automation transaction 계약"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    },
+    {
+      "id": "UR018-19",
+      "title": "Testing and Optimizing Your Content",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/testing-and-optimizing-your-content?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[18]",
+      "fetchedAt": "2026-10-03T16:28:26.435346+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.source.html",
+      "sourceHash": "ccce686ff127c5e788d66e44db3087edf4a296780be8b325b23b0372b25528ab",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.ssr.json",
+      "bodyHash": "a518b9ac8fafe382b50263d139f1fb43f50f7b1d75c0f3f2a3f5ec7677ab1196",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.read.txt",
+      "textReadHash": "415968e24492b572f3a79af2332de24cc20a102cb16b3383f86188e453a8a540",
+      "metadata": {
+        "id": 3234759,
+        "hash_id": "mWvW3",
+        "revision_hash_id": "n0o913",
+        "revision_id": 5003768,
+        "updated_at": "2026-09-25T21:00:11.810Z",
+        "slug": "testing-and-optimizing-your-content",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "3459830506",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]"
+      ],
+      "uniqueManualChildCandidates": 16,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 16
+      },
+      "legacyTopicCount": 16,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-19.discovery.json",
+        "sha256": "f6acd1df80ba43898b6a061fa84d1a49e9a2af9649e0382129ad126f1ceb7068"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:4]",
+          "fact": "목록은 preset으로 console variable 공유, crash report, runtime gameplay debugger/VisualLogger, Insights/stats, Zen runtime loader, significance, PSO/Oodle, module 중심 low-level tests, automation unit/feature/stress tests, Android/Linux Clang sanitizer를 구분해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "검사·최적화",
+        "humanCppNodeAi": "사람 진단 UI와 C++ instrumentation·노드 debug·AI 실행/판독 명령이 같은 실행 기록을 연결해야 해요. 엔진 GUI·SDK/runtime/test는 이번 연구에서 실행하지 않았고 목록의 존재를 HB 검사 통과로 계산하지 않아요."
+      },
+      "apiFamiliesPending": [
+        "debug/profile/stats",
+        "tests/automation",
+        "runtime loader"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "각 tool의 recorder/상태/오류·API",
+        "profiling/timing·low-level/automation tests 조건",
+        "platform-specific sanitizer 지원"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    },
+    {
+      "id": "UR018-20",
+      "title": "Sharing and Releasing Projects",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/sharing-and-releasing-projects-for-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[19]",
+      "fetchedAt": "2026-10-03T16:28:26.138997+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.source.html",
+      "sourceHash": "d52ef50863c109a784d5198aadea9e9a29bdbfb6b7d28f8b37a9e4f506aab6d9",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.ssr.json",
+      "bodyHash": "750acb51fd12afbb73f153731568d1c4f51cd846e9cc4fe5b03315c4db4d915d",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.read.txt",
+      "textReadHash": "2c992d24145fdce4d3723ec360780dd985842e17629586e1309ca92136f282c6",
+      "metadata": {
+        "id": 4787866,
+        "hash_id": "l4zVBw",
+        "revision_hash_id": "n0eN3M",
+        "revision_id": 4803224,
+        "updated_at": "2026-08-26T14:42:12.962Z",
+        "slug": "sharing-and-releasing-projects-for-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "1650914086",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[6]",
+        "blocks[7]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[11]",
+        "blocks[12]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]"
+      ],
+      "uniqueManualChildCandidates": 34,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 35
+      },
+      "legacyTopicCount": 34,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-20.discovery.json",
+        "sha256": "54cbfb9a19754b0c65725ab16626b300734071fc5e709058337a1fbc5d5886b9"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:17]",
+          "fact": "본문은 공통 packaging 절차와 platform별 setup/publishing/debug/optimization 차이를 명시해요. cook/chunk/multiprocess/versioned release/cooked editor와 AutoSDK/device/profile/latency/TVsafezone/ARM64, mobile, OpenXR/handheldAR/input/UI/multi-user/XR devices 및 WebRTC Pixel Streaming도 후속 목록이에요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "빌드·배포·XR",
+        "humanCppNodeAi": "사람 deploy/device UI와 C++ cook/dependency·노드·AI build 명령에는 version/platform/supported target·cancel/error/recovery 계약이 필요해요. XR·cloud streaming과 플랫폼 제한은 별도 전체 목록으로 유지해요."
+      },
+      "apiFamiliesPending": [
+        "cook/package/platform",
+        "XR/OpenXR",
+        "Pixel Streaming"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "platform/cook/ARM64·XR/PixelStreaming 세부 API",
+        "restricted consoles 목록·권한 있는 공식 자료",
+        "각 build operation·취소/복구·지원타깃"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json",
+        "/documentation/assets/i18n/global/search/en-US.json"
+      ]
+    },
+    {
+      "id": "UR018-21",
+      "title": "Samples and Tutorials",
+      "kind": "navigation_root_with_limited_overview_semantics",
+      "requestedOrLegacySeedUrl": "https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine?application_version=5.8",
+      "requestUrlExplicitlyRecorded": false,
+      "finalUrl": "https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine?application_version=5.8",
+      "corpusIdentityUrl": "https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine?application_version=5.8",
+      "canonicalTags": [
+        "<link rel=\"canonical\" href=\"https://dev.epicgames.com/documentation/unreal-engine/samples-and-tutorials-for-unreal-engine?lang=en-US\" />"
+      ],
+      "rootLocator": "blocks[0].items[20]",
+      "fetchedAt": "2026-10-03T16:28:25.701355+00:00",
+      "bodyMethod": "official_HTML_SSR_document.json_transfer_state",
+      "sourceFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.source.html",
+      "sourceHash": "11648bbaef5417acd3e8feaf3fc255dc5df688be2e41ac53c89bf2286fbb264e",
+      "bodyFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.ssr.json",
+      "bodyHash": "8c656758ade7b36ab13b53b7b299cf81cc478f34a815d5166c5f2164b7cf1edc",
+      "textReadFile": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.read.txt",
+      "textReadHash": "95ec4ccf1fd692900cab19888dc518907e3fae7e7f2a95c3e5e90abaa9e37605",
+      "metadata": {
+        "id": 3236691,
+        "hash_id": "6VlVJ",
+        "revision_hash_id": "xaraD7",
+        "revision_id": 4516977,
+        "updated_at": "2025-09-15T10:00:04.951Z",
+        "slug": "samples-and-tutorials-for-unreal-engine",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "document_type": "landing",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ],
+        "prereq_documents": [],
+        "related_documents": []
+      },
+      "ssrTransportKey": "2598528397",
+      "ssrTransportUrl": "http://documentation-app/community/api/documentation/document.json",
+      "sourceMatchesPriorManifest": true,
+      "cachedJSONEqualsSourceSSR": true,
+      "reader": "unreal_root_expansion_018",
+      "readAt": "2026-10-04T07:16:25.228997+00:00",
+      "readScope": "entire_accessible_SSR_text_and_list_descriptions_including_nested_table/include; metadata description/seo description; no_child_bodies_API_declarations_or_media_pixels/video",
+      "priorScope": "legacy cached roots structurally inspected; no prior same-hash full-text/strict proof reused",
+      "currentStatus": "partial_root_text_and_discovery_analysis_not_ledger_promoted",
+      "strictBodyReviewed": false,
+      "strictAnalyzed": false,
+      "verified": false,
+      "coveredTextualBlockLocators": [
+        "blocks[0]",
+        "blocks[1]",
+        "blocks[2]",
+        "blocks[3]",
+        "blocks[4]",
+        "blocks[5]",
+        "blocks[7]",
+        "blocks[7].blocks[0]",
+        "blocks[8]",
+        "blocks[9]",
+        "blocks[10]",
+        "blocks[10].items[0][0]",
+        "blocks[10].items[1][0]",
+        "blocks[11]",
+        "blocks[13]",
+        "blocks[14]",
+        "blocks[15]",
+        "blocks[16]",
+        "blocks[17]"
+      ],
+      "uniqueManualChildCandidates": 5,
+      "linkOccurrences": {
+        "unreal_manual_candidate": 5,
+        "official_linked_product_catalog_candidate": 1,
+        "other_epic_product_documentation": 1
+      },
+      "legacyTopicCount": 5,
+      "legacyMissingFromActualRoot": [],
+      "legacyPresentNonManual": [],
+      "additionalManualRelationsVsLegacy": [],
+      "newAcceptedEngineCandidatesVs16216": [],
+      "childInventoryArtifact": {
+        "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/UR018-21.discovery.json",
+        "sha256": "cdcd84465d1ba79793171ec29fed9330fce19b5aff2e79a884fa082686c7884c"
+      },
+      "unresolvedTopicTokens": [],
+      "unresolvedRelativeReferences": [],
+      "unreviewedBodyMediaLocators": [
+        "blocks[6]",
+        "blocks[12]"
+      ],
+      "overviewFacts": [
+        {
+          "locator": "blocks[0:18]",
+          "fact": "본문은 template에 추가 구성 없이 동작하는 character controller/Blueprint 등의 기능이 포함된다고 해요. sample은 호환 engine version이 설치돼야 Fab Library에 나타나요. Fab integration은 5.3 이상, 기존5.3/5.4에는 별도 plugin download, 새 install/update에는 포함된다는 조건을 보존했어요. 진입은 Window > Fab 또는 Content Drawer toolbar의 Fab이며 새 창을 열고 Discover의 UE Samples/search를 사용해요."
+        }
+      ],
+      "hbDesignJudgment": {
+        "sourceDistinction": "HB design requirement; not an Epic guarantee or HB implementation claim",
+        "axis": "예제·Fab",
+        "humanCppNodeAi": "사람 template/import UI와 C++/노드/AI 예제 복제 명령에 version/호환/의존 계약이 필요해요. 실제 예제를 내려받거나 실행하지 않았어요. Fab 제품 문서와 catalog는 Unreal 매뉴얼 외부의 공식 연결 후보로 남겨요."
+      },
+      "apiFamiliesPending": [
+        "templates/samples",
+        "Fab integration"
+      ],
+      "apiDeclarationCountReviewed": 0,
+      "pending": [
+        "본문 이미지2개의 실제 픽셀/UI",
+        "Fab 제품 문서/catalog 및 sample full inventory",
+        "template/sample runtime·dependency·compatibility"
+      ],
+      "cachedTransferStateEndpoints": [
+        "/documentation/assets/i18n/en-US.json",
+        "/documentation/assets/i18n/global/search/en-US.json",
+        "http://documentation-app/community/api/documentation/document.json"
+      ]
+    }
+  ],
+  "extractionTool": {
+    "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/extract_roots.py",
+    "sha256": "36951b78447cd8ee9683a72f9f8654495690fc149f38f20d07688efbb38fa4ac",
+    "runtime": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "method": "Exact cached SSR bytes copied; document payload reparsed from HTML and compared structurally; stdlib HTMLParser reads all text/heading/table/include/directory attributes and link locators; relative path candidates are not guessed into canonical slugs",
+    "autoStatusPromotion": false
+  },
+  "mediaEvidence": {
+    "imageFetchArtifact": {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-fetch.json",
+      "sha256": "f27aa16ec22bbf6ca5a1a52d0c1370afd1981900f9bd3e4a0ef7ef29b1604cc2"
+    },
+    "imageCountRequested": 10,
+    "imagesFetched": 0,
+    "imagesRead": 0,
+    "failureClass": "HTTP_403_text_html_not_image; no_header_credentials_or_query_bypass",
+    "videoInspectionArtifact": {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/video-inspection.json",
+      "sha256": "c820091fa7f2a623165ea35240f28b65f707da0b0c4fe6e9ef54bb6e255c02a3"
+    },
+    "videoMetadata": {
+      "videoId": "nZlVkI3j7Xs",
+      "title": "Unreal for Mobile: Building AAA Cross-Platform Open Worlds | Unreal Fest 2024",
+      "author": "Unreal Engine",
+      "channelId": "UCBobmJyzsJ6Ll7UbfhI4iwQ",
+      "lengthSeconds": "2584",
+      "isLiveContent": false
+    },
+    "captionTrackMetadata": [
+      {
+        "name": {
+          "simpleText": "영어 (자동 생성됨)"
+        },
+        "vssId": "a.en",
+        "languageCode": "en",
+        "kind": "asr",
+        "isTranslatable": true,
+        "trackName": ""
+      }
+    ],
+    "captionInterpretation": "Observed ASR tracks are platform-generated captions; they are not a creator-authored verified technical transcript.",
+    "wholeVideoRead": false,
+    "transcriptBodyRead": false,
+    "watchPageMetadataProbeAttempts": 2,
+    "pinnedCurrentWatchPageSnapshots": 1,
+    "firstWatchPageProbeMetadata": {
+      "httpStatus": 200,
+      "bytes": 1370583,
+      "reportedResponseSha256": "26b01ff1f2c27e1b5e6d979891255921436a323edd4b3003a5a42bf7472e4ea5",
+      "rawPreserved": false,
+      "disposition": "metadata from tool result only; do not use as independent-verifiable source; current pinned snapshot supports all reported video metadata"
+    },
+    "sourceProvidedImageURLsArtifact": {
+      "file": "native/build/reference-corpus/unreal-root-coverage-batch-018/media-provided-urls.json",
+      "sha256": "035e49a3b4195177535e9d48b0a56334bb05edda884b25b41c47e9376b23ef25"
+    },
+    "sourceProvidedCDNOrDifferentImageEndpoint": false
+  }
+}

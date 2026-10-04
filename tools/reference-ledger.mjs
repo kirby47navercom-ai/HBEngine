@@ -21,8 +21,10 @@ const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const full = file => path.resolve(repo, file);
 const requireThat = (condition, message) => { if (!condition) throw new Error(message); };
 const nonempty = value => typeof value === 'string' && value.trim().length > 0;
-const manifest = read(manifestFile);
+const manifestBytes = fs.readFileSync(manifestFile);
+const manifest = JSON.parse(manifestBytes.toString('utf8'));
 requireThat(manifest.schemaVersion === 1 && manifest.phase === 'research_only', 'Expected research_only manifest v1');
+requireThat(manifest.scopeExpansionPending === undefined || (Array.isArray(manifest.scopeExpansionPending) && manifest.scopeExpansionPending.every(nonempty)), 'Scope expansion issues must be explicit nonempty strings');
 const sources = new Map(manifest.sources.map(source => [source.id, source]));
 requireThat(sources.size > 0 && sources.size === manifest.sources.length, 'Nonempty unique source roots required');
 const baselineHash = source => hash(JSON.stringify({ id: source.id, engine: source.engine, version: source.version, locale: source.locale, roots: source.roots, hosts: source.hosts, pathPrefix: source.pathPrefix }));
@@ -60,11 +62,12 @@ function canonical(source, input) {
   url.hash = '';
   return url.href;
 }
-function discoveryUrl(source, input) {
+function discoveryUrl(input) {
   const url = new URL(input);
-  requireThat(url.protocol === 'https:' && source.hosts.includes(url.hostname), 'Unofficial discovery source');
+  const origins = [...sources.values()].filter(source => source.hosts.includes(url.hostname));
+  requireThat(url.protocol === 'https:' && origins.length > 0, 'Unofficial discovery source');
   const version = url.searchParams.get('application_version');
-  requireThat(source.engine !== 'Unreal' || !version || version === source.version, 'Wrong discovery version');
+  requireThat(!version || origins.some(source => source.engine !== 'Unreal' || version === source.version), 'Wrong discovery version');
   return url.href;
 }
 function pageById(id) {
@@ -176,7 +179,7 @@ function status(page) {
   try {
     requireThat(canonical(sources.get(page.sourceId), page.url) === page.url, 'Discovery no longer matches source baseline');
     requireThat(page.discoveredFrom.length > 0, 'Missing official discovery provenance');
-    for (const evidence of page.discoveredFrom) pinnedProof(evidence);
+    for (const evidence of page.discoveredFrom) { pinnedProof(evidence); discoveryUrl(evidence.url); }
     if (!page.snapshot) return { state: 'discovered' };
     snapshot(page);
     if (!page.review) return { state: 'fetched' };
@@ -239,7 +242,23 @@ function summary() {
       } catch (error) { reasons.push(`${source.id}: ${error.message}`); }
     }
   }
+  for (const issue of manifest.scopeExpansionPending || []) result.implementationGate.reasons.push(`scope expansion: ${issue}`);
   result.implementationGate.ready = result.implementationGate.reasons.length === 0;
+  result.progress = {
+    scope: 'registered_manifest_sources',
+    evaluatedAt: new Date().toISOString(),
+    manifestSha256: hash(manifestBytes),
+    evidenceGatePassed: result.implementationGate.ready,
+    percentage: result.implementationGate.ready ? 100 : null,
+    percentageBasis: result.implementationGate.ready
+      ? 'All registered inventories and body/API evidence passed the gate'
+      : 'No aggregate percentage while inventory, denominators or evidence remain unresolved',
+    openInventorySources: result.sources.filter(source => !source.discoveryClosed).map(source => source.id),
+    unknownPageDenominatorSources: result.sources.filter(source => !Number.isInteger(source.expectedPages) || source.expectedPages < 1).map(source => source.id),
+    unknownApiDenominatorSources: result.sources.filter(source => !Number.isInteger(source.expectedApiUnits) || source.expectedApiUnits < 0).map(source => source.id),
+    pendingScopeIssues: manifest.scopeExpansionPending || [],
+    limits: 'Collection, declaration candidates and bounded comparisons are not whole-corpus reading. Newly discovered functional sources must be registered before this gate can cover them. This gate does not evaluate engine implementation.'
+  };
   return result;
 }
 
@@ -250,14 +269,14 @@ try {
     const source = sources.get(bundle.sourceId);
     requireThat(source && Array.isArray(bundle.entries), 'Known source and entries required');
     const proof = fileProof(bundle.discovery.file, bundle.discovery.sha256);
-    discoveryUrl(source, bundle.discovery.url);
+    discoveryUrl(bundle.discovery.url);
     let added = 0;
     for (const entry of bundle.entries) {
       requireThat(nonempty(entry.url) && nonempty(entry.title), 'URL and title required');
       const url = canonical(source, entry.url);
       const id = hash(`${source.id}\n${url}`).slice(0, 24);
       const entryProof = entry.discovery ? pinnedProof(entry.discovery) : proof;
-      if (entry.discovery) discoveryUrl(source, entry.discovery.url);
+      if (entry.discovery) discoveryUrl(entry.discovery.url);
       const provenance = { ...entryProof, url: entry.discovery?.url || bundle.discovery.url, parentUrl: entry.parentUrl || bundle.discovery.url };
       if (!ledger.pages[id]) {
         ledger.pages[id] = { id, sourceId: source.id, url, title: entry.title, kind: entry.kind || 'unclassified', discoveredFrom: [], legacyClaims: entry.legacyClaims || [] };

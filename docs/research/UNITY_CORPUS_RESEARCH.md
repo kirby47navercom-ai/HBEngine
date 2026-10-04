@@ -51,7 +51,7 @@ TOC의 top-level API 항목은 UnityEngine 2,301, UnityEditor 1,336, Unity 400�
 
 ## 3. 전체 Manual 분야별 발견 범위
 
-아래 숫자는 각 top-level section 내부 고유 URL 수예요. section 간 5개 중복이 있으므로 합산값 3,127은 전역 고유 3,122와 달라요. **이 표 전체의 상태는 발견·수집 완료, 본문 분석은 대부분 unread**예요.
+아래 숫자는 각 top-level section 내부 고유 URL 수예요. section 간 5개 중복이 있으므로 합산값 3,127은 전역 고유 3,122와 달라요. 이 표는 당시 TOC/search 목록의 발견·ZIP 확보 집계예요. 공식 연결 문서 확장과 원장 전체 본문 확인은 미완료이며, 대부분의 본문은 미독 상태예요.
 
 | 분야 | 고유 URL | 분야 | 고유 URL |
 |---|---:|---|---:|

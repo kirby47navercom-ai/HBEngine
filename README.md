@@ -1,5 +1,7 @@
 # HBEngine
 
+현재 작업 단계는 **전체 공식 본문·API 분석 선행(`research_only`)**이다. 아래 기능은 연구 단계 이전의 구현 이력이며 Unity·Unreal 전체 분석 완료를 뜻하지 않는다. 실제 읽은 범위·미독·전체 분모와 조건은 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다.
+
 C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
 
 ## 현재 구현
@@ -23,7 +25,7 @@ C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 �
 - **내비게이션·인지·효과**: XY/XZ 격자 A*와 에이전트/장애물, 시야/차폐/소리/기억과 블랙보드 연동, 계층 태그/Any·All·None 질의, CPU 파티클의 Main/Emission/Shape/Velocity/Force/Color/Size/Renderer, 실제 표면 데칼 투영을 제공한다. 다각형 NavMesh·군중 회피·입자 충돌/트레일·뼈별 슬롯 블렌딩은 남아 있다.
 - **장면과 에셋 사용**: 도형·광원·Transform, 직교 2D와 3D 뷰, 하늘·햇빛·구름·안개·맵 템플릿. OBJ/GLTF/GLB/FBX 미리보기·배치, 모델에 포함된 애니메이션, 브라우저 지원 영상·오디오, 기본 PBR 표면·광원·위젯·게임 저장을 연결한다.
 
-Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포인터·창 배치의 공식 근거와 남은 범위는 [전체 분야 조사와 구현 대조](docs/REFERENCE_COVERAGE.md), [전체 엔진 분석](docs/ENGINE_REFERENCE_ANALYSIS.md), [인터랙션 계약과 검증 상태](docs/EDITOR_INTERACTION_SPEC.md), [BP/C++ 구현 기준](docs/BLUEPRINT_SPEC.md), [장기 엔진 기획](docs/ENGINE_PLAN.md)에 있다.
+Unreal/Unity의 외형뿐 아니라 제작 흐름·실행 의미·키보드/포인터·창 배치의 과거 조사 근거와 남은 범위는 [과거 분야 조사와 구현 대조](docs/REFERENCE_COVERAGE.md), [과거 부분 조사·설계 대조](docs/ENGINE_REFERENCE_ANALYSIS.md), [인터랙션 계약과 검증 상태](docs/EDITOR_INTERACTION_SPEC.md), [BP/C++ 구현 기준](docs/BLUEPRINT_SPEC.md), [장기 엔진 기획](docs/ENGINE_PLAN.md)에 있다. 이 자료를 새 전체 본문/API 분석의 완료 증거로 자동 승격하지 않는다.
 
 ## 실행과 검사
 

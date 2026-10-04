@@ -44,6 +44,14 @@ test('official inventory import deduplicates aliases without promoting reading, 
     const result = JSON.parse(f.run('status').stdout);
     assert.equal(result.sources[0].counts.discovered, 1);
     assert.equal(result.sources[0].counts.analyzed, 0);
+    assert.equal(result.progress.scope, 'registered_manifest_sources');
+    assert.equal(result.progress.evidenceGatePassed, false);
+    assert.equal(result.progress.percentage, null);
+    assert.match(result.progress.evaluatedAt, /^\d{4}-\d{2}-\d{2}T/);
+    assert.equal(result.progress.manifestSha256, digest(fs.readFileSync(f.manifestFile)));
+    assert.deepEqual(result.progress.openInventorySources, ['api']);
+    assert.deepEqual(result.progress.unknownPageDenominatorSources, ['api']);
+    assert.deepEqual(result.progress.unknownApiDenominatorSources, ['api']);
     assert.equal(f.run('gate').status, 2);
     for (const url of ['https://example.com/not-official', 'https://dev.epicgames.com/documentation/en-us/unreal-engine/API/A?application_version=4.27']) {
       assert.equal(f.run('import', f.write('wrong.json', { ...f.bundle, entries: [{ title: 'Wrong', url }] })).status, 1);
@@ -89,6 +97,32 @@ test('gate needs independent complete evidence and discovery closure; changed bo
     f.source.closure = { baselineHash, actor: 'discoverer', verifier: 'inventory-verifier', evidence: [f.sourceFile, f.bodyFile].map(file => ({ file, sha256: digest(fs.readFileSync(file)) })), inventoryPages: 1, apiUnits: 2, unprocessedLinks: 0, unresolvedRoots: 0 };
     f.write('manifest.json', f.manifest);
     assert.equal(f.run('gate').status, 0);
+    const complete = JSON.parse(f.run('status').stdout).progress;
+    assert.equal(complete.evidenceGatePassed, true);
+    assert.equal(complete.percentage, 100);
+    assert.deepEqual(complete.openInventorySources, []);
+    // A newly discovered platform contract must keep the overall gate open,
+    // even when every older source has already passed its own evidence gate.
+    f.manifest.sources.push({ id: 'platform-android-api', engine: 'Android', version: 'unversioned-snapshot', hosts: ['developer.android.com'], roots: ['https://developer.android.com/reference/'], pathPrefix: '/reference/', expectedPages: null, expectedApiUnits: null, discoveryClosed: false, openIssues: ['Platform API discovery and contracts pending'] });
+    f.write('manifest.json', f.manifest);
+    const expanded = f.run('gate');
+    assert.equal(expanded.status, 2);
+    const expandedProgress = JSON.parse(expanded.stdout).progress;
+    assert.equal(expandedProgress.evidenceGatePassed, false);
+    assert.equal(expandedProgress.percentage, null);
+    assert.deepEqual(expandedProgress.openInventorySources, ['platform-android-api']);
+    assert.deepEqual(expandedProgress.unknownPageDenominatorSources, ['platform-android-api']);
+    assert.deepEqual(expandedProgress.unknownApiDenominatorSources, ['platform-android-api']);
+    f.manifest.sources.pop();
+    f.write('manifest.json', f.manifest);
+    f.manifest.scopeExpansionPending = ['Official SDK sources still need registration'];
+    f.write('manifest.json', f.manifest);
+    const pendingScope = f.run('gate');
+    assert.equal(pendingScope.status, 2);
+    assert.equal(JSON.parse(pendingScope.stdout).progress.percentage, null);
+    assert.deepEqual(JSON.parse(pendingScope.stdout).progress.pendingScopeIssues, f.manifest.scopeExpansionPending);
+    delete f.manifest.scopeExpansionPending;
+    f.write('manifest.json', f.manifest);
     f.source.roots = ['https://dev.epicgames.com/documentation/en-us/unreal-engine/API/NewRoot'];
     f.write('manifest.json', f.manifest);
     assert.equal(f.run('gate').status, 2);
@@ -214,5 +248,27 @@ test('entry-specific official discovery proofs are retained when the catalog pro
     assert.equal(evidence[1].sha256, entryProof.sha256);
     assert.equal(f.run('import', f.write('second-bundle.json', bundle)).status, 0);
     assert.equal(f.ledger().pages[f.pageId].discoveredFrom.length, 2);
+  } finally { cleanup(f); }
+});
+
+test('cross-host discoveries require a registered official parent, preserve target validation and become stale if the parent is removed', () => {
+  const f = fixture();
+  try {
+    const url = 'https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html';
+    const file = f.write('official-parent.html', `<a href="${f.bundle.entries[0].url}">Published API link</a>`);
+    const proof = { url, file, sha256: digest(fs.readFileSync(file)) };
+    const bundle = { sourceId: 'api', discovery: proof, entries: [{ ...f.bundle.entries[0], discovery: proof, parentUrl: url }] };
+    const bundleFile = f.write('cross-host.json', bundle);
+    assert.equal(f.run('import', bundleFile).status, 1);
+    f.manifest.sources.push({ id: 'godot', engine: 'Godot', version: '4.5', hosts: ['docs.godotengine.org'], roots: [url], expectedPages: null, expectedApiUnits: null, discoveryClosed: false, openIssues: ['Supplemental editor contracts remain open'] });
+    f.write('manifest.json', f.manifest);
+    assert.equal(f.run('import', bundleFile).status, 0);
+    assert.equal(f.ledger().pages[f.pageId].discoveredFrom.length, 2);
+    assert.equal(JSON.parse(f.run('status').stdout).sources[0].counts.discovered, 1);
+    assert.equal(f.run('import', f.write('wrong-cross-target.json', { ...bundle, entries: [{ title: 'Wrong target', url }] })).status, 1);
+    assert.equal(f.run('gate').status, 2);
+    f.manifest.sources.pop();
+    f.write('manifest.json', f.manifest);
+    assert.equal(JSON.parse(f.run('status').stdout).sources[0].counts.stale_or_invalid, 1);
   } finally { cleanup(f); }
 });
