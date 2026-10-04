@@ -22,6 +22,8 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 
 응답의 `objects:[]`는 C++ Transform/공개 속성에 변화가 없다는 뜻이다. 전체 장면이 사라졌다는 뜻으로 해석하지 않는다. `transport`의 `upstreamMode/upstreamBytes`, worker `mode/bytes`, `prepareMs/rpcMs`, `replyBytes/returnedObjects`는 전송/반환 비용이다. GPU/화면 표시 FPS로 해석하지 않는다. 전체 장면 검증·형상 질의·JSON 한도/복구는 [경량화 계약](PERFORMANCE_BUDGETS.md)에 연결한다.
 
+후속 worker는 `transport.parseMs/patchMs/syncMs/invokeMs/snapshotMs/workerMs`를, host는 `decodeMs/validateMs/replyValidationMs`를 반환한다. AI도 전체 왕복이 느린지 실제 사용자 함수가 느린지 이 값으로 구분할 수 있다. 호출/프로세스 대기와 출력 직렬화가 포함된 `rpcMs`와 내부 `workerMs`를 더하지 않는다. 이전 worker에서 없는 필드는 미측정으로 처리한다. 실행 진단을 BP 에셋의 선언/핀/기본값에 저장하지 않는다.
+
 ## 입력·스프라이트·타일 제작
 
 `schema.input`은 실제 8개 트리거, 유지/탭/반복 시간 기본값, 5개 이벤트와 모디파이어 종류를 반환한다. 입력 액션의 시간·조합 액션 경로·처리 순서는 사람이 쓰는 입력 에셋 편집기와 같은 데이터다. `schema.sprites`는 픽셀/피벗/테두리 좌표, 분할 방식과 기존 분할 적용 방식을 설명한다.

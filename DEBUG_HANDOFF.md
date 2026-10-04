@@ -1,3 +1,13 @@
+# 후속 물리·C++ 경량화와 복구 경계 — 2026-10-04
+
+- 실제 CPU profile의 같은 고정 스텝 중복 물리 sync와 worldPatch의 미변경 필드 경로 생성을 줄였어요. 동적 강체 속도 변경은 추가 sync가 필요 없고, 강체 없는 부모/자식 pose와 update callback 변경은 필요해요. 2D·3D 같은 프레임 이동/속도 미러/자식 trigger 접촉을 추가해144개 WASM assertion을 통과했어요.
+- BFsbYx의 worker 평균14.11ms 중 bridgeSync12.05ms였어요. canonical/작업용 세계를 함께 patch하고 사용자 C++가 바꾼 객체만 먼저 복구해 전체 복사를 줄였어요. FLIPNx는 patch8.99+sync0.50ms, 전체 worker10.85ms예요. 복구 비용을 patch로 옮긴 만큼 sync만 비교하지 않아요. RPC/루프와 worker 내부 시간도 구분해요.
+- 처음 복구에 JSON `==`를 사용하면 중첩 unsigned 정수1과 double1.0이 같게 비교돼요. 실제 사용자 C++ Retype→Unsigned 검사에서 false≠true 실패를 재현한 뒤 타입/값 재귀 대조로 수정했어요. 이 실패가 있는 f265kk는 최종 성공 근거가 아니에요.
+- patch 중 새 클래스의 생성자가 bridgeWorld를 비우면 함수가 빈 세계를 읽는 out_of_range.401 실패도 재현했어요. ensure로 새 인스턴스를 만들었을 때만 기존처럼 입력 세계 전체를 다시 동기화해요. 재호출의 정상 delta 경로에는 복사를 넣지 않아요. 생성자→Nested 입력 읽기로 검사했어요.
+- reset이 inputObjects/cells만 비우고 bridgeWorld를 남기던 별도 수명 결함을 확인했어요. reset→재생성의 첫 생성자가480개를 보던 검사 실패를 작업용 세계 해제로 고쳤고0개로 통과했어요. 사용자 C++ EndPlay는 reset 전에 실행해요. headless의 장면 전환/EndPlay/재실행으로 확인해요.
+- 전체 최초 기준 pVE0Gf 대비 FLIPNx의480+C++ 루프11.2→17.6/p9592.5→67.6ms/지속9.5→14.7은 개선이지만 직전WCjb5G의 지속15.1보다 낮았어요. 전체 메모리도584/657/672MiB private 표본이며 감소를 단정하지 않아요. 새 의존성0, 전체 표본/중간 실패/원자료를 docs/INPUT_MOBILE_POOL.md에 보존해요.
+- 생성자/reset 수정 뒤 마지막 ir3BYV는480+C++21.8/p9549.8ms/35.4초96회재사용19.3, private587/625/663MiB 표본이에요. 최초/직전 commit 두 자동 비교가 통과했지만 앞선17.6/지속14.7 편차를 지우지 않아요. 최종 에디터4vNL2a와2D·3D package cYhBqS의 실제 실행·C++ 재실행·원본 복구·정상 종료도 통과했고 HBEngine.exe/dist를 다시 만들었어요. 사용자 창은 조작하지 않았어요.
+
 # C++ 경량화 검증 — 2026-10-04
 
 - 기준 pVE0Gf: 480개 이동/매프레임 사용자 C++ Update에서11.2루프/초·work p9592.5ms. 전체 browser→HTTP 요청/host JSON 복사와 비교/worker patch 전체 복사/미변경480개 Transform 반환이 반복됐다.

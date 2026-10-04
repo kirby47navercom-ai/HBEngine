@@ -1,5 +1,16 @@
 # HBEngine 작업 인계 — 2026-10-04
 
+## 최신 후속: 중복 물리 동기화·C++ 작업용 장면 복사 감소
+
+주인님의 계속 지시와 가벼움 요구를 이어 물리/전송/worker 비용을 줄였어요. 전체 누적 엔진/연구/사람 UI·AI 편집/2D·2.5D·3D/PC·모바일 요구를 유지하고 이 작업을 전체 완료로 계산하지 않아요.
+
+- 물리 sync는 스텝 시작에 유지해요. 동적 강체 속도 변경이면 중복 sync를 생략하고, 강체 없는 부모·자식 이동과 callback 변경이면 유지해요. 양 차원 같은 프레임 이동/속도 미러/자식 trigger 접촉의8개 추가 assertion으로 총144개 실제 WASM 검사를 통과했어요. worldPatch는 미변경 값의 경로 문자열을 만들지 않아요.
+- C++ canonical/작업용 JSON을 함께 patch하고 사용자 코드의 임시 수정만 복구해요. 숫자형 `1/1.0` 동등 비교 때문에 복구를 놓치던 실패를 재현·수정했어요. 생성자가 작업용 세계를 수정하는 경우도 재현하고 새 인스턴스를 만든 호출만 입력 세계를 다시 복사해요. reset 뒤 첫 생성자가 이전480개 객체를 보던 수명 결함도0개로 고쳤어요. 기존 caller/전체 전송/동기 질의/함수 안 타일 변경·물리 질의는 유지해요.
+- host decode/요청·응답 검증, worker parse/patch/sync/invoke/snapshot/전체 시간을 transport에 추가했어요. 사람/AI가 같은 진단을 읽고 이전 worker의 없는 값은 미측정으로 처리해요. 캐시/진단을 에셋에 저장하지 않아요. 의존성을 추가하지 않았어요.
+- 전송/host/native-world/headless/144physics/2d-authoring/pool/입력/scene/main/API/integration 통과. 생성자/reset 수정 뒤 native transport와 headless를 다시 통과했고 새 HBEngine.exe/dist를 만들었어요. 최종 별도 에디터4vNL2a는 전체API·2D→3D·C++ BeginPlay/입력 재호출·Stop→Play·원본 복구/정상 종료, package cYhBqS는2D·3D 실제EXE·GPU·BP/C++·컴파일러 없는 실행·종료·무결성/원본 보존을 통과했어요. 앞선 z9xQvf/RztdWL도 보존해요. 기존 사용자 창/탭에는 접속하지 않았어요.
+- 마지막 release Player ir3BYV는 기본슈터60.2/비C++480개60.4/매프레임C++480개21.8/p9549.8ms/35.4초96회재사용19.3이에요. 최초 pVE0Gf 대비 루프+93.6%/p95-46.2%/지속+103.2%, 직전WCjb5G 대비+30.0%/-38.5%/+27.9%; 두 자동 비교 모두 통과했어요. 앞선 FLIPNx의17.6/p9567.6/지속14.7과 BFsbYx/f265kk 편차·숫자형 복구 실패도 보존해요. worker 평균14.11→9.31ms지만 patch/sync 비용 위치를 함께 비교해요. 마지막 private587/625/663MiB 표본은 전체 무누수/모바일 메모리 증명이 아니에요.
+- docs/PERFORMANCE_BUDGETS.md와 INPUT_MOBILE_POOL.md/AI_ENGINE_API.md에 계약·조건·진단·원자료를 연결해요. 비교는 native/build/performance-comparison-2026-10-04-sync-final.json 및 sync-incremental.json, 실제 증거는 player-acceptance-ir3BYV/acceptance.json이에요. 단일 최신 표본을 평균으로 바꾸지 않아요. 큰 C++ 장면60루프/16.7ms 목표 및 실제 모바일 앱/기기/발열·전체 누적 범위는 그대로 유지해요.
+
 ## 최신 경량화: C++ 전체 장면 비용 감소
 
 가벼움을 엔진의 계속 요구로 유지하라는 사용자 지시에 따라 비용을 실측·줄였어요. 전체 누적 엔진/2D·2.5D·3D/AI 편집·PC/mobile 요구를 유지하고 추가 의존성이나 기능 생략 없이 브리지의 반복 작업을 줄였어요.

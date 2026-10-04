@@ -31,8 +31,8 @@ for(const workerProtocol of [undefined,1,2]){
 
 const host=new NativeHost();
 try {
-  const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass TransportProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static hb::Vec3 Read(hb::Actor* target); HB_FUNCTION(BlueprintPure) static int Nested(); HB_FUNCTION(BlueprintCallable) static void Fail(); };\nHB_CLASS()\nclass TransportActor : public hb::Actor { public: HB_PROPERTY(BlueprintReadWrite) int Count=0; HB_FUNCTION(BlueprintCallable) void Mutate(); };';
-  const source='#include "User.h"\nhb::Vec3 TransportProbe::Read(hb::Actor* target){return target->transform.position;}\nint TransportProbe::Nested(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(1).get<int>();}\nvoid TransportProbe::Fail(){throw std::runtime_error("transport probe failure");}\nvoid TransportActor::Mutate(){Count++;transform.position.x+=5;}';
+  const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass TransportProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static hb::Vec3 Read(hb::Actor* target); HB_FUNCTION(BlueprintPure) static int Nested(); HB_FUNCTION(BlueprintPure) static bool Unsigned(); HB_FUNCTION(BlueprintPure) static int WorldOnConstruct(); HB_FUNCTION(BlueprintCallable) static void Retype(); HB_FUNCTION(BlueprintCallable) static void Tamper(bool erase); HB_FUNCTION(BlueprintCallable) static void Fail(); };\nHB_CLASS()\nclass TransportActor : public hb::Actor { public: TransportActor(); HB_PROPERTY(BlueprintReadWrite) int Count=0; HB_FUNCTION(BlueprintCallable) void Mutate(); };';
+  const source='#include "User.h"\nint constructedWorldSize=-1;\nint TransportProbe::WorldOnConstruct(){return constructedWorldSize;}\nhb::Vec3 TransportProbe::Read(hb::Actor* target){return target->transform.position;}\nint TransportProbe::Nested(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(1).get<int>();}\nbool TransportProbe::Unsigned(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(0).is_number_unsigned();}\nvoid TransportProbe::Retype(){hb::bridgeWorld.at(0)["nested"]["a~/b"][0]=1.0;}\nvoid TransportProbe::Tamper(bool erase){if(erase)hb::bridgeWorld.clear();else{hb::bridgeWorld.at(0)["nested"]["a~/b"][1]=999;hb::bridgeWorld.at(1)["extra"]=true;}}\nvoid TransportProbe::Fail(){throw std::runtime_error("transport probe failure");}\nTransportActor::TransportActor(){constructedWorldSize=static_cast<int>(hb::bridgeWorld.size());hb::bridgeWorld.clear();}\nvoid TransportActor::Mutate(){Count++;transform.position.x+=5;}';
   const built=await host.build(header,source),client=new NativeWorldClient(),packets=[];
   let objects=Array.from({length:480},(_,i)=>object('actor'+i,i));
   Object.assign(objects[0],{nativeClass:'TransportActor',nativeProperties:{Count:0}});
@@ -40,12 +40,16 @@ try {
   const request=(nativeId='TransportProbe.Read',args={target:'actor0'})=>({key:'nativeCall',nativeId,args,objects});
   const call=(nativeId,args)=>client.call(request(nativeId,args),built.metadata,send);
   let reply=await call();assert.deepEqual(reply.outputs.result,[0,0,Math.fround(.1)]);assert.deepEqual(reply.objects,[],'pure read avoids returning all transforms');
+  for(const key of ['parseMs','patchMs','syncMs','invokeMs','snapshotMs','workerMs','decodeMs','validateMs','replyValidationMs'])assert.ok(Number.isFinite(reply.transport[key])&&reply.transport[key]>=0,'native timing: '+key);
   objects[200].position[0]+=.25;objects[0].nested['a~/b'][1]=7;objects[0].omit=undefined;
   reply=await call('TransportProbe.Nested',{});assert.equal(reply.outputs.result,7);assert.equal(reply.transport.upstreamMode,'patch');
   assert.ok(reply.transport.upstreamBytes<JSON.stringify(objects).length/100,'HTTP and worker both carry the changed paths');
   assert.equal(reply.transport.mode,'patch');assert.deepEqual(reply.objects,[]);
   reply=await client.call({command:'frame',delta:.01,objects:[]},built.metadata,send);assert.equal(reply.transport.mode,'clock');
   reply=await call();assert.deepEqual(packets.at(-1).objectPatch,[],'clock preserves the committed input world');
+  for(const erase of [false,true]){await call('TransportProbe.Tamper',{erase});reply=await call('TransportProbe.Nested',{});assert.equal(reply.outputs.result,7,'temporary C++ JSON mutation does not corrupt the authoritative input cache');assert.equal(reply.transport.mode,'patch');}
+  assert.equal((await call('TransportProbe.Unsigned',{})).outputs.result,true);await call('TransportProbe.Retype',{});assert.equal((await call('TransportProbe.Unsigned',{})).outputs.result,true,'equal numeric values with different JSON types must still restore');
+  Object.assign(objects[1],{nativeClass:'TransportActor',nativeProperties:{Count:4}});assert.equal((await call('TransportProbe.Nested',{})).outputs.result,7,'new C++ constructors cannot alter the authoritative world used by the function');
   reply=await call('TransportActor.Mutate',{target:'actor0'});assert.equal(reply.objects.length,1);assert.equal(reply.objects[0].nativeProperties.Count,1);assert.equal(reply.objects[0].position[0],5);
   Object.assign(objects[0],reply.objects[0]);reply=await call();assert.equal(reply.outputs.result[0],5);assert.deepEqual(reply.objects,[],'unchanged float32 conversion does not write all objects back');
   const beforeFailure=packets.length;await assert.rejects(call('TransportProbe.Fail',{}),/probe failure/);assert.equal(packets.length,beforeFailure+1,'side effects are never automatically retried');
@@ -61,7 +65,7 @@ try {
   await assert.rejects(call(),/sequence mismatch/,'different world identity cannot silently patch the wrong world');reply=await call();assert.equal(reply.transport.upstreamMode,'full');
   const forged={...packets.at(-1),objects:undefined,baseSequence:1,worldSequence:2,objectPatch:[{op:'replace',path:'/0/position',value:[99,0,0]},{op:'remove',path:'/noSuchObject'}]};
   await assert.rejects(host.call(built.token,snapshot(forged)),/array index/);assert.equal(client.world[0].position[0],6);await assert.rejects(call(),/sequence mismatch/);assert.equal((await call()).outputs.result[0],6);
-  await client.call({command:'reset',objects:[]},built.metadata,send);reply=await call();assert.equal(reply.transport.upstreamMode,'full');
+  delete objects[1].nativeClass;delete objects[1].nativeProperties;await client.call({command:'reset',objects:[]},built.metadata,send);reply=await call();assert.equal(reply.transport.upstreamMode,'full');assert.equal((await call('TransportProbe.WorldOnConstruct',{})).outputs.result,0,'reset releases the previous C++ JSON world before new constructors run');
   const concurrent=await Promise.all([call('TransportProbe.Nested',{}),call()]);assert.equal(concurrent[0].outputs.result,7);assert.equal(concurrent[1].outputs.result[0],6);
   assert.equal(packets.at(-1).worldSequence,packets.at(-2).worldSequence+1);
   // Existing hosts/headless callers still use mutable full snapshots.

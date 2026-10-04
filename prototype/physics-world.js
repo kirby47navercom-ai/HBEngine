@@ -172,13 +172,15 @@ export function createRigidPhysics(objects,options={}){
     }
   }
   function movement(step){
+    let changedPose=false;
     for(const o of objects){const move=enabledComponent(o,'TopDownMovement2D')||enabledComponent(o,'CharacterMovement2D')||enabledComponent(o,'CharacterMovement')||enabledComponent(o,'PawnMovement');if(!move)continue;
       const r=record(o,2)?.p?record(o,2):record(o,3),top=!!enabledComponent(o,'TopDownMovement2D'),controller=objects.find(v=>v.id===state.gameplay?.controller),control=controller&&enabledComponent(controller,'PlayerController'),allow=!control||control.inputEnabled,controlled=state.gameplay?.pawn===o.id||move.autoPossess;
       const keyboard=controlled&&allow?[(keys.get('d')||keys.get('arrowright')||0)-(keys.get('a')||keys.get('arrowleft')||0),top?(keys.get('w')||keys.get('arrowup')||0)-(keys.get('s')||keys.get('arrowdown')||0):0,top?0:(keys.get('s')||keys.get('arrowdown')||0)-(keys.get('w')||keys.get('arrowup')||0)]:[0,0,0],direction=o.navigationControl?.direction||new Vector3(...(inputs.get(o.id)||[0,0,0])).add(new Vector3(...keyboard)).toArray(),length=Math.hypot(...direction),target=direction.map(v=>v/Math.max(1,length)*(o.navigationControl?.speed??move.speed)),velocity=r?.p?array(r.body.linvel()):o.velocity??[0,0,0],blend=Math.min(1,move.acceleration*step);
       for(const i of top||o.navigationControl&&r?.dim===2?[0,1]:r?.dim===2?[0]:[0,2])velocity[i]+=(target[i]-velocity[i])*blend;
       if(jumps.has(o.id)&&move.jumpSpeed!==undefined&&o.grounded)velocity[1]=move.jumpSpeed;
-      if(r?.body.isDynamic())r.body.setLinvel(xyz(constrained(r,velocity)),true);else if(!r?.p){setSceneWorldPosition(o,sceneWorldPosition(o,objects).map((v,i)=>v+velocity[i]*step),objects);o.velocity=velocity;options.update?.(o);}
+      if(r?.body.isDynamic())r.body.setLinvel(xyz(constrained(r,velocity)),true);else if(!r?.p){setSceneWorldPosition(o,sceneWorldPosition(o,objects).map((v,i)=>v+velocity[i]*step),objects);o.velocity=velocity;options.update?.(o);changedPose=true;}
     }
+    return changedPose;
   }
   function query(key,args){
     alive();sync();const dim=args.dimension??3;if(![2,3].includes(dim))throw Error('물리 질의 차원은 2 또는 3이에요.');const space=spaces.get(dim);if(!space)throw Error('물리 월드를 먼저 준비하세요.');
@@ -221,7 +223,7 @@ export function createRigidPhysics(objects,options={}){
     debug(){alive();return [...spaces].map(([dimension,s])=>{const data=s.world.debugRender();if(dimension===3)return {dimension,...data};const vertices=new Float32Array(data.vertices.length/2*3);for(let i=0;i<data.vertices.length/2;i++)vertices.set([data.vertices[i*2],data.vertices[i*2+1],0],i*3);return {dimension,vertices,colors:data.colors};});},
     inspect(){alive();sync();return {backend:'rapier',fixedStep:dt,elapsed,dimensions:[...spaces].map(([dimension,s])=>({dimension,bodies:[...s.bodies.values()].map(r=>({id:r.object.id,bodyType:typeOf(r.p),position:array(r.body.translation()),velocity:array(r.body.linvel()),angularVelocity:dimension===2?[0,0,r.body.angvel()]:array(r.body.angvel()),mass:r.body.mass(),sleeping:r.body.isSleeping(),colliders:r.colliders.size})),joints:[...s.joints.values()].map(j=>({owner:j.object.id,component:j.component.id,type:j.component.properties.jointType,connectedBody:j.component.properties.connectedBody||null}))}))};},
     step(delta,limit=maxSubsteps){alive();if(!spaces.size)throw Error('물리 월드를 먼저 준비하세요.');if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;
-      while(accumulator+1e-9>=dt&&count<limit){sync();movement(dt);sync();for(const o of objects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
+      while(accumulator+1e-9>=dt&&count<limit){sync();if(movement(dt))sync();for(const o of objects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
         for(const s of spaces.values())s.world.step(s.eventQueue,s.hooks);updateObjects();collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
         inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }

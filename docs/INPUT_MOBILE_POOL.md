@@ -131,6 +131,46 @@ private 증거: `player-acceptance-pVE0Gf/acceptance.json`, `player-acceptance-W
 
 실제 저작/자동화·패키지 회귀도 확인했다. `authoring-window-FshpAA`는 스프라이트 분할·Undo/Redo·AI·입력→타일 화면/충돌, `package-check-p6ymR2`는2D·3D GPU/BP/C++·컴파일러 없는 EXE·종료·무결성·원본 보존을 통과했다. 새 `npm run test:editor-api-window`는 고립된 실제 편집기에서 기존 전체 API 검사와 C++ BeginPlay→입력 재호출·다시 Play·원본 복구를 실행한다. 성공증거는 `editor-api-window-Ywixc6`다. 첫 wLg3Xr의 기능 검사는 통과했지만 검사 마지막 Undo 문서가 미저장 상태여서 종료 확인이 대기했다. fixture 원본을 저장하고 재검사했으며 첫 전체 실행은 성공으로 계산하지 않는다. 기존5181에 직접 실행한 검사는 ECONNREFUSED였고 사용자 창에 접속해 해결하지 않았다.
 
+## 후속 물리·C++ 동기화 — 2026-10-04
+
+CPU profile에서 물리의 같은 스텝 중복 sync와 변경 없는 JSON 필드의 경로 생성이 보였다. 동적 강체의 속도만 바꾼 경우에 두 번째 sync를 생략하고, 부모/자식 위치와 callback 변경이 있을 때는 유지했다. JSON 차이 검색도 같은 값이면 경로를 만들지 않는다. 물리 144개 assertion은 양 차원의 같은 프레임 제어 이동·속도 미러·강체 없는 부모 이동 뒤 자식 trigger 접촉을 포함한다.
+
+worker 시간 표본 `BFsbYx`에서는 입력 patch 평균0.84ms, 전체 게임용 JSON 복사를 포함한 sync12.05ms, 함수0.21ms, 전체 worker14.11ms였다. canonical/작업용 세계에 변경분을 적용하고 사용자 C++의 임시 수정만 복구한 최종 `FLIPNx`에서는 patch8.99ms, sync0.50ms, 함수0.21ms, 전체 worker10.85ms였다. 복구 시간이 patch로 이동했으므로 sync 감소만 전체 개선이라고 계산하지 않는다. worker 전체 평균은 이 표본에서 약23% 감소했다. 출력 직렬화/프로세스 대기를 포함한 rpc 평균은16.35→13.23ms였다.
+
+일반 JSON 동등 비교를 쓴 중간 `f265kk`는 정수1을 실수1.0으로 임시 수정한 뒤 원래 형을 복원하는 추가 검사에서 실패했다. 값·JSON 타입을 모두 재귀 대조하도록 수정했고 중첩 사용자 값·추가 키·세계 삭제·형 변경을 실제 C++ 호출로 재검사했다. 이 중간 코드는 최종 성공 근거로 쓰지 않는다.
+
+같은 release EXE 조건의 최종 FLIPNx는 다음과 같다. 각 값은 한 실행의 표본이며 앞선 실측도 보존한다.
+
+| 조건 | 실행 루프/초 | 작업 p95 |
+|---|---:|---:|
+| 기본 C++ 슈터/마우스 발사 | 60.2 | 별도 기본 표본 |
+| 480개 이동, 사용자 C++ 없음 | 57.8 | 19.9ms |
+| 480개 이동, 프레임마다 사용자 C++ | 17.6 | 67.6ms |
+| 30초 이상, 480개 이동+C++/96회 풀 재사용 | 14.7 | 79.6ms |
+
+최초 기준 pVE0Gf 대비 480+C++ 루프는11.2→17.6(+56.2%), p95는92.5→67.6ms(-26.9%), 지속 루프는9.5→14.7(+54.9%)다. 직전 커밋 WCjb5G와 비교하면 480 루프16.7→17.6, p9581.0→67.6ms지만 지속 루프는15.1→14.7이다. 전체 경로가 매번 개선됐다고 주장하지 않는다. BFsbYx의19.5/p9559.3/지속19.2와도 편차가 있다. `performance-comparison-2026-10-04-physics-sync.json`은 최초 기준 대비 개선/비C++ 회귀/기능 유지 조건을 통과했다. 60루프/16.7ms의 큰 장면 목표와는 구별한다.
+
+최종 owned Game/Node/WebView2/worker 트리 표본의 private commit은 준비584/480+C++657/지속 끝672MiB, working set 합은720/867/887MiB다. 직전 WCjb5G의584/662/666MiB private와 비교해 전체 메모리 감소라고 단정하지 않는다. 표본/공유 페이지/피크·GPU 제외의 기존 제약을 유지한다. 새로운 의존성을 추가하지 않았다.
+
+native transport/host/native-world/headless/physics/2D 저작·풀/입력/장면/main/API/integration 회귀를 통과했다. Player 실제 창의 스프라이트·한글 UI·마우스 C++ 발사·Web Audio 신호·멀티터치·모든 탄환 이동을 다시 확인했다. 진단 필드와 복구 계약은 PERFORMANCE_BUDGETS 및 AI_ENGINE_API에 연결한다. 실제 에디터와 2D·3D 패키지 검증은 아래 후속 실행 증거에 기록한다.
+
+### 생성자·reset 복구 후의 마지막 EXE 실측
+
+새 C++ 인스턴스의 생성자가 작업용 세계를 비우던 재현은 새 인스턴스가 있을 때만 입력 세계 전체 복사로 복구했다. reset 후 첫 생성자가 이전480개 객체를 보던 수명 결함도 빈 세계0개로 수정·재검사했다. 그 두 수정까지 포함한 별도 release EXE `ir3BYV`는 아래 결과를 남겼다. 앞선 FLIPNx 수치는 자료형 복구 후의 중간 실측이며 삭제하지 않는다.
+
+| 조건 | 실행 루프/초 | 작업 p95 |
+|---|---:|---:|
+| 기본 C++ 슈터/마우스 발사 | 60.2 | 별도 기본 표본 |
+| 480개 이동, 사용자 C++ 없음 | 60.4 | 15.5ms |
+| 480개 이동, 프레임마다 사용자 C++ | 21.8 | 49.8ms |
+| 35.4초, 480개 이동+C++/96회 풀 재사용 | 19.3 | 50.9ms |
+
+최초 pVE0Gf 대비 480+C++의 루프+93.6%/p95-46.2%/지속+103.2%, 직전 커밋 WCjb5G 대비 루프+30.0%/p95-38.5%/지속+27.9%다. 두 비교 모두 같은 CPU/release/해상도/슬롯 수·활성 탄환 이동·96회 재사용을 확인했고 비C++ 경로10% 이상 회귀도 없다. 자동 비교 증거는 `performance-comparison-2026-10-04-sync-final.json` 및 `performance-comparison-2026-10-04-sync-incremental.json`이다. 반복 표본의17.6~21.8/지속14.7~19.3 편차를 지우거나 이 마지막 한 번을 통계 평균으로 취급하지 않는다. 큰 C++ 장면의60루프 목표는 여전히 별도로 판단한다.
+
+worker 평균은9.31ms(parse1.04/patch7.61/sync0.40/함수0.16/결과0.09), rpc11.66ms였다. BFsbYx의14.11ms와 비교한 worker 평균 감소는약34%이며 함수 시간만 바뀐 개선으로 해석하지 않는다. private commit 표본은 준비587/480+C++625/지속 끝663MiB, working set 합은714/819/859MiB다. 직전 commit/앞선 실측의 표본과 함께 보존하며 전용 커밋량과 GPU/RAM 피크를 구분한다. 종료 후 C++ 세계를 비운 기능 검사가 전체 무누수/모바일 메모리 증명은 아니다.
+
+최종 저작/배포 재검사: `editor-api-window-4vNL2a`의 전체API·2D→3D·사용자 C++ BeginPlay/입력 재호출·Stop→Play 두 번·원본 복구/정상 종료, `package-check-cYhBqS`의2D 개발/3D 배포 GPU/BP/C++·컴파일러 없는 실행·서버 종료·무결성·원본 보존도 통과했다. HBEngine.exe/dist를 다시 만들었고 최신 docs도 배포 폴더에 반영했다. 검사는 격리 프로젝트/프로필과 화면 밖 비활성 창만 사용했다.
+
 ## 공식 근거
 
 [Epic GetMousePosition](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APlayerController/GetMousePosition)과 [DeprojectMousePositionToWorld](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APlayerController/DeprojectMousePositionToWorld)를 마우스 위치/월드 방향 계약과 대조했다. [Unity ScreenPointToRay](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.ScreenPointToRay.html)의 좌표는 왼쪽 아래 기준이므로 HB의 왼쪽 위 CSS 좌표 계약과 혼동하지 않는다.

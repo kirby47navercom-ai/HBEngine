@@ -1,7 +1,7 @@
 // JSON snapshots stay separate from the mutable game world. Clone only changed
 // paths after a successful call; failures force the next request to send a full world.
 export function worldPatch(previous,current,limit=4096){
-  const operations=[],escape=value=>String(value).replace(/~/g,'~0').replace(/\//g,'~1');
+  const operations=[],escape=value=>/[~/]/.test(value)?String(value).replace(/~/g,'~0').replace(/\//g,'~1'):String(value);
   const add=(operation,depth)=>{operations.push(operation);if(operations.length>limit||depth>64||operation.path.length>4096)throw Error('full snapshot');};
   function walk(a,b,path,depth=0){
     if(Object.is(a,b))return;
@@ -9,7 +9,7 @@ export function worldPatch(previous,current,limit=4096){
     if(!ao||!bo||aa!==ba||aa&&a.length!==b.length){add({op:'replace',path,value:b},depth);return;}
     if(aa){if(a.length<=4){let changes=0,scalar=true;for(let i=0;i<a.length;i++){if(!Object.is(a[i],b[i]))changes++;if(a[i]!==null&&typeof a[i]==='object'||b[i]!==null&&typeof b[i]==='object')scalar=false;}if(!changes)return;if(scalar&&changes>1){add({op:'replace',path,value:b},depth);return;}}for(let i=0;i<a.length;i++){const value=b[i],type=typeof value;walk(a[i],value===undefined||type==='function'||type==='symbol'||type==='number'&&!Number.isFinite(value)?null:value,path+'/'+i,depth+1);}return;}
     for(const key in a)if(Object.hasOwn(a,key)&&(!Object.hasOwn(b,key)||b[key]===undefined))add({op:'remove',path:path+'/'+escape(key)},depth+1);
-    for(const key in b)if(Object.hasOwn(b,key)&&b[key]!==undefined){const at=path+'/'+escape(key);if(!Object.hasOwn(a,key))add({op:'add',path:at,value:b[key]},depth+1);else walk(a[key],b[key],at,depth+1);}
+    for(const key in b)if(Object.hasOwn(b,key)&&b[key]!==undefined){const exists=Object.hasOwn(a,key);if(exists&&Object.is(a[key],b[key]))continue;const at=path+'/'+escape(key);if(!exists)add({op:'add',path:at,value:b[key]},depth+1);else walk(a[key],b[key],at,depth+1);}
   }
   try{walk(previous,current,'');return operations;}catch{return null;}
 }
