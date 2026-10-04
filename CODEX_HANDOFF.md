@@ -1,5 +1,17 @@
 # HBEngine 작업 인계 — 2026-10-04
 
+## 후속 구현: 입력 액션·스프라이트 시트·실행 중 타일맵
+
+2026-10-04의 계속 구현 지시를 따라 연구 009/010과 공식 Enhanced Input/Sprite Editor/Tilemap API를 실제 제작·실행 기능에 연결했어요. 전체 엔진과 문서/API 완료로 승격하지 않고 기존 모든 누적 요구·미독 대기열·pin/hash를 보존해요.
+
+- 입력: Hold/HoldRelease/Tap/DoubleTap/Pulse, 5종 이벤트와 elapsed, 조합 액션·순환 거부, 우선순위 컨텍스트 추가/제거, 축 크기/반전/교환/정규화/지수 모디파이어를 에셋 UI·BP·사용자 C++에 연결했어요. 컨텍스트 제거/키 소비는 Tap/Released 성공 대신 취소하고 풀 재사용의 준비 샘플은 가짜 이벤트를 남기지 않아요.
+- 2D 제작: 셀 크기/행열/알파 자동 분할·빈 셀·trim, 미리 보기/Apply/Revert·Undo/Redo, 선택 분할 이름/rect/pivot/border와 Smart/Safe ID 보존, 기존 출력 재사용·sheet/sliceId 연결·독립 스프라이트 전환을 추가했어요. 참조 이동·패키지·실제 렌더·headless가 같은 연결 스프라이트를 해석해요.
+- 타일맵: 원본과 분리한 실행 복사본을 Construction 전에 준비해요. C++ hb::Tilemaps와 BP의 12개 함수로 지정/삭제·영역/연결 채우기·월드/셀 좌표·표시·변경/갱신을 처리해요. 같은 C++ 호출의 변경 후 읽기를 지원해요. ProcessTilemapChanges 다음 충돌 질의가 옛 충돌을 읽던 재현 실패를 수정했고 공용 생성기로 동기 스냅샷을 갱신해 배치/삭제 양쪽을 재검사했어요. 실제 화면/VM 변경은 C++ 반환 뒤 명령 순서대로 적용하며 물리 시간을 진행시키지 않아요.
+- AI: sprite.slice/sprite.trim, 실제 입력/분할 스키마·안정적 ID·expectedRevision/dryRun, 공용 no-op Undo 방지를 추가했어요. 사용자 C++ 선언의 공용 함수 18개 추가로 BP 카탈로그 504개예요. 사람 UI와 자동화가 같은 검증/Undo/저장 경로를 사용해요.
+- 검증: input-authoring/2d-authoring/main/API/integration/headless/native-world/physics 통과. 실제 별도 에디터에서 분할 적용/Undo/Redo/AI 수정/분할 dryRun/trim no-op/연결 출력과 재출력/미리 보기, Hold→타일 화면·충돌 제거와 원본 보존을 확인했어요. native/build/authoring-window-NGokoS 및 앞선 qVOYKQ/Qn1WLD/cJGxFE/AMoOvv는 private 성공 증거예요. Hr62qx/NtdxuS의 초기 타일 렌더 자원 초기화 실패는 성공으로 계산하지 않아요. package-check-I4PLwR에서 실제 2D·3D Game.exe GPU/BP/C++/컴파일러 없는 실행·종료·프로필 충돌/취소/무결성/원본 보존도 통과했어요.
+- 현재 HBEngine.exe/dist를 다시 만들었어요. 검사는 고유 임시 프로젝트/프로필·화면 밖 SW_SHOWNOACTIVATE 창만 사용했고 사용자의 기존 브라우저/창을 조작하지 않았어요. 새 회귀 명령은 npm run test:authoring-window예요.
+- 세부 계약과 남은 구현은 docs/INPUT_SPRITE_TILEMAP.md, 자동화는 docs/AI_ENGINE_API.md에 연결해요. isometric/outline/sorting/mask/타일 provider·모바일 SDK/앱/제작기·큰 C++ 브리지 성능 병목을 이 작업의 완료로 계산하지 않아요. 전체 제작 범위는 기존 엔진 지도와 연구 원장을 그대로 이어가요.
+
 ## 최신 사용자 지시: 구현 재개 + 뒤에 실제 실행 검증
 
 2026-10-04 후속 지시에서 마우스 조준·클릭, 탄환/적 재사용, 스프라이트 방향 전환, 탑다운 플레이어 찾기를 먼저 구현하고 기존 분석의 구현 요구를 이어 진행하도록 명시했어요. 모바일 조작/UI 전반을 추가했고, 그 뒤 실제 창의 스프라이트·UI·한글·오디오와 탄막 성능을 검증하도록 했어요. 이 명시적 단계 변경이 아래의 과거 `research_only` 지시보다 우선해요. 전체 엔진·문서/API 분석 완료를 의미하지 않아요.

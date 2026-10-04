@@ -1,3 +1,5 @@
+import {resolveSprite} from './sprite-import.js';
+import {RuntimeTilemaps} from './tilemap-runtime.js';
 import {requestSceneTravel} from './play-world.js';
 import {storageKey,storage} from './project-session.js';
 import {evaluateMaterial,validAsset} from './asset-documents.js';
@@ -39,6 +41,7 @@ export function engineOperations(hooks){
   const soundRouting=new AudioRouting({readAsset:path=>readAsset(path)});
   let physics,audioEpoch=0;
   const readAsset=hooks.readAsset||(async(path)=>(await editorRequest(fileUrl(path))).json());
+  const tilemaps=new RuntimeTilemaps({read:readAsset,render:hooks.tilemapFrame});
   const stopAnimation=id=>{animations.delete(id);const mixer=mixers.get(id)?.mixer;if(mixer){mixer.stopAllAction();mixer.uncacheRoot(mixer.getRoot());mixers.delete(id);}};
   const applyAnimation=(o,state)=>{for(const track of state.tracks)o[track.id]=sampleTimeline(track,state.time);hooks.update(o);};
   const target=(args,b,vm,key='target')=>{const o=vm.object(args[key]===null?b.self:args[key],b);if(!o)throw Error('대상 오브젝트가 없어요.');return o;};
@@ -73,12 +76,23 @@ export function engineOperations(hooks){
       if(key==='physicsTorque'||key==='physicsAngularImpulse')system.torque(o,a.torque||a.impulse,key==='physicsAngularImpulse');return {};
     }
     if(['inputKeyDown','inputAxisValue','mousePosition','mouseDelta','mouseRay','mouseWorldPlane'].includes(key)){vm.inputSnapshot();return vm.inputState.query(key,a);}
+    if(['inputAddContext','inputRemoveContext','actionValue','actionState','actionEvent','actionElapsed'].includes(key)){
+      const o=target(a,b,vm),bindings=vm.bindings.filter(binding=>binding.self===o.id);if(!bindings.length)throw Error('입력 액션을 받을 블루프린트가 필요해요.');
+      if(key==='inputRemoveContext'){const path=await hooks.asset(a.context,'inputmapping');if(!path)throw Error('입력 컨텍스트가 없어요.');for(const binding of bindings)binding.input.removeContext(path);return {};}
+      if(key==='inputAddContext'){
+        if(!Number.isInteger(a.priority)||Math.abs(a.priority)>10000)throw Error('입력 우선순위를 확인하세요.');const path=await hooks.asset(a.context,'inputmapping');if(!path)throw Error('입력 컨텍스트가 없어요.');const context=await readAsset(path);if(!validAsset('inputmapping',context))throw Error('입력 매핑을 확인하세요.');
+        const actions=new Map(),load=async(path,stack=new Set())=>{if(stack.has(path))throw Error('Input Action 조합 순환');if(actions.has(path))return;stack.add(path);const action=await readAsset(path);if(!validAsset('inputaction',action))throw Error('Input Action을 확인하세요.');if(action.chordAction)await load(action.chordAction,stack);actions.set(path,action);stack.delete(path);};for(const m of context.mappings)await load(m.action);
+        for(const binding of bindings){for(const [path,action] of actions)binding.input.actions.set(path,action);binding.input.addContext(path,context,a.priority);}return {};
+      }
+      const input=bindings[0].input,state=input.snapshot().find(s=>s.path===a.action);if(key==='actionState')return {return:state?.state||'none'};if(key==='actionElapsed')return {return:state?.elapsed||0};if(key==='actionEvent')return {return:state?.events.includes(a.event)||false};const v=state?.value??false;return {return:Array.isArray(v)?[v[0],v[1],v[2]||0]:[Number(v),0,0]};
+    }
     if(['spriteFlip','spriteGetFlip','spriteSet','spriteGet'].includes(key)){
       const o=target(a,b,vm),component=objectComponents(o).find(c=>c.type==='SpriteRenderer');if(!component)throw Error('SpriteRenderer 컴포넌트가 필요해요.');const p=component.properties;
       if(key==='spriteGetFlip')return {flipX:!!p.flipX,flipY:!!p.flipY};if(key==='spriteGet')return {return:o.currentSprite||p.sprite||o.spriteAsset||''};
       if(key==='spriteFlip'){p.flipX=a.flipX;p.flipY=a.flipY;hooks.spriteFlip?.(o,p);return {};}
-      const path=await hooks.asset(a.sprite,'sprite');if(!path||!valid2DAsset('sprite',await readAsset(path)))throw Error('스프라이트 에셋을 확인하세요.');if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;return {};
+      const path=await hooks.asset(a.sprite,'sprite');if(!path)throw Error('스프라이트 에셋을 확인하세요.');await resolveSprite(await readAsset(path),readAsset);if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;return {};
     }
+    const tileResult=await tilemaps.operation(key,a,b,vm);if(tileResult!==undefined)return tileResult;
     const uiResult=await ui.operation(key,a,b,vm);if(uiResult!==undefined)return uiResult;
     const mixerResult=await soundRouting.operation(key,a,b,vm);if(mixerResult!==undefined)return mixerResult;
     if(key.startsWith('tag')){const o=target(a,b,vm);o.tags??=[];if(['tagAdd','tagRemove','tagHas'].includes(key)&&!validGameplayTag(a.tag))throw Error('게임플레이 태그 형식 오류');if(key==='tagGet')return {return:[...o.tags]};if(key==='tagHas')return {return:hasGameplayTag(o.tags,a.tag,a.exact)};if(key==='tagQuery')return {return:matchTagQuery(o.tags,JSON.parse(a.query))};if(['tagAny','tagAll'].includes(key)){if(!Array.isArray(a.tags)||a.tags.length>32)throw Error('태그 배열 크기 오류');const values=a.tags.map(t=>hasGameplayTag(o.tags,t,a.exact));return {return:key==='tagAny'?values.some(Boolean):values.every(Boolean)};}if(key==='tagAdd'){if(!o.tags.includes(a.tag)){if(o.tags.length>=32)throw Error('태그 개수 제한 초과');o.tags.push(a.tag);}}else if(key==='tagRemove')o.tags=o.tags.filter(t=>t!==a.tag);else throw Error('태그 함수가 없어요.');return {};}
@@ -89,13 +103,13 @@ export function engineOperations(hooks){
     if(key==='poolActive')return {return:target(a,b,vm).poolActive!==false};
     if(key==='poolAcquire'){
       if(!Array.isArray(a.pool)||a.pool.length>500||!validValue('transform',a.transform)||!a.transform.scale.every(v=>v>=.01))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
-      o.poolActive=true;o.visible=o.poolVisible!==false;o.collisionEnabled=o.poolCollision!==false;Object.assign(o,structuredClone(a.transform));o.velocity=[0,0,0];o.angularVelocity=[0,0,0];hooks.update(o);for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();for(const [key,value] of vm.inputState.keys)binding.input.set(key,value);binding.input.sample(false);}await startActor(o,vm);await systems.start(vm,o.id);for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolAcquire');return {return:o.id};
+      o.poolActive=true;o.visible=o.poolVisible!==false;o.collisionEnabled=o.poolCollision!==false;Object.assign(o,structuredClone(a.transform));o.velocity=[0,0,0];o.angularVelocity=[0,0,0];hooks.update(o);for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();for(const [key,value] of vm.inputState.keys)binding.input.set(key,value);binding.input.sample(false);binding.input.endFrame();}await startActor(o,vm);await systems.start(vm,o.id);for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolAcquire');return {return:o.id};
     }
     if(key==='poolRelease'){
       const o=target(a,b,vm);if(o.poolActive===false)return {};for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolRelease');await releaseActor(o,vm);o.poolVisible=o.visible;o.poolCollision=o.collisionEnabled!==false;o.poolActive=false;o.visible=false;o.collisionEnabled=false;o.velocity=[0,0,0];o.angularVelocity=[0,0,0];delete o.navigationControl;hooks.update(o);return {};
     }
     if(key==='spawn'){if(vm.objects.length>=500)throw Error('오브젝트 제한 초과');const known=b.root.native?.classes.some(c=>c.name===a.class),kind={Cube:'cube',Sphere:'sphere',Cylinder:'cylinder',Plane:'plane',Character:'character',Pawn:'character',Actor:'empty'}[a.class]||'cube';if(!known&&!['Actor','Pawn','Character','Cube','Sphere','Cylinder','Plane'].includes(a.class))throw Error('등록되지 않은 클래스: '+a.class);const o={id:crypto.randomUUID(),name:a.class,kind,group:'WORLD',visible:true,...structuredClone(a.transform),nativeClass:a.class};objectComponents(o);vm.objects.push(o);hooks.build(o);return {actor:o.id};}
-    if(key==='destroy'){const o=target(a,b,vm);for(const binding of vm.bindings.filter(x=>x.self===o.id))await vm.emit(binding,'endPlay',{reason:'Destroyed'});vm.bindings=vm.bindings.filter(x=>x.self!==o.id);vm.jobs=vm.jobs.filter(j=>j.owner!==o.id);for(const [id,t] of vm.timelines)if(t.f.b.self===o.id)vm.timelines.delete(id);for(const [id,t] of vm.core.timers)if(t.owner===o.id)vm.core.timers.delete(id);await releaseActor(o,vm);vm.objects.splice(vm.objects.indexOf(o),1);hooks.remove(o);return {};}
+    if(key==='destroy'){const o=target(a,b,vm);tilemaps.release(o.id);for(const binding of vm.bindings.filter(x=>x.self===o.id))await vm.emit(binding,'endPlay',{reason:'Destroyed'});vm.bindings=vm.bindings.filter(x=>x.self!==o.id);vm.jobs=vm.jobs.filter(j=>j.owner!==o.id);for(const [id,t] of vm.timelines)if(t.f.b.self===o.id)vm.timelines.delete(id);for(const [id,t] of vm.core.timers)if(t.owner===o.id)vm.core.timers.delete(id);await releaseActor(o,vm);vm.objects.splice(vm.objects.indexOf(o),1);hooks.remove(o);return {};}
     if(key==='visibility'){const o=target(a,b,vm);o.visible=a.visible;hooks.update(o);return {};}
     if(key==='attach'){const o=target(a,b,vm),parent=target(a,b,vm,'parent');let p=parent;while(p){if(p.id===o.id)throw Error('부모 연결 순환');p=vm.object(p.parent);}const mesh=hooks.mesh(o.id),parentMesh=hooks.mesh(parent.id);if(!mesh||!parentMesh)throw Error('장면 객체가 없어요.');parentMesh.attach(mesh);o.parent=parent.id;o.position=mesh.position.toArray();o.rotation=mesh.rotation.toArray().slice(0,3).map(THREE.MathUtils.radToDeg);o.scale=mesh.scale.toArray();return {};}
     if(['getComponent','addComponent','componentEnabled'].includes(key)){const o=target(a,b,vm);if(key==='componentEnabled'){if(!o.owner)throw Error('컴포넌트 대상이 아니에요.');const owner=vm.object(o.owner),component=objectComponents(owner).find(c=>c.id===o.componentId);if(!component)throw Error('컴포넌트가 제거됐어요.');component.properties??=componentDefaults(component.type);component.properties.enabled=a.enabled;o.enabled=a.enabled;hooks.update(owner);return {};}let c=objectComponents(o).find(c=>c.type===a.class);if(!c&&key==='addComponent'){c=addSceneComponent(o,a.class);hooks.update(o);}if(!c)return {return:null};const id=o.id+':'+c.id;if(!vm.object(id))vm.objects.push({id,name:c.name,kind:'component',owner:o.id,componentId:c.id,visible:false,enabled:c.properties?.enabled!==false,position:[...o.position],rotation:[...o.rotation],scale:[...o.scale],properties:c.properties});return {return:id};}
@@ -149,9 +163,11 @@ export function engineOperations(hooks){
     audioState:()=>({state:soundRouting.context?.state||'idle',levels:Object.fromEntries([...soundRouting.graphs].map(([path,graph])=>[path,graph.levels()])),voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime}))}),
     pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
+    prepare:async vm=>tilemaps.start(vm.objects),
     start:async vm=>{currentVM=vm;await ensurePhysics(vm).loadMaterials(readAsset);for(const o of [...vm.objects])await startActor(o,vm);await systems.start(vm);},
     input:(key,value)=>physics?.input(key,value),releaseInput:()=>{physics?.releaseInput();ui.releaseInput();},contacts:()=>physics?.contacts(),
     physics:async(delta,vm,rawDelta=delta)=>{
+      await tilemaps.flush(vm);
       await ui.tick(vm);
       await senses.tick(delta,vm);
       for(const o of vm.objects){const p=enabledComponent(o,'ParticleSystem');if(p){if(!particles.has(o.id)){const state=particleState(o);state.playing=p.playOnStart;}const state=particles.get(o.id);state.advance(delta,sceneWorldMatrix(o,vm.objects));hooks.particleSnapshot?.(o,state);o.gameplayDebug={...o.gameplayDebug,particles:{count:state.particles.length,playing:state.playing,paused:state.paused}};}else particles.delete(o.id);}

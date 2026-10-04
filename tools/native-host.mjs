@@ -10,6 +10,7 @@ import {validValue} from '../prototype/blueprint-model.js';
 import {serviceApi} from '../prototype/core-api.js';
 import {prepareNative,jsonInclude} from './prepare-native.mjs';
 import {validInputSnapshot} from '../prototype/runtime-input.js';
+import {valid2DAsset} from '../prototype/two-d-assets.js';
 import {NativePhysicsQueries} from './native-physics-query.mjs';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
@@ -72,6 +73,7 @@ export class NativeHost {
     const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
   validate(session,request){
+    if(Array.isArray(request?.objects)&&request.objects.some(o=>o?.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o?.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'))throw Error('C++ 타일맵 상태 오류');
     if(!request||typeof request!=='object')throw Error('잘못된 C++ 요청');if(request.input!==undefined&&!validInputSnapshot(request.input))throw Error('C++ 입력 상태 오류');if(!Array.isArray(request.objects)||request.objects.length>2000||new Set(request.objects.map(o=>o?.id)).size!==request.objects.length||request.objects.some(o=>!o||typeof o.id!=='string'||o.id.length>160||!validValue('transform',o)))throw Error('C++ 객체 상태 오류');for(const o of request.objects){const c=session.metadata.classes.find(c=>c.name===o.nativeClass);for(const [name,value] of Object.entries(o.nativeProperties||{})){const p=c?.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 속성 자료형 오류: '+name);}}if(['frame','reset'].includes(request.command)){if(request.command==='frame'&&(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean')))throw Error('프레임 시간 오류');return;}
     const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name);if(!c||!['nativeCall','nativeGet','nativeSet'].includes(request.key)||!request.args)throw Error('등록되지 않은 C++ 함수');
     const ports=request.key==='nativeCall'?f?.inputs:request.key==='nativeSet'&&!p?.readOnly?[{...p,id:'value'}]:request.key==='nativeGet'&&p?[]:null;if(!ports)throw Error('등록되지 않은 C++ 작업');for(const pin of ports){const value=request.args[pin.id];if(!(pin.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))throw Error('C++ 입력 자료형 오류: '+pin.id);}

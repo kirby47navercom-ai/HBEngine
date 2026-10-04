@@ -25,7 +25,7 @@
     "test:viewport": "node tools/check-viewport-controls.mjs && node tools/check-viewport-presentation.mjs && node tools/check-viewport-automation.mjs && node tools/check-environment-actors.mjs && node tools/check-detached-window-frames.mjs",
     "test:detached": "node tools/check-detached-windows.mjs",
     "test:scene": "node tools/check-scene-editor.mjs && node tools/check-scene-runtime.mjs",
-    "test:2d": "node tools/check-2d-workflow.mjs",
+    "test:2d": "node tools/check-2d-workflow.mjs && node tools/check-2d-authoring.mjs",
     "test:authoring": "node tools/check-authoring.mjs",
     "test:material": "node tools/check-material-workflow.mjs",
     "test:gameplay": "node tools/check-gameplay-workflow.mjs",
@@ -44,7 +44,8 @@
     "test:native-cancel": "node tools/check-native-cancel.mjs",
     "test:build-profiles": "node tools/check-build-profiles.mjs",
     "test:player-lifecycle": "node tools/check-player-lifecycle.mjs",
-    "test:input": "node tools/check-runtime-input.mjs",
+    "test:input": "node tools/check-runtime-input.mjs && node tools/check-input-authoring.mjs",
+    "test:authoring-window": "node tools/build-desktop.mjs && node tools/check-authoring-window.mjs",
     "test:pool": "node tools/check-actor-pool.mjs",
     "test:native-world": "node tools/check-native-world-patch.mjs",
     "test:player-acceptance": "node tools/check-player-acceptance.mjs"

@@ -1,3 +1,4 @@
+import {validSpriteSlices} from './sprite-import.js';
 export const twoDSuffix={sprite:'.hbsprite.json',tilemap:'.hbtilemap.json',spriteanimation:'.hbspriteanimation.json'};
 export const twoDTypes={sprite:{label:'스프라이트',prefix:'S_',group:'2D'},tilemap:{label:'타일맵',prefix:'TM_',group:'2D'},spriteanimation:{label:'스프라이트 애니메이션',prefix:'SA_',group:'2D'}};
 const finite=(value,min,max)=>typeof value==='number'&&Number.isFinite(value)&&value>=min&&value<=max;
@@ -14,7 +15,7 @@ export function create2DAsset(kind,title){
 }
 export function valid2DAsset(kind,data){
   if(!data||data.version!==1||!name(data.name))return false;
-  if(kind==='sprite')return reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
+  if(kind==='sprite')return (data.slices===undefined||validSpriteSlices(data.slices))&&(data.sheet===undefined||reference(data.sheet)&&typeof data.sliceId==='string'&&/^[\w-]{1,80}$/.test(data.sliceId))&&reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
   if(kind==='spriteanimation')return typeof data.loop==='boolean'&&finite(data.playRate,.01,100)&&Array.isArray(data.frames)&&data.frames.length<=1000&&data.frames.every(frame=>frame&&reference(frame.sprite)&&frame.sprite.length>0&&finite(frame.duration,.001,3600));
   if(kind!=='tilemap'||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;
   const ids=new Set();
@@ -75,7 +76,7 @@ export function tileLine(from,to){
 }
 /** A tool returns an immutable map; callers group successive brush points into one undo stroke. */
 export function applyTileTool(map,layerId,tool,from,to=from,index=0){
-  if(!valid2DAsset('tilemap',map)||!['brush','erase','rectangle','fill'].includes(tool)||!from||!to||![from.x,from.y,to.x,to.y].every(Number.isInteger)||!integer(index,0,1048575))return {data:map,changed:false};
+  if(!valid2DAsset('tilemap',map)||!['brush','erase','rectangle','fill'].includes(tool)||!from||!to||![from.x,from.y,to.x,to.y].every(Number.isInteger)||!integer(index,-1,1048575))return {data:map,changed:false};
   const layerIndex=map.layers.findIndex(layer=>layer.id===layerId);if(layerIndex<0)return {data:map,changed:false};
   const inside=({x,y})=>x>=0&&y>=0&&x<map.width&&y<map.height,key=({x,y})=>x+','+y,tiles=new Map(map.layers[layerIndex].tiles.map(tile=>[key(tile),tile]));let cells=[];
   if(tool==='rectangle')for(let y=Math.max(0,Math.min(from.y,to.y));y<=Math.min(map.height-1,Math.max(from.y,to.y));y++)for(let x=Math.max(0,Math.min(from.x,to.x));x<=Math.min(map.width-1,Math.max(from.x,to.x));x++)cells.push({x,y});
@@ -85,7 +86,7 @@ export function applyTileTool(map,layerId,tool,from,to=from,index=0){
     for(let cursor=0;cursor<queue.length;cursor++){const cell=queue[cursor];if(tiles.get(key(cell))?.index!==source)continue;cells.push(cell);for(const adjacent of [{x:cell.x-1,y:cell.y},{x:cell.x+1,y:cell.y},{x:cell.x,y:cell.y-1},{x:cell.x,y:cell.y+1}])if(inside(adjacent)&&!visited[adjacent.y*map.width+adjacent.x]){visited[adjacent.y*map.width+adjacent.x]=1;queue.push(adjacent);}}
   }else cells=tileLine(from,to).filter(inside);
   let changed=false;
-  for(const cell of cells){const previous=tiles.get(key(cell));if(tool==='erase'){if(previous){tiles.delete(key(cell));changed=true;}}else if(previous?.index!==index){tiles.set(key(cell),{...cell,index});changed=true;}}
+  for(const cell of cells){const previous=tiles.get(key(cell));if(tool==='erase'||index===-1){if(previous){tiles.delete(key(cell));changed=true;}}else if(previous?.index!==index){tiles.set(key(cell),{...cell,index});changed=true;}}
   if(!changed)return {data:map,changed:false};
   const layers=[...map.layers];layers[layerIndex]={...layers[layerIndex],tiles:[...tiles.values()].sort((a,b)=>a.y-b.y||a.x-b.x)};return {data:{...map,layers},changed:true};
 }

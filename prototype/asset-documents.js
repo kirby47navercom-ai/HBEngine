@@ -6,6 +6,7 @@ import {twoDTypes,twoDSuffix,create2DAsset,valid2DAsset} from './two-d-assets.js
 import {gameplayTypes,gameplaySuffix,createGameplayAsset,validGameplayAsset} from './gameplay-assets.js';
 import {createWidgetAsset,validWidgetAsset} from './ui-assets.js';
 import {createAudioMixer,validAudioMixer} from './audio-mixer.js';
+import {validActionSettings} from './input-actions.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
@@ -18,8 +19,9 @@ export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i
 export async function loadSceneBindings(objects,read){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
   const load=async(path,kind)=>{if(!loaded.has(path)){const data=await read(path);if(!validAsset(kind,data))throw Error('에셋 검증 실패: '+path);loaded.set(path,data);}return loaded.get(path);};
+  const action=async(path,stack=new Set())=>{if(stack.has(path))throw Error('Input Action 조합 순환: '+path);if(actions.has(path))return;stack.add(path);const data=await load(path,'inputaction');actions.set(path,data);if(data.chordAction)await action(data.chordAction,stack);stack.delete(path);};
   for(const object of objects){if(!object.blueprintAsset)continue;const root=await load(object.blueprintAsset,'blueprint');bindings.push({root,self:object.id,path:object.blueprintAsset});
-    if(root.settings?.inputMapping){const path=root.settings.inputMapping,context=await load(path,'inputmapping');contexts.set(path,context);for(const m of context.mappings){if(!m.action)throw Error('Input Action을 선택하세요: '+path);actions.set(m.action,await load(m.action,'inputaction'));}}
+    if(root.settings?.inputMapping){const path=root.settings.inputMapping,context=await load(path,'inputmapping');contexts.set(path,context);for(const m of context.mappings){if(!m.action)throw Error('Input Action을 선택하세요: '+path);await action(m.action);}}
   }
   return {bindings,inputAssets:{contexts,actions}};
 }
@@ -58,7 +60,7 @@ export function validAsset(kind,data){
   if(kind==='blueprint')return validBlueprint(data);
   if(kind==='scene')return validScene(data);
   if(['inputaction','inputmapping','data','curve','materialinstance','physicalmaterial','prefab','gameconfig','audioasset'].includes(kind)&&!(data?.version===1&&typeof data.name==='string'&&data.name.length>0&&data.name.length<=80))return false;
-  if(kind==='inputaction')return ['bool','float','vec2','vec3'].includes(data.valueType)&&typeof data.consumeInput==='boolean'&&['pressed','held','released'].includes(data.trigger)&&Number.isFinite(data.deadZone)&&data.deadZone>=0&&data.deadZone<=1;
+  if(kind==='inputaction')return ['bool','float','vec2','vec3'].includes(data.valueType)&&typeof data.consumeInput==='boolean'&&validActionSettings(data)&&validAssetPath(data.chordAction||'')&&Number.isFinite(data.deadZone)&&data.deadZone>=0&&data.deadZone<=1;
   if(kind==='inputmapping')return Number.isInteger(data.priority)&&Math.abs(data.priority)<=10000&&Array.isArray(data.mappings)&&data.mappings.length<=128&&data.mappings.every(m=>typeof m.action==='string'&&m.action.length<=1000&&typeof m.key==='string'&&m.key.length>0&&m.key.length<=40&&[0,1,2].includes(m.axis)&&Number.isFinite(m.scale)&&Math.abs(m.scale)<=100);
   if(kind==='data')return Array.isArray(data.fields)&&data.fields.length<=128&&new Set(data.fields.map(f=>f?.name)).size===data.fields.length&&data.fields.every(f=>f&&/^[A-Za-z_가-힣][\w가-힣]{0,79}$/.test(f.name)&&['string','float','bool'].includes(f.type)&&typeof f.value===({string:'string',float:'number',bool:'boolean'}[f.type])&&(f.type!=='float'||Number.isFinite(f.value)));
   if(kind==='curve')return validTimeline(data.timeline);
@@ -76,7 +78,7 @@ export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUI
   const objects=copy(data.objects).map(object=>{const old=object.id,parent=object.parent||object.parentId;object.id=ids.get(old);if(parent&&ids.has(parent)){object.parent=ids.get(parent);if(object.parentId!==undefined)object.parentId=object.parent;}else{delete object.parent;delete object.parentId;object.position=object.position.map((value,index)=>value+position[index]);}object.prefabRoot=ids.get(data.root);return object;});
   if(!validScene({version:1,objects,surface:defaultSurface}))throw Error('프리팹 계층 검증 실패');return objects;
 }
-export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sprite','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
+export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sheet','chordAction','context','sprite','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}

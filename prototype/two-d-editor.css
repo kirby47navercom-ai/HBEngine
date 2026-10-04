@@ -16,6 +16,11 @@ body:is([data-editor=sprite],[data-editor=tilemap],[data-editor=spriteanimation]
 .two-d-properties .two-d-inline { flex-direction:row; align-items:center; gap:6px; }
 .two-d-properties section > button { width:100%; min-height:30px; padding:4px 7px; border:1px solid var(--line); border-radius:3px; font-size:12px; }
 .two-d-pair { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
+.two-d-properties .two-d-pair > button { min-width:0; min-height:30px; padding:4px 7px; border:1px solid var(--line); border-radius:3px; background:var(--raised); font-size:12px; }
+.two-d-slice-list { display:grid; gap:4px; margin:8px 0; }
+.two-d-slice-list > .two-d-pair { grid-template-columns:minmax(0,1fr) 30px; gap:4px; }
+.two-d-slice-list [data-two-d-action=slice-select] { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+.two-d-slice-list [aria-pressed=true] { border-color:var(--accent); background:var(--accent-dark); }
 .two-d-section-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; }
 .two-d-section-heading h3 { margin:0; }
 .two-d-section-heading button { width:28px; height:28px; padding:5px; }

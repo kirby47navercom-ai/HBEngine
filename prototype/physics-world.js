@@ -1,3 +1,4 @@
+import {valid2DAsset} from './two-d-assets.js';
 import {Vector3,Quaternion,Euler} from 'three';
 import {componentDefaultValues,objectComponents,enabledComponent,validComponentProperties} from './scene-components.js';
 import {sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
@@ -236,7 +237,7 @@ export function validPhysicsSnapshot(objects){
   if(!Array.isArray(objects)||objects.length>2000||new Set(objects.map(o=>o?.id)).size!==objects.length)return false;
   let count=0;const byId=new Map(objects.map(o=>[o?.id,o]));
   for(const o of objects){
-    if(!o||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!o.scale.every(v=>v>=.01)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&(!Array.isArray(o.tileColliders)||o.tileColliders.length>8000))return false;
+    if(!o||o.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!o.scale.every(v=>v>=.01)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&(!Array.isArray(o.tileColliders)||o.tileColliders.length>8000))return false;
     const components=[...(o.components||[]),...(o.tileColliders||[])];if(new Set(components.map(c=>c?.id)).size!==components.length)return false;
     for(const c of components){if(!c||typeof c.type!=='string'||typeof c.id!=='string'||!c.id.length||c.id.length>160)return false;if(colliderTypes.has(c.type)&&++count>8000)return false;if((colliderTypes.has(c.type)||['Rigidbody','Rigidbody2D','CharacterMovement','CharacterMovement2D'].includes(c.type))&&!validComponentProperties(c.type,c.properties||{}))return false;}
     const seen=new Set([o.id]);let parent=o.parentId||o.parent,depth=0;while(parent){if(typeof parent!=='string'||seen.has(parent)||!byId.has(parent)||++depth>64)return false;seen.add(parent);parent=byId.get(parent).parentId||byId.get(parent).parent;}

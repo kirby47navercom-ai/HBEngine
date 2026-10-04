@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **486개**, 실제 공통 C++ API **404개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **504개**, 실제 공통 C++ API **422개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -38,7 +38,9 @@
 | 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
 | 입력 | 6 | 6 |
+| 입력 액션 | 6 | 6 |
 | 2D 스프라이트 | 4 | 4 |
+| 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
 | AI | 15 | 15 |
 | 상태 머신 | 8 | 8 |
@@ -72,7 +74,7 @@
 | customEvent | Custom Event / 사용자 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
-| inputAction | Input Action / 입력 액션 이벤트 | — | started: exec, triggered: exec, completed: exec, value: bool | — | VM 이벤트 진입점 |
+| inputAction | Input Action / 입력 액션 이벤트 | — | started: exec, triggered: exec, completed: exec, ongoing: exec, canceled: exec, value: bool, elapsed: float | — | VM 이벤트 진입점 |
 | inputAxis | Input Axis / 축 입력 | — | then: exec, value: float | — | VM 이벤트 진입점 |
 | anyDamage | Any Damage / 피해 이벤트 | — | then: exec, damage: float, instigator: object | — | VM 이벤트 진입점 |
 
@@ -619,6 +621,17 @@
 | mouseRay | Deproject Mouse Position To World / 마우스 월드 방향 가져오기 | — | return: bool, origin: vec3, direction: vec3 | hb::Input::DeprojectMousePositionToWorld | 공통 C++ + VM |
 | mouseWorldPlane | Get Mouse World Position / 마우스 조준 평면 위치 | normal: vec3, point: vec3 | return: bool, position: vec3 | hb::Input::GetMouseWorldPosition | 공통 C++ + VM |
 
+## 입력 액션
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| actionValue | Get Action Value / 입력 액션 값 | target: object, action: string | return: vec3 | hb::Input::GetActionValue | 공통 C++ + VM |
+| actionState | Get Action State / 입력 액션 상태 | target: object, action: string | return: string | hb::Input::GetActionState | 공통 C++ + VM |
+| actionEvent | Has Action Event / 입력 액션 이벤트 여부 | target: object, action: string, event: string | return: bool | hb::Input::HasActionEvent | 공통 C++ + VM |
+| actionElapsed | Get Action Elapsed / 입력 액션 유지 시간 | target: object, action: string | return: float | hb::Input::GetActionElapsed | 공통 C++ + VM |
+| inputAddContext | Add Mapping Context / 입력 컨텍스트 추가 | exec: exec, target: object, context: string, priority: int | then: exec | hb::Input::AddMappingContext | 공통 C++ + VM |
+| inputRemoveContext | Remove Mapping Context / 입력 컨텍스트 제거 | exec: exec, target: object, context: string | then: exec | hb::Input::RemoveMappingContext | 공통 C++ + VM |
+
 ## 2D 스프라이트
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -627,6 +640,23 @@
 | spriteGetFlip | Get Flip / 스프라이트 반전 가져오기 | target: object | flipX: bool, flipY: bool | hb::Sprites::GetFlip | 공통 C++ + VM |
 | spriteSet | Set Sprite / 스프라이트 지정 | exec: exec, target: object, sprite: string | then: exec | hb::Sprites::SetSprite | 공통 C++ + VM |
 | spriteGet | Get Sprite / 스프라이트 가져오기 | target: object | return: string | hb::Sprites::GetSprite | 공통 C++ + VM |
+
+## 2D 타일맵
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| tileGet | Get Tile / 타일 가져오기 | target: object, layer: string, cell: vec2 | return: int | hb::Tilemaps::GetTile | 공통 C++ + VM |
+| tileHas | Has Tile / 타일 존재 여부 | target: object, layer: string, cell: vec2 | return: bool | hb::Tilemaps::HasTile | 공통 C++ + VM |
+| tileSet | Set Tile / 타일 지정·삭제 | exec: exec, target: object, layer: string, cell: vec2, index: int | then: exec | hb::Tilemaps::SetTile | 공통 C++ + VM |
+| tileBoxFill | Box Fill / 타일 영역 채우기 | exec: exec, target: object, layer: string, cell: vec2, end: vec2, index: int | then: exec | hb::Tilemaps::BoxFill | 공통 C++ + VM |
+| tileFloodFill | Flood Fill / 같은 타일 채우기 | exec: exec, target: object, layer: string, cell: vec2, index: int | then: exec | hb::Tilemaps::FloodFill | 공통 C++ + VM |
+| tileClear | Clear Tiles / 타일 레이어 비우기 | exec: exec, target: object, layer: string | then: exec | hb::Tilemaps::ClearTiles | 공통 C++ + VM |
+| tileWorldToCell | World To Cell / 월드 좌표를 타일 셀로 | target: object, position: vec3 | return: vec2 | hb::Tilemaps::WorldToCell | 공통 C++ + VM |
+| tileCellToWorld | Get Cell Center World / 타일 중심 월드 좌표 | target: object, cell: vec2 | return: vec3 | hb::Tilemaps::GetCellCenterWorld | 공통 C++ + VM |
+| tileRefresh | Refresh Tile / 타일 새로고침 | exec: exec, target: object, layer: string, cell: vec2 | then: exec | hb::Tilemaps::RefreshTile | 공통 C++ + VM |
+| tileProcessChanges | Process Tilemap Changes / 타일 화면·충돌 즉시 갱신 | exec: exec, target: object | then: exec | hb::Tilemaps::ProcessTilemapChanges | 공통 C++ + VM |
+| tileHasChanges | Has Tilemap Changes / 타일 변경 대기 여부 | target: object | return: bool | hb::Tilemaps::HasTilemapChanges | 공통 C++ + VM |
+| tileLayerVisible | Set Layer Visible / 타일 레이어 표시 | exec: exec, target: object, layer: string, visible: bool | then: exec | hb::Tilemaps::SetLayerVisible | 공통 C++ + VM |
 
 ## 물리 질의
 

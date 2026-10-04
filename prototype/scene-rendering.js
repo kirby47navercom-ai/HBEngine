@@ -1,3 +1,4 @@
+import {resolveSprite} from './sprite-import.js';
 import {createGameCamera,selectGameCamera} from './game-camera.js';
 import * as THREE from 'three';
 import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
@@ -39,7 +40,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     const result=createThreeMaterial(THREE,data,{fileUrl,onError:error});replaceMaterials(group,result);group.userData.materialData=data;
   }
   async function sprite(group,properties,path,request){
-    const definitions=group.userData.spriteDefinitions??=new Map();if(path&&!definitions.has(path))definitions.set(path,read(path));const definition=path?await definitions.get(path):null,source=definition?.texture||properties.texture;
+    const definitions=group.userData.spriteDefinitions??=new Map();if(path&&!definitions.has(path))definitions.set(path,read(path).then(data=>resolveSprite(data,read)));const definition=path?await definitions.get(path):null,source=definition?.texture||properties.texture;
     const cache=group.userData.spriteTextures??=new Map();let map=null,layout=null;
     if(source){if(!cache.has(source)){const pending=texture(source).then(value=>{own(group,value);return value;});cache.set(source,pending);pending.catch(()=>cache.delete(source));}const base=await cache.get(source);if(group.userData.disposed)return;map=base.clone();map.needsUpdate=true;if(!own(group,map))return;layout=definition?spriteImage(definition,map.image):null;if(definition&&!layout){release(group,map);throw Error('스프라이트 잘라내기 범위 오류');}map.magFilter=definition?.filter==='linear'?THREE.LinearFilter:THREE.NearestFilter;map.minFilter=map.magFilter;if(layout){map.offset.fromArray(layout.uv.offset);map.repeat.fromArray(layout.uv.repeat);}
       // ponytail: retain at most 32 source atlases per object; a larger flipbook reloads evicted atlases.
@@ -51,12 +52,13 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
   }
   function spriteFlip(object,p){const group=current(object.id),mesh=group?.userData.spriteMesh;if(mesh)mesh.scale.set(p.flipX?-1:1,p.flipY?-1:1,1);if(group)group.userData.componentSignature=visualComponentSignature(object);}
   async function spriteFrame(object,path){const group=current(object.id);if(!group)return;const token=group.userData.spriteRequest=(group.userData.spriteRequest||0)+1;await sprite(group,enabledComponent(object,'SpriteRenderer')||{},path,token);if(current(object.id)===group&&!group.userData.disposed&&group.userData.spriteRequest===token)object.currentSprite=path;}
-  async function tilemap(group,path,properties){
-    if(!path)return;const map=await read(path);if(!map.tileset)return;const atlas=await texture(map.tileset);if(!own(group,atlas))return;atlas.magFilter=THREE.NearestFilter;atlas.minFilter=THREE.NearestFilter;
-    const material=new THREE.MeshBasicMaterial({map:atlas,transparent:true,side:THREE.DoubleSide,depthWrite:false});own(group,material);
+  async function tilemap(group,path,properties,data){
+    if(!path)return;const map=data||await read(path);if(!map.tileset)return;const atlas=await texture(map.tileset);if(!own(group,atlas))return;atlas.magFilter=THREE.NearestFilter;atlas.minFilter=THREE.NearestFilter;
+    const material=new THREE.MeshBasicMaterial({map:atlas,transparent:true,side:THREE.DoubleSide,depthWrite:false});own(group,material);group.userData.tilemapResources=[atlas,material];
     // One mesh per layer keeps draw calls independent of the tile count.
-    for(const [index,layer] of map.layers.entries()){if(!layer.visible)continue;const positions=[],uvs=[],indices=[];for(const tile of layer.tiles){const region=tileAtlasRect(map,tile.index,atlas.image);if(!region)continue;const [w,h]=map.cellSize,x=tile.x*w,y=-tile.y*h,z=index*.001,v=positions.length/3,[u0,v0]=region.uv.offset,[uw,vh]=region.uv.repeat;positions.push(x,y-h,z,x+w,y-h,z,x+w,y,z,x,y,z);uvs.push(u0,v0,u0+uw,v0,u0+uw,v0+vh,u0,v0+vh);indices.push(v,v+1,v+2,v,v+2,v+3);}const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeBoundingSphere();own(group,geometry);const mesh=new THREE.Mesh(geometry,material);mesh.userData.sprite=true;mesh.userData.objectId=group.userData.objectId;mesh.renderOrder=(properties.sortingOrder||0)+index;group.add(mesh);}
+    for(const [index,layer] of map.layers.entries()){if(!layer.visible)continue;const positions=[],uvs=[],indices=[];for(const tile of layer.tiles){const region=tileAtlasRect(map,tile.index,atlas.image);if(!region)continue;const [w,h]=map.cellSize,x=tile.x*w,y=-tile.y*h,z=index*.001,v=positions.length/3,[u0,v0]=region.uv.offset,[uw,vh]=region.uv.repeat;positions.push(x,y-h,z,x+w,y-h,z,x+w,y,z,x,y,z);uvs.push(u0,v0,u0+uw,v0,u0+uw,v0+vh,u0,v0+vh);indices.push(v,v+1,v+2,v,v+2,v+3);}const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeBoundingSphere();own(group,geometry);group.userData.tilemapResources.push(geometry);const mesh=new THREE.Mesh(geometry,material);mesh.userData.sprite=true;mesh.userData.tilemap=true;mesh.userData.objectId=group.userData.objectId;mesh.renderOrder=(properties.sortingOrder||0)+index;group.add(mesh);}
   }
+  async function tilemapFrame(object,map){const group=current(object.id);if(!group)return;for(const mesh of group.children.filter(c=>c.userData.tilemap))mesh.removeFromParent();for(const resource of group.userData.tilemapResources||[])release(group,resource);group.userData.tilemapResources=[];await tilemap(group,object.runtimeTilemapPath,enabledComponent(object,'TilemapRenderer')||{},map);}
   async function preparePhysics(objects){for(const object of objects){const path=enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset;if(!path)continue;object.tileColliders=tileCollisionBoxes(await read(path)).map((box,index)=>({id:'tile_'+index,name:'Tile',type:'BoxCollider2D',properties:{...componentDefaults('BoxCollider2D'),center:box.center,extent:box.size.map(n=>n/2)}}));}}
   async function decal(group,p){
     const data=p.material?await resolveMaterialAsset(await read(p.material),read):null;
@@ -83,7 +85,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,p.sprite||object.spriteAsset);
-      if(component.type==='TilemapRenderer'&&p.visible!==false)await tilemap(group,p.tilemap||object.tilemapAsset,p);
+      if(component.type==='TilemapRenderer'&&p.visible!==false)await tilemap(group,p.tilemap||object.tilemapAsset,p,object.runtimeTilemap);
       if(component.type==='Decal')await decal(group,p);
       if(component.type==='ParticleSystem')await particles(group,p);
       if(component.type==='NavigationGrid'&&p.debug){const axes=p.plane==='XY'?[0,1]:[0,2],points=[];for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]){const v=[0,0,0];v[axes[0]]=x*p.extent[axes[0]];v[axes[1]]=y*p.extent[axes[1]];points.push(new THREE.Vector3(...v));}const geometry=new THREE.BufferGeometry().setFromPoints(points),material=new THREE.LineBasicMaterial({color:0x63c8ad});own(group,geometry);own(group,material);const line=new THREE.Line(geometry,material);line.userData.editorHelper=true;group.add(line);}
@@ -94,5 +96,5 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation};
+  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation};
 }

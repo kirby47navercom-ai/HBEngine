@@ -14,6 +14,16 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 - `document.save`, `editor.undo`, `editor.redo`: 같은 revision 보호를 사용한다. 저장할 때 디스크의 이전 내용도 대조하고 `Saved/Backups`에 원본을 남긴다.
 - `scene.select`, `document.open`, `native.build`, `runtime.play/stop/pause/resume/input/openScene/state`: UI의 실제 편집·실행 함수를 사용한다. 런타임 상태는 현재/대기 장면, 차원, 뷰 모드, 환경, 오브젝트, 게임 프레임워크, 시간, 로그를 JSON으로 반환한다. 객체의 `gameplayDebug`에는 소유 에셋·blackboard/parameters·BT 상태·FSM 상태·montage/sequence 시간·navigation 경로/상태·perception 자극·particles 수가 포함된다.
 
+## 입력·스프라이트·타일 제작
+
+`schema.input`은 실제 8개 트리거, 유지/탭/반복 시간 기본값, 5개 이벤트와 모디파이어 종류를 반환한다. 입력 액션의 시간·조합 액션 경로·처리 순서는 사람이 쓰는 입력 에셋 편집기와 같은 데이터다. `schema.sprites`는 픽셀/피벗/테두리 좌표, 분할 방식과 기존 분할 적용 방식을 설명한다.
+
+`sprite.slice`는 `{path,expectedRevision,settings,method?,dryRun?}`을 받는다. settings.mode는 `size/count/automatic`, method는 `smart/safe/delete`다. Smart는 겹친 기존 분할의 ID·이름·pivot·border·출력 에셋 참조를 보존한다. `sprite.trim`은 `{path,expectedRevision,slice?,threshold?,dryRun?}`이며 slice는 화면 목록 인덱스 대신 고유 ID다. 생략하면 본문 rect의 투명 여백을 자른다. 두 명령은 UI와 같은 이미지 픽셀/검증/Undo를 사용하며 비동기 픽셀 읽기 후 revision도 다시 확인한다. 결과 데이터가 같으면 `noChange:true`를 반환하고 빈 Undo 항목과 새로운 dirty 상태를 만들지 않는다.
+
+분할 에셋의 `sheet/sliceId`가 원본의 현재 분할을 참조한다. 생성된 일반 .hbsprite.json을 애니메이션과 SpriteRenderer에 사용하고 Smart 재분할 시 기존 파일 경로를 유지한다. 파일 이동·의존성·패키지는 sheet/chordAction/context 참조를 추적한다.
+
+`schema.blueprint.nodes`의 입력 액션 6개·타일맵 12개 공용 함수는 `hb::Input`과 `hb::Tilemaps`의 C++ 선언에서 생성된다. `runtime.state`의 오브젝트에는 원본과 분리한 `runtimeTilemap/tilemapDirty/tileColliders`가 있다. Play 변경을 원본 문서에 저장하려면 자동 저장으로 간주하지 말고 명시적인 저작 변경을 작성한다. 좌표·시간·갱신 순서와 검증은 [구현 계약](INPUT_SPRITE_TILEMAP.md)에 기록한다.
+
 ## 뷰포트와 독립 작업창
 
 `GET /api/schema`의 `viewport`는 `directions/modes/flags/defaults/positionLimit`을 제공한다. 방향은 `3d/2d/top/bottom/front/back/left/right`, 보기 모드는 `lit/unlit/wireframe/lighting/detailLighting/normals`다. 표시 이름 대신 이 key를 사용한다. `id`를 생략하면 기본 뷰포트 `scene`이며 추가 뷰포트 ID는 `editor.state.layout`의 작업창 ID에서 조회한다. 다른 에셋 편집기 ID를 레벨 뷰포트 ID로 사용하면 거부된다.

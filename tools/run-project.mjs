@@ -1,3 +1,4 @@
+import {resolveSprite} from '../prototype/sprite-import.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -28,7 +29,7 @@ export async function runProject(file,{scene:scenePath,frames=180,delta=1/60,inp
     world.clear();meshes.clear();currentScene=scenePath;sceneHistory.push({scene:currentScene,frame});
     objects.forEach(build);for(const object of objects)if(object.parent)meshes.get(object.parent)?.add(meshes.get(object.id));
     const files=await project.files();
-    services=engineOperations({storage:{getItem:key=>savedGames.get(key)??null,setItem:(key,value)=>savedGames.set(key,value)},storageKey:key=>key,gameplay:prepared.gameplay,physicsOptions:prepared.physicsOptions,readAsset,build,update,remove:object=>{meshes.get(object.id)?.removeFromParent();meshes.delete(object.id);},mesh:id=>meshes.get(id),meshes:()=>[...meshes.values()],scene:()=>world,asset:async(name,kind)=>resolvePlayAsset(files,name,kind),spriteFrame:async(object,sprite)=>{if(!validAsset('sprite',await readAsset(sprite)))throw Error('스프라이트 검증 실패');object.currentSprite=sprite;visualEvents.push({type:'spriteFrame',object:object.id,path:sprite});}});
+    services=engineOperations({storage:{getItem:key=>savedGames.get(key)??null,setItem:(key,value)=>savedGames.set(key,value)},storageKey:key=>key,gameplay:prepared.gameplay,physicsOptions:prepared.physicsOptions,readAsset,build,update,remove:object=>{meshes.get(object.id)?.removeFromParent();meshes.delete(object.id);},mesh:id=>meshes.get(id),meshes:()=>[...meshes.values()],scene:()=>world,asset:async(name,kind)=>resolvePlayAsset(files,name,kind),spriteFrame:async(object,sprite)=>{await resolveSprite(await readAsset(sprite),readAsset);object.currentSprite=sprite;visualEvents.push({type:'spriteFrame',object:object.id,path:sprite});}});
     const native=async(request,build)=>{build??=builds.get(objects.find(o=>o.id===request.self)?.blueprintAsset);if(!build)throw Error('C++ 실행 바인딩이 없어요.');const assetPaths=new Set([...builds].filter(([,item])=>item.token===build.token).map(([name])=>name)),result=await host.call(build.token,{...request,input:vm.inputSnapshot(),objects:nativeRequestWorld(objects,assetPaths,request,build.metadata)});
       for(const state of result.objects||[]){if(!validValue('transform',state)||!state.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(key=>state[key].every(v=>Math.abs(v)<=10000)))throw Error('C++ 변환 데이터 범위 오류');const object=objects.find(o=>o.id===state.id);if(object){Object.assign(object,state);update(object);}}
       for(const operation of result.operations||[])await vm.hooks.operation(operation.key,operation.args,vm.bindings.find(b=>b.self===request.self)||{self:request.self,root:{components:[]}},vm);

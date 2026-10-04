@@ -79,6 +79,12 @@ class Input : public Library {
 public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputKeyDown", KoreanName="키·마우스 버튼 눌림", Category="입력") static bool IsKeyDown(const std::string& key);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputAxisValue", KoreanName="입력 축 값 가져오기", Category="입력") static float GetAxis(const std::string& key);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionValue", KoreanName="입력 액션 값", Category="입력 액션") static Vec3 GetActionValue(Actor* target,const std::string& action);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionState", KoreanName="입력 액션 상태", Category="입력 액션") static std::string GetActionState(Actor* target,const std::string& action);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionEvent", KoreanName="입력 액션 이벤트 여부", Category="입력 액션") static bool HasActionEvent(Actor* target,const std::string& action,const std::string& event);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionElapsed", KoreanName="입력 액션 유지 시간", Category="입력 액션") static float GetActionElapsed(Actor* target,const std::string& action);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputAddContext", KoreanName="입력 컨텍스트 추가", Category="입력 액션") static void AddMappingContext(Actor* target,const std::string& context,int priority=0);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="inputRemoveContext", KoreanName="입력 컨텍스트 제거", Category="입력 액션") static void RemoveMappingContext(Actor* target,const std::string& context);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mousePosition", KoreanName="마우스 위치 가져오기", Category="입력") static bool GetMousePosition(Vec2& position);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseDelta", KoreanName="마우스 이동량 가져오기", Category="입력") static Vec2 GetMouseDelta();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseRay", KoreanName="마우스 월드 방향 가져오기", Category="입력") static bool DeprojectMousePositionToWorld(Vec3& origin,Vec3& direction);
@@ -91,6 +97,22 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetFlip", KoreanName="스프라이트 반전 가져오기", Category="2D 스프라이트") static void GetFlip(Actor* target,bool& flipX,bool& flipY);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSet", KoreanName="스프라이트 지정", Category="2D 스프라이트") static void SetSprite(Actor* target,const std::string& sprite);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGet", KoreanName="스프라이트 가져오기", Category="2D 스프라이트") static std::string GetSprite(Actor* target);
+};
+HB_CLASS()
+class Tilemaps : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileGet", KoreanName="타일 가져오기", Category="2D 타일맵") static int GetTile(Actor* target,const std::string& layer,const Vec2& cell);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileHas", KoreanName="타일 존재 여부", Category="2D 타일맵") static bool HasTile(Actor* target,const std::string& layer,const Vec2& cell);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileSet", KoreanName="타일 지정·삭제", Category="2D 타일맵") static void SetTile(Actor* target,const std::string& layer,const Vec2& cell,int index);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileBoxFill", KoreanName="타일 영역 채우기", Category="2D 타일맵") static void BoxFill(Actor* target,const std::string& layer,const Vec2& cell,const Vec2& end,int index);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileFloodFill", KoreanName="같은 타일 채우기", Category="2D 타일맵") static void FloodFill(Actor* target,const std::string& layer,const Vec2& cell,int index);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileClear", KoreanName="타일 레이어 비우기", Category="2D 타일맵") static void ClearTiles(Actor* target,const std::string& layer);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileWorldToCell", KoreanName="월드 좌표를 타일 셀로", Category="2D 타일맵") static Vec2 WorldToCell(Actor* target,const Vec3& position);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileCellToWorld", KoreanName="타일 중심 월드 좌표", Category="2D 타일맵") static Vec3 GetCellCenterWorld(Actor* target,const Vec2& cell);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileRefresh", KoreanName="타일 새로고침", Category="2D 타일맵") static void RefreshTile(Actor* target,const std::string& layer,const Vec2& cell);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileProcessChanges", KoreanName="타일 화면·충돌 즉시 갱신", Category="2D 타일맵") static void ProcessTilemapChanges(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileHasChanges", KoreanName="타일 변경 대기 여부", Category="2D 타일맵") static bool HasTilemapChanges(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileLayerVisible", KoreanName="타일 레이어 표시", Category="2D 타일맵") static void SetLayerVisible(Actor* target,const std::string& layer,bool visible);
 };
 HB_CLASS()
 class Physics : public Library {

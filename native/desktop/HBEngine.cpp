@@ -24,7 +24,7 @@ struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
     ICoreWebView2Controller* controller=nullptr; ICoreWebView2* view=nullptr;
     ICoreWebView2Environment* environment=nullptr;
-    fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false;
+    fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
 } app;
 std::wstring quote(const std::wstring& value){
@@ -148,8 +148,10 @@ public:
 #endif
             const auto workspace=std::wstring(message)==L"hbengine.ready.hub"?"hub":std::wstring(message)==L"hbengine.ready.player"?"player":"editor";
             write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\""+std::string(workspace)+"\",\"port\":"+std::string(app.url.begin()+17,app.url.end()-1)+"}");app.smokeSuccess=true;
+            if(app.editorAcceptance){CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;}
             const auto result=app.view->ExecuteScript(L"window.hbEngineRequestClose();",nullptr);if(FAILED(result))error(L"편집기를 종료하지 못했어요.",result);
         }
+        if(own&&message&&app.editorAcceptance&&std::wstring(message)==L"hbengine.acceptance.finished")app.view->ExecuteScript(L"window.hbEngineRequestClose();",nullptr);
         if(own&&message&&app.windowSmoke&&std::wstring(message)==L"hbengine.windows.passed"){
             write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\"detached-windows\",\"nativeWindows\":"+
 #ifndef HB_GAME_PLAYER
@@ -281,6 +283,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(env(L"HB_USER_DATA_DIR").empty()){const auto id=game.at("id").get<std::string>();if(!std::regex_match(id,std::regex("[0-9a-f-]{36}")))throw std::runtime_error("game identity");app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine"/L"Games"/wide(id);fs::create_directories(app.userData/L"Sessions");}
         SetEnvironmentVariableW(L"HB_PLAYER_SMOKE",app.smoke.empty()?nullptr:L"1");
         #endif
+#ifndef HB_GAME_PLAYER
+        app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
+#endif
         if(registerOnly){CoUninitialize();return 0;}
         unsigned hash=2166136261u;for(wchar_t c:(project.empty()?app.root.wstring():project)){hash^=std::towlower(c);hash*=16777619;}
         const auto className=L"HBEngine."+std::to_wstring(hash);single=CreateMutexW(nullptr,FALSE,(L"Local\\"+className).c_str());
@@ -308,7 +313,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         SetWindowTextW(app.window,wide(game.at("name").get<std::string>()).c_str());
         {RECT size{0,0,std::clamp(game.value("width",1280),320,7680),std::clamp(game.value("height",720),240,4320)};AdjustWindowRect(&size,WS_OVERLAPPEDWINDOW,FALSE);SetWindowPos(app.window,nullptr,0,0,size.right-size.left,size.bottom-size.top,SWP_NOMOVE|SWP_NOZORDER);}
         #endif
-        BOOL dark=TRUE;DwmSetWindowAttribute(app.window,20,&dark,sizeof(dark));if(app.smoke.empty())ShowWindow(app.window,show);
+        BOOL dark=TRUE;DwmSetWindowAttribute(app.window,20,&dark,sizeof(dark));if(app.editorAcceptance){SetWindowPos(app.window,HWND_BOTTOM,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOACTIVATE);ShowWindow(app.window,SW_SHOWNOACTIVATE);}else if(app.smoke.empty())ShowWindow(app.window,show);
 #ifdef HB_GAME_PLAYER
         else{SetWindowPos(app.window,HWND_BOTTOM,-20000,-20000,0,0,SWP_NOSIZE|SWP_NOACTIVATE);ShowWindow(app.window,SW_SHOWNOACTIVATE);}
 #endif
@@ -318,7 +323,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         using CreateEnvironment=HRESULT(STDAPICALLTYPE*)(PCWSTR,PCWSTR,ICoreWebView2EnvironmentOptions*,ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler*);
         const auto create=reinterpret_cast<CreateEnvironment>(GetProcAddress(loader,"CreateCoreWebView2EnvironmentWithOptions"));if(!create)throw std::runtime_error("WebView2 entry");
         const auto profile=app.userData/L"WebView2";auto handler=new EnvironmentHandler;const auto result=create(nullptr,profile.c_str(),nullptr,handler);handler->Release();if(FAILED(result))error(L"WebView2 Runtime을 시작하지 못했어요.",result);
-        SetTimer(app.window,1,1000,nullptr);if(!app.smoke.empty())SetTimer(app.window,2,env(L"HB_PLAYER_ACCEPTANCE")==L"1"?180000:30000,nullptr);
+        SetTimer(app.window,1,1000,nullptr);if(!app.smoke.empty())SetTimer(app.window,2,(app.editorAcceptance||env(L"HB_PLAYER_ACCEPTANCE")==L"1")?180000:30000,nullptr);
         MSG message;while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}
     }catch(const std::exception& exception){
         const auto details=L"엔진을 시작하지 못했어요: "+wide(exception.what())+L"\n실행 로그: "+app.log.wstring();error(details.c_str());

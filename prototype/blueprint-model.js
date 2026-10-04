@@ -117,7 +117,7 @@ catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').
 catalog.push(
   {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
   {key:'hitEvent',title:'Event Hit',ko:'충돌 이벤트',group:'이벤트',keywords:'hit collision 충돌 히트',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit')]},
-  {key:'inputAction',title:'Input Action',ko:'입력 액션 이벤트',group:'이벤트',keywords:'input action ia 입력 액션 started triggered completed',kind:'event',inputs:[],outputs:[pin('started','Started'),pin('triggered','Triggered'),pin('completed','Completed'),pin('value','Action value','bool')]},
+  {key:'inputAction',title:'Input Action',ko:'입력 액션 이벤트',group:'이벤트',keywords:'input action ia 입력 액션 started triggered completed',kind:'event',inputs:[],outputs:[pin('started','Started'),pin('triggered','Triggered'),pin('completed','Completed'),pin('ongoing','Ongoing'),pin('canceled','Canceled'),pin('value','Action value','bool'),pin('elapsed','Elapsed seconds','float')]},
   {key:'inputAxis',title:'Input Axis',ko:'축 입력',group:'이벤트',keywords:'input axis 입력 축 이동 마우스',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('value','Axis value','float')]},
   {key:'anyDamage',title:'Any Damage',ko:'피해 이벤트',group:'이벤트',keywords:'damage hit 피해 데미지',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('damage','Damage','float'),pin('instigator','Instigator','object')]},
   spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
