@@ -1,5 +1,15 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 가져온 모델 포즈의 AI/headless 연결 후 계속
+
+전체 누적 요구·active goal·다 할 때까지 계속 지시를 유지해요. [화면 없는 모델 포즈 계약](docs/HEADLESS_MODEL_POSE.md)에 공식 본문/설치 로더 대조·lazy pose buffer·제한·원본/종료·실제 근거를 기록했어요.
+
+- headless에서 같은 glTF/GLB 계층/뼈/스킨/이름/interpolant를 읽고, 정점·텍스처·URL fetch를 생략해요. runProject는 시작 전 모델을 붙이고 animation 슬롯을 반환하며 파괴/전환/종료 자원을 정리해요.
+- 세부 검사에서 발견한 CUBICSPLINE의 바인딩 폭 오류를 공용 런타임에서 수정했어요. LINEAR/STEP/CUBIC·sparse·quaternion·normalized morph·경로/범위/정리 검증과 실제 Player BP/C++ 동일 포즈가 통과했어요.
+- 근거 CwArCG(단위), VKait2(Player 대조), FSFCTK(actual release Player), f5atg7(actual Editor/PNG), 기존 headless/runtime/animation/integration/API/diff 통과예요. 불명확한 oKnHjs exit1은 성공으로 세지 않고 DEBUG에 보존해요.
+- 사용자 설치본/프로필/원본/창은 건드리지 않았어요. 전체 문서/API 연구와 상용 완성을 선언하지 않아요. 2D rig/skin·animation states/sync/IK·다중 montage 및 다른 모든 엔진 누적 영역을 계속해요. 여기서 최종 답변이나 goal complete를 보내지 않아요.
+
+
 ## 최신 후속: 포즈 애니메이션 그래프와 실제 Editor/Player 검증 후 계속
 
 주인님의 전체 누적 요구·active goal·다 할 때까지 계속 지시를 유지해요. 사용자 설치본/프로필/원본/창은 변경하지 않았어요. [애니메이션 그래프 계약](docs/ANIMATION_GRAPH.md)에 실제 공식 기술 본문 읽기·현재 의미·다른 엔진과의 차이·다음 세부를 기록해요.

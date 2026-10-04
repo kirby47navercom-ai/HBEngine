@@ -131,7 +131,7 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 
 `scenario.json`은 `{ "frames": 180, "delta": 0.016666666666666666, "inputs": [{ "frame": 60, "key": "d", "value": 1 }, { "frame": 90, "key": "d", "value": 0 }] }`처럼 프레임과 입력을 지정한다. 선택적인 `scene`은 프로젝트 상대 경로다. 같은 BlueprintRuntime·컴포넌트·고정 물리·게임 프레임워크·사용자 C++ 호스트를 사용한다. C++이 연결되면 실제 컴파일과 함수 호출을 수행한다.
 
-결과 JSON의 `mode`는 `headless-logic`이며 오브젝트, 역할, 변수, 시간, 로그, 스프라이트 프레임 전환, 해당 실행의 저장 슬롯을 제공한다. 게임 저장은 실행마다 격리된 메모리 슬롯이고 사용자 저장 파일을 덮지 않는다. 입력에 대한 최종 위치·충돌·이벤트·변수의 예상값을 자동으로 검사할 수 있다. GPU 그림·음향·위젯을 검사했다고 표시하지 않는다. 해당 서비스 호출은 실제 화면 검사가 필요하다는 오류로 실패하며 몰래 성공 처리하지 않는다.
+결과 JSON의 `mode`는 `headless-logic`이며 오브젝트, 역할, 변수, 시간, 로그, 스프라이트 프레임 전환, 해당 실행의 저장 슬롯과 요청 시 모델 포즈 `animation`을 제공한다. 게임 저장은 실행마다 격리된 메모리 슬롯이고 사용자 저장 파일을 덮지 않는다. 입력에 대한 최종 위치·충돌·이벤트·변수의 예상값을 자동으로 검사할 수 있다. GPU 그림·음향·위젯을 검사했다고 표시하지 않는다. 해당 서비스 호출은 실제 화면 검사가 필요하다는 오류로 실패하며 몰래 성공 처리하지 않는다.
 
 `npm run test:headless`는 독립 임시 2D 프로젝트의 이동·점프·착지·원본 보존과 실제 사용자 C++ 함수의 공통 서비스 호출 결과를 검사한다.
 
@@ -255,4 +255,4 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 
 `test:package`의 실제 2D 개발/3D 배포 검사는 Win32/WebView2 GPU 제출·BP→C++ 호출, 컴파일러 없는 PATH, AudioContext running/음원 voice playing, EndPlay의 SaveGame flush와 저장 재열기, 소유 서버 종료를 확인했다. 이는 native DX11·모든 코덱/장치·전체 엔진 기능의 완료 근거가 아니다. 공용 BP/서비스 수명과 원본 형식/배포 제약은 [빌드/Player 연구](BUILD_PLAYER_RESEARCH.md)에 연결한다.
 
-애니메이션 그래프는 [포즈 계약](ANIMATION_GRAPH.md)의 animgraph/AnimationGraph/animationGraph schema를 사용해요. 9개 포즈 노드·Float/Bool 파라미터·공용 BP/C++7개·실행 active/weights/시간과 요청 시 runtime.state.animation 속성 포즈를 제공해요. 기존 revision/dryRun/patch/Undo/Save/잠금을 공유해요. named bone 필터·captured reference·우세 sprite 프레임과 아직 없는 headless model pose/IK/normalized sync를 혼동하지 않아요.
+애니메이션 그래프는 [포즈 계약](ANIMATION_GRAPH.md)의 animgraph/AnimationGraph/animationGraph schema를 사용해요. 9개 포즈 노드·Float/Bool 파라미터·공용 BP/C++7개·실행 active/weights/시간과 요청 시 runtime.state.animation 속성 포즈를 제공해요. 기존 revision/dryRun/patch/Undo/Save/잠금을 공유해요. named bone 필터·captured reference·우세 sprite 프레임과 [headless model pose](HEADLESS_MODEL_POSE.md)와 아직 없는 IK/normalized sync를 혼동하지 않아요.

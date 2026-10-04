@@ -46,6 +46,7 @@
     "test:editor-api-window": "node tools/check-editor-api-window.mjs",
     "engine": "node tools/hb.mjs",
     "test:headless": "node tools/check-headless.mjs",
+    "test:headless-model": "node tools/check-headless-model.mjs",
     "run:project": "node tools/run-project.mjs",
     "test:systems": "node tools/check-scene-systems.mjs",
     "test:ui-audio": "node tools/prepare-native.mjs && node tools/check-ui-audio.mjs && node tools/check-audio-sources.mjs",

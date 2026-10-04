@@ -1,5 +1,16 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## headless 모델 포즈 후속과 CUBICSPLINE 수정
+
+첫 임시 probe의 상대 .hbproject 경로는 기존 absolute 계약을 위반해 실패했고 probe를 path.resolve로 고쳤어요. 첫 apply_patch의 같은 파일 Delete/Add 중복은 검증 단계에서 거절돼 변경되지 않았어요.
+
+headless-model-FXKdYD에서 CUBICSPLINE Bone.position 바인딩이 실패했어요. glTF track의 getValueSize는 탄젠트 포함9, interpolant 실제 출력은3이므로 공용 AnimationGraphPlayer가 interpolant.resultBuffer.length를 쓰도록 수정했어요. 단위 PLJm3l/CwArCG, 이전 Player 대조 nPuaWe 및 새 CUBIC Player 대조 VKait2가 통과했어요.
+
+첫 CUBIC Player oKnHjs 실행은 명령 exit1만 남고 진단/acceptance가 없어 통과로 세지 않아요. 재실행 FSFCTK와 실제 Editor f5atg7는 모든 assertion/원본/정상 종료/서버 정리가 통과하고 PNG를 확인했어요. oKnHjs의 정확한 실패 원인은 확정하지 않았어요. 실패 폴더를 보존해요.
+
+전역 ProgressEvent shim/전체 buffer의 data URI 변환 시도는 실제 경로에 남기지 않았어요. 포즈 bufferView lazy 플러그인으로 읽고 정점/텍스처를 생략해요. 전체 파일 형식/확장/시각·음향/모바일 성능을 검증했다고 표현하지 않아요.
+
+
 ## 애니메이션 그래프의 검사·미리보기 보강 근거
 
 2026-10-05. test fixture 첫 assembler의 문자열 줄바꿈/출력 변수 이름 충돌은 실제 EXE 실행 전에 수정했어요. fEL3Se의 AI patch를 잘못된 op=set/dotted path로 작성해 실패한 부분은 기존 replace/JSON pointer 규약으로 수정했어요. yM3zev의 가중치 차트 클릭0은 속성 스크롤 밖 좌표여서 실제 scrollIntoView와 chart-hit 증거를 추가했고 이후 물리 차트 .5가 통과했어요.

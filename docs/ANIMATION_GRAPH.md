@@ -65,6 +65,6 @@ Direct의 각 입력값은0~1로 제한해요. 정규화가 켜지고 합이 양
 - `test:animation-graph-editor`: 고유 Win32 Editor에서 물리 포즈 핀 드래그·차트 드래그, 속성/Undo/Redo/AI dryRun/저장, 원본과 분리된 미리보기/모델 로드, 실행 잠금/강조, BP/C++ 파라미터·실제 스켈레톤 필터·일시정지/재개, 원본/정상 종료를 검사해요.
 - `test:animation-graph-player`: release Game.exe의 실제 키→BP→컴파일 C++→파라미터/순수 조회, 가져온 glTF의 Spine/Arm과 Leg 분리, 정지/재개·원본/정상 종료·소유 서버 종료를 검사해요. 물리 모바일·전체 모델 형식·전체 스켈레톤 품질로 확대하지 않아요.
 
-아직 구현할 세부는2D skeletal/skin, 2D/방향별 Blend Space, animation state graph/transition rules/normalized time sync, 실제 bind/reference frame, mesh space/additive/curve 정책, named blend mask, IK·리타게팅·root motion·다중 montage 슬롯·notifies, inertialization/LOD·linked layers·전체 편집 단축키/주석·독립 animation debugger, headless의 가져온 모델 포즈 로드예요. 다른 모든2D/렌더/월드/게임 프레임워크/네트워크/UI/모바일/빌드/AI 세부도 누적 요구에 그대로 유지해요.
+아직 구현할 세부는2D skeletal/skin, 2D/방향별 Blend Space, animation state graph/transition rules/normalized time sync, 실제 bind/reference frame, mesh space/additive/curve 정책, named blend mask, IK·리타게팅·root motion·다중 montage 슬롯·notifies, inertialization/LOD·linked layers·전체 편집 단축키/주석·독립 animation debugger예요. headless의 가져온 모델 포즈 로드는 [후속 계약](HEADLESS_MODEL_POSE.md)으로 연결했어요. 다른 모든2D/렌더/월드/게임 프레임워크/네트워크/UI/모바일/빌드/AI 세부도 누적 요구에 그대로 유지해요.
 
 최종 실제 Editor 근거는 `native/build/animation-graph-editor-fAgxU4`, release Player는 `animation-graph-player-72pITM`이에요. 저작/모델/실행 PNG와 acceptance JSON을 보존해요. 마지막1D 가중치0 가지 생략은 unit에서 확인한 뒤 반영했고 두 실제 시나리오의0/.75 혼합 결과를 바꾸지 않아요.
