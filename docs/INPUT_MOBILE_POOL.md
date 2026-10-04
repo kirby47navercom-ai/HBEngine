@@ -103,6 +103,34 @@ Ryzen 7 7800X3D, 메모리 약 31.1 GiB, WebView2/Edge 154.0.4258.53, 1280×720�
 
 private 증거: 개발 `native/build/player-acceptance-yHpXFV/acceptance.json`, 배포 `native/build/player-acceptance-zjHAZa/acceptance.json`. 같은 폴더의 desktop/flipped/mobile-portrait/mobile-landscape/stress-480 PNG와 cpu-200.json을 보존한다. 최종 배포 검사에는 버튼 글자 중앙 정렬과 Enter 눌림/해제도 포함했다. 고립된 검증 프로세스만 실행했으며 기존 사용자 창은 새로고침하지 않았다.
 
+## 후속 C++ 경량화 — 2026-10-04
+
+가벼움을 전체 엔진의 계속 요구로 고정하고 [측정 기준과 전송 계약](PERFORMANCE_BUDGETS.md)을 추가했다. 기능·물리·슬롯 수를 유지하면서 browser→host 입력도 변경분으로 전송한다. 성공한 불변 스냅샷은 변경 경로만 복사하고, worker는 patch_inplace/달라진 Transform·공개 속성만 반환한다. 기존 worker와 전체 입력 도구의 계약은 유지한다.
+
+변경 전 기준은 현재 작업 직전 `player-acceptance-pVE0Gf`, 최종 코드 검증은 `player-acceptance-WCjb5G`다. CPU·release·해상도·장면·모든 탄환 이동·96회 재사용 조건은 같다. 이 절은 위의 프로토콜 2 기록 이후의 결과이며 위 표/증거를 삭제하거나 덮어쓰지 않는다.
+
+| 480 슬롯 + 매 프레임 C++ / 활성 수 | 변경 전 루프/초 | 최종 루프/초 | 변경 전 work p95 ms | 최종 work p95 ms |
+| --- | ---: | ---: | ---: | ---: |
+| 0 | 18.3 | 43.4 | 56.8 | 22.1 |
+| 64 | 18.1 | 40.5 | 60.4 | 31.3 |
+| 100 | 18.4 | 33.0 | 59.2 | 32.9 |
+| 200 | 15.4 | 29.1 | 70.6 | 38.6 |
+| 480 | 11.2 | 16.7 | 92.5 | 81.0 |
+
+최종 480개+C++ 완료 루프는 **48.9% 증가**, work p95는 **12.4% 감소**했다. 35.6초·96회 재사용 시험은 9.5→15.1회/초였다. C++ 없는 480 활성은 60.4→58.3회/초다. 비교 검사의 10% 이상 처리 속도 회귀 기준은 통과했고, 모든 탄환이 계속 이동했다. 기본 64슬롯/12적 C++ 슈터는 60.0회/초였다. 이는 표시 FPS·최대 탄막 수 보장이 아니다.
+
+앞선 성공 실행 `auhjKS`는 480+C++ 19.9회/초·p95 53.6ms·지속17.7회/초, 전송량을 줄인 중간 실행 `dP4TKh`는20.9회/초·p95 50.2ms·지속18.2회/초였다. 최종 실행의 CPU 대기와 렌더 제출 시간이 더 길었으며, 외부 부하와 실행 간 편차의 원인을 이 표본만으로 확정하지 않는다. 가장 좋은 실행만 채택하지 않는다. 깊은 JSON/undefined 배열의 전체 복구 경계를 추가한 최종 코드는 WCjb5G이며 대형 C++ 60회/초 목표는 미달이다.
+
+최종 Windows 소유 프로세스 트리의 전용 커밋 표본은 준비584MiB/480+C++662MiB/지속시험 끝666MiB였다. working set 합계는734/887/894MiB이며 공유 페이지 중복이 있을 수 있다. 앞선 dP4TKh 표본의 전용 커밋은583/628/662MiB였다. Game/Node/WebView2/worker를 포함하고 GPU 메모리/피크가 아니다. 최종 V8 heap 종료 표본은26.3MiB였지만 이것을 전체 엔진 메모리로 표시하지 않는다. 변경 전 OS 전체 트리 표본이 없어 전체 메모리 감소를 증명한 것으로 계산하지 않는다. WebView2/Node의 기본 비용도 후속 경량화 대상으로 유지한다.
+
+최종 `nativeTransport`는 이동 중 worker patch 약61KB/963작업, upstream 약61KB, C++ 미변경 객체 반환0·결과 약258바이트를 기록했다. 반복 전체 복사/중복 diff·미변경 Transform 적용을 줄인 경로다. arbitrary nested JSON·C++ 내부 물리 질의와 타일 갱신·input/풀 수명 의미는 유지한다.
+
+검사: native-world/transport/host/headless/2d-authoring/pool/input-authoring/runtime-input/scene-runtime/physics/main/API 통과. 새 전송 경계 검사는 실제 C++ + JSON wire로 공유 token/불변 기준/순서/오류·유실 응답·ack 오류·장면 reset·worker 재시작·잘못된 경로를 확인한다. 최초 `9Sv81F`는 함수 이름 오타로 시작 실패했고 수정 후 실제 EXE에서 재검사했다. 성공으로 계산하지 않는다. 기존 배포 workerProtocol2 EXE도 신규 host/client의 clock/전체 요청/worker delta/기존 반환으로 대조했다.
+
+private 증거: `player-acceptance-pVE0Gf/acceptance.json`, `player-acceptance-WCjb5G/acceptance.json`, `native/build/performance-comparison-2026-10-04-final.json`; 성공 실행 auhjKS/dP4TKh도 보존한다. 비교와 원자료는 native/build 아래이며 공개 문서는 수치/조건/제약을 담는다. 최신 HBEngine.exe/dist를 다시 만들었다. 기존 사용자 창은 조작하지 않았다.
+
+실제 저작/자동화·패키지 회귀도 확인했다. `authoring-window-FshpAA`는 스프라이트 분할·Undo/Redo·AI·입력→타일 화면/충돌, `package-check-p6ymR2`는2D·3D GPU/BP/C++·컴파일러 없는 EXE·종료·무결성·원본 보존을 통과했다. 새 `npm run test:editor-api-window`는 고립된 실제 편집기에서 기존 전체 API 검사와 C++ BeginPlay→입력 재호출·다시 Play·원본 복구를 실행한다. 성공증거는 `editor-api-window-Ywixc6`다. 첫 wLg3Xr의 기능 검사는 통과했지만 검사 마지막 Undo 문서가 미저장 상태여서 종료 확인이 대기했다. fixture 원본을 저장하고 재검사했으며 첫 전체 실행은 성공으로 계산하지 않는다. 기존5181에 직접 실행한 검사는 ECONNREFUSED였고 사용자 창에 접속해 해결하지 않았다.
+
 ## 공식 근거
 
 [Epic GetMousePosition](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APlayerController/GetMousePosition)과 [DeprojectMousePositionToWorld](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/APlayerController/DeprojectMousePositionToWorld)를 마우스 위치/월드 방향 계약과 대조했다. [Unity ScreenPointToRay](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.ScreenPointToRay.html)의 좌표는 왼쪽 아래 기준이므로 HB의 왼쪽 위 CSS 좌표 계약과 혼동하지 않는다.

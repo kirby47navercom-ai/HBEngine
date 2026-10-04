@@ -14,6 +14,14 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 - `document.save`, `editor.undo`, `editor.redo`: 같은 revision 보호를 사용한다. 저장할 때 디스크의 이전 내용도 대조하고 `Saved/Backups`에 원본을 남긴다.
 - `scene.select`, `document.open`, `native.build`, `runtime.play/stop/pause/resume/input/openScene/state`: UI의 실제 편집·실행 함수를 사용한다. 런타임 상태는 현재/대기 장면, 차원, 뷰 모드, 환경, 오브젝트, 게임 프레임워크, 시간, 로그를 JSON으로 반환한다. 객체의 `gameplayDebug`에는 소유 에셋·blackboard/parameters·BT 상태·FSM 상태·montage/sequence 시간·navigation 경로/상태·perception 자극·particles 수가 포함된다.
 
+## C++ 실행 전송과 비용
+
+사람의 Play와 AI의 `runtime.play`는 같은 `native-transport.js`를 사용한다. C++ 빌드 결과 `metadata.workerProtocol:3`은 첫 전체 입력 이후의 변경분과 변경된 객체만 반환하는 계약이다. 이전 메타데이터 1/2는 기존 전체 요청을 유지한다. BP 노드/에셋을 AI가 변경할 때 이 내부 전송 캐시를 에셋에 저장하지 않는다.
+
+직접 `/api/native/call`을 호출하는 도구는 기존 `{token,request:{objects,...}}` 전체 요청을 계속 사용할 수 있다. 변경분 전송은 `request.worldTransport:1`, `worldId`, `baseSequence`, `worldSequence`를 사용하며 첫 요청은 `baseSequence:0/worldSequence:1/objects`다. 후속 요청은 objects를 생략하고 `objectPatch`와 이전/다음 sequence를 전달한다. 같은 worker를 쓰는 여러 BP는 같은 Play 세계의 전송 상태를 공유한다. 응답의 worldSequence 확인 후에만 기준을 갱신하고, 오류/유실 응답 이후 다음 명시적 호출은 전체 입력으로 동기화한다. 함수 실행을 자동 재시도하지 않는다. 새 Play/장면은 명시적 reset으로 기존 C++ 수명을 정리한다.
+
+응답의 `objects:[]`는 C++ Transform/공개 속성에 변화가 없다는 뜻이다. 전체 장면이 사라졌다는 뜻으로 해석하지 않는다. `transport`의 `upstreamMode/upstreamBytes`, worker `mode/bytes`, `prepareMs/rpcMs`, `replyBytes/returnedObjects`는 전송/반환 비용이다. GPU/화면 표시 FPS로 해석하지 않는다. 전체 장면 검증·형상 질의·JSON 한도/복구는 [경량화 계약](PERFORMANCE_BUDGETS.md)에 연결한다.
+
 ## 입력·스프라이트·타일 제작
 
 `schema.input`은 실제 8개 트리거, 유지/탭/반복 시간 기본값, 5개 이벤트와 모디파이어 종류를 반환한다. 입력 액션의 시간·조합 액션 경로·처리 순서는 사람이 쓰는 입력 에셋 편집기와 같은 데이터다. `schema.sprites`는 픽셀/피벗/테두리 좌표, 분할 방식과 기존 분할 적용 방식을 설명한다.

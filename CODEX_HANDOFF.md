@@ -1,5 +1,17 @@
 # HBEngine 작업 인계 — 2026-10-04
 
+## 최신 경량화: C++ 전체 장면 비용 감소
+
+가벼움을 엔진의 계속 요구로 유지하라는 사용자 지시에 따라 비용을 실측·줄였어요. 전체 누적 엔진/2D·2.5D·3D/AI 편집·PC/mobile 요구를 유지하고 추가 의존성이나 기능 생략 없이 브리지의 반복 작업을 줄였어요.
+
+- protocol3: browser→host도 JSON 변경분 전송, VM/token별 공유 client·worldId/sequence/ack·실패 후 명시적 전체 복구. 변경 경로만 복사한 불변 기준, worker patch_inplace, 변경된 Transform/공개 속성만 반환해요. clock·기존 전체 요청 caller/worker1·2·동기 물리 query의 계약을 유지해요. 오류 후 부작용 함수를 자동 재시도하지 않아요. 중첩 JSON/array/undefined/깊은 경로/한도/원자 거부와 새 장면 수명을 검사했어요.
+- before: native/build/player-acceptance-pVE0Gf. final: WCjb5G. 같은 release EXE 시험의 480+C++는11.2→16.7루프/초, work p9592.5→81.0ms, 35.6초/96회 풀 재사용은9.5→15.1이에요. 앞선 auhjKS/dP4TKh의19.9/20.9와 실행 간 편차도 INPUT_MOBILE_POOL에 보존해요. 최종 코드는 깊은 JSON 복구 경계를 포함해요. 초기9Sv81F의 awaitnativeWorldClient 오타 실패는 성공에 포함하지 않아요.
+- 현재 전체 Windows 프로세스 트리 표본은 준비584/대형C++662/지속끝666MiB private commit, working set734/887/894MiB예요. 공유 working set 중복/표본/피크 아닌 점을 유지해요. 변경 전 OS 표본이 없어 전체 메모리 감소로 주장하지 않아요. V8 heap만 전체 메모리로 표시하지 않아요.
+- 요구/재현/자동 비교: docs/PERFORMANCE_BUDGETS.md, tools/check-performance-comparison.mjs, npm run test:native-world(실제 client→wire→host→C++ 복구 경계 포함). AI 계약은 AI_ENGINE_API의 C++ 실행 전송 절이에요. 60회/초·16.7ms 목표와 개선 게이트를 구분해요. C++ 없는480은58.3/샘플슈터60.0이며 대형C++ 목표는 남아 있어요.
+- 검증: host/native-world/transport/headless/2d-authoring/pool/input-authoring/runtime-input/scene-runtime/physics/main/API·배포 실제 EXE의 스프라이트/한글/오디오 신호/마우스/멀티터치 통과. 이전 protocol2 배포 worker를 신규 host/client로 확인했어요. HBEngine.exe/dist를 최신 코드로 갱신했어요. 별도 임시 프로젝트/프로필·화면 밖 비활성 창만 사용했어요.
+- 실제 별도 에디터 전체 API/2D→3D 전환/사용자 C++ BeginPlay→입력 재호출/Play 재실행·원본 복구는 editor-api-window-Ywixc6에서 통과했어요. npm run test:editor-api-window가 격리 프로젝트/화면 밖 창을 만들어 재현해요. 직접 기존5181 검사는 ECONNREFUSED였고, 초기wLg3Xr 검사는 끝의 Undo 문서를 저장하지 않아 종료 확인이 대기했어요. fixture 원본을 저장하고 재검사했으며 초기 실패를 전체 성공으로 계산하지 않아요. package-check-p6ymR2의2D·3D EXE, authoring-window-FshpAA의스프라이트/타일 저작 회귀도 통과했어요.
+- 다음 성능 조사 대상은 world diff/host 검증/C++ bridgeSync/프로세스 왕복/물리·렌더 제출과 WebView2/Node 기본 메모리예요. 실제 모바일 앱/기기/발열 및 전체 누적 제작 범위와 미독 연구 원장은 그대로 이어가요. 이 변경을 전체 엔진/조사 완료로 바꾸지 않아요.
+
 ## 후속 구현: 입력 액션·스프라이트 시트·실행 중 타일맵
 
 2026-10-04의 계속 구현 지시를 따라 연구 009/010과 공식 Enhanced Input/Sprite Editor/Tilemap API를 실제 제작·실행 기능에 연결했어요. 전체 엔진과 문서/API 완료로 승격하지 않고 기존 모든 누적 요구·미독 대기열·pin/hash를 보존해요.

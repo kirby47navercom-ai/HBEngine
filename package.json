@@ -31,6 +31,7 @@
     "test:gameplay": "node tools/check-gameplay-workflow.mjs",
     "test:integration": "node tools/check-engine-integration.mjs",
     "test:editor-api": "node tools/check-editor-api.mjs",
+    "test:editor-api-window": "node tools/check-editor-api-window.mjs",
     "engine": "node tools/hb.mjs",
     "test:headless": "node tools/check-headless.mjs",
     "run:project": "node tools/run-project.mjs",
@@ -47,7 +48,7 @@
     "test:input": "node tools/check-runtime-input.mjs && node tools/check-input-authoring.mjs",
     "test:authoring-window": "node tools/build-desktop.mjs && node tools/check-authoring-window.mjs",
     "test:pool": "node tools/check-actor-pool.mjs",
-    "test:native-world": "node tools/check-native-world-patch.mjs",
+    "test:native-world": "node tools/check-native-world-patch.mjs && node tools/check-native-transport.mjs",
     "test:player-acceptance": "node tools/check-player-acceptance.mjs"
   },
   "dependencies": {

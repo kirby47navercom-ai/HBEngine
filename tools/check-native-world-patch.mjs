@@ -6,7 +6,7 @@ const host=new NativeHost(),object=(id,x)=>({id,name:id,position:[x,0,0],rotatio
 try{
   const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass PatchProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static hb::Vec3 Read(hb::Actor* target); HB_FUNCTION(BlueprintPure) static int Nested(); HB_FUNCTION(BlueprintCallable) static void Fail(); };',source='#include "User.h"\nhb::Vec3 PatchProbe::Read(hb::Actor* target){ return hb::Scene::GetPosition(target)+hb::Physics::GetVelocity(target); }\nint PatchProbe::Nested(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(1).get<int>();}\nvoid PatchProbe::Fail(){throw std::runtime_error("probe failure");}';
   const build=await host.build(header,source),objects=[object('a',1),object('b',2)],request={key:'nativeCall',nativeId:'PatchProbe.Read',args:{target:'a'},objects};
-  assert.equal(build.metadata.workerProtocol,2);assert.deepEqual((await host.call(build.token,request)).outputs.result,[1,0,0]);
+  assert.equal(build.metadata.workerProtocol,3);assert.deepEqual((await host.call(build.token,request)).outputs.result,[1,0,0]);
   assert.deepEqual(nativeRequestWorld(objects,new Set(),{command:'frame'},build.metadata),[],'새 clock 프로토콜은 프론트엔드에서도 세계 직렬화를 생략');
   assert.equal(nativeRequestWorld(objects,new Set(),{command:'frame'},{}).length,2,'이전 worker의 전체 세계 전달 유지');
   objects[0].position=[3,4,5];objects[0].velocity=[1,2,3];objects[0].nested['a~/b'][1]=7;

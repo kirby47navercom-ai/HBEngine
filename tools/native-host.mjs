@@ -1,4 +1,4 @@
-import {worldPatch} from './native-world-patch.mjs';
+import {worldPatch,applyWorldPatch} from './native-world-patch.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {existsSync} from 'node:fs';
@@ -15,6 +15,7 @@ import {NativePhysicsQueries} from './native-physics-query.mjs';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
+const canonicalWorld=Symbol('canonical native world');
 const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*',hit:'hb::HitResult'};
 const cppType=p=>p.array?`std::vector<${cppType({...p,array:false})}>`:p.type==='object'?`${['Object','Actor','Pawn','Character','Controller','PlayerController','GameMode','GameState','PlayerState','AIController','Component','SceneComponent'].includes(p.className)?'hb::'+(p.className==='Object'?'Actor':p.className):p.className||'hb::Actor'}*`:cpp[p.type];
 function unpack(p,expr){if(p.array&&p.type==='object')return `hb::bridgeObjectArray<${cppType({...p,array:false}).slice(0,-1)}>(${expr})`;return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
@@ -43,8 +44,8 @@ bool ensure(const std::string& id,const std::string& className){if(hb::bridgeCel
 int main(){hb::Json inputObjects=hb::Json::array();std::string line;while(std::getline(std::cin,line)){hb::Json response;try{auto request=hb::Json::parse(line);hb::bridgeEvents=hb::Json::array();hb::bridgeOperations=hb::Json::array();hb::bridgeOverrides=request.value("overrides",std::vector<std::string>{});hb::bridgeInput=request.value("input",hb::Json::object());const auto command=request.value("command",std::string{});
 if(request.value("command",std::string{})=="reset"){inputObjects=hb::Json::array();hb::bridgeCells.clear();hb::bridgeActors.clear();hb::bridgeActorIds.clear();hb::bridgeStateIndices.clear();hb::Clock::Reset();hb::Timers::Reset();}
 else if(request.value("command",std::string{})=="frame"){if(request.contains("clock")){hb::Clock::SetTimeScale(request.at("clock").at("scale").get<float>());hb::Clock::SetPaused(request.at("clock").at("paused").get<bool>());}hb::AdvanceFrame(request.at("delta").get<float>());}
-else{if(request.contains("objectPatch"))inputObjects=inputObjects.patch(request.at("objectPatch"));else inputObjects=request.value("objects",hb::Json::array());const auto& objects=inputObjects;for(const auto& o:objects)if(o.contains("nativeClass")&&!o.at("nativeClass").is_null()&&o.at("nativeClass")!="Actor")ensure(o.at("id").get<std::string>(),o.at("nativeClass").get<std::string>());hb::bridgeSync(objects);const auto key=request.at("key").get<std::string>(),nativeId=request.at("nativeId").get<std::string>();const auto args=request.at("args");const auto targetId=args.value("target",request.value("self",std::string{}));hb::Json out=hb::Json::object();bool handled=false;${cases}if(!handled)throw std::runtime_error("unknown native function");response["outputs"]=out;}
-response["clock"]={{"time",hb::Clock::GetGameTime()},{"delta",hb::Clock::GetWorldDeltaSeconds()},{"scale",hb::Clock::TimeScale()},{"paused",hb::Clock::IsPaused()}};response["events"]=hb::bridgeEvents;response["operations"]=hb::bridgeOperations;response["objects"]=command=="frame"||command=="reset"?hb::Json::array():hb::bridgeSnapshot();response["timerEvents"]=hb::Timers::TakeEvents();response["ok"]=true;
+else{if(request.contains("objectPatch"))inputObjects.patch_inplace(request.at("objectPatch"));else inputObjects=request.value("objects",hb::Json::array());const auto& objects=inputObjects;for(const auto& o:objects)if(o.contains("nativeClass")&&!o.at("nativeClass").is_null()&&o.at("nativeClass")!="Actor")ensure(o.at("id").get<std::string>(),o.at("nativeClass").get<std::string>());hb::bridgeSync(objects);const auto key=request.at("key").get<std::string>(),nativeId=request.at("nativeId").get<std::string>();const auto args=request.at("args");const auto targetId=args.value("target",request.value("self",std::string{}));hb::Json out=hb::Json::object();bool handled=false;${cases}if(!handled)throw std::runtime_error("unknown native function");response["outputs"]=out;}
+response["clock"]={{"time",hb::Clock::GetGameTime()},{"delta",hb::Clock::GetWorldDeltaSeconds()},{"scale",hb::Clock::TimeScale()},{"paused",hb::Clock::IsPaused()}};response["events"]=hb::bridgeEvents;response["operations"]=hb::bridgeOperations;response["objects"]=command=="frame"||command=="reset"?hb::Json::array():hb::bridgeChangedSnapshot(inputObjects);response["timerEvents"]=hb::Timers::TakeEvents();response["ok"]=true;
 }catch(const std::exception& e){response={{"ok",false},{"error",e.what()}};}std::cout<<"HB_RESULT\\t"<<response.dump()<<std::endl;}return 0;}`;
 }
 export class NativeHost {
@@ -53,7 +54,7 @@ export class NativeHost {
   async build(header,source,{configuration='editor',signal}={}){
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header);metadata.workerProtocol=2;if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
+    if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header);metadata.workerProtocol=3;if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
     let compiledHeader=header.replace(/(HB_FUNCTION\([^)]*Blueprint(?:Native|Implementable)Event[^)]*\)\s*)(?!virtual\b)(void\s)/g,'$1virtual $2');
     let compiledSource='#include <HBEngine/Bridge.hpp>\n'+source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,'');compiledSource='#include "User.hpp"\n'+compiledSource;
     for(const c of metadata.classes)for(const f of c.functions.filter(f=>f.event==='implementable'))if(!new RegExp(`\\b${c.name}\\s*::\\s*${f.name}\\s*\\(`).test(source))compiledSource+=`\nvoid ${c.name}::${f.name}(${f.parameters.map(p=>p.cppType+' '+p.name).join(',')}){}\n`;
@@ -90,14 +91,30 @@ export class NativeHost {
     for(const operation of result.operations){const spec=serviceApi.find(s=>s.key===operation?.key&&!s.pure);if(!spec||!operation.args||spec.inputs.filter(p=>p.type!=='exec').some(p=>!valid(p,operation.args[p.id])))throw Error('C++ 엔진 작업 자료형 오류');}
     if(!result.clock||!['time','delta','scale'].every(k=>Number.isFinite(result.clock[k])&&result.clock[k]>=0)||typeof result.clock.paused!=='boolean')throw Error('C++ 시간 출력 오류');return result;
   }
-  async call(token,request){const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');this.validate(session,request);session.lastUsed=Date.now();const job=session.queue.then(async()=>this.validateReply(session,request,await this.rpc(session,request)));session.queue=job.catch(()=>{});return job;}
+  decodeRequest(session,request){
+    if(request?.worldTransport===undefined)return request;
+    if(session.metadata.workerProtocol!==3||request.worldTransport!==1||request.command||typeof request.worldId!=='string'||!/^[0-9a-f-]{36}$/.test(request.worldId)||!Number.isSafeInteger(request.worldSequence)||request.worldSequence<1||!Number.isSafeInteger(request.baseSequence)||request.baseSequence<0)throw Error('C++ snapshot transport contract');
+    const {objectPatch,worldTransport,worldId,baseSequence,worldSequence,...plain}=request;let objects;
+    if(baseSequence===0){if(worldSequence!==1||objectPatch!==undefined||!Array.isArray(request.objects))throw Error('C++ full snapshot contract');objects=request.objects;}
+    else {if(!session.requestWorld||worldId!==session.requestWorldId||baseSequence!==session.requestSequence||worldSequence!==baseSequence+1||request.objects!==undefined)throw Error('C++ snapshot sequence mismatch');objects=applyWorldPatch(session.requestWorld,objectPatch);}
+    return {...plain,objects,[canonicalWorld]:{base:session.requestWorld,patch:objectPatch}};
+  }
+  async call(token,request){
+    const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();
+    const job=session.queue.then(async()=>{try{
+      const decoded=this.decodeRequest(session,request);this.validate(session,decoded);const result=this.validateReply(session,decoded,await this.rpc(session,decoded));
+      if(request.worldTransport===1){session.requestWorld=decoded.objects;session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
+      else if(request.command!=='frame'){session.requestWorld=null;session.requestSequence=0;}return result;
+    }catch(error){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;throw error;}});
+    session.queue=job.catch(()=>{});return job;
+  }
   rpc(session,request){
     if(!session.process){session.transportWorld=null;session.process=spawn(session.binary,[],{env,windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>session.process=null);}
-    return new Promise((resolve,reject)=>{const clockOnly=session.metadata.workerProtocol===2&&["frame","reset"].includes(request.command);if(request.command==="reset")session.transportWorld=null;const current=clockOnly?null:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol===2&&session.transportWorld?worldPatch(session.transportWorld,current):null,packet=clockOnly?{...request,objects:[]}:patch&&JSON.stringify(patch).length<JSON.stringify(current).length?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects);let finished=false;
+    return new Promise((resolve,reject)=>{const prepareStart=performance.now();const clockOnly=session.metadata.workerProtocol>=2&&["frame","reset"].includes(request.command);if(request.command==="reset")session.transportWorld=null;const current=clockOnly?null:request[canonicalWorld]?request.objects:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol>=2&&session.transportWorld?(request[canonicalWorld]?.patch&&session.transportWorld===request[canonicalWorld].base?request[canonicalWorld].patch:worldPatch(session.transportWorld,current)):null,packet=clockOnly?{...request,objects:[]}:patch?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects);let finished=false;
       const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();session.transportWorld=null;reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
       const onLine=async line=>{if(finished)return;
         if(line.startsWith('HB_QUERY\t')){let reply;try{if(Buffer.byteLength(line,'utf8')>4000000)throw Error('C++ 물리 질의 크기 제한 초과');reply={ok:true,value:await queries.query(JSON.parse(line.slice(9)))};}catch(error){reply={ok:false,error:error.message};}if(!finished)child.stdin.write(JSON.stringify(reply)+'\n',error=>{if(error)onError(error);});return;}
-        const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();if(result.ok){result.transport={mode:clockOnly?"clock":packet.objectPatch?"patch":"full",bytes:Buffer.byteLength(payload),patchOperations:packet.objectPatch?.length||0,rpcMs:performance.now()-rpcStart};resolve(result);}else{session.transportWorld=null;reject(Error(result.error));}}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(payload+'\n',error=>{if(error)onError(error);});});
+        const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();if(result.ok){result.transport={mode:clockOnly?"clock":packet.objectPatch?"patch":"full",bytes:Buffer.byteLength(payload),patchOperations:packet.objectPatch?.length||0,prepareMs:rpcStart-prepareStart,replyBytes:Buffer.byteLength(line),returnedObjects:result.objects?.length||0,rpcMs:performance.now()-rpcStart};resolve(result);}else{session.transportWorld=null;reject(Error(result.error));}}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(payload+'\n',error=>{if(error)onError(error);});});
   }
   close(){for(const session of this.sessions.values())session.process?.kill();this.sessions.clear();}
 }
