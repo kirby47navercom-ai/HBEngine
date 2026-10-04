@@ -1,3 +1,4 @@
+import {disposeSceneEnvironment} from '../prototype/scene-environment.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 
@@ -6,7 +7,7 @@ const source=await fs.readFile(new URL('../prototype/player.js',import.meta.url)
 const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix));assert.ok(value,'Player function missing: '+prefix);return value;};
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
-const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout',`
+const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment',`
   let closed=false,closing=false,busy=false,failureCleanup,sceneEpoch=0;
   ${releaseSource}
   ${failSource}
@@ -18,12 +19,12 @@ const settle=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
 function fixture({reportGate,endGate,flushGate,flushFailures=0,reportError=false,endError=false}={}){
   const events=[],saved=[],pending=[],timers=[],elements=new Map(),groups=new Map([['actor',{}]]);let flushes=0;
   const vm={active:true,async stop(reason){events.push('EndPlay:'+reason);if(endGate)await endGate.promise;if(endError){this.active=false;throw Error('EndPlay fixture failure');}pending.push('EndPlay-save');this.active=false;events.push('EndPlay-saved');}};
-  const services={dispose:()=>events.push('services-disposed')},world={traverse:callback=>{events.push('render-disposed');callback({geometry:{dispose(){}},material:{dispose(){}}});},environment:{dispose(){events.push('environment-disposed');}}};
+  const services={dispose:()=>events.push('services-disposed')},world={userData:{},traverse:callback=>{events.push('render-disposed');callback({geometry:{dispose(){}},material:{dispose(){}}});},environment:{dispose(){events.push('environment-disposed');}}};
   const report=async()=>{events.push('report-start');if(reportGate)await reportGate.promise;if(reportError)throw Error('report fixture failure');events.push('report-done');};
   const flushStorage=async()=>{const attempt=++flushes;events.push('flush-start:'+attempt);if(flushGate&&attempt===1)await flushGate.promise;if(attempt<=flushFailures){events.push('flush-failed:'+attempt);throw Error('storage fixture failure');}saved.push(...pending.splice(0));events.push('flush-done:'+attempt);};
   const window={chrome:{webview:{postMessage:value=>events.push(value)}}};
   const $=selector=>{if(!elements.has(selector))elements.set(selector,{hidden:false,textContent:''});return elements.get(selector);};
-  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);});
+  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);},disposeSceneEnvironment);
   return {...api,events,saved,pending,timers,vm,groups,elements};
 }
 const count=(events,value)=>events.filter(event=>event===value).length;

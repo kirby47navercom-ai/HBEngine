@@ -1,3 +1,4 @@
+import {shooterTemplate} from '../prototype/shooter-template.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -29,10 +30,10 @@ export async function ensureProjectManifest(root,name=path.basename(root)){
   return readProjectManifest(file);
 }
 export async function createProject(name,directory,template='garden'){
-  if(!['garden','2d','3d','gameplay2d','gameplay3d'].includes(template))throw Error('프로젝트 템플릿 오류');
+  if(!['garden','2d','3d','gameplay2d','gameplay3d','shooter2d'].includes(template))throw Error('프로젝트 템플릿 오류');
   if(!validName(name))throw Error('프로젝트 이름을 확인하세요.');directory=absolute(directory);await fs.mkdir(directory,{recursive:true});directory=await fs.realpath(directory);const root=path.join(directory,name);
   // Exclusive mkdir reserves a new project without changing an existing folder or its files.
-  await fs.mkdir(root);const project=await new ProjectService(root).init(true);if(template.startsWith('gameplay')){const data=gameplayTemplate(name,template==='gameplay2d'?'2d':'3d');for(const [file,value] of Object.entries(data.files))await project.write(file,JSON.stringify(value,null,2));await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(data.scene,null,2));}else if(template!=='garden')await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(makeStarterScene(name,template),null,2));return ensureProjectManifest(root,name);
+  await fs.mkdir(root);const project=await new ProjectService(root).init(true);if(template.startsWith('gameplay')||template==='shooter2d'){const data=template==='shooter2d'?shooterTemplate(name):gameplayTemplate(name,template==='gameplay2d'?'2d':'3d');for(const [file,value] of Object.entries(data.files))await project.write(file,typeof value==='string'?value:JSON.stringify(value,null,2));await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(data.scene,null,2));}else if(template!=='garden')await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(makeStarterScene(name,template),null,2));return ensureProjectManifest(root,name);
 }
 async function readRecent(){
   try{const file=path.join(absolute(dataDirectory()),'recent-projects.json'),stat=await fs.stat(file);if(stat.size>1048576)return [];const data=JSON.parse(await fs.readFile(file,'utf8'));return data.version===1&&Array.isArray(data.projects)?data.projects.slice(0,100).filter(p=>p&&typeof p.file==='string'):[];}catch(error){if(error.code==='ENOENT'||error instanceof SyntaxError)return [];throw error;}

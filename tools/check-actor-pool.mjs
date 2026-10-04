@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import {createAsset} from '../prototype/asset-documents.js';
+import {makeSceneComponent,enabledComponent} from '../prototype/scene-components.js';
+import {makeNode,connect} from '../prototype/blueprint-model.js';
+import {preparePlayWorld} from '../prototype/play-world.js';
+import {BlueprintRuntime} from '../prototype/blueprint-runtime.js';
+import {engineOperations} from '../prototype/engine-services.js';
+import {NativeHost} from './native-host.mjs';
+import {nativeWorld} from '../prototype/native-model.js';
+const graph=createAsset('blueprint','BP_Bullet');graph.nodes=[];graph.edges=[];graph.components=[];graph.variables=[];
+for(const [key,id,event] of [['tick','tick',''],['customEvent','acquire','OnPoolAcquire'],['customEvent','release','OnPoolRelease']]){const n={...makeNode(key),id,options:{eventName:event}},print={...makeNode('print'),id:id+'_log',inputValues:{message:id}};graph.nodes.push(n,print);assert.ok(connect(graph,{node:id,pin:'then'},{node:print.id,pin:'exec'}).ok);}
+const objects=['a','b'].map(id=>({id,name:id,kind:'sprite',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],blueprintAsset:'Assets/BP_Bullet.hbblueprint.json',components:['Transform','SpriteRenderer','CircleCollider2D','Rigidbody2D','PooledActor'].map(type=>makeSceneComponent(type,type==='Rigidbody2D'?{useGravity:false}:{}))}));
+const prepared=await preparePlayWorld(objects,{dimension:'2d',autoSpawnPlayer:false},{readAsset:async()=>graph,readText:async()=>'',buildNative:()=>{throw Error('C++ 사용 안함');}}),messages=[],services=engineOperations({physicsOptions:prepared.physicsOptions,gameplay:prepared.gameplay,build:()=>{},update:()=>{},remove:()=>{},readAsset:async()=>graph});
+const vm=new BlueprintRuntime(objects,prepared.bindings,{...services,log:s=>messages.push(s)});await vm.start();const b=vm.bindings[0],operation=(key,args)=>services.operation(key,args,b,vm),transform={position:[1,2,0],rotation:[0,0,0],scale:[1,1,1]};
+try{
+  assert.equal(objects[0].visible,false);assert.equal(enabledComponent(objects[0],'Rigidbody2D'),null);await vm.tick(1/60);assert.deepEqual(messages,[]);assert.ok(services.physicsState().dimensions.every(d=>d.bodies.every(body=>!['a','b'].includes(body.id))));
+  assert.equal((await operation('poolAcquire',{pool:['a','b'],transform})).return,'a');assert.equal((await operation('poolAcquire',{pool:['a','b'],transform})).return,'b');assert.equal((await operation('poolAcquire',{pool:['a','b'],transform})).return,null);await operation('setVelocity',{target:'a',velocity:[10,0,0]});await vm.tick(1/60);assert.ok(objects[0].position[0]>1);assert.ok(messages.includes('tick'));
+  vm.jobs.push({owner:'a',at:100,run:()=>{throw Error('반환 후 Delay 실행');}});vm.core.timers.set('owned',{owner:'a',active:true,duration:100,elapsed:0});vm.timelines.set('owned',{f:{b},playing:false});
+  await operation('poolRelease',{target:'a'});assert.equal(objects[0].visible,false);assert.equal(objects[0].collisionEnabled,false);assert.deepEqual(objects[0].velocity,[0,0,0]);assert.ok(!vm.jobs.some(j=>j.owner==='a'));assert.ok(!vm.core.timers.has('owned'));assert.ok(!vm.timelines.has('owned'));assert.ok(messages.includes('release'));const componentValues=structuredClone(objects[0].components);const returnedCount=messages.length;await operation('poolRelease',{target:'a'});assert.equal(messages.length,returnedCount,'중복 반환이 이벤트를 반복하지 않는다');
+  for(let i=0;i<100;i++){const acquired=await operation('poolAcquire',{pool:['a'],transform});assert.equal(acquired.return,'a');await operation('poolRelease',{target:'a'});}assert.deepEqual(objects[0].components,componentValues);assert.equal(objects.filter(o=>o.id==='a').length,1,'재사용 중 인스턴스와 컴포넌트를 새로 만들지 않는다');await vm.tick(1/60);assert.ok(services.physicsState().dimensions.every(d=>d.bodies.every(body=>body.id!=='a')));
+  const host=new NativeHost();try{
+    const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass PoolProbe : public hb::Library { public: HB_FUNCTION(BlueprintCallable) static hb::Actor* Take(const std::vector<hb::Actor*>& pool,const hb::Transform& transform,bool& active); HB_FUNCTION(BlueprintCallable) static void Give(hb::Actor* target,bool& active); };',source='#include "User.h"\nhb::Actor* PoolProbe::Take(const std::vector<hb::Actor*>& pool,const hb::Transform& transform,bool& active){auto* actor=hb::ActorPool::Acquire(pool,transform);active=actor&&hb::ActorPool::IsActive(actor);return actor;}\nvoid PoolProbe::Give(hb::Actor* target,bool& active){hb::ActorPool::Release(target);active=hb::ActorPool::IsActive(target);}';
+    const build=await host.build(header,source),request={key:'nativeCall',nativeId:'PoolProbe.Take',args:{pool:['a','b'],transform},objects:nativeWorld(objects,new Set())};let result=await host.call(build.token,request);assert.equal(result.outputs.result,'a');assert.equal(result.outputs.active,true);for(const op of result.operations)await operation(op.key,op.args);assert.ok(objects[0].poolActive);
+    result=await host.call(build.token,{...request,nativeId:'PoolProbe.Give',args:{target:'a'},objects:nativeWorld(objects,new Set())});assert.equal(result.outputs.active,false);for(const op of result.operations)await operation(op.key,op.args);assert.equal(objects[0].poolActive,false);
+  }finally{host.close();}
+}finally{await vm.stop();services.dispose();}
+console.log('2D 탄환·적 풀 초기화·할당/고갈/반환·물리 제외·속도 초기화·Tick/타이머/Delay 정리·100회 재사용·실제 C++ 배열 풀 호출 검사 통과');

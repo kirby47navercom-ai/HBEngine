@@ -10,7 +10,7 @@ import {defaultRuntimeSettings} from '../prototype/model.js';
 const base=process.argv[2]||'http://127.0.0.1:5182',clients=(await engineRequest(base,'/api/automation')).clients.sort((a,b)=>b.seen-a.seen);
 assert.ok(clients.length,'검증용 편집기를 먼저 연다');const call=(method,params)=>editorCommand(base,method,params,{clientId:clients[0].id,timeout:30000}),original=await call('editor.state');assert.equal(original.projectName,'authoring-qa');assert.equal(original.running,false);
 const project=(await engineRequest(base,'/api/project')).root;assert.equal(path.resolve(project),path.resolve(import.meta.dirname,'../native/build/authoring-qa'),'검증 전용 프로젝트만 변경한다');
-const schema=await engineRequest(base,'/api/schema');assert.equal(Object.keys(schema.components).length,46);assert.equal(schema.physics.geometry.mesh.dynamic,'convex only');
+const schema=await engineRequest(base,'/api/schema');for(const type of ['Rigidbody','Rigidbody2D','MeshCollider','PolygonCollider2D','PooledActor','UIWidget'])assert.ok(schema.components[type],'Schema component: '+type);assert.equal(schema.physics.geometry.mesh.dynamic,'convex only');
 const stamp=Date.now(),file=`Assets/Scenes/Geometry_UI_QA_${stamp}.hbscene.json`,data=createAsset('scene','Geometry UI QA');data.runtime={...defaultRuntimeSettings,dimension:'2d'};
 const polygon=geometryObject('Polygon','PolygonCollider2D',{paths:[lPath]});const edge=geometryObject('Edge','EdgeCollider2D',{points:[[-3,0],[3,0]]});edge.position=[-5,0,0];
 const floor=geometryObject('MeshFloor','MeshCollider',{mode:'mesh'});floor.kind='cube';floor.position=[5,-.5,0];floor.scale=[6,1,6];

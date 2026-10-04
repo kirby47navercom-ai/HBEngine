@@ -1,6 +1,9 @@
 // Header declarations become editor metadata; this is not a C++ compiler.
 // Other modules remain reachable as Actors, but only their owner loads native state.
 export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}
+// Protocol 2 clock/reset replies carry no actors. Avoid serializing the scene
+// on this path all the way from the browser; old packaged workers keep theirs.
+export function nativeRequestWorld(objects,assetPaths,request,metadata){return metadata?.workerProtocol===2&&['frame','reset'].includes(request.command)?[]:nativeWorld(objects,assetPaths);}
 const id=s=>typeof s==='string'&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(s);
 const types=new Set(['bool','int','float','string','vec2','vec3','color','transform','object','hit']);
 const portValid=p=>p&&id(p.id)&&typeof p.label==='string'&&p.label.length<=80&&types.has(p.type)&&typeof p.array==='boolean'&&(p.className===undefined||id(p.className));

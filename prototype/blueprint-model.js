@@ -13,7 +13,7 @@ export const catalog = [
   {key:'fixedTick',title:'Fixed Update',ko:'고정 물리 업데이트',group:'이벤트',keywords:'fixed update physics 물리 고정 틱 프레임',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Fixed delta seconds','float')]},
   {key:'beginOverlap',title:'Begin Overlap',ko:'겹침 시작',group:'이벤트',keywords:'actor component overlap begin 비긴 오버랩 충돌 트리거',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
   {key:'endOverlap',title:'End Overlap',ko:'겹침 종료',group:'이벤트',keywords:'end overlap 끝 엔드 충돌',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
-  {key:'input',title:'Keyboard Event',ko:'키보드 이벤트',group:'이벤트',keywords:'input key keyboard 입력 키보드 상호작용',kind:'event',inputs:[],outputs:[pin('then','Pressed')]},
+  {key:'input',title:'Input Event',ko:'키·마우스 이벤트',group:'이벤트',keywords:'input key keyboard mouse click 입력 키보드 마우스 클릭 버튼',kind:'event',inputs:[],outputs:[pin('then','Pressed'),pin('released','Released')]},
   {key:'customEvent',title:'Custom Event',ko:'사용자 이벤트',group:'이벤트',keywords:'custom event 커스텀 사용자 정의',kind:'event',inputs:[],outputs:[pin('then','실행')]},
   {key:'branch',title:'Branch',ko:'조건 분기',group:'흐름 제어',keywords:'branch if 조건 분기 참 거짓',kind:'condition',inputs:[pin('exec','실행'),pin('condition','Condition','bool')],outputs:[pin('true','True'),pin('false','False')]},
   {key:'delay',title:'Delay',ko:'기다리기',group:'흐름 제어',keywords:'delay wait 딜레이 지연 대기',inputs:[pin('exec','실행'),pin('duration','Duration','float')],outputs:[pin('then','Completed')]},

@@ -43,7 +43,11 @@
     "test:package": "node tools/check-package.mjs",
     "test:native-cancel": "node tools/check-native-cancel.mjs",
     "test:build-profiles": "node tools/check-build-profiles.mjs",
-    "test:player-lifecycle": "node tools/check-player-lifecycle.mjs"
+    "test:player-lifecycle": "node tools/check-player-lifecycle.mjs",
+    "test:input": "node tools/check-runtime-input.mjs",
+    "test:pool": "node tools/check-actor-pool.mjs",
+    "test:native-world": "node tools/check-native-world-patch.mjs",
+    "test:player-acceptance": "node tools/check-player-acceptance.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

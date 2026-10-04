@@ -1,3 +1,4 @@
+import {createGameCamera,selectGameCamera} from './game-camera.js';
 import * as THREE from 'three';
 import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
 import {enabledComponent,objectComponents,componentDefaults} from './scene-components.js';
@@ -6,6 +7,8 @@ import {createThreeMaterial,resolveMaterialAsset} from './material-runtime.js';
 import {ParticleSimulation} from './scene-systems.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
+const visualTypes=new Set(['MeshRenderer','SpriteRenderer','TilemapRenderer','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight']);
+export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}){
   const texture=async path=>{const result=await new THREE.TextureLoader().loadAsync(fileUrl(path));result.colorSpace=THREE.SRGBColorSpace;return result;};
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
@@ -46,7 +49,8 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     mesh.onBeforeRender=(_r,_s,camera)=>{if(properties.billboard){const rotation=group.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(camera.getWorldQuaternion(new THREE.Quaternion()));mesh.quaternion.copy(rotation);}};
     const old=group.userData.spriteMesh;if(old){old.removeFromParent();old.geometry.dispose();old.material.map?.dispose();old.material.dispose();for(const r of [old.geometry,old.material,old.material.map])group.userData.resources.delete(r);}group.userData.spriteMesh=mesh;group.add(mesh);
   }
-  async function spriteFrame(object,path){const group=current(object.id);if(!group)return;const token=group.userData.spriteRequest=(group.userData.spriteRequest||0)+1;await sprite(group,enabledComponent(object,'SpriteRenderer')||{},path,token);}
+  function spriteFlip(object,p){const group=current(object.id),mesh=group?.userData.spriteMesh;if(mesh)mesh.scale.set(p.flipX?-1:1,p.flipY?-1:1,1);if(group)group.userData.componentSignature=visualComponentSignature(object);}
+  async function spriteFrame(object,path){const group=current(object.id);if(!group)return;const token=group.userData.spriteRequest=(group.userData.spriteRequest||0)+1;await sprite(group,enabledComponent(object,'SpriteRenderer')||{},path,token);if(current(object.id)===group&&!group.userData.disposed&&group.userData.spriteRequest===token)object.currentSprite=path;}
   async function tilemap(group,path,properties){
     if(!path)return;const map=await read(path);if(!map.tileset)return;const atlas=await texture(map.tileset);if(!own(group,atlas))return;atlas.magFilter=THREE.NearestFilter;atlas.minFilter=THREE.NearestFilter;
     const material=new THREE.MeshBasicMaterial({map:atlas,transparent:true,side:THREE.DoubleSide,depthWrite:false});own(group,material);
@@ -75,7 +79,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
   }
   async function build(object,group){
     const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
-    group.userData.componentSignature=JSON.stringify(components);const meshPath=renderer?.mesh||object.asset;
+    group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,p.sprite||object.spriteAsset);
@@ -83,12 +87,12 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
       if(component.type==='Decal')await decal(group,p);
       if(component.type==='ParticleSystem')await particles(group,p);
       if(component.type==='NavigationGrid'&&p.debug){const axes=p.plane==='XY'?[0,1]:[0,2],points=[];for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]){const v=[0,0,0];v[axes[0]]=x*p.extent[axes[0]];v[axes[1]]=y*p.extent[axes[1]];points.push(new THREE.Vector3(...v));}const geometry=new THREE.BufferGeometry().setFromPoints(points),material=new THREE.LineBasicMaterial({color:0x63c8ad});own(group,geometry);own(group,material);const line=new THREE.Line(geometry,material);line.userData.editorHelper=true;group.add(line);}
-      if(component.type==='Camera'){const camera=p.projection==='orthographic'?new THREE.OrthographicCamera(-p.orthographicSize,p.orthographicSize,p.orthographicSize,-p.orthographicSize,p.near,p.far):new THREE.PerspectiveCamera(p.fieldOfView,1,p.near,p.far);camera.userData.cameraProperties=p;group.add(camera);group.userData.gameCamera=camera;}
+      if(component.type==='Camera'){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}
       if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);light.castShadow=p.castShadow;if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}
     }
     if(group.userData.disposed)return;group.traverse(child=>{child.userData.objectId=object.id;if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
-  function gameCamera(objects,aspect,override){const choices=objects.map(object=>({object,camera:current(object.id)?.userData.gameCamera})).filter(x=>x.camera&&x.object.visible!==false&&(override?x.object.id===override:x.camera.userData.cameraProperties.main)).sort((a,b)=>b.camera.userData.cameraProperties.priority-a.camera.userData.cameraProperties.priority);const selected=choices[0];if(!selected)return null;const c=selected.camera,p=c.userData.cameraProperties;if(c.isOrthographicCamera){c.left=-p.orthographicSize*aspect;c.right=p.orthographicSize*aspect;}else c.aspect=aspect;if(p.followTarget){const target=current(p.followTarget);if(target){const position=target.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(...(p.followOffset||[0,0,10])));c.parent.updateWorldMatrix(true,false);c.position.copy(c.parent.worldToLocal(position));}}c.updateProjectionMatrix();return c;}
-  return {build,dispose,material,materialFloat,spriteFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation};
+  const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
+  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation};
 }

@@ -68,6 +68,31 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="jump", KoreanName="캐릭터 점프", Category="게임플레이") static void Jump(Actor* target);
 };
 HB_CLASS()
+class ActorPool : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="poolAcquire", KoreanName="재사용 오브젝트 꺼내기", Category="오브젝트 풀") static Actor* Acquire(const std::vector<Actor*>& pool,const Transform& transform);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="poolRelease", KoreanName="재사용 오브젝트 반환", Category="오브젝트 풀") static void Release(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="poolActive", KoreanName="재사용 오브젝트 활성 상태", Category="오브젝트 풀") static bool IsActive(Actor* target);
+};
+HB_CLASS()
+class Input : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputKeyDown", KoreanName="키·마우스 버튼 눌림", Category="입력") static bool IsKeyDown(const std::string& key);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputAxisValue", KoreanName="입력 축 값 가져오기", Category="입력") static float GetAxis(const std::string& key);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mousePosition", KoreanName="마우스 위치 가져오기", Category="입력") static bool GetMousePosition(Vec2& position);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseDelta", KoreanName="마우스 이동량 가져오기", Category="입력") static Vec2 GetMouseDelta();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseRay", KoreanName="마우스 월드 방향 가져오기", Category="입력") static bool DeprojectMousePositionToWorld(Vec3& origin,Vec3& direction);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mouseWorldPlane", KoreanName="마우스 조준 평면 위치", Category="입력") static bool GetMouseWorldPosition(const Vec3& normal,const Vec3& point,Vec3& position);
+};
+HB_CLASS()
+class Sprites : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteFlip", KoreanName="스프라이트 좌우·상하 반전", Category="2D 스프라이트") static void SetFlip(Actor* target,bool flipX,bool flipY);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetFlip", KoreanName="스프라이트 반전 가져오기", Category="2D 스프라이트") static void GetFlip(Actor* target,bool& flipX,bool& flipY);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSet", KoreanName="스프라이트 지정", Category="2D 스프라이트") static void SetSprite(Actor* target,const std::string& sprite);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGet", KoreanName="스프라이트 가져오기", Category="2D 스프라이트") static std::string GetSprite(Actor* target);
+};
+HB_CLASS()
 class Physics : public Library {
 public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getVelocity", KoreanName="속도 가져오기", Category="물리") static Vec3 GetVelocity(Actor* target);

@@ -7,7 +7,7 @@ import {engineSchema} from './editor-automation.mjs';
 import {editComponentProperty,componentDefaults,validComponentProperties,physicsGeometryError} from '../prototype/scene-components.js';
 
 console.log('실제 2D·3D 편집/실행 형상 검사',await collisionGeometryCases());
-const schema=engineSchema();assert.equal(schema.physics.geometry.polygon.decomposition,'exact ear-clipped triangles in one compound collider');assert.ok(schema.commands['collision.bake']);assert.equal(Object.keys(schema.components).length,46);
+const schema=engineSchema();assert.equal(schema.physics.geometry.polygon.decomposition,'exact ear-clipped triangles in one compound collider');assert.ok(schema.commands['collision.bake']);for(const type of ['Rigidbody','Rigidbody2D','MeshCollider','PolygonCollider2D','PooledActor','UIWidget'])assert.ok(schema.components[type],'Schema component: '+type);
 for(const type of ['Rigidbody','Rigidbody2D']){const kinematic=editComponentProperty(type,componentDefaults(type),'bodyType','kinematic'),dynamic=editComponentProperty(type,kinematic,'isKinematic',false);assert.equal(dynamic.bodyType,'dynamic');assert.equal(dynamic.isKinematic,false);}
 for(const type of ['PhysicsConstraint','PhysicsConstraint2D']){const spring=editComponentProperty(type,{...componentDefaults(type),jointType:'hinge',enableLimit:true,useMotor:true},'jointType','spring');assert.equal(spring.enableLimit,false);assert.equal(spring.useMotor,false);assert.ok(validComponentProperties(type,spring));}
 assert.match(physicsGeometryError(geometryObject('dynamic','MeshCollider',{mode:'mesh'},{}).components),/동적 강체/);

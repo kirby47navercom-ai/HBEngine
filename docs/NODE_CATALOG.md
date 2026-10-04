@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **473개**, 실제 공통 C++ API **391개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **486개**, 실제 공통 C++ API **404개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -36,6 +36,9 @@
 | 회전 | 9 | 9 |
 | 색상 | 10 | 10 |
 | 게임플레이 | 9 | 9 |
+| 오브젝트 풀 | 3 | 3 |
+| 입력 | 6 | 6 |
+| 2D 스프라이트 | 4 | 4 |
 | 물리 질의 | 7 | 7 |
 | AI | 15 | 15 |
 | 상태 머신 | 8 | 8 |
@@ -65,7 +68,7 @@
 | fixedTick | Fixed Update / 고정 물리 업데이트 | — | then: exec, delta: float | — | VM 이벤트 진입점 |
 | beginOverlap | Begin Overlap / 겹침 시작 | — | then: exec, other: object | — | VM 이벤트 진입점 |
 | endOverlap | End Overlap / 겹침 종료 | — | then: exec, other: object | — | VM 이벤트 진입점 |
-| input | Keyboard Event / 키보드 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
+| input | Input Event / 키·마우스 이벤트 | — | then: exec, released: exec | — | VM 이벤트 진입점 |
 | customEvent | Custom Event / 사용자 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
@@ -596,6 +599,34 @@
 | unPossess | Un Possess / 폰 제어권 해제 | exec: exec, controller: object | then: exec | hb::Gameplay::UnPossess | 공통 C++ + VM |
 | addMovementInput | Add Movement Input / 이동 입력 더하기 | exec: exec, target: object, direction: vec3, scale: float | then: exec | hb::Gameplay::AddMovementInput | 공통 C++ + VM |
 | jump | Jump / 캐릭터 점프 | exec: exec, target: object | then: exec | hb::Gameplay::Jump | 공통 C++ + VM |
+
+## 오브젝트 풀
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| poolAcquire | Acquire / 재사용 오브젝트 꺼내기 | exec: exec, pool: object[], transform: transform | then: exec, return: object | hb::ActorPool::Acquire | 공통 C++ + VM |
+| poolRelease | Release / 재사용 오브젝트 반환 | exec: exec, target: object | then: exec | hb::ActorPool::Release | 공통 C++ + VM |
+| poolActive | Is Active / 재사용 오브젝트 활성 상태 | target: object | return: bool | hb::ActorPool::IsActive | 공통 C++ + VM |
+
+## 입력
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| inputKeyDown | Is Key Down / 키·마우스 버튼 눌림 | key: string | return: bool | hb::Input::IsKeyDown | 공통 C++ + VM |
+| inputAxisValue | Get Axis / 입력 축 값 가져오기 | key: string | return: float | hb::Input::GetAxis | 공통 C++ + VM |
+| mousePosition | Get Mouse Position / 마우스 위치 가져오기 | — | return: bool, position: vec2 | hb::Input::GetMousePosition | 공통 C++ + VM |
+| mouseDelta | Get Mouse Delta / 마우스 이동량 가져오기 | — | return: vec2 | hb::Input::GetMouseDelta | 공통 C++ + VM |
+| mouseRay | Deproject Mouse Position To World / 마우스 월드 방향 가져오기 | — | return: bool, origin: vec3, direction: vec3 | hb::Input::DeprojectMousePositionToWorld | 공통 C++ + VM |
+| mouseWorldPlane | Get Mouse World Position / 마우스 조준 평면 위치 | normal: vec3, point: vec3 | return: bool, position: vec3 | hb::Input::GetMouseWorldPosition | 공통 C++ + VM |
+
+## 2D 스프라이트
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| spriteFlip | Set Flip / 스프라이트 좌우·상하 반전 | exec: exec, target: object, flipX: bool, flipY: bool | then: exec | hb::Sprites::SetFlip | 공통 C++ + VM |
+| spriteGetFlip | Get Flip / 스프라이트 반전 가져오기 | target: object | flipX: bool, flipY: bool | hb::Sprites::GetFlip | 공통 C++ + VM |
+| spriteSet | Set Sprite / 스프라이트 지정 | exec: exec, target: object, sprite: string | then: exec | hb::Sprites::SetSprite | 공통 C++ + VM |
+| spriteGet | Get Sprite / 스프라이트 가져오기 | target: object | return: string | hb::Sprites::GetSprite | 공통 C++ + VM |
 
 ## 물리 질의
 

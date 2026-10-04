@@ -1,6 +1,20 @@
 # HBEngine 작업 인계 — 2026-10-04
 
-## 최우선 현재 단계: 전체 본문·API 분석 선행
+## 최신 사용자 지시: 구현 재개 + 뒤에 실제 실행 검증
+
+2026-10-04 후속 지시에서 마우스 조준·클릭, 탄환/적 재사용, 스프라이트 방향 전환, 탑다운 플레이어 찾기를 먼저 구현하고 기존 분석의 구현 요구를 이어 진행하도록 명시했어요. 모바일 조작/UI 전반을 추가했고, 그 뒤 실제 창의 스프라이트·UI·한글·오디오와 탄막 성능을 검증하도록 했어요. 이 명시적 단계 변경이 아래의 과거 `research_only` 지시보다 우선해요. 전체 엔진·문서/API 분석 완료를 의미하지 않아요.
+
+- 구현: 공용 RuntimeInput의 키/마우스/조준 평면/Released 핀, C++ hb::Input, PooledActor + hb::ActorPool, hb::Sprites, Blueprint 컴포넌트를 설치한 뒤 TopDownMovement2D 제어권 연결. 에디터 Play·Player·headless 동일 계약이에요.
+- 모바일: 기존 위젯 편집기에 Joystick/DPad/TouchButton/TouchPad, 프리셋, 멀티터치 소스 합성, 안전 영역·세로/가로 대응·취소/일시정지 해제. 사람의 편집 메뉴와 AI widget.mobileControls가 같은 데이터/Undo 검증을 사용해요. 새 프로젝트 `shooter2d`는 사용자 C++ Update를 BP Tick으로 감싸 실제 조준·발사·풀·적 이동을 실행해요.
+- 성능 작업: 읽기 전용 기본값 캐시/편집용 깊은 복사 유지, 물리 값 미러로 렌더 자원을 재생성하지 않는 시그니처, 루트 좌표 빠른 경로. C++ workerProtocol 2는 JSON Patch 차이 전송·오류/재시작 전체 복구·clock 명령 분리·지연 Actor 핸들을 사용하고 기존 프로토콜 metadata는 전체 요청을 유지해요. development는 -Og -g, editor -O0, release -O2예요.
+- 백그라운드 유지: 사용자의 기존 창/탭에는 접속하지 않았어요. 실제 Game.exe 검사는 별도 임시 프로젝트와 프로필로 (-20000,-20000) SW_SHOWNOACTIVATE 실행했어요. 실제 UI API/충돌 에디터 검사는 실행 중인 검증용 에디터 클라이언트가 없어 ECONNREFUSED였으며 통과로 계산하지 않아요.
+- 검증과 측정은 [입력·모바일·풀 구현 기록](docs/INPUT_MOBILE_POOL.md)에 기록해요. 실제 WebView2 화면 픽셀, Web Audio master bus 신호, CDP 마우스/멀티터치와 사용자 C++ 실행까지 확인하고 프레임 처리와 표시 FPS를 구별해요. 물리 스피커 청음·Android/iOS 실기기·모바일 native 에디터·APK/IPA는 이 작업의 완료로 주장하지 않아요.
+- 최종 실측: 기본 64탄환/12적 C++ 슈터 발사는 배포 약60.2루프/초. 480슬롯/480활성 스크립트 없는 배포는60.5, 매프레임 C++ Update는11.2, 35.2초/96재사용 지속은9.9예요. 모니터 표시FPS·실기기 모바일 수치가 아니며 큰 C++ 브리지는 병목이에요. 개발/배포 최신 private증거 yHpXFV/zjHAZa와 앞선 편차를 구현 기록에 남겼어요.
+- 최종 게이트: input/pool/native-world/headless/UI-audio/API/main/package 검사 통과, package-check-AxEiTv의 실제 2D·3D Game.exe·컴파일러 없는 실행·종료·무결성/취소 확인. HBEngine.exe/dist 갱신, 테스트 모드만의 native debug API는 일반 release에 노출하지 않아요. 기존 live 편집기 API 검사는 여전히 미실행이에요.
+- 이어갈 구현의 우선 병목은 브라우저→host→C++ 전체 장면 직렬화/왕복과 큰 장면 고정 스텝 지연이에요. 기존 전체 제작·함수·컴포넌트·2D/2.5D/3D·각 에셋 저작/UI·debug·PC/mobile 게임/에디터 요구와 미독 연구 대기열은 삭제하지 않아요. 실제 모바일 SDK/앱/기기 Play는 별도 후속 검증이에요.
+- 아래 017–019 corpus/API 원장과 hash는 당시 역사적 분석 상태로 보존해요. 신규 기능 구현으로 기존 읽기/분석/검증 수치를 승격하지 않고 전체 누적 제작 요구도 유지해요. 원문/표/코드/media와 실제 실행/프로파일 파일은 ignored native/build에 있어요.
+
+## 이전 연구 단계 기록: 전체 본문·API 분석 선행
 
 - 보고 규칙: 전체 분석 조건 미충족이면 “분석 끝/전체 완료”라고 하지 않는다. 지정 본문 읽기·독립 대조와 전체 corpus/API/media closure는 다르다. 실제 신규/재읽기·미독·다음 대상을 구분하고 분모가 미확정이면 완료율을 제시하지 않는다. 사용자 사례만 또는 임의 분야만 대상으로 축소하지 않는다.
 - 최신017–019 actual gate: UTC2026-10-04T07:20:56.435Z, manifestSHA61b9bd1c2ec18e4c9228293af0f598adc614a0a1e6f4c69745aaa5e020b3e888, source18/발견URLidentity168940/body34877/strictverified기존2/stale0/exit2-readyfalse-percentageNull. gate-2026-10-04-019.json private snapshot이며 이전012(source13)·019-pre-package-import(165328)은 당시상태다. 보조platform5source205URL과package새4root3612URL은실제discoveryimport만;읽기승격0이다.

@@ -318,7 +318,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         using CreateEnvironment=HRESULT(STDAPICALLTYPE*)(PCWSTR,PCWSTR,ICoreWebView2EnvironmentOptions*,ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler*);
         const auto create=reinterpret_cast<CreateEnvironment>(GetProcAddress(loader,"CreateCoreWebView2EnvironmentWithOptions"));if(!create)throw std::runtime_error("WebView2 entry");
         const auto profile=app.userData/L"WebView2";auto handler=new EnvironmentHandler;const auto result=create(nullptr,profile.c_str(),nullptr,handler);handler->Release();if(FAILED(result))error(L"WebView2 Runtime을 시작하지 못했어요.",result);
-        SetTimer(app.window,1,1000,nullptr);if(!app.smoke.empty())SetTimer(app.window,2,30000,nullptr);
+        SetTimer(app.window,1,1000,nullptr);if(!app.smoke.empty())SetTimer(app.window,2,env(L"HB_PLAYER_ACCEPTANCE")==L"1"?180000:30000,nullptr);
         MSG message;while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}
     }catch(const std::exception& exception){
         const auto details=L"엔진을 시작하지 못했어요: "+wide(exception.what())+L"\n실행 로그: "+app.log.wstring();error(details.c_str());

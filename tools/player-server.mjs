@@ -27,7 +27,7 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     const url=new URL(req.url,origin),q=url.searchParams;
     if(req.headers.origin&&req.headers.origin!==origin||req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'출처 오류'},403);
     if(url.pathname==='/api/session'&&req.method==='GET')return json(res,session);
-    if(url.pathname==='/api/player'&&req.method==='GET')return json(res,{name:manifest.name,smoke:process.env.HB_PLAYER_SMOKE==='1',configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene});
+    if(url.pathname==='/api/player'&&req.method==='GET')return json(res,{name:manifest.name,smoke:process.env.HB_PLAYER_SMOKE==='1',acceptance:process.env.HB_PLAYER_SMOKE==='1'&&process.env.HB_PLAYER_ACCEPTANCE==='1',configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene});
     if(url.pathname==='/api/project'&&req.method==='GET')return json(res,{entries:manifest.entries});
     if(url.pathname==='/api/storage'&&req.method==='GET'){if(q.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.read());}
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=await body(req);if(data.id!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.patch(data.items));}

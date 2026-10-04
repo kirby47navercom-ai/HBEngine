@@ -1,5 +1,5 @@
 import {Vector3,Quaternion,Euler} from 'three';
-import {componentDefaults,objectComponents,enabledComponent,validComponentProperties} from './scene-components.js';
+import {componentDefaultValues,objectComponents,enabledComponent,validComponentProperties} from './scene-components.js';
 import {sceneWorldMatrix,sceneWorldPosition,setSceneWorldPosition} from './scene-runtime.js';
 import {geometryColliderTypes,geometryDescriptor,colliderGeometryRadius,geometryContract} from './collision-geometry.js';
 
@@ -28,7 +28,7 @@ export function createRigidPhysics(objects,options={}){
     const rb=enabledComponent(o,type),other=enabledComponent(o,dim===2?'Rigidbody':'Rigidbody2D');
     if(rb&&other)throw Error(o.name+': 한 오브젝트에는 한 차원의 Rigidbody만 사용할 수 있어요.');
     if(rb)return {...rb,movement};
-    return movement?{...componentDefaults(type),movement}:null;
+    return movement?{...componentDefaultValues(type),movement}:null;
   };
   const typeOf=p=>options.queryOnly||!p?'static':p.isKinematic?'kinematic':p.bodyType||'dynamic';
   const record=(o,dim)=>spaces.get(dim)?.bodies.get(o.id);
@@ -41,7 +41,7 @@ export function createRigidPhysics(objects,options={}){
   };
   const coefficients=(p,R)=>{const merged={...p,...materials.get(p.physicalMaterial)};return {...merged,frictionCombine:R.CoefficientCombineRule[{average:'Average',min:'Min',max:'Max',multiply:'Multiply'}[merged.frictionCombine]||'Average']};};
   function shape(component,scale,R,dim){
-    const p={...componentDefaults(component.type),...component.properties},s=scale.toArray().map(Math.abs);
+    const p={...componentDefaultValues(component.type),...component.properties},s=scale.toArray().map(Math.abs);
     if(geometryColliderTypes.has(component.type))return geometryDescriptor(component.type,p,s,R);
     if(component.type.includes('Sphere')||component.type.includes('Circle'))return R.ColliderDesc.ball(p.radius*Math.max(...s.slice(0,dim)));
     if(component.type.startsWith('Capsule')){const radius=p.radius*(dim===2?s[0]:Math.max(s[0],s[2]));return R.ColliderDesc.capsule(Math.max(0,p.height*s[1]/2-radius),radius);}
@@ -57,7 +57,7 @@ export function createRigidPhysics(objects,options={}){
     for(const [dim,space] of spaces){
       const {R,world}=space,active=new Set();
       for(const o of objects){
-        if(['component','widget'].includes(o.kind))continue;
+        if(['component','widget'].includes(o.kind)||o.poolActive===false)continue;
         const p=properties(o,dim),components=[...objectComponents(o),...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
         const transform=pose(o,objects),transformKey=JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);let r=space.bodies.get(o.id);
@@ -76,7 +76,7 @@ export function createRigidPhysics(objects,options={}){
         }
         const activeColliders=new Set();
         for(const component of components){
-          const cp={...componentDefaults(component.type),...component.properties},signature=JSON.stringify([cp,transform.scale.toArray(),materials.get(cp.physicalMaterial)]);activeColliders.add(component.id);
+          const cp={...componentDefaultValues(component.type),...component.properties},signature=JSON.stringify([cp,transform.scale.toArray(),materials.get(cp.physicalMaterial)]);activeColliders.add(component.id);
           if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
           if(c?.signature===signature)continue;
@@ -110,7 +110,7 @@ export function createRigidPhysics(objects,options={}){
   function syncJoints(space,dim){
     const {R,world}=space,active=new Set();
     for(const o of objects)for(const component of objectComponents(o).filter(c=>c.type===(dim===2?'PhysicsConstraint2D':'PhysicsConstraint')&&c.properties?.enabled!==false)){
-      const p={...componentDefaults(component.type),...component.properties},a=space.bodies.get(o.id),b=p.connectedBody?space.bodies.get(p.connectedBody):null,key=o.id+':'+component.id;
+      const p={...componentDefaultValues(component.type),...component.properties},a=space.bodies.get(o.id),b=p.connectedBody?space.bodies.get(p.connectedBody):null,key=o.id+':'+component.id;
       if(!a||p.connectedBody&&!b)continue;
       if(a===b)throw Error('관절을 자기 자신에게 연결할 수 없어요.');
       active.add(key);const signature=JSON.stringify([p,a.nonce,b?.nonce]);const previous=space.joints.get(key);if(previous?.signature===signature&&previous.joint.isValid())continue;
@@ -165,7 +165,7 @@ export function createRigidPhysics(objects,options={}){
     const records=[...spaces.values()].flatMap(s=>[...s.bodies.values()]).filter(r=>r.p);
     const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objects.find(v=>v.id===(at.parentId||at.parent));if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
     for(const r of records){const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);
-      const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation()),parent=objects.find(o=>o.id===(r.object.parentId||r.object.parent));
+      const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation()),parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null;
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
       const p=pose(r.object,objects);r.lastPose=JSON.stringify([p.position.toArray(),p.rotation.toArray()]);mirror(r);options.update?.(r.object);
     }
@@ -220,7 +220,7 @@ export function createRigidPhysics(objects,options={}){
     debug(){alive();return [...spaces].map(([dimension,s])=>{const data=s.world.debugRender();if(dimension===3)return {dimension,...data};const vertices=new Float32Array(data.vertices.length/2*3);for(let i=0;i<data.vertices.length/2;i++)vertices.set([data.vertices[i*2],data.vertices[i*2+1],0],i*3);return {dimension,vertices,colors:data.colors};});},
     inspect(){alive();sync();return {backend:'rapier',fixedStep:dt,elapsed,dimensions:[...spaces].map(([dimension,s])=>({dimension,bodies:[...s.bodies.values()].map(r=>({id:r.object.id,bodyType:typeOf(r.p),position:array(r.body.translation()),velocity:array(r.body.linvel()),angularVelocity:dimension===2?[0,0,r.body.angvel()]:array(r.body.angvel()),mass:r.body.mass(),sleeping:r.body.isSleeping(),colliders:r.colliders.size})),joints:[...s.joints.values()].map(j=>({owner:j.object.id,component:j.component.id,type:j.component.properties.jointType,connectedBody:j.component.properties.connectedBody||null}))}))};},
     step(delta,limit=maxSubsteps){alive();if(!spaces.size)throw Error('물리 월드를 먼저 준비하세요.');if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;
-      while(accumulator+1e-9>=dt&&count<limit){sync();movement(dt);sync();for(const o of objects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaults(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
+      while(accumulator+1e-9>=dt&&count<limit){sync();movement(dt);sync();for(const o of objects)for(const c of objectComponents(o).filter(c=>['ConstantForce','ConstantForce2D'].includes(c.type)&&c.properties?.enabled!==false)){const p={...componentDefaultValues(c.type),...c.properties},r=record(o,c.type.endsWith('2D')?2:3);if(!r?.body.isDynamic())continue;r.body.addForce(xyz(p.force),p.force.some(v=>v!==0));r.body.addTorque(r.dim===2?p.torque[2]:xyz(p.torque),p.torque.some(v=>v!==0));}
         for(const s of spaces.values())s.world.step(s.eventQueue,s.hooks);updateObjects();collectContacts();elapsed+=dt;accumulator=Math.max(0,accumulator-dt);count++;jumps.clear();
         inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}
       }

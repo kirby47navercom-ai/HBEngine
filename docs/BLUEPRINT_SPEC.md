@@ -4,13 +4,23 @@
 
 **실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. 현재 Game.exe의 렌더러는 WebView2/WebGL2이며 네이티브 DX11 렌더러와 동일하지 않다.
 
+## 2026-10-04 입력·모바일·풀 연동
+
+- Input Event의 Pressed/Released와 hb::Input의 키/축/마우스 CSS 좌표/델타/월드 ray/조준 평면을 에디터 Play·Player·headless·실제 C++에 연결했다. 핀의 자료형과 out 매개변수는 공통 헤더에서 생성한다.
+- hb::ActorPool Acquire/Release/IsActive는 PooledActor의 미리 배치한 탄환·적을 재사용한다. 반환 시 물리/충돌·Tick·소유 Delay/Timer/Timeline·AI/FSM·UI/오디오를 정리하며 OnPoolAcquire/OnPoolRelease 사용자 이벤트를 지원한다.
+- hb::Sprites SetFlip/GetFlip/SetSprite/GetSprite와 스프라이트 애니메이션이 같은 렌더 경로를 사용한다. 반전은 렌더 메시만 바꾸고 Actor 변환이나 콜라이더를 바꾸지 않는다.
+- TopDownMovement2D를 BP에서 추가한 경우에도 플레이어 자동 제어권/Gameplay.GetPlayerPawn을 연결한다. 새 프로젝트의 탑다운 슈터는 일반 BP 그래프·변수·사용자 C++ 파일이다.
+- 기존 위젯 편집기의 모바일 프리셋과 AI widget.mobileControls는 같은 스키마·문서 revision·Undo를 사용한다. 가상 입력은 키/축 소스 합성 뒤 동일 Input Event/Input Action으로 전달한다.
+
+검증 범위·실제 프레임 측정·재현 명령은 [입력·모바일·풀](INPUT_MOBILE_POOL.md)에 기록한다.
+
 ## 공식 근거
 
 [Epic C++/Blueprint 혼합](https://dev.epicgames.com/documentation/unreal-engine/coding-in-unreal-engine-blueprint-vs-cplusplus?lang=en-US), [공개 메타데이터](https://dev.epicgames.com/documentation/en-us/unreal-engine/exposing-gameplay-elements-to-blueprints-visual-scripting-in-unreal-engine), [UFUNCTION](https://dev.epicgames.com/documentation/en-us/unreal-engine/ufunctions-in-unreal-engine), [변수](https://dev.epicgames.com/documentation/unreal-engine/blueprint-variables-in-unreal-engine?lang=en-US), [흐름 제어](https://dev.epicgames.com/documentation/unreal-engine/flow-control-in-unreal-engine?lang=en-US), [함수](https://dev.epicgames.com/documentation/en-us/unreal-engine/functions-in-unreal-engine), [매크로](https://dev.epicgames.com/documentation/en-us/unreal-engine/macros-in-unreal-engine), [그래프 추출](https://dev.epicgames.com/documentation/en-us/unreal-engine/collapsing-graphs-in-unreal-engine)를 참고했다. HB는 자체 코드·저장 형식·실행기를 사용한다.
 
 ## 노드 라이브러리
 
-기본 노드 **473개**, 공통 C++ 코어 API **289개**와 실행 서비스 API **102개**를 제공한다. 라이브러리에는 수학/삼각/지수/보간, 정수/비트/비교, Vec2/Vec3, 회전·방향·Transform, 색상, 문자열, 자료형 변환, 8종 배열 × 11연산의 **221개 공통 함수**와 **8개 흐름 제어**가 추가되어 있다. 새 `inputAction`은 독립 IA 에셋의 값 타입과 Started/Triggered/Completed 실행 출력을 갖는 이벤트다. 노드마다 실제 계산/제어 코드와 서명 검사를 두었다. C++/JS 동등성 검사는 공통 함수의 실제 C++ 호출 결과를 비교한다. 모든 수치·경계 조합을 증명하는 검사는 아니다.
+기본 노드 **486개**, 공통 C++ 코어 API **289개**와 실행 서비스 API **115개**를 제공한다. 라이브러리에는 수학/삼각/지수/보간, 정수/비트/비교, Vec2/Vec3, 회전·방향·Transform, 색상, 문자열, 자료형 변환, 8종 배열 × 11연산의 **221개 공통 함수**와 **8개 흐름 제어**가 추가되어 있다. 새 `inputAction`은 독립 IA 에셋의 값 타입과 Started/Triggered/Completed 실행 출력을 갖는 이벤트다. 노드마다 실제 계산/제어 코드와 서명 검사를 두었다. C++/JS 동등성 검사는 공통 함수의 실제 C++ 호출 결과를 비교한다. 모든 수치·경계 조합을 증명하는 검사는 아니다.
 
 - bool/int/float/string/vec2/vec3/color/transform/object/hit, 단일·배열 변수와 내장 구조체 분할/합치기.
 - Branch, Sequence, ForLoop, ForEach, While, Break가 있는 반복, DoOnce/DoN, Gate/MultiGate, FlipFlop, Delay/재시작 지연, 정수/문자열 Switch.

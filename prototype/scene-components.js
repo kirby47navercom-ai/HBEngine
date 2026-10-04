@@ -21,6 +21,8 @@ export const componentDefinitions={
   ExponentialHeightFog:{label:'Exponential Height Fog · 높이 안개',group:'환경',icon:'layers',properties:{enabled:enabled(),priority:field('우선순위','number',0,{min:-10000,max:10000,step:1}),density:field('밀도','number',.02,{min:0,max:1}),heightFalloff:field('높이 감쇠','number',.12,{min:0,max:10}),color:field('색상','color',[.087,.159,.162,1]),maxOpacity:field('최대 불투명도','number',.9,{min:0,max:1}),startDistance:field('시작 거리','number',0,{min:0,max:100000}),cutoffDistance:field('제외 거리','number',100000,{min:.01,max:1000000})}},
   PointLight:{label:'Point Light · 점 광원',group:'렌더링',icon:'light',properties:{...light(),radius:field('거리','number',15,{min:0,max:10000}),decay:field('감쇠','number',2,{min:0,max:10})}},
   SpotLight:{label:'Spot Light · 스포트 광원',group:'렌더링',icon:'light',properties:{...light(),radius:field('거리','number',15,{min:0,max:10000}),angle:field('각도','number',45,{min:1,max:89}),penumbra:field('가장자리','number',.2,{min:0,max:1})}},
+  PooledActor:{label:'Pooled Actor · 재사용 오브젝트',group:'게임플레이',icon:'cube',properties:{enabled:enabled(),initiallyActive:field('시작 시 활성화','checkbox',false)}},
+  UIWidget:{label:'UI Widget · 화면 UI',group:'UI',icon:'layers',properties:{enabled:enabled(),asset:path('위젯 UI','widget'),instance:field('인스턴스','text','HUD'),showOnStart:field('시작 시 표시','checkbox',true)}},
   AudioSource:{label:'Audio Source · 오디오',group:'오디오',icon:'sound',properties:{enabled:enabled(),clip:path('클립','media'),mixer:path('믹서','audiomixer'),bus:field('출력 버스 ID','text','master'),rolloff:field('거리 감쇠 계수','number',1,{min:0,max:100}),volume:field('볼륨','number',1,{min:0,max:1}),pitch:field('피치','number',1,{min:.25,max:4}),loop:field('반복','checkbox',false),playOnStart:field('시작 시 재생','checkbox',false),spatial:field('거리 감쇠','checkbox',true),minDistance:field('최소 거리','number',1,{min:.01,max:10000}),maxDistance:field('최대 거리','number',50,{min:.01,max:10000})}},
   Animator:{label:'Animator · 애니메이션',group:'애니메이션',icon:'animation',properties:{enabled:enabled(),clip:path('클립','animation'),playOnStart:field('시작 시 재생','checkbox',true),loop:field('반복','checkbox',true),speed:field('배속','number',1,{min:0,max:100})}},
   Rigidbody:{label:'Rigidbody · 강체',group:'물리',icon:'physics',properties:{enabled:enabled(),mass:field('질량','number',1,{min:.0001,max:1000000}),autoMass:field('밀도로 질량 계산','checkbox',false),useGravity:field('중력 사용','checkbox',true),isKinematic:field('키네마틱','checkbox',false),drag:field('선형 감쇠','number',0,{min:0,max:100}),velocity:field('시작 속도','vec3',[0,0,0]),freezePosition:field('위치 축 고정','vec3',[0,0,0],{min:0,max:1})}},
@@ -72,7 +74,10 @@ Object.assign(componentDefinitions,{
   SequencePlayer:{label:'Sequence Player · 시퀀스',group:'시네마틱',icon:'animation',properties:{enabled:enabled(),asset:path('시퀀스','sequenceasset'),autoPlay:field('자동 재생','checkbox',false)}},
   Decal:{label:'Decal · 데칼',group:'렌더링',icon:'material',properties:{enabled:enabled(),target:field('투영 대상 ID','text',''),material:path('머테리얼','material'),texture:path('텍스처','texture'),size:field('투영 크기','vec3',[1,1,1],{min:.001,max:10000}),opacity:field('불투명도','number',1,{min:0,max:1}),sortOrder:field('표시 순서','number',0,{min:-100000,max:100000,step:1})}}
 });
-export function componentDefaults(type){return Object.fromEntries(Object.entries(componentDefinitions[type]?.properties||{className:field('클래스','text','MyComponent'),enabled:enabled()}).map(([key,meta])=>[key,structuredClone(meta.default)]));}
+const readDefaults=new Map(),freezeDefaults=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freezeDefaults);Object.freeze(value);}return value;};
+// Read-only runtime fallbacks; authoring receives a separate mutable deep copy.
+export function componentDefaultValues(type){if(!readDefaults.has(type))readDefaults.set(type,freezeDefaults(Object.fromEntries(Object.entries(componentDefinitions[type]?.properties||{className:field('클래스','text','MyComponent'),enabled:enabled()}).map(([key,meta])=>[key,structuredClone(meta.default)]))));return readDefaults.get(type);}
+export function componentDefaults(type){return structuredClone(componentDefaultValues(type));}
 export function componentPropertyVisible(type,key,p){
   if(type==='DirectionalLight'&&key==='atmosphereSunLightIndex')return p.atmosphereSunLight;
   if(['Rigidbody','Rigidbody2D'].includes(type)&&key==='isKinematic')return false;
@@ -102,13 +107,13 @@ export function editComponentProperty(type,properties,key,value){
   return next;
 }
 export function physicsGeometryError(components){
-  const props=type=>{const c=components.find(c=>c.type===type&&c.properties?.enabled!==false);return c?{...componentDefaults(type),...c.properties}:null;};
+  const props=type=>{const c=components.find(c=>c.type===type&&c.properties?.enabled!==false);return c?{...componentDefaultValues(type),...c.properties}:null;};
   for(const dimension of [2,3]){const body=props(dimension===2?'Rigidbody2D':'Rigidbody')||(props(dimension===2?'CharacterMovement2D':'CharacterMovement')?componentDefaults('Rigidbody'):null);if(!body||body.isKinematic||body.bodyType!=='dynamic')continue;
     if(components.some(c=>c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&(dimension===2?c.type==='EdgeCollider2D':c.type==='MeshCollider'&&c.properties?.mode==='mesh')))return '동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.';
   }return '';
 }
 export function addSceneComponent(object,type){const components=objectComponents(object);if(components.length>=100)throw Error('컴포넌트 제한 초과');if(['Transform','Rigidbody','Rigidbody2D','PawnMovement','CharacterMovement','CharacterMovement2D','PlayerController','GameMode','GameState','PlayerState'].includes(type)&&components.some(c=>c.type===type))throw Error('이미 있는 컴포넌트예요.');const component=makeSceneComponent(type);const reason=physicsGeometryError([...components,component]);if(reason)throw Error(reason);components.push(component);return component;}
-export function enabledComponent(object,type){const c=objectComponents(object).find(c=>c.type===type&&c.properties?.enabled!==false);return c?{...componentDefaults(type),...c.properties}:null;}
+export function enabledComponent(object,type){if(object?.poolActive===false)return null;const c=objectComponents(object).find(c=>c.type===type&&c.properties?.enabled!==false);return c?{...componentDefaultValues(type),...c.properties}:null;}
 const safePath=value=>typeof value==='string'&&value.length<=1000&&!value.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value);
 export function validComponentProperties(type,values){
   if(!values||typeof values!=='object'||Array.isArray(values))return false;const definitions=componentDefinitions[type]?.properties||{className:field('클래스','text','MyComponent'),enabled:enabled()};
