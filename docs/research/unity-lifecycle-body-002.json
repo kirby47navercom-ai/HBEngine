@@ -1,0 +1,4064 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-lifecycle-body-002",
+  "phase": "research_only",
+  "reader": "unity_lifecycle_body",
+  "date": "2026-10-04",
+  "stateMeaning": "analyzed means per-body semantic analysis; linked contracts/fullAPI/independent verification are incomplete",
+  "wholeCorpusComplete": false,
+  "engineImplementationAuthorized": false,
+  "counts": {
+    "pages": 9,
+    "apiMessagePages": 8,
+    "manualPages": 1,
+    "extractedSlots": 50,
+    "nonemptyBodySectionsReviewedAnalyzed": 42,
+    "emptyFormalSignatureSlots": 8,
+    "headingElements": 26,
+    "codeExampleBlocksReviewed": 11,
+    "htmlTables": 0,
+    "sourceImages": 2,
+    "sourceImagesTextAndVisualReviewed": 2,
+    "visualCropsReviewed": 5,
+    "messageContractsPartiallyAnalyzed": 8,
+    "nonemptyFormalDeclarations": 0,
+    "sampleCallbackForms": 9,
+    "fullAPIUnitDenominator": null,
+    "fullOverloadDenominator": null,
+    "independentlyVerifiedPages": 0,
+    "uniqueTechnicalLinks": 94,
+    "fixedVersionLocalLinkTargetsPresent": 90,
+    "separateOrUnpinnedLinkTargets": 4
+  },
+  "sourceProvenance": {
+    "archiveURL": "https://cloudmedia-docs.unity3d.com/docscloudstorage/en/6000.0/UnityDocumentation.zip",
+    "archiveFinalURL": "https://cloudmedia-docs.unity3d.com/docscloudstorage/en/6000.0/UnityDocumentation.zip",
+    "archiveHTTPStatus": 200,
+    "archiveBytes": 392108580,
+    "archiveLastModified": "Fri, 02 Oct 2026 00:05:08 GMT",
+    "archiveCacheSHA256": "cf07df16fbe4ca7d174cc15bfeb2503995cc4140b42368d0ae7bf17b7805b28f",
+    "archiveRecomputedSHA256": "cf07df16fbe4ca7d174cc15bfeb2503995cc4140b42368d0ae7bf17b7805b28f",
+    "all9HTMLEntryBytesMatch": true,
+    "all2SVGEntryBytesMatch": true,
+    "onlineManualAlias": {
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/ExecutionOrder.html",
+      "recordedFinalURL": "https://docs.unity3d.com:443/6000.0/Documentation/Manual/execution-order.html",
+      "individualRedirectHops": "not preserved in preexisting metadata",
+      "onlineSnapshotBodyUsedForThisAnalysis": false
+    }
+  },
+  "evidenceArtifacts": [
+    {
+      "sha256": "a66e3d145f9b7a83187e030ee3f8b5f4fa74e70b01f9b7d9fdf954f676754345",
+      "role": "human per-section/contract/HB analysis",
+      "encoding": "UTF-8 LF",
+      "file": "docs/research/UNITY_LIFECYCLE_BODY_002.md"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "path": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json",
+      "sha256": "ff302aaa478fb52e5dcbba1be91f448e877830c2e9b1236f003f9c36279f17f3"
+    },
+    {
+      "path": "native/build/reference-corpus/unity-lifecycle-batch/media-render-evidence.json",
+      "sha256": "d64d7ae1e4da89e16160107656c9b2facbef837ad78f32c0fc66051305f8c40e"
+    }
+  ],
+  "pages": [
+    {
+      "stableId": "unity-6000.0-en-lifecycle-awake",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .Awake()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.Awake.html",
+        "sourceHash": "6f01f1ae202678650960ab4df3bd4083f517929c59444a1415842611027bb56a",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Awake.body.txt",
+        "bodyHash": "636fba08d0734c2d25c3334f1cebd4fc619bc5ecbf782c05567d33a30dec19ed",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Awake.body.html",
+        "bodyHTMLHash": "574247ba012d9291adc124d293ab497e396fe60257eee7edc3c034c78a3180fc",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+        "zipEntryHash": "6f01f1ae202678650960ab4df3bd4083f517929c59444a1415842611027bb56a",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "235f2d8b",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "636fba08d0734c2d25c3334f1cebd4fc619bc5ecbf782c05567d33a30dec19ed",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "d27c265b688bf1d5ea4021ffe283e75ff7496f1d36a93630fdf44a5cc9df1e56",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "script component instance를 load할 때 호출되는 초기화 메시지예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "887bd947dcbade341e5d216f8a6039556dcb47c1dc924771715cfc3e42489ac1",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "장면 load 때 activeInHierarchy=true인 object 초기화, inactive→active, Instantiate한 parent 초기화 뒤의 세 경우를 나눠요. enabled=false여도 다른 조건을 만족하면 호출해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "instance lifetime당 한 번, scene 재로드는 새 instance, additive 다중 load는 복수 instance당 한 번이에요. scene load의 active object가 초기화된 뒤 다른 object를 query할 수 있어요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "각 object의 Awake 순서는 비결정적이에요. 참조 설정과 Start의 상호 정보 전달을 분리하며 constructor에서는 serialized state가 undefined예요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "본문은 Awake가 any Start보다 먼저라고 적지만 늦은 활성화 예제/runtime 생성과 그 범위를 함께 검토해야 해요. Awake 예외는 해당 component를 disable하고 coroutine은 불가예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "8be42f0f87127174f411ec23cc166cf14d1f1108eeae480ec40f7ce4e99366c1",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExampleClass의 void Awake()가 GameObject.FindWithTag(\"Player\") 결과를 private target에 저장해요. target 소유권/Find 실패 동작은 이 예제로 완결되지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:5",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "165ba95d2ac6fd09512cf51ff9366e1f6ffbbc9217d8306caca9d91625746a25",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Cube1에 Example1을 달고 Inspector 좌상단 체크를 꺼 inactive로 둬요. Cube2의 Example2.GO에 Cube1을 할당하고 Play 중 Space로 활성화해요. 전체 scene setup과 GUI 조작은 읽은 설명이며 이번에 실행하지 않았어요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:6",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "cb188fe118bc6faea9acd69d659d564901f9f64d276bb4422368598a2d8a0b2f",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Example1은 void Awake/Start 로그와 Input.GetKeyDown(\"b\")를 검사하는 Update를 포함해요. Cube1의 Awake→Start 뒤 B키 처리 예제이며 다른 객체 callback 순서를 고정하지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:7",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "103cf8ba2310e49e59e4f3c513f041ed8ac657c42bf3b341fa69f930e1723911",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "두 번째 example script가 첫 번째의 Awake를 발생시키며 Space를 입력으로 사용한다고 안내해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:8",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "821313a561afe421b94d902e2e25fa3ce7e49ceb30dab6da79c71795badd36ff",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Example2는 public GO와 activateGO=true guard를 사용해 Space 첫 입력에서 GO.SetActive(true) 후 guard를 false로 바꿔요. Awake/Start 자체는 Cube2에서도 로그를 내므로 Cube1의 늦은 Awake 전 이미 Cube2 Start가 일어날 수 있는 예제예요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "0eea91032e168d961c57fb628776520134e9594e6a2bdb414bc129d4698d9f3f",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Awake.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        },
+        {
+          "sectionId": "subsection:6",
+          "codeHash": "d1b40d6f4d2ec3d14f37f4e536294a3bb217bf0d0a2f85823f1163bc0117310d",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Awake.body.txt",
+            "sectionId": "subsection:6",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:6"
+        },
+        {
+          "sectionId": "subsection:8",
+          "codeHash": "48aeffc2f389ce7c8b13f8698fc74382abf39e86ccc12d891d5f816907a415a8",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Awake.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Awake.body.txt",
+            "sectionId": "subsection:8",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:8"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "GameObject-activeInHierarchy.html",
+          "text": "GameObject.activeInHierarchy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject-activeInHierarchy.html"
+        },
+        {
+          "href": "GameObject-activeInHierarchy.html",
+          "text": "GameObject.activeInHierarchy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject-activeInHierarchy.html"
+        },
+        {
+          "href": "GameObject-activeInHierarchy.html",
+          "text": "GameObject.activeInHierarchy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject-activeInHierarchy.html"
+        },
+        {
+          "href": "Object.Instantiate.html",
+          "text": "Object.Instantiate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.Instantiate.html"
+        },
+        {
+          "href": "Behaviour-enabled.html",
+          "text": "Behaviour.enabled",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour-enabled.html"
+        },
+        {
+          "href": "GameObject.FindWithTag.html",
+          "text": "GameObject.FindWithTag",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.FindWithTag.html"
+        },
+        {
+          "href": "MonoBehaviour.Start.html",
+          "text": "Start",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html"
+        },
+        {
+          "href": "MonoBehaviour.Start.html",
+          "text": "Start",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "GameObject.FindWithTag.html",
+          "text": "GameObject.FindWithTag",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.FindWithTag.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "GameObject.SetActive.html",
+          "text": "GameObject.SetActive",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.SetActive.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Input.GetKeyDown.html",
+          "text": "Input.GetKeyDown",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Input.GetKeyDown.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Input.GetKeyDown.html",
+          "text": "Input.GetKeyDown",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Input.GetKeyDown.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "Awake",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void Awake()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "Awake exception disables component",
+        "coroutine": "explicitly forbidden",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void Awake()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:4",
+              "codeHash": "0eea91032e168d961c57fb628776520134e9594e6a2bdb414bc129d4698d9f3f"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:6",
+              "codeHash": "d1b40d6f4d2ec3d14f37f4e536294a3bb217bf0d0a2f85823f1163bc0117310d"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:8",
+              "codeHash": "48aeffc2f389ce7c8b13f8698fc74382abf39e86ccc12d891d5f816907a415a8"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+              "section": "subsection:4",
+              "codeHash": "88eb7915a9439d86182f50a8c29ee7e6ae7021ceb8fd189a40b3d367ce2124d1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+              "section": "subsection:4",
+              "codeHash": "7b55c8b1f0f59d5866ee529d7ec4bb95840c49d592bc65519b59a91aef1ba335"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.FixedUpdate.html",
+              "section": "subsection:4",
+              "codeHash": "98aef114c1cd7bbcc6a4a73062aeba0b3b354837a64f5f20fe0534e3fdc9ac1c"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-onenable",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .OnEnable()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.OnEnable.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnEnable.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.OnEnable.html",
+        "sourceHash": "2eaa32862b5d632f50dac8038a6b5bc7de0bc709d6dbe0e127fb4b796e9e4897",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnEnable.body.txt",
+        "bodyHash": "bbdd85bf7e7782e63d2b8b41d636135246e3624114928b33272528d6a2577238",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnEnable.body.html",
+        "bodyHTMLHash": "04b0d6c48f8d9e4ea4687db959ffd9bc92a7f6b9119510d52727ece0a21331b8",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.OnEnable.html",
+        "zipEntryHash": "2eaa32862b5d632f50dac8038a6b5bc7de0bc709d6dbe0e127fb4b796e9e4897",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "471bced2",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "bbdd85bf7e7782e63d2b8b41d636135246e3624114928b33272528d6a2577238",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "ab9a100a1f8eee563e758a867f96c93b0ad3cf5d01ad6ca888e774c8ab374d7c",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "active GameObject의 component가 first enabled될 때 호출된다는 description이에요. 다음 구역이 반복 runtime enable 경로를 구체화해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "8b932ecd8effc6f08b7ef184e9681e3234d91b5dfcbeb6667f16f7e460100b03",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Play 진입에서는 activeInHierarchy=true와 enabled=true가 함께 필요해요. 활성 객체의 component enable, enabled component가 있는 객체/비활성 parent 활성화에서도 호출해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Play 진입 때 Awake 뒤·Start 전이고 coroutine은 불가예요. disable 후 반복 enable을 instance 초기화1회와 구분해야 해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "6f5037c62b78d0b809900556cd5403c85dd65469699afd9c6c15945762371269",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExecuteInEditMode PrintOnOff의 void OnDisable/OnEnable은 로그를 기록하고 UNITY_EDITOR의 Update 로그는 editor object 위치 변경을 예로 들어요. 이 예제가 모든 edit-mode callback 빈도를 선언하지는 않아요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "0d1cdad39df46059bea23283bbccedc2339ac11c17d1c3e633e2f738faf92ff1",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnEnable.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnEnable.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "GameObject-activeInHierarchy.html",
+          "text": "GameObject.activeInHierarchy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject-activeInHierarchy.html"
+        },
+        {
+          "href": "Behaviour-enabled.html",
+          "text": "Behaviour.enabled",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour-enabled.html"
+        },
+        {
+          "href": "MonoBehaviour.Awake.html",
+          "text": "MonoBehaviour.Awake",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html"
+        },
+        {
+          "href": "MonoBehaviour.Start.html",
+          "text": "MonoBehaviour.Start",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html"
+        },
+        {
+          "href": "../Manual/Coroutines.html",
+          "text": "coroutine",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Coroutines.html"
+        },
+        {
+          "href": "MonoBehaviour.OnDisable.html",
+          "text": "MonoBehaviour.OnDisable",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Editor.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "ExecuteInEditMode.html",
+          "text": "ExecuteInEditMode",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExecuteInEditMode.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Editor.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "OnEnable",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void OnEnable()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "explicitly forbidden",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void OnEnable()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+              "section": "subsection:4",
+              "codeHash": "0d1cdad39df46059bea23283bbccedc2339ac11c17d1c3e633e2f738faf92ff1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+              "section": "subsection:4",
+              "codeHash": "ce705f4e544ec92bcedccd87d4c6a5032b8381977772131b68e8f5b976892980"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:4",
+              "codeHash": "24bc65f1edd1fb53255d02f9174f99cda21af49b6dead04da57851d05f99e4ce"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:6",
+              "codeHash": "26c3dc46c506a9c2fbbffc149d4a18ca96901e4fc081eb5532b97fb68cd0cb5f"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-start",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .Start()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.Start.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Start.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.Start.html",
+        "sourceHash": "949dadc2500351044e40c9231ddc8623ae21bbf5abfde0bdfdc9c178b75fe4ef",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Start.body.txt",
+        "bodyHash": "9da3130468b8ea4b21b35542d7ee296dca4e87085ee23bd47d825042fe685c74",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Start.body.html",
+        "bodyHTMLHash": "83a5788924e85b5c1a1a247a267552633fc5a22e12c58d2eb87d49260f4de218",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.Start.html",
+        "zipEntryHash": "949dadc2500351044e40c9231ddc8623ae21bbf5abfde0bdfdc9c178b75fe4ef",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "69b8e96e",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "9da3130468b8ea4b21b35542d7ee296dca4e87085ee23bd47d825042fe685c74",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "a619982095a5d7ed465303f22afc15fde55afaadced951511cf33d9f363fecec",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "script가 enabled되는 frame에 첫 Update가 호출되기 직전의 시작 메시지예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "0325272a0cbe5854ad26b524b32245a705b41207eae87e7412690756b1f4750c",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "lifetime당 정확히1회·Awake 뒤예요. 초기 disabled면 Awake와 같은 frame이 아닐 수 있어요. scene object의 Awake 완료를 A.Start/B.Awake 의존성 분리에 활용해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Update에서 runtime Instantiate한 object의 Awake/Start가 현재 frame 끝 전에 호출된다고 적어요. Start는 coroutine으로 정의 가능해요. coroutine 완료를 모든 Update의 global barrier로 보장하지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "bcbdeb3bfb25e052681977d310ccd04a4f76d318f1d18f60e1ede0403297d3b8",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "IEnumerator Start()는 Start1 로그→WaitForSeconds(2.5f)→Start2 로그예요. Awake는 누적 update=0, Update는 deltaTime을 더해1초보다 크면 로그/초기화해요. comments는 activeSelf와 Inspector script checkbox, private target 비노출을 설명하지만 코드에는 target 필드가 없어요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "88eb7915a9439d86182f50a8c29ee7e6ae7021ceb8fd189a40b3d367ce2124d1",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Start.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Start.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "MonoBehaviour.Awake.html",
+          "text": "MonoBehaviour.Awake",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html"
+        },
+        {
+          "href": "MonoBehaviour.Update.html",
+          "text": "MonoBehaviour.Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html"
+        },
+        {
+          "href": "../Manual/Coroutines.html",
+          "text": "coroutine",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Coroutines.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "WaitForSeconds.html",
+          "text": "WaitForSeconds",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForSeconds.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "Start",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void Start()",
+          "IEnumerator Start()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void",
+          "IEnumerator"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "explicitly permitted",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void Start()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:6",
+              "codeHash": "d1b40d6f4d2ec3d14f37f4e536294a3bb217bf0d0a2f85823f1163bc0117310d"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:8",
+              "codeHash": "48aeffc2f389ce7c8b13f8698fc74382abf39e86ccc12d891d5f816907a415a8"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:4",
+              "codeHash": "24bc65f1edd1fb53255d02f9174f99cda21af49b6dead04da57851d05f99e4ce"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:6",
+              "codeHash": "26c3dc46c506a9c2fbbffc149d4a18ca96901e4fc081eb5532b97fb68cd0cb5f"
+            }
+          ],
+          "IEnumerator Start()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+              "section": "subsection:4",
+              "codeHash": "88eb7915a9439d86182f50a8c29ee7e6ae7021ceb8fd189a40b3d367ce2124d1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+              "section": "subsection:4",
+              "codeHash": "7b55c8b1f0f59d5866ee529d7ec4bb95840c49d592bc65519b59a91aef1ba335"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-update",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .Update()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.Update.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Update.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.Update.html",
+        "sourceHash": "9675adcabdac3aad869ceca678e1755fc8ede13d064ab1f052933811b57cf495",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Update.body.txt",
+        "bodyHash": "7c0551f5ad0d70a3dbd93167fef8f769417a7ac5e53cf556c8273bc12bb42952",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Update.body.html",
+        "bodyHTMLHash": "44d51d38ac88a02bb8f8ee5a2de13a0be0df489426b2c52e395ab62069a5079a",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.Update.html",
+        "zipEntryHash": "9675adcabdac3aad869ceca678e1755fc8ede13d064ab1f052933811b57cf495",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "bee6bebd",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "7c0551f5ad0d70a3dbd93167fef8f769417a7ac5e53cf556c8273bc12bb42952",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "a3d0977ace2522362d7212b41d3bc13c35946b77cd52646ed6f5b5af44c2c2ca",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "MonoBehaviour가 enabled일 때 every frame 호출해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "8364a11155150900c2279f8685c660513489a1a713e411bcb60734cf9e10c521",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "보통 game script를 작성하는 메시지지만 모든 script가 Update를 필요로 하는 것은 아니에요. 빈 Update를 필수 등록 단계로 만들 근거가 없어요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "d37fb312fdd70508c341eeea643789e8374e1bed856780ec78e8c9eaeeeee858",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "예제의 Awake 초기화, IEnumerator Start의2.5초 yield와 Update의 deltaTime 누적/1초보다큰 비교를 별도로 읽었어요. 정확한 one-second timer나 catch-up의 예제가 아니에요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:5",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "91bfd1dd6b3931d21ae288c51cb3a6840789f8f21100d43e8a8e862aae637d34",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "elapsed time은 Time.deltaTime을 사용하고 enabled Behaviour 제한을 다시 명시해요. 마지막 문장의 override라는 표현만으로 public/virtual/override C# 선언을 만들지 않아요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "7b55c8b1f0f59d5866ee529d7ec4bb95840c49d592bc65519b59a91aef1ba335",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.Update.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.Update.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "WaitForSeconds.html",
+          "text": "WaitForSeconds",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForSeconds.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Behaviour.html",
+          "text": "Behaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "Update",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void Update()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "not stated on this page; unresolved",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void Update()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:6",
+              "codeHash": "d1b40d6f4d2ec3d14f37f4e536294a3bb217bf0d0a2f85823f1163bc0117310d"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+              "section": "subsection:8",
+              "codeHash": "48aeffc2f389ce7c8b13f8698fc74382abf39e86ccc12d891d5f816907a415a8"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+              "section": "subsection:4",
+              "codeHash": "0d1cdad39df46059bea23283bbccedc2339ac11c17d1c3e633e2f738faf92ff1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+              "section": "subsection:4",
+              "codeHash": "88eb7915a9439d86182f50a8c29ee7e6ae7021ceb8fd189a40b3d367ce2124d1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+              "section": "subsection:4",
+              "codeHash": "7b55c8b1f0f59d5866ee529d7ec4bb95840c49d592bc65519b59a91aef1ba335"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.FixedUpdate.html",
+              "section": "subsection:4",
+              "codeHash": "98aef114c1cd7bbcc6a4a73062aeba0b3b354837a64f5f20fe0534e3fdc9ac1c"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+              "section": "subsection:4",
+              "codeHash": "ce705f4e544ec92bcedccd87d4c6a5032b8381977772131b68e8f5b976892980"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:4",
+              "codeHash": "24bc65f1edd1fb53255d02f9174f99cda21af49b6dead04da57851d05f99e4ce"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-fixedupdate",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .FixedUpdate()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.FixedUpdate.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.FixedUpdate.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.FixedUpdate.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.FixedUpdate.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.FixedUpdate.html",
+        "sourceHash": "92a5412d9972c20f0d01c5a16b2f003bf97430e1b24790180c4bfa30f9a84d29",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.FixedUpdate.body.txt",
+        "bodyHash": "eb0d6ccda7e57ce24f90514c9c643a906f3828dff44a6171e0ad432e4d2f5e37",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.FixedUpdate.body.html",
+        "bodyHTMLHash": "9053ddb248498469b9237dabf080ad7c597b60c667fe3028774e3789e316004a",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.FixedUpdate.html",
+        "zipEntryHash": "92a5412d9972c20f0d01c5a16b2f003bf97430e1b24790180c4bfa30f9a84d29",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "bd400396",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "eb0d6ccda7e57ce24f90514c9c643a906f3828dff44a6171e0ad432e4d2f5e37",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "86611470a863e2b67f07b1e6f72cceefae836a6e2e597c00df808b94ca18618d",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "physics update loop의 regular fixed interval 단계예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "e72cf080aafe714d858a6bc531bf5d03998427a7c375bd3c3f82ff11c693d172",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Time.fixedDeltaTime 또는 Editor Time setting의 Fixed Timestep으로 간격을 바꾸고 기본0.02초=50회/초예요. Rigidbody force처럼 physics 계산에 사용해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "render frame당0·1·여러번 가능해요. 문서는 consistency/determinism을 설명하지만 모든 플랫폼 physics의 동일결과/lockstep을 입증하지 않아요. Application.targetFrameRate와 time-variation 후속 문서를 연결해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "2f9da504aea15b0402708071f3de0e7743164ca308e3ccbf8263ccca78e1a7d7",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Awake가 Loop coroutine을 시작하고 Update/FixedUpdate 각 count가 증가해요. Loop는 WaitForSeconds(1)마다 측정치를 복사하고 counter를0으로 바꾸며 OnGUI 두 label로 출력해요. targetFrameRate=10은 comment라 그대로 실행하면 강제10fps가 아니에요. GUIStyle을 OnGUI마다 생성하는 예제는 lifecycle frequency 설명이며 성능 best-practice 계약으로 채택하지 않아요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "98aef114c1cd7bbcc6a4a73062aeba0b3b354837a64f5f20fe0534e3fdc9ac1c",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.FixedUpdate.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.FixedUpdate.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-fixedDeltaTime.html"
+        },
+        {
+          "href": "../Manual/class-TimeManager.html",
+          "text": "Time settings",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-TimeManager.html"
+        },
+        {
+          "href": "Rigidbody.html",
+          "text": "Rigidbody",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody.html"
+        },
+        {
+          "href": "MonoBehaviour.Update.html",
+          "text": "MonoBehaviour.Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html"
+        },
+        {
+          "href": "Application-targetFrameRate.html",
+          "text": "Application.targetFrameRate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html"
+        },
+        {
+          "href": "../Manual/time-handling-variations.html",
+          "text": "Handling variation in time",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/time-handling-variations.html"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Application-targetFrameRate.html",
+          "text": "Application.targetFrameRate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html"
+        },
+        {
+          "href": "GUIStyle.html",
+          "text": "GUIStyle",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUIStyle.html"
+        },
+        {
+          "href": "GUIStyle.html",
+          "text": "GUIStyle",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUIStyle.html"
+        },
+        {
+          "href": "GUI.Label.html",
+          "text": "GUI.Label",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUI.Label.html"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rect.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "GUI.Label.html",
+          "text": "GUI.Label",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUI.Label.html"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rect.html"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "WaitForSeconds.html",
+          "text": "WaitForSeconds",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForSeconds.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "FixedUpdate",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void FixedUpdate()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "not stated on this page; unresolved",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void FixedUpdate()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.FixedUpdate.html",
+              "section": "subsection:4",
+              "codeHash": "98aef114c1cd7bbcc6a4a73062aeba0b3b354837a64f5f20fe0534e3fdc9ac1c"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-lateupdate",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .LateUpdate()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.LateUpdate.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.LateUpdate.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.LateUpdate.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.LateUpdate.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.LateUpdate.html",
+        "sourceHash": "d4de016f39fb6d4eada129e7847d74c5a88a7854e6a9447eec085ec7dcf176db",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.LateUpdate.body.txt",
+        "bodyHash": "f5c1547fadb5dd0168dc02c3e1061e6e6bb79a08ab304626147ea1fa6935c2cd",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.LateUpdate.body.html",
+        "bodyHTMLHash": "9e761c611ee1a0353729f5b1f72bd35f99979897dd6aceaadf4531338bada463",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.LateUpdate.html",
+        "zipEntryHash": "d4de016f39fb6d4eada129e7847d74c5a88a7854e6a9447eec085ec7dcf176db",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "23b7fcbf",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "f5c1547fadb5dd0168dc02c3e1061e6e6bb79a08ab304626147ea1fa6935c2cd",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "c922eb32c7c377915e7ffb1cb7d706d78ea9a28e21951727508e1285f5cfdc02",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "enabled Behaviour에서 frame마다 호출돼요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "6bf08d7912bcda546dbd3d60989d0fb517c85f487deb68d24e674a514c0cac49",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "모든 Update 호출 뒤에 호출돼요. Update에서 움직인 대상을 follow camera가 추적하는 단계로 사용해요. 다른 LateUpdate instance끼리의 순서는 여기서 정하지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "35959a7cb1e96e599266574e89096ae5e2cec5d58a91289dc7aecb65dfbb8f4e",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "void LateUpdate()는 transform.Translate(0, Time.deltaTime, 0)예요. 설명의 follow-camera 용도와 달리 예제는 자기 transform 이동만 수행해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:5",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "b8bd64db97cb68b7725a8e58f2d8083ca25a083fdb11b796b86a0aea2556fa68",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "elapsed time은 Time.deltaTime이며 enabled 조건을 반복해요. 함수 설명의 override를 formal C# modifier로 승격하지 않아요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "3d96f490b1ab6326f934231936cc6db9b6aa8ea71c07e2a86ca31bf8199ff124",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.LateUpdate.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.LateUpdate.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "Behaviour.html",
+          "text": "Behaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Behaviour.html",
+          "text": "Behaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "LateUpdate",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void LateUpdate()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "not stated on this page; unresolved",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void LateUpdate()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.LateUpdate.html",
+              "section": "subsection:4",
+              "codeHash": "3d96f490b1ab6326f934231936cc6db9b6aa8ea71c07e2a86ca31bf8199ff124"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-ondisable",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .OnDisable()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.OnDisable.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnDisable.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.OnDisable.html",
+        "sourceHash": "b76e0d0c88d293475c3f38dac0bdc442c0dceab06c36722d2a02e68409c845ab",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDisable.body.txt",
+        "bodyHash": "3623ca48d4c6eb8def584208431d306c6d586d3f1bc13c72fdf4deaa777ae630",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDisable.body.html",
+        "bodyHTMLHash": "b15057e58a7b572c0682e17295538485f222cbe855585a83018cda7fea10ae1a",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.OnDisable.html",
+        "zipEntryHash": "b76e0d0c88d293475c3f38dac0bdc442c0dceab06c36722d2a02e68409c845ab",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "ccc7b698",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "3623ca48d4c6eb8def584208431d306c6d586d3f1bc13c72fdf4deaa777ae630",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "cfd81710d13b3bb6073f41f20e253cec5cd0756ebff89568355b73a07ec34dc4",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "component disable 또는 parent GameObject deactivate 메시지예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "594f11554ff74f9beec489f0eb7cbe9659e8f50b1277bfd28c16d02246bae72b",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "active object의 component를 code/Inspector로 disable, enabled component parent deactivate, component/parent Object.Destroy, scene unload, domain-reload script reload가 각 trigger예요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "coroutine 불가예요. scene/reload cleanup과 일반 disable을 한 destroy 사건으로 합치지 않아요. OnEnable을 related API로 남겨요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "f499ed16845086c8d672a81859049a0adfae2287801e754c43f8c11357d8be81",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExecuteInEditMode PrintOnOff에서 OnDisable/OnEnable 로그와 UNITY_EDITOR Update를 보여줘요. comments는 attached GameObject activate/deactivate와 component enable/disable을 함께 설명해요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "ce705f4e544ec92bcedccd87d4c6a5032b8381977772131b68e8f5b976892980",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnDisable.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDisable.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "Object.Destroy.html",
+          "text": "Object.Destroy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.Destroy.html"
+        },
+        {
+          "href": "../Manual/Coroutines.html",
+          "text": "coroutine",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Coroutines.html"
+        },
+        {
+          "href": "MonoBehaviour.OnEnable.html",
+          "text": "MonoBehaviour.OnEnable",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Editor.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html"
+        },
+        {
+          "href": "ExecuteInEditMode.html",
+          "text": "ExecuteInEditMode",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExecuteInEditMode.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Editor.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "OnDisable",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void OnDisable()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "explicitly forbidden",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void OnDisable()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+              "section": "subsection:4",
+              "codeHash": "0d1cdad39df46059bea23283bbccedc2339ac11c17d1c3e633e2f738faf92ff1"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+              "section": "subsection:4",
+              "codeHash": "ce705f4e544ec92bcedccd87d4c6a5032b8381977772131b68e8f5b976892980"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-ondestroy",
+      "engine": "Unity",
+      "kind": "api",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "MonoBehaviour .OnDestroy()",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+      "discoveryPath": "official full ZIP Documentation/en/ScriptReference/MonoBehaviour.OnDestroy.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnDestroy.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/MonoBehaviour.OnDestroy.html",
+        "sourceHash": "62226d840cea0060079b8454b6e1a97127eafabede9799d636d01824769dc823",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDestroy.body.txt",
+        "bodyHash": "52e99312809aa06c619ca6740ae0048f956230df010995e0f6c50d0e1e2331d0",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDestroy.body.html",
+        "bodyHTMLHash": "ad0ffef61a8247971672b58c1083b29c4b60cc8ec9013677c5531486450eb510",
+        "zipEntry": "Documentation/en/ScriptReference/MonoBehaviour.OnDestroy.html",
+        "zipEntryHash": "62226d840cea0060079b8454b6e1a97127eafabede9799d636d01824769dc823",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "1c57755d",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "52e99312809aa06c619ca6740ae0048f956230df010995e0f6c50d0e1e2331d0",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "subsection:2",
+          "exactHeading": "Description",
+          "kind": "prose",
+          "sectionTextHash": "cc6a9164f001b1a57d071e0f249afd541ccfedb692214e1837d57228786c82da",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "GameObject 또는 component가 파괴되기 직전 호출되는 메시지예요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:3",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "7e69bba2c1f85e528a30376bf547aa3ea4d4969c6e2cecac4de97253d8e8a3cc",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "explicit Object.Destroy, scene end/unload의 DontDestroyOnLoad 비보존 object, runtime quit와 Play 종료의 세 path예요. Editor의 scene close/open 및 UnloadSceneAsync/LoadScene도 연결해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "previously-active object만 호출하고 coroutine은 불가예요. 모바일 suspended app을 OS가 종료하면 callback을 못 받을 수 있어 저장을 의존하지 않으며 OnApplicationFocus를 연결해요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:4",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "eeccf0a42949682386d0462b0c724f8fbca1a1083687f96906509345ef602dc3",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExampleClass1은 Start/Update/OnEnable/OnDestroy 로그와 GUI.Button에서 SceneManager.LoadScene(1)으로 scene 전환해요. scene index1 대상의 build 설정은 코드만으로 제공되지 않아 재현 검증이 아니에요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:5",
+          "exactHeading": null,
+          "kind": "prose",
+          "sectionTextHash": "edff117e21855a0cdccfeccc65180fe551f1aad75bda8bf383afd9bf60f72951",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExampleClass2 코드를 따로 소개하는 label예요. 새 scene object와 기존 instance 정리를 구분하는 문맥이에요."
+            }
+          ]
+        },
+        {
+          "id": "subsection:6",
+          "exactHeading": null,
+          "kind": "example",
+          "sectionTextHash": "67e928b015589d51642d95bad5736cac44cffe55a49d36643728173cd6c06fe7",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ExampleClass2는 Start2/OnEnable2/OnDestroy2 로그를 기록해요. app close에 새 instance의 OnDestroy가 발생하는 설명이며 old object가 되살아나는 코드가 아니에요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [
+        {
+          "id": "subsection:1",
+          "status": "unresolved_api_declaration",
+          "reason": "signature-CS contains no declaration; not counted as reviewed semantic body section"
+        }
+      ],
+      "examples": [
+        {
+          "sectionId": "subsection:4",
+          "codeHash": "24bc65f1edd1fb53255d02f9174f99cda21af49b6dead04da57851d05f99e4ce",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnDestroy.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDestroy.body.txt",
+            "sectionId": "subsection:4",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:4"
+        },
+        {
+          "sectionId": "subsection:6",
+          "codeHash": "26c3dc46c506a9c2fbbffc149d4a18ca96901e4fc081eb5532b97fb68cd0cb5f",
+          "reviewed": true,
+          "executed": false,
+          "sourceLocator": {
+            "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/MonoBehaviour.OnDestroy.html",
+            "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/MonoBehaviour.OnDestroy.body.txt",
+            "sectionId": "subsection:6",
+            "fullExamplePreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+          },
+          "analysisLocator": "sectionCoverage/subsection:6"
+        }
+      ],
+      "tableCount": 0,
+      "images": [],
+      "links": [
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../Manual/class-MonoBehaviour.html",
+          "text": "Switch to Manual",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "Object.Destroy.html",
+          "text": "Object.Destroy",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.Destroy.html"
+        },
+        {
+          "href": "Object.DontDestroyOnLoad.html",
+          "text": "Object.DontDestroyOnLoad",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.DontDestroyOnLoad.html"
+        },
+        {
+          "href": "SceneManagement.SceneManager.UnloadSceneAsync.html",
+          "text": "SceneManager.UnloadSceneAsync",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.UnloadSceneAsync.html"
+        },
+        {
+          "href": "SceneManagement.SceneManager.LoadScene.html",
+          "text": "SceneManager.LoadScene",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.LoadScene.html"
+        },
+        {
+          "href": "../Manual/Coroutines.html",
+          "text": "coroutine",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Coroutines.html"
+        },
+        {
+          "href": "MonoBehaviour.OnApplicationFocus.html",
+          "text": "MonoBehaviour.OnApplicationFocus",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnApplicationFocus.html"
+        },
+        {
+          "href": "MonoBehaviour.OnDisable.html",
+          "text": "MonoBehaviour.OnDisable",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "GUI.Button.html",
+          "text": "GUI.Button",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUI.Button.html"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rect.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "SceneManagement.SceneManager.LoadScene.html",
+          "text": "SceneManager.LoadScene",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.LoadScene.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.Scene.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html"
+        }
+      ],
+      "api": {
+        "owner": "MonoBehaviour (HTML H1 owner link)",
+        "member": "OnDestroy",
+        "language": "C# example",
+        "formalDeclaration": null,
+        "formalOverloadCount": null,
+        "observedSampleForms": [
+          "void OnDestroy()"
+        ],
+        "parametersInSamples": [],
+        "returnInSamples": [
+          "void"
+        ],
+        "assemblyModuleHeader": "unresolved; not provided by this member page",
+        "thread": "unresolved; not inferred from Player loop diagram",
+        "ownership": "instance callback; full object/scene/native ownership unresolved",
+        "failure": "unresolved; callback failure contract absent",
+        "coroutine": "explicitly forbidden",
+        "version": "6000.0",
+        "deprecationReplacement": "no deprecation/replacement notice observed in this page; not a global absence claim",
+        "editorRuntime": "per-page facts; ExecuteInEditMode/reload/Editor scene semantics must be read in linked documents",
+        "status": "message_body_analyzed_contract_incomplete",
+        "observedSampleFormEvidence": {
+          "void OnDestroy()": [
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:4",
+              "codeHash": "24bc65f1edd1fb53255d02f9174f99cda21af49b6dead04da57851d05f99e4ce"
+            },
+            {
+              "page": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDestroy.html",
+              "section": "subsection:6",
+              "codeHash": "26c3dc46c506a9c2fbbffc149d4a18ca96901e4fc081eb5532b97fb68cd0cb5f"
+            }
+          ]
+        }
+      },
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    },
+    {
+      "stableId": "unity-6000.0-en-lifecycle-execution-order",
+      "engine": "Unity",
+      "kind": "manual",
+      "version": "6000.0",
+      "locale": "en",
+      "title": "Event function execution order",
+      "requestedURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html",
+      "canonicalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html",
+      "discoveryPath": "official full ZIP Documentation/en/Manual/execution-order.html",
+      "packagePlugin": null,
+      "fetch": {
+        "method": "reuse official offline ZIP with entry bytes/hash comparison",
+        "httpStatus": null,
+        "httpStatusReason": "individual entry has no HTTP response; archive response was200",
+        "contentType": "text/html from official ZIP entry",
+        "sourcePath": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/execution-order.html",
+        "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/execution-order.html",
+        "sourceHash": "90d6f40e422e60b27252ed2573e67ad8de53c001a1a20a28fad33ce70b5919da",
+        "bodyPath": "native/build/reference-corpus/unity-lifecycle-batch/execution-order.body.txt",
+        "bodyHash": "19ea4b761459e21eed0996d1bdc1e1ef0590e0d02a5b3e8f75d9e25f534224b4",
+        "bodyHTMLPath": "native/build/reference-corpus/unity-lifecycle-batch/execution-order.body.html",
+        "bodyHTMLHash": "6c8af5555f279de3279c1c4de743ece8883ac90d8b98b9dc55bb0073338f5b34",
+        "zipEntry": "Documentation/en/Manual/execution-order.html",
+        "zipEntryHash": "90d6f40e422e60b27252ed2573e67ad8de53c001a1a20a28fad33ce70b5919da",
+        "zipMatchesExtracted": true,
+        "zipCRC32": "f6b4fd33",
+        "observedVersion": "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "buildFooter": {
+          "jobId": "76410965",
+          "builtOn": "2026-09-29",
+          "version": "6000.0",
+          "fullFooterPreservedPrivately": "native/build/reference-corpus/unity-lifecycle-batch/extraction-evidence.json"
+        },
+        "extractor": "extract.py, Python + beautifulsoup4 4.15.0 html.parser; remove site UI/footer/inline glossary tooltip expansion; preserve body tables/examples/images/link anchors"
+      },
+      "read": {
+        "reader": "unity_lifecycle_body",
+        "date": "2026-10-04",
+        "readScope": "all nonempty document body sections, all11examples acrossbatch, zero HTML tables, plus both Manual SVG full visual crops; site UI excluded",
+        "boundBodyHash": "19ea4b761459e21eed0996d1bdc1e1ef0590e0d02a5b3e8f75d9e25f534224b4",
+        "wholeDocumentBodyReviewed": true,
+        "dynamicBodyNodes": [],
+        "unreadBodySections": [],
+        "unreadBodyMedia": [],
+        "linkedBodiesAutomaticallyReviewed": false
+      },
+      "sectionCoverage": [
+        {
+          "id": "heading:1",
+          "exactHeading": "Event function execution order",
+          "kind": "heading_section",
+          "sectionTextHash": "162673dbbcdabbfdcc1921d179e4f8795d057a5c2c67e2f9623fdc1c9eeaa65f",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "핵심 lifecycle 그림은 full Player loop의 일부이며 내부 system은 더 많아요. LowLevel.PlayerLoop로 전체 조회, custom loop로 제거/추가/순서변경을 하도록 안내해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Messages reference로 각 callback 의미/제약을 확장해요. 그림의 callback/내부/내부 multithreaded 범례와 모든 phase/cycle을 시각 확인했지만 특정 callback thread를 도형만으로 추론하지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "heading:2",
+          "exactHeading": "Before scene load and unload",
+          "kind": "heading_section",
+          "sectionTextHash": "f11cda99f4be4cb0c7667665340ba32bebd5199059b87b77aedade4604300635",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "sceneLoaded는 scene의 OnEnable 뒤·Start 앞에 raised돼요. sceneUnloaded와 함께 개별 reference 및 domain/scene reload 설정 그림은 후속 대기예요."
+            }
+          ]
+        },
+        {
+          "id": "heading:3",
+          "exactHeading": "Run code on Editor launch",
+          "kind": "heading_section",
+          "sectionTextHash": "5c7c5a6250cc2c1ac9ef97e5189d59bef83ba30660ad59acaf217550c8985d7f",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "InitializeOnLoad를 class static constructor에, InitializeOnLoadMethod를 method에 붙여 MonoBehaviour instance 없이 Editor launch 코드를 실행할 수 있어요. static constructor 상세는 Microsoft 공식 후속 링크예요."
+            }
+          ]
+        },
+        {
+          "id": "heading:4",
+          "exactHeading": "Run code on runtime intialization",
+          "kind": "heading_section",
+          "sectionTextHash": "8337652dc01f0ca0f1da02c8e96728808d4519a590d2b5e60863506049dab612",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "원문 heading은 Run code on runtime intialization이에요. runtime method attribute와 load-type parameter로 위치를 선택할 수 있다고 안내하고 정확한 order는 API에 맡겨요. label RunTimeInitializeLoadType과 실제 linked RuntimeInitializeLoadType의 spelling 차이를 기록해요."
+            }
+          ]
+        },
+        {
+          "id": "heading:5",
+          "exactHeading": "Internal animation update",
+          "kind": "heading_section",
+          "sectionTextHash": "a69f26b5f8383909a7fbf963608a2769c1095d41b8a6f0bc083f4514f6cba4be",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "MonoBehaviour.OnAnimatorMove/OnAnimatorIK와 StateMachineBehaviour의 Enter/Exit/Update/Move/IK 등7callback을 구분해요. 내부 function은 context이며 Profiler marker로 frame 위치를 확인하는 별도 도구예요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "시각 순서는 State machine update→OnStateMachineEnter/Exit→ProcessGraph→Fire animation events→StateMachineBehaviour callbacks→OnAnimatorMove→ProcessAnimation→OnAnimatorIK→WriteTransform→WriteProperties예요. IK/WriteTransform의 loop 조건은 미기재라 후속 API/Profiler marker 확인이 필요해요. XML text 요소의 저장 순서는 실행순서와 달라요."
+            }
+          ]
+        },
+        {
+          "id": "heading:6",
+          "exactHeading": "Rendering",
+          "kind": "heading_section",
+          "sectionTextHash": "1c79dcd9f064eeb32d19cdb3ac75078c99b0ff246c5ec3f658e41ce5d76660ff",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "순서는 Built-in Render Pipeline에 한정돼요. URP/HDRP는 다른 linked 문서를 읽어야 하며 렌더 직전 작업은 Application.onBeforeRender를 연결해요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "PreCull은 cull전, BecameVisible/Invisible은 any-camera visibility 변화, WillRenderObject는 visible object에 camera당1회, PreRender는 rendering전, RenderObject는 일반scene render후, PostRender는 camera후, RenderImage는 postprocess예요. OnGUI는 Layout/Repaint/input 때문에 여러번, Gizmos는 scene-view 시각화예요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "PreCull/PreRender/PostRender/RenderImage 메시지는 enabled Camera와 같은 object에 script가 있어야 해요. 다른 object의 앞3callback은 Camera.onPreCull/onPreRender/onPostRender delegate를 사용해요. 중간 HTML의 Camera.On* autolink와 앞부분 MonoBehaviour.On* owner 차이는 후속 API 대조가 필요해요."
+            }
+          ]
+        },
+        {
+          "id": "heading:7",
+          "exactHeading": "Resumption of coroutines and asynchronous tasks",
+          "kind": "heading_section",
+          "sectionTextHash": "4d8cdbba6cae6148c84c81faf4b5f54b618794212879b324da490aeee5a6c8c6",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "WaitForEndOfFrame/WaitForFixedUpdate coroutine은 각 phase끝에서 재개해요. .NET Task/async method는 Update phase, Awaitable은 선택 method에 따라 위치가 달라져요."
+            },
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "coroutine과 task 상대 순서는 guaranteed가 아니며 Awaitable은 awaited order로 grouped 실행돼요. 그림의 세로 배치를 strict coroutine-before-task 계약으로 쓰지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "heading:8",
+          "exactHeading": "Combining MonoBehaviours with Entities",
+          "kind": "heading_section",
+          "sectionTextHash": "137c9497c64342dfb1ccea0288b32344dea8907d049edc676017a18ad571bd0e",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "ECS system group은 Player update loop에 merged돼요. Entities Systems window로 group과 full loop의 상대 순서를 확인하도록 안내해요. latest package와1.4 systems-update-order의 기준6000.0 compatibility는 이 페이지에서 확인되지 않아요."
+            }
+          ]
+        },
+        {
+          "id": "heading:9",
+          "exactHeading": "Limitations",
+          "kind": "heading_section",
+          "sectionTextHash": "0ebe6a3d7617547b4f042e8b3b6a123f2896406deb121387cb64cbfb80322d7e",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "다른 GameObject의 같은 event 순서는 explicit documented/settable 예외 외에 의존할 수 없어요. 같은 MonoBehaviour script의 다른 instance는 parent/child라도 순서를 지정할 수 없어요. 다른 script 사이의 order설정은 script-execution-order로 연결해요."
+            }
+          ]
+        },
+        {
+          "id": "heading:10",
+          "exactHeading": "Additional resources",
+          "kind": "heading_section",
+          "sectionTextHash": "91db7b185bb18006a4a232609343ce32cb050561a7522d17dd79457b54fb7835",
+          "bodyReviewed": true,
+          "analyzed": true,
+          "reader": "unity_lifecycle_body",
+          "date": "2026-10-04",
+          "facts": [
+            {
+              "classification": "source_fact_or_explicit_limitation",
+              "text": "Event functions, MonoBehaviour Manual, PlayerLoop API, Script execution order와 prev/next feature link를 후속 발견 목록으로 보존해요. 링크된 본문 전체의 읽기/분모/완료를 부모에 포함하지 않아요."
+            }
+          ]
+        }
+      ],
+      "emptySignatureSlots": [],
+      "examples": [],
+      "tableCount": 0,
+      "images": [
+        {
+          "src": "../uploads/Main/monobehaviour_flowchart.svg",
+          "alt": "Order of execution for event functions during the lifecycle of a MonoBehaviour script.",
+          "path": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/uploads/Main/monobehaviour_flowchart.svg",
+          "sourceHash": "24937cbc25ea6cc51b3fec1ea9fb0f83dc8a75e494c3a9ca6090830cac2ccfda",
+          "bytes": 162369
+        },
+        {
+          "src": "../uploads/Main/animation-update-sequence.svg",
+          "alt": "Order of execution for the regular Animation update loop.",
+          "path": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/uploads/Main/animation-update-sequence.svg",
+          "sourceHash": "cd5f768f3933d7cd9421861b6f0fe58efcbaad855e88dc467441145f27bbea81",
+          "bytes": 59854
+        }
+      ],
+      "links": [
+        {
+          "href": "../ScriptReference/LowLevel.PlayerLoop.html",
+          "text": "PlayerLoop API",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/LowLevel.PlayerLoop.html"
+        },
+        {
+          "href": "player-loop-customizing.html",
+          "text": "customize the Player loop",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/player-loop-customizing.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../ScriptReference/SceneManagement.SceneManager-sceneLoaded.html",
+          "text": "SceneManager.sceneLoaded",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html"
+        },
+        {
+          "href": "../ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html",
+          "text": "SceneManager.sceneUnloaded",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html"
+        },
+        {
+          "href": "configurable-enter-play-mode-details.html",
+          "text": "Details of disabling Domain and Scene reload",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/configurable-enter-play-mode-details.html"
+        },
+        {
+          "href": "../ScriptReference/InitializeOnLoadAttribute.html",
+          "text": "[InitializeOnLoad]",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/InitializeOnLoadAttribute.html"
+        },
+        {
+          "href": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors",
+          "text": "static constructor",
+          "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors"
+        },
+        {
+          "href": "../ScriptReference/InitializeOnLoadMethodAttribute.html",
+          "text": "[InitializeOnLoadMethod]",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/InitializeOnLoadMethodAttribute.html"
+        },
+        {
+          "href": "../ScriptReference/RuntimeInitializeOnLoadMethodAttribute.html",
+          "text": "[RuntimeInitializeOnLoadMethodAttribute]",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeOnLoadMethodAttribute.html"
+        },
+        {
+          "href": "../ScriptReference/RuntimeInitializeLoadType.html",
+          "text": "RunTimeInitializeLoadType",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeLoadType.html"
+        },
+        {
+          "href": "../ScriptReference/RuntimeInitializeOnLoadMethodAttribute.html",
+          "text": "RuntimeInitializeOnLoadMethodAttribute",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeOnLoadMethodAttribute.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnAnimatorMove.html",
+          "text": "MonoBehaviour.OnAnimatorMove",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorMove.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnAnimatorIK.html",
+          "text": "MonoBehaviour.OnAnimatorIK",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorIK.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.html",
+          "text": "StateMachineBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateMachineEnter.html",
+          "text": "StateMachineBehaviour.OnStateMachineEnter",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMachineEnter.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateMachineExit.html",
+          "text": "StateMachineBehaviour.OnStateMachineExit",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMachineExit.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateEnter.html",
+          "text": "StateMachineBehaviour.OnStateEnter",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateEnter.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateUpdate.html",
+          "text": "StateMachineBehaviour.OnStateUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateUpdate.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateExit.html",
+          "text": "StateMachineBehaviour.OnStateExit",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateExit.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateMove.html",
+          "text": "StateMachineBehaviour.OnStateMove",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMove.html"
+        },
+        {
+          "href": "../ScriptReference/StateMachineBehaviour.OnStateIK.html",
+          "text": "StateMachineBehaviour.OnStateIK",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateIK.html"
+        },
+        {
+          "href": "Profiler.html",
+          "text": "Profiler",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Profiler.html"
+        },
+        {
+          "href": "profiler-markers.html#animation",
+          "text": "Profiler markers",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/profiler-markers.html#animation"
+        },
+        {
+          "href": "built-in-render-pipeline.html",
+          "text": "Built-in Render Pipeline",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/built-in-render-pipeline.html"
+        },
+        {
+          "href": "scriptable-render-pipeline-introduction.html",
+          "text": "Scriptable Render Pipeline",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/scriptable-render-pipeline-introduction.html"
+        },
+        {
+          "href": "urp/customize/custom-pass-injection-points.html",
+          "text": "Universal Render Pipeline",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/customize/custom-pass-injection-points.html"
+        },
+        {
+          "href": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/rendering-execution-order.html",
+          "text": "High Definition Render Pipeline",
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/rendering-execution-order.html"
+        },
+        {
+          "href": "../ScriptReference/Application-onBeforeRender.html",
+          "text": "Application.onBeforeRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-onBeforeRender.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnPreCull.html",
+          "text": "OnPreCull",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPreCull.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnBecameVisible.html",
+          "text": "OnBecameVisible",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnBecameVisible.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnBecameInvisible.html",
+          "text": "OnBecameInvisible",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnBecameInvisible.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnWillRenderObject.html",
+          "text": "OnWillRenderObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnWillRenderObject.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnPreRender.html",
+          "text": "OnPreRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPreRender.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnRenderObject.html",
+          "text": "OnRenderObject",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnRenderObject.html"
+        },
+        {
+          "href": "../ScriptReference/GL.html",
+          "text": "GL",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GL.html"
+        },
+        {
+          "href": "../ScriptReference/Graphics.DrawMeshNow.html",
+          "text": "Graphics.DrawMeshNow",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Graphics.DrawMeshNow.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnPostRender.html",
+          "text": "OnPostRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPostRender.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnRenderImage.html",
+          "text": "OnRenderImage",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnRenderImage.html"
+        },
+        {
+          "href": "PostProcessingOverview.html",
+          "text": "Post-processing Effects",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PostProcessingOverview.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnGUI.html",
+          "text": "OnGUI",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnGUI.html"
+        },
+        {
+          "href": "../ScriptReference/MonoBehaviour.OnDrawGizmos.html",
+          "text": "OnDrawGizmos",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDrawGizmos.html"
+        },
+        {
+          "href": "../ScriptReference/Camera.OnPreCull.html",
+          "text": "OnPreCull",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPreCull.html"
+        },
+        {
+          "href": "../ScriptReference/Camera.OnPreRender.html",
+          "text": "OnPreRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPreRender.html"
+        },
+        {
+          "href": "../ScriptReference/Camera.OnPostRender.html",
+          "text": "OnPostRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPostRender.html"
+        },
+        {
+          "href": "../ScriptReference/Camera.OnRenderImage.html",
+          "text": "OnRenderImage",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnRenderImage.html"
+        },
+        {
+          "href": "../ScriptReference/Camera-onPreCull.html",
+          "text": "Camera.onPreCull",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPreCull.html"
+        },
+        {
+          "href": "../ScriptReference/Camera-onPreRender.html",
+          "text": "Camera.onPreRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPreRender.html"
+        },
+        {
+          "href": "../ScriptReference/Camera-onPostRender.html",
+          "text": "Camera.onPostRender",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPostRender.html"
+        },
+        {
+          "href": "../ScriptReference/WaitForEndOfFrame.html",
+          "text": "WaitForEndOfFrame",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForEndOfFrame.html"
+        },
+        {
+          "href": "../ScriptReference/WaitForFixedUpdate.html",
+          "text": "WaitForFixedUpdate",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForFixedUpdate.html"
+        },
+        {
+          "href": "coroutines.html",
+          "text": "Coroutines",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/coroutines.html"
+        },
+        {
+          "href": "../ScriptReference/Awaitable.html",
+          "text": "Awaitable",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Awaitable.html"
+        },
+        {
+          "href": "async-await-support.html",
+          "text": "Asynchronous programming with the Awaitable class",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/async-await-support.html"
+        },
+        {
+          "href": "https://docs.unity3d.com/Packages/com.unity.entities@latest/index.html",
+          "text": "Entity Component System",
+          "url": "https://docs.unity3d.com/Packages/com.unity.entities@latest/index.html"
+        },
+        {
+          "href": "https://docs.unity3d.com/Packages/com.unity.entities@1.4/manual/systems-update-order.html#update-order-of-systems",
+          "text": "Update order of systems",
+          "url": "https://docs.unity3d.com/Packages/com.unity.entities@1.4/manual/systems-update-order.html#update-order-of-systems"
+        },
+        {
+          "href": "script-execution-order.html",
+          "text": "Script execution order",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-execution-order.html"
+        },
+        {
+          "href": "event-functions.html",
+          "text": "Event functions",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/event-functions.html"
+        },
+        {
+          "href": "class-MonoBehaviour.html",
+          "text": "MonoBehaviour",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html"
+        },
+        {
+          "href": "../ScriptReference/LowLevel.PlayerLoop.html",
+          "text": "PlayerLoop API reference",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/LowLevel.PlayerLoop.html"
+        },
+        {
+          "href": "script-execution-order.html",
+          "text": "Script execution order",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-execution-order.html"
+        },
+        {
+          "href": "event-functions.html",
+          "text": "",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/event-functions.html"
+        },
+        {
+          "href": "player-loop-customizing.html",
+          "text": "",
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/player-loop-customizing.html"
+        }
+      ],
+      "api": null,
+      "hbMappings": [
+        "HB-LIFE-002-INIT",
+        "HB-LIFE-002-ACTIVE",
+        "HB-LIFE-002-PHASE",
+        "HB-LIFE-002-STOP",
+        "HB-LIFE-002-LOOP"
+      ],
+      "state": "analyzed",
+      "workStatus": "pending_independent_verification_and_related_contracts",
+      "independentVerification": null,
+      "fullApiAnalysisComplete": false
+    }
+  ],
+  "media": [
+    {
+      "src": "../uploads/Main/monobehaviour_flowchart.svg",
+      "alt": "Order of execution for event functions during the lifecycle of a MonoBehaviour script.",
+      "path": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/uploads/Main/monobehaviour_flowchart.svg",
+      "sourceHash": "24937cbc25ea6cc51b3fec1ea9fb0f83dc8a75e494c3a9ca6090830cac2ccfda",
+      "bytes": 162369,
+      "png": "native/build/reference-corpus/unity-lifecycle-batch/monobehaviour_flowchart.png",
+      "pngHash": "506bbab8470d7809a1b9d4bd8a6f5749756b3ada6cf81a22405db4a3f9e0320f",
+      "renderer": "sharp 0.35.4, librsvg 2.62.91",
+      "width": 2000,
+      "height": 3450,
+      "slices": [
+        "native/build/reference-corpus/unity-lifecycle-batch/monobehaviour_flowchart-0.png",
+        "native/build/reference-corpus/unity-lifecycle-batch/monobehaviour_flowchart-1400.png",
+        "native/build/reference-corpus/unity-lifecycle-batch/monobehaviour_flowchart-2800.png"
+      ],
+      "zipEntry": "Documentation/en/uploads/Main/monobehaviour_flowchart.svg",
+      "zipMatchesExtracted": true,
+      "zipEntryHash": "24937cbc25ea6cc51b3fec1ea9fb0f83dc8a75e494c3a9ca6090830cac2ccfda",
+      "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/monobehaviour_flowchart.svg",
+      "visualReviewed": true,
+      "reader": "unity_lifecycle_body",
+      "date": "2026-10-04",
+      "readScope": "all text labels, notes, legend, arrows and cycles in consecutively covering all5crop images across2SVGs",
+      "unresolved": [
+        "UL-002-DIAGRAM"
+      ]
+    },
+    {
+      "src": "../uploads/Main/animation-update-sequence.svg",
+      "alt": "Order of execution for the regular Animation update loop.",
+      "path": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/uploads/Main/animation-update-sequence.svg",
+      "sourceHash": "cd5f768f3933d7cd9421861b6f0fe58efcbaad855e88dc467441145f27bbea81",
+      "bytes": 59854,
+      "png": "native/build/reference-corpus/unity-lifecycle-batch/animation-update-sequence.png",
+      "pngHash": "9859f1e4e70d2dae3125bec8d260dda1f3a112d30f9f5f9454b6b685c4fa7929",
+      "renderer": "sharp 0.35.4, librsvg 2.62.91",
+      "width": 2000,
+      "height": 2185,
+      "slices": [
+        "native/build/reference-corpus/unity-lifecycle-batch/animation-update-sequence-0.png",
+        "native/build/reference-corpus/unity-lifecycle-batch/animation-update-sequence-1400.png"
+      ],
+      "zipEntry": "Documentation/en/uploads/Main/animation-update-sequence.svg",
+      "zipMatchesExtracted": true,
+      "zipEntryHash": "cd5f768f3933d7cd9421861b6f0fe58efcbaad855e88dc467441145f27bbea81",
+      "rawSnapshotPath": "native/build/reference-corpus/unity-lifecycle-batch/raw/animation-update-sequence.svg",
+      "visualReviewed": true,
+      "reader": "unity_lifecycle_body",
+      "date": "2026-10-04",
+      "readScope": "all text labels, notes, legend, arrows and cycles in consecutively covering all5crop images across2SVGs",
+      "unresolved": [
+        "UL-002-DIAGRAM"
+      ]
+    }
+  ],
+  "hbDesignCandidates": [
+    {
+      "id": "HB-LIFE-002-INIT",
+      "classification": "hb_design_candidate",
+      "sourceFacts": "Awake/Start subsection:3",
+      "cpp": "deserialization/ref restoration 뒤 initialize-once와 valid-first-execution start-once stage; Unity C# native 번역 아님",
+      "blueprint": "initialize와 first-start의 별도 event 및 C++와 동일 scheduler 후보",
+      "humanEditor": "component enabled와 hierarchy active를 별도 조작",
+      "aiCommand": "사람과 같은 검증 모델의 active/enabled 변경 schema 후보; 기존 구현이라고 주장하지 않음",
+      "data": "scene/blueprint defaults와 runtime awakened/started를 분리",
+      "validation": "initial disabled/inactive ancestor/delayed activation/additive reload/runtime spawn"
+    },
+    {
+      "id": "HB-LIFE-002-ACTIVE",
+      "classification": "hb_design_candidate",
+      "sourceFacts": "OnEnable/OnDisable subsection:3",
+      "cpp": "enable/disable 반복과 destructor를 분리",
+      "blueprint": "enable/disable event count/order/cleanup을 공통화",
+      "humanEditor": "enable/active 변경과 Undo/Redo 대상 분리",
+      "aiCommand": "공통 변경 경로와 명시적 error result",
+      "data": "runtime toggle이 editor defaults를 덮는 정책 별도",
+      "validation": "re-enable initialize/start 중복 방지 및 domain-reload cleanup"
+    },
+    {
+      "id": "HB-LIFE-002-PHASE",
+      "classification": "hb_design_candidate",
+      "sourceFacts": "FixedUpdate subsection:3 / LateUpdate subsection:3 / execution-order heading:7",
+      "cpp": "fixed/frame/late와 physics/animation/resume 경계를 공통 phase scheduler로 표현",
+      "blueprint": "같은 phase/delta와 async/coroutine 비보장 경계를 제공",
+      "humanEditor": "project time setting과 script-type execution order UI 후보",
+      "aiCommand": "같은 time/order schema 및 runtime trace조회 후보",
+      "data": "time/order persisted config와 pause/runtime 상태 분리",
+      "validation": "0/1/multiple fixed, frame drops/pause/camera follow, 원본Unity0.02와 HB1/60 차이"
+    },
+    {
+      "id": "HB-LIFE-002-STOP",
+      "classification": "hb_design_candidate",
+      "sourceFacts": "OnDestroy subsection:3 / OnDisable subsection:3",
+      "cpp": "RAII/normal cleanup과 durable save를 별도 계약; force-exit cleanup 보장 없음",
+      "blueprint": "normal end/cleanup과 save flush 서비스 구분",
+      "humanEditor": "stop/scene transition/error feedback 공통 서비스",
+      "aiCommand": "동일 stop cleanup service와 실패 보고",
+      "data": "explicit durable checkpoint policy 별도",
+      "validation": "never-active destruction/scene travel/cleanup failure/focus loss/force-exit target"
+    },
+    {
+      "id": "HB-LIFE-002-LOOP",
+      "classification": "hb_design_candidate",
+      "sourceFacts": "execution-order heading:1/5/6/8/9",
+      "cpp": "user callbacks와 internal physics/animation/render/ECS systems 구분",
+      "blueprint": "internal Profiler function을 무조건 사용자 event로 만들지 않음",
+      "humanEditor": "full actual frame trace/Profiler와 instance/phase 정보 후보",
+      "aiCommand": "같은 actual trace/query model 접근 후보",
+      "data": "extension descriptor와 runtime trace 분리",
+      "validation": "PlayerLoop/package/render pipeline 전체 계약·thread·target 분석 뒤 확정"
+    }
+  ],
+  "repositoryReadOnlyComparison": [
+    {
+      "path": "prototype/blueprint-runtime.js",
+      "lines": "22-28",
+      "fact": "Construction(all)→hook.start→BeginPlay; EndPlay plus finally cleanup; these are not proved identical to Awake/Start/OnDestroy",
+      "scope": "read selected current code; no execution"
+    },
+    {
+      "path": "prototype/blueprint-runtime.js",
+      "lines": "34-41",
+      "fact": "fixedTick; frame tick then physics hook; no same-order claim to Unity fixed-before-Update diagram",
+      "scope": "read selected current code"
+    },
+    {
+      "path": "prototype/scene-runtime.js",
+      "lines": "27-33",
+      "fact": "fixedStep1/60,maxSubsteps8,accumulator capped; differs from Unity0.02 default",
+      "scope": "read selected current code"
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "lines": "22-24",
+      "fact": "Actor/Component destructors; no eight-message managed lifecycle declarations",
+      "scope": "read selected current code"
+    },
+    {
+      "path": "docs/BLUEPRINT_SPEC.md",
+      "lines": "29-31",
+      "fact": "Construction native edit-time lifecycle remains work",
+      "scope": "read selected existing specification"
+    }
+  ],
+  "linkInventory": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Coroutines.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PostProcessingOverview.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Profiler.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/async-await-support.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/built-in-render-pipeline.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-MonoBehaviour.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-TimeManager.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/configurable-enter-play-mode-details.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/coroutines.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/event-functions.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/player-loop-customizing.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/profiler-markers.html#animation",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/script-execution-order.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/scriptable-render-pipeline-introduction.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/time-handling-variations.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/customize/custom-pass-injection-points.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-onBeforeRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Awaitable.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour-enabled.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPostRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPreCull.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-onPreRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPostRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPreCull.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnPreRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera.OnRenderImage.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Debug.Log.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Editor.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExecuteInEditMode.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GL.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUI.Button.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUI.Label.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GUIStyle.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject-activeInHierarchy.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.FindWithTag.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.SetActive.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Graphics.DrawMeshNow.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/InitializeOnLoadAttribute.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/InitializeOnLoadMethodAttribute.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Input.GetKeyDown.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/LowLevel.PlayerLoop.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Awake.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": true,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorIK.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorMove.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnApplicationFocus.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnBecameInvisible.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnBecameVisible.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDisable.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": true,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnDrawGizmos.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnEnable.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": true,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnGUI.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPostRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPreCull.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPreRender.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnRenderImage.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnRenderObject.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnWillRenderObject.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": true,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Update.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": true,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.Destroy.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.DontDestroyOnLoad.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.Instantiate.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.FixedUpdate.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PlayerLoop.Update.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rect.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeLoadType.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RuntimeInitializeOnLoadMethodAttribute.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.Scene.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager-sceneLoaded.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager-sceneUnloaded.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.LoadScene.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.UnloadSceneAsync.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateEnter.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateExit.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateIK.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMachineEnter.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMachineExit.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateMove.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.OnStateUpdate.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/StateMachineBehaviour.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-deltaTime.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Time-fixedDeltaTime.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForEndOfFrame.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForFixedUpdate.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WaitForSeconds.html",
+      "kind": "fixed_engine_technical",
+      "localFileExists": true,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.entities@1.4/manual/systems-update-order.html#update-order-of-systems",
+      "kind": "separate_or_unpinned_technical",
+      "localFileExists": null,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.entities@latest/index.html",
+      "kind": "separate_or_unpinned_technical",
+      "localFileExists": null,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/rendering-execution-order.html",
+      "kind": "separate_or_unpinned_technical",
+      "localFileExists": null,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors",
+      "kind": "separate_or_unpinned_technical",
+      "localFileExists": null,
+      "bodyReviewedInThisBatch": false,
+      "anchorChecked": false,
+      "disposition": "retain_for_source_expansion; no parent-to-child completion"
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "UL-002-DECLARATIONS",
+      "status": "unresolved",
+      "description": "8 message 페이지의 signature-CS가 비어 있어 formal visibility/modifier/declaration와 overload 분모를 예제로 대체할 수 없어요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+    },
+    {
+      "id": "UL-002-THREAD-MODULE",
+      "status": "unresolved",
+      "description": "callback thread, managed assembly/native module, IL2CPP/native-plug-in boundary와 ownership을 이번 본문에서 확정하지 않아요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+    },
+    {
+      "id": "UL-002-ORDER-SCOPE",
+      "status": "unresolved",
+      "description": "Awake any Start 문구, 늦게 active한 Cube1 예제, Start의 runtime Instantiate 설명에서 global/scene/instance 범위를 추가 대조해야 해요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.Start.html"
+    },
+    {
+      "id": "UL-002-LIFETIME",
+      "status": "unresolved",
+      "description": "Awake scene-unload lifetime 설명과 explicit Destroy/scene간 DontDestroyOnLoad 보존을 함께 읽어 전체 instance lifetime을 닫아야 해요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.DontDestroyOnLoad.html"
+    },
+    {
+      "id": "UL-002-ERRORS",
+      "status": "unresolved",
+      "description": "Awake exception→disable만 명시해요. 나머지 callback exception/재진입/종료 중 실패 정책을 동일하게 추정하지 않아요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.html"
+    },
+    {
+      "id": "UL-002-FIXED-CONTRACT",
+      "status": "unresolved",
+      "description": "FixedUpdate 본문은 enable/active gating, coroutine 허용, 전체 simulation determinism/target-platform 범위를 완결하지 않아요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Behaviour-enabled.html"
+    },
+    {
+      "id": "UL-002-COROUTINE",
+      "status": "unresolved",
+      "description": "Start coroutine 완료·cancel/disable/destroy와 paused/time-scale 관계는 WaitForSeconds/StartCoroutine/Coroutines 본문 대조가 필요해요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.StartCoroutine.html"
+    },
+    {
+      "id": "UL-002-RELOAD",
+      "status": "unresolved",
+      "description": "ExecuteInEditMode와 domain/scene reload 설정을 전체 읽어 Enter/Exit Play 및 editor launch 계약을 구분해야 해요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExecuteInEditMode.html"
+    },
+    {
+      "id": "UL-002-DIAGRAM",
+      "status": "unresolved",
+      "description": "그림 async 상대배치·destroy→OnEnable 회색 경로·animation IK/WriteTransform 반복은 명시적 설명이 부족해요. callback간 thread/order를 추론하지 않아요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/LowLevel.PlayerLoop.html"
+    },
+    {
+      "id": "UL-002-RENDER",
+      "status": "unresolved",
+      "description": "MonoBehaviour.On*와 Camera.On* autolink의 owner와 render pipeline/version-specific callback 계약을 별도 API로 검토해야 해요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnPreCull.html"
+    },
+    {
+      "id": "UL-002-PACKAGE",
+      "status": "unresolved",
+      "description": "Entities latest/1.4 및 HDRP latest의 pinned edition/6000.0 compatibility가 미확정이에요.",
+      "followUpURL": "https://docs.unity3d.com/Packages/com.unity.entities@1.4/manual/systems-update-order.html#update-order-of-systems"
+    },
+    {
+      "id": "UL-002-LINKS",
+      "status": "unresolved",
+      "description": "94 기술 link의 target본문/anchor/alias/version 확장은 이번 bounded batch에서 닫지 않았어요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/LowLevel.PlayerLoop.html"
+    },
+    {
+      "id": "UL-002-EDITOR-DATA",
+      "status": "unresolved",
+      "description": "Time setting 전체 menu path, input focus/Undo/Redo, scene/serialized data 저장·복원·conversion 정책은9본문에서 충분하지 않아요.",
+      "followUpURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/../Manual/class-TimeManager.html"
+    }
+  ],
+  "independentVerification": {
+    "verifier": null,
+    "verifiedPages": 0,
+    "issuesResolvedByThisAuthor": false,
+    "required": "different actor must compare currentsource/body/42sections/11examples/2visualmedia/8message contracts/MD artifact hash; unresolvedcontracts retained"
+  },
+  "fullCorpusGate": "closed; no discovery closure/APIdenominator/fullbodyverification claim"
+}

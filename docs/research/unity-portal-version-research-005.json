@@ -1,0 +1,961 @@
+{
+  "schemaVersion": 1,
+  "analysisType": "new_semantic_version_research_not_independent_verification",
+  "actor": "unity_lifecycle_body",
+  "analysisDate": "2026-10-04",
+  "phase": "research_only",
+  "analysisReport": "docs/research/UNITY_PORTAL_VERSION_RESEARCH_005.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_PORTAL_VERSION_RESEARCH_005.md",
+      "sha256": "01860ca460e3c0a8c78b75ec0827daefcd38949def508f50afc51f46817383c3"
+    },
+    {
+      "file": "docs/research/UNITY_PORTAL_ALIAS_BODY_004.md",
+      "sha256": "37b0c518f21c8640dd86542e0d650c47d8c1e16c73697df04e4294a1aecbe054"
+    },
+    {
+      "file": "docs/research/unity-portal-alias-body-004.json",
+      "sha256": "a4b0f5ee8a9c87b5ea9bf4ef0611cd084c5170710a95c6ded55e0dadf45225a9"
+    }
+  ],
+  "privateEvidence": {
+    "file": "native/build/reference-corpus/unity-portal-version-batch/final-source-evidence.json",
+    "sha256": "17c56bd740d4d5fcaa26c31b2d30fdf0ae06de2081ad3aafd2120083a84a7e77"
+  },
+  "counts": {
+    "actualTextBodiesRead": 3,
+    "reused004ApiBodiesRead": 2,
+    "additionalManualBodyRead": 1,
+    "apiH1H3Headings": 32,
+    "apiH4Headings": 20,
+    "apiH1H6Headings": 52,
+    "allThreeH1H6Headings": 55,
+    "displayedSignatures": 7,
+    "parameterTypePre": 18,
+    "examples": 7,
+    "preElements": 32,
+    "htmlTables": 1,
+    "htmlTableRows": 2,
+    "htmlTableCells": 4,
+    "imgElements": 0,
+    "inlineSvgElements": 85,
+    "svgVisuallyReviewed": 0,
+    "selectedVersionControlInstancesApiOnly": 4,
+    "selectedRscEnvironmentObjectsApiOnly": 2,
+    "javascriptBootstrapFilesActuallyRead": 1,
+    "versionPickerImplementationFilesRead": 0,
+    "independentlyVerified": 0,
+    "ledgerPromotions": 0,
+    "completeVersionCrossComparisons": 0
+  },
+  "countCorrection": {
+    "previous004HeadingScope": "h1-h3 only; 32 is not all headings or full section denominator",
+    "actualApiHeadingScope": "h1-h6=52, consisting of original h1-h3=32 plus h4=20",
+    "addedH4Meaning": {
+      "TranslateParameters": 16,
+      "SimulateParameters": 2,
+      "SimulateReturnsTableHeadingCells": 2
+    },
+    "preClassification": "32 pre elements = 7 displayed signatures + 18 parameter type blocks + 7 examples",
+    "old004FilesChanged": false,
+    "headingCountIsNotStandaloneSemanticCoverage": true
+  },
+  "pages": [
+    {
+      "name": "Transform.Translate",
+      "sourceFile": "native/build/reference-corpus/unity-portal-alias-batch/Transform.Translate.portal.html",
+      "sourceHash": "d64721e557d9597c1a88e7dadd4db6e90b28ce6314969dfa7d011b346dddca30",
+      "sourceBytes": 5325791,
+      "bodyFile": "native/build/reference-corpus/unity-portal-alias-batch/Transform.Translate.portal.body.html",
+      "bodyHash": "751b967adc4a0895643cb1decb7c7c09b01c74a8ce0767c6934d6f9aa90d039c",
+      "bodyBytes": 105068,
+      "sourceContainerMatchesBody": true,
+      "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/transform/translate",
+      "finalUrl": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/transform/translate",
+      "retrievedAtUTC": "2026-10-04T03:39:32.295004+00:00",
+      "httpStatus": 200,
+      "contentType": null,
+      "bodyMethod": "BeautifulSoup html.parser; str(#page-content-container); stored bytes recomputed and equal",
+      "reader": "unity_lifecycle_body",
+      "readDate": "2026-10-04",
+      "readScope": "entire content-container text, all signatures, parameters, examples and table cells; source DOM version controls/meta; selected RSC publisher fields. UI/SVG rendering and remaining navigation/scripts not read.",
+      "localTextBodyRead": true,
+      "fullMediaUiVerified": false,
+      "ledgerEligible": false,
+      "headingCounts": {
+        "h1": 1,
+        "h2": 7,
+        "h3": 18,
+        "h4": 16,
+        "h5": 0,
+        "h6": 0
+      },
+      "h1h3HeadingCount": 26,
+      "h1h6HeadingCount": 42,
+      "headings": [
+        [
+          1,
+          "h1",
+          null,
+          "Translate"
+        ],
+        [
+          2,
+          "h2",
+          "definition",
+          "Definition"
+        ],
+        [
+          3,
+          "h2",
+          "translate(vector3-space)",
+          "Translate(Vector3, Space)"
+        ],
+        [
+          4,
+          "h3",
+          "parameters",
+          "Parameters"
+        ],
+        [
+          5,
+          "h4",
+          null,
+          "translation"
+        ],
+        [
+          6,
+          "h4",
+          null,
+          "relativeTo"
+        ],
+        [
+          7,
+          "h3",
+          "remarks",
+          "Remarks"
+        ],
+        [
+          8,
+          "h3",
+          "examples",
+          "Examples"
+        ],
+        [
+          9,
+          "h2",
+          "translate(vector3)",
+          "Translate(Vector3)"
+        ],
+        [
+          10,
+          "h3",
+          "parameters-1",
+          "Parameters"
+        ],
+        [
+          11,
+          "h4",
+          null,
+          "translation"
+        ],
+        [
+          12,
+          "h3",
+          "remarks-1",
+          "Remarks"
+        ],
+        [
+          13,
+          "h3",
+          "examples-1",
+          "Examples"
+        ],
+        [
+          14,
+          "h2",
+          "translate(float-float-float-space)",
+          "Translate(float, float, float, Space)"
+        ],
+        [
+          15,
+          "h3",
+          "parameters-2",
+          "Parameters"
+        ],
+        [
+          16,
+          "h4",
+          null,
+          "x"
+        ],
+        [
+          17,
+          "h4",
+          null,
+          "y"
+        ],
+        [
+          18,
+          "h4",
+          null,
+          "z"
+        ],
+        [
+          19,
+          "h4",
+          null,
+          "relativeTo"
+        ],
+        [
+          20,
+          "h3",
+          "remarks-2",
+          "Remarks"
+        ],
+        [
+          21,
+          "h3",
+          "examples-2",
+          "Examples"
+        ],
+        [
+          22,
+          "h2",
+          "translate(float-float-float)",
+          "Translate(float, float, float)"
+        ],
+        [
+          23,
+          "h3",
+          "parameters-3",
+          "Parameters"
+        ],
+        [
+          24,
+          "h4",
+          null,
+          "x"
+        ],
+        [
+          25,
+          "h4",
+          null,
+          "y"
+        ],
+        [
+          26,
+          "h4",
+          null,
+          "z"
+        ],
+        [
+          27,
+          "h3",
+          "remarks-3",
+          "Remarks"
+        ],
+        [
+          28,
+          "h3",
+          "examples-3",
+          "Examples"
+        ],
+        [
+          29,
+          "h2",
+          "translate(vector3-transform)",
+          "Translate(Vector3, Transform)"
+        ],
+        [
+          30,
+          "h3",
+          "parameters-4",
+          "Parameters"
+        ],
+        [
+          31,
+          "h4",
+          null,
+          "translation"
+        ],
+        [
+          32,
+          "h4",
+          null,
+          "relativeTo"
+        ],
+        [
+          33,
+          "h3",
+          "remarks-4",
+          "Remarks"
+        ],
+        [
+          34,
+          "h3",
+          "examples-4",
+          "Examples"
+        ],
+        [
+          35,
+          "h2",
+          "translate(float-float-float-transform)",
+          "Translate(float, float, float, Transform)"
+        ],
+        [
+          36,
+          "h3",
+          "parameters-5",
+          "Parameters"
+        ],
+        [
+          37,
+          "h4",
+          null,
+          "x"
+        ],
+        [
+          38,
+          "h4",
+          null,
+          "y"
+        ],
+        [
+          39,
+          "h4",
+          null,
+          "z"
+        ],
+        [
+          40,
+          "h4",
+          null,
+          "relativeTo"
+        ],
+        [
+          41,
+          "h3",
+          "remarks-5",
+          "Remarks"
+        ],
+        [
+          42,
+          "h3",
+          "examples-5",
+          "Examples"
+        ]
+      ],
+      "displayedSignatures": 6,
+      "parameterTypePre": 16,
+      "examples": 6,
+      "preElements": 28,
+      "tableCount": 0,
+      "imgElements": 0,
+      "inlineSvgElements": 68,
+      "svgVisuallyReviewed": 0,
+      "canonicalLinks": 0,
+      "body6000LiteralOccurrences": 0,
+      "engine": "Unity",
+      "kind": "api",
+      "requestedVersion": "6000.0",
+      "locale": "en-US",
+      "extractorVersions": {
+        "python": "3.13.7",
+        "beautifulsoup4": "4.15.0",
+        "parser": "html.parser"
+      },
+      "publisherSelectedVersion": "6000.0",
+      "contentEditionBinding": "pending",
+      "contentTypeEvidence": "004 metadata did not preserve content-type header; source is actual HTML",
+      "exampleEvidence": [
+        {
+          "locator": "#page-content-container pre[4] under #examples",
+          "codeHash": "9e0bd58d90fa00a07fcbdbd3c31c35e8a70a0454ae44b53b0ed382505035515f",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        },
+        {
+          "locator": "#page-content-container pre[7] under #examples-1",
+          "codeHash": "9e0bd58d90fa00a07fcbdbd3c31c35e8a70a0454ae44b53b0ed382505035515f",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        },
+        {
+          "locator": "#page-content-container pre[13] under #examples-2",
+          "codeHash": "d1c304cb443c5cfeb2fc5807b6f2f9ba4d31635fcdc65925f422d36328ba97e0",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        },
+        {
+          "locator": "#page-content-container pre[18] under #examples-3",
+          "codeHash": "d1c304cb443c5cfeb2fc5807b6f2f9ba4d31635fcdc65925f422d36328ba97e0",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        },
+        {
+          "locator": "#page-content-container pre[22] under #examples-4",
+          "codeHash": "16fae59aea4c57677c58406a937ff00ed07f5a8fed24502cd326bbc9cb651ee7",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        },
+        {
+          "locator": "#page-content-container pre[28] under #examples-5",
+          "codeHash": "9ec8892b02213a9f3255aab1e450e1108d324dfc414f41ca2941f82e2fa7aebe",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        }
+      ],
+      "tableEvidence": [],
+      "selectedControls": {
+        "locator": "div[data-sentry-component=\"VersionPicker\"]",
+        "componentSourceFile": "version-picker.tsx",
+        "instances": 2,
+        "comboboxLocator": "[role=\"combobox\"][aria-labelledby=\"version-picker-label\"]",
+        "displayedVersion": "6000.0",
+        "tag": "LTS",
+        "nativeInputLocator": "input.MuiSelect-nativeInput",
+        "nativeInputValue": "6000.0",
+        "ariaExpanded": false,
+        "controlOpened": false,
+        "boundApiReleaseProven": false
+      },
+      "rscEvidence": {
+        "file": "native/build/reference-corpus/unity-portal-version-batch/Transform.Translate.rsc-script-49.txt",
+        "sha256": "243562030f429626426e42999908f9407fede2a17fd0a8ce4f83d19dc5dc822a",
+        "scriptOrdinal": 49,
+        "decodedChars": 4055605,
+        "decodeMethod": "JSON decode self.__next_f.push([1,string]); LF UTF-8 saved decoded stream",
+        "routeLocator": "rsc:0/c",
+        "environmentLocator": "rsc:12/1/3",
+        "environment": {
+          "environment_namespace": "engine",
+          "environment_version": "6000.0",
+          "environment_content_locale": "en-US",
+          "environment_locale_is_fallback": false
+        },
+        "headerLocator": "rsc:12/2/3",
+        "versionListCount": 10,
+        "environmentFieldsDirectlyRead": true,
+        "entireDecodedStreamRead": false,
+        "scriptElements": 49,
+        "externalScriptElements": 40,
+        "allExternalScriptsRead": false
+      },
+      "actualBodyVersionEvidence": {
+        "selectedPublisherEnvironment": "6000.0",
+        "apiBodyVersionLabel": null,
+        "contentBoundReleaseId": "unresolved in inspected evidence",
+        "conclusion": "publisher-selected environment observed; API content edition/source relation pending; no strict promotion"
+      },
+      "bodyFacts": [
+        {
+          "locator": "#definition",
+          "fact": "method in UnityEngine namespace and UnityEngine.CoreModule assembly; no version field"
+        },
+        {
+          "locator": "#translate(vector3-space), #translate(vector3), #translate(float-float-float-space), #translate(float-float-float)",
+          "fact": "four Space/omitted shapes retain Self-local and World movement semantics; displayed Space signatures omit default syntax; examples use deltaTime"
+        },
+        {
+          "locator": "#translate(vector3-transform), #translate(float-float-float-transform)",
+          "fact": "reference transform defines local frame; null reference uses world; examples use camera transform"
+        },
+        {
+          "locator": "#page-content-container",
+          "fact": "six example blocks and sixteen parameter type blocks are distinct from six signature blocks; relative last-updated label supplies no immutable edition"
+        }
+      ]
+    },
+    {
+      "name": "PhysicsScene2D.Simulate",
+      "sourceFile": "native/build/reference-corpus/unity-portal-alias-batch/PhysicsScene2D.Simulate.portal.html",
+      "sourceHash": "5a97d1f7341e1e19de40ddecb7c412d124de8bedc84318dee430ff18891cd07f",
+      "sourceBytes": 5027628,
+      "bodyFile": "native/build/reference-corpus/unity-portal-alias-batch/PhysicsScene2D.Simulate.portal.body.html",
+      "bodyHash": "a65c98e3c0251cce22569653eb586da136ea745ef7c6cd4e2915487f0545b8f7",
+      "bodyBytes": 34916,
+      "sourceContainerMatchesBody": true,
+      "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/physicsscene2d/simulate",
+      "finalUrl": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/physicsscene2d/simulate",
+      "retrievedAtUTC": "2026-10-04T03:39:29.964911+00:00",
+      "httpStatus": 200,
+      "contentType": null,
+      "bodyMethod": "BeautifulSoup html.parser; str(#page-content-container); stored bytes recomputed and equal",
+      "reader": "unity_lifecycle_body",
+      "readDate": "2026-10-04",
+      "readScope": "entire content-container text, all signatures, parameters, examples and table cells; source DOM version controls/meta; selected RSC publisher fields. UI/SVG rendering and remaining navigation/scripts not read.",
+      "localTextBodyRead": true,
+      "fullMediaUiVerified": false,
+      "ledgerEligible": false,
+      "headingCounts": {
+        "h1": 1,
+        "h2": 1,
+        "h3": 4,
+        "h4": 4,
+        "h5": 0,
+        "h6": 0
+      },
+      "h1h3HeadingCount": 6,
+      "h1h6HeadingCount": 10,
+      "headings": [
+        [
+          1,
+          "h1",
+          null,
+          "Simulate(float, int)"
+        ],
+        [
+          2,
+          "h2",
+          "definition",
+          "Definition"
+        ],
+        [
+          3,
+          "h3",
+          "parameters",
+          "Parameters"
+        ],
+        [
+          4,
+          "h4",
+          null,
+          "deltaTime"
+        ],
+        [
+          5,
+          "h4",
+          null,
+          "simulationLayers"
+        ],
+        [
+          6,
+          "h3",
+          "returns",
+          "Returns"
+        ],
+        [
+          7,
+          "h4",
+          null,
+          "Type"
+        ],
+        [
+          8,
+          "h4",
+          null,
+          "Description"
+        ],
+        [
+          9,
+          "h3",
+          "remarks",
+          "Remarks"
+        ],
+        [
+          10,
+          "h3",
+          "examples",
+          "Examples"
+        ]
+      ],
+      "displayedSignatures": 1,
+      "parameterTypePre": 2,
+      "examples": 1,
+      "preElements": 4,
+      "tableCount": 1,
+      "imgElements": 0,
+      "inlineSvgElements": 14,
+      "svgVisuallyReviewed": 0,
+      "canonicalLinks": 0,
+      "body6000LiteralOccurrences": 0,
+      "engine": "Unity",
+      "kind": "api",
+      "requestedVersion": "6000.0",
+      "locale": "en-US",
+      "extractorVersions": {
+        "python": "3.13.7",
+        "beautifulsoup4": "4.15.0",
+        "parser": "html.parser"
+      },
+      "publisherSelectedVersion": "6000.0",
+      "contentEditionBinding": "pending",
+      "contentTypeEvidence": "004 metadata did not preserve content-type header; source is actual HTML",
+      "exampleEvidence": [
+        {
+          "locator": "#page-content-container pre[4] under #examples",
+          "codeHash": "702faab58748e7b7a08f61c32a40e79479039c999d700245d813d5cb79db0ae6",
+          "hashMethod": "UTF-8 of BeautifulSoup pre.get_text(), no reformatting",
+          "codePublished": false
+        }
+      ],
+      "tableEvidence": [
+        {
+          "locator": "#page-content-container table[1]",
+          "rows": 2,
+          "headerCells": 2,
+          "dataCells": 2,
+          "semanticCheck": "bool return reports whether simulation ran; invocation inside physics callbacks fails",
+          "cellsDirectlyCompared": true
+        }
+      ],
+      "selectedControls": {
+        "locator": "div[data-sentry-component=\"VersionPicker\"]",
+        "componentSourceFile": "version-picker.tsx",
+        "instances": 2,
+        "comboboxLocator": "[role=\"combobox\"][aria-labelledby=\"version-picker-label\"]",
+        "displayedVersion": "6000.0",
+        "tag": "LTS",
+        "nativeInputLocator": "input.MuiSelect-nativeInput",
+        "nativeInputValue": "6000.0",
+        "ariaExpanded": false,
+        "controlOpened": false,
+        "boundApiReleaseProven": false
+      },
+      "rscEvidence": {
+        "file": "native/build/reference-corpus/unity-portal-version-batch/PhysicsScene2D.Simulate.rsc-script-49.txt",
+        "sha256": "17d9c1e4a401686f19a500db7b50ba92bc8173f9608a5f32feffc89c75aed798",
+        "scriptOrdinal": 49,
+        "decodedChars": 4048045,
+        "decodeMethod": "JSON decode self.__next_f.push([1,string]); LF UTF-8 saved decoded stream",
+        "routeLocator": "rsc:0/c",
+        "environmentLocator": "rsc:12/1/3",
+        "environment": {
+          "environment_namespace": "engine",
+          "environment_version": "6000.0",
+          "environment_content_locale": "en-US",
+          "environment_locale_is_fallback": false
+        },
+        "headerLocator": "rsc:12/2/3",
+        "versionListCount": 10,
+        "environmentFieldsDirectlyRead": true,
+        "entireDecodedStreamRead": false,
+        "scriptElements": 49,
+        "externalScriptElements": 40,
+        "allExternalScriptsRead": false
+      },
+      "actualBodyVersionEvidence": {
+        "selectedPublisherEnvironment": "6000.0",
+        "apiBodyVersionLabel": null,
+        "contentBoundReleaseId": "unresolved in inspected evidence",
+        "conclusion": "publisher-selected environment observed; API content edition/source relation pending; no strict promotion"
+      },
+      "bodyFacts": [
+        {
+          "locator": "#definition, #parameters",
+          "fact": "method in UnityEngine.Physics2DModule; bool instance signature displays layer default -1; time increment and selected layers documented"
+        },
+        {
+          "locator": "#returns/table[1]",
+          "fact": "two rows/four cells; bool execution result and callback invocation failure directly read"
+        },
+        {
+          "locator": "#remarks",
+          "fact": "layer mask applies to bodies, contacts, joints and effectors; edit-mode contact generation suppresses standard contact callbacks; manual simulation does not trigger FixedUpdate; fixed time step guidance retained"
+        },
+        {
+          "locator": "#examples",
+          "fact": "example uses PhysicsScene on a PhysicsScene2D page; no silent correction applied; no body release label found"
+        }
+      ]
+    },
+    {
+      "name": "documentation-versions-6000.0",
+      "sourceFile": "native/build/reference-corpus/unity-portal-version-batch/documentation-versions-6000.0.html",
+      "sourceHash": "871ca0cc3e1f5bc12e02f1e7088912575a8ff1a30e1afad9ea1303fee2f48d4d",
+      "sourceBytes": 942031,
+      "bodyFile": "native/build/reference-corpus/unity-portal-version-batch/documentation-versions-6000.0.body.html",
+      "bodyHash": "644b07bba56474c64ccf67433fc3510a2e146851e5527a1dedf337ffa1bc7909",
+      "bodyBytes": 11080,
+      "sourceContainerMatchesBody": true,
+      "url": "https://docs.unity.com/en-us/engine/6000.0/manual/manual-versions",
+      "finalUrl": "https://docs.unity.com/en-us/engine/6000.0/manual/manual-versions",
+      "retrievedAtUTC": "2026-10-04T03:58:36.640054+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bodyMethod": "BeautifulSoup html.parser; str(#page-content-container); stored bytes recomputed and equal",
+      "reader": "unity_lifecycle_body",
+      "readDate": "2026-10-04",
+      "readScope": "entire manual content-container text and lists; version controls/meta and captured HTTP headers. No manual RSC stream, linked target pages or UI/SVG rendering read.",
+      "localTextBodyRead": true,
+      "fullMediaUiVerified": false,
+      "ledgerEligible": false,
+      "headingCounts": {
+        "h1": 1,
+        "h2": 2,
+        "h3": 0,
+        "h4": 0,
+        "h5": 0,
+        "h6": 0
+      },
+      "h1h3HeadingCount": 3,
+      "h1h6HeadingCount": 3,
+      "headings": [
+        [
+          1,
+          "h1",
+          null,
+          "Documentation versions"
+        ],
+        [
+          2,
+          "h2",
+          "install-offline-documentation",
+          "Install offline documentation"
+        ],
+        [
+          3,
+          "h2",
+          "additional-resources",
+          "Additional resources"
+        ]
+      ],
+      "displayedSignatures": 0,
+      "parameterTypePre": 0,
+      "examples": 0,
+      "preElements": 0,
+      "tableCount": 0,
+      "imgElements": 0,
+      "inlineSvgElements": 3,
+      "svgVisuallyReviewed": 0,
+      "canonicalLinks": 0,
+      "body6000LiteralOccurrences": 0,
+      "engine": "Unity",
+      "kind": "manual",
+      "requestedVersion": "6000.0",
+      "locale": "en-US",
+      "extractorVersions": {
+        "python": "3.13.7",
+        "beautifulsoup4": "4.15.0",
+        "parser": "html.parser"
+      },
+      "publisherSelectedVersion": "6000.0",
+      "contentEditionBinding": "pending",
+      "contentTypeEvidence": "captured HTTP content-type header",
+      "bodyVersionEvidence": {
+        "breadcrumbLabel": "Unity 6.0 User Manual",
+        "6000LiteralInBody": false,
+        "exactPublishedEditionProven": false
+      },
+      "exampleEvidence": [],
+      "tableEvidence": [],
+      "selectedControls": {
+        "locator": "div[data-sentry-component=\"VersionPicker\"]",
+        "componentSourceFile": "version-picker.tsx",
+        "instances": 2,
+        "comboboxLocator": "[role=\"combobox\"][aria-labelledby=\"version-picker-label\"]",
+        "displayedVersion": "6000.0",
+        "tag": "LTS",
+        "nativeInputLocator": "input.MuiSelect-nativeInput",
+        "nativeInputValue": "6000.0",
+        "ariaExpanded": false,
+        "controlOpened": false,
+        "boundApiReleaseProven": false
+      },
+      "bodyFacts": [
+        {
+          "locator": "#page-content-container introduction before #install-offline-documentation",
+          "fact": "engine features/documents change between releases; online content within one version can be republished; select Manual/API version matching installed engine"
+        },
+        {
+          "locator": "#page-content-container introduction, archived/offline list",
+          "fact": "installer offline documents match their version; offline installer and unsupported archived documents are not republished; this general contract does not resolve duplicated 6000.0 supported/archived state"
+        },
+        {
+          "locator": "#install-offline-documentation",
+          "fact": "Download Assistant/Hub installation and separate Offline Documentation link described; target pages/install UI unread"
+        },
+        {
+          "locator": "#additional-resources",
+          "fact": "four links to new features, upgrade, system requirements and install pages; targets unread"
+        },
+        {
+          "locator": "#page-content-container breadcrumb and introduction external link",
+          "fact": "breadcrumb says Unity 6.0 User Manual; external docs.unity3d.com root link confirms publisher relationship but supplies no page-specific 6000.0 alias/edition equivalence"
+        }
+      ],
+      "httpPublisherContext": {
+        "middlewareRewrite": "/en-US/engine/6000.0/manual/manual-versions",
+        "cacheTag": "app:docs, release:c4bde61, path:a6482d0aca3993b0b6a3d399d6c2e47c",
+        "classification": "route rewrite and web deployment/cache identifiers; not engine/API content release identity"
+      }
+    }
+  ],
+  "publisherVersionList": {
+    "locator": "both API script[49] decoded rsc:12/2/3/versions",
+    "entryCount": 10,
+    "entries": [
+      {
+        "title": "6000.7",
+        "versionNumber": "6000.7",
+        "status": "supported",
+        "tags": [
+          "Beta"
+        ]
+      },
+      {
+        "title": "6000.6",
+        "versionNumber": "6000.6",
+        "status": "supported",
+        "tags": [
+          "Current"
+        ]
+      },
+      {
+        "title": "6000.3",
+        "versionNumber": "6000.3",
+        "status": "supported",
+        "tags": [
+          "LTS"
+        ]
+      },
+      {
+        "title": "6000.0",
+        "versionNumber": "6000.0",
+        "status": "supported",
+        "tags": [
+          "LTS"
+        ]
+      },
+      {
+        "title": "6000.5",
+        "versionNumber": "6000.5",
+        "status": "legacy"
+      },
+      {
+        "title": "2023.1",
+        "versionNumber": "2023.1",
+        "status": "archived"
+      },
+      {
+        "title": "2023.2",
+        "versionNumber": "2023.2",
+        "status": "archived"
+      },
+      {
+        "title": "2023.3",
+        "versionNumber": "2023.3",
+        "status": "archived"
+      },
+      {
+        "title": "6000.0",
+        "versionNumber": "6000.0",
+        "status": "archived"
+      },
+      {
+        "title": "6000.1",
+        "versionNumber": "6000.1",
+        "status": "archived"
+      }
+    ],
+    "duplicate6000Statuses": [
+      "supported/LTS",
+      "archived"
+    ],
+    "conflictDisposition": "pending official status/identity explanation; no default status chosen",
+    "current60006Scope": "publisher label in captured list only; no global-latest claim"
+  },
+  "publisherBootstrap": {
+    "url": "https://cdn.docs.unity.com/_next/static/chunks/app/%5Blocale%5D/%5Bnamespace%5D/%5B%5B...slugs%5D%5D/layout-85a1c850e814ba87.js",
+    "finalUrl": "https://cdn.docs.unity.com/_next/static/chunks/app/%5Blocale%5D/%5Bnamespace%5D/%5B%5B...slugs%5D%5D/layout-85a1c850e814ba87.js",
+    "httpStatus": 200,
+    "retrievedAtUTC": "2026-10-04T03:58:37.071842+00:00",
+    "file": "native/build/reference-corpus/unity-portal-version-batch/publisher-layout.js",
+    "sha256": "963f0c464a39fa39b53ee529950ad96dcb54a7326f88c3c328b34f42cb18a7f8",
+    "bytes": 11928,
+    "contentType": "text/javascript",
+    "reader": "unity_lifecycle_body",
+    "readDate": "2026-10-04",
+    "readScope": "entire 11928-byte bootstrap; import/module entries; no imported implementation reading",
+    "rscImportsRead": {
+      "rsc:24": [
+        78696,
+        "EnvironmentTracker"
+      ],
+      "rsc:25": [
+        3591,
+        "ProductHeader"
+      ],
+      "rsc:27": [
+        75795,
+        "Sidebar"
+      ]
+    },
+    "webDeploymentCommit": "c4bde6175915f371d780be8a35721e0cdc47091a",
+    "engineContentVersionInferredFromCommit": false,
+    "versionPickerImplementationFound": false,
+    "externalDependencyImplementationStatus": "pending acquisition/read; no new requests in offline finalization"
+  },
+  "evidenceLayerConclusion": {
+    "route": "requested/final 6000.0 address",
+    "ssrSelection": "publisher rendered selected control 6000.0 LTS",
+    "meta": "no API edition metadata among inspected meta/canonical fields",
+    "rsc": "publisher declares engine/6000.0/en-US/nonfallback environment",
+    "body": "API contracts lack content version label; manual general versioning policy is not API edition binding",
+    "hostRelation": "official manual links old host root; no per-page canonical alias or immutable edition guarantee",
+    "strictDisposition": "pending_content_edition_status_conflict_and_independent_comparison"
+  },
+  "hbDecisions": [
+    {
+      "axis": "research provenance",
+      "decision": "keep selected environment, content edition, web deployment and source/body hashes separate; retain host/source identity differences"
+    },
+    {
+      "axis": "C++ and node runtime contracts",
+      "decision": "bind defaults/modules to fixed authoritative declarations; version control selection alone cannot resolve API signature mismatch"
+    },
+    {
+      "axis": "human/AI authoring",
+      "decision": "use common pinned contract/source identity for API selection and preserve unresolved alternatives; no implementation performed"
+    }
+  ],
+  "pending": [
+    {
+      "id": "UV005-01",
+      "item": "VersionPicker and server content loader contract, selected environment to API content edition binding",
+      "status": "pending; only import bootstrap read"
+    },
+    {
+      "id": "UV005-02",
+      "item": "same6000.0 supported/LTS versus archived publisher records",
+      "status": "pending official explanation"
+    },
+    {
+      "id": "UV005-03",
+      "item": "old/new host immutable page edition/canonical alias mapping and version-fixed binding comparison",
+      "status": "pending; prior004 comparison referenced, not independently verified here"
+    },
+    {
+      "id": "UV005-04",
+      "item": "Space optional/default display, Physics2D.AllLayers versus -1 and wrong PhysicsScene example",
+      "status": "pending authoritative binding/constant/source correction; no fabricated equivalence"
+    },
+    {
+      "id": "UV005-05",
+      "item": "manual link targets, full remaining RSC/sidebar and dependency implementations",
+      "status": "unread; no inherited body counts"
+    },
+    {
+      "id": "UV005-06",
+      "item": "UI rendering/SVG appearance and opened selector interactions",
+      "status": "not performed; DOM role classification only"
+    },
+    {
+      "id": "UV005-07",
+      "item": "client network permission revoked error reported by root; no actual failed HTTP URL/status captured",
+      "status": "client/tool error only; not HTTP403 or global network block; acquisition evidence limited to captured fetch records; separate root HTTP follow-up pending"
+    }
+  ],
+  "restrictions": {
+    "offlineFinalization": true,
+    "additionalNetworkInFinalization": false,
+    "guiChanged": false,
+    "engineChanged": false,
+    "sharedLedgerStatusToolsChanged": false,
+    "commitCreated": false,
+    "originalBodyScriptPublication": false,
+    "fullCorpusClaim": false
+  }
+}

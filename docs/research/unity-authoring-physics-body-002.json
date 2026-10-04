@@ -1,0 +1,1878 @@
+{
+  "schemaVersion": 1,
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "actor": "root",
+  "analysisDate": "2026-10-04",
+  "phase": "research_only",
+  "analysisReport": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+  "independentlyVerified": 0,
+  "counts": {
+    "pages": 8,
+    "sections": 32,
+    "displayedDeclarations": 8,
+    "parameterTables": 7,
+    "codeExamples": 8
+  },
+  "pages": [
+    {
+      "pageId": "ef5137303f021233fad475cc",
+      "sourceHash": "11fb1f2d52bccec9bf0366cba913bfa18053526f77d85b900ac92211c65e0852",
+      "bodyHash": "f371f3576a2dec15c9370f122d58376cf51154a595c74b403274ba560cc99f90",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void Refresh ( ImportAssetOptions options = ImportAssetOptions.Default);"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html: heading 1 AssetDatabase .Refresh and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "Editor asset DB 전체 갱신 호출이에요.",
+            "hbDecision": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void와 ImportAssetOptions.Default 선택 인수예요.",
+            "hbDecision": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "options의 import 선택을 설명하며 옵션 enum 본문은 별도예요.",
+            "hbDecision": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "변경/추가/삭제와 의존성 반영, 에셋 import 동기/스크립트 컴파일 비동기, unused asset GC, 자동 감지/Auto Refresh 비활성화 조건과 3폴더 예제를 확인했어요.",
+            "hbDecision": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void Refresh ( ImportAssetOptions options = ImportAssetOptions.Default);",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"options\", \"type\": \"ImportAssetOptions\", \"default\": \"ImportAssetOptions.Default\"}], \"scheduling\": \"asset imports synchronous; script compilation asynchronous\", \"sideEffects\": [\"asset change/dependency/deletion reconciliation\", \"implicit unused asset garbage collection\"]}",
+            "hbDecision": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요."
+          }
+        ],
+        "editor": "단일 import·전체 refresh·GC·비동기 빌드 결과를 공통 사람/AI 명령과 C++/노드 작업 상태에서 구분해요.",
+        "runtime": "Editor-only UnityEditor sample; runtime capability not established by this API.",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "옵션 조합·GC 참조 수명·실패/원자성·스레드 계약과 refresh loop 전체는 후속 본문 확인이 필요해요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AssetDatabase.Refresh.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/AssetDatabase.Refresh.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.Refresh.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void Refresh ( ImportAssetOptions options = ImportAssetOptions.Default);"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void Refresh ( ImportAssetOptions options = ImportAssetOptions.Default);",
+          "owner": "AssetDatabase",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "options",
+                "type": "ImportAssetOptions",
+                "default": "ImportAssetOptions.Default"
+              }
+            ],
+            "scheduling": "asset imports synchronous; script compilation asynchronous",
+            "sideEffects": [
+              "asset change/dependency/deletion reconciliation",
+              "implicit unused asset garbage collection"
+            ]
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "AssetDatabase .Refresh"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "AssetDatabase.html",
+          "text": "AssetDatabase"
+        },
+        {
+          "href": "ImportAssetOptions.html",
+          "text": "ImportAssetOptions"
+        },
+        {
+          "href": "Resources.UnloadUnusedAssets.html",
+          "text": "Resources.UnloadUnusedAssets"
+        },
+        {
+          "href": "../Manual/preferences-asset-pipeline.html",
+          "text": "Auto Refresh"
+        },
+        {
+          "href": "ImportAssetOptions.html",
+          "text": "ImportAssetOptions"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "AssetDatabase.html",
+          "text": "AssetDatabase"
+        },
+        {
+          "href": "Windows.Directory.CreateDirectory.html",
+          "text": "Directory.CreateDirectory"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "AssetDatabase.IsValidFolder.html",
+          "text": "AssetDatabase.IsValidFolder"
+        },
+        {
+          "href": "AssetDatabase.Refresh.html",
+          "text": "AssetDatabase.Refresh"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "AssetDatabase.IsValidFolder.html",
+          "text": "AssetDatabase.IsValidFolder"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "f5e14e2d301b83c9e7254d17",
+      "sourceHash": "dbede9fa9e6ce4f7cf8b020b0f3377a0e9ee41862f6b8dc54c95ff1f9bef326b",
+      "bodyHash": "ef08c813d9583ae7fb1f8eec8d9bc02eb00bf454a35e01fc17eb3b5cfbe4cf3a",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void ImportAsset (string path , ImportAssetOptions options = ImportAssetOptions.Default);"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html: heading 1 AssetDatabase .ImportAsset and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "프로젝트 에셋 한 경로의 import 호출이에요.",
+            "hbDecision": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void, path와 default 옵션을 표시해요.",
+            "hbDecision": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "표에는 path만 있어 signature의 options 설명은 누락됐어요.",
+            "hbDecision": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "프로젝트 상대 경로, 저장 전/후처리 콜백, 두 파일 중 하나만 import하는 예제를 확인했어요. 디렉터리 생성은 예제에 없어 실행 전제예요.",
+            "hbDecision": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void ImportAsset (string path , ImportAssetOptions options = ImportAssetOptions.Default);",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"path\", \"type\": \"string\", \"meaning\": \"project-relative path\"}, {\"name\": \"options\", \"type\": \"ImportAssetOptions\", \"default\": \"ImportAssetOptions.Default\", \"parameterTable\": \"missing\"}], \"sideEffects\": [\"AssetModificationProcessor.OnWillSaveAssets\", \"AssetPostprocessor.OnPostprocessAllAssets\"]}",
+            "hbDecision": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요."
+          }
+        ],
+        "editor": "단일 파일 import와 전체 refresh를 분리하고 경로 규칙·후처리·실패·동기 상태를 동일 C++/노드/UI/AI 계약으로 정의해야 해요.",
+        "runtime": "Editor-only UnityEditor sample; runtime capability not established by this API.",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "options가 인수 표에 누락됐어요. ImportAssetOptions 본문과 대조해야 해요.",
+        "콜백 순서·실패·동기성·옵션 전체 계약은 본문이 확정하지 않아요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AssetDatabase.ImportAsset.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/AssetDatabase.ImportAsset.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.ImportAsset.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void ImportAsset (string path , ImportAssetOptions options = ImportAssetOptions.Default);"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void ImportAsset (string path , ImportAssetOptions options = ImportAssetOptions.Default);",
+          "owner": "AssetDatabase",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "path",
+                "type": "string",
+                "meaning": "project-relative path"
+              },
+              {
+                "name": "options",
+                "type": "ImportAssetOptions",
+                "default": "ImportAssetOptions.Default",
+                "parameterTable": "missing"
+              }
+            ],
+            "sideEffects": [
+              "AssetModificationProcessor.OnWillSaveAssets",
+              "AssetPostprocessor.OnPostprocessAllAssets"
+            ]
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "AssetDatabase .ImportAsset"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "AssetDatabase.html",
+          "text": "AssetDatabase"
+        },
+        {
+          "href": "ImportAssetOptions.html",
+          "text": "ImportAssetOptions"
+        },
+        {
+          "href": "AssetModificationProcessor.OnWillSaveAssets.html",
+          "text": "AssetModificationProcessor.OnWillSaveAssets"
+        },
+        {
+          "href": "AssetPostprocessor.OnPostprocessAllAssets.html",
+          "text": "AssetPostprocessor.OnPostprocessAllAssets"
+        },
+        {
+          "href": "ImportAssetOptions.html",
+          "text": "ImportAssetOptions"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Application-dataPath.html",
+          "text": "Application.dataPath"
+        },
+        {
+          "href": "AssetDatabase.ImportAsset.html",
+          "text": "AssetDatabase.ImportAsset"
+        },
+        {
+          "href": "AssetPostprocessor.html",
+          "text": "AssetPostprocessor"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "VersionControl.Asset.html",
+          "text": "Asset"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "f5b1f420c10fd736b37ae9ea",
+      "sourceHash": "b9a8531665acef8e629e776d74ca24dce06ccbc71f77ede96d54241d8257fe1c",
+      "bodyHash": "3689b793dd95b3f420088eddfda56602adf03339ee43a7ffa8f3f94c9b5580df",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void CreateAsset ( Object asset , string path );"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html: heading 1 AssetDatabase .CreateAsset and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "Native 에셋 생성 API이며 외부 원본 import와 달라요.",
+            "hbDecision": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void, Object asset와 string path 인수예요.",
+            "hbDecision": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "asset 객체와 프로젝트 상대 path를 표에서 구분해요.",
+            "hbDecision": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "Prefab/GameObject·비native 이미지/텍스트 제외, 기존 경로 덮어쓰기, native 확장자·StreamingAssets 오류, import 중 생성 경고, 다중 subasset와 root 없음, Specular material 예제를 확인했어요.",
+            "hbDecision": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void CreateAsset ( Object asset , string path );",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"asset\", \"type\": \"Object\"}, {\"name\": \"path\", \"type\": \"string\", \"meaning\": \"project-relative native-asset path\"}], \"errors\": \"console error for non-native extension and StreamingAssets; warning for import-time use\", \"sideEffects\": [\"existing asset path overwritten\"]}",
+            "hbDecision": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요."
+          }
+        ],
+        "editor": "생성·원본 import·프리팹 저장·subasset ID·덮어쓰기·재진입을 별도 공통 명령으로 설계해야 해요.",
+        "runtime": "Editor-only UnityEditor sample; runtime capability not established by this API.",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "지원 형식 전체·예외/실패 방식·트랜잭션/Undo·subasset 참조 수명·렌더 파이프라인의 예제 shader 지원은 별도 미확인이에요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AssetDatabase.CreateAsset.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/AssetDatabase.CreateAsset.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/AssetDatabase.CreateAsset.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void CreateAsset ( Object asset , string path );"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void CreateAsset ( Object asset , string path );",
+          "owner": "AssetDatabase",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "asset",
+                "type": "Object"
+              },
+              {
+                "name": "path",
+                "type": "string",
+                "meaning": "project-relative native-asset path"
+              }
+            ],
+            "errors": "console error for non-native extension and StreamingAssets; warning for import-time use",
+            "sideEffects": [
+              "existing asset path overwritten"
+            ]
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "AssetDatabase .CreateAsset"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "AssetDatabase.html",
+          "text": "AssetDatabase"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "../Manual/assets-supported-types.html",
+          "text": "Native asset importers reference"
+        },
+        {
+          "href": "PrefabUtility.html",
+          "text": "PrefabUtility"
+        },
+        {
+          "href": "../Manual/assets-supported-types.html",
+          "text": "Native asset importers reference"
+        },
+        {
+          "href": "AssetDatabase.AddObjectToAsset.html",
+          "text": "AssetDatabase.AddObjectToAsset"
+        },
+        {
+          "href": "../Manual/ImporterConsistency.html",
+          "text": "Check the consistency of the import process"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Material.html",
+          "text": "Material"
+        },
+        {
+          "href": "Material.html",
+          "text": "Material"
+        },
+        {
+          "href": "Material.html",
+          "text": "Material"
+        },
+        {
+          "href": "Shader.Find.html",
+          "text": "Shader.Find"
+        },
+        {
+          "href": "AssetDatabase.CreateAsset.html",
+          "text": "AssetDatabase.CreateAsset"
+        },
+        {
+          "href": "Debug.Log.html",
+          "text": "Debug.Log"
+        },
+        {
+          "href": "AssetDatabase.GetAssetPath.html",
+          "text": "AssetDatabase.GetAssetPath"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "ac3308731972241194a9a09e",
+      "sourceHash": "7b6e9d53aa9c20844e86725f58bcffb9e1c24dc8f8ae8112f5673733482eade7",
+      "bodyHash": "cac758ea03217e98d1948baae5a08e10b6ffebbb9dc361c3e1c4476d8bce3fed",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void RecordObject ( Object objectToUndo , string name );"
+      ],
+      "media": [
+        "table-1",
+        "example-1",
+        "example-2"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html: heading 1 Undo .RecordObject and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "변경 전 상태를 저장해 이후 속성 변화 Undo를 기록해요.",
+            "hbDecision": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void, Object objectToUndo와 string name 인수예요.",
+            "hbDecision": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "수정 객체와 Undo 메뉴의 action 이름을 표에서 확인했어요.",
+            "hbDecision": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "프레임 끝 binary diff/no-change 미기록, parent/AddComponent/destruction 제외, prefab override 별도 기록과 radius Editor/MonoBehaviour 두 예제의 record-before-write 순서를 확인했어요.",
+            "hbDecision": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void RecordObject ( Object objectToUndo , string name );",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"objectToUndo\", \"type\": \"Object\"}, {\"name\": \"name\", \"type\": \"string\", \"meaning\": \"undo-menu action title\"}], \"scheduling\": \"copy at call, binary property diff at frame end\", \"excludedChanges\": [\"transform parent\", \"AddComponent\", \"object destruction\"]}",
+            "hbDecision": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요."
+          }
+        ],
+        "editor": "사람 UI·C++ 편집 확장·AI patch에 같은 before/after 변경 기록과 별도 구조 변경 명령이 필요해요.",
+        "runtime": "Editor-only UnityEditor sample; runtime capability not established by this API.",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "Grouping/Redo·메모리·객체 수명·전용 구조 Undo API·prefab 저장 계약은 후속 확인이 필요해요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObject.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RecordObject.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/Undo.RecordObject.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void RecordObject ( Object objectToUndo , string name );"
+          ],
+          "media": [
+            "table-1",
+            "example-1",
+            "example-2"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void RecordObject ( Object objectToUndo , string name );",
+          "owner": "Undo",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "objectToUndo",
+                "type": "Object"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "meaning": "undo-menu action title"
+              }
+            ],
+            "scheduling": "copy at call, binary property diff at frame end",
+            "excludedChanges": [
+              "transform parent",
+              "AddComponent",
+              "object destruction"
+            ]
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "Undo .RecordObject"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+          "text": "PrefabUtility.RecordPrefabInstancePropertyModifications"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "CustomEditor.html",
+          "text": "CustomEditor"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor"
+        },
+        {
+          "href": "GUI.html",
+          "text": "GUI"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "EditorGUI.BeginChangeCheck.html",
+          "text": "EditorGUI.BeginChangeCheck"
+        },
+        {
+          "href": "Handles.RadiusHandle.html",
+          "text": "Handles.RadiusHandle"
+        },
+        {
+          "href": "Quaternion-identity.html",
+          "text": "Quaternion.identity"
+        },
+        {
+          "href": "EditorGUI.EndChangeCheck.html",
+          "text": "EditorGUI.EndChangeCheck"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "c4f6067e221bb5b19c99357e",
+      "sourceHash": "6463badd9cd5e28613e6b059078d22f84145e3087686d05827242200c823e3c8",
+      "bodyHash": "f89a01f15ddd6145e2a1bf5f24cba5d95e597522483ef6683394480b0936f7fc",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void RecordPrefabInstancePropertyModifications ( Object targetObject );"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html: heading 1 PrefabUtility .RecordPrefabInstancePropertyModifications and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "프리팹 인스턴스 변경 override 기록이에요.",
+            "hbDecision": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void와 Object targetObject 한 인수를 표시해요.",
+            "hbDecision": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "처리 객체 인수를 표에서 확인했어요.",
+            "hbDecision": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "수정 뒤 기록·누락 시 저장/재열기 손실, SerializedObject/Property 권장, Undo→scale→override 예제, SaveScene 주석·persistent/무선택 메뉴 비활성화를 확인했어요.",
+            "hbDecision": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void RecordPrefabInstancePropertyModifications ( Object targetObject );",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"targetObject\", \"type\": \"Object\"}], \"ordering\": \"after property mutation; example uses Undo.RecordObject before mutation\", \"alternative\": \"SerializedObject and SerializedProperty\", \"persistence\": \"not itself proof that disk Scene save occurred\"}",
+            "hbDecision": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요."
+          }
+        ],
+        "editor": "기본값·instance override·Undo·dirty·디스크 저장을 분리하고 공통 validated property edit를 사람/AI에 제공해야 해요.",
+        "runtime": "Editor-only UnityEditor sample; runtime capability not established by this API.",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "본문 Undo 관련 설명을 이 함수만의 범용 Undo 보장으로 확대할 수 없어요. 중첩/variant·구조 override·apply/revert·dirty 상세는 후속 확인이 필요해요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/PrefabUtility.RecordPrefabInstancePropertyModifications.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void RecordPrefabInstancePropertyModifications ( Object targetObject );"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void RecordPrefabInstancePropertyModifications ( Object targetObject );",
+          "owner": "PrefabUtility",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "targetObject",
+                "type": "Object"
+              }
+            ],
+            "ordering": "after property mutation; example uses Undo.RecordObject before mutation",
+            "alternative": "SerializedObject and SerializedProperty",
+            "persistence": "not itself proof that disk Scene save occurred"
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "PrefabUtility .RecordPrefabInstancePropertyModifications"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "PrefabUtility.html",
+          "text": "PrefabUtility"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "SerializedProperty.html",
+          "text": "SerializedProperty"
+        },
+        {
+          "href": "SerializedObject.html",
+          "text": "SerializedObject"
+        },
+        {
+          "href": "SerializedObject.html",
+          "text": "SerializedObject"
+        },
+        {
+          "href": "SerializedProperty.html",
+          "text": "SerializedProperty"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "UIElements.Scale.html",
+          "text": "Scale"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Selection-activeGameObject.html",
+          "text": "Selection.activeGameObject"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene"
+        },
+        {
+          "href": "PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+          "text": "PrefabUtility.RecordPrefabInstancePropertyModifications"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "Scene"
+        },
+        {
+          "href": "SceneManagement.EditorSceneManager.SaveScene.html",
+          "text": "EditorSceneManager.SaveScene"
+        },
+        {
+          "href": "SceneManagement.SceneManager.GetActiveScene.html",
+          "text": "SceneManager.GetActiveScene"
+        },
+        {
+          "href": "Unity.Hierarchy.Hierarchy.html",
+          "text": "Hierarchy"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "UIElements.Scale.html",
+          "text": "Scale"
+        },
+        {
+          "href": "Selection-activeGameObject.html",
+          "text": "Selection.activeGameObject"
+        },
+        {
+          "href": "EditorUtility.IsPersistent.html",
+          "text": "EditorUtility.IsPersistent"
+        },
+        {
+          "href": "Selection-activeGameObject.html",
+          "text": "Selection.activeGameObject"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "0fb5d9f5143743922523e2ff",
+      "sourceHash": "5168e68ae50715912dcabce2d8584c95bedafec8bee9d65695a0294be2aae3a7",
+      "bodyHash": "a55023e5920a4030e66602b2067fbc0eb3aeadab8aa686bca9a80284ddb9a8e3",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [
+        "public static void Simulate (float step );"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html: heading 1 Physics .Simulate and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "3D 물리 simulation을 수동 호출해요.",
+            "hbDecision": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void와 float step 인수예요.",
+            "hbDecision": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "step은 물리 시간을 얼마나 전진시킬지 설명해요.",
+            "hbDecision": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html: heading 4 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "Script mode, detection/integration/callback, FixedUpdate 별도, 고정 작은 양수 step과 0.03 초과 정확도 경고, accumulator 예제와 maximumDeltaTime 제외를 확인했어요.",
+            "hbDecision": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void Simulate (float step );",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [{\"name\": \"step\", \"type\": \"float\", \"guidance\": \"small positive value; >0.03 accuracy warning\"}], \"precondition\": \"Physics.simulationMode Script\", \"scheduling\": \"does not invoke FixedUpdate; existing FixedUpdate schedule remains\", \"exampleLimit\": \"excludes Time.maximumDeltaTime handling\"}",
+            "hbDecision": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요."
+          }
+        ],
+        "editor": "C++/노드 lifecycle과 물리 스텝을 분리하고 fixed step·catch-up cap·pause·재진입·콜백 순서를 별도 계약으로 정의해야 해요.",
+        "runtime": "does not invoke FixedUpdate; existing FixedUpdate schedule remains",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "고정 step이 플랫폼 간 bit-identical 결과를 보장한다는 근거는 없어요. invalid step·callback 재진입·thread·다중 Scene은 후속 확인이 필요해요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics.Simulate.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics.Simulate.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.Simulate.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [
+            "public static void Simulate (float step );"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void Simulate (float step );",
+          "owner": "Physics",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [
+              {
+                "name": "step",
+                "type": "float",
+                "guidance": "small positive value; >0.03 accuracy warning"
+              }
+            ],
+            "precondition": "Physics.simulationMode Script",
+            "scheduling": "does not invoke FixedUpdate; existing FixedUpdate schedule remains",
+            "exampleLimit": "excludes Time.maximumDeltaTime handling"
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "Physics .Simulate"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "Physics.html",
+          "text": "Physics"
+        },
+        {
+          "href": "MonoBehaviour.FixedUpdate.html",
+          "text": "MonoBehaviour.FixedUpdate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime"
+        },
+        {
+          "href": "Physics-simulationMode.html",
+          "text": "Physics.simulationMode"
+        },
+        {
+          "href": "SimulationMode.html",
+          "text": "SimulationMode"
+        },
+        {
+          "href": "SimulationMode.FixedUpdate.html",
+          "text": "SimulationMode.FixedUpdate"
+        },
+        {
+          "href": "Time-maximumDeltaTime.html",
+          "text": "Time.maximumDeltaTime"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update"
+        },
+        {
+          "href": "Physics-simulationMode.html",
+          "text": "Physics.simulationMode"
+        },
+        {
+          "href": "SimulationMode.Script.html",
+          "text": "SimulationMode.Script"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Physics.Simulate.html",
+          "text": "Physics.Simulate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "b7d2da0693c1e3717c895d95",
+      "sourceHash": "4e335b92c273c488bf0671374529a212966858ac8c4f1a0c04baa59f944e02fa",
+      "bodyHash": "321b845c36d498d045e33f01236d61c15f492f6bd8e53d1de8c1ed3c5b7b622a",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "apiUnits": [
+        "public static void SyncTransforms ();"
+      ],
+      "media": [],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.SyncTransforms.body.html: heading 1 Physics .SyncTransforms and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "Transform 변경을 물리 엔진에 반영하는 별도 호출이에요.",
+            "hbDecision": "편집·노드·C++ transform 쓰기와 물리 질의/스텝 사이의 동기화 지점과 비용을 정의해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.SyncTransforms.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static void, 인수가 없는 선언 하나예요.",
+            "hbDecision": "편집·노드·C++ transform 쓰기와 물리 질의/스텝 사이의 동기화 지점과 비용을 정의해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.SyncTransforms.body.html: heading 3 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "해당 Transform/자식의 Rigidbody·Collider 위치/회전/크기를 flush해요. 시간 전진이나 FixedUpdate 호출 설명은 없어요.",
+            "hbDecision": "편집·노드·C++ transform 쓰기와 물리 질의/스텝 사이의 동기화 지점과 비용을 정의해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static void SyncTransforms ();",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.SyncTransforms.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"void\", \"parameters\": [], \"scope\": \"Rigidbody/Collider on changed Transform and its children\", \"sideEffects\": [\"flush pending Transform positioning/rotation/scaling to physics\"]}",
+            "hbDecision": "편집·노드·C++ transform 쓰기와 물리 질의/스텝 사이의 동기화 지점과 비용을 정의해야 해요."
+          }
+        ],
+        "editor": "편집·노드·C++ transform 쓰기와 물리 질의/스텝 사이의 동기화 지점과 비용을 정의해야 해요.",
+        "runtime": "Rigidbody/Collider on changed Transform and its children",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "autoSync·비용·2D 대응·thread/callback 허용 조건과 실제 query/step sync 순서는 본문에 없어요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics.SyncTransforms.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics.SyncTransforms.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/Physics.SyncTransforms.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3"
+          ],
+          "apiUnits": [
+            "public static void SyncTransforms ();"
+          ],
+          "media": [],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static void SyncTransforms ();",
+          "owner": "Physics",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "void",
+            "parameters": [],
+            "scope": "Rigidbody/Collider on changed Transform and its children",
+            "sideEffects": [
+              "flush pending Transform positioning/rotation/scaling to physics"
+            ]
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "Physics .SyncTransforms"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "Physics.html",
+          "text": "Physics"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Rigidbody.html",
+          "text": "Rigidbody"
+        },
+        {
+          "href": "Collider.html",
+          "text": "Collider"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    },
+    {
+      "pageId": "563ff2bae482205d42e30e46",
+      "sourceHash": "b881a0d9db5651266c84baede546d65e24c107ee6f1b33d1f47e4920e6f99483",
+      "bodyHash": "11c65ee5180656f4c148d218db2929cdc4157dfabbdebb987d252316cd8e1d88",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5"
+      ],
+      "apiUnits": [
+        "public static bool Simulate (float deltaTime , int simulationLayers = Physics2D.AllLayers);"
+      ],
+      "media": [
+        "table-1",
+        "example-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md ; all actual body prose, declarations, table cells and full code examples read; no media omitted.",
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+          "sha256": "2e082de7b8249a8ae4ea3a2ec3dd20cb1a269b84cffebb6c033b146c12df1fc9"
+        }
+      ],
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html: heading 1 Physics2D .Simulate and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "기본 2D physics Scene의 한 스텝 호출이에요.",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          },
+          {
+            "id": "h2",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html: heading 2 Declaration and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "static bool, float deltaTime와 int simulationLayers=Physics2D.AllLayers예요.",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          },
+          {
+            "id": "h3",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html: heading 3 Parameters and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "시간 전진량과 2D body/collider 대상 레이어를 표에서 확인했어요.",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          },
+          {
+            "id": "h4",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html: heading 4 Returns and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "bool 실행 여부; 물리 callbacks 안의 호출은 항상 실패해요.",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          },
+          {
+            "id": "h5",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html: heading 5 Description and following body/table/example; docs/research/UNITY_AUTHORING_PHYSICS_BODY_002.md",
+            "finding": "레이어가 body/contacts/joints/effectors를 제한하며 편집기 Play 밖 객체 이동·접촉 생성과 script callback 억제, 별도 FixedUpdate·fixed step accumulator 예제를 확인했어요.",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "public static bool Simulate (float deltaTime , int simulationLayers = Physics2D.AllLayers);",
+            "evidence": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html .signature-CS + Parameters/Description/Returns where present",
+            "finding": "{\"return\": \"bool simulation ran\", \"parameters\": [{\"name\": \"deltaTime\", \"type\": \"float\"}, {\"name\": \"simulationLayers\", \"type\": \"int\", \"default\": \"Physics2D.AllLayers\"}], \"failure\": \"always fails when called during physics callbacks\", \"editor\": \"outside Play, moves rigidbody GameObjects and generates contacts without standard script contact callbacks\", \"scheduling\": \"does not invoke FixedUpdate; fixed-step accumulator example ignores returned bool\"}",
+            "hbDecision": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요."
+          }
+        ],
+        "editor": "독립 2D world·레이어·effector·return/failure와 preview 복구/callback 정책을 C++/노드/UI/AI에 같은 계약으로 제공해야 해요.",
+        "runtime": "does not invoke FixedUpdate; fixed-step accumulator example ignores returned bool",
+        "cppBlueprint": "HB decision: C++ and typed nodes share parameter/default/result/error contracts; Unity C# declarations are not invented C++ signatures.",
+        "humanAi": "HB decision: stable object/asset IDs and validated common commands, with separate side effects and transaction scope.",
+        "dependencies": "Official outgoing URLs below are separate pending bodies; reading this page does not read targets.",
+        "limitations": "Thread/lifetime/error/related API gaps below remain unknown; no engine execution or independent verification."
+      },
+      "openIssues": [
+        "step 범위·default mask 숫자·thread·비기본 Scene·mode setter와 invalid input은 후속 확인이 필요해요."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D.Simulate.html",
+        "httpStatus": 200,
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original Unity 6.0 (6000.0) header; official ZIP job76410965 built2026-09-29",
+        "retrievalMethod": "official_archive",
+        "bodyMethod": "First technical content section; suggest/scrollToFeedback website controls excluded; original paragraphs/tables/code retained",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D.Simulate.html",
+        "bodyFile": "native/build/reference-corpus/unity-authoring-physics-batch/Physics2D.Simulate.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5"
+          ],
+          "apiUnits": [
+            "public static bool Simulate (float deltaTime , int simulationLayers = Physics2D.AllLayers);"
+          ],
+          "media": [
+            "table-1",
+            "example-1"
+          ],
+          "openIssues": [],
+          "evidence": "All original technical headings, declaration, tables, paragraphs and examples read directly; no images/language tabs in body. Not complete owner/engine API denominator."
+        }
+      },
+      "declaredApi": [
+        {
+          "signature": "public static bool Simulate (float deltaTime , int simulationLayers = Physics2D.AllLayers);",
+          "owner": "Physics2D",
+          "language": "C#",
+          "static": true,
+          "contract": {
+            "return": "bool simulation ran",
+            "parameters": [
+              {
+                "name": "deltaTime",
+                "type": "float"
+              },
+              {
+                "name": "simulationLayers",
+                "type": "int",
+                "default": "Physics2D.AllLayers"
+              }
+            ],
+            "failure": "always fails when called during physics callbacks",
+            "editor": "outside Play, moves rigidbody GameObjects and generates contacts without standard script contact callbacks",
+            "scheduling": "does not invoke FixedUpdate; fixed-step accumulator example ignores returned bool"
+          },
+          "unknownContracts": [
+            "complete owner/module declarations",
+            "thread",
+            "ownership",
+            "error details not present in body"
+          ]
+        }
+      ],
+      "headings": [
+        {
+          "id": "h1",
+          "level": "h1",
+          "title": "Physics2D .Simulate"
+        },
+        {
+          "id": "h2",
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "id": "h3",
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "id": "h4",
+          "level": "h3",
+          "title": "Returns"
+        },
+        {
+          "id": "h5",
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "outgoingLinks": [
+        {
+          "href": "Physics2D.html",
+          "text": "Physics2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "text": "Physics2D.Simulate"
+        },
+        {
+          "href": "Physics2D.AllLayers.html",
+          "text": "All Layers"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Joint2D.html",
+          "text": "joints"
+        },
+        {
+          "href": "Effector2D.html",
+          "text": "effectors"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "text": "Physics2D.Simulate"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Joint2D.html",
+          "text": "Joint2D"
+        },
+        {
+          "href": "Effector2D.html",
+          "text": "Effector2D"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "text": "Physics2D.Simulate"
+        },
+        {
+          "href": "MonoBehaviour.FixedUpdate.html",
+          "text": "MonoBehaviour.FixedUpdate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime"
+        },
+        {
+          "href": "Physics2D-simulationMode.html",
+          "text": "Physics2D.simulationMode"
+        },
+        {
+          "href": "PhysicsScene2D.Simulate.html",
+          "text": "PhysicsScene2D.Simulate"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update"
+        },
+        {
+          "href": "Physics2D-simulationMode.html",
+          "text": "Physics2D.simulationMode"
+        },
+        {
+          "href": "SimulationMode2D.Script.html",
+          "text": "SimulationMode2D.Script"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "text": "Time.deltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "text": "Physics2D.Simulate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        }
+      ],
+      "verificationStatus": "pending_independent_comparison",
+      "gatePass": false
+    }
+  ]
+}

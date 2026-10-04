@@ -1,0 +1,3222 @@
+{
+  "schemaVersion": 1,
+  "batch": "unreal-actor-body-002",
+  "phase": "research_only",
+  "analyzedAt": "2026-10-04T03:47:37.162673+00:00",
+  "reader": "/root/unreal_actor_body",
+  "scope": "bounded Actor/ActorComponent lifecycle/ownership/attachment/destruction/events; no global corpus conclusion",
+  "automaticExtractionIsReadingEvidence": false,
+  "independentVerifiedCount": 0,
+  "fullCorpusDenominator": null,
+  "discoveryClosed": false,
+  "implementationChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "counts": {
+    "newRequests": 15,
+    "newRequestsWithSSRBody": 11,
+    "failedBodyRequests": 4,
+    "fullyReviewedAnalyzedBodies": 9,
+    "fullTextButPendingMediaBodies": 1,
+    "partialClassBodies": 2,
+    "fullyReadDisplayedSections": 42,
+    "fullTextDisplayedSectionsIncludingPendingMedia": 51,
+    "fullyReadAPIPages": 8,
+    "displayedAPIDefinitionsOnFullyReadPages": 10,
+    "fullyReadTableRowsIncludingHeaders": 84,
+    "fullyReadTableCells": 180,
+    "partialClassSelectedRows": 26,
+    "technicalImagePixelsPending": 2
+  },
+  "hashRules": {
+    "sourceHash": "SHA-256 HTTP HTML bytes",
+    "bodyFileHash": "SHA-256 UTF-8 JSON file bytes",
+    "bodyHash": "SHA-256 json.dumps(blocks, ensure_ascii=False, sort_keys=True, separators=(comma,colon)).encode(utf8)",
+    "snapshotIntegrity": "recomputed in this assembly; independent semantic validation remains pending"
+  },
+  "pages": [
+    {
+      "id": "UEACT002-01",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/Destroy?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/Destroy?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:38.899778+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/Destroy?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/46d31270e4ffe6a4d3a146c5d9ebf73bd0778e8086df30394b63347559d07aad.html",
+      "sourceHash": "6ac29236233f33f1560be1d35be8e5e252e1d5d8076c0aee20e6a2db2fc9fcba",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/46d31270e4ffe6a4d3a146c5d9ebf73bd0778e8086df30394b63347559d07aad.json",
+      "bodyFileHash": "4e13eb21049344464d489bbe2f5753d207ef0bc1933491f8b9753ffb4ecc63ea",
+      "bodyHash": "a220d653b3c5060a8d77c317d3af78e724c234744d6b3e08820f2c7468ac7a13",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4945155,
+        "revision_hash_id": "6pd7lz",
+        "updated_at": "2026-06-16T20:39:26.300Z",
+        "slug": "API/Runtime/Engine/AActor/Destroy",
+        "title": "AActor::Destroy",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 3,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "Parameters",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 9,
+      "tableCellCount": 18,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "7e0f866708fb172582b366e7b2dc29c5102c8434dcac03268d387192fa54887b",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "ea9bb7ea83febba109130b5765f3f35d1ccaa5c5fced54557040e5676d4fcaf6"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "a608cdadf655378f953a41bf25880e855cca2aa28ed9ed92669b528dab0d997e",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "de0d03f6a55d92837cf254efbac6dde1bb3fa33933cdff6a40a22bffa9d81d78"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "78fb67fb811ebefc3215f400ab34ffe8897cf7ff122bfedc076392b77d438d7a",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "126f741533613e13ffcdd85ecc0fc449c3ed97c838446de098c904e249a81c71"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "927a4daeec1e36e4c72d1d5c7119b3adc3e36a74ccc84bc63f16ef9de436abb3",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "4ddfa21d2595794c1e7ebd8d4c669e9885f4adc66de80e4e0ef412af312231a0"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "741d2dd38def1817d3873930f991b7efde2d20c979af4842fbfb31705a815a44",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "df7765dd7e25e80bbf2688d0c0906bb22046c2ef469a02b0d710da335ac7395d",
+          "individualCellSha256": [
+            "c5371491b3b7c6b9215867d4724c5c614e6a45bea87f27e7244102118be0eb4a",
+            "f52d0dccfa94e3fb892901cbbe51b64c8b7a98e6c96652d97f062bfdd44b9e66"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "82bc61c4dcc2fc92ac7603cec5d5c38add3bc6daeb4144dbfd55c387043ed6f2",
+          "individualCellSha256": [
+            "dfa82d78125b5f401e4f717c0037b118fa70412cfd86c2af919ed9c09b36b2cc",
+            "df2edb377c6ae854028fd8fa9c60e31368e2c766ef113d965bcd27d0b666848d"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "bool Destroy  \n(  \n    bool bNetForce,  \n    bool bShouldModifyLevel  \n)"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2]+pre[1]",
+          "sourceFacts": [
+            "파괴 요청 반환값은 실제 제거뿐 아니라 이미 파괴 표시된 경우에도 true이며, indestructible이면 false예요. 제거는 latent이고 tick 끝에 일어나요. 즉시 메모리 해제 성공값이라는 설명은 없어요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::table[2]::parameter rows",
+          "sourceFacts": [
+            "bNetForce는 play 중 호출될 때만 의미가 있으며 문서 기본값 false예요. 구체 강제 네트워크 효과는 설명하지 않아요.",
+            "bShouldModifyLevel은 제거 전에 level Modify() 여부이며 문서 기본값 true예요. 실제 Undo/Redo·transaction 범위는 미상이에요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "AActor",
+        "returns": "bool: destroyed/already marked true; indestructible false",
+        "parameters": [
+          {
+            "name": "bNetForce",
+            "type": "bool",
+            "direction": "in",
+            "documentedDefault": false,
+            "condition": "ignored unless called during play"
+          },
+          {
+            "name": "bShouldModifyLevel",
+            "type": "bool",
+            "direction": "in",
+            "documentedDefault": true,
+            "effect": "Modify() level before removing actor"
+          }
+        ],
+        "lifetime": "latent destruction at end of tick; not immediate memory-free guarantee"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-02",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/AttachToComponent?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/AttachToComponent?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:38.900144+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/AttachToComponent?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/a723eaf53c96976e4dedcf139834c50ce0b7e7092757fee548270c27176f4d6c.html",
+      "sourceHash": "7584e1eecb8b070f453fb1cd95e597b20b26466345c4e122466ce32638a69e1c",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/a723eaf53c96976e4dedcf139834c50ce0b7e7092757fee548270c27176f4d6c.json",
+      "bodyFileHash": "518aa4b91a5ca8cb09a15b96f61608c2bce4dfc57cd7b39352373f50b6c2c162",
+      "bodyHash": "85fd19a10d00912431a9bd6509b973ce03a9cf054318894e9917dd4068bc6859",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4945143,
+        "revision_hash_id": "q0e32x",
+        "updated_at": "2026-06-16T20:39:26.092Z",
+        "slug": "API/Runtime/Engine/AActor/AttachToComponent",
+        "title": "AActor::AttachToComponent",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 3,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "Parameters",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 10,
+      "tableCellCount": 20,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "a0a1d8a43d7f8d6b73226ce8b284ccf6bfb478349ae0439de5fc309349472492",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "99273e34476c7a99364fb47c9deb05e8a4d3e70058bfa7e4c3d5a5f445154217"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "a608cdadf655378f953a41bf25880e855cca2aa28ed9ed92669b528dab0d997e",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "de0d03f6a55d92837cf254efbac6dde1bb3fa33933cdff6a40a22bffa9d81d78"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "78fb67fb811ebefc3215f400ab34ffe8897cf7ff122bfedc076392b77d438d7a",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "126f741533613e13ffcdd85ecc0fc449c3ed97c838446de098c904e249a81c71"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "927a4daeec1e36e4c72d1d5c7119b3adc3e36a74ccc84bc63f16ef9de436abb3",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "4ddfa21d2595794c1e7ebd8d4c669e9885f4adc66de80e4e0ef412af312231a0"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "741d2dd38def1817d3873930f991b7efde2d20c979af4842fbfb31705a815a44",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "6545e679a5c21cdf78e49ac1ee51afd28adc8c1c5f00caddabf7b7a5ac10e54c",
+          "individualCellSha256": [
+            "5f7953f7c9b6ba16602898e540795140db39847cf03fd10d32ef636cded0360e",
+            "bc5de3754dba065303a96e1e2f93dd383eff1981f8c0356b9c9c6da45fd855d3"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "83ade4fd26d7ececfddd5648361473b25125dafdb5862cdb40a4797e6c1c62d7",
+          "individualCellSha256": [
+            "369fb4891578b76949a52b0a15e7a5342c365bc5d256b6a13398415d1a809d4b",
+            "81233041b1c01a18fc1e4a728ed49fd448bf8cba52431456ede71b72368fc4df"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "c3d96999f993aa6c76ceb7a7fbde8e0c60eec6d5c6ba9d4976bcb8cec5459d16",
+          "individualCellSha256": [
+            "f0fe9cb00f48d95f9918d3f9aa23d91cbc4207e234dab2f2bd34467ccfe98ffd",
+            "d223d45a212149543550ef55df39dc8f1f2f6f28a83e8ade52999d0c504b8c80"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "bool AttachToComponent  \n(  \n    USceneComponent * Parent,  \n    const FAttachmentTransformRules & AttachmentRules,  \n    FName SocketName  \n)"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2]+pre[1]",
+          "sourceFacts": [
+            "Actor 자체 transform 값이 아니라 RootComponent를 Parent에 연결해요. 등록되지 않은 component에 호출하면 유효하지 않아요. 반환 bool은 부착 성공 여부예요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::table[2]",
+          "sourceFacts": [
+            "Parent는 USceneComponent* 입력, AttachmentRules는 const FAttachmentTransformRules& 입력으로 변환·용접 처리를 지정해요. SocketName은 선택적인 부모 socket 이름이에요. 선택적이라는 설명만으로 C++ default=NAME_None을 확정하지 않아요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "AActor",
+        "returns": "bool: attachment success",
+        "parameters": [
+          {
+            "name": "Parent",
+            "type": "USceneComponent*",
+            "direction": "in",
+            "nullPolicy": "unknown"
+          },
+          {
+            "name": "AttachmentRules",
+            "type": "const FAttachmentTransformRules&",
+            "direction": "in",
+            "ownership": "borrowed const reference declaration; retention/lifetime unspecified"
+          },
+          {
+            "name": "SocketName",
+            "type": "FName",
+            "direction": "in",
+            "optionalByDescription": true,
+            "cppDefault": "not displayed"
+          }
+        ],
+        "precondition": "components registered",
+        "nodeExposure": "not displayed on native function page; separate K2 wrapper inspected"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-03",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/K2_AttachToComponent?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/K2_AttachToComponent?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:39.388278+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/K2_AttachToComponent?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/ea43ba8d28435c99d4bf8c481b3e1c3a8377d2e75306dc76fa52c77835d69e49.html",
+      "sourceHash": "25c45d8219bdcbed8d546741d6e2435f88bc7a73a4b238d2b1ba4adb32e481d6",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/ea43ba8d28435c99d4bf8c481b3e1c3a8377d2e75306dc76fa52c77835d69e49.json",
+      "bodyFileHash": "65f1cf8c8988a504b44ded0d2240e0ec487414054fee02bfd0c6d8a6bad3ff5e",
+      "bodyHash": "095597fbdcd2fea22c97ffcb7d11461ad62dd99f5d48b24d50449f0fb4dac7d3",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4945220,
+        "revision_hash_id": "LxmXE3",
+        "updated_at": "2026-06-16T20:39:27.896Z",
+        "slug": "API/Runtime/Engine/AActor/K2_AttachToComponent",
+        "title": "AActor::K2_AttachToComponent",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 3,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "Parameters",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 13,
+      "tableCellCount": 26,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "8b6ce7d42e8835204e7d05ddb8a867d1d9eb99d3f370b47a78f779a0f6193473",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "fe30ac91274ae33bcf8d9c94f6b7f071bd953fe35862323c9762aa134b936b7e"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "a608cdadf655378f953a41bf25880e855cca2aa28ed9ed92669b528dab0d997e",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "de0d03f6a55d92837cf254efbac6dde1bb3fa33933cdff6a40a22bffa9d81d78"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "78fb67fb811ebefc3215f400ab34ffe8897cf7ff122bfedc076392b77d438d7a",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "126f741533613e13ffcdd85ecc0fc449c3ed97c838446de098c904e249a81c71"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "927a4daeec1e36e4c72d1d5c7119b3adc3e36a74ccc84bc63f16ef9de436abb3",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "4ddfa21d2595794c1e7ebd8d4c669e9885f4adc66de80e4e0ef412af312231a0"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "741d2dd38def1817d3873930f991b7efde2d20c979af4842fbfb31705a815a44",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "6545e679a5c21cdf78e49ac1ee51afd28adc8c1c5f00caddabf7b7a5ac10e54c",
+          "individualCellSha256": [
+            "5f7953f7c9b6ba16602898e540795140db39847cf03fd10d32ef636cded0360e",
+            "bc5de3754dba065303a96e1e2f93dd383eff1981f8c0356b9c9c6da45fd855d3"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "c3d96999f993aa6c76ceb7a7fbde8e0c60eec6d5c6ba9d4976bcb8cec5459d16",
+          "individualCellSha256": [
+            "f0fe9cb00f48d95f9918d3f9aa23d91cbc4207e234dab2f2bd34467ccfe98ffd",
+            "d223d45a212149543550ef55df39dc8f1f2f6f28a83e8ade52999d0c504b8c80"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "b989a1b595236699b3b386976cae6dd90f25dac7cb10a0e41dfa604b89e17aad",
+          "individualCellSha256": [
+            "aa89e2138517dad84f28fc8d911569a297a3ab9d272eb624e9031264849e01fb",
+            "f5f20e47d0df873c6878832ad78934f8b03b8aa91a8849c0358b66a09b1fa8f0"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "c87c1db6db1eada6737fb1a371c3adc69121a11da15ebe0d6a48d2ec8ae88cc4",
+          "individualCellSha256": [
+            "ae9eb248b28688e8080e22913730ec0ccdc55298be01a17ac4d0419db6b12293",
+            "77f97895236e56a0fd2f451fc344317c07227c53f70b4676d0a9179dacb5ef45"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "de59c52f9dd470f8ff96a3b596108e546170fd2961a56e6e913c08fdcf780b07",
+          "individualCellSha256": [
+            "d6291d064e6f8576de53f42ac0a1f96d39552966d41aff84d11966285f836034",
+            "d69975ea770266372d8a560149e13b8fe48dfa102cc2eb7e75c78297669adb76"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 6,
+          "cellCount": 2,
+          "cellsSha256": "8118c1e02286a868542a9fa554e5242538353067dc9de3a7290e20fc3f901525",
+          "individualCellSha256": [
+            "83fdd7827df8b03c3ac592ee84dd3cea825ad05bd442c156c6b01faa9460187f",
+            "3fffb2cc55daf731ba3400932f2b5f50579a1eead731006d98dd130781220265"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "UFUNCTION (BlueprintCallable,  \n          Meta=(DisplayName=\"Attach Actor To Component\", ScriptName=\"AttachToComponent\", bWeldSimulatedBodies=true),  \n          Category=\"Transformation\")  \nbool K2_AttachToComponent  \n(  \n    USceneComponent * Parent,  \n    FName SocketName,  \n    EAttachmentRule LocationRule,  \n    EAttachmentRule RotationRule,  \n    EAttachmentRule ScaleRule,  \n    bool bWeldSimulatedBodies  \n)"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::pre[1]",
+          "sourceFacts": [
+            "BlueprintCallable, DisplayName=\"Attach Actor To Component\", ScriptName=\"AttachToComponent\", Category=\"Transformation\" metadata가 있어요. bWeldSimulatedBodies=true는 metadata에 표시된 값이며 C++ signature default 식은 표시하지 않아요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h2[2]+table[2]",
+          "sourceFacts": [
+            "RootComponent를 등록된 Parent에 부착하며 성공 bool을 반환해요. LocationRule·RotationRule·ScaleRule은 EAttachmentRule 입력으로 각각 위치·회전·크기를 결정해요.",
+            "bWeldSimulatedBodies는 simulated 부모에 shape를 이관할 수 있어요. 이후 detach해도 변경이 영구적으로 남을 수 있다고 경고해요. 다른 pin 기본값, 무효 socket·nullptr·cycle 실패 경로는 이 API 본문에 없어요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "AActor",
+        "returns": "bool: attachment success",
+        "parameters": [
+          {
+            "name": "Parent",
+            "type": "USceneComponent*",
+            "direction": "in"
+          },
+          {
+            "name": "SocketName",
+            "type": "FName",
+            "direction": "in"
+          },
+          {
+            "name": "LocationRule",
+            "type": "EAttachmentRule",
+            "direction": "in"
+          },
+          {
+            "name": "RotationRule",
+            "type": "EAttachmentRule",
+            "direction": "in"
+          },
+          {
+            "name": "ScaleRule",
+            "type": "EAttachmentRule",
+            "direction": "in"
+          },
+          {
+            "name": "bWeldSimulatedBodies",
+            "type": "bool",
+            "direction": "in",
+            "metadataDefault": "true",
+            "cppDefault": "not displayed",
+            "effect": "may permanently transfer welded shapes into simulated parent even after detach"
+          }
+        ],
+        "blueprintMetadata": "BlueprintCallable; DisplayName=\"Attach Actor To Component\"; ScriptName=\"AttachToComponent\"; bWeldSimulatedBodies=true; Category=\"Transformation\""
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-04",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/GetOwner?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/GetOwner?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:39.866539+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/GetOwner?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/fb0f77932077a8e8eb68fae39d56b63e24cdc9ae6150b4709cf2ae5b4306ef48.html",
+      "sourceHash": "65e01b646ad7f6d59c08008f5802beb4625444e5318da8b55e7b35ac471c1150",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/fb0f77932077a8e8eb68fae39d56b63e24cdc9ae6150b4709cf2ae5b4306ef48.json",
+      "bodyFileHash": "c210671e9c0dcee5339bac2ae6f640a1a4897d9f266a9a23f0917a62e30b34a0",
+      "bodyHash": "f002bcfaa80a64ff1781a32dd13f7e916d6e1a4ff9b81ff2fdc795bbde2e7afa",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4945201,
+        "revision_hash_id": "zobMng",
+        "updated_at": "2026-06-16T20:39:27.234Z",
+        "slug": "API/Runtime/Engine/AActor/GetOwner",
+        "title": "GetOwner",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 6,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Overloads",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "GetOwner()",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 4,
+          "text": "Description",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 5,
+          "text": "GetOwner()",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 6,
+          "text": "Description",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 13,
+      "tableCellCount": 32,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 4,
+          "cellsSha256": "034d8e380402629c0e3b4d3ad4535e0082f94a501fa827f0087df0f9536a229f",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2",
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "443c39a4934999fda96bb8c615cdda572c8c4002c3b3e69f09e21bfbd901c6a4"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 4,
+          "cellsSha256": "e2d533b2019106e9198e1dd1a4ea28f189a44818ea83e473f94b575cdda255c3",
+          "individualCellSha256": [
+            "c3be421f13dc0fd0b56091b3122914fe188969c520720f44d7e6cdd1471373d0",
+            "9a1de773f053b8da7dd026cb84dc3449f154d03abdfe787bd508996c2698642c",
+            "3e5a33c792e4e3ea0be80bbf882b38200d7899e05c1e9d808b8720c4c8ddd50e",
+            "81d568caea75af0055f7e6cae430f0c7886367be440a08db5240bdea01d74b65"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 4,
+          "cellsSha256": "26571411f23fdf075a9a2a2f497e682d49bb4a6f825f356457d802aadf36d637",
+          "individualCellSha256": [
+            "ebbb6a1b188c73dea75c05d6bd7e7c08be2913d9ca5af29b38b41eaef0d548ab",
+            "3e95060a7828164ce24c16ba46939a2736c4605fef17c5e6a443efc895e41e69",
+            "3e5a33c792e4e3ea0be80bbf882b38200d7899e05c1e9d808b8720c4c8ddd50e",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "75758a53ebbc3b81c918394a12ca06147bb32fb2f753a34276395d70b5795b31",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "815dd71c5813ca702c01fa6fa83bf9b2918da8d02f39d21586caaf067513332e"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "a608cdadf655378f953a41bf25880e855cca2aa28ed9ed92669b528dab0d997e",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "de0d03f6a55d92837cf254efbac6dde1bb3fa33933cdff6a40a22bffa9d81d78"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "78fb67fb811ebefc3215f400ab34ffe8897cf7ff122bfedc076392b77d438d7a",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "126f741533613e13ffcdd85ecc0fc449c3ed97c838446de098c904e249a81c71"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "75758a53ebbc3b81c918394a12ca06147bb32fb2f753a34276395d70b5795b31",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "815dd71c5813ca702c01fa6fa83bf9b2918da8d02f39d21586caaf067513332e"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "a608cdadf655378f953a41bf25880e855cca2aa28ed9ed92669b528dab0d997e",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "de0d03f6a55d92837cf254efbac6dde1bb3fa33933cdff6a40a22bffa9d81d78"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "78fb67fb811ebefc3215f400ab34ffe8897cf7ff122bfedc076392b77d438d7a",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "126f741533613e13ffcdd85ecc0fc449c3ed97c838446de098c904e249a81c71"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "UFUNCTION (BlueprintCallable, Category=Actor)  \nAActor * GetOwner() const",
+        "template<class T>  \nT * GetOwner() const"
+      ],
+      "apiDefinitionCount": 2,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2],pre[1],pre[2]",
+          "sourceFacts": [
+            "AActor* GetOwner() const는 주로 network replication에 사용하는 Actor owner를 반환해요. BlueprintCallable, Category=Actor예요.",
+            "template<class T> T* GetOwner() const는 cast 실패 시 nullptr예요. 표의 shorthand에 const가 생략되어 있어 정확한 qualifier는 개별 snippet에서 확인해요.",
+            "반환 raw pointer의 ownership 이전·참조 증가·thread 보장은 설명하지 않아요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/GetOwner?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/ufunctions-in-unreal-engine?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor",
+        "https://dev.epicgames.com/documentation/unreal-engine/ufunctions-in-unreal-engine#functionspecifiers",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/GetOwner"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "AActor",
+        "returns": [
+          "AActor* owner used primarily for network replication",
+          "T*: nullptr if cast fails"
+        ],
+        "parameters": [],
+        "qualifiers": [
+          "const",
+          "const; template<class T>"
+        ],
+        "blueprintMetadata": "first overload BlueprintCallable, Category=Actor; template overload no exposure shown",
+        "ownership": "raw return pointer; no transfer/retain/thread guarantee in body"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-05",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/BeginPlay?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/BeginPlay?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:39.909819+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/BeginPlay?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/06781d0a19bcfa5c0e3c6a0703c243e22195d72e7eb3c9bc5401989446f6f0b3.html",
+      "sourceHash": "77f89d6da0f42c63cc0b290e2d5658646777093b3c84dd4951010f74fef75774",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/06781d0a19bcfa5c0e3c6a0703c243e22195d72e7eb3c9bc5401989446f6f0b3.json",
+      "bodyFileHash": "c0f21cb6a1d35fcbd4ba0d18f52a4c4a0d1243de43250ed5f4e2d0f7ac0650d8",
+      "bodyHash": "aaa65f444db1001114de0bd8630b8c8091699cdebd695a9c5146e74de6aa89b8",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4956849,
+        "revision_hash_id": "GEedXA",
+        "updated_at": "2026-06-16T20:43:57.002Z",
+        "slug": "API/Runtime/Engine/UActorComponent/BeginPlay",
+        "title": "UActorComponent::BeginPlay",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 3,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "Derived Overrides",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 6,
+      "tableCellCount": 12,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "5d39c2b36b564e0d0975566afba7234bf0a9f453356c072f50ef3c34a668c889",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "2f8ef9339db9dce83b1d353579d551c527baf6e3b4a6f85768432b6a4f2fedce"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "583288684d905dc81727a094d30129425b79cbe1bc5295cdb53d12365464a622",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "45f97f208ace344fc8555035213979e145b9ca6b2c49f51d292f361bb8879a39"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "1ba8310a660bde6eda2db61c21a6d80455e1cc0809ef231bea4269ac57992e81",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "ab6238e593e0b967aebb820d04c02f77866c0def890914ad2ee227488ca00a80"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "2580d74502d3ef972130d44b327ef71ec6f5291fb39008827c0bbd4ced220417",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "c20d3638daa928664e8a10f050b7f6f1e5894c7f945771e2ca5a35ba438428de"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "virtual void BeginPlay()"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2]+pre[1]",
+          "sourceFacts": [
+            "virtual void BeginPlay()이며 owning Actor의 play 시작 또는 이미 begun Actor에 동적 생성될 때 호출돼요. component가 registered·initialized 상태여야 해요.",
+            "Actor BeginPlay는 보통 PostInitializeComponents 직후이지만 networked·child actor에서는 늦어질 수 있어요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h2[3]",
+          "sourceFacts": [
+            "Derived Overrides 링크 14개의 이름을 읽었고 개별 override body는 읽지 않았어요. 동적 subclass의 callback 동작을 확정하지 않아요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UCameraShakeSourceComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UCharacterMovementComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UChildActorComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UDecalComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UInterpToMovementComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UMeshComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UNetworkPhysicsComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UNetworkPhysicsSettingsComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UPrimitiveComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/URadialForceComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/USkeletalMeshComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/USkinnedMeshComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UStaticMeshComponent/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UWorldPartitionDestructibleHLODC-/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UCameraShakeSourceComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UCharacterMovementComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UChildActorComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UDecalComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UInterpToMovementComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UMeshComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UNetworkPhysicsComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UNetworkPhysicsSettingsComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UPrimitiveComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/URadialForceComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/USkeletalMeshComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/USkinnedMeshComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UStaticMeshComponent/BeginPlay",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UWorldPartitionDestructibleHLODC-/BeginPlay"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "UActorComponent",
+        "returns": "void",
+        "parameters": [],
+        "qualifiers": [
+          "virtual"
+        ],
+        "precondition": "registered and initialized; owning Actor begins play or dynamic component added after Actor has begun",
+        "runtimeEditor": "gameplay hook; editor-only classification not stated; PIE distinction comes from lifecycle guide"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-06",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/RegisterComponent?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/RegisterComponent?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:57:40.541147+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/RegisterComponent?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/0d130319153e066fe2622dd07847648a9e3a59f02b087ddc35e2d7aad225a858.html",
+      "sourceHash": "ec744933c8c9552de64cbc5c1a883f716fe4623218919385f93aae7e8793e139",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/0d130319153e066fe2622dd07847648a9e3a59f02b087ddc35e2d7aad225a858.json",
+      "bodyFileHash": "33abd1df2054d687205dabcb4349d3627c6b1768cb81eee647ddb73e85ba9608",
+      "bodyHash": "50b6ab12660fc29e8fe56168941f852788a0877b755ec55b28c4138f25898c37",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4956886,
+        "revision_hash_id": "538b5G",
+        "updated_at": "2026-06-16T20:43:57.759Z",
+        "slug": "API/Runtime/Engine/UActorComponent/RegisterComponent",
+        "title": "UActorComponent::RegisterComponent",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 2,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 6,
+      "tableCellCount": 12,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "519a4d957c312d3c4e837b8107219267e98b025c8271a5bcc7654104f68124f2",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "cb94b629b554648b0640fa7d03c0d90c835c459cd0397e3ccedeaa16691c7312"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "583288684d905dc81727a094d30129425b79cbe1bc5295cdb53d12365464a622",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "45f97f208ace344fc8555035213979e145b9ca6b2c49f51d292f361bb8879a39"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "1ba8310a660bde6eda2db61c21a6d80455e1cc0809ef231bea4269ac57992e81",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "ab6238e593e0b967aebb820d04c02f77866c0def890914ad2ee227488ca00a80"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "2580d74502d3ef972130d44b327ef71ec6f5291fb39008827c0bbd4ced220417",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "c20d3638daa928664e8a10f050b7f6f1e5894c7f945771e2ca5a35ba438428de"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "void RegisterComponent()"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2]+pre[1]",
+          "sourceFacts": [
+            "void RegisterComponent()는 rendering/physics state를 만들고, 아직 없으면 outer Actor의 Components 배열에 자신을 추가해요. 반환 성공 코드·실패 처리·비동기 완료·thread는 본문에 없어요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "UActorComponent",
+        "returns": "void",
+        "parameters": [],
+        "sideEffects": "create render/physics state; add to outer Actor Components array if absent",
+        "runtimeEditor": "class intro says registration occurs in editor and runtime; guide permits runtime manual registration"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-07",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-actor-lifecycle?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "guide",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:58:31.509321+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/38bb18c008121e531e40a1f5a0960a41c45afb7cb3b4915ccec9503e22752935.html",
+      "sourceHash": "01b641d4ed843ce7f55409482a9b69084525769bab14f3ed78bbc1b6ab75d00c",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/38bb18c008121e531e40a1f5a0960a41c45afb7cb3b4915ccec9503e22752935.json",
+      "bodyFileHash": "78e655a8c030912adff9b82f7e49041836033e6ee255eab7c99546bfa9783838",
+      "bodyHash": "d03e9c3b8e28f8d920a748d7f646e6a6c257dcab25f6ad53fcc6c29a1cf32d90",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4781076,
+        "revision_hash_id": "NpKXql",
+        "updated_at": "2025-12-08T23:38:50.237Z",
+        "slug": "unreal-engine-actor-lifecycle",
+        "title": "Actor Lifecycle",
+        "source": "epic_developer_community",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "fetched",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all displayed text/nested lists/captions; image pixels unread",
+      "wholeBodyReviewed": false,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 9,
+      "sections": [
+        {
+          "jsonPointer": "/blocks/2",
+          "text": "Lifecycle Break Down",
+          "anchor": {
+            "id": 21047,
+            "name": "lifecycle-break-down",
+            "previous_names": [
+              "lifecyclebreakdown"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/4",
+          "text": "Load from Disk",
+          "anchor": {
+            "id": 21048,
+            "name": "load-from-disk",
+            "previous_names": [
+              "loadfromdisk"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/7",
+          "text": "Play in Editor",
+          "anchor": {
+            "id": 21049,
+            "name": "play-in-editor",
+            "previous_names": [
+              "playineditor"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/10",
+          "text": "Spawning",
+          "anchor": {
+            "id": 21050,
+            "name": "spawning",
+            "previous_names": [
+              "spawning"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/13",
+          "text": "Deferred Spawn",
+          "anchor": {
+            "id": 21051,
+            "name": "deferred-spawn",
+            "previous_names": [
+              "deferredspawn"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/16",
+          "text": "End of Actor Lifecycle",
+          "anchor": {
+            "id": 21052,
+            "name": "end-of-actor-lifecycle",
+            "previous_names": [
+              "endofactorlifecycle"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/22",
+          "text": "Garbage Collection",
+          "anchor": {
+            "id": 21053,
+            "name": "garbage-collection",
+            "previous_names": [
+              "garbagecollection"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "jsonPointer": "/blocks/26",
+          "text": "Advanced Garbage Collection",
+          "anchor": {
+            "id": 21054,
+            "name": "advanced-garbage-collection",
+            "previous_names": [
+              "advancedgarbagecollection"
+            ]
+          },
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 31,
+      "tableRowsIncludingHeaders": 0,
+      "tableCellCount": 0,
+      "tableEvidence": [],
+      "declarationOriginal": [],
+      "apiDefinitionCount": 0,
+      "notes": [
+        {
+          "locator": "/blocks/0../blocks/3",
+          "sourceFacts": [
+            "생성 경로와 GC 파괴의 high-level 소개 및 lifecycle chart예요. /blocks/3 그림 pixels는 미독이에요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/4../blocks/6",
+          "sourceFacts": [
+            "disk load는 PostLoad의 version fixup을 거치며 PostActorCreated와 배타적이에요. InitializeActorsForPlay→RouteActorInitialize→PreInitializeComponents→InitializeComponent→PostInitializeComponents→BeginPlay 순서를 설명해요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/7../blocks/9",
+          "sourceFacts": [
+            "PIE는 disk reload가 아니라 editor Actor를 새 World에 복제하고 PostDuplicate를 호출한 뒤 gameplay 초기화 경로에 들어가요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/10../blocks/12",
+          "sourceFacts": [
+            "spawn 경로는 SpawnActor→PostSpawnInitialize→PostActorCreated→ExecuteConstruction/OnConstruction→PostActorConstruction 및 component 초기화→OnActorSpawned broadcast→BeginPlay예요. Blueprint component 생성·변수 초기화는 construction 단계에 연결돼요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/13../blocks/15",
+          "sourceFacts": [
+            "Expose on Spawn/deferred spawn은 유효하지만 불완전한 Actor를 PostActorCreated 다음에 설정할 수 있어요. FinishSpawning이 ExecuteConstruction부터 재개해요. 완전 초기화 객체와 동일하게 사용해도 된다는 보장은 없어요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/16../blocks/21",
+          "sourceFacts": [
+            "EndPlay의 원인은 명시 Destroy, PIE 종료, level transition, streaming unload, lifetime 만료, application shutdown이에요. OnDestroyed는 더 좁은 legacy Destroy 응답이며 EndPlay로 cleanup 이전을 권해요.",
+            "s.ForceGCAfterLevelStreamedOut=false에서 빠른 sublevel reload는 같은 Actor/local variables가 기본값 재초기화 없이 되살아날 수 있어요. EndPlay와 메모리 파괴를 동일시할 수 없어요. 문서의 일반 RF_PendingKill 설명과 이 경고의 적용 범위를 추가 확인해야 해요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/22../blocks/25",
+          "sourceFacts": [
+            "GC에서 BeginDestroy는 그래픽 thread proxy 등의 자원 정리, IsReadyForFinishDestroy=false는 다음 GC pass로 영구 해제를 연기, FinishDestroy는 메모리 해제 전 마지막 단계예요. gameplay cleanup은 주로 EndPlay에서 처리하라고 해요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/26../blocks/30",
+          "sourceFacts": [
+            "cluster는 object/subobject 자원을 함께 해제해서 GC 시간·memory churn을 줄여요. Project Settings→Garbage Collection→Create Garbage Collector UObject Clusters=false는 profiling으로 이득이 확인된 경우에 권해요. /blocks/30 settings screenshot pixels는 미독이고 정확한 UI 배치는 미검증이에요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/CoreUObject/UObject/UObject/BeginDestroy?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/CoreUObject/UObject/UObject/FinishDestroy?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/CoreUObject/UObject/UObject/IsReadyForFinishDestroy?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/CoreUObject/UObject/UObject/PostDuplicate?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/CoreUObject/UObject/UObject/PostLoad?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AI/UAISystemBase/InitializeActorsForPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Components/UActorComponent/InitializeComponent?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/UEngine/LoadMap?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/ULevel/RouteActorInitialize?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/UWorld/AddOnActorSpawnedHandler?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/UWorld/AddToWorld?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/UWorld/SpawnActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/Engine/UWorld/SpawnActorDeferred?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/BeginPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/Destroy?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/EndPlay?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/ExecuteConstruction?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/FinishSpawning?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/OnConstruction?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/PostActorConstruction?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/PostActorCreated?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/PostInitializeComponents?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/PostSpawnInitialize?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor/PreInitializeComponents?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/GameFramework/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/actors-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/level-streaming-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/unreal-object-handling-in-unreal-engine?application_version=5.8"
+      ],
+      "allHrefValues": [],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [
+        {
+          "jsonPointer": "/blocks/3",
+          "filename": "ActorLifeCycle1.png",
+          "id": 26329771,
+          "caption": "",
+          "alt": "",
+          "pixelsReviewed": false,
+          "reason": "no local media snapshot; bounded request policy permits only version-pinned dev.epicgames.com documents"
+        },
+        {
+          "jsonPointer": "/blocks/30",
+          "filename": "AdvancedGC.png",
+          "id": 26329772,
+          "caption": "Clustering options for Garbage Collection within the Project Settings menu.",
+          "alt": "",
+          "pixelsReviewed": false,
+          "reason": "no local media snapshot; bounded request policy permits only version-pinned dev.epicgames.com documents"
+        }
+      ],
+      "threadContract": "only Scene Proxy parallel rendering / GC resource cleanup context is described, not general API call permission",
+      "editorRuntimeContract": "per-section distinctions recorded",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "two technical diagram/screenshots pixels unread; no whole body promotion",
+        "RF_PendingKill general prose vs resurrection warning requires source-level followup",
+        "hook names in lifecycle guide are not full API declarations"
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-08",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/components-in-unreal-engine?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "guide",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T17:58:32.198292+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/components-in-unreal-engine?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/95b5ce11ab07c0300c7339cdfe1e8dc4f28c3db9b4248c822cd4e674615bc375.html",
+      "sourceHash": "15ef4b931f116d792e9b40c56cde4cb975d3e07b8ae1924617acda93f1417ab9",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/95b5ce11ab07c0300c7339cdfe1e8dc4f28c3db9b4248c822cd4e674615bc375.json",
+      "bodyFileHash": "1227833fb4017d5729438d12ffc3e04b53b294798587c6a6729cf549afec9d4d",
+      "bodyHash": "739f694b7541d9ab0d7d259150c29ee13d36f42176c6878cee57d4ac435fd14f",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 3229485,
+        "revision_hash_id": "7gm1g",
+        "updated_at": "2025-03-24T15:39:24.812Z",
+        "slug": "components-in-unreal-engine",
+        "title": "Components",
+        "source": "external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 3581142,
+            "type": "unreal_engine",
+            "version": "5.5",
+            "major_version": "5"
+          },
+          {
+            "id": 4279130,
+            "type": "unreal_engine",
+            "version": "5.6",
+            "major_version": "5"
+          },
+          {
+            "id": 4279213,
+            "type": "unreal_engine",
+            "version": "5.7",
+            "major_version": "5"
+          },
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 14,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Actor Components",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Registering Components",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "Register Events",
+          "tag": "h4",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 4,
+          "text": "Unregistering Components",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 5,
+          "text": "Unregister Events",
+          "tag": "h4",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 6,
+          "text": "Updating",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 7,
+          "text": "Render State",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 8,
+          "text": "Physics State",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 9,
+          "text": "Visualization Components",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 10,
+          "text": "Scene Components",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 11,
+          "text": "Attachment",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 12,
+          "text": "Primitive Components",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 13,
+          "text": "Scene Proxy",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 8,
+      "tableCellCount": 16,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "5b5ee1a7f394505986bf1c7925b3822f3c37c14108aab82f6c2e1363a6de1fca",
+          "individualCellSha256": [
+            "c803710302d5769d8fcd51958c516ff27f2a3c5ad9373c348d1d180c04a74624",
+            "526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "21203afada1bc06c289e8b96dccbeb2d55e9f15bb8a5815209533b3a98d144da",
+          "individualCellSha256": [
+            "d3a8955f8b557c08c1412661592a4a639f1702bd567fd8bcd7d6ad635b114377",
+            "cc4ef7524c98c2c69535462858e276f38dd701e8743c5a73508bc3f58ee257d3"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "22ffc945387df2abc31df7b7635df14419bc1edb24f232e31a0724417ee0afac",
+          "individualCellSha256": [
+            "b2f8912206eab777584b210e146bbbf68b542de2e077f685dc847406e4f55400",
+            "19599d5eb69e8b6624dbf7c5d5898e8a64a9ff2b3a9eedbdc109238ed98c29fc"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "331ece585aac6bc6a31144b534604a17c159bf63038794e229ff2c76cfd9bf49",
+          "individualCellSha256": [
+            "e6c1ad6d380a632e7057fdb3a68d3f40bfb9e7aa09f8cfc54d2d7d56b4f507b1",
+            "3e8aaf3519c585e35342e97d1f23805cd1f7e9c7095f89410f86db249da333a3"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "5b5ee1a7f394505986bf1c7925b3822f3c37c14108aab82f6c2e1363a6de1fca",
+          "individualCellSha256": [
+            "c803710302d5769d8fcd51958c516ff27f2a3c5ad9373c348d1d180c04a74624",
+            "526e0087cc3f254d9f86f6c7d8e23d954c4dfda2b312efc29194ae8a860106ba"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "fc19a68413482e4eafa4592bff1f4d8f975ac9db6420382ddd2aa2d65e6880d0",
+          "individualCellSha256": [
+            "14a056030f8d4c80a64fbc19a1800cb68a8470c049d1f35ced17cc041ef598ee",
+            "5d6e53e4d8469cfd28265041dd81b80c3e4635ff24e3295f6b6a4d4e788dcc9c"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "fe6c21eac6e9862bf665baf8585b2ec71c997d7f952e644a04133012113ba8c8",
+          "individualCellSha256": [
+            "3f8e2ec81a31b63021b5ec18d22c42927dba047c6c33d2191a40bc2b3a92f2c4",
+            "1c81c7ebbf6f03d55c4276f90ace178ec68c25e6ba85b55af4831c6c3c1cdf4c"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "e4a1bf362c995d599a3bae4f9e00efc38905224efbc1cfac7e8bf20459a74871",
+          "individualCellSha256": [
+            "90165fde308f6cc13af369f7e4c23f844645151f4edb5fb3462dd98aabe3a007",
+            "4bf3f93ac996b03be0dc641278a3f6dbef147d3d329e92293b9c605f2a2c93c5"
+          ]
+        }
+      ],
+      "declarationOriginal": [],
+      "apiDefinitionCount": 0,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::introduction+h2[1]",
+          "sourceFacts": [
+            "ActorComponent는 재사용되는 sub-object behavior이며 transform이 없어요. SceneComponent가 위치·회전·크기를 지원하고 PrimitiveComponent가 geometry/render/collision을 추가해요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[1]+h4[1]+table[1]",
+          "sourceFacts": [
+            "등록되어야 per-frame 업데이트와 scene 효과를 내요. Actor spawn의 subobject는 자동 등록되고 play 중 생성은 수동 등록할 수 있으며 Actor와 연관되어야 해요. 등록 비용 경고가 있어요.",
+            "OnRegister, CreateRenderState, OnCreatePhysicsState의 세 역할을 표로 설명해요. 표 순서가 모든 override의 정확한 내부 호출 순서를 입증하는 것은 아니에요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[2]+h4[2]+table[2]",
+          "sourceFacts": [
+            "UnregisterComponent는 update/simulation/render 과정에서 제외해요. OnUnregister, DestroyRenderState, OnDestroyPhysicsState 역할을 설명하지만 이것을 UObject 메모리 해제라고 말하지 않아요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[3]",
+          "sourceFacts": [
+            "component는 기본적으로 update하지 않아요. PrimaryComponentTick.bCanEverTick 기본 false이고 constructor에서 true로 허용한 다음 SetTickFunctionEnable(true)로 update를 켜요. false로 꺼요. 수동 update 선택은 별개예요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[4]",
+          "sourceFacts": [
+            "render state dirty는 frame 끝에 갱신해요. SceneComponent/PrimitiveComponent는 기본 render state를 만들며 일반 ActorComponent는 만들지 않아요. MarkRenderStateDirty가 갱신 경로예요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[5]",
+          "sourceFacts": [
+            "physics state는 변경 즉시 갱신하며 dirty marker를 요구하지 않아요. ActorComponent/SceneComponent 기본 없음, PrimitiveComponent 기본 있음이에요. ShouldCreatePhysicsState에서 destruction 등 유효 조건을 고려해야 하고 무조건 true를 권하지 않아요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h3[6]+pre[1]+pre[2]",
+          "sourceFacts": [
+            "Visualization Component는 editor에서만 필요하고 PIE와 packaged build에 필요하지 않아요. SetIsVisualizationComponent와 WITH_EDITORONLY_DATA/WITH_EDITOR 보호를 설명해요.",
+            "DrawFrustum 예제는 owner 확인 뒤 NewObject<UDrawFrustumComponent>(MyOwner, NAME_None, RF_Transactional | RF_TextExportTransient), SetupAttachment(this), visualization=true를 하고 Super::OnRegister를 호출해요. 코드의 ...는 완전한 함수 구현이 아니에요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h2[2]+h3[7]",
+          "sourceFacts": [
+            "SceneComponent tree는 부모 한 개·자식 여러 개·cycle 불허예요. Actor는 단일 SceneComponent root의 transform을 사용해요.",
+            "SetupAttachment는 constructor/미등록 component에 유용하고 AttachToComponent는 즉시 연결·play에 유용해요. Actor 간 연결은 root component를 다른 Actor의 component에 연결해서 이뤄져요."
+          ],
+          "analyzed": true
+        },
+        {
+          "locator": "/blocks/0/content_html::h2[3]+h3[8]",
+          "sourceFacts": [
+            "PrimitiveComponent의 box/capsule은 invisible collision geometry, mesh는 render/collision 가능 geometry예요. Scene Proxy는 game thread와 병렬로 rendering하는 scene data를 담아요. 이것이 모든 component API의 arbitrary worker-thread 호출 허용을 뜻하지 않아요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine#sceneproxy",
+        "https://dev.epicgames.com/documentation/unreal-engine/components-in-unreal-engine#physicsstate",
+        "https://api.unrealengine.com/INT/API/Runtime/Core/Math/FTransform/index.htm",
+        "https://dev.epicgames.com/documentation/unreal-engine/designing-visuals-rendering-and-graphics-with-unreal-engine"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "only Scene Proxy parallel rendering / GC resource cleanup context is described, not general API call permission",
+      "editorRuntimeContract": "per-section distinctions recorded",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [
+        {
+          "locator": "/blocks/0/content_html::pre[1]",
+          "textSha256": "f70c326dc2a9afebdd623c9feb19bd55cae75d9a0a0433e9cf0b416922af2e71",
+          "roleSummary": "WITH_EDITORONLY_DATA protects the visualization member reference"
+        },
+        {
+          "locator": "/blocks/0/content_html::pre[2]",
+          "textSha256": "bae972a0e4d4c320618f7983000ca1527ed1e4908e75b2d4f3a224bbee87a85e",
+          "roleSummary": "OnRegister example creates visualization under valid owner, SetupAttachment and editor-only guard"
+        }
+      ],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-09",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/GetOwner?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/GetOwner?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T18:00:29.271475+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/GetOwner?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/4c9922b851ce5d8f8e557c27910a2a30cf437ab20230753f18b2449f19335e7b.html",
+      "sourceHash": "351ae9da7d2024e0e6c076ff2d6a1e0e2a4fe377d133b2297d393126a75e16e1",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/4c9922b851ce5d8f8e557c27910a2a30cf437ab20230753f18b2449f19335e7b.json",
+      "bodyFileHash": "d656db54d908a73523e471bbf4f884cc9391e4a6d8afb510a27672f0134482f4",
+      "bodyHash": "ee4801747c474833a4d8768744d0cdb020373b420bcbf5d32b2db7a095755b5a",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4956867,
+        "revision_hash_id": "83D05N",
+        "updated_at": "2026-06-16T20:43:57.374Z",
+        "slug": "API/Runtime/Engine/UActorComponent/GetOwner",
+        "title": "GetOwner",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 6,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Overloads",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 3,
+          "text": "GetOwner()",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 4,
+          "text": "Description",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 5,
+          "text": "GetOwner()",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 6,
+          "text": "Description",
+          "tag": "h3",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 13,
+      "tableCellCount": 32,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 4,
+          "cellsSha256": "034d8e380402629c0e3b4d3ad4535e0082f94a501fa827f0087df0f9536a229f",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "b5025c735015c2942556c84379ce0c3c4ea792d1fc7d9930a6d38a1ce11220a2",
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "443c39a4934999fda96bb8c615cdda572c8c4002c3b3e69f09e21bfbd901c6a4"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 4,
+          "cellsSha256": "ed6dea328ccb80593ba0c14d749179132d0763c3fe3cec0d7565e48076f67165",
+          "individualCellSha256": [
+            "c3be421f13dc0fd0b56091b3122914fe188969c520720f44d7e6cdd1471373d0",
+            "59f9eab7242809377d2ea943009f13ed0a26baa617b4634b858f0a2c5acdd364",
+            "ede66d8d9126c22af954dcb45c33eeb62b156d66399453a6b3a804cbd95430f1",
+            "3809171701aaa407fa1be3fac5fb8ace958b81d496f6b50b7de0308a3d7f131b"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 4,
+          "cellsSha256": "e64b1b600517cde4670528eeef802e700d0f89a0bac03bbe9cc4e1a55689b91a",
+          "individualCellSha256": [
+            "ebbb6a1b188c73dea75c05d6bd7e7c08be2913d9ca5af29b38b41eaef0d548ab",
+            "3e95060a7828164ce24c16ba46939a2736c4605fef17c5e6a443efc895e41e69",
+            "ede66d8d9126c22af954dcb45c33eeb62b156d66399453a6b3a804cbd95430f1",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "75758a53ebbc3b81c918394a12ca06147bb32fb2f753a34276395d70b5795b31",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "815dd71c5813ca702c01fa6fa83bf9b2918da8d02f39d21586caaf067513332e"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "583288684d905dc81727a094d30129425b79cbe1bc5295cdb53d12365464a622",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "45f97f208ace344fc8555035213979e145b9ca6b2c49f51d292f361bb8879a39"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 1,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "1ba8310a660bde6eda2db61c21a6d80455e1cc0809ef231bea4269ac57992e81",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "ab6238e593e0b967aebb820d04c02f77866c0def890914ad2ee227488ca00a80"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "75758a53ebbc3b81c918394a12ca06147bb32fb2f753a34276395d70b5795b31",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "815dd71c5813ca702c01fa6fa83bf9b2918da8d02f39d21586caaf067513332e"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "583288684d905dc81727a094d30129425b79cbe1bc5295cdb53d12365464a622",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "45f97f208ace344fc8555035213979e145b9ca6b2c49f51d292f361bb8879a39"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 2,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "1ba8310a660bde6eda2db61c21a6d80455e1cc0809ef231bea4269ac57992e81",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "ab6238e593e0b967aebb820d04c02f77866c0def890914ad2ee227488ca00a80"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "UFUNCTION (BlueprintCallable, Category=\"Components\", Meta=(Keywords=\"Actor Owning Parent\"))  \nAActor * GetOwner() const",
+        "template<class T>  \nT * GetOwner() const"
+      ],
+      "apiDefinitionCount": 2,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2],pre[1],pre[2]",
+          "sourceFacts": [
+            "AActor* GetOwner() const는 Outer chain을 따라 owning AActor를 찾아요. Actor의 network-owner getter와 다른 계약이에요.",
+            "BlueprintCallable, Category=\"Components\", Keywords=\"Actor Owning Parent\"예요. template<class T> T* GetOwner() const는 cast 실패 시 nullptr예요.",
+            "Outer chain이 component attachment tree와 같다는 설명이나 ownership 이전·thread 보장은 없어요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/GetOwner?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/ufunctions-in-unreal-engine?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent",
+        "https://dev.epicgames.com/documentation/unreal-engine/ufunctions-in-unreal-engine#functionspecifiers",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/GetOwner"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "UActorComponent",
+        "returns": [
+          "AActor* found following Outer chain",
+          "T*: nullptr if cast fails"
+        ],
+        "parameters": [],
+        "qualifiers": [
+          "const",
+          "const; template<class T>"
+        ],
+        "blueprintMetadata": "first overload BlueprintCallable; Category=\"Components\"; Keywords=\"Actor Owning Parent\"",
+        "ownership": "raw return pointer; ownership transfer not promised"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-10",
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/K2_DestroyComponent?application_version=5.8",
+      "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent/K2_DestroyComponent?lang=en-US",
+      "canonicalContainsVersion": false,
+      "versionIdentityBasis": "requested application_version=5.8 + SSR applications includes actual 5.8; canonical alone insufficient",
+      "version": "5.8",
+      "locale": "en-us",
+      "kind": "api",
+      "source": "official Epic SSR",
+      "retrievedAt": "2026-10-03T18:00:29.834078+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/K2_DestroyComponent?application_version=5.8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/293da2b012fe12ee4d9a482a5a94264bc1ca2d02eeef9252766062f22bb93a5a.html",
+      "sourceHash": "ef7b78a598193d2355725478d33ff8f6d52e897e0522c20257355c710890ffef",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/293da2b012fe12ee4d9a482a5a94264bc1ca2d02eeef9252766062f22bb93a5a.json",
+      "bodyFileHash": "58c425f40ff6e12912dc957a35995c35969637f95236d55c841e23702ac715cf",
+      "bodyHash": "5b180e49658ceb1db529dfb003e8dcb21ee06d85bd216a15a09f6a7972363bf1",
+      "bodyMethod": "official embedded SSR JSON blocks; HTMLParser for content_html",
+      "metadata": {
+        "id": 4956877,
+        "revision_hash_id": "7A0d5m",
+        "updated_at": "2026-06-16T20:43:57.555Z",
+        "slug": "API/Runtime/Engine/UActorComponent/K2_DestroyComponent",
+        "title": "UActorComponent::K2_DestroyComponent",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "status": "analyzed",
+      "reader": "/root/unreal_actor_body",
+      "readAt": "2026-10-04T03:47:37.162673+00:00",
+      "readScope": "all SSR body text, headings, table cells, declarations/examples, remarks; linked target bodies not implied",
+      "wholeBodyReviewed": true,
+      "textBodyReviewed": true,
+      "independentVerified": false,
+      "displayedSections": 2,
+      "sections": [
+        {
+          "htmlHeadingOrdinalOneBased": 1,
+          "text": "Navigation",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        },
+        {
+          "htmlHeadingOrdinalOneBased": 2,
+          "text": "Description",
+          "tag": "h2",
+          "reviewed": true,
+          "analyzed": true
+        }
+      ],
+      "topLevelBlockCount": 1,
+      "tableRowsIncludingHeaders": 6,
+      "tableCellCount": 12,
+      "tableEvidence": [
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 0,
+          "cellCount": 2,
+          "cellsSha256": "439083f38956ba51ece90631552c6ea23c5c29570d3d5710e408e77e01ba7375",
+          "individualCellSha256": [
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "cellCount": 2,
+          "cellsSha256": "4ccb1721acc7016e522704d0d80480300b366fadd6ffc49c6f6fe61e6bb3048d",
+          "individualCellSha256": [
+            "dcd1d5223f73b3a965c07e3ff5dbee3eedcfedb806686a05b9b3868a2c3d6d50",
+            "8196049004b662600bbab441a55bda12c509d0427bee8e616197c45af6f696c9"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 2,
+          "cellCount": 2,
+          "cellsSha256": "3415940cba9949f85f2288da4785f285cb728a3d2d87ce3f9a1c6168cdde8181",
+          "individualCellSha256": [
+            "baaddf70fb5d432b8bd948ef91d6f910124a6d138edae4d5f000c4610ddc8eae",
+            "78f9ac018e554365069108352dacabb7fbd15246edf19400677e3b54fe24e126"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 3,
+          "cellCount": 2,
+          "cellsSha256": "583288684d905dc81727a094d30129425b79cbe1bc5295cdb53d12365464a622",
+          "individualCellSha256": [
+            "724111f7bc870fd3f44de38368f13f22032977ad97cce02c2b96902e8787bf09",
+            "45f97f208ace344fc8555035213979e145b9ca6b2c49f51d292f361bb8879a39"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 4,
+          "cellCount": 2,
+          "cellsSha256": "1ba8310a660bde6eda2db61c21a6d80455e1cc0809ef231bea4269ac57992e81",
+          "individualCellSha256": [
+            "77e012ecf8aac8e86926839cbd3523e677e26318fcef0a9db9100f7a228499e0",
+            "ab6238e593e0b967aebb820d04c02f77866c0def890914ad2ee227488ca00a80"
+          ]
+        },
+        {
+          "tableIndexZeroBased": 0,
+          "rowIndexZeroBasedIncludingHeader": 5,
+          "cellCount": 2,
+          "cellsSha256": "2580d74502d3ef972130d44b327ef71ec6f5291fb39008827c0bbd4ced220417",
+          "individualCellSha256": [
+            "0e570ca6fabe24f94e52c1833f3ffd25567022beb826fa16891f3322051bc221",
+            "c20d3638daa928664e8a10f050b7f6f1e5894c7f945771e2ca5a35ba438428de"
+          ]
+        }
+      ],
+      "declarationOriginal": [
+        "UFUNCTION (BlueprintCallable, Category=\"Components\",  \n          Meta=(Keywords=\"Delete\", HidePin=\"Object\", DefaultToSelf=\"Object\", DisplayName=\"Destroy Component\", ScriptName=\"DestroyComponent\"))  \nvoid K2_DestroyComponent  \n(  \n    UObject * Object  \n)"
+      ],
+      "apiDefinitionCount": 1,
+      "notes": [
+        {
+          "locator": "/blocks/0/content_html::h2[2]+pre[1]",
+          "sourceFacts": [
+            "void K2_DestroyComponent(UObject* Object)는 component를 unregister하고 pending kill로 표시해요. Actor 소유 component는 owning Actor가 호출하는 경우에만 사용할 수 있다는 본문 제약이 있어요.",
+            "BlueprintCallable, Category=\"Components\", Keywords=\"Delete\", HidePin=\"Object\", DefaultToSelf=\"Object\", DisplayName=\"Destroy Component\", ScriptName=\"DestroyComponent\"예요. Object는 숨겨진 호출 문맥 pin이며 일반 표시 pin이나 C++ default argument로 오해하지 않아요.",
+            "bAllowAnyoneToDestroyMe class 변수 설명과 예외 관계가 이 본문에 없어요. default·허용 검사 방식·실패 통지는 미상으로 남겨요."
+          ],
+          "analyzed": true
+        }
+      ],
+      "linkedUrls": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime?application_version=5.8",
+        "https://dev.epicgames.com/documentation/unreal-engine/API?application_version=5.8"
+      ],
+      "allHrefValues": [
+        "https://dev.epicgames.com/documentation/unreal-engine/API",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine",
+        "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UActorComponent"
+      ],
+      "unreadLinkedTargets": "all links except other explicitly listed batch pages remain unreviewed",
+      "media": [],
+      "threadContract": "not stated on this API page; arbitrary-thread safety unestablished",
+      "editorRuntimeContract": "Runtime/Engine API module; not an editor-only declaration, but universal phase-validity not implied",
+      "serializationContract": "not provided by these API pages; durable file format/reference migrations unresolved",
+      "hbDecisionsReference": "hbDecisions",
+      "analysisRequiredGaps": [
+        "member overload/inheritance closure not established beyond displayed definitions",
+        "missing thread/ownership/default/error details must be resolved from additional version-fixed official evidence"
+      ],
+      "apiContract": {
+        "owner": "UActorComponent",
+        "returns": "void",
+        "parameters": [
+          {
+            "name": "Object",
+            "type": "UObject*",
+            "direction": "in",
+            "blueprintPin": "HidePin=Object; DefaultToSelf=Object",
+            "cppDefault": "not displayed",
+            "nullPolicy": "unknown"
+          }
+        ],
+        "blueprintMetadata": "BlueprintCallable; Category=\"Components\"; Keywords=\"Delete\"; HidePin=\"Object\"; DefaultToSelf=\"Object\"; DisplayName=\"Destroy Component\"; ScriptName=\"DestroyComponent\"",
+        "precondition": "owning Actor must call for Actor-owned component, per page; bAllowAnyoneToDestroyMe exception unresolved",
+        "lifetime": "unregister and pending kill; no immediate deallocation promise"
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "codeExamples": [],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    }
+  ],
+  "partialClassSources": [
+    {
+      "id": "UEACT002-PART-AActor",
+      "status": "fetched",
+      "wholeBodyReviewed": false,
+      "independentVerified": false,
+      "readScope": "initial description before first table plus explicitly listed selected rows only; rest unread",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/cached-aactor.html",
+      "sourceHash": "1c9b06d506c4af4e0ccc27d8979f78fbedd3507fcffb744baec14877723472a8",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/cached-aactor.json",
+      "bodyFileHash": "0ecff02f91c5a27564ad159ad44f7893776aac3bdabefa90d93eb9eda08e7449",
+      "bodyHash": "bd44c3a6f41cb37112b717a981ff9fa61109c289d844b5e0b03418310ff1b0b8",
+      "originalSourcePath": "native/build/reference-cache/unreal/pages/54a9c50802e63cef0e19b493ac5460d2b21f1aa227c3e3eb83b2ad1dac44942e.html",
+      "retrievedAt": "2026-10-03T16:30:02.756295+00:00",
+      "metadata": {
+        "id": 4945127,
+        "hash_id": "pPkvmy",
+        "revision_hash_id": "O96YLV",
+        "updated_at": "2026-06-16T20:39:25.767Z",
+        "slug": "API/Runtime/Engine/AActor",
+        "title": "AActor",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "document_type": null,
+        "entitlement": "none",
+        "readiness": "production",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "selectedRowCount": 12,
+      "selectedRows": [
+        {
+          "tableIndexZeroBased": 4,
+          "rowIndexZeroBasedIncludingHeader": 56,
+          "declarationOrPropertyName": "OnDestroyed",
+          "propertyType": "FActorDestroyedSignature",
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintAssignable Category=\"Game\"",
+          "cellCount": 5,
+          "cellsSha256": "cb20d706f07abb371166d00afeee6acb6c600ecddacd9e1633b9b300b61ac44c"
+        },
+        {
+          "tableIndexZeroBased": 4,
+          "rowIndexZeroBasedIncludingHeader": 58,
+          "declarationOrPropertyName": "OnEndPlay",
+          "propertyType": "FActorEndPlaySignature",
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintAssignable Category=\"Game\"",
+          "cellCount": 5,
+          "cellsSha256": "d458ba64458799ea340dfaa473e91156fabb90ff3fd095bceafc7f006e825d33"
+        },
+        {
+          "tableIndexZeroBased": 4,
+          "rowIndexZeroBasedIncludingHeader": 68,
+          "declarationOrPropertyName": "Owner",
+          "propertyType": "TObjectPtr< AActor >",
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "ReplicatedUsing=OnRep_Owner",
+          "cellCount": 5,
+          "cellsSha256": "103ac674425d35aca02686a4b25b0217772593930000d84bef69a34f4c7ecaec"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 23,
+          "declarationOrPropertyName": "bool AttachToComponent ( USceneComponent* Parent, const FAttachmentTransformRules& AttachmentRules, FName SocketName )",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "e5af48f15536c8706001f4852583580e151009d9095cfee94c8d4b8bf692271e"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 51,
+          "declarationOrPropertyName": "void DispatchBeginPlay ( bool bFromLevelStreaming )",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "af644c0420000fa440e8b388d4b87d6f0f4d13c15843fd3e1d0d3c6c555aa9f0"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 153,
+          "declarationOrPropertyName": "AActor * GetOwner ()",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintCallable Category=Actor",
+          "cellCount": 4,
+          "cellsSha256": "e2d533b2019106e9198e1dd1a4ea28f189a44818ea83e473f94b575cdda255c3"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 154,
+          "declarationOrPropertyName": "T * GetOwner ()",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "26571411f23fdf075a9a2a2f497e682d49bb4a6f825f356457d802aadf36d637"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 292,
+          "declarationOrPropertyName": "void RouteEndPlay ( const EEndPlayReason::Type EndPlayReason )",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "59998c20262f5f55640e416382b6e1ff4db643c6902ade0becb7b51b617f2a30"
+        },
+        {
+          "tableIndexZeroBased": 7,
+          "rowIndexZeroBasedIncludingHeader": 22,
+          "declarationOrPropertyName": "virtual void Destroyed()",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "fa84f29ced1407dedc9afa2b53b704272bd930b7ad8622ae0d333086ce7597f8"
+        },
+        {
+          "tableIndexZeroBased": 7,
+          "rowIndexZeroBasedIncludingHeader": 173,
+          "declarationOrPropertyName": "virtual void SetOwner ( AActor* NewOwner )",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintCallable Category=Actor",
+          "cellCount": 4,
+          "cellsSha256": "a4caa492baa3b9f7fe1f4ad889a64d0cc6a8c80986227789a75a74b0cbcf12ea"
+        },
+        {
+          "tableIndexZeroBased": 10,
+          "rowIndexZeroBasedIncludingHeader": 6,
+          "declarationOrPropertyName": "void ReceiveBeginPlay()",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintImplementableEvent Meta=(DisplayName=\"BeginPlay\")",
+          "cellCount": 4,
+          "cellsSha256": "963fbeb42f2fadaf2631e94d8ce4bd780603d9bdb0e940ff8691f9fed0b6c421"
+        },
+        {
+          "tableIndexZeroBased": 10,
+          "rowIndexZeroBasedIncludingHeader": 7,
+          "declarationOrPropertyName": "void ReceiveEndPlay ( EEndPlayReason::Type EndPlayReason )",
+          "propertyType": null,
+          "includePath": "GameFramework/Actor.h",
+          "specifierMetadata": "BlueprintImplementableEvent Meta=(Keywords=\"delete\", DisplayName=\"End Play\")",
+          "cellCount": 4,
+          "cellsSha256": "98e93c7eacff6e4dcaa08929bb4e695b6b30f731cd44b3222c939a5f4568fe28"
+        }
+      ],
+      "locatorBasis": "/blocks/0/content_html::table[n+1]/tr[m+1], both recorded n/m zero based and header row included",
+      "analysisNotes": [
+        "Actor owner uses replication/visibility and ReplicatedUsing=OnRep_Owner, not a declaration of transform parent or deletion ownership.",
+        "ReceiveBeginPlay/ReceiveEndPlay are BlueprintImplementableEvent; EndPlay carries EEndPlayReason::Type input. No delegate invocation order or listener lifetime guarantee.",
+        "Destroyed() explicit gameplay/editor destruction excludes level streaming/gameplay ending; OnEndPlay broader and OnDestroyed explicitly destroyed.",
+        "SetOwner(AActor* NewOwner) virtual void BlueprintCallable Category=Actor, default/null/error not supplied; member request has no SSR body.",
+        "Initial lifecycle ordered paragraphs distinguish PostLoad vs creation, registration over multiple frames, construction editor reruns, autoactivation and conditional initialization, actual-gameplay BeginPlay."
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    },
+    {
+      "id": "UEACT002-PART-UActorComponent",
+      "status": "fetched",
+      "wholeBodyReviewed": false,
+      "independentVerified": false,
+      "readScope": "initial description before first table plus explicitly listed selected rows only; rest unread",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/3cc94fc87dab907d369ba74a117066939076cc530bda1b23d4bcbf049e836a02.html",
+      "sourceHash": "325eebfc505ac990bbf318af32252a44fba13d43bd9ea6ce479a708195afe801",
+      "bodyPath": "native/build/reference-corpus/unreal-actor-batch/3cc94fc87dab907d369ba74a117066939076cc530bda1b23d4bcbf049e836a02.json",
+      "bodyFileHash": "196c0beacdbea9947502e640b5ab94354385b969f15c22ad2ec6a617d977fc8a",
+      "bodyHash": "2531648051049b1cac172cd9c6ae7ad8393312c37832cc6e2b6114222064b58a",
+      "originalSourcePath": "native/build/reference-corpus/unreal-actor-batch/3cc94fc87dab907d369ba74a117066939076cc530bda1b23d4bcbf049e836a02.html",
+      "retrievedAt": "2026-10-03T17:58:32.704866+00:00",
+      "metadata": {
+        "id": 4956848,
+        "revision_hash_id": "41b6lz",
+        "updated_at": "2026-06-16T20:43:57.003Z",
+        "slug": "API/Runtime/Engine/UActorComponent",
+        "title": "UActorComponent",
+        "source": "ue_cpp_api_external",
+        "locale": "en-us",
+        "entitlement": "none",
+        "applications": [
+          {
+            "id": 4279322,
+            "type": "unreal_engine",
+            "version": "5.8",
+            "major_version": "5"
+          }
+        ]
+      },
+      "selectedRowCount": 14,
+      "selectedRows": [
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 1,
+          "declarationOrPropertyName": "bAllowAnyoneToDestroyMe",
+          "propertyType": "uint8",
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 5,
+          "cellsSha256": "99d43f779af23fab2cf19c852d217c0b616250904cb3e9b67c21fe6b8784a6c2"
+        },
+        {
+          "tableIndexZeroBased": 6,
+          "rowIndexZeroBasedIncludingHeader": 15,
+          "declarationOrPropertyName": "PrimaryComponentTick",
+          "propertyType": "FActorComponentTickFunction",
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "EditDefaultsOnly Category=\"ComponentTick\"",
+          "cellCount": 5,
+          "cellsSha256": "a05161d6f01d5337ef96e46c529e1b56ecca96b01e14171587a168900922514e"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 21,
+          "declarationOrPropertyName": "AActor * GetOwner ()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "BlueprintCallable Category=\"Components\" Meta=(Keywords=\"Actor Owning Parent\")",
+          "cellCount": 4,
+          "cellsSha256": "ed6dea328ccb80593ba0c14d749179132d0763c3fe3cec0d7565e48076f67165"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 22,
+          "declarationOrPropertyName": "T * GetOwner ()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "e64b1b600517cde4670528eeef802e700d0f89a0bac03bbe9cc4e1a55689b91a"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 60,
+          "declarationOrPropertyName": "void K2_DestroyComponent ( UObject* Object )",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "BlueprintCallable Category=\"Components\" Meta=(Keywords=\"Delete\", HidePin=\"Object\", DefaultToSelf=\"Object\", DisplayName=\"Destroy Component\", ScriptName=\"DestroyComponent\")",
+          "cellCount": 4,
+          "cellsSha256": "d53101d7ffa1756f399f17ce541bb35c1ca8007b19d6f8998d2330ccba8e1a90"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 72,
+          "declarationOrPropertyName": "void ReceiveBeginPlay()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "BlueprintImplementableEvent Meta=(DisplayName=\"Begin Play\")",
+          "cellCount": 4,
+          "cellsSha256": "c8576a691048eeb25ee6350e8e30752784c826a14245fff0608ab75a816f511b"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 73,
+          "declarationOrPropertyName": "void ReceiveEndPlay ( EEndPlayReason::Type EndPlayReason )",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "BlueprintImplementableEvent Meta=(Keywords=\"delete\", DisplayName=\"End Play\")",
+          "cellCount": 4,
+          "cellsSha256": "12dcc72e2360e6ba9297aae8df25f5ae47301be75afb71e183e077ae9020a8c7"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 78,
+          "declarationOrPropertyName": "void RegisterComponent ()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "713d9d0c0c80153e24b61bae833c8c3449baf53a18e5474e63d983c3892827ed"
+        },
+        {
+          "tableIndexZeroBased": 8,
+          "rowIndexZeroBasedIncludingHeader": 95,
+          "declarationOrPropertyName": "void UnregisterComponent()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "84e6d3686ecd68bf329e387528cc9afcec6e3a1712ac66716d759420754dcca0"
+        },
+        {
+          "tableIndexZeroBased": 9,
+          "rowIndexZeroBasedIncludingHeader": 7,
+          "declarationOrPropertyName": "virtual void BeginPlay ()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "b85aa1823eb9228321b8bf19470909e7bb62a7964356d7db9cb8260a84488031"
+        },
+        {
+          "tableIndexZeroBased": 9,
+          "rowIndexZeroBasedIncludingHeader": 12,
+          "declarationOrPropertyName": "virtual void DestroyComponent ( bool bPromoteChildren )",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "6c4c1b269eb6c55d0c8f2df401af75e912332013217b2d242d4b7c8a6c98a429"
+        },
+        {
+          "tableIndexZeroBased": 9,
+          "rowIndexZeroBasedIncludingHeader": 13,
+          "declarationOrPropertyName": "virtual void EndPlay ( const EEndPlayReason::Type EndPlayReason )",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "067587c068d44cf4139bae4691edd55e1373394722e52fd60827129967d77123"
+        },
+        {
+          "tableIndexZeroBased": 9,
+          "rowIndexZeroBasedIncludingHeader": 38,
+          "declarationOrPropertyName": "virtual void OnComponentCreated()",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "e4474833a4a7d06674b4f8576b4507d2bd3ebeef210b6a763a2473c71ffbbee7"
+        },
+        {
+          "tableIndexZeroBased": 9,
+          "rowIndexZeroBasedIncludingHeader": 39,
+          "declarationOrPropertyName": "virtual void OnComponentDestroyed ( bool bDestroyingHierarchy )",
+          "propertyType": null,
+          "includePath": "Components/ActorComponent.h",
+          "specifierMetadata": "",
+          "cellCount": 4,
+          "cellsSha256": "bfd677e68fd31a146c0b2b51bfb21375fb8d745277afe3c4bbb7e061a4352b15"
+        }
+      ],
+      "locatorBasis": "/blocks/0/content_html::table[n+1]/tr[m+1], both recorded n/m zero based and header row included",
+      "analysisNotes": [
+        "Component GetOwner follows Outer; spatial attachment is a SceneComponent-only tree.",
+        "ReceiveBeginPlay is documented before owning Actor BeginPlay or on dynamic creation after begun Actor; ReceiveEndPlay generally via component destruction/Actor EndPlay.",
+        "DestroyComponent(bool bPromoteChildren) unregisters/removes from outer Actor Components/marks pending kill; promotion semantics/default missing. EndPlay(const EEndPlayReason::Type) only from Actor EndPlay when bHasBegunPlay true.",
+        "bAllowAnyoneToDestroyMe exposes any-parent destruction permission but default/interaction with K2 caller restriction is undocumented here.",
+        "OnComponentCreated excludes loaded components and applies editor/gameplay; OnComponentDestroyed(bool bDestroyingHierarchy) has no argument semantics stated."
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+          "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+        }
+      ],
+      "privateSourceEvidence": {
+        "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+        "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+      }
+    }
+  ],
+  "failedRequests": [
+    {
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-lifecycle-in-unreal-engine?application_version=5.8",
+      "fetchedAt": "2026-10-03T17:57:38.899312+00:00",
+      "readStatus": "unread",
+      "httpStatus": 200,
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-lifecycle-in-unreal-engine?application_version=5.8",
+      "contentType": "text/html; charset=utf-8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/057159d36b2b901c1f233672323d9ebf65471f9135546d26029117ebf444d9d3.html",
+      "sourceHash": "3c3104316f33669a96e49be5433d57b0a00d6719da70e9f49117993678fadf59",
+      "fetchStatus": "failed",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "disposition": "corrected URL fetched separately; no alias equivalence claim",
+      "selectedActualVersion": null
+    },
+    {
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/SetOwner?application_version=5.8",
+      "fetchedAt": "2026-10-03T17:57:39.479417+00:00",
+      "readStatus": "unread",
+      "httpStatus": 200,
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/AActor/SetOwner?application_version=5.8",
+      "contentType": "text/html; charset=utf-8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/77ccc8852cc8f0c47332521ab9f0c96345765f559ff0bf5c92565e8e0b82d957.html",
+      "sourceHash": "90c867ecff3969e33ed8c1ad2ec510736f30546d5e0d3daad2deb657c1b1041d",
+      "fetchStatus": "failed",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "disposition": "member contract retained from class table; detailed member body unresolved",
+      "selectedActualVersion": null
+    },
+    {
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/EndPlay?application_version=5.8",
+      "fetchedAt": "2026-10-03T17:57:40.046944+00:00",
+      "readStatus": "unread",
+      "httpStatus": 200,
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/EndPlay?application_version=5.8",
+      "contentType": "text/html; charset=utf-8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/4ef40d5112f8d3bd4c0ab627c13f26319f6fe45bc6de3ebb52071fbe51af720f.html",
+      "sourceHash": "e41a8164c2dc6131f964ac808dc01bc7057087c9c14721b2b089a60f250df44d",
+      "fetchStatus": "failed",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "disposition": "member contract retained from class table; detailed member body unresolved",
+      "selectedActualVersion": null
+    },
+    {
+      "requestUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/DestroyComponent?application_version=5.8",
+      "fetchedAt": "2026-10-03T17:57:40.426515+00:00",
+      "readStatus": "unread",
+      "httpStatus": 200,
+      "finalUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UActorComponent/DestroyComponent?application_version=5.8",
+      "contentType": "text/html; charset=utf-8",
+      "sourcePath": "native/build/reference-corpus/unreal-actor-batch/7a20e4e9f32316c1933797b1025c92f1e1a42fe24634ce8d808590adae20ad0a.html",
+      "sourceHash": "b9dfc49ae63447ba1c2871b6ac3517349bd1285f3ccce4970de33a2a92fbd6c4",
+      "fetchStatus": "failed",
+      "error": "No SSR document body; do not count shell/challenge as fetched body",
+      "disposition": "member contract retained from class table; detailed member body unresolved",
+      "selectedActualVersion": null
+    }
+  ],
+  "sourceConflictsAndGaps": [
+    {
+      "id": "UEACT-GAP-01",
+      "source": "K2_DestroyComponent description + UActorComponent table[7]/row[2]",
+      "problem": "body requires owning Actor caller, class bAllowAnyoneToDestroyMe describes any-parent permission; scope/default/actual guard unresolved",
+      "status": "unresolved"
+    },
+    {
+      "id": "UEACT-GAP-02",
+      "source": "Actor Lifecycle /blocks/19 + /blocks/20/blocks/0",
+      "problem": "general RF_PendingKill/GC claim and resurrection exception need flags/context reconciliation; do not infer BeginPlay/EndPlay once-only",
+      "status": "unresolved"
+    },
+    {
+      "id": "UEACT-GAP-03",
+      "source": "failed member requests",
+      "problem": "SetOwner/EndPlay/DestroyComponent individual bodies absent despite valid class rows; no parameter defaults/error/ownership/thread details invented",
+      "status": "unresolved"
+    },
+    {
+      "id": "UEACT-GAP-04",
+      "source": "Actor Lifecycle /blocks/3,/blocks/30",
+      "problem": "technical image pixels unavailable and empty alt text; textual full read cannot promote whole body reviewed",
+      "status": "pending_media"
+    },
+    {
+      "id": "UEACT-GAP-05",
+      "source": "all API pages",
+      "problem": "FAttachmentTransformRules/EAttachmentRule/EEndPlayReason/delegate type pages/inherited overrides/version-fixed source not yet fully read; exact callbacks order, lifetime, thread, unsupported target and errors incomplete",
+      "status": "unresolved"
+    },
+    {
+      "id": "UEACT-GAP-06",
+      "source": "AActor initial lifecycle list",
+      "problem": "bWantsInitializeComponentSet is the displayed prose identifier; actual flag declaration/call guard not read here",
+      "status": "unresolved"
+    }
+  ],
+  "hbCurrentReadOnlyReferences": [
+    {
+      "path": "docs/AI_ENGINE_API.md",
+      "line": 13,
+      "scope": "document.patch expectedRevision/dryRun/copy validation/single Undo documented; not runtime validated here"
+    },
+    {
+      "path": "docs/AI_ENGINE_API.md",
+      "line": 131,
+      "scope": "C++ service queued commands applied after call; lookup snapshots documented; not executed here"
+    },
+    {
+      "path": "docs/BLUEPRINT_SPEC.md",
+      "line": 82,
+      "scope": "existing prototype component/Construction/BeginPlay ordering documented; source runtime not audited here"
+    }
+  ],
+  "hbDecisions": [
+    {
+      "id": "HB-ACTOR-D01",
+      "kind": "design_proposal_not_source_fact",
+      "cxx": "separate serialized Actor owner id, Component outer/owner id and SceneComponent attachment-parent id; avoid pointer ownership assumptions",
+      "node": "typed getter/setter/attach commands must identify which relationship they use and expose correct pins",
+      "humanUI": "component tree describes spatial parent/root; network owner shown separately where meaningful",
+      "aiSchema": "same stable ids and validation for human/AI edits; explicit relation discriminator, cycle/type/registration checks",
+      "validationAfterFullCorpusGate": "save/reload relations, attach invalid/unregistered objects, stale ids and cycle rejection; no implementation performed"
+    },
+    {
+      "id": "HB-ACTOR-D02",
+      "kind": "design_proposal_not_source_fact",
+      "cxx": "represent constructed/registered/initialized/begun/ended/pending-destroy/resource-freed phases separately; lifecycle hooks must account for load/spawn/PIE/deferred",
+      "node": "C++ and node calls share phase validation; BeginPlay/EndPlay event reason and repeated streaming re-entry policy must be explicit",
+      "humanUI": "Play state observes runtime state without replacing authoring defaults; editor visualization resources separated",
+      "aiSchema": "runtime observation distinct from document.patch; destruction request versus applied/resource-free states explicit",
+      "validationAfterFullCorpusGate": "same events/state through C++/nodes/human Play/AI; shutdown, streamed reload and dynamic component creation; no implementation performed"
+    },
+    {
+      "id": "HB-ACTOR-D03",
+      "kind": "design_proposal_not_source_fact",
+      "cxx": "attachment/welding is a structural and physics operation with possible persistent side effects, not a generic owner assignment",
+      "node": "expose location/rotation/scale rule and weld input and actual success/error result; pin defaults cannot be inferred from C++ omission",
+      "humanUI": "validate transform hierarchy and disclose destructive weld effect only where user makes that choice; transaction semantics need separate design",
+      "aiSchema": "dry-run/revision/type/lifetime/caller permission for mutation; metadata-hidden self context not arbitrary caller authorization",
+      "validationAfterFullCorpusGate": "failed mutation leaves data/Undo stable; detach/weld policy tested; API success versus queued application observed; no implementation performed"
+    }
+  ],
+  "verification": {
+    "status": "pending_independent_source_compare",
+    "required": [
+      "recompute every source/body/analysis file hash",
+      "compare all 9 whole bodies and 10 displayed overload declarations",
+      "compare 26 supplemental rows and initial lifecycle paragraphs without whole-class promotion",
+      "keep diagram/caller-policy/flag/default/thread gaps unresolved until new official evidence",
+      "do not mark global ledger or full corpus verified from this local batch"
+    ]
+  },
+  "analysisReport": "docs/research/UNREAL_ACTOR_BODY_002.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNREAL_ACTOR_BODY_002.md",
+      "sha256": "a4b2911289c4b0cde26df5194f3b446d951999dac84be411e87026bfdd715b04"
+    }
+  ],
+  "privateSourceEvidence": {
+    "file": "native/build/reference-corpus/unreal-actor-batch/actor-body-source-evidence.json",
+    "sha256": "4dde5ee05329387a8cd1819a411358cf752f17e9ce61c523729b2bbb46329077"
+  }
+}

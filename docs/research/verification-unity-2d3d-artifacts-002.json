@@ -1,0 +1,49 @@
+{
+  "pageId": "62b783c29188d37cdc8571db",
+  "bodyHash": "944e5ea7518d6d32a4c2cdef20b5df146ae268ed2e21fed715012976dd93b68c",
+  "sourceHash": "11d6d081651cf1df864ba7ae0ab2a9f89555e68c66611c586547251f562b3ae2",
+  "actor": "unity_lifecycle_body",
+  "date": "2026-10-04",
+  "analysisHash": "253423fd5d6d08058c5238bd7f24247d0a7f0d38ab79145b432474358afd5087",
+  "sections": [
+    "h1",
+    "h2",
+    "h3",
+    "h4"
+  ],
+  "apiUnits": [],
+  "media": [
+    "table-1"
+  ],
+  "comparisonEvidence": "원본 HTML 전체를 직접 읽고 canonical/6000.0 영어/version 표시/job76410965/2026-09-29와 첫h1~_content 이전 본문을 대조했어요. 시작시2D/3D 선택 및 이후 전환, Edit > Project Settings의 Editor category에서 Default Behavior Mode를 고르는 두 단계, 비교표와 Additional resources 전체4구역을 확인했어요. 표3header와 6데이터행(전체7행/21셀)을 직접 대조했어요. 이미지의 Sprite 가정/비가정, Scene view2D/3D, 기본 실시간 방향광 없음/있음, 카메라(0,0,-10)/(0,1,-10), 직교/원근, Lighting 양쪽각5항목이 일치해요. 2D는 새scene Skybox off·Ambient Color RGB54/58/66·Realtime GI off·Baked GI on·Auto-Building off, 3D는 기본Skybox material·Ambient Skybox·Realtime/Baked GI와Auto-Building on이에요. inline Sprite/Skybox tooltip 정의와 연결 link도 직접 읽었고, 이를 기존 콘텐츠 자동 변환이나 모든 rendering pipeline의 GI 지원 보장으로 바꾸지 않았어요. private snapshot/review/current analysis JSON 및 UNITY_ROOT_BODY_ANALYSIS_001.md의 해당표/문단은 모든 비교값, 전체menu path와 적용성 미확정을 보존해요. HB2.5D·C++/노드·공통AI schema는 HB 설계 판단으로 분리돼 있어요. API 선언·그림·동적 탭·code example은 없고 table-1만 있어요. 세Additional resources와 tooltip/본문 링크의 target는 미독이며 이 검증을 상속하지 않아요. 실제 현재 파일 SHA/byte-exact source slice/heading/table coverage와 MD evidence pin을 재계산하여 일치했고 비교한 bounded page 분석의 누락/오류는 발견하지 않았어요. 엔진/GUI/네트워크/API 실행은 하지 않았어요.",
+  "openIssues": [],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+      "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+    }
+  ],
+  "revalidation": {
+    "scope": "actual complete2page bodies/tables and current root analysis/MD linkage; not own lifecycle verification or entire corpus",
+    "wholeBodyRead": true,
+    "exactHeadings": [
+      "Set your project to 2D or 3D mode",
+      "Switching between 2D and 3D modes",
+      "Comparison of the different modes",
+      "Additional resources"
+    ],
+    "tableHeaderRows": 1,
+    "tableDataRows": 6,
+    "tableTotalCells": 21,
+    "sourceSliceMatchesBodyBytes": true,
+    "sourceMatchesOfficialZIPEntry": true,
+    "noSemanticDiffToPreArtifactAnalysis": true,
+    "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/2DAnd3DModeSettings.html",
+    "bodyFile": "native/build/reference-corpus/unity-root-batch/2DAnd3DModeSettings.html.body.html",
+    "analysisFile": "native/build/reference-corpus/unity-root-batch/2DAnd3DModeSettings.html.analysis.json",
+    "currentReviewHash": "4af63d73b3951899b2aca6113bbfe4cf856dddd1aea263b8e5b87a4124837753",
+    "currentSnapshotHash": "9bc17e059d6d5ee48beaa64290ee358da47a7b4bcb487cfd9ba6f218107ec1ff",
+    "relatedBodiesVerified": false,
+    "runtimeGuiExecuted": false
+  }
+}

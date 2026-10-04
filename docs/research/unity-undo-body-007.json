@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-undo-007",
+  "phase": "research_only",
+  "reader": "root",
+  "date": "2026-10-04",
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "counts": {
+    "wholeBodiesRead": 6,
+    "meaningHeadings": 31,
+    "displayedDeclarations": 8,
+    "tables": 7,
+    "tableRowsIncludingHeaders": 19,
+    "tableCells": 38,
+    "wholeExamplesRead": 2,
+    "technicalImages": 0,
+    "ledgerPromotions": 0,
+    "independentlyVerified": 0
+  },
+  "analysisReport": "docs/research/UNITY_UNDO_BODY_007.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_UNDO_BODY_007.md",
+      "sha256": "3d7ab938c99deabdce8448aa01c326155723412ee7b29a023d9a54bc93d50d61"
+    }
+  ],
+  "privateEvidence": {
+    "file": "native/build/reference-corpus/unity-undo-batch/extraction.json",
+    "sha256": "616f7acde1debacc57566588b460459d2fdc086f28b80b631ef357a72826d9e4",
+    "originalExamplesAndTableTextsPublic": false
+  },
+  "pages": [
+    {
+      "file": "Undo.SetTransformParent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetTransformParent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetTransformParent.html",
+      "sourceHash": "e11a0586849f368d54bb82ecdda257c9b3a1b9be087abd828ae9e94ff82953ef",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.SetTransformParent.html.body.html",
+      "bodyHash": "2aa53000a9ae3c27d80ef870dd1da2202d3c10bd882be0bb9b523f48a9edb6ae",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .SetTransformParent"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void SetTransformParent ( Transform transform , Transform newParent ,\r\nstring name );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        }
+      ],
+      "pageId": "UNUNDO007-01",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "변경할 Transform·newParent·history 표시 name의 인수 3개를 받아 부모 변경과 Undo 등록을 함께 해요. 단순 RecordObject로 복구할 수 없던 부모 변경의 전용 API예요. transform.parent = newParent와 같다고 설명하지만 world/local 보존·null/root·cycle 거부·dirty/prefab 저장·실패·thread는 이 본문에 없어요.",
+        "hb": "Outliner의 끌어서 부모 변경·노드·C++ editor API·AI hierarchy command를 전용 구조 변경 transaction에 연결하는 후보예요. 엔진의 부모 규칙과 좌표 계약을 후속 확인하기 전에 임의 기본값을 원출처 사실로 확정하지 않아요.",
+        "gaps": [
+          "Transform.parent assignment contracts",
+          "root/cycle/space/worldPositionStays/default/failure/thread",
+          "prefab override/scene dirty and saving"
+        ]
+      },
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 4,
+          "cells": 8,
+          "sha256": "85a9d7508b9cd3c13f5ba86165cf9d1ee5e3d4834d8fc3011099e2811e20fe68",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        }
+      ],
+      "examples": [],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Undo.AddComponent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.AddComponent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.AddComponent.html",
+      "sourceHash": "36f948c6318d5ece5d2e6101e2ba10b875bb6ab3d3daeff95b19c0d49e92c3e1",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.AddComponent.html.body.html",
+      "bodyHash": "c4c59b1d35bec87c79744973eb78260840341cef41837d52b06b561122432a6c",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .AddComponent"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Component AddComponent ( GameObject gameObject ,\r\nType type );",
+        "public static T AddComponent ( GameObject gameObject );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Component.html",
+          "text": "Component"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        }
+      ],
+      "pageId": "UNUNDO007-02",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "GameObject와 Type를 받는 Component 반환형, GameObject만 받는 표시 T 반환형의 두 overload예요. 추가와 Undo 등록을 함께 하고 Undo 시 새 컴포넌트를 파괴해요. 반환값은 새 컴포넌트예요. 표시된 T의 constraint와 완전한 generic 선언은 없어서 만들어 채우지 않아요. 초기화·필수 의존 컴포넌트·잘못된 타입·중복·Undo/Redo의 callback과 참조는 미확인이에요.",
+        "hb": "컴포넌트 추가를 일반 속성 변경과 분리해 stable component ID 생성·구조 snapshot·삭제/복구·의존성 검증의 공통 명령으로 설계하는 후보예요. 파괴 후 재생성할 때 저장된 raw pointer가 안전하다고 주장하지 않아요.",
+        "gaps": [
+          "generic constraint and complete signature",
+          "component constructor/Awake/OnEnable/required component/duplicates",
+          "Undo redo lifetime/null/error/thread/serialization"
+        ]
+      },
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 3,
+          "cells": 6,
+          "sha256": "74715cf639234ddd819ce70b7d66996765406330a462ffbe6dce15e78a46bc8e",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        },
+        {
+          "locator": "table[2]",
+          "rows": 2,
+          "cells": 4,
+          "sha256": "6a0765370f1cd10ea34f180d297306df62b2766bc2ed39d57baebaae6ce4d298",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        }
+      ],
+      "examples": [],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Undo.DestroyObjectImmediate.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceHash": "c3e84e43d3368fc9373d79ea7a0323e3f2ed793f8032d3e9e459a3ab98f849b0",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.DestroyObjectImmediate.html.body.html",
+      "bodyHash": "e5bb4a61d93a0bafeaf73d72cc09a5ab6cfdc598a4892fd78ed668e28d02a146",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .DestroyObjectImmediate"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void DestroyObjectImmediate ( Object objectToUndo );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        }
+      ],
+      "pageId": "UNUNDO007-03",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "Object 인수 하나로 파괴하고 Undo buffer에 파괴된 객체를 저장해 다시 생성할 수 있어요. 설명은 DestroyImmediate(objectToUndo, true)와 같은 동작이라고 연결해요. 게임의 지연 파괴와 구분할 저작 명령이지만, 직접 binding과 연결된 DestroyImmediate를 읽기 전에 파일 삭제 권한이나 모든 외부 참조 복구를 확정하지 않아요.",
+        "hb": "에디터 삭제 transaction은 대상·하위 객체·참조·에셋 파일 영향·복구 데이터·stable ID를 기록하고 사람·AI·C++ editor·node 명령에서 동일한 검증을 사용해야 해요. 물리/게임의 지연 파괴와 이 명령을 구분하는 후보예요.",
+        "gaps": [
+          "DestroyImmediate linked allowDestroyingAssets contract",
+          "children/dependencies/external references/file restoration",
+          "permissions/runtime applicability/thread/null/errors"
+        ]
+      },
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 2,
+          "cells": 4,
+          "sha256": "0bae57aef690ef64cd3855459f915c5307452e9bb79df51a053d55db103908ee",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        }
+      ],
+      "examples": [],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Undo.RegisterCompleteObjectUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceHash": "0790cd09799f0521c33ded64618fd0731ca0b191a9e0e512b8c98b8299af6984",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.RegisterCompleteObjectUndo.html.body.html",
+      "bodyHash": "46b8207316c00a87b8e6405fd79d7847395218b0cc32264ff244fa32cb88222f",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterCompleteObjectUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterCompleteObjectUndo ( Object objectToUndo ,\r\nstring name );",
+        "public static void RegisterCompleteObjectUndo (Object[] objectsToUndo ,\r\nstring name );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "Undo.SetTransformParent.html",
+          "text": "Undo.SetTransformParent"
+        },
+        {
+          "href": "Undo.AddComponent.html",
+          "text": "Undo.AddComponent"
+        },
+        {
+          "href": "Undo.DestroyObjectImmediate.html",
+          "text": "Undo.DestroyObjectImmediate"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "Undo.RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "pageId": "UNUNDO007-04",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "호출 시 객체 상태를 복사해 후속 변경을 기록한 상태로 되돌려요. 부모 변경·컴포넌트 추가·객체 파괴는 복구 범위가 아니며 전용 API 3개를 쓰도록 해요. Scene 객체라면 실제 후속 값 변경이 없어도 호출 즉시 Scene을 modified로 표시해요. Object[] overload는 하나의 Undo operation을 만들어요. 전체 예제는 새 Player 생성→snapshot→이름 변경→Edit의 Undo로 이름 복구 순서예요. 새 객체 생성 자체를 Undo로 등록한 증거는 아니에요.",
+        "hb": "전체 snapshot·delta·구조 변경을 분리하고 다중 선택에서 하나의 Undo를 제공하는 후보예요. AI 명령의 no-op가 모든 경로에서 dirty를 만들지 않는다고 전제하지 않고, 저장/revision 정책을 선택한 Undo 계약에 연결해야 해요.",
+        "gaps": [
+          "deep versus shallow state/serialized fields and reference retention",
+          "prefab/saving/native state and version",
+          "null/array duplicates/exception/thread/redo"
+        ]
+      },
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 3,
+          "cells": 6,
+          "sha256": "2b3ce19262230c34536ac774c590e55f3b02c42991e6084daf5348844f3df739",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        },
+        {
+          "locator": "table[2]",
+          "rows": 3,
+          "cells": 6,
+          "sha256": "7ee16c983536a1ef32f6139a0a621490074b7d647885a85d89d72ca03c66d61d",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "3e894258bb00a3fc85e65c4e27631120194d86394a6a6785c66342a8e54e653b",
+          "hashMethod": "UTF-8 BeautifulSoup pre.get_text(newline,strip=False), full text private only",
+          "wholeExampleRead": true
+        }
+      ],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Undo.IncrementCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceHash": "2f2fa598627e3cec71dd7fb9c7505080d54c88247ffe2eba474defec6e903b17",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.IncrementCurrentGroup.html.body.html",
+      "bodyHash": "a9b607d4ccde8080381d9fe0f00a2754522ba09bcff201d8faa75d1f73d5aaf8",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .IncrementCurrentGroup"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void IncrementCurrentGroup ();"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "pageId": "UNUNDO007-05",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "Undo는 current group index로 자동 묶이며 mouse down·menu 실행 같은 이벤트에서 index가 증가해요. 필요하면 수동으로 그룹을 나눠요. 표시 선언은 static void이며 무인수예요. group index를 현재 작업창의 탐색 이력이나 게임 상태와 동일시하지 않아요.",
+        "hb": "끌기·slider·복합 AI 편집의 시작과 완료를 명시적인 그룹 transaction으로 정하고 pane focus·Undo owner와 에셋 탐색 이력을 분리하는 후보예요. 엔진 규칙은 관련 CurrentGroup API의 근거를 확인한 뒤 정해요.",
+        "gaps": [
+          "group increment exact phase/index range/nesting/rollback",
+          "GetCurrentGroup/SetCurrentGroupName/Undo callbacks",
+          "thread/runtime/automatic save"
+        ]
+      },
+      "tables": [],
+      "examples": [],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Undo.CollapseUndoOperations.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceHash": "cd0b8f4466606b514875719c552e7b69d48a3968da36b427642fc7e69ada6a1b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch/Undo.CollapseUndoOperations.html.body.html",
+      "bodyHash": "5c35286fffa2c6135222a49033c65c0ee12f6a342734290511228065baeb288a",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .CollapseUndoOperations"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void CollapseUndoOperations (int groupIndex );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "Undo.GetCurrentGroup"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Vector3-zero.html",
+          "text": "Vector3.zero"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "Undo.CollapseUndoOperations"
+        }
+      ],
+      "pageId": "UNUNDO007-06",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body with all tables and full examples",
+      "analysis": {
+        "facts": "지정 groupIndex보다 높은 operation을 해당 그룹까지 묶어 한 단계로 만들어요. color picker는 열린 동안 변경을 별개의 Undo operation으로 두고 닫히면 한 단계로 묶는 예예요. 별도의 cancel/rollback API 보장을 뜻하지 않아요. 전체 코드 예제는 이름 설정→현재 그룹 확보→Selection.transforms의 RecordObjects→각 position을 zero로 변경→collapse 순서예요. 빈 선택·실패 중 부분 Undo·다른 창에서 끼어든 그룹은 설명하지 않아요.",
+        "hb": "gesture 끝에 collapse를 연결하고 중간 Undo/취소·다중 선택/창·AI 명령의 원자성을 별개로 검증하는 후보예요. 그룹 label은 사용자가 이해할 한국어 작업명을 제공해야 해요.",
+        "gaps": [
+          "negative/unknown groupIndex/range/error/nesting",
+          "RecordObjects/GetCurrentGroup/SetCurrentGroupName/Selection linked APIs",
+          "cross-window interleaving/cancel/failure/redo/thread"
+        ]
+      },
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 2,
+          "cells": 4,
+          "sha256": "3ee91ef97f2f585c341e9e1490115ff63eead4c4e5503c873919e9098270d2bc",
+          "hashMethod": "UTF-8 compact JSON of ordered normalized cell texts"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "1cbcef8a766205899d270975b59d5a40995bf6d10014cf2fa191b443eee13bf8",
+          "hashMethod": "UTF-8 BeautifulSoup pre.get_text(newline,strip=False), full text private only",
+          "wholeExampleRead": true
+        }
+      ],
+      "ledgerPromotion": false,
+      "independentVerified": false
+    }
+  ],
+  "fullCorpusComplete": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "automaticExtractionIsSemanticReading": false
+}

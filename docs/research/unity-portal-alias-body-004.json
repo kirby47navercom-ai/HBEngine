@@ -1,0 +1,511 @@
+{
+  "schemaVersion": 1,
+  "actor": "root",
+  "phase": "research_only",
+  "analysisDate": "2026-10-04",
+  "analysisReport": "docs/research/UNITY_PORTAL_ALIAS_BODY_004.md",
+  "counts": {
+    "actualBodiesRead": 2,
+    "sections": 32,
+    "displayedOverloads": 7,
+    "examples": 7,
+    "independentlyVerified": 0,
+    "ledgerPromotions": 0
+  },
+  "pages": [
+    {
+      "name": "Transform.Translate",
+      "requestedVersion": "6000.0",
+      "actualBodyVersionEvidence": "unknown: actual API content has no version; fixed route alone insufficient",
+      "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/transform/translate",
+      "retrieval": {
+        "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/transform/translate",
+        "finalUrl": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/transform/translate",
+        "status": 200,
+        "retrievedAt": "2026-10-04T03:39:32.295004+00:00",
+        "bytes": 5325791,
+        "sourceHash": "d64721e557d9597c1a88e7dadd4db6e90b28ce6314969dfa7d011b346dddca30",
+        "title": "Translate • Unity Editor • Unity Docs",
+        "headings": [
+          [
+            "h1",
+            "Documentation"
+          ],
+          [
+            "h2",
+            "Development"
+          ],
+          [
+            "h2",
+            "User Acquisition"
+          ],
+          [
+            "h2",
+            "Monetization"
+          ],
+          [
+            "h2",
+            "Industry"
+          ],
+          [
+            "h2",
+            "Development"
+          ],
+          [
+            "h2",
+            "User Acquisition"
+          ],
+          [
+            "h2",
+            "Monetization"
+          ],
+          [
+            "h2",
+            "Industry"
+          ],
+          [
+            "h3",
+            "Unity Engine"
+          ],
+          [
+            "h3",
+            "User Manual"
+          ],
+          [
+            "h3",
+            "Script Reference"
+          ],
+          [
+            "h3",
+            "Unity Engine"
+          ],
+          [
+            "h1",
+            "Translate"
+          ],
+          [
+            "h2",
+            "Definition"
+          ],
+          [
+            "h2",
+            "Translate(Vector3, Space)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ],
+          [
+            "h2",
+            "Translate(Vector3)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ],
+          [
+            "h2",
+            "Translate(float, float, float, Space)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ],
+          [
+            "h2",
+            "Translate(float, float, float)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ],
+          [
+            "h2",
+            "Translate(Vector3, Transform)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ],
+          [
+            "h2",
+            "Translate(float, float, float, Transform)"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ]
+        ],
+        "mainFound": true,
+        "canonicals": []
+      },
+      "sourceFile": "native/build/reference-corpus/unity-portal-alias-batch/Transform.Translate.portal.html",
+      "sourceHash": "d64721e557d9597c1a88e7dadd4db6e90b28ce6314969dfa7d011b346dddca30",
+      "bodyFile": "native/build/reference-corpus/unity-portal-alias-batch/Transform.Translate.portal.body.html",
+      "bodyHash": "751b967adc4a0895643cb1decb7c7c09b01c74a8ce0767c6934d6f9aa90d039c",
+      "oldBodyFile": "native/build/reference-corpus/unity-root-batch/Transform.Translate.body.html",
+      "oldBodyHash": "a38111a9c4965bc9cbf9ede52949653603f4eba51e57e798336921c027a80a4c",
+      "actor": "root",
+      "readDate": "2026-10-04",
+      "readScope": "entire actual API content container; no promotion pending version evidence",
+      "sections": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "Translate"
+        },
+        {
+          "ordinal": 2,
+          "level": "h2",
+          "title": "Definition"
+        },
+        {
+          "ordinal": 3,
+          "level": "h2",
+          "title": "Translate(Vector3, Space)"
+        },
+        {
+          "ordinal": 4,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 5,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 6,
+          "level": "h3",
+          "title": "Examples"
+        },
+        {
+          "ordinal": 7,
+          "level": "h2",
+          "title": "Translate(Vector3)"
+        },
+        {
+          "ordinal": 8,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 9,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 10,
+          "level": "h3",
+          "title": "Examples"
+        },
+        {
+          "ordinal": 11,
+          "level": "h2",
+          "title": "Translate(float, float, float, Space)"
+        },
+        {
+          "ordinal": 12,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 13,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 14,
+          "level": "h3",
+          "title": "Examples"
+        },
+        {
+          "ordinal": 15,
+          "level": "h2",
+          "title": "Translate(float, float, float)"
+        },
+        {
+          "ordinal": 16,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 17,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 18,
+          "level": "h3",
+          "title": "Examples"
+        },
+        {
+          "ordinal": 19,
+          "level": "h2",
+          "title": "Translate(Vector3, Transform)"
+        },
+        {
+          "ordinal": 20,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 21,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 22,
+          "level": "h3",
+          "title": "Examples"
+        },
+        {
+          "ordinal": 23,
+          "level": "h2",
+          "title": "Translate(float, float, float, Transform)"
+        },
+        {
+          "ordinal": 24,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 25,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 26,
+          "level": "h3",
+          "title": "Examples"
+        }
+      ],
+      "displayedOverloads": 6,
+      "examples": 6,
+      "images": 0,
+      "facts": [
+        "Method/UnityEngine/UnityEngine.CoreModule displayed",
+        "same six overload shapes; duplicated examples vs four old grouped blocks",
+        "new Space declaration omits old = Space.Self while omitted/Self semantics retained"
+      ],
+      "unknown": [
+        "actual body version metadata",
+        "native binding and conflicting default display",
+        "full owner/member denominator, lifetime/thread/error contracts"
+      ],
+      "status": "pending_version_and_independent_comparison",
+      "gatePass": false,
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_PORTAL_ALIAS_BODY_004.md",
+          "sha256": "37b0c518f21c8640dd86542e0d650c47d8c1e16c73697df04e4294a1aecbe054"
+        }
+      ]
+    },
+    {
+      "name": "PhysicsScene2D.Simulate",
+      "requestedVersion": "6000.0",
+      "actualBodyVersionEvidence": "unknown: actual API content has no version; fixed route alone insufficient",
+      "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/physicsscene2d/simulate",
+      "retrieval": {
+        "url": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/physicsscene2d/simulate",
+        "finalUrl": "https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/physicsscene2d/simulate",
+        "status": 200,
+        "retrievedAt": "2026-10-04T03:39:29.964911+00:00",
+        "bytes": 5027628,
+        "sourceHash": "5a97d1f7341e1e19de40ddecb7c412d124de8bedc84318dee430ff18891cd07f",
+        "title": "Simulate(float, int) • Unity Editor • Unity Docs",
+        "headings": [
+          [
+            "h1",
+            "Documentation"
+          ],
+          [
+            "h2",
+            "Development"
+          ],
+          [
+            "h2",
+            "User Acquisition"
+          ],
+          [
+            "h2",
+            "Monetization"
+          ],
+          [
+            "h2",
+            "Industry"
+          ],
+          [
+            "h2",
+            "Development"
+          ],
+          [
+            "h2",
+            "User Acquisition"
+          ],
+          [
+            "h2",
+            "Monetization"
+          ],
+          [
+            "h2",
+            "Industry"
+          ],
+          [
+            "h3",
+            "Unity Engine"
+          ],
+          [
+            "h3",
+            "User Manual"
+          ],
+          [
+            "h3",
+            "Script Reference"
+          ],
+          [
+            "h3",
+            "Unity Engine"
+          ],
+          [
+            "h1",
+            "Simulate(float, int)"
+          ],
+          [
+            "h2",
+            "Definition"
+          ],
+          [
+            "h3",
+            "Parameters"
+          ],
+          [
+            "h3",
+            "Returns"
+          ],
+          [
+            "h3",
+            "Remarks"
+          ],
+          [
+            "h3",
+            "Examples"
+          ]
+        ],
+        "mainFound": true,
+        "canonicals": []
+      },
+      "sourceFile": "native/build/reference-corpus/unity-portal-alias-batch/PhysicsScene2D.Simulate.portal.html",
+      "sourceHash": "5a97d1f7341e1e19de40ddecb7c412d124de8bedc84318dee430ff18891cd07f",
+      "bodyFile": "native/build/reference-corpus/unity-portal-alias-batch/PhysicsScene2D.Simulate.portal.body.html",
+      "bodyHash": "a65c98e3c0251cce22569653eb586da136ea745ef7c6cd4e2915487f0545b8f7",
+      "oldBodyFile": "native/build/reference-corpus/unity-dependency-batch/PhysicsScene2D.Simulate.body.html",
+      "oldBodyHash": "cbe7aecb3978f163df71d3bfe214c0ba9e4f25491a510703f9e685db84bd53fa",
+      "actor": "root",
+      "readDate": "2026-10-04",
+      "readScope": "entire actual API content container; no promotion pending version evidence",
+      "sections": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "Simulate(float, int)"
+        },
+        {
+          "ordinal": 2,
+          "level": "h2",
+          "title": "Definition"
+        },
+        {
+          "ordinal": 3,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 4,
+          "level": "h3",
+          "title": "Returns"
+        },
+        {
+          "ordinal": 5,
+          "level": "h3",
+          "title": "Remarks"
+        },
+        {
+          "ordinal": 6,
+          "level": "h3",
+          "title": "Examples"
+        }
+      ],
+      "displayedOverloads": 1,
+      "examples": 1,
+      "images": 0,
+      "facts": [
+        "Method/UnityEngine/UnityEngine.Physics2DModule displayed",
+        "new default displays -1 versus old Physics2D.AllLayers",
+        "old PhysicsScene example mismatch remains in new portal"
+      ],
+      "unknown": [
+        "actual body version metadata",
+        "native binding and conflicting default display",
+        "full owner/member denominator, lifetime/thread/error contracts"
+      ],
+      "status": "pending_version_and_independent_comparison",
+      "gatePass": false,
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_PORTAL_ALIAS_BODY_004.md",
+          "sha256": "37b0c518f21c8640dd86542e0d650c47d8c1e16c73697df04e4294a1aecbe054"
+        }
+      ]
+    }
+  ]
+}

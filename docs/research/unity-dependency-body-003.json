@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "baseline": "Unity6000.0/en",
+  "actor": "root",
+  "analysisDate": "2026-10-04",
+  "phase": "research_only",
+  "analysisReport": "docs/research/UNITY_DEPENDENCY_BODY_003.md",
+  "counts": {
+    "pages": 4,
+    "sections": 12,
+    "displayedDeclarations": 3,
+    "enumValueRows": 6,
+    "parameterTables": 1,
+    "codeExamples": 1,
+    "enumTypeMarkersWithoutDeclaration": 1
+  },
+  "ledgerPromotion": "none; separate source-specific semantic record pending independent verification and API inventory reconciliation",
+  "pages": [
+    {
+      "name": "ImportAssetOptions",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ImportAssetOptions.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/ImportAssetOptions.html",
+      "sourceHash": "d02edd8197e980c49028d882780d0d572603d2b5b5b38feaf72a8cc3b66d9e4a",
+      "bodyFile": "native/build/reference-corpus/unity-dependency-batch/ImportAssetOptions.body.html",
+      "bodyHash": "0fb2435f62648daa4621b8baa7c47eba528b2b765859bcac623bdcd013cf9f07",
+      "version": "6000.0",
+      "versionEvidence": "Unity6.0(6000.0), job76410965/2026-09-29",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire_actual_body",
+      "headings": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "ImportAssetOptions"
+        },
+        {
+          "ordinal": 2,
+          "level": "h3",
+          "title": "Description"
+        },
+        {
+          "ordinal": 3,
+          "level": "h3",
+          "title": "Properties"
+        }
+      ],
+      "displayedSyntax": [],
+      "tableInventory": [
+        {
+          "ordinal": 1,
+          "rowsIncludingHeader": 7,
+          "cells": 14
+        }
+      ],
+      "displayedEnumValueNames": [
+        "Default",
+        "ForceUpdate",
+        "ForceSynchronousImport",
+        "ImportRecursive",
+        "DontDownloadFromCacheServer",
+        "ForceUncompressedImport"
+      ],
+      "codeExamples": 0,
+      "images": 0,
+      "sourceFacts": [
+        "enum import options connects ImportAsset/Refresh",
+        "six named value rows distinguish default/user-initiated/synchronous/recursive/cache bypass/uncompressed edition imports"
+      ],
+      "unresolved": [
+        "numeric enum values and Flags/bitwise composition",
+        "compile-wait exceptions, errors, thread"
+      ],
+      "hbDecision": "Typed import flags and independent 2D/3D/world scheduling need identical human/AI/C++/node contracts; preserve source/example inconsistencies without implementation.",
+      "outgoingLinks": [
+        {
+          "href": "AssetDatabase.ImportAsset.html",
+          "title": "AssetDatabase.ImportAsset"
+        },
+        {
+          "href": "AssetDatabase.Refresh.html",
+          "title": "AssetDatabase.Refresh"
+        },
+        {
+          "href": "ImportAssetOptions.Default.html",
+          "title": "Default"
+        },
+        {
+          "href": "ImportAssetOptions.ForceUpdate.html",
+          "title": "ForceUpdate"
+        },
+        {
+          "href": "ImportAssetOptions.ForceSynchronousImport.html",
+          "title": "ForceSynchronousImport"
+        },
+        {
+          "href": "ImportAssetOptions.ImportRecursive.html",
+          "title": "ImportRecursive"
+        },
+        {
+          "href": "ImportAssetOptions.DontDownloadFromCacheServer.html",
+          "title": "DontDownloadFromCacheServer"
+        },
+        {
+          "href": "ImportAssetOptions.ForceUncompressedImport.html",
+          "title": "ForceUncompressedImport"
+        }
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_DEPENDENCY_BODY_003.md",
+          "sha256": "7536ecc5fc2773c8db9e764db0c465ca4f70277126b7272f9d2dcde7a398b759"
+        }
+      ],
+      "independentlyVerified": false,
+      "gatePass": false,
+      "emptySignatureSlots": 1
+    },
+    {
+      "name": "Physics-simulationMode",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics-simulationMode.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics-simulationMode.html",
+      "sourceHash": "c4c8b52049225903cf622f1db36cb7c3738a5069fe7b610b4633b9b41db4bde5",
+      "bodyFile": "native/build/reference-corpus/unity-dependency-batch/Physics-simulationMode.body.html",
+      "bodyHash": "ebe2c27da5df4da7325bc77c62b268181c255acf5d497ce18a39e57b023f7835",
+      "version": "6000.0",
+      "versionEvidence": "Unity6.0(6000.0), job76410965/2026-09-29",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire_actual_body",
+      "headings": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "Physics .simulationMode"
+        },
+        {
+          "ordinal": 2,
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "displayedSyntax": [
+        "public static SimulationMode simulationMode ;"
+      ],
+      "tableInventory": [],
+      "displayedEnumValueNames": [],
+      "codeExamples": 0,
+      "images": 0,
+      "sourceFacts": [
+        "static SimulationMode simulationMode displayed",
+        "controls timing of 3D physics simulation, links separate enum"
+      ],
+      "unresolved": [
+        "default, detailed get/set/native binding",
+        "transition accumulator/Scene scope, errors/thread"
+      ],
+      "hbDecision": "Typed import flags and independent 2D/3D/world scheduling need identical human/AI/C++/node contracts; preserve source/example inconsistencies without implementation.",
+      "outgoingLinks": [
+        {
+          "href": "Physics.html",
+          "title": "Physics"
+        },
+        {
+          "href": "SimulationMode.html",
+          "title": "SimulationMode"
+        },
+        {
+          "href": "SimulationMode.html",
+          "title": "SimulationMode"
+        }
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_DEPENDENCY_BODY_003.md",
+          "sha256": "7536ecc5fc2773c8db9e764db0c465ca4f70277126b7272f9d2dcde7a398b759"
+        }
+      ],
+      "independentlyVerified": false,
+      "gatePass": false,
+      "emptySignatureSlots": 0
+    },
+    {
+      "name": "Physics2D-simulationMode",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-simulationMode.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D-simulationMode.html",
+      "sourceHash": "a380c3e56a8a961ab5ee71dd1e2d96407de39cb1451f7c0b4a43e4b928bcf1a0",
+      "bodyFile": "native/build/reference-corpus/unity-dependency-batch/Physics2D-simulationMode.body.html",
+      "bodyHash": "0a6b6e1bd55feea850fd150158031b0c63757150cd72788b1e9aa41c8102a98a",
+      "version": "6000.0",
+      "versionEvidence": "Unity6.0(6000.0), job76410965/2026-09-29",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire_actual_body",
+      "headings": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "Physics2D .simulationMode"
+        },
+        {
+          "ordinal": 2,
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "displayedSyntax": [
+        "public static SimulationMode2D simulationMode ;"
+      ],
+      "tableInventory": [],
+      "displayedEnumValueNames": [],
+      "codeExamples": 0,
+      "images": 0,
+      "sourceFacts": [
+        "static SimulationMode2D simulationMode displayed",
+        "controls timing of 2D simulation, separate enum"
+      ],
+      "unresolved": [
+        "default, detailed get/set/native binding",
+        "transition accumulator/Scene scope, errors/thread"
+      ],
+      "hbDecision": "Typed import flags and independent 2D/3D/world scheduling need identical human/AI/C++/node contracts; preserve source/example inconsistencies without implementation.",
+      "outgoingLinks": [
+        {
+          "href": "Physics2D.html",
+          "title": "Physics2D"
+        },
+        {
+          "href": "SimulationMode2D.html",
+          "title": "SimulationMode2D"
+        },
+        {
+          "href": "SimulationMode2D.html",
+          "title": "SimulationMode2D"
+        }
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_DEPENDENCY_BODY_003.md",
+          "sha256": "7536ecc5fc2773c8db9e764db0c465ca4f70277126b7272f9d2dcde7a398b759"
+        }
+      ],
+      "independentlyVerified": false,
+      "gatePass": false,
+      "emptySignatureSlots": 0
+    },
+    {
+      "name": "PhysicsScene2D.Simulate",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PhysicsScene2D.Simulate.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PhysicsScene2D.Simulate.html",
+      "sourceHash": "2d1266019f44ba47b5da960589c90f6a758f888fbd12dcfab3c685865f3003db",
+      "bodyFile": "native/build/reference-corpus/unity-dependency-batch/PhysicsScene2D.Simulate.body.html",
+      "bodyHash": "cbe7aecb3978f163df71d3bfe214c0ba9e4f25491a510703f9e685db84bd53fa",
+      "version": "6000.0",
+      "versionEvidence": "Unity6.0(6000.0), job76410965/2026-09-29",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire_actual_body",
+      "headings": [
+        {
+          "ordinal": 1,
+          "level": "h1",
+          "title": "PhysicsScene2D .Simulate"
+        },
+        {
+          "ordinal": 2,
+          "level": "h2",
+          "title": "Declaration"
+        },
+        {
+          "ordinal": 3,
+          "level": "h3",
+          "title": "Parameters"
+        },
+        {
+          "ordinal": 4,
+          "level": "h3",
+          "title": "Returns"
+        },
+        {
+          "ordinal": 5,
+          "level": "h3",
+          "title": "Description"
+        }
+      ],
+      "displayedSyntax": [
+        "public bool Simulate (float deltaTime , int simulationLayers = Physics2D.AllLayers);"
+      ],
+      "tableInventory": [
+        {
+          "ordinal": 1,
+          "rowsIncludingHeader": 3,
+          "cells": 6
+        }
+      ],
+      "displayedEnumValueNames": [],
+      "codeExamples": 1,
+      "images": 0,
+      "sourceFacts": [
+        "instance bool method, deltaTime and default AllLayers mask",
+        "returns whether run; physics callback calls fail",
+        "target Scene2D body/contact/joint/effector layers; editor callbacks suppressed outside Play; fixed stepping separate"
+      ],
+      "unresolved": [
+        "official example field is PhysicsScene instead of PhysicsScene2D",
+        "global Physics2D references repeated in instance-method description",
+        "invalid Scene errors, independent mode influence, step ranges/thread"
+      ],
+      "hbDecision": "Typed import flags and independent 2D/3D/world scheduling need identical human/AI/C++/node contracts; preserve source/example inconsistencies without implementation.",
+      "outgoingLinks": [
+        {
+          "href": "PhysicsScene2D.html",
+          "title": "PhysicsScene2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "title": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "title": "Collider2D"
+        },
+        {
+          "href": "PhysicsScene.html",
+          "title": "PhysicsScene"
+        },
+        {
+          "href": "PhysicsScene2D.Simulate.html",
+          "title": "PhysicsScene2D.Simulate"
+        },
+        {
+          "href": "Physics2D.AllLayers.html",
+          "title": "All Layers"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "title": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "title": "Collider2D"
+        },
+        {
+          "href": "Joint2D.html",
+          "title": "joints"
+        },
+        {
+          "href": "Effector2D.html",
+          "title": "effectors"
+        },
+        {
+          "href": "PhysicsScene2D.Simulate.html",
+          "title": "PhysicsScene2D.Simulate"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "title": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "title": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "title": "Collider2D"
+        },
+        {
+          "href": "Joint2D.html",
+          "title": "Joint2D"
+        },
+        {
+          "href": "Effector2D.html",
+          "title": "Effector2D"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "title": "Physics2D.Simulate"
+        },
+        {
+          "href": "MonoBehaviour.FixedUpdate.html",
+          "title": "MonoBehaviour.FixedUpdate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "title": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "title": "Time.deltaTime"
+        },
+        {
+          "href": "Physics2D-simulationMode.html",
+          "title": "Physics2D.simulationMode"
+        },
+        {
+          "href": "Physics2D.Simulate.html",
+          "title": "Physics2D.Simulate"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "title": "MonoBehaviour"
+        },
+        {
+          "href": "PhysicsScene.html",
+          "title": "PhysicsScene"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "title": "Update"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "title": "Scene"
+        },
+        {
+          "href": "Time-deltaTime.html",
+          "title": "Time.deltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "title": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "title": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "title": "Time.fixedDeltaTime"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "title": "Time.fixedDeltaTime"
+        }
+      ],
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_DEPENDENCY_BODY_003.md",
+          "sha256": "7536ecc5fc2773c8db9e764db0c465ca4f70277126b7272f9d2dcde7a398b759"
+        }
+      ],
+      "independentlyVerified": false,
+      "gatePass": false,
+      "emptySignatureSlots": 0
+    }
+  ]
+}

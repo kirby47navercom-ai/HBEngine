@@ -1,4 +1,22 @@
-# HBEngine 작업 인계 — 2026-10-03
+# HBEngine 작업 인계 — 2026-10-04
+
+## 최우선 현재 단계: 전체 본문·API 분석 선행
+
+- 주인님의 최신 지시는 **공식 문서 전체 본문과 API를 먼저 분석한 다음 엔진 제작을 시작**하는 순서다. `research_only`. 엔진·에디터·런타임 구현을 재개하지 않는다. 모든 누적 기능과 세부 요구/2D·2.5D·3D/사람과 AI 공용 편집 요구를 유지한다. 몇 개 사례나 단일 분야를 전체 범위로 바꾸지 않는다.
+- 사용자의 백그라운드 작업 지시도 유지한다. foreground 창/브라우저 변경, 실제 EXE GUI 검사와 새로고침을 하지 않는다. 문서 읽기·공식 HTTP 요청·로컬 분석·연구 도구 검사만 진행한다. 연구 문서/도구의 한글 커밋·푸시는 기존 권한이 유지된다.
+- 우선 읽을 파일: docs/research/ANALYSIS_PROTOCOL.md, CORPUS_MANIFEST.json, RESEARCH_STATUS.md. 이 지시가 아래 과거 기능 구현 순서보다 우선한다. 이전 reference-index의 overview/detail48은 legacyClaims로 남기며 새로운 분석 증거로 자동 승격하지 않는다.
+- 원문은 무시 캐시 native/build/reference-cache, 영속 원장은 native/build/reference-corpus/ledger.json에 있다. 대량 원문·ZIP·생성 index/선언 후보를 Git에 넣지 않는다. tools/reference-ledger.mjs status/gate, tools/reference-api-inventory.py를 사용한다. gate의 exit2는 아직 전체 조건 미충족을 나타내는 정상 차단이다.
+- Unity 기존6000.0 Manual/API/Packages와 새 docs.unity.com6000.0 Manual/API를 별도 source로 대조한다. 패키지223roots/1558영어edition 발견은 전체 호환·본문 분석 완료가 아니다. 공식 포털151sitemap shard 전부를 확보했고 영어231872URL 중 엔진5판본223291/다른제품8581이다. 다른 판본188740URL은 별도 발견 기록이며 6000.0동작으로 섞지 않는다. 추가 기능/폐기/호환성 비교도 미완료다.
+- 현재 원장165123URL은 발견한 source별 주소 수다. 새 포털 별칭과 중복 문서 identity를 아직 대조하지 않았으므로 전체 고유 본문 분모로 쓰지 않는다. API/overload 분모·외부 REST/CLI·WebAPI/NodeReference·문서 접근 제한이 미해결이다. 모든 source discoveryClosed=false.
+- 실제 의미 분석: Unity root묶음7본문58구역/6표시overload. 기존 두본문 독립검증 이력을 보존하고, 현행 원문·전체표·analysisHash·MD artifact를 별도 담당자가 실제 다시 읽고 대조하여 현재 원장 verified2다. 검증은 두본문만이며 연결 계약/전체 corpus를 포함하지 않는다. Unity authoring/physics8본문32구역/8선언/7표/8예제를 실제 분석해 원장 API 분석9개다. 후속4본문12구역/3선언/enum6행은 별도 의미 기록이며 원장 승격0, 공식 PhysicsScene2D 예제의 PhysicsScene 타입 불일치는 미해결이다. Unreal10본문54구역/121표시API항목, 짧은7본문 제한된 독립대조(오류/누락 때문에 verified보류). Unity 기술20본문 텍스트 계약은 UNITY_CORPUS_RESEARCH와 캐시evidence에 보존하며 그림/세부검증 미완료다. 서로 겹칠 수 있는 묶음을 단순 합산하지 않고 다운로드나 추출 수를 읽기 수로 바꾸지 않는다.
+- 새 생명주기 묶음: Unity9본문42의미구역/11예제/SVG2개 시각 확인, 메시지8개는 부분계약이며 formal선언0/미해결13문제군. Unreal Actor/Component9전체본문42구역/10표시선언, 별도 ActorLifecycle 그림2개미독/class2개부분/HTTP200본문없는4실패. 서로 다른 담당자가 Unity authoring/physics8본문과 Unreal전체9본문의 원문·표·선언·예제를 직접 대조한 제한 검증을 추가했다. 관련 미해결 계약 때문에 모두 verified 승격0이다. 공개파일은 원문예제·표설명을 복제하지 않고 private locator/hash/본인분석을 남겼다.
+- 추가 Unity2D물리12전체본문38heading/11표시선언/6표16행32셀/3예제/enum5값을 실제 읽었다. Rigidbody2D종류/참여/kinematic접촉통지와반응/MovePosition의다음step·마지막호출/Force·Impulse/array와List contact용량/Transform sync/callback객체재사용의수명을구분했다.UNITY_2D_PHYSICS_BODY_006.md/JSON에source/body/hash·semantic·미해결을남기고원장승격0유지. ForceMode2D예제의旧velocity호환은미확정이며예제원문을공개복제하지않았다.
+- 추가 Unity Undo6전체본문31heading/8표시선언/7표19행38셀/2예제를 실제 읽고 UNITY_UNDO_BODY_007.md/JSON에 기록했다. 전용 부모·컴포넌트·삭제 Undo와 fullsnapshot/group/collapse를 구분하고, Scene no-op dirty/예제의 object생성 미등록/다중선택·colorpicker·관련API미확인을 남겼다. 원장승격0/별도담당자의전체본문·표·예제의미대조와일치. colorpicker열린동안은별도Undo operation이지cancel API보장이아님을정밀화했다. 2D12본문은 별도담당자의전체원문·표·예제의미대조와일치하며전체verified는0유지다.
+- 전체 Unity API raw31707HTML에서 선언후보25778개를 추출했다. 선언후보가 없는9767본문 중 signature-CS block 부재는91, block이전부빈본문은9676이다. 이전9767 block없음표기는분류오류라전체다시순회해수정했다. enum/타입/멤버표/overload/기본값/오류/수명·모듈 대조가 남았다. 추출기는 reviewed/analyzed/verified를0으로 유지하며 원장 읽기 상태를 바꾸지 않는다.
+- 새Unity6000.0포털 실제2API본문/7overload·예제를기존과대조했다. 004의32는h1~h3부분집계이며005에서h1~h6전체52/추가h420/Returns표4셀로정정했다.32를전체coverage분모로사용하지않는다. namespace/module표시·default표시·설명묶음구조가다르고PhysicsScene2D예제오류는그대로다. API본문에는별도version근거가없어URL만믿고원장승격하지않았다. UNITY_PORTAL_ALIAS_BODY_004.md와privateunity-portal-alias-batch에HTTP시각/원문·본문hash를보존한다.
+- UNITY_PORTAL_VERSION_RESEARCH_005.md/JSON은 같은2API의전체본문재읽기/selector와RSC환경6000.0, 추가Documentationversions전체1본문3heading, layoutJSbootstrap전체1개를분석했다. supported/archived중복·APIrelease결합·VersionPicker/contentloader실제구현은미해결이다.본문img0과inlineSVG85 DOM분류/시각미독을구분한다.004MD/JSON은역사hash보존,005정정값이현재보고기준이다.한agent클라이언트permission오류는실제실패HTTP/전역네트워크차단을입증하지않는다.
+- 연구 도구 검증: node --test tools/check-reference-ledger.mjs9개, python -X utf8 tools/check-reference-api-inventory.py4개, 총13개. 버전/host/원문hash/독립검증/전체구역/overload/그림/루트변경·본문변경/빈ID/대량등록오류·참조 MD/중첩JSON artifact hash·추가발견근거보존·빈선언슬롯구분을 검사한다. 실제 의미·목록 완전성은 별도 담당자가 원문과 대조해야 한다. 공식per-entry bundle7개를다시등록했고새identity추가0이다. 엔진 검사는 이번 연구 단계에서 실행하지 않았다.
+- 다음 작업은 새/기존Unity URL·선언 inventory의 차이 대조, 모든 패키지/서비스 API 버전 고정, Unreal SSR 전체 link 확장과 sitemap/NodeReference/WebAPI/제한 문서 해결, 전체 본문 구역·API 계약·그림 분석 및 독립검증이다. 미독 대기열과 요구를 삭제하거나 중간 구현으로 넘어가지 않는다.
 
 ## 최신 추가: 빌드 프로필과 독립 Windows 게임
 

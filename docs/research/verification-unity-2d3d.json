@@ -1,0 +1,13 @@
+{
+  "pageId": "62b783c29188d37cdc8571db",
+  "bodyHash": "944e5ea7518d6d32a4c2cdef20b5df146ae268ed2e21fed715012976dd93b68c",
+  "sourceHash": "11d6d081651cf1df864ba7ae0ab2a9f89555e68c66611c586547251f562b3ae2",
+  "actor": "analysis_protocol",
+  "date": "2026-10-04",
+  "analysisHash": "4ade37f6f13f570c3630e6fd3dfbe9d535398c5e691c0a3dbec5de7b6f418aa9",
+  "sections": ["h1", "h2", "h3", "h4"],
+  "apiUnits": [],
+  "media": ["table-1"],
+  "comparisonEvidence": "로컬 원본 2DAnd3DModeSettings.html 전체 본문을 첫 h1부터 publisher _content marker 직전까지 직접 읽고 source/body SHA-256과 추출 본문의 byte-exact 원문 포함을 재확인했어요. canonical URL, Unity 6.0 (6000.0), job76410965/2026-09-29 표시를 확인했어요. 시작 설명, Switching between 2D and 3D modes, Comparison of the different modes, Additional resources의 4구역 및 h1~h4 coverage가 snapshot/review/analysis와 일치해요. Edit > Project Settings > Editor > Default Behavior Mode에서 2D/3D를 선택하는 단계와 생성 시 선택/이후 전환 설명을 대조했어요. 표의 Setting/2D mode/3D mode header 및 6데이터행, 전체 7행/21셀과 Lighting의 양쪽 각 5개 항목·inline Sprite/Skybox tooltip 설명도 읽었어요. 2D 이미지 Sprite 가정/3D 비가정, Scene View 2D/3D, 실시간 방향광 없음/있음, 카메라 (0,0,-10)/(0,1,-10), Orthographic/Perspective, 2D 새 Scene Skybox 비활성·Ambient Color RGB54/58/66·실시간GI끔/베이크GI켬/Auto-Building끔, 3D 기본 Skybox·Ambient Skybox·실시간GI/베이크GI/Auto-Building켬이 UNITY_ROOT_BODY_ANALYSIS_001.md 비교표와 분석 JSON에 정확히 반영돼요. 그림·동적 탭·API 선언은 없으며 table-1이 유일한 media 항목이에요. 원문은 기존 콘텐츠 일괄 변환, 2D/3D 물리 통합이나 pipeline별 실제 GI 적용성을 보장하지 않으며 분석도 이를 미확정 후속 계약으로 분리해요. 세 Additional resources 및 tooltip/본문 링크의 대상은 읽지 않았고 이 검증을 상속하지 않아요. 페이지 본문/표 전사에서 누락/오류는 발견하지 않았어요. HB 2.5D와 C++/노드/AI 대응은 설계 판단이며 구현 동등성 증거로 삼지 않았어요. 엔진/GUI/API 실행과 네트워크 요청은 하지 않았어요.",
+  "openIssues": []
+}

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "phase": "research_only",
+  "baselineDate": "2026-10-04",
+  "policy": "Engine implementation resumes only after the complete baseline corpus passes the evidence gate. Collection does not constitute reading or analysis.",
+  "legacyClaims": "docs/reference-index/detail-audit.json",
+  "privateCache": "native/build/reference-corpus",
+  "sources": [
+    {
+      "id": "unity-manual", "engine": "Unity", "version": "6000.0", "locale": "en",
+      "roots": ["https://docs.unity3d.com/6000.0/Documentation/Manual/"],
+      "hosts": ["docs.unity3d.com"], "pathPrefix": "/6000.0/Documentation/Manual/",
+      "knownInventory": {"searchUniquePages": 3122, "offlineHtmlFiles": 3124},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": 0,
+      "openIssues": ["Reconcile navigation files, aliases and content pages; expand official outgoing product references."]
+    },
+    {
+      "id": "unity-scriptreference", "engine": "Unity", "version": "6000.0", "locale": "en",
+      "roots": ["https://docs.unity3d.com/6000.0/Documentation/ScriptReference/"],
+      "hosts": ["docs.unity3d.com"], "pathPrefix": "/6000.0/Documentation/ScriptReference/",
+      "knownInventory": {"tocUniquePages": 4037, "searchUniquePages": 31709, "offlineHtmlFiles": 31710},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Type-only TOC omits 27673 member URLs; reconcile offline/search differences and enumerate declarations including overloads."]
+    },
+    {
+      "id": "unity-packages", "engine": "Unity", "version": "6000.0-compatible-package-versions", "locale": "en",
+      "roots": ["https://docs.unity3d.com/6000.0/Documentation/Manual/PackagesList.html", "https://docs.unity3d.com/Packages/"],
+      "hosts": ["docs.unity3d.com"], "pathPrefix": "/Packages/",
+      "knownInventory": {"initialCatalogRoots": 111, "expandedRoots": 223, "discoveredEnglishEditions": 1558, "indexedUrls": 59261},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Expand all official package summary links, manual/API TOCs and xref inventories; pin package versions and compatibility. Initial catalog is not exhaustive."]
+    },
+    {
+      "id": "unity-services", "engine": "Unity", "version": "product-specific", "locale": "en",
+      "roots": ["https://docs.unity.com/", "https://docs.unity.com/en-us/services"], "hosts": ["docs.unity.com", "docs.unity3d.com", "docs-multiplayer.unity3d.com"],
+      "knownInventory": {"officialPortalSitemapShards": 151, "nonEngineEnglishPortalUrls": 8581},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Enumerate official services/tools linked by the complete core/package corpus, including APIs and version applicability."]
+    },
+    {
+      "id": "unity-services-rest", "engine": "Unity", "version": "service-specific-v1-v2-and-cli-editions", "locale": "en",
+      "roots": ["https://docs.unity.com/en-us/services/reference", "https://services.docs.unity.com/"],
+      "hosts": ["services.docs.unity.com", "docs.unity.com"],
+      "knownInventory": {"officialReferenceLinkedRoots": 26},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["SDK, Admin REST, Client REST and CLI documentation are distinct contracts; expand every official reference and specification.", "Pin each service API/CLI edition and enumerate endpoints, schemas, scopes, pagination, limits and errors. Latest CLI aliases are not fixed versions."]
+    },
+    {
+      "id": "unity-manual-portal", "engine": "Unity", "version": "6000.0", "locale": "en-us",
+      "roots": ["https://docs.unity.com/en-us/engine/6000.0/manual"],
+      "hosts": ["docs.unity.com"], "pathPrefix": "/en-us/engine/6000.0/manual",
+      "knownInventory": {"sitemapUrls": 3123},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": 0,
+      "openIssues": ["New official portal has a separately structured manual; reconcile all bodies/aliases and differences with the same-version legacy host, not only counts.", "Other published engine versions need explicit feature-delta/version applicability analysis before closure."]
+    },
+    {
+      "id": "unity-scriptreference-portal", "engine": "Unity", "version": "6000.0", "locale": "en-us",
+      "roots": ["https://docs.unity.com/en-us/engine/6000.0/script-reference"],
+      "hosts": ["docs.unity.com"], "pathPrefix": "/en-us/engine/6000.0/script-reference",
+      "knownInventory": {"sitemapUrls": 31427},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Portal sitemap URL count differs from legacy search index; URL aliases, member/overload coverage and missing/changed bodies need comparison.", "Web reader limit on large root is a tool limit; it is not evidence the API root lacks content."]
+    },
+    {
+      "id": "unreal-manual", "engine": "Unreal", "version": "5.8", "locale": "en-us",
+      "roots": ["https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-5-8-documentation?application_version=5.8"],
+      "hosts": ["dev.epicgames.com"], "pathPrefix": "/documentation/en-us/unreal-engine/",
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": 0,
+      "openIssues": ["Sitemap shard bodies return 403; recursively expand SSR blocks and reconcile publisher inventories.", "Restricted platform documentation and embedded media remain unresolved."]
+    },
+    {
+      "id": "unreal-cpp", "engine": "Unreal", "version": "5.8", "locale": "en-us",
+      "roots": ["https://dev.epicgames.com/documentation/en-us/unreal-engine/API?application_version=5.8"],
+      "hosts": ["dev.epicgames.com"], "pathPrefix": "/documentation/en-us/unreal-engine/API",
+      "knownInventory": {"rootHrefs": 2719, "cppSitemapShards": 279},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Expand Developer/Editor/Runtime/Plugins and PluginIndex including members without separate hrefs and all overloads.", "Official enum names and parameter descriptions have observed inconsistencies; retain unresolved evidence."]
+    },
+    {
+      "id": "unreal-blueprint", "engine": "Unreal", "version": "5.8", "locale": "en-us",
+      "roots": ["https://dev.epicgames.com/documentation/en-us/unreal-engine/BlueprintAPI?application_version=5.8"],
+      "hosts": ["dev.epicgames.com"], "pathPrefix": "/documentation/en-us/unreal-engine/BlueprintAPI",
+      "knownInventory": {"rootCategoryHrefs": 889, "sitemapShards": 114},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Expand all categories and actions, pin contracts and links to C++ definitions.", "Publisher explicitly says this reference is incomplete/outdated in places; public corpus completion cannot prove the engine has no undocumented nodes."]
+    },
+    {
+      "id": "unreal-python", "engine": "Unreal", "version": "5.8", "locale": "en",
+      "roots": ["https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/?application_version=5.8"],
+      "hosts": ["dev.epicgames.com"], "pathPrefix": "/documentation/en-us/unreal-engine/python-api/",
+      "knownInventory": {"searchDocnames": 11678, "sphinxSymbolRecords": 66849, "inventoryUriPaths": 11681},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Reconcile search docnames, URI aliases and inventory roles; expand inherited members and signatures. Downloaded Actor body is unread."]
+    },
+    {
+      "id": "unreal-node-reference", "engine": "Unreal", "version": "5.8", "locale": "en-us",
+      "roots": ["https://dev.epicgames.com/community/api/documentation/sitemaps/unreal_engine/ue_noderef_api_external/sitemap_1.xml"],
+      "hosts": ["dev.epicgames.com"], "knownInventory": {"sitemapShards": 3},
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Public index exposes three shards but actual page inventory is not yet available; keep this independent source open."]
+    },
+    {
+      "id": "unreal-webapi", "engine": "Unreal", "version": "5.8", "locale": "en-us",
+      "roots": ["https://dev.epicgames.com/documentation/en-us/unreal-engine/WebAPI?application_version=5.8"],
+      "hosts": ["dev.epicgames.com"],
+      "discoveryClosed": false, "expectedPages": null, "expectedApiUnits": null,
+      "openIssues": ["Official client exposes WebAPI root; current request yields an empty shell. Resolve inventory/body access without counting HTTP 200 as content."]
+    }
+  ],
+  "supplementalBaselines": [
+    {"engine": "Unity", "versions": ["6000.2", "6000.5", "6000.6"], "disposition": "Keep previously inspected sources separate; investigate additions, removal and replacement. Do not merge incompatible version behavior."},
+    {"engine": "Unreal", "versions": ["4.27"], "disposition": "Historical behavior only; investigate current replacements. Do not describe deprecated workflows as current 5.8 functionality."}
+  ],
+  "additionalVersionDiscovery": {
+    "source": "https://docs.unity.com/sitemap.xml",
+    "state": "discovered_unread_not_merged_into_baseline",
+    "enginePortalUrlCounts": {"6000.0": 34551, "6000.3": 38760, "6000.5": 45382, "6000.6": 50177, "6000.7": 54421},
+    "openIssue": "New official engine corpora are retained separately. Determine supported versions and all added/removed/changed feature contracts; do not describe the 6000.0 baseline as the newest or silently waive later additions."
+  },
+  "scopeExpansion": "Any official functionality reference discovered in manuals/APIs/packages/plugins registers another source or work item. These roots are starting points, not a feature exclusion list."
+}

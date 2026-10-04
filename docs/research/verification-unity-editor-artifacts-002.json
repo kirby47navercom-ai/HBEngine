@@ -1,0 +1,45 @@
+{
+  "pageId": "c422154f5cbc056935fa2383",
+  "bodyHash": "598cc4a91a8f1112f516a969bcdd15a26e4268dc54c1cb5f3f4213fe63918812",
+  "sourceHash": "794a1322b4c41d9169e8ca82f82dfb6119520c6ca186a96bb021b9fe798d81f6",
+  "actor": "unity_lifecycle_body",
+  "date": "2026-10-04",
+  "analysisHash": "900f4dbf3c226d9cf15dceb1940ff734b4bf6742867f2aaf5f4181c2ee993675",
+  "sections": [
+    "h1",
+    "h2"
+  ],
+  "apiUnits": [],
+  "media": [
+    "table-1"
+  ],
+  "comparisonEvidence": "원본 HTML 전체를 직접 읽고 canonical/6000.0 영어/version 표시/job76410965/2026-09-29와 첫h1~_content 이전 본문을 대조했어요. editor workspace가 제작·정리·관리를 담당한다는 시작 설명과 7개 분야 표를 각각 확인했어요. 표의 두 header와 7데이터행(전체8행/16셀)은 탐색·단축키·검색·workflow, Scene/Hierarchy/Inspector/Project 창, 배치와 custom tool, preference/project/build 설정, 사용 분석 데이터, 문제 진단과 해결, command-line argument/자동화로 구별돼요. Additional resources의 Community 토론 링크도 직접 읽었어요. private snapshot/review/current analysis JSON과 UNITY_ROOT_BODY_ANALYSIS_001.md의 편집기 입구 분석은 이7분야와 실제2구역을 보존해요. 현재 analysis의 원문 사실과 HB 공통 작업 모델/안정 document-window ID/AI command 후보가 구분돼 있으며 Unity가 공식 AI API를 제공하거나 현재 HB 구현이 완료됐다고 확장하지 않아요. API 선언·그림·동적 탭·code example은 이 본문에 없고 table-1만 있어요. 관련7분야/Community 본문은 미독이며 부모의 검증을 상속하지 않아요. 실제 현재 파일 SHA/byte-exact source slice/heading/table coverage와 MD evidence pin을 다시 계산하여 일치했고 비교한 bounded page 분석의 누락/오류는 발견하지 않았어요. 엔진/GUI/네트워크/API 실행은 하지 않았어요.",
+  "openIssues": [],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+      "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+    }
+  ],
+  "revalidation": {
+    "scope": "actual complete2page bodies/tables and current root analysis/MD linkage; not own lifecycle verification or entire corpus",
+    "wholeBodyRead": true,
+    "exactHeadings": [
+      "Unity Editor interface",
+      "Additional resources"
+    ],
+    "tableHeaderRows": 1,
+    "tableDataRows": 7,
+    "tableTotalCells": 16,
+    "sourceSliceMatchesBodyBytes": true,
+    "sourceMatchesOfficialZIPEntry": true,
+    "noSemanticDiffToPreArtifactAnalysis": true,
+    "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/unity-editor.html",
+    "bodyFile": "native/build/reference-corpus/unity-root-batch/unity-editor.html.body.html",
+    "analysisFile": "native/build/reference-corpus/unity-root-batch/unity-editor.html.analysis.json",
+    "currentReviewHash": "4bdaf3b69cdbb06aaa308e824afc9b0708535a15bd4f82fec121c664bf6aa20a",
+    "currentSnapshotHash": "d26978922335ff5b98479e66ff799bfda306363f3fa31e12ca8fc1dd9eaf2464",
+    "relatedBodiesVerified": false,
+    "runtimeGuiExecuted": false
+  }
+}

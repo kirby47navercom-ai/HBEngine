@@ -1,0 +1,1364 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-2d-physics-006",
+  "phase": "research_only",
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "reader": "root",
+  "date": "2026-10-04",
+  "counts": {
+    "wholeBodiesRead": 12,
+    "meaningHeadings": 38,
+    "displayedDeclarations": 11,
+    "formalEnumDeclarations": 0,
+    "enumMembers": 5,
+    "tables": 6,
+    "tableRowsIncludingHeaders": 16,
+    "tableCells": 32,
+    "wholeExamplesRead": 3,
+    "technicalImages": 0,
+    "ledgerPromotions": 0,
+    "independentlyVerified": 0
+  },
+  "analysisReport": "docs/research/UNITY_2D_PHYSICS_BODY_006.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_2D_PHYSICS_BODY_006.md",
+      "sha256": "992c6b5fa9cd3bd1cfaef044289bea601c1a5e36554cdcb0669f93fc0bb6c8f5"
+    }
+  ],
+  "privateEvidence": {
+    "file": "native/build/reference-corpus/unity-2d-physics-batch/extraction.json",
+    "sha256": "88adef96463928b6a8a3e8f15d094d65663327dfcd378e24e230a3d0ddf62b70",
+    "originalExamplesAndTableTextsPublic": false
+  },
+  "pages": [
+    {
+      "file": "Rigidbody2D-bodyType.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D-bodyType.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Rigidbody2D-bodyType.html",
+      "sourceHash": "ccc3c5beb1b28f9a6880fd478d54ada5717f50003429aedcfd2687b3895bafb5",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D-bodyType.html.body.html",
+      "bodyHash": "b0b4438edf884b52f5f71e1219235370949a100ea7c33267b90f47ba38bc8a0a",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Rigidbody2D .bodyType"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public RigidbodyType2D bodyType ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "RigidbodyType2D.html",
+          "text": "RigidbodyType2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "RigidbodyType2D.html",
+          "text": "RigidbodyType2D"
+        }
+      ],
+      "pageId": "UN2DPH006-01",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "bodyType의 표시 타입은 RigidbodyType2D이고 물리 행동 종류를 선택한다. 이 짧은 본문은 Dynamic/Kinematic/Static 전환의 속도·contact 재생성·비용·허용 호출 단계를 설명하지 않는다. 후속 enum 전체를 읽어 세 이름만 확인했다.",
+        "hbDecision": "2D body 종류를 렌더 차원/컴포넌트 enable과 독립 필드로 보존하고 변경 명령의 old/new value를 Undo 및 AI revision과 연결하는 후보다. 전환의 실행 계약은 미확정.",
+        "unknowns": [
+          "property accessor/default/storage",
+          "body-type transition/callback/contact/lifetime/thread"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Rigidbody2D.MovePosition.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D.MovePosition.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Rigidbody2D.MovePosition.html",
+      "sourceHash": "049dd183222b7bcdfe939e0e4a3c495183279f69919caddf40d40c0858da30f0",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D.MovePosition.html.body.html",
+      "bodyHash": "5fca2b3c577f5f9a67fc518df6f9fa61d264fb243a7a720eb4ae82ea3ef1654d",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Rigidbody2D .MovePosition"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public void MovePosition ( Vector2 position );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Rigidbody2D-linearDamping.html",
+          "text": "linearDamping"
+        },
+        {
+          "href": "Rigidbody2D.MovePosition.html",
+          "text": "MovePosition"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Texture2D.html",
+          "text": "Texture2D"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Sprite.html",
+          "text": "Sprite"
+        },
+        {
+          "href": "SpriteRenderer.html",
+          "text": "SpriteRenderer"
+        },
+        {
+          "href": "SpriteRenderer.html",
+          "text": "SpriteRenderer"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Sprite.Create.html",
+          "text": "Sprite.Create"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Color.html",
+          "text": "Color"
+        },
+        {
+          "href": "Vector3.html",
+          "text": "Vector3"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate"
+        },
+        {
+          "href": "Time-fixedDeltaTime.html",
+          "text": "Time.fixedDeltaTime"
+        }
+      ],
+      "pageId": "UN2DPH006-02",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 2,
+          "cells": 4,
+          "contentHash": "2723d42d68dc45287b741c83ffdcbd4d76fc6c55232c2f5944ffded77346af7e",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "97586eede475a883437d746d322c781e9beb03f228694259080d4e04dc9f54ef",
+          "hashMethod": "UTF-8 BeautifulSoup pre.get_text(newline,strip=False), retained only in private extraction.json",
+          "wholeExampleRead": true
+        }
+      ],
+      "analysis": {
+        "finding": "Vector2 목표를 다음 physics update의 선형 속도로 이행한다. 이 이동 중 gravity와 linearDamping이 영향을 주지 않는다. collider의 충돌/trigger가 발생하며 응답이 목표 도달을 막을 수 있다. kinematic 본체는 충돌에 영향받지 않고 다른 dynamic collider에 영향 준다. 큰 이동은 고정 속도 제한 때문에 도달 실패할 수 있고 작은 이동을 권한다. 같은 step 이전 반복 요청은 마지막 것을 쓰며 FixedUpdate와 kinematic 용도를 권한다. 전체 예제는 Awake의 renderer/body 추가, Start의 texture→sprite/색/위치, FixedUpdate의 position+velocity*fixedDeltaTime을 보여주지만 bodyType을 Kinematic으로 설정하지 않는다.",
+        "hbDecision": "Transform teleport와 deferred 2D move-target을 별도 C++/node/AI action으로 설계한다. step 전 요청 교체, 도달 여부/충돌 진단과 좌표 단위를 명시하며 예제의 bodyType 미설정을 권장 설정을 실제 적용한 증거로 사용하지 않는다.",
+        "unknowns": [
+          "position local/world space not explicit here",
+          "numeric speed limit/default/body type relation",
+          "invalid target/component/thread/failure"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Rigidbody2D.AddForce.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D.AddForce.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Rigidbody2D.AddForce.html",
+      "sourceHash": "a21c54f67210d6878c3d3f770824b36b79cc8055a7f42c3d8c80224a355ce783",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D.AddForce.html.body.html",
+      "bodyHash": "d18b0d4f16bbfbe818666ded2987e2470dc930b69614c36f9df9f1ea1222e667",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Rigidbody2D .AddForce"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public void AddForce ( Vector2 force , ForceMode2D mode = ForceMode2D.Force);"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "ForceMode2D.html",
+          "text": "ForceMode2D"
+        },
+        {
+          "href": "Rigidbody2D.AddForceAtPosition.html",
+          "text": "AddForceAtPosition"
+        },
+        {
+          "href": "Rigidbody2D.AddTorque.html",
+          "text": "AddTorque"
+        },
+        {
+          "href": "Rigidbody2D-mass.html",
+          "text": "mass"
+        },
+        {
+          "href": "Rigidbody2D-linearVelocity.html",
+          "text": "linearVelocity"
+        },
+        {
+          "href": "Rigidbody2D.AddForce.html",
+          "text": "AddForce"
+        },
+        {
+          "href": "ForceMode2D.html",
+          "text": "ForceMode2D"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Texture2D.html",
+          "text": "Texture2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Sprite.html",
+          "text": "Sprite"
+        },
+        {
+          "href": "SpriteRenderer.html",
+          "text": "SpriteRenderer"
+        },
+        {
+          "href": "SpriteRenderer.html",
+          "text": "SpriteRenderer"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Sprite.Create.html",
+          "text": "Sprite.Create"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Color.html",
+          "text": "Color"
+        },
+        {
+          "href": "Vector3.html",
+          "text": "Vector3"
+        },
+        {
+          "href": "PlayerLoop.FixedUpdate.html",
+          "text": "FixedUpdate"
+        },
+        {
+          "href": "ForceMode2D.Force.html",
+          "text": "ForceMode2D.Force"
+        },
+        {
+          "href": "ForceMode2D.Impulse.html",
+          "text": "ForceMode2D.Impulse"
+        }
+      ],
+      "pageId": "UN2DPH006-03",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 3,
+          "cells": 6,
+          "contentHash": "21cb489e38bf1ca1eb40a9c8b248fd879d919aac161b904267d5f7662bf9e3de",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "40410a976ce088d18b00227c8d728486211520591d419c11a64fcf4944731677",
+          "hashMethod": "UTF-8 BeautifulSoup pre.get_text(newline,strip=False), retained only in private extraction.json",
+          "wholeExampleRead": true
+        }
+      ],
+      "analysis": {
+        "finding": "표시 선언은 Vector2 force와 optional ForceMode2D.Force다. X/Y만 있고 질량에 따른 가속과 지속 Force를 설명한다. 두 인수 표 전체와 Sprite/Rigidbody2D 조건, 전체 Awake/Start/FixedUpdate 예제를 읽었다. 예제의 Force와 Impulse 두 호출은 모두 활성 코드이며 alternatively라는 주석만으로 둘 중 하나만 실행된다고 해석하지 않는다.",
+        "hbDecision": "Force와 Impulse를 3D 모드들과 분리한 2D enum/pin으로 노출한다. mass/time/벡터 차원과 step 시점을 node/C++/AI에 동일하게 정의하고 예제를 자동 구현 템플릿으로 그대로 복사하지 않는다.",
+        "unknowns": [
+          "force coordinate frame/range/thread/invalid body",
+          "call accumulation/disabled/sleeping/static/kinematic effect",
+          "2D enum numeric IDs not shown"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Rigidbody2D-simulated.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D-simulated.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Rigidbody2D-simulated.html",
+      "sourceHash": "23f731b1e948e5e89cc37463018368da3427b17acfbc7b5828525544f34d75b1",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D-simulated.html.body.html",
+      "bodyHash": "b18e1c390b2ee13a8337bde625597c5f3e5e6fdbaa0e76e54e9a0324e1efbf26",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Rigidbody2D .simulated"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public bool simulated ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Joint2D.html",
+          "text": "Joint2D"
+        }
+      ],
+      "pageId": "UN2DPH006-04",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "bool이 본체의 physics simulation 참여를 나타내며 false일 때 부착 Collider2D와 Joint2D도 참여하지 않는다. 시각 표시/GameObject 활성/컴포넌트 lifetime과 같다고 하지 않는다. query에서 보이는지/다시 true로 할 때 state 보존·callback은 이 본문에 없다.",
+        "hbDecision": "simulation participation을 visibility/enabled/destroy와 독립 직렬화하고 inspector/C++/node/AI가 같은 action을 사용한다. 연결 collider/joint 영향은 진단에 표시할 후보다.",
+        "unknowns": [
+          "default/accessor",
+          "query visibility/re-enable contacts/sleep/velocity/callback/thread"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Rigidbody2D-useFullKinematicContacts.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D-useFullKinematicContacts.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Rigidbody2D-useFullKinematicContacts.html",
+      "sourceHash": "a7415bf2122cdcd3ff54dfcfc1be5476d4867923e0fbf143dd0a1e15ff03a6f8",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D-useFullKinematicContacts.html.body.html",
+      "bodyHash": "12ceeaec8fde56892eb94c49553f7d3453b6fc609f3ad2d982b2827619edc73a",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Rigidbody2D .useFullKinematicContacts"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public bool useFullKinematicContacts ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Rigidbody2D-bodyType.html",
+          "text": "bodyType"
+        },
+        {
+          "href": "RigidbodyType2D.Kinematic.html",
+          "text": "RigidbodyType2D.Kinematic"
+        },
+        {
+          "href": "Rigidbody2D-bodyType.html",
+          "text": "bodyType"
+        }
+      ],
+      "pageId": "UN2DPH006-05",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "false 기본에서 kinematic-kinematic/kinematic-static은 충돌하지 않고 kinematic-dynamic은 가능하다. true면 앞 두 pair의 contact callback이 생기지만 자동 collision response는 없어 overlap을 허용한다. contact point/normal을 반응 없이 받을 수 있으며 Kinematic bodyType일 때만 사용한다. 본문 내부 [[...]] markup 잔재도 보존했다.",
+        "hbDecision": "contact generation/notification/solver response/trigger를 하나의 collision checkbox로 합치지 않는다. component와 collision filter view/C++/node/AI에서 각각 구분한다.",
+        "unknowns": [
+          "runtime change/contact transition/trigger combinations",
+          "callback ordering/data lifetime/thread"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Physics2D-autoSyncTransforms.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-autoSyncTransforms.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D-autoSyncTransforms.html",
+      "sourceHash": "0f8d9a445a01172f687191c693987d62dc5652db52ad47a4e0a33aea5bc123df",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Physics2D-autoSyncTransforms.html.body.html",
+      "bodyHash": "81df82c7f427e42e97e839b4474a0a4d7a8d7a5785d7714635251fdb9845d44f",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Physics2D .autoSyncTransforms"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static bool autoSyncTransforms ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Physics2D.html",
+          "text": "Physics2D"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Physics2D.SyncTransforms.html",
+          "text": "Physics2D.SyncTransforms"
+        }
+      ],
+      "pageId": "UN2DPH006-06",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "Transform과 자식의 body/collider position/rotation/scale 동기화를 제어한다. false면 Fixed Update simulation 직전에 sync하며 명시 SyncTransforms도 가능하다고 설명한다. true로 Transform 변경 후 query를 반복하면 성능 손실이고 Unity2017.2 이전 호환 외에는 off를 권한다. manual simulation/다른 mode의 모든 world에 이 문장을 확장할 근거는 없다.",
+        "hbDecision": "여러 사람/AI Transform 편집을 하나의 dirty batch로 모아 query/step 경계에서 flush하는 후보다. physics sim advance와 sync를 분리하고 frame/fixed/manual mode별 계약을 후속 조사한다.",
+        "unknowns": [
+          "actual current default",
+          "manual/Update simulation mode/independent Scene sync applicability",
+          "query freshness/order/thread"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Physics2D-reuseCollisionCallbacks.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-reuseCollisionCallbacks.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D-reuseCollisionCallbacks.html",
+      "sourceHash": "ddfa4fb4177a1dd9290c3509276afa5759d607b0e68abb90fdc05f09e25de994",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Physics2D-reuseCollisionCallbacks.html.body.html",
+      "bodyHash": "3bd0ac2883bb309b0254a3139f975e1b9aa656acb3be35b513d5ed0aad899a8b",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Physics2D .reuseCollisionCallbacks"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static bool reuseCollisionCallbacks ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Physics2D.html",
+          "text": "Physics2D"
+        },
+        {
+          "href": "MonoBehaviour.OnCollisionEnter2D.html",
+          "text": "MonoBehaviour.OnCollisionEnter2D"
+        },
+        {
+          "href": "MonoBehaviour.OnCollisionStay2D.html",
+          "text": "MonoBehaviour.OnCollisionStay2D"
+        },
+        {
+          "href": "MonoBehaviour.OnCollisionExit2D.html",
+          "text": "MonoBehaviour.OnCollisionExit2D"
+        },
+        {
+          "href": "Collision2D.html",
+          "text": "Collision2D"
+        },
+        {
+          "href": "Collision2D.html",
+          "text": "Collision2D"
+        },
+        {
+          "href": "Collision2D.html",
+          "text": "Collision2D"
+        },
+        {
+          "href": "Collision2D.html",
+          "text": "Collision2D"
+        }
+      ],
+      "pageId": "UN2DPH006-07",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "Enter2D/Stay2D/Exit2D에 넘기는 Collision2D는 true일 때 하나의 instance를 callback마다 재사용해 GC 부담을 줄인다. callback 밖의 지연 처리에서 참조를 유지하려면 false로 하라고 설명한다. 한 번 저장한 참조가 영구 event snapshot이라는 보장은 없다.",
+        "hbDecision": "C++/node/AI event record는 명시적 borrowed callback data 또는 복사 snapshot으로 구분해야 한다. stable object ID와 epoch를 포함하는 HB 후보이며 원엔진 AI 계약은 아니다.",
+        "unknowns": [
+          "default/thread/reentrant scope/per-world identity",
+          "exact invalidation timing/retention allocation cost"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Collision2D.GetContacts.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Collision2D.GetContacts.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Collision2D.GetContacts.html",
+      "sourceHash": "ec556e8884d7e69243b977c0258bbc4b71e24421e42007034eb8ada2cd0755d2",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Collision2D.GetContacts.html.body.html",
+      "bodyHash": "2bd270d54ceb815353f8e0a31fba1f96c0efa6d7e6e541e8a26e13f9bd7a617e",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Collision2D .GetContacts"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public int GetContacts (ContactPoint2D[] contacts );",
+        "public int GetContacts (List<ContactPoint2D> contacts );"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Collision2D.html",
+          "text": "Collision2D"
+        },
+        {
+          "href": "ContactPoint2D.html",
+          "text": "ContactPoint2D"
+        },
+        {
+          "href": "Collision2D-collider.html",
+          "text": "collider"
+        },
+        {
+          "href": "Collision2D-otherCollider.html",
+          "text": "otherCollider"
+        },
+        {
+          "href": "Collision2D-contactCount.html",
+          "text": "contactCount"
+        },
+        {
+          "href": "Physics2D.GetContacts.html",
+          "text": "Physics2D.GetContacts"
+        },
+        {
+          "href": "Collider2D.GetContacts.html",
+          "text": "Collider2D.GetContacts"
+        },
+        {
+          "href": "Rigidbody2D.GetContacts.html",
+          "text": "Rigidbody2D.GetContacts"
+        },
+        {
+          "href": "ContactPoint2D.html",
+          "text": "ContactPoint2D"
+        },
+        {
+          "href": "Collision2D-collider.html",
+          "text": "collider"
+        },
+        {
+          "href": "Collision2D-otherCollider.html",
+          "text": "otherCollider"
+        },
+        {
+          "href": "Collision2D-contactCount.html",
+          "text": "contactCount"
+        },
+        {
+          "href": "Physics2D.GetContacts.html",
+          "text": "Physics2D.GetContacts"
+        },
+        {
+          "href": "Collider2D.GetContacts.html",
+          "text": "Collider2D.GetContacts"
+        },
+        {
+          "href": "Rigidbody2D.GetContacts.html",
+          "text": "Rigidbody2D.GetContacts"
+        }
+      ],
+      "pageId": "UN2DPH006-08",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 2,
+          "cells": 4,
+          "contentHash": "af7b9bb9ce94cf367386ca2e62a7836ec4adf5bf2eac3bcb461451ce46803259",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        },
+        {
+          "locator": "table[2]",
+          "rows": 2,
+          "cells": 4,
+          "contentHash": "25dd53b9b6fd2b717b9d0109916b63d1b0ed7cf06d558303dfd1c2909f771f26",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        }
+      ],
+      "examples": [],
+      "analysis": {
+        "finding": "array와 List<ContactPoint2D> 두 표시 overload는 결과 container에 쓴 contact 수를 int로 반환한다. array는 충분히 크게 재사용하고 할당하지 않는다고 설명하며 contactCount로 필요 수를 볼 수 있다. list는 부족하면 자동 증가하므로 capacity 충분할 때만 무할당이다. collider/otherCollider 사이 contact이며 두 인수/반환/Description 전체를 읽었다.",
+        "hbDecision": "C++ span/동적 배열, node typed-array, AI snapshot API의 결과 count/capacity/overflow 비용을 분리한다. 배열에서 전체 contact 수를 무조건 반환한다고 추정하지 않는다.",
+        "unknowns": [
+          "ordering/truncation choice/null/empty container/exception/thread",
+          "ContactPoint2D space/lifetime and stale Collision2D"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "ForceMode2D.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ForceMode2D.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/ForceMode2D.html",
+      "sourceHash": "6a2f26a62e03a5598932cb95c13db940a06ad6f9e0a89d2fc12fdf1d757dba9c",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/ForceMode2D.html.body.html",
+      "bodyHash": "ccf8d4ace055aece9790e07532e6a415022add313a9252d545a2d9bf3598c71f",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "ForceMode2D"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Properties"
+        }
+      ],
+      "declarations": [],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.AddForce.html",
+          "text": "Rigidbody2D.AddForce"
+        },
+        {
+          "href": "ForceMode.html",
+          "text": "ForceMode"
+        },
+        {
+          "href": "Rigidbody.html",
+          "text": "Rigidbody"
+        },
+        {
+          "href": "Sprite.html",
+          "text": "Sprite"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Sprite.html",
+          "text": "Sprite"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "ForceMode2D.html",
+          "text": "ForceMode2D"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "Scripting.GarbageCollector.Mode.html",
+          "text": "Mode"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "ForceMode2D.Force.html",
+          "text": "ForceMode2D.Force"
+        },
+        {
+          "href": "Scripting.GarbageCollector.Mode.html",
+          "text": "Mode"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Vector2.html",
+          "text": "Vector2"
+        },
+        {
+          "href": "ForceMode2D.Impulse.html",
+          "text": "ForceMode2D.Impulse"
+        },
+        {
+          "href": "GUI.Button.html",
+          "text": "GUI.Button"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect"
+        },
+        {
+          "href": "GUI.Button.html",
+          "text": "GUI.Button"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "UIElements.Button.html",
+          "text": "Button"
+        },
+        {
+          "href": "GUI.Button.html",
+          "text": "GUI.Button"
+        },
+        {
+          "href": "Rect.html",
+          "text": "Rect"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "ForceMode2D.Force.html",
+          "text": "Force"
+        },
+        {
+          "href": "ForceMode2D.Impulse.html",
+          "text": "Impulse"
+        }
+      ],
+      "pageId": "UN2DPH006-09",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 3,
+          "cells": 6,
+          "contentHash": "4b2db17791b6ad22fa4e29cc644b8cdd0f8a9ec049bdc168596918f462598c64",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "dc2fd3da3351433399aeab3a51c27549f6aab10db5dffc17f476a6097dc1e8c3",
+          "hashMethod": "UTF-8 BeautifulSoup pre.get_text(newline,strip=False), retained only in private extraction.json",
+          "wholeExampleRead": true
+        }
+      ],
+      "analysis": {
+        "finding": "enum marker와 Force/Impulse 두 Properties 행을 읽었다. 둘 다 mass 사용이며 Force는 지속, Impulse는 즉시 충격이다. 3D ForceMode는 다른 링크다. 전체 예제는 Update mode switch와 OnGUI reset/impulse/force 버튼을 사용하고 예전 Rigidbody2D.velocity 이름을 쓴다. 현재 archive에 그 이름 파일이 없지만 실제 compile/폐기 binding을 조사하지 않아 compile 실패로 확정하지 않는다. Impulse 모드는 버튼1회마다1번이 아니라 Update마다 호출되는 예제다.",
+        "hbDecision": "3D의 네 mode를 2D로 임의 복제하지 않고 UI에 force 단위/step과 impulse 단위를 구분한다. numeric enum 값을 외부 문서 없이 고정하지 않는다.",
+        "unknowns": [
+          "numeric IDs/flags/native mapping",
+          "velocity compatibility/actual sample compilation",
+          "Update example and fixed-step accumulation relation"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Physics2D.SyncTransforms.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D.SyncTransforms.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D.SyncTransforms.html",
+      "sourceHash": "3e9e25a1072f84a20c17537272166e3192202e5580093d87c43232cde6ae6435",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Physics2D.SyncTransforms.html.body.html",
+      "bodyHash": "b47d0cc359c4a54da2ccd0f9419969456a2215a3ff0d9e00597042218a46f824",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Physics2D .SyncTransforms"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void SyncTransforms ();"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Physics2D.html",
+          "text": "Physics2D"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Collider2D.html",
+          "text": "Collider2D"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        }
+      ],
+      "pageId": "UN2DPH006-10",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "public static void 무인수 선언이며 변경 Transform과 자식의 Rigidbody2D/Collider2D 위치·회전·크기를 동기화한다고 설명한다. 시간 advance/contact callback/solver run/세계 선택은 이 본문에 없다.",
+        "hbDecision": "sync command를 physics simulate와 독립하고 해당 시점/dirty Transform batch를 명시하는 후보다. GUI 편집과 AI/C++ 호출이 같은 flush 경로를 사용할 조건을 후속 API와 대조한다.",
+        "unknowns": [
+          "world/scene scope/callback/query guarantee",
+          "allowed phase/thread/failure/order"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "RigidbodyType2D.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/RigidbodyType2D.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/RigidbodyType2D.html",
+      "sourceHash": "58eb63dc1d5b96a3e898bea2722146983c92e9dfc3a4261e9426c54a37c5d127",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/RigidbodyType2D.html.body.html",
+      "bodyHash": "f07b3a4413de2eeb7da550037e5de451ac09c940c5937fd4de4020927c2d05a1",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "RigidbodyType2D"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Properties"
+        }
+      ],
+      "declarations": [],
+      "images": [],
+      "links": [
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D.html",
+          "text": "Rigidbody2D"
+        },
+        {
+          "href": "Rigidbody2D-bodyType.html",
+          "text": "Rigidbody2D.bodyType"
+        },
+        {
+          "href": "RigidbodyType2D.Dynamic.html",
+          "text": "Dynamic"
+        },
+        {
+          "href": "RigidbodyType2D.Kinematic.html",
+          "text": "Kinematic"
+        },
+        {
+          "href": "RigidbodyType2D.Static.html",
+          "text": "Static"
+        }
+      ],
+      "pageId": "UN2DPH006-11",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rows": 4,
+          "cells": 8,
+          "contentHash": "022f6a720716346b6819dff464d11aef22b2266705788e71da26815c78c6c8ec",
+          "hashMethod": "UTF-8 compact JSON of ordered cell texts; collapsed source whitespace"
+        }
+      ],
+      "examples": [],
+      "analysis": {
+        "finding": "enum marker와 Dynamic/Kinematic/Static 세 Properties 행을 전체 읽었다. 이동·힘·나머지 simulation 상호작용의 행동 종류라고만 설명하며 각 상세 동작과 numeric ID는 없다.",
+        "hbDecision": "차원/body kind를 안정 semantic enum으로 표현하되 Unity native 숫자나 HB 현재 물리와의 동등성을 주장하지 않는다. 세 member 후속 본문을 별도 대기열로 남긴다.",
+        "unknowns": [
+          "numeric IDs/default/bit flags",
+          "each kind detailed collision/mass/simulation/transition"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    },
+    {
+      "file": "Physics2D-maxTranslationSpeed.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-maxTranslationSpeed.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Physics2D-maxTranslationSpeed.html",
+      "sourceHash": "596928daf3183ab538a23db498c757859d6c388a415adf9f357aa4a0df56aad1",
+      "bodyFile": "native/build/reference-corpus/unity-2d-physics-batch/Physics2D-maxTranslationSpeed.html.body.html",
+      "bodyHash": "802813f0caaf222d1e78c2e1a8c15071f8a9d8406a09e8fc68087a76c6e0b770",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback controls, not body bytes",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Physics2D .maxTranslationSpeed"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static float maxTranslationSpeed ;"
+      ],
+      "images": [],
+      "links": [
+        {
+          "href": "Physics2D.html",
+          "text": "Physics2D"
+        }
+      ],
+      "pageId": "UN2DPH006-12",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "entire technical body including all tables and full examples",
+      "wholeBodyRead": true,
+      "formalEnumDeclarations": 0,
+      "tables": [],
+      "examples": [],
+      "analysis": {
+        "finding": "public static float 표시 속성은 body의 physics update당 최대 linear speed이며 증가시 numerical problem 가능성을 경고한다. 실제 단위/범위/default/검증·clamp와 MovePosition 한계의 정확 적용 식은 제공하지 않는다.",
+        "hbDecision": "큰 월드/fast body 설정과 diagnostic을 시뮬레이션 안정성 연구에 연결한다. map 크기 제한을 이 값과 동일시하거나 임의수치로 원엔진 값인 것처럼 제공하지 않는다.",
+        "unknowns": [
+          "units/default/range/getter setter/clamp",
+          "MovePosition coupling/solver body modes/independent Scene/thread"
+        ]
+      },
+      "ledgerPromotion": false,
+      "independentVerified": false
+    }
+  ],
+  "liveTextComparisons": [
+    {
+      "requestUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D.MovePosition.html",
+      "finalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D.MovePosition.html",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T03:58:34.428490+00:00",
+      "sourceFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D.MovePosition.html.live-2026-10-04.html",
+      "sourceHash": "7aaed06450cf373e70a07062466feb92c0bef14e9607960defa35a101981cfc4",
+      "technicalTextEqualToPinnedArchive": true,
+      "footerJob": [
+        [
+          "76758565",
+          "2026-10-03"
+        ]
+      ],
+      "readScope": "technical text comparison only; archived semantic analysis is separate"
+    },
+    {
+      "requestUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D-simulated.html",
+      "finalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rigidbody2D-simulated.html",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T03:58:34.408751+00:00",
+      "sourceFile": "native/build/reference-corpus/unity-2d-physics-batch/Rigidbody2D-simulated.html.live-2026-10-04.html",
+      "sourceHash": "e4fd132bd7f971e86c5b96de9f351d17c729fcdbffafbaa74b2834d8429cad47",
+      "technicalTextEqualToPinnedArchive": true,
+      "footerJob": [
+        [
+          "76758565",
+          "2026-10-03"
+        ]
+      ],
+      "readScope": "technical text comparison only; archived semantic analysis is separate"
+    },
+    {
+      "requestUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-reuseCollisionCallbacks.html",
+      "finalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D-reuseCollisionCallbacks.html",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T03:58:34.424945+00:00",
+      "sourceFile": "native/build/reference-corpus/unity-2d-physics-batch/Physics2D-reuseCollisionCallbacks.html.live-2026-10-04.html",
+      "sourceHash": "d31b26d9ed21dd328ee41abc3a90d04c06c4e8408ead95a245197eb99e4eda59",
+      "technicalTextEqualToPinnedArchive": true,
+      "footerJob": [
+        [
+          "76758565",
+          "2026-10-03"
+        ]
+      ],
+      "readScope": "technical text comparison only; archived semantic analysis is separate"
+    }
+  ],
+  "missingArchiveCandidate": {
+    "file": "Rigidbody2D-velocity.html",
+    "actualCompileTested": false,
+    "compatibilityResolved": false
+  },
+  "fullCorpusComplete": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "automaticExtractionIsSemanticReading": false
+}

@@ -1,0 +1,993 @@
+{
+  "schemaVersion": 1,
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "analysisDate": "2026-10-04",
+  "actor": "root",
+  "phase": "research_only",
+  "independentlyVerified": 2,
+  "analysisReport": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+  "pages": [
+    {
+      "pageId": "62b783c29188d37cdc8571db",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/2DAnd3DModeSettings.html",
+      "sourceHash": "11d6d081651cf1df864ba7ae0ab2a9f89555e68c66611c586547251f562b3ae2",
+      "bodyHash": "944e5ea7518d6d32a4c2cdef20b5df146ae268ed2e21fed715012976dd93b68c",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+      ],
+      "apiUnits": [],
+      "media": [
+        "table-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "2DAnd3DModeSettings.html: heading Set your project to 2D or 3D mode at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Project mode can be chosen at creation or switched later; existing-content conversion is not promised.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct 2DAnd3DModeSettings.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h2",
+            "evidence": "2DAnd3DModeSettings.html: heading Switching between 2D and 3D modes at ordinal 2; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Edit > Project Settings > Editor > Default Behavior Mode selects 2D or 3D.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct 2DAnd3DModeSettings.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h3",
+            "evidence": "2DAnd3DModeSettings.html: heading Comparison of the different modes at ordinal 3; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The full table changes image import assumptions, scene-view mode, default directional light, camera positions/projection and new-scene sky/ambient/GI defaults; pipeline-specific applicability remains a separate follow-up.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct 2DAnd3DModeSettings.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h4",
+            "evidence": "2DAnd3DModeSettings.html: heading Additional resources at ordinal 4; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Editor settings, 2D/3D project comparison and 3D getting-started are linked separately and are unread child contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct 2DAnd3DModeSettings.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/2DAnd3DModeSettings.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/2DAnd3DModeSettings.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/2DAnd3DModeSettings.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "apiUnits": [],
+          "media": [
+            "table-1"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "dde4cd940c24593a07b64682",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/CustomizingYourWorkspace.html",
+      "sourceHash": "26e28f232c28b2df36c724ebaa6343a3683e09d8d75f91ccf15dd1cff0208ff4",
+      "bodyHash": "684323e9b2e84334b331d403c5748941255d385e22130f6a61ea2d671f9e1940",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6"
+      ],
+      "apiUnits": [],
+      "media": [
+        "media-1",
+        "media-2",
+        "table-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "CustomizingYourWorkspace.html: heading Customize your workspace layout at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The editor layout is a collection of tabs with built-in and saved layouts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h2",
+            "evidence": "CustomizingYourWorkspace.html: heading Manage tabs at ordinal 2; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Opening a window from the main menu adds a tab; tab-name context menus provide maximize, close, add tabs and overlays.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h3",
+            "evidence": "CustomizingYourWorkspace.html: heading Move tabs in the main Editor window at ordinal 3; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Dragging the tab title offers a destination outline before changing its dock location.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h4",
+            "evidence": "CustomizingYourWorkspace.html: heading Move tabs to floating Editor windows at ordinal 4; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "A separate floating OS window can itself contain multiple tabs; the search-window image explicitly depicts two such tabs.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h5",
+            "evidence": "CustomizingYourWorkspace.html: heading Save and restore tab layouts at ordinal 5; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Five layout actions distinguish save/name/overwrite, export to file, import from file, delete and full reset; file format and crash/monitor recovery are not specified.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h6",
+            "evidence": "CustomizingYourWorkspace.html: heading Additional resources at ordinal 6; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Scene view, toolbar and overlays remain independent follow-up documents.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct CustomizingYourWorkspace.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/CustomizingYourWorkspace.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/CustomizingYourWorkspace.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/CustomizingYourWorkspace.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ],
+          "apiUnits": [],
+          "media": [
+            "media-1",
+            "media-2",
+            "table-1"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "d5cc3c62a477a66cbbbcedf9",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/OfflineDocumentation.html",
+      "sourceHash": "349d949914ca30ea31f204a795b9d903c3373a4ac089323b0b89a781c44fa585",
+      "bodyHash": "126d2a83193f0779fcd00104a27780953c118435dfb0fbf2c713dd0d75269473",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1"
+      ],
+      "apiUnits": [],
+      "media": [
+        "media-1",
+        "media-2"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "OfflineDocumentation.html: heading Offline documentation at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The official ZIP contains Manual and Scripting API; the displayed size is approximate. The two old-style screenshots are illustrations, not current editor-layout contracts; packages/services/media/version history are not declared fully included.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct OfflineDocumentation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/OfflineDocumentation.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/OfflineDocumentation.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/OfflineDocumentation.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1"
+          ],
+          "apiUnits": [],
+          "media": [
+            "media-1",
+            "media-2"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "ed0884ef3cfaf998c85d5de7",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/SceneViewNavigation.html",
+      "sourceHash": "56bb4a2cbd7e6064abf80abb826b2caaaf5c17995ca30ee472da4769eca759bc",
+      "bodyHash": "b56347b075b245f4a5959f790a7453156cb3a0df19fc96e52ca356398f90c44a",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "h7",
+        "h8",
+        "h9",
+        "h10"
+      ],
+      "apiUnits": [],
+      "media": [
+        "media-1",
+        "media-2",
+        "media-3",
+        "media-4",
+        "media-5",
+        "media-6",
+        "table-1",
+        "table-2"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "SceneViewNavigation.html: heading Scene view navigation at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Navigation normally controls the Scene Camera; controlling a camera GameObject uses the Cameras overlay and is a separate edit target.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h2",
+            "evidence": "SceneViewNavigation.html: heading Orientation overlay at ordinal 2; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Axis clicks, cube context angles/Free, perspective toggle, Shift recovery and rotation lock are distinct; 2D hides this overlay and looks perpendicular to XY.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h3",
+            "evidence": "SceneViewNavigation.html: heading Mac trackpad gestures at ordinal 3; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Two-finger zoom and three-finger direction gestures require Mac trackpad OS support/settings.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h4",
+            "evidence": "SceneViewNavigation.html: heading Move, orbit and zoom in the Scene view at ordinal 4; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Arrow keys, View tool, flythrough, speed settings and input-device shortcuts are independent navigation paths.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h5",
+            "evidence": "SceneViewNavigation.html: heading Use the arrow keys at ordinal 5; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Arrow keys move forward/back or pan sideways; Shift accelerates.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h6",
+            "evidence": "SceneViewNavigation.html: heading Use the View tool at ordinal 6; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Q View tool uses drag pan, Alt/Option LMB orbit and Alt/Option RMB zoom, with Mac Control-LMB alternative and Shift speed; locked rotation/2D restrict orbit.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h7",
+            "evidence": "SceneViewNavigation.html: heading Use flythrough mode at ordinal 7; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Perspective flythrough is RMB with W/S/A/D/Q/E and Shift; RMB in orthographic or 2D has a different orbit/pan role.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h8",
+            "evidence": "SceneViewNavigation.html: heading Change the move speed of the camera at ordinal 8; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "View Options Camera Speed and backtick overlay discovery are explicit; scroll changes speed during flythrough, distinct from ordinary zoom.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h9",
+            "evidence": "SceneViewNavigation.html: heading Movement shortcuts at ordinal 9; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The complete three-column device table provides MMB pan/Alt-LMB orbit/wheel or Alt-RMB zoom plus two-button and Mac modifier alternatives.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h10",
+            "evidence": "SceneViewNavigation.html: heading Center the view on a GameObject at ordinal 10; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "With scene-view pointer focus, F frames selected/pivot; Shift-F locks tracking; the menu counterparts are Frame Selected and Lock View to Selected. No browser-history behavior is specified.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct SceneViewNavigation.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/SceneViewNavigation.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/SceneViewNavigation.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/SceneViewNavigation.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "h7",
+            "h8",
+            "h9",
+            "h10"
+          ],
+          "apiUnits": [],
+          "media": [
+            "media-1",
+            "media-2",
+            "media-3",
+            "media-4",
+            "media-5",
+            "media-6",
+            "table-1",
+            "table-2"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "030a435f71a4098534e7072c",
+      "sourceHash": "0fba9f5d096df05e04ce20f3a69b08c3b2c605f95eba1d21099aadd59bf0bc4a",
+      "bodyHash": "a38111a9c4965bc9cbf9ede52949653603f4eba51e57e798336921c027a80a4c",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "h7",
+        "h8",
+        "h9",
+        "h10",
+        "h11"
+      ],
+      "apiUnits": [
+        "Translate(Vector3)",
+        "Translate(Vector3,Space=Self)",
+        "Translate(float,float,float)",
+        "Translate(float,float,float,Space=Self)",
+        "Translate(Vector3,Transform)",
+        "Translate(float,float,float,Transform)"
+      ],
+      "media": [
+        "example-1",
+        "example-2",
+        "example-3",
+        "example-4"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md : exact full source read; code examples distinguish local z/world y/reference-camera x and explicit deltaTime multiplication; feedback controls reviewed as website scaffolding.",
+      "analysis": {
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "Original heading ordinal 1 Transform .Translate and its following paragraphs/signature/example in exact body file",
+            "finding": "UnityEngine Transform translation has six actual declarations grouped into four description/example blocks; neither all methods nor only one vector overload is a valid page inventory.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h2",
+            "evidence": "Original heading ordinal 2 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Vector3 displacement overload returns void and omits reference-space input.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h3",
+            "evidence": "Original heading ordinal 3 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Vector3 plus Space overload returns void and displays relativeTo default Space.Self.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h4",
+            "evidence": "Original heading ordinal 4 Description and its following paragraphs/signature/example in exact body file",
+            "finding": "Self/omitted uses local transform axes; World uses world coordinates. Example inputs multiply deltaTime rather than translation automatically integrating speed.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h5",
+            "evidence": "Original heading ordinal 5 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Float x,y,z displacement overload returns void and omits reference space.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h6",
+            "evidence": "Original heading ordinal 6 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Float x,y,z plus Space overload returns void, defaulting relativeTo to Self.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h7",
+            "evidence": "Original heading ordinal 7 Description and its following paragraphs/signature/example in exact body file",
+            "finding": "Individual float axes obey the same local/world rule; the two example calls distinguish local forward and global upward motion.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h8",
+            "evidence": "Original heading ordinal 8 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Vector3 plus another Transform reference has no displayed default and returns void.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h9",
+            "evidence": "Original heading ordinal 9 Description and its following paragraphs/signature/example in exact body file",
+            "finding": "Reference Transform local coordinate system controls direction; null reference uses world. Camera.main.transform example passes explicit time-scaled displacement.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h10",
+            "evidence": "Original heading ordinal 10 Declaration and its following paragraphs/signature/example in exact body file",
+            "finding": "Float x,y,z plus another Transform reference has no displayed default and returns void.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          },
+          {
+            "id": "h11",
+            "evidence": "Original heading ordinal 11 Description and its following paragraphs/signature/example in exact body file",
+            "finding": "Float axes are relative to that Transform, null means world; reference-camera example passes deltaTime as distance. Camera existence and invalid inputs are not specified here.",
+            "hbDecision": "Keep distance, velocity-times-time and basis selection separate in common HB contracts; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md"
+          }
+        ],
+        "apiUnits": [
+          {
+            "id": "Translate(Vector3)",
+            "evidence": "signature-CS ordinal 1, associated Description and code example",
+            "finding": "Vector displacement, void return, omitted basis follows Self; caller supplies distance.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          },
+          {
+            "id": "Translate(Vector3,Space=Self)",
+            "evidence": "signature-CS ordinal 2, associated Description and code example",
+            "finding": "Vector displacement, enum basis, explicit optional Self default; World selects world axes.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          },
+          {
+            "id": "Translate(float,float,float)",
+            "evidence": "signature-CS ordinal 3, associated Description and code example",
+            "finding": "Three scalar distances, void, omitted basis follows Self.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          },
+          {
+            "id": "Translate(float,float,float,Space=Self)",
+            "evidence": "signature-CS ordinal 4, associated Description and code example",
+            "finding": "Three scalar distances plus enum basis, explicit optional Self default.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          },
+          {
+            "id": "Translate(Vector3,Transform)",
+            "evidence": "signature-CS ordinal 5, associated Description and code example",
+            "finding": "Vector displacement plus nullable Transform basis; null maps to world and non-null uses that transform axes.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          },
+          {
+            "id": "Translate(float,float,float,Transform)",
+            "evidence": "signature-CS ordinal 6, associated Description and code example",
+            "finding": "Three scalar distances plus nullable Transform basis with the same null/world rule.",
+            "hbDecision": "C++/Blueprint/AI require the same input type, units, basis and null-reference policy; do not infer physics sweep from a Transform translation."
+          }
+        ],
+        "editor": "Scene selection axes are illustrative; editor-camera navigation and game-object transforms have distinct owners.",
+        "runtime": "Caller-provided displacement is applied relative to chosen axes, not internally interpreted as speed. Collision/sweep behavior is absent.",
+        "cppBlueprint": "Unity C# signatures are source contracts, not C++ declarations. HB Scene::AddOffset and MoveActorTowards need separate basis/equivalence review; Game.hpp currently exposes position-relative addition and speed*time movement.",
+        "humanAi": "Stable typed overload IDs, displacement units, basis enum/reference and missing reference diagnostics should be shared between human nodes, C++ wrappers and AI commands.",
+        "dependencies": "Linked Space, Transform, Vector3, Time.deltaTime, Camera.main and Rigidbody contracts remain separate unread pages.",
+        "limitations": "No thread, ownership, scale-parent details, non-finite handling or failure/exception contract is documented on this page."
+      },
+      "openIssues": [
+        "Follow-up API needed for parent/scale conversion and thread/ownership rules.",
+        "Physics collision and Rigidbody motion are not defined by this Transform method page."
+      ],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Transform.Translate.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original header Unity 6.0 (6000.0); same official ZIP job76410965 built2026-09-29",
+        "bodyMethod": "First actual h1 through publisher _content marker; feedback form heading scaffolding excluded from API section inventory",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Transform.Translate.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/Transform.Translate.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "h7",
+            "h8",
+            "h9",
+            "h10",
+            "h11"
+          ],
+          "apiUnits": [
+            "Translate(Vector3)",
+            "Translate(Vector3,Space=Self)",
+            "Translate(float,float,float)",
+            "Translate(float,float,float,Space=Self)",
+            "Translate(Vector3,Transform)",
+            "Translate(float,float,float,Transform)"
+          ],
+          "media": [
+            "example-1",
+            "example-2",
+            "example-3",
+            "example-4"
+          ],
+          "openIssues": [],
+          "evidence": "All six signature-CS blocks, four Description blocks, intervening paragraphs and four codeExampleCS blocks directly read. No parameter table, image or language tab appears in this body."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "c422154f5cbc056935fa2383",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html",
+      "sourceHash": "794a1322b4c41d9169e8ca82f82dfb6119520c6ca186a96bb021b9fe798d81f6",
+      "bodyHash": "598cc4a91a8f1112f516a969bcdd15a26e4268dc54c1cb5f3f4213fe63918812",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2"
+      ],
+      "apiUnits": [],
+      "media": [
+        "table-1"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "unity-editor.html: heading Unity Editor interface at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The seven-row editor table separately links navigation/shortcuts/search/workflow, windows, customization, preferences/settings, analytics, troubleshooting and command-line operation.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct unity-editor.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h2",
+            "evidence": "unity-editor.html: heading Additional resources at ordinal 2; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Community discussion is a supplemental research source; official contracts and author advice must not be silently merged.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct unity-editor.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/unity-editor.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/unity-editor.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/unity-editor.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2"
+          ],
+          "apiUnits": [],
+          "media": [
+            "table-1"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    },
+    {
+      "pageId": "e0399f6e91bcd1e3a4826598",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/UnityManual.html",
+      "sourceHash": "c371e6b4cd3d2257067fdd3cdfb512e8277f9278108f052fe4081b9939138a95",
+      "bodyHash": "538054e67b5bcee007567674053b78f29ad3b4bc1127d49e0a4393f346251beb",
+      "actor": "root",
+      "date": "2026-10-04",
+      "sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "h7",
+        "h8",
+        "h9",
+        "h10",
+        "h11",
+        "h12",
+        "h13",
+        "h14",
+        "h15",
+        "h16",
+        "h17",
+        "h18",
+        "h19",
+        "h20",
+        "h21",
+        "h22",
+        "h23",
+        "h24"
+      ],
+      "apiUnits": [],
+      "media": [
+        "media-1",
+        "media-2",
+        "media-3",
+        "media-4",
+        "media-5",
+        "media-6",
+        "media-7",
+        "media-8",
+        "media-9",
+        "media-10",
+        "media-11",
+        "media-12",
+        "media-13",
+        "media-14",
+        "media-15",
+        "media-16",
+        "media-17",
+        "media-18",
+        "media-19",
+        "media-20"
+      ],
+      "readScope": "entire_body",
+      "readEvidence": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md ; original source HTML read directly; media sheets 0/1/2, original floating/offline pictures and GIF dock-all-0..100 plus frames26/78 inspected.",
+      "analysis": {
+        "editor": "Use this source-specific section analysis to keep tab, project-mode and camera focus contracts separate; linked editor APIs remain unread.",
+        "runtime": "Editor camera/layout state is separate from game world/camera/physics data; overview pages do not establish actual runtime equivalence.",
+        "cppBlueprint": "Manual navigation exposes no C++ declaration. Derived HB C++/node contracts require the independent API analysis, with lifecycle and space distinctions retained.",
+        "humanAi": "HB design: stable document/window/object IDs and common validated commands should back both human actions and structured AI edits; this is not a claim about a Unity AI API.",
+        "dependencies": "All official outgoing functionality links remain in separate discovered/unread queues. Package versions and overload inventories are not inferred from an overview.",
+        "limitations": "This page body is bounded by its actual headings/tables/media. All linked contracts, platform execution and the full corpus closure remain unverified.",
+        "sections": [
+          {
+            "id": "h1",
+            "evidence": "UnityManual.html: heading Unity 6.0 User Manual at ordinal 1; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "This 6000.0 baseline is LTS and includes the named 2023.1/2023.2 and preview feature streams; linked upgrade history still requires separate reading.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h2",
+            "evidence": "UnityManual.html: heading Highlights of Unity 6 at ordinal 2; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Six overview branches lead to rendering, multiplayer, platforms, runtime inference, visuals and editor productivity rather than defining detailed API contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h3",
+            "evidence": "UnityManual.html: heading Boost rendering performance at ordinal 3; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Rendering performance introduction links rendering, lighting and VFX; no quantitative performance guarantee is stated.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h4",
+            "evidence": "UnityManual.html: heading Multiplayer game creation at ordinal 4; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Multiplayer production links packages and services, both of which must remain in discovery rather than reducing this to a network button.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h5",
+            "evidence": "UnityManual.html: heading Expand multiplatform reach at ordinal 5; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Mobile browser runtime and wider platforms are separate compatibility targets; this landing page does not define their full build contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h6",
+            "evidence": "UnityManual.html: heading Unlock possibilities with Runtime AI at ordinal 6; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Sentis runtime inference is introduced separately from gameplay behavior trees or AI-assisted editing.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h7",
+            "evidence": "UnityManual.html: heading Achieve more engaging visuals at ordinal 7; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Lighting, graphics profiling, Shader Graph and VFX Graph have independent documentation contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h8",
+            "evidence": "UnityManual.html: heading Enhance productivity and functionality at ordinal 8; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "ProBuilder, Cinemachine, profiling and UI Toolkit are editor productivity dependencies that require version-pinned package follow-up.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h9",
+            "evidence": "UnityManual.html: heading Featured content at ordinal 9; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The fourteen featured production domains each link to their own body corpus; a parent overview does not mark the children read.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h10",
+            "evidence": "UnityManual.html: heading Animation at ordinal 10; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Animation includes avatar representation, clips and state machines; all three are retained as separate required contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h11",
+            "evidence": "UnityManual.html: heading Audio at ordinal 11; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Audio includes clips, sources, listeners, importing and sound settings; clip playback alone does not cover the domain.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h12",
+            "evidence": "UnityManual.html: heading 2D game development at ordinal 12; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "2D explicitly includes gameplay, sprites and physics; these remain first-class and are not replaced by an orthographic 3D view.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h13",
+            "evidence": "UnityManual.html: heading Lighting at ordinal 13; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Lighting must support realistic and stylized art workflows; exact pipelines and supported algorithms are not defined here.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h14",
+            "evidence": "UnityManual.html: heading Multiplayer at ordinal 14; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Multiplayer requires both packages and services rather than a single local game-framework example.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h15",
+            "evidence": "UnityManual.html: heading Package management at ordinal 15; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Package exploration, install, update and management extend the editor and import assets; versions and dependencies are discovery work.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h16",
+            "evidence": "UnityManual.html: heading Physics at ordinal 16; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "3D physics includes motion, mass, gravity and collision; each has runtime contracts beyond viewport helpers.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h17",
+            "evidence": "UnityManual.html: heading Platform development at ordinal 17; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Platform development links to application targets; this page gives no per-platform certification or toolchain rules.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h18",
+            "evidence": "UnityManual.html: heading Rendering at ordinal 18; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Render pipeline choice, custom rendering and post-processing are independent capabilities.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h19",
+            "evidence": "UnityManual.html: heading Scripting at ordinal 19; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Scripting programs game behavior in the editor; this page does not specify C++ interoperation or lifecycle contracts.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h20",
+            "evidence": "UnityManual.html: heading UI at ordinal 20; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "The UI entry covers editor-supported toolkits, not only a sample in-game widget.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h21",
+            "evidence": "UnityManual.html: heading Unity services at ordinal 21; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Monetization, cloud services, ads, cloud build and multiplayer services are explicitly linked official product areas.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h22",
+            "evidence": "UnityManual.html: heading Visual effects at ordinal 22; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Visual effects include particles, lens flare and full-screen effects; their simulation and rendering still need separate analysis.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h23",
+            "evidence": "UnityManual.html: heading XR at ordinal 23; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "XR encompasses augmented, mixed and virtual reality with separate target and input considerations.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          },
+          {
+            "id": "h24",
+            "evidence": "UnityManual.html: heading Additional resources at ordinal 24; docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+            "finding": "Best practices, discussions, Knowledge Base, tutorials and Asset Store help are distinct official/support research routes.",
+            "hbDecision": "Preserve this exact contract and unknowns in the HB research requirements. See the distinct UnityManual.html assessment in docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md; no implementation or child-page completion is asserted."
+          }
+        ],
+        "apiUnits": []
+      },
+      "openIssues": [],
+      "snapshot": {
+        "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/UnityManual.html",
+        "httpStatus": 200,
+        "retrievalMethod": "official_archive",
+        "actualBody": true,
+        "version": "6000.0",
+        "versionEvidence": "Original HTML explicitly shows Unity 6.0 (6000.0); official archive footer job76410965 built2026-09-29",
+        "bodyMethod": "Exact HTML from first h1 to publisher _content marker, excluding website navigation/footer",
+        "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/UnityManual.html",
+        "bodyFile": "native/build/reference-corpus/unity-root-batch/UnityManual.html.body.html",
+        "inventory": {
+          "complete": true,
+          "sections": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "h7",
+            "h8",
+            "h9",
+            "h10",
+            "h11",
+            "h12",
+            "h13",
+            "h14",
+            "h15",
+            "h16",
+            "h17",
+            "h18",
+            "h19",
+            "h20",
+            "h21",
+            "h22",
+            "h23",
+            "h24"
+          ],
+          "apiUnits": [],
+          "media": [
+            "media-1",
+            "media-2",
+            "media-3",
+            "media-4",
+            "media-5",
+            "media-6",
+            "media-7",
+            "media-8",
+            "media-9",
+            "media-10",
+            "media-11",
+            "media-12",
+            "media-13",
+            "media-14",
+            "media-15",
+            "media-16",
+            "media-17",
+            "media-18",
+            "media-19",
+            "media-20"
+          ],
+          "openIssues": [],
+          "evidence": "Root directly read each body heading/table. Every image was locally inspected; workspace GIF 105 frames were inspected on sheets plus enlarged key frames. No API declarations appear in these manual bodies."
+        }
+      },
+      "evidenceArtifacts": [
+        {
+          "file": "docs/research/UNITY_ROOT_BODY_ANALYSIS_001.md",
+          "sha256": "83eac68e67b514592aa88038495cdb2898d21e7efb924a9da34a87500c16a082"
+        }
+      ]
+    }
+  ],
+  "verificationRecords": [
+    "docs/research/verification-unity-editor-artifacts-002.json",
+    "docs/research/verification-unity-2d3d-artifacts-002.json"
+  ],
+  "verificationRefresh": "2026-10-04: independent reader compared both complete source bodies/tables, unchanged semantic findings, current private analysis hashes and pinned Markdown; 2 bounded pages revalidated, all linked contracts/corpus remain unverified.",
+  "historicalVerificationRecords": [
+    "docs/research/verification-unity-editor.json",
+    "docs/research/verification-unity-2d3d.json"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "pageId": "c422154f5cbc056935fa2383",
+  "bodyHash": "598cc4a91a8f1112f516a969bcdd15a26e4268dc54c1cb5f3f4213fe63918812",
+  "sourceHash": "794a1322b4c41d9169e8ca82f82dfb6119520c6ca186a96bb021b9fe798d81f6",
+  "actor": "analysis_protocol",
+  "date": "2026-10-04",
+  "analysisHash": "4688542b84a6c9e3dd4d0a2fed3f9a0a14cab33e8a9912aa7a3dfeaca9cb2cba",
+  "sections": ["h1", "h2"],
+  "apiUnits": [],
+  "media": ["table-1"],
+  "comparisonEvidence": "로컬 원본 unity-editor.html 전체 본문을 첫 h1부터 publisher _content marker 직전까지 직접 읽고 source/body SHA-256과 추출 본문의 byte-exact 원문 포함을 재확인했어요. 원본의 canonical URL, Unity 6.0 (6000.0), job76410965/2026-09-29 표시를 확인했어요. h1 Unity Editor interface와 h2 Additional resources 2구역이 snapshot/review/analysis sections와 일치해요. 표의 Topic/Description header와 데이터 7행, 전체 8행/16셀을 각각 대조했어요: 탐색/단축키/검색/workflow, Scene/Hierarchy/Inspector/Project 창, 배치/custom tools, preferences/project settings/build, 사용 데이터, 문제 진단/해결, command-line arguments/자동화가 모두 원문과 분석 JSON 및 UNITY_ROOT_BODY_ANALYSIS_001.md의 해당 분석에 보존돼요. 본문 시작의 제작/정리/관리 workspace 설명과 추가 Community 토론 링크도 대조했어요. 그림·동적 탭·API 선언은 이 본문에 없으며 table-1이 유일한 media 항목이에요. 분석의 HB 공용 모델/안정 ID/명령 제안은 설계 판단이며 Unity 공식 AI API나 현재 구현 완료로 읽지 않았어요. 하위 7계열 문서와 Community 글은 읽지 않았고 이 검증 상태를 상속하지 않아요. 이 페이지 표시 본문과 분석 사이의 누락/오류는 발견하지 않았어요. 엔진/GUI/API 실행과 네트워크 요청은 하지 않았어요.",
+  "openIssues": []
+}
