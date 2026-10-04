@@ -271,7 +271,13 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         app.root=fs::exists(folder/serverScript)?folder:folder/L"dist/HBEngine";
         #endif
         if(!fs::exists(app.root/serverScript))throw std::runtime_error("engine files");
-        app.userData=env(L"HB_USER_DATA_DIR");if(app.userData.empty())app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine";
+        app.userData=env(L"HB_USER_DATA_DIR");
+        auto defaultUserData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine";
+        #ifndef HB_GAME_PLAYER
+        // Installed user builds keep their browser profile away from development builds.
+        if(fs::is_regular_file(app.root/L"HBEngine.install.json")){defaultUserData/=L"User";SetEnvironmentVariableW(L"PORT",L"0");}
+        #endif
+        if(app.userData.empty())app.userData=defaultUserData;
         fs::create_directories(app.userData/L"Sessions");std::wstring project;bool registerOnly=false;int count;auto arguments=CommandLineToArgvW(GetCommandLineW(),&count);
         for(int i=1;i<count;i++){const std::wstring value=arguments[i];if(value==L"--register")registerOnly=true;else if((value==L"--smoke-test"||value==L"--smoke-windows")&&i+1<count){app.windowSmoke=value==L"--smoke-windows";app.smoke=fs::absolute(arguments[++i]);}else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");else if(project.empty())project=fs::absolute(value).wstring();else throw std::runtime_error("argument");}LocalFree(arguments);
         if(!project.empty()&&(!fs::is_regular_file(project)||_wcsicmp(fs::path(project).extension().c_str(),L".hbproject")))throw std::runtime_error("project file");

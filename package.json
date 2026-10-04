@@ -17,6 +17,8 @@
     "test:library": "node tools/prepare-native.mjs && node tools/check-library.mjs",
     "test:assets": "node tools/check-assets.mjs",
     "desktop:build": "node tools/build-desktop.mjs",
+    "desktop:install": "node tools/install-editor.mjs",
+    "test:user-install": "node tools/check-user-install.mjs",
     "test:launcher": "node tools/check-launcher.mjs",
     "test:hub-ui": "node tools/check-hub-ui.mjs",
     "test:session": "node tools/check-session.mjs",

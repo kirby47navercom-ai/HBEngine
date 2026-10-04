@@ -33,6 +33,8 @@ Windows에서 **HBEngine.exe를 더블클릭**하면 프로젝트 허브가 열�
 
 Microsoft WebView2 Runtime이 필요하다. 없으면 [공식 Runtime 다운로드](https://developer.microsoft.com/microsoft-edge/webview2/)에서 설치한다. 배포 폴더를 실행할 때 Node.js/npm을 따로 설치할 필요는 없다. 사용자 C++ 코드를 빌드하려면 C++17 컴파일러가 별도로 필요하다.
 
+엔진 개발과 동시에 사용할 때는 `npm run desktop:install`로 저장소 밖의 사용자용 설치본을 만든다. 바탕 화면의 **HBEngine 사용자용** 바로가기는 고정된 배포본을 열고, 개발 빌드와 WebView 프로필·C++ 캐시·포트를 분리한다. 개발 중 사용자용 설치본과 게임 원본을 변경하지 않는다. 업데이트는 새 버전 폴더로 설치하고 사용자 요청에 따라 전환한다. [동시 사용·저장·검증 방식](docs/USER_DEVELOPMENT_SEPARATION.md).
+
 소스에서 Windows x64 EXE를 만들려면 Node.js 22 이상과 g++/windres를 준비한다.
 
 ```powershell
