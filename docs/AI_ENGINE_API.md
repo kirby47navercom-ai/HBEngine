@@ -145,6 +145,7 @@ node tools/run-project.mjs C:/Games/MyGame/MyGame.hbproject scenario.json
 - BB: `keys[{name,type,value}]`; `bool/int/float/string/vec3/object`. int32·벡터·객체 ID 검증을 적용한다.
 - BT: `blackboard`, `root`, `interval`, `nodes[{id,type,properties,children,services,x,y}]`. 순환/다중 부모·자료형·노드 수/깊이를 검증한다. 서비스는 이벤트/간격을 가진다.
 - BT 태스크는 `onStart/onTick/onFinish/onAbort`와 활성화 handle을 사용한다. `behaviorTaskHandle/behaviorTaskFinish`와 사용자 C++ `hb::AI::GetTaskHandle/FinishTask`가 같은 실행기를 사용한다. stale 완료는 무시하고 태스크 완료/중단 때 해당 BP 작업·native 타이머 수명을 정리한다. `runtime.state.work`는 BP의 scopes/delays/timers/timelines/subscriptions 관측이다. 서비스 선택 필드·추가 노드·실제 창 증거와 남은 Observer/Subtree 범위는 [태스크 수명 계약](BEHAVIOR_TASK_LIFECYCLE.md)을 따른다.
+- 후속 Observer의 abortMode/notify, Selector reactive, Parallel finishMode, compareBlackboard, subtree와 내부 인스턴스는 [조건/하위 트리 계약](BEHAVIOR_OBSERVERS_SUBTREES.md)을 따른다. `gameplay.behaviorChoices`를 조회해 선택 값을 사용하고 `gameplayDebug.behavior.instances`의 asset/scope/path/status/tasks로 현재 열린 트리를 대조한다. 정적 subtree는 실행 전에 로드/검증하며 같은 키의 자료형을 공유하고, root defaults를 우선한다. C++와 headless도 같은 핸들·타이머 수명을 사용한다.
 - FSM: `initial`, `parameters`, `states`, `transitions`. 전이는 from/to·event·hasExitTime/exitTime·conditions로 표현하며 `from:"any"`는 Any State다.
 - Montage: `length/rate/loop/group`, `sections`, `clips`, `notifies`. clip은 start/duration/sourceStart/rate/slot, section은 time/name/next, Notify는 time/event다.
 - Sequence: `length/rate/loop/fps/restoreState`, `tracks[{id,type,target,keys,clips}]`. target은 장면 객체 ID이며 animation/audio 트랙만 clip 구간을 가진다.

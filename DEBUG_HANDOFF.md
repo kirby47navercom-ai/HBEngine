@@ -1,5 +1,12 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 조건 감시·하위 트리 후속
+
+- 여러 AND 조건의 첫 감시 검사에서 아직 실행하지 않은 두 번째 조건의 변경을 놓쳤어요. 진입용 데코레이터 연결의 조건도 등록하고, 모두 유효할 때만 낮은 분기를 중단하게 고쳤어요. Observer 네 모드·결과/값·무관한 키·Abort→Start·병렬 정책 검사를 통과했어요.
+- 정적 subtree root 조건은 실패한 자식 인스턴스가 없어도 부모 감시에 남아야 해요. private root guard 관측을 부모에 연결하고 active Self 중단은 자식이 맡아 중복 Abort를 막았어요. 첫 보강 검사에서는 관측/교체 후 새 자식의 최초 interval을 기다려 핸들이 비어 있었어요. 최초 검색을 첫 Tick에 즉시 수행하도록 바꾸고 regression/실제 키로 확인했어요.
+- Editor TlzUUV는 명령 클라이언트 연결 전 API 호출한 fixture 실패예요. 소유한 서버의 automation 클라이언트1개를 기다려 시작하고 J7JXNQ에서 통과했어요. 루트 조건까지 보강한 최종 frpx7w/xXOLLQ는 E만으로 Idle 유지, R로 교체, 내부 C++ 완료·지연/native Timer 취소·원본/종료를 확인했어요. 원래 실패를 성공으로 세지 않아요.
+- 화면 없는 실행 경로에도 scope 전달과 native callback의 owner/scope 처리가 필요했어요. runProject를 공용 nativeTimers로 바꾸고 같은 실제 Player 시나리오200프레임과 기존 headless 회귀로 확인했어요. headless를 화면/음향 검증이라고 표시하지 않아요.
+
 ## 행동트리 태스크 수명 실제 창 후속
 
 - Editor uWmdbi의 1초 Delay 이후 위치99는 완료 전 이미 Delay 시간이 지났을 가능성을 구분하지 않은 검사였어요. HfOa2i에서 3초로 늘려도 before 시간2.19/after6.21 사이 예약 시간이 지나며, 진단 필드를 editor.state에만 넣고 runtime.state에서 찾는 fixture 실패도 있었어요. 실패를 엔진 취소 오류의 증거나 성공으로 세지 않아요.

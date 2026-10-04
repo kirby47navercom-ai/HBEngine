@@ -1,5 +1,15 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 조건 감시·병렬 정책·정적 하위 트리 실제 검증 후 계속
+
+[조건/하위 트리 계약](docs/BEHAVIOR_OBSERVERS_SUBTREES.md)을 추가했어요. 전체 active goal·누적 요구·사용자 설치 보호를 유지하고 다음 엔진 구현을 계속해요.
+
+- 감시 None/Self/Lower/Both와 결과/값 변경, memory Selector/legacy reactive 호환, 같은/무관한 키 비용 방지·중단 후 새 Start·AND 진입 조건, 키 비교·Simple Parallel Immediate/Delayed를 UI/검증/공용 실행기로 연결했어요.
+- 정적 하위 트리 사전 로드·순환/깊이32/확장4096/공유 키128 제한·루트 기본값/자료형·실패 시 기존 트리 보존, 독립 활성화·자식 시간/감시·루트 조건의 부모 감시·경로 핸들·전체 Stop을 구현했어요. 헤더 더블클릭/트리 열기·내부 인스턴스 진단과 AI schema를 연결했어요. headless에도 이전 native Timer owner/scope 경로를 보강했어요.
+- 최종 실제 Editor `native/build/behavior-program-editor-frpx7w`, release Player/AI headless `behavior-program-player-xXOLLQ`에서 E=상위 조건만 바꿔 Idle 유지, R=하위 루트 조건 충족 뒤 Idle Abort→Attack Start, 내부 표시/읽기 전용/더블클릭, C++ 완료·BP Delay/native Timer 취소·원본·정상 종료/서버 정리 통과예요. J7JXNQ/20vwie는 하위 루트 조건 보강 전 근거로 유지해요.
+- Observer/program/lifecycle/gameplay/state-hierarchy/integration/main519/API 대조·diff와 headless 회귀를 통과했어요. 실제 이미지도 확인했어요. 공식 Decorator/Task 기술 본문 재읽기와 Composite 기술 본문 전체 새 읽기 경계를 계약에 기록했어요. 전체 공식 연구 gate를 승격하지 않아요.
+- 다음은 timed decorator·Apply Scope·dynamic subtree/EQS/Task subclass와 더불어 남은 애니메이션/2D/렌더·모바일/전체 엔진 세부 기능이에요. 특정 분야만 전체 요구라고 한정하지 않아요. 사용자 stress 검사는 미루고 고유 작은 fixture에서 확인해요.
+
 ## 최신 후속: 행동트리 태스크·서비스·BP/C++ 작업 수명 검증 후 계속
 
 주인님의 전체 누적 기능·세부 구현과 “다 할 때까지 끝내지 말고 계속”을 유지해요. [행동트리 계약](docs/BEHAVIOR_TASK_LIFECYCLE.md)에 공식 기술 본문/검색 API 읽기 경계·실제 구현·아직 제공하지 않은 기능을 기록했어요. 전체 목표는 active예요.

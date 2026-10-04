@@ -41,4 +41,4 @@ C++ `hb::Timers::SetTimer`도 호출 대상 Actor와 현재 태스크 handle을 
 - 실제 release Game.exe `native/build/behavior-player-window-2wt1oc`: 물리 키→BP→사용자 C++ 완료, 다음 Wait 실행, BP Delay와 C++ Timer의 예약 시간이 지난 뒤에도 위치 변경이 발생하지 않는 것, 원본·정상 종료/서버 폐기를 확인했어요.
 - 초기 1초 Editor Delay는 완료 입력 처리 전 시간이 지날 수 있어 취소 증거로 쓰지 않아요. 후속 Editor에서는 pending 작업을 먼저 관측하고 완료 후 scopes/delays가 빈 것을 확인해요. Player에서는 빠른 CDP 입력과 3초 예약으로 실제 예정 시간 이후도 확인해요. 실패 원자료와 fixture 수정은 DEBUG_HANDOFF에 남겨요.
 
-현재 트리는 interval 평가를 유지하고 Blackboard revision·태스크 완료 때 다음 tick을 깨워요. 전체 event-driven 탐색, 조건 데코레이터의 Observer Aborts 4모드·Notify 결과/값 변화, 비동기 FinishAbort, subtree/EQS, native BTTask 클래스, NavMesh, 완전한 병렬 정책은 아직 이 구현으로 제공한 것이 아니에요. 전체 누적 엔진 기능의 후속 구현 대상으로 유지해요.
+최초 이 추가의 interval reactive 동작에서 이어 [조건 감시·병렬 정책·정적 하위 트리](BEHAVIOR_OBSERVERS_SUBTREES.md)를 구현했어요. 그 후속 계약에서 현재 Observer/Selector/Subtree 동작과 실제 근거를 확인해요. 비동기 FinishAbort·EQS·native BTTask 클래스·모든 조건/이동 정책과 전체 엔진 요구는 후속 구현 범위로 유지해요.
