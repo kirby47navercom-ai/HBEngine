@@ -1,0 +1,1223 @@
+{
+  "schemaVersion": 1,
+  "batchId": "mobile-editor-verification-012",
+  "phase": "research_only",
+  "readerOfOriginalAnalysis": "root",
+  "verifier": "/root/build_editor_platform_research",
+  "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+  "verificationLevel": "independent bounded text/example/table/source-integrity comparison; strict corpus/API verified gate remains closed",
+  "scopeComparisonPassed": true,
+  "strictVerificationReady": false,
+  "counts": {
+    "authorSourceBodiesCompared": 5,
+    "wholeTechnicalBodiesCompared": 3,
+    "wholeTextPartialMediaBodiesCompared": 1,
+    "partialPolicySubsectionsCompared": 1,
+    "technicalHeadingsCompared": 86,
+    "wholeDisplayedPreBlocksCompared": 46,
+    "tablesCompared": 1,
+    "tableRowsIncludingHeaderCompared": 5,
+    "tableCellsCompared": 15,
+    "authorBodyImageInstances": 14,
+    "authorBodyUniqueImageFiles": 2,
+    "imagePixelsCompared": 0,
+    "authorAndroidCodeLanguageTabsCompared": [
+      "Kotlin",
+      "Java"
+    ],
+    "additionalPartialReferenceMetadataLookups": 1,
+    "additionalPartialGuideRejectedAsMappingEvidence": 1,
+    "wholeFormalApiUnitsVerified": 0,
+    "strictVerified": 0,
+    "ledgerPromotions": 0
+  },
+  "authorArtifacts": [
+    {
+      "file": "docs/research/MOBILE_EDITOR_BODY_012.md",
+      "sha256": "7b9d20c25b0c2188c9e26346b09714b9aca4e29d451ccbc81b01739250f52121"
+    },
+    {
+      "file": "docs/research/mobile-editor-body-012.json",
+      "sha256": "a7ff0bd3c954570b482a099785ce9c453f34c783963dc05869b734eb5f34b5a2"
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/MOBILE_EDITOR_VERIFICATION_012.md",
+      "sha256": "c00fc8bb737328f69e555288fcea4960334a1016ce1530d28c5bc27165f8b86e"
+    }
+  ],
+  "privateEvidenceCompared": [
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/fetch.json",
+      "sha256": "69009f04d21ffb1955a983c5102798ce6ee22f2a78270ae6fd5f289747ba4d32"
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/extraction.json",
+      "sha256": "5e5511c198277a75441a6f650a2ac5e9219cf8379b168bd2d964ee649205f75f"
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/media.json",
+      "sha256": "961fa0a40805f659eb2b4003e96757dac115a5e6c3f6887752ced9b3c06de791"
+    }
+  ],
+  "pages": [
+    {
+      "name": "godot-android-editor",
+      "requestUrl": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "canonicalUrl": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "versionEvidence": "4.5 in publisher title",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-editor.source.html",
+      "sourceHash": "8055df7f35a48fa1256dd0e100889e4769901432371e558541b7f9de2c3692a9",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-editor.body.html",
+      "bodyHash": "9af0fa8d40b04e11b0cf1dd65854ea1777189fa8c34f2182ccc14f11020e993d",
+      "verifier": "/root/build_editor_platform_research",
+      "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+      "sourceExtractionByteMatch": true,
+      "headingCountCompared": 5,
+      "sections": [
+        {
+          "ordinalZeroBased": 0,
+          "tag": "h1",
+          "id": null,
+          "heading": "Using the Android editor",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 1,
+          "tag": "h2",
+          "id": null,
+          "heading": "Android devices support",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 2,
+          "tag": "h2",
+          "id": null,
+          "heading": "Runtime Permissions",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 3,
+          "tag": "h2",
+          "id": null,
+          "heading": "Tips & Tricks",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 4,
+          "tag": "h2",
+          "id": null,
+          "heading": "Limitations & known issues",
+          "wholeTextCompared": true
+        }
+      ],
+      "codeBlocks": [],
+      "tables": [],
+      "mediaInventory": {
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "iframe": 0,
+        "audio": 0,
+        "object": 0,
+        "canvas": 0
+      },
+      "scopeFinding": "Android 5+/OpenGL3 조건, early access, project 생성·편집·export, GDExtension Android 바이너리, PiP 입력 없음, 파일/설치/오디오 권한과 Gradle/C#/외부 editor·Forward+·휴대폰 UX·activity 복원 제한이 본문과 맞아요.",
+      "fullPolicyOrClassRead": null,
+      "wholeTechnicalBodyCompared": true,
+      "scopeSemanticComparisonPassed": true,
+      "strictVerified": false,
+      "ledgerPromotion": false,
+      "formalApiUnitDenominator": null,
+      "wholeFormalApiUnitsVerified": 0
+    },
+    {
+      "name": "godot-android-compile",
+      "requestUrl": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "canonicalUrl": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "versionEvidence": "4.5 in publisher title",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-compile.source.html",
+      "sourceHash": "7c2c7c4bf50d8921783e43ed8f5d584f6847a2145ae8ee9696b2fe3f783c88b0",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-compile.body.html",
+      "bodyHash": "6ea560213708c5287e709d3aa0c41ffd262b0b4f8c8bc5ac84f8c1fcb5415c8b",
+      "verifier": "/root/build_editor_platform_research",
+      "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+      "sourceExtractionByteMatch": true,
+      "headingCountCompared": 16,
+      "sections": [
+        {
+          "ordinalZeroBased": 0,
+          "tag": "h1",
+          "id": null,
+          "heading": "Compiling for Android",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 1,
+          "tag": "h2",
+          "id": null,
+          "heading": "Note",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 2,
+          "tag": "h2",
+          "id": null,
+          "heading": "Requirements",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 3,
+          "tag": "h2",
+          "id": null,
+          "heading": "Setting up the buildsystem",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 4,
+          "tag": "h2",
+          "id": null,
+          "heading": "Building the export templates",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 5,
+          "tag": "h3",
+          "id": null,
+          "heading": "Adding support for x86 devices",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 6,
+          "tag": "h3",
+          "id": null,
+          "heading": "Cleaning the generated export templates",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 7,
+          "tag": "h2",
+          "id": null,
+          "heading": "Using the export templates",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 8,
+          "tag": "h3",
+          "id": null,
+          "heading": "Installing the templates",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 9,
+          "tag": "h2",
+          "id": null,
+          "heading": "Building the Godot editor",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 10,
+          "tag": "h2",
+          "id": null,
+          "heading": "Removing the Editor binaries",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 11,
+          "tag": "h2",
+          "id": null,
+          "heading": "Installing the Godot editor APK",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 12,
+          "tag": "h2",
+          "id": null,
+          "heading": "Troubleshooting",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 13,
+          "tag": "h3",
+          "id": null,
+          "heading": "Platform doesn't appear in SCons",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 14,
+          "tag": "h3",
+          "id": null,
+          "heading": "Application not installed",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 15,
+          "tag": "h3",
+          "id": null,
+          "heading": "Application exits immediately",
+          "wholeTextCompared": true
+        }
+      ],
+      "codeBlocks": [
+        {
+          "ordinalZeroBased": 0,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "86a507394bdec3f3f7cf094146469919e35e47697f98d214c1320cc7facd8330",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 1,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4b44e4c51479128b090e4e4b545f38d71c974b76f4c3893195850d91ddf7ffa4",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 2,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "905d1be5f57ea28bec936bb83ca0f1f3a22bd04d18d796c632e4eb0e0a748382",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 3,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "d93c4f6dd0e1d2692bfef30706b86e9b3c9c3ebca9cdca620072ef72b2d83773",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 4,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "27a5c9dc888bac65f84f64729b0a920d48318fdcc3e256adb498b94874d8989b",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 5,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "1fab0530987b6cc71d2a5286ebc52be1248199943f9ada4b28fcf53b909722dd",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 6,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "9a7b1e74a8869e323a92689e09c84a75aa379d0b82a4f3f01da422d0d8093239",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 7,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "841fcb56ce7c3f97d90ff7892713c5e38cd338c041e197cc8c31da8389254612",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 8,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "55d234b9a09357d731e90db5a4117fb6f59cf38f5f94854e7852d58163a582fd",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 9,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "c90836bd2dfb6b253dc101613f36ab50d0edc6bdd0e2476d52acd3e697e6989a",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 10,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "ce2c718121c9d76608e2895c887b9b99fe466609448892d3f031edf12e072fbd",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        }
+      ],
+      "tables": [],
+      "mediaInventory": {
+        "img": 1,
+        "svg": 0,
+        "video": 0,
+        "iframe": 0,
+        "audio": 0,
+        "object": 0,
+        "canvas": 0
+      },
+      "scopeFinding": "호스트 Windows/Linux/macOS, Python3.8+/SCons4+/JDK17, SDK35/NDK28.1.13356709 setup 명령, release/debug/dev template과 target=editor의 별도 산출물·마지막 ABI의 generate_android_binaries·동일 version/commit을 확인했어요. 명령과 debug-symbol·ADB 설치·logcat 예제를 전부 읽었어요. JDK8 jarsigner는 별도 troubleshooting 문구로 남아 있어요.",
+      "fullPolicyOrClassRead": null,
+      "wholeTechnicalBodyCompared": false,
+      "scopeSemanticComparisonPassed": true,
+      "strictVerified": false,
+      "ledgerPromotion": false,
+      "formalApiUnitDenominator": null,
+      "wholeFormalApiUnitsVerified": 0,
+      "unreadMedia": {
+        "imageInstances": 1,
+        "pixelsReviewed": false,
+        "independentRetryHTTPStatus": 403,
+        "retryEvidence": "native/build/reference-corpus/mobile-editor-batch-012/verifier-media-retry.json"
+      }
+    },
+    {
+      "name": "android-abis",
+      "requestUrl": "https://developer.android.com/ndk/guides/abis",
+      "canonicalUrl": "https://developer.android.com/ndk/guides/abis",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.source.html",
+      "sourceHash": "976d7327e5a6cdba2cda94e81332667c6d64661444630848675c443a2f1c8233",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.body.html",
+      "bodyHash": "7fed84eafbd81e68edd056ba954b494be97f061db751ac92ff9e8ad00848c924",
+      "verifier": "/root/build_editor_platform_research",
+      "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+      "sourceExtractionByteMatch": true,
+      "headingCountCompared": 21,
+      "sections": [
+        {
+          "ordinalZeroBased": 0,
+          "tag": "h2",
+          "id": "sa",
+          "heading": "Supported ABIs",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 1,
+          "tag": "h3",
+          "id": "v7a",
+          "heading": "armeabi-v7a",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 2,
+          "tag": "h3",
+          "id": "arm64-v8a",
+          "heading": "arm64-v8a",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 3,
+          "tag": "h3",
+          "id": "x86",
+          "heading": "x86",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 4,
+          "tag": "h3",
+          "id": "86-64",
+          "heading": "x86_64",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 5,
+          "tag": "h2",
+          "id": "gc",
+          "heading": "Generate code for a specific ABI",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 6,
+          "tag": "h3",
+          "id": "gradle",
+          "heading": "Gradle",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 7,
+          "tag": "h3",
+          "id": "ndk-build",
+          "heading": "ndk-build",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 8,
+          "tag": "h3",
+          "id": "cmake",
+          "heading": "CMake",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 9,
+          "tag": "h2",
+          "id": "am",
+          "heading": "ABI management on the Android platform",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 10,
+          "tag": "h3",
+          "id": "native-code-in-app-packages",
+          "heading": "Native code in app packages",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 11,
+          "tag": "h3",
+          "id": "android-platform-abi-support",
+          "heading": "Android platform ABI support",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 12,
+          "tag": "h3",
+          "id": "aen",
+          "heading": "Automatic extraction of native code at install time",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 13,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 14,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 15,
+          "tag": "h2",
+          "id": "armv9_enabling_pac_and_bti_for_cc",
+          "heading": "ARMv9: Enabling PAC and BTI for C/C++",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 16,
+          "tag": "h3",
+          "id": "build_changes",
+          "heading": "Build changes",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 17,
+          "tag": "h3",
+          "id": "ndk-build_1",
+          "heading": "ndk-build",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 18,
+          "tag": "h3",
+          "id": "cmake_1",
+          "heading": "CMake",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 19,
+          "tag": "h3",
+          "id": "other-build-systems",
+          "heading": "Other build systems",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 20,
+          "tag": "h3",
+          "id": "pac-bti-troubleshooting",
+          "heading": "Troubleshooting",
+          "wholeTextCompared": true
+        }
+      ],
+      "codeBlocks": [
+        {
+          "ordinalZeroBased": 0,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "d4f6eea2a472194c90cd76281a7b3d70c5da29cd09dff161c5974e73784d4637",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 1,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "fb955276fc316c88902fe27fd1959eca1481feca3a54619abf33b89a79f8defe",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 2,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "0b8b20eb2c1860aca728535d5aeb6685f5c97e66c7380f3468ccec89d1264337",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 3,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "f798c1bbfcd4b0eac8a279618e0bbf5806ae8ac8bee64164af9700df5e579b9c",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 4,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "cd1c626ba22f3527f6940c2f1f9259a933d7c7960bda37a4103350b6ddcbf347",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 5,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "78d0a0762cbd2f4d73703fcc27c140b22579e415f7eb9170f47c59235b6085e0",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 6,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "a4298b9151936327d5d9df2833101a1c3f7d3be3c27dd84bf9538e37ee1eb886",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 7,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "eabcd2f7f4b024c064dd0e2496df392cb725b0eacb252bca42d0d8736dadb5f9",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 8,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "21e1933e0f58b508790e7c720573bb41ce0244b1174572e8f05913ab6bd830d7",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 9,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "29ec2c31406e24e3c5659164aa883a2db0b3e77aab31d3c7a669d9c69f521bd2",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 10,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4ff92e6fbbf607b162e29bff9ef8dbded5672e0fe33b0062e41889ed5b368101",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        }
+      ],
+      "tables": [
+        {
+          "rowsIncludingHeader": 5,
+          "cells": 15,
+          "sha256": "4ce0f9dc221d4e193b8b3ed9da67b7af8a4dd805df867242506f05c63d181fa9",
+          "hashMethod": "UTF8 compact JSON ordered normalized cell texts",
+          "wholeCellsCompared": true
+        }
+      ],
+      "mediaInventory": {
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "iframe": 0,
+        "audio": 0,
+        "object": 0,
+        "canvas": 0
+      },
+      "scopeFinding": "little-endian·ELF·C++ calling/name-mangling·ABI별 long double, 네 ABI 표, Gradle/ndk-build 기본과 CMake 단일 ABI, fat APK/split/bundle, lib/<abi>/lib<name>.so와 primary/secondary 추출을 확인했어요. 설치와 runtime crash를 구분하고 ARM64 PAC/BTI의 구형 CPU 실행·혼합 object/구형 OpenSSL/DRM 문제를 읽었어요.",
+      "fullPolicyOrClassRead": null,
+      "wholeTechnicalBodyCompared": true,
+      "scopeSemanticComparisonPassed": true,
+      "strictVerified": false,
+      "ledgerPromotion": false,
+      "formalApiUnitDenominator": null,
+      "wholeFormalApiUnitsVerified": 0,
+      "codeLanguageTabsCompared": [
+        "Kotlin",
+        "Java"
+      ],
+      "publisherLastUpdatedVerified": "2026-05-15 UTC"
+    },
+    {
+      "name": "android-documents",
+      "requestUrl": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "canonicalUrl": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/android-documents.source.html",
+      "sourceHash": "2605d52566027924b4645b53cd978b966a77e0bc9feb167376001f83d0cd5021",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/android-documents.body.html",
+      "bodyHash": "4fa5edd56a7b3300206effaba9a70be1e2456a3a2983664999c2388ee306f456",
+      "verifier": "/root/build_editor_platform_research",
+      "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+      "sourceExtractionByteMatch": true,
+      "headingCountCompared": 44,
+      "sections": [
+        {
+          "ordinalZeroBased": 0,
+          "tag": "h2",
+          "id": "use-cases",
+          "heading": "Use cases for accessing documents and other files",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 1,
+          "tag": "h2",
+          "id": "create-file",
+          "heading": "Create a new file",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 2,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 3,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 4,
+          "tag": "h2",
+          "id": "open-file",
+          "heading": "Open a file",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 5,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 6,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 7,
+          "tag": "h3",
+          "id": "document-access-restrictions",
+          "heading": "Access restrictions",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 8,
+          "tag": "h2",
+          "id": "grant-access-directory",
+          "heading": "Grant access to a directory's contents",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 9,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 10,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 11,
+          "tag": "h3",
+          "id": "document-tree-access-restrictions",
+          "heading": "Access restrictions",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 12,
+          "tag": "h2",
+          "id": "perform-operations",
+          "heading": "Perform operations on chosen location",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 13,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 14,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 15,
+          "tag": "h3",
+          "id": "determine-supported-operations",
+          "heading": "Determine operations that a provider supports",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 16,
+          "tag": "h3",
+          "id": "persist-permissions",
+          "heading": "Persist permissions",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 17,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 18,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 19,
+          "tag": "h3",
+          "id": "examine-metadata",
+          "heading": "Examine document metadata",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 20,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 21,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 22,
+          "tag": "h3",
+          "id": "open",
+          "heading": "Open a document",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 23,
+          "tag": "h4",
+          "id": "bitmap",
+          "heading": "Bitmap",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 24,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 25,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 26,
+          "tag": "h4",
+          "id": "input_stream",
+          "heading": "Input stream",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 27,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 28,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 29,
+          "tag": "h3",
+          "id": "edit",
+          "heading": "Edit a document",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 30,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 31,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 32,
+          "tag": "h3",
+          "id": "delete",
+          "heading": "Delete a document",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 33,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 34,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 35,
+          "tag": "h3",
+          "id": "retrieve-equivalent-media-uri",
+          "heading": "Retrieve an equivalent media URI",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 36,
+          "tag": "h3",
+          "id": "open-virtual-file",
+          "heading": "Open a virtual file",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 37,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 38,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 39,
+          "tag": "h3",
+          "id": "kotlin",
+          "heading": "Kotlin",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 40,
+          "tag": "h3",
+          "id": "java",
+          "heading": "Java",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 41,
+          "tag": "h2",
+          "id": "additional-resources",
+          "heading": "Additional resources",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 42,
+          "tag": "h3",
+          "id": "additional-resources-samples",
+          "heading": "Samples",
+          "wholeTextCompared": true
+        },
+        {
+          "ordinalZeroBased": 43,
+          "tag": "h3",
+          "id": "additional-resources-videos",
+          "heading": "Videos",
+          "wholeTextCompared": true
+        }
+      ],
+      "codeBlocks": [
+        {
+          "ordinalZeroBased": 0,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "b8a75c09fc99eaf69200189c9ef96285c8dd148652be0bd4142ecd6d3f46c26a",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 1,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "3a4e07a1d3c8adf2e86f3c2160358ed72325711165dfbd4bc0334537b9f15e2e",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 2,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "cc68014e06a287643cfac8f45d25f4a3df9e872ed4262380726553161656f34a",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 3,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "5e0888eb26eeebd114704b3899d17825fd910d168321f5671bd04d8a76a9a330",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 4,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4f8fe6edad715061ebd426ddc05bbc0f5b2f53360992c388e3b2baafdcc20011",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 5,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4751e740d09e27505fb939f1a2805898f94deba42b1aea8b9da64590fe73eb59",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 6,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "cd4ad14456787ba2a2ae2100b38f9e46d7ed67f8f9b246cde564ada47e4e1630",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 7,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "82d87621bc85dab512a3735b932dced58fd1179923f27db3c82c26e646931935",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 8,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "73b964405c60b2c31efe87d3a0f7ad412b9b409081465e284f6b737ff3996789",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 9,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "85a2cad61ef118ce2f2c5c253d5b5a6a4e9e23d18973ef3cbe99ed71fa643cdf",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 10,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "1788aae0931d2067e15d8b6b63e0e7d232e90ff2b27999e8d1757797e349c4c9",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 11,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "f5560527f082552e3bb35c78ee75e543c10e878bd1220a8c1abe8feae7112a15",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 12,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "a88812e8073650e942e42fb7d4ef57c9a528e0e3d7379d577878aa3c3e73e43c",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 13,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "a7aea159906dd863308fe51c0580461eb459f48f22cd3022a4b1d59d731150e8",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 14,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "fc599c072b53f893c558c72455ebd48b6e81358172a9e2650222131c84979872",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 15,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "e9829355a1bfd6f6bd87922ae4d6022c390004837ead0cf0d268af5434000768",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 16,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4d653682846955800d31603819ad9fca47940f56ea6242f00e483596657c40bf",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 17,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "090178ec8aaea0a833e006257e1a6dc2f39652e2ae3940970f7808479b2867a0",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 18,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "17dea7e9d7c224c89fab46791e4f11ced97ccf1f4e414cb4a12f9a9f9caf08f6",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 19,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "879ae5ad63d817fd341d1dddebb9447ff26655ac8153ba9fc4e4d9eb732707e9",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 20,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "814ce4e8c52a13aca66856fa6de8c6acc3c304b38491b13493109a10514f9d67",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 21,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "4a9c53dc81426bf509c51064d30653c80d3ed303c91fc79cb0dff2ad23598247",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 22,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "cc2adbec4560a699d08ab7ec6a976ce20b74690cb1b638851ed9f946d517bb7c",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        },
+        {
+          "ordinalZeroBased": 23,
+          "fullDisplayedExampleCompared": true,
+          "sha256": "c70fa92265b681c37f0179aae6fa1916764267aa6759e02a82c70d58f89163bf",
+          "hashMethod": "UTF8 complete pre text without additional separators; syntax whitespace preserved"
+        }
+      ],
+      "tables": [],
+      "mediaInventory": {
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "iframe": 0,
+        "audio": 0,
+        "object": 0,
+        "canvas": 0
+      },
+      "scopeFinding": "SAF API19+/tree API21+, URI picker와 생성/열기/tree, API30의 경로 제한, provider flags, read/write grant, metadata 표시명/unknown size, bitmap background thread, stream/edit/delete/virtual MIME·getMediaUri 권한 비확장과 양 언어 예제를 확인했어요. persist flags·null cursor/descriptor/close·Android7.0/API25는 불일치/미확정으로 유지하는 것이 맞아요.",
+      "fullPolicyOrClassRead": null,
+      "wholeTechnicalBodyCompared": true,
+      "scopeSemanticComparisonPassed": true,
+      "strictVerified": false,
+      "ledgerPromotion": false,
+      "formalApiUnitDenominator": null,
+      "wholeFormalApiUnitsVerified": 0,
+      "codeLanguageTabsCompared": [
+        "Kotlin",
+        "Java"
+      ],
+      "publisherLastUpdatedVerified": "2026-10-01 UTC"
+    },
+    {
+      "name": "apple-guidelines",
+      "requestUrl": "https://developer.apple.com/app-store/review/guidelines/",
+      "canonicalUrl": "https://developer.apple.com/app-store/review/guidelines/",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/apple-guidelines.source.html",
+      "sourceHash": "32be6bc750cd9389732c0ed7bbbba39ece454ad5d53d8b0b4012254d811459d7",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/apple-guidelines.body.html",
+      "bodyHash": "a2e9a1db25d151fb50a6b5f925e34490038528722f368f70f7b4d81cf5819eb3",
+      "verifier": "/root/build_editor_platform_research",
+      "verifiedAt": "2026-10-04T05:50:10.972771+00:00",
+      "sourceExtractionByteMatch": true,
+      "headingCountCompared": 0,
+      "sections": [],
+      "codeBlocks": [],
+      "tables": [],
+      "mediaInventory": {
+        "img": 13,
+        "svg": 0,
+        "video": 0,
+        "iframe": 0,
+        "audio": 0,
+        "object": 0,
+        "canvas": 0
+      },
+      "scopeFinding": "2.5.1~2.5.18 텍스트 및 2.5.11(i)-(iii), 2.5.16(a)만 확인했어요. public API, bundle/container 및 code의 download/install/execute 경계·제한된 교육 예외, background purpose·IPv6·WebKit/entitlement·녹화 동의·Files/iCloud·다른 조항을 읽었어요. 전체 policy나 iOS 에디터 승인/불가능 판단으로 확대하지 않은 것이 맞아요.",
+      "fullPolicyOrClassRead": false,
+      "wholeTechnicalBodyCompared": false,
+      "scopeSemanticComparisonPassed": true,
+      "strictVerified": false,
+      "ledgerPromotion": false,
+      "formalApiUnitDenominator": null,
+      "wholeFormalApiUnitsVerified": 0,
+      "numberedClauseRange": "2.5.1-2.5.18 plus subclauses",
+      "unreadMedia": {
+        "badgeInstances": 13,
+        "uniqueBadgeFiles": 1,
+        "altRead": "ASR & NR",
+        "pixelsReviewed": false,
+        "applicabilityLegendOutsideScope": true
+      }
+    }
+  ],
+  "supplementaryPartialReference": {
+    "url": "https://developer.android.com/reference/android/os/Build.VERSION_CODES#N",
+    "finalUrl": "https://developer.android.com/reference/android/os/Build.VERSION_CODES#N",
+    "httpStatus": 200,
+    "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/verifier-version-codes.source.html",
+    "sourceHash": "20a01a90f1309f80cd774a2059f31874d81a039b64f0ead92a29d7f3be034021",
+    "retrievedAt": "2026-10-04T05:43:29.622004+00:00",
+    "readScope": "N heading/signature/added-level/release-label/value only; N behavior list, all other constants and linked APIs not analyzed",
+    "wholeBodyReviewed": false,
+    "owner": "android.os.Build.VERSION_CODES",
+    "constant": "N",
+    "declaration": "public static final int N",
+    "addedApiLevel": 24,
+    "releaseLabel": "Android 7.0",
+    "constantValue": 24,
+    "wholeApiUnitReviewed": false,
+    "wholePageReviewed": false,
+    "metadataFile": "native/build/reference-corpus/mobile-editor-batch-012/verifier-N-metadata.json",
+    "metadataHash": "fa7cfa5f2d2b0996f397f310e5bc397598f2eb1324cc855916c365514588c2e1"
+  },
+  "independentMediaRetry": {
+    "file": "native/build/reference-corpus/mobile-editor-batch-012/verifier-media-retry.json",
+    "sha256": "93b283ad2b660a50a442a3bd645c3ce4f96e69fce889753e9875a53b9d440750",
+    "httpStatus": 403,
+    "pixelsReviewed": false
+  },
+  "findings": [
+    {
+      "id": "MEV012-01",
+      "type": "source_mismatch_retained",
+      "source": "android-documents#persist-permissions",
+      "finding": "Kotlin OR versus Java returned-grant mask; complete API/exception contract not verified"
+    },
+    {
+      "id": "MEV012-02",
+      "type": "source_mismatch_confirmed_with_partial_official_reference",
+      "source": "android-documents#open-virtual-file",
+      "finding": "Android7.0/API25 conflicts with Build.VERSION_CODES.N metadata Android7.0/API24; exact virtual-file contract remains queued"
+    },
+    {
+      "id": "MEV012-03",
+      "type": "source_context_difference_retained",
+      "source": "godot-android-compile Requirements/Application not installed",
+      "finding": "JDK17 build requirement versus JDK8 jarsigner troubleshooting; purposes differ, no arbitrary single-version resolution"
+    },
+    {
+      "id": "MEV012-04",
+      "type": "author_wording_corrected_and_recompared",
+      "source": "MOBILE_EDITOR_BODY_012.md editor binary/template paragraph",
+      "finding": "Author replaced inferred module inclusion requirement with documented Advanced Options/custom-template configuration path; updated paragraph directly reread and matched",
+      "resolved": true
+    }
+  ],
+  "fullCorpusDenominator": null,
+  "fullApiDenominator": null,
+  "discoveryClosed": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "engineTestsExecuted": false,
+  "ledgerPromoted": false,
+  "originalBodiesOrExamplesPublic": false,
+  "authorCorrectionHistory": {
+    "previousMDHash": "9b6e157a788accc5e899fdccd8f9f6fd38f3ed0b5e93d7166c68f65fb9394cd5",
+    "previousJSONHash": "d8bf69c89f24229323759d203234b4fb1bef2045270db8424c3ecdfb2576f979",
+    "correctedMDHash": "7b9d20c25b0c2188c9e26346b09714b9aca4e29d451ccbc81b01739250f52121",
+    "correctedJSONHash": "a7ff0bd3c954570b482a099785ce9c453f34c783963dc05869b734eb5f34b5a2",
+    "correction": "custom module/C++ direct source fact versus architectural inference",
+    "correctedVersionReread": true
+  }
+}

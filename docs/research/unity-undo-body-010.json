@@ -1,0 +1,3681 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-undo-010",
+  "phase": "research_only",
+  "reader": "root",
+  "date": "2026-10-04",
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "counts": {
+    "allReread": {
+      "pages": 47,
+      "headings": 154,
+      "displayedDeclarationBlocks": 46,
+      "tables": 22,
+      "tableRowsIncludingHeaders": 95,
+      "tableCells": 190,
+      "wholePreExampleBlocksRead": 14,
+      "inlineCodeFragmentsRead": 24,
+      "emptySignatureSlots": 4,
+      "inlineVariableNameMentionsRead": 6
+    },
+    "newBodies": {
+      "pages": 40,
+      "headings": 119,
+      "displayedDeclarationBlocks": 37,
+      "tables": 14,
+      "tableRowsIncludingHeaders": 73,
+      "tableCells": 146,
+      "wholePreExampleBlocksRead": 10,
+      "inlineCodeFragmentsRead": 24,
+      "emptySignatureSlots": 4,
+      "inlineVariableNameMentionsRead": 6
+    },
+    "previouslyAnalyzedReread": {
+      "pages": 7,
+      "headings": 35,
+      "displayedDeclarationBlocks": 9,
+      "tables": 8,
+      "tableRowsIncludingHeaders": 22,
+      "tableCells": 44,
+      "wholePreExampleBlocksRead": 4,
+      "inlineCodeFragmentsRead": 0,
+      "emptySignatureSlots": 0,
+      "inlineVariableNameMentionsRead": 0
+    },
+    "directUndoOwnerMemberLinks": 33,
+    "ancillaryOwnerBodies": 3,
+    "ancillaryFieldBodies": 10,
+    "ledgerPromotions": 0,
+    "independentlyVerified": 0
+  },
+  "analysisReport": "docs/research/UNITY_UNDO_BODY_010.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_UNDO_BODY_010.md",
+      "sha256": "0f76125216a2bea7409f25ab564fcf11f44c6747a53bd1aa6ed4f3137e7f6f1d"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/root-extraction.json",
+      "sha256": "eb7ff83427bb4e7d75da572e352c1d18f5c2a941fa95230400fc188055cf5907"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/extraction.json",
+      "sha256": "d2b28f060492ef45a8b601b6003090193317ba968be2a65e48543d93d65ab24e"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/ancillary-extraction.json",
+      "sha256": "11c14c158b47ba94259126f6a2a7c37ebb1798264fe54aac895e98b0ff17725e"
+    }
+  ],
+  "ownerInventoryClosure": "Only the 33 direct member links displayed by this pinned Undo owner snapshot were followed. Namespace/inherited/native implementation/linked API full coverage remains open.",
+  "pages": [
+    {
+      "file": "Undo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.html",
+      "sourceHash": "5c4978a116930d119041fee05440bd2869304677f8a5c3f8f7b8ea94940fe7ca",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.html.body.html",
+      "bodyHash": "572d684d770b2dc9fe8e2c2e9f2482a3fed0969ea6cb03b70afc357dd3401776",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Static Properties"
+        },
+        {
+          "tag": "h3",
+          "text": "Static Methods"
+        },
+        {
+          "tag": "h3",
+          "text": "Delegates"
+        }
+      ],
+      "declarations": [],
+      "displayedDeclarationBlocks": 0,
+      "formalTypeDeclarationComplete": false,
+      "emptySignatureSlots": 1,
+      "tablesRead": 3,
+      "tableRowsIncludingHeaders": 36,
+      "tableCells": 72,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 7,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "UnityEditor class owner; 속성 delta와 객체 snapshot, event group과 action 우선순위 기반 이름, 종류별 전용 기록 API를 설명한다. 직접 링크 표 33개만 해당 snapshot의 owner inventory이며 상속/미노출 멤버의 전체 분모가 아니다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.IncrementCurrentGroup.html",
+          "text": "Undo.IncrementCurrentGroup"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "Undo-isProcessing.html",
+          "text": "isProcessing"
+        },
+        {
+          "href": "Undo-postprocessModifications.html",
+          "text": "postprocessModifications"
+        },
+        {
+          "href": "Undo-undoRedoEvent.html",
+          "text": "undoRedoEvent"
+        },
+        {
+          "href": "Undo-undoRedoPerformed.html",
+          "text": "undoRedoPerformed"
+        },
+        {
+          "href": "Undo-willFlushUndoRecord.html",
+          "text": "willFlushUndoRecord"
+        },
+        {
+          "href": "Undo.AddComponent.html",
+          "text": "AddComponent"
+        },
+        {
+          "href": "Undo.ClearAll.html",
+          "text": "ClearAll"
+        },
+        {
+          "href": "Undo.ClearUndo.html",
+          "text": "ClearUndo"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "CollapseUndoOperations"
+        },
+        {
+          "href": "Undo.DestroyObjectImmediate.html",
+          "text": "DestroyObjectImmediate"
+        },
+        {
+          "href": "Undo.FlushUndoRecordObjects.html",
+          "text": "FlushUndoRecordObjects"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "GetCurrentGroup"
+        },
+        {
+          "href": "Undo.GetCurrentGroupName.html",
+          "text": "GetCurrentGroupName"
+        },
+        {
+          "href": "Undo.IncrementCurrentGroup.html",
+          "text": "IncrementCurrentGroup"
+        },
+        {
+          "href": "Undo.MoveGameObjectToScene.html",
+          "text": "MoveGameObjectToScene"
+        },
+        {
+          "href": "Undo.PerformRedo.html",
+          "text": "PerformRedo"
+        },
+        {
+          "href": "Undo.PerformUndo.html",
+          "text": "PerformUndo"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "RecordObject"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "RecordObjects"
+        },
+        {
+          "href": "Undo.RegisterChildrenOrderUndo.html",
+          "text": "RegisterChildrenOrderUndo"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.RegisterCreatedObjectUndo.html",
+          "text": "RegisterCreatedObjectUndo"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "Undo.RegisterImporterUndo.html",
+          "text": "RegisterImporterUndo"
+        },
+        {
+          "href": "Undo.RevertAllDownToGroup.html",
+          "text": "RevertAllDownToGroup"
+        },
+        {
+          "href": "Undo.RevertAllInCurrentGroup.html",
+          "text": "RevertAllInCurrentGroup"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "SetCurrentGroupName"
+        },
+        {
+          "href": "Undo.SetSiblingIndex.html",
+          "text": "SetSiblingIndex"
+        },
+        {
+          "href": "Undo.SetTransformParent.html",
+          "text": "SetTransformParent"
+        },
+        {
+          "href": "Undo.PostprocessModifications.html",
+          "text": "PostprocessModifications"
+        },
+        {
+          "href": "Undo.UndoRedoCallback.html",
+          "text": "UndoRedoCallback"
+        },
+        {
+          "href": "Undo.UndoRedoEventCallback.html",
+          "text": "UndoRedoEventCallback"
+        },
+        {
+          "href": "Undo.WillFlushUndoRecord.html",
+          "text": "WillFlushUndoRecord"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo-isProcessing.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-isProcessing.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-isProcessing.html",
+      "sourceHash": "1e8324fbf286b1da1b2e37449984262b028970c8e7de878f59b46099206ecbd3",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-isProcessing.html.body.html",
+      "bodyHash": "5428a61d9757ed221a315cceb785ea0189c3b493b5631116f443be3e5d53bf1d",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .isProcessing"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static bool isProcessing ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 3,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "현재 Undo/Redo 처리 중인지 표시해요. true일 때 생성 등록을 금지한다는 별도 생성 API의 조건과 연결해요. 다른 모든 mutation 금지를 추정하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.RegisterCreatedObjectUndo.html",
+          "text": "RegisterCreatedObjectUndo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo-postprocessModifications.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-postprocessModifications.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-postprocessModifications.html",
+      "sourceHash": "99d5e12c5703067fb7c9897ec80df87ca067ec88052013a6683ad05626c1e7ee",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-postprocessModifications.html.body.html",
+      "bodyHash": "c9ade358fcfaa18ce120dbefee3328073d0edb1b7ece021585215903c00d2778",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .postprocessModifications"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Undo.PostprocessModifications postprocessModifications ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "새 속성 modification 집합 callback이에요. 예제는 등록·해제를 하고 입력 배열을 그대로 반환해요. 교체 배열의 길이/null 계약은 미기재예요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.PostprocessModifications.html",
+          "text": "Undo.PostprocessModifications"
+        },
+        {
+          "href": "Undo.PostprocessModifications.html",
+          "text": "PostprocessModifications"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Undo-postprocessModifications.html",
+          "text": "Undo.postprocessModifications"
+        },
+        {
+          "href": "Undo-postprocessModifications.html",
+          "text": "Undo.postprocessModifications"
+        },
+        {
+          "href": "UndoPropertyModification.html",
+          "text": "UndoPropertyModification"
+        },
+        {
+          "href": "UndoPropertyModification.html",
+          "text": "UndoPropertyModification"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo-undoRedoEvent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-undoRedoEvent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-undoRedoEvent.html",
+      "sourceHash": "ba01ef6aca5b29d0d4f3e2e5fe14f278281f589a31f27852affbb0d1db77de83",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-undoRedoEvent.html.body.html",
+      "bodyHash": "ca3dd0f6b61df88eea5536c3e74e4bde31a7ab0e4a3184205de2bdbce8ba402a",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .undoRedoEvent"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Undo.UndoRedoEventCallback undoRedoEvent ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Undo/Redo 후 callback이에요. 예제는 `in UndoRedoInfo`를 받고 등록·해제해요. 아래 delegate 선언 오류를 별도로 남겨요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.UndoRedoEventCallback.html",
+          "text": "Undo.UndoRedoEventCallback"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Undo-undoRedoEvent.html",
+          "text": "Undo.undoRedoEvent"
+        },
+        {
+          "href": "Undo-undoRedoEvent.html",
+          "text": "Undo.undoRedoEvent"
+        },
+        {
+          "href": "UndoRedoInfo.html",
+          "text": "UndoRedoInfo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo-undoRedoPerformed.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-undoRedoPerformed.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-undoRedoPerformed.html",
+      "sourceHash": "215979215b764747bfea150cf80664394bd60d10f8268d753d53314b52724868",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-undoRedoPerformed.html.body.html",
+      "bodyHash": "c39539b3697b7d8bb743ca2fea7783ab971c70361d73bec5953ec9e702dd21c1",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .undoRedoPerformed"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Undo.UndoRedoCallback undoRedoPerformed ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Undo/Redo 실행 뒤 통지해요. 방향을 구분하려면 undoRedoEvent를 사용하라고 안내해요. 예제에는 등록 뒤 해제가 없어 reload/구독 소유권 검토가 필요해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.UndoRedoCallback.html",
+          "text": "Undo.UndoRedoCallback"
+        },
+        {
+          "href": "Undo-undoRedoEvent.html",
+          "text": "undoRedoEvent"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Undo-undoRedoPerformed.html",
+          "text": "Undo.undoRedoPerformed"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo-willFlushUndoRecord.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-willFlushUndoRecord.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-willFlushUndoRecord.html",
+      "sourceHash": "cf7bc33eacc41650106fdd9a1eb756d83855fc18c7eb62820b5af326d107492b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-willFlushUndoRecord.html.body.html",
+      "bodyHash": "bb8a05e7921c69502e956a09f5be91172701b1965576fd545d87a15034d96198",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .willFlushUndoRecord"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Undo.WillFlushUndoRecord willFlushUndoRecord ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "RecordObject 기록을 flush하기 전에 호출해요. 디스크 저장 callback이라는 근거는 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.WillFlushUndoRecord.html",
+          "text": "Undo.WillFlushUndoRecord"
+        },
+        {
+          "href": "Undo.FlushUndoRecordObjects.html",
+          "text": "FlushUndoRecordObjects"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.AddComponent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.AddComponent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.AddComponent.html",
+      "sourceHash": "36f948c6318d5ece5d2e6101e2ba10b875bb6ab3d3daeff95b19c0d49e92c3e1",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.AddComponent.html.body.html",
+      "bodyHash": "c4c59b1d35bec87c79744973eb78260840341cef41837d52b06b561122432a6c",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .AddComponent"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static Component AddComponent ( GameObject gameObject ,\r\nType type );",
+        "public static T AddComponent ( GameObject gameObject );"
+      ],
+      "displayedDeclarationBlocks": 2,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 2,
+      "tableRowsIncludingHeaders": 5,
+      "tableCells": 10,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "타입 인수와 generic 두 표시 선언이에요. 추가된 컴포넌트를 반환하고 Undo는 해당 컴포넌트를 파괴해요. generic 제약/실패는 미기재예요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Component.html",
+          "text": "Component"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.ClearAll.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.ClearAll.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.ClearAll.html",
+      "sourceHash": "cac66a90e34a12b17d71946ac0219864b303b24a4423f7bb2046d5e03f9f81f7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.ClearAll.html.body.html",
+      "bodyHash": "5fe3306923708a9089da31c1d047f1b7a57586f0c78bf5a6022c3fe5564789bc",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .ClearAll"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void ClearAll ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Undo와 Redo 기록 양쪽을 지워요. 객체 하나나 현재 탭의 기록만 지우는 API로 해석하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.ClearUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.ClearUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.ClearUndo.html",
+      "sourceHash": "5dc8eaf4ecd3a9c0e5fb782186b7d5e4b1e6828c01ddcbe1ccd28a3c8e1733b1",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.ClearUndo.html.body.html",
+      "bodyHash": "52f372eb0ce26b14a72b824bf5ece3fe8129558f78ef6e84856dd8feaf865961",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .ClearUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void ClearUndo ( Object identifier );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "특정 객체의 CompleteObjectUndo 기록을 제거해요. 해당 객체의 모든 구조 작업을 제거한다고 확대하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.CollapseUndoOperations.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceHash": "cd0b8f4466606b514875719c552e7b69d48a3968da36b427642fc7e69ada6a1b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.CollapseUndoOperations.html.body.html",
+      "bodyHash": "5c35286fffa2c6135222a49033c65c0ee12f6a342734290511228065baeb288a",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .CollapseUndoOperations"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void CollapseUndoOperations (int groupIndex );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 2,
+      "tableCells": 4,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "주어진 group까지 위쪽 기록을 한 단계로 합쳐요. color picker는 열린 동안 별도 operation을 유지하고 닫을 때 합쳐요. Cancel 계약은 별도예요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "Undo.GetCurrentGroup"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Vector3-zero.html",
+          "text": "Vector3.zero"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "Undo.CollapseUndoOperations"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.DestroyObjectImmediate.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceHash": "c3e84e43d3368fc9373d79ea7a0323e3f2ed793f8032d3e9e459a3ab98f849b0",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.DestroyObjectImmediate.html.body.html",
+      "bodyHash": "e5bb4a61d93a0bafeaf73d72cc09a5ab6cfdc598a4892fd78ed668e28d02a146",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .DestroyObjectImmediate"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void DestroyObjectImmediate ( Object objectToUndo );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 2,
+      "tableCells": 4,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "즉시 파괴를 기록해 복원 가능하게 해요. 본문은 DestroyImmediate의 asset 허용 동작과 연결해요. 게임의 지연 파괴와 구분해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.FlushUndoRecordObjects.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.FlushUndoRecordObjects.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.FlushUndoRecordObjects.html",
+      "sourceHash": "9316a5e7d9acffab64ef30c1e1727b01874cde115da5b331c09958894c5a1490",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.FlushUndoRecordObjects.html.body.html",
+      "bodyHash": "5d4371e42ef285a5d2be9cbbb1b12c064bdf8e4f71daad608cff07a75b2d7a87",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .FlushUndoRecordObjects"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void FlushUndoRecordObjects ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "RecordObject/RecordObjects가 등록한 변경을 기록해요. mouse-up/관례적 action 끝에서 자동 flush하므로 보통 수동 호출은 필요 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "RecordObject"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "RecordObjects"
+        },
+        {
+          "href": "Undo.FlushUndoRecordObjects.html",
+          "text": "FlushUndoRecordObjects"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.GetCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.GetCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.GetCurrentGroup.html",
+      "sourceHash": "8b5a32050d32a150c541ce836c8cffe97997bdfaf845e74af64345c87a7e75b9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.GetCurrentGroup.html.body.html",
+      "bodyHash": "bb3e102cf55ecdaedd39a236eb4b0fc757adc5d74e202004b0ae7ad2ffcf461d",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .GetCurrentGroup"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static int GetCurrentGroup ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "현재 group 인덱스를 반환해요. 다중 선택 예제는 이름→인덱스→RecordObjects→이동→Collapse 순서이며 별도 Increment 호출은 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.RevertAllDownToGroup.html",
+          "text": "Undo.RevertAllDownToGroup"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "Undo.CollapseUndoOperations"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "Undo.GetCurrentGroup"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Vector3-zero.html",
+          "text": "Vector3.zero"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "Undo.CollapseUndoOperations"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.GetCurrentGroupName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.GetCurrentGroupName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.GetCurrentGroupName.html",
+      "sourceHash": "59b9c7581d2de16d3f6c7d0fd1bd731993ea1be10ed59fe6ac827b3f3d309f2a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.GetCurrentGroupName.html.body.html",
+      "bodyHash": "01eba5b3fe64e54f00fefcac0e92ce7fd717722e1a0079e8b7a6d3de3d247cd7",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .GetCurrentGroupName"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Returns"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static string GetCurrentGroupName ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "action 기반 이름 또는 수동 이름을 반환하고 빈 group은 빈 문자열이에요. 영속 ID로 사용하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.IncrementCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceHash": "2f2fa598627e3cec71dd7fb9c7505080d54c88247ffe2eba474defec6e903b17",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.IncrementCurrentGroup.html.body.html",
+      "bodyHash": "a9b607d4ccde8080381d9fe0f00a2754522ba09bcff201d8faa75d1f73d5aaf8",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .IncrementCurrentGroup"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void IncrementCurrentGroup ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "자동 event group 외에 명시적으로 group을 증가시켜요. 이것만으로 작업을 적용하거나 원자 rollback을 보장하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.MoveGameObjectToScene.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.MoveGameObjectToScene.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.MoveGameObjectToScene.html",
+      "sourceHash": "63dfe036fce893729ccfab87948be5522ff5f0fd10e47af453cc543ace0c495e",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.MoveGameObjectToScene.html.body.html",
+      "bodyHash": "38712cc437eb87d7f94720e252e802ebe3805cbf400f1c74661072d3e64df581",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .MoveGameObjectToScene"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void MoveGameObjectToScene ( GameObject go , SceneManagement.Scene scene ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 4,
+      "tableCells": 8,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Scene 이동과 Undo를 함께 기록해요. 대상 GameObject는 현재 Scene의 root여야 해요. 자식 이동·대상 Scene 로딩·실패 결과는 추가 확인 대상이에요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "SceneManagement.Scene.html",
+          "text": "SceneManagement.Scene"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.PerformRedo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PerformRedo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PerformRedo.html",
+      "sourceHash": "13dcb26200eab3c9d42bf8048dd8a84677a1179db5114ff619ad48768dc7b8cd",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PerformRedo.html.body.html",
+      "bodyHash": "ccc73e8af66eee3c2c05181e9c60134a1ef13e1034903f09b8d6c33f31765f24",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .PerformRedo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void PerformRedo ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Edit→Redo와 같은 동작이에요. 빈 stack 결과/반환 오류는 본문에 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.PerformUndo.html",
+          "text": "PerformUndo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.PerformUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PerformUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PerformUndo.html",
+      "sourceHash": "babe30c2c4b6180fd6275124c60c1849cbf2240cdd20d866b8a86746b954af76",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PerformUndo.html.body.html",
+      "bodyHash": "cd2c9a11afe12b1cbea21f08939c8ab4ae977ce7e5ba9369166e913e2b9c74f3",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .PerformUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void PerformUndo ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Edit→Undo와 같은 동작이에요. 어느 창이 단축키를 소유하는지는 이 API가 정하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.PerformRedo.html",
+          "text": "PerformRedo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.PostprocessModifications.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PostprocessModifications.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PostprocessModifications.html",
+      "sourceHash": "8bb500b76402d122bbe27481e8ca506f18342971cd4a79c1149cc3c77d935b4b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PostprocessModifications.html.body.html",
+      "bodyHash": "548bb7199f333ffec9ac0fc408b23d9ef4cc5e36fa1bccf21ab9069176e6ecfe",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .PostprocessModifications"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public delegate UndoPropertyModification[] PostprocessModifications (UndoPropertyModification[] modifications );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 2,
+      "tableCells": 4,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "modification 배열을 입력받고 배열을 반환하는 delegate예요. 거절·필터링·예외 전파의 구체 계약은 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo-postprocessModifications.html",
+          "text": "postprocessModifications"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RecordObject.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObject.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RecordObject.html",
+      "sourceHash": "7b6e9d53aa9c20844e86725f58bcffb9e1c24dc8f8ae8112f5673733482eade7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RecordObject.html.body.html",
+      "bodyHash": "77e898d9887cdf33112b69655a66a16c26b103ecf149f3a741371998f64713ce",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RecordObject"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RecordObject ( Object objectToUndo ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 3,
+      "tableCells": 6,
+      "wholePreExampleBlocksRead": 2,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "호출 뒤 값 변경을 frame 끝에서 binary diff해요. 변화가 없으면 stack 기록이 없어요. 부모/추가/파괴는 전용 API가 필요하고 Prefab override 기록도 별도로 이어져요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+          "text": "PrefabUtility.RecordPrefabInstancePropertyModifications"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "CustomEditor.html",
+          "text": "CustomEditor"
+        },
+        {
+          "href": "Editor.html",
+          "text": "Editor"
+        },
+        {
+          "href": "GUI.html",
+          "text": "GUI"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "EditorGUI.BeginChangeCheck.html",
+          "text": "EditorGUI.BeginChangeCheck"
+        },
+        {
+          "href": "Handles.RadiusHandle.html",
+          "text": "Handles.RadiusHandle"
+        },
+        {
+          "href": "Quaternion-identity.html",
+          "text": "Quaternion.identity"
+        },
+        {
+          "href": "EditorGUI.EndChangeCheck.html",
+          "text": "EditorGUI.EndChangeCheck"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RecordObjects.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObjects.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RecordObjects.html",
+      "sourceHash": "8892329f83b6751808ed20ccd5a8b5686fde3ea9a11b6fc39241896ad7ceaa9a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RecordObjects.html.body.html",
+      "bodyHash": "468aa813675fd86bad08c2ed04ff2205952c074c9f7a1d1ad572530d1c1e85f2",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RecordObjects"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RecordObjects (Object[] objectsToUndo ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "RecordObject를 각 객체에 호출하는 것과 같아요. 배열 인수가 있다고 CompleteObjectUndo 배열 overload의 한 operation 보장을 상속하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "PrefabUtility.RecordPrefabInstancePropertyModifications.html",
+          "text": "PrefabUtility.RecordPrefabInstancePropertyModifications"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RegisterChildrenOrderUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterChildrenOrderUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterChildrenOrderUndo.html",
+      "sourceHash": "a4f349b82285f3846b4b7461e6b64d565c356950c5fce4f859bf968db5b4b41b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterChildrenOrderUndo.html.body.html",
+      "bodyHash": "b442ca6de3d0aef5a22d7c768dd05c9443bafeb5b38f773fe99812847e5f5d60",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterChildrenOrderUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterChildrenOrderUndo ( Object objectToUndo ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 3,
+      "tableCells": 6,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "자식 순서를 저장해요. 예제의 생성은 Undo로 등록하지 않았고 첫 자식을 끝으로 옮기는 순서만 복원해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterChildrenOrderUndo.html",
+          "text": "Undo.RegisterChildrenOrderUndo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RegisterCompleteObjectUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceHash": "0790cd09799f0521c33ded64618fd0731ca0b191a9e0e512b8c98b8299af6984",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterCompleteObjectUndo.html.body.html",
+      "bodyHash": "46b8207316c00a87b8e6405fd79d7847395218b0cc32264ff244fa32cb88222f",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterCompleteObjectUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterCompleteObjectUndo ( Object objectToUndo ,\r\nstring name );",
+        "public static void RegisterCompleteObjectUndo (Object[] objectsToUndo ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 2,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 2,
+      "tableRowsIncludingHeaders": 6,
+      "tableCells": 12,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "단일/배열 두 선언이에요. 상태 snapshot을 즉시 기록하며 Scene 소속이면 무변경이어도 dirty예요. 배열 overload는 한 operation, 부모/추가/파괴는 제외해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "Undo.SetTransformParent.html",
+          "text": "Undo.SetTransformParent"
+        },
+        {
+          "href": "Undo.AddComponent.html",
+          "text": "Undo.AddComponent"
+        },
+        {
+          "href": "Undo.DestroyObjectImmediate.html",
+          "text": "Undo.DestroyObjectImmediate"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "Undo.RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RegisterCreatedObjectUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterCreatedObjectUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterCreatedObjectUndo.html",
+      "sourceHash": "9b4f798a7fcd286befb6a07a59514328557b9dab9b93290e0622f8779586cfc9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterCreatedObjectUndo.html.body.html",
+      "bodyHash": "071a7310ca582479336cec3f2061430dc1eae7cc16bffde093bb83831f6f49ba",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterCreatedObjectUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterCreatedObjectUndo ( Object objectToUndo ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 3,
+      "tableCells": 6,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 8,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "생성 등록을 Undo하면 파괴돼요. GameObject의 자식도 포함하고 부모·형제는 포함하지 않아요. 생성 등록이 진행 중인 RecordObject를 flush하고 기록을 중지시키는 부작용이 있어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "Object.Destroy.html",
+          "text": "Object.Destroy"
+        },
+        {
+          "href": "Undo.RegisterCreatedObjectUndo.html",
+          "text": "Undo.RegisterCreatedObjectUndo"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "Undo.RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "Undo.RecordObject.html",
+          "text": "Undo.RecordObject"
+        },
+        {
+          "href": "Undo.FlushUndoRecordObjects.html",
+          "text": "Undo.FlushUndoRecordObjects"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.IncrementCurrentGroup.html",
+          "text": "Undo.IncrementCurrentGroup"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterCreatedObjectUndo.html",
+          "text": "Undo.RegisterCreatedObjectUndo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterCreatedObjectUndo.html",
+          "text": "Undo.RegisterCreatedObjectUndo"
+        },
+        {
+          "href": "Undo.SetTransformParent.html",
+          "text": "Undo.SetTransformParent"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "PlayerLoop.Update.html",
+          "text": "Update"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Vector3.html",
+          "text": "Vector3"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "Undo-isProcessing.html",
+          "text": "isProcessing"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RegisterFullObjectHierarchyUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterFullObjectHierarchyUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterFullObjectHierarchyUndo.html",
+      "sourceHash": "c3381114e92706c0aa50b73545b833097f926eca353692ac4f593c4c3541580d",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterFullObjectHierarchyUndo.html.body.html",
+      "bodyHash": "69901ef7ec1bb1f15657acbe45fb138189ed908fc0befeb3dadb91816b92cdaf",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterFullObjectHierarchyUndo ( Object objectToUndo ,\r\nstring name );",
+        "Obsolete Use Undo.RegisterFullObjectHierarchyUndo(Object, string) instead. Declaration public static void RegisterFullObjectHierarchyUndo ( Object objectToUndo );"
+      ],
+      "displayedDeclarationBlocks": 2,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 3,
+      "tableCells": 6,
+      "wholePreExampleBlocksRead": 2,
+      "inlineCodeFragmentsRead": 6,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "GameObject는 자식/컴포넌트까지, Component는 자신의 GameObject와 컴포넌트만 포함해 자식을 제외해요. 다른 객체는 자신만 기록해요. 이름 없는 obsolete 선언도 inventory에 남겨요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "Undo.RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.RegisterCompleteObjectUndo.html",
+          "text": "Undo.RegisterCompleteObjectUndo"
+        },
+        {
+          "href": "Undo.SetTransformParent.html",
+          "text": "Undo.SetTransformParent"
+        },
+        {
+          "href": "Undo.AddComponent.html",
+          "text": "Undo.AddComponent"
+        },
+        {
+          "href": "Undo.DestroyObjectImmediate.html",
+          "text": "Undo.DestroyObjectImmediate"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshRenderer.html",
+          "text": "MeshRenderer"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "MeshCollider.html",
+          "text": "MeshCollider"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.RegisterFullObjectHierarchyUndo.html",
+          "text": "Undo.RegisterFullObjectHierarchyUndo"
+        },
+        {
+          "href": "Object.html",
+          "text": "Object"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "includesObsoleteOverload": true,
+      "inlineVariableNameMentionsRead": 6
+    },
+    {
+      "file": "Undo.RegisterImporterUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterImporterUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterImporterUndo.html",
+      "sourceHash": "20c25c53adfcccfdefa3c5abf3c3a5bea30d4190273554b4ae775abe52da4180",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterImporterUndo.html.body.html",
+      "bodyHash": "55a690663a5320263f7f179a3592a91680edd26f90bdd296daa55477c1ca2a74",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RegisterImporterUndo"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RegisterImporterUndo (string path ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 3,
+      "tableCells": 6,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "importer 상태를 기록하며 예제는 ImporterOverride 전에 호출해요. 원본 모델 bytes까지 되돌린다는 근거는 없어요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "AssetDatabase.SetImporterOverride.html",
+          "text": "AssetDatabase.SetImporterOverride"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "AssetImporters.ScriptedImporter.html",
+          "text": "ScriptedImporter"
+        },
+        {
+          "href": "AssetImporters.ScriptedImporter.html",
+          "text": "ScriptedImporter"
+        },
+        {
+          "href": "AssetImporters.AssetImportContext.html",
+          "text": "AssetImportContext"
+        },
+        {
+          "href": "GameObject.html",
+          "text": "GameObject"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "AssetDatabase.GetAssetPath.html",
+          "text": "AssetDatabase.GetAssetPath"
+        },
+        {
+          "href": "Selection-activeObject.html",
+          "text": "Selection.activeObject"
+        },
+        {
+          "href": "Undo.RegisterImporterUndo.html",
+          "text": "Undo.RegisterImporterUndo"
+        },
+        {
+          "href": "AssetDatabase.SetImporterOverride.html",
+          "text": "AssetDatabase.SetImporterOverride"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RevertAllDownToGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RevertAllDownToGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RevertAllDownToGroup.html",
+      "sourceHash": "f62da6ed5f2bda21e77d248a3c354525173b7c99db408d1574810206026bbef4",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RevertAllDownToGroup.html.body.html",
+      "bodyHash": "3736486fd3abd6d33949639c020a27190f3886a1027deea5cb7feb0b84a744fa",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RevertAllDownToGroup"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RevertAllDownToGroup (int group );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "지정 group까지 되돌리며 Redo를 만들지 않아요. 음수/빈 stack/정확한 index 경계 오류 처리는 미기재예요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "Undo.GetCurrentGroup"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.RevertAllInCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RevertAllInCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RevertAllInCurrentGroup.html",
+      "sourceHash": "1a3ead02c88e1346588d91396638237d8e5e154feb52603b162f93da5c791bfd",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RevertAllInCurrentGroup.html.body.html",
+      "bodyHash": "0891a6ec9b41eb0564e4cd8015888897260f1aafecb745f7f7f919cfedf240a5",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .RevertAllInCurrentGroup"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void RevertAllInCurrentGroup ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "본문은 마지막 Undo operation을 Redo 없이 되돌린다고 설명해요. 이름만 보고 현재 group의 모든 operation 복원을 보장하지 않아요. Escape는 사용 예이지 전역 키 처리 계약이 아니에요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.SetCurrentGroupName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetCurrentGroupName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetCurrentGroupName.html",
+      "sourceHash": "4ba1d9ada8d3fbb4e4fd67a2c86532e24a1ebc281d205a067a5cb1ba3881a12c",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetCurrentGroupName.html.body.html",
+      "bodyHash": "6686347c6e5e7cae66ca59277c2b078b63f28b2487c1c590a1a45d3a3942137d",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .SetCurrentGroupName"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void SetCurrentGroupName (string name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 2,
+      "tableCells": 4,
+      "wholePreExampleBlocksRead": 1,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "현재 group의 표시 이름을 수동으로 지정해요. 다중 선택 reset 예제는 상태 기록과 collapse를 별도로 수행해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo.GetCurrentGroupName.html",
+          "text": "Undo.GetCurrentGroupName"
+        },
+        {
+          "href": "UnityEditor.html",
+          "text": "UnityEditor"
+        },
+        {
+          "href": "MonoBehaviour.html",
+          "text": "MonoBehaviour"
+        },
+        {
+          "href": "MenuItem.html",
+          "text": "MenuItem"
+        },
+        {
+          "href": "Undo.SetCurrentGroupName.html",
+          "text": "Undo.SetCurrentGroupName"
+        },
+        {
+          "href": "Undo.GetCurrentGroup.html",
+          "text": "Undo.GetCurrentGroup"
+        },
+        {
+          "href": "Undo.RecordObjects.html",
+          "text": "Undo.RecordObjects"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Selection-transforms.html",
+          "text": "Selection.transforms"
+        },
+        {
+          "href": "Vector3-zero.html",
+          "text": "Vector3.zero"
+        },
+        {
+          "href": "Undo.CollapseUndoOperations.html",
+          "text": "Undo.CollapseUndoOperations"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.SetSiblingIndex.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetSiblingIndex.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetSiblingIndex.html",
+      "sourceHash": "dffc189cda8a2acac4f203abd93c1274768f3b17525a5d51583a86f3d87ca1a7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetSiblingIndex.html.body.html",
+      "bodyHash": "1593fe0bf9766eca3256df5720ba90f2e2ed3eb60f5ca547c08bb14fe52dea7e",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .SetSiblingIndex"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void SetSiblingIndex ( Transform transform ,\r\nint siblingIndex ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 4,
+      "tableCells": 8,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "Transform의 sibling index 변경과 Undo를 함께 기록해요. 허용 범위/clamp는 미기재예요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.SetTransformParent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetTransformParent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetTransformParent.html",
+      "sourceHash": "e11a0586849f368d54bb82ecdda257c9b3a1b9be087abd828ae9e94ff82953ef",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetTransformParent.html.body.html",
+      "bodyHash": "2aa53000a9ae3c27d80ef870dd1da2202d3c10bd882be0bb9b523f48a9edb6ae",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .SetTransformParent"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Parameters"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public static void SetTransformParent ( Transform transform , Transform newParent ,\r\nstring name );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 4,
+      "tableCells": 8,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": true,
+      "sourceFacts": [
+        "부모 변경과 Undo를 함께 기록해요. world pose·cycle/null 등 상세 처리는 별도 Transform API가 필요해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        },
+        {
+          "href": "Transform.html",
+          "text": "Transform"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.UndoRedoCallback.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.UndoRedoCallback.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.UndoRedoCallback.html",
+      "sourceHash": "665866b264853804493896c33cee4888692d3040fc40005bb77018bd69f87440",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.UndoRedoCallback.html.body.html",
+      "bodyHash": "539ed5d44ced7d69c2979eb2149a19c7cc84e3bbfeddb9dca66f73680d18b382",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .UndoRedoCallback"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public delegate void UndoRedoCallback ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "인수 없는 void callback이에요. Undo인지 Redo인지 직접 전달하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo-undoRedoPerformed.html",
+          "text": "undoRedoPerformed"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.UndoRedoEventCallback.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.UndoRedoEventCallback.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.UndoRedoEventCallback.html",
+      "sourceHash": "626efcdb37a54167e97219fa5c2545b3f9423c6ec223679a86441e665a7bc1e6",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.UndoRedoEventCallback.html.body.html",
+      "bodyHash": "cb3e20cecb59a96e8bb8186855dd874e96e584144481bfc86125b87b4a7c2457",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .UndoRedoEventCallback"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public delegate void UndoRedoEventCallback (InAttribute) undo );"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "표시 선언 자체가 불완전해요. 속성 예제의 `in UndoRedoInfo`와 같은 정상 선언이라고 자동 정정하지 않아요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required",
+        "Raw publisher signature conflicts with undoRedoEvent example; exact baseline official source declaration pending"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo-undoRedoEvent.html",
+          "text": "undoRedoEvent"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "malformedSourceSignature": true,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "Undo.WillFlushUndoRecord.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.WillFlushUndoRecord.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.WillFlushUndoRecord.html",
+      "sourceHash": "e54f8b10fa4d4b6938c2b71500820bf7a2367cf2c29230e60a8ec41b13702556",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.WillFlushUndoRecord.html.body.html",
+      "bodyHash": "81bb3a860acf412c39717b21c5b970dd3de3abe0f18f66c255827e510d95e1c4",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "Undo .WillFlushUndoRecord"
+        },
+        {
+          "tag": "h2",
+          "text": "Declaration"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public delegate void WillFlushUndoRecord ();"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "인수 없는 void delegate예요. 시점은 willFlushUndoRecord/FlushUndoRecordObjects 본문과 함께 해석해요."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        {
+          "href": "Undo.html",
+          "text": "Undo"
+        },
+        {
+          "href": "Undo-willFlushUndoRecord.html",
+          "text": "willFlushUndoRecord"
+        }
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoRedoInfo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo.html",
+      "sourceHash": "feff5176481f22667a914fda966596d8bc77e6cac47f5b57a8139ce2122cb74b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo.html.body.html",
+      "bodyHash": "6926dfe381001c2c13b862213d7c4a6531fe3d5d92394bf6f2473e93fe660b95",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoRedoInfo"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Properties"
+        }
+      ],
+      "declarations": [],
+      "displayedDeclarationBlocks": 0,
+      "formalTypeDeclarationComplete": false,
+      "emptySignatureSlots": 1,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 4,
+      "tableCells": 8,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "struct 표시와 isRedo/undoGroup/undoName 직접 멤버 표. formal 타입 선언은 비어 있어 전체 API 선언으로 계산하지 않는다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "Undo-undoRedoEvent.html",
+        "UndoRedoInfo-isRedo.html",
+        "UndoRedoInfo-undoGroup.html",
+        "UndoRedoInfo-undoName.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoPropertyModification.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification.html",
+      "sourceHash": "630ac17c1ceb0cc24ef310b9304bbcc2ed7379ed58dc9cf13298f4eada08f2b2",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification.html.body.html",
+      "bodyHash": "1c2a5a12e3d3bebcdb2339f1effed3f371999c7143158f5477f236b615a379b9",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoPropertyModification"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Properties"
+        }
+      ],
+      "declarations": [],
+      "displayedDeclarationBlocks": 0,
+      "formalTypeDeclarationComplete": false,
+      "emptySignatureSlots": 1,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 4,
+      "tableCells": 8,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "struct 표시, currentValue/previousValue PropertyModification과 keepPrefabOverride bool. Prefab override 유지 정책을 별도 전달한다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "Undo-postprocessModifications.html",
+        "UndoPropertyModification-currentValue.html",
+        "UndoPropertyModification-keepPrefabOverride.html",
+        "UndoPropertyModification-previousValue.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "PropertyModification.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification.html",
+      "sourceHash": "8e89d37673f71accbced64c80038d2026d4bfc6b5f7f086898ca1aa6afcf16c9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification.html.body.html",
+      "bodyHash": "cf3e1b9d7202b1ff0445458837669e4ed9a83435a824a550ee232b2da7bee7e1",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "PropertyModification"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        },
+        {
+          "tag": "h3",
+          "text": "Properties"
+        }
+      ],
+      "declarations": [],
+      "displayedDeclarationBlocks": 0,
+      "formalTypeDeclarationComplete": false,
+      "emptySignatureSlots": 1,
+      "tablesRead": 1,
+      "tableRowsIncludingHeaders": 5,
+      "tableCells": 10,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "class 표시, target/objectReference 참조와 propertyPath/value 문자열을 구분한다. 직렬화 경로와 객체 값의 encoding/복사는 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "PropertyModification-objectReference.html",
+        "PropertyModification-propertyPath.html",
+        "PropertyModification-target.html",
+        "PropertyModification-value.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoRedoInfo-isRedo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-isRedo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-isRedo.html",
+      "sourceHash": "7ad42c23ca38a0d91dc2cb136a8de154b1bfff6c812e2a27438618f390f6681a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-isRedo.html.body.html",
+      "bodyHash": "04b930197b68f0c429816945c38c4a8e18b5ceb023f216e72fa57d6eb4f122ee",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoRedoInfo .isRedo"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public bool isRedo ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public bool 필드. true가 Redo event임을 뜻한다. 기본 초기값/수명은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoRedoInfo.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoRedoInfo-undoGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-undoGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-undoGroup.html",
+      "sourceHash": "74bc5da2249719d685571fdba1492b8c3093470ee9fecd44055eeaabdb303aa7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-undoGroup.html.body.html",
+      "bodyHash": "b8185f531a7ac55c218ad6b6d3ddfb1489f4c0293f63d12b986c9fcc6e09fefc",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoRedoInfo .undoGroup"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public int undoGroup ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public int 필드. 발생한 Undo/Redo event의 group. 현재 group을 새로 생성하는 명령이나 persistent ID가 아니다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoRedoInfo.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoRedoInfo-undoName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-undoName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-undoName.html",
+      "sourceHash": "075d3b5992d2f2bf31b13bf2256d0965a7b873bdb4ed34bff639b8b15b58dbaf",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-undoName.html.body.html",
+      "bodyHash": "acbcf6d8a549563ef4c566202c4b4d57c81ed0c220fd931671bd34f4a696f782",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoRedoInfo .undoName"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public string undoName ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public string 필드. 수행한 event의 이름. null/locale/영속성은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoRedoInfo.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoPropertyModification-currentValue.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-currentValue.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-currentValue.html",
+      "sourceHash": "bd8c84c70934893265e9c97850b56c171bdb5b6acb62fa2c816a8ee307c3c198",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-currentValue.html.body.html",
+      "bodyHash": "703f25be1fbafe7cfd7dbdf5b571261a54211183621ac22903ea8d1206613c03",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoPropertyModification .currentValue"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public PropertyModification currentValue ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public PropertyModification 필드. 변경 후 값에 대응한다. mutable class 참조의 소유/복사 계약은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoPropertyModification.html",
+        "PropertyModification.html",
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoPropertyModification-keepPrefabOverride.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-keepPrefabOverride.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-keepPrefabOverride.html",
+      "sourceHash": "40ed89dd5c3a08b7de95d3a1037614e2f8421d91f51485e42425d6636577dc01",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-keepPrefabOverride.html.body.html",
+      "bodyHash": "b4ad6e8d2f5859edcc875ef959331c96baadf7b71871c9196f4b07efa2528475",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoPropertyModification .keepPrefabOverride"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public bool keepPrefabOverride ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public bool 필드. 대상이 Prefab instance일 때 modification 유지 여부다. 기본값과 생성 정책은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoPropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "UndoPropertyModification-previousValue.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-previousValue.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-previousValue.html",
+      "sourceHash": "a02d803f425d14c216d940c5b418b96aae4c517fe3156055d9a428bbb8cc95bf",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-previousValue.html.body.html",
+      "bodyHash": "cfc43e58aac1b3fdecaab1fbb4950083b332c9a4a4d1683d56a567bae9d71d64",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "UndoPropertyModification .previousValue"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public PropertyModification previousValue ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public PropertyModification 필드. 변경 전 값에 대응한다. 재진입과 callback 이후 참조 수명은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "UndoPropertyModification.html",
+        "PropertyModification.html",
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "PropertyModification-objectReference.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-objectReference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-objectReference.html",
+      "sourceHash": "af8f202cf6b6f1dea1c672f720ee09523660b5c8493610b5ea911e15854ae5bb",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-objectReference.html.body.html",
+      "bodyHash": "cbb9ad156389241b0d31f4134044bbadd4984d638d1a5e9a453887cda2128861",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "PropertyModification .objectReference"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public Object objectReference ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public Object 필드. 문자열로 나타낼 수 없는 객체 참조 값이다. 안정된 reference 직렬화가 HB 조사 대상이다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "PropertyModification-propertyPath.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-propertyPath.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-propertyPath.html",
+      "sourceHash": "66ff62a4afa9b06dc97bef79e7c48db54a342cb729831db2801d477b0db6fb3d",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-propertyPath.html.body.html",
+      "bodyHash": "bec11033716c48d0eb7f26a7cb10dd2f00570f9f69e69d74017015eb578f6b58",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "PropertyModification .propertyPath"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public string propertyPath ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public string 필드. SerializedProperty.propertyPath와 대응한다. 경로 문법/배열·managed reference 등의 세부는 연결 API 미독이다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "PropertyModification-target.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-target.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-target.html",
+      "sourceHash": "9ba69b81fefac602f5ec8c91de994dc669b076c9dad49dbe6840c66447b03f66",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-target.html.body.html",
+      "bodyHash": "13a0a4c11442755e2512c3f4cf2f88b60a23d9d6900ca5413339c06018f3e7cb",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "PropertyModification .target"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public Object target ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public Object 필드. 변경할 객체이다. value/objectReference와 서로 다른 역할이며 null/소유권은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    },
+    {
+      "file": "PropertyModification-value.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-value.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-value.html",
+      "sourceHash": "c06d72bf2f85b6ad0fdc76522b90a03437955d3e214422e31cb712e83e99eba7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-value.html.body.html",
+      "bodyHash": "bad29b24195fca7e8bee4084ef6560357c4c9a56360d782d47825171db7dbb56",
+      "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+      "bodyMethod": "Exact source first h1 to _content marker; technical inventory excludes publisher feedback UI",
+      "reader": "root",
+      "date": "2026-10-04",
+      "readScope": "Whole technical body, every displayed heading/table/declaration/pre example/inline code; no technical media or other language tab in these DOMs",
+      "headings": [
+        {
+          "tag": "h1",
+          "text": "PropertyModification .value"
+        },
+        {
+          "tag": "h3",
+          "text": "Description"
+        }
+      ],
+      "declarations": [
+        "public string value ;"
+      ],
+      "displayedDeclarationBlocks": 1,
+      "formalTypeDeclarationComplete": null,
+      "emptySignatureSlots": 0,
+      "tablesRead": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "wholePreExampleBlocksRead": 0,
+      "inlineCodeFragmentsRead": 0,
+      "technicalImages": [],
+      "reusesPreviouslyAnalyzedBody": false,
+      "sourceFacts": [
+        "public string 필드. 적용 값의 문자열이다. locale/precision/값 타입별 encoding은 미기재다."
+      ],
+      "hbDecision": "표시 API의 변경 종류/대상/순서와 타입·수명·미확인 조건을 공용 editor mutation 계약에 연결한다. 본문별 구체 적용과 예제 해석은 analysisReport의 대응 행·후속 문단에 있다.",
+      "unresolvedContractAxes": [
+        "thread/allowed editor phase/default/null/failure/ownership: source body only establishes the explicitly described subset; linked API follow-up required"
+      ],
+      "links": [
+        "PropertyModification.html"
+      ],
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "inlineVariableNameMentionsRead": 0
+    }
+  ],
+  "copyrightedWholeBodiesExamplesTablesPublic": false,
+  "fullCorpusComplete": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "automaticExtractionIsSemanticReading": false
+}

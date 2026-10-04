@@ -1,0 +1,3491 @@
+{
+  "schemaVersion": 1,
+  "batchId": "android-build-deploy-verification-014",
+  "phase": "research_only",
+  "analysisReader": "/root/android_build_deploy_014",
+  "verifier": "/root/finish_009_verification",
+  "date": "2026-10-04",
+  "scope": "Bounded independent original article body versus pinned author analysis comparison for ABD014-01..06 only. Five unique new bodies and one same-hash ABI re-read from012. 016 and external reference/release/sample bodies excluded from actual read scope. No entire Android/Unity/Unreal corpus or API/SDK compatibility closure.",
+  "verificationReport": "docs/research/ANDROID_BUILD_DEPLOY_VERIFICATION_014.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/ANDROID_BUILD_DEPLOY_BODY_014.md",
+      "sha256": "72a4cf1bd9b809fd5502aae59bc68c9d35f9db3f659be1e0c6d0959f434a84d0"
+    },
+    {
+      "file": "docs/research/android-build-deploy-body-014.json",
+      "sha256": "fdca71ccd56ee0c02c7cf3536354bdd114924ad921228057a4fac693f84858ea"
+    },
+    {
+      "file": "docs/research/ANDROID_BUILD_DEPLOY_VERIFICATION_014.md",
+      "sha256": "e8bce8df0a5eb8db7e50bbcfd4797ba7568512900e5c9abb376288ad6ae196f3"
+    },
+    {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76",
+      "readScope": "full protocol",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "docs/research/EXPORT_EDITOR_REQUIREMENTS.md",
+      "sha256": "f587df637628b739509f14221b4116351d683caf1e019dede192da127549b9a3",
+      "readScope": "full requirements",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_RESEARCH_011.md",
+      "sha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5",
+      "readScope": "full bounded research",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "docs/research/mobile-editor-body-012.json",
+      "sha256": "a7ff0bd3c954570b482a099785ce9c453f34c783963dc05869b734eb5f34b5a2",
+      "readScope": "ABI record/bodyHash only; prior body bytes directly compared, no other012 source re-verification",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "docs/AI_ENGINE_API.md",
+      "sha256": "a6f41db430ca4b7c9375aafb6d01b71a8f22758063f4b4e9bf00863893f6e916",
+      "readScope": "build section lines181-228 and earlier common revision/command context",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "prototype/build-profile.js",
+      "sha256": "00c1cccd088346f34d4586f4660ad2801069579c838fa10d55d5cd1843344d95",
+      "readScope": "full file read only",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    },
+    {
+      "file": "tools/build-game.mjs",
+      "sha256": "c734cd980eb0984b3f1dfcb0709c5f34b6627c0f08bd362ebbdd11c39c9efe49",
+      "readScope": "full file read only",
+      "referenceScopeDoesNotIncreaseArticleBodyCount": true
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/android-build-deploy-batch-014/fetch-inventory.private.json",
+      "sha256": "9947682f83f021aa407dee3d48ae88af3f0f4e6900d3a64942fdf76a2bc9494f"
+    }
+  ],
+  "counts": {
+    "wholeArticleBodiesDirectlyRead": 6,
+    "headingsIncludingTitles": 126,
+    "bodyHeadingOnly": 121,
+    "tables": 7,
+    "rowsIncludingHeaders": 83,
+    "cells": 171,
+    "wholePreBlocksRead": 105,
+    "nonPreInlineCodeOccurrencesRead": 883,
+    "imageOccurrencesVisuallyCompared": 16,
+    "uniqueImagePixelsDirectlyViewed": 14,
+    "otherTechnicalMedia": 0,
+    "newUniqueBodiesRelativeTo012": 5,
+    "rereadBodiesFrom012": 1,
+    "formalApiReferenceBodiesRead": 0,
+    "formalApiOverloadsVerified": 0,
+    "guideEntrySignaturesRead": 1,
+    "authorUnresolvedGroupsPreserved": 9,
+    "supplementaryLinkIssuesPending": 1,
+    "frozenTargetFragmentOccurrencesChecked": 61,
+    "allSourceHrefOccurrencesCompared": 300,
+    "finalSemanticComparisonFailures": 0,
+    "strictLedgerVerified": 0,
+    "ledgerPromotions": 0,
+    "wholeCorpusVerified": 0,
+    "engineTestsRun": 0,
+    "realDeviceInstallsOrLaunches": 0
+  },
+  "actualReadingEvidence": {
+    "verifier": "/root/finish_009_verification",
+    "date": "2026-10-04",
+    "sourceEquivalentReadableFilesActuallyRead": [
+      {
+        "id": "ABD014-01",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.readable.txt",
+        "sha256": "7479193e8649b0aabe14b3bcfb3783dd7670c2e6f38bc65ee1b894d09c336984",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      },
+      {
+        "id": "ABD014-02",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.readable.txt",
+        "sha256": "cca3f31232cfbb74a115ffcb5dec68987299715cb42ee76cf71571f606875c62",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      },
+      {
+        "id": "ABD014-03",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.readable.txt",
+        "sha256": "7b95723bd45306265ff152e1906d48290cf396319d143cdd0d5ec9cc128133ad",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      },
+      {
+        "id": "ABD014-04",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.readable.txt",
+        "sha256": "b7f4a7ca6bed1a0794293e3b327b142b55c0fbb6dd171ff4bc60f6d2f0e6884d",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      },
+      {
+        "id": "ABD014-05",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.readable.txt",
+        "sha256": "d5ba9f91ca14af82cf0a0a355fe427f2f7d144db99aa4e6b6050116ac7ec9321",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      },
+      {
+        "id": "ABD014-06",
+        "file": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.readable.txt",
+        "sha256": "613d620c5d26573b82122fe33595ef6afd7ee2821a806ec992eb9daf1b24ee5b",
+        "fullReadableTextRead": true,
+        "sourceProseNormalizationMatch": true,
+        "allSourcePreBlocksPresent": true
+      }
+    ],
+    "readableMethod": "Normalized readable text after removing each [CODE ordinal] plus complete normalized exact source pre text equals source body prose after removing pre; each exact original pre separately matches pinned private code bytes.",
+    "allSourceSectionsAndTableCellsActuallyRead": true,
+    "wholePreExamplesActuallyRead": true,
+    "allNonPreInlineOccurrencesActuallyRead": true,
+    "languageVariants": "All source-retained Kotlin/Groovy and Kotlin/Java variants read; no browser-generated dynamic content claimed.",
+    "uniqueOriginalImagesActuallyViewed": 14,
+    "imageOccurrencesCompared": 16,
+    "automaticRecalculationIsSemanticReading": false,
+    "agentIdentityAloneIsProof": false,
+    "authorReadsCountedAsVerifierReads": false
+  },
+  "hashMethods": {
+    "sourceBodyText": "SHA-256 original source bytes and recreated retained devsite article-body serialization/text UTF8",
+    "heading": "SHA-256 original heading text after excluding devsite-actions collection chrome; ordinal distinguishes repeated language anchors; external h1 title included once",
+    "table": "SHA-256 compact UTF8 JSON of ordered normalized cell texts, header/data rows retained",
+    "code": "SHA-256 exact pre.get_text UTF8 preserving original whitespace; no span-added newline",
+    "inlineCode": "SHA-256 compact JSON of ordinal/exact text/exact text hash for every code outside pre",
+    "media": "SHA-256 original downloaded PNG bytes; only frozen provenance checked, no fresh download",
+    "relativeHref": "Resolved from finalUrl with ?hl=en retained",
+    "lastUpdated": "Original Last updated source footer matched after removing trailing period only",
+    "internalAnchor": "All frozen six canonical targets; query-independent path match; ID or named a anchor; no external HTTP tested"
+  },
+  "pages": [
+    {
+      "id": "ABD014-01",
+      "requestUrl": "https://developer.android.com/build/building-cmdline?hl=en",
+      "canonicalUrl": "https://developer.android.com/build/building-cmdline",
+      "finalUrl": "https://developer.android.com/build/building-cmdline?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.914311+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2026-02-26 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.source.html",
+      "sourceHash": "9cc24a188b58298bc19d15a1e8f3e7a32587c39e15011a5d36d6554754f3e753",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.body.html",
+      "bodyHash": "3115eb8f0be62003d4e2e580f3ec16d9f7a2ece91e8c2dc7d7688403d0168e86",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.body.txt",
+      "textHash": "6516e989b81bcf3b5441708183be9cdbcb1be60a455c3e1f146d21c0482c2760",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.readable.txt",
+      "readableHash": "7479193e8649b0aabe14b3bcfb3783dd7670c2e6f38bc65ee1b894d09c336984",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 22,
+      "bodyHeadingCount": 21,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": null,
+          "originalHeadingHash": "0e14895b85ea54772035bcd6e5f37c7a90137009e01b890bf7b81c8870d93ed9",
+          "analysisFinding": "프로젝트 wrapper가 작업을 실행해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "BuildTypes",
+          "originalHeadingHash": "7895e7f43a81a54a9c1814856218157ebfb2e179001be5ef37be9cf848941b4d",
+          "analysisFinding": "debug는 SDK키, release는 사설키예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "anchor": "build_apk",
+          "originalHeadingHash": "3feda9db3e5bef8f49f449c3988b57b3e2c24e31683ea3c4982b85c7d3414e9d",
+          "analysisFinding": "APK는 직접 시험·공유할 산출물이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "DebugMode",
+          "originalHeadingHash": "b6845494111ce4d998a47ad43c717a3dcfc9ab727d62d05add1163a3be7f6ebc",
+          "analysisFinding": "assembleDebug 출력은 서명·정렬돼요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "anchor": "ReleaseMode",
+          "originalHeadingHash": "1eff6cfb60e3350c85c8abecca241513c8d7609d643203d748f061317cc4d464",
+          "analysisFinding": "배포 구성도 서명이 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "RunningOnEmulator",
+          "originalHeadingHash": "37112196b05cc69f2ec6921705fd529836dbf46d6a03f940389a8e88d43b24d0",
+          "analysisFinding": "preview 시험 APK는 -t가 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "RunningOnDevice",
+          "originalHeadingHash": "caff7ebca524a099e98e3a2bf0005c045ce6fd5a7abab1b69fc3cb965eb00a1e",
+          "analysisFinding": "USB debugging이 먼저 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "anchor": "build_bundle",
+          "originalHeadingHash": "cb4d07c9b74d6bdc17935494af7b333a1f6cb37605ec4fbc40c28b166be05488",
+          "analysisFinding": "AAB는 직접 설치하지 못해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "bundle_build_gradle",
+          "originalHeadingHash": "b987aa3f41c0ec256e20a3736f99f9ce5b3101bf8bc88a5949d09349312c4c85",
+          "analysisFinding": "base module의 bundle variant를 선택해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "anchor": "bundletool-build",
+          "originalHeadingHash": "31051680f3d5064f890d35273ed52a99269d1068a9600a76456aa6957bcdabe9",
+          "analysisFinding": "사용자 toolchain도 bundletool에 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h4",
+          "anchor": "generate_the_manifest_and_resources_in_proto_format",
+          "originalHeadingHash": "58cac48779466ff84f88f45e9b251af4b6b335c91e24c2f432e1910b8a448c9c",
+          "analysisFinding": "manifest·resource는 protobuf여야 해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h5",
+          "anchor": "download_aapt2",
+          "originalHeadingHash": "b6cacc8dbe7c34c25d4cb37311fc9064446c007fc9c314e9f8679c54eea6922c",
+          "analysisFinding": "본문은 Maven AAPT2를 요구해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h5",
+          "anchor": "compile_and_link_your_apps_resources",
+          "originalHeadingHash": "22915e9b4233fc637328e5b040cdb1419fd20de795050ce994aa26a8c083a222",
+          "analysisFinding": "compile 후 link에 proto-format을 줘요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h4",
+          "anchor": "package_pre-compiled_code_and_resources",
+          "originalHeadingHash": "e1283e8dec820cbad28d90c59da5b0b6481edabfa6dd896cca6488e20d33548f",
+          "analysisFinding": "module별 ZIP 구조를 지켜요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h4",
+          "anchor": "build_your_app_bundle_using_bundletool",
+          "originalHeadingHash": "1780d060b0df53363bb01bdc308c97e8805305119e8b1e3f2c03caae1d2a0ea9",
+          "analysisFinding": "modules·output과 선택 metadata가 달라요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 15,
+          "tag": "h4",
+          "anchor": "bundleconfig",
+          "originalHeadingHash": "0d4a05c5bd540342025784625fd71d1e21cbfef799d07c11df1cb1a749ac9669",
+          "analysisFinding": "언어 split·압축을 설정할 수 있어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "anchor": "deploy_from_bundle",
+          "originalHeadingHash": "060f5b10eb84d2ca110be3b9f147d4ce8072d7da82c77d68a8373ad0ef084bae",
+          "analysisFinding": "AAB에서 설치 APK를 생성해야 해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 17,
+          "tag": "h2",
+          "anchor": "sign_cmdline",
+          "originalHeadingHash": "2f054dffa61c7e07a99be07e6d9f5846ea1b6b50f2b0ea40e62d5daad9a38b99",
+          "analysisFinding": "APK와 AAB 서명도구가 달라요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "anchor": "sign_manually",
+          "originalHeadingHash": "85f388a780415eba8a330c0aee8403eb5652273c5eda70d8ea83549e009d3803",
+          "analysisFinding": "APK는 정렬→서명→검사 순서예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "anchor": "gradle_signing",
+          "originalHeadingHash": "79578bb0ac43503bebc6414d0845677f8dd9f388be8c44d429f2476df74498ee",
+          "analysisFinding": "Gradle signingConfig가 installRelease를 열어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 20,
+          "tag": "h3",
+          "anchor": "kts",
+          "originalHeadingHash": "c78f6c97923e81a2f04f09c5e87b69e085c1e47066a1136b5f590bfde696e2eb",
+          "analysisFinding": "Kotlin 예제는 네 서명값을 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 21,
+          "tag": "h3",
+          "anchor": "groovy",
+          "originalHeadingHash": "be20cdfc984a810db87fe9388725643e5f14a80d59b1cea58fddb556e0c4a78b",
+          "analysisFinding": "Groovy도 동일값을 buildType에 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [
+        {
+          "ordinal": 1,
+          "rows": 6,
+          "cells": 12,
+          "sha256": "4f931f7c63535f5e26d9bd71e35e8ddf506c10f7eb454b0551b8442ba0836338",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.table-1.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "module ZIP내용",
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "rows": 5,
+          "cells": 10,
+          "sha256": "f9cfd37f75f33d4757771bc7f3b8a0a1bd0667c1a17fb2adda98e357e8dc25a5",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.table-2.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "build-bundle옵션",
+          "factComparisonPassed": true
+        }
+      ],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-1.txt",
+          "sha256": "c7db133e3cb0dae0f06083b0ffa5b2cee7020b07d7c9f1ef086dcbaae1ad9797",
+          "characters": 17,
+          "language": [
+            "none"
+          ],
+          "purpose": "CMD wrapper",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-2.txt",
+          "sha256": "5a51455b6dceb79ab50470b5c3dfa739789ab9c0e176adc7f38b2d33deb77dee",
+          "characters": 19,
+          "language": [
+            "none"
+          ],
+          "purpose": "PowerShell wrapper",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-3.txt",
+          "sha256": "ac86ff586e61c832618435aaae12e4375a1e38776ce8c2932de3c65006e4623d",
+          "characters": 15,
+          "language": [
+            "none"
+          ],
+          "purpose": "task목록",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-4.txt",
+          "sha256": "9c3c6b5d9e2ff7d95eaaea379cc46ba5c71bc3e8a768d999621127069350b36a",
+          "characters": 23,
+          "language": [
+            "none"
+          ],
+          "purpose": "debug assemble",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-5.txt",
+          "sha256": "5839bb5c242718862fccb23a06feffcc0e4f6c7d0faf2f8ea6a2fbb491b74b36",
+          "characters": 20,
+          "language": [
+            "none"
+          ],
+          "purpose": "debug install",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-6.txt",
+          "sha256": "a504514fe56a8c6a8e89dfcc90155e04f28fc64108e53b1f4d61d11b799f04bc",
+          "characters": 22,
+          "language": [
+            "none"
+          ],
+          "purpose": "AVD 시작",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 7,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-7.txt",
+          "sha256": "28599dd153bd7fbf701364022ee7278576abf55de2a3eb8fba47087cc24ee5fc",
+          "characters": 34,
+          "language": [
+            "none"
+          ],
+          "purpose": "APK 설치",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 8,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-8.txt",
+          "sha256": "569f14c7cda208a7dd89cf5d6b074787005950ad5a5b748a38855e3ba74ab32a",
+          "characters": 37,
+          "language": [
+            "none"
+          ],
+          "purpose": "physical APK설치",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 9,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-9.txt",
+          "sha256": "c39708510bd5eb3072b6583243aec4c514b96d6ffc4aa08b492969351ba11952",
+          "characters": 28,
+          "language": "Text only",
+          "purpose": "base bundle",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 10,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-10.txt",
+          "sha256": "8a127e190f235b531ace9c11d542e28c57702f99f48a980df83b430f89905ca9",
+          "characters": 59,
+          "language": "Bash Session",
+          "purpose": "AAB서명",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 11,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-11.txt",
+          "sha256": "235060e3a6fed5904f7c636edfdfb8a3de8b50cab82bcda0fa4aa247643fe617",
+          "characters": 160,
+          "language": [
+            "none"
+          ],
+          "purpose": "resource compile",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 12,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-12.txt",
+          "sha256": "4bc97151d05b153d14f709711c1e0f7aba228e95bd858bef1b868b953f2afd8a",
+          "characters": 215,
+          "language": [
+            "none"
+          ],
+          "purpose": "resource link",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 13,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-13.txt",
+          "sha256": "0f7db156ba14fcda7ca04fcafaeaaaf6609bd89f89429f5b62998d84d64b8fd7",
+          "characters": 66,
+          "language": [
+            "none"
+          ],
+          "purpose": "module bundle",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 14,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-14.txt",
+          "sha256": "0afe363592b0820d020da17f98ca27afe55f8913d847cbdc1ec9fb665ac2ca62",
+          "characters": 145,
+          "language": "JSON",
+          "purpose": "language split",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 15,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-15.txt",
+          "sha256": "a357bef844509ac9aaeb24b1bba2d2df63fb1e25f4299435ae4d91e44b8647ac",
+          "characters": 92,
+          "language": "JSON",
+          "purpose": "압축제외",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 16,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-16.txt",
+          "sha256": "674fbaf7a087813ab185c194fe430a91d7b040f2c91eea2b929523c726b6b030",
+          "characters": 107,
+          "language": [
+            "none",
+            "devsite-terminal",
+            "devsite-click-to-copy"
+          ],
+          "purpose": "키생성",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 17,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-17.txt",
+          "sha256": "f342702717586732501ee41785be93a5c6fe316ac57b4ef304a8ff817ae45ee8",
+          "characters": 66,
+          "language": [
+            "none",
+            "devsite-terminal",
+            "devsite-click-to-copy"
+          ],
+          "purpose": "APK정렬",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 18,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-18.txt",
+          "sha256": "235c10311c24310ba47e30f86bed2c3db9b0cc1dd55b5f14ab4f61ee4fbea99a",
+          "characters": 93,
+          "language": [
+            "none",
+            "devsite-terminal",
+            "devsite-click-to-copy"
+          ],
+          "purpose": "APK서명",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 19,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-19.txt",
+          "sha256": "beb61288e00980c7ac41751bf140bebe19da6c8f15a3de311e2d79da0ed309cd",
+          "characters": 37,
+          "language": [
+            "none",
+            "devsite-terminal",
+            "devsite-click-to-copy"
+          ],
+          "purpose": "APK검사",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 20,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-20.txt",
+          "sha256": "dae46d1be84fdfcffd86b361c97ea3f173b67a0c3796502b3259c32ef1ac4cb5",
+          "characters": 566,
+          "language": "Kotlin",
+          "purpose": "Kotlin signing",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 21,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.code-21.txt",
+          "sha256": "4dd3231a6938de781bc93f1ca8846ee637165226161c16ebb7ab3401f4b7b87e",
+          "characters": 520,
+          "language": "Groovy",
+          "purpose": "Groovy signing",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-01.inline-codes.private.json",
+        "sha256": "9dfefef7e89af5d8448d5337bfe78e5f9d8a588a8bf4f301d75efbf3811e4db1",
+        "count": 105,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 49,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "Wrapper/shell roles; assemble/install; signed/aligned debug and signed release; test APK -t; AAB not directly deployable; module/protobuf/bundletool; APK versus AAB signing tools and Kotlin/Groovy examples compared.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    },
+    {
+      "id": "ABD014-02",
+      "requestUrl": "https://developer.android.com/studio/publish/app-signing?hl=en",
+      "canonicalUrl": "https://developer.android.com/studio/publish/app-signing",
+      "finalUrl": "https://developer.android.com/studio/publish/app-signing?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.888944+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2026-03-06 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.source.html",
+      "sourceHash": "a02e620daaab103c8cc3f1589039f725db94b021a6b675787af92704c321d741",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.body.html",
+      "bodyHash": "59b7315f0191ce4a69edc4f94fc0f92e114ad37395cab604568043d0368f82ba",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.body.txt",
+      "textHash": "fd16b63e8004b6fa0cd73dcc6d7f21ee2958e391531d185620d516ac892cefac",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.readable.txt",
+      "readableHash": "cca3f31232cfbb74a115ffcb5dec68987299715cb42ee76cf71571f606875c62",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 26,
+      "bodyHeadingCount": 25,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": null,
+          "originalHeadingHash": "f189dc9e11a4d5437ba4012e1210864481c03cc605d914fdf14ff7cccfbe6024",
+          "analysisFinding": "설치·업데이트 APK에는 인증서가 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "app-signing-google-play",
+          "originalHeadingHash": "c6e2bf23dd98cce7e37092f4cc5408945b619cca7f11785d2e6cfa919e2fa31e",
+          "analysisFinding": "upload키와 설치 APK키를 구분해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "anchor": "certificates-keystores",
+          "originalHeadingHash": "2d9dd0daaaf448408256bbc0db148fb3c3b486310531db944f6714a1159cac57",
+          "analysisFinding": "keystore는 인증서·사설키 저장소예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "api-providers",
+          "originalHeadingHash": "e1a3aebff6aff29f9c3197fdaf13c4236f47220d499cf94bdbfccc26073a879d",
+          "analysisFinding": "공개 fingerprint는 package와 함께 등록해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "anchor": "debug-mode",
+          "originalHeadingHash": "6489ed29cb1100b79a16e1df66e47645090b5c90afe6fc4fbbb1a96b13f3a325",
+          "analysisFinding": "SDK debug키는 공개 배포에 부적합해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "expdebug",
+          "originalHeadingHash": "6f2bc8b8b58452d47b02bd7de19bcda0976a8c4350374f45e8a4d04c5d96d372",
+          "analysisFinding": "30년 만료 후 재생성 경로예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h2",
+          "anchor": "sign-apk",
+          "originalHeadingHash": "66c938e07fb145781b9bb90140ee7bd00eb6cb1d4d9a62238ef2f8146cfe9a5e",
+          "analysisFinding": "2021년8월 이전앱 예외를 명시해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "anchor": "generate-key",
+          "originalHeadingHash": "8b02b3174eeaecf8154a1a4c1db0ddfc36859197931e7aec6e443351df63f3f0",
+          "analysisFinding": "생성 UI는 최소25년을 권장해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "sign_release",
+          "originalHeadingHash": "1bf9ced7215490aee152aae6e9d7c02df7bdefcc1ce867227669a98a948f3f0d",
+          "analysisFinding": "flavor별 산출물과 서명scheme을 선택해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "anchor": "enroll",
+          "originalHeadingHash": "4774788483202552b5ffbad9b5e7bfcf6a6821f6c14d556d5fdd7117712b142b",
+          "analysisFinding": "새앱과 기존앱 등록이 달라요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h3",
+          "anchor": "enroll_new",
+          "originalHeadingHash": "b48d087982cfc3c219e5535f4ee2d6404827dc44e98d79750da4f163ef218c4b",
+          "analysisFinding": "생성키·다른앱키·자체키를 선택해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h3",
+          "anchor": "enroll_existing",
+          "originalHeadingHash": "9d13719a60768991fe85bdab75319fc31bb9e4973c5097266c73e7e1336ee3d7",
+          "analysisFinding": "기존 Java키는 PEPK로 암호화해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h4",
+          "anchor": "register_upload_key",
+          "originalHeadingHash": "3d1d73c127bd65fc941ed79b150f8988ef9f0ba6d93a9e75d9384f5bc92ea697",
+          "analysisFinding": "upload 공개인증서를 별도로 등록해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h4",
+          "anchor": "upgrade_key",
+          "originalHeadingHash": "b3c6dc5e9a8f0b6e3fe038819b69e483f1a3862ecf61d32eb6969f484cd326e2",
+          "analysisFinding": "키upgrade는 Android13 전후로 갈라져요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "anchor": "reset_upload_key",
+          "originalHeadingHash": "5634c505f7c3c98c18197307a1d40230b04df83443e014293aae7ca159286c19",
+          "analysisFinding": "upload reset은 설치서명키를 바꾸지 않아요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 15,
+          "tag": "h3",
+          "anchor": "sign-auto",
+          "originalHeadingHash": "af04bdc14e4fde2cc03fecabb8949931ef97f3789cd710d0b22098601326b664",
+          "analysisFinding": "release buildType에 signingConfig를 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "anchor": "sign-flavors",
+          "originalHeadingHash": "ef142972e36fce3eb3bd6a948ac077f30319369db8c7417b84d1be12e96e3ee8",
+          "analysisFinding": "각 flavor에 다른 config를 배정해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 17,
+          "tag": "h2",
+          "anchor": "signing_report",
+          "originalHeadingHash": "24c31e964ce5f9a9cc9ac8764240beeca5b369f4d8d8fffeb900043e8e92983d",
+          "analysisFinding": "variant별 signingReport를 조회해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 18,
+          "tag": "h2",
+          "anchor": "opt-out",
+          "originalHeadingHash": "873b4c103686357bd1371a61ea5e39a2a5a43be9fa83b869da6db5fcb4d63159",
+          "analysisFinding": "자체키 분실은 업데이트를 막아요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 19,
+          "tag": "h2",
+          "anchor": "considerations",
+          "originalHeadingHash": "335397e1639dd1c9cc28c59037cec80e953258f0f3e0cb9002ac66249676ac74",
+          "analysisFinding": "동일인증서 업데이트와 package변경을 구분해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 20,
+          "tag": "h3",
+          "anchor": "secure_key",
+          "originalHeadingHash": "c3db3c8f6b5d6b79d061cc8f9275142c9c541eca186b882767a901be000e4a8d",
+          "analysisFinding": "사설키와 암호는 안전하게 보관해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 21,
+          "tag": "h4",
+          "anchor": "secure-shared-keystore",
+          "originalHeadingHash": "1c9875f3adb3d10a9084ee5ae1a25003f1e9fc29318212f582c697fe2300c5c4",
+          "analysisFinding": "properties도 source control에서 보호해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 22,
+          "tag": "h3",
+          "anchor": "groovy",
+          "originalHeadingHash": "be20cdfc984a810db87fe9388725643e5f14a80d59b1cea58fddb556e0c4a78b",
+          "analysisFinding": "Groovy가 외부 properties를 먼저 읽어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 23,
+          "tag": "h3",
+          "anchor": "kts",
+          "originalHeadingHash": "c78f6c97923e81a2f04f09c5e87b69e085c1e47066a1136b5f590bfde696e2eb",
+          "analysisFinding": "Kotlin도 android블록 전에 읽어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 24,
+          "tag": "h3",
+          "anchor": "groovy",
+          "originalHeadingHash": "be20cdfc984a810db87fe9388725643e5f14a80d59b1cea58fddb556e0c4a78b",
+          "analysisFinding": "Groovy config가 properties를 참조해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 25,
+          "tag": "h3",
+          "anchor": "kts",
+          "originalHeadingHash": "c78f6c97923e81a2f04f09c5e87b69e085c1e47066a1136b5f590bfde696e2eb",
+          "analysisFinding": "Kotlin config는 문자열로 캐스팅해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-1.txt",
+          "sha256": "4384d91a9d4b63e421f1972ec90952603ebc7204003efe837161066cda0ae527",
+          "characters": 121,
+          "language": [
+            "none"
+          ],
+          "purpose": "upload공개인증서",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-2.txt",
+          "sha256": "0023c1f79db65de82aaee279bb3f1d7d40702a2b0709bd9b50f072380798bef8",
+          "characters": 107,
+          "language": [
+            "none"
+          ],
+          "purpose": "properties파일",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-3.txt",
+          "sha256": "74304badf5b01dd2264a0429d0e51f3240d7a3a29bda436b7ccf7bafba9c6ab1",
+          "characters": 482,
+          "language": "Groovy",
+          "purpose": "Groovy load",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-4.txt",
+          "sha256": "0be45bab950904bf080d48b46a64b0a2c076e85fecc3f833262bf03e723194c9",
+          "characters": 533,
+          "language": "Kotlin",
+          "purpose": "Kotlin load",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-5.txt",
+          "sha256": "5c798d594cd3380deb36ba517fc806472f41c2fb975f892edb9d27b80008a512",
+          "characters": 307,
+          "language": "Groovy",
+          "purpose": "Groovy config",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.code-6.txt",
+          "sha256": "845a371bcc4f4b523402ce23904ddef30aad1f034508b7d836637756b2cd8d78",
+          "characters": 365,
+          "language": "Kotlin",
+          "purpose": "Kotlin config",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-02.inline-codes.private.json",
+        "sha256": "d34d0c99a3ff054915ac5d15ccd7789e9323539b2e4e8e2394a633fa8be90c0c",
+        "count": 30,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [
+        {
+          "ordinal": 1,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/appsigning_googleplayappsigningdiagram_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-1.png",
+          "sha256": "bfd8ab2a43db45c55946a9af77134036889acc66e897a540b344ef5b1232a3c2",
+          "httpStatus": 200,
+          "bytes": 31888,
+          "pixelsReviewed": true,
+          "meaning": "개발 upload키→Google 설치서명키→사용자 흐름이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/projects/project-gradle-configuration.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-2.png",
+          "sha256": "48c91fbc052b87dc1b9048449a4ce49f0fcddd507c2cfdfb631ef41a145da8d7",
+          "httpStatus": 200,
+          "bytes": 111885,
+          "pixelsReviewed": true,
+          "meaning": "Gradle android 아래 signingReport선택이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/keystore-wizard_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-3.png",
+          "sha256": "2ad9c6b36febf6fe0dd9a6e355ed0047fa2226e72a242a2c98fdad41dba93e04",
+          "httpStatus": 200,
+          "bytes": 116208,
+          "pixelsReviewed": true,
+          "meaning": "JKS경로·alias·암호·25년·인증서 입력이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/generate-signed-apk-wizard_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-4.png",
+          "sha256": "a0af61f71ebb9215e124024318c3de050ed4b4e81abd8dca3e266a28fff2ea8d",
+          "httpStatus": 200,
+          "bytes": 117933,
+          "pixelsReviewed": true,
+          "meaning": "module·키입력과 현재 deprecated된 export옵션도 보여요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/generate_signed_bundle_popup-2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-5.png",
+          "sha256": "4f8ae0bfcf46a28a1f3d1d4b6cfb1eb91ce483d0a61ebc5f2b272d9c69dd9fa7",
+          "httpStatus": 200,
+          "bytes": 30989,
+          "pixelsReviewed": true,
+          "meaning": "산출물 locate·analyze 알림이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/add-signing-config_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-6.png",
+          "sha256": "5348d5fe3a9a1aff246f58ca3b5dc7c1b7c6a451dcf4dabdc84636832e703a39",
+          "httpStatus": 200,
+          "bytes": 556,
+          "pixelsReviewed": true,
+          "meaning": "signing configuration 추가버튼이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/project-structure-signing_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-7.png",
+          "sha256": "b654e9f2f59813377114b06d1c4e367839dfb60e23ea82d8ba286beb34ba3385",
+          "httpStatus": 200,
+          "bytes": 101759,
+          "pixelsReviewed": true,
+          "meaning": "Signing탭의 네 키설정 입력이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/project-structure-build-types_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-8.png",
+          "sha256": "25e8f500645acc74e9d5e7bb9a23b39b2e67ec4d41bac33caf7a06fa9bffe697",
+          "httpStatus": 200,
+          "bytes": 112343,
+          "pixelsReviewed": true,
+          "meaning": "release와 signingConfig 선택이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/add-signing-config_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-6.png",
+          "sha256": "5348d5fe3a9a1aff246f58ca3b5dc7c1b7c6a451dcf4dabdc84636832e703a39",
+          "httpStatus": 200,
+          "bytes": 556,
+          "pixelsReviewed": true,
+          "meaning": "signing configuration 추가버튼이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/project-structure-signing_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-7.png",
+          "sha256": "b654e9f2f59813377114b06d1c4e367839dfb60e23ea82d8ba286beb34ba3385",
+          "httpStatus": 200,
+          "bytes": 101759,
+          "pixelsReviewed": true,
+          "meaning": "Signing탭의 네 키설정 입력이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/project-structure-flavors_2-1_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-9.png",
+          "sha256": "2ba92d5d92b4385d10b335dd934b65fc882ed9d8e55499b62c478bedccfd8ef7",
+          "httpStatus": 200,
+          "bytes": 85973,
+          "pixelsReviewed": true,
+          "meaning": "flavor free·paid 별 config예요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/publish/appsigning_selfmanagediagram_2x.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-10.png",
+          "sha256": "554b187f5a0ba9857bf93d241e36cbf1bf3dac93d6a7a09cd51fa58802e050f9",
+          "httpStatus": 200,
+          "bytes": 26479,
+          "pixelsReviewed": true,
+          "meaning": "자체 설치서명키가 동일하게 전달돼요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        }
+      ],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 57,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "Upload versus app signing key, public certificate/fingerprint versus secret, debug expiry, Play enrollment/PEPK/upload registration/reset, Android13 key-upgrade branch, package/certificate update identity, per-flavor configuration and properties examples compared.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    },
+    {
+      "id": "ABD014-03",
+      "requestUrl": "https://developer.android.com/tools/adb?hl=en",
+      "canonicalUrl": "https://developer.android.com/tools/adb",
+      "finalUrl": "https://developer.android.com/tools/adb?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.927722+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2026-09-25 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.source.html",
+      "sourceHash": "cefa4c92833cb89b9e12fde385dfb85f76986fb56d37ba6b6cf924671eefcc5a",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.body.html",
+      "bodyHash": "dba91c7a98569ed6f82f9f7634d64c8a36fa4aca791f453d2222358747100a23",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.body.txt",
+      "textHash": "01dfd42365555940eb064c49a7e3c0ad2b9d49a007ded62f70e900e60fa017b3",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.readable.txt",
+      "readableHash": "7b95723bd45306265ff152e1906d48290cf396319d143cdd0d5ec9cc128133ad",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 34,
+      "bodyHeadingCount": 33,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": null,
+          "originalHeadingHash": "ea60b2b3ebc974badfa7f8993c24fa64ce5511b506aafc6b6aa561db0fdbd3d9",
+          "analysisFinding": "client·host server·device daemon 구조예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "android-cli-card__try-android-cli-to-communicate-with-a-device",
+          "originalHeadingHash": "a82e14dd2a83394eff555ff98570f1180911e5c9a2f136d7ea3d26784e58d19e",
+          "analysisFinding": "본문에 별도 CLI가 연결돼요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "anchor": "cli-title_try-android-cli-to-communicate-with-a-device",
+          "originalHeadingHash": "e55a397cdea9a7ad75d59860a469e80792554f1b49dc91b86a4309f1aa947a8b",
+          "analysisFinding": "CLI 예시는 install·run 등을 표시해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "anchor": "howadbworks",
+          "originalHeadingHash": "3e7b2373542c2b1b53b4dd0c9dfcc91315cb26f07ba20ece7217ec2b96840878",
+          "analysisFinding": "host server는 TCP5037을 사용해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "anchor": "Enabling",
+          "originalHeadingHash": "dbcc0e6a511a82b74ddea06430aa327db54faef67dcf724e7f247d95483d5d6b",
+          "analysisFinding": "USB debugging과 RSA 승인이 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "anchor": "connect-to-a-device-over-wi-fi",
+          "originalHeadingHash": "88ef56efbb94892b8f5d19802fc30c80bcbd6c26a056e0721e366679a86a10e0",
+          "analysisFinding": "Android11+ pairing, Android17+ Wi-Fi2.0예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "wireless-android11-troubleshoot",
+          "originalHeadingHash": "15c9b07c818609467c9a03edd6fb2a55a0647be91f7e347bdf31dc874cf26709",
+          "analysisFinding": "무선 오류는 조건별로 나눠요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h4",
+          "anchor": "check-prereqs",
+          "originalHeadingHash": "f058836ee9290f53b0f442c0072e57959d823c08dd36607e212d82d6e55db10a",
+          "analysisFinding": "동일network와 OS 조건을 확인해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h4",
+          "anchor": "check-adb-setup",
+          "originalHeadingHash": "20889d02f28fd2f8ea7dddb82edde67f2b969b94bb58d5710e9256ce15ba0906",
+          "analysisFinding": "server-status는 version·mDNS를 노출해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h4",
+          "anchor": "check-mdns-support",
+          "originalHeadingHash": "88c51350a843370e2b9f447723a72034d2519f5bd8cab2209619f12cb416ba28",
+          "analysisFinding": "mDNS 발견정보가 비면 network를 점검해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h4",
+          "anchor": "check-adb-wifi-2.0",
+          "originalHeadingHash": "eeb44d0010eeabd78eafcb4577f47b642c88074e0216c03b2ae9771b9fa51157",
+          "analysisFinding": "Wi-Fi2.0은 service-version2.0을 확인해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h4",
+          "anchor": "check-known-issues",
+          "originalHeadingHash": "bbf7edfbfed66a21805ae3feab6fa8f939224d7556e3dce0a61ac38ae354c150",
+          "analysisFinding": "device·host 로그를 함께 요청해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h2",
+          "anchor": "wireless",
+          "originalHeadingHash": "ef4e8fc831aa0b937088477c23507ebf623a56cf17b5dea80338362ea84bdfab",
+          "analysisFinding": "구형경로는 USB→TCP5555 연결이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h2",
+          "anchor": "devicestatus",
+          "originalHeadingHash": "52be79d0634d3388a7cbac937eb1fa2a7694c3fd60d408d46443aca7188fd241",
+          "analysisFinding": "device 상태는 부팅완료를 보장하지 않아요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "anchor": "notlisted",
+          "originalHeadingHash": "b6129cc2fc21ec26208f35a0b8e2ba954a5dea84bffb860ca98006b67f7546b8",
+          "analysisFinding": "odd port와 server 순서 예외예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 15,
+          "tag": "h2",
+          "anchor": "directingcommands",
+          "originalHeadingHash": "9ead1166484908fe2a3dd0cd04c106a092cc1e952b5aef152ca770cf10fc83f1",
+          "analysisFinding": "serial -s가 환경변수를 덮어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 16,
+          "tag": "h2",
+          "anchor": "move",
+          "originalHeadingHash": "5350bceee41a6665c0884f926a3f8ad25a5f379c53f91bc3fccfd89713b8d241",
+          "analysisFinding": "test APK는 -t, split은 install-multiple예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 17,
+          "tag": "h2",
+          "anchor": "forwardports",
+          "originalHeadingHash": "06c503d683bb1912c1658836124dd19e61e8dd75c277ae05ea7d6a1f038d10da",
+          "analysisFinding": "forward는 host·device port를 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 18,
+          "tag": "h2",
+          "anchor": "copyfiles",
+          "originalHeadingHash": "40a98e7e61fa137e2f482181dc21c6778955cc875f9e833efa8b06eeb3256a1b",
+          "analysisFinding": "push·pull은 install과 다른 복사예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 19,
+          "tag": "h2",
+          "anchor": "stopping",
+          "originalHeadingHash": "9035e06ec0c36d75505fde27f574638efa953a1e7e56350a51b09587bb6a616a",
+          "analysisFinding": "kill-server 후 다시 시작할 수 있어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 20,
+          "tag": "h2",
+          "anchor": "issuingcommands",
+          "originalHeadingHash": "9ed6dbd0685f9772e782b79ea37c096a6bb72b9ded2ef159473a392cb3451213",
+          "analysisFinding": "다중기기는 target 지정을 요구해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 21,
+          "tag": "h2",
+          "anchor": "shellcommands",
+          "originalHeadingHash": "1b62dfa5ffde262de87f70a95d1305a816a91f97d83d5e0747e5a8cf58bc8b36",
+          "analysisFinding": "local·remote shell 인용을 구분해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 22,
+          "tag": "h3",
+          "anchor": "am",
+          "originalHeadingHash": "5e368219f0a8c30f2a3e77a7d8e57afb6113d1b5e666db500f4a6a1c4585f974",
+          "analysisFinding": "am start -W가 launch완료를 기다려요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 23,
+          "tag": "h4",
+          "anchor": "IntentSpec",
+          "originalHeadingHash": "e6227fcd94b6dfa9f9f8518fbce454fc64d25de8779f51342e9f4e4aee6060ee",
+          "analysisFinding": "component·extra·permission flag를 지정해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 24,
+          "tag": "h3",
+          "anchor": "pm",
+          "originalHeadingHash": "35f025b9af6c11cf7da33ac2916412b57ba767a4044a17dbdc369e4d80a053a6",
+          "analysisFinding": "pm -r은 데이터보존, -d는 downgrade예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 25,
+          "tag": "h3",
+          "anchor": "dpm",
+          "originalHeadingHash": "7fafdc3efb46c2390762db23ed1ca226853174b47c14f50c4d0e44432d48bf4b",
+          "analysisFinding": "policy owner 명령은 일반 game설치와 달라요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 26,
+          "tag": "h3",
+          "anchor": "screencap",
+          "originalHeadingHash": "2be02ed10fabfbf31a76e45974c1d7c6f3acd3da1d99d42750d11352365b36cf",
+          "analysisFinding": "exec-out은 PNG 원시출력에 사용해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 27,
+          "tag": "h3",
+          "anchor": "screenrecord",
+          "originalHeadingHash": "98a8ff311e30114f4d273778dd49a5194e31be5f453317fecab58d132c8787bd",
+          "analysisFinding": "screenrecord는 audio·rotation 제한이 있어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 28,
+          "tag": "h3",
+          "anchor": "appprofiles",
+          "originalHeadingHash": "5d70612fa4989385c34747004aefe9e6a302699b228a44cd181a76f688fec43e",
+          "analysisFinding": "ART profile 파일조회에는 root가 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 29,
+          "tag": "h3",
+          "anchor": "test_harness",
+          "originalHeadingHash": "a7f9c6e7e20b447ce3db1613eefb2a0981f52a19c93bf43370c72080becb00c0",
+          "analysisFinding": "testharness는 userdata를 초기화해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 30,
+          "tag": "h3",
+          "anchor": "sqlite",
+          "originalHeadingHash": "0cd8666848bf286d951c3d230e8b6e092fde03c3a080e3454467e496e7b14e78",
+          "analysisFinding": "SQLite 접근 예시는 root가 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 31,
+          "tag": "h2",
+          "anchor": "backends",
+          "originalHeadingHash": "17cfafd768f183a87eb2fd77f4b45e6e855ef51de0e6f52046099c95852b479a",
+          "analysisFinding": "v34 Windows기본은 native USB예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 32,
+          "tag": "h2",
+          "anchor": "mdnsBackends",
+          "originalHeadingHash": "404a4c19b9d4198141fb55911ac6948b769b19b3e927b373bf2c58cc1bcabbdb",
+          "analysisFinding": "v37 기본 mDNS는 libadbmdns예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 33,
+          "tag": "h2",
+          "anchor": "burstMode",
+          "originalHeadingHash": "544a1aea44dc9a3a90ec029248329b5c3547c818f0880b0e91f35cfbb9a2fed5",
+          "analysisFinding": "v36 burst는 실험기능·기본off예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [
+        {
+          "ordinal": 1,
+          "rows": 21,
+          "cells": 42,
+          "sha256": "66fc173aff049301e3bdfd717f6c6a0c7228d8eee86330a857f1b272c0ba6c20",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.table-1.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "am명령",
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "rows": 31,
+          "cells": 62,
+          "sha256": "852d871c527ccefab7863ce3c46476c6a13185e4d024c55de3db48e65c41988f",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.table-2.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "pm명령",
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "rows": 8,
+          "cells": 16,
+          "sha256": "d85e566b3e21bda9ccfe7ab47289e1baf6dcc2bc05e3d61f140910522ac98eec",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.table-3.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "dpm명령",
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "rows": 7,
+          "cells": 14,
+          "sha256": "5ade4aafa2e4a68664f188ba5f44415c6c98fdebc12f18d734ce2ef26729c59d",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.table-4.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "screenrecord옵션",
+          "factComparisonPassed": true
+        }
+      ],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-1.txt",
+          "sha256": "77ba43d43447eba5729fa1fcd17c41d8cbd83ab853777d8b311329f95c55b5cf",
+          "characters": 43,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "purpose": "CLI구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-2.txt",
+          "sha256": "3f91c8a6ee14b833b1db802d96ffc521839d1941e0590ea7af5738503dbb6d3a",
+          "characters": 397,
+          "language": [
+            "none"
+          ],
+          "purpose": "mDNS출력",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-3.txt",
+          "sha256": "3db21435422f516a85cb43349411fab6fe83a63b60e823f5f07620794c8ba712",
+          "characters": 16,
+          "language": [
+            "none"
+          ],
+          "purpose": "TCP대기",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-4.txt",
+          "sha256": "4d3f6bec4327f16095557807c84d4ea6309eabcd982ecb4f99b9ed299e9eabd1",
+          "characters": 36,
+          "language": [
+            "none"
+          ],
+          "purpose": "IP연결",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-5.txt",
+          "sha256": "27b958683d03b95df090e3c6380ee7ae2577a725e25c6e49f65afd9033fc1f1d",
+          "characters": 70,
+          "language": [
+            "none"
+          ],
+          "purpose": "연결출력",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-6.txt",
+          "sha256": "d880c98cfa26aaf69db834c02669356ec894eba97943cf4831a982e34afe78aa",
+          "characters": 17,
+          "language": [
+            "none"
+          ],
+          "purpose": "server중지",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 7,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-7.txt",
+          "sha256": "8cdd59c82dfcc76f235e2da84441ee25203cbfcd47adce7c6906055218ef5551",
+          "characters": 20,
+          "language": [
+            "none"
+          ],
+          "purpose": "기기조회",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 8,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-8.txt",
+          "sha256": "ff71120c32b1930222dffcf74cb3ee8fa4bc62a4e8b3e04858ca4896a183b932",
+          "characters": 318,
+          "language": [
+            "none"
+          ],
+          "purpose": "다중기기출력",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 9,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-9.txt",
+          "sha256": "76f21c8be9e9d4bd05df58e66d9534ab3762238e56780b34ee7cfe90b5193ebf",
+          "characters": 186,
+          "language": [
+            "none"
+          ],
+          "purpose": "port실패순서",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 10,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-10.txt",
+          "sha256": "da07c53e1c4bf27df5152b316030a6ddeb03e6bcdb02e647cd06b7b9432f28e2",
+          "characters": 141,
+          "language": [
+            "none"
+          ],
+          "purpose": "port회복순서",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 11,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-11.txt",
+          "sha256": "7a4d5d68bd76198595482c1f8b1b80601a29b0c99801f557fb5ca1d359bbae8e",
+          "characters": 254,
+          "language": [
+            "none"
+          ],
+          "purpose": "serial설치",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 12,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-12.txt",
+          "sha256": "2e93cfb1a53f000167b6370099a889566d7d28c4a468cca3286677f3a6421a4e",
+          "characters": 25,
+          "language": [
+            "none"
+          ],
+          "purpose": "APK설치",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 13,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-13.txt",
+          "sha256": "9422a0a861845b93e61666cbfbfcfe7e8eef7f82911fb16c4660640f1e2c9cef",
+          "characters": 31,
+          "language": [
+            "none"
+          ],
+          "purpose": "TCPforward",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 14,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-14.txt",
+          "sha256": "0efc512e33aef0038269e3ade394611e3ce56f12c7b5339c65420c0ef2677996",
+          "characters": 33,
+          "language": [
+            "none"
+          ],
+          "purpose": "logdforward",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 15,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-15.txt",
+          "sha256": "69f3d92b58837e03f82e07cef0706725465d56c97fcf78afaaece21a84e99f2b",
+          "characters": 23,
+          "language": [
+            "none"
+          ],
+          "purpose": "파일pull",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 16,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-16.txt",
+          "sha256": "dbb1498322414e2e128fb3170103901f855707bdf3b29715ea463e11d9b06193",
+          "characters": 23,
+          "language": [
+            "none"
+          ],
+          "purpose": "파일push",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 17,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-17.txt",
+          "sha256": "05641982abc30b3ef07493f81bb45a8012aedb4b59ff39f18454152968f2689c",
+          "characters": 40,
+          "language": [
+            "none"
+          ],
+          "purpose": "sdcardpush",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 18,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-18.txt",
+          "sha256": "f688a5792e32e580ceb64411d160976806fba6b09dd7877bad3d3310bf51c499",
+          "characters": 42,
+          "language": [
+            "none"
+          ],
+          "purpose": "adb구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 19,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-19.txt",
+          "sha256": "f6a028561af08288976b04a497f1bb2cf289c6e459df6499496fd0c2e93afab7",
+          "characters": 12,
+          "language": [
+            "none"
+          ],
+          "purpose": "adb도움말",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 20,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-20.txt",
+          "sha256": "fea07cb5c55a76ac0cb7dc8731bd9898f890a4f6d07848b6b55869bf80819136",
+          "characters": 53,
+          "language": [
+            "none"
+          ],
+          "purpose": "단일shell",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 21,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-21.txt",
+          "sha256": "ef162e03cf6c5a3f128278d6c47e0ed0527b8a5f7b2fd4d6122a0bb5f26be6c8",
+          "characters": 40,
+          "language": [
+            "none"
+          ],
+          "purpose": "대화shell",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 22,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-22.txt",
+          "sha256": "15870e767744c907d2dc5f81cb65cdb310a96d40a85838295263b737ecbea02c",
+          "characters": 24,
+          "language": [
+            "none"
+          ],
+          "purpose": "device도구조회",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 23,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-23.txt",
+          "sha256": "1a77ee31a23b786221a1d8fa299d47c1b8e3a3a26b1c4865fad3ffd83ed2738a",
+          "characters": 12,
+          "language": [
+            "none"
+          ],
+          "purpose": "am구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 24,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-24.txt",
+          "sha256": "7a6b7612fa4acff86de7783597cc64126c5a046fa29a10e4a3e9f861ad79a27a",
+          "characters": 50,
+          "language": [
+            "none"
+          ],
+          "purpose": "Activity시작",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 25,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-25.txt",
+          "sha256": "ce0a2d9093d87e4d0a1d4f4d65bc3d9cf8ee77160c29281753d3270b731461cb",
+          "characters": 12,
+          "language": [
+            "none"
+          ],
+          "purpose": "pm구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 26,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-26.txt",
+          "sha256": "72c381354aa0d3a3439f77ce529a9da4bf3038f721c0048ec87e6a4bc3f146c9",
+          "characters": 42,
+          "language": [
+            "none"
+          ],
+          "purpose": "uninstall예시",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 27,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-27.txt",
+          "sha256": "99e64f28a3a66b4c53af022b781e2998f40a9e867adc66ad0b8b364f33700d85",
+          "characters": 13,
+          "language": [
+            "none"
+          ],
+          "purpose": "dpm구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 28,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-28.txt",
+          "sha256": "76a04f1731425d6dd3130ddb13ee9036535c0765151c7e05c8564b85b570269a",
+          "characters": 23,
+          "language": [
+            "none"
+          ],
+          "purpose": "host dpm",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 29,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-29.txt",
+          "sha256": "bee77d84d709924bf016545ae5b5e65bc16dc40e92f0110cd4a8df840d03f167",
+          "characters": 20,
+          "language": [
+            "none"
+          ],
+          "purpose": "screencap구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 30,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-30.txt",
+          "sha256": "72123aad597cd5e15f2fefb4257074bac6ace4a5b58b4203c7ca225b1a44c366",
+          "characters": 40,
+          "language": [
+            "none"
+          ],
+          "purpose": "screencap저장",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 31,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-31.txt",
+          "sha256": "c8f1393eee66ea25c74e8188a68e74c89a4d53fa7cc7232aa3cbc85198764112",
+          "characters": 95,
+          "language": [
+            "none"
+          ],
+          "purpose": "capture후pull",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 32,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-32.txt",
+          "sha256": "834642926a980d6d313bce086c1d36340af2c8e640881b7d4d8f72bf3d42f392",
+          "characters": 94,
+          "language": [
+            "none"
+          ],
+          "purpose": "원시PNG",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 33,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-33.txt",
+          "sha256": "1c83abd846a1d4e1d6181896d707e59001439e48a9d9d3cdfc693482879a63b4",
+          "characters": 33,
+          "language": [
+            "none"
+          ],
+          "purpose": "screenrecord구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 34,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-34.txt",
+          "sha256": "b304824214d4974aad856c3a2e2f3bcb0c04d45241a7710a60fbf1e0dcd1d2cc",
+          "characters": 41,
+          "language": [
+            "none"
+          ],
+          "purpose": "video저장",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 35,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-35.txt",
+          "sha256": "00cb552fd583a22577316888d2c6a8c8eb68dbdcf92db0365f58f81d1e82e1f2",
+          "characters": 132,
+          "language": [
+            "none"
+          ],
+          "purpose": "record후pull",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 36,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-36.txt",
+          "sha256": "d7b5b61a7c32cb1aeb3693c3dbbabb44779fe03b844a4c49c0a696f6f22dd7d6",
+          "characters": 48,
+          "language": [
+            "none"
+          ],
+          "purpose": "bitrate",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 37,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-37.txt",
+          "sha256": "dea15a640d457bea33fd21781f8b67023adb1f345bde250f0adad199b56f2ff2",
+          "characters": 45,
+          "language": [
+            "none"
+          ],
+          "purpose": "ARTdump",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 38,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-38.txt",
+          "sha256": "db2509c4127dc057c0740933a4d4564674b873117097dd263d6c78c1a4df85cc",
+          "characters": 46,
+          "language": [
+            "none"
+          ],
+          "purpose": "profilepull",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 39,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-39.txt",
+          "sha256": "ed47a36254afda291c7ec74ac787489a8b6dfb30e66ed712f6741fd06a8ec382",
+          "characters": 34,
+          "language": [
+            "none"
+          ],
+          "purpose": "testharness초기화",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 40,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.code-40.txt",
+          "sha256": "0cbf9013c1f9ae91ebda5ece4cb106a73b8bbee5e95c0664d2e876a62a68d550",
+          "characters": 142,
+          "language": [
+            "none"
+          ],
+          "purpose": "SQLite조회",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-03.inline-codes.private.json",
+        "sha256": "785100ff48bafcf1141e65be0b0bf5b8e6d385780129cc7d3aa620e4a709fe2e",
+        "count": 511,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [
+        {
+          "ordinal": 1,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/run/adb_wifi-wireless_debugging_prompt.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-11.png",
+          "sha256": "b2e31bca971ad1e0781bbdf7530914929b895368b1cea9c40d6f26d2df7bba4b",
+          "httpStatus": 200,
+          "bytes": 87176,
+          "pixelsReviewed": true,
+          "meaning": "network별 wirelessdebugging 허용이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/run/adb_wifi-wireless_debugging_setting.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-12.png",
+          "sha256": "ce42ba62d71090ebb686a1a920eceb111b5743713f91895c028b40ab732880e9",
+          "httpStatus": 200,
+          "bytes": 71979,
+          "pixelsReviewed": true,
+          "meaning": "QR·code pairing과 기기endpoint예요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/run/adb_wifi-cmd_line_pairing.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-13.png",
+          "sha256": "9482c73dda6827451eff1c8dfeca2eaae15e9f1774c3cf305418e80bd3db5053",
+          "httpStatus": 200,
+          "bytes": 15682,
+          "pixelsReviewed": true,
+          "meaning": "pairing code 입력후 success출력이에요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "img",
+          "url": "https://developer.android.com/static/studio/images/run/adb_wifi-quick_settings.png",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/media-14.png",
+          "sha256": "d73e85dd54c899a740d3e885080a4bb0b8f03eea297f2e2dfa8ae8498ba182aa",
+          "httpStatus": 200,
+          "bytes": 113390,
+          "pixelsReviewed": true,
+          "meaning": "wirelessdebugging quicktile 활성화예요.",
+          "actuallyViewedBy": "/root/finish_009_verification",
+          "independentPixelMeaningCompared": true
+        }
+      ],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 78,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "Client-server-daemon, USB/RSA/Wi-Fi/version/mDNS, target/boot status, install/test/split and copy/shell distinctions, all am/pm/dpm/recording tables, testharness/root/backend/burst constraints compared; launch wait does not imply runtime ready.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    },
+    {
+      "id": "ABD014-04",
+      "requestUrl": "https://developer.android.com/tools/logcat?hl=en",
+      "canonicalUrl": "https://developer.android.com/tools/logcat",
+      "finalUrl": "https://developer.android.com/tools/logcat?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.559471+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2024-01-03 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.source.html",
+      "sourceHash": "7ac162bec7b5ab6bd58941d735452bf43b1e93c4ca44a5a8fc9965f844347e32",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.body.html",
+      "bodyHash": "7ee37e49395f3b4e1147426f6772af0aecd5019507ea87c7c843c56401d7240d",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.body.txt",
+      "textHash": "aaef35a1e4c0d6a4105fb06996b7a5c70409a8a4d84be64706baa2abafe79a83",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.readable.txt",
+      "readableHash": "b7f4a7ca6bed1a0794293e3b327b142b55c0fbb6dd171ff4bc60f6d2f0e6884d",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 11,
+      "bodyHeadingCount": 10,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": null,
+          "originalHeadingHash": "bdfe2781dbf81e968bf046a4fe19b1190f055a823072bcbbd51d52ddec253110",
+          "analysisFinding": "logcat은 system·app 로그를 읽어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "Overview",
+          "originalHeadingHash": "b48ca28f8e8504893ddc3b5283905f4c1de7a6c0a90aedfb4a5807d98fd5d068",
+          "analysisFinding": "liblog→logd와 네 필터층이 있어요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "anchor": "Syntax",
+          "originalHeadingHash": "b021724ae550cacab43334328b153d155e888afc30a5a80fb877b271aa5bf1a4",
+          "analysisFinding": "adb logcat은 shell logcat축약이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "options",
+          "originalHeadingHash": "d0db8b5e364b6989e4b8f38a2b3846b87d99a51c1592ebf35d21cc66405a8e39",
+          "analysisFinding": "기기 OS별 옵션·root조건이 달라요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "anchor": "filteringOutput",
+          "originalHeadingHash": "876b52dac7e97e2ae6c21320de6c85cafe9b25bcbec0fc81acdd8eca0b1cc1b4",
+          "analysisFinding": "tag:priority와 *:S로 제한해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "anchor": "outputFormat",
+          "originalHeadingHash": "46046c1d127aacf4c80a918762c3b4011a04005a2cae3fb198d95407f820e091",
+          "analysisFinding": "기본 threadtime은 PID·TID를 남겨요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h2",
+          "anchor": "formatmodify",
+          "originalHeadingHash": "d34e806e167333888e65d650c2a11092adb0cde7ff4fcdc1414b3122e2d0e96a",
+          "analysisFinding": "한 format과 여러 modifier예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "anchor": "alternativeBuffers",
+          "originalHeadingHash": "a02f791881194e934fd104b930bba05a5cad27045631f3e6b94384e2a9ad6699",
+          "analysisFinding": "default buffer는 main·system·crash예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h2",
+          "anchor": "logClass",
+          "originalHeadingHash": "9ad854f425d0d0864c481f078e17da40fd69252fb43f2da8f7cee8ed240d6ae6",
+          "analysisFinding": "Log 호출이 로그에 표시돼요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "anchor": "kotlin",
+          "originalHeadingHash": "c78f6c97923e81a2f04f09c5e87b69e085c1e47066a1136b5f590bfde696e2eb",
+          "analysisFinding": "Kotlin은 보간 문자열 예제예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h3",
+          "anchor": "java",
+          "originalHeadingHash": "c1ba60ce13586503a21a05e9ef0bb959f1ba74a1d37bcfcbf5fc6bfb548f684d",
+          "analysisFinding": "Java는 문자열연결 예제예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-1.txt",
+          "sha256": "ce46cdc9e8139c7a13dfa9e689c2176b32f00ae9ae8813727bd95d8057e5b099",
+          "characters": 55,
+          "language": [
+            "none"
+          ],
+          "purpose": "logcat구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-2.txt",
+          "sha256": "8b527f5da3b76bebc8c8280ca8f9d36a3a7746438c7e8cfb0fd8beb90378ff28",
+          "characters": 27,
+          "language": [
+            "none"
+          ],
+          "purpose": "device도움말",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-3.txt",
+          "sha256": "19bb1226aff0ffae7f4e728ed14b180d9ff2da3325990331d1dfa2783826281e",
+          "characters": 88,
+          "language": [
+            "none"
+          ],
+          "purpose": "brief출력",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-4.txt",
+          "sha256": "04565cafa4c8f4043e90a271045fc0559098bc8ecdac75e46a3356fcc35b9a10",
+          "characters": 42,
+          "language": [
+            "none"
+          ],
+          "purpose": "tag필터",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-5.txt",
+          "sha256": "51235904e4faa6caaf8986ecaf59fb77e13c833b27ea17e08c412517dc72cc88",
+          "characters": 16,
+          "language": [
+            "none"
+          ],
+          "purpose": "warning필터",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-6.txt",
+          "sha256": "60ff6a4f7664823f4bcf3d5b7b47d4381f00335fa6d8026b913d6a3901e67d82",
+          "characters": 57,
+          "language": [
+            "none"
+          ],
+          "purpose": "host환경필터",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 7,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-7.txt",
+          "sha256": "5e4c2bae9dc77017e950487c859b3e7b29bff7d5350c6061f686dfe7f2825da4",
+          "characters": 28,
+          "language": [
+            "none"
+          ],
+          "purpose": "format구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 8,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-8.txt",
+          "sha256": "6b02ac9b5329cfe858d8f21f4f5db0471bc973a1de53ec8d5f959771e5c10980",
+          "characters": 22,
+          "language": [
+            "none"
+          ],
+          "purpose": "threadformat",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 9,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-9.txt",
+          "sha256": "735f7493829ada7e4f9051c6534ba53257072efd8fc79f12752cf068e7ee0396",
+          "characters": 31,
+          "language": [
+            "none"
+          ],
+          "purpose": "all버퍼modifier",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 10,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-10.txt",
+          "sha256": "e13e6dfb0eea15b385e657c3910913beb9447af18c3de4261219b76fb62397db",
+          "characters": 28,
+          "language": [
+            "none"
+          ],
+          "purpose": "buffer구문",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 11,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-11.txt",
+          "sha256": "88410b3271879212350d653cae4494008b3ffb69f708a5c967a7dd2e1af786a7",
+          "characters": 21,
+          "language": [
+            "none"
+          ],
+          "purpose": "radio버퍼",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 12,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-12.txt",
+          "sha256": "ade378dcece63c309d0b7adf2d2d0940943e0911139f5673ab81a32e382bb8aa",
+          "characters": 35,
+          "language": [
+            "none"
+          ],
+          "purpose": "다중버퍼",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 13,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-13.txt",
+          "sha256": "1ebd58a935688aad3a1d05ae8b90a1bb956f2a55a909744631c2b4c0cfe03f9d",
+          "characters": 29,
+          "language": [
+            "none"
+          ],
+          "purpose": "쉼표버퍼",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 14,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-14.txt",
+          "sha256": "7b37b4b15d8b66648a73df7bab3fadad4a8c1a58a0f0cd1a438081989d9a121e",
+          "characters": 68,
+          "language": "Kotlin",
+          "purpose": "Kotlin로그",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 15,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-15.txt",
+          "sha256": "cdcc8d94dcda7be6082946694fb9a7cb8c44c8a43c3618375baa47d8ebefeb77",
+          "characters": 71,
+          "language": "Java",
+          "purpose": "Java로그",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 16,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.code-16.txt",
+          "sha256": "5ee9e9a301238fae3ce68ec26a21c4f95ac61723961421cebff9be202bf9d6ee",
+          "characters": 60,
+          "language": [
+            "none"
+          ],
+          "purpose": "로그출력",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-04.inline-codes.private.json",
+        "sha256": "d79860e4fabf3447894d3317114038a69eb66225bc215840fd10260e55e64267",
+        "count": 125,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 11,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "Logging buffers and four filter stages, priorities/shell/local environment, output/modifiers, Kotlin/Java/output examples compared; no logs does not prove successful execution; guide calls are not formal API declaration closure.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    },
+    {
+      "id": "ABD014-05",
+      "requestUrl": "https://developer.android.com/ndk/guides/abis?hl=en",
+      "canonicalUrl": "https://developer.android.com/ndk/guides/abis",
+      "finalUrl": "https://developer.android.com/ndk/guides/abis?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.553794+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2026-05-15 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.source.html",
+      "sourceHash": "71ffcdc18d7e0cbb2699dc4bb508272524d4632aaa11b6bcc391f7c3aacd4716",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.body.html",
+      "bodyHash": "7fed84eafbd81e68edd056ba954b494be97f061db751ac92ff9e8ad00848c924",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.body.txt",
+      "textHash": "a2c9642da833559d70805e61723df11d84fd01cd06eb9a2db8389349d93c4579",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.readable.txt",
+      "readableHash": "d5ba9f91ca14af82cf0a0a355fe427f2f7d144db99aa4e6b6050116ac7ec9321",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 22,
+      "bodyHeadingCount": 21,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": null,
+          "originalHeadingHash": "73762373aa82ce373f1b75189fb3b2ea6a2c91aef2a45dcce8907a4875fae0ce",
+          "analysisFinding": "ABI는 CPU·호출규약·ELF까지 포함해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "sa",
+          "originalHeadingHash": "05063fc87c0908d3ba03fcd5a78dd2f67bfc91708ce6c6e9ecae2d6a44cab79d",
+          "analysisFinding": "현재표는 네 ABI를 구분해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "anchor": "v7a",
+          "originalHeadingHash": "4c5779e5fc4b104e5fd453ae54998ba5a7f2874ab1bc9a7b8acecdb7fdc67f46",
+          "analysisFinding": "v7a softfp는 인수전달 규약이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "arm64-v8a",
+          "originalHeadingHash": "90e22382780996116ebcd17de5d9a2add6ee8b44112f2fe5d332a1f0516a9048",
+          "analysisFinding": "arm64 x18은 platform예약 register예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "anchor": "x86",
+          "originalHeadingHash": "13d6a668eb0789a68e20ff5b93a5fd42981d81c14f9fb6a0756a9368b8e2037e",
+          "analysisFinding": "x86 추가명령에는 runtime fallback이 필요해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "86-64",
+          "originalHeadingHash": "7520b5a1b312efde4fd7e2793ef4bc0cf8f1c235f778d203ab7216a0e31b3880",
+          "analysisFinding": "x86_64 표는 v2기준을 표시해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h2",
+          "anchor": "gc",
+          "originalHeadingHash": "68dd9950b8a824072df95e05a62368c22146c17497532d3c4135b002236fcbe5",
+          "analysisFinding": "fat APK와 split의 tradeoff예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "anchor": "gradle",
+          "originalHeadingHash": "61212fa8d6ea11d9fdeda08841646ad1d37a810e1531e1d353e184a0bf40c2a2",
+          "analysisFinding": "Gradle abiFilters로 타깃을 제한해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "ndk-build",
+          "originalHeadingHash": "6a22c7fdf6ba8842d98f45d899c0d882f8bd1817ba9c2c8fb7a63fc898c7c7e3",
+          "analysisFinding": "ndk-build는 APP_ABI를 사용해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "anchor": "cmake",
+          "originalHeadingHash": "e7efda826b6d097e47d7cb2cd6b1cf126084197d7834e7b022048183509c774b",
+          "analysisFinding": "CMake는 호출당 하나 ABI예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "anchor": "am",
+          "originalHeadingHash": "3dbc4654a45b8038d2b8da02ad29ba1b2605a21e238a245bb4fa0937c6c9f72d",
+          "analysisFinding": "native package와 device ABI가 대응해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h3",
+          "anchor": "native-code-in-app-packages",
+          "originalHeadingHash": "15ebd774609f95e0e13aa49706d6f597166eed43849212fad9b467908ad38ff6",
+          "analysisFinding": "APK 안 lib/ABI 경로를 요구해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "anchor": "android-platform-abi-support",
+          "originalHeadingHash": "388360593b7fa52974562b0ce6f8b59e1c2ca4c4ce1cfbd6db40ec425f5dc2b1",
+          "analysisFinding": "device primary·secondary ABI를 선택해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "anchor": "aen",
+          "originalHeadingHash": "9aa5c63bcbd2b7d70dad74df4070d0872e101b5c47842455f1c81b317da68340",
+          "analysisFinding": "라이브러리 누락은 설치후 crash가능해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "anchor": "kotlin",
+          "originalHeadingHash": "c78f6c97923e81a2f04f09c5e87b69e085c1e47066a1136b5f590bfde696e2eb",
+          "analysisFinding": "Kotlin 예제는 nativeLibraryDir를 조회해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 15,
+          "tag": "h3",
+          "anchor": "java",
+          "originalHeadingHash": "c1ba60ce13586503a21a05e9ef0bb959f1ba74a1d37bcfcbf5fc6bfb548f684d",
+          "analysisFinding": "Java도 같은 directory를 조회해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 16,
+          "tag": "h2",
+          "anchor": "armv9_enabling_pac_and_bti_for_cc",
+          "originalHeadingHash": "f805fd9db1eea73da2a263aaf7ccec9774128593d6e04b20b2dca58f56f45334",
+          "analysisFinding": "PAC/BTI 보호는 ARMv9·64bit조건예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 17,
+          "tag": "h3",
+          "anchor": "build_changes",
+          "originalHeadingHash": "09fb13a3545abde9cd28baed05b19419581af6df24c07ae15ac4f66b9a79edb0",
+          "analysisFinding": "CFI와 complementary 보호예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "anchor": "ndk-build_1",
+          "originalHeadingHash": "6a22c7fdf6ba8842d98f45d899c0d882f8bd1817ba9c2c8fb7a63fc898c7c7e3",
+          "analysisFinding": "module별 branch protection설정이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "anchor": "cmake_1",
+          "originalHeadingHash": "e7efda826b6d097e47d7cb2cd6b1cf126084197d7834e7b022048183509c774b",
+          "analysisFinding": "target별 compile option설정이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 20,
+          "tag": "h3",
+          "anchor": "other-build-systems",
+          "originalHeadingHash": "359879b755bb3c83f68262fe869720f5aa7b8f50128e59268b9acf8939f6852b",
+          "analysisFinding": "arm64 compile flag이며 link불필요예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 21,
+          "tag": "h3",
+          "anchor": "pac-bti-troubleshooting",
+          "originalHeadingHash": "c3af076f92c5ed8dcb0d0b0d36dd120bc31b68264efea96cf8019ca19f1c13a3",
+          "analysisFinding": "혼합BTI·구OpenSSL·DRM을 점검해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [
+        {
+          "ordinal": 1,
+          "rows": 5,
+          "cells": 15,
+          "sha256": "4ce0f9dc221d4e193b8b3ed9da67b7af8a4dd805df867242506f05c63d181fa9",
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.table-1.json",
+          "entireTableCellsActuallyRead": true,
+          "analysisPurpose": "지원 ABI·instruction set",
+          "factComparisonPassed": true
+        }
+      ],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-1.txt",
+          "sha256": "d4f6eea2a472194c90cd76281a7b3d70c5da29cd09dff161c5974e73784d4637",
+          "characters": 107,
+          "language": "scdoc",
+          "purpose": "abiFilters",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-2.txt",
+          "sha256": "fb955276fc316c88902fe27fd1959eca1481feca3a54619abf33b89a79f8defe",
+          "characters": 187,
+          "language": "Makefile",
+          "purpose": "APP_ABI",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-3.txt",
+          "sha256": "0b8b20eb2c1860aca728535d5aeb6685f5c97e66c7380f3468ccec89d1264337",
+          "characters": 137,
+          "language": "CMake",
+          "purpose": "CMakeABI",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-4.txt",
+          "sha256": "f798c1bbfcd4b0eac8a279618e0bbf5806ae8ac8bee64164af9700df5e579b9c",
+          "characters": 25,
+          "language": [
+            "none"
+          ],
+          "purpose": "lib경로",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-5.txt",
+          "sha256": "cd1c626ba22f3527f6940c2f1f9259a933d7c7960bda37a4103350b6ddcbf347",
+          "characters": 94,
+          "language": [
+            "none"
+          ],
+          "purpose": "fatAPK경로",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-6.txt",
+          "sha256": "78d0a0762cbd2f4d73703fcc27c140b22579e415f7eb9170f47c59235b6085e0",
+          "characters": 46,
+          "language": [
+            "none"
+          ],
+          "purpose": "강제ABI설치",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 7,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-7.txt",
+          "sha256": "a4298b9151936327d5d9df2833101a1c3f7d3be3c27dd84bf9538e37ee1eb886",
+          "characters": 32,
+          "language": [
+            "none"
+          ],
+          "purpose": "primary경로",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 8,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-8.txt",
+          "sha256": "eabcd2f7f4b024c064dd0e2496df392cb725b0eacb252bca42d0d8736dadb5f9",
+          "characters": 34,
+          "language": [
+            "none"
+          ],
+          "purpose": "secondary경로",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 9,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-9.txt",
+          "sha256": "21e1933e0f58b508790e7c720573bb41ce0244b1174572e8f05913ab6bd830d7",
+          "characters": 330,
+          "language": "Kotlin",
+          "purpose": "Kotlin librarydir",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 10,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-10.txt",
+          "sha256": "29ec2c31406e24e3c5659164aa883a2db0b3e77aab31d3c7a669d9c69f521bd2",
+          "characters": 352,
+          "language": "Java",
+          "purpose": "Java librarydir",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 11,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.code-11.txt",
+          "sha256": "4ff92e6fbbf607b162e29bff9ef8dbded5672e0fe33b0062e41889ed5b368101",
+          "characters": 263,
+          "language": [
+            "none"
+          ],
+          "purpose": "ELF note조회",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-05.inline-codes.private.json",
+        "sha256": "f7123e578f0d93baef1bc07feb270bcc3e50321f2da6be2ce2652268d5d130f2",
+        "count": 35,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 53,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "ABI table/calling conventions/endianness/ELF/mangling, CPU specifics/build-system differences/fat APK/split/native library selection, install versus runtime crash, PAC/BTI and exceptions re-read. 012 body overlap independently matched.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    },
+    {
+      "id": "ABD014-06",
+      "requestUrl": "https://developer.android.com/games/agdk/game-activity/get-started?hl=en",
+      "canonicalUrl": "https://developer.android.com/games/agdk/game-activity/get-started",
+      "finalUrl": "https://developer.android.com/games/agdk/game-activity/get-started?hl=en",
+      "httpStatusCached": 200,
+      "contentTypeCached": "text/html; charset=utf-8",
+      "retrievedAt": "2026-10-04T06:00:43.899192+00:00",
+      "edition": {
+        "lastUpdated": [
+          "Last updated 2026-09-28 UTC"
+        ],
+        "version": "Android Developers unversioned web guide; no pinned SDK/API edition"
+      },
+      "sourcePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.source.html",
+      "sourceHash": "2351b9d7af2a54492b21641087dc60f2b1b08141ab1c3faaddefe5c490431521",
+      "bodyPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.body.html",
+      "bodyHash": "904a27ab1d27f84e7593543ce7fe6513a9cf4382702795f3efdf4ff175e3a063",
+      "textPath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.body.txt",
+      "textHash": "85cf6aeef53d6e691816025af33e63186da447a9935d47f1df5045b3224195c5",
+      "wholeOriginalTechnicalTextActuallyRead": true,
+      "readablePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.readable.txt",
+      "readableHash": "613d620c5d26573b82122fe33595ef6afd7ee2821a806ec992eb9daf1b24ee5b",
+      "readableContainsEveryPreAndIdenticalNormalizedProse": true,
+      "unheadedIntroductionAndEndOfBodyRead": true,
+      "headingCountIncludingTitle": 11,
+      "bodyHeadingCount": 11,
+      "sections": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "anchor": "get_started_with_gameactivity",
+          "originalHeadingHash": "e655ff4b3004a068424cfabb29884a8c8efd49438501b90608cfaf0842d3f4b4",
+          "analysisFinding": "GameActivity는 C/C++ game진입을 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "before-start",
+          "originalHeadingHash": "74e492d5d0df0babb6b2dce8690ab0041564fafa87e3007502c04d218c4a1e30",
+          "analysisFinding": "distribution release는 별도 확인이에요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "anchor": "build-setup",
+          "originalHeadingHash": "21216808bfef8483762da4a54f30d51adba81c038f6ae59d5be535d21fec86a6",
+          "analysisFinding": "AAR·Prefab·AGP4.1+조건을 제시해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "static-library",
+          "originalHeadingHash": "82f7a479f37d5c25eaf604999dcd07aebd99b4e3570bd712e5c827f4cf9e18a4",
+          "analysisFinding": "1.2.2+ static library를 권장해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "anchor": "source-code",
+          "originalHeadingHash": "bf046c7395cb38ee8549eb538ef0681c1a0aa736b2bf36b548420a968fdb7787",
+          "analysisFinding": "source경로는 세 source와 android를 연결해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "anchor": "how_android_launches_your_activity",
+          "originalHeadingHash": "ef6a7e1b384f9a7017cdde60542e5678ddb190c50d75e2090ccda6188c3de727",
+          "analysisFinding": "Android가 lifecycle callback으로 시작해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "android_manifest",
+          "originalHeadingHash": "b95576403c528952705fea58d7d9b22100ed9467f0bbb72cd429a985557bac71",
+          "analysisFinding": "manifest는 ID·permission·native명도 담아요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "anchor": "implement-gameactivity",
+          "originalHeadingHash": "2899e911ccd7abc8c1ea3b71453c78678f656b5892b8c6fd7509b3aa3e42700d",
+          "analysisFinding": "loadLibrary명과 manifest명을 일치시켜요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "implement-android-main",
+          "originalHeadingHash": "8eb895eb10fcb4970201d119bcfe12e4d6090676abcf2690bbc8778eefaf3fbc",
+          "analysisFinding": "GameActivity glue는 별도 thread를 사용해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "anchor": "handle-events",
+          "originalHeadingHash": "48b9de40e132c7db463c9b2fb4168a4f8da7b382871467395c460995d1d206b2",
+          "analysisFinding": "swap후 처리·clear하며 inputQueue를 제거해요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "anchor": "additional-resources",
+          "originalHeadingHash": "2c30c23bb265671ad0381c90d62fd5ccd24bfd1a6b10f97c6688c51bf1a80728",
+          "analysisFinding": "release·reference·sample은 후속읽기예요.",
+          "independentlyReadCompared": true,
+          "factComparisonPassed": true
+        }
+      ],
+      "tables": [],
+      "codes": [
+        {
+          "ordinal": 1,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-1.txt",
+          "sha256": "b6a04f017917de333734141c77ee068ec205776bb5e6b04ed3ab5796c7d5a164",
+          "characters": 34,
+          "language": "Groovy",
+          "purpose": "prefab활성",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 2,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-2.txt",
+          "sha256": "c0fed77848fcf583d53e768d4766d3433ad76ba0d9d859aa24ce277c1687feee",
+          "characters": 28,
+          "language": "Groovy",
+          "purpose": "prefab판본예시",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 3,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-3.txt",
+          "sha256": "1b26dcf2514a175c825db8b99ffa3c33dfd044079c10cda5141c54486299d446",
+          "characters": 138,
+          "language": "Makefile",
+          "purpose": "static링크",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 4,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-4.txt",
+          "sha256": "8ec8051cae1b9c75817e9584775ca3ac3e780cdc044dc703c87a29d17609c4f6",
+          "characters": 112,
+          "language": "Makefile",
+          "purpose": "source링크",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 5,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-5.txt",
+          "sha256": "238cbf3084433491c0d15bc06fee1b5f99b6c1cc3323619c0e5c81cbd2e404c8",
+          "characters": 107,
+          "language": "Java",
+          "purpose": "Activity상속",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 6,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-6.txt",
+          "sha256": "e45bbf026c945685142ac15db1df3c865e3d10473eb4a57d9c3e6c70bf7da30b",
+          "characters": 283,
+          "language": "Java",
+          "purpose": "native로드",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 7,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-7.txt",
+          "sha256": "67f430c1d8eb1e18f0af88f00a86563c323996ade36a7842d8f9ef54d170a400",
+          "characters": 80,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "purpose": "manifest명",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 8,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-8.txt",
+          "sha256": "2dbd6fc437691df575cf1ee4ecdf710d400d983293b498b7b2429a8935473782",
+          "characters": 275,
+          "language": "C++",
+          "purpose": "android_main예시",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 9,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-9.txt",
+          "sha256": "9806b597f381e5c8c37a29378a06f4b32405724eab9145cd61a307064bb2d949",
+          "characters": 783,
+          "language": "C++",
+          "purpose": "game loop예시",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 10,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-10.txt",
+          "sha256": "d984a5511b8240df717b3534fd1a0a2dfa7ceb45777780111d6c3f2ed7063df3",
+          "characters": 3295,
+          "language": "C++",
+          "purpose": "motion처리",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        },
+        {
+          "ordinal": 11,
+          "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.code-11.txt",
+          "sha256": "4ef051a7f3c3d8a6016bb590d58bbc58f36746d63610b4c02a2cf86f766efacd",
+          "characters": 39,
+          "language": "C++",
+          "purpose": "queue정리예시",
+          "wholeBlockActuallyRead": true,
+          "independentlyCompared": true,
+          "executed": false,
+          "formalOverloadCount": 0
+        }
+      ],
+      "inlineCodeInventory": {
+        "privatePath": "native/build/reference-corpus/android-build-deploy-batch-014/ABD014-06.inline-codes.private.json",
+        "sha256": "54220052c1fa14e8a703633ecd95ff5c97fa43a76230e23670863dea193f7c5c",
+        "count": 77,
+        "allInlineOccurrencesActuallyRead": true
+      },
+      "media": [],
+      "linkedTargetsReadInherited": false,
+      "linkedTargetCount": 52,
+      "sourceFactVersusAnalysisComparisonPassed": true,
+      "strictVerified": false,
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "readScope": "Entire pinned source-equivalent readable technical body including unheaded introduction and end, every section/table cell/pre/inline code/language variant. Original source body/text/heading/table/pre/inline/link/media bytes independently recalculated. Every associated image unique original directly viewed; duplicated occurrences retained. External linked bodies not inherited.",
+      "semanticComparison": "GameActivity API19/AAR/Prefab/AGP/static/source/library/manifest/load/entry/thread/polling/destroy/input flow read. inputBuffer/mApp clear argument and _hand/_handle handler differences preserved as source inconsistencies, not valid overloads.",
+      "apiGuideVersusFormalReferenceSeparated": true,
+      "sourceFactsAndHBDesignSeparated": true,
+      "ledgerPromotion": false
+    }
+  ],
+  "abiOverlap": {
+    "priorAnalysisFile": "docs/research/mobile-editor-body-012.json",
+    "priorBodyFile": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.body.html",
+    "priorBodyHash": "7fed84eafbd81e68edd056ba954b494be97f061db751ac92ff9e8ad00848c924",
+    "currentBodyHash": "7fed84eafbd81e68edd056ba954b494be97f061db751ac92ff9e8ad00848c924",
+    "sameBodyBytes": true,
+    "priorHeadingUnit": "article-body h2/h3 only21",
+    "currentHeadingUnit": "title including external h1 plus body h2/h3 =22",
+    "uniqueNewBodies": 5,
+    "rereadBodies": 1
+  },
+  "guideEntry": {
+    "source": "ABD014-06",
+    "preOrdinal": 8,
+    "signature": "void android_main(struct android_app* state);",
+    "language": "C++ with C linkage",
+    "signatureRead": true,
+    "guideExampleOnly": true,
+    "formalReferenceComplete": false,
+    "ownershipLifetimeFailureUnknown": true,
+    "guideSeparateEventThreadFactConfirmed": true,
+    "allEntryAndCallbackThreadContractsVerified": false
+  },
+  "sourceInconsistenciesPreserved": [
+    {
+      "id": "ABD014-U03-motion-clear",
+      "pageId": "ABD014-06",
+      "preOrdinals": [
+        10,
+        11
+      ],
+      "argumentTokens": [
+        "inputBuffer",
+        "mApp"
+      ],
+      "sameNamedCallsConvertedToValidFormalOverloads": false,
+      "requiresPinnedHeaderOrImplementation": true,
+      "analysisCorrectlyMarksUnresolved": true
+    },
+    {
+      "id": "ABD014-U03-handler",
+      "pageId": "ABD014-06",
+      "proseToken": "_hand_cmd_proxy",
+      "preOrdinal": 9,
+      "codeToken": "_handle_cmd_proxy",
+      "sourceSpellingRepairedOrHidden": false,
+      "analysisCorrectlyMarksUnresolved": true
+    },
+    {
+      "id": "ABD014-U04-export-picture",
+      "pageId": "ABD014-02",
+      "mediaOrdinal": 4,
+      "observedExportEncryptedKeyOption": true,
+      "deprecatedProseRead": true,
+      "imageTreatedAsCurrentToolDefault": false
+    }
+  ],
+  "mediaObservationScope": "Original pixels14 for16 source IMG occurrences: app-signing12 occurrences including add/signing-image duplicate2; adb wireless4. Developer/upload/Google/app-signing key flows; Gradle signingReport; JKS/alias/password/validity/certificate; module/key export; locate/analyze; add/signing/release/flavor configuration; own-signing flow; wireless trust/QR-code-pairing/endpoint/success/quicktile viewed. Snapshot field/example values not current SDK defaults or live GUI.",
+  "hbComparison": {
+    "currentCodeActuallyRead": [
+      "prototype/build-profile.js entire",
+      "tools/build-game.mjs entire",
+      "docs/AI_ENGINE_API.md build lines181-228 and related revision context"
+    ],
+    "pinnedCodeArtifacts": [
+      {
+        "file": "docs/AI_ENGINE_API.md",
+        "sha256": "a6f41db430ca4b7c9375aafb6d01b71a8f22758063f4b4e9bf00863893f6e916",
+        "readScope": "build section lines181-228 and earlier common revision/command context"
+      },
+      {
+        "file": "prototype/build-profile.js",
+        "sha256": "00c1cccd088346f34d4586f4660ad2801069579c838fa10d55d5cd1843344d95",
+        "readScope": "full file read only"
+      },
+      {
+        "file": "tools/build-game.mjs",
+        "sha256": "c734cd980eb0984b3f1dfcb0709c5f34b6627c0f08bd362ebbdd11c39c9efe49",
+        "readScope": "full file read only"
+      }
+    ],
+    "currentWindowsBuildDoesNotProveAndroid": true,
+    "mobileGameShellDoesNotProveEditorAuthoring": true,
+    "requirementsAnd011ReadAsContextOnly": true,
+    "hbCapabilitySnapshotJobArtifactSigningIdentityFieldsAreDesignCandidates": true,
+    "sourceFactsVersusHBInferenceSeparated": true
+  },
+  "linkInventory": {
+    "sourceHrefOccurrences": 300,
+    "allResolvedUrlsMatchAuthor": true,
+    "readInherited": false,
+    "frozenTargetFragmentOccurrencesChecked": 61,
+    "frozenAnchorIssues": 1,
+    "supplementaryIssues": [
+      {
+        "id": "ABD014-VLINK01",
+        "kind": "frozen_target_anchor_missing",
+        "source": "ABD014-02",
+        "url": "https://developer.android.com/studio/publish/app-signing#google-play-app-signing",
+        "anchorExistsInFrozenTarget": false,
+        "actualExistingSectionAnchor": "app-signing-google-play",
+        "officialReplacementConfirmed": false,
+        "freshHttp404Confirmed": false,
+        "authorAnalysisFactFailure": false,
+        "disposition": "Reported to root; author files unchanged; pending canonical/replacement confirmation."
+      }
+    ],
+    "externalLiveLinksChecked": false
+  },
+  "preservedUnresolvedGroups": [
+    "ABD014-U01 version/SDK compatibility/full denominator",
+    "ABD014-U02 formal native/log/glue/looper API thread/ownership/lifetime/errors",
+    "ABD014-U03 source clear-argument/handler inconsistencies",
+    "ABD014-U04 signing scheme/lineage/bundletool/error closure",
+    "ABD014-U05 application identity/version/update/storage",
+    "ABD014-U06 native ABI/STL/JNI/16KB/GPU/lifecycle/startup proof",
+    "ABD014-U07 error registry/device reproduction",
+    "ABD014-U08 editor packaging/local authoring capability",
+    "ABD014-U09 strict independent verification/full gate"
+  ],
+  "independentVerificationGroupDisposition": "ABD014-U09 bounded source-versus-analysis semantic comparison is now recorded; author files remain unchanged and strict ledger/API/SDK/runtime closure is still pending.",
+  "supplementaryUnresolved": [
+    {
+      "id": "ABD014-VLINK01",
+      "kind": "frozen_target_anchor_missing",
+      "source": "ABD014-02",
+      "url": "https://developer.android.com/studio/publish/app-signing#google-play-app-signing",
+      "anchorExistsInFrozenTarget": false,
+      "actualExistingSectionAnchor": "app-signing-google-play",
+      "officialReplacementConfirmed": false,
+      "freshHttp404Confirmed": false,
+      "authorAnalysisFactFailure": false,
+      "disposition": "Reported to root; author files unchanged; pending canonical/replacement confirmation."
+    }
+  ],
+  "result": {
+    "limitedOriginalBodyVersusAnalysisComparisonPassed": true,
+    "finalSemanticComparisonFailures": [],
+    "pinnedStructureAndHashComparisonFailures": [],
+    "sourceLinkClosurePassed": false,
+    "strictVerified": false,
+    "ledgerPromotion": false,
+    "fullCorpusDenominator": null,
+    "fullApiDenominator": null,
+    "discoveryClosed": false,
+    "wholeCorpusGatePassed": false,
+    "staleIfAnyPinnedSourceBodyAnalysisMediaArtifactChanges": true
+  },
+  "prohibitedActionsPerformed": {
+    "authorFilesModified": false,
+    "privateEvidenceModified": false,
+    "engineEdits": false,
+    "guiExecuted": false,
+    "sdkInstalled": false,
+    "buildAdbLogcatEmulatorExecuted": false,
+    "deviceCommandsExecuted": false,
+    "testsRun": false,
+    "networkRequests": false,
+    "sharedStatusManifestLedgerToolsEdits": false,
+    "commits": false,
+    "originalFullTablesCodeFontOrImagesPubliclyCopied": false
+  },
+  "ownedFilesWritten": [
+    "docs/research/ANDROID_BUILD_DEPLOY_VERIFICATION_014.md",
+    "docs/research/android-build-deploy-verification-014.json"
+  ],
+  "status": "Bounded independent semantic comparison passed, one frozen source anchor issue added; strict ledger verified/promotions0 and whole corpus/API gate not passed."
+}

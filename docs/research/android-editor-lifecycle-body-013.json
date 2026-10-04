@@ -1,0 +1,1768 @@
+{
+  "schemaVersion": 1,
+  "batchId": "android-editor-lifecycle-013",
+  "phase": "research_only",
+  "reader": "/root/android_editor_lifecycle_013",
+  "date": "2026-10-04",
+  "writtenAt": "2026-10-04T06:10:03.236466+00:00",
+  "analysisReport": "docs/research/ANDROID_EDITOR_LIFECYCLE_BODY_013.md",
+  "counts": {
+    "fetchedArticles": 5,
+    "wholeTechnicalBodiesReviewed": 5,
+    "wholeTextPartialMediaBodies": 0,
+    "partialBodies": 0,
+    "technicalAndResourceHeadingsRead": 55,
+    "publisherRecommendationHeadingsReadSeparately": 2,
+    "rawArticleHeadingCount": 57,
+    "wholePreBlocksRead": 24,
+    "tablesRead": 3,
+    "tableRowsIncludingHeadersRead": 30,
+    "tableCellsRead": 79,
+    "articleRasterMediaFound": 1,
+    "articleRasterMediaRead": 1,
+    "unreadArticleRasterMedia": 0,
+    "iframeCount": 0,
+    "inlineSvgCount": 0,
+    "videoCount": 0,
+    "wholeFormalApisRead": 0,
+    "ledgerPromotions": 0,
+    "independentlyVerified": 0,
+    "unresolvedIssueGroups": 12,
+    "linkedReferenceOccurrences": 133,
+    "distinctLinkedReferenceUrlIdentities": 77
+  },
+  "denominators": {
+    "androidWholeDocumentation": "unknown",
+    "linkedApiUnits": "unknown",
+    "linkedApiOverloads": "unknown",
+    "androidxVersions": "unknown",
+    "deviceCapabilityMatrix": "unknown"
+  },
+  "baseline": "English nonversioned official Android guides with publisher date and byte snapshots pinned; named API level/library version conditions are per-section facts, not a selected complete platform edition.",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/ANDROID_EDITOR_LIFECYCLE_BODY_013.md",
+      "sha256": "15dc15f825bb7d5a3854690a514d2611a2dd7a90954cd5afa42afb3081633853"
+    },
+    {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76"
+    },
+    {
+      "file": "docs/research/EXPORT_EDITOR_REQUIREMENTS.md",
+      "sha256": "f587df637628b739509f14221b4116351d683caf1e019dede192da127549b9a3"
+    },
+    {
+      "file": "docs/research/MOBILE_EDITOR_BODY_012.md",
+      "sha256": "7b9d20c25b0c2188c9e26346b09714b9aca4e29d451ccbc81b01739250f52121"
+    },
+    {
+      "file": "docs/AI_ENGINE_API.md",
+      "sha256": "a6f41db430ca4b7c9375aafb6d01b71a8f22758063f4b4e9bf00863893f6e916"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/acquisition.json",
+      "sha256": "40c9381d979401c85a6ae1c557b978210df746fa3d5c8ee2f0791d6ef4f62b94"
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/fetch.py",
+      "sha256": "e295a576d76076d3d16a6c480072e655b915255213ac4d92bfcaeab4fe85a040"
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/format_read.py",
+      "sha256": "403ef6025adbbcb57bb15d09a35b406348e85fbd2f83dcd99bdf54e6ffb83e97"
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/write_record.py",
+      "sha256": "26c8d825747186ca1abed8cf5b6fed7181e04828e63dea9196f85e2b8878dda1"
+    }
+  ],
+  "pages": [
+    {
+      "stableId": "android-guide-en-013-activity-lifecycle",
+      "engine": "Android supplemental platform guide, not Unity/Unreal",
+      "kind": "guide",
+      "requestUrl": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+      "fetchedUrl": "https://developer.android.com/guide/components/activities/activity-lifecycle?hl=en",
+      "canonicalUrl": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+      "redirects": [],
+      "locale": "en",
+      "version": "nonversioned live guide; no complete SDK/AndroidX edition selected",
+      "publisherLastUpdated": "2026-09-22 UTC",
+      "actualTitle": "The activity lifecycle  |  App architecture  |  Android Developers",
+      "discoveryPath": "Parent MOBILE_EDITOR_BODY_012 lifecycle queue; Android lifecycle article links Save UI states and process lifecycle; state guide links SavedStateHandle; process article links long-running workers.",
+      "fetchedAt": "2026-10-04T06:00:42.762224+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.source.html",
+      "sourceHash": "7652434b9ac9d042646d390f7721e5ee6badf40a056fa4d3ae74aab2c0ed6917",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html",
+      "bodyHash": "88f3b7a07fdd4c6ed90e0a80906388be6b229025348dcd6b9dd496dc752a8ed5",
+      "extractedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.txt",
+        "sha256": "a364780ff69747e183386d23d59ce5fcbbe175901b44dfe5f49ff70af957a27c",
+        "bytes": 28810
+      },
+      "numberedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.numbered.txt",
+        "sha256": "1fb04cfc232227995e5ce587f4747092dc488211c0150dd2228f4e54de0325e6",
+        "bytes": 34781
+      },
+      "readArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.read.txt",
+        "sha256": "8fdd84b1e04e262b1a5d4ad2a65fa474c89bbed2db2cafd34ae6e254b7e1c30e"
+      },
+      "bodyMethod": {
+        "method": "BeautifulSoup .devsite-article-body; get_text newline strip; complete article subtree including all code language tabs",
+        "python": "3.13.7",
+        "beautifulsoup": "4.15.0",
+        "requests": "2.32.5"
+      },
+      "reader": "/root/android_editor_lifecycle_013",
+      "readDate": "2026-10-04",
+      "readScope": "Whole article text including introduction, all technical/resource sections, entire pre code blocks, tables, available source-DOM language variants and recommendation titles; all article raster media visually read.",
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.read.txt",
+        "start": 1,
+        "end": 410
+      },
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "wholeArticleMediaReviewed": true,
+      "technicalHeadings": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": "activity-lifecycle-concepts",
+          "text": "Activity-lifecycle concepts",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#activity-lifecycle-concepts"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "id": "compose-and",
+          "text": "Compose and the Lifecycle",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#compose-and"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "id": "lifecycle-callbacks",
+          "text": "Lifecycle callbacks",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#lifecycle-callbacks"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "id": "oncreate",
+          "text": "onCreate",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#oncreate"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "id": "onstart",
+          "text": "onStart",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#onstart"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": "onresume",
+          "text": "onResume",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#onresume"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "id": "onpause",
+          "text": "onPause",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#onpause"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "id": "onstop",
+          "text": "onStop",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#onstop"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "id": "ondestroy",
+          "text": "onDestroy",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#ondestroy"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "id": "activity-state",
+          "text": "Activity state and ejection from memory",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#activity-state"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "id": "saving-and",
+          "text": "Saving and restoring transient UI state",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#saving-and"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "id": "instance-state",
+          "text": "Instance state",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#instance-state"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": "save-simple",
+          "text": "Save simple, lightweight UI state using rememberSaveable",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#save-simple"
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "id": "restore-activity",
+          "text": "Restore activity UI state using saved instance state",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#restore-activity"
+        },
+        {
+          "ordinal": 15,
+          "tag": "h2",
+          "id": "activities-and",
+          "text": "Activities and navigation",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#activities-and"
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "id": "starting-one",
+          "text": "Starting one activity from another",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#starting-one"
+        },
+        {
+          "ordinal": 17,
+          "tag": "h4",
+          "id": "startactivity",
+          "text": "startActivity",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#startactivity"
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "id": "starting-external",
+          "text": "Starting external activities",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#starting-external"
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "id": "coordinating-activities",
+          "text": "Coordinating activities",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#coordinating-activities"
+        },
+        {
+          "ordinal": 20,
+          "tag": "h2",
+          "id": "additional-resources",
+          "text": "Additional resources",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#additional-resources"
+        },
+        {
+          "ordinal": 21,
+          "tag": "h3",
+          "id": "views-content",
+          "text": "Views content",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "AL05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html#views-content"
+        }
+      ],
+      "technicalHeadingCount": 21,
+      "publisherRecommendationHeadings": [],
+      "introductionReviewed": true,
+      "unheadedParagraphCoverage": "Introduction and all text between heading anchors read",
+      "wholePreBlocksRead": 8,
+      "preInventory": [
+        {
+          "ordinal": 1,
+          "language": [
+            "devsite-click-to-copy",
+            "notranslate"
+          ],
+          "bytes": 414
+        },
+        {
+          "ordinal": 2,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 210
+        },
+        {
+          "ordinal": 3,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 190
+        },
+        {
+          "ordinal": 4,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 225
+        },
+        {
+          "ordinal": 5,
+          "language": [
+            "devsite-click-to-copy",
+            "notranslate"
+          ],
+          "bytes": 223
+        },
+        {
+          "ordinal": 6,
+          "language": [
+            "devsite-click-to-copy",
+            "notranslate"
+          ],
+          "bytes": 223
+        },
+        {
+          "ordinal": 7,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 177
+        },
+        {
+          "ordinal": 8,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 121
+        }
+      ],
+      "tableCount": 1,
+      "tableRowsIncludingHeaders": 5,
+      "tableCells": 15,
+      "tableInventory": [
+        {
+          "ordinal": 1,
+          "rows": 5,
+          "cells": 15
+        }
+      ],
+      "media": [
+        {
+          "ordinal": 1,
+          "url": "https://developer.android.com/guide/components/images/activity_lifecycle.png",
+          "alt": "",
+          "srcset": null,
+          "read": true,
+          "httpStatus": 200,
+          "contentType": "image/png",
+          "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.media-1.png",
+          "sha256": "193f49b9d852ed9c0564467b49bdaa676abf71c1b6591ae5930a7d22a8ae20c0",
+          "bytes": 45666,
+          "reader": "/root/android_editor_lifecycle_013",
+          "readMethod": "view_image of downloaded official PNG; visually read callback transitions, process-kill return branch and restart/resume paths",
+          "analysis": "The simplified kill branch bypasses a guaranteed destroy callback; combine with explicit process guide text rather than treating image as exact modern multi-window state specification."
+        }
+      ],
+      "iframe": [],
+      "inlineSvgCount": 0,
+      "videoCount": 0,
+      "codeLanguageTabsRead": [
+        "Kotlin"
+      ],
+      "sourceFacts": [
+        {
+          "id": "AL01",
+          "analysis": "Core callbacks follow creation/start/resume and pause/stop/destroy with restart; visible paused multi-window resources require matched start/stop or resume/pause acquisition/release."
+        },
+        {
+          "id": "AL02",
+          "analysis": "Pause is brief and unsuitable for user data/network/database save work; foreground save opportunities and stop fallback are described without a durable-write guarantee."
+        },
+        {
+          "id": "AL03",
+          "analysis": "System kills the containing process, not an individual activity; the table is conditional on absence of other components; instance state is small transient state requiring main-thread serialization."
+        },
+        {
+          "id": "AL04",
+          "analysis": "Same-process A pause precedes B create/start/resume and then invisible A stop; modern external activity-result API is recommended, while the earlier section still names legacy startActivityForResult."
+        },
+        {
+          "id": "AL05",
+          "analysis": "Compose lifecycle-aware collection is recommended; annotation observer snippets and Compose recommendations coexist; all displayed snippets and resource-link list were read without inferring linked reference completion."
+        }
+      ],
+      "displayedGuideContractNames": [
+        "Activity.onCreate",
+        "Activity.onStart",
+        "Activity.onResume",
+        "Activity.onPause",
+        "Activity.onStop",
+        "Activity.onRestart",
+        "Activity.onDestroy",
+        "Activity.isFinishing",
+        "ViewModel.onCleared",
+        "rememberSaveable",
+        "collectAsStateWithLifecycle",
+        "LifecycleObserver",
+        "OnLifecycleEvent",
+        "Activity.startActivity",
+        "Activity.startActivityForResult",
+        "Activity result APIs"
+      ],
+      "displayedCallsAreFormalApiDeclarations": false,
+      "formalApiDeclarationsRead": 0,
+      "linkedApiUnitDenominator": "unknown",
+      "linkedOverloadDenominator": "unknown",
+      "linkedReferencesAnalyzedCompletely": false,
+      "unresolvedIssueIds": [
+        "U01",
+        "U02",
+        "U09",
+        "U10",
+        "U11"
+      ],
+      "localAnalysisStatus": "whole_guide_analyzed_with_linked_contracts_unresolved",
+      "strictLedgerStatus": "not_promoted",
+      "independentlyVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "stableId": "android-guide-en-013-saving-states",
+      "engine": "Android supplemental platform guide, not Unity/Unreal",
+      "kind": "guide",
+      "requestUrl": "https://developer.android.com/topic/libraries/architecture/saving-states",
+      "fetchedUrl": "https://developer.android.com/topic/libraries/architecture/saving-states?hl=en",
+      "canonicalUrl": "https://developer.android.com/topic/libraries/architecture/saving-states",
+      "redirects": [],
+      "locale": "en",
+      "version": "nonversioned live guide; no complete SDK/AndroidX edition selected",
+      "publisherLastUpdated": "2026-04-22 UTC",
+      "actualTitle": "Save UI states  |  App architecture  |  Android Developers",
+      "discoveryPath": "Parent MOBILE_EDITOR_BODY_012 lifecycle queue; Android lifecycle article links Save UI states and process lifecycle; state guide links SavedStateHandle; process article links long-running workers.",
+      "fetchedAt": "2026-10-04T06:00:43.315030+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.source.html",
+      "sourceHash": "c3c06330e50bd4f3011be293c56ba4f297c30dcb6a7904ade41cb01ec1ffacf1",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html",
+      "bodyHash": "6fda31140dc7ac9ea22f33124fe411b2cb5834720792e4307007b3b2041a11c9",
+      "extractedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.txt",
+        "sha256": "453c5e828541bef240c6d7e62fe4b98928661ec48ead09fdbbde603104f3d8a8",
+        "bytes": 18898
+      },
+      "numberedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.numbered.txt",
+        "sha256": "7fa77cb9b5a486ccbb0d5314560b6de2ea29d86dc6d963b8318d153358e22eba",
+        "bytes": 23003
+      },
+      "readArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.read.txt",
+        "sha256": "c4ef5f6a8b714833da336c0cdee8586334166dc4badd2e13bb9d42e17e690871"
+      },
+      "bodyMethod": {
+        "method": "BeautifulSoup .devsite-article-body; get_text newline strip; complete article subtree including all code language tabs",
+        "python": "3.13.7",
+        "beautifulsoup": "4.15.0",
+        "requests": "2.32.5"
+      },
+      "reader": "/root/android_editor_lifecycle_013",
+      "readDate": "2026-10-04",
+      "readScope": "Whole article text including introduction, all technical/resource sections, entire pre code blocks, tables, available source-DOM language variants and recommendation titles; all article raster media visually read.",
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.read.txt",
+        "start": 1,
+        "end": 283
+      },
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "wholeArticleMediaReviewed": true,
+      "technicalHeadings": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": "expectations",
+          "text": "User expectations and system behavior",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#expectations"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "id": "ui-dismissal-user",
+          "text": "User-initiated UI state dismissal",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#ui-dismissal-user"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "id": "ui-dismissal-system",
+          "text": "System-initiated UI state dismissal",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#ui-dismissal-system"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "id": "options",
+          "text": "Options for preserving UI state",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#options"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "id": "viewmodel",
+          "text": "Use ViewModel to handle configuration changes",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#viewmodel"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h2",
+          "id": "onsaveinstancestate",
+          "text": "Use saved state as backup to handle system-initiated process death",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS02"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#onsaveinstancestate"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "id": "savedstateregistry",
+          "text": "Hook into saved state using SavedStateRegistry",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#savedstateregistry"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h2",
+          "id": "local",
+          "text": "Use local persistence to handle process death for complex or large data",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#local"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "id": "manage",
+          "text": "Managing UI state: divide and conquer",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#manage"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "id": "restore",
+          "text": "Restore complex states: reassembling the pieces",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#restore"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "id": "resources",
+          "text": "Additional resources",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#resources"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "id": "codelabs",
+          "text": "Codelabs",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#codelabs"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": "views",
+          "text": "Views content",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "SS05"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html#views"
+        }
+      ],
+      "technicalHeadingCount": 13,
+      "publisherRecommendationHeadings": [
+        {
+          "ordinal": 14,
+          "tag": "h2",
+          "id": "recommended_for_you",
+          "text": "Recommended for you"
+        }
+      ],
+      "introductionReviewed": true,
+      "unheadedParagraphCoverage": "Introduction and all text between heading anchors read",
+      "wholePreBlocksRead": 2,
+      "preInventory": [
+        {
+          "ordinal": 1,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 289
+        },
+        {
+          "ordinal": 2,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 1415
+        }
+      ],
+      "tableCount": 1,
+      "tableRowsIncludingHeaders": 7,
+      "tableCells": 28,
+      "tableInventory": [
+        {
+          "ordinal": 1,
+          "rows": 7,
+          "cells": 28
+        }
+      ],
+      "media": [],
+      "iframe": [],
+      "inlineSvgCount": 0,
+      "videoCount": 0,
+      "codeLanguageTabsRead": [
+        "Kotlin"
+      ],
+      "sourceFacts": [
+        {
+          "id": "SS01",
+          "analysis": "ViewModel survives configuration change but not process death; system saved state survives system process death but not user dismissal, while persistent storage can survive both."
+        },
+        {
+          "id": "SS02",
+          "analysis": "Saved state is small transient data; stop captures state and stopped writes need another start/stop; large app data belongs in local storage."
+        },
+        {
+          "id": "SS03",
+          "analysis": "Registry provider returns a Bundle; key registration/consume occurs after super.onCreate or ON_CREATE; the displayed second sample declares query as val then reassigns it."
+        },
+        {
+          "id": "SS04",
+          "analysis": "Local persistence lasts while app remains installed unless app data is cleared; none of ViewModel/rememberSaveable/SavedStateHandle replaces long-term app storage."
+        },
+        {
+          "id": "SS05",
+          "analysis": "Model data and small query restore differently after process death versus configuration change; first creation has empty restored state; additional resource titles are not child-body reading."
+        }
+      ],
+      "displayedGuideContractNames": [
+        "ViewModel",
+        "rememberSerializable",
+        "rememberSaveable",
+        "SavedStateHandle",
+        "SavedStateRegistryOwner",
+        "SavedStateRegistry.SavedStateProvider.saveState",
+        "SavedStateRegistry.registerSavedStateProvider",
+        "SavedStateRegistry.consumeRestoredStateForKey",
+        "PersistableBundle",
+        "Bundle"
+      ],
+      "displayedCallsAreFormalApiDeclarations": false,
+      "formalApiDeclarationsRead": 0,
+      "linkedApiUnitDenominator": "unknown",
+      "linkedOverloadDenominator": "unknown",
+      "linkedReferencesAnalyzedCompletely": false,
+      "unresolvedIssueIds": [
+        "U01",
+        "U03",
+        "U10",
+        "U12"
+      ],
+      "localAnalysisStatus": "whole_guide_analyzed_with_linked_contracts_unresolved",
+      "strictLedgerStatus": "not_promoted",
+      "independentlyVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "stableId": "android-guide-en-013-process-lifecycle",
+      "engine": "Android supplemental platform guide, not Unity/Unreal",
+      "kind": "guide",
+      "requestUrl": "https://developer.android.com/guide/components/activities/process-lifecycle",
+      "fetchedUrl": "https://developer.android.com/guide/components/activities/process-lifecycle?hl=en",
+      "canonicalUrl": "https://developer.android.com/guide/components/activities/process-lifecycle",
+      "redirects": [],
+      "locale": "en",
+      "version": "nonversioned live guide; no complete SDK/AndroidX edition selected",
+      "publisherLastUpdated": "2025-02-10 UTC",
+      "actualTitle": "Processes and app lifecycle  |  App architecture  |  Android Developers",
+      "discoveryPath": "Parent MOBILE_EDITOR_BODY_012 lifecycle queue; Android lifecycle article links Save UI states and process lifecycle; state guide links SavedStateHandle; process article links long-running workers.",
+      "fetchedAt": "2026-10-04T06:00:43.496894+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.source.html",
+      "sourceHash": "554d9e3361c9309bf93cb37cf1c28a14fa374103ac384f788f83b631049cf561",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.body.html",
+      "bodyHash": "3516d10ce28d852382d22e3c38e4ad7fc03a21db58eedbf2b32d0004465e9690",
+      "extractedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.body.txt",
+        "sha256": "ab85d2811c2d87916a35b2a2f4d41247d280224168f386e008d32ef8af3e0c48",
+        "bytes": 7643
+      },
+      "numberedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.numbered.txt",
+        "sha256": "5dfb00bf1f2c389f2302de85187a87e59b7ad7c01d084b3b823de46625026dad",
+        "bytes": 8820
+      },
+      "readArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.read.txt",
+        "sha256": "f80d36350bf83a9b3af7892e179eff871d01311dd050fcafdd84c72a5f521ab1"
+      },
+      "bodyMethod": {
+        "method": "BeautifulSoup .devsite-article-body; get_text newline strip; complete article subtree including all code language tabs",
+        "python": "3.13.7",
+        "beautifulsoup": "4.15.0",
+        "requests": "2.32.5"
+      },
+      "reader": "/root/android_editor_lifecycle_013",
+      "readDate": "2026-10-04",
+      "readScope": "Whole article text including introduction, all technical/resource sections, entire pre code blocks, tables, available source-DOM language variants and recommendation titles; all article raster media visually read.",
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.read.txt",
+        "start": 1,
+        "end": 53
+      },
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "wholeArticleMediaReviewed": true,
+      "technicalHeadings": [],
+      "technicalHeadingCount": 0,
+      "publisherRecommendationHeadings": [],
+      "introductionReviewed": true,
+      "unheadedParagraphCoverage": "Whole article, not represented by fabricated headings",
+      "wholePreBlocksRead": 0,
+      "preInventory": [],
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "tableInventory": [],
+      "media": [],
+      "iframe": [],
+      "inlineSvgCount": 0,
+      "videoCount": 0,
+      "codeLanguageTabsRead": [],
+      "sourceFacts": [
+        {
+          "id": "PL01",
+          "analysis": "Android system determines process lifetime using active components, user importance and memory; foreground, visible, service and cached importance hierarchy is described."
+        },
+        {
+          "id": "PL02",
+          "analysis": "Returning from a receiver after starting an unmanaged thread can leave its process killable; a scheduled job is suggested so system knows work remains."
+        },
+        {
+          "id": "PL03",
+          "analysis": "Cached processes should stop work, may receive little/no execution time from Android13 and can be killed without onDestroy; exact cached ordering is a platform implementation detail."
+        },
+        {
+          "id": "PL04",
+          "analysis": "Most important active component and bound-service/content-provider dependencies can raise process importance; priority is not a durable job guarantee."
+        }
+      ],
+      "displayedGuideContractNames": [
+        "BroadcastReceiver.onReceive",
+        "JobService",
+        "Service.startForeground",
+        "Service.startService",
+        "Activity.onDestroy",
+        "Context.BIND_AUTO_CREATE",
+        "ContentProvider",
+        "AlarmManager"
+      ],
+      "displayedCallsAreFormalApiDeclarations": false,
+      "formalApiDeclarationsRead": 0,
+      "linkedApiUnitDenominator": "unknown",
+      "linkedOverloadDenominator": "unknown",
+      "linkedReferencesAnalyzedCompletely": false,
+      "unresolvedIssueIds": [
+        "U01",
+        "U07",
+        "U08",
+        "U09"
+      ],
+      "localAnalysisStatus": "whole_guide_analyzed_with_linked_contracts_unresolved",
+      "strictLedgerStatus": "not_promoted",
+      "independentlyVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "stableId": "android-guide-en-013-viewmodel-savedstate",
+      "engine": "Android supplemental platform guide, not Unity/Unreal",
+      "kind": "guide",
+      "requestUrl": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+      "fetchedUrl": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate?hl=en",
+      "canonicalUrl": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+      "redirects": [],
+      "locale": "en",
+      "version": "nonversioned live guide; no complete SDK/AndroidX edition selected",
+      "publisherLastUpdated": "2026-09-22 UTC",
+      "actualTitle": "Saved State module for ViewModel  |  App architecture  |  Android Developers",
+      "discoveryPath": "Parent MOBILE_EDITOR_BODY_012 lifecycle queue; Android lifecycle article links Save UI states and process lifecycle; state guide links SavedStateHandle; process article links long-running workers.",
+      "fetchedAt": "2026-10-04T06:00:42.632457+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.source.html",
+      "sourceHash": "cbb9a74b9ab48807746961f24baa69530933c45ebf9ddedd6b88c8382329b8be",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html",
+      "bodyHash": "671b1c91c26c7a6607c19a49ede405b1f42a15e4bac0a9d5d1f489cf31401744",
+      "extractedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.txt",
+        "sha256": "e63dd2e5a5523e359acd1368f74c075e1fae94f9eaf78336824c4c31ab9233bd",
+        "bytes": 12859
+      },
+      "numberedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.numbered.txt",
+        "sha256": "46119180cc9af0f08a88338ac697c15d566361b26fc34fac1a9bd8b734edd2c7",
+        "bytes": 18542
+      },
+      "readArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.read.txt",
+        "sha256": "b3243bc95b16542632787416a4a6bf98c64e72c860d6083776f850354ad12ca6"
+      },
+      "bodyMethod": {
+        "method": "BeautifulSoup .devsite-article-body; get_text newline strip; complete article subtree including all code language tabs",
+        "python": "3.13.7",
+        "beautifulsoup": "4.15.0",
+        "requests": "2.32.5"
+      },
+      "reader": "/root/android_editor_lifecycle_013",
+      "readDate": "2026-10-04",
+      "readScope": "Whole article text including introduction, all technical/resource sections, entire pre code blocks, tables, available source-DOM language variants and recommendation titles; all article raster media visually read.",
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.read.txt",
+        "start": 1,
+        "end": 334
+      },
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "wholeArticleMediaReviewed": true,
+      "technicalHeadings": [
+        {
+          "ordinal": 1,
+          "tag": "h1",
+          "id": "saved_state_module_for_viewmodel",
+          "text": "Saved State module for ViewModel Part of Android Jetpack .",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#saved_state_module_for_viewmodel"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "id": "setup",
+          "text": "Setup",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM01"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#setup"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "id": "savedstatehandle",
+          "text": "Working with SavedStateHandle",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM02"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#savedstatehandle"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "id": "savedstate-stateflow",
+          "text": "StateFlow",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM02"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#savedstate-stateflow"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "id": "kotlinx-serialization",
+          "text": "KotlinX Serialization support",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#kotlinx-serialization"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": "savedstate-compose-state",
+          "text": "Compose State support",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#savedstate-compose-state"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "id": "types",
+          "text": "Supported types",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#types"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "id": "direct",
+          "text": "Directly supported types",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#direct"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "id": "non-parcelable",
+          "text": "Saving non-parcelable classes",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#non-parcelable"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "id": "testing",
+          "text": "SavedStateHandle in tests",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#testing"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "id": "resources",
+          "text": "Additional resources",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#resources"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "id": "codelabs",
+          "text": "Codelabs",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#codelabs"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": "views",
+          "text": "Views content",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "VM04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html#views"
+        }
+      ],
+      "technicalHeadingCount": 13,
+      "publisherRecommendationHeadings": [
+        {
+          "ordinal": 14,
+          "tag": "h2",
+          "id": "recommended_for_you",
+          "text": "Recommended for you"
+        }
+      ],
+      "introductionReviewed": true,
+      "unheadedParagraphCoverage": "Introduction and all text between heading anchors read",
+      "wholePreBlocksRead": 9,
+      "preInventory": [
+        {
+          "ordinal": 1,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 84
+        },
+        {
+          "ordinal": 2,
+          "language": [
+            "devsite-click-to-copy",
+            "notranslate"
+          ],
+          "bytes": 228
+        },
+        {
+          "ordinal": 3,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 810
+        },
+        {
+          "ordinal": 4,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 869
+        },
+        {
+          "ordinal": 5,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 315
+        },
+        {
+          "ordinal": 6,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 229
+        },
+        {
+          "ordinal": 7,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 571
+        },
+        {
+          "ordinal": 8,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 855
+        },
+        {
+          "ordinal": 9,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 240
+        }
+      ],
+      "tableCount": 1,
+      "tableRowsIncludingHeaders": 18,
+      "tableCells": 36,
+      "tableInventory": [
+        {
+          "ordinal": 1,
+          "rows": 18,
+          "cells": 36
+        }
+      ],
+      "media": [],
+      "iframe": [],
+      "inlineSvgCount": 0,
+      "videoCount": 0,
+      "codeLanguageTabsRead": [
+        "Kotlin"
+      ],
+      "sourceFacts": [
+        {
+          "id": "VM01",
+          "analysis": "SavedStateHandle is passed through constructor/default factory or custom CreationExtras; saved state is task-stack-bound and disappears on force-stop/recents removal/reboot."
+        },
+        {
+          "id": "VM02",
+          "analysis": "Key/map methods and read-only/mutable flows share stop-capture limitations; getMutableStateFlow is documented as added in lifecycle2.9.0."
+        },
+        {
+          "id": "VM03",
+          "analysis": "Serialization delegate initializes lazily upon first access; Saver interoperability exists; simple/light state remains the guidance and serialization comments require reconciliation with stop capture."
+        },
+        {
+          "id": "VM04",
+          "analysis": "Bundle-compatible type table and custom provider Bundle conversion were fully read; the File example restores a path, not validated existence/access; tests inject an independent SavedStateHandle."
+        }
+      ],
+      "displayedGuideContractNames": [
+        "SavedStateHandle.constructor",
+        "SavedStateHandle.get",
+        "SavedStateHandle.set",
+        "SavedStateHandle.contains",
+        "SavedStateHandle.remove",
+        "SavedStateHandle.keys",
+        "SavedStateHandle.getStateFlow",
+        "SavedStateHandle.getMutableStateFlow",
+        "SavedStateHandle.saved",
+        "SavedStateHandle.saveable",
+        "SavedStateHandle.setSavedStateProvider",
+        "SavedStateRegistry.SavedStateProvider.saveState",
+        "CreationExtras",
+        "ViewModelProvider.Factory",
+        "viewModelFactory",
+        "Bundle",
+        "Parcelable",
+        "Serializable"
+      ],
+      "displayedCallsAreFormalApiDeclarations": false,
+      "formalApiDeclarationsRead": 0,
+      "linkedApiUnitDenominator": "unknown",
+      "linkedOverloadDenominator": "unknown",
+      "linkedReferencesAnalyzedCompletely": false,
+      "unresolvedIssueIds": [
+        "U01",
+        "U04",
+        "U05",
+        "U10"
+      ],
+      "localAnalysisStatus": "whole_guide_analyzed_with_linked_contracts_unresolved",
+      "strictLedgerStatus": "not_promoted",
+      "independentlyVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "stableId": "android-guide-en-013-long-running-workers",
+      "engine": "Android supplemental platform guide, not Unity/Unreal",
+      "kind": "guide",
+      "requestUrl": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+      "fetchedUrl": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running?hl=en",
+      "canonicalUrl": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+      "redirects": [],
+      "locale": "en",
+      "version": "nonversioned live guide; no complete SDK/AndroidX edition selected",
+      "publisherLastUpdated": "2026-10-01 UTC",
+      "actualTitle": "Support for long-running workers  |  Background work  |  Android Developers",
+      "discoveryPath": "Parent MOBILE_EDITOR_BODY_012 lifecycle queue; Android lifecycle article links Save UI states and process lifecycle; state guide links SavedStateHandle; process article links long-running workers.",
+      "fetchedAt": "2026-10-04T06:00:42.695689+00:00",
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.source.html",
+      "sourceHash": "be6e05473d0f8332a5ecb043f5e6988624410ffe44f796df4223b0cab5b59c8a",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html",
+      "bodyHash": "ce306585e95df18452f29df21585d1f5852e455ca16c7349534344d53c66fa12",
+      "extractedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.txt",
+        "sha256": "8ae2dd5f5721c0726e2ef3161377a89fb56f51e18b97e9f60be1933422cadd52",
+        "bytes": 9467
+      },
+      "numberedText": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.numbered.txt",
+        "sha256": "618e2b55d3743c0194bc6752540030126c8b19934c23dd2dd9202ddc7d790730",
+        "bytes": 14244
+      },
+      "readArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.read.txt",
+        "sha256": "cf6db38073634d2d6a8d9a1dfe86e14c5d350a31311dfb0fe56a80650caaa96a"
+      },
+      "bodyMethod": {
+        "method": "BeautifulSoup .devsite-article-body; get_text newline strip; complete article subtree including all code language tabs",
+        "python": "3.13.7",
+        "beautifulsoup": "4.15.0",
+        "requests": "2.32.5"
+      },
+      "reader": "/root/android_editor_lifecycle_013",
+      "readDate": "2026-10-04",
+      "readScope": "Whole article text including introduction, all technical/resource sections, entire pre code blocks, tables, available source-DOM language variants and recommendation titles; all article raster media visually read.",
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.read.txt",
+        "start": 1,
+        "end": 232
+      },
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "wholeArticleMediaReviewed": true,
+      "technicalHeadings": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": "long-running",
+          "text": "Creating and managing long-running workers",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#long-running"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "id": "long-running-kotlin",
+          "text": "Kotlin",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#long-running-kotlin"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "id": "long-running-java",
+          "text": "Java",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW03"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#long-running-java"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "id": "foreground-service-type",
+          "text": "Add a foreground service type to a long-running worker",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#foreground-service-type"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "id": "declare-foreground-service-types-manifest",
+          "text": "Declare foreground service types in app manifest",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#declare-foreground-service-types-manifest"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": "specify-foreground-service-types-runtime",
+          "text": "Specify foreground service types at runtime",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#specify-foreground-service-types-runtime"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#kotlin"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java",
+          "reviewed": true,
+          "analyzed": true,
+          "factIds": [
+            "LW04"
+          ],
+          "bodyLocator": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html#java"
+        }
+      ],
+      "technicalHeadingCount": 8,
+      "publisherRecommendationHeadings": [],
+      "introductionReviewed": true,
+      "unheadedParagraphCoverage": "Introduction and all text between heading anchors read",
+      "wholePreBlocksRead": 5,
+      "preInventory": [
+        {
+          "ordinal": 1,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 2471
+        },
+        {
+          "ordinal": 2,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 2557
+        },
+        {
+          "ordinal": 3,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 160
+        },
+        {
+          "ordinal": 4,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 219
+        },
+        {
+          "ordinal": 5,
+          "language": [
+            "devsite-click-to-copy"
+          ],
+          "bytes": 291
+        }
+      ],
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "tableInventory": [],
+      "media": [],
+      "iframe": [],
+      "inlineSvgCount": 0,
+      "videoCount": 0,
+      "codeLanguageTabsRead": [
+        "Kotlin",
+        "Java",
+        "XML"
+      ],
+      "sourceFacts": [
+        {
+          "id": "LW01",
+          "analysis": "WorkManager signals important long-running work with managed foreground service and notification; keep-alive is qualified rather than guaranteed."
+        },
+        {
+          "id": "LW02",
+          "analysis": "Android16 foreground-service workers still use JobScheduler and may exhaust quota; direct FGS/user-initiated transfer are suggestions requiring further eligibility analysis."
+        },
+        {
+          "id": "LW03",
+          "analysis": "CoroutineWorker.setForeground is suspending; Worker/ListenableWorker.setForegroundAsync returns ListenableFuture<Void>; cancel PendingIntent support is described from2.3.0-alpha03."
+        },
+        {
+          "id": "LW04",
+          "analysis": "Target API34+ requires service type for long workers; target29 location and30 camera/microphone cases are separately stated; type must be declared in manifest and passed at runtime with prerequisites checked."
+        }
+      ],
+      "displayedGuideContractNames": [
+        "CoroutineWorker.setForeground",
+        "ListenableWorker.setForegroundAsync",
+        "Worker.doWork",
+        "CoroutineWorker.doWork",
+        "ForegroundInfo",
+        "WorkManager.createCancelPendingIntent",
+        "SystemForegroundService",
+        "JobScheduler"
+      ],
+      "displayedCallsAreFormalApiDeclarations": false,
+      "formalApiDeclarationsRead": 0,
+      "linkedApiUnitDenominator": "unknown",
+      "linkedOverloadDenominator": "unknown",
+      "linkedReferencesAnalyzedCompletely": false,
+      "unresolvedIssueIds": [
+        "U01",
+        "U06",
+        "U07",
+        "U08",
+        "U12"
+      ],
+      "localAnalysisStatus": "whole_guide_analyzed_with_linked_contracts_unresolved",
+      "strictLedgerStatus": "not_promoted",
+      "independentlyVerified": false,
+      "ledgerPromoted": false
+    }
+  ],
+  "readOnlyCodeComparisons": [
+    {
+      "file": "prototype/asset-documents.js",
+      "sha256": "6dbf6756cacf7a8fddf476a2e990955eb9030923c2ddb0135bfb1ce5a28438ce",
+      "readScope": "lines81-88 only",
+      "analysis": "Document/history/dirty in memory Map; save awaits write then updates saved baseline; no Android restoration proof."
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "921381cbbd6bc2fc8f41a835e7fa26b5cbba092d0cad8e588dac3d0083020725",
+      "readScope": "lines49-60",
+      "analysis": "Command/client Maps with request-ID dedup and time-limited cleanup; no durable process-restart receipt contract in this read class."
+    },
+    {
+      "file": "tools/build-jobs.mjs",
+      "sha256": "688737684be1e636f3af81e7d3289b0b0f5d29656406801f8ebf3c6e9ffc134f",
+      "readScope": "whole short module lines1-21",
+      "analysis": "Build job Map, AbortController and close cancellation are process-local; output success and job restoration are distinct."
+    },
+    {
+      "file": "tools/native-host.mjs",
+      "sha256": "386525d6978d76ca74a46d65749103fe8ccd2b88862dad2d920d1c69f5fa65c5",
+      "readScope": "lines47-99 only",
+      "analysis": "Session Map, compiler staging/cache commit, queued RPC and process close; Windows/native worker support is not Android compiler/service support."
+    },
+    {
+      "file": "native/desktop/HBEngine.cpp",
+      "sha256": "6eb1a28f47d8d82621b60c1ff93a126140182f1dbbe64558697f8652ff18f4f2",
+      "readScope": "search hits and lines296-301 only",
+      "analysis": "Windows job owns server child with kill-on-close; this is not an Android process-lifetime implementation."
+    }
+  ],
+  "hbDecisionScope": "Proposed contracts only, no callable implementation added; human/C++/node/AI share durable IDs, typed values, revision protection, attempt epochs and receipts.",
+  "hbCommandProposals": [
+    {
+      "name": "checkpointDraft",
+      "inputs": [
+        "projectId",
+        "draftId",
+        "documentId",
+        "expectedRevision",
+        "baseSavedHash",
+        "commandSequence",
+        "requestId"
+      ],
+      "outputs": [
+        "durableCheckpointId",
+        "checkpointHash",
+        "committedSequence"
+      ],
+      "errors": [
+        "revision_conflict",
+        "permission_lost",
+        "storage_full",
+        "commit_unconfirmed"
+      ],
+      "implemented": false
+    },
+    {
+      "name": "reattachEditor",
+      "inputs": [
+        "checkpointLocator",
+        "uiLocator",
+        "hostCapability",
+        "sessionEpoch"
+      ],
+      "outputs": [
+        "recoveredModelRevision",
+        "newSession",
+        "revalidatedProviderAccess"
+      ],
+      "implemented": false
+    },
+    {
+      "name": "reconcileJob",
+      "inputs": [
+        "jobId",
+        "inputRevision",
+        "inputHash",
+        "attempt",
+        "hostEpoch",
+        "lastReceipt"
+      ],
+      "outputs": [
+        "confirmedResultOrRunningOrInterruptedOrConflict"
+      ],
+      "implemented": false
+    },
+    {
+      "name": "cancelJob",
+      "inputs": [
+        "jobId",
+        "expectedAttempt",
+        "requestId"
+      ],
+      "outputs": [
+        "cancelRequestedReceipt",
+        "terminalCleanupReceipt"
+      ],
+      "implemented": false
+    },
+    {
+      "name": "restorePlay",
+      "inputs": [
+        "sourceRevision",
+        "sessionOrCheckpointId",
+        "userPlayPausePolicy",
+        "deviceCapability"
+      ],
+      "outputs": [
+        "reattachedOrRestartedOrCheckpointLoaded"
+      ],
+      "implemented": false
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "U01",
+      "status": "open",
+      "analysis": "All linked Android/AndroidX API declarations, overloads, thread, ownership, nullability, exception, version and deprecation contracts remain unread; complete unit denominator unknown.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U02",
+      "status": "open",
+      "analysis": "Activity guide combines Compose advice and annotation observer snippets; linked reference is needed to fix current API/deprecation status.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U03",
+      "status": "open",
+      "analysis": "Saving-states registry sample declares val query and later reassigns it; compiler check not run and source sample must not be copied.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U04",
+      "status": "open",
+      "analysis": "SavedStateHandle serialization sample process-death wording must be reconciled with explicit stop-capture warning; no save-at-death guarantee inferred.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U05",
+      "status": "open",
+      "analysis": "Bundle table completeness, nullable File restoration, lazy/provider timing, file existence and URI grant need formal reference/provider validation.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U06",
+      "status": "open",
+      "analysis": "Long-worker Kotlin/Java input-check and Java Future handling differ; cancellation/failure/retry/progress and placeholder download remain incomplete contracts.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U07",
+      "status": "open",
+      "analysis": "Android16 job quota and eligible FGS type/permission/background-start/user-initiated transfer rules for import/compile/cook/AI are not yet analyzed.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U08",
+      "status": "open",
+      "analysis": "Android native compiler/child worker/ABI/toolchain capability and local/remote termination ownership remain supplemental/build API research.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U09",
+      "status": "open",
+      "analysis": "Exact rotation/fold/resize/multi-resume/focus/IME/surface API and physical-device behavior remain unverified.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U10",
+      "status": "open",
+      "analysis": "Durable draft/journal transactions, provider non-atomic storage, full disk, lost grant, clear-data and move/delete recovery need storage backend/API verification.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U11",
+      "status": "open",
+      "analysis": "Native Play input/audio/GPU/time/checkpoint/session ownership and actual suspend/resume remain runtime verification work.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U12",
+      "status": "open",
+      "analysis": "Persistent AI dedup/revision conflict/uncertain commit/remote receipt/offline reattachment protocol remains a design requiring validation.",
+      "removedFromDenominator": false
+    }
+  ],
+  "verificationNeeded": [
+    "Independent reader must re-read all pinned body/source sections, pre blocks/tables/media and compare authored factual/decision separation; does not mark linked API completeness.",
+    "Formal linked API/version/overload/thread/ownership/exception evidence.",
+    "After whole Unity/Unreal gate: physical Android lifecycle/process-kill/force-stop/reboot/storage/worker cancellation/AI idempotency/Play resume checks; not performed in research-only."
+  ],
+  "fullCorpusComplete": false,
+  "discoveryClosed": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "automaticExtractionIsSemanticReading": false,
+  "originalExamplesAndTableTextsPublic": false
+}

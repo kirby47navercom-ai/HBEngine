@@ -1,0 +1,663 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unreal-packaging-media-body-016",
+  "phase": "research_only",
+  "reader": "root",
+  "date": "2026-10-04",
+  "counts": {
+    "newWholeTextBodiesRead": 0,
+    "staticImageInstancesActuallyViewed": 29,
+    "staticImageUniqueByteHashesActuallyViewed": 27,
+    "animatedGifsStillUnread": 2,
+    "videosStillUnread": 1,
+    "strictVerified": 0,
+    "ledgerPromotions": 0
+  },
+  "sourcePage": {
+    "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project?application_version=5.8",
+    "pageId": "BP011-07",
+    "requestedVersion": "5.8",
+    "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.source.html",
+    "sourceHash": "d82066c1d6472309ba2551f0f1405b5679f56456fa04840dc710027cd5e9e8de",
+    "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.body.html",
+    "bodyHash": "8ee5a6e800dd901df3517a043490378f32f03cceead86f39fe36bde511c97007",
+    "exactScreenshotEngineEditionsUnconfirmed": true
+  },
+  "analysisReport": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+      "sha256": "f0670dc92603b1dfeb9d64ba6a0b8274ffdafd37ec8b44ba52efbd91a2e08d9a"
+    },
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_RESEARCH_011.md",
+      "sha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5"
+    },
+    {
+      "file": "docs/research/build-editor-platform-research-011.json",
+      "sha256": "e3285b8f5307bd7f24f4475e0fbcd3d9f7cb41b11434ec50dfd3da1b9d7b2410"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/unreal-packaging-media-batch-016/media-review.json",
+      "sha256": "3db4c777ce516c73b430c03779ef0e96543ed2ddc89c095a8f4fe2ff70591443"
+    }
+  ],
+  "media": [
+    {
+      "ordinalZeroBased": 0,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/39be121d-9228-456f-becf-6177e45c0362/dev-pipeline-diagram.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-0.png",
+      "sha256": "f8b03d0e1e188cd0291d07d6e6b66bf2ea3712d4d1542708a2199a2bd448d9f3",
+      "alt": "The Development Pipeline",
+      "format": "PNG",
+      "dimensions": [
+        1559,
+        567
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "제작·테스트·출시·DLC/patch 후속까지 packaging 사용 범위를 표시한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 1,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/847e4530-1586-46a8-a346-44efcfb5e5c7/the-packaging-process.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-1.png",
+      "sha256": "eb12d3f5bef522c9dcabcc4be0d5a6b8f36502f59c775c2b85f9fb90afd0815f",
+      "alt": "The Packaging Process",
+      "format": "PNG",
+      "dimensions": [
+        1383,
+        168
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Build/Cook/Stage/Package를 packaging 괄호로 묶고 Deploy/Run을 다음 단계로 분리한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 2,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/650d1a69-1d11-441b-8512-05dd940fa429/ue-platforms-menu.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-2.png",
+      "sha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "alt": "Unreal Editor Platforms Menu",
+      "format": "PNG",
+      "dimensions": [
+        580,
+        97
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "레벨 에디터 상단의 Platforms 드롭다운 위치를 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 3,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e8b80e53-4a20-4e19-b01a-d56335e97061/unreal-editor-cook-content.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-3.png",
+      "sha256": "bddf69249ffd9f4fecae543913955833e631e128e70639f75cfd3284880d2525",
+      "alt": "Unreal Editor Cook Content",
+      "format": "PNG",
+      "dimensions": [
+        1065,
+        1199
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Windows submenu에서 Cook Content·binary config·architecture·allowed/installed SDK와 offline quick launch가 함께 보인다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 4,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5cb2bf60-a096-4a96-a11e-2e72b141cbaa/cooking-content.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-4.png",
+      "sha256": "2793b353b571079ecc6d35dac670344ff9ac60ec3a40f46ce9030cac719b01e9",
+      "alt": "Cooking Content",
+      "format": "PNG",
+      "dimensions": [
+        352,
+        89
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Windows cooking 진행 중 Cancel과 Output Log 접근을 표시한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 5,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/fae11676-0196-4057-9d01-2cdfa97280e4/cooking-complete.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-5.png",
+      "sha256": "20a0f1f4d4cfdaabb7ac7a9aee883b027521423d25ef12aa8b6da4e50f5a99e6",
+      "alt": "Cooking Complete",
+      "format": "PNG",
+      "dimensions": [
+        352,
+        66
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Cooking complete와 Output Log를 표시하며 packaging 완료 문구와 다르다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 6,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/7eac8dc2-200d-4519-b9bb-0703103421da/ue-platforms-menu.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-6.png",
+      "sha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "alt": "Unreal Editor Platforms Menu",
+      "format": "PNG",
+      "dimensions": [
+        580,
+        97
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "2와 같은 Platforms 툴바 화면을 반복한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 7,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/869278d0-59ab-4b71-b4a9-fd371bbb57ff/platforms-cooking-on-the-fly.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-7.png",
+      "sha256": "78613c05f2c3318b7acd636dcb4e752de2e5ddc1d50a425c1ed2e570bbb57a3b",
+      "alt": "Platforms Cooking On The Fly",
+      "format": "PNG",
+      "dimensions": [
+        419,
+        768
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "On-the-fly checkbox 선택을 보여주며 quick-launch 기기는 offline 표시다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 8,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/84148d77-7ff6-40d1-9777-013533cb6f2b/unreal-editor-packaging-settings.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-8.png",
+      "sha256": "3861549327d2bfc757b9711f4d5b7a5f9aec74ac0dbcc1d8803d9150f6bca022",
+      "alt": "Unreal Editor Packaging Settings",
+      "format": "PNG",
+      "dimensions": [
+        419,
+        775
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Platforms의 Packaging Settings 진입을 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 9,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e61ec49b-e154-4918-8580-9aee88a9a7a2/project-settings-packaging.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-9.png",
+      "sha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "alt": "Project Settings Packaging",
+      "format": "PNG",
+      "dimensions": [
+        847,
+        562
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "검색/카테고리/접기형 Packaging 설정, 저장 ini writable 상태, Import/Export·array·Pak/IoStore/chunk·shared shader code와 별도 Ini Key/Section Denylist를 보인다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 10,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/a95bbd38-8b36-4268-ab95-c7b9a612930b/ue-project-browser.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-10.png",
+      "sha256": "248f1c490623c5dd780508d753cbc22be1e3e47df54d40d0c2cc17267d1d1e4f",
+      "alt": "Unreal Project Browser",
+      "format": "PNG",
+      "dimensions": [
+        1794,
+        1293
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Project Browser의 분류·template·preview·Blueprint/C++·target/quality/variant·location/name/create 선택을 보인다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 11,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d60a7de0-68b3-4006-be24-5addf2c6bd49/unreal-editor-project-settings.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-11.png",
+      "sha256": "ab769bdfe1b39bee3d17d1b3556329831d9bcf907497053ea67538d3fac9db9d",
+      "alt": "Unreal Editor Project Settings",
+      "format": "PNG",
+      "dimensions": [
+        768,
+        548
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Edit 메뉴의 Project Settings 진입과 Undo/Redo/clipboard/duplicate shortcut·비활성 사유를 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 12,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/0f8b7c3e-96ad-4f72-ae81-d832f31679f4/ue-maps-and-modes.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-12.png",
+      "sha256": "b793bf90fb34b9292ccc7c6ed628491c628c96b8eabf2a5e64a0f7cf8011465a",
+      "alt": "Project Settings Maps And Modes",
+      "format": "PNG",
+      "dimensions": [
+        744,
+        473
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Maps/Modes 설정에 editor startup map과 game default map, default mode 및 local multiplayer/splitscreen 항목을 따로 둔다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 13,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/aa963d49-7b27-42e2-8899-a8801781060d/ue-set-game-default-map.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-13.png",
+      "sha256": "fbb6cc54367500f62f37a3b29c2b090cab172605a877dbdb9e81a37f60a72e17",
+      "alt": "",
+      "format": "PNG",
+      "dimensions": [
+        469,
+        352
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Game Default Map asset picker의 search·목록·현재자산 Edit/Copy/Clear와 선택행을 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 14,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/bbba631e-42df-491c-9099-69da52714516/project-settings-packaging.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-14.png",
+      "sha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "alt": "Project Settings Packaging",
+      "format": "PNG",
+      "dimensions": [
+        847,
+        562
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "9와 같은 Packaging 설정 화면을 반복한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 15,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/dd86d353-66ae-4775-94ea-736b435545dd/project-settings-build-configuration.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-15.png",
+      "sha256": "5cf732cbbe4041aa41d5f34507406fb7a88382a12630c75ee21f203566185349",
+      "alt": "Project Settings Build Configurations",
+      "format": "PNG",
+      "dimensions": [
+        600,
+        187
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Build configuration과 Build Target/Full Rebuild/For Distribution/Shipping debug file 항목의 부분 화면이다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 16,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/9647e17a-c12d-4245-ad25-daad36b8ca3a/unreal-editor-platforms-windows.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-16.png",
+      "sha256": "7b79f18ed83e4fe363c6bdc239fef068fc6eda5fcbfe487cc07903f152d4ee5c",
+      "alt": "Unreal Editor Platforms Windows",
+      "format": "PNG",
+      "dimensions": [
+        420,
+        769
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Platforms Windows target 선택을 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 17,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e0b921da-e78b-4252-9fcd-70510cba483f/platforms-binary-configuration.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-17.png",
+      "sha256": "668ce364170829ead675269d58bb37f6389cdd3ce135e808f37c40fe610c3495",
+      "alt": "Platforms Binary Configuration",
+      "format": "PNG",
+      "dimensions": [
+        981,
+        1138
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "project 설정을 따르는 configuration 선택과 별도 override, architecture 선택 및 SDK 상태를 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 18,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/86a0bae8-dfca-4131-8505-87c3d2f873fb/platforms-package-project.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-18.png",
+      "sha256": "aa8d8949c1be8cb1a1260127d6af0c28a4d057fc7aa2f0eae8bd5f7a4e62e28c",
+      "alt": "Platforms Package Project",
+      "format": "PNG",
+      "dimensions": [
+        1327,
+        1034
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Windows submenu의 Package Project 선택을 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 19,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d7ba6195-3380-43fe-b0ce-1fbccc4fe715/packaging-gif.gif",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-19.gif",
+      "sha256": "30167cbe035e32a39fdd1cd500cccf5ae40ab57a81c55e87ff9d9e939094668b",
+      "alt": "Packaging GIF",
+      "format": "GIF",
+      "dimensions": [
+        430,
+        198
+      ],
+      "frames": 330,
+      "pixelsActuallyViewed": false,
+      "readScope": "GIF animation pixels/frames not reviewed; n_frames metadata only",
+      "reader": null,
+      "date": "2026-10-04",
+      "observation": null,
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 20,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/92774841-e42a-4555-9b84-6318775d39aa/testgif.gif",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-20.gif",
+      "sha256": "739702f703bdf02353d42a00b8ed84bcfec979a559026a4e44fb3c24b1c258cc",
+      "alt": "",
+      "format": "GIF",
+      "dimensions": [
+        1898,
+        432
+      ],
+      "frames": 9,
+      "pixelsActuallyViewed": false,
+      "readScope": "GIF animation pixels/frames not reviewed; n_frames metadata only",
+      "reader": null,
+      "date": "2026-10-04",
+      "observation": null,
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 21,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/02d720ca-4dd7-4e6b-bcd5-f8c2a517deab/packaging-complete.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-21.png",
+      "sha256": "de77db2a9c847225718e15cf45c74195060e6b9b4faae5a6da713a84937dfe19",
+      "alt": "Packaging Complete",
+      "format": "PNG",
+      "dimensions": [
+        352,
+        68
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Packaging complete와 Output Log를 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 22,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5deee5b9-d9d2-4e8a-850c-d5e5a553f6ef/packaging-failed.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-22.png",
+      "sha256": "52f493eb805c9ddf04aedbe3b62ebc2dec598ec6ba528b29af9d8f6b50d06150",
+      "alt": "Packaging Failed",
+      "format": "PNG",
+      "dimensions": [
+        440,
+        113
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Packaging failed·Output Log·Dismiss를 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 23,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/8635bb67-3b59-4d36-aa09-d3ed955da1d2/packaging-cancel.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-23.png",
+      "sha256": "f5259aa48c122326f1375050d07f8986878c414dd0996573569835ca3d8a055c",
+      "alt": "Packaging Cancel",
+      "format": "PNG",
+      "dimensions": [
+        352,
+        93
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Packaging 진행 중 Cancel 버튼을 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 24,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d5c2b9c3-a563-43dc-b2b4-73fee4aff5b0/packaging-canceled.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-24.png",
+      "sha256": "1d3ec19c0027e3565749666d78e7cb71a65be048966735879517b5540a50cd79",
+      "alt": "Packaging Canceled",
+      "format": "PNG",
+      "dimensions": [
+        522,
+        126
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Packaging canceled·Output Log·Dismiss를 별도 상태로 보여준다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 25,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/083dc7ee-668f-4f93-b6ca-96a071d6438a/packaging-show-output-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-25.png",
+      "sha256": "1fe7ebea21a9543fe9e2c1c5176fc301692fa90ee36ee271df39fc378042d71a",
+      "alt": "Packaging Show Output Log",
+      "format": "PNG",
+      "dimensions": [
+        260,
+        63
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "진행 알림에서 Show Output Log 접근을 강조한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 26,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/afd282cc-58db-411e-baf5-73714674aca3/window-messsage-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-26.png",
+      "sha256": "cde6b0132a6b13debde5ed76382d1ffdceb5db9116e4e6c7d168dd9ef5f2990f",
+      "alt": "Windows Message Log",
+      "format": "PNG",
+      "dimensions": [
+        231,
+        600
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Window 메뉴에 Device Output/Message/Output Log, layout 저장/복원과 toolbar/fullscreen 바로가기를 표시한다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 27,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/6b50aac4-db5f-4d96-8b85-178da260d610/message-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-27.png",
+      "sha256": "b7e03e91fe12a7a69dbca814e8af907a61d02209927c81b0bba439b6e981679c",
+      "alt": "Message Log",
+      "format": "PNG",
+      "dimensions": [
+        1435,
+        741
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Message Log에서 Packaging Results 분류와 Show/Page/Clear를 표시하며 결과 영역은 비어 있다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 28,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/947ba1ad-0464-4658-b5a5-fd4f1ec746e5/packaged-executable.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-28.png",
+      "sha256": "6e8187109bc5e0327b118ed950ec092ae16174d848b1c38ef6ac5e038eb9d2ba",
+      "alt": "Packaged Executable",
+      "format": "PNG",
+      "dimensions": [
+        1408,
+        619
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "출력 Windows 폴더의 실행 application뿐 아니라 Engine/Project 디렉터리와 여러 manifest도 함께 보인다. 파일 Date modified 열은 5/8/2025 표시이며 날짜 locale/촬영일은 확인하지 않았다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 29,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/871d0fb9-70b8-43d3-a06f-82f426d65834/command-line.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-29.png",
+      "sha256": "83438dcae403a7a561cb8bf3d09afd0f1cc4c71cdc368b84f4c4f75301bd6fef",
+      "alt": "Command Line",
+      "format": "PNG",
+      "dimensions": [
+        586,
+        72
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "게임 화면의 console quit 입력을 보여준다. quit 실행 완료나 Shipping 사용 가능성까지 입증하지 않는다.",
+      "notActualGuiRuntimeTest": true
+    },
+    {
+      "ordinalZeroBased": 30,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5c547c3a-f75c-40d9-ba15-9737e3119da6/platforms-project-launcher.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-30.png",
+      "sha256": "8f05a94ca22a0f228c4843ccfe8b8d64210842c8443759ad2f9ef8181d2359bd",
+      "alt": "Platforms Project Launcher",
+      "format": "PNG",
+      "dimensions": [
+        417,
+        773
+      ],
+      "frames": 1,
+      "pixelsActuallyViewed": true,
+      "readScope": "Original or high-detail whole static pixels viewed through view_image",
+      "reader": "root",
+      "date": "2026-10-04",
+      "observation": "Platforms 메뉴의 Project Launcher 진입을 강조하며 Legacy Launcher와 Device Manager도 별도로 보인다.",
+      "notActualGuiRuntimeTest": true
+    }
+  ],
+  "independentComparison": "pending",
+  "automaticFetchOrFrameMetadataIsPixelReading": false,
+  "fullPackagingMediaRead": false,
+  "fullCorpusVerified": false,
+  "engineChanged": false,
+  "guiExecuted": false,
+  "runtimeExecuted": false,
+  "imagesOrOriginalFullTablesExamplesPublic": false,
+  "correctionsDuringIndependentComparison": [
+    {
+      "foundBy": "/root/android_build_deploy_014",
+      "issue": "Ini Key/Section Denylist is separate from shared shader code; shader denylist was an imprecise original observation",
+      "resolved": true
+    },
+    {
+      "foundBy": "/root/android_build_deploy_014",
+      "issue": "Ordinal3 and17 show same SDK numbers, original author misread difference",
+      "resolved": true
+    },
+    {
+      "foundBy": "/root/android_build_deploy_014",
+      "issue": "Date modified string5/8/2025 is not a proved ISO date or screenshot capture date",
+      "resolved": true
+    }
+  ]
+}

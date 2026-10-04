@@ -1,0 +1,1357 @@
+{
+  "schemaVersion": 1,
+  "batch": "unreal-packaging-media-verification-016",
+  "phase": "research_only",
+  "verifier": "/root/android_build_deploy_014",
+  "analyst": "root",
+  "independentlyComparedAt": "2026-10-04T06:27:06.756414+00:00",
+  "boundedIndependentComparison": "passed_after_three_observation_corrections",
+  "strictVerified": 0,
+  "ledgerPromotions": 0,
+  "fullCorpusVerified": false,
+  "fullPackagingMediaRead": false,
+  "discoveryClosed": false,
+  "formalApiReferenceBodiesRead": 0,
+  "newWholeTextBodiesRead": 0,
+  "automaticHashOrMetadataIsPixelReading": false,
+  "initialAnalysisPin": [
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+      "sha256": "e1e91ebaf579e3e70ae6bf800d020515e3e230630a52b17a9d639d00dc7015e3",
+      "hashProvenance": "initial supplied pin and original analysis evidence metadata; retired bytes not claimed currently checked"
+    },
+    {
+      "file": "docs/research/unreal-packaging-media-body-016.json",
+      "sha256": "43171f930cf440749a40a6ae21d1a98483bccb880ea55f6485112ffe79ec26bf",
+      "hashProvenance": "initial supplied pin; retired bytes not claimed currently checked"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-packaging-media-batch-016/media-review.json",
+      "sha256": "dccb7c9079c531ee80e17b4d6d6db5546a578cd89dc9a1cb3168c9bc35e821b2",
+      "hashProvenance": "original analysis privateEvidence metadata; retired bytes not claimed currently checked"
+    }
+  ],
+  "finalAnalysisPin": [
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+      "sha256": "f0670dc92603b1dfeb9d64ba6a0b8274ffdafd37ec8b44ba52efbd91a2e08d9a"
+    },
+    {
+      "file": "docs/research/unreal-packaging-media-body-016.json",
+      "sha256": "80cbb41348ef01ba9c5a7078d70371c98a29d8d57480f738a7e1349841e69ad5"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-packaging-media-batch-016/media-review.json",
+      "sha256": "3db4c777ce516c73b430c03779ef0e96543ed2ddc89c095a8f4fe2ff70591443"
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_VERIFICATION_016.md",
+      "sha256": "4afa6474daf232a9ae51d1b80b7adb34b2f92df8eb7fcbc89068e84a21c8c272"
+    },
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+      "sha256": "f0670dc92603b1dfeb9d64ba6a0b8274ffdafd37ec8b44ba52efbd91a2e08d9a"
+    },
+    {
+      "file": "docs/research/unreal-packaging-media-body-016.json",
+      "sha256": "80cbb41348ef01ba9c5a7078d70371c98a29d8d57480f738a7e1349841e69ad5"
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-packaging-media-batch-016/media-review.json",
+      "sha256": "3db4c777ce516c73b430c03779ef0e96543ed2ddc89c095a8f4fe2ff70591443"
+    }
+  ],
+  "counts": {
+    "staticInstancesIndependentlyViewed": 29,
+    "staticUniqueByteHashesIndependentlyViewed": 27,
+    "initialStaticViewCalls": 29,
+    "correctionRereadStaticViewCalls": 5,
+    "totalStaticViewCalls": 34,
+    "bodyImageLocatorsCompared": 31,
+    "imageFileMetadataCompared": 31,
+    "hashFileComparisons": 39,
+    "hashFileMismatches": 0,
+    "videoMetadataHashComparisons": 1,
+    "videoMetadataHashMismatches": 0,
+    "initialObservationCorrectionsFound": 3,
+    "correctionsResolvedAndIndependentlyReread": 3,
+    "remainingBlockingObservationContradictions": 0,
+    "gifAnimationsUnread": 2,
+    "gifFramesUnread": 339,
+    "videosUnread": 1,
+    "unresolvedGroups": 8
+  },
+  "sourcePage": {
+    "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/packaging-your-project?application_version=5.8",
+    "pageId": "BP011-07",
+    "requestedVersion": "5.8",
+    "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.source.html",
+    "sourceHash": "d82066c1d6472309ba2551f0f1405b5679f56456fa04840dc710027cd5e9e8de",
+    "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.body.html",
+    "bodyHash": "8ee5a6e800dd901df3517a043490378f32f03cceead86f39fe36bde511c97007",
+    "exactScreenshotEngineEditionsUnconfirmed": true,
+    "retrievedAt": "2026-10-04T05:26:31.442618+00:00",
+    "canonicalUrl": "https://dev.epicgames.com/documentation/unreal-engine/packaging-your-project?lang=en-US",
+    "publisherMetadata": {
+      "id": 3948464,
+      "revision_hash_id": "maeoPE",
+      "updated_at": "2025-11-05T16:54:15.867Z",
+      "slug": "packaging-your-project",
+      "title": "Packaging Unreal Engine Projects",
+      "source": "epic_developer_community",
+      "locale": "en-us",
+      "entitlement": "none",
+      "applications": [
+        {
+          "id": 4279130,
+          "type": "unreal_engine",
+          "version": "5.6",
+          "major_version": "5"
+        },
+        {
+          "id": 4279213,
+          "type": "unreal_engine",
+          "version": "5.7",
+          "major_version": "5"
+        },
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ]
+    },
+    "ssrFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.ssr.json",
+    "ssrSha256": "94e74aedef62ddd00c8425e08372608a2d7aea7dde62d20a1dd36a455e929900",
+    "provenanceReadScope": "source/body/SSR byte hashes, official metadata, all body img locators and SSR video metadata only; full original technical text/tables/pre not claimed reread in this verification"
+  },
+  "media": [
+    {
+      "ordinalZeroBased": 0,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/39be121d-9228-456f-becf-6177e45c0362/dev-pipeline-diagram.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-0.png",
+      "sha256": "f8b03d0e1e188cd0291d07d6e6b66bf2ea3712d4d1542708a2199a2bd448d9f3",
+      "bodyLocator": "img ordinalZeroBased=0",
+      "nearestHeading": "What is Packaging?",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1559,
+          567
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Production/testing/distribution/post-production branches link packaging uses to development testing, QA, final build and DLC/patches; no API behavior is shown.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 1,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/847e4530-1586-46a8-a346-44efcfb5e5c7/the-packaging-process.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-1.png",
+      "sha256": "eb12d3f5bef522c9dcabcc4be0d5a6b8f36502f59c775c2b85f9fb90afd0815f",
+      "bodyLocator": "img ordinalZeroBased=1",
+      "nearestHeading": "How Does Packaging Work?",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1383,
+          168
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "The diagram groups Build, Cook, Stage and Package in a Packaging bracket, followed by Deploy and Run.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 2,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/650d1a69-1d11-441b-8512-05dd940fa429/ue-platforms-menu.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-2.png",
+      "sha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "bodyLocator": "img ordinalZeroBased=2",
+      "nearestHeading": "Cooking by the Book",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          580,
+          97
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "A highlighted Platforms dropdown appears in the level editor toolbar.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 3,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e8b80e53-4a20-4e19-b01a-d56335e97061/unreal-editor-cook-content.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-3.png",
+      "sha256": "bddf69249ffd9f4fecae543913955833e631e128e70639f75cfd3284880d2525",
+      "bodyLocator": "img ordinalZeroBased=3",
+      "nearestHeading": "Cooking by the Book",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1065,
+          1199
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Windows submenu highlights Cook Content; the image shows configuration and architecture choices, SDK state and an offline quick-launch device. SDK values match ordinal17.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": true,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 4,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5cb2bf60-a096-4a96-a11e-2e72b141cbaa/cooking-content.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-4.png",
+      "sha256": "2793b353b571079ecc6d35dac670344ff9ac60ec3a40f46ce9030cac719b01e9",
+      "bodyLocator": "img ordinalZeroBased=4",
+      "nearestHeading": "Cooking by the Book",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          352,
+          89
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Cooking content for Windows progress notification has Cancel and Show Output Log.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 5,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/fae11676-0196-4057-9d01-2cdfa97280e4/cooking-complete.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-5.png",
+      "sha256": "20a0f1f4d4cfdaabb7ac7a9aee883b027521423d25ef12aa8b6da4e50f5a99e6",
+      "bodyLocator": "img ordinalZeroBased=5",
+      "nearestHeading": "Cooking by the Book",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          352,
+          66
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Cooking complete notification has a green check and Show Output Log; this is a cooking result.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 6,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/7eac8dc2-200d-4519-b9bb-0703103421da/ue-platforms-menu.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-6.png",
+      "sha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "bodyLocator": "img ordinalZeroBased=6",
+      "nearestHeading": "Cooking on the Fly",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          580,
+          97
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "The same toolbar pixels as ordinal2 are presented again.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 7,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/869278d0-59ab-4b71-b4a9-fd371bbb57ff/platforms-cooking-on-the-fly.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-7.png",
+      "sha256": "78613c05f2c3318b7acd636dcb4e752de2e5ddc1d50a425c1ed2e570bbb57a3b",
+      "bodyLocator": "img ordinalZeroBased=7",
+      "nearestHeading": "Cooking on the Fly",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          419,
+          768
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Enable cooking on the fly is checked/highlighted; quick-launch device is labelled offline.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 8,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/84148d77-7ff6-40d1-9777-013533cb6f2b/unreal-editor-packaging-settings.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-8.png",
+      "sha256": "3861549327d2bfc757b9711f4d5b7a5f9aec74ac0dbcc1d8803d9150f6bca022",
+      "bodyLocator": "img ordinalZeroBased=8",
+      "nearestHeading": "Packaging Settings",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          419,
+          775
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Packaging Settings is highlighted in the Platforms menu; the cooking checkbox is checked in this example.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 9,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e61ec49b-e154-4918-8580-9aee88a9a7a2/project-settings-packaging.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-9.png",
+      "sha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "bodyLocator": "img ordinalZeroBased=9",
+      "nearestHeading": "Packaging Settings",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          847,
+          562
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Search/categories/collapsible groups, writable ini indicator, import/export and array controls are visible. Shared shader-code settings and Ini Key/Section Denylist are separate rows; this is not a shader denylist.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": true,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 10,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/a95bbd38-8b36-4268-ab95-c7b9a612930b/ue-project-browser.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-10.png",
+      "sha256": "248f1c490623c5dd780508d753cbc22be1e3e47df54d40d0c2cc17267d1d1e4f",
+      "bodyLocator": "img ordinalZeroBased=10",
+      "nearestHeading": "Let's Package a Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1794,
+          1293
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Project Browser shows project categories, game templates and preview, Blueprint/C++ choice, target/quality/variant plus location/name and Create/Cancel controls.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 11,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d60a7de0-68b3-4006-be24-5addf2c6bd49/unreal-editor-project-settings.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-11.png",
+      "sha256": "ab769bdfe1b39bee3d17d1b3556329831d9bcf907497053ea67538d3fac9db9d",
+      "bodyLocator": "img ordinalZeroBased=11",
+      "nearestHeading": "Setting a Game Default Map",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          768,
+          548
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Edit menu highlights Project Settings; Undo/Redo display disabled reasons and several edit commands show shortcut labels.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 12,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/0f8b7c3e-96ad-4f72-ae81-d832f31679f4/ue-maps-and-modes.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-12.png",
+      "sha256": "b793bf90fb34b9292ccc7c6ed628491c628c96b8eabf2a5e64a0f7cf8011465a",
+      "bodyLocator": "img ordinalZeroBased=12",
+      "nearestHeading": "Setting a Game Default Map",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          744,
+          473
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Maps/Modes settings separate editor startup and game default maps and show local multiplayer/splitscreen settings; ini writable state is visible.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 13,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/aa963d49-7b27-42e2-8899-a8801781060d/ue-set-game-default-map.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-13.png",
+      "sha256": "fbb6cc54367500f62f37a3b29c2b090cab172605a877dbdb9e81a37f60a72e17",
+      "bodyLocator": "img ordinalZeroBased=13",
+      "nearestHeading": "Setting a Game Default Map",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          469,
+          352
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Game Default Map picker shows current asset operations including Clear, a search field and selected map row; Paste appears disabled.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 14,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/bbba631e-42df-491c-9099-69da52714516/project-settings-packaging.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-14.png",
+      "sha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "bodyLocator": "img ordinalZeroBased=14",
+      "nearestHeading": "Setting a Build Configuration",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          847,
+          562
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "The same Packaging settings pixels as ordinal9 are presented again, with separate ini denylists.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": true,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 15,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/dd86d353-66ae-4775-94ea-736b435545dd/project-settings-build-configuration.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-15.png",
+      "sha256": "5cf732cbbe4041aa41d5f34507406fb7a88382a12630c75ee21f203566185349",
+      "bodyLocator": "img ordinalZeroBased=15",
+      "nearestHeading": "Setting a Build Configuration",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          600,
+          187
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "A partial Build settings panel highlights Development configuration and shows other build fields/checkboxes; no universal defaults are established.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 16,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/9647e17a-c12d-4245-ad25-daad36b8ca3a/unreal-editor-platforms-windows.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-16.png",
+      "sha256": "7b79f18ed83e4fe363c6bdc239fef068fc6eda5fcbfe487cc07903f152d4ee5c",
+      "bodyLocator": "img ordinalZeroBased=16",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          420,
+          769
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Windows target is highlighted in Platforms; quick-launch device is labelled offline.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 17,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/e0b921da-e78b-4252-9fcd-70510cba483f/platforms-binary-configuration.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-17.png",
+      "sha256": "668ce364170829ead675269d58bb37f6389cdd3ce135e808f37c40fe610c3495",
+      "bodyLocator": "img ordinalZeroBased=17",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          981,
+          1138
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Windows submenu shows selected project-setting configuration and architecture choices; SDK values match ordinal3 and this does not prove current required versions.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": true,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 18,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/86a0bae8-dfca-4131-8505-87c3d2f873fb/platforms-package-project.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-18.png",
+      "sha256": "aa8d8949c1be8cb1a1260127d6af0c28a4d057fc7aa2f0eae8bd5f7a4e62e28c",
+      "bodyLocator": "img ordinalZeroBased=18",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1327,
+          1034
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Windows submenu highlights Package Project and shows project-setting configuration selection.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 19,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d7ba6195-3380-43fe-b0ce-1fbccc4fe715/packaging-gif.gif",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-19.gif",
+      "sha256": "30167cbe035e32a39fdd1cd500cccf5ae40ab57a81c55e87ff9d9e939094668b",
+      "bodyLocator": "img ordinalZeroBased=19",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "GIF",
+        "dimensions": [
+          430,
+          198
+        ],
+        "frames": 330
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": false,
+      "independentReader": null,
+      "readScope": "File metadata only; all animated frames/pixels unread",
+      "independentObservation": null,
+      "analystObservationCompared": false,
+      "finalAnalysisMatchesBoundedObservation": null,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 20,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/92774841-e42a-4555-9b84-6318775d39aa/testgif.gif",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-20.gif",
+      "sha256": "739702f703bdf02353d42a00b8ed84bcfec979a559026a4e44fb3c24b1c258cc",
+      "bodyLocator": "img ordinalZeroBased=20",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "GIF",
+        "dimensions": [
+          1898,
+          432
+        ],
+        "frames": 9
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": false,
+      "independentReader": null,
+      "readScope": "File metadata only; all animated frames/pixels unread",
+      "independentObservation": null,
+      "analystObservationCompared": false,
+      "finalAnalysisMatchesBoundedObservation": null,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 21,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/02d720ca-4dd7-4e6b-bcd5-f8c2a517deab/packaging-complete.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-21.png",
+      "sha256": "de77db2a9c847225718e15cf45c74195060e6b9b4faae5a6da713a84937dfe19",
+      "bodyLocator": "img ordinalZeroBased=21",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          352,
+          68
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Packaging complete notification has a green check and Show Output Log; it is distinct from ordinal5 cooking complete.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 22,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5deee5b9-d9d2-4e8a-850c-d5e5a553f6ef/packaging-failed.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-22.png",
+      "sha256": "52f493eb805c9ddf04aedbe3b62ebc2dec598ec6ba528b29af9d8f6b50d06150",
+      "bodyLocator": "img ordinalZeroBased=22",
+      "nearestHeading": "Creating a Packaged Project",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          440,
+          113
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Packaging failed notification has warning icon, Show Output Log and Dismiss.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 23,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/8635bb67-3b59-4d36-aa09-d3ed955da1d2/packaging-cancel.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-23.png",
+      "sha256": "f5259aa48c122326f1375050d07f8986878c414dd0996573569835ca3d8a055c",
+      "bodyLocator": "img ordinalZeroBased=23",
+      "nearestHeading": "(Optional) Canceling the Packaging Process",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          352,
+          93
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Packaging project for Windows progress notification highlights Cancel; completion of cancellation is not shown.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 24,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/d5c2b9c3-a563-43dc-b2b4-73fee4aff5b0/packaging-canceled.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-24.png",
+      "sha256": "1d3ec19c0027e3565749666d78e7cb71a65be048966735879517b5540a50cd79",
+      "bodyLocator": "img ordinalZeroBased=24",
+      "nearestHeading": "(Optional) Canceling the Packaging Process",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          522,
+          126
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Packaging canceled notification has warning icon, Show Output Log and Dismiss; this is a separate result image.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 25,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/083dc7ee-668f-4f93-b6ca-96a071d6438a/packaging-show-output-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-25.png",
+      "sha256": "1fe7ebea21a9543fe9e2c1c5176fc301692fa90ee36ee271df39fc378042d71a",
+      "bodyLocator": "img ordinalZeroBased=25",
+      "nearestHeading": "(Optional) Debugging Packaging Errors",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          260,
+          63
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Progress notification highlights Show Output Log and also displays Cancel.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 26,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/afd282cc-58db-411e-baf5-73714674aca3/window-messsage-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-26.png",
+      "sha256": "cde6b0132a6b13debde5ed76382d1ffdceb5db9116e4e6c7d168dd9ef5f2990f",
+      "bodyLocator": "img ordinalZeroBased=26",
+      "nearestHeading": "(Optional) Debugging Packaging Errors",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          231,
+          600
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Window menu lists Device Output Log, Message Log and Output Log; layout actions and some toolbar/fullscreen shortcuts are visible.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 27,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/6b50aac4-db5f-4d96-8b85-178da260d610/message-log.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-27.png",
+      "sha256": "b7e03e91fe12a7a69dbca814e8af907a61d02209927c81b0bba439b6e981679c",
+      "bodyLocator": "img ordinalZeroBased=27",
+      "nearestHeading": "The Message Log",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1435,
+          741
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Message Log selects Packaging Results and shows an empty result area; Page/Clear appear disabled. This does not establish success.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 28,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/947ba1ad-0464-4658-b5a5-fd4f1ec746e5/packaged-executable.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-28.png",
+      "sha256": "6e8187109bc5e0327b118ed950ec092ae16174d848b1c38ef6ac5e038eb9d2ba",
+      "bodyLocator": "img ordinalZeroBased=28",
+      "nearestHeading": "Running and Exiting Your Executable",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          1408,
+          619
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Windows output folder shows an application beside Engine/MyProject directories and manifests. Date modified displays5/8/2025; locale interpretation and screenshot capture date remain unknown.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": true,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 29,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/871d0fb9-70b8-43d3-a06f-82f426d65834/command-line.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-29.png",
+      "sha256": "83438dcae403a7a561cb8bf3d09afd0f1cc4c71cdc368b84f4c4f75301bd6fef",
+      "bodyLocator": "img ordinalZeroBased=29",
+      "nearestHeading": "Running and Exiting Your Executable",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          586,
+          72
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "A console input displays quit; execution completion and Shipping console support are not shown.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    },
+    {
+      "ordinalZeroBased": 30,
+      "url": "https://d1iv7db44yhgxn.cloudfront.net/documentation/images/5c547c3a-f75c-40d9-ba15-9737e3119da6/platforms-project-launcher.png",
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-30.png",
+      "sha256": "8f05a94ca22a0f228c4843ccfe8b8d64210842c8443759ad2f9ef8181d2359bd",
+      "bodyLocator": "img ordinalZeroBased=30",
+      "nearestHeading": "Using the Project Launcher",
+      "altMatches": true,
+      "urlMatches": true,
+      "metadataIndependentlyRecomputed": {
+        "format": "PNG",
+        "dimensions": [
+          417,
+          773
+        ],
+        "frames": 1
+      },
+      "metadataMatches": true,
+      "independentPixelsActuallyViewed": true,
+      "independentReader": "/root/android_build_deploy_014",
+      "readScope": "Whole original static PNG pixels directly viewed; exact bytes checked separately",
+      "independentObservation": "Platforms highlights Project Launcher; Legacy Project Launcher and Device Manager are distinct menu entries.",
+      "analystObservationCompared": true,
+      "finalAnalysisMatchesBoundedObservation": true,
+      "correctionPixelsReread": false,
+      "guiOrRuntimeEvidence": false
+    }
+  ],
+  "unreadVideo": {
+    "ssrLocator": "blocks[114].items[2][1]",
+    "provider": "kaltura",
+    "id": "V_tKNK2C",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "metadataSha256": "5602f6dea2b9722f1e66c9ed2a92ee8f75acf0041f6d99b32f97cc1bf09e021f",
+    "canonicalHashRule": "UTF8 json.dumps ensure_ascii=False sort_keys=True separators=(comma,colon)",
+    "metadataMatches011": true,
+    "pixelsAudioOrFramesRead": false,
+    "bodyPlaceholderLocated": true
+  },
+  "duplicateStaticInstances": [
+    {
+      "ordinals": [
+        2,
+        6
+      ],
+      "sameSha256": true
+    },
+    {
+      "ordinals": [
+        9,
+        14
+      ],
+      "sameSha256": true
+    }
+  ],
+  "hashComparisons": [
+    {
+      "file": "docs/research/UNREAL_PACKAGING_MEDIA_BODY_016.md",
+      "expectedSha256": "f0670dc92603b1dfeb9d64ba6a0b8274ffdafd37ec8b44ba52efbd91a2e08d9a",
+      "actualSha256": "f0670dc92603b1dfeb9d64ba6a0b8274ffdafd37ec8b44ba52efbd91a2e08d9a",
+      "matches": true
+    },
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_RESEARCH_011.md",
+      "expectedSha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5",
+      "actualSha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5",
+      "matches": true
+    },
+    {
+      "file": "docs/research/build-editor-platform-research-011.json",
+      "expectedSha256": "e3285b8f5307bd7f24f4475e0fbcd3d9f7cb41b11434ec50dfd3da1b9d7b2410",
+      "actualSha256": "e3285b8f5307bd7f24f4475e0fbcd3d9f7cb41b11434ec50dfd3da1b9d7b2410",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/unreal-packaging-media-batch-016/media-review.json",
+      "expectedSha256": "3db4c777ce516c73b430c03779ef0e96543ed2ddc89c095a8f4fe2ff70591443",
+      "actualSha256": "3db4c777ce516c73b430c03779ef0e96543ed2ddc89c095a8f4fe2ff70591443",
+      "matches": true
+    },
+    {
+      "file": "docs/research/unreal-packaging-media-body-016.json",
+      "expectedSha256": "80cbb41348ef01ba9c5a7078d70371c98a29d8d57480f738a7e1349841e69ad5",
+      "actualSha256": "80cbb41348ef01ba9c5a7078d70371c98a29d8d57480f738a7e1349841e69ad5",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.source.html",
+      "expectedSha256": "d82066c1d6472309ba2551f0f1405b5679f56456fa04840dc710027cd5e9e8de",
+      "actualSha256": "d82066c1d6472309ba2551f0f1405b5679f56456fa04840dc710027cd5e9e8de",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.body.html",
+      "expectedSha256": "8ee5a6e800dd901df3517a043490378f32f03cceead86f39fe36bde511c97007",
+      "actualSha256": "8ee5a6e800dd901df3517a043490378f32f03cceead86f39fe36bde511c97007",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.ssr.json",
+      "expectedSha256": "94e74aedef62ddd00c8425e08372608a2d7aea7dde62d20a1dd36a455e929900",
+      "actualSha256": "94e74aedef62ddd00c8425e08372608a2d7aea7dde62d20a1dd36a455e929900",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-0.png",
+      "expectedSha256": "f8b03d0e1e188cd0291d07d6e6b66bf2ea3712d4d1542708a2199a2bd448d9f3",
+      "actualSha256": "f8b03d0e1e188cd0291d07d6e6b66bf2ea3712d4d1542708a2199a2bd448d9f3",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-1.png",
+      "expectedSha256": "eb12d3f5bef522c9dcabcc4be0d5a6b8f36502f59c775c2b85f9fb90afd0815f",
+      "actualSha256": "eb12d3f5bef522c9dcabcc4be0d5a6b8f36502f59c775c2b85f9fb90afd0815f",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-2.png",
+      "expectedSha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "actualSha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-3.png",
+      "expectedSha256": "bddf69249ffd9f4fecae543913955833e631e128e70639f75cfd3284880d2525",
+      "actualSha256": "bddf69249ffd9f4fecae543913955833e631e128e70639f75cfd3284880d2525",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-4.png",
+      "expectedSha256": "2793b353b571079ecc6d35dac670344ff9ac60ec3a40f46ce9030cac719b01e9",
+      "actualSha256": "2793b353b571079ecc6d35dac670344ff9ac60ec3a40f46ce9030cac719b01e9",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-5.png",
+      "expectedSha256": "20a0f1f4d4cfdaabb7ac7a9aee883b027521423d25ef12aa8b6da4e50f5a99e6",
+      "actualSha256": "20a0f1f4d4cfdaabb7ac7a9aee883b027521423d25ef12aa8b6da4e50f5a99e6",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-6.png",
+      "expectedSha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "actualSha256": "1b43fa57592a32035b49df83ea67a00d020e531abacc2cc7c8368d64075976c8",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-7.png",
+      "expectedSha256": "78613c05f2c3318b7acd636dcb4e752de2e5ddc1d50a425c1ed2e570bbb57a3b",
+      "actualSha256": "78613c05f2c3318b7acd636dcb4e752de2e5ddc1d50a425c1ed2e570bbb57a3b",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-8.png",
+      "expectedSha256": "3861549327d2bfc757b9711f4d5b7a5f9aec74ac0dbcc1d8803d9150f6bca022",
+      "actualSha256": "3861549327d2bfc757b9711f4d5b7a5f9aec74ac0dbcc1d8803d9150f6bca022",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-9.png",
+      "expectedSha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "actualSha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-10.png",
+      "expectedSha256": "248f1c490623c5dd780508d753cbc22be1e3e47df54d40d0c2cc17267d1d1e4f",
+      "actualSha256": "248f1c490623c5dd780508d753cbc22be1e3e47df54d40d0c2cc17267d1d1e4f",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-11.png",
+      "expectedSha256": "ab769bdfe1b39bee3d17d1b3556329831d9bcf907497053ea67538d3fac9db9d",
+      "actualSha256": "ab769bdfe1b39bee3d17d1b3556329831d9bcf907497053ea67538d3fac9db9d",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-12.png",
+      "expectedSha256": "b793bf90fb34b9292ccc7c6ed628491c628c96b8eabf2a5e64a0f7cf8011465a",
+      "actualSha256": "b793bf90fb34b9292ccc7c6ed628491c628c96b8eabf2a5e64a0f7cf8011465a",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-13.png",
+      "expectedSha256": "fbb6cc54367500f62f37a3b29c2b090cab172605a877dbdb9e81a37f60a72e17",
+      "actualSha256": "fbb6cc54367500f62f37a3b29c2b090cab172605a877dbdb9e81a37f60a72e17",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-14.png",
+      "expectedSha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "actualSha256": "6c1d3146e740a2baa394e273ee607530459e9ffed57613600cc65da352d91f9c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-15.png",
+      "expectedSha256": "5cf732cbbe4041aa41d5f34507406fb7a88382a12630c75ee21f203566185349",
+      "actualSha256": "5cf732cbbe4041aa41d5f34507406fb7a88382a12630c75ee21f203566185349",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-16.png",
+      "expectedSha256": "7b79f18ed83e4fe363c6bdc239fef068fc6eda5fcbfe487cc07903f152d4ee5c",
+      "actualSha256": "7b79f18ed83e4fe363c6bdc239fef068fc6eda5fcbfe487cc07903f152d4ee5c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-17.png",
+      "expectedSha256": "668ce364170829ead675269d58bb37f6389cdd3ce135e808f37c40fe610c3495",
+      "actualSha256": "668ce364170829ead675269d58bb37f6389cdd3ce135e808f37c40fe610c3495",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-18.png",
+      "expectedSha256": "aa8d8949c1be8cb1a1260127d6af0c28a4d057fc7aa2f0eae8bd5f7a4e62e28c",
+      "actualSha256": "aa8d8949c1be8cb1a1260127d6af0c28a4d057fc7aa2f0eae8bd5f7a4e62e28c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-19.gif",
+      "expectedSha256": "30167cbe035e32a39fdd1cd500cccf5ae40ab57a81c55e87ff9d9e939094668b",
+      "actualSha256": "30167cbe035e32a39fdd1cd500cccf5ae40ab57a81c55e87ff9d9e939094668b",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-20.gif",
+      "expectedSha256": "739702f703bdf02353d42a00b8ed84bcfec979a559026a4e44fb3c24b1c258cc",
+      "actualSha256": "739702f703bdf02353d42a00b8ed84bcfec979a559026a4e44fb3c24b1c258cc",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-21.png",
+      "expectedSha256": "de77db2a9c847225718e15cf45c74195060e6b9b4faae5a6da713a84937dfe19",
+      "actualSha256": "de77db2a9c847225718e15cf45c74195060e6b9b4faae5a6da713a84937dfe19",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-22.png",
+      "expectedSha256": "52f493eb805c9ddf04aedbe3b62ebc2dec598ec6ba528b29af9d8f6b50d06150",
+      "actualSha256": "52f493eb805c9ddf04aedbe3b62ebc2dec598ec6ba528b29af9d8f6b50d06150",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-23.png",
+      "expectedSha256": "f5259aa48c122326f1375050d07f8986878c414dd0996573569835ca3d8a055c",
+      "actualSha256": "f5259aa48c122326f1375050d07f8986878c414dd0996573569835ca3d8a055c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-24.png",
+      "expectedSha256": "1d3ec19c0027e3565749666d78e7cb71a65be048966735879517b5540a50cd79",
+      "actualSha256": "1d3ec19c0027e3565749666d78e7cb71a65be048966735879517b5540a50cd79",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-25.png",
+      "expectedSha256": "1fe7ebea21a9543fe9e2c1c5176fc301692fa90ee36ee271df39fc378042d71a",
+      "actualSha256": "1fe7ebea21a9543fe9e2c1c5176fc301692fa90ee36ee271df39fc378042d71a",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-26.png",
+      "expectedSha256": "cde6b0132a6b13debde5ed76382d1ffdceb5db9116e4e6c7d168dd9ef5f2990f",
+      "actualSha256": "cde6b0132a6b13debde5ed76382d1ffdceb5db9116e4e6c7d168dd9ef5f2990f",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-27.png",
+      "expectedSha256": "b7e03e91fe12a7a69dbca814e8af907a61d02209927c81b0bba439b6e981679c",
+      "actualSha256": "b7e03e91fe12a7a69dbca814e8af907a61d02209927c81b0bba439b6e981679c",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-28.png",
+      "expectedSha256": "6e8187109bc5e0327b118ed950ec092ae16174d848b1c38ef6ac5e038eb9d2ba",
+      "actualSha256": "6e8187109bc5e0327b118ed950ec092ae16174d848b1c38ef6ac5e038eb9d2ba",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-29.png",
+      "expectedSha256": "83438dcae403a7a561cb8bf3d09afd0f1cc4c71cdc368b84f4c4f75301bd6fef",
+      "actualSha256": "83438dcae403a7a561cb8bf3d09afd0f1cc4c71cdc368b84f4c4f75301bd6fef",
+      "matches": true
+    },
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.image-30.png",
+      "expectedSha256": "8f05a94ca22a0f228c4843ccfe8b8d64210842c8443759ad2f9ef8181d2359bd",
+      "actualSha256": "8f05a94ca22a0f228c4843ccfe8b8d64210842c8443759ad2f9ef8181d2359bd",
+      "matches": true
+    }
+  ],
+  "corrections": [
+    {
+      "id": "UPMV016-C01",
+      "ordinals": [
+        3,
+        17
+      ],
+      "initialObservation": "MD stated SDK numbers differ",
+      "independentObservation": "Displayed allowed/installed SDK values are identical; layout/size differs",
+      "correctedByAnalyst": true,
+      "correctedInFinalPin": true,
+      "pixelsIndependentlyReread": true,
+      "resolved": true,
+      "currentSDKContractInferred": false
+    },
+    {
+      "id": "UPMV016-C02",
+      "ordinals": [
+        9,
+        14
+      ],
+      "initialObservation": "JSON wording combined shader denylist",
+      "independentObservation": "Shared shader settings and Ini Key/Section Denylist are separate rows",
+      "correctedByAnalyst": true,
+      "correctedInFinalPin": true,
+      "pixelsIndependentlyReread": true,
+      "resolved": true,
+      "defaultValuesInferred": false
+    },
+    {
+      "id": "UPMV016-C03",
+      "ordinals": [
+        28
+      ],
+      "initialObservation": "Date expressed as2025-05-08 without distinguishing file modification/locale/capture date",
+      "independentObservation": "Date modified string5/8/2025 is visible; format locale and capture date unproved",
+      "correctedByAnalyst": true,
+      "correctedInFinalPin": true,
+      "pixelsIndependentlyReread": true,
+      "resolved": true,
+      "ISOOrCaptureDateInferred": false
+    }
+  ],
+  "sourceFactVsHbJudgmentAudit": {
+    "sourceObservationAndDesignColumnsSeparated": true,
+    "hbProposalParagraphLabelled": true,
+    "hbProposals": [
+      "common profile/target/job/revision/artifact/log/capability path for human and AI",
+      "separate package/install/play reports",
+      "editable documents with long-running jobs and explicit source snapshots",
+      "cancel request separate from final canceled state; retry/log/artifact access"
+    ],
+    "notClaimedAsOfficialInternalApi": [
+      "transaction/atomicity",
+      "cancellation cleanup",
+      "all target capability and SDK install implementation",
+      "mobile editor host support"
+    ],
+    "screenshotValuesCountedAsDefaults": false,
+    "blankLogCountedAsSuccess": false,
+    "quitInputCountedAsExecutionCompletion": false,
+    "packagedFolderCountedAsCompleteDependencyContract": false,
+    "windowsEvidencePromotedToAndroidNativeProof": false
+  },
+  "unresolved": [
+    {
+      "id": "UPMV016-U01",
+      "scope": "Both GIFs all339 frames remain unread; metadata does not replace frame observation"
+    },
+    {
+      "id": "UPMV016-U02",
+      "scope": "One Kaltura video remains unwatched, including pixels/audio/action sequence"
+    },
+    {
+      "id": "UPMV016-U03",
+      "scope": "Exact screenshot engine editions, universal defaults and Date modified locale/capture date are unconfirmed"
+    },
+    {
+      "id": "UPMV016-U04",
+      "scope": "Connected profile/launcher/log/packaging API bodies, overloads and shortcut context remain unread"
+    },
+    {
+      "id": "UPMV016-U05",
+      "scope": "Formal thread/lifetime/failure/transaction/cancel/cleanup behavior is unproved"
+    },
+    {
+      "id": "UPMV016-U06",
+      "scope": "Target-specific current SDK requirements, signing/update and exact distribution dependency contract require separate official bodies"
+    },
+    {
+      "id": "UPMV016-U07",
+      "scope": "Mobile editor host and Android native startup/install/play require independent platform evidence; Windows PNGs cannot prove these"
+    },
+    {
+      "id": "UPMV016-U08",
+      "scope": "HB implementation, persistence/revision/job/report/capability parity and device/GUI/runtime tests are not verified in research_only"
+    }
+  ],
+  "unchanged011Pins": [
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_RESEARCH_011.md",
+      "sha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5"
+    },
+    {
+      "file": "docs/research/build-editor-platform-research-011.json",
+      "sha256": "e3285b8f5307bd7f24f4475e0fbcd3d9f7cb41b11434ec50dfd3da1b9d7b2410"
+    }
+  ],
+  "implementationOrExecution": {
+    "engineChanged": false,
+    "sharedStatusChanged": false,
+    "ledgerChanged": false,
+    "commitCreated": false,
+    "foregroundOrBrowserOpened": false,
+    "guiExecuted": false,
+    "runtimeExecuted": false,
+    "testsExecuted": false,
+    "sdkInstalled": false,
+    "deviceDeployOrLogCommandsExecuted": false,
+    "originalWholeBodiesCodeTablesMediaPubliclyReplicated": false
+  }
+}

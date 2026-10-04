@@ -1,0 +1,4458 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-undo-verification-010",
+  "phase": "research_only",
+  "analysisReader": "root",
+  "verifier": "/root/undo_mobile_evidence_audit",
+  "date": "2026-10-04",
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "scope": "Limited original technical body versus final root analysis comparison, not closure of UnityEditor/Undo linked contracts or strict ledger promotion.",
+  "verificationReport": "docs/research/UNITY_UNDO_VERIFICATION_010.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_UNDO_BODY_010.md",
+      "sha256": "0f76125216a2bea7409f25ab564fcf11f44c6747a53bd1aa6ed4f3137e7f6f1d"
+    },
+    {
+      "file": "docs/research/unity-undo-body-010.json",
+      "sha256": "138f8179f6da58090b396347d48004619d0aded03a80bda11d4539fd36e0e357"
+    },
+    {
+      "file": "docs/research/UNITY_UNDO_VERIFICATION_010.md",
+      "sha256": "e9e4af0b418ae0aa2e9a10c3bacd49ee37eef77fd972fd12f5d5016c69888928"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/root-extraction.json",
+      "sha256": "eb7ff83427bb4e7d75da572e352c1d18f5c2a941fa95230400fc188055cf5907"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/extraction.json",
+      "sha256": "d2b28f060492ef45a8b601b6003090193317ba968be2a65e48543d93d65ab24e"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-undo-batch-010/ancillary-extraction.json",
+      "sha256": "11c14c158b47ba94259126f6a2a7c37ebb1798264fe54aac895e98b0ff17725e"
+    }
+  ],
+  "counts": {
+    "allReread": {
+      "pages": 47,
+      "headings": 154,
+      "displayedDeclarationBlocks": 46,
+      "tables": 22,
+      "tableRowsIncludingHeaders": 95,
+      "tableCells": 190,
+      "wholePreExampleBlocksRead": 14,
+      "inlineCodeFragmentsRead": 24,
+      "emptySignatureSlots": 4,
+      "inlineVariableNameMentionsRead": 6
+    },
+    "newBodies": {
+      "pages": 40,
+      "headings": 119,
+      "displayedDeclarationBlocks": 37,
+      "tables": 14,
+      "tableRowsIncludingHeaders": 73,
+      "tableCells": 146,
+      "wholePreExampleBlocksRead": 10,
+      "inlineCodeFragmentsRead": 24,
+      "emptySignatureSlots": 4,
+      "inlineVariableNameMentionsRead": 6
+    },
+    "previouslyAnalyzedReread": {
+      "pages": 7,
+      "headings": 35,
+      "displayedDeclarationBlocks": 9,
+      "tables": 8,
+      "tableRowsIncludingHeaders": 22,
+      "tableCells": 44,
+      "wholePreExampleBlocksRead": 4,
+      "inlineCodeFragmentsRead": 0,
+      "emptySignatureSlots": 0,
+      "inlineVariableNameMentionsRead": 0
+    },
+    "directUndoOwnerMemberLinks": 33,
+    "ancillaryOwnerBodies": 3,
+    "ancillaryFieldBodies": 10,
+    "limitedIndependentlyComparedBodies": 47,
+    "ledgerPromotions": 0,
+    "strictLedgerVerified": 0
+  },
+  "ownerInventory": {
+    "directUndoLinks": [
+      "Undo-isProcessing.html",
+      "Undo-postprocessModifications.html",
+      "Undo-undoRedoEvent.html",
+      "Undo-undoRedoPerformed.html",
+      "Undo-willFlushUndoRecord.html",
+      "Undo.AddComponent.html",
+      "Undo.ClearAll.html",
+      "Undo.ClearUndo.html",
+      "Undo.CollapseUndoOperations.html",
+      "Undo.DestroyObjectImmediate.html",
+      "Undo.FlushUndoRecordObjects.html",
+      "Undo.GetCurrentGroup.html",
+      "Undo.GetCurrentGroupName.html",
+      "Undo.IncrementCurrentGroup.html",
+      "Undo.MoveGameObjectToScene.html",
+      "Undo.PerformRedo.html",
+      "Undo.PerformUndo.html",
+      "Undo.RecordObject.html",
+      "Undo.RecordObjects.html",
+      "Undo.RegisterChildrenOrderUndo.html",
+      "Undo.RegisterCompleteObjectUndo.html",
+      "Undo.RegisterCreatedObjectUndo.html",
+      "Undo.RegisterFullObjectHierarchyUndo.html",
+      "Undo.RegisterImporterUndo.html",
+      "Undo.RevertAllDownToGroup.html",
+      "Undo.RevertAllInCurrentGroup.html",
+      "Undo.SetCurrentGroupName.html",
+      "Undo.SetSiblingIndex.html",
+      "Undo.SetTransformParent.html",
+      "Undo.PostprocessModifications.html",
+      "Undo.UndoRedoCallback.html",
+      "Undo.UndoRedoEventCallback.html",
+      "Undo.WillFlushUndoRecord.html"
+    ],
+    "matchesPinnedOwnerTables": true,
+    "matchesRootExtraction": true,
+    "allDirectMemberBodiesActuallyRead": true,
+    "ancillary": [
+      {
+        "owner": "UndoRedoInfo.html",
+        "directFieldLinks": [
+          "UndoRedoInfo-isRedo.html",
+          "UndoRedoInfo-undoGroup.html",
+          "UndoRedoInfo-undoName.html"
+        ],
+        "allFieldBodiesActuallyRead": true
+      },
+      {
+        "owner": "UndoPropertyModification.html",
+        "directFieldLinks": [
+          "UndoPropertyModification-currentValue.html",
+          "UndoPropertyModification-keepPrefabOverride.html",
+          "UndoPropertyModification-previousValue.html"
+        ],
+        "allFieldBodiesActuallyRead": true
+      },
+      {
+        "owner": "PropertyModification.html",
+        "directFieldLinks": [
+          "PropertyModification-objectReference.html",
+          "PropertyModification-propertyPath.html",
+          "PropertyModification-target.html",
+          "PropertyModification-value.html"
+        ],
+        "allFieldBodiesActuallyRead": true
+      }
+    ],
+    "fullNamespaceInheritedNativeClosure": false
+  },
+  "corrections": [
+    {
+      "id": "inline-code-varname-count",
+      "foundBy": "/root/undo_mobile_evidence_audit",
+      "originalCount": 18,
+      "actualAllCodeOutsidePre": 24,
+      "literalCallFragments": 18,
+      "variableNameMentions": 6,
+      "location": "Undo.RegisterFullObjectHierarchyUndo.html description p code.varname nodes",
+      "analysisFixOwner": "root",
+      "disposition": "Resolved: final MD/JSON total and new inline count24 and explicit varname6 independently rechecked; private initial literal-only extraction remains18 with stated scope."
+    }
+  ],
+  "preservedUncertainties": [
+    {
+      "id": "malformed-delegate",
+      "source": "Undo.UndoRedoEventCallback.html",
+      "displayedMalformedLiteral": "public delegate void UndoRedoEventCallback(InAttribute) undo );",
+      "normalDeclarationInferredFromExample": false,
+      "requiredFollowup": "Corresponding pinned official source or other official declaration/ABI evidence."
+    },
+    {
+      "id": "generic-addcomponent",
+      "source": "Undo.AddComponent.html",
+      "displayedSecondDeclaration": "public static T AddComponent(GameObject gameObject);",
+      "displayedTypeParameterList": null,
+      "displayedGenericConstraints": null,
+      "missingSyntaxInvented": false
+    },
+    {
+      "id": "revert-currentgroup",
+      "source": "Undo.RevertAllInCurrentGroup.html",
+      "documentedScope": "Last undo operation without recording a redo operation; no assumption of all operations in current group from API name."
+    }
+  ],
+  "pages": [
+    {
+      "file": "Undo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.html",
+      "sourceHash": "5c4978a116930d119041fee05440bd2869304677f8a5c3f8f7b8ea94940fe7ca",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.html.body.html",
+      "bodyHash": "572d684d770b2dc9fe8e2c2e9f2482a3fed0969ea6cb03b70afc357dd3401776",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Static Properties",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Static Methods",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[5]",
+          "tag": "h3",
+          "title": "Delegates",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 5,
+        "displayedDeclarationBlocks": 0,
+        "tables": 3,
+        "tableRowsIncludingHeaders": 36,
+        "tableCells": 72,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 7,
+        "emptySignatureSlots": 1,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 6,
+          "cells": 12,
+          "sha256": "aac4bcefe2657d1bade7e87400d3a0763c68824c8938bcdbf507b432a4da337a",
+          "allCellsActuallyRead": true
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeaders": 25,
+          "cells": 50,
+          "sha256": "58c2edb77ba90b30ffd68fa2d3f66fb44e8bc571a7e028076f26b78b3eb0e624",
+          "allCellsActuallyRead": true
+        },
+        {
+          "locator": "table[3]",
+          "rowsIncludingHeaders": 5,
+          "cells": 10,
+          "sha256": "a0226a62cb8e488242e15e6b9e201921388bb039828d8610fae48ef85cf422e2",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [
+        {
+          "locator": "codeOutsidePre[1]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "448cec0ea5f7e20b721029df24ea45540859d8d6eeeafe3410d03eed97e3a1c1",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[2]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "b166d4a964b3ce43631a8f634be26c50a0670d96942ace9b6a6200f2142eeae3",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[3]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "4d4cc7c6d21911c7645c269b780e2fe7746f454d993b42a833a54528df56f9fd",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[4]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "da278341f4d77439db1100de2ea472ba0b08b52ec743918b6f7c3ed1cb2e731f",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[5]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "6b429af69a55c030401315eade9b0b1c49f2be59830af6c247ba81a3969f83a5",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[6]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "39620afc7f8168ab3c0526e0bcd55eb192dc838a285601e381ca1dc25e2baf72",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[7]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "77ddb75f234dabdabfbfa8d5d3e149706b0a8dab54edb44e181afc37cbc70801",
+          "actuallyRead": true
+        }
+      ],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "속성 delta/객체 상태·event group·action별 자동 이름과 수동 override·종류별 전용 호출을 대조했다. 실제 표 직접 링크33만 닫았고 전체 namespace/상속/native inventory는 미확정이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo-isProcessing.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-isProcessing.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-isProcessing.html",
+      "sourceHash": "1e8324fbf286b1da1b2e37449984262b028970c8e7de878f59b46099206ecbd3",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-isProcessing.html.body.html",
+      "bodyHash": "5428a61d9757ed221a315cceb785ea0189c3b493b5631116f443be3e5d53bf1d",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .isProcessing",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 3,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "0eaccb6ed5caa17ee982f833b426375d6088161b61ff7ffb77841ba8ac8e143b",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [
+        {
+          "locator": "codeOutsidePre[1]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[2]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[3]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+          "actuallyRead": true
+        }
+      ],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "bool true/false와 true 동안 RegisterCreatedObjectUndo 금지를 대조했다. 다른 mutation 전반 금지로 확대하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo-postprocessModifications.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-postprocessModifications.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-postprocessModifications.html",
+      "sourceHash": "99d5e12c5703067fb7c9897ec80df87ca067ec88052013a6683ad05626c1e7ee",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-postprocessModifications.html.body.html",
+      "bodyHash": "c9ade358fcfaa18ce120dbefee3328073d0edb1b7ece021585215903c00d2778",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .postprocessModifications",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "bda95df47d7082952b22aa30fb0dae2aedee164c906aeec37f77b77d7fb39dbf",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 599,
+          "sha256": "1c1a28afa3072c793aadd93f10d3e7017d0512087cbab307bf54c8e7ee4ce298",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "새 property modification callback·배열 입출력 예제·Start 등록/OnDestroy 해제·입력 배열 그대로 반환을 대조했다. 교체/null/항목 수명은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo-undoRedoEvent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-undoRedoEvent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-undoRedoEvent.html",
+      "sourceHash": "ba01ef6aca5b29d0d4f3e2e5fe14f278281f589a31f27852affbb0d1db77de83",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-undoRedoEvent.html.body.html",
+      "bodyHash": "ca3dd0f6b61df88eea5536c3e74e4bde31a7ab0e4a3184205de2bdbce8ba402a",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .undoRedoEvent",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "9ddd0df8a79d305ebaae67f2554fd06653f686637fa3bc6b71b8abec68dd6e0b",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 402,
+          "sha256": "f50bd8666cc162fa38dae2fb9868294f8890b5c4e69d9d1afb7e68f04ef94082",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Undo/Redo 이후 event 통지·Start 등록/OnDestroy 해제·in UndoRedoInfo 예제를 대조했다. 정상 delegate 전체 선언/ABI의 대체 근거로 세지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo-undoRedoPerformed.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-undoRedoPerformed.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-undoRedoPerformed.html",
+      "sourceHash": "215979215b764747bfea150cf80664394bd60d10f8268d753d53314b52724868",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-undoRedoPerformed.html.body.html",
+      "bodyHash": "c39539b3697b7d8bb743ca2fea7783ab971c70361d73bec5953ec9e702dd21c1",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .undoRedoPerformed",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "3544fbb0c84aa8e2a1ca78c315d49b51079d7479b36fd3f7d0515efb3c388006",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 283,
+          "sha256": "bfc30db9b82399672fe2b34e6b8bf00c6d9a497e62731102defa5c3e0bc42ca5",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Undo/Redo 후 callback과 방향 정보를 undoRedoEvent로 안내하는 본문을 대조했다. 예제는 Start 등록만 있고 해제 코드가 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo-willFlushUndoRecord.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo-willFlushUndoRecord.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo-willFlushUndoRecord.html",
+      "sourceHash": "cf7bc33eacc41650106fdd9a1eb756d83855fc18c7eb62820b5af326d107492b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo-willFlushUndoRecord.html.body.html",
+      "bodyHash": "bb8a05e7921c69502e956a09f5be91172701b1965576fd545d87a15034d96198",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .willFlushUndoRecord",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "5330e03d286e87790334c03a780b72aecba6796c7e5909910092fc0fcdebbd39",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "flush 이전 통지와 FlushUndoRecordObjects 연결을 대조했다. 디스크 저장 callback이라는 근거는 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.AddComponent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.AddComponent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.AddComponent.html",
+      "sourceHash": "36f948c6318d5ece5d2e6101e2ba10b875bb6ab3d3daeff95b19c0d49e92c3e1",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.AddComponent.html.body.html",
+      "bodyHash": "c4c59b1d35bec87c79744973eb78260840341cef41837d52b06b561122432a6c",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .AddComponent",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Returns",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[5]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[6]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[7]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[8]",
+          "tag": "h3",
+          "title": "Returns",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[9]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 9,
+        "displayedDeclarationBlocks": 2,
+        "tables": 2,
+        "tableRowsIncludingHeaders": 5,
+        "tableCells": 10,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "a552473c354843679d67d191e590659328146305ff650f919a7c3d2a38eca874",
+          "displayedTextCompared": true
+        },
+        {
+          "locator": "signature-CS(nonempty)[2]",
+          "sha256": "26d4afc0e51768db5619a6c24b0ab205392837366ba0319085a1328324c7172b",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "74715cf639234ddd819ce70b7d66996765406330a462ffbe6dce15e78a46bc8e",
+          "allCellsActuallyRead": true
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeaders": 2,
+          "cells": 4,
+          "sha256": "6a0765370f1cd10ea34f180d297306df62b2766bc2ed39d57baebaae6ce4d298",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "GameObject+Type→Component와 GameObject→T 두 표시 block·각 parameter/return 표·Undo시 새 component 파괴를 대조했다. 두 번째 block의 <T>/constraint가 없어 완전한 generic 선언을 보완하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.ClearAll.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.ClearAll.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.ClearAll.html",
+      "sourceHash": "cac66a90e34a12b17d71946ac0219864b303b24a4423f7bb2046d5e03f9f81f7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.ClearAll.html.body.html",
+      "bodyHash": "5fe3306923708a9089da31c1d047f1b7a57586f0c78bf5a6022c3fe5564789bc",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .ClearAll",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "2138e904a0c727dc0e3689934c6981494e22b2d59236e4d42df24de2cbb55a7c",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Undo와 Redo stack 모두의 제거 범위를 대조했다. 특정 객체/창만의 기록 제거로 축소하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.ClearUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.ClearUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.ClearUndo.html",
+      "sourceHash": "5dc8eaf4ecd3a9c0e5fb782186b7d5e4b1e6828c01ddcbe1ccd28a3c8e1733b1",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.ClearUndo.html.body.html",
+      "bodyHash": "52f372eb0ce26b14a72b824bf5ece3fe8129558f78ef6e84856dd8feaf865961",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .ClearUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "07fe5c771b1527156799c0018884b0657a66253e8f7cd0799d26ec5fbe8c0230",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Object identifier와 RegisterCompleteObjectUndo로 등록된 특정 객체의 Undo operation 제거를 대조했다. 모든 구조 기록 삭제로 확대하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.CollapseUndoOperations.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.CollapseUndoOperations.html",
+      "sourceHash": "cd0b8f4466606b514875719c552e7b69d48a3968da36b427642fc7e69ada6a1b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.CollapseUndoOperations.html.body.html",
+      "bodyHash": "5c35286fffa2c6135222a49033c65c0ee12f6a342734290511228065baeb288a",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .CollapseUndoOperations",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 2,
+        "tableCells": 4,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "6d7dff797b5d5e84fa72f4688cbb249da697e5078661b7550cef627d0a14765f",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 2,
+          "cells": 4,
+          "sha256": "3ee91ef97f2f585c341e9e1490115ff63eead4c4e5503c873919e9098270d2bc",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 640,
+          "sha256": "1cbcef8a766205899d270975b59d5a40995bf6d10014cf2fa191b443eee13bf8",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "제공 index 위 group들의 operation을 그 index의 한 step으로 합침·color picker open/close·전체 reset-position 예제의 기록/변경/collapse 순서를 대조했다. cancel/원자 rollback은 미확정이다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.DestroyObjectImmediate.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.DestroyObjectImmediate.html",
+      "sourceHash": "c3e84e43d3368fc9373d79ea7a0323e3f2ed793f8032d3e9e459a3ab98f849b0",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.DestroyObjectImmediate.html.body.html",
+      "bodyHash": "e5bb4a61d93a0bafeaf73d72cc09a5ab6cfdc598a4892fd78ed668e28d02a146",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .DestroyObjectImmediate",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 2,
+        "tableCells": 4,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "570b7b814745e6c77b1c9b354f2b6fe5c0d69e628009ab4e60ee3f3b5df91fb8",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 2,
+          "cells": 4,
+          "sha256": "0bae57aef690ef64cd3855459f915c5307452e9bb79df51a053d55db103908ee",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "즉시 파괴·undo buffer 재생성·DestroyImmediate(objectToUndo,true) 대응을 대조했다. runtime 지연 파괴·파일/외부 참조 상세 복원 보장은 추가 계약이다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.FlushUndoRecordObjects.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.FlushUndoRecordObjects.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.FlushUndoRecordObjects.html",
+      "sourceHash": "9316a5e7d9acffab64ef30c1e1727b01874cde115da5b331c09958894c5a1490",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.FlushUndoRecordObjects.html.body.html",
+      "bodyHash": "5d4371e42ef285a5d2be9cbbb1b12c064bdf8e4f71daad608cff07a75b2d7a87",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .FlushUndoRecordObjects",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "5dc39258f1cfcfcb048598200a40859488d01f6e6e283b30279c91d5ec82f6ed",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "RecordObject/RecordObjects 기록과 mouse-up/일부 종료 event의 자동 flush를 대조했다. 일반적으로 수동 호출 불필요라는 조건을 유지했다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.GetCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.GetCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.GetCurrentGroup.html",
+      "sourceHash": "8b5a32050d32a150c541ce836c8cffe97997bdfaf845e74af64345c87a7e75b9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.GetCurrentGroup.html.body.html",
+      "bodyHash": "bb3e102cf55ecdaedd39a236eb4b0fc757adc5d74e202004b0ae7ad2ffcf461d",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .GetCurrentGroup",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Returns",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "c314aec14a8f2ca5c33bb382847a6249d8bb1363dbec281ace7e035590c64365",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 640,
+          "sha256": "1cbcef8a766205899d270975b59d5a40995bf6d10014cf2fa191b443eee13bf8",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "int current index·event 증가·두 관련 API와 전체 reset-position 예제를 대조했다. 예제에 수동 Increment 호출은 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.GetCurrentGroupName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.GetCurrentGroupName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.GetCurrentGroupName.html",
+      "sourceHash": "59b9c7581d2de16d3f6c7d0fd1bd731993ea1be10ed59fe6ac827b3f3d309f2a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.GetCurrentGroupName.html.body.html",
+      "bodyHash": "01eba5b3fe64e54f00fefcac0e92ce7fd717722e1a0079e8b7a6d3de3d247cd7",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .GetCurrentGroupName",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Returns",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "1c99933b6ca49da8fbb0ba225e70a89d93372316c997d7b2548c46bd723ed2ed",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "string 표시 이름·빈 group은 빈 string·action 기반 추정과 수동 이름 연결을 대조했다. 영속 ID로 확정하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.IncrementCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.IncrementCurrentGroup.html",
+      "sourceHash": "2f2fa598627e3cec71dd7fb9c7505080d54c88247ffe2eba474defec6e903b17",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.IncrementCurrentGroup.html.body.html",
+      "bodyHash": "a9b607d4ccde8080381d9fe0f00a2754522ba09bcff201d8faa75d1f73d5aaf8",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .IncrementCurrentGroup",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "6c5e212d13df85eeb4a2ecaad23abfd2865cb55e813f2e3c85e820cdfba57afd",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "무인수 void·event 자동 group 증가·수동 grouping 필요 상황을 대조했다. 독립 rollback 보장은 없다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.MoveGameObjectToScene.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.MoveGameObjectToScene.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.MoveGameObjectToScene.html",
+      "sourceHash": "63dfe036fce893729ccfab87948be5522ff5f0fd10e47af453cc543ace0c495e",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.MoveGameObjectToScene.html.body.html",
+      "bodyHash": "38712cc437eb87d7f94720e252e802ebe3805cbf400f1c74661072d3e64df581",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .MoveGameObjectToScene",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 4,
+        "tableCells": 8,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "8559a15f4076102db7b032bf4b55b58570d531c69c296fad9b0eb4f4bcc697f2",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 4,
+          "cells": 8,
+          "sha256": "206f78b1b0f21969dc85c40400bb57179e9c8d1c8fa9e2a4b3cecc33dcaf5b23",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "GameObject go/SceneManagement.Scene scene/string name 표와 현재 Scene root 요구를 대조했다. destination 로딩·실패/자식 동작은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.PerformRedo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PerformRedo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PerformRedo.html",
+      "sourceHash": "13dcb26200eab3c9d42bf8048dd8a84677a1179db5114ff619ad48768dc7b8cd",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PerformRedo.html.body.html",
+      "bodyHash": "ccc73e8af66eee3c2c05181e9c60134a1ef13e1034903f09b8d6c33f31765f24",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .PerformRedo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "6256c897de07ad5823276f244ace6e2f42442cbeca43169a0c764027914f9fa4",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "무인수 void와 Edit→Redo 대응을 대조했다. 빈 stack/실패/keyboard focus는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.PerformUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PerformUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PerformUndo.html",
+      "sourceHash": "babe30c2c4b6180fd6275124c60c1849cbf2240cdd20d866b8a86746b954af76",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PerformUndo.html.body.html",
+      "bodyHash": "cd2c9a11afe12b1cbea21f08939c8ab4ae977ce7e5ba9369166e913e2b9c74f3",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .PerformUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "c7fdb4a0c8412791402578adaaa1a84d21012e9daab18b2e03ad9972b4064b23",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "무인수 void와 Edit→Undo 대응을 대조했다. 빈 stack/실패/keyboard focus는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.PostprocessModifications.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.PostprocessModifications.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.PostprocessModifications.html",
+      "sourceHash": "8bb500b76402d122bbe27481e8ca506f18342971cd4a79c1149cc3c77d935b4b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.PostprocessModifications.html.body.html",
+      "bodyHash": "548bb7199f333ffec9ac0fc408b23d9ef4cc5e36fa1bccf21ab9069176e6ecfe",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .PostprocessModifications",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 2,
+        "tableCells": 4,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "de8b61b32a59203bfd34c0dfcdfa6935a502d6a7d7d7d26f62e355ce2f934b36",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 2,
+          "cells": 4,
+          "sha256": "432d8ad7173f468d3f388d3c4becbf2eabbe1b9a8514d865aa71e0f0a8288b7b",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "UndoPropertyModification[] 입력/반환 delegate와 modifications 표를 대조했다. 필터/null/예외 계약은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RecordObject.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObject.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RecordObject.html",
+      "sourceHash": "7b6e9d53aa9c20844e86725f58bcffb9e1c24dc8f8ae8112f5673733482eade7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RecordObject.html.body.html",
+      "bodyHash": "77e898d9887cdf33112b69655a66a16c26b103ecf149f3a741371998f64713ce",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RecordObject",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 3,
+        "tableCells": 6,
+        "wholePreExampleBlocksRead": 2,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "488ee74b421d8edc2b3d0f6e5bd10ac5378bb7a282239499194290fa8f3aea8f",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "40c6f24a6c5d6294d4034700b3f95ce6acccbe2af44dee41a022e6a280a7b852",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 848,
+          "sha256": "d9b745780659dfd109b0ebd615a362b0fe2bfaffb473622d7060c1065cdff2b4",
+          "wholeExampleActuallyRead": true
+        },
+        {
+          "locator": "pre[2]",
+          "characters": 170,
+          "sha256": "a95684ee5f4799a4d1002ea4c3bff135dd12480b50dc0de30ef9c02a42150466",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "temporary copy→frame 끝 binary diff→no-change no record·구조 제외·Prefab 후속 기록 요구와 두 전체 EffectRadius 예제를 대조했다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RecordObjects.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObjects.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RecordObjects.html",
+      "sourceHash": "8892329f83b6751808ed20ccd5a8b5686fde3ea9a11b6fc39241896ad7ceaa9a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RecordObjects.html.body.html",
+      "bodyHash": "468aa813675fd86bad08c2ed04ff2205952c074c9f7a1d1ad572530d1c1e85f2",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RecordObjects",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "dfcc745999bcafd175e44ab8038eec518b7d6d2d555f81186bfe3fec4753e2d1",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Object[]/name·여러 RecordObject 호출과 동일함·Prefab 후속 기록 요구를 대조했다. CompleteObjectUndo 배열의 한 operation 계약을 상속하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RegisterChildrenOrderUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterChildrenOrderUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterChildrenOrderUndo.html",
+      "sourceHash": "a4f349b82285f3846b4b7461e6b64d565c356950c5fce4f859bf968db5b4b41b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterChildrenOrderUndo.html.body.html",
+      "bodyHash": "b442ca6de3d0aef5a22d7c768dd05c9443bafeb5b38f773fe99812847e5f5d60",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RegisterChildrenOrderUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 3,
+        "tableCells": 6,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "f6192ee48edb8a6f6b936e589b697ebe6b74c24e5b271ec81308ca0fa20da7b2",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "b1015fa6e9297692c514a159790b8ee61d15a30042de74a94aa482a8d7cf544f",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 760,
+          "sha256": "040ed2ff11053501e5fdf4384f3ea7292faae376a403a2efe7c74250ff326500",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "child 순서 snapshot/복원·전체 생성 후 첫 child를 마지막으로 옮기는 예제를 대조했다. 예제 객체 생성은 Undo에 등록되지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RegisterCompleteObjectUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterCompleteObjectUndo.html",
+      "sourceHash": "0790cd09799f0521c33ded64618fd0731ca0b191a9e0e512b8c98b8299af6984",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterCompleteObjectUndo.html.body.html",
+      "bodyHash": "46b8207316c00a87b8e6405fd79d7847395218b0cc32264ff244fa32cb88222f",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RegisterCompleteObjectUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[5]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[6]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[7]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 7,
+        "displayedDeclarationBlocks": 2,
+        "tables": 2,
+        "tableRowsIncludingHeaders": 6,
+        "tableCells": 12,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "ba23c4a876fb13909f7be58214eb994a7ce1d7dd9f7d6ce6238fb53239e6e93f",
+          "displayedTextCompared": true
+        },
+        {
+          "locator": "signature-CS(nonempty)[2]",
+          "sha256": "bd552005b87d3f41c396c66364e9316975c383e33ea71b95d1ad2e8c5408cb15",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "2b3ce19262230c34536ac774c590e55f3b02c42991e6084daf5348844f3df739",
+          "allCellsActuallyRead": true
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "7ee16c983536a1ef32f6139a0a621490074b7d647885a85d89d72ca03c66d61d",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 536,
+          "sha256": "3e894258bb00a3fc85e65c4e27631120194d86394a6a6785c66342a8e54e653b",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "단일/배열 두 block·즉시 상태 기록·무변경에도 Scene 즉시 modified·구조 제외·배열 한 operation·전체 이름 변경 예제를 대조했다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RegisterCreatedObjectUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterCreatedObjectUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterCreatedObjectUndo.html",
+      "sourceHash": "9b4f798a7fcd286befb6a07a59514328557b9dab9b93290e0622f8779586cfc9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterCreatedObjectUndo.html.body.html",
+      "bodyHash": "071a7310ca582479336cec3f2061430dc1eae7cc16bffde093bb83831f6f49ba",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RegisterCreatedObjectUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 3,
+        "tableCells": 6,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 8,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "12c6676489ddfd51ff23c5adbdd08b342c6995aeb15b50a335a73a07000b2a9a",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "8add2aa28b44c9448b5206c861bfcb11163a08c337221ab416940709634bc08c",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 928,
+          "sha256": "d71297f17bdd9cfbe7030eb21277f0d1fa6663a4e6edb77f6b5ca3b756ba4247",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [
+        {
+          "locator": "codeOutsidePre[1]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "4d0574efe289d13ddfed2221fbcb2fd027b8f29bd2f1d0e5cfca03260bfe8efd",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[2]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "4d0574efe289d13ddfed2221fbcb2fd027b8f29bd2f1d0e5cfca03260bfe8efd",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[3]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "4d0574efe289d13ddfed2221fbcb2fd027b8f29bd2f1d0e5cfca03260bfe8efd",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[4]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "235f7cd2d5dd10a6a1b2c67a07d32a7be9cfba511641c6bf5db78b87f751c900",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[5]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "235f7cd2d5dd10a6a1b2c67a07d32a7be9cfba511641c6bf5db78b87f751c900",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[6]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "235f7cd2d5dd10a6a1b2c67a07d32a7be9cfba511641c6bf5db78b87f751c900",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[7]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "4d0574efe289d13ddfed2221fbcb2fd027b8f29bd2f1d0e5cfca03260bfe8efd",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[8]",
+          "kind": "literal_or_call_fragment",
+          "sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+          "actuallyRead": true
+        }
+      ],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "자식 포함/부모·형제 제외·무지연 파괴·create/register/snapshot/update·기존 RecordObject flush와 recording 중지·isProcessing 금지·전체 한-step 생성 예제를 대조했다. 원자 실패 복구는 별도 HB 조건이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RegisterFullObjectHierarchyUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterFullObjectHierarchyUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterFullObjectHierarchyUndo.html",
+      "sourceHash": "c3381114e92706c0aa50b73545b833097f926eca353692ac4f593c4c3541580d",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterFullObjectHierarchyUndo.html.body.html",
+      "bodyHash": "69901ef7ec1bb1f15657acbe45fb138189ed908fc0befeb3dadb91816b92cdaf",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RegisterFullObjectHierarchyUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[5]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[6]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 6,
+        "displayedDeclarationBlocks": 2,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 3,
+        "tableCells": 6,
+        "wholePreExampleBlocksRead": 2,
+        "inlineCodeFragmentsRead": 6,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 6
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "bb739366f82d96786d1d13392c3300ef4545e3fd6dadc7de19c803e5678d385a",
+          "displayedTextCompared": true
+        },
+        {
+          "locator": "signature-CS(nonempty)[2]",
+          "sha256": "e25ca1b65c3896b266a157f632f1e743b1102bc8398a3d32c393bdda5c137c3a",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "0235d30f1c8cf47bbb241fa68c47da482e42b18ddd6f0050bfe238bf2a51145e",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 1294,
+          "sha256": "5787faf48e9f90ccf3c69952c4bde902661eff152228c41c5749d7ba7774dd83",
+          "wholeExampleActuallyRead": true
+        },
+        {
+          "locator": "pre[2]",
+          "characters": 1385,
+          "sha256": "0e46d12631ce03ab29e5b422781ef73134d3693c487b8aa31f3d893ba2233ffa",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [
+        {
+          "locator": "codeOutsidePre[1]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[2]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[3]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[4]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[5]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        },
+        {
+          "locator": "codeOutsidePre[6]",
+          "kind": "variable_name_mention",
+          "sha256": "3c1d66d7d00bbd70c7e378f38fcc2fb9fd38e861b7d3c091f98f0f8184c45461",
+          "actuallyRead": true
+        }
+      ],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "GameObject 자식/컴포넌트 포함·Component 입력 child 제외·다른 Object self·즉시 Scene dirty·구조 제외·두 전체 예제·obsolete 이름 없는 overload를 대조했다. varname inline6을 직접 읽고 추가 집계했다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RegisterImporterUndo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RegisterImporterUndo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RegisterImporterUndo.html",
+      "sourceHash": "20c25c53adfcccfdefa3c5abf3c3a5bea30d4190273554b4ae775abe52da4180",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RegisterImporterUndo.html.body.html",
+      "bodyHash": "55a690663a5320263f7f179a3592a91680edd26f90bdd296daa55477c1ca2a74",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RegisterImporterUndo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 3,
+        "tableCells": 6,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "3a9c06371c660b7d33bcbdc8ca1d58ed16a9026d49eb400abbc88cdce41a75a1",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 3,
+          "cells": 6,
+          "sha256": "fd8dac5295c4627d24ba72633206a996406bded9cd581a6d93484022bf07196e",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 798,
+          "sha256": "67c6fa277948b7798b6adb94d0470f443055fdc72a5689b9a07d451eb0d6d29c",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "path/name·importer 상태 기록·SetImporterOverride 복구 용도·전체 예제의 기록 후 override 순서를 대조했다. 원본 모델 bytes 복구는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RevertAllDownToGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RevertAllDownToGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RevertAllDownToGroup.html",
+      "sourceHash": "f62da6ed5f2bda21e77d248a3c354525173b7c99db408d1574810206026bbef4",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RevertAllDownToGroup.html.body.html",
+      "bodyHash": "3736486fd3abd6d33949639c020a27190f3886a1027deea5cb7feb0b84a744fa",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RevertAllDownToGroup",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "1252c564134e4b91ec19270b3fb941de8ca87295f0fce87578ccb734984b68ce",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "int group와 지정 group까지 Undo operations·Redo 미기록을 대조했다. index boundary/빈 stack/오류는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.RevertAllInCurrentGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RevertAllInCurrentGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.RevertAllInCurrentGroup.html",
+      "sourceHash": "1a3ead02c88e1346588d91396638237d8e5e154feb52603b162f93da5c791bfd",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.RevertAllInCurrentGroup.html.body.html",
+      "bodyHash": "0891a6ec9b41eb0564e4cd8015888897260f1aafecb745f7f7f919cfedf240a5",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .RevertAllInCurrentGroup",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "2e4eefe1bad9c071eb668d0e983b46e49110edb4796e600ae77c5754631b3326",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "원문은 마지막 Undo operation만 Redo 없이 되돌린다고 설명한다. 현재 group 전체 보장으로 수정하지 않았다. Escape는 흔한 사용 사례이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.SetCurrentGroupName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetCurrentGroupName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetCurrentGroupName.html",
+      "sourceHash": "4ba1d9ada8d3fbb4e4fd67a2c86532e24a1ebc281d205a067a5cb1ba3881a12c",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetCurrentGroupName.html.body.html",
+      "bodyHash": "6686347c6e5e7cae66ca59277c2b078b63f28b2487c1c590a1a45d3a3942137d",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .SetCurrentGroupName",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 2,
+        "tableCells": 4,
+        "wholePreExampleBlocksRead": 1,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "6de08001287dff16c349c70bd733d0d2dc26d1761f254d30e7372e124ac50035",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 2,
+          "cells": 4,
+          "sha256": "9067643944fede4cf77152ed6931eb1ec94ce70b678e2f305aa4cb697a93ddea",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [
+        {
+          "locator": "pre[1]",
+          "characters": 640,
+          "sha256": "1cbcef8a766205899d270975b59d5a40995bf6d10014cf2fa191b443eee13bf8",
+          "wholeExampleActuallyRead": true
+        }
+      ],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "string name·수동 이름이 암묵 이름 override·전체 reset-position 예제를 대조했다. 이름 설정과 값 기록/collapse는 별도 호출이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.SetSiblingIndex.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetSiblingIndex.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetSiblingIndex.html",
+      "sourceHash": "dffc189cda8a2acac4f203abd93c1274768f3b17525a5d51583a86f3d87ca1a7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetSiblingIndex.html.body.html",
+      "bodyHash": "1593fe0bf9766eca3256df5720ba90f2e2ed3eb60f5ca547c08bb14fe52dea7e",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .SetSiblingIndex",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 4,
+        "tableCells": 8,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "31ae47113aabc904e75eb2638b085c3a487d18d95db6c763069f743869566325",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 4,
+          "cells": 8,
+          "sha256": "240ad94031915631bbb27227483cc56b29044f55e23ec317ca62ebcde4b6ccda",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Transform/int index/string name 표와 sibling index 변경+Undo를 대조했다. 범위/clamp는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.SetTransformParent.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.SetTransformParent.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.SetTransformParent.html",
+      "sourceHash": "e11a0586849f368d54bb82ecdda257c9b3a1b9be087abd828ae9e94ff82953ef",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.SetTransformParent.html.body.html",
+      "bodyHash": "2aa53000a9ae3c27d80ef870dd1da2202d3c10bd882be0bb9b523f48a9edb6ae",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .SetTransformParent",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Parameters",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[4]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 4,
+        "displayedDeclarationBlocks": 1,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 4,
+        "tableCells": 8,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "e31798ca97d1c7bf08cc4f6d54e40a9b794e4922a5d8737bda64db5307cee7cd",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 4,
+          "cells": 8,
+          "sha256": "85a9d7508b9cd3c13f5ba86165cf9d1ee5e3d4834d8fc3011099e2811e20fe68",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "Transform/newParent/name과 transform.parent 대입+Undo 대응을 대조했다. pose/null/cycle 상세 계약은 연결 API 대기이다.",
+      "reusesPreviouslyAnalyzedBody": true,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.UndoRedoCallback.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.UndoRedoCallback.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.UndoRedoCallback.html",
+      "sourceHash": "665866b264853804493896c33cee4888692d3040fc40005bb77018bd69f87440",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.UndoRedoCallback.html.body.html",
+      "bodyHash": "539ed5d44ced7d69c2979eb2149a19c7cc84e3bbfeddb9dca66f73680d18b382",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .UndoRedoCallback",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "cda9c90e97fc9f38b123a4029d6b571612d6427cf0d998d6fd5896106f16d648",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "무인수 void delegate와 undoRedoPerformed 대응을 대조했다. event 방향 인수가 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.UndoRedoEventCallback.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.UndoRedoEventCallback.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.UndoRedoEventCallback.html",
+      "sourceHash": "626efcdb37a54167e97219fa5c2545b3f9423c6ec223679a86441e665a7bc1e6",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.UndoRedoEventCallback.html.body.html",
+      "bodyHash": "cb3e20cecb59a96e8bb8186855dd874e96e584144481bfc86125b87b4a7c2457",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .UndoRedoEventCallback",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "67a6cbd36b469e3a971f9bffb44cff3dcea12f0b77b49e9181624247e0371f4c",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "원본 markup의 malformed InAttribute) undo );를 직접 확인했다. undoRedoEvent 예제의 in UndoRedoInfo로 전체 정상 선언/ABI를 자동 대체하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "Undo.WillFlushUndoRecord.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.WillFlushUndoRecord.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Undo.WillFlushUndoRecord.html",
+      "sourceHash": "e54f8b10fa4d4b6938c2b71500820bf7a2367cf2c29230e60a8ec41b13702556",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/Undo.WillFlushUndoRecord.html.body.html",
+      "bodyHash": "81bb3a860acf412c39717b21c5b970dd3de3abe0f18f66c255827e510d95e1c4",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "Undo .WillFlushUndoRecord",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h2",
+          "title": "Declaration",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "e6a31bf128093f1beab5e31b832c3493347ab730498cafc26d3e69debbc71f5f",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true,
+        "selectedLiteralCallFragmentsMatchPrivate": true
+      },
+      "semanticComparison": "무인수 void delegate와 willFlushUndoRecord 연결을 대조했다. 실제 flush 문맥은 관련 본문으로 한정했다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoRedoInfo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo.html",
+      "sourceHash": "feff5176481f22667a914fda966596d8bc77e6cac47f5b57a8139ce2122cb74b",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo.html.body.html",
+      "bodyHash": "6926dfe381001c2c13b862213d7c4a6531fe3d5d92394bf6f2473e93fe660b95",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoRedoInfo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Properties",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 0,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 4,
+        "tableCells": 8,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 1,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 4,
+          "cells": 8,
+          "sha256": "d87c4f27e839febea321373e6b630845f2e9125facf7706210d529d272a67d83",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "UnityEditor struct 표기·빈 signature slot·isRedo/undoGroup/undoName 직접 링크3을 대조했다. formal 타입 선언은 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoPropertyModification.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification.html",
+      "sourceHash": "630ac17c1ceb0cc24ef310b9304bbcc2ed7379ed58dc9cf13298f4eada08f2b2",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification.html.body.html",
+      "bodyHash": "1c2a5a12e3d3bebcdb2339f1effed3f371999c7143158f5477f236b615a379b9",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoPropertyModification",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Properties",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 0,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 4,
+        "tableCells": 8,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 1,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 4,
+          "cells": 8,
+          "sha256": "ac45e00da29c1c720389b75aecb89df4163e4d12866f8cb010be733495d3be5a",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "UnityEditor struct 표기·빈 signature slot·currentValue/keepPrefabOverride/previousValue 직접 링크3을 대조했다. formal 타입 선언은 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "PropertyModification.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification.html",
+      "sourceHash": "8e89d37673f71accbced64c80038d2026d4bfc6b5f7f086898ca1aa6afcf16c9",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification.html.body.html",
+      "bodyHash": "cf3e1b9d7202b1ff0445458837669e4ed9a83435a824a550ee232b2da7bee7e1",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "PropertyModification",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[3]",
+          "tag": "h3",
+          "title": "Properties",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 3,
+        "displayedDeclarationBlocks": 0,
+        "tables": 1,
+        "tableRowsIncludingHeaders": 5,
+        "tableCells": 10,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 1,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeaders": 5,
+          "cells": 10,
+          "sha256": "9cca0f0722d6d426d40cb449b80c20327b809bdb8346687e84e7cef799bce594",
+          "allCellsActuallyRead": true
+        }
+      ],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "UnityEditor class 표기·Prefab system 수정 추적·빈 signature slot·objectReference/propertyPath/target/value 직접 링크4를 대조했다. formal 타입 선언은 없다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoRedoInfo-isRedo.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-isRedo.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-isRedo.html",
+      "sourceHash": "7ad42c23ca38a0d91dc2cb136a8de154b1bfff6c812e2a27438618f390f6681a",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-isRedo.html.body.html",
+      "bodyHash": "04b930197b68f0c429816945c38c4a8e18b5ceb023f216e72fa57d6eb4f122ee",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoRedoInfo .isRedo",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "170d1875f7baef50803eaf4ddaac41759b67eaad250143189e70962dec58139d",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public bool field와 true가 Redo event라는 설명을 대조했다. 기본값/수명은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoRedoInfo-undoGroup.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-undoGroup.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-undoGroup.html",
+      "sourceHash": "74bc5da2249719d685571fdba1492b8c3093470ee9fecd44055eeaabdb303aa7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-undoGroup.html.body.html",
+      "bodyHash": "b8185f531a7ac55c218ad6b6d3ddfb1489f4c0293f63d12b986c9fcc6e09fefc",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoRedoInfo .undoGroup",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "9986f791f5aa0ca02ed83e321918496d6d03d91f4f61b03e06a8089af8516564",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public int field·발생한 Undo/Redo event의 group을 대조했다. 새 group 생성 명령/영속 ID로 해석하지 않았다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoRedoInfo-undoName.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoRedoInfo-undoName.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoRedoInfo-undoName.html",
+      "sourceHash": "075d3b5992d2f2bf31b13bf2256d0965a7b873bdb4ed34bff639b8b15b58dbaf",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoRedoInfo-undoName.html.body.html",
+      "bodyHash": "acbcf6d8a549563ef4c566202c4b4d57c81ed0c220fd931671bd34f4a696f782",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoRedoInfo .undoName",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "c9e488ecb71b1be49a7a5338ed6f8796c4df2cef1ff1461f9ede2814cdff2d04",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public string field·수행한 Undo/Redo event 이름을 대조했다. null/locale/영속성은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoPropertyModification-currentValue.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-currentValue.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-currentValue.html",
+      "sourceHash": "bd8c84c70934893265e9c97850b56c171bdb5b6acb62fa2c816a8ee307c3c198",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-currentValue.html.body.html",
+      "bodyHash": "703f25be1fbafe7cfd7dbdf5b571261a54211183621ac22903ea8d1206613c03",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoPropertyModification .currentValue",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "a9fd193d5a931d1d556137df19938f8daeb21d08e7f27a64ec147ac3607f5b64",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public PropertyModification field와 수정된 property의 현재 값을 대조했다. class 참조의 ownership/copy는 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoPropertyModification-keepPrefabOverride.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-keepPrefabOverride.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-keepPrefabOverride.html",
+      "sourceHash": "40ed89dd5c3a08b7de95d3a1037614e2f8421d91f51485e42425d6636577dc01",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-keepPrefabOverride.html.body.html",
+      "bodyHash": "b4ad6e8d2f5859edcc875ef959331c96baadf7b71871c9196f4b07efa2528475",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoPropertyModification .keepPrefabOverride",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "ad73d3fd36774a42e0302309bddb67c5d7ed830c89a2992145401ebec5e74ebb",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public bool field·Prefab instance 대상 modification 유지 여부를 대조했다. 기본 생성 정책은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "UndoPropertyModification-previousValue.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/UndoPropertyModification-previousValue.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/UndoPropertyModification-previousValue.html",
+      "sourceHash": "a02d803f425d14c216d940c5b418b96aae4c517fe3156055d9a428bbb8cc95bf",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/UndoPropertyModification-previousValue.html.body.html",
+      "bodyHash": "cfc43e58aac1b3fdecaab1fbb4950083b332c9a4a4d1683d56a567bae9d71d64",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "UndoPropertyModification .previousValue",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "3a884427c9dbac966e1c60cdfc755cd7bc1d8faa5b66c9cea81164bbff4be322",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public PropertyModification field와 수정된 property의 이전 값을 대조했다. callback 뒤 수명/재진입은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "PropertyModification-objectReference.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-objectReference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-objectReference.html",
+      "sourceHash": "af8f202cf6b6f1dea1c672f720ee09523660b5c8493610b5ea911e15854ae5bb",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-objectReference.html.body.html",
+      "bodyHash": "cbb9ad156389241b0d31f4134044bbadd4984d638d1a5e9a453887cda2128861",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "PropertyModification .objectReference",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "8b9b1f19e09789b80cc27461406311d279811a82658cdfdbd574e69f057c2cb4",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public Object field·string으로 표시할 수 없는 적용 object reference 값을 대조했다. target과 별개의 역할이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "PropertyModification-propertyPath.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-propertyPath.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-propertyPath.html",
+      "sourceHash": "66ff62a4afa9b06dc97bef79e7c48db54a342cb729831db2801d477b0db6fb3d",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-propertyPath.html.body.html",
+      "bodyHash": "bec11033716c48d0eb7f26a7cb10dd2f00570f9f69e69d74017015eb578f6b58",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "PropertyModification .propertyPath",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "c6f1a78a6b87fd51e42c7fc4e6280693cbcbb6821fc1e4d3e239bf8feb4a39d0",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public string field·수정 property 경로와 SerializedProperty.propertyPath 대응을 대조했다. 세부 경로 문법은 연결 API 대기이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "PropertyModification-target.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-target.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-target.html",
+      "sourceHash": "9ba69b81fefac602f5ec8c91de994dc669b076c9dad49dbe6840c66447b03f66",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-target.html.body.html",
+      "bodyHash": "13a0a4c11442755e2512c3f4cf2f88b60a23d9d6900ca5413339c06018f3e7cb",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "PropertyModification .target",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "8cb4b3ba282286016f1eb784adf0d81bcfee3afc84118bb87ab821fe03165b14",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public Object field·수정 대상 객체를 대조했다. 적용 value/objectReference와 별개이고 null/ownership은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    },
+    {
+      "file": "PropertyModification-value.html",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PropertyModification-value.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/PropertyModification-value.html",
+      "sourceHash": "c06d72bf2f85b6ad0fdc76522b90a03437955d3e214422e31cb712e83e99eba7",
+      "bodyFile": "native/build/reference-corpus/unity-undo-batch-010/PropertyModification-value.html.body.html",
+      "bodyHash": "bad29b24195fca7e8bee4084ef6560357c4c9a56360d782d47825171db7dbb56",
+      "reader": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "analysisReader": "root",
+      "readScope": "Every technical paragraph, warning, heading, displayed declaration, table cell, whole pre example and inline code directly read from pinned original source slice; publisher controls excluded only from semantic inventory. No technical media or extra language declaration tab in these DOMs.",
+      "sourceTechnicalBodyActuallyRead": true,
+      "fullTechnicalBodyReviewed": true,
+      "sections": [
+        {
+          "locator": "heading[1]",
+          "tag": "h1",
+          "title": "PropertyModification .value",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        },
+        {
+          "locator": "heading[2]",
+          "tag": "h3",
+          "title": "Description",
+          "reviewed": true,
+          "comparedWithAnalysis": true
+        }
+      ],
+      "counts": {
+        "pages": 1,
+        "headings": 2,
+        "displayedDeclarationBlocks": 1,
+        "tables": 0,
+        "tableRowsIncludingHeaders": 0,
+        "tableCells": 0,
+        "wholePreExampleBlocksRead": 0,
+        "inlineCodeFragmentsRead": 0,
+        "emptySignatureSlots": 0,
+        "inlineVariableNameMentionsRead": 0
+      },
+      "declarationBlocks": [
+        {
+          "locator": "signature-CS(nonempty)[1]",
+          "sha256": "22a45def4d4a847dfdfa8ac5cc73fb19eb6b94ac3660a1a3adc7df469a9fa3e9",
+          "displayedTextCompared": true
+        }
+      ],
+      "tables": [],
+      "wholePreExamples": [],
+      "inlineCode": [],
+      "checks": {
+        "sourceHashMatch": true,
+        "bodyHashMatch": true,
+        "exactSourceSliceMatch": true,
+        "headingListMatch": true,
+        "displayedDeclarationTextMatch": true,
+        "allTableCellsMatchPrivate": true,
+        "wholePreExamplesMatchPrivate": true,
+        "finalPublicCountsMatch": true,
+        "canonicalMatch": true,
+        "versionHeaderMatch": true,
+        "jobBuildFooterMatch": true,
+        "noTechnicalMedia": true,
+        "noAdditionalLanguageDeclarationBlocks": true
+      },
+      "semanticComparison": "public string field·적용 값을 대조했다. 원본을 확인해 string 타입은 확정했고 타입별 encoding/locale/precision은 미기재이다.",
+      "reusesPreviouslyAnalyzedBody": false,
+      "boundedBodyToAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromoted": false
+    }
+  ],
+  "verificationFailures": [],
+  "analysisIssuesFound": 1,
+  "analysisIssuesResolved": 1,
+  "boundedBodyToAnalysisComparisonPassed": true,
+  "strictLedgerPromotionEligible": false,
+  "strictLedgerPromotionBlockedBy": [
+    "Missing full module/native bridge/thread/editor phase/ownership/lifetime/failure contracts.",
+    "Malformed delegate and incomplete generic/type declarations need additional official evidence.",
+    "Unresolved callback array/reentrancy/buffer/parent/index/Prefab/SerializedProperty/importer/file-save interactions.",
+    "Full engine/package/API/root denominators and closure remain open."
+  ],
+  "fullCorpusComplete": false,
+  "automaticExtractionCountsAsSemanticReading": false,
+  "copyrightedWholeBodiesExamplesTablesPublic": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "foregroundChanged": false,
+  "networkUsed": false,
+  "ledgerChanged": false,
+  "commitPerformed": false,
+  "staleRule": "Any change to pinned analysis, evidence artifact, original source or body bytes invalidates this comparison until re-read/re-audit."
+}

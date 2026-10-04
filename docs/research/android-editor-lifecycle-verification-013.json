@@ -1,0 +1,1752 @@
+{
+  "schemaVersion": 1,
+  "batch": "android-editor-lifecycle-verification-013",
+  "phase": "research_only",
+  "verifier": "/root/android_build_deploy_014",
+  "analyst": "/root/android_editor_lifecycle_013",
+  "verifiedAt": "2026-10-04T06:17:54.757839+00:00",
+  "boundedIndependentComparison": "passed",
+  "strictVerified": 0,
+  "ledgerPromotions": 0,
+  "fullCorpusVerified": false,
+  "fullApiDenominator": null,
+  "discoveryClosed": false,
+  "automaticHashOrExtractionIsSemanticReading": false,
+  "analysisPin": [
+    {
+      "file": "docs/research/ANDROID_EDITOR_LIFECYCLE_BODY_013.md",
+      "sha256": "15dc15f825bb7d5a3854690a514d2611a2dd7a90954cd5afa42afb3081633853"
+    },
+    {
+      "file": "docs/research/android-editor-lifecycle-body-013.json",
+      "sha256": "57cfa1db2fa4ca15b332832931a4f068f928b3897f3550be988cdba36dbf4bfd"
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/ANDROID_EDITOR_LIFECYCLE_VERIFICATION_013.md",
+      "sha256": "7715c7c24602f62c5ab5d04227e1463dcaf91ecfc811ad4b873100a9eb995bcf"
+    },
+    {
+      "file": "docs/research/ANDROID_EDITOR_LIFECYCLE_BODY_013.md",
+      "sha256": "15dc15f825bb7d5a3854690a514d2611a2dd7a90954cd5afa42afb3081633853"
+    },
+    {
+      "file": "docs/research/android-editor-lifecycle-body-013.json",
+      "sha256": "57cfa1db2fa4ca15b332832931a4f068f928b3897f3550be988cdba36dbf4bfd"
+    }
+  ],
+  "counts": {
+    "wholeBodiesActuallyReadByVerifier": 5,
+    "technicalResourceHeadings": 55,
+    "recommendationHeadingsSeparatelyRead": 2,
+    "rawHeadings": 57,
+    "wholePreBlocks": 24,
+    "tables": 3,
+    "tableRowsIncludingHeaders": 30,
+    "tableCells": 79,
+    "mediaPixelsActuallyRead": 1,
+    "mediaPixelsPending": 0,
+    "iframe": 0,
+    "inlineSvg": 0,
+    "video": 0,
+    "sourceFactComparisons": 22,
+    "fileHashComparisons": 40,
+    "hashMismatches": 0,
+    "bodyDOMMismatches": 0,
+    "linkedReferenceOccurrences": 133,
+    "distinctLinkedReferenceUrlIdentities": 77,
+    "linkedFormalApiBodiesVerified": 0,
+    "preservedUnresolvedGroups": 12,
+    "strictVerified": 0,
+    "engineTestsExecuted": 0
+  },
+  "pages": [
+    {
+      "stableId": "android-guide-en-013-activity-lifecycle",
+      "requestUrl": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+      "canonicalUrl": "https://developer.android.com/guide/components/activities/activity-lifecycle",
+      "publisherLastUpdated": "2026-09-22 UTC",
+      "sourceHash": "7652434b9ac9d042646d390f7721e5ee6badf40a056fa4d3ae74aab2c0ed6917",
+      "bodyHash": "88f3b7a07fdd4c6ed90e0a80906388be6b229025348dcd6b9dd496dc752a8ed5",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.source.html",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html",
+      "sourceBodyDOMBytesMatch": true,
+      "actualReadArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.read.txt",
+        "sha256": "8fdd84b1e04e262b1a5d4ad2a65fa474c89bbed2db2cafd34ae6e254b7e1c30e"
+      },
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.read.txt",
+        "start": 1,
+        "end": 410
+      },
+      "verifier": "/root/android_build_deploy_014",
+      "readAt": "2026-10-04T06:17:54.757839+00:00",
+      "actualReadScope": "entire technical source-body/read text with all sections and unheaded paragraphs, every pre block and comment/placeholder, every table cell, every supplied media pixel; all source-provided language variants; linked bodies not inherited",
+      "introductionRead": true,
+      "unheadedBodyRead": true,
+      "technicalHeadingCount": 21,
+      "recommendationHeadingCount": 0,
+      "headingComparisons": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "activity-lifecycle-concepts",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "anchor": "compose-and",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "anchor": "lifecycle-callbacks",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "anchor": "oncreate",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "onstart",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "onresume",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "anchor": "onpause",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "onstop",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "anchor": "ondestroy",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "anchor": "activity-state",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "anchor": "saving-and",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "anchor": "instance-state",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "anchor": "save-simple",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "anchor": "restore-activity",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 15,
+          "tag": "h2",
+          "anchor": "activities-and",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "anchor": "starting-one",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 17,
+          "tag": "h4",
+          "anchor": "startactivity",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "anchor": "starting-external",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "anchor": "coordinating-activities",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 20,
+          "tag": "h2",
+          "anchor": "additional-resources",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 21,
+          "tag": "h3",
+          "anchor": "views-content",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "AL05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        }
+      ],
+      "preComparisons": [
+        {
+          "ordinal": 1,
+          "sha256": "ab55456cf11baf33fac4fc23068cd4b099d088a5448a8284af628f2591c00fe5",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 414,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 2,
+          "sha256": "0f0ffe035c2288c644ada32e1f7a41106db82e6744a721469c9a950f4e229bce",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 210,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 3,
+          "sha256": "8965fda60d1706b15134ee2981d1a20387c1203035602f97ee1510e3eb00201e",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 190,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 4,
+          "sha256": "6b6ec737f34d4741957350a6dc3dba9f04784f5bf93705af5fc9f4bc838ee976",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 225,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 5,
+          "sha256": "f9e99eb5f457bbe2547692553fbf8f2aea2e9e6a631740ae011bdcead10245f4",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 223,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 6,
+          "sha256": "f9e99eb5f457bbe2547692553fbf8f2aea2e9e6a631740ae011bdcead10245f4",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 223,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 7,
+          "sha256": "a1c90370243e7d8e5ebc1fd470762ebb3713ef5b05a92dc12da725838ce90d80",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 177,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 8,
+          "sha256": "09f83fc877cd9cb8b08e896c0c9b335a8cd38aa270b42d8c6bcabb570c0b7bda",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 121,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        }
+      ],
+      "tableComparisons": [
+        {
+          "ordinal": 1,
+          "rowsIncludingHeader": 5,
+          "cells": 15,
+          "sha256": "809e75bad229efcaceff9917325dd7d82b365fa081b7294c78a621ff3c6855da",
+          "hashMethod": "compact UTF8 JSON ordered normalized cell text; full table stays private",
+          "everyCellRead": true,
+          "meaningCompared": true
+        }
+      ],
+      "mediaComparisons": [
+        {
+          "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.media-1.png",
+          "sha256": "193f49b9d852ed9c0564467b49bdaa676abf71c1b6591ae5930a7d22a8ae20c0",
+          "pixelsReadByVerifier": true,
+          "reader": "/root/android_build_deploy_014",
+          "analysisCompared": true,
+          "comparison": "simplified creation/resume/restart/termination and process-kill/recreation routes agree; explicit process-body non-guarantee controls onDestroy interpretation"
+        }
+      ],
+      "factComparisons": [
+        {
+          "factId": "AL01",
+          "sourceLocators": [
+            "activity-lifecycle-concepts",
+            "oncreate",
+            "onstart",
+            "onresume",
+            "onpause",
+            "onstop",
+            "ondestroy"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "AL02",
+          "sourceLocators": [
+            "onpause",
+            "onstop",
+            "save-simple"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "AL03",
+          "sourceLocators": [
+            "activity-state",
+            "instance-state"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "AL04",
+          "sourceLocators": [
+            "starting-one",
+            "starting-external",
+            "coordinating-activities"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "AL05",
+          "sourceLocators": [
+            "compose-and",
+            "oncreate",
+            "onresume",
+            "additional-resources"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        }
+      ],
+      "guideCallNamesAreFormalReference": false,
+      "formalApiComplete": false,
+      "strictVerified": false,
+      "unresolvedIdsPreserved": [
+        "U01",
+        "U02",
+        "U09",
+        "U10",
+        "U11"
+      ]
+    },
+    {
+      "stableId": "android-guide-en-013-saving-states",
+      "requestUrl": "https://developer.android.com/topic/libraries/architecture/saving-states",
+      "canonicalUrl": "https://developer.android.com/topic/libraries/architecture/saving-states",
+      "publisherLastUpdated": "2026-04-22 UTC",
+      "sourceHash": "c3c06330e50bd4f3011be293c56ba4f297c30dcb6a7904ade41cb01ec1ffacf1",
+      "bodyHash": "6fda31140dc7ac9ea22f33124fe411b2cb5834720792e4307007b3b2041a11c9",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.source.html",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html",
+      "sourceBodyDOMBytesMatch": true,
+      "actualReadArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.read.txt",
+        "sha256": "c4ef5f6a8b714833da336c0cdee8586334166dc4badd2e13bb9d42e17e690871"
+      },
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.read.txt",
+        "start": 1,
+        "end": 283
+      },
+      "verifier": "/root/android_build_deploy_014",
+      "readAt": "2026-10-04T06:17:54.757839+00:00",
+      "actualReadScope": "entire technical source-body/read text with all sections and unheaded paragraphs, every pre block and comment/placeholder, every table cell, every supplied media pixel; all source-provided language variants; linked bodies not inherited",
+      "introductionRead": true,
+      "unheadedBodyRead": true,
+      "technicalHeadingCount": 13,
+      "recommendationHeadingCount": 1,
+      "headingComparisons": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "expectations",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "anchor": "ui-dismissal-user",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "ui-dismissal-system",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "anchor": "options",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "anchor": "viewmodel",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h2",
+          "anchor": "onsaveinstancestate",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS02"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "anchor": "savedstateregistry",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h2",
+          "anchor": "local",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "anchor": "manage",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "anchor": "restore",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "anchor": "resources",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "anchor": "codelabs",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "anchor": "views",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "SS05"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h2",
+          "anchor": "recommended_for_you",
+          "allSectionTextRead": true,
+          "analysisFactIds": [],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        }
+      ],
+      "preComparisons": [
+        {
+          "ordinal": 1,
+          "sha256": "29a9e931d7b419b7e192e27dfc4e0a6650bd81cc2ec67fdb1375d55e0e18632e",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 289,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 2,
+          "sha256": "6c59216dce34cdc0b84bdea2276eb8db9051442cb4bcdfe7af91701602e734d1",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 1415,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        }
+      ],
+      "tableComparisons": [
+        {
+          "ordinal": 1,
+          "rowsIncludingHeader": 7,
+          "cells": 28,
+          "sha256": "66adcd6210082b149d80c1f467bedfc37b49a9b0096263036ecf7582343f5f99",
+          "hashMethod": "compact UTF8 JSON ordered normalized cell text; full table stays private",
+          "everyCellRead": true,
+          "meaningCompared": true
+        }
+      ],
+      "mediaComparisons": [],
+      "factComparisons": [
+        {
+          "factId": "SS01",
+          "sourceLocators": [
+            "ui-dismissal-user",
+            "ui-dismissal-system",
+            "options"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "SS02",
+          "sourceLocators": [
+            "onsaveinstancestate",
+            "savedstateregistry"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "SS03",
+          "sourceLocators": [
+            "savedstateregistry"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "SS04",
+          "sourceLocators": [
+            "local"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "SS05",
+          "sourceLocators": [
+            "manage",
+            "restore",
+            "resources"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        }
+      ],
+      "guideCallNamesAreFormalReference": false,
+      "formalApiComplete": false,
+      "strictVerified": false,
+      "unresolvedIdsPreserved": [
+        "U01",
+        "U03",
+        "U10",
+        "U12"
+      ]
+    },
+    {
+      "stableId": "android-guide-en-013-process-lifecycle",
+      "requestUrl": "https://developer.android.com/guide/components/activities/process-lifecycle",
+      "canonicalUrl": "https://developer.android.com/guide/components/activities/process-lifecycle",
+      "publisherLastUpdated": "2025-02-10 UTC",
+      "sourceHash": "554d9e3361c9309bf93cb37cf1c28a14fa374103ac384f788f83b631049cf561",
+      "bodyHash": "3516d10ce28d852382d22e3c38e4ad7fc03a21db58eedbf2b32d0004465e9690",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.source.html",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.body.html",
+      "sourceBodyDOMBytesMatch": true,
+      "actualReadArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.read.txt",
+        "sha256": "f80d36350bf83a9b3af7892e179eff871d01311dd050fcafdd84c72a5f521ab1"
+      },
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.read.txt",
+        "start": 1,
+        "end": 53
+      },
+      "verifier": "/root/android_build_deploy_014",
+      "readAt": "2026-10-04T06:17:54.757839+00:00",
+      "actualReadScope": "entire technical source-body/read text with all sections and unheaded paragraphs, every pre block and comment/placeholder, every table cell, every supplied media pixel; all source-provided language variants; linked bodies not inherited",
+      "introductionRead": true,
+      "unheadedBodyRead": true,
+      "technicalHeadingCount": 0,
+      "recommendationHeadingCount": 0,
+      "headingComparisons": [],
+      "preComparisons": [],
+      "tableComparisons": [],
+      "mediaComparisons": [],
+      "factComparisons": [
+        {
+          "factId": "PL01",
+          "sourceLocators": [
+            "unheaded-introduction-and-importance-hierarchy"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "PL02",
+          "sourceLocators": [
+            "unheaded-BroadcastReceiver-thread-example"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "PL03",
+          "sourceLocators": [
+            "unheaded-cached-process-and-Android13-paragraphs"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "PL04",
+          "sourceLocators": [
+            "unheaded-final-active-component-and-dependency-paragraphs"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        }
+      ],
+      "guideCallNamesAreFormalReference": false,
+      "formalApiComplete": false,
+      "strictVerified": false,
+      "unresolvedIdsPreserved": [
+        "U01",
+        "U07",
+        "U08",
+        "U09"
+      ]
+    },
+    {
+      "stableId": "android-guide-en-013-viewmodel-savedstate",
+      "requestUrl": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+      "canonicalUrl": "https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-savedstate",
+      "publisherLastUpdated": "2026-09-22 UTC",
+      "sourceHash": "cbb9a74b9ab48807746961f24baa69530933c45ebf9ddedd6b88c8382329b8be",
+      "bodyHash": "671b1c91c26c7a6607c19a49ede405b1f42a15e4bac0a9d5d1f489cf31401744",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.source.html",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html",
+      "sourceBodyDOMBytesMatch": true,
+      "actualReadArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.read.txt",
+        "sha256": "b3243bc95b16542632787416a4a6bf98c64e72c860d6083776f850354ad12ca6"
+      },
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.read.txt",
+        "start": 1,
+        "end": 334
+      },
+      "verifier": "/root/android_build_deploy_014",
+      "readAt": "2026-10-04T06:17:54.757839+00:00",
+      "actualReadScope": "entire technical source-body/read text with all sections and unheaded paragraphs, every pre block and comment/placeholder, every table cell, every supplied media pixel; all source-provided language variants; linked bodies not inherited",
+      "introductionRead": true,
+      "unheadedBodyRead": true,
+      "technicalHeadingCount": 13,
+      "recommendationHeadingCount": 1,
+      "headingComparisons": [
+        {
+          "ordinal": 1,
+          "tag": "h1",
+          "anchor": "saved_state_module_for_viewmodel",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "anchor": "setup",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM01"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "anchor": "savedstatehandle",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM02"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "anchor": "savedstate-stateflow",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM02"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "kotlinx-serialization",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "savedstate-compose-state",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "anchor": "types",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "direct",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "anchor": "non-parcelable",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "anchor": "testing",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "anchor": "resources",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "anchor": "codelabs",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "anchor": "views",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "VM04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 14,
+          "tag": "h2",
+          "anchor": "recommended_for_you",
+          "allSectionTextRead": true,
+          "analysisFactIds": [],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        }
+      ],
+      "preComparisons": [
+        {
+          "ordinal": 1,
+          "sha256": "0a6b2eb1089214e76fbcfb5f0f55ca62662b83510bd3d467453c67dbc7d03f76",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 84,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 2,
+          "sha256": "55b39791cce473dd9782ea8c359feb968a99ed1c46456062e1698336b683a2ee",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 228,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 3,
+          "sha256": "c204cc9fc90fb245ce33d38699b60c0b57fcb454c53bd610844319bafc615391",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 810,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 4,
+          "sha256": "0c44884c68cf1702b73ec9276e89bf9e6b659740a754aeb07189d93760136ae3",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 869,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 5,
+          "sha256": "da7ceed62807d20999e9a4a4205f1f1751aeb7d46462c64f0fd33035e084ece2",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 315,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 6,
+          "sha256": "319a6dba014b7264fc5928b429d682ef3048e49bf711eb469fc68153176e3c92",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 229,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 7,
+          "sha256": "793075d565351387e5910f416394addfb8648dea26bbe7a9b962b44c004b9990",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 571,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 8,
+          "sha256": "89518e716f66ccdefbcdd7daa14db2c6294a7cb92fd249e6765510697a988f48",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 855,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 9,
+          "sha256": "96c0200f44d8dbc6d67fe70ba30b223fea79f82ad6b6f6f89a321c805e30537e",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 240,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        }
+      ],
+      "tableComparisons": [
+        {
+          "ordinal": 1,
+          "rowsIncludingHeader": 18,
+          "cells": 36,
+          "sha256": "57e1075dfb485cec896db2062eecebd5f2b9d4e630db8a40c1c05dcac89963f8",
+          "hashMethod": "compact UTF8 JSON ordered normalized cell text; full table stays private",
+          "everyCellRead": true,
+          "meaningCompared": true
+        }
+      ],
+      "mediaComparisons": [],
+      "factComparisons": [
+        {
+          "factId": "VM01",
+          "sourceLocators": [
+            "saved_state_module_for_viewmodel",
+            "setup"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "VM02",
+          "sourceLocators": [
+            "savedstatehandle",
+            "savedstate-stateflow"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "VM03",
+          "sourceLocators": [
+            "kotlinx-serialization",
+            "savedstate-compose-state"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "VM04",
+          "sourceLocators": [
+            "direct",
+            "non-parcelable",
+            "testing"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        }
+      ],
+      "guideCallNamesAreFormalReference": false,
+      "formalApiComplete": false,
+      "strictVerified": false,
+      "unresolvedIdsPreserved": [
+        "U01",
+        "U04",
+        "U05",
+        "U10"
+      ]
+    },
+    {
+      "stableId": "android-guide-en-013-long-running-workers",
+      "requestUrl": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+      "canonicalUrl": "https://developer.android.com/develop/background-work/background-tasks/persistent/how-to/long-running",
+      "publisherLastUpdated": "2026-10-01 UTC",
+      "sourceHash": "be6e05473d0f8332a5ecb043f5e6988624410ffe44f796df4223b0cab5b59c8a",
+      "bodyHash": "ce306585e95df18452f29df21585d1f5852e455ca16c7349534344d53c66fa12",
+      "sourceFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.source.html",
+      "bodyFile": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html",
+      "sourceBodyDOMBytesMatch": true,
+      "actualReadArtifact": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.read.txt",
+        "sha256": "cf6db38073634d2d6a8d9a1dfe86e14c5d350a31311dfb0fe56a80650caaa96a"
+      },
+      "actualReadLineRange": {
+        "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.read.txt",
+        "start": 1,
+        "end": 232
+      },
+      "verifier": "/root/android_build_deploy_014",
+      "readAt": "2026-10-04T06:17:54.757839+00:00",
+      "actualReadScope": "entire technical source-body/read text with all sections and unheaded paragraphs, every pre block and comment/placeholder, every table cell, every supplied media pixel; all source-provided language variants; linked bodies not inherited",
+      "introductionRead": true,
+      "unheadedBodyRead": true,
+      "technicalHeadingCount": 8,
+      "recommendationHeadingCount": 0,
+      "headingComparisons": [
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "anchor": "long-running",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "anchor": "long-running-kotlin",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "anchor": "long-running-java",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW03"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "anchor": "foreground-service-type",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "anchor": "declare-foreground-service-types-manifest",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "anchor": "specify-foreground-service-types-runtime",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "anchor": "kotlin",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "anchor": "java",
+          "allSectionTextRead": true,
+          "analysisFactIds": [
+            "LW04"
+          ],
+          "comparison": "consistent; recommendation links carry no child-body reading",
+          "originalHeadingRead": true
+        }
+      ],
+      "preComparisons": [
+        {
+          "ordinal": 1,
+          "sha256": "d3ef21e277cde5e436f81055ac53768611d413bf40f9f91be0ad506cc9c49d53",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 2471,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 2,
+          "sha256": "8ad9b65e1274764c2d885bc64a23025510a2adb58fefbd9a1c48fcc966be9e7f",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 2557,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 3,
+          "sha256": "2b6c2cc496934af0f00a9349327f2b5d94b0fea039d2483be9a01c38c9fe337a",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 160,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 4,
+          "sha256": "605319b52fedc6f9504604267131a4852667bf52eb22e9417ed656caf5e6913b",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 219,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        },
+        {
+          "ordinal": 5,
+          "sha256": "fade57af219e57ed0bcdc9042ff48f9eb6c113502b6a77638e931366374941af",
+          "hashMethod": "exact pre.get_text UTF8; comments/output/placeholders retained",
+          "bytes": 291,
+          "allTextRead": true,
+          "meaningCompared": true,
+          "executed": false,
+          "formalOverloadClaimed": false
+        }
+      ],
+      "tableComparisons": [],
+      "mediaComparisons": [],
+      "factComparisons": [
+        {
+          "factId": "LW01",
+          "sourceLocators": [
+            "unheaded-introduction"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "LW02",
+          "sourceLocators": [
+            "unheaded-Android16-quota-note"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "LW03",
+          "sourceLocators": [
+            "long-running-kotlin",
+            "long-running-java"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        },
+        {
+          "factId": "LW04",
+          "sourceLocators": [
+            "foreground-service-type",
+            "declare-foreground-service-types-manifest",
+            "specify-foreground-service-types-runtime"
+          ],
+          "analysisMatchesReadSource": true,
+          "hbJudgmentKeptSeparate": true
+        }
+      ],
+      "guideCallNamesAreFormalReference": false,
+      "formalApiComplete": false,
+      "strictVerified": false,
+      "unresolvedIdsPreserved": [
+        "U01",
+        "U06",
+        "U07",
+        "U08",
+        "U12"
+      ]
+    }
+  ],
+  "hashComparisons": [
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.source.html",
+      "sha256": "7652434b9ac9d042646d390f7721e5ee6badf40a056fa4d3ae74aab2c0ed6917",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.html",
+      "sha256": "88f3b7a07fdd4c6ed90e0a80906388be6b229025348dcd6b9dd496dc752a8ed5",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.body.txt",
+      "sha256": "a364780ff69747e183386d23d59ce5fcbbe175901b44dfe5f49ff70af957a27c",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.numbered.txt",
+      "sha256": "1fb04cfc232227995e5ce587f4747092dc488211c0150dd2228f4e54de0325e6",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.read.txt",
+      "sha256": "8fdd84b1e04e262b1a5d4ad2a65fa474c89bbed2db2cafd34ae6e254b7e1c30e",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/activity-lifecycle.media-1.png",
+      "sha256": "193f49b9d852ed9c0564467b49bdaa676abf71c1b6591ae5930a7d22a8ae20c0",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.source.html",
+      "sha256": "c3c06330e50bd4f3011be293c56ba4f297c30dcb6a7904ade41cb01ec1ffacf1",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.html",
+      "sha256": "6fda31140dc7ac9ea22f33124fe411b2cb5834720792e4307007b3b2041a11c9",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.body.txt",
+      "sha256": "453c5e828541bef240c6d7e62fe4b98928661ec48ead09fdbbde603104f3d8a8",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.numbered.txt",
+      "sha256": "7fa77cb9b5a486ccbb0d5314560b6de2ea29d86dc6d963b8318d153358e22eba",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/saving-states.read.txt",
+      "sha256": "c4ef5f6a8b714833da336c0cdee8586334166dc4badd2e13bb9d42e17e690871",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.source.html",
+      "sha256": "554d9e3361c9309bf93cb37cf1c28a14fa374103ac384f788f83b631049cf561",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.body.html",
+      "sha256": "3516d10ce28d852382d22e3c38e4ad7fc03a21db58eedbf2b32d0004465e9690",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.body.txt",
+      "sha256": "ab85d2811c2d87916a35b2a2f4d41247d280224168f386e008d32ef8af3e0c48",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.numbered.txt",
+      "sha256": "5dfb00bf1f2c389f2302de85187a87e59b7ad7c01d084b3b823de46625026dad",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/process-lifecycle.read.txt",
+      "sha256": "f80d36350bf83a9b3af7892e179eff871d01311dd050fcafdd84c72a5f521ab1",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.source.html",
+      "sha256": "cbb9a74b9ab48807746961f24baa69530933c45ebf9ddedd6b88c8382329b8be",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.html",
+      "sha256": "671b1c91c26c7a6607c19a49ede405b1f42a15e4bac0a9d5d1f489cf31401744",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.body.txt",
+      "sha256": "e63dd2e5a5523e359acd1368f74c075e1fae94f9eaf78336824c4c31ab9233bd",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.numbered.txt",
+      "sha256": "46119180cc9af0f08a88338ac697c15d566361b26fc34fac1a9bd8b734edd2c7",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/viewmodel-savedstate.read.txt",
+      "sha256": "b3243bc95b16542632787416a4a6bf98c64e72c860d6083776f850354ad12ca6",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.source.html",
+      "sha256": "be6e05473d0f8332a5ecb043f5e6988624410ffe44f796df4223b0cab5b59c8a",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.html",
+      "sha256": "ce306585e95df18452f29df21585d1f5852e455ca16c7349534344d53c66fa12",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.body.txt",
+      "sha256": "8ae2dd5f5721c0726e2ef3161377a89fb56f51e18b97e9f60be1933422cadd52",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.numbered.txt",
+      "sha256": "618e2b55d3743c0194bc6752540030126c8b19934c23dd2dd9202ddc7d790730",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/long-running-workers.read.txt",
+      "sha256": "cf6db38073634d2d6a8d9a1dfe86e14c5d350a31311dfb0fe56a80650caaa96a",
+      "match": true
+    },
+    {
+      "file": "docs/research/ANDROID_EDITOR_LIFECYCLE_BODY_013.md",
+      "sha256": "15dc15f825bb7d5a3854690a514d2611a2dd7a90954cd5afa42afb3081633853",
+      "match": true
+    },
+    {
+      "file": "docs/research/ANALYSIS_PROTOCOL.md",
+      "sha256": "27cb826671e2f2aefc71e27dc48edf9897450c59af32c02b1de9d0e3e4852a76",
+      "match": true
+    },
+    {
+      "file": "docs/research/EXPORT_EDITOR_REQUIREMENTS.md",
+      "sha256": "f587df637628b739509f14221b4116351d683caf1e019dede192da127549b9a3",
+      "match": true
+    },
+    {
+      "file": "docs/research/MOBILE_EDITOR_BODY_012.md",
+      "sha256": "7b9d20c25b0c2188c9e26346b09714b9aca4e29d451ccbc81b01739250f52121",
+      "match": true
+    },
+    {
+      "file": "docs/AI_ENGINE_API.md",
+      "sha256": "a6f41db430ca4b7c9375aafb6d01b71a8f22758063f4b4e9bf00863893f6e916",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/acquisition.json",
+      "sha256": "40c9381d979401c85a6ae1c557b978210df746fa3d5c8ee2f0791d6ef4f62b94",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/fetch.py",
+      "sha256": "e295a576d76076d3d16a6c480072e655b915255213ac4d92bfcaeab4fe85a040",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/format_read.py",
+      "sha256": "403ef6025adbbcb57bb15d09a35b406348e85fbd2f83dcd99bdf54e6ffb83e97",
+      "match": true
+    },
+    {
+      "file": "native/build/reference-corpus/android-editor-lifecycle-batch-013/write_record.py",
+      "sha256": "26c8d825747186ca1abed8cf5b6fed7181e04828e63dea9196f85e2b8878dda1",
+      "match": true
+    },
+    {
+      "file": "prototype/asset-documents.js",
+      "sha256": "6dbf6756cacf7a8fddf476a2e990955eb9030923c2ddb0135bfb1ce5a28438ce",
+      "match": true
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "921381cbbd6bc2fc8f41a835e7fa26b5cbba092d0cad8e588dac3d0083020725",
+      "match": true
+    },
+    {
+      "file": "tools/build-jobs.mjs",
+      "sha256": "688737684be1e636f3af81e7d3289b0b0f5d29656406801f8ebf3c6e9ffc134f",
+      "match": true
+    },
+    {
+      "file": "tools/native-host.mjs",
+      "sha256": "386525d6978d76ca74a46d65749103fe8ccd2b88862dad2d920d1c69f5fa65c5",
+      "match": true
+    },
+    {
+      "file": "native/desktop/HBEngine.cpp",
+      "sha256": "6eb1a28f47d8d82621b60c1ff93a126140182f1dbbe64558697f8652ff18f4f2",
+      "match": true
+    }
+  ],
+  "readOnlyCodeComparisons": [
+    {
+      "file": "prototype/asset-documents.js",
+      "sha256": "6dbf6756cacf7a8fddf476a2e990955eb9030923c2ddb0135bfb1ce5a28438ce",
+      "readScope": "lines81-88 only",
+      "analysis": "Document/history/dirty in memory Map; save awaits write then updates saved baseline; no Android restoration proof.",
+      "verifierActuallyReadSameScope": true,
+      "comparison": "consistent in the declared read-only range; no Android execution or full-file semantic verification inferred"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "921381cbbd6bc2fc8f41a835e7fa26b5cbba092d0cad8e588dac3d0083020725",
+      "readScope": "lines49-60",
+      "analysis": "Command/client Maps with request-ID dedup and time-limited cleanup; no durable process-restart receipt contract in this read class.",
+      "verifierActuallyReadSameScope": true,
+      "comparison": "consistent in the declared read-only range; no Android execution or full-file semantic verification inferred"
+    },
+    {
+      "file": "tools/build-jobs.mjs",
+      "sha256": "688737684be1e636f3af81e7d3289b0b0f5d29656406801f8ebf3c6e9ffc134f",
+      "readScope": "whole short module lines1-21",
+      "analysis": "Build job Map, AbortController and close cancellation are process-local; output success and job restoration are distinct.",
+      "verifierActuallyReadSameScope": true,
+      "comparison": "consistent in the declared read-only range; no Android execution or full-file semantic verification inferred"
+    },
+    {
+      "file": "tools/native-host.mjs",
+      "sha256": "386525d6978d76ca74a46d65749103fe8ccd2b88862dad2d920d1c69f5fa65c5",
+      "readScope": "lines47-99 only",
+      "analysis": "Session Map, compiler staging/cache commit, queued RPC and process close; Windows/native worker support is not Android compiler/service support.",
+      "verifierActuallyReadSameScope": true,
+      "comparison": "consistent in the declared read-only range; no Android execution or full-file semantic verification inferred"
+    },
+    {
+      "file": "native/desktop/HBEngine.cpp",
+      "sha256": "6eb1a28f47d8d82621b60c1ff93a126140182f1dbbe64558697f8652ff18f4f2",
+      "readScope": "search hits and lines296-301 only",
+      "analysis": "Windows job owns server child with kill-on-close; this is not an Android process-lifetime implementation.",
+      "verifierActuallyReadSameScope": true,
+      "comparison": "consistent in the declared read-only range; no Android execution or full-file semantic verification inferred"
+    }
+  ],
+  "specificAudits": [
+    {
+      "analysisIssues": [
+        "U03"
+      ],
+      "observed": "registry sample query is declared val and later reassigned; retained as source inconsistency; no Kotlin compilation performed"
+    },
+    {
+      "analysisIssues": [
+        "U04"
+      ],
+      "observed": "serialization sample comment says process-death serialization while savedstatehandle warns stop-only capture; analyst correctly avoids save-at-kill guarantee"
+    },
+    {
+      "analysisIssues": [
+        "U06"
+      ],
+      "observed": "Kotlin checks both missing string inputs before foreground/download; Java checks neither and shows no get/await for setForegroundAsync Future; no cancellation/child-termination contract inferred"
+    },
+    {
+      "analysisIssues": [
+        "U01",
+        "U02",
+        "U05"
+      ],
+      "observed": "guide call names and type/example syntax are not all formal declarations, overloads or nullable/lifetime/thread/deprecation contracts; analyst leaves reference completeness unknown"
+    }
+  ],
+  "unresolvedPreserved": [
+    {
+      "id": "U01",
+      "status": "open",
+      "analysis": "All linked Android/AndroidX API declarations, overloads, thread, ownership, nullability, exception, version and deprecation contracts remain unread; complete unit denominator unknown.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U02",
+      "status": "open",
+      "analysis": "Activity guide combines Compose advice and annotation observer snippets; linked reference is needed to fix current API/deprecation status.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U03",
+      "status": "open",
+      "analysis": "Saving-states registry sample declares val query and later reassigns it; compiler check not run and source sample must not be copied.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U04",
+      "status": "open",
+      "analysis": "SavedStateHandle serialization sample process-death wording must be reconciled with explicit stop-capture warning; no save-at-death guarantee inferred.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U05",
+      "status": "open",
+      "analysis": "Bundle table completeness, nullable File restoration, lazy/provider timing, file existence and URI grant need formal reference/provider validation.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U06",
+      "status": "open",
+      "analysis": "Long-worker Kotlin/Java input-check and Java Future handling differ; cancellation/failure/retry/progress and placeholder download remain incomplete contracts.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U07",
+      "status": "open",
+      "analysis": "Android16 job quota and eligible FGS type/permission/background-start/user-initiated transfer rules for import/compile/cook/AI are not yet analyzed.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U08",
+      "status": "open",
+      "analysis": "Android native compiler/child worker/ABI/toolchain capability and local/remote termination ownership remain supplemental/build API research.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U09",
+      "status": "open",
+      "analysis": "Exact rotation/fold/resize/multi-resume/focus/IME/surface API and physical-device behavior remain unverified.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U10",
+      "status": "open",
+      "analysis": "Durable draft/journal transactions, provider non-atomic storage, full disk, lost grant, clear-data and move/delete recovery need storage backend/API verification.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U11",
+      "status": "open",
+      "analysis": "Native Play input/audio/GPU/time/checkpoint/session ownership and actual suspend/resume remain runtime verification work.",
+      "removedFromDenominator": false
+    },
+    {
+      "id": "U12",
+      "status": "open",
+      "analysis": "Persistent AI dedup/revision conflict/uncertain commit/remote receipt/offline reattachment protocol remains a design requiring validation.",
+      "removedFromDenominator": false
+    }
+  ],
+  "newBlockingAnalysisContradictionsFound": [],
+  "promotableToStrictLedgerVerified": false,
+  "promotionBlockedBy": "unclosed full documentation/API roots, linked formal contract/version/runtime issues and all 12 open issue groups; limited comparison does not remove them",
+  "implementationOrExecution": {
+    "analysisFilesChanged": false,
+    "privateSourcesChanged": false,
+    "engineChanged": false,
+    "guiExecuted": false,
+    "foregroundChanged": false,
+    "sdkInstalled": false,
+    "compilerWorkerRuntimeExecuted": false,
+    "testsExecuted": false,
+    "deviceConnectedOrCommandsRun": false,
+    "ledgerChanged": false
+  }
+}

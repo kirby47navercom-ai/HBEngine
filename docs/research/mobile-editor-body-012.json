@@ -1,0 +1,1408 @@
+{
+  "schemaVersion": 1,
+  "batchId": "mobile-editor-012",
+  "phase": "research_only",
+  "reader": "root",
+  "date": "2026-10-04",
+  "counts": {
+    "wholeTechnicalBodiesReviewed": 3,
+    "wholeTextPartialMediaBodies": 1,
+    "partialPolicySubsections": 1,
+    "wholeFormalApisRead": 0,
+    "ledgerPromotions": 0,
+    "independentlyVerified": 0
+  },
+  "baseline": "Godot4.5 supplemental comparator; Android nonversioned guides at publisher2026-05-15/2026-10-01; Apple policy as retrieved2026-10-04",
+  "analysisReport": "docs/research/MOBILE_EDITOR_BODY_012.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/MOBILE_EDITOR_BODY_012.md",
+      "sha256": "7b9d20c25b0c2188c9e26346b09714b9aca4e29d451ccbc81b01739250f52121"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/fetch.json",
+      "sha256": "69009f04d21ffb1955a983c5102798ce6ee22f2a78270ae6fd5f289747ba4d32"
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/extraction.json",
+      "sha256": "5e5511c198277a75441a6f650a2ac5e9219cf8379b168bd2d964ee649205f75f"
+    },
+    {
+      "file": "native/build/reference-corpus/mobile-editor-batch-012/media.json",
+      "sha256": "961fa0a40805f659eb2b4003e96757dac115a5e6c3f6887752ced9b3c06de791"
+    }
+  ],
+  "pages": [
+    {
+      "name": "godot-android-editor",
+      "requestUrl": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "fetchedAt": "2026-10-04T05:24:51.704413+00:00",
+      "readStatus": "whole_technical_body_read",
+      "httpStatus": 200,
+      "finalUrl": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-editor.source.html",
+      "sourceHash": "8055df7f35a48fa1256dd0e100889e4769901432371e558541b7f9de2c3692a9",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-editor.body.html",
+      "bodyHash": "9af0fa8d40b04e11b0cf1dd65854ea1777189fa8c34f2182ccc14f11020e993d",
+      "bodyMethod": "BeautifulSoup publisher [itemprop=articleBody]; excludes navigation/contribution headings for counts only, raw bytes retained",
+      "images": [],
+      "preCount": 0,
+      "links": [
+        {
+          "label": "",
+          "url": "#using-the-android-editor"
+        },
+        {
+          "label": "Android port of the editor",
+          "url": "https://godotengine.org/article/android_godot_editor_play_store_beta_release/"
+        },
+        {
+          "label": "Godot download page",
+          "url": "https://godotengine.org/download/android/"
+        },
+        {
+          "label": "Google Play Store",
+          "url": "https://play.google.com/store/apps/details?id=org.godotengine.editor.v4"
+        },
+        {
+          "label": "Limitations & known issues",
+          "url": "#doc-using-the-android-editor-limitations"
+        },
+        {
+          "label": "",
+          "url": "#android-devices-support"
+        },
+        {
+          "label": "",
+          "url": "#runtime-permissions"
+        },
+        {
+          "label": "All files access permission",
+          "url": "https://developer.android.com/training/data-storage/manage-all-files#all-files-access"
+        },
+        {
+          "label": "REQUEST_INSTALL_PACKAGES",
+          "url": "https://developer.android.com/reference/android/Manifest.permission#REQUEST_INSTALL_PACKAGES"
+        },
+        {
+          "label": "RECORD_AUDIO",
+          "url": "https://developer.android.com/reference/android/Manifest.permission#RECORD_AUDIO"
+        },
+        {
+          "label": "audio/driver/enable_input",
+          "url": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-audio-driver-enable-input"
+        },
+        {
+          "label": "",
+          "url": "#tips-tricks"
+        },
+        {
+          "label": "usual shortcuts and key mappings",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/editor/default_key_mapping.html"
+        },
+        {
+          "label": "interface/touchscreen/increase_scrollbar_touch_area",
+          "url": "https://docs.godotengine.org/en/stable/classes/class_editorsettings.html#class-editorsettings-property-interface-touchscreen-increase-scrollbar-touch-area"
+        },
+        {
+          "label": "block coding plugin",
+          "url": "https://godotengine.org/asset-library/asset/3095"
+        },
+        {
+          "label": "run/window_placement/play_window_pip_mode",
+          "url": "https://docs.godotengine.org/en/latest/classes/class_editorsettings.html#class-editorsettings-property-run-window-placement-play-window-pip-mode"
+        },
+        {
+          "label": "run/window_placement/android_window",
+          "url": "https://docs.godotengine.org/en/latest/classes/class_editorsettings.html#class-editorsettings-property-run-window-placement-android-window"
+        },
+        {
+          "label": "Termux terminal",
+          "url": "https://termux.dev/en/"
+        },
+        {
+          "label": "running the following command",
+          "url": "https://wiki.termux.com/wiki/Termux-setup-storage"
+        },
+        {
+          "label": "",
+          "url": "#limitations-known-issues"
+        },
+        {
+          "label": "Android Go devices",
+          "url": "https://developer.android.com/guide/topics/androidgo"
+        },
+        {
+          "label": "bug",
+          "url": "https://github.com/godotengine/godot/issues/70751"
+        },
+        {
+          "label": "Google keyboard (Gboard)",
+          "url": "https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin"
+        },
+        {
+          "label": "list of open issues on GitHub related to the Android editor",
+          "url": "https://github.com/godotengine/godot/issues?q=is%3Aopen+is%3Aissue+label%3Aplatform%3Aandroid+label%3Atopic%3Aeditor"
+        },
+        {
+          "label": "Previous",
+          "url": "using_the_xr_editor.html"
+        },
+        {
+          "label": "Next",
+          "url": "using_the_web_editor.html"
+        },
+        {
+          "label": "User-contributed notes policy",
+          "url": "https://github.com/godotengine/godot-docs-user-notes/discussions/1"
+        }
+      ],
+      "reader": "root",
+      "date": "2026-10-04",
+      "actualTitle": "Using the Android editor — Godot Engine (4.5) documentation in English",
+      "versionEvidence": "4.5 in publisher title",
+      "canonicalUrl": "https://docs.godotengine.org/en/4.5/tutorials/editor/using_the_android_editor.html",
+      "technicalHeadings": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "id": null,
+          "text": "Using the Android editor"
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": null,
+          "text": "Android devices support"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "id": null,
+          "text": "Runtime Permissions"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "id": null,
+          "text": "Tips & Tricks"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "id": null,
+          "text": "Limitations & known issues"
+        }
+      ],
+      "readScope": "Whole technical article text/tables/all displayed pre snippets and Kotlin+Java tabs; technical media none",
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "formalApiDeclarationsRead": 0,
+      "displayedCallsAreFormalApiDeclarations": false,
+      "wholePreBlocksRead": 0,
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "sourceFacts": [
+        "Android에서 2D·3D project 제작/내보내기를 수행하는 실제 editor 사례다. early access·Android native plugin binary·Gradle/C#/외부 script editor 제약을 구분한다.",
+        "PiP Play lacks input; keyboard/mouse and touch-area controls are separate, file access/install/audio permissions differ."
+      ],
+      "mediaStatus": "no article img",
+      "linkedReferencesAnalyzedCompletely": false,
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "codeLanguageTabsRead": []
+    },
+    {
+      "name": "godot-android-compile",
+      "requestUrl": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "fetchedAt": "2026-10-04T05:24:51.705021+00:00",
+      "readStatus": "whole_text_media_pending",
+      "httpStatus": 200,
+      "finalUrl": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-compile.source.html",
+      "sourceHash": "7c2c7c4bf50d8921783e43ed8f5d584f6847a2145ae8ee9696b2fe3f783c88b0",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/godot-android-compile.body.html",
+      "bodyHash": "6ea560213708c5287e709d3aa0c41ffd262b0b4f8c8bc5ac84f8c1fcb5415c8b",
+      "bodyMethod": "BeautifulSoup publisher [itemprop=articleBody]; exact extracted scope hash, missing image separate",
+      "images": [
+        "../../../_images/andtemplates.webp"
+      ],
+      "preCount": 11,
+      "links": [
+        {
+          "label": "",
+          "url": "#compiling-for-android"
+        },
+        {
+          "label": "Exporting for Android",
+          "url": "../../../tutorials/export/exporting_for_android.html#doc-exporting-for-android"
+        },
+        {
+          "label": "",
+          "url": "#note"
+        },
+        {
+          "label": "Exporting for Android",
+          "url": "../../../tutorials/export/exporting_for_android.html#doc-exporting-for-android"
+        },
+        {
+          "label": "",
+          "url": "#requirements"
+        },
+        {
+          "label": "Python 3.8+",
+          "url": "https://www.python.org/downloads/"
+        },
+        {
+          "label": "SCons 4.0+",
+          "url": "https://scons.org/pages/download.html"
+        },
+        {
+          "label": "Android SDK",
+          "url": "https://developer.android.com/studio/#command-tools"
+        },
+        {
+          "label": "Adoptium",
+          "url": "https://adoptium.net/temurin/releases/?variant=openjdk17"
+        },
+        {
+          "label": "Getting the source",
+          "url": "getting_source.html#doc-getting-source"
+        },
+        {
+          "label": "Introduction to the buildsystem",
+          "url": "introduction_to_the_buildsystem.html#doc-introduction-to-the-buildsystem"
+        },
+        {
+          "label": "",
+          "url": "#setting-up-the-buildsystem"
+        },
+        {
+          "label": "",
+          "url": "#building-the-export-templates"
+        },
+        {
+          "label": "Vulkan validation layers on Android",
+          "url": "../debugging/vulkan/vulkan_validation_layers.html#doc-vulkan-validation-layers-android"
+        },
+        {
+          "label": "",
+          "url": "#adding-support-for-x86-devices"
+        },
+        {
+          "label": "",
+          "url": "#cleaning-the-generated-export-templates"
+        },
+        {
+          "label": "",
+          "url": "#using-the-export-templates"
+        },
+        {
+          "label": "",
+          "url": "#installing-the-templates"
+        },
+        {
+          "label": "",
+          "url": "#building-the-godot-editor"
+        },
+        {
+          "label": "",
+          "url": "#removing-the-editor-binaries"
+        },
+        {
+          "label": "",
+          "url": "#installing-the-godot-editor-apk"
+        },
+        {
+          "label": "",
+          "url": "#troubleshooting"
+        },
+        {
+          "label": "",
+          "url": "#platform-doesn-t-appear-in-scons"
+        },
+        {
+          "label": "Setting up the buildsystem",
+          "url": "#doc-android-setting-up-the-buildsystem"
+        },
+        {
+          "label": "",
+          "url": "#application-not-installed"
+        },
+        {
+          "label": "logcat",
+          "url": "https://developer.android.com/studio/command-line/logcat"
+        },
+        {
+          "label": "",
+          "url": "#application-exits-immediately"
+        },
+        {
+          "label": "Previous",
+          "url": "compiling_for_macos.html"
+        },
+        {
+          "label": "Next",
+          "url": "compiling_for_ios.html"
+        },
+        {
+          "label": "User-contributed notes policy",
+          "url": "https://github.com/godotengine/godot-docs-user-notes/discussions/1"
+        }
+      ],
+      "reader": "root",
+      "date": "2026-10-04",
+      "actualTitle": "Compiling for Android — Godot Engine (4.5) documentation in English",
+      "versionEvidence": "4.5 in publisher title",
+      "canonicalUrl": "https://docs.godotengine.org/en/4.5/engine_details/development/compiling/compiling_for_android.html",
+      "technicalHeadings": [
+        {
+          "ordinal": 0,
+          "tag": "h1",
+          "id": null,
+          "text": "Compiling for Android"
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": null,
+          "text": "Note"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h2",
+          "id": null,
+          "text": "Requirements"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h2",
+          "id": null,
+          "text": "Setting up the buildsystem"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "id": null,
+          "text": "Building the export templates"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "id": null,
+          "text": "Adding support for x86 devices"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": null,
+          "text": "Cleaning the generated export templates"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h2",
+          "id": null,
+          "text": "Using the export templates"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "id": null,
+          "text": "Installing the templates"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "id": null,
+          "text": "Building the Godot editor"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h2",
+          "id": null,
+          "text": "Removing the Editor binaries"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h2",
+          "id": null,
+          "text": "Installing the Godot editor APK"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h2",
+          "id": null,
+          "text": "Troubleshooting"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": null,
+          "text": "Platform doesn't appear in SCons"
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "id": null,
+          "text": "Application not installed"
+        },
+        {
+          "ordinal": 15,
+          "tag": "h3",
+          "id": null,
+          "text": "Application exits immediately"
+        }
+      ],
+      "readScope": "Whole technical text and11 pre command blocks; custom template image1 unread HTTP403",
+      "wholeTechnicalBodyReviewed": false,
+      "allTextInExtractedScopeRead": true,
+      "formalApiDeclarationsRead": 0,
+      "displayedCallsAreFormalApiDeclarations": false,
+      "wholePreBlocksRead": 11,
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "sourceFacts": [
+        "Editor target and debug/release templates are distinct; editor/template version or commit must match; final ABI invocation generates Android binaries.",
+        "Requirements JDK17 vs troubleshooting JDK8 jarsigner mismatch; ABI/library placement/version explain some startup failures, no commands executed."
+      ],
+      "mediaStatus": "unread",
+      "linkedReferencesAnalyzedCompletely": false,
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "codeLanguageTabsRead": []
+    },
+    {
+      "name": "android-abis",
+      "requestUrl": "https://developer.android.com/ndk/guides/abis",
+      "fetchedAt": "2026-10-04T05:24:51.705364+00:00",
+      "readStatus": "whole_technical_body_read",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.android.com/ndk/guides/abis",
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.source.html",
+      "sourceHash": "976d7327e5a6cdba2cda94e81332667c6d64661444630848675c443a2f1c8233",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/android-abis.body.html",
+      "bodyHash": "7fed84eafbd81e68edd056ba954b494be97f061db751ac92ff9e8ad00848c924",
+      "bodyMethod": "BeautifulSoup publisher .devsite-article-body; both Kotlin and Java are present in source DOM",
+      "images": [],
+      "preCount": 11,
+      "links": [
+        {
+          "label": "ELF System V Application Binary Interface",
+          "url": "https://refspecs.linuxfoundation.org/elf/gabi4+/contents.html"
+        },
+        {
+          "label": "Generic/Itanium C++ ABI",
+          "url": "http://itanium-cxx-abi.github.io/cxx-abi/"
+        },
+        {
+          "label": "32-bit ABI bugs",
+          "url": "https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md"
+        },
+        {
+          "label": "armeabi-v7a",
+          "url": "#v7a"
+        },
+        {
+          "label": "arm64-v8a",
+          "url": "#arm64-v8a"
+        },
+        {
+          "label": "x86",
+          "url": "#x86"
+        },
+        {
+          "label": "x86_64",
+          "url": "#86-64"
+        },
+        {
+          "label": "x86-64-v2",
+          "url": "https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels"
+        },
+        {
+          "label": "Application Binary Interface (ABI) for the ARM Architecture",
+          "url": "https://developer.arm.com/architectures/system-architectures/software-standards/abi"
+        },
+        {
+          "label": "Android.mk",
+          "url": "/ndk/guides/android_mk"
+        },
+        {
+          "label": "CMake",
+          "url": "/ndk/guides/cmake"
+        },
+        {
+          "label": "Neon Support",
+          "url": "/ndk/guides/cpu-arm-neon"
+        },
+        {
+          "label": "IEEE binary64",
+          "url": "https://en.wikipedia.org/wiki/Double-precision_floating-point_format"
+        },
+        {
+          "label": "Learn the Architecture",
+          "url": "https://developer.arm.com/architectures/learn-the-architecture"
+        },
+        {
+          "label": "64-bit Android Development",
+          "url": "https://developer.arm.com/64bit"
+        },
+        {
+          "label": "Neon intrinsics",
+          "url": "https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics"
+        },
+        {
+          "label": "Neon Programmer's Guide for Armv8-A",
+          "url": "https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/neon-programmers-guide-for-armv8-a"
+        },
+        {
+          "label": "ShadowCallStack",
+          "url": "https://source.android.com/devices/tech/debug/shadow-call-stack"
+        },
+        {
+          "label": "IEEE binary128",
+          "url": "https://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format"
+        },
+        {
+          "label": "MMX",
+          "url": "https://en.wikipedia.org/wiki/MMX_%28instruction_set%29"
+        },
+        {
+          "label": "SSE",
+          "url": "https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions"
+        },
+        {
+          "label": "SSE2",
+          "url": "https://en.wikipedia.org/wiki/SSE2"
+        },
+        {
+          "label": "SSE3",
+          "url": "https://en.wikipedia.org/wiki/SSE3"
+        },
+        {
+          "label": "SSSE3",
+          "url": "https://en.wikipedia.org/wiki/SSSE3"
+        },
+        {
+          "label": "Calling\nconventions for different C++ compilers and operating systems",
+          "url": "http://www.agner.org/optimize/calling_conventions.pdf"
+        },
+        {
+          "label": "Intel IA-32 Intel Architecture Software Developer's Manual, Volume 2:\nInstruction Set Reference",
+          "url": "http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf"
+        },
+        {
+          "label": "Intel\nIA-32 Intel Architecture Software Developer's Manual, Volume 3: System\nProgramming Guide",
+          "url": "http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-system-programming-manual-325384.pdf"
+        },
+        {
+          "label": "System V Application Binary\nInterface: Intel386 Processor Architecture Supplement",
+          "url": "http://www.sco.com/developers/devspecs/abi386-4.pdf"
+        },
+        {
+          "label": "IEEE binary64",
+          "url": "https://en.wikipedia.org/wiki/Double-precision_floating-point_format"
+        },
+        {
+          "label": "MMX",
+          "url": "https://en.wikipedia.org/wiki/MMX_%28instruction_set%29"
+        },
+        {
+          "label": "SSE",
+          "url": "https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions"
+        },
+        {
+          "label": "SSE2",
+          "url": "https://en.wikipedia.org/wiki/SSE2"
+        },
+        {
+          "label": "SSE3",
+          "url": "https://en.wikipedia.org/wiki/SSE3"
+        },
+        {
+          "label": "SSSE3",
+          "url": "https://en.wikipedia.org/wiki/SSSE3"
+        },
+        {
+          "label": "SSE4.1",
+          "url": "https://en.wikipedia.org/wiki/SSE4#SSE4.1"
+        },
+        {
+          "label": "SSE4.2",
+          "url": "https://en.wikipedia.org/wiki/SSE4#SSE4.2"
+        },
+        {
+          "label": "Calling conventions for\ndifferent C++ compilers and operating systems",
+          "url": "http://www.agner.org/optimize/calling_conventions.pdf"
+        },
+        {
+          "label": "Intel64 and IA-32 Architectures Software Developer's Manual, Volume 2: Instruction Set\nReference",
+          "url": "http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html?iid=tech_vt_tech+64-32_manuals"
+        },
+        {
+          "label": "Intel64 and IA-32 Intel Architecture Software Developer's Manual Volume 3: System Programming",
+          "url": "http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html?iid=tech_vt_tech+64-32_manuals"
+        },
+        {
+          "label": "IEEE binary128",
+          "url": "https://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format"
+        },
+        {
+          "label": "Application.mk",
+          "url": "/ndk/guides/application_mk"
+        },
+        {
+          "label": "Application.mk",
+          "url": "/ndk/guides/application_mk"
+        },
+        {
+          "label": "CMake guide",
+          "url": "/ndk/guides/cmake"
+        },
+        {
+          "label": "fat APK",
+          "url": "https://en.wikipedia.org/wiki/Fat_binary"
+        },
+        {
+          "label": "App Bundles",
+          "url": "/guide/app-bundle"
+        },
+        {
+          "label": "APK Splits",
+          "url": "/studio/build/configure-apk-splits"
+        },
+        {
+          "label": "Automatic extraction of\nnative code at install time",
+          "url": "#aen"
+        },
+        {
+          "label": "Supported ABIs",
+          "url": "#sa"
+        },
+        {
+          "label": "Android.mk",
+          "url": "/ndk/guides/android_mk"
+        },
+        {
+          "label": "ABI",
+          "url": "#sa"
+        },
+        {
+          "label": "Memory error debugging and mitigation",
+          "url": "/ndk/guides/memory-debug"
+        },
+        {
+          "label": "Learn the architecture - Providing protection for\ncomplex software",
+          "url": "https://developer.arm.com/documentation/102433/0100/Overview"
+        },
+        {
+          "label": "PDF",
+          "url": "https://documentation-service.arm.com/static/62bdb1d031ea212bb66257c5?token="
+        }
+      ],
+      "reader": "root",
+      "date": "2026-10-04",
+      "actualTitle": "Android ABIs  |  Android NDK  |  Android Developers",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "canonicalUrl": "https://developer.android.com/ndk/guides/abis",
+      "technicalHeadings": [
+        {
+          "ordinal": 0,
+          "tag": "h2",
+          "id": "sa",
+          "text": "Supported ABIs"
+        },
+        {
+          "ordinal": 1,
+          "tag": "h3",
+          "id": "v7a",
+          "text": "armeabi-v7a"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "id": "arm64-v8a",
+          "text": "arm64-v8a"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "id": "x86",
+          "text": "x86"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h3",
+          "id": "86-64",
+          "text": "x86_64"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h2",
+          "id": "gc",
+          "text": "Generate code for a specific ABI"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": "gradle",
+          "text": "Gradle"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "id": "ndk-build",
+          "text": "ndk-build"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h3",
+          "id": "cmake",
+          "text": "CMake"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h2",
+          "id": "am",
+          "text": "ABI management on the Android platform"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h3",
+          "id": "native-code-in-app-packages",
+          "text": "Native code in app packages"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h3",
+          "id": "android-platform-abi-support",
+          "text": "Android platform ABI support"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h3",
+          "id": "aen",
+          "text": "Automatic extraction of native code at install time"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 15,
+          "tag": "h2",
+          "id": "armv9_enabling_pac_and_bti_for_cc",
+          "text": "ARMv9: Enabling PAC and BTI for C/C++"
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "id": "build_changes",
+          "text": "Build changes"
+        },
+        {
+          "ordinal": 17,
+          "tag": "h3",
+          "id": "ndk-build_1",
+          "text": "ndk-build"
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "id": "cmake_1",
+          "text": "CMake"
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "id": "other-build-systems",
+          "text": "Other build systems"
+        },
+        {
+          "ordinal": 20,
+          "tag": "h3",
+          "id": "pac-bti-troubleshooting",
+          "text": "Troubleshooting"
+        }
+      ],
+      "readScope": "Whole technical article text/tables/all displayed pre snippets and Kotlin+Java tabs; technical media none",
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "formalApiDeclarationsRead": 0,
+      "displayedCallsAreFormalApiDeclarations": false,
+      "wholePreBlocksRead": 11,
+      "tableCount": 1,
+      "tableRowsIncludingHeaders": 5,
+      "tableCells": 15,
+      "sourceFacts": [
+        "ABI instruction/call/alignment/name-mangling/ELF and numeric width differ, including long double by architecture. Gradle/ndk-build/CMake select/build ABIs differently.",
+        "Native libs use lib/<abi>/lib<name>.so and device ABI selection. fat APK tradeoff and split/bundle follow-up; install success is not launch proof.",
+        "ARM64 PAC/BTI support/older CPU compatibility/combined object compatibility and troubleshooting read, ISA external references unread."
+      ],
+      "mediaStatus": "no article img",
+      "linkedReferencesAnalyzedCompletely": false,
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "codeLanguageTabsRead": [
+        "Kotlin",
+        "Java"
+      ],
+      "publisherLastUpdated": "2026-05-15 UTC"
+    },
+    {
+      "name": "android-documents",
+      "requestUrl": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "fetchedAt": "2026-10-04T05:24:51.705659+00:00",
+      "readStatus": "whole_technical_body_read",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "contentType": "text/html; charset=utf-8",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/android-documents.source.html",
+      "sourceHash": "2605d52566027924b4645b53cd978b966a77e0bc9feb167376001f83d0cd5021",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/android-documents.body.html",
+      "bodyHash": "4fa5edd56a7b3300206effaba9a70be1e2456a3a2983664999c2388ee306f456",
+      "bodyMethod": "BeautifulSoup publisher .devsite-article-body; both Kotlin and Java are present in source DOM",
+      "images": [],
+      "preCount": 24,
+      "links": [
+        {
+          "label": "documents provider",
+          "url": "/guide/topics/providers/create-document-provider"
+        },
+        {
+          "label": "system\npermissions",
+          "url": "/guide/topics/permissions/overview"
+        },
+        {
+          "label": "use case",
+          "url": "#use-cases"
+        },
+        {
+          "label": "perform operations on\nthe chosen location",
+          "url": "#perform-operations"
+        },
+        {
+          "label": "photo picker",
+          "url": "/training/data-storage/shared/photopicker"
+        },
+        {
+          "label": "READ_EXTERNAL_STORAGE",
+          "url": "/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE"
+        },
+        {
+          "label": "Create a new file",
+          "url": "#create-file"
+        },
+        {
+          "label": "ACTION_CREATE_DOCUMENT",
+          "url": "/reference/android/content/Intent#ACTION_CREATE_DOCUMENT"
+        },
+        {
+          "label": "Open a document or file",
+          "url": "#open-file"
+        },
+        {
+          "label": "ACTION_OPEN_DOCUMENT",
+          "url": "/reference/android/content/Intent#ACTION_OPEN_DOCUMENT"
+        },
+        {
+          "label": "Grant access to a directory's contents",
+          "url": "#grant-access-directory"
+        },
+        {
+          "label": "ACTION_OPEN_DOCUMENT_TREE",
+          "url": "/reference/android/content/Intent#ACTION_OPEN_DOCUMENT_TREE"
+        },
+        {
+          "label": "ACTION_CREATE_DOCUMENT",
+          "url": "/reference/android/content/Intent#ACTION_CREATE_DOCUMENT"
+        },
+        {
+          "label": "EXTRA_INITIAL_URI",
+          "url": "/reference/android/provider/DocumentsContract#EXTRA_INITIAL_URI"
+        },
+        {
+          "label": "ACTION_OPEN_DOCUMENT",
+          "url": "/reference/android/content/Intent#ACTION_OPEN_DOCUMENT"
+        },
+        {
+          "label": "EXTRA_INITIAL_URI",
+          "url": "/reference/android/provider/DocumentsContract#EXTRA_INITIAL_URI"
+        },
+        {
+          "label": "ACTION_OPEN_DOCUMENT_TREE",
+          "url": "/reference/android/content/Intent#ACTION_OPEN_DOCUMENT_TREE"
+        },
+        {
+          "label": "EXTRA_INITIAL_URI",
+          "url": "/reference/android/provider/DocumentsContract#EXTRA_INITIAL_URI"
+        },
+        {
+          "label": "onActivityResult()",
+          "url": "/reference/android/app/Activity#onActivityResult(int,%20int,%20android.content.Intent)"
+        },
+        {
+          "label": "Document.COLUMN_FLAGS",
+          "url": "/reference/android/provider/DocumentsContract.Document#COLUMN_FLAGS"
+        },
+        {
+          "label": "Bitmap",
+          "url": "/reference/android/graphics/Bitmap"
+        },
+        {
+          "label": "ImageView",
+          "url": "/reference/android/widget/ImageView"
+        },
+        {
+          "label": "canWrite()",
+          "url": "/reference/androidx/documentfile/provider/DocumentFile#canWrite()"
+        },
+        {
+          "label": "Document.COLUMN_FLAGS",
+          "url": "/training/data-storage/shared/(/reference/android/provider/DocumentsContract.Document#COLUMN_FLAGS)"
+        },
+        {
+          "label": "Document.COLUMN_FLAGS",
+          "url": "/reference/android/provider/DocumentsContract.Document#COLUMN_FLAGS"
+        },
+        {
+          "label": "SUPPORTS_DELETE",
+          "url": "/reference/android/provider/DocumentsContract.Document#FLAG_SUPPORTS_DELETE"
+        },
+        {
+          "label": "getMediaUri()",
+          "url": "/reference/android/provider/MediaStore#getMediaUri(android.content.Context,%20android.net.Uri)"
+        },
+        {
+          "label": "access media files from shared\nstorage",
+          "url": "/training/data-storage/shared/media"
+        },
+        {
+          "label": "opening the document",
+          "url": "#open"
+        },
+        {
+          "label": "ACTION_VIEW",
+          "url": "/reference/android/content/Intent#ACTION_VIEW"
+        },
+        {
+          "label": "openInputStream()",
+          "url": "/reference/android/content/ContentResolver#openInputStream(android.net.Uri)"
+        },
+        {
+          "label": "CATEGORY_OPENABLE",
+          "url": "/reference/android/content/Intent#CATEGORY_OPENABLE"
+        },
+        {
+          "label": "ActionOpenDocument",
+          "url": "https://github.com/android/storage-samples/tree/main/ActionOpenDocument"
+        },
+        {
+          "label": "ActionOpenDocumentTree",
+          "url": "https://github.com/android/storage-samples/tree/main/ActionOpenDocumentTree"
+        },
+        {
+          "label": "Preparing for Scoped Storage (Android Dev Summit\n'19)",
+          "url": "https://www.youtube.com/watch?v=UnJ3amzJM94"
+        }
+      ],
+      "reader": "root",
+      "date": "2026-10-04",
+      "actualTitle": "Access documents and other files from shared storage  |  App data and files  |  Android Developers",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "canonicalUrl": "https://developer.android.com/training/data-storage/shared/documents-files",
+      "technicalHeadings": [
+        {
+          "ordinal": 0,
+          "tag": "h2",
+          "id": "use-cases",
+          "text": "Use cases for accessing documents and other files"
+        },
+        {
+          "ordinal": 1,
+          "tag": "h2",
+          "id": "create-file",
+          "text": "Create a new file"
+        },
+        {
+          "ordinal": 2,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 3,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 4,
+          "tag": "h2",
+          "id": "open-file",
+          "text": "Open a file"
+        },
+        {
+          "ordinal": 5,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 6,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 7,
+          "tag": "h3",
+          "id": "document-access-restrictions",
+          "text": "Access restrictions"
+        },
+        {
+          "ordinal": 8,
+          "tag": "h2",
+          "id": "grant-access-directory",
+          "text": "Grant access to a directory's contents"
+        },
+        {
+          "ordinal": 9,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 10,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 11,
+          "tag": "h3",
+          "id": "document-tree-access-restrictions",
+          "text": "Access restrictions"
+        },
+        {
+          "ordinal": 12,
+          "tag": "h2",
+          "id": "perform-operations",
+          "text": "Perform operations on chosen location"
+        },
+        {
+          "ordinal": 13,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 14,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 15,
+          "tag": "h3",
+          "id": "determine-supported-operations",
+          "text": "Determine operations that a provider supports"
+        },
+        {
+          "ordinal": 16,
+          "tag": "h3",
+          "id": "persist-permissions",
+          "text": "Persist permissions"
+        },
+        {
+          "ordinal": 17,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 18,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 19,
+          "tag": "h3",
+          "id": "examine-metadata",
+          "text": "Examine document metadata"
+        },
+        {
+          "ordinal": 20,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 21,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 22,
+          "tag": "h3",
+          "id": "open",
+          "text": "Open a document"
+        },
+        {
+          "ordinal": 23,
+          "tag": "h4",
+          "id": "bitmap",
+          "text": "Bitmap"
+        },
+        {
+          "ordinal": 24,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 25,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 26,
+          "tag": "h4",
+          "id": "input_stream",
+          "text": "Input stream"
+        },
+        {
+          "ordinal": 27,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 28,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 29,
+          "tag": "h3",
+          "id": "edit",
+          "text": "Edit a document"
+        },
+        {
+          "ordinal": 30,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 31,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 32,
+          "tag": "h3",
+          "id": "delete",
+          "text": "Delete a document"
+        },
+        {
+          "ordinal": 33,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 34,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 35,
+          "tag": "h3",
+          "id": "retrieve-equivalent-media-uri",
+          "text": "Retrieve an equivalent media URI"
+        },
+        {
+          "ordinal": 36,
+          "tag": "h3",
+          "id": "open-virtual-file",
+          "text": "Open a virtual file"
+        },
+        {
+          "ordinal": 37,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 38,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 39,
+          "tag": "h3",
+          "id": "kotlin",
+          "text": "Kotlin"
+        },
+        {
+          "ordinal": 40,
+          "tag": "h3",
+          "id": "java",
+          "text": "Java"
+        },
+        {
+          "ordinal": 41,
+          "tag": "h2",
+          "id": "additional-resources",
+          "text": "Additional resources"
+        },
+        {
+          "ordinal": 42,
+          "tag": "h3",
+          "id": "additional-resources-samples",
+          "text": "Samples"
+        },
+        {
+          "ordinal": 43,
+          "tag": "h3",
+          "id": "additional-resources-videos",
+          "text": "Videos"
+        }
+      ],
+      "readScope": "Whole technical article text/tables/all displayed pre snippets and Kotlin+Java tabs; technical media none",
+      "wholeTechnicalBodyReviewed": true,
+      "allTextInExtractedScopeRead": true,
+      "formalApiDeclarationsRead": 0,
+      "displayedCallsAreFormalApiDeclarations": false,
+      "wholePreBlocksRead": 24,
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "sourceFacts": [
+        "SAF create/open/tree grants access through user-selected URI; same-name Create does not overwrite. Android11 directory restrictions and provider capabilities apply.",
+        "Persistent grants can be lost when items move/delete; display names are provider-specific, size can be unknown; canWrite is not exact write support.",
+        "Bitmap/stream/metadata/write/delete/virtual MIME guide examples read in both Kotlin and Java; getMediaUri grants no permissions; bitmap work belongs off UI thread.",
+        "Unresolved source differences: virtual file Android7.0/API25; persist flags OR vs returned-grant mask; nullable query/descriptor/close code behavior."
+      ],
+      "mediaStatus": "no article img",
+      "linkedReferencesAnalyzedCompletely": false,
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "codeLanguageTabsRead": [
+        "Kotlin",
+        "Java"
+      ],
+      "publisherLastUpdated": "2026-10-01 UTC"
+    },
+    {
+      "name": "apple-guidelines",
+      "requestUrl": "https://developer.apple.com/app-store/review/guidelines/",
+      "fetchedAt": "2026-10-04T05:24:51.705957+00:00",
+      "readStatus": "partial_policy_subsection_read",
+      "httpStatus": 200,
+      "finalUrl": "https://developer.apple.com/app-store/review/guidelines/",
+      "contentType": "text/html",
+      "sourceFile": "native/build/reference-corpus/mobile-editor-batch-012/apple-guidelines.source.html",
+      "sourceHash": "32be6bc750cd9389732c0ed7bbbba39ece454ad5d53d8b0b4012254d811459d7",
+      "bodyFile": "native/build/reference-corpus/mobile-editor-batch-012/apple-guidelines.body.html",
+      "bodyHash": "a2e9a1db25d151fb50a6b5f925e34490038528722f368f70f7b4d81cf5819eb3",
+      "bodyMethod": "BeautifulSoup publisher #software-requirements subsection only; whole policy source preserved but not claimed read",
+      "images": [
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg",
+        "/app-store/review/images/key-icon.svg"
+      ],
+      "preCount": 0,
+      "links": [
+        {
+          "label": "public APIs",
+          "url": "/documentation/"
+        },
+        {
+          "label": "Learn more about these entitlements",
+          "url": "/support/alternative-browser-engines/"
+        },
+        {
+          "label": "LocalAuthentication",
+          "url": "/documentation/localauthentication"
+        },
+        {
+          "label": "Connectivity Standards Alliance",
+          "url": "https://csa-iot.org/"
+        }
+      ],
+      "reader": "root",
+      "date": "2026-10-04",
+      "actualTitle": "App Review Guidelines - Apple Developer",
+      "versionEvidence": "Nonversioned platform policy/guide; publisher update date and retrieval hash pinned separately",
+      "canonicalUrl": "https://developer.apple.com/app-store/review/guidelines/",
+      "technicalHeadings": [],
+      "readScope": "Only Software Requirements2.5 subsection including18 numbered items; rest of full policy unread, icon media unread",
+      "wholeTechnicalBodyReviewed": false,
+      "allTextInExtractedScopeRead": true,
+      "formalApiDeclarationsRead": 0,
+      "displayedCallsAreFormalApiDeclarations": false,
+      "wholePreBlocksRead": 0,
+      "tableCount": 0,
+      "tableRowsIncludingHeaders": 0,
+      "tableCells": 0,
+      "sourceFacts": [
+        "Only Software Requirements2.5 subsection read: bundle/container and feature-changing executable code boundaries, limited educational exception, public APIs/background/recording/file selection.",
+        "No HB App Store approval inference; other guidelines/distribution-specific entitlements/OS rules remain unread."
+      ],
+      "mediaStatus": "unread",
+      "linkedReferencesAnalyzedCompletely": false,
+      "independentlyVerified": false,
+      "ledgerPromoted": false,
+      "codeLanguageTabsRead": [],
+      "wholePolicyReviewed": false,
+      "numberedSubsectionRangeRead": "2.5.1-2.5.18",
+      "htmlBodyIsPartialScope": true
+    }
+  ],
+  "hbApplicationDimensions": [
+    "portable C++/typed serialized editor model",
+    "human desktop/touch/keyboard authoring and Play focus",
+    "node callable/native ABI version",
+    "AI stable URI/reference/capability/revision command parity",
+    "native editor build vs game runtime/template/package/device install+play"
+  ],
+  "fullCorpusComplete": false,
+  "engineChanged": false,
+  "runtimeExecuted": false,
+  "guiExecuted": false,
+  "automaticExtractionIsSemanticReading": false,
+  "originalExamplesAndTableTextsPublic": false
+}

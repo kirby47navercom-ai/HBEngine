@@ -1,0 +1,1664 @@
+{
+  "schemaVersion": 1,
+  "batchId": "unity-2d-authoring-verification-009",
+  "phase": "research_only",
+  "analysisReader": "/root/sprite_tilemap_body_analysis",
+  "verifier": "/root/finish_009_verification",
+  "date": "2026-10-04",
+  "baseline": "Unity6000.0/en/job76410965/2026-09-29",
+  "baselineNotCurrentLatestClaim": true,
+  "scope": "Limited pinned 12 technical body versus final analysis comparison; four owner headers only partial. No closure of linked APIs, package compatibility, entire Unity/Unreal corpus or ledger gate.",
+  "verificationReport": "docs/research/UNITY_2D_AUTHORING_VERIFICATION_009.md",
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/UNITY_2D_AUTHORING_BODY_009.md",
+      "sha256": "4d0ccb2580d40c8783e9375db4e735ca421fc159f97ceeda49a9c20c7f25ec25"
+    },
+    {
+      "file": "docs/research/unity-2d-authoring-body-009.json",
+      "sha256": "6a71a2e89939d3b0f10e7c6e9747cb2d88fc17192b9793dd89132284c2dba2e4"
+    },
+    {
+      "file": "docs/research/UNITY_2D_AUTHORING_VERIFICATION_009.md",
+      "sha256": "f93fad3eff713567dac60373ddbf61ef6fff2a83634693409d99b299587752ef"
+    }
+  ],
+  "readerAttribution": {
+    "predecessor": {
+      "verifier": "/root/undo_mobile_evidence_audit",
+      "date": "2026-10-04",
+      "evidenceKind": "Predecessor-authored verification Markdown observed before amendment plus parent handoff; not completion verifier's own historical read.",
+      "observedReportFile": "docs/research/UNITY_2D_AUTHORING_VERIFICATION_009.md",
+      "observedBeforeAmendmentSha256": "a12abfcf4ade13fab3718b723de2f3206ed2bfc20c8baad8513685b0b4002b2e",
+      "reportedActualReadScope": "All 12 technical bodies, every table cell, 10 displayed declaration blocks, 3 full examples, original IMG5 and glyph19; owner headers4 partial.",
+      "reportedMismatchCount": 0,
+      "predecessorJsonSaved": false,
+      "dedicatedPrivateAuditRecordFound": false,
+      "identityAloneAcceptedAsProof": false
+    },
+    "completion": {
+      "verifier": "/root/finish_009_verification",
+      "date": "2026-10-04",
+      "actualReadScope": "All 12 technical body text files directly read in three batches (P01-P04/P05-P08/P09-P12), final analysis MD/JSON and predecessor MD compared; all table cells and complete example text included. Original IMG5 and glyph contact sheet19 directly viewed; corresponding original CSS font/codepoint/color/layer-margin rules read. Four original owner header slices partly read. HB code only declared ranges read.",
+      "independentSourceRecalculation": "All source/body/text files and official ZIP read bytewise; exact h1-to-_content body/text reproduction, headings/tables/declarations/pre/media/links/canonical/version/footer computed from original HTML and compared against final analysis record. Relevant API owner source/header and image/CSS/WOFF ZIP entries matched. WOFF versus rendered TTF cmap/glyf/hmtx/loca/maxp bytes matched.",
+      "automaticChecksReplaceSemanticReading": false,
+      "predecessorReadsCountedAsOwn": false
+    }
+  },
+  "counts": {
+    "wholeTechnicalBodiesCompared": 12,
+    "partialOwnerHeadersCompared": 4,
+    "rawHeadings": 70,
+    "technicalHeadings": 62,
+    "publisherFeedbackHeadingsExcluded": 8,
+    "tables": 19,
+    "tableRowsIncludingHeaders": 149,
+    "tableCells": 359,
+    "displayedDeclarationBlocks": 10,
+    "wholePreExampleBlocksCompared": 3,
+    "imagesActuallyViewed": 5,
+    "cssGlyphOccurrences": 21,
+    "distinctCssGlyphs": 19,
+    "exactOfflineLinkOrAnchorMismatchOccurrences": 13,
+    "distinctExactOfflineLinkOrAnchorMismatchUrls": 9,
+    "limitedIndependentlyComparedTechnicalBodies": 12,
+    "distinctMemberPages": 4,
+    "displayedMethodOverloads": 9,
+    "fieldStyleMemberDeclarations": 1,
+    "packageCompatibilityEditionsRead": 0,
+    "ledgerPromotions": 0,
+    "strictLedgerVerified": 0,
+    "wholeCorpusVerified": 0,
+    "finalComparisonFailures": 0,
+    "globalApiOverloadDenominator": null
+  },
+  "hashMethods": {
+    "sourceBodyText": "SHA-256 actual bytes",
+    "heading": "SHA-256 UTF-8 compact JSON of normalized {tag,id,text}; locator ordered within technical headings",
+    "table": "SHA-256 UTF-8 compact JSON ordered rows of normalized cell texts including headers",
+    "declaration": "SHA-256 normalized source signature-CS text with leading Declaration label removed; source order",
+    "example": "SHA-256 exact BeautifulSoup pre text UTF-8",
+    "bodyExtraction": "Exact source bytes first <h1 through immediately before <div id=\"_content\">",
+    "linkAnchor": "Exact offline path; either id or named a anchor; no extension/canonical fallback and no fresh HTTP"
+  },
+  "distribution": {
+    "file": "native/build/reference-cache/unity-discovery/cloudmedia-docs.unity3d.com_docscloudstorage_en_6000.0_UnityDocumentation.zip",
+    "bytes": 392108580,
+    "sha256": "cf07df16fbe4ca7d174cc15bfeb2503995cc4140b42368d0ae7bf17b7805b28f",
+    "cachedMetadataHash": "6e59927599b8b9848e7862a20ee43d1a51d3f16b91090fc4ec87f95534df4534",
+    "freshNetworkRequest": false,
+    "url": "https://cloudmedia-docs.unity3d.com/docscloudstorage/en/6000.0/UnityDocumentation.zip",
+    "cachedHttpStatus": 200,
+    "cachedContentType": "application/octet-stream",
+    "twelveSourceFilesByteEqualZipEntries": true,
+    "originalImagesByteEqualZipEntries": 5
+  },
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/unity-2d-authoring-batch/extraction.json",
+      "sha256": "89a092137e24939c8371cb4113d8f6ec6db61ae29ecd7388f39cc08706fba0a0"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-2d-authoring-batch/owner-headers.json",
+      "sha256": "34348c0019917d0ee70f1e7d9f5c6d8a88a1d4a69fa140bbf657796973422ee0"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media.json",
+      "sha256": "1bb82b2cf83fc8f7383b55d5e53c78badf4f297655ddb3fa5a318394a06b0091"
+    },
+    {
+      "file": "native/build/reference-corpus/unity-2d-authoring-batch/extract.py",
+      "sha256": "8000a7ac610ef605735cb63a5c9d5755460a9a8290375a25a69a29d1cc1d6fc2"
+    }
+  ],
+  "pages": [
+    {
+      "pageId": "UN2DA009-01",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/texture-type-sprite.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/texture-type-sprite.html",
+      "sourceHash": "b8ac1a459000fde6a2d2e745c814836c62ca3e01ee15943684da5e1d87eee8b7",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_texture-type-sprite.html.body.html",
+      "bodyHash": "c491d776e4487e86092748f7487ca082e815ba6d6a8b284632f82c3a19835118",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_texture-type-sprite.html.body.txt",
+      "textHash": "066863ca23d008bdac87390d732d90a4facbc87801df8b1ecbf01e384b6d69f6",
+      "zipEntry": "Documentation/en/Manual/texture-type-sprite.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 2,
+      "technicalHeadingCount": 2,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Sprite (2D and UI) texture Import Settings window reference",
+          "sha256": "1d0c852fd082f71acd590e44deb06b206d17e4fe0a01b939a51e950064006294"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 26,
+          "cells": 52,
+          "sha256": "d4d8bc9ebccd8372a58fc85d7d20e0fe96aeeb14db7656c37264dd4a0d255870"
+        }
+      ],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Sprite importer 2D lock; Single/Multiple/Polygon distinctions; conditionally visible mesh/pivot/physics controls; small sprite FullRect limitation; Read/Write copy doubles texture memory; alpha/mipmap/filter/wrap conditions including unsupported Mirror Once fallback.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Typed importer/runtime schema, origin/units and controlled memory option are HB candidates.",
+      "preservedUncertainties": [
+        "Exact small-size per-axis predicate",
+        "Texture API validity/failure/reimport sub-asset identity",
+        "Pinned package compatibility and platform overrides"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-02",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sprite-editor/use-editor.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/sprite/sprite-editor/use-editor.html",
+      "sourceHash": "e1191d29e1e04f9afe2fbb6839c053554d0a25be71b35e4fa703a7a8a01e6fbd",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sprite-editor_use-editor.html.body.html",
+      "bodyHash": "e5de82a7b2c6067bcd1d7831e126bf421912e555a395c4f3ada9cd9ebaca501c",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sprite-editor_use-editor.html.body.txt",
+      "textHash": "9dab6f3e9d439d934ed82e22b99729fb27b6d7b2f95bdc8833e26c5ba7bc4332",
+      "zipEntry": "Documentation/en/Manual/sprite/sprite-editor/use-editor.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 8,
+      "technicalHeadingCount": 8,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Cut out sprites from a texture",
+          "sha256": "d7e4c7b8d50a74efef4363e5dcdd87336c9bcded33eb43df52c4e6374f4dd022"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Open the Sprite Editor",
+          "sha256": "ff5f72a92fa3e776fcdb38b76c0d5fbbf266b9d37a786e328a67d45a3efc5e4e"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Adjust the area of a single sprite",
+          "sha256": "477a10cc3ab94b0916d5a5e97768dd99577a8c84448d9eb1240c37cf241ba649"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Cut out multiple sprites from a single texture",
+          "sha256": "039d84e101fd09a041ec2b379616b3514d18d86a238e60b4e8ac179aa6155c9b"
+        },
+        {
+          "locator": "technical-heading[5]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Manually select areas to use as sprites",
+          "sha256": "8f3683d7a82d1cda44f0b25b02bb9796df8570725bff6e823033486948cadcd0"
+        },
+        {
+          "locator": "technical-heading[6]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Slice into sprites automatically",
+          "sha256": "744db0a9fedb2a11af923809d6c636b929ab91522125b65c3ed0588c43ec6b0d"
+        },
+        {
+          "locator": "technical-heading[7]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Warn before applying or reverting changes",
+          "sha256": "10563cf151b0e958b0e9c7a88a6eb2fb1abaf54d9c4487fa394a0e88047cec2f"
+        },
+        {
+          "locator": "technical-heading[8]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [
+        "iconClr-2D-Sprite"
+      ],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Project texture selection is required; Scene sprite selection cannot open editing. Single handles and Multiple manual/automatic slicing produce child sprite assets saved by Apply. Automatic/Cell Size/Cell Count/Isometric and preview exceptions preserved; Edit > Preferences > 2D > Sprite Editor Window warnings verified.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Shared sprite rect proposal/preview/apply flow is an HB candidate.",
+      "preservedUncertainties": [
+        "OS/focus shortcuts",
+        "Undo grouping and reference identity on cancel",
+        "Package edition"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-03",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sprite-editor/sprite-editor-window-reference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/sprite/sprite-editor/sprite-editor-window-reference.html",
+      "sourceHash": "734d4951b60b63721d6a9e49a42039c74c535c3c1a7bf74a9f0b6cbf91d0b96c",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sprite-editor_sprite-editor-window-reference.html.body.html",
+      "bodyHash": "c67d8a3723a80e157c0ec4438ffa4ba7e78d87b15b36a19566dadb930273d923",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sprite-editor_sprite-editor-window-reference.html.body.txt",
+      "textHash": "cac2c5369bd62543f4439e79f54c677551bf535be004249c9b5a56ffa3268d63",
+      "zipEntry": "Documentation/en/Manual/sprite/sprite-editor/sprite-editor-window-reference.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 8,
+      "technicalHeadingCount": 8,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Sprite Editor tab reference for the Sprite Editor window",
+          "sha256": "df47bfbbbf0508937e6d6a967c01e4bd1c4fcf3248fd126dbcb675526f772472"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Toolbar",
+          "sha256": "9556a913aef75b222af0a75983aa675fe278e819f85e1dc544f4fd2abbaa090d"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Sprite Editor toolbar",
+          "sha256": "bc518cde5b3d7366c752ac460fc50af09f6501eb4976bbfe101578fc0c43cd5e"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Slice overlay",
+          "sha256": "8a8fd1d3179b767514a72ce83e5ebb1c1d892b5c51cf94167efec5f520a0b2b9"
+        },
+        {
+          "locator": "technical-heading[5]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Main area",
+          "sha256": "56d7b48b181d19ba7d2211564a32c64084aa690b45b79b84c428e996db9747ba"
+        },
+        {
+          "locator": "technical-heading[6]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Polygon texture properties",
+          "sha256": "5ae708ff8f35130a258fa9db167733019d392a15408d681c09e681984515e056"
+        },
+        {
+          "locator": "technical-heading[7]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Sprite overlay",
+          "sha256": "f24db09d306afb2b9444f2b3bf21681c98d5f28628e35d8f7e8ae06eef87744f"
+        },
+        {
+          "locator": "technical-heading[8]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 8,
+          "cells": 24,
+          "sha256": "8b65857f7a320f2b2bc8c4f7db076dd808fb36bc307a5acb74ae239b309a653a"
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeader": 4,
+          "cells": 12,
+          "sha256": "1effec723d1e882aa56ba47cadea2ef85597727d48bf5567d68bfeb8c5a62e27"
+        },
+        {
+          "locator": "table[3]",
+          "rowsIncludingHeader": 12,
+          "cells": 24,
+          "sha256": "238785c6d9dfb4afb59319020fcd589c1e403a6e902be22f3969e9c24a90d616"
+        },
+        {
+          "locator": "table[4]",
+          "rowsIncludingHeader": 3,
+          "cells": 6,
+          "sha256": "747a40a3f9bec289044b018fdaf139c251b145ffdbdd557ba8374891b0d634a9"
+        },
+        {
+          "locator": "table[5]",
+          "rowsIncludingHeader": 7,
+          "cells": 14,
+          "sha256": "4cff8af095406d2182470d902acc5dbe449474a0f1648a2dcfdc04deef4ae19b"
+        }
+      ],
+      "declarations": [],
+      "examples": [],
+      "images": [
+        {
+          "locator": "img[1]",
+          "file": "native/build/reference-corpus/unity-2d-authoring-batch/media/Documentation/en/uploads/Main/sprite-editor_preview.png",
+          "sha256": "0f279f43ef91bd5e69485b93d37f9f23c77f1aa9eba2994dbebd92f42cb9ec54",
+          "zipEntry": "Documentation/en/uploads/Main/sprite-editor_preview.png",
+          "sourceBytesEqualZip": true,
+          "actuallyViewedBy": "/root/finish_009_verification"
+        },
+        {
+          "locator": "img[2]",
+          "file": "native/build/reference-corpus/unity-2d-authoring-batch/media/Documentation/en/uploads/Main/sprite-editor_color.png",
+          "sha256": "745fd8fe24bf8c1ce17652723dbedb95cc3e0273fc4dcd796be7acc4b49bec06",
+          "zipEntry": "Documentation/en/uploads/Main/sprite-editor_color.png",
+          "sourceBytesEqualZip": true,
+          "actuallyViewedBy": "/root/finish_009_verification"
+        },
+        {
+          "locator": "img[3]",
+          "file": "native/build/reference-corpus/unity-2d-authoring-batch/media/Documentation/en/uploads/Main/sprite-editor_mipmap.png",
+          "sha256": "d85ed054401fa9eaccb241dc61b40d0c02e6c7fdc2851b5512657b935da2c8a1",
+          "zipEntry": "Documentation/en/uploads/Main/sprite-editor_mipmap.png",
+          "sourceBytesEqualZip": true,
+          "actuallyViewedBy": "/root/finish_009_verification"
+        },
+        {
+          "locator": "img[4]",
+          "file": "native/build/reference-corpus/unity-2d-authoring-batch/media/Documentation/en/uploads/Main/sprite-editor_sprite-selected.jpg",
+          "sha256": "97123bf3fb3e609e3f58b8fb36cbbc10d1a51132ab31d8eaf4409ddada9f7ec1",
+          "zipEntry": "Documentation/en/uploads/Main/sprite-editor_sprite-selected.jpg",
+          "sourceBytesEqualZip": true,
+          "actuallyViewedBy": "/root/finish_009_verification"
+        }
+      ],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Toolbar/tab and Polygon/Multiple visibility; slice parameter availability; Delete Existing/Smart/Safe overlap behavior; bottom-left Position Y and pivot units; L/R/T/B editor order distinguished from Sprite.Create Vector4 order. Four original images correspond to eye/RGB/mipmap and A/B/C SpriteRect/border/pivot.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Explicit origin/border/pivot schema and slice method conflict behavior are HB candidates.",
+      "preservedUncertainties": [
+        "Smart asset identity persistence",
+        "Other editor tabs including unread Animation@latest",
+        "Undo/reimport contracts"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-04",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/renderer/sprite-renderer-reference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/sprite/renderer/sprite-renderer-reference.html",
+      "sourceHash": "9abd0ca40fd635f85d0a98292865ad201dd620be97625d4b486d61e111573184",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_renderer_sprite-renderer-reference.html.body.html",
+      "bodyHash": "ef11d5e1fbe54603d1129cfed48604ceb35dbd2e5c37a20a973311998096c4be",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_renderer_sprite-renderer-reference.html.body.txt",
+      "textHash": "b3f84faa81bfe818315281c197d019cabdd220ff3b98d41cf615d36e281f9851",
+      "zipEntry": "Documentation/en/Manual/sprite/renderer/sprite-renderer-reference.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 4,
+      "technicalHeadingCount": 4,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Sprite Renderer component reference",
+          "sha256": "99051db94d931045807218400e412647e631ae23687ccf301590cdfee666d943"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Draw Mode properties",
+          "sha256": "fe22df0b4381d485bd4e0a86a9f3806f6491ba4573b9e5f2e97c70c49456ac26"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional Settings",
+          "sha256": "4d073e0d76ca26d03bd53b34fa93ace78b350868f639af927d99a58c16e71e83"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 9,
+          "cells": 18,
+          "sha256": "17e3b89aa09428491823d51ec0637dc11fea9d179f76dffe21fb3ec38d12ce1a"
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeader": 4,
+          "cells": 8,
+          "sha256": "59086d73959da0212a20f6ad9897b0f026596d72ca34fd83d3e57d364feeba07"
+        },
+        {
+          "locator": "table[3]",
+          "rowsIncludingHeader": 4,
+          "cells": 8,
+          "sha256": "0c533baf1c76803e177698c46dd54d5f1b0e89c52bb7df5511bece7fe46f36d4"
+        }
+      ],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Flip changes rendering without moving/mirroring GameObject location. Simple default; 9-slice Sliced/Tiled; Continuous cropped edge tiles versus Adaptive stretch/full texture; sorting and rendering layers distinguished. Source table Sprite-Lit-Default statement retained with pipeline uncertainty.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Typed render fields/modes/threshold and origin-independent visual flip are HB candidates.",
+      "preservedUncertainties": [
+        "Stretch Value numeric range/formula and experimental behavior",
+        "Pipeline-specific defaults",
+        "Related 9-slice API"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-05",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sort-sprites/sort-sprites.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/sprite/sort-sprites/sort-sprites.html",
+      "sourceHash": "0799b1545604a2d7814426e2483e359cbaaee6e45df8d1a3f2879df80ab63692",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sort-sprites_sort-sprites.html.body.html",
+      "bodyHash": "027efec83efd8132319ee3ba93a76d888818329df4e12116a5a904c737acd560",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_sort-sprites_sort-sprites.html.body.txt",
+      "textHash": "a16089e19cfcc7c2979cfdb967b33cd97ca4eb3c81a8d1c2e0ae4ab1192119d4",
+      "zipEntry": "Documentation/en/Manual/sprite/sort-sprites/sort-sprites.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 2,
+      "technicalHeadingCount": 2,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "2D rendering order",
+          "sha256": "940c9c21f07497d41af5d9ee18950a187ecc057fb67683717e6a64720acc928e"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Sort criteria order is layer/order/material queue/distance/shader-material grouping/internal order; group and tie order are not guaranteed. Camera projection, sort mode, sort point and Sorting Group unit documented. Numeric default order/queue values are not inferred.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Common sort key and any stable tie-break remain HB choices.",
+      "preservedUncertainties": [
+        "Nested/internal Sorting Group detail",
+        "Camera transparency sort APIs",
+        "Replacement of malformed relative link"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-06",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/mask/sprite-mask-reference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/sprite/mask/sprite-mask-reference.html",
+      "sourceHash": "cd81dd199835350d108e730965e94ac69cdacea8e3037cc28c14af3b5f16a8c0",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_mask_sprite-mask-reference.html.body.html",
+      "bodyHash": "64f42cd264f29c032535d12898cb5a9f16d1c8e6b3a9d119745f16e45a6c5756",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_sprite_mask_sprite-mask-reference.html.body.txt",
+      "textHash": "a15cfdf083be3ec8586a3879456ea7d78426aafe17dcd4c16dea40c79cc50b36",
+      "zipEntry": "Documentation/en/Manual/sprite/mask/sprite-mask-reference.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 3,
+      "technicalHeadingCount": 3,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Sprite Mask component reference",
+          "sha256": "4a22c6a4e50416bd7c04918f22544f894161eb6e0b44fc3f3cd25545543f3b70"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Custom Range properties",
+          "sha256": "def9e1c08e9b5b8b10e5071cad71d6a239482a945a7adb3239c8aa94a2efea81"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 8,
+          "cells": 16,
+          "sha256": "7c6e1dcd3335b965e527346f546f4c47ba7803044d22803020cb5c6c21fdfd50"
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeader": 7,
+          "cells": 19,
+          "sha256": "8d86bd2a59babd7f9c6b5617b688fed9dffaa041126fbc07dc21301182bf7663"
+        }
+      ],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Mask Sprite versus Supported Renderer inputs and visibility conditions; alpha cutoff meaning; render-layer selection differs from draw order. Back excluded lowest boundary and Front affected highest boundary; Back1/Front2 example affects layer2 only.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Typed source union, half-open range and separate render-layer mask are HB candidates.",
+      "preservedUncertainties": [
+        "Same-boundary order cases and invalid ranges",
+        "Alpha numeric range/default",
+        "Sorting Group/URP/multiple mask contracts"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-07",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/tile-palettes/tile-palette-editor-reference.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/tilemaps/tile-palettes/tile-palette-editor-reference.html",
+      "sourceHash": "dba08b3ce8bde5cbc93e20d7ace742ec7e12390a8381b9cd7ad96a21e488f8e6",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_tilemaps_tile-palettes_tile-palette-editor-reference.html.body.html",
+      "bodyHash": "cf7c626be49c8ca49f76ca2cc71e1af5ed427eaffd207c882472b2579359bb84",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_tilemaps_tile-palettes_tile-palette-editor-reference.html.body.txt",
+      "textHash": "3fbd9a553209dae8fc3d40c4c37d868cf60cbc9478e10851f8211941da762ec0",
+      "zipEntry": "Documentation/en/Manual/tilemaps/tile-palettes/tile-palette-editor-reference.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 9,
+      "technicalHeadingCount": 9,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Tile Palette window reference",
+          "sha256": "1002f04ba7bee6c0daa23303d205ae9b86545f4d4eec72fdb3a4fcaa2e86d6fe"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Toolbar",
+          "sha256": "9556a913aef75b222af0a75983aa675fe278e819f85e1dc544f4fd2abbaa090d"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Active Target dropdown menu and overlay buttons",
+          "sha256": "b451fddd4066ef65b768ccbad57ad118c5a7c0dd22be49245afc91c50491fbd1"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Main area",
+          "sha256": "56d7b48b181d19ba7d2211564a32c64084aa690b45b79b84c428e996db9747ba"
+        },
+        {
+          "locator": "technical-heading[5]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Create New Tile Palette overlay",
+          "sha256": "d30ce7ed4e2d7b7a0298a5374f20b37569074961fc8b057a30039b00f160b253"
+        },
+        {
+          "locator": "technical-heading[6]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Brush Inspector window",
+          "sha256": "891f8e736acd23c58dbce96608a5b67f6ca0d4afe2e0745279b7d183a9383e56"
+        },
+        {
+          "locator": "technical-heading[7]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Keyboard shortcuts",
+          "sha256": "dfca241b2a691759bf679af7205ae85bbc6c159b5217e7a119c22698bf883fbd"
+        },
+        {
+          "locator": "technical-heading[8]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Color preferences",
+          "sha256": "6b39604132b40200913960dec9885aaae2d3349fcb18fe26ddcaf52fb52bcd85"
+        },
+        {
+          "locator": "technical-heading[9]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 12,
+          "cells": 48,
+          "sha256": "62aa86f6bf949ab7de847b8d6bde48b4a100fc7518897e568965710bd7accc0f"
+        },
+        {
+          "locator": "table[2]",
+          "rowsIncludingHeader": 7,
+          "cells": 28,
+          "sha256": "8bf12663f882960b9c3048efc0bb9b0247669ee8e40c57ffef3a7e345eba970d"
+        },
+        {
+          "locator": "table[3]",
+          "rowsIncludingHeader": 6,
+          "cells": 18,
+          "sha256": "2ae05383c8eb51140d29d2d87b02faff044cb5eb415ceb37bf9c2db28c194afd"
+        },
+        {
+          "locator": "table[4]",
+          "rowsIncludingHeader": 7,
+          "cells": 14,
+          "sha256": "2e10dde88cf1324611ebbe1a13c824c51a3eddd72114388c427b58871b272265"
+        },
+        {
+          "locator": "table[5]",
+          "rowsIncludingHeader": 8,
+          "cells": 16,
+          "sha256": "2bc01fda8f3ad1af4de0891dd6c7b9d74d907092f2a8d21c65093c1785aab2e3"
+        },
+        {
+          "locator": "table[6]",
+          "rowsIncludingHeader": 5,
+          "cells": 10,
+          "sha256": "1010cfb71e5e5b5deff5fc579d1d7293c87f291da292f480e0afef7eea0f3f5f"
+        }
+      ],
+      "declarations": [],
+      "examples": [],
+      "images": [
+        {
+          "locator": "img[1]",
+          "file": "native/build/reference-corpus/unity-2d-authoring-batch/media/Documentation/en/uploads/Main/2d-tile-palette-window_labelled.png",
+          "sha256": "b45f52c7dab53c93ba3ea9e38864c12e88a21948d9d7c6b111164ce25fbb2342",
+          "zipEntry": "Documentation/en/uploads/Main/2d-tile-palette-window_labelled.png",
+          "sourceBytesEqualZip": true,
+          "actuallyViewedBy": "/root/finish_009_verification"
+        }
+      ],
+      "cssGlyphClasses": [
+        "icon-Animation-Selection",
+        "icon-Animation-Move",
+        "icon-Animation-Brush",
+        "icon-Animation-FillSelection",
+        "icon-EditorUI-Colorpicker",
+        "icon-Animation-Eraser",
+        "icon-Animation-Fill",
+        "icon-EditorUI-RotateCounterClockwise",
+        "icon-EditorUI-RotateClockwise",
+        "icon-EditorUI-FlipX",
+        "icon-EditorUI-FlipY",
+        "iconClr-Tilemap-ActiveTargetLayers",
+        "icon-EditorUI-EyeTool",
+        "icon-EditorUI-Target",
+        "icon-EditorUI-Colorpicker",
+        "iconClr-Tilemap-TilePalette",
+        "iconClr-Tilemap-TilePalette",
+        "icon-Input-Pen",
+        "icon-2D-Grid",
+        "icon-EditorUI-GizmoGeneric"
+      ],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Palette Edit changes target; Select then Move and Pick then Paint; multi-tile footprint and single-tile Flood Fill; shortcut keys, 90-degree rotation/flip, active target, palette-derived dimension, layouts and XYZ height. Automatic cell size uses bottom-left tile. Contiguous fill and Z lock differ. Minus increases z and equals decreases z per source.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Explicit edit target, brush transform/footprint/XYZ/layout shared by human/C++/node/AI are HB candidates.",
+      "preservedUncertainties": [
+        "Focus/OS/layout shortcut routing",
+        "Undo/storage and Clipboard/Brush Picks detail",
+        "Tilemap Extras@latest compatibility"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-08",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/work-with-tilemaps/tilemap-collider-2d.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/Manual/tilemaps/work-with-tilemaps/tilemap-collider-2d.html",
+      "sourceHash": "c0dc720035c5c7a6090d33152ab3acd34e2901601208e16cd7b26afe1dcc1651",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_tilemaps_work-with-tilemaps_tilemap-collider-2d.html.body.html",
+      "bodyHash": "830ca53f090f16dc121bb9d3f3b0f540bf12e58cf5968e8882b577d99d717256",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/Manual_tilemaps_work-with-tilemaps_tilemap-collider-2d.html.body.txt",
+      "textHash": "f44da85f49075cb16807e47ef58da79936f0a682fd745ad70b04f5070f31fcb0",
+      "zipEntry": "Documentation/en/Manual/tilemaps/work-with-tilemaps/tilemap-collider-2d.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 7,
+      "technicalHeadingCount": 7,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Enable collision detection for tiles",
+          "sha256": "1ec5ad15d4b0f285e77a6a1b4187abfaad1b88e73ab59af5e7781ba73f9f48ec"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Add a Tilemap Collider 2D component",
+          "sha256": "0d5e593f36a9bc8686ab03da9ff594c4d2c7cf196e698d89c788456da625a84a"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Disable collisions for a tile",
+          "sha256": "4c17b4d312b5ab35c9b0d9dd76f98fe6173d1f597b46b05b67e89bb7c2542ad5"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Create a custom collider shape",
+          "sha256": "381e2f522243228f63d8372a1043e164acf8e79b0b4fe33a874bcf595d00ee82"
+        },
+        {
+          "locator": "technical-heading[5]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Reduce the number of collider shapes",
+          "sha256": "f097a0ba390baac88dca423ad291f94fab8a37b8f46e7fcfb8618761927ef607"
+        },
+        {
+          "locator": "technical-heading[6]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Update collider shapes manually via API",
+          "sha256": "4e3d78b1523d2cc1868fe0db560af66567f1b9db3e64518719a28b2c41e34f59"
+        },
+        {
+          "locator": "technical-heading[7]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Additional resources",
+          "sha256": "f101afadaff5e02b3e27ff7b95b4297c60ff6f7ea2330722c73036f9537a6f34"
+        }
+      ],
+      "tables": [],
+      "declarations": [],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Add Component path; tile None disables collision; Sprite uses Custom Physics Shape; neighbor shapes composite; LateUpdate batches additions/removals. Source manual lists Process then hasTilemapChanges check.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Query-first optimization, dirty-cell queue and explicit collider flush remain HB choices. Renderer refresh/collider rebuild/physics simulation remain separate.",
+      "preservedUncertainties": [
+        "Composite/Rigidbody/extrusion/rebuild thresholds",
+        "hasTilemapChanges API",
+        "Learn version=6.5 is unread and not inherited"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-09",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Sprite.Create.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Sprite.Create.html",
+      "sourceHash": "16c92a44c1b75557da32d27e5fe2049751561b5606152599cb93a9c39bb65f59",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Sprite.Create.html.body.html",
+      "bodyHash": "549c71e87675d9348dd8573a705e39d79794f5d5b62764b71ab9652541dfe1f5",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Sprite.Create.html.body.txt",
+      "textHash": "cfabab0ce4811e0bb2cad1c256809bbe1f037254f02c679c7742c358286b0bee",
+      "zipEntry": "Documentation/en/ScriptReference/Sprite.Create.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 12,
+      "technicalHeadingCount": 10,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Sprite .Create",
+          "sha256": "50280a7182e77120288a009b0c6583266d3adad913ea92fdc13d9099e5073ffe"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[5]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[6]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[7]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[8]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[9]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Parameters",
+          "sha256": "c1670d17855f0ff6a489b881a2d8be2783d6ffcc41683b9334fe33025df82dbb"
+        },
+        {
+          "locator": "technical-heading[10]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Description",
+          "sha256": "d191bb9a7993ace8f0608b60b462fd0f2e960bba6afc4042269feb7e3d7e4253"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 10,
+          "cells": 20,
+          "sha256": "d22b307b68304ec886e3439da8b901d80660f8f99435780f0a412f13fe6718a7"
+        }
+      ],
+      "declarations": [
+        {
+          "locator": "signature-CS[1]",
+          "sha256": "7ee2be14e6d0a24aa1ba68afc234bc26b988638c3103de2d7ffc868193745f54"
+        },
+        {
+          "locator": "signature-CS[2]",
+          "sha256": "0ffe7e69b17fb6e8cdbd47a137cf4407fb2ee0ce7c65934e0c8e24ee6160c1a1"
+        },
+        {
+          "locator": "signature-CS[3]",
+          "sha256": "7d47ffbfa15df76f4a0f34d22e51cb806fadde384658d8abfe83442c819197e4"
+        },
+        {
+          "locator": "signature-CS[4]",
+          "sha256": "426d63d7925ca320197f194500693236ab7b3905686987a2774a0b62433e8a0a"
+        },
+        {
+          "locator": "signature-CS[5]",
+          "sha256": "8be4a9ac15bc386eacc3e770da11621b0bfaf98ad95e3adefbbb3598e565d77b"
+        },
+        {
+          "locator": "signature-CS[6]",
+          "sha256": "2dc63cc5a0f0fc4e533853e37c3f1da408d2be70ce53a09dc5fcdeb3b9cb89e1"
+        },
+        {
+          "locator": "signature-CS[7]",
+          "sha256": "404a92bdfea7366284a8fd667741c51492a6b7efc3832588b2d2ac76e9db1695"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "7a8a918ba12e37959558e67b23ddb5ac840cc68b7dfcc1af70317354f2d3c63f"
+        },
+        {
+          "locator": "pre[2]",
+          "sha256": "c1a9dc532befd7ac166dd93f156d3926fd719d7cbf6958424692915ea5b0d93c"
+        }
+      ],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Seven displayed static C# Sprite-returning overloads read in source order, without displayed optional defaults. Rect bottom-left pixel range, normalized pivot, PPU scaling, border left/bottom/right/top, mesh/fallback/secondary input meaning. Full first sample creates in Start then assigns in OnGUI; second sample creates 64x64 main/secondary textures, three distinct names, zero pivot/border, false fallback and reads count; no renderer assignment/cleanup. Sample calls are not formal overloads.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Runtime SpriteDescriptor/output handle and shared units/secondary schema are HB candidates, distinct from editor imported asset persistence.",
+      "preservedUncertainties": [
+        "Omitted argument defaults",
+        "Null/bounds/PPU failures/exceptions",
+        "Texture/native resource ownership, cleanup, thread and ABI"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-10",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteRenderer-maskInteraction.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/SpriteRenderer-maskInteraction.html",
+      "sourceHash": "11bdcc49f3be8e6218de476f4c0f93d7c609866cc05a31db40075656bf62a176",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_SpriteRenderer-maskInteraction.html.body.html",
+      "bodyHash": "dda0e8d875cf0f5f0fbb3dab61d4d358b496b6343311ff248608cb10ecadf515",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_SpriteRenderer-maskInteraction.html.body.txt",
+      "textHash": "f0cb651227b9b0ee7403f8822c213c121f9e0ed4c658ba8283d3678fd6cf85c7",
+      "zipEntry": "Documentation/en/ScriptReference/SpriteRenderer-maskInteraction.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 4,
+      "technicalHeadingCount": 2,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "SpriteRenderer .maskInteraction",
+          "sha256": "4af3b5c9ae4daf2d67b83874a36301c6eaa6bacc61b6ef6b943061db9e3d169b"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Description",
+          "sha256": "d191bb9a7993ace8f0608b60b462fd0f2e960bba6afc4042269feb7e3d7e4253"
+        }
+      ],
+      "tables": [],
+      "declarations": [
+        {
+          "locator": "signature-CS[1]",
+          "sha256": "a9eb828336f716685daaa86bebe1022675b78665718473c8d62848e555edfb84"
+        }
+      ],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "Field-style displayed C# declaration does not establish reflection field/property identity. Default no mask interaction and Inside/Outside visibility meanings preserved.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Typed enum common to C++/node/human UI/AI remains HB choice.",
+      "preservedUncertainties": [
+        "Enum numeric values and invalid values",
+        "Phase/thread/multiple masks",
+        "Unread enum/type body"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-11",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Tilemaps.Tilemap.RefreshTile.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Tilemaps.Tilemap.RefreshTile.html",
+      "sourceHash": "9529d04343b4486a3362177df90edb2bb965ef79735176b34a39d5353ebf95bf",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Tilemaps.Tilemap.RefreshTile.html.body.html",
+      "bodyHash": "9ee33242a08dad5364bb9addff71572c0f687f103e016a06f136c55bd67b2cf7",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Tilemaps.Tilemap.RefreshTile.html.body.txt",
+      "textHash": "82bb6aa0b3bce6abacc4c095e92f40dff0ce096ee669a4823661ed57c1e97c3e",
+      "zipEntry": "Documentation/en/ScriptReference/Tilemaps.Tilemap.RefreshTile.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 6,
+      "technicalHeadingCount": 4,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "Tilemap .RefreshTile",
+          "sha256": "45e0334a04560af8cb8c194a497e5ba9d066bfc2ebde40dc00035e86d77b1eda"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Parameters",
+          "sha256": "c1670d17855f0ff6a489b881a2d8be2783d6ffcc41683b9334fe33025df82dbb"
+        },
+        {
+          "locator": "technical-heading[4]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Description",
+          "sha256": "d191bb9a7993ace8f0608b60b462fd0f2e960bba6afc4042269feb7e3d7e4253"
+        }
+      ],
+      "tables": [
+        {
+          "locator": "table[1]",
+          "rowsIncludingHeader": 2,
+          "cells": 4,
+          "sha256": "679a93ab9d476ca61d623eef0a0401b8edae289fdd83a3db08401b9697d0859a"
+        }
+      ],
+      "declarations": [
+        {
+          "locator": "signature-CS[1]",
+          "sha256": "21d01aa9fdc3b0818b7c8836d688cc9a2be7459ece06b0161c7dc05d131fab1f"
+        }
+      ],
+      "examples": [
+        {
+          "locator": "pre[1]",
+          "sha256": "880ba74bfd7931826afd6507936e8f2ecb12b66f4f9b9afa80a1123b7ec79c8b"
+        }
+      ],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "One Vector3Int XYZ Tilemap member refreshes rendering/animation/other data and components. Full NeighbourTile sample overrides TileBase.RefreshTile with ITilemap callback; it is not a two-argument Tilemap overload. Same z orthogonal asset-reference neighbors, possible duplicate center requests, and spriteA/spriteB GetTileData logic verified.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "XYZ and asset identity provider/invalidation behavior with separate owner/target/pin is an HB candidate.",
+      "preservedUncertainties": [
+        "Empty/out-of-range cells, recursion/failure/thread",
+        "Callback formal contracts",
+        "Storage/repaint/phase/collider sync not implied"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    },
+    {
+      "pageId": "UN2DA009-12",
+      "canonicalUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Tilemaps.TilemapCollider2D.ProcessTilemapChanges.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Tilemaps.TilemapCollider2D.ProcessTilemapChanges.html",
+      "sourceHash": "bdf63c7743ef09efa5e1b3520d0eacc088ad76b2e98da5350934c9c416facbe0",
+      "bodyFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Tilemaps.TilemapCollider2D.ProcessTilemapChanges.html.body.html",
+      "bodyHash": "26b0eb45f2be7ac1dafd370e988083298332866dcd523da34e9b067e9ca1bfd6",
+      "textFile": "native/build/reference-corpus/unity-2d-authoring-batch/ScriptReference_Tilemaps.TilemapCollider2D.ProcessTilemapChanges.html.body.txt",
+      "textHash": "99716ce509714bc2f16a480618e303bd22678f4c65d167d9963b4613a697c6cd",
+      "zipEntry": "Documentation/en/ScriptReference/Tilemaps.TilemapCollider2D.ProcessTilemapChanges.html",
+      "sourceBytesEqualZip": true,
+      "exactBodyAndTextMatch": true,
+      "rawHeadingCount": 5,
+      "technicalHeadingCount": 3,
+      "headings": [
+        {
+          "locator": "technical-heading[1]",
+          "tag": "h1",
+          "anchor": null,
+          "heading": "TilemapCollider2D .ProcessTilemapChanges",
+          "sha256": "ed1dacab997ac627f16a079a94b118ec75a8c7b5ff1c8887b3eb124250a98d12"
+        },
+        {
+          "locator": "technical-heading[2]",
+          "tag": "h2",
+          "anchor": null,
+          "heading": "Declaration",
+          "sha256": "34f5da1565688acf74c241992c639e6917c61d840c67c8ee2abebfb7175dd9a5"
+        },
+        {
+          "locator": "technical-heading[3]",
+          "tag": "h3",
+          "anchor": null,
+          "heading": "Description",
+          "sha256": "d191bb9a7993ace8f0608b60b462fd0f2e960bba6afc4042269feb7e3d7e4253"
+        }
+      ],
+      "tables": [],
+      "declarations": [
+        {
+          "locator": "signature-CS[1]",
+          "sha256": "3777c6177e90e225d5f1f4b22a01beaf85731ab8661c3697823d5b5ff7599148"
+        }
+      ],
+      "examples": [],
+      "images": [],
+      "cssGlyphClasses": [],
+      "otherTechnicalMedia": {
+        "inlineSvg": 0,
+        "video": 0,
+        "iframe": 0,
+        "objectEmbedPictureSourceScript": 0
+      },
+      "date": "2026-10-04",
+      "completionReader": "/root/finish_009_verification",
+      "completionReadScope": "Entire extracted technical body text directly read; source HTML structure/table/declaration/pre/text hashes independently recalculated; associated original IMG and glyph contact sheet actually viewed where present; only owner headers partial; linked dependencies not read.",
+      "wholeTechnicalBodyTextRead": true,
+      "sourceStructureRecalculated": true,
+      "allTableCellsRead": true,
+      "wholeExamplesRead": true,
+      "mediaVisualRead": true,
+      "sourceFactComparison": "One void no-argument member immediately processes pending collider changes; normally LateUpdate. Disabled TilemapCollider2D does not process changes. It does not force enable or simulate physics.",
+      "sourceAndHBSeparated": true,
+      "hbInferenceComparison": "Enabled/dirty-aware explicit flush and HB-specific result details are design choices.",
+      "preservedUncertainties": [
+        "hasTilemapChanges/enabled APIs",
+        "Invocation phase/thread/failure detail",
+        "Composite/broadphase synchronization"
+      ],
+      "sourceBodyAnalysisComparisonPassed": true,
+      "strictLedgerVerified": false,
+      "ledgerPromotion": false
+    }
+  ],
+  "partialOwnerHeaders": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Sprite.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Sprite.html",
+      "sourceHash": "78f96cba7cb2c5d84088af9c2f2483cfc07508e86a819334e24dcaa6bac80914",
+      "headerFile": "native/build/reference-corpus/unity-2d-authoring-batch/owner-header-Sprite.html",
+      "headerHash": "826163a86fbc7374488ff60cab58c4d4e6ef3cae84efdc54fe6f783caf750c02",
+      "headerText": "Sprite class in\r\n          UnityEngine / Inherits from: Object / Implemented in: UnityEngine.CoreModule",
+      "readScope": "partial: owner/namespace/inheritance/module header only; entire type body not read",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "footer": "Is something described here not working as you expect it to? It might be a Known Issue . Please check with the Issue Tracker at issuetracker.unity3d.com . Copyright ©2005-2026 Unity Technologies. All rights reserved. Built from job ID 76410965. Built on: 2026-09-29.",
+      "sourceBytesEqualZip": true,
+      "headerBytesContainedInSource": true,
+      "actuallyReadBy": "/root/finish_009_verification"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteRenderer.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/SpriteRenderer.html",
+      "sourceHash": "77155a0dd9147eff94f0002d16a0f876fdba902508369874c08abcec3c4430c2",
+      "headerFile": "native/build/reference-corpus/unity-2d-authoring-batch/owner-header-SpriteRenderer.html",
+      "headerHash": "772f0a8388fbc3d5194c5beb473506d5b7ffb457d720d3d4057b531e0cac3320",
+      "headerText": "SpriteRenderer class in\r\n          UnityEngine / Inherits from: Renderer / Implemented in: UnityEngine.CoreModule",
+      "readScope": "partial: owner/namespace/inheritance/module header only; entire type body not read",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "footer": "Is something described here not working as you expect it to? It might be a Known Issue . Please check with the Issue Tracker at issuetracker.unity3d.com . Copyright ©2005-2026 Unity Technologies. All rights reserved. Built from job ID 76410965. Built on: 2026-09-29.",
+      "sourceBytesEqualZip": true,
+      "headerBytesContainedInSource": true,
+      "actuallyReadBy": "/root/finish_009_verification"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Tilemaps.Tilemap.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Tilemaps.Tilemap.html",
+      "sourceHash": "a03ee6740e9aff774a51b880ac592054422fee0191eea72d53fdb68e7149ba99",
+      "headerFile": "native/build/reference-corpus/unity-2d-authoring-batch/owner-header-Tilemaps.Tilemap.html",
+      "headerHash": "00a498b5d710961766c940a011df1fd050fc2097b896fd4e6098d01636b09aaf",
+      "headerText": "Tilemap class in\r\n          UnityEngine.Tilemaps / Inherits from: GridLayout / Implemented in: UnityEngine.TilemapModule",
+      "readScope": "partial: owner/namespace/inheritance/module header only; entire type body not read",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "footer": "Is something described here not working as you expect it to? It might be a Known Issue . Please check with the Issue Tracker at issuetracker.unity3d.com . Copyright ©2005-2026 Unity Technologies. All rights reserved. Built from job ID 76410965. Built on: 2026-09-29.",
+      "sourceBytesEqualZip": true,
+      "headerBytesContainedInSource": true,
+      "actuallyReadBy": "/root/finish_009_verification"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Tilemaps.TilemapCollider2D.html",
+      "sourceFile": "native/build/reference-cache/unity-discovery/offline-6000.0/Documentation/en/ScriptReference/Tilemaps.TilemapCollider2D.html",
+      "sourceHash": "c3dea9d6aa080d8e28cfa45ed8716e12d1a9f35abb952bbf0af7ea1c2bf76121",
+      "headerFile": "native/build/reference-corpus/unity-2d-authoring-batch/owner-header-Tilemaps.TilemapCollider2D.html",
+      "headerHash": "1f92e30f722d445cc676635242566bc1dd0682d715bd732d8dbd2ab185fb3fa1",
+      "headerText": "TilemapCollider2D class in\r\n          UnityEngine.Tilemaps / Inherits from: Collider2D / Implemented in: UnityEngine.TilemapModule",
+      "readScope": "partial: owner/namespace/inheritance/module header only; entire type body not read",
+      "versionText": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version"
+      ],
+      "footer": "Is something described here not working as you expect it to? It might be a Known Issue . Please check with the Issue Tracker at issuetracker.unity3d.com . Copyright ©2005-2026 Unity Technologies. All rights reserved. Built from job ID 76410965. Built on: 2026-09-29.",
+      "sourceBytesEqualZip": true,
+      "headerBytesContainedInSource": true,
+      "actuallyReadBy": "/root/finish_009_verification"
+    }
+  ],
+  "fontMedia": {
+    "evidence": "native/build/reference-corpus/unity-2d-authoring-batch/font-media.json",
+    "resourcesAndByteChecks": [
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/glyph-contact-sheet.png",
+        "sha256": "fe700086343f034c222171bcae5e49cf2fdb67a262440117b37a42868dcdf0cc",
+        "zipEntry": null
+      },
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/icons.css",
+        "sha256": "63f53547cf152e569fd5541a9122f1825b1ad57873d7d3baceb044487a0ea36c",
+        "zipEntry": "Documentation/en/StaticFilesManual/css/icons.css",
+        "bytesEqualZip": true
+      },
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/UnityIcons.ttf",
+        "sha256": "f4e41e6243b51bd510a51178e4556723ee164f10ce320402f7e8ccd1370b1e14",
+        "zipEntry": null
+      },
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/UnityIcons.woff",
+        "sha256": "ae3df10b1aa96bfd193e0fd7a61a1328f7a211d1f48038f9aa721bda7db3fd9d",
+        "zipEntry": "Documentation/en/StaticFilesManual/css/UnityIcons.woff",
+        "bytesEqualZip": true
+      },
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/UnityIconsColor.ttf",
+        "sha256": "37de5076f78793871c4756b1b985a5a9c6b6788b9d5eb5d4439d3d60b40f35d6",
+        "zipEntry": null
+      },
+      {
+        "file": "native/build/reference-corpus/unity-2d-authoring-batch/font-media/UnityIconsColor.woff",
+        "sha256": "ddbd6025a6e283067c867ebb1067203a68d2eb5660d996e3d4313a698518d0a4",
+        "zipEntry": "Documentation/en/StaticFilesManual/css/UnityIconsColor.woff",
+        "bytesEqualZip": true
+      },
+      {
+        "font": "UnityIcons",
+        "woffTtfOriginalTableBytesEqual": {
+          "cmap": true,
+          "glyf": true,
+          "hmtx": true,
+          "loca": true,
+          "maxp": true
+        }
+      },
+      {
+        "font": "UnityIconsColor",
+        "woffTtfOriginalTableBytesEqual": {
+          "cmap": true,
+          "glyf": true,
+          "hmtx": true,
+          "loca": true,
+          "maxp": true
+        }
+      }
+    ],
+    "cssGlyphOccurrences": 21,
+    "distinctCssGlyphs": 19,
+    "actuallyViewedBy": "/root/finish_009_verification",
+    "originalCssRelevantRulesActuallyRead": true,
+    "woffTtfTablesCompared": [
+      "cmap",
+      "glyf",
+      "hmtx",
+      "loca",
+      "maxp"
+    ],
+    "visualObservation": "Sprite purple rectangle/points; selection/move/paint/rectangle/dropper/eraser/fill; rotate/flip/layers/eye/target/palette/pen/grid/gizmo shapes confirmed. Colored CSS layers share origin by negative margin. Mono #555 is static inspection neutral color, not CSS glyph color.",
+    "staticInspectionOnly": true,
+    "browserInheritedColorVerified": false,
+    "guiExecuted": false
+  },
+  "repoReadOnlyComparisons": [
+    {
+      "file": "prototype/two-d-assets.js",
+      "sha256": "bfa11085a3df60fca0fce89cad916dd756abe3fc40a0eb5835c534bd47583552",
+      "readScope": "entire text read; sprite/grid slicing/tile tools/collider functions analyzed",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    },
+    {
+      "file": "prototype/two-d-editor.js",
+      "sha256": "ac6d535dfe5c6b8e353311008e1e2c771fe399d0961d56bb0997d48119b16f5e",
+      "readScope": "partial rg lines57,81,117,120-122,144,165,187",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "acd5905b630f31401fde80d5b99f13cdfcb5da9d7a78b8ec1a5218413ce23a3e",
+      "readScope": "partial rg lines14-15 SpriteRenderer/TilemapRenderer; no whole-repo absence proof",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "0899b428583f4aa2bed5281f99c740dc47b254034f8207bf1482916599cc4260",
+      "readScope": "partial: sprite/tilemap/preparePhysics lines41-56; source shown with context, no whole-file semantic claim",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    },
+    {
+      "file": "docs/AI_ENGINE_API.md",
+      "sha256": "a6f41db430ca4b7c9375aafb6d01b71a8f22758063f4b4e9bf00863893f6e916",
+      "readScope": "partial rg line135 document command/revision contract",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    },
+    {
+      "file": "native/include/HBEngine/Game.hpp",
+      "sha256": "cbaa3e02d82bc0450198d62efc0de360a731458416bf0b8849f94da618eb7fda",
+      "readScope": "partial first24 lines metadata/type declarations; no Sprite runtime API proof",
+      "modified": false,
+      "actuallyReadBy": "/root/finish_009_verification",
+      "fullRepositoryAbsenceProof": false
+    }
+  ],
+  "linkProblems": [
+    {
+      "pageId": "UN2DA009-01",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-TextureImporter.html#textureshape",
+      "exactOfflineTargetExists": true,
+      "anchorExistsInExactOfflineTarget": false
+    },
+    {
+      "pageId": "UN2DA009-01",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/tiles-for-tilemaps/scriptable-tiles/scriptable-tiles-landing",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-01",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-TextureImporter.html#platform",
+      "exactOfflineTargetExists": true,
+      "anchorExistsInExactOfflineTarget": false
+    },
+    {
+      "pageId": "UN2DA009-05",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sort-sprites/sprite/sorting-group/use-sorting-groups.html",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-06",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sprite-editor/open-sprite-editor",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-06",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/sprite-editor/open-sprite-editor",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-07",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/tile-palettes/tile-palette-editor-reference.html#tile-palette-clipboard-overlay",
+      "exactOfflineTargetExists": true,
+      "anchorExistsInExactOfflineTarget": false
+    },
+    {
+      "pageId": "UN2DA009-07",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/tile-palettes/create-tile-palette",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-08",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/tilemaps/tiles-for-tilemaps/scriptable-tiles/scriptable-tiles-landing",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-11",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-Tilemap.html",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-11",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/Tilemap-ScriptableTiles-TileBase.html",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-11",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/Tilemap-ScriptableTiles-TileBase.html",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    },
+    {
+      "pageId": "UN2DA009-11",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-Tilemap.html",
+      "exactOfflineTargetExists": false,
+      "anchorExistsInExactOfflineTarget": null
+    }
+  ],
+  "linkProblemScope": "13 occurrences / 9 distinct exact offline URLs or anchors; named anchors accepted. Not fresh HTTP404, official deletion, or completed canonical replacement.",
+  "preservedUncertainties": [
+    "Whole Unity/Unreal document/API/package/plugin denominators and discovery closure remain unresolved",
+    "Package @latest editions and compatibility unread/unpinned; Learn version=6.5 not inherited by 6000.0",
+    "Null/range/default/failure/exception, ownership and resource cleanup, thread/editor-runtime phase",
+    "Undo/dirty/reference storage/reimport and composite/broadphase/physics synchronization",
+    "Owner type/member/inherited API closure and native/IL2CPP ABI not established by four partial headers"
+  ],
+  "result": {
+    "limitedSourceBodyAnalysisComparisonPassed": true,
+    "finalComparisonFailures": [],
+    "strictVerified": false,
+    "ledgerPromotion": false,
+    "wholeCorpusAnalysisComplete": false,
+    "wholeCorpusVerified": false,
+    "wholeCorpusGatePassed": false,
+    "followupContractsResolved": false,
+    "staleIfAnyPinnedSourceBodyAnalysisMediaFontArtifactChanges": true
+  },
+  "prohibitedActionsPerformed": {
+    "engineEdits": false,
+    "guiExecuted": false,
+    "testsRun": false,
+    "networkRequests": false,
+    "sharedStatusManifestLedgerToolsEdits": false,
+    "commits": false,
+    "rawOriginalFullTablesCodeFontOrImagesPubliclyCopied": false
+  },
+  "completionFilesModified": [
+    "docs/research/UNITY_2D_AUTHORING_VERIFICATION_009.md",
+    "docs/research/unity-2d-authoring-verification-009.json"
+  ],
+  "status": "Limited independent comparison passed after explicit predecessor attribution and completion verifier supplemental reading/recalculation. Strict ledger verified/promotions0; whole corpus gate not passed."
+}

@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "batchId": "build-editor-platform-verification-011",
+  "phase": "research_only",
+  "verifier": "root",
+  "analysisAuthor": "/root/build_editor_platform_research",
+  "date": "2026-10-04",
+  "result": "bounded body-to-analysis comparison passed; full linked contracts/media unresolved",
+  "counts": {
+    "technicalBodiesFetched": 12,
+    "fullTextBodiesRead": 12,
+    "wholeBodiesReviewedAnalyzed": 11,
+    "textOnlyPendingMediaBodies": 1,
+    "navigationPagesExcluded": 2,
+    "sourceHeadingsRead": 110,
+    "unheadedTechnicalIntroductionsRead": 1,
+    "tablesRead": 37,
+    "tableRowsIncludingHeadersRead": 172,
+    "tableCellsRead": 449,
+    "wholeExamplesOrSyntaxRead": 4,
+    "displayedApiOverloadsRead": 4,
+    "imagesFetched": 33,
+    "imagePixelsReviewed": 2,
+    "imagePixelsPending": 31,
+    "animatedGifsPending": 2,
+    "videosPending": 1,
+    "independentlyVerified": 0,
+    "ledgerPromotions": 0
+  },
+  "independentComparisonErrors": [],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_VERIFICATION_011.md",
+      "sha256": "8f13295342bd9f8bdfb7d73af66e1486e6d6b0be7f0e8ad56e05230713276965"
+    },
+    {
+      "file": "docs/research/BUILD_EDITOR_PLATFORM_RESEARCH_011.md",
+      "sha256": "447f338e3cc4809f360197e74276254f73331a99d89cdfe0d986f580897b7cd5"
+    },
+    {
+      "file": "docs/research/build-editor-platform-research-011.json",
+      "sha256": "e3285b8f5307bd7f24f4475e0fbcd3d9f7cb41b11434ec50dfd3da1b9d7b2410"
+    }
+  ],
+  "privateEvidence": [
+    {
+      "file": "native/build/reference-corpus/build-editor-platform-batch-011/root-independent-structure-audit.json",
+      "sha256": "11cb1ce4cb4580650b92bec622af4444961dafa6b54342f2dae09b7cf2c5f6a7"
+    }
+  ],
+  "pages": [
+    {
+      "id": "BP011-01",
+      "sourceHash": "6114834eb601acecc8583ec4db11450b43b336b8194764b37745a736f2818c4f",
+      "bodyHash": "f70995f73848325aeb4b51c69d7746a7d3d24330e4a986a1d06bc126198826d2",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 5,
+      "syntheticOsTabHeadings": 0,
+      "tables": 0,
+      "tableRows": 0,
+      "tableCells": 0,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-01.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-01.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-02",
+      "sourceHash": "70c2c4f5d7ea17d32410c9ded3a55aa87d8147ae797554655a294961e59ef119",
+      "bodyHash": "0e6ffe8cc48ecbe85f7148602cb63464e36863f91b873415b4a5adf1e02f09b5",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 14,
+      "syntheticOsTabHeadings": 0,
+      "tables": 3,
+      "tableRows": 9,
+      "tableCells": 18,
+      "pre": 2,
+      "declarations": 4,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-02.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-02.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-03",
+      "sourceHash": "31721f39005155ffb90bb9ea275345da67f25b8af0b4084a0eb325ddbe957306",
+      "bodyHash": "a609933dba8630914bc4919fa77f3e0e1c559f45f2dfd5585073093c6cc1f9c4",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 23,
+      "syntheticOsTabHeadings": 0,
+      "tables": 12,
+      "tableRows": 57,
+      "tableCells": 174,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-03.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-03.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-04",
+      "sourceHash": "c7c9d0c12a5cfd491ba5ce51e29f7bb9b809aa379d409c6c4b2617ac0080c2a5",
+      "bodyHash": "855b7d0d095e44781482c1584648a84da4f8422846ee4c4895349c37bfcea694",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 6,
+      "syntheticOsTabHeadings": 0,
+      "tables": 0,
+      "tableRows": 0,
+      "tableCells": 0,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-04.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-04.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-05",
+      "sourceHash": "b8473e043355c0f795de755e7c5c0f1946c4ec9c8b83f4ef2545c802e9c657d1",
+      "bodyHash": "78f0336f7fca1ca07ba9c1d1e0603dd4055e7ac3a67f732c5220c56250727c67",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 6,
+      "syntheticOsTabHeadings": 0,
+      "tables": 1,
+      "tableRows": 5,
+      "tableCells": 10,
+      "pre": 1,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-05.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-05.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-06",
+      "sourceHash": "4246d5f77540439946c3e93c42a6ebcd0ce49444ddf8f82fe0bdc4f7790406d4",
+      "bodyHash": "ce8dd1623ff656738de25541256a7b312d37cca92f1373d0ee777fda5cc33d37",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 10,
+      "syntheticOsTabHeadings": 0,
+      "tables": 0,
+      "tableRows": 0,
+      "tableCells": 0,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        "Version: Unity 6.0 (6000.0) Supported Legacy",
+        "Version: Unity 6.0 Select a different version",
+        "Version: Unity 6.0"
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-06.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-06.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-07",
+      "sourceHash": "d82066c1d6472309ba2551f0f1405b5679f56456fa04840dc710027cd5e9e8de",
+      "bodyHash": "8ee5a6e800dd901df3517a043490378f32f03cceead86f39fe36bde511c97007",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 26,
+      "syntheticOsTabHeadings": 0,
+      "tables": 4,
+      "tableRows": 17,
+      "tableCells": 46,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 4279130,
+          "type": "unreal_engine",
+          "version": "5.6",
+          "major_version": "5"
+        },
+        {
+          "id": 4279213,
+          "type": "unreal_engine",
+          "version": "5.7",
+          "major_version": "5"
+        },
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-07.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": false,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-08",
+      "sourceHash": "79779ba16bbd7289403fb4e694f7b241da49337bdc46834e49cd2ede13a12b35",
+      "bodyHash": "7c190480de2a306d8d942c521dbb5fa52c121c1563fdd265e6fc6f7983ad29ea",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 7,
+      "syntheticOsTabHeadings": 0,
+      "tables": 2,
+      "tableRows": 14,
+      "tableCells": 28,
+      "pre": 1,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 3581142,
+          "type": "unreal_engine",
+          "version": "5.5",
+          "major_version": "5"
+        },
+        {
+          "id": 4279130,
+          "type": "unreal_engine",
+          "version": "5.6",
+          "major_version": "5"
+        },
+        {
+          "id": 4279213,
+          "type": "unreal_engine",
+          "version": "5.7",
+          "major_version": "5"
+        },
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-08.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-08.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-09",
+      "sourceHash": "68bdf01eb57d50afc1080ae535797db1c2cb2124514e66c25a9e95b09fc8c7fb",
+      "bodyHash": "fd1979ea03a202074c425a355df6115bdc789050fe5ec0877b4d46355709be42",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 7,
+      "syntheticOsTabHeadings": 14,
+      "tables": 13,
+      "tableRows": 53,
+      "tableCells": 106,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-09.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-09.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-10",
+      "sourceHash": "b7be063d50750a0b3a1772f93218a54d90df2e8b22ba65973fcce9f45c22f5d6",
+      "bodyHash": "9daf5f6164839212d5fc5ebf3088d4947c7572ca35a5a78a5b2772a79ce26b71",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 3,
+      "syntheticOsTabHeadings": 0,
+      "tables": 1,
+      "tableRows": 8,
+      "tableCells": 40,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-10.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-10.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-11",
+      "sourceHash": "31ab4f4560f979499cd93d30a81556060f0dfda6878da3494bbb92f538461b4e",
+      "bodyHash": "ddae3c5640703ea0ec971f95ad4e28dadb97cea014039ea9a08698f5e9a4a9e0",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 3,
+      "syntheticOsTabHeadings": 0,
+      "tables": 1,
+      "tableRows": 9,
+      "tableCells": 27,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-11.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-11.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    },
+    {
+      "id": "BP011-12",
+      "sourceHash": "71bc55943ca773bd033b55dd94285f6d2ac8cb6cf2f379952fec8b3c29d378ea",
+      "bodyHash": "20e08b4dcc3a13cb16eaab4530eb3a7582a9d15220b1af32d5d468457d09760e",
+      "allSourceBodyHashesMatch": true,
+      "bodyExtractionReproduced": true,
+      "sourceHeadings": 0,
+      "syntheticOsTabHeadings": 0,
+      "tables": 0,
+      "tableRows": 0,
+      "tableCells": 0,
+      "pre": 0,
+      "declarations": 0,
+      "analysisAuthor": "/root/build_editor_platform_research",
+      "verifier": "root",
+      "readAt": "2026-10-04",
+      "readScope": "Entire source-derived technical text, every table cell and whole pre/declaration, each section finding compared; 2 images actually viewed, Packaging media not read",
+      "versionEvidence": [
+        {
+          "id": 4279213,
+          "type": "unreal_engine",
+          "version": "5.7",
+          "major_version": "5"
+        },
+        {
+          "id": 4279322,
+          "type": "unreal_engine",
+          "version": "5.8",
+          "major_version": "5"
+        }
+      ],
+      "sourceFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-12.source.html",
+      "bodyFile": "native/build/reference-corpus/build-editor-platform-batch-011/BP011-12.body.html",
+      "wholeTextActuallyReadAndCompared": true,
+      "semanticComparisonPass": true,
+      "wholeMediaCompared": true,
+      "strictLedgerPromoted": false
+    }
+  ],
+  "mediaActuallyViewed": [
+    "BP011-01.image-0.png",
+    "BP011-08.image-0.png"
+  ],
+  "mediaPending": {
+    "packagingImages": 31,
+    "animatedGifs": 2,
+    "videos": 1
+  },
+  "fullCorpusVerified": false,
+  "ledgerPromotions": 0,
+  "engineExecuted": false,
+  "guiExecuted": false,
+  "sdkInstalled": false,
+  "packageBuilt": false,
+  "targetDevicePlayed": false,
+  "automaticHashCheckIsSemanticReading": false
+}

@@ -1,6 +1,6 @@
 # 전체 문서·API 연구 상태
 
-2026-10-04 기준, 현재 단계는 **`research_only`**예요. 주인님의 지시에 따라 전체 본문/API 분석을 먼저 진행해요. 엔진 기능 변경과 foreground UI 조작은 하지 않았어요. 전체 구현 시작 조건은 충족하지 않았고, 수집량을 읽기·분석 완료로 계산하지 않아요.
+2026-10-04 기준, 현재 단계는 **`research_only`**예요. 주인님의 지시에 따라 전체 본문/API 분석을 먼저 진행해요. 엔진 기능 변경과 foreground UI 조작은 하지 않았어요. PC·모바일 게임을 내보내 설치·플레이하는 과정과 에디터 자체를 PC·모바일에서 제작 도구로 실행하는 요구도 [추가 누적 요구](EXPORT_EDITOR_REQUIREMENTS.md)에 영속 기록했어요. 두 경로의 분석·완료 조건을 각각 유지해요. 전체 구현 시작 조건은 충족하지 않았고, 수집량을 읽기·분석 완료로 계산하지 않아요.
 
 ## 현재 실제 기록
 
@@ -39,6 +39,26 @@ body snapshot 열은 `fetched/body_reviewed/analyzed/verified` 합계예요. 단
 
 - [Unreal 액터·컴포넌트 분석 002](UNREAL_ACTOR_BODY_002.md), [기계 기록](unreal-actor-body-002.json): 전체 9본문·42구역·10표시 선언을 분석하고 [독립 본문 대조](UNREAL_ACTOR_VERIFICATION_002.md)에서 해당 전체 9본문·84표 행·180셀과 의미를 확인했어요. Actor Lifecycle 텍스트의 그림 2개 미독, class 2개 부분 읽기, 실제 본문 없는 요청 4개를 구분했어요. owner/Outer/attachment·등록·시작·지연 파괴·컴포넌트 권한·thread 등의 미해결 조건이 있어 원장 승격/verified는 0이에요.
 
+## 추가 실제 분석·독립 대조 009–012
+
+이 묶음도 전체 문서/API 완료가 아니며, 읽은 본문과 미디어·부분 구역을 각각 기록해요. 이번 묶음의 엄격한 원장 상태 승격은 0개예요. 분석 파일은 작성 시점의 snapshot을 보존하므로 당시 독립 대기 표시는 후속 검증 파일과 이 현행 상태 기록을 함께 읽어야 해요. 별도 담당자의 **지정된 원문과 분석의 독립 대조 통과**와 전체 corpus/API의 `verified`는 다른 판정이에요. 이전 묶음과 겹치는 원문을 고유 신규 문서로 합산하지 않아요.
+
+- [Unity 2D 제작 분석 009](UNITY_2D_AUTHORING_BODY_009.md), [기계 기록](unity-2d-authoring-body-009.json): 실제 기술 본문 12개·62heading(원시 70)·19표(149행/359셀)·10표시 선언·3전체 예제·5그림과 CSS 아이콘 21회/19종을 읽었어요. owner header 4개는 부분 읽기예요. 스프라이트 import/slice/좌표·정렬·mask·Tile Palette의 실제 조작과 타일 충돌/갱신을 현재 HB 데이터 계약과 대조했어요. [독립 대조](UNITY_2D_AUTHORING_VERIFICATION_009.md)에서 ZIP 내 원문/그림/font·전체 본문과 분석의 일치를 확인했어요. 호환 package edition·연결 API/enum·실패·수명/thread와 정확한 offline 링크/anchor 불일치 13회/9종은 남겨요.
+- [Unity Undo owner 분석 010](UNITY_UNDO_BODY_010.md), [기계 기록](unity-undo-body-010.json): owner의 직접 멤버 33개와 연결 타입/필드까지 **47전체 본문을 읽었으며 신규 40개/기존 7개 재읽기**예요. 전체 154heading·46표시 선언 block·22표(95행/190셀)·14전체 pre 예제예요. callback/flush·생성/계층/부모·scene 이동·revert·importer·Undo 데이터의 순서/대상/제약을 분석했어요. [독립 대조](UNITY_UNDO_VERIFICATION_010.md)에서 inline code 중 변수명 6개 누락을 찾아 최종 24개(호출/리터럴 18+변수명 6)로 바로잡았어요. malformed delegate와 불완전 generic 표시를 정상 선언으로 추정하지 않아요. owner 33링크를 namespace/엔진 전체 API 분모로 확대하지 않아요.
+- [Unity·Unreal 빌드/호스트 분석 011](BUILD_EDITOR_PLATFORM_RESEARCH_011.md), [기계 기록](build-editor-platform-research-011.json): 실제 12기술 텍스트 본문·110heading·37표(172행/449셀)·4전체 예제/명령 block·BuildPlayer 4표시 overload를 읽고 [독립 대조](BUILD_EDITOR_PLATFORM_VERIFICATION_011.md)에서 같은 전체 범위를 다시 확인했어요. 11개는 본문/media 확인, Packaging 1개는 전체 텍스트/미디어 미독이며 그림 31개(그중 GIF 2개)·영상 1개를 남겨요. 실제 그림 확인은 2개예요. compile/cook/stage/package/sign/install/run과 editor host/게임 target/Remote companion을 구분했어요. Unity 온라인 job76758565/2026-10-03과 기존 오프라인 job76410965/2026-09-29를 섞지 않으며 Unreal 5.8의 SDK/OS/Xcode 설명 간 충돌을 보존해요. SDK 설치·실제 패키징/기기 실행을 한 것은 아니에요.
+- [실제 모바일 에디터·플랫폼 분석 012](MOBILE_EDITOR_BODY_012.md), [기계 기록](mobile-editor-body-012.json): Godot 4.5 Android editor/compile, Android NDK ABI와 SAF, Apple 2.5를 읽었어요. **3개 전체 기술 본문·1개 전체 텍스트/그림 미독·1개 정책 subsection 부분 읽기**예요. Kotlin/Java 탭 둘 다, 46전체 pre block·표 1개(5행/15셀)를 읽고 [독립 대조](MOBILE_EDITOR_VERIFICATION_012.md)했어요. compile 그림은 원문 요청과 독립 재요청 모두 HTTP403, Apple badge는 미독이에요. Android7.0/API25 표기 차이는 공식 N metadata(API24)를 추가 부분 확인했으며 virtual-file API 전체는 대기예요. custom module/C++에 관한 첫 표현을 원문의 Advanced Options/custom-template 안내 범위로 고쳐 재대조했어요. native plugin 로드와 기기 내 C++ 컴파일, local editor와 remote stream을 각각 구분해요.
+
+[게임 출력·에디터 추가 요구](EXPORT_EDITOR_REQUIREMENTS.md)는 게임 Windows/macOS/Linux/Android/iOS 출력과 editor PC/mobile, SDK·서명·권한·C++ ABI·터치/IME·GPU/lifecycle·파일 provider·저장·업데이트·CI·사람/AI 공통 명령까지 이어지는 세부 대기열이에요. 보조 플랫폼 자료의 전체 목록/API 분모도 미확정이며 몇 개 guide로 폐쇄하지 않아요. 모바일 편집을 원격 제어만으로 대체하지 않아요. 원문/전체 코드/표/그림은 무시 캐시에만 보존하며 공개 파일은 자체 분석과 hash/locator예요.
+
+## 모바일 복원·실제 배포·저장 API·패키징 UI 후속 013–016
+
+- [Android editor 수명주기 분석 013](ANDROID_EDITOR_LIFECYCLE_BODY_013.md), [기계 기록](android-editor-lifecycle-body-013.json): Activity/process lifecycle·UI state·SavedStateHandle·장기 Worker의 **5전체 기술 본문**, 55기술/resource heading(추천 2개 별도)·24전체 pre·3표(30행/79셀)·PNG 1개를 읽었어요. stop 시점의 시스템 상태 캡처, task 종료의 소실, process kill 때 onDestroy 비보장, quota/Worker/취소 조건을 분리했어요. durable draft와 사용자 저장본, UI state와 native Play/작업 receipt·AI revision의 복구를 HB 설계로 연결했어요. [독립 대조](ANDROID_EDITOR_LIFECYCLE_VERIFICATION_013.md)는 지정 5본문/그림 전체 범위만 확인하며 formal API와 미해결 12문제군은 남겨요.
+- [Android build/deploy 분석 014](ANDROID_BUILD_DEPLOY_BODY_014.md), [기계 기록](android-build-deploy-body-014.json): 명령줄 build·signing·adb·logcat·ABI·GameActivity **6전체 본문(012 대비 신규 5/ABI 재읽기 1)**, 제목 포함 126heading·7표(83행/171셀)·105전체 pre·16그림 회수/고유 14종을 읽었어요. ABI 본문의 012 기술 heading21과 014 제목 포함22는 분모 정의가 달라요. APK/AAB/기기 APK집합, upload/app signing key·update, install/launch/native ready/play/log를 각각 연결했어요. [독립 대조](ANDROID_BUILD_DEPLOY_VERIFICATION_014.md)를 별도로 남겨요. 가이드의 android_main entry 1표시 signature는 formal API reference 전체 분석이 아니며 GameActivity 예제 인수/input handler의 원문 차이와 미해결 9문제군을 보존해요. 독립 대조에서 frozen 서명 본문에 없는 local anchor 1개도 발견해 후속 미해결로 남겨요. HTTP404 판정은 아니에요.
+- [Android 저장 API 분석 015](ANDROID_STORAGE_API_BODY_015.md), [기계 기록](android-storage-api-body-015.json): **4owner 페이지 중 선택한 Java 멤버 18구역 전체/owner class header4부분**이에요. 전체 owner 본문 0, Kotlin 대응 미독이며 20heading·18표시 선언(메서드10/상수8)·14표(30행/46셀)를 읽었어요. URI grant와 provider capability의 타입을 분리하고, persist/release/목록·unlock·file mode·null/실패/cancel·descriptor 소유와 close, VIRTUAL 상수의 API24와 timestamp 문구 차이를 확인했어요. [독립 대조](ANDROID_STORAGE_API_VERIFICATION_015.md)를 별도로 남기며 실제 기기/파일 제공자/SDK 검사로 확대하지 않아요. public 표 fingerprint 직렬화 규칙의 누락을 대조 중 찾아 hashRules에 추가했어요. 현재 PC 저장 코드의 정확한 읽기 범위와 모바일 provider 계약의 차이도 기록했어요.
+- [Unreal Packaging media 분석 016](UNREAL_PACKAGING_MEDIA_BODY_016.md), [기계 기록](unreal-packaging-media-body-016.json): 011의 미독 Packaging 정지 그림 **29회/고유 bytes27종**의 pixels를 실제 읽었어요. 새 텍스트 본문29개로 세지 않아요. 플랫폼·SDK/device·config/architecture·asset picker·시작 map·build/package·진행/실패/cancel/canceled·log/산출물의 시각 흐름을 분석했어요. GIF2개(330/9frame)는 frame metadata만 확인했고 영상1개도 미독이에요. screenshot 자체의 정확한 엔진 판본과 default/실제 조작을 추정하지 않아요. 011의 당시 pin을 유지하며 후속 관찰만 연결해요. [정지 pixels/의미의 독립 대조](UNREAL_PACKAGING_MEDIA_VERIFICATION_016.md)를 별도로 기록해요. 대조 중 INI denylist와 shader 항목의 구분, 두 그림의 동일 SDK 값, 파일 수정일의 날짜 형식/촬영일 추정을 바로잡았어요.
+
+이 후속에서도 guide 호출/CLI 예제·선택 member 구역·전체 owner·실제 기기 시험을 각각 구분해요. 독립 원문 대조가 전체 corpus/API의 폐쇄를 대신하지 않으며 엄격한 원장 승격/verified는 0개예요. 구현 gate는 계속 `research_only`, exit2/ready=false예요. 추가 플랫폼 분석은 원래 Unity·Unreal의 모든 분야/세부 분석에 더하는 일이에요. user 요구의 PC/mobile editor·game 출력과 사람/AI의 동일 결과를 유지하며 대상마다 별도 실제 제작·설치/플레이 검증을 요구해요.
+
 ## API 전체 분석을 위한 구조 확인
 
 `tools/reference-api-inventory.py`는 실제 Unity 6000.0 API HTML **31,707개**를 모두 순회해 **25,778개 선언 후보**를 추출했어요. generic 타입·기본값·중첩 markup을 보존하고 코드 예제/다른 언어/탐색 내용을 선언으로 세지 않아요. **9,767개는 선언 후보가 없는 본문**이며, 그중 `signature-CS` block 자체가 없는 것은 **91개**, block이 있으나 전부 빈 것은 **9,676개**예요. 이전의 ‘9,767개 block 없음’ 표시는 잘못된 구분이라 실제 HTML 전체를 다시 순회해 바로잡았어요. class/enum/멤버 표, 상속과 overload, actual owner/module, 입력·반환·수명·실패·thread 계약까지 별도로 확인해야 해요.
@@ -63,4 +83,4 @@ python -X utf8 tools/check-reference-api-inventory.py
 python -X utf8 tools/reference-api-inventory.py
 ```
 
-원장 검사는 **9개**, API 후보 추출 검사는 **4개**, 총 **13개** 통과했어요. 다른 버전/host·latest 별칭, source/body/analysis hash, 독립 검증, 구역/API/media coverage, source roots/locale 변경, 본문 변경, 빈 ID, 일부 실패한 대량 등록, 참조 Markdown·중첩 JSON 증거 변경, 추가 공식 발견 근거 보존과 빈 선언 슬롯/실제 block 부재를 검사했어요. [독립 감사와 수정 기록](RESEARCH_AUDIT_002.md)을 보존하며 수집 bundle 7개도 재대조했어요. **검사기는 증거 형식을 확인하며, 실제 의미·읽기 여부·목록 완전성은 별도 검증자가 원문과 대조해야 해요.** 엔진 런타임/GUI 검사는 이번 연구 단계에서 실행하지 않았어요.
+이전 연구 도구 검증에서 원장 검사는 **9개**, API 후보 추출 검사는 **4개**, 총 **13개** 통과했어요. 이번 009–016에서는 도구 구현을 바꾸지 않아 해당 13개를 재실행하지 않았어요. 이번에는 새 연구 source/body·analysis·verification artifact hash를 재대조하고 현재 gate를 실제 node process로 실행해 exit 2/ready=false를 확인했어요. 다른 버전/host·latest 별칭, source/body/analysis hash, 독립 검증, 구역/API/media coverage, source roots/locale 변경, 본문 변경, 빈 ID, 일부 실패한 대량 등록, 참조 Markdown·중첩 JSON 증거 변경, 추가 공식 발견 근거 보존과 빈 선언 슬롯/실제 block 부재를 검사했어요. [독립 감사와 수정 기록](RESEARCH_AUDIT_002.md)을 보존하며 수집 bundle 7개도 재대조했어요. **검사기는 증거 형식을 확인하며, 실제 의미·읽기 여부·목록 완전성은 별도 검증자가 원문과 대조해야 해요.** 엔진 런타임/GUI 검사는 이번 연구 단계에서 실행하지 않았어요.
