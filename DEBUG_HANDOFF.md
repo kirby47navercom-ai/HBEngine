@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## UI SVG·배율 후속 — 2026-10-05
+
+- 실제 전달 MIME는 이미 SVG였으나 fileKind 텍스처 목록에 SVG가 빠져 선택할 수 없었어요. 프로젝트 textExtensions에도 빠져 소스 쓰기가 거절됐어요. 둘을 연결하고 styled SVG를 양쪽 서버 CSP로 렌더했어요. 최종 Player hUn4pE/Editor f9MmIh가 실제 표시/저장/종료 근거예요.
+- ui-render-window-boAbFB는 TouchButton의 입력키를 LeftMouseButton 그대로 찾던 fixture 실패예요. 실제 RuntimeInput의 정규화된 leftmousebutton 값을 읽도록 테스트만 수정했어요. 최초 k4pLQ0의 source write 실패도 성공으로 세지 않아요.
+- 초기 ui-editor-window의 selector 문자열에서 따옴표가 소실돼 CDP SyntaxError였어요. 안전한 문자열 selector로 수정했어요. b8WOvr 성공은 disabled 메뉴를 synthetic change하던 한계가 있어 해상도 맞춤/안전 영역을 실제 클릭하고 활성 메뉴를 검사하는 f9MmIh로 보강했어요.
+- assets 회귀의 TypeError는 현행 worker의 변경된 객체만 반환하는 응답에 foreign 행이 없을 수 있다는 계약을 옛 테스트가 놓친 원인이에요. check-host와 같이 원래 세계에 변경 객체를 합쳐 own/foreign 속성과 원본을 검사하며 제품 worker는 바꾸지 않았어요. 수정 뒤 전체 assets 검사를 통과했어요.
+- check-project --server 기본5173 접속은 ECONNREFUSED였어요. 해당 검사를 서버 성공으로 보고하지 않아요. 소유한 별도 Editor/Player 서버에서 SVG MIME/CSP·렌더·종료를 검사했어요. 원본 사용자 창/서버/프로필은 건드리지 않았어요.
+
 - 마스크를 none으로 바꿀 때 이전 uniform의 모드를 유지하던 오류를 실제4ccClL 픽셀 검사로 재현했어요. 모드0으로 끄고 타깃 해제 전에 sampler 참조도 null로 제거해요. 폐기된 렌더 타깃 텍스처를 다음 렌더에서 다시 바인딩하지 않게 해요. GPU 검사에 실제 가림 해제/0 타깃/0 패스/null sampler를 포함해요.
 - 타일은 원래 레이어가 같은 재질 객체를 썼어요. 마스크 범위가 다르면 마지막 레이어 uniform이 다른 레이어도 덮으므로 마스크를 쓰는 레이어만 재질 객체를 분리했어요. 실제 두 겹 타일에서 아래 범위만 표시되는 GPU 검사를 추가했어요. 빈 집합은 별도 전체 화면 타깃 대신 1×1 텍스처를 쓰고 패스/타깃0을 검사해요.
 - lit 점광원 결과는 [255,53,53,255]였어요. 테스트의 순수 빨강 기준(<30)이 PBR 흰 반사광을 잘못 거절한 xtD3qm/0Qya8i는 원자료로 유지해요. 광원/재질을 고치지 않고 실제 빛 반응/색 우세를 판정하는 oracle로 바꿨어요. point-light/재질 타입/픽셀은 성공 보고서에도 있어요.

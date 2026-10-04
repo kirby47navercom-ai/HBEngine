@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: HUD 배율·SVG 실제 Player 검증 후 계속 구현
+
+주인님의 “다 할 때까지 끝내지 말고 계속”을 전체 누적 작업의 지속 지시로 유지해요. active goal은 전체 엔진/연구/사람·AI/2D·2.5D·3D/PC·모바일/가벼움과 검증이에요. SVG만 구현하고 전체 목표를 완료하거나 턴을 끝내지 않아요. 사용자용 설치본/프로필/게임 원본은 그대로 보호해요.
+
+- 다섯 UI 배율·높이/혼합·Canvas 기준 크기/안전 여백, SVG 텍스처 분류·선택/편집, 소수 배율 SVG 보조 이미지·fit/filter·버튼 이미지를 실제 위젯 제작기·런타임에 연결했어요. version1 선택 필드로 하위 호환을 유지해요. SVG 스타일 허용/스크립트·외부 네트워크 차단 CSP, 의존성/rename/패키징, 공용 AI schema/patch도 연결했어요.
+- 실제 release Game.exe `ui-render-window-hUn4pE`: 여섯 CDP 화면/DPR, HP/버튼 모서리/안전 영역 좌표, 물리 클릭/BP/TouchButton 키, 원본/종료 통과. 1.5배 300픽셀 진단 선의 직접 SVG와 평균 차이0, 흰/검정 각150/중간값0이에요. 물리 모니터·모바일 검증과 모든 SVG 품질로 확대하지 않아요. PNG를 직접 확인했어요.
+- 실제 비활성 Editor `ui-editor-window-f9MmIh`: 배율 활성 메뉴·SVG 선택/렌더·AI dryRun/충돌·Undo/Redo·저장/원본/종료 통과. 앞선 b8WOvr의 disabled 메뉴 fixture 한계를 보강했어요. layout/입력/main/UI-audio/assets 회귀 통과. 구형 assets 검사 응답 가정만 변경분 합치기로 수정했어요. 기존 서버5173 접속 거절과 fixture 실패는 DEBUG_HANDOFF에 보존해요.
+- 재현 test:ui-layout/ui-editor-window/ui-render-window, 계약/공식 실제 읽기 경계는 docs/UI_SCALING_SVG.md와 AI_ENGINE_API예요. 전체 연구 pin/원장 승격0과 모든 누적 미구현을 유지해요. 다음은 계층 FSM 등 현재 flat game system의 실행·UI·AI·C++ 연결을 구현하면서 나머지 전체 범위를 이어가요.
+
 ## 최신 후속: 주인님 사용과 개발·검증 분리
 
 주인님의 “작업하면 내가 못 쓰는데 방법이 없나” 요청에 따라 개발 중에도 기존 제작을 이어갈 사용자용 설치본을 준비했어요. 전체 누적 기능 요구와 남은 연구·구현은 유지하며 사용자용 설치를 전체 엔진 완료로 계산하지 않아요.

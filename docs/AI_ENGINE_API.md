@@ -1,5 +1,7 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-05 추가: [UI 배율·안전 영역·SVG](UI_SCALING_SVG.md). schema.ui.scaling/images와 실제 widget 정의를 공유해요. scaleRule/scaleMatch/safeAreaPadding 및 Image·Button·TouchButton의 vectorTexture/imageFit/imageRendering은 revision 보호 document.patch/dryRun·Undo/Redo·저장으로 편집해요. SVG 의존성·폴더 이름 변경·소수 배율 선택도 같은 런타임 규칙이에요.
+
 2026-10-05 추가: [2D 정렬·마스크·등각 타일과 단축키](2D_RENDERING_SHORTCUTS.md). 공용 schema의 render2d/shortcuts와 실제 컴포넌트 정의를 사용해요. `editor.shortcuts.get/set`은 전체 JSON·expectedRevision·dryRun·충돌 거절과 프로젝트 디스크 저장을 제공해요. 정렬 레이어의 안정적 ID, 단축키 문맥/두 키/프로필, C++ 선언에서 생성한 스프라이트 서비스 10개는 사람 UI와 동일한 검증을 사용해요. 단축키 프로필은 장면 Undo와 별개의 설정이에요.
 
 AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 에셋, 장면, 컴포넌트, 머테리얼, 애니메이션, 실행 상태가 버전 있는 데이터로 표현되고, UI와 자동화가 같은 검증·실행 취소·저장 경로를 사용한다. 화면 좌표와 한국어 표시 이름을 데이터 식별자로 쓰지 않는다.

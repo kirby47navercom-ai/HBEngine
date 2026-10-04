@@ -50,7 +50,7 @@ export function validEnvironment(env) {
 }
 export function fileKind(name) {
   const extension = name.split('.').pop().toLowerCase();
-  if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tga', 'hdr', 'exr'].includes(extension)) return 'texture';
+  if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tga', 'hdr', 'exr', 'svg'].includes(extension)) return 'texture';
   if (['glb', 'gltf', 'fbx', 'obj', 'blend', 'dae'].includes(extension)) return 'model';
   if (['avi', 'mp4', 'mov', 'webm', 'wav', 'mp3', 'ogg', 'flac'].includes(extension)) return 'media';
   return 'unsupported';
