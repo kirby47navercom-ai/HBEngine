@@ -17,6 +17,7 @@ import {RuntimeProfiler,ProfilerPanel} from './profiler.js';
 import {ReferenceViewer} from './reference-viewer.js';
 import {WidgetEditor} from './ui-editor.js';
 import {addWidget,removeWidget,duplicateWidget,reparentWidget,addMobileControls} from './ui-assets.js';
+import {addState,reparentState,removeState} from './gameplay-assets.js';
 import {AudioMixerEditor} from './audio-editor.js';
 import {icon,assetIcon} from './icons.js';
 import * as THREE from 'three';
@@ -1269,6 +1270,9 @@ const disconnectAutomation=connectAutomation({request:editorRequest,state:automa
   'widget.reparent':params=>automationAuthoringEdit(params,'widget',data=>{reparentWidget(data,params.node,params.parent);return {node:params.node,parent:params.parent};}),
   'widget.duplicate':params=>automationAuthoringEdit(params,'widget',data=>({node:duplicateWidget(data,params.node,{parent:params.parent,offset:params.offset})})),
   'widget.remove':params=>automationAuthoringEdit(params,'widget',data=>({removed:removeWidget(data,params.node)})),
+  'state.add':params=>automationAuthoringEdit(params,'statemachine',data=>({state:addState(data,{parent:params.parent,name:params.name,position:params.position,submachine:params.submachine})})),
+  'state.reparent':params=>automationAuthoringEdit(params,'statemachine',data=>{reparentState(data,params.state,params.parent);return {state:params.state};}),
+  'state.remove':params=>automationAuthoringEdit(params,'statemachine',data=>({removed:removeState(data,params.state)})),
   'document.open':async({path})=>{automationEditable(true);if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.patch':async params=>{const {doc}=await automationDocument(params,true),next=patchAsset(doc.kind,doc.data,params.operations);if(params.dryRun)return {valid:true,revision:await documentRevision(next),data:next};activateDocument(doc.path);const previous=clone(doc.data),previousHistory=[...history],previousFuture=[...future],previousDirty=doc.dirty;remember();try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}log('AI 명령으로 에셋 수정: '+doc.path);return {path:doc.path,revision:await documentRevision(doc.data),dirty:true};},

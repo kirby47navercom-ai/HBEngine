@@ -186,6 +186,9 @@ inline Actor* Blackboard::GetObject(Actor* target,const std::string& key){return
 inline void Blackboard::Clear(Actor* target,const std::string& key){engineCommand("blackboardClear",{{"target",bridgeId(target)},{"key",key}});}
 inline void States::Start(Actor* target,const std::string& asset){engineCommand("startStateMachine",{{"target",bridgeId(target)},{"asset",asset}});}
 inline std::string States::GetState(Actor* target){return gameplayField(target,"state").get<std::string>();}
+inline bool States::IsInState(Actor* target,const std::string& name){auto& state=gameplayField(target,"stateMachine");if(!state.is_object()||!state.value("active",Json::array()).is_array())return false;for(const auto& s:state["active"])if(s.value("id",std::string{})==name||s.value("name",std::string{})==name)return true;return false;}
+inline std::vector<std::string> States::GetPath(Actor* target){std::vector<std::string> result;auto& state=gameplayField(target,"stateMachine");if(state.is_object()&&state.contains("active"))for(const auto& s:state["active"])result.push_back(s.at("name").get<std::string>());return result;}
+inline float States::GetElapsed(Actor* target){auto& state=gameplayField(target,"stateMachine");return state.is_object()?state.value("elapsed",0.0f):0.0f;}
 inline void States::SendEvent(Actor* target,const std::string& event){engineCommand("stateEvent",{{"target",bridgeId(target)},{"event",event}});}
 inline void States::Jump(Actor* target,const std::string& state){engineCommand("stateJump",{{"target",bridgeId(target)},{"state",state}});}
 inline void States::Stop(Actor* target){engineCommand("stateStop",{{"target",bridgeId(target)}});}

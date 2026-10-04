@@ -182,6 +182,9 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateJump", KoreanName="상태 변경", Category="상태 머신") static void Jump(Actor* target,const std::string& state);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateStop", KoreanName="상태 머신 정지", Category="상태 머신") static void Stop(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetFloat", KoreanName="상태 파라미터 실수 지정", Category="상태 머신") static void SetFloat(Actor* target,const std::string& key,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="stateIsActive", KoreanName="계층 상태 활성 확인", Category="상태 머신") static bool IsInState(Actor* target,const std::string& state);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="stateGetPath", KoreanName="활성 상태 경로", Category="상태 머신") static std::vector<std::string> GetPath(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="stateElapsed", KoreanName="상태 경과 시간", Category="상태 머신") static float GetElapsed(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetBool", KoreanName="상태 파라미터 불리언 지정", Category="상태 머신") static void SetBool(Actor* target,const std::string& key,bool value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetString", KoreanName="상태 파라미터 문자열 지정", Category="상태 머신") static void SetString(Actor* target,const std::string& key,const std::string& value);
 };

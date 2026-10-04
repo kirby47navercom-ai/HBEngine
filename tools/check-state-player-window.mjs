@@ -1,0 +1,43 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import net from 'node:net';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {deflateSync} from 'node:zlib';
+import {createProject} from './project-manifest.mjs';
+import {buildGame,readBuildProfiles} from './build-game.mjs';
+import {createAsset} from '../prototype/asset-documents.js';
+import {addState} from '../prototype/gameplay-assets.js';
+import {makeSceneComponent} from '../prototype/scene-components.js';
+import {parseNativeHeader} from '../prototype/native-model.js';
+import {makeNode} from '../prototype/blueprint-model.js';
+const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/state-player-window-')),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function until(fn,label){const end=Date.now()+40000;while(Date.now()<end){const result=await fn();if(result)return result;await sleep(50);}throw Error(label+' 시간 초과');}
+const project=await createProject('계층 상태 머신 배포 검증',work,'2d'),asset=createAsset('statemachine','FSM_Player');
+const group=addState(asset,{name:'Locomotion',submachine:true,position:[340,150]}),idle=asset.states.find(s=>s.id===group).initialChild,run=addState(asset,{parent:group,name:'Run'});asset.initial=group;asset.transitions=[{id:'advance',from:idle,to:run,event:'Advance',hasExitTime:false,exitTime:1,conditions:[]}];
+const assetPath='Assets/FSM_Player.hbstatemachine.json';await project.project.write(assetPath,JSON.stringify(asset));
+const header='#pragma once\n#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable)\nclass StateProbe : public hb::Actor {public: HB_PROPERTY(BlueprintReadWrite) bool checked=false; HB_FUNCTION(BlueprintCallable) void Advance(); HB_FUNCTION(BlueprintCallable) void Reset();};';
+const source='void StateProbe::Advance(){checked=hb::States::IsInState(this,"Locomotion") && hb::States::GetPath(this).size()==2 && hb::States::GetElapsed(this)>=0;hb::States::SendEvent(this,"Advance");} void StateProbe::Reset(){hb::States::Jump(this,"Locomotion");}';
+const bp=createAsset('blueprint','BP_Player');bp.native={...parseNativeHeader(header),header,source,headerPath:'Source/StateProbe.h',sourcePath:'Source/StateProbe.cpp'};bp.settings.parentClass='StateProbe';bp.construction={nodes:[makeNode('construction')],edges:[],comments:[]};
+const event=makeNode('input'),advance=makeNode('nativeCall'),resetEvent=makeNode('input'),reset=makeNode('nativeCall');event.options={key:'E'};advance.nativeId='StateProbe.Advance';resetEvent.options={key:'R'};reset.nativeId='StateProbe.Reset';bp.nodes=[event,advance,resetEvent,reset];bp.edges=[{from:{node:event.id,pin:'then'},to:{node:advance.id,pin:'exec'}},{from:{node:resetEvent.id,pin:'then'},to:{node:reset.id,pin:'exec'}}];
+await project.project.write('Source/StateProbe.h',header);await project.project.write('Source/StateProbe.cpp',source);await project.project.write(project.manifest.startupBlueprint,JSON.stringify(bp));
+const scene=JSON.parse(await fs.readFile(path.join(project.root,project.manifest.startupScene),'utf8'));scene.objects=[...scene.objects.filter(o=>o.kind==='camera'),{id:'Owner',name:'Owner',kind:'empty',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],blueprintAsset:project.manifest.startupBlueprint,components:[makeSceneComponent('Transform'),makeSceneComponent('StateMachine',{asset:assetPath,autoStart:true})]}];await project.project.write(project.manifest.startupScene,JSON.stringify(scene));
+const originals=await Promise.all([assetPath,project.manifest.startupScene,project.manifest.startupBlueprint,'Source/StateProbe.h','Source/StateProbe.cpp'].map(async name=>[name,await fs.readFile(path.join(project.root,name))]));
+const profile=(await readBuildProfiles(project)).profiles[0];profile.configuration='release';const built=await buildGame(project,profile);assert.ok(built.totalFiles>0);
+const reservation=net.createServer();await new Promise(r=>reservation.listen(0,'127.0.0.1',r));const debugPort=reservation.address().port;await new Promise(r=>reservation.close(r));
+const env={...process.env,HB_USER_DATA_DIR:path.join(work,'UserData'),HB_PLAYER_ACCEPTANCE:'1',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+debugPort+' --disable-renderer-backgrounding --disable-background-timer-throttling --disable-backgrounding-occluded-windows'};for(const key of ['PORT','HB_PROJECT_DIR','HB_PROJECT_FILE'])delete env[key];
+const proof=path.join(work,'shell.json'),child=spawn(built.executable,['--smoke-test',proof],{cwd:work,env,windowsHide:true,stdio:'pipe'});let ended,output='';child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);const exit=new Promise(r=>child.on('exit',(code,signal)=>{ended={code,signal};r();}));
+let socket,seq=0;const pending=new Map(),errors=[],evidence=[];
+try{
+  const target=await until(async()=>{if(ended)throw Error('Player 종료 '+JSON.stringify(ended)+output);try{return (await(await fetch('http://127.0.0.1:'+debugPort+'/json/list')).json()).find(t=>t.type==='page'&&t.url.startsWith('http://127.0.0.1:'));}catch{}},'격리 Player 디버거');
+  socket=new WebSocket(target.webSocketDebuggerUrl);await new Promise((r,j)=>{socket.onopen=r;socket.onerror=j;});socket.onmessage=({data})=>{const m=JSON.parse(data);if(m.id){const p=pending.get(m.id);if(p){pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result);}}else if(m.method==='Runtime.exceptionThrown')errors.push(m);};
+  const cdp=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq,timer=setTimeout(()=>{pending.delete(id);reject(Error('CDP '+method));},30000);pending.set(id,{resolve,reject,timer});socket.send(JSON.stringify({id,method,params}));});
+  const evaluate=async expression=>{const r=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true,userGesture:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);return r.result.value;};
+  await cdp('Runtime.enable');await until(()=>evaluate('window.hbPlayerDebug?.ready()'),'배포 Player 준비');
+  const state=()=>evaluate('window.hbPlayerDebug.inspect().objects.find(o=>o.id==="Owner")');let first=await state();assert.deepEqual(first.gameplayDebug.stateMachine.active.map(s=>s.name),['Locomotion','Locomotion_Idle']);
+  const key=async value=>{await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:value,code:'Key'+value,windowsVirtualKeyCode:value.charCodeAt(0)});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:value,code:'Key'+value,windowsVirtualKeyCode:value.charCodeAt(0)});};
+  await key('E');const advanced=await until(async()=>{const s=await state();return s.gameplayDebug.state==='Run'?s:null;},'실제 키→BP→C++→FSM');assert.equal(advanced.nativeProperties.checked,true);assert.deepEqual(advanced.gameplayDebug.stateMachine.active.map(s=>s.name),['Locomotion','Run']);assert.ok(advanced.gameplayDebug.stateMachine.active[0].time>=first.gameplayDebug.stateMachine.active[0].time);
+  await key('R');const reset=await until(async()=>{const s=await state();return s.gameplayDebug.state==='Locomotion_Idle'?s:null;},'C++ 부모 상태 Jump');assert.ok(reset.gameplayDebug.stateMachine.active[0].time<advanced.gameplayDebug.stateMachine.active[0].time);
+  assert.equal(errors.length,0);for(const [name,bytes] of originals)assert.deepEqual(await fs.readFile(path.join(project.root,name)),bytes);
+  await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({ok:true,executable:built.executable,first,advanced,reset,errors,originalPreserved:true},null,2));await evaluate("window.chrome.webview.postMessage('hbengine.ready.player')");await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);const shell=JSON.parse(await fs.readFile(proof,'utf8'));await assert.rejects(fetch('http://127.0.0.1:'+shell.port+'/api/session',{signal:AbortSignal.timeout(1000)}));console.log('실제 배포 EXE: 계층 FSM·키/BP/C++ 조회/이벤트·부모 Jump·원본·종료 검사 통과:',work);
+}catch(error){console.error('상태 실행 증거:',work);throw error;}finally{socket?.close();for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('검사 종료'));}if(!ended)child.kill();await Promise.race([exit,sleep(2000)]);}

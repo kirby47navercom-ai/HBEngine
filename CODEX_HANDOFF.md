@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 계층 FSM 실제 Editor·release Player 검증 후 계속
+
+전체 누적 요구를 유지하고 다음 구현을 이어가요. [계층 FSM 계약](docs/HIERARCHICAL_FSM.md)에 부모/기본 자식/조건·진입/종료·전이 우선순위·재진입·최신 Start·사람/AI·BP/C++와 실제 근거를 기록했어요. 현재 공식 연구 전체 gate와 잔여 구현은 완료로 승격하지 않아요.
+
+- 실제 최종 Editor `native/build/state-editor-window-w2eNXC`: 더블클릭/경로/하위 편집·AI dryRun/순환 거절/Undo/Redo/저장·실행 중 그래프 표시/부모/말단 강조·키 BP→FSM·Stop→Play·장면 원본·정상 종료 통과예요. 앞선 JVE8LS는 숨겨진 그래프의 DOM 검사가 포함돼 0SLZmg부터 실제 도킹 탭을 열어 표시를 보강했어요.
+- 실제 최종 release Player `native/build/state-player-window-WeiLVw`: 키→BP→컴파일된 사용자 C++→FSM 이벤트/부모 Jump와 C++ 활성 부모/경로/시간 조회, 공개 checked 속성·원본 보존·정상 종료/서버 폐기 통과예요. fewNtj는 이전 첫 실행 근거예요.
+- `check-state-hierarchy`, gameplay-workflow, engine-integration, main(517개 노드), API 생성 대조·diff 검사를 통과했어요. 사용자 설치본·프로필·창·게임 원본을 수정하지 않았어요. 개발 repo에서 만든 별도 EXE 검사본이에요.
+- 다음은 행동트리의 중단/태스크 수명·서비스·경량 평가를 공식 본문에 맞춰 구현할 작업이에요. Epic Behavior Tree overview 전체 기술 본문, Node Reference Decorators/Tasks/Services를 새로 읽고 있어요. version=5.6 추측 URL 두 개는 도구 접근 실패라 읽기로 세지 않고 Overview의 실제 링크에서 5.8 본문을 읽어요. 이미지·클래스 API 전체는 분석 완료로 세지 않아요.
+
 ## 최신 후속: HUD 배율·SVG 실제 Player 검증 후 계속 구현
 
 주인님의 “다 할 때까지 끝내지 말고 계속”을 전체 누적 작업의 지속 지시로 유지해요. active goal은 전체 엔진/연구/사람·AI/2D·2.5D·3D/PC·모바일/가벼움과 검증이에요. SVG만 구현하고 전체 목표를 완료하거나 턴을 끝내지 않아요. 사용자용 설치본/프로필/게임 원본은 그대로 보호해요.

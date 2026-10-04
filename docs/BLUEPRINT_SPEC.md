@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: `hb::States::IsInState/GetPath/GetElapsed`의 BP 노드 세 개와 계층 FSM을 연결했어요. 카탈로그는 517개예요. 기존 평면 FSM 파일과 GetState는 유지하며 C++ 변경 명령은 함수 반환 후 처리해요. [FSM 제작·실행·실제 창 검증](HIERARCHICAL_FSM.md)에 세부 계약을 기록해요.
+
 2026-10-05 추가: `hb::Sprites`의 색상/크기/정렬/마스크/조명 설정과 읽기 10개를 공용 선언에서 생성했어요. 사용자 C++ 함수 안의 변경 후 읽기와 BP의 같은 서비스 검증을 확인했어요. 전체 카탈로그는 514개이며, 등각 Tilemaps 좌표/즉시 충돌 질의도 공용 격자 기준을 사용해요. 세부 동작·검증 범위는 [2D·단축키 계약](2D_RENDERING_SHORTCUTS.md)에 있어요. 노드 수를 전체 누적 엔진 완성으로 해석하지 않아요.
 
 조사 갱신: 2026-10-03. 전체 공식 근거와 엔진 범위는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 분야별 조사 상태와 코드 대조는 [조사 범위](REFERENCE_COVERAGE.md), 조작 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 노드별 핀·C++ 대응은 [노드 카탈로그](NODE_CATALOG.md)에 있다.

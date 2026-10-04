@@ -2,6 +2,10 @@
 
 ## UI SVG·배율 후속 — 2026-10-05
 
+계층 FSM의 JVfjVp/PAXEDY 더블클릭 실패는 stable ID 연속 포인터 판정으로 수정했고 최종 w2eNXC 실제 창에서 통과했어요. 작은 이동을 Undo로 만들지 않고, 중간/우클릭은 헤더에서도 이동하며 pointercancel은 두 번째 클릭으로 세지 않아요. nKNFO8의 상태 서비스 실패는 `target:'self'`를 문자열 그대로 lookup하던 공용 서비스가 원인이에요. 바인딩 소유자로 해석하고 null/누락/self 회귀와 실제 키 BP→FSM을 검사했어요. JVE8LS 성공의 숨겨진 실행 그래프 한계는 탭을 열어 표시/스크린샷까지 확인하는 0SLZmg/w2eNXC로 보강했어요. 최종 release WeiLVw는 실제 사용자 C++ 조회·이벤트/Jump도 통과했어요. 실패 원자료는 삭제하지 않아요.
+
+계층 FSM 후속의 실제 JVfjVp/PAXEDY에서는 더블클릭 하위 진입이 실패했어요. PAXEDY/pointer.json에 HEADER pointerdown 두 번과 캡처한 graph DIV의 pointerup 두 번만 있고 click/dblclick이 없는 것을 확인했어요. graph pointer capture·pointerup의 DOM 교체 때문에 native dblclick을 받지 못해요. 같은 안정적 state ID·500ms·5픽셀 이내의 연속 좌클릭을 직접 처리하고 drag/cancel·scope 변경과 구분하도록 수정 중이에요. 아직 이 수정의 실제 성공을 해당 실패의 성공으로 세지 않아요. 새 window fixture의 첫 syntax 실패와 기본5181 editor-api 접속 거절도 별도이며 기존 창을 고치거나 연결하지 않았어요.
+
 - 실제 전달 MIME는 이미 SVG였으나 fileKind 텍스처 목록에 SVG가 빠져 선택할 수 없었어요. 프로젝트 textExtensions에도 빠져 소스 쓰기가 거절됐어요. 둘을 연결하고 styled SVG를 양쪽 서버 CSP로 렌더했어요. 최종 Player hUn4pE/Editor f9MmIh가 실제 표시/저장/종료 근거예요.
 - ui-render-window-boAbFB는 TouchButton의 입력키를 LeftMouseButton 그대로 찾던 fixture 실패예요. 실제 RuntimeInput의 정규화된 leftmousebutton 값을 읽도록 테스트만 수정했어요. 최초 k4pLQ0의 source write 실패도 성공으로 세지 않아요.
 - 초기 ui-editor-window의 selector 문자열에서 따옴표가 소실돼 CDP SyntaxError였어요. 안전한 문자열 selector로 수정했어요. b8WOvr 성공은 disabled 메뉴를 synthetic change하던 한계가 있어 해상도 맞춤/안전 영역을 실제 클릭하고 활성 메뉴를 검사하는 f9MmIh로 보강했어요.
