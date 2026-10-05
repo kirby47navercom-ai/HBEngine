@@ -75,4 +75,23 @@ const count=(events,value)=>events.filter(event=>event===value).length;
   assert.equal(count(f.events,'EndPlay:Stopped'),1);assert.equal(count(f.events,'EndPlay:Failed'),0);assert.deepEqual(f.pending,['EndPlay-save']);
   await f.close();assert.deepEqual(f.saved,['EndPlay-save']);assert.equal(count(f.events,'hbengine.close'),1);assert.equal(f.events.at(-2),'flush-done:3');
 }
-console.log('Player 실제 함수 원문·메모리 의존 대역 검사 통과: 실패 정리 대기·중복 종료·EndPlay 저장/flush 순서·저장 실패 재시도');
+// Capability and request failures belong to the pause menu, not fatal game cleanup.
+{
+  const fullSource=line("$('#fullscreen').hidden="),elements=new Map(),$=key=>{if(!elements.has(key))elements.set(key,{});return elements.get(key);};
+  let requests=0,exits=0,reject=false;const document={fullscreenEnabled:true,documentElement:{requestFullscreen:async()=>{requests++;if(reject)throw Error('platform rejection');}},exitFullscreen:async()=>{exits++;}};
+  const setup=new Function('$','document',fullSource);setup($,document);assert.equal($('#fullscreen').hidden,false);await $('#fullscreen').onclick();assert.equal(requests,1);
+  reject=true;await $('#fullscreen').onclick();assert.equal($('#pause-status').hidden,false);assert.match($('#pause-status').textContent,/전환/);
+  reject=false;document.fullscreenElement={};await $('#fullscreen').onclick();assert.equal(exits,1);assert.equal($('#pause-status').hidden,true);
+  document.fullscreenEnabled=false;setup($,document);await $('#fullscreen').onclick();assert.equal($('#fullscreen').hidden,true);assert.equal(requests,2);
+  document.fullscreenEnabled=true;delete document.documentElement.requestFullscreen;setup($,document);assert.equal($('#fullscreen').hidden,true);
+}
+// Run the current mobile lifecycle source without waiting for a physical app switch.
+{
+  const events=[],window={},menu={open:false};let now=10;
+  const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
+  const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;});
+  api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:false,last:10,queued:0});assert.deepEqual(events,['release','save','audio:true']);
+  api.suspend();now=500000;api.activate(true);api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);assert.equal(api.state().last,500000);assert.equal(api.state().queued,0);
+  menu.open=true;api.activate(true);assert.equal(events.at(-1),'audio:true');api.suspend();api.close();api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);
+}
+console.log('Player 실제 함수 원문 검사 통과: 실패/저장/종료·전체 화면 기능 감지/거절·모바일 입력/저장/오디오/복귀 스케줄');

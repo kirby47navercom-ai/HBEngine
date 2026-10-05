@@ -42,3 +42,7 @@ Android SDK는 사용자 이용약관 동의를 기다리고 있으며 설치·A
 [원격 실제 실행 37311864792](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37311864792): Xcode 기기·시뮬레이터 대상 컴파일, iPhone 17 Pro 시뮬레이터 설치·실행을 통과했어요. 첫 10프레임/15 draw call, C++ 두 모듈 Count 1/10·배치 위치, 실제 Rapier 2D 동기 질의, 패키지 SVG의 전체·부분·접미 범위 읽기와 외부 파일 거절을 확인했어요. `ios-simulator.png`에서 C++ Begin Play의 한글 HUD 변경, SVG UI, 스프라이트, 조이스틱·공격 버튼을 직접 확인했어요. 실제 휴대폰·배포 서명·음향 청취의 증거로 계산하지 않아요.
 
 공용 실행 의존성은 실제 literal import와 Player의 Three import map을 따라 수집해요. 사용하지 않는 예제·빌드·소스맵 전체를 복사하지 않으며 2D/3D Rapier, 모델 로더, Three 핵심과 라이선스는 유지해요. 같은 모바일 검사 프로젝트는 1302파일/59,130,284bytes에서 92파일/11,381,133bytes로 줄었어요 (`mobile-player-uAZEDc`). 이는 콘텐츠 용량 측정이며 네이티브 바이너리·설치 용량·실행 FPS 측정과 달라요. Windows 첫 축소 검사 jb0mg3에서는 Three exports 메타데이터가 없어 Node 서버가 종료됐어요. package.json을 포함해 dJEqQD의 실제 배포 Player·C++·2D 표면·조명 GPU 검사와 원본 보존·예외0·종료/서버 정리를 통과했어요. 축소 패키지와 앱 백그라운드/복귀는 원격 iOS에서 후속 검증해요.
+
+`ui-render-window-0ndfVk`: 축소 패키지의 실제 Windows Player에서 1280×720·1920×1080·1600×900·2560×1080·1080×1920·소수 DPI 여섯 조건을 통과했어요. 높이 배율·모서리/안전 영역·클릭→블루프린트·터치 버튼 입력을 확인했어요. 1.5배 SVG는 실제 화면 픽셀을 직접 크기로 표시한 SVG와 비교했어요. 사용자 원본과 설치본은 보존했어요.
+
+전체 화면은 실행 환경의 실제 지원 여부를 검사해요. 지원하지 않는 버튼을 숨기고, 요청 거절은 메뉴 안에서 처리해 게임 실패 정리로 보내지 않아요. [WebKit 16.4 공식 본문](https://webkit.org/blog/13966/webkit-features-in-safari-16-4/)의 229–244행에서 전체 화면 지원 플랫폼·화면 방향·사용자 활성화 설명을 다시 읽었어요. `check-player-lifecycle.mjs`는 실제 Player 함수 원문으로 전체 화면 지원/미지원/거절·모바일 입력 초기화·저장·오디오 정지·복귀 중복 프레임 방지·시간 누적 초기화를 검사해요. 실제 앱 전환은 별도의 시뮬레이터 검사예요.
