@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+P0 최신 검증: 07f8959/37352568086에서 ModuleDirector*→Json 초기화 컴파일 실패(이 실패를 성공으로 세지 않음). a1cc135 공용Actor* ADL→bridgeId 보완 후37352925562의 실제CPP/portableAOT/transport 단계와 공용모바일 출력 단계 성공, iOS 실제검증 진행중. 새 후속 변경은 own nativeProperties 중복descriptor전송 제외(기존worldpatch재사용), foreign clock scale/paused 전달·회귀, Windows AOT fixture PATH 보완. JS module/batch/mobilebridge/api검사 통과, 실제후속CPP 재검증 전. installed/originalgame변경없음.
+
 2026-10-06 P0 후속: 6235881 원격37350067432 전체 성공(다중 클래스 실제 C++/50batch/실패checkpoint/reset/typedtransport, AOT2module, 두 Xcode SDK/SE3·오디오 복귀). 새 후보는 Native.hpp의 hb::Native::GetFloat/SetFloat/Call을 같은worker는 직접, 다른worker는 검증된 동기query로 연결; portable Modules.hpp는 네이티브스레드 내 재귀dispatch로 모바일 단일worker deadlock 방지. typed bindings/foreign receipts/객체·이벤트·operation 소유권반영/순환·깊이8·전체128queries 거절. 함수 인자 target이receiver와충돌할 때 HB_invoke의 공용 targetId 문자열변환 오류도수정. JS query/protocol/batch/mobilebridge/api:check 통과; 새 후보 실제CPP/AOT 검증 전. Auric 변경엔진9/실제 성능/전체이벤트batch 아직진행. 원본문서기록/설치업데이트 순서 유지.
 
 2026-10-06 Auric P0-1+2: 격리 auric-p0-fsoOGQ/기존 설치본 d4d의 check_demo.mjs 원문 9개 통과(고정 224파일 SHA/자체 TEMP). 변경 엔진의 공용 준비는 같은 header/source worker 공유, nativeBatch1 terminal Tick 50→1 RPC·이벤트/operation/clock 경계·실패 성공분 checkpoint/재동기화·다음프레임 patch. JS 검사와 check-runtime의 실제 DoorController C++→BP 통과. host worker TU -O2/user 디버그 최적화 분리, Android/iOS Worker.cpp도 분리 최적화. 다중 클래스 실제 C++와 transport 회귀는 원격 macOS 검증으로 진행(Premiere CPU1390%). 다른 빌드 Native API/모든 이벤트 묶음/Auric 변경엔진9/성능 기준은 미완료. Auric 요청 문서 진행 기록에 기존 기준선+잔여 기준을 기록. 설치본 미갱신.

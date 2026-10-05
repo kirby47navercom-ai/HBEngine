@@ -16,7 +16,7 @@ inline Json bridgeNative(const Json& args){
             if(index==bridgeStateIndices.end())throw std::runtime_error("unknown native module object");
             if(state.contains("position")){bridgeActor(id)->transform=state.get<Transform>();auto copy=state;copy.erase("nativeProperties");bridgeWorld.at(index->second).update(copy);}
         }
-    };apply(receipt.at("result"));bridgeForeign.push_back(receipt);return receipt.at("result").at("outputs");
+    };apply(receipt.at("result"));const auto& clock=receipt.at("result").at("clock");Clock::SetTimeScale(clock.at("scale").get<float>());Clock::SetPaused(clock.at("paused").get<bool>());bridgeForeign.push_back(receipt);return receipt.at("result").at("outputs");
 }
 namespace Native {
 inline float GetFloat(Actor* actor,const std::string& name){return bridgeNative({{"target",bridgeId(actor)},{"member",name},{"operation","getFloat"}}).at("value").get<float>();}
