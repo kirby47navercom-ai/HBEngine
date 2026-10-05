@@ -28,6 +28,7 @@ export async function mobileSources(natives,out){
 
 export async function buildMobile(record,profile,prepared,{signal,onProgress=()=>{},dryRun=false}={}){
   const {content,natives,report}=prepared,target=profileTarget(profile),settings=mobileSettings(profile);
+  if(!profile.mobile?.applicationId)settings.applicationId='com.hbengine.game'+record.manifest.id.replace(/[^a-z0-9]/gi,'');
   let redirects={};try{redirects=JSON.parse(await fs.readFile(await record.project.resolve('.hbredirects.json',true,false),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
   const platform=await import(target==='android'?'./mobile-android.mjs':'./mobile-ios.mjs');
   const capability=await platform.mobileCapability(profile);

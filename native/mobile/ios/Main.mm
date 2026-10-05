@@ -8,6 +8,8 @@
 #include <fstream>
 #include <memory>
 #include <cstring>
+#include <algorithm>
+#include <cctype>
 #include "Modules.hpp"
 
 static NSData* encode(id value){return [NSJSONSerialization dataWithJSONObject:value options:0 error:nil];}
@@ -26,10 +28,16 @@ class AssetServer {
         timeval timeout{5,0};setsockopt(client,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout));setsockopt(client,SOL_SOCKET,SO_SNDTIMEO,&timeout,sizeof(timeout));int yes=1;setsockopt(client,SOL_SOCKET,SO_NOSIGPIPE,&yes,sizeof(yes));
         std::string header;char buffer[8192];while(header.find("\r\n\r\n")==std::string::npos&&header.size()<8192){auto n=recv(client,buffer,sizeof(buffer),0);if(n<=0)return;header.append(buffer,n);}auto begin=header.find(' '),end=header.find(' ',begin+1);if(header.rfind("GET ",0)!=0||end==std::string::npos)return;
         NSString* name=[text(header.substr(begin+1,end-begin-1)) stringByRemovingPercentEncoding];name=[[name componentsSeparatedByString:@"?"] firstObject];if([name hasPrefix:@"/"])name=[name substringFromIndex:1];if(!safe(name)||!inventory[name]){const char* response="HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";sendAll(client,response,strlen(response));return;}
-        const auto host="\r\nHost: 127.0.0.1:"+std::to_string(port)+"\r\n";if(header.find(host)==std::string::npos)return;
+        std::string normalized=header;std::transform(normalized.begin(),normalized.end(),normalized.begin(),[](unsigned char c){return std::tolower(c);});const auto host="\r\nhost: 127.0.0.1:"+std::to_string(port)+"\r\n";if(normalized.find(host)==std::string::npos)return;
         auto file=std::ifstream(utf8([root stringByAppendingPathComponent:name]),std::ios::binary|std::ios::ate);if(!file)return;size_t size=file.tellg(),start=0,count=size;int status=200;
-        auto range=header.find("\r\nRange: bytes=");if(range!=std::string::npos){try{auto value=header.substr(range+15);auto dash=value.find('-');start=std::stoull(value.substr(0,dash));const auto tail=value.substr(dash+1);const auto last=tail.rfind("\r\n",0)==0?size-1:std::min<size_t>(size-1,std::stoull(tail));if(start>=size||last<start)throw std::runtime_error("range");count=last-start+1;status=206;}catch(...){const char* response="HTTP/1.1 416 Range Not Satisfiable\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";sendAll(client,response,strlen(response));return;}}
-        NSDictionary* types=@{@"html":@"text/html",@"js":@"text/javascript",@"mjs":@"text/javascript",@"css":@"text/css",@"json":@"application/json",@"wasm":@"application/wasm",@"svg":@"image/svg+xml",@"png":@"image/png",@"jpg":@"image/jpeg",@"jpeg":@"image/jpeg",@"webp":@"image/webp",@"wav":@"audio/wav",@"mp3":@"audio/mpeg",@"ogg":@"audio/ogg",@"mp4":@"video/mp4",@"webm":@"video/webm"};
+        auto range=normalized.find("\r\nrange: bytes=");if(range!=std::string::npos){try{
+            const auto value=normalized.substr(range+15,normalized.find("\r\n",range+2)-range-15);const auto dash=value.find('-');
+            const auto number=[](const std::string& digits)->size_t{if(digits.empty()||digits.find_first_not_of("0123456789")!=std::string::npos)throw std::runtime_error("range");return std::stoull(digits);};
+            if(!size||dash==std::string::npos)throw std::runtime_error("range");const auto tail=value.substr(dash+1);size_t last=size-1;
+            if(dash==0){const auto suffix=number(tail);if(!suffix)throw std::runtime_error("range");start=size-std::min(size,suffix);}else{start=number(value.substr(0,dash));if(!tail.empty())last=std::min(size-1,number(tail));}
+            if(start>=size||last<start)throw std::runtime_error("range");count=last-start+1;status=206;
+        }catch(...){const auto response="HTTP/1.1 416 Range Not Satisfiable\r\nContent-Range: bytes */"+std::to_string(size)+"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";sendAll(client,response.data(),response.size());return;}}
+        NSDictionary* types=@{@"html":@"text/html",@"js":@"text/javascript",@"mjs":@"text/javascript",@"css":@"text/css",@"json":@"application/json",@"wasm":@"application/wasm",@"svg":@"image/svg+xml",@"png":@"image/png",@"jpg":@"image/jpeg",@"jpeg":@"image/jpeg",@"webp":@"image/webp",@"wav":@"audio/wav",@"mp3":@"audio/mpeg",@"ogg":@"audio/ogg",@"mp4":@"video/mp4",@"webm":@"video/webm",@"ttf":@"font/ttf",@"otf":@"font/otf",@"woff":@"font/woff",@"woff2":@"font/woff2"};
         auto reply="HTTP/1.1 "+std::string(status==200?"200 OK":"206 Partial Content")+"\r\nContent-Type: "+utf8(types[name.pathExtension.lowercaseString]?:@"application/octet-stream")+"\r\nContent-Length: "+std::to_string(count)+"\r\nConnection: close\r\nAccept-Ranges: bytes\r\nX-Content-Type-Options: nosniff\r\n";
         if(status==206)reply+="Content-Range: bytes "+std::to_string(start)+"-"+std::to_string(start+count-1)+"/"+std::to_string(size)+"\r\n";
         if([name hasPrefix:@"Content/"])reply+="Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox\r\n";

@@ -14,7 +14,7 @@ export function mobileBackend(manifest,{read,request}){
     const job=module.queue.then(async()=>{
       let queries;try{
         const decoded=protocol.decodeRequest(module,data.request);protocol.validate(module,decoded);queries=new NativePhysicsQueries(decoded.objects);
-        const packet=data.request.objectPatch?{...decoded,objects:undefined,objectPatch:data.request.objectPatch}:decoded;
+        const clockOnly=['frame','reset'].includes(decoded.command),packet=clockOnly?{...decoded,objects:[]}:data.request.objectPatch?{...decoded,objects:undefined,objectPatch:data.request.objectPatch}:decoded;
         const reply=await request('native',{module:module.index,request:packet},query=>queries.query(query));
         if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);
         if(data.request.worldTransport===1){module.requestWorld=decoded.objects;module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
@@ -31,7 +31,7 @@ export function mobileBackend(manifest,{read,request}){
       if(url.pathname==='/api/project'&&method==='GET')return json({entries:manifest.entries});
       if(url.pathname==='/api/file'&&method==='GET'){const name=url.searchParams.get('path');if(!safe(name))throw Error('모바일 에셋 경로 오류');const resolved=resolveBuildPath(name,manifest.redirects);if(!entries.has(resolved))return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
       if(url.pathname==='/api/storage'){
-        if(method==='GET'){if(url.searchParams.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');return json(await request('storageRead',{}));}
+        if(method==='GET'){if(url.searchParams.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');const saved=await request('storageRead',{});if(saved?.version!==1||!saved.items||typeof saved.items!=='object'||Array.isArray(saved.items))throw Error('게임 저장 형식 오류');const suffix='.project.'+encodeURIComponent(manifest.id);return json({version:1,items:Object.fromEntries(Object.entries(saved.items).filter(([key])=>key.endsWith(suffix)))});}
         if(method==='PUT'){const data=body(),suffix='.project.'+encodeURIComponent(manifest.id);if(data.id!==manifest.id||!data.items||Array.isArray(data.items)||typeof data.items!=='object'||Object.entries(data.items).some(([key,value])=>key.length>1000||!key.endsWith(suffix)||!key.startsWith('hbengine.savegame.')&&!key.startsWith('hbengine.storage-migrated.v1.')||value!==null&&typeof value!=='string')||JSON.stringify(data.items).length>4194304)throw Error('게임 저장 범위 오류');return json(await request('storageWrite',data.items));}
       }
       if(url.pathname==='/api/native/build'&&method==='POST'){const data=body(),module=[...modules.values()].find(m=>m.header===data.header&&m.source===data.source);if(!module)throw Error('패키지에 등록되지 않은 C++ 코드');return json({token:module.token,metadata:module.metadata,diagnostics:'모바일 사전 빌드 로드'});}
