@@ -1,5 +1,8 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-05 추가: [2D IK](2D_IK.md). schema.spriteRig.ik는 실제 솔버/한도/좌표·평면/체인·업데이트 계약을 제공해요. `rig.ik.add/remove/reorder`와 document.patch는 ID·expectedRevision·dryRun·검증·Undo/Redo·저장을 공유해요. `runtime.state.spriteSkin[].ik`는 작성 데이터와 다른 실제 목표/가중치/도달/계산 한도 snapshot이에요. C++/BP12개는 같은 서비스와 staged getter를 사용해요. clock/reset 요청에는 전체 뼈/솔버 데이터를 매 프레임 보내지 않아요.
+
+
 2026-10-05 추가: [2D 스프라이트 리그](2D_SPRITE_RIG.md), [시작 상태](STARTUP_STATE.md). schema.spriteRig와 spriterig 에셋·rig.bone/mesh/weights 명령은 안정적 ID·expectedRevision·dryRun·Undo/Redo를 사용해요. runtime.state.spriteSkin과 native 요청은 같은 실제 포즈를 조회해요. clock/reset 요청에는 이 전체 snapshot을 보내지 않아요. 저장된 값으로 Undo가 돌아오면 dirty를 해제해요. 자동 UIWidget은 사용자 Construction 전에 준비돼 첫 프레임 대기가 필요하지 않아요.
 
 

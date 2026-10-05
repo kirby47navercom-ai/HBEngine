@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {validSpriteRig,validateSpriteRigProgram,rigMatrices,inverse2D} from './sprite-rig-assets.js';
+import {SpriteRigIK} from './sprite-rig-ik.js';
 
 export class SpriteRigPose{
   constructor(data,{geometry,requireSprite=false}={}){
@@ -8,6 +9,7 @@ export class SpriteRigPose{
     for(const b of data.bones){const bone=new THREE.Bone();bone.name='rig_'+b.id;bone.userData.rigBoneId=b.id;bone.userData.rigBoneName=b.name;bone.position.set(...b.position,0);bone.rotation.z=THREE.MathUtils.degToRad(b.rotation);bone.scale.set(...b.scale,1);this.bones.set(b.id,bone);this.labels.set(b.name,b.id);}
     for(const b of data.bones)(b.parent?this.bones.get(b.parent):this.group).add(this.bones.get(b.id));
     this.matrices=data.bones.map(()=>new Float64Array(6));this.previous=new Float64Array(data.bones.length*7).fill(NaN);this.ids=new Map(data.bones.map((b,i)=>[b.id,i]));this.weights=data.vertices.map(v=>v.weights.map(w=>({index:this.ids.get(w.bone),weight:w.weight})));this.inverseRoot=new THREE.Matrix4();this.matrix=new THREE.Matrix4();this.revision=0;
+    this.ik=new SpriteRigIK(this);
     this.animations=data.clips.map(clip=>new THREE.AnimationClip(clip.name,clip.length,clip.tracks.map(track=>{
       const target=this.bones.get(track.bone).name,times=track.keys.map(k=>k.time),values=track.keys.flatMap(k=>track.property==='rotation'?[THREE.MathUtils.degToRad(k.value)]:[...k.value,track.property==='scale'?1:0]);
       const type=track.property==='rotation'?THREE.NumberKeyframeTrack:THREE.VectorKeyframeTrack,key=track.property==='rotation'?'.rotation[z]':'.'+track.property,result=new type(target+key,times,values),keys=track.keys;
@@ -28,6 +30,6 @@ export class SpriteRigPose{
     for(let i=0;i<this.data.vertices.length;i++){const p=this.data.vertices[i].position,weights=this.weights[i];let x=0,y=0;for(const w of weights){const m=this.matrices[w.index];x+=(m[0]*p[0]+m[2]*p[1]+m[4])*w.weight;y+=(m[1]*p[0]+m[3]*p[1]+m[5])*w.weight;}this.positions[i*3]=weights.length?x:p[0];this.positions[i*3+1]=weights.length?y:p[1];}
     if(this.geometry){this.geometry.attributes.position.needsUpdate=true;this.geometry.computeBoundingBox();this.geometry.computeBoundingSphere();}this.revision++;return true;
   }
-  snapshot({vertices=false}={}){this.update();return {revision:this.revision,bones:this.data.bones.map(b=>({id:b.id,name:b.name,parent:b.parent,...this.get(b.id)})),...vertices?{positions:Array.from(this.positions)}:{}};}
-  dispose(){this.disposed=true;this.group.removeFromParent();this.group.clear();this.bones.clear();this.labels.clear();this.weights.length=0;}
+  snapshot({vertices=false}={}){this.update();return {revision:this.revision,bones:this.data.bones.map(b=>({id:b.id,name:b.name,parent:b.parent,...this.get(b.id)})),ik:this.ik.snapshot(),...vertices?{positions:Array.from(this.positions)}:{}};}
+  dispose(){this.disposed=true;this.ik.dispose();this.group.removeFromParent();this.group.clear();this.bones.clear();this.labels.clear();this.weights.length=0;}
 }

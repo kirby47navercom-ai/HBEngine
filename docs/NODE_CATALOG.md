@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **533개**, 실제 공통 C++ API **451개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **545개**, 실제 공통 C++ API **463개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -46,6 +46,7 @@
 | 상태 머신 | 11 | 11 |
 | 애니메이션 그래프 | 7 | 7 |
 | 2D 뼈 변형 | 7 | 7 |
+| 2D IK | 12 | 12 |
 | 몽타주 | 7 | 7 |
 | 시퀀스 | 5 | 5 |
 | AI 내비게이션 | 4 | 4 |
@@ -743,6 +744,23 @@
 | skinSetScale | Set Bone Scale / 2D 뼈 크기 지정 | exec: exec, target: object, bone: string, value: vec2 | then: exec | hb::SpriteSkin::SetBoneScale | 공통 C++ + VM |
 | skinGetScale | Get Bone Scale / 2D 뼈 크기 조회 | target: object, bone: string | return: vec2 | hb::SpriteSkin::GetBoneScale | 공통 C++ + VM |
 | skinReset | Reset Bind Pose / 2D 바인드 포즈 복원 | exec: exec, target: object | then: exec | hb::SpriteSkin::ResetBindPose | 공통 C++ + VM |
+
+## 2D IK
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| ik2dSetTarget | Set Target / 2D IK 목표 위치 지정 | exec: exec, target: object, solver: string, value: vec2 | then: exec | hb::IK2D::SetTarget | 공통 C++ + VM |
+| ik2dGetTarget | Get Target / 2D IK 목표 위치 조회 | target: object, solver: string | return: vec2 | hb::IK2D::GetTarget | 공통 C++ + VM |
+| ik2dSetRotation | Set Target Rotation / 2D IK 목표 회전 지정 | exec: exec, target: object, solver: string, value: float | then: exec | hb::IK2D::SetTargetRotation | 공통 C++ + VM |
+| ik2dGetRotation | Get Target Rotation / 2D IK 목표 회전 조회 | target: object, solver: string | return: float | hb::IK2D::GetTargetRotation | 공통 C++ + VM |
+| ik2dBindTarget | Set Target Actor / 2D IK 목표 오브젝트 지정 | exec: exec, target: object, solver: string, actor: object, offset: vec2 | then: exec | hb::IK2D::SetTargetActor | 공통 C++ + VM |
+| ik2dClearTarget | Clear Target Actor / 2D IK 목표 오브젝트 해제 | exec: exec, target: object, solver: string | then: exec | hb::IK2D::ClearTargetActor | 공통 C++ + VM |
+| ik2dSetWeight | Set Weight / 2D IK 솔버 가중치 지정 | exec: exec, target: object, solver: string, value: float | then: exec | hb::IK2D::SetWeight | 공통 C++ + VM |
+| ik2dGetWeight | Get Weight / 2D IK 솔버 가중치 조회 | target: object, solver: string | return: float | hb::IK2D::GetWeight | 공통 C++ + VM |
+| ik2dSetEnabled | Set Enabled / 2D IK 솔버 활성화 | exec: exec, target: object, solver: string, value: bool | then: exec | hb::IK2D::SetEnabled | 공통 C++ + VM |
+| ik2dIsEnabled | Is Enabled / 2D IK 솔버 활성화 조회 | target: object, solver: string | return: bool | hb::IK2D::IsEnabled | 공통 C++ + VM |
+| ik2dSetMasterWeight | Set Master Weight / 2D IK 전체 가중치 지정 | exec: exec, target: object, value: float | then: exec | hb::IK2D::SetMasterWeight | 공통 C++ + VM |
+| ik2dGetMasterWeight | Get Master Weight / 2D IK 전체 가중치 조회 | target: object | return: float | hb::IK2D::GetMasterWeight | 공통 C++ + VM |
 
 ## 몽타주
 

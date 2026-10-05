@@ -72,7 +72,10 @@
     "test:animation-graph-player": "node tools/check-animation-graph-window.mjs",
     "test:sprite-rig-editor-window": "node tools/check-sprite-rig-window.mjs --editor",
     "test:sprite-rig-player-window": "node tools/check-sprite-rig-window.mjs",
-    "test:startup-state": "node tools/check-startup-state.mjs"
+    "test:startup-state": "node tools/check-startup-state.mjs",
+    "test:sprite-ik": "node tools/check-sprite-ik.mjs",
+    "test:sprite-ik-editor-window": "node tools/check-sprite-rig-window.mjs --ik --editor",
+    "test:sprite-ik-player-window": "node tools/check-sprite-rig-window.mjs --ik"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

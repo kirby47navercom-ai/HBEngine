@@ -26,7 +26,7 @@ SpriteSkin 컴포넌트의 `rig`가 에셋을 참조해요. 로컬 XY 월드 단
 
 클립은 기존 Animator와 AnimationGraph가 읽는 실제 Three.js AnimationClip이에요. 그래프의 혼합·뼈 레이어와 동일 포즈 데이터를 사용해요. Editor Play, packaged Player, 화면 없는 runProject 모두 같은 SpriteRigPose를 사용해요. 에디터 리그 창은 실행 중 실제 연결 Actor의 뼈 값을 표시하고 작성 필드를 잠가요.
 
-BP/C++에 공용 `SpriteSkin::Set/GetBonePosition`, `Set/GetBoneRotation`, `Set/GetBoneScale`, `Reset` 7개가 있어요. C++ setter 직후 getter는 요청 snapshot에 반영된 값을 읽어요. Reset은 실행기로 보내는 명령이므로 같은 C++ 호출 내부 후속 getter까지 즉시 복원되는 계약은 아직 아니에요. 전체 카탈로그는 현재 533개예요.
+BP/C++에 공용 `SpriteSkin::Set/GetBonePosition`, `Set/GetBoneRotation`, `Set/GetBoneScale`, `Reset` 7개가 있어요. C++ setter 직후 getter는 요청 snapshot에 반영된 값을 읽어요. Reset은 실행기로 보내는 명령이므로 같은 C++ 호출 내부 후속 getter까지 즉시 복원되는 계약은 아직 아니에요. [2D IK](2D_IK.md)의 공용 함수12개를 추가한 전체 카탈로그는 현재545개예요.
 
 AI는 schema.spriteRig의 필드/도구/한도, assetTypes.spriterig 예제와 `rig.bone.add/remove/reparent/split`, `rig.mesh.grid/splitEdge`, `rig.weights.auto/paint/smooth/set`을 사용해요. expectedRevision·dryRun·검증·Undo/Redo·저장을 사람 UI와 공유해요. 일반 document.patch로 클립·UV 등을 수정해요. runtime.state의 spriteSkin은 요청할 때 포즈를 반환해요. clock/reset native 요청에 리그 전체를 매 프레임 직렬화하지 않아요. 참조 수집·rename·게임 패키징은 rig→sprite→texture 의존성을 따라가요.
 
@@ -38,4 +38,4 @@ AI는 schema.spriteRig의 필드/도구/한도, assetTypes.spriterig 예제와 `
 
 `test:sprite-rig-editor-window`는 고유 프로젝트/프로필/포트의 화면 밖 비활성 Editor에서 물리 뼈 드래그·휠/이동·Undo/Redo·AI dryRun·키·이름·배치/복원·실행 잠금·실제 포즈를 검사해요. 최종 `sprite-rig-editor-4pSQeG`에서 저장 상태까지 Undo된 문서의 dirty 해제·정상 종료·검사 서버 정리도 통과했고 PNG를 확인했어요. `test:sprite-rig-player-window`의 release Player `sprite-rig-player-kFFO2l`에서 C++가 시작 위치를 보존하고 첫 Tick 전 한글 HUD를 바꿔 읽었으며, 90도 변형 정점과 실제 PNG의 4704개 마젠타 픽셀을 확인했어요. BP Reset·원본 보존·정상 종료·검사 서버 정리도 통과했어요. 사용자 설치본/원본/현재 창은 변경하지 않았어요.
 
-2D IK·스프라이트 변형 깊이·PSD 다중 스프라이트 캐릭터·외부 뼈 재바인딩·GPU skin·양방향 일반 클립 변환·커브 편집/Undo 전문화는 후속 작업이에요. 2D 조명/그림자·타일 충돌 모양·입자 마스크, 다른 애니메이션/렌더링/프레임워크/모바일/배포 등 전체 누적 요구도 계속 유지해요. 이 문서가 전체 요구의 완료 판정은 아니에요.
+[2D IK](2D_IK.md)의 Limb/CCD/FABRIK·목표 편집/실행·C++/BP/AI·실제 창 검증을 후속으로 연결했어요. IK 관절 한계/stretch/pole·스프라이트 변형 깊이·PSD 다중 스프라이트 캐릭터·외부 뼈 재바인딩·GPU skin·양방향 일반 클립 변환·커브 편집/Undo 전문화는 후속 작업이에요. 2D 조명/그림자·타일 충돌 모양·입자 마스크, 다른 애니메이션/렌더링/프레임워크/모바일/배포 등 전체 누적 요구도 계속 유지해요. 이 문서가 전체 요구의 완료 판정은 아니에요.

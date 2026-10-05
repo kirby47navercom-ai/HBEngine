@@ -214,6 +214,22 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="skinReset", KoreanName="2D 바인드 포즈 복원", Category="2D 뼈 변형") static void ResetBindPose(Actor* target);
 };
 HB_CLASS()
+class IK2D : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetTarget", KoreanName="2D IK 목표 위치 지정", Category="2D IK") static void SetTarget(Actor* target,const std::string& solver,const Vec2& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dGetTarget", KoreanName="2D IK 목표 위치 조회", Category="2D IK") static Vec2 GetTarget(Actor* target,const std::string& solver);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetRotation", KoreanName="2D IK 목표 회전 지정", Category="2D IK") static void SetTargetRotation(Actor* target,const std::string& solver,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dGetRotation", KoreanName="2D IK 목표 회전 조회", Category="2D IK") static float GetTargetRotation(Actor* target,const std::string& solver);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dBindTarget", KoreanName="2D IK 목표 오브젝트 지정", Category="2D IK") static void SetTargetActor(Actor* target,const std::string& solver,Actor* actor,const Vec2& offset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dClearTarget", KoreanName="2D IK 목표 오브젝트 해제", Category="2D IK") static void ClearTargetActor(Actor* target,const std::string& solver);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetWeight", KoreanName="2D IK 솔버 가중치 지정", Category="2D IK") static void SetWeight(Actor* target,const std::string& solver,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dGetWeight", KoreanName="2D IK 솔버 가중치 조회", Category="2D IK") static float GetWeight(Actor* target,const std::string& solver);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetEnabled", KoreanName="2D IK 솔버 활성화", Category="2D IK") static void SetEnabled(Actor* target,const std::string& solver,bool value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dIsEnabled", KoreanName="2D IK 솔버 활성화 조회", Category="2D IK") static bool IsEnabled(Actor* target,const std::string& solver);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetMasterWeight", KoreanName="2D IK 전체 가중치 지정", Category="2D IK") static void SetMasterWeight(Actor* target,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dGetMasterWeight", KoreanName="2D IK 전체 가중치 조회", Category="2D IK") static float GetMasterWeight(Actor* target);
+};
+HB_CLASS()
 class Montage : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playMontage", KoreanName="몽타주 재생", Category="몽타주") static void Play(Actor* target,const std::string& asset,const std::string& section);

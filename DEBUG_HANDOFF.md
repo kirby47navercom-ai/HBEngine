@@ -1,5 +1,14 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 2D IK 실제 창 검증 후속
+
+sprite-ik-editor-X8VtdL는 Limb의 중간 뼈 분할로 체인이4개가 되는데 성공을 기대한 시험 오류예요. 코드는 명시적으로 거절하고 원본을 보존해요. 테스트를 거절/보존 단언으로 고쳤어요. 솔버 종류를 자동 변경하지 않아요.
+
+sprite-ik-editor-viukij는 리그 body를 display:contents로 바꾸면서 전역 .workspace-view.active의 display:flex가 전용 grid를 덮어쓴 실제 UI 회귀예요. stage가 작아져 휠 단언도 실패했어요. active/detached 리그 전용 selector를 강화하고 최종 wbOkUc에서 패널 높이·물리 이동/확대·IK 목표 드래그·읽기 전용 실제 뼈/목표 값을 검증했어요.
+
+최종 Editor wbOkUc와 release Player jYGbhc의 acceptance.json은 기능 단언·원본 보존·exit0·서버 정리 이후 작성돼요. 오류 배열0·첫 Tick 전 한글 HUD·초기 위치·C++12개·BP 변경·headless 실제 솔버 포즈 대조가 통과했고 Player GPU 마젠타 픽셀4704개와 PNG를 확인했어요. 7CELia/jgZhGD는 추가 목표 회전 함수2개 전의 근거로 구분해요. 모든 실패 폴더를 남기고 사용자 설치/창/원본은 건드리지 않았어요.
+
+
 ## 시작 위치·HUD·2D 리그 검증 후속
 
 원래 게임을 읽기 전용으로 확인했어요. BP_TopDownShooter의 변경 없는 예전 Construction setPosition이 원점을 덮는 경로와 C++의 frame<2 HUD 우회를 확인했어요. 원본/사용자 설치본은 수정하지 않았어요. 새/예전/명시적 Construction 및 C++ 첫 Tick 전 UI를 따로 검사해요.

@@ -1,5 +1,16 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 2D IK 제작·공용 실행·실제 Editor/Player 검증 후 계속
+
+전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [2D IK 계약](docs/2D_IK.md)에 실제 Unity13.0.6 기술 본문과 IKManager2D/Solver2D/Limb/CCD/FABRIK의 자체 Properties/Methods 읽기 경계·구현·제한·검증을 기록했어요. 상속 API/다른 링크/이미지와 전체 corpus gate를 승격하지 않아요.
+
+- 안정적인 솔버 ID와 선택/생성/정렬·목표 드래그·상세·기즈모·Undo/Redo·실행 읽기 전용을 연결했어요. 리그 편집기의 양옆 패널을 타임라인까지 확장하고 메타데이터를 접어요. Limb의 중간 뼈 분할은 명시적 거절로 원본을 보존해요.
+- Limb/CCD/FABRIK·순서/가중치·복원/목표 회전·Actor 목표/평면 변환·숨김/alwaysUpdate·입력 캐시·재사용 버퍼·작업 예산/진단을 공용 서비스와 headless에 연결했어요. IKManager2D와 BP/C++12개, schema·rig.ik.add/remove/reorder·revision/dryRun·패키징을 공유해요. 카탈로그545개예요.
+- 최종 실제 Editor wbOkUc, release Player jYGbhc에서 C++12개·BP 목표 변경·실제 포즈/HUD/배치 위치·원본/exit0/서버 정리가 통과했어요. PNG를 확인했고 Player GPU 마젠타4704픽셀을 읽었어요. core sprite-ik·sprite-rig-WRn0j7·main/API/integration/runtime/startup 회귀도 통과했어요.
+- 초기 X8VtdL의 잘못된 Limb 분할 기대와 viukij의 active CSS 우선순위 회귀를 DEBUG에 보존했어요. 성공 근거와 구분해요. 사용자 설치본/프로필/게임 원본/현재 창은 변경하지 않았어요.
+- 다음은 애니메이션 포즈 상태/전이·동기화·몽타주를 이어가며 2D 조명/타일/입자, 렌더·월드/에셋·프레임워크·C++·AI·UI/오디오·모바일/배포·가벼움 등 전체 누적 범위도 유지해요. 최종 답변/goal complete를 보내지 않아요.
+
+
 ## 최신 후속: 시작 위치·첫 프레임 HUD와 2D 스프라이트 리그 후 계속
 
 전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [시작 상태 계약](docs/STARTUP_STATE.md), [2D 리그 계약](docs/2D_SPRITE_RIG.md)에 실제 공식 본문 읽기 경계·구현·검증·다음 세부를 기록했어요.

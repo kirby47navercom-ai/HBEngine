@@ -1,5 +1,8 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 구현 후속: [2D IK](../2D_IK.md)를 추가했어요. Unity2D Animation13.0.6의2DIK 기술 본문과 IKManager2D/Solver2D/LimbSolver2D/CCDSolver2D/FabrikSolver2D 각 클래스의 자체 Properties/Methods·선언/인자/반환/override를 읽고 구현·전용 UI·C++/BP12개·AI/headless·실제 Editor/Player 검증을 연결했어요. 원문/본문/SHA는 native/build/ik-docs-NalnfP에 보존해요. 상속 UnityEngine API·연결 문서·이미지·전체 package 읽기나 기존 전체 corpus/API gate 승격으로 세지 않아요. 다음 포즈 상태/전이·동기화와 다른 전체 누적 요구를 계속해요.
+
+
 2026-10-05 구현 후속: [2D 스프라이트 리그](../2D_SPRITE_RIG.md)와 [시작 위치/HUD](../STARTUP_STATE.md)를 연결했어요. Unity 2D Animation13 Skinning/Tools/SpriteSkin의 관련 본문·API 부분, Epic Paper2D SpriteEditor와 ActorLifecycle, Unity6.3 실행 순서/Awake 부분을 읽고 실제 구현과 별도 Editor/Player/C++/headless 검증을 대조했어요. 이 보조 읽기를 기존 전체 corpus/API gate의 검증 완료로 세지 않아요. 2D IK 본문/기술 API를 다음 대상으로 읽고 있으며 전체 누적 요구를 유지해요.
 
 

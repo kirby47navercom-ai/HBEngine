@@ -214,6 +214,19 @@ inline float SpriteSkin::GetBoneRotation(Actor* target,const std::string& bone){
 inline void SpriteSkin::SetBoneScale(Actor* target,const std::string& bone,const Vec2& value){engineCommand("skinSetScale",{{"target",bridgeId(target)},{"bone",bone},{"value",value}});bridgeSkinBone(target,bone)["scale"]=Json(value);}
 inline Vec2 SpriteSkin::GetBoneScale(Actor* target,const std::string& bone){return bridgeSkinBone(target,bone).at("scale").get<Vec2>();}
 inline void SpriteSkin::ResetBindPose(Actor* target){engineCommand("skinReset",{{"target",bridgeId(target)}});}
+inline Json& bridgeIKSolver(Actor* target,const std::string& solver){for(auto& value:gameplayField(target,"spriteSkin").at("ik").at("solvers"))if(value.at("id")==solver||value.at("name")==solver)return value;throw std::runtime_error("missing 2D IK solver");}
+inline void IK2D::SetTarget(Actor* target,const std::string& solver,const Vec2& value){engineCommand("ik2dSetTarget",{{"target",bridgeId(target)},{"solver",solver},{"value",value}});auto& state=bridgeIKSolver(target,solver);state["target"]=Json(value);state["targetActor"]=Json("");}
+inline Vec2 IK2D::GetTarget(Actor* target,const std::string& solver){return bridgeIKSolver(target,solver).at("target").get<Vec2>();}
+inline void IK2D::SetTargetRotation(Actor* target,const std::string& solver,float value){engineCommand("ik2dSetRotation",{{"target",bridgeId(target)},{"solver",solver},{"value",value}});auto& state=bridgeIKSolver(target,solver);state["targetRotation"]=Json(value);state["targetActor"]=Json("");}
+inline float IK2D::GetTargetRotation(Actor* target,const std::string& solver){return bridgeIKSolver(target,solver).at("targetRotation").get<float>();}
+inline void IK2D::SetTargetActor(Actor* target,const std::string& solver,Actor* actor,const Vec2& offset){engineCommand("ik2dBindTarget",{{"target",bridgeId(target)},{"solver",solver},{"actor",bridgeId(actor)},{"offset",offset}});bridgeIKSolver(target,solver)["targetActor"]=Json(bridgeId(actor));}
+inline void IK2D::ClearTargetActor(Actor* target,const std::string& solver){engineCommand("ik2dClearTarget",{{"target",bridgeId(target)},{"solver",solver}});bridgeIKSolver(target,solver)["targetActor"]=Json("");}
+inline void IK2D::SetWeight(Actor* target,const std::string& solver,float value){engineCommand("ik2dSetWeight",{{"target",bridgeId(target)},{"solver",solver},{"value",value}});bridgeIKSolver(target,solver)["weight"]=Json(value);}
+inline float IK2D::GetWeight(Actor* target,const std::string& solver){return bridgeIKSolver(target,solver).at("weight").get<float>();}
+inline void IK2D::SetEnabled(Actor* target,const std::string& solver,bool value){engineCommand("ik2dSetEnabled",{{"target",bridgeId(target)},{"solver",solver},{"value",value}});bridgeIKSolver(target,solver)["enabled"]=Json(value);}
+inline bool IK2D::IsEnabled(Actor* target,const std::string& solver){return bridgeIKSolver(target,solver).at("enabled").get<bool>();}
+inline void IK2D::SetMasterWeight(Actor* target,float value){engineCommand("ik2dSetMasterWeight",{{"target",bridgeId(target)},{"value",value}});gameplayField(target,"spriteSkin")["ik"]["weight"]=Json(value);}
+inline float IK2D::GetMasterWeight(Actor* target){return gameplayField(target,"spriteSkin").at("ik").at("weight").get<float>();}
 inline void Montage::Pause(Actor* target,bool paused){engineCommand("montagePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Montage::JumpToSection(Actor* target,const std::string& section){engineCommand("montageJump",{{"target",bridgeId(target)},{"section",section}});}
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}

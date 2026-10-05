@@ -1,5 +1,8 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: `hb::IK2D`의 목표/회전 Set/Get·Actor 목표 연결/해제·솔버 가중치 Set/Get·활성 Set/Get·전체 가중치 Set/Get12개가 같은 2D IK 실행기를 사용해요. C++ setter 직후 조회는 같은 요청 값이고 뼈 계산은 IK 갱신 단계예요. [2D IK 계약·실제 Editor/Player 근거](2D_IK.md)에 제작/수명·가중치/순서·headless/AI·한계를 기록해요. 전체 카탈로그545개예요.
+
+
 2026-10-05 추가: SpriteSkin::Set/GetBonePosition, Set/GetBoneRotation, Set/GetBoneScale, Reset 7개를 공용 C++/BP로 연결했어요(전체533개). [2D 리그](2D_SPRITE_RIG.md)·[시작 위치/HUD 계약](STARTUP_STATE.md) 참고. 새 Construction 기본 그래프는 이벤트만 있고, 변경 없는 예전 원점 초기화 예제는 실행 복사본에서 제외해요. 실제 Editor/Player C++ Construction에서 첫 Tick 전 HUD 수정/조회·배치 위치 보존이 통과했어요.
 
 
