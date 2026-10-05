@@ -201,3 +201,6 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 ### 포즈 애니메이션 그래프 추가(2026-10-05)
 
 [애니메이션 그래프 계약](ANIMATION_GRAPH.md)의 독립 animgraph 포즈 에셋/제작기·공용 실행기를 추가했어요. BP/C++ Play/Stop/Pause/SetFloat/SetBool/GetFloat/GetBool7개가 생성되어 전체 BP 노드는526개예요. 별도의9개 포즈 노드 카탈로그는 BP 수에 합치지 않아요. 실제 Editor/Player 키→BP→C++→포즈/파라미터/조회/뼈 레이어를 확인했고2D rig·AnimGraph 상태·IK·root motion·다중 슬롯·전체 잔여는 그대로 이어 구현해요.
+# 2026-10-05 몽타주 슬롯 후속
+
+[몽타주 슬롯 계약](ANIMATION_MONTAGE_SLOTS.md)의6개 그룹 제어/조회 BP와 C++ 실행 연결을 추가했어요. BP566개/API289개이며 기존 본문의 수량은 당시 기록이에요. 사람/AI·실제 Editor/Player·2D/가져온 모델·배치 위치/HUD 검증과 남은 세부를 해당 계약에 기록해요.

@@ -6,6 +6,7 @@
 :is(body[data-editor=blackboard],body[data-editor=behaviortree],body[data-editor=statemachine],body[data-editor=montage],body[data-editor=sequenceasset]) .center-workspace{grid-column:1/-1}
 
 .gameplay-preview{height:220px;min-height:150px;position:relative;border-bottom:1px solid var(--line)}.gameplay-preview canvas{display:block;width:100%;height:100%}.gameplay-toolbar-end{display:flex;gap:7px}
+.gameplay-main:has(.gameplay-timeline){display:flex;flex-direction:column;overflow:hidden}.gameplay-main:has(.gameplay-timeline) .gameplay-preview{height:40%;min-height:90px;flex:0 1 40%}.gameplay-main:has(.gameplay-timeline) .gameplay-transport{flex:none}.gameplay-main:has(.gameplay-timeline) .gameplay-timeline{flex:1;min-height:90px;overflow:auto;padding:0}.gameplay-timeline .gameplay-ruler{position:sticky;top:0;z-index:2;background:var(--raised)}
 
 .gameplay-editor{position:relative}.gameplay-context{position:absolute;z-index:12;width:220px;max-height:420px;overflow:auto;border:1px solid #5c6a76;background:#282e35;padding:8px;box-shadow:0 8px 24px #0009}.gameplay-context button{display:block;width:100%;text-align:left;padding:7px;font-size:12px}.gameplay-context button:hover{background:#41546a}
 

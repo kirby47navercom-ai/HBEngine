@@ -16,6 +16,7 @@ export function planAnimationPose(owner,delta){
       if(t){if(!t.frozen){const s=machine.states.get(t.from);merge(s.input,1-t.weight,machine.stateContext(s.id),step*s.speed);}const s=machine.states.get(t.to);merge(s.input,t.weight,machine.stateContext(s.id),step*s.speed);}
       else{const s=machine.states.get(machine.current);merge(s.input,1,machine.stateContext(s.id),step*s.speed);}
     }else if(node.type==='sync')merge('pose',1,context,step,p.group);
+    else if(node.type==='slot'){const inserted=owner.slotPose?.(p.group,p.slot),weight=inserted?.weight||0;if(weight<1||p.alwaysUpdateSource)merge('pose',1-weight);}
     else if(node.type==='blend'||node.type==='layer'){const w=owner.alpha(p);if(w<1||node.type==='layer')merge(node.type==='layer'?'base':'a',1-w);if(w>0)merge(node.type==='layer'?'overlay':'b',w);}
     else if(node.type==='select'){
       const desired=owner.parameters.get(p.parameter)?1:0;let s=context.selections.get(id);if(!s){s={weight:desired,from:desired,target:desired,time:0};context.selections.set(id,s);}if(s.frame!==owner.frame){if(desired!==s.target){s.from=s.weight;s.target=desired;s.time=0;}s.time+=step;s.weight=p.duration?s.from+(s.target-s.from)*clamp(s.time/p.duration):desired;s.frame=owner.frame;}

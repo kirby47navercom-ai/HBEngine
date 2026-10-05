@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 몽타주 슬롯 실제 실행/회귀 후속
+
+실제 Editor BAKSDk/Player juVNeC에서 C++ 두 그룹·그룹 BP 조회→사용자 C++·중지/Interrupted·기본 뼈/2D 프레임 복원·배치 위치·원본/exit0/소유 서버 정리가 통과했어요. Editor 슬롯 속성/Undo·AI 불법 슬롯 거절·우클릭 복제/추가/Undo·독립 미리보기 PNG를 확인했어요. 코어 비동기 교체/Stop/세계 종료·실패한 바인딩 결합 뒤 이전 재생 유지·Notify Seek/Stop 취소·Quaternion/비활성 문맥 확장·독립 혼합도 통과해요. 작은 비용 vHTl4m와 startup-IIW7qZ는 별도 근거예요.
+
+초기 코어 해제 후 poseBuffers Set3개가 남는 실패는 dispose에서 비웠어요. 뒤따른 libuv UV_HANDLE_CLOSING abort는 원인 미확정이며 엔진 원인으로 단정하지 않아요. Editor Y3ioe0은 dryRun 오류를 valid:false로 기대한 검사 오류로 실제 rejection 기대를 고쳤어요. iNDAIx는 화면 밖 밴드의 우클릭 검사 좌표를 scrollIntoView로 고쳤고 UV2ZK3 context 증거를 남겼어요. UV2ZK3/N15DER의 Idle 누락은 실제 공통 클래스 MeshRenderer 기본값이 장면의 모델을 덮은 문제였어요. installBlueprintComponents의 이전 기본 스냅샷/개별 속성 대조로 수정하고 상속 변경·명시적 모델/머테리얼 유지·startup·scene을 검사했어요.
+
+Player jV4KRW의 Unexpected '<'는 검사 SpriteRenderer에 Sprite JSON 대신 SVG 텍스처를 지정한 오류예요. 정식 Sprite 에셋을 만든48wKLs/juVNeC가 통과해요. scene-runtime의 hooks.mesh 없는 headless Tick 실패는 공통 null mesh 훅으로 수정하고 컴포넌트57종/2D·3D 물리/프레임워크/스프라이트 회귀를 통과했어요. 초기 TNA1Ne PNG의 높은 preview/잘린 timeline은 선택 Actor preview와 flex/scroll 배치로 수정한 BAKSDk PNG에서 확인했어요. 최신 작은 바인딩/수명 보강은 코어/최종 Player로 보강했고 Editor의 활성 VM 의미 경로를 유지해요. 사용자 설치/게임/창은 변경하지 않았어요.
+
 ## 혼합 샘플 알림 정책 검증 후속
 
 1D/2D3모드·동률/최소 가중치·중첩/공유 경로·포즈/리더/시계 유지·구간 filtered End/새 Begin·legacy/불법 필드·all 추가 Map 생략 코어가 통과했어요. 실제 Editor R6GRXh/Player IZGIm1은 인자 알림→사용자 C++, 중지 뒤 Begin/End7/7·3/3 및 원본/exit0/소유 서버 정리 후 acceptance를 남겨요. 마지막 null 검증/all 불필요한 승자 계산 제거는 코어로 확인했고 실제 highest 경로는 유지해요. runtime·첫HUD/배치 위치 l3JCs9·작은CPU QiFMpW는 별도 근거예요. 사용자 설치/창/게임은 보존해요.

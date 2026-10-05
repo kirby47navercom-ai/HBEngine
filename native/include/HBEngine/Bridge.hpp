@@ -249,6 +249,13 @@ inline void Montage::JumpToSection(Actor* target,const std::string& section){eng
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}
 inline float Montage::GetPosition(Actor* target){auto& state=gameplayField(target,"montage");return state.is_null()?0.0f:state.at("time").get<float>();}
 inline void Montage::Seek(Actor* target,float time){engineCommand("montageSeek",{{"target",bridgeId(target)},{"time",time}});}
+inline void Montage::StopGroup(Actor* target,const std::string& group){engineCommand("montageStopGroup",{{"target",bridgeId(target)},{"group",group}});}
+inline void Montage::PauseGroup(Actor* target,const std::string& group,bool paused){engineCommand("montagePauseGroup",{{"target",bridgeId(target)},{"group",group},{"paused",paused}});}
+inline void Montage::SeekGroup(Actor* target,const std::string& group,float time){engineCommand("montageSeekGroup",{{"target",bridgeId(target)},{"group",group},{"time",time}});}
+inline const Json* bridgeMontageGroup(Actor* target,const std::string& group){auto& states=gameplayField(target,"montageGroups");if(states.is_array())for(auto& s:states)if(s.at("group").get<std::string>()==group)return &s;return nullptr;}
+inline float Montage::GetGroupPosition(Actor* target,const std::string& group){const auto* s=bridgeMontageGroup(target,group);return s?s->at("time").get<float>():0.0f;}
+inline float Montage::GetGroupWeight(Actor* target,const std::string& group){const auto* s=bridgeMontageGroup(target,group);return s?s->at("weight").get<float>():0.0f;}
+inline bool Montage::IsGroupPlaying(Actor* target,const std::string& group){return bridgeMontageGroup(target,group)!=nullptr;}
 inline void LevelSequence::Play(Actor* target,const std::string& asset){engineCommand("playSequence",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"target",bridgeId(target)}});}
 inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}

@@ -1,5 +1,15 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 몽타주 슬롯 통합 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [몽타주 슬롯 계약](docs/ANIMATION_MONTAGE_SLOTS.md)에 실제 공식 본문6개/API 읽기 경계·자체 구현·증거/실패/남은 세부를 기록했어요. 전체 corpus gate를 완료로 세지 않아요.
+
+- Slot13번째 포즈 노드·여러 슬롯/그룹·기본 가지/Always Source·혼합/유지·새 바인딩/마스크/비활성 상태/중단 버퍼·Quaternion·2D 프레임을 공용 샘플러로 연결했어요. 그룹 C++/BP6개를 추가해 BP566/API289개예요. 실패 교체 보존·로드 중 취소·Notify Seek/Stop/Pause/Jump 취소와 legacy Stop 전체 그룹을 검사했어요.
+- 실제 Editor BAKSDk/Player juVNeC는 C++ 두 그룹/조회와 BP→사용자 C++·뼈/2D 스프라이트·원본/exit0/소유 서버 정리를 검사해요. Editor 슬롯 우클릭/Undo·속성/AI 거절·독립 preview PNG를 확인했어요. 코어/상태/Sync/알림·main/scene·실제 startup-IIW7qZ도 통과해요.
+- 기본 MeshRenderer가 장면 모델을 덮던 공통 클래스 결합을 이전 기본 스냅샷과 개별 값으로 수정했어요. 손대지 않은 상속 변경은 유지해요. 렌더러 없는 실행의 mesh 훅도 공통 null 대상으로 보강했어요. 사용자 설치본/프로필/게임/창은 보존해요.
+- 작은 CPU vHTl4m 비활성 .0099786/활성 .0088387ms, 그래프432/몽타주336bytes 재사용은 순수 추가 비용/전체FPS/모바일 근거가 아니에요.
+- 다음은 Stop/교체 혼합·공유 Skeleton 슬롯/Notify Window와 다른 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부를 계속해요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 혼합 샘플 알림 정책 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [알림 정책 계약](docs/ANIMATION_NOTIFY_POLICY.md)에 Epic5.8 Asset Details119–122 재대조와 실제 계약·검증·남은 세부를 기록해요.

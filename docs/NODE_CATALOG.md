@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **560개**, 실제 공통 C++ API **478개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **566개**, 실제 공통 C++ API **484개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -49,7 +49,7 @@
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
 | 2D IK | 12 | 12 |
-| 몽타주 | 7 | 7 |
+| 몽타주 | 13 | 13 |
 | 시퀀스 | 5 | 5 |
 | AI 내비게이션 | 4 | 4 |
 | AI 감지 | 3 | 3 |
@@ -800,6 +800,12 @@
 | montageNext | Set Next Section / 다음 몽타주 섹션 지정 | exec: exec, target: object, section: string, next: string | then: exec | hb::Montage::SetNextSection | 공통 C++ + VM |
 | montagePosition | Get Position / 몽타주 재생 위치 | target: object | return: float | hb::Montage::GetPosition | 공통 C++ + VM |
 | montageSeek | Seek / 몽타주 재생 위치 지정 | exec: exec, target: object, time: float | then: exec | hb::Montage::Seek | 공통 C++ + VM |
+| montageStopGroup | Stop Group / 몽타주 그룹 정지 | exec: exec, target: object, group: string | then: exec | hb::Montage::StopGroup | 공통 C++ + VM |
+| montagePauseGroup | Pause Group / 몽타주 그룹 일시 정지 | exec: exec, target: object, group: string, paused: bool | then: exec | hb::Montage::PauseGroup | 공통 C++ + VM |
+| montageSeekGroup | Seek Group / 몽타주 그룹 위치 지정 | exec: exec, target: object, group: string, time: float | then: exec | hb::Montage::SeekGroup | 공통 C++ + VM |
+| montagePositionGroup | Get Group Position / 몽타주 그룹 재생 위치 | target: object, group: string | return: float | hb::Montage::GetGroupPosition | 공통 C++ + VM |
+| montageWeightGroup | Get Group Weight / 몽타주 그룹 가중치 | target: object, group: string | return: float | hb::Montage::GetGroupWeight | 공통 C++ + VM |
+| montagePlayingGroup | Is Group Playing / 몽타주 그룹 재생 중 | target: object, group: string | return: bool | hb::Montage::IsGroupPlaying | 공통 C++ + VM |
 
 ## 시퀀스
 

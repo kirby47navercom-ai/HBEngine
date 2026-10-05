@@ -9,6 +9,7 @@ export const animationGraphNodes={
   rest:{label:'Reference Pose · 기준 포즈',inputs:[],group:'포즈'},
   stateMachine:{label:'State Machine · 포즈 상태 머신',inputs:[],group:'상태'},
   sync:{label:'Sync · 포즈 동기화',inputs:['pose'],group:'동기화'},
+  slot:{label:'Slot · 몽타주 슬롯',inputs:['pose'],group:'레이어'},
   clip:{label:'Sequence Player · 클립 재생',inputs:[],group:'포즈'},
   blend:{label:'Blend · 두 포즈 혼합',inputs:['a','b'],group:'혼합'},
   blend1d:{label:'Blend 1D · 1차원 혼합',inputs:[],group:'혼합'},
@@ -21,7 +22,7 @@ export const animationGraphNodes={
 export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','blend2d','direct'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
 export function makeAnimationNode(type,x=100,y=100){
   if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
-  const properties={clip:{clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
+  const properties={clip:{clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
   return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:type==='stateMachine'?makeAnimationMachine():structuredClone(properties)};
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
@@ -39,6 +40,7 @@ export function validAnimationGraph(data){
       if(node.type==='stateMachine'&&!validAnimationMachine(p,data.parameters))return false;
       if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0||!validAnimationSync(p)))return false;
       if(node.type==='sync'&&(!text(p.group,80)||!p.group))return false;
+      if(node.type==='slot'&&(!text(p.group,80)||!p.group.trim()||!text(p.slot,80)||!p.slot.trim()||typeof p.alwaysUpdateSource!=='boolean'))return false;
       if(['blend','layer','additive'].includes(node.type)&&(!numeric(p.alpha)||p.alpha<0||p.alpha>1||!param(p.parameter,'float')))return false;
       if(node.type==='select'&&(params.get(p.parameter)!=='bool'||!numeric(p.duration)||p.duration<0||p.duration>60))return false;
       if(['blend1d','blend2d','direct'].includes(node.type)){

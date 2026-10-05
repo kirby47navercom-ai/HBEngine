@@ -254,6 +254,12 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageNext", KoreanName="다음 몽타주 섹션 지정", Category="몽타주") static void SetNextSection(Actor* target,const std::string& section,const std::string& next);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePosition", KoreanName="몽타주 재생 위치", Category="몽타주") static float GetPosition(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageSeek", KoreanName="몽타주 재생 위치 지정", Category="몽타주") static void Seek(Actor* target,float time);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStopGroup", KoreanName="몽타주 그룹 정지", Category="몽타주") static void StopGroup(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montagePauseGroup", KoreanName="몽타주 그룹 일시 정지", Category="몽타주") static void PauseGroup(Actor* target,const std::string& group,bool paused);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageSeekGroup", KoreanName="몽타주 그룹 위치 지정", Category="몽타주") static void SeekGroup(Actor* target,const std::string& group,float time);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePositionGroup", KoreanName="몽타주 그룹 재생 위치", Category="몽타주") static float GetGroupPosition(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montageWeightGroup", KoreanName="몽타주 그룹 가중치", Category="몽타주") static float GetGroupWeight(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePlayingGroup", KoreanName="몽타주 그룹 재생 중", Category="몽타주") static bool IsGroupPlaying(Actor* target,const std::string& group);
 };
 HB_CLASS()
 class LevelSequence : public Library {

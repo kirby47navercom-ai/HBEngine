@@ -90,7 +90,10 @@
     "test:animation-blend-space-player": "node tools/check-animation-graph-window.mjs --blend-space",
     "test:animation-notify-policy": "node tools/check-animation-notify-policy.mjs",
     "test:animation-notify-policy-editor": "node tools/check-animation-graph-window.mjs --blend-notify --editor",
-    "test:animation-notify-policy-player": "node tools/check-animation-graph-window.mjs --blend-notify"
+    "test:animation-notify-policy-player": "node tools/check-animation-graph-window.mjs --blend-notify",
+    "test:animation-montage": "node tools/check-animation-montage.mjs",
+    "test:animation-montage-editor": "node tools/check-animation-graph-window.mjs --montage --editor",
+    "test:animation-montage-player": "node tools/check-animation-graph-window.mjs --montage"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",
