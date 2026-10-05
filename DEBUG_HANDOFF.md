@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37338308632/e46e7e6: 강화 오디오 게이트 정상 실패. WK probe는HTTP176444bytes→decodeAudioData2초/48k/96000샘플, BufferSource12표본RMS0.0344–0.0346 지속. plain/routed 모두 최초duration2/clock진행 정상, 첫loop 이후duration/time마이크로초로 손상. Swift는compile starting까지만 있어 컴파일60초 제한 실패이며 진단 실행 아님. 다음fixture는자동loop 대 ended수동재개/DOM부착/같은bytes Blob을 대조; 중복Swift진단제거,제품오디오아직무변경. Androidport 후보xw7jwk/9czDGl 전체실행통과하지만기존APK같은시점WpZcj1도3.7loops/s. 당시Adobe Premiere CPU1056%라 이전ddTswv11.87와 성능개선/회귀 단정불가. 로컬 추가stress/대량컴파일 미룸. 설치본업데이트전,누적전체요구계속.
+
 iOS37335923351/e37c9c7은 CI success지만 오디오 정상 완료로 인정하지 않아요.2400프레임의duration/time1.907마이크로초·master0.000133 한 표본이time>0/RMS 조건을 통과했고, 복귀2771프레임은duration/time11.9마이크로초/master1.1e-44였어요. Swift 시작 출력 없이60초 시간 초과여서 Apple HTTP 디코더가 실행됐다고 세지 않아요. 실제 실패 표본을 거부하는2초 길이·서로 다른 게임 보고의 시간 진행/신호·복귀 뒤 재검사를 추가했어요. 별도 진단은 Swift 컴파일과 실행 단계를 나누며, 검사 출력의 Main.mm에만 개발 오디오 경로 대조를 삽입해 HTTP바이트 decodeAudioData·기본Audio·MediaElementSource·BufferSource를 비교해요. 검사용 삽입 hash를 기록하며 사용자/제품 iOS 소스는 변경하지 않아요. 결과 대기 중, 설치본 업데이트 전.
 
 iOS37332792293/0b81d0e: 두 Xcode 컴파일·게임 실행 통과 뒤 Swift HTTP 진단60초 시간 초과. 최초 보고의 WK WAV 요청은 GET bytes=0-1/bytes=0-176443이고 duration약1.9마이크로초/time0. Swift 시작 출력이 없어 컴파일 지연과 AVURLAsset 로딩 지연을 구분하지 못함. 검사 도구를 시작/출력 보존·진단 오류 뒤에도 실제 오디오15표본 검사 계속·실패 시 마지막 보고 복사·전체 Content-Range/바이트 대조로 수정. 실제 신호/시간 검사의 조건과 앱 구현은 유지. 최신 설치본은 아직 업데이트하지 않음.

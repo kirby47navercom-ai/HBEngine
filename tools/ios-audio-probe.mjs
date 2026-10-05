@@ -3,21 +3,22 @@ export const validTonePlayback=samples=>{const valid=samples.filter(validToneSam
 
 // Test-only WKWebView probe: compare the same HTTP bytes and separate audio paths.
 export async function iosAudioProbe(url){
-  const result=window.hbIOSAudioProbe={phase:'fetch',samples:[]},players=[];let context;
+  const result=window.hbIOSAudioProbe={phase:'fetch',samples:[]},players=[];let context,blobURL;
   try{
     context=new AudioContext();await context.resume();const bytes=await(await fetch(url)).arrayBuffer();result.bytes=bytes.byteLength;result.phase='decode';
     const buffer=await context.decodeAudioData(bytes.slice(0));result.decoded={duration:buffer.duration,length:buffer.length,sampleRate:buffer.sampleRate,channels:buffer.numberOfChannels};
     const silent=context.createGain();silent.gain.value=0;silent.connect(context.destination);
     const decoded=context.createBufferSource(),bufferMeter=context.createAnalyser();decoded.buffer=buffer;decoded.loop=true;decoded.connect(bufferMeter);bufferMeter.connect(silent);decoded.start();
-    const plain=new Audio(url),routed=new Audio(url);players.push(plain,routed);for(const player of players){player.loop=true;player.volume=.0001;}
+    blobURL=URL.createObjectURL(new Blob([bytes],{type:'audio/wav'}));const plain=new Audio(url),routed=new Audio(url),attached=new Audio(url),manual=new Audio(url),blob=new Audio(blobURL);players.push(plain,routed,attached,manual,blob);for(const player of players){player.loop=player!==manual;player.volume=.0001;}
+    attached.hidden=true;document.body.append(attached);manual.addEventListener('ended',()=>{manual.currentTime=0;manual.play().catch(error=>{result.manualError=error.message;});});
     const source=context.createMediaElementSource(routed),mediaMeter=context.createAnalyser();source.connect(mediaMeter);mediaMeter.connect(silent);
     result.phase='play';await Promise.all(players.map(player=>player.play()));
     const state=player=>({time:player.currentTime,duration:Number.isFinite(player.duration)?player.duration:null,readyState:player.readyState,playing:!player.paused,error:player.error?.code||null});
     const level=meter=>{const values=new Float32Array(meter.fftSize);meter.getFloatTimeDomainData(values);return Math.sqrt(values.reduce((sum,value)=>sum+value*value,0)/values.length);};
-    for(let i=0;i<12;i++){result.samples.push({clock:context.currentTime,plain:state(plain),routed:state(routed),bufferRMS:level(bufferMeter),mediaRMS:level(mediaMeter)});await new Promise(resolve=>setTimeout(resolve,500));}
+    for(let i=0;i<12;i++){result.samples.push({clock:context.currentTime,plain:state(plain),routed:state(routed),attached:state(attached),manual:state(manual),blob:state(blob),bufferRMS:level(bufferMeter),mediaRMS:level(mediaMeter)});await new Promise(resolve=>setTimeout(resolve,500));}
     decoded.stop();result.phase='done';
   }catch(error){result.error=error.name+': '+error.message;result.phase='failed';}
-  finally{for(const player of players){player.pause();player.removeAttribute('src');player.load();}await context?.close();}
+  finally{for(const player of players){player.pause();player.removeAttribute('src');player.load();player.remove();}if(blobURL)URL.revokeObjectURL(blobURL);await context?.close();}
 }
 
 if(process.argv.includes('--check')){
