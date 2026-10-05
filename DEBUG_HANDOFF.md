@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37332792293/0b81d0e: 두 Xcode 컴파일·게임 실행 통과 뒤 Swift HTTP 진단60초 시간 초과. 최초 보고의 WK WAV 요청은 GET bytes=0-1/bytes=0-176443이고 duration약1.9마이크로초/time0. Swift 시작 출력이 없어 컴파일 지연과 AVURLAsset 로딩 지연을 구분하지 못함. 검사 도구를 시작/출력 보존·진단 오류 뒤에도 실제 오디오15표본 검사 계속·실패 시 마지막 보고 복사·전체 Content-Range/바이트 대조로 수정. 실제 신호/시간 검사의 조건과 앱 구현은 유지. 최신 설치본은 아직 업데이트하지 않음.
+
 iOS37332059720은 진단 보고의 C++ AssetServer 메서드를 Objective-C 메시지 문법으로 호출한 오류로 컴파일에서 멈췄어요. `server->inspectMedia()`로 수정하고 실제 Xcode 재검증해요. 게임/디코더 가설 검사에 도달한 결과로 세지 않아요.
 
 iOS37330057221: Xcode 앱 WAV SHA·HTTP 전체/0–1/44–4095/접미44 바이트가 원본과 일치했고 Apple afinfo도44100Hz/mono/Int16/176400 audio bytes/2초로 읽었어요. WKWebView만6.2마이크로초/time0/RMS 거의0이었어요. OS log show는 시간 초과돼 요청 로그를 확보하지 못했어요. 다음 진단은 실제 미디어 요청의 method/path/Range/Host/User-Agent만32개 한도로 앱 보고에 보존하고 Apple AVURLAsset HTTP duration을 대조해 HTTP 네이티브 디코더와 WK 재생을 구분해요. 전체 개인 헤더/쿠키·릴리스 진단·조건 완화는 추가하지 않아요.

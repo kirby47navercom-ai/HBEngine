@@ -23,13 +23,14 @@ const types=JSON.parse(await run(['simctl','list','devicetypes','--json'])),type
 const device={name:type.name,udid:(await run(['simctl','create','HBEngine-'+proof.applicationId.slice(-8),type.identifier,runtime])).trim()};
 await fs.writeFile(path.join(out,'ios-device.json'),JSON.stringify({sdk,runtime,device,owned:true,headless:true},null,2));
 console.log('독립 시뮬레이터 기준:',{sdk,runtime,device});
+let reportFile;
 try{
 await run(['simctl','boot',device.udid]);
 await run(['simctl','bootstatus',device.udid,'-b']);
 await run(['simctl','install',device.udid,app]);
 await run(['simctl','launch',device.udid,proof.applicationId]);
 const data=(await run(['simctl','get_app_container',device.udid,proof.applicationId,'data'])).trim();
-const reportFile=path.join(data,'Library/Application Support/runtime-report.json');
+reportFile=path.join(data,'Library/Application Support/runtime-report.json');
 let report;
 for(let i=0;i<90;i++){
   try{report=JSON.parse(await fs.readFile(reportFile,'utf8'));}catch(error){if(error.code!=='ENOENT'&&!(error instanceof SyntaxError))throw error;}
@@ -46,8 +47,9 @@ const packed=JSON.parse(await fs.readFile(path.join(out,'Assets/game.hbpack.json
 const bundled=await fs.readFile(path.join(app,'Assets',tone.path));assert.equal(createHash('sha256').update(bundled).digest('hex'),tone.sha256,'Xcode 앱의 WAV는 출력한 원본 바이트와 같아야 해요.');
 await fs.writeFile(path.join(out,'ios-audio-file.txt'),await runTool('/usr/bin/afinfo',[path.join(app,'Assets',tone.path)],{timeout:30000}));
 const response=await fetch(report.mobileHost.assetOrigin+'/'+tone.path,{signal:AbortSignal.timeout(15000)});assert.equal(response.status,200);const served=Buffer.from(await response.arrayBuffer());assert.deepEqual(served,bundled,'앱 서버의 WAV 전체 응답은 원본과 같아야 해요.');
-for(const [range,start,end] of [['bytes=0-1',0,2],['bytes=44-4095',44,4096],['bytes=-44',bundled.length-44,bundled.length]]){const part=await fetch(report.mobileHost.assetOrigin+'/'+tone.path,{headers:{range},signal:AbortSignal.timeout(15000)});assert.equal(part.status,206);assert.deepEqual(Buffer.from(await part.arrayBuffer()),bundled.subarray(start,end));}
-const audioProbe=path.join(out,'ios-audio-http.swift');await fs.writeFile(audioProbe,'import AVFoundation\nimport Foundation\ndo { let duration = try await AVURLAsset(url: URL(string: CommandLine.arguments[1])!).load(.duration); print("HTTP duration:", CMTimeGetSeconds(duration)) } catch { print("HTTP decoder error:", error) }\n');await fs.writeFile(path.join(out,'ios-audio-http.txt'),await runTool('swift',[audioProbe,report.mobileHost.assetOrigin+'/'+tone.path],{timeout:60000}));
+for(const [range,start,end] of [['bytes=0-1',0,2],['bytes=0-'+(bundled.length-1),0,bundled.length],['bytes=44-4095',44,4096],['bytes=-44',bundled.length-44,bundled.length]]){const part=await fetch(report.mobileHost.assetOrigin+'/'+tone.path,{headers:{range},signal:AbortSignal.timeout(15000)});assert.equal(part.status,206);assert.equal(part.headers.get('content-range'),'bytes '+start+'-'+(end-1)+'/'+bundled.length);assert.deepEqual(Buffer.from(await part.arrayBuffer()),bundled.subarray(start,end));}
+const audioProbe=path.join(out,'ios-audio-http.swift');await fs.writeFile(audioProbe,'import AVFoundation\nimport Foundation\nprint("HTTP probe starting"); fflush(nil)\ndo { let duration = try await AVURLAsset(url: URL(string: CommandLine.arguments[1])!).load(.duration); print("HTTP duration:", CMTimeGetSeconds(duration)); fflush(nil) } catch { print("HTTP decoder error:", error); fflush(nil) }\n');
+let probeOutput='';try{await runTool('swift',[audioProbe,report.mobileHost.assetOrigin+'/'+tone.path],{timeout:60000,onOutput:text=>{probeOutput+=text;}});}catch(error){probeOutput+='\nHTTP diagnostic failure: '+error.message+'\n';}await fs.writeFile(path.join(out,'ios-audio-http.txt'),probeOutput);
 const audioSamples=[];for(let i=0;i<15;i++){report=JSON.parse(await fs.readFile(reportFile,'utf8'));assert.equal(report.ok,true,report.error);audioSamples.push({frames:report.frames,audio:report.audio});if(report.audio.state==='running'&&report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0)&&report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6)break;await new Promise(resolve=>setTimeout(resolve,1000));}await fs.writeFile(path.join(out,'ios-audio.json'),JSON.stringify(audioSamples,null,2));await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
 console.log('실제 오디오 상태:',JSON.stringify(report.audio));assert.equal(report.audio.state,'running');assert.ok(report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0),'오디오 파일의 실제 재생 시간이 진행돼야 해요.');assert.ok(report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6,'실제 믹서 출력 신호가 있어야 해요.');
 for(const [i,count] of [[0,1],[1,10]]){
@@ -80,6 +82,7 @@ await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.p
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');
 }catch(error){
   console.error('iOS 실행 검사 실패:',error.message);
+  if(reportFile)try{await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));}catch(failure){console.error('iOS 마지막 실행 보고 수집:',failure.message);}
   try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'" OR (process CONTAINS "WebKit" AND (eventMessage CONTAINS[c] "audio" OR eventMessage CONTAINS[c] "media"))'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
   const crashes=path.join(process.env.HOME,'Library/Logs/DiagnosticReports');try{for(const name of await fs.readdir(crashes))if(name.startsWith('HBGame')&&name.endsWith('.ips'))await fs.copyFile(path.join(crashes,name),path.join(out,name));}catch(failure){if(failure.code!=='ENOENT')console.error('iOS 충돌 기록 수집:',failure.message);}
   throw error;
