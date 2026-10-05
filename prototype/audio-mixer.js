@@ -1,4 +1,5 @@
 import {validAssetPath} from './material-runtime.js';
+import {createAudioPlayer,BufferedAudioPlayer} from './buffered-audio.js';
 export const mixerDefaults={volumeDb:0,mute:false,solo:false,bypass:false,lowpass:20000,highpass:20,compressor:false,threshold:-24,ratio:4,attack:.003,release:.25};
 export const mixerParameters={volumeDb:[-80,20],lowpass:[20,22000],highpass:[10,22000],threshold:[-100,0],ratio:[1,20],attack:[0,1],release:[.001,1]};
 const validSettings=p=>p&&Object.entries(mixerParameters).every(([k,[min,max]])=>Number.isFinite(p[k])&&p[k]>=min&&p[k]<=max)&&['mute','solo','bypass','compressor'].every(k=>typeof p[k]==='boolean');
@@ -36,19 +37,25 @@ export class AudioMixerGraph {
   dispose(){for(const n of this.nodes.values())for(const node of Object.values(n))node.disconnect();this.nodes.clear();}
 }
 export class AudioRouting {
-  constructor({readAsset,context}={}){this.readAsset=readAsset;this.context=context;this.graphs=new Map();this.loading=new Map();this.observers=new Map();this.voices=new Map();this.disposed=false;}
+  constructor({readAsset,context}={}){this.readAsset=readAsset;this.context=context;this.graphs=new Map();this.loading=new Map();this.buffers=new Map();this.bufferBytes=0;this.bufferLoads=new Map();this.observers=new Map();this.voices=new Map();this.disposed=false;}
+  async player(url){const context=await this.ensure();return createAudioPlayer(context,url,{readBuffer:async url=>{
+    if(this.buffers.has(url)){const cached=this.buffers.get(url);this.buffers.delete(url);this.buffers.set(url,cached);return cached.buffer;}
+    if(!this.bufferLoads.has(url)){const pending=(async()=>{const response=await fetch(url);if(!response.ok)throw Error('오디오 파일 요청 실패: '+response.status);const buffer=await context.decodeAudioData(await response.arrayBuffer());if(this.disposed)throw Error('오디오 실행이 종료됐어요.');const bytes=buffer.length*buffer.numberOfChannels*4;
+      // ponytail: 32 MiB retained PCM cache; active voices/decoding can own evicted buffers.
+      if(bytes<=33554432){for(const [key,cached] of this.buffers){if(this.bufferBytes+bytes<=33554432)break;this.buffers.delete(key);this.bufferBytes-=cached.bytes;}this.buffers.set(url,{buffer,bytes});this.bufferBytes+=bytes;}return buffer;})();this.bufferLoads.set(url,pending);pending.finally(()=>this.bufferLoads.delete(url)).catch(()=>{});}return this.bufferLoads.get(url);
+  }});}
   async ensure(){if(this.disposed)throw Error('오디오 실행이 종료됐어요.');if(!this.context){const Context=globalThis.AudioContext||globalThis.webkitAudioContext;if(!Context)throw Error('Web Audio 실행 환경이 없어요.');this.context=new Context();}if(this.context.state==='suspended')await this.context.resume();return this.context;}
   async graph(path){if(!validAssetPath(path)||!path)throw Error('오디오 믹서 경로를 확인하세요.');if(this.disposed)throw Error('오디오 실행이 종료됐어요.');if(this.graphs.has(path))return this.graphs.get(path);if(!this.loading.has(path)){const pending=(async()=>{const data=await this.readAsset(path),context=await this.ensure();if(this.disposed)throw Error('오디오 실행이 종료됐어요.');const graph=new AudioMixerGraph(context,data);this.graphs.set(path,graph);return graph;})();this.loading.set(path,pending);pending.finally(()=>this.loading.delete(path)).catch(()=>{});}return this.loading.get(path);}
   async connect(player,settings={}){
     const context=await this.ensure(),graph=settings.mixer?await this.graph(settings.mixer):null;if(this.disposed)throw Error('오디오 실행이 종료됐어요.');const destination=graph?graph.input(settings.bus||'master'):context.destination;
-    const source=context.createMediaElementSource(player),gain=context.createGain(),panner=settings.spatial?context.createPanner():null;source.connect(gain);if(panner){panner.panningModel='HRTF';panner.distanceModel='inverse';panner.refDistance=settings.refDistance||1;panner.maxDistance=settings.maxDistance||100;panner.rolloffFactor=settings.rolloff??1;gain.connect(panner);panner.connect(destination);}else gain.connect(destination);
+    const source=player instanceof BufferedAudioPlayer?player.output:context.createMediaElementSource(player),gain=context.createGain(),panner=settings.spatial?context.createPanner():null;source.connect(gain);if(panner){panner.panningModel='HRTF';panner.distanceModel='inverse';panner.refDistance=settings.refDistance||1;panner.maxDistance=settings.maxDistance||100;panner.rolloffFactor=settings.rolloff??1;gain.connect(panner);panner.connect(destination);}else gain.connect(destination);
     player.volume=1;player.hbBaseVolume=settings.volume??1;gain.gain.value=player.hbBaseVolume;this.voices.set(player,{source,gain,panner});return player;
   }
   position(player,position){const p=this.voices.get(player)?.panner;if(p&&position){if(p.positionX){[p.positionX,p.positionY,p.positionZ].forEach((v,i)=>v.setValueAtTime(position[i],this.context.currentTime));}else p.setPosition(...position);}}
   volume(player,value){const voice=this.voices.get(player);if(voice)voice.gain.gain.value=value;}
-  disconnect(player){const voice=this.voices.get(player);if(!voice)return;for(const n of Object.values(voice))n?.disconnect();this.voices.delete(player);}
+  disconnect(player){player.dispose?.();const voice=this.voices.get(player);if(!voice)return;for(const n of Object.values(voice))n?.disconnect();this.voices.delete(player);}
   mirror(path,graph){for(const owner of this.observers.get(path)||[]){owner.gameplayDebug??={};owner.gameplayDebug.audioMixers??={};owner.gameplayDebug.audioMixers[path]=Object.fromEntries(graph.state.data.exposed.map(e=>[e.name,graph.state.get(e.name)]));}}
   async operation(key,a,b,vm){if(!['mixerSet','mixerGet','mixerClear','mixerSnapshot'].includes(key))return undefined;const graph=await this.graph(a.asset);if(key==='mixerSet')graph.state.set(a.parameter,a.value);else if(key==='mixerClear')graph.state.clear(a.parameter);else if(key==='mixerSnapshot')graph.state.snapshot(a.snapshot,a.duration);graph.update(0);const owner=vm.object(!a.target||a.target==='self'?b.self:a.target);if(owner){if(!this.observers.has(a.asset))this.observers.set(a.asset,new Set());this.observers.get(a.asset).add(owner);}this.mirror(a.asset,graph);return key==='mixerGet'?{return:graph.state.get(a.parameter)}:{};}
   update(delta,position){const listener=this.context?.listener;if(listener&&position){if(listener.positionX)[listener.positionX,listener.positionY,listener.positionZ].forEach((v,i)=>v.setValueAtTime(position[i],this.context.currentTime));else listener.setPosition(...position);}for(const [path,g] of this.graphs){g.update(delta);this.mirror(path,g);}}
-  dispose(){this.disposed=true;for(const player of [...this.voices.keys()])this.disconnect(player);for(const graph of this.graphs.values())graph.dispose();this.graphs.clear();this.observers.clear();this.context?.close?.().catch?.(()=>{});}
+  dispose(){this.disposed=true;for(const player of [...this.voices.keys()])this.disconnect(player);for(const graph of this.graphs.values())graph.dispose();this.graphs.clear();this.buffers.clear();this.bufferBytes=0;this.observers.clear();this.context?.close?.().catch?.(()=>{});}
 }

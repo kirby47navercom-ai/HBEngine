@@ -156,7 +156,7 @@ export function engineOperations(hooks){
       if(!path){const asset=await hooks.asset(name,'audioasset');if(asset){const stored=await readAsset(asset);if(!validAsset('audioasset',stored)||!stored.clip)throw Error('오디오 에셋의 클립을 확인하세요.');path=stored.clip;settings={...stored,...a.settings};}}
       if(epoch!==audioEpoch)throw Error('오디오 실행이 종료됐어요.');
       if(!path)throw Error('오디오 파일을 찾을 수 없어요: '+name);
-      const player=new Audio(fileUrl(path));player.loop=settings?.loop??false;player.playbackRate=settings?.pitch??1;player.hbClip=name;player.hbPosition=a.position;player.hbSettings=settings;player.hbSource=a.source;
+      const player=await soundRouting.player(fileUrl(path));player.loop=settings?.loop??false;player.playbackRate=settings?.pitch??1;player.hbClip=name;player.hbPosition=a.position;player.hbSettings=settings;player.hbSource=a.source;
       try{await soundRouting.connect(player,{...settings,volume:(a.volume??1)*(settings?.volume??1)});soundRouting.position(player,a.position);await player.play();if(epoch!==audioEpoch)throw Error('오디오 실행이 종료됐어요.');}
       catch(error){player.pause();soundRouting.disconnect(player);throw error;}
       const previous=audio.get(voiceKey);previous?.pause();if(previous)soundRouting.disconnect(previous);audio.set(voiceKey,player);

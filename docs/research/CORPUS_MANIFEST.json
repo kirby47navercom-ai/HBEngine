@@ -616,6 +616,61 @@
           "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
         }
       ]
+    },
+    {
+      "id": "whatwg-html-platform",
+      "engine": "WHATWG",
+      "version": "Living-Standard-snapshot-2026-10-06",
+      "locale": "en",
+      "roots": [
+        "https://html.spec.whatwg.org/multipage/media.html",
+        "https://html.spec.whatwg.org/multipage/web-messaging.html"
+      ],
+      "hosts": [
+        "html.spec.whatwg.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "scopeNote": "023 bounded partial body/API readings; complete linked specification/API/media inventory remains open.",
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://html.spec.whatwg.org/multipage/media.html",
+          "record": "docs/research/WEB_MEDIA_CONTRACTS_023.md"
+        },
+        {
+          "url": "https://html.spec.whatwg.org/multipage/web-messaging.html",
+          "record": "docs/research/WEB_MEDIA_CONTRACTS_023.md"
+        }
+      ],
+      "openIssues": [
+        "Reconcile all sections, linked DOM/structured-clone/MessageEvent, inherited API, figures and editions; do not promote partial reads."
+      ]
+    },
+    {
+      "id": "w3c-web-audio",
+      "engine": "W3C",
+      "version": "WD-webaudio-1.1-20260922",
+      "locale": "en",
+      "roots": [
+        "https://www.w3.org/TR/2026/WD-webaudio-1.1-20260922/"
+      ],
+      "hosts": [
+        "www.w3.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "scopeNote": "023 bounded partial body/API readings; complete linked specification/API/media inventory remains open.",
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://www.w3.org/TR/2026/WD-webaudio-1.1-20260922/",
+          "record": "docs/research/WEB_MEDIA_CONTRACTS_023.md"
+        }
+      ],
+      "openIssues": [
+        "Reconcile all sections, linked DOM/structured-clone/MessageEvent, inherited API, figures and editions; do not promote partial reads."
+      ]
     }
   ],
   "supplementalBaselines": [

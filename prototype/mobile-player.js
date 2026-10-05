@@ -81,6 +81,7 @@ export async function startMobilePlayer(){
   if(window.HBMobile){const connected=await connectAndroidChannel(bridge,window);messagePort=connected.port;if(manifest.configuration==='development')window.hbMobileChannel=connected.info;}
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
   window.hbMobileFileUrl=backend.fileUrl;
+  window.hbMobileTarget=manifest.target;
   window.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);return url.origin===location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};
   // Preserve the existing Player close/save path on both mobile hosts.
   window.chrome={webview:{postMessage:value=>{if(value==='hbengine.close')bridge.request('close',{}).catch(()=>{});}}};
