@@ -16,7 +16,7 @@ import {validBuildProfile,defaultBuildProfile} from '../prototype/build-profile.
 import {createProject} from './project-manifest.mjs';
 import {buildGame} from './build-game.mjs';
 
-const root=path.resolve(import.meta.dirname,'..'),dir=await fs.mkdtemp(path.join(root,'native/build/mobile-player-'));
+const root=path.resolve(import.meta.dirname,'..');await fs.mkdir(path.join(root,'native/build'),{recursive:true});const dir=await fs.mkdtemp(path.join(root,'native/build/mobile-player-'));
 const header='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable) class MobileActor:public hb::Actor{public:HB_PROPERTY(BlueprintReadWrite) int Count=0;HB_FUNCTION(BlueprintCallable) int Start();HB_FUNCTION(BlueprintPure) std::string Greeting();HB_FUNCTION(BlueprintPure) bool Hit();};';
 const source='int MobileActor::Start(){Count++;return Count;}std::string MobileActor::Greeting(){return "주인님 안녕하세요";}bool MobileActor::Hit(){return hb::Physics::Raycast({0,3,0},{0,-3,0},2,-1,false,this).hit;}';
 const modules=new Map();for(const code of [source,source.replace('Count++','Count+=10')])modules.set(createHash('sha256').update(JSON.stringify([header,code])).digest('hex'),{header,source:code});
