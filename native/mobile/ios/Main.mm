@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cctype>
 #include <vector>
+#include <chrono>
 #include "Modules.hpp"
 
 static NSData* encode(id value){return [NSJSONSerialization dataWithJSONObject:value options:0 error:nil];}
@@ -56,12 +57,14 @@ public:
 
 @interface HBController : UIViewController<WKScriptMessageHandler,WKNavigationDelegate> {
     WKWebView* web;NSDictionary* manifest;NSURL* saveFile;dispatch_queue_t worker;NSMutableDictionary* queries;std::unique_ptr<AssetServer> server;
+    BOOL foreground;double activeElapsed;std::chrono::steady_clock::time_point activeMark;
 }
 -(void)lifecycle:(BOOL)active;
+-(double)activeTime;
 @end
 @implementation HBController
 -(void)viewDidLoad {
-    [super viewDidLoad];NSString* root=[NSBundle.mainBundle.resourcePath stringByAppendingPathComponent:@"Assets"];manifest=decode([NSData dataWithContentsOfFile:[root stringByAppendingPathComponent:@"game.hbpack.json"]]);
+    [super viewDidLoad];[self lifecycle:YES];NSString* root=[NSBundle.mainBundle.resourcePath stringByAppendingPathComponent:@"Assets"];manifest=decode([NSData dataWithContentsOfFile:[root stringByAppendingPathComponent:@"game.hbpack.json"]]);
     NSMutableDictionary* files=[NSMutableDictionary dictionaryWithObject:@YES forKey:@"game.hbpack.json"];for(NSDictionary* file in manifest[@"files"])files[file[@"path"]]=@YES;
     try{server=std::make_unique<AssetServer>(root,files);}catch(const std::exception& e){UILabel* error=[[UILabel alloc] initWithFrame:self.view.bounds];error.numberOfLines=0;error.text=text(e.what());[self.view addSubview:error];return;}
     NSURL* directory=[NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;[NSFileManager.defaultManager createDirectoryAtURL:directory withIntermediateDirectories:YES attributes:nil error:nil];saveFile=[directory URLByAppendingPathComponent:@"savegames.json"];
@@ -76,7 +79,7 @@ public:
     dispatch_async(worker,^{@autoreleasepool{try{
         NSDictionary* data=packet[@"data"];id result=nil;
         if([operation isEqual:@"native"]){int index=[data[@"module"] intValue];auto input=utf8([[NSString alloc] initWithData:encode(data[@"request"]) encoding:NSUTF8StringEncoding]);
-            const auto query=[&](const std::string& input){NSString* id=NSUUID.UUID.UUIDString;NSMutableDictionary* slot=[NSMutableDictionary dictionaryWithObject:dispatch_semaphore_create(0) forKey:@"signal"];@synchronized(self->queries){self->queries[id]=slot;}[self emit:@{@"id":requestID,@"queryId":id,@"query":decode([text(input) dataUsingEncoding:NSUTF8StringEncoding])}];const auto timed=dispatch_semaphore_wait(slot[@"signal"],dispatch_time(DISPATCH_TIME_NOW,10*NSEC_PER_SEC));@synchronized(self->queries){[self->queries removeObjectForKey:id];}if(timed)throw std::runtime_error("mobile query timeout");return utf8([[NSString alloc] initWithData:encode(slot[@"reply"]) encoding:NSUTF8StringEncoding]);};
+            const auto query=[&](const std::string& input){NSString* id=NSUUID.UUID.UUIDString;NSMutableDictionary* slot=[NSMutableDictionary dictionaryWithObject:dispatch_semaphore_create(0) forKey:@"signal"];@synchronized(self->queries){self->queries[id]=slot;}[self emit:@{@"id":requestID,@"queryId":id,@"query":decode([text(input) dataUsingEncoding:NSUTF8StringEncoding])}];const auto started=[self activeTime];bool timed=false;while(dispatch_semaphore_wait(slot[@"signal"],dispatch_time(DISPATCH_TIME_NOW,100*NSEC_PER_MSEC))){if([self activeTime]-started>=10){timed=true;break;}}@synchronized(self->queries){[self->queries removeObjectForKey:id];}if(timed)throw std::runtime_error("mobile query timeout");return utf8([[NSString alloc] initWithData:encode(slot[@"reply"]) encoding:NSUTF8StringEncoding]);};
             auto output=HB_mobileInvoke(index,input,query);result=decode([text(output) dataUsingEncoding:NSUTF8StringEncoding]);
         }else if([operation isEqual:@"storageRead"]||[operation isEqual:@"storageWrite"]){NSData* saved=[NSData dataWithContentsOfURL:self->saveFile];NSMutableDictionary* store=decode(saved);if(saved&&(![store isKindOfClass:NSDictionary.class]||![store[@"items"] isKindOfClass:NSDictionary.class]||![store[@"version"] isEqual:@1]))throw std::runtime_error("mobile save file invalid");if(!saved)store=[@{@"version":@1,@"items":[NSMutableDictionary new]} mutableCopy];
             if([operation isEqual:@"storageWrite"]){NSMutableDictionary* items=store[@"items"];NSString* suffix=[@".project." stringByAppendingString:self->manifest[@"id"]];for(NSString* key in data){id value=data[key];if(key.length>1000||![key hasSuffix:suffix]||![key hasPrefix:@"hbengine.savegame."]&&![key hasPrefix:@"hbengine.storage-migrated.v1."]||value!=NSNull.null&&![value isKindOfClass:NSString.class])throw std::runtime_error("mobile save key range");if(value==NSNull.null)[items removeObjectForKey:key];else items[key]=value;}NSData* bytes=encode(store);NSError* error=nil;if(bytes.length>16777216||![bytes writeToURL:self->saveFile options:NSDataWritingAtomic error:&error])throw std::runtime_error("mobile save failed");}result=store;
@@ -87,7 +90,8 @@ public:
     }catch(const std::exception& error){[self emit:@{@"id":requestID,@"error":text(error.what())?:@"mobile native failure"}];}}});
 }
 -(void)webView:(WKWebView*)view decidePolicyForNavigationAction:(WKNavigationAction*)action decisionHandler:(void (^)(WKNavigationActionPolicy))handler {NSURL* url=action.request.URL;handler([url.host isEqual:@"127.0.0.1"]&&url.port.intValue==server->port?WKNavigationActionPolicyAllow:WKNavigationActionPolicyCancel);}
--(void)lifecycle:(BOOL)active {dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:active?@"window.hbMobileLifecycle&&window.hbMobileLifecycle(true)":@"window.hbMobileLifecycle&&window.hbMobileLifecycle(false)" completionHandler:nil];});}
+-(double)activeTime {@synchronized(self){return activeElapsed+(foreground?std::chrono::duration<double>(std::chrono::steady_clock::now()-activeMark).count():0);}}
+-(void)lifecycle:(BOOL)active {@synchronized(self){const auto now=std::chrono::steady_clock::now();if(foreground)activeElapsed+=std::chrono::duration<double>(now-activeMark).count();activeMark=now;foreground=active;}dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:active?@"window.hbMobileLifecycle&&window.hbMobileLifecycle(true)":@"window.hbMobileLifecycle&&window.hbMobileLifecycle(false)" completionHandler:nil];});}
 @end
 @interface HBApp : UIResponder<UIApplicationDelegate>
 @property(strong,nonatomic) UIWindow* window;

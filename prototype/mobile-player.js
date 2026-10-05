@@ -49,23 +49,24 @@ export function mobileBackend(manifest,{read,request}){
 }
 
 export function platformBridge(send){
-  const pending=new Map();let sequence=0;
+  const pending=new Map();let sequence=0,active=true;
+  const arm=(id,item)=>{item.started=performance.now();item.timer=setTimeout(()=>{if(!active||pending.get(id)!==item)return;pending.delete(id);item.reject(Error('모바일 호스트 응답 시간 초과'));},item.remaining);};
+  const setActive=value=>{if(active===value)return;active=value;const now=performance.now();for(const [id,item] of pending)if(active)arm(id,item);else{clearTimeout(item.timer);item.remaining=Math.max(0,item.remaining-(now-item.started));}};
   const request=(operation,data,query)=>new Promise((resolve,reject)=>{
-    const id=String(++sequence),timer=setTimeout(()=>{pending.delete(id);reject(Error('모바일 호스트 응답 시간 초과'));},15000);
-    pending.set(id,{resolve,reject,timer,query});try{send({id,operation,data});}catch(error){clearTimeout(timer);pending.delete(id);reject(error);}
+    const id=String(++sequence),item={resolve,reject,query,remaining:15000};pending.set(id,item);if(active)arm(id,item);try{send({id,operation,data});}catch(error){clearTimeout(item.timer);pending.delete(id);reject(error);}
   });
   const receive=async packet=>{
     const item=pending.get(packet.id);if(!item)return;
     if(packet.query){let response;try{if(!item.query)throw Error('C++ 질의 작업이 없어요.');response={ok:true,value:await item.query(packet.query)};}catch(error){response={ok:false,error:error.message};}send({operation:'queryReply',id:packet.queryId,data:response});return;}
     clearTimeout(item.timer);pending.delete(packet.id);packet.error?item.reject(Error(packet.error)):item.resolve(packet.data);
   };
-  return {request,receive};
+  return {request,receive,setActive};
 }
 
 export async function startMobilePlayer(){
   const original=window.fetch.bind(window),manifest=await (await original('/game.hbpack.json')).json();
   const send=packet=>{const value=JSON.stringify(packet);if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
-  const bridge=platformBridge(send);window.hbMobileReply=bridge.receive;
+  const bridge=platformBridge(send);window.hbMobileReply=bridge.receive;window.hbMobileHostLifecycle=bridge.setActive;
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
   window.hbMobileFileUrl=backend.fileUrl;
   window.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);return url.origin===location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};

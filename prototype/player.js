@@ -67,7 +67,8 @@ if(config.configuration==='development'||config.smoke)window.hbPlayerDebug={
   async operation(key,args){while(busy)await new Promise(resolve=>setTimeout(resolve,1));busy=true;try{return await services.operation(key,args,vm.bindings[0]||{self:objects[0]?.id,root:{components:[]}},vm);}finally{busy=false;}},
 };
 menu.addEventListener('close',()=>{services?.pauseAudio(false)?.catch(fail);queued=0;});
-window.hbMobileLifecycle=active=>{mobileActive=active;last=performance.now();queued=0;if(active&&mobileSuspended&&!closed&&!closing){mobileSuspended=false;schedule();}if(!active){releaseKeys();flushStorage().catch(fail);}services?.pauseAudio(!active||menu.open)?.catch(fail);};
+window.hbMobileLifecycle=active=>{window.hbMobileHostLifecycle?.(active);mobileActive=active;last=performance.now();queued=0;if(active&&mobileSuspended&&!closed&&!closing){mobileSuspended=false;schedule();}if(!active){releaseKeys();flushStorage().catch(fail);}services?.pauseAudio(!active||menu.open)?.catch(fail);};
+if(config.mobile)document.addEventListener('visibilitychange',()=>window.hbMobileLifecycle(!document.hidden));
 function releaseKeys(){held.clear();vm?.releaseInput().catch(fail);}
 bindRuntimePointer(canvas,{runtime:()=>vm,enabled:()=>!closed&&!closing&&!menu.open&&vm?.active&&!vm.paused,error:fail});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();releaseKeys();if(menu.open)menu.close();else{menu.showModal();services?.pauseAudio(true)?.catch(fail);}return;}if(menu.open||e.target.closest('input,textarea,select,button,[role="button"],[contenteditable="true"]'))return;e.preventDefault();if(!e.repeat&&!held.has(e.key)){held.add(e.key);vm?.input(e.key,1).catch(fail);}});

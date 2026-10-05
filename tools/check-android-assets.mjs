@@ -6,11 +6,14 @@ import {runTool} from './mobile-android.mjs';
 const root=path.resolve(import.meta.dirname,'..'),source=await fs.readFile(path.join(root,'native/mobile/android/HBActivity.java'),'utf8');
 const begin=source.indexOf('    private static String singleRange('),end=source.indexOf('    private void emit(',begin);
 assert.ok(begin>=0&&end>begin,'실제 Android 범위 처리 코드를 추출해야 해요.');
+const clockStart=source.indexOf('    private boolean foreground='),clockEnd=source.indexOf('    private native byte[]',clockStart);assert.ok(clockStart>=0&&clockEnd>clockStart);
+const clock=source.slice(clockStart,clockEnd).replaceAll('System.nanoTime()','nanoTime()');
 await fs.mkdir(path.join(root,'native/build'),{recursive:true});const out=await fs.mkdtemp(path.join(root,'native/build/android-assets-'));
 const checks=`
     static void check(boolean value){if(!value)throw new AssertionError();}
     static void range(String header,long size,long start,long end){check(java.util.Arrays.equals(byteRange(header,size),new long[]{start,end}));}
     public static void main(String[] args) throws Exception {
+        AndroidAssetCheck clock=new AndroidAssetCheck();now=4000000000L;check(clock.activeTime()==now);clock.setActive(false);now+=90000000000L;check(clock.activeTime()==4000000000L);clock.setActive(false);clock.setActive(true);now+=2000000000L;check(clock.activeTime()==6000000000L);clock.setActive(false);now+=60000000000L;clock.setActive(true);now+=1000000000L;check(clock.activeTime()==7000000000L);
         check(singleRange(java.util.Collections.singletonMap("rAnGe","BYTES=-8")).equals("BYTES=-8"));
         check(singleRange(java.util.Collections.singletonMap("Range","items=0-7"))==null);
         check(singleRange(java.util.Collections.singletonMap("Range","bytes=0-7,8-9"))==null);check(singleRange(java.util.Collections.emptyMap())==null);
@@ -33,7 +36,7 @@ const checks=`
         System.out.println("Android production byte ranges and bounded streams passed");
     }
 `;
-await fs.writeFile(path.join(out,'AndroidAssetCheck.java'),'import java.io.*;\nimport java.math.BigInteger;\nimport java.util.*;\npublic final class AndroidAssetCheck {\n'+source.slice(begin,end)+checks+'}\n');
+await fs.writeFile(path.join(out,'AndroidAssetCheck.java'),'import java.io.*;\nimport java.math.BigInteger;\nimport java.util.*;\npublic final class AndroidAssetCheck {\nstatic long now;static long nanoTime(){return now;}\n'+clock+source.slice(begin,end)+checks+'}\n');
 const javaHome=process.env.JAVA_HOME||(process.platform==='win32'?'C:/Program Files/Java/jdk-25':''),tool=name=>javaHome?path.join(javaHome,'bin',name+(process.platform==='win32'?'.exe':'')):name;
 await runTool(tool('javac'),['--release','8','-encoding','UTF-8','-d',out,path.join(out,'AndroidAssetCheck.java')]);
 console.log((await runTool(tool('java'),['-cp',out,'AndroidAssetCheck'])).trim());

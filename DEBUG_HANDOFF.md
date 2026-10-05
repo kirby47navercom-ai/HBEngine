@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+수정 후 Android android-mobile-lSxvr1 전체 검사 exit0: 실제 두 ABI JNI/C++·Java/DEX·16KB ELF·APK 서명/정렬·AAB·ZIP 에셋/한글·원본 보존. CmRimg 마지막 실패는 bundletool stdout와 JDK25 stderr 경고가 합쳐져 앱 ID 비교가 실패한 검사 오류였고 실제 manifest 마지막 줄로 비교해 해결했어요. 런타임 검사는 별도예요. JS 브리지/Player 수명과 정확한 Android production 시계/범위 메서드의 가상 시간 검사를 통과했고 iOS 실제 복귀를 재검증해요.
+
+37317957491은 SDK18.5에 맞는 시뮬레이터로 실제 두 컴파일·첫10프레임/15 draw call·C++ 두 모듈/물리·전체/동시8개/앞·뒤 범위/외부 파일 거절을 통과했어요. Safari 시작 88초 뒤 background 보고가 `모바일 호스트 응답 시간 초과`로 바뀌었어요. bridge의 15초 타이머가 OS 비활성 시간을 포함하고 있었어요. 요청/응답을 버리거나 Begin Play를 재실행하지 않고 활성 시간만 제한하도록 수정해요. JS visibility와 네이티브 수명 이벤트를 같은 경로로 연결하고 네이티브 물리 질의의 10초 대기도 활성 시간으로 검사해요. 실제 재검증 전에는 복귀 통과로 세지 않아요.
+
+Android PnRTQU는 APK 정렬/서명·AAB 패키지 검증을 모두 마친 뒤 에셋 경로 검사에 실패했어요. 실제 jar 목록의 APK는 `assets/Content\\Assets\\...`로 Windows 구분자를 포함했고 AAB는 `/`로 정규화됐어요. aapt2의 -A를 사용하지 않고 기존 Java jar로 assets 디렉터리를 넣어 모바일 논리 경로와 ZIP 이름을 일치시켜 다시 검사해요. 기존 리소스 압축/정렬을 유지하며 런타임 주소를 우회하지 않아요.
+
+Android SDK/NDK 설치·공식 체크섬·수령 기록을 완료했어요. 첫 전체 검사 3o2bX2는 파일 목록의 없는 file 필드를 읽던 검사 오류였고 프로젝트 resolve(path)로 수정했어요. 동일 격리 fixture를 재사용한 다음 실제 Java/DEX·ARM64/x86_64 C++/16KB ELF는 통과했지만 aapt2 compile이 한글 절대 res 경로를 열지 못했어요. 같은 디렉터리가 존재함을 확인했고 상대 Android/res 입력으로 같은 aapt2가 366bytes 리소스 zip을 컴파일했어요. 실제 aapt2/zipalign 경로를 작업 폴더 기준으로 바꾸어 APK/AAB 전체를 재검증해요. 아직 패키지 전체 성공은 아니에요.
+
 37316212354: 고정 읽기 작업자 변경은 실제 Xcode 두 대상 컴파일을 통과했어요. 시뮬레이터 부팅 87초/설치 약59초 뒤 첫 `simctl launch`가 180초 시간 초과됐고 실행 보고는 없어요. 외부 SVG 요청에는 도달하지 않았으므로 이전 EPIPE 가설의 통과/실패로 세지 않아요. Xcode SDK와 맞는 설치된 iOS 런타임을 우선 선택하고 명령 시작·사용한 목록/SDK·실패한 앱 로그/충돌 보고를 보존해 재검증해요. 실행 지연 원인은 아직 미확정이에요.
 
 주인님이 Android SDK 이용약관에 명시 동의했어요. SDK/NDK 설치를 시작했으며 완료/전체 앱 빌드 결과는 후속 증거가 필요해요. Java 부분 범위/스트림 최종 o0g5RD가 통과했고 이를 실제 APK/AAB까지 연결해 검사해요.

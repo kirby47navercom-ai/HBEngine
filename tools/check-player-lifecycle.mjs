@@ -87,10 +87,10 @@ const count=(events,value)=>events.filter(event=>event===value).length;
 }
 // Run the current mobile lifecycle source without waiting for a physical app switch.
 {
-  const events=[],window={},menu={open:false};let now=10;
+  const events=[],window={hbMobileHostLifecycle:value=>events.push('host:'+value)},menu={open:false};let now=10;
   const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
   const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;});
-  api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:false,last:10,queued:0});assert.deepEqual(events,['release','save','audio:true']);
+  api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:false,last:10,queued:0});assert.deepEqual(events,['host:false','release','save','audio:true']);
   api.suspend();now=500000;api.activate(true);api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);assert.equal(api.state().last,500000);assert.equal(api.state().queued,0);
   menu.open=true;api.activate(true);assert.equal(events.at(-1),'audio:true');api.suspend();api.close();api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);
 }

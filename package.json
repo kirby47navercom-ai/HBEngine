@@ -96,7 +96,9 @@
     "test:animation-montage-player": "node tools/check-animation-graph-window.mjs --montage",
     "android:prepare": "node tools/prepare-android.mjs",
     "test:android-assets": "node tools/check-android-assets.mjs",
-    "test:mobile": "node tools/check-mobile-player.mjs"
+    "test:mobile": "node tools/check-mobile-player.mjs",
+    "test:mobile-bridge": "node tools/check-mobile-bridge.mjs",
+    "test:android-mobile": "node tools/check-android-mobile.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

@@ -69,6 +69,7 @@ for(const [i,module] of native.modules.entries()){
   const bp=createAsset('blueprint','BP_Mobile'+i),headerPath='Source/Mobile'+i+'.h',sourcePath='Source/Mobile'+i+'.cpp',assetPath='Assets/BP_Mobile'+i+'.hbblueprint.json';
   bp.native={...parseNativeHeader(module.header),header:module.header,source:code,headerPath,sourcePath};bp.settings.parentClass='MobileActor';
   const call=makeNode('nativeCall');call.nativeId='MobileActor.Start';bp.nodes.push(call);bp.edges.push({from:{node:'beginPlay',pin:'then'},to:{node:call.id,pin:'exec'}});
+  const hit=makeNode('nativeCall'),ground=makeNode('nativeSet');hit.nativeId='MobileActor.Hit';ground.nativeId='MobileActor.GroundHit';bp.nodes.push(hit,ground);bp.edges.push({from:{node:'tick',pin:'then'},to:{node:ground.id,pin:'exec'}},{from:{node:hit.id,pin:'result'},to:{node:ground.id,pin:'value'}});
   await record.project.write(headerPath,module.header);await record.project.write(sourcePath,code);await record.project.write(assetPath,JSON.stringify(bp));
   scene.objects.push({id:'mobile-probe-'+i,name:'Mobile Probe '+i,kind:'cube',visible:true,position:[i?2:-2,1,0],rotation:[0,0,0],scale:[1,1,1],blueprintAsset:assetPath,nativeClass:'MobileActor',nativeProperties:{Count:0},components:i===0?[makeSceneComponent('UIWidget',{asset:'Assets/W_Mobile.hbwidget.json',instance:'HUD'})]:[]});
 }

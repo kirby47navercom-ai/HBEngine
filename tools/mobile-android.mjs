@@ -31,7 +31,7 @@ async function signing(settings,configuration,sdk,signal){
   return {keyStore,alias:'androiddebugkey',debug:true};
 }
 export async function packageMobile({out,assets,profile,settings,native,signal,onProgress,capability:c}){
-  const run=(program,args,options={})=>runTool(program,args,{cwd:out,signal,...options}),suffix=process.platform==='win32'?'.exe':'',stage=path.join(out,'Android'),classes=path.join(stage,'classes'),dex=path.join(stage,'dex'),res=path.join(stage,'res'),apk=path.join(out,'Game.apk');
+  const run=(program,args,options={})=>runTool(program,args,{cwd:out,signal,...options}),local=file=>path.relative(out,file),suffix=process.platform==='win32'?'.exe':'',stage=path.join(out,'Android'),classes=path.join(stage,'classes'),dex=path.join(stage,'dex'),res=path.join(stage,'res'),apk=path.join(out,'Game.apk');
   for(const directory of [classes,dex,path.join(res,'values'),path.join(stage,'java/com/hbengine/player')])await fs.mkdir(directory,{recursive:true});
   const activity=path.join(stage,'java/com/hbengine/player/HBActivity.java');await fs.copyFile(path.join(root,'native/mobile/android/HBActivity.java'),activity);
   await fs.copyFile(path.join(root,'native/mobile/android/Bridge.cpp'),path.join(out,'Native/Bridge.cpp'));
@@ -48,19 +48,21 @@ export async function packageMobile({out,assets,profile,settings,native,signal,o
     await run(path.join(c.bin,'clang++'+suffix),['--target='+triple+settings.minSdk,'-std=c++17','-shared','-fPIC','-fvisibility=hidden','-static-libstdc++','-Wl,-z,max-page-size=16384',...(profile.configuration==='release'?['-O2','-Wl,-s']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),...native.sources.map(file=>path.relative(out,file)),path.join('Native','Bridge.cpp'),'-o',path.relative(out,library)]);
     const elf=await run(path.join(c.bin,'llvm-readelf'+suffix),['-h','-W','-l',library]);if(!elf.includes('DYN')||!elf.includes(abi==='arm64-v8a'?'AArch64':'X86-64'))throw Error('Android ELF ABI 검사 실패');const loads=elf.split(/\r?\n/).filter(line=>/^\s*LOAD\s/.test(line));if(!loads.length||loads.some(line=>{const align=Number(line.trim().split(/\s+/).at(-1));return !Number.isSafeInteger(align)||align<16384;}))throw Error('Android ELF 16KB 정렬 검사 실패');nativeFiles.push({abi,path:library,elf,alignmentVerified:true});
   }
-  onProgress('Android 패키지');await run(path.join(c.tools,'aapt2'+suffix),['compile','--dir',res,'-o',path.join(stage,'resources.zip')]);
-  const base=path.join(stage,'base.zip');await run(path.join(c.tools,'aapt2'+suffix),['link',...(settings.format==='aab'?['--proto-format']:[]),'-o',base,'-I',c.platform,'--manifest',path.join(stage,'AndroidManifest.xml'),'-A',assets,path.join(stage,'resources.zip')]);
+  // Native Windows packaging tools resolve relative paths without losing Korean names in the working directory.
+  onProgress('Android 패키지');await run(path.join(c.tools,'aapt2'+suffix),['compile','--dir',local(res),'-o',local(path.join(stage,'resources.zip'))]);
+  const base=path.join(stage,'base.zip');await run(path.join(c.tools,'aapt2'+suffix),['link',...(settings.format==='aab'?['--proto-format']:[]),'-o',local(base),'-I',local(c.platform),'--manifest',local(path.join(stage,'AndroidManifest.xml')),local(path.join(stage,'resources.zip'))]);
   const key=await signing(settings,profile.configuration,c.sdk,signal),signEnv={...process.env};
   if(settings.format==='apk'){
-    await fs.copyFile(path.join(dex,'classes.dex'),path.join(stage,'classes.dex'));await run(javaTool('jar'),['uf',base,'-C',stage,'classes.dex','-C',stage,'lib']);
-    const aligned=path.join(stage,'aligned.apk');await run(path.join(c.tools,'zipalign'+suffix),['-P','16','-f','4',base,aligned]);
+    // jar writes portable ZIP entry separators; Windows aapt2 -A produced backslashes.
+    await fs.cp(assets,path.join(stage,'assets'),{recursive:true});await fs.copyFile(path.join(dex,'classes.dex'),path.join(stage,'classes.dex'));await run(javaTool('jar'),['uf',base,'-C',stage,'classes.dex','-C',stage,'lib','-C',stage,'assets']);
+    const aligned=path.join(stage,'aligned.apk');await run(path.join(c.tools,'zipalign'+suffix),['-P','16','-f','4',local(base),local(aligned)]);
     const password=key.debug?['--ks-pass','pass:android','--key-pass','pass:android']:['--ks-pass','env:'+key.storePasswordEnv,'--key-pass','env:'+key.keyPasswordEnv];
     await run(javaTool('java'),['-jar',path.join(c.tools,'lib/apksigner.jar'),'sign','--ks',key.keyStore,'--ks-key-alias',key.alias,...password,'--out',apk,aligned],{env:signEnv});
-    const verification=await run(javaTool('java'),['-jar',path.join(c.tools,'lib/apksigner.jar'),'verify','--verbose','--print-certs',apk]);await run(path.join(c.tools,'zipalign'+suffix),['-c','-P','16','4',apk]);
-    const badging=await run(path.join(c.tools,'aapt2'+suffix),['dump','badging',apk]);if(!badging.includes("name='"+settings.applicationId+"'"))throw Error('APK applicationId 검사 실패');
+    const verification=await run(javaTool('java'),['-jar',path.join(c.tools,'lib/apksigner.jar'),'verify','--verbose','--print-certs',apk]);await run(path.join(c.tools,'zipalign'+suffix),['-c','-P','16','4',local(apk)]);
+    const badging=await run(path.join(c.tools,'aapt2'+suffix),['dump','badging',local(apk)]);if(!badging.includes("name='"+settings.applicationId+"'"))throw Error('APK applicationId 검사 실패');
     return {artifact:apk,artifactType:'apk',nativeFiles,signing:{debug:key.debug===true,verification},packageInspection:badging,installVerified:false,launchVerified:false};
   }
-  const module=path.join(stage,'bundle-base');await fs.mkdir(module);await run(javaTool('jar'),['xf',base],{cwd:module});await fs.mkdir(path.join(module,'manifest'));await fs.rename(path.join(module,'AndroidManifest.xml'),path.join(module,'manifest/AndroidManifest.xml'));await fs.cp(path.join(stage,'lib'),path.join(module,'lib'),{recursive:true});await fs.mkdir(path.join(module,'dex'));await fs.copyFile(path.join(dex,'classes.dex'),path.join(module,'dex/classes.dex'));
+  const module=path.join(stage,'bundle-base');await fs.mkdir(module);await run(javaTool('jar'),['xf',base],{cwd:module});await fs.mkdir(path.join(module,'manifest'));await fs.rename(path.join(module,'AndroidManifest.xml'),path.join(module,'manifest/AndroidManifest.xml'));await fs.cp(assets,path.join(module,'assets'),{recursive:true});await fs.cp(path.join(stage,'lib'),path.join(module,'lib'),{recursive:true});await fs.mkdir(path.join(module,'dex'));await fs.copyFile(path.join(dex,'classes.dex'),path.join(module,'dex/classes.dex'));
   const moduleZip=path.join(stage,'bundle-base.zip'),bundle=path.join(out,'Game.aab');await run(javaTool('jar'),['cMf',moduleZip,'-C',module,'.']);await run(javaTool('java'),['-jar',path.join(c.sdk,'bundletool.jar'),'build-bundle','--modules='+moduleZip,'--output='+bundle]);
   const password=key.debug?['-storepass','android','-keypass','android']:['-storepass:env',key.storePasswordEnv,'-keypass:env',key.keyPasswordEnv];await run(javaTool('jarsigner'),['-keystore',key.keyStore,...password,bundle,key.alias],{env:signEnv});const verification=await run(javaTool('jarsigner'),['-verify',bundle]);await run(javaTool('java'),['-jar',path.join(c.sdk,'bundletool.jar'),'validate','--bundle='+bundle]);
   return {artifact:bundle,artifactType:'aab',nativeFiles,signing:{debug:key.debug===true,verification},installVerified:false,launchVerified:false};

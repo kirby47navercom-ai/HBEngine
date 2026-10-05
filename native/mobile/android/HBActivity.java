@@ -24,6 +24,10 @@ public final class HBActivity extends Activity {
     private final ConcurrentHashMap<String, CompletableFuture<String>> queries = new ConcurrentHashMap<>();
     private String currentRequest;
     private volatile boolean destroyed;
+    private boolean foreground=true;
+    private long activeElapsed,activeMark=System.nanoTime();
+    private synchronized long activeTime(){return activeElapsed+(foreground?System.nanoTime()-activeMark:0);}
+    private synchronized void setActive(boolean next){long now=System.nanoTime();if(foreground)activeElapsed+=now-activeMark;activeMark=now;foreground=next;}
     private native byte[] nativeInvoke(int module, byte[] request);
     private static final String ORIGIN = "https://hbengine.local";
     private static final int LIMIT = 8388608;
@@ -122,10 +126,10 @@ public final class HBActivity extends Activity {
     // their replies arrive on WebView's bridge thread, never on this executor.
     public byte[] query(byte[] request) throws Exception {
         if(request.length>4000000||destroyed)throw new IOException("C++ 질의 범위 오류");String id=UUID.randomUUID().toString();CompletableFuture<String> result=new CompletableFuture<>();queries.put(id,result);
-        try{emit(new JSONObject().put("id",currentRequest).put("queryId",id).put("query",new JSONObject(new String(request,StandardCharsets.UTF_8))));return result.get(10,TimeUnit.SECONDS).getBytes(StandardCharsets.UTF_8);}finally{queries.remove(id);}
+        try{emit(new JSONObject().put("id",currentRequest).put("queryId",id).put("query",new JSONObject(new String(request,StandardCharsets.UTF_8))));long start=activeTime();for(;;){try{return result.get(100,TimeUnit.MILLISECONDS).getBytes(StandardCharsets.UTF_8);}catch(TimeoutException e){if(activeTime()-start>=TimeUnit.SECONDS.toNanos(10))throw e;}}}finally{queries.remove(id);}
     }
-    @Override protected void onPause(){if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(false)",null);super.onPause();}
-    @Override protected void onResume(){super.onResume();if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(true)",null);}
+    @Override protected void onPause(){setActive(false);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(false)",null);super.onPause();}
+    @Override protected void onResume(){super.onResume();setActive(true);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(true)",null);}
     @Override public void onBackPressed(){if(web!=null)web.evaluateJavascript("document.querySelector('#pause-toggle')?.click()",null);else super.onBackPressed();}
     @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
 }
