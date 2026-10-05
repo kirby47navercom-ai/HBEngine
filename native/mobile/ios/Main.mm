@@ -10,6 +10,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cctype>
+#include <vector>
 #include "Modules.hpp"
 
 static NSData* encode(id value){return [NSJSONSerialization dataWithJSONObject:value options:0 error:nil];}
@@ -19,10 +20,10 @@ static NSString* text(const std::string& value){return [[NSString alloc] initWit
 static bool safe(NSString* value){if(!value||value.length>2000||[value hasPrefix:@"/"]||[value containsString:@"\\"]||[value containsString:@":"])return false;for(NSString* part in [value componentsSeparatedByString:@"/"])if(!part.length||[part isEqual:@"."]||[part isEqual:@".."])return false;return [value rangeOfCharacterFromSet:NSCharacterSet.controlCharacterSet].location==NSNotFound;}
 
 // Assets use a loopback HTTP origin so WKWebView retains fetch, modules and WASM.
-// ponytail: a serial streaming asset server; parallel reads if measured load stalls.
 class AssetServer {
-    int socket_=-1;std::atomic<bool> active{false};std::thread thread;
+    int socket_=-1;std::atomic<bool> active{false};std::vector<std::thread> workers;
     NSString* root;NSDictionary* inventory;
+    void stop(){active=false;if(socket_>=0){shutdown(socket_,SHUT_RDWR);close(socket_);socket_=-1;}for(auto& worker:workers)if(worker.joinable())worker.join();}
     static bool sendAll(int client,const char* data,size_t size){while(size){auto n=send(client,data,size,0);if(n<=0)return false;data+=n;size-=n;}return true;}
     void serve(int client){@autoreleasepool{
         timeval timeout{5,0};setsockopt(client,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout));setsockopt(client,SOL_SOCKET,SO_SNDTIMEO,&timeout,sizeof(timeout));int yes=1;setsockopt(client,SOL_SOCKET,SO_NOSIGPIPE,&yes,sizeof(yes));
@@ -46,8 +47,11 @@ class AssetServer {
     }}
 public:
     int port=0;
-    AssetServer(NSString* directory,NSDictionary* files):root(directory),inventory(files){socket_=socket(AF_INET,SOCK_STREAM,0);sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);if(socket_<0||bind(socket_,reinterpret_cast<sockaddr*>(&address),sizeof(address))||listen(socket_,16))throw std::runtime_error("mobile asset server failed");socklen_t length=sizeof(address);getsockname(socket_,reinterpret_cast<sockaddr*>(&address),&length);port=ntohs(address.sin_port);active=true;thread=std::thread([this]{while(active){int client=accept(socket_,nullptr,nullptr);if(client<0)break;serve(client);close(client);}});}
-    ~AssetServer(){active=false;shutdown(socket_,SHUT_RDWR);close(socket_);if(thread.joinable())thread.join();}
+    AssetServer(NSString* directory,NSDictionary* files):root(directory),inventory(files){socket_=socket(AF_INET,SOCK_STREAM,0);sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);if(socket_<0||bind(socket_,reinterpret_cast<sockaddr*>(&address),sizeof(address))||listen(socket_,16)){stop();throw std::runtime_error("mobile asset server failed");}socklen_t length=sizeof(address);if(getsockname(socket_,reinterpret_cast<sockaddr*>(&address),&length)){stop();throw std::runtime_error("mobile asset port failed");}port=ntohs(address.sin_port);active=true;
+        // Bounded readers prevent idle WebKit connections from blocking all assets.
+        const int listener=socket_;try{for(int i=0;i<8;i++)workers.emplace_back([this,listener]{while(active){int client=accept(listener,nullptr,nullptr);if(client<0)break;serve(client);close(client);}});}catch(...){stop();throw;}
+    }
+    ~AssetServer(){stop();}
 };
 
 @interface HBController : UIViewController<WKScriptMessageHandler,WKNavigationDelegate> {

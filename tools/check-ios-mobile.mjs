@@ -45,10 +45,12 @@ for(const [i,count] of [[0,1],[1,10]]){
   assert.deepEqual(actor.position,[i?2:-2,1,0],'C++ 시작 실행이 배치 위치를 보존해야 해요.');
 }
 const origin=report.mobileHost.assetOrigin;assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
-const whole=await fetch(origin+'/Content/Assets/MobileVector.svg');assert.equal(whole.status,200);assert.equal(whole.headers.get('content-type'),'image/svg+xml');const image=await whole.text();
-for(const [range,expected] of [['bytes=0-7',image.slice(0,8)],['bytes=-8',image.slice(-8)]]){const response=await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range}});assert.equal(response.status,206);assert.equal(await response.text(),expected);}
-assert.equal((await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range:'bytes=invalid'}})).status,416);
-assert.equal((await fetch(origin+'/Native/Main.mm')).status,404);
+const asset=async(name,options={})=>{console.log('iOS 에셋 요청:',name,options.headers?.range||'전체');return fetch(origin+name,{...options,signal:AbortSignal.timeout(15000)});};
+const whole=await asset('/Content/Assets/MobileVector.svg');assert.equal(whole.status,200);assert.equal(whole.headers.get('content-type'),'image/svg+xml');const image=await whole.text();
+await Promise.all(Array.from({length:8},async()=>{const response=await asset('/Content/Assets/MobileVector.svg');assert.equal(response.status,200);assert.equal(await response.text(),image);}));
+for(const [range,expected] of [['bytes=0-7',image.slice(0,8)],['bytes=-8',image.slice(-8)]]){const response=await asset('/Content/Assets/MobileVector.svg',{headers:{range}});assert.equal(response.status,206);assert.equal(await response.text(),expected);}
+assert.equal((await asset('/Content/Assets/MobileVector.svg',{headers:{range:'bytes=invalid'}})).status,416);
+assert.equal((await asset('/Native/Main.mm')).status,404);
 await run(['simctl','launch',device.udid,'com.apple.mobilesafari']);
 await new Promise(resolve=>setTimeout(resolve,3000));const paused=JSON.parse(await fs.readFile(reportFile,'utf8'));
 await new Promise(resolve=>setTimeout(resolve,3000));const background=JSON.parse(await fs.readFile(reportFile,'utf8'));
