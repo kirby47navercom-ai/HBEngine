@@ -7,11 +7,11 @@ const root=path.resolve(import.meta.dirname,'..');
 export const androidSdk=()=>path.resolve(process.env.ANDROID_HOME||process.env.ANDROID_SDK_ROOT||path.join(process.env.LOCALAPPDATA||process.env.HOME,'HBEngine/Toolchains/Android'));
 const javaHome=()=>process.env.JAVA_HOME||(process.platform==='win32'?'C:/Program Files/Java/jdk-25':'');
 const javaTool=name=>javaHome()?path.join(javaHome(),'bin',name+(process.platform==='win32'?'.exe':'')):name;
-export function runTool(program,args,{cwd,signal,env=process.env,timeout=180000,maxOutput=50000}={}){
+export function runTool(program,args,{cwd,signal,env=process.env,timeout=180000,maxOutput=50000,onOutput}={}){
   return new Promise((resolve,reject)=>{
-    const child=spawn(program,args,{cwd,env,signal,windowsHide:true,shell:false,stdio:['ignore','pipe','pipe']});let output='',failure;
-    const append=data=>{output=(output+data.toString()).slice(-maxOutput);};child.stdout.on('data',append);child.stderr.on('data',append);
-    const timer=setTimeout(()=>{failure=Error('모바일 도구 시간 초과');child.kill();},timeout);child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timer);failure?reject(failure):code===0?resolve(output):reject(Error(output||'모바일 도구 실패: '+path.basename(program)));});
+    const child=spawn(program,args,{cwd,env,signal,windowsHide:true,shell:false,stdio:['ignore','pipe','pipe']});let output='',failure,forceTimer;
+    const append=data=>{output=(output+data.toString()).slice(-maxOutput);onOutput?.(data.toString());};child.stdout.on('data',append);child.stderr.on('data',append);
+    const timer=setTimeout(()=>{failure=Error('모바일 도구 시간 초과');child.kill();forceTimer=setTimeout(()=>child.kill('SIGKILL'),5000);},timeout);child.once('error',error=>{failure=error;if(signal?.aborted)forceTimer=setTimeout(()=>child.kill('SIGKILL'),5000);});child.once('close',code=>{clearTimeout(timer);clearTimeout(forceTimer);failure?reject(failure):code===0?resolve(output):reject(Error(output||'모바일 도구 실패: '+path.basename(program)));});
   });
 }
 export async function mobileCapability(profile){

@@ -8,12 +8,15 @@ const proof=JSON.parse(await fs.readFile(process.env.HB_MOBILE_PROOF_EXPORT||'na
 const out=proof.output,derived=path.join(out,'DerivedData'),app=path.join(derived,'Build/Products/Debug-iphonesimulator/HBGame.app');
 const run=async(args)=>{const result=await runTool('xcrun',args,{timeout:180000,maxOutput:args.includes('--json')?1000000:50000});if(!args.includes('--json'))console.log(result.trim());return result;};
 const build=async(platform,dir)=>{
-  await runTool('xcodebuild',['-project',path.join(out,'HBGame.xcodeproj'),'-scheme','HBGame','-configuration','Debug','-destination','generic/platform='+platform,'-derivedDataPath',dir,'CODE_SIGNING_ALLOWED=NO','build'],{timeout:600000});
+  console.log('Xcode '+platform+' 컴파일 시작');
+  await runTool('xcodebuild',['-project',path.join(out,'HBGame.xcodeproj'),'-scheme','HBGame','-configuration','Debug','-destination','generic/platform='+platform,'-derivedDataPath',dir,'CODE_SIGNING_ALLOWED=NO','build'],{timeout:600000,onOutput:text=>process.stdout.write(text)});
+  console.log('Xcode '+platform+' 컴파일 통과');
 };
 await build('iOS Simulator',derived);
 await build('iOS',path.join(out,'DeviceDerivedData'));
 const devices=JSON.parse(await run(['simctl','list','devices','available','--json']));
-const device=Object.values(devices.devices).flat().find(d=>d.isAvailable&&d.name.startsWith('iPhone'));
+const device=Object.entries(devices.devices).filter(([runtime])=>runtime.includes('iOS')).sort((a,b)=>b[0].localeCompare(a[0],undefined,{numeric:true})).flatMap(([,list])=>list).find(d=>d.isAvailable&&d.name.startsWith('iPhone'));
+console.log('시뮬레이터 선택:',device?.name,device?.udid);
 assert.ok(device,'설치된 iPhone 시뮬레이터가 없어요.');
 if(device.state!=='Booted')await run(['simctl','boot',device.udid]);
 await run(['simctl','bootstatus',device.udid,'-b']);

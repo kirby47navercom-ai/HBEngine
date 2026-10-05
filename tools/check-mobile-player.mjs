@@ -47,6 +47,8 @@ try{
   const invalid={key:'nativeCall',nativeId:'Unknown.Start',args:{},objects};await assert.rejects(post('/api/native/call',{token:builds[0].token,request:invalid}),/등록/);
   for(const [i,build] of builds.entries())await clients[i].call({command:'reset',objects:[]},build.metadata,request=>post('/api/native/call',{token:build.token,request}));assert.equal((await call(0,'Start')).outputs.result,2);
 }finally{child.stdin.end();await new Promise(resolve=>{child.once('close',resolve);});lines.close();}
+let outputBytes=0;const largeJSON=await runTool(process.execPath,['-e','process.stdout.write(JSON.stringify({text:"x".repeat(100000)}))'],{maxOutput:150000,onOutput:text=>{outputBytes+=text.length;}});assert.equal(JSON.parse(largeJSON).text.length,100000);assert.equal(outputBytes,largeJSON.length);
+const timeoutStart=Date.now();await assert.rejects(runTool(process.execPath,['-e','process.on("SIGTERM",()=>{});setInterval(()=>{},100)'],{timeout:200}),/시간 초과/);assert.ok(Date.now()-timeoutStart<8000,'시간 초과 도구를 실제로 종료해야 해요.');
 let posted,bridge=platformBridge(packet=>{posted=packet;}),job=bridge.request('native',{},async query=>query.x+1);await bridge.receive({id:posted.id,queryId:'q',query:{x:2}});assert.equal(posted.operation,'queryReply');assert.equal(posted.data.value,3);await bridge.receive({id:'1',data:{ok:true}});assert.deepEqual(await job,{ok:true});
 const record=await createProject('모바일 출력',dir,'2d'),profile={...defaultBuildProfile(record.manifest),id:'ios',target:'ios'};
 const scenePath=await record.project.resolve(record.manifest.startupScene),scene=JSON.parse(await fs.readFile(scenePath,'utf8'));
