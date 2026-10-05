@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 혼합 샘플 알림 정책 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [알림 정책 계약](docs/ANIMATION_NOTIFY_POLICY.md)에 Epic5.8 Asset Details119–122 재대조와 실제 계약·검증·남은 세부를 기록해요.
+
+- 1D/2D All/Highest/None·동률·별도 허용 기여도/최소 가중치·중첩/공유 경로·선택 변경의 filtered End/새 Begin을 연결했어요. 포즈/시계/Sync 리더는 유지하고 all 그래프는 추가 계획 Map을 건너뛰어요. 사람의 정책 선택/Undo·AI/schema·notifyWeight/notifyInput 진단을 공유해요.
+- 실제 Editor R6GRXh와 release Player IZGIm1에서 처음 샘플0→C++/BP 축 변경 후 샘플2의 인자 알림·구간→BP→사용자 C++, C++ Stop의 End/stopped·원본/exit0/서버 정리가 통과했어요. 최종 End 카운터 Editor7/7·Player3/3예요. 마지막 null 거절/all 승자 계산 생략은 코어이고 실제 highest 경로를 유지해요. 포즈/상태/Sync/구간·main/API/integration/runtime·startup-l3JCs9도 통과했어요.
+- QiFMpW CPU all .0096086/highest .0082983/none .0089818ms·포즈120bytes는 Actor1/클립3/단일 알림각1/5×1000Tick의 작은 근거이며 정책 순수비용/전체 FPS/모바일 우열이 아니에요. 사용자 설치/창/게임을 건드리지 않았어요.
+- 다음은 몽타주/슬롯의 포즈 통합·공유 애니메이션 메타·Blend Space 남은 세부와 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 구현을 계속해요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 두 축 Blend Space 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [Blend Space 계약](docs/ANIMATION_BLEND_SPACE.md)에 실제 공식 기술 본문/API 읽기 경계·자체 수학/차이·사람/AI/C++/BP·검증/비용과 남은 세부를 기록했어요. 전체 연구/기능 완료로 승격하지 않아요.

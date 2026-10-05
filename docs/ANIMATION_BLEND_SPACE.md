@@ -1,5 +1,7 @@
 # 두 축 Blend Space · 2026-10-05
 
+후속: [혼합 샘플 알림 정책](ANIMATION_NOTIFY_POLICY.md)의1D/2D All/Highest/None·중첩/공유 경로·구간 End·사람/AI/실제 Editor/Player BP→사용자 C++를 추가했어요. 아래 최초 검증과 구분해요.
+
 ## 공식 근거와 읽기 경계
 
 [Epic5.8 Blend Spaces](https://dev.epicgames.com/documentation/en-us/unreal-engine/blend-spaces-in-unreal-engine)의 기술 본문0–171과 Asset Details 표를 읽었어요. 축·좌표·삼각/격자·보정/가중치 속도·알림 방식·편집/미리보기 조작을 구분했어요. 연결된 Analysis/Aim Offset/API·그림·영상은 아직 읽기로 세지 않아요.
@@ -40,4 +42,4 @@
 - 포즈/상태/동기화/구간 알림·main/API/integration/runtime 회귀 및 `startup-state-DAf2Xd`의 실제 C++ 첫 프레임 HUD/배치 위치가 통과했어요. 초기 코어의 `.2/.3` 정확한 부동소수점 동등 단언은 허용 오차 비교로 수정했어요. 실제 구현 오류로 세지 않아요.
 - `animation-blend-space-cost-xGaboc`: Actor1/트랜스폼 클립3, 준비100회/5×1000Tick에서 Direct 중앙.0082166ms, 두 축 혼합.0083768ms예요. 포즈120bytes·샘플 가중치24bytes의 버퍼를 재사용해요. 이 작은 CPU 측정은 전체 FPS/프로세스 메모리/탄막/모바일·발열 근거가 아니에요. 샘플64/축 격자64/보정60초·기존 문맥2048/포즈64MiB 한도를 유지하고 계산 도중 한도를 회피하지 않아요.
 
-연구에서 확인한 별도 격자 bilinear/선호 삼각 방향, 추가 보정 곡선/속도 상한/감쇠비, 샘플·뼈별 가중치 보정, 축에 따른 클립 배속, All/Highest/None 알림 방식, root motion 기반 좌표 자동 계산·Analysis/Aim Offset은 후속 계약이에요. 현재 메뉴로 미지원 설정을 받거나 구현한 것으로 세지 않아요. 몽타주/슬롯·IK/리타깃/Root Motion과 다른 전체2D·렌더/월드·게임/C++/AI·UI/오디오·모바일/배포·가벼움 누적 요구도 유지하며 다음 구현을 계속해요. 사용자 설치본/프로필/게임 원본/열린 작업 창은 변경하지 않았어요.
+연구에서 확인한 별도 격자 bilinear/선호 삼각 방향, 추가 보정 곡선/속도 상한/감쇠비, 샘플·뼈별 가중치 보정, 축에 따른 클립 배속, root motion 기반 좌표 자동 계산·Analysis/Aim Offset은 후속 계약이에요. 현재 메뉴로 미지원 설정을 받거나 구현한 것으로 세지 않아요. 몽타주/슬롯·IK/리타깃/Root Motion과 다른 전체2D·렌더/월드·게임/C++/AI·UI/오디오·모바일/배포·가벼움 누적 요구도 유지하며 다음 구현을 계속해요. 사용자 설치본/프로필/게임 원본/열린 작업 창은 변경하지 않았어요.

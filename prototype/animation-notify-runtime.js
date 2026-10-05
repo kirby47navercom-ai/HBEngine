@@ -7,7 +7,7 @@ export class AnimationNotifyTrack {
   constructor(owner,limits){this.owner=owner;this.limits=limits;this.active=new Map();this.delivered=new Map();this.hasStates=owner.data.nodes.some(n=>n.properties.notifyStates?.length);}
   event(window,phase,at,fields={}){
     const {record,notify,cycle,instance}=window;
-    return animationNotifyPayload(record,notify,cycle,{name:notify[{notifyBegin:'onBegin',notifyTick:'onTick',notifyEnd:'onEnd'}[phase]],phase,instance,time:at-cycle*record.length,weight:record.weight,duration:notify.duration,deltaSeconds:0,progress:clamp((at-window.begin)/notify.duration),reason:'',...fields});
+    return animationNotifyPayload(record,notify,cycle,{name:notify[{notifyBegin:'onBegin',notifyTick:'onTick',notifyEnd:'onEnd'}[phase]],phase,instance,time:at-cycle*record.length,weight:record.notifyWeight??record.weight,duration:notify.duration,deltaSeconds:0,progress:clamp((at-window.begin)/notify.duration),reason:'',...fields});
   }
   resolve(weights,pending,delta){
     if(!this.hasStates)return;
@@ -37,6 +37,6 @@ export class AnimationNotifyTrack {
     else if(event.phase==='notifyTick'&&this.delivered.has(event.instance))this.delivered.set(event.instance,event);
   }
   cancel(reason='stopped'){const events=[...this.delivered.values()].map(event=>({...event,name:this.owner.nodes.get(event.clip).properties.notifyStates.find(n=>n.id===event.notify).onEnd,phase:'notifyEnd',deltaSeconds:0,reason}));this.delivered.clear();this.active.clear();return events;}
-  snapshot(){return [...this.active.values()].map(w=>({instance:w.instance,id:w.notify.id,name:w.notify.name,clip:w.record.id,context:w.record.context.key,cycle:w.cycle,time:w.at-w.cycle*w.record.length,duration:w.notify.duration,progress:clamp((w.at-w.begin)/w.notify.duration),weight:w.record.weight}));}
+  snapshot(){return [...this.active.values()].map(w=>({instance:w.instance,id:w.notify.id,name:w.notify.name,clip:w.record.id,context:w.record.context.key,cycle:w.cycle,time:w.at-w.cycle*w.record.length,duration:w.notify.duration,progress:clamp((w.at-w.begin)/w.notify.duration),weight:w.record.notifyWeight??w.record.weight}));}
   dispose(){this.active.clear();this.delivered.clear();}
 }

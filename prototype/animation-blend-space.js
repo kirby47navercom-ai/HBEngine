@@ -3,6 +3,7 @@ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const tau=Math.PI*2,epsilon=1e-9;
 export const animationBlendModes=['cartesian','directional','freeformDirectional'];
 export const animationAxisSmoothing=['linear','exponential'];
+export const animationBlendNotifyModes=['all','highest','none'];
 export const defaultAnimationAxis=name=>({name,min:-1,max:1,divisions:8,snap:false,wrap:false,smoothing:0,smoothingType:'linear'});
 export function validAnimationBlendSpace(p,parameters){
   if(!animationBlendModes.includes(p.mode)||parameters.get(p.parameterX)!=='float'||parameters.get(p.parameterY)!=='float'||p.parameterX===p.parameterY)return false;

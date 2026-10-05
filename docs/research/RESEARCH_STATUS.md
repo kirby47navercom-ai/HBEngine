@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 구현 후속: [혼합 샘플 알림 정책](../ANIMATION_NOTIFY_POLICY.md). 이미 읽은 Epic5.8 Blend Spaces의 Asset Details119–122를 다시 대조해1D/2D3가지 정책과 중첩/공유 경로·구간 End/최소 기여도를 연결했어요. 새로운 전체 API/미디어 읽기로 세지 않으며 기존 corpus gate는 유지해요. 실제 Editor/Player의 인자→BP→사용자 C++·중지 시 Begin/End 일치와 기존 포즈/시계/HUD를 검사하고 전체 엔진 구현을 계속해요.
+
 2026-10-05 구현 후속: [두 축 Blend Space](../ANIMATION_BLEND_SPACE.md). Epic5.8 Blend Spaces 기술 본문0–171/Asset Details와 Unity6000.0 2D Blending 전체 기술 본문/좌표 두 표·API3개 자체 선언/Description·BlendTreeType 설명/5개 멤버 요약을 읽었어요. native/build/blend-space-docs-xqmLcK 원문/본문/SHA/manifest를 보존해요. 연결 Analysis/AimOffset/API/멤버와 그림/영상·전체 corpus gate는 미독/미완료를 유지해요. 자체 삼각/각도·반지름 수학 계약과 원본 엔진 동일성은 구분해요. 사람/AI·2D/가져온 뼈·C++/BP·실제 Editor/Player·작은 비용/시작 위치/HUD 검증을 기록하며 전체 엔진 구현을 계속해요.
 
 2026-10-05 구현 후속: [구간 알림·이벤트 인자](../ANIMATION_NOTIFIES.md). Epic5.8 UAnimNotifyState의 자체 선언/변수/함수 요약0–153을 새로 읽고 Notifies 기술 본문을 다시 대조했어요. Unity6000.0 AnimationEvent의 float/int/string/objectReferenceParameter/functionName5개의 각 선언/Description을 새로 읽었어요. 원문/본문/SHA와 경계 manifest는 native/build/animation-notify-docs-BKjIEx에 있어요. 개별 Epic 함수 추측 주소의 접근 실패/빈 본문은 미독이고 연결 클래스/상속·미디어/전체 gate를 승격하지 않아요. 사람/AI·범위 수명·typed BP/C++·별도 실제 Editor/Player/2D 코어를 연결했고 몽타주·공유 Sequence/Skeleton 알림·다른 전체 기능은 계속해요.

@@ -1,5 +1,9 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 혼합 샘플 알림 정책 검증 후속
+
+1D/2D3모드·동률/최소 가중치·중첩/공유 경로·포즈/리더/시계 유지·구간 filtered End/새 Begin·legacy/불법 필드·all 추가 Map 생략 코어가 통과했어요. 실제 Editor R6GRXh/Player IZGIm1은 인자 알림→사용자 C++, 중지 뒤 Begin/End7/7·3/3 및 원본/exit0/소유 서버 정리 후 acceptance를 남겨요. 마지막 null 검증/all 불필요한 승자 계산 제거는 코어로 확인했고 실제 highest 경로는 유지해요. runtime·첫HUD/배치 위치 l3JCs9·작은CPU QiFMpW는 별도 근거예요. 사용자 설치/창/게임은 보존해요.
+
 ## 두 축 Blend Space 검증 후속
 
 초기 코어의 [.5,.2,.3] deepEqual은 실제 [.5,.19999999999999996,.30000000000000004]를 오류로 센 시험 문제였어요. 허용오차 비교로 수정했고 삼각/64샘플·방향/반지름·보정/순환·독립 상태·동기화/알림·2D/뼈 검사가 통과했어요. zlWrBz/xQGZET 실제 Editor와 XaWTs8/최종ZBmccm release Player가 원본·exit0/소유 서버 정리 뒤 acceptance를 남겨요. xQGZET는 차트 변하지 않으면 DOM 변경0을 검사해요. 마지막 공용 누적기 임시 객체 제거는 코어/Player에서 확인했고 기존 Direct 회귀도 통과했어요. 작은CPU xGaboc·시작 위치/첫HUD DAf2Xd는 별도 근거이며 전체 모바일/FPS로 확대하지 않아요. 실패/사용자 설치/게임/열린 창은 보존해요.

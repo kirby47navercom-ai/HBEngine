@@ -56,9 +56,9 @@ function markerSpan(leader,start,end,follower,previous,common){
 function lengthSpan(leader,start,end,follower){const phase=v=>leader.p.loop?v/leader.length:clamp(v/leader.length);return {start:phase(start)*follower.length,end:phase(end)*follower.length};}
 export class AnimationSyncGroups {
   constructor(owner){this.owner=owner;this.groups=new Map();this.notifies=new AnimationNotifyTrack(owner,animationSyncLimits);}
-  resolve(weights,delta=0){
+  resolve(weights,delta=0,notifyWeights=weights){
     const frame=this.owner.frame,groups=new Map();
-    for(const [record,weight] of weights){record.weight=weight;record.leader=true;record.grouped=false;
+    for(const [record,weight] of weights){record.weight=weight;record.notifyWeight=notifyWeights.get(record)||0;record.leader=true;record.grouped=false;
       if(record.lastRelevantFrame!==frame-1||record.fresh)record.syncReady=false;
       if(weight<=0){record.syncReady=false;continue;}record.lastRelevantFrame=frame;if(weight>=1-1e-6)record.syncReady=true;
       if(!record.group||record.sync.role.startsWith('transition')&&!record.syncReady)continue;if(!groups.has(record.group))groups.set(record.group,[]);groups.get(record.group).push(record);
@@ -78,7 +78,7 @@ export class AnimationSyncGroups {
     }
     this.groups=next;
     const pending=[];
-    for(const [record,weight] of weights){
+    for(const [record,weight] of notifyWeights){
       if(weight>0)for(const notify of record.notifies){if(weight<notify.minWeight||record.grouped&&!record.leader&&!notify.triggerOnFollower)continue;
         const start=record.previous,end=record.absolute,initial=record.fresh&&Math.abs(start-notify.time)<1e-9;
         const first=record.p.loop?Math.floor((start-notify.time)/record.length)+(initial?0:1):0,last=record.p.loop?Math.floor((end-notify.time)/record.length):0;
@@ -86,9 +86,9 @@ export class AnimationSyncGroups {
         for(let cycle=first;cycle<=last;cycle++){const at=cycle*record.length+notify.time;if(at<0||at>end||!(at>start||initial&&at===start))continue;if(pending.length+this.owner.events.length>=4096)throw Error('애니메이션 이벤트 한도4096');pending.push({fraction:end===start?0:(at-start)/(end-start),event:animationNotifyPayload(record,notify,cycle,{name:notify.name,phase:'notify',time:notify.time,weight})});}
       }
     }
-    this.notifies.resolve(weights,pending,delta);for(const record of weights.keys())record.fresh=false;
+    this.notifies.resolve(notifyWeights,pending,delta);for(const record of weights.keys())record.fresh=false;
     pending.sort((a,b)=>a.fraction-b.fraction);for(const item of pending)this.owner.queueEvent(item.event);
   }
-  snapshot(){return [...this.groups.values()].map(g=>({name:g.name,phase:g.phase,method:g.method,marker:g.marker,leader:{id:g.record.id,name:this.owner.nodes.get(g.record.id).name,context:g.record.context.key},participants:g.records.map(r=>({id:r.id,context:r.context.key,weight:r.weight,role:r.sync.role,time:r.absolute,leader:r.leader}))}));}
+  snapshot(){return [...this.groups.values()].map(g=>({name:g.name,phase:g.phase,method:g.method,marker:g.marker,leader:{id:g.record.id,name:this.owner.nodes.get(g.record.id).name,context:g.record.context.key},participants:g.records.map(r=>({id:r.id,context:r.context.key,weight:r.weight,notifyWeight:r.notifyWeight,role:r.sync.role,time:r.absolute,leader:r.leader}))}));}
   dispose(){this.groups.clear();this.notifies.dispose();}
 }
