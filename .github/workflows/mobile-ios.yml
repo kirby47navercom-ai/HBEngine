@@ -31,4 +31,6 @@ jobs:
             native/build/mobile-player-*/acceptance.json
             native/build/mobile-player-*/모바일 출력/Builds/ios/*/ios-*.json
             native/build/mobile-player-*/모바일 출력/Builds/ios/*/ios-*.png
+            native/build/mobile-player-*/모바일 출력/Builds/ios/*/ios-*.txt
+            native/build/mobile-player-*/모바일 출력/Builds/ios/*/HBGame*.ips
           retention-days: 7

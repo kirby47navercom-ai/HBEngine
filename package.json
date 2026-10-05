@@ -95,6 +95,7 @@
     "test:animation-montage-editor": "node tools/check-animation-graph-window.mjs --montage --editor",
     "test:animation-montage-player": "node tools/check-animation-graph-window.mjs --montage",
     "android:prepare": "node tools/prepare-android.mjs",
+    "test:android-assets": "node tools/check-android-assets.mjs",
     "test:mobile": "node tools/check-mobile-player.mjs"
   },
   "dependencies": {

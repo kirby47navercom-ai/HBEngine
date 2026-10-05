@@ -9,6 +9,7 @@ import android.net.Uri;
 import org.json.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -69,12 +70,35 @@ public final class HBActivity extends Activity {
             Map<String,String> headers=new HashMap<>();headers.put("X-Content-Type-Options","nosniff");headers.put("Cache-Control","no-cache");headers.put("Accept-Ranges","bytes");
             if(name.startsWith("Content/"))headers.put("Content-Security-Policy",ext.equals("svg")?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox");
             if(name.equals("prototype/player.html"))headers.put("Content-Security-Policy","default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'");
-            String range=request.getRequestHeaders().get("Range");
-            if(range!=null){long size=fileSizes.getOrDefault(name,0L);java.util.regex.Matcher parts=java.util.regex.Pattern.compile("bytes=(\\d+)-(\\d*)").matcher(range);if(!parts.matches())throw new IOException("Range 오류");long start=Long.parseLong(parts.group(1)),end=parts.group(2).isEmpty()?size-1:Math.min(Long.parseLong(parts.group(2)),size-1);if(start>end||start>=size)return new WebResourceResponse(type,"UTF-8",416,"Range Not Satisfiable",Collections.singletonMap("Content-Range","bytes */"+size),new ByteArrayInputStream(new byte[0]));InputStream stream=getAssets().open(name);long skip=start;while(skip>0){long n=stream.skip(skip);if(n<=0){stream.close();throw new IOException("에셋 Range 읽기 실패");}skip-=n;}headers.put("Content-Range","bytes "+start+"-"+end+"/"+size);headers.put("Content-Length",String.valueOf(end-start+1));return new WebResourceResponse(type,"UTF-8",206,"Partial Content",headers,new LimitedStream(stream,end-start+1));}
+            String range=singleRange(request.getRequestHeaders());
+            if(range!=null){long size=fileSizes.getOrDefault(name,0L);long[] part=byteRange(range,size);if(part==null){headers.put("Content-Range","bytes */"+size);headers.put("Content-Length","0");return new WebResourceResponse(type,"UTF-8",416,"Range Not Satisfiable",headers,new ByteArrayInputStream(new byte[0]));}long start=part[0],end=part[1];InputStream stream=getAssets().open(name);long skip=start;while(skip>0){long n=stream.skip(skip);if(n<=0){stream.close();throw new IOException("에셋 Range 읽기 실패");}skip-=n;}headers.put("Content-Range","bytes "+start+"-"+end+"/"+size);headers.put("Content-Length",String.valueOf(end-start+1));return new WebResourceResponse(type,"UTF-8",206,"Partial Content",headers,new LimitedStream(stream,end-start+1));}
             return new WebResourceResponse(type,"UTF-8",200,"OK",headers,getAssets().open(name));
         } catch(Exception e) { return new WebResourceResponse("text/plain","UTF-8",404,"Not Found",Collections.emptyMap(),new ByteArrayInputStream(new byte[0])); }
     }
-    private static final class LimitedStream extends FilterInputStream { private long remaining;LimitedStream(InputStream stream,long length){super(stream);remaining=length;}@Override public int read() throws IOException {if(remaining<=0)return -1;int value=super.read();if(value>=0)remaining--;return value;}@Override public int read(byte[] bytes,int offset,int length) throws IOException {if(remaining<=0)return -1;int n=super.read(bytes,offset,(int)Math.min(length,remaining));if(n>0)remaining-=n;return n;} }
+    // ponytail: single byte range; multipart only when a supported decoder needs it.
+    private static String singleRange(Map<String,String> headers) {
+        for(Map.Entry<String,String> entry:headers.entrySet())if(entry.getKey().equalsIgnoreCase("Range")){String value=entry.getValue().trim();return value.regionMatches(true,0,"bytes=",0,6)&&value.indexOf(',')<0?value:null;}
+        return null;
+    }
+    private static long[] byteRange(String value,long size) {
+        if(value==null||value.length()>256||size<=0)return null;
+        java.util.regex.Matcher parts=java.util.regex.Pattern.compile("(?i)bytes=(\\d*)-(\\d*)").matcher(value.trim());
+        if(!parts.matches()||parts.group(1).isEmpty()&&parts.group(2).isEmpty())return null;
+        BigInteger total=BigInteger.valueOf(size);long start,end=size-1;
+        if(parts.group(1).isEmpty()){BigInteger suffix=new BigInteger(parts.group(2));if(suffix.signum()==0)return null;start=size-suffix.min(total).longValue();}
+        else{BigInteger first=new BigInteger(parts.group(1));if(first.compareTo(total)>=0)return null;start=first.longValue();if(!parts.group(2).isEmpty())end=new BigInteger(parts.group(2)).min(total.subtract(BigInteger.ONE)).longValue();}
+        return end<start?null:new long[]{start,end};
+    }
+    private static final class LimitedStream extends FilterInputStream {
+        private long remaining;LimitedStream(InputStream stream,long length){super(stream);remaining=length;}
+        @Override public int read() throws IOException {if(remaining<=0)return -1;int value=in.read();if(value>=0)remaining--;return value;}
+        @Override public int read(byte[] bytes,int offset,int length) throws IOException {if(offset<0||length<0||offset>bytes.length-length)throw new IndexOutOfBoundsException();if(length==0)return 0;if(remaining<=0)return -1;int n=in.read(bytes,offset,(int)Math.min(length,remaining));if(n>0)remaining-=n;return n;}
+        @Override public long skip(long count) throws IOException {if(count<=0||remaining<=0)return 0;long n=in.skip(Math.min(count,remaining));remaining-=n;return n;}
+        @Override public int available() throws IOException {return (int)Math.min(in.available(),remaining);}
+        @Override public boolean markSupported(){return false;}
+        @Override public void mark(int limit){}
+        @Override public void reset() throws IOException {throw new IOException("범위 스트림은 되감기를 지원하지 않아요.");}
+    }
 
     private void emit(JSONObject packet) { if(destroyed)return;runOnUiThread(()->{if(!destroyed&&web!=null)web.evaluateJavascript("window.hbMobileReply&&window.hbMobileReply("+packet.toString()+")",null);}); }
     @JavascriptInterface public void postMessage(String payload) {

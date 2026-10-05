@@ -6,7 +6,7 @@ import {runTool} from './mobile-android.mjs';
 if(process.platform!=='darwin')throw Error('iOS 실행 검증에는 Mac과 Xcode가 필요해요.');
 const proof=JSON.parse(await fs.readFile(process.env.HB_MOBILE_PROOF_EXPORT||'native/build/mobile-proof.json','utf8'));
 const out=proof.output,derived=path.join(out,'DerivedData'),app=path.join(derived,'Build/Products/Debug-iphonesimulator/HBGame.app');
-const run=async(args)=>{const result=await runTool('xcrun',args,{timeout:180000,maxOutput:args.includes('--json')?1000000:50000});if(!args.includes('--json'))console.log(result.trim());return result;};
+const run=async(args)=>{console.log('iOS 명령 시작:',args.join(' '));const result=await runTool('xcrun',args,{timeout:180000,maxOutput:args.includes('--json')?1000000:50000});if(!args.includes('--json'))console.log(result.trim());return result;};
 const build=async(platform,dir)=>{
   console.log('Xcode '+platform+' 컴파일 시작');
   await runTool('xcodebuild',['-project',path.join(out,'HBGame.xcodeproj'),'-scheme','HBGame','-configuration','Debug','-destination','generic/platform='+platform,'-derivedDataPath',dir,'CODE_SIGNING_ALLOWED=NO','build'],{timeout:600000,onOutput:text=>process.stdout.write(text)});
@@ -15,9 +15,13 @@ const build=async(platform,dir)=>{
 await build('iOS Simulator',derived);
 await build('iOS',path.join(out,'DeviceDerivedData'));
 const devices=JSON.parse(await run(['simctl','list','devices','available','--json']));
-const device=Object.entries(devices.devices).filter(([runtime])=>runtime.includes('iOS')).sort((a,b)=>b[0].localeCompare(a[0],undefined,{numeric:true})).flatMap(([,list])=>list).find(d=>d.isAvailable&&d.name.startsWith('iPhone'));
+await fs.writeFile(path.join(out,'ios-devices.json'),JSON.stringify(devices,null,2));
+const sdk=(await run(['--sdk','iphonesimulator','--show-sdk-version'])).trim(),runtimes=Object.entries(devices.devices).filter(([runtime])=>runtime.includes('iOS')).sort((a,b)=>b[0].localeCompare(a[0],undefined,{numeric:true})),matching=runtimes.find(([runtime])=>runtime.endsWith('iOS-'+sdk.replaceAll('.','-')));
+const iphone=d=>d.isAvailable&&d.name.startsWith('iPhone'),device=matching?.[1].find(iphone)||runtimes.flatMap(([,list])=>list).find(iphone);
+console.log('시뮬레이터 기준:',{sdk,runtime:runtimes.find(([,list])=>list.some(d=>d.udid===device?.udid))?.[0]});
 console.log('시뮬레이터 선택:',device?.name,device?.udid);
 assert.ok(device,'설치된 iPhone 시뮬레이터가 없어요.');
+try{
 if(device.state!=='Booted')await run(['simctl','boot',device.udid]);
 await runTool('open',['-a','Simulator','--args','-CurrentDeviceUDID',device.udid],{timeout:60000});
 await run(['simctl','bootstatus',device.udid,'-b']);
@@ -63,3 +67,9 @@ await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
 await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,backgroundPaused:true,resumePreservesWorld:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
 await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.png')]);
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');
+}catch(error){
+  console.error('iOS 실행 검사 실패:',error.message);
+  try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'"'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
+  const crashes=path.join(process.env.HOME,'Library/Logs/DiagnosticReports');try{for(const name of await fs.readdir(crashes))if(name.startsWith('HBGame')&&name.endsWith('.ips'))await fs.copyFile(path.join(crashes,name),path.join(out,name));}catch(failure){if(failure.code!=='ENOENT')console.error('iOS 충돌 기록 수집:',failure.message);}
+  throw error;
+}

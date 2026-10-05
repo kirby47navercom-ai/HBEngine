@@ -1,6 +1,6 @@
 # 강체·관절·공간 검색의 제작/실행 대조 — 2026-10-03
 
-이후 형상 추가와 검증은 [충돌 형상 연구](COLLISION_GEOMETRY_RESEARCH.md)에 연결했다. 실제 convex hull/triangle mesh·오목한 PolygonCollider2D/열린 EdgeCollider2D, 편집/생성/저장·AI revision·BP/C++ 동일 query가 추가됐다. 기본 강체 136개 검사와 형상 67개 검사를 각각 유지한다.
+이후 형상 추가와 검증은 [충돌 형상 연구](COLLISION_GEOMETRY_RESEARCH.md)에 연결했다. 실제 convex hull/triangle mesh·오목한 PolygonCollider2D/열린 EdgeCollider2D, 편집/생성/저장·AI revision·BP/C++ 동일 query가 추가됐다. 기본 강체는 136개에서 확장된 144개 검사와 형상 67개 검사를 각각 유지한다.
 
 사용자의 요구 범위는 Unreal/Unity 전 영역과 각 영역의 세부 동작이다. 이번 물리 구현은 그 범위의 일부다. 전체 매뉴얼·API·패키지를 모두 읽었거나 엔진 전체를 완성한 상태로 기록하지 않는다. [전체 영역 대조](REFERENCE_COVERAGE.md)와 [분야별 기존 연구](ENGINE_WORKFLOW_RESEARCH.md)를 함께 유지한다.
 
@@ -75,10 +75,10 @@
 
 ## 검증과 남은 작업
 
-`test:physics`는 Node에서 실제 WASM으로 136개 조건을 확인한다. 같은 `physics-cases.js`를 `prototype/tests/physics.html`에서 실제 브라우저로 실행한다. 캡슐 모서리/회전 상자/shape cast 법선, layer31/마스크/트리거, 힘 4모드/질량/회전, sensor 질량/관성, collider 없는 바디의 질량/충격/형상 추가·제거, CCD, sleep/축 고정, 6종 관절과 실제 Hinge/Slider 모터, 삭제/부모 변환/debug stride/잘못된 snapshot을 검사한다. 같은 명령에서 실제 컴파일한 사용자 C++의 동기 검색·HitResult/배열·함수 안 이동/충돌 비활성·힘·BP split pin을 추가 확인한다.
+`test:physics`는 Node에서 실제 WASM으로 144개 조건을 확인한다. 같은 `physics-cases.js`를 `prototype/tests/physics.html`에서 실제 브라우저로 실행한다. 캡슐 모서리/회전 상자/shape cast 법선, layer31/마스크/트리거, 힘 4모드/질량/회전, sensor 질량/관성, collider 없는 바디의 질량/충격/형상 추가·제거, CCD, sleep/축 고정, 6종 관절과 실제 Hinge/Slider 모터, 삭제/부모 변환/debug stride/잘못된 snapshot을 검사한다. 같은 명령에서 실제 컴파일한 사용자 C++의 동기 검색·HitResult/배열·함수 안 이동/충돌 비활성·힘·BP split pin을 추가 확인한다.
 
 `node tools/check-physics-editor.mjs http://127.0.0.1:5182`는 `authoring-qa`에서만 새 장면을 만들고 공용 schema/MIME, revision/dryRun/Undo/저장, 실제 2D/3D Play·착지/질량/CCD/월드 관절·pause·Stop 원본 복구를 확인한다. 사용자 문서를 대상으로 실행하지 않는다. 실제 키보드로 2D 회전 축 체크·CCD·Hinge ±20도 값을 편집하여 파일/Play/AI 관측값 일치도 확인했다. 브라우저 도구의 `fill`만으로 native change가 발생한다고 가정하지 않으며 숫자는 실제 타이핑/확정으로 검사했다.
 
-BP Inspector도 같은 선택의 속성 재구성 뒤 접기·검색·스크롤·입력 포커스를 보존한다. 자체 QA에서 컴포넌트 그룹을 접고 운동 형식을 바꾼 뒤 접힌 상태와 `운동` 검색 결과가 유지되는 것을 실제 DOM으로 확인했다. `test:desktop`은 배포 폴더의 물리 모듈을 Node로 불러 같은 136조건을 검사하고, 실제 EXE/WebView2 시작·허브·프로젝트 경로·종료를 별도로 검사한다. 개발 서버 브라우저 검사와 배포 검사 환경을 구별한다.
+BP Inspector도 같은 선택의 속성 재구성 뒤 접기·검색·스크롤·입력 포커스를 보존한다. 자체 QA에서 컴포넌트 그룹을 접고 운동 형식을 바꾼 뒤 접힌 상태와 `운동` 검색 결과가 유지되는 것을 실제 DOM으로 확인했다. `test:desktop`은 배포 폴더의 물리 모듈을 Node로 불러 같은 144조건을 검사하고, 실제 EXE/WebView2 시작·허브·프로젝트 경로·종료를 별도로 검사한다. 개발 서버 브라우저 검사와 배포 검사 환경을 구별한다.
 
 이 구현은 정밀 primitive 강체 단계다. Mesh/Convex/Polygon/Heightfield·terrain collision, character step/slope/platform controller, contact filtering 프로필/충돌 채널 전체, COM/관성/보간/solver 설정 저작, 완전한 연결 프레임/6-DOF/break/soft/articulation, ragdoll/vehicles/cloth/destruction, native 물리 backend·병렬 처리·공간 질의 최적화·규모별 성능 검증은 계속 남아 있다. 렌더링·애니메이션·머테리얼·UI·오디오·에셋/빌드·네트워크·AI 등 다른 전 영역도 기존 전체 작업 지도의 모든 세부 항목을 유지한다.
