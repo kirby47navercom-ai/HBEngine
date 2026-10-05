@@ -28,7 +28,17 @@ JS 호스트 요청은 활성 시간 15초, C++ 동기 질의는 활성 시간 1
 
 개발용 가상 기기는 `node tools/prepare-android.mjs --accept-license --emulator`로 안정판 에뮬레이터와 Android 36 x86_64 시스템 이미지를 선택 설치해요. 기본 게임 출력에는 가상 기기를 포함하지 않아요. 같은 Android SDK 약관과 공식 목록의 크기·체크섬을 확인해요. [명령행 문서](https://developer.android.com/studio/run/emulator-commandline)의 설치·독립 데이터·메모리·창 없는 실행 부분과 [가속 문서](https://developer.android.com/studio/run/emulator-acceleration)의 가속 검사·WHPX 본문을 읽었어요. 연결된 모든 API/새 Android CLI 문서를 읽었다는 뜻은 아니에요.
 
-## 실제 기록 — 2026-10-05
+## 최신 실제 결과 — 2026-10-06
+
+Android `android-mobile-H6PL0Q`는 실제 ARM64/x86_64 C++·Java/DEX·APK/AAB·서명·16KB 정렬을 통과했고, `android-runtime-ddTswv`는 독립 창 없는 Android36에서 C++ 두 모듈·2D 물리·한글/SVG/DPR1.5 안전 영역·동시 이동/공격·실제 믹서 신호·배경 정지/복귀·검사 자원 정리를 통과했어요. 소리를 사람이 들었거나 실물 휴대폰에서 검증한 결과는 아니에요.
+
+활성 4.5초 표본은 59프레임/11.87회 실행/s·작업 평균72.49ms/p95 123.4ms였어요. software GPU와 매 Tick C++ 질의가 있는 가상 기기 조건이에요. 최근 120개 호출 중 물리 질의 없는 80개 RPC 평균3.12ms, 질의 한 개가 있는 40개 RPC 평균14.7ms·질의 평균1.33ms였어요. RPC·worker·질의 시간은 서로 포함하므로 더하지 않아요. 물리 질의 자체보다 호출 왕복이 큰 표본이며 실물 휴대폰의 FPS·발열·배터리 결과로 사용하지 않아요.
+
+iOS [37323624672](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37323624672)는 실제 Xcode 기기·시뮬레이터 컴파일과 독립 iPhone SE 시뮬레이터의 C++/BP·물리·에셋·배경/복귀를 통과했어요. 이후 오디오를 포함한 [37328442455](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37328442455)는 실제 신호 검사에 실패했어요. AudioContext 시계가 진행되고 WAV readyState4/error없음이지만 2초 파일을 약4마이크로초로 인식했어요. 앱 포함 바이트·Apple 파일 분석·HTTP 전체/부분 응답과 실제 미디어 요청을 대조하는 후속 검사를 진행해요. 이전 성공으로 최신 오디오 실패를 덮지 않아요. 사용자 설치본 업데이트는 검증 후 진행하며 게임·프로필은 보존해요.
+
+공식 보조 출처의 누적 연구 등록과 미독 범위는 [020 등록 기록](research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md)에 있어요. 이 실행 검사는 전체 Unity·Unreal 분석이나 전체 엔진 완성을 뜻하지 않아요.
+
+## 초기 실제 기록 — 2026-10-05
 
 `node tools/check-mobile-player.mjs`의 `native/build/mobile-player-q6e2yh/acceptance.json`: MinGW로 실제 C++ AOT 두 모듈을 링크·실행했고, 증분 월드·배치 위치·한글·Rapier 2D 질의·저장 범위·요청 상관관계·두 사용자 C++ 모듈을 포함한 iOS 프로젝트 출력 검사를 통과했어요. 이 검사는 Android JNI/Java 또는 Apple SDK 컴파일 검사가 아니에요.
 

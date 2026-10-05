@@ -357,6 +357,36 @@
         "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
         "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
         "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://developer.android.com/develop/ui/views/layout/webapps/load-local-content",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/ndk/guides/other_build_systems",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/tools/bundletool",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/studio/run/emulator-commandline",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/studio/run/emulator-acceleration",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/develop/ui/views/layout/edge-to-edge",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/studio/terms",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        }
       ]
     },
     {
@@ -386,6 +416,16 @@
         "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
         "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
         "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://developer.android.com/reference/android/webkit/WebSettings",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/reference/android/view/WindowInsets",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        }
       ]
     },
     {
@@ -440,6 +480,36 @@
         "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
         "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
         "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://developer.apple.com/documentation/xcode/xcode-command-line-tool-reference",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/webkit/wkscriptmessagehandler",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/webkit/wkscriptmessage",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/webkit/wkwebviewconfiguration",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/webkit/wkwebviewconfiguration/mediatypesrequiringuseractionforplayback",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/webkit/wkwebview",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/avfaudio/avaudioplayer/currenttime",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        }
       ]
     },
     {
@@ -473,6 +543,62 @@
         "Expand and independently reconcile the complete functional source inventory; these seeds are not a full denominator.",
         "Bind every SDK/package/OS/specification edition and linked API contract; preserve unresolved source differences.",
         "Register exact body/API/media evidence without promoting bounded earlier analysis or automatic link extraction."
+      ]
+    },
+    {
+      "id": "github-actions-platform",
+      "engine": "GitHub",
+      "version": "unversioned-public-web-snapshot-2026-10-06",
+      "locale": "en",
+      "roots": [
+        "https://docs.github.com/en/actions/reference/runners/github-hosted-runners"
+      ],
+      "hosts": [
+        "docs.github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "020 manual seeds only; partial earlier readings are not full body/API/media analysis or independent verification.",
+      "openIssues": [
+        "Expand linked official functionality and bind exact editions, bodies, examples, API units and media; denominator remains unknown."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        }
+      ]
+    },
+    {
+      "id": "ietf-http-specification",
+      "engine": "IETF",
+      "version": "RFC-9110",
+      "locale": "en",
+      "roots": [
+        "https://www.rfc-editor.org/rfc/rfc9110.html"
+      ],
+      "hosts": [
+        "www.rfc-editor.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "020 manual seeds only; partial earlier readings are not full body/API/media analysis or independent verification.",
+      "openIssues": [
+        "Expand linked official functionality and bind exact editions, bodies, examples, API units and media; denominator remains unknown."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+          "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        }
       ]
     }
   ],
@@ -510,6 +636,7 @@
   "scopeExpansionPending": [
     "Reconcile all functional outgoing platform/compiler/SDK/ABI references and register remaining official sources, including unresolved legacy HTTP specification links.",
     "Complete the same-version/new-version and service/plugin source expansion; presently registered roots and supplemental seeds do not prove an exhaustive inventory.",
-    "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion."
+    "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion.",
+    "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope."
   ]
 }
