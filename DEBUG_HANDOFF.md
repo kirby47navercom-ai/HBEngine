@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37335923351/e37c9c7은 CI success지만 오디오 정상 완료로 인정하지 않아요.2400프레임의duration/time1.907마이크로초·master0.000133 한 표본이time>0/RMS 조건을 통과했고, 복귀2771프레임은duration/time11.9마이크로초/master1.1e-44였어요. Swift 시작 출력 없이60초 시간 초과여서 Apple HTTP 디코더가 실행됐다고 세지 않아요. 실제 실패 표본을 거부하는2초 길이·서로 다른 게임 보고의 시간 진행/신호·복귀 뒤 재검사를 추가했어요. 별도 진단은 Swift 컴파일과 실행 단계를 나누며, 검사 출력의 Main.mm에만 개발 오디오 경로 대조를 삽입해 HTTP바이트 decodeAudioData·기본Audio·MediaElementSource·BufferSource를 비교해요. 검사용 삽입 hash를 기록하며 사용자/제품 iOS 소스는 변경하지 않아요. 결과 대기 중, 설치본 업데이트 전.
+
 iOS37332792293/0b81d0e: 두 Xcode 컴파일·게임 실행 통과 뒤 Swift HTTP 진단60초 시간 초과. 최초 보고의 WK WAV 요청은 GET bytes=0-1/bytes=0-176443이고 duration약1.9마이크로초/time0. Swift 시작 출력이 없어 컴파일 지연과 AVURLAsset 로딩 지연을 구분하지 못함. 검사 도구를 시작/출력 보존·진단 오류 뒤에도 실제 오디오15표본 검사 계속·실패 시 마지막 보고 복사·전체 Content-Range/바이트 대조로 수정. 실제 신호/시간 검사의 조건과 앱 구현은 유지. 최신 설치본은 아직 업데이트하지 않음.
 
 iOS37332059720은 진단 보고의 C++ AssetServer 메서드를 Objective-C 메시지 문법으로 호출한 오류로 컴파일에서 멈췄어요. `server->inspectMedia()`로 수정하고 실제 Xcode 재검증해요. 게임/디코더 가설 검사에 도달한 결과로 세지 않아요.
