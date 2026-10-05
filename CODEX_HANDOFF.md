@@ -1,5 +1,16 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 시작 위치·첫 프레임 HUD와 2D 스프라이트 리그 후 계속
+
+전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [시작 상태 계약](docs/STARTUP_STATE.md), [2D 리그 계약](docs/2D_SPRITE_RIG.md)에 실제 공식 본문 읽기 경계·구현·검증·다음 세부를 기록했어요.
+
+- 새 BP의 숨은 원점 Construction 예제를 제거하고 변경 없는 예전 템플릿만 실행 복사본에서 제외해요. 사용자 그래프/위치는 보존해요. 자동 UIWidget을 사용자 Construction/BeginPlay 전에 준비하고 중복 생성하지 않아요. 실제 C++에서 첫 Tick 전 한글 HUD 변경/조회가 통과했어요.
+- SpriteRig 전용 뼈·메시·가중치·키 편집/실행 포즈·Undo/Redo, SpriteSkin CPU 변경 포즈 스키닝, Animator/AnimationGraph/BP/C++7개·headless·AI revision/dryRun·의존성/rename/패키징을 연결했어요. 카탈로그533개예요. 버퍼 재사용·변경 검사로 불필요한 변형을 줄여요.
+- 최종 sprite-rig-XvfOcd, startup-state-r7TDDl, 실제 Editor4pSQeG와 release PlayerkFFO2l가 통과했어요. 실제 PNG·한글·변형 메시·원본·정상 종료/서버 정리를 확인했어요. Editor 배치 Undo가 저장 상태로 돌아와도 dirty였던 문제도 고쳤어요.
+- 실패717d3E/9A0bkm 및 초기 .1 float32 단언/큰 아이콘 실패를 DEBUG에 보존해요. 717d3E acceptance.json의 ok는 종료 전 기록 오류이며 전체 통과 근거가 아니에요. 새 도구는 assertions.json과 종료 후 acceptance.json을 구분해요.
+- 사용자 설치본/프로필/게임 원본/현재 창은 변경하지 않았어요. 다음은 2D IK와 animation states/sync/몽타주 및 다른 전체 엔진 누적 영역이에요. 전체 연구 gate를 승격하지 않고 최종 답변/goal complete를 보내지 않아요.
+
+
 ## 최신 후속: 가져온 모델 포즈의 AI/headless 연결 후 계속
 
 전체 누적 요구·active goal·다 할 때까지 계속 지시를 유지해요. [화면 없는 모델 포즈 계약](docs/HEADLESS_MODEL_POSE.md)에 공식 본문/설치 로더 대조·lazy pose buffer·제한·원본/종료·실제 근거를 기록했어요.

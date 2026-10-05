@@ -203,6 +203,17 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetBool", KoreanName="애니메이션 불리언 파라미터 조회", Category="애니메이션 그래프") static bool GetBool(Actor* target,const std::string& key);
 };
 HB_CLASS()
+class SpriteSkin : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="skinSetPosition", KoreanName="2D 뼈 위치 지정", Category="2D 뼈 변형") static void SetBonePosition(Actor* target,const std::string& bone,const Vec2& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skinGetPosition", KoreanName="2D 뼈 위치 조회", Category="2D 뼈 변형") static Vec2 GetBonePosition(Actor* target,const std::string& bone);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="skinSetRotation", KoreanName="2D 뼈 회전 지정", Category="2D 뼈 변형") static void SetBoneRotation(Actor* target,const std::string& bone,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skinGetRotation", KoreanName="2D 뼈 회전 조회", Category="2D 뼈 변형") static float GetBoneRotation(Actor* target,const std::string& bone);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="skinSetScale", KoreanName="2D 뼈 크기 지정", Category="2D 뼈 변형") static void SetBoneScale(Actor* target,const std::string& bone,const Vec2& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="skinGetScale", KoreanName="2D 뼈 크기 조회", Category="2D 뼈 변형") static Vec2 GetBoneScale(Actor* target,const std::string& bone);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="skinReset", KoreanName="2D 바인드 포즈 복원", Category="2D 뼈 변형") static void ResetBindPose(Actor* target);
+};
+HB_CLASS()
 class Montage : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playMontage", KoreanName="몽타주 재생", Category="몽타주") static void Play(Actor* target,const std::string& asset,const std::string& section);

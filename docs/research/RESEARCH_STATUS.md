@@ -1,5 +1,8 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 구현 후속: [2D 스프라이트 리그](../2D_SPRITE_RIG.md)와 [시작 위치/HUD](../STARTUP_STATE.md)를 연결했어요. Unity 2D Animation13 Skinning/Tools/SpriteSkin의 관련 본문·API 부분, Epic Paper2D SpriteEditor와 ActorLifecycle, Unity6.3 실행 순서/Awake 부분을 읽고 실제 구현과 별도 Editor/Player/C++/headless 검증을 대조했어요. 이 보조 읽기를 기존 전체 corpus/API gate의 검증 완료로 세지 않아요. 2D IK 본문/기술 API를 다음 대상으로 읽고 있으며 전체 누적 요구를 유지해요.
+
+
 **후속 지시 갱신(2026-10-04):** 주인님이 입력·풀·스프라이트·플레이어 기능을 먼저 만들고 기존 분석의 구현을 이어 진행하도록 명시했어요. 모바일 UI 전반과 그 뒤의 실제 창·탄막 검증도 추가했어요. 구현을 재개했으며 [실제 구현·검증 기록](../INPUT_MOBILE_POOL.md)에 구분해요. 아래 corpus/API 원장은 이전 연구 단계의 스냅샷이며, 전체 본문/API 분석 완료나 전체 상용 엔진 기능 완료로 승격하지 않아요. 전체 누적 요구를 계속 보존해요.
 
 

@@ -1,5 +1,8 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-05 추가: [2D 스프라이트 리그](2D_SPRITE_RIG.md), [시작 상태](STARTUP_STATE.md). schema.spriteRig와 spriterig 에셋·rig.bone/mesh/weights 명령은 안정적 ID·expectedRevision·dryRun·Undo/Redo를 사용해요. runtime.state.spriteSkin과 native 요청은 같은 실제 포즈를 조회해요. clock/reset 요청에는 이 전체 snapshot을 보내지 않아요. 저장된 값으로 Undo가 돌아오면 dirty를 해제해요. 자동 UIWidget은 사용자 Construction 전에 준비돼 첫 프레임 대기가 필요하지 않아요.
+
+
 2026-10-05 추가: [계층 FSM](HIERARCHICAL_FSM.md). `state.add/reparent/remove`는 안정적인 상태 ID·expectedRevision·dryRun·Undo/Redo를 사용해요. 활성 계층은 `gameplayDebug.stateMachine.active`의 부모→말단 `{id,name,time}` 배열이에요. UI와 AI는 같은 부모/조건/삭제 검증을 사용하며 사용자 C++ 조회·명령은 같은 실행 상태에 연결돼요.
 
 2026-10-05 추가: [UI 배율·안전 영역·SVG](UI_SCALING_SVG.md). schema.ui.scaling/images와 실제 widget 정의를 공유해요. scaleRule/scaleMatch/safeAreaPadding 및 Image·Button·TouchButton의 vectorTexture/imageFit/imageRendering은 revision 보호 document.patch/dryRun·Undo/Redo·저장으로 편집해요. SVG 의존성·폴더 이름 변경·소수 배율 선택도 같은 런타임 규칙이에요.

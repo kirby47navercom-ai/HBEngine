@@ -197,8 +197,14 @@ export const defaultBlueprint={version:1,name:'BP_Garden',components:[{id:'trans
   {id:'targetPosition',name:'targetPosition',type:'vec3',container:'single',value:[0,0,0]},{id:'speed',name:'speed',type:'float',container:'single',value:3},{id:'waypoints',name:'waypoints',type:'vec3',container:'array',value:[[0,0,0],[1,0,1]]}],
   nodes:[{id:'begin',key:'beginPlay',position:{x:28,y:30},splitPins:[]},{id:'print',key:'print',position:{x:270,y:30},splitPins:[]},{id:'overlap',key:'beginOverlap',position:{x:28,y:205},splitPins:[]},{id:'branch',key:'branch',position:{x:270,y:205},splitPins:[]},{id:'door',key:'door',position:{x:512,y:205},splitPins:[]},{id:'tick',key:'tick',position:{x:28,y:410},splitPins:[]},{id:'location',key:'location',position:{x:512,y:410},splitPins:[]},{id:'getKey',key:'getVariable',variableId:'hasKey',position:{x:270,y:395},splitPins:[]}],
   edges:[{from:{node:'begin',pin:'then'},to:{node:'print',pin:'exec'}},{from:{node:'overlap',pin:'then'},to:{node:'branch',pin:'exec'}},{from:{node:'branch',pin:'true'},to:{node:'door',pin:'exec'}},{from:{node:'getKey',pin:'value'},to:{node:'branch',pin:'condition'}}],
-  functions:[],macros:[],comments:[],construction:{nodes:[{id:'construction',key:'construction',position:{x:28,y:50},splitPins:[]},{id:'setup',key:'setPosition',position:{x:290,y:50},splitPins:[]}],edges:[{from:{node:'construction',pin:'then'},to:{node:'setup',pin:'exec'}}],comments:[]}
+  functions:[],macros:[],comments:[],construction:{nodes:[{id:'construction',key:'construction',position:{x:28,y:50},splitPins:[]}],edges:[],comments:[]}
 };
+// Earlier asset creation copied this exact example, including its implicit zero
+// location. Only the unedited generated graph is removed from the runtime copy.
+export function legacyTemplateConstruction(graph){
+  const template={nodes:[{id:'construction',key:'construction',position:{x:28,y:50},splitPins:[]},{id:'setup',key:'setPosition',position:{x:290,y:50},splitPins:[]}],edges:[{from:{node:'construction',pin:'then'},to:{node:'setup',pin:'exec'}}],comments:[]};
+  const same=(a,b)=>{if(Object.is(a,b))return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(k=>Object.hasOwn(b,k)&&same(a[k],b[k]));};return same(graph,template);
+}
 // A view shares metadata, but writes node/link changes back to its own saved graph.
 export function graphContext(root,view='event'){
   const target=view==='event'?root:view==='construction'?root.construction:[...(root.functions||[]),...(root.macros||[])].find(d=>d.id===view)?.graph;

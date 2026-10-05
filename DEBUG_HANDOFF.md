@@ -1,5 +1,16 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 시작 위치·HUD·2D 리그 검증 후속
+
+원래 게임을 읽기 전용으로 확인했어요. BP_TopDownShooter의 변경 없는 예전 Construction setPosition이 원점을 덮는 경로와 C++의 frame<2 HUD 우회를 확인했어요. 원본/사용자 설치본은 수정하지 않았어요. 새/예전/명시적 Construction 및 C++ 첫 Tick 전 UI를 따로 검사해요.
+
+startup-state-TnhpL3는 .1과 C++ float32 .10000000149의 엄격 동등 검사 실패였어요. 허용 오차와 원점/명시 이동 단언으로 고쳐 최신 r7TDDl가 통과했어요.
+
+sprite-rig-editor-O7QsiA PNG에서 큰 SVG 툴바를 발견해 16px로 고쳤어요. 9A0bkm는 CDP test selector 문자열 따옴표 실패이며 JSON.stringify로 고쳤어요. 717d3E는 기능 단언은 통과했으나 종료가 지연됐어요. scene 배치 Undo 후 dirty가 남아 저장 확인을 기다리는 경로였고 restoreEdit에서 저장 기준과 대조하도록 고쳤어요. 이 폴더 acceptance.json의 ok는 종료 전 작성된 잠정 값이라 전체 성공으로 계산하지 않아요. 새 검사 도구는 종료/서버 정리 후에만 ok를 쓰고 실패를 failure.json에 기록해요.
+
+최종 Editor4pSQeG에서 물리 뼈 생성·포즈 키·휠/이동·AI dryRun·Undo/Redo·배치 Undo 데이터/dirty·실제 C++ 첫 프레임 HUD/시작 위치·실행 중 실제 뼈 값·BP Reset·원본/정상 종료/서버 정리가 통과했어요. 최종 PNG를 확인했어요. release PlayerkFFO2l의 실제 GPU 변형 정점/4704 마젠타 픽셀·한글 HUD·정상 종료는 별도 양의 근거예요. 코어XvfOcd에서 SpriteSkin.rig 폴더 rename도 검증했어요.
+
+
 ## headless 모델 포즈 후속과 CUBICSPLINE 수정
 
 첫 임시 probe의 상대 .hbproject 경로는 기존 absolute 계약을 위반해 실패했고 probe를 path.resolve로 고쳤어요. 첫 apply_patch의 같은 파일 Delete/Add 중복은 검증 단계에서 거절돼 변경되지 않았어요.

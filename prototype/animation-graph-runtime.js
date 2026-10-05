@@ -32,7 +32,7 @@ export class AnimationGraphPlayer {
     if(this.slots.reduce((a,s)=>a+s.rest.length,0)>8192)throw Error('그래프 포즈 값 제한8192');
     this.rest=this.slots.map(s=>new Float64Array(s.rest));for(const id of reachable)this.poses.set(id,this.rest.map(v=>new Float64Array(v)));
     this.masks=new Map();for(const node of this.data.nodes.filter(n=>reachable.has(n.id)&&n.type==='layer')){
-      const filters=node.properties.filters.map(f=>{const bone=f.bone==='*'?null:group?.getObjectByName(f.bone);if(f.bone!=='*'&&!bone)throw Error('레이어 뼈가 없어요: '+f.bone);return {...f,bone};});
+      const filters=node.properties.filters.map(f=>{const bone=f.bone==='*'?null:group?.getObjectByName(f.bone)||group?.userData.spriteSkin?.bone(f.bone);if(f.bone!=='*'&&!bone)throw Error('레이어 뼈가 없어요: '+f.bone);return {...f,bone};});
       this.masks.set(node.id,this.slots.map(s=>{let weight=0;for(const f of filters){let distance=0,target=s.target;if(f.bone){while(target&&target!==f.bone){distance++;target=target.parent;}if(!target)continue;}const amount=f.depth===0?1:Math.min(1,(distance+1)/Math.abs(f.depth));weight=clamp(weight+(f.depth<0?-amount:amount));}return weight;}));
     }
   }

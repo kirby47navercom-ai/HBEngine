@@ -47,6 +47,7 @@
     "engine": "node tools/hb.mjs",
     "test:headless": "node tools/check-headless.mjs",
     "test:headless-model": "node tools/check-headless-model.mjs",
+    "test:sprite-rig": "node tools/check-sprite-rig.mjs",
     "run:project": "node tools/run-project.mjs",
     "test:systems": "node tools/check-scene-systems.mjs",
     "test:ui-audio": "node tools/prepare-native.mjs && node tools/check-ui-audio.mjs && node tools/check-audio-sources.mjs",
@@ -68,7 +69,10 @@
     "test:player-acceptance": "node tools/check-player-acceptance.mjs",
     "test:animation-graph": "node tools/check-animation-graph.mjs",
     "test:animation-graph-editor": "node tools/check-animation-graph-window.mjs --editor",
-    "test:animation-graph-player": "node tools/check-animation-graph-window.mjs"
+    "test:animation-graph-player": "node tools/check-animation-graph-window.mjs",
+    "test:sprite-rig-editor-window": "node tools/check-sprite-rig-window.mjs --editor",
+    "test:sprite-rig-player-window": "node tools/check-sprite-rig-window.mjs",
+    "test:startup-state": "node tools/check-startup-state.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

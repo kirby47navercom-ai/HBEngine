@@ -1,7 +1,7 @@
 import {RuntimeInput,inputKey,validInputPacket} from './runtime-input.js';
 import {InputActions} from './input-actions.js';
 import {derivesFrom} from './class-types.js';
-import {catalog,basePins,fieldsFor,defaultInputValue,defaultsFor,validBlueprint,graphContext,sampleTimeline,timelineLength} from './blueprint-model.js';
+import {catalog,basePins,fieldsFor,defaultInputValue,defaultsFor,validBlueprint,graphContext,sampleTimeline,timelineLength,legacyTemplateConstruction} from './blueprint-model.js';
 import {createCorePreview,evaluateCore} from './core-preview.js';
 import {nativeMember,nativeTargetPin} from './native-model.js';
 import {installBlueprintComponents} from './scene-components.js';
@@ -15,6 +15,7 @@ export class BlueprintRuntime {
   constructor(objects,bindings,hooks={}){
     this.objects=objects;this.hooks=hooks;this.inputState=new RuntimeInput();this.inputQueue=Promise.resolve();this.inputEpoch=0;this.core=createCorePreview(hooks.now);this.values=this.core.values;this.bindings=bindings.map(({root,self})=>{if(!validBlueprint(root))throw Error('블루프린트 검증 실패');return {root:copy(root),self,variables:new Map(root.variables.map(v=>[v.id,copy(v.value)])),states:new Map(),ticks:new Map(),input:new InputActions(hooks.inputAssets?.contexts.get(root.settings?.inputMapping)?[{...hooks.inputAssets.contexts.get(root.settings.inputMapping),path:root.settings.inputMapping}]:[],hooks.inputAssets?.actions||new Map())};});
     installBlueprintComponents(this.objects,this.bindings);
+    for(const b of this.bindings)if(legacyTemplateConstruction(b.root.construction)){b.root.construction.nodes.splice(1);b.root.construction.edges=[];this.hooks.log?.(b.root.name+': 예전 자동 생성 Construction 위치 초기화를 제외했어요.');}
     this.jobs=[];this.timelines=new Map();this.subscriptions=new Map();this.scopes=new Set();this.active=false;this.paused=false;this.pending=null;this.steps=0;this.overlaps=new Map();this.hits=new Map();this.generation=0;this.depth=0;this.stepRemaining=null;
     this.core.object=id=>this.object(id);this.core.updateObject=o=>this.hooks.updateObject?.(o);
   }

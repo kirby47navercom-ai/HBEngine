@@ -8,15 +8,16 @@ import {tilemapColliders} from './tilemap-runtime.js';
 import {createThreeMaterial,resolveMaterialAsset} from './material-runtime.js';
 import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering} from './two-d-rendering.js';
+import {SpriteRigPose} from './sprite-rig-runtime.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
-const visualTypes=new Set(['MeshRenderer','SpriteRenderer','TilemapRenderer','SpriteMask','SortingGroup','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight']);
+const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}){
   const twoD=new TwoDRendering();
   const texture=async path=>{const result=await new THREE.TextureLoader().loadAsync(fileUrl(path));result.colorSpace=THREE.SRGBColorSpace;return result;};
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
-  function dispose(group){group.userData.disposed=true;for(const resource of group.userData.resources||[])resource.dispose();group.userData.resources?.clear();}
+  function dispose(group){group.userData.disposed=true;group.userData.spriteSkin?.dispose();for(const resource of group.userData.resources||[])resource.dispose();group.userData.resources?.clear();}
   function release(group,resource){if(group.userData.resources?.delete(resource))resource.dispose();}
   async function particles(group,p){
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(p.maxParticles*3),3));geometry.setAttribute('particleColor',new THREE.BufferAttribute(new Float32Array(p.maxParticles*4),4));geometry.setAttribute('particleSize',new THREE.BufferAttribute(new Float32Array(p.maxParticles),1));geometry.setDrawRange(0,0);own(group,geometry);
@@ -52,7 +53,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     let size=properties.useCustomSize?[properties.width||1,properties.height||1]:layout?.size||[properties.width||1,properties.height||1],offset=layout&&properties.useCustomSize?[(.5-layout.pivot[0])*size[0],(.5-layout.pivot[1])*size[1]]:layout?.offset||[0,0],geometry;if(sliced){geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(sliced.positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(sliced.uvs,2));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(sliced.normals,3));offset=sliced.offset;}else geometry=new THREE.PlaneGeometry(...size);own(group,geometry);const mesh=new THREE.Mesh(geometry,mat);mesh.userData.sprite=true;mesh.userData.objectId=group.userData.objectId;mesh.position.set(...offset,0);mesh.scale.set(properties.flipX?-1:1,properties.flipY?-1:1,1);mesh.renderOrder=properties.sortingOrder||0;
     mesh.onBeforeRender=(_r,_s,camera)=>{if(properties.billboard){const rotation=group.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(camera.getWorldQuaternion(new THREE.Quaternion()));mesh.quaternion.copy(rotation);}};
     const slot=isMask?'maskMesh':'spriteMesh',old=group.userData[slot];if(old){old.removeFromParent();for(const r of [old.geometry,old.material,old.material.map,old.userData.maskMaterial])if(r)release(group,r);}group.userData[slot]=mesh;
-    if(isMask){mesh.visible=false;mesh.userData.spriteMask=true;mesh.userData.maskProperties=properties;mesh.userData.maskMaterial=new THREE.MeshBasicMaterial({color:0xffffff,map,alphaTest:properties.alphaCutoff,side:THREE.DoubleSide,depthTest:false,depthWrite:false,toneMapped:false});own(group,mesh.userData.maskMaterial);}else{mesh.userData.draw2d=properties;mesh.userData.draw2dId='sprite';}group.add(mesh);
+    if(isMask){mesh.visible=false;mesh.userData.spriteMask=true;mesh.userData.maskProperties=properties;mesh.userData.maskMaterial=new THREE.MeshBasicMaterial({color:0xffffff,map,alphaTest:properties.alphaCutoff,side:THREE.DoubleSide,depthTest:false,depthWrite:false,toneMapped:false});own(group,mesh.userData.maskMaterial);}else{mesh.userData.draw2d=properties;mesh.userData.draw2dId='sprite';if(group.userData.spriteSkin){group.userData.spriteSkin.attachGeometry(geometry);mesh.position.set(0,0,0);}}group.add(mesh);
   }
   function spriteFlip(object,p){const group=current(object.id),mesh=group?.userData.spriteMesh;if(mesh)mesh.scale.set(p.flipX?-1:1,p.flipY?-1:1,1);if(group)group.userData.componentSignature=visualComponentSignature(object);}
   async function spriteFrame(object,path){const group=current(object.id);if(!group)return;const token=group.userData.spriteRequest=(group.userData.spriteRequest||0)+1;await sprite(group,enabledComponent(object,'SpriteRenderer')||{},path,token);if(current(object.id)===group&&!group.userData.disposed&&group.userData.spriteRequest===token)object.currentSprite=path;}
@@ -87,10 +88,12 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
     group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
+    const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
+    if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
       if(component.type==='SortingGroup')group.userData.sortingGroup=p;
       if(component.type==='SpriteMask')await sprite(group,p,p.sprite,undefined,true);
-      if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,p.sprite||object.spriteAsset);
+      if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,rig?.sprite||p.sprite||object.spriteAsset);
       if(component.type==='TilemapRenderer'&&p.visible!==false)await tilemap(group,p.tilemap||object.tilemapAsset,p,object.runtimeTilemap);
       if(component.type==='Decal')await decal(group,p);
       if(component.type==='ParticleSystem')await particles(group,p);
@@ -98,9 +101,10 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
       if(component.type==='Camera'){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}
       if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);light.castShadow=p.castShadow;if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}
     }
-    if(group.userData.disposed)return;group.traverse(child=>{child.userData.objectId=object.id;if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
+    if(group.userData.disposed)return;if(rig){const pose=new SpriteRigPose(rig,{geometry:group.userData.spriteMesh?.geometry,requireSprite:true});group.add(pose.group);group.userData.spriteSkin=pose;group.userData.animations=[...group.userData.animations||[],...pose.animations];if(group.userData.spriteMesh)group.userData.spriteMesh.position.set(0,0,0);}
+    group.traverse(child=>{child.userData.objectId=object.id;if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers)=>twoD.prepare(renderer,scene,camera,all(),layers),dispose2D:()=>twoD.dispose()};
+  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers)=>{for(const group of all())group.userData.spriteSkin?.update();return twoD.prepare(renderer,scene,camera,all(),layers);},dispose2D:()=>twoD.dispose()};
 }

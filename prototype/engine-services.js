@@ -52,17 +52,23 @@ export function engineOperations(hooks){
   const particleState=(o,restart=false)=>{const p=enabledComponent(o,'ParticleSystem');if(!p)throw Error('Particle System 컴포넌트가 필요해요.');if(restart||!particles.has(o.id)){const state=new ParticleSimulation(p);state.playing=restart||p.playOnStart;particles.set(o.id,state);}return particles.get(o.id);};
   const navigate=(o,destination,vm)=>{const p=enabledComponent(o,'NavigationAgent');if(!p)throw Error('Navigation Agent 컴포넌트가 필요해요.');const path=findNavigationPath(vm.objects,sceneWorldPosition(o,vm.objects),destination,{gridId:p.grid,ignore:[o.id,o.controller].filter(Boolean),radius:p.radius,height:p.height,margin:p.stoppingDistance});navigation.set(o.id,{destination:[...destination],path,index:0,elapsed:0,status:path.length?'moving':'failed'});return path.length>0;};
   const systems=gameplaySystems({...hooks,readAsset,physics:ensurePhysics,captureParameter:(id,type,key)=>{const group=hooks.mesh(id);if(type==='light'){let value;group?.traverse(c=>{if(c.isLight)value=c.intensity;});return value;}const data=group?.userData.materialData,node=data?.graph.nodes.find(n=>n.parameter===key);if(node)return node.value;const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key;return data?.surface[property];},sampleAudio:async(name,time,paused)=>{for(const player of audio.values()){if(player.hbClip!==name)continue;if(Math.abs(player.currentTime-time)>.15)player.currentTime=time;if(paused)player.pause();else if(player.paused)await player.play();}},operation:(key,args,b,vm)=>vm.hooks.operation(key,args,b,vm),sampleAnimation:async(id,time)=>{const state=animations.get(id);if(state){state.controlled=true;state.time=Math.min(state.length,time);if(state.type==='sprite'){const frame=spriteAnimationFrame(state.animation,state.time,{loop:state.loop,rate:1});if(frame){await hooks.spriteFrame(vmObject(id),frame.sprite);state.lastFrame=frame.index;}}else applyAnimation(vmObject(id),state);}else if(mixers.has(id)){const state=mixers.get(id);state.controlled=true;state.action.paused=false;state.action.enabled=true;state.mixer.setTime(Math.min(state.length,time));}}});
-  let currentVM;const vmObject=id=>currentVM.object(id);
+  let currentVM;const vmObject=id=>currentVM.object(id),preparedWidgets=new Set();
+  async function prepareActorWidgets(o,vm){
+    if(o.poolActive===false||preparedWidgets.has(o.id))return;
+    const b=vm.bindings.find(b=>b.self===o.id)||{self:o.id,root:{components:objectComponents(o)}};
+    for(const c of objectComponents(o)){const p={...componentDefaults(c.type),...c.properties};if(c.type==='UIWidget'&&p.enabled!==false&&p.showOnStart&&p.asset)await operation('uiShow',{target:o.id,asset:p.asset,instance:p.instance},b,vm);}
+    preparedWidgets.add(o.id);
+  }
   async function releaseActor(o,vm){
     vm.jobs=vm.jobs.filter(j=>j.owner!==o.id);for(const [id,t] of vm.timelines)if(t.f.b.self===o.id)vm.timelines.delete(id);for(const [id,t] of vm.core.timers)if(t.owner===o.id)vm.core.timers.delete(id);
     for(const [id,list] of vm.subscriptions){const remaining=list.filter(s=>s.b.self!==o.id);if(id.startsWith(o.id+':')||!remaining.length)vm.subscriptions.delete(id);else vm.subscriptions.set(id,remaining);}
-    for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();}await systems.remove(o.id,vm);navigation.delete(o.id);particles.delete(o.id);senses.forget(o.id);stopAnimation(o.id);ui.removeOwner(o.id,vm);for(const [id,player] of audio)if(player.hbSource===o.id){player.pause();soundRouting.disconnect(player);audio.delete(id);}
+    for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();}await systems.remove(o.id,vm);navigation.delete(o.id);particles.delete(o.id);senses.forget(o.id);stopAnimation(o.id);ui.removeOwner(o.id,vm);preparedWidgets.delete(o.id);for(const [id,player] of audio)if(player.hbSource===o.id){player.pause();soundRouting.disconnect(player);audio.delete(id);}
   }
   async function startActor(o,vm){
     if(o.poolActive===false)return;const b=vm.bindings.find(b=>b.self===o.id)||{self:o.id,root:{components:objectComponents(o)}};
+    await prepareActorWidgets(o,vm);
     for(const c of objectComponents(o)){const p={...componentDefaults(c.type),...c.properties};if(p.enabled===false)continue;
       if(c.type==='AudioSource'&&p.playOnStart&&p.clip)await operation('playSoundAt',{sound:p.clip,position:sceneWorldPosition(o,vm.objects),volume:1,settings:{...p,refDistance:p.minDistance},source:o.id,voice:JSON.stringify([o.id,c.id])},b,vm);
-      if(c.type==='UIWidget'&&p.showOnStart&&p.asset)await operation('uiShow',{target:o.id,asset:p.asset,instance:p.instance},b,vm);
       if(c.type==='Animator'&&p.playOnStart&&p.clip)await operation('playAnimation',{target:o.id,clip:p.clip,loop:p.loop},b,vm);
       if(c.type==='AnimationGraph'&&p.autoPlay&&p.asset)await operation('animGraphPlay',{target:o.id,asset:p.asset},b,vm);
     }
@@ -158,6 +164,11 @@ export function engineOperations(hooks){
       const timeline=structuredClone(data.timeline),state={timeline,tracks:timeline.tracks.filter(t=>tracks.some(track=>track.id===t.id)),time:0,length:timelineLength(timeline),loop:a.loop};
       stopAnimation(o.id);animations.set(o.id,state);applyAnimation(o,state);return {};
     }
+    if(['skinSetPosition','skinGetPosition','skinSetRotation','skinGetRotation','skinSetScale','skinGetScale','skinReset'].includes(key)){
+      const o=target(a,b,vm),skin=hooks.mesh(o.id)?.userData.spriteSkin;if(!skin||!enabledComponent(o,'SpriteSkin'))throw Error('활성 Sprite Skin이 없어요.');
+      if(key==='skinReset'){stopAnimation(o.id);skin.reset();return {};}
+      const pose=skin.get(a.bone),property=key.endsWith('Position')?'position':key.endsWith('Rotation')?'rotation':'scale';if(key.startsWith('skinGet'))return {result:pose[property]};skin.set(a.bone,{...pose,[property]:a.value});return {};
+    }
     if(['setMaterial','materialFloat','lightIntensity'].includes(key)){
       const o=target(a,b,vm),group=hooks.mesh(o.id);if(!group)throw Error('렌더 대상이 없어요.');
       if(key==='lightIntensity'){let light;group.traverse(child=>{if(child.isLight)light=child;});if(!light)throw Error('광원 대상이 아니에요.');light.intensity=Math.max(0,a.value);return {};}
@@ -175,10 +186,12 @@ export function engineOperations(hooks){
   };
   return {
     animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
+    spriteSkinState:({vertices=false}={})=>(currentVM?.objects||[]).flatMap(o=>{const skin=hooks.mesh(o.id)?.userData.spriteSkin;return skin?[{actor:o.id,...skin.snapshot({vertices})}]:[];}),
+    spriteSkinSnapshot:id=>hooks.mesh(id)?.userData.spriteSkin?.snapshot(),
     audioState:()=>({state:soundRouting.context?.state||'idle',levels:Object.fromEntries([...soundRouting.graphs].map(([path,graph])=>[path,graph.levels()])),voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime}))}),
     pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
-    prepare:async vm=>tilemaps.start(vm.objects),
+    prepare:async vm=>{currentVM=vm;await tilemaps.start(vm.objects);for(const o of [...vm.objects])await prepareActorWidgets(o,vm);},
     start:async vm=>{currentVM=vm;await ensurePhysics(vm).loadMaterials(readAsset);for(const o of [...vm.objects])await startActor(o,vm);await systems.start(vm);},
     input:(key,value)=>physics?.input(key,value),releaseInput:()=>{physics?.releaseInput();ui.releaseInput();},contacts:()=>physics?.contacts(),
     physics:async(delta,vm,rawDelta=delta)=>{
@@ -192,6 +205,6 @@ export function engineOperations(hooks){
       const listener=hooks.listenerPosition?.()||vm.object(hooks.gameplay?.pawn)?.position||[0,0,0];
       soundRouting.update(delta,listener);for(const [id,player] of audio){let p=player.hbSettings,position=player.hbPosition;if(player.hbSource){const source=vm.object(player.hbSource);p=source&&enabledComponent(source,'AudioSource');if(!p){player.pause();soundRouting.disconnect(player);audio.delete(id);continue;}position=sceneWorldPosition(source,vm.objects);player.loop=p.loop;player.playbackRate=p.pitch;soundRouting.volume(player,p.volume);}if(position)soundRouting.position(player,position);}
     },
-    dispose(){audioEpoch++;soundRouting.dispose();ui.dispose();systems.dispose();senses.dispose();navigation.clear();particles.clear();currentVM=null;physics?.dispose();physics=null;audio.forEach(a=>a.pause());audio.clear();for(const id of new Set([...graphs.keys(),...graphRequests.keys(),...mixers.keys()]))stopAnimation(id);animations.clear();widgets.forEach(w=>w.remove());widgets.clear();}
+    dispose(){audioEpoch++;soundRouting.dispose();ui.dispose();systems.dispose();senses.dispose();navigation.clear();particles.clear();preparedWidgets.clear();currentVM=null;physics?.dispose();physics=null;audio.forEach(a=>a.pause());audio.clear();for(const id of new Set([...graphs.keys(),...graphRequests.keys(),...mixers.keys()]))stopAnimation(id);animations.clear();widgets.forEach(w=>w.remove());widgets.clear();}
   };
 }

@@ -1,5 +1,8 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: SpriteSkin::Set/GetBonePosition, Set/GetBoneRotation, Set/GetBoneScale, Reset 7개를 공용 C++/BP로 연결했어요(전체533개). [2D 리그](2D_SPRITE_RIG.md)·[시작 위치/HUD 계약](STARTUP_STATE.md) 참고. 새 Construction 기본 그래프는 이벤트만 있고, 변경 없는 예전 원점 초기화 예제는 실행 복사본에서 제외해요. 실제 Editor/Player C++ Construction에서 첫 Tick 전 HUD 수정/조회·배치 위치 보존이 통과했어요.
+
+
 2026-10-05 추가: `hb::States::IsInState/GetPath/GetElapsed`의 BP 노드 세 개와 계층 FSM을 연결했어요. 카탈로그는 517개예요. 기존 평면 FSM 파일과 GetState는 유지하며 C++ 변경 명령은 함수 반환 후 처리해요. [FSM 제작·실행·실제 창 검증](HIERARCHICAL_FSM.md)에 세부 계약을 기록해요.
 
 2026-10-05 추가: `hb::Sprites`의 색상/크기/정렬/마스크/조명 설정과 읽기 10개를 공용 선언에서 생성했어요. 사용자 C++ 함수 안의 변경 후 읽기와 BP의 같은 서비스 검증을 확인했어요. 전체 카탈로그는 514개이며, 등각 Tilemaps 좌표/즉시 충돌 질의도 공용 격자 기준을 사용해요. 세부 동작·검증 범위는 [2D·단축키 계약](2D_RENDERING_SHORTCUTS.md)에 있어요. 노드 수를 전체 누적 엔진 완성으로 해석하지 않아요.

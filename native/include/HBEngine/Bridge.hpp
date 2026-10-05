@@ -206,6 +206,14 @@ inline void AnimationGraph::SetFloat(Actor* target,const std::string& key,float 
 inline void AnimationGraph::SetBool(Actor* target,const std::string& key,bool value){engineCommand("animGraphSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}
 inline float AnimationGraph::GetFloat(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<float>();}
 inline bool AnimationGraph::GetBool(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<bool>();}
+inline Json& bridgeSkinBone(Actor* target,const std::string& bone){for(auto& value:gameplayField(target,"spriteSkin").at("bones"))if(value.at("id")==bone||value.at("name")==bone)return value;throw std::runtime_error("missing sprite skin bone");}
+inline void SpriteSkin::SetBonePosition(Actor* target,const std::string& bone,const Vec2& value){engineCommand("skinSetPosition",{{"target",bridgeId(target)},{"bone",bone},{"value",value}});bridgeSkinBone(target,bone)["position"]=Json(value);}
+inline Vec2 SpriteSkin::GetBonePosition(Actor* target,const std::string& bone){return bridgeSkinBone(target,bone).at("position").get<Vec2>();}
+inline void SpriteSkin::SetBoneRotation(Actor* target,const std::string& bone,float value){engineCommand("skinSetRotation",{{"target",bridgeId(target)},{"bone",bone},{"value",value}});bridgeSkinBone(target,bone)["rotation"]=Json(value);}
+inline float SpriteSkin::GetBoneRotation(Actor* target,const std::string& bone){return bridgeSkinBone(target,bone).at("rotation").get<float>();}
+inline void SpriteSkin::SetBoneScale(Actor* target,const std::string& bone,const Vec2& value){engineCommand("skinSetScale",{{"target",bridgeId(target)},{"bone",bone},{"value",value}});bridgeSkinBone(target,bone)["scale"]=Json(value);}
+inline Vec2 SpriteSkin::GetBoneScale(Actor* target,const std::string& bone){return bridgeSkinBone(target,bone).at("scale").get<Vec2>();}
+inline void SpriteSkin::ResetBindPose(Actor* target){engineCommand("skinReset",{{"target",bridgeId(target)}});}
 inline void Montage::Pause(Actor* target,bool paused){engineCommand("montagePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Montage::JumpToSection(Actor* target,const std::string& section){engineCommand("montageJump",{{"target",bridgeId(target)},{"section",section}});}
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}

@@ -8,6 +8,7 @@ import {createWidgetAsset,validWidgetAsset} from './ui-assets.js';
 import {createAudioMixer,validAudioMixer} from './audio-mixer.js';
 import {validActionSettings} from './input-actions.js';
 import {createAnimationGraph,validAnimationGraph} from './animation-graph-assets.js';
+import {createSpriteRig,validSpriteRig} from './sprite-rig-assets.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
@@ -17,6 +18,7 @@ Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
 assetSuffix.animgraph='.hbanimgraph.json';assetTypes.animgraph={label:'애니메이션 그래프',prefix:'AG_',group:'애니메이션'};
+assetSuffix.spriterig='.hbspriterig.json';assetTypes.spriterig={label:'2D 스프라이트 리그',prefix:'SR_',group:'2D'};
 export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i,'');
 export async function loadSceneBindings(objects,read){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
@@ -35,6 +37,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind==='widget')return createWidgetAsset(name);
   if(kind==='audiomixer')return createAudioMixer(name);
   if(kind==='animgraph')return createAnimationGraph(name);
+  if(kind==='spriterig')return createSpriteRig(name);
   if(kind==='blueprint'){
     const type=blueprintClasses[parent];if(!type)throw Error('지원하지 않는 부모 클래스예요.');
     const root=copy(defaultBlueprint);root.name=name;root.nodes=['beginPlay','tick','endPlay'].map((key,i)=>({...makeNode(key,70,55+i*165),id:key}));root.edges=[];root.variables=[];root.functions=[];root.macros=[];root.comments=[];root.dispatchers=[];root.interfaces=[];delete root.native;
@@ -60,6 +63,7 @@ export function validAsset(kind,data){
   if(kind==='widget')return validWidgetAsset(data);
   if(kind==='audiomixer')return validAudioMixer(data);
   if(kind==='animgraph')return validAnimationGraph(data);
+  if(kind==='spriterig')return validSpriteRig(data);
   if(kind==='text')return typeof data==='string'&&data.length<=1048576;
   if(kind==='blueprint')return validBlueprint(data);
   if(kind==='scene')return validScene(data);
@@ -82,7 +86,7 @@ export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUI
   const objects=copy(data.objects).map(object=>{const old=object.id,parent=object.parent||object.parentId;object.id=ids.get(old);if(parent&&ids.has(parent)){object.parent=ids.get(parent);if(object.parentId!==undefined)object.parentId=object.parent;}else{delete object.parent;delete object.parentId;object.position=object.position.map((value,index)=>value+position[index]);}object.prefabRoot=ids.get(data.root);return object;});
   if(!validScene({version:1,objects,surface:defaultSurface}))throw Error('프리팹 계층 검증 실패');return objects;
 }
-export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sheet','chordAction','context','sprite','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
+export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sheet','chordAction','context','sprite','rig','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}
