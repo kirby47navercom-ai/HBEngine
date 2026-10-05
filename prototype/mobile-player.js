@@ -19,7 +19,7 @@ export function mobileBackend(manifest,{read,request}){
         const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
         if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
         if(data.request.worldTransport===1){module.requestWorld=decoded.objects;module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
-        else if(data.request.command!=='frame'){module.requestWorld=null;module.requestSequence=0;}return result;
+        else if(data.request.command!=='frame'){module.requestWorld=null;module.requestSequence=0;}if(result.nativeError){module.requestWorld=null;module.requestSequence=0;}return result;
       }catch(error){module.requestWorld=null;module.requestSequence=0;throw error;}finally{queries?.close();}
     });module.queue=job.catch(()=>{});return job;
   }

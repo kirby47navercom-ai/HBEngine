@@ -17,6 +17,11 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: C++ 공유 객체와 순서 보존 묶음 호출 검증
+        run: |
+          node tools/check-play-world-native.mjs
+          node tools/check-native-batch.mjs --cpp
+          node tools/check-native-transport.mjs
       - name: 공용 실행과 실제 사용자 C++ 포함 프로젝트 출력
         run: node tools/check-mobile-player.mjs
       - name: Xcode 컴파일과 시뮬레이터 실행

@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+2026-10-06 Auric P0-1+2: 격리 auric-p0-fsoOGQ/기존 설치본 d4d의 check_demo.mjs 원문 9개 통과(고정 224파일 SHA/자체 TEMP). 변경 엔진의 공용 준비는 같은 header/source worker 공유, nativeBatch1 terminal Tick 50→1 RPC·이벤트/operation/clock 경계·실패 성공분 checkpoint/재동기화·다음프레임 patch. JS 검사와 check-runtime의 실제 DoorController C++→BP 통과. host worker TU -O2/user 디버그 최적화 분리, Android/iOS Worker.cpp도 분리 최적화. 다중 클래스 실제 C++와 transport 회귀는 원격 macOS 검증으로 진행(Premiere CPU1390%). 다른 빌드 Native API/모든 이벤트 묶음/Auric 변경엔진9/성능 기준은 미완료. Auric 요청 문서 진행 기록에 기존 기준선+잔여 기준을 기록. 설치본 미갱신.
+
 iOS37343333585/8e2cbd5 실제 통과: 두 Xcode SDK 빌드, 독립 SE3/iOS18.5, 최초480→720frames/clock31.648→44.552/duration2/RMS0.000132–0.000135, 배경 context suspended/frames고정, 복귀2760→3120/clock142.048→156.117/duration2/신호, C++Count1/10/배치/Rapier/에셋 범위와 동시8읽기. 한글/SVG/모바일 컨트롤 캡처 직접 확인. 실물/청취/서명 false. ZIP native/build/ios-artifacts-37343333585.zip SHA a3dc2a8021227c4ff64867e99f48d2b776d77559312ef66ea88335a6be6b0b9d. 현재 모바일 검증을 마쳐 AuricP0-1+2 진행: preparePlayWorld가 같은 header/source라도 BP path별 host.build하여 token/worker를 분리함→nativeWorld가 다른token의nativeClass/속성을 제거하여 실제class접근 차단. 패키지 출력은nativeSignature로 이미중복제거. VM순서를 보존하는 batch와 공용 준비의 소스중복제거부터. 로컬 Premiere CPU1362%라 스트레스/대량컴파일 미룸. 사용자 설치본 미갱신/전체gate false.
 
 2026-10-06 주인님 추가: 현재 모바일 검증 마침→Auric_Loop/docs/엔진_개선_요청.md P0-1부터 순차(1+2 함께)→각 단계 tools/check_demo.mjs 실제 적용 및 원문 아래 진행 기록→사용중 HBEngine 업데이트→누적 장기 엔진 작업 재개. 사용자 게임/프로필과 원본은 격리 복사·검증으로 보호하며 문서 진행 기록 쓰기는 직접 허용됨. 요청 문서 본문·완료 기준을 읽었고 실제 원본 변화 여부를 단계별 확인. 설치 업데이트 이미 직접 요청돼 재승인 불필요.

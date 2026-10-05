@@ -19,12 +19,18 @@ export class NativeHost extends NativeProtocol {
   async build(header,source,{configuration='editor',signal}={}){
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v1'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
     if(!existsSync(binary)){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       await Promise.all([fs.writeFile(path.join(compileDir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(compileDir,'User.cpp'),compiledSource),fs.writeFile(path.join(compileDir,'worker.cpp'),worker)]);
       try{
-        await new Promise((resolve,reject)=>{const child=spawn(compiler,['-std=c++17',...(configuration==='editor'?['-O0']:configuration==='release'?['-O2','-s','-static']:['-Og','-g','-static']),'-I','native/include','-I',path.relative(root,jsonInclude),path.relative(root,path.join(compileDir,'worker.cpp')),path.relative(root,path.join(compileDir,'User.cpp')),'-o',path.relative(root,temporary)],{env,cwd:root,windowsHide:true,signal});let diagnostics='',failure;const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};child.stderr.on('data',append);child.stdout.on('data',append);const timeout=setTimeout(()=>{failure=Error('C++ 빌드 시간 제한 초과');child.kill();},60000);child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timeout);failure?reject(failure):code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
+        const deadline=performance.now()+60000,compile=args=>new Promise((resolve,reject)=>{if(performance.now()>=deadline){reject(Error('C++ 빌드 시간 제한 초과'));return;}const child=spawn(compiler,args,{env,cwd:root,windowsHide:true,signal});let diagnostics='',failure;const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};child.stderr.on('data',append);child.stdout.on('data',append);const timeout=setTimeout(()=>{failure=Error('C++ 빌드 시간 제한 초과');child.kill();},deadline-performance.now());child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timeout);failure?reject(failure):code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
+        const common=['-std=c++17','-I','native/include','-I',path.relative(root,jsonInclude)],file=name=>path.relative(root,path.join(compileDir,name));
+        // Optimize the JSON/engine translation unit while preserving user-code
+        // debugging. All stages share the existing 60-second build deadline.
+        await compile([...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')]);
+        await compile([...common,...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),'-c',file('User.cpp'),'-o',file('User.o')]);
+        await compile([file('worker.o'),file('User.o'),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
         signal?.throwIfAborted();
         // Only a complete executable enters the shared cache. Other attempts may
         // commit the same hash while this compiler runs; keep their complete file.
@@ -39,7 +45,7 @@ export class NativeHost extends NativeProtocol {
     const job=session.queue.then(async()=>{try{
       const started=performance.now(),decoded=this.decodeRequest(session,request),decodedAt=performance.now();this.validate(session,decoded);const validatedAt=performance.now(),reply=await this.rpc(session,decoded),replyAt=performance.now(),result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
       if(request.worldTransport===1){session.requestWorld=decoded.objects;session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
-      else if(request.command!=='frame'){session.requestWorld=null;session.requestSequence=0;}return result;
+      else if(request.command!=='frame'){session.requestWorld=null;session.requestSequence=0;}if(result.nativeError){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;}return result;
     }catch(error){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;throw error;}});
     session.queue=job.catch(()=>{});return job;
   }

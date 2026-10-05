@@ -38,7 +38,7 @@ export class NativeWorldClient {
       let next,packet,sequence=this.sequence+1;const operations=this.world&&worldPatch(this.world,request.objects);
       if(operations){try{const patch=JSON.parse(JSON.stringify(operations));next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}catch{/* Non-JSON fields and paths outside the patch limits use the full JSON contract. */}}
       if(!packet){next=JSON.parse(JSON.stringify(request.objects));sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
-      const result=await send(packet);if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');this.world=next;this.sequence=sequence;return result;
+      const result=await send(packet);if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');this.world=result.nativeError?null:next;this.sequence=result.nativeError?0:sequence;return result;
     });
     this.queue=job.catch(()=>{this.world=null;this.sequence=0;});return job;
   }

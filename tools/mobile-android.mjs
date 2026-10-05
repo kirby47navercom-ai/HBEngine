@@ -45,7 +45,13 @@ export async function packageMobile({out,assets,profile,settings,native,signal,o
   onProgress('Android C++');const nativeFiles=[];
   for(const abi of settings.abis){
     const directory=path.join(stage,'lib',abi);await fs.mkdir(directory,{recursive:true});const library=path.join(directory,'libhbgame.so'),triple=abi==='arm64-v8a'?'aarch64-linux-android':'x86_64-linux-android';
-    await run(path.join(c.bin,'clang++'+suffix),['--target='+triple+settings.minSdk,'-std=c++17','-shared','-fPIC','-fvisibility=hidden','-static-libstdc++','-Wl,-z,max-page-size=16384',...(profile.configuration==='release'?['-O2','-Wl,-s']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),...native.sources.map(file=>path.relative(out,file)),path.join('Native','Bridge.cpp'),'-o',path.relative(out,library)]);
+    const compiler=path.join(c.bin,'clang++'+suffix),target='--target='+triple+settings.minSdk,objectFiles=[];
+    for(const [index,file] of [...native.sources,path.join(out,'Native/Bridge.cpp')].entries()){
+      const object=path.join(directory,'source-'+index+'.o');objectFiles.push(local(object));
+      await run(compiler,[target,'-std=c++17','-fPIC','-fvisibility=hidden',...(profile.configuration==='release'||path.basename(file)==='Worker.cpp'?['-O2']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),'-c',local(file),'-o',local(object)]);
+    }
+    await run(compiler,[target,'-shared','-static-libstdc++','-Wl,-z,max-page-size=16384',...(profile.configuration==='release'?['-Wl,-s']:[]),...objectFiles,'-o',local(library)]);
+    await Promise.all(objectFiles.map(file=>fs.unlink(path.join(out,file))));
     const elf=await run(path.join(c.bin,'llvm-readelf'+suffix),['-h','-W','-l',library]);if(!elf.includes('DYN')||!elf.includes(abi==='arm64-v8a'?'AArch64':'X86-64'))throw Error('Android ELF ABI 검사 실패');const loads=elf.split(/\r?\n/).filter(line=>/^\s*LOAD\s/.test(line));if(!loads.length||loads.some(line=>{const align=Number(line.trim().split(/\s+/).at(-1));return !Number.isSafeInteger(align)||align<16384;}))throw Error('Android ELF 16KB 정렬 검사 실패');nativeFiles.push({abi,path:library,elf,alignmentVerified:true});
   }
   // Native Windows packaging tools resolve relative paths without losing Korean names in the working directory.
