@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37330057221: Xcode 앱 WAV SHA·HTTP 전체/0–1/44–4095/접미44 바이트가 원본과 일치했고 Apple afinfo도44100Hz/mono/Int16/176400 audio bytes/2초로 읽었어요. WKWebView만6.2마이크로초/time0/RMS 거의0이었어요. OS log show는 시간 초과돼 요청 로그를 확보하지 못했어요. 다음 진단은 실제 미디어 요청의 method/path/Range/Host/User-Agent만32개 한도로 앱 보고에 보존하고 Apple AVURLAsset HTTP duration을 대조해 HTTP 네이티브 디코더와 WK 재생을 구분해요. 전체 개인 헤더/쿠키·릴리스 진단·조건 완화는 추가하지 않아요.
+
 iOS37328442455: AudioContext clock21.696→34.133초·readyState4/networkState1/error없음이지만 WAV duration0.000004053초·voice time0·master8.4e-45였어요. Windows ffprobe는 실제 패키지 WAV를 PCM16/44100Hz/mono/176444bytes/2초로 읽었어요. 아직 iOS 파일 전달/네이티브 디코더 원인은 확정하지 않아요. 다음 실행은 Xcode 앱 바이트 SHA·afinfo·HTTP 전체/미디어 크기 부분 응답을 먼저 대조하고 개발 구성의 실제 WAV 요청 헤더를 기록해 판별해요. 기존 오디오 시스템/AVAudioSession/시간 제한을 바꾸지 않아요.
 
 iOS37326369196: 오디오 포함 게임은1080프레임/15draw·AudioContext running이었지만 voice time0/믹서 master5.3e-44여서 실제 신호 검사를 실패했어요. 컴파일/게임 성공으로 오디오를 통과시키지 않아요. 파일 요청/디코더와 시뮬레이터 오디오 시계를 구분하기 위해 context clock·media readyState/networkState/error/duration과 WebKit 오디오/미디어 로그를 추가해 다음 실행에서 확인해요. 아직 AVAudioSession·서버·음소거·루프 경계 어느 원인도 확정하지 않아요. 임의 지연/조건 완화나 다른 오디오 시스템 교체를 하지 않아요.

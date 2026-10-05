@@ -26,5 +26,3 @@
 | ietf-http-specification | https://www.rfc-editor.org/rfc/rfc9110.html | 앞선 헤더·범위 구역 부분 읽기 기록 연결, 전체 RFC 미완료 |
 
 Apple 오디오 정책 원문은 `native/build/mobile-audio-docs/apple-audio-policy.json`, SHA256 `25381b2d8361bf6105a9cf05c04d79da79f0a5d4661c6a5818b6c818c5150aeb`에 보존돼 있어요. 이 수동 주소 목록의 hash는 발견 경로를 고정하는 용도이며 위 원문 hash와 혼용하지 않아요. Android repository XML·도구 배포판, 연결된 Microsoft 가속 지침·WebKit/Chromium 구현과 새 API는 계속 조사·별도 등록할 대상이에요. 발견한 보조 출처를 이유로 Unity·Unreal 또는 기존 엔진 요구를 제외하지 않아요.
-
-기존 원장에 import한 결과 18개 입력 주소 중 17개가 새 발견 페이지로 추가됐어요(기존 Android 주소 한 개는 발견 경로만 추가). 출처 계열은 18→20개이며 새 두 계열은 각각 discovered1/fetched0/body_reviewed0/analyzed0/verified0이에요. 기존 18계열의 id·engine·version·locale·roots·hosts·pathPrefix가 변경되지 않았음을 대조했어요. `native/build/mobile-research-status-020.json`의 전체 gate는 false이고 미확정 분모·미독·연결 출처 문제가 그대로 남아 있어요.

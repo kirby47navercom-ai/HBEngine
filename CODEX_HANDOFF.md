@@ -1,3 +1,9 @@
+# 이어서 할 작업 — 2026-10-06
+
+Android H6PL0Q 두 ABI APK/AAB, ddTswv 실제 독립 가상 기기의 오디오·동시 터치·안전 영역·C++/BP·배경/복귀·자원 정리 통과. 질의 포함 RPC14.7ms/질의1.33ms로 왕복 비용이 큰 표본이며 실물 기기 성능은 미검증. iOS37328442455는 오디오 clock 진행·readyState4지만 WAV duration4마이크로초/time0/RMS 거의0으로 실패. fafc57f의 후속37330057221에서 Xcode 앱 SHA/afinfo/HTTP 전체·부분 바이트/개발 미디어 요청을 대조하고 원인 수정 후 재검증. Windows release3ZuMaB는 게임 경로/480탄환·30초/96재사용 통과하지만 이전 i3wHLE 대비 기존10%성능 회귀 게이트 실패; 임의 완화 금지. 사용자 설치본/게임/프로필은 아직 보존했고 검증 후 불변 새 버전 업데이트가 승인돼 있음. 020 수동 모바일 출처18주소/17새 발견을 원장에 등록, 기존18기준 보존/20계열 gatefalse. 전체 누적 요구·가벼움·사람/AI 편집을 계속하며 최종 완료 응답 금지.
+
+## 이전 작업 기록
+
 # HBEngine 작업 인계 — 2026-10-05
 
 가장 최신: iOS 오디오 포함37326369196 게임1080frame은 실행됐지만 voice time0/master 거의0여서 신호 실패예요. context/media 진단과 WebKit 로그를 추가해 재검증하며 사용자 설치본 업데이트는 보류해요. Android CuEx4o/Riasyn 오디오 신호·suspend/resume는 실제 통과. 후속 mobile RPC/질의/검증 비용 보고는 portable와 H6PL0Q APK/AAB 컴파일 통과, 실제 Android 재측정 중이에요. Windows release3ZuMaB 기능/480탄환·30초재사용은 통과했으나 i3wHLE 대비10%성능 회귀 게이트는 실패예요. 상세 DEBUG_HANDOFF를 보고 성능·iOS 오디오 원인을 확인한 뒤 설치본을 업데이트하고 전체 누적 작업을 계속해요. 과거 성공을 최신 오디오 성공으로 계산하지 않아요.
@@ -420,6 +426,3 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 - 검증 전용 프로젝트는 native/build/viewport-qa, 서버는 5186(exec20089)이다. 이전 브라우저 ID2가 끊긴 뒤 ID5/tab2로 동일 QA 탭에 다시 연결했다. QA 에셋/증거/cache/EXE/dist는 ignored다. 환경 값은 새 맵에서 Actor 모드이며 기존 맵은 사용자의 명시적 변환에만 Actor로 전환한다. 전체 분야의 남은 작업은 REFERENCE_COVERAGE를 유지한다.
 - 최신 사용자 지시: 백그라운드에서 계속하고 방해하지 않는다. 이후 작업은 foreground 브라우저/창 이동·패널 열기·실제 EXE GUI 검사를 자동 실행하지 않는다. 필요 검증은 코드/헤드리스부터 진행하며 중간 사용자 알림을 줄인다. 기존 2D/2.5D/3D와 전체 엔진 누적 범위를 유지한다.
 - 마지막 코드 검토에서 AI presentation.camera 부분 패치를 옛 표시 설정과 검증하던 오류와 실패 시 rollback 이벤트가 조종 Actor를 쓰고 탐색 이력을 추가하던 오류를 발견했다. 대상 카메라의 현재 FOV/near/far와 패치를 합쳐 검사하고 복원 중 조종/탐색 기록을 잠시 끊도록 수정했다. 실제 등록 handler를 GUI 없이 실행하는 check-viewport-automation의 main/extra·원근/직교·실패 원자성·조종 Actor 쓰기/탐색 이력 보존·state 우선순위·유효한 큰 clip 20조건을 통과했다. 두 오류 모두 수정 전 실제 handler의 회귀 검사가 먼저 실패하는 것을 확인했다. 사용자 배경 작업 지시 뒤 GUI나 EXE 실행은 추가로 하지 않는다.
-# 이어서 할 작업 — 2026-10-06
-
-Android H6PL0Q 두 ABI APK/AAB, ddTswv 실제 독립 가상 기기의 오디오·동시 터치·안전 영역·C++/BP·배경/복귀·자원 정리 통과. 질의 포함 RPC14.7ms/질의1.33ms로 왕복 비용이 큰 표본이며 실물 기기 성능은 미검증. iOS37328442455는 오디오 clock 진행·readyState4지만 WAV duration4마이크로초/time0/RMS 거의0으로 실패. fafc57f의 후속37330057221에서 Xcode 앱 SHA/afinfo/HTTP 전체·부분 바이트/개발 미디어 요청을 대조하고 원인 수정 후 재검증. Windows release3ZuMaB는 게임 경로/480탄환·30초/96재사용 통과하지만 이전 i3wHLE 대비 기존10%성능 회귀 게이트 실패; 임의 완화 금지. 사용자 설치본/게임/프로필은 아직 보존했고 검증 후 불변 새 버전 업데이트가 승인돼 있음. 020 수동 모바일 출처18주소/17새 발견을 원장에 등록, 기존18기준 보존/20계열 gatefalse. 전체 누적 요구·가벼움·사람/AI 편집을 계속하며 최종 완료 응답 금지.

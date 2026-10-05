@@ -12,6 +12,7 @@
 #include <cctype>
 #include <vector>
 #include <chrono>
+#include <mutex>
 #include "Modules.hpp"
 
 static NSData* encode(id value){return [NSJSONSerialization dataWithJSONObject:value options:0 error:nil];}
@@ -23,13 +24,13 @@ static bool safe(NSString* value){if(!value||value.length>2000||[value hasPrefix
 // Assets use a loopback HTTP origin so WKWebView retains fetch, modules and WASM.
 class AssetServer {
     int socket_=-1;std::atomic<bool> active{false};std::vector<std::thread> workers;
-    NSString* root;NSDictionary* inventory;bool diagnostics;
+    NSString* root;NSDictionary* inventory;bool diagnostics;std::mutex mediaMutex;NSMutableArray* mediaRequests=[NSMutableArray new];
     void stop(){active=false;if(socket_>=0){shutdown(socket_,SHUT_RDWR);close(socket_);socket_=-1;}for(auto& worker:workers)if(worker.joinable())worker.join();}
     static bool sendAll(int client,const char* data,size_t size){while(size){auto n=send(client,data,size,0);if(n<=0)return false;data+=n;size-=n;}return true;}
     void serve(int client){@autoreleasepool{
         timeval timeout{5,0};setsockopt(client,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout));setsockopt(client,SOL_SOCKET,SO_SNDTIMEO,&timeout,sizeof(timeout));int yes=1;setsockopt(client,SOL_SOCKET,SO_NOSIGPIPE,&yes,sizeof(yes));
         std::string header;char buffer[8192];while(header.find("\r\n\r\n")==std::string::npos&&header.size()<8192){auto n=recv(client,buffer,sizeof(buffer),0);if(n<=0)return;header.append(buffer,n);}auto begin=header.find(' '),end=header.find(' ',begin+1);
-        if(diagnostics&&header.find("/Content/")!=std::string::npos&&header.find(".wav")!=std::string::npos)NSLog(@"HBPlayer MEDIA %@",text(header));
+        if(diagnostics&&header.find("/Content/")!=std::string::npos&&header.find(".wav")!=std::string::npos){std::string record=header.substr(0,header.find("\r\n")),lower=header;std::transform(lower.begin(),lower.end(),lower.begin(),[](unsigned char c){return std::tolower(c);});for(const auto* field:{"\r\nrange:","\r\nhost:","\r\nuser-agent:"}){const auto at=lower.find(field);if(at!=std::string::npos)record+=header.substr(at,std::min<size_t>(512,header.find("\r\n",at+2)-at));}std::lock_guard<std::mutex> lock(mediaMutex);if(mediaRequests.count>=32)[mediaRequests removeObjectAtIndex:0];[mediaRequests addObject:text(record)];}
         if(header.rfind("GET ",0)!=0||end==std::string::npos)return;
         NSString* name=[text(header.substr(begin+1,end-begin-1)) stringByRemovingPercentEncoding];name=[[name componentsSeparatedByString:@"?"] firstObject];if([name hasPrefix:@"/"])name=[name substringFromIndex:1];if(!safe(name)||!inventory[name]){const char* response="HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";sendAll(client,response,strlen(response));return;}
         std::string normalized=header;std::transform(normalized.begin(),normalized.end(),normalized.begin(),[](unsigned char c){return std::tolower(c);});const auto host="\r\nhost: 127.0.0.1:"+std::to_string(port)+"\r\n";if(normalized.find(host)==std::string::npos)return;
@@ -50,6 +51,7 @@ class AssetServer {
     }}
 public:
     int port=0;
+    NSArray* inspectMedia(){std::lock_guard<std::mutex> lock(mediaMutex);return [mediaRequests copy];}
     AssetServer(NSString* directory,NSDictionary* files,bool development):root(directory),inventory(files),diagnostics(development){socket_=socket(AF_INET,SOCK_STREAM,0);sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);if(socket_<0||bind(socket_,reinterpret_cast<sockaddr*>(&address),sizeof(address))||listen(socket_,16)){stop();throw std::runtime_error("mobile asset server failed");}socklen_t length=sizeof(address);if(getsockname(socket_,reinterpret_cast<sockaddr*>(&address),&length)){stop();throw std::runtime_error("mobile asset port failed");}port=ntohs(address.sin_port);active=true;
         // Bounded readers prevent idle WebKit connections from blocking all assets.
         const int listener=socket_;try{for(int i=0;i<8;i++)workers.emplace_back([this,listener]{while(active){int client=accept(listener,nullptr,nullptr);if(client<0)break;serve(client);close(client);}});}catch(...){stop();throw;}
@@ -85,7 +87,7 @@ public:
             auto output=HB_mobileInvoke(index,input,query);result=decode([text(output) dataUsingEncoding:NSUTF8StringEncoding]);
         }else if([operation isEqual:@"storageRead"]||[operation isEqual:@"storageWrite"]){NSData* saved=[NSData dataWithContentsOfURL:self->saveFile];NSMutableDictionary* store=decode(saved);if(saved&&(![store isKindOfClass:NSDictionary.class]||![store[@"items"] isKindOfClass:NSDictionary.class]||![store[@"version"] isEqual:@1]))throw std::runtime_error("mobile save file invalid");if(!saved)store=[@{@"version":@1,@"items":[NSMutableDictionary new]} mutableCopy];
             if([operation isEqual:@"storageWrite"]){NSMutableDictionary* items=store[@"items"];NSString* suffix=[@".project." stringByAppendingString:self->manifest[@"id"]];for(NSString* key in data){id value=data[key];if(key.length>1000||![key hasSuffix:suffix]||![key hasPrefix:@"hbengine.savegame."]&&![key hasPrefix:@"hbengine.storage-migrated.v1."]||value!=NSNull.null&&![value isKindOfClass:NSString.class])throw std::runtime_error("mobile save key range");if(value==NSNull.null)[items removeObjectForKey:key];else items[key]=value;}NSData* bytes=encode(store);NSError* error=nil;if(bytes.length>16777216||![bytes writeToURL:self->saveFile options:NSDataWritingAtomic error:&error])throw std::runtime_error("mobile save failed");}result=store;
-        }else if([operation isEqual:@"report"]){if([self->manifest[@"configuration"] isEqual:@"development"]){NSMutableDictionary* report=[data mutableCopy];report[@"mobileHost"]=@{@"assetOrigin":[NSString stringWithFormat:@"http://127.0.0.1:%d",self->server->port]};[encode(report) writeToURL:[[self->saveFile URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"runtime-report.json"] atomically:YES];NSLog(@"HBPlayer REPORT %@",report);}result=@{@"ok":@YES};}
+        }else if([operation isEqual:@"report"]){if([self->manifest[@"configuration"] isEqual:@"development"]){NSMutableDictionary* report=[data mutableCopy];report[@"mobileHost"]=@{@"assetOrigin":[NSString stringWithFormat:@"http://127.0.0.1:%d",self->server->port],@"mediaRequests":[self->server inspectMedia]};[encode(report) writeToURL:[[self->saveFile URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"runtime-report.json"] atomically:YES];NSLog(@"HBPlayer REPORT frames=%@ ok=%@ error=%@",report[@"frames"],report[@"ok"],report[@"error"]);}result=@{@"ok":@YES};}
         else if([operation isEqual:@"close"]){result=@{@"ok":@YES};[self lifecycle:NO];}
         else throw std::runtime_error("unknown mobile operation");
         [self emit:@{@"id":requestID,@"data":result?:@{}}];
