@@ -93,7 +93,9 @@
     "test:animation-notify-policy-player": "node tools/check-animation-graph-window.mjs --blend-notify",
     "test:animation-montage": "node tools/check-animation-montage.mjs",
     "test:animation-montage-editor": "node tools/check-animation-graph-window.mjs --montage --editor",
-    "test:animation-montage-player": "node tools/check-animation-graph-window.mjs --montage"
+    "test:animation-montage-player": "node tools/check-animation-graph-window.mjs --montage",
+    "android:prepare": "node tools/prepare-android.mjs",
+    "test:mobile": "node tools/check-mobile-player.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

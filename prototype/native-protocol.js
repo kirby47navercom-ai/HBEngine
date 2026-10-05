@@ -1,0 +1,35 @@
+import {applyWorldPatch} from './native-transport.js';
+import {nativeTargetPin} from './native-model.js';
+import {validValue} from './blueprint-model.js';
+import {serviceApi} from './core-api.js';
+import {validInputSnapshot} from './runtime-input.js';
+import {valid2DAsset} from './two-d-assets.js';
+export const canonicalWorld=Symbol('canonical native world');
+export class NativeProtocol{
+  validate(session,request){
+    if(Array.isArray(request?.objects)&&request.objects.some(o=>o?.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o?.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'))throw Error('C++ 타일맵 상태 오류');
+    if(!request||typeof request!=='object')throw Error('잘못된 C++ 요청');const scopeValid=s=>typeof s==='string'&&s.length<=160;if(request.scope!==undefined&&!scopeValid(request.scope)||request.scopes!==undefined&&(!Array.isArray(request.scopes)||request.scopes.length>40000||request.scopes.some(s=>!scopeValid(s))))throw Error('C++ 작업 수명 오류');if(request.scope&&request.scopes&&!request.scopes.includes(request.scope))throw Error('완료한 C++ 작업 수명');if(request.input!==undefined&&!validInputSnapshot(request.input))throw Error('C++ 입력 상태 오류');if(!Array.isArray(request.objects)||request.objects.length>2000||new Set(request.objects.map(o=>o?.id)).size!==request.objects.length||request.objects.some(o=>!o||typeof o.id!=='string'||o.id.length>160||!validValue('transform',o)))throw Error('C++ 객체 상태 오류');for(const o of request.objects){const c=session.metadata.classes.find(c=>c.name===o.nativeClass);for(const [name,value] of Object.entries(o.nativeProperties||{})){const p=c?.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 속성 자료형 오류: '+name);}}if(['frame','reset'].includes(request.command)){if(request.command==='frame'&&(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean')))throw Error('프레임 시간 오류');return;}
+    const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name);if(!c||!['nativeCall','nativeGet','nativeSet'].includes(request.key)||!request.args)throw Error('등록되지 않은 C++ 함수');
+    const ports=request.key==='nativeCall'?f?.inputs:request.key==='nativeSet'&&!p?.readOnly?[{...p,id:'value'}]:request.key==='nativeGet'&&p?[]:null;if(!ports)throw Error('등록되지 않은 C++ 작업');for(const pin of ports){const value=request.args[pin.id];if(!(pin.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(pin.type,v)):validValue(pin.type,value)))throw Error('C++ 입력 자료형 오류: '+pin.id);}
+    for(const pin of ports.filter(p=>['object','hit'].includes(p.type)))for(const value of pin.array?request.args[pin.id]:[request.args[pin.id]]){const id=pin.type==='hit'?value.actor:value;if(id!==null&&!request.objects.some(o=>o.id===id))throw Error('C++ 객체 참조 오류: '+pin.id);}const receiver=request.args[request.key==='nativeCall'?nativeTargetPin(f):'target'];if(!f?.static&&(typeof receiver!=='string'||!request.objects?.some(o=>o.id===receiver)))throw Error('C++ 대상 오브젝트가 없어요.');
+  }
+  validateReply(session,request,result){
+    const objectIndex=new Map(request.objects.map(o=>[o.id,o])),known=id=>objectIndex.has(id),validOne=(p,v)=>validValue(p.type,v)&&(p.type!=='object'||v===null||known(v))&&(p.type!=='hit'||v.actor===null||known(v.actor)),valid=(p,v)=>p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validOne(p,x)):validOne(p,v);
+    const [className,name]=String(request.nativeId).split('.'),c=session.metadata.classes.find(c=>c.name===className),f=c?.functions.find(f=>f.name===name),p=c?.properties.find(p=>p.name===name),ports=request.key==='nativeCall'?f?.outputs:request.key==='nativeGet'&&p?[{...p,id:'value'}]:[];
+    for(const pin of ports||[]){const value=result.outputs?.[pin.id];if(!valid(pin,value)||(pin.type==='object'&&!pin.array&&value!==null&&!known(value)))throw Error('C++ 출력 자료형 오류: '+pin.id);}
+    if(!Array.isArray(result.objects)||result.objects.some(o=>!known(o?.id)||(o.position!==undefined?(!validValue('transform',o)||!o.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))):!session.metadata.classes.some(c=>c.name===objectIndex.get(o.id)?.nativeClass&&c.base!=='Actor'))))throw Error('C++ 객체 출력 범위 오류');
+    for(const o of result.objects)for(const [name,value] of Object.entries(o.nativeProperties||{})){const cl=session.metadata.classes.find(c=>c.name===objectIndex.get(o.id)?.nativeClass),property=cl?.properties.find(p=>p.name===name);if(!property||!valid(property,value))throw Error('C++ 속성 출력 자료형 오류: '+name);}
+    if(!Array.isArray(result.events))throw Error('C++ 이벤트 출력 오류');for(const e of result.events){const [cls,name]=String(e.nativeId).split('.'),event=session.metadata.classes.find(c=>c.name===cls)?.functions.find(f=>f.name===name&&f.event!=='none');if(!event||!known(e.target)||event.inputs.some(p=>!valid(p,e.args?.[p.id])))throw Error('C++ 이벤트 출력 자료형 오류');}
+    if(!Array.isArray(result.operations)||result.operations.length>1000)throw Error('C++ 엔진 작업 출력 오류');
+    for(const operation of result.operations){const spec=serviceApi.find(s=>s.key===operation?.key&&!s.pure);if(!spec||!operation.args||spec.inputs.filter(p=>p.type!=='exec').some(p=>!valid(p,operation.args[p.id])))throw Error('C++ 엔진 작업 자료형 오류');}
+    if(result.timerCallbacks!==undefined&&(!Array.isArray(result.timerCallbacks)||result.timerCallbacks.some(e=>!e||!['event','owner','scope','handle'].every(k=>typeof e[k]==='string'&&e[k].length<=160))))throw Error('C++ 타이머 콜백 오류');if(!result.clock||!['time','delta','scale'].every(k=>Number.isFinite(result.clock[k])&&result.clock[k]>=0)||typeof result.clock.paused!=='boolean')throw Error('C++ 시간 출력 오류');return result;
+  }
+  decodeRequest(session,request){
+    if(request?.worldTransport===undefined)return request;
+    if(session.metadata.workerProtocol!==3||request.worldTransport!==1||request.command||typeof request.worldId!=='string'||!/^[0-9a-f-]{36}$/.test(request.worldId)||!Number.isSafeInteger(request.worldSequence)||request.worldSequence<1||!Number.isSafeInteger(request.baseSequence)||request.baseSequence<0)throw Error('C++ snapshot transport contract');
+    const {objectPatch,worldTransport,worldId,baseSequence,worldSequence,...plain}=request;let objects;
+    if(baseSequence===0){if(worldSequence!==1||objectPatch!==undefined||!Array.isArray(request.objects))throw Error('C++ full snapshot contract');objects=request.objects;}
+    else {if(!session.requestWorld||worldId!==session.requestWorldId||baseSequence!==session.requestSequence||worldSequence!==baseSequence+1||request.objects!==undefined)throw Error('C++ snapshot sequence mismatch');objects=applyWorldPatch(session.requestWorld,objectPatch);}
+    return {...plain,objects,[canonicalWorld]:{base:session.requestWorld,patch:objectPatch}};
+  }
+}

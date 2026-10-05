@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {readBuildProfiles,saveBuildProfiles,buildGame} from './build-game.mjs';
+import {androidDevices,deployAndroid} from './android-deploy.mjs';
 export class BuildJobs{
   constructor(){this.jobs=new Map();this.queue=Promise.resolve();}
   save(record,data,revision,checkOwner=()=>{}){const task=this.queue.then(()=>{checkOwner();return saveBuildProfiles(record,data,revision,checkOwner);});this.queue=task.catch(()=>{});return task;}
@@ -10,9 +11,16 @@ export class BuildJobs{
     buildGame(record,profile,{dryRun,signal:controller.signal,onProgress:stage=>{job.stage=stage;}}).then(result=>{job.result=result;job.status='done';},error=>{job.error=error.message;job.status=controller.signal.aborted?'canceled':'error';}).finally(()=>{job.finishedAt=new Date().toISOString();});for(const [key,value] of this.jobs)if(this.jobs.size>50&&value.status!=='running')this.jobs.delete(key);return this.get(record,id);}
   get(record,id){const job=this.jobs.get(id);if(!job||job.root!==record.root)throw Error('빌드 기록이 없어요.');const {controller,root,...data}=job;return data;}
   cancel(record,id){const job=this.jobs.get(id);this.get(record,id);if(job.status==='running')job.controller.abort(Error('사용자가 빌드를 취소했어요.'));return this.get(record,id);}
+  devices(){return androidDevices();}
+  async deploy(record,id,serial){
+    const job=this.jobs.get(id),snapshot=this.get(record,id);if(snapshot.status!=='done'||snapshot.result?.artifactType!=='apk'||job.deploying)throw Error('설치할 완료 APK 빌드를 선택하세요.');
+    const file=await fs.realpath(snapshot.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!file.toLowerCase().startsWith((base+path.sep).toLowerCase())||path.basename(file)!=='Game.apk')throw Error('APK 빌드 경로 오류');
+    job.deploying=true;try{const result=await deployAndroid(snapshot.result,serial);job.deployment=result;await fs.writeFile(path.join(snapshot.result.output,'deploy-report.json'),JSON.stringify(result,null,2));return result;}finally{job.deploying=false;}
+  }
   async open(record,id,action){
-    if(!['run','reveal'].includes(action))throw Error('빌드 동작 오류');const job=this.get(record,id);if(job.status!=='done'||!job.result?.executable)throw Error('완료된 게임 빌드가 없어요.');
-    const exe=await fs.realpath(job.result.executable),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!exe.toLowerCase().startsWith((base+path.sep).toLowerCase())||path.basename(exe)!=='Game.exe')throw Error('빌드 경로 오류');
+    if(!['run','reveal'].includes(action))throw Error('빌드 동작 오류');const job=this.get(record,id);if(job.status!=='done'||!job.result?.executable&&!job.result?.artifact)throw Error('완료된 게임 빌드가 없어요.');
+    if(action==='run'&&!job.result.executable)throw Error('모바일 앱은 휴대폰에 설치하거나 Mac의 Xcode에서 실행하세요.');
+    const exe=await fs.realpath(job.result.executable||job.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!exe.toLowerCase().startsWith((base+path.sep).toLowerCase())||!(job.result.executable?path.basename(exe)==='Game.exe':['Game.apk','Game.aab','HBGame.xcodeproj'].includes(path.basename(exe))))throw Error('빌드 경로 오류');
     const env={...process.env};for(const key of ['PORT','HB_USER_DATA_DIR','HB_PROJECT_FILE','HB_PROJECT_DIR','HB_READY_FILE','HB_PLAYER_SMOKE'])delete env[key];
     const program=action==='run'?exe:path.join(process.env.SystemRoot,'explorer.exe'),args=action==='run'?[]:[path.dirname(exe)];
     await new Promise((resolve,reject)=>{const child=spawn(program,args,{cwd:path.dirname(exe),env,shell:false,detached:true,stdio:'ignore',windowsHide:false});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {ok:true,action};

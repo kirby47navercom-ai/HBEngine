@@ -6,7 +6,7 @@ import {readProjectManifest} from './project-manifest.mjs';
 import {assetKind,assetReferences} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {validAsset} from '../prototype/asset-documents.js';
-import {defaultBuildProfile,validBuildProfile} from '../prototype/build-profile.js';
+import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
 export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export const nativeSignature=(header,source)=>digest(JSON.stringify([header,source]));
@@ -54,15 +54,15 @@ export async function inspectBuild(record,profile){
   const legacyBlueprints=new Map();for(const [name,bytes] of content)if(name.endsWith('.hbblueprint.json')){const bp=JSON.parse(bytes);const candidates=legacyBlueprints.get(bp.name)||[];candidates.push(name);legacyBlueprints.set(bp.name,candidates);}
   for(const [name,bytes] of content)if(name.endsWith('.hbscene.json')){const data=JSON.parse(bytes);let changed=false;for(const object of data.objects)if(object.blueprint&&!object.blueprintAsset){const matches=legacyBlueprints.get(object.blueprint)||[];if(matches.length!==1)throw Error(name+': 블루프린트 이름을 경로로 지정하세요: '+object.blueprint);object.blueprintAsset=matches[0];changed=true;}if(changed)content.set(name,Buffer.from(json(data)));}
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');
-  return {content,natives,report:{target:'windows-x64',renderer:'WebView2/WebGL2',profile:structuredClone(profile),startupScene:[...enabled][0],files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
+  return {content,natives,report:{target:profileTarget(profile),renderer:buildTargets[profileTarget(profile)].renderer,profile:structuredClone(profile),startupScene:[...enabled][0],files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
-async function moduleClosure(entry,seen=new Set()){
+export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
   for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g))if(match[1].startsWith('.'))await moduleClosure(path.relative(root,path.resolve(path.dirname(full),match[1])),seen);
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
-  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(dryRun)return report;
+  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
   if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 빌드하세요.');
   const desktop=path.join(root,'dist/HBEngine');await fs.access(path.join(desktop,'HBPlayer.exe'));
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});

@@ -50,7 +50,7 @@ const jsonLicense=path.join(build,'nlohmann-3.12.0-LICENSE.txt');await download(
 for(const name of ['gcc-libs','libwinpthread','crt']){const source=path.join(path.dirname(path.dirname(compiler)),'share/licenses',name);if(await exists(source))await fs.cp(source,path.join(output,'licenses/MinGW-'+name),{recursive:true});}
 await fs.copyFile(path.join(root,'node_modules/three/LICENSE'),path.join(output,'licenses/Three.txt'));
 for(const name of ['rapier2d-compat','rapier3d-compat'])await fs.copyFile(path.join(root,'node_modules/@dimforge',name,'LICENSE'),path.join(output,'licenses',name+'.txt'));
-for(const name of ['prototype','tools','docs','native/include','node_modules/three','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat'])await fs.cp(path.join(root,name),path.join(output,name),{recursive:true,filter:file=>!file.includes(path.sep+'screenshots'+path.sep)});
+for(const name of ['prototype','tools','docs','native/include','native/mobile','node_modules/three','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat'])await fs.cp(path.join(root,name),path.join(output,name),{recursive:true,filter:file=>!file.includes(path.sep+'screenshots'+path.sep)});
 await fs.copyFile(path.join(root,'package.json'),path.join(output,'package.json'));
 const {ProjectService}=await import('./project-service.mjs');const sample=path.join(output,'Projects/QuietGarden');await new ProjectService(sample).init(true);
 const {ensureProjectManifest}=await import('./project-manifest.mjs');await ensureProjectManifest(sample,'QuietGarden');

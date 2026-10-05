@@ -69,8 +69,10 @@ inline bool Input::HasActionEvent(Actor* target,const std::string& action,const 
 inline float Input::GetActionElapsed(Actor* target,const std::string& action){return bridgeAction(target,action).at("elapsed").get<float>();}
 inline void Input::AddMappingContext(Actor* target,const std::string& context,int priority){engineCommand("inputAddContext",{{"target",bridgeId(target)},{"context",context},{"priority",priority}});}
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
+inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
     Json world=bridgeWorld;for(const auto& updated:bridgeSnapshot())for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
+    if(bridgeQuery){const auto response=bridgeQuery(Json{{"key",key},{"args",args},{"objects",world}});if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
     std::cout<<"HB_QUERY\t"<<Json{{"key",key},{"args",args},{"objects",world}}.dump()<<std::endl;
     std::string line;if(!std::getline(std::cin,line))throw std::runtime_error("engine query disconnected");const auto response=Json::parse(line);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");
 }

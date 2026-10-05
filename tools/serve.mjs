@@ -60,6 +60,8 @@ const server=http.createServer(async(req,res)=>{try{
       if(url.pathname==='/api/build'&&req.method==='POST')return json(res,await buildJobs.start(record,JSON.parse(await readBody())),202);
       if(url.pathname==='/api/build/job'&&req.method==='GET')return json(res,buildJobs.get(record,q.get('id')));
       if(url.pathname==='/api/build/open'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await buildJobs.open(record,data.id,data.action));}
+      if(url.pathname==='/api/build/devices'&&req.method==='GET')return json(res,{devices:await buildJobs.devices()});
+      if(url.pathname==='/api/build/deploy'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await buildJobs.deploy(record,data.id,data.serial));}
       if(url.pathname==='/api/build/cancel'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,buildJobs.cancel(record,data.id));}
     }
     if(url.pathname==='/api/schema'&&req.method==='GET')return json(res,engineSchema());
