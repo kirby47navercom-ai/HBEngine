@@ -9,6 +9,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import readline from 'node:readline';
 import {prepareNative,jsonInclude} from './prepare-native.mjs';
 import {NativePhysicsQueries} from './native-physics-query.mjs';
+import {nativeModuleRequest,mergeNativeReply} from '../prototype/native-module-query.js';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
@@ -19,7 +20,7 @@ export class NativeHost extends NativeProtocol {
   async build(header,source,{configuration='editor',signal}={}){
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp','Native.hpp','NativeRouting.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
     if(!existsSync(binary)){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       await Promise.all([fs.writeFile(path.join(compileDir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(compileDir,'User.cpp'),compiledSource),fs.writeFile(path.join(compileDir,'worker.cpp'),worker)]);
@@ -40,13 +41,16 @@ export class NativeHost extends NativeProtocol {
     signal?.throwIfAborted();
     const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
-  async call(token,request){
+  async call(token,request,from){
     const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();
+    if(from&&session.busy)throw Error('실행 중인 C++ 모듈로 순환 호출할 수 없어요.');
+    if(from&&from.nativeDepth>=7)throw Error('C++ 모듈 호출 깊이 제한 초과');
     const job=session.queue.then(async()=>{try{
+      session.busy=true;session.nativeDepth=from?from.nativeDepth+1:0;session.nativeBudget=from?.nativeBudget||{count:0};
       const started=performance.now(),decoded=this.decodeRequest(session,request),decodedAt=performance.now();this.validate(session,decoded);const validatedAt=performance.now(),reply=await this.rpc(session,decoded),replyAt=performance.now(),result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
       if(request.worldTransport===1){session.requestWorld=decoded.objects;session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
       else if(request.command!=='frame'){session.requestWorld=null;session.requestSequence=0;}if(result.nativeError){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;}return result;
-    }catch(error){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;throw error;}});
+    }catch(error){session.requestWorld=null;session.requestSequence=0;session.transportWorld=null;throw error;}finally{session.busy=false;session.nativeBudget=null;}});
     session.queue=job.catch(()=>{});return job;
   }
   rpc(session,request){
@@ -54,7 +58,10 @@ export class NativeHost extends NativeProtocol {
     return new Promise((resolve,reject)=>{const prepareStart=performance.now();const clockOnly=session.metadata.workerProtocol>=2&&["frame","reset"].includes(request.command);if(request.command==="reset")session.transportWorld=null;const current=clockOnly?null:request[canonicalWorld]?request.objects:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol>=2&&session.transportWorld?(request[canonicalWorld]?.patch&&session.transportWorld===request[canonicalWorld].base?request[canonicalWorld].patch:worldPatch(session.transportWorld,current)):null,packet=clockOnly?{...request,objects:[]}:patch?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects);let finished=false;
       const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();session.transportWorld=null;reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
       const onLine=async line=>{if(finished)return;
-        if(line.startsWith('HB_QUERY\t')){let reply;try{if(Buffer.byteLength(line,'utf8')>4000000)throw Error('C++ 물리 질의 크기 제한 초과');reply={ok:true,value:await queries.query(JSON.parse(line.slice(9)))};}catch(error){reply={ok:false,error:error.message};}if(!finished)child.stdin.write(JSON.stringify(reply)+'\n',error=>{if(error)onError(error);});return;}
+        if(line.startsWith('HB_QUERY\t')){let reply;try{if(Buffer.byteLength(line,'utf8')>4000000)throw Error('C++ 질의 크기 제한 초과');const query=JSON.parse(line.slice(9));let value;if(query.key==='nativeModule'){
+          if(++session.nativeBudget.count>128||!Array.isArray(query.objects)||query.objects.length!==request.objects.length||query.objects.some(o=>!request.objects.some(known=>known.id===o.id)))throw Error('C++ 모듈 질의 월드 또는 개수 오류');this.validate(session,{command:'reset',objects:query.objects});const route=nativeModuleRequest(request,query,token=>this.module(token)),result=await this.call(route.token,route.request,session);
+          for(const state of mergeNativeReply(result,route.call.self).objects){const binding=request.nativeBindings.find(b=>b.id===state.id);if(binding&&state.nativeProperties)binding.properties=state.nativeProperties;}value={token:route.token,call:route.call,result};
+        }else value=await queries.query(query);reply={ok:true,value};}catch(error){reply={ok:false,error:error.message};}if(!finished)child.stdin.write(JSON.stringify(reply)+'\n',error=>{if(error)onError(error);});return;}
         const start=line.indexOf('HB_RESULT\t');if(start<0)return;try{const result=JSON.parse(line.slice(start+10));cleanup();if(result.ok){result.transport={...result.transport,mode:clockOnly?"clock":packet.objectPatch?"patch":"full",bytes:Buffer.byteLength(payload),patchOperations:packet.objectPatch?.length||0,prepareMs:rpcStart-prepareStart,replyBytes:Buffer.byteLength(line),returnedObjects:result.objects?.length||0,rpcMs:performance.now()-rpcStart};resolve(result);}else{session.transportWorld=null;reject(Error(result.error));}}catch(error){onError(error);}};lines.on('line',onLine);child.once('exit',onExit);child.once('error',onError);child.stdin.write(payload+'\n',error=>{if(error)onError(error);});});
   }
   close(){for(const session of this.sessions.values())session.process?.kill();this.sessions.clear();}

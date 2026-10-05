@@ -9,6 +9,7 @@ export function mobileBackend(manifest,{read,request}){
   const entries=new Set(manifest.entries.map(e=>e.path)),protocol=new NativeProtocol(),modules=new Map();let report=null;
   const resolve=name=>{if(!safe(name))throw Error('모바일 에셋 경로 오류');const resolved=resolveBuildPath(name,manifest.redirects);return entries.has(resolved)?resolved:null;};
   for(const [index,module] of manifest.nativeModules.entries())modules.set(module.signature,{...module,index,token:module.signature,queue:Promise.resolve()});
+  protocol.module=token=>modules.get(token);
   const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json'}});
   async function nativeCall(data){
     const module=modules.get(data.token);if(!module)throw Error('패키지에 등록되지 않은 C++ 모듈');

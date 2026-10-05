@@ -72,8 +72,8 @@ inline void Input::RemoveMappingContext(Actor* target,const std::string& context
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
     Json world=bridgeWorld;for(const auto& updated:bridgeSnapshot())for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
-    if(bridgeQuery){const auto response=bridgeQuery(Json{{"key",key},{"args",args},{"objects",world}});if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
-    std::cout<<"HB_QUERY\t"<<Json{{"key",key},{"args",args},{"objects",world}}.dump()<<std::endl;
+    if(bridgeQuery){const auto response=bridgeQuery(Json{{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second}});if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
+    std::cout<<"HB_QUERY\t"<<Json{{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second}}.dump()<<std::endl;
     std::string line;if(!std::getline(std::cin,line))throw std::runtime_error("engine query disconnected");const auto response=Json::parse(line);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");
 }
 inline Json physicsQuery(const char* key,Json args,int dimension,int mask,bool includeTriggers,Actor* ignore){args["dimension"]=dimension;args["mask"]=mask;args["includeTriggers"]=includeTriggers;args["ignore"]=bridgeId(ignore);return engineQuery(key,args);}

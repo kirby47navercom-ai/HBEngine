@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 // Editor metadata; the prototype registration tool reads these declarations.
@@ -426,6 +427,7 @@ public:
     struct Callback {std::string event,owner,scope,handle;};
     static std::vector<Callback> TakeCallbacks();
     static void SetContext(const std::string& owner,const std::string& scope){owner_=owner;scope_=scope;}
+    static std::pair<std::string,std::string> GetContext(){return {owner_,scope_};}
     static void PruneScopes(const std::vector<std::string>& active);
     static void Reset(){timers_.clear();watches_.clear();events_.clear();owner_.clear();scope_.clear();next_=0;}
 private:
