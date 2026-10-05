@@ -35,6 +35,8 @@ const post=async(url,data)=>{const result=await backend(url,{method:'POST',body:
 try{
   assert.equal((await (await backend('/api/session')).json()).player,true);assert.equal((await (await backend('/api/player')).json()).mobile,true);
   assert.equal((await backend('/api/file?path=Assets%2FOld.svg')).status,200);assert.deepEqual(reads,['Content/Assets/새 이름.svg']);assert.equal((await backend('/api/file?path=../secret')).status,400);
+  const {fileUrl}=await import('../prototype/project-browser.js');assert.equal(fileUrl('Assets/Old.svg'),'/api/file?path=Assets%2FOld.svg');
+  globalThis.hbMobileFileUrl=backend.fileUrl;try{assert.equal(fileUrl('Assets/Old.svg'),'/Content/Assets/%EC%83%88%20%EC%9D%B4%EB%A6%84.svg');assert.throws(()=>fileUrl('../secret'),/경로/);assert.throws(()=>fileUrl('Native/Main.mm'),/게임 파일/);}finally{delete globalThis.hbMobileFileUrl;}
   const key='hbengine.savegame.slot.project.'+manifest.id;
   assert.equal((await backend('/api/storage',{method:'PUT',body:JSON.stringify({id:manifest.id,items:{[key]:'한글 저장'}})})).status,200);assert.equal(saved.items[key],'한글 저장');const loaded=await(await backend('/api/storage?project='+manifest.id)).json();assert.equal(loaded.items['hbengine.savegame.old.project.older-project'],undefined);assert.equal(saved.items['hbengine.savegame.old.project.older-project'],'이전 게임');assert.equal((await backend('/api/storage',{method:'PUT',body:JSON.stringify({id:manifest.id,items:{other:'금지'}})})).status,400);assert.equal(saved.items[key],'한글 저장');
   const builds=[];for(const module of native.modules)builds.push(await post('/api/native/build',{header:module.header,source:module.source}));await assert.rejects(post('/api/native/build',{header,source:'unregistered'}),/등록/);

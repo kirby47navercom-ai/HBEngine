@@ -15,7 +15,7 @@ const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','Tilemap
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error}){
   const twoD=new TwoDRendering();
-  const texture=async (path,normal=false)=>{const result=await new THREE.TextureLoader().loadAsync(fileUrl(path));result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;return result;};
+  const texture=async (path,normal=false)=>{let result;try{result=await new THREE.TextureLoader().loadAsync(fileUrl(path));}catch(error){throw Error('텍스처를 읽지 못했어요: '+path+(error?.message?' · '+error.message:''));}result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;return result;};
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
   function lightOutline(group,p){
     if(p.lightType==='global')return;

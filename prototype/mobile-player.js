@@ -7,6 +7,7 @@ export function mobileBackend(manifest,{read,request}){
   if(manifest.version!==1||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene))throw Error('모바일 패키지 형식 오류');
   const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,legacyStorage:false,player:true};
   const entries=new Set(manifest.entries.map(e=>e.path)),protocol=new NativeProtocol(),modules=new Map();let report=null;
+  const resolve=name=>{if(!safe(name))throw Error('모바일 에셋 경로 오류');const resolved=resolveBuildPath(name,manifest.redirects);return entries.has(resolved)?resolved:null;};
   for(const [index,module] of manifest.nativeModules.entries())modules.set(module.signature,{...module,index,token:module.signature,queue:Promise.resolve()});
   const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json'}});
   async function nativeCall(data){
@@ -22,14 +23,14 @@ export function mobileBackend(manifest,{read,request}){
       }catch(error){module.requestWorld=null;module.requestSequence=0;throw error;}finally{queries?.close();}
     });module.queue=job.catch(()=>{});return job;
   }
-  return async function fetchMobile(input,options={}){
+  const backend=async function fetchMobile(input,options={}){
     const url=new URL(typeof input==='string'?input:input.url,'https://hbengine.local'),method=options.method||input.method||'GET';
     const body=()=>{const raw=options.body||'{}';if(typeof raw!=='string'||raw.length>8388608)throw Error('모바일 요청 크기 오류');return JSON.parse(raw);};
     try{
       if(url.pathname==='/api/session'&&method==='GET')return json(session);
       if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile:true});
       if(url.pathname==='/api/project'&&method==='GET')return json({entries:manifest.entries});
-      if(url.pathname==='/api/file'&&method==='GET'){const name=url.searchParams.get('path');if(!safe(name))throw Error('모바일 에셋 경로 오류');const resolved=resolveBuildPath(name,manifest.redirects);if(!entries.has(resolved))return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
+      if(url.pathname==='/api/file'&&method==='GET'){const resolved=resolve(url.searchParams.get('path'));if(!resolved)return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
       if(url.pathname==='/api/storage'){
         if(method==='GET'){if(url.searchParams.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');const saved=await request('storageRead',{});if(saved?.version!==1||!saved.items||typeof saved.items!=='object'||Array.isArray(saved.items))throw Error('게임 저장 형식 오류');const suffix='.project.'+encodeURIComponent(manifest.id);return json({version:1,items:Object.fromEntries(Object.entries(saved.items).filter(([key])=>key.endsWith(suffix)))});}
         if(method==='PUT'){const data=body(),suffix='.project.'+encodeURIComponent(manifest.id);if(data.id!==manifest.id||!data.items||Array.isArray(data.items)||typeof data.items!=='object'||Object.entries(data.items).some(([key,value])=>key.length>1000||!key.endsWith(suffix)||!key.startsWith('hbengine.savegame.')&&!key.startsWith('hbengine.storage-migrated.v1.')||value!==null&&typeof value!=='string')||JSON.stringify(data.items).length>4194304)throw Error('게임 저장 범위 오류');return json(await request('storageWrite',data.items));}
@@ -43,6 +44,8 @@ export function mobileBackend(manifest,{read,request}){
       return json({error:'모바일 실행기에 없는 작업'},404);
     }catch(error){return json({error:error.message},400);}
   };
+  backend.fileUrl=name=>{const resolved=resolve(name);if(!resolved)throw Error('게임 파일이 없어요: '+name);return '/Content/'+resolved.split('/').map(encodeURIComponent).join('/');};
+  return backend;
 }
 
 export function platformBridge(send){
@@ -64,6 +67,7 @@ export async function startMobilePlayer(){
   const send=packet=>{const value=JSON.stringify(packet);if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
   const bridge=platformBridge(send);window.hbMobileReply=bridge.receive;
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
+  window.hbMobileFileUrl=backend.fileUrl;
   window.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);return url.origin===location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};
   // Preserve the existing Player close/save path on both mobile hosts.
   window.chrome={webview:{postMessage:value=>{if(value==='hbengine.close')bridge.request('close',{}).catch(()=>{});}}};

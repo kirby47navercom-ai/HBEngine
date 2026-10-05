@@ -1,6 +1,6 @@
 # HBEngine 작업 인계 — 2026-10-05
 
-모바일 출력 우선 작업: Android APK/AAB 및 iOS Xcode 프로젝트 공용 실행 연결을 구현했어요. 실제 C++ AOT 두 모듈·Rapier 질의·배치 위치·한글·프로젝트 출력 검사 통과이며, Android SDK 동의와 실제 플랫폼 컴파일·실행 검증을 기다려요. 사용자 Mac/Xcode 없음, 설치본은 보존 중이에요. 상세: [모바일 출력](docs/MOBILE_EXPORT.md)
+모바일 우선 작업: 원격 Mac의 실제 Xcode 기기/시뮬레이터 컴파일·기존 장면 C++ 실행을 확인했어요. SVG 추가 검사는 0프레임으로 실패해, 이미지·소리·글꼴의 공용 fileUrl을 모바일 패키지 주소에 연결하고 다시 검증해요. Android SDK 약관 답변과 실제 APK/AAB 검사는 대기 중이에요. 사용자 Mac/Xcode 없음, 설치본은 보존해요. 상세: [모바일 출력](docs/MOBILE_EXPORT.md)
 
 ## 최신 우선순위: 모바일 배포·검증 후 사용자 업데이트
 

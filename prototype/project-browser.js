@@ -4,7 +4,7 @@ import {assetTypes,assetTitle,assetSuffix} from './asset-documents.js';
 import {blueprintClasses} from './class-types.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export async function editorRequest(url,options={}){const response=await fetch(url,{...options,headers:{'X-HB-Editor':'1',...options.headers}});if(!response.ok){let message;try{message=(await response.json()).error;}catch{}throw Error(message||'요청 실패: '+response.status);}return response;}
-export const fileUrl=path=>'/api/file?path='+encodeURIComponent(path);
+export const fileUrl=path=>globalThis.hbMobileFileUrl?globalThis.hbMobileFileUrl(path):'/api/file?path='+encodeURIComponent(path);
 export async function droppedFiles(transfer){
   const roots=[...transfer.items].filter(i=>i.kind==='file').map(i=>({entry:i.webkitGetAsEntry?.(),file:i.getAsFile()})),files=[];
   const visit=async(entry,depth=0)=>{if(depth>32)throw Error('폴더 깊이는 32단계까지 가져올 수 있어요.');if(entry.isFile){const file=await new Promise((resolve,reject)=>entry.file(resolve,reject));if(files.length>=100)throw Error('한 번에 100개 파일까지 가져올 수 있어요.');files.push({file,relativePath:entry.fullPath.replace(/^\//,'')});}else if(entry.isDirectory){const reader=entry.createReader();while(true){const children=await new Promise((resolve,reject)=>reader.readEntries(resolve,reject));if(!children.length)break;for(const child of children)await visit(child,depth+1);}}};
