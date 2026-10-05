@@ -50,3 +50,14 @@ export function nativeChainBlock(binding,g,plan,outputs,scope){
   }
   return jobs;
 }
+
+// Event descriptors are read-only until their completed native prefix is visited.
+// Input key maps and construction callbacks stay at their original event boundary.
+export function nativeEventBlock(binding,g,descriptors){
+  const entries=[],jobs=[];
+  for(const descriptor of descriptors){const {n,args,pin='then'}=descriptor,edges=g.edges.filter(e=>e.from.node===n.id&&e.from.pin===pin);let chain=[];
+    if(edges.length){if(edges.length!==1||edges[0].to.pin!=='exec')return null;const start=g.nodes.find(n=>n.id===edges[0].to.node),plan=start&&nativeChainPlan(binding.root,g,start);if(!plan?.length||g.edges.some(e=>e.from.node===plan.at(-1).node.id&&e.from.pin==='then'))return null;chain=nativeChainBlock(binding,g,plan,new Map([[n.id,args]]),'');}
+    const entry={...descriptor,pin,jobs:chain};entries.push(entry);jobs.push(...chain);
+  }
+  return {binding,g,entries,jobs,requests:jobs.map(j=>j.request)};
+}

@@ -4,7 +4,7 @@ import {derivesFrom} from './class-types.js';
 import {catalog,basePins,fieldsFor,defaultInputValue,defaultsFor,validBlueprint,graphContext,sampleTimeline,timelineLength,legacyTemplateConstruction} from './blueprint-model.js';
 import {createCorePreview,evaluateCore} from './core-preview.js';
 import {nativeMember,nativeTargetPin} from './native-model.js';
-import {nativeTickPlan,nativeTickBlock,nativeChainPlan,nativeChainBlock} from './native-tick-batch.js';
+import {nativeTickPlan,nativeTickBlock,nativeChainPlan,nativeChainBlock,nativeEventBlock} from './native-tick-batch.js';
 import {cloneNativeValue} from './native-transport.js';
 import {NativeProtocol} from './native-protocol.js';
 import {installBlueprintComponents} from './scene-components.js';
@@ -29,10 +29,10 @@ export class BlueprintRuntime {
   beginScope(scope){if(scope)this.scopes.add(scope);}
   inspectWork(){return {scopes:[...this.scopes],delays:this.jobs.map(j=>({node:j.node,owner:j.owner,scope:j.scope||'',at:j.at})),timers:[...this.core.timers].map(([id,t])=>({id,owner:t.owner||'',scope:t.scope||'',elapsed:t.elapsed,active:t.active})),timelines:[...this.timelines].map(([id,t])=>({id,node:t.n.id,owner:t.f.b.self,scope:t.f.scope||'',time:t.time,playing:t.playing})),subscriptions:[...this.subscriptions].flatMap(([signal,list])=>list.map(s=>({signal,owner:s.b.self,event:s.event,scope:s.scope||''})))};}
   cancelScope(scope){if(!scope)return;this.scopes.delete(scope);this.jobs=this.jobs.filter(j=>j.scope!==scope);for(const [id,t] of this.timelines)if(t.f.scope===scope)this.timelines.delete(id);for(const [id,t] of this.core.timers)if(t.scope===scope)this.core.timers.delete(id);for(const [id,list] of this.subscriptions){const next=list.filter(s=>s.scope!==scope);if(next.length)this.subscriptions.set(id,next);else this.subscriptions.delete(id);}if(this.pending?.f.scope===scope){this.pending.resolve();this.pending=null;}}
-  async start(){this.generation++;this.active=true;await this.hooks.prepare?.(this);for(const b of this.bindings)await this.emit(b,'construction',{},graphContext(b.root,'construction'));await this.hooks.start?.(this);if(this.hooks.gameplay)this.hooks.gameplay.matchState='playing';await this.tickBindings('beginPlay',{});return this;}
+  async start(){this.generation++;this.active=true;await this.hooks.prepare?.(this);await this.eventBindings('construction',{},b=>graphContext(b.root,'construction'));await this.hooks.start?.(this);if(this.hooks.gameplay)this.hooks.gameplay.matchState='playing';await this.tickBindings('beginPlay',{});return this;}
   async stop(reason='Stopped'){
     if(!this.active||this.stopping)return;this.paused=false;this.stepRemaining=null;this.generation++;this.pending?.resolve();this.pending=null;this.stopping=true;let firstError;await this.inputQueue;
-    try{try{await this.hooks.stop?.(this,reason);}catch(error){firstError??=error;}for(const b of this.bindings)try{await this.emit(b,'endPlay',{reason});}catch(error){firstError??=error;}}
+    try{try{await this.hooks.stop?.(this,reason);}catch(error){firstError??=error;}try{const endError=await this.eventBindings('endPlay',{reason},b=>b.root,true);firstError??=endError;}catch(error){firstError??=error;}}
     finally{if(this.hooks.gameplay)this.hooks.gameplay.matchState='ended';this.active=false;this.stopping=false;this.sceneRequest=null;this.jobs=[];this.timelines.clear();this.subscriptions.clear();this.scopes.clear();this.core.timers.clear();this.overlaps.clear();this.hits.clear();this.resetInput();}
     if(firstError)throw firstError;
   }
@@ -45,7 +45,20 @@ export class BlueprintRuntime {
   flushInput(){return this.inputQueue;}
   dispatchInput(packet,camera){if(!validInputPacket(packet))return Promise.reject(Error('입력 키·값·마우스 좌표를 확인하세요.'));const generation=this.generation,epoch=this.inputEpoch,sample=copy(packet);const job=this.inputQueue.then(async()=>{if(!this.active||this.paused||this.stopping||this.generation!==generation||this.inputEpoch!==epoch)return;if(sample.pointer)this.pointer(sample.pointer,camera);if(sample.key!==undefined)await this.applyInput(sample.key,sample.value??1,sample.source);});this.inputQueue=job.catch(()=>{});return job;}
   input(key,value=1){return this.dispatchInput({key,value});}
-  async applyInput(key,value,source){key=inputKey(key);value=this.inputState.set(key,value,source);this.hooks.input?.(key,value);for(const b of this.bindings){if(this.object(b.self)?.poolActive===false)continue;const old=b.input.keys.get(key)||0;b.input.set(key,value);if(!old&&value||old&&!value)await this.emit(b,'input',{},b.root,n=>inputKey(n.options?.key||'E')===key,!value?'released':'then');await this.emit(b,'inputAxis',{value},b.root,n=>inputKey(n.options?.key||'A')===key);await this.actionEvents(b);}}
+  async applyInput(key,value,source){key=inputKey(key);value=this.inputState.set(key,value,source);this.hooks.input?.(key,value);await this.inputBindings(key,value);}
+  inputDescriptors(b,key,value){const old=b.input.keys.get(key)||0,edge=!old&&value||old&&!value;return b.root.nodes.filter(n=>n.key==='input'&&edge&&inputKey(n.options?.key||'E')===key).map(n=>({n,args:{},pin:value?'then':'released'})).concat(b.root.nodes.filter(n=>n.key==='inputAxis'&&inputKey(n.options?.key||'A')===key).map(n=>({n,args:{value}})));}
+  async inputBinding(b,key,value){if(this.object(b.self)?.poolActive===false)return;const old=b.input.keys.get(key)||0;b.input.set(key,value);if(!old&&value||old&&!value)await this.emit(b,'input',{},b.root,n=>inputKey(n.options?.key||'E')===key,!value?'released':'then');await this.emit(b,'inputAxis',{value},b.root,n=>inputKey(n.options?.key||'A')===key);await this.actionEvents(b);}
+  async inputBindings(key,value){
+    const bindings=this.bindings;for(let index=0;index<bindings.length;){const b=bindings[index],build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
+      if(this.canBatchEvents(build)&&this.actionEvents===BlueprintRuntime.prototype.actionEvents){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
+        for(let i=index;i<bindings.length;i++){const owner=bindings[i],input=owner.input;if(this.object(owner.self)?.poolActive===false||this.hooks.nativeBuild?.(owner.self)?.token!==build.token||input.contexts.length||input.actions.size||input.states.size||input.events.size)break;let block;
+          try{block=nativeEventBlock(owner,owner.root,this.inputDescriptors(owner,key,value));if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
+          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.before=()=>owner.input.set(key,value);block.after=()=>this.actionEvents(owner);blocks.push(block);calls.push(...block.requests);
+        }
+      }
+      if(calls.length<2){const count=calls.length===0&&blocks.length?blocks.length:calls.length===1?blocks.findIndex(block=>block.requests.length)+1:1;for(let i=0;i<count;i++)await this.inputBinding(bindings[index++],key,value);}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return;index+=used;}
+    }
+  }
   resetInput(){this.inputEpoch++;this.pointerCamera=null;this.inputState.clear();this.hooks.releaseInput?.();for(const b of this.bindings){b.input.clear();b.input.previous.clear();}}
   releaseInput(){if(!this.active||this.paused||this.stopping){this.resetInput();return Promise.resolve();}this.inputEpoch++;const generation=this.generation;const job=this.inputQueue.then(async()=>{if(!this.active||this.paused||this.stopping||this.generation!==generation){this.resetInput();return;}const keys=[...this.inputState.keys.keys()];this.inputState.clear();this.hooks.releaseInput?.();for(const b of this.bindings){for(const key of keys){const old=b.input.keys.get(key);b.input.set(key,0);if(old)await this.emit(b,'input',{},b.root,n=>inputKey(n.options?.key||'E')===key,'released');}b.input.clear();await this.actionEvents(b);}this.pointerCamera=null;this.inputState.clearPointer();});this.inputQueue=job.catch(()=>{});return job;}
   async releaseSource(source){for(const key of [...(this.inputState.sources.get(source)?.keys()||[])])await this.dispatchInput({key,value:0,source});}
@@ -74,7 +87,71 @@ export class BlueprintRuntime {
       if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');
     }
   }
-  async collisions(){const contacts=this.hooks.contacts?.()||sceneContacts(this.objects),now=new Map(),hits=new Map();for(const b of this.bindings)for(const contact of contacts){if(contact.a!==b.self&&contact.b!==b.self)continue;const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([this.bindings.indexOf(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};if(contact.trigger){if(b.root.settings?.overlapEnabled===false)continue;now.set(id,state);if(!this.overlaps.has(id))await this.emit(b,'beginOverlap',{other},b.root,n=>this.componentEvent(n,state));}else{hits.set(id,state);if(!this.hits.has(id))await this.emit(b,'hitEvent',{other,hit:{hit:true,position:copy(contact.position),normal:contact.normal.map(v=>reversed?-v:v),actor:other}},b.root,n=>this.componentEvent(n,state));}}for(const [id,state] of this.overlaps)if(!now.has(id))await this.emit(state.b,'endOverlap',{other:state.other},state.b.root,n=>this.componentEvent(n,state));this.overlaps=now;this.hits=hits;}
+  canBatchEvents(build){return this.active&&!this.paused&&this.stepRemaining===null&&this.depth<64&&this.emit===BlueprintRuntime.prototype.emit&&build?.metadata.nativeBatch===1;}
+  async eventBindings(key,args={},graphFor=b=>b.root,continueOnError=false){
+    let firstError;const bindings=this.bindings;for(let index=0;index<bindings.length;){const b=bindings[index],graph=graphFor(b);if(!graph.nodes.some(n=>n.key===key&&graph.edges.some(e=>e.from.node===n.id&&e.from.pin==='then'))){try{await this.emit(b,key,args,graph);}catch(error){if(!continueOnError)throw error;firstError??=error;}index++;continue;}const build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
+      if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
+        for(let i=index;i<bindings.length;i++){const owner=bindings[i];if(this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;const g=graphFor(owner);let block;
+          try{block=nativeEventBlock(owner,g,g.nodes.filter(n=>n.key===key).map(n=>({n,args})));if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
+          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;blocks.push(block);calls.push(...block.requests);
+        }
+      }
+      if(calls.length<2){const count=calls.length===0&&blocks.length?blocks.length:calls.length===1?blocks.findIndex(block=>block.requests.length)+1:1;for(let i=0;i<count;i++){const owner=bindings[index++];try{await this.emit(owner,key,args,graphFor(owner));}catch(error){if(!continueOnError)throw error;firstError??=error;}}}else{try{const used=await this.nativeEventGroup(blocks,calls);if(!used)return firstError;index+=used;}catch(error){const failed=bindings.indexOf(error.nativeEventBinding,index);if(!continueOnError||failed<index)throw error;firstError??=error;index=failed+1;}}
+    }return firstError;
+  }
+  async emitEntry(b,g,entry,reset=true){if(!this.active)return;if(++this.depth>64){this.depth--;throw Error('이벤트 재귀 깊이 64 초과');}if(this.depth===1&&reset)this.steps=0;try{const f=this.frame(b,g,entry.args);f.outputs.set(entry.n.id,entry.args);await this.follow(entry.n,entry.pin,f);}finally{this.depth--;}}
+  async nativeEventGroup(blocks,calls){
+    const generation=this.generation,result=await this.hooks.native({calls,self:calls[0].self});if(!this.active||this.generation!==generation)return 0;
+    if(!Array.isArray(result.results)||result.results.length>calls.length||!result.results.length&&!result.nativeError)throw Error('C++ 묶음 실행 결과 오류');let completed=0,used=0;
+    for(const block of blocks){if(completed>=result.results.length&&!result.nativeError)break;const b=block.binding;block.before?.();let boundary=false,phase;
+      for(const entry of block.entries){const nextPhase=entry.n.key+':'+entry.pin;if(this.depth===0&&phase!==nextPhase)this.steps=0;phase=nextPhase;this.depth++;const f=this.frame(b,block.g,entry.args);f.outputs.set(entry.n.id,entry.args);let last;
+        const visit=job=>{this.steps+=1+job.readCount;if(this.steps>10000)throw Error('한 이벤트 실행량 10000 초과');this.hooks.trace?.(job.node,f);for(const [id,value] of job.reads){f.outputs.set(id,value);this.values.set(id,value);}};
+        try{for(const job of entry.jobs){if(completed>=result.results.length){if(result.nativeError){visit(job);throw Object.assign(Error(result.nativeError),{nativeEventBinding:b});}try{if(last)await this.follow(last.node,'then',f);else await this.follow(entry.n,entry.pin,f);}catch(error){error.nativeEventBinding=b;throw error;}boundary=true;break;}
+            visit(job);const reply=result.results[completed++];if(completed===result.results.length){try{for(const operation of result.operations||[])await this.hooks.operation(operation.key,operation.args,this.bindings.find(b=>b.self===operation.self)||b,this);for(const event of result.events||[]){const owner=this.bindings.find(b=>b.self===event.target)||b;await this.emit(owner,'nativeEvent',event.args,owner.root,n=>n.nativeId===event.nativeId);}}catch(error){error.nativeEventBinding=b;throw error;}if(!this.frameActive(f))return 0;}
+            const output=reply.outputs||{};f.outputs.set(job.node.id,output);this.values.set(job.node.id,cloneNativeValue(output));last=job;
+          }
+        }finally{this.depth--;}
+        if(boundary){for(const next of block.entries.slice(block.entries.indexOf(entry)+1)){const nextPhase=next.n.key+':'+next.pin;try{await this.emitEntry(b,block.g,next,phase!==nextPhase);}catch(error){error.nativeEventBinding=b;throw error;}phase=nextPhase;}break;}
+      }
+      await block.after?.();used++;if(boundary)break;
+    }
+    if(result.nativeError)throw Error(result.nativeError);if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');return used;
+  }
+  collisionTask(b,contact,now,hits){
+    if(contact.a!==b.self&&contact.b!==b.self)return null;
+    const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([this.bindings.indexOf(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};
+    if(contact.trigger&&b.root.settings?.overlapEnabled===false)return null;
+    const map=contact.trigger?now:hits,previous=contact.trigger?this.overlaps:this.hits,key=contact.trigger?'beginOverlap':'hitEvent',args=contact.trigger?{other}:{other,hit:{hit:true,position:copy(contact.position),normal:contact.normal.map(v=>reversed?-v:v),actor:other}},match=n=>this.componentEvent(n,state);
+    return {b,key,args,match,before:()=>map.set(id,state),descriptors:previous.has(id)?[]:b.root.nodes.filter(n=>n.key===key&&match(n)).map(n=>({n,args}))};
+  }
+  async collisionBinding(task){if(!task)return;task.before();if(task.descriptors.length)await this.emit(task.b,task.key,task.args,task.b.root,task.match);}
+  async endOverlapBindings(now){
+    const previous=this.overlaps,rows=[...previous.keys()];
+    for(let index=0;index<rows.length;){const state=previous.get(rows[index]);if(!state||now.has(rows[index])){index++;continue;}const b=state.b,build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
+      if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
+        for(let i=index;i<rows.length;i++){const next=previous.get(rows[i]);if(!next||now.has(rows[i]))continue;const owner=next.b,args={other:next.other},descriptors=owner.root.nodes.filter(n=>n.key==='endOverlap'&&this.componentEvent(n,next)).map(n=>({n,args}));if(descriptors.length&&this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;let block;
+          try{block=nativeEventBlock(owner,owner.root,descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
+          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.cursor=i;blocks.push(block);calls.push(...block.requests);
+        }
+      }
+      if(calls.length<2){await this.emit(b,'endOverlap',{other:state.other},b.root,n=>this.componentEvent(n,state));index++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return false;index=blocks[used-1].cursor+1;}
+    }return true;
+  }
+  async collisions(){
+    const contacts=this.hooks.contacts?.()||sceneContacts(this.objects),bindings=this.bindings,now=new Map(),hits=new Map();
+    for(let cursor=0;contacts.length&&cursor<bindings.length*contacts.length;){const task=this.collisionTask(bindings[Math.floor(cursor/contacts.length)],contacts[cursor%contacts.length],now,hits);
+      if(!task?.descriptors.length){await this.collisionBinding(task);cursor++;continue;}
+      const build=this.hooks.nativeBuild?.(task.b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
+      if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
+        for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits);if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
+          try{block=nativeEventBlock(next.b,next.b.root,next.descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
+          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.before=next.before;block.cursor=i;blocks.push(block);calls.push(...block.requests);
+        }
+      }
+      if(calls.length<2){await this.collisionBinding(task);cursor++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return;cursor=blocks[used-1].cursor+1;}
+    }
+    if(await this.endOverlapBindings(now)){this.overlaps=now;this.hits=hits;}
+  }
   componentEvent(node,state){const id=node.options?.componentId;return !id||id==='actor'||(state.sources?.length?state.sources.some(source=>source.name===state.b.root.name&&source.id===id):id===state.component||state.b.root.components.find(c=>c.id===id)?.type===state.type);}
   continue(step=false){this.stepRemaining=step?1:null;this.paused=false;this.pending?.resolve();this.pending=null;}
   pause(){this.paused=true;this.resetInput();}

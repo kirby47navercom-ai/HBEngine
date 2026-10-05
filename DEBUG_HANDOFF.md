@@ -1,3 +1,5 @@
+2026-10-06 이벤트 후속: 실제 CPP100/150→1 Construction/input/overlap/hit/end/EndPlay, native input E100/0·trace/vars/objects 일치, native callback 미래 InputAction 추가·변수 변경 재평가, EndPlay owner 오류 뒤 나머지 정리와 hooks.stop 오류 후에도 EndPlay 실행 회귀 통과. 빈 Construction scan O(n²)과 stop의 ??= RHS 단락 오류는 검증 중 수정. 실제 CPP batch/module+AOT/mobile 회귀 및 원본 dvSLuk9수치+225파일 보존. Headless event-group ABBA1.491726/+1.017796ms 통과. 미커밋3코드/검사파일. 다음terminal BP function wrapper와 InputAction 등을 계속. 설치본 그대로.
+
 최신 검증 2026-10-06: Editor LVnWdd +1.26200ms/Player OL3kQo +1.33917ms 각각3 Stop/Play·장면 cycles 통과. HeadlessABBA1.46478/1.48543 두 후속 통과. Android 최종소스 ZpjEFz4core/2GB/실제hostGPU41.23/41.50fps 통과; 2core 실패는 보존. 실제CPP100→1 Tick-chain/입력·충돌·함수 chain 및 경계·실패·breakpoint 회귀, AOT2module/bridge/player/API, 원본 check_demo9개·수치·225파일 보존 통과(auric-original-32tNf7). 전체 P0-1 비Tick 여러인스턴스 묶음은 계속 필요. 설치본 그대로.
 
 ## 최신 측정 — 2026-10-06

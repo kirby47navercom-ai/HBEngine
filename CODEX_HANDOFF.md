@@ -1,3 +1,14 @@
+# 최신 진행 — 2026-10-06 Auric P0 이벤트 묶음
+
+- HEAD12f6e8d/원격37380658386 성공: 실제 C++/AOT/두 Xcode SDK/iOS 시뮬레이터. 사용자 설치본은 유지.
+- 새 미커밋: nativeEventBlock/group으로 여러 인스턴스 Construction·Pressed/Released/Axis·Begin/EndOverlap·Hit·EndPlay의 terminal C++ 직선 호출을 묶음. 입력은 Context/Action/기존 Action state가 없는 안전한 경로만. 입력 맵은 성공한 prefix에서만 갱신하여 미래 오브젝트 상태를 앞당기지 않음. 전체 BP/Action/function 범위 완료로 표시하지 않음.
+- 실제 C++ 50인스턴스100/150→1, 모든 호출의 global E Pressed/Released 값·상태·trace·변수 일치. 콜백이 미래 변수·InputAction context를 추가하는 경계에서 후속 재평가. 충돌 normal/other·중복 enter/hit 억제·EndOverlap 묶음. EndPlay 한 owner 실패 후 다른 owner 종료를 유지하고 실패 호출 no replay, stop hook 오류가 있어도 종료를 생략하지 않음. 과도한 빈 Construction suffix 조회 실패는 no-edge fast path로 수정.
+- 실제 CPP batch/module-query 회귀, portable mobile-player-lDmS2n/AOT2module, 입력/2D3D물리/그래프/API 검사 통과. 최신 원본 직접9검사 auric-original-dvSLuk: 원래 수치 동일·프로젝트225파일 SHA 전후 동일.
+- 최신 event-group 소스의 격리 Auric ABBA600은1.491726배/+1.017796ms 통과(acceptance-performance-event-groups.json). 기존12f소스의 Editor LVnWdd +1.262ms/Player OL3kQo +1.339ms/Android ZpjEFz4core41.23/41.50fps는 해당 소스 증거이며 새 event-group GUI/APK의 검증으로 바꿔 말하지 않음.
+- 다음: 이벤트 변경 커밋/원문 진행 기록/원격 → BP 함수로 감싼 호출·InputAction/타이머 경로의 여러 인스턴스 묶음 등 P0-1 남은 경로 → 마지막 GUI/mobile 및 원본 데모 재검증. 그 뒤 P0-3부터 원문 순서. 모든 Auric 단계 뒤 승인된 설치본 업데이트, 전체 누적 작업 재개. 최종 완료 응답 금지.
+
+## 이전 인계
+
 # 현재 이어서 할 작업 — 2026-10-06 Auric P0-1·P0-2
 
 - 주인님 지시: 모바일 선행 작업 → Auric 원문 P0부터 순서대로 구현/원본 check_demo 검증/원문 진행 기록 → 설치본 업데이트 → 누적 전체 엔진 세부 작업. 전체 완료 응답 금지. 설치/사용자 창/원본 게임 보존.
