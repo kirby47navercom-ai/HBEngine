@@ -5,6 +5,7 @@ import {catalog,basePins,fieldsFor,defaultInputValue,defaultsFor,validBlueprint,
 import {createCorePreview,evaluateCore} from './core-preview.js';
 import {nativeMember,nativeTargetPin} from './native-model.js';
 import {nativeTickPlan,nativeTickBlock} from './native-tick-batch.js';
+import {cloneNativeValue} from './native-transport.js';
 import {NativeProtocol} from './native-protocol.js';
 import {installBlueprintComponents} from './scene-components.js';
 import {sceneContacts} from './scene-runtime.js';
@@ -65,7 +66,7 @@ export class BlueprintRuntime {
       const generation=this.generation,result=await this.hooks.native({calls,self:calls[0].self});if(!this.active||this.generation!==generation)return;
       if(!Array.isArray(result.results)||result.results.length>calls.length||!result.results.length&&!result.nativeError)throw Error('C++ 묶음 실행 결과 오류');let completed=0,used=0;
       for(const block of blocks){if(completed>=result.results.length)break;const b=block.binding;for(const job of block.jobs){if(key==='tick')b.ticks.set(job.tick.id,job.due?0:job.elapsed);if(!job.due)continue;this.values.set(job.tick.id,eventArgs??{delta:job.elapsed});if(!job.request)continue;
-          this.steps+=1+job.readCount;if(this.steps>10000)throw Error('한 이벤트 실행량 10000 초과');const f=this.frame(b);f.outputs.set(job.tick.id,eventArgs??{delta:job.elapsed});this.hooks.trace?.(job.node,f);for(const [id,value] of job.reads){f.outputs.set(id,value);this.values.set(id,value);}const reply=result.results[completed++];if(completed===result.results.length){for(const operation of result.operations||[])await this.hooks.operation(operation.key,operation.args,this.bindings.find(owner=>owner.self===operation.self)||b,this);for(const event of result.events||[]){const owner=this.bindings.find(b=>b.self===event.target)||b;await this.emit(owner,'nativeEvent',event.args,owner.root,n=>n.nativeId===event.nativeId);}}this.values.set(job.node.id,structuredClone(reply.outputs||{}));
+          this.steps+=1+job.readCount;if(this.steps>10000)throw Error('한 이벤트 실행량 10000 초과');const f=this.frame(b);f.outputs.set(job.tick.id,eventArgs??{delta:job.elapsed});this.hooks.trace?.(job.node,f);for(const [id,value] of job.reads){f.outputs.set(id,value);this.values.set(id,value);}const reply=result.results[completed++];if(completed===result.results.length){for(const operation of result.operations||[])await this.hooks.operation(operation.key,operation.args,this.bindings.find(owner=>owner.self===operation.self)||b,this);for(const event of result.events||[]){const owner=this.bindings.find(b=>b.self===event.target)||b;await this.emit(owner,'nativeEvent',event.args,owner.root,n=>n.nativeId===event.nativeId);}}this.values.set(job.node.id,cloneNativeValue(reply.outputs||{}));
         }used++;}
       index+=used;if(result.nativeError){for(const block of blocks.slice(used)){const b=block.binding;for(const job of block.jobs){if(key==='tick')b.ticks.set(job.tick.id,job.due?0:job.elapsed);if(job.due)this.values.set(job.tick.id,eventArgs??{delta:job.elapsed});if(job.request){const f=this.frame(b);f.outputs.set(job.tick.id,eventArgs??{delta:job.elapsed});this.hooks.trace?.(job.node,f);for(const [id,value] of job.reads)this.values.set(id,value);throw Error(result.nativeError);}}}throw Error(result.nativeError);}
       if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');

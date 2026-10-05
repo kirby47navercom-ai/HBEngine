@@ -51,10 +51,11 @@ export class NativeHost extends NativeProtocol {
     const job=session.queue.then(async()=>{try{
       session.busy=true;session.nativeDepth=from?from.nativeDepth+1:0;session.nativeBudget=from?.nativeBudget||{count:0};
       const started=performance.now(),decoded=this.decodeRequest(session,request),decodedAt=performance.now();this.validate(session,decoded);const validatedAt=performance.now(),reply=await this.rpc(session,decoded),replyAt=performance.now(),result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
-      if(session.transportWorld)session.transportWorld=commitNativeWorld(session.transportWorld,result);
+      const committed=request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
+      if(session.transportWorld)session.transportWorld=session.transportWorld===decoded.objects&&committed?committed:commitNativeWorld(session.transportWorld,result);
       // Nested module calls change the worker world, not the client's acknowledged
       // snapshot history. Its next delta still refers to that earlier client world.
-      if(request.worldTransport===1){session.requestWorld=commitNativeWorld(decoded.objects,result);session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
+      if(request.worldTransport===1){session.requestWorld=committed;session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
       else if(request.command==='reset'){session.requestWorld=null;session.requestSequence=0;}if(result.nativeError){if(request.worldTransport===1){session.requestWorld=null;session.requestSequence=0;}session.transportWorld=null;}return result;
     }catch(error){if(request.worldTransport===1||request.command==='reset'){session.requestWorld=null;session.requestSequence=0;}session.transportWorld=null;throw error;}finally{session.busy=false;session.nativeBudget=null;}});
     session.queue=job.catch(()=>{});return job;

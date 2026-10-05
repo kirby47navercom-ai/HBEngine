@@ -1,7 +1,8 @@
 import {basePins,defaultInputValue,fieldsFor} from './blueprint-model.js';
 import {nativeMember,nativeTargetPin} from './native-model.js';
+import {cloneNativeValue} from './native-transport.js';
 
-const plans=new WeakMap(),clone=value=>value&&typeof value==='object'?structuredClone(value):value;
+const plans=new WeakMap(),clone=cloneNativeValue;
 // ponytail: terminal native events can batch without graph continuations. Branches,
 // world reads and used return pins keep their existing ordered execution boundary.
 export function nativeTickPlan(root,key='tick'){

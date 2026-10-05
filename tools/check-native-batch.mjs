@@ -24,6 +24,7 @@ HB_CLASS(Blueprintable) class BatchDirector : public hb::Actor { hb::Actor* prev
  HB_FUNCTION(BlueprintCallable) void Display(hb::Actor* owner,std::string text,int repeat,bool fail,bool interactive);
  HB_FUNCTION(BlueprintCallable) std::string ReadDisplay(hb::Actor* owner);
  HB_FUNCTION(BlueprintCallable) void Flip(hb::Actor* owner,bool flipped);
+ HB_FUNCTION(BlueprintCallable) void Time(float scale,bool fail);
  HB_FUNCTION(BlueprintPure) bool Same(hb::Actor* other) const;
 };`;
 const source=`int BatchStats::Think(float,int amount){Count++;if(amount==-1)throw std::runtime_error("planned failure");if(amount==-2)hb::Scene::SetLocalPosition(this,{9,2,0});if(amount==-3)Changed(99);return amount;}
@@ -31,6 +32,7 @@ void BatchStats::FailAfterMutating(hb::Actor* other){Count++;Precise=99;Label="c
 void BatchStats::Changed(int){}
 float BatchDirector::ReadAndChange(const std::vector<hb::Actor*>& enemies){auto* enemy=dynamic_cast<BatchStats*>(enemies.at(0));if(!enemy)throw std::runtime_error("real class missing");const float value=enemy->MaxHp;enemy->MaxHp+=1;return value;}
 void BatchDirector::Flip(hb::Actor* owner,bool flipped){hb::Sprites::SetFlip(owner,flipped,false);}
+void BatchDirector::Time(float scale,bool fail){hb::Clock::SetTimeScale(scale);if(fail)throw std::runtime_error("clock failure");}
 void BatchDirector::Display(hb::Actor* owner,std::string text,int repeat,bool fail,bool interactive){for(int i=0;i<repeat;i++)hb::UI::SetText(owner,"HUD","Label",text);if(interactive)hb::UI::SetVisible(owner,"HUD","Attack",false);if(fail)throw std::runtime_error("display failure");}std::string BatchDirector::ReadDisplay(hb::Actor* owner){return hb::UI::GetText(owner,"HUD","Label");}
 void BatchDirector::Remember(hb::Actor* other){previous=other;}bool BatchDirector::Same(hb::Actor* other)const{return previous==other;}`;
 const metadata={...parseNativeHeader(header),workerProtocol:3,nativeBatch:1},protocol=new NativeProtocol();
@@ -98,6 +100,9 @@ if(process.argv.includes('--cpp')){
   const control=await send({calls:[display('button',1,false,true),readDisplay],self:'director'});assert.equal(control.results.length,1);assert.equal(control.batchBoundary,true,'hiding interactive controls preserves its input release boundary');
   const many=await send({calls:[display('a',700),display('b',700),readDisplay],self:'director'});assert.equal(many.results.length,2);assert.equal(many.operations.length,1400);assert.equal(many.batchBoundary,true,'aggregate UI work flushes before the next call');
   const overflow=await send({calls:[display('large',1001),readDisplay],self:'director'});assert.match(overflow.nativeError,/operation limit/);assert.equal(overflow.results.length,0);assert.equal(overflow.operations.length,0,'each individual C++ function retains its original operation limit');
-  await send({command:'reset'});assert.equal((await send(request('BatchDirector.Same',{target:'director',other:'actor0'}))).outputs.result,false,'Stop/Play reset releases previous pointers');console.log('Actual C++: dynamic_cast/defaults/writeback, pooled pointer identity, 50-instance batch, failure checkpoint/recovery, operation/event boundaries and reset passed');
+  const time=(scale,fail=false)=>request('BatchDirector.Time',{target:'director',scale,fail});
+  const changedClock=await send({calls:[time(.5),calls[1]],self:'director'});assert.equal(changedClock.results.length,1);assert.equal(changedClock.batchBoundary,true);assert.equal(changedClock.clock.scale,.5,'clock changes retain their dependency boundary');
+  const failedClock=await send({calls:[time(.25,true),calls[1]],self:'director'});assert.match(failedClock.nativeError,/clock failure/);assert.equal(failedClock.results.length,0);assert.equal(failedClock.clock.scale,.5,'failed calls do not report their clock as the last successful checkpoint');
+  await send({command:'reset'});assert.equal((await send(request('BatchDirector.Same',{target:'director',other:'actor0'}))).outputs.result,false,'Stop/Play reset releases previous pointers');console.log('Actual C++: dynamic_cast/defaults/writeback, pooled pointer identity, 50-instance batch, failure checkpoint/recovery, operation/event/clock boundaries and reset passed');
  }finally{host.close();}
 }

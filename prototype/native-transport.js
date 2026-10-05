@@ -29,10 +29,17 @@ export function applyWorldPatch(previous,operations){
   }
   return result;
 }
+// Native values have already crossed the JSON/typed protocol boundary. Avoid
+// structuredClone's message-transfer setup for these small property replies.
+export function cloneNativeValue(value){
+  if(Array.isArray(value))return value.map(cloneNativeValue);
+  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,child])=>[key,cloneNativeValue(child)]));
+  return value;
+}
 export function commitNativeWorld(world,result){
   if(!result.worldCommitted?.length)return world;
   const ids=new Set(result.worldCommitted),states=new Map(result.objects.filter(o=>ids.has(o.id)).map(o=>[o.id,o]));
-  return world.map(object=>states.has(object.id)?{...object,...structuredClone(states.get(object.id))}:object);
+  return world.map(object=>states.has(object.id)?{...object,...cloneNativeValue(states.get(object.id))}:object);
 }
 // Engine-owned UI snapshots are immutable. Cache their JSON without hiding any
 // UI fields from C++; ordinary mutable actor data is serialized on every call.
@@ -45,20 +52,29 @@ function nativeRowJSON(object){
   const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
 }
 export class NativeWorldClient {
-  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();}
+  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;}
   call(request,metadata,send){
     const job=this.queue.then(async()=>{
       if(metadata?.workerProtocol!==3)return send(request);
-      if(['frame','reset'].includes(request.command)){const result=await send(request);if(request.command==='reset'){this.world=null;this.rows=null;this.sequence=0;}return result;}
+      if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
+      if(request.command==='frame'){
+        if(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean'))return send(request);
+        // With one module and no active C++ timers, only the next C++ read can
+        // observe this clock. Carry each original step, preserving float rounding.
+        const scale=Math.fround(request.clock?.scale),delta=request.clock?.paused?0:Math.fround(Math.fround(request.delta)*scale),time=Math.fround(this.clockState?.time+delta);
+        if(request.deferFrame&&request.clock&&metadata.nativeFrameBatch===1&&this.clockBatchable&&this.frames.length<63&&Number.isFinite(time)&&Number.isFinite(scale)){this.frames.push({delta:request.delta,clock:{...request.clock}});this.clockState={time,delta,scale,paused:request.clock.paused};return {objects:[],events:[],operations:[],timerCallbacks:[],clock:this.clockState};}
+        const {deferFrame,...plain}=request,frames=this.frames;this.frames=[];const result=await send({...plain,...(frames.length?{frameAdvances:frames}:{})});this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;
+      }
       // Native JSON serialization compares unchanged actor rows faster than walking
       // all their component/UI fields in JS. Keep only detached, immutable rows.
       const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>this.world&&row===this.rows?.[i]?this.world[i]:JSON.parse(row));
       let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
       if(patch){next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
       if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
-      const result=await send(packet);if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;return result;
+      const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
+      const result=await send(packet);this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;return result;
     });
-    this.queue=job.catch(()=>{this.world=null;this.rows=null;this.sequence=0;});return job;
+    this.queue=job.catch(()=>{this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job;
   }
 }
 const owners=new WeakMap();

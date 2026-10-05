@@ -1,6 +1,7 @@
 import {NativeProtocol} from './native-protocol.js';
 import {NativePhysicsQueries} from './native-physics-query.js';
 import {worldPatch,commitNativeWorld} from './native-transport.js';
+import {canonicalWorld} from './native-protocol.js';
 import {resolveBuildPath} from './build-profile.js';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(s=>!s||s==='.'||s==='..');
@@ -17,12 +18,13 @@ export function mobileBackend(manifest,{read,request}){
     const job=module.queue.then(async()=>{
       let queries;try{
         const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects);let queryMs=0,queryCount=0;
-        const clockOnly=['frame','reset'].includes(decoded.command),patch=!clockOnly&&module.metadata.workerProtocol>=2&&module.transportWorld?worldPatch(module.transportWorld,decoded.objects):null,packet=clockOnly?{...decoded,objects:[]}:patch?{...decoded,objects:undefined,objectPatch:patch}:decoded;if(decoded.command==='reset')module.transportWorld=null;
+        const clockOnly=['frame','reset'].includes(decoded.command),patch=!clockOnly&&module.metadata.workerProtocol>=2&&module.transportWorld?(decoded[canonicalWorld]?.patch&&module.transportWorld===decoded[canonicalWorld].base?decoded[canonicalWorld].patch:worldPatch(module.transportWorld,decoded.objects)):null,packet=clockOnly?{...decoded,objects:[]}:patch?{...decoded,objects:undefined,objectPatch:patch}:decoded;if(decoded.command==='reset')module.transportWorld=null;
         const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
         if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
-        if(!clockOnly)module.transportWorld=commitNativeWorld(decoded.objects,result);
+        const committed=data.request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
+        if(!clockOnly)module.transportWorld=committed||commitNativeWorld(decoded.objects,result);
         const invalidateForeign=reply=>{for(const foreign of reply.foreign||[]){const target=modules.get(foreign.token);if(target)target.transportWorld=null;invalidateForeign(foreign.result);}};invalidateForeign(result);
-        if(data.request.worldTransport===1){module.requestWorld=commitNativeWorld(decoded.objects,result);module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
+        if(data.request.worldTransport===1){module.requestWorld=committed;module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
         else if(data.request.command==='reset'){module.requestWorld=null;module.requestSequence=0;}if(result.nativeError){if(data.request.worldTransport===1){module.requestWorld=null;module.requestSequence=0;}module.transportWorld=null;}return result;
       }catch(error){if(data.request.worldTransport===1||data.request.command==='reset'){module.requestWorld=null;module.requestSequence=0;}module.transportWorld=null;throw error;}finally{queries?.close();}
     });module.queue=job.catch(()=>{});return job;
@@ -52,12 +54,12 @@ export function mobileBackend(manifest,{read,request}){
   return backend;
 }
 
-export function platformBridge(send){
+export function platformBridge(send,{nativeJSON=false}={}){
   const pending=new Map();let sequence=0,active=true;
   const arm=(id,item)=>{item.started=performance.now();item.timer=setTimeout(()=>{if(!active||pending.get(id)!==item)return;pending.delete(id);item.reject(Error('모바일 호스트 응답 시간 초과'));},item.remaining);};
   const setActive=value=>{if(active===value)return;active=value;const now=performance.now();for(const [id,item] of pending)if(active)arm(id,item);else{clearTimeout(item.timer);item.remaining=Math.max(0,item.remaining-(now-item.started));}};
   const request=(operation,data,query)=>new Promise((resolve,reject)=>{
-    const id=String(++sequence),item={resolve,reject,query,remaining:15000};pending.set(id,item);if(active)arm(id,item);try{send({id,operation,data});}catch(error){clearTimeout(item.timer);pending.delete(id);reject(error);}
+    const id=String(++sequence),item={resolve,reject,query,remaining:15000,nativeJSON:nativeJSON&&operation==='native'};pending.set(id,item);if(active)arm(id,item);try{send({id,operation,data:item.nativeJSON?{module:data.module,requestJSON:JSON.stringify(data.request)}:data});}catch(error){clearTimeout(item.timer);pending.delete(id);reject(error);}
   });
   const receive=async packet=>{
     const item=pending.get(packet.id);if(!item)return;
@@ -81,7 +83,9 @@ export async function startMobilePlayer(){
   const original=window.fetch.bind(window),manifest=await (await original('/game.hbpack.json')).json();
   let messagePort;
   const send=packet=>{const value=JSON.stringify(packet);if(messagePort)messagePort.postMessage(value);else if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
-  const bridge=platformBridge(send);window.hbMobileReply=bridge.receive;window.hbMobileHostLifecycle=bridge.setActive;
+  // Android can carry the native packet as JSON text. Its host validates the
+  // envelope without parsing and rebuilding every actor/property in Java.
+  const bridge=platformBridge(send,{nativeJSON:!!window.HBMobile});window.hbMobileReply=bridge.receive;window.hbMobileHostLifecycle=bridge.setActive;
   if(window.HBMobile){const connected=await connectAndroidChannel(bridge,window);messagePort=connected.port;if(manifest.configuration==='development')window.hbMobileChannel=connected.info;}
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
   window.hbMobileFileUrl=backend.fileUrl;

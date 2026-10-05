@@ -23,6 +23,7 @@ jobs:
           node tools/check-native-batch.mjs --cpp
           node tools/check-native-module-query.mjs --cpp
           node tools/check-native-transport.mjs
+          node tools/check-native-frame.mjs
           node tools/check-runtime.mjs
           node tools/check-headless.mjs
           node tools/check-ui-state-cache.mjs

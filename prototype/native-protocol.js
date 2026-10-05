@@ -9,6 +9,7 @@ export const canonicalWorld=Symbol('canonical native world');
 export class NativeProtocol{
   module(token){return this.sessions?.get(token);}
   validate(session,request){
+    if(request?.frameAdvances!==undefined&&(session.metadata.nativeFrameBatch!==1||request.command==='reset'||!Array.isArray(request.frameAdvances)||!request.frameAdvances.length||request.frameAdvances.length>63||request.frameAdvances.some(step=>!step||!Number.isFinite(step.delta)||step.delta<0||step.delta>1||!step.clock||!Number.isFinite(step.clock.scale)||step.clock.scale<0||typeof step.clock.paused!=='boolean')))throw Error('C++ 프레임 묶음 자료형 오류');
     if(request?.objects)validateNativeBindings(request,token=>this.module(token));
     if(request?.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean'))throw Error('프레임 시간 오류');
     if(Array.isArray(request?.objects)&&request.objects.some(o=>o?.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o?.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'))throw Error('C++ 타일맵 상태 오류');
@@ -25,6 +26,7 @@ export class NativeProtocol{
     for(const pin of ports.filter(p=>['object','hit'].includes(p.type)))for(const value of pin.array?request.args[pin.id]:[request.args[pin.id]]){const id=pin.type==='hit'?value.actor:value;if(id!==null&&!known(id))throw Error('C++ 객체 참조 오류: '+pin.id);}const receiver=request.args[request.key==='nativeCall'?nativeTargetPin(f):'target'];if(!f?.static&&(typeof receiver!=='string'||!known(receiver)))throw Error('C++ 대상 오브젝트가 없어요.');
   }
   validateReply(session,request,result,depth=0,budget={count:0}){
+    if(result.clockBatchable!==undefined&&(session.metadata.nativeFrameBatch!==1||typeof result.clockBatchable!=='boolean'))throw Error('C++ 프레임 묶음 상태 오류');
     if(depth>8||++budget.count>129)throw Error('C++ 모듈 결과 수명 또는 개수 오류');
     if(result.foreign!==undefined){if(!Array.isArray(result.foreign)||result.foreign.length>128)throw Error('C++ 모듈 결과 형식 오류');for(const foreign of result.foreign){const module=this.module(foreign?.token),binding=request.nativeBindings?.find(r=>r.id===foreign.call?.self&&r.token===foreign.token);if(!module||!binding||!foreign.result||typeof foreign.call!=='object')throw Error('C++ 모듈 결과 대상 오류');const nested={...foreign.call,nativeBindings:request.nativeBindings,objects:nativeModuleWorld(request.objects,request.nativeBindings,foreign.token),scopes:request.scopes};this.validateCall(module,nested,nested.objects,nested.scopes);this.validateReply(module,nested,foreign.result,depth+1,budget);}}
     const objectIndex=new Map(request.objects.map(o=>[o.id,o])),known=id=>objectIndex.has(id),validOne=(p,v)=>validValue(p.type,v)&&(p.type!=='object'||v===null||known(v))&&(p.type!=='hit'||v.actor===null||known(v.actor)),valid=(p,v)=>p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validOne(p,x)):validOne(p,v);

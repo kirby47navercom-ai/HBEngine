@@ -426,6 +426,7 @@ public:
     static std::vector<std::string> TakeEvents();
     struct Callback {std::string event,owner,scope,handle;};
     static std::vector<Callback> TakeCallbacks();
+    static bool CanBatchFrame(){return std::none_of(timers_.begin(),timers_.end(),[](const auto& item){return item.second.active&&!item.second.paused;});}
     static void SetContext(const std::string& owner,const std::string& scope){owner_=owner;scope_=scope;}
     static std::pair<std::string,std::string> GetContext(){return {owner_,scope_};}
     static void PruneScopes(const std::vector<std::string>& active);
