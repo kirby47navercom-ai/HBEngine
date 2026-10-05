@@ -1,5 +1,12 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 공용 타임라인 검사 후속
+
+- 실제 Editor xyFptU와 배포 Player cxsjYq: 프레임/키·단위·C++ 몽타주/시퀀스·별도 preview/runtime 시간·원본/복원/exit0/서버 종료가 통과해요. xyFptU timeline-live/sequence-live PNG를 직접 확인했어요. 코어 check-gameplay-timeline은 유한/범위·30/60fps·경계·256×1024키·종료/반복을 확인해요. 전체 FPS/모바일/정밀 포즈 복제의 근거가 아니에요.
+- Editor8VGE8R는 검사 fixture의 새 Sequence Seek F와 기존 Root Graph Pause F 충돌이었어요. steps.log의 send F에서 실패했고 시퀀스 시작 전 Seek가 호출됐어요. fixture를 U로 분리한 뒤 다음 실제 실행이 진행됐어요.
+- Editor1GboTU는 document.querySelectorAll이 Dock parking의 숨은 다른 문서 재생선까지 읽어 실패했어요. Dock-layout의 parking.hidden/DOM 이동을 확인하고 검사 선택을 .gameplay-editor.active로 한정해 xyFptU가 통과했어요. 제품의 재생 시간을 바꾸지 않았어요. timeline-live.json은 assertion 전에 보존해요.
+- check-editor-api.mjs의 인자 없는 실행은 기본127.0.0.1:5181 ECONNREFUSED로 시작하지 못했어요. 사용자 서버/창을 켜지 않았어요. schema/원자적 편집은 check-engine-integration과 격리 actual Editor 명령으로 확인했어요.
+
 ## 중단 혼합 검증·관측 타이밍 후속
 
 코어 지정 Stop 시간/일시정지/linear·smooth/재호출 단축·연장 방지/불법 입력/후속 Notify 억제/Ended·콜백 오류 정리/전체 Stop 중 새 인스턴스 보존이 통과해요. 최종 Editor HrVBQs/Player DyhJfk의 C++/BP 중간 뼈/가중치·다른 그룹·기본 포즈 복원과 Ended bool→사용자 C++·원본/exit0/서버 정리도 통과해요. HrVBQs montage-stopping.png에서46%/중단 중을 확인해요.

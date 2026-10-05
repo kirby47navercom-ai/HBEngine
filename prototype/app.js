@@ -1002,7 +1002,7 @@ window.addEventListener('beforeunload',e=>{persistRecovery();if(dirty&&!leavingP
 window.addEventListener('pagehide',()=>objectUrls.forEach(url=>URL.revokeObjectURL(url)));
 let previous=performance.now();
 function animate(now){dock?.requestAnimationFrame?dock.requestAnimationFrame(animate):requestAnimationFrame(animate);const dt=Math.min((now-previous)/1000,.1);previous=now;
-  if(running&&!paused)tickGame(dt);else corePreview.delta=0;assetPanes.get(assetDocs.active)?.editor?.runtimeState?.(objects,running);
+  if(running&&!paused)tickGame(dt);else corePreview.delta=0;for(const [path,pane] of assetPanes)if(path===assetDocs.active||dock?.visible(pane.id))pane.editor?.runtimeState?.(objects,running);
   if(cloudGroup&&skyDome)syncSkyToCamera({skyDome,cloudGroup},activeCamera,mainPresentation.settings.realtime?dt:0);
   if((!dock||dock.visible('scene'))&&mainRenderer&&scene){orbit?.update(dt);if(selectionBox?.visible)selectionBox.update();const gameCamera=running&&renderGameView?visuals.gameCamera(objects,camera.aspect,runtime?.sequenceCamera):null;transform.getHelper().visible=!gameCamera&&transform.enabled;selectionBox.visible=!gameCamera&&!!transform.object;visuals.tickParticles(objects,dt,running);visuals.syncNavigation(objects);visuals.syncDecals();if(mainPresentation.settings.realtime||mainPresentation.needsRender||running||orbit?.isNavigating){const pf=profiler.begin('뷰포트 렌더'),start=performance.now();renderViewport(null,gameCamera,dt);if(pf)pf.samples.push({name:'WebGL 렌더 제출',parent:'',start:start-pf.start,duration:performance.now()-start});profiler.finish(pf,{drawCalls:mainRenderer.info.render.calls,triangles:mainRenderer.info.render.triangles,geometries:mainRenderer.info.memory.geometries,textures:mainRenderer.info.memory.textures});}}
 

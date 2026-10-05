@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 공용 타임라인 조작·실행 추적 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [공용 타임라인 계약](docs/ANIMATION_TIMELINE_CONTROLS.md)에 새 공식7개 읽기 경계·자체 UI/시계 계약·남은 세부를 기록했어요. 원문 manifest는 animation-editor-docs-uTk8GW이며 전체 분석/엔진 완료가 아니에요.
+
+- 몽타주/시퀀스 공용 프레임/키·처음/끝·초/프레임·물리 클릭/드래그·로컬 단축키를 연결했어요. 미리보기/실행 재생선과 시간을 분리하고 실행 중 편집 시간을 보존해요. 큰 키 목록의 함수 인자 한도·반복 잔여시간/종료 버튼을 보강했어요. C++ 직접 시퀀스의 에셋 진단과 표시/분리 편집기 갱신·AI schema도 공유해요. BP566/API289개 유지예요.
+- 실제 Editor xyFptU/배포 Player cxsjYq는 직접 C++ 몽타주/시퀀스·BP→C++·Pause/Seek/Stop·2D/가져온 뼈·원본 바이트/exit0/서버 정리를 통과해요. Editor 물리 키/마우스·revision/data 보존·0.37 preview/0.50 runtime·0.10 preview/0.75 runtime·23프레임/실행선·정지 후 preview 보존을 확인해요. timeline-live.png/sequence-live.png를 직접 보았어요. 코어 timeline/몽타주/게임 흐름·main/API·scene·분리 frame 수명·AI integration도 통과해요.
+- 실패 Editor8VGE8R는 새 검사용 Seek F가 기존 그래프 Pause F와 겹쳐 시퀀스 시작 전 호출됐어요. 검사용 U로 분리했어요. Editor1GboTU는 숨은 parking 문서의 재생선까지 선택한 검사 범위 오류였고 active editor로 한정했어요. standalone check-editor-api의 기본5181은 서버가 없어 실행되지 않았으며 사용자 서버를 시작하지 않았어요. 실제 API 명령은 위 격리 Editor에서 통과했어요.
+- 사용자 설치본/게임/프로필/창을 보존해요. 다음은 공용 Notify State의 몽타주 구간·같은 그룹 교체 혼합·공유 Skeleton/클립 메타와 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부예요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 중단 혼합·Ended 후 계속
 
 [몽타주 Stop 후속](docs/ANIMATION_MONTAGE_SLOTS.md)에 Epic5.8 Stop 자체 본문/선언과 AnimInstance 일부 delegate/몽타주 요약 읽기·개별 StopGroup 본문 미독·자체 계약/차이를 기록해요. 원문/경계 manifest는 montage-stop-docs-5QRB0I예요. 전체 gate를 승격하지 않아요.

@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 제작·실행 후속: [공용 타임라인 조작](../ANIMATION_TIMELINE_CONTROLS.md). Unity6000.0 Use Animation view 기술127–243·AnimationWindow 자체 설명243–248/8개 속성258–265와 time/frame/previewing/playing 자체 선언/설명을 읽고, Epic5.8 Animation Sequence Editor 기술0–177을 읽었어요. 이미지/연결/상속은 미독이며 압축/프레임 제거·data model/controller/meta·Skeleton/기록/곡선/잠금/색의 세부를 추가 후속 대상으로 포함해요. 원문/응답/SHA/경계는 native/build/animation-editor-docs-uTk8GW예요. 실제 Editor xyFptU/Player cxsjYq의 프레임·키/마우스 조작·C++ 직접 몽타주/시퀀스·독립 시간/재생선·원본/복원/종료와 코어 큰 키 목록을 검사했어요. 전체 corpus gate를 승격하지 않고 전체 요구를 계속해요.
+
 2026-10-05 후속: [몽타주 중단 혼합](../ANIMATION_MONTAGE_SLOTS.md). Epic5.8 Montage_Stop 자체 Description/선언0–25와 UAnimInstance delegate 요약112–127/몽타주 요약740–849를 새로 읽고 Stop/StopGroup 지정 시간·Ended/BlendingOut을 대조했어요. StopGroupByName 개별 본문은 web 실패·직접200 HTML에서도 미확인이며 미독으로 유지해요. 원문/응답/SHA/경계는 native/build/montage-stop-docs-5QRB0I에 있어요. 관련 delegate/Blend 설정/동기화·연결 전체 API를 후속 대상으로 등록하고 전체 corpus gate는 승격하지 않아요. 실제 C++/BP·Editor/Player·사람/AI와 콜백/호환을 확인하며 전체 엔진 세부를 계속해요.
 
 2026-10-05 구현 후속: [몽타주 슬롯](../ANIMATION_MONTAGE_SLOTS.md). Epic5.8 Slots 기술 본문0–92 재읽기, Montage Editor0–153/Montage0–126, Unity6000.0 Layers127–168/AvatarMask126–186와 SetLayerMaskFromAvatarMask 자체 선언/인자/Description/예제를 읽고 대조했어요. 여섯 HTML/응답/SHA/경계는 native/build/montage-slot-docs-jmWetA에 있어요. 해당 출처와 연결 Skeleton/Sequencer/마스크 API를 후속 대상으로 포함하며 이미지/영상/상속/전체 corpus gate는 승격하지 않아요. 공용 포즈·사람/AI·C++/BP·실제 Editor/Player/2D와 작은 비용을 검사하고 전체 구현을 계속해요.

@@ -1,5 +1,7 @@
 # 몽타주 슬롯·포즈 통합 · 2026-10-05
 
+공용 제작/실행 창의 프레임·키 이동, 초/프레임·별도 미리보기/실행 재생선과 C++ 직접 시퀀스 진단은 [타임라인 조작 계약](ANIMATION_TIMELINE_CONTROLS.md)에 이어 기록해요.
+
 ## 후속: 지정 시간의 Stop 혼합·Ended
 
 [Epic5.8 Montage_Stop](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UAnimInstance/Montage_Stop)의 자체 Description/선언0–25를 새로 읽었어요. null 몽타주 전체 중단과 지정 BlendTime에 에셋 BlendOut 설정을 사용하는 동작을 대조했어요. [UAnimInstance](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UAnimInstance)의 자체 delegate 요약112–127과 몽타주 요약740–849에서 BlendingOut/Ended의 구분·StopGroupByName(float,Name)을 읽었어요. 전체 클래스/상속/링크된 API를 읽기로 세지 않아요. StopGroupByName 개별 URL은 web 읽기가 실패했고 직접 받은200 HTML에서도 기술 본문을 확인하지 못했으므로 자체 본문 미독이에요. 원문/응답/SHA/경계는 `native/build/montage-stop-docs-5QRB0I`에 있어요. 연결 선언/프로파일/동기화 API도 후속 대상으로 유지해요.
