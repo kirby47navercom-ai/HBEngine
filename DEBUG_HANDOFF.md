@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+Android v6YE5E와 iOS37323624672는 실제 매 Tick C++ 물리 질의 중 배경/복귀·Begin Play Count1/10 보존을 통과했어요. 독립 iOS 기기에서는 첫 실행도 통과했으나 기존 simctl 지연의 정확한 원인은 확정하지 않아요. bqMC2Q 동시 터치 실패는 검사에서 공백 키를 k.space로 비교한 오류였어요. k[" "]로 고친 v6YE5E는 동시 이동/공격·해제와 기기 종료/임시 폴더 정리까지 통과했어요. 실패 검사 동안 누른 입력이 계속돼 플레이어가 물리 범위를 벗어난 보고를 새 엔진 질의 오류로 세지 않아요. 잘못된 Range의 TypeError는 CDP 실제 net::ERR_REQUEST_RANGE_NOT_SATISFIABLE와 함께 확인했어요. 안전 영역 수정 후 화면에서 탐색 바와 공격 버튼이 겹치지 않아요. 오디오/활성 구간 성능은 별도 검사해요.
+
 iOS37321490368: 두 컴파일은 통과했지만 첫 simctl launch180초 제한으로 끝났어요. 실패 로그에서 CoreSimulatorBridge→FrontBoard 요청 뒤 HBGame 프로세스 로그/실행 보고는 없었고 설치 등록 이벤트가 계속됐어요. 복귀 수정 검사에 도달하지 않았으므로 JS/C++ 수명 수정을 성공/실패로 단정하지 않아요. 기존 고해상도 기본 기기/Simulator GUI와 검사 상태를 분리하기 위해 SDK18.5의 독립 iPhone SE 기기를 생성·창 없이 부팅·종료/삭제하도록 검사 환경을 바꿔 재검증해요. 앱 코드나 시간 제한을 추가로 바꾸지 않아요. 시뮬레이터 서비스 지연이라는 가설은 다음 실행으로 확인해요.
 
 Android ScZlRB는 실제 첫 프레임/배경18초/복귀와 C++ Count 보존·메모리 수집 뒤 검사 가상 기기 종료 대기7초가 기본20초보다 짧아 최종 정리에 실패했어요. 실제 기기는 그 뒤 종료됐고 데이터는 지우지 않았어요. 종료 대기를30초로 고쳤어요. 화면에서 탐색 바가 공격 버튼을 가린 문제는 WebView 자체 padding이 HTML 콘텐츠를 줄이지 않는 원인이어서 FrameLayout 부모에 시스템/화면 잘림 inset을 적용했어요. 수정한 Java 포함 APK/AAB Y9F6Lt 전체 빌드는 통과했어요. o4hSId는 UI 안전 영역/한글/SVG·일반/동시8개/유효 Range 뒤 invalid Range의 fetch가 TypeError여서 중단됐어요. Chromium의 stream URL loader가 잘못된 Range를 net::ERR_REQUEST_RANGE_NOT_SATISFIABLE로 거절하는 경로와 대조하고 실제 CDP 오류 코드를 수집해 검사해요. 416을200으로 바꾸거나 일반 네트워크 오류를 통과시키지 않아요.

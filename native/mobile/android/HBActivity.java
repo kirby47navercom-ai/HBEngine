@@ -24,6 +24,7 @@ public final class HBActivity extends Activity {
     private final ConcurrentHashMap<String, CompletableFuture<String>> queries = new ConcurrentHashMap<>();
     private String currentRequest;
     private volatile boolean destroyed;
+    private volatile int[] safeInsets=new int[4];
     private boolean foreground=true;
     private long activeElapsed,activeMark=System.nanoTime();
     private synchronized long activeTime(){return activeElapsed+(foreground?System.nanoTime()-activeMark:0);}
@@ -40,7 +41,7 @@ public final class HBActivity extends Activity {
             JSONArray inventory = manifest.getJSONArray("files");
             for (int i=0;i<inventory.length();i++){JSONObject entry=inventory.getJSONObject(i);files.add(entry.getString("path"));fileSizes.put(entry.getString("path"),entry.getLong("bytes"));}
             saves = new AtomicFile(new File(getFilesDir(), "savegames.json"));
-            web = new WebView(this);setContentView(web);
+            web = new WebView(this);android.widget.FrameLayout host=new android.widget.FrameLayout(this);host.addView(web,new android.widget.FrameLayout.LayoutParams(-1,-1));setContentView(host);
             WebSettings settings = web.getSettings();
             settings.setJavaScriptEnabled(true);settings.setDomStorageEnabled(true);
             settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);
@@ -57,7 +58,7 @@ public final class HBActivity extends Activity {
             web.setWebChromeClient(new WebChromeClient() {
                 @Override public boolean onConsoleMessage(ConsoleMessage m) { Log.println(m.messageLevel()==ConsoleMessage.MessageLevel.ERROR?Log.ERROR:Log.INFO,"HBPlayer",m.message());return true; }
             });
-            web.setOnApplyWindowInsetsListener((view,insets)->{view.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
+            host.setOnApplyWindowInsetsListener((view,insets)->{int left=insets.getSystemWindowInsetLeft(),top=insets.getSystemWindowInsetTop(),right=insets.getSystemWindowInsetRight(),bottom=insets.getSystemWindowInsetBottom();if(android.os.Build.VERSION.SDK_INT>=28&&insets.getDisplayCutout()!=null){android.view.DisplayCutout cutout=insets.getDisplayCutout();left=Math.max(left,cutout.getSafeInsetLeft());top=Math.max(top,cutout.getSafeInsetTop());right=Math.max(right,cutout.getSafeInsetRight());bottom=Math.max(bottom,cutout.getSafeInsetBottom());}safeInsets=new int[]{left,top,right,bottom};view.setPadding(left,top,right,bottom);return insets;});
             web.loadUrl(ORIGIN+"/prototype/player.html");
         } catch(Exception e) { android.widget.TextView error=new android.widget.TextView(this);error.setText("게임 실행 실패: "+e.getMessage());setContentView(error);Log.e("HBPlayer","startup",e); }
     }
@@ -114,7 +115,7 @@ public final class HBActivity extends Activity {
                     case "native": { int module=data.getInt("module");if(module<0||module>=manifest.getJSONArray("nativeModules").length())throw new IOException("C++ 모듈 오류");byte[] response=nativeInvoke(module,data.getJSONObject("request").toString().getBytes(StandardCharsets.UTF_8));result=new JSONObject(new String(response,StandardCharsets.UTF_8));break; }
                     case "storageRead": result=loadSaves();break;
                     case "storageWrite": { result=loadSaves();JSONObject items=result.getJSONObject("items");Iterator<String> keys=data.keys();String suffix=".project."+Uri.encode(manifest.getString("id"));while(keys.hasNext()){String key=keys.next();Object value=data.get(key);if(key.length()>1000||!key.endsWith(suffix)||!key.startsWith("hbengine.savegame.")&&!key.startsWith("hbengine.storage-migrated.v1.")||value!=JSONObject.NULL&&!(value instanceof String))throw new IOException("저장 키 범위 오류");if(value==JSONObject.NULL)items.remove(key);else items.put(key,value);}byte[] bytes=result.toString().getBytes(StandardCharsets.UTF_8);if(bytes.length>16777216)throw new IOException("게임 저장 크기 제한");FileOutputStream stream=saves.startWrite();try{stream.write(bytes);saves.finishWrite(stream);}catch(Exception e){saves.failWrite(stream);throw e;}break; }
-                    case "report": { if("development".equals(manifest.getString("configuration"))){try(FileOutputStream stream=openFileOutput("runtime-report.json",MODE_PRIVATE)){stream.write(data.toString().getBytes(StandardCharsets.UTF_8));}JSONObject ready=new JSONObject().put("ok",data.optBoolean("ok",false)).put("frames",data.optInt("frames",0)).put("scene",data.optString("scene","")).put("error",data.opt("error"));Log.i("HBPlayer","REPORT "+ready.toString());}result=new JSONObject().put("ok",true);break; }
+                    case "report": { if("development".equals(manifest.getString("configuration"))){data.put("mobileHost",new JSONObject().put("safeInsets",new JSONArray(safeInsets)));try(FileOutputStream stream=openFileOutput("runtime-report.json",MODE_PRIVATE)){stream.write(data.toString().getBytes(StandardCharsets.UTF_8));}JSONObject ready=new JSONObject().put("ok",data.optBoolean("ok",false)).put("frames",data.optInt("frames",0)).put("scene",data.optString("scene","")).put("error",data.opt("error"));Log.i("HBPlayer","REPORT "+ready.toString());}result=new JSONObject().put("ok",true);break; }
                     case "close": result=new JSONObject().put("ok",true);runOnUiThread(()->finish());break;
                     default: throw new IOException("모바일 호스트에 없는 작업");
                 }reply.put("data",result);

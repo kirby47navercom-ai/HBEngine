@@ -1,8 +1,12 @@
 # 모바일 게임 출력
 
-최신 검사: Android SDK 약관 동의와 공식 체크섬 설치 후 `native/build/android-mobile-lSxvr1/acceptance.json`에서 실제 Java·DEX·JNI·사용자 C++ ARM64/x86_64·16KB ELF·APK 정렬/서명·AAB 구조·표준 ZIP 에셋 경로·한글 프로젝트·원본 보존을 통과했어요. 연결된 기기는 없으며 실제 앱 실행은 다음 검사예요. 아래 동의 대기 기록은 이전 단계의 기록이에요.
+최신 검사: SDK 약관 동의·공식 체크섬 설치 후 `android-mobile-Y9F6Lt`의 ARM64/x86_64 APK/AAB 전체 빌드와 `android-runtime-v6YE5E`의 Android 36 독립 가상 기기 설치·실제 게임 실행을 통과했어요. 한글 HUD·SVG·DPR 1.5·동시 이동/공격·터치 해제·매 Tick C++ 물리 질의·18초 백그라운드 뒤 월드 보존·검사 기기 종료/정리를 확인했어요. 아래 동의 대기 기록은 이전 단계의 기록이에요.
 
-iOS 37317957491은 실제 두 SDK 컴파일·첫 10프레임·C++ 두 모듈·전체/동시 8개/범위 에셋 읽기를 통과했지만 앱 전환 중 호스트 시간 초과로 실패했어요. JS 요청과 네이티브 동기 물리 질의의 시간 제한을 앱 활성 시간으로 바꾸고 매 Tick C++ 물리 질의를 수행하는 패키지로 다시 검사해요. `test:mobile-bridge`, `test:player-lifecycle`, `test:android-assets`의 대기·복귀·실제 활성 시간 초과·중복 이벤트·오류 정리는 통과했어요. 아직 실제 복귀 성공으로 세지 않아요.
+[iOS 실제 검사 37323624672](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37323624672)는 Xcode 두 SDK 컴파일·독립 iPhone SE 시뮬레이터 설치/실행·C++ 두 모듈·매 Tick 물리 질의·동시 8개/범위 에셋·앱 전환/복귀·Count 1/10 보존을 통과했어요. 한글 HUD·SVG·조이스틱·공격 버튼 화면도 확인했어요. JS 15초와 네이티브 10초 제한은 활성 시간에 적용하고 비활성 대기와 월드를 보존해요. 실물 휴대폰·Apple 배포 서명·스피커 청취·발열/배터리와 모바일 편집기는 별도 검증/작업 대상이에요.
+
+Android의 WebView 부모에 시스템 바/화면 잘림 안전 영역을 적용해서 탐색 바가 공격 버튼을 가리지 않게 했어요. [Android edge-to-edge 문서](https://developer.android.com/develop/ui/views/layout/edge-to-edge)의 시스템 바·cutout·inset 본문을 참고했어요. `node tools/check-android-runtime.mjs native/build/android-mobile-Y9F6Lt/acceptance.json`으로 재현해요. 8개 동시 에셋·앞/뒤 범위·외부 파일 거절도 통과했고 잘못된 Range는 실제 WebView의 `net::ERR_REQUEST_RANGE_NOT_SATISFIABLE`로 거절됐어요. 단순 TypeError를 정상 응답으로 세지 않아요.
+
+실행 검사는 성능 합격 판정과 구분해요. Android 앱 PID의 PSS 105,263KB/RSS 270,452KB는 한 번의 표본이며 WebView 전체 프로세스 메모리나 최고값이 아니에요. 복귀 보고의 FPS에는 비활성 간격과 검사 작업이 포함돼 있어 게임의 목표 FPS로 해석하지 않아요. 별도 활성 구간의 작업 시간·탄막·오디오 검사를 이어가요. 사용자 설치본은 아직 변경하지 않았어요.
 
 Windows 플레이어의 장면·블루프린트·물리·UI·입력 실행 코드를 모바일에서도 사용해요. Android는 WebView와 JNI, iOS는 WKWebView와 Objective-C++ 호스트를 사용하며 사용자 C++을 앱에 사전 컴파일해요. 실행 중 외부 Node 서버나 편집기 파일을 요구하지 않아요.
 
