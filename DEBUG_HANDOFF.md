@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37328442455: AudioContext clock21.696→34.133초·readyState4/networkState1/error없음이지만 WAV duration0.000004053초·voice time0·master8.4e-45였어요. Windows ffprobe는 실제 패키지 WAV를 PCM16/44100Hz/mono/176444bytes/2초로 읽었어요. 아직 iOS 파일 전달/네이티브 디코더 원인은 확정하지 않아요. 다음 실행은 Xcode 앱 바이트 SHA·afinfo·HTTP 전체/미디어 크기 부분 응답을 먼저 대조하고 개발 구성의 실제 WAV 요청 헤더를 기록해 판별해요. 기존 오디오 시스템/AVAudioSession/시간 제한을 바꾸지 않아요.
+
 iOS37326369196: 오디오 포함 게임은1080프레임/15draw·AudioContext running이었지만 voice time0/믹서 master5.3e-44여서 실제 신호 검사를 실패했어요. 컴파일/게임 성공으로 오디오를 통과시키지 않아요. 파일 요청/디코더와 시뮬레이터 오디오 시계를 구분하기 위해 context clock·media readyState/networkState/error/duration과 WebKit 오디오/미디어 로그를 추가해 다음 실행에서 확인해요. 아직 AVAudioSession·서버·음소거·루프 경계 어느 원인도 확정하지 않아요. 임의 지연/조건 완화나 다른 오디오 시스템 교체를 하지 않아요.
 
 Windows release3ZuMaB: 실제 스프라이트/한글/믹서/마우스 C++ 발사·터치/접근성·480탄환 전부 이동·30초 이상/96재사용 통과. i3wHLE 대비 C++480 실행26.75→23.65/s(-11.6%)·작업p95 41.5→46.9ms(+13.0%)여서 기존10%회귀 게이트는 실패했어요. CPU 상위는 Three getParameters·증분world walk·physics sync이고 여러 구간이 함께 느려졌어요. 이 단일 표본으로 모바일 변경이나 외부 부하를 원인으로 단정하지 않아요. Android에는 기존 transport 보고에 RPC/질의/검증 시간을 추가해 비용을 분리하고 공용 portable/H6PL0Q 실제 두ABI APK/AAB 컴파일을 통과했어요. 원인 확인 후 최적화와 동일 조건 회귀 검사를 이어가요.

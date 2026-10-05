@@ -23,12 +23,14 @@ static bool safe(NSString* value){if(!value||value.length>2000||[value hasPrefix
 // Assets use a loopback HTTP origin so WKWebView retains fetch, modules and WASM.
 class AssetServer {
     int socket_=-1;std::atomic<bool> active{false};std::vector<std::thread> workers;
-    NSString* root;NSDictionary* inventory;
+    NSString* root;NSDictionary* inventory;bool diagnostics;
     void stop(){active=false;if(socket_>=0){shutdown(socket_,SHUT_RDWR);close(socket_);socket_=-1;}for(auto& worker:workers)if(worker.joinable())worker.join();}
     static bool sendAll(int client,const char* data,size_t size){while(size){auto n=send(client,data,size,0);if(n<=0)return false;data+=n;size-=n;}return true;}
     void serve(int client){@autoreleasepool{
         timeval timeout{5,0};setsockopt(client,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout));setsockopt(client,SOL_SOCKET,SO_SNDTIMEO,&timeout,sizeof(timeout));int yes=1;setsockopt(client,SOL_SOCKET,SO_NOSIGPIPE,&yes,sizeof(yes));
-        std::string header;char buffer[8192];while(header.find("\r\n\r\n")==std::string::npos&&header.size()<8192){auto n=recv(client,buffer,sizeof(buffer),0);if(n<=0)return;header.append(buffer,n);}auto begin=header.find(' '),end=header.find(' ',begin+1);if(header.rfind("GET ",0)!=0||end==std::string::npos)return;
+        std::string header;char buffer[8192];while(header.find("\r\n\r\n")==std::string::npos&&header.size()<8192){auto n=recv(client,buffer,sizeof(buffer),0);if(n<=0)return;header.append(buffer,n);}auto begin=header.find(' '),end=header.find(' ',begin+1);
+        if(diagnostics&&header.find("/Content/")!=std::string::npos&&header.find(".wav")!=std::string::npos)NSLog(@"HBPlayer MEDIA %@",text(header));
+        if(header.rfind("GET ",0)!=0||end==std::string::npos)return;
         NSString* name=[text(header.substr(begin+1,end-begin-1)) stringByRemovingPercentEncoding];name=[[name componentsSeparatedByString:@"?"] firstObject];if([name hasPrefix:@"/"])name=[name substringFromIndex:1];if(!safe(name)||!inventory[name]){const char* response="HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";sendAll(client,response,strlen(response));return;}
         std::string normalized=header;std::transform(normalized.begin(),normalized.end(),normalized.begin(),[](unsigned char c){return std::tolower(c);});const auto host="\r\nhost: 127.0.0.1:"+std::to_string(port)+"\r\n";if(normalized.find(host)==std::string::npos)return;
         auto file=std::ifstream(utf8([root stringByAppendingPathComponent:name]),std::ios::binary|std::ios::ate);if(!file)return;size_t size=file.tellg(),start=0,count=size;int status=200;
@@ -48,7 +50,7 @@ class AssetServer {
     }}
 public:
     int port=0;
-    AssetServer(NSString* directory,NSDictionary* files):root(directory),inventory(files){socket_=socket(AF_INET,SOCK_STREAM,0);sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);if(socket_<0||bind(socket_,reinterpret_cast<sockaddr*>(&address),sizeof(address))||listen(socket_,16)){stop();throw std::runtime_error("mobile asset server failed");}socklen_t length=sizeof(address);if(getsockname(socket_,reinterpret_cast<sockaddr*>(&address),&length)){stop();throw std::runtime_error("mobile asset port failed");}port=ntohs(address.sin_port);active=true;
+    AssetServer(NSString* directory,NSDictionary* files,bool development):root(directory),inventory(files),diagnostics(development){socket_=socket(AF_INET,SOCK_STREAM,0);sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);if(socket_<0||bind(socket_,reinterpret_cast<sockaddr*>(&address),sizeof(address))||listen(socket_,16)){stop();throw std::runtime_error("mobile asset server failed");}socklen_t length=sizeof(address);if(getsockname(socket_,reinterpret_cast<sockaddr*>(&address),&length)){stop();throw std::runtime_error("mobile asset port failed");}port=ntohs(address.sin_port);active=true;
         // Bounded readers prevent idle WebKit connections from blocking all assets.
         const int listener=socket_;try{for(int i=0;i<8;i++)workers.emplace_back([this,listener]{while(active){int client=accept(listener,nullptr,nullptr);if(client<0)break;serve(client);close(client);}});}catch(...){stop();throw;}
     }
@@ -66,7 +68,7 @@ public:
 -(void)viewDidLoad {
     [super viewDidLoad];[self lifecycle:YES];NSString* root=[NSBundle.mainBundle.resourcePath stringByAppendingPathComponent:@"Assets"];manifest=decode([NSData dataWithContentsOfFile:[root stringByAppendingPathComponent:@"game.hbpack.json"]]);
     NSMutableDictionary* files=[NSMutableDictionary dictionaryWithObject:@YES forKey:@"game.hbpack.json"];for(NSDictionary* file in manifest[@"files"])files[file[@"path"]]=@YES;
-    try{server=std::make_unique<AssetServer>(root,files);}catch(const std::exception& e){UILabel* error=[[UILabel alloc] initWithFrame:self.view.bounds];error.numberOfLines=0;error.text=text(e.what());[self.view addSubview:error];return;}
+    try{server=std::make_unique<AssetServer>(root,files,[manifest[@"configuration"] isEqual:@"development"]);}catch(const std::exception& e){UILabel* error=[[UILabel alloc] initWithFrame:self.view.bounds];error.numberOfLines=0;error.text=text(e.what());[self.view addSubview:error];return;}
     NSURL* directory=[NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;[NSFileManager.defaultManager createDirectoryAtURL:directory withIntermediateDirectories:YES attributes:nil error:nil];saveFile=[directory URLByAppendingPathComponent:@"savegames.json"];
     worker=dispatch_queue_create("hbengine.native",DISPATCH_QUEUE_SERIAL);queries=[NSMutableDictionary new];WKWebViewConfiguration* config=[WKWebViewConfiguration new];config.allowsInlineMediaPlayback=YES;config.mediaTypesRequiringUserActionForPlayback=WKAudiovisualMediaTypeNone;[config.userContentController addScriptMessageHandler:self name:@"hbmobile"];
     web=[[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];web.navigationDelegate=self;web.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;web.scrollView.scrollEnabled=NO;[self.view addSubview:web];[web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://127.0.0.1:%d/prototype/player.html",server->port]]]];
