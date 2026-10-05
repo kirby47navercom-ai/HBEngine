@@ -1,9 +1,11 @@
+import {makeAnimationMachine,validAnimationMachine,animationStateLimits,addAnimationState} from './animation-state-assets.js';
 const numeric=v=>Number.isFinite(v)&&Math.abs(v)<=100000;
 const text=(v,max=1000)=>typeof v==='string'&&v.length<=max;
 const identifier=v=>text(v,80)&&/^[A-Za-z_가-힣][\w가-힣]*$/.test(v);
 export const animationGraphNodes={
   output:{label:'Output Pose · 최종 포즈',inputs:['pose'],group:'출력'},
   rest:{label:'Reference Pose · 기준 포즈',inputs:[],group:'포즈'},
+  stateMachine:{label:'State Machine · 포즈 상태 머신',inputs:[],group:'상태'},
   clip:{label:'Sequence Player · 클립 재생',inputs:[],group:'포즈'},
   blend:{label:'Blend · 두 포즈 혼합',inputs:['a','b'],group:'혼합'},
   blend1d:{label:'Blend 1D · 1차원 혼합',inputs:[],group:'혼합'},
@@ -12,21 +14,25 @@ export const animationGraphNodes={
   layer:{label:'Layered Blend · 뼈별 혼합',inputs:['base','overlay'],group:'레이어'},
   additive:{label:'Apply Additive · 가산 포즈',inputs:['base','additive'],group:'레이어'}
 };
-export function animationInputs(node){return ['blend1d','direct'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
+export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','direct'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
 export function makeAnimationNode(type,x=100,y=100){
   if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
   const properties={clip:{clip:'',loop:true,rate:1,offset:0},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
-  return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:structuredClone(properties)};
+  return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:type==='stateMachine'?makeAnimationMachine():structuredClone(properties)};
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
+export function addAnimationStatePose(data,machine,settings={}){const state=addAnimationState(machine,settings),rest=makeAnimationNode('rest',100,180);rest.scope=machine.id+'/'+state.id;data.nodes.push(rest);machine.inputs[state.input]=rest.id;return state;}
 export function validAnimationGraph(data){
   try{
-    if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!identifier(p?.name)||!['float','bool'].includes(p.type)||(p.type==='float'?!numeric(p.value):typeof p.value!=='boolean'))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;
+    if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!identifier(p?.name)||!['float','int','bool','trigger'].includes(p.type)||(['float','int'].includes(p.type)?!numeric(p.value)||p.type==='int'&&!Number.isInteger(p.value):typeof p.value!=='boolean'))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;
+    const machines=data.nodes.filter(n=>n.type==='stateMachine');if(machines.length>animationStateLimits.machines||machines.reduce((sum,n)=>sum+(n.properties?.states?.length||0),0)>animationStateLimits.states)return false;
     const nodes=new Map(data.nodes.map(n=>[n?.id,n])),params=new Map(data.parameters.map(p=>[p.name,p.type]));if(nodes.size!==data.nodes.length||nodes.get(data.output)?.type!=='output'||data.nodes.filter(n=>n.type==='output').length!==1||data.nodes.filter(n=>n.type==='clip').length>64)return false;
+    const scopes=new Set(machines.flatMap(n=>(n.properties?.states||[]).map(s=>n.id+'/'+s.id)));if(data.nodes.some(n=>n.scope!==undefined&&!scopes.has(n.scope)))return false;
     const param=(p,type)=>p===''||params.get(p)===type;
     for(const node of nodes.values()){
       if(!text(node.id,120)||!node.id||!animationGraphNodes[node.type]||!text(node.name,80)||!numeric(node.x)||!numeric(node.y)||!node.inputs||typeof node.inputs!=='object'||Array.isArray(node.inputs)||!node.properties||typeof node.properties!=='object'||Array.isArray(node.properties))return false;
       const p=node.properties;
+      if(node.type==='stateMachine'&&!validAnimationMachine(p,data.parameters))return false;
       if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0))return false;
       if(['blend','layer','additive'].includes(node.type)&&(!numeric(p.alpha)||p.alpha<0||p.alpha>1||!param(p.parameter,'float')))return false;
       if(node.type==='select'&&(params.get(p.parameter)!=='bool'||!numeric(p.duration)||p.duration<0||p.duration>60))return false;

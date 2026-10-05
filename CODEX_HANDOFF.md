@@ -1,5 +1,15 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 포즈 상태·전이 제작/실행 후 계속
+
+전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [포즈 상태 계약](docs/ANIMATION_STATES.md)에 Epic5.8 상태/전이/동기화 기술 본문과 Unity6000.0 전이 본문·StateInfo/TransitionInfo 요약·CrossFade2선언 읽기 경계·차이·구현을 기록했어요. 상속/개별 연결 API·그림/영상·전체 corpus gate를 승격하지 않아요.
+
+- 상태/Entry/Any State/전이 핀·선 선택·상세·상태별 Output Pose·breadcrumb·콘텐츠 클립 드롭·미리보기·Undo/Redo·실행 잠금/강조를 연결했어요. 공유 클립 시계·진입 초기화/이어가기·중첩/모호한 key·종료 경계/AND·Integer/Trigger·중단 큐/곡선·혼합 보존·콜백 최신 그래프/정지·확장 문맥/포즈 메모리 한도를 구현했어요.
+- C++/BP12개와 같은 서비스·headless·AI4명령/schema/revision/dryRun를 연결했어요. 전체 BP557개, 포즈 노드10종이에요. 상태 삭제는 소유 포즈를 지우고 외부 공유 포즈를 보존해요. 추가 정밀 단언에서 자기 재진입 포즈/총 가중치·DAG 지수 재귀·명령 CrossFade 시간 덮기 오류를 막았어요.
+- 실제 최종 Editor veTo8X·release Player Y1zo4q에서 사람/AI/미리보기·C++12개·BP Trigger·AttackEnter→사용자 C++ StateEntered·뼈 마스크·pause·원본/exit0/서버 정리가 통과했어요. 마지막 공유 포즈 삭제 보강과 사람 삭제/Undo도 veTo8X에서 확인했어요. yvF6O9와 진단 없는 w0buaQ는 실패 근거로 남겨요.
+- 사용자의 설치본/프로필/게임 원본/창을 변경하지 않았어요. 다음은 Sync Group/marker/notify·전이 세부/몬타주와 다른 전체 2D/렌더/월드/프레임워크/C++/AI/UI/오디오/모바일/배포/가벼움 영역을 이어가요. 최종 답변/goal complete를 보내지 않아요.
+
+
 ## 최신 후속: 2D IK 제작·공용 실행·실제 Editor/Player 검증 후 계속
 
 전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [2D IK 계약](docs/2D_IK.md)에 실제 Unity13.0.6 기술 본문과 IKManager2D/Solver2D/Limb/CCD/FABRIK의 자체 Properties/Methods 읽기 경계·구현·제한·검증을 기록했어요. 상속 API/다른 링크/이미지와 전체 corpus gate를 승격하지 않아요.

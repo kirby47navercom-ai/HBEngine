@@ -1,5 +1,8 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: AnimationGraph의 정수/트리거와 상태 전환·현재/다음/시간/정규화 시간/가중치/진행률12개를 공용 선언·실행에 연결했어요(전체557개). [포즈 상태 계약](ANIMATION_STATES.md)에 C++ 명령 처리 시점·단위·실제 Editor/Player BP Trigger→State Custom Event→사용자 C++ callback 근거를 기록해요.
+
+
 2026-10-05 추가: `hb::IK2D`의 목표/회전 Set/Get·Actor 목표 연결/해제·솔버 가중치 Set/Get·활성 Set/Get·전체 가중치 Set/Get12개가 같은 2D IK 실행기를 사용해요. C++ setter 직후 조회는 같은 요청 값이고 뼈 계산은 IK 갱신 단계예요. [2D IK 계약·실제 Editor/Player 근거](2D_IK.md)에 제작/수명·가중치/순서·headless/AI·한계를 기록해요. 전체 카탈로그545개예요.
 
 

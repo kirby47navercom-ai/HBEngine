@@ -1,5 +1,8 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 구현 후속: [포즈 상태·전이](../ANIMATION_STATES.md)를 추가했어요. 실제 Epic5.8 State Machines/Transition Rules/Sync Groups 기술 본문과 Unity6000.0 Animation transitions 기술 본문·StateInfo/TransitionInfo 자체 요약·CrossFade2선언/인자/설명을 읽고 상태/전이·사람/AI·C++/BP12개·headless·별도 실제 Editor/Player에 연결했어요. Unity 원문/본문/SHA는 native/build/anim-state-docs-X9OC0r에 있어요. Sync Group 본문은 다음 구현 근거이고 이 상태 추가를 동기화 구현 완료로 세지 않아요. 개별 연결 API/상속·그림/영상·전체 corpus gate를 승격하지 않아요.
+
+
 2026-10-05 구현 후속: [2D IK](../2D_IK.md)를 추가했어요. Unity2D Animation13.0.6의2DIK 기술 본문과 IKManager2D/Solver2D/LimbSolver2D/CCDSolver2D/FabrikSolver2D 각 클래스의 자체 Properties/Methods·선언/인자/반환/override를 읽고 구현·전용 UI·C++/BP12개·AI/headless·실제 Editor/Player 검증을 연결했어요. 원문/본문/SHA는 native/build/ik-docs-NalnfP에 보존해요. 상속 UnityEngine API·연결 문서·이미지·전체 package 읽기나 기존 전체 corpus/API gate 승격으로 세지 않아요. 다음 포즈 상태/전이·동기화와 다른 전체 누적 요구를 계속해요.
 
 

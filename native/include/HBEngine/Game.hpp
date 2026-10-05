@@ -201,6 +201,18 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetBool", KoreanName="애니메이션 불리언 파라미터 지정", Category="애니메이션 그래프") static void SetBool(Actor* target,const std::string& key,bool value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetFloat", KoreanName="애니메이션 실수 파라미터 조회", Category="애니메이션 그래프") static float GetFloat(Actor* target,const std::string& key);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetBool", KoreanName="애니메이션 불리언 파라미터 조회", Category="애니메이션 그래프") static bool GetBool(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetInt", KoreanName="애니메이션 정수 파라미터 지정", Category="애니메이션 그래프") static void SetInteger(Actor* target,const std::string& key,int value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetInt", KoreanName="애니메이션 정수 파라미터 조회", Category="애니메이션 그래프") static int GetInteger(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetTrigger", KoreanName="애니메이션 트리거 지정", Category="애니메이션 그래프") static void SetTrigger(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphResetTrigger", KoreanName="애니메이션 트리거 해제", Category="애니메이션 그래프") static void ResetTrigger(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphCrossFade", KoreanName="포즈 상태 전환", Category="애니메이션 상태") static void CrossFade(Actor* target,const std::string& machine,const std::string& state,float duration,float offset);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphState", KoreanName="현재 포즈 상태", Category="애니메이션 상태") static std::string GetState(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphNextState", KoreanName="다음 포즈 상태", Category="애니메이션 상태") static std::string GetNextState(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphStateTime", KoreanName="포즈 상태 경과 시간", Category="애니메이션 상태") static float GetStateTime(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphNormalizedTime", KoreanName="포즈 상태 정규화 시간", Category="애니메이션 상태") static float GetNormalizedTime(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphStateWeight", KoreanName="포즈 상태 혼합 가중치", Category="애니메이션 상태") static float GetStateWeight(Actor* target,const std::string& machine,const std::string& state);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphTransitioning", KoreanName="포즈 전환 중인지", Category="애니메이션 상태") static bool IsTransitioning(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphTransitionProgress", KoreanName="포즈 전환 진행률", Category="애니메이션 상태") static float GetTransitionProgress(Actor* target,const std::string& machine);
 };
 HB_CLASS()
 class SpriteSkin : public Library {

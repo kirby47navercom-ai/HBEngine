@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **545개**, 실제 공통 C++ API **463개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **557개**, 실제 공통 C++ API **475개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -44,7 +44,8 @@
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
-| 애니메이션 그래프 | 7 | 7 |
+| 애니메이션 그래프 | 11 | 11 |
+| 애니메이션 상태 | 8 | 8 |
 | 2D 뼈 변형 | 7 | 7 |
 | 2D IK | 12 | 12 |
 | 몽타주 | 7 | 7 |
@@ -732,6 +733,23 @@
 | animGraphSetBool | Set Bool / 애니메이션 불리언 파라미터 지정 | exec: exec, target: object, key: string, value: bool | then: exec | hb::AnimationGraph::SetBool | 공통 C++ + VM |
 | animGraphGetFloat | Get Float / 애니메이션 실수 파라미터 조회 | target: object, key: string | return: float | hb::AnimationGraph::GetFloat | 공통 C++ + VM |
 | animGraphGetBool | Get Bool / 애니메이션 불리언 파라미터 조회 | target: object, key: string | return: bool | hb::AnimationGraph::GetBool | 공통 C++ + VM |
+| animGraphSetInt | Set Integer / 애니메이션 정수 파라미터 지정 | exec: exec, target: object, key: string, value: int | then: exec | hb::AnimationGraph::SetInteger | 공통 C++ + VM |
+| animGraphGetInt | Get Integer / 애니메이션 정수 파라미터 조회 | target: object, key: string | return: int | hb::AnimationGraph::GetInteger | 공통 C++ + VM |
+| animGraphSetTrigger | Set Trigger / 애니메이션 트리거 지정 | exec: exec, target: object, key: string | then: exec | hb::AnimationGraph::SetTrigger | 공통 C++ + VM |
+| animGraphResetTrigger | Reset Trigger / 애니메이션 트리거 해제 | exec: exec, target: object, key: string | then: exec | hb::AnimationGraph::ResetTrigger | 공통 C++ + VM |
+
+## 애니메이션 상태
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| animGraphCrossFade | Cross Fade / 포즈 상태 전환 | exec: exec, target: object, machine: string, state: string, duration: float, offset: float | then: exec | hb::AnimationGraph::CrossFade | 공통 C++ + VM |
+| animGraphState | Get State / 현재 포즈 상태 | target: object, machine: string | return: string | hb::AnimationGraph::GetState | 공통 C++ + VM |
+| animGraphNextState | Get Next State / 다음 포즈 상태 | target: object, machine: string | return: string | hb::AnimationGraph::GetNextState | 공통 C++ + VM |
+| animGraphStateTime | Get State Time / 포즈 상태 경과 시간 | target: object, machine: string | return: float | hb::AnimationGraph::GetStateTime | 공통 C++ + VM |
+| animGraphNormalizedTime | Get Normalized Time / 포즈 상태 정규화 시간 | target: object, machine: string | return: float | hb::AnimationGraph::GetNormalizedTime | 공통 C++ + VM |
+| animGraphStateWeight | Get State Weight / 포즈 상태 혼합 가중치 | target: object, machine: string, state: string | return: float | hb::AnimationGraph::GetStateWeight | 공통 C++ + VM |
+| animGraphTransitioning | Is Transitioning / 포즈 전환 중인지 | target: object, machine: string | return: bool | hb::AnimationGraph::IsTransitioning | 공통 C++ + VM |
+| animGraphTransitionProgress | Get Transition Progress / 포즈 전환 진행률 | target: object, machine: string | return: float | hb::AnimationGraph::GetTransitionProgress | 공통 C++ + VM |
 
 ## 2D 뼈 변형
 

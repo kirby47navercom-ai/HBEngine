@@ -1,5 +1,8 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-05 추가: [포즈 상태·전이](ANIMATION_STATES.md). schema.animationGraph.states와 `anim.state.add/remove`, `anim.transition.add/remove`는 사람의 상태/전이/포즈 편집과 같은 검증·revision/dryRun·Undo/Redo를 사용해요. 세부/연결은 document.patch로 다뤄요. runtime.state의 animationGraph.machines는 인스턴스 key·현재/다음·시계·전이·가중치/한도를 제공해요. C++12개와 같은 실행기이며 Integer/Trigger·중첩/공유 클립·콜백 정지 의미를 계약에 기록해요.
+
+
 2026-10-05 추가: [2D IK](2D_IK.md). schema.spriteRig.ik는 실제 솔버/한도/좌표·평면/체인·업데이트 계약을 제공해요. `rig.ik.add/remove/reorder`와 document.patch는 ID·expectedRevision·dryRun·검증·Undo/Redo·저장을 공유해요. `runtime.state.spriteSkin[].ik`는 작성 데이터와 다른 실제 목표/가중치/도달/계산 한도 snapshot이에요. C++/BP12개는 같은 서비스와 staged getter를 사용해요. clock/reset 요청에는 전체 뼈/솔버 데이터를 매 프레임 보내지 않아요.
 
 
