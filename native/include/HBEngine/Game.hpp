@@ -94,6 +94,8 @@ public:
 HB_CLASS()
 class Sprites : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetLighting", KoreanName="스프라이트 2D·3D 광원 모드", Category="2D 조명") static void SetLightingMode(Actor* target,const std::string& mode);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetLighting", KoreanName="스프라이트 광원 모드 조회", Category="2D 조명") static std::string GetLightingMode(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteFlip", KoreanName="스프라이트 좌우·상하 반전", Category="2D 스프라이트") static void SetFlip(Actor* target,bool flipX,bool flipY);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetFlip", KoreanName="스프라이트 반전 가져오기", Category="2D 스프라이트") static void GetFlip(Actor* target,bool& flipX,bool& flipY);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSet", KoreanName="스프라이트 지정", Category="2D 스프라이트") static void SetSprite(Actor* target,const std::string& sprite);
@@ -115,6 +117,26 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetNormal", KoreanName="스프라이트 노멀맵 설정 가져오기", Category="2D 스프라이트") static void GetNormalMap(Actor* target,std::string& texture,float& strength,bool& flipY);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetShadows", KoreanName="스프라이트 그림자 지정", Category="2D 스프라이트") static void SetShadows(Actor* target,bool cast,bool receive);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetShadows", KoreanName="스프라이트 그림자 설정 가져오기", Category="2D 스프라이트") static void GetShadows(Actor* target,bool& cast,bool& receive);
+};
+HB_CLASS()
+class Light2D : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetEnabled", KoreanName="2D 광원 활성화", Category="2D 조명") static void SetEnabled(Actor* target,bool enabled);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetEnabled", KoreanName="2D 광원 활성 여부", Category="2D 조명") static bool IsEnabled(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetType", KoreanName="2D 광원 종류 지정", Category="2D 조명") static void SetType(Actor* target,const std::string& type);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetType", KoreanName="2D 광원 종류 조회", Category="2D 조명") static std::string GetType(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetColor", KoreanName="2D 광원 색상 지정", Category="2D 조명") static void SetColor(Actor* target,const Color& color);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetColor", KoreanName="2D 광원 색상 조회", Category="2D 조명") static Color GetColor(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetIntensity", KoreanName="2D 광원 밝기 지정", Category="2D 조명") static void SetIntensity(Actor* target,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetIntensity", KoreanName="2D 광원 밝기 조회", Category="2D 조명") static float GetIntensity(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetRange", KoreanName="2D 광원 반경·감쇠 지정", Category="2D 조명") static void SetRange(Actor* target,float innerRadius,float outerRadius,float falloff=1.f);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetRange", KoreanName="2D 광원 반경·감쇠 조회", Category="2D 조명") static void GetRange(Actor* target,float& innerRadius,float& outerRadius,float& falloff);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetAngles", KoreanName="2D 광원 안쪽·바깥 각도 지정", Category="2D 조명") static void SetAngles(Actor* target,float innerAngle,float outerAngle);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetAngles", KoreanName="2D 광원 안쪽·바깥 각도 조회", Category="2D 조명") static void GetAngles(Actor* target,float& innerAngle,float& outerAngle);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetNormal", KoreanName="2D 광원 노멀 품질·높이 지정", Category="2D 조명") static void SetNormal(Actor* target,const std::string& mode,float distance=1.f);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetNormal", KoreanName="2D 광원 노멀 품질·높이 조회", Category="2D 조명") static void GetNormal(Actor* target,std::string& mode,float& distance);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetLayers", KoreanName="2D 광원 대상 레이어 지정", Category="2D 조명") static void SetTargetSortingLayers(Actor* target,const std::vector<std::string>& layers);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetLayers", KoreanName="2D 광원 대상 레이어 조회", Category="2D 조명") static std::vector<std::string> GetTargetSortingLayers(Actor* target);
 };
 HB_CLASS()
 class Tilemaps : public Library {

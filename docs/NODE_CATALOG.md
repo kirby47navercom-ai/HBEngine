@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **573개**, 실제 공통 C++ API **491개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **591개**, 실제 공통 C++ API **509개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -39,6 +39,7 @@
 | 오브젝트 풀 | 3 | 3 |
 | 입력 | 6 | 6 |
 | 입력 액션 | 6 | 6 |
+| 2D 조명 | 18 | 18 |
 | 2D 스프라이트 | 21 | 21 |
 | 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
@@ -636,6 +637,29 @@
 | actionElapsed | Get Action Elapsed / 입력 액션 유지 시간 | target: object, action: string | return: float | hb::Input::GetActionElapsed | 공통 C++ + VM |
 | inputAddContext | Add Mapping Context / 입력 컨텍스트 추가 | exec: exec, target: object, context: string, priority: int | then: exec | hb::Input::AddMappingContext | 공통 C++ + VM |
 | inputRemoveContext | Remove Mapping Context / 입력 컨텍스트 제거 | exec: exec, target: object, context: string | then: exec | hb::Input::RemoveMappingContext | 공통 C++ + VM |
+
+## 2D 조명
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| spriteSetLighting | Set Lighting Mode / 스프라이트 2D·3D 광원 모드 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetLightingMode | 공통 C++ + VM |
+| spriteGetLighting | Get Lighting Mode / 스프라이트 광원 모드 조회 | target: object | return: string | hb::Sprites::GetLightingMode | 공통 C++ + VM |
+| light2dSetEnabled | Set Enabled / 2D 광원 활성화 | exec: exec, target: object, enabled: bool | then: exec | hb::Light2D::SetEnabled | 공통 C++ + VM |
+| light2dGetEnabled | Is Enabled / 2D 광원 활성 여부 | target: object | return: bool | hb::Light2D::IsEnabled | 공통 C++ + VM |
+| light2dSetType | Set Type / 2D 광원 종류 지정 | exec: exec, target: object, type: string | then: exec | hb::Light2D::SetType | 공통 C++ + VM |
+| light2dGetType | Get Type / 2D 광원 종류 조회 | target: object | return: string | hb::Light2D::GetType | 공통 C++ + VM |
+| light2dSetColor | Set Color / 2D 광원 색상 지정 | exec: exec, target: object, color: color | then: exec | hb::Light2D::SetColor | 공통 C++ + VM |
+| light2dGetColor | Get Color / 2D 광원 색상 조회 | target: object | return: color | hb::Light2D::GetColor | 공통 C++ + VM |
+| light2dSetIntensity | Set Intensity / 2D 광원 밝기 지정 | exec: exec, target: object, value: float | then: exec | hb::Light2D::SetIntensity | 공통 C++ + VM |
+| light2dGetIntensity | Get Intensity / 2D 광원 밝기 조회 | target: object | return: float | hb::Light2D::GetIntensity | 공통 C++ + VM |
+| light2dSetRange | Set Range / 2D 광원 반경·감쇠 지정 | exec: exec, target: object, innerRadius: float, outerRadius: float, falloff: float | then: exec | hb::Light2D::SetRange | 공통 C++ + VM |
+| light2dGetRange | Get Range / 2D 광원 반경·감쇠 조회 | target: object | innerRadius: float, outerRadius: float, falloff: float | hb::Light2D::GetRange | 공통 C++ + VM |
+| light2dSetAngles | Set Angles / 2D 광원 안쪽·바깥 각도 지정 | exec: exec, target: object, innerAngle: float, outerAngle: float | then: exec | hb::Light2D::SetAngles | 공통 C++ + VM |
+| light2dGetAngles | Get Angles / 2D 광원 안쪽·바깥 각도 조회 | target: object | innerAngle: float, outerAngle: float | hb::Light2D::GetAngles | 공통 C++ + VM |
+| light2dSetNormal | Set Normal / 2D 광원 노멀 품질·높이 지정 | exec: exec, target: object, mode: string, distance: float | then: exec | hb::Light2D::SetNormal | 공통 C++ + VM |
+| light2dGetNormal | Get Normal / 2D 광원 노멀 품질·높이 조회 | target: object | mode: string, distance: float | hb::Light2D::GetNormal | 공통 C++ + VM |
+| light2dSetLayers | Set Target Sorting Layers / 2D 광원 대상 레이어 지정 | exec: exec, target: object, layers: string[] | then: exec | hb::Light2D::SetTargetSortingLayers | 공통 C++ + VM |
+| light2dGetLayers | Get Target Sorting Layers / 2D 광원 대상 레이어 조회 | target: object | return: string[] | hb::Light2D::GetTargetSortingLayers | 공통 C++ + VM |
 
 ## 2D 스프라이트
 

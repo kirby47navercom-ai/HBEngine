@@ -4,6 +4,7 @@ import {sceneRendering} from '../scene-rendering.js';
 import {makeSceneComponent} from '../scene-components.js';
 import {create2DAsset} from '../two-d-assets.js';
 import {runTwoDSurfaceCase} from './2d-surface-case.js';
+import {runTwoDLightingCase} from './2d-lighting-case.js';
 
 export async function runTwoDRenderingCase(){
   let checks=0;const evidence=[],expect=(test,label)=>{checks++;if(!test)throw Error(label);};
@@ -47,6 +48,7 @@ export async function runTwoDRenderingCase(){
     for(const g of [tileGroup,rangeMask])maskedTiles.dispose(g);maskedTiles.dispose2D();
     for(const g of groups)g.removeFromParent();groups.length=0;
     const surface=await runTwoDSurfaceCase({renderer,scene,camera,groups,group,layers,pixel,expect});
-    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence,surface};
+    const lighting=await runTwoDLightingCase({renderer,scene,camera,groups,group,layers,pixel,expect});
+    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence,surface,lighting};
   }finally{draw.dispose();for(const r of resources)r.dispose();renderer.dispose();}
 }

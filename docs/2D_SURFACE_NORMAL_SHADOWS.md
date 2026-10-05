@@ -2,6 +2,8 @@
 
 2026-10-05. 스프라이트/타일맵의 기존 GPU 렌더 경로에 연결한 자체 계약이에요. 전체 Unreal/Unity 분석이나 DirectX11·모바일 렌더 검증의 완료를 의미하지 않아요.
 
+후속 [전용 Light2D](2D_LIGHTING.md)에서 shading=lit2d와 Global/Point/Spot·레이어/Z 무시·노멀 모드를 연결했어요. 아래 lit/그림자 설명과 당시 검증은 기존3D 광원 경로의 기록이에요.
+
 ## 직접 확인한 출처
 
 - [Epic 5.8 Paper 2D Sprite Material](https://dev.epicgames.com/documentation/en-us/unreal-engine/paper-2d-sprite-material-in-unreal-engine?application_version=5.8): 웹 리더 접근은 실패했지만 공식 서버의 렌더된 HTML에서 소개·8개 표 행·Custom Sprite Materials 본문을 직접 읽었어요. Lit/Unlit과 Opaque/Masked/Translucent 조합, 알파 경계/연속 투명도·투명 배경의 검정·투명 재질 비용을 대조했어요. 그림과 연결 Material Editor/Niagara 문서는 미독이에요.

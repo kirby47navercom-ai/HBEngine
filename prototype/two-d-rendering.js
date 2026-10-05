@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {sortingLayerIndex} from './sorting-layers.js';
+import {TwoDLighting} from './two-d-lighting.js';
 
 const position=new THREE.Vector3(),cameraPosition=new THREE.Vector3(),direction=new THREE.Vector3();
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
@@ -16,7 +17,7 @@ export function spriteMaskUniforms(material){
 // Mask textures are allocated only for an actually used combination of masks.
 // They are shared by sprites with the same scope/range and released when unused.
 export class TwoDRendering{
-  constructor(){this.targets=new Map();this.maskScene=new THREE.Scene();this.size=new THREE.Vector2();this.clear=new THREE.Color();}
+  constructor(){this.targets=new Map();this.maskScene=new THREE.Scene();this.size=new THREE.Vector2();this.clear=new THREE.Color();this.lighting=new TwoDLighting();}
   prepare(renderer,scene,camera,groups,layers){
     if(!groups.some(g=>g.userData.sortingGroup||g.userData.maskMesh||g.userData.spriteMesh||g.userData.tilemapResources||g.children.some(n=>n.userData.draw2d))){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
     scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraPosition);camera.getWorldDirection(direction);
@@ -33,12 +34,12 @@ export class TwoDRendering{
       }
     }
     let order=0;const assign=list=>{list.sort(compare);for(const entry of list)if(entry.children)assign(entry.children);else entry.node.renderOrder=++order;};assign(roots);
-    renderer.getDrawingBufferSize(this.size);const used=new Set(),buckets=new Map();
+    const lighting=this.lighting.prepare(groups,entries,layers);renderer.getDrawingBufferSize(this.size);const used=new Set(),buckets=new Map();
     for(const entry of entries){const mode=entry.properties.maskInteraction;if(mode!=='inside'&&mode!=='outside'){for(const material of Array.isArray(entry.node.material)?entry.node.material:[entry.node.material])if(material.userData.hbSpriteMask){material.userData.hbSpriteMask.hbSpriteMaskMode.value=0;material.userData.hbSpriteMask.hbSpriteMask.value=null;}continue;}
       const selected=visible(entry.node)?masks.filter(mask=>{if(mask.scope!==entry.scope)return false;const p=mask.properties;if(!p.customRange)return true;const low=sortingLayerIndex(layers,p.backSortingLayer),high=sortingLayerIndex(layers,p.frontSortingLayer);return (entry.layer>low||entry.layer===low&&entry.order>=p.backSortingOrder)&&(entry.layer<high||entry.layer===high&&entry.order<=p.frontSortingOrder);}):[];
       const key=selected.map(mask=>mask.mesh.uuid).sort().join(',');let bucket=buckets.get(key);if(!bucket)buckets.set(key,bucket={selected,entries:[]});bucket.entries.push(entry);
     }
-    if(!buckets.size){this.dispose();return {renderers:entries.length,maskPasses:0,maskTargets:0};}
+    if(!buckets.size){this.disposeMasks();return {renderers:entries.length,maskPasses:0,maskTargets:0,...lighting};}
     const originalTarget=renderer.getRenderTarget(),autoClear=renderer.autoClear,clearAlpha=renderer.getClearAlpha(),scissorTest=renderer.getScissorTest(),viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4()),xrEnabled=renderer.xr.enabled;renderer.getClearColor(this.clear);
     try{
       renderer.xr.enabled=false;renderer.autoClear=true;renderer.setScissorTest(false);renderer.setClearColor(0,0);
@@ -51,7 +52,8 @@ export class TwoDRendering{
       }
     }finally{this.maskScene.clear();renderer.setRenderTarget(originalTarget);renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(scissorTest);renderer.setClearColor(this.clear,clearAlpha);renderer.autoClear=autoClear;renderer.xr.enabled=xrEnabled;}
     for(const [key,target] of this.targets)if(!used.has(key)){target.dispose();this.targets.delete(key);}
-    return {renderers:entries.length,maskPasses:used.size,maskTargets:this.targets.size};
+    return {renderers:entries.length,maskPasses:used.size,maskTargets:this.targets.size,...lighting};
   }
-  dispose(){for(const target of this.targets.values())target.dispose();this.targets.clear();this.emptyMask?.dispose();this.emptyMask=null;this.maskScene.clear();}
+  disposeMasks(){for(const target of this.targets.values())target.dispose();this.targets.clear();this.emptyMask?.dispose();this.emptyMask=null;this.maskScene.clear();}
+  dispose(){this.disposeMasks();this.lighting.dispose();}
 }

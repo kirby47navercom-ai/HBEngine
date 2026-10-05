@@ -1,5 +1,13 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 전용 Light2D 후 계속
+
+전체 누적 요구·끝까지 계속을 유지해요. [Light2D 계약](docs/2D_LIGHTING.md)에 Unity6000.0 Properties 기술 본문/표·URP17 Light2D 자체 Properties/Methods·NormalMapQuality 읽기 경계/원문 light2d-docs-ixHRQl을 기록해요. 전체 gate는 유지해요.
+
+- Global/Point/Spot·안쪽/바깥 반경/각도·감쇠·레이어64bit·월드Z 무시/부모XY·노멀 Disabled/Fast/Accurate를 실제 공유 GPU에 연결해요. C++/BP18개 추가·기본591/API289·장면/BP 체크/Undo·AI·Sequence를 공유해요. 데이터112bytes/램프·최대64/7168bytes·없으면해제/배열재사용/변경만업로드·3D조명계산생략이에요.
+- 실제 Editor heP5Hg 물리 체크·장면/BP Undo/Redo/저장·기존 제작/단축키·GPU77개/전용28개, 최종 배포 Player CfFWyo BP→C++→BP 여러 핀→C++ true2개·위치[-2,-1,.25]·노멀96×32·light1/112bytes·Source cooking·원본 바이트/예외0/exit0/서버종료가 통과해요. PNG 직접 확인·코어Light/scene58/main/API/diff도 통과해요.
+- Px56Mb 종료 실패는 검사용 BP 미저장이었고 저장한 heP5Hg가 통과해요. hx7NHK/g5f51U는 검사 fixture레이어/API경로 오류예요. 사용자 설치/프로필/게임/창을 보존해요. 이어 Freeform/Sprite cookie·블렌드/마스크·2D/복합 그림자·광원 윤곽 편집/볼륨과 전체 누적 엔진 세부를 계속해요. 최종 답변/goal complete 금지예요.
+
 ## 최신 후속: 2D 표면·노멀·3D 광원 그림자 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [2D 표면 계약](docs/2D_SURFACE_NORMAL_SHADOWS.md)에 Epic5.8 Sprite Material 소개/기술8행/Custom 본문·Unity6000.0 SecondaryTextures/Light/Shadow 기술 본문·URP17 Light2D 자체7개 부분 읽기 경계와 미독/전용 Light2D 후속을 기록해요. raw HTML/redirect/SHA manifest는2d-surface-docs-SZdfzn예요. 전체 corpus gate를 승격하지 않아요.

@@ -1,5 +1,9 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 전용 Light2D 실제 창 후 계속
+
+최종 실제 Editor heP5Hg/배포 Player CfFWyo는 GPU77개(전용28)·레이어/Z/노멀/타입/3D분리·마스크/타일·C++→BP핀·원본/종료를 통과해요. 증거/재현은 [Light2D](docs/2D_LIGHTING.md)예요. Px56Mb 종료는 검사용 BP 미저장 확인창이었고 저장 검사로 통과해요. hx7NHK의 노멀 Disabled 실패는 Actor 레이어 복원 누락, g5f51U는 scene.place.result.object 응답 경로였어요. 해당 검사들을 고쳤어요. 앞선 slice 출력 okKqXQ의 한 번 실패 원인은 여전히 확정하지 않아요. 사용자 설치/게임/창은 보존해요. 전체 구현을 계속해요.
+
 ## 2D 표면 실제 GPU 조사 — 검증 후 계속
 
 - sBuiuu의 opaque alpha 검사는 PNG/canvas에서 알파0 픽셀 RGB가0이 되는 조건을 빨강으로 잘못 예상했어요. Epic Paper2D 본문도 투명 배경의 불투명 표면이 검정으로 채워짐을 설명해요. 초록 배경을 써서 discard/불투명 검정을 구분하도록 검사 기대값을 고쳤어요.
