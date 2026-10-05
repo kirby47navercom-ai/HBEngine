@@ -41,3 +41,7 @@ schema.animationGraph.sync의 실제 notifyStates/notifyParameters 계약을 공
 `animation-notify-cost-dCTpO4/cpu-cost.json`은 한 Actor/두 트랜스폼 클립/구간0또는1개,100회 워밍업 후5×1000 Tick의 CPU 검사예요. 중앙 Tick은 구간 없음0.008397ms·1개0.0119702ms, 포즈120bytes/버퍼 재사용을 유지했어요. 구간이 전혀 없는 그래프는 구간 계획의 추가 Map/Set을 만들지 않아요. 전체 FPS/프로세스 메모리·대규모/물리 모바일 검증으로 확대하지 않아요.
 
 공유 Sequence/Skeleton 알림 에셋, 알림 클래스/프리셋, 확률/LOD/편집 전용 필터, 사운드/입자/소켓 전용 알림, 몽타주 알림/Branching Point/슬롯·root motion과 모든 다른 엔진 세부는 계속 구현할 범위예요. 사용자 설치본/프로필/게임 원본/현재 창은 변경하지 않아요.
+
+## 몽타주·작업 범위 후속
+
+[몽타주 구간 알림](ANIMATION_MONTAGE_NOTIFIES.md)은 같은 범위/속성 처리기를 공유해요. 그래프와 몽타주의 Begin/Tick에서 만든 Delay·타임라인·BP/C++ 타이머·구독은 instance 범위에 속하고 End 전에 취소해요. End 자체는 Actor 수명에서 실행해요. 실제 Graph Notify Player0JF4lu와2D/3D Montage Editor/Player에서 회귀를 확인했어요.

@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 몽타주 구간 알림·작업 범위 후속
+
+- 최종 Editor wYidzz/Player Oa3qxq: 2D/3D typed→BP→C++·Montage Begin/Tick/End·Seek/Stop·native Timer/BP Delay 취소·원본/exit0/서버 정리가 통과해요. Editor5/5·2/2, Player3/3·1/1과 지연 호출0/work 비움을 확인해요. wYidzz montage-notify-authoring PNG에서 별도 구간 줄/손잡이를 직접 보았어요. 공용 Graph Notify 실제 Player0JF4lu도 통과해요.
+- 첫 코어 Pause 검사에서 점 알림 PauseNow가 재개 후 중복됐어요. 실제 알림을 계획한 뒤 initial 플래그를 콜백 전에 소비하도록 고쳐 Pause·Begin/끝 Pause·기존 활성 범위 재개를 확인해요. 범위 계획/전달을 구분하고 취소한 Begin에 End를 보내지 않아요.
+- 실제 WIb5vj의 Model 위치 [3,-2,0.10000000149]와 [3,-2,.1] deepEqual 실패는 새 typed C++ 왕복으로 드러난 Float32 관측 차이예요. 위치 검사1e-6 허용오차로 k5aheb 통과 후 Sprite typed/실제 스크롤/우클릭을 포함한 wYidzz를 다시 확인했어요. 제품의 시작 위치나 사용자 데이터를 바꾸지 않았어요.
+- End 콜백 하나의 오류 뒤 다른 End/Ended 시도·작업 정리, End에서 새 몽타주 시작, 그룹별 수명/연속 섹션/반복/최소 가중치/배속을 코어로 검사해요. 사용하지 않는 큐/처리기 생략은 비용 제한이며 전체 FPS/모바일 성능의 근거가 아니에요.
+
+
 ## 공용 타임라인 검사 후속
 
 - 실제 Editor xyFptU와 배포 Player cxsjYq: 프레임/키·단위·C++ 몽타주/시퀀스·별도 preview/runtime 시간·원본/복원/exit0/서버 종료가 통과해요. xyFptU timeline-live/sequence-live PNG를 직접 확인했어요. 코어 check-gameplay-timeline은 유한/범위·30/60fps·경계·256×1024키·종료/반복을 확인해요. 전체 FPS/모바일/정밀 포즈 복제의 근거가 아니에요.

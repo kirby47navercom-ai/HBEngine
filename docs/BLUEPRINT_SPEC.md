@@ -206,3 +206,7 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 [몽타주 슬롯 계약](ANIMATION_MONTAGE_SLOTS.md)의6개 그룹 제어/조회 BP와 C++ 실행 연결을 추가했어요. BP566개/API289개이며 기존 본문의 수량은 당시 기록이에요. 사람/AI·실제 Editor/Player·2D/가져온 모델·배치 위치/HUD 검증과 남은 세부를 해당 계약에 기록해요.
 
 2026-10-05 공용 [타임라인 조작·추적](ANIMATION_TIMELINE_CONTROLS.md)은 기존 C++/BP 몽타주·시퀀스 실행을 같은 창에서 식별해요. 새 노드 수를 늘리지 않고 에셋/Actor/그룹·실행 시간과 미리보기 시간을 분리하며 원본/revision/Undo를 보존해요. 전체 누적 세부를 계속 구현해요.
+
+## 몽타주 구간 알림 후속 · 2026-10-05
+
+[구간 알림 계약](ANIMATION_MONTAGE_NOTIFIES.md)에 사람/AI·typed Custom Event→C++·Begin/Tick 작업 범위/End 취소·조작/호환·실제 Editor/Player 근거를 기록해요. BP566/API289개를 유지하며 다른 전체 기능 후속도 계속해요.

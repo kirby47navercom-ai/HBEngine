@@ -1,5 +1,15 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 몽타주 구간 알림·작업 수명 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [몽타주 구간 알림 계약](docs/ANIMATION_MONTAGE_NOTIFIES.md)에 Epic5.8 Notifies 기술 본문 재대조/enum 자체 읽기 경계·개별 Window API 미독·자체 계약과 남은 세부를 기록했어요. 원문/SHA manifest는 montage-notify-docs-hpk9dZ예요. 후속 웹 리더 접근 실패를 읽기로 세지 않고 전체 gate를 승격하지 않아요.
+
+- 선택 필드 notifyStates64/typed 인자8·공용 범위 처리기/속성 렌더러·Begin/Tick/End·가중치/배속·섹션/반복·Pause 예정 알림 취소/재개·Seek/Jump/Stop/교체/오류 정리를 연결했어요. 그래프/몽타주의 Delay·타이머·타임라인·구독/C++ 타이머 범위를 End 전에 취소해요. 점 알림 Pause 재개 중복도 수정해요. 구간/손잡이·키/우클릭·스크롤/Undo/AI schema를 공유하고 사용하지 않는 구간 처리기를 생략해요. BP566/API289 유지예요.
+- 실제 최종 Editor wYidzz/배포 Player Oa3qxq는2D Sprite/3D Model typed→BP→C++·native Timer/Delay 정리·시작/종료 수 일치·원본 바이트/exit0/서버 종료를 통과해요. Editor Begin/End Model5/5 Sprite2/2, Player3/3·1/1, 지연 호출0/work 목록 비움이에요. Editor 물리 손잡이/키·자료형 기본값/Undo/AI 거절·우클릭/스크롤/PNG를 확인해요. 공용 Graph Notify Player0JF4lu도 통과해요. 코어 콜백 오류/all End/새 인스턴스 보존·schema/main/API/scene/Sync/상태/포즈/정책/분리 frame/타임라인도 확인해요.
+- 초기 WIb5vj는 C++ Float32 .1을 정확 비교한 검사 오류예요. 위치 오차1e-6으로 k5aheb와 최종 wYidzz가 통과해요. 작은 큐 생성 생략/ID 검증/스크롤 보강은 최종 Editor/Player에 포함해요. 성능 스트레스/모바일 열 측정을 했다는 근거가 아니에요.
+- 사용자 설치/게임/프로필/창을 보존해요. 다음은 공유 애니메이션 메타/같은 그룹 교체 혼합·2D 조명/윤곽선과 전체 렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부를 계속해요. 최종 답변/goal complete를 보내지 않아요.
+
+
 ## 최신 후속: 공용 타임라인 조작·실행 추적 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [공용 타임라인 계약](docs/ANIMATION_TIMELINE_CONTROLS.md)에 새 공식7개 읽기 경계·자체 UI/시계 계약·남은 세부를 기록했어요. 원문 manifest는 animation-editor-docs-uTk8GW이며 전체 분석/엔진 완료가 아니에요.

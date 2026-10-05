@@ -1,5 +1,8 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 후속: [몽타주 구간 알림](../ANIMATION_MONTAGE_NOTIFIES.md). Epic5.8 Notifies 기술 본문0–260 재대조와 EMontageNotifyTickType::Type 자체 선언/값0–35를 읽었어요. raw HTML/응답/SHA/경계는 native/build/montage-notify-docs-hpk9dZ에 유지해요. Window 개별 API 본문 실패/뒤의 두 주소 웹 리더 실패는 미독/재조회 실패로 기록하며200 HTML만으로 승격하지 않아요. 그림/영상/링크 API·전체 gate는 유지하고 슬롯/Sequence 링크·공유 알림/조건·Queued/Branching Point 등 연결 후속을 등록해요. 기존 범위/속성/작업 수명 처리기를 사람/AI·2D/3D·CPP/BP에 공유하고 실제 Editor/Player·Graph 회귀를 확인하며 전체 엔진 세부를 계속해요.
+
+
 2026-10-05 제작·실행 후속: [공용 타임라인 조작](../ANIMATION_TIMELINE_CONTROLS.md). Unity6000.0 Use Animation view 기술127–243·AnimationWindow 자체 설명243–248/8개 속성258–265와 time/frame/previewing/playing 자체 선언/설명을 읽고, Epic5.8 Animation Sequence Editor 기술0–177을 읽었어요. 이미지/연결/상속은 미독이며 압축/프레임 제거·data model/controller/meta·Skeleton/기록/곡선/잠금/색의 세부를 추가 후속 대상으로 포함해요. 원문/응답/SHA/경계는 native/build/animation-editor-docs-uTk8GW예요. 실제 Editor xyFptU/Player cxsjYq의 프레임·키/마우스 조작·C++ 직접 몽타주/시퀀스·독립 시간/재생선·원본/복원/종료와 코어 큰 키 목록을 검사했어요. 전체 corpus gate를 승격하지 않고 전체 요구를 계속해요.
 
 2026-10-05 후속: [몽타주 중단 혼합](../ANIMATION_MONTAGE_SLOTS.md). Epic5.8 Montage_Stop 자체 Description/선언0–25와 UAnimInstance delegate 요약112–127/몽타주 요약740–849를 새로 읽고 Stop/StopGroup 지정 시간·Ended/BlendingOut을 대조했어요. StopGroupByName 개별 본문은 web 실패·직접200 HTML에서도 미확인이며 미독으로 유지해요. 원문/응답/SHA/경계는 native/build/montage-stop-docs-5QRB0I에 있어요. 관련 delegate/Blend 설정/동기화·연결 전체 API를 후속 대상으로 등록하고 전체 corpus gate는 승격하지 않아요. 실제 C++/BP·Editor/Player·사람/AI와 콜백/호환을 확인하며 전체 엔진 세부를 계속해요.

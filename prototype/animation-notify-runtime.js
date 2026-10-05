@@ -1,5 +1,11 @@
 const clamp=v=>Math.max(0,Math.min(1,v));
 export function animationNotifyPayload(record,notify,cycle,fields){const event={notify:notify.id,clip:record.id,context:record.context.key,group:record.grouped?record.group:'',cycle,...fields};for(const p of notify.parameters||[])event[p.name]=structuredClone(p.value);return event;}
+export async function deliverAnimationNotify(vm,binding,event){
+  const scope=event.instance||'';
+  if(event.phase==='notifyBegin')vm.beginScope(scope);
+  else if(event.phase==='notifyEnd')vm.cancelScope(scope);
+  if(binding&&event.name)await vm.custom(binding,event.name,event,event.phase==='notifyEnd'?'':scope);
+}
 
 // Planned windows and delivered callbacks are separate: a canceled pending Begin
 // must never produce an End for gameplay which never received that Begin.
@@ -11,7 +17,7 @@ export class AnimationNotifyTrack {
   }
   resolve(weights,pending,delta){
     if(!this.hasStates)return;
-    const next=new Map(),ended=new Set(),emit=(window,phase,at,fraction,fields)=>{const event=this.event(window,phase,at,fields);if(pending.length+this.owner.events.length>=this.limits.crossings)throw Error('애니메이션 이벤트 한도4096');if(phase==='notifyEnd')ended.add(window.instance);pending.push({fraction,event});};
+    const next=new Map(),ended=new Set(),emit=(window,phase,at,fraction,fields)=>{const event=this.event(window,phase,at,fields);if(pending.length+this.owner.events.length>=this.limits.crossings)throw Error('애니메이션 이벤트 한도4096');if(phase==='notifyEnd')ended.add(window.instance);pending.push({fraction,event,window});};
     for(const [instance,window] of this.active){const {record,notify}=window,weight=weights.get(record)||0,eligible=weight>0&&weight>=notify.minWeight&&(!record.grouped||record.leader||notify.triggerOnFollower);if(!weights.has(record)||!eligible||record.fresh){emit(window,'notifyEnd',window.at,0,{reason:record.fresh?'restarted':!weights.has(record)?'irrelevant':'filtered'});}}
     for(const [record,weight] of weights){if(weight<=0)continue;
       for(const notify of record.notifyStates){if(weight<notify.minWeight||record.grouped&&!record.leader&&!notify.triggerOnFollower)continue;
@@ -35,6 +41,12 @@ export class AnimationNotifyTrack {
     if(event.phase==='notifyBegin')this.delivered.set(event.instance,event);
     else if(event.phase==='notifyEnd')this.delivered.delete(event.instance);
     else if(event.phase==='notifyTick'&&this.delivered.has(event.instance))this.delivered.set(event.instance,event);
+  }
+  interrupt(pending,time){
+    // Callbacks may pause before the planned interval finishes. Keep only
+    // windows whose Begin actually ran, at the cursor visible to that callback.
+    const windows=new Map(this.active),ends=[];for(const item of pending)if(item.window)windows.set(item.window.instance,item.window);
+    this.active.clear();for(const instance of this.delivered.keys()){const w=windows.get(instance);if(!w)continue;if(time>=w.finish)ends.push(this.event(w,'notifyEnd',w.finish,{reason:'completed'}));else this.active.set(instance,{...w,at:time});}return ends;
   }
   cancel(reason='stopped'){const events=[...this.delivered.values()].map(event=>({...event,name:this.owner.nodes.get(event.clip).properties.notifyStates.find(n=>n.id===event.notify).onEnd,phase:'notifyEnd',deltaSeconds:0,reason}));this.delivered.clear();this.active.clear();return events;}
   snapshot(){return [...this.active.values()].map(w=>({instance:w.instance,id:w.notify.id,name:w.notify.name,clip:w.record.id,context:w.record.context.key,cycle:w.cycle,time:w.at-w.cycle*w.record.length,duration:w.notify.duration,progress:clamp((w.at-w.begin)/w.notify.duration),weight:w.record.notifyWeight??w.record.weight}));}
