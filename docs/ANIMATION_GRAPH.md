@@ -1,5 +1,7 @@
 # 애니메이션 그래프·포즈 혼합
 
+2026-10-05 후속: [두 축 Blend Space](ANIMATION_BLEND_SPACE.md)의 Cartesian/방향·속도 혼합·축/보정/샘플 편집·공용 BP/C++/AI·실제 Editor/Player와 2D 스프라이트/가져온 뼈 검사를 연결했어요. 현재 포즈 노드12종/BP560개이며 이전 아래 수량은 각 추가 당시 기록이에요.
+
 2026-10-05 후속: [구간 알림·이벤트 인자](ANIMATION_NOTIFIES.md)의 상세 범위/인자 제작과 Begin/Tick/End·재생 수명 정리·실제 Editor/Player BP→C++를 연결했어요. 2D 스프라이트도 같은 알림 실행기를 사용해요.
 
 2026-10-05 후속: [동기화·마커·알림](ANIMATION_SYNC.md)의 Sync 노드·Group/Graph·리더 역할·반복 마커·길이 대체·단일 Custom Event 알림·C++/BP3개·AI·실제 Editor/Player를 연결했어요. 현재 포즈 노드는11종, 공용 BP는560개예요. 아래 동기화 미구현 문장은 최초 추가 당시의 기록이며 후속 계약을 함께 읽어요.

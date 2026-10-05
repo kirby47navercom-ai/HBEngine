@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 두 축 Blend Space 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [Blend Space 계약](docs/ANIMATION_BLEND_SPACE.md)에 실제 공식 기술 본문/API 읽기 경계·자체 수학/차이·사람/AI/C++/BP·검증/비용과 남은 세부를 기록했어요. 전체 연구/기능 완료로 승격하지 않아요.
+
+- Cartesian 삼각/밖 투영·방향/반지름 밴드·두 Float·축 범위/순환/선형·지수 보정·독립 상태/공유 DAG를 포즈 계획·동기화/알림과 같은 가중치에 연결했어요. 포즈 노드12/BP560개예요. 샘플/Shift/키보드/Delete/우클릭·Undo·AI dryRun/검증·미리보기/실행 잠금·동일 입력 차트 DOM 보존을 연결했어요.
+- 실제 Editor zlWrBz/xQGZET·release Player XaWTs8/최종ZBmccm의 포즈/축·C++ Set/Get·BP Get→사용자 C++·뼈 마스크·Pause·원본/exit0/서버 정리가 통과했어요. PNG를 확인했어요. 코어64샘플/2D 스프라이트 배치·상태/동기화/알림·main/API/integration/runtime/startup-DAf2Xd도 통과했어요. 마지막 누적기 비용 보강은 코어/Player에서 검사했고 Editor 의미 경로를 유지해요.
+- 작은 CPU xGaboc은 Direct .0082166/BlendSpace .0083768ms, 포즈120/가중치24bytes재사용이며 전체FPS/모바일 근거가 아니에요. 초기 정확한 부동소수점 단언 오류는 허용오차로 고쳤어요. 설치본/게임/사용자 창을 건드리지 않았어요.
+- 격자 bilinear/추가 보정/뼈별 가중치·클립 배속·알림 방식/좌표 자동 계산·AimOffset과 몽타주 슬롯/공유메타/IK/리타깃/Root Motion, 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 후속을 계속해요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 구간 알림·자료형 인자 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [구간 알림 계약](docs/ANIMATION_NOTIFIES.md)에 Epic5.8 NotifyState 자체 API 요약/Unity6000.0 이벤트5개 필드의 실제 읽기 경계·자체 구현/차이·검증을 기록했어요. 전체 gate를 승격하지 않아요.

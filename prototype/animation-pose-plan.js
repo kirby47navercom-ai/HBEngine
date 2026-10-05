@@ -1,4 +1,5 @@
 const clamp=v=>Math.max(0,Math.min(1,v));
+import {updateAnimationBlendContext} from './animation-blend-space.js';
 export function animationBlendSamples(owner,node){const samples=owner.sortedSamples.get(node.id),value=owner.parameters.get(node.properties.parameter);let hi=samples.findIndex(s=>s.threshold>=value);if(hi<0)hi=samples.length-1;const lo=Math.max(0,hi-1),weight=hi===lo||value<=samples[0].threshold?0:clamp((value-samples[lo].threshold)/(samples[hi].threshold-samples[lo].threshold));return {low:samples[lo].input,high:samples[hi].input,weight};}
 export function planAnimationPose(owner,delta){
   const memo=new Map();
@@ -20,6 +21,7 @@ export function planAnimationPose(owner,delta){
       const desired=owner.parameters.get(p.parameter)?1:0;let s=context.selections.get(id);if(!s){s={weight:desired,from:desired,target:desired,time:0};context.selections.set(id,s);}if(s.frame!==owner.frame){if(desired!==s.target){s.from=s.weight;s.target=desired;s.time=0;}s.time+=step;s.weight=p.duration?s.from+(s.target-s.from)*clamp(s.time/p.duration):desired;s.frame=owner.frame;}
       if(s.weight<1)merge('false',1-s.weight);if(s.weight>0)merge('true',s.weight);
     }else if(node.type==='blend1d'){const s=animationBlendSamples(owner,node);if(s.weight<1)merge(s.low,1-s.weight);if(s.weight>0)merge(s.high,s.weight);}
+    else if(node.type==='blend2d'){const state=updateAnimationBlendContext(context.blendSpaces.get(id),owner.parameters,step,owner.frame);p.samples.forEach((s,i)=>{if(state.weights[i])merge(s.input,state.weights[i]);});}
     else if(node.type==='direct'){const values=p.samples.map(s=>clamp(s.parameter?owner.parameters.get(s.parameter):s.weight)),sum=values.reduce((a,b)=>a+b,0);p.samples.forEach((s,i)=>{if(values[i])merge(s.input,values[i]/(p.normalize&&sum?sum:1));});}
     else if(node.type==='additive'){merge('base');merge('additive',owner.alpha(p));}
     else for(const input of Object.keys(node.inputs))merge(input);
