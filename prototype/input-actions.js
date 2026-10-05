@@ -20,6 +20,8 @@ export class InputActions {
   clear(){this.keys.clear();this.previous.clear();this.states.clear();this.events.clear();this.time=0;}
   addContext(path,context,priority=context.priority){this.removeContext(path);this.contexts.push({...context,path,priority});this.contexts.sort((a,b)=>b.priority-a.priority);}
   removeContext(path){this.contexts=this.contexts.filter(c=>c.path!==path);}
+  preview(frame=false,delta=0,key,value){const next=Object.assign(Object.create(InputActions.prototype),this);for(const field of ['keys','previous','states','events'])next[field]=structuredClone(this[field]);if(key!==undefined)next.set(key,value);return {input:next,events:next.sample(frame,delta)};}
+  commit(next){for(const field of ['keys','previous','states','events']){this[field].clear();for(const [key,value] of next[field])this[field].set(key,value);}this.time=next.time;}
   snapshot(){return [...this.actions].map(([path,a])=>{const s=this.states.get(path);return {path,value:structuredClone(s?.value??zero(a)),state:s?.state||'none',elapsed:s?.elapsed||0,events:[...(this.events.get(path)||[])]};});}
   endFrame(){this.events.clear();}
   sample(frame=false,delta=0){

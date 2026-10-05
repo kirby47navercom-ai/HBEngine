@@ -88,17 +88,17 @@ inline bool bridgeDisplayOperation(const std::string& key,const Json& args){
     const auto property=key=="uiSetVisible"?"visible":"enabled";return (widget.contains(property)&&widget.at(property)==args.at(property))||type=="Text"||type=="Image"||type=="ProgressBar";
 }
 inline void engineCommand(const char* key,const Json& args){if(bridgeOperations.size()-bridgeOperationStart>=1000)throw std::runtime_error("engine operation limit");if(!bridgeDisplayOperation(key,args))bridgeOperationBoundary=true;bridgeOperations.push_back({{"key",key},{"args",args},{"self",Timers::GetContext().first}});}
-inline Json bridgeAction(Actor* target,const std::string& path){const auto id=bridgeId(target);for(const auto& a:bridgeInput.value("actions",Json::array()))if(a.at("owner")==id&&a.at("path")==path)return a;return {{"value",false},{"state","none"},{"elapsed",0},{"events",Json::array()}};}
+inline const Json& bridgeAction(Actor* target,const std::string& path){const auto id=bridgeId(target);const auto actions=bridgeInput.find("actions");if(actions!=bridgeInput.end())for(const auto& a:*actions)if(a.at("owner")==id&&a.at("path")==path)return a;static const Json empty={{"value",false},{"state","none"},{"elapsed",0},{"events",Json::array()}};return empty;}
 inline Vec3 Input::GetActionValue(Actor* target,const std::string& action){const auto value=bridgeAction(target,action).at("value");if(value.is_boolean())return {value.get<bool>()?1.0f:0.0f,0,0};if(value.is_number())return {value.get<float>(),0,0};return {value.at(0).get<float>(),value.at(1).get<float>(),value.size()>2?value.at(2).get<float>():0.0f};}
 inline std::string Input::GetActionState(Actor* target,const std::string& action){return bridgeAction(target,action).at("state").get<std::string>();}
-inline bool Input::HasActionEvent(Actor* target,const std::string& action,const std::string& event){const auto data=bridgeAction(target,action);for(const auto& e:data.at("events"))if(e==event)return true;return false;}
+inline bool Input::HasActionEvent(Actor* target,const std::string& action,const std::string& event){const auto& data=bridgeAction(target,action);for(const auto& e:data.at("events"))if(e==event)return true;return false;}
 inline float Input::GetActionElapsed(Actor* target,const std::string& action){return bridgeAction(target,action).at("elapsed").get<float>();}
 inline void Input::AddMappingContext(Actor* target,const std::string& context,int priority){engineCommand("inputAddContext",{{"target",bridgeId(target)},{"context",context},{"priority",priority}});}
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
     Json world=bridgeWorld;for(const auto& updated:bridgeSnapshot())for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
-    const Json packet={{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};
+    Json packet={{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
     if(bridgeQuery){const auto response=bridgeQuery(packet);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
     std::cout<<"HB_QUERY\t"<<packet.dump()<<std::endl;
     std::string line;if(!std::getline(std::cin,line))throw std::runtime_error("engine query disconnected");const auto response=Json::parse(line);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");

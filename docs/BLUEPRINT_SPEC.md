@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-06: [Auric C++ 묶음 계약](AURIC_NATIVE_BATCH.md). 함수·매크로·여러 Tick·C++ Timer·Input Action의 직선 native 호출을 같은 빌드에서 묶고, 콜백/자료 의존성/실패/작업 취소 경계를 유지해요. Action은 owner별 샘플 시점과 다른 모듈 조회 상태를 PC worker·모바일 AOT에서 대조해요. 전체 BP 상속·전체 함수 실행 최적화의 완료로 계산하지 않아요.
+
 2026-10-05 추가: [전용 Light2D](2D_LIGHTING.md)의 공용 C++/BP16개와 Sprites 조명 모드2개를 연결해 기본 노드594개예요. 반경·각도·노멀의 여러 반환 핀/같은 C++ 호출의 읽기·쓰기·실제 배포 Player를 검증했어요. 이전 숫자는 당시 스냅샷이에요.
 
 2026-10-05 추가: [구간 알림·이벤트 인자](ANIMATION_NOTIFIES.md). 단일/구간 알림은 사용자 Custom Event의 같은 이름/자료형 데이터 출력으로 int/float/bool/string/vec2/vec3/color/object를 전달해요. 범위 Begin/Tick/End→nativeCall 사용자 C++와 Stop의 정리를 실제 Editor/Player에서 확인했어요. 독립 알림 클래스 ABI로 표현하지 않아요.

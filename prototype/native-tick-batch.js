@@ -1,8 +1,11 @@
 import {catalog,basePins,defaultInputValue,fieldsFor,graphContext} from './blueprint-model.js';
+import {evaluateCore,blueprintPure} from './core-preview.js';
+import {libraryByKey} from './library-spec.js';
 import {nativeMember,nativeTargetPin} from './native-model.js';
 import {cloneNativeValue} from './native-transport.js';
 
 const plans=new WeakMap(),clone=cloneNativeValue;
+const pureKeys=new Set([...Object.keys(blueprintPure).filter(key=>key!=='random'),...catalog.filter(s=>s.pure&&!s.service&&(/^hb::(?:Math|VectorMath)::/.test(s.cppName||'')||libraryByKey.has(s.key))).map(s=>s.key)]);
 // ponytail: terminal native events can batch without graph continuations. Branches,
 // world reads and used return pins keep their existing ordered execution boundary.
 export function nativeTickPlan(root,key='tick'){
@@ -31,7 +34,7 @@ const chains=new WeakMap(),entries=new Set([...catalog.filter(s=>s.kind==='event
 export function nativeChainPlan(root,g,start){
   if(!chains.has(g))chains.set(g,new Map());const cache=chains.get(g);if(cache.has(start.id))return cache.get(start.id);
   const jobs=[],visited=new Set();let node=start;
-  const safe=(n,pin,seen=new Set())=>{const id=n.id+':'+pin;if(seen.has(id))return false;seen=new Set(seen).add(id);const edge=g.edges.find(e=>e.to.node===n.id&&e.to.pin===pin);if(!edge)return true;const source=g.nodes.find(n=>n.id===edge.from.node);return ['getVariable','self'].includes(source?.key)||entries.has(source?.key)||source?.key==='reroute'&&safe(source,'value',seen);};
+  const safe=(n,pin,seen=new Set())=>{const id=n.id+':'+pin;if(seen.has(id))return false;seen=new Set(seen).add(id);const edge=g.edges.find(e=>e.to.node===n.id&&e.to.pin===pin);if(!edge)return true;const source=g.nodes.find(n=>n.id===edge.from.node);return ['getVariable','self'].includes(source?.key)||entries.has(source?.key)||source?.key==='reroute'&&safe(source,'value',seen)||pureKeys.has(source?.key)&&!source.splitPins?.some(p=>p.startsWith('in:'))&&basePins(source,'in',g).every(p=>p.type!=='exec'&&safe(source,p.id,seen));};
   while(node&&!visited.has(node.id)&&jobs.length<1000){
     visited.add(node.id);const {f}=nativeMember(root,node),inputs=basePins(node,'in',g).filter(p=>p.type!=='exec');
     if(node.key!=='nativeCall'||node.enabled===false||node.breakpoint||!f||f.pure||f.event!=='none'||inputs.some(p=>!safe(node,p.id)||node.splitPins?.includes('in:'+p.id)))break;
@@ -43,7 +46,7 @@ export function nativeChainBlock(binding,g,plan,outputs,scope){
   const overrides=binding.root.nodes.filter(n=>n.key==='nativeEvent').map(n=>n.nativeId),jobs=[];
   for(const item of plan){if(item.node.enabled===false||item.node.breakpoint)throw Error('C++ 실행·중단점 경계');const reads=new Map(),job={...item,reads,readCount:0};
     const read=(n,p)=>{const edge=g.edges.find(e=>e.to.node===n.id&&e.to.pin===p.id);if(!edge)return clone(defaultInputValue(n,p));const source=g.nodes.find(n=>n.id===edge.from.node),[id,...path]=edge.from.pin.split('.');let output;
-      if(entries.has(source.key))output=outputs.get(source.id);else if(source.key==='getVariable')output={value:binding.variables.get(source.variableId)};else if(source.key==='self')output={return:binding.self};else if(source.key==='reroute')output={value:read(source,basePins(source,'in',g).find(p=>p.id==='value'))};else throw Error('C++ 묶음 데이터 의존성');
+      if(entries.has(source.key))output=outputs.get(source.id);else if(source.key==='getVariable')output={value:binding.variables.get(source.variableId)};else if(source.key==='self')output={return:binding.self};else if(source.key==='reroute')output={value:read(source,basePins(source,'in',g).find(p=>p.id==='value'))};else if(pureKeys.has(source.key)){const args=Object.fromEntries(basePins(source,'in',g).filter(p=>p.type!=='exec').map(p=>[p.id,read(source,p)]));output=blueprintPure[source.key]?blueprintPure[source.key](args):evaluateCore(source.key,args);}else throw Error('C++ 묶음 데이터 의존성');
       if(!output)throw Error('먼저 실행해야 하는 출력: '+source.key);if(!entries.has(source.key)){job.readCount++;output=clone(output);reads.set(source.id,output);}let value=output[id];if(path.length){let type=basePins(source,'out',g).find(p=>p.id===id)?.type;for(const field of path){const fields=fieldsFor(type),i=fields.findIndex(p=>p.id===field);value=Array.isArray(value)?value[i]:value?.[field];type=fields[i]?.type;}}if(value===undefined)throw Error('출력 값이 없어요: '+edge.from.pin);return clone(value);
     };
     const args=Object.fromEntries(item.inputs.map(p=>[p.id,read(item.node,p)])),receiver=nativeTargetPin(item.fn);if(!item.fn.static)args[receiver]=args[receiver]==='self'||args[receiver]===null?binding.self:args[receiver];job.request={key:'nativeCall',nativeId:item.node.nativeId,args,self:binding.self,scope,overrides};jobs.push(job);
@@ -55,15 +58,15 @@ export function nativeChainBlock(binding,g,plan,outputs,scope){
 // Input key maps and construction callbacks stay at their original event boundary.
 export function nativeEventBlock(binding,g,descriptors){
   const entries=[],jobs=[];
-  for(const descriptor of descriptors){const {n,args,pin='then'}=descriptor,edges=g.edges.filter(e=>e.from.node===n.id&&e.from.pin===pin);let chain=[];
+  for(const descriptor of descriptors){const {n,args,pin='then',scope=''}=descriptor,edges=g.edges.filter(e=>e.from.node===n.id&&e.from.pin===pin);let chain=[];
     let wrapper;
     if(edges.length){if(edges.length!==1||edges[0].to.pin!=='exec')return null;const start=g.nodes.find(n=>n.id===edges[0].to.node);
-      if(start?.key==='callFunction'){
-        const definition=binding.root.functions.find(d=>d.id===start.definitionId),inputs=basePins(start,'in',g).filter(p=>p.type!=='exec');if(!definition||definition.pure||definition.outputs.some(p=>p.type!=='exec')||start.enabled===false||start.breakpoint||g.edges.some(e=>e.from.node===start.id)||inputs.some(p=>p.array||!['bool','int','float','string','object'].includes(p.type)||start.splitPins?.includes('in:'+p.id)))return null;
-        const subgraph=graphContext(binding.root,definition.id),entry=subgraph.nodes.find(n=>n.key==='functionInput'),exit=subgraph.nodes.find(n=>n.key==='functionOutput'),links=subgraph.edges.filter(e=>e.from.node===entry?.id&&e.from.pin==='exec'),first=links.length===1&&links[0].to.pin==='exec'&&subgraph.nodes.find(n=>n.id===links[0].to.node),plan=first&&nativeChainPlan(binding.root,subgraph,first),tail=plan?.length&&subgraph.edges.filter(e=>e.from.node===plan.at(-1).node.id&&e.from.pin==='then');
-        if(!plan?.length||!exit||exit.breakpoint||tail.length!==1||tail[0].to.node!==exit.id||tail[0].to.pin!=='then')return null;
-        const prefix=nativeChainBlock(binding,g,[{node:start,fn:{static:true},inputs}],new Map([[n.id,args]]),'')[0];wrapper={node:start,definition,subgraph,entry,prefix};chain=nativeChainBlock(binding,subgraph,plan,new Map([[entry.id,prefix.request.args]]),'');
-      }else{const plan=start&&nativeChainPlan(binding.root,g,start);if(!plan?.length||g.edges.some(e=>e.from.node===plan.at(-1).node.id&&e.from.pin==='then'))return null;chain=nativeChainBlock(binding,g,plan,new Map([[n.id,args]]),'');}
+      if(['callFunction','callMacro'].includes(start?.key)){
+        const definition=[...binding.root.functions,...binding.root.macros].find(d=>d.id===start.definitionId),inputs=basePins(start,'in',g).filter(p=>p.type!=='exec');if(!definition||definition.pure||definition.inputs.filter(p=>p.type==='exec').length!==1||definition.inputs.find(p=>p.type==='exec')?.id!=='exec'||definition.outputs.length!==1||definition.outputs[0].id!=='then'||definition.outputs.some(p=>p.type!=='exec')||start.enabled===false||start.breakpoint||g.edges.some(e=>e.from.node===start.id)||inputs.some(p=>p.array||!['bool','int','float','string','object'].includes(p.type)||start.splitPins?.includes('in:'+p.id)))return null;
+        const subgraph=graphContext(binding.root,definition.id),entry=subgraph.nodes.find(n=>n.key=== (start.key==='callMacro'?'macroInput':'functionInput')),exit=subgraph.nodes.find(n=>n.key===(start.key==='callMacro'?'macroOutput':'functionOutput')),links=subgraph.edges.filter(e=>e.from.node===entry?.id&&e.from.pin==='exec'),first=links.length===1&&links[0].to.pin==='exec'&&subgraph.nodes.find(n=>n.id===links[0].to.node),plan=first&&nativeChainPlan(binding.root,subgraph,first),tail=plan?.length&&subgraph.edges.filter(e=>e.from.node===plan.at(-1).node.id&&e.from.pin==='then');
+        if(!plan?.length||!exit||exit.enabled===false||exit.breakpoint||tail.length!==1||tail[0].to.node!==exit.id||tail[0].to.pin!=='then')return null;
+        const prefix=nativeChainBlock(binding,g,[{node:start,fn:{static:true},inputs}],new Map([[n.id,args]]),scope)[0];wrapper={node:start,definition,subgraph,entry,prefix};chain=nativeChainBlock(binding,subgraph,plan,new Map([[entry.id,prefix.request.args]]),scope);
+      }else{const plan=start&&nativeChainPlan(binding.root,g,start);if(!plan?.length||g.edges.some(e=>e.from.node===plan.at(-1).node.id&&e.from.pin==='then'))return null;chain=nativeChainBlock(binding,g,plan,new Map([[n.id,args]]),scope);}
     }
     const entry={...descriptor,pin,jobs:chain,wrapper};entries.push(entry);jobs.push(...chain);
   }

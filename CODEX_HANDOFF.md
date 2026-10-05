@@ -1,3 +1,14 @@
+# 최신 진행 — 2026-10-06 Auric P0 매크로·Timer·Input Action 묶음
+
+- 추가 소스: primitive 함수/매크로·여러 Tick·Timer callback owner/scope·Input Action owner별 지연 샘플 커밋·deterministic 계산 입력. 현재 함수 인자는 캡처하고 미실행 미래 인자는 콜백 뒤 다시 평가. 실패/취소/중단점/RNG/월드 의존성 경계를 보존. 계약 docs/AURIC_NATIVE_BATCH.md.
+- 실제 CPP chain/action100~200→1, scope 취소 macro·모든 wrapper/interval/trace/values/stack/depth 일치. Action Pressed/Released/Hold·미래와 앞 owner state/elapsed/events·Context 변경·늦은 자료형 오류·기존 worker 회귀 통과. 다른 모듈로 현재 입력 전달은 실제 PC와 mobile AOT native-module-HzOZd6 통과. portable Player mobile-player-bgXlwu/bridge/API 등13검사 전체 auric-p0-final-mMYoZv 통과·source hash 고정.
+- 최신 original auric-original-jE0h9M: 원본checker9개 수치 동일, 게임225파일 SHA 보존, Engine snapshot SHA·보존 기록. 실패 auric-original-5kHN33은 삭제하지 않음. 검증 도중 Bridge.hpp8:27:19 변경→전환 worker8:27:20~32 재컴파일로 원본10초TEMP handoff 만료. auric-boss-diagnostic-YvR90L 지연없음144shots/56hits/5kills/38gold vs4e9su8 전환11초지연으로0값 초기화 재현. checker/게임 코드·만료 기준 수정 없음; 안정된 소스로 재검증. TEMP 우회 대체는P0-5.
+- 최신 headless ABBA600 1.4941167배/+0.9656247ms 통과 acceptance-performance-actions-final.json. Editor editor-window-uq8Z11 +1.1280351ms/Player player-window-Bt2gcI +0.7620833ms, 각3반복/클래스 전환 통과. Android 새소스4core/host GPU/2GB 검증 진행; 이전 GUI/APK를 새소스 검증으로 계산하지 않음.
+- d01c858 원격37386197241은 실제 CPP/AOT/두 Xcode SDK/iOS simulator 성공. 이번 소스는 별도 원격 검증 필요. 설치본·사용자 프로필·원본 게임 유지, 원본 요청문서 진행 기록만 추가.
+- 다음: 최신 Android와 원격증거 → P0-1/P0-2 원문 완료 기준 체크 → P0-3 상속/배치 override부터 순서대로 → 승인된 설치본 업데이트 → 전체 누적 엔진. P0-3 공식본문 추가읽기/기존코드 결손 docs/research/AURIC_BP_INHERITANCE_ANALYSIS.md. 전체 research gate false, 전체 요구 완료 응답 금지.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0 함수 묶음
 
 - 기준 b971f2d 원격37383235348 성공: 실제 C++/AOT/두 Xcode SDK/iOS 시뮬레이터. 이 함수 후속 소스의 원격 검증은 별도로 진행. 사용자 설치본 유지.
