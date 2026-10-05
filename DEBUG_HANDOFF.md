@@ -1,5 +1,11 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 구간 알림·자료형 인자 검증 후속
+
+hwMQC9는0길이 패치를 엔진이 거절했으나 시험 정규식에 실제 '에셋 규칙' 문구가 없던 실패예요. 초기 코어의 Run 알림 시각/.variables 호출도 시험 오류였어요. Editor eVqdu5는 실제 C++/BP/범위/Stop/정상 종료가 통과했지만 PNG의 두 범위 이름이 겹쳤어요. 별도 줄/스크롤로 고쳐 최종 toxXVX의 실제 드래그/손잡이/자료형/Undo/AI·가독성·C++/BP·원본/exit0/서버 정리가 통과했어요. Player xp4juH도 성공 근거예요.
+
+check-runtime64줄의 직접 모델 재생은 비활성 VM에서도 기존에 지원하던 경로인데 새 current()의 vm.active 조건이 재생을 취소해 위치0/기대1로 실패했어요. 요청 ID·VM generation·Actor 동일성·정리 상태 검사로 바꿔 해당 경로와 실제 C++→BP 회귀를 통과했어요. 뒤에 나온 Windows libuv UV_HANDLE_CLOSING abort의 별도 원인은 특정하지 않았고 단언 실패와 구분해요. 마지막 호환 수정은 코어로 확인했으며 실제 EXE의 활성 VM 경로는 그대로예요. y2IMwg 첫 프레임 HUD/위치, dCTpO4 소규모 CPU 비용도 별도 근거예요. 설치본/게임/사용자 창과 실패 근거를 보존해요.
+
 ## 동기화·마커·알림 검증 후속
 
 03R2Wq는 fixture에서 BP 노드의 key 대신 type을 조회한 시험 오류였어요. yT66QH/LzRgFC는 타임라인 SVG가 전역 .gameplay-properties svg의14px 규칙에 눌린 실제 UI 오류예요. 전용 selector로110px 타임라인/100px1D 차트를 복원했고 키 글자 stroke도 해제했어요. 0jrO4q는 정수 마우스 픽셀로 놓은 실제0.4041s와 이상적0.4s를 섞은 시험 오류로, 실제 dispatch 픽셀의 변환 시각을 단언하도록 고쳤어요.

@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 구간 알림·자료형 인자 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [구간 알림 계약](docs/ANIMATION_NOTIFIES.md)에 Epic5.8 NotifyState 자체 API 요약/Unity6000.0 이벤트5개 필드의 실제 읽기 경계·자체 구현/차이·검증을 기록했어요. 전체 gate를 승격하지 않아요.
+
+- 범위 전체/양 끝 이동·별도 줄/스크롤·기간/Begin/Tick/End·인자8종/성분·Undo/AI 공용 검증을 연결했어요. 반복/offset/rate·필터·재진입/시계 변경·전달 전 Begin 취소·중단/교체/풀/파괴/세계 End·End 오류 뒤 정리·End에서 새 재생의 나중 요청 보존을 구현했어요. 2D 스프라이트 알림/배치 위치도 검사했어요.
+- 최종 실제 Editor toxXVX·Player xp4juH에서 정수/한글/벡터 알림→BP 핀→사용자 C++·구간 Begin/Tick/End·Stop의 End·포즈/GPU·pause·원본/exit0/서버 정리가 통과했어요. 첫 eVqdu5 PNG의 겹친 이름을 수정한 toxXVX PNG를 확인했어요. 시작 위치/첫 프레임 HUD y2IMwg·포즈/상태/동기화·main/API/integration/runtime·게임플레이/모바일 입력/UI/오디오 회귀도 통과했어요.
+- 중지 보호가 실행 전 직접 모델 재생을 막은 회귀는 활성 여부 대신 요청/generation/Actor/정리 검사를 사용해 복원했어요. 마지막 호환 수정은 코어로 검사했으며 실제 활성 VM 경로를 유지해요. 작은 CPU dCTpO4의 중앙 .008397/.0119702ms·포즈120bytes 재사용은 전체 FPS/모바일 근거가 아니에요.
+- 실패 hwMQC9/초기 코어 시험 오류·직접 재생 회귀/후속 libuv abort는 DEBUG에 구분해요. 사용자 설치본/프로필/게임 원본/현재 창은 건드리지 않았어요. 다음은 몽타주 슬롯/알림·공유 애니메이션 메타데이터·Blend Space와 다른 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움을 이어가요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 동기화·마커·단일 알림 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [동기화 계약](docs/ANIMATION_SYNC.md)에 공식 기술 본문/API 요약의 읽기 경계와 자체 동작/차이·검증을 기록해요. 전체 corpus gate를 승격하지 않아요.

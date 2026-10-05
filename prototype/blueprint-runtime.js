@@ -28,7 +28,7 @@ export class BlueprintRuntime {
   async start(){this.generation++;this.active=true;await this.hooks.prepare?.(this);for(const b of this.bindings)await this.emit(b,'construction',{},graphContext(b.root,'construction'));await this.hooks.start?.(this);if(this.hooks.gameplay)this.hooks.gameplay.matchState='playing';for(const b of this.bindings){await this.emit(b,'beginPlay');for(const n of b.root.nodes.filter(n=>n.key==='timeline'&&n.timeline.autoplay))await this.execute(n,this.frame(b),'start');}return this;}
   async stop(reason='Stopped'){
     if(!this.active||this.stopping)return;this.paused=false;this.stepRemaining=null;this.generation++;this.pending?.resolve();this.pending=null;this.stopping=true;let firstError;await this.inputQueue;
-    try{for(const b of this.bindings)try{await this.emit(b,'endPlay',{reason});}catch(error){firstError??=error;}}
+    try{try{await this.hooks.stop?.(this,reason);}catch(error){firstError??=error;}for(const b of this.bindings)try{await this.emit(b,'endPlay',{reason});}catch(error){firstError??=error;}}
     finally{if(this.hooks.gameplay)this.hooks.gameplay.matchState='ended';this.active=false;this.stopping=false;this.sceneRequest=null;this.jobs=[];this.timelines.clear();this.subscriptions.clear();this.scopes.clear();this.core.timers.clear();this.overlaps.clear();this.hits.clear();this.resetInput();}
     if(firstError)throw firstError;
   }

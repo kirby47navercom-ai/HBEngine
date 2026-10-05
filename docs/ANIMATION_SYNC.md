@@ -1,5 +1,7 @@
 # 애니메이션 동기화·마커·알림 · 2026-10-05
 
+후속: [구간 알림·이벤트 인자](ANIMATION_NOTIFIES.md)의 Begin/Tick/End·범위/손잡이 편집·자료형 인자·콜백 취소/정리·실제 Editor/Player C++ 연결을 추가했어요. 아래 구간/인자 미지원 표시는 최초 단일 알림 추가 당시의 기록이에요.
+
 ## 공식 근거와 읽기 경계
 
 [Epic Sync Groups](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-sync-groups-in-unreal-engine)의 기술 본문0–106을 다시 읽고 그룹·리더 역할·길이/마커 동기화·알림 발생을 대조했어요. [Animation Notifies](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-notifies-in-unreal-engine)의 기술 본문0–260을 읽었어요. 단일 알림과 구간 알림·최소 가중치·팔로워·몽타주 알림·편집/실행 속성을 구분했어요. 링크된 클래스/API 전체나 그림·영상까지 읽은 것으로 세지 않아요.

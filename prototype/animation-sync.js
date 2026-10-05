@@ -1,20 +1,29 @@
+import {validValue} from './blueprint-model.js';
+import {AnimationNotifyTrack,animationNotifyPayload} from './animation-notify-runtime.js';
 const clamp=v=>Math.max(0,Math.min(1,v));
 const mod=(v,n)=>((v%n)+n)%n;
 const name=v=>typeof v==='string'&&v.length>0&&v.length<=80;
 const identity=v=>typeof v==='string'&&v.length>0&&v.length<=120;
-export const animationSyncLimits={markers:64,notifies:64,crossings:4096};
+export const animationSyncLimits={markers:64,notifies:64,notifyStates:64,notifyParameters:8,activeNotifyStates:2048,crossings:4096};
+export const animationNotifyTypes=['bool','int','float','string','vec2','vec3','color','object'];
 export const animationSyncMethods=['none','group','graph'];
 export const animationSyncRoles=['canLeader','follower','leader','transitionLeader','transitionFollower'];
 export const defaultAnimationSync=()=>({method:'none',group:'',role:'canLeader',markers:[]});
-export const makeAnimationNotify=(event='Notify',time=0)=>({id:crypto.randomUUID(),name:event,time,minWeight:.00001,triggerOnFollower:false});
+export const makeAnimationNotify=(event='Notify',time=0)=>({id:crypto.randomUUID(),name:event,time,minWeight:.00001,triggerOnFollower:false,parameters:[]});
+export const makeAnimationNotifyState=(event='NotifyState',time=0,duration=.25)=>({...makeAnimationNotify(event,time),duration,onBegin:event+'Begin',onTick:event+'Tick',onEnd:event+'End'});
+export const animationNotifyReservedNames=['name','phase','notify','clip','context','group','time','cycle','weight','duration','deltaSeconds','progress','reason','instance','__proto__','constructor','prototype'];
+const reserved=new Set(animationNotifyReservedNames);
+const validParameters=list=>list===undefined||Array.isArray(list)&&list.length<=animationSyncLimits.notifyParameters&&new Set(list.map(p=>p?.name)).size===list.length&&list.every(p=>p&&typeof p.name==='string'&&/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(p.name)&&!reserved.has(p.name)&&animationNotifyTypes.includes(p.type)&&validValue(p.type,p.value));
+const validNotifies=(list,state=false)=>list===undefined||Array.isArray(list)&&list.length<=64&&new Set(list.map(n=>n?.id)).size===list.length&&list.every(n=>identity(n?.id)&&name(n.name)&&Number.isFinite(n.time)&&n.time>=0&&n.time<=100000&&Number.isFinite(n.minWeight)&&n.minWeight>=0&&n.minWeight<=1&&typeof n.triggerOnFollower==='boolean'&&validParameters(n.parameters)&&(!state||Number.isFinite(n.duration)&&n.duration>0&&n.duration<=100000&&['onBegin','onTick','onEnd'].every(k=>typeof n[k]==='string'&&n[k].length<=80)));
 export function validAnimationSync(p){
   const s=p.sync;if(s!==undefined&&(!s||!animationSyncMethods.includes(s.method)||typeof s.group!=='string'||s.group.length>80||s.method==='group'&&!name(s.group)||!animationSyncRoles.includes(s.role)||!Array.isArray(s.markers)||s.markers.length>animationSyncLimits.markers||new Set(s.markers.map(m=>m?.id)).size!==s.markers.length||new Set(s.markers.map(m=>m?.time)).size!==s.markers.length||s.markers.some(m=>!identity(m?.id)||!name(m.name)||!Number.isFinite(m.time)||m.time<0||m.time>100000)))return false;
-  return p.notifies===undefined||Array.isArray(p.notifies)&&p.notifies.length<=animationSyncLimits.notifies&&new Set(p.notifies.map(n=>n?.id)).size===p.notifies.length&&p.notifies.every(n=>identity(n?.id)&&name(n.name)&&Number.isFinite(n.time)&&n.time>=0&&n.time<=100000&&Number.isFinite(n.minWeight)&&n.minWeight>=0&&n.minWeight<=1&&typeof n.triggerOnFollower==='boolean');
+  return validNotifies(p.notifies)&&validNotifies(p.notifyStates,true);
 }
 export function compileAnimationSync(properties,length){
-  const sync=properties.sync||defaultAnimationSync(),markers=[...sync.markers].sort((a,b)=>a.time-b.time),notifies=[...(properties.notifies||[])].sort((a,b)=>a.time-b.time);
+  const sync=properties.sync||defaultAnimationSync(),markers=[...sync.markers].sort((a,b)=>a.time-b.time),notifies=[...(properties.notifies||[])].sort((a,b)=>a.time-b.time),notifyStates=[...(properties.notifyStates||[])].sort((a,b)=>a.time-b.time);
   if([...markers,...notifies].some(m=>m.time>=length))throw Error('동기화 마커·알림 시간은 클립 길이보다 짧아야 해요.');
-  return {sync,markers,notifies};
+  if(notifyStates.some(n=>n.time>=length||n.time+n.duration>length+1e-9))throw Error('구간 알림은 클립 안에 있어야 해요.');
+  return {sync,markers,notifies,notifyStates};
 }
 function markerSegment(record,absolute,common){
   const list=record.markers.filter(m=>common.has(m.name));if(list.length<2)return null;
@@ -46,8 +55,8 @@ function markerSpan(leader,start,end,follower,previous,common){
 }
 function lengthSpan(leader,start,end,follower){const phase=v=>leader.p.loop?v/leader.length:clamp(v/leader.length);return {start:phase(start)*follower.length,end:phase(end)*follower.length};}
 export class AnimationSyncGroups {
-  constructor(owner){this.owner=owner;this.groups=new Map();}
-  resolve(weights){
+  constructor(owner){this.owner=owner;this.groups=new Map();this.notifies=new AnimationNotifyTrack(owner,animationSyncLimits);}
+  resolve(weights,delta=0){
     const frame=this.owner.frame,groups=new Map();
     for(const [record,weight] of weights){record.weight=weight;record.leader=true;record.grouped=false;
       if(record.lastRelevantFrame!==frame-1||record.fresh)record.syncReady=false;
@@ -74,11 +83,12 @@ export class AnimationSyncGroups {
         const start=record.previous,end=record.absolute,initial=record.fresh&&Math.abs(start-notify.time)<1e-9;
         const first=record.p.loop?Math.floor((start-notify.time)/record.length)+(initial?0:1):0,last=record.p.loop?Math.floor((end-notify.time)/record.length):0;
         const count=last-first+1;if(count>animationSyncLimits.crossings)throw Error('애니메이션 알림 경계 한도4096');
-        for(let cycle=first;cycle<=last;cycle++){const at=cycle*record.length+notify.time;if(at<0||at>end||!(at>start||initial&&at===start))continue;if(pending.length+this.owner.events.length>=4096)throw Error('애니메이션 이벤트 한도4096');pending.push({fraction:end===start?0:(at-start)/(end-start),event:{name:notify.name,phase:'notify',notify:notify.id,clip:record.id,context:record.context.key,group:record.grouped?record.group:'',time:notify.time,cycle,weight}});}
-      }record.fresh=false;
+        for(let cycle=first;cycle<=last;cycle++){const at=cycle*record.length+notify.time;if(at<0||at>end||!(at>start||initial&&at===start))continue;if(pending.length+this.owner.events.length>=4096)throw Error('애니메이션 이벤트 한도4096');pending.push({fraction:end===start?0:(at-start)/(end-start),event:animationNotifyPayload(record,notify,cycle,{name:notify.name,phase:'notify',time:notify.time,weight})});}
+      }
     }
+    this.notifies.resolve(weights,pending,delta);for(const record of weights.keys())record.fresh=false;
     pending.sort((a,b)=>a.fraction-b.fraction);for(const item of pending)this.owner.queueEvent(item.event);
   }
   snapshot(){return [...this.groups.values()].map(g=>({name:g.name,phase:g.phase,method:g.method,marker:g.marker,leader:{id:g.record.id,name:this.owner.nodes.get(g.record.id).name,context:g.record.context.key},participants:g.records.map(r=>({id:r.id,context:r.context.key,weight:r.weight,role:r.sync.role,time:r.absolute,leader:r.leader}))}));}
-  dispose(){this.groups.clear();}
+  dispose(){this.groups.clear();this.notifies.dispose();}
 }

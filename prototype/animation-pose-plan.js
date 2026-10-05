@@ -25,5 +25,5 @@ export function planAnimationPose(owner,delta){
     else for(const input of Object.keys(node.inputs))merge(input);
     return result;
   };
-  const weights=visit(owner.data.output);owner.syncGroups.resolve(weights);return weights;
+  const weights=visit(owner.data.output);owner.syncGroups.resolve(weights,delta);return weights;
 }

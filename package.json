@@ -81,7 +81,10 @@
     "test:animation-states-player-window": "node tools/check-animation-graph-window.mjs --states",
     "test:animation-sync": "node tools/check-animation-sync.mjs",
     "test:animation-sync-editor-window": "node tools/check-animation-graph-window.mjs --editor --sync",
-    "test:animation-sync-player-window": "node tools/check-animation-graph-window.mjs --sync"
+    "test:animation-sync-player-window": "node tools/check-animation-graph-window.mjs --sync",
+    "test:animation-notifies": "node tools/check-animation-notifies.mjs",
+    "test:animation-notifies-editor-window": "node tools/check-animation-graph-window.mjs --editor --notifies",
+    "test:animation-notifies-player-window": "node tools/check-animation-graph-window.mjs --notifies"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",
