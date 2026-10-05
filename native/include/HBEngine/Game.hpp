@@ -248,13 +248,13 @@ HB_CLASS()
 class Montage : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playMontage", KoreanName="몽타주 재생", Category="몽타주") static void Play(Actor* target,const std::string& asset,const std::string& section);
-    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStop", KoreanName="몽타주 정지", Category="몽타주") static void Stop(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStop", KoreanName="몽타주 정지", Category="몽타주") static void Stop(Actor* target,float blendTime=0.0f);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montagePause", KoreanName="몽타주 일시 정지", Category="몽타주") static void Pause(Actor* target,bool paused);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageJump", KoreanName="몽타주 섹션 이동", Category="몽타주") static void JumpToSection(Actor* target,const std::string& section);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageNext", KoreanName="다음 몽타주 섹션 지정", Category="몽타주") static void SetNextSection(Actor* target,const std::string& section,const std::string& next);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePosition", KoreanName="몽타주 재생 위치", Category="몽타주") static float GetPosition(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageSeek", KoreanName="몽타주 재생 위치 지정", Category="몽타주") static void Seek(Actor* target,float time);
-    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStopGroup", KoreanName="몽타주 그룹 정지", Category="몽타주") static void StopGroup(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageStopGroup", KoreanName="몽타주 그룹 정지", Category="몽타주") static void StopGroup(Actor* target,const std::string& group,float blendTime=0.0f);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montagePauseGroup", KoreanName="몽타주 그룹 일시 정지", Category="몽타주") static void PauseGroup(Actor* target,const std::string& group,bool paused);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="montageSeekGroup", KoreanName="몽타주 그룹 위치 지정", Category="몽타주") static void SeekGroup(Actor* target,const std::string& group,float time);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePositionGroup", KoreanName="몽타주 그룹 재생 위치", Category="몽타주") static float GetGroupPosition(Actor* target,const std::string& group);

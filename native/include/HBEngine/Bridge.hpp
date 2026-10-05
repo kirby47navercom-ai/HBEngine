@@ -198,7 +198,7 @@ inline void States::SetFloat(Actor* target,const std::string& key,float value){e
 inline void States::SetBool(Actor* target,const std::string& key,bool value){engineCommand("stateSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
 inline void States::SetString(Actor* target,const std::string& key,const std::string& value){engineCommand("stateSetString",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
 inline void Montage::Play(Actor* target,const std::string& asset,const std::string& section){engineCommand("playMontage",{{"target",bridgeId(target)},{"asset",asset},{"section",section}});}
-inline void Montage::Stop(Actor* target){engineCommand("montageStop",{{"target",bridgeId(target)}});}
+inline void Montage::Stop(Actor* target,float blendTime){engineCommand("montageStop",{{"target",bridgeId(target)},{"blendTime",blendTime}});}
 inline void AnimationGraph::Play(Actor* target,const std::string& asset){engineCommand("animGraphPlay",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void AnimationGraph::Stop(Actor* target){engineCommand("animGraphStop",{{"target",bridgeId(target)}});}
 inline void AnimationGraph::Pause(Actor* target,bool paused){engineCommand("animGraphPause",{{"target",bridgeId(target)},{"paused",paused}});}
@@ -249,7 +249,7 @@ inline void Montage::JumpToSection(Actor* target,const std::string& section){eng
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}
 inline float Montage::GetPosition(Actor* target){auto& state=gameplayField(target,"montage");return state.is_null()?0.0f:state.at("time").get<float>();}
 inline void Montage::Seek(Actor* target,float time){engineCommand("montageSeek",{{"target",bridgeId(target)},{"time",time}});}
-inline void Montage::StopGroup(Actor* target,const std::string& group){engineCommand("montageStopGroup",{{"target",bridgeId(target)},{"group",group}});}
+inline void Montage::StopGroup(Actor* target,const std::string& group,float blendTime){engineCommand("montageStopGroup",{{"target",bridgeId(target)},{"group",group},{"blendTime",blendTime}});}
 inline void Montage::PauseGroup(Actor* target,const std::string& group,bool paused){engineCommand("montagePauseGroup",{{"target",bridgeId(target)},{"group",group},{"paused",paused}});}
 inline void Montage::SeekGroup(Actor* target,const std::string& group,float time){engineCommand("montageSeekGroup",{{"target",bridgeId(target)},{"group",group},{"time",time}});}
 inline const Json* bridgeMontageGroup(Actor* target,const std::string& group){auto& states=gameplayField(target,"montageGroups");if(states.is_array())for(auto& s:states)if(s.at("group").get<std::string>()==group)return &s;return nullptr;}

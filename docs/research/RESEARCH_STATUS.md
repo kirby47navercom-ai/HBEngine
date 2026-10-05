@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 후속: [몽타주 중단 혼합](../ANIMATION_MONTAGE_SLOTS.md). Epic5.8 Montage_Stop 자체 Description/선언0–25와 UAnimInstance delegate 요약112–127/몽타주 요약740–849를 새로 읽고 Stop/StopGroup 지정 시간·Ended/BlendingOut을 대조했어요. StopGroupByName 개별 본문은 web 실패·직접200 HTML에서도 미확인이며 미독으로 유지해요. 원문/응답/SHA/경계는 native/build/montage-stop-docs-5QRB0I에 있어요. 관련 delegate/Blend 설정/동기화·연결 전체 API를 후속 대상으로 등록하고 전체 corpus gate는 승격하지 않아요. 실제 C++/BP·Editor/Player·사람/AI와 콜백/호환을 확인하며 전체 엔진 세부를 계속해요.
+
 2026-10-05 구현 후속: [몽타주 슬롯](../ANIMATION_MONTAGE_SLOTS.md). Epic5.8 Slots 기술 본문0–92 재읽기, Montage Editor0–153/Montage0–126, Unity6000.0 Layers127–168/AvatarMask126–186와 SetLayerMaskFromAvatarMask 자체 선언/인자/Description/예제를 읽고 대조했어요. 여섯 HTML/응답/SHA/경계는 native/build/montage-slot-docs-jmWetA에 있어요. 해당 출처와 연결 Skeleton/Sequencer/마스크 API를 후속 대상으로 포함하며 이미지/영상/상속/전체 corpus gate는 승격하지 않아요. 공용 포즈·사람/AI·C++/BP·실제 Editor/Player/2D와 작은 비용을 검사하고 전체 구현을 계속해요.
 
 2026-10-05 구현 후속: [혼합 샘플 알림 정책](../ANIMATION_NOTIFY_POLICY.md). 이미 읽은 Epic5.8 Blend Spaces의 Asset Details119–122를 다시 대조해1D/2D3가지 정책과 중첩/공유 경로·구간 End/최소 기여도를 연결했어요. 새로운 전체 API/미디어 읽기로 세지 않으며 기존 corpus gate는 유지해요. 실제 Editor/Player의 인자→BP→사용자 C++·중지 시 Begin/End 일치와 기존 포즈/시계/HUD를 검사하고 전체 엔진 구현을 계속해요.

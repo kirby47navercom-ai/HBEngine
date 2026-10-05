@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 중단 혼합·Ended 후 계속
+
+[몽타주 Stop 후속](docs/ANIMATION_MONTAGE_SLOTS.md)에 Epic5.8 Stop 자체 본문/선언과 AnimInstance 일부 delegate/몽타주 요약 읽기·개별 StopGroup 본문 미독·자체 계약/차이를 기록해요. 원문/경계 manifest는 montage-stop-docs-5QRB0I예요. 전체 gate를 승격하지 않아요.
+
+- 기존 Stop/StopGroup에 blendTime Float 기본0을 추가해 CPP 호출/저장 노드를 유지해요. 고정 중단 포즈의 linear/smooth fade·일시정지 중 진행·재호출 단축/연장 방지·후속 Notify 억제·Ended/interrupted·콜백 오류 정리/새 인스턴스 보존을 연결했어요. AI schema와 실제 기여도/중단 중 UI도 공유해요. BP566/API289개 유지예요.
+- 실제 Editor HrVBQs/Player DyhJfk의 C++/BP5초 StopGroup→중간 뼈/가중치→기본 포즈·다른 그룹 유지·Ended Bool→사용자 C++·원본/exit0/서버 정리가 통과했어요. HrVBQs montage-stopping.png의46%/중단 중 상태를 직접 확인했어요. 코어 짧은 시간/곡선/불법 입력/콜백 수명·main/API/scene/Sync/notifies/integration도 통과해요.
+- DeCJSA의0.1 Float32 정확 비교 실패는 오차1e-6으로 수정했어요. Editor uWogIX/FSM6Sx는 connectAutomation500ms 왕복을 기다리는2.9초 동안1초 fade가 이미 종료된 관측 실패였어요. 실패 trace의 원인 확인 뒤 fixture5초로 VQ5XDx/최종HrVBQs가 통과했어요. 제품의 polling 간격/시간을 변경하지 않았어요.
+- 사용자 설치/게임/창을 보존해요. 다음은 공유 애니메이션 메타/몽타주 구간 알림·같은 그룹 교체 혼합과 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부를 계속해요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 몽타주 슬롯 통합 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [몽타주 슬롯 계약](docs/ANIMATION_MONTAGE_SLOTS.md)에 실제 공식 본문6개/API 읽기 경계·자체 구현·증거/실패/남은 세부를 기록했어요. 전체 corpus gate를 완료로 세지 않아요.

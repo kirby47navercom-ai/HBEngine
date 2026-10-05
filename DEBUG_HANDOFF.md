@@ -1,5 +1,11 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 중단 혼합 검증·관측 타이밍 후속
+
+코어 지정 Stop 시간/일시정지/linear·smooth/재호출 단축·연장 방지/불법 입력/후속 Notify 억제/Ended·콜백 오류 정리/전체 Stop 중 새 인스턴스 보존이 통과해요. 최종 Editor HrVBQs/Player DyhJfk의 C++/BP 중간 뼈/가중치·다른 그룹·기본 포즈 복원과 Ended bool→사용자 C++·원본/exit0/서버 정리도 통과해요. HrVBQs montage-stopping.png에서46%/중단 중을 확인해요.
+
+Player DeCJSA는 native Float32 직렬화0.10000000149를 정확0.1과 비교한 검사 실패였어요. 오차1e-6으로 검사해요. Editor uWogIX/FSM6Sx의 중간 weight timeout은 제품 실패로 단정하지 않고 investigate-first로 추적했어요. FSM6Sx montage-fade-trace.jsonl의 첫 전체 그룹 기록→2.9초 뒤 이미 Upper 없음/Ended3/기본 뼈 복원과 connectAutomation500ms 왕복을 대조했어요.1초 fade를 키 down/up+state 왕복 뒤 관측하던 검사 타이밍 문제예요. fixture를5초로 VQ5XDx와 UI 보강 후 HrVBQs에서 중간/종료를 통과했고 짧은 혼합은 코어로 별도 증명해요. polling/제품 시간은 바꾸지 않아요. StopGroup 개별 web URL 실패/직접200 HTML의 미확인 본문도 연구 미독으로 남겨요. 사용자 설치/창/게임은 보존해요.
+
 ## 몽타주 슬롯 실제 실행/회귀 후속
 
 실제 Editor BAKSDk/Player juVNeC에서 C++ 두 그룹·그룹 BP 조회→사용자 C++·중지/Interrupted·기본 뼈/2D 프레임 복원·배치 위치·원본/exit0/소유 서버 정리가 통과했어요. Editor 슬롯 속성/Undo·AI 불법 슬롯 거절·우클릭 복제/추가/Undo·독립 미리보기 PNG를 확인했어요. 코어 비동기 교체/Stop/세계 종료·실패한 바인딩 결합 뒤 이전 재생 유지·Notify Seek/Stop 취소·Quaternion/비활성 문맥 확장·독립 혼합도 통과해요. 작은 비용 vHTl4m와 startup-IIW7qZ는 별도 근거예요.

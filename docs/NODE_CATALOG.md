@@ -794,13 +794,13 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | playMontage | Play / 몽타주 재생 | exec: exec, target: object, asset: string, section: string | then: exec | hb::Montage::Play | 공통 C++ + VM |
-| montageStop | Stop / 몽타주 정지 | exec: exec, target: object | then: exec | hb::Montage::Stop | 공통 C++ + VM |
+| montageStop | Stop / 몽타주 정지 | exec: exec, target: object, blendTime: float | then: exec | hb::Montage::Stop | 공통 C++ + VM |
 | montagePause | Pause / 몽타주 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::Montage::Pause | 공통 C++ + VM |
 | montageJump | Jump To Section / 몽타주 섹션 이동 | exec: exec, target: object, section: string | then: exec | hb::Montage::JumpToSection | 공통 C++ + VM |
 | montageNext | Set Next Section / 다음 몽타주 섹션 지정 | exec: exec, target: object, section: string, next: string | then: exec | hb::Montage::SetNextSection | 공통 C++ + VM |
 | montagePosition | Get Position / 몽타주 재생 위치 | target: object | return: float | hb::Montage::GetPosition | 공통 C++ + VM |
 | montageSeek | Seek / 몽타주 재생 위치 지정 | exec: exec, target: object, time: float | then: exec | hb::Montage::Seek | 공통 C++ + VM |
-| montageStopGroup | Stop Group / 몽타주 그룹 정지 | exec: exec, target: object, group: string | then: exec | hb::Montage::StopGroup | 공통 C++ + VM |
+| montageStopGroup | Stop Group / 몽타주 그룹 정지 | exec: exec, target: object, group: string, blendTime: float | then: exec | hb::Montage::StopGroup | 공통 C++ + VM |
 | montagePauseGroup | Pause Group / 몽타주 그룹 일시 정지 | exec: exec, target: object, group: string, paused: bool | then: exec | hb::Montage::PauseGroup | 공통 C++ + VM |
 | montageSeekGroup | Seek Group / 몽타주 그룹 위치 지정 | exec: exec, target: object, group: string, time: float | then: exec | hb::Montage::SeekGroup | 공통 C++ + VM |
 | montagePositionGroup | Get Group Position / 몽타주 그룹 재생 위치 | target: object, group: string | return: float | hb::Montage::GetGroupPosition | 공통 C++ + VM |

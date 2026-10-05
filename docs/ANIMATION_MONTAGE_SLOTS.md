@@ -1,5 +1,19 @@
 # 몽타주 슬롯·포즈 통합 · 2026-10-05
 
+## 후속: 지정 시간의 Stop 혼합·Ended
+
+[Epic5.8 Montage_Stop](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UAnimInstance/Montage_Stop)의 자체 Description/선언0–25를 새로 읽었어요. null 몽타주 전체 중단과 지정 BlendTime에 에셋 BlendOut 설정을 사용하는 동작을 대조했어요. [UAnimInstance](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UAnimInstance)의 자체 delegate 요약112–127과 몽타주 요약740–849에서 BlendingOut/Ended의 구분·StopGroupByName(float,Name)을 읽었어요. 전체 클래스/상속/링크된 API를 읽기로 세지 않아요. StopGroupByName 개별 URL은 web 읽기가 실패했고 직접 받은200 HTML에서도 기술 본문을 확인하지 못했으므로 자체 본문 미독이에요. 원문/응답/SHA/경계는 `native/build/montage-stop-docs-5QRB0I`에 있어요. 연결 선언/프로파일/동기화 API도 후속 대상으로 유지해요.
+
+`Montage::Stop(target, blendTime=0.0f)`와 `StopGroup(target,group,blendTime=0.0f)`에 동일한 BP Float 핀을 추가했어요. 기존 저장 노드와 인자 없는 C++ 호출은0초 즉시 중단으로 호환해요. 0~60초의 유한 수만 허용하고 null/문자열/NaN/무한/범위 밖 입력은 기존 재생을 바꾸기 전에 거절해요. 재생 추가/별도 노드 없이 기존 공용 경로를 사용하며 BP/API 수량은566/289개로 유지해요.
+
+양의 시간은 현재 가중치/포즈를 잡고 linear/smooth로0까지 줄여요. 몽타주 일시정지 중에도 중단 혼합은 진행해요. 현재 HBEngine Stop은 **중단 위치의 포즈를 고정**하며 그 이후 클립 시간/Notify를 진행하지 않아요. UE의 모든 blend-out 평가/Notify 동작과 동일하다고 표현하지 않아요. 같은 Stop을 다시 호출해 남은 시간을 늘리지 않고 더 짧은 시간으로 줄일 수 있어요. 다른 그룹은 유지하며0 가중치에서 기준 그래프 포즈로 돌아가요. 반환/파괴/컴포넌트 비활성/세계 정리는 혼합을 기다리지 않아요.
+
+중단 혼합 시작은 아직 BlendOut을 시작하지 않은 인스턴스의 `OnMontageBlendOut(interrupted=true)`를 한 번 전달해요. `OnMontageInterrupted`는 호환을 위해 완전히 끝난 시점에 전달하고, 뒤이어 새 `OnMontageEnded(asset,group,reason,interrupted)`를 전달해요. 자연 종료의 Ended는 interrupted=false예요. Play Montage proxy의 모든 출력과 동일한 ABI로 세지 않아요. 정리를 먼저 끝내서 사용자 콜백이 실패해도 프로그램을 남기지 않고, 첫 콜백 실패 뒤에도 Ended를 시도해요. 전체 Stop 중 콜백이 만든 새 인스턴스는 오래된 목록의 후속 처리로 중단하지 않아요.
+
+runtime/schema에 `stopping`과 중단 계약을 추가하고 몽타주 창의 실행 상태에 실제 기여도와 중단 중 상태를 표시해요. AI와 사람은 같은 상태/Float 핀·revision/검증·실행 잠금을 사용해요. 기존 그룹 조회로 혼합의 가중치를 읽을 수 있어요.
+
+코어 검사는 짧은/부드러운 혼합, 일시정지, 시간을 늘리는 재호출 거절/단축, 불법 시간의 원본 보존, 중단 뒤 Notify 억제, 콜백 생성 인스턴스 보존, 콜백 오류 뒤 정리/Ended를 통과해요. 실제 Editor/Player의 C++ StopGroup→중간 뼈 포즈·다른 그룹 유지→Ended BP→사용자 C++, BP StopGroup→중간 뼈/가중치→기본 포즈 복원을 검사해요. 개별 근거와 실패는 최신 인계에 기록해요. 같은 그룹 교체의 outgoing pose 혼합·프로파일·시간 보정·공유 Skeleton/Notify Window·Root Motion/Sequencer 슬롯과 다른 전체 엔진 요구는 계속 구현해요. 아래 즉시 Stop 설명은 최초 슬롯 통합 당시 기록이에요.
+
 ## 실제로 읽고 대조한 공식 근거
 
 - [Epic5.8 Animation Slots](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-slots-in-unreal-engine) 기술 본문0–92를 다시 읽었어요. 기본 포즈 통과, 완전 덮어쓰기와 Always Update Source, 전신/상체 배치, 공유 Skeleton 슬롯 관리, 같은 그룹 중단/다른 그룹 병행, Sequencer 슬롯을 대조했어요.
