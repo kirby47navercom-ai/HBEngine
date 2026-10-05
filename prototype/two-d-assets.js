@@ -8,13 +8,13 @@ const reference=value=>typeof value==='string'&&value.length<=2000&&!/^(?:[A-Za-
 const name=value=>typeof value==='string'&&value.trim().length>0&&value.length<=120;
 export function create2DAsset(kind,title){
   if(!name(title))throw Error('에셋 이름을 확인하세요.');
-  if(kind==='sprite')return {version:1,name:title,texture:'',pixelsPerUnit:100,rect:[0,0,0,0],pivot:[.5,.5],filter:'nearest',border:[0,0,0,0]};
-  if(kind==='tilemap')return {version:1,name:title,tileset:'',tileSize:[32,32],cellSize:[1,1],width:32,height:32,layers:[{id:'ground',name:'Ground',visible:true,collision:false,tiles:[]}]};
+  if(kind==='sprite')return {version:1,name:title,texture:'',normalTexture:'',pixelsPerUnit:100,rect:[0,0,0,0],pivot:[.5,.5],filter:'nearest',border:[0,0,0,0]};
+  if(kind==='tilemap')return {version:1,name:title,tileset:'',normalTexture:'',tileSize:[32,32],cellSize:[1,1],width:32,height:32,layers:[{id:'ground',name:'Ground',visible:true,collision:false,tiles:[]}]};
   if(kind==='spriteanimation')return {version:1,name:title,frames:[],loop:true,playRate:1};
   throw Error('2D 에셋 종류를 확인하세요.');
 }
 export function valid2DAsset(kind,data){
-  if(!data||data.version!==1||!name(data.name))return false;
+  if(!data||data.version!==1||!name(data.name)||data.normalTexture!==undefined&&!reference(data.normalTexture))return false;
   if(kind==='sprite')return (data.slices===undefined||validSpriteSlices(data.slices))&&(data.sheet===undefined||reference(data.sheet)&&typeof data.sliceId==='string'&&/^[\w-]{1,80}$/.test(data.sliceId))&&reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
   if(kind==='spriteanimation')return typeof data.loop==='boolean'&&finite(data.playRate,.01,100)&&Array.isArray(data.frames)&&data.frames.length<=1000&&data.frames.every(frame=>frame&&reference(frame.sprite)&&frame.sprite.length>0&&finite(frame.duration,.001,3600));
   if(kind!=='tilemap'||data.layout!==undefined&&!['rectangular','isometric'].includes(data.layout)||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;

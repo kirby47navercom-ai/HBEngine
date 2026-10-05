@@ -108,6 +108,13 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetMask", KoreanName="스프라이트 마스크 가져오기", Category="2D 스프라이트") static std::string GetMaskInteraction(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetLit", KoreanName="스프라이트 광원 적용", Category="2D 스프라이트") static void SetLit(Actor* target,bool lit);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteIsLit", KoreanName="스프라이트 광원 적용 여부", Category="2D 스프라이트") static bool IsLit(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetBlend", KoreanName="스프라이트 표면 혼합 지정", Category="2D 스프라이트") static void SetBlendMode(Actor* target,const std::string& mode,float alphaCutoff=.5f);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetBlend", KoreanName="스프라이트 표면 혼합 가져오기", Category="2D 스프라이트") static std::string GetBlendMode(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetAlphaCutoff", KoreanName="스프라이트 알파 기준 가져오기", Category="2D 스프라이트") static float GetAlphaCutoff(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetNormal", KoreanName="스프라이트 노멀맵 지정", Category="2D 스프라이트") static void SetNormalMap(Actor* target,const std::string& texture,float strength=1.f,bool flipY=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetNormal", KoreanName="스프라이트 노멀맵 설정 가져오기", Category="2D 스프라이트") static void GetNormalMap(Actor* target,std::string& texture,float& strength,bool& flipY);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetShadows", KoreanName="스프라이트 그림자 지정", Category="2D 스프라이트") static void SetShadows(Actor* target,bool cast,bool receive);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetShadows", KoreanName="스프라이트 그림자 설정 가져오기", Category="2D 스프라이트") static void GetShadows(Actor* target,bool& cast,bool& receive);
 };
 HB_CLASS()
 class Tilemaps : public Library {

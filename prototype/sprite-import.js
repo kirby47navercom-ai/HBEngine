@@ -39,5 +39,5 @@ export function mergeSpriteSlices(existing,generated,method='delete'){
 export async function resolveSprite(sprite,read){
   if(!valid2DAsset('sprite',sprite))throw Error('스프라이트 검증 실패');if(!sprite.sheet)return sprite;
   const sheet=await read(sprite.sheet);if(!valid2DAsset('sprite',sheet)||sheet.sheet)throw Error('원본 스프라이트 시트를 확인하세요.');const slice=sheet.slices?.find(s=>s.id===sprite.sliceId);if(!slice)throw Error('스프라이트 분할이 제거됐어요: '+sprite.sliceId);
-  return {...sprite,name:slice.name,texture:sheet.texture,pixelsPerUnit:sheet.pixelsPerUnit,filter:sheet.filter,rect:[...slice.rect],pivot:[...slice.pivot],border:[...slice.border]};
+  return {...sprite,name:slice.name,texture:sheet.texture,normalTexture:sheet.normalTexture||'',pixelsPerUnit:sheet.pixelsPerUnit,filter:sheet.filter,rect:[...slice.rect],pivot:[...slice.pivot],border:[...slice.border]};
 }

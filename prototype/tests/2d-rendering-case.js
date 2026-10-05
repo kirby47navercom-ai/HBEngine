@@ -3,6 +3,7 @@ import {TwoDRendering} from '../two-d-rendering.js';
 import {sceneRendering} from '../scene-rendering.js';
 import {makeSceneComponent} from '../scene-components.js';
 import {create2DAsset} from '../two-d-assets.js';
+import {runTwoDSurfaceCase} from './2d-surface-case.js';
 
 export async function runTwoDRenderingCase(){
   let checks=0;const evidence=[],expect=(test,label)=>{checks++;if(!test)throw Error(label);};
@@ -44,6 +45,8 @@ export async function runTwoDRenderingCase(){
     await maskedTiles.build({id:'range-mask',kind:'empty',components:[makeSceneComponent('SpriteMask',{width:4,height:4,customRange:true,backSortingOrder:0,frontSortingOrder:0})]},rangeMask);
     const tileState=maskedTiles.prepare2D(renderer,scene,camera,layers);renderer.render(scene,camera);expect(red(pixel(40,24))&&tileState.maskTargets===1&&tileState.maskPasses===1,'tile layers keep independent custom-range mask uniforms with no empty-mask pass');
     for(const g of [tileGroup,rangeMask])maskedTiles.dispose(g);maskedTiles.dispose2D();
-    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence};
+    for(const g of groups)g.removeFromParent();groups.length=0;
+    const surface=await runTwoDSurfaceCase({renderer,scene,camera,groups,group,layers,pixel,expect});
+    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence,surface};
   }finally{draw.dispose();for(const r of resources)r.dispose();renderer.dispose();}
 }

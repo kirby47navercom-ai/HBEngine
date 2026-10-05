@@ -1,5 +1,14 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 2D 표면 실제 GPU 조사 — 검증 후 계속
+
+- sBuiuu의 opaque alpha 검사는 PNG/canvas에서 알파0 픽셀 RGB가0이 되는 조건을 빨강으로 잘못 예상했어요. Epic Paper2D 본문도 투명 배경의 불투명 표면이 검정으로 채워짐을 설명해요. 초록 배경을 써서 discard/불투명 검정을 구분하도록 검사 기대값을 고쳤어요.
+- jJ71fw의 방향 광원 그림자 실패는 Three WebGLShadowMap.getDepthMaterial이 customDepth/customDistance에도 color.alphaTest를 복사해 반투명 표면의0이 그림자 .5를 덮던 문제예요. onBeforeShadow에서 기준을 복원했고 Editor XORaAp/Player v29dli의 방향228/0/228·점229/0/212 픽셀이 통과해요.
+- 직접 C++/BP 표면 쓰기 후 같은 호출 조회는 통과해요. asset-registry 검사의 최초 파일 rename 기대는 기존 redirect 계약을 재작성 계약으로 오해했어요. normal 참조의 redirect 해석/의존성과 프런트 재작성은 각각 확인해요.
+- Editor XORaAp의 물리 키/Undo·노멀 미리보기·분할 상속/저장·GPU49개, Player v29dli의 BP→C++→BP 핀→C++·배치 위치·실제 표면·Source normal cooking·같은49개·예외0·원본/exit0/서버 정리가 통과해요. PNG를 직접 확인했어요. GPU Editor gVRxKE도 통과해요.
+- okKqXQ 한 번의 두 번째 slice 출력 실패 원인은 미확정이에요. 독립 loadRequest/토스트 기록을 포함한 XORaAp에서 같은 과정은 통과해요. Player sLPgVT는 handshake 전 shell 증거 순서, xxymzZ는 검사 nativeFields/실제 nativeProperties 차이였고 수정한 v29dli가 통과해요.
+
+
 ## 몽타주 구간 알림·작업 범위 후속
 
 - 최종 Editor wYidzz/Player Oa3qxq: 2D/3D typed→BP→C++·Montage Begin/Tick/End·Seek/Stop·native Timer/BP Delay 취소·원본/exit0/서버 정리가 통과해요. Editor5/5·2/2, Player3/3·1/1과 지연 호출0/work 비움을 확인해요. wYidzz montage-notify-authoring PNG에서 별도 구간 줄/손잡이를 직접 보았어요. 공용 Graph Notify 실제 Player0JF4lu도 통과해요.

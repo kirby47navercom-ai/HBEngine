@@ -210,3 +210,7 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 ## 몽타주 구간 알림 후속 · 2026-10-05
 
 [구간 알림 계약](ANIMATION_MONTAGE_NOTIFIES.md)에 사람/AI·typed Custom Event→C++·Begin/Tick 작업 범위/End 취소·조작/호환·실제 Editor/Player 근거를 기록해요. BP566/API289개를 유지하며 다른 전체 기능 후속도 계속해요.
+
+## 2D 표면 후속 · 2026-10-05
+
+[2D 표면 계약](2D_SURFACE_NORMAL_SHADOWS.md)의 blend/cutoff·normal texture/strength/Y·cast/receive 설정/조회7개를 같은 C++/BP 서비스로 추가했어요. BP573/API289개예요. 실제 배포 Player의 BP→C++ 즉시 조회/쓰기→BP 다중 반환 핀→C++ 인자, 제작기/AI·GPU49개를 확인해요. 다른 전체 세부도 계속해요.

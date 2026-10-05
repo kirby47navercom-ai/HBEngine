@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-05 후속: [2D 표면·노멀·그림자](../2D_SURFACE_NORMAL_SHADOWS.md). Epic5.8 Paper2D Sprite Material의 소개·8개 재질 표·Custom 본문을 공식 렌더 HTML에서 읽고, Unity6000.0 SecondaryTextures 기술126–210/Light Properties126–175/2DShadows127–164 및 URP17 Light2D 자체7개 요약/선언674–861 일부를 대조했어요. Sprite Editor는 검색 발췌만이며 이미지/연결/나머지·상속 API는 미독이에요. raw HTML/redirect/SHA·경계 manifest는 native/build/2d-surface-docs-SZdfzn이에요. 전용 Light2D의 Z 무시/레이어/거리/품질·outline/composite·조명 mask/style/volumetric·커스텀 재질을 후속으로 등록해요. 현재 기존3D 표면·C++/BP7개·AI·실제 Editor XORaAp/Player v29dli·GPU49개·cooking/원본/종료를 확인했고 전체 corpus/API 분모는 승격하지 않아요.
+
 2026-10-05 후속: [몽타주 구간 알림](../ANIMATION_MONTAGE_NOTIFIES.md). Epic5.8 Notifies 기술 본문0–260 재대조와 EMontageNotifyTickType::Type 자체 선언/값0–35를 읽었어요. raw HTML/응답/SHA/경계는 native/build/montage-notify-docs-hpk9dZ에 유지해요. Window 개별 API 본문 실패/뒤의 두 주소 웹 리더 실패는 미독/재조회 실패로 기록하며200 HTML만으로 승격하지 않아요. 그림/영상/링크 API·전체 gate는 유지하고 슬롯/Sequence 링크·공유 알림/조건·Queued/Branching Point 등 연결 후속을 등록해요. 기존 범위/속성/작업 수명 처리기를 사람/AI·2D/3D·CPP/BP에 공유하고 실제 Editor/Player·Graph 회귀를 확인하며 전체 엔진 세부를 계속해요.
 
 

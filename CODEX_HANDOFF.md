@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 2D 표면·노멀·3D 광원 그림자 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [2D 표면 계약](docs/2D_SURFACE_NORMAL_SHADOWS.md)에 Epic5.8 Sprite Material 소개/기술8행/Custom 본문·Unity6000.0 SecondaryTextures/Light/Shadow 기술 본문·URP17 Light2D 자체7개 부분 읽기 경계와 미독/전용 Light2D 후속을 기록해요. raw HTML/redirect/SHA manifest는2d-surface-docs-SZdfzn예요. 전체 corpus gate를 승격하지 않아요.
+
+- Sprite/Tilemap 공용 blend/cutoff/normal/Y/strength/cast/receive·sheet 자식 상속·미리보기/Undo·참조/redirect/cooking·C++/BP7개·AI schema를 연결해요. BP573/API289개예요. UV/linear·9-slice/tiled·프레임/async/GPU 해제를 공유하고 캐시는 색상/노멀 합계32 LRU·타일 레이어당 메시·unlit/꺼진 caster의 자원 생략을 유지해요.
+- 최종 Editor XORaAp의 물리 키·Undo·미리보기/분할·기존 제작/단축키·GPU49개, GPU Editor gVRxKE, 실제 Player v29dli의 BP→C++→BP 노멀 반환 핀→C++·위치 [2,-1,.25]·linear96×32/scale[1.5,-1.5]·Source normal cooking·같은49개·예외0·원본 바이트/exit0/서버 정리가 통과해요. 세 PNG를 직접 확인해요. 코어2D/workflow/authoring/integration/scene/rig/IK/main/API 생성 일치도 통과해요.
+- custom shadow alphaTest 덮어쓰기 원인을 복원하고 방향228/0/228·점229/0/212로 확인해요. okKqXQ 한 번의 slice 출력 실패는 원인 미확정이에요. Player shell handshake/nativeProperties 검사 오류는 수정한 v29dli가 통과해요.
+- 사용자 설치/게임/프로필/창을 보존해요. 다음은 전용 Light2D 타입·레이어/Z 무시·normal 거리/품질·윤곽/복합 캐스터·조명 mask/커스텀 노드 표면과 전체 애니메이션/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부예요. 현재 그림자는3D 광원 경로이며 DX11/모바일 측정과 구분해요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 몽타주 구간 알림·작업 수명 후 계속
 
 전체 누적 요구·끝까지 계속 지시를 유지해요. [몽타주 구간 알림 계약](docs/ANIMATION_MONTAGE_NOTIFIES.md)에 Epic5.8 Notifies 기술 본문 재대조/enum 자체 읽기 경계·개별 Window API 미독·자체 계약과 남은 세부를 기록했어요. 원문/SHA manifest는 montage-notify-docs-hpk9dZ예요. 후속 웹 리더 접근 실패를 읽기로 세지 않고 전체 gate를 승격하지 않아요.

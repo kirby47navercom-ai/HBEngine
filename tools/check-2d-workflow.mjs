@@ -4,13 +4,14 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {create2DAsset,valid2DAsset,spriteImage,spriteSlices,sliceSpriteGrid,spriteAnimationDuration,spriteAnimationFrame,tileAtlasRect,tileLine,applyTileTool,tileCollisionBoxes,twoDSuffix} from '../prototype/two-d-assets.js';
 import {TwoDEditor} from '../prototype/two-d-editor.js';
-import {AssetDocuments,assetSuffix,validAsset} from '../prototype/asset-documents.js';
+import {AssetDocuments,assetSuffix,validAsset,renameAssetReferences} from '../prototype/asset-documents.js';
 
 const clone=structuredClone,near=(actual,expected)=>assert.ok(Math.abs(actual-expected)<1e-10,`${actual} != ${expected}`);
 for(const kind of ['sprite','tilemap','spriteanimation']){
   const data=create2DAsset(kind,'Test');assert.ok(valid2DAsset(kind,data));assert.ok(validAsset(kind,data));assert.equal(assetSuffix[kind],twoDSuffix[kind]);
 }
 assert.throws(()=>create2DAsset('sprite',''));
+for(const kind of ['sprite','tilemap']){const a=create2DAsset(kind,'Normal');assert.ok(valid2DAsset(kind,{...a,normalTexture:undefined}),'legacy normal field is optional');for(const value of [null,'../outside.png','C:/outside.png','Assets/\u0000.png'])assert.ok(!valid2DAsset(kind,{...a,normalTexture:value}));a.normalTexture='Assets/Normal.png';assert.ok(renameAssetReferences(a,'Assets/Normal.png','Assets/Moved.png'));assert.equal(a.normalTexture,'Assets/Moved.png');}
 const sprite={...create2DAsset('sprite','Hero'),texture:'Assets/Hero.png',pixelsPerUnit:32,rect:[16,32,32,16],pivot:[0,1]};
 const image={width:128,height:96},resolved=spriteImage(sprite,image);
 assert.deepEqual(resolved.rect,[16,32,32,16]);assert.deepEqual(resolved.size,[1,.5]);assert.deepEqual(resolved.offset,[.5,-.25]);assert.deepEqual(resolved.uv.repeat,[.25,1/6]);near(resolved.uv.offset[1],.5);
