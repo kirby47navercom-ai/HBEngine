@@ -1,5 +1,7 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37343333585/8e2cbd5 실제 통과: 두 Xcode SDK 빌드, 독립 SE3/iOS18.5, 최초480→720frames/clock31.648→44.552/duration2/RMS0.000132–0.000135, 배경 context suspended/frames고정, 복귀2760→3120/clock142.048→156.117/duration2/신호, C++Count1/10/배치/Rapier/에셋 범위와 동시8읽기. 한글/SVG/모바일 컨트롤 캡처 직접 확인. 실물/청취/서명 false. ZIP native/build/ios-artifacts-37343333585.zip SHA a3dc2a8021227c4ff64867e99f48d2b776d77559312ef66ea88335a6be6b0b9d. 현재 모바일 검증을 마쳐 AuricP0-1+2 진행: preparePlayWorld가 같은 header/source라도 BP path별 host.build하여 token/worker를 분리함→nativeWorld가 다른token의nativeClass/속성을 제거하여 실제class접근 차단. 패키지 출력은nativeSignature로 이미중복제거. VM순서를 보존하는 batch와 공용 준비의 소스중복제거부터. 로컬 Premiere CPU1362%라 스트레스/대량컴파일 미룸. 사용자 설치본 미갱신/전체gate false.
+
 2026-10-06 주인님 추가: 현재 모바일 검증 마침→Auric_Loop/docs/엔진_개선_요청.md P0-1부터 순차(1+2 함께)→각 단계 tools/check_demo.mjs 실제 적용 및 원문 아래 진행 기록→사용중 HBEngine 업데이트→누적 장기 엔진 작업 재개. 사용자 게임/프로필과 원본은 격리 복사·검증으로 보호하며 문서 진행 기록 쓰기는 직접 허용됨. 요청 문서 본문·완료 기준을 읽었고 실제 원본 변화 여부를 단계별 확인. 설치 업데이트 이미 직접 요청돼 재승인 불필요.
 
 iOS37340898874/c8dc488: plain/routed/DOM/Blob/manual 모두 첫 반복 뒤 duration 마이크로초 손상, BufferSource12표본 정상RMS. iOS manifest target에만 공용 BufferedAudioPlayer 적용중: cache32MiB/동일클립 로딩 공유·탐색/피치/loop/정지/재개/ended/늦은 작업 정리 검사 통과, Windows/Android 기존 Audio 보존. 실제 Xcode 검증 대기. gate를4초의3신호 표본+중간2초길이 보존으로 강화. WHATWG/W3C 자체 부분 계약023 등록(전체gate false). 로컬 Premiere CPU1282%라 부하검사 계속 미룸.
