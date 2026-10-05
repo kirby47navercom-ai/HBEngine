@@ -16,6 +16,7 @@ import java.util.concurrent.*;
 public final class HBActivity extends Activity {
     static { System.loadLibrary("hbgame"); }
     private WebView web;
+    private volatile WebMessagePort messagePort;
     private JSONObject manifest;
     private AtomicFile saves;
     private final Set<String> files = new HashSet<>();
@@ -53,7 +54,7 @@ public final class HBActivity extends Activity {
             web.setWebViewClient(new WebViewClient() {
                 @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) { return !local(request.getUrl()); }
                 @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) { return asset(request); }
-                @Override public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) { view.destroy();web=null;android.widget.TextView error=new android.widget.TextView(HBActivity.this);error.setText("게임 화면이 종료됐어요. 앱을 다시 열어 주세요.");setContentView(error);return true; }
+                @Override public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) { if(messagePort!=null){messagePort.close();messagePort=null;}view.destroy();web=null;android.widget.TextView error=new android.widget.TextView(HBActivity.this);error.setText("게임 화면이 종료됐어요. 앱을 다시 열어 주세요.");setContentView(error);return true; }
             });
             web.setWebChromeClient(new WebChromeClient() {
                 @Override public boolean onConsoleMessage(ConsoleMessage m) { Log.println(m.messageLevel()==ConsoleMessage.MessageLevel.ERROR?Log.ERROR:Log.INFO,"HBPlayer",m.message());return true; }
@@ -105,17 +106,18 @@ public final class HBActivity extends Activity {
         @Override public void reset() throws IOException {throw new IOException("범위 스트림은 되감기를 지원하지 않아요.");}
     }
 
-    private void emit(JSONObject packet) { if(destroyed)return;runOnUiThread(()->{if(!destroyed&&web!=null)web.evaluateJavascript("window.hbMobileReply&&window.hbMobileReply("+packet.toString()+")",null);}); }
+    private void emit(JSONObject packet) { if(destroyed)return;runOnUiThread(()->{if(!destroyed&&web!=null){if(messagePort!=null)messagePort.postMessage(new WebMessage(packet.toString()));else web.evaluateJavascript("window.hbMobileReply&&window.hbMobileReply("+packet.toString()+")",null);}}); }
     @JavascriptInterface public void postMessage(String payload) {
         if(destroyed||payload==null||payload.length()>LIMIT)return;
         try { JSONObject packet=new JSONObject(payload);String operation=packet.getString("operation"),id=packet.getString("id");if(id.length()>80)throw new JSONException("작업 ID 오류");
             if(operation.equals("queryReply")){CompletableFuture<String> query=queries.remove(id);if(query!=null)query.complete(packet.getJSONObject("data").toString());return;}
             worker.execute(()->{JSONObject reply=new JSONObject();try{reply.put("id",id);currentRequest=id;JSONObject data=packet.optJSONObject("data"),result;
                 switch(operation){
+                    case "channel": { String nonce=data.getString("nonce");if(!nonce.matches("[a-f0-9-]{36}"))throw new IOException("채널 확인 값 오류");runOnUiThread(()->{if(destroyed||web==null)return;if(messagePort!=null)messagePort.close();WebMessagePort[] ports=web.createWebMessageChannel();messagePort=ports[0];messagePort.setWebMessageCallback(new WebMessagePort.WebMessageCallback(){@Override public void onMessage(WebMessagePort port,WebMessage message){postMessage(message.getData());}});web.postWebMessage(new WebMessage(nonce,new WebMessagePort[]{ports[1]}),Uri.parse(ORIGIN));});result=new JSONObject().put("ok",true);break; }
                     case "native": { int module=data.getInt("module");if(module<0||module>=manifest.getJSONArray("nativeModules").length())throw new IOException("C++ 모듈 오류");byte[] response=nativeInvoke(module,data.getJSONObject("request").toString().getBytes(StandardCharsets.UTF_8));result=new JSONObject(new String(response,StandardCharsets.UTF_8));break; }
                     case "storageRead": result=loadSaves();break;
                     case "storageWrite": { result=loadSaves();JSONObject items=result.getJSONObject("items");Iterator<String> keys=data.keys();String suffix=".project."+Uri.encode(manifest.getString("id"));while(keys.hasNext()){String key=keys.next();Object value=data.get(key);if(key.length()>1000||!key.endsWith(suffix)||!key.startsWith("hbengine.savegame.")&&!key.startsWith("hbengine.storage-migrated.v1.")||value!=JSONObject.NULL&&!(value instanceof String))throw new IOException("저장 키 범위 오류");if(value==JSONObject.NULL)items.remove(key);else items.put(key,value);}byte[] bytes=result.toString().getBytes(StandardCharsets.UTF_8);if(bytes.length>16777216)throw new IOException("게임 저장 크기 제한");FileOutputStream stream=saves.startWrite();try{stream.write(bytes);saves.finishWrite(stream);}catch(Exception e){saves.failWrite(stream);throw e;}break; }
-                    case "report": { if("development".equals(manifest.getString("configuration"))){data.put("mobileHost",new JSONObject().put("safeInsets",new JSONArray(safeInsets)));try(FileOutputStream stream=openFileOutput("runtime-report.json",MODE_PRIVATE)){stream.write(data.toString().getBytes(StandardCharsets.UTF_8));}JSONObject ready=new JSONObject().put("ok",data.optBoolean("ok",false)).put("frames",data.optInt("frames",0)).put("scene",data.optString("scene","")).put("error",data.opt("error"));Log.i("HBPlayer","REPORT "+ready.toString());}result=new JSONObject().put("ok",true);break; }
+                    case "report": { if("development".equals(manifest.getString("configuration"))){data.put("mobileHost",new JSONObject().put("safeInsets",new JSONArray(safeInsets)).put("transport",messagePort!=null?"message-port":"javascript-interface"));try(FileOutputStream stream=openFileOutput("runtime-report.json",MODE_PRIVATE)){stream.write(data.toString().getBytes(StandardCharsets.UTF_8));}JSONObject ready=new JSONObject().put("ok",data.optBoolean("ok",false)).put("frames",data.optInt("frames",0)).put("scene",data.optString("scene","")).put("error",data.opt("error"));Log.i("HBPlayer","REPORT "+ready.toString());}result=new JSONObject().put("ok",true);break; }
                     case "close": result=new JSONObject().put("ok",true);runOnUiThread(()->finish());break;
                     default: throw new IOException("모바일 호스트에 없는 작업");
                 }reply.put("data",result);
@@ -124,7 +126,7 @@ public final class HBActivity extends Activity {
     }
     private JSONObject loadSaves() throws Exception { try{JSONObject value=new JSONObject(read(saves.openRead(),16777216));if(value.getInt("version")!=1||!(value.get("items") instanceof JSONObject))throw new IOException("게임 저장 형식 오류");return value;}catch(FileNotFoundException e){return new JSONObject().put("version",1).put("items",new JSONObject());} }
     // Called on the serialized native worker. JS queries run on the UI thread;
-    // their replies arrive on WebView's bridge thread, never on this executor.
+    // their replies arrive on the port/UI or WebView bridge thread, never on this executor.
     public byte[] query(byte[] request) throws Exception {
         if(request.length>4000000||destroyed)throw new IOException("C++ 질의 범위 오류");String id=UUID.randomUUID().toString();CompletableFuture<String> result=new CompletableFuture<>();queries.put(id,result);
         try{emit(new JSONObject().put("id",currentRequest).put("queryId",id).put("query",new JSONObject(new String(request,StandardCharsets.UTF_8))));long start=activeTime();for(;;){try{return result.get(100,TimeUnit.MILLISECONDS).getBytes(StandardCharsets.UTF_8);}catch(TimeoutException e){if(activeTime()-start>=TimeUnit.SECONDS.toNanos(10))throw e;}}}finally{queries.remove(id);}
@@ -132,5 +134,5 @@ public final class HBActivity extends Activity {
     @Override protected void onPause(){setActive(false);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(false)",null);super.onPause();}
     @Override protected void onResume(){super.onResume();setActive(true);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(true)",null);}
     @Override public void onBackPressed(){if(web!=null)web.evaluateJavascript("document.querySelector('#pause-toggle')?.click()",null);else super.onBackPressed();}
-    @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
+    @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();if(messagePort!=null){messagePort.close();messagePort=null;}if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
 }

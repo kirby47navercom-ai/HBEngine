@@ -425,6 +425,22 @@
         {
           "url": "https://developer.android.com/reference/android/view/WindowInsets",
           "record": "docs/research/MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md"
+        },
+        {
+          "url": "https://developer.android.com/reference/android/webkit/WebMessagePort",
+          "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
+        },
+        {
+          "url": "https://developer.android.com/reference/android/webkit/WebView",
+          "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
+        },
+        {
+          "url": "https://developer.android.com/reference/android/webkit/WebMessage",
+          "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
+        },
+        {
+          "url": "https://developer.android.com/reference/android/webkit/WebMessagePort.WebMessageCallback",
+          "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
         }
       ]
     },
@@ -637,6 +653,7 @@
     "Reconcile all functional outgoing platform/compiler/SDK/ABI references and register remaining official sources, including unresolved legacy HTTP specification links.",
     "Complete the same-version/new-version and service/plugin source expansion; presently registered roots and supplemental seeds do not prove an exhaustive inventory.",
     "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion.",
-    "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope."
+    "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope.",
+    "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units."
   ]
 }

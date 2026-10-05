@@ -63,10 +63,22 @@ export function platformBridge(send){
   return {request,receive,setActive};
 }
 
+export async function connectAndroidChannel(bridge,host){
+  const nonce=host.crypto.randomUUID();let result;
+  const receive=event=>{
+    if(result||event.data!==nonce||event.origin!==''&&event.origin!==host.location.origin||event.source!==null&&event.source!==host||event.ports?.length!==1)return;
+    const port=event.ports[0];port.onmessage=event=>{try{bridge.receive(JSON.parse(event.data)).catch(error=>console.warn('모바일 채널 응답:',error.message));}catch(error){console.warn('모바일 채널 형식:',error.message);}};port.start();result={port,info:{origin:event.origin,sourceIsWindow:event.source===host,sourceNull:event.source===null}};
+  };
+  host.addEventListener('message',receive);
+  try{await bridge.request('channel',{nonce});if(!result)throw Error('모바일 메시지 포트가 없어요.');return result;}catch(error){result?.port.close();throw error;}finally{host.removeEventListener('message',receive);}
+}
+
 export async function startMobilePlayer(){
   const original=window.fetch.bind(window),manifest=await (await original('/game.hbpack.json')).json();
-  const send=packet=>{const value=JSON.stringify(packet);if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
+  let messagePort;
+  const send=packet=>{const value=JSON.stringify(packet);if(messagePort)messagePort.postMessage(value);else if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
   const bridge=platformBridge(send);window.hbMobileReply=bridge.receive;window.hbMobileHostLifecycle=bridge.setActive;
+  if(window.HBMobile){const connected=await connectAndroidChannel(bridge,window);messagePort=connected.port;if(manifest.configuration==='development')window.hbMobileChannel=connected.info;}
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
   window.hbMobileFileUrl=backend.fileUrl;
   window.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);return url.origin===location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};

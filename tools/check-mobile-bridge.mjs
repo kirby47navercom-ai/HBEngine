@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {platformBridge} from '../prototype/mobile-player.js';
+import {platformBridge,connectAndroidChannel} from '../prototype/mobile-player.js';
 
 const originalSet=globalThis.setTimeout,originalClear=globalThis.clearTimeout,originalNow=Object.getOwnPropertyDescriptor(performance,'now');
 let now=0,id=0;const timers=new Map(),sent=[];
@@ -16,5 +16,10 @@ try{
   const overdue=bridge.request('native',{}),failure=assert.rejects(overdue,/시간 초과/);advance(14999);assert.equal(timers.size,1);advance(1);await failure;assert.equal(timers.size,0);await bridge.receive({id:'3',data:{late:true}});
   const rejected=platformBridge(()=>{throw Error('send failed');});await assert.rejects(rejected.request('native',{}),/send failed/);assert.equal(timers.size,0);
   const replyError=bridge.request('native',{}),replyFailure=assert.rejects(replyError,/native error/);await bridge.receive({id:'4',error:'native error'});await replyFailure;assert.equal(timers.size,0);
+  let listener,started=0,closed=0,received;
+  const port={start:()=>started++,close:()=>closed++},host={crypto:{randomUUID:()=> '01234567-89ab-cdef-0123-456789abcdef'},location:{origin:'https://hbengine.local'},addEventListener:(type,callback)=>{assert.equal(type,'message');listener=callback;},removeEventListener:(type,callback)=>{assert.equal(type,'message');assert.equal(callback,listener);listener=null;}};
+  const handshake={receive:async packet=>{received=packet;},request:async(operation,{nonce})=>{assert.equal(operation,'channel');const event={data:nonce,origin:'',source:null,ports:[port]};for(const change of [{data:'wrong'},{origin:'https://foreign.test'},{source:{}},{ports:[port,port]}])listener({...event,...change});assert.equal(started,0);listener(event);}};
+  const connected=await connectAndroidChannel(handshake,host);assert.equal(listener,null);assert.equal(connected.port,port);assert.deepEqual(connected.info,{origin:'',sourceIsWindow:false,sourceNull:true});assert.equal(started,1);port.onmessage({data:'{"id":"test","queryId":"physics","query":{"ray":true}}'});assert.deepEqual(received,{id:'test',queryId:'physics',query:{ray:true}});
+  await assert.rejects(connectAndroidChannel({request:async()=>{listener({data:host.crypto.randomUUID(),origin:host.location.origin,source:host,ports:[port]});throw Error('channel failure');}},host),/channel failure/);assert.equal(closed,1);assert.equal(listener,null);
 }finally{globalThis.setTimeout=originalSet;globalThis.clearTimeout=originalClear;if(originalNow)Object.defineProperty(performance,'now',originalNow);else delete performance.now;}
-console.log('모바일 브리지: 활성 시간 제한·백그라운드 대기·복귀·진행 중 질의·저장·늦은 응답·오류 정리 통과');
+console.log('모바일 브리지: 활성 시간·배경/복귀·질의·저장·응답/오류 정리·채널 확인 값/출처/포트 수·실패 정리 통과');
