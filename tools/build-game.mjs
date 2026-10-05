@@ -58,7 +58,11 @@ export async function inspectBuild(record,profile){
 }
 export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
-  for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g))if(match[1].startsWith('.'))await moduleClosure(path.relative(root,path.resolve(path.dirname(full),match[1])),seen);
+  for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g)){
+    const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
+    if(specifier==='three'||specifier.startsWith('three/addons/'))seen.add(path.join(root,'node_modules/three/package.json'));
+    if(dependency)await moduleClosure(dependency,seen);
+  }
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
@@ -77,9 +81,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     onProgress('실행 파일 구성');const modules=await moduleClosure('prototype/player.js');for(const file of await moduleClosure('tools/player-server.mjs'))modules.add(file);
     for(const file of modules)await copy(file,path.relative(root,file).split(path.sep).join('/'));
     for(const name of ['player.html','player.css','ui-runtime.css'])await copy(path.join(root,'prototype',name),'prototype/'+name);
-    for(const dir of ['node_modules/three','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat','licenses']){
-      const base=dir==='licenses'?desktop:root;const walk=async rel=>{for(const e of await fs.readdir(path.join(base,rel),{withFileTypes:true})){if(e.isSymbolicLink())throw Error('배포 의존성 심볼릭 링크');if(e.isDirectory())await walk(rel+'/'+e.name);else await copy(path.join(base,rel,e.name),rel+'/'+e.name);}};await walk(dir);
-    }
+    const copyLicenses=async rel=>{for(const e of await fs.readdir(path.join(desktop,rel),{withFileTypes:true})){if(e.isSymbolicLink())throw Error('배포 의존성 심볼릭 링크');if(e.isDirectory())await copyLicenses(rel+'/'+e.name);else await copy(path.join(desktop,rel,e.name),rel+'/'+e.name);}};await copyLicenses('licenses');
     await copy(path.join(desktop,'HBPlayer.exe'),'Game.exe');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));
     failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,'Game.exe'),totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;

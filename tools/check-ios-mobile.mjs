@@ -49,6 +49,15 @@ const whole=await fetch(origin+'/Content/Assets/MobileVector.svg');assert.equal(
 for(const [range,expected] of [['bytes=0-7',image.slice(0,8)],['bytes=-8',image.slice(-8)]]){const response=await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range}});assert.equal(response.status,206);assert.equal(await response.text(),expected);}
 assert.equal((await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range:'bytes=invalid'}})).status,416);
 assert.equal((await fetch(origin+'/Native/Main.mm')).status,404);
-await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
+await run(['simctl','launch',device.udid,'com.apple.mobilesafari']);
+await new Promise(resolve=>setTimeout(resolve,3000));const paused=JSON.parse(await fs.readFile(reportFile,'utf8'));
+await new Promise(resolve=>setTimeout(resolve,3000));const background=JSON.parse(await fs.readFile(reportFile,'utf8'));
+assert.equal(background.ok,true,background.error);assert.equal(background.frames,paused.frames,'백그라운드에서는 게임 프레임을 멈춰야 해요.');
+await run(['simctl','launch',device.udid,proof.applicationId]);
+for(let i=0;i<90;i++){report=JSON.parse(await fs.readFile(reportFile,'utf8'));if(!report.ok||report.frames>paused.frames)break;await new Promise(resolve=>setTimeout(resolve,1000));}
+assert.equal(report.ok,true,report.error);assert.ok(report.frames>paused.frames,'앱 복귀 후 프레임이 재개되어야 해요.');
+for(const [i,count] of [[0,1],[1,10]])assert.equal(report.objects.find(o=>o.id==='mobile-probe-'+i).nativeProperties.Count,count,'복귀가 Begin Play를 다시 실행하지 않아야 해요.');
+await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
+await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,backgroundPaused:true,resumePreservesWorld:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
 await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.png')]);
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');

@@ -44,9 +44,6 @@ export async function buildMobile(record,profile,prepared,{signal,onProgress=()=
     const closure=await moduleClosure('prototype/player.js');await moduleClosure('prototype/mobile-player.js',closure);for(const file of closure)await copy(file,path.relative(root,file).split(path.sep).join('/'));
     let html=await fs.readFile(path.join(root,'prototype/player.html'),'utf8');html=html.replace('<script type="module" src="/prototype/player.js"></script>','<script type="module">import {startMobilePlayer} from "/prototype/mobile-player.js";startMobilePlayer().catch(startupFailure);</script>');await write('prototype/player.html',Buffer.from(html));
     for(const name of ['player.css','ui-runtime.css'])await copy(path.join(root,'prototype',name),'prototype/'+name);
-    for(const directory of ['node_modules/three','node_modules/@dimforge/rapier2d-compat','node_modules/@dimforge/rapier3d-compat']){
-      const walk=async name=>{for(const entry of await fs.readdir(path.join(root,name),{withFileTypes:true})){if(entry.isSymbolicLink())throw Error('모바일 의존성 심볼릭 링크');if(entry.isDirectory())await walk(name+'/'+entry.name);else await copy(path.join(root,name,entry.name),name+'/'+entry.name);}};await walk(directory);
-    }
     for(const [name,source] of [['Three','node_modules/three/LICENSE'],['Rapier2D','node_modules/@dimforge/rapier2d-compat/LICENSE'],['Rapier3D','node_modules/@dimforge/rapier3d-compat/LICENSE']])await copy(path.join(root,source),'licenses/'+name+'.txt');
     onProgress('모바일 C++ 준비');const native=await mobileSources(natives,out);
     const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,target,mobile:settings,width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules:native.modules,redirects,files};
