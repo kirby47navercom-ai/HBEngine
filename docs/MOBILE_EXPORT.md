@@ -31,3 +31,5 @@ Android SDK는 사용자 이용약관 동의를 기다리고 있으며 설치·A
 - [GitHub 표준 실행 환경](https://docs.github.com/en/actions/reference/runners/github-hosted-runners): 공개 저장소 표준 실행 환경과 macOS 목록을 확인했어요. 워크플로는 수동 실행이고 저장소 읽기 권한만 사용해요.
 
 이 플랫폼별 보조 읽기와 실행 검사는 Unreal·Unity 전체 본문·API 분석 완료나 누적 엔진 요구 전체 완료로 계산하지 않아요. 모바일 에디터·실제 휴대폰 열/배터리·전체 배포 및 기존 엔진 세부 기능 요구는 계속 유지해요.
+
+추가 실제 검사: `authoring-window-N50gvI`에서 Android 필드·CPU/방향/앱 ID 저장·누락 SDK 안내·iOS 출력·Windows 복귀를 실제 편집기 창에서 통과했어요. 원격 Mac `37308145242`에서는 Xcode 두 대상 빌드 이후 시뮬레이터 목록 JSON을 검사 도구가 50KB로 잘라 읽어 실패했어요. 목록 출력 한도를 늘려 후속 실행을 검증해요. Android 보고는 긴 오브젝트 로그가 잘리지 않도록 짧은 준비 로그와 앱 내부 전체 보고를 구분하며 실제 JNI/Java·기기 검사는 동의 후 진행해요.

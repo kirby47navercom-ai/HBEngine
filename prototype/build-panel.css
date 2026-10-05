@@ -3,3 +3,5 @@
 .build-panel button{white-space:nowrap;flex-shrink:0}.build-add select{flex:1;width:0}
 
 .build-output{display:flex;gap:8px;margin:12px 0}.build-output[hidden]{display:none}.build-panel aside header{gap:4px}.build-panel aside header strong{flex:1}
+
+.build-device{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0}.build-device[hidden]{display:none}.build-device select{flex:1;min-width:160px;width:auto}

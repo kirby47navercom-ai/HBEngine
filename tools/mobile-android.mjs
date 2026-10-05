@@ -7,10 +7,10 @@ const root=path.resolve(import.meta.dirname,'..');
 export const androidSdk=()=>path.resolve(process.env.ANDROID_HOME||process.env.ANDROID_SDK_ROOT||path.join(process.env.LOCALAPPDATA||process.env.HOME,'HBEngine/Toolchains/Android'));
 const javaHome=()=>process.env.JAVA_HOME||(process.platform==='win32'?'C:/Program Files/Java/jdk-25':'');
 const javaTool=name=>javaHome()?path.join(javaHome(),'bin',name+(process.platform==='win32'?'.exe':'')):name;
-export function runTool(program,args,{cwd,signal,env=process.env,timeout=180000}={}){
+export function runTool(program,args,{cwd,signal,env=process.env,timeout=180000,maxOutput=50000}={}){
   return new Promise((resolve,reject)=>{
     const child=spawn(program,args,{cwd,env,signal,windowsHide:true,shell:false,stdio:['ignore','pipe','pipe']});let output='',failure;
-    const append=data=>{output=(output+data.toString()).slice(-50000);};child.stdout.on('data',append);child.stderr.on('data',append);
+    const append=data=>{output=(output+data.toString()).slice(-maxOutput);};child.stdout.on('data',append);child.stderr.on('data',append);
     const timer=setTimeout(()=>{failure=Error('모바일 도구 시간 초과');child.kill();},timeout);child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timer);failure?reject(failure):code===0?resolve(output):reject(Error(output||'모바일 도구 실패: '+path.basename(program)));});
   });
 }
@@ -46,7 +46,7 @@ export async function packageMobile({out,assets,profile,settings,native,signal,o
   for(const abi of settings.abis){
     const directory=path.join(stage,'lib',abi);await fs.mkdir(directory,{recursive:true});const library=path.join(directory,'libhbgame.so'),triple=abi==='arm64-v8a'?'aarch64-linux-android':'x86_64-linux-android';
     await run(path.join(c.bin,'clang++'+suffix),['--target='+triple+settings.minSdk,'-std=c++17','-shared','-fPIC','-fvisibility=hidden','-static-libstdc++','-Wl,-z,max-page-size=16384',...(profile.configuration==='release'?['-O2','-Wl,-s']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),...native.sources.map(file=>path.relative(out,file)),path.join('Native','Bridge.cpp'),'-o',path.relative(out,library)]);
-    const elf=await run(path.join(c.bin,'llvm-readelf'+suffix),['-h','-l',library]);if(!elf.includes('DYN')||!elf.includes(abi==='arm64-v8a'?'AArch64':'X86-64'))throw Error('Android ELF ABI 검사 실패');nativeFiles.push({abi,path:library,elf});
+    const elf=await run(path.join(c.bin,'llvm-readelf'+suffix),['-h','-W','-l',library]);if(!elf.includes('DYN')||!elf.includes(abi==='arm64-v8a'?'AArch64':'X86-64'))throw Error('Android ELF ABI 검사 실패');const loads=elf.split(/\r?\n/).filter(line=>/^\s*LOAD\s/.test(line));if(!loads.length||loads.some(line=>{const align=Number(line.trim().split(/\s+/).at(-1));return !Number.isSafeInteger(align)||align<16384;}))throw Error('Android ELF 16KB 정렬 검사 실패');nativeFiles.push({abi,path:library,elf,alignmentVerified:true});
   }
   onProgress('Android 패키지');await run(path.join(c.tools,'aapt2'+suffix),['compile','--dir',res,'-o',path.join(stage,'resources.zip')]);
   const base=path.join(stage,'base.zip');await run(path.join(c.tools,'aapt2'+suffix),['link',...(settings.format==='aab'?['--proto-format']:[]),'-o',base,'-I',c.platform,'--manifest',path.join(stage,'AndroidManifest.xml'),'-A',assets,path.join(stage,'resources.zip')]);
