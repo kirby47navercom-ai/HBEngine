@@ -1,3 +1,16 @@
+# 현재 이어서 할 작업 — 2026-10-06 Auric P0-1·P0-2
+
+- 주인님 지시: 모바일 선행 작업 → Auric 원문 P0부터 순서대로 구현/원본 check_demo 검증/원문 진행 기록 → 설치본 업데이트 → 누적 전체 엔진 세부 작업. 전체 완료 응답 금지. 설치/사용자 창/원본 게임 보존.
+- HEAD794b054/원격37373877209는 공용 C++·모바일 AOT·두 Xcode SDK와 iOS 시뮬레이터까지 성공. 새 후속 변경은 아직 미커밋/원격 재검증 전.
+- 후속: C++ 공개 상태 checkpoint의 일반 Actor 이름 복사를 실제 포인터로 바꾸되 실패 시 모든 현재 Actor를 다시 조회해 복구. 공개 string/array를 보존하며 임의 다른 Actor 변경을 생략하지 않음. receiver 조회·JSON 결과 move/reserve, 모바일 AOT lazy request parse, native planner 불필요 복제 절감.
+- 새 순서 보존 nativeChain: 입력/충돌/사용자/네이티브 이벤트·Construction·BP 함수와 Tick/Begin/Fixed의 직선 호출. 50인스턴스 각2함수100→1 검사를 추가. 출력/월드 읽기·branch·breakpoint와 실제 host event/operation 경계, 실패 no replay, 중간 경계 뒤 다른 Tick도 유지. 모든 인스턴스에 걸친 비-Tick 이벤트 묶음 등은 계속 남음.
+- Headless Auric ABBA600 두 후속 검사1.46478/1.48543배, 원래9개 수치 동일. 최신 acceptance-performance-native-chain.json. 최신 원본 직접 검사 auric-original-32tNf7는9수치+225파일 SHA 보존.
+- 새 실제 Editor LVnWdd 추가1.26200ms/3 Stop/Play 클래스 접근 통과. 최신Player OL3kQo 추가1.33917ms/3cycles 통과.
+- Android2core/2GB SwiftShader26.77/28.08fps 실패; 실제host GPU2core a052tk28.52/31.35fps 한표본실패. 최신소스4core/2GB·host GPU ZpjEFz41.23/41.50fps 통과. CPU online0-3/GPU 실제정보와 JNI/UI 대기 계측. 실물/청취/열 false. APK 새 빌드·설치·4단계 ABBA 실행 및 검사 소유 기기 정리.
+- 최신 실제 CPP chain/batch/module/transport/frame/runtime/mobile AOT/bridge/API 회귀 및 원본 직접9검사가 통과. 다음: 증거/원문 기록 → 한글커밋푸시·원격CI. P0-1 남은 여러 인스턴스 이벤트 묶음을 마치고 P0-3 BP상속부터 계속. 사용자 설치본 아직 그대로.
+
+## 이전 인계 기록
+
 # 이어서 할 작업 — 2026-10-06
 
 Android H6PL0Q 두 ABI APK/AAB, ddTswv 실제 독립 가상 기기의 오디오·동시 터치·안전 영역·C++/BP·배경/복귀·자원 정리 통과. 질의 포함 RPC14.7ms/질의1.33ms로 왕복 비용이 큰 표본이며 실물 기기 성능은 미검증. iOS37328442455는 오디오 clock 진행·readyState4지만 WAV duration4마이크로초/time0/RMS 거의0으로 실패. fafc57f의 후속37330057221에서 Xcode 앱 SHA/afinfo/HTTP 전체·부분 바이트/개발 미디어 요청을 대조하고 원인 수정 후 재검증. Windows release3ZuMaB는 게임 경로/480탄환·30초/96재사용 통과하지만 이전 i3wHLE 대비 기존10%성능 회귀 게이트 실패; 임의 완화 금지. 사용자 설치본/게임/프로필은 아직 보존했고 검증 후 불변 새 버전 업데이트가 승인돼 있음. 020 수동 모바일 출처18주소/17새 발견을 원장에 등록, 기존18기준 보존/20계열 gatefalse. 전체 누적 요구·가벼움·사람/AI 편집을 계속하며 최종 완료 응답 금지.

@@ -32,9 +32,12 @@ inline void UpdateBindings(Json& rows,const Json& result){
 }
 inline std::string Invoke(int module,const std::string& packet,const Query& query,const Json& modules,const Dispatch& dispatch,std::vector<int>& active,int& count){
     if(active.size()>=8||std::find(active.begin(),active.end(),module)!=active.end())throw std::runtime_error("cyclic native module call");
-    auto request=Json::parse(packet);active.push_back(module);
+    // The owning worker parses and validates the packet. Decode its routing
+    // context only if user code actually calls another native module.
+    Json request;bool requestLoaded=false;active.push_back(module);
     const Query route=[&](const std::string& line){auto q=Json::parse(line);if(q.value("key",std::string{})!="nativeModule")return query(line);
         try{
+            if(!requestLoaded){request=Json::parse(packet);requestLoaded=true;}
             if(++count>128)throw std::runtime_error("native module call limit");
             const auto& args=q.at("args");const auto id=args.at("target").get<std::string>();Json* binding=nullptr;
             for(auto& row:request.at("nativeBindings"))if(row.at("id")==id)binding=&row;

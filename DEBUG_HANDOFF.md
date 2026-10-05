@@ -1,3 +1,19 @@
+최신 검증 2026-10-06: Editor LVnWdd +1.26200ms/Player OL3kQo +1.33917ms 각각3 Stop/Play·장면 cycles 통과. HeadlessABBA1.46478/1.48543 두 후속 통과. Android 최종소스 ZpjEFz4core/2GB/실제hostGPU41.23/41.50fps 통과; 2core 실패는 보존. 실제CPP100→1 Tick-chain/입력·충돌·함수 chain 및 경계·실패·breakpoint 회귀, AOT2module/bridge/player/API, 원본 check_demo9개·수치·225파일 보존 통과(auric-original-32tNf7). 전체 P0-1 비Tick 여러인스턴스 묶음은 계속 필요. 설치본 그대로.
+
+## 최신 측정 — 2026-10-06
+
+상태 보존 비용 분리 후 pointer checkpoint로 checkpointMs0.19389→0.03583ms(동일120프레임). 공개 상태 복구와 다른 Actor 변경은 유지하고 actual C++ string/array/transform failure 검사 통과. 결과 move/reserve 뒤 ABBA6001.46478/1.48543배 통과. Android2corehost GPU28.52/31.35fps는 전체실패,4core동일2GB/해상도45.46/43.84fps는별도환경통과. JNI/UI 분리 계측은추가했고 주스레드게시제약을유지. 원인별 실패 표본을 지우지 않음.
+
+Tick-chain 확장 첫 구현에서 중간 native 반환 뒤 같은 BP의 다른 Tick 이벤트를 건너뛸 수 있음을 리뷰에서 발견. pending tick ID로 현재 그래프 잔여와 다른 Tick을 따로 이어가도록 고치고 ordinary/batch 실행·trace·최종state를 대조하여 통과. generic chain과 terminal phase JS 회귀 통과. 최종 actual CPP/원본9/Player/모바일 재검증 전.
+
+## 현재 조사 — Auric P0-1·P0-2 성능 (2026-10-06)
+
+- 794b054 이후 실제 Editor 추가 비용 1.473ms, Game.exe 1.154ms와 Stop/Play·장면 전환 3회 객체 접근은 통과했어요. 원본 check_demo 9개 수치가 같고 원본 프로젝트 240개 파일 SHA도 유지됐어요.
+- 화면 없는 ABBA 600프레임 비율은 1.558~1.598로 반복 실패해요. 한 번의 1.497 결과로 완료 처리하지 않아요. Android 2core/2GB SwiftShader도 26.77/28.08fps로 실패했어요.
+- JSON 복제·프레임 왕복·문자열 복사 절감만으로 상대 시간 기준이 통과하지 않았어요. 같은 변경을 다시 시도하며 임계값을 바꾸지 않아요.
+- 다음 가설: 호출 50회마다 모든 실제 클래스·일반 Actor의 공개 상태를 보존하는 작업과 generated dispatch 중 어느 쪽이 차이를 만드는지 아직 분리되지 않았어요. worker transport에 checkpointMs와 userCallsMs를 따로 측정해 동일 120프레임을 비교해요. 임의 C++가 다른 Actor를 수정할 수 있으므로 상태 보존 자체를 생략하지 않아요.
+- 설치본·원본 게임·사용자 창은 보존하고 격리 fixture에서만 실행해요. 전체 이벤트·함수 묶음 경로와 P0-3 이후는 계속 남아 있어요.
+
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
 P0 현재: e9886d2/37354143300 전체성공(별도worker/portableAOT namedNative APIs+clock/typedargs/cycles, 50batch/transport/두SDK/SE3 audio 복귀). ZIP e9a3a184f40e4c349ff934b9d231a5d911bf93cdd792e03bd56bc436c2fdebc5. 신규미커밋은 beginPlay/fixedTick 독립terminal 50→1 + autoplay/풀/순서 JS회귀통과, 원격 check-runtime 추가, Auric prepare/check tools. 준비fixture native/build/auric-native-p0-AEFiuA/fixture.json(기준선131+empty50=181 비교두장면/클래스장면, 준비검증만/실제Cpp 미실행). check-auric-native-p0.mjs directory [--performance]는 동적import앞에 자체TEMP설정하여 게임구파일격리; originalcheck_demo SHA/9 stdout baseline정확대조, performance ABBA600frames/ratio<=1.5. 원본문서후속기록작성. Premiere CPU1456%라 대량컴파일·부하 미룸. installed/originalgame untouched. 다음 Begin/fixed 실제runtime CI→AuricCpp9 및PCEditor/Game/Android정량→P0-3부터순차→설치업데이트→전체장기작업. whole gatefalse.

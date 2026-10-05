@@ -13,3 +13,10 @@ HB 적용 판단: C++ 실행은 기존 단일 worker에 남기고, JS 물리 질
 실제 후보 `android-mobile-xw7jwk/acceptance.json`의 APK·AAB·두 JNI ABI·16KB ELF 검사를 통과했어요. `android-runtime-9czDGl`에서 C++ 두 모듈·동기 물리 질의·한글 HUD/SVG·1.5 DPR·안전 영역·동시 두 터치·해제·믹서 신호·18초 배경과 복귀·자체 가상 기기 정리를 확인했어요. 주 프레임 포트 전달의 실제 MessageEvent는 빈 origin과 null source여서, 임의 외부 출처 허용 없이 요청의 임의 확인 값과 단일 포트를 대조해요. 잘못된 값·출처·source·포트 수·요청 실패 정리는 `node tools/check-mobile-bridge.mjs`에서 검사해요.
 
 같은 시기의 기존 APK `android-runtime-WpZcj1`도 전체 동작 검사를 통과했어요. 두 방식 모두 약3.7회/초로, 앞선 조용한 환경의11.87회/초와 차이가 났어요. 당시 Adobe Premiere가 CPU1056%를 사용한 표본이므로 속도 개선이나 회귀로 단정하지 않아요. 기본 플랫폼 채널의 기능 연결은 확인했지만 안정된 성능 대조는 대기 중이에요. 주인님 설치본은 아직 업데이트하지 않았어요.
+
+
+2026-10-06 추가 재읽기: WebMessagePort의 자체 4메서드와 [AOSP 설명](https://android.googlesource.com/platform/frameworks/base/+/37bd890/core/java/android/webkit/WebMessagePort.java)의 주 스레드 제약을 다시 확인했어요. 과거 API 명칭의 AOSP 본문은 스레드 설명의 보조 근거이며 현행 메서드 명칭은 Android 공식 API를 따라요. 포트 게시를 임의의 C++ worker에서 직접 호출하지 않아요. Android native 응답에 Java 해석·worker 대기·JNI 호출·UI 게시 대기를 각각 계측하고, C++ workerMs와 별도 값으로 보고해요. 이 재읽기를 전체 연결 API나 두 엔진 문서 분석 완료로 세지 않아요.
+
+Auric 격리 검사: 2코어·2GB·호스트 GPU에서 50개 인스턴스는 28.52/31.35fps로 두 표본 중 하나가30fps를 넘지 못했어요(`android-window-a052tk`). 같은2GB·해상도·50개 인스턴스 조건의4코어 검사에서는45.46/43.84fps를 확인했어요(`android-window-GmYOUG`). 실제 WebGL renderer는 NVIDIA RTX4070 SUPER를 사용하는 Android Emulator translator이고 guest CPU online0-3을 읽었어요. 실기기 성능·음향 청취·열/배터리 검증으로 계산하지 않아요. SwiftShader·2코어 실패 증거도 계속 보존해요.
+
+추가 AOSP 발견 출처는 `android-aosp-webkit`으로 전체 corpus 대상에 등록했어요. 고정37bd890 응답 31,922바이트의 SHA-256은 `11db5f3c24acd77ee4ee5c37d05c85839430ed080cd3646f1035aa2b83d5f7aa`이고 private 원문은 `native/build/android-channel-docs/aosp-import-022.json`에 연결돼 있어요. 발견 등록이며 본문/API 전체·독립 분석 승격은 하지 않아요. 최신 코드로 APK를 새 빌드한 ZpjEFz의4코어 측정은41.23/41.50fps였고, 검사 기기와 데이터도 정리했어요.

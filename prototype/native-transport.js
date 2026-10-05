@@ -67,12 +67,12 @@ export class NativeWorldClient {
       }
       // Native JSON serialization compares unchanged actor rows faster than walking
       // all their component/UI fields in JS. Keep only detached, immutable rows.
-      const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>this.world&&row===this.rows?.[i]?this.world[i]:JSON.parse(row));
+      const serializeStart=performance.now();let reusedRows=0;const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>{if(this.world&&row===this.rows?.[i]){reusedRows++;return this.world[i];}return JSON.parse(row);}),serializedAt=performance.now();
       let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
       if(patch){next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
       if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
-      const result=await send(packet);this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;return result;
+      const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows});return result;
     });
     this.queue=job.catch(()=>{this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job;
   }

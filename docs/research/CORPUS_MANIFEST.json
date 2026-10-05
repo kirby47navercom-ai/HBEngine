@@ -671,6 +671,35 @@
       "openIssues": [
         "Reconcile all sections, linked DOM/structured-clone/MessageEvent, inherited API, figures and editions; do not promote partial reads."
       ]
+    },
+    {
+      "id": "android-aosp-webkit",
+      "engine": "Android",
+      "version": "AOSP-37bd890-historical",
+      "locale": "en",
+      "roots": [
+        "https://android.googlesource.com/platform/frameworks/base/+/37bd890/core/java/android/webkit/WebMessagePort.java"
+      ],
+      "hosts": [
+        "android.googlesource.com"
+      ],
+      "pathPrefix": "/platform/frameworks/base/+/37bd890/core/java/android/webkit/",
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "Historical WebMessagePort thread contract only. Current API names use the separately registered Android reference. No whole-file/API or independent analysis claim.",
+      "openIssues": [
+        "Reconcile pinned implementation with current Android API and linked Java/Handler/Chromium bodies; historical version must not replace current contracts."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://android.googlesource.com/platform/frameworks/base/+/37bd890/core/java/android/webkit/WebMessagePort.java",
+          "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

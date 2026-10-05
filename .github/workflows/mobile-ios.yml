@@ -21,6 +21,7 @@ jobs:
         run: |
           node tools/check-play-world-native.mjs
           node tools/check-native-batch.mjs --cpp
+          node tools/check-native-chain.mjs --cpp
           node tools/check-native-module-query.mjs --cpp
           node tools/check-native-transport.mjs
           node tools/check-native-frame.mjs
