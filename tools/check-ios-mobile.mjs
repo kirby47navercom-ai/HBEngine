@@ -17,13 +17,13 @@ await build('iOS',path.join(out,'DeviceDerivedData'));
 const devices=JSON.parse(await run(['simctl','list','devices','available','--json']));
 await fs.writeFile(path.join(out,'ios-devices.json'),JSON.stringify(devices,null,2));
 const sdk=(await run(['--sdk','iphonesimulator','--show-sdk-version'])).trim(),runtimes=Object.entries(devices.devices).filter(([runtime])=>runtime.includes('iOS')).sort((a,b)=>b[0].localeCompare(a[0],undefined,{numeric:true})),matching=runtimes.find(([runtime])=>runtime.endsWith('iOS-'+sdk.replaceAll('.','-')));
-const iphone=d=>d.isAvailable&&d.name.startsWith('iPhone'),device=matching?.[1].find(iphone)||runtimes.flatMap(([,list])=>list).find(iphone);
-console.log('시뮬레이터 기준:',{sdk,runtime:runtimes.find(([,list])=>list.some(d=>d.udid===device?.udid))?.[0]});
-console.log('시뮬레이터 선택:',device?.name,device?.udid);
-assert.ok(device,'설치된 iPhone 시뮬레이터가 없어요.');
+const runtime=matching?.[0]||runtimes[0]?.[0];assert.ok(runtime,'설치된 iOS 시뮬레이터 런타임이 없어요.');
+const types=JSON.parse(await run(['simctl','list','devicetypes','--json'])),type=types.devicetypes.find(t=>t.name==='iPhone SE (3rd generation)');assert.ok(type,'설치된 iPhone SE 시뮬레이터 타입이 없어요.');
+const device={name:type.name,udid:(await run(['simctl','create','HBEngine-'+proof.applicationId.slice(-8),type.identifier,runtime])).trim()};
+await fs.writeFile(path.join(out,'ios-device.json'),JSON.stringify({sdk,runtime,device,owned:true,headless:true},null,2));
+console.log('독립 시뮬레이터 기준:',{sdk,runtime,device});
 try{
-if(device.state!=='Booted')await run(['simctl','boot',device.udid]);
-await runTool('open',['-a','Simulator','--args','-CurrentDeviceUDID',device.udid],{timeout:60000});
+await run(['simctl','boot',device.udid]);
 await run(['simctl','bootstatus',device.udid,'-b']);
 await run(['simctl','install',device.udid,app]);
 await run(['simctl','launch',device.udid,proof.applicationId]);
@@ -72,4 +72,7 @@ console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·�
   try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'"'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
   const crashes=path.join(process.env.HOME,'Library/Logs/DiagnosticReports');try{for(const name of await fs.readdir(crashes))if(name.startsWith('HBGame')&&name.endsWith('.ips'))await fs.copyFile(path.join(crashes,name),path.join(out,name));}catch(failure){if(failure.code!=='ENOENT')console.error('iOS 충돌 기록 수집:',failure.message);}
   throw error;
+}finally{
+  try{await run(['simctl','shutdown',device.udid]);}catch(error){console.error('독립 시뮬레이터 종료:',error.message);}
+  try{await run(['simctl','delete',device.udid]);}catch(error){console.error('독립 시뮬레이터 정리:',error.message);}
 }

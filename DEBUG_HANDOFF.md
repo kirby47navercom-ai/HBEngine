@@ -1,5 +1,9 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37321490368: 두 컴파일은 통과했지만 첫 simctl launch180초 제한으로 끝났어요. 실패 로그에서 CoreSimulatorBridge→FrontBoard 요청 뒤 HBGame 프로세스 로그/실행 보고는 없었고 설치 등록 이벤트가 계속됐어요. 복귀 수정 검사에 도달하지 않았으므로 JS/C++ 수명 수정을 성공/실패로 단정하지 않아요. 기존 고해상도 기본 기기/Simulator GUI와 검사 상태를 분리하기 위해 SDK18.5의 독립 iPhone SE 기기를 생성·창 없이 부팅·종료/삭제하도록 검사 환경을 바꿔 재검증해요. 앱 코드나 시간 제한을 추가로 바꾸지 않아요. 시뮬레이터 서비스 지연이라는 가설은 다음 실행으로 확인해요.
+
+Android ScZlRB는 실제 첫 프레임/배경18초/복귀와 C++ Count 보존·메모리 수집 뒤 검사 가상 기기 종료 대기7초가 기본20초보다 짧아 최종 정리에 실패했어요. 실제 기기는 그 뒤 종료됐고 데이터는 지우지 않았어요. 종료 대기를30초로 고쳤어요. 화면에서 탐색 바가 공격 버튼을 가린 문제는 WebView 자체 padding이 HTML 콘텐츠를 줄이지 않는 원인이어서 FrameLayout 부모에 시스템/화면 잘림 inset을 적용했어요. 수정한 Java 포함 APK/AAB Y9F6Lt 전체 빌드는 통과했어요. o4hSId는 UI 안전 영역/한글/SVG·일반/동시8개/유효 Range 뒤 invalid Range의 fetch가 TypeError여서 중단됐어요. Chromium의 stream URL loader가 잘못된 Range를 net::ERR_REQUEST_RANGE_NOT_SATISFIABLE로 거절하는 경로와 대조하고 실제 CDP 오류 코드를 수집해 검사해요. 416을200으로 바꾸거나 일반 네트워크 오류를 통과시키지 않아요.
+
 수정 후 Android android-mobile-lSxvr1 전체 검사 exit0: 실제 두 ABI JNI/C++·Java/DEX·16KB ELF·APK 서명/정렬·AAB·ZIP 에셋/한글·원본 보존. CmRimg 마지막 실패는 bundletool stdout와 JDK25 stderr 경고가 합쳐져 앱 ID 비교가 실패한 검사 오류였고 실제 manifest 마지막 줄로 비교해 해결했어요. 런타임 검사는 별도예요. JS 브리지/Player 수명과 정확한 Android production 시계/범위 메서드의 가상 시간 검사를 통과했고 iOS 실제 복귀를 재검증해요.
 
 37317957491은 SDK18.5에 맞는 시뮬레이터로 실제 두 컴파일·첫10프레임/15 draw call·C++ 두 모듈/물리·전체/동시8개/앞·뒤 범위/외부 파일 거절을 통과했어요. Safari 시작 88초 뒤 background 보고가 `모바일 호스트 응답 시간 초과`로 바뀌었어요. bridge의 15초 타이머가 OS 비활성 시간을 포함하고 있었어요. 요청/응답을 버리거나 Begin Play를 재실행하지 않고 활성 시간만 제한하도록 수정해요. JS visibility와 네이티브 수명 이벤트를 같은 경로로 연결하고 네이티브 물리 질의의 10초 대기도 활성 시간으로 검사해요. 실제 재검증 전에는 복귀 통과로 세지 않아요.
