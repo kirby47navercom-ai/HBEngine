@@ -1,3 +1,14 @@
+# 최신 진행 — 2026-10-06 Auric P0 함수 묶음
+
+- 기준 b971f2d 원격37383235348 성공: 실제 C++/AOT/두 Xcode SDK/iOS 시뮬레이터. 이 함수 후속 소스의 원격 검증은 별도로 진행. 사용자 설치본 유지.
+- terminal BP 함수가 primitive 인자를 받아 functionInput→직선 native calls→functionOutput으로 이어지면 여러 인스턴스의 이벤트/Construction/EndPlay/Tick/BeginPlay/FixedTick 호출을 함께 보냄. 실제 CPP50×2=100→1, 같은 input의 두 함수200→1. 반환값 사용/배열·구조체 참조/분기·중단점은 원래 실행 경계 유지. 콜백 뒤 현재 함수 인자는 유지하고 미래 함수 인자를 다시 평가.
+- 원래/묶음의 objects/variables/values/trace/stack 동일, native callback 경계 사이 두 함수 보존, 함수/return 중단점과 not-due interval suffix/실패 및 잃은 응답 no replay 회귀 통과. 배열 인자의 alias 회귀도 실제 CPP로 대조.
+- native reply worldCommitted ID와 많은 변경 객체 적용을 인덱스로 조회, 비어 있는 InputActions snapshot 할당 생략. 처음 함수 성능1.51851 실패는 보존; 이후 ABBA600 1.471083배/+0.975112ms 통과(acceptance-performance-reply-index.json). 기존 소스 GUI/APK 측정을 최신 GUI/APK 증거로 계산하지 않음.
+- 실제 CPP chain/transport/batch/runtime/input/scene/mobile bridge+AOT Player/API 검사 통과. 원본 auric-original-ufa3RD9개 수치 동일/225파일 SHA 보존. check-mobile-aot.mjs라는 존재하지 않는 명령 실행은 실패했고 실제 check-mobile-player.mjs로 정정하여 통과; 성공 검사로 계산하지 않음.
+- 다음: primitive macro wrapper/여러 Tick 함수/Timer와 Action의 실제 순서 경계 → P0-1·P0-2 최종 GUI/mobile/원본 검증 → P0-3부터 원문 순서 → 승인된 설치본 업데이트 → 전체 누적 작업. 전체 gate false, 최종 완료 응답 금지.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0 이벤트 묶음
 
 - HEAD12f6e8d/원격37380658386 성공: 실제 C++/AOT/두 Xcode SDK/iOS 시뮬레이터. 사용자 설치본은 유지.

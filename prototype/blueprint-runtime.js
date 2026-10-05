@@ -41,7 +41,7 @@ export class BlueprintRuntime {
   async nativeTimers(result,bindings=this.bindings){if(Array.isArray(result.timerCallbacks)){for(const callback of result.timerCallbacks)for(const b of bindings.filter(b=>!callback.owner||b.self===callback.owner))await this.custom(b,callback.event,{timer:callback.handle},callback.scope||'');}else for(const event of result.timerEvents||[])for(const b of bindings)await this.custom(b,event);}
   async actionEvents(b,frame=false){if(this.object(b.self)?.poolActive===false)return;for(const event of b.input.sample(frame,frame?this.core.delta:0))for(const n of b.root.nodes.filter(n=>n.key==='inputAction'&&n.options?.action===event.path)){const a=b.input.actions.get(event.path);if((n.valueType||'bool')!==a.valueType)throw Error('Input Action 출력 자료형 불일치: '+a.name);const f=this.frame(b),out={value:copy(event.value),elapsed:event.elapsed};f.outputs.set(n.id,out);this.values.set(n.id,out);await this.follow(n,event.event,f);}}
   pointer(sample,camera){if(this.active&&!this.paused&&!this.stopping){this.pointerCamera=camera;this.inputState.pointerSample(sample);}}
-  inputSnapshot(){return {...this.inputState.snapshot(this.pointerCamera?.()||this.hooks.inputCamera?.(this)),actions:this.bindings.flatMap(b=>b.input.snapshot().map(s=>({owner:b.self,...s})))};}
+  inputSnapshot(){const actions=[];for(const b of this.bindings)if(b.input.actions.size)for(const state of b.input.snapshot())actions.push({owner:b.self,...state});return {...this.inputState.snapshot(this.pointerCamera?.()||this.hooks.inputCamera?.(this)),actions};}
   flushInput(){return this.inputQueue;}
   dispatchInput(packet,camera){if(!validInputPacket(packet))return Promise.reject(Error('입력 키·값·마우스 좌표를 확인하세요.'));const generation=this.generation,epoch=this.inputEpoch,sample=copy(packet);const job=this.inputQueue.then(async()=>{if(!this.active||this.paused||this.stopping||this.generation!==generation||this.inputEpoch!==epoch)return;if(sample.pointer)this.pointer(sample.pointer,camera);if(sample.key!==undefined)await this.applyInput(sample.key,sample.value??1,sample.source);});this.inputQueue=job.catch(()=>{});return job;}
   input(key,value=1){return this.dispatchInput({key,value});}
@@ -53,7 +53,7 @@ export class BlueprintRuntime {
       if(this.canBatchEvents(build)&&this.actionEvents===BlueprintRuntime.prototype.actionEvents){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
         for(let i=index;i<bindings.length;i++){const owner=bindings[i],input=owner.input;if(this.object(owner.self)?.poolActive===false||this.hooks.nativeBuild?.(owner.self)?.token!==build.token||input.contexts.length||input.actions.size||input.states.size||input.events.size)break;let block;
           try{block=nativeEventBlock(owner,owner.root,this.inputDescriptors(owner,key,value));if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
-          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.before=()=>owner.input.set(key,value);block.after=()=>this.actionEvents(owner);blocks.push(block);calls.push(...block.requests);
+          budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.before=()=>owner.input.set(key,value);block.after=()=>this.actionEvents(owner);blocks.push(block);calls.push(...block.requests);
         }
       }
       if(calls.length<2){const count=calls.length===0&&blocks.length?blocks.length:calls.length===1?blocks.findIndex(block=>block.requests.length)+1:1;for(let i=0;i<count;i++)await this.inputBinding(bindings[index++],key,value);}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return;index+=used;}
@@ -73,7 +73,7 @@ export class BlueprintRuntime {
   }
   async tickBinding(b,nodes=b.root.nodes.filter(n=>n.key==='tick')){if(this.object(b.self)?.poolActive===false||b.root.settings?.tickEnabled===false)return;for(const n of nodes){const elapsed=(b.ticks.get(n.id)||0)+this.core.delta,interval=n.options?.tickInterval??b.root.settings?.tickInterval??0;b.ticks.set(n.id,elapsed);if(elapsed+1e-9>=interval&&this.core.delta>0){b.ticks.set(n.id,0);const f=this.frame(b),output={delta:elapsed};f.outputs.set(n.id,output);this.values.set(n.id,output);await this.follow(n,'then',f);}}}
   async tickBindings(key='tick',eventArgs){
-    for(let index=0;index<this.bindings.length;){const root=this.bindings[index].root;if(!root.nodes.some(n=>n.key===key)&&!(key==='beginPlay'&&root.nodes.some(n=>n.key==='timeline'&&n.timeline.autoplay))){index++;continue;}const blocks=[],calls=[],build=this.hooks.nativeBuild?.(this.bindings[index].self);let budget=this.steps;const nativeObjects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),scopes=[...this.scopes],knownIds=new Set(nativeObjects.map(o=>o.id));
+    for(let index=0;index<this.bindings.length;){const root=this.bindings[index].root;if(!root.nodes.some(n=>n.key===key)&&!(key==='beginPlay'&&root.nodes.some(n=>n.key==='timeline'&&n.timeline.autoplay))){index++;continue;}const entry=root.nodes.find(n=>n.key===key),link=entry&&root.edges.find(e=>e.from.node===entry.id&&e.from.pin==='then');if(link&&root.nodes.find(n=>n.id===link.to.node)?.key==='callFunction'){const functionCount=await this.nativeFunctionTicks(index,key,eventArgs);if(functionCount<0)return;if(functionCount){index+=functionCount;continue;}}const blocks=[],calls=[],build=this.hooks.nativeBuild?.(this.bindings[index].self);let budget=this.steps;const nativeObjects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),scopes=[...this.scopes],knownIds=new Set(nativeObjects.map(o=>o.id));
       if(!this.paused&&this.stepRemaining===null&&build?.metadata.nativeBatch===1)for(let i=index;i<this.bindings.length&&calls.length<1000;i++){const b=this.bindings[i];if(key!=='beginPlay'&&(this.object(b.self)?.poolActive===false||b.root.settings?.tickEnabled===false)||this.hooks.nativeBuild?.(b.self)?.token!==build.token||key==='beginPlay'&&b.root.nodes.some(n=>n.key==='timeline'&&n.timeline.autoplay))break;const plan=nativeTickPlan(b.root,key);if(!plan)break;let block;try{block=nativeTickBlock(b,plan,key==='tick'?this.core.delta:0,eventArgs);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,nativeObjects,scopes,knownIds);}catch{break;}budget+=block.jobs.reduce((sum,j)=>sum+(j.request?1+j.readCount:0),0);if(budget>10000)break;if(calls.length+block.requests.length>1000)break;blocks.push(block);calls.push(...block.requests);}
       if(calls.length<2){const count=calls.length===0&&blocks.length?blocks.length:calls.length===1?blocks.findIndex(b=>b.request)+1:1;for(let next=0;next<count;next++){const b=this.bindings[index++];if(key==='tick')await this.tickBinding(b);else if(key==='beginPlay'){await this.emit(b,key,eventArgs);for(const n of b.root.nodes.filter(n=>n.key==='timeline'&&n.timeline.autoplay))await this.execute(n,this.frame(b),'start');}else if(this.object(b.self)?.poolActive!==false&&b.root.settings?.tickEnabled!==false)await this.emit(b,key,eventArgs);}continue;}
       const generation=this.generation,result=await this.hooks.native({calls,self:calls[0].self});if(!this.active||this.generation!==generation)return;
@@ -87,31 +87,46 @@ export class BlueprintRuntime {
       if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');
     }
   }
+  async nativeFunctionTicks(index,key,eventArgs){
+    const bindings=this.bindings,first=bindings[index],events=first.root.nodes.filter(n=>n.key===key),links=events.length===1&&first.root.edges.filter(e=>e.from.node===events[0].id&&e.from.pin==='then');
+    if(!links||links.length!==1||first.root.nodes.find(n=>n.id===links[0].to.node)?.key!=='callFunction')return 0;
+    const build=this.hooks.nativeBuild?.(first.self);if(!this.canBatchEvents(build))return 0;const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes],blocks=[],calls=[];let budget=this.steps;
+    for(let i=index;i<bindings.length;i++){const b=bindings[i],nodes=b.root.nodes.filter(n=>n.key===key);if(nodes.length!==1||this.hooks.nativeBuild?.(b.self)?.token!==build.token||key!=='beginPlay'&&(this.object(b.self)?.poolActive===false||b.root.settings?.tickEnabled===false)||key==='beginPlay'&&b.root.nodes.some(n=>n.key==='timeline'&&n.timeline.autoplay))break;
+      const n=nodes[0],elapsed=(b.ticks.get(n.id)||0)+this.core.delta,interval=n.options?.tickInterval??b.root.settings?.tickInterval??0,due=key!=='tick'||elapsed+1e-9>=interval&&this.core.delta>0,args=eventArgs??{delta:elapsed};let block;
+      try{block=nativeEventBlock(b,b.root,due?[{n,args}]:[]);if(!block||due&&!block.entries[0].wrapper)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
+      budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;if(key==='tick')block.before=()=>{b.ticks.set(n.id,due?0:elapsed);if(due)this.values.set(n.id,args);};blocks.push(block);calls.push(...block.requests);
+    }
+    if(!calls.length){for(const block of blocks)block.before?.();return blocks.length;}if(calls.length===1){const prefix=blocks.findIndex(b=>b.requests.length);for(const block of blocks.slice(0,prefix))block.before?.();return prefix;}
+    const used=await this.nativeEventGroup(blocks,calls);return used||-1;
+  }
   canBatchEvents(build){return this.active&&!this.paused&&this.stepRemaining===null&&this.depth<64&&this.emit===BlueprintRuntime.prototype.emit&&build?.metadata.nativeBatch===1;}
   async eventBindings(key,args={},graphFor=b=>b.root,continueOnError=false){
     let firstError;const bindings=this.bindings;for(let index=0;index<bindings.length;){const b=bindings[index],graph=graphFor(b);if(!graph.nodes.some(n=>n.key===key&&graph.edges.some(e=>e.from.node===n.id&&e.from.pin==='then'))){try{await this.emit(b,key,args,graph);}catch(error){if(!continueOnError)throw error;firstError??=error;}index++;continue;}const build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
         for(let i=index;i<bindings.length;i++){const owner=bindings[i];if(this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;const g=graphFor(owner);let block;
           try{block=nativeEventBlock(owner,g,g.nodes.filter(n=>n.key===key).map(n=>({n,args})));if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
-          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;blocks.push(block);calls.push(...block.requests);
+          budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;blocks.push(block);calls.push(...block.requests);
         }
       }
       if(calls.length<2){const count=calls.length===0&&blocks.length?blocks.length:calls.length===1?blocks.findIndex(block=>block.requests.length)+1:1;for(let i=0;i<count;i++){const owner=bindings[index++];try{await this.emit(owner,key,args,graphFor(owner));}catch(error){if(!continueOnError)throw error;firstError??=error;}}}else{try{const used=await this.nativeEventGroup(blocks,calls);if(!used)return firstError;index+=used;}catch(error){const failed=bindings.indexOf(error.nativeEventBinding,index);if(!continueOnError||failed<index)throw error;firstError??=error;index=failed+1;}}
     }return firstError;
   }
   async emitEntry(b,g,entry,reset=true){if(!this.active)return;if(++this.depth>64){this.depth--;throw Error('이벤트 재귀 깊이 64 초과');}if(this.depth===1&&reset)this.steps=0;try{const f=this.frame(b,g,entry.args);f.outputs.set(entry.n.id,entry.args);await this.follow(entry.n,entry.pin,f);}finally{this.depth--;}}
+  async resumeEventEntries(block,index,phase){for(const entry of block.entries.slice(index)){const next=entry.n.key+':'+entry.pin;try{await this.emitEntry(block.binding,block.g,entry,phase!==next);}catch(error){error.nativeEventBinding=block.binding;throw error;}phase=next;}}
   async nativeEventGroup(blocks,calls){
     const generation=this.generation,result=await this.hooks.native({calls,self:calls[0].self});if(!this.active||this.generation!==generation)return 0;
     if(!Array.isArray(result.results)||result.results.length>calls.length||!result.results.length&&!result.nativeError)throw Error('C++ 묶음 실행 결과 오류');let completed=0,used=0;
     for(const block of blocks){if(completed>=result.results.length&&!result.nativeError)break;const b=block.binding;block.before?.();let boundary=false,phase;
-      for(const entry of block.entries){const nextPhase=entry.n.key+':'+entry.pin;if(this.depth===0&&phase!==nextPhase)this.steps=0;phase=nextPhase;this.depth++;const f=this.frame(b,block.g,entry.args);f.outputs.set(entry.n.id,entry.args);let last;
+      for(const entry of block.entries){if(completed>=result.results.length&&!result.nativeError&&entry.jobs.length){await this.resumeEventEntries(block,block.entries.indexOf(entry),phase);boundary=true;break;}const nextPhase=entry.n.key+':'+entry.pin;if(this.depth===0&&phase!==nextPhase)this.steps=0;phase=nextPhase;this.depth++;const outer=this.frame(b,block.g,entry.args);outer.outputs.set(entry.n.id,entry.args);let f=outer,last;
         const visit=job=>{this.steps+=1+job.readCount;if(this.steps>10000)throw Error('한 이벤트 실행량 10000 초과');this.hooks.trace?.(job.node,f);for(const [id,value] of job.reads){f.outputs.set(id,value);this.values.set(id,value);}};
-        try{for(const job of entry.jobs){if(completed>=result.results.length){if(result.nativeError){visit(job);throw Object.assign(Error(result.nativeError),{nativeEventBinding:b});}try{if(last)await this.follow(last.node,'then',f);else await this.follow(entry.n,entry.pin,f);}catch(error){error.nativeEventBinding=b;throw error;}boundary=true;break;}
+        try{if(entry.wrapper){const w=entry.wrapper;this.steps+=1+w.prefix.readCount;this.hooks.trace?.(w.node,outer);for(const [id,value] of w.prefix.reads){outer.outputs.set(id,value);this.values.set(id,value);}f=this.frame(b,w.subgraph,w.prefix.request.args);f.stack=[...outer.stack,w.definition.name];f.outputs.set(w.entry.id,w.prefix.request.args);}
+          for(const job of entry.jobs){if(completed>=result.results.length){if(result.nativeError){visit(job);throw Object.assign(Error(result.nativeError),{nativeEventBinding:b});}try{if(last)await this.follow(last.node,'then',f);else await this.follow(entry.n,entry.pin,f);}catch(error){error.nativeEventBinding=b;throw error;}boundary=true;break;}
             visit(job);const reply=result.results[completed++];if(completed===result.results.length){try{for(const operation of result.operations||[])await this.hooks.operation(operation.key,operation.args,this.bindings.find(b=>b.self===operation.self)||b,this);for(const event of result.events||[]){const owner=this.bindings.find(b=>b.self===event.target)||b;await this.emit(owner,'nativeEvent',event.args,owner.root,n=>n.nativeId===event.nativeId);}}catch(error){error.nativeEventBinding=b;throw error;}if(!this.frameActive(f))return 0;}
             const output=reply.outputs||{};f.outputs.set(job.node.id,output);this.values.set(job.node.id,cloneNativeValue(output));last=job;
           }
+          if(entry.wrapper){if(!boundary)await this.follow(last.node,'then',f);outer.outputs.set(entry.wrapper.node.id,f.result);this.values.set(entry.wrapper.node.id,cloneNativeValue(f.result));}
         }finally{this.depth--;}
-        if(boundary){for(const next of block.entries.slice(block.entries.indexOf(entry)+1)){const nextPhase=next.n.key+':'+next.pin;try{await this.emitEntry(b,block.g,next,phase!==nextPhase);}catch(error){error.nativeEventBinding=b;throw error;}phase=nextPhase;}break;}
+        if(boundary){await this.resumeEventEntries(block,block.entries.indexOf(entry)+1,phase);break;}
       }
       await block.after?.();used++;if(boundary)break;
     }
@@ -131,7 +146,7 @@ export class BlueprintRuntime {
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
         for(let i=index;i<rows.length;i++){const next=previous.get(rows[i]);if(!next||now.has(rows[i]))continue;const owner=next.b,args={other:next.other},descriptors=owner.root.nodes.filter(n=>n.key==='endOverlap'&&this.componentEvent(n,next)).map(n=>({n,args}));if(descriptors.length&&this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;let block;
           try{block=nativeEventBlock(owner,owner.root,descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
-          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.cursor=i;blocks.push(block);calls.push(...block.requests);
+          budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.cursor=i;blocks.push(block);calls.push(...block.requests);
         }
       }
       if(calls.length<2){await this.emit(b,'endOverlap',{other:state.other},b.root,n=>this.componentEvent(n,state));index++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return false;index=blocks[used-1].cursor+1;}
@@ -145,7 +160,7 @@ export class BlueprintRuntime {
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
         for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits);if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
           try{block=nativeEventBlock(next.b,next.b.root,next.descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
-          budget+=block.jobs.reduce((sum,j)=>sum+1+j.readCount,0);if(budget>10000||calls.length+block.requests.length>1000)break;block.before=next.before;block.cursor=i;blocks.push(block);calls.push(...block.requests);
+          budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.before=next.before;block.cursor=i;blocks.push(block);calls.push(...block.requests);
         }
       }
       if(calls.length<2){await this.collisionBinding(task);cursor++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return;cursor=blocks[used-1].cursor+1;}
