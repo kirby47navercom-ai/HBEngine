@@ -50,8 +50,13 @@ try{
     await capture('mobile-build-android.png');await evaluate('document.querySelector("[data-build=save]").click()');
     await until(async()=>{try{return (await read('Settings/BuildProfiles.json')).profiles[0].target==='android';}catch{}},'Android 설정 디스크 저장');
     let settings=await read('Settings/BuildProfiles.json');assert.deepEqual(settings.profiles[0].mobile.abis,['arm64-v8a','x86_64']);assert.equal(settings.profiles[0].mobile.orientation,'portrait');
-    await evaluate('document.querySelector("[data-build=validate]").click()');await until(()=>evaluate('document.querySelector(".build-progress").textContent==="완료"'),'Android 환경 검사');
+    await evaluate('document.querySelector("[data-build=validate]").click()');await until(()=>evaluate('document.querySelector(".build-progress").textContent==="환경 준비 필요"'),'Android 환경 검사');
     assert.equal(await evaluate('document.querySelector(".build-result").textContent.includes("Android SDK")'),true);
+    await evaluate('document.querySelector("[data-build=android-tools]").click()');await until(()=>evaluate('!!document.querySelector(".build-tools-dialog[open]")'),'SDK 약관 화면');
+    assert.equal(await evaluate('document.querySelector("[data-sdk-consent]").checked'),false);assert.equal(await evaluate('document.querySelector("[data-sdk-install]").disabled'),true);
+    assert.equal(await evaluate('(async()=>{const response=await fetch("/api/build/tools/android",{method:"POST",headers:{"X-HB-Editor":"1","Content-Type":"application/json"},body:JSON.stringify({acceptLicense:"true"})});return !response.ok&&(await response.json()).error.includes("동의");})()'),true);
+    await capture('android-tools-consent.png');await evaluate('document.querySelector("[data-sdk-consent]").click()');assert.equal(await evaluate('document.querySelector("[data-sdk-install]").disabled'),false);
+    await evaluate('document.querySelector("[data-sdk-cancel]").click()');await until(()=>evaluate('!document.querySelector(".build-tools-dialog")'),'SDK 설치 취소');
     await field('target','ios');assert.equal(await evaluate('document.querySelector("[data-mobile=format]")'),null);assert.equal(await evaluate('document.querySelector("[data-build=build-run]").disabled'),true);
     await field('orientation','landscape',true);await evaluate('document.querySelector("[data-build=build]").click()');
     await until(()=>evaluate('document.querySelector(".build-progress").textContent==="완료"&&document.querySelector(".build-result").textContent.includes("HBGame.xcodeproj")'),'iOS 프로젝트 실제 출력');

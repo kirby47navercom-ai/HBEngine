@@ -15,7 +15,7 @@ async function download(url,file,{bytes,sha1,sha256,signal}){
   try{await pipeline(Readable.fromWeb(response.body),createWriteStream(partial,{flags:'wx'}),{signal});if((await fs.stat(partial)).size!==bytes||await fileHash(partial,sha256?'sha256':'sha1')!==(sha256||sha1))throw Error('Android 도구 체크섬 불일치');await fs.rename(partial,file);}finally{await fs.unlink(partial).catch(error=>{if(error.code!=='ENOENT')throw error;});}
 }
 export async function prepareAndroid({acceptLicense=false,signal,onProgress=console.log}={}){
-  if(!acceptLicense)throw Error('Google Android SDK 이용약관 동의가 필요해요: https://developer.android.com/studio/terms');
+  if(acceptLicense!==true)throw Error('Google Android SDK 이용약관 동의가 필요해요: https://developer.android.com/studio/terms');
   const sdk=androidSdk(),cache=path.join(sdk,'.downloads');await fs.mkdir(cache,{recursive:true});
   const response=await fetch('https://dl.google.com/android/repository/repository2-3.xml',{signal});if(!response.ok)throw Error('Android SDK 목록 다운로드 실패');const repository=await response.text();
   const license=repository.match(/<license id="android-sdk-license"[^>]*>([\s\S]*?)<\/license>/)?.[1];if(!license?.includes('SDK License'))throw Error('Android SDK 약관 확인 실패');

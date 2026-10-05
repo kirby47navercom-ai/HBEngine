@@ -4,10 +4,17 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {readBuildProfiles,saveBuildProfiles,buildGame} from './build-game.mjs';
 import {androidDevices,deployAndroid} from './android-deploy.mjs';
+import {prepareAndroid} from './prepare-android.mjs';
 export class BuildJobs{
   constructor(){this.jobs=new Map();this.queue=Promise.resolve();}
+  async prepareTools(record,{acceptLicense=false}={}){
+    if(acceptLicense!==true)throw Error('Google Android SDK 이용약관에 직접 동의해야 해요.');
+    if([...this.jobs.values()].some(j=>j.status==='running'))throw Error('진행 중인 빌드가 끝난 뒤 도구를 준비하세요.');
+    const id=randomUUID(),controller=new AbortController(),job={id,root:record.root,kind:'android-tools',status:'running',stage:'Android 도구 준비',startedAt:new Date().toISOString(),controller};this.jobs.set(id,job);
+    prepareAndroid({acceptLicense,signal:controller.signal,onProgress:stage=>{job.stage=stage;}}).then(result=>{job.result=result;job.status='done';},error=>{job.error=error.message;job.status=controller.signal.aborted?'canceled':'error';}).finally(()=>{job.finishedAt=new Date().toISOString();});return this.get(record,id);
+  }
   save(record,data,revision,checkOwner=()=>{}){const task=this.queue.then(()=>{checkOwner();return saveBuildProfiles(record,data,revision,checkOwner);});this.queue=task.catch(()=>{});return task;}
-  async start(record,{profileId,expectedRevision,dryRun=false}={}){await this.queue;const settings=await readBuildProfiles(record);if(settings.revision!==expectedRevision)throw Error('빌드 프로필이 변경됐어요. 다시 읽으세요.');const profile=settings.profiles.find(p=>p.id===profileId);if(!profile)throw Error('빌드 프로필이 없어요.');if([...this.jobs.values()].some(j=>j.root===record.root&&j.status==='running'))throw Error('이 프로젝트를 빌드 중이에요.');const id=randomUUID(),controller=new AbortController(),job={id,root:record.root,profileId,status:'running',stage:'검증',startedAt:new Date().toISOString(),controller};this.jobs.set(id,job);
+  async start(record,{profileId,expectedRevision,dryRun=false}={}){await this.queue;const settings=await readBuildProfiles(record);if(settings.revision!==expectedRevision)throw Error('빌드 프로필이 변경됐어요. 다시 읽으세요.');const profile=settings.profiles.find(p=>p.id===profileId);if(!profile)throw Error('빌드 프로필이 없어요.');if([...this.jobs.values()].some(j=>j.status==='running'&&(j.root===record.root||j.kind==='android-tools')))throw Error('이 프로젝트를 빌드 중이에요.');const id=randomUUID(),controller=new AbortController(),job={id,root:record.root,profileId,status:'running',stage:'검증',startedAt:new Date().toISOString(),controller};this.jobs.set(id,job);
     buildGame(record,profile,{dryRun,signal:controller.signal,onProgress:stage=>{job.stage=stage;}}).then(result=>{job.result=result;job.status='done';},error=>{job.error=error.message;job.status=controller.signal.aborted?'canceled':'error';}).finally(()=>{job.finishedAt=new Date().toISOString();});for(const [key,value] of this.jobs)if(this.jobs.size>50&&value.status!=='running')this.jobs.delete(key);return this.get(record,id);}
   get(record,id){const job=this.jobs.get(id);if(!job||job.root!==record.root)throw Error('빌드 기록이 없어요.');const {controller,root,...data}=job;return data;}
   cancel(record,id){const job=this.jobs.get(id);this.get(record,id);if(job.status==='running')job.controller.abort(Error('사용자가 빌드를 취소했어요.'));return this.get(record,id);}

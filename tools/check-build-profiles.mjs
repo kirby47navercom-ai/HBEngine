@@ -5,6 +5,7 @@ import {createProject} from './project-manifest.mjs';
 import {readBuildProfiles,saveBuildProfiles} from './build-game.mjs';
 import {BuildJobs} from './build-jobs.mjs';
 import {BuildPanel} from '../prototype/build-panel.js';
+import {prepareAndroid} from './prepare-android.mjs';
 
 const root=path.resolve(import.meta.dirname,'..'),dir=await fs.mkdtemp(path.join(root,'native/build/build-profiles-'));
 const record=await createProject('프로필 검증',dir,'2d');
@@ -14,6 +15,7 @@ await assert.rejects(saveBuildProfiles(record,modified,initial.revision,()=>{if(
 assert.equal((await readBuildProfiles(record)).revision,initial.revision);
 
 const jobs=new BuildJobs(),outside=path.join(dir,'outside-build');await fs.mkdir(outside);await fs.writeFile(path.join(outside,'Game.exe'),'never execute this fixture');
+for(const acceptLicense of [false,undefined,'true','false',1,null]){await assert.rejects(jobs.prepareTools(record,{acceptLicense}),/동의/);await assert.rejects(prepareAndroid({acceptLicense}),/동의/);}assert.equal(jobs.jobs.size,0,'거절된 약관 요청은 작업이나 설치를 시작하지 않는다');
 await fs.symlink(outside,path.join(record.root,'Builds'),process.platform==='win32'?'junction':'dir');
 jobs.jobs.set('escape',{id:'escape',root:record.root,status:'done',result:{executable:path.join(record.root,'Builds/Game.exe')}});
 await assert.rejects(jobs.open(record,'escape','run'),/빌드 경로/);
