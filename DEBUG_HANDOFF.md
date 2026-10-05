@@ -1,5 +1,11 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 동기화·마커·알림 검증 후속
+
+03R2Wq는 fixture에서 BP 노드의 key 대신 type을 조회한 시험 오류였어요. yT66QH/LzRgFC는 타임라인 SVG가 전역 .gameplay-properties svg의14px 규칙에 눌린 실제 UI 오류예요. 전용 selector로110px 타임라인/100px1D 차트를 복원했고 키 글자 stroke도 해제했어요. 0jrO4q는 정수 마우스 픽셀로 놓은 실제0.4041s와 이상적0.4s를 섞은 시험 오류로, 실제 dispatch 픽셀의 변환 시각을 단언하도록 고쳤어요.
+
+최종 Editor I2DJmg에서 실제 키 드래그·ArrowLeft/Delete(노드 보존)/Undo·우클릭·스크롤220 보존·AI/미리보기/C++/BP/notify→C++·뼈/GPU·pause·원본·exit0/서버 정리가 통과했어요. Player wkAJuF도 exit0/서버 정리 후 acceptance.json을 확인했어요. 역할이 완전 가중치가 된 뒤 blend-out 중 그룹 참여를 유지하는 경로는 마지막 코어 보강으로 검사했어요. 작은 CPU OP3EhY·실제 startup-state-TaqWsk도 별도 양의 근거예요. 실패/사용자 창/원본/설치본은 보존해요.
+
 ## 포즈 상태·전이 검증 후속
 
 코어에서 중단 직전 output 버퍼가 다음 evaluate의 기준 포즈 초기화로 덮여 포즈가 튀는 오류를 발견했어요. 직전 결과의 별도 재사용 버퍼로 고쳤어요. 자기 재진입은 초기화 전 포즈를 보존하고 상태 총 가중치1을 유지해요. 명령 CrossFade의 시간을 현재 상태 일반 전이가 덮는 경로는 Any State만 명령 중단 후보로 검사하도록 고쳤어요. 공유 DAG 관련성은 memo를 사용하고 확장 문맥2048에서 멈춰요.

@@ -1,5 +1,7 @@
 # 애니메이션 그래프·포즈 혼합
 
+2026-10-05 후속: [동기화·마커·알림](ANIMATION_SYNC.md)의 Sync 노드·Group/Graph·리더 역할·반복 마커·길이 대체·단일 Custom Event 알림·C++/BP3개·AI·실제 Editor/Player를 연결했어요. 현재 포즈 노드는11종, 공용 BP는560개예요. 아래 동기화 미구현 문장은 최초 추가 당시의 기록이며 후속 계약을 함께 읽어요.
+
 2026-10-05 후속: [포즈 상태·전이](ANIMATION_STATES.md)의 전용 상태/포즈 페이지·독립 시계·혼합/중단·Integer/Trigger·Custom Event·중첩·C++/BP12개·AI와 실제 Editor/Player 검증을 연결했어요. 아래는 최초9개 포즈 노드 계약의 기록이고 State Machine을 추가한 현재 노드는10종, 공용 BP 카탈로그는557개예요. 상태/동기화의 모든 후속이 완료된 것으로 세지 않아요.
 
 

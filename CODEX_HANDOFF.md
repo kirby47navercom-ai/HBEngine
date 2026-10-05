@@ -1,5 +1,14 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 후속: 동기화·마커·단일 알림 후 계속
+
+전체 누적 요구·끝까지 계속 지시를 유지해요. [동기화 계약](docs/ANIMATION_SYNC.md)에 공식 기술 본문/API 요약의 읽기 경계와 자체 동작/차이·검증을 기록해요. 전체 corpus gate를 승격하지 않아요.
+
+- Sync 포즈 노드·Group/Graph·리더 역할·길이/반복 마커·리더 교체·단일 알림·공유 DAG 한 번 시계·전이 역할의 완전 참여 후 blend-out 유지·경계4096을 연결했어요. 포즈 노드11종/BP560개예요. C++/BP3개 조회·Custom Event→사용자 C++와 schema/document.patch/runtime snapshot은 같은 실행기예요.
+- 상세 키 드래그/Ctrl/키보드/우클릭·이름/시간/가중치/팔로워·스크롤/펼침 보존·미리보기·Undo/AI를 연결했어요. 전역14px SVG 규칙이 타임라인/1D 차트를 누른 UI 오류를 수정했어요.
+- 최종 실제 Editor I2DJmg와 Player wkAJuF의 기능/원본/exit0/서버 정리가 통과했어요. 실제 알림→C++ 카운터, BP3개·C++3개·가져온 뼈/GPU·pause를 검사했어요. 마지막 전이 blend-out 보강은 코어로 검증했고 실제 fixture canLeader 경로는 유지해요. main/API/integration/runtime/startup·포즈/상태 회귀도 통과했어요. 작은 CPU 비용 검사는 OP3EhY이며 전체 FPS/모바일 근거로 확대하지 않아요.
+- 실패03R2Wq/yT66QH/LzRgFC/0jrO4q와 실제 성공을 구분해 보존해요. 사용자 설치본/프로필/게임 원본/창은 건드리지 않았어요. 다음 구간 알림/이벤트 인자·몽타주와 전체2D/렌더/월드/프레임워크/C++/AI/UI/오디오/모바일/배포/가벼움을 이어가요. 최종 답변/goal complete를 보내지 않아요.
+
 ## 최신 후속: 포즈 상태·전이 제작/실행 후 계속
 
 전체 누적 요구·active goal·끝까지 계속 지시를 유지해요. [포즈 상태 계약](docs/ANIMATION_STATES.md)에 Epic5.8 상태/전이/동기화 기술 본문과 Unity6000.0 전이 본문·StateInfo/TransitionInfo 요약·CrossFade2선언 읽기 경계·차이·구현을 기록했어요. 상속/개별 연결 API·그림/영상·전체 corpus gate를 승격하지 않아요.

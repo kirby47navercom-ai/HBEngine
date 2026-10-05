@@ -219,6 +219,10 @@ inline float AnimationGraph::GetNormalizedTime(Actor* target,const std::string& 
 inline float AnimationGraph::GetStateWeight(Actor* target,const std::string& machine,const std::string& state){for(const auto& s:bridgeAnimationMachine(target,machine).at("states"))if(s.at("id")==state||s.at("name")==state)return s.at("weight").get<float>();throw std::runtime_error("missing animation state");}
 inline bool AnimationGraph::IsTransitioning(Actor* target,const std::string& machine){return !bridgeAnimationMachine(target,machine).at("transition").is_null();}
 inline float AnimationGraph::GetTransitionProgress(Actor* target,const std::string& machine){const auto& t=bridgeAnimationMachine(target,machine).at("transition");return t.is_null()?0:t.at("progress").get<float>();}
+inline Json& bridgeAnimationSync(Actor* target,const std::string& group){for(auto& g:gameplayField(target,"animationGraph").at("syncGroups"))if(g.at("name")==group)return g;throw std::runtime_error("missing active animation sync group");}
+inline std::string AnimationGraph::GetSyncLeader(Actor* target,const std::string& group){return bridgeAnimationSync(target,group).at("leader").at("id").get<std::string>();}
+inline float AnimationGraph::GetSyncPhase(Actor* target,const std::string& group){return bridgeAnimationSync(target,group).at("phase").get<float>();}
+inline std::string AnimationGraph::GetSyncMode(Actor* target,const std::string& group){return bridgeAnimationSync(target,group).at("method").get<std::string>();}
 inline Json& bridgeSkinBone(Actor* target,const std::string& bone){for(auto& value:gameplayField(target,"spriteSkin").at("bones"))if(value.at("id")==bone||value.at("name")==bone)return value;throw std::runtime_error("missing sprite skin bone");}
 inline void SpriteSkin::SetBonePosition(Actor* target,const std::string& bone,const Vec2& value){engineCommand("skinSetPosition",{{"target",bridgeId(target)},{"bone",bone},{"value",value}});bridgeSkinBone(target,bone)["position"]=Json(value);}
 inline Vec2 SpriteSkin::GetBonePosition(Actor* target,const std::string& bone){return bridgeSkinBone(target,bone).at("position").get<Vec2>();}

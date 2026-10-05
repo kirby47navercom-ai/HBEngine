@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-05 추가: AnimationGraph::GetSyncLeader/GetSyncPhase/GetSyncMode3개를 공용 C++/BP·실제 Editor/Player에 연결했어요(전체560개). 단일 애니메이션 알림은 Actor의 Custom Event를 통해 사용자 C++도 호출해요. ID/처리 시점·마커/시계·검증은 [동기화 계약](ANIMATION_SYNC.md)에 기록해요.
+
 2026-10-05 추가: AnimationGraph의 정수/트리거와 상태 전환·현재/다음/시간/정규화 시간/가중치/진행률12개를 공용 선언·실행에 연결했어요(전체557개). [포즈 상태 계약](ANIMATION_STATES.md)에 C++ 명령 처리 시점·단위·실제 Editor/Player BP Trigger→State Custom Event→사용자 C++ callback 근거를 기록해요.
 
 

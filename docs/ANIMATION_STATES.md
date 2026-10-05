@@ -1,5 +1,7 @@
 # 포즈 상태·전이 제작과 실행 · 2026-10-05
 
+후속: [동기화·마커·단일 알림](ANIMATION_SYNC.md)을 실제 공용 실행기와 사람/AI/C++/BP·Editor/Player에 연결했어요. 아래 Sync Groups의 다음 구현 표시는 상태 추가 당시 기록이에요. 구간 알림·몽타주/다른 애니메이션 세부는 계속 구현해요.
+
 ## 실제 공식 읽기
 
 [Unreal5.8 State Machines](https://dev.epicgames.com/documentation/en-us/unreal-engine/state-machines-in-unreal-engine) 기술 본문0–146, [Transition Rules](https://dev.epicgames.com/documentation/en-us/unreal-engine/transition-rules-in-unreal-engine)0–135, [Sync Groups](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-sync-groups-in-unreal-engine)0–106을 읽었어요. Entry·상태 내부 포즈·조건·재진입·전이 순서/중단·상태 이벤트·다시 relevant가 되는 경우·동기화 역할을 대조했어요. 연결된 모든 하위 페이지/API·그림/영상·상속 내용을 읽은 것으로 세지 않아요. Sync Groups 본문은 다음 구현의 근거이고, 이 상태 머신 추가를 Sync Group 구현 완료로 세지 않아요.

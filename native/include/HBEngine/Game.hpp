@@ -213,6 +213,9 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphStateWeight", KoreanName="포즈 상태 혼합 가중치", Category="애니메이션 상태") static float GetStateWeight(Actor* target,const std::string& machine,const std::string& state);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphTransitioning", KoreanName="포즈 전환 중인지", Category="애니메이션 상태") static bool IsTransitioning(Actor* target,const std::string& machine);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphTransitionProgress", KoreanName="포즈 전환 진행률", Category="애니메이션 상태") static float GetTransitionProgress(Actor* target,const std::string& machine);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphSyncLeader", KoreanName="동기화 리더 클립", Category="애니메이션 동기화") static std::string GetSyncLeader(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphSyncPhase", KoreanName="동기화 재생 비율", Category="애니메이션 동기화") static float GetSyncPhase(Actor* target,const std::string& group);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphSyncMode", KoreanName="동기화 길이·마커 방식", Category="애니메이션 동기화") static std::string GetSyncMode(Actor* target,const std::string& group);
 };
 HB_CLASS()
 class SpriteSkin : public Library {

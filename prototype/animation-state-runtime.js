@@ -29,15 +29,20 @@ export class AnimationPoseMachine {
   finish(){const t=this.transition;if(!t)return;this.current=t.to;this.transition=null;this.event(t.rule.onEnd,'transitionEnd',this.states.get(t.to),t.rule);this.event(this.states.get(t.to).onFullyBlended,'fullyBlended',this.states.get(t.to));}
   initialize(){this.current=this.node.properties.entry;this.transition=null;this.enter(this.current,0,true);this.initialized=true;this.event(this.states.get(this.current).onFullyBlended,'fullyBlended',this.states.get(this.current));}
   crossFade(state,duration,offset){const found=this.states.get(state)||[...this.states.values()].find(s=>s.name===state);if(!found||!Number.isFinite(duration)||duration<0||duration>60||!Number.isFinite(offset)||offset<0||offset>1000)throw Error('포즈 상태·전이 시간·시작 비율을 확인하세요.');if(!this.initialized)this.initialize();this.lastFrame=this.owner.frame;this.begin({id:'command',to:found.id,duration,fixedDuration:true,offset,curve:'linear',conditions:[],interrupt:'none',ordered:false,onStart:'',onEnd:'',onInterrupt:''},undefined,{duration,offset});}
-  evaluate(delta,out,evaluate){
+  prepare(delta){
+    if(this.preparedFrame===this.owner.frame)return;this.preparedFrame=this.owner.frame;
     const first=!this.initialized||this.node.properties.reinitialize&&this.lastFrame!==this.owner.frame-1;if(first)this.initialize();this.lastFrame=this.owner.frame;this.limited=false;
     let decisions=0;for(;decisions<this.node.properties.maxTransitions;decisions++){
       let choice,source;for(const t of this.candidates()){if(this.transition&&t.id===this.transition.rule.id){if(this.transition.rule.ordered)break;continue;}const from=t.from==='any'?(this.transition?.to||this.current):t.from;if(this.eligible(t,from,delta)){choice=t;source=from;break;}}
       if(!choice)break;this.begin(choice,source,{initial:first&&this.node.properties.skipFirstTransition});if(this.transition)break;
     }this.limited=decisions===this.node.properties.maxTransitions;
     const t=this.transition,ids=t?[t.from,t.to]:[this.current];for(const id of new Set(ids))this.stateContext(id).time+=delta*this.states.get(id).speed;
+    if(t){t.time+=delta;t.weight=animationCurve(t.duration?t.time/t.duration:1,t.rule.curve);}
+  }
+  evaluate(delta,out,evaluate){
+    this.prepare(delta);const t=this.transition;
     const sample=id=>{const s=this.states.get(id);return evaluate(this.node.inputs[s.input],this.stateContext(id),delta*s.speed);};
-    let result;if(t){t.time+=delta;t.weight=animationCurve(t.duration?t.time/t.duration:1,t.rule.curve);const a=t.frozen?{pose:this.frozen,sprites:this.frozenSprites}:sample(t.from),b=sample(t.to);this.owner.mix(out,a.pose,b.pose,t.weight);result={pose:out,sprites:this.owner.mergeSprites(a.sprites,b.sprites,t.weight)};if(t.time>=t.duration)this.finish();}else{const value=sample(this.current);for(let i=0;i<out.length;i++)out[i].set(value.pose[i]);result={pose:out,sprites:value.sprites};}for(let i=0;i<this.lastPose.length;i++)this.lastPose[i].set(result.pose[i]);this.lastResult={pose:this.lastPose,sprites:result.sprites};return result;
+    let result;if(t){const a=t.frozen?{pose:this.frozen,sprites:this.frozenSprites}:sample(t.from),b=sample(t.to);this.owner.mix(out,a.pose,b.pose,t.weight);result={pose:out,sprites:this.owner.mergeSprites(a.sprites,b.sprites,t.weight)};if(t.time>=t.duration)this.finish();}else{const value=sample(this.current);for(let i=0;i<out.length;i++)out[i].set(value.pose[i]);result={pose:out,sprites:value.sprites};}for(let i=0;i<this.lastPose.length;i++)this.lastPose[i].set(result.pose[i]);this.lastResult={pose:this.lastPose,sprites:result.sprites};return result;
   }
   snapshot(){const t=this.transition,current=this.states.get(this.current),next=t&&this.states.get(t.to);return {id:this.node.id,name:this.node.name,key:this.key,state:current?.id||'',stateName:current?.name||'',nextState:next?.id||'',nextName:next?.name||'',...this.current?this.timing(this.current):{time:0,normalized:0,length:0},transition:t?{id:t.rule.id,from:t.from,to:t.to,time:t.time,duration:t.duration,progress:t.duration?clamp(t.time/t.duration):1,weight:t.weight}:null,limited:this.limited,states:[...this.states.values()].map(s=>({id:s.id,name:s.name,time:this.stateContext(s.id).time,weight:t?s.id===t.to&&s.id===t.from?1:s.id===t.to?t.weight:s.id===t.from?1-t.weight:0:s.id===this.current?1:0}))};}
 }
