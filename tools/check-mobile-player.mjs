@@ -18,8 +18,8 @@ import {createProject} from './project-manifest.mjs';
 import {buildGame} from './build-game.mjs';
 
 const root=path.resolve(import.meta.dirname,'..');await fs.mkdir(path.join(root,'native/build'),{recursive:true});const dir=await fs.mkdtemp(path.join(root,'native/build/mobile-player-'));
-const header='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable) class MobileActor:public hb::Actor{public:HB_PROPERTY(BlueprintReadWrite) int Count=0;HB_FUNCTION(BlueprintCallable) int Start();HB_FUNCTION(BlueprintPure) std::string Greeting();HB_FUNCTION(BlueprintPure) bool Hit();};';
-const source='int MobileActor::Start(){Count++;return Count;}std::string MobileActor::Greeting(){return "주인님 안녕하세요";}bool MobileActor::Hit(){return hb::Physics::Raycast({0,3,0},{0,-3,0},2,-1,false,this).hit;}';
+const header='#include <HBEngine/Game.hpp>\nHB_CLASS(Blueprintable) class MobileActor:public hb::Actor{public:HB_PROPERTY(BlueprintReadWrite) int Count=0;HB_PROPERTY(BlueprintReadWrite) bool GroundHit=false;HB_FUNCTION(BlueprintCallable) int Start();HB_FUNCTION(BlueprintPure) std::string Greeting();HB_FUNCTION(BlueprintPure) bool Hit();};';
+const source='int MobileActor::Start(){GroundHit=Hit();Count++;return Count;}std::string MobileActor::Greeting(){return "주인님 안녕하세요";}bool MobileActor::Hit(){return hb::Physics::Raycast({0,3,0},{0,-3,0},2,-1,false,this).hit;}';
 const modules=new Map();for(const code of [source,source.replace('Count++','Count+=10')])modules.set(createHash('sha256').update(JSON.stringify([header,code])).digest('hex'),{header,source:code});
 const native=await mobileSources(modules,dir);
 const main='#include "Modules.hpp"\n#include <iostream>\n#include <nlohmann/json.hpp>\nint main(){std::string line;while(std::getline(std::cin,line)){auto request=nlohmann::json::parse(line);try{auto query=[](const std::string& packet){std::cout<<"QUERY\\t"<<packet<<std::endl;std::string reply;std::getline(std::cin,reply);return reply;};auto result=HB_mobileInvoke(request.at("module").get<int>(),request.at("request").dump(),query);std::cout<<"RESULT\\t"<<result<<std::endl;}catch(const std::exception& e){std::cout<<"RESULT\\t"<<nlohmann::json{{"ok",false},{"error",e.what()}}.dump()<<std::endl;}}}';
@@ -40,7 +40,7 @@ try{
   const builds=[];for(const module of native.modules)builds.push(await post('/api/native/build',{header:module.header,source:module.source}));await assert.rejects(post('/api/native/build',{header,source:'unregistered'}),/등록/);
   const objects=[{id:'player',nativeClass:'MobileActor',nativeProperties:{Count:0},position:[4,2,0],rotation:[0,0,0],scale:[1,1,1]},{id:'ground',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],components:[{id:'box',type:'BoxCollider2D',properties:{...componentDefaultValues('BoxCollider2D'),extent:[1,.5,.5]}}]}],clients=builds.map(()=>new NativeWorldClient());
   const call=(index,name,args={target:'player'})=>clients[index].call({key:'nativeCall',nativeId:'MobileActor.'+name,self:'player',objects,args},builds[index].metadata,request=>post('/api/native/call',{token:builds[index].token,request}));
-  const first=await call(0,'Start');assert.equal(first.outputs.result,1);assert.deepEqual(first.objects[0].position,[4,2,0]);assert.equal(first.objects[0].nativeProperties.Count,1);
+  const first=await call(0,'Start');assert.equal(first.outputs.result,1);assert.deepEqual(first.objects[0].position,[4,2,0]);assert.equal(first.objects[0].nativeProperties.Count,1);assert.equal(first.objects[0].nativeProperties.GroundHit,true);
   assert.equal((await call(1,'Start')).outputs.result,10,'same C++ class names keep separate AOT state');const frame=await clients[0].call({command:'frame',delta:.016,clock:{scale:1,paused:false},objects},builds[0].metadata,request=>post('/api/native/call',{token:builds[0].token,request}));assert.equal(frame.clock.delta>.015,true);assert.deepEqual(frame.objects,[]);
   objects[0].nativeProperties.Count=1;objects[0].position[0]=5;
   assert.equal((await call(0,'Start')).outputs.result,2,'delta world is applied to the portable C++ module');assert.equal((await call(0,'Greeting')).outputs.result,'주인님 안녕하세요');assert.equal((await call(0,'Hit')).outputs.result,true,'C++ synchronous queries use the shared real Rapier 2D world');
@@ -60,6 +60,7 @@ for(const [type,id,right] of [['Joystick','Move',false],['TouchButton','Attack',
 await record.project.write('Assets/W_Mobile.hbwidget.json',JSON.stringify(widget));
 await record.project.write('Assets/MobileVector.svg','<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect x="2" y="2" width="92" height="92" rx="18" fill="#284e75" stroke="#c8edff" stroke-width="3"/><path d="M16 48L48 16L80 48L48 80Z" fill="#5dccad"/></svg>');
 const sprite=createAsset('sprite','S_Mobile');sprite.texture='Assets/MobileVector.svg';sprite.pixelsPerUnit=96;await record.project.write('Assets/S_Mobile.hbsprite.json',JSON.stringify(sprite));
+scene.objects.push({id:'mobile-ground',name:'Ground',kind:'cube',visible:true,position:[0,-2,0],rotation:[0,0,0],scale:[1,1,1],components:[makeSceneComponent('BoxCollider2D',{extent:[6,.5,.5]})]});
 scene.objects.push({id:'mobile-sprite',name:'Mobile Sprite',kind:'sprite',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[2,2,1],components:[makeSceneComponent('SpriteRenderer',{sprite:'Assets/S_Mobile.hbsprite.json'})]});
 for(const [i,module] of native.modules.entries()){
   const code=i===0?module.source.replace('Count++;','Count++;hb::UI::SetText(this,"HUD","Title",Greeting());'):module.source;

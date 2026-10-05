@@ -19,6 +19,7 @@ const device=Object.entries(devices.devices).filter(([runtime])=>runtime.include
 console.log('시뮬레이터 선택:',device?.name,device?.udid);
 assert.ok(device,'설치된 iPhone 시뮬레이터가 없어요.');
 if(device.state!=='Booted')await run(['simctl','boot',device.udid]);
+await runTool('open',['-a','Simulator','--args','-CurrentDeviceUDID',device.udid],{timeout:60000});
 await run(['simctl','bootstatus',device.udid,'-b']);
 await run(['simctl','install',device.udid,app]);
 await run(['simctl','launch',device.udid,proof.applicationId]);
@@ -31,16 +32,23 @@ for(let i=0;i<90;i++){
   await new Promise(resolve=>setTimeout(resolve,1000));
 }
 assert.ok(report,'WKWebView 실행 보고가 없어요.');
+console.log('실행 보고:',JSON.stringify({ok:report.ok,frames:report.frames,drawCalls:report.drawCalls,error:report.error}));
 await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
-await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.png')]);
 assert.equal(report.ok,true,report.error);
 assert.ok(report.frames>=10,'첫 10프레임까지 실행되어야 해요.');
 assert.ok(report.drawCalls>0,'WebGL2가 장면을 그려야 해요.');
 for(const [i,count] of [[0,1],[1,10]]){
   const actor=report.objects.find(o=>o.id==='mobile-probe-'+i);
   assert.ok(actor,'C++ 블루프린트 액터가 없어요.');
+  assert.equal(actor.nativeProperties.GroundHit,true,'앱의 실제 C++ 동기 질의가 Rapier 2D 충돌을 읽어야 해요.');
   assert.equal(actor.nativeProperties.Count,count,'동일 클래스의 두 C++ 모듈이 각각 실행되어야 해요.');
   assert.deepEqual(actor.position,[i?2:-2,1,0],'C++ 시작 실행이 배치 위치를 보존해야 해요.');
 }
-await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
+const origin=report.mobileHost.assetOrigin;assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
+const whole=await fetch(origin+'/Content/Assets/MobileVector.svg');assert.equal(whole.status,200);assert.equal(whole.headers.get('content-type'),'image/svg+xml');const image=await whole.text();
+for(const [range,expected] of [['bytes=0-7',image.slice(0,8)],['bytes=-8',image.slice(-8)]]){const response=await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range}});assert.equal(response.status,206);assert.equal(await response.text(),expected);}
+assert.equal((await fetch(origin+'/Content/Assets/MobileVector.svg',{headers:{range:'bytes=invalid'}})).status,416);
+assert.equal((await fetch(origin+'/Native/Main.mm')).status,404);
+await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
+await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.png')]);
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');

@@ -7,7 +7,7 @@ const source=await fs.readFile(new URL('../prototype/player.js',import.meta.url)
 const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix));assert.ok(value,'Player function missing: '+prefix);return value;};
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
-const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment',`
+const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment','visuals',`
   let closed=false,closing=false,busy=false,failureCleanup,sceneEpoch=0;
   ${releaseSource}
   ${failSource}
@@ -24,7 +24,7 @@ function fixture({reportGate,endGate,flushGate,flushFailures=0,reportError=false
   const flushStorage=async()=>{const attempt=++flushes;events.push('flush-start:'+attempt);if(flushGate&&attempt===1)await flushGate.promise;if(attempt<=flushFailures){events.push('flush-failed:'+attempt);throw Error('storage fixture failure');}saved.push(...pending.splice(0));events.push('flush-done:'+attempt);};
   const window={chrome:{webview:{postMessage:value=>events.push(value)}}};
   const $=selector=>{if(!elements.has(selector))elements.set(selector,{hidden:false,textContent:''});return elements.get(selector);};
-  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);},disposeSceneEnvironment);
+  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);},disposeSceneEnvironment,{dispose2D:()=>events.push('2d-lighting-disposed')});
   return {...api,events,saved,pending,timers,vm,groups,elements};
 }
 const count=(events,value)=>events.filter(event=>event===value).length;
@@ -66,7 +66,7 @@ const count=(events,value)=>events.filter(event=>event===value).length;
   const f=fixture();f.setBusy(true);const close=f.close();await f.close();assert.deepEqual(f.events,[]);assert.equal(f.timers.length,1);
   f.setBusy(false);f.timers.shift()();await close;
   assert.deepEqual(f.saved,['EndPlay-save']);assert.equal(count(f.events,'EndPlay:Stopped'),1);assert.equal(count(f.events,'hbengine.close'),1);
-  assert.ok(f.events.indexOf('EndPlay-saved')<f.events.indexOf('flush-start:1'));assert.equal(f.events.at(-1),'hbengine.close');
+  assert.ok(f.events.indexOf('EndPlay-saved')<f.events.indexOf('flush-start:1'));assert.equal(count(f.events,'2d-lighting-disposed'),1);assert.equal(f.events.at(-1),'hbengine.close');
 }
 
 // A normal shutdown save failure remains recoverable without sending an early close.
