@@ -45,7 +45,7 @@ async function report(error){
   if(config.configuration==='development'||config.smoke){
     data.objects=objects.slice(0,2000).map(o=>({id:o.id,name:o.name,kind:o.kind,position:o.position,rotation:o.rotation,scale:o.scale,visible:o.visible,poolActive:o.poolActive,velocity:o.velocity,currentSprite:o.currentSprite,nativeProperties:o.nativeProperties}));
     data.variables=[];let budget=250000;for(const b of vm?.bindings||[]){const values={};for(const [id,value] of b.variables){const text=JSON.stringify(value);if(text.length<=16000&&text.length<budget){values[id]=value;budget-=text.length;}}if(Object.keys(values).length)data.variables.push({self:b.self,values});}
-    data.nativeTransport=nativeSamples;data.logs=logs.map(s=>s.slice(0,2000));data.audio=services?.audioState();
+    data.nativeTransport=nativeSamples;data.logs=logs.map(s=>s.slice(0,2000));data.audio=services?.audioState();data.mobileActive=mobileActive;
   }
   // Diagnostics may fail (e.g. a read-only save directory) without stopping the game.
   try{await editorRequest('/api/player/report',{method:'POST',body:JSON.stringify(data)});}catch(issue){console.warn('게임 진단 저장 실패:',issue.message);}return data;
@@ -63,11 +63,12 @@ if(config.configuration==='development'||config.smoke)window.hbPlayerDebug={
   input:packet=>vm.dispatchInput(packet),
   resetProfile:()=>profiler.reset(),
   profile:()=>profiler.snapshot(),
+  audio:()=>services.audioState(),
   inspect:()=>({animation:services.animationState(),spriteSkin:services.spriteSkinState({vertices:true}),work:vm.inspectWork(),input:vm.inputSnapshot(),objects:structuredClone(objects),physics:services.physicsState(),camera:{position:activeCamera.getWorldPosition(new THREE.Vector3()).toArray(),projection:activeCamera.type},sprites:objects.filter(o=>groups.get(o.id)?.userData.spriteMesh).map(o=>{const g=groups.get(o.id),m=g.userData.spriteMesh;return {id:o.id,flip:m.scale.toArray(),sprite:o.currentSprite||null,image:[m.material.map?.image?.width||0,m.material.map?.image?.height||0],children:g.children.length,surface:{material:m.material.type,transparent:m.material.transparent,depthWrite:m.material.depthWrite,alphaCutoff:m.material.alphaTest,normalImage:[m.material.normalMap?.image?.width||0,m.material.normalMap?.image?.height||0],normalScale:m.material.normalScale?.toArray()||null,normalColorSpace:m.material.normalMap?.colorSpace??null,castShadow:m.castShadow,receiveShadow:m.receiveShadow,light2d:m.material.userData.hbLight2D?{count:m.material.userData.hbLight2D.hbLight2DCount.value,layer:m.material.userData.hbLight2D.hbLight2DLayer.value,bytes:m.material.userData.hbLight2D.hbLight2DData.value?.image.data.byteLength||0,shapeBytes:m.material.userData.hbLight2D.hbLight2DShape.value?.image.data.byteLength||0}:null}};}),renderer:{vendor:renderer.getContext().getParameter(renderer.getContext().VENDOR),renderer:renderer.getContext().getParameter(renderer.getContext().RENDERER),info:renderer.info.render,memory:renderer.info.memory}}),
   async operation(key,args){while(busy)await new Promise(resolve=>setTimeout(resolve,1));busy=true;try{return await services.operation(key,args,vm.bindings[0]||{self:objects[0]?.id,root:{components:[]}},vm);}finally{busy=false;}},
 };
 menu.addEventListener('close',()=>{services?.pauseAudio(false)?.catch(fail);queued=0;});
-window.hbMobileLifecycle=active=>{window.hbMobileHostLifecycle?.(active);mobileActive=active;last=performance.now();queued=0;if(active&&mobileSuspended&&!closed&&!closing){mobileSuspended=false;schedule();}if(!active){releaseKeys();flushStorage().catch(fail);}services?.pauseAudio(!active||menu.open)?.catch(fail);};
+window.hbMobileLifecycle=active=>{window.hbMobileHostLifecycle?.(active);const changed=mobileActive!==active;mobileActive=active;last=performance.now();queued=0;if(active&&mobileSuspended&&!closed&&!closing){mobileSuspended=false;schedule();}if(!active){releaseKeys();flushStorage().catch(fail);}const playback=services?.pauseAudio(!active||menu.open);Promise.resolve(playback).then(()=>{if(changed&&!closed&&config.configuration==='development')return report();}).catch(fail);};
 if(config.mobile)document.addEventListener('visibilitychange',()=>window.hbMobileLifecycle(!document.hidden));
 function releaseKeys(){held.clear();vm?.releaseInput().catch(fail);}
 bindRuntimePointer(canvas,{runtime:()=>vm,enabled:()=>!closed&&!closing&&!menu.open&&vm?.active&&!vm.paused,error:fail});

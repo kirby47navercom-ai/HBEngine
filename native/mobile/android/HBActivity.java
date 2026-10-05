@@ -47,7 +47,7 @@ public final class HBActivity extends Activity {
             settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);
             settings.setAllowFileAccessFromFileURLs(false);settings.setAllowUniversalAccessFromFileURLs(false);
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-            settings.setMediaPlaybackRequiresUserGesture(true);
+            settings.setMediaPlaybackRequiresUserGesture(false);
             WebView.setWebContentsDebuggingEnabled("development".equals(manifest.getString("configuration")));
             web.addJavascriptInterface(this,"HBMobile");
             web.setWebViewClient(new WebViewClient() {

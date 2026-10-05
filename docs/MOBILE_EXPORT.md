@@ -36,6 +36,8 @@ Android SDK는 사용자 이용약관 동의를 기다리고 있으며 설치·A
 
 ## 확인한 공식 출처와 읽기 범위
 
+- [Android 재생 터치 조건](https://developer.android.com/reference/android/webkit/WebSettings#setMediaPlaybackRequiresUserGesture(boolean)): 해당 메서드의 기본값·인자 본문을 읽었어요. [Apple 재생 터치 조건](https://developer.apple.com/documentation/webkit/wkwebviewconfiguration/mediatypesrequiringuseractionforplayback): 공식 JSON의 abstract·선언·Discussion 전체를 읽었어요. 원문 `native/build/mobile-audio-docs/apple-audio-policy.json`, SHA256 `25381b2d8361bf6105a9cf05c04d79da79f0a5d4661c6a5818b6c818c5150aeb`예요. WebSettings/WKWebView 전체 연결 API 읽기로 세지 않아요. 로컬 게임 앱의 시작 사운드는 별도 터치 없이 재생하게 설정하고 실제 믹서 신호·정지/복귀를 후속 검사해요.
+
 - [Android 로컬 콘텐츠](https://developer.android.com/develop/ui/views/layout/webapps/load-local-content): 로컬 콘텐츠 출처·보안·파일 URL 제한·코드 예제 본문을 읽었어요. 이 페이지의 링크 대상 전체 API를 읽었다는 뜻은 아니에요.
 - [Android NDK 다른 빌드 시스템](https://developer.android.com/ndk/guides/other_build_systems): clang 대상·호스트·명령행 본문을 읽었어요.
 - [Android bundletool](https://developer.android.com/tools/bundletool): 번들·APK 세트 생성·설치·서명 본문을 읽었어요.

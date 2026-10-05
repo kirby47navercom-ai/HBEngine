@@ -54,6 +54,8 @@ const timeoutStart=Date.now();await assert.rejects(runTool(process.execPath,['-e
 let posted,bridge=platformBridge(packet=>{posted=packet;}),job=bridge.request('native',{},async query=>query.x+1);await bridge.receive({id:posted.id,queryId:'q',query:{x:2}});assert.equal(posted.operation,'queryReply');assert.equal(posted.data.value,3);await bridge.receive({id:'1',data:{ok:true}});assert.deepEqual(await job,{ok:true});
 const record=await createProject('모바일 출력',dir,'2d'),profile={...defaultBuildProfile(record.manifest),id:'ios',target:'ios'};
 const scenePath=await record.project.resolve(record.manifest.startupScene),scene=JSON.parse(await fs.readFile(scenePath,'utf8'));
+const samples=44100*2,wav=Buffer.alloc(44+samples*2);wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(44100,24);wav.writeUInt32LE(88200,28);wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(samples*2,40);for(let i=0;i<samples;i++)wav.writeInt16LE(Math.round(Math.sin(i*2*Math.PI*440/44100)*1600),44+i*2);
+await fs.writeFile(path.join(record.root,'Assets/MobileTone.wav'),wav);await record.project.write('Assets/MobileMixer.hbmixer.json',JSON.stringify(createAsset('audiomixer','MobileMixer')));
 const widget=createAsset('widget','W_Mobile');widget.scaleMode='scale';widget.scaleRule='height';widget.safeArea=true;
 const title=createWidgetNode('Text','title');title.name='Title';title.properties.text='초기값';title.properties.fontSize=28;title.slot.offset=[32,32,450,48];widget.nodes.push(title);
 const health=createWidgetNode('ProgressBar','health');health.name='Health';health.slot.offset=[32,90,280,20];health.properties.value=.75;widget.nodes.push(health);
@@ -63,7 +65,7 @@ await record.project.write('Assets/W_Mobile.hbwidget.json',JSON.stringify(widget
 await record.project.write('Assets/MobileVector.svg','<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect x="2" y="2" width="92" height="92" rx="18" fill="#284e75" stroke="#c8edff" stroke-width="3"/><path d="M16 48L48 16L80 48L48 80Z" fill="#5dccad"/></svg>');
 const sprite=createAsset('sprite','S_Mobile');sprite.texture='Assets/MobileVector.svg';sprite.pixelsPerUnit=96;await record.project.write('Assets/S_Mobile.hbsprite.json',JSON.stringify(sprite));
 scene.objects.push({id:'mobile-ground',name:'Ground',kind:'cube',visible:true,position:[0,-2,0],rotation:[0,0,0],scale:[1,1,1],components:[makeSceneComponent('BoxCollider2D',{extent:[6,.5,.5]})]});
-scene.objects.push({id:'mobile-sprite',name:'Mobile Sprite',kind:'sprite',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[2,2,1],components:[makeSceneComponent('SpriteRenderer',{sprite:'Assets/S_Mobile.hbsprite.json'})]});
+scene.objects.push({id:'mobile-sprite',name:'Mobile Sprite',kind:'sprite',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[2,2,1],components:[makeSceneComponent('SpriteRenderer',{sprite:'Assets/S_Mobile.hbsprite.json'}),makeSceneComponent('AudioSource',{clip:'Assets/MobileTone.wav',loop:true,playOnStart:true,volume:.04,mixer:'Assets/MobileMixer.hbmixer.json'})]});
 for(const [i,module] of native.modules.entries()){
   const code=i===0?module.source.replace('Count++;','Count++;hb::UI::SetText(this,"HUD","Title",Greeting());'):module.source;
   const bp=createAsset('blueprint','BP_Mobile'+i),headerPath='Source/Mobile'+i+'.h',sourcePath='Source/Mobile'+i+'.cpp',assetPath='Assets/BP_Mobile'+i+'.hbblueprint.json';

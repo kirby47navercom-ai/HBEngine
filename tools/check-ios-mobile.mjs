@@ -41,6 +41,7 @@ await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
 assert.equal(report.ok,true,report.error);
 assert.ok(report.frames>=10,'첫 10프레임까지 실행되어야 해요.');
 assert.ok(report.drawCalls>0,'WebGL2가 장면을 그려야 해요.');
+assert.equal(report.audio.state,'running');assert.ok(report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0));assert.ok(report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6,'실제 믹서 출력 신호가 있어야 해요.');
 for(const [i,count] of [[0,1],[1,10]]){
   const actor=report.objects.find(o=>o.id==='mobile-probe-'+i);
   assert.ok(actor,'C++ 블루프린트 액터가 없어요.');
@@ -57,14 +58,16 @@ assert.equal((await asset('/Content/Assets/MobileVector.svg',{headers:{range:'by
 assert.equal((await asset('/Native/Main.mm')).status,404);
 await run(['simctl','launch',device.udid,'com.apple.mobilesafari']);
 await new Promise(resolve=>setTimeout(resolve,3000));const paused=JSON.parse(await fs.readFile(reportFile,'utf8'));
+assert.equal(paused.mobileActive,false);assert.equal(paused.audio.state,'suspended','앱 전환 시 오디오를 멈춰야 해요.');
 await new Promise(resolve=>setTimeout(resolve,3000));const background=JSON.parse(await fs.readFile(reportFile,'utf8'));
 assert.equal(background.ok,true,background.error);assert.equal(background.frames,paused.frames,'백그라운드에서는 게임 프레임을 멈춰야 해요.');
 await run(['simctl','launch',device.udid,proof.applicationId]);
-for(let i=0;i<90;i++){report=JSON.parse(await fs.readFile(reportFile,'utf8'));if(!report.ok||report.frames>paused.frames)break;await new Promise(resolve=>setTimeout(resolve,1000));}
+for(let i=0;i<90;i++){report=JSON.parse(await fs.readFile(reportFile,'utf8'));if(!report.ok||report.frames>paused.frames&&report.audio.state==='running')break;await new Promise(resolve=>setTimeout(resolve,1000));}
 assert.equal(report.ok,true,report.error);assert.ok(report.frames>paused.frames,'앱 복귀 후 프레임이 재개되어야 해요.');
+assert.equal(report.mobileActive,true);assert.equal(report.audio.state,'running','게임 복귀 시 오디오를 재개해야 해요.');
 for(const [i,count] of [[0,1],[1,10]])assert.equal(report.objects.find(o=>o.id==='mobile-probe-'+i).nativeProperties.Count,count,'복귀가 Begin Play를 다시 실행하지 않아야 해요.');
 await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
-await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,backgroundPaused:true,resumePreservesWorld:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
+await fs.writeFile(path.join(out,'ios-acceptance.json'),JSON.stringify({ok:true,simulatorCompiled:true,deviceCompiled:true,simulatorInstalled:true,simulatorLaunched:true,sharedCppBlueprint:true,synchronousPhysics:true,assetRangeVerified:true,audioSignalVerified:true,audioBackgroundPaused:true,audioResumed:true,audioHeard:false,backgroundPaused:true,resumePreservesWorld:true,physicalDeviceVerified:false,signingVerified:false,device:device.name,report},null,2));
 await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.png')]);
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');
 }catch(error){
