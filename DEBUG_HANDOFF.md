@@ -1,5 +1,11 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+iOS37326369196: 오디오 포함 게임은1080프레임/15draw·AudioContext running이었지만 voice time0/믹서 master5.3e-44여서 실제 신호 검사를 실패했어요. 컴파일/게임 성공으로 오디오를 통과시키지 않아요. 파일 요청/디코더와 시뮬레이터 오디오 시계를 구분하기 위해 context clock·media readyState/networkState/error/duration과 WebKit 오디오/미디어 로그를 추가해 다음 실행에서 확인해요. 아직 AVAudioSession·서버·음소거·루프 경계 어느 원인도 확정하지 않아요. 임의 지연/조건 완화나 다른 오디오 시스템 교체를 하지 않아요.
+
+Windows release3ZuMaB: 실제 스프라이트/한글/믹서/마우스 C++ 발사·터치/접근성·480탄환 전부 이동·30초 이상/96재사용 통과. i3wHLE 대비 C++480 실행26.75→23.65/s(-11.6%)·작업p95 41.5→46.9ms(+13.0%)여서 기존10%회귀 게이트는 실패했어요. CPU 상위는 Three getParameters·증분world walk·physics sync이고 여러 구간이 함께 느려졌어요. 이 단일 표본으로 모바일 변경이나 외부 부하를 원인으로 단정하지 않아요. Android에는 기존 transport 보고에 RPC/질의/검증 시간을 추가해 비용을 분리하고 공용 portable/H6PL0Q 실제 두ABI APK/AAB 컴파일을 통과했어요. 원인 확인 후 최적화와 동일 조건 회귀 검사를 이어가요.
+
+Windows player-acceptance-fAeMrQ는 터치 버튼 정렬 검사에서 멈췄어요. 스크린샷의 실제 글자는 중앙에 있었고, 검사 firstElementChild가 SVG 버튼 지원 이후 숨겨진 img를 읽고 있었어요. 실제 label span의 텍스트·보이는 폭·중심 오차를 검사하고 두 rect를 보존하도록 수정해 release 탄막 검사를 다시 수행해요. UI 정렬을 임의로 바꾸거나 오차 한도를 느슨하게 하지 않아요. Android 오디오 포함 CuEx4o/Riasyn은 실제 믹서 신호·background suspend·resume running까지 통과했어요. 활성 구간 4.5초 표본은 48프레임/9.84fps·작업p95 134.4ms이며 software GPU/가상 기기·매 Tick 두 C++ 물리 질의 조건이에요. 실물 모바일 성능으로 표시하지 않으며 비용 원인을 후속 분리해요.
+
 Android v6YE5E와 iOS37323624672는 실제 매 Tick C++ 물리 질의 중 배경/복귀·Begin Play Count1/10 보존을 통과했어요. 독립 iOS 기기에서는 첫 실행도 통과했으나 기존 simctl 지연의 정확한 원인은 확정하지 않아요. bqMC2Q 동시 터치 실패는 검사에서 공백 키를 k.space로 비교한 오류였어요. k[" "]로 고친 v6YE5E는 동시 이동/공격·해제와 기기 종료/임시 폴더 정리까지 통과했어요. 실패 검사 동안 누른 입력이 계속돼 플레이어가 물리 범위를 벗어난 보고를 새 엔진 질의 오류로 세지 않아요. 잘못된 Range의 TypeError는 CDP 실제 net::ERR_REQUEST_RANGE_NOT_SATISFIABLE와 함께 확인했어요. 안전 영역 수정 후 화면에서 탐색 바와 공격 버튼이 겹치지 않아요. 오디오/활성 구간 성능은 별도 검사해요.
 
 iOS37321490368: 두 컴파일은 통과했지만 첫 simctl launch180초 제한으로 끝났어요. 실패 로그에서 CoreSimulatorBridge→FrontBoard 요청 뒤 HBGame 프로세스 로그/실행 보고는 없었고 설치 등록 이벤트가 계속됐어요. 복귀 수정 검사에 도달하지 않았으므로 JS/C++ 수명 수정을 성공/실패로 단정하지 않아요. 기존 고해상도 기본 기기/Simulator GUI와 검사 상태를 분리하기 위해 SDK18.5의 독립 iPhone SE 기기를 생성·창 없이 부팅·종료/삭제하도록 검사 환경을 바꿔 재검증해요. 앱 코드나 시간 제한을 추가로 바꾸지 않아요. 시뮬레이터 서비스 지연이라는 가설은 다음 실행으로 확인해요.

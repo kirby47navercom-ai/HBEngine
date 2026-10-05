@@ -14,10 +14,10 @@ export function mobileBackend(manifest,{read,request}){
     const module=modules.get(data.token);if(!module)throw Error('패키지에 등록되지 않은 C++ 모듈');
     const job=module.queue.then(async()=>{
       let queries;try{
-        const decoded=protocol.decodeRequest(module,data.request);protocol.validate(module,decoded);queries=new NativePhysicsQueries(decoded.objects);
+        const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects);let queryMs=0,queryCount=0;
         const clockOnly=['frame','reset'].includes(decoded.command),packet=clockOnly?{...decoded,objects:[]}:data.request.objectPatch?{...decoded,objects:undefined,objectPatch:data.request.objectPatch}:decoded;
-        const reply=await request('native',{module:module.index,request:packet},query=>queries.query(query));
-        if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);
+        const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
+        if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
         if(data.request.worldTransport===1){module.requestWorld=decoded.objects;module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
         else if(data.request.command!=='frame'){module.requestWorld=null;module.requestSequence=0;}return result;
       }catch(error){module.requestWorld=null;module.requestSequence=0;throw error;}finally{queries?.close();}

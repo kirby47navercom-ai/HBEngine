@@ -213,7 +213,7 @@ export function engineOperations(hooks){
     animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
     spriteSkinState:({vertices=false}={})=>(currentVM?.objects||[]).flatMap(o=>{const skin=hooks.mesh(o.id)?.userData.spriteSkin;return skin?[{actor:o.id,...skin.snapshot({vertices})}]:[];}),
     spriteSkinSnapshot:id=>{const skin=hooks.mesh(id)?.userData.spriteSkin;if(!skin)return;const state=skin.snapshot(),o=currentVM?.object(id);const manager=o&&objectComponents(o).find(c=>c.type==='IKManager2D');state.ik.enabled=!!manager&&manager.properties.enabled!==false;state.ik.weight=manager?.properties.weight??skin.ik.masterWeight;return state;},
-    audioState:()=>({state:soundRouting.context?.state||'idle',levels:Object.fromEntries([...soundRouting.graphs].map(([path,graph])=>[path,graph.levels()])),voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime}))}),
+    audioState:()=>({state:soundRouting.context?.state||'idle',clock:soundRouting.context?.currentTime||0,levels:Object.fromEntries([...soundRouting.graphs].map(([path,graph])=>[path,graph.levels()])),voices:[...audio.values()].map(p=>({clip:p.hbClip,playing:!p.paused,time:p.currentTime,readyState:p.readyState,networkState:p.networkState,error:p.error?.code||null,duration:Number.isFinite(p.duration)?p.duration:null}))}),
     pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
     prepare:async vm=>{currentVM=vm;await tilemaps.start(vm.objects);for(const o of [...vm.objects])await prepareActorWidgets(o,vm);},

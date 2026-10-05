@@ -41,7 +41,8 @@ await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
 assert.equal(report.ok,true,report.error);
 assert.ok(report.frames>=10,'첫 10프레임까지 실행되어야 해요.');
 assert.ok(report.drawCalls>0,'WebGL2가 장면을 그려야 해요.');
-assert.equal(report.audio.state,'running');assert.ok(report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0));assert.ok(report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6,'실제 믹서 출력 신호가 있어야 해요.');
+const audioSamples=[];for(let i=0;i<15;i++){report=JSON.parse(await fs.readFile(reportFile,'utf8'));assert.equal(report.ok,true,report.error);audioSamples.push({frames:report.frames,audio:report.audio});if(report.audio.state==='running'&&report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0)&&report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6)break;await new Promise(resolve=>setTimeout(resolve,1000));}await fs.writeFile(path.join(out,'ios-audio.json'),JSON.stringify(audioSamples,null,2));await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));
+console.log('실제 오디오 상태:',JSON.stringify(report.audio));assert.equal(report.audio.state,'running');assert.ok(report.audio.voices.some(v=>v.clip==='Assets/MobileTone.wav'&&v.playing&&v.time>0),'오디오 파일의 실제 재생 시간이 진행돼야 해요.');assert.ok(report.audio.levels['Assets/MobileMixer.hbmixer.json']?.master>1e-6,'실제 믹서 출력 신호가 있어야 해요.');
 for(const [i,count] of [[0,1],[1,10]]){
   const actor=report.objects.find(o=>o.id==='mobile-probe-'+i);
   assert.ok(actor,'C++ 블루프린트 액터가 없어요.');
@@ -72,7 +73,7 @@ await run(['simctl','io',device.udid,'screenshot',path.join(out,'ios-simulator.p
 console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·블루프린트·C++ 두 모듈 실행 통과');
 }catch(error){
   console.error('iOS 실행 검사 실패:',error.message);
-  try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'"'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
+  try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'" OR (process CONTAINS "WebKit" AND (eventMessage CONTAINS[c] "audio" OR eventMessage CONTAINS[c] "media"))'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
   const crashes=path.join(process.env.HOME,'Library/Logs/DiagnosticReports');try{for(const name of await fs.readdir(crashes))if(name.startsWith('HBGame')&&name.endsWith('.ips'))await fs.copyFile(path.join(crashes,name),path.join(out,name));}catch(failure){if(failure.code!=='ENOENT')console.error('iOS 충돌 기록 수집:',failure.message);}
   throw error;
 }finally{

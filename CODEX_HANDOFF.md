@@ -1,5 +1,7 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+가장 최신: iOS 오디오 포함37326369196 게임1080frame은 실행됐지만 voice time0/master 거의0여서 신호 실패예요. context/media 진단과 WebKit 로그를 추가해 재검증하며 사용자 설치본 업데이트는 보류해요. Android CuEx4o/Riasyn 오디오 신호·suspend/resume는 실제 통과. 후속 mobile RPC/질의/검증 비용 보고는 portable와 H6PL0Q APK/AAB 컴파일 통과, 실제 Android 재측정 중이에요. Windows release3ZuMaB 기능/480탄환·30초재사용은 통과했으나 i3wHLE 대비10%성능 회귀 게이트는 실패예요. 상세 DEBUG_HANDOFF를 보고 성능·iOS 오디오 원인을 확인한 뒤 설치본을 업데이트하고 전체 누적 작업을 계속해요. 과거 성공을 최신 오디오 성공으로 계산하지 않아요.
+
 후속 검사 중: 로컬 모바일 앱의 오디오 시작 조건을 Android false/iOS None으로 변경하고 실제 WAV/믹서를 공용 fixture에 추가했어요. 개발 보고는 활성 전환 뒤 오디오 상태/모바일 활성 여부를 기록하고 중복 이벤트는 추가 보고하지 않아요. 정확한 Player 수명·브리지·기본594/공용289·Android CuEx4o 두 ABI APK/AAB 컴파일/패키지가 통과했고 Android 실제 신호·정지/복귀와 iOS 원격 재검증을 진행해요. Windows 새 후보의 격리 사용자 설치8NOQKl·실제 배포 물리144/형상67·EXE 허브/종료도 통과했어요. 사용자 실제 설치본은 아직 그대로예요.
 
 최신 증거: Android android-mobile-Y9F6Lt APK/AAB·android-runtime-v6YE5E 실제 Android36 가상 기기 설치/실행·한글/SVG/DPR1.5·부모 FrameLayout 안전 영역·동시 터치/해제·매 Tick C++ 물리·18초 배경/복귀·Count/월드 보존·기기/임시 데이터 정리 통과. iOS 원격37323624672도 Xcode 두 SDK·독립 iPhone SE·실제 게임/물리·8개 에셋/범위·배경/복귀 통과. 증거는 docs/MOBILE_EXPORT.md예요. 실물 기기/Apple 서명/청취/열·배터리와 모바일 편집기는 미검증/남은 작업이에요. 설치본은 아직 업데이트 전이며 재빌드·격리 설치 검사 후 새 불변 버전을 추가할 예정이에요. 활성 구간 성능·오디오와 전체 누적 요구를 계속해요. 아래 진행 중 표기는 과거 기록이에요.
