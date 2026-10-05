@@ -121,6 +121,9 @@ public:
 HB_CLASS()
 class Light2D : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetShape", KoreanName="2D 광원 모양·감쇠 거리 지정", Category="2D 조명") static void SetShapePath(Actor* target,const std::vector<Vec2>& path,float falloffDistance=.5f);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShape", KoreanName="2D 광원 모양 조회", Category="2D 조명") static std::vector<Vec2> GetShapePath(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShapeFalloff", KoreanName="2D 광원 모양 감쇠 거리 조회", Category="2D 조명") static float GetShapeFalloff(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetEnabled", KoreanName="2D 광원 활성화", Category="2D 조명") static void SetEnabled(Actor* target,bool enabled);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetEnabled", KoreanName="2D 광원 활성 여부", Category="2D 조명") static bool IsEnabled(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetType", KoreanName="2D 광원 종류 지정", Category="2D 조명") static void SetType(Actor* target,const std::string& type);

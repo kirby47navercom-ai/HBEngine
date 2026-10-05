@@ -1,5 +1,13 @@
 # 2D 렌더·단축키의 실제 창 조사 — 2026-10-05
 
+## 최신 우선순위: 모바일 배포·검증 후 사용자 업데이트
+
+주인님이 Android/iOS 실제 내보내기를 먼저 만들고 검증한 다음 사용 중인 설치본 업데이트를 명시 승인했어요. Mac/Xcode는 없다고 답했어요. Android SDK/NDK/Gradle/adb는 아직 없고 JDK25가 있어요. Android 실제 APK/AAB 및 공용 C++/BP 실행 연결, iOS Xcode 프로젝트/실행 연결을 진행해요. iOS 빌드/서명·실제 휴대폰 실행은 증거가 있을 때만 통과로 세요. 이전 설치본/프로필/게임/실행 창을 보존하며 새 불변 버전을 추가하는 설치 도구를 사용해요. 전체 누적 엔진 세부·가벼움·AI 편집을 이후에도 계속해요.
+
+Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePath64·512bytes/광원·C++/BP3개→594/API289·공용 모양 편집/방향키·장면/BP Undo·뷰포트 진단/조명 표시·Editor bdfWUZ와 Player e7Whrs GPU93/전용44·원본/exit0/서버 정리 통과예요.
+
+새 ShadowCaster2D/Composite 공식4개 자체 기술 본문/API 읽기는 native/build/2d-shadow-docs-jVDrut/manifest.json 원문/SHA에 있어요. 이미지/상속/연결은 미독이며 구현하거나 전체 gate를 승격하지 않았어요. Android build/NDK/Apple Xcode 새 웹 탐색은 모바일 구현을 위해 계속 읽는 중이에요. 최종 답변/goal complete 금지 지시를 유지해요.
+
 ## 전용 Light2D 실제 창 후 계속
 
 최종 실제 Editor heP5Hg/배포 Player CfFWyo는 GPU77개(전용28)·레이어/Z/노멀/타입/3D분리·마스크/타일·C++→BP핀·원본/종료를 통과해요. 증거/재현은 [Light2D](docs/2D_LIGHTING.md)예요. Px56Mb 종료는 검사용 BP 미저장 확인창이었고 저장 검사로 통과해요. hx7NHK의 노멀 Disabled 실패는 Actor 레이어 복원 누락, g5f51U는 scene.place.result.object 응답 경로였어요. 해당 검사들을 고쳤어요. 앞선 slice 출력 okKqXQ의 한 번 실패 원인은 여전히 확정하지 않아요. 사용자 설치/게임/창은 보존해요. 전체 구현을 계속해요.

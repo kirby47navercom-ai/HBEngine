@@ -82,9 +82,20 @@ inline Json& bridgeSprite(Actor* target){auto* state=bridgeState(target);if(!sta
 inline void Sprites::SetLightingMode(Actor* target,const std::string& mode){if(mode!="unlit"&&mode!="lit"&&mode!="lit2d")throw std::runtime_error("invalid sprite lighting mode");auto& p=bridgeSprite(target);engineCommand("spriteSetLighting",{{"target",bridgeId(target)},{"mode",mode}});p["shading"]=mode;}
 inline std::string Sprites::GetLightingMode(Actor* target){return bridgeSprite(target).value("shading",std::string("unlit"));}
 inline Json& bridgeLight2D(Actor* target){auto* state=bridgeState(target);if(!state||!state->contains("components"))throw std::runtime_error("missing Light2D");for(auto& c:state->at("components"))if(c.value("type",std::string{})=="Light2D"){auto& p=c["properties"];if(p.is_null())p=Json::object();return p;}throw std::runtime_error("missing Light2D");}
+inline bool bridgeValidPath2D(const std::vector<Vec2>& path){
+ if(path.size()<3||path.size()>64)return false;constexpr double eps=1e-8;double area=0;
+ const auto cross=[](const Vec2& a,const Vec2& b,const Vec2& c){return (double(b.x)-a.x)*(double(c.y)-a.y)-(double(b.y)-a.y)*(double(c.x)-a.x);};
+ const auto on=[&](const Vec2& a,const Vec2& b,const Vec2& p){return std::abs(cross(a,b,p))<eps&&p.x>=std::min(a.x,b.x)-eps&&p.x<=std::max(a.x,b.x)+eps&&p.y>=std::min(a.y,b.y)-eps&&p.y<=std::max(a.y,b.y)+eps;};
+ for(size_t i=0;i<path.size();i++){const auto &a=path[i],&b=path[(i+1)%path.size()],&c=path[(i+2)%path.size()];if(!std::isfinite(a.x)||!std::isfinite(a.y)||std::abs(a.x)>10000||std::abs(a.y)>10000||std::hypot(double(b.x)-a.x,double(b.y)-a.y)<eps)return false;area+=double(a.x)*b.y-double(b.x)*a.y;if(std::abs(cross(a,b,c))<eps&&(double(b.x)-a.x)*(double(c.x)-b.x)+(double(b.y)-a.y)*(double(c.y)-b.y)<0)return false;
+  for(size_t j=i+1;j<path.size();j++){if(j==i+1||(i==0&&j==path.size()-1))continue;const auto &d=path[j],&e=path[(j+1)%path.size()];if(cross(a,b,d)*cross(a,b,e)<0&&cross(d,e,a)*cross(d,e,b)<0||on(a,b,d)||on(a,b,e)||on(d,e,a)||on(d,e,b))return false;}
+ }return std::abs(area/2)>=eps;
+}
+inline void Light2D::SetShapePath(Actor* target,const std::vector<Vec2>& path,float falloffDistance){if(!bridgeValidPath2D(path)||!std::isfinite(falloffDistance)||falloffDistance<0||falloffDistance>100000)throw std::runtime_error("invalid Light2D shape");auto& p=bridgeLight2D(target);engineCommand("light2dSetShape",{{"target",bridgeId(target)},{"path",path},{"falloffDistance",falloffDistance}});p["shapePath"]=path;p["shapeFalloff"]=falloffDistance;}
+inline std::vector<Vec2> Light2D::GetShapePath(Actor* target){return bridgeLight2D(target).value("shapePath",std::vector<Vec2>{{-1,-1},{1,-1},{1,1},{-1,1}});}
+inline float Light2D::GetShapeFalloff(Actor* target){return bridgeLight2D(target).value("shapeFalloff",.5f);}
 inline void Light2D::SetEnabled(Actor* target,bool enabled){auto& p=bridgeLight2D(target);engineCommand("light2dSetEnabled",{{"target",bridgeId(target)},{"enabled",enabled}});p["enabled"]=enabled;}
 inline bool Light2D::IsEnabled(Actor* target){return bridgeLight2D(target).value("enabled",true);}
-inline void Light2D::SetType(Actor* target,const std::string& type){if(type!="global"&&type!="point"&&type!="spot")throw std::runtime_error("invalid Light2D type");auto& p=bridgeLight2D(target);engineCommand("light2dSetType",{{"target",bridgeId(target)},{"type",type}});p["lightType"]=type;}
+inline void Light2D::SetType(Actor* target,const std::string& type){if(type!="global"&&type!="point"&&type!="spot"&&type!="freeform")throw std::runtime_error("invalid Light2D type");auto& p=bridgeLight2D(target);engineCommand("light2dSetType",{{"target",bridgeId(target)},{"type",type}});p["lightType"]=type;}
 inline std::string Light2D::GetType(Actor* target){return bridgeLight2D(target).value("lightType",std::string("point"));}
 inline void Light2D::SetColor(Actor* target,const Color& color){for(const float v:{color.r,color.g,color.b,color.a})if(!std::isfinite(v)||v<0||v>1)throw std::runtime_error("invalid Light2D color");auto& p=bridgeLight2D(target);engineCommand("light2dSetColor",{{"target",bridgeId(target)},{"color",color}});p["color"]=color;}
 inline Color Light2D::GetColor(Actor* target){return bridgeLight2D(target).value("color",Color{1,1,1,1});}

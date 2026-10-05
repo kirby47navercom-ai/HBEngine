@@ -56,3 +56,18 @@ hb::Light2D::SetTargetSortingLayers(lamp, {"default"});
 - main591/API 생성 일치·scene58종·diff 검사가 통과해요. Px56Mb 종료 실패는 검사용 BP 미저장 확인창이었고 저장을 추가한 heP5Hg가 통과해요. hx7NHK/g5f51U는 검사 레이어 복원/API 응답 경로 오류였어요.
 
 사용자 설치·게임·프로필·창을 보존하며 전체 누적 엔진 세부를 계속해요.
+
+## Freeform 후속 — 2026-10-05
+
+freeform 타입·shapePath(최대64개의 유한 XY 점)·shapeFalloff를 추가했어요. 중복/역행/자기 교차/퇴화 윤곽을 JS/C++에서 거절하고 오목/반대 감기 윤곽을 지원해요. 공용 모양 편집기의 점 드래그·중점 추가·Delete·방향키/Shift·스냅·로컬 Undo/Redo·적용과 장면/BP Undo를 공유해요. 초안은 적용 전 문서를 바꾸지 않으며 오래된 문서 적용을 거절해요. 편집기 광원 윤곽은 플레이어에 만들지 않아요.
+
+C++/BP SetShapePath/GetShapePath/GetShapeFalloff를 추가해 기본 노드594개/API289개예요. 기존의 Freeform 미구현 기록은 이 후속으로 대체해요. Sprite cookie·블렌드 스타일/마스크·전용/복합 그림자·볼륨은 별도 후속이에요.
+
+윤곽 데이터는 RG32F 64texel=광원당512bytes·최대32768bytes예요. 범위 밖 픽셀은 윤곽 검사를 건너뛰고 변경한 값만 업로드해요. 광원 없으면 해제해요. 64edge 픽셀 검사는 현재 상한이며 거리 필드 개선 후보예요. 뷰포트 조명 표시와 진단5모드가 원본 머테리얼 복원/노멀 강도를 보존해요.
+
+- 실제 최종 Editor authoring-window-bdfWUZ: 점 드래그·방향키·중점/초안 보존·Undo/Redo/적용·장면/BP 저장·기존 제작 조작·GPU93개(전용44개)·예외0·exit0/소유 서버 종료 통과.
+- 최종 배포 Game.exe authoring-window-e7Whrs: BP→C++ 자유 광원 설정/조회→BP 핀→C++ true2개·512bytes 윤곽·GPU93개/전용44개·Source cooking·원본 보존·exit0 통과.
+- 코어 Light2D·main594/API289/생성 일치·scene58·실제 Rapier/C++ 질의67·뷰포트228 검사 통과. 공유 모양 편집기 별도 서버 검사에는 기본5182 서버가 없었으며 통과로 세지 않아요.
+- UWN9MG 실패는 검사 JavaScript 문자열의 따옴표 오류였고 수정 후 bdfWUZ가 통과해요. 6ZSg8U는 배포에 없는 검사용 진단 모듈 import였고 검사 data URL 주입으로 바꿨어요.
+
+주인님의 최신 지시에 따라 다음 우선순위는 Android/iOS 내보내기와 검증 후 설치본 업데이트예요. Mac/Xcode가 없으므로 iOS 실제 빌드/서명 검증은 분리해 기록해요. 누적 엔진 요구와 전체 분석 gate는 유지해요.

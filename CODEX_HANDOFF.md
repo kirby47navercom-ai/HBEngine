@@ -1,5 +1,13 @@
 # HBEngine 작업 인계 — 2026-10-05
 
+## 최신 우선순위: 모바일 배포·검증 후 사용자 업데이트
+
+주인님이 Android/iOS 실제 내보내기를 먼저 만들고 검증한 다음 사용 중인 설치본 업데이트를 명시 승인했어요. Mac/Xcode는 없다고 답했어요. Android SDK/NDK/Gradle/adb는 아직 없고 JDK25가 있어요. Android 실제 APK/AAB 및 공용 C++/BP 실행 연결, iOS Xcode 프로젝트/실행 연결을 진행해요. iOS 빌드/서명·실제 휴대폰 실행은 증거가 있을 때만 통과로 세요. 이전 설치본/프로필/게임/실행 창을 보존하며 새 불변 버전을 추가하는 설치 도구를 사용해요. 전체 누적 엔진 세부·가벼움·AI 편집을 이후에도 계속해요.
+
+Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePath64·512bytes/광원·C++/BP3개→594/API289·공용 모양 편집/방향키·장면/BP Undo·뷰포트 진단/조명 표시·Editor bdfWUZ와 Player e7Whrs GPU93/전용44·원본/exit0/서버 정리 통과예요.
+
+새 ShadowCaster2D/Composite 공식4개 자체 기술 본문/API 읽기는 native/build/2d-shadow-docs-jVDrut/manifest.json 원문/SHA에 있어요. 이미지/상속/연결은 미독이며 구현하거나 전체 gate를 승격하지 않았어요. Android build/NDK/Apple Xcode 새 웹 탐색은 모바일 구현을 위해 계속 읽는 중이에요. 최종 답변/goal complete 금지 지시를 유지해요.
+
 ## 최신 후속: 전용 Light2D 후 계속
 
 전체 누적 요구·끝까지 계속을 유지해요. [Light2D 계약](docs/2D_LIGHTING.md)에 Unity6000.0 Properties 기술 본문/표·URP17 Light2D 자체 Properties/Methods·NormalMapQuality 읽기 경계/원문 light2d-docs-ixHRQl을 기록해요. 전체 gate는 유지해요.

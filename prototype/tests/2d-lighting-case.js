@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {sceneRendering} from '../scene-rendering.js';
 import {makeSceneComponent} from '../scene-components.js';
 import {create2DAsset} from '../two-d-assets.js';
+import {ViewportPresentation} from '../viewport-presentation.js';
 
 export async function runTwoDLightingCase({renderer,scene,camera,groups,group,layers,pixel,expect}){
   let checks=0;const evidence=[],frames=[],check=(test,label)=>{checks++;if(!test)window.__hbLight2DFailure={label,evidence,image:renderer.domElement.toDataURL()};expect(test,label);};
@@ -26,6 +27,17 @@ export async function runTwoDLightingCase({renderer,scene,camera,groups,group,la
     Object.assign(p(),{lightType:'point',innerRadius:2,normalMode:'accurate',normalDistance:1});lamp.position.set(0,0,50);const accurate=render();const accurateEdge=pixel(44,32);p().normalMode='fast';render();const fastEdge=pixel(44,32);check(fastEdge[0]>accurateEdge[0]+12,'Fast uses center direction while Accurate uses each fragment');p().normalMode='accurate';p().normalDistance=.1;render();check(pixel(44,32)[0]<accurateEdge[0]-30,'simulated normal distance changes direction without changing range');
     actor.components[0].properties.normalTexture='tilt.png';await visuals.spriteFrame(actor,'');p().normalDistance=1;check(render().pixel[0]<20,'linear normal map changes dedicated 2D light');p().normalMode='disabled';check(white(render().pixel),'disabled normal calculation bypasses map response');shot('Normal disabled');
     const parent=new THREE.Group();scene.add(parent);parent.add(lamp);parent.position.set(10,0,7);lamp.position.set(-10,0,-90);check(white(render().pixel),'parented world XY transforms drive 2D light');parent.scale.set(2,1,1);lamp.position.x=-5;check(white(render().pixel),'nonuniform XY scale supports light center');parent.remove(lamp);scene.add(lamp);parent.removeFromParent();lamp.position.set(0,0,0);
+    Object.assign(p(),{lightType:'freeform',shapePath:[[-1,-1],[1,-1],[1,-.25],[-.25,-.25],[-.25,1],[-1,1]],shapeFalloff:0,falloff:1});
+    const polygon=render();check(black(pixel())&&white(pixel(20,32))&&white(pixel(44,24)),'concave freeform excludes notch while lighting polygon interior');check(polygon.state.shapeBytes===512,'shape atlas allocated only for freeform');shot('2D Freeform');
+    const shapeUpload=render().state.lightUploads;check(render().state.lightUploads===shapeUpload,'unchanged shape data does not upload');p().shapePath.reverse();render();check(black(pixel())&&white(pixel(20,32)),'freeform supports either winding');
+    p().shapeFalloff=1;const wideFalloff=render().pixel[0];p().shapeFalloff=.2;check(wideFalloff>render().pixel[0]+100,'freeform outer falloff uses distance to concave boundary');
+    p().shapePath=[[-1,-1],[1,-1],[1,1],[-1,1]];p().shapeFalloff=0;check(white(render().pixel)&&render().state.lightUploads>shapeUpload,'edited polygon reaches GPU');
+    lamp.rotation.z=Math.PI/4;p().shapePath=[[-.3,-1],[.3,-1],[.3,1],[-.3,1]];render();check(black(pixel(42,32))&&white(pixel()),'freeform uses lamp local inverse XY rotation');lamp.rotation.z=0;
+    p().lightType='point';check(render().state.shapeBytes===0,'leaving last freeform releases shape atlas');
+    const presentation=new ViewportPresentation(),options={objects:[actor,light],prepare2D:o=>visuals.prepare2D(renderer,scene,camera,layers,o)};
+    presentation.configure({flags:{lights:false}});presentation.render(renderer,scene,camera,options);check(black(pixel()),'viewport lights flag disables dedicated lights without hiding sprite');
+    for(const mode of ['unlit','wireframe','normals','lighting','detailLighting']){presentation.configure({mode,flags:{lights:true}});presentation.render(renderer,scene,camera,options);check(renderer.info.programs.every(program=>program.diagnostics?.runnable!==false),'dedicated sprite diagnostic mode '+mode+' compiles');if(mode==='unlit')check(white(pixel()),'Unlit diagnostic stays independent of dedicated lights');}
+    presentation.dispose();check(sprite.userData.spriteMesh.material.isMeshStandardMaterial,'viewport diagnostic restores original material');
     p().enabled=false;check(black(render().pixel)&&render().state.lightBytes===0,'disabled last light releases data texture');p().enabled=true;lamp.visible=false;check(black(render().pixel),'hidden light does not illuminate');lamp.visible=true;
     const mask=group('light2d-mask');await visuals.build({id:'light2d-mask',kind:'empty',components:[makeSceneComponent('SpriteMask',{width:.5,height:2})]},mask);actor.components[0].properties.maskInteraction='inside';await visuals.spriteFrame(actor,'');render();check(white(pixel())&&black(pixel(44,32)),'dedicated lighting composes with SpriteMask');visuals.dispose(mask);mask.removeFromParent();groups.splice(groups.indexOf(mask),1);
     visuals.dispose(sprite);sprite.removeFromParent();groups.splice(groups.indexOf(sprite),1);

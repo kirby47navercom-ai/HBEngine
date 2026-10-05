@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **591개**, 실제 공통 C++ API **509개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **594개**, 실제 공통 C++ API **512개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -39,7 +39,7 @@
 | 오브젝트 풀 | 3 | 3 |
 | 입력 | 6 | 6 |
 | 입력 액션 | 6 | 6 |
-| 2D 조명 | 18 | 18 |
+| 2D 조명 | 21 | 21 |
 | 2D 스프라이트 | 21 | 21 |
 | 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
@@ -644,6 +644,9 @@
 | --- | --- | --- | --- | --- | --- |
 | spriteSetLighting | Set Lighting Mode / 스프라이트 2D·3D 광원 모드 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetLightingMode | 공통 C++ + VM |
 | spriteGetLighting | Get Lighting Mode / 스프라이트 광원 모드 조회 | target: object | return: string | hb::Sprites::GetLightingMode | 공통 C++ + VM |
+| light2dSetShape | Set Shape Path / 2D 광원 모양·감쇠 거리 지정 | exec: exec, target: object, path: vec2[], falloffDistance: float | then: exec | hb::Light2D::SetShapePath | 공통 C++ + VM |
+| light2dGetShape | Get Shape Path / 2D 광원 모양 조회 | target: object | return: vec2[] | hb::Light2D::GetShapePath | 공통 C++ + VM |
+| light2dGetShapeFalloff | Get Shape Falloff / 2D 광원 모양 감쇠 거리 조회 | target: object | return: float | hb::Light2D::GetShapeFalloff | 공통 C++ + VM |
 | light2dSetEnabled | Set Enabled / 2D 광원 활성화 | exec: exec, target: object, enabled: bool | then: exec | hb::Light2D::SetEnabled | 공통 C++ + VM |
 | light2dGetEnabled | Is Enabled / 2D 광원 활성 여부 | target: object | return: bool | hb::Light2D::IsEnabled | 공통 C++ + VM |
 | light2dSetType | Set Type / 2D 광원 종류 지정 | exec: exec, target: object, type: string | then: exec | hb::Light2D::SetType | 공통 C++ + VM |

@@ -13,10 +13,18 @@ import {SpriteRigPose} from './sprite-rig-runtime.js';
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
-export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}){
+export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error}){
   const twoD=new TwoDRendering();
   const texture=async (path,normal=false)=>{const result=await new THREE.TextureLoader().loadAsync(fileUrl(path));result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;return result;};
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
+  function lightOutline(group,p){
+    if(p.lightType==='global')return;
+    const paths=p.lightType==='freeform'?[p.shapePath]:[[p.outerRadius,p.outerAngle],...(p.innerRadius>0?[[p.innerRadius,p.innerAngle]]:[])].map(([radius,degrees])=>{
+      const angle=p.lightType==='spot'?degrees*Math.PI/180:Math.PI*2,points=[];
+      if(p.lightType==='spot')points.push([0,0]);for(let i=0;i<=64;i++){const a=-angle/2+angle*i/64;points.push([Math.sin(a)*radius,Math.cos(a)*radius]);}return points;
+    });
+    for(const path of paths){const geometry=new THREE.BufferGeometry().setFromPoints([...path,path[0]].map(point=>new THREE.Vector3(...point,0))),material=new THREE.LineBasicMaterial({color:new THREE.Color(...p.color.slice(0,3)),depthTest:false}),line=new THREE.Line(geometry,material);own(group,geometry);own(group,material);line.userData.editorHelper=true;line.userData.light2dHelper=true;line.userData.objectId=group.userData.objectId;line.renderOrder=900;group.add(line);}
+  }
   function dispose(group){group.userData.disposed=true;group.userData.spriteSkin?.dispose();for(const resource of group.userData.resources||[])resource.dispose();group.userData.resources?.clear();}
   function release(group,resource){if(group.userData.resources?.delete(resource))resource.dispose();}
   function spriteMaterial(map,p,normalMap=null){
@@ -111,7 +119,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
     if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
-      if(component.type==='Light2D')group.userData.light2d=p;
+      if(component.type==='Light2D'){group.userData.light2d=p;if(editor)lightOutline(group,p);}
       if(component.type==='SortingGroup')group.userData.sortingGroup=p;
       if(component.type==='SpriteMask')await sprite(group,p,p.sprite,undefined,true);
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,rig?.sprite||p.sprite||object.spriteAsset);
@@ -127,5 +135,5 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],error}
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers)=>{for(const group of all())group.userData.spriteSkin?.update();return twoD.prepare(renderer,scene,camera,all(),layers);},dispose2D:()=>twoD.dispose()};
+  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{for(const group of all())group.userData.spriteSkin?.update();return twoD.prepare(renderer,scene,camera,all(),layers,options);},dispose2D:()=>twoD.dispose()};
 }

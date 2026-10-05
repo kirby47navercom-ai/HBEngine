@@ -13,6 +13,7 @@ export const placementCatalog=[
   ['trigger2d','Trigger 2D · 감지 영역','2D','empty',{BoxCollider2D:{trigger:true}}],
   ['pointLight2d','Point Light 2D · 원형 광원','2D','light2d',{Light2D:{}}],
   ['spotLight2d','Spot Light 2D · 부채꼴 광원','2D','light2d',{Light2D:{lightType:'spot'}}],
+  ['freeformLight2d','Freeform Light 2D · 자유 모양 광원','2D','light2d',{Light2D:{lightType:'freeform'}}],
   ['globalLight2d','Global Light 2D · 전체 광원','2D','light2d',{Light2D:{lightType:'global'}}],
   ['camera2d','Camera 2D · 직교 카메라','2D','camera',{Camera:{projection:'orthographic',main:true}}],
   ['particles2d','Particles 2D · 2D 입자','2D','particles',{ParticleSystem:{shape:'circle'}}],
