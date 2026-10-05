@@ -1,3 +1,4 @@
+import {immutableNativeSnapshot} from './native-transport.js';
 import {bindVirtualControl,drawVirtualControl,virtualTypes,virtualDefaults} from './virtual-controls.js';
 import {validWidgetAsset,widgetContainers,widgetDefaults,widgetScale,widgetImageSource} from './ui-assets.js';
 
@@ -48,7 +49,7 @@ export class WidgetSystem {
   key(owner,instance){return JSON.stringify([owner,instance]);}
   state(owner,instance){const state=this.instances.get(this.key(owner,instance));if(!state)throw Error('위젯 인스턴스를 찾을 수 없어요: '+instance);return state;}
   node(state,name){const node=state.data.nodes.find(n=>n.id===name||n.name===name);if(!node)throw Error('위젯 요소가 없어요: '+name);return node;}
-  sync(state,vm){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};owner.gameplayDebug.ui[state.instance]=Object.fromEntries(state.data.nodes.map(n=>[n.name,{type:n.type,...n.properties,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value}]));}
+  sync(state,vm){const owner=vm.object(state.owner);if(!owner)return;owner.gameplayDebug??={};owner.gameplayDebug.ui??={};owner.gameplayDebug.ui=immutableNativeSnapshot({...owner.gameplayDebug.ui,[state.instance]:Object.fromEntries(state.data.nodes.map(n=>[n.name,{type:n.type,...n.properties,value:n.type==='CheckBox'?Number(n.properties.checked):n.properties.value}]))});}
   async operation(key,a,b,vm){
     if(!key.startsWith('ui'))return undefined;
     const owner=!a.target||a.target==='self'?b.self:a.target;if(!vm.object(owner))throw Error('위젯 소유 오브젝트가 없어요.');
@@ -62,20 +63,20 @@ export class WidgetSystem {
     if(key==='uiRemove'){this.remove(owner,a.instance,vm);return {};}
     const state=this.state(owner,a.instance),node=this.node(state,a.element),p=node.properties;
     if(key==='uiGetText')return {return:p.text};if(key==='uiGetValue')return {return:node.type==='CheckBox'?Number(p.checked):p.value};
-    if(key==='uiSetText'){if(typeof a.text!=='string'||a.text.length>10000)throw Error('위젯 텍스트 길이 초과');p.text=a.text;}
-    else if(key==='uiSetValue'){if(!Number.isFinite(a.value))throw Error('위젯 값은 유한한 수여야 해요.');p.value=clamp(a.value,p.min,p.max);if(node.type==='CheckBox')p.checked=Boolean(a.value);}
-    else if(key==='uiSetVisible')p.visible=Boolean(a.visible);
-    else if(key==='uiSetEnabled')p.enabled=Boolean(a.enabled);
+    if(key==='uiSetText'){if(typeof a.text!=='string'||a.text.length>10000)throw Error('위젯 텍스트 길이 초과');if(p.text===a.text)return {};p.text=a.text;}
+    else if(key==='uiSetValue'){if(!Number.isFinite(a.value))throw Error('위젯 값은 유한한 수여야 해요.');const value=clamp(a.value,p.min,p.max);if(p.value===value&&(node.type!=='CheckBox'||p.checked===Boolean(a.value)))return {};p.value=value;if(node.type==='CheckBox')p.checked=Boolean(a.value);}
+    else if(key==='uiSetVisible'){const value=Boolean(a.visible);if(p.visible===value)return {};p.visible=value;}
+    else if(key==='uiSetEnabled'){const value=Boolean(a.enabled);if(p.enabled===value)return {};p.enabled=value;}
     else if(key==='uiFocus'){const el=state.view?.elements.get(node.id);(el?.querySelector('input')||el)?.focus();}
     else throw Error('위젯 함수가 없어요: '+key);
     state.view?.update();this.sync(state,vm);return {};
   }
-  remove(owner,instance,vm){const key=this.key(owner,instance),state=this.instances.get(key);if(!state)return;state.view?.dispose();state.host?.remove();this.instances.delete(key);this.events=this.events.filter(e=>e.state!==state);const ui=vm.object(owner)?.gameplayDebug?.ui;if(ui)delete ui[instance];}
+  remove(owner,instance,vm){const key=this.key(owner,instance),state=this.instances.get(key);if(!state)return;state.view?.dispose();state.host?.remove();this.instances.delete(key);this.events=this.events.filter(e=>e.state!==state);const ui=vm.object(owner)?.gameplayDebug?.ui;if(ui){const {[instance]:removed,...rest}=ui;vm.object(owner).gameplayDebug.ui=immutableNativeSnapshot(rest);}}
   removeOwner(owner,vm){for(const state of [...this.instances.values()])if(state.owner===owner)this.remove(owner,state.instance,vm);}
   releaseInput(){for(const state of this.instances.values())state.view?.resetControls(false);}
   async tick(vm){
     const queued=this.events.splice(0);for(const e of queued){if(this.disposed||this.instances.get(this.key(e.state.owner,e.state.instance))!==e.state)continue;for(const b of vm.bindings.filter(b=>b.self===e.state.owner))await vm.custom(b,e.event,{widget:e.state.instance,element:e.node,type:e.type,text:e.text,value:e.value});}
-    for(const state of [...this.instances.values()]){if(!vm.object(state.owner)){this.remove(state.owner,state.instance,vm);continue;}const binding=vm.bindings.find(b=>b.self===state.owner);for(const node of state.data.nodes)for(const [property,variable] of Object.entries(node.bindings)){const symbol=binding?.root.variables.find(v=>v.id===variable||v.name===variable),key=symbol?.id||variable;if(!variable||!binding?.variables.has(key))continue;const value=binding.variables.get(key);if(property==='text')node.properties.text=String(value).slice(0,10000);else if(property==='value'&&Number.isFinite(value))node.properties.value=clamp(value,node.properties.min,node.properties.max);else if(['visible','enabled','checked'].includes(property)&&typeof value==='boolean')node.properties[property]=value;}state.view?.update();state.view?.endFrame();this.sync(state,vm);}
+    for(const state of [...this.instances.values()]){if(!vm.object(state.owner)){this.remove(state.owner,state.instance,vm);continue;}const binding=vm.bindings.find(b=>b.self===state.owner);let changed=false;for(const node of state.data.nodes)for(const [property,variable] of Object.entries(node.bindings)){const symbol=binding?.root.variables.find(v=>v.id===variable||v.name===variable),key=symbol?.id||variable;if(!variable||!binding?.variables.has(key))continue;const value=binding.variables.get(key),next=property==='text'?String(value).slice(0,10000):property==='value'&&Number.isFinite(value)?clamp(value,node.properties.min,node.properties.max):['visible','enabled','checked'].includes(property)&&typeof value==='boolean'?value:node.properties[property];if(!Object.is(node.properties[property],next)){node.properties[property]=next;changed=true;}}state.view?.update();state.view?.endFrame();if(changed)this.sync(state,vm);}
   }
   dispose(){this.disposed=true;for(const state of this.instances.values()){state.view?.dispose();state.host?.remove();}this.instances.clear();this.events=[];}
 }

@@ -37,16 +37,16 @@ async function child(mode,fixture){
       let temporary;
       try{
         temporary=await waitForPartial(path.join(fixture,'partial.txt'));
-        assert.match(path.basename(temporary),/^worker-.*\.tmp(?:\.exe)?$/);
-        assert.equal(await fs.readFile(temporary,'utf8'),'partial executable');
-        assert.equal(await exists(path.join(path.dirname(temporary),process.platform==='win32'?'worker.exe':'worker')),false);
+        assert.match(path.basename(temporary),/^worker\.o$/);
+        assert.equal(await fs.readFile(temporary,'utf8'),'partial output');
+        assert.match(path.basename(path.dirname(temporary)),/^compile-/);assert.equal(await exists(path.join(path.dirname(path.dirname(temporary)),process.platform==='win32'?'worker.exe':'worker')),false);
       }finally{controller.abort(Error('부분 출력 생성 후 취소'));}
       await assert.rejects(compilation,error=>error.name==='AbortError'||/취소|abort/i.test(error.message));
-      const directory=path.dirname(temporary),binary=path.join(directory,process.platform==='win32'?'worker.exe':'worker');
+      assert.equal(await exists(temporary),false,'취소한 일부 object 파일도 정리해야 해요.');const directory=path.dirname(path.dirname(temporary)),binary=path.join(directory,process.platform==='win32'?'worker.exe':'worker');
       assert.equal(await exists(binary),false,'취소한 부분 실행 파일이 완성 캐시에 들어가지 않아야 해요.');
       assert.deepEqual(await temporaryExecutables(directory),[],'취소한 임시 실행 파일을 지워야 해요.');
-      await fs.writeFile(path.join(fixture,'cancel.json'),json({directory,binary,partialObserved:true,cacheCreated:false,temporaryFiles:0}));
-      console.log('부분 실행 파일 생성 후 실제 컴파일 프로세스 취소·캐시 보존 통과');
+      await fs.writeFile(path.join(fixture,'cancel.json'),json({directory,binary,partialObserved:true,partialKind:'object',cacheCreated:false,temporaryFiles:0}));
+      console.log('부분 object 출력 후 실제 컴파일 프로세스 취소·일부 출력 정리·캐시 보존 통과');
       return;
     }
     if(mode==='retry'){
@@ -66,6 +66,7 @@ async function child(mode,fixture){
         assert.equal(second.sessions.get(secondResult.token).binary,binary);
         const attempts=(await fs.readdir(path.dirname(binary))).filter(name=>name.startsWith('compile-'));
         assert.equal(attempts.length,2,'새 해시에서 서로 다른 두 컴파일 시도가 실행돼야 해요.');
+        for(const attempt of attempts)for(const name of ['worker.o','User.o'])assert.equal(await exists(path.join(path.dirname(binary),attempt,name)),false,'두 컴파일 시도 모두 object 중간 파일을 정리해야 해요.');
         const values=await Promise.all([host.call(firstResult.token,request()),second.call(secondResult.token,request())]);
         assert.deepEqual(values.map(value=>value.outputs.result),[42,42]);
         assert.deepEqual(await temporaryExecutables(path.dirname(binary)),[]);
@@ -94,14 +95,14 @@ if(process.argv[2]==='--child'){
 int wmain(int argc,wchar_t** argv){
   std::filesystem::path output;for(int i=1;i+1<argc;i++)if(std::wstring(argv[i])==L"-o")output=argv[i+1];
   const wchar_t* marker=_wgetenv(L"HB_COMPILER_PARTIAL");if(output.empty()||!marker)return 2;
-  {std::ofstream file(output,std::ios::binary);file<<"partial executable";if(!file)return 3;}
+  {std::ofstream file(output,std::ios::binary);file<<"partial output";if(!file)return 3;}
   const auto wide=output.wstring();const int size=WideCharToMultiByte(CP_UTF8,0,wide.data(),int(wide.size()),nullptr,0,nullptr,nullptr);std::string name(size,'\\0');WideCharToMultiByte(CP_UTF8,0,wide.data(),int(wide.size()),name.data(),size,nullptr,nullptr);
   {std::ofstream file(std::filesystem::path(marker),std::ios::binary);file<<name;}
 #else
 int main(int argc,char** argv){
   std::filesystem::path output;for(int i=1;i+1<argc;i++)if(std::string(argv[i])=="-o")output=argv[i+1];
   const char* marker=std::getenv("HB_COMPILER_PARTIAL");if(output.empty()||!marker)return 2;
-  {std::ofstream file(output,std::ios::binary);file<<"partial executable";if(!file)return 3;}
+  {std::ofstream file(output,std::ios::binary);file<<"partial output";if(!file)return 3;}
   {std::ofstream file(marker,std::ios::binary);file<<output.string();}
 #endif
   std::this_thread::sleep_for(std::chrono::seconds(60));return 0;
@@ -109,8 +110,9 @@ int main(int argc,char** argv){
   const sourceFile=path.join(fixture,'partial-compiler.cpp'),double=path.join(fixture,process.platform==='win32'?'partial-compiler.exe':'partial-compiler');
   await fs.writeFile(sourceFile,doubleSource);
   await exec(compiler,['-std=c++17','-O0',...(process.platform==='win32'?['-static','-municode']:[]),path.relative(root,sourceFile),'-o',path.relative(root,double)],{cwd:root,env:compilerEnv,windowsHide:true,timeout:30000,maxBuffer:1048576});
+  const unicodeTemp=path.join(fixture,'한글 임시');await fs.mkdir(unicodeTemp);
   for(const mode of ['cancel','retry','concurrent']){
-    const env={...compilerEnv,CXX:mode==='cancel'?double:compiler,HB_COMPILER_PARTIAL:path.join(fixture,'partial.txt')};
+    const env={...compilerEnv,TEMP:unicodeTemp,TMP:unicodeTemp,CXX:mode==='cancel'?double:compiler,HB_COMPILER_PARTIAL:path.join(fixture,'partial.txt')};
     const {stdout}=await exec(process.execPath,[script,'--child',mode,fixture],{cwd:root,env,windowsHide:true,timeout:120000,maxBuffer:4194304});
     process.stdout.write(stdout);
   }

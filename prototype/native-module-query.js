@@ -4,7 +4,8 @@ import {nativeTargetPin} from './native-model.js';
 export function nativeBindings(objects,builds,bindings,request,metadata){
   if(request?.command||metadata?.nativeModuleQueries!==1)return undefined;
   const current=builds.get(objects.find(o=>o.id===request.self)?.blueprintAsset)?.token;
-  return objects.filter(o=>!['widget','component'].includes(o.kind)&&o.nativeClass&&builds.has(o.blueprintAsset)).map(o=>({id:o.id,token:builds.get(o.blueprintAsset).token,className:o.nativeClass,...(builds.get(o.blueprintAsset).token!==current?{properties:o.nativeProperties||{}}:{}),overrides:bindings.find(b=>b.self===o.id)?.root.nodes.filter(n=>n.key==='nativeEvent'&&n.nativeId.startsWith(o.nativeClass+'.')).map(n=>n.nativeId)||[]}));
+  const native=objects.filter(o=>!['widget','component'].includes(o.kind)&&o.nativeClass&&builds.has(o.blueprintAsset)),foreign=native.some(o=>builds.get(o.blueprintAsset).token!==current),owners=new Map(bindings.map(b=>[b.self,b]));
+  return native.flatMap(o=>{const token=builds.get(o.blueprintAsset).token,overrides=owners.get(o.id)?.root.nodes.filter(n=>n.key==='nativeEvent'&&n.nativeId.startsWith(o.nativeClass+'.')).map(n=>n.nativeId)||[];return foreign||overrides.length?[{id:o.id,token,className:o.nativeClass,...(token!==current?{properties:o.nativeProperties||{}}:{}),overrides}]:[];});
 }
 export function validateNativeBindings(request,resolve){
   const rows=request.nativeBindings;if(rows===undefined)return;

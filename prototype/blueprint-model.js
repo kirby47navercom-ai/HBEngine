@@ -123,6 +123,7 @@ catalog.push(
   spec('makeColor','Make Color','색상 만들기','수학',[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],[pin('return','Color','color')])
 );
 for(const entry of [...coreApi,...serviceApi]){const existing=catalog.find(n=>n.key===entry.key);if(existing)Object.assign(existing,entry,{keywords:(existing.keywords||'')+' '+entry.keywords});else catalog.push(entry);}
+const catalogByKey=new Map(catalog.map(node=>[node.key,node]));
 export const fieldsFor = type => ({vec2:[pin('x','X','float'),pin('y','Y','float')],vec3:[pin('x','X','float'),pin('y','Y','float'),pin('z','Z','float')],color:[pin('r','R','float'),pin('g','G','float'),pin('b','B','float'),pin('a','A','float')],transform:[pin('position','Position','vec3'),pin('rotation','Rotation','vec3'),pin('scale','Scale','vec3')],hit:[pin('hit','Blocking hit','bool'),pin('position','Impact point','vec3'),pin('normal','Normal','vec3'),pin('actor','Actor','object')]}[type]||[]);
 export function defaultsFor(type){ return {bool:false,int:0,float:0,string:'',vec2:[0,0],vec3:[0,0,0],color:[1,1,1,1],transform:{position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},object:null,hit:{hit:false,position:[0,0,0],normal:[0,1,0],actor:null}}[type]; }
 export function validValue(type,value){
@@ -131,7 +132,7 @@ export function validValue(type,value){
   if(type==='vec2')return vector(2);if(type==='vec3')return vector(3);if(type==='color')return vector(4)&&value.every(v=>v>=0&&v<=1);if(type==='object')return value===null||(typeof value==='string'&&value.length<=200);
   if(type==='transform')return value&&['position','rotation','scale'].every(k=>validValue('vec3',value[k]));if(type==='hit')return value&&validValue('bool',value.hit)&&validValue('vec3',value.position)&&validValue('vec3',value.normal)&&validValue('object',value.actor);return false;
 }
-export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalog.find(s=>s.key===n.key)?.defaults?.[p.id]??p.default??(p.array?[]:defaultsFor(p.type));}
+export function defaultInputValue(n,p){return n.inputValues?.[p.id]??catalogByKey.get(n.key)?.defaults?.[p.id]??p.default??(p.array?[]:defaultsFor(p.type));}
 export function basePins(node,direction,graph){
   if(node.key==='inputAction')return direction==='in'?[]:catalog.find(s=>s.key==='inputAction').outputs.map(p=>p.id==='value'?{...p,type:node.valueType||'bool'}:p);
   if(node.key==='timeline'){const s=catalog.find(s=>s.key==='timeline');return direction==='in'?s.inputs:[...s.outputs,...(node.timeline?.tracks||[]).map(t=>pin(t.id,t.name,t.type==='event'?'exec':t.type))];}

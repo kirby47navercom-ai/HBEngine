@@ -1,5 +1,6 @@
 import {NativeProtocol} from './native-protocol.js';
 import {NativePhysicsQueries} from './native-physics-query.js';
+import {worldPatch,commitNativeWorld} from './native-transport.js';
 import {resolveBuildPath} from './build-profile.js';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(s=>!s||s==='.'||s==='..');
@@ -16,12 +17,14 @@ export function mobileBackend(manifest,{read,request}){
     const job=module.queue.then(async()=>{
       let queries;try{
         const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects);let queryMs=0,queryCount=0;
-        const clockOnly=['frame','reset'].includes(decoded.command),packet=clockOnly?{...decoded,objects:[]}:data.request.objectPatch?{...decoded,objects:undefined,objectPatch:data.request.objectPatch}:decoded;
+        const clockOnly=['frame','reset'].includes(decoded.command),patch=!clockOnly&&module.metadata.workerProtocol>=2&&module.transportWorld?worldPatch(module.transportWorld,decoded.objects):null,packet=clockOnly?{...decoded,objects:[]}:patch?{...decoded,objects:undefined,objectPatch:patch}:decoded;if(decoded.command==='reset')module.transportWorld=null;
         const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
         if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
-        if(data.request.worldTransport===1){module.requestWorld=decoded.objects;module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
-        else if(data.request.command!=='frame'){module.requestWorld=null;module.requestSequence=0;}if(result.nativeError){module.requestWorld=null;module.requestSequence=0;}return result;
-      }catch(error){module.requestWorld=null;module.requestSequence=0;throw error;}finally{queries?.close();}
+        if(!clockOnly)module.transportWorld=commitNativeWorld(decoded.objects,result);
+        const invalidateForeign=reply=>{for(const foreign of reply.foreign||[]){const target=modules.get(foreign.token);if(target)target.transportWorld=null;invalidateForeign(foreign.result);}};invalidateForeign(result);
+        if(data.request.worldTransport===1){module.requestWorld=commitNativeWorld(decoded.objects,result);module.requestWorldId=data.request.worldId;module.requestSequence=data.request.worldSequence;result.worldSequence=data.request.worldSequence;}
+        else if(data.request.command==='reset'){module.requestWorld=null;module.requestSequence=0;}if(result.nativeError){if(data.request.worldTransport===1){module.requestWorld=null;module.requestSequence=0;}module.transportWorld=null;}return result;
+      }catch(error){if(data.request.worldTransport===1||data.request.command==='reset'){module.requestWorld=null;module.requestSequence=0;}module.transportWorld=null;throw error;}finally{queries?.close();}
     });module.queue=job.catch(()=>{});return job;
   }
   const backend=async function fetchMobile(input,options={}){

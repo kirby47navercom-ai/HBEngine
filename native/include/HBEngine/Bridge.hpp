@@ -16,12 +16,14 @@ inline void to_json(Json& j,const Color& v){j=Json::array({v.r,v.g,v.b,v.a});}
 inline void from_json(const Json& j,Color& v){v={j.at(0).get<float>(),j.at(1).get<float>(),j.at(2).get<float>(),j.at(3).get<float>()};}
 inline void to_json(Json& j,const Transform& v){j={{"position",v.position},{"rotation",v.rotation},{"scale",v.scale}};}
 inline void from_json(const Json& j,Transform& v){j.at("position").get_to(v.position);j.at("rotation").get_to(v.rotation);j.at("scale").get_to(v.scale);}
-struct BridgeCell {virtual ~BridgeCell()=default;virtual Actor* actor(){return nullptr;}virtual Json properties()=0;virtual void defaults(const Json&)=0;};
+struct BridgeCell {bool checkpointed=false;virtual ~BridgeCell()=default;virtual Actor* actor(){return nullptr;}virtual Json properties()=0;virtual void defaults(const Json&)=0;virtual void saveCheckpoint()=0;virtual void restoreCheckpoint()=0;};
 inline std::unordered_map<std::string,std::unique_ptr<BridgeCell>> bridgeCells;
 inline std::unordered_map<std::string,std::unique_ptr<Actor>> bridgeActors;
 inline Json bridgeEvents=Json::array();
 inline Json bridgeOperations=Json::array(),bridgeWorld=Json::array();
 inline Json bridgeInput=Json::object();
+inline bool bridgeOperationBoundary=false;
+inline size_t bridgeOperationStart=0;
 inline std::string bridgeInputKey(std::string key){for(auto& c:key)c=static_cast<char>(std::tolower(static_cast<unsigned char>(c)));if(key=="space"||key=="spacebar")return " ";if(key=="mouse0"||key=="mouseleft")return "leftmousebutton";if(key=="mouse1"||key=="mouseright")return "rightmousebutton";if(key=="mouse2"||key=="mousemiddle")return "middlemousebutton";return key;}
 inline bool Input::IsKeyDown(const std::string& key){return GetAxis(key)!=0;}
 inline float Input::GetAxis(const std::string& key){return bridgeInput.value("keys",Json::object()).value(bridgeInputKey(key),0.0f);}
@@ -48,6 +50,14 @@ inline void bridgeRestoreWorld(const Json& input){if(!bridgeWorld.is_array()||br
 inline void bridgeSync(const Json& objects,bool copyWorld=true){if(copyWorld)bridgeWorld=objects;bridgeStateIndices.clear();bridgeActorIds.clear();std::unordered_set<std::string> ids;size_t index=0;for(const auto& o:objects){const auto id=o.at("id").get<std::string>();ids.insert(id);bridgeStateIndices[id]=index++;}for(auto it=bridgeCells.begin();it!=bridgeCells.end();)if(!ids.count(it->first))it=bridgeCells.erase(it);else ++it;for(auto it=bridgeActors.begin();it!=bridgeActors.end();)if(!ids.count(it->first))it=bridgeActors.erase(it);else ++it;for(const auto& o:objects){const auto id=o.at("id").get<std::string>();auto c=bridgeCells.find(id);auto plain=bridgeActors.find(id);Actor* a=c!=bridgeCells.end()?c->second->actor():plain!=bridgeActors.end()?plain->second.get():nullptr;if(a){a->transform=o.get<Transform>();bridgeActorIds[a]=id;}if(c!=bridgeCells.end()&&o.contains("nativeProperties"))c->second->defaults(o.at("nativeProperties"));}}
 inline Json bridgeSnapshot(){Json values=Json::array();for(const auto& c:bridgeCells){Json o={{"id",c.first},{"nativeProperties",c.second->properties()}};if(c.second->actor()){const auto& t=c.second->actor()->transform;o["position"]=t.position;o["rotation"]=t.rotation;o["scale"]=t.scale;}values.push_back(o);}for(const auto& c:bridgeActors){const auto& t=c.second->transform;values.push_back({{"id",c.first},{"position",t.position},{"rotation",t.rotation},{"scale",t.scale}});}for(const auto& state:bridgeWorld){const auto id=state.at("id").get<std::string>();if(!bridgeCells.count(id)&&!bridgeActors.count(id))values.push_back({{"id",id},{"position",state.at("position")},{"rotation",state.at("rotation")},{"scale",state.at("scale")}});}return values;}
 inline bool bridgeSameVector(const Vec3& a,const Vec3& b){return a.x==b.x&&a.y==b.y&&a.z==b.z;}
+// Match JSON.stringify's numeric types when acknowledging C++ changes. Large
+// integral floats with ambiguous decimal rounding keep the ordinary input path.
+inline bool bridgeWireJson(Json& value){
+    if(value.is_structured()){for(auto& child:value)if(!bridgeWireJson(child))return false;}
+    else if(value.is_number_float()){const auto number=value.get<double>();if(!std::isfinite(number))return false;if(std::floor(number)==number){if(std::abs(number)<=9007199254740991.0)value=number>=0?Json(static_cast<uint64_t>(number)):Json(static_cast<int64_t>(number));else if(std::abs(number)<1e21)return false;}}
+    else if(value.is_number_integer()&&!value.is_number_unsigned()&&value.get<int64_t>()>=0)value=static_cast<uint64_t>(value.get<int64_t>());
+    return true;
+}
 inline Json bridgeChangedSnapshot(const Json& input){
     Json values=Json::array();
     for(const auto& state:input){
@@ -56,13 +66,23 @@ inline Json bridgeChangedSnapshot(const Json& input){
         Json next={{"id",id}};bool changed=false;
         if(cell!=bridgeCells.end()){const auto props=cell->second->properties();if(!state.contains("nativeProperties")||props!=state.at("nativeProperties")){next["nativeProperties"]=props;changed=true;}}
         if(actor){const auto previous=state.get<Transform>();const auto& current=actor->transform;if(!bridgeSameVector(previous.position,current.position)||!bridgeSameVector(previous.rotation,current.rotation)||!bridgeSameVector(previous.scale,current.scale)){next["position"]=current.position;next["rotation"]=current.rotation;next["scale"]=current.scale;changed=true;}}
-        if(changed){if(actor&&!next.contains("position")){const auto& current=actor->transform;next["position"]=current.position;next["rotation"]=current.rotation;next["scale"]=current.scale;}values.push_back(next);}
+        if(changed)values.push_back(next);
     }
     return values;
 }
 inline Json* bridgeState(Actor* actor){const auto id=bridgeId(actor);if(id.is_null())return nullptr;const auto state=bridgeStateIndices.find(id.get<std::string>());return state==bridgeStateIndices.end()?nullptr:&bridgeWorld.at(state->second);}
 inline Actor* frameworkActor(const std::string& role){for(const auto& state:bridgeWorld)if(state.value("frameworkRole",std::string{})==role)return bridgeActor(state.at("id"));return nullptr;}
-inline void engineCommand(const char* key,const Json& args){if(bridgeOperations.size()>=1000)throw std::runtime_error("engine operation limit");bridgeOperations.push_back({{"key",key},{"args",args}});}
+inline bool bridgeDisplayOperation(const std::string& key,const Json& args){
+    if(key!="uiSetText"&&key!="uiSetValue"&&key!="uiSetVisible"&&key!="uiSetEnabled")return false;
+    const auto actor=bridgeStateIndices.find(args.at("target").get<std::string>());if(actor==bridgeStateIndices.end())return false;
+    const auto& state=bridgeWorld.at(actor->second);if(!state.contains("gameplayDebug")||!state.at("gameplayDebug").contains("ui"))return false;
+    const auto& ui=state.at("gameplayDebug").at("ui");const auto instance=args.at("instance").get<std::string>(),element=args.at("element").get<std::string>();if(!ui.contains(instance)||!ui.at(instance).contains(element))return false;
+    const auto& widget=ui.at(instance).at(element);const auto type=widget.value("type",std::string{});
+    if(key=="uiSetText")return args.at("text").get<std::string>().size()<=10000;
+    if(key=="uiSetValue")return args.at("value").is_number()&&std::isfinite(args.at("value").get<double>());
+    const auto property=key=="uiSetVisible"?"visible":"enabled";return (widget.contains(property)&&widget.at(property)==args.at(property))||type=="Text"||type=="Image"||type=="ProgressBar";
+}
+inline void engineCommand(const char* key,const Json& args){if(bridgeOperations.size()-bridgeOperationStart>=1000)throw std::runtime_error("engine operation limit");if(!bridgeDisplayOperation(key,args))bridgeOperationBoundary=true;bridgeOperations.push_back({{"key",key},{"args",args},{"self",Timers::GetContext().first}});}
 inline Json bridgeAction(Actor* target,const std::string& path){const auto id=bridgeId(target);for(const auto& a:bridgeInput.value("actions",Json::array()))if(a.at("owner")==id&&a.at("path")==path)return a;return {{"value",false},{"state","none"},{"elapsed",0},{"events",Json::array()}};}
 inline Vec3 Input::GetActionValue(Actor* target,const std::string& action){const auto value=bridgeAction(target,action).at("value");if(value.is_boolean())return {value.get<bool>()?1.0f:0.0f,0,0};if(value.is_number())return {value.get<float>(),0,0};return {value.at(0).get<float>(),value.at(1).get<float>(),value.size()>2?value.at(2).get<float>():0.0f};}
 inline std::string Input::GetActionState(Actor* target,const std::string& action){return bridgeAction(target,action).at("state").get<std::string>();}
@@ -87,11 +107,12 @@ inline void Sprites::SetLightingMode(Actor* target,const std::string& mode){if(m
 inline std::string Sprites::GetLightingMode(Actor* target){return bridgeSprite(target).value("shading",std::string("unlit"));}
 inline Json& bridgeLight2D(Actor* target){auto* state=bridgeState(target);if(!state||!state->contains("components"))throw std::runtime_error("missing Light2D");for(auto& c:state->at("components"))if(c.value("type",std::string{})=="Light2D"){auto& p=c["properties"];if(p.is_null())p=Json::object();return p;}throw std::runtime_error("missing Light2D");}
 inline bool bridgeValidPath2D(const std::vector<Vec2>& path){
- if(path.size()<3||path.size()>64)return false;constexpr double eps=1e-8;double area=0;
+ if(path.size()<3||path.size()>64)return false;
+ constexpr double eps=1e-8;double area=0;
  const auto cross=[](const Vec2& a,const Vec2& b,const Vec2& c){return (double(b.x)-a.x)*(double(c.y)-a.y)-(double(b.y)-a.y)*(double(c.x)-a.x);};
  const auto on=[&](const Vec2& a,const Vec2& b,const Vec2& p){return std::abs(cross(a,b,p))<eps&&p.x>=std::min(a.x,b.x)-eps&&p.x<=std::max(a.x,b.x)+eps&&p.y>=std::min(a.y,b.y)-eps&&p.y<=std::max(a.y,b.y)+eps;};
  for(size_t i=0;i<path.size();i++){const auto &a=path[i],&b=path[(i+1)%path.size()],&c=path[(i+2)%path.size()];if(!std::isfinite(a.x)||!std::isfinite(a.y)||std::abs(a.x)>10000||std::abs(a.y)>10000||std::hypot(double(b.x)-a.x,double(b.y)-a.y)<eps)return false;area+=double(a.x)*b.y-double(b.x)*a.y;if(std::abs(cross(a,b,c))<eps&&(double(b.x)-a.x)*(double(c.x)-b.x)+(double(b.y)-a.y)*(double(c.y)-b.y)<0)return false;
-  for(size_t j=i+1;j<path.size();j++){if(j==i+1||(i==0&&j==path.size()-1))continue;const auto &d=path[j],&e=path[(j+1)%path.size()];if(cross(a,b,d)*cross(a,b,e)<0&&cross(d,e,a)*cross(d,e,b)<0||on(a,b,d)||on(a,b,e)||on(d,e,a)||on(d,e,b))return false;}
+  for(size_t j=i+1;j<path.size();j++){if(j==i+1||(i==0&&j==path.size()-1))continue;const auto &d=path[j],&e=path[(j+1)%path.size()];if((cross(a,b,d)*cross(a,b,e)<0&&cross(d,e,a)*cross(d,e,b)<0)||on(a,b,d)||on(a,b,e)||on(d,e,a)||on(d,e,b))return false;}
  }return std::abs(area/2)>=eps;
 }
 inline void Light2D::SetShapePath(Actor* target,const std::vector<Vec2>& path,float falloffDistance){if(!bridgeValidPath2D(path)||!std::isfinite(falloffDistance)||falloffDistance<0||falloffDistance>100000)throw std::runtime_error("invalid Light2D shape");auto& p=bridgeLight2D(target);engineCommand("light2dSetShape",{{"target",bridgeId(target)},{"path",path},{"falloffDistance",falloffDistance}});p["shapePath"]=path;p["shapeFalloff"]=falloffDistance;}
@@ -113,7 +134,7 @@ inline void Light2D::SetNormal(Actor* target,const std::string& mode,float dista
 inline void Light2D::GetNormal(Actor* target,std::string& mode,float& distance){auto& p=bridgeLight2D(target);mode=p.value("normalMode",std::string("accurate"));distance=p.value("normalDistance",1.f);}
 inline void Light2D::SetTargetSortingLayers(Actor* target,const std::vector<std::string>& layers){if(layers.size()>64)throw std::runtime_error("Light2D layer limit");std::unordered_set<std::string> seen;for(const auto& id:layers)if(id.empty()||id.size()>80||id.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-")!=std::string::npos||!seen.insert(id).second)throw std::runtime_error("invalid Light2D layer");auto& p=bridgeLight2D(target);engineCommand("light2dSetLayers",{{"target",bridgeId(target)},{"layers",layers}});p["targetSortingLayers"]=layers;}
 inline std::vector<std::string> Light2D::GetTargetSortingLayers(Actor* target){return bridgeLight2D(target).value("targetSortingLayers",std::vector<std::string>{"default"});}
-inline void Sprites::SetFlip(Actor* target,bool flipX,bool flipY){auto& p=bridgeSprite(target);engineCommand("spriteFlip",{{"target",bridgeId(target)},{"flipX",flipX},{"flipY",flipY}});p["flipX"]=flipX;p["flipY"]=flipY;}
+inline void Sprites::SetFlip(Actor* target,bool flipX,bool flipY){auto& p=bridgeSprite(target);if(p.value("flipX",false)==flipX&&p.value("flipY",false)==flipY)return;engineCommand("spriteFlip",{{"target",bridgeId(target)},{"flipX",flipX},{"flipY",flipY}});p["flipX"]=flipX;p["flipY"]=flipY;}
 inline void Sprites::GetFlip(Actor* target,bool& flipX,bool& flipY){auto& p=bridgeSprite(target);flipX=p.value("flipX",false);flipY=p.value("flipY",false);}
 inline void Sprites::SetSprite(Actor* target,const std::string& sprite){auto& p=bridgeSprite(target);engineCommand("spriteSet",{{"target",bridgeId(target)},{"sprite",sprite}});p["sprite"]=sprite;(*bridgeState(target))["currentSprite"]=sprite;}
 inline std::string Sprites::GetSprite(Actor* target){auto& p=bridgeSprite(target);return bridgeState(target)->value("currentSprite",p.value("sprite",std::string{}));}
@@ -130,7 +151,7 @@ inline bool Sprites::IsLit(Actor* target){const auto mode=GetLightingMode(target
 inline void Sprites::SetBlendMode(Actor* target,const std::string& mode,float alphaCutoff){if((mode!="opaque"&&mode!="masked"&&mode!="translucent")||!std::isfinite(alphaCutoff)||alphaCutoff<0||alphaCutoff>1)throw std::runtime_error("invalid sprite blend");auto& p=bridgeSprite(target);engineCommand("spriteSetBlend",{{"target",bridgeId(target)},{"mode",mode},{"alphaCutoff",alphaCutoff}});p["blendMode"]=mode;p["alphaCutoff"]=alphaCutoff;}
 inline std::string Sprites::GetBlendMode(Actor* target){return bridgeSprite(target).value("blendMode",std::string("translucent"));}
 inline float Sprites::GetAlphaCutoff(Actor* target){return bridgeSprite(target).value("alphaCutoff",.5f);}
-inline void Sprites::SetNormalMap(Actor* target,const std::string& texture,float strength,bool flipY){for(const unsigned char c:texture)if(c<32)throw std::runtime_error("invalid sprite normal map");if(texture.size()>1000||texture.find("..")!=std::string::npos||texture.find(':')!=std::string::npos||!texture.empty()&&(texture.front()=='/'||texture.front()=='\\')||!std::isfinite(strength)||strength<0||strength>16)throw std::runtime_error("invalid sprite normal map");auto& p=bridgeSprite(target);engineCommand("spriteSetNormal",{{"target",bridgeId(target)},{"texture",texture},{"strength",strength},{"flipY",flipY}});p["normalTexture"]=texture;p["normalStrength"]=strength;p["normalFlipY"]=flipY;}
+inline void Sprites::SetNormalMap(Actor* target,const std::string& texture,float strength,bool flipY){for(const unsigned char c:texture)if(c<32)throw std::runtime_error("invalid sprite normal map");if(texture.size()>1000||texture.find("..")!=std::string::npos||texture.find(':')!=std::string::npos||(!texture.empty()&&(texture.front()=='/'||texture.front()=='\\'))||!std::isfinite(strength)||strength<0||strength>16)throw std::runtime_error("invalid sprite normal map");auto& p=bridgeSprite(target);engineCommand("spriteSetNormal",{{"target",bridgeId(target)},{"texture",texture},{"strength",strength},{"flipY",flipY}});p["normalTexture"]=texture;p["normalStrength"]=strength;p["normalFlipY"]=flipY;}
 inline void Sprites::GetNormalMap(Actor* target,std::string& texture,float& strength,bool& flipY){auto& p=bridgeSprite(target);texture=p.value("normalTexture",std::string{});strength=p.value("normalStrength",1.f);flipY=p.value("normalFlipY",false);}
 inline void Sprites::SetShadows(Actor* target,bool cast,bool receive){auto& p=bridgeSprite(target);engineCommand("spriteSetShadows",{{"target",bridgeId(target)},{"cast",cast},{"receive",receive}});p["castShadow"]=cast;p["receiveShadow"]=receive;}
 inline void Sprites::GetShadows(Actor* target,bool& cast,bool& receive){auto& p=bridgeSprite(target);cast=p.value("castShadow",false);receive=p.value("receiveShadow",false);}
@@ -203,8 +224,8 @@ inline void UI::SetText(Actor* target,const std::string& instance,const std::str
 inline std::string UI::GetText(Actor* target,const std::string& instance,const std::string& element){return bridgeWidget(target,instance,element).at("text").get<std::string>();}
 inline void UI::SetValue(Actor* target,const std::string& instance,const std::string& element,float value){if(!std::isfinite(value))throw std::invalid_argument("invalid UI value");engineCommand("uiSetValue",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"value",value}});auto& ui=gameplayField(target,"ui");if(ui.contains(instance)&&ui.at(instance).contains(element)){auto& p=ui[instance][element];p["value"]=p.value("type",std::string{})=="CheckBox"?float(bool(value)):std::clamp(value,p.at("min").get<float>(),p.at("max").get<float>());p["checked"]=bool(value);}}
 inline float UI::GetValue(Actor* target,const std::string& instance,const std::string& element){return bridgeWidget(target,instance,element).at("value").get<float>();}
-inline void UI::SetVisible(Actor* target,const std::string& instance,const std::string& element,bool visible){engineCommand("uiSetVisible",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"visible",visible}});}
-inline void UI::SetEnabled(Actor* target,const std::string& instance,const std::string& element,bool enabled){engineCommand("uiSetEnabled",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"enabled",enabled}});}
+inline void UI::SetVisible(Actor* target,const std::string& instance,const std::string& element,bool visible){engineCommand("uiSetVisible",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"visible",visible}});auto& ui=gameplayField(target,"ui");if(ui.contains(instance)&&ui.at(instance).contains(element))ui[instance][element]["visible"]=visible;}
+inline void UI::SetEnabled(Actor* target,const std::string& instance,const std::string& element,bool enabled){engineCommand("uiSetEnabled",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"enabled",enabled}});auto& ui=gameplayField(target,"ui");if(ui.contains(instance)&&ui.at(instance).contains(element))ui[instance][element]["enabled"]=enabled;}
 inline void UI::Focus(Actor* target,const std::string& instance,const std::string& element){engineCommand("uiFocus",{{"target",bridgeId(target)},{"instance",instance},{"element",element}});}
 inline void AudioMixer::SetFloat(Actor* target,const std::string& asset,const std::string& parameter,float value){engineCommand("mixerSet",{{"target",bridgeId(target)},{"asset",asset},{"parameter",parameter},{"value",value}});gameplayField(target,"audioMixers")[asset][parameter]=value;}
 inline float AudioMixer::GetFloat(Actor* target,const std::string& asset,const std::string& parameter){return gameplayField(target,"audioMixers").at(asset).at(parameter).get<float>();}

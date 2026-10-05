@@ -29,18 +29,36 @@ export function applyWorldPatch(previous,operations){
   }
   return result;
 }
+export function commitNativeWorld(world,result){
+  if(!result.worldCommitted?.length)return world;
+  const ids=new Set(result.worldCommitted),states=new Map(result.objects.filter(o=>ids.has(o.id)).map(o=>[o.id,o]));
+  return world.map(object=>states.has(object.id)?{...object,...structuredClone(states.get(object.id))}:object);
+}
+// Engine-owned UI snapshots are immutable. Cache their JSON without hiding any
+// UI fields from C++; ordinary mutable actor data is serialized on every call.
+const immutableJSON=new WeakMap();
+export function immutableNativeSnapshot(value){
+  const snapshot=structuredClone(value),freeze=value=>{if(value&&typeof value==='object'){for(const child of Object.values(value))freeze(child);Object.freeze(value);}};freeze(snapshot);immutableJSON.set(snapshot,JSON.stringify(snapshot));return snapshot;
+}
+function withJSONField(object,key,value){const text=JSON.stringify({...object,[key]:undefined});return text.slice(0,-1)+(text.length>2?',':'')+JSON.stringify(key)+':'+value+'}';}
+function nativeRowJSON(object){
+  const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
+}
 export class NativeWorldClient {
-  constructor(){this.id=crypto.randomUUID();this.world=null;this.sequence=0;this.queue=Promise.resolve();}
+  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();}
   call(request,metadata,send){
     const job=this.queue.then(async()=>{
       if(metadata?.workerProtocol!==3)return send(request);
-      if(['frame','reset'].includes(request.command)){const result=await send(request);if(request.command==='reset'){this.world=null;this.sequence=0;}return result;}
-      let next,packet,sequence=this.sequence+1;const operations=this.world&&worldPatch(this.world,request.objects);
-      if(operations){try{const patch=JSON.parse(JSON.stringify(operations));next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}catch{/* Non-JSON fields and paths outside the patch limits use the full JSON contract. */}}
-      if(!packet){next=JSON.parse(JSON.stringify(request.objects));sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
-      const result=await send(packet);if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');this.world=result.nativeError?null:next;this.sequence=result.nativeError?0:sequence;return result;
+      if(['frame','reset'].includes(request.command)){const result=await send(request);if(request.command==='reset'){this.world=null;this.rows=null;this.sequence=0;}return result;}
+      // Native JSON serialization compares unchanged actor rows faster than walking
+      // all their component/UI fields in JS. Keep only detached, immutable rows.
+      const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>this.world&&row===this.rows?.[i]?this.world[i]:JSON.parse(row));
+      let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
+      if(patch){next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
+      if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}
+      const result=await send(packet);if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;return result;
     });
-    this.queue=job.catch(()=>{this.world=null;this.sequence=0;});return job;
+    this.queue=job.catch(()=>{this.world=null;this.rows=null;this.sequence=0;});return job;
   }
 }
 const owners=new WeakMap();

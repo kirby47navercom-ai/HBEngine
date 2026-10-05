@@ -24,6 +24,9 @@ jobs:
           node tools/check-native-module-query.mjs --cpp
           node tools/check-native-transport.mjs
           node tools/check-runtime.mjs
+          node tools/check-headless.mjs
+          node tools/check-ui-state-cache.mjs
+          node tools/check-ui-audio.mjs
       - name: 공용 실행과 실제 사용자 C++ 포함 프로젝트 출력
         run: node tools/check-mobile-player.mjs
       - name: Xcode 컴파일과 시뮬레이터 실행

@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {createAsset} from '../prototype/asset-documents.js';
+import {WidgetSystem} from '../prototype/ui-runtime.js';
+import {NativeWorldClient} from '../prototype/native-transport.js';
+
+const asset=createAsset('widget','HUD'),node=asset.nodes[0];node.name='Title';node.properties.text='원본';node.bindings.text='title';
+const actor={id:'player',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},binding={self:actor.id,root:{variables:[{id:'title',name:'Title'}]},variables:new Map([['title','첫 화면']])};
+const vm={object:id=>id===actor.id?actor:null,bindings:[binding]},ui=new WidgetSystem({readAsset:async()=>asset});
+const operation=(key,args={})=>ui.operation(key,{target:actor.id,instance:'HUD',element:'Title',...args},binding,vm);
+await operation('uiShow',{asset:'HUD'});const initial=actor.gameplayDebug.ui;
+assert.ok(Object.isFrozen(initial.HUD.Title));assert.ok(Object.isFrozen(initial.HUD));
+ui.instances.values().next().value.data.nodes[0].properties.text='독립 데이터';assert.equal(initial.HUD.Title.text,'원본','published UI cannot alias editable widget properties');
+await ui.tick(vm);const first=actor.gameplayDebug.ui;assert.equal(first.HUD.Title.text,'첫 화면');
+await ui.tick(vm);assert.equal(actor.gameplayDebug.ui,first,'unchanged bindings reuse the same snapshot');
+await operation('uiSetText',{text:'첫 화면'});assert.equal(actor.gameplayDebug.ui,first,'unchanged setter does no work');
+await operation('uiSetVisible',{visible:false});assert.equal(first.HUD.Title.visible,true);assert.equal(actor.gameplayDebug.ui.HUD.Title.visible,false);
+const client=new NativeWorldClient(),packets=[];const send=packet=>{packets.push(packet);return {worldSequence:packet.worldSequence,objects:[]};};
+await client.call({objects:[actor]}, {workerProtocol:3},send);assert.deepEqual(client.world[0],JSON.parse(JSON.stringify(actor)),'cached native JSON preserves all UI and actor fields');
+binding.variables.set('title','바뀐 글자');await ui.tick(vm);await client.call({objects:[actor]}, {workerProtocol:3},send);assert.equal(client.world[0].gameplayDebug.ui.HUD.Title.text,'바뀐 글자');assert.ok(packets[1].objectPatch.length>0);
+await operation('uiRemove');assert.equal(actor.gameplayDebug.ui.HUD,undefined);assert.equal(first.HUD.Title.text,'첫 화면');ui.dispose(vm);
+console.log('UI state: detached immutable snapshots, unchanged setters/bindings, exact native JSON and changed/remove updates passed');
