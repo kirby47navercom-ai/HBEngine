@@ -17,6 +17,8 @@ const validName=name=>typeof name==='string'&&name.length>0&&name.length<=80&&na
 export function validateManifest(data){
   if(!data||data.version!==1||data.engine!=='HBEngine'||data.engineVersion!==engineVersion||!validName(data.name)||typeof data.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.id))throw Error('지원하지 않거나 잘못된 HBEngine 프로젝트 파일이에요.');
   for(const [key,suffix] of [['startupScene','.hbscene.json'],['startupBlueprint','.hbblueprint.json']]){const value=data[key];if(typeof value!=='string'||!value||value.length>1000||!value.endsWith(suffix)||value.includes('\\')||value.startsWith('/')||value.split('/').some(p=>!p||p==='.'||p==='..'||/[<>:"|?*\x00-\x1f]/.test(p)||/[. ]$/.test(p)))throw Error('프로젝트 시작 에셋 경로 오류');}
+  if(data.gameInstance){const value=data.gameInstance,asset=typeof value==='string'&&value.startsWith('Assets/')&&value.endsWith('.hbblueprint.json'),cpp=typeof value==='string'&&/^Source\/.+\.(?:h|hpp)(?:#[A-Za-z_]\w{0,79})?$/.test(value);if((!asset&&!cpp)||value.length>1000||/[\\:\x00-\x1f<>"|?*]/.test(value)||value.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('GameInstance 에셋·C++ 경로 오류');}
+
   return data;
 }
 const descriptor=name=>({version:1,engine:'HBEngine',engineVersion,id:randomUUID(),name,startupScene:'Assets/Scenes/Garden.hbscene.json',startupBlueprint:'Assets/Blueprints/BP_Garden.hbblueprint.json'});

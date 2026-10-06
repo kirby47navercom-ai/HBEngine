@@ -1,3 +1,4 @@
+import {configureNativePersistence} from './game-storage.mjs';
 import {BuildJobs} from './build-jobs.mjs';
 import {readBuildProfiles} from './build-game.mjs';
 import {findEditor,openExternal,createCppClass} from './external-editor.mjs';
@@ -23,7 +24,7 @@ async function writeReady(){
 }
 async function selectProject(record){
   if(stopping)throw Error('편집기가 종료 중이에요.');await rememberProject(record);native.close();native=new NativeHost();automation=new EditorAutomation();project=record.project;
-  session={id:record.manifest.id,name:record.manifest.name,projectFile:record.file,startupScene:record.manifest.startupScene,startupBlueprint:record.manifest.startupBlueprint,legacyStorage:sameRoot(record.root,quietCanonicalRoot)};storage=new ProjectStorage(project,session.id);await writeReady();return session;
+  session={id:record.manifest.id,name:record.manifest.name,projectFile:record.file,startupScene:record.manifest.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:record.manifest.gameInstance||'',legacyStorage:sameRoot(record.root,quietCanonicalRoot)};storage=new ProjectStorage(project,session.id);configureNativePersistence(native,storage,async name=>JSON.parse(await fs.readFile((await project.read(name)).file,'utf8')));await writeReady();return session;
 }
 if(!desktop){
   const directory=process.env.HB_PROJECT_DIR||quietRoot;await new ProjectService(directory).init(!process.env.HB_PROJECT_DIR);
@@ -45,6 +46,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(url.pathname.startsWith('/api/')){
     if(req.headers.origin&&!['http://127.0.0.1:'+port,'http://localhost:'+port].includes(req.headers.origin))return json(res,{error:'허용되지 않은 요청 출처'},403);
     if(req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'편집기 요청 헤더 필요'},403);
+    if(url.pathname==='/api/game-data'&&req.method==='POST'){const data=await body(req);if(!native.persistentQueries)throw Error('프로젝트 게임 데이터 서비스가 없어요.');return json(res,{value:await native.persistentQueries(data.key,data.args)});}
     if(url.pathname==='/api/session'&&req.method==='GET')return json(res,session);
     if(url.pathname==='/api/launcher'&&req.method==='GET')return json(res,{projects:await recentProjects(defaultProject),defaultDirectory});
     if(url.pathname==='/api/launcher/browse'&&req.method==='POST'){const data=JSON.parse(await body(req));return json(res,{path:await pickProjectPath(data.kind)});}

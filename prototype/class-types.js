@@ -7,6 +7,7 @@ export const blueprintClasses = {
   AIController: {label:'AI Controller', ko:'AI 컨트롤러', icon:'controller', base:'Controller', components:['AIController'], placeable:false},
   GameMode: {label:'Game Mode', ko:'게임 모드', icon:'game', base:'Actor', components:['GameMode'], placeable:false},
   GameState: {label:'Game State', ko:'게임 상태', icon:'game', base:'Actor', components:['GameState'], placeable:false},
+  GameInstance: {label:'Game Instance', ko:'게임 인스턴스', icon:'game', base:'Actor', components:[], placeable:false},
   PlayerState: {label:'Player State', ko:'플레이어 상태', icon:'pawn', base:'Actor', components:['PlayerState'], placeable:false},
   Component: {label:'Actor Component', ko:'액터 컴포넌트', icon:'component', base:null, components:[], placeable:false},
   SceneComponent: {label:'Scene Component', ko:'씬 컴포넌트', icon:'layers', base:'Component', components:['Transform'], placeable:false}

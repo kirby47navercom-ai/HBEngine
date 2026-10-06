@@ -9,6 +9,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 // Editor metadata; the prototype registration tool reads these declarations.
 #define HB_CLASS(...)
@@ -16,6 +17,7 @@
 #define HB_NODE(...)
 #define HB_PROPERTY(...)
 namespace hb {
+using Json=nlohmann::json;
 struct Vec2 { float x=0,y=0; };
 struct Vec3 { float x=0,y=0,z=0; };
 struct Color { float r=1,g=1,b=1,a=1; };
@@ -30,9 +32,29 @@ struct Controller : Actor {};
 struct PlayerController : Controller {};
 struct GameMode : Actor {};
 struct GameState : Actor {};
+struct GameInstance : Actor { Json state=Json::object(); virtual void Init(){} virtual void Shutdown(){} };
 struct PlayerState : Actor {};
 struct AIController : Controller {};
 struct SceneComponent : Component { Transform transform{}; };
+HB_CLASS()
+class Game : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getGameInstance", KoreanName="게임 인스턴스", Category="게임") static GameInstance* GetInstance();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="gameStateRead", KoreanName="게임 상태 JSON 읽기", Category="게임") static std::string GetStateText();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="gameArgsRead", KoreanName="장면 인자 JSON 읽기", Category="게임") static std::string GetArgumentsText();
+    static Json GetArguments(){return Json::parse(GetArgumentsText());}
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="gameStateWrite", KoreanName="게임 상태 JSON 지정", Category="게임") static void SetStateText(const std::string& json);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="gameReset", KoreanName="게임 새로 시작", Category="게임") static void Reset();
+};
+HB_CLASS()
+class Save : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="saveJsonWrite", KoreanName="JSON 저장", Category="저장") static void WriteText(const std::string& slot,const std::string& json);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="saveJsonRead", KoreanName="JSON 저장 읽기", Category="저장") static std::string ReadText(const std::string& slot);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="saveJsonDelete", KoreanName="JSON 저장 삭제", Category="저장") static void Delete(const std::string& slot);
+    static void Write(const std::string& slot,const Json& json){WriteText(slot,json.dump());}
+    static Json Read(const std::string& slot){return Json::parse(ReadText(slot));}
+};
 HB_CLASS()
 class UI : public Library {
 public:
@@ -452,6 +474,8 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindTag", KoreanName="태그로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetActorsWithTag(const std::string& tag,bool includeInactive=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindId", KoreanName="ID로 액터 찾기", Category="오브젝트") static Actor* FindActorById(const std::string& id,bool includeInactive=false);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openScene", KoreanName="장면 열기", Category="장면") static void Open(const std::string& scene);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openSceneArgs", KoreanName="장면 열기와 인자", Category="장면") static void OpenWithArguments(const std::string& scene,const std::string& json);
+    static void Open(const std::string& scene,const Json& arguments){OpenWithArguments(scene,arguments.dump());}
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getWorldPosition", KoreanName="월드 위치 가져오기", Category="변환") static Vec3 GetWorldPosition(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setWorldPosition", KoreanName="월드 위치 설정", Category="변환") static void SetWorldPosition(Actor* target,const Vec3& position);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getLocalPosition", KoreanName="로컬 위치 가져오기", Category="변환") static Vec3 GetLocalPosition(Actor* target);

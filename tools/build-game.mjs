@@ -1,3 +1,5 @@
+import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
+import {canonicalNativeText} from '../prototype/native-model.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
@@ -38,6 +40,9 @@ export async function inspectBuild(record,profile){
     if(info.size>104857600)throw Error('빌드 파일 100MB 제한: '+name);
     const bytes=await fs.readFile(info.file);size+=bytes.length;if(size>1073741824)throw Error('빌드 콘텐츠 1GB 제한');content.set(canonical,bytes);return canonical;
   };
+  let gameInstanceAsset=record.manifest.gameInstance||'';
+  if(!gameInstanceAsset){const selected=new Set();for(const scene of enabled){const data=JSON.parse(await fs.readFile((await record.project.read(scene)).file,'utf8'));if(data.runtime?.gameConfig){const config=JSON.parse(await fs.readFile((await record.project.read(data.runtime.gameConfig)).file,'utf8'));if(!validAsset('gameconfig',config))throw Error('게임 설정 형식 오류');if(config.gameInstance)selected.add(config.gameInstance);}}if(selected.size>1)throw Error('빌드 장면의 GameInstance 클래스는 하나로 지정하세요.');gameInstanceAsset=[...selected][0]||'';}
+  if(gameInstanceAsset.startsWith('Source/')){const {root:gameRoot,asset}=await gameInstanceBlueprint(gameInstanceAsset,{readText:async name=>fs.readFile((await record.project.read(name)).file,'utf8')});gameInstanceAsset=asset;content.set(asset,Buffer.from(json(gameRoot)));await include(gameRoot.native.headerPath);await include(gameRoot.native.sourcePath);}else if(gameInstanceAsset)await include(gameInstanceAsset);
   for(const f of files.filter(f=>f.kind!=='folder'&&f.path.startsWith('Assets/')&&(f.kind!=='scene'||enabled.has(f.path))))await include(f.path);
   for(const [name,bytes] of content){
     let data;const kind=assetKind(name);
@@ -45,8 +50,8 @@ export async function inspectBuild(record,profile){
     else if(name.endsWith('.json')||name.endsWith('.gltf')){try{data=JSON.parse(bytes);}catch{continue;}}
     else continue;
     if(kind==='blueprint'&&data.native){
-      const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=content.get(headerPath).toString('utf8'),source=content.get(sourcePath).toString('utf8');
-      if(header!==n.header||source!==n.source)throw Error(name+': 변경된 C++을 블루프린트에서 다시 빌드하세요.');natives.set(nativeSignature(header,source),{header,source});
+      const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
+      if(header!==canonicalNativeText(n.header)||source!==canonicalNativeText(n.source))throw Error(name+': 변경된 C++을 블루프린트에서 다시 빌드하세요.');natives.set(nativeSignature(header,source),{header,source});
       data=structuredClone(data);delete data.native.header;delete data.native.source;
     }
     for(const value of assetReferences(data,name))await include(value);
@@ -54,7 +59,7 @@ export async function inspectBuild(record,profile){
   const legacyBlueprints=new Map();for(const [name,bytes] of content)if(name.endsWith('.hbblueprint.json')){const bp=JSON.parse(bytes);const candidates=legacyBlueprints.get(bp.name)||[];candidates.push(name);legacyBlueprints.set(bp.name,candidates);}
   for(const [name,bytes] of content)if(name.endsWith('.hbscene.json')){const data=JSON.parse(bytes);let changed=false;for(const object of data.objects)if(object.blueprint&&!object.blueprintAsset){const matches=legacyBlueprints.get(object.blueprint)||[];if(matches.length!==1)throw Error(name+': 블루프린트 이름을 경로로 지정하세요: '+object.blueprint);object.blueprintAsset=matches[0];changed=true;}if(changed)content.set(name,Buffer.from(json(data)));}
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');
-  return {content,natives,report:{target:profileTarget(profile),renderer:buildTargets[profileTarget(profile)].renderer,profile:structuredClone(profile),startupScene:[...enabled][0],files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
+  return {content,natives,report:{target:profileTarget(profile),renderer:buildTargets[profileTarget(profile)].renderer,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
 export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
@@ -83,7 +88,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     for(const name of ['player.html','player.css','ui-runtime.css'])await copy(path.join(root,'prototype',name),'prototype/'+name);
     const copyLicenses=async rel=>{for(const e of await fs.readdir(path.join(desktop,rel),{withFileTypes:true})){if(e.isSymbolicLink())throw Error('배포 의존성 심볼릭 링크');if(e.isDirectory())await copyLicenses(rel+'/'+e.name);else await copy(path.join(desktop,rel,e.name),rel+'/'+e.name);}};await copyLicenses('licenses');
     await copy(path.join(desktop,'HBPlayer.exe'),'Game.exe');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));
-    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
+    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,'Game.exe'),totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}finally{host.close();}
 }

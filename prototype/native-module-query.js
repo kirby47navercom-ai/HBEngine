@@ -3,7 +3,7 @@ import {validValue} from './blueprint-model.js';
 import {nativeTargetPin} from './native-model.js';
 
 export function nativeBindings(objects,builds,bindings,request,metadata){
-  if(request?.command||metadata?.nativeModuleQueries!==1)return undefined;
+  if(request?.command&&request.command!=='initialize'||metadata?.nativeModuleQueries!==1)return undefined;
   const current=builds.get((()=>{const o=objects.find(o=>o.id===request.self);return o?.blueprintAsset||o?.nativeBuildAsset;})())?.token;
   const native=objects.filter(o=>!['widget','component'].includes(o.kind)&&o.nativeClass&&builds.has(o.blueprintAsset||o.nativeBuildAsset)),foreign=native.some(o=>builds.get(o.blueprintAsset||o.nativeBuildAsset).token!==current),owners=new Map(bindings.map(b=>[b.self,b]));
   return native.flatMap(o=>{const token=builds.get(o.blueprintAsset||o.nativeBuildAsset).token,overrides=owners.get(o.id)?.root.nodes.filter(n=>n.key==='nativeEvent'&&n.nativeId.startsWith(o.nativeClass+'.')).map(n=>n.nativeId)||[];return foreign||overrides.length?[{id:o.id,token,className:o.nativeClass,...(token!==current?{properties:o.nativeProperties||{}}:{}),overrides}]:[];});
@@ -27,7 +27,7 @@ export function nativeModuleRequest(request,query,resolve){
   if(args.operation==='call'){if(!f||!args.arguments||typeof args.arguments!=='object'||Array.isArray(args.arguments))throw Error('C++ 모듈 함수 오류');call.key='nativeCall';call.args={...args.arguments,...(!f.static?{[nativeTargetPin(f)]:row.id}:{})};}
   else{if(!p||p.array||!['float','int'].includes(p.type)||args.operation==='setFloat'&&p.readOnly)throw Error('C++ 모듈 숫자 속성 오류');call.key=args.operation==='getFloat'?'nativeGet':'nativeSet';call.args={target:row.id,...(call.key==='nativeSet'?{value:args.value}:{})};}
   const rows=request.nativeBindings.map(r=>{const state=query.objects.find(o=>o.id===r.id);return state?.nativeClass===r.className?{...r,properties:state.nativeProperties||r.properties}:r;});
-  return {token:row.token,call,request:{...call,input:query.input??request.input,scopes:request.scopes,clock:query.clock,nativeBindings:rows,objects:nativeModuleWorld(query.objects,rows,row.token)}};
+  return {token:row.token,call,request:{...call,...(request.gameSession?{gameSession:{...request.gameSession,state:query.gameState??request.gameSession.state}}:{}),input:query.input??request.input,scopes:request.scopes,clock:query.clock,nativeBindings:rows,objects:nativeModuleWorld(query.objects,rows,row.token)}};
 }
 // Foreign calls have already passed their owning module's typed protocol check.
 // Merge their effects at the caller's real execution boundary, retaining ownership.

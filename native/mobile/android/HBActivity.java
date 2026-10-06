@@ -22,6 +22,7 @@ public final class HBActivity extends Activity {
     private final Set<String> files = new HashSet<>();
     private final Map<String,Long> fileSizes = new HashMap<>();
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
+    private final ExecutorService storageWorker = Executors.newSingleThreadExecutor();
     private final ConcurrentHashMap<String, CompletableFuture<String>> queries = new ConcurrentHashMap<>();
     private String currentRequest;
     private volatile boolean destroyed;
@@ -121,7 +122,7 @@ public final class HBActivity extends Activity {
         try { JSONObject packet=new JSONObject(payload);String operation=packet.getString("operation"),id=packet.getString("id");if(id.length()>80)throw new JSONException("작업 ID 오류");
             if(operation.equals("queryReply")){CompletableFuture<String> query=queries.remove(id);if(query!=null)query.complete(packet.getJSONObject("data").toString());return;}
             final long decodedAt=System.nanoTime();
-            worker.execute(()->{final long workerAt=System.nanoTime();long invokedAt=0,finishedAt=0;JSONObject reply=new JSONObject();String nativeReply=null;try{reply.put("id",id);currentRequest=id;JSONObject data=packet.optJSONObject("data"),result;
+            (operation.equals("storageRead")||operation.equals("storageWrite")?storageWorker:worker).execute(()->{final long workerAt=System.nanoTime();long invokedAt=0,finishedAt=0;JSONObject reply=new JSONObject();String nativeReply=null;try{reply.put("id",id);if(operation.equals("native"))currentRequest=id;JSONObject data=packet.optJSONObject("data"),result;
                 switch(operation){
                     case "channel": { String nonce=data.getString("nonce");if(!nonce.matches("[a-f0-9-]{36}"))throw new IOException("채널 확인 값 오류");runOnUiThread(()->{if(destroyed||web==null)return;if(messagePort!=null)messagePort.close();WebMessagePort[] ports=web.createWebMessageChannel();messagePort=ports[0];messagePort.setWebMessageCallback(new WebMessagePort.WebMessageCallback(){@Override public void onMessage(WebMessagePort port,WebMessage message){postMessage(message.getData());}});web.postWebMessage(new WebMessage(nonce,new WebMessagePort[]{ports[1]}),Uri.parse(ORIGIN));});result=new JSONObject().put("ok",true);break; }
                     case "native": { int module=data.getInt("module");if(module<0||module>=manifest.getJSONArray("nativeModules").length())throw new IOException("C++ 모듈 오류");boolean raw=data.has("requestJSON");Object input=raw?data.get("requestJSON"):data.getJSONObject("request");if(raw&&!(input instanceof String))throw new IOException("C++ JSON 요청 형식 오류");invokedAt=System.nanoTime();byte[] response=nativeInvoke(module,input.toString().getBytes(StandardCharsets.UTF_8));finishedAt=System.nanoTime();String text=new String(response,StandardCharsets.UTF_8);if(raw){nativeReply=text;result=null;}else result=new JSONObject(text);break; }
@@ -131,7 +132,7 @@ public final class HBActivity extends Activity {
                     case "close": result=new JSONObject().put("ok",true);runOnUiThread(()->finish());break;
                     default: throw new IOException("모바일 호스트에 없는 작업");
                 }reply.put("data",result);
-            }catch(Exception e){nativeReply=null;try{reply.put("error",e.getMessage());}catch(JSONException ignored){}Log.e("HBPlayer","host operation",e);}finally{currentRequest=null;if(nativeReply!=null)emitNative(id,nativeReply,decodedAt,receivedAt,workerAt,invokedAt,finishedAt);else emit(reply);}});
+            }catch(Exception e){nativeReply=null;try{reply.put("error",e.getMessage());}catch(JSONException ignored){}Log.e("HBPlayer","host operation",e);}finally{if(operation.equals("native"))currentRequest=null;if(nativeReply!=null)emitNative(id,nativeReply,decodedAt,receivedAt,workerAt,invokedAt,finishedAt);else emit(reply);}});
         }catch(Exception e){Log.e("HBPlayer","invalid message",e);}
     }
     private JSONObject loadSaves() throws Exception { try{JSONObject value=new JSONObject(read(saves.openRead(),16777216));if(value.getInt("version")!=1||!(value.get("items") instanceof JSONObject))throw new IOException("게임 저장 형식 오류");return value;}catch(FileNotFoundException e){return new JSONObject().put("version",1).put("items",new JSONObject());} }
@@ -144,5 +145,5 @@ public final class HBActivity extends Activity {
     @Override protected void onPause(){setActive(false);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(false)",null);super.onPause();}
     @Override protected void onResume(){super.onResume();setActive(true);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(true)",null);}
     @Override public void onBackPressed(){if(web!=null)web.evaluateJavascript("document.querySelector('#pause-toggle')?.click()",null);else super.onBackPressed();}
-    @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();if(messagePort!=null){messagePort.close();messagePort=null;}if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
+    @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();storageWorker.shutdownNow();if(messagePort!=null){messagePort.close();messagePort=null;}if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
 }

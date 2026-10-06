@@ -10,7 +10,7 @@ inline Json bridgeNative(const Json& args){
     if(bridgeLocalNative){const auto context=Timers::GetContext();const auto overrides=bridgeOverrides;Json output;try{output=bridgeLocalNative(args);}catch(...){Timers::SetContext(context.first,context.second);bridgeOverrides=overrides;throw;}Timers::SetContext(context.first,context.second);bridgeOverrides=overrides;if(!output.is_null())return output;}
     if(bridgeForeign.size()>=128)throw std::runtime_error("native module call limit");
     auto receipt=engineQuery("nativeModule",args);
-    std::function<void(const Json&)> apply=[&](const Json& result){
+    std::function<void(const Json&)> apply=[&](const Json& result){if(result.contains("gameSession"))Game::SetStateText(result.at("gameSession").at("state").dump());
         for(const auto& foreign:result.value("foreign",Json::array()))apply(foreign.at("result"));
         for(const auto& state:result.at("objects")){
             const auto id=state.at("id").get<std::string>();auto index=bridgeStateIndices.find(id);

@@ -1,3 +1,4 @@
+export const canonicalNativeText=text=>text.replace(/^\uFEFF/,'').replaceAll('\r\n','\n').replaceAll('\r','\n');
 // Header declarations become editor metadata; this is not a C++ compiler.
 // Other modules remain reachable as Actors, but only their owner loads native state.
 export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset||o.nativeBuildAsset))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}

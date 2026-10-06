@@ -1,3 +1,4 @@
+import {configureNativePersistence} from './game-storage.mjs';
 import {resolveBuildPath} from '../prototype/build-profile.js';
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -18,7 +19,8 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
   const native=new NativeHost(),builds=new Map();for(const module of manifest.nativeModules){const file=files.get(module.binary);if(!file||!module.binary.startsWith('Binaries/'))throw Error('C++ 실행 파일 누락');builds.set(module.signature,native.registerBinary(file.full,module.metadata));}
   userData=path.resolve(userData||path.join(process.env.LOCALAPPDATA||root,'HBEngine','Games',manifest.id));await fs.mkdir(userData,{recursive:true});
   const store=new ProjectStorage({resolve:async()=>path.join(userData,'savegames.json')},manifest.id),validKey=store.validKey.bind(store);store.validKey=key=>validKey(key)&&(key.startsWith('hbengine.savegame.')||key.startsWith('hbengine.storage-migrated.v1.'));
-  const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,legacyStorage:false,player:true};
+  configureNativePersistence(native,store,async name=>{const file=files.get('Content/'+resolveBuildPath(name,manifest.redirects));if(!file)throw Error('쿠킹된 데이터 에셋이 없어요.');return JSON.parse(await fs.readFile(file.full,'utf8'));});
+  const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,gameInstance:manifest.gameInstance||'',legacyStorage:false,player:true};
   const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify(data));
   const body=async req=>{const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>8388608)throw Error('요청 크기 초과');chunks.push(chunk);}return JSON.parse(Buffer.concat(chunks).toString('utf8'));};
   let report=null,activePort;const server=http.createServer(async(req,res)=>{try{
@@ -26,6 +28,7 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     const origin='http://127.0.0.1:'+activePort;if(req.headers.host!=='127.0.0.1:'+activePort)return json(res,{error:'호스트 오류'},403);
     const url=new URL(req.url,origin),q=url.searchParams;
     if(req.headers.origin&&req.headers.origin!==origin||req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'출처 오류'},403);
+    if(url.pathname==='/api/game-data'&&req.method==='POST'){const data=await body(req);return json(res,{value:await native.persistentQueries(data.key,data.args)});}
     if(url.pathname==='/api/session'&&req.method==='GET')return json(res,session);
     if(url.pathname==='/api/player'&&req.method==='GET')return json(res,{name:manifest.name,smoke:process.env.HB_PLAYER_SMOKE==='1',acceptance:process.env.HB_PLAYER_SMOKE==='1'&&process.env.HB_PLAYER_ACCEPTANCE==='1',configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene});
     if(url.pathname==='/api/project'&&req.method==='GET')return json(res,{entries:manifest.entries});

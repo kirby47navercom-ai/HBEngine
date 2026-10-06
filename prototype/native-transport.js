@@ -52,14 +52,15 @@ function nativeRowJSON(object){
   const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
 }
 export class NativeWorldClient {
-  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
+  constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
   call(request,metadata,send){
     const job=this.queue.then(async()=>{
-      const context=request.spawnTemplates,prefix=request.spawnPrefix,deliver=send;
+      const game=this.owner?.hooks?.game;if(game&&metadata?.nativeGameSession===1)request={...request,gameSession:game.snapshot()};const context=request.spawnTemplates,prefix=request.spawnPrefix,deliver=send;
       if(context&&this.spawnContext?.context===context&&this.spawnContext.prefix===prefix&&request.command!=='reset'){const {spawnTemplates,...next}=request;request=next;}
-      send=async packet=>{const result=await deliver(packet);if(context)this.spawnContext={context,prefix};return result;};
+      send=async packet=>{const result=await deliver(packet);if(game&&result.gameSession?.id===game.id)game.setState(result.gameSession.state);if(context)this.spawnContext={context,prefix};return result;};
       if(metadata?.workerProtocol!==3)return send(request);
       if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
+      if(request.command==='initialize'){const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
       if(request.command==='frame'){
         if(!Number.isFinite(request.delta)||request.delta<0||request.delta>1||request.clock&&(!Number.isFinite(request.clock.scale)||request.clock.scale<0||typeof request.clock.paused!=='boolean'))return send(request);
         // With one module and no active C++ timers, only the next C++ read can
@@ -81,4 +82,4 @@ export class NativeWorldClient {
   }
 }
 const owners=new WeakMap();
-export function nativeWorldClient(build,owner=build){if(!owners.has(owner))owners.set(owner,new Map());const clients=owners.get(owner);if(!clients.has(build.token))clients.set(build.token,new NativeWorldClient());return clients.get(build.token);}
+export function nativeWorldClient(build,owner=build){if(!owners.has(owner))owners.set(owner,new Map());const clients=owners.get(owner);if(!clients.has(build.token))clients.set(build.token,new NativeWorldClient(owner));return clients.get(build.token);}

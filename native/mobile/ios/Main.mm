@@ -60,7 +60,7 @@ public:
 };
 
 @interface HBController : UIViewController<WKScriptMessageHandler,WKNavigationDelegate> {
-    WKWebView* web;NSDictionary* manifest;NSURL* saveFile;dispatch_queue_t worker;NSMutableDictionary* queries;std::unique_ptr<AssetServer> server;
+    WKWebView* web;NSDictionary* manifest;NSURL* saveFile;dispatch_queue_t worker,storageWorker;NSMutableDictionary* queries;std::unique_ptr<AssetServer> server;
     BOOL foreground;double activeElapsed;std::chrono::steady_clock::time_point activeMark;
 }
 -(void)lifecycle:(BOOL)active;
@@ -72,7 +72,7 @@ public:
     NSMutableDictionary* files=[NSMutableDictionary dictionaryWithObject:@YES forKey:@"game.hbpack.json"];for(NSDictionary* file in manifest[@"files"])files[file[@"path"]]=@YES;
     try{server=std::make_unique<AssetServer>(root,files,[manifest[@"configuration"] isEqual:@"development"]);}catch(const std::exception& e){UILabel* error=[[UILabel alloc] initWithFrame:self.view.bounds];error.numberOfLines=0;error.text=text(e.what());[self.view addSubview:error];return;}
     NSURL* directory=[NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;[NSFileManager.defaultManager createDirectoryAtURL:directory withIntermediateDirectories:YES attributes:nil error:nil];saveFile=[directory URLByAppendingPathComponent:@"savegames.json"];
-    worker=dispatch_queue_create("hbengine.native",DISPATCH_QUEUE_SERIAL);queries=[NSMutableDictionary new];WKWebViewConfiguration* config=[WKWebViewConfiguration new];config.allowsInlineMediaPlayback=YES;config.mediaTypesRequiringUserActionForPlayback=WKAudiovisualMediaTypeNone;[config.userContentController addScriptMessageHandler:self name:@"hbmobile"];
+    worker=dispatch_queue_create("hbengine.native",DISPATCH_QUEUE_SERIAL);storageWorker=dispatch_queue_create("hbengine.storage",DISPATCH_QUEUE_SERIAL);queries=[NSMutableDictionary new];WKWebViewConfiguration* config=[WKWebViewConfiguration new];config.allowsInlineMediaPlayback=YES;config.mediaTypesRequiringUserActionForPlayback=WKAudiovisualMediaTypeNone;[config.userContentController addScriptMessageHandler:self name:@"hbmobile"];
     web=[[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];web.navigationDelegate=self;web.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;web.scrollView.scrollEnabled=NO;[self.view addSubview:web];[web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://127.0.0.1:%d/prototype/player.html",server->port]]]];
 }
 -(void)emit:(NSDictionary*)packet {NSString* script=[@"window.hbMobileReply&&window.hbMobileReply(" stringByAppendingFormat:@"%@)",[[NSString alloc] initWithData:encode(packet) encoding:NSUTF8StringEncoding]];dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:script completionHandler:nil];});}
@@ -80,7 +80,7 @@ public:
     if(!message.frameInfo.isMainFrame||![message.frameInfo.securityOrigin.host isEqual:@"127.0.0.1"]||message.frameInfo.securityOrigin.port!=server->port||![message.body isKindOfClass:NSString.class]||[message.body length]>8388608)return;
     NSDictionary* packet=decode([message.body dataUsingEncoding:NSUTF8StringEncoding]);if(![packet isKindOfClass:NSDictionary.class])return;NSString* operation=packet[@"operation"],*requestID=packet[@"id"];if(![requestID isKindOfClass:NSString.class]||requestID.length>80||![operation isKindOfClass:NSString.class]||![packet[@"data"] isKindOfClass:NSDictionary.class])return;
     if([operation isEqual:@"queryReply"]){@synchronized(queries){NSMutableDictionary* query=queries[requestID];if(query){query[@"reply"]=packet[@"data"];dispatch_semaphore_signal(query[@"signal"]);}}return;}
-    dispatch_async(worker,^{@autoreleasepool{try{
+    dispatch_async(([operation isEqual:@"storageRead"]||[operation isEqual:@"storageWrite"])?storageWorker:worker,^{@autoreleasepool{try{
         NSDictionary* data=packet[@"data"];id result=nil;
         if([operation isEqual:@"native"]){int index=[data[@"module"] intValue];auto input=utf8([[NSString alloc] initWithData:encode(data[@"request"]) encoding:NSUTF8StringEncoding]);
             const auto query=[&](const std::string& input){NSString* id=NSUUID.UUID.UUIDString;NSMutableDictionary* slot=[NSMutableDictionary dictionaryWithObject:dispatch_semaphore_create(0) forKey:@"signal"];@synchronized(self->queries){self->queries[id]=slot;}[self emit:@{@"id":requestID,@"queryId":id,@"query":decode([text(input) dataUsingEncoding:NSUTF8StringEncoding])}];const auto started=[self activeTime];bool timed=false;while(dispatch_semaphore_wait(slot[@"signal"],dispatch_time(DISPATCH_TIME_NOW,100*NSEC_PER_MSEC))){if([self activeTime]-started>=10){timed=true;break;}}@synchronized(self->queries){[self->queries removeObjectForKey:id];}if(timed)throw std::runtime_error("mobile query timeout");return utf8([[NSString alloc] initWithData:encode(slot[@"reply"]) encoding:NSUTF8StringEncoding]);};

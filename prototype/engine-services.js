@@ -1,3 +1,5 @@
+import {createPersistentQueries,persistentQueryKeys} from './runtime-storage.js';
+import {parseGameJson} from './runtime-game.js';
 import {resolveSprite} from './sprite-import.js';
 import {RuntimeTilemaps} from './tilemap-runtime.js';
 import {requestSceneTravel} from './play-world.js';
@@ -48,6 +50,7 @@ export function engineOperations(hooks){
   const soundRouting=new AudioRouting({readAsset:path=>readAsset(path)});
   const releasingActors=new Set();let physics,audioEpoch=0,graphSerial=0;
   const readAsset=hooks.readAsset||(async(path)=>(await editorRequest(fileUrl(path))).json());
+  const persistentQueries=createPersistentQueries({readAsset,readSave:slot=>(hooks.storage||storage).getItem((hooks.storageKey||storageKey)('hbengine.savegame.json.'+slot)),writeSave:async(slot,text)=>{(hooks.storage||storage).setItem((hooks.storageKey||storageKey)('hbengine.savegame.json.'+slot),text);await (hooks.storage||storage).flush?.();},deleteSave:async slot=>{(hooks.storage||storage).removeItem((hooks.storageKey||storageKey)('hbengine.savegame.json.'+slot));await (hooks.storage||storage).flush?.();}});
   const tilemaps=new RuntimeTilemaps({read:readAsset,render:hooks.tilemapFrame});
   const stopAnimation=async(id,vm,reason='stopped',request,keepMontages=false)=>{graphRequests.delete(id);if(request!==undefined)graphRequests.set(id,request);const graph=graphs.get(id),events=graph?.cancelNotifyStates(reason)||[];graphs.delete(id);graph?.dispose();animations.delete(id);const mixer=mixers.get(id)?.mixer;if(mixer){mixer.stopAllAction();mixer.uncacheRoot(mixer.getRoot());mixers.delete(id);}let montageError;if(!keepMontages)try{await systems.stopMontages(id,vm,reason);}catch(error){montageError=error;}if(vm?.active){const b=vm.bindings.find(b=>b.self===id);let firstError=montageError;if(b)for(const event of events){if(!vm.active||!vm.object(id))break;try{await deliverAnimationNotify(vm,b,event);}catch(error){firstError??=error;}}if(firstError)throw firstError;}};
   const applyAnimation=(o,state)=>{for(const track of state.tracks)o[track.id]=sampleTimeline(track,state.time);hooks.update(o);};
@@ -84,6 +87,13 @@ export function engineOperations(hooks){
     }
   }
   const operation=async(key,a,b,vm)=>{
+    if(persistentQueryKeys.has(key)){const value=hooks.persistentQueries?await hooks.persistentQueries(key,a):!hooks.headless&&key.startsWith('saveJson')?(await(await editorRequest('/api/game-data',{method:'POST',body:JSON.stringify({key,args:a})})).json()).value:await persistentQueries(key,a);return key==='saveJsonWrite'||key==='saveJsonDelete'?{}:{return:value};}
+    if(key==='getGameInstance')return {return:vm.hooks.game?.instance?.id||null};
+    if(key==='gameArgsRead')return {return:JSON.stringify(vm.hooks.game?.arguments||{})};
+    if(key==='gameStateRead')return {return:JSON.stringify(vm.hooks.game?.state||{})};
+    if(key==='gameStateWrite'){if(!vm.hooks.game)throw Error('게임 세션이 없어요.');vm.hooks.game.setState(parseGameJson(a.json));return {};}
+    if(key==='gameReset'){vm.sceneRequest={reset:true,path:vm.hooks.startupScene||vm.hooks.scenePath,data:await readAsset(vm.hooks.startupScene||vm.hooks.scenePath),arguments:{}};return {};}
+
     if(key.startsWith('animGraph')){
       const o=target(a,b,vm);if(key==='animGraphStop'){await stopAnimation(o.id,vm);return {};}
       if(key==='animGraphPlay'){if(releasingActors.has(o.id)||o.destroying)throw Error('정리 중인 오브젝트의 애니메이션을 시작할 수 없어요.');if(vm.stopping)throw Error('실행 종료 중에는 애니메이션을 시작할 수 없어요.');const generation=vm.generation,request=++graphSerial;graphRequests.set(o.id,request);const path=await hooks.asset(a.asset,'animgraph');if(!path)throw Error('애니메이션 그래프가 없어요: '+a.asset);const player=await AnimationGraphPlayer.load(await readAsset(path),{object:o,group:hooks.mesh(o.id),readAsset,asset:hooks.asset,update:hooks.update,spriteFrame:hooks.spriteFrame,slotPose:(group,slot)=>systems.slotPose(o.id,group,slot)});player.path=path;if(request!==graphRequests.get(o.id)||vm.object(o.id)!==o||vm.generation!==generation||vm.stopping){player.dispose();return {};}try{for(const montage of systems.montagePlayers(o.id)){montage.validateGraph(player);player.adoptProgram(montage.program);montage.sample(montage.time,montage.weight);}}catch(error){player.dispose();throw error;}await stopAnimation(o.id,vm,'replaced',request,true);if(request!==graphRequests.get(o.id)||vm.object(o.id)!==o||vm.generation!==generation||vm.stopping){player.dispose();return {};}graphs.set(o.id,player);await player.tick(0);await graphEvents(player,vm);return {};}
@@ -238,7 +248,7 @@ export function engineOperations(hooks){
     if(key==='saveGame'){(hooks.storage||storage).setItem((hooks.storageKey||storageKey)('hbengine.savegame.'+a.slot),JSON.stringify({version:1,objects:vm.objects,variables:vm.bindings.map(b=>({self:b.self,values:Object.fromEntries(b.variables)}))}));return {success:true};}
     if(key==='loadGame'){const data=JSON.parse((hooks.storage||storage).getItem((hooks.storageKey||storageKey)('hbengine.savegame.'+a.slot))||'null');if(!validRuntimeSave(data,vm))throw Error('저장 슬롯 데이터 검증 실패');for(const saved of data.objects){const o=vm.object(saved.id);Object.assign(o,saved);hooks.update(o);}for(const state of data.variables){const binding=vm.bindings.find(b=>b.self===state.self);binding.variables=new Map(Object.entries(state.values));}return {data:b.self};}
     if(['createWidget','addViewport','setText'].includes(key)){if(key==='createWidget'){if(!['Text','Button','Panel'].includes(a.class))throw Error('지원 위젯 클래스: Text, Button, Panel');const id=crypto.randomUUID(),element=document.createElement(a.class==='Button'?'button':'div');element.className='runtime-widget';widgets.set(id,element);vm.objects.push({id,name:a.class,kind:'widget',visible:false,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]});return {widget:id};}const widget=widgets.get(a.widget);if(!widget)throw Error('위젯 참조가 없어요.');if(key==='setText')widget.textContent=a.text;else hooks.overlay().append(widget);return {};}
-    if(key==='openScene')return requestSceneTravel(vm,a.scene,{readAsset,asset:hooks.asset});
+    if(key==='openScene'||key==='openSceneArgs')return requestSceneTravel(vm,a.scene,{readAsset,asset:hooks.asset,arguments:key==='openSceneArgs'?parseGameJson(a.json):{}});
     const extended=await systems.operation(key,a,b,vm);if(extended!==undefined)return extended;
     throw Error('실행 서비스가 없어요: '+key);
   };
