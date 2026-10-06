@@ -59,7 +59,7 @@ jobs:
           changes=$(git diff --name-only "$SHARED_REVISION" HEAD)
           while IFS= read -r file; do
             case "$file" in
-              ''|docs/*|tools/check-player-lifecycle.mjs|.github/workflows/mobile-ios.yml) ;;
+              ''|docs/*|CODEX_HANDOFF.md|DEBUG_HANDOFF.md|tools/check-player-lifecycle.mjs|tools/check-ios-mobile.mjs|.github/workflows/mobile-ios.yml) ;;
               *) echo "실행 소스가 바뀌어 전체 검사가 필요해요: $file"; exit 1 ;;
             esac
           done <<< "$changes"

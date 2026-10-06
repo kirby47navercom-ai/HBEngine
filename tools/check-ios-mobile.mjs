@@ -11,15 +11,13 @@ const proof=JSON.parse(await fs.readFile(process.env.HB_MOBILE_PROOF_EXPORT||'na
 const out=proof.output,derived=path.join(out,'DerivedData'),app=path.join(derived,'Build/Products/Debug-iphonesimulator/HBGame.app');
 const mainFile=path.join(out,'Native/Main.mm'),originalMain=await fs.readFile(mainFile,'utf8'),marker='NSMutableDictionary* report=[data mutableCopy];';assert.ok(originalMain.includes(marker)&&originalMain.includes('BOOL foreground;'));
 const probeScript='void ('+iosAudioProbe.toString()+')('+JSON.stringify('/Content/Assets/MobileTone.wav')+','+audioMeterReuseProof.toString()+','+iosAssetProof.toString()+');',probeHook='if(!self->audioProbeStarted){self->audioProbeStarted=YES;dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:@'+JSON.stringify(probeScript)+' completionHandler:nil];});}dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:@"window.hbIOSAudioProbe" completionHandler:^(id value,NSError* error){if([value isKindOfClass:NSDictionary.class])[encode(value) writeToURL:[[self->saveFile URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"audio-probe.json"] atomically:YES];}];});';
-const instrumentedMain=originalMain.replace('BOOL foreground;','BOOL audioProbeStarted;BOOL foreground;').replace(marker,marker+probeHook);await fs.writeFile(mainFile,instrumentedMain);await fs.writeFile(path.join(out,'ios-audio-instrumentation.json'),JSON.stringify({testOnly:true,originalSha256:createHash('sha256').update(originalMain).digest('hex'),instrumentedSha256:createHash('sha256').update(instrumentedMain).digest('hex')},null,2));
+const instrumentedMain=originalMain.replace('BOOL foreground;','BOOL audioProbeStarted;BOOL foreground;').replace(marker,marker+probeHook).replace('return UIApplicationMain(', 'NSLog(@"HBGame CHECK main reached");return UIApplicationMain(');await fs.writeFile(mainFile,instrumentedMain);await fs.writeFile(path.join(out,'ios-audio-instrumentation.json'),JSON.stringify({testOnly:true,originalSha256:createHash('sha256').update(originalMain).digest('hex'),instrumentedSha256:createHash('sha256').update(instrumentedMain).digest('hex')},null,2));
 const run=async(args)=>{console.log('iOS 명령 시작:',args.join(' '));const result=await runTool('xcrun',args,{timeout:180000,maxOutput:args.includes('--json')?1000000:50000});if(!args.includes('--json'))console.log(result.trim());return result;};
 const build=async(platform,dir)=>{
   console.log('Xcode '+platform+' 컴파일 시작');
   await runTool('xcodebuild',['-project',path.join(out,'HBGame.xcodeproj'),'-scheme','HBGame','-configuration','Debug','-destination','generic/platform='+platform,'-derivedDataPath',dir,'CODE_SIGNING_ALLOWED=NO','build'],{timeout:600000,onOutput:text=>process.stdout.write(text)});
   console.log('Xcode '+platform+' 컴파일 통과');
 };
-await build('iOS Simulator',derived);
-await build('iOS',path.join(out,'DeviceDerivedData'));
 const devices=JSON.parse(await run(['simctl','list','devices','available','--json']));
 await fs.writeFile(path.join(out,'ios-devices.json'),JSON.stringify(devices,null,2));
 const sdk=(await run(['--sdk','iphonesimulator','--show-sdk-version'])).trim(),runtimes=Object.entries(devices.devices).filter(([runtime])=>runtime.includes('iOS')).sort((a,b)=>b[0].localeCompare(a[0],undefined,{numeric:true})),matching=runtimes.find(([runtime])=>runtime.endsWith('iOS-'+sdk.replaceAll('.','-')));
@@ -32,11 +30,17 @@ let reportFile,audioProbeReportFile;
 try{
 await run(['simctl','boot',device.udid]);
 await run(['simctl','bootstatus',device.udid,'-b']);
+// Fresh-device services can still be registering apps after bootstatus completes.
+// Compile while they settle; a system app separates simulator readiness from HBGame startup.
+await build('iOS Simulator',derived);
+await build('iOS',path.join(out,'DeviceDerivedData'));
+await run(['simctl','launch',device.udid,'com.apple.mobilesafari']);
+await fs.writeFile(path.join(out,'ios-platform-readiness.json'),JSON.stringify({systemAppLaunched:true,applicationId:'com.apple.mobilesafari',device:device.udid},null,2));
 await run(['simctl','install',device.udid,app]);
-await run(['simctl','launch',device.udid,proof.applicationId]);
 const data=(await run(['simctl','get_app_container',device.udid,proof.applicationId,'data'])).trim();
 reportFile=path.join(data,'Library/Application Support/runtime-report.json');
 audioProbeReportFile=path.join(data,'Library/Application Support/audio-probe.json');
+await run(['simctl','launch',device.udid,proof.applicationId]);
 let report;
 for(let i=0;i<90;i++){
   try{report=JSON.parse(await fs.readFile(reportFile,'utf8'));}catch(error){if(error.code!=='ENOENT'&&!(error instanceof SyntaxError))throw error;}
@@ -84,7 +88,7 @@ console.log('iOS: 실제 Xcode 기기·시뮬레이터 컴파일과 WKWebView·�
   console.error('iOS 실행 검사 실패:',error.message);
   if(reportFile)try{await fs.copyFile(reportFile,path.join(out,'ios-runtime-report.json'));}catch(failure){console.error('iOS 마지막 실행 보고 수집:',failure.message);}
   if(audioProbeReportFile)try{await fs.copyFile(audioProbeReportFile,path.join(out,'ios-audio-probe.json'));}catch(failure){console.error('iOS 오디오 경로 대조 수집:',failure.message);}
-  try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR eventMessage CONTAINS "'+proof.applicationId+'" OR (process CONTAINS "WebKit" AND (eventMessage CONTAINS[c] "audio" OR eventMessage CONTAINS[c] "media"))'],{timeout:30000,maxOutput:200000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
+  try{const logs=await runTool('xcrun',['simctl','spawn',device.udid,'log','show','--last','5m','--style','compact','--predicate','process == "HBGame" OR process == "CoreSimulatorBridge" OR eventMessage CONTAINS "'+proof.applicationId+'" OR (eventMessage CONTAINS "com.apple.mobilesafari" AND (eventMessage CONTAINS[c] "launch" OR eventMessage CONTAINS[c] "error")) OR (process CONTAINS "WebKit" AND (eventMessage CONTAINS[c] "audio" OR eventMessage CONTAINS[c] "media"))'],{timeout:30000,maxOutput:250000});await fs.writeFile(path.join(out,'ios-failure-log.txt'),logs);}catch(failure){console.error('iOS 실패 로그 수집:',failure.message);}
   const crashes=path.join(process.env.HOME,'Library/Logs/DiagnosticReports');try{for(const name of await fs.readdir(crashes))if(name.startsWith('HBGame')&&name.endsWith('.ips'))await fs.copyFile(path.join(crashes,name),path.join(out,name));}catch(failure){if(failure.code!=='ENOENT')console.error('iOS 충돌 기록 수집:',failure.message);}
   throw error;
 }finally{
