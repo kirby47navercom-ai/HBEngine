@@ -7,7 +7,7 @@ const source=await fs.readFile(new URL('../prototype/player.js',import.meta.url)
 const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix));assert.ok(value,'Player function missing: '+prefix);return value;};
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
-const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment','visuals','primitives',`
+const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment','visuals','primitives','frameLoop',`
   const kiosk={enabled:false},config={},operatorMenu=false;let closed=false,closing=false,busy=false,failureCleanup,sceneEpoch=0;
   ${releaseSource}
   ${failSource}
@@ -17,15 +17,15 @@ const factory=new Function('vm','services','objects','groups','world','remove','
 const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return {promise,resolve,reject};};
 const settle=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
 function fixture({reportGate,endGate,flushGate,flushFailures=0,reportError=false,endError=false}={}){
-  const events=[],saved=[],pending=[],timers=[],elements=new Map(),groups=new Map([['actor',{}]]);let flushes=0;
+  const events=[],saved=[],pending=[],timers=[],elements=new Map(),groups=new Map([['actor',{}]]);let flushes=0,frameStops=0;
   const vm={active:true,async stop(reason){events.push('EndPlay:'+reason);if(endGate)await endGate.promise;if(endError){this.active=false;throw Error('EndPlay fixture failure');}pending.push('EndPlay-save');this.active=false;events.push('EndPlay-saved');}};
   const services={dispose:()=>events.push('services-disposed')},world={userData:{},traverse:callback=>{events.push('render-disposed');callback({geometry:{dispose(){}},material:{dispose(){}}});},environment:{dispose(){events.push('environment-disposed');}}};
   const report=async()=>{events.push('report-start');if(reportGate)await reportGate.promise;if(reportError)throw Error('report fixture failure');events.push('report-done');};
   const flushStorage=async()=>{const attempt=++flushes;events.push('flush-start:'+attempt);if(flushGate&&attempt===1)await flushGate.promise;if(attempt<=flushFailures){events.push('flush-failed:'+attempt);throw Error('storage fixture failure');}saved.push(...pending.splice(0));events.push('flush-done:'+attempt);};
   const window={chrome:{webview:{postMessage:value=>events.push(value)}}};
   const $=selector=>{if(!elements.has(selector))elements.set(selector,{hidden:false,textContent:''});return elements.get(selector);};
-  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);},disposeSceneEnvironment,{dispose2D:()=>events.push('2d-lighting-disposed')},{dispose:()=>events.push('primitives-disposed')});
-  return {...api,events,saved,pending,timers,vm,groups,elements};
+  const api=factory(vm,services,[{id:'actor'}],groups,world,object=>events.push('removed:'+object.id),report,flushStorage,window,$,{warn:()=>events.push('warning'),error:()=>events.push('failure-reported')},callback=>{timers.push(callback);},disposeSceneEnvironment,{dispose2D:()=>events.push('2d-lighting-disposed')},{dispose:()=>events.push('primitives-disposed')},{stop(){frameStops++;}});
+  return {...api,events,saved,pending,timers,vm,groups,elements,frameStops:()=>frameStops};
 }
 const count=(events,value)=>events.filter(event=>event===value).length;
 
@@ -33,7 +33,7 @@ const count=(events,value)=>events.filter(event=>event===value).length;
 {
   const reportGate=deferred(),endGate=deferred(),flushGate=deferred(),f=fixture({reportGate,endGate,flushGate});
   const failure=f.fail(Error('fatal fixture failure')),cleanup=f.state().failureCleanup;
-  assert.ok(cleanup instanceof Promise);assert.equal(f.state().closed,true);
+  assert.ok(cleanup instanceof Promise);assert.equal(f.state().closed,true);assert.equal(f.frameStops(),1);
   const close=f.close();await f.close();await f.fail(Error('duplicate failure'));
   assert.equal(f.state().failureCleanup,cleanup);assert.deepEqual(f.events,['report-start']);
   reportGate.resolve();await settle();assert.deepEqual(f.events,['report-start','report-done','EndPlay:Failed']);
@@ -66,7 +66,7 @@ const count=(events,value)=>events.filter(event=>event===value).length;
   const f=fixture();f.setBusy(true);const close=f.close();await f.close();assert.deepEqual(f.events,[]);assert.equal(f.timers.length,1);
   f.setBusy(false);f.timers.shift()();await close;
   assert.deepEqual(f.saved,['EndPlay-save']);assert.equal(count(f.events,'EndPlay:Stopped'),1);assert.equal(count(f.events,'hbengine.close'),1);
-  assert.ok(f.events.indexOf('EndPlay-saved')<f.events.indexOf('flush-start:1'));assert.equal(count(f.events,'2d-lighting-disposed'),1);assert.equal(count(f.events,'primitives-disposed'),1);assert.equal(f.events.at(-1),'hbengine.close');
+  assert.ok(f.events.indexOf('EndPlay-saved')<f.events.indexOf('flush-start:1'));assert.equal(count(f.events,'2d-lighting-disposed'),1);assert.equal(count(f.events,'primitives-disposed'),1);assert.equal(f.events.at(-1),'hbengine.close');assert.equal(f.frameStops(),1);
 }
 
 // A normal shutdown save failure remains recoverable without sending an early close.
@@ -88,9 +88,9 @@ const count=(events,value)=>events.filter(event=>event===value).length;
 // Run the current mobile lifecycle source without waiting for a physical app switch.
 {
   const events=[],window={hbMobileHostLifecycle:value=>events.push('host:'+value)},menu={open:false};let now=10;
-  const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail','config','report',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
-  const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;},{configuration:'development'},async()=>events.push('report'));
-  api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:false,last:10,queued:0});assert.deepEqual(events,['host:false','release','save','audio:true']);
+  const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail','config','report','frameLoop',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
+  const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;},{configuration:'development'},async()=>events.push('report'),{stop:()=>events.push('frame-stop')});
+  api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:true,last:10,queued:0});assert.deepEqual(events,['host:false','frame-stop','release','save','audio:true']);
   api.suspend();now=500000;api.activate(true);api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);assert.equal(api.state().last,500000);assert.equal(api.state().queued,0);
   await settle();assert.equal(events.filter(e=>e==='report').length,2,'수명 전환마다 오디오 상태를 보고하고 중복 활성화는 보고하지 않아야 해요.');
   menu.open=true;api.activate(true);assert.equal(events.at(-1),'audio:true');api.suspend();api.close();api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);
@@ -107,9 +107,8 @@ console.log('Player 실제 함수 원문 검사 통과: 실패/저장/종료·�
  const snapshot=inspect(services,vm,[],camera,{Vector3:class{}},new Map(),renderer,'Boss');assert.equal(snapshot.time,2.5);assert.equal(snapshot.scene,'Boss');assert.equal(snapshot.input.keys.w,1);
 }
 
-// Keep the absolute hidden-player cadence through small timer jitter; skip long stalls.
+// The shared deadline loop is checked in check-frame-rate; verify Player gates it.
 {
- const scheduleSource=line('const schedule=');let clock=125;const tasks=[];
- const factory=new Function('performance','setTimeout','requestAnimationFrame','animate', 'let scheduledFrame=null,nextSmokeFrame=100,closed=false,closing=false,kioskResetting=false;const config={smoke:true};'+scheduleSource+'return {schedule,deadline:()=>nextSmokeFrame};');
- let api;api=factory({now:()=>clock},(callback,delay)=>{tasks.push({callback,delay});return tasks.length;},()=>{throw Error('hidden cadence');},()=>api.schedule());api.schedule();api.schedule();assert.equal(tasks.length,1);assert.equal(tasks[0].delay,0);tasks[0].callback();assert.ok(Math.abs(api.deadline()-133.3333333333)<1e-6);assert.ok(Math.abs(tasks[1].delay-8.3333333333)<1e-6);clock=500;tasks[1].callback();assert.equal(api.deadline(),500);assert.equal(tasks.at(-1).delay,0);
+ const scheduleSource=line('const schedule='),factory=new Function('frameLoop','closed','closing','kioskResetting','mobileActive',scheduleSource+'return schedule;');
+ let starts=0;const loop={start:()=>starts++};for(const flags of [[true,false,false,true],[false,true,false,true],[false,false,true,true],[false,false,false,false]])factory(loop,...flags)();assert.equal(starts,0);factory(loop,false,false,false,true)();assert.equal(starts,1);
 }
