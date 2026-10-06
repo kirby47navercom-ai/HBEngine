@@ -35,6 +35,7 @@ jobs:
           node tools/check-buffered-audio.mjs
           node tools/check-streaming-audio.mjs
           node tools/check-render-resources.mjs
+          node tools/ios-audio-probe.mjs --check
           node tools/check-runtime-features.mjs
           node tools/check-player-lifecycle.mjs
           node tools/check-asset-cache.mjs
