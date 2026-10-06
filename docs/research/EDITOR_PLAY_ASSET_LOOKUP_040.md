@@ -20,3 +20,5 @@
 - 영구 회귀 도구 `node tools/check-auric-features-editor.mjs <격리 auric-spawn 사본> --boss-only`의6WJJfx는 실제 사용자 C++/300프레임·조회0회·오류0을 통과했다. 명령 적용 최대3ms·평균.1835ms, frontend 최대7.5ms. 기존 폭넓은 검사 경로는 유지하고 이번 수정에는6초 검사만 실행했다.
 - CPU 프로필/명령별 측정은 검사 엔진 사본만 계측했다. 공개 엔진에 계측 오버헤드를 넣지 않았다. 증거 native/build/boss-asset-result-040.json, private editor-window별 JSON/CPU profile이다.
 - 순차 측정의 OS 부하·전투 조작이 통제된 FPS 벤치마크는 아니다. 120fps/휴대폰60fps나 모든 주기 멈춤 제거를 주장하지 않는다. 남은 simulation 비용의 물리 접촉·네이티브 직렬화·UI 업데이트는 다음 조사 대상으로 남긴다. 모바일/패키지 실행 코드 불변으로 iOS·Android 빌드 및 긴 스트레스 검사를 반복하지 않았다.
+
+- 2026-10-07 사용자 설치 완료: sourcec150496/bundled03c655dc25a2bb6, C:/Users/kirby/HBEngine/Versions/d03c655dc25a2bb6/HBEngine.exe.1786파일/변경24SHA와 실제 회귀 창의 app.js가 일치하며 모바일·패키지·네이티브 실행소스는478e610 검증본 그대로예요. 기존ff86 설치 manifest/프로필·adb14204 및 사용자 창을 보존했고 바로가기/HKCU 프로젝트 실행 경로를 갱신했어요. 다음 실행부터 적용돼요. 증거 native/build/boss-asset-user-install-040.json.
