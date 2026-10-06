@@ -63,6 +63,7 @@ jobs:
               *) echo "실행 소스가 바뀌어 전체 검사가 필요해요: $file"; exit 1 ;;
             esac
           done <<< "$changes"
+          mkdir -p native/build
           node tools/check-player-lifecycle.mjs
           node tools/check-frame-rate.mjs
           node tools/check-native-channel.mjs
