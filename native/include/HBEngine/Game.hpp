@@ -224,6 +224,10 @@ using Sprite = Sprites;
 HB_CLASS()
 class Light2D : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetOrder", KoreanName="2D 광원 순서 지정", Category="2D 조명") static void SetLightOrder(Actor* target,int order);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetOrder", KoreanName="2D 광원 순서 조회", Category="2D 조명") static int GetLightOrder(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetOverlap", KoreanName="2D 광원 겹침 처리 지정", Category="2D 조명") static void SetOverlapOperation(Actor* target,const std::string& mode);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetOverlap", KoreanName="2D 광원 겹침 처리 조회", Category="2D 조명") static std::string GetOverlapOperation(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetBlendStyle", KoreanName="2D 광원 블렌드 스타일 지정", Category="2D 조명") static void SetBlendStyle(Actor* target,int index);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetBlendStyle", KoreanName="2D 광원 블렌드 스타일 조회", Category="2D 조명") static int GetBlendStyle(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dRendererSetStyle", KoreanName="2D 렌더러 블렌드 스타일 설정", Category="2D 조명") static void SetRendererBlendStyle(Actor* target,int index,const std::string& mode,const std::string& mask);

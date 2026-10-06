@@ -44,20 +44,21 @@ float hbLight2DPolygon(vec2 point,float count,float row,float falloff){
   return inside||distanceToEdge<0.00001?1.0:falloff<=0.0?0.0:1.0-smoothstep(0.0,falloff,distanceToEdge);
 }
 `+shader.fragmentShader;
-    shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`vec3 hbLight2DMultiply=vec3(0.0),hbLight2DAdd=vec3(0.0);
+    shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`vec3 hbLight2DMultiply=vec3(0.0),hbLight2DAdd=vec3(0.0),hbLight2DAccum[4];
+for(int hbStyle=0;hbStyle<4;hbStyle++)hbLight2DAccum[hbStyle]=vec3(0.0);
 vec4 hbLight2DMaskValue=hbLight2DHasMask>0.5?texture2D(hbLight2DMask,hbLight2DMaskUV):vec4(1.0);
 for(int hbIndex=0;hbIndex<64;hbIndex++){
   if(hbIndex>=hbLight2DCount)break;float row=float(hbIndex);if(hbLight2DTarget(row)<0.5)continue;
-  vec4 origin=hbLight2DRead(0.0,row),tint=hbLight2DRead(1.0,row);float attenuation=1.0,normalMode=mod(origin.w,4.0),style=floor(origin.w/4.0);
+  vec4 origin=hbLight2DRead(0.0,row),tint=hbLight2DRead(1.0,row);float attenuation=1.0,normalResponse=1.0,coverage=1.0,normalMode=mod(origin.w,4.0),style=mod(floor(origin.w/4.0),4.0),alphaBlend=floor(origin.w/16.0);
   if(origin.z>0.5){
     vec4 range=hbLight2DRead(2.0,row),settings=hbLight2DRead(3.0,row),basis=hbLight2DRead(4.0,row);
     vec2 delta=hbLight2DWorld-origin.xy,local=vec2(dot(basis.xy,delta),dot(basis.zw,delta));float distance2d=length(local);
     attenuation=pow(origin.z>2.5?(distance2d>range.z?0.0:hbLight2DPolygon(local,range.x,settings.z,range.y)):1.0-hbLight2DFade(range.x,range.y,distance2d),settings.x);
     if(origin.z>1.5&&origin.z<2.5&&distance2d>0.00001)attenuation*=hbLight2DFade(range.z,range.w,local.y/distance2d);
-    if(attenuation<=0.0)continue;
+    if(attenuation<=0.0)continue;coverage=attenuation;
     if(normalMode>0.5){vec2 normalDelta=origin.xy-(normalMode<1.5?hbLight2DOrigin:hbLight2DWorld);
       vec3 surfaceNormal=inverseTransformDirection(normal,viewMatrix);
-      attenuation*=max(0.0,dot(surfaceNormal,normalize(vec3(normalDelta,max(0.00001,settings.y)))));
+      normalResponse=max(0.0,dot(surfaceNormal,normalize(vec3(normalDelta,max(0.00001,settings.y)))));attenuation*=normalResponse;coverage*=normalResponse;
     }
     if(settings.w>0.0){vec4 rect=texture2D(hbShadowRects,vec2((row+0.5)/64.0,(hbLight2DLayer+0.5)/64.0));
       if(rect.z>0.0){vec4 bounds=texture2D(hbShadowBounds,vec2((row+0.5)/64.0,0.5));vec2 uv=(hbLight2DWorld-bounds.xy)/bounds.zw+0.5;
@@ -65,16 +66,21 @@ for(int hbIndex=0;hbIndex<64;hbIndex++){
       }
     }
   }
+  vec3 contribution=tint.rgb*tint.a*attenuation;int index=int(style);
+  if(alphaBlend>0.5)hbLight2DAccum[index]=contribution*normalResponse+hbLight2DAccum[index]*(1.0-clamp(coverage,0.0,1.0));else hbLight2DAccum[index]+=contribution;
+}
+for(int hbStyle=0;hbStyle<4;hbStyle++){
+  float style=float(hbStyle);
   float mode=style<0.5?hbLight2DModes.x:style<1.5?hbLight2DModes.y:style<2.5?hbLight2DModes.z:hbLight2DModes.w;
   float channel=style<0.5?hbLight2DChannels.x:style<1.5?hbLight2DChannels.y:style<2.5?hbLight2DChannels.z:hbLight2DChannels.w;
   float mask=1.0;if(channel>=0.0){float c=mod(channel,4.0);mask=c<0.5?hbLight2DMaskValue.r:c<1.5?hbLight2DMaskValue.g:c<2.5?hbLight2DMaskValue.b:hbLight2DMaskValue.a;if(channel>3.5)mask=1.0-mask;}
-  vec3 contribution=tint.rgb*tint.a*attenuation*mask;
+  vec3 contribution=hbLight2DAccum[hbStyle]*mask;
   if(mode<0.5)hbLight2DMultiply+=contribution;else hbLight2DAdd+=contribution*(mode<1.5?1.0:-1.0);
 }
 outgoingLight=max(vec3(0.0),diffuseColor.rgb*hbLight2DMultiply+hbLight2DAdd)+totalEmissiveRadiance;
 #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey=()=>key+'|hb-light2d-v4';material.needsUpdate=true;material.userData.hbLight2DOwner=material.uuid;material.userData.hbLight2D=uniforms;return uniforms;
+  material.customProgramCacheKey=()=>key+'|hb-light2d-v5';material.needsUpdate=true;material.userData.hbLight2DOwner=material.uuid;Object.defineProperty(material.userData,'hbLight2D',{value:uniforms,writable:true,configurable:true,enumerable:false});return uniforms;
 }
 
 export class TwoDLighting{
@@ -86,6 +92,8 @@ export class TwoDLighting{
     for(let i=0;i<4;i++){this.modes.setComponent(i,lightBlendModes.indexOf(config?.['style'+i+'Mode']??defaultLightBlendStyles[i].mode));this.channels.setComponent(i,lightMaskChannels.indexOf(config?.['style'+i+'Mask']??defaultLightBlendStyles[i].mask)-1);}
     const lights=[];
     for(const group of groups){if(group.userData.disposed||!group.userData.light2d)continue;let shown=true;for(let node=group;node;node=node.parent)if(!node.visible){shown=false;break;}if(shown&&group.userData.light2d.enabled!==false)lights.push(group);}
+    // Global illumination initializes each style before ordered local lamps.
+    lights.sort((a,b)=>Number(b.userData.light2d.lightType==='global')-Number(a.userData.light2d.lightType==='global')||(a.userData.light2d.lightType==='global'?0:(a.userData.light2d.lightOrder||0)-(b.userData.light2d.lightOrder||0)));
     if(lights.length>light2dLimit)throw Error('활성 2D 광원은64개까지예요.');
     const receiverLayers=new Set(receivers.filter(e=>{for(let n=e.node;n;n=n.parent)if(!n.visible)return false;return true;}).map(e=>sortingLayerIndex(layers,e.properties.sortingLayer))),shadows=this.shadows.prepare(renderer,groups,lights,receiverLayers,layers);
     const capacity=Math.max(1,2**Math.ceil(Math.log2(lights.length||1)));
@@ -101,7 +109,7 @@ export class TwoDLighting{
       const group=lights[row],p=group.userData.light2d,m=group.matrixWorld.elements,det=m[0]*m[5]-m[4]*m[1];
       if(p.lightType!=='global'&&(!Number.isFinite(det)||Math.abs(det)<1e-8))throw Error('2D 광원의 XY 변환이 평면에서 사라졌어요.');
       const masks=this.masks; masks.fill(0);for(let i=0;i<Math.min(64,layers.length);i++)if(p.targetSortingLayers.includes(layers[i].id))masks[Math.floor(i/8)]|=1<<(i%8);
-      const data=this.row;data[0]=m[12];data[1]=m[13];data[2]=p.lightType==='global'?0:p.lightType==='point'?1:p.lightType==='spot'?2:3;data[3]=(p.normalMode==='disabled'?0:p.normalMode==='fast'?1:2)+4*(p.blendStyle||0);
+      const data=this.row;data[0]=m[12];data[1]=m[13];data[2]=p.lightType==='global'?0:p.lightType==='point'?1:p.lightType==='spot'?2:3;data[3]=(p.normalMode==='disabled'?0:p.normalMode==='fast'?1:2)+4*(p.blendStyle||0)+16*(p.lightType!=='global'&&p.overlapOperation==='alphaBlend'?1:0);
       data[4]=p.color[0];data[5]=p.color[1];data[6]=p.color[2];data[7]=p.intensity;data[8]=p.innerRadius;data[9]=p.outerRadius;data[10]=Math.cos(p.outerAngle*Math.PI/360);data[11]=Math.cos(p.innerAngle*Math.PI/360);
       data[12]=p.falloff;data[13]=p.normalDistance;data[15]=this.shadows.atlas&&p.shadows&&p.lightType!=='global'?p.shadowStrength:0;data[16]=p.lightType==='global'?1:m[5]/det;data[17]=p.lightType==='global'?0:-m[4]/det;data[18]=p.lightType==='global'?0:-m[1]/det;data[19]=p.lightType==='global'?1:m[0]/det;data.set(masks,20);
       data[14]=0;if(p.lightType==='freeform'){data[8]=p.shapePath.length;data[9]=p.shapeFalloff;data[14]=shapes.indexOf(group);data[10]=Math.max(...p.shapePath.map(point=>Math.hypot(...point)))+p.shapeFalloff;data[11]=0;}

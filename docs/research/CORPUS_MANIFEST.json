@@ -32,6 +32,10 @@
         {
           "url": "https://docs.unity3d.com/kr/6000.0/Manual/urp/LightBlendStyles.html",
           "record": "docs/research/2D_BLEND_STYLES_033.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/kr/6000.0/Manual/urp/2DLightProperties.html",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md"
         }
       ]
     },
@@ -105,6 +109,14 @@
         {
           "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/api/UnityEngine.Rendering.Universal.Light2DBlendStyle.html",
           "record": "docs/research/2D_BLEND_STYLES_033.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/api/UnityEngine.Rendering.Universal.Light2D.html",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/api/UnityEngine.Rendering.Universal.Light2D.OverlapOperation.html",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md"
         }
       ]
     },
@@ -987,6 +999,21 @@
         {
           "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl",
           "record": "docs/research/2D_BLEND_STYLES_033.md",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Light2D.shader",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Light2DManager.cs",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Passes/Utility/RendererLighting.cs",
+          "record": "docs/research/2D_LIGHT_OVERLAP_034.md",
           "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
         }
       ]

@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-06 후속: [034 광원 순서/겹침](2D_LIGHT_OVERLAP_034.md)에 Unity6000 자체 표·URP17.0.4 두 속성/enum·고정 셰이더/manager/utility 전체와 RendererLighting 일부 읽기/SHA를 기록했어요. 가산/알파·RGB와coverage·순서·마스크 후적용을 사람/AI/C++/BP에 연결하고 실제 GPU143/조명93을 확인했어요.6주소 발견 추가, 전체27계열/gate와 독립 Unity/미독 범위는 보존해요.
+
 2026-10-06 후속: [033 공용2D 블렌드 스타일](2D_BLEND_STYLES_033.md)에 Unity6000.0 자체 설정 본문/표·URP17.0.4 자체 타입/name·동일 버전 공식 소스2개 전체 읽기/SHA와 곱셈·가산·감산·RGBA 반전 마스크 계약을 기록했어요. 기존 계열에4주소를 등록하고 전체 패키지/연결 API·설치 Unity 대조·corpus 완료 gate는 유지해요. 사람/AI/C++/BP/실제 렌더 연결 검사는 기능 구현과 함께 기록해요.
 
 2026-10-06 후속: [032 스트리밍 수명](AUDIO_STREAMING_LIFETIME_032.md)에 고정 Chromium MediaElement/Handler/DeferredTask 6개 전체 읽기와 실제 읽기/SHA 후속을 기록했어요. 기존 발견 계열에6주소를 추가했고, PC 공용 source 재사용·옛 핸들/이벤트 격리·믹서 변경분 예약의 CPU 회귀를 통과했어요. 설치 revision·전체 메모리·8시간·모바일 검사는 별도로 유지해요.
