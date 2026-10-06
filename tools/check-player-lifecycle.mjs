@@ -16,9 +16,15 @@ const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix))
 // Reusing a baseline covers only this exact mobile startup change in the shared Player.
 if(process.env.SHARED_REVISION){
   assert.match(process.env.SHARED_REVISION,/^[0-9a-f]{40}$/);
-  const base=execFileSync('git',['show',process.env.SHARED_REVISION+':prototype/player.js'],{encoding:'utf8',windowsHide:true});
+  let base=execFileSync('git',['show',process.env.SHARED_REVISION+':prototype/player.js'],{encoding:'utf8',windowsHide:true});
   const marker='  vm=new BlueprintRuntime(objects,prepared.bindings,',added='  // Native mobile hosts explicitly allow audio playback; do not rely on incidental bridge user activation.\n  if(config.mobile)void services.unlockAudio();\n';
-  assert.ok(source===base||source===base.replace(marker,added+marker),'Other shared Player changes require the full checks');
+  if(!base.includes(added))base=base.replace(marker,added+marker);
+  base=base.replace('const frameStart=performance.now()','const frameStart=profiler.time(performance.now())');
+  base=base.replace('simulationEnd=performance.now();','simulationEnd=profiler.time(performance.now());');
+  base=base.replace('const renderStart=performance.now();','const renderStart=profiler.time(performance.now());');
+  base=base.replace('profiler.frame(frameStart,performance.now(),simulationEnd-frameStart,performance.now()-renderStart)','profiler.frame(frameStart,profiler.time(performance.now()),simulationEnd-frameStart,profiler.time(performance.now())-renderStart)');
+  base=base.replace('const changed=mobileActive!==active;','const changed=mobileActive!==active;profiler.setActive(active,performance.now());');
+  assert.equal(source,base,'Other shared Player changes require the full checks');
 }
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
@@ -103,10 +109,11 @@ const count=(events,value)=>events.filter(event=>event===value).length;
 // Run the current mobile lifecycle source without waiting for a physical app switch.
 {
   const events=[],window={hbMobileHostLifecycle:value=>events.push('host:'+value)},menu={open:false};let now=10;
-  const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail','config','report','frameLoop',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
-  const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;},{configuration:'development'},async()=>events.push('report'),{stop:()=>events.push('frame-stop')});
+  const create=new Function('window','performance','menu','schedule','releaseKeys','flushStorage','services','fail','config','report','frameLoop','profiler',`let mobileActive=true,mobileSuspended=false,closed=false,closing=false,last=0,queued=1;${line('window.hbMobileLifecycle=')}return {activate:window.hbMobileLifecycle,suspend:()=>{mobileSuspended=true;},close:()=>{closed=true;},state:()=>({mobileActive,mobileSuspended,last,queued})};`);
+  const profileActivity=[];const api=create(window,{now:()=>now},menu,()=>events.push('schedule'),()=>events.push('release'),async()=>events.push('save'),{pauseAudio:async value=>events.push('audio:'+value)},error=>{throw error;},{configuration:'development'},async()=>events.push('report'),{stop:()=>events.push('frame-stop')},{setActive:(active,t)=>profileActivity.push([active,t])});
   api.activate(false);assert.deepEqual(api.state(),{mobileActive:false,mobileSuspended:true,last:10,queued:0});assert.deepEqual(events,['host:false','frame-stop','release','save','audio:true']);
   api.suspend();now=500000;api.activate(true);api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);assert.equal(api.state().last,500000);assert.equal(api.state().queued,0);
+  assert.deepEqual(profileActivity,[[false,10],[true,500000],[true,500000]]);
   await settle();assert.equal(events.filter(e=>e==='report').length,2,'수명 전환마다 오디오 상태를 보고하고 중복 활성화는 보고하지 않아야 해요.');
   menu.open=true;api.activate(true);assert.equal(events.at(-1),'audio:true');api.suspend();api.close();api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);
 }

@@ -7,6 +7,7 @@ import {makeSceneComponent} from '../scene-components.js';
 import {create2DAsset} from '../two-d-assets.js';
 import {runTwoDSurfaceCase} from './2d-surface-case.js';
 import {runTwoDLightingCase} from './2d-lighting-case.js';
+import {runParticleColorCase} from './particle-color-case.js';
 
 export async function runTwoDRenderingCase({beforePrimitiveSource}={}){
   let checks=0;const evidence=[],expect=(test,label)=>{checks++;if(!test)throw Error(label);};
@@ -65,7 +66,7 @@ export async function runTwoDRenderingCase({beforePrimitiveSource}={}){
     Object.assign(particleSettings,{color:[1,0,0,1],endColor:[0,0,1,1]});for(const [i,z,age] of [[0,8,.1],[1,2,.9],[2,5,.5]])Object.assign(particleState.simulation.particles[i],{position:[0,0,z],age,lifetime:1});
     for(const [mode,channel] of [['depth',0],['depthReverse',2],['oldest',2],['youngest',0]]){particleSettings.sortMode=mode;particleFrame();expect(pixel()[channel]>210,'particle GPU individual order '+mode);}
     particleSettings.sortMode='depth';camera.position.z=-10;camera.lookAt(0,0,0);particleFrame();expect(pixel()[2]>210,'second camera upload uses current particle order without one-frame lag');camera.position.z=10;camera.lookAt(0,0,0);particleFrame();expect(pixel()[0]>210,'first camera restores its own particle order in the same frame');
-    particleSettings.sortMode='none';particleOwner.tickParticles([particleObject],0,true);particleFrame();expect(pixel()[0]>120&&pixel()[0]<135&&pixel()[2]>120&&pixel()[2]<135,'none restores simulation order');
+    particleSettings.sortMode='none';particleOwner.tickParticles([particleObject],0,true);particleFrame();const mixed=Math.round(new THREE.Color(.5,0,.5).convertLinearToSRGB().r*255),restored=pixel();expect(Math.abs(restored[0]-mixed)<=1&&Math.abs(restored[2]-mixed)<=1,'none restores simulation order with linear RGB output conversion');
     particleState.simulation.particles.length=1;Object.assign(particleState.simulation.particles[0],{position:[0,0,0],age:0,size:2});particleSettings.maxParticleSize=.125;particleOwner.tickParticles([particleObject],0,true);particleFrame();expect(red(pixel(33,32))&&black(pixel(40,32)),'maximum particle size limits screen overdraw');
     particleSettings.maxParticleSize=1;particleSettings.minParticleSize=.5;particleState.simulation.particles[0].size=.001;particleOwner.tickParticles([particleObject],0,true);particleFrame();expect(red(pixel(40,32)),'minimum particle size is viewport relative');
     particleSettings.minParticleSize=particleSettings.maxParticleSize=0;particleFrame();expect(black(pixel()),'zero maximum hides the particle instead of leaving a hardware one-pixel dot');
@@ -82,6 +83,6 @@ export async function runTwoDRenderingCase({beforePrimitiveSource}={}){
     const ownership=await cycles(scenePrimitives);expect(ownership.samples.every(s=>Object.keys(s).every(k=>s[k]===ownership.baseline[k])),'20 complete primitive scenes release all GPU material references, geometry, and textures');
     if(beforePrimitiveSource){const source=beforePrimitiveSource.replaceAll("'./","'"+new URL('/prototype/',document.baseURI).href),url='data:text/javascript;base64,'+btoa(unescape(encodeURIComponent(source))),old=(await import(url)).scenePrimitives;ownership.before=await cycles(old);expect(ownership.before.samples.at(-1).references>ownership.before.baseline.references+100,'unmodified baseline reproduces retained material program references');}
     evidence.push({kind:'resource-ownership',...ownership});
-    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence,surface,lighting};
+    expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');const particleColor=await runParticleColorCase();return {ok:true,checks,evidence,surface,lighting,particleColor};
   }finally{draw.dispose();for(const r of resources)r.dispose();renderer.dispose();}
 }
