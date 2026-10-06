@@ -19,8 +19,30 @@ export class BufferedAudioPlayer extends EventTarget {
   dispose(){this.pause();this.disposed=true;this.output.disconnect();}
 }
 
-export async function createAudioPlayer(context,url,{buffered=['ios','android'].includes(globalThis.hbMobileTarget),readBuffer}={}){
-  if(!buffered)return new Audio(url);
+// A lease keeps stopped handles and their callbacks separate from a reused media element.
+export class StreamingAudioPlayer extends EventTarget {
+  constructor(media,output,release){super();this.media=media;this.output=output;this.release=release;this.disposed=false;this.ended=()=>this.dispatchEvent(new Event('ended'));media.addEventListener('ended',this.ended);}
+  active(){if(this.disposed)throw Error('오디오 실행이 종료됐어요.');return this.media;}
+  get duration(){return this.media?.duration??this.lastDuration;}
+  get currentTime(){return this.media?.currentTime??this.lastTime;}
+  set currentTime(value){const media=this.active();if(!Number.isFinite(value)||value<0)throw Error('오디오 탐색 시간을 확인하세요.');media.currentTime=value;}
+  get playbackRate(){return this.media?.playbackRate??1;}
+  set playbackRate(value){const media=this.active();if(!Number.isFinite(value)||value<=0)throw Error('오디오 재생 속도를 확인하세요.');media.playbackRate=value;}
+  get loop(){return this.media?.loop??false;}
+  set loop(value){this.active().loop=Boolean(value);}
+  get volume(){return this.media?.volume??1;}
+  set volume(value){this.active().volume=value;}
+  get paused(){return this.media?.paused??true;}
+  get readyState(){return this.media?.readyState??0;}
+  get networkState(){return this.media?.networkState??0;}
+  get error(){return this.media?.error??null;}
+  async play(){await this.active().play();this.active();}
+  pause(){this.media?.pause();}
+  dispose(){if(this.disposed)return;this.disposed=true;const media=this.media;this.lastTime=media.currentTime;this.lastDuration=media.duration;media.removeEventListener('ended',this.ended);this.media=null;this.output=null;this.release();this.release=null;this.ended=null;}
+}
+
+export async function createAudioPlayer(context,url,{buffered=['ios','android'].includes(globalThis.hbMobileTarget),readBuffer,createStream}={}){
+  if(!buffered)return createStream?createStream(url):new Audio(url);
   const buffer=readBuffer?await readBuffer(url):await(async()=>{const response=await fetch(url);if(!response.ok)throw Error('오디오 파일 요청 실패: '+response.status);return context.decodeAudioData(await response.arrayBuffer());})();
   if(!Number.isFinite(buffer.duration)||buffer.duration<=0)throw Error('오디오 길이를 확인하세요.');
   return new BufferedAudioPlayer(context,buffer);

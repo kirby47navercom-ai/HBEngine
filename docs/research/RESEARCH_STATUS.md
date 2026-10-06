@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-06 후속: [032 스트리밍 수명](AUDIO_STREAMING_LIFETIME_032.md)에 고정 Chromium MediaElement/Handler/DeferredTask 6개 전체 읽기와 실제 읽기/SHA 후속을 기록했어요. 기존 발견 계열에6주소를 추가했고, PC 공용 source 재사용·옛 핸들/이벤트 격리·믹서 변경분 예약의 CPU 회귀를 통과했어요. 설치 revision·전체 메모리·8시간·모바일 검사는 별도로 유지해요.
+
 2026-10-06 후속: [031 렌더 수명/진단](RENDER_LIFETIME_ANALYSIS_031.md)에 설치 Three0.180.0의 해제/프로그램 참조 경로, 고정 DevTools/V8의 HeapProfiler 강제GC 경로의 부분 읽기를 기록했어요. 파일 전체/설치V8 revision/전체corpus 완료로 계산하지 않아요. 실제 GPU20장면 참조 대조와 전체 메모리/8시간 검사는 구분해요.
 
 2026-10-06 후속: [030 전용2D 그림자 계약](2D_SHADOW_CONTRACT_030.md)에 Unity6000.0 매뉴얼/URP17.0.4 자체API와 같은17.0.4 공식Graphics의22개 관련소스 전체 읽기를 기록해요. SpriteSkin/TrimEdge의 문서·소스 차이와 연결Clipper/UTess/Rendergraph·상속/API·미디어·독립검증을 미해결로 유지해요. 새 공식 구현 계열을 발견 대기열에 등록하며 전체corpus 또는 그림자 구현/검증 완료로 올리지 않아요.

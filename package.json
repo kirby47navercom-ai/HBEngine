@@ -58,7 +58,7 @@
     "test:sprite-rig": "node tools/check-sprite-rig.mjs",
     "run:project": "node tools/run-project.mjs",
     "test:systems": "node tools/check-scene-systems.mjs",
-    "test:ui-audio": "node tools/prepare-native.mjs && node tools/check-ui-audio.mjs && node tools/check-audio-sources.mjs && node tools/check-buffered-audio.mjs",
+    "test:ui-audio": "node tools/prepare-native.mjs && node tools/check-ui-audio.mjs && node tools/check-audio-sources.mjs && node tools/check-buffered-audio.mjs && node tools/check-streaming-audio.mjs",
     "test:ui-layout": "node tools/check-ui-layout.mjs",
     "test:ui-editor-window": "node tools/check-ui-editor-window.mjs",
     "test:ui-render-window": "node tools/check-ui-render-window.mjs",
