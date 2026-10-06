@@ -26,3 +26,11 @@
 
 - 실행 중 component rate/speed를 바꿔도 기존 ParticleSimulation이 최초 설정을 유지하던 결함을 추가로 발견했다. 수정 전 실제VM 기대4/실제0으로 실패(native/build/particle-settings-before-037.log), 공용 particleState가 매 호출/틱에 현재 설정을 사용하도록 고쳤다. Pause·입자·seed는 보존하며 새 입자의 speed6·count4와 기존C++/VM 회귀를 통과했다. physics에서 이미 읽은 설정을 전달해 중복 조회도 피한다.
 - engine-services가 바뀌었으므로 이번 iOS는 공용기반 재사용 입력을 쓰지 않고 전체 C++/기반 검사 후 모바일 output/Xcode/app을 실행한다. 같은소스 광범위검사·새 장시간실험을 로컬에서 반복하지 않는다.
+
+
+### 2026-10-06 — 파티클 새 소스 모바일 결과 확인
+
+- source6537f3b의 iOS run37476970087 전체 공용 C++/기반·모바일 출력·Xcode 기기/시뮬레이터 SDK·독립 iPhone SE3 앱600프레임/오류0을 통과했어요. 새 depth/min.015/max.2/mask 설정을 포함하며 cookie/volume·9셰이더 runnable·Points5·C++2AOT/동기물리/한글·SVG·오디오 신호/정지·복귀를 확인했어요. GPU 입자 정렬·mask 픽셀 비교는 Windows181항목 증거이며 iOS에서 같은 픽셀 비교까지 완료했다는 뜻은 아니에요. 실제 폰/배포서명/가청은 미검증이에요. https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37476970087
+- iOS599 측정프레임은15.4191fps, work 중앙43/p95 73ms, simulation 평균45.3489/p95 72ms, render 제출 평균.9332/p95 2ms예요. 모바일60 목표미달을 유지해요. 앞76c 시뮬레이터 결과와 실행부하가 통제된 쌍 비교가 아니므로 파티클 수정의 회귀/개선으로 단정하지 않아요. 순수 CPU 입자 적분 개선은 게임 전체 FPS와 구분해요.
+- Android android-mobile-NfoYil에서 새 실행소스의 APK/AAB 각각 arm64-v8a+x86_64 Java/DEX/JNI/C++·16KB ELF/패키지·서명·원본 보존을 통과했어요. APK SHA8c15b41635fd6e3568decf5906fa47767f34a107805a0bbd4849748584fd3573, AAB SHA622e05964d826b6adcffec38bde5606329bdebceb9dac396cfb7566b702ee6d0이며 실제 네 공유실행파일 SHA도 각 패키지와 같아요. 기기설치/실행은 하지 않았어요. 증거 native/build/particle-mobile-037-summary.json.
+- 최종 사용자 설치본은 fac7946/c611c381db853f76이고 후속 기록 커밋을 설치 실행코드로 바꾸지 않아요. 사용자 창/원본게임·검사기·프로필/기존8시간 검사는 건드리지 않았고 새 에뮬레이터·장시간 검사·통과한 광범위 반복검사를 추가하지 않았어요.

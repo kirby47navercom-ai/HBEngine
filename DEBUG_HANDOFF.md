@@ -1,6 +1,16 @@
+# 최신 모바일 결과 / 시뮬레이션 비용 — 2026-10-06
+
+- source6537f3b iOS37476970087 전체공용/두SDK/실제app600frames/errors0 SUCCESS. cookie-volume/9shader/Points5/C++2AOT·physics·audio/lifecycle PASS. Windows181 GPU pixel회귀와 구분. Android NfoYil APK/AAB두ABI·16KB/signing/원본보존/실제packed4SHA PASS. 실제phone/iOS서명/가청 false.
+- iOS599frames15.4191fps/p5043/p9573ms로60미달. simulationmean45.35/p9572,renderSubmitmean.933/p952. 전76c17.83과부하통제한쌍이아니므로원인확정불가. 다음 nativeinvoke/query 경로. iOS hostserial과 sharedrouting 상태 때문에 무조건 병렬화는race 위험. particle-mobile-037-summary.json/원본report·zip 보존.
+- Installedfac7946/c611c381db853f76 그대로. Android 검사패키지만 만들고 에뮬레이터/사용자창/프로필/기존8h 바꾸지 않음. 후속기록은실행source변경아님.
+
+# 최종 설치 확인 — fac7946/c611c381db853f76
+
+- 같은userinstall에1780파일/20source-dist-installedSHA+실제HKCU open command/shortcut 일치. 기존 --register hidden/privateprofile로창없이등록. 전후active2688(old82abc)/defaultADB14204 경로·생성시각·PID동일 PASS, 기존a847/23f·사용자프로필에설치기쓰기가없음. 원본게임 변경없음. particle-association-user-install-fac7946.json. 첫guard실패를후속PASS로덮지않음.
+
 # 업데이트 진단 — 파일 연결과 동시 사용자 동작
 
-- source6537 새불변설치23f9a0a15132d667 복사/바로가기완료 뒤 기존PID동일성 assertion 실패. 설치기는 프로세스를 종료/재시작하지 않으며 guard 중 사용자세션이 바뀌었다. 이후 실제PID56976/old82abc·기본ADB14204 관찰. 기존PID보존 PASS로 기록하지 않고 첫시도 proof미생성과 guard 실패를 보존한다.
+- source6537 새불변설치23f9a0a15132d667 복사/바로가기완료 뒤 기존PID동일성 assertion 실패. 설치기는 프로세스를 종료/재시작하지 않으며 검사 전후 세션PID가 달랐으며 어느 사용자동작이 있었는지는 확인하지 않았다. 이후 실제PID56976/old82abc·기본ADB14204 관찰. 기존PID보존 PASS로 기록하지 않고 첫시도 proof미생성과 guard 실패를 보존한다.
 - 실제.hbproject HKCU 연결이 repository HBEngine.exe를 가리켰다. installEditor는바로가기만 갱신, dev보통launch도 associateProject를 자동호출하던 결손. 새userinstall은기존 --register를 분리임시프로필/hidden으로호출해 file route까지설치본에연결. dev자동등록은제외하고 설치본 일반실행/명시등록은유지. 개발build script 자체에는등록호출이 없으므로 그명령을 원인으로확정하지 않는다.
 
 # 추가 진단 — 파티클 실행 중 설정 갱신

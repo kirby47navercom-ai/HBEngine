@@ -1,3 +1,15 @@
+# 모바일 결과 확인 / 다음 C++ 질의 비용 — 2026-10-06
+
+- Runtime6537f3b: iOS37476970087 SUCCESS/fullcommon+SDKs+실제app600/errors0/CPP2AOT+physics+cookie-volume/9shader/Points5/audio-lifecycle. Android NfoYil APK/AAB2ABI/16KB/signing PASS,4sharedpackedSHA/current 일치. phone/signing(iOS)/heard false. particle-mobile-037-summary.json.
+- iOS599measured15.4191fps/workp5043,p9573/simulationmean45.35,p9572/renderSubmitmean.933,p952: mobile60FAIL 유지. nativeTransport120 mean은 summary 보존. 서로다른CI 부하인76c와수치만으로원인 단정금지. 다음 native query 왕복/모듈처리 실제흐름 추적. Main.mm workerSERIAL/NativeRouting mutable이므로 blindparallel 금지.
+- Userinstall fac7946/c611c381db853f76,1780/20SHA/shortcut+HKCU동일. 당시active2688(old82abc)/ADB14204 보존. docs-only 후속을 설치runtime으로계산하지 않음. OriginalMD2append. 새agents/goals/stress/8h/foreground/게임체커반복 금지. Fullofficialcorpus27gatesfalse.
+
+# 설치 완료 / 새 iOS 진행 — 2026-10-06
+
+- Userinstall fac7946/c611c381db853f76/HBEngine.exe,1780파일/20SHA. Shortcut +실제 .hbproject HKCU command 같은새version. --register hidden/privateprofile, dev일반launch는autoassociation제외. 전후active2688(old82abc)/ADB14204 보존 PASS. olda847/23f/profiles/game보존. First6537copy/link 뒤PIDguard실패보존(변화동작은미확인), installerterminate/restart 없음. 최종proof particle-association-user-install-fac7946.json.
+- mobile runtime source6537f3b/CI37476970087 전체commonC++/기반+모바일출력 PASS, SDK/app진행. fac는Windows전용Desktop.cpp/install-editor와기록만달라 mobile source동일. 결과수집/필요수리/문서최종commit 남음. 소스/배포/설치본문은fac 시점이므로 후속docs-only커밋을실행버전으로바꾸지않음.
+- Particle7sort/viewportlimits/inplaceCPU/actualVM live-rate-speed: WindowsM637rV181/111/errors0, 실제C++6Set/Get/CPU7orders/camera/arrays/640step범위 PASS; 순수CPU중앙2.326575→.117655ms. Fullsource037/manifest27gatesfalse. 기존76c iOSactualSUCCESS와17.8269fps/p9553ms mobile60미달분리. 원본MD2append. 새stress/8h/agents/goals/foreground/통과광범위반복 금지.
+
 # 최신 업데이트 보완 — 2026-10-06 설치 파일 연결
 
 - 6537f3b push/모바일전체CI37476970087(common단계). Windows181/111과 CPUlive-config·적분증거동일. 새설치23f9..복사/링크완료 후race PIDguard실패, 기존세션PID보존 PASS로 쓰지 않음(후속old82abcPID56976/defaultADB14204). updater가프로세스 종료/재시작한코드는없음.

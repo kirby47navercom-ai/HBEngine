@@ -240,3 +240,19 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - Renderer의 입자별7정렬/직교거리=깊이/카메라별 즉시업로드·none복귀/화면 최소·최대·0숨김, Scene/BP/AI와 C++기존Components6Set/Get을 연결했어요. 실제Windows M637rV181/조명111/errors0·CPU버퍼/C++/입자 원본 보존을 확인했어요.
 - 적분 임시배열·사망 filter를 제자리재사용으로 바꾸고 이전공유소스640step 동일결과(1e-8)를 확인했어요. 짧은10000입자20step×3 CPU중앙값2.326575→.117655ms/step이며 게임FPS/실물폰/8시간 증거가 아니에요.
 - 실제VM으로 기존시스템의 rate/speed 변경이 실행에 안반영됨(기대4/실제0)을 발견해 공용설정 연결을 고쳤어요. 방출4/speed6와 Pause/clear·C++/런타임 회귀가 통과했어요. 정렬·크기·서비스수정은 앞iOS76c 결과에 포함하지 않으며 새source전체공용/SDK/app으로 확인해요. 원본게임/checker/사용자창을 바꾸지 않았어요.
+
+
+### 2026-10-06 — 파티클 실행 보강·프로젝트 파일 연결 사용자 갱신
+
+- 실제Windows Player M637rV181항목/조명111/오류0으로 입자별7정렬·직교거리·두카메라 즉시업로드·화면 최소/최대/0숨김과 기존Mask/SortingGroup/3D깊이/광원/C++를 확인했어요. C++기존Components6Set/Get·Scene/BP/AI·640step 이전소스 비교·Pause/Reset·원자성·실제VM의 살아있는 rate/speed 갱신도 통과했어요. 적분 CPU10000입자20step×3 중앙2.326575→.117655ms/step은 게임FPS/실물폰 증거와 구분해요.
+- 공개 한국어 커밋6537f3b의 파티클/서비스 보강과 Windows 전용fac7946의 파일 연결을 C:/Users/kirby/HBEngine/Versions/c611c381db853f76/HBEngine.exe로 갱신했어요.1780파일/소스·배포·설치20SHA 일치, 바로가기와 실제HKCU .hbproject open command 모두 같은 새버전이에요. 등록은 기존 --register를 hidden/분리임시프로필로 실행하고 개발폴더 일반실행의 자동등록을 제외해요. 설치기 검사 동안 현재사용자PID2688(82abc)/기본ADB14204·이전a847/23f버전을 보존했어요. 사용자창을 재시작하지 않았고 다음실행에 적용돼요. 증거 native/build/particle-association-user-install-fac7946.json.
+- 첫6537 설치는 복사/링크 뒤 PID동일성 guard가 실패했고 실패로그를 보존해요. 검사 전후 세션PID가 달랐으며 어느 사용자동작이 있었는지 확인하지 않았어요. 이시도를 PID보존PASS로 바꾸지 않아요. 설치기 코드에는 기존프로세스 종료/재시작이 없으며 최종설치에서는 전후PID/생성시각/경로 보존을 실제확인했어요.
+- iOS의 실제새파티클/서비스 source6537 run37476970087은 전체공용C++/기반 검사와 모바일출력을 통과한 뒤 SDK/앱 단계예요. Windows전용후속fac는 모바일 실행소스를 바꾸지 않아요. 앞76c의 실제광원/Points/9shader·C++/물리/오디오/복귀 통과는 별도source이며600frames17.8269fps/p95 53ms로60목표미달을 그대로 기록해요. 새run 성공을 미리표시하지 않고 실물폰/서명/가청/기존8시간 칸도 그대로 둬요. 원본게임/에셋/checker는 바꾸지 않았어요.
+
+
+### 2026-10-06 — 파티클 새 소스 모바일 결과 확인
+
+- source6537f3b의 iOS run37476970087 전체 공용 C++/기반·모바일 출력·Xcode 기기/시뮬레이터 SDK·독립 iPhone SE3 앱600프레임/오류0을 통과했어요. 새 depth/min.015/max.2/mask 설정을 포함하며 cookie/volume·9셰이더 runnable·Points5·C++2AOT/동기물리/한글·SVG·오디오 신호/정지·복귀를 확인했어요. GPU 입자 정렬·mask 픽셀 비교는 Windows181항목 증거이며 iOS에서 같은 픽셀 비교까지 완료했다는 뜻은 아니에요. 실제 폰/배포서명/가청은 미검증이에요. https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37476970087
+- iOS599 측정프레임은15.4191fps, work 중앙43/p95 73ms, simulation 평균45.3489/p95 72ms, render 제출 평균.9332/p95 2ms예요. 모바일60 목표미달을 유지해요. 앞76c 시뮬레이터 결과와 실행부하가 통제된 쌍 비교가 아니므로 파티클 수정의 회귀/개선으로 단정하지 않아요. 순수 CPU 입자 적분 개선은 게임 전체 FPS와 구분해요.
+- Android android-mobile-NfoYil에서 새 실행소스의 APK/AAB 각각 arm64-v8a+x86_64 Java/DEX/JNI/C++·16KB ELF/패키지·서명·원본 보존을 통과했어요. APK SHA8c15b41635fd6e3568decf5906fa47767f34a107805a0bbd4849748584fd3573, AAB SHA622e05964d826b6adcffec38bde5606329bdebceb9dac396cfb7566b702ee6d0이며 실제 네 공유실행파일 SHA도 각 패키지와 같아요. 기기설치/실행은 하지 않았어요. 증거 native/build/particle-mobile-037-summary.json.
+- 최종 사용자 설치본은 fac7946/c611c381db853f76이고 후속 기록 커밋을 설치 실행코드로 바꾸지 않아요. 사용자 창/원본게임·검사기·프로필/기존8시간 검사는 건드리지 않았고 새 에뮬레이터·장시간 검사·통과한 광범위 반복검사를 추가하지 않았어요.
