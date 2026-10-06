@@ -5,6 +5,13 @@ import fs from 'node:fs/promises';
 // Execute the current Player functions; only browser/VM/storage dependencies are doubles.
 const source=await fs.readFile(new URL('../prototype/player.js',import.meta.url),'utf8');
 const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix));assert.ok(value,'Player function missing: '+prefix);return value;};
+// Native autoplay starts audio without blocking BeginPlay on a suspended context.
+{
+  let calls=0;const run=new Function('config','services',line('  if(config.mobile)void services.unlockAudio();'));
+  const services={unlockAudio:()=>{calls++;return new Promise(()=>{});}};
+  run({mobile:false},services);assert.equal(calls,0,'PC/browser gesture behavior remains unchanged');
+  run({mobile:true},services);assert.equal(calls,1,'Native mobile audio must start explicitly even with no user activation');
+}
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
 const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment','visuals','primitives','frameLoop',`
