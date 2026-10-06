@@ -34,6 +34,7 @@
     "test:viewport": "node tools/check-viewport-controls.mjs && node tools/check-viewport-presentation.mjs && node tools/check-viewport-automation.mjs && node tools/check-environment-actors.mjs && node tools/check-detached-window-frames.mjs",
     "test:detached": "node tools/check-detached-windows.mjs",
     "test:scene": "node tools/check-scene-editor.mjs && node tools/check-scene-runtime.mjs",
+    "test:render-resources": "node tools/check-render-resources.mjs",
     "test:2d": "node tools/check-2d-workflow.mjs && node tools/check-2d-authoring.mjs && node tools/check-2d-extensions.mjs && node tools/check-2d-lighting.mjs && node tools/check-2d-shadows.mjs",
     "test:shortcuts": "node tools/check-editor-shortcuts.mjs",
     "test:authoring": "node tools/check-authoring.mjs",

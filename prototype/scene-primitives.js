@@ -1,15 +1,19 @@
 import * as THREE from 'three';
 import {validSurface} from './model.js';
 import {enabledComponent} from './scene-components.js';
-export function scenePrimitives(surface,surfaceMaterial=new THREE.MeshStandardMaterial({color:surface.color,roughness:surface.roughness,metalness:surface.metalness})){
+export function scenePrimitives(surface,surfaceMaterial){
+const ownSurface=surfaceMaterial===undefined;
+if(ownSurface)surfaceMaterial=new THREE.MeshStandardMaterial({color:surface.color,roughness:surface.roughness,metalness:surface.metalness});
 const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0x9faa91, roughness: 0.86, flatShading: true });
 const darkStone = new THREE.MeshStandardMaterial({ color: 0x667c6d, roughness: 0.93, flatShading: true });
 const grassMaterial = new THREE.MeshStandardMaterial({ color: 0x7f9c61, roughness: 1, flatShading: true });
 const paleGrass = new THREE.MeshStandardMaterial({ color: 0xa4b97c, roughness: 1, flatShading: true });
 const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x607851, roughness: 1, flatShading: true });
 const crystalMaterial = new THREE.MeshPhysicalMaterial({ color: 0xc3e3b9, roughness: 0.13, metalness: 0.18, clearcoat: 1, emissive: 0x669853, emissiveIntensity: 0.13, flatShading: true });
+const pooled=new Set([surfaceMaterial,stoneMaterial,darkStone,grassMaterial,paleGrass,groundMaterial,crystalMaterial]);let disposed=false;
 
 function mesh(group, geometry, material, position = [0, 0, 0], rotation = [0, 0, 0], scale = [1, 1, 1]) {
+  const resources=group.userData.resources??=new Set();resources.add(geometry);for(const m of Array.isArray(material)?material:[material])if(!pooled.has(m))resources.add(m);
   const m = new THREE.Mesh(geometry, material); m.position.set(...position); m.rotation.set(...rotation); m.scale.set(...scale); m.castShadow = true; m.receiveShadow = true; group.add(m); return m;
 }
 const box = (group, size, material, pos, rot) => mesh(group, new THREE.BoxGeometry(...size), material, pos, rot);
@@ -52,7 +56,7 @@ function buildObject(object) {
     }
     case 'rocks': [[-2.7,-2.4,.6],[2.8,-2.3,.6],[-3,1.9,.4],[3.5,.1,.5],[-1.9,-2.8,.36],[2.9,2.5,.42]].forEach(([x,z,s],i) => mesh(g, new THREE.DodecahedronGeometry(s), i%2 ? darkStone : stoneMaterial, [x,s*.4,z], [.3,i,0],[1.1,.8,.8])); break;
     case 'water': mesh(g, new THREE.CylinderGeometry(1.3,1.25,.06,28), new THREE.MeshPhysicalMaterial({color:0x567f83,roughness:.16,metalness:.3,clearcoat:1}), [0,.08,0], [0,0,0],[1.05,1,.76]); break;
-    case 'light': { const directional=object.id==='sun-light',p=enabledComponent(object,directional?'DirectionalLight':'PointLight')||(!directional?enabledComponent(object,'DirectionalLight'):null);if(!p)break;const l=directional?new THREE.DirectionalLight(new THREE.Color(...p.color.slice(0,3)),p.intensity):new THREE.PointLight(new THREE.Color(...p.color.slice(0,3)),p.intensity,p.radius??15,p.decay??2);g.add(l);if(directional){l.castShadow=p.castShadow;l.shadow.mapSize.set(2048,2048);Object.assign(l.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:25});l.shadow.bias=-.001;l.shadow.normalBias=.025;l.target.position.set(0,0,-1);g.add(l.target);}break; }
+    case 'light': { const directional=object.id==='sun-light',p=enabledComponent(object,directional?'DirectionalLight':'PointLight')||(!directional?enabledComponent(object,'DirectionalLight'):null);if(!p)break;const l=directional?new THREE.DirectionalLight(new THREE.Color(...p.color.slice(0,3)),p.intensity):new THREE.PointLight(new THREE.Color(...p.color.slice(0,3)),p.intensity,p.radius??15,p.decay??2);g.userData.resources=new Set([l]);g.add(l);if(directional){l.castShadow=p.castShadow;l.shadow.mapSize.set(2048,2048);Object.assign(l.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:.1,far:25});l.shadow.bias=-.001;l.shadow.normalBias=.025;l.target.position.set(0,0,-1);g.add(l.target);}break; }
     case 'skyAtmosphere':case 'skyLight':case 'volumetricCloud':case 'heightFog': {
       const geometry=new THREE.EdgesGeometry(new THREE.OctahedronGeometry(.4)),material=new THREE.LineBasicMaterial({color:object.kind==='heightFog'?0x95afc0:object.kind==='volumetricCloud'?0xc4d5df:0xe5ca84,depthTest:false}),helper=new THREE.LineSegments(geometry,material);helper.userData.editorHelper=true;helper.userData.environmentHelper=true;helper.renderOrder=900;g.userData.resources=new Set([geometry,material]);g.add(helper);break;
     }
@@ -66,9 +70,10 @@ function buildObject(object) {
     case 'plane': box(g,[1.5,.08,1.5],surfaceMaterial,[0,.04,0]); break;
     case 'character': mesh(g,new THREE.CapsuleGeometry(.35,1.1,8,16),surfaceMaterial,[0,.9,0]);break;
   }
-  if(object.materialSurface&&validSurface(object.materialSurface)){const m=new THREE.MeshStandardMaterial({color:object.materialSurface.color,roughness:object.materialSurface.roughness,metalness:object.materialSurface.metalness});g.traverse(child=>{if(child.isMesh)child.material=m;});}
+  if(object.materialSurface&&validSurface(object.materialSurface)){const m=new THREE.MeshStandardMaterial({color:object.materialSurface.color,roughness:object.materialSurface.roughness,metalness:object.materialSurface.metalness});(g.userData.resources??=new Set()).add(m);g.traverse(child=>{if(child.isMesh)child.material=m;});}
   g.traverse(child => child.userData.objectId = object.id);
   return g;
 }
-return {build:buildObject,surfaceMaterial,mesh};
+function dispose(){if(disposed)return;disposed=true;for(const m of pooled)if(m!==surfaceMaterial||ownSurface)m.dispose();pooled.clear();}
+return {build:buildObject,surfaceMaterial,mesh,dispose};
 }

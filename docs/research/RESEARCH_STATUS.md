@@ -1,5 +1,7 @@
 # 전체 문서·API 연구 상태
 
+2026-10-06 후속: [031 렌더 수명/진단](RENDER_LIFETIME_ANALYSIS_031.md)에 설치 Three0.180.0의 해제/프로그램 참조 경로, 고정 DevTools/V8의 HeapProfiler 강제GC 경로의 부분 읽기를 기록했어요. 파일 전체/설치V8 revision/전체corpus 완료로 계산하지 않아요. 실제 GPU20장면 참조 대조와 전체 메모리/8시간 검사는 구분해요.
+
 2026-10-06 후속: [030 전용2D 그림자 계약](2D_SHADOW_CONTRACT_030.md)에 Unity6000.0 매뉴얼/URP17.0.4 자체API와 같은17.0.4 공식Graphics의22개 관련소스 전체 읽기를 기록해요. SpriteSkin/TrimEdge의 문서·소스 차이와 연결Clipper/UTess/Rendergraph·상속/API·미디어·독립검증을 미해결로 유지해요. 새 공식 구현 계열을 발견 대기열에 등록하며 전체corpus 또는 그림자 구현/검증 완료로 올리지 않아요.
 
 2026-10-06 후속: [029 오디오 유휴 비용](AUDIO_IDLE_COST_029.md)에 AudioParam 이벤트 삽입·정리의 실제 부분 읽기, 설치 revision 조회 404, 자연 GC 대조와 공용 유휴 처리 중단·좌표 변경분 예약을 기록했어요. 같은 계열에 발견 주소 1개를 추가했으며 전체 읽기·설치 버전 대응·독립 검증·8시간 안정성으로 승격하지 않아요. Windows 전체 기능과 새 신호/유휴 검사 통과, 직전 iOS SDK/신호 통과, 최신 Android의 WebView 연결 시간 초과를 각각 보존해요.

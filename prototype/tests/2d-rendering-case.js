@@ -1,12 +1,14 @@
 import * as THREE from 'three';
 import {TwoDRendering} from '../two-d-rendering.js';
 import {sceneRendering} from '../scene-rendering.js';
+import {scenePrimitives} from '../scene-primitives.js';
+import {defaultSurface} from '../model.js';
 import {makeSceneComponent} from '../scene-components.js';
 import {create2DAsset} from '../two-d-assets.js';
 import {runTwoDSurfaceCase} from './2d-surface-case.js';
 import {runTwoDLightingCase} from './2d-lighting-case.js';
 
-export async function runTwoDRenderingCase(){
+export async function runTwoDRenderingCase({beforePrimitiveSource}={}){
   let checks=0;const evidence=[],expect=(test,label)=>{checks++;if(!test)throw Error(label);};
   const canvas=document.createElement('canvas'),renderer=new THREE.WebGLRenderer({canvas,antialias:false,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.setSize(64,64);renderer.setClearColor(0,1);
   const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-2,2,2,-2,.1,100);camera.position.set(0,0,10);camera.lookAt(0,0,0);const groups=[],draw=new TwoDRendering(),resources=new Set();
@@ -49,6 +51,15 @@ export async function runTwoDRenderingCase(){
     for(const g of groups)g.removeFromParent();groups.length=0;
     const surface=await runTwoDSurfaceCase({renderer,scene,camera,groups,group,layers,pixel,expect});
     const lighting=await runTwoDLightingCase({renderer,scene,camera,groups,group,layers,pixel,expect});
+    const resourceScene=new THREE.Scene(),resourceCamera=new THREE.OrthographicCamera(-6,6,6,-6,.1,100);resourceCamera.position.set(0,4,8);resourceCamera.lookAt(0,0,0);resourceScene.add(new THREE.HemisphereLight());
+    const counters=()=>({programs:renderer.info.programs.length,references:renderer.info.programs.reduce((n,p)=>n+p.usedTimes,0),...renderer.info.memory});
+    const cycles=async(factory)=>{const baseline=counters(),samples=[],active=[];const owner=sceneRendering({read:async()=>{throw Error('unexpected resource asset');},fileUrl:p=>p,loadModel:async()=>{throw Error('unexpected resource model');},current:id=>active.find(g=>g.userData.objectId===id),all:()=>active});
+      for(let i=0;i<20;i++){const primitives=factory(defaultSurface);for(const kind of ['arch','crystal','ground','path','grass','rocks','water','cube']){const object={id:kind,kind,components:[],...kind==='cube'?{materialSurface:{...defaultSurface,color:'#ffee88'}}:{}};const g=primitives.build(object);resourceScene.add(g);active.push(g);await owner.build(object,g);}renderer.render(resourceScene,resourceCamera);
+        for(const g of active){owner.dispose(g);g.removeFromParent();if(!primitives.dispose)g.traverse(c=>c.geometry?.dispose());}active.length=0;primitives.dispose?.();samples.push(counters());}
+      owner.dispose2D();return {baseline,samples};};
+    const ownership=await cycles(scenePrimitives);expect(ownership.samples.every(s=>Object.keys(s).every(k=>s[k]===ownership.baseline[k])),'20 complete primitive scenes release all GPU material references, geometry, and textures');
+    if(beforePrimitiveSource){const source=beforePrimitiveSource.replaceAll("'./","'"+new URL('/prototype/',document.baseURI).href),url='data:text/javascript;base64,'+btoa(unescape(encodeURIComponent(source))),old=(await import(url)).scenePrimitives;ownership.before=await cycles(old);expect(ownership.before.samples.at(-1).references>ownership.before.baseline.references+100,'unmodified baseline reproduces retained material program references');}
+    evidence.push({kind:'resource-ownership',...ownership});
     expect(renderer.info.programs.every(p=>p.diagnostics?.runnable!==false),'GPU shader compilation');return {ok:true,checks,evidence,surface,lighting};
   }finally{draw.dispose();for(const r of resources)r.dispose();renderer.dispose();}
 }
