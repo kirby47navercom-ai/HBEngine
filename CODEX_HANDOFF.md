@@ -1,3 +1,8 @@
+# 038 재검사 준비 — WebKit Objective-C selector 수정
+
+- First37481223712: Windows-only diff gate 제외누락→시작전중단. Second37481522265: 공용CPP/VM/모바일출력 PASS, Main 등록selector가 reply없는overload라 simulatorcompile FAILURE,실제SDK/app미통과. exact addScriptMessageHandlerWithReply로1단어root수정. 로그/원문API+공식ObjC header/실패proof 보존.
+- unchangedbasis6537 전체commonSUCCESS 재사용. Renderer/metadata/scene-systems source가실제로달라질때만해당CPP/VM 재검사. bridge+playerlifecycle+모바일CPP출력+SDKs/실제app는요구. 공용worker/API/frame/cache/AI 변경은gatefail. 다음sourcecommit/dispatch후actual결과수집→필요수리→불변설치. installc611/openuser/profiles/game/기존8h untouched.
+
 # 진행 중 — iOS 직접 Promise·물리 질의 응답 038
 
 - 037 mobile 결과b7ae060 push: Android NfoYil 두ABI APK/AAB PASS; iOS6537/37476970087 SUCCESS 기능PASS,15.42fps/p9573으로60FAIL. installfac/c611불변 유지.

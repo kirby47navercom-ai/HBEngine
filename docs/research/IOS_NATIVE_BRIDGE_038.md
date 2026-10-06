@@ -8,6 +8,9 @@
 | [async](https://developer.apple.com/documentation/webkit/wkwebview/callasyncjavascript:arguments:inframe:incontentworld:completionhandler:) | `6b535d790c88a2e6eaa3a1f9e7a902a0dec181d110be49f137a78ca45122f7e3` | 자체 선언·설명·매개변수·discussion·예제, 연결 API 제외 |
 | [reply-method](https://developer.apple.com/documentation/webkit/wkscriptmessagehandlerwithreply/usercontentcontroller(_:didreceive:replyhandler:)) | `6ecc843a5b9a18363776b332565fe8fae88ff3d28d3788426028f93395bcf2a9` | 자체 선언·설명·매개변수·discussion·예제, 연결 API 제외 |
 
+| [registration-objc](https://developer.apple.com/documentation/webkit/wkusercontentcontroller/addscriptmessagehandler(_:contentworld:name:)?language=objc) | `c58b6f1aff4d07a2ba283bc1a53eff8b6f82ed6901e823b426da2de62f241f01` | own Objective-C registration declaration and body |
+| [WebKit ObjC registration header](https://raw.githubusercontent.com/WebKit/WebKit/main/Source/WebKit/UIProcess/API/Cocoa/WKUserContentController.h) | `71134c48de456ccbd52902477a34f73c17c79f8af52031507149cee11dbe6a55` | WithReply registration own discussion and exact Objective-C declaration only |
+
 원문/manifest는 native/build/ios-bridge-source-038에 보존한다. API는 iOS14부터 제공되고 엔진 배포 최소값16.4 안에서 사용할 수 있다. Objective-C 메서드 서명·replyHandler 단회 호출 계약은 공식 WebKit 헤더와도 대조했다.
 
 - 기존 네이티브 응답은 결과를 JS 문자열 코드로 만들어 evaluateJavaScript했고, 물리 질의 결과는 별도 JS→native queryReply 메시지를 기다렸다. WKScriptMessageHandlerWithReply가 반환한 Promise로 최초 요청에 직접 응답하고 callAsyncJavaScript가 실제 Rapier 질의 Promise를 기다린다. NativePhysicsQueries의 스냅샷·spawn 검증·순서·C++ 의미는 바꾸지 않는다.
@@ -23,3 +26,6 @@
 - 사용자 설치는 검증 후 별도 불변 버전으로 갱신한다. 현재 c611c381db853f76과 열린 앱·이전 버전·게임 원본은 유지한다. 아직 이 수정으로60fps 목표를 달성했다고 기록하지 않는다.
 
 - 첫 원격 run37481223712는 이전 기준 뒤 Windows 전용 파일 연결2개를 재사용 source gate에 넣지 않아 검사가 시작되기 전 중단됐다. Xcode/앱을 실행한 실패와 구분하고 로그를 보존한다. Mac 검사/모바일 컴파일 입력에서 사용하지 않는 native/desktop/HBEngine.cpp·tools/install-editor.mjs만 정확한 이름으로 허용한다. 공용 C++/worker/routing 변화에는 계속 전체 검사를 요구한다.
+
+- 두 번째 run37481522265는 변경영역·공용모바일/C++출력을 통과했으나 simulator Main.mm 등록 호출이 reply 없는 addScriptMessageHandler로 되어 Xcode 컴파일에서 실패했다. Swift의 겹친 함수명에서 Objective-C selector를 잘못 옮긴 구현 오류이며 등록 API의 실제 Objective-C addScriptMessageHandlerWithReply로 수정한다. 실패는 SDK/앱 성공으로 계산하지 않는다. 원시 로그를 보존하고 위등록API 본문·SHA를 추가 보존한다.
+- 재검사 비용 보완: 실제 통과6537과 byte diff gate에서 C++/프레임/채널/캐시/AI 입력은 불변이어야 하므로 그 검사를 다시 반복하지 않는다. 허용된 Renderer/metadata/시뮬레이션·픽셀검사 파일이 바뀔 때만 runtime-features/scene-systems/particle-renderers를 실행한다. 브리지/수명·실제 모바일출력/C++·두 Xcode SDK/앱 검사는 계속 요구한다. 기본 전체검사 경로는 그대로다.

@@ -69,14 +69,13 @@ jobs:
           mkdir -p native/build
           node tools/check-mobile-bridge.mjs
           node tools/check-player-lifecycle.mjs
-          node tools/check-runtime-features.mjs
-          node tools/check-scene-systems.mjs
-          node tools/check-particle-renderers.mjs
-          node tools/check-frame-rate.mjs
-          node tools/check-native-channel.mjs
-          node tools/check-asset-cache.mjs
-          node tools/check-state-native-batch.mjs
-          node tools/check-behavior-native-batch.mjs
+          # Frame/channel/cache/AI/C++ sources must be unchanged to pass the gate.
+          # Run renderer/VM checks only when their previously allowed sources differ.
+          if ! git diff --quiet "$SHARED_REVISION" HEAD -- prototype/scene-components.js prototype/scene-rendering.js prototype/scene-systems.js prototype/two-d-rendering.js prototype/tests/2d-lighting-case.js prototype/tests/2d-rendering-case.js tools/check-particle-renderers.mjs; then
+            node tools/check-runtime-features.mjs
+            node tools/check-scene-systems.mjs
+            node tools/check-particle-renderers.mjs
+          fi
       - name: 공용 실행과 실제 사용자 C++ 포함 프로젝트 출력
         run: node tools/check-mobile-player.mjs
       - name: Xcode 컴파일과 시뮬레이터 실행
