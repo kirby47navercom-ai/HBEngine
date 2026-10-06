@@ -21,7 +21,7 @@ import {createGameCamera,selectGameCamera,fallbackGameCamera} from '../prototype
 import {BlueprintRuntime} from '../prototype/blueprint-runtime.js';
 import {engineOperations} from '../prototype/engine-services.js';
 import {nativeRequestWorld} from '../prototype/native-model.js';
-import {nativeWorldClient,canDeferNativeFrames} from '../prototype/native-transport.js';
+import {nativeWorldClient,advanceNativeFrames} from '../prototype/native-transport.js';
 import {validValue} from '../prototype/blueprint-model.js';
 
 export async function runProject(file,{scene:scenePath,frames=180,delta=1/60,inputs=[],onFrame,nativeDefaults={},preserveInputOnTravel=true,saveDirectory}={}){
@@ -53,10 +53,10 @@ export async function runProject(file,{scene:scenePath,frames=180,delta=1/60,inp
   };
   try{
     let native=await openWorld(await readAsset(currentScene),currentScene);
-    for(frame=0;frame<frames;frame++){for(const input of inputs.filter(input=>input.frame===frame))await vm.dispatchInput(input);await vm.flushInput();for(const build of uniqueBuilds){const result=await native({command:'frame',delta,deferFrame:canDeferNativeFrames(objects,builds),clock:{scale:vm.core.scale,paused:vm.core.paused}},build);await vm.nativeTimers(result,vm.bindings.filter(binding=>builds.get((()=>{const o=objects.find(o=>o.id===binding.self);return o?.blueprintAsset||o?.nativeBuildAsset;})())?.token===build.token));}await vm.tick(delta);await onFrame?.(frame,vm);
+    for(frame=0;frame<frames;frame++){for(const input of inputs.filter(input=>input.frame===frame))await vm.dispatchInput(input);await vm.flushInput();await advanceNativeFrames(builds,vm,delta,native);await vm.tick(delta);await onFrame?.(frame,vm);
       if(vm.sceneRequest){const request=vm.sceneRequest;carriedInput=preserveInputOnTravel?vm.inputState:null;if(request.reset){game.reset();carriedInput=undefined;vm.resetInput();}await vm.stop('LevelTransition');services.dispose('LevelTransition');native=await openWorld(request.data,request.path,request.arguments);}
     }
-    const result={version:1,mode:'headless-logic',project:manifest.name,scene:currentScene,sceneHistory,frames,delta,time:vm.core.time,objects:structuredClone(objects),animation:services.animationState(),spriteSkin:services.spriteSkinState({vertices:true}),gameplay:structuredClone(prepared.gameplay),game:game.snapshot(),widgets:objects.filter(o=>o.gameplayDebug?.ui).map(o=>({owner:o.id,instances:o.gameplayDebug.ui})),variables:vm.bindings.map(binding=>({self:binding.self,values:Object.fromEntries(binding.variables)})),logs,visualEvents,saves:Object.fromEntries([...savedGames].map(([key,value])=>[key,JSON.parse(value)]))};await vm.stop();return result;
+    const result={version:1,mode:'headless-logic',project:manifest.name,scene:currentScene,sceneHistory,frames,delta,time:vm.core.time,nativeFrameGroups:structuredClone(vm.nativeFrameGroups||null),objects:structuredClone(objects),animation:services.animationState(),spriteSkin:services.spriteSkinState({vertices:true}),gameplay:structuredClone(prepared.gameplay),game:game.snapshot(),widgets:objects.filter(o=>o.gameplayDebug?.ui).map(o=>({owner:o.id,instances:o.gameplayDebug.ui})),variables:vm.bindings.map(binding=>({self:binding.self,values:Object.fromEntries(binding.variables)})),logs,visualEvents,saves:Object.fromEntries([...savedGames].map(([key,value])=>[key,JSON.parse(value)]))};await vm.stop();return result;
   }finally{try{if(vm?.active)await vm.stop();}finally{try{services?.dispose();}finally{clearModels();host.close();}}}
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){try{const [file,scenario]=process.argv.slice(2);if(!file)throw Error('node tools/run-project.mjs <project.hbproject> [scenario.json]');const options=scenario?JSON.parse(await fs.readFile(scenario,'utf8')):{};console.log(JSON.stringify(await runProject(file,options),null,2));}catch(error){console.error(JSON.stringify({error:error.message}));process.exitCode=1;}}

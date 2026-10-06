@@ -46,3 +46,20 @@ P0-5 설치본은 `09e4470b1e254ac3`이다. 나머지 요청을 함께 구현한
 
 - iOS 사전 공용 검사의 headless 단계에서 종료된 Actor의 InputActions 키가 남는 문제를 발견했다. LevelTransition은 공유 장치 상태와 지속 GameInstance 입력을 유지하고, 떠나는 Actor의 키/이전 액션 상태는 해제하도록 공용 stop을 수정했다. 실제 C++ 장면 전환 뒤 새 월드 d=1 유지·옛 Actor 키0·GameInstance 입력1, 기존 타이머/지연 취소·원본 장면 보존 검사가 통과했다. 사전 그룹 gfZK8B의 앞7개와 수정 headless, tail77GWUM의9개가 통과했다. 새 iOS SDK 결과는 별도 수집한다.
 - Android aY0HKH는 HUD 리사이즈를 생략하고 CPU sampling을 켠 진단이며17.9840fps/p95 72.9ms로 실패했다. C++ 사전 컴파일과 PC8시간 실행이 겹쳤고 sampling 비용도 들어 있어 일반 성능 결과로 확대하지 않는다. 33.883초 프로필 중 idle18.141초·program3.259초, 네이티브 왕복 평균6.958ms/worker2.876ms를 기록했다. 다음 측정은 대량 컴파일과 sampling 없이 진행한다.
+
+- Android 진단 aY0HKH/dU0emM은 실행 환경 지정이 빠져 실제2코어0–1/SwiftShader로 실행됐다. 4코어0–3/RTX4070SUPER인 GWQQIo·jbIuSt·ufqJHJ와 통제된 비교가 아니다. dU0emM20.1321fps/작업p9563.4ms도 일반4코어 성능 회귀로 계산하지 않는다. 원래4코어 호스트 GPU의 최신 실패2개는 유지한다. 실행 조건을 다시 명시한 최신417f384 APK/전체 모바일 검사를 진행하며 진단 환경 기록을 바로잡는다.
+
+
+### 2026-10-06 — iOS 원격 통과와 프레임 대기 후속
+
+- 공개 main의417f384 iOS 원격37425093439가 성공했다. 실제 두 Xcode SDK 컴파일·독립 iPhone SE3 시뮬레이터 설치/실행·C++ 두 모듈·물리·에셋 범위·반복 오디오 신호·배경 음소거와 복귀 후 재생/월드 보존을 통과했다. 원격 ios-mobile-proof를 다운로드해 native/build/ios-proof-37425093439에 보존했다. 실제 청취·실물 기기·서명 검증은 false다. TestFlight 절차와 원격 Mac/Apple 서명 자료의 경계는 docs/IOS_REMOTE_DISTRIBUTION.md에 정리했다.
+- 타이머 없는 독립 C++ 모듈의 frame 응답 대기를 함께 수행하는 공용 경로를 추가했다. 외부 모듈 호출·진행 중 요청·밀린 frame·float32 오버플로·타이머 콜백이 있으면 순차 경계를 유지한다. 실제 C++ 두 모듈의 float32 시계, 콜백의 배율 변경/Spawn/Stop 순서, 기존 frame/transport/headless/runtime/GameInstance 검사가 통과했다.
+- 실제 PC features-window-k9VzZd의전체기능/600프레임59.31198fps가 통과했다. 새 Android5XetDR는 실제4코어0–3/호스트GPU에서 생성93·오디오20·세HUD해상도·터치·HOME·Back이 동작했으나32.2485fps/작업p9542.9ms로 전체성능 게이트에 실패했다. 기준을 낮추지 않았다. 최근120호출의worker평균.8435ms/왕복5.2ms를 근거로, Android 공식Handler callback에서메시지를받게수정하고새APK로검사한다.
+
+
+### 2026-10-06 — 프레임 안전 경계와 배포 준비
+
+- 별도 Android 메시지 스레드 실험 d9CjKs는 실제 background callback·기능을 확인했으나30.6455fps/작업p9545.6ms로 실패했다. 개선 근거가 없어 해당 Java 변경과 전용 검사 변경을 제외했다. 기존 기본ADB와 사용자 창은 보존했다.
+- q82C5Z는 기본 메시지 경로와 반환된 외부 모듈의 시계·타이머 증명을 사용한 APK다. 전체기능은 동작했으나31.5224fps/작업p9544.4ms로 예산 실패다. 게이트를 변경하지 않았고 성능 개선 완료로 계산하지 않는다. 후속 원격 호출이 타이머 상태를 바꿨을 때 오래된 진행 중 응답이 증명을 복원하지 못하도록 revision 경계를 추가했고, 실제 C++·통신·장면 전환·GameInstance 회귀가 통과했다.
+- 프레임 그룹의 parallel/sequential 횟수를 기존 runtime.state·Player 검사·headless 결과에 별도 기록한다. 마지막 C++ 호출의nativeTiming이 덮어써지는 것과 분리했다. 앞 APK에는 이 최종 진단 필드/늦은 응답 보호가 모두 들어 있다고 주장하지 않는다. 새 설치본·iOS 원격 검사는 고정한 최종 소스로 만든다.
+- 최신 원문 검사 checker-UFabo8은9개 통과/code0,537파일·검사기976c8f…·격리게임·격리엔진SHA를 보존했다. 실제 Editor 검사에서 남아 있던 AURIC_MUTE=1도 제거해 직접 오디오 경로를 검사한다. 자연8시간 zjUtGE의 코드·시계·게이트는 변경하지 않고 계속 기록한다.

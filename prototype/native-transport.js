@@ -56,13 +56,46 @@ function nativeRowJSON(object){
 export function canDeferNativeFrames(objects,builds){
   const tokens=new Set();for(const object of objects){if(!object.nativeClass)continue;const build=builds.get(object.blueprintAsset||object.nativeBuildAsset);if(!build)return false;tokens.add(build.token);if(tokens.size>1)return false;}return true;
 }
+// Timer-free module clocks have no callbacks or actor writes. Send their steps
+// together instead of waiting for a separate host/UI round trip for each one.
+export function canParallelNativeFrames(builds,owner,delta){
+  const scale=Math.fround(owner.core.scale),step=owner.core.paused?0:Math.fround(Math.fround(delta)*scale);
+  return Number.isFinite(delta)&&delta>=0&&delta<=1&&Number.isFinite(scale)&&scale>=0&&typeof owner.core.paused==='boolean'&&[...builds].every(build=>{
+    const client=nativeWorldClient(build,owner);
+    return build.metadata?.nativeFrameBatch===1&&client.clockBatchable&&client.pendingCalls===0&&!client.frames.length&&Number.isFinite(Math.fround(client.clockState?.time+step));
+  });
+}
+export async function advanceNativeFrames(builds,owner,delta,invoke,isCurrent=()=>owner.active&&!owner.stopping){
+  const unique=[...new Map([...builds.values()].map(build=>[build.token,build])).values()];
+  const advance=async build=>{
+    if(!isCurrent())return;
+    const result=await invoke({command:'frame',delta,deferFrame:canDeferNativeFrames(owner.objects,builds),clock:{scale:owner.core.scale,paused:owner.core.paused}},build);
+    if(isCurrent())await owner.nativeTimers(result,owner.bindings.filter(binding=>owner.hooks.nativeBuild?.(binding.self)?.token===build.token));
+  };
+  const parallel=unique.length>1&&canParallelNativeFrames(unique,owner,delta);
+  const counts=owner.nativeFrameGroups??={parallel:0,sequential:0};counts[parallel?'parallel':'sequential']++;
+  if(parallel)await Promise.all(unique.map(advance));
+  else for(const build of unique){if(!isCurrent())break;await advance(build);}
+}
 export class NativeWorldClient {
-  constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
+  constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.pendingCalls=0;this.clockRevision=0;this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
   call(request,metadata,send){
+    this.pendingCalls++;
     const job=this.queue.then(async()=>{
       const game=this.owner?.hooks?.game;if(game&&metadata?.nativeGameSession===1)request={...request,gameSession:game.snapshot()};const context=request.spawnTemplates,prefix=request.spawnPrefix,deliver=send;
       if(context&&this.spawnContext?.context===context&&this.spawnContext.prefix===prefix&&request.command!=='reset'){const {spawnTemplates,...next}=request;request=next;}
-      send=async packet=>{const result=await deliver(packet);if(game&&result.gameSession?.id===game.id)game.setState(result.gameSession.state);if(context)this.spawnContext={context,prefix};return result;};
+      send=async packet=>{
+        const revision=this.clockRevision,result=await deliver(packet);
+        const refresh=reply=>{for(const foreign of reply.foreign||[]){
+          const receiver=owners.get(this.owner)?.get(foreign.token);
+          if(receiver){receiver.clockRevision++;receiver.clockBatchable=foreign.result.clockBatchable===true&&!foreign.result.nativeError&&receiver.pendingCalls===0&&!receiver.frames.length;receiver.clockState=foreign.result.clock;}
+          refresh(foreign.result);
+        }};refresh(result);
+        if(game&&result.gameSession?.id===game.id)game.setState(result.gameSession.state);
+        if(context)this.spawnContext={context,prefix};
+        // An older reply must not restore a clock proof superseded by a foreign call.
+        return revision===this.clockRevision?result:{...result,clockBatchable:false};
+      };
       if(metadata?.workerProtocol!==3)return send(request);
       if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
       if(request.command==='initialize'){const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
@@ -83,7 +116,7 @@ export class NativeWorldClient {
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
       const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows});return result;
     });
-    this.queue=job.catch(()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job;
+    this.queue=job.catch(()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);
   }
 }
 const owners=new WeakMap();

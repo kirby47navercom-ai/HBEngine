@@ -80,3 +80,6 @@ Android 에셋 호스트는 요청 헤더의 대소문자를 구분하지 않고
 `npm run test:android-assets`의 `android-assets-o0g5RD`: 앱에 들어가는 실제 Java 범위 함수와 스트림을 추출해 설치된 JDK로 Java 8 대상 컴파일·실행했어요. 접미/경계/64비트를 넘는 요청 수·파일 끝·건너뛰기·빈 읽기·되감기 거절 검사를 통과했어요. Android SDK를 설치하지 않았으며 Activity 전체/DEX/JNI/APK 검사와 구별해요.
 
 주인님이 Android SDK 약관에 동의해 도구 설치를 시작했어요. 실제 SDK/NDK 빌드·설치 결과는 후속 증거에 기록해요. iOS 37316212354는 두 대상 컴파일 뒤 첫 앱 시작 명령이 180초 시간 초과됐고 실행 보고를 남기지 못했어요. 에셋 서버 가설의 검증에 도달하지 않았으며 SDK와 맞는 설치된 런타임 우선 선택·단계/실패 앱 로그 보존으로 다시 검사해요.
+
+
+2026-10-06 iOS417f384의SDK/시뮬레이터/반복오디오 신호/배경·복귀 검사가 통과했다. [원격 검사](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37425093439)와 [원격 서명·TestFlight 흐름](IOS_REMOTE_DISTRIBUTION.md)을 확인한다. 실물 기기·서명·실제 청취는 미검증이다.

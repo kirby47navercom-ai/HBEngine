@@ -17,7 +17,7 @@ assert.ok(['editor','player'].includes(mode));
 const fixture=JSON.parse(await fs.readFile(path.join(directory,'fixture.json'),'utf8')),work=await fs.mkdtemp(path.join(directory,mode+'-window-'));
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),cases=[],errors=[];
 async function until(fn,label,timeout=45000){const end=Date.now()+timeout;while(Date.now()<end){const value=await fn();if(value)return value;await sleep(100);}throw Error(label+' 시간 초과');}
-const temporary=path.join(work,'Temp');await fs.mkdir(temporary);process.env.TEMP=process.env.TMP=temporary;process.env.AURIC_MUTE='1';
+const temporary=path.join(work,'Temp');await fs.mkdir(temporary);process.env.TEMP=process.env.TMP=temporary;delete process.env.AURIC_MUTE;
 let executable;
 if(mode==='player'){
  const record=await readProjectManifest(fixture.project),profile=defaultBuildProfile(record.manifest);
