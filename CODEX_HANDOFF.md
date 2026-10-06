@@ -1,3 +1,14 @@
+# 최신 진행 — 2026-10-06 Auric P0-1·P0-2 기준 통과 / P0-3 시작
+
+- 원본 요청의 P0-1/P0-2 7개 기준 체크. 실행 소스78bd47b: Editor uq8Z11 +1.1280351ms, Player Bt2gcI +0.7620833ms, 각각3회 Stop/Play/클래스 전환·pool identity; headless ABBA600 1.4941167배/+0.9656247ms. native/build/auric-native-p0-AEFiuA 아래 플랫폼별 증거 보존.
+- 최신 같은 APK Android tbkKAJ 42.7719995/42.8406657fps. Android36/실제4core/720x1280density240/RTX4070SUPER hostGPU. RAM 요청2048→에뮬레이터최소2560MB. 물리 기기/온도/전력은미검증. GCPqYm ADB 응답 중단·D3XVYh 서버주소 실수 실패 보존.
+- android-deploy runtime probe 총15초/명령최대4초, ready/error file 뒤 logcat 생략, 제한 로그fallback·취소 보존. Auric Android 검사 전용 ADB port/USB serial filter/autoscan·mDNS off/기본서버 유지. check-android-deploy.mjs 7회귀 통과 android-deploy-BnJYiH. 이 도구 변경은 APK 실행 코드를 바꾸지 않음.
+- 최신 original auric-original-FxGCbN: 원본9개수치동일/225파일 SHA/Engine snapshot 보존. checker·게임 소스·TEMP TTL 변경없음. 이전 cold-build 10초handoff 만료실패 원인·제어실험 보존, P0-5 대상.
+- 78bd47b 원격37390023600 성공, artifacts ios-artifacts-37390023600.zip. 실제 CPP/AOT/query 두모듈/두XcodeSDK/iOS simulator+audio signal/background/resume PASS. 실제기기/서명/청취 false.
+- 다음 P0-3 BP→BP 부모/상속·부모 호출·배치 명시override·전파·순환/redirect·인간Details+AI명령, Auric Skeleton3개/MaxHp10/Editor+Game.exe. 순서 P0-3→4→5→P1→P2, 요청단계 검증 후 설치본 업데이트→전체 누적 엔진. 아직 설치본 유지. 전체 research/API gate false; 전체 완성 응답 금지.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0 매크로·Timer·Input Action 묶음
 
 - 추가 소스: primitive 함수/매크로·여러 Tick·Timer callback owner/scope·Input Action owner별 지연 샘플 커밋·deterministic 계산 입력. 현재 함수 인자는 캡처하고 미실행 미래 인자는 콜백 뒤 다시 평가. 실패/취소/중단점/RNG/월드 의존성 경계를 보존. 계약 docs/AURIC_NATIVE_BATCH.md.

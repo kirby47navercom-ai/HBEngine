@@ -6,31 +6,35 @@ import {validMobileSettings} from '../prototype/build-profile.js';
 
 const serialValid=serial=>typeof serial==='string'&&serial.length<=200&&/^[a-zA-Z0-9_.:-]+$/.test(serial);
 const adb=()=>path.join(androidSdk(),'platform-tools','adb'+(process.platform==='win32'?'.exe':''));
-export async function androidDevices(){
-  const output=await runTool(adb(),['devices','-l'],{timeout:15000});return output.split(/\r?\n/).map(line=>{
+export async function androidDevices({signal,env=process.env}={}){
+  const output=await runTool(adb(),['devices','-l'],{signal,env,timeout:15000});return output.split(/\r?\n/).map(line=>{
     const match=/^([^\s]+)\s+(device|unauthorized|offline)(?:\s+(.*))?$/.exec(line);if(!match||!serialValid(match[1]))return null;
     const fields=Object.fromEntries((match[3]||'').split(/\s+/).map(p=>p.split(':')).filter(p=>p.length===2));return {serial:match[1],state:match[2],model:fields.model||match[1]};
   }).filter(Boolean);
 }
-export async function deployAndroid(build,serial,{signal,onProgress=()=>{}}={}){
+export async function deployAndroid(build,serial,{signal,env=process.env,onProgress=()=>{}}={}){
   if(!serialValid(serial)||build.artifactType!=='apk'||build.target!=='android'||!build.artifact||!build.artifactSha256||!validMobileSettings({target:'android',mobile:build.mobile}))throw Error('설치할 APK와 Android 기기를 선택하세요.');
-  const device=(await androidDevices()).find(d=>d.serial===serial);if(device?.state!=='device')throw Error('휴대폰의 USB 디버깅 연결과 승인을 확인하세요.');
+  const device=(await androidDevices({signal,env})).find(d=>d.serial===serial);if(device?.state!=='device')throw Error('휴대폰의 USB 디버깅 연결과 승인을 확인하세요.');
   const bytes=await fs.readFile(build.artifact);if(createHash('sha256').update(bytes).digest('hex')!==build.artifactSha256)throw Error('설치 APK가 빌드 결과와 달라요.');
-  const run=args=>runTool(adb(),['-s',serial,...args],{signal,timeout:180000});
-  const abis=(await run(['shell','getprop','ro.product.cpu.abilist'])).trim().split(',');if(!build.mobile.abis.some(abi=>abis.includes(abi)))throw Error('기기 CPU와 APK CPU가 달라요: '+abis.join(', '));
-  const sdk=Number((await run(['shell','getprop','ro.build.version.sdk'])).trim());if(!Number.isInteger(sdk)||sdk<build.mobile.minSdk)throw Error('기기의 Android 버전이 앱 최소 버전보다 낮아요.');
+  const run=(args,timeout=180000)=>runTool(adb(),['-s',serial,...args],{signal,env,timeout});
+  const abis=(await run(['shell','getprop','ro.product.cpu.abilist'],15000)).trim().split(',');if(!build.mobile.abis.some(abi=>abis.includes(abi)))throw Error('기기 CPU와 APK CPU가 달라요: '+abis.join(', '));
+  const sdk=Number((await run(['shell','getprop','ro.build.version.sdk'],15000)).trim());if(!Number.isInteger(sdk)||sdk<build.mobile.minSdk)throw Error('기기의 Android 버전이 앱 최소 버전보다 낮아요.');
   onProgress('APK 설치');const installed=await run(['install','-r',build.artifact]);if(!/\bSuccess\b/.test(installed))throw Error('APK 설치 실패: '+installed);
   onProgress('앱 시작');const launch=await run(['shell','am','start','-W','-n',build.mobile.applicationId+'/com.hbengine.player.HBActivity']);if(!/Status:\s*ok/.test(launch))throw Error('앱 시작 실패: '+launch);
-  const pid=(await run(['shell','pidof',build.mobile.applicationId])).trim().split(/\s+/)[0];if(!/^\d+$/.test(pid))throw Error('앱 실행 프로세스를 찾지 못했어요.');
-  let runtimeReport=null,logs='';const deadline=Date.now()+15000;
+  const pid=(await run(['shell','pidof',build.mobile.applicationId],15000)).trim().split(/\s+/)[0];if(!/^\d+$/.test(pid))throw Error('앱 실행 프로세스를 찾지 못했어요.');
+  let runtimeReport=null,logs='',runtimeProbeError=null;const deadline=Date.now()+15000;
+  const ready=()=>runtimeReport?.ok===true&&runtimeReport.frames>=10&&runtimeReport.scene===build.startupScene;
+  const probe=args=>run(args,Math.max(1,Math.min(4000,deadline-Date.now())));
   do{
     signal?.throwIfAborted();
-    if(build.profile.configuration==='development')try{runtimeReport=JSON.parse(await run(['shell','run-as',build.mobile.applicationId,'cat','files/runtime-report.json']));}catch(error){signal?.throwIfAborted();}
-    logs=await run(['logcat','-d','--pid='+pid,'-s','HBPlayer']);
+    if(build.profile.configuration==='development')try{runtimeReport=JSON.parse(await probe(['shell','run-as',build.mobile.applicationId,'cat','files/runtime-report.json']));}catch(error){signal?.throwIfAborted();runtimeProbeError=error.message;}
+    if(runtimeReport?.ok===false||ready())break;
+    if(Date.now()>=deadline)break;
+    try{logs=await probe(['logcat','-d','-t','200','--pid='+pid,'-s','HBPlayer']);}catch(error){signal?.throwIfAborted();runtimeProbeError=error.message;}
     if(!runtimeReport)for(const line of logs.split(/\r?\n/).filter(line=>line.includes('HBPlayer')&&line.includes('REPORT ')))try{runtimeReport=JSON.parse(line.slice(line.indexOf('REPORT ')+7));}catch{}
-    if(runtimeReport?.ok===false||runtimeReport?.frames>=10&&runtimeReport.scene===build.startupScene)break;
+    if(runtimeReport?.ok===false||ready())break;
     if(build.profile.configuration!=='development')break;
-    await new Promise(resolve=>setTimeout(resolve,250));
+    await new Promise(resolve=>setTimeout(resolve,Math.max(0,Math.min(250,deadline-Date.now()))));
   }while(Date.now()<deadline);
-  return {device:{...device,sdk,abis},installVerified:true,activityStarted:true,pid,launch,runtimeReady:runtimeReport?.ok===true&&runtimeReport.frames>=10&&runtimeReport.scene===build.startupScene,runtimeReport,logs};
+  return {device:{...device,sdk,abis},installVerified:true,activityStarted:true,pid,launch,runtimeReady:ready(),runtimeReport,logs,runtimeProbeError:ready()?null:runtimeProbeError};
 }
