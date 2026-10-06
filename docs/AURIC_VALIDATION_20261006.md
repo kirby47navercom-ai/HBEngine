@@ -205,3 +205,11 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 
 - iOS400d696/run37468368819의 SDK18.5 device/simulator 컴파일과 독립 iPhoneSE3 실행600frames/errors0, 두 동일클래스 C++/Rapier 질의·배치 위치/한글·SVG/WAV ranges/오디오12신호·재사용·백그라운드복귀를 확인했어요. actual phone/signing/heard는 false예요. 이전 초기launch timeout과 검사 수정 근거는 IOS_STARTUP_20261006.md에 보존했어요.
 - Unity 공식 Light2D 본문/API/고정 셰이더 근거로2D Sprite cookie/볼륨·독립 그림자를 Scene/BP/C++7/AI·출력에 연결했어요. CPU/C++ 검증과 실제Windows Player wd42dX160개/조명110개/errors0, 모바일공용 uav3wz C++/출력이 통과했어요. 새광원은 앞 iOS 성공에 포함하지 않고 해당 소스에서 한 번 따로 확인해요. 원본 게임/검사기/사용자 창 변경은 없어요.
+
+
+### 2026-10-06 — iOS 실행 통과와 추가2D 광원 사용자 업데이트
+
+- iOS400d696/run37468368819은 Xcode18.5 기기·시뮬레이터 컴파일 뒤 실제앱600프레임/오류0, 동일클래스 C++두모듈/동기Rapier/배치위치 보존·한글/SVG/WAV range·오디오12신호·버퍼재사용·백그라운드정지/복귀를 통과했어요. 원래launch timeout과 준비순서 검사 수정은 docs/research/IOS_STARTUP_20261006.md에 남겼어요. 실제휴대폰/배포서명/소리를귀로듣기는 미검증이에요.
+- 공식본문/API/고정셰이더를 토대로2D Sprite Light cookie(RGBA/crop/PPU/pivot)·볼륨 빛/독립 그림자를 Scene·BP·C++7개·AI·PC/모바일 에셋출력에 연결했어요. 사용된64×최대256²배열 공유/정적업로드0/볼륨당1평면·추가전체화면타깃0을 유지해요. CPU/C++/의존성과 실제Windows Player160개/조명110개·오류0, 모바일공용 C++/프로젝트출력을 통과했어요. 세부범위는 docs/research/2D_COOKIE_VOLUME_035.md예요.
+- 공개 한국어 커밋950f4a9cd7015fad4e01785f1c2dea7ce2ac2f92를 C:/Users/kirby/HBEngine/Versions/87b7af9ce10a2ee9/HBEngine.exe로 갱신했어요.1777파일/소스·배포·설치30SHA 일치, 바로가기는 새버전이며 다음실행부터 적용돼요. 현재사용자창43288·기본ADB14204·이전82abc·프로필과 원본게임/에셋/checker를 보존했어요. 증거 native/build/light-cookie-user-install-950f4a9.json. 새광원의 iOS 검사는 run37471088488에서 진행해요(앞600프레임 성공에 새광원을 포함하지 않아요).
+- 앞 프레임요구 PC120/mobile60 설정과 고정사본118.67/116.37FPS, 평균고정엔진비용3.67/3.96ms 기록은 유지해요. 광원추가만으로 항상120/실물60/전프레임4ms를 주장하거나 검사표의 실물·8시간 완료칸을 올리지 않았어요. 사용자요청대로 새장시간검사·이미통과한게임검사 반복은 추가하지 않았어요.

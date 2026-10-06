@@ -103,8 +103,8 @@ console.log('Player 실제 함수 원문 검사 통과: 실패/저장/종료·�
  const inspect=new Function('services','vm','objects','activeCamera','THREE','groups','renderer','currentScene','return ('+inspectSource+')();');
  assert.equal(inspect(null,{active:true},[],null,null,null,null,'Travel'),null);
  assert.equal(inspect({}, {active:false},[],null,null,null,null,'Travel'),null);
- const services={animationState:()=>[],spriteSkinState:()=>[],physicsState:()=>[],projectileState:()=>[]},vm={active:true,core:{time:2.5},inspectWork:()=>[],inputSnapshot:()=>({keys:{w:1}})},camera={type:'Camera',getWorldPosition:()=>({toArray:()=>[0,0,0]})},renderer={getContext:()=>({getParameter:()=>''}),info:{render:{},memory:{}}};
- const snapshot=inspect(services,vm,[],camera,{Vector3:class{}},new Map(),renderer,'Boss');assert.equal(snapshot.time,2.5);assert.equal(snapshot.scene,'Boss');assert.equal(snapshot.input.keys.w,1);
+ const services={animationState:()=>[],spriteSkinState:()=>[],physicsState:()=>[],projectileState:()=>[]},vm={active:true,core:{time:2.5},inspectWork:()=>[],inputSnapshot:()=>({keys:{w:1}})},camera={type:'Camera',getWorldPosition:()=>({toArray:()=>[0,0,0]})},renderer={getContext:()=>({getParameter:()=>''}),info:{render:{},memory:{},programs:[{diagnostics:{runnable:true}},{diagnostics:{runnable:false}}]}};
+ const snapshot=inspect(services,vm,[],camera,{Vector3:class{}},new Map(),renderer,'Boss');assert.equal(snapshot.time,2.5);assert.equal(snapshot.scene,'Boss');assert.equal(snapshot.input.keys.w,1);assert.deepEqual(snapshot.renderer.programs,[{runnable:true},{runnable:false}]);assert.deepEqual(snapshot.lights2d,[]);
 }
 
 // The shared deadline loop is checked in check-frame-rate; verify Player gates it.

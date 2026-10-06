@@ -23,3 +23,5 @@ Sprite Light는 스프라이트 모양과 색/알파로 빛을 만든다. 스프
 CPU/C++/동기 Get·Set/자료형/참조 의존성 검사는 tools/check-light-cookies.mjs, 기존 블렌드·그림자 검사와 API 생성 검사가 통과했다. 실제 Windows Player native/build/authoring-window-wd42dX/acceptance.json은 160개(2D 조명110개), C++ 실행·핀 검증, 오류0으로 통과했다. 실제 GPU RGBA/회전/배율/crop·pivot, 정적 재업로드 없음, 불필요한 배열 해제, 빈 공간의 볼륨·독립 그림자·정렬·광원 표시 토글을 확인했다. cookie 하나는 4096바이트/업로드1회, 광원 데이터는 행당144바이트다. 새 기능의 iOS SDK/시뮬레이터 실행은 별도 결과를 남긴다. 물리 모바일 실행·발열·FPS는 기기가 없어 여전히 미검증이다.
 
 모바일 공용 native/build/mobile-player-uav3wz는 실제2AOT C++/Rapier/소스분리와 cookie 배열 모듈이 포함된 iOS 프로젝트 출력을 통과했다. 실제 앱 검사는 Sprite Light와 volume을 같은 예제에 배치하고 WKWebView의 cookieBytes/volume 정렬/셰이더 링크를 기록한다. 개발 PlayerDebug에만 이 진단을 제공하며 릴리스 프레임마다 추가 조회하지 않는다.
+
+iOS950f4a9/run37471088488은 Mac의 기존 C++ 공용·새cookie·실제2AOT·프레임·전송·오디오·headless·runtime-feature 검사를 통과한 뒤 check-player-lifecycle의 Renderer 모형에 programs 필드가 없어 실패했다. 실제 Three.WebGLRenderer의 programs 배열을 Windows168GPU 검사가 사용했고 엔진 셰이더 실패로 계산하지 않는다. 검사 모형에 실제 필드를 넣고 healthy/failed 진단 보존을 단언한다. 같은 실행 소스는 이미 통과한 C++ 묶음을 반복하지 않고 남은6검사·모바일출력·Xcode·WKWebView를 수행한다. 최초 실패 로그 native/build/ios-37471088488-failure.txt는 보존한다.

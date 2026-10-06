@@ -1,5 +1,7 @@
 # 현재 진단 — 2026-10-06 iOS 준비 순서 구별 / 새2D 광원
 
+- 최신950f4a9 iOS37471088488: 공용C++/cookie/프레임/오디오/headless/runtime-feature PASS 뒤 PlayerDebug.inspect 함수 검사 Renderer더블.info.programs 누락으로 실패(Xcode skip). 실제WebGLRenderer는배열제공, WindowsGPU168/errors0. testdouble programs에 성공/실패 둘 다 넣고 진단배열 단언. 실행소스동일 기준950f와 남은6검사로 재사용, 최초실패로그 보존.
+
 - iOS400d696/run37468368819 SUCCESS: 동일7ff 실행에서 SDK2종/새 독립iPhoneSE3/실제600frames·오류0·C++/physics/audio/assets/lifecycle 통과. ios-final-400d696.json/png, IOS_STARTUP_20261006.md. 실제phone/서명/가청검증은 false. 새Cookie·Volume 코드 포함 여부는 다음 소스로 따로 확인한다.
 - 이전37466333179는 SDK성공 뒤 CoreSimulatorBridge/FrontBoard launch180초timeout/main로그없음. 장치를 먼저 부팅하여 컴파일 동안 초기화·Safari 기준 실행·launch전data경로·main로그로 시험했다. timeout증가/맹목적재시도 없음. 성공은 준비 순서 가설과 부합하며 최초플랫폼 내부 원인 확정은 아님.
 - Cookie GPU l46SlG: 부모group.userData.light2dVolume은 mesh, 자식만 true인데 truthy로 처리해 group의 draw2d를 수정. 공유2D 순회에서 ===true로 구별해 고침. 5mV1Vn의 zeroVolume은 앞 tile fixture가 남아 표면광원이 보인 검사구성 오류; 독립receiver dispose 후 빈 공간을 검증. 실패 증거 보존. 최종 wd42dX160/110/errors0 PASS, resource·RGBA·정렬·그림자·토글 검사 유지.

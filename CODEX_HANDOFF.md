@@ -5,7 +5,8 @@
 - iOS400d696/run37468368819 SUCCESS. SDK18.5 기기/시뮬레이터 컴파일·실행600frames/errors0·C++두모듈/동기Rapier/한글SVG/WAV range/12오디오신호·buffer재사용·idletimer중지·백그라운드정지/복귀 보존 PASS. ios-final-400d696.json/png. physical/signing/heard false. 이전37466333179 launchtimeout은 준비 순서·Safari 기준·main로그 검사 수정으로 구별, 실행 소스 변경 없음. 새cookie/volume은 이 성공에 포함되지 않음.
 - 새 Light2D sprite cookie(crop/PPU/pivot/RGBA)·volumetric/독립 그림자: Scene/BP조건부속성·C++7/BP/AI shared, 에셋참조/PC·mobile 출력, WebGL2 array≤64×256²/CPU16MiB+GPU16MiB, 사용된 것만/정적 업로드0, volume당1plane/추가fullscreenRT없음. docs/research/2D_COOKIE_VOLUME_035.md 범위·3원본hash. 27가족/fullcorpus gates false 유지.
 - CPU/C++ cookie·기존 blend/shadow·API/diff PASS. 실제 Windows Player authoring-window-wd42dX160개/2D110개/errors0/C++핀검증 PASS. 모바일 공용 실제C++/출력 mobile-player-uav3wz PASS; 새cookie+volume 실제 WKWebView/SDK는 다음 커밋 원격 검사 한 번. 새PlayerDebug cookieBytes/volume/program진단만 추가, release 핫프레임 비용 없음.
-- NEXT: 새광원 commit/push→desktopbuild→불변 사용자 설치/프로세스·SHA검증; 해당 소스 iOS 원격 한 번, 다른 누적 제작 기능은 연구/결손 근거로 계속. 사용자 MD두개 설치/실측 기록만 append. 새광원의 실제Android실기기는 기기 없음.
+- 새광원950f4a9 push/install 완료: C:/Users/kirby/HBEngine/Versions/87b7af9ce10a2ee9/HBEngine.exe,1777파일/30SHA. 바로가기·이전82abc·사용자43288/ADB14204/프로필 보존, native/build/light-cookie-user-install-950f4a9.json. iOS37471088488 원격한번 진행중.
+- NEXT: 해당 iOS 결과 수집; 다른 누적 제작 기능은 연구/결손 근거로 계속. 사용자 MD두개 설치/실측 기록만 append. 새광원의 실제Android실기기는 기기 없음.
 - ONLY8h 고정313 패키지69q8fO/session50315/root54748 UTC09:56:21.573→17:56:21.573/KST10월7일02:56. 메모리 증가 미통과/새 설치 검사가 아님. 반복poll·대기·강제GC·새장기실행 금지.
 
 # 이전 진행 — 2026-10-06 2D 블렌드/A14 호환 설치 완료
