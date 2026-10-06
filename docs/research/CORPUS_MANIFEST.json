@@ -70,7 +70,23 @@
       "additionalDiscoverySeeds": [
         "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer.html",
         "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-maskInteraction.html",
-        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteMaskInteraction.html"
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteMaskInteraction.html",
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-sortMode.html",
+          "record": "docs/research/PARTICLE_SORT_037.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemSortMode.html",
+          "record": "docs/research/PARTICLE_SORT_037.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-minParticleSize.html",
+          "record": "docs/research/PARTICLE_SORT_037.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-maxParticleSize.html",
+          "record": "docs/research/PARTICLE_SORT_037.md"
+        }
       ]
     },
     {

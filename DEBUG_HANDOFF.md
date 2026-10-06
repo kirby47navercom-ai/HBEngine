@@ -1,3 +1,12 @@
+# 추가 진단 — 파티클 실행 중 설정 갱신
+
+- 기존 particleState.p가 생성당시 스냅샷을 유지해 기존시스템에서 componentSetFloat rate/speed가 읽기값만 바꾸고 방출에 적용되지 않음. check-scene-systems 실제VM에서 rate0→40 기대4/실제0 실패를 먼저 보존. 공용 factory와 tick에 최신p 적용·중복metadata조회 제거, rate40/count4·speed6/Pause/clear/CPP 회귀 PASS. Renderer rebuild만으로 해결한 것으로 기록하지 않음.
+
+# 최신 확인 — 2026-10-06 76c iOS 실제 광원 실행
+
+- 37474343475 SUCCESS/두SDK/C++·물리/자산·오디오·pause-resume/960frames/errors0. Cookie65536bytes/volumevisible order8/9programs runnable/Points5. optional-layer root 수정이 실제WKWebView에서 확인됨. 600frame 성능은17.8269fps/p95 53ms로60 미달이며 기능PASS와 분리. phone/signing/heard false, Windows mask픽셀회귀와 iOSshader/그리기 범위를 구분. ios-76c2bf3-summary.json/원본artifacts/화면 보존.
+- 후속개별 입자 정렬은 upload 전에 카메라별 prepare2D에서 쓰며 GPU 이전카메라 지연을 회귀 검사. 기본sort none는기존경로. 적분arrays identity/죽은입자stablecompaction/640step 이전source 비교와 실제M637rV GPU 통과. 후속iOS 아직 이76c 성공에 합치지 않음.
+
 # 현재 진단 — 2026-10-06 optional 정렬 레이어 volume 결함 수정
 
 - fed46d4 iOS37472250751 두SDK BUILD SUCCEEDED·Safari/install/launch 성공, 앱0frames/draw1/error layers.filter. validRuntimeSettings는 sortingLayers 선택필드, 기본runtime에없음. 새volume .filter가배열을가정한공유Renderer 결함. TwoDRendering.prepare 첫행에서 기존defaultSortingLayers 적용, 실제wlEr8c170/111/errors0 missing-layer 픽셀 동일회귀 PASS. runtime-report/log/artifact 보존. 새iOS 성공으로 계산하지 않으며 수정된소스검사필요.

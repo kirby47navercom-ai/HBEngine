@@ -219,3 +219,24 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - ParticleSystem에 레이어/순서·Sprite Mask none/inside/outside를 Scene/BP·C++ Components·AI 공용 속성으로 연결했어요. ShaderMaterial mask hook·SortingGroup·타깃 해제와 3D 기본 깊이정렬을 유지해요. 입자별 임시 벡터/배열과 역행렬·viewport 할당을 재사용해요. 실제Windows Player wlEr8c170개/조명111개/errors0과 실제C++·CPU 버퍼/좌표/보간/UI 순서 검사가 통과했어요.
 - fed46d4 iOS37472250751은 두SDK·설치·launch를 통과했지만 선택필드 sortingLayers 누락을 volume 코드가 허용하지 않아 앱0프레임에서 실패했어요. 공용Renderer에 기존기본레이어를 먼저 적용하고 같은 누락조건의 RGBA 동일 회귀를 통과했어요. 모바일공용 uT5pYZ C++2AOT/새광원·particle-mask 포함 출력도 통과했어요. 실제새iOS 결과는 후속 기록하며 앞실패를 성공으로 덮지 않아요.
 - CI는950f와 같은C++/native/API/VM/서비스/전송 기반에 한해 재사용하고 Renderer/metadata 변경은 runtime-feature·scene-system·particle-renderer와 기존6개·SDK/실제앱을 검사해요. 범위 밖 변경은 전체검사를 요구해요. 사용자원본/창은 변경하지 않았고 새8시간이나 원문게임검사는 추가하지 않았어요.
+
+
+### 2026-10-06 — 기본2D 레이어·파티클 렌더러 수정 사용자 설치
+
+- 공용2D Renderer에서 선택필드 sortingLayers가 없는 기본·구형 장면에 기존Default를 적용해 volume 실행중단을 고쳤어요. ParticleSystem의 정렬레이어/순서·Sprite Mask none/inside/outside·SortingGroup과 ShaderMaterial을 같은 렌더러에 연결했고, 기본3D perspective 파티클의 투명오브젝트 깊이정렬은 유지해요. Scene/BP/C++ Components/AI가 같은 속성을 다뤄요. 입자별 임시벡터/배열과 역행렬·viewport 할당도 재사용해요.
+- 최종 실제Windows Player wlEr8c170항목/조명111항목·오류0, 실제C++/버퍼world-local/색보간·원본보존·UI필드순서, 모바일공용 uT5pYZ의 C++2AOT/새광원·particle-mask 포함 출력이 통과했어요. 공식본문/API/Niagara Sprite 세부대조와 남은renderer항목은 docs/research/PARTICLE_RENDERER_036.md에 적었어요.
+- 공개 한국어 커밋76c2bf31bdc2d8424b49af050ef0e2e932628526을 C:/Users/kirby/HBEngine/Versions/a84724c3bafa35be/HBEngine.exe로 갱신했어요.1779파일/소스·배포·설치34SHA 일치, 바로가기는 새버전이며 다음실행부터 적용돼요. 이번 갱신 당시 사용자창34080(82abc버전)·기본ADB14204·이전버전·프로필을 보존했어요. 증거 native/build/particle-layer-user-install-76c2bf3.json. 원본게임/에셋/checker는 변경하지 않았어요.
+- fed46d4 iOS37472250751은 두SDK/install/launch 성공 뒤 위optional-layer 결함으로0프레임에서 실패했어요. 로그/보고를 보존했고 새소스의 run37474343475는 변경영역/공용기반 검사와 프로젝트출력을 통과한 뒤 실제SDK/앱 검사를 진행해요. 성공으로 미리표시하지 않아요. 같은C++기반의 이미통과한검사 묶음은 재사용하고 새장시간/원문게임 반복검사는 추가하지 않았어요. 실물폰/서명/가청/기존8시간 완료칸은 유지해요.
+
+
+### 2026-10-06 — iOS 새2D 광원·파티클 실행 확인
+
+- source76c2bf3의 실제 원격iOS run37474343475가 두SDK/독립iPhone SE3/실제WKWebView 실행/C++2AOT/동기물리/파일SHA·range·병렬SVG/오디오 신호·일시정지·복귀를 통과했어요. 오류0/보고960frames, Cookie65536bytes·볼륨visible/order8·9셰이더runnable/실제Points5개를 확인했어요. 파티클mask GPU 픽셀 비교는 Windows 증거이고 이번iOS 진단은 실제 생성/그리기와 셰이더링크 범위예요. 설치a84724c3bafa35be와 같은 실행소스예요.
+- 성능창600frames는17.8269fps/work p50 39/p95 53ms로 모바일60 목표미달이에요. 기능PASS를 성능PASS로 바꾸지 않고 실물폰/서명/가청/8시간 확인칸을 그대로 둬요. iOS 요약 native/build/ios-76c2bf3-summary.json·원본zip/화면을 보존했어요. 이후 개별 입자 정렬·화면크기·적분 재사용 수정은 이source에 포함하지 않아요.
+
+
+### 2026-10-06 — 파티클 개별 정렬·화면 크기·실행 설정 연결
+
+- Renderer의 입자별7정렬/직교거리=깊이/카메라별 즉시업로드·none복귀/화면 최소·최대·0숨김, Scene/BP/AI와 C++기존Components6Set/Get을 연결했어요. 실제Windows M637rV181/조명111/errors0·CPU버퍼/C++/입자 원본 보존을 확인했어요.
+- 적분 임시배열·사망 filter를 제자리재사용으로 바꾸고 이전공유소스640step 동일결과(1e-8)를 확인했어요. 짧은10000입자20step×3 CPU중앙값2.326575→.117655ms/step이며 게임FPS/실물폰/8시간 증거가 아니에요.
+- 실제VM으로 기존시스템의 rate/speed 변경이 실행에 안반영됨(기대4/실제0)을 발견해 공용설정 연결을 고쳤어요. 방출4/speed6와 Pause/clear·C++/런타임 회귀가 통과했어요. 정렬·크기·서비스수정은 앞iOS76c 결과에 포함하지 않으며 새source전체공용/SDK/app으로 확인해요. 원본게임/checker/사용자창을 바꾸지 않았어요.

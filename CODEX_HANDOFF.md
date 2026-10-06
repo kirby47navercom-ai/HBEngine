@@ -1,10 +1,17 @@
+# 현재 후속 — 2026-10-06 파티클 개별 정렬·크기·적분 비용
+
+- Latest source edits037: 7sort modes/orthoDistance=depth/카메라별pre-upload buffer/viewportmin-max0..1·0숨김, generic Scene/BP/C++6Set/Get/AI. ParticleSimulation inplace force·position·velocity·stablecompaction·worldspawn/previous reuse. baseline640step PASS/CPU10000×20step×3 중앙2.326575→.117655ms(실제게임FPS 아님). renderer/scene-systems CPU PASS; WindowsM637rV GPU/오류0 PASS. 현재변경 commit/배포 후 새iOS 검사 필요.
+- Installed a84724c3bafa35be source76c 유지/사용자34080(82abc)/ADB14204/원본게임/프로필 보존. 그 source의37474343475 실제iOS SUCCESS/960frames/Cookie·volume/두SDK·CPP·물리·assets/audio/lifecycle. 600frames17.8269fps/p95 53ms로모바일60미달; 기능PASS와성능 분리. ios-76c2bf3-summary.json/zip/png. 새sort·적분은 해당 성공에 포함하지 않음.
+- 27families/full gatesfalse. 037원문4/hash+manual036 ownscope 읽기. 원본두MD append. 새8h/agents/goals/사용자창 이동/통과한광범위 반복 금지. 추가실제VM은 실행중rate/speed 변경이기존simulation에 안반영되는결함(기대4/실제0)을 발견: factory/currentp·중복조회 제거후PASS. 서비스source변경으로 이번iOS는전체공용검사(재사용입력 없음)→output/SDK/app. 현재서비스수정뒤scene-systems/runtime-feature PASS, 모바일출력WdAwC4는서비스수정직전renderer source임을 구분.
+
 # 현재 진행 — 2026-10-06 2D cookie·volume / 파티클 공유 렌더러
 
 - Human: 누적 엔진 목표, 사람/AI·2D/2.5D/3D·가벼움 유지. 원본Auric 게임/에셋/checker 변경 금지, MD append만. 사용자창/탭/프로필/ADB 방해 금지. 통과한광범위검사 반복/새8h/새agent/goal 금지.
 - Installed950f4a9 C:/Users/kirby/HBEngine/Versions/87b7af9ce10a2ee9/HBEngine.exe,1777파일/30SHA, shortcut다음실행. old82abc/사용자43288/defaultADB14204/프로필 보존. CookieRGBA·crop/PPU/pivot·volumetric/독립그림자·C++7/BP/AI·에셋참조. CPU16+GPU16MiB최대/정적업로드0/볼륨당1plane·추가전체화면RT0. light-cookie-user-install-950f4a9.json.
 - NewParticle: 같은Scene/BP/AI renderer section과 C++/BP Components SetString/GetString/SetFloat/GetFloat를 재사용. layer/order/mask none-inside-outside, SortingGroup scope와 기존 mask target·ShaderMaterial hook. 3D perspective 기본0/none/group없음은 Three 깊이정렬 유지. 입자별 임시Vec3/배열·프레임별Matrix clone/viewport Vec2 재사용. 최종 C++/CPU property·world/local/색/원본보존·UI필드순서 PASS; scene-systems PASS; 실제Windows Player wlEr8c170/조명111/errors0/C++핀 PASS.
 - iOS400d696/37468368819 실제600frames/두SDK/C++/Rapier/assets/audio/lifecycle PASS(새cookie·particles 제외). 950f/37471088488 공용 C++·cookie 등PASS 후inspect의Renderer더블.programs누락으로 실패 → test-only fed46d4. fed/37472250751 두SDK/install/launch PASS나 앱0frames layers.filter 오류: optional runtime.sortingLayers 없음의volume 엔진결함. 공용TwoDRendering에서 기존defaultSortingLayers 먼저적용; missing-layer GPU 픽셀회귀 PASS. 실패로그·artifact·runtime-report 보존. 최신실제iOS 아직새소스로 검증해야 한다.
-- NEXT: 묶음commit/push·불변 사용자 설치(구형레이어 수정 필수). 공용C++/기반은950f와 동일일때 재사용, Renderer/metadata/검사 파일변경은runtime-feature/scene-system/particle-renderer와 기존6개·출력/실제Xcode/app 모두검증. 더넓은변경은전체검사. docs035/036 본문범위+hash,27계열/fullcorpus gatesfalse.
+- Latest76c2bf3 push/install a84724c3bafa35be/HBEngine.exe,1779파일/34SHA. 이전87bf/82abc/사용자34080(82abc)/ADB14204/프로필 보존, shortcut다음실행. particle-layer-user-install-76c2bf3.json. 원본MD두개append. iOS37474343475 변경영역+공용기반/모바일출력 PASS, SDK/app진행중.
+- NEXT: 해당iOS결과수집/필요수리와 누적기능 계속. 공용C++/기반은950f와 동일일때 재사용, Renderer/metadata/검사 파일변경은runtime-feature/scene-system/particle-renderer와 기존6개·출력/실제Xcode/app 모두검증. 더넓은변경은전체검사. docs035/036 본문범위+hash,27계열/fullcorpus gatesfalse.
 - PC120/mobile60/7ff실측 idle118.67/battle116.37FPS·평균고정3.67/3.96ms 증거 유지, 항상120/실물60/전프레임4ms보장아님. physicalDevice/signing/heard false. ONLY8h old31369q8fO/session50315/root54748 UTC09:56→17:56(KST10월7일02:56), 증가미통과/새버전검사아님; poll/강제GC/추가장기실행 금지.
 
 # 이전 진행 — 2026-10-06 2D 블렌드/A14 호환 설치 완료

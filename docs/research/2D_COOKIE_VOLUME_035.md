@@ -29,3 +29,9 @@ iOS950f4a9/run37471088488은 Mac의 기존 C++ 공용·새cookie·실제2AOT·�
 후속 fed46d4/run37472250751: 공용기반/모바일출력/두SDK 컴파일/설치/launch는 통과했으나 실제앱0frames에서 layers.filter 오류가 발생했다. runtime.sortingLayers는 validRuntimeSettings에서 선택 필드이고 기본 장면에는 없는데, 새volume 정렬 코드가 항상 배열로 가정한 엔진 결함이다. 모든 호출자는 그대로 두고 TwoDRendering.prepare 진입에서 기존 defaultSortingLayers를 적용한다. 실제Windows Player wlEr8c170개/조명111개/errors0은 정렬설정이 없는 상태에서도 volume의 원래 RGBA 픽셀과 같은 결과를 확인했다. 초기 회귀9niVLI는 불투명 red 기준을 강도.5 volume에 적용한 검사 오류로 실패했고 기존 volume와 픽셀 동일성을 기준으로 바로잡아 보존한다.
 
 CI 공용기반 재사용은 C++/native/API/VM/서비스/전송 코드가 같을 때만 허용한다. 이번 Renderer·컴포넌트 metadata/test 파일로 허용 범위를 명시하고 해당 runtime-feature/scene-system/particle-renderer 검사와 기존6개를 항상 실행하며 실제 모바일 출력/Xcode/WKWebView를 생략하지 않는다. 범위 밖 변경은 전체 검사를 요구한다. 이 재사용을 모든 실행 소스가 같다는 표현으로 바꾸지 않는다.
+
+
+### 2026-10-06 — iOS 새2D 광원·파티클 실행 확인
+
+- source76c2bf3의 실제 원격iOS run37474343475가 두SDK/독립iPhone SE3/실제WKWebView 실행/C++2AOT/동기물리/파일SHA·range·병렬SVG/오디오 신호·일시정지·복귀를 통과했어요. 오류0/보고960frames, Cookie65536bytes·볼륨visible/order8·9셰이더runnable/실제Points5개를 확인했어요. 파티클mask GPU 픽셀 비교는 Windows 증거이고 이번iOS 진단은 실제 생성/그리기와 셰이더링크 범위예요. 설치a84724c3bafa35be와 같은 실행소스예요.
+- 성능창600frames는17.8269fps/work p50 39/p95 53ms로 모바일60 목표미달이에요. 기능PASS를 성능PASS로 바꾸지 않고 실물폰/서명/가청/8시간 확인칸을 그대로 둬요. iOS 요약 native/build/ios-76c2bf3-summary.json·원본zip/화면을 보존했어요. 이후 개별 입자 정렬·화면크기·적분 재사용 수정은 이source에 포함하지 않아요.

@@ -18,11 +18,11 @@
 
 | 조작·속성·함수군 | HBEngine 현재 연결과 남은 구현 |
 |---|---|
-| Renderer 전체 순서와 개별 파티클 정렬 | 레이어·레이어 안 순서는 이번 공유2D 순회에 연결. 개별 distance/depth/age/custom 정렬 및 sorting fudge는 대기 |
+| Renderer 전체 순서와 개별 파티클 정렬 | 레이어·레이어 안 순서는 이번 공유2D 순회에 연결. 개별 distance/depth/age와 반대 순서는 조사037에서 연결. custom 정렬·sorting fudge는 대기 |
 | Sprite Mask none/inside/outside | 이번 컴포넌트/공용 mask 타깃·셰이더·SortingGroup 범위에 연결 |
 | billboard/stretch/horizontal/vertical/mesh/none | 현재 Points 카메라 평면 표시만 있음. 다른 모드와 속도/카메라 기반 늘이기는 대기 |
 | mesh 배분·weights·GPU instancing | 전용 mesh 배열·가중치·GPU 실행이 없어 대기 |
-| alignment/facing/roll/pivot/flip/크기 제한 | 카메라 투영 크기만 적용. 나머지는 전용 quad/mesh 렌더러와 계약 필요 |
+| alignment/facing/roll/pivot/flip/크기 제한 | 카메라 투영·화면 최소/최대 크기는 조사037에서 연결. 정렬/facing/roll/pivot/flip은 전용 quad/mesh 렌더러와 계약 필요 |
 | 머테리얼·trail material·vertex/trail streams | texture/color/alpha-additive만 연결. 사용자 머테리얼 입력/stream과 trail 구현 대기 |
 | particle color space·normal·shadow/motion/probe/anchor | 자체 파티클 셰이더에는 해당 파이프라인 연결이 없어 대기 |
 | SubUV·보간·속성 binding·cutout | Sprite sheet frame과 VFX 변수 공통 자료는 있으나 파티클 GPU renderer까지의 연결은 대기 |
@@ -44,3 +44,9 @@ Unity의 시스템 전체 순서와 개별 파티클 순서는 별개다. Niagar
 새 모바일 예제에는 실제 ParticleSystem과 SpriteMask도 포함한다. 누락 정렬 레이어의 기본값은 공용 Renderer에 먼저 적용하고 같은 missing-field 조건의 volume GPU 회귀를 추가해 기본/구형 장면 모두 확인한다.
 
 최종 모바일공용 native/build/mobile-player-uT5pYZ: C++2AOT/질의/시간·UI/오디오/새cookie·particle-mask 포함 iOS 프로젝트 출력 통과. 실제 WKWebView 결과는 해당 수정 커밋에서 별도로 기록한다.
+
+
+### 2026-10-06 — iOS 새2D 광원·파티클 실행 확인
+
+- source76c2bf3의 실제 원격iOS run37474343475가 두SDK/독립iPhone SE3/실제WKWebView 실행/C++2AOT/동기물리/파일SHA·range·병렬SVG/오디오 신호·일시정지·복귀를 통과했어요. 오류0/보고960frames, Cookie65536bytes·볼륨visible/order8·9셰이더runnable/실제Points5개를 확인했어요. 파티클mask GPU 픽셀 비교는 Windows 증거이고 이번iOS 진단은 실제 생성/그리기와 셰이더링크 범위예요. 설치a84724c3bafa35be와 같은 실행소스예요.
+- 성능창600frames는17.8269fps/work p50 39/p95 53ms로 모바일60 목표미달이에요. 기능PASS를 성능PASS로 바꾸지 않고 실물폰/서명/가청/8시간 확인칸을 그대로 둬요. iOS 요약 native/build/ios-76c2bf3-summary.json·원본zip/화면을 보존했어요. 이후 개별 입자 정렬·화면크기·적분 재사용 수정은 이source에 포함하지 않아요.
