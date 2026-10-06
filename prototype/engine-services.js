@@ -1,6 +1,9 @@
 import {resolveSprite} from './sprite-import.js';
 import {RuntimeTilemaps} from './tilemap-runtime.js';
 import {requestSceneTravel} from './play-world.js';
+import {findRuntimeActors} from './runtime-actors.js';
+import {instantiateSpawn,spawnBindings,initializeSpawn,spawnTransformValid} from './runtime-spawn.js';
+import {actorClassNames} from './runtime-actors.js';
 import {storageKey,storage} from './project-session.js';
 import {evaluateMaterial,validAsset} from './asset-documents.js';
 import * as THREE from 'three';
@@ -130,6 +133,7 @@ export function engineOperations(hooks){
     if(['perceptionTargets','perceptionForget','reportNoise'].includes(key)){const o=target(a,b,vm);if(key==='perceptionTargets')return {return:senses.targets(o.id)};if(key==='perceptionForget'){senses.forget(o.id);systems.perception(o.id,[],vm);o.gameplayDebug={...o.gameplayDebug,perception:[]};}else senses.noise(o.id,a.position,a.loudness,a.radius,a.tag);return {};}
     if(['particlePlay','particleStop','particlePause','particleEmit','particleCount'].includes(key)){const o=target(a,b,vm),state=particleState(o,key==='particlePlay');if(key==='particleCount')return {return:state.particles.length};if(key==='particleStop'){state.playing=false;if(a.clear)state.particles.length=0;}else if(key==='particlePause')state.paused=a.paused;else if(key==='particleEmit')state.emit(a.count,sceneWorldMatrix(o,vm.objects));hooks.particleSnapshot?.(o,state);o.gameplayDebug={...o.gameplayDebug,particles:{count:state.particles.length,playing:state.playing,paused:state.paused}};return {};}
     if(['getWorldPosition','setWorldPosition','getLocalPosition','setLocalPosition'].includes(key)){const o=target(a,b,vm);if(key==='getWorldPosition')return {return:sceneWorldPosition(o,vm.objects)};if(key==='getLocalPosition')return {return:[...o.position]};if(!Array.isArray(a.position)||a.position.length!==3||!a.position.every(Number.isFinite))throw Error('위치를 확인하세요.');if(key==='setWorldPosition')setSceneWorldPosition(o,a.position,vm.objects);else o.position=[...a.position];hooks.update(o);return {};}
+    const foundActors=findRuntimeActors(vm.objects,key,a);if(foundActors!==undefined)return foundActors;
     if(key==='poolActive')return {return:target(a,b,vm).poolActive!==false};
     if(key==='poolAcquire'){
       if(!Array.isArray(a.pool)||a.pool.length>500||!validValue('transform',a.transform)||!a.transform.scale.every(v=>v>=.01))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
@@ -138,8 +142,37 @@ export function engineOperations(hooks){
     if(key==='poolRelease'){
       const o=target(a,b,vm);if(o.poolActive===false)return {};for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolRelease');await releaseActor(o,vm);o.poolVisible=o.visible;o.poolCollision=o.collisionEnabled!==false;o.poolActive=false;o.visible=false;o.collisionEnabled=false;o.velocity=[0,0,0];o.angularVelocity=[0,0,0];delete o.navigationControl;hooks.update(o);return {};
     }
-    if(key==='spawn'){if(vm.objects.length>=500)throw Error('오브젝트 제한 초과');const known=b.root.native?.classes.some(c=>c.name===a.class),kind={Cube:'cube',Sphere:'sphere',Cylinder:'cylinder',Plane:'plane',Character:'character',Pawn:'character',Actor:'empty'}[a.class]||'cube';if(!known&&!['Actor','Pawn','Character','Cube','Sphere','Cylinder','Plane'].includes(a.class))throw Error('등록되지 않은 클래스: '+a.class);const o={id:crypto.randomUUID(),name:a.class,kind,group:'WORLD',visible:true,...structuredClone(a.transform),nativeClass:a.class};objectComponents(o);vm.objects.push(o);hooks.build(o);return {actor:o.id};}
-    if(key==='destroy'){const o=target(a,b,vm);if(o.destroying||releasingActors.has(o.id))return {};o.destroying=true;tilemaps.release(o.id);for(const binding of vm.bindings.filter(x=>x.self===o.id))await vm.emit(binding,'endPlay',{reason:'Destroyed'});await releaseActor(o,vm);vm.bindings=vm.bindings.filter(x=>x.self!==o.id);vm.jobs=vm.jobs.filter(j=>j.owner!==o.id);for(const [id,t] of vm.timelines)if(t.f.b.self===o.id)vm.timelines.delete(id);for(const [id,t] of vm.core.timers)if(t.owner===o.id)vm.core.timers.delete(id);vm.objects.splice(vm.objects.indexOf(o),1);hooks.remove(o);return {};}
+    if(key==='spawn'||key==='sceneSpawn'){
+      if(!vm.active||vm.stopping)throw Error('활성 게임 월드에서만 생성할 수 있어요.');
+      const name=a.blueprintOrPrefab??a.class,catalog=hooks.spawnCatalog;let template=catalog?.templates.get(name);
+      if(!template){const known=b.root.native?.classes.find(c=>c.name===name),kind={Cube:'cube',Sphere:'sphere',Cylinder:'cylinder',Plane:'plane',Character:'character',Pawn:'character',Actor:'empty'}[name];if(!known&&!kind)throw Error('등록되지 않은 생성 에셋/클래스: '+name);const o={id:'root',name,kind:kind||'empty',group:'WORLD',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],components:[]};if(known)o.nativeClass=name;objectComponents(o);o.actorClasses=actorClassNames(o,b.root);template={key:name,root:'root',objects:[o],pool:{enabled:false,maxInactive:0}};}
+      if(!spawnTransformValid(a.transform))throw Error('생성 변환을 확인하세요.');
+      const reuse=template.pool.enabled&&vm.objects.find(o=>o.spawnAsset===template.key&&o.spawnRoot===o.id&&o.poolActive===false&&(!a.actorId||o.id===a.actorId)),existing=reuse?vm.objects.filter(o=>o.spawnRoot===reuse.id):undefined,instance=instantiateSpawn(template,a.transform,reuse?.id||a.spawnId||a.actorId||undefined,existing);
+      if(a.actorId!==undefined&&(typeof a.actorId!=='string'||a.actorId.length>160)||!reuse&&vm.object(instance.rootId))throw Error('생성 오브젝트 ID가 중복되었거나 잘못됐어요.');
+      if(a.spawnId!==undefined&&a.spawnId!==instance.rootId)throw Error('C++ 생성 풀 선택 상태가 변경됐어요.');
+      if(!reuse&&vm.objects.length+instance.objects.length>2000)throw Error('실행 오브젝트 2000개 제한 초과');
+      if(a.spawnStates!==undefined){if(!Array.isArray(a.spawnStates)||a.spawnStates.length!==instance.objects.length)throw Error('C++ 생성 상태 오류');for(const state of a.spawnStates){const o=instance.objects.find(o=>o.id===state.id);if(!o||!spawnTransformValid(state))throw Error('C++ 생성 변환 상태 오류');for(const k of ['position','rotation','scale','nativeProperties'])if(state[k]!==undefined)o[k]=structuredClone(state[k]);}}
+      const previousStates=new Map((existing||[]).map(o=>[o.id,structuredClone(o)]));
+      const spawned=instance.objects.map(o=>{const previous=vm.object(o.id);if(previous){for(const k of Object.keys(previous))delete previous[k];Object.assign(previous,o);return previous;}vm.objects.push(o);return o;});
+      const generation=vm.generation;let added=[];try{
+        added=vm.addBindings(catalog?spawnBindings(catalog,template,instance):[],catalog?.inputAssets);
+        for(const o of spawned){if(reuse)await hooks.update?.(o);else{const group=await hooks.build(o);await group?.userData?.ready;}}
+        if(!vm.active||vm.stopping||vm.generation!==generation)throw Error('생성 중 게임 실행이 종료됐어요.');
+        for(const o of spawned)if(o.parent){const group=hooks.mesh?.(o.id),parent=hooks.mesh?.(o.parent);if(group&&parent)parent.add(group);hooks.update?.(o);}
+        await initializeSpawn(vm,added,{startActor,startSystems:(vm,id)=>systems.start(vm,id)},spawned,{reused:!!reuse});
+        if(!vm.active||vm.stopping||vm.generation!==generation)throw Error('생성 중 게임 실행이 종료됐어요.');
+      }catch(error){for(const o of spawned){if(vm.object(o.id)!==o)continue;await releaseActor(o,vm);if(vm.object(o.id)!==o)continue;const previous=previousStates.get(o.id);if(previous&&vm.active&&!vm.stopping&&vm.generation===generation){for(const k of Object.keys(o))delete o[k];Object.assign(o,previous);await hooks.update?.(o);}else{const index=vm.objects.indexOf(o);if(index>=0)vm.objects.splice(index,1);hooks.remove?.(o);}}vm.bindings=vm.bindings.filter(b=>!added.includes(b));throw error;}
+      return {[key==='spawn'?'actor':'return']:vm.object(instance.rootId)?.poolActive===false||!vm.object(instance.rootId)?null:instance.rootId};
+    }
+    if(key==='destroy'||key==='sceneDestroy'){
+      const o=vm.object(a.target===undefined||a.target==='self'||key==='destroy'&&a.target===null?b.self:a.target);if(!o||o.destroying||o.poolActive===false||releasingActors.has(o.id))return {};
+      const root=vm.object(o.spawnRoot)||o,owned=new Set([root.id]);let changed=true;while(changed){changed=false;for(const item of vm.objects)if(item.spawnRoot===root.id||owned.has(item.parent)||owned.has(item.owner)){if(!owned.has(item.id)){owned.add(item.id);changed=true;}}}
+      const rows=vm.objects.filter(item=>owned.has(item.id)),pooled=root.spawnPool?.enabled&&vm.objects.filter(item=>item.spawnAsset===root.spawnAsset&&item.spawnRoot===item.id&&item.poolActive===false).length<root.spawnPool.maxInactive;
+      for(const item of rows)item.destroying=true;
+      try{for(const item of [...rows].reverse()){tilemaps.release(item.id);for(const binding of vm.bindings.filter(x=>x.self===item.id)){if(pooled)await vm.custom(binding,'OnPoolRelease');await vm.emit(binding,'endPlay',{reason:pooled?'Pooled':'Destroyed'});}await releaseActor(item,vm);}}
+      finally{vm.bindings=vm.bindings.filter(x=>!owned.has(x.self));for(const item of rows){if(pooled){delete item.destroying;item.poolActive=false;item.visible=false;item.collisionEnabled=false;item.velocity=[0,0,0];item.angularVelocity=[0,0,0];hooks.update?.(item);}else{const index=vm.objects.indexOf(item);if(index>=0)vm.objects.splice(index,1);hooks.remove?.(item);}}}
+      vm.refreshActorReferences();return {};
+    }
     if(key==='visibility'){const o=target(a,b,vm);o.visible=a.visible;hooks.update(o);return {};}
     if(key==='attach'){const o=target(a,b,vm),parent=target(a,b,vm,'parent');let p=parent;while(p){if(p.id===o.id)throw Error('부모 연결 순환');p=vm.object(p.parent);}const mesh=hooks.mesh(o.id),parentMesh=hooks.mesh(parent.id);if(!mesh||!parentMesh)throw Error('장면 객체가 없어요.');parentMesh.attach(mesh);o.parent=parent.id;o.position=mesh.position.toArray();o.rotation=mesh.rotation.toArray().slice(0,3).map(THREE.MathUtils.radToDeg);o.scale=mesh.scale.toArray();return {};}
     if(['getComponent','addComponent','componentEnabled'].includes(key)){const o=target(a,b,vm);if(key==='componentEnabled'){if(!o.owner)throw Error('컴포넌트 대상이 아니에요.');const owner=vm.object(o.owner),component=objectComponents(owner).find(c=>c.id===o.componentId);if(!component)throw Error('컴포넌트가 제거됐어요.');component.properties??=componentDefaults(component.type);component.properties.enabled=a.enabled;o.enabled=a.enabled;hooks.update(owner);return {};}let c=objectComponents(o).find(c=>c.type===a.class);if(!c&&key==='addComponent'){c=addSceneComponent(o,a.class);hooks.update(o);}if(!c)return {return:null};const id=o.id+':'+c.id;if(!vm.object(id))vm.objects.push({id,name:c.name,kind:'component',owner:o.id,componentId:c.id,visible:false,enabled:c.properties?.enabled!==false,position:[...o.position],rotation:[...o.rotation],scale:[...o.scale],properties:c.properties});return {return:id};}
@@ -217,6 +250,7 @@ export function engineOperations(hooks){
     pauseAudio:paused=>paused?soundRouting.context?.suspend():soundRouting.context?.resume(),
     operation,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,physicsDebug:()=>physics?.debug?.()||null,
     prepare:async vm=>{currentVM=vm;await tilemaps.start(vm.objects);for(const o of [...vm.objects])await prepareActorWidgets(o,vm);},
+    spawnCatalog:hooks.spawnCatalog,
     start:async vm=>{currentVM=vm;await ensurePhysics(vm).loadMaterials(readAsset);for(const o of [...vm.objects])await startActor(o,vm);await systems.start(vm);},
     stop:async vm=>{let firstError;for(const o of vm.objects)try{await systems.stopMontages(o.id,vm,'worldStopped');}catch(error){firstError??=error;}for(const id of [...graphs.keys()])try{await stopAnimation(id,vm,'worldStopped');}catch(error){firstError??=error;}if(firstError)throw firstError;},
     input:(key,value)=>physics?.input(key,value),releaseInput:()=>{physics?.releaseInput();ui.releaseInput();},contacts:()=>physics?.contacts(),

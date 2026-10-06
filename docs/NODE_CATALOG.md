@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **594개**, 실제 공통 C++ API **512개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **601개**, 실제 공통 C++ API **517개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -11,9 +11,10 @@
 | 분야 | 노드 | 공통 C++ |
 | --- | ---: | ---: |
 | 이벤트 | 13 | 0 |
+| 클래스 | 2 | 0 |
 | 흐름 제어 | 16 | 0 |
 | 디버그 | 1 | 0 |
-| 변환 | 29 | 28 |
+| 변환 | 34 | 33 |
 | 벡터 | 34 | 34 |
 | 수학 | 52 | 50 |
 | 배열 | 95 | 88 |
@@ -84,6 +85,13 @@
 | inputAxis | Input Axis / 축 입력 | — | then: exec, value: float | — | VM 이벤트 진입점 |
 | anyDamage | Any Damage / 피해 이벤트 | — | then: exec, damage: float, instigator: object | — | VM 이벤트 진입점 |
 
+## 클래스
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| callParent | Call Parent / 부모 호출 | exec: exec | then: exec | — | VM / 브라우저 서비스 |
+| parentEntry | Parent Event / 부모 이벤트 | — | — | — | VM / 브라우저 서비스 |
+
 ## 흐름 제어
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -140,6 +148,11 @@
 | intToBool | Int To Bool / 정수를 불리언으로 | value: int | return: bool | hb::Extended::IntToBool | 공통 C++ + VM |
 | vector2ToVector3 | Vector2 To Vector3 / 벡터2를 벡터3로 | value: vec2, z: float | return: vec3 | hb::Extended::Vector2ToVector3 | 공통 C++ + VM |
 | vector3ToVector2 | Vector3 To Vector2 / 벡터3의 XY | value: vec3 | return: vec2 | hb::Extended::Vector3ToVector2 | 공통 C++ + VM |
+| sceneSpawn | Spawn / 에셋/클래스 생성 | exec: exec, blueprintOrPrefab: string, transform: transform, actorId: string | then: exec, return: object | hb::Scene::Spawn | 공통 C++ + VM |
+| sceneDestroy | Destroy / 생성 액터 제거/풀 반환 | exec: exec, target: object | then: exec | hb::Scene::Destroy | 공통 C++ + VM |
+| sceneFindClass | Get All Actors Of Class / 클래스로 액터 찾기 | className: string, includeInactive: bool | return: object[] | hb::Scene::GetAllActorsOfClass | 공통 C++ + VM |
+| sceneFindTag | Get Actors With Tag / 태그로 액터 찾기 | tag: string, includeInactive: bool | return: object[] | hb::Scene::GetActorsWithTag | 공통 C++ + VM |
+| sceneFindId | Find Actor By Id / ID로 액터 찾기 | id: string, includeInactive: bool | return: object | hb::Scene::FindActorById | 공통 C++ + VM |
 | getWorldPosition | Get World Position / 월드 위치 가져오기 | target: object | return: vec3 | hb::Scene::GetWorldPosition | 공통 C++ + VM |
 | setWorldPosition | Set World Position / 월드 위치 설정 | exec: exec, target: object, position: vec3 | then: exec | hb::Scene::SetWorldPosition | 공통 C++ + VM |
 | getLocalPosition | Get Local Position / 로컬 위치 가져오기 | target: object | return: vec3 | hb::Scene::GetLocalPosition | 공통 C++ + VM |

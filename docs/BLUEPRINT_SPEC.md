@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-06: [실행 중 생성·찾기 계약](AURIC_RUNTIME_SPAWN.md). C++/BP의 BP·Prefab·클래스 Spawn/Destroy, 실제 C++ 객체·기본값·수명, 자동 풀 용량·재사용·취소, 클래스/태그/ID 검색과 없는 Actor 참조의 null 처리를 연결해요. 전체 노드601개/공용 선언289개예요. 모듈 간 생성 후 호출과 모바일 AOT도 같은 명령 순서를 검증해요.
+
 2026-10-06: [BP 상속·인스턴스 계약](BLUEPRINT_INHERITANCE.md). BP 부모의 컴포넌트·변수·그래프·C++를 해석하고 얇은 자식 파일을 저장해요. 이벤트/함수/Construction 부모 호출과 명시적 클래스/인스턴스 기본값, 순환/redirect/cook, revision을 공유해요. 실제 Editor·Game.exe의 C++ 값과 호출 순서를 검사해요.
 
 2026-10-06: [Auric C++ 묶음 계약](AURIC_NATIVE_BATCH.md). 함수·매크로·여러 Tick·C++ Timer·Input Action의 직선 native 호출을 같은 빌드에서 묶고, 콜백/자료 의존성/실패/작업 취소 경계를 유지해요. Action은 owner별 샘플 시점과 다른 모듈 조회 상태를 PC worker·모바일 AOT에서 대조해요. 전체 BP 상속·전체 함수 실행 최적화의 완료로 계산하지 않아요.

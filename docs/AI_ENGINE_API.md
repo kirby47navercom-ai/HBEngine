@@ -1,5 +1,7 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-06: [실행 중 생성·찾기 계약](AURIC_RUNTIME_SPAWN.md). 공용 C++ 선언에서 생성한 Scene Spawn/Destroy/클래스·태그·ID 찾기 노드를 기존 그래프 API로 편집해요. BP 부모/클래스 기본값·Prefab 로컬 ID/컴포넌트 오브젝트 참조·PooledActor.maxInactive는 사람 UI와 동일한 저장 schema와 검증을 사용해요. 기존 ActorPool API도 유지해요.
+
 2026-10-05 추가: [구간 알림·이벤트 인자](ANIMATION_NOTIFIES.md). schema.animationGraph.sync.notifyStates/notifyParameters는 실제 이름/자료형/한도·Begin/Tick/End/수명 계약을 제공해요. 문서 패치·revision/dryRun·Undo/Save는 사람과 같고 runtime.state의 animationGraph.notifyStates에 현재 인스턴스/시계/진행률을 제공해요.
 
 2026-10-05 추가: [동기화·마커·알림](ANIMATION_SYNC.md). schema.animationGraph.sync와 document.patch는 Sequence Player의 안정적 마커/알림 ID·공용 검증·revision/dryRun·Undo/Redo/저장을 공유해요. runtime.state의 animationGraph.syncGroups는 리더/위상/방식·참여자/시계를 제공하며 BP/C++3개 조회도 같은 실행 상태예요.

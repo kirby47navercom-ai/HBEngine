@@ -2,21 +2,31 @@ import {defaultRuntimeSettings,validScene} from './model.js';
 import {assetTitle,loadSceneBindings,validAsset} from './asset-documents.js';
 import {prepareGameplay} from './scene-runtime.js';
 import {blueprintInstanceDefaults,installBlueprintInstances} from './blueprint-overrides.js';
+import {actorClassNames} from './runtime-actors.js';
+import {spawnRequested,prepareSpawnCatalog} from './runtime-spawn.js';
 
-// Editor Play and the scenario runner prepare exactly the same game objects.
-export async function preparePlayWorld(objects,settings,{readAsset,readText,buildNative}){
-  settings={...defaultRuntimeSettings,...settings};const reads=new Map(),read=path=>{if(!reads.has(path))reads.set(path,Promise.resolve().then(()=>readAsset(path)));return reads.get(path);};const config=settings.gameConfig?await read(settings.gameConfig):null;
-  if(config&&!validAsset('gameconfig',config))throw Error('게임 설정 에셋 검증 실패');
-  const initial=await loadSceneBindings(objects,read);installBlueprintInstances(objects,initial.bindings);const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read),builds=new Map(),nativeBuilds=new Map();
-  for(const binding of gameplay.bindings){const existing=loaded.bindings.find(item=>item.self===binding.self);if(existing)existing.root=binding.root;else loaded.bindings.push(binding);}
-  installBlueprintInstances(objects,loaded.bindings);
+export async function prepareActorBindings(objects,{readAsset,readText,buildNative,builds=new Map(),nativeBuilds=new Map(),loaded}){
+  loaded??=await loadSceneBindings(objects,readAsset);installBlueprintInstances(objects,loaded.bindings);
   for(const {root,self,path} of loaded.bindings){
     const object=objects.find(item=>item.id===self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
     if(definition){object.nativeClass=className;object.nativeProperties=blueprintInstanceDefaults(root,object).nativeProperties;}else delete object.nativeClass;
     if(root.native&&!builds.has(path)){const header=await readText(root.native.headerPath||'Source/DoorController.h'),source=await readText(root.native.sourcePath||'Source/DoorController.cpp');if(header!==root.native.header||source!==root.native.source)throw Error(path+': 외부 C++ 변경 후 빌드가 필요해요.');const signature=JSON.stringify([header,source]);if(!nativeBuilds.has(signature))nativeBuilds.set(signature,{...await buildNative(header,source),header,source});builds.set(path,nativeBuilds.get(signature));}
   }
-  for(const object of objects){const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
-  return {...loaded,objects,builds,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
+  for(const object of objects)object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);
+  return {...loaded,objects,builds};
+}
+
+// Editor Play and the scenario runner prepare exactly the same game objects.
+export async function preparePlayWorld(objects,settings,{readAsset,readText,buildNative,listAssets}){
+  settings={...defaultRuntimeSettings,...settings};const reads=new Map(),read=path=>{if(!reads.has(path))reads.set(path,Promise.resolve().then(()=>readAsset(path)));return reads.get(path);};const config=settings.gameConfig?await read(settings.gameConfig):null;
+  if(config&&!validAsset('gameconfig',config))throw Error('게임 설정 에셋 검증 실패');
+  const initial=await loadSceneBindings(objects,read);installBlueprintInstances(objects,initial.bindings);const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read),builds=new Map(),nativeBuilds=new Map();
+  for(const binding of gameplay.bindings){const existing=loaded.bindings.find(item=>item.self===binding.self);if(existing)existing.root=binding.root;else loaded.bindings.push(binding);}
+  installBlueprintInstances(objects,loaded.bindings);
+  await prepareActorBindings(objects,{readAsset:read,readText,buildNative,builds,nativeBuilds,loaded});
+  for(const object of objects){object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
+  const spawnCatalog=spawnRequested(loaded.bindings)?await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds}):null;
+  return {...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
 }
 
 export async function requestSceneTravel(vm,name,{readAsset,asset}){

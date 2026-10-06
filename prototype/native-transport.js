@@ -52,9 +52,12 @@ function nativeRowJSON(object){
   const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
 }
 export class NativeWorldClient {
-  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;}
+  constructor(){this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
   call(request,metadata,send){
     const job=this.queue.then(async()=>{
+      const context=request.spawnTemplates,prefix=request.spawnPrefix,deliver=send;
+      if(context&&this.spawnContext?.context===context&&this.spawnContext.prefix===prefix&&request.command!=='reset'){const {spawnTemplates,...next}=request;request=next;}
+      send=async packet=>{const result=await deliver(packet);if(context)this.spawnContext={context,prefix};return result;};
       if(metadata?.workerProtocol!==3)return send(request);
       if(request.command==='reset'){this.frames=[];this.clockBatchable=false;const result=await send(request);this.world=null;this.rows=null;this.sequence=0;this.clockBatchable=result.clockBatchable===true;this.clockState=result.clock;return result;}
       if(request.command==='frame'){
@@ -74,7 +77,7 @@ export class NativeWorldClient {
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
       const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows});return result;
     });
-    this.queue=job.catch(()=>{this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job;
+    this.queue=job.catch(()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job;
   }
 }
 const owners=new WeakMap();

@@ -21,6 +21,7 @@ inline std::unordered_map<std::string,std::unique_ptr<BridgeCell>> bridgeCells;
 inline std::unordered_map<std::string,std::unique_ptr<Actor>> bridgeActors;
 inline Json bridgeEvents=Json::array();
 inline Json bridgeOperations=Json::array(),bridgeWorld=Json::array();
+inline std::function<void()> bridgePrepareQuery;
 inline Json bridgeInput=Json::object();
 inline bool bridgeOperationBoundary=false;
 inline size_t bridgeOperationStart=0;
@@ -97,8 +98,9 @@ inline void Input::AddMappingContext(Actor* target,const std::string& context,in
 inline void Input::RemoveMappingContext(Actor* target,const std::string& context){engineCommand("inputRemoveContext",{{"target",bridgeId(target)},{"context",context}});}
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
+    if(bridgePrepareQuery)bridgePrepareQuery();
     Json world=bridgeWorld;for(const auto& updated:bridgeSnapshot())for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
-    Json packet={{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
+    Json packet={{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
     if(bridgeQuery){const auto response=bridgeQuery(packet);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
     std::cout<<"HB_QUERY\t"<<packet.dump()<<std::endl;
     std::string line;if(!std::getline(std::cin,line))throw std::runtime_error("engine query disconnected");const auto response=Json::parse(line);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");
@@ -196,6 +198,10 @@ inline Vec3 bridgeRotate(Vec3 v,Vec3 r,bool inverse){float p[]={v.x,v.y,v.z},ang
 inline Vec3 bridgeToWorld(Actor* actor,Vec3 value,int depth=0){if(!actor)return value;if(depth>64)throw std::runtime_error("parent hierarchy limit");const auto& t=actor->transform;value=bridgeRotate({value.x*t.scale.x,value.y*t.scale.y,value.z*t.scale.z},t.rotation,false);value={value.x+t.position.x,value.y+t.position.y,value.z+t.position.z};return bridgeToWorld(bridgeParent(actor),value,depth+1);}
 inline Vec3 bridgeFromWorld(Actor* actor,Vec3 value,int depth=0){if(!actor)return value;if(depth>64)throw std::runtime_error("parent hierarchy limit");value=bridgeFromWorld(bridgeParent(actor),value,depth+1);const auto& t=actor->transform;value=bridgeRotate({value.x-t.position.x,value.y-t.position.y,value.z-t.position.z},t.rotation,true);if(t.scale.x==0||t.scale.y==0||t.scale.z==0)throw std::runtime_error("zero parent scale");return {value.x/t.scale.x,value.y/t.scale.y,value.z/t.scale.z};}
 inline void Scene::Open(const std::string& scene){engineCommand("openScene",{{"scene",scene}});}
+inline bool bridgeFindableActor(const Json& state,bool includeInactive){const auto kind=state.value("kind",std::string{});return kind!="widget"&&kind!="component"&&!state.value("destroying",false)&&(includeInactive||state.value("poolActive",true));}
+inline std::vector<Actor*> Scene::GetAllActorsOfClass(const std::string& className,bool includeInactive){std::vector<Actor*> found;if(className.empty())return found;if(className.size()>1000)throw std::runtime_error("actor class name limit");for(const auto& state:bridgeWorld){if(!bridgeFindableActor(state,includeInactive))continue;const auto classes=state.value("actorClasses",Json::array());const bool matches=std::find(classes.begin(),classes.end(),Json(className))!=classes.end()||state.value("nativeClass",std::string{})==className||(className=="Actor"&&classes.empty());if(matches)found.push_back(bridgeActor(state.at("id")));}return found;}
+inline std::vector<Actor*> Scene::GetActorsWithTag(const std::string& tag,bool includeInactive){std::vector<Actor*> found;if(tag.empty())return found;if(tag.size()>1000)throw std::runtime_error("actor tag limit");for(const auto& state:bridgeWorld)if(bridgeFindableActor(state,includeInactive)){const auto tags=state.value("tags",Json::array());if(std::find(tags.begin(),tags.end(),Json(tag))!=tags.end())found.push_back(bridgeActor(state.at("id")));}return found;}
+inline Actor* Scene::FindActorById(const std::string& id,bool includeInactive){if(id.size()>1000)throw std::runtime_error("actor id limit");const auto found=bridgeStateIndices.find(id);if(found==bridgeStateIndices.end()||!bridgeFindableActor(bridgeWorld.at(found->second),includeInactive))return nullptr;return bridgeActor(Json(id));}
 inline Vec3 Scene::GetWorldPosition(Actor* target){if(!target)throw std::runtime_error("null actor");return bridgeToWorld(target,{});}
 inline void Scene::SetWorldPosition(Actor* target,const Vec3& position){if(!target)throw std::runtime_error("null actor");target->transform.position=bridgeFromWorld(bridgeParent(target),position);engineCommand("setWorldPosition",{{"target",bridgeId(target)},{"position",position}});}
 inline Vec3 Scene::GetLocalPosition(Actor* target){return GetPosition(target);}

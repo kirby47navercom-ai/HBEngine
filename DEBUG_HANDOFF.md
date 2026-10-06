@@ -1,3 +1,12 @@
+# 최신 진행 — 2026-10-06 Auric P0-4 기준 통과 / P0-5 시작
+
+- 정확한 상태·실측·잔여 경계는 CODEX_HANDOFF.md 첫 구역과 docs/AURIC_RUNTIME_SPAWN.md. 원본 요청 네기준/진행기록 갱신. original ll0oi1/private auric-spawn-58vhJd9checks PASS,225원본파일 SHA·엔진snapshot 보존. P04commit후 P05 이어가기. installed versions/user profile/defaultADB unchanged.
+- Windows Player UUw9bt60.5772fps mean4.7835 p955.6. Android eZy69Q58.7115/59.1043fps p9511.7/12.4; actualADBdevice.png GPUcanvas+sprite+KoreanHUD 정상. CDP captureGPU누락이엔진렌더실패는아님. QQ6F3L oversized83actor p9545.3/45.7 실패 유지, P216대규모탄막 미완료.
+- runtime/native Spawn each8cases, typed cells/poolidentity/defaultreset/Stopmidready/selfdestroy/missingrefs1warning, moduleGetSetCall+physics+caching+AOT 실제소스 PASS. original9수치는변함없고private9수치도기준만족. privatechecker/sourceprofileisolation유지.
+- 다음P05actualproject-lifetime GameInstance+CPPJSONSave+travelargs,privateAuricTEMP33값우회제거9검사/F12/PCAndroidrelaunch/background/saveproof. 요구모두끝나기전최종응답금지. Wholeofficialcorpusgatefalse.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0-1·P0-2 기준 통과 / P0-3 시작
 
 - 원본 요청의 P0-1/P0-2 7개 기준 체크. 실행 소스78bd47b: Editor uq8Z11 +1.1280351ms, Player Bt2gcI +0.7620833ms, 각각3회 Stop/Play/클래스 전환·pool identity; headless ABBA600 1.4941167배/+0.9656247ms. native/build/auric-native-p0-AEFiuA 아래 플랫폼별 증거 보존.

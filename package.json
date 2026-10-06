@@ -10,6 +10,8 @@
     "api:generate": "node tools/generate-api.mjs",
     "api:check": "node tools/generate-api.mjs --check",
     "test:native": "node tools/check-native.mjs",
+    "test:runtime-spawn": "node tools/check-runtime-spawn.mjs",
+    "test:native-spawn": "node tools/check-actor-find.mjs && node tools/check-native-spawn.mjs && node tools/check-native-spawn-modules.mjs && node tools/check-native-spawn-aot.mjs",
     "test:runtime": "node tools/check-runtime.mjs",
     "test:blueprint-inheritance": "node tools/check-blueprint-inheritance.mjs --cpp",
     "test:blueprint-inheritance-window": "node tools/check-blueprint-inheritance-window.mjs",

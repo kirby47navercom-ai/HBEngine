@@ -1,3 +1,15 @@
+# 최신 진행 — 2026-10-06 Auric P0-4 검증 통과 / P0-5 시작
+
+- 원본 요청 P0-4 네 기준 체크·진행 기록 추가. 원본 checker9 수치 동일/225파일 SHA/고정 engine SHA: auric-original-ll0oi1. 미리배치 풀1005개 제거 private Auric9checker: auric-spawn-58vhJd. Hub도 같은BP, MainCamera 태그 검색. 원본/checker/사용자 설치본/프로필/기본ADB 미수정.
+- CPP/BP Scene Spawn/Destroy/BP·Prefab·클래스/상속/defaults/실제typedcell, 자동풀 maxInactive/정리/실패복구·로딩Stop/자기Destroy, actor class/tag/id 검색, soft missing object refs/경고1회. Shared C++선언601전체/289core노드. docs/AURIC_RUNTIME_SPAWN.md에 범위·공식읽기·차이·한계·증거.
+- 실제 PC Player UUw9bt: 60.5772fps/work4.7835ms p955.6000/peak36. Editor QI0UDC: VMwork4.5331/p955.5; VM빈도161.47를 displayfps로 해석 금지. Android eZy69Q:58.7115/59.1043fps,work8.3086/8.1834,p9511.7/12.4,peak37. Android36x86_64실제4core0–3/RTX4070SUPERhostANGLE/720x1280density240/RAM2048요청→2560실제. device.png 실제바닥/캐릭터/탄환/한글HUD/모바일controls 시각확인. CDP runtime.png GPUcanvas누락. 실기기/열/전력/청취/iOSspawnstress 미검증.
+- 실제24발+6.6667초당/게임원본수명1.6초 조건. 초기확대시험83활성탄 Android 평균37.52/36.89,p9545.3/45.7예산초과 QQ6F3L 보존. 조건수정을최적화로계산하지않음. P2161000발/30적 별개.
+- runtime-spawn-RVWD57/native-spawn-GBvHY9 각8case PASS. module jg5PQs/portable mobile AOT yd9upB actual GetSetCall/physics/order/cachedcatalog PASS. actor-find-TbsWdB(actualC++dynamiccastHP10). native-chain--cpp/transport/scene-runtime58/commonAPI 회귀PASS. batchrollback genericActor out-of-range 방지, failedSpawn batch앞결과 유지. UI Image updater가 visible=false 덮어쓰는 문제 actualPC+Android 캡처로 수정검증.
+- 다음 P0-5 GameInstance 프로젝트수명/StopPlayreset/CPPJSONSave/SceneOpenargs/PlayerStart/TEMP33값우회삭제/F12/Android background+재실행저장. UE GameInstance/SaveGame, Unity DontDestroyOnLoad/persistentDataPath 본문 범위읽기 시작. 요청 P0→P1→P2 번호순 모두검증→승인된불변설치업데이트→전체누적엔진. whole research/API gate false. 최종완료 응답 금지.
+- 남은 경계: nested foreign callee 자체Spawn catalog/새ID전파, CPPSpawn BP수명은outerCpp호출뒤명령적용시, private/static/external임의부작용롤백 없음. 그룹rawJSONParentdefaults preview전파·C++다중번역단위도 잔여. 새로운 actor/context 제한을 전체AI친화적 완성으로 계산 금지.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0-3 검증 통과 / P0-4 진행
 
 - P0-3 원문3기준 체크: typed BP→BP resolver, thin child serialize, 부모 event/Construction/함수 override+CallParent, native/variable/component defaults, 개별 overrides·reset·bold·Undo, cycle/redirect/cook, 실제 C++ defaults. docs/BLUEPRINT_INHERITANCE.md.

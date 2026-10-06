@@ -1,4 +1,5 @@
 import {NativeProtocol} from './native-protocol.js';
+import {spawnQueryRequest} from './native-spawn.js';
 import {NativePhysicsQueries} from './native-physics-query.js';
 import {worldPatch,commitNativeWorld} from './native-transport.js';
 import {canonicalWorld} from './native-protocol.js';
@@ -17,10 +18,10 @@ export function mobileBackend(manifest,{read,request}){
     const module=modules.get(data.token);if(!module)throw Error('패키지에 등록되지 않은 C++ 모듈');
     const job=module.queue.then(async()=>{
       let queries;try{
-        const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects);let queryMs=0,queryCount=0;
+        const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);if(decoded.spawnTemplates){module.spawnContexts??=new Map();module.spawnContexts.set(decoded.spawnPrefix,decoded.spawnTemplates);if(module.spawnContexts.size>8)module.spawnContexts.delete(module.spawnContexts.keys().next().value);}else if(decoded.spawnPrefix&&module.workerSpawnPrefix!==decoded.spawnPrefix&&module.spawnContexts?.has(decoded.spawnPrefix))decoded.spawnTemplates=module.spawnContexts.get(decoded.spawnPrefix);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects,{authorizeWorld:query=>spawnQueryRequest(decoded,query,module.metadata,decoded.spawnTemplates||module.spawnContexts?.get(decoded.spawnPrefix))});let queryMs=0,queryCount=0;
         const clockOnly=['frame','reset'].includes(decoded.command),patch=!clockOnly&&module.metadata.workerProtocol>=2&&module.transportWorld?(decoded[canonicalWorld]?.patch&&module.transportWorld===decoded[canonicalWorld].base?decoded[canonicalWorld].patch:worldPatch(module.transportWorld,decoded.objects)):null,packet=clockOnly?{...decoded,objects:[]}:patch?{...decoded,objects:undefined,objectPatch:patch}:decoded;if(decoded.command==='reset')module.transportWorld=null;
         const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
-        if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,...reply.hostTiming,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
+        if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');if(decoded.spawnTemplates)module.workerSpawnPrefix=decoded.spawnPrefix;const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,...reply.hostTiming,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
         const committed=data.request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
         if(!clockOnly)module.transportWorld=committed||commitNativeWorld(decoded.objects,result);
         const invalidateForeign=reply=>{for(const foreign of reply.foreign||[]){const target=modules.get(foreign.token);if(target)target.transportWorld=null;invalidateForeign(foreign.result);}};invalidateForeign(result);

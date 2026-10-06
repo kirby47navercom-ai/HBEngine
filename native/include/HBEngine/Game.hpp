@@ -429,11 +429,13 @@ public:
     static bool CanBatchFrame(){return std::none_of(timers_.begin(),timers_.end(),[](const auto& item){return item.second.active&&!item.second.paused;});}
     static void SetContext(const std::string& owner,const std::string& scope){owner_=owner;scope_=scope;}
     static std::pair<std::string,std::string> GetContext(){return {owner_,scope_};}
+    static void ClearOwner(const std::string& owner){for(auto it=timers_.begin();it!=timers_.end();)if(it->second.owner==owner)it=timers_.erase(it);else ++it;for(auto it=watches_.begin();it!=watches_.end();)if(it->second.owner==owner)it=watches_.erase(it);else ++it;events_.erase(std::remove_if(events_.begin(),events_.end(),[&](const Callback& c){return c.owner==owner;}),events_.end());}
+    static void PruneOwners(const std::vector<std::string>& owners){const std::unordered_set<std::string> live(owners.begin(),owners.end());std::unordered_set<std::string> expired;for(const auto& t:timers_)if(!t.second.owner.empty()&&!live.count(t.second.owner))expired.insert(t.second.owner);for(const auto& w:watches_)if(!w.second.owner.empty()&&!live.count(w.second.owner))expired.insert(w.second.owner);for(const auto& e:events_)if(!e.owner.empty()&&!live.count(e.owner))expired.insert(e.owner);for(const auto& id:expired)ClearOwner(id);}
     static void PruneScopes(const std::vector<std::string>& active);
     static void Reset(){timers_.clear();watches_.clear();events_.clear();owner_.clear();scope_.clear();next_=0;}
 private:
     struct Timer {float duration,elapsed=0;bool loop,paused=false,active=true;std::string event,owner,scope;};
-    struct Stopwatch {std::chrono::steady_clock::time_point start;float elapsed=0;bool running=true;};
+    struct Stopwatch {std::chrono::steady_clock::time_point start;float elapsed=0;bool running=true;std::string owner;};
     inline static std::uint64_t next_=0;
     // Completed unscoped handles remain queryable until ClearTimer or world reset.
     inline static std::unordered_map<std::string,Timer> timers_;
@@ -444,6 +446,11 @@ private:
 HB_CLASS()
 class Scene : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneSpawn", KoreanName="에셋/클래스 생성", Category="오브젝트") static Actor* Spawn(const std::string& blueprintOrPrefab,const Transform& transform,const std::string& actorId="");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneDestroy", KoreanName="생성 액터 제거/풀 반환", Category="오브젝트") static void Destroy(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindClass", KoreanName="클래스로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetAllActorsOfClass(const std::string& className,bool includeInactive=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindTag", KoreanName="태그로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetActorsWithTag(const std::string& tag,bool includeInactive=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindId", KoreanName="ID로 액터 찾기", Category="오브젝트") static Actor* FindActorById(const std::string& id,bool includeInactive=false);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openScene", KoreanName="장면 열기", Category="장면") static void Open(const std::string& scene);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getWorldPosition", KoreanName="월드 위치 가져오기", Category="변환") static Vec3 GetWorldPosition(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setWorldPosition", KoreanName="월드 위치 설정", Category="변환") static void SetWorldPosition(Actor* target,const Vec3& position);
@@ -522,7 +529,7 @@ inline void Timers::Tick(float delta){if(!std::isfinite(delta)||delta<0)throw st
 inline std::vector<Timers::Callback> Timers::TakeCallbacks(){auto result=std::move(events_);events_.clear();return result;}
 inline std::vector<std::string> Timers::TakeEvents(){std::vector<std::string> result;for(const auto& event:TakeCallbacks())result.push_back(event.event);return result;}
 inline void Timers::PruneScopes(const std::vector<std::string>& active){const std::unordered_set<std::string> scopes(active.begin(),active.end());const auto alive=[&](const std::string& scope){return scope.empty()||scopes.count(scope);};for(auto it=timers_.begin();it!=timers_.end();)if(!alive(it->second.scope))it=timers_.erase(it);else ++it;events_.erase(std::remove_if(events_.begin(),events_.end(),[&](const Callback& c){return !alive(c.scope);}),events_.end());}
-inline std::string Timers::StartStopwatch(const std::string& name){const auto handle=name+"_"+std::to_string(++next_);watches_.emplace(handle,Stopwatch{std::chrono::steady_clock::now(),0,true});return handle;}
+inline std::string Timers::StartStopwatch(const std::string& name){const auto handle=name+"_"+std::to_string(++next_);watches_.emplace(handle,Stopwatch{std::chrono::steady_clock::now(),0,true,owner_});return handle;}
 inline float Timers::GetStopwatchElapsed(const std::string& handle){const auto i=watches_.find(handle);return i==watches_.end()?0:i->second.running?std::chrono::duration<float>(std::chrono::steady_clock::now()-i->second.start).count():i->second.elapsed;}
 inline float Timers::StopStopwatch(const std::string& handle){const auto i=watches_.find(handle);if(i==watches_.end())return 0;const float elapsed=GetStopwatchElapsed(handle);i->second.elapsed=elapsed;i->second.running=false;return elapsed;}
 inline Actor& checked(Actor* target){if(!target)throw std::invalid_argument("null actor");return *target;}

@@ -1,6 +1,6 @@
 // Header declarations become editor metadata; this is not a C++ compiler.
 // Other modules remain reachable as Actors, but only their owner loads native state.
-export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}
+export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset||o.nativeBuildAsset))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}
 // Protocol 2 clock/reset replies carry no actors. Avoid serializing the scene
 // on this path all the way from the browser; old packaged workers keep theirs.
 export function nativeRequestWorld(objects,assetPaths,request,metadata,spriteSkin){if(metadata?.workerProtocol>=2&&['frame','reset'].includes(request.command))return [];const world=nativeWorld(objects,assetPaths);return spriteSkin?world.map(o=>{const pose=spriteSkin(o.id);return pose?{...o,gameplayDebug:{...o.gameplayDebug,spriteSkin:pose}}:o;}):world;}
@@ -25,7 +25,7 @@ export function parseNativeHeader(source){
   while((match=re.exec(text))){let end=re.lastIndex,depth=1;for(;end<text.length&&depth;end++){if(text[end]==='{')depth++;if(text[end]==='}')depth--;}if(depth)throw Error(match[2]+' 클래스의 닫는 중괄호가 없어요.');
     const body=text.slice(re.lastIndex,end-1),c={name:match[2],base:match[3],blueprintable:/\bBlueprintable\b/.test(match[1]),properties:[],functions:[]};
     const props=/HB_PROPERTY\(([^)]*)\)\s*([^;{}]+);/g;let p;
-    while((p=props.exec(body))){const declaration=p[2].trim().match(/^(.+?)\s+(\w+)\s*(?:=\s*(.+))?$/);if(!declaration)throw Error('속성 선언을 확인하세요: '+p[2]);const [,type,name,literal]=declaration,parsed=cppType(type),property={name,...parsed,readOnly:/\bBlueprintReadOnly\b/.test(p[1])};if(literal){try{property.value=JSON.parse(literal.replace(/([0-9.])f\b/g,'$1'));}catch{throw Error(name+' 기본값은 숫자·문자열·불리언 또는 JSON 배열로 적으세요.');}}c.properties.push(property);}
+    while((p=props.exec(body))){const declaration=p[2].trim().match(/^(.+?)\s+(\w+)\s*(?:=\s*(.+))?$/);if(!declaration)throw Error('속성 선언을 확인하세요: '+p[2]);const [,type,name,literal]=declaration,parsed=cppType(type),property={name,...parsed,readOnly:/\bBlueprintReadOnly\b/.test(p[1])};if(literal){try{property.value=JSON.parse(parsed.type==='object'&&!parsed.array&&literal==='nullptr'?'null':literal.replace(/([0-9.])f\b/g,'$1'));}catch{throw Error(name+' 기본값은 숫자·문자열·불리언 또는 JSON 배열로 적으세요.');}}c.properties.push(property);}
     const funcs=/HB_(?:FUNCTION|NODE)\(([^)]*)\)\s*((?:(?:static|virtual)\s+)*)([^;{}()]+?)\s+(\w+)\s*\(([^)]*)\)\s*(?:const\s*)?(?:override\s*)?;/g;let f;
     while((f=funcs.exec(body))){const flags=f[1],fn={name:f[4],label:metadata(flags,'DisplayName',f[4]),category:metadata(flags,'Category','C++'),pure:/\bBlueprintPure\b/.test(flags),static:/\bstatic\b/.test(f[2]),event:/BlueprintNativeEvent/.test(flags)?'native':/BlueprintImplementableEvent/.test(flags)?'implementable':'none',inputs:[],outputs:[]};
       fn.returnType=f[3].trim();fn.parameters=[];
