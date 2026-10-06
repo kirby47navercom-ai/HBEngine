@@ -33,6 +33,8 @@ jobs:
           node tools/check-ui-audio.mjs
           node tools/check-audio-sources.mjs
           node tools/check-buffered-audio.mjs
+          node tools/check-streaming-audio.mjs
+          node tools/check-render-resources.mjs
           node tools/check-runtime-features.mjs
           node tools/check-player-lifecycle.mjs
           node tools/check-asset-cache.mjs
