@@ -15,6 +15,7 @@ const workspace=await fs.realpath(path.join(root,'native/build'));
 assert.ok(directory.startsWith(workspace+path.sep)&&path.basename(directory).startsWith('auric-spawn-'),'격리 Auric 복사본을 지정하세요.');
 assert.ok(['editor','player'].includes(mode));
 const fixture=JSON.parse(await fs.readFile(path.join(directory,'fixture.json'),'utf8')),work=await fs.mkdtemp(path.join(directory,mode+'-window-'));
+const bossOnly=process.argv.includes('--boss-only');
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),cases=[],errors=[];
 async function until(fn,label,timeout=45000){const end=Date.now()+timeout;while(Date.now()<end){const value=await fn();if(value)return value;await sleep(100);}throw Error(label+' 시간 초과');}
 const temporary=path.join(work,'Temp');await fs.mkdir(temporary);process.env.TEMP=process.env.TMP=temporary;delete process.env.AURIC_MUTE;
@@ -52,6 +53,15 @@ try{
  if(mode==='editor')await until(async()=>{try{return(await(await fetch(base+'/api/automation')).json()).clients.length===1;}catch{}},'편집기 자동화 등록');
  else await until(()=>evaluate('window.hbPlayerDebug?.ready()'),'게임 준비');
 
+ if(bossOnly){
+  await call('document.open',{path:'Assets/Scenes/Test_Boss.hbscene.json'});await call('runtime.play',{userGesture:true});
+  await until(async()=>(await call('runtime.state')).time>.5,'보스 준비');await call('profiler.clear');await call('profiler.record',{recording:true});await evaluate('performance.clearResourceTimings()');
+  await sleep(6000);await call('profiler.record',{recording:false});const record=await call('profiler.read'),state=await call('runtime.state'),scans=await evaluate('performance.getEntriesByType("resource").filter(e=>e.name.includes("/api/project?recursive=1")).map(e=>({url:e.name,duration:e.duration}))');
+  const packets=record.frames.flatMap(f=>f.nativePackets||[]),stats=key=>{const rows=packets.map(p=>p[key]).filter(Number.isFinite).sort((a,b)=>a-b);return {count:rows.length,mean:rows.reduce((a,b)=>a+b,0)/Math.max(1,rows.length),p95:rows[Math.floor((rows.length-1)*.95)]||0,max:rows.at(-1)||0};};
+  const proof={scene:'Assets/Scenes/Test_Boss.hbscene.json',frames:record.frames.length,objects:state.objects.length,scans,operations:stats('clientOperationsMs'),invoke:stats('invokeMs'),frontend:stats('frontendMs'),errors};await fs.writeFile(path.join(work,'boss-play-assets.json'),JSON.stringify(proof,null,2));
+  assert.ok(record.frames.length>=30&&proof.invoke.count>0,'실제 사용자 C++ 보스 프레임');assert.deepEqual(scans,[],'실행 중 에셋 이름 조회가 폴더 전체를 다시 읽으면 안 돼요.');assert.equal(errors.length,0);
+  await call('runtime.stop');cases.push({bossPlayAssets:proof});await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,cases,errors},null,2));
+ }else{
  const game=path.join(directory,'AuricLoop'),hub='Assets/Scenes/Hub.hbscene.json',boss='Assets/Scenes/Dungeon_4.hbscene.json',bp='Assets/Blueprints/BP_TopDownShooter.hbblueprint.json',table='Assets/Data/DT_Dialogue.hbdata.json';
  const remember=new Map();async function disk(file,value){if(!remember.has(file))remember.set(file,await fs.readFile(path.join(game,file)));await fs.writeFile(path.join(game,file),typeof value==='string'?value:JSON.stringify(value,null,2));}
  try{
@@ -75,6 +85,7 @@ try{
   const bossCost=[];for(const measuredScene of ['Assets/Scenes/Dungeon_2.hbscene.json',boss]){await call('document.open',{path:measuredScene});await call('runtime.play',{userGesture:true});await until(async()=>{const r=await call('runtime.state');return r.time>.2;},'보스 비용 준비');await call('profiler.clear');await call('profiler.record',{recording:true});const started=(await call('runtime.state')).time;await until(async()=>{const r=await call('runtime.state');return r.time-started>=6;},'보스 비용 실제 6초');await call('profiler.record',{recording:false});const record=await call('profiler.read'),packets=record.frames.flatMap(f=>f.nativePackets||[]),stats=key=>{const rows=packets.map(p=>p[key]).filter(Number.isFinite).sort((a,b)=>a-b);return {count:rows.length,mean:rows.reduce((a,b)=>a+b,0)/Math.max(1,rows.length),p50:rows[Math.floor((rows.length-1)*.5)]||0,p95:rows[Math.floor((rows.length-1)*.95)]||0,p99:rows[Math.floor((rows.length-1)*.99)]||0,max:rows.at(-1)||0};};assert.ok(packets.length>0);const row={scene:measuredScene,frames:record.frames.length,invoke:stats('invokeMs'),frontend:stats('frontendMs'),serialize:stats('clientSerializeMs'),patch:stats('clientPatchMs'),apply:stats('clientApplyMs'),operations:stats('clientOperationsMs'),workerSync:stats('syncMs'),rpc:stats('rpcMs')};assert.ok(row.frontend.count>0,'실제 편집기 프런트 호출 전체 시간');bossCost.push(row);await fs.writeFile(path.join(work,'boss-cost.json'),JSON.stringify({comparison:'Fixed private Auric fixture; user-reported old 70–90ms was a different revision, so no controlled before/after speedup is claimed.',rows:bossCost},null,2));await call('runtime.stop');}cases.push({bossCost});
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile(path.join(work,'editor.png'),Buffer.from(screenshot.data,'base64'));assert.equal(errors.length,0);await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,cases,errors},null,2));
  }finally{for(const [file,content] of remember)await fs.writeFile(path.join(game,file),content);}
+ }
  await evaluate('window.chrome.webview.postMessage("hbengine.acceptance.finished")');await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);console.log(JSON.stringify({work,passed:true}));
 
 }catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,output,cases,errors},null,2));console.error('실제 창 검사 증거: '+work);throw error;}

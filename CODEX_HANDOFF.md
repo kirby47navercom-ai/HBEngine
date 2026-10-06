@@ -747,3 +747,10 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 - 엔진_요청_프레임.md의 새 보스전 기록(기존 설치82abc,78.2fps·simulation 평균10ms·편집기 clientOperations 약160ms/0.3초)을 확인했어요. 이 기록을 누락하지 않고 편집기 명령 적용 경로를 다음 조사 대상으로 유지해요. 전체 엔진/전체 API 완료로 계산하지 않아요.
 
 - 2026-10-07 사용자 설치 완료: source273f38a(실행478e610)/bundleff86c664879f12a3, C:/Users/kirby/HBEngine/Versions/ff86c664879f12a3/HBEngine.exe.1785파일/변경21SHA 일치, 기존5946523 설치 manifest·프로필과 adb14204 보존, 사용자용 바탕화면 바로가기/HKCU .hbproject 경로 일치예요. 설치 당시 실행 중인 사용자 엔진은 없었으며 앱을 열거나 닫지 않았어요. 다음 실행부터 적용돼요. 증거 native/build/particle-color-user-install-039.json. 이 뒤 기록 커밋은 설치 실행 소스와 구분해요.
+
+
+### 2026-10-07 — Test_Boss 편집기 에셋 이름 조회 비용 수정
+
+- 새 MD 보고(보스78.2fps·편집기 약160ms)를 확인한 뒤 숨겨진773파일 사본으로 재현했어요. 새 애니메이션 이름을 찾을 때 전체 디렉터리를 다시 읽던 경로에서 명령 적용 최대399.8ms/playAnimation398.4ms가 나왔어요. Play 준비 목록을 Spawn catalog와 모든 실행 에셋 이름 조회가 함께 쓰도록 고쳤어요.
+- 같은 사본 수정 후 명령 적용 최대8.4ms·평균.3ms/playAnimation 최대7.2ms·실행 중 폴더 재조회0회, 영구 --boss-only 실제 C++/300프레임 검사도 조회0/오류0·명령 최대3ms로 통과했어요. 순차 짧은 측정이며 항상120/실물60/전체 시뮬레이션 개선으로 단정하지 않아요. 불변 모바일/패키지 코드는 다시 빌드하지 않았어요.
+- 원본 C++ TopDownShooter.cpp의 외부 변경은 보존했고 한 번 동결한 사본으로 이전/이후를 비교했어요. 원본773파일 모두 불변이라고 잘못 표시하지 않으며 원본·검사기·사용자창·프로필을 수정하거나 복원하지 않았어요. 세부 근거/본문 범위/증거 docs/research/EDITOR_PLAY_ASSET_LOOKUP_040.md·native/build/boss-asset-result-040.json예요. AI 여러문서/ C++ 묶음 수정·저장 준비도 유지하며 아직 구현 완료로 계산하지 않아요.
