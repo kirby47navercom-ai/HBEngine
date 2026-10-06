@@ -1,3 +1,8 @@
+# 최신 업데이트 보완 — 2026-10-06 설치 파일 연결
+
+- 6537f3b push/모바일전체CI37476970087(common단계). Windows181/111과 CPUlive-config·적분증거동일. 새설치23f9..복사/링크완료 후race PIDguard실패, 기존세션PID보존 PASS로 쓰지 않음(후속old82abcPID56976/defaultADB14204). updater가프로세스 종료/재시작한코드는없음.
+- .hbproject HKCU가repoEXE라서 updater에기존 --register headless/분리임시프로필/hidden 연결, native dev보통launch자동등록 제외. 현재2개Windows전용 소스변경 commit/build/install 필요. 모바일runtime은6537과같으므로 진행중CI결과를이Windows수정검사로바꾸지않음. 이전a847/23f/프로필/게임보존. 설치검사snapshot를성공/실패관계없이미리파일에보존할것.
+
 # 현재 후속 — 2026-10-06 파티클 개별 정렬·크기·적분 비용
 
 - Latest source edits037: 7sort modes/orthoDistance=depth/카메라별pre-upload buffer/viewportmin-max0..1·0숨김, generic Scene/BP/C++6Set/Get/AI. ParticleSimulation inplace force·position·velocity·stablecompaction·worldspawn/previous reuse. baseline640step PASS/CPU10000×20step×3 중앙2.326575→.117655ms(실제게임FPS 아님). renderer/scene-systems CPU PASS; WindowsM637rV GPU/오류0 PASS. 현재변경 commit/배포 후 새iOS 검사 필요.

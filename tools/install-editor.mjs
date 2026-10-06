@@ -45,8 +45,9 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
     const quote=value=>"'"+value.replaceAll("'","''")+"'";
     const script='$shell=New-Object -ComObject WScript.Shell; $link=$shell.CreateShortcut('+quote(link)+'); $link.TargetPath='+quote(executable)+'; $link.WorkingDirectory='+quote(directory)+'; $link.Description="HBEngine 사용자용 편집기"; $link.Save(); $desktop=[Environment]::GetFolderPath("Desktop"); if($desktop){$target=Join-Path $desktop "HBEngine 사용자용.lnk"; Copy-Item -LiteralPath '+quote(link)+' -Destination $target; [Console]::Write($target)}';
     const {stdout}=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command','[Console]::OutputEncoding=[Text.UTF8Encoding]::new(); '+script],{windowsHide:true,encoding:'utf8'});desktopShortcut=stdout.trim()||null;
+    await exec(executable,['--register'],{cwd:directory,windowsHide:true,timeout:30000,env:{...process.env,HB_USER_DATA_DIR:path.join(os.tmpdir(),'HBEngine-register-'+randomUUID())}});
   }
-  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,bundleHash,files:files.length};
+  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2);if(args.length>1)throw Error('사용법: node tools/install-editor.mjs [설치 폴더]');

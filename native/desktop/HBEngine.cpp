@@ -284,7 +284,7 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         for(int i=1;i<count;i++){const std::wstring value=arguments[i];if(value==L"--register")registerOnly=true;else if((value==L"--smoke-test"||value==L"--smoke-windows")&&i+1<count){app.windowSmoke=value==L"--smoke-windows";app.smoke=fs::absolute(arguments[++i]);}else if(value.rfind(L"--",0)==0)throw std::runtime_error("argument");else if(project.empty())project=fs::absolute(value).wstring();else throw std::runtime_error("argument");}LocalFree(arguments);
         if(!project.empty()&&(!fs::is_regular_file(project)||_wcsicmp(fs::path(project).extension().c_str(),L".hbproject")))throw std::runtime_error("project file");
         #ifndef HB_GAME_PLAYER
-        if(app.smoke.empty())associateProject(executable);
+        if(app.smoke.empty()&&(registerOnly||fs::is_regular_file(app.root/L"HBEngine.install.json")))associateProject(executable);
         #else
         if(!project.empty()||registerOnly||app.windowSmoke)throw std::runtime_error("player argument");
         const auto game=nlohmann::json::parse(read(app.root/L"game.hbpack.json"));app.development=game.value("configuration",std::string{})=="development";

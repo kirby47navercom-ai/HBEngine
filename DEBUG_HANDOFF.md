@@ -1,3 +1,8 @@
+# 업데이트 진단 — 파일 연결과 동시 사용자 동작
+
+- source6537 새불변설치23f9a0a15132d667 복사/바로가기완료 뒤 기존PID동일성 assertion 실패. 설치기는 프로세스를 종료/재시작하지 않으며 guard 중 사용자세션이 바뀌었다. 이후 실제PID56976/old82abc·기본ADB14204 관찰. 기존PID보존 PASS로 기록하지 않고 첫시도 proof미생성과 guard 실패를 보존한다.
+- 실제.hbproject HKCU 연결이 repository HBEngine.exe를 가리켰다. installEditor는바로가기만 갱신, dev보통launch도 associateProject를 자동호출하던 결손. 새userinstall은기존 --register를 분리임시프로필/hidden으로호출해 file route까지설치본에연결. dev자동등록은제외하고 설치본 일반실행/명시등록은유지. 개발build script 자체에는등록호출이 없으므로 그명령을 원인으로확정하지 않는다.
+
 # 추가 진단 — 파티클 실행 중 설정 갱신
 
 - 기존 particleState.p가 생성당시 스냅샷을 유지해 기존시스템에서 componentSetFloat rate/speed가 읽기값만 바꾸고 방출에 적용되지 않음. check-scene-systems 실제VM에서 rate0→40 기대4/실제0 실패를 먼저 보존. 공용 factory와 tick에 최신p 적용·중복metadata조회 제거, rate40/count4·speed6/Pause/clear/CPP 회귀 PASS. Renderer rebuild만으로 해결한 것으로 기록하지 않음.
