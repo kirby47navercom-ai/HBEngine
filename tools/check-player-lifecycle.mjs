@@ -1,6 +1,7 @@
 import {disposeSceneEnvironment} from '../prototype/scene-environment.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
 
 // Execute the current Player functions; only browser/VM/storage dependencies are doubles.
 const source=await fs.readFile(new URL('../prototype/player.js',import.meta.url),'utf8');
@@ -11,6 +12,13 @@ const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix))
   const services={unlockAudio:()=>{calls++;return new Promise(()=>{});}};
   run({mobile:false},services);assert.equal(calls,0,'PC/browser gesture behavior remains unchanged');
   run({mobile:true},services);assert.equal(calls,1,'Native mobile audio must start explicitly even with no user activation');
+}
+// Reusing a baseline covers only this exact mobile startup change in the shared Player.
+if(process.env.SHARED_REVISION){
+  assert.match(process.env.SHARED_REVISION,/^[0-9a-f]{40}$/);
+  const base=execFileSync('git',['show',process.env.SHARED_REVISION+':prototype/player.js'],{encoding:'utf8',windowsHide:true});
+  const marker='  vm=new BlueprintRuntime(objects,prepared.bindings,',added='  // Native mobile hosts explicitly allow audio playback; do not rely on incidental bridge user activation.\n  if(config.mobile)void services.unlockAudio();\n';
+  assert.ok(source===base||source===base.replace(marker,added+marker),'Other shared Player changes require the full checks');
 }
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';

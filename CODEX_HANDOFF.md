@@ -726,3 +726,11 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 - 검증 전용 프로젝트는 native/build/viewport-qa, 서버는 5186(exec20089)이다. 이전 브라우저 ID2가 끊긴 뒤 ID5/tab2로 동일 QA 탭에 다시 연결했다. QA 에셋/증거/cache/EXE/dist는 ignored다. 환경 값은 새 맵에서 Actor 모드이며 기존 맵은 사용자의 명시적 변환에만 Actor로 전환한다. 전체 분야의 남은 작업은 REFERENCE_COVERAGE를 유지한다.
 - 최신 사용자 지시: 백그라운드에서 계속하고 방해하지 않는다. 이후 작업은 foreground 브라우저/창 이동·패널 열기·실제 EXE GUI 검사를 자동 실행하지 않는다. 필요 검증은 코드/헤드리스부터 진행하며 중간 사용자 알림을 줄인다. 기존 2D/2.5D/3D와 전체 엔진 누적 범위를 유지한다.
 - 마지막 코드 검토에서 AI presentation.camera 부분 패치를 옛 표시 설정과 검증하던 오류와 실패 시 rollback 이벤트가 조종 Actor를 쓰고 탐색 이력을 추가하던 오류를 발견했다. 대상 카메라의 현재 FOV/near/far와 패치를 합쳐 검사하고 복원 중 조종/탐색 기록을 잠시 끊도록 수정했다. 실제 등록 handler를 GUI 없이 실행하는 check-viewport-automation의 main/extra·원근/직교·실패 원자성·조종 Actor 쓰기/탐색 이력 보존·state 우선순위·유효한 큰 clip 20조건을 통과했다. 두 오류 모두 수정 전 실제 handler의 회귀 검사가 먼저 실패하는 것을 확인했다. 사용자 배경 작업 지시 뒤 GUI나 EXE 실행은 추가로 하지 않는다.
+
+### 2026-10-07 — iOS 직접 응답·게임 오디오 시작과 Android 새 패키지
+
+- 실행 source bb36739, iOS run37485278400은 Xcode 기기·시뮬레이터 SDK/독립 iPhone SE3 앱480프레임·오류0을 통과했어요. WebKit Promise 직접 응답·callAsyncJavaScript 동기 Rapier 질의·C++2모듈/배치 위치 보존·잘못된 호스트 메시지8종/알 수 없는 질의 거절, Sprite Light cookie/볼륨·셰이더·한글/SVG·WAV2초 길이/최소4초 믹서 신호·배경 정지/복귀·BeginPlay 재실행0을 실제 앱에서 확인했어요. 실제 휴대폰/서명/가청 검증과는 구분해요. https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37485278400
+- 이전 새 브리지 앱의 audio idle/queued1 실패를 보존하고, native 모바일 Player가 명시적으로 unlockAudio를 시작하도록 고쳤어요. 응답 스크립트의 우연한 사용자 활성화에 의존하지 않으며 OS resume Promise를 기다려 게임 시작을 막지 않아요. PC/브라우저 입력 방식은 그대로예요. check-player-lifecycle·check-mobile-bridge 및 실제 앱의 기존 오디오 합격 조건을 통과했어요. 실패3회는 성공으로 바꾸지 않았어요.
+- iOS479측정 프레임 work 평균46.8977/중앙41/p95 77ms, simulation 평균45.7850/p95 75ms, 렌더 제출 평균.9791/p95 2ms이며60목표미달이에요. 보고 FPS14.3572는 배경 복귀가 포함된 이 검사 구간 값이며 전/후 CI의 실행부하가 통제되지 않아 브리지 개선률이나 회귀로 단정하지 않아요. 실제폰60을 확인한 결과도 아니에요.
+- Android android-mobile-bQ34Wa에서 새 Player/bridge 소스 SHA가 APK·AAB에 실제 포함됨을 확인했어요. 두 CPU Java/DEX/JNI/C++·16KB ELF·정렬/서명·AAB/게임 원본 보존 통과, 기기설치/실행 없음이에요. APK SHAeb3bd0786171163111c957ce8bcec2f23a460d67503637492578717251b3ef07, AAB SHA6c6f401f1b8f8e29225385b11b5073a086bf37172d8bf5c26dadf0f4086caded예요. 기존 검증의 격리 게임을 재사용해 공용 C++ 검사를 반복하지 않았어요.
+- 증거 native/build/ios-bridge-result-038.json·ios-bridge-37485278400-ios-acceptance.json·ios-bridge-android-038.json. 사용자 창/원본 게임·에셋·C++·검사기·프로필·기존 장시간 검사는 건드리지 않았어요. 전체 엔진/전체 문서 완료로 바꾸지 않아요.
