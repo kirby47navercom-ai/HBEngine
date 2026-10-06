@@ -782,7 +782,8 @@
       "scopeNote": "Historical allocation/timeline investigation only; not asserted to match installed WebView2.",
       "openIssues": [
         "Resolve installed browser version and corresponding AudioParam/MediaElementAudioSource lifetime source; sampled allocation addresses are not symbolized root-cause proof.",
-        "028 reads eight analyser files at 751b533743c567cc069f12da53e4470f51008e7a; installed-browser match, FFT/platform/audio-array/deferred-task source and native-address symbolization remain unresolved."
+        "028 reads eight analyser files at 751b533743c567cc069f12da53e4470f51008e7a; installed-browser match, FFT/platform/audio-array/deferred-task source and native-address symbolization remain unresolved.",
+        "029 partial AudioParam source reading; actual installed Edg154 revision lookup returned404. Listener-scheduling counterfactual is not a standalone leak or8h proof."
       ],
       "additionalDiscoverySeeds": [
         {
@@ -823,6 +824,11 @@
         {
           "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/audio_basic_inspector_node.h",
           "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc",
+          "record": "docs/research/AUDIO_IDLE_COST_029.md",
           "revision": "751b533743c567cc069f12da53e4470f51008e7a"
         }
       ]

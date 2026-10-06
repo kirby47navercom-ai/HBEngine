@@ -17,6 +17,8 @@ export async function audioMeterReuseProof(){
       route.disconnect(player);await waitClock(context.currentTime+.11);
     }
     if(created!==1)throw Error('반복 효과음에서 측정 노드를 매번 생성했어요: '+created);
-    return {created,peaks,reuse:true};
+    const deadline=performance.now()+1000;while(route.idleMeters.some(entry=>entry.draining)){if(performance.now()>deadline)throw Error('유휴 측정 노드가 오디오 처리를 계속했어요.');await new Promise(r=>setTimeout(r,16));}
+    if(route.peakTimer!==null)throw Error('재생 종료 후 측정 타이머가 남았어요.');
+    return {created,peaks,reuse:true,idleDisconnected:true,timerStopped:true};
   }finally{route.dispose();}
 }

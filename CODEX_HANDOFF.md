@@ -1,3 +1,12 @@
+# 최신 진행 — 2026-10-06 오디오 유휴 처리 보강
+
+- Uncommitted AudioRouting idle drain→disconnect/timerstop + position axis cache; buffered/sources/UIaudio PASS, actualPC PVSo1Z PASS59.404176fps/p9511ms/12signals/created1/idleDisconnected/timerStopped. Finaldesktop session25533 rebuilding currentsource; not installed yet.
+- Androidfresh currentsource lcqWUQ/61704 FAIL WebView timeout afterinstall/Activity, no functional/perfPASS. ADBruntime/logcat calls timedout; isolatedemu/servercleaned/default14204preserved. Reuse lcq build.json for bounded diagnosis; do notrebuildsameAPK/reducebudget. PreviouspED/nd failures retained.
+- iOS a3ad7ec run37433705272 SUCCESS/extracted ios-proof-37433705272/twoSDK/12signals/created1/backgroundresume. Not currentidle-cache source; commit/push thennewiOSdispatch required. Physical/signing/heardfalse.
+- Research029 partialparamtimeline ranges449–709/949–1003/2019–2054 SHAee5ccb…; 404installedrevisionlookup; discoveryimport1, same26family/fullgatefalse. 028 pinned unchanged. OriginalAuric neveroverwrite; humanMD progress appended.
+- XAZtAi listener counterfactual completed0 naturalGC:123.716s588.75→663.2 /124.056s666.2→662.5 /paused123.658672.7→576.14, sampledhalfMiB1 each; standaloneleakroot unproven. No production no-report orno-listener hacks.
+- Fixedold8h65670/zjUtGE continuesUTC06:25→14:25;6738sec112resets/private2076.6MiB/errors0, growing. Donotstop/restart/forceGC/changegate/claimcurrent sourcetested. P05installed42b/current userapp preserved. No newagents/goals/partialfinal.
+
 # 최신 진행 — 2026-10-06 오디오 버퍼 재사용·모바일 회귀
 
 - 이전 설치42bcd763ffa422e3/runtime448 유지. 새 AudioRouting idleMeters≤16/silence→destination/readyAt(audio clock)/dispose 변경은 아직 미설치. unit buffered/audio-sources/UI-audio PASS. 실제PC cSnRHl 전체PASS59.596531fps/p959.5ms/12strongweakPCM created1. iXrtCr stalehistoryFAIL 보존.
