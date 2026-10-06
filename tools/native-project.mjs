@@ -16,18 +16,39 @@ export async function readNativeFiles(project){
 }
 export function nativeProjectLayout(header,source,generated,files){
   files=checkedNativeFiles(files);const primaryHeader=files.find(file=>/\.(h|hpp|hh)$/i.test(file.path)&&file.content===canonicalNativeText(header)),primarySource=files.find(file=>/\.(cpp|cc|cxx)$/i.test(file.path)&&file.content===canonicalNativeText(source));
-  const sourcePath=primarySource?.path||'User.cpp',records=files.map(file=>({...file,content:file===primaryHeader?'#pragma once\n'+generated.header:file===primarySource?generated.source:/\.(cpp|cc|cxx)$/i.test(file.path)?'#include <HBEngine/Native.hpp>\n'+file.content:file.content}));
+  const sourcePath=primarySource?.path||'User.cpp',records=files.map(file=>{
+    let content=file.content;
+    if(file===primaryHeader)content='#pragma once\n'+generated.header;
+    else if(file===primarySource)content=generated.source;
+    else if(/\.(cpp|cc|cxx)$/i.test(file.path)){
+      const stem=file.path.replace(/\.[^.]+$/,'').toLowerCase(),ownHeader=files.find(header=>/\.(h|hpp|hh)$/i.test(header.path)&&header.path.replace(/\.[^.]+$/,'').toLowerCase()===stem);
+      const includes=[...content.matchAll(/^\s*#include\s*["<]([^">]+)[">]/gm)].map(match=>match[1]);
+      const included=ownHeader&&includes.some(name=>name===path.posix.basename(ownHeader.path)||name===ownHeader.path||path.posix.normalize(path.posix.join(path.posix.dirname(file.path),name))===ownHeader.path);
+      content='#include <HBEngine/Native.hpp>\n'+(ownHeader&&!included?'#include "'+path.posix.basename(ownHeader.path)+'"\n':'')+content;
+    }
+    return {...file,content};
+  });
   if(!primarySource)records.push({path:sourcePath,content:generated.source});
+  // Older engine templates used User.h regardless of the authored header name.
+  // Preserve that alias only when no real project header has that name.
+  if(!files.some(file=>path.posix.basename(file.path).toLowerCase()==='user.h')&&records.some(file=>/^\s*#include\s*"User\.h"/m.test(file.content)))records.push({path:'User.h',content:'#pragma once\n#include "User.hpp"\n'});
   return {header:primaryHeader?'#pragma once\n#include "'+primaryHeader.path+'"\n':'#pragma once\n'+generated.header,files:records,sourceFiles:records.filter(file=>/\.(cpp|cc|cxx)$/i.test(file.path)).map(file=>file.path),includeDirectories:[...new Set(['.','Source',...files.map(file=>path.posix.dirname(file.path))])],projectFiles:files.length};
 }
 export async function writeNativeProject(directory,generated,{prefix='',namespace=''}={}){
   const records=generated.files||[{path:'User.cpp',content:generated.source}],dirs=generated.includeDirectories||['.'];
+  const known=new Set([...records.map(file=>file.path),'User.hpp']);
+  // AOT modules share one compiler command. Resolve project includes relative to
+  // their own file before global search paths can select another module's copy.
+  const localIncludes=(content,file)=>content.replace(/^(\s*#include\s*)["<]([^">]+)[">]/gm,(line,start,name)=>{
+    const base=path.posix.dirname(file),found=[path.posix.join(base,name),...dirs.map(dir=>path.posix.join(dir,name))].find(candidate=>known.has(path.posix.normalize(candidate)));
+    return found?start+'"'+path.posix.relative(base,path.posix.normalize(found))+'"':line;
+  });
   // Standard headers stay outside the per-module namespace; project headers keep
   // their relative include paths and each AOT module's independent C++ state.
   const globalIncludes=namespace?[generated.header,...records.map(file=>file.content)].map(content=>content.split('\n').filter(line=>{if(/^\s*#(?:if|ifdef|ifndef|elif|else|endif)\b/.test(line))return true;const include=line.match(/^\s*#include\s*<([^>]+)>\s*$/);return include&&!records.some(file=>file.path===include[1]||file.path.endsWith('/'+include[1]));}).join('\n')).join('\n')+'\n':'';
   const preamble=prefix+(namespace?'#include <HBEngine/Native.hpp>\n'+globalIncludes:'');
   await fs.mkdir(directory,{recursive:true});await fs.writeFile(path.join(directory,'User.hpp'),preamble+(namespace?'namespace '+namespace+' {\n'+generated.header+'\n}\n':generated.header));
-  for(const file of records){const target=path.join(directory,file.path);await fs.mkdir(path.dirname(target),{recursive:true});let content=file.content;if(namespace&&/\.(cpp|cc|cxx)$/i.test(file.path)){const user=path.relative(path.dirname(target),path.join(directory,'User.hpp')).split(path.sep).join('/');content=preamble+'#include "'+user+'"\nnamespace '+namespace+' {\n'+content.replace(/^#include "User.hpp"$/gm,'')+'\n}\n';}await fs.writeFile(target,content);}
+  for(const file of records){const target=path.join(directory,file.path);await fs.mkdir(path.dirname(target),{recursive:true});let content=namespace?localIncludes(file.content,file.path):file.content;if(namespace&&/\.(cpp|cc|cxx)$/i.test(file.path)){const user=path.relative(path.dirname(target),path.join(directory,'User.hpp')).split(path.sep).join('/');content=preamble+'#include "'+user+'"\nnamespace '+namespace+' {\n'+content.replace(/^#include "User.hpp"$/gm,'')+'\n}\n';}await fs.writeFile(target,content);}
   const worker=prefix+generated.worker.replace('#include "User.hpp"','#include "User.hpp"'+(namespace?'\nusing namespace '+namespace+';':''));await fs.writeFile(path.join(directory,'worker.cpp'),worker);
   return {sources:generated.sourceFiles||['User.cpp'],includeDirectories:dirs};
 }

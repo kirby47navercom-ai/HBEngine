@@ -27,6 +27,12 @@
       "expectedApiUnits": 0,
       "openIssues": [
         "Reconcile navigation files, aliases and content pages; expand official outgoing product references."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.unity3d.com/kr/6000.0/Manual/urp/LightBlendStyles.html",
+          "record": "docs/research/2D_BLEND_STYLES_033.md"
+        }
       ]
     },
     {
@@ -94,6 +100,12 @@
         "Expand all official package summary links, manual/API TOCs, xref inventories and dependency packages; pin each package version and editor compatibility. Batch 017 extends the known queue, but neither catalog closes the whole scope.",
         "Read all package wrapper, edition, manual and API bodies, tables, examples, member overloads and media; the known 227-root union and 62873 index URL identities are discovery records, not completed analysis.",
         "Reconcile 26 dependencies outside the current 159 package catalog, seven prior roots absent from the live catalog and actual unavailable index/media URLs without silently dropping them."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/api/UnityEngine.Rendering.Universal.Light2DBlendStyle.html",
+          "record": "docs/research/2D_BLEND_STYLES_033.md"
+        }
       ]
     },
     {
@@ -847,7 +859,8 @@
       "pathPrefix": "/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/",
       "knownInventory": {
         "boundedShadowFiles": 22,
-        "wholePackageRead": false
+        "wholePackageRead": false,
+        "boundedBlendFiles": 2
       },
       "discoveryClosed": false,
       "expectedPages": null,
@@ -965,6 +978,16 @@
           "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShapeProvider2D_Utility.cs",
           "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
           "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Light2DBlendStyle.cs",
+          "record": "docs/research/2D_BLEND_STYLES_033.md",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl",
+          "record": "docs/research/2D_BLEND_STYLES_033.md",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53"
         }
       ]
     }

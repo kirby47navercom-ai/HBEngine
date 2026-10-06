@@ -13,6 +13,7 @@ export const placementCatalog=[
   ['topdown2d','Top Down Character · 탑다운 캐릭터','2D','sprite',{TopDownMovement2D:{autoPossess:true},Rigidbody2D:{useGravity:false}}],
   ['physics2d','Physics Sprite · 물리 스프라이트','2D','sprite',{Rigidbody2D:{}}],
   ['trigger2d','Trigger 2D · 감지 영역','2D','empty',{BoxCollider2D:{trigger:true}}],
+  ['renderer2d','Renderer 2D · 2D 조명 설정','2D','empty',{Renderer2D:{}}],
   ['pointLight2d','Point Light 2D · 원형 광원','2D','light2d',{Light2D:{}}],
   ['spotLight2d','Spot Light 2D · 부채꼴 광원','2D','light2d',{Light2D:{lightType:'spot'}}],
   ['freeformLight2d','Freeform Light 2D · 자유 모양 광원','2D','light2d',{Light2D:{lightType:'freeform'}}],

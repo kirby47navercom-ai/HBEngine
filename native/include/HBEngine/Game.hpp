@@ -214,6 +214,8 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetAlphaCutoff", KoreanName="스프라이트 알파 기준 가져오기", Category="2D 스프라이트") static float GetAlphaCutoff(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetNormal", KoreanName="스프라이트 노멀맵 지정", Category="2D 스프라이트") static void SetNormalMap(Actor* target,const std::string& texture,float strength=1.f,bool flipY=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetNormal", KoreanName="스프라이트 노멀맵 설정 가져오기", Category="2D 스프라이트") static void GetNormalMap(Actor* target,std::string& texture,float& strength,bool& flipY);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetLightMask", KoreanName="스프라이트 2D 조명 마스크 지정", Category="2D 스프라이트") static void SetLightMaskTexture(Actor* target,const std::string& texture);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetLightMask", KoreanName="스프라이트 2D 조명 마스크 조회", Category="2D 스프라이트") static std::string GetLightMaskTexture(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetShadows", KoreanName="스프라이트 그림자 지정", Category="2D 스프라이트") static void SetShadows(Actor* target,bool cast,bool receive);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetShadows", KoreanName="스프라이트 그림자 설정 가져오기", Category="2D 스프라이트") static void GetShadows(Actor* target,bool& cast,bool& receive);
 };
@@ -222,6 +224,10 @@ using Sprite = Sprites;
 HB_CLASS()
 class Light2D : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetBlendStyle", KoreanName="2D 광원 블렌드 스타일 지정", Category="2D 조명") static void SetBlendStyle(Actor* target,int index);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetBlendStyle", KoreanName="2D 광원 블렌드 스타일 조회", Category="2D 조명") static int GetBlendStyle(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dRendererSetStyle", KoreanName="2D 렌더러 블렌드 스타일 설정", Category="2D 조명") static void SetRendererBlendStyle(Actor* target,int index,const std::string& mode,const std::string& mask);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dRendererGetStyle", KoreanName="2D 렌더러 블렌드 스타일 조회", Category="2D 조명") static void GetRendererBlendStyle(Actor* target,int index,std::string& mode,std::string& mask);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetShadows", KoreanName="2D 광원 그림자 설정", Category="2D 조명") static void SetShadows(Actor* target,bool enabled,float strength=1.f,float softness=0.f,int resolution=128);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShadows", KoreanName="2D 광원 그림자 조회", Category="2D 조명") static void GetShadows(Actor* target,bool& enabled,float& strength,float& softness,int& resolution);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetShape", KoreanName="2D 광원 모양·감쇠 거리 지정", Category="2D 조명") static void SetShapePath(Actor* target,const std::vector<Vec2>& path,float falloffDistance=.5f);
