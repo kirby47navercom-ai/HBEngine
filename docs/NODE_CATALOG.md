@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **610개**, 실제 공통 C++ API **526개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **656개**, 실제 공통 C++ API **572개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -21,28 +21,32 @@
 | 물리 | 16 | 14 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 7 | 4 |
+| 오디오 | 12 | 9 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
 | 논리 | 7 | 3 |
-| 컴포넌트 | 3 | 0 |
+| 컴포넌트 | 15 | 12 |
 | 문자열 | 23 | 19 |
 | 애니메이션 | 2 | 0 |
 | 렌더링 | 3 | 0 |
-| UI | 12 | 9 |
+| UI | 23 | 20 |
 | 저장 | 5 | 3 |
 | 정수 | 14 | 14 |
 | 벡터2 | 20 | 20 |
 | 회전 | 9 | 9 |
 | 색상 | 10 | 10 |
-| 게임 | 5 | 5 |
+| 게임 | 6 | 6 |
+| 데이터 | 2 | 2 |
+| 2D 이동 | 1 | 1 |
+| 투사체 | 4 | 4 |
+| 카메라 | 4 | 4 |
 | 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
-| 입력 | 6 | 6 |
+| 입력 | 10 | 10 |
 | 입력 액션 | 6 | 6 |
+| 2D 스프라이트 | 23 | 23 |
 | 2D 조명 | 21 | 21 |
-| 2D 스프라이트 | 21 | 21 |
 | 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
@@ -403,6 +407,11 @@
 | sound | Play Sound / 효과음 재생 | exec: exec, name: string | then: exec | — | VM / 브라우저 서비스 |
 | playSoundAt | Play Sound At Location / 위치에서 소리 재생 | exec: exec, sound: string, position: vec3, volume: float | then: exec | — | 오디오 재생; 위치 음향 없음 |
 | stopSound | Stop Sound / 소리 정지 | exec: exec, sound: string | then: exec | — | VM / 브라우저 서비스 |
+| audioPlay | Play / 소리 재생 | exec: exec, asset: string, volume: float, pitch: float, bus: string | then: exec, return: string | hb::Audio::Play | 공통 C++ + VM |
+| audioStop | Stop / 소리 핸들 정지 | exec: exec, handle: string | then: exec | hb::Audio::Stop | 공통 C++ + VM |
+| audioMusic | Play Music / 배경음 전환 | exec: exec, asset: string, fadeSeconds: float | then: exec | hb::Audio::PlayMusic | 공통 C++ + VM |
+| audioStopMusic | Stop Music / 배경음 정지 | exec: exec, fadeSeconds: float | then: exec | hb::Audio::StopMusic | 공통 C++ + VM |
+| audioPlayAt | Play At / 위치 소리 재생 | exec: exec, asset: string, position: vec3, volume: float, pitch: float, bus: string | then: exec, return: string | hb::Audio::PlayAt | 공통 C++ + VM |
 | mixerSet | Set Float / 믹서 파라미터 지정 | exec: exec, target: object, asset: string, parameter: string, value: float | then: exec | hb::AudioMixer::SetFloat | 공통 C++ + VM |
 | mixerGet | Get Float / 믹서 파라미터 가져오기 | target: object, asset: string, parameter: string | return: float | hb::AudioMixer::GetFloat | 공통 C++ + VM |
 | mixerClear | Clear Float / 믹서 파라미터 재정의 해제 | exec: exec, target: object, asset: string, parameter: string | then: exec | hb::AudioMixer::ClearFloat | 공통 C++ + VM |
@@ -468,6 +477,18 @@
 | getComponent | Get Component / 컴포넌트 찾기 | target: object, class: string | return: object | — | VM / 브라우저 서비스 |
 | addComponent | Add Component / 컴포넌트 추가 | exec: exec, target: object, class: string | then: exec, return: object | — | VM / 브라우저 서비스 |
 | componentEnabled | Set Component Enabled / 컴포넌트 활성화 | exec: exec, target: object, enabled: bool | then: exec | — | VM / 브라우저 서비스 |
+| componentGetFloat | Get Float / 컴포넌트 수치 읽기 | target: object, component: string, property: string | return: float | hb::Components::GetFloat | 공통 C++ + VM |
+| componentSetFloat | Set Float / 컴포넌트 수치 지정 | exec: exec, target: object, component: string, property: string, value: float | then: exec | hb::Components::SetFloat | 공통 C++ + VM |
+| componentGetBool | Get Bool / 컴포넌트 논리값 읽기 | target: object, component: string, property: string | return: bool | hb::Components::GetBool | 공통 C++ + VM |
+| componentSetBool | Set Bool / 컴포넌트 논리값 지정 | exec: exec, target: object, component: string, property: string, value: bool | then: exec | hb::Components::SetBool | 공통 C++ + VM |
+| componentGetString | Get String / 컴포넌트 문자열 읽기 | target: object, component: string, property: string | return: string | hb::Components::GetString | 공통 C++ + VM |
+| componentSetString | Set String / 컴포넌트 문자열 지정 | exec: exec, target: object, component: string, property: string, value: string | then: exec | hb::Components::SetString | 공통 C++ + VM |
+| componentGetVector | Get Vector / 컴포넌트 벡터 읽기 | target: object, component: string, property: string | return: vec3 | hb::Components::GetVector | 공통 C++ + VM |
+| componentSetVector | Set Vector / 컴포넌트 벡터 지정 | exec: exec, target: object, component: string, property: string, value: vec3 | then: exec | hb::Components::SetVector | 공통 C++ + VM |
+| componentGetColor | Get Color / 컴포넌트 색상 읽기 | target: object, component: string, property: string | return: color | hb::Components::GetColor | 공통 C++ + VM |
+| componentSetColor | Set Color / 컴포넌트 색상 지정 | exec: exec, target: object, component: string, property: string, value: color | then: exec | hb::Components::SetColor | 공통 C++ + VM |
+| componentGetJson | Get Text / 컴포넌트 JSON 읽기 | target: object, component: string, property: string | return: string | hb::Components::GetText | 공통 C++ + VM |
+| componentSetJson | Set Text / 컴포넌트 JSON 지정 | exec: exec, target: object, component: string, property: string, json: string | then: exec | hb::Components::SetText | 공통 C++ + VM |
 
 ## 문자열
 
@@ -528,6 +549,17 @@
 | uiSetVisible | Set Visible / 위젯 표시 상태 | exec: exec, target: object, instance: string, element: string, visible: bool | then: exec | hb::UI::SetVisible | 공통 C++ + VM |
 | uiSetEnabled | Set Enabled / 위젯 활성 상태 | exec: exec, target: object, instance: string, element: string, enabled: bool | then: exec | hb::UI::SetEnabled | 공통 C++ + VM |
 | uiFocus | Focus / 위젯 입력 포커스 | exec: exec, target: object, instance: string, element: string | then: exec | hb::UI::Focus | 공통 C++ + VM |
+| uiSetTexture | Set Texture / 위젯 그림 지정 | exec: exec, target: object, instance: string, element: string, texture: string | then: exec | hb::UI::SetTexture | 공통 C++ + VM |
+| uiSetPosition | Set Position / 위젯 위치 지정 | exec: exec, target: object, instance: string, element: string, position: vec2 | then: exec | hb::UI::SetPosition | 공통 C++ + VM |
+| uiSetSize | Set Size / 위젯 크기 지정 | exec: exec, target: object, instance: string, element: string, size: vec2 | then: exec | hb::UI::SetSize | 공통 C++ + VM |
+| uiSetRotation | Set Rotation / 위젯 회전 지정 | exec: exec, target: object, instance: string, element: string, rotation: float | then: exec | hb::UI::SetRotation | 공통 C++ + VM |
+| uiSetScale | Set Scale / 위젯 배율 지정 | exec: exec, target: object, instance: string, element: string, scale: vec2 | then: exec | hb::UI::SetScale | 공통 C++ + VM |
+| uiSetColor | Set Color / 위젯 색상 지정 | exec: exec, target: object, instance: string, element: string, color: color | then: exec | hb::UI::SetColor | 공통 C++ + VM |
+| uiSetOpacity | Set Opacity / 위젯 불투명도 지정 | exec: exec, target: object, instance: string, element: string, opacity: float | then: exec | hb::UI::SetOpacity | 공통 C++ + VM |
+| uiSetFont | Set Font / 위젯 글꼴 지정 | exec: exec, target: object, instance: string, element: string, font: string | then: exec | hb::UI::SetFont | 공통 C++ + VM |
+| uiSetFontSize | Set Font Size / 위젯 글자 크기 | exec: exec, target: object, instance: string, element: string, fontSize: float | then: exec | hb::UI::SetFontSize | 공통 C++ + VM |
+| uiSetFillDirection | Set Fill Direction / 위젯 채우기 방향 | exec: exec, target: object, instance: string, element: string, direction: string | then: exec | hb::UI::SetFillDirection | 공통 C++ + VM |
+| uiAnimate | Animate / 위젯 간단 애니메이션 | exec: exec, target: object, instance: string, element: string, property: string, to: float, duration: float | then: exec | hb::UI::Animate | 공통 C++ + VM |
 
 ## 저장
 
@@ -617,10 +649,42 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | getGameInstance | Get Instance / 게임 인스턴스 | — | return: object | hb::Game::GetInstance | 공통 C++ + VM |
+| gameSessionId | Get Session Id / 게임 세션 ID | — | return: string | hb::Game::GetSessionId | 공통 C++ + VM |
 | gameStateRead | Get State Text / 게임 상태 JSON 읽기 | — | return: string | hb::Game::GetStateText | 공통 C++ + VM |
 | gameArgsRead | Get Arguments Text / 장면 인자 JSON 읽기 | — | return: string | hb::Game::GetArgumentsText | 공통 C++ + VM |
 | gameStateWrite | Set State Text / 게임 상태 JSON 지정 | exec: exec, json: string | then: exec | hb::Game::SetStateText | 공통 C++ + VM |
 | gameReset | Reset / 게임 새로 시작 | exec: exec | then: exec | hb::Game::Reset | 공통 C++ + VM |
+
+## 데이터
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| dataJsonRead | Get Text / 데이터 에셋 JSON | path: string | return: string | hb::Data::GetText | 공통 C++ + VM |
+| dataTableRead | Get Table Text / 데이터 표 행 | path: string, rowId: string | return: string | hb::Data::GetTableText | 공통 C++ + VM |
+
+## 2D 이동
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| movement2dSpeed | Set Speed / 2D 이동 속도 지정 | exec: exec, target: object, speed: float | then: exec | hb::Movement2D::SetSpeed | 공통 C++ + VM |
+
+## 투사체
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| projectileFire | Fire Text / 투사체 패턴 발사 | exec: exec, json: string | then: exec, return: string | hb::Projectiles::FireText | 공통 C++ + VM |
+| projectileHits | Take Hits Text / 투사체 충돌 묶음 | exec: exec | then: exec, return: string | hb::Projectiles::TakeHitsText | 공통 C++ + VM |
+| projectileClear | Clear / 소유 투사체 정리 | exec: exec | then: exec | hb::Projectiles::Clear | 공통 C++ + VM |
+| projectileOnHit | On Hit / 투사체 충돌 이벤트 등록 | exec: exec, eventName: string | then: exec | hb::Projectiles::OnHit | 공통 C++ + VM |
+
+## 카메라
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| cameraOrthoSize | Set Ortho Size / 카메라 직교 크기 | exec: exec, target: object, size: float | then: exec | hb::Camera::SetOrthoSize | 공통 C++ + VM |
+| cameraFollow | Follow / 카메라 따라가기 | exec: exec, target: object, subject: object | then: exec | hb::Camera::Follow | 공통 C++ + VM |
+| cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
+| screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
 
 ## 게임플레이
 
@@ -648,6 +712,10 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| inputLastDevice | Get Last Device / 최근 입력 장치 | — | return: string | hb::Input::GetLastDevice | 공통 C++ + VM |
+| inputAnyPressed | Any Key Pressed / 아무 입력 눌림 | — | return: bool | hb::Input::AnyKeyPressed | 공통 C++ + VM |
+| inputJustPressed | Was Pressed This Frame / 이번 프레임 눌림 | key: string | return: bool | hb::Input::WasPressedThisFrame | 공통 C++ + VM |
+| inputJustReleased | Was Released This Frame / 이번 프레임 해제 | key: string | return: bool | hb::Input::WasReleasedThisFrame | 공통 C++ + VM |
 | inputKeyDown | Is Key Down / 키·마우스 버튼 눌림 | key: string | return: bool | hb::Input::IsKeyDown | 공통 C++ + VM |
 | inputAxisValue | Get Axis / 입력 축 값 가져오기 | key: string | return: float | hb::Input::GetAxis | 공통 C++ + VM |
 | mousePosition | Get Mouse Position / 마우스 위치 가져오기 | — | return: bool, position: vec2 | hb::Input::GetMousePosition | 공통 C++ + VM |
@@ -665,6 +733,34 @@
 | actionElapsed | Get Action Elapsed / 입력 액션 유지 시간 | target: object, action: string | return: float | hb::Input::GetActionElapsed | 공통 C++ + VM |
 | inputAddContext | Add Mapping Context / 입력 컨텍스트 추가 | exec: exec, target: object, context: string, priority: int | then: exec | hb::Input::AddMappingContext | 공통 C++ + VM |
 | inputRemoveContext | Remove Mapping Context / 입력 컨텍스트 제거 | exec: exec, target: object, context: string | then: exec | hb::Input::RemoveMappingContext | 공통 C++ + VM |
+
+## 2D 스프라이트
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| spriteFlash | Flash / 스프라이트 피격 번쩍임 | exec: exec, target: object, duration: float, strength: float | then: exec | hb::Sprites::Flash | 공통 C++ + VM |
+| spritePlayAnimation | Play Animation / 스프라이트 애니메이션 재생 | exec: exec, target: object, asset: string, loop: bool | then: exec | hb::Sprites::PlayAnimation | 공통 C++ + VM |
+| spriteFlip | Set Flip / 스프라이트 좌우·상하 반전 | exec: exec, target: object, flipX: bool, flipY: bool | then: exec | hb::Sprites::SetFlip | 공통 C++ + VM |
+| spriteGetFlip | Get Flip / 스프라이트 반전 가져오기 | target: object | flipX: bool, flipY: bool | hb::Sprites::GetFlip | 공통 C++ + VM |
+| spriteSet | Set Sprite / 스프라이트 지정 | exec: exec, target: object, sprite: string | then: exec | hb::Sprites::SetSprite | 공통 C++ + VM |
+| spriteGet | Get Sprite / 스프라이트 가져오기 | target: object | return: string | hb::Sprites::GetSprite | 공통 C++ + VM |
+| spriteSetColor | Set Color / 스프라이트 색상 지정 | exec: exec, target: object, color: color | then: exec | hb::Sprites::SetColor | 공통 C++ + VM |
+| spriteGetColor | Get Color / 스프라이트 색상 가져오기 | target: object | return: color | hb::Sprites::GetColor | 공통 C++ + VM |
+| spriteSetSize | Set Size / 스프라이트 크기 지정 | exec: exec, target: object, size: vec2 | then: exec | hb::Sprites::SetSize | 공통 C++ + VM |
+| spriteGetSize | Get Size / 스프라이트 설정 크기 가져오기 | target: object | return: vec2 | hb::Sprites::GetSize | 공통 C++ + VM |
+| spriteSetSorting | Set Sorting / 스프라이트 정렬 지정 | exec: exec, target: object, layer: string, order: int | then: exec | hb::Sprites::SetSorting | 공통 C++ + VM |
+| spriteGetSorting | Get Sorting / 스프라이트 정렬 가져오기 | target: object | layer: string, order: int | hb::Sprites::GetSorting | 공통 C++ + VM |
+| spriteSetMask | Set Mask Interaction / 스프라이트 마스크 지정 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetMaskInteraction | 공통 C++ + VM |
+| spriteGetMask | Get Mask Interaction / 스프라이트 마스크 가져오기 | target: object | return: string | hb::Sprites::GetMaskInteraction | 공통 C++ + VM |
+| spriteSetLit | Set Lit / 스프라이트 광원 적용 | exec: exec, target: object, lit: bool | then: exec | hb::Sprites::SetLit | 공통 C++ + VM |
+| spriteIsLit | Is Lit / 스프라이트 광원 적용 여부 | target: object | return: bool | hb::Sprites::IsLit | 공통 C++ + VM |
+| spriteSetBlend | Set Blend Mode / 스프라이트 표면 혼합 지정 | exec: exec, target: object, mode: string, alphaCutoff: float | then: exec | hb::Sprites::SetBlendMode | 공통 C++ + VM |
+| spriteGetBlend | Get Blend Mode / 스프라이트 표면 혼합 가져오기 | target: object | return: string | hb::Sprites::GetBlendMode | 공통 C++ + VM |
+| spriteGetAlphaCutoff | Get Alpha Cutoff / 스프라이트 알파 기준 가져오기 | target: object | return: float | hb::Sprites::GetAlphaCutoff | 공통 C++ + VM |
+| spriteSetNormal | Set Normal Map / 스프라이트 노멀맵 지정 | exec: exec, target: object, texture: string, strength: float, flipY: bool | then: exec | hb::Sprites::SetNormalMap | 공통 C++ + VM |
+| spriteGetNormal | Get Normal Map / 스프라이트 노멀맵 설정 가져오기 | target: object | texture: string, strength: float, flipY: bool | hb::Sprites::GetNormalMap | 공통 C++ + VM |
+| spriteSetShadows | Set Shadows / 스프라이트 그림자 지정 | exec: exec, target: object, cast: bool, receive: bool | then: exec | hb::Sprites::SetShadows | 공통 C++ + VM |
+| spriteGetShadows | Get Shadows / 스프라이트 그림자 설정 가져오기 | target: object | cast: bool, receive: bool | hb::Sprites::GetShadows | 공통 C++ + VM |
 
 ## 2D 조명
 
@@ -691,32 +787,6 @@
 | light2dGetNormal | Get Normal / 2D 광원 노멀 품질·높이 조회 | target: object | mode: string, distance: float | hb::Light2D::GetNormal | 공통 C++ + VM |
 | light2dSetLayers | Set Target Sorting Layers / 2D 광원 대상 레이어 지정 | exec: exec, target: object, layers: string[] | then: exec | hb::Light2D::SetTargetSortingLayers | 공통 C++ + VM |
 | light2dGetLayers | Get Target Sorting Layers / 2D 광원 대상 레이어 조회 | target: object | return: string[] | hb::Light2D::GetTargetSortingLayers | 공통 C++ + VM |
-
-## 2D 스프라이트
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| spriteFlip | Set Flip / 스프라이트 좌우·상하 반전 | exec: exec, target: object, flipX: bool, flipY: bool | then: exec | hb::Sprites::SetFlip | 공통 C++ + VM |
-| spriteGetFlip | Get Flip / 스프라이트 반전 가져오기 | target: object | flipX: bool, flipY: bool | hb::Sprites::GetFlip | 공통 C++ + VM |
-| spriteSet | Set Sprite / 스프라이트 지정 | exec: exec, target: object, sprite: string | then: exec | hb::Sprites::SetSprite | 공통 C++ + VM |
-| spriteGet | Get Sprite / 스프라이트 가져오기 | target: object | return: string | hb::Sprites::GetSprite | 공통 C++ + VM |
-| spriteSetColor | Set Color / 스프라이트 색상 지정 | exec: exec, target: object, color: color | then: exec | hb::Sprites::SetColor | 공통 C++ + VM |
-| spriteGetColor | Get Color / 스프라이트 색상 가져오기 | target: object | return: color | hb::Sprites::GetColor | 공통 C++ + VM |
-| spriteSetSize | Set Size / 스프라이트 크기 지정 | exec: exec, target: object, size: vec2 | then: exec | hb::Sprites::SetSize | 공통 C++ + VM |
-| spriteGetSize | Get Size / 스프라이트 설정 크기 가져오기 | target: object | return: vec2 | hb::Sprites::GetSize | 공통 C++ + VM |
-| spriteSetSorting | Set Sorting / 스프라이트 정렬 지정 | exec: exec, target: object, layer: string, order: int | then: exec | hb::Sprites::SetSorting | 공통 C++ + VM |
-| spriteGetSorting | Get Sorting / 스프라이트 정렬 가져오기 | target: object | layer: string, order: int | hb::Sprites::GetSorting | 공통 C++ + VM |
-| spriteSetMask | Set Mask Interaction / 스프라이트 마스크 지정 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetMaskInteraction | 공통 C++ + VM |
-| spriteGetMask | Get Mask Interaction / 스프라이트 마스크 가져오기 | target: object | return: string | hb::Sprites::GetMaskInteraction | 공통 C++ + VM |
-| spriteSetLit | Set Lit / 스프라이트 광원 적용 | exec: exec, target: object, lit: bool | then: exec | hb::Sprites::SetLit | 공통 C++ + VM |
-| spriteIsLit | Is Lit / 스프라이트 광원 적용 여부 | target: object | return: bool | hb::Sprites::IsLit | 공통 C++ + VM |
-| spriteSetBlend | Set Blend Mode / 스프라이트 표면 혼합 지정 | exec: exec, target: object, mode: string, alphaCutoff: float | then: exec | hb::Sprites::SetBlendMode | 공통 C++ + VM |
-| spriteGetBlend | Get Blend Mode / 스프라이트 표면 혼합 가져오기 | target: object | return: string | hb::Sprites::GetBlendMode | 공통 C++ + VM |
-| spriteGetAlphaCutoff | Get Alpha Cutoff / 스프라이트 알파 기준 가져오기 | target: object | return: float | hb::Sprites::GetAlphaCutoff | 공통 C++ + VM |
-| spriteSetNormal | Set Normal Map / 스프라이트 노멀맵 지정 | exec: exec, target: object, texture: string, strength: float, flipY: bool | then: exec | hb::Sprites::SetNormalMap | 공통 C++ + VM |
-| spriteGetNormal | Get Normal Map / 스프라이트 노멀맵 설정 가져오기 | target: object | texture: string, strength: float, flipY: bool | hb::Sprites::GetNormalMap | 공통 C++ + VM |
-| spriteSetShadows | Set Shadows / 스프라이트 그림자 지정 | exec: exec, target: object, cast: bool, receive: bool | then: exec | hb::Sprites::SetShadows | 공통 C++ + VM |
-| spriteGetShadows | Get Shadows / 스프라이트 그림자 설정 가져오기 | target: object | cast: bool, receive: bool | hb::Sprites::GetShadows | 공통 C++ + VM |
 
 ## 2D 타일맵
 

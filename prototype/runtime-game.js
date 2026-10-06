@@ -11,7 +11,7 @@ import {validGameJson} from './game-json.js';
 
 export async function gameInstanceBlueprint(path,{readAsset,readText}){
   if(typeof path!=='string'||path.length>1000||/[\\:\x00-\x1f]/.test(path)||path.split('/').some(p=>!p||p==='.'||p==='..'))throw Error('GameInstance 경로 오류');
-  if(!path.startsWith('Source/'))return {root:await createBlueprintResolver(readAsset)(path),asset:path};
+  if(!path.startsWith('Source/'))return {root:await createBlueprintResolver(readAsset,readText)(path),asset:path};
   const [headerPath,requested,...extra]=path.split('#');if(extra.length||!/^Source\/.+\.(?:h|hpp)$/.test(headerPath)||requested!==undefined&&!/^[A-Za-z_]\w{0,79}$/.test(requested))throw Error('GameInstance C++ 경로·클래스 오류');
   const sourcePath=headerPath.replace(/\.(h|hpp)$/,'.cpp'),header=canonicalNativeText(await readText(headerPath)),source=canonicalNativeText(await readText(sourcePath)),metadata=parseNativeHeader(header);
   const gameClass=c=>{const seen=new Set();while(c){if(c.base==='GameInstance')return true;if(seen.has(c.name))return false;seen.add(c.name);c=metadata.classes.find(item=>item.name===c.base);}return false;};
@@ -21,7 +21,7 @@ export async function gameInstanceBlueprint(path,{readAsset,readText}){
 
 // One instance belongs to a Play session; scene worlds borrow it without owning it.
 export class RuntimeGame {
-  constructor(){this.id=crypto.randomUUID();this.state={};this.arguments={};this.instance=null;this.binding=null;this.root=null;this.path=null;this.initialized=false;this.nativeBuilds=new Map();}
+  constructor(){this.inputLifetime=new AbortController();this.id=crypto.randomUUID();this.state={};this.arguments={};this.instance=null;this.binding=null;this.root=null;this.path=null;this.initialized=false;this.nativeBuilds=new Map();}
   setState(value){if(!validGameJson(value))throw Error('GameInstance 상태 JSON을 확인하세요.');this.state=copy(value);}
   setArguments(value={}){if(!validGameJson(value)||value.spawn!==undefined&&(typeof value.spawn!=='string'||!value.spawn||value.spawn.length>200))throw Error('장면 인자를 확인하세요.');this.arguments=copy(value);}
   async attach(objects,path='',readAsset,readText){
@@ -33,7 +33,7 @@ export class RuntimeGame {
     this.root=root;objects.push(this.instance);return root?[{root,self:this.instance.id,path:asset}]:[];
   }
   bind(binding){this.binding=binding;return binding;}
-  reset(){this.id=crypto.randomUUID();this.state={};this.arguments={};this.initialized=false;this.instance=null;this.binding=null;this.root=null;this.path=null;return this.id;}
+  reset(){this.inputLifetime.abort();this.inputLifetime=new AbortController();this.id=crypto.randomUUID();this.state={};this.arguments={};this.initialized=false;this.instance=null;this.binding=null;this.root=null;this.path=null;return this.id;}
   snapshot(){return {id:this.id,actor:this.instance?.id||null,state:copy(this.state),arguments:copy(this.arguments)};}
 }
 

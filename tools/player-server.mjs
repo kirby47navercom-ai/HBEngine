@@ -1,5 +1,5 @@
 import {configureNativePersistence} from './game-storage.mjs';
-import {resolveBuildPath} from '../prototype/build-profile.js';
+import {resolveBuildPath,kioskSettings,validKioskSettings} from '../prototype/build-profile.js';
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
@@ -13,6 +13,7 @@ const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.wasm':'application/wasm','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.mp4':'video/mp4','.webm':'video/webm'};
 export async function startPlayerServer({root=path.resolve(import.meta.dirname,'..'),port=0,userData=process.env.HB_USER_DATA_DIR,verify=true}={}){
   root=await fs.realpath(root);const manifest=JSON.parse(await fs.readFile(path.join(root,'game.hbpack.json'),'utf8'));
+  if(!validKioskSettings(manifest))throw Error('키오스크 패키지 설정 오류');
   if(manifest.version!==1||!Array.isArray(manifest.files)||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene)||!['development','release'].includes(manifest.configuration)||!/^[0-9a-f-]{36}$/.test(manifest.id))throw Error('게임 패키지 형식 오류');
   const files=new Map();for(const entry of manifest.files){if(!safe(entry.path)||files.has(entry.path)||!/^[0-9a-f]{64}$/.test(entry.sha256))throw Error('패키지 파일 목록 오류');const full=await fs.realpath(path.join(root,entry.path));if(!full.toLowerCase().startsWith((root+path.sep).toLowerCase()))throw Error('패키지 경로 이탈');if(verify){const bytes=await fs.readFile(full);if(bytes.length!==entry.bytes||hash(bytes)!==entry.sha256)throw Error('패키지 파일 검증 실패: '+entry.path);}files.set(entry.path,{...entry,full});}
   const entries=new Map(manifest.entries.map(e=>[e.path,e]));for(const name of entries.keys())if(!safe(name)||!files.has('Content/'+name))throw Error('콘텐츠 목록 오류');if(!entries.has(manifest.startupScene))throw Error('시작 장면 누락');
@@ -30,7 +31,7 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     if(req.headers.origin&&req.headers.origin!==origin||req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'출처 오류'},403);
     if(url.pathname==='/api/game-data'&&req.method==='POST'){const data=await body(req);return json(res,{value:await native.persistentQueries(data.key,data.args)});}
     if(url.pathname==='/api/session'&&req.method==='GET')return json(res,session);
-    if(url.pathname==='/api/player'&&req.method==='GET')return json(res,{name:manifest.name,smoke:process.env.HB_PLAYER_SMOKE==='1',acceptance:process.env.HB_PLAYER_SMOKE==='1'&&process.env.HB_PLAYER_ACCEPTANCE==='1',configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene});
+    if(url.pathname==='/api/player'&&req.method==='GET')return json(res,{name:manifest.name,kiosk:kioskSettings(manifest),smoke:process.env.HB_PLAYER_SMOKE==='1',acceptance:process.env.HB_PLAYER_SMOKE==='1'&&process.env.HB_PLAYER_ACCEPTANCE==='1',configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene});
     if(url.pathname==='/api/project'&&req.method==='GET')return json(res,{entries:manifest.entries});
     if(url.pathname==='/api/storage'&&req.method==='GET'){if(q.get('project')!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.read());}
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=await body(req);if(data.id!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.patch(data.items));}

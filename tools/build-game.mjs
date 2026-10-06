@@ -1,5 +1,5 @@
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
-import {canonicalNativeText} from '../prototype/native-model.js';
+import {parseNativeHeader,canonicalNativeText} from '../prototype/native-model.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
@@ -51,8 +51,7 @@ export async function inspectBuild(record,profile){
     else continue;
     if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
-      if(header!==canonicalNativeText(n.header)||source!==canonicalNativeText(n.source))throw Error(name+': 변경된 C++을 블루프린트에서 다시 빌드하세요.');natives.set(nativeSignature(header,source),{header,source});
-      data=structuredClone(data);delete data.native.header;delete data.native.source;
+      natives.set(nativeSignature(header,source),{header,source});Object.assign(n,parseNativeHeader(header));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
     }
     for(const value of assetReferences(data,name))await include(value);
   }
@@ -87,8 +86,8 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     for(const file of modules)await copy(file,path.relative(root,file).split(path.sep).join('/'));
     for(const name of ['player.html','player.css','ui-runtime.css'])await copy(path.join(root,'prototype',name),'prototype/'+name);
     const copyLicenses=async rel=>{for(const e of await fs.readdir(path.join(desktop,rel),{withFileTypes:true})){if(e.isSymbolicLink())throw Error('배포 의존성 심볼릭 링크');if(e.isDirectory())await copyLicenses(rel+'/'+e.name);else await copy(path.join(desktop,rel,e.name),rel+'/'+e.name);}};await copyLicenses('licenses');
-    await copy(path.join(desktop,'HBPlayer.exe'),'Game.exe');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));
-    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
+    await copy(path.join(desktop,'HBPlayer.exe'),'Game.exe');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));await copy(path.join(root,'tools/kiosk-watchdog.mjs'),'tools/kiosk-watchdog.mjs');await write('Kiosk.cmd',Buffer.from('@echo off\r\n"%~dp0runtime\\node.exe" "%~dp0tools\\kiosk-watchdog.mjs" "%~dp0Game.exe"\r\n'));
+    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,kiosk:profile.kiosk||{},width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,'Game.exe'),totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}finally{host.close();}
 }

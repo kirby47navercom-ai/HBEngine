@@ -1,3 +1,4 @@
+import {BloomRendering} from './bloom-rendering.js';
 import {resolveSprite} from './sprite-import.js';
 import {createGameCamera,selectGameCamera} from './game-camera.js';
 import * as THREE from 'three';
@@ -7,15 +8,31 @@ import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-ass
 import {tilemapColliders} from './tilemap-runtime.js';
 import {createThreeMaterial,resolveMaterialAsset} from './material-runtime.js';
 import {ParticleSimulation} from './scene-systems.js';
-import {TwoDRendering} from './two-d-rendering.js';
+import {TwoDRendering,spriteEffectsUniforms} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
+import {cacheAssetReader} from './runtime-storage.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error}){
-  const twoD=new TwoDRendering();
-  const texture=async (path,normal=false)=>{let result;try{result=await new THREE.TextureLoader().loadAsync(fileUrl(path));}catch(error){throw Error('텍스처를 읽지 못했어요: '+path+(error?.message?' · '+error.message:''));}result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;return result;};
+  read=cacheAssetReader(read);
+  const twoD=new TwoDRendering(),bloom=new BloomRendering();
+  const textureSources=new Map();let textureBytes=0,textureEpoch=0;
+  function invalidateAssets(){textureEpoch++;read.clear();for(const entry of textureSources.values())entry.promise.then(t=>t.dispose(),()=>{});textureSources.clear();textureBytes=0;}
+  const texture=async(path,normal=false)=>{
+    const key=JSON.stringify([path,normal]);let entry=textureSources.get(key);
+    if(entry){textureSources.delete(key);textureSources.set(key,entry);}else{
+      const epoch=textureEpoch;entry={bytes:0};textureSources.set(key,entry);
+      entry.promise=new THREE.TextureLoader().loadAsync(fileUrl(path)).then(result=>{result.colorSpace=normal?THREE.NoColorSpace:THREE.SRGBColorSpace;
+        if(epoch===textureEpoch&&textureSources.get(key)===entry){entry.bytes=(result.image.width||1)*(result.image.height||1)*4;textureBytes+=entry.bytes;while(textureSources.size>128||textureBytes>32*1024*1024){const [old,value]=textureSources.entries().next().value;textureSources.delete(old);textureBytes-=value.bytes;value.promise.then(t=>t.dispose(),()=>{});}}
+        return result;
+      },e=>{if(textureSources.get(key)===entry)textureSources.delete(key);throw Error('텍스처를 읽지 못했어요: '+path+(e?.message?' · '+e.message:''));});
+    }
+    // UV/filter state is private; Texture.clone shares the immutable image Source.
+    return (await entry.promise).clone();
+  };
+  async function prepareSpawn(catalog){for(const template of new Set(catalog?.templates.values()||[]))for(const object of template.objects){const p=enabledComponent(object,'SpriteRenderer');if(!p)continue;const resolved=p.sprite?await resolveSprite(await read(p.sprite),read):{texture:p.texture};for(const [path,normal] of [[resolved.texture,false],[p.normalTexture||resolved.normalTexture,true]])if(path){const t=await texture(path,normal);t.dispose();}}}
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
   function lightOutline(group,p){
     if(p.lightType==='global')return;
@@ -28,8 +45,8 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   function dispose(group){group.userData.disposed=true;group.userData.spriteSkin?.dispose();for(const resource of group.userData.resources||[])resource.dispose();group.userData.resources?.clear();}
   function release(group,resource){if(group.userData.resources?.delete(resource))resource.dispose();}
   function spriteMaterial(map,p,normalMap=null){
-    const color=p.color||[1,1,1,1],mode=p.blendMode||'translucent',lit=['lit','lit2d'].includes(p.shading),material=new (lit?THREE.MeshStandardMaterial:THREE.MeshBasicMaterial)({map,color:new THREE.Color(...color.slice(0,3)),transparent:mode==='translucent',opacity:color[3],alphaTest:mode==='masked'?(p.alphaCutoff??.5):0,side:THREE.DoubleSide,depthWrite:mode!=='translucent'});
-    if(lit&&normalMap){material.normalMap=normalMap;const strength=p.normalStrength??1;material.normalScale.set(strength,p.normalFlipY?-strength:strength);}return material;
+    const color=p.color||[1,1,1,1],mode=p.blendMode||'translucent',lit=['lit','lit2d'].includes(p.shading),material=new (lit?THREE.MeshStandardMaterial:THREE.MeshBasicMaterial)({map,color:new THREE.Color(...color.slice(0,3)),transparent:['translucent','additive'].includes(mode),blending:mode==='additive'?THREE.AdditiveBlending:THREE.NormalBlending,opacity:color[3],alphaTest:mode==='masked'?(p.alphaCutoff??.5):0,side:THREE.DoubleSide,depthWrite:!['translucent','additive'].includes(mode)});
+    spriteEffectsUniforms(material).hbSpriteEmission.value=p.emissiveIntensity||0;if(lit&&normalMap){material.normalMap=normalMap;const strength=p.normalStrength??1;material.normalScale.set(strength,p.normalFlipY?-strength:strength);}return material;
   }
   function spriteShadows(group,mesh,p){
     mesh.castShadow=!!p.castShadow;mesh.receiveShadow=p.shading==='lit'&&!!p.receiveShadow;if(!mesh.castShadow)return [];
@@ -73,13 +90,13 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(source){map=await spriteTexture(group,source,false,definition);if(!map)return;layout=definition?spriteImage(definition,map.image):null;if(definition&&!layout)throw Error('스프라이트 잘라내기 범위 오류');if(layout){map.offset.fromArray(layout.uv.offset);map.repeat.fromArray(layout.uv.repeat);}}
       const normalSource=!isMask&&['lit','lit2d'].includes(properties.shading)&&(properties.normalTexture||definition?.normalTexture);if(normalSource){normalMap=await spriteTexture(group,normalSource,true,definition);if(normalMap&&layout){normalMap.offset.copy(map.offset);normalMap.repeat.copy(map.repeat);}}
       if(group.userData.disposed||request!==undefined&&request!==group.userData.spriteRequest){for(const r of [map,normalMap])if(r)release(group,r);return;}
-      if(definition&&properties.drawMode&&properties.drawMode!=='simple')sliced=spriteSlices(definition,map.image,{size:[properties.width||1,properties.height||1],mode:properties.drawMode});
+      if(map&&properties.drawMode&&properties.drawMode!=='simple')sliced=spriteSlices(definition||{version:1,name:'Texture',texture:source,normalTexture:'',pixelsPerUnit:properties.pixelsPerUnit||100,rect:[0,0,0,0],pivot:[.5,.5],filter:'nearest',border:properties.border||[properties.borderLeft||0,properties.borderBottom||0,properties.borderRight||0,properties.borderTop||0]},map.image,{size:[properties.width||1,properties.height||1],mode:properties.drawMode,origin:properties.tileOrigin||'bottomLeft'});
     }catch(error){for(const r of [map,normalMap])if(r)release(group,r);throw error;}
-    const mat=spriteMaterial(map,properties,normalMap);own(group,mat);
+    const mat=spriteMaterial(map,properties,normalMap);spriteEffectsUniforms(mat);own(group,mat);
     let size=properties.useCustomSize?[properties.width||1,properties.height||1]:layout?.size||[properties.width||1,properties.height||1],offset=layout&&properties.useCustomSize?[(.5-layout.pivot[0])*size[0],(.5-layout.pivot[1])*size[1]]:layout?.offset||[0,0],geometry;if(sliced){geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(sliced.positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(sliced.uvs,2));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(sliced.normals,3));offset=sliced.offset;}else geometry=new THREE.PlaneGeometry(...size);own(group,geometry);const mesh=new THREE.Mesh(geometry,mat);mesh.userData.sprite=true;mesh.userData.objectId=group.userData.objectId;mesh.position.set(...offset,0);mesh.scale.set(properties.flipX?-1:1,properties.flipY?-1:1,1);mesh.renderOrder=properties.sortingOrder||0;
-    mesh.onBeforeRender=(_r,_s,camera)=>{if(properties.billboard){const rotation=group.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(camera.getWorldQuaternion(new THREE.Quaternion()));mesh.quaternion.copy(rotation);mesh.updateWorldMatrix(true,false);}};
+    mesh.onBeforeRender=(_r,_s,camera)=>{const effects=spriteEffectsUniforms(mat);effects.hbPixelPPU.value=camera.userData.cameraProperties?.pixelPerfect?camera.userData.cameraProperties.pixelPixelsPerUnit||32:0;const flash=group.userData.spriteActor?.spriteFlash;effects.hbSpriteFlash.value=flash?.remaining>0?flash.strength:0;effects.hbSpriteEmission.value=properties.emissiveIntensity||0;if(properties.billboard){const rotation=group.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(camera.getWorldQuaternion(new THREE.Quaternion()));mesh.quaternion.copy(rotation);mesh.updateWorldMatrix(true,false);}};
     const slot=isMask?'maskMesh':'spriteMesh',old=group.userData[slot];if(old){old.removeFromParent();for(const r of [old.geometry,old.material,old.material.map,old.material.normalMap,old.customDepthMaterial,old.customDistanceMaterial,old.userData.maskMaterial])if(r)release(group,r);}group.userData[slot]=mesh;
-    if(isMask){mesh.visible=false;mesh.userData.spriteMask=true;mesh.userData.maskProperties=properties;mesh.userData.maskMaterial=new THREE.MeshBasicMaterial({color:0xffffff,map,alphaTest:properties.alphaCutoff,side:THREE.DoubleSide,depthTest:false,depthWrite:false,toneMapped:false});own(group,mesh.userData.maskMaterial);}else{spriteShadows(group,mesh,properties);mesh.userData.draw2d=properties;mesh.userData.draw2dId='sprite';if(group.userData.spriteSkin){group.userData.spriteSkin.attachGeometry(geometry);mesh.position.set(0,0,0);}}group.add(mesh);
+    if(isMask){mesh.visible=false;mesh.userData.spriteMask=true;mesh.userData.maskProperties=properties;mesh.userData.maskMaterial=new THREE.MeshBasicMaterial({color:0xffffff,map,alphaTest:properties.alphaCutoff,side:THREE.DoubleSide,depthTest:false,depthWrite:false,toneMapped:false});own(group,mesh.userData.maskMaterial);}else{spriteShadows(group,mesh,properties);mesh.userData.sortPoint=properties.sortPoint==='feet'?[0,-size[1]/2,0]:properties.sortPoint==='pivot'?[0,-offset[1],0]:[0,0,0];mesh.userData.draw2d=properties;mesh.userData.draw2dId='sprite';if(group.userData.spriteSkin){group.userData.spriteSkin.attachGeometry(geometry);mesh.position.set(0,0,0);}}group.add(mesh);
   }
   function spriteFlip(object,p){const group=current(object.id),mesh=group?.userData.spriteMesh;if(mesh)mesh.scale.set(p.flipX?-1:1,p.flipY?-1:1,1);if(group)group.userData.componentSignature=visualComponentSignature(object);}
   async function spriteFrame(object,path){const group=current(object.id);if(!group)return;const token=group.userData.spriteRequest=(group.userData.spriteRequest||0)+1;await sprite(group,enabledComponent(object,'SpriteRenderer')||{},path,token);if(current(object.id)===group&&!group.userData.disposed&&group.userData.spriteRequest===token)object.currentSprite=path;}
@@ -113,7 +130,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     }
   }
   async function build(object,group){
-    const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
+    group.userData.spriteActor=object;const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
     group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
     const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
@@ -135,5 +152,5 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{for(const group of all())group.userData.spriteSkin?.update();return twoD.prepare(renderer,scene,camera,all(),layers,options);},dispose2D:()=>twoD.dispose()};
+  return {build,dispose,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{for(const group of all())group.userData.spriteSkin?.update();return twoD.prepare(renderer,scene,camera,all(),layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
 }

@@ -30,6 +30,13 @@ jobs:
           node tools/check-headless.mjs
           node tools/check-ui-state-cache.mjs
           node tools/check-ui-audio.mjs
+          node tools/check-audio-sources.mjs
+          node tools/check-buffered-audio.mjs
+          node tools/check-runtime-features.mjs
+          node tools/check-player-lifecycle.mjs
+          node tools/check-asset-cache.mjs
+          node tools/check-state-native-batch.mjs
+          node tools/check-behavior-native-batch.mjs
       - name: 공용 실행과 실제 사용자 C++ 포함 프로젝트 출력
         run: node tools/check-mobile-player.mjs
       - name: Xcode 컴파일과 시뮬레이터 실행
@@ -42,6 +49,7 @@ jobs:
           path: |
             native/build/mobile-proof.json
             native/build/native-module-*/acceptance.json
+            native/build/runtime-features-*/acceptance.json
             native/build/mobile-player-*/acceptance.json
             native/build/mobile-player-*/모바일 출력/Builds/ios/*/ios-*.json
             native/build/mobile-player-*/모바일 출력/Builds/ios/*/ios-*.png

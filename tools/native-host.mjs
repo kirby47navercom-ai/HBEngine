@@ -24,7 +24,7 @@ export class NativeHost extends NativeProtocol {
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
     const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp','Native.hpp','NativeRouting.hpp','Spawn.hpp','Session.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
-    if(!existsSync(binary)){
+    const cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       await Promise.all([fs.writeFile(path.join(compileDir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(compileDir,'User.cpp'),compiledSource),fs.writeFile(path.join(compileDir,'worker.cpp'),worker)]);
       try{
@@ -44,7 +44,7 @@ export class NativeHost extends NativeProtocol {
       }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),path.join(compileDir,'User.o')].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));}
     }
     signal?.throwIfAborted();
-    const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,cacheKey:hash,cacheHit,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
   async call(token,request,from){
     const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();
@@ -64,7 +64,7 @@ export class NativeHost extends NativeProtocol {
   }
   rpc(session,request){
     if(request.spawnPrefix&&session.spawnContexts?.has(request.spawnPrefix)&&(!session.process||session.workerSpawnPrefix!==request.spawnPrefix))request={...request,spawnTemplates:session.spawnContexts.get(request.spawnPrefix)};
-    if(!session.process){session.transportWorld=null;session.process=spawn(session.binary,[],{env,windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>{session.process=null;session.workerSpawnPrefix=null;});}
+    if(!session.process){session.transportWorld=null;session.process=spawn(session.binary,[],{env:{...env,...process.env,PATH:env.PATH},windowsHide:true,stdio:['pipe','pipe','pipe']});session.lines=readline.createInterface({input:session.process.stdout});session.process.stderr.on('data',()=>{});session.process.on('error',()=>{});session.process.once('exit',()=>{session.process=null;session.workerSpawnPrefix=null;});}
     return new Promise((resolve,reject)=>{const prepareStart=performance.now();const clockOnly=session.metadata.workerProtocol>=2&&["frame","reset"].includes(request.command);if(request.command==="reset")session.transportWorld=null;const current=clockOnly?null:request[canonicalWorld]?request.objects:JSON.parse(JSON.stringify(request.objects)),patch=!clockOnly&&session.metadata.workerProtocol>=2&&session.transportWorld?(request[canonicalWorld]?.patch&&session.transportWorld===request[canonicalWorld].base?request[canonicalWorld].patch:worldPatch(session.transportWorld,current)):null,packet=clockOnly?{...request,objects:[]}:patch?{...request,objects:undefined,objectPatch:patch}:request;if(!clockOnly)session.transportWorld=current;const payload=JSON.stringify(packet),rpcStart=performance.now();const child=session.process,lines=session.lines,queries=new NativePhysicsQueries(request.objects,{authorizeWorld:query=>spawnQueryRequest(request,query,session.metadata,request.spawnTemplates||session.spawnContexts?.get(request.spawnPrefix))});let finished=false;
       const cleanup=()=>{finished=true;clearTimeout(timeout);queries.close();lines.off('line',onLine);child.off('exit',onExit);child.off('error',onError);};const onError=error=>{if(finished)return;cleanup();session.transportWorld=null;reject(error);},onExit=code=>onError(Error('C++ 실행 프로세스가 종료됐어요: '+code));const timeout=setTimeout(()=>{child.kill();onError(Error('C++ 함수 실행 시간 제한 초과'));},5000);
       const onLine=async line=>{if(finished)return;

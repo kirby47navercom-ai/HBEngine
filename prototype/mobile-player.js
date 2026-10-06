@@ -4,15 +4,16 @@ import {spawnQueryRequest} from './native-spawn.js';
 import {NativePhysicsQueries} from './native-physics-query.js';
 import {worldPatch,commitNativeWorld} from './native-transport.js';
 import {canonicalWorld} from './native-protocol.js';
-import {resolveBuildPath} from './build-profile.js';
+import {resolveBuildPath,kioskSettings,validKioskSettings} from './build-profile.js';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(s=>!s||s==='.'||s==='..');
 export function mobileBackend(manifest,{read,request}){
+  if(!validKioskSettings(manifest))throw Error('키오스크 패키지 설정 오류');
   if(manifest.version!==1||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene))throw Error('모바일 패키지 형식 오류');
   const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,gameInstance:manifest.gameInstance||'',legacyStorage:false,player:true};
   const entries=new Set(manifest.entries.map(e=>e.path)),protocol=new NativeProtocol(),modules=new Map();let report=null;
   const resolve=name=>{if(!safe(name))throw Error('모바일 에셋 경로 오류');const resolved=resolveBuildPath(name,manifest.redirects);return entries.has(resolved)?resolved:null;};
-  const saveKey=slot=>'hbengine.savegame.json.'+slot+'.project.'+encodeURIComponent(manifest.id),persistentQueries=createPersistentQueries({readAsset:async name=>{const resolved=resolve(name);if(!resolved)throw Error('쿠킹된 데이터 에셋이 없어요.');return JSON.parse(await read('Content/'+resolved));},readSave:async slot=>(await request('storageRead',{})).items[saveKey(slot)]??null,writeSave:(slot,json)=>request('storageWrite',{[saveKey(slot)]:json}),deleteSave:slot=>request('storageWrite',{[saveKey(slot)]:null})});let gameSessionId;
+  const saveKey=slot=>'hbengine.savegame.json.'+slot+'.project.'+encodeURIComponent(manifest.id),persistentQueries=createPersistentQueries({readAsset:async name=>{const resolved=resolve(name);if(!resolved)throw Error('쿠킹된 데이터 에셋이 없어요.');const data=await read('Content/'+resolved);if(data instanceof Response){if(!data.ok)throw Error('데이터 에셋 요청 실패: '+data.status);return data.json();}return JSON.parse(data);},readSave:async slot=>(await request('storageRead',{})).items[saveKey(slot)]??null,writeSave:(slot,json)=>request('storageWrite',{[saveKey(slot)]:json}),deleteSave:slot=>request('storageWrite',{[saveKey(slot)]:null})});let gameSessionId;
   for(const [index,module] of manifest.nativeModules.entries())modules.set(module.signature,{...module,index,token:module.signature,queue:Promise.resolve()});
   protocol.module=token=>modules.get(token);
   const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json'}});
@@ -37,7 +38,7 @@ export function mobileBackend(manifest,{read,request}){
     const body=()=>{const raw=options.body||'{}';if(typeof raw!=='string'||raw.length>8388608)throw Error('모바일 요청 크기 오류');return JSON.parse(raw);};
     try{
       if(url.pathname==='/api/session'&&method==='GET')return json(session);
-      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile:true});
+      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,kiosk:kioskSettings(manifest),configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile:true});
       if(url.pathname==='/api/project'&&method==='GET')return json({entries:manifest.entries});
       if(url.pathname==='/api/file'&&method==='GET'){const resolved=resolve(url.searchParams.get('path'));if(!resolved)return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
       if(url.pathname==='/api/game-data'&&method==='POST'){const data=body();return json({value:await persistentQueries(data.key,data.args)});}

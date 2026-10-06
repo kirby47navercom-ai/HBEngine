@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {NativeHost} from './native-host.mjs';
-import {NativeWorldClient} from '../prototype/native-transport.js';
+import {NativeWorldClient,canDeferNativeFrames} from '../prototype/native-transport.js';
+const compiled=new Map([['A',{token:'A'}],['B',{token:'B'}]]),actor={nativeClass:'ActorA',blueprintAsset:'A'};assert.equal(canDeferNativeFrames([actor],compiled),true);assert.equal(canDeferNativeFrames([actor,{nativeClass:'ActorB',blueprintAsset:'B',poolActive:false}],compiled),false);assert.equal(canDeferNativeFrames([{nativeClass:'Unknown'}],compiled),false);
 
 const header=`#include <HBEngine/Game.hpp>
 HB_CLASS() class FrameProbe:public hb::Library {public:

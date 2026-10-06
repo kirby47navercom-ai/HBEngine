@@ -6,7 +6,7 @@ export function actorClassNames(object,root){
   const classes=new Set(root?[root.name,object.blueprintAsset,...root.inheritance?.ancestors||[]]:[]);
   for(const path of [...classes])if(typeof path==='string'&&path.endsWith('.hbblueprint.json'))classes.add(assetClass(path));
   let type=root?.settings?.parentClass||object.nativeClass||kindClass[object.kind]||'Actor';
-  const native=root?.native?.classes.find(c=>c.name===type);if(native){classes.add(type);type=native.base;}
+  const native=root?.native?.classes?.find(c=>c.name===type);if(native){classes.add(type);type=native.base;}
   for(let depth=0;type&&depth<32;depth++){classes.add(type);type=blueprintClasses[type]?.base;}
   return [...classes].filter(v=>typeof v==='string'&&v);
 }

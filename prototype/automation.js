@@ -1,4 +1,4 @@
-import {validAsset} from './asset-documents.js';
+import {validAsset,assetValidationError} from './asset-documents.js';
 
 export async function documentRevision(data){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(data)));return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');}
 export function patchAsset(kind,data,operations){
@@ -17,7 +17,7 @@ export function patchAsset(kind,data,operations){
     else{if(!Object.hasOwn(operation,'value'))throw Error('패치 값이 없어요.');const value=structuredClone(operation.value);if(array&&operation.op==='add')parent.splice(index,0,value);else parent[index]=value;}
     if(!parts.length)result=parent.root;
   }
-  if(!validAsset(kind,result))throw Error('패치 결과가 에셋 규칙에 맞지 않아요.');return result;
+  if(!validAsset(kind,result))throw Error('패치 결과가 에셋 규칙에 맞지 않아요. '+assetValidationError(kind,result));return result;
 }
 
 // Commands call the same editor functions as human actions; DOM simulation is unnecessary.

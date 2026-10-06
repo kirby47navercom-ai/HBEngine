@@ -40,7 +40,7 @@ export function sliceSpriteGrid(sprite,image,{width=32,height=32,margin=0,spacin
   return Array.from({length:columns*rows},(_,index)=>({...structuredClone(sprite),name:sprite.name.slice(0,115)+'_'+String(index+1).padStart(3,'0'),rect:[x+margin+(index%columns)*(width+spacing),y+margin+Math.floor(index/columns)*(height+spacing),width,height]}));
 }
 /** Borders use left/bottom/right/top pixels. UVs are local to the cropped sprite rectangle. */
-export function spriteSlices(sprite,image,{size,mode='sliced'}={}){
+export function spriteSlices(sprite,image,{size,mode='sliced',origin='bottomLeft'}={}){
   const layout=spriteImage(sprite,image);if(!layout||!vector(size,2,.001,10000)||!['sliced','tiled'].includes(mode))throw Error('스프라이트 크기·모드를 확인하세요.');
   const [left,bottom,right,top]=sprite.border||[0,0,0,0],w=layout.rect[2],h=layout.rect[3],ppu=sprite.pixelsPerUnit;
   if(left+right>w||bottom+top>h)throw Error('스프라이트 테두리가 원본 영역보다 커요.');
@@ -50,6 +50,7 @@ export function spriteSlices(sprite,image,{size,mode='sliced'}={}){
     if(b>0)list.push({from:length-b,to:length,u0:last,u1:1});return list;
   };
   const xs=segments(size[0],left,right,w,left/w,1-right/w),ys=segments(size[1],bottom,top,h,bottom/h,1-top/h);if(xs.length*ys.length>10000)throw Error('스프라이트 반복 면 제한 초과');
+  if(mode==='tiled'&&origin==='topLeft'&&bottom===0&&top===0)for(const y of ys){const from=size[1]-y.to,to=size[1]-y.from,u0=1-y.u1,u1=1-y.u0;Object.assign(y,{from,to,u0,u1});}
   const positions=[],uvs=[],normals=[];for(const x of xs)for(const y of ys){const verts=[[x.from,y.from,x.u0,y.u0],[x.to,y.from,x.u1,y.u0],[x.to,y.to,x.u1,y.u1],[x.from,y.from,x.u0,y.u0],[x.to,y.to,x.u1,y.u1],[x.from,y.to,x.u0,y.u1]];for(const [vx,vy,u,v] of verts){positions.push(vx-size[0]/2,vy-size[1]/2,0);uvs.push(u,v);normals.push(0,0,1);}}
   return {positions,uvs,normals,size,offset:[(.5-sprite.pivot[0])*size[0],(.5-sprite.pivot[1])*size[1]]};
 }

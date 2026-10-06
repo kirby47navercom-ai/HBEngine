@@ -1,3 +1,84 @@
+# 최신 진행 — 2026-10-06 P1/P2 통합 수리·실제8시간 재시작
+
+- 인간 latest: P0-5완료→사용자설치→나머지MD전부일괄구현/최종검사/수리/설치→누적장기작업. P05 설치09e4470b1e254ac3/HEAD26bd257 유지. 전체P1/P2+A1–13 diff미커밋. 원본Auric게임/검사 공동 작업 중, 절대덮어쓰기 금지. 한국어 커밋/공개push kirby47navercom-ai. agent/goal 새로생성 금지. 주인님/짚짱 존댓말/백그라운드 유지.
+- session65670 실제8h: kiosk-soak-zjUtGE, UTC06:25:27.387→14:25:27.387. D3vnwR/build.json fixedpackage. 실제시간·자연GC·60초reset·1000발30targets, phase5초샘플/30분warmup 이후 전체privateMB/h≤1/geo&texrange≤4. 진짜8h완료전PASS금지. 사용자app/프로필/defaultADB14204 유지.
+- old76265/zEjNdw1636sec28sessions 취소/exit1failure 유지. warmup.heapsnapshot76MB oldBlueprintRuntime/AudioContext26. Blink pending activities→HTMLaudio loop→ended listener→item.vm oldVM. 공용 AudioRouting.disconnect HTMLpause/removeAttribute(src)/load + startVoice success item.vm=null. sourceAudioDouble regression stop/unload/keepMusic scene travel PASS. lAHd9Z 실제20F12 후VM1→1/AudioContext1→1(PASS수명만;GC강제/8h와구분). prototype조회oCueHa0 실패검사교정; direct hbPlayerDebug.runtimePrototype 사용/exception 검사.
+- PC budget58.9fail repeated 보존(WVwsTK/wRYak9,lAHd9Z,K2euMe,diagnosticShu686). ShuCPU HUD DOM쓰기 hotspot. widgetTree node/image stamp+cached MediaQueryList로 변경만쓰기. actualD3vnwR600frames59.5085PASS/oldtarget59변경안함; runtimeFeatures/UIcache/audio regression PASS. SpriteProjectile broadphase 이전배열alloc제거/요청Target만collidercompute. 실제SVG S84vhZ400msHUDDOM쓰기0/6res/1.5SVG/한국어/button/BP PASS.
+- fullbatch31875/WVwsTK finalfalse PCfps만실패, Editorp6kXQ2 allPASS/audio20/93/C++Source/BOM/외부reload/한글tableUndo/activeBPtime/heldW. AndroidGWQQIo fullPASS Back2pause/resume/93/audio20/touch/HOME/1000/30targets600frames40.9054fps/workp9532.8. Androidtarget36Back API33+OnBackInvokedCallback officialfix. freshAndroidsession16086 newUIcache/audiocleanup/3mobileHUDres actualWebView resize added, currentlybooting.
+- EditorfrontendMs 누락field 고침: qSHOOF travel-only/boss6sec actualPASS: Dungeon2frontendp952.5/rpc1.2062;Dungeon4frontendp952.7/rpc1.3707/invoke.2423. 표고정게임과보고70–90differentversion,no controlledspeedup.
+- freshdesktop85784 PASS 배포dist/HBEngine updated. currentchecker newsession juststarted afterUIfix: check-auric-spawn --current. current checkerhash976c8f... (old55e77b... goldenunchanged), checker9 adapter preserveInputOnTravel:false goldenonly &AURIC_MUTE삭제, heldinput separatelyPCEditorheadlessactualPASS.
+- Actualwatchdog7pB3zgPASS realcrash ownPID/exe/argv →1secnewPIDready→normalexit0norespawn. actual2dEffects cC3TgE PASS CPPFlash/screenFlash/cliploopstop/additive/emissive/globalBloom/threshold/pixelbars/5toggletexture2.
+- GitHub gh없음. 비대화식 git credential fill(GIT_TERMINAL_PROMPT0/GCM_INTERACTIVEnever) password는 메모리만/출력금지, REST APIuser.login검증kirby47navercom-ai 가능. latestiosrun37390023600(78bd47b)PASS oldsource. 커밋push후새mobile-ios.yml workflowdispatch+status/artifacts 아직필요. Caveman-commit읽음/사용고지 아직안함.
+- docsAURIC_VALIDATION_20261006/MOBILE_PERFORMANCE_BUDGET 업데이트, 인간MD progress아직후속미추가/체크박스미표시. 실제폰unanswered/MacXcode없음/Apple signing없음, emulator를physical로계산금지. 기능gates끝나면 한국어commit/push/불변사용자install(현재oldversion유지), 8h완료결과후checkbox보정과누적전체research 계속. 최종부분완료turn끝내지말것.
+
+## 이전 진행 기록
+
+# 최신 진행 — 2026-10-06 P1/P2 + A11–A13 통합 검사
+
+- 현재 batch exec21574 / native/build/auric-features-batch-s1l6s7: generate/API/features/cache/pool/nativeSpawn/frame/FSM·BT batch/profiler/FSM검증/montage notify/lifecycle/environment/2D/runtime/input/audio/UI/scene PASS, inheritance 이후 순차 검사 중. 마지막 PC/Editor/Android도 batch에서 실행. A1 actual Boss/Dungeon2 profiler6초 비교 새 Editor gate 추가; 아직 결과 없음.
+- **actual8h session76265 / kiosk-soak-zEjNdw** 계속. UTC05:45:40.467→13:45:40.467. 수정 전 고정 features-window-Xsn7PR 패키지. warmup 중 UTC05:53:08 debug.ready 측정 게이트만 busy/kioskResetting/time>.2로 래핑, sampling-readiness.json에 기록; 게임·renderer·PID·연속8h시계 미변경. 현재 textures5 일정, geometry16~41 주기변동/PrivateMiB~922–943: 워밍업 뒤 실제 추세로 판정. 가속/짧은 런을8h로 계산 금지.
+- Player 준비 상태 root 수정: frame은 전체세션누적, sceneFrame은장면별10 rendered frames(장면open시0). 이전 APK4juuUw stress 복귀0발이었던건 stale debug.ready false-positive. 실제 APK DGHFci Spawn93+Ctor93+Hp99.25, Audio20/Touch/background,1000발30적600frames fps39.7923/workp9530.3 통과. 마지막 Android Back CDPtimeout→전체FAIL 보존.
+- Android16 target36에서는 legacy onBackPressed 호출 안됨(공식 developer.android.com/about/versions/16/behavior-changes-16#predictive-back 읽음). HBActivity API33+ OnBackInvokedDispatcher callback 등록, older legacy handler 공유. Back pause/Back again resume 테스트 추가, 다음batchAPK에 포함. physical기기/Mac/signing 없음.
+- 원본 MD 동시 변경으로 **A11 Bloom/A12 Flash/Additive/A13 C++Clip 새 요청** 발견/함께 반영. prototype/bloom-rendering.js 기존 Three EffectComposer/UnrealBloomPass/OutputPass 재사용, PostProcessVolume global highestPriority, threshold0..64/strength0..10/radius0..1/resScale.25..1, disabled면noGPUtargets. Sprite/Tilemap emissiveIntensity0..64, Additive 표면 C++/BP/Inspector/Schema. 기존 Sprites::Flash/PlayAnimation 실제실행 연결 검증. actual Player **2d-effects-window-jQIv7R PASS** C++flash/loop/stop/HDRhalo/threshold64/픽셀여백/GPUtoggle5회, bloom.png 시각 확인. 발광 간접조명/GI를 지원한다고 주장 금지.
+- **watchdog actual kiosk-watchdog-7pB3zg PASS** 소유검증PID23056 실제 taskkill→1sec→새PID10368 ready→normalexit0 재시작없음. 검사 패키지를 별도copy(root mutex 분리). 초기 WCDz67/JhydlD 같은Xsn패키지를 써 single-instance 재사용으로 증거없는FAIL, 이를PASS로 인용 금지. 테스트때 우리soak창이잠시표시되어 exactPID59212/exe확인 뒤 Win32ShowWindow0숨김복원, 사용자app미변경. 1YtbzW 한글PowerShell출력encoding검증FAIL, UTF8출력수정후7pB3zg통과.
+- actual Editor TQFwe6 PASS93spawn/BP활성whilePlaytimeadvance/nativeProfiler분할20audio/camera/external/Cppnondirty/KoreanUndo/Wtravel. 이전 gU1GAI BPwhilePlay open guard 실패: app guard blueprint허용, authoring guard유지.
+- P05 설치09e4470b1e254ac3/HEAD26bd257 유지, 큰 P1/P2/A diff 미커밋. 사용자앱/프로필/기본ADB14204 유지, originalgame공동편집소스덮기금지. MD진행기록/checkbox/docs보강→Korean commit/push+remoteiOS proof→불변설치업데이트.8h/실기기false금지, 최종부분완료로턴끝내지말 것. 새agent/goal금지.
+
+# 최신 진행 — 2026-10-06 A1–A10 통합 수리와 실제 8시간 검사
+
+- HUMAN: P05 뒤 사용자 설치, 나머지 MD 전체 구현→통합 검사/수리→설치, 긴 엔진 작업 계속. P05 26bd257 / 설치09e4470b1e254ac3 유지. 큰 diff 아직 미커밋. 사용자 앱/프로필/ADB14204 유지. 새 agent/goal 금지. 원본게임 동시 편집: private native/build/auric-spawn-LruQRE만 migration. 최종 부분완료 응답 금지.
+- 실제 최신 Game.exe **features-window-Xsn7PR PASS**: 93개 CPP Spawn + Construction93 + 다음프레임 raw pointer/HP99.25, rawPNG 준비 첫 Spawn<1ms/반복p95<1ms/ActorPool<1ms, audio20/UI3res/6Scene/W누름/F12/idle60/정상exit0, 1000발30적 fps59.022. 이전 EbCbap fps58.918 실패(프로브 전용 모듈을 성능 장면에 넣은 조건) 보존. QxX5cl 기능passed지만 shutdown timeout: acceptance.json의 premature true를 전체PASS로 인용 금지; failure.json이 실제 결과. 검사 이제 ready후 종료 + 모든 성공 뒤 acceptance 작성.
+- **actual8h active session76265 / kiosk-soak-zEjNdw**, Xsn7PR/build.json 고정. startedUTC2026-10-06T05:45:40.467Z, 종료목표UTC13:45:40. 실제시간 줄이거나 가속으로 대체 금지. 이전51Gx2M 12sessions/666sec 자원증가 발견 후 취소(cancelled.json), PASS 아님. PMREM WebGLRenderTarget 전체 소유/dispose + preview/pagehide 수정 환경34/lifecycle PASS. 현재 실행본을 소스 수정과 혼동하지 말 것.
+- 최신 actual Editor active session72784, A4/5 93개와 A7 활성 BP 중 time진행 추가. Android fresh APK active session88494, 20audio/93spawn/touch/background/Back/1000발600frames + nativeTransport 수집. perf 다른 작업과 CPU/GPU 공유 조건 명시. 이전pyXygs audio20(40ms SfxSelect peak.126) 통과, fps35.49/workp95 37.4 예산실패, top-levelawait 검사 SyntaxError도 수정. physical phone/Mac/signing 없음.
+- A4/5 원인: 개별 SceneSpawn 처리의 CPP Construction callback이 아직 VM에 없는 후속 spawns를 worker에서 제거. 공용 applyNativeOperations는 전체 spawned cells를 먼저 VM 등록, authored순서 materialize. app/player/headless/VM 모든 경로 연결. actualCPP native-spawn-yiRsAZ PASS93constructor+포인터; LEGACY_APPLY1 UgDO4M raw pointer fail 재현 보존.
+- A2/A3: cacheAssetReader 256/32MiB Promise/LRU/clone/실패재시도/epochStop. SceneRendering sharedimageSource 128/32MiB, UV private. prepareSpawn sprite JSON뿐 아니라 rawPNG/normal warm. 단순 pooled sprite/collider는 무관한 autoplay/AI start 제외. asset-cache/pool100회 PASS. gameplay.remove 요청맵은 monotonic actorRequestSerial 후 삭제, 몽타주 epoch WeakMap으로 사망Actor key 증가 방지. montage/lifecycle PASS.
+- A6 actual CPP FSM state-native-batch-0dNLM4 (3프레임15→3RPC, 이전Actor/다음Actor clock 순서, board변경barrier, 오류복구) PASS. gameplayDebug preview worker RAII복원, nativeStateBatch1, malformed/oversized/unknown/duplicate fields拒否. BT behavior-native-batch-ZRRnTx PASS15→3, Finish/오류/selector·sequence·timeLimit·repeat stablepath. 서비스/서브트리/병렬/재평가 필요분기는 원래 순서 유지. NativeCallbackGroup generic name,args,scope, failurecleanup 완료행 보존.
+- A1 nativeProfiler clientSerialize/Patch/Ack/Apply/Operations + workerparse/patch/sync/checkpoint/invoke/snapshot/rpc/whole 분리, snapshot/runtime.state pauseReason/command/frame/document. check-profiler-native PASS. 실제 보스 튐 전후값 아직 확보 안됨. A10 구체 중복 이름/ID 에러 document/open/save/projectservice/runtime/automation patch 연결. A9 props512 테스트PASS. A8 path-only nondirty actualEditor 이전PASS.
+- canDeferNativeFrames: 컴파일된 unused templates만 있고 실제 CPP Actor token1이면 기존 one-module 프레임 묶음 허용; 비활성 Actor라도 다른 token있으면 즉시경계 유지, unknownbuild도 false. app/player/headless 공용, native-frame actualPASS. 여러 활성모듈 전체 무조건 지연 아님.
+- 준비도구 prepare-auric-spawn-probe.mjs: private 전용 Test_NativeSpawns scene / SourceSpawnProbe.h/cpp / BP_SpawnCell & BP_SpawnProbe. separate scene prevents benchmark from adding active CPP module. auric-spawn-proof sharedactual Game/Editor/APK checks93Constructed/HP99.25/cleanup. 통합batch 도구에 prepare step/새회귀 추가 아직 필요.
+- 남음: Editor/APK gate결과 수리, physicalAndroid질문 unanswered 유지(단순 emulator를 실기기로 계산 금지), freshheadless/original9/전체주요회귀, actual watchdogcrash→relaunch→normalstop, docs/MD기록+checkbox 근거, Koreancommit/push+remoteiOSdispatch/artifacts, finalimmutableinstall. 8h 완료 전 PASS금지. Caveman-commit read했으나 아직 staging/사용고지 안함. 한국어authorkirby47navercom-ai.
+
+# 최신 진행 — 2026-10-06 P1/P2 통합 검사 수리
+
+- P05 설치09e4470b1e254ac3 완료/HEAD26bd257 유지. 큰 P1/P2 diff 아직 커밋 안 함. 전체 구현 후 통합 검사, 한국어 커밋/공개 push/불변 설치 업데이트/누적 엔진 작업 계속. 최종 부분완료 응답 금지. 원본게임 동시 편집 중, old native/build/auric-spawn-LruQRE private fixture만 migration. 사용자 앱/기본 ADB14204 유지, 새 agent 금지.
+- Windows desktop fresh build exec52010 PASS. 실제 Game.exe 최종 gate 현재 exec22573: new ComponentsAPI/audio peak interval/autoplay flag/periodicreport nonblocking + 1000shots30targets/20audio/UI3res/heldW Dungeon4/6scenes/F12idle60. 통과 후 build.json으로 check-auric-kiosk-soak.mjs fixture build.json 8 즉시시작. 실제8h 아직 시작 안함; native HB_PLAYER_SOAK_HOURS1..24 timeout확장 구현 포함. soak error DOM guard 추가.
+- 실제 Editor sU5LX4 fullPASS20audio/문서camera/외부reload/Source refs/BOMCRLF/nondirtybuild/한글dataUndo/offfocus. BecbXT/CwFlmC heldW Hub는 입력w1유지였으나 Hub벽 충돌(시간1.7s뒤arrival y1.7,wall2.1). travel-only QYW0Rk Dungeon4 안전구간 실제 W유지+이동PASS.
+- 실제 SVG ui-render-window-qCgyLJ PASS6cases. 1920x1080 SVG1.5x directSVG pixel mean error0,300samples150white150black0blur. 한글HUD/버튼/Touch/클릭BP수정. innerimgwrapper검사수정, UISetTexturevectorfallbackclear/accessibilityalt수정. UIallprops/5filldirections/fade/snapshot 검사PASS.
+- runtimefeatures actual CPP GetSetallcomponentproperties >300/VecColorJSONarray/Transformreadlive/bounds/Camera prioritymainprojectionrefresh PASS. groupedauric-final-components-s5hdLW 5gates PASS. MobileAOTQDO4V7 Response JSON/readcache/404 + 실제2CPP/iOSexport PASS. headless eKo93G heldW/frame6→30 이동PASS.
+- Android latest15042 uIFk80 APK built/installed/launched butownADB timedoutallcommands,CDP target90s timeout. 26129diagnostic all3timedout. Finally ownemu/server cleaned, defaultADB14204 only alive. Priorax7lXb alsoCDPstall (ownNode23672/qemu13540/server37388 verifiedstopped; failurespreserved). Now test uses recommended emulatorports5554..5584 (old5654 warning) + independent emulatorstdout logcat for failures. Reuse uIFk80/build.json withoutfullAPKrebuild afterPCgate, noheavyparallelperformance.
+- PriorAndroidNp5RJJ actual first4audiopeaks,69msSfxHitpeak0 despite8mssampler. Production BufferedAudioPlayer nowbothios/android uses sharedPCM32MiBLRU,checksPASS; actualAndroidpath validation blockedtransport. Don’tclaimPCMfix passed. CDP HTTP3sec/Websocket10sec timeouts added.
+- Original9 checker-IOaiy1 all9 code0, originalsource preservationfalse becauseconcurrentuserchange;checkerSHA55e77b... unchanged. Musthonestlydistinguish9functionalpass vs concurrenthash. PhysicalAndroid noanswer/Macnone. Remote iOS newbranch gate pendingpush. Docs/MDremaining unmarked untilactualproof; P214physical+P216physical+P2158h notfake.
+
+## 이전 인계
+
+# 최신 진행 — 2026-10-06 P1/P2 통합 구현·검증 진행
+
+- 사용자 최신 순서: P0-5 설치(완료) → 남은 MD 전체 구현 → 한 번 통합 검사·실패 수리 → 새 불변 설치 → 누적 엔진 작업. 최종 응답 금지. 사용자 창/설치09e4470b1e254ac3/User 프로필/기본 ADB 유지. 새 agent 금지.
+- HEAD26bd257 + P1/P2 큰 미검증 diff. 신규 도구 prepare-auric-features/projectiles, check-runtime-features, check-auric-features-headless/window/editor, check-auric-batch, check-auric-kiosk-soak. 원본 게임은 동시 작업으로 C++ TopDownShooter가123속성으로 바뀌는 중. 엔진 native 속성 제한100→512 +123개 파서 확인 추가. 새 원본을 옛 migration으로 덮어쓰지 않는다.
+- 고정 검증 사본 native/build/auric-spawn-LruQRE. 초기 실패 49ECo0/F7DPq3 및 batch-kSLq63/Asm9mU/cb4Ke4/qLDUdM 보존. Assets/Prefabs가 아니라 Spawn임. fixture.project 누락·transparent 아닌 #00000000·GoldText(없는 DebtText 아님) 수정. C++ LoadData를 실제 다중 인자 Update 시작에 연결하고 중괄호 배열에 크기 보존. 준비 스크립트와 검증 사본 둘 다 수정.
+- features-headless-4L24fO PASS:20오디오 기록/첫 프레임 위젯/실제 C++ 충돌 묶음/76데이터/환경쓰기/데이터 변경4 재컴파일 없음. NativeHost cacheKey/cacheHit를 노출; 세션 token은 매번새값이므로 캐시검사에 사용하지 않음. manual nativeCall은 args.target 필수: Player debug.call 자동으로 nativeTargetPin 주입.
+- runtime/input/UIaudio/ui-layout/native/상속CPP/mobile-AOT 기존 검사 통과. audioSession optional undefined==undefined 조건과 TouchPad doc/element move 회귀/Bridge.hpp misleading indentation/native test json include 수정. LevelTransition 입력 유지에는 실제 Game session이 필요하고 EndPlay 실패는 input cleanup. check-scene-runtime 후속 PASS.
+- 현재 exec session48376: native 신규123속성·scene-runtime PASS 뒤 원본 그대로 복사한 check_demo9 실행 중(check-auric-spawn.mjs LruQRE). 원본 동시 변경 SHA 비교는 false일 수 있고 실패를 숨기지 않는다. 원본 checker SHA55e77b... 유지. 검사기 K→touch LeftMouse 변환은 복사 Engine 어댑터만.
+- 다음: checker9 결과/잔여 수정 → actual PC features-window + editor + Android 4corehost 한 번 → 실제 SVG1.5x 도트/UI 확인 →8hsoak 백그라운드 별도(아직 시작/통과 아님). check-auric-kiosk-soak.mjs <privatefixture> <PCbuild.json> [8]. no compiler package/temp/local/6scenes/F12idle/kiosk actual 검증 포함.
+- Android 실물 응답 없음; Mac/Xcode 없음. iOS 원격 새 코드 SDK/audio 검증 및 signing flow 문서·실기기 필요. 에뮬레이터를 실물 열·터치 지연/PC8시간으로 계산하지 않는다. 전체 Unreal/Unity 분석 gate false.
+
+## 이전 인계
+
+# 최신 진행 — 2026-10-06 P0-5 설치 완료 / MD 나머지 일괄 구현
+
+- P0-5 커밋 26bd257 공개 main 푸시 완료. 사용자 설치본 C:/Users/kirby/HBEngine/Versions/09e4470b1e254ac3, 사용자 바로가기 갱신. 현재 켜진 창·프로필·기본 ADB 유지. Stage .codex/engine-staging/p05-HBEngine-20261006는 격리된 검증 배포 사본.
+- 실제 Game.exe·Android APK 세션/JSON SaveGame/Scene arguments/restart 확인. native/build/auric-spawn-Z85KyY, P0-5-acceptance.json 및 docs/AURIC_GAME_SESSION.md. 원본 225파일 SHA와 checker 55e77b195642b74fc61d1646be3caff641309f87d7332e1f7a1f0063a2958de3 보존.
+- Primary HEAD 26bd257, P1/P2 미검증 작업을 worktree에 보존. source merge 백업 native/build/p05-merge-N78RGi. 다시 P0 검사를 반복하지 않는다.
+- 다음 P1-6~P2-16 전체 MD 구현 후 통합 검증·실패 수정·진행 기록·한국어 커밋/푸시·불변 설치본 갱신. 그 뒤 거대한 전체 누적 엔진 작업 계속. 중간 기능별 전체검사/빌드 하지 않는다. 최종 완료 응답 금지.
+- P1 audio 비동기 경쟁/음악 장면 수명, UI runtime/9slice, typed components/실제 CameraShake, data wrapper/rename, touch carry 남음. P2 문서 외부변경/Source원본·2D pixelperfect/tiled·headless·mobile 실제제약·kiosk·1000projectile arrays/instancing 남음.
+- 전체 공식 본문/API 분석 gate false; 전부 분석/전부 상용 완성 주장 금지. 물리 Android/iOS·8h soak 수치 꾸미지 않는다. 사용자 앱 조작 금지. 새로운 subagent 금지.
+
+## 이전 인계
+
+# 최신 지시 — 요청 문서 전체 구현 뒤 통합 검사
+
+- 주인님 2026-10-06 명시 지시: 엔진_개선_요청.md 남은 전체 구현 → 마지막 통합 검사 → 문제 수정 → 승인된 설치 업데이트 → 누적 엔진 작업. 개별 기능/단계마다 전체 검사·PC/Android 빌드 반복 금지. 기존 단계별 검증 규칙보다 최신 지시가 우선. 구현을 막는 오류 확인 외 검증은 통합 시점에 수행. 원본 게임/checker/사용자 설치본/프로필/창 유지. 완료 체크는 실제 증거 이후에만.
+
 # 최신 진행 — 2026-10-06 Auric P0-4 검증 통과 / P0-5 시작
 
 - 원본 요청 P0-4 네 기준 체크·진행 기록 추가. 원본 checker9 수치 동일/225파일 SHA/고정 engine SHA: auric-original-ll0oi1. 미리배치 풀1005개 제거 private Auric9checker: auric-spawn-58vhJd. Hub도 같은BP, MainCamera 태그 검색. 원본/checker/사용자 설치본/프로필/기본ADB 미수정.

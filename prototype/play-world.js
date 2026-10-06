@@ -8,7 +8,7 @@ import {actorClassNames} from './runtime-actors.js';
 import {spawnRequested,prepareSpawnCatalog} from './runtime-spawn.js';
 
 export async function prepareActorBindings(objects,{readAsset,readText,buildNative,builds=new Map(),nativeBuilds=new Map(),loaded}){
-  loaded??=await loadSceneBindings(objects,readAsset);installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
+  loaded??=await loadSceneBindings(objects,readAsset,readText);installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
   for(const {root,self,path} of loaded.bindings){
     if(root.native){const header=canonicalNativeText(await readText(root.native.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(root.native.sourcePath||'Source/DoorController.cpp'));Object.assign(root.native,parseNativeHeader(header),{header,source});}
     const object=objects.find(item=>item.id===self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
@@ -23,7 +23,7 @@ export async function prepareActorBindings(objects,{readAsset,readText,buildNati
 export async function preparePlayWorld(objects,settings,{readAsset,readText,buildNative,listAssets,game,gameInstance='',travelArguments={}}){
   settings={...defaultRuntimeSettings,...settings};const reads=new Map(),read=path=>{if(!reads.has(path))reads.set(path,Promise.resolve().then(()=>readAsset(path)));return reads.get(path);};const config=settings.gameConfig?await read(settings.gameConfig):null;
   if(config&&!validAsset('gameconfig',config))throw Error('게임 설정 에셋 검증 실패');
-  const gameRows=game?await game.attach(objects,gameInstance||config?.gameInstance||game.path||'',read,readText):[];if(game)game.setArguments(travelArguments);const initial=await loadSceneBindings(objects,read);installBlueprintInstances(objects,initial.bindings.filter(b=>b.self!==game?.instance?.id||!game.initialized));const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read),builds=new Map(),nativeBuilds=game?.nativeBuilds||new Map();
+  const gameRows=game?await game.attach(objects,gameInstance||config?.gameInstance||game.path||'',read,readText):[];if(game)game.setArguments(travelArguments);const initial=await loadSceneBindings(objects,read,readText);installBlueprintInstances(objects,initial.bindings.filter(b=>b.self!==game?.instance?.id||!game.initialized));const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read,readText),builds=new Map(),nativeBuilds=game?.nativeBuilds||new Map();
   for(const binding of [...gameplay.bindings,...gameRows]){const existing=loaded.bindings.find(item=>item.self===binding.self);if(existing)Object.assign(existing,binding);else loaded.bindings.push(binding);}
   installBlueprintInstances(objects,loaded.bindings.filter(b=>!b.retained));
   applyTravelSpawn(objects,gameplay.gameplay,travelArguments);

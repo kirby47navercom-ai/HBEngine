@@ -51,6 +51,11 @@ function withJSONField(object,key,value){const text=JSON.stringify({...object,[k
 function nativeRowJSON(object){
   const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
 }
+// Compiled templates without an actor cannot receive a foreign actor call.
+// Keep the boundary if even an inactive actor belongs to another module.
+export function canDeferNativeFrames(objects,builds){
+  const tokens=new Set();for(const object of objects){if(!object.nativeClass)continue;const build=builds.get(object.blueprintAsset||object.nativeBuildAsset);if(!build)return false;tokens.add(build.token);if(tokens.size>1)return false;}return true;
+}
 export class NativeWorldClient {
   constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
   call(request,metadata,send){

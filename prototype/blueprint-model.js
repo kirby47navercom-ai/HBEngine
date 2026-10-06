@@ -1,7 +1,7 @@
 import {blueprintClasses} from './class-types.js';
 import {componentDefaults,validComponents} from './scene-components.js';
 export {componentDefaults};
-import {validNative,nativePins,nativeMember} from './native-model.js';
+import {validNative,validNativeReference,nativePins,nativeMember} from './native-model.js';
 import {coreApi,serviceApi} from './core-api.js';
 const pin = (id,label,type='exec',array=false) => ({id,label,type,array});
 export const variableTypes = { bool:'Boolean · 불리언', int:'Integer · 정수', float:'Float · 실수', string:'String · 문자열', vec2:'Vector2 · 벡터2', vec3:'Vector3 · 벡터3', color:'Color · 색상', transform:'Transform · 변환', object:'Object · 클래스 참조', hit:'HitResult · 구조체' };
@@ -281,7 +281,7 @@ export const isBlueprintParent=s=>typeof s==='string'&&s.startsWith('Assets/')&&
 export function boundedBlueprintValue(value,budget={left:200000},depth=0){if(--budget.left<0||depth>6)return false;if(value===null||typeof value==='boolean')return true;if(typeof value==='number')return Number.isFinite(value);if(typeof value==='string')return value.length<=100000;if(Array.isArray(value))return value.length<=65536&&value.every(v=>boundedBlueprintValue(v,budget,depth+1));return !!value&&typeof value==='object'&&Object.keys(value).length<=128&&Object.entries(value).every(([k,v])=>k.length<=200&&!['__proto__','prototype','constructor'].includes(k)&&boundedBlueprintValue(v,budget,depth+1));}
 export function validBlueprint(g,{resolved=false}={}){
   if(g?.inheritance!==undefined&&!resolved)return false;
-  const deferred=isBlueprintParent(g?.settings?.parentClass)&&!resolved;
+  const deferred=(isBlueprintParent(g?.settings?.parentClass)||validNativeReference(g?.native))&&!resolved;
   const unresolvedNode=n=>deferred&&(['getVariable','setVariable'].includes(n.key)&&safeId(n.variableId)&&!g.variables.some(v=>v.id===n.variableId)||['nativeCall','nativeEvent','nativeGet','nativeSet','nativeMembers'].includes(n.key)&&typeof n.nativeId==='string'&&/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)?$/.test(n.nativeId)&&n.nativeId.length<=200&&!nativeMember(g,n).c||['callFunction','callMacro'].includes(n.key)&&safeId(n.definitionId)&&![...(g.functions||[]),...(g.macros||[])].some(d=>d.id===n.definitionId)||['dispatcherCall','dispatcherBind','dispatcherUnbind','dispatcherEvent','interfaceCall'].includes(n.key)&&safeId(n.symbolId)&&![...(g.dispatchers||[]),...(g.interfaces||[])].some(d=>d.id===n.symbolId)||n.key==='callParent'&&(safeId(n.parentFunctionId)||n.parentEvent&&typeof n.parentEvent.key==='string'&&boundedBlueprintValue(n.parentEvent)));
   if(!g||g.version!==1||typeof g.name!=='string'||g.name.length>200||!Array.isArray(g.nodes)||g.nodes.length>1000||!Array.isArray(g.variables)||g.variables.length>100||!Array.isArray(g.components)||g.components.length>100||!Array.isArray(g.edges)||g.edges.length>5000)return false;
   if(new Set(g.nodes.map(n=>n?.id)).size!==g.nodes.length||new Set(g.variables.map(v=>v?.id)).size!==g.variables.length||new Set(g.variables.map(v=>v?.name)).size!==g.variables.length)return false;

@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
-import {createGameplayAsset,makeState,validGameplayAsset,addState,reparentState,removeState,stateAncestors} from '../prototype/gameplay-assets.js';
+import {createGameplayAsset,makeState,validGameplayAsset,gameplayValidationError,addState,reparentState,removeState,stateAncestors} from '../prototype/gameplay-assets.js';
 import {StateMachineRunner,gameplaySystems} from '../prototype/gameplay-runtime.js';
 import {NativeHost} from './native-host.mjs';
 import {engineSchema} from './editor-automation.mjs';
 
 const asset=createGameplayAsset('statemachine','FSM_Hierarchy');asset.states=[];asset.parameters=[{name:'Ready',type:'bool',value:false}];
+const duplicated=createGameplayAsset('statemachine','FSM_Duplicate');duplicated.states=[{...makeState('돌진'),id:'group'},{...makeState('돌진'),id:'child',parent:'group'}];assert.equal(validGameplayAsset('statemachine',duplicated),false);assert.equal(gameplayValidationError('statemachine',duplicated),'상태 이름 중복: 돌진 (group / child)');
 const state=(id,parent='')=>{const s={...makeState(id),id,parent,onEnter:'Enter'+id,onExit:'Exit'+id,onUpdate:'Update'+id};asset.states.push(s);return s;};
 const root=state('Root'),idle=state('Idle','Root'),run=state('Run','Root'),other=state('Other');root.initialChild='Idle';asset.initial='Root';
 const transition=(id,from,to,extra={})=>({id,from,to,event:'',hasExitTime:false,exitTime:1,conditions:[],...extra});

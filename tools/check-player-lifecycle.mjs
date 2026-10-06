@@ -8,7 +8,7 @@ const line=prefix=>{const value=source.split('\n').find(s=>s.startsWith(prefix))
 const releaseSource=line('async function release('),failSource=line('async function fail(');
 const closeSource=line('window.hbEngineRequestClose=').split(";$('#quit')")[0]+';';
 const factory=new Function('vm','services','objects','groups','world','remove','report','flushStorage','window','$','console','setTimeout','disposeSceneEnvironment','visuals',`
-  let closed=false,closing=false,busy=false,failureCleanup,sceneEpoch=0;
+  const kiosk={enabled:false},config={},operatorMenu=false;let closed=false,closing=false,busy=false,failureCleanup,sceneEpoch=0;
   ${releaseSource}
   ${failSource}
   ${closeSource}
@@ -79,7 +79,7 @@ const count=(events,value)=>events.filter(event=>event===value).length;
 {
   const fullSource=line("$('#fullscreen').hidden="),elements=new Map(),$=key=>{if(!elements.has(key))elements.set(key,{});return elements.get(key);};
   let requests=0,exits=0,reject=false;const document={fullscreenEnabled:true,documentElement:{requestFullscreen:async()=>{requests++;if(reject)throw Error('platform rejection');}},exitFullscreen:async()=>{exits++;}};
-  const setup=new Function('$','document',fullSource);setup($,document);assert.equal($('#fullscreen').hidden,false);await $('#fullscreen').onclick();assert.equal(requests,1);
+  const setup=new Function('$','document','const kiosk={enabled:false};'+fullSource);setup($,document);assert.equal($('#fullscreen').hidden,false);await $('#fullscreen').onclick();assert.equal(requests,1);
   reject=true;await $('#fullscreen').onclick();assert.equal($('#pause-status').hidden,false);assert.match($('#pause-status').textContent,/전환/);
   reject=false;document.fullscreenElement={};await $('#fullscreen').onclick();assert.equal(exits,1);assert.equal($('#pause-status').hidden,true);
   document.fullscreenEnabled=false;setup($,document);await $('#fullscreen').onclick();assert.equal($('#fullscreen').hidden,true);assert.equal(requests,2);
@@ -96,3 +96,20 @@ const count=(events,value)=>events.filter(event=>event===value).length;
   menu.open=true;api.activate(true);assert.equal(events.at(-1),'audio:true');api.suspend();api.close();api.activate(true);assert.equal(events.filter(e=>e==='schedule').length,1);
 }
 console.log('Player 실제 함수 원문 검사 통과: 실패/저장/종료·전체 화면 기능 감지/거절·모바일 입력/저장/오디오/복귀 스케줄');
+
+// Scene transitions expose no disposed service snapshot; a live snapshot carries game time.
+{
+ const inspectSource=line('  inspect:').trim().replace(/^inspect:/,'').replace(/,$/,'');
+ const inspect=new Function('services','vm','objects','activeCamera','THREE','groups','renderer','currentScene','return ('+inspectSource+')();');
+ assert.equal(inspect(null,{active:true},[],null,null,null,null,'Travel'),null);
+ assert.equal(inspect({}, {active:false},[],null,null,null,null,'Travel'),null);
+ const services={animationState:()=>[],spriteSkinState:()=>[],physicsState:()=>[],projectileState:()=>[]},vm={active:true,core:{time:2.5},inspectWork:()=>[],inputSnapshot:()=>({keys:{w:1}})},camera={type:'Camera',getWorldPosition:()=>({toArray:()=>[0,0,0]})},renderer={getContext:()=>({getParameter:()=>''}),info:{render:{},memory:{}}};
+ const snapshot=inspect(services,vm,[],camera,{Vector3:class{}},new Map(),renderer,'Boss');assert.equal(snapshot.time,2.5);assert.equal(snapshot.scene,'Boss');assert.equal(snapshot.input.keys.w,1);
+}
+
+// Keep the absolute hidden-player cadence through small timer jitter; skip long stalls.
+{
+ const scheduleSource=line('const schedule=');let clock=125;const tasks=[];
+ const factory=new Function('performance','setTimeout','requestAnimationFrame','animate', 'let scheduledFrame=null,nextSmokeFrame=100,closed=false,closing=false,kioskResetting=false;const config={smoke:true};'+scheduleSource+'return {schedule,deadline:()=>nextSmokeFrame};');
+ let api;api=factory({now:()=>clock},(callback,delay)=>{tasks.push({callback,delay});return tasks.length;},()=>{throw Error('hidden cadence');},()=>api.schedule());api.schedule();api.schedule();assert.equal(tasks.length,1);assert.equal(tasks[0].delay,0);tasks[0].callback();assert.ok(Math.abs(api.deadline()-133.3333333333)<1e-6);assert.ok(Math.abs(tasks[1].delay-8.3333333333)<1e-6);clock=500;tasks[1].callback();assert.equal(api.deadline(),500);assert.equal(tasks.at(-1).delay,0);
+}

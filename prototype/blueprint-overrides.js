@@ -6,7 +6,7 @@ export const validBlueprintOverrides=v=>v===undefined||record(v)&&Object.keys(v)
 const typed=(definition,value)=>definition.array||definition.container==='array'?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(definition.type,v)):validValue(definition.type,value);
 export function blueprintInstanceDefaults(root,object={}){
   if(!validBlueprintOverrides(object.overrides))throw Error('오브젝트 BP 덮어쓰기 형식 오류: '+object.id);
-  const variables=Object.fromEntries(root.variables.map(v=>[v.id,copy(v.value)])),definition=root.native?.classes.find(c=>c.name===(root.settings?.parentClass||'Actor')),nativeProperties=Object.fromEntries((definition?.properties||[]).map(p=>[p.name,copy(root.settings?.nativeDefaults?.[definition.name+'.'+p.name]??p.value??(p.array?[]:defaultsFor(p.type)))])),components={},values=object.overrides||{};
+  const variables=Object.fromEntries(root.variables.map(v=>[v.id,copy(v.value)])),definition=root.native?.classes?.find(c=>c.name===(root.settings?.parentClass||'Actor')),nativeProperties=Object.fromEntries((definition?.properties||[]).map(p=>[p.name,copy(root.settings?.nativeDefaults?.[definition.name+'.'+p.name]??p.value??(p.array?[]:defaultsFor(p.type)))])),components={},values=object.overrides||{};
   const variable=(key,value)=>{const d=root.variables.find(v=>v.id===key||v.name===key);if(!d||!typed(d,value))throw Error('오브젝트 BP 변수 자료형 오류: '+key);variables[d.id]=copy(value);};
   const native=(key,value)=>{const d=definition?.properties.find(p=>p.name===key||definition.name+'.'+p.name===key);if(!d||!typed(d,value))throw Error('오브젝트 C++ 속성 자료형 오류: '+key);nativeProperties[d.name]=copy(value);};
   // Existing authored nativeProperties remain explicit instance values.

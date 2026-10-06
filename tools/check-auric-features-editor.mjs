@@ -1,0 +1,81 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import net from 'node:net';
+import {spawn} from 'node:child_process';
+import {readProjectManifest} from './project-manifest.mjs';
+import {buildGame} from './build-game.mjs';
+import {defaultBuildProfile} from '../prototype/build-profile.js';
+import {editorCommand} from './hb.mjs';
+import {parseNativeHeader} from '../prototype/native-model.js';
+import {auricSpawnProof} from './auric-spawn-proof.mjs';
+
+const root=path.resolve(import.meta.dirname,'..'),directory=await fs.realpath(path.resolve(process.argv[2]||'')),mode='editor';
+const workspace=await fs.realpath(path.join(root,'native/build'));
+assert.ok(directory.startsWith(workspace+path.sep)&&path.basename(directory).startsWith('auric-spawn-'),'격리 Auric 복사본을 지정하세요.');
+assert.ok(['editor','player'].includes(mode));
+const fixture=JSON.parse(await fs.readFile(path.join(directory,'fixture.json'),'utf8')),work=await fs.mkdtemp(path.join(directory,mode+'-window-'));
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),cases=[],errors=[];
+async function until(fn,label,timeout=45000){const end=Date.now()+timeout;while(Date.now()<end){const value=await fn();if(value)return value;await sleep(100);}throw Error(label+' 시간 초과');}
+const temporary=path.join(work,'Temp');await fs.mkdir(temporary);process.env.TEMP=process.env.TMP=temporary;process.env.AURIC_MUTE='1';
+let executable;
+if(mode==='player'){
+ const record=await readProjectManifest(fixture.project),profile=defaultBuildProfile(record.manifest);
+ profile.productName='Auric P0 격리 검사';profile.configuration='development';profile.scenes=[{path:fixture.stressScene,enabled:true}];
+ const built=await buildGame(record,profile);executable=built.executable;await fs.writeFile(path.join(work,'package.json'),JSON.stringify(built,null,2));
+}else{
+ // An isolated shell/code copy keeps the user's running editor and installed
+ // version untouched. Shared dependencies and hashed native binaries are local.
+ const engine=path.join(work,'Engine');await fs.mkdir(engine);
+ for(const name of ['prototype','tools'])await fs.cp(path.join(root,name),path.join(engine,name),{recursive:true});
+ await fs.cp(path.join(root,'native/include'),path.join(engine,'native/include'),{recursive:true});
+ await fs.symlink(path.join(root,'native/build'),path.join(engine,'native/build'),'junction');
+ await fs.symlink(path.join(root,'node_modules'),path.join(engine,'node_modules'),'junction');
+ await fs.cp(path.join(root,'dist/HBEngine/runtime'),path.join(engine,'runtime'),{recursive:true});
+ await fs.copyFile(path.join(root,'package.json'),path.join(engine,'package.json'));
+ await fs.copyFile(path.join(root,'dist/HBEngine/WebView2Loader.dll'),path.join(engine,'WebView2Loader.dll'));
+ executable=path.join(engine,'HBEngine.exe');await fs.copyFile(path.join(root,'HBEngine.exe'),executable);
+}
+const reserve=net.createServer();await new Promise(r=>reserve.listen(0,'127.0.0.1',r));const port=reserve.address().port;await new Promise(r=>reserve.close(r));
+await fs.mkdir(path.join(work,'LocalAppData'));const env={...process.env,LOCALAPPDATA:path.join(work,'LocalAppData'),HB_USER_DATA_DIR:path.join(work,'UserData'),[mode==='editor'?'HB_EDITOR_ACCEPTANCE':'HB_PLAYER_ACCEPTANCE']:'1',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+port+' --disable-renderer-backgrounding --disable-background-timer-throttling --disable-backgrounding-occluded-windows'};
+for(const key of ['PORT','HB_PROJECT_DIR','HB_PROJECT_FILE'])delete env[key];
+const proof=path.join(work,'shell.json'),child=spawn(executable,['--smoke-test',proof,...(mode==='editor'?[fixture.project]:[])],{cwd:work,env,windowsHide:true,stdio:'pipe'});
+let ended,output='',socket,sequence=0;const pending=new Map();child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);
+const exit=new Promise(r=>child.once('exit',(code,signal)=>{ended={code,signal};r();}));
+try{
+ const target=await until(async()=>{if(ended)throw Error('격리 창 종료 '+JSON.stringify(ended)+output);try{return(await(await fetch('http://127.0.0.1:'+port+'/json/list')).json()).find(t=>t.type==='page'&&t.url.startsWith('http://127.0.0.1:'));}catch{}},'격리 실행 창');
+ socket=new WebSocket(target.webSocketDebuggerUrl);await new Promise((r,j)=>{socket.onopen=r;socket.onerror=j;});
+ socket.onmessage=({data})=>{const message=JSON.parse(data);if(message.id){const request=pending.get(message.id);if(request){pending.delete(message.id);clearTimeout(request.timer);message.error?request.reject(Error(JSON.stringify(message.error))):request.resolve(message.result);}}else if(message.method==='Runtime.exceptionThrown')errors.push(message);};
+ const cdp=(method,params={})=>new Promise((resolve,reject)=>{const id=++sequence,timer=setTimeout(()=>{pending.delete(id);reject(Error('CDP '+method));},45000);pending.set(id,{resolve,reject,timer});socket.send(JSON.stringify({id,method,params}));});
+ const evaluate=async expression=>{const result=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);return result.result.value;};
+ await cdp('Runtime.enable');const base=new URL(target.url).origin,call=(method,params)=>editorCommand(base,method,params);
+ if(mode==='editor')await until(async()=>{try{return(await(await fetch(base+'/api/automation')).json()).clients.length===1;}catch{}},'편집기 자동화 등록');
+ else await until(()=>evaluate('window.hbPlayerDebug?.ready()'),'게임 준비');
+
+ const game=path.join(directory,'AuricLoop'),hub='Assets/Scenes/Hub.hbscene.json',boss='Assets/Scenes/Dungeon_4.hbscene.json',bp='Assets/Blueprints/BP_TopDownShooter.hbblueprint.json',table='Assets/Data/DT_Dialogue.hbdata.json';
+ const remember=new Map();async function disk(file,value){if(!remember.has(file))remember.set(file,await fs.readFile(path.join(game,file)));await fs.writeFile(path.join(game,file),typeof value==='string'?value:JSON.stringify(value,null,2));}
+ try{
+  if(!process.argv.includes('--travel-only')){await call('document.open',{path:hub});const first=await call('viewport.get');assert.ok(first.state.position.every(Number.isFinite));
+  const chosen=structuredClone(first.state);chosen.position[0]+=4;chosen.target[0]+=4;await call('viewport.configure',{state:chosen});
+  await call('document.open',{path:boss});const second=await call('viewport.get');assert.notDeepEqual(second.state.position,chosen.position,'다른 장면의 카메라는 별도로 맞춰요');
+  await call('document.open',{path:hub});assert.deepEqual((await call('viewport.get')).state.position,chosen.position);cases.push({cameras:{hub:first.state,boss:second.state,restored:chosen}});
+  const diskScene=JSON.parse(await fs.readFile(path.join(game,hub),'utf8'));diskScene.sceneName='외부 장면 변경';await disk(hub,diskScene);await until(async()=>{const doc=await call('document.get',{path:hub});return !doc.dirty&&doc.data.sceneName===diskScene.sceneName;},'깨끗한 장면 외부 변경');
+  let current=await call('document.get',{path:hub});await call('document.patch',{path:hub,expectedRevision:current.revision,operations:[{op:'replace',path:'/sceneName',value:'내 편집'}]});diskScene.sceneName='디스크 선택';await disk(hub,diskScene);
+  await until(()=>evaluate('!!Array.from(document.querySelectorAll("dialog[open] button")).find(b=>b.textContent==="비교")'),'충돌 선택');
+  const click=label=>evaluate('Array.from(document.querySelectorAll("dialog[open] button")).find(b=>b.textContent==='+JSON.stringify(label)+').click()');await click('비교');assert.equal(await evaluate('document.querySelectorAll(".disk-compare textarea").length'),2);await click('디스크 것 받기');await until(async()=>{const d=await call('document.get',{path:hub});return !d.dirty&&d.data.sceneName==='디스크 선택';},'디스크 선택 적용');
+  current=await call('document.get',{path:hub});await call('document.patch',{path:hub,expectedRevision:current.revision,operations:[{op:'replace',path:'/sceneName',value:'내 편집 저장'}]});diskScene.sceneName='다른 디스크';await disk(hub,diskScene);await until(()=>evaluate('!!Array.from(document.querySelectorAll("dialog[open] button")).find(b=>b.textContent==="내 것 저장")'),'내 편집 선택');await click('내 것 저장');await until(async()=>JSON.parse(await fs.readFile(path.join(game,hub),'utf8')).sceneName==='내 편집 저장','내 편집 디스크 쓰기');assert.equal((await call('document.get',{path:hub})).dirty,false);cases.push({externalScene:true,conflictCompare:true,diskChoice:true,mineChoice:true});
+  await call('document.open',{path:bp});let raw=JSON.parse(await fs.readFile(path.join(game,bp),'utf8'));raw.name='BP_외부변경';await disk(bp,raw);await until(async()=>(await call('document.get',{path:bp})).data.name===raw.name,'블루프린트 외부 변경');
+  const sourcePath='Source/TopDownShooter.h',source=await fs.readFile(path.join(game,sourcePath),'utf8');await disk(sourcePath,'\uFEFF'+source.replaceAll('\n','\r\n')+'\r\n// 외부 C++ 변경\r\n');await sleep(2500);await call('native.build',{path:bp});assert.equal((await call('document.get',{path:bp})).dirty,false,'C++ 빌드 결과를 에셋 변경으로 저장하지 않아요');cases.push({nativeBuildClean:true,sourceOnly:true,bomCrLf:true});
+  await call('document.open',{path:table});const original=await call('document.get',{path:table}),cell=Object.entries(original.data.rows).flatMap(([row,values])=>Object.entries(values).map(([column,value])=>({row,column,value}))).find(c=>Array.isArray(c.value)&&c.value[0]?.text);cell.value=structuredClone(cell.value);cell.value[0].text='한글 대사 편집';assert.ok(cell);
+  await evaluate('(()=>{const e=Array.from(document.querySelectorAll("[data-cell-row]")).find(e=>e.dataset.cellRow==='+JSON.stringify(cell.row)+'&&e.dataset.cellColumn==='+JSON.stringify(cell.column)+');e.value='+JSON.stringify(JSON.stringify(cell.value))+';e.dispatchEvent(new Event("change",{bubbles:true}));})()');const edited=await call('document.get',{path:table});assert.equal(edited.data.rows[cell.row][cell.column][0].text,'한글 대사 편집');await call('editor.undo',{path:table,expectedRevision:edited.revision});assert.deepEqual((await call('document.get',{path:table})).data,original.data);cases.push({koreanTableUndo:true});
+  await call('document.open',{path:fixture.projectileStress.scene});await call('profiler.record',{recording:true});try{await call('runtime.play',{userGesture:true});}catch(error){await fs.writeFile(path.join(work,'runtime-failure.json'),JSON.stringify(await call('runtime.state'),null,2));throw error;}await call('runtime.input',{key:'W',value:1});if(fixture.nativeSpawnProbe){await call('runtime.openScene',{path:fixture.nativeSpawnProbe.scene});cases.push({nativeSpawn:await auricSpawnProof({probe:fixture.nativeSpawnProbe,call:(self,fn,args={})=>call('runtime.call',{target:self,functionId:fn,args}),inspect:()=>call('runtime.state'),sleep})});await call('runtime.openScene',{path:fixture.projectileStress.scene});}const focusBefore=await call('runtime.state');await call('document.open',{path:bp});const progressed=await until(async()=>{const r=await call('runtime.state');return r.time-focusBefore.time>.25&&r;},'BP 문서가 활성인 동안 실행 진행');assert.equal(progressed.pauseReason,null);cases.push({activeBlueprintRuntime:{before:focusBefore.time,after:progressed.time,document:progressed.progress.document}});const recorded=await call('profiler.read'),packets=recorded.frames.flatMap(f=>f.nativePackets||[]);assert.ok(packets.some(p=>p.invokeMs>0));assert.ok(packets.some(p=>Number.isFinite(p.clientSerializeMs)));assert.ok(packets.some(p=>Number.isFinite(p.clientOperationsMs)));await fs.writeFile(path.join(work,'native-profiler.json'),JSON.stringify(recorded,null,2));await call('profiler.record',{recording:false});const runtime=await call('runtime.state');assert.equal(runtime.input.keys.w,1);assert.ok(runtime.objects.some(o=>o.nativeProperties?.WidgetReady));await call('runtime.stop');cases.push({offscreenAutomationInput:true,firstFrameWidget:true});
+  await call('runtime.play',{userGesture:true});const sounds=parseNativeHeader(await fs.readFile(path.join(game,'Source/TopDownShooter.h'),'utf8')).classes.find(c=>c.name==='TopDownShooter').properties.filter(p=>/^(?:Sfx)|Music$/.test(p.name)&&p.value?.endsWith?.('.hbaudioasset.json'));assert.equal(sounds.length,20);const audio=[];
+  for(const sound of sounds){await call('runtime.call',{target:'projectile-director',functionId:'AuricProjectileProbe.Play',args:{asset:sound.value,music:/Music$/.test(sound.name)}});const voice=await until(async()=>{const state=await call('runtime.audio');assert.equal(state.errors.length,0,JSON.stringify(state.errors));return [...state.voices,...state.recent].find(v=>v.clip===sound.value&&(v.playing||v.ended)&&v.time>0&&v.peak>0);},sound.name+' 편집기 오디오');audio.push({name:sound.name,voice});}cases.push({editorAudio:audio});await call('runtime.stop');}
+  await call('document.open',{path:'Assets/Scenes/Dungeon_0.hbscene.json'});await call('runtime.play',{userGesture:true});await call('runtime.input',{key:'W',value:1});await call('runtime.openScene',{path:boss});await until(async()=>{const state=await call('runtime.state');return state.scene===boss&&state.time>.05;},'W 누름 중 장면 전환');const arrival=await call('runtime.state');assert.equal(arrival.input.keys.w,1);const walked=await until(async()=>{const state=await call('runtime.state');return state.time-arrival.time>.5&&state;},'다음 장면의 게임 시간');cases.push({travelRuntime:{arrival,walked}});const distance=walked.objects.find(o=>o.id==='Player').position[1]-arrival.objects.find(o=>o.id==='Player').position[1];assert.ok(distance>1,'편집기에서 W를 다시 보내지 않고 계속 이동해요');await call('runtime.input',{key:'W',value:0});await call('runtime.stop');cases.push({heldInputTravel:{distance,input:walked.input}});
+  const bossCost=[];for(const measuredScene of ['Assets/Scenes/Dungeon_2.hbscene.json',boss]){await call('document.open',{path:measuredScene});await call('runtime.play',{userGesture:true});await until(async()=>{const r=await call('runtime.state');return r.time>.2;},'보스 비용 준비');await call('profiler.clear');await call('profiler.record',{recording:true});const started=(await call('runtime.state')).time;await until(async()=>{const r=await call('runtime.state');return r.time-started>=6;},'보스 비용 실제 6초');await call('profiler.record',{recording:false});const record=await call('profiler.read'),packets=record.frames.flatMap(f=>f.nativePackets||[]),stats=key=>{const rows=packets.map(p=>p[key]).filter(Number.isFinite).sort((a,b)=>a-b);return {count:rows.length,mean:rows.reduce((a,b)=>a+b,0)/Math.max(1,rows.length),p50:rows[Math.floor((rows.length-1)*.5)]||0,p95:rows[Math.floor((rows.length-1)*.95)]||0,p99:rows[Math.floor((rows.length-1)*.99)]||0,max:rows.at(-1)||0};};assert.ok(packets.length>0);const row={scene:measuredScene,frames:record.frames.length,invoke:stats('invokeMs'),frontend:stats('frontendMs'),serialize:stats('clientSerializeMs'),patch:stats('clientPatchMs'),apply:stats('clientApplyMs'),operations:stats('clientOperationsMs'),workerSync:stats('syncMs'),rpc:stats('rpcMs')};assert.ok(row.frontend.count>0,'실제 편집기 프런트 호출 전체 시간');bossCost.push(row);await fs.writeFile(path.join(work,'boss-cost.json'),JSON.stringify({comparison:'Fixed private Auric fixture; user-reported old 70–90ms was a different revision, so no controlled before/after speedup is claimed.',rows:bossCost},null,2));await call('runtime.stop');}cases.push({bossCost});
+  const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile(path.join(work,'editor.png'),Buffer.from(screenshot.data,'base64'));assert.equal(errors.length,0);await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,cases,errors},null,2));
+ }finally{for(const [file,content] of remember)await fs.writeFile(path.join(game,file),content);}
+ await evaluate('window.chrome.webview.postMessage("hbengine.acceptance.finished")');await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);console.log(JSON.stringify({work,passed:true}));
+
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,output,cases,errors},null,2));console.error('실제 창 검사 증거: '+work);throw error;}
+finally{socket?.close();for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('검사 종료'));}if(!ended)child.kill();await Promise.race([exit,sleep(2000)]);}

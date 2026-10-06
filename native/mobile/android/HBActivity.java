@@ -37,6 +37,7 @@ public final class HBActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        if(android.os.Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT,this::handleBack);
         try {
             manifest = new JSONObject(read(getAssets().open("game.hbpack.json"), LIMIT));
             files.add("game.hbpack.json");
@@ -144,6 +145,7 @@ public final class HBActivity extends Activity {
     }
     @Override protected void onPause(){setActive(false);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(false)",null);super.onPause();}
     @Override protected void onResume(){super.onResume();setActive(true);if(web!=null)web.evaluateJavascript("window.hbMobileLifecycle&&window.hbMobileLifecycle(true)",null);}
-    @Override public void onBackPressed(){if(web!=null)web.evaluateJavascript("document.querySelector('#pause-toggle')?.click()",null);else super.onBackPressed();}
+    private void handleBack(){if(web!=null)web.evaluateJavascript("(()=>{const menu=document.querySelector('#pause-menu');if(menu?.open)menu.close();else document.querySelector('#pause-toggle')?.click();})()",null);else finish();}
+    @Override public void onBackPressed(){handleBack();}
     @Override protected void onDestroy(){destroyed=true;for(CompletableFuture<String> query:queries.values())query.completeExceptionally(new IOException("게임 창 종료"));queries.clear();worker.shutdownNow();storageWorker.shutdownNow();if(messagePort!=null){messagePort.close();messagePort=null;}if(web!=null){web.removeJavascriptInterface("HBMobile");web.destroy();}super.onDestroy();}
 }

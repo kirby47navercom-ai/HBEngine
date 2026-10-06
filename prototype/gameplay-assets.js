@@ -4,6 +4,12 @@ const id=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(v);
 const number=(v,min=-100000,max=100000)=>Number.isFinite(v)&&v>=min&&v<=max;
 const list=(v,max=256)=>Array.isArray(v)&&v.length<=max;
 const unique=items=>new Set(items.map(v=>v.id)).size===items.length;
+export function gameplayValidationError(kind,data){
+  if(kind==='statemachine'&&Array.isArray(data?.states)){
+    const seen=new Map();for(const state of data.states){if(!state)continue;const prior=seen.get(state.name);if(prior)return '상태 이름 중복: '+state.name+' ('+prior.id+' / '+state.id+')';seen.set(state.name,state);}
+  }
+  return kind+' 에셋 검증 실패';
+}
 export const gameplayTypes={blackboard:{label:'블랙보드',prefix:'BB_',group:'AI'},behaviortree:{label:'행동트리',prefix:'BT_',group:'AI'},statemachine:{label:'상태 머신 · FSM',prefix:'FSM_',group:'게임플레이'},montage:{label:'애니메이션 몽타주',prefix:'AM_',group:'애니메이션'},sequenceasset:{label:'레벨 시퀀스',prefix:'LS_',group:'시네마틱'}};
 export const gameplaySuffix={blackboard:'.hbblackboard.json',behaviortree:'.hbbehaviortree.json',statemachine:'.hbstatemachine.json',montage:'.hbmontage.json',sequenceasset:'.hbsequence.json'};
 export const boardTypes={bool:false,int:0,float:0,string:'',vec3:[0,0,0],object:null};

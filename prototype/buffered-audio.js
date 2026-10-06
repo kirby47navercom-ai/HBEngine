@@ -19,7 +19,7 @@ export class BufferedAudioPlayer extends EventTarget {
   dispose(){this.pause();this.disposed=true;this.output.disconnect();}
 }
 
-export async function createAudioPlayer(context,url,{buffered=globalThis.hbMobileTarget==='ios',readBuffer}={}){
+export async function createAudioPlayer(context,url,{buffered=['ios','android'].includes(globalThis.hbMobileTarget),readBuffer}={}){
   if(!buffered)return new Audio(url);
   const buffer=readBuffer?await readBuffer(url):await(async()=>{const response=await fetch(url);if(!response.ok)throw Error('오디오 파일 요청 실패: '+response.status);return context.decodeAudioData(await response.arrayBuffer());})();
   if(!Number.isFinite(buffer.duration)||buffer.duration<=0)throw Error('오디오 길이를 확인하세요.');

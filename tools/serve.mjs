@@ -24,7 +24,7 @@ async function writeReady(){
 }
 async function selectProject(record){
   if(stopping)throw Error('편집기가 종료 중이에요.');await rememberProject(record);native.close();native=new NativeHost();automation=new EditorAutomation();project=record.project;
-  session={id:record.manifest.id,name:record.manifest.name,projectFile:record.file,startupScene:record.manifest.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:record.manifest.gameInstance||'',legacyStorage:sameRoot(record.root,quietCanonicalRoot)};storage=new ProjectStorage(project,session.id);configureNativePersistence(native,storage,async name=>JSON.parse(await fs.readFile((await project.read(name)).file,'utf8')));await writeReady();return session;
+  session={id:record.manifest.id,name:record.manifest.name,projectFile:record.file,startupScene:record.manifest.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:record.manifest.gameInstance||'',legacyStorage:sameRoot(record.root,quietCanonicalRoot)};storage=new ProjectStorage(project,session.id);configureNativePersistence(native,storage,async name=>JSON.parse(await fs.promises.readFile((await project.read(name)).file,'utf8')));await writeReady();return session;
 }
 if(!desktop){
   const directory=process.env.HB_PROJECT_DIR||quietRoot;await new ProjectService(directory).init(!process.env.HB_PROJECT_DIR);

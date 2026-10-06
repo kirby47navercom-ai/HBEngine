@@ -1,5 +1,5 @@
 import {validBlueprint,isBlueprintParent,allGraphContexts,basePins,catalog,validValue,legacyTemplateConstruction,makeNode,graphContext} from './blueprint-model.js';
-import {nativeMember} from './native-model.js';
+import {nativeMember,nativeSourceReference,validNativeReference,parseNativeHeader,canonicalNativeText} from './native-model.js';
 import {componentDefaults,validComponentProperties} from './scene-components.js';
 import {inputKey} from './runtime-input.js';
 
@@ -23,7 +23,7 @@ function classDefaults(root,child,parent){
   for(const [id,value] of Object.entries(child.settings?.variableDefaults||{})){const v=root.variables.find(v=>v.id===id);if(!parent.variables.some(v=>v.id===id)||!v||(v.container==='array'?!(Array.isArray(value)&&value.length<=128&&value.every(x=>validValue(v.type,x))):!validValue(v.type,value)))throw Error('상속 변수 기본값 자료형 오류: '+id);v.value=copy(value);}
   for(const [id,values] of Object.entries(child.settings?.componentOverrides||{})){const c=root.components.find(c=>c.id===id);if(!parent.components.some(c=>c.id===id)||!c||!values||Array.isArray(values)||typeof values!=='object')throw Error('상속 컴포넌트가 없어요: '+id);const next={...componentDefaults(c.type),...c.properties,...values};if(!validComponentProperties(c.type,next)||Object.keys(values).some(k=>!Object.hasOwn(componentDefaults(c.type),k)))throw Error('상속 컴포넌트 기본값 오류: '+id);c.properties=copy(next);}
 }
-export function createBlueprintResolver(read){
+export function createBlueprintResolver(read,readText){
   const loaded=new Map();
   async function resolve(path,stack=[]){
     // Readers enforce project paths; legacy in-memory readers use names such as A.
@@ -31,6 +31,7 @@ export function createBlueprintResolver(read){
     if(stack.includes(path))throw Error('블루프린트 순환 상속: '+[...stack,path].join(' → '));if(stack.length>=32)throw Error('블루프린트 상속 깊이 32 초과');
     if(loaded.has(path))return loaded.get(path);
     const child=copy(await read(path));if(!validBlueprint(child))throw Error('블루프린트 검증 실패: '+path);
+    if(child.native&&readText){const n=child.native,header=canonicalNativeText(await readText(n.headerPath||'Source/DoorController.h')),source=canonicalNativeText(await readText(n.sourcePath||'Source/DoorController.cpp'));child.native={...parseNativeHeader(header),header,source,headerPath:n.headerPath,sourcePath:n.sourcePath};if(!validBlueprint(child))throw Error('C++ 원본과 블루프린트가 맞지 않아요: '+path);}else if(validNativeReference(child.native))throw Error('C++ 원본 읽기 경로가 필요해요: '+path);
     const parentPath=child.settings?.parentClass;
     if(!isBlueprintParent(parentPath)){loaded.set(path,child);return child;}
     const parent=await resolve(parentPath,[...stack,path]);const root=composeBlueprint(child,parent,path);loaded.set(path,root);return root;
@@ -68,7 +69,7 @@ function composeBlueprint(child,parent,path){
 }
 
 export function serializeBlueprint(root){
-  if(!root.inheritance)return copy(root);const {authored,inherited,defaults}=root.inheritance,child=copy(authored);
+  if(!root.inheritance){const authored=copy(root);if(authored.native)authored.native=nativeSourceReference(authored.native);return authored;}const {authored,inherited,defaults}=root.inheritance,child=copy(authored);
   child.name=root.name;child.nodes=copy(root.nodes.filter(n=>!inherited.nodes.includes(n.id)));child.edges=copy(root.edges.filter(e=>!inherited.nodes.includes(e.from.node)&&!inherited.nodes.includes(e.to.node)));child.comments=copy((root.comments||[]).filter(c=>!inherited.comments.includes(c.id)));
   child.variables=copy(root.variables.filter(v=>!inherited.variables.includes(v.id)));child.components=copy(root.components.filter(c=>!inherited.components.includes(c.id)));
   child.functions=copy((root.functions||[]).filter(d=>!d.parentImplementation&&!inherited.functions.includes(d.id)));child.macros=copy((root.macros||[]).filter(d=>!inherited.macros.includes(d.id)));

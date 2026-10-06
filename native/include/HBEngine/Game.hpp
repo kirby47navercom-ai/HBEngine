@@ -40,6 +40,7 @@ HB_CLASS()
 class Game : public Library {
 public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getGameInstance", KoreanName="게임 인스턴스", Category="게임") static GameInstance* GetInstance();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="gameSessionId", KoreanName="게임 세션 ID", Category="게임") static std::string GetSessionId();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="gameStateRead", KoreanName="게임 상태 JSON 읽기", Category="게임") static std::string GetStateText();
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="gameArgsRead", KoreanName="장면 인자 JSON 읽기", Category="게임") static std::string GetArgumentsText();
     static Json GetArguments(){return Json::parse(GetArgumentsText());}
@@ -56,6 +57,64 @@ public:
     static Json Read(const std::string& slot){return Json::parse(ReadText(slot));}
 };
 HB_CLASS()
+class Data : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="dataJsonRead", KoreanName="데이터 에셋 JSON", Category="데이터") static std::string GetText(const std::string& path);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="dataTableRead", KoreanName="데이터 표 행", Category="데이터") static std::string GetTableText(const std::string& path,const std::string& rowId);
+    static Json Get(const std::string& path){return Json::parse(GetText(path));}
+    static Json GetTable(const std::string& path,const std::string& rowId){return Json::parse(GetTableText(path,rowId));}
+};
+HB_CLASS()
+class Audio : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioPlay", KoreanName="소리 재생", Category="오디오") static std::string Play(const std::string& asset,float volume=1.f,float pitch=1.f,const std::string& bus="sfx");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioStop", KoreanName="소리 핸들 정지", Category="오디오") static void Stop(const std::string& handle);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioMusic", KoreanName="배경음 전환", Category="오디오") static void PlayMusic(const std::string& asset,float fadeSeconds=0.f);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioStopMusic", KoreanName="배경음 정지", Category="오디오") static void StopMusic(float fadeSeconds=0.f);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioPlayAt", KoreanName="위치 소리 재생", Category="오디오") static std::string PlayAt(const std::string& asset,const Vec3& position,float volume=1.f,float pitch=1.f,const std::string& bus="sfx");
+};
+HB_CLASS()
+class Components : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetFloat", KoreanName="컴포넌트 수치 읽기", Category="컴포넌트") static float GetFloat(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetFloat", KoreanName="컴포넌트 수치 지정", Category="컴포넌트") static void SetFloat(Actor* target,const std::string& component,const std::string& property,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetBool", KoreanName="컴포넌트 논리값 읽기", Category="컴포넌트") static bool GetBool(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetBool", KoreanName="컴포넌트 논리값 지정", Category="컴포넌트") static void SetBool(Actor* target,const std::string& component,const std::string& property,bool value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetString", KoreanName="컴포넌트 문자열 읽기", Category="컴포넌트") static std::string GetString(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetString", KoreanName="컴포넌트 문자열 지정", Category="컴포넌트") static void SetString(Actor* target,const std::string& component,const std::string& property,const std::string& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetVector", KoreanName="컴포넌트 벡터 읽기", Category="컴포넌트") static Vec3 GetVector(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetVector", KoreanName="컴포넌트 벡터 지정", Category="컴포넌트") static void SetVector(Actor* target,const std::string& component,const std::string& property,const Vec3& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetColor", KoreanName="컴포넌트 색상 읽기", Category="컴포넌트") static Color GetColor(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetColor", KoreanName="컴포넌트 색상 지정", Category="컴포넌트") static void SetColor(Actor* target,const std::string& component,const std::string& property,const Color& value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="componentGetJson", KoreanName="컴포넌트 JSON 읽기", Category="컴포넌트") static std::string GetText(Actor* target,const std::string& component,const std::string& property);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="componentSetJson", KoreanName="컴포넌트 JSON 지정", Category="컴포넌트") static void SetText(Actor* target,const std::string& component,const std::string& property,const std::string& json);
+    static Json Get(Actor* target,const std::string& component,const std::string& property){return Json::parse(GetText(target,component,property));}
+    static void Set(Actor* target,const std::string& component,const std::string& property,const Json& value){SetText(target,component,property,value.dump());}
+};
+HB_CLASS()
+class Movement2D : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="movement2dSpeed", KoreanName="2D 이동 속도 지정", Category="2D 이동") static void SetSpeed(Actor* target,float speed);
+};
+HB_CLASS()
+class Projectiles : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="projectileFire", KoreanName="투사체 패턴 발사", Category="투사체") static std::string FireText(const std::string& json);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="projectileHits", KoreanName="투사체 충돌 묶음", Category="투사체") static std::string TakeHitsText();
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="projectileClear", KoreanName="소유 투사체 정리", Category="투사체") static void Clear();
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="projectileOnHit", KoreanName="투사체 충돌 이벤트 등록", Category="투사체") static void OnHit(const std::string& eventName);
+    static std::string Fire(const Json& pattern){return FireText(pattern.dump());}
+    static Json TakeHits(){return Json::parse(TakeHitsText());}
+};
+HB_CLASS()
+class Camera : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="cameraOrthoSize", KoreanName="카메라 직교 크기", Category="카메라") static void SetOrthoSize(Actor* target,float size);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="cameraFollow", KoreanName="카메라 따라가기", Category="카메라") static void Follow(Actor* target,Actor* subject);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="cameraShake", KoreanName="카메라 흔들기", Category="카메라") static void Shake(Actor* target,float intensity,float duration);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="screenFlash", KoreanName="화면 번쩍임", Category="카메라") static void Flash(const Color& color,float duration);
+};
+HB_CLASS()
 class UI : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiShow", KoreanName="위젯 UI 표시", Category="UI") static void Show(Actor* target,const std::string& asset,const std::string& instance);
@@ -67,6 +126,17 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetVisible", KoreanName="위젯 표시 상태", Category="UI") static void SetVisible(Actor* target,const std::string& instance,const std::string& element,bool visible);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetEnabled", KoreanName="위젯 활성 상태", Category="UI") static void SetEnabled(Actor* target,const std::string& instance,const std::string& element,bool enabled);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiFocus", KoreanName="위젯 입력 포커스", Category="UI") static void Focus(Actor* target,const std::string& instance,const std::string& element);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetTexture", KoreanName="위젯 그림 지정", Category="UI") static void SetTexture(Actor* target,const std::string& instance,const std::string& element,const std::string& texture);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetPosition", KoreanName="위젯 위치 지정", Category="UI") static void SetPosition(Actor* target,const std::string& instance,const std::string& element,const Vec2& position);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetSize", KoreanName="위젯 크기 지정", Category="UI") static void SetSize(Actor* target,const std::string& instance,const std::string& element,const Vec2& size);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetRotation", KoreanName="위젯 회전 지정", Category="UI") static void SetRotation(Actor* target,const std::string& instance,const std::string& element,float rotation);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetScale", KoreanName="위젯 배율 지정", Category="UI") static void SetScale(Actor* target,const std::string& instance,const std::string& element,const Vec2& scale);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetColor", KoreanName="위젯 색상 지정", Category="UI") static void SetColor(Actor* target,const std::string& instance,const std::string& element,const Color& color);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetOpacity", KoreanName="위젯 불투명도 지정", Category="UI") static void SetOpacity(Actor* target,const std::string& instance,const std::string& element,float opacity);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetFont", KoreanName="위젯 글꼴 지정", Category="UI") static void SetFont(Actor* target,const std::string& instance,const std::string& element,const std::string& font);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetFontSize", KoreanName="위젯 글자 크기", Category="UI") static void SetFontSize(Actor* target,const std::string& instance,const std::string& element,float fontSize);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetFillDirection", KoreanName="위젯 채우기 방향", Category="UI") static void SetFillDirection(Actor* target,const std::string& instance,const std::string& element,const std::string& direction);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiAnimate", KoreanName="위젯 간단 애니메이션", Category="UI") static void Animate(Actor* target,const std::string& instance,const std::string& element,const std::string& property,float to,float duration);
 };
 HB_CLASS()
 class AudioMixer : public Library {
@@ -101,6 +171,10 @@ public:
 HB_CLASS()
 class Input : public Library {
 public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputLastDevice", KoreanName="최근 입력 장치", Category="입력") static std::string GetLastDevice();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputAnyPressed", KoreanName="아무 입력 눌림", Category="입력") static bool AnyKeyPressed();
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputJustPressed", KoreanName="이번 프레임 눌림", Category="입력") static bool WasPressedThisFrame(const std::string& key);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputJustReleased", KoreanName="이번 프레임 해제", Category="입력") static bool WasReleasedThisFrame(const std::string& key);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputKeyDown", KoreanName="키·마우스 버튼 눌림", Category="입력") static bool IsKeyDown(const std::string& key);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="inputAxisValue", KoreanName="입력 축 값 가져오기", Category="입력") static float GetAxis(const std::string& key);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="actionValue", KoreanName="입력 액션 값", Category="입력 액션") static Vec3 GetActionValue(Actor* target,const std::string& action);
@@ -117,6 +191,8 @@ public:
 HB_CLASS()
 class Sprites : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteFlash", KoreanName="스프라이트 피격 번쩍임", Category="2D 스프라이트") static void Flash(Actor* target,float duration,float strength=1);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spritePlayAnimation", KoreanName="스프라이트 애니메이션 재생", Category="2D 스프라이트") static void PlayAnimation(Actor* target,const std::string& asset,bool loop=true);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetLighting", KoreanName="스프라이트 2D·3D 광원 모드", Category="2D 조명") static void SetLightingMode(Actor* target,const std::string& mode);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetLighting", KoreanName="스프라이트 광원 모드 조회", Category="2D 조명") static std::string GetLightingMode(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteFlip", KoreanName="스프라이트 좌우·상하 반전", Category="2D 스프라이트") static void SetFlip(Actor* target,bool flipX,bool flipY);
@@ -141,6 +217,8 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="spriteSetShadows", KoreanName="스프라이트 그림자 지정", Category="2D 스프라이트") static void SetShadows(Actor* target,bool cast,bool receive);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="spriteGetShadows", KoreanName="스프라이트 그림자 설정 가져오기", Category="2D 스프라이트") static void GetShadows(Actor* target,bool& cast,bool& receive);
 };
+
+using Sprite = Sprites;
 HB_CLASS()
 class Light2D : public Library {
 public:

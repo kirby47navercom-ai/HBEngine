@@ -25,7 +25,7 @@ export const placementCatalog=[
   ['physicsSphere','Physics Sphere · 물리 구','물리','sphere',{Rigidbody:{}}],
   ['trigger','Trigger Box · 감지 영역','물리','empty',{BoxCollider:{trigger:true}}],
   ['directionalLight','Directional Light · 태양광','조명'],['pointLight','Point Light · 점 광원','조명'],['spotLight','Spot Light · 스포트 광원','조명'],
-  ['skyAtmosphere','Sky Atmosphere · 하늘 대기','환경'],['skyLight','Sky Light · 주변광','환경'],['volumetricCloud','Volumetric Cloud · 구름','환경'],['heightFog','Exponential Height Fog · 높이 안개','환경'],
+  ['skyAtmosphere','Sky Atmosphere · 하늘 대기','환경'],['skyLight','Sky Light · 주변광','환경'],['volumetricCloud','Volumetric Cloud · 구름','환경'],['heightFog','Exponential Height Fog · 높이 안개','환경'],['postProcess','Post Process Volume · 후처리','환경','empty',{PostProcessVolume:{}}],
   ['camera','Camera · 카메라','시네마틱'],['sequence','Sequence Player · 시퀀스 재생','시네마틱','empty',{SequencePlayer:{}}],['audio','Audio Source · 오디오','오디오'],
   ['decal','Decal · 데칼','효과'],['particles','Particle System · 입자','효과'],
   ['navigation','Navigation Grid · 경로 영역','AI'],
