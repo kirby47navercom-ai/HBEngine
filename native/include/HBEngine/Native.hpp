@@ -15,7 +15,7 @@ inline Json bridgeNative(const Json& args){
         for(const auto& state:result.at("objects")){
             const auto id=state.at("id").get<std::string>();auto index=bridgeStateIndices.find(id);
             if(index==bridgeStateIndices.end())throw std::runtime_error("unknown native module object");
-            if(state.contains("position")){bridgeActor(id)->transform=state.get<Transform>();auto copy=state;copy.erase("nativeProperties");bridgeWorld.at(index->second).update(copy);}
+            if(state.contains("position")){bridgeActor(id)->transform=state.get<Transform>();auto copy=state;copy.erase("nativeProperties");bridgeWorldData.at(index->second).update(copy);bridgeDirtyStates.insert(index->second);}
         }
     };apply(receipt.at("result"));const auto& clock=receipt.at("result").at("clock");Clock::SetTimeScale(clock.at("scale").get<float>());Clock::SetPaused(clock.at("paused").get<bool>());receipt["operationIndex"]=bridgeOperations.size();bridgeForeign.push_back(receipt);return receipt.at("result").at("outputs");
 }

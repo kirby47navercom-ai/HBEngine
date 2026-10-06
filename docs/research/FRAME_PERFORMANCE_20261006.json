@@ -1,0 +1,59 @@
+{
+  "scene": "Test_Valen",
+  "runtimeObjects": 432,
+  "configuration": "release",
+  "frameSettings": {
+    "targetFrameRate": 120,
+    "framePacing": "fixed"
+  },
+  "rows": [
+    {
+      "mode": "idle",
+      "fps": 118.669563763998,
+      "frames": 355,
+      "workMs": {
+        "mean": 6.488450704493993,
+        "p50": 6.699999988079071,
+        "p95": 8.199999988079071
+      },
+      "simulationMs": {
+        "mean": 5.578591549312565,
+        "p95": 7.200000017881393
+      },
+      "renderSubmissionMs": {
+        "mean": 0.8064788735248674,
+        "p95": 1
+      },
+      "engineFixedMeanMs": 3.6691890213398772,
+      "physicsMeanMs": 1.5581460672985301,
+      "userCppMeanMs": 0.35125646067415733
+    },
+    {
+      "mode": "battle",
+      "fps": 116.36702158621704,
+      "frames": 600,
+      "workMs": {
+        "mean": 6.761166667193175,
+        "p50": 6.799999982118607,
+        "p95": 9.599999994039536
+      },
+      "simulationMs": {
+        "mean": 5.806500000804663,
+        "p95": 8.599999994039536
+      },
+      "renderSubmissionMs": {
+        "mean": 0.8456666666766007,
+        "p95": 1.0999999940395355
+      },
+      "engineFixedMeanMs": 3.9570436675607357,
+      "physicsMeanMs": 1.4848333332439263,
+      "userCppMeanMs": 0.3646230000000002
+    }
+  ],
+  "measurement": "mean simulation time minus matching VM physics/AI/animation hook and C++ user function time; excludes rendering",
+  "nativeHTTPCalls": 0,
+  "errors": 0,
+  "physicalMobileVerified": false,
+  "constant120FPSVerified": false,
+  "perFrame4MSCeilingVerified": false
+}

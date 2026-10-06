@@ -181,3 +181,12 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - 수정분을 새 불변 사용자 설치에 반영하며 현재 실행 창·프로필·이전 버전을 보존해요. 실물Android/실제8시간/PC와실물최종성능 미체크3개와 고정313 패키지의 단일69q8fO 검사는 유지해요. 전체 엔진/전체 본문/API 완료로 이 결과를 올리지 않아요.
 
 - 설치 후속: 공개 한국어 커밋 b93ad7f를 C:/Users/kirby/HBEngine/Versions/f39e8619a2936aff/HBEngine.exe로 갱신했어요.1745파일/27개 소스·배포·설치 SHA가 일치해요. 바탕화면 HBEngine 사용자용.lnk는 새 버전이며 다음 실행부터 적용돼요. 이전91e 버전·프로필·현재 사용자앱46636·기본ADB14204를 보존했어요. 증거 native/build/blend-source-user-install-b93ad7f.json. 같은 소스 iOS 검증은 한 번 요청했으며 결과는 별도 수집해요. 설치 후 누적 엔진 기능을 계속해요.
+
+
+### 2026-10-06 — 프레임 MD 전체 반영·실행 비용 보강
+
+- 별도 요청 문서 docs/엔진_요청_프레임.md의 본문·추가 회귀 대조·release 패키지 결과까지 읽었어요. 원래 42b의18.9/24.1ms, f39의26.8/46.5ms 기록을 보존해요. 자체 ABBA 대조에서 그 증가폭은 재현되지 않았고 사용자 측정을 오측정으로 처리하지 않았어요.
+- PC120/fixed·Android/iOS60/display(15~240/설정 가능)를 편집기·Player·빌드 프로필·AI 스키마에 연결하고 물리1/60을 유지했어요. C++ 두 모듈 시계+사용자 호출을 한 프런트엔드 왕복으로 묶고 지속 WebSocket, 바뀐 C++ 행/필드와 변환만 동기화, 불변 UI 값 공유, 정적/잠든 물리 생략·연속 물리 쓰기 묶음을 적용했어요. 설치 루트 HBPlayer.exe 패키징 경로와 다른 BP의 같은 클래스 소스 충돌도 고쳤어요.
+- 실제 Windows release Game.exe의 고정 Test_Valen 사본(실행432개) 대기3초118.67fps/작업중앙값6.70ms/p958.20ms, F9 전투·마우스 공격6초116.37fps/6.80ms/9.60ms예요. 물리·AI·애니메이션과 사용자 C++·렌더를 제외한 평균 엔진 비용3.669/3.957ms예요. 평균4ms 아래이며 모든 프레임4ms 상한/항상120fps를 확인한 결과가 아니에요. 실제 패키지 스프라이트 로드·한글 HUD 텍스트·오류0·HTTP native 호출0을 확인했어요.
+- 실제 공용 C++/물리156항목/시계·호출 순서와 재전송 방지/프레임 계약·취소·예산 검사를 통과했어요. Android android-mobile-INkAIJ에서 Java/DEX/JNI/C++ 두 CPU·16KB 정렬·APK 서명·AAB·60/display·원본 보존을 확인했어요. 실제 휴대폰60fps는 기기가 없어 미검증이에요. iOS의 동일 소스 Xcode 결과와 설치 경로는 후속 기록에 남겨요.
+- 상세 docs/research/FRAME_PERFORMANCE_20261006.md/JSON, 로컬 native/build/frame-regression-Y3u0Qb/package-performance.json. 원본 게임/검사기·프로필·열린 사용자 창을 바꾸지 않고 고정313의8시간 검사 한 개를 그대로 유지해요. 새로운 장시간 검사·통과한 전체 검사 반복은 추가하지 않아요. 전체 엔진/전체 문서 분석 완료로 계산하지 않아요.

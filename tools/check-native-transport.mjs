@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {NativeHost} from './native-host.mjs';
-import {NativeWorldClient,nativeWorldClient,worldPatch,applyWorldPatch} from '../prototype/native-transport.js';
+import {NativeWorldClient,nativeWorldClient,worldPatch,applyWorldPatch,immutableNativeSnapshot} from '../prototype/native-transport.js';
 
 const snapshot=value=>JSON.parse(JSON.stringify(value));
 const object=(id,x)=>({id,position:[x,0,.1],rotation:[0,0,0],scale:[1,1,1],nested:{'a~/b':[1,2],keep:{flag:true}}});
@@ -27,6 +27,16 @@ assert.notEqual(nativeWorldClient(build,owner),nativeWorldClient(build,{}),'new 
 for(const workerProtocol of [undefined,1,2]){
   const request={objects:old},client=new NativeWorldClient();
   await client.call(request,{workerProtocol},async packet=>{assert.equal(packet,request);assert.equal(packet.worldTransport,undefined);return {};});
+}
+{
+  const client=new NativeWorldClient(),ui=immutableNativeSnapshot({hud:{text:'한글',value:1}}),objects=[{...object('ui',0),gameplayDebug:{ui}}],packets=[];
+  const send=async packet=>{packets.push(snapshot(packet));return {worldSequence:packet.worldSequence,objects:[],worldCommitted:[]};};
+  await client.call({objects},{workerProtocol:3},send);const saved=client.world[0].gameplayDebug.ui;
+  objects[0].position[0]=2;await client.call({objects},{workerProtocol:3},send);
+  assert.equal(client.world[0].gameplayDebug.ui,saved,'unchanged immutable UI shares detached wire storage during actor movement');
+  assert.deepEqual(packets.at(-1).objectPatch,[{op:'replace',path:'/0/position/0',value:2}]);
+  objects[0].gameplayDebug.ui=immutableNativeSnapshot({hud:{text:'변경',value:2}});await client.call({objects},{workerProtocol:3},send);
+  assert.equal(client.world[0].gameplayDebug.ui.hud.text,'변경');assert.equal(saved.hud.text,'한글');assert.equal(ui.hud.value,1);
 }
 
 const host=new NativeHost();

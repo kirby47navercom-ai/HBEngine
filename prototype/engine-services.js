@@ -104,6 +104,13 @@ export function engineOperations(hooks){
     }finally{releasingActors.delete(o.id);}
   }
   const stagedNativeSpawns=new WeakSet();
+  const physicsWrites=new Set(['setVelocity','setAngularVelocity','addForce','impulse','physicsSleep','physicsForce','physicsForceAt','physicsTorque','physicsAngularImpulse']);
+  function writePhysics(system,key,o,a){
+    if(key==='setVelocity')system.velocity(o,a.velocity);else if(key==='setAngularVelocity')system.angularVelocity(o,a.velocity);
+    else if(key==='physicsSleep')system.sleeping(o,a.sleeping);else if(key==='addForce')system.force(o,a.force);else if(key==='impulse')system.impulse(o,a.impulse);
+    else if(key==='physicsForce'||key==='physicsForceAt')system.applyForce(o,a.force,a.mode,key==='physicsForceAt'?a.position:undefined);
+    else system.torque(o,a.torque||a.impulse,key==='physicsAngularImpulse');
+  }
   async function applyNativeOperations(operations,b,vm){
     const added=[];
     try{
@@ -114,7 +121,12 @@ export function engineOperations(hooks){
         if(!template||op.args.spawnStates.length!==template.objects.length)throw Error('C++ 생성 템플릿 상태 오류');
         for(const state of op.args.spawnStates){if(!spawnTransformValid(state)||typeof state.id!=='string')throw Error('C++ 생성 상태 오류');if(vm.object(state.id))continue;if(vm.objects.length>=2000)throw Error('실행 오브젝트 2000개 제한 초과');const object=structuredClone(state);vm.objects.push(object);stagedNativeSpawns.add(object);added.push(object);}
       }
-      for(const op of operations)await operation(op.key,op.args,vm.bindings.find(owner=>owner.self===op.self)||b,vm);
+      for(let i=0;i<operations.length;){
+        const op=operations[i];let end=i+1;
+        if(physicsWrites.has(op.key))while(end<operations.length&&physicsWrites.has(operations[end].key))end++;
+        if(end>i+1){const system=ensurePhysics(vm);await system.ready?.();if(system.writeBatch){system.writeBatch(()=>{for(;i<end;i++){const op=operations[i],binding=vm.bindings.find(owner=>owner.self===op.self)||b;writePhysics(system,op.key,target(op.args,binding,vm),op.args);}});continue;}}
+        await operation(op.key,op.args,vm.bindings.find(owner=>owner.self===op.self)||b,vm);i++;
+      }
     }finally{for(const object of added)if(stagedNativeSpawns.has(object)){stagedNativeSpawns.delete(object);const index=vm.objects.indexOf(object);if(index>=0)vm.objects.splice(index,1);}}
   }
   async function startActor(o,vm){
@@ -168,9 +180,7 @@ export function engineOperations(hooks){
       const o=target(a,b,vm),system=ensurePhysics(vm);await system.ready?.();if(system.backend!=='rapier')throw Error('이 강체 기능에는 Rapier 물리가 필요해요.');
       if(key==='getAngularVelocity')return {return:structuredClone(o.angularVelocity||[0,0,0])};
       if(key==='physicsMass'||key==='physicsSleeping'){system.inspect();const body=o.gameplayDebug?.physics;if(!body)throw Error('Rigidbody가 필요해요.');return {return:key==='physicsMass'?body.mass:body.sleeping};}
-      if(key==='setAngularVelocity')system.angularVelocity(o,a.velocity);if(key==='physicsSleep')system.sleeping(o,a.sleeping);
-      if(key==='physicsForce'||key==='physicsForceAt')system.applyForce(o,a.force,a.mode,key==='physicsForceAt'?a.position:undefined);
-      if(key==='physicsTorque'||key==='physicsAngularImpulse')system.torque(o,a.torque||a.impulse,key==='physicsAngularImpulse');return {};
+      writePhysics(system,key,o,a);return {};
     }
     if(['inputLastDevice','inputAnyPressed','inputJustPressed','inputJustReleased','inputKeyDown','inputAxisValue','mousePosition','mouseDelta','mouseRay','mouseWorldPlane'].includes(key)){vm.inputSnapshot();return vm.inputState.query(key,a);}
     if(['inputAddContext','inputRemoveContext','actionValue','actionState','actionEvent','actionElapsed'].includes(key)){
@@ -245,9 +255,9 @@ export function engineOperations(hooks){
     if(['getComponent','addComponent','componentEnabled'].includes(key)){const o=target(a,b,vm);if(key==='componentEnabled'){if(!o.owner)throw Error('컴포넌트 대상이 아니에요.');const owner=vm.object(o.owner),component=objectComponents(owner).find(c=>c.id===o.componentId);if(!component)throw Error('컴포넌트가 제거됐어요.');component.properties??=componentDefaults(component.type);component.properties.enabled=a.enabled;o.enabled=a.enabled;hooks.update(owner);return {};}let c=objectComponents(o).find(c=>c.type===a.class);if(!c&&key==='addComponent'){c=addSceneComponent(o,a.class);hooks.update(o);}if(!c)return {return:null};const id=o.id+':'+c.id;if(!vm.object(id))vm.objects.push({id,name:c.name,kind:'component',owner:o.id,componentId:c.id,visible:false,enabled:c.properties?.enabled!==false,position:[...o.position],rotation:[...o.rotation],scale:[...o.scale],properties:c.properties});return {return:id};}
     if(['getGameMode','getGameState','getPlayerController','getPlayerState','getPlayerPawn'].includes(key)){const field={getGameMode:'gameMode',getGameState:'gameState',getPlayerController:'controller',getPlayerState:'playerState',getPlayerPawn:'pawn'}[key];return {return:hooks.gameplay?.[field]||null};}
     if(key==='possess'||key==='unPossess'){const controller=target(a,b,vm,'controller'),control=objectComponents(controller).find(c=>['PlayerController','AIController'].includes(c.type));if(!control)throw Error('컨트롤러 컴포넌트가 필요해요.');const previous=controller.pawn&&vm.object(controller.pawn);if(previous)previous.controller=null;const pawn=key==='possess'?target(a,b,vm,'pawn'):null;if(pawn){if(pawn.controller&&pawn.controller!==controller.id){const old=vm.object(pawn.controller);if(old){old.pawn=null;const oldControl=objectComponents(old).find(c=>['PlayerController','AIController'].includes(c.type));if(oldControl)oldControl.properties.pawn='';}}pawn.controller=controller.id;}controller.pawn=pawn?.id||null;control.properties.pawn=pawn?.id||'';if(hooks.gameplay?.controller===controller.id)hooks.gameplay.pawn=pawn?.id||null;return {};}
-    if(['addMovementInput','jump','getVelocity','setVelocity','addForce'].includes(key)){const o=target(a,b,vm),system=ensurePhysics(vm);await system.ready?.();if(key==='getVelocity')return {return:structuredClone(o.velocity||[0,0,0])};if(key==='addMovementInput'){if(!['PawnMovement','CharacterMovement','CharacterMovement2D','TopDownMovement2D'].some(type=>enabledComponent(o,type)))throw Error('이동 컴포넌트가 필요해요.');system.movement(o,a.direction,a.scale);}if(key==='jump')system.jump(o);if(key==='setVelocity')system.velocity(o,a.velocity);if(key==='addForce')system.force(o,a.force);return {};}
+    if(['addMovementInput','jump','getVelocity','setVelocity','addForce'].includes(key)){const o=target(a,b,vm),system=ensurePhysics(vm);await system.ready?.();if(key==='getVelocity')return {return:structuredClone(o.velocity||[0,0,0])};if(key==='addMovementInput'){if(!['PawnMovement','CharacterMovement','CharacterMovement2D','TopDownMovement2D'].some(type=>enabledComponent(o,type)))throw Error('이동 컴포넌트가 필요해요.');system.movement(o,a.direction,a.scale);}if(key==='jump')system.jump(o);if(physicsWrites.has(key))writePhysics(system,key,o,a);return {};}
     if(key==='trace'||key==='lineTrace'){const system=ensurePhysics(vm);if(system.query){await system.ready();return {[key==='trace'?'return':'hit']:system.query('physicsRaycast',{...a,dimension:hooks.physicsOptions?.dimension||3})};}const start=new THREE.Vector3(...a.start),direction=new THREE.Vector3(...a.end).sub(start),distance=direction.length();if(!distance)return {[key==='trace'?'return':'hit']:defaultsFor('hit')};hooks.scene().updateMatrixWorld();const ray=new THREE.Raycaster(start,direction.normalize(),0,distance),hit=ray.intersectObjects(hooks.meshes(),true).find(h=>h.object.isMesh&&vm.object(h.object.userData.objectId)?.collisionEnabled!==false),normal=hit?.face?.normal.clone().transformDirection(hit.object.matrixWorld).toArray();return {[key==='trace'?'return':'hit']:hit?{hit:true,position:hit.point.toArray(),normal:normal||[0,1,0],actor:hit.object.userData.objectId}:defaultsFor('hit')};}
-    if(key==='impulse'){const system=ensurePhysics(vm);await system.ready?.();system.impulse(target(a,b,vm),a.impulse);return {};}
+    if(key==='impulse'){const system=ensurePhysics(vm);await system.ready?.();writePhysics(system,key,target(a,b,vm),a);return {};}
     if(key==='collisionEnabled'){target(a,b,vm).collisionEnabled=a.enabled;return {};}
     if(['audioPlay','audioPlayAt','audioMusic','audioStop','audioStopMusic','sound','playSoundAt','stopSound'].includes(key)){
       const music=key==='audioMusic',stop=key==='audioStop'||key==='audioStopMusic'||key==='stopSound',name=a.asset||a.name||a.sound,voiceKey=music||key==='audioStopMusic'?'__music':a.handle||a.voice||name||crypto.randomUUID(),epoch=audioSession.epoch;

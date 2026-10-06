@@ -1,3 +1,4 @@
+import {validFrameSettings} from './build-profile.js';
 import {storageKey} from './project-session.js';
 import { validBlueprint } from './blueprint-model.js';
 import {validComponents} from './scene-components.js';
@@ -22,7 +23,7 @@ export const defaultObjects = [
 export const clone = value => JSON.parse(JSON.stringify(value));
 const kinds = new Set(['skyAtmosphere','skyLight','volumetricCloud','heightFog','cone','capsule','torus','particles','navigation','decal','arch', 'crystal', 'ground', 'path', 'grass', 'rocks', 'water', 'light', 'camera', 'cube', 'sphere', 'cylinder', 'plane', 'model','empty','group','playerStart','character','character2d','sprite','tilemap','audio','directionalLight','pointLight','spotLight','light2d','controller','gameMode','gameState','playerState']);
 export const defaultRuntimeSettings={dimension:'3d',gameConfig:'',gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8};
-export function validRuntimeSettings(value){return value&&(value.sortingLayers===undefined||validSortingLayers(value.sortingLayers))&&['2d','3d'].includes(value.dimension)&&typeof value.gameConfig==='string'&&value.gameConfig.length<=1000&&!value.gameConfig.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value.gameConfig)&&Array.isArray(value.gravity)&&value.gravity.length===3&&value.gravity.every(v=>Number.isFinite(v)&&Math.abs(v)<=1000)&&Number.isFinite(value.fixedDeltaTime)&&value.fixedDeltaTime>=1/240&&value.fixedDeltaTime<=.1&&Number.isInteger(value.maxSubsteps)&&value.maxSubsteps>=1&&value.maxSubsteps<=32;}
+export function validRuntimeSettings(value){return value&&(value.sortingLayers===undefined||validSortingLayers(value.sortingLayers))&&validFrameSettings(value)&&['2d','3d'].includes(value.dimension)&&typeof value.gameConfig==='string'&&value.gameConfig.length<=1000&&!value.gameConfig.includes('..')&&!/^(?:[a-z]+:|[/\\])/i.test(value.gameConfig)&&Array.isArray(value.gravity)&&value.gravity.length===3&&value.gravity.every(v=>Number.isFinite(v)&&Math.abs(v)<=1000)&&Number.isFinite(value.fixedDeltaTime)&&value.fixedDeltaTime>=1/240&&value.fixedDeltaTime<=.1&&Number.isInteger(value.maxSubsteps)&&value.maxSubsteps>=1&&value.maxSubsteps<=32;}
 export const validSurface = value => !!value && /^#[0-9a-f]{6}$/i.test(value.color)
   && ['roughness','metalness'].every(k=>Number.isFinite(value[k])&&value[k]>=0&&value[k]<=1)
   && Number.isFinite(value.light)&&value.light>=0&&value.light<=10;

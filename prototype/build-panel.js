@@ -1,11 +1,11 @@
 import {editorRequest} from './project-browser.js';
-import {validBuildProfile,buildTargets,profileTarget,mobileSettings,kioskSettings} from './build-profile.js';
+import {validBuildProfile,buildTargets,profileTarget,mobileSettings,kioskSettings,frameSettings} from './build-profile.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function platformFields(profile){
   const target=profileTarget(profile),m=mobileSettings(profile);
   const select=(field,label,choices,value,mobile=true)=>`<label>${label}<select data-${mobile?'mobile':'field'}="${field}">${choices.map(([id,label])=>`<option value="${id}" ${value===id?'selected':''}>${esc(label)}</option>`).join('')}</select></label>`;
   const input=(field,label,value,type='text',limits='')=>`<label>${label}<input data-mobile="${field}" type="${type}" value="${esc(value)}" ${limits}></label>`;
-  let fields=select('target','플랫폼',Object.entries(buildTargets).map(([id,t])=>[id,t.label]),target,false);
+  const f=frameSettings(profile);let fields=select('target','플랫폼',Object.entries(buildTargets).map(([id,t])=>[id,t.label]),target,false)+'<label>목표 FPS<input data-field="targetFrameRate" type="number" min="15" max="240" value="'+f.targetFrameRate+'"></label>'+select('framePacing','프레임 동기화',[['fixed','목표 FPS'],['display','화면 주사율']],f.framePacing,false);
   if(target==='windows-x64'){const k=kioskSettings(profile);return fields+'<fieldset><legend>부스 / 키오스크</legend>'+['enabled','fullscreen','hideCursor','preventMinimize'].map((key,index)=>'<label><input type="checkbox" data-kiosk="'+key+'" '+(k[key]?'checked':'')+'>'+['키오스크 사용','전체 화면 고정','커서 숨김','최소화 방지'][index]+'</label>').join('')+'<label>무입력 초기화(초)<input type="number" min="0" max="86400" data-kiosk="idleResetSeconds" value="'+k.idleResetSeconds+'"></label></fieldset>';}
   fields+=input('applicationId','앱 ID',m.applicationId,'text','maxlength="200"')+input('versionName','버전',m.versionName,'text','maxlength="80"')+input('versionCode','빌드 번호',m.versionCode,'number','min="1" max="2100000000"')+select('orientation','화면 방향',[['landscape','가로'],['portrait','세로'],['auto','자동']],m.orientation);
   if(target==='ios')return fields+'<span>Mac에서 여는 Xcode 프로젝트</span>';

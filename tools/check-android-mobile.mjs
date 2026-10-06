@@ -31,6 +31,7 @@ try{
     assert.ok(names.includes((type==='aab'?'base/':'')+'assets/Content/Assets/MobileVector.svg'));
     assert.equal(names.some(name=>name.endsWith('node.exe')||name.includes('tools/serve.mjs')),false);
     assert.deepEqual(await fs.readFile(path.join(build.output,'Android/java/com/hbengine/player/HBActivity.java')),await fs.readFile(path.join(root,'native/mobile/android/HBActivity.java')));
+    const packed=JSON.parse(await fs.readFile(path.join(build.output,'Assets/game.hbpack.json'),'utf8'));assert.equal(packed.targetFrameRate,60);assert.equal(packed.framePacing,'display');
   }
   const packageId=(await runTool(java('java'),['-jar',path.join(capability.sdk,'bundletool.jar'),'dump','manifest','--bundle='+aab.artifact,'--xpath=/manifest/@package'])).trim().split(/\r?\n/).at(-1);assert.equal(packageId,aab.mobile.applicationId);
   for(const [name,hash] of original)assert.equal(createHash('sha256').update(await fs.readFile(await record.project.resolve(name))).digest('hex'),hash,'원본 보존: '+name);

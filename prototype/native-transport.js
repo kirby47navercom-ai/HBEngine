@@ -45,11 +45,15 @@ export function commitNativeWorld(world,result){
 // UI fields from C++; ordinary mutable actor data is serialized on every call.
 const immutableJSON=new WeakMap();
 export function immutableNativeSnapshot(value){
-  const snapshot=structuredClone(value),freeze=value=>{if(value&&typeof value==='object'){for(const child of Object.values(value))freeze(child);Object.freeze(value);}};freeze(snapshot);immutableJSON.set(snapshot,JSON.stringify(snapshot));return snapshot;
+  const snapshot=structuredClone(value),freeze=value=>{if(value&&typeof value==='object'){for(const child of Object.values(value))freeze(child);Object.freeze(value);}return value;};freeze(snapshot);const text=JSON.stringify(snapshot);immutableJSON.set(snapshot,{text,value:freeze(JSON.parse(text))});return snapshot;
 }
 function withJSONField(object,key,value){const text=JSON.stringify({...object,[key]:undefined});return text.slice(0,-1)+(text.length>2?',':'')+JSON.stringify(key)+':'+value+'}';}
 function nativeRowJSON(object){
-  const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded));
+  const debug=object.gameplayDebug,ui=debug?.ui,encoded=ui&&immutableJSON.get(ui);return encoded===undefined?JSON.stringify(object):withJSONField(object,'gameplayDebug',withJSONField(debug,'ui',encoded.text));
+}
+function detachedNativeRow(object,row){
+  const debug=object.gameplayDebug,encoded=debug?.ui&&immutableJSON.get(debug.ui);if(!encoded)return JSON.parse(row);
+  const value=JSON.parse(withJSONField(object,'gameplayDebug',withJSONField(debug,'ui','null')));value.gameplayDebug.ui=encoded.value;return value;
 }
 // Compiled templates without an actor cannot receive a foreign actor call.
 // Keep the boundary if even an inactive actor belongs to another module.
@@ -67,9 +71,10 @@ export function canParallelNativeFrames(builds,owner,delta){
 }
 export async function advanceNativeFrames(builds,owner,delta,invoke,isCurrent=()=>owner.active&&!owner.stopping){
   const unique=[...new Map([...builds.values()].map(build=>[build.token,build])).values()];
+  const mergeClocks=unique.length>1&&unique.length<=32&&unique.every(build=>{const c=nativeWorldClient(build,owner);return build.metadata.nativeModuleFrameBatch===1&&c.clockBatchable&&c.pendingCalls===0&&c.frames.length<63;});
   const advance=async build=>{
     if(!isCurrent())return;
-    const result=await invoke({command:'frame',delta,deferFrame:canDeferNativeFrames(owner.objects,builds),clock:{scale:owner.core.scale,paused:owner.core.paused}},build);
+    const result=await invoke({command:'frame',delta,deferFrame:mergeClocks||canDeferNativeFrames(owner.objects,builds),clock:{scale:owner.core.scale,paused:owner.core.paused}},build);
     if(isCurrent())await owner.nativeTimers(result,owner.bindings.filter(binding=>owner.hooks.nativeBuild?.(binding.self)?.token===build.token));
   };
   const parallel=unique.length>1&&canParallelNativeFrames(unique,owner,delta);
@@ -80,12 +85,18 @@ export async function advanceNativeFrames(builds,owner,delta,invoke,isCurrent=()
 export class NativeWorldClient {
   constructor(owner){this.owner=owner;this.id=crypto.randomUUID();this.world=null;this.rows=null;this.sequence=0;this.queue=Promise.resolve();this.pendingCalls=0;this.clockRevision=0;this.frames=[];this.clockBatchable=false;this.clockState=null;this.spawnContext=null;}
   call(request,metadata,send){
+    this.moduleFrameBatch=metadata?.nativeModuleFrameBatch===1;
     this.pendingCalls++;
     const job=this.queue.then(async()=>{
       const game=this.owner?.hooks?.game;if(game&&metadata?.nativeGameSession===1)request={...request,gameSession:game.snapshot()};const context=request.spawnTemplates,prefix=request.spawnPrefix,deliver=send;
       if(context&&this.spawnContext?.context===context&&this.spawnContext.prefix===prefix&&request.command!=='reset'){const {spawnTemplates,...next}=request;request=next;}
       send=async packet=>{
-        const revision=this.clockRevision,result=await deliver(packet);
+        const revision=this.clockRevision,preludes=[];
+        if(!packet.command&&metadata.nativeModuleFrameBatch===1)for(const [token,client] of owners.get(this.owner)||[]){if(preludes.length>=32)break;if(client===this||!client.moduleFrameBatch||client.pendingCalls||!client.clockBatchable||!client.frames.length)continue;let release;const gate=new Promise(r=>release=r),steps=client.frames;client.frames=[];client.pendingCalls++;client.queue=client.queue.then(()=>gate);preludes.push({token,client,steps,release});}
+        let result;try{result=await deliver(preludes.length?{...packet,moduleFrames:preludes.map(({token,steps})=>({token,steps}))}:packet);
+          if(preludes.length){if(!Array.isArray(result.moduleFrames)||result.moduleFrames.length!==preludes.length)throw Error('C++ 모듈 프레임 응답 개수 오류');for(let i=0;i<preludes.length;i++){const p=preludes[i],r=result.moduleFrames[i];if(r.token!==p.token||r.result.clockBatchable!==true||r.result.timerCallbacks?.length||r.result.operations?.length||r.result.objects?.length||r.result.events?.length)throw Error('C++ 모듈 프레임 응답 경계 오류');p.client.clockState=r.result.clock;p.client.clockBatchable=true;}}
+        }catch(error){for(const p of preludes){p.client.clockBatchable=false;p.client.clockState=null;}throw error;}finally{for(const p of preludes){p.client.pendingCalls--;p.release();}}
+
         const refresh=reply=>{for(const foreign of reply.foreign||[]){
           const receiver=owners.get(this.owner)?.get(foreign.token);
           if(receiver){receiver.clockRevision++;receiver.clockBatchable=foreign.result.clockBatchable===true&&!foreign.result.nativeError&&receiver.pendingCalls===0&&!receiver.frames.length;receiver.clockState=foreign.result.clock;}
@@ -109,7 +120,7 @@ export class NativeWorldClient {
       }
       // Native JSON serialization compares unchanged actor rows faster than walking
       // all their component/UI fields in JS. Keep only detached, immutable rows.
-      const serializeStart=performance.now();let reusedRows=0;const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>{if(this.world&&row===this.rows?.[i]){reusedRows++;return this.world[i];}return JSON.parse(row);}),serializedAt=performance.now();
+      const serializeStart=performance.now();let reusedRows=0;const rows=request.objects.map(object=>nativeRowJSON(object)??'null'),current=rows.map((row,i)=>{if(this.world&&row===this.rows?.[i]){reusedRows++;return this.world[i];}return detachedNativeRow(request.objects[i],row);}),serializedAt=performance.now();
       let next,packet,sequence=this.sequence+1;const patch=this.world&&worldPatch(this.world,current);
       if(patch){next=applyWorldPatch(this.world,patch);packet={...request,objects:undefined,objectPatch:patch,worldTransport:1,worldId:this.id,baseSequence:this.sequence,worldSequence:sequence};}
       if(!packet){next=current;sequence=1;packet={...request,objects:next,worldTransport:1,worldId:this.id,baseSequence:0,worldSequence:sequence};}

@@ -9,7 +9,7 @@ export function generatedCore(){
   for(const c of native.classes)for(const f of c.functions){
     if(!f.nodeKey)throw Error(c.name+'.'+f.name+' 노드 ID 누락');
     const exec={id:'exec',label:'실행',type:'exec',array:false},then={id:'then',label:'다음',type:'exec',array:false};
-    const defaults=Object.fromEntries(f.inputs.filter(p=>p.default!==undefined||['duration','speed','scale','alpha','tolerance','delta','maxLength'].includes(p.id)).map(p=>[p.id,p.default??(p.id==='delta'?1/60:p.id==='tolerance'?.001:1)]));
+    const defaults=Object.fromEntries(f.inputs.filter(p=>p.default!==undefined||['duration','speed','scale','alpha','tolerance','delta','maxLength'].includes(p.id)).map(p=>[p.id,p.default!==undefined?p.default:(p.id==='delta'?1/60:p.id==='tolerance'?.001:1)]));
     if(f.nodeKey.startsWith('physics')){if(f.inputs.some(p=>p.id==='mode'))defaults.mode='force';if(f.inputs.some(p=>p.id==='radius'))defaults.radius=.5;if(f.inputs.some(p=>p.id==='extent'))defaults.extent=[.5,.5,.5];}
     (f.service?services:entries).push({key:f.nodeKey,title:f.label.replace(/([a-z0-9])([A-Z])/g,'$1 $2'),ko:f.ko,group:group[c.name]||f.category,keywords:f.nodeKey+' '+f.label+' '+f.ko+' '+f.category+' c++ cpp',cppName:'hb::'+c.name+'::'+f.name,pure:f.pure,...(f.service?{service:true}:{}),inputs:[...(!f.pure?[exec]:[]),...f.inputs],outputs:[...(!f.pure?[then]:[]),...f.outputs.map(p=>({...p,id:p.id==='result'?'return':p.id}))],defaults});
   }

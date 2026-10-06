@@ -40,6 +40,7 @@ public final class HBActivity extends Activity {
         if(android.os.Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT,this::handleBack);
         try {
             manifest = new JSONObject(read(getAssets().open("game.hbpack.json"), LIMIT));
+            android.view.WindowManager.LayoutParams windowSettings=getWindow().getAttributes();windowSettings.preferredRefreshRate=manifest.optInt("targetFrameRate",60);getWindow().setAttributes(windowSettings);
             files.add("game.hbpack.json");
             JSONArray inventory = manifest.getJSONArray("files");
             for (int i=0;i<inventory.length();i++){JSONObject entry=inventory.getJSONObject(i);files.add(entry.getString("path"));fileSizes.put(entry.getString("path"),entry.getLong("bytes"));}

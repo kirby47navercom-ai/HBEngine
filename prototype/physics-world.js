@@ -22,7 +22,7 @@ export function createRigidPhysics(objects,options={}){
   const dt=options.fixedStep??options.fixedDeltaTime??1/60,maxSubsteps=options.maxSubsteps??8,gravity=options.gravity??[0,-9.81,0];
   if(!vector(gravity)||!Number.isFinite(dt)||dt<=0||dt>1||!Number.isInteger(maxSubsteps)||maxSubsteps<1||maxSubsteps>128)throw Error('물리 설정을 확인하세요.');
   const spaces=new Map(),materials=new Map(options.materials||[]),inputs=new Map(),keys=new Map(),jumps=new Set();
-  let readyPromise,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0;
+  let readyPromise,disposed=false,accumulator=0,elapsed=0,lastContacts=[],nonce=0,writingBatch=false;
   const alive=()=>{if(disposed)throw Error('종료된 물리 월드예요.');};
   const properties=(o,dim)=>{
     const type=dim===2?'Rigidbody2D':'Rigidbody',movement=enabledComponent(o,dim===2?'CharacterMovement2D':'CharacterMovement');
@@ -34,7 +34,7 @@ export function createRigidPhysics(objects,options={}){
   const typeOf=p=>options.queryOnly||!p?'static':p.isKinematic?'kinematic':p.bodyType||'dynamic';
   const record=(o,dim)=>spaces.get(dim)?.bodies.get(o.id);
   const constrained=(r,v,angular=false)=>v.map((value,i)=>(angular?(r.p?.movement?[1,1,1]:r.p?.freezeRotation)?.[i]||r.dim===2&&i!==2:r.p?.freezePosition?.[i]||r.dim===2&&i===2)?0:value);
-  const dynamic=o=>{alive();sync();const r=record(o,2)?.p?record(o,2):record(o,3);if(!r?.p||!r.body.isDynamic())throw Error('활성화된 동적 Rigidbody가 필요해요.');return r;};
+  const dynamic=o=>{alive();if(!writingBatch)sync();const r=record(o,2)?.p?record(o,2):record(o,3);if(!r?.p||!r.body.isDynamic())throw Error('활성화된 동적 Rigidbody가 필요해요.');return r;};
   const mirror=r=>{
     if(options.queryOnly)return;
     const velocity=array(r.body.linvel()),angular=r.dim===2?[0,0,r.body.angvel()]:array(r.body.angvel());
@@ -165,8 +165,8 @@ export function createRigidPhysics(objects,options={}){
   function updateObjects(){
     const records=[...spaces.values()].flatMap(s=>[...s.bodies.values()]).filter(r=>r.p);
     const depth=o=>{let n=0,at=o;while(at.parent||at.parentId){at=objects.find(v=>v.id===(at.parentId||at.parent));if(!at)break;if(++n>64)throw Error('부모 계층 깊이 제한 초과');}return n;};records.sort((a,b)=>depth(a.object)-depth(b.object));
-    for(const r of records){const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);
-      const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation()),parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null;
+    for(const r of records){const parent=(r.object.parentId||r.object.parent)?objects.find(o=>o.id===(r.object.parentId||r.object.parent)):null,parentKey=parent?sceneWorldMatrix(parent,objects).elements.join():null,sleeping=r.body.isFixed()||r.body.isSleeping();if(sleeping&&parentKey===r.lastParentKey){if(!r.lastSleeping)mirror(r);r.lastSleeping=true;continue;}r.lastSleeping=sleeping;r.lastParentKey=parentKey;const position=array(r.body.translation());if(r.dim===2)position[2]=sceneWorldPosition(r.object,objects)[2];setSceneWorldPosition(r.object,position,objects);
+      const rotation=r.dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),r.body.rotation()):new Quaternion().copy(r.body.rotation());
       if(parent)rotation.premultiply(pose(parent,objects).rotation.invert());r.object.rotation=new Euler().setFromQuaternion(rotation).toArray().slice(0,3).map(v=>v/rad);
       const p=pose(r.object,objects);r.lastPose=JSON.stringify([p.position.toArray(),p.rotation.toArray()]);mirror(r);options.update?.(r.object);
     }
@@ -209,6 +209,9 @@ export function createRigidPhysics(objects,options={}){
     return {hit:true,position:new Vector3(...array(h.witness1)).applyQuaternion(rotationQ).add(new Vector3(...array(c.collider.translation()))).toArray(),normal:new Vector3(...array(h.normal1)).applyQuaternion(rotationQ).toArray(),actor:c.object.id};
   }
   const state={backend:'rapier',objects,gameplay:options.gameplay||null,
+    // Only consecutive synchronous velocity/force/sleep writes share a sync.
+    // Scene edits and queries remain outside this scope and synchronize normally.
+    writeBatch(callback){alive();if(writingBatch)throw Error('물리 쓰기 묶음 중첩');sync();writingBatch=true;try{return callback();}finally{writingBatch=false;}},
     async ready(){alive();readyPromise??=loadPhysicsLibraries().then(modules=>{alive();for(let i=0;i<modules.length;i++){const R=modules[i],dim=i+2,world=new R.World(xyz(gravity));world.timestep=dt;world.numSolverIterations=options.solverIterations??8;const space={R,world,bodies:new Map(),colliders:new Map(),joints:new Map(),eventQueue:new R.EventQueue(true),anchorBody:world.createRigidBody(R.RigidBodyDesc.fixed())};space.hooks={filterContactPair:(a,b)=>pairAllowed(space,a,b)?R.SolverFlags.COMPUTE_IMPULSE:null,filterIntersectionPair:(a,b)=>pairAllowed(space,a,b)};spaces.set(dim,space);}sync();return state;}).catch(error=>{state.dispose();throw error;});return readyPromise;},
     async loadMaterials(read){for(const o of objects)for(const c of objectComponents(o)){const path=c.properties?.physicalMaterial;if(!path||materials.has(path))continue;const data=await read(path);if(data?.version!==1||!['friction','restitution','density'].every(k=>Number.isFinite(data[k]))||data.friction<0||data.friction>10||data.restitution<0||data.restitution>1||data.density<=0)throw Error('물리 머테리얼 검증 실패: '+path);materials.set(path,data);}return state.ready();},
     input(key,value){keys.set(key.toLowerCase(),value);if(key===' '&&value&&state.gameplay?.pawn)jumps.add(state.gameplay.pawn);},releaseInput(){keys.clear();inputs.clear();jumps.clear();},

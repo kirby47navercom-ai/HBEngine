@@ -9,7 +9,7 @@ import {assetKind,assetReferences} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {readNativeFiles} from './native-project.mjs';
 import {validAsset} from '../prototype/asset-documents.js';
-import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets} from '../prototype/build-profile.js';
+import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets,frameSettings} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
 export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export const nativeSignature=(header,source)=>digest(JSON.stringify([header,source]));
@@ -65,6 +65,7 @@ export async function inspectBuild(record,profile){
 export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
   for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g)){
+    if(match[1]==='ws'){async function collect(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await collect(f);else if(/\.(?:js|mjs|json)$/.test(e.name)||e.name==='LICENSE')seen.add(f);}}await collect(path.join(root,'node_modules/ws'));}
     const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
     if(specifier==='three'||specifier.startsWith('three/addons/'))seen.add(path.join(root,'node_modules/three/package.json'));
     if(dependency)await moduleClosure(dependency,seen);
@@ -74,7 +75,7 @@ export async function moduleClosure(entry,seen=new Set()){
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
   failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
   if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 빌드하세요.');
-  const desktop=path.join(root,'dist/HBEngine');await fs.access(path.join(desktop,'HBPlayer.exe'));
+  const desktop=await fs.access(path.join(root,'HBPlayer.exe')).then(()=>root,()=>path.join(root,'dist/HBEngine'));await fs.access(path.join(desktop,'HBPlayer.exe'));
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});
   const canonical=await fs.realpath(out);if(!canonical.toLowerCase().startsWith((record.root+path.sep).toLowerCase()))throw Error('빌드 경로가 프로젝트 밖이에요.');
   const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{failIfCanceled(signal);await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});artifacts.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
@@ -89,7 +90,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
     for(const name of ['player.html','player.css','ui-runtime.css'])await copy(path.join(root,'prototype',name),'prototype/'+name);
     const copyLicenses=async rel=>{for(const e of await fs.readdir(path.join(desktop,rel),{withFileTypes:true})){if(e.isSymbolicLink())throw Error('배포 의존성 심볼릭 링크');if(e.isDirectory())await copyLicenses(rel+'/'+e.name);else await copy(path.join(desktop,rel,e.name),rel+'/'+e.name);}};await copyLicenses('licenses');
     await copy(path.join(desktop,'HBPlayer.exe'),'Game.exe');await copy(path.join(desktop,'runtime/node.exe'),'runtime/node.exe');await copy(path.join(desktop,'WebView2Loader.dll'),'WebView2Loader.dll');await write('package.json',Buffer.from('{"type":"module"}\n'));await copy(path.join(root,'tools/kiosk-watchdog.mjs'),'tools/kiosk-watchdog.mjs');await write('Kiosk.cmd',Buffer.from('@echo off\r\n"%~dp0runtime\\node.exe" "%~dp0tools\\kiosk-watchdog.mjs" "%~dp0Game.exe"\r\n'));
-    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,kiosk:profile.kiosk||{},width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
+    failIfCanceled(signal);const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,kiosk:profile.kiosk||{},...frameSettings(profile),width:profile.width,height:profile.height,startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,gameInstance:report.gameInstance||'',entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files:artifacts};
     const result={...report,id,output:out,executable:path.join(out,'Game.exe'),totalFiles:artifacts.length,totalBytes:artifacts.reduce((sum,f)=>sum+f.bytes,0)};await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}finally{host.close();}
 }

@@ -252,6 +252,8 @@ C++ 공간 검색은 현재 C++ 변환/충돌 flags를 합친 읽기 전용 정�
 }
 ```
 
+프레임 설정은 선택 필드 `targetFrameRate`(15~240 정수)와 `framePacing`(`fixed/display`)예요. 생략 시 Windows120/fixed, Android·iOS60/display를 사용해요. 씬의 `runtime`에도 같은 필드를 둘 수 있고 빌드 프로필 값이 패키지 실행을 결정해요. `runtime.state.frameSettings`와 `GET /api/schema`의 `build.frameDefaults/frameLimits`에서 해석한 값/계약을 확인해요. 실제 FPS와 프레임 예산 초과는 프로파일러 측정값이며 목표값 자체가 성능 보장이 아니에요. [실행 비용과 증거](research/FRAME_PERFORMANCE_20261006.md)
+
 프로필은 1~32개, Scene 목록은 1~256개이며 하나 이상의 Scene이 활성이어야 한다. 경로 중복·이탈을 거부하고 첫 활성 Scene이 시작 Scene이다. 너비는 320~7680, 높이는 240~4320의 정수다. 구성은 `development/release`이다. UI에서 열린 Scene 추가·드롭·체크 제외·제거·순서를 지원하고 AI는 같은 배열을 revision 보호로 저장한다.
 
 빌드는 **디스크에 저장된 에셋**을 소비한다. AI가 열린 문서를 변경했다면 `document.get` → 조건부 변경 → `document.save`를 먼저 완료한다. 프로필 저장과 에셋 저장을 한 원자적 트랜잭션으로 취급하지 않는다. UI의 모두 저장하고 빌드는 에셋 저장을 먼저 수행하고, 검사/CLI/직접 빌드 API는 열린 미저장 편집을 자동 반영하지 않는다. C++ 소스가 BP에 등록한 소스와 다르면 `native.build` 후 해당 BP를 저장한다.

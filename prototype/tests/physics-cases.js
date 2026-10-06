@@ -9,6 +9,10 @@ export async function physicsCases(){
   const worlds=[];const create=async(objects,options={})=>{const p=createRigidPhysics(objects,options);worlds.push(p);await p.ready();return p;},run=(p,n)=>{for(let i=0;i<n;i++)p.step(1/60);};
   try{
     for(const dim of [2,3]){
+      const fixed=object('fixed-skip',dim,'Box',{}, {bodyType:'static'}),sleeper=object('sleep-skip',dim,'Box',{}, {useGravity:false});sleeper.position=[5,0,0];let mirrors=0;const quiet=await create([fixed,sleeper],{update:()=>mirrors++});quiet.sleeping(sleeper,true);run(quiet,1);mirrors=0;run(quiet,8);check(mirrors===0,dim+'D static and sleeping bodies skip unchanged object updates');fixed.position[0]=2;quiet.step(1/60);check(near(quiet.inspect().dimensions.find(d=>d.dimension===dim).bodies.find(b=>b.id===fixed.id).position[0],2),dim+'D fixed teleport remains visible');quiet.applyForce(sleeper,[1,0,0],'velocityChange');quiet.step(1/60);check(mirrors>0&&sleeper.position[0]>5,dim+'D force wakes and resumes body updates');
+
+      quiet.writeBatch(()=>{quiet.velocity(sleeper,[2,0,0]);quiet.applyForce(sleeper,[1,0,0],'velocityChange');check(near(sleeper.velocity[0],3),dim+'D consecutive velocity/force write order');quiet.sleeping(sleeper,true);quiet.sleeping(sleeper,false);});check(sleeper.gameplayDebug.physics.sleeping===false,dim+'D sleep/wake write order');
+      let batchFailed=false;try{quiet.writeBatch(()=>{quiet.velocity(sleeper,[1,0,0]);throw Error('batch probe');});}catch{batchFailed=true;}quiet.writeBatch(()=>quiet.velocity(sleeper,[4,0,0]));check(batchFailed&&near(sleeper.velocity[0],4),dim+'D failed write batch releases its sync scope');
       const capsule=object('capsule',dim,'Capsule',{radius:.5,height:2}),box=object('rotated',dim,'Box',{extent:[2,.2,.2]});box.position=[5,0,0];box.rotation=[0,0,45];
       const trigger=object('trigger',dim,'Sphere',{trigger:true,layer:31});trigger.position=[10,0,0];const physicsOnly=object('physics-only',dim,'Sphere',{collisionMode:'physics'});physicsOnly.position=[15,0,0];
       const p=await create([capsule,box,trigger,physicsOnly]);
