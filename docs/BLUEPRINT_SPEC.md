@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-06: [BP 상속·인스턴스 계약](BLUEPRINT_INHERITANCE.md). BP 부모의 컴포넌트·변수·그래프·C++를 해석하고 얇은 자식 파일을 저장해요. 이벤트/함수/Construction 부모 호출과 명시적 클래스/인스턴스 기본값, 순환/redirect/cook, revision을 공유해요. 실제 Editor·Game.exe의 C++ 값과 호출 순서를 검사해요.
+
 2026-10-06: [Auric C++ 묶음 계약](AURIC_NATIVE_BATCH.md). 함수·매크로·여러 Tick·C++ Timer·Input Action의 직선 native 호출을 같은 빌드에서 묶고, 콜백/자료 의존성/실패/작업 취소 경계를 유지해요. Action은 owner별 샘플 시점과 다른 모듈 조회 상태를 PC worker·모바일 AOT에서 대조해요. 전체 BP 상속·전체 함수 실행 최적화의 완료로 계산하지 않아요.
 
 2026-10-05 추가: [전용 Light2D](2D_LIGHTING.md)의 공용 C++/BP16개와 Sprites 조명 모드2개를 연결해 기본 노드594개예요. 반경·각도·노멀의 여러 반환 핀/같은 C++ 호출의 읽기·쓰기·실제 배포 Player를 검증했어요. 이전 숫자는 당시 스냅샷이에요.
@@ -60,7 +62,7 @@
 | Construction | 별도 그래프, 실행 시작 때 BeginPlay 전에 실행 | 편집 중 속성 변경마다 재구성하는 native 생명주기 |
 | 이벤트 | Begin/End/Tick·키/축·typed IA 입력, 실제 2D/3D 콜라이더의 Overlap/Hit, 사용자 이벤트 | 전체 입력 Trigger/Modifier·장치/플레이어별 문맥·정밀 물리 이벤트 |
 | 핀/변수 | 단일/배열 검사·기본값·Get/Set·중첩 분할·관찰·변수 승격 | 사용자 Struct/Enum/Set/Map·soft/interface 참조·자동 변환 삽입 |
-| 클래스/상속 | Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent 템플릿·C++ 부모·공개 기본값·void 이벤트 재정의 | BP→BP 상속·부모 호출·인스턴스별 override·정밀 Character 이동 solver |
+| 클래스/상속 | Actor/Pawn/Character/PlayerController/GameMode/Component/SceneComponent 템플릿·C++ 부모·공개 기본값·void 이벤트 재정의·BP→BP 상속·부모 호출·클래스/인스턴스 override | 정밀 Character 이동 solver·추가 C++ 수명 주기/리플렉션 계약 |
 | 편집 | RMB/MMB 이동·휠/Ctrl 확대·사각/다중 선택·복사/복제·주석·Undo/Redo·검색 | 북마크·정렬/분배·자동 배선·Diff |
 | 도킹/Project | 실제 폴더·다중 선택/가져오기·파일 내부 검색·창 분할; BP/Material/Animation/Curve/IA/IMC/Data/Scene 파일별 문서·Undo·저장/닫기 보호 | OS 부동창·명명 레이아웃·전용 에셋 종류 확대·전체 Project 키/필터 |
 | 타이머·지연 | 게임 시간 배율·정지, Delay·재시작 지연·타이머 완료 이벤트 | native/VM 공통 핸들 풀·비동기 서비스 전반 |

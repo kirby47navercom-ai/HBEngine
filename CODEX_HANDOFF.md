@@ -1,3 +1,13 @@
+# 최신 진행 — 2026-10-06 Auric P0-3 검증 통과 / P0-4 진행
+
+- P0-3 원문3기준 체크: typed BP→BP resolver, thin child serialize, 부모 event/Construction/함수 override+CallParent, native/variable/component defaults, 개별 overrides·reset·bold·Undo, cycle/redirect/cook, 실제 C++ defaults. docs/BLUEPRINT_INHERITANCE.md.
+- 실제 Editor blueprint-inheritance-window-5ao3CZ: human create/default/JSON import, Skeleton3 HP10/7.25/7.25 Speed6/6/0 Order12/12/12 배치위치 유지, 3Stop/Play, 부모 breakpoint 원본노드+그래프전면+관찰패널 안에 가려지지않음, 이어실행/exit0. Player4yoJRn 같은 값3reload/cook/exit0. core18 q0aY6V 실제Cpp 포함. native-chain --cpp 회귀 PASS.
+- 마지막 original auric-original-QCjOQe: checker9수치 동일,225gamefiles SHA 보존, snapshot engine SHA 보존. 원본 게임/checker/설치본/사용자profile 수정 없음. 실패 rQ0xPC/jBCzJn/yOvzfG/s1TCyJ 보존. native Actor OnBeginPlay virtual은 미구현이며 fixture 오류를 기능구현으로 계산하지 않음.
+- app async parent hydration/raw save+import/rename cache/sourced breakpoint, project-service full parent resolve-before-write. AI inheritance/default/override 명령 서버 schema 등록.
+- 다음 P0-4: CPP/BP Spawn/Destroy BP/prefab/class, 동적 실제 클래스 수명, 태그/클래스/ID 찾기, pool옵션+soft missing refs. 원본 Auric 유지하고 private게임사본 풀삭제+Spawn 전환을 원본9checker 수치까지 검사. P0-5→P1→P2 뒤 승인된 불변 설치 업데이트→전체 누적엔진. whole research/API gate false. 최종완료 응답 금지.
+
+## 이전 인계
+
 # 최신 진행 — 2026-10-06 Auric P0-1·P0-2 기준 통과 / P0-3 시작
 
 - 원본 요청의 P0-1/P0-2 7개 기준 체크. 실행 소스78bd47b: Editor uq8Z11 +1.1280351ms, Player Bt2gcI +0.7620833ms, 각각3회 Stop/Play/클래스 전환·pool identity; headless ABBA600 1.4941167배/+0.9656247ms. native/build/auric-native-p0-AEFiuA 아래 플랫폼별 증거 보존.

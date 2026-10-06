@@ -9,6 +9,9 @@ import {createAudioMixer,validAudioMixer} from './audio-mixer.js';
 import {validActionSettings} from './input-actions.js';
 import {createAnimationGraph,validAnimationGraph} from './animation-graph-assets.js';
 import {createSpriteRig,validSpriteRig} from './sprite-rig-assets.js';
+import {createBlueprintResolver} from './blueprint-inheritance.js';
+import {blueprintInstanceDefaults} from './blueprint-overrides.js';
+import {isBlueprintParent} from './blueprint-model.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
@@ -23,8 +26,9 @@ export const assetTitle=path=>path.split('/').pop().replace(/\.hb[a-z]+\.json$/i
 export async function loadSceneBindings(objects,read){
   const loaded=new Map(),contexts=new Map(),actions=new Map(),bindings=[];
   const load=async(path,kind)=>{if(!loaded.has(path)){const data=await read(path);if(!validAsset(kind,data))throw Error('에셋 검증 실패: '+path);loaded.set(path,data);}return loaded.get(path);};
+  const blueprint=createBlueprintResolver(path=>load(path,'blueprint'));
   const action=async(path,stack=new Set())=>{if(stack.has(path))throw Error('Input Action 조합 순환: '+path);if(actions.has(path))return;stack.add(path);const data=await load(path,'inputaction');actions.set(path,data);if(data.chordAction)await action(data.chordAction,stack);stack.delete(path);};
-  for(const object of objects){if(!object.blueprintAsset)continue;const root=await load(object.blueprintAsset,'blueprint');bindings.push({root,self:object.id,path:object.blueprintAsset});
+  for(const object of objects){if(!object.blueprintAsset)continue;const root=await blueprint(object.blueprintAsset),defaults=blueprintInstanceDefaults(root,object);bindings.push({root,self:object.id,path:object.blueprintAsset,variableValues:defaults.variables,componentOverrides:defaults.components});
     if(root.settings?.inputMapping){const path=root.settings.inputMapping,context=await load(path,'inputmapping');contexts.set(path,context);for(const m of context.mappings){if(!m.action)throw Error('Input Action을 선택하세요: '+path);await action(m.action);}}
   }
   return {bindings,inputAssets:{contexts,actions}};
@@ -39,6 +43,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind==='animgraph')return createAnimationGraph(name);
   if(kind==='spriterig')return createSpriteRig(name);
   if(kind==='blueprint'){
+    if(isBlueprintParent(parent))return {version:1,name,settings:{parentClass:parent},nodes:[],edges:[],variables:[],components:[],functions:[],macros:[],comments:[],dispatchers:[],interfaces:[]};
     const type=blueprintClasses[parent];if(!type)throw Error('지원하지 않는 부모 클래스예요.');
     const root=copy(defaultBlueprint);root.name=name;root.nodes=['beginPlay','tick','endPlay'].map((key,i)=>({...makeNode(key,70,55+i*165),id:key}));root.edges=[];root.variables=[];root.functions=[];root.macros=[];root.comments=[];root.dispatchers=[];root.interfaces=[];delete root.native;
     root.components=type.components.map((type,i)=>({id:'component_'+i,name:type,type,properties:componentDefaults(type)}));root.settings={parentClass:parent,tickEnabled:true,tickInterval:0,overlapEnabled:true};return root;
@@ -86,7 +91,7 @@ export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUI
   const objects=copy(data.objects).map(object=>{const old=object.id,parent=object.parent||object.parentId;object.id=ids.get(old);if(parent&&ids.has(parent)){object.parent=ids.get(parent);if(object.parentId!==undefined)object.parentId=object.parent;}else{delete object.parent;delete object.parentId;object.position=object.position.map((value,index)=>value+position[index]);}object.prefabRoot=ids.get(data.root);return object;});
   if(!validScene({version:1,objects,surface:defaultSurface}))throw Error('프리팹 계층 검증 실패');return objects;
 }
-export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','texture','normalTexture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sheet','chordAction','context','sprite','rig','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
+export function renameAssetReferences(value,from,to){const keys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','parentClass','texture','normalTexture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','defaultController','playerState','defaultPawn','clip','sheet','chordAction','context','sprite','rig','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if(keys.has(key)&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='parameters'&&item&&typeof item==='object'){for(const [name,parameter] of Object.entries(item)){const next=remap(parameter);if(next!==parameter){item[name]=next;changed=true;}}}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}

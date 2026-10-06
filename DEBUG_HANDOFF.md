@@ -325,3 +325,11 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 - Scene 컴포넌트 change 뒤 Inspector 재구성이 details를 접어 버렸다. 객체/컴포넌트 ID로 열린 그룹·스크롤·현재 field 포커스를 복원한다. enableLimit 뒤에도 입력 그룹이 열린 실제 GUI로 확인했다.
 - BP Inspector도 문서/그래프/선택 ID를 기준으로 열린 그룹·속성 검색·스크롤·입력 포커스를 복원한다. 컴포넌트 그룹을 접고 운동 형식을 바꾸거나 검색 상태에서 재구성해도 유지되는 실제 GUI를 확인했다. 기존 authoring 검사의 `line.scale.z=.01`은 과거 AABB 표시 구현을 고정한 조건이었다. 새 실제 형상의 XY 평면 깊이/월드 위치/트리거 재질을 검사하도록 바꿨고 통과했다.
 - 브라우저 플러그인의 locator.fill은 일부 숫자/name 입력에서 native change를 확정하지 않았다. 이를 제품 실행 오류로 간주하지 않고 ControlOrMeta+A→pressSequentially→Tab으로 실제 타이핑을 검사했다. 사용자 5181 미저장 탭은 검증용으로 쓰지 않는다.
+
+
+## 2026-10-06 BP 상속 실제 창 검증
+
+- 순수 BP 함수 entry 인자를 args 읽기 전에 outputs에 기록하지 않아 기본값으로 계산되던 버그를 부모/자식 순수 함수의3+1+2=6 회귀로 수정했어요.
+- 상속 runtime root를 원본 에셋 문서로 넣던 중단점 경로를 raw parent read+nodeOrigins+generation/pending guard로 변경했어요. 계산 inheritance 데이터는 raw validator에서 거절해요.
+- 실제 캡처에서 graph DOM 선택만 되고 scene pane이 앞에 남거나 관찰 패널이 노드를 가린 것을 발견했어요. dock.open('blueprint')과 관찰 패널을 먼저 연 뒤 focus로 고쳤어요.5ao3CZ는 selected node 전체 rect가 graph 안인지, screenshot/3gate 계속 실행/exit0까지 통과해요.
+- rQ0xPC는 Actor에 없는 OnBeginPlay override를 fixture가 작성한 문제, jBCzJn은3중단점인데1회만 continue, yOvzfG는 breakpoint patch 미저장 close prompt, s1TCyJ는 Player 종료 hook 오류예요. 실패 파일은 보존해요. Player s1TCyJ passed:false/runtimeValidated:true/cleanupPassed:false로 구분했고4yoJRn에서 exit0까지 확인했어요.

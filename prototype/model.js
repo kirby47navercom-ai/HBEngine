@@ -3,6 +3,7 @@ import { validBlueprint } from './blueprint-model.js';
 import {validComponents} from './scene-components.js';
 import {validParent} from './scene-editor.js';
 import {validSortingLayers} from './sorting-layers.js';
+import {validBlueprintOverrides} from './blueprint-overrides.js';
 
 export const STORAGE_KEY = storageKey('hbengine-ui-scene-v1');
 export const defaultSurface = { color: '#889878', roughness: 0.72, metalness: 0.08, light: 3.2 };
@@ -32,7 +33,7 @@ export function validScene(value) {
       && (o.kind!=='model'||typeof o.asset==='string'&&o.asset.length<=1000&&!o.asset.includes('..')) && (o.blueprint===undefined||typeof o.blueprint==='string'&&o.blueprint.length<=80) && ['blueprintAsset','materialAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')) && (o.materialSurface===undefined||validSurface(o.materialSurface)) && kinds.has(o.kind) && typeof o.visible === 'boolean'
       && ['position', 'rotation', 'scale'].every(key => Array.isArray(o[key]) && o[key].length === 3 && o[key].every(n => Number.isFinite(n) && Math.abs(n) <= (key==='position'?1000000:10000)))
       && o.scale.every(n => n >= 0.01))
-    && value.objects.every(o=>(o.components===undefined||validComponents(o.components))&&(o.parent===undefined||typeof o.parent==='string'&&validParent(value.objects,o.id,o.parent))&&(o.locked===undefined||typeof o.locked==='boolean')&&(o.tags===undefined||Array.isArray(o.tags)&&o.tags.length<=32&&o.tags.every(t=>typeof t==='string'&&t.length<=80))&&['spriteAsset','tilemapAsset','prefabAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')))
+    && value.objects.every(o=>validBlueprintOverrides(o.overrides)&&(o.components===undefined||validComponents(o.components))&&(o.parent===undefined||typeof o.parent==='string'&&validParent(value.objects,o.id,o.parent))&&(o.locked===undefined||typeof o.locked==='boolean')&&(o.tags===undefined||Array.isArray(o.tags)&&o.tags.length<=32&&o.tags.every(t=>typeof t==='string'&&t.length<=80))&&['spriteAsset','tilemapAsset','prefabAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')))
     && (value.runtime===undefined||validRuntimeSettings(value.runtime))
     && validSurface(value.surface)
     && (value.sceneName === undefined || (typeof value.sceneName === 'string' && value.sceneName.length > 0 && value.sceneName.length <= 80))

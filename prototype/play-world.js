@@ -1,19 +1,18 @@
 import {defaultRuntimeSettings,validScene} from './model.js';
 import {assetTitle,loadSceneBindings,validAsset} from './asset-documents.js';
 import {prepareGameplay} from './scene-runtime.js';
-import {installBlueprintComponents} from './scene-components.js';
-import {defaultsFor} from './blueprint-model.js';
+import {blueprintInstanceDefaults,installBlueprintInstances} from './blueprint-overrides.js';
 
 // Editor Play and the scenario runner prepare exactly the same game objects.
 export async function preparePlayWorld(objects,settings,{readAsset,readText,buildNative}){
   settings={...defaultRuntimeSettings,...settings};const reads=new Map(),read=path=>{if(!reads.has(path))reads.set(path,Promise.resolve().then(()=>readAsset(path)));return reads.get(path);};const config=settings.gameConfig?await read(settings.gameConfig):null;
   if(config&&!validAsset('gameconfig',config))throw Error('게임 설정 에셋 검증 실패');
-  const initial=await loadSceneBindings(objects,read);installBlueprintComponents(objects,initial.bindings);const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read),builds=new Map(),nativeBuilds=new Map();
+  const initial=await loadSceneBindings(objects,read);installBlueprintInstances(objects,initial.bindings);const gameplay=await prepareGameplay(objects,{gameConfig:{...settings,...config,dimension:settings.dimension},readAsset:read}),loaded=await loadSceneBindings(objects,read),builds=new Map(),nativeBuilds=new Map();
   for(const binding of gameplay.bindings){const existing=loaded.bindings.find(item=>item.self===binding.self);if(existing)existing.root=binding.root;else loaded.bindings.push(binding);}
-  installBlueprintComponents(objects,loaded.bindings);
+  installBlueprintInstances(objects,loaded.bindings);
   for(const {root,self,path} of loaded.bindings){
     const object=objects.find(item=>item.id===self),className=root.settings?.parentClass||'Actor',definition=root.native?.classes.find(item=>item.name===className);
-    if(definition){object.nativeClass=className;object.nativeProperties=Object.fromEntries(definition.properties.map(property=>[property.name,structuredClone(root.settings?.nativeDefaults?.[className+'.'+property.name]??property.value??(property.array?[]:defaultsFor(property.type)))]));}else delete object.nativeClass;
+    if(definition){object.nativeClass=className;object.nativeProperties=blueprintInstanceDefaults(root,object).nativeProperties;}else delete object.nativeClass;
     if(root.native&&!builds.has(path)){const header=await readText(root.native.headerPath||'Source/DoorController.h'),source=await readText(root.native.sourcePath||'Source/DoorController.cpp');if(header!==root.native.header||source!==root.native.source)throw Error(path+': 외부 C++ 변경 후 빌드가 필요해요.');const signature=JSON.stringify([header,source]);if(!nativeBuilds.has(signature))nativeBuilds.set(signature,{...await buildNative(header,source),header,source});builds.set(path,nativeBuilds.get(signature));}
   }
   for(const object of objects){const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}

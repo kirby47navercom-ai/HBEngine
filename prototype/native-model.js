@@ -41,7 +41,7 @@ export function parseNativeHeader(source){
   }
   const manifest={version:1,classes};if(!classes.length||!validNative(manifest))throw Error('HB_CLASS·HB_FUNCTION·HB_PROPERTY 선언을 확인하세요.');return manifest;
 }
-export function nativeMember(root,n){const [className,name]=(n.nativeId||'').split('.'),c=root.native?.classes.find(c=>c.name===className);return {c,f:c?.functions.find(f=>f.name===name),p:c?.properties.find(p=>p.name===name)};}
+export function nativeMember(root,n){const [className,name]=(typeof n.nativeId==='string'?n.nativeId:'').split('.'),c=root.native?.classes.find(c=>c.name===className);return {c,f:c?.functions.find(f=>f.name===name),p:c?.properties.find(p=>p.name===name)};}
 const exec={id:'exec',label:'실행',type:'exec',array:false},then={id:'then',label:'다음',type:'exec',array:false},target={id:'target',label:'Target',type:'object',array:false};
 export function nativeTargetPin(f){const names=new Set(f?.inputs?.map(p=>p.id)||[]);let name='target',index=0;while(names.has(name))name='nativeTarget'+(index++||'');return name;}
 export function nativePins(root,n,direction){
