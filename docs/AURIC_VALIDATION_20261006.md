@@ -34,3 +34,15 @@ P0-5 설치본은 `09e4470b1e254ac3`이다. 나머지 요청을 함께 구현한
 
 - 최신 원본게임537파일의 사본/원문검사기9개는 `checker-ADsL1K`에서 통과했다. 현재 checker976c8f...·원본게임·격리엔진 사본SHA를 보존했고 AURIC_MUTE 환경변수는 사용하지 않았다. 옛 검사기의 장면 전환 key-release 전제에는 검사 어댑터의 명시적호환옵션만 적용했으며, 실제 누름 유지 증거와 분리했다.
 - 최신 Android APK `android-window-zoYaCZ`는 설치/Activity시작 뒤 전용ADB장치 연결이 사라져 실패했다. 게임성능/새HUD해상도 통과 증거로 계산하지 않는다. 같은APK를 새 전용기기에서 재검사하며 사용자ADB5037/프로필을 변경하지 않는다. 실물 USB 기기조회 결과는0대였다.
+
+
+### 2026-10-06 — 사용자 설치본 반영 및 모바일 통합 후속
+
+- 한국어 커밋 2dfdb89를 공개 HBEngine/main에 푸시했고, 사용자 설치본을 **C:/Users/kirby/HBEngine/Versions/fddd827f41717173/HBEngine.exe**로 갱신했다. 1,721파일과 주요 런타임/API/Android 소스 SHA를 설치 후 대조했다. 기존09e4470b1e254ac3·사용자 프로필·실행 중인 앱·기본ADB5037을 보존했다. 새 실행부터 적용된다. 설치 증거: engineCreate/native/build/auric-user-install-20261006.json.
+- P1-7의 두 완료 기준을 체크했다. 실제 편집기 p6kXQ2·Game.exe Xsn7PR 및 최신 Android jbIuSt/ufqJHJ의1280×720/1920×1080/2340×1080 HUD에서 중복 요소 없는 피로도1·선택테두리1·공격버튼1·한글을 확인했다. Android는 실제 WebView를 CDP로 리사이즈했으며, 실제 휴대폰 화면 검사가 아니다. Actor BeginPlay 전 준비된 WidgetReady와 즉시 HUD 호출이 성공했다. 별도 모바일 성능 실패를 이 기능 성공으로 덮지 않는다.
+- 최신 APK jbIuSt/ufqJHJ의1,000발/적30개 성능은 각각28.3683/29.1622fps, 작업p95 48.4/46.8ms로 실패했다. ufqJHJ에서 원래806×456/DPR1.5 복원 뒤 측정해 단순 미복원 화면 크기 가설을 제외했다. 이전GWQQIo의40.9054fps 결과와 분리하며 C++ 처리/응답 대기 및 PC8시간 동시 실행 조건을 분석한다. 게이트30fps/p95≤33.333ms는 유지한다. 오디오20·생성93·세HUD해상도·터치·HOME복귀·Back 두번은 동작했다.
+- 새 iOS 원격 검사37424160740은 Xcode 앞의 공용 검사에서 실패했다. P2-11의 Source 단일 원문 계약으로 외부 변경을 읽도록 고쳤는데 옛 검사가 외부 변경을 거절하라고 검증한 문제다. 새 검사는 컴파일러 인자의 수정된 Source·BOM/줄바꿈 정규화·공유1회 컴파일·이전 실행/저장BP의 불변성을 검증한다. 로컬 통과 후 다시 원격 빌드한다. 이 실패는 새 iOS 통과로 계산하지 않는다.
+- 자연8시간 zjUtGE는 계속 실행 중이다. 검사 전용 프로세스 트리만 BelowNormal 우선순위로 바꿨고 background-priority.json에 PID/생성시각/이유를 보존했다. 사용자 앱을 건드리지 않았고 실행 코드·8시간 시계·메모리 게이트는 변경하지 않았다. 워밍업30분과 실제8시간 완료 전에 완료 체크하지 않는다.
+
+- iOS 사전 공용 검사의 headless 단계에서 종료된 Actor의 InputActions 키가 남는 문제를 발견했다. LevelTransition은 공유 장치 상태와 지속 GameInstance 입력을 유지하고, 떠나는 Actor의 키/이전 액션 상태는 해제하도록 공용 stop을 수정했다. 실제 C++ 장면 전환 뒤 새 월드 d=1 유지·옛 Actor 키0·GameInstance 입력1, 기존 타이머/지연 취소·원본 장면 보존 검사가 통과했다. 사전 그룹 gfZK8B의 앞7개와 수정 headless, tail77GWUM의9개가 통과했다. 새 iOS SDK 결과는 별도 수집한다.
+- Android aY0HKH는 HUD 리사이즈를 생략하고 CPU sampling을 켠 진단이며17.9840fps/p95 72.9ms로 실패했다. C++ 사전 컴파일과 PC8시간 실행이 겹쳤고 sampling 비용도 들어 있어 일반 성능 결과로 확대하지 않는다. 33.883초 프로필 중 idle18.141초·program3.259초, 네이티브 왕복 평균6.958ms/worker2.876ms를 기록했다. 다음 측정은 대량 컴파일과 sampling 없이 진행한다.

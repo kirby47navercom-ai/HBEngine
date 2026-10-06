@@ -1,3 +1,12 @@
+# 최신 진행 — 2026-10-06 설치 반영·Android 성능·iOS 재검사
+
+- HEAD2dfdb89/public main pushed, Korean commit. 설치fddd827f41717173(1721파일/SHA검사)/이전09e4470b1e254ac3·프로필·열린앱 보존. 증거native/build/auric-user-install-20261006.json. P1/P2+A1–13 일괄 구현됨; 전체 완료 아님.
+- 인간 지시 P05설치→나머지MD전체→통합검사/수리→설치→누적 큰 작업 계속. 부분 최종응답/새goal/agent 금지. MD P17 두 기능 기준 추가 체크; 실기기/iOS서명/8h/P216 통과 금지.
+- iOS37424160740 FAIL check-play-world-native의 옛 Source mismatch 거절 기대. 새 Source-authority 실제 컴파일 인자/공유1회/BOMCRLF/이전BP 불변성 검사 수정 로컬PASS. session96142 ios-preflight 공용17개 순차 검사 중. 실패 수정 커밋 push후 mobile-ios.yml 재dispatch 필요. credential 비출력/REST user 검증 규칙 유지.
+- Android 동일 최신APK zoYaCZ 연결 실패; jbIuSt/ufqJHJ 기능93/audio20/UI3res/touch/HOME/Back PASS지만28.3683/29.1622fps/workp9548.4/46.8 FAIL. ufqJHJ nativeviewport806x456dpr1.5 복원 확인. 기존GWQQIo40.9054/p9532.8 이전소스PASS와 분리.
+- session23017 actualAndroid 진단 --cpu-profile --skip-hud-resize(동일APK/게이트 유지); 프로필 확인 뒤 원인 패치. tools/check-auric-spawn-android.mjs 미커밋 옵션/복원 체크. 기본ADB14204/5037 보존.
+- actual8h session65670/zjUtGE UTC06:25:27.387→14:25:27.387, D3 fixedpackage/no forcedGC. 소유 트리 BelowNormal 배경 우선순위 journal 보존; 코드/시계/목표 불변. 워밍업30분 뒤 privateMiB/h≤1/geo&texrange≤4. 현재12분/12sessions/heap27–50MB/private799–833MB/tex5/geom16(순간41); 아직 결론 금지.
+
 # 최신 진행 — 2026-10-06 P1/P2 통합 수리·실제8시간 재시작
 
 - 인간 latest: P0-5완료→사용자설치→나머지MD전부일괄구현/최종검사/수리/설치→누적장기작업. P05 설치09e4470b1e254ac3/HEAD26bd257 유지. 전체P1/P2+A1–13 diff미커밋. 원본Auric게임/검사 공동 작업 중, 절대덮어쓰기 금지. 한국어 커밋/공개push kirby47navercom-ai. agent/goal 새로생성 금지. 주인님/짚짱 존댓말/백그라운드 유지.
