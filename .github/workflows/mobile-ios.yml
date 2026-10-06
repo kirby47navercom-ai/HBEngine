@@ -62,7 +62,7 @@ jobs:
           changes=$(git diff --name-only "$SHARED_REVISION" HEAD)
           while IFS= read -r file; do
             case "$file" in
-              ''|docs/*|CODEX_HANDOFF.md|DEBUG_HANDOFF.md|tools/check-player-lifecycle.mjs|tools/check-ios-mobile.mjs|tools/check-mobile-player.mjs|tools/check-particle-renderers.mjs|tools/check-mobile-bridge.mjs|prototype/mobile-player.js|native/mobile/ios/Main.mm|prototype/scene-components.js|prototype/scene-rendering.js|prototype/scene-systems.js|prototype/two-d-rendering.js|prototype/tests/2d-lighting-case.js|prototype/tests/2d-rendering-case.js|.github/workflows/mobile-ios.yml) ;;
+              ''|docs/*|CODEX_HANDOFF.md|DEBUG_HANDOFF.md|native/desktop/HBEngine.cpp|tools/install-editor.mjs|tools/check-player-lifecycle.mjs|tools/check-ios-mobile.mjs|tools/check-mobile-player.mjs|tools/check-particle-renderers.mjs|tools/check-mobile-bridge.mjs|prototype/mobile-player.js|native/mobile/ios/Main.mm|prototype/scene-components.js|prototype/scene-rendering.js|prototype/scene-systems.js|prototype/two-d-rendering.js|prototype/tests/2d-lighting-case.js|prototype/tests/2d-rendering-case.js|.github/workflows/mobile-ios.yml) ;;
               *) echo "공유 기반 소스가 바뀌어 전체 검사가 필요해요: $file"; exit 1 ;;
             esac
           done <<< "$changes"

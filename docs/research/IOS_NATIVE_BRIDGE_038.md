@@ -21,3 +21,5 @@
 - tools/check-ios-mobile.mjs 실제 앱 검증에8개 잘못된 호스트 메시지·알 수 없는 질의 owner 거절, 실제 C++2모듈/동기 Rapier/배치 위치·오디오/파일/배경 복귀, 새 bridge 진단을 연결한다. probe는 출력한 검사 프로젝트만 수정하며 배포 원본 Main.mm은 보존한다.
 - CI는 실제 통과6537f3b C++/기반에 대한 이름별 source diff gate를 통과할 때만 공용검사를 재사용한다. 새 mobile-player·Main.mm·검사기 허용과 bridge 검사를 명시했으며 다른 공용 소스 변경은 전체 검사를 요구한다. Xcode 두 SDK·실제 시뮬레이터와 공용 모바일 출력은 이번 source로 다시 실행한다. 결과는 후속 기록한다. 새 장시간/에뮬레이터/원문 게임 반복검사를 추가하지 않는다.
 - 사용자 설치는 검증 후 별도 불변 버전으로 갱신한다. 현재 c611c381db853f76과 열린 앱·이전 버전·게임 원본은 유지한다. 아직 이 수정으로60fps 목표를 달성했다고 기록하지 않는다.
+
+- 첫 원격 run37481223712는 이전 기준 뒤 Windows 전용 파일 연결2개를 재사용 source gate에 넣지 않아 검사가 시작되기 전 중단됐다. Xcode/앱을 실행한 실패와 구분하고 로그를 보존한다. Mac 검사/모바일 컴파일 입력에서 사용하지 않는 native/desktop/HBEngine.cpp·tools/install-editor.mjs만 정확한 이름으로 허용한다. 공용 C++/worker/routing 변화에는 계속 전체 검사를 요구한다.
