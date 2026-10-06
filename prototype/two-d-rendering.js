@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {sortingLayerIndex} from './sorting-layers.js';
+import {sortingLayerIndex,defaultSortingLayers} from './sorting-layers.js';
 import {TwoDLighting} from './two-d-lighting.js';
 
 const position=new THREE.Vector3(),cameraPosition=new THREE.Vector3(),direction=new THREE.Vector3();
@@ -25,6 +25,7 @@ export function spriteMaskUniforms(material){
 export class TwoDRendering{
   constructor(){this.targets=new Map();this.maskScene=new THREE.Scene();this.size=new THREE.Vector2();this.clear=new THREE.Color();this.lighting=new TwoDLighting();}
   prepare(renderer,scene,camera,groups,layers,{lights=true}={}){
+    layers??=defaultSortingLayers;
     if(!groups.some(g=>g.userData.sortingGroup||g.userData.maskMesh||g.userData.spriteMesh||g.userData.tilemapResources||g.children.some(n=>n.userData.draw2d))){this.dispose();return {renderers:0,maskPasses:0,maskTargets:0};}
     scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraPosition);camera.getWorldDirection(direction);
     const roots=[],scopes=new Map(),entries=[],masks=[];
@@ -37,7 +38,7 @@ export class TwoDRendering{
       const owned=[group];while(owned.length){const node=owned.pop();if(node.userData.objectId!==group.userData.objectId)continue;owned.push(...node.children);if(node.userData.spriteMask||node.userData.editorHelper)continue;
         const volume=node.userData.light2dVolume===true,p=group.userData.light2d;if(volume){const layer=layers.filter(l=>p.targetSortingLayers.includes(l.id)).at(-1);node.visible=!!layer&&lights&&p.enabled!==false&&p.volumeIntensity>0;Object.assign(node.userData.draw2d,{sortingLayer:layer?.id||'default',sortingOrder:2097153+(p.lightOrder||0)});}
         const scope=volume?null:nearestGroup(node);if(!node.userData.draw2d&&!(scope&&(node.isMesh||node.isPoints)))continue;
-        const entry=item(node,node.userData.draw2d||{},(group.userData.objectId||group.uuid)+':'+(node.userData.draw2dId||node.uuid));entry.scope=scope;entry.properties=node.userData.draw2d||{};entries.push(entry);(scopes.get(scope)?.children||roots).push(entry);
+        const entry=item(node,node.userData.draw2d||{},(group.userData.objectId||group.uuid)+':'+(node.userData.draw2dId||node.uuid));entry.scope=scope;entry.properties=node.userData.draw2d||{};entries.push(entry);if(node.userData.particleRenderer&&!camera.isOrthographicCamera&&!scope&&entry.layer===sortingLayerIndex(layers,'default')&&entry.order===0&&(!entry.properties.maskInteraction||entry.properties.maskInteraction==='none'))node.renderOrder=0;else (scopes.get(scope)?.children||roots).push(entry);
       }
     }
     let order=0;const assign=list=>{list.sort(compare);for(const entry of list)if(entry.children)assign(entry.children);else entry.node.renderOrder=++order;};assign(roots);

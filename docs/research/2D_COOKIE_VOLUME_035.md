@@ -25,3 +25,7 @@ CPU/C++/동기 Get·Set/자료형/참조 의존성 검사는 tools/check-light-c
 모바일 공용 native/build/mobile-player-uav3wz는 실제2AOT C++/Rapier/소스분리와 cookie 배열 모듈이 포함된 iOS 프로젝트 출력을 통과했다. 실제 앱 검사는 Sprite Light와 volume을 같은 예제에 배치하고 WKWebView의 cookieBytes/volume 정렬/셰이더 링크를 기록한다. 개발 PlayerDebug에만 이 진단을 제공하며 릴리스 프레임마다 추가 조회하지 않는다.
 
 iOS950f4a9/run37471088488은 Mac의 기존 C++ 공용·새cookie·실제2AOT·프레임·전송·오디오·headless·runtime-feature 검사를 통과한 뒤 check-player-lifecycle의 Renderer 모형에 programs 필드가 없어 실패했다. 실제 Three.WebGLRenderer의 programs 배열을 Windows168GPU 검사가 사용했고 엔진 셰이더 실패로 계산하지 않는다. 검사 모형에 실제 필드를 넣고 healthy/failed 진단 보존을 단언한다. 같은 실행 소스는 이미 통과한 C++ 묶음을 반복하지 않고 남은6검사·모바일출력·Xcode·WKWebView를 수행한다. 최초 실패 로그 native/build/ios-37471088488-failure.txt는 보존한다.
+
+후속 fed46d4/run37472250751: 공용기반/모바일출력/두SDK 컴파일/설치/launch는 통과했으나 실제앱0frames에서 layers.filter 오류가 발생했다. runtime.sortingLayers는 validRuntimeSettings에서 선택 필드이고 기본 장면에는 없는데, 새volume 정렬 코드가 항상 배열로 가정한 엔진 결함이다. 모든 호출자는 그대로 두고 TwoDRendering.prepare 진입에서 기존 defaultSortingLayers를 적용한다. 실제Windows Player wlEr8c170개/조명111개/errors0은 정렬설정이 없는 상태에서도 volume의 원래 RGBA 픽셀과 같은 결과를 확인했다. 초기 회귀9niVLI는 불투명 red 기준을 강도.5 volume에 적용한 검사 오류로 실패했고 기존 volume와 픽셀 동일성을 기준으로 바로잡아 보존한다.
+
+CI 공용기반 재사용은 C++/native/API/VM/서비스/전송 코드가 같을 때만 허용한다. 이번 Renderer·컴포넌트 metadata/test 파일로 허용 범위를 명시하고 해당 runtime-feature/scene-system/particle-renderer 검사와 기존6개를 항상 실행하며 실제 모바일 출력/Xcode/WKWebView를 생략하지 않는다. 범위 밖 변경은 전체 검사를 요구한다. 이 재사용을 모든 실행 소스가 같다는 표현으로 바꾸지 않는다.

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       sharedCheckedRevision:
-        description: 이미 통과한 공용 검사 기준 SHA (비워두면 전체 검사)
+        description: 이미 통과한 C++·공용기반 검사 기준 SHA (비워두면 전체 검사)
         type: string
         default: ''
 permissions:
@@ -33,6 +33,8 @@ jobs:
           node tools/check-project-native.mjs
           node tools/check-light-blend-styles.mjs
           node tools/check-light-cookies.mjs
+          node tools/check-particle-renderers.mjs
+          node tools/check-scene-systems.mjs
           node tools/check-native-transport.mjs
           node tools/check-native-frame.mjs
           node tools/check-native-frame-concurrency.mjs
@@ -50,7 +52,7 @@ jobs:
           node tools/check-asset-cache.mjs
           node tools/check-state-native-batch.mjs
           node tools/check-behavior-native-batch.mjs
-      - name: 동일 실행 소스 확인과 남은 공용 검사
+      - name: 공유 C++·기반 소스 확인과 변경 영역 검사
         if: inputs.sharedCheckedRevision != ''
         env:
           SHARED_REVISION: ${{ inputs.sharedCheckedRevision }}
@@ -60,12 +62,15 @@ jobs:
           changes=$(git diff --name-only "$SHARED_REVISION" HEAD)
           while IFS= read -r file; do
             case "$file" in
-              ''|docs/*|CODEX_HANDOFF.md|DEBUG_HANDOFF.md|tools/check-player-lifecycle.mjs|tools/check-ios-mobile.mjs|.github/workflows/mobile-ios.yml) ;;
-              *) echo "실행 소스가 바뀌어 전체 검사가 필요해요: $file"; exit 1 ;;
+              ''|docs/*|CODEX_HANDOFF.md|DEBUG_HANDOFF.md|tools/check-player-lifecycle.mjs|tools/check-ios-mobile.mjs|tools/check-mobile-player.mjs|tools/check-particle-renderers.mjs|prototype/scene-components.js|prototype/scene-rendering.js|prototype/two-d-rendering.js|prototype/tests/2d-lighting-case.js|prototype/tests/2d-rendering-case.js|.github/workflows/mobile-ios.yml) ;;
+              *) echo "공유 기반 소스가 바뀌어 전체 검사가 필요해요: $file"; exit 1 ;;
             esac
           done <<< "$changes"
           mkdir -p native/build
           node tools/check-player-lifecycle.mjs
+          node tools/check-runtime-features.mjs
+          node tools/check-scene-systems.mjs
+          node tools/check-particle-renderers.mjs
           node tools/check-frame-rate.mjs
           node tools/check-native-channel.mjs
           node tools/check-asset-cache.mjs

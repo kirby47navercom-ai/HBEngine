@@ -40,7 +40,8 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DLightProperties.html",
           "record": "docs/research/2D_COOKIE_VOLUME_035.md"
-        }
+        },
+        "https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html"
       ]
     },
     {
@@ -65,6 +66,11 @@
       "expectedApiUnits": null,
       "openIssues": [
         "Type-only TOC omits 27673 member URLs; reconcile offline/search differences and enumerate declarations including overloads."
+      ],
+      "additionalDiscoverySeeds": [
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer.html",
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-maskInteraction.html",
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SpriteMaskInteraction.html"
       ]
     },
     {
@@ -241,6 +247,9 @@
       "openIssues": [
         "Sitemap shard bodies return 403; recursively expand SSR blocks and reconcile publisher inventories.",
         "Restricted platform documentation and embedded media remain unresolved."
+      ],
+      "additionalDiscoverySeeds": [
+        "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US"
       ]
     },
     {

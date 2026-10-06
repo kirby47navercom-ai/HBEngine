@@ -213,3 +213,9 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - 공식본문/API/고정셰이더를 토대로2D Sprite Light cookie(RGBA/crop/PPU/pivot)·볼륨 빛/독립 그림자를 Scene·BP·C++7개·AI·PC/모바일 에셋출력에 연결했어요. 사용된64×최대256²배열 공유/정적업로드0/볼륨당1평면·추가전체화면타깃0을 유지해요. CPU/C++/의존성과 실제Windows Player160개/조명110개·오류0, 모바일공용 C++/프로젝트출력을 통과했어요. 세부범위는 docs/research/2D_COOKIE_VOLUME_035.md예요.
 - 공개 한국어 커밋950f4a9cd7015fad4e01785f1c2dea7ce2ac2f92를 C:/Users/kirby/HBEngine/Versions/87b7af9ce10a2ee9/HBEngine.exe로 갱신했어요.1777파일/소스·배포·설치30SHA 일치, 바로가기는 새버전이며 다음실행부터 적용돼요. 현재사용자창43288·기본ADB14204·이전82abc·프로필과 원본게임/에셋/checker를 보존했어요. 증거 native/build/light-cookie-user-install-950f4a9.json. 새광원의 iOS 검사는 run37471088488에서 진행해요(앞600프레임 성공에 새광원을 포함하지 않아요).
 - 앞 프레임요구 PC120/mobile60 설정과 고정사본118.67/116.37FPS, 평균고정엔진비용3.67/3.96ms 기록은 유지해요. 광원추가만으로 항상120/실물60/전프레임4ms를 주장하거나 검사표의 실물·8시간 완료칸을 올리지 않았어요. 사용자요청대로 새장시간검사·이미통과한게임검사 반복은 추가하지 않았어요.
+
+### 2026-10-06 — 파티클 공용2D 렌더러와 모바일 기본레이어 결함 수정
+
+- ParticleSystem에 레이어/순서·Sprite Mask none/inside/outside를 Scene/BP·C++ Components·AI 공용 속성으로 연결했어요. ShaderMaterial mask hook·SortingGroup·타깃 해제와 3D 기본 깊이정렬을 유지해요. 입자별 임시 벡터/배열과 역행렬·viewport 할당을 재사용해요. 실제Windows Player wlEr8c170개/조명111개/errors0과 실제C++·CPU 버퍼/좌표/보간/UI 순서 검사가 통과했어요.
+- fed46d4 iOS37472250751은 두SDK·설치·launch를 통과했지만 선택필드 sortingLayers 누락을 volume 코드가 허용하지 않아 앱0프레임에서 실패했어요. 공용Renderer에 기존기본레이어를 먼저 적용하고 같은 누락조건의 RGBA 동일 회귀를 통과했어요. 모바일공용 uT5pYZ C++2AOT/새광원·particle-mask 포함 출력도 통과했어요. 실제새iOS 결과는 후속 기록하며 앞실패를 성공으로 덮지 않아요.
+- CI는950f와 같은C++/native/API/VM/서비스/전송 기반에 한해 재사용하고 Renderer/metadata 변경은 runtime-feature·scene-system·particle-renderer와 기존6개·SDK/실제앱을 검사해요. 범위 밖 변경은 전체검사를 요구해요. 사용자원본/창은 변경하지 않았고 새8시간이나 원문게임검사는 추가하지 않았어요.

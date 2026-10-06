@@ -1,4 +1,7 @@
-# 현재 진단 — 2026-10-06 iOS 준비 순서 구별 / 새2D 광원
+# 현재 진단 — 2026-10-06 optional 정렬 레이어 volume 결함 수정
+
+- fed46d4 iOS37472250751 두SDK BUILD SUCCEEDED·Safari/install/launch 성공, 앱0frames/draw1/error layers.filter. validRuntimeSettings는 sortingLayers 선택필드, 기본runtime에없음. 새volume .filter가배열을가정한공유Renderer 결함. TwoDRendering.prepare 첫행에서 기존defaultSortingLayers 적용, 실제wlEr8c170/111/errors0 missing-layer 픽셀 동일회귀 PASS. runtime-report/log/artifact 보존. 새iOS 성공으로 계산하지 않으며 수정된소스검사필요.
+- GPU9niVLI는 volume강도.5를 opaque red임계값으로 검사한 실패; 같은volume의 원래픽셀동일성과count1을 단언해 바로잡았고 실패파일보존. mask/scope·perspective3D particles·world/local버퍼·재사용 검사통과.
 
 - 최신950f4a9 iOS37471088488: 공용C++/cookie/프레임/오디오/headless/runtime-feature PASS 뒤 PlayerDebug.inspect 함수 검사 Renderer더블.info.programs 누락으로 실패(Xcode skip). 실제WebGLRenderer는배열제공, WindowsGPU168/errors0. testdouble programs에 성공/실패 둘 다 넣고 진단배열 단언. 실행소스동일 기준950f와 남은6검사로 재사용, 최초실패로그 보존.
 
