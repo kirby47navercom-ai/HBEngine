@@ -200,3 +200,8 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - 최종 사용자 버전은 C:\Users\kirby\HBEngine\Versions\82abc860ad41c075\HBEngine.exe예요(290c538,1,773파일/49개 SHA). Player 수명 검사 도구와 설치·데모·패키징 기록도 포함했어요. 실행 코드·프레임 성능은 7ff와 동일하고 두 번의 배포는 각각 별도 불변 폴더예요. 열린 사용자43288·ADB14204·이전 f174/f39·프로필을 유지했으며 바로가기는 최종82abc860ad41c075를 가리켜요. 증거 native/build/frame-user-install-290c538.json. 이후8bfe946은 원격 부분검사 폴더 준비 한 줄만 바뀌어 앱 재설치는 하지 않아요. 290의 iOS 공용 수명/프레임/채널/에셋 검사는 통과했지만 새 작업 폴더 누락으로 다음 검사에서 실패했고 이를 고쳐 다시 진행해요. 이 실패나 이전 Xcode 건너뜀을 통과로 표시하지 않아요.
 
 - 마지막 상태: 최종 설치82abc860ad41c075의 실행 파일39개는 실제 성능을 잰7ff 버전과 SHA가 같아요. 새 설치본 원문 데모8개·원본613파일/검사기 보존·실제 설치 도구 release 패키징·Android APK/AAB는 완료예요. 동일 실행 소스의 iOS run37466333179(8bfe946)은 남은 공용 검사/모바일 프로젝트 출력을 통과하고 Xcode·시뮬레이터 단계에서 진행 중이에요. 결과 링크 https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37466333179. 아직 성공으로 계산하지 않아요. PC와 모바일 목표값은 반영됐지만 PC 항상120fps/각 프레임 고정비용4ms 상한/휴대폰60fps 실측을 완료로 표시하지 않아요. 기존8시간 검사69q8fO 한 개는 유지하며 새 장시간 검사나 사용자 창 재실행은 추가하지 않았어요.
+
+### 2026-10-06 — iOS 동일 실행 소스 통과·추가2D 제작 광원
+
+- iOS400d696/run37468368819의 SDK18.5 device/simulator 컴파일과 독립 iPhoneSE3 실행600frames/errors0, 두 동일클래스 C++/Rapier 질의·배치 위치/한글·SVG/WAV ranges/오디오12신호·재사용·백그라운드복귀를 확인했어요. actual phone/signing/heard는 false예요. 이전 초기launch timeout과 검사 수정 근거는 IOS_STARTUP_20261006.md에 보존했어요.
+- Unity 공식 Light2D 본문/API/고정 셰이더 근거로2D Sprite cookie/볼륨·독립 그림자를 Scene/BP/C++7/AI·출력에 연결했어요. CPU/C++ 검증과 실제Windows Player wd42dX160개/조명110개/errors0, 모바일공용 uav3wz C++/출력이 통과했어요. 새광원은 앞 iOS 성공에 포함하지 않고 해당 소스에서 한 번 따로 확인해요. 원본 게임/검사기/사용자 창 변경은 없어요.

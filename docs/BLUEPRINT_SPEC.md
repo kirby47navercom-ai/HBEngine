@@ -1,5 +1,7 @@
 # HBEngine 블루프린트와 C++ 구현 기준
 
+2026-10-06: [2D Sprite 광원·볼륨 빛](research/2D_COOKIE_VOLUME_035.md). Light2D 공용 C++/BP7개로 스프라이트·텍스처 cookie 지정/조회/크기, 볼륨 활성/강도/독립 그림자를 연결해요. 사람의 Scene/BP 속성과 AI component schema가 같은 필드를 편집하고 프로젝트 내부 외부 폴더 에셋 참조도 출력에 포함해요. 기존 노드·클래스·핀 구조는 유지해요.
+
 2026-10-06: [실행 중 생성·찾기 계약](AURIC_RUNTIME_SPAWN.md). C++/BP의 BP·Prefab·클래스 Spawn/Destroy, 실제 C++ 객체·기본값·수명, 자동 풀 용량·재사용·취소, 클래스/태그/ID 검색과 없는 Actor 참조의 null 처리를 연결해요. 전체 노드601개/공용 선언289개예요. 모듈 간 생성 후 호출과 모바일 AOT도 같은 명령 순서를 검증해요.
 
 2026-10-06: [BP 상속·인스턴스 계약](BLUEPRINT_INHERITANCE.md). BP 부모의 컴포넌트·변수·그래프·C++를 해석하고 얇은 자식 파일을 저장해요. 이벤트/함수/Construction 부모 호출과 명시적 클래스/인스턴스 기본값, 순환/redirect/cook, revision을 공유해요. 실제 Editor·Game.exe의 C++ 값과 호출 순서를 검사해요.

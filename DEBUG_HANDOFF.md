@@ -1,9 +1,9 @@
-# 현재 진단 — 2026-10-06 iOS 초기 실행 timeout
+# 현재 진단 — 2026-10-06 iOS 준비 순서 구별 / 새2D 광원
 
-- 증거: run37466333179/8bfe946 SDK18.5 simulator와device 모두 BUILD SUCCEEDED. bootstatus76초·설치29초 뒤 첫 launch180초 timeout. artifact에는 런타임 보고/충돌ips가 없고 HBGame 프로세스 로그0개. CoreSimulatorBridge는 부팅108초/bootLeeway120초에 FrontBoard로 열기 요청했지만 완료 응답 없음. 실행 C++ 실패로 단정하지 않음.
-- 우선 가설: 새 CoreSimulator의 앱 등록/시스템 앱 초기화가 부팅 완료 이후에도 진행 중. 다른 가설: HBGame 시작 전에 설치/FrontBoard가 해당 번들을 열지 못함. UIKit/C++ main 진입 문제는 main 로그/보고가 나온 뒤 구별.
-- 최소 구별 검사: 동일 소스에서 독립 장치를 먼저 부팅하고 두 SDK를 컴파일, Safari 실행으로 플랫폼 준비를 확인한 뒤 HBGame 설치·실행. app data 경로를 먼저 확보하여 launch 실패해도 보고를 수집. 테스트 전용 main NSLog로 코드 진입 구별. Safari도 실패하면 엔진 실행 통과 주장하지 않음. timeout 증가·무조건 재시도 없음.
-- 반복 정책: 같은 가설 두 번 실패하면 자동 재시도 대신 새 증거로 원인 분리. 이미 통과한25공용 검사는 실행 소스 hash 비교가 같은 때만 생략. 사용자의 Windows 엔진/프로필/게임에는 영향 없음.
+- iOS400d696/run37468368819 SUCCESS: 동일7ff 실행에서 SDK2종/새 독립iPhoneSE3/실제600frames·오류0·C++/physics/audio/assets/lifecycle 통과. ios-final-400d696.json/png, IOS_STARTUP_20261006.md. 실제phone/서명/가청검증은 false. 새Cookie·Volume 코드 포함 여부는 다음 소스로 따로 확인한다.
+- 이전37466333179는 SDK성공 뒤 CoreSimulatorBridge/FrontBoard launch180초timeout/main로그없음. 장치를 먼저 부팅하여 컴파일 동안 초기화·Safari 기준 실행·launch전data경로·main로그로 시험했다. timeout증가/맹목적재시도 없음. 성공은 준비 순서 가설과 부합하며 최초플랫폼 내부 원인 확정은 아님.
+- Cookie GPU l46SlG: 부모group.userData.light2dVolume은 mesh, 자식만 true인데 truthy로 처리해 group의 draw2d를 수정. 공유2D 순회에서 ===true로 구별해 고침. 5mV1Vn의 zeroVolume은 앞 tile fixture가 남아 표면광원이 보인 검사구성 오류; 독립receiver dispose 후 빈 공간을 검증. 실패 증거 보존. 최종 wd42dX160/110/errors0 PASS, resource·RGBA·정렬·그림자·토글 검사 유지.
+- 공용모바일 uav3wz는2AOT/동기Rapier/2Dcookie패키지출력 PASS. 새실제WKWebView shader/cookie/volume은 원격한번으로확인. 원본Auric/사용자창/기본ADB 보존, 기존장기313검사 성능결론에 재사용하지 않는다.
 
 # 이전 진행 — 2026-10-06 Auric P0-4 기준 통과 / P0-5 시작
 

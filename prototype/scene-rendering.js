@@ -11,6 +11,7 @@ import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering,spriteEffectsUniforms} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {cacheAssetReader} from './runtime-storage.js';
+import {light2DUniforms} from './two-d-lighting.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
@@ -36,11 +37,26 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   function own(group,resource){if(group.userData.disposed){resource.dispose();return false;}(group.userData.resources??=new Set()).add(resource);return true;}
   function lightOutline(group,p){
     if(p.lightType==='global')return;
-    const paths=p.lightType==='freeform'?[p.shapePath]:[[p.outerRadius,p.outerAngle],...(p.innerRadius>0?[[p.innerRadius,p.innerAngle]]:[])].map(([radius,degrees])=>{
+    const bounds=group.userData.light2dCookie,half=bounds?.size.map(v=>v/2)||[p.cookieWidth/2,p.cookieHeight/2],offset=bounds?.offset||[0,0];
+    const paths=p.lightType==='sprite'?[[[-half[0]+offset[0],-half[1]+offset[1]],[half[0]+offset[0],-half[1]+offset[1]],[half[0]+offset[0],half[1]+offset[1]],[-half[0]+offset[0],half[1]+offset[1]]]]:p.lightType==='freeform'?[p.shapePath]:[[p.outerRadius,p.outerAngle],...(p.innerRadius>0?[[p.innerRadius,p.innerAngle]]:[])].map(([radius,degrees])=>{
       const angle=p.lightType==='spot'?degrees*Math.PI/180:Math.PI*2,points=[];
       if(p.lightType==='spot')points.push([0,0]);for(let i=0;i<=64;i++){const a=-angle/2+angle*i/64;points.push([Math.sin(a)*radius,Math.cos(a)*radius]);}return points;
     });
     for(const path of paths){const geometry=new THREE.BufferGeometry().setFromPoints([...path,path[0]].map(point=>new THREE.Vector3(...point,0))),material=new THREE.LineBasicMaterial({color:new THREE.Color(...p.color.slice(0,3)),depthTest:false}),line=new THREE.Line(geometry,material);own(group,geometry);own(group,material);line.userData.editorHelper=true;line.userData.light2dHelper=true;line.userData.objectId=group.userData.objectId;line.renderOrder=900;group.add(line);}
+  }
+  async function light2d(group,p){
+    group.userData.light2d=p;
+    if(p.lightType==='sprite'){
+      const definition=p.cookieSprite?await resolveSprite(await read(p.cookieSprite),read):null,source=definition?.texture||p.cookieTexture;
+      if(source){const map=await texture(source);if(!own(group,map))return;const layout=definition?spriteImage(definition,map.image):{rect:[0,0,map.image.width,map.image.height],size:[p.cookieWidth,p.cookieHeight],offset:[0,0]};if(!layout)throw Error('광원 스프라이트 잘라내기 범위 오류');group.userData.light2dCookie={texture:map,...layout,filter:definition?.filter||'linear',key:JSON.stringify([map.source.uuid,layout.rect,definition?.filter||'linear'])};}
+    }
+    if(group.userData.disposed)return;
+    if(p.volumetric&&p.lightType!=='global'){
+      const cookie=group.userData.light2dCookie,radius=p.lightType==='freeform'?Math.max(...p.shapePath.map(q=>Math.hypot(...q)))+p.shapeFalloff:p.outerRadius,size=p.lightType==='sprite'?cookie?.size||[p.cookieWidth,p.cookieHeight]:[2*radius,2*radius],offset=cookie?.offset||[0,0];
+      const geometry=new THREE.PlaneGeometry(...size),material=new THREE.MeshStandardMaterial({transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});own(group,geometry);own(group,material);light2DUniforms(material).hbLight2DVolume.value=0;
+      const mesh=new THREE.Mesh(geometry,material);mesh.position.set(...offset,0);mesh.userData.objectId=group.userData.objectId;mesh.userData.light2dVolume=true;mesh.userData.draw2d={shading:'volume2d'};mesh.userData.draw2dId='volume';group.userData.light2dVolume=mesh;group.add(mesh);
+    }
+    if(editor)lightOutline(group,p);
   }
   function dispose(group){group.userData.disposed=true;group.userData.spriteSkin?.dispose();for(const resource of group.userData.resources||[])resource.dispose();group.userData.resources?.clear();}
   function release(group,resource){if(group.userData.resources?.delete(resource))resource.dispose();}
@@ -138,7 +154,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
       if(component.type==='Renderer2D')group.userData.renderer2d=p;
-      if(component.type==='Light2D'){group.userData.light2d=p;if(editor)lightOutline(group,p);}
+      if(component.type==='Light2D')await light2d(group,p);
       if(component.type==='ShadowCaster2D'){group.userData.shadowCaster2d=p;if(editor&&p.source==='shape')lightOutline(group,{lightType:'freeform',shapePath:p.shapePath,color:[.9,.85,.5]});}
       if(component.type==='CompositeShadowCaster2D')group.userData.shadowGroup2d=p;
       if(component.type==='SortingGroup')group.userData.sortingGroup=p;

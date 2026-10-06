@@ -32,6 +32,7 @@ jobs:
           node tools/check-native-module-query.mjs --cpp
           node tools/check-project-native.mjs
           node tools/check-light-blend-styles.mjs
+          node tools/check-light-cookies.mjs
           node tools/check-native-transport.mjs
           node tools/check-native-frame.mjs
           node tools/check-native-frame-concurrency.mjs

@@ -1,11 +1,12 @@
-# 현재 진행 — 2026-10-06 프레임 수정 설치 / 엔진 기능 계속
+# 현재 진행 — 2026-10-06 Sprite/cookie·volume 2D 광원
 
-- Human: 누적 엔진 목표 계속. 사람과 AI 제작, 2D·2.5D·3D, 가벼움 유지. 원본 Auric 게임·에셋·checker 변경 금지, 요청 MD는 진행 기록만 추가. 사용자 창·탭·실행 프로세스 방해 금지. 통과한 광범위 검사 반복·새 8h 검사·새 agent/goal 금지.
-- Public c33be47. 실행 변경 7ff2a077, 검사/배포 290c538a. 사용자 설치 C:/Users/kirby/HBEngine/Versions/82abc860ad41c075/HBEngine.exe, 1773파일/49SHA. 기존 창 PID43288, 기본ADB14204, 이전 버전·프로필 보존. 다음 실행부터 새 설치본. native/build/frame-user-install-290c538.json.
-- PC120/fixed·모바일60/display, C++ clock 묶음/변경 객체만 전송/WS/정적 물리 건너뛰기 적용. 실제 고정 복사 게임 EXE idle118.67/battle116.37FPS, 평균 고정 엔진 비용3.67/3.96ms. 모든 프레임4ms·항상120FPS·실기기60FPS 보장은 아님. 원본 checker 복사본8그룹/code0, 설치본에서 게임 패키징 및 Android APK/AAB 통과. native/build/frame-installed-acceptance.json와 docs/research/FRAME_PERFORMANCE_20261006.md. 두 사용자 MD에 기록됨.
-- iOS8bfe946/run37466333179: Xcode18.5 기기·시뮬레이터 컴파일 PASS, 독립 iPhoneSE3 설치 PASS, simctl launch180초 timeout. HBGame 프로세스/런타임 보고 없음. native/build/ios-ci-37466333179.zip와 ios-artifacts-37466333179.zip 보존. 부팅108초 시점 launch, CoreSimulatorBridge bootLeeway120초·FrontBoard 응답 미완료. 원인 확정 아님. 테스트만 수정: 부팅 후 SDK 컴파일 동안 초기화, Safari 기준 실행, launch 전 보고 경로 확보와 main 로그. 실행 소스는 바뀌지 않음. 같은 실행 기준7ff 공용 검사 재사용 후 원격 재검사 한 번.
-- NEXT: 원격 결과는 독립 작업 후 확인; 2D Sprite Light cookie 및 volumetric처럼 조사했으나 빠진 실제 제작 기능 연결. API/메타데이터/AI·사람 편집/Player/C++ 모두 같은 계약 사용. 전체 문서 gate27가족 미통과 유지, 전체 완료로 표현 금지.
-- ONLY8h 고정313 패키지69q8fO/session50315/root54748 UTC09:56:21.573→17:56:21.573/KST10월7일02:56. 기존 메모리 증가 미통과. 새 설치본 검사가 아님. 반복 polling·대기·강제GC·추가 장기 실행 금지.
+- Human: 누적 엔진 기능 계속, 사람/AI 동일 제작·2D/2.5D/3D·가벼움 유지. Auric 원본 게임/에셋/checker 변경 금지, MD는 진행 기록만 추가. 사용자 창·탭·프로필·ADB 방해 금지. 통과한 검사 반복/새8h/새agent/goal 금지.
+- PC120/mobile60 실행 소스7ff2a077 설치82abc860ad41c075/290c538,1773파일/49SHA. 사용자창43288/defaultADB14204. 고정 사본release idle118.67/battle116.37FPS, 평균 고정비용3.67/3.96ms. 전프레임4ms/항상120/실물60 보장 아님. frame-installed-acceptance/FRAME_PERFORMANCE_20261006 증거 유지.
+- iOS400d696/run37468368819 SUCCESS. SDK18.5 기기/시뮬레이터 컴파일·실행600frames/errors0·C++두모듈/동기Rapier/한글SVG/WAV range/12오디오신호·buffer재사용·idletimer중지·백그라운드정지/복귀 보존 PASS. ios-final-400d696.json/png. physical/signing/heard false. 이전37466333179 launchtimeout은 준비 순서·Safari 기준·main로그 검사 수정으로 구별, 실행 소스 변경 없음. 새cookie/volume은 이 성공에 포함되지 않음.
+- 새 Light2D sprite cookie(crop/PPU/pivot/RGBA)·volumetric/독립 그림자: Scene/BP조건부속성·C++7/BP/AI shared, 에셋참조/PC·mobile 출력, WebGL2 array≤64×256²/CPU16MiB+GPU16MiB, 사용된 것만/정적 업로드0, volume당1plane/추가fullscreenRT없음. docs/research/2D_COOKIE_VOLUME_035.md 범위·3원본hash. 27가족/fullcorpus gates false 유지.
+- CPU/C++ cookie·기존 blend/shadow·API/diff PASS. 실제 Windows Player authoring-window-wd42dX160개/2D110개/errors0/C++핀검증 PASS. 모바일 공용 실제C++/출력 mobile-player-uav3wz PASS; 새cookie+volume 실제 WKWebView/SDK는 다음 커밋 원격 검사 한 번. 새PlayerDebug cookieBytes/volume/program진단만 추가, release 핫프레임 비용 없음.
+- NEXT: 새광원 commit/push→desktopbuild→불변 사용자 설치/프로세스·SHA검증; 해당 소스 iOS 원격 한 번, 다른 누적 제작 기능은 연구/결손 근거로 계속. 사용자 MD두개 설치/실측 기록만 append. 새광원의 실제Android실기기는 기기 없음.
+- ONLY8h 고정313 패키지69q8fO/session50315/root54748 UTC09:56:21.573→17:56:21.573/KST10월7일02:56. 메모리 증가 미통과/새 설치 검사가 아님. 반복poll·대기·강제GC·새장기실행 금지.
 
 # 이전 진행 — 2026-10-06 2D 블렌드/A14 호환 설치 완료
 

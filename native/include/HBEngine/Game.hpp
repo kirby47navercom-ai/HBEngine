@@ -224,6 +224,13 @@ using Sprite = Sprites;
 HB_CLASS()
 class Light2D : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetCookieSprite", KoreanName="2D 광원 스프라이트 지정", Category="2D 조명") static void SetCookieSprite(Actor* target,const std::string& sprite);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetCookieSprite", KoreanName="2D 광원 스프라이트 조회", Category="2D 조명") static std::string GetCookieSprite(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetCookieTexture", KoreanName="2D 광원 텍스처 지정", Category="2D 조명") static void SetCookieTexture(Actor* target,const std::string& texture,float width,float height);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetCookieTexture", KoreanName="2D 광원 텍스처 조회", Category="2D 조명") static std::string GetCookieTexture(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetCookieSize", KoreanName="2D 광원 텍스처 크기 조회", Category="2D 조명") static void GetCookieSize(Actor* target,float& width,float& height);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetVolume", KoreanName="2D 볼륨 빛 지정", Category="2D 조명") static void SetVolumetric(Actor* target,bool enabled,float intensity,float shadowStrength);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetVolume", KoreanName="2D 볼륨 빛 조회", Category="2D 조명") static void GetVolumetric(Actor* target,bool& enabled,float& intensity,float& shadowStrength);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetOrder", KoreanName="2D 광원 순서 지정", Category="2D 조명") static void SetLightOrder(Actor* target,int order);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetOrder", KoreanName="2D 광원 순서 조회", Category="2D 조명") static int GetLightOrder(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetOverlap", KoreanName="2D 광원 겹침 처리 지정", Category="2D 조명") static void SetOverlapOperation(Actor* target,const std::string& mode);

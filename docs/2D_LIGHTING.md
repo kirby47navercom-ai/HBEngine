@@ -1,5 +1,7 @@
 # 전용 2D 광원
 
+2026-10-06 추가: [Sprite cookie·볼륨 빛](research/2D_COOKIE_VOLUME_035.md)을 연결했어요. 아래의 당시 미구현 표기는 이 추가 전의 기록이에요. 실제 Player의 RGBA/crop/pivot/회전/크기, 빈 공간 볼륨·정렬 레이어·독립 그림자·자원 해제를 확인해요. C++/BP7개·사람의 속성 UI·AI metadata·프로젝트 내부 에셋 참조가 같은 계약을 사용해요.
+
 2026-10-05. 제작창과 배포 Player의 같은 WebGL 렌더 경로에 연결한 자체 계약이에요. [표면·3D 그림자](2D_SURFACE_NORMAL_SHADOWS.md)와 함께 사용해요.
 
 ## 직접 읽은 근거
