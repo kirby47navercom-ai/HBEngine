@@ -22,3 +22,12 @@
 - FrameProfiler의 누적 비활성 시간 두 숫자와 time(now)를 사용해 interval·work·simulation·render 제출을 동일 활성 시간으로 잰다. 첫 복귀 프레임/누적 표본을 버리거나 높은 비용 표본을 걸러내지 않는다. 호출이 중복돼도 비활성 시간을 중복 차감하지 않으며 표본 reset은 활성 시계 상태를 보존한다. C++ 게임 시계·프레임 스케줄·물리·입력 delta는 그대로다.
 - check-frame-rate: 정해진6초 배경이 기존100fps/9ms work/8ms simulation 표본과 같아야 한다. 배경 중 시계 정지·중복 suspend/resume·대기 중 프레임·reset 보존을 확인했다. check-player-lifecycle은 실제 Player 함수를 실행해 활성 상태와 타임스탬프 전달을 검사했다. 두 검사가 통과했다. 이 수정은 측정의 정정이며 모바일60 달성/게임 처리 시간 개선으로 주장하지 않는다.
 - CI 재사용은 Player·Profiler의 기준 본문을 비교해 이 명시된 변경만 허용한다. 다른 변경은 전체 검사를 요구한다. 바뀐 Renderer/VM 검사는 실행하고 공용 C++/프레임 채널/캐시/AI 실행은 불변 소스 증거를 재사용한다. 긴 스트레스 검사는 추가하지 않는다.
+
+
+### 2026-10-07 — 실제 앱의 파티클 출력·활성 시간 측정 확인
+
+- 실행 source478e610, iOS run37487615079은 기기/시뮬레이터 SDK 컴파일·독립 iPhone SE3 WKWebView 앱1080프레임/오류0을 통과했어요. production 파티클의 흰색·선형 RGB/alpha·두 tone mapping·화면/선형/sRGB 타깃12조합, 비대칭 UV2개·셰이더 링크1개 총15조건이 기본 PointsMaterial과 일치했어요. 기존 C++2AOT/동기Rapier/파일 range·한글/SVG·오디오 신호·배경 정지/복귀도 통과했어요. https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37487615079
+- 실제 Windows Hh3b8Y에서도 기존2D181/광원111와 새15조건·오류0이에요. Android Lwbr7o 두CPU Java/DEX/JNI/C++·16KB ELF/서명·정렬·APK/AAB와 실제 패키지의 공유 실행파일4개 SHA 일치를 확인했어요. APK SHA7c560f279ae2fac358fad244e88734b15532bb8f3f1deed7c7696b44dfa9fc70, AAB SHA7f45fb5bced8eb48cde92579b23f8a843d12e34635ecd2bab5c396633cc1dbb7예요. 실물폰 설치/실행·iOS 배포서명·가청은 미검증이에요.
+- FrameProfiler가 배경6초를 interval/work/simulation에 섞던 문제를 공통 활성 시계로 고쳤어요. 표본을 삭제하거나 큰 값을 제한하지 않아요. 실제 iOS 마지막600프레임25.2951fps/work 평균39.2833/중앙37/p95 58ms, simulation 평균38.1167/p95 57ms, render 제출 평균1.0383/p95 2ms이며60목표미달이에요. 앞 CI와 부하가 통제된 비교가 아니며 측정 정정을 성능 개선으로 주장하지 않아요.
+- check-frame-rate·check-player-lifecycle의 실제 함수 회귀, 변경 Renderer/VM 검사를 통과했고 불변 C++ 공유 기반은 소스 대조로 재사용했어요. 증거 native/build/particle-color-result-039.json·ios-color-37487615079-ios-particle-color.json·particle-color-android-039.json. 새 장시간 검사를 추가하거나 원본 게임/에셋/C++/검사기·사용자 창·프로필·기존8시간 검사에는 손대지 않았어요.
+- 엔진_요청_프레임.md의 새 보스전 기록(기존 설치82abc,78.2fps·simulation 평균10ms·편집기 clientOperations 약160ms/0.3초)을 확인했어요. 이 기록을 누락하지 않고 편집기 명령 적용 경로를 다음 조사 대상으로 유지해요. 전체 엔진/전체 API 완료로 계산하지 않아요.
