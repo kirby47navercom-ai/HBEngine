@@ -8,6 +8,7 @@ import {icon} from './icons.js';
 const clone=v=>structuredClone(v);
 export function geometrySummary(type,p){return type==='MeshCollider'?`${p.vertices.length} 정점 · ${p.indices.length/3} 삼각형`:type==='PolygonCollider2D'?`${p.paths.length} 경로 · ${p.paths.flat().length} 점`:`${p.points.length} 점 · 열린 선분`;}
 export function geometryControls(type,p,id,{blueprint=false,disabled=false}={}){
+  if(type==='ShadowCaster2D')return p.source==='shape'?`<div class="collider-geometry-controls"><span>${p.shapePath.length} 점</span><button data-edit-collider="${id}" data-collider-scope="${blueprint?'blueprint':'scene'}" ${disabled?'disabled':''}>${icon('edit')} 모양 편집</button></div>`:'';
   if(type==='Light2D')return p.lightType==='freeform'?`<div class="collider-geometry-controls"><span>${p.shapePath.length} 점</span><button data-edit-collider="${id}" data-collider-scope="${blueprint?'blueprint':'scene'}" ${disabled?'disabled':''}>${icon('edit')} 모양 편집</button></div>`:'';
   if(!geometryColliderTypes.has(type))return '';
   return `<div class="collider-geometry-controls"><span>${geometrySummary(type,p)}</span><button data-edit-collider="${id}" data-collider-scope="${blueprint?'blueprint':'scene'}" ${disabled?'disabled':''}>${icon('edit')} 형상 편집</button>${type==='MeshCollider'?`<button data-bake-collider="${id}" data-collider-scope="${blueprint?'blueprint':'scene'}" ${disabled?'disabled':''}>${icon('cube')} 메시에서 생성</button>`:''}</div>`;

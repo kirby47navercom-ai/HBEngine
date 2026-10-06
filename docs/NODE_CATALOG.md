@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **656개**, 실제 공통 C++ API **572개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **671개**, 실제 공통 C++ API **587개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -46,7 +46,8 @@
 | 입력 | 10 | 10 |
 | 입력 액션 | 6 | 6 |
 | 2D 스프라이트 | 23 | 23 |
-| 2D 조명 | 21 | 21 |
+| 2D 조명 | 23 | 23 |
+| 2D 그림자 | 13 | 13 |
 | 2D 타일맵 | 12 | 12 |
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
@@ -768,6 +769,8 @@
 | --- | --- | --- | --- | --- | --- |
 | spriteSetLighting | Set Lighting Mode / 스프라이트 2D·3D 광원 모드 | exec: exec, target: object, mode: string | then: exec | hb::Sprites::SetLightingMode | 공통 C++ + VM |
 | spriteGetLighting | Get Lighting Mode / 스프라이트 광원 모드 조회 | target: object | return: string | hb::Sprites::GetLightingMode | 공통 C++ + VM |
+| light2dSetShadows | Set Shadows / 2D 광원 그림자 설정 | exec: exec, target: object, enabled: bool, strength: float, softness: float, resolution: int | then: exec | hb::Light2D::SetShadows | 공통 C++ + VM |
+| light2dGetShadows | Get Shadows / 2D 광원 그림자 조회 | target: object | enabled: bool, strength: float, softness: float, resolution: int | hb::Light2D::GetShadows | 공통 C++ + VM |
 | light2dSetShape | Set Shape Path / 2D 광원 모양·감쇠 거리 지정 | exec: exec, target: object, path: vec2[], falloffDistance: float | then: exec | hb::Light2D::SetShapePath | 공통 C++ + VM |
 | light2dGetShape | Get Shape Path / 2D 광원 모양 조회 | target: object | return: vec2[] | hb::Light2D::GetShapePath | 공통 C++ + VM |
 | light2dGetShapeFalloff | Get Shape Falloff / 2D 광원 모양 감쇠 거리 조회 | target: object | return: float | hb::Light2D::GetShapeFalloff | 공통 C++ + VM |
@@ -787,6 +790,24 @@
 | light2dGetNormal | Get Normal / 2D 광원 노멀 품질·높이 조회 | target: object | mode: string, distance: float | hb::Light2D::GetNormal | 공통 C++ + VM |
 | light2dSetLayers | Set Target Sorting Layers / 2D 광원 대상 레이어 지정 | exec: exec, target: object, layers: string[] | then: exec | hb::Light2D::SetTargetSortingLayers | 공통 C++ + VM |
 | light2dGetLayers | Get Target Sorting Layers / 2D 광원 대상 레이어 조회 | target: object | return: string[] | hb::Light2D::GetTargetSortingLayers | 공통 C++ + VM |
+
+## 2D 그림자
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| shadow2dSetEnabled | Set Enabled / 2D 그림자 활성화 | exec: exec, target: object, enabled: bool | then: exec | hb::ShadowCaster2D::SetEnabled | 공통 C++ + VM |
+| shadow2dGetEnabled | Is Enabled / 2D 그림자 활성 여부 | target: object | return: bool | hb::ShadowCaster2D::IsEnabled | 공통 C++ + VM |
+| shadow2dSetSource | Set Source / 2D 그림자 모양 출처 지정 | exec: exec, target: object, source: string | then: exec | hb::ShadowCaster2D::SetSource | 공통 C++ + VM |
+| shadow2dGetSource | Get Source / 2D 그림자 모양 출처 조회 | target: object | return: string | hb::ShadowCaster2D::GetSource | 공통 C++ + VM |
+| shadow2dSetCasting | Set Casting / 2D 그림자 생성 방식 지정 | exec: exec, target: object, mode: string | then: exec | hb::ShadowCaster2D::SetCasting | 공통 C++ + VM |
+| shadow2dGetCasting | Get Casting / 2D 그림자 생성 방식 조회 | target: object | return: string | hb::ShadowCaster2D::GetCasting | 공통 C++ + VM |
+| shadow2dSetShape | Set Shape Path / 2D 그림자 모양 지정 | exec: exec, target: object, path: vec2[] | then: exec | hb::ShadowCaster2D::SetShapePath | 공통 C++ + VM |
+| shadow2dGetShape | Get Shape Path / 2D 그림자 모양 조회 | target: object | return: vec2[] | hb::ShadowCaster2D::GetShapePath | 공통 C++ + VM |
+| shadow2dSetLayers | Set Target Sorting Layers / 2D 그림자 대상 레이어 지정 | exec: exec, target: object, layers: string[], allLayers: bool | then: exec | hb::ShadowCaster2D::SetTargetSortingLayers | 공통 C++ + VM |
+| shadow2dGetLayers | Get Target Sorting Layers / 2D 그림자 대상 레이어 조회 | target: object | return: string[] | hb::ShadowCaster2D::GetTargetSortingLayers | 공통 C++ + VM |
+| shadow2dGetAllLayers | Uses All Sorting Layers / 2D 그림자 모든 레이어 여부 | target: object | return: bool | hb::ShadowCaster2D::UsesAllSortingLayers | 공통 C++ + VM |
+| shadow2dSetImageShape | Set Image Shape Options / 2D 그림자 알파·경계 수축 설정 | exec: exec, target: object, alphaCutoff: float, trimEdge: float | then: exec | hb::ShadowCaster2D::SetImageShapeOptions | 공통 C++ + VM |
+| shadow2dGetImageShape | Get Image Shape Options / 2D 그림자 알파·경계 수축 조회 | target: object | alphaCutoff: float, trimEdge: float | hb::ShadowCaster2D::GetImageShapeOptions | 공통 C++ + VM |
 
 ## 2D 타일맵
 

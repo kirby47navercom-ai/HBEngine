@@ -222,6 +222,8 @@ using Sprite = Sprites;
 HB_CLASS()
 class Light2D : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetShadows", KoreanName="2D 광원 그림자 설정", Category="2D 조명") static void SetShadows(Actor* target,bool enabled,float strength=1.f,float softness=0.f,int resolution=128);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShadows", KoreanName="2D 광원 그림자 조회", Category="2D 조명") static void GetShadows(Actor* target,bool& enabled,float& strength,float& softness,int& resolution);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetShape", KoreanName="2D 광원 모양·감쇠 거리 지정", Category="2D 조명") static void SetShapePath(Actor* target,const std::vector<Vec2>& path,float falloffDistance=.5f);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShape", KoreanName="2D 광원 모양 조회", Category="2D 조명") static std::vector<Vec2> GetShapePath(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetShapeFalloff", KoreanName="2D 광원 모양 감쇠 거리 조회", Category="2D 조명") static float GetShapeFalloff(Actor* target);
@@ -241,6 +243,23 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetNormal", KoreanName="2D 광원 노멀 품질·높이 조회", Category="2D 조명") static void GetNormal(Actor* target,std::string& mode,float& distance);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="light2dSetLayers", KoreanName="2D 광원 대상 레이어 지정", Category="2D 조명") static void SetTargetSortingLayers(Actor* target,const std::vector<std::string>& layers);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="light2dGetLayers", KoreanName="2D 광원 대상 레이어 조회", Category="2D 조명") static std::vector<std::string> GetTargetSortingLayers(Actor* target);
+};
+HB_CLASS()
+class ShadowCaster2D : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetEnabled", KoreanName="2D 그림자 활성화", Category="2D 그림자") static void SetEnabled(Actor* target,bool enabled);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetEnabled", KoreanName="2D 그림자 활성 여부", Category="2D 그림자") static bool IsEnabled(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetSource", KoreanName="2D 그림자 모양 출처 지정", Category="2D 그림자") static void SetSource(Actor* target,const std::string& source);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetSource", KoreanName="2D 그림자 모양 출처 조회", Category="2D 그림자") static std::string GetSource(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetCasting", KoreanName="2D 그림자 생성 방식 지정", Category="2D 그림자") static void SetCasting(Actor* target,const std::string& mode);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetCasting", KoreanName="2D 그림자 생성 방식 조회", Category="2D 그림자") static std::string GetCasting(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetShape", KoreanName="2D 그림자 모양 지정", Category="2D 그림자") static void SetShapePath(Actor* target,const std::vector<Vec2>& path);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetShape", KoreanName="2D 그림자 모양 조회", Category="2D 그림자") static std::vector<Vec2> GetShapePath(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetLayers", KoreanName="2D 그림자 대상 레이어 지정", Category="2D 그림자") static void SetTargetSortingLayers(Actor* target,const std::vector<std::string>& layers,bool allLayers=true);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetLayers", KoreanName="2D 그림자 대상 레이어 조회", Category="2D 그림자") static std::vector<std::string> GetTargetSortingLayers(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetAllLayers", KoreanName="2D 그림자 모든 레이어 여부", Category="2D 그림자") static bool UsesAllSortingLayers(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="shadow2dSetImageShape", KoreanName="2D 그림자 알파·경계 수축 설정", Category="2D 그림자") static void SetImageShapeOptions(Actor* target,float alphaCutoff,float trimEdge);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="shadow2dGetImageShape", KoreanName="2D 그림자 알파·경계 수축 조회", Category="2D 그림자") static void GetImageShapeOptions(Actor* target,float& alphaCutoff,float& trimEdge);
 };
 HB_CLASS()
 class Tilemaps : public Library {

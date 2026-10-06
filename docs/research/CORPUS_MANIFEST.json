@@ -832,6 +832,141 @@
           "revision": "751b533743c567cc069f12da53e4470f51008e7a"
         }
       ]
+    },
+    {
+      "id": "unity-graphics-implementation",
+      "engine": "Unity",
+      "version": "URP17.0.4-Unity6000.0-Graphics-feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+      "locale": "source",
+      "roots": [
+        "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/CompositeShadowCaster2D.cs"
+      ],
+      "hosts": [
+        "raw.githubusercontent.com"
+      ],
+      "pathPrefix": "/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/",
+      "knownInventory": {
+        "boundedShadowFiles": 22,
+        "wholePackageRead": false
+      },
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Discover all linked shader/provider/Clipper/UTess/Rendergraph/native implementation and package-version changes; bounded files do not close the package/repository inventory."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/CompositeShadowCaster2D.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowCaster2D.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowCasterGroup2D.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowCasterGroup2DManager.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowRendering.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Shadow2D-Projected.shader",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Shadow2D-Shadow-Geometry.shader",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Shadow2D-Shadow-Sprite.shader",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Shadow2D-Unshadow-Geometry.shader",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Shadow2D-Unshadow-Sprite.shader",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/ShadowEdge.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/ShadowMesh2D.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/ShadowShape2D.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/ShadowShape2DProvider.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/ShadowUtility.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/LightingUtility.hlsl",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/ShadowProjectVertex.hlsl",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShape2DProvider_Collider.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShape2DProvider_SpriteRenderer.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShape2DProvider_SpriteShape.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShape2DProvider_SpriteSkin.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53/Packages/com.unity.render-pipelines.universal/Runtime/2D/Shadows/ShadowProvider/Providers/ShadowShapeProvider2D_Utility.cs",
+          "revision": "feb4de2d9a93a4ae10d287d3a6d7003d08ea3e53",
+          "record": "docs/research/2D_SHADOW_CONTRACT_030.md"
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

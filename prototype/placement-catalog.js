@@ -8,6 +8,8 @@ export const placementCatalog=[
   ['sprite','Sprite · 스프라이트','2D'],['character2d','Platform Character · 플랫포머 캐릭터','2D'],['tilemap','Tilemap · 타일맵','2D'],
   ['sortingGroup','Sorting Group · 정렬 그룹','2D','empty',{SortingGroup:{}}],
   ['spriteMask','Sprite Mask · 스프라이트 마스크','2D','empty',{SpriteMask:{}}],
+  ['shadowCaster2d','Shadow Caster 2D · 그림자 모양','2D','empty',{ShadowCaster2D:{source:'shape'}}],
+  ['shadowGroup2d','Composite Shadow Caster 2D · 그림자 그룹','2D','empty',{CompositeShadowCaster2D:{}}],
   ['topdown2d','Top Down Character · 탑다운 캐릭터','2D','sprite',{TopDownMovement2D:{autoPossess:true},Rigidbody2D:{useGravity:false}}],
   ['physics2d','Physics Sprite · 물리 스프라이트','2D','sprite',{Rigidbody2D:{}}],
   ['trigger2d','Trigger 2D · 감지 영역','2D','empty',{BoxCollider2D:{trigger:true}}],

@@ -13,7 +13,7 @@ import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {cacheAssetReader} from './runtime-storage.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
-const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D']);
+const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error}){
   read=cacheAssetReader(read);
@@ -137,6 +137,8 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
       if(component.type==='Light2D'){group.userData.light2d=p;if(editor)lightOutline(group,p);}
+      if(component.type==='ShadowCaster2D'){group.userData.shadowCaster2d=p;if(editor&&p.source==='shape')lightOutline(group,{lightType:'freeform',shapePath:p.shapePath,color:[.9,.85,.5]});}
+      if(component.type==='CompositeShadowCaster2D')group.userData.shadowGroup2d=p;
       if(component.type==='SortingGroup')group.userData.sortingGroup=p;
       if(component.type==='SpriteMask')await sprite(group,p,p.sprite,undefined,true);
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,rig?.sprite||p.sprite||object.spriteAsset);

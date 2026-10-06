@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import {defaultSortingLayers,sortingLayerIndex} from './sorting-layers.js';
+import {TwoDShadows} from './two-d-shadows.js';
 
 // ponytail: at most64 active lamps per scene; spatial batches replace this ceiling when larger scenes need it.
 export const light2dLimit=64;
 const width=7,stride=width*4;
 export function light2DUniforms(material){
   if(material.userData.hbLight2D)return material.userData.hbLight2D;
-  const uniforms={hbLight2DData:{value:null},hbLight2DShape:{value:null},hbLight2DShapeHeight:{value:1},hbLight2DCount:{value:0},hbLight2DHeight:{value:1},hbLight2DLayer:{value:0},hbLight2DOrigin:{value:new THREE.Vector2()}};
+  const uniforms={hbLight2DData:{value:null},hbLight2DShape:{value:null},hbLight2DShapeHeight:{value:1},hbLight2DCount:{value:0},hbLight2DHeight:{value:1},hbLight2DLayer:{value:0},hbLight2DOrigin:{value:new THREE.Vector2()},hbShadowAtlas:{value:null},hbShadowRects:{value:null},hbShadowBounds:{value:null}};
   const compile=material.onBeforeCompile,key=material.customProgramCacheKey();
   material.onBeforeCompile=(shader,renderer)=>{
     compile.call(material,shader,renderer);Object.assign(shader.uniforms,uniforms);
@@ -14,7 +15,7 @@ export function light2DUniforms(material){
     shader.vertexShader='varying vec2 hbLight2DWorld;\n'+shader.vertexShader;
     shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>','#include <project_vertex>\nhbLight2DWorld=(modelMatrix*vec4(transformed,1.0)).xy;');
     shader.fragmentShader=`varying vec2 hbLight2DWorld;
-uniform sampler2D hbLight2DData,hbLight2DShape;
+uniform sampler2D hbLight2DData,hbLight2DShape,hbShadowAtlas,hbShadowRects,hbShadowBounds;
 uniform int hbLight2DCount;
 uniform float hbLight2DHeight,hbLight2DLayer,hbLight2DShapeHeight;
 uniform vec2 hbLight2DOrigin;
@@ -53,23 +54,29 @@ for(int hbIndex=0;hbIndex<64;hbIndex++){
       vec3 surfaceNormal=inverseTransformDirection(normal,viewMatrix);
       attenuation*=max(0.0,dot(surfaceNormal,normalize(vec3(normalDelta,max(0.00001,settings.y)))));
     }
+    if(settings.w>0.0){vec4 rect=texture2D(hbShadowRects,vec2((row+0.5)/64.0,(hbLight2DLayer+0.5)/64.0));
+      if(rect.z>0.0){vec4 bounds=texture2D(hbShadowBounds,vec2((row+0.5)/64.0,0.5));vec2 uv=(hbLight2DWorld-bounds.xy)/bounds.zw+0.5;
+        if(all(greaterThanEqual(uv,vec2(0.0)))&&all(lessThanEqual(uv,vec2(1.0)))){vec3 mask=texture2D(hbShadowAtlas,rect.xy+uv*rect.zw).rgb;attenuation*=1.0-settings.w*clamp(max(mask.r,mask.g*(1.0-clamp(mask.b,0.0,1.0))),0.0,1.0);}
+      }
+    }
   }
   hbLight2DSum+=tint.rgb*tint.a*attenuation;
 }
 outgoingLight=diffuseColor.rgb*hbLight2DSum+totalEmissiveRadiance;
 #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey=()=>key+'|hb-light2d-v2';material.needsUpdate=true;material.userData.hbLight2D=uniforms;return uniforms;
+  material.customProgramCacheKey=()=>key+'|hb-light2d-v3';material.needsUpdate=true;material.userData.hbLight2D=uniforms;return uniforms;
 }
 
 export class TwoDLighting{
-  constructor(){this.texture=null;this.shapeTexture=null;this.count=0;this.uploads=0;this.row=new Float32Array(stride);this.masks=new Uint8Array(8);}
-  prepare(groups,entries,layers=defaultSortingLayers){
+  constructor(){this.texture=null;this.shapeTexture=null;this.count=0;this.uploads=0;this.row=new Float32Array(stride);this.masks=new Uint8Array(8);this.shadows=new TwoDShadows();}
+  prepare(renderer,groups,entries,layers=defaultSortingLayers){
     const receivers=entries.filter(e=>e.properties.shading==='lit2d'&&(Array.isArray(e.node.material)?e.node.material:[e.node.material]).some(m=>m.isMeshStandardMaterial));
     if(!receivers.length){this.dispose();return {lights:0,lightBytes:0};}
     const lights=[];
     for(const group of groups){if(group.userData.disposed||!group.userData.light2d)continue;let shown=true;for(let node=group;node;node=node.parent)if(!node.visible){shown=false;break;}if(shown&&group.userData.light2d.enabled!==false)lights.push(group);}
     if(lights.length>light2dLimit)throw Error('활성 2D 광원은64개까지예요.');
+    const receiverLayers=new Set(receivers.filter(e=>{for(let n=e.node;n;n=n.parent)if(!n.visible)return false;return true;}).map(e=>sortingLayerIndex(layers,e.properties.sortingLayer))),shadows=this.shadows.prepare(renderer,groups,lights,receiverLayers,layers);
     const capacity=Math.max(1,2**Math.ceil(Math.log2(lights.length||1)));
     if(lights.length&&(!this.texture||this.texture.image.height!==capacity)){
       this.texture?.dispose();this.texture=new THREE.DataTexture(new Float32Array(stride*capacity),width,capacity,THREE.RGBAFormat,THREE.FloatType);this.texture.minFilter=this.texture.magFilter=THREE.NearestFilter;
@@ -85,7 +92,7 @@ export class TwoDLighting{
       const masks=this.masks; masks.fill(0);for(let i=0;i<Math.min(64,layers.length);i++)if(p.targetSortingLayers.includes(layers[i].id))masks[Math.floor(i/8)]|=1<<(i%8);
       const data=this.row;data[0]=m[12];data[1]=m[13];data[2]=p.lightType==='global'?0:p.lightType==='point'?1:p.lightType==='spot'?2:3;data[3]=p.normalMode==='disabled'?0:p.normalMode==='fast'?1:2;
       data[4]=p.color[0];data[5]=p.color[1];data[6]=p.color[2];data[7]=p.intensity;data[8]=p.innerRadius;data[9]=p.outerRadius;data[10]=Math.cos(p.outerAngle*Math.PI/360);data[11]=Math.cos(p.innerAngle*Math.PI/360);
-      data[12]=p.falloff;data[13]=p.normalDistance;data[16]=p.lightType==='global'?1:m[5]/det;data[17]=p.lightType==='global'?0:-m[4]/det;data[18]=p.lightType==='global'?0:-m[1]/det;data[19]=p.lightType==='global'?1:m[0]/det;data.set(masks,20);
+      data[12]=p.falloff;data[13]=p.normalDistance;data[15]=this.shadows.atlas&&p.shadows&&p.lightType!=='global'?p.shadowStrength:0;data[16]=p.lightType==='global'?1:m[5]/det;data[17]=p.lightType==='global'?0:-m[4]/det;data[18]=p.lightType==='global'?0:-m[1]/det;data[19]=p.lightType==='global'?1:m[0]/det;data.set(masks,20);
       data[14]=0;if(p.lightType==='freeform'){data[8]=p.shapePath.length;data[9]=p.shapeFalloff;data[14]=shapes.indexOf(group);data[10]=Math.max(...p.shapePath.map(point=>Math.hypot(...point)))+p.shapeFalloff;data[11]=0;}
       for(let i=0;i<stride;i++){const at=row*stride+i,value=Math.fround(data[i]);if(this.texture.image.data[at]!==value){this.texture.image.data[at]=value;changed=true;}}
     }
@@ -96,9 +103,10 @@ export class TwoDLighting{
       if(!material.isMeshStandardMaterial)continue;
       const u=light2DUniforms(material);u.hbLight2DData.value=this.texture;u.hbLight2DCount.value=this.count;u.hbLight2DHeight.value=capacity;u.hbLight2DLayer.value=sortingLayerIndex(layers,entry.properties.sortingLayer);
       u.hbLight2DShape.value=this.shapeTexture;u.hbLight2DShapeHeight.value=shapeCapacity;
+      u.hbShadowAtlas.value=this.shadows.atlas?.texture||null;u.hbShadowRects.value=this.shadows.rects;u.hbShadowBounds.value=this.shadows.bounds;
       u.hbLight2DOrigin.value.set(entry.node.matrixWorld.elements[12],entry.node.matrixWorld.elements[13]);
     }
-    return {lights:this.count,lightBytes:this.texture?.image.data.byteLength||0,shapeBytes:this.shapeTexture?.image.data.byteLength||0,lightUploads:this.uploads};
+    return {lights:this.count,lightBytes:this.texture?.image.data.byteLength||0,shapeBytes:this.shapeTexture?.image.data.byteLength||0,lightUploads:this.uploads,...shadows};
   }
-  dispose(){this.texture?.dispose();this.shapeTexture?.dispose();this.texture=this.shapeTexture=null;this.count=0;}
+  dispose(){this.texture?.dispose();this.shapeTexture?.dispose();this.texture=this.shapeTexture=null;this.count=0;this.shadows.dispose();}
 }
