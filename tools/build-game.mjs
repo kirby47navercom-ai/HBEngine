@@ -7,6 +7,7 @@ import {pathToFileURL} from 'node:url';
 import {readProjectManifest} from './project-manifest.mjs';
 import {assetKind,assetReferences} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
+import {readNativeFiles} from './native-project.mjs';
 import {validAsset} from '../prototype/asset-documents.js';
 import {defaultBuildProfile,validBuildProfile,profileTarget,buildTargets} from '../prototype/build-profile.js';
 const root=path.resolve(import.meta.dirname,'..');
@@ -31,7 +32,7 @@ export async function inspectBuild(record,profile){
   if(!validBuildProfile(profile))throw Error('빌드 프로필을 확인하세요.');
   const files=await record.project.files(),enabled=new Set();for(const scene of profile.scenes.filter(s=>s.enabled))enabled.add(path.relative(record.root,await record.project.resolve(scene.path)).split(path.sep).join('/'));
   for(const name of enabled)if(!files.some(f=>f.path===name&&f.kind==='scene'))throw Error('빌드 장면이 없어요: '+name);
-  const content=new Map(),natives=new Map(),warnings=[];let size=0;
+  const content=new Map(),natives=new Map(),warnings=[],nativeFiles=await readNativeFiles(record.project);let size=0;
   // Include all Assets for dynamic lookups; also follow actual project-file references outside Assets.
   const include=async name=>{
     const info=await record.project.read(name),canonical=path.relative(record.root,info.file).split(path.sep).join('/');
@@ -41,6 +42,7 @@ export async function inspectBuild(record,profile){
     const bytes=await fs.readFile(info.file);size+=bytes.length;if(size>1073741824)throw Error('빌드 콘텐츠 1GB 제한');content.set(canonical,bytes);return canonical;
   };
   let gameInstanceAsset=record.manifest.gameInstance||'';
+  for(const file of nativeFiles)await include(file.path);
   if(!gameInstanceAsset){const selected=new Set();for(const scene of enabled){const data=JSON.parse(await fs.readFile((await record.project.read(scene)).file,'utf8'));if(data.runtime?.gameConfig){const config=JSON.parse(await fs.readFile((await record.project.read(data.runtime.gameConfig)).file,'utf8'));if(!validAsset('gameconfig',config))throw Error('게임 설정 형식 오류');if(config.gameInstance)selected.add(config.gameInstance);}}if(selected.size>1)throw Error('빌드 장면의 GameInstance 클래스는 하나로 지정하세요.');gameInstanceAsset=[...selected][0]||'';}
   if(gameInstanceAsset.startsWith('Source/')){const {root:gameRoot,asset}=await gameInstanceBlueprint(gameInstanceAsset,{readText:async name=>fs.readFile((await record.project.read(name)).file,'utf8')});gameInstanceAsset=asset;content.set(asset,Buffer.from(json(gameRoot)));await include(gameRoot.native.headerPath);await include(gameRoot.native.sourcePath);}else if(gameInstanceAsset)await include(gameInstanceAsset);
   for(const f of files.filter(f=>f.kind!=='folder'&&f.path.startsWith('Assets/')&&(f.kind!=='scene'||enabled.has(f.path))))await include(f.path);
@@ -51,7 +53,7 @@ export async function inspectBuild(record,profile){
     else continue;
     if(kind==='blueprint'&&data.native){
       const n=data.native,headerPath=await include(n.headerPath||'Source/DoorController.h'),sourcePath=await include(n.sourcePath||'Source/DoorController.cpp'),header=canonicalNativeText(content.get(headerPath).toString('utf8')),source=canonicalNativeText(content.get(sourcePath).toString('utf8'));
-      natives.set(nativeSignature(header,source),{header,source});Object.assign(n,parseNativeHeader(header));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
+      natives.set(nativeSignature(header,source),{header,source,files:nativeFiles});Object.assign(n,parseNativeHeader(header));delete n.header;delete n.source;content.set(name,Buffer.from(json(data)));
     }
     for(const value of assetReferences(data,name))await include(value);
   }
@@ -78,7 +80,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
   const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{failIfCanceled(signal);await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});artifacts.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
   const copy=async(from,to)=>{if(!copied.has(to))await write(to,await fs.readFile(from));};
   try{
-    const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata});}
+    const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata});}
     onProgress('콘텐츠 준비');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     // Redirect aliases keep renamed model sidecars and string-based asset references working.
     let redirects={};try{redirects=JSON.parse(await fs.readFile(await record.project.resolve('.hbredirects.json',true,false),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}

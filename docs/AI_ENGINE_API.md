@@ -37,6 +37,8 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 
 ## C++ 실행 전송과 비용
 
+`schema.read`의 `build.nativeSources`는 프로젝트 `Source/` 전체 수집·상대 include·보조 파일 캐시 무효화·모바일 모듈 상태 격리와 크기/시간 제한을 제공해요. `native.build`, 화면 없는 실행, Windows/Android/iOS 출력이 같은 소스 스냅샷을 사용해요. 대량 타일 편집은 `tileSetMany` / `hb::Tilemaps::SetTiles`의 좌표·인덱스 배열로 한 번에 전달해요. [소스·타일 계약](PROJECT_NATIVE_SOURCES.md)을 참고해요.
+
 사람의 Play와 AI의 `runtime.play`는 같은 `native-transport.js`를 사용한다. C++ 빌드 결과 `metadata.workerProtocol:3`은 첫 전체 입력 이후의 변경분과 변경된 객체만 반환하는 계약이다. 이전 메타데이터 1/2는 기존 전체 요청을 유지한다. BP 노드/에셋을 AI가 변경할 때 이 내부 전송 캐시를 에셋에 저장하지 않는다.
 
 직접 `/api/native/call`을 호출하는 도구는 기존 `{token,request:{objects,...}}` 전체 요청을 계속 사용할 수 있다. 변경분 전송은 `request.worldTransport:1`, `worldId`, `baseSequence`, `worldSequence`를 사용하며 첫 요청은 `baseSequence:0/worldSequence:1/objects`다. 후속 요청은 objects를 생략하고 `objectPatch`와 이전/다음 sequence를 전달한다. 같은 worker를 쓰는 여러 BP는 같은 Play 세계의 전송 상태를 공유한다. 응답의 worldSequence 확인 후에만 기준을 갱신하고, 오류/유실 응답 이후 다음 명시적 호출은 전체 입력으로 동기화한다. 함수 실행을 자동 재시도하지 않는다. 새 Play/장면은 명시적 reset으로 기존 C++ 수명을 정리한다.

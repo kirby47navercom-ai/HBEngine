@@ -4,26 +4,26 @@ import {randomUUID,createHash} from 'node:crypto';
 import {moduleClosure} from './build-game.mjs';
 import {assetKind} from './project-service.mjs';
 import {nativeSources} from './native-source.mjs';
+import {writeNativeProject} from './native-project.mjs';
 import {prepareNative,jsonInclude} from './prepare-native.mjs';
 import {mobileSettings,profileTarget} from '../prototype/build-profile.js';
 
 const root=path.resolve(import.meta.dirname,'..'),json=value=>JSON.stringify(value,null,2)+'\n';
 export async function mobileSources(natives,out){
-  await prepareNative();const sources=[],modules=[],declarations=[],cases=[];
+  await prepareNative();const sources=[],modules=[],declarations=[],cases=[],includeDirectories=[];
   for(const [signature,code] of natives){
-    const name='HB_module_'+signature.slice(0,20),dir=path.join(out,'Native',name),generated=nativeSources(code.header,code.source,{portableName:name});await fs.mkdir(dir,{recursive:true});
+    const name='HB_module_'+signature.slice(0,20),dir=path.join(out,'Native',name),generated=nativeSources(code.header,code.source,{portableName:name,files:code.files});await fs.mkdir(dir,{recursive:true});
     // Each module keeps its original worker's independent world/static state.
     // Rename hb and user class symbols before compiling all AOT modules together.
     const prefix='#define hb HB_hb_'+signature.slice(0,20)+'\n'+generated.metadata.classes.map(c=>'#define '+c.name+' HB_'+signature.slice(0,20)+'_'+c.name).join('\n')+'\n';
-    await fs.writeFile(path.join(dir,'User.hpp'),'#pragma once\n'+prefix+generated.header);
-    await fs.writeFile(path.join(dir,'User.cpp'),prefix+generated.source);await fs.writeFile(path.join(dir,'Worker.cpp'),prefix+generated.worker);
-    sources.push(path.join(dir,'User.cpp'),path.join(dir,'Worker.cpp'));declarations.push('std::string '+name+'(const std::string&,const std::function<std::string(const std::string&)>&);');cases.push('case '+modules.length+':return '+name+'(request,query);');
+    const layout=await writeNativeProject(dir,generated,{prefix,namespace:'HB_user_'+signature.slice(0,20)});await fs.rename(path.join(dir,'worker.cpp'),path.join(dir,'Worker.cpp'));
+    sources.push(...layout.sources.map(file=>path.join(dir,file)),path.join(dir,'Worker.cpp'));includeDirectories.push(...layout.includeDirectories.map(folder=>path.join(dir,folder)));declarations.push('std::string '+name+'(const std::string&,const std::function<std::string(const std::string&)>&);');cases.push('case '+modules.length+':return '+name+'(request,query);');
     modules.push({signature,metadata:generated.metadata,header:code.header,source:code.source});
   }
   const header='#pragma once\n#include <HBEngine/NativeRouting.hpp>\n'+declarations.join('\n')+'\ninline std::string HB_mobileDispatch(int module,const std::string& request,const hb_native::Query& query){switch(module){'+cases.join('')+'default:throw std::runtime_error("unregistered mobile module");}}\ninline std::string HB_mobileInvoke(int module,const std::string& request,const hb_native::Query& query){static const auto modules=hb_native::Json::parse('+JSON.stringify(JSON.stringify(modules.map(({signature,metadata})=>({signature,metadata}))))+');std::vector<int> active;int count=0;return hb_native::Invoke(module,request,query,modules,HB_mobileDispatch,active,count);}\n';
   await fs.mkdir(path.join(out,'Native'),{recursive:true});await fs.writeFile(path.join(out,'Native/Modules.hpp'),header);
   await fs.cp(path.join(root,'native/include'),path.join(out,'Native/include'),{recursive:true});await fs.cp(path.join(jsonInclude,'nlohmann'),path.join(out,'Native/include/nlohmann'),{recursive:true});
-  return {sources,modules};
+  return {sources,modules,includeDirectories};
 }
 
 export async function buildMobile(record,profile,prepared,{signal,onProgress=()=>{},dryRun=false}={}){

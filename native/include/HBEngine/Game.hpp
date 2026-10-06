@@ -267,6 +267,7 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileGet", KoreanName="타일 가져오기", Category="2D 타일맵") static int GetTile(Actor* target,const std::string& layer,const Vec2& cell);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="tileHas", KoreanName="타일 존재 여부", Category="2D 타일맵") static bool HasTile(Actor* target,const std::string& layer,const Vec2& cell);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileSet", KoreanName="타일 지정·삭제", Category="2D 타일맵") static void SetTile(Actor* target,const std::string& layer,const Vec2& cell,int index);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileSetMany", KoreanName="여러 타일 지정·삭제", Category="2D 타일맵") static void SetTiles(Actor* target,const std::string& layer,const std::vector<Vec2>& cells,const std::vector<int>& indices);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileBoxFill", KoreanName="타일 영역 채우기", Category="2D 타일맵") static void BoxFill(Actor* target,const std::string& layer,const Vec2& cell,const Vec2& end,int index);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileFloodFill", KoreanName="같은 타일 채우기", Category="2D 타일맵") static void FloodFill(Actor* target,const std::string& layer,const Vec2& cell,int index);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="tileClear", KoreanName="타일 레이어 비우기", Category="2D 타일맵") static void ClearTiles(Actor* target,const std::string& layer);

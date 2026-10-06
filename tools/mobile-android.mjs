@@ -48,7 +48,7 @@ export async function packageMobile({out,assets,profile,settings,native,signal,o
     const compiler=path.join(c.bin,'clang++'+suffix),target='--target='+triple+settings.minSdk,objectFiles=[];
     for(const [index,file] of [...native.sources,path.join(out,'Native/Bridge.cpp')].entries()){
       const object=path.join(directory,'source-'+index+'.o');objectFiles.push(local(object));
-      await run(compiler,[target,'-std=c++17','-fPIC','-fvisibility=hidden',...(profile.configuration==='release'||path.basename(file)==='Worker.cpp'?['-O2']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),'-c',local(file),'-o',local(object)]);
+      await run(compiler,[target,'-std=c++17','-fPIC','-fvisibility=hidden',...(profile.configuration==='release'||path.basename(file)==='Worker.cpp'?['-O2']:['-O1','-g']),'-I',path.join(out,'Native'),'-I',path.join(out,'Native/include'),...(native.includeDirectories||[]).flatMap(folder=>['-I',local(folder)]),'-c',local(file),'-o',local(object)]);
     }
     await run(compiler,[target,'-shared','-static-libstdc++','-Wl,-z,max-page-size=16384',...(profile.configuration==='release'?['-Wl,-s']:[]),...objectFiles,'-o',local(library)]);
     await Promise.all(objectFiles.map(file=>fs.unlink(path.join(out,file))));

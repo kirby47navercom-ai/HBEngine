@@ -234,6 +234,18 @@ inline bool Tilemaps::HasTile(Actor* target,const std::string& layer,const Vec2&
 inline void bridgeSetTile(Json& tiles,int x,int y,int index){for(auto it=tiles.begin();it!=tiles.end();++it)if(it->at("x")==x&&it->at("y")==y){if(index<0)tiles.erase(it);else (*it)["index"]=index;return;}if(index>=0)tiles.push_back({{"x",x},{"y",y},{"index",index}});}
 inline void bridgeTileDirty(Actor* target){(*bridgeState(target))["tilemapDirty"]=true;}
 inline void Tilemaps::SetTile(Actor* target,const std::string& layer,const Vec2& cell,int index){auto& map=bridgeTilemap(target);auto& tiles=bridgeTileLayer(map,layer).at("tiles");if(!bridgeTileCell(map,cell)||index< -1||index>1048575)throw std::runtime_error("invalid tile cell or index");engineCommand("tileSet",{{"target",bridgeId(target)},{"layer",layer},{"cell",cell},{"index",index}});if(GetTile(target,layer,cell)!=index){bridgeSetTile(tiles,static_cast<int>(cell.x),static_cast<int>(cell.y),index);bridgeTileDirty(target);}}
+inline void Tilemaps::SetTiles(Actor* target,const std::string& layer,const std::vector<Vec2>& cells,const std::vector<int>& indices){
+    auto& map=bridgeTilemap(target);auto& tiles=bridgeTileLayer(map,layer).at("tiles");
+    if(cells.size()!=indices.size()||cells.size()>65536)throw std::runtime_error("tile batch size limit");
+    for(size_t i=0;i<cells.size();i++)if(!bridgeTileCell(map,cells[i])||indices[i]<-1||indices[i]>1048575)throw std::runtime_error("invalid tile batch cell or index");
+    if(cells.empty())return;
+    const int width=map.at("width");std::unordered_map<int,size_t> positions;positions.reserve(tiles.size()+cells.size());
+    for(size_t i=0;i<tiles.size();i++)positions[tiles.at(i).at("y").get<int>()*width+tiles.at(i).at("x").get<int>()]=i;
+    auto next=tiles;for(size_t i=0;i<cells.size();i++){const int x=static_cast<int>(cells[i].x),y=static_cast<int>(cells[i].y),key=y*width+x;const auto found=positions.find(key);if(found!=positions.end())next.at(found->second)["index"]=indices[i];else{positions[key]=next.size();next.push_back({{"x",x},{"y",y},{"index",indices[i]}});}}
+    Json compact=Json::array();for(auto& tile:next)if(tile.at("index").get<int>()>=0)compact.push_back(std::move(tile));
+    engineCommand("tileSetMany",{{"target",bridgeId(target)},{"layer",layer},{"cells",cells},{"indices",indices}});
+    if(compact!=tiles){tiles=std::move(compact);bridgeTileDirty(target);}
+}
 inline std::vector<int> bridgeTileGrid(const Json& map,const Json& tiles){const int width=map.at("width"),height=map.at("height");std::vector<int> grid(width*height,-1);for(const auto& t:tiles)grid.at(t.at("y").get<int>()*width+t.at("x").get<int>())=t.at("index");return grid;}
 inline void bridgeTileGridApply(Json& tiles,const std::vector<int>& grid,int width){tiles=Json::array();for(size_t at=0;at<grid.size();at++)if(grid[at]>=0)tiles.push_back({{"x",at%width},{"y",at/width},{"index",grid[at]}});}
 inline void Tilemaps::BoxFill(Actor* target,const std::string& layer,const Vec2& cell,const Vec2& end,int index){auto& map=bridgeTilemap(target);auto& tiles=bridgeTileLayer(map,layer).at("tiles");if(!bridgeTileCell(map,cell)||!bridgeTileCell(map,end)||index< -1||index>1048575)throw std::runtime_error("invalid tile bounds or index");engineCommand("tileBoxFill",{{"target",bridgeId(target)},{"layer",layer},{"cell",cell},{"end",end},{"index",index}});const int width=map.at("width");auto grid=bridgeTileGrid(map,tiles);bool changed=false;for(int y=static_cast<int>(std::min(cell.y,end.y));y<=std::max(cell.y,end.y);y++)for(int x=static_cast<int>(std::min(cell.x,end.x));x<=std::max(cell.x,end.x);x++){auto& tile=grid[y*width+x];if(tile!=index){tile=index;changed=true;}}if(changed){bridgeTileGridApply(tiles,grid,width);bridgeTileDirty(target);}}

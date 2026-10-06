@@ -1,4 +1,5 @@
 import {parseNativeHeader,nativeTargetPin} from '../prototype/native-model.js';
+import {nativeProjectLayout,checkedNativeFiles} from './native-project.mjs';
 const cpp={bool:'bool',int:'int',float:'float',string:'std::string',vec2:'hb::Vec2',vec3:'hb::Vec3',color:'hb::Color',transform:'hb::Transform',object:'hb::Actor*',hit:'hb::HitResult'};
 const cppType=p=>p.array?`std::vector<${cppType({...p,array:false})}>`:p.type==='object'?`${['Object','Actor','Pawn','Character','Controller','PlayerController','GameMode','GameState','GameInstance','PlayerState','AIController','Component','SceneComponent'].includes(p.className)?'hb::'+(p.className==='Object'?'Actor':p.className):p.className||'hb::Actor'}*`:cpp[p.type];
 function unpack(p,expr){if(p.array&&p.type==='object')return `hb::bridgeObjectArray<${cppType({...p,array:false}).slice(0,-1)}>(${expr})`;return p.type==='object'?`dynamic_cast<${cppType(p)}>(hb::bridgeActor(${expr}))`:`${expr}.get<${cppType(p)}>()`;}
@@ -55,10 +56,11 @@ ${portableName?`std::string ${portableName}(const std::string& line,const std::f
 `;
 }
 
-export function nativeSources(header,source,{portableName}={}){
+export function nativeSources(header,source,{portableName,files=[]}={}){
+ files=checkedNativeFiles(files);
  if(typeof source!=='string'||source.length>500000)throw Error('C++ 구현은 500 KB 이하로 입력하세요.');const metadata=parseNativeHeader(header);metadata.workerProtocol=3;metadata.nativeBatch=1;metadata.nativeModuleQueries=1;metadata.nativeStateCommit=1;metadata.nativeBatchOperations=1;metadata.nativeFrameBatch=1;metadata.nativeInputBatch=1;metadata.nativeStateBatch=1;metadata.nativeSpawn=1;metadata.nativeActorLifetime=1;metadata.nativeGameSession=1;if(!metadata.classes.length)throw Error('공개 C++ 클래스가 없어요.');
  let compiledHeader=header.replace(/(HB_FUNCTION\([^)]*Blueprint(?:Native|Implementable)Event[^)]*\)\s*)(?!virtual\b)(void\s)/g,'$1virtual $2');
- let compiledSource='#include <HBEngine/Native.hpp>\n'+source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,'');compiledSource='#include "User.hpp"\n'+compiledSource;
+ let compiledSource='#include <HBEngine/Native.hpp>\n'+(files.length?source:source.replace(/^\s*#include\s*"[^"\n]+\.(?:h|hpp)"\s*$/gm,''));compiledSource='#include "User.hpp"\n'+compiledSource;
  for(const c of metadata.classes)for(const f of c.functions.filter(f=>f.event==='implementable'))if(!new RegExp('\\b'+c.name+'\\s*::\\s*'+f.name+'\\s*\\(').test(source))compiledSource+='\nvoid '+c.name+'::'+f.name+'('+f.parameters.map(p=>p.cppType+' '+p.name).join(',')+'){}\n';
- return {metadata,header:compiledHeader,source:compiledSource,worker:generatedWorker(metadata,{portableName})};
+ const generated={metadata,header:compiledHeader,source:compiledSource,worker:generatedWorker(metadata,{portableName})};return {...generated,...nativeProjectLayout(header,source,generated,files)};
 }

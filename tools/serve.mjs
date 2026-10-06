@@ -9,6 +9,7 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {ProjectService} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
+import {readNativeFiles} from './native-project.mjs';
 import {ProjectStorage,storageLimit} from './project-storage.mjs';
 import {EditorAutomation,engineSchema} from './editor-automation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
@@ -87,7 +88,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.import(q.get('folder')||'Assets',q.get('name'),await readBody(104857600));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/folder'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.mkdir(data.path);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/rename'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.rename(data.from,data.to);checkOwner(owner);return json(res,{ok:true});}
-    if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await host.build(data.header,data.source);if(project!==owner||stopping){host.close();throw changedProject();}return json(res,result);}
+    if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=JSON.parse(await readBody()),files=await readNativeFiles(owner);checkOwner(owner);const result=await host.build(data.header,data.source,{files});if(project!==owner||stopping){host.close();throw changedProject();}return json(res,result);}
     if(url.pathname==='/api/native/call'&&req.method==='POST'){const data=JSON.parse(await readBody(4194304)),result=await host.call(data.token,data.request);checkOwner(owner);return json(res,result);}
     return json(res,{error:'API 경로가 없어요.'},404);
   }

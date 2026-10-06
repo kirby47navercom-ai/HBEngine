@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {valid2DAsset,applyTileTool,tileCollisionBoxes,tileCellPoint,tileLocalToCell,tileCellPolygon} from './two-d-assets.js';
 import {enabledComponent,componentDefaults} from './scene-components.js';
 import {sceneWorldMatrix} from './scene-runtime.js';
-export const tilemapKeys=new Set(['tileGet','tileHas','tileSet','tileBoxFill','tileFloodFill','tileClear','tileWorldToCell','tileCellToWorld','tileRefresh','tileProcessChanges','tileHasChanges','tileLayerVisible']);
+export const tilemapKeys=new Set(['tileGet','tileHas','tileSet','tileSetMany','tileBoxFill','tileFloodFill','tileClear','tileWorldToCell','tileCellToWorld','tileRefresh','tileProcessChanges','tileHasChanges','tileLayerVisible']);
 const cellOK=(map,v)=>Array.isArray(v)&&v.length===2&&v.every(Number.isInteger)&&v[0]>=0&&v[1]>=0&&v[0]<map.width&&v[1]<map.height;
 export const tilemapColliders=map=>tileCollisionBoxes(map).map((box,i)=>{
   if(map.layout!=='isometric')return {id:'tile_'+i,name:'Tile',type:'BoxCollider2D',properties:{...componentDefaults('BoxCollider2D'),center:box.center,extent:box.size.map(n=>n/2)}};
@@ -29,7 +29,14 @@ export class RuntimeTilemaps {
     const layer=map.layers.find(l=>l.id===args.layer);if(!layer)throw Error('타일 레이어가 없어요: '+args.layer);
     if(['tileGet','tileHas'].includes(key)){if(!cellOK(map,args.cell))return {return:key==='tileGet'?-1:false};const tile=layer.tiles.find(t=>t.x===args.cell[0]&&t.y===args.cell[1]);return {return:key==='tileGet'?tile?.index??-1:!!tile};}
     let next=map,changed=false;
-    if(key==='tileClear'){if(layer.tiles.length){next=structuredClone(map);next.layers.find(l=>l.id===layer.id).tiles=[];changed=true;}}
+    if(key==='tileSetMany'){
+      if(!Array.isArray(args.cells)||!Array.isArray(args.indices)||args.cells.length!==args.indices.length||args.cells.length>65536||args.cells.some((cell,i)=>!cellOK(map,cell)||!Number.isInteger(args.indices[i])||args.indices[i]<-1||args.indices[i]>1048575))throw Error('타일 묶음 좌표·인덱스·크기를 확인하세요.');
+      const updates=new Map(args.cells.map((cell,i)=>[cell[1]*map.width+cell[0],{x:cell[0],y:cell[1],index:args.indices[i]}])),tiles=[];
+      for(const tile of layer.tiles){const id=tile.y*map.width+tile.x,value=updates.get(id);updates.delete(id);if(!value)tiles.push(tile);else{changed||=value.index!==tile.index;if(value.index>=0)tiles.push(value);}}
+      for(const value of updates.values())if(value.index>=0){tiles.push(value);changed=true;}
+      if(changed){next={...map,layers:map.layers.map(item=>item===layer?{...item,tiles}:item)};}
+    }
+    else if(key==='tileClear'){if(layer.tiles.length){next=structuredClone(map);next.layers.find(l=>l.id===layer.id).tiles=[];changed=true;}}
     else if(key==='tileLayerVisible'){if(typeof args.visible!=='boolean')throw Error('표시 값을 확인하세요.');if(layer.visible!==args.visible){next=structuredClone(map);next.layers.find(l=>l.id===layer.id).visible=args.visible;changed=true;}}
     else if(key==='tileRefresh'){if(!cellOK(map,args.cell))throw Error('셀 좌표를 확인하세요.');changed=true;}
     else{

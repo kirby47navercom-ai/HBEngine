@@ -24,6 +24,7 @@ jobs:
           node tools/check-native-chain.mjs --cpp
           node tools/check-native-action-batch.mjs --cpp
           node tools/check-native-module-query.mjs --cpp
+          node tools/check-project-native.mjs
           node tools/check-native-transport.mjs
           node tools/check-native-frame.mjs
           node tools/check-native-frame-concurrency.mjs

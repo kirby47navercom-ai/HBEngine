@@ -9,6 +9,7 @@ import {pathToFileURL} from 'node:url';
 import * as THREE from 'three';
 import {readProjectManifest} from './project-manifest.mjs';
 import {NativeHost} from './native-host.mjs';
+import {readNativeFiles} from './native-project.mjs';
 import {loadHeadlessModel,disposeHeadlessModel} from './headless-model.mjs';
 import {SpriteRigPose} from '../prototype/sprite-rig-runtime.js';
 import {validScene} from '../prototype/model.js';
@@ -26,7 +27,7 @@ import {validValue} from '../prototype/blueprint-model.js';
 
 export async function runProject(file,{scene:scenePath,frames=180,delta=1/60,inputs=[],onFrame,nativeDefaults={},preserveInputOnTravel=true,saveDirectory}={}){
   if(!Number.isInteger(frames)||frames<0||frames>36000||!Number.isFinite(delta)||delta<=0||delta>1||!Array.isArray(inputs)||inputs.length>10000||inputs.some(input=>!Number.isInteger(input.frame)||input.frame<0||input.frame>=frames||!validInputPacket(input)))throw Error('실행 프레임·시간·입력 시나리오를 확인하세요.');
-  const {project,manifest}=await readProjectManifest(path.resolve(file)),readText=async name=>fs.readFile((await project.read(name)).file,'utf8'),readAsset=async name=>JSON.parse(await readText(name));
+  const {project,manifest}=await readProjectManifest(path.resolve(file)),readText=async name=>fs.readFile((await project.read(name)).file,'utf8'),readAsset=async name=>JSON.parse(await readText(name)),nativeFiles=await readNativeFiles(project);
   const game=new RuntimeGame(),host=new NativeHost(),world=new THREE.Scene(),meshes=new Map(),models=new Map(),logs=[],visualEvents=[],savedGames=new Map(),sceneHistory=[];let vm,services,objects,prepared,builds,currentScene=scenePath||manifest.startupScene,uniqueBuilds=[],frame=0,fallback,carriedInput;
   host.persistentQueries=createPersistentQueries({readAsset,readSave:async slot=>saveDirectory?fs.readFile(path.join(saveDirectory,encodeURIComponent(slot)+'.json'),'utf8').catch(e=>{if(e.code==='ENOENT')return null;throw e;}):savedGames.get(slot)??null,writeSave:async(slot,text)=>{if(saveDirectory){await fs.mkdir(saveDirectory,{recursive:true});const file=path.join(saveDirectory,encodeURIComponent(slot)+'.json');await fs.writeFile(file+'.tmp',text);await fs.rename(file+'.tmp',file);}savedGames.set(slot,text);},deleteSave:async slot=>{savedGames.delete(slot);if(saveDirectory)await fs.unlink(path.join(saveDirectory,encodeURIComponent(slot)+'.json')).catch(e=>{if(e.code!=='ENOENT')throw e;});}});
   const releaseModel=id=>{disposeHeadlessModel(models.get(id));models.delete(id);};
@@ -35,7 +36,7 @@ export async function runProject(file,{scene:scenePath,frames=180,delta=1/60,inp
   const build=object=>{const group=new THREE.Group();group.userData.objectId=object.id;const p=enabledComponent(object,'Camera');if(p){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}meshes.set(object.id,group);world.add(group);update(object);return group;};
   const openWorld=async(data,scenePath,travelArguments={})=>{
     if(!validScene(data))throw Error('장면 데이터 검증 실패: '+scenePath);
-    const authored=structuredClone(data.objects);for(const o of authored){const defaults=nativeDefaults[o.id]||nativeDefaults[o.blueprintAsset];if(defaults)o.overrides={...o.overrides,nativeProperties:{...o.overrides?.nativeProperties,...defaults}};}prepared=await preparePlayWorld(authored,data.runtime,{game,gameInstance:manifest.gameInstance||'',travelArguments,readAsset,readText,listAssets:()=>project.files(),buildNative:(header,source)=>host.build(header,source)});objects=prepared.objects;builds=prepared.builds;fallback=fallbackGameCamera(data.runtime?.dimension||'3d');
+    const authored=structuredClone(data.objects);for(const o of authored){const defaults=nativeDefaults[o.id]||nativeDefaults[o.blueprintAsset];if(defaults)o.overrides={...o.overrides,nativeProperties:{...o.overrides?.nativeProperties,...defaults}};}prepared=await preparePlayWorld(authored,data.runtime,{game,gameInstance:manifest.gameInstance||'',travelArguments,readAsset,readText,listAssets:()=>project.files(),buildNative:(header,source)=>host.build(header,source,{files:nativeFiles})});objects=prepared.objects;builds=prepared.builds;fallback=fallbackGameCamera(data.runtime?.dimension||'3d');
     clearModels();world.clear();meshes.clear();currentScene=scenePath;sceneHistory.push({scene:currentScene,frame});
     objects.forEach(build);for(const object of objects)if(object.parent)meshes.get(object.parent)?.add(meshes.get(object.id));
     for(const object of objects){const name=object.components?.find(c=>c.type==='MeshRenderer')?.properties?.mesh||object.asset;if(name&&/\.(gltf|glb)$/i.test(name)){const loaded=await loadHeadlessModel(project,name),group=meshes.get(object.id);models.set(object.id,loaded.object);group.add(loaded.object);group.userData.animations=loaded.animations;}else if(name&&enabledComponent(object,'AnimationGraph'))throw Error('화면 없는 모델 애니메이션에는 glTF/GLB를 사용하세요: '+name);}

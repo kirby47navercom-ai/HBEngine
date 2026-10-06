@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **671개**, 실제 공통 C++ API **587개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **672개**, 실제 공통 C++ API **588개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -48,7 +48,7 @@
 | 2D 스프라이트 | 23 | 23 |
 | 2D 조명 | 23 | 23 |
 | 2D 그림자 | 13 | 13 |
-| 2D 타일맵 | 12 | 12 |
+| 2D 타일맵 | 13 | 13 |
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
@@ -816,6 +816,7 @@
 | tileGet | Get Tile / 타일 가져오기 | target: object, layer: string, cell: vec2 | return: int | hb::Tilemaps::GetTile | 공통 C++ + VM |
 | tileHas | Has Tile / 타일 존재 여부 | target: object, layer: string, cell: vec2 | return: bool | hb::Tilemaps::HasTile | 공통 C++ + VM |
 | tileSet | Set Tile / 타일 지정·삭제 | exec: exec, target: object, layer: string, cell: vec2, index: int | then: exec | hb::Tilemaps::SetTile | 공통 C++ + VM |
+| tileSetMany | Set Tiles / 여러 타일 지정·삭제 | exec: exec, target: object, layer: string, cells: vec2[], indices: int[] | then: exec | hb::Tilemaps::SetTiles | 공통 C++ + VM |
 | tileBoxFill | Box Fill / 타일 영역 채우기 | exec: exec, target: object, layer: string, cell: vec2, end: vec2, index: int | then: exec | hb::Tilemaps::BoxFill | 공통 C++ + VM |
 | tileFloodFill | Flood Fill / 같은 타일 채우기 | exec: exec, target: object, layer: string, cell: vec2, index: int | then: exec | hb::Tilemaps::FloodFill | 공통 C++ + VM |
 | tileClear | Clear Tiles / 타일 레이어 비우기 | exec: exec, target: object, layer: string | then: exec | hb::Tilemaps::ClearTiles | 공통 C++ + VM |

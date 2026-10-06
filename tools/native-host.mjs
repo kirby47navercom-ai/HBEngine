@@ -1,6 +1,7 @@
 import {persistentQueryKeys} from '../prototype/runtime-storage.js';
 import {NativeProtocol,canonicalWorld} from '../prototype/native-protocol.js';
 import {nativeSources} from './native-source.mjs';
+import {writeNativeProject} from './native-project.mjs';
 import {worldPatch,applyWorldPatch} from './native-world-patch.mjs';
 import {commitNativeWorld} from '../prototype/native-transport.js';
 import fs from 'node:fs/promises';
@@ -20,28 +21,28 @@ const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env
 export class NativeHost extends NativeProtocol {
   constructor(){super();this.sessions=new Map();}
   registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
-  async build(header,source,{configuration='editor',signal}={}){
+  async build(header,source,{configuration='editor',signal,files=[]}={}){
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const {metadata,header:compiledHeader,source:compiledSource,worker}=nativeSources(header,source);const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp','Native.hpp','NativeRouting.hpp','Spawn.hpp','Session.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('atomic-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp','Native.hpp','NativeRouting.hpp','Spawn.hpp','Session.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('project-source-v1-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify(generated.files)+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
     const cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
-      await Promise.all([fs.writeFile(path.join(compileDir,'User.hpp'),'#pragma once\n'+compiledHeader),fs.writeFile(path.join(compileDir,'User.cpp'),compiledSource),fs.writeFile(path.join(compileDir,'worker.cpp'),worker)]);
+      const layout=await writeNativeProject(compileDir,generated),objects=[];
       try{
         const deadline=performance.now()+60000,compile=args=>new Promise((resolve,reject)=>{if(performance.now()>=deadline){reject(Error('C++ 빌드 시간 제한 초과'));return;}const child=spawn(compiler,args,{env,cwd:root,windowsHide:true,signal});let diagnostics='',failure;const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};child.stderr.on('data',append);child.stdout.on('data',append);const timeout=setTimeout(()=>{failure=Error('C++ 빌드 시간 제한 초과');child.kill();},deadline-performance.now());child.once('error',error=>{failure=error;});child.once('close',code=>{clearTimeout(timeout);failure?reject(failure):code===0?resolve():reject(Error(diagnostics||'C++ 빌드 실패'));});});
         // GCC's assembler cannot reopen an intermediate file in a Unicode TEMP
         // on Windows. Pipe translation units directly; keep the game's TEMP intact.
-        const common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,jsonInclude)],file=name=>path.relative(root,path.join(compileDir,name));
+        const common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,jsonInclude),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(compileDir,dir))])],file=name=>path.relative(root,path.join(compileDir,name));
         // Optimize the JSON/engine translation unit while preserving user-code
         // debugging. All stages share the existing 60-second build deadline.
         await compile([...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')]);
-        await compile([...common,...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),'-c',file('User.cpp'),'-o',file('User.o')]);
-        await compile([file('worker.o'),file('User.o'),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
+        for(const [i,source] of layout.sources.entries()){const object='source-'+i+'.o';objects.push(path.join(compileDir,object));await compile([...common,...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),'-c',file(source),'-o',file(object)]);}
+        await compile([file('worker.o'),...objects.map(file=>path.relative(root,file)),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
         signal?.throwIfAborted();
         // Only a complete executable enters the shared cache. Other attempts may
         // commit the same hash while this compiler runs; keep their complete file.
         if(!existsSync(binary))await fs.rename(temporary,binary).catch(error=>{if(!existsSync(binary))throw error;});
-      }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),path.join(compileDir,'User.o')].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));}
+      }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),...objects].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));}
     }
     signal?.throwIfAborted();
     const token=randomUUID(),session={binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,cacheKey:hash,cacheHit,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
