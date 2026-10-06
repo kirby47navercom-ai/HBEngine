@@ -13,6 +13,7 @@
 #include <vector>
 #include <chrono>
 #include <mutex>
+#include <cmath>
 #include "Modules.hpp"
 
 static NSData* encode(id value){return [NSJSONSerialization dataWithJSONObject:value options:0 error:nil];}
@@ -59,9 +60,9 @@ public:
     ~AssetServer(){stop();}
 };
 
-@interface HBController : UIViewController<WKScriptMessageHandler,WKNavigationDelegate> {
-    WKWebView* web;NSDictionary* manifest;NSURL* saveFile;dispatch_queue_t worker,storageWorker;NSMutableDictionary* queries;std::unique_ptr<AssetServer> server;
-    BOOL foreground;double activeElapsed;std::chrono::steady_clock::time_point activeMark;
+@interface HBController : UIViewController<WKScriptMessageHandlerWithReply,WKNavigationDelegate> {
+    WKWebView* web;NSDictionary* manifest;NSURL* saveFile;dispatch_queue_t worker,storageWorker;std::unique_ptr<AssetServer> server;
+    BOOL foreground;double activeElapsed,nativeQueryWaitMs;uint64_t nativeQueries;std::chrono::steady_clock::time_point activeMark;
 }
 -(void)lifecycle:(BOOL)active;
 -(double)activeTime;
@@ -72,26 +73,35 @@ public:
     NSMutableDictionary* files=[NSMutableDictionary dictionaryWithObject:@YES forKey:@"game.hbpack.json"];for(NSDictionary* file in manifest[@"files"])files[file[@"path"]]=@YES;
     try{server=std::make_unique<AssetServer>(root,files,[manifest[@"configuration"] isEqual:@"development"]);}catch(const std::exception& e){UILabel* error=[[UILabel alloc] initWithFrame:self.view.bounds];error.numberOfLines=0;error.text=text(e.what());[self.view addSubview:error];return;}
     NSURL* directory=[NSFileManager.defaultManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject;[NSFileManager.defaultManager createDirectoryAtURL:directory withIntermediateDirectories:YES attributes:nil error:nil];saveFile=[directory URLByAppendingPathComponent:@"savegames.json"];
-    worker=dispatch_queue_create("hbengine.native",DISPATCH_QUEUE_SERIAL);storageWorker=dispatch_queue_create("hbengine.storage",DISPATCH_QUEUE_SERIAL);queries=[NSMutableDictionary new];WKWebViewConfiguration* config=[WKWebViewConfiguration new];config.allowsInlineMediaPlayback=YES;config.mediaTypesRequiringUserActionForPlayback=WKAudiovisualMediaTypeNone;[config.userContentController addScriptMessageHandler:self name:@"hbmobile"];
+    worker=dispatch_queue_create("hbengine.native",DISPATCH_QUEUE_SERIAL);storageWorker=dispatch_queue_create("hbengine.storage",DISPATCH_QUEUE_SERIAL);WKWebViewConfiguration* config=[WKWebViewConfiguration new];config.allowsInlineMediaPlayback=YES;config.mediaTypesRequiringUserActionForPlayback=WKAudiovisualMediaTypeNone;[config.userContentController addScriptMessageHandler:self contentWorld:WKContentWorld.pageWorld name:@"hbmobile"];
     web=[[WKWebView alloc] initWithFrame:self.view.bounds configuration:config];web.navigationDelegate=self;web.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;web.scrollView.scrollEnabled=NO;[self.view addSubview:web];[web loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://127.0.0.1:%d/prototype/player.html",server->port]]]];
 }
--(void)emit:(NSDictionary*)packet {NSString* script=[@"window.hbMobileReply&&window.hbMobileReply(" stringByAppendingFormat:@"%@)",[[NSString alloc] initWithData:encode(packet) encoding:NSUTF8StringEncoding]];dispatch_async(dispatch_get_main_queue(),^{[self->web evaluateJavaScript:script completionHandler:nil];});}
--(void)userContentController:(WKUserContentController*)controller didReceiveScriptMessage:(WKScriptMessage*)message {
-    if(!message.frameInfo.isMainFrame||![message.frameInfo.securityOrigin.host isEqual:@"127.0.0.1"]||message.frameInfo.securityOrigin.port!=server->port||![message.body isKindOfClass:NSString.class]||[message.body length]>8388608)return;
-    NSDictionary* packet=decode([message.body dataUsingEncoding:NSUTF8StringEncoding]);if(![packet isKindOfClass:NSDictionary.class])return;NSString* operation=packet[@"operation"],*requestID=packet[@"id"];if(![requestID isKindOfClass:NSString.class]||requestID.length>80||![operation isKindOfClass:NSString.class]||![packet[@"data"] isKindOfClass:NSDictionary.class])return;
-    if([operation isEqual:@"queryReply"]){@synchronized(queries){NSMutableDictionary* query=queries[requestID];if(query){query[@"reply"]=packet[@"data"];dispatch_semaphore_signal(query[@"signal"]);}}return;}
+-(void)userContentController:(WKUserContentController*)controller didReceiveScriptMessage:(WKScriptMessage*)message replyHandler:(void (^)(id,NSString*))replyHandler {
+    if(!message.frameInfo.isMainFrame||![message.frameInfo.securityOrigin.host isEqual:@"127.0.0.1"]||message.frameInfo.securityOrigin.port!=server->port||![message.body isKindOfClass:NSString.class]||[message.body length]>8388608){replyHandler(nil,@"mobile message origin or size invalid");return;}
+    NSDictionary* packet=decode([message.body dataUsingEncoding:NSUTF8StringEncoding]);if(![packet isKindOfClass:NSDictionary.class]){replyHandler(nil,@"mobile message invalid");return;}NSString* operation=packet[@"operation"],*requestID=packet[@"id"];if(![requestID isKindOfClass:NSString.class]||requestID.length>80||![operation isKindOfClass:NSString.class]||![packet[@"data"] isKindOfClass:NSDictionary.class]){replyHandler(nil,@"mobile message envelope invalid");return;}
     dispatch_async(([operation isEqual:@"storageRead"]||[operation isEqual:@"storageWrite"])?storageWorker:worker,^{@autoreleasepool{try{
         NSDictionary* data=packet[@"data"];id result=nil;
-        if([operation isEqual:@"native"]){int index=[data[@"module"] intValue];auto input=utf8([[NSString alloc] initWithData:encode(data[@"request"]) encoding:NSUTF8StringEncoding]);
-            const auto query=[&](const std::string& input){NSString* id=NSUUID.UUID.UUIDString;NSMutableDictionary* slot=[NSMutableDictionary dictionaryWithObject:dispatch_semaphore_create(0) forKey:@"signal"];@synchronized(self->queries){self->queries[id]=slot;}[self emit:@{@"id":requestID,@"queryId":id,@"query":decode([text(input) dataUsingEncoding:NSUTF8StringEncoding])}];const auto started=[self activeTime];bool timed=false;while(dispatch_semaphore_wait(slot[@"signal"],dispatch_time(DISPATCH_TIME_NOW,100*NSEC_PER_MSEC))){if([self activeTime]-started>=10){timed=true;break;}}@synchronized(self->queries){[self->queries removeObjectForKey:id];}if(timed)throw std::runtime_error("mobile query timeout");return utf8([[NSString alloc] initWithData:encode(slot[@"reply"]) encoding:NSUTF8StringEncoding]);};
-            auto output=HB_mobileInvoke(index,input,query);result=decode([text(output) dataUsingEncoding:NSUTF8StringEncoding]);
+        if([operation isEqual:@"native"]){
+            NSNumber* module=data[@"module"];if(![module isKindOfClass:NSNumber.class])throw std::runtime_error("mobile module invalid");double number=module.doubleValue;if(!std::isfinite(number)||number<0||number>=[self->manifest[@"nativeModules"] count]||std::floor(number)!=number)throw std::runtime_error("mobile module range invalid");int index=static_cast<int>(number);
+            NSString* inputJSON=data[@"requestJSON"];if(!inputJSON){if(![data[@"request"] isKindOfClass:NSDictionary.class])throw std::runtime_error("mobile native packet invalid");inputJSON=[[NSString alloc] initWithData:encode(data[@"request"]) encoding:NSUTF8StringEncoding];}if(![inputJSON isKindOfClass:NSString.class]||inputJSON.length>8388608)throw std::runtime_error("mobile native JSON invalid");auto input=utf8(inputJSON);if(input.size()>8388608)throw std::runtime_error("mobile native JSON size invalid");
+            // ponytail: retain one native queue because AOT module routing shares mutable state.
+            // WebKit awaits the query promise directly, without a second JS-to-native message.
+            const auto query=[&](const std::string& input){
+                const auto queryStarted=[self activeTime];self->nativeQueries++;
+                NSMutableDictionary* slot=[NSMutableDictionary dictionaryWithObject:dispatch_semaphore_create(0) forKey:@"signal"];NSString* queryJSON=text(input);
+                dispatch_async(dispatch_get_main_queue(),^{[self->web callAsyncJavaScript:@"return JSON.stringify(await window.hbMobileQuery(id,JSON.parse(queryJSON)));" arguments:@{@"id":requestID,@"queryJSON":queryJSON} inFrame:nil inContentWorld:WKContentWorld.pageWorld completionHandler:^(id value,NSError* error){
+                    if(error||![value isKindOfClass:NSString.class]||[value length]>8388608)value=[[NSString alloc] initWithData:encode(@{@"ok":@NO,@"error":error.localizedDescription?:@"mobile query reply invalid"}) encoding:NSUTF8StringEncoding];slot[@"reply"]=value;dispatch_semaphore_signal(slot[@"signal"]);
+                }];});
+                const auto started=[self activeTime];while(dispatch_semaphore_wait(slot[@"signal"],dispatch_time(DISPATCH_TIME_NOW,100*NSEC_PER_MSEC)))if([self activeTime]-started>=10)throw std::runtime_error("mobile query timeout");self->nativeQueryWaitMs+=([self activeTime]-queryStarted)*1000;return utf8(slot[@"reply"]);
+            };
+            auto output=HB_mobileInvoke(index,input,query);NSString* outputJSON=text(output);result=data[@"requestJSON"]?outputJSON:decode([outputJSON dataUsingEncoding:NSUTF8StringEncoding]);
         }else if([operation isEqual:@"storageRead"]||[operation isEqual:@"storageWrite"]){NSData* saved=[NSData dataWithContentsOfURL:self->saveFile];NSMutableDictionary* store=decode(saved);if(saved&&(![store isKindOfClass:NSDictionary.class]||![store[@"items"] isKindOfClass:NSDictionary.class]||![store[@"version"] isEqual:@1]))throw std::runtime_error("mobile save file invalid");if(!saved)store=[@{@"version":@1,@"items":[NSMutableDictionary new]} mutableCopy];
             if([operation isEqual:@"storageWrite"]){NSMutableDictionary* items=store[@"items"];NSString* suffix=[@".project." stringByAppendingString:self->manifest[@"id"]];for(NSString* key in data){id value=data[key];if(key.length>1000||![key hasSuffix:suffix]||![key hasPrefix:@"hbengine.savegame."]&&![key hasPrefix:@"hbengine.storage-migrated.v1."]||value!=NSNull.null&&![value isKindOfClass:NSString.class])throw std::runtime_error("mobile save key range");if(value==NSNull.null)[items removeObjectForKey:key];else items[key]=value;}NSData* bytes=encode(store);NSError* error=nil;if(bytes.length>16777216||![bytes writeToURL:self->saveFile options:NSDataWritingAtomic error:&error])throw std::runtime_error("mobile save failed");}result=store;
-        }else if([operation isEqual:@"report"]){if([self->manifest[@"configuration"] isEqual:@"development"]){NSMutableDictionary* report=[data mutableCopy];report[@"mobileHost"]=@{@"assetOrigin":[NSString stringWithFormat:@"http://127.0.0.1:%d",self->server->port],@"mediaRequests":self->server->inspectMedia()};[encode(report) writeToURL:[[self->saveFile URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"runtime-report.json"] atomically:YES];NSLog(@"HBPlayer REPORT frames=%@ ok=%@ error=%@",report[@"frames"],report[@"ok"],report[@"error"]);}result=@{@"ok":@YES};}
+        }else if([operation isEqual:@"report"]){if([self->manifest[@"configuration"] isEqual:@"development"]){NSMutableDictionary* report=[data mutableCopy];report[@"mobileHost"]=@{@"assetOrigin":[NSString stringWithFormat:@"http://127.0.0.1:%d",self->server->port],@"mediaRequests":self->server->inspectMedia(),@"nativeBridge":@"webkitPromise",@"queryBridge":@"callAsyncJavaScript",@"nativeQueue":@"serial",@"nativeQueries":@(self->nativeQueries),@"nativeQueryWaitMs":@(self->nativeQueryWaitMs)};[encode(report) writeToURL:[[self->saveFile URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"runtime-report.json"] atomically:YES];NSLog(@"HBPlayer REPORT frames=%@ ok=%@ error=%@",report[@"frames"],report[@"ok"],report[@"error"]);}result=@{@"ok":@YES};}
         else if([operation isEqual:@"close"]){result=@{@"ok":@YES};[self lifecycle:NO];}
         else throw std::runtime_error("unknown mobile operation");
-        [self emit:@{@"id":requestID,@"data":result?:@{}}];
-    }catch(const std::exception& error){[self emit:@{@"id":requestID,@"error":text(error.what())?:@"mobile native failure"}];}}});
+        dispatch_async(dispatch_get_main_queue(),^{replyHandler(result?:@{},nil);});
+    }catch(const std::exception& error){NSString* reason=text(error.what())?:@"mobile native failure";dispatch_async(dispatch_get_main_queue(),^{replyHandler(nil,reason);});}}});
 }
 -(void)webView:(WKWebView*)view decidePolicyForNavigationAction:(WKNavigationAction*)action decisionHandler:(void (^)(WKNavigationActionPolicy))handler {NSURL* url=action.request.URL;handler([url.host isEqual:@"127.0.0.1"]&&url.port.intValue==server->port?WKNavigationActionPolicyAllow:WKNavigationActionPolicyCancel);}
 -(double)activeTime {@synchronized(self){return activeElapsed+(foreground?std::chrono::duration<double>(std::chrono::steady_clock::now()-activeMark).count():0);}}

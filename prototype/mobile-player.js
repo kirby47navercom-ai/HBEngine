@@ -64,14 +64,15 @@ export function platformBridge(send,{nativeJSON=false}={}){
   const arm=(id,item)=>{item.started=performance.now();item.timer=setTimeout(()=>{if(!active||pending.get(id)!==item)return;pending.delete(id);item.reject(Error('모바일 호스트 응답 시간 초과'));},item.remaining);};
   const setActive=value=>{if(active===value)return;active=value;const now=performance.now();for(const [id,item] of pending)if(active)arm(id,item);else{clearTimeout(item.timer);item.remaining=Math.max(0,item.remaining-(now-item.started));}};
   const request=(operation,data,query)=>new Promise((resolve,reject)=>{
-    const id=String(++sequence),item={resolve,reject,query,remaining:15000,nativeJSON:nativeJSON&&operation==='native'};pending.set(id,item);if(active)arm(id,item);try{send({id,operation,data:item.nativeJSON?{module:data.module,requestJSON:JSON.stringify(data.request)}:data});}catch(error){clearTimeout(item.timer);pending.delete(id);reject(error);}
+    const id=String(++sequence),item={resolve,reject,query,remaining:15000,nativeJSON:nativeJSON&&operation==='native'};pending.set(id,item);if(active)arm(id,item);try{const reply=send({id,operation,data:item.nativeJSON?{module:data.module,requestJSON:JSON.stringify(data.request)}:data});if(reply?.then)Promise.resolve(reply).then(data=>receive({id,data}),error=>receive({id,error:error?.message||String(error)}));}catch(error){clearTimeout(item.timer);pending.delete(id);reject(error);}
   });
+  const query=async(id,value)=>{try{const item=pending.get(id);if(!item?.query)throw Error('C++ 질의 작업이 없어요.');return {ok:true,value:await item.query(value)};}catch(error){return {ok:false,error:error.message};}};
   const receive=async packet=>{
     const item=pending.get(packet.id);if(!item)return;
-    if(packet.query){let response;try{if(!item.query)throw Error('C++ 질의 작업이 없어요.');response={ok:true,value:await item.query(packet.query)};}catch(error){response={ok:false,error:error.message};}send({operation:'queryReply',id:packet.queryId,data:response});return;}
+    if(packet.query){send({operation:'queryReply',id:packet.queryId,data:await query(packet.id,packet.query)});return;}
     clearTimeout(item.timer);pending.delete(packet.id);packet.error?item.reject(Error(packet.error)):item.resolve(packet.data);
   };
-  return {request,receive,setActive};
+  return {request,receive,query,setActive};
 }
 
 export async function connectAndroidChannel(bridge,host){
@@ -87,10 +88,10 @@ export async function connectAndroidChannel(bridge,host){
 export async function startMobilePlayer(){
   const original=window.fetch.bind(window),manifest=await (await original('/game.hbpack.json')).json();
   let messagePort;
-  const send=packet=>{const value=JSON.stringify(packet);if(messagePort)messagePort.postMessage(value);else if(window.HBMobile)window.HBMobile.postMessage(value);else window.webkit.messageHandlers.hbmobile.postMessage(value);};
-  // Android can carry the native packet as JSON text. Its host validates the
-  // envelope without parsing and rebuilding every actor/property in Java.
-  const bridge=platformBridge(send,{nativeJSON:!!window.HBMobile});window.hbMobileReply=bridge.receive;window.hbMobileHostLifecycle=bridge.setActive;
+  const send=packet=>{const value=JSON.stringify(packet);if(messagePort)messagePort.postMessage(value);else if(window.HBMobile)window.HBMobile.postMessage(value);else return window.webkit.messageHandlers.hbmobile.postMessage(value).then(reply=>typeof reply==='string'?JSON.parse(reply):reply);};
+  // Both hosts validate the envelope while passing the C++ packet as JSON text.
+  // iOS resolves WebKit promises directly; Android keeps its message port.
+  const bridge=platformBridge(send,{nativeJSON:true});window.hbMobileReply=bridge.receive;window.hbMobileQuery=bridge.query;window.hbMobileHostLifecycle=bridge.setActive;
   if(window.HBMobile){const connected=await connectAndroidChannel(bridge,window);messagePort=connected.port;if(manifest.configuration==='development')window.hbMobileChannel=connected.info;}
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
   window.hbMobileFileUrl=backend.fileUrl;

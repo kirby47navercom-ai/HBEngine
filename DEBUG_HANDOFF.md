@@ -1,3 +1,9 @@
+# 진행 중 — iOS 직접 Promise·물리 질의 응답 038
+
+- 037 mobile 결과b7ae060 push: Android NfoYil 두ABI APK/AAB PASS; iOS6537/37476970087 SUCCESS 기능PASS,15.42fps/p9573으로60FAIL. installfac/c611불변 유지.
+- 새 iOSMain은 WKScriptMessageHandlerWithReply·callAsyncJavaScript/rawJSON. Serialnative/독립storage/active timeout·origin+envelope/module/type/UTF8 guard 유지. Shared mobileplatformBridge directPromise/query/no replay+Android path 회귀 PASS. IOS검사에실제8invalid messages+unknownowner/C++2AOT·Rapier/audio/lifecycle 추가. docs/research/IOS_NATIVE_BRIDGE_038.md/원문manifest.
+- 다음 현재sourcecommit/push→iOS CI baseline6537 source gate 재사용→결과수집/필요수리→사용자불변설치. C++worker/API/VM 의미불변, 실제phone/signing/heard/8h 미검증. 사용자UI/원본game/profiles·기존장기검사 untouched. Fullofficialcorpus27gatesfalse.
+
 # 최신 모바일 결과 / 시뮬레이션 비용 — 2026-10-06
 
 - source6537f3b iOS37476970087 전체공용/두SDK/실제app600frames/errors0 SUCCESS. cookie-volume/9shader/Points5/C++2AOT·physics·audio/lifecycle PASS. Windows181 GPU pixel회귀와 구분. Android NfoYil APK/AAB두ABI·16KB/signing/원본보존/실제packed4SHA PASS. 실제phone/iOS서명/가청 false.
