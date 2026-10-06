@@ -91,3 +91,14 @@ P0-5 설치본은 `09e4470b1e254ac3`이다. 나머지 요청을 함께 구현한
 `ui-render-window-J43YYZ`는 기존6화면/DPI/SVG1.5배/한글/클릭·BP·터치 검사에 실제 CSS 환경 변수의노치3조건을추가해통과했다.2340×1080에서좌우84/72·하단24px,상단32·하단24px,0으로복원했으며safe-area컨테이너·HP·공격버튼좌표가예상값과 .1px이내로일치했다. 원본위젯불변·정상종료0·서버종료도확인한뒤acceptance를저장한다. 사용법은 `node tools/check-ui-render-window.mjs --cutouts`다. [공식CDP프로토콜](https://github.com/ChromeDevTools/devtools-protocol/blob/master/json/browser_protocol.json)의experimental `Emulation.setSafeAreaInsetsOverride`를사용했고실물노치를검증한것은아니다.
 
 Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디오재개및landscape출력계약에함께근거하여 MD의해당기능기준을체크했다. 실제휴대폰·서명/청취·8시간·실물중급탄막성능은계속미검증이다.
+
+
+### 2026-10-06 — 반복 효과음 측정 버퍼와 장시간 진단
+
+- 공용 AudioRouting의 Analyser를 유휴 최대16개로 재사용하고, 이전 파형을 오디오 시계 기준으로 비운 뒤 새 재생에 연결한다. 종료 시 유휴 연결도 정리한다. 최초 단순 disconnect 구현의 실제 강한/약한 소리 혼입 실패(features-window-iXrtCr)는 보존했다.
+- 실제 Windows features-window-cSnRHl은 .8/.02 진폭의40ms PCM12회에서 새 Analyser1개·peak오차.005이내를 통과했다. 기존93생성/20소리/3HUD해상도/6장면/W누름/F12/60초 초기화와1,000발·적30개600프레임도통과했다(59.596531fps/작업p959.5ms).
+- 자연GC·같은GameInstance의 별도 memory-controlled-egPsS8 약6분대조에서 크기524,284바이트의 샘플 할당은123초/248초 뒤1개/1개다. 기존 bOMG23은53개/105개, PCM JhXfdi는54개/106개였다. 샘플 바이트를 전체메모리나누수량으로세지않고 초기사용량이서로다른프로세스를단순차감하지않는다. Analyser제거대조 mbH9a3은0개였지만 측정을뺀진단이며제품합격증거가아니다.
+- Android hQrbsx의첫40ms진단은새오디오장치시작전벽시계60ms로읽어0을반환했다. 기존20게임소리는정상이며실패를보존했다. 검사시간을실제AudioContext시계로측정한pEDhFS에서는12개신호/새노드1개와93생성·20소리·HUD·터치·HOME·Back이동작했다. 그러나600프레임33.556484fps/작업p9541.6ms로기존p95≤33.333ms게이트에실패했다. 전체성능합격으로계산하지않는다. 같은APK에서지연원인을분리하고있다.
+- iOS도같은12개신호검사를실제WKWebView진단에연결했다. 새원격SDK/시뮬레이터결과는아직수집전이다. 실물·서명·스피커청취는기존처럼미검증이다.
+- 불변자연8시간zjUtGE는코드·시계·게이트를유지하고계속실행한다. 마지막5,829초/97세션의전체private1,926.21MiB/JSheap37.07MiB로전체증가가남아있다. 이번버퍼변경이들어간패키지가아니며8시간안정통과체크를하지않는다.
+- 공식Chromium의고정커밋에서Analyser관련8파일을전부읽고본문SHA·범위·설치버전미대조를docs/research/AUDIO_ANALYSER_LIFETIME_028.md에구분했다. 전체Unreal/Unity분석완료로승격하지않는다. 원본게임/검사기는수정하지않고열린사용자엔진·프로필·기본ADB를유지한다.

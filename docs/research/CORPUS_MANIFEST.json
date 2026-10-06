@@ -781,7 +781,50 @@
       },
       "scopeNote": "Historical allocation/timeline investigation only; not asserted to match installed WebView2.",
       "openIssues": [
-        "Resolve installed browser version and corresponding AudioParam/MediaElementAudioSource lifetime source; sampled allocation addresses are not symbolized root-cause proof."
+        "Resolve installed browser version and corresponding AudioParam/MediaElementAudioSource lifetime source; sampled allocation addresses are not symbolized root-cause proof.",
+        "028 reads eight analyser files at 751b533743c567cc069f12da53e4470f51008e7a; installed-browser match, FFT/platform/audio-array/deferred-task source and native-address symbolization remain unresolved."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/realtime_analyser.h",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/analyser_node.cc",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/analyser_node.h",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/analyser_handler.h",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/audio_basic_inspector_node.cc",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/751b533743c567cc069f12da53e4470f51008e7a/third_party/blink/renderer/modules/webaudio/audio_basic_inspector_node.h",
+          "record": "docs/research/AUDIO_ANALYSER_LIFETIME_028.md",
+          "revision": "751b533743c567cc069f12da53e4470f51008e7a"
+        }
       ]
     }
   ],

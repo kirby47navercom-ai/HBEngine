@@ -1,3 +1,11 @@
+# 최신 진행 — 2026-10-06 오디오 버퍼 재사용·모바일 회귀
+
+- 이전 설치42bcd763ffa422e3/runtime448 유지. 새 AudioRouting idleMeters≤16/silence→destination/readyAt(audio clock)/dispose 변경은 아직 미설치. unit buffered/audio-sources/UI-audio PASS. 실제PC cSnRHl 전체PASS59.596531fps/p959.5ms/12strongweakPCM created1. iXrtCr stalehistoryFAIL 보존.
+- 자연GC pool대조 egPsS8/session76449 완료0:123/248sec sampled halfMiB1→1(기존bOMG53→105/PCM54→106), private608.6→681.7 /681.7→655.9 /665→573.6. sampled전체메모리/8hPASS 아님. baseline/no-meter/Gain/snapshot 과거증거 유지.
+- Android새APK hQrbsx/90300 첫probe peak0FAIL(벽시계 colddevice), 동일APK pEDhFS/22621 audio clock proof12/created1 기능전체PASS but33.556484fps/workp9541.6 FAIL. target30/p95≤33.333 unchanged. new sharedtools/audio-meter-proof.mjs test helper actualaudio clock. iOScheck hook+acceptance assert 연결됨; commit/push/newworkflow SDK proof 필요. 과거448 run37427806194는newpool검증 아님.
+- Research028 fixedChromium751b 8wholefiles read/SHA/installedmatchfalse, discoveryadded8/samefamily26. 027 고정hash 미변경. Wholecorpus gatefalse. HumanMD/engineAURICprogress appended; originalAuric gameplay/checker NEVERoverwrite.
+- Actual8h65670/zjUtGE unchanged D3 oldpackage UTC06:25→14:25. last5829sec97sessions/private1926MiB/heap37MiB/errors0, growth unresolved. Do notstop/restart/forceGC/fakePASS. Userwindow/profile/defaultADB preserve. No newagents/goals/partialfinal.
+
 # 최신 진행 — 2026-10-06 설치 완료·메모리 원인 추적
 
 - 런타임448a9b5/설치42bcd763ffa422e3 보존. Final PC Av9j2H PASS59.500788fps/workp9510.5ms. checker-qfTJah PASS9/code0/537files/checker976c8f…/allSHA preserved. Final Android xDeGsX PASS43.26351fps/workp9530.1ms/parallel888/4cores hostGPU. Physical/signing/heard false.

@@ -2,7 +2,7 @@ export const validToneSample=report=>report.audio?.state==='running'&&report.aud
 export const validTonePlayback=samples=>{const valid=samples.filter(validToneSample),tone=sample=>sample.audio.voices.find(v=>v.clip==='Assets/MobileTone.wav'),first=valid[0],last=valid.at(-1);return valid.length>=3&&last.audio.clock-first.audio.clock>=4&&samples.filter(sample=>sample.frames>=first.frames&&sample.frames<=last.frames).every(sample=>Math.abs((tone(sample)?.duration??0)-2)<.01)&&valid.some(sample=>sample.frames!==first.frames&&Math.abs(tone(sample).time-tone(first).time)>.01);};
 
 // Test-only WKWebView probe: compare the same HTTP bytes and separate audio paths.
-export async function iosAudioProbe(url){
+export async function iosAudioProbe(url,meterReuse){
   const result=window.hbIOSAudioProbe={phase:'fetch',samples:[]},players=[];let context,blobURL;
   try{
     context=new AudioContext();await context.resume();const bytes=await(await fetch(url)).arrayBuffer();result.bytes=bytes.byteLength;result.phase='decode';
@@ -16,7 +16,7 @@ export async function iosAudioProbe(url){
     const state=player=>({time:player.currentTime,duration:Number.isFinite(player.duration)?player.duration:null,readyState:player.readyState,playing:!player.paused,error:player.error?.code||null});
     const level=meter=>{const values=new Float32Array(meter.fftSize);meter.getFloatTimeDomainData(values);return Math.sqrt(values.reduce((sum,value)=>sum+value*value,0)/values.length);};
     for(let i=0;i<12;i++){result.samples.push({clock:context.currentTime,plain:state(plain),routed:state(routed),attached:state(attached),manual:state(manual),blob:state(blob),bufferRMS:level(bufferMeter),mediaRMS:level(mediaMeter)});await new Promise(resolve=>setTimeout(resolve,500));}
-    decoded.stop();result.phase='done';
+    decoded.stop();if(meterReuse)result.meterReuse=await meterReuse();result.phase='done';
   }catch(error){result.error=error.name+': '+error.message;result.phase='failed';}
   finally{for(const player of players){player.pause();player.removeAttribute('src');player.load();player.remove();}if(blobURL)URL.revokeObjectURL(blobURL);await context?.close();}
 }
