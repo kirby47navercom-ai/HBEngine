@@ -1,5 +1,11 @@
 # 전체 문서·API 연구 상태
 
+2026-10-06 후속: [025 필드 계약](PLAYER_LOOP_FIELDS_025.md), [026 공식 C# 참조 소스](PLAYER_LOOP_SOURCE_026.md), [027 진단 프로토콜 범위](DIAGNOSTIC_PROTOCOL_027.md)를 추가했어요. Unity 6000.0 참조 파일 440줄은 읽었고, 네이티브 본체·연결 속성과 전체 저장소 검증은 남아 있어요. Chromium 프로토콜은 안전 영역·메모리 명령과 직접 타입만 읽었어요. 발견 계열은 26개로 늘었고 전체 분모·독립 검증·완료 gate는 계속 미확정이에요.
+
+2026-10-06 최신 설치/우선 MD 후속: P0와 P1/P2·추가A1~13의 일괄 구현·통합 수리 후448a9b5를 사용자 불변설치42bcd763ffa422e3로 갱신했어요. 실제PC Av9j2H59.500788fps,Android xDeGsX43.26351fps/작업p9530.1ms,최신원문게임9개qfTJah,동일소스iOS37427806194의SDK2/시뮬레이터/오디오신호·복귀가통과했어요. 실제실물기기/서명/청취·8시간메모리는미검증이며이결과를전체누적엔진완성이나corpus검증으로계산하지않아요. 아래의 과거 설치 미수행 문장은 당시 시점 기록이에요.
+
+내부순서 후속 [024 부분 분석](FRAME_ORDER_ANALYSIS_024.md): UnityPlayerLoop의4페이지자체본문/선언/예제와System자체본문/5속성요약,ExecutionOrder캐시본문재읽기,UnrealTick/Timer가이드기술본문·두타입자체선언/멤버요약·NextTick5overload·TimerParameters3필드를대조했어요. 현재5.8 NextTickAPI의반환handle과가이드설명의모순을미해결로보존해요. 이미지/연결/상속/미독API와독립검증·전체gate는승격하지않아요. 원문SHA와범위는native/build/frame-order-docs-20261006예요.
+
 모바일 출력 우선 작업: 사용자 동의 후 Android SDK·NDK를 설치했고 실제 두 ABI APK/AAB·독립 가상 기기의 C++/BP·한글/SVG·동시 터치·오디오 신호·배경/복귀를 통과했어요. iOS37343333585/8e2cbd5는 두 Xcode 대상 컴파일·독립 시뮬레이터 게임과 반복 오디오의2초 길이/신호·배경 정지/복귀를 통과했어요. 실물 휴대폰·배포 서명·음향 청취 검증과 사용자 설치본 업데이트는 아직 수행하지 않았어요. 보조 출처는 [020 등록 기록](MOBILE_RUNTIME_SOURCE_REGISTRATION_020.md)과 [023 부분 표준 계약](WEB_MEDIA_CONTRACTS_023.md)으로 발견 대기열에 추가하며 전체 연구 gate를 승격하지 않아요. 상세: [모바일 출력](../MOBILE_EXPORT.md)
 
 ## 최신 우선순위: 모바일 검증 → Auric Loop 순차 개선 → 사용자 업데이트

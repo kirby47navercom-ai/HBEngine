@@ -47,5 +47,19 @@ try{
     const point=await evaluate(`(()=>{const r=document.querySelector('[data-widget-name=TouchAttack]').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',clickCount:1});await until(()=>evaluate('window.hbPlayerDebug.inspect().input.keys.leftmousebutton===1'),'터치 버튼 키 입력');await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',...point,button:'left',clickCount:1});
     evidence.push({width,height,dpr,...info,screenshot});await fs.writeFile(path.join(work,'cases.json'),JSON.stringify(evidence,null,2));
   }
-  assert.equal(errors.length,0);assert.deepEqual(await fs.readFile(path.join(project.root,widgetPath)),original);await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({ok:true,package:built.executable,svgHeaders:mime,cases:evidence,errors,originalPreserved:true},null,2));await evaluate("window.chrome.webview.postMessage('hbengine.ready.player')");await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);const shell=JSON.parse(await fs.readFile(proof,'utf8'));await assert.rejects(fetch('http://127.0.0.1:'+shell.port+'/api/session',{signal:AbortSignal.timeout(1000)}));console.log('실제 배포 Player SVG 1.5배·높이 배율·모서리/안전 영역·소수 DPI·클릭/BP·종료 검사 통과: '+work);
+  const cutouts=[];
+  if(process.argv.includes('--cutouts')){
+    const width=2340,height=1080;await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    for(const insets of [{top:0,left:84,right:72,bottom:24},{top:32,left:0,right:0,bottom:24},{top:0,left:0,right:0,bottom:0}]){
+      await cdp('Emulation.setSafeAreaInsetsOverride',{insets});await sleep(180);
+      const actual=await evaluate(`(()=>{const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom};};return {frame:rect(document.querySelector('.hb-ui-safe-area')),health:rect(document.querySelector('[data-widget-name=Health]')),attack:rect(document.querySelector('[data-widget-name=Attack]')),scale:Number(document.querySelector('.hb-ui-canvas').dataset.uiScale)};})()`);
+      const expected={left:insets.left+16,top:insets.top+12,right:width-insets.right-20,bottom:height-insets.bottom-28};
+      for(const edge of Object.keys(expected))assert.ok(Math.abs(actual.frame[edge]-expected[edge])<.1,'노치 안전 영역 '+edge+': '+JSON.stringify({insets,actual,expected}));
+      assert.ok(actual.health.left>=actual.frame.left&&actual.health.top>=actual.frame.top);assert.ok(actual.attack.right<=actual.frame.right&&actual.attack.bottom<=actual.frame.bottom);
+      assert.ok(Math.abs(actual.attack.right-(expected.right-32*actual.scale))<.1);assert.ok(Math.abs(actual.attack.bottom-(expected.bottom-32*actual.scale))<.1);
+      cutouts.push({insets,...actual,expected,simulated:true});
+    }
+    await cdp('Emulation.setSafeAreaInsetsOverride',{insets:{}});await fs.writeFile(path.join(work,'cutouts.json'),JSON.stringify(cutouts,null,2));
+  }
+  assert.equal(errors.length,0);assert.deepEqual(await fs.readFile(path.join(project.root,widgetPath)),original);await evaluate("window.chrome.webview.postMessage('hbengine.ready.player')");await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);const shell=JSON.parse(await fs.readFile(proof,'utf8'));await assert.rejects(fetch('http://127.0.0.1:'+shell.port+'/api/session',{signal:AbortSignal.timeout(1000)}));await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({ok:true,package:built.executable,svgHeaders:mime,cases:evidence,cutouts,errors,originalPreserved:true,exitCode:ended.code,serverClosed:true},null,2));console.log('실제 배포 Player SVG 1.5배·높이 배율·모서리/안전 영역·소수 DPI·클릭/BP·종료 검사 통과: '+work);
 }catch(error){console.error('SVG 실행 증거:',work);throw error;}finally{socket?.close();for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('검사 종료'));}if(!ended)child.kill();await Promise.race([exit,sleep(2000)]);}

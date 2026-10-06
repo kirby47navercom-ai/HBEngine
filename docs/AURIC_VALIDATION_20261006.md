@@ -63,3 +63,31 @@ P0-5 설치본은 `09e4470b1e254ac3`이다. 나머지 요청을 함께 구현한
 - q82C5Z는 기본 메시지 경로와 반환된 외부 모듈의 시계·타이머 증명을 사용한 APK다. 전체기능은 동작했으나31.5224fps/작업p9544.4ms로 예산 실패다. 게이트를 변경하지 않았고 성능 개선 완료로 계산하지 않는다. 후속 원격 호출이 타이머 상태를 바꿨을 때 오래된 진행 중 응답이 증명을 복원하지 못하도록 revision 경계를 추가했고, 실제 C++·통신·장면 전환·GameInstance 회귀가 통과했다.
 - 프레임 그룹의 parallel/sequential 횟수를 기존 runtime.state·Player 검사·headless 결과에 별도 기록한다. 마지막 C++ 호출의nativeTiming이 덮어써지는 것과 분리했다. 앞 APK에는 이 최종 진단 필드/늦은 응답 보호가 모두 들어 있다고 주장하지 않는다. 새 설치본·iOS 원격 검사는 고정한 최종 소스로 만든다.
 - 최신 원문 검사 checker-UFabo8은9개 통과/code0,537파일·검사기976c8f…·격리게임·격리엔진SHA를 보존했다. 실제 Editor 검사에서 남아 있던 AURIC_MUTE=1도 제거해 직접 오디오 경로를 검사한다. 자연8시간 zjUtGE의 코드·시계·게이트는 변경하지 않고 계속 기록한다.
+
+
+### 2026-10-06 — 448a9b5 사용자 설치본 갱신
+
+- 공개main에 한국어 커밋448a9b5를 푸시하고, 최종 Windows 배포본을 C:/Users/kirby/HBEngine/Versions/42bcd763ffa422e3/HBEngine.exe로 옮겼다. 바탕화면 HBEngine 사용자용.lnk는 새 버전을 가리킨다.1,723파일의 설치 SHA와 주요 실행/API11파일을 현재 소스와 대조했다. 이전fddd827f41717173과09e4470b1e254ac3·사용자 프로필·열린 앱을 보존했다. 새 실행부터 적용된다. 증거native/build/auric-user-install-448a9b5.json.
+- editor-window-Zg11qp는 AURIC_MUTE 없는 실제편집기에서 통과했다. Source 단일 원문·93생성·20소리·데이터/Undo·문서 외 실행·누름 유지 등의 공용 실행을 확인했다. 최종늦은응답 보호와횟수진단은448a9b5의 별도 C++회귀/새iOS원격 검사에 연결했다.
+- 설치 완료는 Android 성능·실물기기·자연8시간 완료를 대신하지 않는다. Android의최종448a9b5 APK와같은소스iOS원격 검사를 진행하고, 자연8시간zjUtGE는 기존불변패키지로 계속측정한다. MD와누적엔진 작업의미검증 항목은성공으로표시하지않는다.
+
+
+### 2026-10-06 — 최종 Android 실행·성능 통과
+
+- 설치본과 같은448a9b5의 새 APK android-window-xDeGsX가 전체 검사를 통과했다. 실제4코어0–3·x86_64·호스트RTX4070SUPER 에뮬레이터,1,000발/적30개600프레임 평균43.26351fps·작업p9530.1ms·렌더p951.0ms다.30fps/작업p95≤33.333ms 기준을 유지했다. 프레임 그룹parallel888/sequential0을 기록하여 최종 공용 경로가 실제 앱에서 사용됨을 확인했다.
+- 생성93·Construction93·다음프레임HP99.25, 소리20개,1280×720/1920×1080/2340×1080 HUD, 원래806×456/DPR1.5 복원, 터치,HOME정지/복귀,Back2회 일시정지/재개를 함께 통과했다. 앞의 모든 실패는 유지했다. 이 결과는중급실물기기·발열10분·스피커청취 증거가아니다. P2-16의실기기 기준은미체크를유지한다.
+- 별도 메시지 스레드는제외된최종기본메시지 경로다. 독립모듈 프레임대기·외부시계증명·늦은응답보호의최종코드를검사했고, Windows 설치본42bcd763ffa422e3의런타임과일치한다. 같은최종소스iOS37427806194와실제PC최종검사가계속된다.
+
+### 최종 설치 소스의 PC·현재 게임·iOS 결과
+
+- `448a9b5`의 실제 Game.exe `features-window-Av9j2H`가 전체 기능을 통과했다. 1,000발·적30개·600프레임 평균59.500788fps, 작업p95 10.5ms, 렌더 제출p95 .6ms이며 기존59fps/작업p95≤16.667ms 기준을 유지했다. 생성93/Construction93/HP99.25,20개오디오,3개HUD해상도,6장면,장면전환W누름2.125m,F12/60초리셋을 함께 확인했다. 준비된최초생성 .20ms/반복p95 .20ms/풀획득p95 .10ms는 연산 내부 CPU 구간이다.
+- `checker-qfTJah`는 최신게임537파일 사본과 원문 `check_demo.mjs`9개를 통과했다(code0). 원본게임·검사기·격리게임·엔진사본SHA 보존을 확인했다. 검사기SHA976c8f…이며 키해제 전제의호환옵션만사용했고 AURIC_MUTE는없다.
+- 같은소스 [iOS37427806194](https://github.com/kirby47navercom-ai/HBEngine/actions/runs/37427806194)도 성공했다. 아티팩트11396326248을 `native/build/ios-proof-37427806194`로 내려받아 결과본문을 확인했다. 공용C++검사,두Xcode대상컴파일,iPhoneSE3시뮬레이터 설치·실행,두C++모듈,물리질의,미디어범위요청,반복오디오신호,배경정지·음소거/복귀월드·재생이통과했다. `audioHeard/physicalDeviceVerified/signingVerified`는false다. 실제Auric iOS배포본·TestFlight·실물청취 증거로 확대하지않는다.
+- 설치본42bcd763ffa422e3는 위최종런타임을포함한다. 이후검사기록만추가하는문서커밋때문에 사용자설치본을다시변경하지않는다.
+- 자연8시간zjUtGE의약52분 표본에서JS살아있는heap은약28~52MiB로순환하지만전체private메모리는워밍업후1146→1375MiB로증가했다.8시간완료/메모리안정통과로표시하지않는다. 불변검사는유지하고 별도 `memory-controlled-GG4TUO`에서활성실행/Runtime진단활성여부/일시정지를비교한다. 강제GC없고 사용자프로필·창은사용하지않는다.
+
+### 노치 안전 영역
+
+`ui-render-window-J43YYZ`는 기존6화면/DPI/SVG1.5배/한글/클릭·BP·터치 검사에 실제 CSS 환경 변수의노치3조건을추가해통과했다.2340×1080에서좌우84/72·하단24px,상단32·하단24px,0으로복원했으며safe-area컨테이너·HP·공격버튼좌표가예상값과 .1px이내로일치했다. 원본위젯불변·정상종료0·서버종료도확인한뒤acceptance를저장한다. 사용법은 `node tools/check-ui-render-window.mjs --cutouts`다. [공식CDP프로토콜](https://github.com/ChromeDevTools/devtools-protocol/blob/master/json/browser_protocol.json)의experimental `Emulation.setSafeAreaInsetsOverride`를사용했고실물노치를검증한것은아니다.
+
+Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디오재개및landscape출력계약에함께근거하여 MD의해당기능기준을체크했다. 실제휴대폰·서명/청취·8시간·실물중급탄막성능은계속미검증이다.

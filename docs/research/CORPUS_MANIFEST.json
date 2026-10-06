@@ -700,6 +700,89 @@
           "record": "docs/research/ANDROID_MESSAGE_CHANNEL_RESEARCH_022.md"
         }
       ]
+    },
+    {
+      "id": "unity-csharp-reference",
+      "engine": "Unity",
+      "version": "6000.0-0c7f0bfc4f9b21d3d84fffc9ee9001ad82f0fbc4",
+      "locale": "en",
+      "roots": [
+        "https://github.com/Unity-Technologies/UnityCsReference/blob/0c7f0bfc4f9b21d3d84fffc9ee9001ad82f0fbc4/Runtime/Export/PlayerLoop/PlayerLoop.bindings.cs"
+      ],
+      "hosts": [
+        "github.com",
+        "raw.githubusercontent.com"
+      ],
+      "pathPrefix": "/Unity-Technologies/UnityCsReference/",
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "Pinned official managed reference source supplements API contracts; empty phase declarations do not establish native execution behavior.",
+      "openIssues": [
+        "Reconcile all linked managed/native attributes, phase APIs, version inventory and engine implementation; one whole-file reading does not close repository or API coverage."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://github.com/Unity-Technologies/UnityCsReference/blob/0c7f0bfc4f9b21d3d84fffc9ee9001ad82f0fbc4/Runtime/Export/PlayerLoop/PlayerLoop.bindings.cs",
+          "record": "docs/research/PLAYER_LOOP_SOURCE_026.md"
+        }
+      ]
+    },
+    {
+      "id": "chromium-devtools-protocol",
+      "engine": "Chromium",
+      "version": "tip-of-tree-d209a9a38897d2935a078a0bf00ca821811d21ed",
+      "locale": "en",
+      "roots": [
+        "https://github.com/ChromeDevTools/devtools-protocol/blob/d209a9a38897d2935a078a0bf00ca821811d21ed/json/browser_protocol.json"
+      ],
+      "hosts": [
+        "github.com",
+        "raw.githubusercontent.com"
+      ],
+      "pathPrefix": "/ChromeDevTools/devtools-protocol/",
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "Safe-area override and native memory sampling used by isolated acceptance diagnostics. Protocol capability checks do not prove physical-device output.",
+      "openIssues": [
+        "Pin protocol source and reconcile experimental Emulation/Memory types, browser version behavior, linked protocol definitions and individual API units."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://github.com/ChromeDevTools/devtools-protocol/blob/d209a9a38897d2935a078a0bf00ca821811d21ed/json/browser_protocol.json",
+          "record": "docs/research/DIAGNOSTIC_PROTOCOL_027.md"
+        }
+      ]
+    },
+    {
+      "id": "chromium-webaudio-implementation",
+      "engine": "Chromium",
+      "version": "0aee4434a4db-historical",
+      "locale": "en",
+      "roots": [
+        "https://chromium.googlesource.com/chromium/src/+/0aee4434a4db/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc"
+      ],
+      "hosts": [
+        "chromium.googlesource.com"
+      ],
+      "pathPrefix": "/chromium/src/",
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "knownInventory": {
+        "manualSeedEntries": 1
+      },
+      "scopeNote": "Historical allocation/timeline investigation only; not asserted to match installed WebView2.",
+      "openIssues": [
+        "Resolve installed browser version and corresponding AudioParam/MediaElementAudioSource lifetime source; sampled allocation addresses are not symbolized root-cause proof."
+      ]
     }
   ],
   "supplementalBaselines": [
@@ -738,6 +821,7 @@
     "Complete the same-version/new-version and service/plugin source expansion; presently registered roots and supplemental seeds do not prove an exhaustive inventory.",
     "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion.",
     "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope.",
-    "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units."
+    "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units.",
+    "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification."
   ]
 }
