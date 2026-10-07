@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-08",
+  "sources": [
+    {
+      "id": "enum-runtime",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListByEnum",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListByEnum",
+      "status": 200,
+      "bytes": 65469,
+      "sha256": "161fc21e53b9c9952ee07e8b24552069234b05b97cf197a01fd525d2e632364c",
+      "scope": "UE5.8 own62lines declaration, ActiveEnumValue/EnumToPoseIndex, getters/setter/override summaries read; full engine C++ method bodies and linked pages not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "enum-editor",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Editor/AnimGraph/UAnimGraphNode_BlendListByEnum",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Editor/AnimGraph/UAnimGraphNode_BlendListByEnum",
+      "status": 200,
+      "bytes": 88214,
+      "sha256": "9f842847d27e5c6ebdb2446805a09a909ff624089d5efe586b124ad454589049",
+      "scope": "UE5.8 own125lines declaration, enum-dependent interface, enum reload/pin expose/remove/details/compile validation/menu function summaries read; full implementations and linked pages not read",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "discovery": {
+    "unreal-cpp": 2
+  },
+  "wholeCorpusGatePromoted": false,
+  "checks": {
+    "core": "native/build/enum-core-069.log",
+    "existing": [
+      "check-animation-states.mjs",
+      "check-animation-sync.mjs",
+      "check-animation-blend-space.mjs",
+      "check-animation-montage.mjs",
+      "check-assets.mjs",
+      "check-gameplay-workflow.mjs",
+      "check.mjs",
+      "generate-api.mjs --check"
+    ],
+    "editor": "native/build/animation-enum-editor-U6Kc5a/acceptance.json",
+    "releasePlayer": "native/build/animation-enum-player-5p7bBX/acceptance.json",
+    "priorEditor": [
+      "native/build/animation-enum-editor-6fT613/acceptance.json",
+      "native/build/animation-enum-editor-WayRmV/acceptance.json"
+    ],
+    "priorPlayer": "native/build/animation-enum-player-f6QkWR/acceptance.json"
+  },
+  "sourceSHA256": {
+    "native/include/HBEngine/Game.hpp": "547fef6fc149040ff99a1569b7301b6ab59a8b9a68649a26a0b826034e1177ea",
+    "native/include/HBEngine/Bridge.hpp": "b7451a6cfe15c49ba9f97c1aa3caf54cba294214466ad99c8dd4711969c7e0af",
+    "prototype/animation-graph-assets.js": "2835529fffa781e2183fd556959bf9784fceacf7a3e1573d44e7728a232e7651",
+    "prototype/animation-graph-runtime.js": "7a7ce0a074e058d4e042d95aa40402ea0b3f8bd1b76ae529865072248de550a9",
+    "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+    "prototype/animation-graph-editor.js": "a08eeece99d5a3ab8f714e023f69fb7ed5cc0486fcb7ab4be68f3cef0a6d3eac",
+    "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+    "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+    "prototype/engine-services.js": "7f4d0c00adba8ebbcea96b0cdf2fc535dd954eb5d62f280cd993c5eda8fcb7f7",
+    "prototype/gameplay-preview.js": "b2be142f4c753e769933ad1b9de5646bd554d0b89f03057be57c22316a64d723",
+    "tools/editor-automation.mjs": "ca294d3680e2aba0b1cb75455b229835050f34ca083a3a68c619d274d9787ffb"
+  },
+  "nextRootMotionReading": {
+    "manifest": "native/build/root-motion-research-070/manifest.json",
+    "discovery": {
+      "unreal-manual": 1,
+      "unity-manual": 0
+    },
+    "implementationComplete": false
+  },
+  "installChanged": false,
+  "wholePerformanceGoal": false,
+  "longMemoryGoal": false,
+  "generalBlueprintEnumReflectionComplete": false
+}

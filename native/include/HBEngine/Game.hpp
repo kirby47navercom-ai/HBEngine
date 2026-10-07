@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <type_traits>
+#include <limits>
 #include <vector>
 #include <nlohmann/json.hpp>
 
@@ -373,6 +375,14 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetBool", KoreanName="애니메이션 불리언 파라미터 조회", Category="애니메이션 그래프") static bool GetBool(Actor* target,const std::string& key);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetInt", KoreanName="애니메이션 정수 파라미터 지정", Category="애니메이션 그래프") static void SetInteger(Actor* target,const std::string& key,int value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetInt", KoreanName="애니메이션 정수 파라미터 조회", Category="애니메이션 그래프") static int GetInteger(Actor* target,const std::string& key);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetEnum", KoreanName="애니메이션 열거형 파라미터 지정", Category="애니메이션 그래프") static void SetEnum(Actor* target,const std::string& key,int value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetEnum", KoreanName="애니메이션 열거형 파라미터 조회", Category="애니메이션 그래프") static int GetEnum(Actor* target,const std::string& key);
+    template<class E> static void SetEnum(Actor* target,const std::string& key,E value){
+        static_assert(std::is_enum_v<E>,"Use an enum or integer value");const auto raw=static_cast<std::underlying_type_t<E>>(value);
+        if constexpr(std::is_signed_v<decltype(raw)>){if(raw < -100000 || raw > 100000)throw std::out_of_range("animation enum value");}else if(raw > 100000)throw std::out_of_range("animation enum value");
+        SetEnum(target,key,static_cast<int>(raw));
+    }
+    template<class E> static E GetEnumValue(Actor* target,const std::string& key){static_assert(std::is_enum_v<E>);using U=std::underlying_type_t<E>;const auto value=GetEnum(target,key);if(value < static_cast<long double>(std::numeric_limits<U>::lowest()) || value > static_cast<long double>(std::numeric_limits<U>::max()))throw std::out_of_range("animation enum type range");return static_cast<E>(value);}
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphSetTrigger", KoreanName="애니메이션 트리거 지정", Category="애니메이션 그래프") static void SetTrigger(Actor* target,const std::string& key);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphResetTrigger", KoreanName="애니메이션 트리거 해제", Category="애니메이션 그래프") static void ResetTrigger(Actor* target,const std::string& key);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphCrossFade", KoreanName="포즈 상태 전환", Category="애니메이션 상태") static void CrossFade(Actor* target,const std::string& machine,const std::string& state,float duration,float offset);

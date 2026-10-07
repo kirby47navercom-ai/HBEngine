@@ -1,3 +1,7 @@
+# 069 열거형 선택
+
+15번째 selectEnum, named sparse domain/default pose/독립 혼합·미리보기/상태 조건/BP·C++·AI 연결. 실제 Editor와 releasePlayer 통과. [구현·근거·한계](ANIMATION_ENUM_SELECTION_069.md).
+
 2026-10-08 후속: [정수 선택 혼합](ANIMATION_INTEGER_SELECTION_068.md)에14번째 포즈 노드·포즈별 시간/곡선·세 자식 갱신·독립 시계·중단·공용 BP/C++/AI·우클릭 입력 제작/실제 Editor/Player를 연결했다. 과거 수량과 미구현 기록은 당시 이력이며 Enum/Root Motion/리타게팅 등의 후속을 함께 유지한다.
 
 # 애니메이션 그래프·포즈 혼합

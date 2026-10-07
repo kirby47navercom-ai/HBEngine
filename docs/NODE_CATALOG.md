@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **689개**, 실제 공통 C++ API **607개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **694개**, 실제 공통 C++ API **609개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -10,7 +10,7 @@
 
 | 분야 | 노드 | 공통 C++ |
 | --- | ---: | ---: |
-| 이벤트 | 13 | 0 |
+| 이벤트 | 16 | 0 |
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 16 | 0 |
 | 디버그 | 1 | 0 |
@@ -53,7 +53,7 @@
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
-| 애니메이션 그래프 | 11 | 11 |
+| 애니메이션 그래프 | 13 | 13 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -83,11 +83,14 @@
 | tick | Event Tick / 매 프레임 | — | then: exec, delta: float | — | VM 이벤트 진입점 |
 | fixedTick | Fixed Update / 고정 물리 업데이트 | — | then: exec, delta: float | — | VM 이벤트 진입점 |
 | beginOverlap | Begin Overlap / 겹침 시작 | — | then: exec, other: object | — | VM 이벤트 진입점 |
+| overlapStay | Overlap Stay / 겹침 유지 | — | then: exec, other: object, delta: float | — | VM 이벤트 진입점 |
 | endOverlap | End Overlap / 겹침 종료 | — | then: exec, other: object | — | VM 이벤트 진입점 |
 | input | Input Event / 키·마우스 이벤트 | — | then: exec, released: exec | — | VM 이벤트 진입점 |
 | customEvent | Custom Event / 사용자 이벤트 | — | then: exec | — | VM 이벤트 진입점 |
 | endPlay | End Play / 게임 종료 | — | then: exec, reason: string | — | VM 이벤트 진입점 |
 | hitEvent | Event Hit / 충돌 이벤트 | — | then: exec, other: object, hit: hit | — | AABB 접촉; 강체 solver 없음 |
+| hitStay | Collision Stay / 충돌 유지 | — | then: exec, other: object, hit: hit, delta: float | — | VM 이벤트 진입점 |
+| endHit | Collision Exit / 충돌 종료 | — | then: exec, other: object, hit: hit | — | VM 이벤트 진입점 |
 | inputAction | Input Action / 입력 액션 이벤트 | — | started: exec, triggered: exec, completed: exec, ongoing: exec, canceled: exec, value: bool, elapsed: float | — | VM 이벤트 진입점 |
 | inputAxis | Input Axis / 축 입력 | — | then: exec, value: float | — | VM 이벤트 진입점 |
 | anyDamage | Any Damage / 피해 이벤트 | — | then: exec, damage: float, instigator: object | — | VM 이벤트 진입점 |
@@ -913,6 +916,8 @@
 | animGraphGetBool | Get Bool / 애니메이션 불리언 파라미터 조회 | target: object, key: string | return: bool | hb::AnimationGraph::GetBool | 공통 C++ + VM |
 | animGraphSetInt | Set Integer / 애니메이션 정수 파라미터 지정 | exec: exec, target: object, key: string, value: int | then: exec | hb::AnimationGraph::SetInteger | 공통 C++ + VM |
 | animGraphGetInt | Get Integer / 애니메이션 정수 파라미터 조회 | target: object, key: string | return: int | hb::AnimationGraph::GetInteger | 공통 C++ + VM |
+| animGraphSetEnum | Set Enum / 애니메이션 열거형 파라미터 지정 | exec: exec, target: object, key: string, value: int | then: exec | hb::AnimationGraph::SetEnum | 공통 C++ + VM |
+| animGraphGetEnum | Get Enum / 애니메이션 열거형 파라미터 조회 | target: object, key: string | return: int | hb::AnimationGraph::GetEnum | 공통 C++ + VM |
 | animGraphSetTrigger | Set Trigger / 애니메이션 트리거 지정 | exec: exec, target: object, key: string | then: exec | hb::AnimationGraph::SetTrigger | 공통 C++ + VM |
 | animGraphResetTrigger | Reset Trigger / 애니메이션 트리거 해제 | exec: exec, target: object, key: string | then: exec | hb::AnimationGraph::ResetTrigger | 공통 C++ + VM |
 

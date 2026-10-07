@@ -67,3 +67,5 @@
 
 
 - 068:14번째 포즈 노드 정수 선택·포즈별 시간/곡선·세 자식 갱신·독립 시계/중단·우클릭 입력/Int step/사람·AI schema·기존 BP/C++ 연동. 코어 및 실제 Editor2v0nuS/releasePlayerGW6cSH 검증 통과, 원본/종료/정리 확인. [상세](ANIMATION_INTEGER_SELECTION_068.md). 06737add40 푸시 완료, 전체 선행 순서·설치 대기/장시간·모바일 목표 유지.
+
+- 069: Enum domain·기본/이름 핀·sparse 값·상태 전이·C++ enum Set/Get·BP wire·AI 계약을 공용 포즈 실행기에 연결. 실제 EditorU6Kc5a/releasePlayer5p7bBX·기존 검사/원본·정리 통과. [상세](ANIMATION_ENUM_SELECTION_069.md). 068a65b17c 푸시 완료, 선행 누적 순서·설치 대기. 다음 rootMotion 공식 본문 대조/실행 순서 확인, 구현 완료 미표시.

@@ -1,4 +1,4 @@
-import {makeAnimationMachine,validAnimationMachine,animationStateLimits,animationBlendCurves,addAnimationState} from './animation-state-assets.js';
+import {makeAnimationMachine,validAnimationMachine,animationStateLimits,animationBlendCurves,addAnimationState,validAnimationParameter} from './animation-state-assets.js';
 import {defaultAnimationSync,validAnimationSync} from './animation-sync.js';
 import {defaultAnimationAxis,validAnimationBlendSpace,animationBlendNotifyModes} from './animation-blend-space.js';
 const numeric=v=>Number.isFinite(v)&&Math.abs(v)<=100000;
@@ -16,21 +16,22 @@ export const animationGraphNodes={
   blend2d:{label:'Blend Space · 2차원 혼합',inputs:[],group:'혼합'},
   direct:{label:'Direct Blend · 직접 혼합',inputs:[],group:'혼합'},
   select:{label:'Blend by Bool · 조건 혼합',inputs:['false','true'],group:'혼합'},
+  selectEnum:{label:'Blend by Enum · 열거형 선택 혼합',inputs:[],group:'혼합'},
   selectInt:{label:'Blend by Integer · 정수 선택 혼합',inputs:[],group:'혼합'},
   layer:{label:'Layered Blend · 뼈별 혼합',inputs:['base','overlay'],group:'레이어'},
   additive:{label:'Apply Additive · 가산 포즈',inputs:['base','additive'],group:'레이어'}
 };
-export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','blend2d','direct','selectInt'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
+export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','blend2d','direct','selectInt','selectEnum'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
 export function makeAnimationNode(type,x=100,y=100){
   if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
-  const properties={clip:{clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
+  const properties={clip:{clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectEnum:{parameter:'Mode',curve:'linear',childUpdate:'active',samples:[{input:'pose0',value:null,duration:.2},{input:'pose1',value:1,duration:.2}]},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
   return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:type==='stateMachine'?makeAnimationMachine():structuredClone(properties)};
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
 export function addAnimationStatePose(data,machine,settings={}){const state=addAnimationState(machine,settings),rest=makeAnimationNode('rest',100,180);rest.scope=machine.id+'/'+state.id;data.nodes.push(rest);machine.inputs[state.input]=rest.id;return state;}
 export function validAnimationGraph(data){
   try{
-    if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!identifier(p?.name)||!['float','int','bool','trigger'].includes(p.type)||(['float','int'].includes(p.type)?!numeric(p.value)||p.type==='int'&&!Number.isInteger(p.value):typeof p.value!=='boolean'))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;
+    if(data?.version!==1||!text(data.name,80)||!data.name||!text(data.model)||!Array.isArray(data.parameters)||data.parameters.length>64||new Set(data.parameters.map(p=>p?.name)).size!==data.parameters.length||data.parameters.some(p=>!validAnimationParameter(p))||!Array.isArray(data.nodes)||!data.nodes.length||data.nodes.length>256)return false;
     const machines=data.nodes.filter(n=>n.type==='stateMachine');if(machines.length>animationStateLimits.machines||machines.reduce((sum,n)=>sum+(n.properties?.states?.length||0),0)>animationStateLimits.states)return false;
     const nodes=new Map(data.nodes.map(n=>[n?.id,n])),params=new Map(data.parameters.map(p=>[p.name,p.type]));if(nodes.size!==data.nodes.length||nodes.get(data.output)?.type!=='output'||data.nodes.filter(n=>n.type==='output').length!==1||data.nodes.filter(n=>n.type==='clip').length>64)return false;
     const scopes=new Set(machines.flatMap(n=>(n.properties?.states||[]).map(s=>n.id+'/'+s.id)));if(data.nodes.some(n=>n.scope!==undefined&&!scopes.has(n.scope)))return false;
@@ -44,9 +45,10 @@ export function validAnimationGraph(data){
       if(node.type==='slot'&&(!text(p.group,80)||!p.group.trim()||!text(p.slot,80)||!p.slot.trim()||typeof p.alwaysUpdateSource!=='boolean'))return false;
       if(['blend','layer','additive'].includes(node.type)&&(!numeric(p.alpha)||p.alpha<0||p.alpha>1||!param(p.parameter,'float')))return false;
       if(node.type==='select'&&(params.get(p.parameter)!=='bool'||!numeric(p.duration)||p.duration<0||p.duration>60))return false;
-      if(['blend1d','blend2d','direct','selectInt'].includes(node.type)){
+      if(['blend1d','blend2d','direct','selectInt','selectEnum'].includes(node.type)){
         if(!Array.isArray(p.samples)||!p.samples.length||p.samples.length>64||new Set(p.samples.map(s=>s?.input)).size!==p.samples.length||p.samples.some(s=>!identifier(s?.input)))return false;
-        if(node.type==='selectInt'&&(params.get(p.parameter)!=='int'||!Object.hasOwn(animationBlendCurves,p.curve)||!['active','reset','all'].includes(p.childUpdate)||p.samples.some(s=>!numeric(s.duration)||s.duration<0||s.duration>60)))return false;
+        if(['selectInt','selectEnum'].includes(node.type)&&(params.get(p.parameter)!==(node.type==='selectInt'?'int':'enum')||!Object.hasOwn(animationBlendCurves,p.curve)||!['active','reset','all'].includes(p.childUpdate)||p.samples.some(s=>!numeric(s.duration)||s.duration<0||s.duration>60)))return false;
+        if(node.type==='selectEnum'){const domain=data.parameters.find(v=>v.name===p.parameter);if(p.samples[0].value!==null||p.samples.slice(1).some(v=>!domain.values.some(e=>e.value===v.value))||new Set(p.samples.map(v=>v.value)).size!==p.samples.length)return false;}
         if(node.type==='blend1d'&&(params.get(p.parameter)!=='float'||new Set(p.samples.map(s=>s.threshold)).size!==p.samples.length||p.samples.some(s=>!numeric(s.threshold))))return false;
         if(['blend1d','blend2d'].includes(node.type)&&!animationBlendNotifyModes.includes(p.notifyMode===undefined?'all':p.notifyMode))return false;
         if(node.type==='blend2d'&&!validAnimationBlendSpace(p,params))return false;

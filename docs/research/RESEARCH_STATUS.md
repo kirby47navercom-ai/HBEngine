@@ -1,3 +1,7 @@
+# 069 / 다음070 읽기
+
+UE5.8 Enum runtime 자체62줄·editor 자체125줄의 선언/필드/함수 요약을 직접 읽고 큐2개 추가. 기존068 guide/ChildMode/Unity SetInteger 읽기 재사용. RootMotion UE 자체111줄/Unity6000.0 본문125–194도 직접 읽고 다음 구현 경로 대조, guide1신규/Unity기존 provenance. 이미지·연결 API·실제 C++ 본체/전체 corpus gate 미승격. [증거와 구현](../ANIMATION_ENUM_SELECTION_069.md).
+
 2026-10-08 후속: [068 정수 선택 혼합](../ANIMATION_INTEGER_SELECTION_068.md). Epic5.8 Int/Base API 자체 선언·필드·함수 요약과 ChildUpdateMode 자체30줄, Unity6000.0 SetInteger 두 선언·인자·설명·전체 예제를 새로 읽고 guide의 Int/Enum 절을 재대조했다. 실제 엔진 본체·상속/링크/미디어와 전체 corpus는 미승격. 기존 계열의 발견 큐에UE API3/guide1을 추가하고 Unity 기존URL에는provenance 추가. 실제 HB 노드·세 갱신 모드/독립 시계·C++/BP/AI·2D/뼈·Editor/Player 동작과 전체 연구 완료를 구분한다.
 
 # 전체 문서·API 연구 상태

@@ -1,3 +1,7 @@
+# 069 애니메이션 Enum 실행
+
+animGraphSetEnum/GetEnum 공용 서비스와 C++ SetEnum/GetEnum/GetEnumValue<E> 연결·실제 실행 통과. BP wire는 Integer, 실행 graph enum domain 검증이며 일반 BP Enum 자료형/자동 C++ Enum 리플렉션 완료로 세지 않는다. [상세](ANIMATION_ENUM_SELECTION_069.md).
+
 2026-10-08 후속: [068 애니메이션 정수 포즈 선택](ANIMATION_INTEGER_SELECTION_068.md)은 기존 BP Integer Set/Get과 C++ SetInteger/GetInteger를 공용 실행으로 연결한다. BP Get 결과가 실제 C++ 인자로 전달되는 Editor/Player를 확인했다. BP 함수 수 증가나 전체 Blueprint/엔진 완료로 계산하지 않는다.
 
 # HBEngine 블루프린트와 C++ 구현 기준
