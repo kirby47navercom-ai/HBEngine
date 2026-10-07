@@ -3,7 +3,7 @@ import {addAnimationStatePose} from './animation-graph-assets.js';
 import {icon} from './icons.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const statePoseOutput='__state_output';
-export function animationPinLabel(node,pin,index){return node.type==='stateMachine'?node.properties.states.find(s=>s.input===pin)?.name:({pose:'포즈',a:'A',b:'B',base:'기준 포즈',overlay:'레이어',additive:'가산 포즈',false:'False',true:'True'}[pin]||'포즈 '+(index+1));}
+export function animationPinLabel(node,pin,index){return node.type==='selectInt'?'포즈 '+index:node.type==='stateMachine'?node.properties.states.find(s=>s.input===pin)?.name:({pose:'포즈',a:'A',b:'B',base:'기준 포즈',overlay:'레이어',additive:'가산 포즈',false:'False',true:'True'}[pin]||'포즈 '+(index+1));}
 export function animationScopeNodes(editor){
   const data=editor.doc.data,map=new Map(data.nodes.map(n=>[n.id,n])),owned=new Set(),main=new Set();const walk=(id,set)=>{if(!id||set.has(id))return;set.add(id);const n=map.get(id);if(n?.type!=='stateMachine')for(const value of Object.values(n?.inputs||{}))walk(value,set);};
   for(const n of data.nodes.filter(n=>n.type==='stateMachine'))for(const source of Object.values(n.inputs))walk(source,owned);walk(data.output,main);

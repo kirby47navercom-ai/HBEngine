@@ -1,3 +1,5 @@
+2026-10-08 후속: [068 애니메이션 정수 포즈 선택](ANIMATION_INTEGER_SELECTION_068.md)은 기존 BP Integer Set/Get과 C++ SetInteger/GetInteger를 공용 실행으로 연결한다. BP Get 결과가 실제 C++ 인자로 전달되는 Editor/Player를 확인했다. BP 함수 수 증가나 전체 Blueprint/엔진 완료로 계산하지 않는다.
+
 # HBEngine 블루프린트와 C++ 구현 기준
 
 2026-10-06: [2D Sprite 광원·볼륨 빛](research/2D_COOKIE_VOLUME_035.md). Light2D 공용 C++/BP7개로 스프라이트·텍스처 cookie 지정/조회/크기, 볼륨 활성/강도/독립 그림자를 연결해요. 사람의 Scene/BP 속성과 AI component schema가 같은 필드를 편집하고 프로젝트 내부 외부 폴더 에셋 참조도 출력에 포함해요. 기존 노드·클래스·핀 구조는 유지해요.

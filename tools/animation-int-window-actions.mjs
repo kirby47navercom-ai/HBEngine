@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+export async function authorAnimationInteger({graphPath,blend,outputNode,dir,call,click,change,evaluate,element,cdp,until}){
+  await click('[data-anim-act="fit"]');await click('[data-anim-drag="'+blend.id+'"]');
+  const get=()=>call('document.get',{path:graphPath}),undo=async()=>{const doc=await get();await call('editor.undo',{path:graphPath,expectedRevision:doc.revision});};
+  const original=(await get()).data;
+  await change('[data-anim-field="nodes.2.properties.samples.1.duration"]','.35');assert.equal((await get()).data.nodes[2].properties.samples[1].duration,.35);await undo();
+  await change('[data-anim-field="nodes.2.properties.childUpdate"]','all');assert.equal((await get()).data.nodes[2].properties.childUpdate,'all');await undo();
+  await change('[data-anim-field="nodes.2.properties.curve"]','easeIn');assert.equal((await get()).data.nodes[2].properties.curve,'easeIn');await undo();
+  await click('[data-anim-select-param="2"]');assert.equal(await element('[data-anim-field="parameters.2.value"]','.step'),'1');await change('[data-anim-field="parameters.2.name"]','Choice');assert.equal((await get()).data.nodes[2].properties.parameter,'Choice');await undo();await click('[data-anim-drag="'+blend.id+'"]');
+  let doc=await get();const patch=[{op:'replace',path:'/nodes/2/properties/samples/1/duration',value:.4}];assert.equal((await call('document.patch',{path:graphPath,expectedRevision:doc.revision,operations:patch,dryRun:true})).valid,true);assert.equal((await get()).revision,doc.revision);
+  await assert.rejects(()=>call('document.patch',{path:graphPath,expectedRevision:doc.revision,operations:[{op:'replace',path:'/nodes/2/properties/samples/1/duration',value:-1}]}),/에셋 규칙/);assert.equal((await get()).revision,doc.revision);
+  const point=selector=>evaluate('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');e.scrollIntoView({block:"nearest"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()');
+  const context=async selector=>{const p=await point(selector);for(const type of ['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...p,button:'right',clickCount:1});};
+  await context('[data-anim-in="'+blend.id+'"][data-pin="pose1"]');await click('.anim-node-menu [data-anim-remove-sample="1"]');doc=await get();assert.equal(doc.data.nodes[2].properties.samples.length,1);assert.equal(doc.data.nodes[2].inputs.pose1,undefined);assert.equal(await element('[data-anim-remove-sample="0"]','.disabled'),true);await undo();
+  await context('[data-anim-drag="'+blend.id+'"]');await click('.anim-node-menu [data-anim-act="sample"]');assert.equal((await get()).data.nodes[2].properties.samples.length,3);await undo();
+  await click('[data-anim-add="selectInt"]');doc=await get();assert.equal(doc.data.nodes.at(-1).type,'selectInt');assert.equal(doc.data.parameters.filter(p=>p.name==='PoseIndex').length,1);await undo();
+  await click('[data-anim-drag="'+outputNode.id+'"]');await click('[data-anim-disconnect="pose"]');const from=await point('[data-anim-out="'+blend.id+'"]'),to=await point('[data-anim-in="'+outputNode.id+'"][data-pin="pose"]');await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...from,button:'left',clickCount:1});await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',...to,button:'left',buttons:1});await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',...to,button:'left',clickCount:1});doc=await get();assert.equal(doc.data.nodes[3].inputs.pose,blend.id);assert.deepEqual(doc.data,original);
+  await call('document.save',{path:graphPath,expectedRevision:doc.revision});await click('[data-anim-drag="'+blend.id+'"]');await click('[data-anim-act="preview"]');assert.equal(await element('[data-anim-preview-param="PoseIndex"]','.step'),'1');await change('[data-anim-preview-param="PoseIndex"]','1');await click('[data-anim-act="play-preview"]');await until(()=>element('[data-anim-selection-runtime]','.textContent.includes("포즈 1")'),'integer selection preview readout');
+  const state=await call('runtime.state');assert.deepEqual(state.objects.find(o=>o.id==='Root').position,[0,0,0]);await evaluate("document.querySelector('[data-anim-selection-runtime]').scrollIntoView({block:'nearest'})");await fs.writeFile(path.join(dir,'integer-authoring-preview.png'),Buffer.from((await cdp('Page.captureScreenshot',{format:'png'})).data,'base64'));await click('[data-anim-act="preview"]');
+}

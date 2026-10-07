@@ -1,6 +1,17 @@
 const clamp=v=>Math.max(0,Math.min(1,v));
+import {animationCurve} from './animation-state-runtime.js';
 import {updateAnimationBlendContext} from './animation-blend-space.js';
 export function animationBlendSamples(owner,node){const samples=owner.sortedSamples.get(node.id),value=owner.parameters.get(node.properties.parameter);let hi=samples.findIndex(s=>s.threshold>=value);if(hi<0)hi=samples.length-1;const lo=Math.max(0,hi-1),weight=hi===lo||value<=samples[0].threshold?0:clamp((value-samples[lo].threshold)/(samples[hi].threshold-samples[lo].threshold));return {low:samples[lo].input,high:samples[hi].input,weight};}
+export function animationIntIndex(owner,node){const index=owner.parameters.get(node.properties.parameter);return index>=0&&index<node.properties.samples.length?index:0;}
+function updateIntSelection(owner,node,context,step){
+  const p=node.properties,index=animationIntIndex(owner,node);let state=context.selections.get(node.id);
+  if(!state){state={weights:new Float64Array(p.samples.length),from:new Float64Array(p.samples.length),target:index,time:0};state.weights[index]=state.from[index]=1;context.selections.set(node.id,state);}
+  if(state.frame!==owner.frame){
+    if(index!==state.target){if(p.childUpdate==='reset'&&state.weights[index]===0)owner.resetContext(context.children.get(node.id).get(p.samples[index].input));state.from.set(state.weights);state.target=index;state.time=0;}
+    state.time+=step;const duration=p.samples[index].duration,alpha=animationCurve(duration?state.time/duration:1,p.curve);
+    for(let i=0;i<state.weights.length;i++)state.weights[i]=state.from[i]*(1-alpha)+(i===index?alpha:0);state.frame=owner.frame;
+  }return state;
+}
 export function planAnimationPose(owner,delta){
   const memo=new Map(),policy=owner.hasNotifyPolicy;
   const visit=(id,context=owner.mainContext,step=delta,group='')=>{
@@ -21,7 +32,8 @@ export function planAnimationPose(owner,delta){
     else if(node.type==='select'){
       const desired=owner.parameters.get(p.parameter)?1:0;let s=context.selections.get(id);if(!s){s={weight:desired,from:desired,target:desired,time:0};context.selections.set(id,s);}if(s.frame!==owner.frame){if(desired!==s.target){s.from=s.weight;s.target=desired;s.time=0;}s.time+=step;s.weight=p.duration?s.from+(s.target-s.from)*clamp(s.time/p.duration):desired;s.frame=owner.frame;}
       if(s.weight<1)merge('false',1-s.weight);if(s.weight>0)merge('true',s.weight);
-    }else if(node.type==='blend1d'){const s=animationBlendSamples(owner,node),mode=p.notifyMode||'all',chosen=s.weight>.5?s.high:s.low,allowed=input=>mode==='all'||mode==='highest'&&input===chosen;if(s.weight<1)merge(s.low,1-s.weight,context,step,group,allowed(s.low));if(s.weight>0)merge(s.high,s.weight,context,step,group,allowed(s.high));}
+    }else if(node.type==='selectInt'){const state=updateIntSelection(owner,node,context,step),children=context.children.get(id);p.samples.forEach((s,i)=>{if(state.weights[i]||p.childUpdate==='all')merge(s.input,state.weights[i],children.get(s.input));});}
+    else if(node.type==='blend1d'){const s=animationBlendSamples(owner,node),mode=p.notifyMode||'all',chosen=s.weight>.5?s.high:s.low,allowed=input=>mode==='all'||mode==='highest'&&input===chosen;if(s.weight<1)merge(s.low,1-s.weight,context,step,group,allowed(s.low));if(s.weight>0)merge(s.high,s.weight,context,step,group,allowed(s.high));}
     else if(node.type==='blend2d'){const state=updateAnimationBlendContext(context.blendSpaces.get(id),owner.parameters,step,owner.frame),mode=p.notifyMode||'all';let chosen=0;if(mode==='highest')for(let i=1;i<state.weights.length;i++)if(state.weights[i]>state.weights[chosen]+1e-12)chosen=i;state.notifyInput=mode==='highest'?p.samples[chosen].input:'';p.samples.forEach((s,i)=>{if(state.weights[i])merge(s.input,state.weights[i],context,step,group,mode==='all'||mode==='highest'&&i===chosen);});}
     else if(node.type==='direct'){const values=p.samples.map(s=>clamp(s.parameter?owner.parameters.get(s.parameter):s.weight)),sum=values.reduce((a,b)=>a+b,0);p.samples.forEach((s,i)=>{if(values[i])merge(s.input,values[i]/(p.normalize&&sum?sum:1));});}
     else if(node.type==='additive'){merge('base');merge('additive',owner.alpha(p));}

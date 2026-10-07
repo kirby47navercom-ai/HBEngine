@@ -64,3 +64,6 @@
 
 
 - 067: VM별 같은 스폰 카탈로그를 검증 후 불변 snapshot으로 공유, 실제 수정본 분리/호출자 격리/worker 재시작·다중 모듈 C++ 생성 검증 통과. WebGPU RzO5ok 원본608 보존/오류0·종료0, 맵 기록7개 유지·모듈당 실제 카탈로그1개. 이번 단일 PC 대기119.98/전투119.80fps·p95 6.4/8.2ms 통과이나 전체 RAM1085MiB·기존 장시간/모바일 목표 미승격. [상세](research/SPAWN_CATALOG_LIFETIME_067.md). 066 ffe3031 푸시 완료, 설치 대기.
+
+
+- 068:14번째 포즈 노드 정수 선택·포즈별 시간/곡선·세 자식 갱신·독립 시계/중단·우클릭 입력/Int step/사람·AI schema·기존 BP/C++ 연동. 코어 및 실제 Editor2v0nuS/releasePlayerGW6cSH 검증 통과, 원본/종료/정리 확인. [상세](ANIMATION_INTEGER_SELECTION_068.md). 06737add40 푸시 완료, 전체 선행 순서·설치 대기/장시간·모바일 목표 유지.

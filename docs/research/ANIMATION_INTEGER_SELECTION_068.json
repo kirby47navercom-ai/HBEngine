@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-08",
+  "sources": [
+    {
+      "id": "blend-guide",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-blend-nodes-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-blend-nodes-in-unreal-engine",
+      "status": 200,
+      "bytes": 132580,
+      "sha256": "474043ebf5edd5612b4974bd878f872dceeba5551d1b7efbfaf07cf1d251155e",
+      "scope": "UE5.8 own Int section lines68-73 reread, Enum74-79 and other guide sections retained as pending implementations; images and linked pages not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "blend-int",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListByInt",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListByInt",
+      "status": 200,
+      "bytes": 62701,
+      "sha256": "b350d382cbd07270b124e038234cab9341ba2dcdd81bc5c838419ba8ce490a7f",
+      "scope": "UE5.8 own API declaration/protected field/override summary63lines read; actual engine method bodies and inherited linked API not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "blend-base",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListBase",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_BlendListBase",
+      "status": 200,
+      "bytes": 93605,
+      "sha256": "3dc6b075540a81e6a1780ac0de9e86009c0918808ba973baa79f2f939fd975bd",
+      "scope": "UE5.8 own API142lines declaration/fields/function summaries/deprecation read; actual engine method bodies/member linked API not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "child-mode",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/EBlendListChildUpdateMode",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/EBlendListChildUpdateMode",
+      "status": 200,
+      "bytes": 53661,
+      "sha256": "953ff926df8632f4b513858d512505fac0cc4879e932408d029f76634cd308ae",
+      "scope": "UE5.8 own enum30lines declaration/three values and descriptions read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "set-integer",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Animator.SetInteger.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Animator.SetInteger.html",
+      "status": 200,
+      "bytes": 21583,
+      "sha256": "7e13e01fcbab0561208299d253a2d77e73c6c1629b39c9f7c04361343303a3ae",
+      "scope": "Unity6000.0 own declaration234-241,parameters246-266,description270-274 and full setup/code example278-307 read; linked APIs not read",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "newDiscovery": {
+    "unreal-cpp": 3,
+    "unreal-manual": 1,
+    "unity-scriptreference": 0
+  },
+  "wholeCorpusGatePromoted": false,
+  "checks": {
+    "core": "native/build/int-blend-core-complete-068.log",
+    "existingCore": [
+      "check-animation-states.mjs",
+      "check-animation-sync.mjs",
+      "check-animation-blend-space.mjs",
+      "check-animation-montage.mjs"
+    ],
+    "editor": "native/build/animation-integer-editor-2v0nuS/acceptance.json",
+    "priorEditor": "native/build/animation-integer-editor-8bDZSZ/acceptance.json",
+    "releasePlayer": "native/build/animation-integer-player-GW6cSH/acceptance.json"
+  },
+  "failedFixtures": [
+    "native/build/int-blend-core-068.log",
+    "native/build/int-blend-core-fixed-068.log"
+  ],
+  "sourceSHA256": {
+    "prototype/animation-graph-assets.js": "5b00817fdb391b2aecee37269a8345f3d53df5d5d5783950ae429307ace66dc7",
+    "prototype/animation-graph-runtime.js": "3e2109733ad98478ed51d1d003423e0214c6de697d713fc1cd57c62446e92569",
+    "prototype/animation-pose-plan.js": "7d5d4fbd527751aed4670da3c31ba92c6f7dde8c932dd15ad4d8dca9fef5039c",
+    "prototype/animation-graph-editor.js": "0e9a2cec2cc55d7728558fc510b3c28819afcdfe367d7f70327d0c1159be6a71",
+    "prototype/animation-state-editor.js": "b351dd9ccf36f2141294bfb027c4216c4eff38006f5619eefa28b66bb5882c70",
+    "tools/editor-automation.mjs": "ade2457113051e05e00ad21df4ed10dbd83abe1b8879cc76d9b314e8543c9680"
+  },
+  "installChanged": false,
+  "wholePerformanceGoal": false,
+  "longMemoryGoal": false,
+  "enumAndInertializationStillPending": true
+}

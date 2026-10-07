@@ -1,3 +1,5 @@
+2026-10-08 후속: [068 정수 선택 혼합](../ANIMATION_INTEGER_SELECTION_068.md). Epic5.8 Int/Base API 자체 선언·필드·함수 요약과 ChildUpdateMode 자체30줄, Unity6000.0 SetInteger 두 선언·인자·설명·전체 예제를 새로 읽고 guide의 Int/Enum 절을 재대조했다. 실제 엔진 본체·상속/링크/미디어와 전체 corpus는 미승격. 기존 계열의 발견 큐에UE API3/guide1을 추가하고 Unity 기존URL에는provenance 추가. 실제 HB 노드·세 갱신 모드/독립 시계·C++/BP/AI·2D/뼈·Editor/Player 동작과 전체 연구 완료를 구분한다.
+
 # 전체 문서·API 연구 상태
 
 2026-10-06 후속: [034 광원 순서/겹침](2D_LIGHT_OVERLAP_034.md)에 Unity6000 자체 표·URP17.0.4 두 속성/enum·고정 셰이더/manager/utility 전체와 RendererLighting 일부 읽기/SHA를 기록했어요. 가산/알파·RGB와coverage·순서·마스크 후적용을 사람/AI/C++/BP에 연결하고 실제 GPU143/조명93을 확인했어요.6주소 발견 추가, 전체27계열/gate와 독립 Unity/미독 범위는 보존해요.
