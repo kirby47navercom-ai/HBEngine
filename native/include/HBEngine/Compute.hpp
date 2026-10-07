@@ -45,6 +45,7 @@ inline UINT bytes(std::size_t floats){if(!floats||floats>std::numeric_limits<UIN
 class Device;
 class Buffer {
     friend class Device;
+    friend class ParticleRenderer;
     detail::Com<ID3D11Buffer> resource,staging;
     detail::Com<ID3D11UnorderedAccessView> uav;
     detail::Com<ID3D11ShaderResourceView> srv;
@@ -77,6 +78,7 @@ public:
     static constexpr std::size_t capacity(){return 3;}
 };
 class Device {
+    friend class ParticleRenderer;
     detail::Com<ID3D11Device> device;
     detail::Com<ID3D11DeviceContext> context;
     std::mutex mutex;
@@ -156,24 +158,25 @@ public:
 // Persistent GPU state. step() dispatches without reading particle positions back.
 // read() is explicit because CPU readback waits for the GPU and copies the buffer.
 class Particles {
+    friend class ParticleRenderer;
     Device& device;Kernel kernel;Buffer buffer;std::optional<FrameResources> frames;
     static constexpr const char* source=R"(
 struct Particle { float4 positionAge; float4 velocityLife; };
 RWStructuredBuffer<Particle> particles : register(u0);
 cbuffer Step : register(b0) { float delta; float3 force; float gravity; float drag; float2 padding; };
 [numthreads(64,1,1)] void Main(uint3 id : SV_DispatchThreadID) {
-  uint count,stride; particles.GetDimensions(count,stride); if(id.x>=count)return;
-  Particle p=particles[id.x]; if(p.positionAge.w>=p.velocityLife.w)return;
+  uint index=id.x+id.y*(64*65535);uint count,stride; particles.GetDimensions(count,stride); if(index>=count)return;
+  Particle p=particles[index]; if(p.positionAge.w>=p.velocityLife.w)return;
   float dt=min(delta,p.velocityLife.w-p.positionAge.w);
   float3 f=force+float3(0,-9.81*gravity,0);
   p.positionAge.xyz+=p.velocityLife.xyz*dt+f*(dt*dt*.5);
   p.velocityLife.xyz=(p.velocityLife.xyz+f*dt)*exp(-drag*dt);
-  p.positionAge.w+=delta; particles[id.x]=p;
+  p.positionAge.w+=delta; particles[index]=p;
 })";
     static const std::vector<float>& valid(const std::vector<float>& values){if(values.empty()||values.size()%8)throw std::runtime_error("GPU particles require position/age/velocity/lifetime records");for(std::size_t i=0;i<values.size();i++)if(!std::isfinite(values[i])||(i%8==3&&values[i]<0)||(i%8==7&&values[i]<=0))throw std::runtime_error("GPU particle value invalid");return values;}
 public:
     Particles(Device& device,const std::vector<float>& values):device(device),kernel(device.compile(source)),buffer(device.create(valid(values),8*sizeof(float))){}
-    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");if(delta)device.dispatch(kernel,{&buffer},static_cast<std::uint32_t>((count()+63)/64),1,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}
+    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}}
     std::vector<float> read(){return device.read(buffer);}
     bool enqueueReadback(){if(!frames)frames.emplace(device.createFrameResources(buffer));return device.enqueueFrame(*frames,buffer);}
     std::optional<FrameResult> pollReadback(){return frames?device.pollFrame(*frames):std::nullopt;}

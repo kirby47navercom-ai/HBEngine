@@ -12,6 +12,7 @@
     "test:native": "node tools/check-native.mjs",
     "test:compute": "node tools/check-gpu-compute.mjs",
     "test:compute-window": "node tools/check-gpu-compute-window.mjs",
+    "test:gpu-render": "node tools/check-gpu-render.mjs",
     "test:light-blends": "node tools/check-light-blend-styles.mjs",
     "test:project-native": "node tools/check-project-native.mjs",
     "test:runtime-spawn": "node tools/check-runtime-spawn.mjs",

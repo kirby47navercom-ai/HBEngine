@@ -207,3 +207,8 @@ production c775bb5를 C:/Users/kirby/HBEngine/Versions/b82a5239ad35ec47에 갱�
 ## 047 사용자 설치 갱신 완료 — 2026-10-07
 
 검증 production 1e988f232925180c5bf75d35a0ddd7bd96543912를 C:\Users\kirby\HBEngine\Versions\88db6de5ffe7c1bf에 불변 설치했어요.1807파일·변경13개SHA·바로가기/.hbproject 연결 검증,이전b82/f906 버전·실행파일·기존SDK·프로필·프로세스 보존 PASS. GPU컴퓨트/순환상수버퍼/비동기결과슬롯과 공용파티클 활성업로드 범위를 포함해요. 사용자창을 시작/종료하거나 기존Android/iOS산출물을 다시 빌드하지 않았어요. 실제GPU/내보낸Player/공용렌더러의 currentSHA검증을 재사용하고 불필요한전체재검사·8시간스트레스를 하지 않았어요. 전체FPS 또는GPU전용씬렌더러완료로 세지 않아요. 증거 native/build/frame-resources-user-install-047.json.
+
+
+## 048 GPU 버퍼 직접 렌더·편의 API — 2026-10-07
+
+실제 DirectCompute 파티클 버퍼→GPU 활성 인덱스/개수→간접 draw→텍스처/깊이 타깃→선택 HWND flip 출력 경로를 추가했어요. 위치/활성 개수 CPU 회수0,3개 상수 재사용,수명 제외/resize/해제·같은 창 재생성을 연결했어요. 게임 코드는 ParticleEffect의 update/draw/resize/texture와 카메라 함수를 호출하며 HLSL·D3D 버퍼를 직접 작성하지 않아도 돼요. DrawGPU는 사용자 C++에서 블루프린트로 노출되며 실제 release Player에서도 실행돼요. 공통 편의 함수221개도 실제C++/BP 결과·타입·오류 비교 PASS예요. GPU render UIDtfw/core3tRrRV/Playerj7k2Gr가 최신SHA증거예요.65,537개20frame간접계산·draw·최종image회수 배치1.5927/2.0115/1.6714ms이며 전체게임FPS로 계산하지 않아요. 메인WebGL2씬/기본CPU방출·탄막충돌·모바일GPU를 새경로로 모두이식한 상태는 아니에요. 근거·계약·미독범위/다음작업은 research/GPU_RESIDENT_RENDER_048.md에 있어요. 기존게임/창/프로필을 건드리지 않았고 두원본MD에는 덧붙이기만 했어요.

@@ -35,7 +35,21 @@ bool GPUActor::PollGPU(){
     }
     return applied;
 }
+int GPUActor::DrawGPU(){
+    PrepareGPU();
+    if(!renderer)renderer=std::make_unique<hb::gpu::ParticleRenderer>(*device,128,128);
+    const auto position=hb::Scene::GetPosition(this);
+    hb::gpu::ParticleStyle style;
+    style.world[12]=-position.x;
+    style.world[13]=-position.y;
+    style.world[14]=.5f-position.z;
+    renderer->clear();
+    renderer->draw(*particles,style);
+    ++gpuDraws;
+    return gpuDraws;
+}
 void GPUActor::ReleaseGPU(){
+    renderer.reset();
     particles.reset();
     device.reset();
     gpuActive=false;
