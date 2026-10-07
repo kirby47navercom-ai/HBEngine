@@ -31,3 +31,6 @@
 
 
 실제 별도 worker와 Windows에서 만든 모바일 AOT C++ 모듈 간 동기 Get/Set/Call·인자 이름 충돌·writeback·형식/수명/순환 거절 검사: `node tools/check-native-module-query.mjs --cpp` → `native/build/native-module-RzTUIe`, 통과. 실제 Spawn/Destroy/Construction·기본값·이벤트/타이머 수명·실패 복구9검사: `node tools/check-native-spawn.mjs` → `native/build/native-spawn-MXspEq/acceptance.json`, 통과. AOT 검사는 Windows 호스트에서 실행했으며 새 Android/iOS 패키지/실기기 합격으로 쓰지 않아요. 전후 기록과 현재 SDK SHA를 `native/build/query-world-result-044.json`에 대조했어요.
+
+
+- 2026-10-07 사용자 설치 갱신(044/041/042/043 유지): sourcee8c34ae/bundle51cf0713e445a496, C:\Users\kirby\HBEngine\Versions\51cf0713e445a496\HBEngine.exe. 1796파일/8변경SHA·최종SDK SHA와 물리production2SHA가 일치해요. 기존533b2b30a45cf205 설치/사용자창·프로필을 보존했고 바로가기/HKCU 연결이 새경로와 같아요. 다음 실행부터 C++ 질의 인덱스 개선과 개수 제한 제거/AI 묶음 저장이 적용돼요. SDK 변경은 기존 빌드해시의 입력이므로 새 사용자 C++ 빌드에 반영돼요. 증거 native/build/query-world-user-install-044.json. 사용자 게임/기존 수출본은 덮어쓰지 않았고 새 모바일 패키지/실기기 검사는 실행하지 않았어요.

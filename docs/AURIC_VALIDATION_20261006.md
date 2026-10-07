@@ -323,3 +323,6 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - 공유 engineQuery가 각 snapshot행마다 전체 월드를 찾는 중첩 검색을 하던 원인이에요. 기존 bridgeStateIndices로 바로 찾고 범위/ID가 맞지 않으면 안전하게 기존 검색을 해요. 현재 actor transform/nativeProperties, 월드 순서와 추가 속성·검증을 유지해요. 새 캐시/의존성이나 개수 상한을 만들지 않았어요.
 - 같은5,000행 실제 컴파일 C++ 입력의 snapshot/merge/패킷 구성 단계만 순차 비교했어요. 이전1,949.3/2,001.2/2,021.3ms → 이후31.2/33.4/34.6ms. IPC·물리·렌더링·전체FPS를 포함하지 않으며 장면 전체120fps 합격으로 쓰지 않아요. 원본게임/사용자창·프로필·장기 검사 불변이에요.
 - query-world-ZgeKee에서 현재 transform/추가 값/행 순서와 잘못되거나 없는 인덱스 fallback을 실제 C++로 통과했어요. 새 SDK로 물리 capacity10검사(12CXiy), 기존156물리검사와 C++/BP연결, 실제 별도 C++ worker/Windows에서 만든 모바일 AOT 모듈 호출(RzTUIe), Spawn/Destroy/Construction/실패회복9검사(MXspEq)도 통과했어요. Android/iOS 실기기·새 패키지 검사가 아니에요. docs/research/CPP_QUERY_WORLD_LOOKUP_044.md·native/build/query-world-result-044.json에 근거를 기록해요. 041/042/043을 유지해요.
+
+
+- 2026-10-07 사용자 설치 갱신(044/041/042/043 유지): sourcee8c34ae/bundle51cf0713e445a496, C:\Users\kirby\HBEngine\Versions\51cf0713e445a496\HBEngine.exe. 1796파일/8변경SHA·최종SDK SHA와 물리production2SHA가 일치해요. 기존533b2b30a45cf205 설치/사용자창·프로필을 보존했고 바로가기/HKCU 연결이 새경로와 같아요. 다음 실행부터 C++ 질의 인덱스 개선과 개수 제한 제거/AI 묶음 저장이 적용돼요. SDK 변경은 기존 빌드해시의 입력이므로 새 사용자 C++ 빌드에 반영돼요. 증거 native/build/query-world-user-install-044.json. 사용자 게임/기존 수출본은 덮어쓰지 않았고 새 모바일 패키지/실기기 검사는 실행하지 않았어요.
