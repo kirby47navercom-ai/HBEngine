@@ -19,7 +19,7 @@ export class BlueprintRuntime {
     this.objects=objects;this.hooks=hooks;this.inputState=hooks.inputState||new RuntimeInput();this.inputQueue=Promise.resolve();this.inputEpoch=0;this.core=createCorePreview(hooks.now);this.values=this.core.values;this.referenceWarnings=new Set();this.bindings=bindings.map(row=>{if(row.retained&&hooks.game?.binding)return hooks.game.binding;const binding=this.makeBinding(row);if(this.object(row.self)?.frameworkRole==='gameInstance')hooks.game?.bind(binding);return binding;});for(const b of this.bindings)for(const [key,value] of this.inputState.keys)b.input.set(key,value);
     installBlueprintInstances(this.objects,this.bindings.filter(b=>this.object(b.self)?.frameworkRole!=='gameInstance'||!hooks.game?.initialized));
     for(const b of this.bindings)if(legacyTemplateConstruction(b.root.construction)){b.root.construction.nodes.splice(1);b.root.construction.edges=[];this.hooks.log?.(b.root.name+': 예전 자동 생성 Construction 위치 초기화를 제외했어요.',this);}
-    this.jobs=[];this.timelines=new Map();this.subscriptions=new Map();this.scopes=new Set();this.active=false;this.paused=false;this.pending=null;this.steps=0;this.overlaps=new Map();this.hits=new Map();this.generation=0;this.depth=0;this.stepRemaining=null;
+    this.jobs=[];this.timelines=new Map();this.subscriptions=new Map();this.scopes=new Set();this.active=false;this.paused=false;this.pending=null;this.steps=0;this.overlaps=new Map();this.hits=new Map();this.contactBindings=new WeakMap();this.contactSerial=0;this.generation=0;this.depth=0;this.stepRemaining=null;
     this.core.object=id=>this.object(id);this.core.updateObject=o=>this.hooks.updateObject?.(o);
   }
   makeBinding({root,self,variableValues,componentOverrides}){const {objects,hooks}=this;if(!validBlueprint(root,{resolved:!!root.inheritance}))throw Error('블루프린트 검증 실패');const defaults=variableValues?{variables:variableValues,components:componentOverrides||{}}:blueprintInstanceDefaults(root,objects.find(o=>o.id===self));const binding={root:copy(root),self,componentOverrides:copy(defaults.components),variables:new Map(Object.entries(defaults.variables).map(([id,value])=>[id,copy(value)])),states:new Map(),ticks:new Map(),input:new InputActions(hooks.inputAssets?.contexts.get(root.settings?.inputMapping)?[{...hooks.inputAssets.contexts.get(root.settings.inputMapping),path:root.settings.inputMapping}]:[],hooks.inputAssets?.actions||new Map())};for(const variable of root.variables.filter(v=>v.type==='object'))binding.variables.set(variable.id,this.softActorValue(binding.variables.get(variable.id),variable.container==='array',self));const object=this.object(self),definition=root.native?.classes.find(c=>c.name===object?.nativeClass);for(const p of definition?.properties.filter(p=>p.type==='object')||[])if(object?.nativeProperties&&Object.hasOwn(object.nativeProperties,p.name))object.nativeProperties[p.name]=this.softActorValue(object.nativeProperties[p.name],p.array,self);return binding;}
@@ -179,43 +179,49 @@ export class BlueprintRuntime {
     }
     if(result.nativeError)throw Error(result.nativeError);if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');return used;
   }
-  collisionTask(b,contact,now,hits,bindingIndex){
+  collisionTask(b,contact,now,hits,delta=0){
     if(contact.a!==b.self&&contact.b!==b.self)return null;
-    const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([bindingIndex??this.bindings.indexOf(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};
+    const owner=this.object(b.self),otherObject=this.object(contact.a===b.self?contact.b:contact.a);
+    if(!this.bindings.includes(b)||!owner||owner.destroying||owner.poolActive===false||owner.collisionEnabled===false||!otherObject||otherObject.destroying||otherObject.poolActive===false||otherObject.collisionEnabled===false)return null;
+    // Array indices change when another actor is removed; binding lifetime does not.
+    if(!this.contactBindings.has(b))this.contactBindings.set(b,this.contactSerial++);
+    const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([this.contactBindings.get(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};
     if(contact.trigger&&b.root.settings?.overlapEnabled===false)return null;
-    const map=contact.trigger?now:hits,previous=contact.trigger?this.overlaps:this.hits,key=contact.trigger?'beginOverlap':'hitEvent',args=contact.trigger?{other}:{other,hit:{hit:true,position:copy(contact.position),normal:contact.normal.map(v=>reversed?-v:v),actor:other}},match=n=>this.componentEvent(n,state);
-    return {b,key,args,match,before:()=>map.set(id,state),descriptors:previous.has(id)?[]:b.root.nodes.filter(n=>n.key===key&&match(n)).map(n=>({n,args}))};
+    const map=contact.trigger?now:hits,previous=contact.trigger?this.overlaps:this.hits,repeated=previous.has(id),key=contact.trigger?(repeated?'overlapStay':'beginOverlap'):(repeated?'hitStay':'hitEvent'),args=contact.trigger?{other,delta}:{other,delta,hit:{hit:true,position:copy(contact.position),normal:contact.normal.map(v=>reversed?-v:v),actor:other}},match=n=>this.componentEvent(n,state);
+    if(!contact.trigger)state.hit=args.hit;
+    const bodies=[contact.colliderA?.r?.body,contact.colliderB?.r?.body].filter(Boolean),awake=contact.trigger||!bodies.length||bodies.some(body=>!body.isFixed()&&!body.isSleeping());
+    return {b,key,args,match,before:()=>map.set(id,state),descriptors:repeated&&(!(delta>0)||!awake)?[]:b.root.nodes.filter(n=>n.key===key&&match(n)).map(n=>({n,args}))};
   }
   async collisionBinding(task){if(!task)return;task.before();if(task.descriptors.length)await this.emit(task.b,task.key,task.args,task.b.root,task.match);}
-  async endOverlapBindings(now){
-    const previous=this.overlaps,rows=[...previous.keys()];
-    for(let index=0;index<rows.length;){const state=previous.get(rows[index]);if(!state||now.has(rows[index])){index++;continue;}const b=state.b,build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
+  async endOverlapBindings(now,previous=this.overlaps,key='endOverlap'){
+    const rows=[...previous.keys()],live=state=>{const owner=this.object(state.b.self);return this.bindings.includes(state.b)&&owner&&!owner.destroying&&owner.poolActive!==false;},argsFor=state=>{const other=this.object(state.other)?state.other:null;return key==='endHit'?{other,hit:{...state.hit,hit:false,actor:other}}:{other};};
+    for(let index=0;index<rows.length;){const state=previous.get(rows[index]);if(!state||now.has(rows[index])||!live(state)){index++;continue;}const b=state.b,build=this.hooks.nativeBuild?.(b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
-        for(let i=index;i<rows.length;i++){const next=previous.get(rows[i]);if(!next||now.has(rows[i]))continue;const owner=next.b,args={other:next.other},descriptors=owner.root.nodes.filter(n=>n.key==='endOverlap'&&this.componentEvent(n,next)).map(n=>({n,args}));if(descriptors.length&&this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;let block;
+        for(let i=index;i<rows.length;i++){const next=previous.get(rows[i]);if(!next||now.has(rows[i])||!live(next))continue;const owner=next.b,args=argsFor(next),descriptors=owner.root.nodes.filter(n=>n.key===key&&this.componentEvent(n,next)).map(n=>({n,args}));if(descriptors.length&&this.hooks.nativeBuild?.(owner.self)?.token!==build.token)break;let block;
           try{block=nativeEventBlock(owner,owner.root,descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
           budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.cursor=i;blocks.push(block);calls.push(...block.requests);
         }
       }
-      if(calls.length<2){await this.emit(b,'endOverlap',{other:state.other},b.root,n=>this.componentEvent(n,state));index++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return false;index=blocks[used-1].cursor+1;}
+      if(calls.length<2){await this.emit(b,key,argsFor(state),b.root,n=>this.componentEvent(n,state));index++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return false;index=blocks[used-1].cursor+1;}
     }return true;
   }
-  async collisions(){
+  async collisions(delta=0){
     const contacts=this.hooks.contacts?.()||sceneContacts(this.objects),bindings=this.bindings,now=new Map(),hits=new Map();
-    for(let cursor=0;contacts.length&&cursor<bindings.length*contacts.length;){const task=this.collisionTask(bindings[Math.floor(cursor/contacts.length)],contacts[cursor%contacts.length],now,hits,Math.floor(cursor/contacts.length));
+    for(let cursor=0;contacts.length&&cursor<bindings.length*contacts.length;){const task=this.collisionTask(bindings[Math.floor(cursor/contacts.length)],contacts[cursor%contacts.length],now,hits,delta);
       // No handler to execute: keep contact state without an empty async job.
       if(!task?.descriptors.length){task?.before();cursor++;continue;}
       const build=this.hooks.nativeBuild?.(task.b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
-        for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits,Math.floor(i/contacts.length));if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
+        for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits,delta);if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
           try{block=nativeEventBlock(next.b,next.b.root,next.descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
           budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.before=next.before;block.cursor=i;blocks.push(block);calls.push(...block.requests);
         }
       }
       if(calls.length<2){await this.collisionBinding(task);cursor++;}else{const used=await this.nativeEventGroup(blocks,calls);if(!used)return;cursor=blocks[used-1].cursor+1;}
     }
-    if(await this.endOverlapBindings(now)){this.overlaps=now;this.hits=hits;}
+    if(await this.endOverlapBindings(now)&&await this.endOverlapBindings(hits,this.hits,'endHit')){this.overlaps=now;this.hits=hits;}
   }
-  componentEvent(node,state){const id=node.options?.componentId;return !id||id==='actor'||(state.sources?.length?state.sources.some(source=>source.name===state.b.root.name&&source.id===id):id===state.component||state.b.root.components.find(c=>c.id===id)?.type===state.type);}
+  componentEvent(node,state){const id=node.options?.componentId;return !id||id==='actor'||(state.sources?.length?state.sources.some(source=>source.name===state.b.root.name&&source.id===id):id===state.component||!!state.type&&state.b.root.components.find(c=>c.id===id)?.type===state.type);}
   continue(step=false){this.stepRemaining=step?1:null;this.paused=false;this.pending?.resolve();this.pending=null;}
   pause(){this.paused=true;this.resetInput();}
   async gate(n,f){if(!this.stopping&&(this.paused||this.stepRemaining===0||n.breakpoint)){this.paused=true;this.resetInput();await new Promise(resolve=>{this.pending={n,f,resolve};this.hooks.breakpoint?.(n,f);});}if(this.stepRemaining!==null)this.stepRemaining--;return this.frameActive(f);}

@@ -12,6 +12,7 @@ export const catalog = [
   {key:'tick',title:'Event Tick',ko:'매 프레임',group:'이벤트',keywords:'event tick 이벤트 틱 델타 시간',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Delta seconds','float')]},
   {key:'fixedTick',title:'Fixed Update',ko:'고정 물리 업데이트',group:'이벤트',keywords:'fixed update physics 물리 고정 틱 프레임',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('delta','Fixed delta seconds','float')]},
   {key:'beginOverlap',title:'Begin Overlap',ko:'겹침 시작',group:'이벤트',keywords:'actor component overlap begin 비긴 오버랩 충돌 트리거',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
+  {key:'overlapStay',title:'Overlap Stay',ko:'겹침 유지',group:'이벤트',keywords:'trigger overlap stay 겹침 유지 접촉 물리',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('delta','Fixed delta seconds','float')]},
   {key:'endOverlap',title:'End Overlap',ko:'겹침 종료',group:'이벤트',keywords:'end overlap 끝 엔드 충돌',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object')]},
   {key:'input',title:'Input Event',ko:'키·마우스 이벤트',group:'이벤트',keywords:'input key keyboard mouse click 입력 키보드 마우스 클릭 버튼',kind:'event',inputs:[],outputs:[pin('then','Pressed'),pin('released','Released')]},
   {key:'customEvent',title:'Custom Event',ko:'사용자 이벤트',group:'이벤트',keywords:'custom event 커스텀 사용자 정의',kind:'event',inputs:[],outputs:[pin('then','실행')]},
@@ -119,6 +120,8 @@ catalog.filter(s=>s.group==='배열'&&s.key!=='arrayLength'||s.key==='forEach').
 catalog.push(
   {key:'endPlay',title:'End Play',ko:'게임 종료',group:'이벤트',keywords:'end play 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('reason','Reason','string')]},
   {key:'hitEvent',title:'Event Hit',ko:'충돌 이벤트',group:'이벤트',keywords:'hit collision 충돌 히트',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit')]},
+  {key:'hitStay',title:'Collision Stay',ko:'충돌 유지',group:'이벤트',keywords:'hit collision stay 접촉 충돌 유지 물리',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Hit result','hit'),pin('delta','Fixed delta seconds','float')]},
+  {key:'endHit',title:'Collision Exit',ko:'충돌 종료',group:'이벤트',keywords:'hit collision exit end 접촉 충돌 종료 끝',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('other','Other actor','object'),pin('hit','Last contact','hit')]},
   {key:'inputAction',title:'Input Action',ko:'입력 액션 이벤트',group:'이벤트',keywords:'input action ia 입력 액션 started triggered completed',kind:'event',inputs:[],outputs:[pin('started','Started'),pin('triggered','Triggered'),pin('completed','Completed'),pin('ongoing','Ongoing'),pin('canceled','Canceled'),pin('value','Action value','bool'),pin('elapsed','Elapsed seconds','float')]},
   {key:'inputAxis',title:'Input Axis',ko:'축 입력',group:'이벤트',keywords:'input axis 입력 축 이동 마우스',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('value','Axis value','float')]},
   {key:'anyDamage',title:'Any Damage',ko:'피해 이벤트',group:'이벤트',keywords:'damage hit 피해 데미지',kind:'event',inputs:[],outputs:[pin('then','실행'),pin('damage','Damage','float'),pin('instigator','Instigator','object')]},

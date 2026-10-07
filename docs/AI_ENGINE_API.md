@@ -289,3 +289,6 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 - 보호된 POST `/api/asset/batch`는 `{entries:[{path,text,expected}],dryRun}`을 사용해요. expected는 에셋 JSON 또는 텍스트 자체를 JSON.stringify한 저장 기준/null이에요. POST `/api/asset/batch/undo {transaction}`은 기록을 읽어 현재 디스크 기준을 검사하므로 세션이 바뀌어도 최신 기록 ID로 사용할 수 있어요. 일반 AI 작업은 editor 명령의 열린 문서 보호를 이용하세요.
 
 근거·검증·세션/파일 시스템 범위: docs/research/AI_ASSET_TRANSACTIONS_041.md.
+
+
+2026-10-08 접촉 이벤트: 공용 노드 catalog/schema의 overlapStay·hitStay·endHit 및 effectivePins를 이용한다. Stay delta는 고정 물리 시간(float), Exit hit는 마지막 접촉의 hit=false와 유효 상대/null이다. AI 수정·핀 연결·컴포넌트 선택은 사람 UI와 같은 문서/검증/런타임을 사용한다. 삭제·풀 수명과 실제 C++/Rapier 검증은 [064](research/CONTACT_LIFETIME_064.md)에 있다.

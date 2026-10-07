@@ -234,7 +234,7 @@ export function createRigidPhysics(objects,options={}){
       if(count){inputs.clear();for(const s of spaces.values())for(const r of s.bodies.values())if(r.p){r.body.resetForces(false);r.body.resetTorques(false);}}
       if(state.gameplay){state.gameplay.elapsed=elapsed;for(const type of ['GameMode','GameState']){const o=objects.find(o=>o.id===state.gameplay[type==='GameMode'?'gameMode':'gameState']),c=o&&objectComponents(o).find(c=>c.type===type);if(c){c.properties.elapsed=elapsed;c.properties.matchState=state.gameplay.matchState;}}}return count;
     },
-    async advance(delta,before,after){await state.ready();if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;while(accumulator+1e-9>=dt&&count<maxSubsteps){await before?.(dt);state.step(0,1);await after?.();count++;}return count;},
+    async advance(delta,before,after){await state.ready();if(!Number.isFinite(delta)||delta<0)throw Error('물리 시간을 확인하세요.');accumulator=Math.min(accumulator+delta,dt*maxSubsteps);let count=0;while(accumulator+1e-9>=dt&&count<maxSubsteps){await before?.(dt);state.step(0,1);await after?.(dt);count++;}return count;},
     dispose(){if(disposed)return;disposed=true;state.releaseInput();for(const s of spaces.values()){s.world.free();s.eventQueue.free();}spaces.clear();lastContacts=[];}
   };return state;
 }

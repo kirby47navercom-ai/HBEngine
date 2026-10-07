@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-08",
+  "passed": true,
+  "evidence": "native/build/collision-dispatch-RmV9lk/acceptance.json",
+  "regressionBefore": {
+    "log": "native/build/contact-lifetime-before-064.log",
+    "expectedCalls": 14,
+    "actualCalls": 18,
+    "exitCode": 1
+  },
+  "cppModes": [
+    false,
+    true
+  ],
+  "stayModes": [
+    false,
+    true
+  ],
+  "fixedStep": [
+    {
+      "batched": false,
+      "dimension": 2,
+      "calls": 10,
+      "deltaSeconds": 0.01666666753590107
+    },
+    {
+      "batched": false,
+      "dimension": 3,
+      "calls": 10,
+      "deltaSeconds": 0.01666666753590107
+    },
+    {
+      "batched": true,
+      "dimension": 2,
+      "calls": 10,
+      "deltaSeconds": 0.01666666753590107
+    },
+    {
+      "batched": true,
+      "dimension": 3,
+      "calls": 10,
+      "deltaSeconds": 0.01666666753590107
+    }
+  ],
+  "dispatchOnly": {
+    "bindings": 512,
+    "contacts": 64,
+    "framesPerBatch": 60,
+    "dispatchMs": [
+      0.6967699999999998,
+      0.6440566666666674,
+      0.6183849999999987,
+      0.6188033333333333,
+      0.6140299999999986
+    ],
+    "medianMs": 0.6188033333333333
+  },
+  "checks": [
+    "check-collision-dispatch.mjs",
+    "check-scene-runtime.mjs: 62 components",
+    "check-physics.mjs: 164 assertions + actual C++"
+  ],
+  "wholeFrameGoal": false,
+  "longMemoryGoal": false,
+  "installChanged": false,
+  "sourceSHA256": {
+    "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+    "prototype/blueprint-model.js": "18f7528d151d70655e9e045853a8c9ba1ac2ce27ae97c76e0ab98c6dd0cbaa7a",
+    "prototype/blueprint-details.js": "844abd4f043acaa364266444ac3d322f93ea6a2d34a8a90ec3ee52bd94735c2e",
+    "prototype/physics-world.js": "7813fbf4af735952bfe0f9e58f893e75149b35f349760240144a17ded5f66ea1",
+    "prototype/engine-services.js": "533640312295d85cb997aa0972b58ec11e2f9abb31a3fc004cf4f6b0bf460d24",
+    "tools/check-collision-dispatch.mjs": "f4f0db43b94f81f0bc35b6963f7faeef9f5601ac2598c2c1f291f209b5cd4de3"
+  },
+  "newReadings": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnTriggerStay2D.html",
+      "bytes": 16701,
+      "sha256": "26950844617315ccfa6215cef7fe9ce92d7007f6bf13d3094acdece9ee350753",
+      "scope": "own signature/parameter/description/notes/full example; linked APIs not read"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Collider.OnCollisionExit.html",
+      "bytes": 16555,
+      "sha256": "6b8e68168c138e7ec0e3ce1d5ead260d9aa5b4ff8dbeddf65ef8f1d6fe5c01c1",
+      "scope": "own signature/parameter/description/notes/full example; linked APIs not read"
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnCollisionExit2D.html",
+      "bytes": 16809,
+      "sha256": "99176e51b422dbab1c6e9cec46b0470245c1378040722fb7676ae57195dc8726",
+      "scope": "own signature/parameter/description/notes/full example; linked APIs not read"
+    }
+  ],
+  "partialReading": {
+    "url": "https://www.rapier.rs/docs/user_guides/javascript/rigid_bodies/",
+    "scope": "rigid body types and Position/next-kinematic methods, remaining chapter and linked APIs not counted"
+  },
+  "fixtureFailures": [
+    "native/build/contact-events-064.log: wrong effectivePins argument order",
+    "native/build/contact-events-fixed-064.log: kinematic next-pose contact graph timing; independent 2D probe then dynamic sensor fixture"
+  ]
+}
