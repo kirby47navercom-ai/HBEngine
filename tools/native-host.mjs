@@ -20,6 +20,17 @@ const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env
 
 export class NativeHost extends NativeProtocol {
   constructor(){super();this.sessions=new Map();}
+  inspectResources(){
+    const modules=[];
+    for(const session of this.sessions.values()){
+      let templates=0,objects=0;
+      for(const context of session.spawnContexts?.values()||[])for(const template of Object.values(context.templates)){templates++;objects+=template.objects.length;}
+      modules.push({module:modules.length,workerPid:session.process?.pid||null,busy:!!session.busy,requestObjects:session.requestWorld?.length||0,transportObjects:session.transportWorld?.length||0,sharedWorld:!!session.requestWorld&&session.requestWorld===session.transportWorld,spawnContexts:session.spawnContexts?.size||0,spawnTemplates:templates,spawnObjects:objects});
+    }
+    // On-demand only: process.memoryUsage may walk pages. Counts are references,
+    // not byte ownership; arrayBuffers is already included in external.
+    return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules};
+  }
   registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
   async build(header,source,{configuration='editor',signal,files=[]}={}){
     signal?.throwIfAborted();

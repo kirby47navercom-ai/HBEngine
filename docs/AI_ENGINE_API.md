@@ -47,6 +47,9 @@ AI 친화성은 블루프린트 파일에 한정하지 않는다. 프로젝트, 
 
 후속 worker는 `transport.parseMs/patchMs/syncMs/invokeMs/snapshotMs/workerMs`를, host는 `decodeMs/validateMs/replyValidationMs`를 반환한다. AI도 전체 왕복이 느린지 실제 사용자 함수가 느린지 이 값으로 구분할 수 있다. 호출/프로세스 대기와 출력 직렬화가 포함된 `rpcMs`와 내부 `workerMs`를 더하지 않는다. 이전 worker에서 없는 필드는 미측정으로 처리한다. 실행 진단을 BP 에셋의 선언/핀/기본값에 저장하지 않는다.
 
+호스트 메모리·참조 진단은 `GET /api/native/inspect`로 읽는다. 현재 편집기 프로젝트 또는 개발 패키지에서 가능하고 일반 release는 제공하지 않는다(smoke 격리 검사 예외). PID/Node 버전·바이트 단위 rss/heapTotal/heapUsed/external/arrayBuffers와 모듈별 world행·생성 카탈로그 참조 수를 반환하며 토큰/경로/세계 내용을 노출하지 않는다. arrayBuffers는 external에 이미 포함된다. 프로세스 private와 live heap을 같은 값으로 취급하거나 둘을 합산하지 않는다. 호출은 측정 비용이 있어 프레임마다 실행하지 않는다.
+
+
 ## 입력·스프라이트·타일 제작
 
 `schema.input`은 실제 8개 트리거, 유지/탭/반복 시간 기본값, 5개 이벤트와 모디파이어 종류를 반환한다. 입력 액션의 시간·조합 액션 경로·처리 순서는 사람이 쓰는 입력 에셋 편집기와 같은 데이터다. `schema.sprites`는 픽셀/피벗/테두리 좌표, 분할 방식과 기존 분할 적용 방식을 설명한다.

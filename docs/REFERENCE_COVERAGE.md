@@ -232,3 +232,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 059 스프라이트 자원/통계 — 2026-10-08
 
 자체 본문/API 표·설치 r180 읽기 범위와 실제 2D/에디터/전체 게임 대조를 [research/SPRITE_RESOURCES_059.md](research/SPRITE_RESOURCES_059.md)에 기록했다. 12회 프레임/C++/BP 자원 유지·픽셀 검증 통과. 전체 게임 FPS 개선·PC120/모바일60·장기 RAM·전체 분석/동등성은 승격하지 않는다. 설치 대기.
+
+
+- 062: C++ 호스트 실제 사용/확보 힙과 world·카탈로그 참조의 읽기 전용 진단·개발/release 경계·편집기/schema 구현. 실제 GPU 고정 게임 fCUCL4 608파일 보존/전환/초기화/오류0·종료0. Node heapUsed33.3→30.3MiB이나 heapTotal56.1→152.2MiB; 전체RAM/FPS/8시간 목표 미승격. [상세](research/HOST_MEMORY_062.md). 061 3036085 푸시 완료; 설치 대기.

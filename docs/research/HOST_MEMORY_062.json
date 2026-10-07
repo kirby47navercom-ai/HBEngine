@@ -1,0 +1,3126 @@
+{
+  "date": "2026-10-08",
+  "proof": "native/build/auric-frame-fCUCL4/acceptance.json",
+  "sourcePreserved": true,
+  "sourceFiles": 608,
+  "checkedFiles": {
+    "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+    "prototype/audio-mixer.js": "2627d65aa851770fb2ff72025e3df24ff29f7056a3b4328b9d84fe35bd8fbb5a",
+    "prototype/frame-loop.js": "c811d2b7304fe833d81b0d3159e95e68714c1b1337432180261088945f69ecda",
+    "prototype/scene-rendering.js": "f003a670ea188924dd8a86cccf7fccf0a4a565367ebf902141d43f0dc0b69d6c",
+    "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+    "prototype/native-model.js": "7106b00549aeea9d52ba67e66f4c7a2c5a4db14b5a8b9fcc748902f9d2cf02bc",
+    "prototype/native-transport.js": "ce2d690eb549f717642641e9ab7a049da398bc9ea30f4fc7c7f16dec50f70546",
+    "prototype/physics-world.js": "a8dc763a3faf4791cf39d7827152e1410ffc76db40ca8f4fe252db947c1371f1",
+    "prototype/ui-runtime.js": "4b3daadbf27784d48505765ccce94d5a7dddf038e5b8f23efc11598313ab2ff2",
+    "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+    "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+    "tools/native-host.mjs": "c668ff8b7332a53541ee72313ae5efed1293365eac756ed4a90adf98f65486cc",
+    "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+    "tools/check-auric-frame.mjs": "fb9bb90f2c663ed67efb9446ec4ff126f1fa71c8ed1c3d31da11ec0c94f975c5"
+  },
+  "phases": [
+    {
+      "mode": "idle",
+      "targetFrameRate": 120,
+      "budgetMs": 8.333333333333334,
+      "overBudget": 3,
+      "frames": 362,
+      "fps": 120.01856640794455,
+      "intervalMs": {
+        "mean": 8.33204419890326,
+        "p50": 8.399999998509884,
+        "p95": 9.800000004470348
+      },
+      "workMs": {
+        "mean": 5.640883978003461,
+        "p50": 5.899999998509884,
+        "p95": 7.199999995529652
+      },
+      "simulationMs": {
+        "mean": 4.5848066299659775,
+        "p95": 6
+      },
+      "renderSubmissionMs": {
+        "mean": 0.9002762431515514,
+        "p95": 1.1000000014901161
+      },
+      "over16ms": 0,
+      "over33ms": 0,
+      "objects": 432,
+      "nativeMean": {
+        "frontendMs": 2.894999999801318,
+        "invokeMs": 0.2448425,
+        "patchMs": 0.0785775,
+        "workerMs": 0.577734166666667,
+        "serializeMs": 0,
+        "syncMs": 0.03907749999999996
+      },
+      "nativeLast": {
+        "invokeMs": 0.2276,
+        "parseMs": 0.0721,
+        "patchMs": 0.0718,
+        "restoreRows": 0,
+        "snapshotMs": 0.1417,
+        "syncMs": 0.0318,
+        "workerMs": 0.5461,
+        "mode": "patch",
+        "bytes": 7917,
+        "patchOperations": 2,
+        "prepareMs": 0.016799999999420834,
+        "replyBytes": 465,
+        "returnedObjects": 0,
+        "rpcMs": 0.9343000000008033,
+        "decodeMs": 0.023000000001047738,
+        "validateMs": 0.3143999999992957,
+        "replyValidationMs": 0.029099999999743886,
+        "upstreamMode": "patch",
+        "upstreamBytes": 8166,
+        "channel": "websocket",
+        "clientSerializeMs": 0.7999999970197678,
+        "clientPatchMs": 0,
+        "clientAckMs": 0,
+        "worldRows": 432,
+        "reusedRows": 430,
+        "clientApplyMs": 0,
+        "frontendMs": 2.899999998509884,
+        "callCount": 1
+      },
+      "renderer": {
+        "backend": "WebGPU",
+        "framebufferTextures": 0,
+        "adapter": {},
+        "vendor": "nvidia",
+        "renderer": "lovelace",
+        "errors": [],
+        "info": {
+          "calls": 9409,
+          "frameCalls": 14,
+          "drawCalls": 39,
+          "triangles": 257,
+          "points": 0,
+          "lines": 0,
+          "timestamp": 0
+        },
+        "compute": {
+          "calls": 0,
+          "frameCalls": 0,
+          "timestamp": 0
+        },
+        "particleResources": {},
+        "memory": {
+          "geometries": 14,
+          "textures": 28
+        }
+      },
+      "hud": [
+        {
+          "name": "Root",
+          "text": "3 / 30 / 1000 G   빚 9800110 FPS  최장 52ms탐색1F제작제작서를 보유한 아이템  (1~5 선택, Enter 제작, Q"
+        },
+        {
+          "name": "GoldText",
+          "text": "0 G   빚 9800"
+        },
+        {
+          "name": "Fps",
+          "text": "110 FPS  최장 52ms"
+        },
+        {
+          "name": "Title",
+          "text": "탐색"
+        },
+        {
+          "name": "CraftTitle",
+          "text": "제작"
+        },
+        {
+          "name": "CraftSub",
+          "text": "제작서를 보유한 아이템  (1~5 선택, Enter 제작, Q 닫기)"
+        },
+        {
+          "name": "CraftName",
+          "text": "회복 물약"
+        },
+        {
+          "name": "CraftEffect",
+          "text": "체력 1 회복"
+        },
+        {
+          "name": "CraftType",
+          "text": "소모 아이템"
+        },
+        {
+          "name": "CraftNeed",
+          "text": "필요 소재"
+        },
+        {
+          "name": "CraftCost",
+          "text": "약초 0 / 3    빈 병 1 / 1"
+        },
+        {
+          "name": "CraftConfirm",
+          "text": "제작하기"
+        },
+        {
+          "name": "CraftFooter",
+          "text": "제작 중에도 전투가 계속됩니다"
+        },
+        {
+          "name": "DialogName",
+          "text": "수금원"
+        },
+        {
+          "name": "TitleHint",
+          "text": "클릭하거나 아무 키나 눌러 시작"
+        },
+        {
+          "name": "SelectTitle",
+          "text": "누구의 빚을 갚을까?"
+        },
+        {
+          "name": "SelectName0",
+          "text": "1. 발렌"
+        },
+        {
+          "name": "SelectWeapon0",
+          "text": "검 · 부채꼴 베기, 적 탄환을 지움"
+        },
+        {
+          "name": "SelectDebt0",
+          "text": "빚 9,800 G"
+        },
+        {
+          "name": "SelectName1",
+          "text": "2. 셰리"
+        },
+        {
+          "name": "SelectWeapon1",
+          "text": "활 · 1초 장전, 한 발이 강함"
+        },
+        {
+          "name": "SelectDebt1",
+          "text": "빚 14,500 G"
+        },
+        {
+          "name": "SelectName2",
+          "text": "3. 알레아"
+        },
+        {
+          "name": "SelectWeapon2",
+          "text": "마탄 · 연사, 닿으면 작은 폭발"
+        },
+        {
+          "name": "SelectDebt2",
+          "text": "빚 31,700 G"
+        },
+        {
+          "name": "SelectHint",
+          "text": "1·2·3 또는 A·D로 고르고 Enter·E로 결정"
+        },
+        {
+          "name": "SelectConfirm",
+          "text": "결정"
+        },
+        {
+          "name": "EndingHint",
+          "text": "아무 키나 눌러 처음으로"
+        }
+      ],
+      "nativeProperties": {
+        "BossHp": 0,
+        "Bottle": 1,
+        "Character": 0,
+        "Crafted": 0,
+        "Debt": 9800,
+        "DoorHits": 0,
+        "Enchant": 0,
+        "Fatigue": 0,
+        "FatigueMax": 20,
+        "Flashbangs": 0,
+        "Gold": 0,
+        "HasReturnItem": false,
+        "Herb": 0,
+        "Hits": 0,
+        "HomeLevel": 1,
+        "Hp": 3,
+        "KeepProgress": false,
+        "Kills": 0,
+        "LastRepaid": 0,
+        "Layout": "[{\"hh\":6.0,\"hw\":6.0,\"kind\":\"Start\",\"links\":[5,2,1,-1],\"path\":0,\"row\":\"Start\",\"state\":0,\"x\":0.0,\"y\":0.0},{\"hh\":7.0,\"hw\":9.0,\"kind\":\"Combat\",\"links\":[0,-1,-1,3],\"path\":-1,\"row\":\"Combat1\",\"state\":0,\"x\":0.0,\"y\":-36.0},{\"hh\":7.0,\"hw\":6.0,\"kind\":\"Combat\",\"links\":[8,-1,-1,0],\"path\":-1,\"row\":\"Combat1\",\"state\":0,\"x\":36.0,\"y\":0.0},{\"hh\":9.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[4,1,-1,-1],\"path\":-1,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":-36.0},{\"hh\":8.0,\"hw\":10.0,\"kind\":\"Combat\",\"links\":[6,-1,3,-1],\"path\":-1,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":0.0},{\"hh\":7.0,\"hw\":7.0,\"kind\":\"Combat\",\"links\":[-1,-1,0,6],\"path\":1,\"row\":\"Combat1\",\"state\":0,\"x\":0.0,\"y\":36.0},{\"hh\":11.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[9,5,4,7],\"path\":2,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":36.0},{\"hh\":9.0,\"hw\":9.0,\"kind\":\"Shop\",\"links\":[-1,6,-1,-1],\"path\":-1,\"row\":\"Shop\",\"state\":0,\"x\":-72.0,\"y\":36.0},{\"hh\":7.0,\"hw\":7.0,\"kind\":\"Gather\",\"links\":[-1,-1,2,-1],\"path\":-1,\"row\":\"Gather\",\"state\":0,\"x\":36.0,\"y\":36.0},{\"hh\":7.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[-1,-1,6,10],\"path\":3,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":72.0},{\"hh\":14.0,\"hw\":14.0,\"kind\":\"Boss\",\"links\":[-1,9,-1,-1],\"path\":4,\"row\":\"Boss\",\"state\":0,\"x\":-72.0,\"y\":72.0}]",
+        "MaxHp": 3,
+        "Monster": 0,
+        "Ore": 0,
+        "Phase": 2,
+        "ReturnSuccess": false,
+        "Returning": false,
+        "RoomClears": 0,
+        "RoomIndex": 0,
+        "Seed": 7,
+        "Shots": 0,
+        "ShowFps": true,
+        "SofaLevel": 0,
+        "StartRoom": "",
+        "Swings": 0,
+        "WeaponLevel": 0
+      },
+      "heap": {
+        "used": 131111119,
+        "total": 178838759
+      },
+      "goalMet": true
+    },
+    {
+      "mode": "battle",
+      "targetFrameRate": 120,
+      "budgetMs": 8.333333333333334,
+      "overBudget": 46,
+      "frames": 600,
+      "fps": 119.20371915607296,
+      "intervalMs": {
+        "mean": 8.388999999997516,
+        "p50": 8.200000002980232,
+        "p95": 10.200000002980232
+      },
+      "workMs": {
+        "mean": 6.07133333325386,
+        "p50": 6.100000001490116,
+        "p95": 8.899999998509884
+      },
+      "simulationMs": {
+        "mean": 4.902333333417773,
+        "p95": 7.5
+      },
+      "renderSubmissionMs": {
+        "mean": 0.9994999997814497,
+        "p95": 1.2000000029802322
+      },
+      "over16ms": 0,
+      "over33ms": 0,
+      "objects": 432,
+      "nativeMean": {
+        "frontendMs": 3.32666666675359,
+        "invokeMs": 0.27378333333333343,
+        "patchMs": 0.2327091666666667,
+        "workerMs": 0.7909449999999997,
+        "serializeMs": 0,
+        "syncMs": 0.044340000000000004
+      },
+      "nativeLast": {
+        "invokeMs": 0.2712,
+        "parseMs": 0.0851,
+        "patchMs": 0.0939,
+        "restoreRows": 0,
+        "snapshotMs": 0.161,
+        "syncMs": 0.0553,
+        "workerMs": 0.6677,
+        "mode": "patch",
+        "bytes": 10175,
+        "patchOperations": 24,
+        "prepareMs": 0.02139999999963038,
+        "replyBytes": 465,
+        "returnedObjects": 0,
+        "rpcMs": 1.082700000000841,
+        "decodeMs": 0.07899999999972351,
+        "validateMs": 0.42590000000018335,
+        "replyValidationMs": 0.029500000000552973,
+        "upstreamMode": "patch",
+        "upstreamBytes": 10426,
+        "channel": "websocket",
+        "clientSerializeMs": 0.6999999955296516,
+        "clientPatchMs": 0.20000000298023224,
+        "clientAckMs": 0,
+        "worldRows": 432,
+        "reusedRows": 408,
+        "clientApplyMs": 0,
+        "frontendMs": 5,
+        "callCount": 1
+      },
+      "renderer": {
+        "backend": "WebGPU",
+        "framebufferTextures": 0,
+        "adapter": {},
+        "vendor": "nvidia",
+        "renderer": "lovelace",
+        "errors": [],
+        "info": {
+          "calls": 20347,
+          "frameCalls": 14,
+          "drawCalls": 41,
+          "triangles": 261,
+          "points": 0,
+          "lines": 0,
+          "timestamp": 0
+        },
+        "compute": {
+          "calls": 0,
+          "frameCalls": 0,
+          "timestamp": 0
+        },
+        "particleResources": {},
+        "memory": {
+          "geometries": 15,
+          "textures": 29
+        }
+      },
+      "hud": [
+        {
+          "name": "Root",
+          "text": "3 / 30 / 1000 G   빚 9800117 FPS  최장 15ms탐색1F제작제작서를 보유한 아이템  (1~5 선택, Enter 제작, Q"
+        },
+        {
+          "name": "GoldText",
+          "text": "0 G   빚 9800"
+        },
+        {
+          "name": "Fps",
+          "text": "117 FPS  최장 15ms"
+        },
+        {
+          "name": "Title",
+          "text": "탐색"
+        },
+        {
+          "name": "CraftTitle",
+          "text": "제작"
+        },
+        {
+          "name": "CraftSub",
+          "text": "제작서를 보유한 아이템  (1~5 선택, Enter 제작, Q 닫기)"
+        },
+        {
+          "name": "CraftName",
+          "text": "회복 물약"
+        },
+        {
+          "name": "CraftEffect",
+          "text": "체력 1 회복"
+        },
+        {
+          "name": "CraftType",
+          "text": "소모 아이템"
+        },
+        {
+          "name": "CraftNeed",
+          "text": "필요 소재"
+        },
+        {
+          "name": "CraftCost",
+          "text": "약초 0 / 3    빈 병 1 / 1"
+        },
+        {
+          "name": "CraftConfirm",
+          "text": "제작하기"
+        },
+        {
+          "name": "CraftFooter",
+          "text": "제작 중에도 전투가 계속됩니다"
+        },
+        {
+          "name": "DialogName",
+          "text": "수금원"
+        },
+        {
+          "name": "TitleHint",
+          "text": "클릭하거나 아무 키나 눌러 시작"
+        },
+        {
+          "name": "SelectTitle",
+          "text": "누구의 빚을 갚을까?"
+        },
+        {
+          "name": "SelectName0",
+          "text": "1. 발렌"
+        },
+        {
+          "name": "SelectWeapon0",
+          "text": "검 · 부채꼴 베기, 적 탄환을 지움"
+        },
+        {
+          "name": "SelectDebt0",
+          "text": "빚 9,800 G"
+        },
+        {
+          "name": "SelectName1",
+          "text": "2. 셰리"
+        },
+        {
+          "name": "SelectWeapon1",
+          "text": "활 · 1초 장전, 한 발이 강함"
+        },
+        {
+          "name": "SelectDebt1",
+          "text": "빚 14,500 G"
+        },
+        {
+          "name": "SelectName2",
+          "text": "3. 알레아"
+        },
+        {
+          "name": "SelectWeapon2",
+          "text": "마탄 · 연사, 닿으면 작은 폭발"
+        },
+        {
+          "name": "SelectDebt2",
+          "text": "빚 31,700 G"
+        },
+        {
+          "name": "SelectHint",
+          "text": "1·2·3 또는 A·D로 고르고 Enter·E로 결정"
+        },
+        {
+          "name": "SelectConfirm",
+          "text": "결정"
+        },
+        {
+          "name": "EndingHint",
+          "text": "아무 키나 눌러 처음으로"
+        }
+      ],
+      "nativeProperties": {
+        "BossHp": 0,
+        "Bottle": 1,
+        "Character": 0,
+        "Crafted": 0,
+        "Debt": 9800,
+        "DoorHits": 0,
+        "Enchant": 0,
+        "Fatigue": 0,
+        "FatigueMax": 20,
+        "Flashbangs": 0,
+        "Gold": 0,
+        "HasReturnItem": false,
+        "Herb": 0,
+        "Hits": 0,
+        "HomeLevel": 1,
+        "Hp": 3,
+        "KeepProgress": false,
+        "Kills": 0,
+        "LastRepaid": 0,
+        "Layout": "[{\"hh\":6.0,\"hw\":6.0,\"kind\":\"Start\",\"links\":[5,2,1,-1],\"path\":0,\"row\":\"Start\",\"state\":0,\"x\":0.0,\"y\":0.0},{\"hh\":7.0,\"hw\":9.0,\"kind\":\"Combat\",\"links\":[0,-1,-1,3],\"path\":-1,\"row\":\"Combat1\",\"state\":0,\"x\":0.0,\"y\":-36.0},{\"hh\":7.0,\"hw\":6.0,\"kind\":\"Combat\",\"links\":[8,-1,-1,0],\"path\":-1,\"row\":\"Combat1\",\"state\":0,\"x\":36.0,\"y\":0.0},{\"hh\":9.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[4,1,-1,-1],\"path\":-1,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":-36.0},{\"hh\":8.0,\"hw\":10.0,\"kind\":\"Combat\",\"links\":[6,-1,3,-1],\"path\":-1,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":0.0},{\"hh\":7.0,\"hw\":7.0,\"kind\":\"Combat\",\"links\":[-1,-1,0,6],\"path\":1,\"row\":\"Combat1\",\"state\":0,\"x\":0.0,\"y\":36.0},{\"hh\":11.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[9,5,4,7],\"path\":2,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":36.0},{\"hh\":9.0,\"hw\":9.0,\"kind\":\"Shop\",\"links\":[-1,6,-1,-1],\"path\":-1,\"row\":\"Shop\",\"state\":0,\"x\":-72.0,\"y\":36.0},{\"hh\":7.0,\"hw\":7.0,\"kind\":\"Gather\",\"links\":[-1,-1,2,-1],\"path\":-1,\"row\":\"Gather\",\"state\":0,\"x\":36.0,\"y\":36.0},{\"hh\":7.0,\"hw\":8.0,\"kind\":\"Combat\",\"links\":[-1,-1,6,10],\"path\":3,\"row\":\"Combat2\",\"state\":0,\"x\":-36.0,\"y\":72.0},{\"hh\":14.0,\"hw\":14.0,\"kind\":\"Boss\",\"links\":[-1,9,-1,-1],\"path\":4,\"row\":\"Boss\",\"state\":0,\"x\":-72.0,\"y\":72.0}]",
+        "MaxHp": 3,
+        "Monster": 0,
+        "Ore": 0,
+        "Phase": 2,
+        "ReturnSuccess": false,
+        "Returning": false,
+        "RoomClears": 0,
+        "RoomIndex": 0,
+        "Seed": 7,
+        "Shots": 0,
+        "ShowFps": true,
+        "SofaLevel": 0,
+        "StartRoom": "",
+        "Swings": 19,
+        "WeaponLevel": 0
+      },
+      "heap": {
+        "used": 85840895,
+        "total": 150245591
+      },
+      "goalMet": false
+    }
+  ],
+  "memory": {
+    "mixerBufferProof": {
+      "reads": 200,
+      "buses": 4,
+      "stableBuffers": 4,
+      "resizedBuffers": 5,
+      "high": 0.352774392735857,
+      "low": 0.014436442014063302,
+      "resized": 0.01396493248501489,
+      "nodesCleared": true,
+      "contextClosed": true
+    },
+    "forcedGC": false,
+    "diagnosticOnly": true,
+    "nativeAllocationSampling": true,
+    "heldNeutralKey": "5",
+    "records": [
+      {
+        "stage": "active-0",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 109568000,
+            "heapTotal": 58826752,
+            "heapUsed": 34920872,
+            "external": 10229980,
+            "arrayBuffers": 3517168
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 0.602,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 12.881880531311035,
+        "frame": 1466,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 20501,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 6.672,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 7,
+          "JSEventListeners": 1298,
+          "Nodes": 382,
+          "JSHeapUsedSize": 72188976,
+          "JSHeapTotalSize": 136462336
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4431872,
+            "WorkingSet64": 20815872
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 121503744,
+            "WorkingSet64": 109547520
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 42225664,
+            "WorkingSet64": 124915712
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 2609152,
+            "WorkingSet64": 10645504
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 418017280,
+            "WorkingSet64": 275484672
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15417344,
+            "WorkingSet64": 47009792
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 8015872,
+            "WorkingSet64": 21377024
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 294252544,
+            "WorkingSet64": 364167168
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15650816,
+            "WorkingSet64": 19017728
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13758464,
+            "WorkingSet64": 17248256
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9162752,
+            "WorkingSet64": 26611712
+          }
+        ],
+        "privateMiB": 904.82421875
+      },
+      {
+        "stage": "active-1",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 110821376,
+            "heapTotal": 58826752,
+            "heapUsed": 31372544,
+            "external": 10197794,
+            "arrayBuffers": 3484942
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 11.202,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 23.49825835571438,
+        "frame": 2737,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 38282,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 17.28,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 385,
+          "JSHeapUsedSize": 95347012,
+          "JSHeapTotalSize": 135110656
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4431872,
+            "WorkingSet64": 20815872
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 122318848,
+            "WorkingSet64": 110821376
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 42233856,
+            "WorkingSet64": 125059072
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 2609152,
+            "WorkingSet64": 10645504
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 397017088,
+            "WorkingSet64": 275836928
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15413248,
+            "WorkingSet64": 47005696
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 8015872,
+            "WorkingSet64": 21377024
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 277708800,
+            "WorkingSet64": 347631616
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15699968,
+            "WorkingSet64": 19161088
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 14028800,
+            "WorkingSet64": 17416192
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9166848,
+            "WorkingSet64": 26652672
+          }
+        ],
+        "privateMiB": 870.109375
+      },
+      {
+        "stage": "active-2",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 137515008,
+            "heapTotal": 92905472,
+            "heapUsed": 50492184,
+            "external": 10384790,
+            "arrayBuffers": 3671938
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 21.779,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 34.08953234253079,
+        "frame": 4004,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 56020,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 27.872,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 382,
+          "JSHeapUsedSize": 56109608,
+          "JSHeapTotalSize": 129232896
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4431872,
+            "WorkingSet64": 20824064
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 157646848,
+            "WorkingSet64": 137510912
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 41934848,
+            "WorkingSet64": 124854272
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3538944,
+            "WorkingSet64": 19652608
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 382013440,
+            "WorkingSet64": 271839232
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15323136,
+            "WorkingSet64": 47005696
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 8015872,
+            "WorkingSet64": 21377024
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 275103744,
+            "WorkingSet64": 346935296
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15667200,
+            "WorkingSet64": 19144704
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13996032,
+            "WorkingSet64": 17399808
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9166848,
+            "WorkingSet64": 26685440
+          }
+        ],
+        "privateMiB": 887.4609375
+      },
+      {
+        "stage": "active-3",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 137908224,
+            "heapTotal": 93167616,
+            "heapUsed": 33175440,
+            "external": 10225021,
+            "arrayBuffers": 3512169
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 32.369,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 44.67234288330376,
+        "frame": 5268,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 73703,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 38.461333333333336,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 381,
+          "JSHeapUsedSize": 52459508,
+          "JSHeapTotalSize": 125579264
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4431872,
+            "WorkingSet64": 20824064
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 157728768,
+            "WorkingSet64": 137863168
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 41910272,
+            "WorkingSet64": 124858368
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3538944,
+            "WorkingSet64": 19652608
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 370958336,
+            "WorkingSet64": 270553088
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15323136,
+            "WorkingSet64": 47005696
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 8015872,
+            "WorkingSet64": 21377024
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 270077952,
+            "WorkingSet64": 342429696
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15667200,
+            "WorkingSet64": 19144704
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13996032,
+            "WorkingSet64": 17399808
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9146368,
+            "WorkingSet64": 26681344
+          }
+        ],
+        "privateMiB": 872.16015625
+      },
+      {
+        "stage": "active-4",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 138674176,
+            "heapTotal": 93691904,
+            "heapUsed": 40336160,
+            "external": 10306461,
+            "arrayBuffers": 3593609
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 42.969,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 55.26428798218071,
+        "frame": 6536,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 91455,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 49.050666666666665,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 385,
+          "JSHeapUsedSize": 102825444,
+          "JSHeapTotalSize": 139157504
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4431872,
+            "WorkingSet64": 20824064
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 159277056,
+            "WorkingSet64": 138674176
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 41926656,
+            "WorkingSet64": 124874752
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3538944,
+            "WorkingSet64": 19652608
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 372035584,
+            "WorkingSet64": 271687680
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15372288,
+            "WorkingSet64": 47054848
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 8015872,
+            "WorkingSet64": 21377024
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 267468800,
+            "WorkingSet64": 341110784
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15667200,
+            "WorkingSet64": 19144704
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13996032,
+            "WorkingSet64": 17399808
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9146368,
+            "WorkingSet64": 26681344
+          }
+        ],
+        "privateMiB": 872.23828125
+      },
+      {
+        "stage": "active-5",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 138444800,
+            "heapTotal": 93691904,
+            "heapUsed": 46528368,
+            "external": 10368912,
+            "arrayBuffers": 3656060
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 53.557,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 65.86433441162109,
+        "frame": 7805,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 109195,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 59.650666666666666,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 383,
+          "JSHeapUsedSize": 69698076,
+          "JSHeapTotalSize": 139272192
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4395008,
+            "WorkingSet64": 20803584
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 158461952,
+            "WorkingSet64": 138420224
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 44654592,
+            "WorkingSet64": 138989568
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 373018624,
+            "WorkingSet64": 259743744
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 14483456,
+            "WorkingSet64": 46518272
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 269561856,
+            "WorkingSet64": 322195456
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15667200,
+            "WorkingSet64": 19144704
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13996032,
+            "WorkingSet64": 17399808
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9138176,
+            "WorkingSet64": 26955776
+          }
+        ],
+        "privateMiB": 875.65625
+      },
+      {
+        "stage": "active-6",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 138985472,
+            "heapTotal": 94216192,
+            "heapUsed": 46700232,
+            "external": 10376177,
+            "arrayBuffers": 3663325
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 1,
+              "spawnTemplates": 30,
+              "spawnObjects": 30
+            }
+          ]
+        },
+        "seconds": 64.128,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 76.4400634765625,
+        "frame": 9070,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 126905,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 15,
+            "textures": 29
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 70.232,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1295,
+          "Nodes": 388,
+          "JSHeapUsedSize": 121902708,
+          "JSHeapTotalSize": 159588352
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4395008,
+            "WorkingSet64": 20803584
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 159907840,
+            "WorkingSet64": 138981376
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 44642304,
+            "WorkingSet64": 139030528
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 381014016,
+            "WorkingSet64": 267739136
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 14536704,
+            "WorkingSet64": 46571520
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 298778624,
+            "WorkingSet64": 348815360
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15667200,
+            "WorkingSet64": 19144704
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 13996032,
+            "WorkingSet64": 17399808
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9138176,
+            "WorkingSet64": 26959872
+          }
+        ],
+        "privateMiB": 912.5625
+      },
+      {
+        "stage": "reopen-0",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 144805888,
+            "heapTotal": 99196928,
+            "heapUsed": 56832664,
+            "external": 10441363,
+            "arrayBuffers": 3728511
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 2,
+              "spawnTemplates": 60,
+              "spawnObjects": 60
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 2,
+              "spawnTemplates": 60,
+              "spawnObjects": 60
+            }
+          ]
+        },
+        "seconds": 67.038,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 2.1598997116088867,
+        "frame": 9272,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 129749,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 73.14133333333334,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 6,
+          "JSEventListeners": 1327,
+          "Nodes": 389,
+          "JSHeapUsedSize": 91170028,
+          "JSHeapTotalSize": 157720576
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 164474880,
+            "WorkingSet64": 144801792
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 46858240,
+            "WorkingSet64": 141819904
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 434671616,
+            "WorkingSet64": 273457152
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15093760,
+            "WorkingSet64": 47001600
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 328093696,
+            "WorkingSet64": 389103616
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 15245312,
+            "WorkingSet64": 19664896
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 14606336,
+            "WorkingSet64": 17838080
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9138176,
+            "WorkingSet64": 26959872
+          }
+        ],
+        "privateMiB": 998.875
+      },
+      {
+        "stage": "reopen-1",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 144875520,
+            "heapTotal": 98934784,
+            "heapUsed": 22604824,
+            "external": 7495395,
+            "arrayBuffers": 782543
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 3,
+              "spawnTemplates": 90,
+              "spawnObjects": 90
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 3,
+              "spawnTemplates": 90,
+              "spawnObjects": 90
+            }
+          ]
+        },
+        "seconds": 69.779,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 2.06080011215806,
+        "frame": 9471,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 132551,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 75.90133333333333,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 7,
+          "JSEventListeners": 3041,
+          "Nodes": 727,
+          "JSHeapUsedSize": 163902204,
+          "JSHeapTotalSize": 214093824
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 164323328,
+            "WorkingSet64": 144875520
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 45158400,
+            "WorkingSet64": 140124160
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 464130048,
+            "WorkingSet64": 285220864
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15171584,
+            "WorkingSet64": 47214592
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 417923072,
+            "WorkingSet64": 472776704
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 16326656,
+            "WorkingSet64": 20008960
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 14508032,
+            "WorkingSet64": 17944576
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9121792,
+            "WorkingSet64": 26943488
+          }
+        ],
+        "privateMiB": 1111.8671875
+      },
+      {
+        "stage": "reopen-2",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 143794176,
+            "heapTotal": 92254208,
+            "heapUsed": 43988656,
+            "external": 7176706,
+            "arrayBuffers": 463854
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 4,
+              "spawnTemplates": 120,
+              "spawnObjects": 120
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 4,
+              "spawnTemplates": 120,
+              "spawnObjects": 120
+            }
+          ]
+        },
+        "seconds": 72.657,
+        "game": "15535073-8984-4eef-a65f-27b2b39af493",
+        "time": 2.152699778750539,
+        "frame": 9672,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 135381,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 78.752,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 7,
+          "JSEventListeners": 1350,
+          "Nodes": 398,
+          "JSHeapUsedSize": 103660408,
+          "JSHeapTotalSize": 206675968
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 162291712,
+            "WorkingSet64": 143794176
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 46465024,
+            "WorkingSet64": 141438976
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 486404096,
+            "WorkingSet64": 286773248
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15462400,
+            "WorkingSet64": 47448064
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 371535872,
+            "WorkingSet64": 433364992
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 16764928,
+            "WorkingSet64": 20234240
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 14655488,
+            "WorkingSet64": 18538496
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9121792,
+            "WorkingSet64": 26943488
+          }
+        ],
+        "privateMiB": 1089.015625
+      },
+      {
+        "stage": "reset-0",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 145887232,
+            "heapTotal": 90808320,
+            "heapUsed": 22716040,
+            "external": 7502209,
+            "arrayBuffers": 793598
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 5,
+              "spawnTemplates": 150,
+              "spawnObjects": 150
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 5,
+              "spawnTemplates": 150,
+              "spawnObjects": 150
+            }
+          ]
+        },
+        "seconds": 75.427,
+        "game": "511404db-3176-4530-be3b-ca502780c013",
+        "time": 1.3464997844696045,
+        "frame": 9873,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 138224,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 1.352,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 11,
+          "JSEventListeners": 3081,
+          "Nodes": 738,
+          "JSHeapUsedSize": 163834424,
+          "JSHeapTotalSize": 230895616
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 162549760,
+            "WorkingSet64": 145887232
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 45719552,
+            "WorkingSet64": 140779520
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 496427008,
+            "WorkingSet64": 295956480
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15396864,
+            "WorkingSet64": 47484928
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 452534272,
+            "WorkingSet64": 506150912
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 16764928,
+            "WorkingSet64": 20881408
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 15212544,
+            "WorkingSet64": 18710528
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9142272,
+            "WorkingSet64": 27320320
+          }
+        ],
+        "privateMiB": 1175.84375
+      },
+      {
+        "stage": "reset-1",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 192081920,
+            "heapTotal": 158441472,
+            "heapUsed": 31626320,
+            "external": 6892770,
+            "arrayBuffers": 209363
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 6,
+              "spawnTemplates": 180,
+              "spawnObjects": 180
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": true,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 6,
+              "spawnTemplates": 180,
+              "spawnObjects": 180
+            }
+          ]
+        },
+        "seconds": 78.252,
+        "game": "bc856773-bfbc-4171-8fb5-fe9afebc138d",
+        "time": 1.3533998727798462,
+        "frame": 10071,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 141025,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 1.3706666666666667,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 5,
+          "JSEventListeners": 1475,
+          "Nodes": 396,
+          "JSHeapUsedSize": 121732016,
+          "JSHeapTotalSize": 214827008
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 225722368,
+            "WorkingSet64": 192077824
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 45690880,
+            "WorkingSet64": 140783616
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 511811584,
+            "WorkingSet64": 293560320
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 14954496,
+            "WorkingSet64": 47042560
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 385884160,
+            "WorkingSet64": 448663552
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 19210240,
+            "WorkingSet64": 21401600
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 15912960,
+            "WorkingSet64": 18604032
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9162752,
+            "WorkingSet64": 27344896
+          }
+        ],
+        "privateMiB": 1189.76953125
+      },
+      {
+        "stage": "reset-2",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 193486848,
+            "heapTotal": 158838784,
+            "heapUsed": 32646880,
+            "external": 7007262,
+            "arrayBuffers": 300056
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 7,
+              "spawnTemplates": 210,
+              "spawnObjects": 210
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 7,
+              "spawnTemplates": 210,
+              "spawnObjects": 210
+            }
+          ]
+        },
+        "seconds": 79.864,
+        "game": "6d4561e2-5d7d-4637-b39e-e8cb63c28038",
+        "time": 0.2039000004529953,
+        "frame": 10141,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 142034,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 0.22133333333333333,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 9,
+          "JSEventListeners": 3158,
+          "Nodes": 722,
+          "JSHeapUsedSize": 160276516,
+          "JSHeapTotalSize": 233721856
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 226316288,
+            "WorkingSet64": 193138688
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 45875200,
+            "WorkingSet64": 140992512
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 521101312,
+            "WorkingSet64": 287670272
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15376384,
+            "WorkingSet64": 47366144
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 346771456,
+            "WorkingSet64": 414703616
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 17551360,
+            "WorkingSet64": 21684224
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 15392768,
+            "WorkingSet64": 18522112
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9183232,
+            "WorkingSet64": 27365376
+          }
+        ],
+        "privateMiB": 1160.4140625
+      },
+      {
+        "stage": "reset-settled",
+        "nativeHost": {
+          "pid": 40216,
+          "node": "v24.15.0",
+          "memory": {
+            "rss": 193740800,
+            "heapTotal": 159625216,
+            "heapUsed": 31744584,
+            "external": 7022864,
+            "arrayBuffers": 315658
+          },
+          "modules": [
+            {
+              "module": 0,
+              "workerPid": 35000,
+              "busy": false,
+              "requestObjects": 0,
+              "transportObjects": 432,
+              "sharedWorld": false,
+              "spawnContexts": 7,
+              "spawnTemplates": 210,
+              "spawnObjects": 210
+            },
+            {
+              "module": 1,
+              "workerPid": 45008,
+              "busy": false,
+              "requestObjects": 432,
+              "transportObjects": 432,
+              "sharedWorld": true,
+              "spawnContexts": 7,
+              "spawnTemplates": 210,
+              "spawnObjects": 210
+            }
+          ]
+        },
+        "seconds": 100.46,
+        "game": "6d4561e2-5d7d-4637-b39e-e8cb63c28038",
+        "time": 20.810653686523438,
+        "frame": 12595,
+        "objects": 432,
+        "renderer": {
+          "backend": "WebGPU",
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 176364,
+            "frameCalls": 14,
+            "drawCalls": 39,
+            "triangles": 257,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 14,
+            "textures": 28
+          }
+        },
+        "audio": {
+          "state": "running",
+          "voices": 1,
+          "clock": 20.832,
+          "errors": []
+        },
+        "metrics": {
+          "AudioHandlers": 4,
+          "JSEventListeners": 1295,
+          "Nodes": 387,
+          "JSHeapUsedSize": 95056348,
+          "JSHeapTotalSize": 178069504
+        },
+        "processes": [
+          {
+            "Id": 6416,
+            "ProcessName": "Game",
+            "Role": "Game",
+            "PrivateMemorySize64": 4399104,
+            "WorkingSet64": 20811776
+          },
+          {
+            "Id": 40216,
+            "ProcessName": "node",
+            "Role": "node",
+            "PrivateMemorySize64": 226639872,
+            "WorkingSet64": 193740800
+          },
+          {
+            "Id": 34164,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1265664,
+            "WorkingSet64": 8556544
+          },
+          {
+            "Id": 22900,
+            "ProcessName": "msedgewebview2",
+            "Role": "msedgewebview2",
+            "PrivateMemorySize64": 45744128,
+            "WorkingSet64": 140914688
+          },
+          {
+            "Id": 34072,
+            "ProcessName": "msedgewebview2",
+            "Role": "crashpad-handler",
+            "PrivateMemorySize64": 3186688,
+            "WorkingSet64": 13627392
+          },
+          {
+            "Id": 39980,
+            "ProcessName": "msedgewebview2",
+            "Role": "gpu-process",
+            "PrivateMemorySize64": 439816192,
+            "WorkingSet64": 270635008
+          },
+          {
+            "Id": 26340,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 15028224,
+            "WorkingSet64": 47144960
+          },
+          {
+            "Id": 15724,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 7897088,
+            "WorkingSet64": 21663744
+          },
+          {
+            "Id": 33028,
+            "ProcessName": "msedgewebview2",
+            "Role": "renderer",
+            "PrivateMemorySize64": 370065408,
+            "WorkingSet64": 429912064
+          },
+          {
+            "Id": 45008,
+            "ProcessName": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "Role": "4792bd49b1299bd5c7c9664fc254da195e9eb46e6268ab860e19b5fe73f22c99",
+            "PrivateMemorySize64": 17551360,
+            "WorkingSet64": 21684224
+          },
+          {
+            "Id": 39396,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1220608,
+            "WorkingSet64": 8327168
+          },
+          {
+            "Id": 35000,
+            "ProcessName": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "Role": "98c30d2a8b8d7c02e0f788115b4d06656e3616a71d3a1ab661d009a05d6f3b5f",
+            "PrivateMemorySize64": 15392768,
+            "WorkingSet64": 18522112
+          },
+          {
+            "Id": 41156,
+            "ProcessName": "conhost",
+            "Role": "conhost",
+            "PrivateMemorySize64": 1245184,
+            "WorkingSet64": 8331264
+          },
+          {
+            "Id": 20416,
+            "ProcessName": "msedgewebview2",
+            "Role": "utility",
+            "PrivateMemorySize64": 9183232,
+            "WorkingSet64": 27365376
+          }
+        ],
+        "privateMiB": 1104.9609375
+      }
+    ],
+    "limitations": "Short natural-GC active/travel/same-renderer F12-reset control with private idleResetSeconds=0; sampling has overhead, no 8-hour stability or physical device claim."
+  },
+  "exit": {
+    "code": 0,
+    "signal": null
+  },
+  "errors": [],
+  "goalMet": false
+}

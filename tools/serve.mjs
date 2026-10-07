@@ -95,6 +95,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/rename'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.rename(data.from,data.to);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=JSON.parse(await readBody()),files=await readNativeFiles(owner);checkOwner(owner);const result=await host.build(data.header,data.source,{files});if(project!==owner||stopping){host.close();throw changedProject();}return json(res,result);}
     if(url.pathname==='/api/native/call'&&req.method==='POST'){const data=JSON.parse(await readBody(4194304)),result=await host.call(data.token,data.request);checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/native/inspect'&&req.method==='GET')return json(res,host.inspectResources());
     return json(res,{error:'API 경로가 없어요.'},404);
   }
   const pathname=decodeURIComponent(url.pathname);

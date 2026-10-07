@@ -38,6 +38,7 @@ export async function startPlayerServer({root=path.resolve(import.meta.dirname,'
     if(url.pathname==='/api/storage'&&req.method==='PUT'){const data=await body(req);if(data.id!==manifest.id)throw Error('프로젝트 ID 오류');return json(res,await store.patch(data.items));}
     if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=await body(req),build=builds.get(hash(JSON.stringify([data.header,data.source])));if(!build)throw Error('패키지에 등록되지 않은 C++ 모듈');return json(res,build);}
     if(url.pathname==='/api/native/call'&&req.method==='POST'){const data=await body(req);return json(res,await native.call(data.token,data.request));}
+    if(url.pathname==='/api/native/inspect'&&req.method==='GET'&&(manifest.configuration==='development'||process.env.HB_PLAYER_SMOKE==='1'))return json(res,native.inspectResources());
     if(url.pathname==='/api/player/report'&&req.method==='POST'){const data=await body(req);if(manifest.configuration==='development'||process.env.HB_PLAYER_SMOKE==='1'){report=data;await fs.writeFile(path.join(userData,'runtime-report.json'),JSON.stringify(data));}return json(res,{ok:true});}
     if(url.pathname==='/api/player/report'&&req.method==='GET'&&manifest.configuration==='development')return json(res,report);
     let name;if(url.pathname==='/api/file'&&req.method==='GET'){const requested=q.get('path');if(!safe(requested))throw Error('에셋 경로 오류');const resolved=resolveBuildPath(requested,manifest.redirects);if(entries.has(resolved))name='Content/'+resolved;}
