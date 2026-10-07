@@ -22,10 +22,8 @@ export function nativeSpawnRequest(vm,build,catalog){
 }
 export function validateSpawnTemplates(context,metadata,resolve){
   if(!context||typeof context!=='object'||!context.templates||Array.isArray(context.templates)||!context.aliases||Array.isArray(context.aliases)||Object.keys(context.templates).length>1024||Object.keys(context.aliases).length>1024)throw Error('C++ 생성 카탈로그 형식 오류');
-  let count=0;
   for(const [key,t] of Object.entries(context.templates)){
-    if(key.length>1000||!key||t?.key!==key||!Array.isArray(t.objects)||!t.objects.length||t.objects.length>128||!t.objects.some(o=>o.id===t.root)||new Set(t.objects.map(o=>o.id)).size!==t.objects.length||!t.pool||typeof t.pool.enabled!=='boolean'||!Number.isInteger(t.pool.maxInactive)||t.pool.maxInactive<0||t.pool.maxInactive>1000)throw Error('C++ 생성 템플릿 형식 오류');
-    count+=t.objects.length;if(count>10000)throw Error('C++ 생성 카탈로그 크기 제한 초과');
+    if(key.length>1000||!key||t?.key!==key||!Array.isArray(t.objects)||!t.objects.length||!t.objects.some(o=>o.id===t.root)||new Set(t.objects.map(o=>o.id)).size!==t.objects.length||!t.pool||typeof t.pool.enabled!=='boolean'||!Number.isInteger(t.pool.maxInactive)||t.pool.maxInactive<0||t.pool.maxInactive>1000)throw Error('C++ 생성 템플릿 형식 오류');
     for(const o of t.objects){if(!o||typeof o.id!=='string'||o.id.length>160||!validValue('transform',o)||o.components!==undefined&&!validComponents(o.components))throw Error('C++ 생성 기본값 오류');const c=metadata.classes.find(c=>c.name===o.nativeClass);if(o.nativeClass!==undefined&&!c)throw Error('C++ 생성 클래스 오류');for(const [name,value] of Object.entries(o.nativeProperties||{})){const p=c?.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 생성 속성 오류: '+name);}}
     if(t.nativeBindings!==undefined){if(!resolve&&t.nativeBindings.length)throw Error('C++ 생성 모듈 검증기가 없어요.');validateNativeBindings({objects:t.objects,nativeBindings:t.nativeBindings},resolve);}
     for(const [id,names] of Object.entries(t.references||{})){const o=t.objects.find(o=>o.id===id),row=t.nativeBindings?.find(r=>r.id===id),c=row?resolve(row.token)?.metadata.classes.find(c=>c.name===row.className):metadata.classes.find(c=>c.name===o?.nativeClass);if(!o||!Array.isArray(names)||names.length>100||names.some(name=>!c?.properties.some(p=>p.name===name&&p.type==='object')))throw Error('C++ 생성 객체 참조 스키마 오류');}
@@ -56,7 +54,6 @@ export function spawnReplyObjects(request,result,metadata,context){
       const c=metadata.classes.find(c=>c.name===source.nativeClass);if(state.nativeProperties!==undefined&&(!c||!state.nativeProperties||Array.isArray(state.nativeProperties)||typeof state.nativeProperties!=='object'||Object.entries(state.nativeProperties).some(([name,v])=>{const p=c.properties.find(p=>p.name===name);return !p||!(p.array?Array.isArray(v)&&v.length<=100000&&v.every(x=>validValue(p.type,x)):validValue(p.type,v));})))throw Error('C++ 생성 속성 출력 오류');
       objects.set(id,{...state});
     }
-    if(objects.size>2000)throw Error('C++ 생성 월드 크기 제한 초과');
   }
   return objects;
 }

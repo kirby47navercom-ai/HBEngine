@@ -10,7 +10,7 @@ export function nativeBindings(objects,builds,bindings,request,metadata){
 }
 export function validateNativeBindings(request,resolve){
   const rows=request.nativeBindings;if(rows===undefined)return;
-  if(!Array.isArray(rows)||rows.length>2000||new Set(rows.map(r=>r?.id)).size!==rows.length)throw Error('C++ 모듈 바인딩 범위 오류');
+  if(!Array.isArray(rows)||new Set(rows.map(r=>r?.id)).size!==rows.length)throw Error('C++ 모듈 바인딩 범위 오류');
   for(const row of rows){const module=resolve(row?.token),c=module?.metadata.classes.find(c=>c.name===row.className),state=request.objects.find(o=>o.id===row.id),properties=row.properties??(state?.nativeClass===row.className?state.nativeProperties:undefined);if(!c||!state||!properties||typeof properties!=='object'||Array.isArray(properties)||Object.keys(row).some(k=>!['id','token','className','properties','overrides'].includes(k)))throw Error('C++ 모듈 바인딩 오류');
     for(const [name,value] of Object.entries(properties)){const p=c.properties.find(p=>p.name===name);if(!p||!(p.array?Array.isArray(value)&&value.length<=100000&&value.every(v=>validValue(p.type,v)):validValue(p.type,value)))throw Error('C++ 모듈 속성 오류: '+name);}
     if(!Array.isArray(row.overrides)||row.overrides.length>500||row.overrides.some(id=>!c.functions.some(f=>f.event!=='none'&&row.className+'.'+f.name===id)))throw Error('C++ 모듈 이벤트 오류');

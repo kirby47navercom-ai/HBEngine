@@ -30,10 +30,10 @@ import {AnimationMontagePlayer} from './animation-montage-runtime.js';
 import {deliverAnimationNotify} from './animation-notify-runtime.js';
 import {ParticleSimulation,perceptionSystems,findNavigationPath,hasGameplayTag,matchTagQuery,validGameplayTag} from './scene-systems.js';
 export function validRuntimeSave(data,vm){
-  return data?.version===1&&Array.isArray(data.objects)&&data.objects.length<=1000
+  return data?.version===1&&Array.isArray(data.objects)
     && new Set(data.objects.map(o=>o?.id)).size===data.objects.length
     && data.objects.every(o=>o&&typeof o.id==='string'&&typeof o.visible==='boolean'&&validValue('transform',o)&&['position','rotation','scale'].every(k=>o[k].every(v=>Math.abs(v)<=10000))&&o.scale.every(v=>v>=.01)&&vm.object(o.id)?.kind===o.kind&&['poolActive','poolVisible','poolCollision'].every(k=>o[k]===undefined||typeof o[k]==='boolean'))
-    && Array.isArray(data.variables)&&data.variables.length<=500&&data.variables.every(state=>{
+    && Array.isArray(data.variables)&&data.variables.every(state=>{
       const binding=vm.bindings.find(b=>b.self===state?.self);return binding&&state.values&&typeof state.values==='object'&&!Array.isArray(state.values)&&Object.entries(state.values).every(([id,value])=>{const variable=binding.root.variables.find(v=>v.id===id);return variable&&(variable.container==='array'?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(variable.type,v)):validValue(variable.type,value));});
     });
 }
@@ -119,7 +119,7 @@ export function engineOperations(hooks){
       for(const op of operations)if(op.key==='sceneSpawn'&&op.args.spawnStates){
         const template=hooks.spawnCatalog?.templates.get(op.args.blueprintOrPrefab);
         if(!template||op.args.spawnStates.length!==template.objects.length)throw Error('C++ 생성 템플릿 상태 오류');
-        for(const state of op.args.spawnStates){if(!spawnTransformValid(state)||typeof state.id!=='string')throw Error('C++ 생성 상태 오류');if(vm.object(state.id))continue;if(vm.objects.length>=2000)throw Error('실행 오브젝트 2000개 제한 초과');const object=structuredClone(state);vm.objects.push(object);stagedNativeSpawns.add(object);added.push(object);}
+        for(const state of op.args.spawnStates){if(!spawnTransformValid(state)||typeof state.id!=='string')throw Error('C++ 생성 상태 오류');if(vm.object(state.id))continue;const object=structuredClone(state);vm.objects.push(object);stagedNativeSpawns.add(object);added.push(object);}
       }
       for(let i=0;i<operations.length;){
         const op=operations[i];let end=i+1;
@@ -213,7 +213,7 @@ export function engineOperations(hooks){
     const foundActors=findRuntimeActors(vm.objects,key,a);if(foundActors!==undefined)return foundActors;
     if(key==='poolActive')return {return:target(a,b,vm).poolActive!==false};
     if(key==='poolAcquire'){
-      if(!Array.isArray(a.pool)||a.pool.length>500||!validValue('transform',a.transform)||!a.transform.scale.every(v=>v>=.01))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
+      if(!Array.isArray(a.pool)||a.pool.some(id=>!validValue('object',id))||!validValue('transform',a.transform)||!a.transform.scale.every(v=>v>=.01))throw Error('오브젝트 풀과 변환을 확인하세요.');const o=a.pool.map(id=>vm.object(id)).find(o=>o&&o.poolActive===false);if(a.selected!==undefined&&(o?.id||null)!==a.selected)throw Error('C++ 오브젝트 풀 선택 상태가 변경됐어요.');if(!o)return {return:null};
       o.poolActive=true;o.visible=o.poolVisible!==false;o.collisionEnabled=o.poolCollision!==false;Object.assign(o,structuredClone(a.transform));o.velocity=[0,0,0];o.angularVelocity=[0,0,0];hooks.update(o);for(const binding of vm.bindings.filter(b=>b.self===o.id)){binding.input.clear();binding.input.previous.clear();for(const [key,value] of vm.inputState.keys)binding.input.set(key,value);binding.input.sample(false);binding.input.endFrame();}if(objectComponents(o).some(c=>['UIWidget','AudioSource','Animator','AnimationGraph','BehaviorTree','StateMachine','MontagePlayer','SequencePlayer'].includes(c.type)&&c.properties?.enabled!==false)){await startActor(o,vm);await systems.start(vm,o.id);}for(const binding of vm.bindings.filter(b=>b.self===o.id))await vm.custom(binding,'OnPoolAcquire');return {return:o.id};
     }
     if(key==='poolRelease'){
@@ -227,7 +227,6 @@ export function engineOperations(hooks){
       const reuse=template.pool.enabled&&vm.objects.find(o=>o.spawnAsset===template.key&&o.spawnRoot===o.id&&o.poolActive===false&&(!a.actorId||o.id===a.actorId)),existing=reuse?vm.objects.filter(o=>o.spawnRoot===reuse.id):undefined,instance=instantiateSpawn(template,a.transform,reuse?.id||a.spawnId||a.actorId||undefined,existing);
       if(a.actorId!==undefined&&(typeof a.actorId!=='string'||a.actorId.length>160)||!reuse&&vm.object(instance.rootId)&&!stagedNativeSpawns.has(vm.object(instance.rootId)))throw Error('생성 오브젝트 ID가 중복되었거나 잘못됐어요.');
       if(a.spawnId!==undefined&&a.spawnId!==instance.rootId)throw Error('C++ 생성 풀 선택 상태가 변경됐어요.');
-      if(!reuse&&vm.objects.length+instance.objects.filter(o=>!stagedNativeSpawns.has(vm.object(o.id))).length>2000)throw Error('실행 오브젝트 2000개 제한 초과');
       if(a.spawnStates!==undefined){if(!Array.isArray(a.spawnStates)||a.spawnStates.length!==instance.objects.length)throw Error('C++ 생성 상태 오류');for(const state of a.spawnStates){const o=instance.objects.find(o=>o.id===state.id);if(!o||!spawnTransformValid(state))throw Error('C++ 생성 변환 상태 오류');for(const k of ['position','rotation','scale','nativeProperties'])if(state[k]!==undefined)o[k]=structuredClone(state[k]);}}
       const previousStates=new Map((existing||[]).map(o=>[o.id,structuredClone(o)]));
       const spawned=instance.objects.map(o=>{const previous=vm.object(o.id);if(previous){if(stagedNativeSpawns.has(previous)){stagedNativeSpawns.delete(previous);return previous;}for(const k of Object.keys(previous))delete previous[k];Object.assign(previous,o);return previous;}vm.objects.push(o);return o;});

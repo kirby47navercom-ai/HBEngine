@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {createAsset,validAsset} from '../prototype/asset-documents.js';
+import {validScene} from '../prototype/model.js';
+import {pasteSceneObjects,removeSceneObjects,sceneRows} from '../prototype/scene-editor.js';
+import {validPhysicsSnapshot} from '../prototype/physics-world.js';
+import {prepareGameplay} from '../prototype/scene-runtime.js';
+import {BlueprintRuntime} from '../prototype/blueprint-runtime.js';
+import {engineOperations,validRuntimeSave} from '../prototype/engine-services.js';
+import {validateSpawnTemplates} from '../prototype/native-spawn.js';
+import {ProjectService} from './project-service.mjs';
+import {NativeHost} from './native-host.mjs';
+
+const dir=await fs.mkdtemp(path.resolve(import.meta.dirname,'../native/build/object-capacity-')),cases=[];
+const actor=id=>({id,name:id,kind:'empty',visible:true,position:[0,0,0],rotation:[0,0,0],scale:[1,1,1],components:[]});
+const objects=Array.from({length:10000},(_,i)=>actor('actor-'+i));
+const scene=createAsset('scene','Large');scene.objects=objects;
+assert.ok(validScene(scene));const invalid=structuredClone(scene);invalid.objects.at(-1).id=invalid.objects[0].id;assert.equal(validScene(invalid),false);
+const project=await new ProjectService(path.join(dir,'Project')).init();await project.write('Assets/Large.hbscene.json',JSON.stringify(scene));const loaded=JSON.parse(await fs.readFile(await project.resolve('Assets/Large.hbscene.json'),'utf8'));assert.equal(loaded.objects.length,10000);assert.ok(validScene(loaded));cases.push('10,000 scene actors save and reload; duplicate IDs still rejected');
+const copies=[];pasteSceneObjects(copies,objects);assert.equal(copies.length,10000);assert.equal(sceneRows(copies).length,10000);removeSceneObjects(copies,copies.map(o=>o.id));assert.equal(copies.length,0);
+const chain=Array.from({length:1200},(_,i)=>({...actor('branch-'+i),...(i?{parent:'branch-'+(i-1)}:{})}));assert.equal(sceneRows(chain,'branch-1199').length,1200);cases.push('10,000 copy/paste/delete and 1,200-level hierarchy search');
+assert.ok(validPhysicsSnapshot(objects));const malformed=structuredClone(objects);malformed.at(-1).position[0]=NaN;assert.equal(validPhysicsSnapshot(malformed),false);cases.push('10,000-object physics query snapshot; invalid transform rejected');
+const frameworkObjects=structuredClone(objects),framework=await prepareGameplay(frameworkObjects,{gameConfig:{autoSpawnPlayer:true},readAsset:async()=>null});assert.ok(frameworkObjects.length>10000);assert.ok(framework.gameplay.pawn);cases.push('game mode, state, controller and pawn added to a 10,000-actor scene');
+const template={key:'Actor',root:'root',objects:[actor('root')],pool:{enabled:false,maxInactive:0}},context={templates:{Actor:template},aliases:{}};
+const prefab=createAsset('prefab','LargePrefab');prefab.objects=Array.from({length:2001},(_,i)=>({...actor(i?'child-'+i:'root'),...(i?{parent:'root'}:{})}));assert.ok(validAsset('prefab',prefab));assert.equal(validateSpawnTemplates({templates:{LargePrefab:{...template,key:'LargePrefab',objects:prefab.objects}},aliases:{}},{classes:[]}).templates.LargePrefab.objects.length,2001);cases.push('2,001-object prefab accepted by scene and C++ template validation');
+const memory=new Map(),services=engineOperations({headless:true,storage:{getItem:k=>memory.get(k),setItem:(k,v)=>memory.set(k,v)},storageKey:k=>k,spawnCatalog:{templates:new Map([['Actor',template]]),bindings:new Map()},build:()=>null,update(){},remove(){},physicsOptions:{backend:'legacy',gravity:[0,0,0]}}),vm=new BlueprintRuntime([],[],services),host=new NativeHost();
+await vm.start();for(const object of objects)vm.objects.push(structuredClone(object));const binding={self:objects[0].id,root:{components:[]}},transform={position:[1,2,0],rotation:[0,0,0],scale:[1,1,1]};
+try{
+  const spawned=(await services.operation('sceneSpawn',{blueprintOrPrefab:'Actor',transform},binding,vm)).return;assert.ok(vm.object(spawned));assert.equal(vm.objects.length,10001);cases.push('Blueprint runtime spawns beyond 10,000 actors');
+  vm.objects.at(-1).poolActive=false;const pool=vm.objects.map(o=>o.id);assert.equal((await services.operation('poolAcquire',{pool,transform},binding,vm)).return,spawned);await assert.rejects(services.operation('poolAcquire',{pool:[{}],transform},binding,vm));cases.push('10,001-entry pool acquisition; malformed reference rejected');
+  await services.operation('saveGame',{slot:'large'},binding,vm);vm.objects[0].position=[9,9,9];await services.operation('loadGame',{slot:'large'},binding,vm);assert.deepEqual(vm.objects[0].position,[0,0,0]);assert.equal(JSON.parse(memory.get('hbengine.savegame.large')).objects.length,10001);cases.push('10,001 actors SaveGame/LoadGame');
+  const variables=Array.from({length:2001},(_,i)=>({self:'owner-'+i,values:{value:i}})),bindings=variables.map(row=>({self:row.self,root:{variables:[{id:'value',type:'float',container:'single'}]}}));assert.ok(validRuntimeSave({version:1,objects:[],variables},{bindings}));cases.push('2,001 actor variable owners in runtime save validation');
+  const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass CapacityProbe : public hb::Library { public: HB_FUNCTION(BlueprintCallable) static hb::Actor* Make(); };',source='#include "User.h"\nhb::Actor* CapacityProbe::Make(){return hb::Scene::Spawn("Actor",{});}';
+  const build=await host.build(header,source),request={key:'nativeCall',nativeId:'CapacityProbe.Make',args:{},objects:vm.objects,activeActors:vm.objects.map(o=>o.id),spawnPrefix:randomUUID(),spawnTemplates:context};
+  const reply=await host.call(build.token,request);assert.ok(reply.outputs.result);await vm.applyNativeOperations(reply.operations,binding);assert.equal(vm.objects.length,10002);assert.ok(vm.object(reply.outputs.result));cases.push('actual compiled C++ Scene::Spawn and complete world transport beyond 10,000 actors');
+  const badRequest={...request,objects:[objects[0],objects[0]]};await assert.rejects(host.call(build.token,badRequest),/객체 상태/);cases.push('C++ duplicate object IDs rejected');
+}finally{host.close();await vm.stop();services.dispose();}
+await fs.writeFile(path.join(dir,'acceptance.json'),JSON.stringify({passed:true,sceneObjects:10000,runtimeObjects:10002,cases,performanceBenchmark:false},null,2));console.log(JSON.stringify({passed:true,dir,cases:cases.length}));

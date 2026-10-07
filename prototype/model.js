@@ -28,7 +28,7 @@ export const validSurface = value => !!value && /^#[0-9a-f]{6}$/i.test(value.col
   && ['roughness','metalness'].every(k=>Number.isFinite(value[k])&&value[k]>=0&&value[k]<=1)
   && Number.isFinite(value.light)&&value.light>=0&&value.light<=10;
 export function validScene(value) {
-  return value && value.version === 1 && Array.isArray(value.objects) && value.objects.length <= 500
+  return value && value.version === 1 && Array.isArray(value.objects)
     && new Set(value.objects.map(o => o?.id)).size === value.objects.length
     && value.objects.every(o => o && typeof o.id === 'string' && typeof o.name === 'string' && o.name.length <= 200
       && (o.kind!=='model'||typeof o.asset==='string'&&o.asset.length<=1000&&!o.asset.includes('..')) && (o.blueprint===undefined||typeof o.blueprint==='string'&&o.blueprint.length<=80) && ['blueprintAsset','materialAsset'].every(k=>o[k]===undefined||typeof o[k]==='string'&&o[k].length<=1000&&!o[k].includes('..')) && (o.materialSurface===undefined||validSurface(o.materialSurface)) && kinds.has(o.kind) && typeof o.visible === 'boolean'

@@ -419,3 +419,10 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 - 원본 C++ TopDownShooter.cpp의 외부 변경은 보존했고 한 번 동결한 사본으로 이전/이후를 비교했어요. 원본773파일 모두 불변이라고 잘못 표시하지 않으며 원본·검사기·사용자창·프로필을 수정하거나 복원하지 않았어요. 세부 근거/본문 범위/증거 docs/research/EDITOR_PLAY_ASSET_LOOKUP_040.md·native/build/boss-asset-result-040.json예요. AI 여러문서/ C++ 묶음 수정·저장 준비도 유지하며 아직 구현 완료로 계산하지 않아요.
 
 - 2026-10-07 사용자 설치 완료: sourcec150496/bundled03c655dc25a2bb6, C:/Users/kirby/HBEngine/Versions/d03c655dc25a2bb6/HBEngine.exe.1786파일/변경24SHA와 실제 회귀 창의 app.js가 일치하며 모바일·패키지·네이티브 실행소스는478e610 검증본 그대로예요. 기존ff86 설치 manifest/프로필·adb14204 및 사용자 창을 보존했고 바로가기/HKCU 프로젝트 실행 경로를 갱신했어요. 다음 실행부터 적용돼요. 증거 native/build/boss-asset-user-install-040.json.
+
+
+### 2026-10-07 — 오브젝트 개수 제한 제거(042)
+
+- 500→1,000처럼 대체하지 않았어요. 편집기/장면·프리팹 저장/프레임워크의500, Spawn·C++ 월드·모듈·물리 스냅숏의2,000, SaveGame의1,000/변수소유자500, 직접풀500, C++템플릿128/합산10,000 개수 제한을 제거했어요. ID·타입·변환·경로와 통신 크기 검증은 유지해요.
+- 실제11검사: 1만 장면 저장/재로드·복사/삭제·프레임워크, 1,200계층 검색, BP/컴파일C++생성 후10,002월드, 10,001풀·Save/Load, 2,001변수 소유자/프리팹 및 잘못된 값 거절. 증거 native/build/object-capacity-KF4Vxz/acceptance.json·docs/research/OBJECT_COUNT_LIMITS_042.md. 1만은 새 제한이나120fps 성능 합격이 아니에요. 원본게임/창/프로필을 건드리지 않았어요.
+- 하던 AI 다중 에셋/C++ 묶음 저장 작업(041)은 계속해요. 이 기록으로 누적 전체 작업을 완료 처리하지 않아요.
