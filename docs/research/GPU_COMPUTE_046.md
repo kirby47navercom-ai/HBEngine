@@ -38,3 +38,13 @@
 - [unity-crossplatform](https://docs.unity3d.com/6000.0/Documentation/Manual/class-ComputeShader-crossplatform.html): best practices and platform differences (web lines127–145); texture-format table and remainder not claimed fully read.
 
 원문 HTTP200·크기·SHA·읽기 범위는 `native/build/gpu-compute-docs-046/manifest.json`이에요. 다운로드·상위 포털·검색 결과·링크 목록을 전체 본문/API 분석 완료로 세지 않아요. GPU는 병렬 계산의 한 경로이며 C++/물리/IPC/UI 병목까지 자동으로 해소한다고 판단하지 않아요.
+
+
+## 046 사용자 설치 기록 — 2026-10-07
+
+production c775bb5를 C:/Users/kirby/HBEngine/Versions/b82a5239ad35ec47에 갱신했어요.1806파일·변경15SHA·바로가기/.hbproject 연결·이전f906 버전/프로필/프로세스 보존 PASS. 실제사용자 창을 시작/종료하지 않았어요. native/build/gpu-compute-user-install-046.json.
+
+
+## 047 프레임 리소스 추가 — 2026-10-07
+
+컴퓨트 경로에3개 순환 상수 버퍼·동적WRITE_DISCARD 업로드,3개 결과 슬롯·완료query·대기 없는 비동기회수·가득 찬 슬롯 보존·reset/해제를 구현했어요. C++/BP 제출·회수 함수와 실제 release Player의2D/3D 경로 PASS. 공용 파티클 렌더러는 동적 버퍼의 활성 범위만 재업로드하고 배열을 재사용해요. GPU코어90zRwE·실제Player0EJH77·공용Renderer검사 PASS/currentSHA일치. 프레임FPS/전체렉/모바일GPU/네이티브씬렌더 이식 완료라고 세지 않아요. 자세한근거/검증은 research/FRAME_RESOURCES_047.md에 있어요. 설치는 검증source를 커밋한 뒤 불변 버전으로 갱신해요.

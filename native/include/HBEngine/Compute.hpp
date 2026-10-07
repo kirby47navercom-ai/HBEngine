@@ -6,6 +6,7 @@
 #include <cstring>
 #include <limits>
 #include <mutex>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -22,6 +23,7 @@
 #endif
 
 namespace hb::gpu {
+struct FrameResult {std::uint64_t sequence=0;std::vector<float> values;};
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 namespace detail {
 template<class T> struct Com {
@@ -54,11 +56,25 @@ public:
 class Kernel {
     friend class Device;
     detail::Com<ID3D11ComputeShader> shader;
-    detail::Com<ID3D11Buffer> constants;
+    std::array<detail::Com<ID3D11Buffer>,3> constants;
     ID3D11Device* owner=nullptr;UINT constantBytes=0;
+    std::size_t constantSlot=0,constantAllocations=0;
     std::vector<float> padded;
 public:
     Kernel()=default;Kernel(Kernel&&)=default;Kernel& operator=(Kernel&&)=default;
+    std::size_t constantBufferAllocations() const{return constantAllocations;}
+};
+class FrameResources {
+    friend class Device;
+    struct Frame {detail::Com<ID3D11Buffer> staging;detail::Com<ID3D11Query> completion;std::uint64_t sequence=0;};
+    std::array<Frame,3> frames;
+    ID3D11Device* owner=nullptr;UINT byteSize=0;
+    std::size_t head=0,tail=0,inFlight=0;
+    std::uint64_t serial=0;
+public:
+    FrameResources()=default;FrameResources(FrameResources&&)=default;FrameResources& operator=(FrameResources&&)=default;
+    std::size_t pending() const{return inFlight;}
+    static constexpr std::size_t capacity(){return 3;}
 };
 class Device {
     detail::Com<ID3D11Device> device;
@@ -86,15 +102,41 @@ public:
         std::lock_guard<std::mutex> lock(mutex);if(!k.shader.p||k.owner!=device.p)throw std::runtime_error("Compute kernel belongs to another device or was moved");std::vector<ID3D11UnorderedAccessView*> uavs;std::vector<ID3D11ShaderResourceView*> srvs;
         for(auto* b:outputs){if(!b)throw std::runtime_error("Compute output is null");owns(*b);for(auto* old:uavs)if(old==b->uav.p)throw std::runtime_error("Compute output is bound twice");uavs.push_back(b->uav.p);}
         for(auto* b:inputs){if(!b)throw std::runtime_error("Compute input is null");owns(*b);for(auto* out:outputs)if(out==b)throw std::runtime_error("Compute buffer cannot be read/write in separate bindings");srvs.push_back(b->srv.p);}
-        if(!constants.empty()){const UINT padded=static_cast<UINT>((constants.size()+3)/4*16);if(k.constantBytes!=padded){D3D11_BUFFER_DESC desc{};desc.ByteWidth=padded;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_CONSTANT_BUFFER;detail::Com<ID3D11Buffer> buffer;detail::check(device->CreateBuffer(&desc,nullptr,&buffer.p),"Compute constants");k.constants=std::move(buffer);k.constantBytes=padded;k.padded.resize(padded/sizeof(float));}std::fill(k.padded.begin(),k.padded.end(),0.f);std::copy(constants.begin(),constants.end(),k.padded.begin());context->UpdateSubresource(k.constants.p,0,nullptr,k.padded.data(),0,0);}
-        auto* cb=constants.empty()?nullptr:k.constants.p;context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(k.shader.p,nullptr,0);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),nullptr);if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());context->Dispatch(x,y,z);
+        ID3D11Buffer* cb=nullptr;
+        if(!constants.empty()){
+            const UINT padded=static_cast<UINT>((constants.size()+3)/4*16);
+            if(k.constantBytes!=padded){
+                D3D11_BUFFER_DESC desc{};desc.ByteWidth=padded;desc.Usage=D3D11_USAGE_DYNAMIC;desc.BindFlags=D3D11_BIND_CONSTANT_BUFFER;desc.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;
+                std::array<detail::Com<ID3D11Buffer>,3> buffers;for(auto& buffer:buffers)detail::check(device->CreateBuffer(&desc,nullptr,&buffer.p),"Compute frame constants");
+                k.padded.resize(padded/sizeof(float));k.constants=std::move(buffers);k.constantBytes=padded;k.constantAllocations+=3;
+            }
+            std::fill(k.padded.begin(),k.padded.end(),0.f);std::copy(constants.begin(),constants.end(),k.padded.begin());cb=k.constants[k.constantSlot].p;
+            D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Compute frame upload");std::memcpy(mapped.pData,k.padded.data(),padded);context->Unmap(cb,0);k.constantSlot=(k.constantSlot+1)%k.constants.size();
+        }
+        context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(k.shader.p,nullptr,0);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),nullptr);if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());context->Dispatch(x,y,z);
         std::fill(uavs.begin(),uavs.end(),nullptr);std::fill(srvs.begin(),srvs.end(),nullptr);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),nullptr);if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());cb=nullptr;context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(nullptr,nullptr,0);detail::check(device->GetDeviceRemovedReason(),"Compute device lost");
     }
     std::vector<float> read(Buffer& b){std::lock_guard<std::mutex> lock(mutex);owns(b);if(!b.staging.p){D3D11_BUFFER_DESC desc{};desc.ByteWidth=b.byteSize;desc.Usage=D3D11_USAGE_STAGING;desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;detail::check(device->CreateBuffer(&desc,nullptr,&b.staging.p),"Compute readback buffer");}std::vector<float> values(b.size());context->CopyResource(b.staging.p,b.resource.p);D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(context->Map(b.staging.p,0,D3D11_MAP_READ,0,&mapped),"Compute readback");std::memcpy(values.data(),mapped.pData,b.byteSize);context->Unmap(b.staging.p,0);return values;}
+    FrameResources createFrameResources(Buffer& b){
+        std::lock_guard<std::mutex> lock(mutex);owns(b);FrameResources result;D3D11_BUFFER_DESC desc{};desc.ByteWidth=b.byteSize;desc.Usage=D3D11_USAGE_STAGING;desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;D3D11_QUERY_DESC query{};query.Query=D3D11_QUERY_EVENT;
+        for(auto& frame:result.frames){detail::check(device->CreateBuffer(&desc,nullptr,&frame.staging.p),"Compute frame readback");detail::check(device->CreateQuery(&query,&frame.completion.p),"Compute frame completion");}result.owner=device.p;result.byteSize=b.byteSize;return result;
+    }
+    bool enqueueFrame(FrameResources& resources,Buffer& b){
+        std::lock_guard<std::mutex> lock(mutex);owns(b);if(resources.owner!=device.p||resources.byteSize!=b.byteSize||!resources.frames[0].staging.p)throw std::runtime_error("Compute frame resources device/size invalid");
+        if(resources.inFlight==resources.capacity())return false;
+        auto& frame=resources.frames[resources.tail];context->CopyResource(frame.staging.p,b.resource.p);context->End(frame.completion.p);context->Flush();frame.sequence=++resources.serial;resources.tail=(resources.tail+1)%resources.capacity();++resources.inFlight;return true;
+    }
+    std::optional<FrameResult> pollFrame(FrameResources& resources){
+        std::lock_guard<std::mutex> lock(mutex);if(resources.owner!=device.p||!resources.frames[0].staging.p)throw std::runtime_error("Compute frame resources belong to another device or were moved");
+        if(!resources.inFlight)return std::nullopt;
+        auto& frame=resources.frames[resources.head];BOOL complete=FALSE;const auto result=context->GetData(frame.completion.p,&complete,sizeof(complete),D3D11_ASYNC_GETDATA_DONOTFLUSH);if(result==S_FALSE)return std::nullopt;detail::check(result,"Compute frame completion");if(!complete)return std::nullopt;
+        FrameResult out{frame.sequence,std::vector<float>(resources.byteSize/sizeof(float))};D3D11_MAPPED_SUBRESOURCE mapped{};const auto status=context->Map(frame.staging.p,0,D3D11_MAP_READ,D3D11_MAP_FLAG_DO_NOT_WAIT,&mapped);if(status==DXGI_ERROR_WAS_STILL_DRAWING)return std::nullopt;detail::check(status,"Compute completed frame map");std::memcpy(out.values.data(),mapped.pData,resources.byteSize);context->Unmap(frame.staging.p,0);resources.head=(resources.head+1)%resources.capacity();--resources.inFlight;return out;
+    }
 };
 #else
 class Buffer {public: std::size_t size() const{return 0;}};
-class Kernel {};
+class Kernel {public: std::size_t constantBufferAllocations() const{return 0;}};
+class FrameResources {public: std::size_t pending() const{return 0;}static constexpr std::size_t capacity(){return 3;}};
 class Device {
 public:
     static bool available() noexcept{return false;}
@@ -105,13 +147,16 @@ public:
     Kernel compile(const std::string&,const std::string& = "Main"){throw std::runtime_error("Compute unavailable");}
     void dispatch(Kernel&,const std::vector<Buffer*>&,std::uint32_t,std::uint32_t=1,std::uint32_t=1,const std::vector<Buffer*>& = {},const std::vector<float>& = {}){throw std::runtime_error("Compute unavailable");}
     std::vector<float> read(Buffer&){throw std::runtime_error("Compute unavailable");}
+    FrameResources createFrameResources(Buffer&){throw std::runtime_error("Compute unavailable");}
+    bool enqueueFrame(FrameResources&,Buffer&){throw std::runtime_error("Compute unavailable");}
+    std::optional<FrameResult> pollFrame(FrameResources&){throw std::runtime_error("Compute unavailable");}
 };
 #endif
 
 // Persistent GPU state. step() dispatches without reading particle positions back.
 // read() is explicit because CPU readback waits for the GPU and copies the buffer.
 class Particles {
-    Device& device;Kernel kernel;Buffer buffer;
+    Device& device;Kernel kernel;Buffer buffer;std::optional<FrameResources> frames;
     static constexpr const char* source=R"(
 struct Particle { float4 positionAge; float4 velocityLife; };
 RWStructuredBuffer<Particle> particles : register(u0);
@@ -130,7 +175,11 @@ public:
     Particles(Device& device,const std::vector<float>& values):device(device),kernel(device.compile(source)),buffer(device.create(valid(values),8*sizeof(float))){}
     void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");if(delta)device.dispatch(kernel,{&buffer},static_cast<std::uint32_t>((count()+63)/64),1,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}
     std::vector<float> read(){return device.read(buffer);}
-    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));}
+    bool enqueueReadback(){if(!frames)frames.emplace(device.createFrameResources(buffer));return device.enqueueFrame(*frames,buffer);}
+    std::optional<FrameResult> pollReadback(){return frames?device.pollFrame(*frames):std::nullopt;}
+    std::size_t pendingReadbacks() const{return frames?frames->pending():0;}
+    std::size_t constantBufferAllocations() const{return kernel.constantBufferAllocations();}
+    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));frames.reset();}
     std::size_t count() const{return buffer.size()/8;}
 };
 }
