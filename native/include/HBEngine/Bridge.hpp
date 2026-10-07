@@ -432,11 +432,12 @@ inline std::vector<Vec3> Navigation::GetPath(Actor* target){auto& state=gameplay
 inline std::vector<Actor*> Perception::GetTargets(Actor* target){std::vector<Actor*> result;auto& states=gameplayField(target,"perception");if(states.is_array())for(const auto& state:states)if(state.value("sensed",false))result.push_back(bridgeActor(state.at("id")));return result;}
 inline void Perception::Forget(Actor* target){engineCommand("perceptionForget",{{"target",bridgeId(target)}});gameplayField(target,"perception")=Json::array();}
 inline void Perception::ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag){engineCommand("reportNoise",{{"target",bridgeId(target)},{"position",position},{"loudness",loudness},{"radius",radius},{"tag",tag}});}
-inline void Particles::Play(Actor* target){engineCommand("particlePlay",{{"target",bridgeId(target)}});}
-inline void Particles::Stop(Actor* target,bool clear){engineCommand("particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
-inline void Particles::Pause(Actor* target,bool paused){engineCommand("particlePause",{{"target",bridgeId(target)},{"paused",paused}});}
-inline void Particles::Emit(Actor* target,int count){engineCommand("particleEmit",{{"target",bridgeId(target)},{"count",count}});}
-inline int Particles::GetCount(Actor* target){auto& state=gameplayField(target,"particles");return state.is_null()?0:state.value("count",0);}
+inline void particleCommand(Actor* target,const char* key,const Json& args){auto& state=gameplayField(target,"particles");if(state.is_object()&&state.value("backend",std::string{}).find("WebGPU")==0)engineQuery(key,args);else engineCommand(key,args);}
+inline void Particles::Play(Actor* target){particleCommand(target,"particlePlay",{{"target",bridgeId(target)}});}
+inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
+inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}
+inline void Particles::Emit(Actor* target,int count){particleCommand(target,"particleEmit",{{"target",bridgeId(target)},{"count",count}});}
+inline int Particles::GetCount(Actor* target){auto& state=gameplayField(target,"particles");return state.is_null()?0:state.value("backend",std::string{}).find("WebGPU")==0?engineQuery("particleCount",{{"target",bridgeId(target)}}).get<int>():state.value("count",0);}
 inline Json& bridgeTags(Actor* target){auto* state=bridgeStateFields(target,{"tags"});if(!state)throw std::runtime_error("missing tag target");auto& tags=(*state)["tags"];if(tags.is_null())tags=Json::array();return tags;}
 inline std::vector<std::string> Tags::Get(Actor* target){return bridgeTags(target).get<std::vector<std::string>>();}
 inline void Tags::Add(Actor* target,const std::string& tag){engineCommand("tagAdd",{{"target",bridgeId(target)},{"tag",tag}});auto& tags=bridgeTags(target);if(std::find(tags.begin(),tags.end(),Json(tag))==tags.end())tags.push_back(tag);}

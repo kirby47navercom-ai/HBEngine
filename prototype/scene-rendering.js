@@ -12,11 +12,12 @@ import {TwoDRendering,spriteEffectsUniforms} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {cacheAssetReader} from './runtime-storage.js';
 import {light2DUniforms} from './two-d-lighting.js';
+import {checkGPUObject} from './game-renderer.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
-export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error}){
+export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer}){
   read=cacheAssetReader(read);
   const twoD=new TwoDRendering(),bloom=new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
   const textureSources=new Map();let textureBytes=0,textureEpoch=0;
@@ -77,11 +78,13 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     cache.delete(key);cache.set(key,Promise.resolve(base));while(cache.size>32){const [old,pending]=cache.entries().next().value;cache.delete(old);pending.then(value=>release(group,value)).catch(()=>{});}return map;
   }
   async function particles(group,p){
+    if(gameRenderer?.hbParticles){const map=p.texture?await texture(p.texture):null;if(map)own(group,map);if(group.userData.disposed)return;const simulation=gameRenderer.hbParticles(group,p,map);own(group,simulation);group.userData.particleState={simulation,properties:p,gpu:true};return;}
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(p.maxParticles*3),3).setUsage(THREE.DynamicDrawUsage));geometry.setAttribute('particleColor',new THREE.BufferAttribute(new Float32Array(p.maxParticles*4),4).setUsage(THREE.DynamicDrawUsage));geometry.setAttribute('particleSize',new THREE.BufferAttribute(new Float32Array(p.maxParticles),1).setUsage(THREE.DynamicDrawUsage));geometry.setDrawRange(0,0);own(group,geometry);
     const map=p.texture?await texture(p.texture):null;if(map)own(group,map);const material=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:p.blend==='additive'?THREE.AdditiveBlending:THREE.NormalBlending,uniforms:{map:{value:map},hasMap:{value:!!map},pixelScale:{value:1},orthographic:{value:false},viewportHeight:{value:1},sizeLimits:{value:new THREE.Vector2(p.minParticleSize,p.maxParticleSize)}},vertexShader:'attribute vec4 particleColor; attribute float particleSize; varying vec4 tint; uniform float pixelScale; uniform bool orthographic; uniform float viewportHeight; uniform vec2 sizeLimits; void main(){tint=particleColor;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_Position=projectionMatrix*mv;float pixels=clamp(particleSize*pixelScale/(orthographic?1.0:max(.001,-mv.z)),sizeLimits.x*viewportHeight,sizeLimits.y*viewportHeight);gl_PointSize=max(1.0,pixels);if(pixels<=0.0)tint.a=0.0;}',fragmentShader:'uniform sampler2D map;uniform bool hasMap;varying vec4 tint;\n#include <clipping_planes_pars_fragment>\nvoid main(){\n#include <clipping_planes_fragment>\nvec4 tex=hasMap?texture2D(map,vec2(gl_PointCoord.x,1.0-gl_PointCoord.y)):vec4(1.0,1.0,1.0,1.0-smoothstep(.35,.5,length(gl_PointCoord-.5)));gl_FragColor=tint*tex;if(gl_FragColor.a<.001)discard;\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}'});own(group,material);const mesh=new THREE.Points(geometry,material);mesh.frustumCulled=false;mesh.userData.objectId=group.userData.objectId;mesh.userData.draw2dId='particles';mesh.userData.particleRenderer=true;mesh.userData.draw2d={sortingLayer:p.sortingLayer||'default',sortingOrder:p.sortingOrder||0,maskInteraction:p.maskInteraction||'none'};mesh.renderOrder=p.sortingOrder;const viewport=new THREE.Vector2();mesh.onBeforeRender=(renderer,_scene,camera)=>{renderer.getDrawingBufferSize(viewport);material.uniforms.viewportHeight.value=viewport.y;material.uniforms.sizeLimits.value.set(p.minParticleSize,p.maxParticleSize);material.uniforms.pixelScale.value=viewport.y*camera.projectionMatrix.elements[5]/2;material.uniforms.orthographic.value=!!camera.isOrthographicCamera;};group.add(mesh);group.userData.particleState={simulation:new ParticleSimulation(p),geometry,properties:p};if(!p.playOnStart)group.userData.particleState.simulation.playing=false;
   }
   function particleSnapshot(object,simulation){const state=current(object.id)?.userData.particleState;if(state)state.simulation=simulation;}
   function writeParticles(group,state,camera){
+    if(state.gpu)return;
     const list=state.simulation.particles,p=state.properties,count=Math.min(list.length,p.maxParticles),position=state.geometry.attributes.position,color=state.geometry.attributes.particleColor,size=state.geometry.attributes.particleSize;
     group.updateWorldMatrix(true,false);
     let order;
@@ -107,6 +110,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   }
   function adopt(group,child){child.traverse(node=>{if(node.geometry)own(group,node.geometry);if(node.isLight)own(group,node);for(const m of node.material?(Array.isArray(node.material)?node.material:[node.material]):[]){own(group,m);for(const v of Object.values(m))if(v?.isTexture)own(group,v);}node.userData.objectId=group.userData.objectId;});group.add(child);}
   async function material(object,path,slot){
+    if(gameRenderer?.hbBackend==='webgpu')throw Error('노드 머테리얼은 WebGL2 렌더러를 사용하세요.');
     const group=current(object.id);if(!group)return;const token=group.userData.materialRequest=(group.userData.materialRequest||0)+1,data=await resolveMaterialAsset(await read(path),read);if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed)return;
     const result=createThreeMaterial(THREE,data,{fileUrl,onError:error});replaceMaterials(group,result,slot);group.userData.materialData=data;
   }
@@ -163,6 +167,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     }
   }
   async function build(object,group){
+    checkGPUObject(gameRenderer,object);
     group.userData.spriteActor=object;const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
     group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
@@ -178,7 +183,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,rig?.sprite||p.sprite||object.spriteAsset);
       if(component.type==='TilemapRenderer'&&p.visible!==false)await tilemap(group,p.tilemap||object.tilemapAsset,p,object.runtimeTilemap);
       if(component.type==='Decal')await decal(group,p);
-      if(component.type==='ParticleSystem')await particles(group,p);
+      if(component.type==='ParticleSystem'){await particles(group,p);const state=group.userData.particleState?.simulation;if(state?.debugState)object.gameplayDebug={...object.gameplayDebug,particles:state.debugState()};}
       if(component.type==='NavigationGrid'&&p.debug){const axes=p.plane==='XY'?[0,1]:[0,2],points=[];for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]){const v=[0,0,0];v[axes[0]]=x*p.extent[axes[0]];v[axes[1]]=y*p.extent[axes[1]];points.push(new THREE.Vector3(...v));}const geometry=new THREE.BufferGeometry().setFromPoints(points),material=new THREE.LineBasicMaterial({color:0x63c8ad});own(group,geometry);own(group,material);const line=new THREE.Line(geometry,material);line.userData.editorHelper=true;group.add(line);}
       if(component.type==='Camera'){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}
       if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);own(group,light);light.castShadow=p.castShadow;if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}
@@ -188,5 +193,5 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed)writeParticles(group,state,camera);}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
+  return {build,dispose,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed)writeParticles(group,state,camera);}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>renderer.hbBackend==='webgpu'?renderer.render(scene,camera):bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
 }

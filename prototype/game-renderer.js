@@ -1,0 +1,35 @@
+import * as THREE from 'three';
+import {objectComponents,componentDefaults} from './scene-components.js';
+import {resolveSceneEnvironment} from './scene-environment.js';
+
+export async function createGameRenderer(canvas,backend='webgl2',onError){
+  if(!['webgl2','webgpu'].includes(backend))throw Error('실행 렌더러 설정 오류');
+  const renderer=backend==='webgpu'?await(await import('./gpu-particles.js')).createGPURenderer(canvas):new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.hbBackend=backend;renderer.hbOnError=onError;renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  return renderer;
+}
+export function checkGPUObject(renderer,object){
+  if(renderer?.hbBackend!=='webgpu')return;
+  const reject=feature=>{throw Error(object.name+': '+feature+'은 WebGL2 렌더러를 사용하세요.');};
+  if(object.materialAsset)reject('노드 머테리얼');
+  for(const component of objectComponents(object)){
+    const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
+    if(['Light2D','SpriteMask','ShadowCaster2D','CompositeShadowCaster2D','ExponentialHeightFog','SkyAtmosphere','SkyLight','VolumetricCloud','Bloom'].includes(component.type))reject(component.type);
+    if(component.type==='PostProcessVolume'&&p.bloomEnabled)reject('블룸');
+    if(component.type==='MeshRenderer'&&p.material)reject('노드 머테리얼');
+    if(['SpriteRenderer','TilemapRenderer'].includes(component.type)&&(p.shading==='lit2d'||p.maskInteraction&&p.maskInteraction!=='none'||p.emissiveIntensity>0))reject('2D 조명·마스크·발광');
+    if(component.type==='Camera'&&p.pixelPerfect)reject('픽셀 퍼펙트');
+    if(component.type==='ParticleSystem'&&(p.sortMode!=='none'||p.maskInteraction!=='none'))reject('입자 정렬·마스크');
+  }
+}
+export function checkGPUScene(renderer,data){
+  if(renderer.hbBackend!=='webgpu')return;
+  if(data.runtime?.renderBackend&&data.runtime.renderBackend!=='webgpu')throw Error('장면 이동에서는 실행 렌더러를 바꿀 수 없어요.');
+  const environment=resolveSceneEnvironment(data.environment,data.surface,data.objects);
+  if(environment.sky||environment.fog&&!environment.fog.legacy||environment.ambient.realTimeCapture)throw Error('하늘·높이 안개·환경 캡처는 WebGL2 렌더러를 사용하세요.');
+  data.objects.forEach(object=>checkGPUObject(renderer,object));
+}
+export function gameRendererInfo(renderer){
+  if(renderer.hbBackend==='webgpu'){const device=renderer.backend.device;return {backend:'WebGPU',adapter:device.adapterInfo,vendor:device.adapterInfo?.vendor,renderer:device.adapterInfo?.architecture,errors:[...renderer.hbGPUErrors],info:{...renderer.info.render},compute:{...renderer.info.compute},particleResources:{...renderer.hbParticleResources},memory:{...renderer.info.memory}};}
+  const gl=renderer.getContext();return {backend:'WebGL2',programs:renderer.info.programs.map(p=>({runnable:p.diagnostics?.runnable!==false})),vendor:gl.getParameter(gl.VENDOR),renderer:gl.getParameter(gl.RENDERER),info:{...renderer.info.render},memory:{...renderer.info.memory}};
+}

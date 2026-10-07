@@ -66,8 +66,8 @@ export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
   for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g)){
     if(match[1]==='ws'){async function collect(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await collect(f);else if(/\.(?:js|mjs|json)$/.test(e.name)||e.name==='LICENSE')seen.add(f);}}await collect(path.join(root,'node_modules/ws'));}
-    const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
-    if(specifier==='three'||specifier.startsWith('three/addons/'))seen.add(path.join(root,'node_modules/three/package.json'));
+    const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier==='three/webgpu'?'node_modules/three/build/three.webgpu.js':specifier==='three/tsl'?'node_modules/three/build/three.tsl.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
+    if(specifier==='three'||specifier.startsWith('three/'))seen.add(path.join(root,'node_modules/three/package.json'));
     if(dependency)await moduleClosure(dependency,seen);
   }
   return seen;
