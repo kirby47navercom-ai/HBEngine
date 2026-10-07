@@ -12,10 +12,9 @@ export function checkGPUObject(renderer,object){
   const reject=feature=>{throw Error(object.name+': '+feature+'은 WebGL2 렌더러를 사용하세요.');};
   for(const component of objectComponents(object)){
     const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
-    if(['Light2D','SpriteMask','ShadowCaster2D','CompositeShadowCaster2D'].includes(component.type))reject(component.type);
-    if(['SpriteRenderer','TilemapRenderer'].includes(component.type)&&(p.shading==='lit2d'||p.maskInteraction&&p.maskInteraction!=='none'||p.emissiveIntensity>0))reject('2D 조명·마스크·발광');
-    if(component.type==='Camera'&&p.pixelPerfect)reject('픽셀 퍼펙트');
-    if(component.type==='ParticleSystem'&&(p.sortMode!=='none'||p.maskInteraction!=='none'))reject('입자 정렬·마스크');
+    if(['Light2D','ShadowCaster2D','CompositeShadowCaster2D'].includes(component.type))reject(component.type);
+    if(['SpriteRenderer','TilemapRenderer'].includes(component.type)&&p.shading==='lit2d')reject('2D 조명');
+    if(component.type==='ParticleSystem'&&p.sortMode!=='none')reject('입자 정렬');
   }
 }
 export function checkGPUScene(renderer,data){

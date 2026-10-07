@@ -14,6 +14,7 @@
     "test:compute-window": "node tools/check-gpu-compute-window.mjs",
     "test:gpu-render": "node tools/check-gpu-render.mjs",
     "test:gpu-scene": "node tools/check-gpu-scene.mjs",
+    "test:gpu-2d": "node tools/check-gpu-scene.mjs --2d",
     "test:gpu-materials": "node tools/check-gpu-scene.mjs --materials",
     "test:light-blends": "node tools/check-light-blend-styles.mjs",
     "test:project-native": "node tools/check-project-native.mjs",

@@ -188,3 +188,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 
 
 2026-10-07 후속: [051 GPU 머테리얼·환경](GPU_MATERIAL_ENVIRONMENT_051.md)에 Unreal 인스턴스/Unity17.0.4 Blackboard 자체 본문과 설치 Three r180의 부분 소유 경로 대조를 기록해요. GPU53연산+Surface·C++/BP·실제 환경 픽셀·자원 해제 검증과 전체corpus/실기기/전체FPS/메모리 목표를 구분해요. 추가 관련 문서·기능을 발견 대기열로 유지하고, 선행 목표 완료 뒤 설치/그다음 추가 연구 목표 순서를 WORK_ORDER_051.md에 기록해요.
+
+
+## 052 GPU 2D 스프라이트·마스크·픽셀 정렬 — 2026-10-07
+
+기존 Sprite/Tilemap/Particle 마스크·SortingGroup/범위·발광·C++ Flash·카메라 픽셀 정렬을 GPU 실행에 연결했어요. 실제 release Player GPU BkkAjH / GL HBMYkk 픽셀·자원 반환·분리 원본 보존 PASS. 상세와 본문/API 읽기 범위는 docs/research/GPU_2D_052.md예요. 전체 선행 목표 완료 뒤 설치, 이후 추가 연구 목표 순서를 유지해요.
