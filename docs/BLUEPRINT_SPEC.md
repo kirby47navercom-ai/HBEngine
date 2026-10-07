@@ -279,3 +279,8 @@ production c775bb5를 C:/Users/kirby/HBEngine/Versions/b82a5239ad35ec47에 갱�
 ## 048 사용자 설치 갱신 완료 — 2026-10-07
 
 검증 production 3316dc90a1e8b1c3d52513bdc1b00951ef178d89를 C:/Users/kirby/HBEngine/Versions/944ae8b62a7b3bc8에 불변 설치했어요.1812파일·변경17개SHA·바로가기/.hbproject 연결 검증 PASS. 이전88db 버전·실행파일·기존SDK·프로필·프로세스를 보존했고 사용자창을 시작/종료하지 않았어요. GPU직접렌더/활성목록·간접draw/ParticleEffect편의API/사용자C++ 노드를 포함해요. 공통편의함수221개·실제GPU·releasePlayer의최신SHA증거를사용했고 불필요한전체/8시간검사는 하지 않았어요. 기존메인씬과기본CPU효과를자동GPU로바꾼설치는아니며,전체게임FPS/모바일GPU성공으로세지않아요. 증거 native/build/gpu-render-user-install-048.json. 다음실행부터새버전이열려요.
+
+
+## 049 GPU 파티클 방출·수명·간편 함수 — 2026-10-07
+
+GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 재사용하도록 연결했어요. C++ ParticleEffect는 emit/rate/play/pause/stop/clear를 제공하며 사용자 C++ HB_FUNCTION은 블루프린트로 노출돼요. 가득 찬 경우 살아 있는 입자를 보존하고 요청 버퍼를 재사용해요. 실제 하드웨어·픽셀·release Player의 2D/3D BP/C++ 방출/수명/일시정지/재개/제거·배치 위치 보존이 통과했어요. 최신 core eZAFNC/render mEgSrZ/Player azWd4k/debug 오류0은 현재 SHA예요. 기존 편의 함수221개의7파일은 변경이 없어 실제 C++/BP 비교 증거를 재사용했어요. 방출1024개/frame·65,537슬롯·20frame의 계산/방출/그리기/최종이미지 회수는1.3395/1.1724/1.2401ms이고 전체 게임 FPS가 아니에요. Unity의4개 자체 API 본문·예제, Epic GPU 두 가이드의 자체 텍스트, Microsoft 세 API 읽기/재읽기 범위를 research/GPU_EMISSION_049.md에 기록했어요. 연결문서/이미지/전체문서 분석 완료로 세지 않아요. 메인 WebGL2 씬의 GPU 타깃 합성·모바일GPU·누적 엔진 기능은 이어갈 작업이에요. 원본 게임/창/프로필과 기존 장기 검사는 사용하지 않았어요. 설치는 검증 소스 커밋 뒤 새 불변 버전으로 갱신해요.

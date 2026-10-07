@@ -15,8 +15,9 @@ int main(){
     if(!window){UnregisterClassW(cls.lpszClassName,instance);return 1;}
     try{
         std::vector<hb::gpu::Particle> initial(65537);
-        for(std::size_t i=0;i<initial.size();i++){const float x=float(i%257)/256*1.8f-.9f,y=float(i/257)/256*1.8f-.9f;initial[i].position={x,y,.5f};initial[i].velocity={-y*.15f,x*.15f,0};initial[i].lifetime=300;}
+        for(std::size_t i=0;i<initial.size();i++){const float x=float(i%257)/256*1.8f-.9f,y=float(i/257)/256*1.8f-.9f;initial[i].position={x,y,.5f};initial[i].velocity={-y*.15f,x*.15f,0};initial[i].lifetime=6;}
         hb::gpu::ParticleEffect effect(initial,960,540,window);effect.style.size=.006f;effect.style.color={.2f,.7f,1,1};effect.style.endColor={1,.3f,.7f,1};effect.style.viewProjection=hb::gpu::orthographic(2,2);
+        effect.emitter.rate=4096;effect.emitter.birth={{0,-.5f,.5f},{.1f,.3f,0},3,0};
         ShowWindow(window,SW_SHOW);auto previous=std::chrono::steady_clock::now();
         while(IsWindow(window)){
             MSG msg;while(PeekMessageW(&msg,nullptr,0,0,PM_REMOVE)){TranslateMessage(&msg);DispatchMessageW(&msg);}if(!IsWindow(window))break;

@@ -49,7 +49,7 @@ class Buffer {
     detail::Com<ID3D11Buffer> resource,staging;
     detail::Com<ID3D11UnorderedAccessView> uav;
     detail::Com<ID3D11ShaderResourceView> srv;
-    ID3D11Device* owner=nullptr;UINT byteSize=0;
+    ID3D11Device* owner=nullptr;UINT byteSize=0,strideBytes=0;bool append=false,structured=true;
 public:
     Buffer()=default;Buffer(Buffer&&)=default;Buffer& operator=(Buffer&&)=default;
     std::size_t size() const{return byteSize/sizeof(float);}
@@ -88,21 +88,29 @@ public:
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
     static bool available() noexcept{try{Device device;return true;}catch(...){return false;}}
     std::string backend() const{return "Direct3D11 hardware cs_5_0";}
-    Buffer create(const std::vector<float>& values,std::uint32_t stride=sizeof(float)){
+    Buffer create(const std::vector<float>& values,std::uint32_t stride=sizeof(float),bool append=false){
         std::lock_guard<std::mutex> lock(mutex);Buffer b;const UINT size=detail::bytes(values.size());if(stride<4||stride>2048||stride%4||size%stride)throw std::runtime_error("Compute structured buffer stride invalid");
         D3D11_BUFFER_DESC desc{};desc.ByteWidth=size;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_UNORDERED_ACCESS|D3D11_BIND_SHADER_RESOURCE;desc.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;desc.StructureByteStride=stride;D3D11_SUBRESOURCE_DATA data{};data.pSysMem=values.data();detail::check(device->CreateBuffer(&desc,&data,&b.resource.p),"Compute buffer");
-        D3D11_UNORDERED_ACCESS_VIEW_DESC uav{};uav.ViewDimension=D3D11_UAV_DIMENSION_BUFFER;uav.Buffer.NumElements=size/stride;detail::check(device->CreateUnorderedAccessView(b.resource.p,&uav,&b.uav.p),"Compute UAV");
-        D3D11_SHADER_RESOURCE_VIEW_DESC srv{};srv.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;srv.Buffer.NumElements=size/stride;detail::check(device->CreateShaderResourceView(b.resource.p,&srv,&b.srv.p),"Compute SRV");b.owner=device.p;b.byteSize=size;return b;
+        D3D11_UNORDERED_ACCESS_VIEW_DESC uav{};uav.ViewDimension=D3D11_UAV_DIMENSION_BUFFER;uav.Buffer.NumElements=size/stride;uav.Buffer.Flags=append?D3D11_BUFFER_UAV_FLAG_APPEND:0;detail::check(device->CreateUnorderedAccessView(b.resource.p,&uav,&b.uav.p),"Compute UAV");
+        D3D11_SHADER_RESOURCE_VIEW_DESC srv{};srv.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;srv.Buffer.NumElements=size/stride;detail::check(device->CreateShaderResourceView(b.resource.p,&srv,&b.srv.p),"Compute SRV");b.owner=device.p;b.byteSize=size;b.strideBytes=stride;b.append=append;return b;
+    }
+    // CopyStructureCount rejects structured destinations. Read these uint counts
+    // through a typed Buffer<uint> SRV, without transferring the count to CPU.
+    Buffer createCountBuffer(std::size_t count=1){
+        std::lock_guard<std::mutex> lock(mutex);Buffer b;const UINT size=detail::bytes(count);std::vector<std::uint32_t> zeros(count);D3D11_BUFFER_DESC desc{};desc.ByteWidth=size;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_SHADER_RESOURCE;D3D11_SUBRESOURCE_DATA data{};data.pSysMem=zeros.data();detail::check(device->CreateBuffer(&desc,&data,&b.resource.p),"Compute count buffer");D3D11_SHADER_RESOURCE_VIEW_DESC view{};view.Format=DXGI_FORMAT_R32_UINT;view.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;view.Buffer.NumElements=static_cast<UINT>(count);detail::check(device->CreateShaderResourceView(b.resource.p,&view,&b.srv.p),"Compute count SRV");b.owner=device.p;b.byteSize=size;b.strideBytes=4;b.structured=false;return b;
     }
     void upload(Buffer& b,const std::vector<float>& values){std::lock_guard<std::mutex> lock(mutex);owns(b);if(values.size()!=b.size())throw std::runtime_error("Compute upload size mismatch");context->UpdateSubresource(b.resource.p,0,nullptr,values.data(),0,0);}
+    void uploadRange(Buffer& b,std::size_t offset,const std::vector<float>& values){std::lock_guard<std::mutex> lock(mutex);owns(b);if(offset>b.size()||values.size()>b.size()-offset||offset*sizeof(float)%b.strideBytes||values.size()*sizeof(float)%b.strideBytes)throw std::runtime_error("Compute upload range/stride invalid");if(values.empty())return;D3D11_BOX box{static_cast<UINT>(offset*sizeof(float)),0,0,static_cast<UINT>((offset+values.size())*sizeof(float)),1,1};context->UpdateSubresource(b.resource.p,0,&box,values.data(),0,0);}
+    void copyCount(Buffer& destination,std::uint32_t byteOffset,Buffer& source){std::lock_guard<std::mutex> lock(mutex);owns(destination);owns(source);if(destination.structured||!source.append||byteOffset%4||destination.byteSize<4||byteOffset>destination.byteSize-4)throw std::runtime_error("Compute append count copy invalid");context->CopyStructureCount(destination.resource.p,byteOffset,source.uav.p);}
     Kernel compile(const std::string& source,const std::string& entry="Main"){
         if(source.empty()||source.size()>1024*1024||entry.empty()||entry.size()>128||entry.find('\0')!=std::string::npos)throw std::runtime_error("Compute shader source/entry invalid");
         std::lock_guard<std::mutex> lock(mutex);Kernel k;detail::Com<ID3DBlob> code,error;auto& dll=detail::libraries();const auto compile=dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto result=compile(source.data(),source.size(),"HBCompute",nullptr,nullptr,entry.c_str(),"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Compute shader compile failed");detail::check(device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&k.shader.p),"Compute shader");k.owner=device.p;return k;
     }
-    void dispatch(Kernel& k,const std::vector<Buffer*>& outputs,std::uint32_t x,std::uint32_t y=1,std::uint32_t z=1,const std::vector<Buffer*>& inputs={},const std::vector<float>& constants={}){
+    void dispatch(Kernel& k,const std::vector<Buffer*>& outputs,std::uint32_t x,std::uint32_t y=1,std::uint32_t z=1,const std::vector<Buffer*>& inputs={},const std::vector<float>& constants={},const std::vector<std::uint32_t>& counters={}){
         if(!x||!y||!z||x>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||y>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||z>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||outputs.empty()||outputs.size()>D3D11_PS_CS_UAV_REGISTER_COUNT||inputs.size()>D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT||constants.size()>D3D11_REQ_CONSTANT_BUFFER_ELEMENT_COUNT*4)throw std::runtime_error("Compute dispatch groups/bindings/constants invalid");
         std::lock_guard<std::mutex> lock(mutex);if(!k.shader.p||k.owner!=device.p)throw std::runtime_error("Compute kernel belongs to another device or was moved");std::vector<ID3D11UnorderedAccessView*> uavs;std::vector<ID3D11ShaderResourceView*> srvs;
-        for(auto* b:outputs){if(!b)throw std::runtime_error("Compute output is null");owns(*b);for(auto* old:uavs)if(old==b->uav.p)throw std::runtime_error("Compute output is bound twice");uavs.push_back(b->uav.p);}
+        if(!counters.empty()&&counters.size()!=outputs.size())throw std::runtime_error("Compute append counter count mismatch");
+        for(auto* b:outputs){if(!b)throw std::runtime_error("Compute output is null");owns(*b);if(!b->uav.p)throw std::runtime_error("Compute output buffer is read-only");for(auto* old:uavs)if(old==b->uav.p)throw std::runtime_error("Compute output is bound twice");if(!counters.empty()&&b->append&&counters[uavs.size()]!=0xffffffffu&&counters[uavs.size()]>b->byteSize/b->strideBytes)throw std::runtime_error("Compute append counter exceeds capacity");uavs.push_back(b->uav.p);}
         for(auto* b:inputs){if(!b)throw std::runtime_error("Compute input is null");owns(*b);for(auto* out:outputs)if(out==b)throw std::runtime_error("Compute buffer cannot be read/write in separate bindings");srvs.push_back(b->srv.p);}
         ID3D11Buffer* cb=nullptr;
         if(!constants.empty()){
@@ -115,7 +123,7 @@ public:
             std::fill(k.padded.begin(),k.padded.end(),0.f);std::copy(constants.begin(),constants.end(),k.padded.begin());cb=k.constants[k.constantSlot].p;
             D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Compute frame upload");std::memcpy(mapped.pData,k.padded.data(),padded);context->Unmap(cb,0);k.constantSlot=(k.constantSlot+1)%k.constants.size();
         }
-        context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(k.shader.p,nullptr,0);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),nullptr);if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());context->Dispatch(x,y,z);
+        context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(k.shader.p,nullptr,0);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),counters.empty()?nullptr:counters.data());if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());context->Dispatch(x,y,z);
         std::fill(uavs.begin(),uavs.end(),nullptr);std::fill(srvs.begin(),srvs.end(),nullptr);context->CSSetUnorderedAccessViews(0,static_cast<UINT>(uavs.size()),uavs.data(),nullptr);if(!srvs.empty())context->CSSetShaderResources(0,static_cast<UINT>(srvs.size()),srvs.data());cb=nullptr;context->CSSetConstantBuffers(0,1,&cb);context->CSSetShader(nullptr,nullptr,0);detail::check(device->GetDeviceRemovedReason(),"Compute device lost");
     }
     std::vector<float> read(Buffer& b){std::lock_guard<std::mutex> lock(mutex);owns(b);if(!b.staging.p){D3D11_BUFFER_DESC desc{};desc.ByteWidth=b.byteSize;desc.Usage=D3D11_USAGE_STAGING;desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;detail::check(device->CreateBuffer(&desc,nullptr,&b.staging.p),"Compute readback buffer");}std::vector<float> values(b.size());context->CopyResource(b.staging.p,b.resource.p);D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(context->Map(b.staging.p,0,D3D11_MAP_READ,0,&mapped),"Compute readback");std::memcpy(values.data(),mapped.pData,b.byteSize);context->Unmap(b.staging.p,0);return values;}
@@ -144,10 +152,13 @@ public:
     static bool available() noexcept{return false;}
     Device(){throw std::runtime_error("DirectCompute requires Windows hardware; this platform has no backend");}
     std::string backend() const{return "unavailable";}
-    Buffer create(const std::vector<float>&,std::uint32_t=sizeof(float)){throw std::runtime_error("Compute unavailable");}
+    Buffer create(const std::vector<float>&,std::uint32_t=sizeof(float),bool=false){throw std::runtime_error("Compute unavailable");}
+    Buffer createCountBuffer(std::size_t=1){throw std::runtime_error("Compute unavailable");}
     void upload(Buffer&,const std::vector<float>&){throw std::runtime_error("Compute unavailable");}
+    void uploadRange(Buffer&,std::size_t,const std::vector<float>&){throw std::runtime_error("Compute unavailable");}
+    void copyCount(Buffer&,std::uint32_t,Buffer&){throw std::runtime_error("Compute unavailable");}
     Kernel compile(const std::string&,const std::string& = "Main"){throw std::runtime_error("Compute unavailable");}
-    void dispatch(Kernel&,const std::vector<Buffer*>&,std::uint32_t,std::uint32_t=1,std::uint32_t=1,const std::vector<Buffer*>& = {},const std::vector<float>& = {}){throw std::runtime_error("Compute unavailable");}
+    void dispatch(Kernel&,const std::vector<Buffer*>&,std::uint32_t,std::uint32_t=1,std::uint32_t=1,const std::vector<Buffer*>& = {},const std::vector<float>& = {},const std::vector<std::uint32_t>& = {}){throw std::runtime_error("Compute unavailable");}
     std::vector<float> read(Buffer&){throw std::runtime_error("Compute unavailable");}
     FrameResources createFrameResources(Buffer&){throw std::runtime_error("Compute unavailable");}
     bool enqueueFrame(FrameResources&,Buffer&){throw std::runtime_error("Compute unavailable");}
@@ -159,7 +170,11 @@ public:
 // read() is explicit because CPU readback waits for the GPU and copies the buffer.
 class Particles {
     friend class ParticleRenderer;
+    friend class ParticleEffect;
     Device& device;Kernel kernel;Buffer buffer;std::optional<FrameResources> frames;
+    std::optional<Kernel> freeKernel,emitKernel,clearKernel;
+    std::optional<Buffer> freeIndices,freeCount,requests;
+    std::size_t requestCapacity=0,requestAllocations=0;
     static constexpr const char* source=R"(
 struct Particle { float4 positionAge; float4 velocityLife; };
 RWStructuredBuffer<Particle> particles : register(u0);
@@ -172,11 +187,41 @@ cbuffer Step : register(b0) { float delta; float3 force; float gravity; float dr
   p.positionAge.xyz+=p.velocityLife.xyz*dt+f*(dt*dt*.5);
   p.velocityLife.xyz=(p.velocityLife.xyz+f*dt)*exp(-drag*dt);
   p.positionAge.w+=delta; particles[index]=p;
-})";
+}
+[numthreads(64,1,1)]void Clear(uint3 id:SV_DispatchThreadID){uint index=id.x+id.y*(64*65535);uint count,stride;particles.GetDimensions(count,stride);if(index<count){Particle p=particles[index];p.positionAge.w=p.velocityLife.w;particles[index]=p;}}
+)";
+    static constexpr const char* freeSource=R"(
+struct Particle {float4 positionAge;float4 velocityLife;};
+StructuredBuffer<Particle> particles:register(t0);AppendStructuredBuffer<uint> freeSlots:register(u0);
+[numthreads(64,1,1)]void Main(uint3 id:SV_DispatchThreadID){uint index=id.x+id.y*(64*65535);uint count,stride;particles.GetDimensions(count,stride);if(index<count){Particle p=particles[index];if(p.positionAge.w>=p.velocityLife.w)freeSlots.Append(index);}}
+)";
+    static constexpr const char* emitSource=R"(
+struct Particle {float4 positionAge;float4 velocityLife;};
+StructuredBuffer<uint> freeSlots:register(t0);StructuredBuffer<Particle> requests:register(t1);Buffer<uint> freeCount:register(t2);RWStructuredBuffer<Particle> particles:register(u0);
+cbuffer Emit:register(b0){uint requestCount;float3 padding;};
+[numthreads(64,1,1)]void Main(uint3 id:SV_DispatchThreadID){uint index=id.x+id.y*(64*65535);if(index<requestCount&&index<freeCount[0])particles[freeSlots[index]]=requests[index];}
+)";
+    static std::vector<float> empty(std::size_t capacity){if(!capacity||capacity>std::numeric_limits<std::uint32_t>::max()/32)throw std::runtime_error("GPU particle capacity byte size invalid");std::vector<float> values(capacity*8);for(std::size_t i=0;i<capacity;i++)values[i*8+3]=values[i*8+7]=1;return values;}
+    static void validStep(float delta,const std::array<float,3>& force,float gravity,float drag){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");}
     static const std::vector<float>& valid(const std::vector<float>& values){if(values.empty()||values.size()%8)throw std::runtime_error("GPU particles require position/age/velocity/lifetime records");for(std::size_t i=0;i<values.size();i++)if(!std::isfinite(values[i])||(i%8==3&&values[i]<0)||(i%8==7&&values[i]<=0))throw std::runtime_error("GPU particle value invalid");return values;}
 public:
     Particles(Device& device,const std::vector<float>& values):device(device),kernel(device.compile(source)),buffer(device.create(valid(values),8*sizeof(float))){}
-    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){if(!std::isfinite(delta)||delta<0||delta>120||!std::isfinite(gravity)||!std::isfinite(drag)||drag<0||!std::all_of(force.begin(),force.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU particle step invalid");if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}}
+    Particles(Device& device,std::size_t capacity):Particles(device,empty(capacity)){}
+    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){validStep(delta,force,gravity,drag);if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}}
+    // Upload births only. Free-slot selection/overflow and existing state stay on GPU.
+    void emit(const std::vector<float>& values){
+        if(values.empty())return;
+        valid(values);for(std::size_t i=0;i<values.size();i+=8)if(values[i+3]>=values[i+7])throw std::runtime_error("GPU emitted particle is already expired");
+        if(!freeKernel){auto scan=device.compile(freeSource),spawn=device.compile(emitSource);auto indices=device.create(std::vector<float>(count()),4,true),total=device.createCountBuffer();freeKernel.emplace(std::move(scan));emitKernel.emplace(std::move(spawn));freeIndices.emplace(std::move(indices));freeCount.emplace(std::move(total));}
+        const auto births=std::min(values.size()/8,count());
+        if(requestCapacity<births){std::size_t capacity=std::max(std::size_t(1),requestCapacity);while(capacity<births)capacity=std::min(count(),capacity*2);auto next=device.create(std::vector<float>(capacity*8),32);requests.emplace(std::move(next));requestCapacity=capacity;++requestAllocations;}
+        const auto groups=static_cast<std::uint32_t>((count()+63)/64);if(values.size()/8>count())device.uploadRange(*requests,0,std::vector<float>(values.begin(),values.begin()+births*8));else device.uploadRange(*requests,0,values);
+        // ponytail: scan capacity per burst; persistent free lists if measured emission cost dominates.
+        device.dispatch(*freeKernel,{&*freeIndices},std::min(groups,65535u),(groups+65534)/65535,1,{&buffer},{},{0});device.copyCount(*freeCount,0,*freeIndices);
+        const auto work=static_cast<std::uint32_t>((births+63)/64),requestCount=static_cast<std::uint32_t>(births);float packed;std::memcpy(&packed,&requestCount,sizeof(packed));device.dispatch(*emitKernel,{&buffer},std::min(work,65535u),(work+65534)/65535,1,{&*freeIndices,&*requests,&*freeCount},{packed});
+    }
+    void clear(){if(!clearKernel)clearKernel.emplace(device.compile(source,"Clear"));const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(*clearKernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1);frames.reset();}
+    std::size_t emissionBufferAllocations() const{return requestAllocations;}
     std::vector<float> read(){return device.read(buffer);}
     bool enqueueReadback(){if(!frames)frames.emplace(device.createFrameResources(buffer));return device.enqueueFrame(*frames,buffer);}
     std::optional<FrameResult> pollReadback(){return frames?device.pollFrame(*frames):std::nullopt;}

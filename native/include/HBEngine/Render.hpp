@@ -155,6 +155,7 @@ struct Particle {
     std::array<float,3> position{0,0,0},velocity{0,0,0};
     float lifetime=5,age=0;
 };
+struct ParticleEmitter {float rate=0;Particle birth;};
 // Owns GPU resources in dependency order. Ordinary game code needs no D3D calls,
 // HLSL, raw structured-record layout or explicit device/context lifetime handling.
 class ParticleEffect {
@@ -166,17 +167,43 @@ class ParticleEffect {
     Particles particles;
     ParticleRenderer renderer;
     bool window;
+    bool playing=true,paused=false;
+    double carry=0;
+    std::vector<float> births;
+    static void validBirth(const Particle& p){
+        if(!std::isfinite(p.lifetime)||!std::isfinite(p.age)||p.lifetime<=0||p.age<0||p.age>=p.lifetime||!std::all_of(p.position.begin(),p.position.end(),[](float v){return std::isfinite(v);})||!std::all_of(p.velocity.begin(),p.velocity.end(),[](float v){return std::isfinite(v);}))throw std::runtime_error("GPU emitter birth invalid");
+    }
+    void emitUniform(std::size_t count,const Particle& p){
+        if(!count)return;
+        validBirth(p);
+        count=std::min(count,particles.count());births.resize(count*8);for(std::size_t i=0;i<count;i++){auto* data=births.data()+i*8;std::copy(p.position.begin(),p.position.end(),data);data[3]=p.age;std::copy(p.velocity.begin(),p.velocity.end(),data+4);data[7]=p.lifetime;}particles.emit(births);
+    }
 public:
     ParticleStyle style;
+    ParticleEmitter emitter;
     ParticleEffect(const std::vector<Particle>& values,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):device(),particles(device,records(values)),renderer(device,width,height,hwnd),window(hwnd!=nullptr){}
-    void update(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){particles.step(delta,force,gravity,drag);}
+    ParticleEffect(std::size_t capacity,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):device(),particles(device,capacity),renderer(device,width,height,hwnd),window(hwnd!=nullptr){}
+    void update(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){
+        Particles::validStep(delta,force,gravity,drag);if(!std::isfinite(emitter.rate)||emitter.rate<0)throw std::runtime_error("GPU emitter rate invalid");if(paused)return;
+        if(playing&&delta&&emitter.rate)validBirth(emitter.birth);
+        particles.step(delta,force,gravity,drag);if(playing&&delta&&emitter.rate){const double next=carry+double(emitter.rate)*delta,whole=std::floor(next);if(whole>=1)emitUniform(static_cast<std::size_t>(std::min(whole,double(particles.count()))),emitter.birth);carry=next-whole;}
+    }
+    void emit(const std::vector<Particle>& values){if(!values.empty())particles.emit(records(values));}
+    void emit(std::size_t count,const Particle& birth={}){emitUniform(count,birth);}
+    void play(){playing=true;paused=false;}
+    void pause(bool value=true){paused=value;}
+    void stop(bool clearParticles=false){playing=false;paused=false;carry=0;if(clearParticles)particles.clear();}
+    void clear(){particles.clear();carry=0;}
+    bool isPlaying() const{return playing&&!paused;}
+    bool isPaused() const{return paused;}
     bool draw(const std::array<float,4>& clearColor={0,0,0,1},std::uint32_t syncInterval=0){if(syncInterval>4)throw std::runtime_error("GPU effect present interval invalid");renderer.clear(clearColor);renderer.draw(particles,style);return window?renderer.present(syncInterval):true;}
     void resize(std::uint32_t width,std::uint32_t height){renderer.resize(width,height);}
     void setTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& rgba,bool nearest=false){renderer.setTexture(width,height,rgba,nearest);}
     void clearTexture(){renderer.clearTexture();}
-    void reset(const std::vector<Particle>& values){particles.reset(records(values));}
+    void reset(const std::vector<Particle>& values){particles.reset(records(values));carry=0;}
     std::vector<std::uint8_t> capture(){return renderer.readPixels();}
     std::size_t count() const{return particles.count();}
     std::uint64_t draws() const{return renderer.draws();}
+    std::size_t emissionBufferAllocations() const{return particles.emissionBufferAllocations();}
 };
 }
