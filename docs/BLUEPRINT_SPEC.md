@@ -294,3 +294,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 050 메인 씬 GPU 렌더·기존 함수 연결 — 2026-10-07
 
 실행 렌더러 선택(runtime.renderBackend/WebGL2 기본·WebGPU 선택), 실제 메인 카메라/깊이 버퍼의 GPU ParticleSystem, 기존 Play/Stop/Pause/Emit/GetCount BP·C++ 함수 연결을 구현했어요. C++ 함수 안의 정지→방출→명시적 개수 조회도 실제 컴파일한 release Player에서 확인했어요. 위치/나이 계산·슬롯 재사용·생존 인덱스/간접 draw는 GPU에 남아요. 공용 장치와 버퍼 재사용, 새 출생이 없을 때 재업로드 방지, PMREM 배경/compute 전용 버퍼 소유권 해제로 장면 전환 뒤 자원 증가를 막았어요. 65,537 경계·2D/3D·깊이 가림·월드/로컬 이동·정지/수명/전환·GPU 오류0·종료0 PASS. GPU24G6Ni/기존WebGLXFO4wW 및 CPU32경우2560스텝/채널/CPU파티클 검사 증거를 research/GPU_SCENE_050.md에 연결했어요. 원본 게임의 렌더러를 바꾸거나 FPS/모바일/모든 셰이더 완료로 세지 않아요. 편집기 미리보기와 미이식 머테리얼·조명·마스크·후처리는 기존 경로를 유지해요. 누적 엔진 요구와 후속 이식은 계속해요.
+
+
+### 050 사용자 설치 갱신 확인 — 2026-10-07
+
+검증한 production `8dabf2d180bb42c640139dde9de2969bdb09ea80`를 `C:/Users/kirby/HBEngine/Versions/7df780dd9a47cf5b`에 불변 설치했어요. 1,817파일·변경27파일 SHA·바로가기·.hbproject 연결을 확인했고, 이전7a192 버전/실행 파일/기존 GPU SDK/프로필/사용자 프로세스를 보존했어요. 창을 열거나 닫거나 새로고침하지 않았으며 다음 실행부터 새 버전이에요. 설치 증거는 `native/build/gpu-scene-user-install-050.json`이에요. 기존 게임 원본/Source/에셋/tools와 모바일 산출물은 변경하지 않았어요. 이 기록은 기존 게임의 FPS 목표 달성으로 세지 않아요.
