@@ -1,3 +1,7 @@
+# 054 GPU sorting/projectile — 2026-10-07
+
+053 commit1fc31c7 pushed. 054 actual release GPU fH6fo7 / GL pKFBLF PASS current SHA: six sort modes, partial/dead slots, paused unchanged matrices skip, perspective/world/local, BP P key and compiled C++ Fire/TakeHits, alpha atlas/XY/XZ, swept collision CPU remains, no automatic position readback (acceptance diagnostic counted), final resource ownership/errors0/exit0/privatefiles/server. docs GPU_EFFECTS_054/read-cache and originaltwoMD prefix proof. Need054 Korean commit/push; NO install before cumulative/previous remaining group. Next editor/mobile GPU then whole-game FPS/RAM/cumulative goals. Installed7df780dd9a47cf5b untouched, background only/user apps and originalgame untouched; no agents/goals/unchanged long stress.
+
 # 053 GPU 2D 광원/그림자 검증 — 2026-10-07
 
 Order unchanged: cumulative/previous remaining goals first, validate, install once group done, then research-derived additions. Install 7df780dd9a47cf5b unchanged; no user windows/foreground/profiles/original game Assets/Source/tools changes. No agents/goals/automations or unchanged long stress.

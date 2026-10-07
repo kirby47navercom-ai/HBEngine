@@ -1,6 +1,6 @@
 import {gpuLight2DUniforms} from './gpu-2d-lighting.js';
-import {MeshBasicNodeMaterial,MeshStandardNodeMaterial,DataTexture,DoubleSide,Color,Vector2,AdditiveBlending,NormalBlending,RenderTarget} from 'three/webgpu';
-import {Fn,If,uniform,texture,vec3,vec4,positionLocal,modelViewMatrix,modelWorldMatrixInverse,cameraWorldMatrix,screenUV,diffuseColor,mix,float,materialReference} from 'three/tsl';
+import {MeshBasicNodeMaterial,MeshStandardNodeMaterial,DataTexture,DoubleSide,Color,Vector2,Vector4,AdditiveBlending,NormalBlending,RenderTarget} from 'three/webgpu';
+import {Fn,If,uniform,texture,vec3,vec4,positionLocal,modelViewMatrix,modelWorldMatrixInverse,cameraWorldMatrix,screenUV,diffuseColor,mix,float,materialReference,attribute,positionGeometry,uv,smoothstep} from 'three/tsl';
 
 export function gpuSpriteMask(material){
   if(material.userData.hbSpriteMask)return material.userData.hbSpriteMask;
@@ -31,3 +31,8 @@ export function createGPUMaskMaterial(map,alphaCutoff){
 }
 
 export const gpuMaskTarget=(w,h,options)=>new RenderTarget(w,h,options);
+
+export function createGPUProjectileMaterial(style){
+  const fallback=new DataTexture(new Uint8Array([255,255,255,255]),1,1);fallback.needsUpdate=true;const map=texture(fallback),u={uvRect:uniform(new Vector4(0,0,1,1)),shape:uniform(new Vector2(1,1)),hasMap:uniform(false,'bool'),tint:uniform(new Vector4(...style.color)),size:uniform(style.size),planeXZ:uniform(style.plane==='XZ','bool')};let source=null;u.map={get value(){return source;},set value(value){source=value;map.value=value||fallback;}};
+  const offset=positionGeometry.xy.mul(u.shape).mul(u.size),sample=u.hasMap.select(map.uv(u.uvRect.xy.add(uv().mul(u.uvRect.zw))),vec4(1,1,1,float(1).sub(smoothstep(.42,.5,uv().sub(.5).length())))),material=new MeshBasicNodeMaterial({transparent:true,depthWrite:false,side:DoubleSide,alphaTest:.001});material.positionNode=attribute('shotPosition','vec3').add(u.planeXZ.select(vec3(offset.x,0,offset.y),vec3(offset,0)));material.colorNode=u.tint.rgb.mul(sample.rgb);material.opacityNode=u.tint.a.mul(sample.a);material.uniforms=u;material.userData.hbGPU=true;const dispose=material.dispose.bind(material);let released=false;material.dispose=()=>{if(released)return;released=true;fallback.dispose();dispose();};return material;
+}

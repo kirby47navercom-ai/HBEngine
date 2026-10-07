@@ -312,3 +312,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 053 GPU 2D 조명·그림자 — 2026-10-07
 
 기존 광원/노멀/쿠키/블렌드 스타일/마스크/ShadowCaster/Composite/볼륨을 메인 GPU에 연결했어요. 실제 release Player GPU7WAkd3/GL10vKc6에서 C++·실제 BP·광원·픽셀·3셀 아틀라스·정렬/마스크·변경 없는 프레임 캐시·자원 반환·종료 PASS. 공용 스프라이트 영향 xlTL92 PASS. 상세와 읽기 범위/미완료 대조: research/GPU_2D_LIGHTING_053.md. 설치는 누적 선행 목표 완료 뒤, 추가 연구 목표는 그다음 순서예요.
+
+
+### 054 GPU 입자/투사체 실행
+
+ParticleSystem의 기존 여섯 sortMode와 C++/BP Projectiles는 GPU draw 경로를 공유해요. 입자 정렬은 GPU 인덱스만 정렬하며 위치 readback은 개인 acceptance 진단에서만 허용해요. Projectiles 이동·swept 충돌은 기존 CPU 서비스예요. 세부 증거 GPU_EFFECTS_054.md.
