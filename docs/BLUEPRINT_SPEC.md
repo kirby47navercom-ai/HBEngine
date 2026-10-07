@@ -235,3 +235,10 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 2026-10-06 P0 이벤트 묶음 후속: 여러 오브젝트의 Construction·키 Pressed/Released/Axis·Begin/EndOverlap·Hit·EndPlay도 terminal 직선 C++ 호출은 같은 build별 요청으로 모아요. 실제 C++50인스턴스100/150호출→1, 원래 native input·값·trace·순서 일치를 검사해요. BP callback/engine 작업 이후에는 미래 인자를 다시 읽고, 입력 키 맵·충돌 기록은 성공 prefix의 원래 시점에서 갱신해요. InputContext/Action 또는 기존 Action state가 있는 입력 경로, BP 함수/매크로로 감싼 인스턴스 간 호출과 native Timer callback 묶음 등은 추가 구현 대상이에요. 한 owner의 EndPlay가 실패하면 그 호출을 재실행하지 않고 나머지 owner를 종료하며, 응답을 잃어 완료 cursor를 모르는 요청은 재전송하지 않아요. 이 상세 진단은 제작 화면의 안내문으로 노출하지 않아요.
 
 2026-10-06 terminal BP 함수 묶음: primitive 함수 인자, functionInput→C++ 직선 호출→functionOutput 및 사용하지 않는 exec-only 반환을 여러 인스턴스 이벤트/Construction/EndPlay/Tick/Begin/Fixed에서 함께 전송해요. 실제 C++100/200→1과 출력·변수·trace·stack 일치, 콜백 뒤 현재 인자 유지/미래 인자 재평가, 함수·return 중단점 및 Tick interval을 검사했어요. 배열·구조체 입력은 alias를 유지하는 기존 경로로 처리하고 배열 callback 회귀를 대조해요. 여러 Tick의 BP wrapper·매크로·InputAction·Timer 경로 전체가 완료됐다는 뜻은 아니에요.
+
+
+### 2026-10-07 — 물리 개수 제한·전체 질의 결과 누락 제거(043)
+
+- 042 후속으로 공유 물리 월드의 차원별 충돌체8,000/관절512, C++ snapshot 전체·타일 충돌체8,000 검사를 제거했어요. RaycastAll/Overlap의1,000개 절단도 제거해요. 단일 Raycast는 첫 결과만 변환하고 C++ snapshot 복사는 인자 펼치기 없이 반복해요. ID/형상/좌표/필터/통신 크기 검증을 유지해요.
+- 수정 전 실제 1,201개 교차가1,000개로 줄어드는 실패를 재현했어요. 최종 tools/check-physics-capacity.mjs 10검사(physics-capacity-BRW5lX): 2D/3D 각각10,001충돌체/solver1프레임/전체겹침, 각각600관절, 한 오브젝트8,001타일충돌체, 실제 C++ RaycastAll/OverlapBox 각1,201결과·잘못된 값 거절. 기존 check-physics.mjs 156WASM검사와 C++/BP 연결도 통과해요. 검사 개수를 새 상한/FPS 성능 판정으로 쓰지 않아요.
+- Unity6000.0 RaycastAll/OverlapBoxAll 자체 본문과 반환·정렬·메모리 의미를 읽었어요. docs/research/PHYSICS_COUNT_LIMITS_043.md에 근거/범위/최종2파일SHA를 기록해요. C++ 호출당128질의/4MB패킷·형상 크기 등 자원/입력 검증은 남아 있어요. 원본게임/사용자창·프로필/장기 검사를 건드리지 않았어요. 041/042 결과를 유지하며 이번 기록은 전체 엔진/조사 완료를 뜻하지 않아요.

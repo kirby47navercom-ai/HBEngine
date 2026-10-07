@@ -16,7 +16,7 @@ export class NativePhysicsQueries {
     if(!args||spec.inputs.filter(p=>p.type!=='exec').some(p=>!validValue(p.type,args[p.id]))||(request.key==='tileProcessChanges'?!ids.has(args.target):args.ignore!==null&&!ids.has(args.ignore)))throw Error('C++ 물리 질의 입력 오류');
     if(!validPhysicsSnapshot(request.objects)||request.objects.length!==ids.size||request.objects.some(o=>!ids.has(o.id)))throw Error('C++ 물리 월드 범위 오류');
     if(request.key==='tileProcessChanges'){const object=request.objects.find(o=>o.id===args.target);if(!object.runtimeTilemap)throw Error('타일맵이 준비되지 않았어요.');const colliders=tilemapColliders(object.runtimeTilemap);if(!validPhysicsSnapshot(request.objects.map(o=>o===object?{...o,tileColliders:colliders}:o)))throw Error('타일맵 충돌 범위 오류');return colliders;}
-    this.objects.splice(0,this.objects.length,...structuredClone(request.objects));
+    const snapshot=structuredClone(request.objects);this.objects.length=0;for(const object of snapshot)this.objects.push(object);
     this.world??=createRigidPhysics(this.objects,{queryOnly:true});await this.world.ready();if(this.closed)throw Error('종료된 C++ 물리 질의예요.');return this.world.query(request.key,args);
   }
   close(){this.closed=true;this.world?.dispose();}

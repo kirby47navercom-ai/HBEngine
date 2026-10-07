@@ -6,7 +6,7 @@ import {geometryColliderTypes,geometryDescriptor,colliderGeometryRadius,geometry
 
 export const colliderTypes=new Set(['BoxCollider','SphereCollider','CapsuleCollider','BoxCollider2D','CircleCollider2D','CapsuleCollider2D',...geometryColliderTypes]);
 export const physicsQueryKeys=new Set(['physicsRaycast','physicsRaycastAll','physicsSphereCast','physicsBoxCast','physicsOverlapSphere','physicsOverlapBox','physicsClosestPoint']);
-export const physicsContract={backend:'rapier',version:'0.21.0',dimensions:[2,3],geometry:geometryContract,units:{distance:'m',mass:'kg',transformRotation:'degree',jointAngle:'degree',jointAngularSpeed:'degree/s',angularVelocity:'rad/s',force:'N',torque:'N*m'},forceModes:['force','acceleration','impulse','velocityChange'],massBehavior:'automatic density mass with active shapes; configured mass without colliders; no shape-free inertia editing',queryKeys:[...physicsQueryKeys],queryDefaults:{dimension:3,mask:-1,includeTriggers:false,ignore:null},queryBehavior:{geometry:'exact primitive, convex/triangle mesh, concave 2D polygons and open edges',algorithm:'linear collider candidates, exact narrow phase',results:'HitResult or HitResult[]; overlaps deduplicate actor IDs',closestPointNormal:[0,0,0],teleports:'visible before next step',crossDimension:false},limits:{collidersPerDimension:8000,querySnapshotColliders:8000,querySnapshotObjects:null,jointsPerDimension:512,queryResults:1000,cppQueriesPerCall:128,cppQueryBytes:4000000},cpp:{queries:'synchronous read-only world, current C++ transforms/collision flags',writes:'queued and applied by VM after function returns'},jointAxes:'positive relative owner movement; 2D Z rotation, XY translation',jointLimitations:['slider requires aligned local body frames','2D ball is an unconstrained revolute joint','no break force, plasticity, multi-body articulation or generic 6-DOF UI']};
+export const physicsContract={backend:'rapier',version:'0.21.0',dimensions:[2,3],geometry:geometryContract,units:{distance:'m',mass:'kg',transformRotation:'degree',jointAngle:'degree',jointAngularSpeed:'degree/s',angularVelocity:'rad/s',force:'N',torque:'N*m'},forceModes:['force','acceleration','impulse','velocityChange'],massBehavior:'automatic density mass with active shapes; configured mass without colliders; no shape-free inertia editing',queryKeys:[...physicsQueryKeys],queryDefaults:{dimension:3,mask:-1,includeTriggers:false,ignore:null},queryBehavior:{geometry:'exact primitive, convex/triangle mesh, concave 2D polygons and open edges',algorithm:'linear collider candidates, exact narrow phase',results:'HitResult or HitResult[]; overlaps deduplicate actor IDs',closestPointNormal:[0,0,0],teleports:'visible before next step',crossDimension:false},limits:{collidersPerDimension:null,querySnapshotColliders:null,querySnapshotObjects:null,jointsPerDimension:null,queryResults:null,cppQueriesPerCall:128,cppQueryBytes:4000000},cpp:{queries:'synchronous read-only world, current C++ transforms/collision flags',writes:'queued and applied by VM after function returns'},jointAxes:'positive relative owner movement; 2D Z rotation, XY translation',jointLimitations:['slider requires aligned local body frames','2D ball is an unconstrained revolute joint','no break force, plasticity, multi-body articulation or generic 6-DOF UI']};
 const copy=structuredClone,rad=Math.PI/180,vector=v=>Array.isArray(v)&&v.length===3&&v.every(Number.isFinite);
 const xyz=v=>({x:v[0],y:v[1],z:v[2]}),array=v=>[v.x,v.y,v.z??0],emptyHit=()=>({hit:false,position:[0,0,0],normal:[0,0,0],actor:null});
 const qValue=q=>({x:q.x,y:q.y,z:q.z,w:q.w});
@@ -104,7 +104,6 @@ export function createRigidPhysics(objects,options={}){
         }
       }
       for(const [id,r] of space.bodies)if(!active.has(id)){for(const c of r.colliders.values())space.colliders.delete(c.collider.handle);world.removeRigidBody(r.body);space.bodies.delete(id);}
-      if(space.colliders.size>8000)throw Error('차원별 충돌체 제한은 8,000개예요.');
       world.propagateModifiedBodyPositionsToColliders();if(!options.queryOnly)syncJoints(space,dim);for(const r of space.bodies.values())mirror(r);
     }
   }
@@ -134,7 +133,6 @@ export function createRigidPhysics(objects,options={}){
       space.joints.set(key,{signature,joint,object:o,component});
     }
     for(const [key,j] of space.joints)if(!active.has(key)||!j.joint.isValid()){if(j.joint.isValid())world.removeImpulseJoint(j.joint,true);space.joints.delete(key);}
-    if(space.joints.size>512)throw Error('차원별 관절 제한은 512개예요.');
   }
   const pairAllowed=(space,a,b)=>{const x=space.colliders.get(a),y=space.colliders.get(b);return !!x&&!!y&&x.object!==y.object&&((x.p.mask>>>0)&(1<<y.p.layer))!==0&&((y.p.mask>>>0)&(1<<x.p.layer))!==0&&!(x.p.collisionMode==='query'&&y.p.collisionMode==='physics'||y.p.collisionMode==='query'&&x.p.collisionMode==='physics');};
   function fixedContacts(space,dim){
@@ -195,14 +193,14 @@ export function createRigidPhysics(objects,options={}){
     const hit=(h,c,start,direction)=>({hit:true,position:start.map((v,i)=>v+direction[i]*h.timeOfImpact),normal:array(h.normal),actor:c.object.id});
     if(key==='physicsRaycast'||key==='physicsRaycastAll'){
       const start=checked(args.start,'시작'),end=checked(args.end,'끝'),direction=[end.x-start.x,end.y-start.y,dim===2?0:end.z-start.z];if(!Math.hypot(...direction))return key==='physicsRaycastAll'?[]:emptyHit();
-      const ray=new R.Ray(start,xyz(direction)),hits=[];for(const c of candidates){const h=c.collider.castRayAndGetNormal(ray,1,true);if(h)hits.push({...hit(h,c,args.start,direction),toi:h.timeOfImpact});}hits.sort((a,b)=>a.toi-b.toi||a.actor.localeCompare(b.actor));const values=hits.slice(0,1000).map(({toi,...h})=>h);return key==='physicsRaycast'?values[0]||emptyHit():values;
+      const ray=new R.Ray(start,xyz(direction)),hits=[];for(const c of candidates){const h=c.collider.castRayAndGetNormal(ray,1,true);if(h)hits.push({...hit(h,c,args.start,direction),toi:h.timeOfImpact});}hits.sort((a,b)=>a.toi-b.toi||a.actor.localeCompare(b.actor));if(key==='physicsRaycast'){if(!hits.length)return emptyHit();const {toi,...value}=hits[0];return value;}return hits.map(({toi,...h})=>h);
     }
     if(args.rotation&&!vector(args.rotation))throw Error('질의 회전을 확인하세요.');
     const position=checked(args.center||args.point||args.start,'질의'),rotation=dim===2?(args.rotation?.[2]??0)*rad:qValue(new Quaternion().setFromEuler(new Euler(...(args.rotation||[0,0,0]).map(v=>v*rad))));
     if(key==='physicsClosestPoint'){let best;for(const c of candidates){const p=c.collider.projectPoint(position,true);if(!p)continue;const distance=Math.hypot(...array(p.point).slice(0,dim).map((v,i)=>v-array(position)[i]));if(!best||distance<best.distance)best={distance,p,c};}return best?{hit:true,position:array(best.p.point),normal:[0,0,0],actor:best.c.object.id}:emptyHit();}
     const sphere=key.includes('Sphere'),extent=args.extent||[.5,.5,.5];if(!sphere&&(!vector(extent)||extent.some(v=>v<=0||v>10000)))throw Error('상자 반 크기를 확인하세요.');
     const shape=sphere?new R.Ball(size(args.radius,'반지름')):dim===2?new R.Cuboid(extent[0],extent[1]):new R.Cuboid(...extent);
-    if(key.startsWith('physicsOverlap'))return [...new Set(candidates.filter(c=>c.collider.intersectsShape(shape,position,rotation)).map(c=>c.object.id))].sort().slice(0,1000);
+    if(key.startsWith('physicsOverlap'))return [...new Set(candidates.filter(c=>c.collider.intersectsShape(shape,position,rotation)).map(c=>c.object.id))].sort();
     const end=checked(args.end,'끝'),direction=[end.x-position.x,end.y-position.y,dim===2?0:end.z-position.z];let best;
     for(const c of candidates){const h=c.collider.castShape(xyz([0,0,0]),shape,position,rotation,xyz(direction),0,1,true);if(h&&(!best||h.time_of_impact<best.h.time_of_impact))best={h,c};}
     if(!best)return emptyHit();const {h,c}=best,rotationQ=dim===2?new Quaternion().setFromAxisAngle(new Vector3(0,0,1),c.collider.rotation()):new Quaternion().copy(c.collider.rotation());
@@ -240,11 +238,11 @@ export function createRigidPhysics(objects,options={}){
 
 export function validPhysicsSnapshot(objects){
   if(!Array.isArray(objects)||new Set(objects.map(o=>o?.id)).size!==objects.length)return false;
-  let count=0;const byId=new Map(objects.map(o=>[o?.id,o]));
+  const byId=new Map(objects.map(o=>[o?.id,o]));
   for(const o of objects){
-    if(!o||o.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!o.scale.every(v=>v>=.01)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&(!Array.isArray(o.tileColliders)||o.tileColliders.length>8000))return false;
+    if(!o||o.runtimeTilemap!==undefined&&!valid2DAsset('tilemap',o.runtimeTilemap)||o.tilemapDirty!==undefined&&typeof o.tilemapDirty!=='boolean'||typeof o.id!=='string'||!o.id.length||o.id.length>160||!['position','rotation','scale'].every(k=>vector(o[k])&&o[k].every(v=>Math.abs(v)<=10000))||!o.scale.every(v=>v>=.01)||o.components!==undefined&&(!Array.isArray(o.components)||o.components.length>100)||o.tileColliders!==undefined&&!Array.isArray(o.tileColliders))return false;
     const components=[...(o.components||[]),...(o.tileColliders||[])];if(new Set(components.map(c=>c?.id)).size!==components.length)return false;
-    for(const c of components){if(!c||typeof c.type!=='string'||typeof c.id!=='string'||!c.id.length||c.id.length>160)return false;if(colliderTypes.has(c.type)&&++count>8000)return false;if((colliderTypes.has(c.type)||['Rigidbody','Rigidbody2D','CharacterMovement','CharacterMovement2D'].includes(c.type))&&!validComponentProperties(c.type,c.properties||{}))return false;}
+    for(const c of components){if(!c||typeof c.type!=='string'||typeof c.id!=='string'||!c.id.length||c.id.length>160)return false;if((colliderTypes.has(c.type)||['Rigidbody','Rigidbody2D','CharacterMovement','CharacterMovement2D'].includes(c.type))&&!validComponentProperties(c.type,c.properties||{}))return false;}
     const seen=new Set([o.id]);let parent=o.parentId||o.parent,depth=0;while(parent){if(typeof parent!=='string'||seen.has(parent)||!byId.has(parent)||++depth>64)return false;seen.add(parent);parent=byId.get(parent).parentId||byId.get(parent).parent;}
   }return true;
 }
