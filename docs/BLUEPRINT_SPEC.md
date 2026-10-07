@@ -317,3 +317,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ### 054 GPU 입자/투사체 실행
 
 ParticleSystem의 기존 여섯 sortMode와 C++/BP Projectiles는 GPU draw 경로를 공유해요. 입자 정렬은 GPU 인덱스만 정렬하며 위치 readback은 개인 acceptance 진단에서만 허용해요. Projectiles 이동·swept 충돌은 기존 CPU 서비스예요. 세부 증거 GPU_EFFECTS_054.md.
+
+
+055: 에디터 GPU 실행에도 공용 C++ 입자 질의를 연결하고 작성 씬의 실행 debug 오염을 방지. AI window.open/close/viewport.get은 실제 공유 렌더러 상태를 제공. 상세 research/GPU_EDITOR_055.md.

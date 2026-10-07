@@ -16,7 +16,7 @@ import {light2DUniforms} from './two-d-lighting.js';
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
-export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer}){
+export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer,runtimeWorld}){
   read=cacheAssetReader(read);
   const twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
   const textureSources=new Map();let textureBytes=0,textureEpoch=0;
@@ -182,7 +182,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(component.type==='SpriteRenderer'&&p.visible!==false)await sprite(group,p,rig?.sprite||p.sprite||object.spriteAsset);
       if(component.type==='TilemapRenderer'&&p.visible!==false)await tilemap(group,p.tilemap||object.tilemapAsset,p,object.runtimeTilemap);
       if(component.type==='Decal')await decal(group,p);
-      if(component.type==='ParticleSystem'){await particles(group,p);const state=group.userData.particleState?.simulation;if(state?.debugState)object.gameplayDebug={...object.gameplayDebug,particles:state.debugState()};}
+      if(component.type==='ParticleSystem'){await particles(group,p);const state=group.userData.particleState?.simulation;if(state?.debugState&&(!editor||runtimeWorld?.()))object.gameplayDebug={...object.gameplayDebug,particles:state.debugState()};}
       if(component.type==='NavigationGrid'&&p.debug){const axes=p.plane==='XY'?[0,1]:[0,2],points=[];for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]){const v=[0,0,0];v[axes[0]]=x*p.extent[axes[0]];v[axes[1]]=y*p.extent[axes[1]];points.push(new THREE.Vector3(...v));}const geometry=new THREE.BufferGeometry().setFromPoints(points),material=new THREE.LineBasicMaterial({color:0x63c8ad});own(group,geometry);own(group,material);const line=new THREE.Line(geometry,material);line.userData.editorHelper=true;group.add(line);}
       if(component.type==='Camera'){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}
       if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);own(group,light);light.castShadow=p.castShadow;if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}

@@ -1,6 +1,14 @@
 import {gpuLight2DUniforms} from './gpu-2d-lighting.js';
-import {MeshBasicNodeMaterial,MeshStandardNodeMaterial,DataTexture,DoubleSide,Color,Vector2,Vector4,AdditiveBlending,NormalBlending,RenderTarget} from 'three/webgpu';
-import {Fn,If,uniform,texture,vec3,vec4,positionLocal,modelViewMatrix,modelWorldMatrixInverse,cameraWorldMatrix,screenUV,diffuseColor,mix,float,materialReference,attribute,positionGeometry,uv,smoothstep} from 'three/tsl';
+import {MeshBasicNodeMaterial,MeshStandardNodeMaterial,SpriteNodeMaterial,DataTexture,DoubleSide,Color,Vector2,Vector4,AdditiveBlending,NormalBlending,RenderTarget} from 'three/webgpu';
+import {Fn,If,uniform,texture,vec3,vec4,positionLocal,normalWorld,modelViewMatrix,modelWorldMatrixInverse,cameraWorldMatrix,screenUV,diffuseColor,mix,float,materialReference,attribute,positionGeometry,uv,smoothstep} from 'three/tsl';
+
+export function createGPUViewportMaterial(original,mode){
+  const lit=mode==='lighting'||mode==='detailLighting',Type=original.isSpriteNodeMaterial?SpriteNodeMaterial:lit?MeshStandardNodeMaterial:MeshBasicNodeMaterial,m=new Type({color:mode==='unlit'?original.color||0xffffff:mode==='wireframe'?0xb7c5d5:0xbfbfbf,side:mode==='wireframe'?DoubleSide:original.side,transparent:original.transparent,opacity:original.opacity,alphaTest:original.alphaTest,depthWrite:original.depthWrite,blending:original.blending,wireframe:mode==='wireframe'});
+  for(const key of ['positionNode','scaleNode','rotationNode','opacityNode','alphaTestNode','maskNode'])if(original[key])m[key]=original[key];
+  if(mode==='normals'){m.colorNode=normalWorld.mul(.5).add(.5);m.toneMapped=false;}else if(mode==='unlit'){m.map=original.map||null;m.colorNode=original.colorNode;}if(mode==='detailLighting'||mode==='normals'){m.normalNode=original.normalNode;m.normalMap=original.normalMap;m.bumpMap=original.bumpMap;m.bumpScale=original.bumpScale;if(original.normalScale)m.normalScale?.copy(original.normalScale);}
+  // Diagnostic materials borrow source textures/nodes; the source object remains their owner.
+  m.userData.hbViewportGPU=true;return m;
+}
 
 export function gpuSpriteMask(material){
   if(material.userData.hbSpriteMask)return material.userData.hbSpriteMask;
