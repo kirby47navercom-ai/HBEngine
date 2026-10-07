@@ -1,3 +1,9 @@
+# 045 검증 완료 / 다음 실제 컴퓨트 셰이더(046) — 2026-10-07
+
+- 045 same-group frozen outgoing pose + own blendOut/curve; incoming own blendIn; normalize above1; quaternion/multi-slot/rapid changes/2D. Preflight/adoption cached maps refresh on binding growth, notify scopes canceled at replacement, Ended at contribution end, all captures cleaned despite callback errors/reentrancy. UI/AI retiring instance observability. Core3 PASS; actual private Editor otTWhz + release Player SIAnz3 PASS/current5productionSHA match; Window source/actions included. Failures1dGWmr/xX4x27/43r2MO preserved and documented. Only --replacement focus; not all authoring retest.
+- 045 production commit/install pending. Install from current51cf0713e445a496/sourcee8c34ae diff, preserve old versions/exe/SDK/profiles/processes. Only focusedchecks; no newstress/8h/agents/goals/foreground. OriginalAuricSource/tools immutable, originalMD2append only.
+- Latest human explicitly requests actual compute shaders if absent. Confirmed no native CSSetShader/CreateComputeShader/Dispatch or WebGPU compute pipeline anywhere in production; sceneRendering Points + projectile instanced ShaderMaterial are draw shaders, ParticleSimulation/ProjectileWorld use CPU. Existing native desktop is WebView2 UI, no native DX renderer. Do not claim compute present or FPS automatically fixed. Need actual compute implementation, renderer buffer/transfer architecture and measured costs; retain lightness/2D/mobile, CPU C++/IPC bottlenecks remain separate. Official Unity ComputeShader portal ownbody points to introduction/run/crossplatform; MDN dispatch/WebGPU opened but their substantive own bodies not read yet.
+
 # 038 재검사 준비 — WebKit Objective-C selector 수정
 
 - First37481223712: Windows-only diff gate 제외누락→시작전중단. Second37481522265: 공용CPP/VM/모바일출력 PASS, Main 등록selector가 reply없는overload라 simulatorcompile FAILURE,실제SDK/app미통과. exact addScriptMessageHandlerWithReply로1단어root수정. 로그/원문API+공식ObjC header/실패proof 보존.

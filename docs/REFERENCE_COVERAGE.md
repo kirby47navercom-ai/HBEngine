@@ -183,3 +183,7 @@
 각 HWND는 실제 원본 패널을 표시하며 같은 문서·선택·Undo·저장을 공유한다. Outliner/Inspector 포커스는 편집 중 입력 DOM을 교체하지 않는다. 모든 살아 있는 창의 frame 예약과 입력 ownerDocument를 관리한다. 별도 WebGL renderer마다 PMREM을 소유하고 진단용 재질 사본은 Scene에서 원본 참조가 사라질 때 해제한다.
 
 행성 대기 LUT·volume 구름 raymarch/그림자·공간 volumetric fog·Lightmass/DF AO·전체 진단 buffer·분리 창 간 직접 도킹/명명 배치 import/export·세계 스트리밍과 나머지 엔진 분야는 별도 세부 계약으로 유지한다. 현재 구름은 mesh 미리보기다. 위 항목의 구현으로 전체 Unreal/Unity 기능을 완료 처리하지 않는다.
+
+## 2026-10-07 후속 구현 대조 — 045
+
+위 초기 대조표의 Animation Graph/뼈별 포즈 혼합·슬롯·2D Rig/IK 일부는 후속 구현 문서에 반영됐어요. 최신 남은 항목 판단은 초기 표만 사용하지 않고 각 상세 구현/검증 문서와 대조해요. 이번에는 ANIMATION_MONTAGE_SLOTS.md의 같은 그룹 outgoing 교체 혼합을 구현했어요. 정확한 계약·읽은 세 API 본문 범위·검증은 research/MONTAGE_REPLACEMENT_BLEND_045.md에 있어요. 전체 API/corpus 완료나 Root Motion/프로파일까지 구현한 것으로 세지 않아요.

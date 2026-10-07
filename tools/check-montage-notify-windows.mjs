@@ -6,7 +6,7 @@ import {defaultBlueprint} from '../prototype/blueprint-model.js';
 import {makeAnimationNotifyState} from '../prototype/animation-sync.js';
 
 const actor={id:'Hero',kind:'empty',components:[]},assets={},events=[],root={...structuredClone(defaultBlueprint),nodes:[],edges:[]};
-const systems=gameplaySystems({asset:async name=>name,readAsset:async name=>assets[name],prepareMontage:async()=>({slots:new Map([['DefaultSlot',{}]]),sample(){},dispose(){}})});
+const systems=gameplaySystems({asset:async name=>name,readAsset:async name=>assets[name],prepareMontage:async()=>({slots:new Map([['DefaultSlot',{}]]),prepareBlend(){},sample(){},dispose(){}})});
 const vm=new BlueprintRuntime([actor],[{self:actor.id,root}],{});vm.active=true;
 const op=(key,args={})=>systems.operation(key,{target:actor.id,...args},vm.bindings[0],vm),tick=delta=>systems.tickMontages(delta,vm);
 let callback=async()=>{};vm.custom=async(b,name,args,scope)=>{events.push({name,args:structuredClone(args),scope});if(name.endsWith('Begin')){vm.jobs.push({scope,at:100});vm.core.timers.set(scope,{scope});}await callback(name,args);};

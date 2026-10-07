@@ -249,3 +249,8 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 - 공유 engineQuery가 각 snapshot행마다 전체 월드를 찾는 중첩 검색을 하던 원인이에요. 기존 bridgeStateIndices로 바로 찾고 범위/ID가 맞지 않으면 안전하게 기존 검색을 해요. 현재 actor transform/nativeProperties, 월드 순서와 추가 속성·검증을 유지해요. 새 캐시/의존성이나 개수 상한을 만들지 않았어요.
 - 같은5,000행 실제 컴파일 C++ 입력의 snapshot/merge/패킷 구성 단계만 순차 비교했어요. 이전1,949.3/2,001.2/2,021.3ms → 이후31.2/33.4/34.6ms. IPC·물리·렌더링·전체FPS를 포함하지 않으며 장면 전체120fps 합격으로 쓰지 않아요. 원본게임/사용자창·프로필·장기 검사 불변이에요.
 - query-world-ZgeKee에서 현재 transform/추가 값/행 순서와 잘못되거나 없는 인덱스 fallback을 실제 C++로 통과했어요. 새 SDK로 물리 capacity10검사(12CXiy), 기존156물리검사와 C++/BP연결, 실제 별도 C++ worker/Windows에서 만든 모바일 AOT 모듈 호출(RzTUIe), Spawn/Destroy/Construction/실패회복9검사(MXspEq)도 통과했어요. Android/iOS 실기기·새 패키지 검사가 아니에요. docs/research/CPP_QUERY_WORLD_LOOKUP_044.md·native/build/query-world-result-044.json에 근거를 기록해요. 041/042/043을 유지해요.
+
+### 2026-10-07 — 몽타주 교체 혼합(045)
+
+- 기존 Play Montage/C++ Montage::Play의 동일 그룹 교체가 이전 포즈를 BlendOut으로 줄이며 새 BlendIn과 혼합해요. Quaternion/여러 슬롯·그룹/빠른 연속 교체와 2D 프레임에 공용 경로를 사용해요. Notify 범위는 교체 시작에 정리하고 Interrupted/Ended는 기여 종료 때 전달해요.
+- AI runtime/schema와 몽타주 창에서 montageTransitions/instance/retiring을 관찰해요. 추가 바인딩 때문에 오래된 외부 포즈 연결표를 쓰던 문제도 고쳤어요. 기존 API/노드 수·임의 개수 제한 제거를 유지해요. 근거/검증은 research/MONTAGE_REPLACEMENT_BLEND_045.md에 기록해요.
