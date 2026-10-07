@@ -83,7 +83,7 @@ export function createRigidPhysics(objects,options={}){
           const cp={...componentDefaultValues(component.type),...component.properties},signature=JSON.stringify([cp,transform.scale.toArray(),materials.get(cp.physicalMaterial)]);activeColliders.add(component.id);
           if(p&&!p.isKinematic&&(p.bodyType||'dynamic')==='dynamic'&&(component.type==='EdgeCollider2D'||component.type==='MeshCollider'&&cp.mode==='mesh'))throw Error(o.name+': 동적 강체에는 볼록 메시 또는 다각형 충돌을 사용하세요.');
           let c=r.colliders.get(component.id);
-          if(c?.signature===signature)continue;
+          if(c?.signature===signature){c.object=o;c.component=component;continue;}
           if(c){space.colliders.delete(c.collider.handle);world.removeCollider(c.collider,true);}
           const material=coefficients(cp,R),desc=shape(component,transform.scale,R,dim),center=cp.center.map((v,i)=>v*transform.scale.getComponent(i));
           desc.setTranslation(...center.slice(0,dim)).setSensor(cp.trigger||cp.collisionMode==='query').setFriction(material.friction).setRestitution(material.restitution);
@@ -154,14 +154,14 @@ export function createRigidPhysics(objects,options={}){
     const result=new Map();
     for(const [dim,space] of spaces)for(const c of space.colliders.values()){
       const add=(other,trigger)=>{const d=space.colliders.get(other.handle);if(!d||!pairAllowed(space,c.collider.handle,d.collider.handle))return;const ids=[c.object.id,c.component.id,d.object.id,d.component.id],key=dim+':'+JSON.stringify(JSON.stringify(ids.slice(0,2))<JSON.stringify(ids.slice(2))?ids:[ids[2],ids[3],ids[0],ids[1]]);if(result.has(key))return;
-        let normal=[0,0,0],position=array(c.collider.translation()).map((v,i)=>(v+array(d.collider.translation())[i])/2),penetration=0,contact=false;
+        const otherPosition=array(d.collider.translation());let normal=[0,0,0],position=array(c.collider.translation()).map((v,i)=>(v+otherPosition[i])/2),penetration=0,contact=false;
         if(trigger)contact=space.world.intersectionPair(c.collider,d.collider);
         else space.world.contactPair(c.collider,d.collider,(manifold,flipped)=>{if(!manifold.numContacts())return;contact=true;normal=array(manifold.normal()).map(v=>v*(flipped?1:-1));penetration=Math.max(penetration,...Array.from({length:manifold.numContacts()},(_,i)=>-manifold.contactDist(i)));if(manifold.numSolverContacts())position=array(manifold.solverContactPoint(0));});
         if(contact)result.set(key,{a:c.object.id,b:d.object.id,componentA:c.component.id,componentB:d.component.id,colliderA:c,colliderB:d,trigger,normal,position,penetration:Math.max(0,penetration)});
       };
       space.world.contactPairsWith(c.collider,other=>add(other,false));space.world.intersectionPairsWith(c.collider,other=>add(other,true));
     }
-    lastContacts=[...result.values(),...[...spaces].flatMap(([dim,space])=>fixedContacts(space,dim))];for(const o of objects)o.grounded=false;for(const c of lastContacts)if(!c.trigger){const a=objects.find(o=>o.id===c.a),b=objects.find(o=>o.id===c.b);if(a&&c.normal[1]>.5)a.grounded=true;if(b&&c.normal[1]<-.5)b.grounded=true;}
+    lastContacts=[...result.values(),...[...spaces].flatMap(([dim,space])=>fixedContacts(space,dim))];for(const o of objects)o.grounded=false;for(const c of lastContacts)if(!c.trigger){const a=c.colliderA.object,b=c.colliderB.object;if(c.normal[1]>.5)a.grounded=true;if(c.normal[1]<-.5)b.grounded=true;}
   }
   function updateObjects(){
     const records=[...spaces.values()].flatMap(s=>[...s.bodies.values()]).filter(r=>r.p);

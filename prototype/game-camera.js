@@ -11,7 +11,13 @@ export function pixelPerfectViewport(width,height,p,pixelRatio=1){
 }
 export function selectGameCamera(objects,size,override,current){
   const aspect=typeof size==='number'?size:size.width/Math.max(1,size.height);
-  const selected=objects.map(object=>{const camera=current(object.id)?.userData.gameCamera;return {object,camera,properties:object.components?enabledComponent(object,'Camera'):camera?.userData.cameraProperties};}).filter(x=>x.camera&&x.properties&&x.object.visible!==false&&(override?x.object.id===override:x.properties.main)).sort((a,b)=>b.properties.priority-a.properties.priority)[0];if(!selected)return null;
+  let selected;
+  for(const object of objects){
+    if(object.visible===false||override&&object.id!==override)continue;
+    const authored=object.components?enabledComponent(object,'Camera'):null;if(object.components&&!authored)continue;
+    const camera=current(object.id)?.userData.gameCamera,properties=authored||camera?.userData.cameraProperties;
+    if(camera&&properties&&(override||properties.main)&&(!selected||properties.priority>selected.properties.priority))selected={object,camera,properties};
+  }if(!selected)return null;
   let c=selected.camera;const p=selected.properties;
   if(Boolean(c.isOrthographicCamera)!==(p.projection==='orthographic')){const previous=c,parent=c.parent;c=createGameCamera(p);c.position.copy(previous.userData.basePosition||previous.position);c.quaternion.copy(previous.quaternion);c.scale.copy(previous.scale);previous.removeFromParent();parent.add(c);parent.userData.gameCamera=c;}
   c.userData.cameraProperties=p;c.near=p.near;c.far=p.far;if(c.isPerspectiveCamera)c.fov=p.fieldOfView;

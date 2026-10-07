@@ -1,0 +1,483 @@
+{
+  "date": "2026-10-08",
+  "profileSummary": [
+    {
+      "function": "(idle)",
+      "file": "",
+      "line": 0,
+      "sampleMs": 5054.852
+    },
+    {
+      "function": "(program)",
+      "file": "",
+      "line": 0,
+      "sampleMs": 909.643
+    },
+    {
+      "function": "",
+      "file": "native-transport.js",
+      "line": 123,
+      "sampleMs": 243.586
+    },
+    {
+      "function": "step",
+      "file": "physics-world.js",
+      "line": 229,
+      "sampleMs": 187.701
+    },
+    {
+      "function": "nativeRowJSON",
+      "file": "native-transport.js",
+      "line": 51,
+      "sampleMs": 185.858
+    },
+    {
+      "function": "sync",
+      "file": "physics-world.js",
+      "line": 56,
+      "sampleMs": 173.724
+    },
+    {
+      "function": "walk",
+      "file": "native-transport.js",
+      "line": 6,
+      "sampleMs": 166.434
+    },
+    {
+      "function": "updateMatrixWorld",
+      "file": "three.core.js",
+      "line": 14280,
+      "sampleMs": 139.551
+    },
+    {
+      "function": "collectContacts",
+      "file": "physics-world.js",
+      "line": 153,
+      "sampleMs": 93.88
+    },
+    {
+      "function": "",
+      "file": "physics-world.js",
+      "line": 164,
+      "sampleMs": 93.114
+    },
+    {
+      "function": "selectGameCamera",
+      "file": "game-camera.js",
+      "line": 12,
+      "sampleMs": 91.735
+    },
+    {
+      "function": "nativeSpawnRequest",
+      "file": "native-spawn.js",
+      "line": 6,
+      "sampleMs": 75.275
+    },
+    {
+      "function": "(garbage collector)",
+      "file": "",
+      "line": 0,
+      "sampleMs": 71.973
+    },
+    {
+      "function": "getNodeChildren",
+      "file": "three.webgpu.js",
+      "line": 724,
+      "sampleMs": 69.778
+    },
+    {
+      "function": "collisions",
+      "file": "blueprint-runtime.js",
+      "line": 208,
+      "sampleMs": 69.053
+    },
+    {
+      "function": "physics",
+      "file": "engine-services.js",
+      "line": 346,
+      "sampleMs": 66.939
+    },
+    {
+      "function": "submit",
+      "file": "",
+      "line": 0,
+      "sampleMs": 64.091
+    },
+    {
+      "function": "properties",
+      "file": "physics-world.js",
+      "line": 27,
+      "sampleMs": 57.553
+    },
+    {
+      "function": "",
+      "file": "game-camera.js",
+      "line": 14,
+      "sampleMs": 55.859
+    },
+    {
+      "function": "sceneWorldMatrix",
+      "file": "scene-runtime.js",
+      "line": 11,
+      "sampleMs": 52.238
+    },
+    {
+      "function": "prepare",
+      "file": "two-d-rendering.js",
+      "line": 33,
+      "sampleMs": 51.224
+    },
+    {
+      "function": "",
+      "file": "native-transport.js",
+      "line": 90,
+      "sampleMs": 49.861
+    },
+    {
+      "function": "prepare2D",
+      "file": "scene-rendering.js",
+      "line": 198,
+      "sampleMs": 47.724
+    },
+    {
+      "function": "fixedContacts",
+      "file": "physics-world.js",
+      "line": 141,
+      "sampleMs": 47.251
+    },
+    {
+      "function": "_projectObject",
+      "file": "three.webgpu.js",
+      "line": 56325,
+      "sampleMs": 46.49
+    },
+    {
+      "function": "ensure",
+      "file": "audio-mixer.js",
+      "line": 56,
+      "sampleMs": 46.444
+    },
+    {
+      "function": "assign",
+      "file": "two-d-rendering.js",
+      "line": 50,
+      "sampleMs": 46.31
+    },
+    {
+      "function": "animate",
+      "file": "player.js",
+      "line": 75,
+      "sampleMs": 39.502
+    },
+    {
+      "function": "peak",
+      "file": "audio-mixer.js",
+      "line": 66,
+      "sampleMs": 37.08
+    },
+    {
+      "function": "next",
+      "file": "frame-loop.js",
+      "line": 6,
+      "sampleMs": 36.383
+    },
+    {
+      "function": "structuredClone",
+      "file": "",
+      "line": 0,
+      "sampleMs": 36.22
+    },
+    {
+      "function": "multiplyMatrices",
+      "file": "three.core.js",
+      "line": 11843,
+      "sampleMs": 36.145
+    },
+    {
+      "function": "tickBindings",
+      "file": "blueprint-runtime.js",
+      "line": 111,
+      "sampleMs": 35.279
+    },
+    {
+      "function": "",
+      "file": "native-spawn.js",
+      "line": 7,
+      "sampleMs": 35.094
+    },
+    {
+      "function": "object",
+      "file": "blueprint-runtime.js",
+      "line": 36,
+      "sampleMs": 31.151
+    },
+    {
+      "function": "_renderObjectDirect",
+      "file": "three.webgpu.js",
+      "line": 56670,
+      "sampleMs": 30.878
+    },
+    {
+      "function": "reference",
+      "file": "two-d-assets.js",
+      "line": 7,
+      "sampleMs": 29.699
+    },
+    {
+      "function": "updateMaterialTime",
+      "file": "scene-rendering.js",
+      "line": 195,
+      "sampleMs": 29.303
+    }
+  ],
+  "cameraBefore": {
+    "actors": 432,
+    "frames": 1000,
+    "lookups": 432000,
+    "samples": [
+      0.023862999999999985,
+      0.0170035,
+      0.012444500000000004,
+      0.01040300000000002,
+      0.012650000000000005
+    ],
+    "medianMs": 0.012650000000000005
+  },
+  "cameraAfter": {
+    "actors": 432,
+    "frames": 1000,
+    "lookups": 1000,
+    "samples": [
+      0.015838,
+      0.013029499999999992,
+      0.011768,
+      0.010672500000000014,
+      0.004150499999999973
+    ],
+    "medianMs": 0.011768
+  },
+  "comparison": {
+    "path": "native/build/auric-frame-BB3COB/acceptance.json",
+    "originalPreserved": true,
+    "originalFiles": 608,
+    "goalMet": false,
+    "rows": [
+      {
+        "version": "baseline",
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "packagedFiles": {
+          "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+          "prototype/game-camera.js": "2b3cb3ca18f155f0475e70b99e553778f4ff6bb89e92d2245cd722befb2c365e",
+          "prototype/physics-world.js": "7813fbf4af735952bfe0f9e58f893e75149b35f349760240144a17ded5f66ea1"
+        },
+        "phases": [
+          {
+            "mode": "idle",
+            "fps": 119.65528670865096,
+            "workMs": {
+              "mean": 5.52825484757113,
+              "p50": 5.699999995529652,
+              "p95": 7.100000001490116
+            },
+            "nativeMs": 2.999999999937912,
+            "goalMet": true
+          },
+          {
+            "mode": "battle",
+            "fps": 119.85617259288853,
+            "workMs": {
+              "mean": 5.8219999999801315,
+              "p50": 5.899999998509884,
+              "p95": 8.300000004470348
+            },
+            "nativeMs": 3.1533333335692686,
+            "goalMet": true
+          }
+        ]
+      },
+      {
+        "version": "current",
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "packagedFiles": {
+          "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/physics-world.js": "d127ccb69755174844f9f1ff7f8bfbcf13df1f90a4c7281b4aaa51ec075c5616"
+        },
+        "phases": [
+          {
+            "mode": "idle",
+            "fps": 120.07430011952961,
+            "workMs": {
+              "mean": 5.523480663004007,
+              "p50": 5.5,
+              "p95": 7.5
+            },
+            "nativeMs": 3.3766666666915017,
+            "goalMet": true
+          },
+          {
+            "mode": "battle",
+            "fps": 117.71168484651362,
+            "workMs": {
+              "mean": 6.672000000079473,
+              "p50": 6.299999997019768,
+              "p95": 10
+            },
+            "nativeMs": 3.915000000285606,
+            "goalMet": false
+          }
+        ]
+      },
+      {
+        "version": "current",
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "packagedFiles": {
+          "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/physics-world.js": "d127ccb69755174844f9f1ff7f8bfbcf13df1f90a4c7281b4aaa51ec075c5616"
+        },
+        "phases": [
+          {
+            "mode": "idle",
+            "fps": 119.25721688880026,
+            "workMs": {
+              "mean": 6.174930362087936,
+              "p50": 6,
+              "p95": 8.299999997019768
+            },
+            "nativeMs": 3.3916666663562256,
+            "goalMet": true
+          },
+          {
+            "mode": "battle",
+            "fps": 112.18727796277281,
+            "workMs": {
+              "mean": 7.486333333315948,
+              "p50": 7,
+              "p95": 11.399999998509884
+            },
+            "nativeMs": 4.3949999997392295,
+            "goalMet": false
+          }
+        ]
+      },
+      {
+        "version": "baseline",
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "packagedFiles": {
+          "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+          "prototype/game-camera.js": "2b3cb3ca18f155f0475e70b99e553778f4ff6bb89e92d2245cd722befb2c365e",
+          "prototype/physics-world.js": "7813fbf4af735952bfe0f9e58f893e75149b35f349760240144a17ded5f66ea1"
+        },
+        "phases": [
+          {
+            "mode": "idle",
+            "fps": 116.07083637334117,
+            "workMs": {
+              "mean": 6.308857143010412,
+              "p50": 6.100000001490116,
+              "p95": 9.5
+            },
+            "nativeMs": 3.654999999826153,
+            "goalMet": false
+          },
+          {
+            "mode": "battle",
+            "fps": 119.6196096411984,
+            "workMs": {
+              "mean": 5.917333333566785,
+              "p50": 5.800000004470348,
+              "p95": 8.700000002980232
+            },
+            "nativeMs": 3.2000000003104407,
+            "goalMet": false
+          }
+        ]
+      }
+    ]
+  },
+  "final": {
+    "path": "native/build/auric-frame-ErfIpl/acceptance.json",
+    "originalPreserved": true,
+    "originalFiles": 608,
+    "goalMet": false,
+    "rows": [
+      {
+        "version": "current",
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "packagedFiles": {
+          "prototype/blueprint-runtime.js": "0632dffbd4027c843651170d6c650a3a5e7a75d500643d16930b5228bb0f64e7",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/physics-world.js": "c72404ae8d3b974f48afcab25dc8d8fb847b949be8bdf58cc46005c93b113115"
+        },
+        "phases": [
+          {
+            "mode": "idle",
+            "fps": 120.0424459476791,
+            "workMs": {
+              "mean": 5.2966850825189224,
+              "p50": 5.300000004470348,
+              "p95": 6.700000002980232
+            },
+            "nativeMs": 2.9524999997889,
+            "goalMet": true
+          },
+          {
+            "mode": "battle",
+            "fps": 119.34598400767352,
+            "workMs": {
+              "mean": 5.762166666599612,
+              "p50": 5.600000001490116,
+              "p95": 8.400000005960464
+            },
+            "nativeMs": 3.2091666673620542,
+            "goalMet": false
+          }
+        ]
+      }
+    ]
+  },
+  "checks": [
+    "runtime-features",
+    "physics: 166 + actual C++",
+    "collision-dispatch: BRhYrf actual C++ and Rapier2D/3D"
+  ],
+  "draftRegression": "contact-reference-replacement-before-065.log: 2D replacement grounding failed; shared sync updates object/component references",
+  "readings": {
+    "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Camera-main.html",
+    "bytes": 18330,
+    "sha256": "a34368f517d339424a855d09fed23f2d4762304ea97583aa6c44686daaa2168b",
+    "scope": "own declaration/description/cache note/full example; linked APIs not read",
+    "unreadAttempt": "Epic APlayerController/GetViewTarget web reader Internal Error"
+  },
+  "sourceSHA256": {
+    "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+    "prototype/physics-world.js": "c72404ae8d3b974f48afcab25dc8d8fb847b949be8bdf58cc46005c93b113115",
+    "prototype/tests/physics-cases.js": "217f499b5e77fd001f25593c7deedb1c43400be5291698b508349410b00c4bae",
+    "tools/check-runtime-features.mjs": "c351dab93e020da8d5c5f6908e766fb935cb60661a212b7e891f716be147c7cf",
+    "tools/check-auric-frame.mjs": "a2e2b6b8f6410a765e70aa0d6fe4134ebcd889a6017fa0936fc5b6c9e8089063"
+  },
+  "installChanged": false,
+  "wholeFrameGoal": false,
+  "longMemoryGoal": false
+}
