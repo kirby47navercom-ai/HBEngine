@@ -7,6 +7,12 @@ import {serviceApi} from './core-api.js';
 import {validInputSnapshot,validInputActions} from './runtime-input.js';
 import {valid2DAsset} from './two-d-assets.js';
 import {validateNativeBindings,nativeModuleWorld} from './native-module-query.js';
+export async function nativeParticleQuery(query,objects,rendererQuery){
+  if(!['particleCount','particlePlay','particleStop','particlePause','particleEmit'].includes(query?.key)||!objects.some(o=>o.id===query.args?.target))throw Error('GPU 파티클 질의 대상 오류');
+  if(!rendererQuery)throw Error('GPU 파티클 질의 채널이 필요해요.');
+  if(query.key==='particleEmit'&&(!Number.isSafeInteger(query.args.count)||query.args.count<0||query.args.count>100000)||query.key==='particlePause'&&typeof query.args.paused!=='boolean'||query.key==='particleStop'&&typeof query.args.clear!=='boolean')throw Error('GPU 파티클 질의 입력 오류');
+  const value=await rendererQuery({key:query.key,args:query.args});if(query.key==='particleCount'&&(!Number.isSafeInteger(value)||value<0))throw Error('GPU 파티클 개수 응답 오류');return value;
+}
 export const canonicalWorld=Symbol('canonical native world');
 export class NativeProtocol{
   module(token){return this.sessions?.get(token);}

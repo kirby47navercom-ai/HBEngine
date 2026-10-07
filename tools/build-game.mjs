@@ -60,7 +60,8 @@ export async function inspectBuild(record,profile){
   const legacyBlueprints=new Map();for(const [name,bytes] of content)if(name.endsWith('.hbblueprint.json')){const bp=JSON.parse(bytes);const candidates=legacyBlueprints.get(bp.name)||[];candidates.push(name);legacyBlueprints.set(bp.name,candidates);}
   for(const [name,bytes] of content)if(name.endsWith('.hbscene.json')){const data=JSON.parse(bytes);let changed=false;for(const object of data.objects)if(object.blueprint&&!object.blueprintAsset){const matches=legacyBlueprints.get(object.blueprint)||[];if(matches.length!==1)throw Error(name+': 블루프린트 이름을 경로로 지정하세요: '+object.blueprint);object.blueprintAsset=matches[0];changed=true;}if(changed)content.set(name,Buffer.from(json(data)));}
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');
-  return {content,natives,report:{target:profileTarget(profile),renderer:buildTargets[profileTarget(profile)].renderer,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
+  const renderBackend=JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=buildTargets[profileTarget(profile)].renderer.replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
+  return {content,natives,report:{target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
 export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');

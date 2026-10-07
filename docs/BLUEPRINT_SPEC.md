@@ -320,3 +320,6 @@ ParticleSystem의 기존 여섯 sortMode와 C++/BP Projectiles는 GPU draw 경�
 
 
 055: 에디터 GPU 실행에도 공용 C++ 입자 질의를 연결하고 작성 씬의 실행 debug 오염을 방지. AI window.open/close/viewport.get은 실제 공유 렌더러 상태를 제공. 상세 research/GPU_EDITOR_055.md.
+
+
+056/057: 기존 Particle SDK/BP 함수를 모바일 renderer 질의에 연결하고 대상/입력/응답 검증을 PC와 공유. GPU 입자의 유휴 제출을 생략하며 기존 방출/정지 의미 유지. 실제 모바일 GPU device는 미검증. research/GPU_MOBILE_056.md와 GPU_IDLE_057.md 참고.

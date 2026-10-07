@@ -1,5 +1,5 @@
 import {createPersistentQueries,persistentQueryKeys} from './runtime-storage.js';
-import {NativeProtocol} from './native-protocol.js';
+import {NativeProtocol,nativeParticleQuery} from './native-protocol.js';
 import {spawnQueryRequest} from './native-spawn.js';
 import {NativePhysicsQueries} from './native-physics-query.js';
 import {worldPatch,commitNativeWorld} from './native-transport.js';
@@ -7,7 +7,7 @@ import {canonicalWorld} from './native-protocol.js';
 import {resolveBuildPath,kioskSettings,validKioskSettings,frameSettings,validFrameSettings} from './build-profile.js';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(s=>!s||s==='.'||s==='..');
-export function mobileBackend(manifest,{read,request}){
+export function mobileBackend(manifest,{read,request,rendererQuery}){
   if(!validKioskSettings(manifest)||!validFrameSettings(manifest))throw Error('키오스크 패키지 설정 오류');
   if(manifest.version!==1||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene))throw Error('모바일 패키지 형식 오류');
   const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,gameInstance:manifest.gameInstance||'',legacyStorage:false,player:true};
@@ -23,7 +23,7 @@ export function mobileBackend(manifest,{read,request}){
       let queries;try{
         const started=performance.now(),decoded=protocol.decodeRequest(module,data.request),decodedAt=performance.now();protocol.validate(module,decoded);if(decoded.moduleFrames!==undefined)protocol.frameModules(data.token,decoded.moduleFrames);if(decoded.gameSession&&gameSessionId!==decoded.gameSession.id){gameSessionId=decoded.gameSession.id;persistentQueries.clear();}if(decoded.spawnTemplates){module.spawnContexts??=new Map();module.spawnContexts.set(decoded.spawnPrefix,decoded.spawnTemplates);if(module.spawnContexts.size>8)module.spawnContexts.delete(module.spawnContexts.keys().next().value);}else if(decoded.spawnPrefix&&module.workerSpawnPrefix!==decoded.spawnPrefix&&module.spawnContexts?.has(decoded.spawnPrefix))decoded.spawnTemplates=module.spawnContexts.get(decoded.spawnPrefix);const validatedAt=performance.now();queries=new NativePhysicsQueries(decoded.objects,{authorizeWorld:query=>spawnQueryRequest(decoded,query,module.metadata,decoded.spawnTemplates||module.spawnContexts?.get(decoded.spawnPrefix))});let queryMs=0,queryCount=0;
         const clockOnly=['frame','frames','reset'].includes(decoded.command),patch=!clockOnly&&module.metadata.workerProtocol>=2&&module.transportWorld?(decoded[canonicalWorld]?.patch&&module.transportWorld===decoded[canonicalWorld].base?decoded[canonicalWorld].patch:worldPatch(module.transportWorld,decoded.objects)):null,packet=clockOnly?{...decoded,objects:[]}:patch?{...decoded,objects:undefined,objectPatch:patch}:decoded;if(decoded.command==='reset')module.transportWorld=null;
-        const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{return persistentQueryKeys.has(query.key)?await persistentQueries(query.key,query.args):await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
+        const rpcStarted=performance.now(),reply=await request('native',{module:module.index,request:packet},async query=>{const at=performance.now();queryCount++;try{if(['particleCount','particlePlay','particleStop','particlePause','particleEmit'].includes(query.key)){if(queryCount>128)throw Error('GPU 파티클 질의 개수 오류');return await nativeParticleQuery(query,decoded.objects.length?decoded.objects:module.transportWorld||[],rendererQuery);}return persistentQueryKeys.has(query.key)?await persistentQueries(query.key,query.args):await queries.query(query);}finally{queryMs+=performance.now()-at;}}),repliedAt=performance.now();
         if(!reply.ok)throw Error(reply.error||'모바일 C++ 실행 실패');if(decoded.spawnTemplates)module.workerSpawnPrefix=decoded.spawnPrefix;const result=protocol.validateReply(module,decoded,reply);result.transport={...result.transport,...reply.hostTiming,decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,rpcMs:repliedAt-rpcStarted,replyValidationMs:performance.now()-repliedAt,queryMs,queryCount};
         const committed=data.request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
         if(!clockOnly)module.transportWorld=committed||commitNativeWorld(decoded.objects,result);
@@ -55,6 +55,7 @@ export function mobileBackend(manifest,{read,request}){
       return json({error:'모바일 실행기에 없는 작업'},404);
     }catch(error){return json({error:error.message},400);}
   };
+  backend.setRendererQuery=handler=>{if(handler!==undefined&&typeof handler!=='function')throw Error('렌더러 질의 연결 오류');rendererQuery=handler;};
   backend.fileUrl=name=>{const resolved=resolve(name);if(!resolved)throw Error('게임 파일이 없어요: '+name);return '/Content/'+resolved.split('/').map(encodeURIComponent).join('/');};
   return backend;
 }
@@ -94,7 +95,7 @@ export async function startMobilePlayer(){
   const bridge=platformBridge(send,{nativeJSON:true});window.hbMobileReply=bridge.receive;window.hbMobileQuery=bridge.query;window.hbMobileHostLifecycle=bridge.setActive;
   if(window.HBMobile){const connected=await connectAndroidChannel(bridge,window);messagePort=connected.port;if(manifest.configuration==='development')window.hbMobileChannel=connected.info;}
   const backend=mobileBackend(manifest,{read:name=>original('/'+name),request:bridge.request});
-  window.hbMobileFileUrl=backend.fileUrl;
+  window.hbMobileFileUrl=backend.fileUrl;window.hbMobileSetRendererQuery=backend.setRendererQuery;
   window.hbMobileTarget=manifest.target;
   window.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);return url.origin===location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};
   // Preserve the existing Player close/save path on both mobile hosts.

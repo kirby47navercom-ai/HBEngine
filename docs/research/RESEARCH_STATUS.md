@@ -204,3 +204,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 
 
 2026-10-07 후속: [055 GPU 에디터](GPU_EDITOR_055.md)에 공식 자체 본문/표·부분 accessor와 GPU/GL 에디터 PNG·BP/C++·소유권 검증을 기록. 전체 corpus/FPS/설치 완료로 승격하지 않음.
+
+
+2026-10-07 후속: [056 모바일 GPU 질의](GPU_MOBILE_056.md)와 [057 유휴 입자](GPU_IDLE_057.md). 공식 부분 본문/API·실제 PC GPU/GL/에디터·C++ AOT 연결·Android adapter null을 분리해 보존. 전체 corpus/FPS/실기기/설치 완료로 승격하지 않음.

@@ -1,5 +1,6 @@
 // A failed or lost reply is never retried: the C++ function may already have run.
 export function createNativeChannel(descriptor,fallback,host=globalThis,rendererQuery){
+  host.hbMobileSetRendererQuery?.(rendererQuery);
   let socket,opening,sequence=0,unavailable=false;const pending=new Map();
   const fail=message=>{for(const p of pending.values()){host.clearTimeout(p.timer);p.reject(Error(message));}pending.clear();};
   async function connect(){if(opening)return opening;opening=new Promise((resolve,reject)=>{
