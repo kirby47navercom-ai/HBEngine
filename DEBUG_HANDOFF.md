@@ -1,3 +1,18 @@
+# 046 실제 compute 검증 / 설치 대기 — 2026-10-07
+
+
+
+## 046 실제 컴퓨트 셰이더 — 2026-10-07
+
+기존 compute 부재를 코드로 확인하고 Direct3D11/HLSL cs_5_0/구조화 버퍼/상수/실제Dispatch·명시적readback과 GPU상태 유지 파티클을 SDK에 추가했어요. BP→C++→실GPU, 실제 release Player의2D·3D 이동·버퍼 유지/해제·원본/종료 PASS.65,537레코드20step 중앙값 CPU 4.0771ms, GPU한번readback 1.2039ms, 매stepreadback 10.8629ms. 전체FPS로 세지 않아요. Android2ABI 헤더 컴파일 PASS이며 모바일 GPU는 미구현이에요. 기본CPU파티클/탄막과 WebGL2렌더러의 직접GPU버퍼 공유가 후속이에요. research/GPU_COMPUTE_046.md에 실제 본문5개 읽기 범위/코드/검증·실패보존을 연결했어요. 사용자 창/원본게임/프로필은 사용하지 않았어요. 설치는 검증 source의 production commit 뒤 진행해요.
+
+
+## 045 사용자 설치 기록 — 2026-10-07
+
+실제 검증한 production e8db3b2를 사용자 설치본 C:\Users\kirby\HBEngine\Versions\f906844c4b5fc257에 불변 버전으로 갱신했어요.1798파일,변경18 SHA 복사 검증,바로가기/.hbproject 연결과 이전51cf 버전·exe/SDK/프로필·기존 프로세스 보존을 확인했어요. 검사 중 사용자 창을 시작/종료하지 않았어요. 증거 native/build/montage-replacement-user-install-045.json.
+
+- 046 current core iwABfm + actual release window aa6Y3B PASS/current checkedFiles SHA matched. No production renderer migration/GPU zero-copy/mobile compute/FPS claim. Prior 045 installed f906844c4b5fc257/e8db3b2; old pending note below superseded. Next commit/push→immutable user install, then GPU resident render integration/remaining cumulative work. No new agents/goals/stress/8h; userUI/processes/profiles/game immutable; originalMD append only.
+
 # 045 검증 완료 / 다음 실제 컴퓨트 셰이더(046) — 2026-10-07
 
 - 045 same-group frozen outgoing pose + own blendOut/curve; incoming own blendIn; normalize above1; quaternion/multi-slot/rapid changes/2D. Preflight/adoption cached maps refresh on binding growth, notify scopes canceled at replacement, Ended at contribution end, all captures cleaned despite callback errors/reentrancy. UI/AI retiring instance observability. Core3 PASS; actual private Editor otTWhz + release Player SIAnz3 PASS/current5productionSHA match; Window source/actions included. Failures1dGWmr/xX4x27/43r2MO preserved and documented. Only --replacement focus; not all authoring retest.

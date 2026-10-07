@@ -1,0 +1,50 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import net from 'node:net';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {spawn} from 'node:child_process';
+import {createProject} from './project-manifest.mjs';
+import {buildGame,readBuildProfiles} from './build-game.mjs';
+import {createAsset} from '../prototype/asset-documents.js';
+import {makeSceneComponent} from '../prototype/scene-components.js';
+import {createPlacedObject} from '../prototype/placement-catalog.js';
+import {parseNativeHeader} from '../prototype/native-model.js';
+import {makeNode} from '../prototype/blueprint-model.js';
+
+const root=path.resolve(import.meta.dirname,'..'),work=await fs.mkdtemp(path.join(root,'native/build/gpu-compute-window-')),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const files=['native/include/HBEngine/Compute.hpp','tools/native-host.mjs','docs/examples/GPUActor.h','docs/examples/GPUActor.cpp','tools/check-gpu-compute-window.mjs'];
+const checkedFiles=Object.fromEntries(await Promise.all(files.map(async name=>[name,createHash('sha256').update(await fs.readFile(path.join(root,name))).digest('hex')])));
+const project=await createProject('GPU 컴퓨트 실행 검증',work,'2d'),write=(p,data)=>project.project.write(p,typeof data==='string'?data:JSON.stringify(data));
+const header=await fs.readFile(path.join(root,'docs/examples/GPUActor.h'),'utf8'),source=await fs.readFile(path.join(root,'docs/examples/GPUActor.cpp'),'utf8');
+const bp=createAsset('blueprint','BP_GPU');bp.settings.parentClass='GPUActor';bp.construction={nodes:[makeNode('construction')],edges:[],comments:[]};bp.native={...parseNativeHeader(header),header,source,headerPath:'Source/GPUActor.h',sourcePath:'Source/GPUActor.cpp'};
+const input=makeNode('input'),step=makeNode('nativeCall'),releaseInput=makeNode('input'),release=makeNode('nativeCall');input.options={key:'E'};step.nativeId='GPUActor.StepGPU';step.inputValues={deltaSeconds:.25};releaseInput.options={key:'R'};release.nativeId='GPUActor.ReleaseGPU';bp.nodes=[input,step,releaseInput,release];bp.edges=[{from:{node:input.id,pin:'then'},to:{node:step.id,pin:'exec'}},{from:{node:releaseInput.id,pin:'then'},to:{node:release.id,pin:'exec'}}];
+await write('Source/GPUActor.h',header);await write('Source/GPUActor.cpp',source);await write(project.manifest.startupBlueprint,bp);
+await write('Assets/GPU.svg','<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" fill="#20d0f0"/></svg>');await write('Assets/S_GPU.hbsprite.json',{...createAsset('sprite','S_GPU'),texture:'Assets/GPU.svg',pixelsPerUnit:32});
+const sprite={...createPlacedObject('sprite',{id:'Sprite'}),name:'GPU 2D',position:[1,1,0],blueprintAsset:project.manifest.startupBlueprint,components:[makeSceneComponent('Transform'),makeSceneComponent('SpriteRenderer',{sprite:'Assets/S_GPU.hbsprite.json'})]},cube={...createPlacedObject('cube',{id:'Cube'}),name:'GPU 3D',position:[-2,-1,0],blueprintAsset:project.manifest.startupBlueprint};
+const camera={...createPlacedObject('camera',{id:'Camera'}),position:[0,0,10],rotation:[0,0,0],components:[makeSceneComponent('Camera',{main:true,projection:'orthographic',orthographicSize:4})]};
+const scene=JSON.parse(await fs.readFile(path.join(project.root,project.manifest.startupScene),'utf8'));scene.objects=[sprite,cube,camera];scene.environment.sky=false;scene.environment.clouds=false;await write(project.manifest.startupScene,scene);
+const originals=await Promise.all([project.manifest.startupScene,project.manifest.startupBlueprint,'Source/GPUActor.h','Source/GPUActor.cpp'].map(async name=>[name,await fs.readFile(path.join(project.root,name))]));
+const profile=(await readBuildProfiles(project)).profiles[0];profile.configuration='release';const built=await buildGame(project,profile);await fs.writeFile(path.join(work,'build.json'),JSON.stringify(built,null,2));
+const reservation=net.createServer();await new Promise(r=>reservation.listen(0,'127.0.0.1',r));const port=reservation.address().port;await new Promise(r=>reservation.close(r));
+const env={...process.env,HB_USER_DATA_DIR:path.join(work,'UserData'),HB_PLAYER_ACCEPTANCE:'1',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+port+' --disable-renderer-backgrounding --disable-background-timer-throttling --disable-backgrounding-occluded-windows'};for(const name of ['PORT','HB_PROJECT_DIR','HB_PROJECT_FILE'])delete env[name];
+const child=spawn(built.executable,['--smoke-test',path.join(work,'shell.json')],{cwd:work,env,windowsHide:true,stdio:'pipe'});let ended,socket,id=0,output='';child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);const exit=new Promise(r=>child.once('exit',(code,signal)=>{ended={code,signal};r();})),pending=new Map(),errors=[];
+async function until(fn,label){const deadline=Date.now()+40000;while(Date.now()<deadline){if(ended)throw Error('검사 실행기 종료 '+JSON.stringify(ended)+output);const value=await fn();if(value)return value;await sleep(50);}throw Error(label+' 시간 초과');}
+try{
+  const target=await until(async()=>{try{return(await(await fetch('http://127.0.0.1:'+port+'/json/list')).json()).find(t=>t.type==='page'&&t.url.startsWith('http://127.0.0.1:'));}catch{}},'격리 실행기');
+  const base=new URL(target.url).origin;socket=new WebSocket(target.webSocketDebuggerUrl);await new Promise((r,j)=>{socket.onopen=r;socket.onerror=j;});socket.onmessage=({data})=>{const m=JSON.parse(data),p=pending.get(m.id);if(p){pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result);}else if(m.method==='Runtime.exceptionThrown')errors.push(m);};
+  const cdp=(method,params={})=>new Promise((resolve,reject)=>{const key=++id,timer=setTimeout(()=>{pending.delete(key);reject(Error(method+' timeout'));},30000);pending.set(key,{resolve,reject,timer});socket.send(JSON.stringify({id:key,method,params}));});
+  const evaluate=async expression=>{const r=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description||r.exceptionDetails.text);return r.result.value;};await cdp('Runtime.enable');
+  await until(()=>evaluate('(()=>{const e=document.querySelector("#error");if(e&&!e.hidden)throw Error(e.textContent);return window.hbPlayerDebug?.ready();})()'),'배포 C++ 준비');
+  const inspect=()=>evaluate('window.hbPlayerDebug.inspect()'),key=async value=>{for(const type of ['keyDown','keyUp'])await cdp('Input.dispatchKeyEvent',{type,key:value,code:'Key'+value,windowsVirtualKeyCode:value.charCodeAt(0)});};
+  const first=await inspect();for(const o of [sprite,cube])assert.deepEqual(first.objects.find(s=>s.id===o.id).position,o.position,'C++ 로드가 배치 위치를 보존해요');
+  for(let n=1;n<=3;n++){await key('E');await until(async()=>{const s=await inspect();return [sprite,cube].every(o=>s.objects.find(a=>a.id===o.id).nativeProperties.gpuSteps===n);},'BP 입력→C++→GPU '+n);}
+  const advanced=await inspect();for(const o of [sprite,cube]){const a=advanced.objects.find(s=>s.id===o.id);assert.deepEqual(a.position,[o.position[0]+.75,...o.position.slice(1)]);assert.equal(a.nativeProperties.gpuGenerations,1);assert.equal(a.nativeProperties.gpuActive,true);}
+  assert.ok(advanced.renderer.info.calls>=2);assert.ok(advanced.renderer.programs.every(p=>p.runnable));assert.equal(advanced.sprites.find(s=>s.id==='Sprite').image[0],32);
+  await fs.writeFile(path.join(work,'gpu-2d-3d.png'),Buffer.from((await evaluate('window.hbPlayerDebug.capture()')).split(',')[1],'base64'));
+  await key('R');const released=await until(async()=>{const s=await inspect();return [sprite,cube].every(o=>s.objects.find(a=>a.id===o.id).nativeProperties.gpuActive===false)?s:null;},'GPU 자원 해제');
+  await key('E');const restarted=await until(async()=>{const s=await inspect();return [sprite,cube].every(o=>s.objects.find(a=>a.id===o.id).nativeProperties.gpuSteps===4)?s:null;},'GPU 재시작');for(const o of [sprite,cube]){const a=restarted.objects.find(s=>s.id===o.id);assert.deepEqual(a.position,[o.position[0]+1,...o.position.slice(1)]);assert.equal(a.nativeProperties.gpuGenerations,2);}
+  assert.equal(errors.length,0);for(const [name,bytes] of originals)assert.deepEqual(await fs.readFile(path.join(project.root,name)),bytes);
+  await evaluate('window.chrome.webview.postMessage("hbengine.ready.player")');await Promise.race([exit,sleep(10000)]);assert.equal(ended?.code,0);await assert.rejects(fetch(base+'/api/session',{signal:AbortSignal.timeout(1000)}));
+  await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,checkedFiles,executable:built.executable,first,advanced,released,restarted,errors,exit:ended,serverClosed:true,privateProjectPreserved:true,hardwareCompute:true,blueprintCppGpuScene:true,sameBuffersAcrossCalls:true,sprite2D:true,mesh3D:true,rendererBackend:'WebGL2 with explicit one-record GPU readback; no claim of GPU-resident rendering'},null,2));console.log('실제 배포 Player BP/C++/DirectCompute→2D·3D 이동·버퍼 유지·해제·재시작 PASS: '+work);
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({message:error.message,stack:error.stack,ended,errors},null,2));console.error('GPU 창 증거:',work);throw error;}finally{socket?.close();for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('검사 종료'));}if(!ended)child.kill();await Promise.race([exit,sleep(2000)]);}

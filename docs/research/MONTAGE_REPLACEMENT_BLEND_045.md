@@ -40,3 +40,8 @@
 - Editor는 이전 몽타주 문서를 계속 열어 둔 채 `교체 혼합` 표시/가중치를 확인하고 `montage-replacement.png`를 남겼어요. 각 runtime JSON에 실제 뼈/인스턴스/사용자 C++ 속성을 남겼어요. `--replacement`는 이번 동작을 집중 검사하며 변경하지 않은 모든 제작 조작을 반복 통과한 것으로 표시하지 않아요.
 - 첫 fixture는 Source 파일보다 BP를 먼저 쓴 순서로 검증 단계에서 실패(1dGWmr)했어요. Source→BP로 고쳤어요. 오래된 광범위 검사(xX4x27)의 상태 표시 확인과 첫2초 교체 검사(43r2MO)는 시간 초과로 실패했어요. 두 실패를 보존하고, 활성 문서의 표시를 선택하며 외부 C++/검사 왕복 중 상태를 관찰할 수 있는10초짜리 검증 에셋으로 집중 검사했어요. 짧은0.4초 동작과 정확한 혼합 값은 코어 검사로 별도 통과해요. 제품의 혼합 시간을 늘리거나 실패를 성공으로 덮어쓰지 않았어요.
 - 이번 증거는 Windows 실제 Editor/Player예요. 새 Android/iOS 패키지·실기기·전체FPS·전체 조사 합격을 뜻하지 않아요.
+
+
+## 045 사용자 설치 기록 — 2026-10-07
+
+실제 검증한 production e8db3b2를 사용자 설치본 C:\Users\kirby\HBEngine\Versions\f906844c4b5fc257에 불변 버전으로 갱신했어요.1798파일,변경18 SHA 복사 검증,바로가기/.hbproject 연결과 이전51cf 버전·exe/SDK/프로필·기존 프로세스 보존을 확인했어요. 검사 중 사용자 창을 시작/종료하지 않았어요. 증거 native/build/montage-replacement-user-install-045.json.

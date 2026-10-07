@@ -187,3 +187,8 @@
 ## 2026-10-07 후속 구현 대조 — 045
 
 위 초기 대조표의 Animation Graph/뼈별 포즈 혼합·슬롯·2D Rig/IK 일부는 후속 구현 문서에 반영됐어요. 최신 남은 항목 판단은 초기 표만 사용하지 않고 각 상세 구현/검증 문서와 대조해요. 이번에는 ANIMATION_MONTAGE_SLOTS.md의 같은 그룹 outgoing 교체 혼합을 구현했어요. 정확한 계약·읽은 세 API 본문 범위·검증은 research/MONTAGE_REPLACEMENT_BLEND_045.md에 있어요. 전체 API/corpus 완료나 Root Motion/프로파일까지 구현한 것으로 세지 않아요.
+
+
+## 046 실제 컴퓨트 셰이더 — 2026-10-07
+
+기존 compute 부재를 코드로 확인하고 Direct3D11/HLSL cs_5_0/구조화 버퍼/상수/실제Dispatch·명시적readback과 GPU상태 유지 파티클을 SDK에 추가했어요. BP→C++→실GPU, 실제 release Player의2D·3D 이동·버퍼 유지/해제·원본/종료 PASS.65,537레코드20step 중앙값 CPU 4.0771ms, GPU한번readback 1.2039ms, 매stepreadback 10.8629ms. 전체FPS로 세지 않아요. Android2ABI 헤더 컴파일 PASS이며 모바일 GPU는 미구현이에요. 기본CPU파티클/탄막과 WebGL2렌더러의 직접GPU버퍼 공유가 후속이에요. research/GPU_COMPUTE_046.md에 실제 본문5개 읽기 범위/코드/검증·실패보존을 연결했어요. 사용자 창/원본게임/프로필은 사용하지 않았어요. 설치는 검증 source의 production commit 뒤 진행해요.

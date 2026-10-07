@@ -254,3 +254,8 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 
 - 기존 Play Montage/C++ Montage::Play의 동일 그룹 교체가 이전 포즈를 BlendOut으로 줄이며 새 BlendIn과 혼합해요. Quaternion/여러 슬롯·그룹/빠른 연속 교체와 2D 프레임에 공용 경로를 사용해요. Notify 범위는 교체 시작에 정리하고 Interrupted/Ended는 기여 종료 때 전달해요.
 - AI runtime/schema와 몽타주 창에서 montageTransitions/instance/retiring을 관찰해요. 추가 바인딩 때문에 오래된 외부 포즈 연결표를 쓰던 문제도 고쳤어요. 기존 API/노드 수·임의 개수 제한 제거를 유지해요. 근거/검증은 research/MONTAGE_REPLACEMENT_BLEND_045.md에 기록해요.
+
+
+## 046 실제 컴퓨트 셰이더 — 2026-10-07
+
+기존 compute 부재를 코드로 확인하고 Direct3D11/HLSL cs_5_0/구조화 버퍼/상수/실제Dispatch·명시적readback과 GPU상태 유지 파티클을 SDK에 추가했어요. BP→C++→실GPU, 실제 release Player의2D·3D 이동·버퍼 유지/해제·원본/종료 PASS.65,537레코드20step 중앙값 CPU 4.0771ms, GPU한번readback 1.2039ms, 매stepreadback 10.8629ms. 전체FPS로 세지 않아요. Android2ABI 헤더 컴파일 PASS이며 모바일 GPU는 미구현이에요. 기본CPU파티클/탄막과 WebGL2렌더러의 직접GPU버퍼 공유가 후속이에요. research/GPU_COMPUTE_046.md에 실제 본문5개 읽기 범위/코드/검증·실패보존을 연결했어요. 사용자 창/원본게임/프로필은 사용하지 않았어요. 설치는 검증 source의 production commit 뒤 진행해요.
