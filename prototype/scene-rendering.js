@@ -54,7 +54,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     if(group.userData.disposed)return;
     if(p.volumetric&&p.lightType!=='global'){
       const cookie=group.userData.light2dCookie,radius=p.lightType==='freeform'?Math.max(...p.shapePath.map(q=>Math.hypot(...q)))+p.shapeFalloff:p.outerRadius,size=p.lightType==='sprite'?cookie?.size||[p.cookieWidth,p.cookieHeight]:[2*radius,2*radius],offset=cookie?.offset||[0,0];
-      const geometry=new THREE.PlaneGeometry(...size),material=new THREE.MeshStandardMaterial({transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});own(group,geometry);own(group,material);light2DUniforms(material).hbLight2DVolume.value=0;
+      const geometry=new THREE.PlaneGeometry(...size),material=gameRenderer?.hbLight2DVolume?.()||new THREE.MeshStandardMaterial({transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});own(group,geometry);own(group,material);light2DUniforms(material).hbLight2DVolume.value=0;
       const mesh=new THREE.Mesh(geometry,material);mesh.position.set(...offset,0);mesh.userData.objectId=group.userData.objectId;mesh.userData.light2dVolume=true;mesh.userData.draw2d={shading:'volume2d'};mesh.userData.draw2dId='volume';group.userData.light2dVolume=mesh;group.add(mesh);
     }
     if(editor)lightOutline(group,p);

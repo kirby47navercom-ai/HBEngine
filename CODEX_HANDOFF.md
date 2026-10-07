@@ -1,3 +1,9 @@
+# 053 GPU 2D 광원/그림자 검증 — 2026-10-07
+
+Order unchanged: cumulative/previous remaining goals first, validate, install once group done, then research-derived additions. Install 7df780dd9a47cf5b unchanged; no user windows/foreground/profiles/original game Assets/Source/tools changes. No agents/goals/automations or unchanged long stress.
+
+053 shared light-data/cookie/shape/shadow owners with GPU WGSL/TSL sprite lighting and 5 stencil passes. Actual release hidden Win32 Player GPU7WAkd3 / GL10vKc6 PASS: Global/point/spot/freeform/cookie, normal accurate/fast/disabled, styles/add/subtract/mask/inverse/layers/order, actual BP L key + compiled C++ SetIntensity, 3-cell/2-row atlas, self/cast/both/Composite/disable/volume, unchanged upload/pass counters, final GPU memory3geom5tex equal, errors0/original private files/exit0/server closed. Common sprite regression xlTL92 PASS. SHA/read cache lighting-research-053; docs GPU_2D_LIGHTING_053 preserves incomplete API/semantic limits. Prior052 commit8c48688 pushed. Need053 Korean commit/push; NO install. Next particle GPU sorting/projectile/editor/mobile then whole PC120/mobile60/memory/cumulative engine requirements. PhysicalAndroid unavailable/localMac absent; old mobile60 and8hRAM failures remain failures.
+
 # 052 GPU 2D 검증 / 선행 목표 완료 뒤 설치 — 2026-10-07
 
 Latest order unchanged: previously declared remaining goals + cumulative requests first; validate; update installed engine only when first whole group done; then research-derived additions. WORK_ORDER_051 preserves both. Current install7df780dd9a47cf5b/production8dabf2d unchanged; user windows/profiles/original Auric assets/Source/tools preserved.

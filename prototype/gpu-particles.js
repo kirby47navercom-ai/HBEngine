@@ -59,11 +59,12 @@ export async function createGPURenderer(canvas){
   };renderer.hbParticles=(group,p,map)=>new GPUParticleSimulation(renderer,group,p,map);
   const {createGPUMaterial}=await import('./gpu-materials.js');renderer.hbMaterial=createGPUMaterial;
   const {createGPUSkyMaterial,applyGPUFog,GPUBloomRendering}=await import('./gpu-environment.js');renderer.hbSkyMaterial=createGPUSkyMaterial;renderer.hbFog=applyGPUFog;renderer.hbBloom=()=>new GPUBloomRendering();
-  const {createGPUSpriteMaterial,createGPUMaskMaterial,gpuSpriteMask,gpuMaskTarget}=await import('./gpu-2d-rendering.js');renderer.hbSprite=createGPUSpriteMaterial;renderer.hbMaskMaterial=createGPUMaskMaterial;renderer.hbSpriteMask=gpuSpriteMask;renderer.hbMaskTarget=gpuMaskTarget;
+  const {createGPUSpriteMaterial,createGPUMaskMaterial,gpuSpriteMask,gpuMaskTarget}=await import('./gpu-2d-rendering.js');const lightingTextures=new Map();renderer.hbSprite=(map,p,normal)=>createGPUSpriteMaterial(map,p,normal,lightingTextures);renderer.hbLight2DVolume=()=>{const m=renderer.hbSprite(null,{shading:'lit2d',blendMode:'additive'},null);m.depthTest=false;return m;};renderer.hbMaskMaterial=createGPUMaskMaterial;renderer.hbSpriteMask=gpuSpriteMask;renderer.hbMaskTarget=gpuMaskTarget;
+  const {gpuShadowMaterials}=await import('./gpu-2d-lighting.js');renderer.hbShadowMaterials=gpuShadowMaterials;renderer.hbShadowTarget=gpuMaskTarget;
   const framebuffers=new Set(),copyFramebuffer=renderer.copyFramebufferToTexture.bind(renderer);
   // r180 transmission uses globally cached ViewportTextureNodes. Their copies need a scene owner.
   renderer.copyFramebufferToTexture=(texture,...args)=>{if(texture.isFramebufferTexture)framebuffers.add(texture);return copyFramebuffer(texture,...args);};
-  renderer.hbReleaseScene=()=>{for(const texture of framebuffers)texture.dispose();framebuffers.clear();};renderer.hbFramebufferTextures=framebuffers;
+  renderer.hbReleaseScene=()=>{for(const texture of framebuffers)texture.dispose();framebuffers.clear();for(const t of lightingTextures.values())t.dispose();lightingTextures.clear();};renderer.hbFramebufferTextures=framebuffers;
   renderer.hbGPUErrors=[];renderer.backend.device.addEventListener('uncapturederror',event=>{renderer.hbGPUErrors.push(event.error.message);console.error(event.error);renderer.hbOnError?.(Error(event.error.message));});
   return renderer;
 }
