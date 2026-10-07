@@ -31,3 +31,13 @@ export async function audioMeterReuseProof(){
     return {created,peaks,reuse:true,idleDisconnected:true,timerStopped:true,streaming};
   }finally{route.dispose();}
 }
+
+export async function audioMixerBufferProof(){
+  const {AudioMixerGraph,createAudioMixer}=await import('/prototype/audio-mixer.js'),context=new AudioContext(),graph=new AudioMixerGraph(context,createAudioMixer('BufferProbe')),oscillator=context.createOscillator(),gain=context.createGain(),buffers=new Set(),meters=[...graph.nodes.values()].map(n=>n.meter),master=graph.nodes.get('master').meter;
+  for(const meter of meters){const read=meter.getFloatTimeDomainData.bind(meter);meter.getFloatTimeDomainData=values=>{if(values.length!==meter.fftSize)throw Error('믹서 샘플 크기 오류');buffers.add(values);read(values);};}
+  const waitClock=async()=>{const start=context.currentTime,end=performance.now()+5000;while(context.currentTime<start+.2){if(performance.now()>end)throw Error('믹서 오디오 시계 정지');await new Promise(r=>setTimeout(r,8));}};
+  let proof;
+  try{await context.resume();oscillator.frequency.value=440;gain.gain.value=.5;oscillator.connect(gain);gain.connect(graph.input());oscillator.start();await waitClock();const high=graph.levels().master;for(let i=0;i<200;i++)graph.levels();const stableBuffers=buffers.size;if(stableBuffers!==meters.length||high<.3||high>.4)throw Error('믹서 반복 측정/신호 오류: '+JSON.stringify({stableBuffers,high}));gain.gain.setValueAtTime(.02,context.currentTime);await waitClock();const low=graph.levels().master;master.fftSize=512;await waitClock();const resized=graph.levels().master;if(low<.01||low>.02||resized<.01||resized>.02||buffers.size!==meters.length+1)throw Error('믹서 신호 교체/FFT 변경 오류: '+JSON.stringify({low,resized,buffers:buffers.size}));proof={reads:200,buses:meters.length,stableBuffers,resizedBuffers:buffers.size,high,low,resized};}
+  finally{oscillator.stop();oscillator.disconnect();gain.disconnect();graph.dispose();await context.close();}
+  return {...proof,nodesCleared:graph.nodes.size===0,contextClosed:context.state==='closed'};
+}

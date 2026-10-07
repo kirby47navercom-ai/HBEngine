@@ -1,0 +1,94 @@
+[
+  {
+    "path": "native\\build\\auric-frame-UwL2J7\\run-0\\acceptance.json",
+    "sha256": "4d9a8b9d1b93b745204cac11cc7d8f634cd96ba827abb2ad97571067e1ccea36",
+    "backend": "webgl2",
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "errors": [],
+    "sampledSeconds": 99.577,
+    "activeStartPrivateMiB": 694.9140625,
+    "activeEndPrivateMiB": 699.03125,
+    "settledPrivateMiB": 809.8515625,
+    "activeStartHeapMiB": 48.71876525878906,
+    "activeEndHeapMiB": 51.657527923583984,
+    "settledHeapMiB": 51.91628646850586,
+    "activeResources": {
+      "geometries": 15,
+      "textures": 21
+    },
+    "settledResources": {
+      "geometries": 14,
+      "textures": 20
+    },
+    "settledNodes": 375,
+    "settledListeners": 1297,
+    "mixerBufferProof": null,
+    "forcedGC": false,
+    "nativeAllocationSampling": true,
+    "neutralHeld": "5",
+    "originalPreserved": true,
+    "beforeMixerBufferChange": true,
+    "active-native-memory": {
+      "sampledBytes": 3211264,
+      "size524284Samples": 0
+    },
+    "reopened-native-memory": {
+      "sampledBytes": 9682944,
+      "size524284Samples": 1
+    }
+  },
+  {
+    "path": "native\\build\\auric-frame-mD50n3\\run-0\\acceptance.json",
+    "sha256": "55ed437ba2edeb7c67bf880af48c129aaef2b9d10c31945920cfd77ae63ed7c8",
+    "backend": "webgpu",
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "errors": [],
+    "sampledSeconds": 100.324,
+    "activeStartPrivateMiB": 934.0390625,
+    "activeEndPrivateMiB": 896.9296875,
+    "settledPrivateMiB": 1087.39453125,
+    "activeStartHeapMiB": 107.36199951171875,
+    "activeEndHeapMiB": 65.49712753295898,
+    "settledHeapMiB": 103.3260726928711,
+    "activeResources": {
+      "geometries": 15,
+      "textures": 29
+    },
+    "settledResources": {
+      "geometries": 14,
+      "textures": 28
+    },
+    "settledNodes": 392,
+    "settledListeners": 1295,
+    "mixerBufferProof": {
+      "reads": 200,
+      "buses": 4,
+      "stableBuffers": 4,
+      "resizedBuffers": 5,
+      "high": 0.352774392735857,
+      "low": 0.014436442014063302,
+      "resized": 0.01396493248501489,
+      "nodesCleared": true,
+      "contextClosed": true
+    },
+    "forcedGC": false,
+    "nativeAllocationSampling": true,
+    "neutralHeld": "5",
+    "originalPreserved": true,
+    "beforeMixerBufferChange": false,
+    "active-native-memory": {
+      "sampledBytes": 6569984,
+      "size524284Samples": 0
+    },
+    "reopened-native-memory": {
+      "sampledBytes": 10371072,
+      "size524284Samples": 1
+    }
+  }
+]
