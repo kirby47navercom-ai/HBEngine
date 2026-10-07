@@ -242,3 +242,10 @@ C++의 공간 검색 7종은 읽기 전용 Rapier 질의 월드에서 동기 결
 - 042 후속으로 공유 물리 월드의 차원별 충돌체8,000/관절512, C++ snapshot 전체·타일 충돌체8,000 검사를 제거했어요. RaycastAll/Overlap의1,000개 절단도 제거해요. 단일 Raycast는 첫 결과만 변환하고 C++ snapshot 복사는 인자 펼치기 없이 반복해요. ID/형상/좌표/필터/통신 크기 검증을 유지해요.
 - 수정 전 실제 1,201개 교차가1,000개로 줄어드는 실패를 재현했어요. 최종 tools/check-physics-capacity.mjs 10검사(physics-capacity-BRW5lX): 2D/3D 각각10,001충돌체/solver1프레임/전체겹침, 각각600관절, 한 오브젝트8,001타일충돌체, 실제 C++ RaycastAll/OverlapBox 각1,201결과·잘못된 값 거절. 기존 check-physics.mjs 156WASM검사와 C++/BP 연결도 통과해요. 검사 개수를 새 상한/FPS 성능 판정으로 쓰지 않아요.
 - Unity6000.0 RaycastAll/OverlapBoxAll 자체 본문과 반환·정렬·메모리 의미를 읽었어요. docs/research/PHYSICS_COUNT_LIMITS_043.md에 근거/범위/최종2파일SHA를 기록해요. C++ 호출당128질의/4MB패킷·형상 크기 등 자원/입력 검증은 남아 있어요. 원본게임/사용자창·프로필/장기 검사를 건드리지 않았어요. 041/042 결과를 유지하며 이번 기록은 전체 엔진/조사 완료를 뜻하지 않아요.
+
+
+### 2026-10-07 — 큰 월드의 C++ 질의 준비 비용 제거(044)
+
+- 공유 engineQuery가 각 snapshot행마다 전체 월드를 찾는 중첩 검색을 하던 원인이에요. 기존 bridgeStateIndices로 바로 찾고 범위/ID가 맞지 않으면 안전하게 기존 검색을 해요. 현재 actor transform/nativeProperties, 월드 순서와 추가 속성·검증을 유지해요. 새 캐시/의존성이나 개수 상한을 만들지 않았어요.
+- 같은5,000행 실제 컴파일 C++ 입력의 snapshot/merge/패킷 구성 단계만 순차 비교했어요. 이전1,949.3/2,001.2/2,021.3ms → 이후31.2/33.4/34.6ms. IPC·물리·렌더링·전체FPS를 포함하지 않으며 장면 전체120fps 합격으로 쓰지 않아요. 원본게임/사용자창·프로필·장기 검사 불변이에요.
+- query-world-ZgeKee에서 현재 transform/추가 값/행 순서와 잘못되거나 없는 인덱스 fallback을 실제 C++로 통과했어요. 새 SDK로 물리 capacity10검사(12CXiy), 기존156물리검사와 C++/BP연결, 실제 별도 C++ worker/Windows에서 만든 모바일 AOT 모듈 호출(RzTUIe), Spawn/Destroy/Construction/실패회복9검사(MXspEq)도 통과했어요. Android/iOS 실기기·새 패키지 검사가 아니에요. docs/research/CPP_QUERY_WORLD_LOOKUP_044.md·native/build/query-world-result-044.json에 근거를 기록해요. 041/042/043을 유지해요.

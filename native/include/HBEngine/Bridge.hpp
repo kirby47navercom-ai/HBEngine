@@ -132,7 +132,13 @@ inline void Input::RemoveMappingContext(Actor* target,const std::string& context
 inline std::function<Json(const Json&)> bridgeQuery;
 inline Json engineQuery(const char* key,const Json& args){
     if(bridgePrepareQuery)bridgePrepareQuery();
-    Json world=bridgeWorldData;for(const auto& updated:bridgeSnapshot())for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
+    Json world=bridgeWorldData;
+    for(const auto& updated:bridgeSnapshot()){
+        const auto index=bridgeStateIndices.find(updated.at("id").get<std::string>());
+        if(index!=bridgeStateIndices.end()&&index->second<world.size()&&world.at(index->second).at("id")==updated.at("id"))world.at(index->second).update(updated);
+        // ponytail: stale index scans rows; rebuild it if unmanaged row edits become frequent.
+        else for(auto& object:world)if(object.at("id")==updated.at("id"))object.update(updated);
+    }
     Json packet={{"key",key},{"args",args},{"objects",world},{"scope",Timers::GetContext().second},{"clock",{{"scale",Clock::TimeScale()},{"paused",Clock::IsPaused()}}}};if(std::any_of(bridgeOperations.begin(),bridgeOperations.end(),[](const Json& o){return o.at("key")=="sceneSpawn";}))packet["operations"]=bridgeOperations;if(std::string(key)=="nativeModule"&&bridgeInput.contains("keys"))packet["input"]=bridgeInput;
     if(std::string(key)=="nativeModule"){packet["gameState"]=Json::parse(Game::GetStateText());}
     if(bridgeQuery){const auto response=bridgeQuery(packet);if(!response.value("ok",false))throw std::runtime_error(response.value("error",std::string("engine query failed")));return response.at("value");}
