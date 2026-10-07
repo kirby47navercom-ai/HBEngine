@@ -783,3 +783,6 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 - 042 후속으로 공유 물리 월드의 차원별 충돌체8,000/관절512, C++ snapshot 전체·타일 충돌체8,000 검사를 제거했어요. RaycastAll/Overlap의1,000개 절단도 제거해요. 단일 Raycast는 첫 결과만 변환하고 C++ snapshot 복사는 인자 펼치기 없이 반복해요. ID/형상/좌표/필터/통신 크기 검증을 유지해요.
 - 수정 전 실제 1,201개 교차가1,000개로 줄어드는 실패를 재현했어요. 최종 tools/check-physics-capacity.mjs 10검사(physics-capacity-BRW5lX): 2D/3D 각각10,001충돌체/solver1프레임/전체겹침, 각각600관절, 한 오브젝트8,001타일충돌체, 실제 C++ RaycastAll/OverlapBox 각1,201결과·잘못된 값 거절. 기존 check-physics.mjs 156WASM검사와 C++/BP 연결도 통과해요. 검사 개수를 새 상한/FPS 성능 판정으로 쓰지 않아요.
 - Unity6000.0 RaycastAll/OverlapBoxAll 자체 본문과 반환·정렬·메모리 의미를 읽었어요. docs/research/PHYSICS_COUNT_LIMITS_043.md에 근거/범위/최종2파일SHA를 기록해요. C++ 호출당128질의/4MB패킷·형상 크기 등 자원/입력 검증은 남아 있어요. 원본게임/사용자창·프로필/장기 검사를 건드리지 않았어요. 041/042 결과를 유지하며 이번 기록은 전체 엔진/조사 완료를 뜻하지 않아요.
+
+
+- 2026-10-07 사용자 설치 갱신(043/041/042 유지): sourceec694c1/bundle533b2b30a45cf205, C:\Users\kirby\HBEngine\Versions\533b2b30a45cf205\HBEngine.exe. 1794파일/9변경SHA와 최종 물리검사2productionSHA가 일치해요. 이전b9a10dd421646ed4 설치와 사용자창·프로필을 보존했고 바로가기/HKCU 프로젝트 연결이 새경로와 같아요. 다음 실행부터 적용돼요. 증거 native/build/physics-capacity-user-install-043.json. 새 창/장기 검사를 반복하거나 새 모바일 패키지를 빌드하지 않았어요.
