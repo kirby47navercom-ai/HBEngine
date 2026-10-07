@@ -27,3 +27,6 @@
 - native/build/asset-transaction-Vj5W1F/acceptance.json: 실제 파일+실제 편집기 함수17검사 합격. 부모/자식/C++ 동시 변경, 미수정 BP 의존성, 새 파일 생성/삭제/ID 복원, dryRun, Undo/Redo, 외부 변경/중간 실패/재시작, Windows 별칭, 저장 도중 인간 편집과 전체 파일 롤백을 확인했어요.
 - native/build/asset-batch-editor-5xq79Y/acceptance.json: 사용자와 분리된 실제 Windows WebView2 편집기7검사 합격. source-only Undo, 실제 BP 표시, C++ 재컴파일·Begin Play 실행 X=7→13, 그룹 Undo/Redo, 외부 변경 거절과 창 오류0개를 확인했어요. production app/서버/저장/명령 파일5개의 SHA가 이 검사 사본과 같아요.
 - check-project/check-assets도 통과했어요. 원본 Auric 게임·검사기·사용자 창을 쓰거나 전환하지 않았어요. Android/iOS 편집기의 같은 API나 실물 휴대폰 실행을 이번 검사로 합격 처리하지 않아요. 렌더·게임 실행 코드가 바뀌지 않은 부분은 반복 빌드하지 않았어요. 전체 엔진이나 전체 공식 문서 완료로 계산하지 않아요.
+
+
+- 2026-10-07 사용자 설치 갱신(041+042): sourcef424d4a/bundleb9a10dd421646ed4, C:\Users\kirby\HBEngine\Versions\b9a10dd421646ed4\HBEngine.exe. 1792파일/14변경SHA와 실제 창 production5SHA가 일치해요. 오브젝트 임의 개수 제한 제거를 유지하고 AI 묶음 저장·전체 Undo/Redo를 포함해요. 기존a2be 설치/사용자프로필·창을 보존했고 바로가기/HKCU 프로젝트 연결이 새경로와 같아요. 다음 실행부터 적용돼요. 증거 native/build/asset-batch-user-install-041.json. 전체 엔진/전체 조사 완료를 뜻하지 않아요.

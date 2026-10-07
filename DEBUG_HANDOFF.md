@@ -436,3 +436,6 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 - files.get/apply/undo/redo, 디스크/열린 문서 revision, 동시 BP·부모·C++ 공개 시그니처 dryRun, 함께 저장하는 기록·중간 실패/재시작 복구와 전체 Undo/Redo를 연결했어요. C++만 수정해도 기존 작업창 Undo로 되돌려요. 새 인간 편집이 대기 중 생기면 보존하고 파일 묶음 전체를 이전 상태로 돌려 요청을 거절해요. 외부 변경은 덮어쓰지 않아요.
 - 실제 파일/편집기 함수17검사(asset-transaction-Vj5W1F), 실제 숨겨진 Windows 엔진 창7검사(asset-batch-editor-5xq79Y): UI와 그룹 Undo/Redo·source-only Undo·실제 C++ 재컴파일/Begin Play X7→13·오류0 확인. changed production5SHA가 창 사본과 같아요. check-project/check-assets 통과. 원본게임/사용자창 불변이고 코드변경 없는 모바일/플레이어 빌드를 반복하지 않았어요.
 - Unity 메서드 본문3개/Unreal FScopedTransaction 자체 클래스 본문을 근거로 import batching/오브젝트 Undo/파일 복구를 구별했어요. docs/research/AI_ASSET_TRANSACTIONS_041.md에 바이트64파일/8MB·세션Undo40/재시작/외부 충돌·실제 검증 범위를 적었어요. 전체 문서·전체 엔진 완료로 합산하지 않아요. 오브젝트 개수 제한 제거042는 유지해요.
+
+
+- 2026-10-07 사용자 설치 갱신(041+042): sourcef424d4a/bundleb9a10dd421646ed4, C:\Users\kirby\HBEngine\Versions\b9a10dd421646ed4\HBEngine.exe. 1792파일/14변경SHA와 실제 창 production5SHA가 일치해요. 오브젝트 임의 개수 제한 제거를 유지하고 AI 묶음 저장·전체 Undo/Redo를 포함해요. 기존a2be 설치/사용자프로필·창을 보존했고 바로가기/HKCU 프로젝트 연결이 새경로와 같아요. 다음 실행부터 적용돼요. 증거 native/build/asset-batch-user-install-041.json. 전체 엔진/전체 조사 완료를 뜻하지 않아요.
