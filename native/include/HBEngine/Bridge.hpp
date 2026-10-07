@@ -434,6 +434,8 @@ inline void Perception::Forget(Actor* target){engineCommand("perceptionForget",{
 inline void Perception::ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag){engineCommand("reportNoise",{{"target",bridgeId(target)},{"position",position},{"loudness",loudness},{"radius",radius},{"tag",tag}});}
 inline void particleCommand(Actor* target,const char* key,const Json& args){auto& state=gameplayField(target,"particles");if(state.is_object()&&state.value("backend",std::string{}).find("WebGPU")==0)engineQuery(key,args);else engineCommand(key,args);}
 inline void Particles::Play(Actor* target){particleCommand(target,"particlePlay",{{"target",bridgeId(target)}});}
+inline void Materials::Set(Actor* target,const std::string& material,int slot){engineCommand("setMaterial",{{"target",bridgeId(target)},{"material",material},{"slot",slot}});}
+inline void Materials::SetFloat(Actor* target,const std::string& parameter,float value){engineCommand("materialFloat",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
 inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
 inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Particles::Emit(Actor* target,int count){particleCommand(target,"particleEmit",{{"target",bridgeId(target)},{"count",count}});}

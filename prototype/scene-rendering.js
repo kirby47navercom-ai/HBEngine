@@ -19,7 +19,7 @@ const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','Tilemap
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer}){
   read=cacheAssetReader(read);
-  const twoD=new TwoDRendering(),bloom=new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
+  const twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
   const textureSources=new Map();let textureBytes=0,textureEpoch=0;
   function invalidateAssets(){textureEpoch++;read.clear();for(const entry of textureSources.values())entry.promise.then(t=>t.dispose(),()=>{});textureSources.clear();textureBytes=0;}
   const texture=async(path,normal=false)=>{
@@ -110,15 +110,14 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   }
   function adopt(group,child){child.traverse(node=>{if(node.geometry)own(group,node.geometry);if(node.isLight)own(group,node);for(const m of node.material?(Array.isArray(node.material)?node.material:[node.material]):[]){own(group,m);for(const v of Object.values(m))if(v?.isTexture)own(group,v);}node.userData.objectId=group.userData.objectId;});group.add(child);}
   async function material(object,path,slot){
-    if(gameRenderer?.hbBackend==='webgpu')throw Error('노드 머테리얼은 WebGL2 렌더러를 사용하세요.');
     const group=current(object.id);if(!group)return;const token=group.userData.materialRequest=(group.userData.materialRequest||0)+1,data=await resolveMaterialAsset(await read(path),read);if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed)return;
-    const result=createThreeMaterial(THREE,data,{fileUrl,onError:error});replaceMaterials(group,result,slot);group.userData.materialData=data;
+    const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});await result.userData.ready;if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed){result.dispose();return;}replaceMaterials(group,result,slot);group.userData.materialData=data;
   }
   async function materialFloat(object,key,value){
     const group=current(object.id),source=group?.userData.materialData;if(!source)throw Error('노드 머테리얼을 먼저 지정하세요.');
     const data=structuredClone(source),node=data.graph.nodes.find(n=>n.parameter===key);
-    if(node){if(typeof node.value!=='number')throw Error('Float 파라미터가 아니에요.');node.value=value;}else{const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key;if(!['roughness','metalness','opacity','emissiveIntensity'].includes(property))throw Error('머테리얼 파라미터가 없어요: '+key);data.surface[property]=value;}
-    const result=createThreeMaterial(THREE,data,{fileUrl,onError:error});replaceMaterials(group,result);group.userData.materialData=data;
+    if(node){if(typeof node.value!=='number')throw Error('Float 파라미터가 아니에요.');data.parameters={...data.parameters,[key]:value};}else{const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key;if(!['roughness','metalness','opacity','emissiveIntensity'].includes(property))throw Error('머테리얼 파라미터가 없어요: '+key);data.surface[property]=value;}
+    const owned=[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial),updated=owned.length&&owned.every(r=>r.userData.updateFloat?.(key,value));if(!updated){const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});replaceMaterials(group,result);}group.userData.materialData=data;
   }
   async function sprite(group,properties,path,request,isMask=false){
     const definitions=group.userData.spriteDefinitions??=new Map();if(path&&!definitions.has(path))definitions.set(path,read(path).then(data=>resolveSprite(data,read)));const definition=path?await definitions.get(path):null,source=definition?.texture||properties.texture;
@@ -150,7 +149,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   async function decal(group,p){
     const data=p.material?await resolveMaterialAsset(await read(p.material),read):null;
     if(group.userData.disposed)return;
-    const material=data?createThreeMaterial(THREE,data,{fileUrl,onError:error}):new THREE.MeshStandardMaterial({color:0xffffff,roughness:1});
+    const material=data?createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer}):new THREE.MeshStandardMaterial({color:0xffffff,roughness:1});
     if(!own(group,material))return;
     material.transparent=true;material.opacity=p.opacity;material.depthWrite=false;material.polygonOffset=true;material.polygonOffsetFactor=-4;
     if(p.texture){const map=await texture(p.texture);if(!own(group,map))return;material.map=map;material.needsUpdate=true;}
@@ -192,6 +191,8 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     group.traverse(child=>{child.userData.objectId=object.id;if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
+  function updateMaterialTime(time){for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}
+  function materialState(){return all().flatMap(group=>[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial).map(r=>({object:group.userData.objectId,id:r.uuid,type:r.type,backend:r.userData.hbGPU?'WebGPU':'WebGL2',parameters:structuredClone(r.userData.materialSource.parameters||{}),surface:structuredClone(r.userData.materialSource.surface||{}),...r.userData.materialState?.()})));}
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {build,dispose,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed)writeParticles(group,state,camera);}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>renderer.hbBackend==='webgpu'?renderer.render(scene,camera):bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
+  return {build,dispose,updateMaterialTime,materialState,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed)writeParticles(group,state,camera);}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
 }

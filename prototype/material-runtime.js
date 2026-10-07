@@ -36,7 +36,8 @@ const specs=[
 ];
 export const materialCatalog=specs.map(([key,title,category,inputs,outputs,defaults={}])=>({key,title,category,inputs,outputs,defaults}));
 const catalogMap=new Map(materialCatalog.map(spec=>[spec.key,spec]));
-const nodeKey=node=>node.key||(node.kind==='output'?'surface':({color:'legacyColor',rough:'legacyRough',constant:'scalar'})[node.body]);
+export const materialNodeKey=node=>node.key||(node.kind==='output'?'surface':({color:'legacyColor',rough:'legacyRough',constant:'scalar'})[node.body]);
+const nodeKey=materialNodeKey;
 export function makeMaterialNode(key,x=80,y=80){const spec=catalogMap.get(key);if(!spec)throw Error('머테리얼 노드 종류를 확인하세요.');return {id:'mat_'+crypto.randomUUID().replaceAll('-',''),key,title:spec.title,kind:key==='surface'?'output':'value',x,y,...copy(spec.defaults),inputValues:{}};}
 export const materialGraph=()=>({nodes:[{id:'color',title:'Base Color',kind:'value',x:.06,y:45,body:'color',output:'RGB'},{id:'rough',title:'Roughness',kind:'value',x:.06,y:195,body:'rough',output:'Float'},{id:'surface',key:'surface',title:'Surface',kind:'output',x:.64,y:70}],edges:[['color','surface',0],['rough','surface',1]]});
 export function normalizedMaterialEdges(graph){return graph.edges.map(edge=>{if(!Array.isArray(edge))return edge;const target=graph.nodes.find(node=>node.id===edge[1]);return {from:{node:edge[0],pin:edge[3]||'value'},to:{node:edge[1],pin:nodeKey(target||{})==='surface'?surfaceInputs[edge[2]]?.id:catalogMap.get(nodeKey(target||{}))?.inputs[edge[2]]?.id}};});}
@@ -146,7 +147,8 @@ ${['float','vec2','vec3','vec4'].map(t=>`${t} hbSmooth(${t} a,${t} b,${t} v){${t
 vec3 hbSRGB(vec3 c){return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));}
 vec2 hbRotate(vec2 uv,float a,vec2 center){float s=sin(a),c=cos(a);vec2 p=uv-center;return vec2(c*p.x-s*p.y,s*p.x+c*p.y)+center;}
 vec3 hbNormal(vec3 eye,vec3 n,vec3 mapN){vec3 q0=dFdx(eye),q1=dFdy(eye);vec2 st0=dFdx(hbUv),st1=dFdy(hbUv);vec3 s=normalize(q0*st1.t-q1*st0.t),t=normalize(-q0*st1.s+q1*st0.s);return normalize(mat3(s,t,n)*mapN);}`;
-export function createThreeMaterial(THREE,data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{}}={}){
+export function createThreeMaterial(THREE,data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
+  if(renderer?.hbMaterial)return renderer.hbMaterial(data,{fileUrl,onError});
   data=copy(data);const plan=compileMaterial(data),surface={...materialDefaults,...data.surface},textures=[],loading=[],uniforms={hbTime:{value:0},hbEmissionIntensity:{value:surface.emissiveIntensity}};let disposed=false;
   const material=new THREE.MeshPhysicalMaterial({color:'#ffffff',roughness:surface.roughness,metalness:surface.metalness,emissive:'#ffffff',emissiveIntensity:surface.emissiveIntensity,opacity:surface.opacity,transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?THREE.DoubleSide:THREE.FrontSide,clearcoat:1,clearcoatRoughness:surface.clearcoatRoughness,transmission:plan.values.transmission!=='0.0'?1:surface.transmission,ior:surface.ior});
   for(const binding of plan.textures){const placeholder=new THREE.DataTexture(new Uint8Array([255,255,255,255]),1,1);placeholder.needsUpdate=true;textures.push(placeholder);uniforms[binding.uniform]={value:placeholder};loading.push(new Promise(resolve=>new THREE.TextureLoader().load(fileUrl(binding.path),texture=>{if(disposed){texture.dispose();resolve(null);return;}texture.colorSpace=THREE.NoColorSpace;texture.wrapS=texture.wrapT=binding.wrap==='repeat'?THREE.RepeatWrapping:THREE.ClampToEdgeWrapping;uniforms[binding.uniform].value=texture;textures.push(texture);material.needsUpdate=true;resolve(texture);},undefined,error=>{onError('텍스처를 읽을 수 없어요: '+binding.path);resolve(null);})));}

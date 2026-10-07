@@ -57,6 +57,12 @@ export async function createGPURenderer(canvas){
     generator._backgroundBox=new Mesh(new BoxGeometry(),new MeshBasicMaterial({name:'PMREM.Background',side:BackSide,depthWrite:false,depthTest:false}));
     return generator;
   };renderer.hbParticles=(group,p,map)=>new GPUParticleSimulation(renderer,group,p,map);
+  const {createGPUMaterial}=await import('./gpu-materials.js');renderer.hbMaterial=createGPUMaterial;
+  const {createGPUSkyMaterial,applyGPUFog,GPUBloomRendering}=await import('./gpu-environment.js');renderer.hbSkyMaterial=createGPUSkyMaterial;renderer.hbFog=applyGPUFog;renderer.hbBloom=()=>new GPUBloomRendering();
+  const framebuffers=new Set(),copyFramebuffer=renderer.copyFramebufferToTexture.bind(renderer);
+  // r180 transmission uses globally cached ViewportTextureNodes. Their copies need a scene owner.
+  renderer.copyFramebufferToTexture=(texture,...args)=>{if(texture.isFramebufferTexture)framebuffers.add(texture);return copyFramebuffer(texture,...args);};
+  renderer.hbReleaseScene=()=>{for(const texture of framebuffers)texture.dispose();framebuffers.clear();};renderer.hbFramebufferTextures=framebuffers;
   renderer.hbGPUErrors=[];renderer.backend.device.addEventListener('uncapturederror',event=>{renderer.hbGPUErrors.push(event.error.message);console.error(event.error);renderer.hbOnError?.(Error(event.error.message));});
   return renderer;
 }

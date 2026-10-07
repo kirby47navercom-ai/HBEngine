@@ -185,3 +185,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 050 메인 씬 GPU 렌더·기존 함수 연결 — 2026-10-07
 
 실행 렌더러 선택(runtime.renderBackend/WebGL2 기본·WebGPU 선택), 실제 메인 카메라/깊이 버퍼의 GPU ParticleSystem, 기존 Play/Stop/Pause/Emit/GetCount BP·C++ 함수 연결을 구현했어요. C++ 함수 안의 정지→방출→명시적 개수 조회도 실제 컴파일한 release Player에서 확인했어요. 위치/나이 계산·슬롯 재사용·생존 인덱스/간접 draw는 GPU에 남아요. 공용 장치와 버퍼 재사용, 새 출생이 없을 때 재업로드 방지, PMREM 배경/compute 전용 버퍼 소유권 해제로 장면 전환 뒤 자원 증가를 막았어요. 65,537 경계·2D/3D·깊이 가림·월드/로컬 이동·정지/수명/전환·GPU 오류0·종료0 PASS. GPU24G6Ni/기존WebGLXFO4wW 및 CPU32경우2560스텝/채널/CPU파티클 검사 증거를 research/GPU_SCENE_050.md에 연결했어요. 원본 게임의 렌더러를 바꾸거나 FPS/모바일/모든 셰이더 완료로 세지 않아요. 편집기 미리보기와 미이식 머테리얼·조명·마스크·후처리는 기존 경로를 유지해요. 누적 엔진 요구와 후속 이식은 계속해요.
+
+
+2026-10-07 후속: [051 GPU 머테리얼·환경](GPU_MATERIAL_ENVIRONMENT_051.md)에 Unreal 인스턴스/Unity17.0.4 Blackboard 자체 본문과 설치 Three r180의 부분 소유 경로 대조를 기록해요. GPU53연산+Surface·C++/BP·실제 환경 픽셀·자원 해제 검증과 전체corpus/실기기/전체FPS/메모리 목표를 구분해요. 추가 관련 문서·기능을 발견 대기열로 유지하고, 선행 목표 완료 뒤 설치/그다음 추가 연구 목표 순서를 WORK_ORDER_051.md에 기록해요.

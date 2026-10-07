@@ -456,6 +456,12 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reportNoise", KoreanName="소리 자극 알림", Category="AI 감지") static void ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag);
 };
 HB_CLASS()
+class Materials : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setMaterial", KoreanName="머테리얼 지정", Category="머테리얼") static void Set(Actor* target,const std::string& material,int slot=0);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialFloat", KoreanName="머테리얼 실수 설정", Category="머테리얼") static void SetFloat(Actor* target,const std::string& parameter,float value);
+};
+HB_CLASS()
 class Particles : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particlePlay", KoreanName="파티클 재생", Category="파티클") static void Play(Actor* target);

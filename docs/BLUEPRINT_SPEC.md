@@ -299,3 +299,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ### 050 사용자 설치 갱신 확인 — 2026-10-07
 
 검증한 production `8dabf2d180bb42c640139dde9de2969bdb09ea80`를 `C:/Users/kirby/HBEngine/Versions/7df780dd9a47cf5b`에 불변 설치했어요. 1,817파일·변경27파일 SHA·바로가기·.hbproject 연결을 확인했고, 이전7a192 버전/실행 파일/기존 GPU SDK/프로필/사용자 프로세스를 보존했어요. 창을 열거나 닫거나 새로고침하지 않았으며 다음 실행부터 새 버전이에요. 설치 증거는 `native/build/gpu-scene-user-install-050.json`이에요. 기존 게임 원본/Source/에셋/tools와 모바일 산출물은 변경하지 않았어요. 이 기록은 기존 게임의 FPS 목표 달성으로 세지 않아요.
+
+
+051 GPU 머테리얼/환경: 기존 Set Material/Set Material Float 노드와 새 hb::Materials::Set/SetFloat가 같은 검증/서비스를 호출해요. 인스턴스 재정의를 포함한 GPU 숫자 파라미터는 uniform 재사용; actual releasePlayer GPU sH8prw/defaultGL pzP5Za에서 C++와 실제 키 입력 BP·픽셀·해제 PASS. [세부 근거](research/GPU_MATERIAL_ENVIRONMENT_051.md). 전체 BP/엔진/조사 완료로 세지 않으며 선행 목표 묶음 완료 뒤 설치해요.
