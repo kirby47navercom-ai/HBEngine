@@ -59,3 +59,8 @@ GPU 메모리는 기존 32바이트 파티클 슬롯 외 렌더러가 사용한 
 
 - 최종 release Player 증거 `native/build/gpu-compute-window-j7k2Gr/acceptance.json`: BP G입력→사용자C++ DrawGPU 2회/actor→실제GPU direct render/회수0/게임위치 보존,기존비동기FIFO/해제/2D·3D·오류0/정상종료·자체서버정리/원본보존 PASS. 주 씬은 WebGL2이고 별도GPU타깃의 웹합성은 미연결이에요.
 - `node tools/check-library.mjs`: 공통 Extended 편의함수221개를 실제C++ 실행 결과와BP evaluator로 대조하고 배열·산술 오류와저장타입을 검증했어요. `native/build/gpu-render-helper-library-048.json`에 SHA/관찰출력을 기록해요. 모든엔진서브시스템을검증했다는뜻은아니에요.
+
+
+## 048 사용자 설치 갱신 완료 — 2026-10-07
+
+검증 production 3316dc90a1e8b1c3d52513bdc1b00951ef178d89를 C:/Users/kirby/HBEngine/Versions/944ae8b62a7b3bc8에 불변 설치했어요.1812파일·변경17개SHA·바로가기/.hbproject 연결 검증 PASS. 이전88db 버전·실행파일·기존SDK·프로필·프로세스를 보존했고 사용자창을 시작/종료하지 않았어요. GPU직접렌더/활성목록·간접draw/ParticleEffect편의API/사용자C++ 노드를 포함해요. 공통편의함수221개·실제GPU·releasePlayer의최신SHA증거를사용했고 불필요한전체/8시간검사는 하지 않았어요. 기존메인씬과기본CPU효과를자동GPU로바꾼설치는아니며,전체게임FPS/모바일GPU성공으로세지않아요. 증거 native/build/gpu-render-user-install-048.json. 다음실행부터새버전이열려요.
