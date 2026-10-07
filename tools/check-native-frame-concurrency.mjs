@@ -6,6 +6,7 @@ const builds=new Map(['A','B'].map(token=>[token,{token,metadata:{workerProtocol
 const owner={active:true,core:{scale:1,paused:false},objects:[{id:'a',nativeClass:'A',blueprintAsset:'A'},{id:'b',nativeClass:'B',nativeBuildAsset:'B'}],bindings:[{self:'a'},{self:'b'}],hooks:{nativeBuild:id=>builds.get(id.toUpperCase())},nativeTimers:async()=>{}};
 const reply=time=>({objects:[],events:[],operations:[],timerCallbacks:[],clock:{time,delta:0,scale:1,paused:false},clockBatchable:true});
 for(const build of builds.values())await nativeWorldClient(build,owner).call({command:'reset'},build.metadata,async()=>reply(0));
+for(const build of builds.values())assert.equal(await nativeWorldClient(build,owner).queue,undefined,'client ordering queue must not retain the complete native reply');
 assert.equal(canParallelNativeFrames(builds.values(),owner,.1),true);
 const started=[],waiters=[];const concurrent=advanceNativeFrames(builds,owner,.1,async(request,build)=>{started.push(build.token);assert.equal(request.deferFrame,false);return new Promise(resolve=>waiters.push(resolve));});
 assert.deepEqual(started,['A','B'],'both timer-free steps are sent before waiting for either host reply');waiters[1](reply(.1));waiters[0](reply(.1));await concurrent;

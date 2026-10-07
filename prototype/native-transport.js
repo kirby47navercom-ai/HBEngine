@@ -127,7 +127,8 @@ export class NativeWorldClient {
       const frames=this.frames;this.frames=[];if(frames.length)packet.frameAdvances=frames;
       const preparedAt=performance.now(),result=await send(packet),acknowledgeAt=performance.now();this.clockBatchable=result.clockBatchable===true&&!result.nativeError;this.clockState=result.clock;if(result.worldSequence!==sequence)throw Error('C++ snapshot acknowledgment mismatch');const committed=commitNativeWorld(next,result);this.world=result.nativeError?null:committed;this.rows=result.nativeError?null:rows.map((row,i)=>committed[i]===next[i]?row:JSON.stringify(committed[i]));this.sequence=result.nativeError?0:sequence;if(result.transport)Object.assign(result.transport,{clientSerializeMs:serializedAt-serializeStart,clientPatchMs:preparedAt-serializedAt,clientAckMs:performance.now()-acknowledgeAt,worldRows:rows.length,reusedRows});return result;
     });
-    this.queue=job.catch(()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);
+    // The ordering tail must not keep the last complete response alive.
+    this.queue=job.then(()=>{},()=>{this.spawnContext=null;this.world=null;this.rows=null;this.sequence=0;this.frames=[];this.clockBatchable=false;this.clockState=null;});return job.finally(()=>this.pendingCalls--);
   }
 }
 const owners=new WeakMap();

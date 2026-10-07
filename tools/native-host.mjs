@@ -61,7 +61,8 @@ export class NativeHost extends NativeProtocol {
       if(request.worldTransport===1){session.requestWorld=committed;session.requestWorldId=request.worldId;session.requestSequence=request.worldSequence;result.worldSequence=request.worldSequence;result.transport.upstreamMode=request.baseSequence?'patch':'full';result.transport.upstreamBytes=Buffer.byteLength(JSON.stringify(request));}
       else if(request.command==='reset'){session.requestWorld=null;session.requestSequence=0;}if(result.nativeError){if(request.worldTransport===1){session.requestWorld=null;session.requestSequence=0;}session.transportWorld=null;}return result;
     }catch(error){if(request.worldTransport===1||request.command==='reset'){session.requestWorld=null;session.requestSequence=0;}session.transportWorld=null;throw error;}finally{session.busy=false;session.nativeBudget=null;session.rendererQuery=null;}});
-    session.queue=job.catch(()=>{});return job;
+    // Queue only completion, not the potentially large reply owned by its caller.
+    session.queue=job.then(()=>{},()=>{});return job;
   }
   rpc(session,request){
     if(request.spawnPrefix&&session.spawnContexts?.has(request.spawnPrefix)&&(!session.process||session.workerSpawnPrefix!==request.spawnPrefix))request={...request,spawnTemplates:session.spawnContexts.get(request.spawnPrefix)};
