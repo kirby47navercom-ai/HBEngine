@@ -60,3 +60,8 @@ effect.clear();                      // 입자와 방출 소수 잔여량 제거
 ## 이어갈 연결
 
 메인 씬은 아직 WebGL2이며 기본 CPU ParticleSystem/탄막 충돌과 새 네이티브 타깃이 자동 합쳐지지 않아요. GPU depth 정렬, 씬 카메라·재질/2D 마스크·조명·충돌·emitter shape/곡선/자식 시스템·고정 bounds/거리별 예산과 공유 장치, 모바일 GPU backend는 다음 통합 대상이에요. CPU 기능을 제거하거나 전체 게임 PC120/모바일60 성공으로 세지 않아요. 누적 요구와 전체 문서 분석 gate도 유지해요.
+
+
+## 049 사용자 설치 갱신 완료 — 2026-10-07
+
+검증 production 022b7decbfa4ebb450936edfa9f598f46846588b를 C:\Users\kirby\HBEngine\Versions\7a1921f1526ee62d에 불변 설치했어요.1813파일·변경15개 SHA·바로가기/.hbproject 연결 검증 PASS. 이전944ae8 버전·실행파일·기존SDK·프로필·프로세스를 보존했고 사용자 창을 시작/종료하지 않았어요. GPU 방출/수명/빈 슬롯 재사용과 ParticleEffect의 emit/rate/play/pause/stop/clear, 사용자C++→BP 노드를 포함해요. 실제 GPU·픽셀·배포 Player·debug 오류0·현재 소스 SHA 검증을 사용했고 변경 없는 편의 함수221개 검사는 재사용했어요. 기존메인씬/CPU 탄막을 자동 GPU로 이식한 설치나 전체게임 FPS/모바일GPU 검증으로 세지 않아요. 증거 native/build/gpu-emission-user-install-049.json. 다음 실행부터 새 버전이 열려요.
