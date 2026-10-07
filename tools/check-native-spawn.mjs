@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {once} from 'node:events';
 import * as THREE from 'three';
 import {NativeHost} from './native-host.mjs';
 import {createAsset} from '../prototype/asset-documents.js';
@@ -54,6 +56,23 @@ void Spawner::FailAfterSpawn(const std::string& asset){hb::Scene::Spawn(asset,{}
     for(const state of reply.objects){const o=vm.object(state.id);if(o)Object.assign(o,state);}if(process.env.HB_SPAWN_LEGACY_APPLY)for(const op of reply.operations)await services.operation(op.key,op.args,vm.bindings[0],vm);else await vm.applyNativeOperations(reply.operations,vm.bindings[0]);return reply;
   };
   try{
+    await call('CountRefs',{refs:[]});
+    const session=host.sessions.get(build.token),base=nativeSpawnRequest(vm,build,prepared.spawnCatalog),first=session.spawnContexts.get(base.spawnPrefix),copy=structuredClone(base.spawnTemplates),copyPrefix=randomUUID();
+    const catalogCall=(prefix,templates)=>host.call(build.token,{key:'nativeCall',nativeId:'Spawner.CountRefs',self:'director',args:{refs:[]},objects:nativeRequestWorld(objects,paths,{},build.metadata),...base,spawnPrefix:prefix,spawnTemplates:templates});
+    assert.equal((await catalogCall(copyPrefix,copy)).outputs.result,0);
+    assert.equal(session.spawnContexts.get(copyPrefix),first,'identical catalogs must share storage across distinct world prefixes');
+    assert.notEqual(first,base.spawnTemplates,'the host must own a detached snapshot, not the mutable caller catalog');
+    assert.ok(Object.isFrozen(first));assert.ok(Object.isFrozen(first.templates['Assets/BP_Skeleton.hbblueprint.json'].objects[0].position));
+    const changed=structuredClone(copy),changedPrefix=randomUUID();changed.aliases.AuditEnemyAlias='Assets/BP_Skeleton.hbblueprint.json';const snapshot=JSON.stringify(changed);
+    assert.equal((await catalogCall(changedPrefix,changed)).outputs.result,0);assert.notEqual(session.spawnContexts.get(changedPrefix),first,'a real asset/alias edit must retain its separate catalog');
+    changed.aliases.AuditEnemyAlias='missing';changed.templates['Assets/BP_Skeleton.hbblueprint.json'].objects[0].position[0]=99;
+    assert.equal(JSON.stringify(session.spawnContexts.get(changedPrefix)),snapshot,'caller edits must not rewrite a previously registered world');assert.ok(!Object.isFrozen(changed));
+    const invalid=structuredClone(copy);invalid.templates['Assets/BP_Skeleton.hbblueprint.json'].objects[0].nativeProperties.MaxHp='invalid';
+    await assert.rejects(catalogCall(copyPrefix,invalid),/C\+\+ 생성 속성 오류/);assert.equal(session.spawnContexts.get(copyPrefix),first);
+    const resources=host.inspectResources().modules[0];assert.equal(resources.spawnContexts,3);assert.equal(resources.uniqueSpawnContexts,2);
+    await call('CountRefs',{refs:[]});const worker=session.process,exited=once(worker,'exit');worker.kill();await exited;
+    assert.equal((await call('CountRefs',{refs:[]})).outputs.result,0);assert.equal(session.spawnContexts.get(base.spawnPrefix),first);
+    cases.push('distinct VM prefixes share identical immutable catalogs; real edits stay separate, caller mutation and invalid defaults cannot corrupt cached worlds, and worker restart restores the retained catalog');
     assert.deepEqual(vm.bindings[0].variables.get('missing'),[null,null]);assert.equal(warnings.length,1);assert.equal((await call('CountRefs',{refs:vm.bindings[0].variables.get('missing')})).outputs.result,0);assert.deepEqual(director.variables.find(v=>v.id==='missing').value,['Ghost','Ghost']);cases.push('missing BP actor arrays become C++ nullptr entries, warn once and preserve authored data');
     const at={position:[11,22,0],rotation:[0,0,90],scale:[2,2,1]},reply=await call('Create',{asset:'BP_Skeleton',at}),id=reply.outputs.result;
     assert.equal(reply.operations.length,1);assert.deepEqual(vm.object(id).position,[13,22,0]);assert.equal(vm.object(id).nativeProperties.MaxHp,8);assert.equal(vm.object(id).nativeClass,'EnemyStats');assert.equal(vm.bindings.find(b=>b.self===id).root.name,'BP_Skeleton');cases.push('compiled Spawn returns the real derived C++ object with inherited HP10, exposes same-call search and commits C++ transform/property writes');

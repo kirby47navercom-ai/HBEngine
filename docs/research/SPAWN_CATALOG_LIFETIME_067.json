@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-08",
+  "proof": "native/build/auric-frame-RzO5ok/acceptance.json",
+  "sourceFiles": 608,
+  "originalPreserved": true,
+  "checks": [
+    "native-spawn-2iMO9k/failure.json: before identical catalog sharing assertion failed",
+    "native-spawn-JTpmT2/acceptance.json: actual C++ catalog isolation/sharing/restart/spawn/prefab/pool/timers",
+    "native-spawn-modules-tXnOVD/acceptance.json: actual foreign module calls/spawn order",
+    "native-resources-cHHhgW/acceptance.json: diagnostics/privacy/routes",
+    "native-spawn-aot-NHm7Ft/acceptance.json: packaged AOT native spawn runtime"
+  ],
+  "phases": [
+    {
+      "mode": "idle",
+      "fps": 119.98413432940397,
+      "workP95Ms": 6.4000000059604645,
+      "goalMet": true
+    },
+    {
+      "mode": "battle",
+      "fps": 119.79634621144055,
+      "workP95Ms": 8.200000002980232,
+      "goalMet": true
+    }
+  ],
+  "resources": [
+    {
+      "stage": "active-0",
+      "wholePrivateMiB": 908.0703125,
+      "hostHeapUsedMiB": 26.162925720214844,
+      "hostHeapTotalMiB": 55.6015625,
+      "modules": [
+        {
+          "module": 0,
+          "workerPid": 38452,
+          "busy": false,
+          "requestObjects": 0,
+          "transportObjects": 432,
+          "sharedWorld": false,
+          "spawnContexts": 1,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 30,
+          "spawnObjects": 30
+        },
+        {
+          "module": 1,
+          "workerPid": 32528,
+          "busy": true,
+          "requestObjects": 432,
+          "transportObjects": 432,
+          "sharedWorld": false,
+          "spawnContexts": 1,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 30,
+          "spawnObjects": 30
+        }
+      ]
+    },
+    {
+      "stage": "active-6",
+      "wholePrivateMiB": 910.96875,
+      "hostHeapUsedMiB": 36.34819030761719,
+      "hostHeapTotalMiB": 88.1015625,
+      "modules": [
+        {
+          "module": 0,
+          "workerPid": 38452,
+          "busy": false,
+          "requestObjects": 0,
+          "transportObjects": 432,
+          "sharedWorld": false,
+          "spawnContexts": 1,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 30,
+          "spawnObjects": 30
+        },
+        {
+          "module": 1,
+          "workerPid": 32528,
+          "busy": false,
+          "requestObjects": 432,
+          "transportObjects": 432,
+          "sharedWorld": true,
+          "spawnContexts": 1,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 30,
+          "spawnObjects": 30
+        }
+      ]
+    },
+    {
+      "stage": "reset-settled",
+      "wholePrivateMiB": 1085.265625,
+      "hostHeapUsedMiB": 71.73320007324219,
+      "hostHeapTotalMiB": 152.98046875,
+      "modules": [
+        {
+          "module": 0,
+          "workerPid": 38452,
+          "busy": false,
+          "requestObjects": 0,
+          "transportObjects": 432,
+          "sharedWorld": false,
+          "spawnContexts": 7,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 210,
+          "spawnObjects": 210
+        },
+        {
+          "module": 1,
+          "workerPid": 32528,
+          "busy": false,
+          "requestObjects": 432,
+          "transportObjects": 432,
+          "sharedWorld": true,
+          "spawnContexts": 7,
+          "uniqueSpawnContexts": 1,
+          "spawnTemplates": 210,
+          "spawnObjects": 210
+        }
+      ]
+    }
+  ],
+  "thisRunPCGoal": true,
+  "wholePCAndMobileGoal": false,
+  "longMemoryGoal": false,
+  "installChanged": false,
+  "forcedGC": false,
+  "errors": 0,
+  "exit": {
+    "code": 0,
+    "signal": null
+  },
+  "sourceSHA256": {
+    "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+    "tools/editor-automation.mjs": "abcc310a53180c4e35b4c5102b8feca69cdf621ce4222dc57f7255878cf54f37",
+    "tools/check-native-spawn.mjs": "2f944ed8edbb29f4e80a148677d872a37f64ea634f750b3799a52596dc422275",
+    "tools/check-native-resources.mjs": "d703db8215af27bd485ae6d9da27a7cba8e58e1852586267a7b106a8f0e39633"
+  },
+  "newExternalReadings": []
+}

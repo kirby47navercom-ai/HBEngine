@@ -17,6 +17,14 @@ import {spawnQueryRequest,spawnQueryCursor} from '../prototype/native-spawn.js';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
+const spawnDigests=new WeakMap();
+function retainedSpawnContext(context,contexts){
+  const wire=JSON.stringify(context),digest=createHash('sha256').update(wire).digest('hex');
+  for(const candidate of contexts.values())if(spawnDigests.get(candidate)===digest&&JSON.stringify(candidate)===wire)return candidate;
+  const snapshot=JSON.parse(wire),pending=[snapshot];
+  while(pending.length){const node=pending.pop();Object.freeze(node);for(const child of Object.values(node))if(child&&typeof child==='object')pending.push(child);}
+  spawnDigests.set(snapshot,digest);return snapshot;
+}
 
 export class NativeHost extends NativeProtocol {
   constructor(){super();this.sessions=new Map();}
@@ -25,7 +33,7 @@ export class NativeHost extends NativeProtocol {
     for(const session of this.sessions.values()){
       let templates=0,objects=0;
       for(const context of session.spawnContexts?.values()||[])for(const template of Object.values(context.templates)){templates++;objects+=template.objects.length;}
-      modules.push({module:modules.length,workerPid:session.process?.pid||null,busy:!!session.busy,requestObjects:session.requestWorld?.length||0,transportObjects:session.transportWorld?.length||0,sharedWorld:!!session.requestWorld&&session.requestWorld===session.transportWorld,spawnContexts:session.spawnContexts?.size||0,spawnTemplates:templates,spawnObjects:objects});
+      modules.push({module:modules.length,workerPid:session.process?.pid||null,busy:!!session.busy,requestObjects:session.requestWorld?.length||0,transportObjects:session.transportWorld?.length||0,sharedWorld:!!session.requestWorld&&session.requestWorld===session.transportWorld,spawnContexts:session.spawnContexts?.size||0,uniqueSpawnContexts:new Set(session.spawnContexts?.values()).size,spawnTemplates:templates,spawnObjects:objects});
     }
     // On-demand only: process.memoryUsage may walk pages. Counts are references,
     // not byte ownership; arrayBuffers is already included in external.
@@ -64,7 +72,7 @@ export class NativeHost extends NativeProtocol {
     if(from&&from.nativeDepth>=7)throw Error('C++ 모듈 호출 깊이 제한 초과');
     const job=session.queue.then(async()=>{try{
       session.busy=true;session.rendererQuery=rendererQuery;session.nativeDepth=from?from.nativeDepth+1:0;session.nativeBudget=from?.nativeBudget||{count:0};
-      const started=performance.now(),decoded=this.decodeRequest(session,request),decodedAt=performance.now();this.validate(session,decoded);if(decoded.gameSession&&this.gameSessionId!==decoded.gameSession.id){this.gameSessionId=decoded.gameSession.id;this.persistentQueries?.clear();}if(decoded.spawnTemplates){session.spawnContexts??=new Map();session.spawnContexts.set(decoded.spawnPrefix,decoded.spawnTemplates);if(session.spawnContexts.size>8)session.spawnContexts.delete(session.spawnContexts.keys().next().value);}const validatedAt=performance.now(),frames=decoded.moduleFrames===undefined?[]:this.frameModules(token,decoded.moduleFrames),receipts=[];for(const frame of frames){if(++session.nativeBudget.count>128)throw Error("C++ 모듈 질의 개수 오류");receipts.push({token:frame.token,result:await this.call(frame.token,{...frame.request,scopes:decoded.scopes,activeActors:decoded.activeActors},session,rendererQuery)});}const {moduleFrames,...packet}=decoded,reply=await this.rpc(session,frames.length?packet:decoded),replyAt=performance.now();if(decoded.moduleFrames!==undefined)reply.moduleFrames=receipts;const result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
+      const started=performance.now();let decoded=this.decodeRequest(session,request);const decodedAt=performance.now();this.validate(session,decoded);if(decoded.gameSession&&this.gameSessionId!==decoded.gameSession.id){this.gameSessionId=decoded.gameSession.id;this.persistentQueries?.clear();}if(decoded.spawnTemplates){session.spawnContexts??=new Map();decoded={...decoded,spawnTemplates:retainedSpawnContext(decoded.spawnTemplates,session.spawnContexts)};session.spawnContexts.set(decoded.spawnPrefix,decoded.spawnTemplates);if(session.spawnContexts.size>8)session.spawnContexts.delete(session.spawnContexts.keys().next().value);}const validatedAt=performance.now(),frames=decoded.moduleFrames===undefined?[]:this.frameModules(token,decoded.moduleFrames),receipts=[];for(const frame of frames){if(++session.nativeBudget.count>128)throw Error("C++ 모듈 질의 개수 오류");receipts.push({token:frame.token,result:await this.call(frame.token,{...frame.request,scopes:decoded.scopes,activeActors:decoded.activeActors},session,rendererQuery)});}const {moduleFrames,...packet}=decoded,reply=await this.rpc(session,frames.length?packet:decoded),replyAt=performance.now();if(decoded.moduleFrames!==undefined)reply.moduleFrames=receipts;const result=this.validateReply(session,decoded,reply);Object.assign(result.transport,{decodeMs:decodedAt-started,validateMs:validatedAt-decodedAt,replyValidationMs:performance.now()-replyAt});
       const committed=request.worldTransport===1?commitNativeWorld(decoded.objects,result):undefined;
       if(session.transportWorld)session.transportWorld=session.transportWorld===decoded.objects&&committed?committed:commitNativeWorld(session.transportWorld,result);
       // Nested module calls change the worker world, not the client's acknowledged

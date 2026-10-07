@@ -12,7 +12,7 @@ const host=new NativeHost(),build=host.registerBinary('private-binary-path',{cla
 const world=[{id:'private-actor',position:[0,0,0]}],context={templates:{privateTemplate:{objects:[...world,...world,...world]}},aliases:{}};
 session.requestWorld=session.transportWorld=world;session.spawnContexts=new Map([['private-prefix-1',context],['private-prefix-2',context]]);
 const state=host.inspectResources();assert.equal(state.pid,process.pid);for(const value of Object.values(state.memory))assert.ok(Number.isSafeInteger(value)&&value>=0);
-assert.deepEqual(state.modules,[{module:0,workerPid:null,busy:false,requestObjects:1,transportObjects:1,sharedWorld:true,spawnContexts:2,spawnTemplates:2,spawnObjects:6}]);
+assert.deepEqual(state.modules,[{module:0,workerPid:null,busy:false,requestObjects:1,transportObjects:1,sharedWorld:true,spawnContexts:2,uniqueSpawnContexts:1,spawnTemplates:2,spawnObjects:6}]);
 const wire=JSON.stringify(state);assert.ok(!wire.includes(build.token));assert.ok(!wire.includes('private-'));state.modules[0].spawnContexts=900;assert.equal(host.inspectResources().modules[0].spawnContexts,2);
 session.requestWorld=null;assert.equal(host.inspectResources().modules[0].sharedWorld,false);host.close();assert.deepEqual(host.inspectResources().modules,[]);
 assert.equal(engineSchema().nativeResources.route,'GET /api/native/inspect');
