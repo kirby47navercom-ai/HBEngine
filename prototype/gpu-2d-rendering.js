@@ -29,7 +29,7 @@ export function createGPUSpriteMaterial(map,p,normalMap,lightingTextures){
   material.userData.hbGPU=true;material.userData.hbSpriteEffectsOwner=material.uuid;material.userData.hbSpriteEffects={hbPixelPPU:ppu,hbSpriteFlash:flash,hbSpriteEmission:emission};
   if(p.shading==='lit2d')gpuLight2DUniforms(material,lightingTextures);
   if(['inside','outside'].includes(p.maskInteraction))gpuSpriteMask(material);
-  material.clone=()=>createGPUSpriteMaterial(map,p,normalMap,lightingTextures);return material;
+  material.clone=()=>{const clone=createGPUSpriteMaterial(material.map,p,material.normalMap,lightingTextures);clone.hbLight2DMaskTexture=material.hbLight2DMaskTexture;return clone;};return material;
 }
 
 export function createGPUMaskMaterial(map,alphaCutoff){

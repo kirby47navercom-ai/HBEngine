@@ -200,7 +200,7 @@ export function engineOperations(hooks){
       const writes={spriteSetColor:{color:a.color},spriteSetSize:{width:a.size?.[0],height:a.size?.[1],useCustomSize:true},spriteSetSorting:{sortingLayer:a.layer,sortingOrder:a.order},spriteSetMask:{maskInteraction:a.mode},spriteSetLighting:{shading:a.mode},spriteSetLit:{shading:a.lit?'lit':'unlit'},spriteSetBlend:{blendMode:a.mode,alphaCutoff:a.alphaCutoff??.5},spriteSetLightMask:{lightMaskTexture:a.texture},spriteSetNormal:{normalTexture:a.texture,normalStrength:a.strength??1,normalFlipY:a.flipY??false},spriteSetShadows:{castShadow:a.cast,receiveShadow:a.receive}};
       if(Object.hasOwn(writes,key)){if(key==='spriteSetLit'&&typeof a.lit!=='boolean'||!validComponentProperties('SpriteRenderer',writes[key]))throw Error('스프라이트 속성 값을 확인하세요.');Object.assign(p,structuredClone(writes[key]));await hooks.update?.(o);return {};}
       if(key==='spriteFlip'){p.flipX=a.flipX;p.flipY=a.flipY;hooks.spriteFlip?.(o,p);return {};}
-      const path=await hooks.asset(a.sprite,'sprite');if(!path)throw Error('스프라이트 에셋을 확인하세요.');await resolveSprite(await readAsset(path),readAsset);if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;return {};
+      const path=await hooks.asset(a.sprite,'sprite');if(!path)throw Error('스프라이트 에셋을 확인하세요.');await resolveSprite(await readAsset(path),readAsset);if(!hooks.spriteFrame)throw Error('스프라이트 렌더 서비스가 없어요.');await hooks.spriteFrame(o,path);p.sprite=path;o.currentSprite=path;hooks.spriteFlip?.(o,p);return {};
     }
     const tileResult=await tilemaps.operation(key,a,b,vm);if(tileResult!==undefined)return tileResult;
     const uiResult=await ui.operation(key,a,b,vm);if(uiResult!==undefined)return uiResult;

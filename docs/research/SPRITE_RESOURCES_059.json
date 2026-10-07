@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-08",
+  "wholeFramePath": "native/build/auric-frame-zMc2qe/acceptance.json",
+  "wholeFrameSHA": "2e009c4fbe7a28a7edc1aad9553f362fcad5c20881afbcfdd3ca31b2795cc582",
+  "originalPreserved": true,
+  "goalMet": false,
+  "rows": [
+    {
+      "backend": "webgl2",
+      "mode": "idle",
+      "baseline": {
+        "fps": 116.49798285128422,
+        "p50Ms": 6.050000000745058,
+        "p95Ms": 8.850000001490116,
+        "nativeMs": 3.1574999998323623,
+        "fpsRuns": [
+          117.30495985207996,
+          115.69100585048848
+        ]
+      },
+      "current": {
+        "fps": 113.09895505354984,
+        "p50Ms": 6.25,
+        "p95Ms": 9.199999999254942,
+        "nativeMs": 3.269583333780368,
+        "fpsRuns": [
+          119.29219961573183,
+          106.90571049136787
+        ]
+      }
+    },
+    {
+      "backend": "webgl2",
+      "mode": "battle",
+      "baseline": {
+        "fps": 116.3557372716505,
+        "p50Ms": 6.25,
+        "p95Ms": 9.399999998509884,
+        "nativeMs": 3.4237499998882415,
+        "fpsRuns": [
+          119.99520019192079,
+          112.71627435138022
+        ]
+      },
+      "current": {
+        "fps": 117.5505486379108,
+        "p50Ms": 6.199999999254942,
+        "p95Ms": 9.099999997764826,
+        "nativeMs": 3.682499999801318,
+        "fpsRuns": [
+          119.99760004796327,
+          115.1034972278583
+        ]
+      }
+    },
+    {
+      "backend": "webgpu",
+      "mode": "idle",
+      "baseline": {
+        "fps": 119.3356761023847,
+        "p50Ms": 6.24999999627471,
+        "p95Ms": 8.199999995529652,
+        "nativeMs": 3.21666666638727,
+        "fpsRuns": [
+          119.99469636712995,
+          118.67665583763944
+        ]
+      },
+      "current": {
+        "fps": 118.42541655363414,
+        "p50Ms": 6.24999999627471,
+        "p95Ms": 8.25,
+        "nativeMs": 3.2412500005215406,
+        "fpsRuns": [
+          116.86806820062904,
+          119.98276490663923
+        ]
+      }
+    },
+    {
+      "backend": "webgpu",
+      "mode": "battle",
+      "baseline": {
+        "fps": 113.6444648881233,
+        "p50Ms": 6.899999998509884,
+        "p95Ms": 10.75,
+        "nativeMs": 3.492083333681027,
+        "fpsRuns": [
+          118.37821840781297,
+          108.91071136843362
+        ]
+      },
+      "current": {
+        "fps": 107.42765264552274,
+        "p50Ms": 7.150000002235174,
+        "p95Ms": 12.399999998509884,
+        "nativeMs": 4.131666666641832,
+        "fpsRuns": [
+          95.4356846473029,
+          119.41962064374258
+        ]
+      }
+    }
+  ],
+  "sourceManifest": "native\\build\\sprite-resource-research-059\\manifest.json",
+  "limitations": "Whole completed frame and CPU render submission, not GPU presentation latency or physical mobile FPS. Private fixed game snapshot; only private scene backend changed."
+}
