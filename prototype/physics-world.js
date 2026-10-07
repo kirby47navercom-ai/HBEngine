@@ -61,8 +61,11 @@ export function createRigidPhysics(objects,options={}){
         if(['component','widget'].includes(o.kind)||o.poolActive===false)continue;
         const p=properties(o,dim),components=[...objectComponents(o),...(o.tileColliders||[])].filter(c=>colliderTypes.has(c.type)&&c.type.endsWith('2D')===(dim===2)&&c.properties?.enabled!==false&&c.properties?.collisionMode!=='none'&&o.collisionEnabled!==false);
         if(!p&&!components.length)continue;active.add(o.id);
-        const transform=pose(o,objects),transformKey=JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);let r=space.bodies.get(o.id);
+        let r=space.bodies.get(o.id);const root=!o.parentId&&!o.parent,cached=root&&r?.poseInput?.every((v,i)=>v===(i<3?o.position[i]:i<6?o.rotation[i-3]:o.scale[i-6])),transform=cached?r.pose:pose(o,objects),transformKey=cached?r.poseKey:JSON.stringify([transform.position.toArray(),transform.rotation.toArray()]);
         if(!r){const desc=R.RigidBodyDesc.fixed();r={object:o,p,body:world.createRigidBody(desc),colliders:new Map(),dim,nonce:++nonce};space.bodies.set(o.id,r);setPose(r,transform);r.lastPose=transformKey;}
+        // Root scalar comparison also catches in-place C++/script edits. Parented
+        // actors still resolve the hierarchy on every sync, including parent motion.
+        if(!cached){r.pose=transform;r.poseKey=transformKey;r.poseInput=root?[...o.position,...o.rotation,...o.scale]:null;}
         r.object=o;r.p=p;
         const kind=typeOf(p),bodyType={static:R.RigidBodyType.Fixed,dynamic:R.RigidBodyType.Dynamic,kinematic:R.RigidBodyType.KinematicPositionBased}[kind];
         if(r.body.bodyType()!==bodyType)r.body.setBodyType(bodyType,true);

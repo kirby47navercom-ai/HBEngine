@@ -1,0 +1,82 @@
+{
+  "source": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\frame-regression-Y3u0Qb\\candidate-Game",
+  "scene": "Assets/Scenes/Test_Valen.hbscene.json",
+  "objects": 432,
+  "sourceFiles": 608,
+  "originalPreserved": true,
+  "goalMet": false,
+  "rows": [
+    {
+      "backend": "webgl2",
+      "version": "baseline",
+      "mode": "idle",
+      "fps": 107.76270201923904,
+      "workP50Ms": 7.399999998509884,
+      "workP95Ms": 9.350000001490116,
+      "nativeFrontendMs": 3.5229166665735345
+    },
+    {
+      "backend": "webgl2",
+      "version": "baseline",
+      "mode": "battle",
+      "fps": 105.00623184240766,
+      "workP50Ms": 7.600000001490116,
+      "workP95Ms": 11.150000002235174,
+      "nativeFrontendMs": 4.210416666759799
+    },
+    {
+      "backend": "webgl2",
+      "version": "current",
+      "mode": "idle",
+      "fps": 119.52076309167683,
+      "workP50Ms": 5.699999999254942,
+      "workP95Ms": 7.149999998509884,
+      "nativeFrontendMs": 2.9325000002048913
+    },
+    {
+      "backend": "webgl2",
+      "version": "current",
+      "mode": "battle",
+      "fps": 119.80736163773496,
+      "workP50Ms": 5.900000002235174,
+      "workP95Ms": 8.5,
+      "nativeFrontendMs": 3.2358333334947624
+    },
+    {
+      "backend": "webgpu",
+      "version": "baseline",
+      "mode": "idle",
+      "fps": 115.50399169873324,
+      "workP50Ms": 6.949999999254942,
+      "workP95Ms": 9.649999998509884,
+      "nativeFrontendMs": 3.424166666561117
+    },
+    {
+      "backend": "webgpu",
+      "version": "baseline",
+      "mode": "battle",
+      "fps": 95.03945762799287,
+      "workP50Ms": 8.550000000745058,
+      "workP95Ms": 15.75,
+      "nativeFrontendMs": 3.849166666995734
+    },
+    {
+      "backend": "webgpu",
+      "version": "current",
+      "mode": "idle",
+      "fps": 117.7620279591035,
+      "workP50Ms": 6.449999999254942,
+      "workP95Ms": 8.699999999254942,
+      "nativeFrontendMs": 3.2687500000620884
+    },
+    {
+      "backend": "webgpu",
+      "version": "current",
+      "mode": "battle",
+      "fps": 103.17329275823398,
+      "workP50Ms": 7.949999999254942,
+      "workP95Ms": 12.700000002980232,
+      "nativeFrontendMs": 4.359583333258827
+    }
+  ]
+}

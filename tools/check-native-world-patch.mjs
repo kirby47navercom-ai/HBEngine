@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import {NativeHost} from './native-host.mjs';
 import {worldPatch} from './native-world-patch.mjs';
-import {nativeRequestWorld} from '../prototype/native-model.js';
+import {nativeRequestWorld,nativeWorld} from '../prototype/native-model.js';
 const host=new NativeHost(),object=(id,x)=>({id,name:id,position:[x,0,0],rotation:[0,0,0],scale:[1,1,1],velocity:[0,0,0],poolActive:false,components:[],nested:{'a~/b':[1,2]}});
 try{
   const header='#include <HBEngine/Game.hpp>\nHB_CLASS()\nclass PatchProbe : public hb::Library { public: HB_FUNCTION(BlueprintPure) static hb::Vec3 Read(hb::Actor* target); HB_FUNCTION(BlueprintPure) static int Nested(); HB_FUNCTION(BlueprintCallable) static void Fail(); HB_FUNCTION(BlueprintCallable) static void Touch(hb::Actor* target); };',source='#include "User.h"\nhb::Vec3 PatchProbe::Read(hb::Actor* target){ return hb::Scene::GetPosition(target)+hb::Physics::GetVelocity(target); }\nint PatchProbe::Nested(){return hb::bridgeWorld.at(0).at("nested").at("a~/b").at(1).get<int>();}\nvoid PatchProbe::Fail(){throw std::runtime_error("probe failure");} void PatchProbe::Touch(hb::Actor* target){hb::bridgeState(target)->at("nested")["a~/b"][1]=19;}';
   const build=await host.build(header,source),objects=[object('a',1),object('b',2)],request={key:'nativeCall',nativeId:'PatchProbe.Read',args:{target:'a'},objects};
+  assert.equal(nativeWorld(objects,new Set())[0],objects[0],'plain actors avoid a temporary row copy');const foreign={...objects[0],nativeClass:'Foreign',nativeProperties:{Value:7}},hidden=nativeWorld([foreign],new Set())[0];assert.equal(hidden.nativeClass,undefined);assert.equal(hidden.nativeProperties,undefined);assert.equal(foreign.nativeProperties.Value,7);assert.equal(nativeWorld([foreign],new Set(['Owned']))[0].nativeClass,undefined);foreign.blueprintAsset='Owned';assert.equal(nativeWorld([foreign],new Set(['Owned']))[0],foreign,'the owning module retains the original class/property row');
   assert.equal(build.metadata.workerProtocol,3);assert.deepEqual((await host.call(build.token,request)).outputs.result,[1,0,0]);
   assert.deepEqual(nativeRequestWorld(objects,new Set(),{command:'frame'},build.metadata),[],'새 clock 프로토콜은 프론트엔드에서도 세계 직렬화를 생략');
   assert.equal(nativeRequestWorld(objects,new Set(),{command:'frame'},{}).length,2,'이전 worker의 전체 세계 전달 유지');

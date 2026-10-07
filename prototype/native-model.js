@@ -2,7 +2,7 @@ import {nativeInitializer} from './native-initializer.js';
 export const canonicalNativeText=text=>text.replace(/^\uFEFF/,'').replaceAll('\r\n','\n').replaceAll('\r','\n');
 // Header declarations become editor metadata; this is not a C++ compiler.
 // Other modules remain reachable as Actors, but only their owner loads native state.
-export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset||o.nativeBuildAsset))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}
+export function nativeWorld(objects,assetPaths){return objects.filter(o=>!['widget','component'].includes(o.kind)).map(o=>{if(assetPaths.has(o.blueprintAsset||o.nativeBuildAsset)||!Object.hasOwn(o,'nativeClass')&&!Object.hasOwn(o,'nativeProperties'))return o;const {nativeClass,nativeProperties,...actor}=o;return actor;});}
 // Protocol 2 clock/reset replies carry no actors. Avoid serializing the scene
 // on this path all the way from the browser; old packaged workers keep theirs.
 export function nativeRequestWorld(objects,assetPaths,request,metadata,spriteSkin){if(metadata?.workerProtocol>=2&&['frame','reset'].includes(request.command))return [];const world=nativeWorld(objects,assetPaths);return spriteSkin?world.map(o=>{const pose=spriteSkin(o.id);return pose?{...o,gameplayDebug:{...o.gameplayDebug,spriteSkin:pose}}:o;}):world;}

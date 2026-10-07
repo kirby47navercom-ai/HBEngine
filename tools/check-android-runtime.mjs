@@ -75,7 +75,7 @@ try{
   await fs.writeFile(path.join(out,'android-meminfo.txt'),await run(['shell','dumpsys','meminfo',build.mobile.applicationId]));
   await fs.writeFile(path.join(out,'android-logcat.txt'),await run(['logcat','-d','--pid='+deployed.pid]));
   result={ok:true,gpuProof,buildProof:path.resolve(process.argv[2]),serial,device:deployed.device,installVerified:true,activityStarted:true,runtimeVerified:true,cppBlueprint:true,physicsEveryTick:true,koreanHUD:true,svgUI:true,safeInsets:true,multitouch:true,assetRangeVerified:true,audioSignalVerified:true,audioBackgroundPaused:true,audioResumed:true,backgroundPaused:true,resumePreservesWorld:true,physicalDeviceVerified:false,audioHeard:false,headless:true,gpuMode,report:ready};
-  if(process.argv.includes('--gpu-probe'))await probeGPU();
+  if(process.argv.includes('--gpu-probe')){await probeGPU();result.gpuProof=gpuProof;}
   }
   await fs.writeFile(path.join(out,'android-runtime-report.json'),JSON.stringify(result,null,2));
 }catch(error){await fs.writeFile(path.join(out,'failure.json'),JSON.stringify({error:error.stack},null,2));try{await fs.writeFile(path.join(out,'android-failure-report.json'),await run(['shell','run-as',build.mobile.applicationId,'cat','files/runtime-report.json']));}catch{}try{await fs.writeFile(path.join(out,'android-logcat.txt'),await run(['logcat','-d']));}catch{}console.error('Android 실행 검사 증거: '+out);throw error;}
