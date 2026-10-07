@@ -293,3 +293,13 @@ Auric최종APK의landscape·Back/HOME실행과최종iOS의배경정지·오디�
 - 500→1,000처럼 대체하지 않았어요. 편집기/장면·프리팹 저장/프레임워크의500, Spawn·C++ 월드·모듈·물리 스냅숏의2,000, SaveGame의1,000/변수소유자500, 직접풀500, C++템플릿128/합산10,000 개수 제한을 제거했어요. ID·타입·변환·경로와 통신 크기 검증은 유지해요.
 - 실제11검사: 1만 장면 저장/재로드·복사/삭제·프레임워크, 1,200계층 검색, BP/컴파일C++생성 후10,002월드, 10,001풀·Save/Load, 2,001변수 소유자/프리팹 및 잘못된 값 거절. 증거 native/build/object-capacity-KF4Vxz/acceptance.json·docs/research/OBJECT_COUNT_LIMITS_042.md. 1만은 새 제한이나120fps 성능 합격이 아니에요. 원본게임/창/프로필을 건드리지 않았어요.
 - 하던 AI 다중 에셋/C++ 묶음 저장 작업(041)은 계속해요. 이 기록으로 누적 전체 작업을 완료 처리하지 않아요.
+
+
+- 2026-10-07 사용자 설치 갱신(042): source0c9364f/bundlea2be41b1ab947dfb, C:\Users\kirby\HBEngine\Versions\a2be41b1ab947dfb\HBEngine.exe. 1788파일과18개 변경 SHA가 일치해요. 이전d03c655dc25a2bb6 설치를 보존했고 사용자창/프로필을 건드리지 않았어요. 바로가기·HKCU 프로젝트 연결이 새경로와 일치해요. 다음 실행부터 오브젝트 개수 제한 제거가 적용돼요. 증거 native/build/object-capacity-user-install-042.json. 미완료041 묶음 저장 코드는 이 설치본에 포함하지 않았어요. 모바일 새 APK/AAB·실기기 검증으로 계산하지 않아요.
+
+
+### 2026-10-07 — AI 에셋·C++ 묶음 저장/Undo(041)
+
+- files.get/apply/undo/redo, 디스크/열린 문서 revision, 동시 BP·부모·C++ 공개 시그니처 dryRun, 함께 저장하는 기록·중간 실패/재시작 복구와 전체 Undo/Redo를 연결했어요. C++만 수정해도 기존 작업창 Undo로 되돌려요. 새 인간 편집이 대기 중 생기면 보존하고 파일 묶음 전체를 이전 상태로 돌려 요청을 거절해요. 외부 변경은 덮어쓰지 않아요.
+- 실제 파일/편집기 함수17검사(asset-transaction-Vj5W1F), 실제 숨겨진 Windows 엔진 창7검사(asset-batch-editor-5xq79Y): UI와 그룹 Undo/Redo·source-only Undo·실제 C++ 재컴파일/Begin Play X7→13·오류0 확인. changed production5SHA가 창 사본과 같아요. check-project/check-assets 통과. 원본게임/사용자창 불변이고 코드변경 없는 모바일/플레이어 빌드를 반복하지 않았어요.
+- Unity 메서드 본문3개/Unreal FScopedTransaction 자체 클래스 본문을 근거로 import batching/오브젝트 Undo/파일 복구를 구별했어요. docs/research/AI_ASSET_TRANSACTIONS_041.md에 바이트64파일/8MB·세션Undo40/재시작/외부 충돌·실제 검증 범위를 적었어요. 전체 문서·전체 엔진 완료로 합산하지 않아요. 오브젝트 개수 제한 제거042는 유지해요.

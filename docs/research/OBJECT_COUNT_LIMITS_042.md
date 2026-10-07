@@ -17,3 +17,6 @@
 1만 개는 검증 입력 크기이며 새 제한이 아니에요. 이 검사는 기능 경계와 데이터 보존 검사예요. 1만 개가 모두 보이고 충돌하는 게임의 120fps/모바일60fps 성능 측정으로 계산하지 않아요. 실제 휴대폰 성능을 측정하지 않았어요. 사용자의 프로젝트·창·프로필을 수정하지 않았어요.
 
 기존 생성/실패 복구/재사용 검사도 실제로 통과했어요: `runtime-spawn-b3U5hh` 8개, `native-spawn-QKt2TX` 9개, `check-actor-pool` 실제 C++ 호출 및100회 재사용, `check-scene-runtime`62컴포넌트/2D·3D, `check-native-module-query`경계 검증예요. 변경 범위가 물리 솔버·렌더러 구현을 바꾸지는 않아요. 과거 전체 분석/전체 기능 완성으로 주장하지 않아요.
+
+
+- 2026-10-07 사용자 설치 갱신(042): source0c9364f/bundlea2be41b1ab947dfb, C:\Users\kirby\HBEngine\Versions\a2be41b1ab947dfb\HBEngine.exe. 1788파일과18개 변경 SHA가 일치해요. 이전d03c655dc25a2bb6 설치를 보존했고 사용자창/프로필을 건드리지 않았어요. 바로가기·HKCU 프로젝트 연결이 새경로와 일치해요. 다음 실행부터 오브젝트 개수 제한 제거가 적용돼요. 증거 native/build/object-capacity-user-install-042.json. 미완료041 묶음 저장 코드는 이 설치본에 포함하지 않았어요. 모바일 새 APK/AAB·실기기 검증으로 계산하지 않아요.

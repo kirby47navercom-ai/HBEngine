@@ -6,6 +6,7 @@ import {createReadStream} from 'node:fs';
 import {fileKind,validScene,defaultObjects,defaultSurface,defaultEnvironment} from '../prototype/model.js';
 import {defaultBlueprint,validBlueprint} from '../prototype/blueprint-model.js';
 import {createBlueprintResolver} from '../prototype/blueprint-inheritance.js';
+import {commitAssetBatch,recoverAssetTransactions,readAssetTransaction} from './asset-transaction.mjs';
 const textExtensions=new Set(['.h','.hpp','.cpp','.c','.json','.txt','.md','.hlsl','.glsl','.obj','.gltf','.csv','.yaml','.yml','.svg']);
 const referenceKeys=new Set(['asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','cookieSprite','cookieTexture','normalTexture','vectorTexture','sheet','chordAction','context','sprite','tileset','physicalMaterial','sourceMesh','model','rig','animation','clip','blackboard','mixer','widget','audio','source','headerPath','sourcePath','inputMapping','action','parent','parentClass','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn']);
 export function assetReferences(data,filename){const result=new Set(),visit=(value,key)=>{if(typeof value==='string'&&(referenceKeys.has(key)||/^(Assets|Source)\/[^#]*\.[A-Za-z0-9]+(?:#[A-Za-z_]\w*)?$/.test(value))&&value&&!value.startsWith('data:')&&!/^[a-z]+:/i.test(value)&&value.includes('.'))result.add(key==='gameInstance'&&value.startsWith('Source/')?value.split('#')[0]:value);else if(Array.isArray(value))value.forEach(item=>visit(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>visit(v,k));};visit(data,'');if(filename.endsWith('.gltf'))for(const item of [...data.buffers||[],...data.images||[]])if(item.uri&&!/^(?:[a-z]+:|\/)/i.test(item.uri))result.add(path.posix.normalize(path.posix.join(path.posix.dirname(filename),item.uri)));return [...result].sort();}
@@ -13,6 +14,7 @@ export function assetKind(name){return Object.entries(assetSuffix).find(([,suffi
 export class ProjectService {
   constructor(root){this.root=path.resolve(root);this.index={};this.redirects={};this.queue=Promise.resolve();this.writeQueue=Promise.resolve();}
   async init(seed=false){await fs.mkdir(this.root,{recursive:true});this.root=await fs.realpath(this.root);try{this.index=JSON.parse(await fs.readFile(path.join(this.root,'.hbassets.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
+    await recoverAssetTransactions(this);
     try{this.redirects=JSON.parse(await fs.readFile(path.join(this.root,'.hbredirects.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
     if(seed){const scene={version:1,sceneName:'Garden',objects:defaultObjects,surface:defaultSurface,environment:defaultEnvironment,blueprint:defaultBlueprint};const files={
       'Assets/Scenes/Garden.hbscene.json':JSON.stringify(scene,null,2),'Assets/Blueprints/BP_Garden.hbblueprint.json':JSON.stringify(defaultBlueprint,null,2),'Assets/Materials/Moss_stone.hbmaterial.json':JSON.stringify({version:1,surface:defaultSurface},null,2),
@@ -28,6 +30,7 @@ export class ProjectService {
     while(true){try{const real=await fs.realpath(cursor);if(real!==this.root&&!real.startsWith(this.root+path.sep))throw Error('프로젝트 밖 링크는 사용할 수 없어요.');break;}catch(error){if(!allowMissing||error.code!=='ENOENT')throw error;cursor=path.dirname(cursor);}}
     return full;
   }
+  async canonicalFile(relative){const file=await this.resolve(relative,true);return fs.realpath(file).catch(error=>{if(error.code==='ENOENT')return file;throw error;});}
   async files(){const result=[];const visit=async(relative,depth=0)=>{if(depth>32||result.length>10000)throw Error('프로젝트 파일 검색 제한 초과');const dir=await this.resolve(relative);for(const entry of await fs.readdir(dir,{withFileTypes:true})){if(result.length>=10000)throw Error('프로젝트 파일 검색 제한 초과');if(entry.name.startsWith('.')||['Library','node_modules','build'].includes(entry.name)||!relative&&['Saved','Builds'].includes(entry.name)||entry.isSymbolicLink())continue;const name=relative?relative+'/'+entry.name:entry.name;if(entry.isDirectory()){result.push({path:name,name:entry.name,kind:'folder'});await visit(name,depth+1);}else if(entry.isFile()){const stat=await fs.stat(await this.resolve(name));this.index[name]??={id:randomUUID()};result.push({path:name,name:entry.name,kind:assetKind(entry.name),size:stat.size,modified:stat.mtimeMs,id:this.index[name].id,text:textExtensions.has(path.extname(name).toLowerCase())});}}};await visit('');return result.sort((a,b)=>(a.kind!=='folder')-(b.kind!=='folder')||a.path.localeCompare(b.path));}
   async list({folder='',query='',type='all',contents=false,recursive=false}={}){await this.resolve(folder);const all=await this.files(),q=query.toLowerCase();let entries=all.filter(e=>(recursive?e.path.startsWith(folder?folder+'/':''):path.posix.dirname(e.path)===(folder||'.'))&&(type==='all'||e.kind===type));
     if(q){const matches=[];for(const e of entries){if(e.name.toLowerCase().includes(q)||e.path.toLowerCase().includes(q))matches.push(e);else if(contents&&e.text&&e.size<=1048576){const lines=(await fs.readFile(await this.resolve(e.path),'utf8')).split(/\r?\n/),line=lines.findIndex(s=>s.toLowerCase().includes(q));if(line>=0)matches.push({...e,line:line+1,match:lines[line].slice(0,160)});}}entries=matches;}
@@ -71,7 +74,43 @@ export class ProjectService {
     });this.writeQueue=task.catch(()=>{});return task;
   }
   write(relative,data,guard=()=>{}){const task=this.writeQueue.then(()=>{guard();return this.writeFile(relative,data);});this.writeQueue=task.catch(()=>{});return task;}
-  async validateBlueprint(relative,data){const file=await this.resolve(relative,true);const canonical=path.relative(this.root,file).split(path.sep).join('/');return createBlueprintResolver(async requested=>{const target=await this.resolve(requested,true);return target===file?data:JSON.parse(await fs.readFile(target,'utf8'));})(canonical);}
+  checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map()}={}){
+    if(!Array.isArray(entries)||!entries.length||entries.length>64||typeof dryRun!=='boolean')throw Error('저장 묶음은1~64개 파일이어야 해요.');
+    const task=this.writeQueue.then(async()=>{
+      guard();const rows=[],drafts=new Map(),seen=new Set();let bytes=0;
+      for(const entry of entries){
+        if(!entry||typeof entry.path!=='string'||!/^(Assets|Source|Settings)\//.test(entry.path)||!textExtensions.has(path.extname(entry.path).toLowerCase())||[entry.text,entry.expected].some(t=>t!==null&&typeof t!=='string'))throw Error('편집 가능한 파일과 이전 저장 기준을 확인하세요.');
+        const file=await this.canonicalFile(entry.path),canonical=path.relative(this.root,file).split(path.sep).join('/'),key=canonical.toLowerCase();if(!/^(Assets|Source|Settings)\//.test(canonical)||!textExtensions.has(path.extname(canonical).toLowerCase()))throw Error('저장 대상 파일 경로를 확인하세요.');if(seen.has(key))throw Error('저장 묶음의 파일 경로가 중복돼요.');seen.add(key);
+        let before;try{const stat=await fs.stat(file);if(!stat.isFile()||stat.size>8388608)throw Error('저장 파일 크기 초과');before=await fs.readFile(file,'utf8');}catch(error){if(error.code!=='ENOENT')throw error;before=null;}
+        const kind=assetKind(canonical);let actual;try{actual=before===null?null:JSON.stringify(assetSuffix[kind]?JSON.parse(before):before);}catch{actual=undefined;}
+        if(actual!==entry.expected)throw Object.assign(Error('외부에서 변경된 파일이에요: '+canonical),{status:409,code:'REVISION_CONFLICT'});
+        if(entry.text===null&&before===null)throw Error('삭제할 파일이 없어요.');bytes+=Buffer.byteLength(before||'')+Buffer.byteLength(entry.text||'');if(bytes>8388608)throw Error('저장 묶음 원본과 변경 내용은 합계8MB까지 지원해요.');
+        if(entry.text!==null&&assetSuffix[kind]){const data=JSON.parse(entry.text);if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+canonical);}
+        rows.push({path:canonical,before,after:entry.text,...(restoreIndex.has(key)?{restoreIndex:restoreIndex.get(key)}:{})});drafts.set(key,entry.text);
+      }
+      if(rows.some(r=>/\.(hbblueprint\.json|h|hpp|cpp|c)$/i.test(r.path))){
+        const paths=new Set((await this.files()).filter(f=>f.kind==='blueprint').map(f=>f.path));for(const row of rows)if(row.path.endsWith('.hbblueprint.json'))paths.add(row.path);
+        for(const name of paths){const raw=drafts.has(name.toLowerCase())?drafts.get(name.toLowerCase()):await fs.readFile(await this.resolve(name),'utf8');if(raw!==null)await this.validateBlueprint(name,JSON.parse(raw),drafts);}
+      }
+      guard();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path)};
+      return commitAssetBatch(this,rows,guard);
+    });this.writeQueue=task.catch(()=>{});return task;
+  }
+  async inspectDocument(relative){
+    if(typeof relative!=='string'||!/^(Assets|Source|Settings)\//.test(relative)||!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 프로젝트 파일 경로가 필요해요.');
+    const file=await this.canonicalFile(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),kind=assetSuffix[assetKind(canonical)]?assetKind(canonical):'text';if(!/^(Assets|Source|Settings)\//.test(canonical)||!textExtensions.has(path.extname(canonical).toLowerCase()))throw Error('조회 대상 파일 경로를 확인하세요.');
+    let text;try{const stat=await fs.stat(file);if(!stat.isFile()||stat.size>8388608)throw Error('조회 파일 크기 초과');text=await fs.readFile(file,'utf8');}catch(error){if(error.code==='ENOENT')return {path:canonical,kind,exists:false,data:null,revision:null,expected:null};throw error;}
+    const data=kind==='text'?text:JSON.parse(text),expected=JSON.stringify(data),revision=createHash('sha256').update(expected).digest('hex');return {path:canonical,kind,exists:true,data,revision,expected};
+  }
+  async undoBatch(id,guard=()=>{}){
+    await this.writeQueue;guard();const journal=await readAssetTransaction(this,id);if(journal.state!=='committed')throw Error('완료된 저장 묶음만 되돌릴 수 있어요.');
+    return this.checkedBatch(journal.rows.map(row=>({path:row.path,text:row.before,expected:row.after===null?null:JSON.stringify(assetSuffix[assetKind(row.path)]?JSON.parse(row.after):row.after)})),guard,{restoreIndex:new Map(journal.rows.filter(r=>r.before!==null&&r.indexBefore).map(r=>[r.path.toLowerCase(),r.indexBefore]))});
+  }
+  async validateBlueprint(relative,data,drafts=new Map()){
+    const file=await this.canonicalFile(relative),canonical=path.relative(this.root,file).split(path.sep).join('/');drafts=new Map(drafts);drafts.set(canonical.toLowerCase(),JSON.stringify(data));
+    const readText=async requested=>{const target=await this.canonicalFile(requested),key=path.relative(this.root,target).split(path.sep).join('/').toLowerCase();if(drafts.has(key)){const text=drafts.get(key);if(text===null)throw Error('삭제된 블루프린트/C++ 참조: '+requested);return text;}return fs.readFile(target,'utf8');};
+    return createBlueprintResolver(async requested=>JSON.parse(await readText(requested)),readText)(canonical);
+  }
   async writeFile(relative,data){if(!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 텍스트 파일이 아니에요.');const file=await this.resolve(relative,true);const kind=assetKind(relative);if(assetSuffix[kind]&&!validAsset(kind,JSON.parse(data)))throw Error(assetValidationError(kind,JSON.parse(data))+': '+relative);if(relative.endsWith('.hbscene.json')&&!validScene(JSON.parse(data)))throw Error('장면 검증 실패');if(relative.endsWith('.hbblueprint.json'))await this.validateBlueprint(relative,JSON.parse(data));await fs.mkdir(path.dirname(file),{recursive:true});const temp=file+'.'+randomUUID()+'.tmp';try{await fs.writeFile(temp,data,{flag:'wx'});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(()=>{});}this.index[relative]??={id:randomUUID()};await this.saveIndex();}
   async create(folder,kind,name,parent){
     if(!assetTypes[kind]||kind==='code')throw Error('에셋 종류 오류');

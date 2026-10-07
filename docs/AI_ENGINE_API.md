@@ -275,3 +275,14 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 `test:package`의 실제 2D 개발/3D 배포 검사는 Win32/WebView2 GPU 제출·BP→C++ 호출, 컴파일러 없는 PATH, AudioContext running/음원 voice playing, EndPlay의 SaveGame flush와 저장 재열기, 소유 서버 종료를 확인했다. 이는 native DX11·모든 코덱/장치·전체 엔진 기능의 완료 근거가 아니다. 공용 BP/서비스 수명과 원본 형식/배포 제약은 [빌드/Player 연구](BUILD_PLAYER_RESEARCH.md)에 연결한다.
 
 애니메이션 그래프는 [포즈 계약](ANIMATION_GRAPH.md)의 animgraph/AnimationGraph/animationGraph schema를 사용해요. 9개 포즈 노드·Float/Bool 파라미터·공용 BP/C++7개·실행 active/weights/시간과 요청 시 runtime.state.animation 속성 포즈를 제공해요. 기존 revision/dryRun/patch/Undo/Save/잠금을 공유해요. named bone 필터·captured reference·우세 sprite 프레임과 [headless model pose](HEADLESS_MODEL_POSE.md)와 아직 없는 IK/normalized sync를 혼동하지 않아요.
+
+
+## 에셋·C++ 파일 묶음 편집(041)
+
+- `files.get {path}`: 디스크 data/revision 및 열린 문서의 editorData/editorRevision. 창을 바꾸거나 외부 IDE를 띄우지 않아요. 없는 파일은 exists:false/revision:null이에요.
+- `files.apply {entries,dryRun}`: entries는 `{path,expectedRevision,expectedEditorRevision,operations}` 또는 data 또는 delete:true. 열린 문서는 expectedEditorRevision도 필요해요. 닫힌 파일을 만들 때 expectedRevision:null과 data를 사용해요. 삭제할 파일은 닫아야 해요. 반환 transaction은 그룹 ID예요. 다른 JSON/Source 파일에 걸친 BP/부모/C++ 시그니처 검증 후 한 저장 묶음으로 적용해요.
+- `files.undo {transaction}` / `files.redo {transaction}`: 원래 그룹 ID로 현재 세션의 묶음을 제어해요. 인간/외부의 새 편집은 거절하고 보존해요. 기존 Ctrl+Z/Ctrl+Y에서도 묶음 전체와 C++를 함께 처리해요. C++만 수정해도 당시 작업창에서 되돌릴 수 있어요.
+- 파일1~64개/원본+결과8MB, 세션 Undo40그룹이에요. dryRun은 컴파일이 아니라 공개 시그니처/그래프/참조 검증이에요. 새 인간 편집이 저장 대기 중 생기면 파일 전체를 되돌려 요청을 거절해요. 복구와 외부 변경이 충돌하면 TRANSACTION_RECOVERY_REQUIRED와 복구 ID를 확인하세요.
+- 보호된 POST `/api/asset/batch`는 `{entries:[{path,text,expected}],dryRun}`을 사용해요. expected는 에셋 JSON 또는 텍스트 자체를 JSON.stringify한 저장 기준/null이에요. POST `/api/asset/batch/undo {transaction}`은 기록을 읽어 현재 디스크 기준을 검사하므로 세션이 바뀌어도 최신 기록 ID로 사용할 수 있어요. 일반 AI 작업은 editor 명령의 열린 문서 보호를 이용하세요.
+
+근거·검증·세션/파일 시스템 범위: docs/research/AI_ASSET_TRANSACTIONS_041.md.

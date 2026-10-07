@@ -57,6 +57,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(!project)return json(res,{error:'프로젝트를 먼저 선택하세요.'},409);
     // Each request retains its original project through body reads and native compilation.
     const owner=project,host=native,store=storage,projectId=session.id,readBody=async(limit)=>{const data=await body(req,limit);checkOwner(owner);return data;};
+    if(req.method==='GET'&&['/api/file','/api/project','/api/asset/info','/api/asset/registry','/api/asset/document'].includes(url.pathname)){await owner.writeQueue;checkOwner(owner);}
     if(url.pathname.startsWith('/api/build')){
       const record=await readProjectManifest(session.projectFile);checkOwner(owner);
       if(url.pathname==='/api/build/profiles'&&req.method==='GET')return json(res,await readBuildProfiles(record));
@@ -80,8 +81,11 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/editor/open'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await openExternal(owner,data.path));}
     if(url.pathname==='/api/asset/create'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,data.kind==='code'?await createCppClass(owner,data.folder||'Source',data.name,data.parent):await owner.create(data.folder||'Assets',data.kind,data.name,data.parent));}
     if(url.pathname==='/api/asset/info'&&req.method==='GET'){const result=await owner.assetInfo(q.get('path'));checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/document'&&req.method==='GET'){const result=await owner.inspectDocument(q.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/registry'&&req.method==='GET'){const result=await owner.assetRegistry();checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/reimport'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.reimport(data.paths);checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/batch'&&req.method==='POST'){const data=JSON.parse(await readBody(16777216)),result=await owner.checkedBatch(data.entries,()=>checkOwner(owner),{dryRun:data.dryRun??false});checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/batch/undo'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.undoBatch(data.transaction,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(8388608)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/project'&&req.method==='GET'){const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/file'&&req.method==='GET'){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}

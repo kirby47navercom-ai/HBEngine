@@ -132,6 +132,7 @@ function log(message, kind = 'INFO') {
   $('#console-logs').innerHTML = logs.map(l => `<div class="log-row"><time>${l.time}</time><span class="log-kind">${l.kind}</span><span>${escapeHtml(l.message)}</span></div>`).join('');
 }
 async function save(all=false) {
+  if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 저장하세요.');
   if(running)return notify('실행을 종료한 뒤 저장하세요.');assetPanes.get(assetDocs.active)?.editor?.flush?.();captureDocument();
   const docs=all?[...assetDocs.items.values()].filter(d=>d.dirty):[assetDocs.current];
   try{for(const doc of docs.filter(Boolean)){if(!assetSuffix[doc.kind]&&doc.kind!=='text')continue;await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}
@@ -142,8 +143,8 @@ function restoreEdit(data){
   const doc=assetDocs.current;if(!doc)return;doc.data=clone(data.data);installDocumentData(doc);changed();
   doc.dirty=JSON.stringify(doc.data)!==doc.saved;renderDocumentTabs();$('#status-text').textContent=dirty?'변경 사항 있음':'준비됨';
 }
-function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.pop();if(!data)return notify('되돌릴 변경 사항이 없어요.');future.push(snapshot());restoreEdit(data);}
-function redo(){if(running)return;const data=future.pop();if(!data)return;history.push(snapshot());restoreEdit(data);}
+function undo(){assetPanes.get(assetDocs.active)?.editor?.flush?.();if(running)return notify('실행을 종료한 뒤 편집하세요.');const data=history.at(-1);if(!data)return notify('되돌릴 변경 사항이 없어요.');if(data.batch)return replayFileBatch(data.batch,false,true).catch(error=>{notify(error.message);return false;});history.pop();future.push(snapshot());restoreEdit(data);}
+function redo(){if(running)return;const data=future.at(-1);if(!data)return;if(data.batch)return replayFileBatch(data.batch,true,true).catch(error=>{notify(error.message);return false;});future.pop();history.push(snapshot());restoreEdit(data);}
 
 const primitiveRendering=scenePrimitives(surface),surfaceMaterial=primitiveRendering.surfaceMaterial,mesh=primitiveRendering.mesh;
 function buildObject(object){
@@ -438,6 +439,7 @@ const sendNative=createNativeChannel(session.nativeChannel,async data=>(await ed
 async function nativeCall(request,build){const started=performance.now(),owner=runtime,generation=owner.generation,services=runtimeServices;build??=runtimeBuilds.get((()=>{const o=owner.objects.find(o=>o.id===request.self);return o?.blueprintAsset||o?.nativeBuildAsset;})())||nativeBuild;if(!build)throw Error('C++을 먼저 빌드하세요.');const result=mergeNativeReply(await nativeWorldClient(build,owner).call({...request,...nativeSpawnRequest(owner,build,preparedSpawnCatalog),nativeBindings:nativeBindings(owner.objects,runtimeBuilds,owner.bindings,request,build.metadata),scopes:[...owner.scopes],input:owner.inputSnapshot(),objects:nativeRequestWorld(owner.objects,new Set([...runtimeBuilds].filter(([,b])=>b.token===build.token).map(([path])=>path)),request,build.metadata,services.spriteSkinSnapshot)},build.metadata,packet=>sendNative({token:build.token,request:packet})),request.self);if(runtime!==owner||owner.generation!==generation)return {outputs:{},events:[],objects:[]};const applyStarted=performance.now();owner.nativeTiming={...result.transport};const states=result.objects||[],stateObjects=states.length>8?new Map(owner.objects.map(o=>[o.id,o])):null;for(const state of states){const o=stateObjects?stateObjects.get(state.id):owner.objects.find(o=>o.id===state.id);if(o){if(state.position!==undefined&&(!validValue('transform',state)||!state.scale.every(v=>v>=.01)||!['position','rotation','scale'].every(k=>state[k].every(v=>Math.abs(v)<=(k==='position'?1000000:10000)))||(state.visible!==undefined&&typeof state.visible!=='boolean')))throw Error('C++ 객체 상태 범위 오류: '+state.id);Object.assign(o,state);if(state.position!==undefined&&running&&runtime===owner)applyObject(o);}}if(result.transport)result.transport.clientApplyMs=performance.now()-applyStarted;owner.nativeTiming={...result.transport};if(!request.calls)await owner.applyNativeOperations(result.operations||[],owner.bindings.find(b=>b.self===request.self)||{self:request.self,root:{components:[]}});if(result.clock){owner.core.scale=result.clock.scale;owner.core.paused=result.clock.paused;if(!request.command)owner.core.time=result.clock.time;}if(result.transport){result.transport.frontendMs=performance.now()-started;result.transport.callCount=request.command?0:result.results?.length??1;}profiler.native(activeProfileFrame,result.transport);return result;}
 let stoppingPlay=false,startingPlay=false,playPresentation,runtimeScenePath;const runtimeBuilds=new Map();
 async function startPlay(travel){
+  if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 실행하세요.');
   if(stoppingPlay)return;
   if(running){if(runtime.pending)runtime.continue();else if(paused)runtime.continue();else runtime.pause();paused=runtime.paused;return updatePlayButtons();}
   if(startingPlay)return;if(!travel){runtimeGame=new RuntimeGame();travelInput=undefined;}startingPlay=true;captureDocument();let prepared,gameplay;
@@ -1129,7 +1131,7 @@ function captureDocument(){
 }
 function persistRecovery(){try{captureDocument();storage.setItem(storageKey('hbengine.documents.v2'),JSON.stringify({active:assetDocs.active,scene:activeScenePath,documents:[...assetDocs.items.values()].filter(d=>(assetSuffix[d.kind]||d.kind==='text')).map(d=>({path:d.path,kind:d.kind,data:d.data,saved:d.saved,dirty:d.dirty,view:{...d.view,nativeBuild:undefined,nativeMetadata:undefined,sourceModified:undefined},layout:d.layout}))}));return true;}catch(error){log('복구 저장 실패: '+error.message,'ERROR');return false;}}
 function queueRecovery(){clearTimeout(recoveryTimer);recoveryTimer=setTimeout(persistRecovery,300);}
-async function switchProject(){try{clearTimeout(recoveryTimer);if(!persistRecovery())return;await flushStorage();leavingProject=true;location.href='/prototype/project-hub.html';}catch(error){notify('프로젝트 전환 실패: '+error.message);}}
+async function switchProject(){if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 프로젝트를 전환하세요.');try{clearTimeout(recoveryTimer);if(!persistRecovery())return;await flushStorage();leavingProject=true;location.href='/prototype/project-hub.html';}catch(error){notify('프로젝트 전환 실패: '+error.message);}}
 window.addEventListener('hbengine-storage-error',event=>notify('복구 저장 실패: '+event.detail));
 function renderDocumentTabs(){
   dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;
@@ -1202,6 +1204,7 @@ function activateDocument(path,reset=false,capture=true){
   }finally{switchingDocument=false;}queueRecovery();return ready;
 }
 async function closeDocument(path){
+  if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 문서를 닫으세요.');
   if(running)return notify('실행을 종료한 뒤 문서를 닫으세요.');captureDocument();const doc=assetDocs.items.get(path);if(!doc)return;
   if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await assetDocs.save(doc,(p,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path:p,text,expected})}));if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
   const closingWorld=doc.kind==='scene'&&activeScenePath===path;let worldDoc=closingWorld?[...assetDocs.items.values()].filter(d=>d.kind==='scene'&&d!==doc).at(-1):null,worldSaved;
@@ -1297,7 +1300,7 @@ window.hbEngineRequestClose=async()=>{
 };
 const automationState=()=>({projectId:session.id,projectName:session.name,activeDocument:assetDocs.active,focusedWindow,workspace,running,paused,startingPlay,selection:[...sceneSelection],documents:[...assetDocs.items.values()].map(doc=>({path:doc.path,kind:doc.kind,dirty:doc.dirty})),layout:clone(dock.tree),windows:{detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id),count:dock.windowCount}});
 function automationViewport(id){if(id==='scene')return null;const view=extraViewports.find(v=>v.id===id);if(!view)throw Error('뷰포트 ID를 확인하세요.');return view;}
-function automationEditable(inspect=false){if(running&&!inspect||startingPlay||stoppingPlay)throw Error('실행 종료 후 편집할 수 있어요.');if(transform?.dragging||$$('dialog').some(dialog=>dialog.open))throw Object.assign(Error('편집 중인 동작을 먼저 마무리하세요.'),{code:'EDITOR_BUSY'});}
+function automationEditable(inspect=false,ownBatch=false){if(running&&!inspect||startingPlay||stoppingPlay)throw Error('실행 종료 후 편집할 수 있어요.');if(authoringBatchBusy&&!ownBatch||diskPolling||transform?.dragging||$$('dialog').some(dialog=>dialog.open))throw Object.assign(Error('편집 중인 동작을 먼저 마무리하세요.'),{code:'EDITOR_BUSY'});}
 async function automationDocument(params,mutate=false){if(mutate)automationEditable();captureDocument();const doc=assetDocs.items.get(params.path||assetDocs.active);if(!doc)throw Error('문서를 먼저 여세요.');const before=JSON.stringify(doc.data),revision=await documentRevision(doc.data);captureDocument();if(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before||mutate&&params.expectedRevision!==revision)throw Object.assign(Error('문서가 변경됐어요. 최신 revision을 조회하세요.'),{code:'REVISION_CONFLICT'});return {doc,revision};}
 async function automationAuthoringEdit(params,kind,edit){
   const {doc}=await automationDocument(params,true);if(doc.kind!==kind)throw Error('문서 종류를 확인하세요.');const draft=kind==='blueprint'?blueprintWorkspace.view(doc.path,doc.data):clone(doc.data),result=edit(draft),next=kind==='blueprint'?serializeBlueprint(draft):draft;if(!validAsset(kind,next))throw Error('편집 결과 검증 실패');
@@ -1307,6 +1310,69 @@ async function automationAuthoringEdit(params,kind,edit){
   activateDocument(doc.path);const previous=clone(doc.data),previousHistory=[...history],previousFuture=[...future],previousDirty=doc.dirty;remember();
   try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}
   return {path:doc.path,dirty:true,result,revision:await documentRevision(doc.data)};
+}
+let authoringBatchBusy=false;
+const authoringBatches=new Map(); // ponytail: session Undo retains the existing 40 groups; durable file journals stay on disk.
+const batchConflict=message=>Object.assign(Error(message),{code:'REVISION_CONFLICT'});
+async function automationFile(path){
+  if(typeof path!=='string')throw Error('파일 경로가 필요해요.');const file=await(await editorRequest('/api/asset/document?path='+encodeURIComponent(path))).json();captureDocument();const doc=assetDocs.items.get(file.path),before=doc&&JSON.stringify(doc.data),editorRevision=doc?await documentRevision(doc.data):null;captureDocument();if(doc&&(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before))throw batchConflict('조회 중 문서가 변경됐어요.');
+  return {...file,editorRevision,editorDirty:doc?.dirty||false,...(doc?{editorData:clone(doc.data)}:{})};
+}
+async function prepareBatchViews(rows,side){
+  const drafts=new Map(rows.filter(row=>!row.viewOnly).map(row=>[row.path,side==='after'?row.after:row.before]));
+  const readText=async path=>{if(drafts.has(path)){const value=drafts.get(path);if(value===null)throw Error('삭제된 파일 참조: '+path);return typeof value==='string'?value:JSON.stringify(value);}return(await editorRequest(fileUrl(path))).text();};
+  const candidate=new BlueprintWorkspace(async path=>JSON.parse(await readText(path)),path=>drafts.has(path)?drafts.get(path):assetDocs.items.get(path)?.data,readText);
+  for(const doc of assetDocs.items.values())if(doc.kind==='blueprint')await candidate.prepare(doc.path,drafts.has(doc.path)?drafts.get(doc.path):doc.data);
+  return candidate;
+}
+function finishFileBatch(group,side,candidate,observed){
+  captureDocument();for(const row of group.rows){const doc=assetDocs.items.get(row.path),data=side==='after'?row.after:row.before;if(row.viewOnly||!doc||data===null)continue;
+    const before=observed.get(row.path);if(before?.doc===doc&&JSON.stringify(doc.data)===before.data)doc.data=clone(side==='after'?row.after:row.editorBefore??row.before);
+    doc.saved=JSON.stringify(data);doc.dirty=JSON.stringify(doc.data)!==doc.saved;delete doc.view.nativeBuild;delete doc.view.nativeMetadata;delete doc.view.sourceModified;delete doc.view.diskConflict;diskModified.delete(row.path);
+  }
+  for(const [path,data] of candidate.files)blueprintWorkspace.files.set(path,data);
+  for(const [path,data] of candidate.nativeMetadata)blueprintWorkspace.nativeMetadata.set(path,data);
+  for(const doc of assetDocs.items.values())if(doc.kind==='blueprint'){delete doc.view.nativeBuild;delete doc.view.nativeMetadata;delete doc.view.sourceModified;}
+  if(assetDocs.current){history=assetDocs.current.history;future=assetDocs.current.future;if(!running&&!startingPlay&&!stoppingPlay)try{installDocumentData(assetDocs.current);}catch(error){log('묶음 저장 후 보기 갱신: '+error.message,'ERROR');}}
+  renderDocumentTabs();queueRecovery();void refreshAssetIndex();for(const browser of projectBrowsers.values())void browser.refresh();
+}
+async function checkBatchCompletion(result,observed){
+  let failure;try{automationEditable(false,true);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('저장 중 새 편집이 생겨 파일 묶음을 되돌렸어요: '+path);}catch(error){failure=error;}
+  if(!failure)return;
+  try{const restored=await(await editorRequest('/api/asset/batch/undo',{method:'POST',body:JSON.stringify({transaction:result.transaction})})).json();failure.restoredTransaction=restored.transaction;}
+  catch(error){throw Object.assign(Error('새 편집은 보존했어요. 파일 묶음 '+result.transaction+'의 복구 기록을 확인하세요: '+error.message),{code:'TRANSACTION_RECOVERY_REQUIRED'});}throw failure;
+}
+async function applyFileBatch(params){
+  automationEditable();if(!Array.isArray(params.entries)||!params.entries.length||params.entries.length>64||params.dryRun!==undefined&&typeof params.dryRun!=='boolean')throw Error('파일 묶음과 dryRun 값을 확인하세요.');authoringBatchBusy=true;
+  try{
+    captureDocument();const anchor=assetDocs.current,rows=[],seen=new Set(),observed=new Map();
+    for(const entry of params.entries){
+      const file=await automationFile(entry?.path),key=file.path.toLowerCase();if(seen.has(key))throw Error('파일 경로가 중복돼요.');seen.add(key);if(entry.expectedRevision!==file.revision)throw batchConflict('외부 파일 기준이 달라요: '+file.path);
+      const doc=assetDocs.items.get(file.path);if(doc&&(entry.expectedEditorRevision!==file.editorRevision||doc.view.diskConflict||doc.saved!==file.expected))throw batchConflict('열린 문서 기준이 달라요: '+file.path);if(!doc&&entry.expectedEditorRevision!=null)throw batchConflict('열린 문서 상태가 달라요: '+file.path);
+      if(entry.delete&&doc)throw Error('열린 문서는 닫은 뒤 묶음 삭제하세요.');if(entry.delete&&!file.exists)throw Error('삭제할 파일이 없어요.');
+      const choices=Number(entry.delete===true)+Number(Object.hasOwn(entry,'data'))+Number(Object.hasOwn(entry,'operations'));if(choices!==1)throw Error('data, operations, delete 중 하나가 필요해요.');
+      const after=entry.delete?null:Object.hasOwn(entry,'operations')?patchAsset(file.kind,doc?.data??file.data,entry.operations):clone(entry.data);if(after!==null&&!validAsset(file.kind,after))throw Error('파일 내용 검증 실패: '+file.path);
+      if(doc)observed.set(file.path,{doc,data:JSON.stringify(doc.data)});rows.push({path:file.path,kind:file.kind,before:file.data,after,expected:file.expected,...(doc?{editorBefore:clone(doc.data)}:{})});
+    }
+    if(anchor&&!rows.some(row=>row.path===anchor.path)){observed.set(anchor.path,{doc:anchor,data:JSON.stringify(anchor.data)});rows.push({path:anchor.path,kind:anchor.kind,before:clone(anchor.data),after:clone(anchor.data),editorBefore:clone(anchor.data),viewOnly:true});}
+    const candidate=await prepareBatchViews(rows,'after'),entries=rows.filter(row=>!row.viewOnly).map(row=>({path:row.path,text:row.after===null?null:row.kind==='text'?row.after:JSON.stringify(row.after,null,2),expected:row.expected}));
+    await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries,dryRun:true})});automationEditable(false,true);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('검증 중 문서가 변경됐어요: '+path);
+    if(params.dryRun)return {valid:true,paths:rows.filter(row=>!row.viewOnly).map(row=>row.path),documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};
+    const result=await(await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries})})).json();if(result.noChange)return result;await checkBatchCompletion(result,observed);
+    const group={id:result.transaction,transaction:result.transaction,rows,undone:false};authoringBatches.set(group.id,group);if(authoringBatches.size>undoLimit)authoringBatches.delete(authoringBatches.keys().next().value);finishFileBatch(group,'after',candidate,observed);
+    for(const row of rows){const doc=assetDocs.items.get(row.path);if(!observed.has(row.path)||doc?.data==null||JSON.stringify(doc.data)!==JSON.stringify(row.after))continue;doc.history.push({batch:group.id});if(doc.history.length>undoLimit)doc.history.shift();doc.future.splice(0);}
+    if(assetDocs.current){history=assetDocs.current.history;future=assetDocs.current.future;}log('AI 파일 묶음 저장: '+result.paths.join(', '));return {...result,documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};
+  }finally{authoringBatchBusy=false;}
+}
+async function replayFileBatch(id,redo=false,fromHistory=false){
+  automationEditable();const group=authoringBatches.get(id);if(!group||group.undone!==redo)throw Error('되돌릴 파일 묶음을 확인하세요.');captureDocument();const observed=new Map();
+  for(const row of group.rows){const doc=assetDocs.items.get(row.path);if(!doc)continue;const expected=redo?row.editorBefore??row.before:row.after;if(JSON.stringify(doc.data)!==JSON.stringify(expected)||fromHistory&&(redo?doc.future:doc.history).at(-1)?.batch!==id)throw batchConflict('먼저 문서의 새 편집을 되돌리세요: '+row.path);observed.set(row.path,{doc,data:JSON.stringify(doc.data)});}
+  authoringBatchBusy=true;try{
+    const side=redo?'after':'before',candidate=await prepareBatchViews(group.rows,side);automationEditable(false,true);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('되돌리기 중 문서가 변경됐어요: '+path);
+    const result=await(await editorRequest('/api/asset/batch/undo',{method:'POST',body:JSON.stringify({transaction:group.transaction})})).json();try{await checkBatchCompletion(result,observed);}catch(error){if(error.restoredTransaction)group.transaction=error.restoredTransaction;throw error;}group.transaction=result.transaction;group.undone=!redo;finishFileBatch(group,side,candidate,observed);
+    for(const [path,before] of observed){const doc=assetDocs.items.get(path);if(doc!==before.doc)continue;const source=redo?doc.future:doc.history,target=redo?doc.history:doc.future,index=source.findLastIndex(item=>item.batch===id);if(index>=0)source.splice(index,1);target.push({batch:id});}
+    return {...result,group:id,undone:group.undone};
+  }finally{authoringBatchBusy=false;}
 }
 function automationGraph(data,view='event'){if(!['event',...(data.construction?['construction']:[]),...data.functions.map(d=>d.id),...data.macros.map(d=>d.id)].includes(view))throw Error('그래프 ID를 확인하세요.');return graphContext(data,view);}
 window.hbEngineWindows={detach:id=>dock.detach(id),redock:id=>dock.redock(id),redockAll:()=>dock.redockAll(),state:()=>({count:dock.windowCount,detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id)})};
@@ -1372,8 +1438,12 @@ const disconnectAutomation=connectAutomation({request:editorRequest,state:automa
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.patch':async params=>{const {doc}=await automationDocument(params,true),next=patchAsset(doc.kind,doc.data,params.operations);if(doc.kind==='blueprint'){await blueprintWorkspace.prepare(doc.path,next);await automationDocument(params,true);}if(params.dryRun)return {valid:true,revision:await documentRevision(next),data:next};activateDocument(doc.path);const previous=clone(doc.data),previousHistory=[...history],previousFuture=[...future],previousDirty=doc.dirty;remember();try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}log('AI 명령으로 에셋 수정: '+doc.path);return {path:doc.path,revision:await documentRevision(doc.data),dirty:true};},
   'document.save':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(!await save())throw Error('저장 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
-  'editor.undo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);undo();return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
-  'editor.redo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);redo();return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
+  'files.get':async({path})=>{const {expected,...file}=await automationFile(path);return file;},
+  'files.apply':applyFileBatch,
+  'files.undo':({transaction})=>replayFileBatch(transaction),
+  'files.redo':({transaction})=>replayFileBatch(transaction,true),
+  'editor.undo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await undo()===false)throw Error('묶음 되돌리기 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
+  'editor.redo':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(await redo()===false)throw Error('묶음 다시 적용 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'blueprint.inheritance.get':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='blueprint')throw Error('블루프린트 문서가 필요해요.');const root=await blueprintWorkspace.prepare(doc.path,doc.data);return {path:doc.path,revision,authored:serializeBlueprint(root),resolved:root};},
   'blueprint.override.event':params=>automationAuthoringEdit(params,'blueprint',data=>{const result=overrideBlueprintEvent(data,params.node,params.position);return {node:result.node.id,call:result.call.id};}),
   'blueprint.override.function':params=>automationAuthoringEdit(params,'blueprint',data=>{const next=overrideBlueprintFunction(data,params.function);Object.assign(data,blueprintWorkspace.view(params.path||assetDocs.active,next));return {function:params.function};}),
@@ -1421,7 +1491,7 @@ function showDiskConflict(doc,disk,draft=doc.data){
   };controls.append(button);}dialog.append(controls);dialog.addEventListener('cancel',event=>event.preventDefault());document.body.append(dialog);dialog.showModal();
 }
 async function pollOpenDocuments(){
-  if(diskPolling||running||startingPlay||closingEngine)return;diskPolling=true;
+  if(diskPolling||authoringBatchBusy||running||startingPlay||closingEngine)return;diskPolling=true;
   try{
     const files=(await(await editorRequest('/api/project?recursive=1')).json()).entries,index=new Map(files.map(file=>[file.path,file]));captureDocument();
     for(const doc of assetDocs.items.values()){
