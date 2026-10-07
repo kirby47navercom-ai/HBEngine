@@ -231,3 +231,6 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 
 
 - 065: 실제 GPU CPU profile을 근거로 카메라 임시 목록/비대상 group 조회와 접촉 중점/grounded 재검색을 절감. 같은 ID 객체 교체의 collider 참조도 갱신. 카메라/C++·166물리·접촉 배치 검증 통과. GPU4대조 current공격117.71/112.19fps, 최종단일119.35·p95 8.4ms로 목표false 유지. [상세](FRAME_LOOKUPS_065.md). 064 3a0046d 푸시 완료, 설치 대기.
+
+
+- 066: 일반 객체의 빈 C++ 속성 준비 생략. 실제 속성/변환/입력/수명 검증은 유지. 실제 C++ wire/host/worker의 잘못된 값·무등록 속성·NaN 거절/복구와 delta/reset/재시작 통과. 부분validation .03088→.02627ms, 전체FPS/RAM 미승격·동일 긴 검사 미반복. [상세](NATIVE_VALIDATION_066.md). 065 a15552a 푸시 완료, 설치 대기.

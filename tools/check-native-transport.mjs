@@ -51,6 +51,11 @@ try {
   const call=(nativeId,args)=>client.call(request(nativeId,args),built.metadata,send);
   let reply=await call();assert.deepEqual(reply.outputs.result,[0,0,Math.fround(.1)]);assert.deepEqual(reply.objects,[],'pure read avoids returning all transforms');
   for(const key of ['parseMs','patchMs','syncMs','invokeMs','snapshotMs','workerMs','decodeMs','validateMs','replyValidationMs'])assert.ok(Number.isFinite(reply.transport[key])&&reply.transport[key]>=0,'native timing: '+key);
+  for(const [index,invalid] of [[0,{Count:'wrong'}],[0,{Unknown:7}],[200,{Count:1}]]){
+    const saved=objects[index].nativeProperties;objects[index].nativeProperties=invalid;await assert.rejects(call(),/C\+\+ 속성 자료형 오류/);if(saved===undefined)delete objects[index].nativeProperties;else objects[index].nativeProperties=saved;
+    reply=await call();assert.equal(reply.transport.upstreamMode,'full');assert.deepEqual(reply.outputs.result,[0,0,Math.fround(.1)],'invalid properties never reach user C++ or mutate its actor');
+  }
+  const savedPosition=objects[201].position;objects[201].position=[NaN,0,0];await assert.rejects(call(),/C\+\+ 객체 상태 오류/);objects[201].position=savedPosition;reply=await call();assert.equal(reply.transport.upstreamMode,'full','plain actor transforms remain validated and recover without a typed property dictionary');
   objects[200].position[0]+=.25;objects[0].nested['a~/b'][1]=7;objects[0].omit=undefined;
   reply=await call('TransportProbe.Nested',{});assert.equal(reply.outputs.result,7);assert.equal(reply.transport.upstreamMode,'patch');
   assert.ok(reply.transport.upstreamBytes<JSON.stringify(objects).length/100,'HTTP and worker both carry the changed paths');

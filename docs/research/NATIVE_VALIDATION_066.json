@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-08",
+  "before": {
+    "actors": 432,
+    "typedActors": 1,
+    "calls": 2500,
+    "samples": [
+      0.03976640000000001,
+      0.030982,
+      0.03022379999999998,
+      0.030295800000000015,
+      0.030883399999999995
+    ],
+    "medianMs": 0.030883399999999995
+  },
+  "after": {
+    "actors": 432,
+    "typedActors": 1,
+    "calls": 2500,
+    "samples": [
+      0.03199899999999999,
+      0.026801999999999992,
+      0.026066400000000017,
+      0.026115399999999993,
+      0.02627459999999999
+    ],
+    "medianMs": 0.02627459999999999
+  },
+  "checks": [
+    "native-validation-transport-066.log: actual C++ typed property rejection/NaN/recovery/transport",
+    "native-validation-world-066.log: actual C++ world patch/reset/restart/direct edits"
+  ],
+  "sourceSHA256": {
+    "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+    "tools/check-native-transport.mjs": "253086ab292fc7d5bff082346e9d4fbb994e025586328c4bd0733561d5ecdaf2"
+  },
+  "installChanged": false,
+  "wholeFrameGoal": false,
+  "longMemoryGoal": false,
+  "newExternalReadings": []
+}
