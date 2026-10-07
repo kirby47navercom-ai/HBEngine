@@ -179,9 +179,9 @@ export class BlueprintRuntime {
     }
     if(result.nativeError)throw Error(result.nativeError);if(!used)throw Error('C++ 묶음 실행이 진행되지 않았어요.');return used;
   }
-  collisionTask(b,contact,now,hits){
+  collisionTask(b,contact,now,hits,bindingIndex){
     if(contact.a!==b.self&&contact.b!==b.self)return null;
-    const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([this.bindings.indexOf(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};
+    const reversed=contact.b===b.self,other=reversed?contact.a:contact.b,component=reversed?contact.componentB:contact.componentA,definition=(reversed?contact.colliderB:contact.colliderA)?.component,id=JSON.stringify([bindingIndex??this.bindings.indexOf(b),b.self,other,component,reversed?contact.componentA:contact.componentB]),state={b,other,component,type:definition?.type,sources:definition?.blueprintSources};
     if(contact.trigger&&b.root.settings?.overlapEnabled===false)return null;
     const map=contact.trigger?now:hits,previous=contact.trigger?this.overlaps:this.hits,key=contact.trigger?'beginOverlap':'hitEvent',args=contact.trigger?{other}:{other,hit:{hit:true,position:copy(contact.position),normal:contact.normal.map(v=>reversed?-v:v),actor:other}},match=n=>this.componentEvent(n,state);
     return {b,key,args,match,before:()=>map.set(id,state),descriptors:previous.has(id)?[]:b.root.nodes.filter(n=>n.key===key&&match(n)).map(n=>({n,args}))};
@@ -201,11 +201,12 @@ export class BlueprintRuntime {
   }
   async collisions(){
     const contacts=this.hooks.contacts?.()||sceneContacts(this.objects),bindings=this.bindings,now=new Map(),hits=new Map();
-    for(let cursor=0;contacts.length&&cursor<bindings.length*contacts.length;){const task=this.collisionTask(bindings[Math.floor(cursor/contacts.length)],contacts[cursor%contacts.length],now,hits);
-      if(!task?.descriptors.length){await this.collisionBinding(task);cursor++;continue;}
+    for(let cursor=0;contacts.length&&cursor<bindings.length*contacts.length;){const task=this.collisionTask(bindings[Math.floor(cursor/contacts.length)],contacts[cursor%contacts.length],now,hits,Math.floor(cursor/contacts.length));
+      // No handler to execute: keep contact state without an empty async job.
+      if(!task?.descriptors.length){task?.before();cursor++;continue;}
       const build=this.hooks.nativeBuild?.(task.b.self),blocks=[],calls=[];let budget=this.depth?this.steps:0;
       if(this.canBatchEvents(build)){const objects=this.objects.filter(o=>!['widget','component'].includes(o.kind)),knownIds=new Set(objects.map(o=>o.id)),scopes=[...this.scopes];
-        for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits);if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
+        for(let i=cursor;i<bindings.length*contacts.length;i++){const next=this.collisionTask(bindings[Math.floor(i/contacts.length)],contacts[i%contacts.length],now,hits,Math.floor(i/contacts.length));if(!next)continue;if(next.descriptors.length&&this.hooks.nativeBuild?.(next.b.self)?.token!==build.token)break;let block;
           try{block=nativeEventBlock(next.b,next.b.root,next.descriptors);if(!block)break;for(const request of block.requests)nativeProtocol.validateCall(build,request,objects,scopes,knownIds);}catch{break;}
           budget+=block.stepCost;if(budget>10000||calls.length+block.requests.length>1000)break;block.before=next.before;block.cursor=i;blocks.push(block);calls.push(...block.requests);
         }

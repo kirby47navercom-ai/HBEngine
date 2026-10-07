@@ -1,0 +1,507 @@
+{
+  "date": "2026-10-08",
+  "dispatchBefore": {
+    "passed": true,
+    "proof": [
+      {
+        "batched": false,
+        "calls": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            3
+          ],
+          [
+            "c",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            2
+          ],
+          [
+            "c",
+            2
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ],
+        "properties": [
+          {
+            "Order": "1,1,3,2,2,3,",
+            "Normal": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,3,2,3,",
+            "Normal": [
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,2,",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "batched": true,
+        "calls": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            3
+          ],
+          [
+            "c",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            2
+          ],
+          [
+            "c",
+            2
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ],
+        "properties": [
+          {
+            "Order": "1,1,3,2,2,3,",
+            "Normal": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,3,2,3,",
+            "Normal": [
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,2,",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    "bindings": 512,
+    "contacts": 64,
+    "framesPerBatch": 60,
+    "dispatchMs": [
+      1.7327116666666664,
+      1.834603333333333,
+      1.6934966666666678,
+      1.6947433333333322,
+      1.6882233333333336
+    ],
+    "medianMs": 1.6947433333333322,
+    "runtimeSHA256": "5ba05abbd8ad2557bf76cd59020c8ec0a49d558241f25c83a10814820244cb24"
+  },
+  "dispatchAfter": {
+    "passed": true,
+    "proof": [
+      {
+        "batched": false,
+        "calls": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            3
+          ],
+          [
+            "c",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            2
+          ],
+          [
+            "c",
+            2
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ],
+        "properties": [
+          {
+            "Order": "1,1,3,2,2,3,",
+            "Normal": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,3,2,3,",
+            "Normal": [
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,2,",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "batched": true,
+        "calls": [
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            1
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "b",
+            3
+          ],
+          [
+            "c",
+            1
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "a",
+            2
+          ],
+          [
+            "b",
+            2
+          ],
+          [
+            "c",
+            2
+          ],
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            3
+          ]
+        ],
+        "properties": [
+          {
+            "Order": "1,1,3,2,2,3,",
+            "Normal": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,3,2,3,",
+            "Normal": [
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "1,2,",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "Order": "",
+            "Normal": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    "bindings": 512,
+    "contacts": 64,
+    "framesPerBatch": 60,
+    "dispatchMs": [
+      0.5359783333333336,
+      0.5499966666666666,
+      0.5050116666666667,
+      0.5477516666666673,
+      0.5769749999999997
+    ],
+    "medianMs": 0.5477516666666673,
+    "runtimeSHA256": "85db0e992e42aa976102b2b28962ccb1158035d79ce04edc0a7aed20f2a4bcc6"
+  },
+  "wholeFrameProof": "native/build/auric-frame-jbONo7/acceptance.json",
+  "summary": [
+    {
+      "version": "baseline",
+      "mode": "idle",
+      "meanFPS": 120.03051145669647,
+      "meanP50": 5.850000001490116,
+      "meanP95": 7.100000005215406,
+      "runs": [
+        {
+          "fps": 120.00265199254635,
+          "workP95": 7.4000000059604645,
+          "goalMet": true
+        },
+        {
+          "fps": 120.0583709208466,
+          "workP95": 6.800000004470348,
+          "goalMet": true
+        }
+      ]
+    },
+    {
+      "version": "baseline",
+      "mode": "battle",
+      "meanFPS": 114.64119030242207,
+      "meanP50": 6.649999998509884,
+      "meanP95": 10.350000001490116,
+      "runs": [
+        {
+          "fps": 119.61722488038278,
+          "workP95": 8.700000002980232,
+          "goalMet": false
+        },
+        {
+          "fps": 109.66515572446139,
+          "workP95": 12,
+          "goalMet": false
+        }
+      ]
+    },
+    {
+      "version": "current",
+      "mode": "idle",
+      "meanFPS": 119.8337986884373,
+      "meanP50": 5.699999999254942,
+      "meanP95": 7.549999997019768,
+      "runs": [
+        {
+          "fps": 119.97878828040649,
+          "workP95": 7.0999999940395355,
+          "goalMet": true
+        },
+        {
+          "fps": 119.68880909646809,
+          "workP95": 8,
+          "goalMet": true
+        }
+      ]
+    },
+    {
+      "version": "current",
+      "mode": "battle",
+      "meanFPS": 119.44103133312272,
+      "meanP50": 5.949999999254942,
+      "meanP95": 8.649999998509884,
+      "runs": [
+        {
+          "fps": 119.06179307063886,
+          "workP95": 8.899999998509884,
+          "goalMet": false
+        },
+        {
+          "fps": 119.82026959560659,
+          "workP95": 8.399999998509884,
+          "goalMet": false
+        }
+      ]
+    }
+  ],
+  "originalPreserved": true,
+  "sourceFiles": 608,
+  "checkedFiles": {
+    "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+    "prototype/audio-mixer.js": "2627d65aa851770fb2ff72025e3df24ff29f7056a3b4328b9d84fe35bd8fbb5a",
+    "prototype/frame-loop.js": "c811d2b7304fe833d81b0d3159e95e68714c1b1337432180261088945f69ecda",
+    "prototype/scene-rendering.js": "f003a670ea188924dd8a86cccf7fccf0a4a565367ebf902141d43f0dc0b69d6c",
+    "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+    "prototype/native-model.js": "7106b00549aeea9d52ba67e66f4c7a2c5a4db14b5a8b9fcc748902f9d2cf02bc",
+    "prototype/native-transport.js": "ce2d690eb549f717642641e9ab7a049da398bc9ea30f4fc7c7f16dec50f70546",
+    "prototype/physics-world.js": "a8dc763a3faf4791cf39d7827152e1410ffc76db40ca8f4fe252db947c1371f1",
+    "prototype/ui-runtime.js": "4b3daadbf27784d48505765ccce94d5a7dddf038e5b8f23efc11598313ab2ff2",
+    "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+    "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+    "tools/native-host.mjs": "c668ff8b7332a53541ee72313ae5efed1293365eac756ed4a90adf98f65486cc",
+    "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+    "tools/check-auric-frame.mjs": "fb9bb90f2c663ed67efb9446ec4ff126f1fa71c8ed1c3d31da11ec0c94f975c5"
+  },
+  "goalMet": false,
+  "exit": [
+    {
+      "code": 0,
+      "signal": null
+    },
+    {
+      "code": 0,
+      "signal": null
+    },
+    {
+      "code": 0,
+      "signal": null
+    },
+    {
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "errors": [
+    [],
+    [],
+    [],
+    []
+  ]
+}
