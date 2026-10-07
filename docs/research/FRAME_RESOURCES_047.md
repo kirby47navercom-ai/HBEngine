@@ -28,3 +28,8 @@ Device.createFrameResources/enqueueFrame/pollFrame과 Particles.enqueueReadback/
 - [map-flags](https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_map_flag): own syntax, DO_NOT_WAIT/error and incompatibility with WRITE_DISCARD (web lines32–52).
 
 원문 HTTP200·SHA·읽은 범위는 native/build/frame-resources-docs-047/manifest.json이에요. 링크/다운로드를 전체 문서·API 분석으로 세지 않아요.
+
+
+## 047 사용자 설치 갱신 완료 — 2026-10-07
+
+검증 production 1e988f232925180c5bf75d35a0ddd7bd96543912를 C:\Users\kirby\HBEngine\Versions\88db6de5ffe7c1bf에 불변 설치했어요.1807파일·변경13개SHA·바로가기/.hbproject 연결 검증,이전b82/f906 버전·실행파일·기존SDK·프로필·프로세스 보존 PASS. GPU컴퓨트/순환상수버퍼/비동기결과슬롯과 공용파티클 활성업로드 범위를 포함해요. 사용자창을 시작/종료하거나 기존Android/iOS산출물을 다시 빌드하지 않았어요. 실제GPU/내보낸Player/공용렌더러의 currentSHA검증을 재사용하고 불필요한전체재검사·8시간스트레스를 하지 않았어요. 전체FPS 또는GPU전용씬렌더러완료로 세지 않아요. 증거 native/build/frame-resources-user-install-047.json.

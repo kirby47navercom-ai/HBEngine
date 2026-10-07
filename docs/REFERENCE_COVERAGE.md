@@ -202,3 +202,8 @@ production c775bb5를 C:/Users/kirby/HBEngine/Versions/b82a5239ad35ec47에 갱�
 ## 047 프레임 리소스 추가 — 2026-10-07
 
 컴퓨트 경로에3개 순환 상수 버퍼·동적WRITE_DISCARD 업로드,3개 결과 슬롯·완료query·대기 없는 비동기회수·가득 찬 슬롯 보존·reset/해제를 구현했어요. C++/BP 제출·회수 함수와 실제 release Player의2D/3D 경로 PASS. 공용 파티클 렌더러는 동적 버퍼의 활성 범위만 재업로드하고 배열을 재사용해요. GPU코어90zRwE·실제Player0EJH77·공용Renderer검사 PASS/currentSHA일치. 프레임FPS/전체렉/모바일GPU/네이티브씬렌더 이식 완료라고 세지 않아요. 자세한근거/검증은 research/FRAME_RESOURCES_047.md에 있어요. 설치는 검증source를 커밋한 뒤 불변 버전으로 갱신해요.
+
+
+## 047 사용자 설치 갱신 완료 — 2026-10-07
+
+검증 production 1e988f232925180c5bf75d35a0ddd7bd96543912를 C:\Users\kirby\HBEngine\Versions\88db6de5ffe7c1bf에 불변 설치했어요.1807파일·변경13개SHA·바로가기/.hbproject 연결 검증,이전b82/f906 버전·실행파일·기존SDK·프로필·프로세스 보존 PASS. GPU컴퓨트/순환상수버퍼/비동기결과슬롯과 공용파티클 활성업로드 범위를 포함해요. 사용자창을 시작/종료하거나 기존Android/iOS산출물을 다시 빌드하지 않았어요. 실제GPU/내보낸Player/공용렌더러의 currentSHA검증을 재사용하고 불필요한전체재검사·8시간스트레스를 하지 않았어요. 전체FPS 또는GPU전용씬렌더러완료로 세지 않아요. 증거 native/build/frame-resources-user-install-047.json.
