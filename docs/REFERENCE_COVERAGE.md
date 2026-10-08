@@ -271,3 +271,7 @@ UE5.8 Previewing and Applying와 Unity ShaderGraph17.0.4 Main Preview/Preview No
 ## 081 — 큐브/배열/볼륨 텍스처
 
 Unity17.0.4 Sample Cubemap/2D Array/3D 자체 기술 본문/표/코드 전체, UE5.8 Texture Asset Editor 자체 앞부분(Types부터 Mip Load Options), Three r180 CubeTextureNode/Texture3DNode 전체와 TextureNode level/depth만 읽고 대조했다. 새 보조 source와 발견 provenance를 등록했으며 연결/남은 본문/API/소스·전체 corpus는 미승격. [구현·35소스 최종 GL/GPU·미독/후속](MATERIAL_TEXTURE_FAMILIES_081.md).
+
+## 082 — 런타임 텍스처 파라미터
+
+Unity6000.0 SetTexture 기술 선언/표/설명/예제, UE5.5 setter 자체 API와 UE5.8 클래스 setter/ByInfo 표만 읽었다. 역사 보조 source를 등록하고 Three r180 pipeline cache/identity에 필요한 범위와 설치/공식 바이트를 대조했다. 연결/나머지 본문/API/source·독립 검증·전체 corpus gate false 유지. [경계·SDK/노드·최종 실제 배포 창](MATERIAL_TEXTURE_PARAMETERS_082.md).

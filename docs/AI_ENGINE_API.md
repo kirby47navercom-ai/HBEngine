@@ -320,3 +320,7 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 ## 텍스처 리소스 계열(081)
 
 콘텐츠 생성 kind에 cubemap/texturearray/volumetexture를 추가했다. `version:1,name,dimension:kind,images:[Assets 이미지 경로]`를 기존 document.patch/files.apply/Undo/Save로 편집한다. cube는 여섯 면 +X/-X/+Y/-Y/+Z/-Z, 다른 둘은 순서 있는 슬라이스다. 함수 핀 texturecube/texturearray/texture3d와 Object/Parameter/Sample을 사용하며 종류가 다른 연결은 거절한다. 리소스 노드의 material.preview도 지원한다. [사람 UI·타입·렌더/검증·남은 세부](MATERIAL_TEXTURE_FAMILIES_081.md).
+
+## 런타임 텍스처 파라미터(082)
+
+SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(object)/parameter(string)/texture(string)를 받는다. 기존 BP/C++ 문서 편집·함수 연결·실행 경로를 공유한다. Texture2D/Cube/Array/3D는 sampler의 파라미터 원점과 자료형을 유지한다. LayerParameterKey로 레이어 범위를 지정한다. 파라미터 staging은 실행 중 원본 파일을 쓰지 않으며 실패/경합에 이전 텍스처를 유지한다. [사람 API·실제 C++/BP 배포/자원 검증](MATERIAL_TEXTURE_PARAMETERS_082.md).

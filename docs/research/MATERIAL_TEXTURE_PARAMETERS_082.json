@@ -1,0 +1,2471 @@
+{
+  "step": "082",
+  "baseCommit": "9f10fe5",
+  "createdAt": "2026-10-08T09:41:25.398102+00:00",
+  "wholeCorpusGate": false,
+  "research": {
+    "createdAt": "2026-10-08T09:26:34.304612+00:00",
+    "wholeCorpusGate": false,
+    "sources": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Material.SetTexture.html",
+        "version": "6000.0",
+        "rawFile": "native/build/material-texture-parameter-research-082/Material.SetTexture.html",
+        "sha256": "54b1d29811be35d66aaf2f3c7cb7898f07f08e3e47348dab66aa4e742eaf233b",
+        "bytes": 21613,
+        "readScope": "own technical declarations/table/description/full example lines 229–316 read; four overloads; linked documents/source unread"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/Materials/UMaterialInstanceDynamic/SetTextureParameterValue?application_version=5.5",
+        "version": "5.5",
+        "rawFile": "native/build/material-texture-parameter-research-082/unreal-set-texture-web.txt",
+        "sha256": "8350b2da85085d77319f3398d379d8d181d1e0f403c2008f948f881c40a270ef",
+        "bytes": 442,
+        "readScope": "own API web body lines 0–26 read; saved paraphrase of web response, not raw HTML; linked API/header/source unread",
+        "htmlCaptureError": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/UMaterialInstanceDynamic",
+        "version": "5.8",
+        "rawFile": "native/build/material-texture-parameter-research-082/unreal-5.8-class-rows-web.txt",
+        "sha256": "6fced059e57f8180e998a76e9c02ad6fb8c5efc26989507ca02b83b5fa8fd405",
+        "bytes": 348,
+        "readScope": "own table rows 188–197 only; saved paraphrase of web response; remaining class body/source/links unread"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Pipelines.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-parameter-research-082/Pipelines.js",
+        "sha256": "a4f39dd09deb1b4dc3932d24bf23aa27dfbe92433ef17f0e7b7f1dd42e6e712b",
+        "bytes": 11801,
+        "readScope": "constructor cache/program fields and new RenderPipeline cache assignment only; remaining methods/imports/backend unread"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/RenderPipeline.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-parameter-research-082/RenderPipeline.js",
+        "sha256": "0ae58bf5d470b585e2396ad8b9c25f8c2eb5cc18cd7eb96d20e74db433194db5",
+        "bytes": 806,
+        "readScope": "entire own file; imports/backend unread"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Pipeline.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-parameter-research-082/Pipeline.js",
+        "sha256": "c7242021caa5a1b59848a764f95feceb78ce8dd86c30698ba8cda69621d8145a",
+        "bytes": 484,
+        "readScope": "entire own file; renderer backend unread"
+      }
+    ]
+  },
+  "coreCommandsPassed": [
+    "node tools/check-material-texture-parameters.mjs",
+    "node tools/check-material-typed.mjs",
+    "node tools/check-material-functions.mjs",
+    "node tools/check-material-workflow.mjs",
+    "node tools/check-material-layers.mjs",
+    "node tools/check-material-texture-families.mjs",
+    "node tools/check-material-uniforms.mjs",
+    "node tools/check-engine-integration.mjs",
+    "node tools/check.mjs"
+  ],
+  "finalWindows": [
+    {
+      "path": "native/build/gpu-scene-8lWGnN/acceptance.json",
+      "sha256": "3d2c3206a5832d64fb06cf2e313e13dda175eada47b986f81cdee3f661fecee1",
+      "checkedSourceCount": 51,
+      "receipt": {
+        "passed": true,
+        "textureParameters": true,
+        "webgl": true,
+        "textureProof": {
+          "cases": [
+            {
+              "type": "texture2d",
+              "red": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "cyan": [
+                154,
+                227,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "27df091d-b94f-4682-99d8-44d5e6604e6e",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Red.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    1
+                  ]
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "27df091d-b94f-4682-99d8-44d5e6604e6e",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Cyan.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    1
+                  ]
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "27df091d-b94f-4682-99d8-44d5e6604e6e",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Cyan.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    1
+                  ]
+                }
+              },
+              "blueprint": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "27df091d-b94f-4682-99d8-44d5e6604e6e",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Red.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Red.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    1
+                  ]
+                }
+              }
+            },
+            {
+              "type": "texturecube",
+              "red": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "cyan": [
+                154,
+                227,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "84789139-9a7c-4fcf-8e6e-09d46d94b9f5",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Red.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    2
+                  ]
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "84789139-9a7c-4fcf-8e6e-09d46d94b9f5",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Cyan.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    2
+                  ]
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "84789139-9a7c-4fcf-8e6e-09d46d94b9f5",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Cyan.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    2
+                  ]
+                }
+              },
+              "blueprint": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "84789139-9a7c-4fcf-8e6e-09d46d94b9f5",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Red.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    2
+                  ]
+                }
+              }
+            },
+            {
+              "type": "texturearray",
+              "red": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "cyan": [
+                154,
+                227,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "1ec51b1a-a6ce-4803-ade5-635aa5a3dc89",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Red.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    3
+                  ]
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "1ec51b1a-a6ce-4803-ade5-635aa5a3dc89",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Cyan.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    3
+                  ]
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "1ec51b1a-a6ce-4803-ade5-635aa5a3dc89",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Cyan.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    3
+                  ]
+                }
+              },
+              "blueprint": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "1ec51b1a-a6ce-4803-ade5-635aa5a3dc89",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Red.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    3
+                  ]
+                }
+              }
+            },
+            {
+              "type": "texture3d",
+              "red": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "cyan": [
+                154,
+                227,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "01c970b1-be54-435b-b1e2-dc283c4171ac",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Red.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    4
+                  ]
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "01c970b1-be54-435b-b1e2-dc283c4171ac",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Cyan.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    4
+                  ]
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "01c970b1-be54-435b-b1e2-dc283c4171ac",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Cyan.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    4
+                  ]
+                }
+              },
+              "blueprint": [
+                250,
+                27,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "01c970b1-be54-435b-b1e2-dc283c4171ac",
+                  "type": "MeshPhysicalMaterial",
+                  "version": 1,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Red.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGL2",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  }
+                },
+                "memory": {
+                  "geometries": 1,
+                  "textures": 2
+                },
+                "programs": [
+                  {
+                    "runnable": true
+                  }
+                ],
+                "shaderIdentity": {
+                  "programs": [
+                    4
+                  ]
+                }
+              }
+            }
+          ],
+          "easyCppAndBlueprint": true
+        },
+        "checkedFiles": {
+          "tools/material-texture-parameter-window-actions.mjs": "82fb047f05509f2c3d0642209b2cc3094690f7c62015e21d2771d5f7e68e1973",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "9e541225699bde121e86ff2e4db4c5e05cf1410ebfa05f79548565f900f7aded",
+          "prototype/gameplay-preview.js": "250a009796aeec00ccdc5af31c62c98404ef8a4bb29cdedc6f7ce0229d020541",
+          "prototype/blueprint-model.js": "4b6a3504445fef30fbce8ace889c5c2df6c90121e86350f1e89f6c1f74dfe677",
+          "prototype/blueprint-runtime.js": "0abab8d34d68605aa630d5a0481505a1c972cf96b0e591c22556f06b850abcf3",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "f5c021332171094371a7ceed87f4a515dfafe61302df68319f03899a982af5a3",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "40e4c26138f99a2b15e0931df27a2da0bdb8d90a927e207a56c03ad1d6dec0b5",
+          "prototype/gpu-materials.js": "72352688a2ca884c0032049b3c7a1203f0d623fcebda6ee11353dac50f0f1e31",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "fe08a9c9d0577852c05a58119efb86fb91d192098d44220a842fbff8d76cf4d3",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "01f30683a8f2e4aae882402e01e7e91b171877157e33d7f66e1238e01c9be34d",
+          "native/include/HBEngine/Game.hpp": "4bd54e6787433f0c8a406f2d0d462adae2a258540d86100cc08b7445eb40ac1e",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "0b0552e4f7feb2c877a0f753379cfde22c0f8b7064c041fd8bd074793684d87f",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "5afc45c28f95331f19f46b6d61fefedf162542cf29250927d0c3d25cf92b38e0",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "d7ead0fad76e0feeff709f3340d95c1501d688d801c774401d6d0d456ff022ba",
+          "native/include/HBEngine/Bridge.hpp": "44bda0146809452d136414accdde0f25baa49b94eed8cfadf0421e476cf43b27",
+          "tools/check-gpu-scene.mjs": "1fd921260f361376a23a4b462da4042ea58f6f404a9c520648b7b1b1efc04325",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    },
+    {
+      "path": "native/build/gpu-scene-LvhZc4/acceptance.json",
+      "sha256": "34c56a073b75b28ed8e59243e8ba74eb701bfd73ab65c4763066f59bb152c279",
+      "checkedSourceCount": 51,
+      "receipt": {
+        "passed": true,
+        "textureParameters": true,
+        "webgl": false,
+        "textureProof": {
+          "cases": [
+            {
+              "type": "texture2d",
+              "red": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "cyan": [
+                155,
+                228,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "55b75f14-d635-4935-a633-7bd527bddb93",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Red.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.33309999999403966
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    2
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      4
+                    ],
+                    "fragment": [
+                      5,
+                      6
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "55b75f14-d635-4935-a633-7bd527bddb93",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Cyan.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.3925000149309635
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    2
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      4
+                    ],
+                    "fragment": [
+                      5,
+                      6
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "55b75f14-d635-4935-a633-7bd527bddb93",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Cyan.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.40000001311302186
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    2
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      4
+                    ],
+                    "fragment": [
+                      5,
+                      6
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "blueprint": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "55b75f14-d635-4935-a633-7bd527bddb93",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture2d",
+                        "path": "Assets/Red.svg"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Red.svg"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.475600005954504
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    2
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      4
+                    ],
+                    "fragment": [
+                      5,
+                      6
+                    ],
+                    "compute": []
+                  }
+                }
+              }
+            },
+            {
+              "type": "texturecube",
+              "red": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "cyan": [
+                155,
+                228,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "9eecde85-44f3-47c3-8785-dbed721ebbc8",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Red.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.20970000000298028
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    7
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      8
+                    ],
+                    "fragment": [
+                      5,
+                      9
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "9eecde85-44f3-47c3-8785-dbed721ebbc8",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Cyan.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.2420000011920929
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    7
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      8
+                    ],
+                    "fragment": [
+                      5,
+                      9
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "9eecde85-44f3-47c3-8785-dbed721ebbc8",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Cyan.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.2420000011920929
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    7
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      8
+                    ],
+                    "fragment": [
+                      5,
+                      9
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "blueprint": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "9eecde85-44f3-47c3-8785-dbed721ebbc8",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturecube",
+                        "path": "Assets/Red.hbcubemap.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbcubemap.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.3024999986886978
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    7
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      8
+                    ],
+                    "fragment": [
+                      5,
+                      9
+                    ],
+                    "compute": []
+                  }
+                }
+              }
+            },
+            {
+              "type": "texturearray",
+              "red": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "cyan": [
+                155,
+                228,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "10ba0288-1b76-4269-af0a-bde94e71b595",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Red.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.21560000000894075
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    10
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      11
+                    ],
+                    "fragment": [
+                      5,
+                      12
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "10ba0288-1b76-4269-af0a-bde94e71b595",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Cyan.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.24130000522732736
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    10
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      11
+                    ],
+                    "fragment": [
+                      5,
+                      12
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "10ba0288-1b76-4269-af0a-bde94e71b595",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Cyan.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.24130000522732736
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    10
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      11
+                    ],
+                    "fragment": [
+                      5,
+                      12
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "blueprint": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "10ba0288-1b76-4269-af0a-bde94e71b595",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texturearray",
+                        "path": "Assets/Red.hbtexturearray.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbtexturearray.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.30140000173449516
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    10
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      11
+                    ],
+                    "fragment": [
+                      5,
+                      12
+                    ],
+                    "compute": []
+                  }
+                }
+              }
+            },
+            {
+              "type": "texture3d",
+              "red": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "cyan": [
+                155,
+                228,
+                226,
+                255
+              ],
+              "initial": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "6ac722de-e874-463e-bbd9-a22a023f445f",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 1,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Red.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {},
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.18269999998807912
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    13
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      14
+                    ],
+                    "fragment": [
+                      5,
+                      15
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "afterSwap": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "6ac722de-e874-463e-bbd9-a22a023f445f",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Cyan.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.18269999998807912
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    13
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      14
+                    ],
+                    "fragment": [
+                      5,
+                      15
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "repeated": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "6ac722de-e874-463e-bbd9-a22a023f445f",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 2,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Cyan.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Cyan.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.20200000816583633
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    13
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      14
+                    ],
+                    "fragment": [
+                      5,
+                      15
+                    ],
+                    "compute": []
+                  }
+                }
+              },
+              "blueprint": [
+                251,
+                26,
+                25,
+                255
+              ],
+              "final": {
+                "material": {
+                  "object": "TextureCube",
+                  "id": "6ac722de-e874-463e-bbd9-a22a023f445f",
+                  "type": "MeshPhysicalNodeMaterial",
+                  "version": 0,
+                  "textures": {
+                    "disposed": false,
+                    "loads": 3,
+                    "owned": 1,
+                    "bindings": [
+                      {
+                        "parameter": "Paint",
+                        "type": "texture3d",
+                        "path": "Assets/Red.hbvolumetexture.json"
+                      }
+                    ]
+                  },
+                  "backend": "WebGPU",
+                  "parameters": {
+                    "Paint": "Assets/Red.hbvolumetexture.json"
+                  },
+                  "surface": {
+                    "color": "#000000",
+                    "roughness": 0.72,
+                    "metalness": 0.08,
+                    "light": 3.2,
+                    "normal": [
+                      0,
+                      0,
+                      1
+                    ],
+                    "emissive": "#000000",
+                    "emissiveIntensity": 1,
+                    "opacity": 1,
+                    "ao": 1,
+                    "clearcoat": 0,
+                    "clearcoatRoughness": 0.1,
+                    "transmission": 0,
+                    "ior": 1.5,
+                    "blendMode": "opaque",
+                    "alphaTest": 0.5,
+                    "doubleSided": false
+                  },
+                  "time": 0.25730000703036787
+                },
+                "memory": {
+                  "geometries": 2,
+                  "textures": 5
+                },
+                "shaderIdentity": {
+                  "pipelines": [
+                    1,
+                    13
+                  ],
+                  "stages": {
+                    "vertex": [
+                      3,
+                      14
+                    ],
+                    "fragment": [
+                      5,
+                      15
+                    ],
+                    "compute": []
+                  }
+                }
+              }
+            }
+          ],
+          "easyCppAndBlueprint": true
+        },
+        "checkedFiles": {
+          "tools/material-texture-parameter-window-actions.mjs": "82fb047f05509f2c3d0642209b2cc3094690f7c62015e21d2771d5f7e68e1973",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "9e541225699bde121e86ff2e4db4c5e05cf1410ebfa05f79548565f900f7aded",
+          "prototype/gameplay-preview.js": "250a009796aeec00ccdc5af31c62c98404ef8a4bb29cdedc6f7ce0229d020541",
+          "prototype/blueprint-model.js": "4b6a3504445fef30fbce8ace889c5c2df6c90121e86350f1e89f6c1f74dfe677",
+          "prototype/blueprint-runtime.js": "0abab8d34d68605aa630d5a0481505a1c972cf96b0e591c22556f06b850abcf3",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "f5c021332171094371a7ceed87f4a515dfafe61302df68319f03899a982af5a3",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "40e4c26138f99a2b15e0931df27a2da0bdb8d90a927e207a56c03ad1d6dec0b5",
+          "prototype/gpu-materials.js": "72352688a2ca884c0032049b3c7a1203f0d623fcebda6ee11353dac50f0f1e31",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "fe08a9c9d0577852c05a58119efb86fb91d192098d44220a842fbff8d76cf4d3",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "01f30683a8f2e4aae882402e01e7e91b171877157e33d7f66e1238e01c9be34d",
+          "native/include/HBEngine/Game.hpp": "4bd54e6787433f0c8a406f2d0d462adae2a258540d86100cc08b7445eb40ac1e",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "0b0552e4f7feb2c877a0f753379cfde22c0f8b7064c041fd8bd074793684d87f",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "5afc45c28f95331f19f46b6d61fefedf162542cf29250927d0c3d25cf92b38e0",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "d7ead0fad76e0feeff709f3340d95c1501d688d801c774401d6d0d456ff022ba",
+          "native/include/HBEngine/Bridge.hpp": "44bda0146809452d136414accdde0f25baa49b94eed8cfadf0421e476cf43b27",
+          "tools/check-gpu-scene.mjs": "1fd921260f361376a23a4b462da4042ea58f6f404a9c520648b7b1b1efc04325",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    }
+  ],
+  "installationChanged": false,
+  "performanceClaim": {
+    "globalPC120FPS": false,
+    "globalMobile60FPS": false,
+    "textureSameAssetDecodeAndUploadSkipped": true
+  },
+  "unverified": [
+    "Android/iOS physical execution",
+    "all material domains/keywords/render textures/virtual textures/HDR/sampler mip settings",
+    "native DX11 main rendering integration",
+    "whole engine cumulative completion/installed release switch"
+  ],
+  "priorEvidence": [
+    "gpu-scene-dQ4cZm/gpu-scene-TynyN6: prior source before descriptor pruning",
+    "gpu-scene-kw1Z4m/gpu-scene-obWrxh: program count/versions only, before identity diagnostic",
+    "gpu-scene-J8PkDS/gpu-scene-dYbEbk: identities before same-asset no-op",
+    "gpu-scene-KYhjAJ: fixture center sampled background at cube bottom; corrected fixture Y=-2",
+    "gpu-scene-dxeBIr/gpu-scene-sJhRNM: invalid debug conditional declaration; corrected and syntax gated"
+  ],
+  "userProgress": [
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/Auric_Loop/docs/엔진_개선_요청.md",
+      "prefixBytes": 190557,
+      "prefixSha256": "0f5a0bf15dc94f273bf9251849b55aa9368e508aba21466c3259f163bdceba1a",
+      "afterSha256": "6a4b90bf12f1ae1a51a3b5646ffa28ae4295f6e2cbfcbfd8589f689bc8db16f1",
+      "prefixPreserved": true,
+      "backup": "native/build/material-texture-parameters-md-082-prefix-0.bin"
+    },
+    {
+      "path": "C:/Users/kirby/OneDrive/바탕 화면/git/Auric_Loop/docs/엔진_요청_프레임.md",
+      "prefixBytes": 76864,
+      "prefixSha256": "ba0349e2ae5ffec0cb281a934cc759b109bec0396581c65b8b7df0add2d61971",
+      "afterSha256": "2d53e299602a7e19bbcda468c69a5ec187537fed7cd8e3e21978570ec10afdfc",
+      "prefixPreserved": true,
+      "backup": "native/build/material-texture-parameters-md-082-prefix-1.bin"
+    }
+  ],
+  "finalCore": {
+    "path": "native/build/material-texture-parameters-core-final-082.log",
+    "sha256": "a112c1e4809dbe5f90c226cbc5289b569f4de1f7d30bdbe37884023e1bae11fc",
+    "elapsedSeconds": 1.77,
+    "status": "passed",
+    "core": 289,
+    "services": 341,
+    "cppConnected": 630,
+    "bp": 715
+  }
+}

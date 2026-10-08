@@ -294,3 +294,7 @@ Unreal5.8 Previewing and Applying 및 Unity17.0.4 Main Preview/Preview Node의 �
 ## 081 — 텍스처 리소스 계열
 
 Unity17.0.4 세 Sample 자체 기술 본문 전체·UE5.8 Texture Editor 앞부분·설치/공식 r180 두 전체 accessor와 TextureNode 두 메서드를 읽었다. 원문/발췌 SHA와 3계열 발견 추가(UE1/Three3 신규, Unity3 기존 provenance), 구현·실제 GL/GPU·미독/후속은 [081](../MATERIAL_TEXTURE_FAMILIES_081.md). 전체 corpus gate false 유지.
+
+## 082 — 동적 텍스처 setter
+
+Unity SetTexture 자체 기술 본문과 UE5.5 setter 자체 API/UE5.8 클래스 표 두 setter 범위를 구분했다. Three r180 cache/pipeline 제한 범위·원문/설치 SHA와 신규 역사 supplement를 기록했다. 구현·일괄 코어·최종 실제 배포 GL/GPU·동일 에셋 비용/셰이더 객체·미독/전체 선행은 [082](../MATERIAL_TEXTURE_PARAMETERS_082.md). 전체 corpus gate false 유지.

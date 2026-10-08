@@ -96,6 +96,7 @@ catalog.push(
   flow('playSoundAt','Play Sound At Location','위치에서 소리 재생','오디오',[pin('sound','Sound','string'),pin('position','Position','vec3'),pin('volume','Volume','float')]),
   flow('stopSound','Stop Sound','소리 정지','오디오',[pin('sound','Sound','string')]),
   flow('setMaterial','Set Material','머테리얼 지정','렌더링',[pin('target','Target','object'),pin('material','Material','string'),pin('slot','Slot','int')]),
+  flow('materialTexture','Set Material Texture','머테리얼 텍스처 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('texture','Texture','string')]),
   flow('materialFloat','Set Material Float','머테리얼 실수 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','float')]),
   flow('lightIntensity','Set Light Intensity','광원 밝기 설정','렌더링',[pin('target','Light','object'),pin('value','Intensity','float')]),
   flow('openScene','Open Scene','장면 열기','장면',[pin('scene','Scene','string')]),

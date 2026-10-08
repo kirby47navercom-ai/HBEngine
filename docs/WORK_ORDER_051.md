@@ -99,3 +99,5 @@
 - 080: 미리보기 기본 메시/프로젝트 모델·2D/3D 조작·문서별 카메라/배율·조명/환경/노출·Realtime과 AI material.scene 연결. 최종 GL KHG7gW/GPU YVTXYC의 실제 픽셀·정지 렌더·카메라/원본/Undo/30소스SHA·오류0/종료0/서버 정리 통과. [상세](MATERIAL_PREVIEW_SCENE_080.md). 0799b0f30e 푸시 완료. 추가 텍스처/도메인·뷰포트 세부와 전체 선행/설치 대기 유지.
 
 - 081: 큐브맵/배열/볼륨 에셋·순서 폼·아홉 typed 노드·함수/MI/레이어/미리보기·공용 CPU/GLSL/TSL·참조/수정 전파·생성 시 변환/실패 수명 연결. 최종 GPU Z9ZlyK/GL rCFmwH의 면6·슬라이스/보간·폼/Undo·35소스SHA/원본/오류0/종료0/서버 정리와 코어 통과. [상세](MATERIAL_TEXTURE_FAMILIES_081.md). 08045c632d 푸시 완료. sampler/mip/HDR/외부·런타임 texture setter와 전체 선행/설치 대기 유지.
+
+- 082: 런타임 typed 텍스처 setter·C++/BP/공용 Play/Preview/Player·파라미터 원점/Layer 키·빈 기본값·atomic staging/실패/요청/해제·동일 에셋 no-op 연결. 최종 배포 GL8lWGnN/GPULvhZc4의 네 종류 실제 C++/BP 픽셀·실제 shader/pipeline identity·동일 에셋10회 loader 증가0·자원/원본/각51SHA·오류0/exit0/서버 종료 및 코어 통과. [상세](MATERIAL_TEXTURE_PARAMETERS_082.md). 0819f10fe5 푸시 완료. sampler/mip/HDR/도메인·전체 선행 세부/설치 대기 및 추가 조사 목표 유지.

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **714개**, 실제 공통 C++ API **629개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **715개**, 실제 공통 C++ API **630개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -29,7 +29,7 @@
 | 컴포넌트 | 15 | 12 |
 | 문자열 | 23 | 19 |
 | 애니메이션 | 2 | 0 |
-| 머테리얼 | 3 | 3 |
+| 머테리얼 | 4 | 4 |
 | 렌더링 | 1 | 0 |
 | UI | 23 | 20 |
 | 저장 | 5 | 3 |
@@ -535,6 +535,7 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | setMaterial | Set / 머테리얼 지정 | exec: exec, target: object, material: string, slot: int | then: exec | hb::Materials::Set | 공통 C++ + VM |
+| materialTexture | Set Texture / 머테리얼 텍스처 설정 | exec: exec, target: object, parameter: string, texture: string | then: exec | hb::Materials::SetTexture | 공통 C++ + VM |
 | materialFloat | Set Float / 머테리얼 실수 설정 | exec: exec, target: object, parameter: string, value: float | then: exec | hb::Materials::SetFloat | 공통 C++ + VM |
 | materialLayerParameter | Layer Parameter Key / 레이어 파라미터 이름 | id: string, name: string, blend: bool | return: string | hb::Materials::LayerParameterKey | 공통 C++ + VM |
 

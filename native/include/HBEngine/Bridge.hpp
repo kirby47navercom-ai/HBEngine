@@ -467,6 +467,7 @@ inline std::string Materials::LayerParameterKey(const std::string& id,const std:
     return "layer."+id+(blend?".blend.":".layer.")+name;
 }
 
+inline void Materials::SetTexture(Actor* target,const std::string& parameter,const std::string& texture){engineCommand("materialTexture",{{"target",bridgeId(target)},{"parameter",parameter},{"texture",texture}});}
 inline void Materials::SetFloat(Actor* target,const std::string& parameter,float value){engineCommand("materialFloat",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
 inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
 inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}

@@ -6,7 +6,8 @@ import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
 import {enabledComponent,objectComponents,componentDefaults} from './scene-components.js';
 import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-assets.js';
 import {tilemapColliders} from './tilemap-runtime.js';
-import {createThreeMaterial,materialParameterKey,resolveMaterialAsset} from './material-runtime.js';
+import {createThreeMaterial,materialParameterKey,materialParameters,resolveMaterialAsset} from './material-runtime.js';
+import {validMaterialTexturePath,validateTextureImages} from './texture-assets.js';
 import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering,spriteEffectsUniforms,createSpriteMaskMaterial} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
@@ -113,6 +114,18 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const group=current(object.id);if(!group)return;const token=group.userData.materialRequest=(group.userData.materialRequest||0)+1,data=await resolveMaterialAsset(await read(path),read);if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed)return;
     const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});try{await result.userData.ready;}catch(e){result.dispose();throw e;}if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed){result.dispose();return;}replaceMaterials(group,result,slot);group.userData.materialData=data;
   }
+  async function materialTexture(object,key,path){
+    const group=current(object.id),owned=[...group?.userData.resources||[]].filter(r=>r.userData?.hbMaterial);if(!owned.length)throw Error('노드 머테리얼을 먼저 지정하세요.');
+    const types=owned.map(m=>{const p=materialParameters(m.userData.materialSource).find(p=>p.name===key),type=p?.type==='texture'?'texture2d':p?.type;if(!validMaterialTexturePath(type,path))throw Error('텍스처 파라미터 이름·자료형·경로를 확인하세요: '+key);return type;});
+    const requests=group.userData.materialTextureRequests??=new Map(),generation=(requests.get(key)||0)+1;requests.set(key,generation);const request=group.userData.materialRequest;
+    const resources={};for(const type of new Set(types))if(type!=='texture2d')resources[path]=validateTextureImages(({texturecube:'cubemap',texturearray:'texturearray',texture3d:'volumetexture'})[type],await read(path));
+    await Promise.all(owned.map(m=>m.userData.ready));
+    const valid=()=>current(object.id)===group&&!group.userData.disposed&&requests.get(key)===generation&&group.userData.materialRequest===request&&owned.every(m=>group.userData.resources.has(m));
+    if(!valid())return false;
+    const results=await Promise.allSettled(owned.map(m=>m.userData.prepareTexture(key,path,resources))),transactions=results.filter(r=>r.status==='fulfilled').map(r=>r.value),failure=results.find(r=>r.status==='rejected');
+    if(failure||!valid()||!transactions.every(t=>t.valid())){transactions.forEach(t=>t.cancel());if(failure)throw failure.reason;return false;}
+    transactions.forEach(t=>t.commit());const data=group.userData.materialData;if(data){data.parameters={...data.parameters,[key]:path};data.textureAssets=Object.fromEntries(owned.flatMap(m=>Object.entries(m.userData.materialSource.textureAssets||{})));}return true;
+  }
   async function materialFloat(object,key,value){
     const group=current(object.id),source=group?.userData.materialData;if(!source)throw Error('노드 머테리얼을 먼저 지정하세요.');
     const data=structuredClone(source),node=data.graph.nodes.find(n=>materialParameterKey(n)===key);
@@ -193,7 +206,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   function updateMaterialTime(time){for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}
-  function materialState(){return all().flatMap(group=>[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial).map(r=>({object:group.userData.objectId,id:r.uuid,type:r.type,backend:r.userData.hbGPU?'WebGPU':'WebGL2',parameters:structuredClone(r.userData.materialSource.parameters||{}),surface:structuredClone(r.userData.materialSource.surface||{}),...r.userData.materialState?.()})));}
+  function materialState(){return all().flatMap(group=>[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial).map(r=>({object:group.userData.objectId,id:r.uuid,type:r.type,version:r.version,textures:r.userData.textureState?.(),backend:r.userData.hbGPU?'WebGPU':'WebGL2',parameters:structuredClone(r.userData.materialSource.parameters||{}),surface:structuredClone(r.userData.materialSource.surface||{}),...r.userData.materialState?.()})));}
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {particleDiagnostics:id=>current(id)?.userData.particleState?.simulation.diagnostics?.(),build,dispose,updateMaterialTime,materialState,prepareSpawn,invalidateAssets,material,materialFloat,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed){if(state.gpu)state.simulation.sort(camera);else writeParticles(group,state,camera);}}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
+  return {particleDiagnostics:id=>current(id)?.userData.particleState?.simulation.diagnostics?.(),build,dispose,updateMaterialTime,materialState,prepareSpawn,invalidateAssets,material,materialFloat,materialTexture,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed){if(state.gpu)state.simulation.sort(camera);else writeParticles(group,state,camera);}}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
 }

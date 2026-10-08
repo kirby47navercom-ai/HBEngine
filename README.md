@@ -181,3 +181,5 @@ RMB+WASD/QE로 이동하고 RMB+휠로 속도를 바꾼다. Alt+좌/중/우 드�
 080은 [머테리얼 미리보기 장면](docs/MATERIAL_PREVIEW_SCENE_080.md)에 메시/모델·직교/3D 조작·문서별 카메라·조명/노출·Realtime·AI material.scene을 연결했다. 최종 GL/GPU 창에서 정지 시 유휴 렌더 중단·카메라 복원·원본/Undo/SHA·종료를 확인했다. 설치 순서는 051 유지.
 
 081은 [큐브맵·텍스처 배열·볼륨 텍스처](docs/MATERIAL_TEXTURE_FAMILIES_081.md)의 에셋/편집기와 아홉 노드를 typed 함수·MI·레이어·CPU/GLSL/TSL에 연결했다. 최종 GL/GPU에서 여섯 면·슬라이스/보간·폼·Undo·35개 소스 SHA/원본/종료를 검증했다. 머테리얼 77종, 설치 순서는 051 유지.
+
+082는 [런타임 텍스처 파라미터](docs/MATERIAL_TEXTURE_PARAMETERS_082.md)를 쉬운 C++ Materials::SetTexture와 BP materialTexture에 연결했다. 네 종류의 실제 배포 GL/GPU 색상·셰이더 객체 재사용·동일 에셋 로딩 생략·자원/원본/SHA·종료 검증 통과. 설치 순서는 051 유지.

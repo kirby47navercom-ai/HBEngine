@@ -1,8 +1,9 @@
 import * as THREE from 'three/webgpu';
-import {materialTextureTypes,textureNodeType,texturePlaceholder,loadMaterialTexture} from './texture-assets.js';
+import {materialTextureTypes,textureNodeType,texturePlaceholder} from './texture-assets.js';
+import {materialTextureBindings} from './material-texture-bindings.js';
 import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3,Vector4,NoColorSpace,RepeatWrapping,ClampToEdgeWrapping,DoubleSide,FrontSide} from 'three/webgpu';
 import * as T from 'three/tsl';
-import {materialParameterKey,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs} from './material-runtime.js';
+import {materialParameterKey,materialTextureParameter,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs} from './material-runtime.js';
 
 const specs=new Map(materialCatalog.map(s=>[s.key,s]));
 const vector=(value,size)=>Array.from({length:size},(_,i)=>Array.isArray(value)?value[i]??value[0]:value);
@@ -15,7 +16,7 @@ const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));r
 // The same persisted graph, pin types, defaults and validation feed GLSL and TSL.
 export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
   data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
-  const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textures=[],loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
+  const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textureBindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
   const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...value),type);
   const surfaceValue=input=>{const raw=surface[input.key];if(typeof raw==='number'){const u=uniformValue(raw,'float');surfaceUniforms.set(input.key,u);return u;}return valueNode(raw,input.type);};
   const expression=(id,output='value')=>{
@@ -31,9 +32,9 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       }
       const {a,b,value:v}=args;
       if(materialTextureTypes[textureNodeType(key)]?.sample===key){
-        const rgbaKey=id+':rgba';let sample=cache.get(rgbaKey);if(!sample){const path=data.parameters?.[materialParameterKey(node)]??node.texture;if(!path)code=T.vec4(1);else{
-          const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);textures.push(placeholder);const sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz),args.lod.max(0)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
-          loading.push(loadMaterialTexture(THREE,{path,type,wrap:node.wrap},data.textureAssets,fileUrl,renderer).then(map=>{if(disposed){map.dispose();return;}textures.push(map);sampleNode.value=map;},error=>{onError('텍스처를 읽을 수 없어요: '+path+' · '+error.message);if(type!=='texture2d')throw error;}));
+        const rgbaKey=id+':rgba';let sample=cache.get(rgbaKey);if(!sample){const parameter=materialTextureParameter(node),path=data.parameters?.[parameter]??node.texture;if(!path&&!parameter)code=T.vec4(1);else{
+          const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);const sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz),args.lod.max(0)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
+          loading.push(textureBindings.add({path,type,parameter,wrap:node.wrap,placeholder},map=>sampleNode.value=map));
           code=node.colorSpace==='linear'?sampleNode:T.vec4(T.sRGBTransferEOTF(sampleNode.rgb),sampleNode.a);
         }sample={code,type:'vec4'};cache.set(rgbaKey,sample);}code=output==='rgba'?sample.code:sample.code[output];
       }else if(key==='split')code=v[output];else if(key==='combine')code=T[type](...['x','y','z','w'].slice(0,Number(type.slice(3))).map(k=>args[k]));
@@ -63,7 +64,8 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
   if(connected.has('normal'))material.normalNode=T.TBNViewMatrix.mul(values.normal.normalize()).normalize();
   if(connected.has('clearcoat')||surface.clearcoat>0){material.clearcoatNode=values.clearcoat.clamp(0,1);material.clearcoatRoughnessNode=values.clearcoatRoughness.clamp(0,1);}
   if(connected.has('transmission')||surface.transmission>0)material.transmissionNode=values.transmission.clamp(0,1);
-  const baseDispose=material.dispose.bind(material);material.dispose=()=>{if(disposed)return;disposed=true;for(const texture of textures)texture.dispose();baseDispose();};
+  const baseDispose=material.dispose.bind(material);material.dispose=()=>{if(disposed)return;disposed=true;textureBindings.dispose();baseDispose();};
   material.userData={...material.userData,hbMaterial:true,hbGPU:true,materialSource:data,ready:Promise.all(loading),updateTime:time=>clock.value=time,materialState:()=>({time:clock.value}),updateFloat:(key,value)=>{const list=parameters.get(key);if(list){if(list.some(n=>typeof n.value!=='number'))throw Error('Float 파라미터가 아니에요.');list.forEach(n=>n.value=value);data.parameters={...data.parameters,[key]:value};return true;}const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key,u=surfaceUniforms.get(property);if(!u)return false;u.value=value;data.surface[property]=value;return true;}};
-  material.clone=()=>createGPUMaterial(data,{fileUrl,onError});return material;
+  material.userData.textureState=textureBindings.state;material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await textureBindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=Object.fromEntries(textureBindings.state().bindings.filter(b=>b.type!=='texture2d').map(b=>[b.path,resources?.[b.path]??data.textureAssets?.[b.path]]));return true;};return transaction;};
+  material.clone=()=>createGPUMaterial(data,{fileUrl,onError,renderer});return material;
 }

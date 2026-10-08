@@ -357,3 +357,7 @@ IK2D SetRotationLimit/ClearRotationLimit 두 SDK 선언에서 같은 BP 서비�
 ## 076 — 머테리얼 레이어 파라미터
 
 Materials::LayerParameterKey SDK 선언에서 순수 BP materialLayerParameter를 생성한다. 안정적 항목 ID·한글/영문 이름·Layer/Blend 구분과 기존 materialFloat로 반복 Layer를 독립 제어한다. BP714·서비스340/core289·SDK629 연결, 실제 C++/BP→GPU/GL 픽셀·인스턴스/숨김·AI 묶음 저장 검증은 [076](MATERIAL_LAYERS_076.md).
+
+## 082 — 머테리얼 텍스처 서비스
+
+Materials::SetTexture SDK 선언에서 materialTexture 노드를 생성한다. 자료형을 유지하는 Texture2D/Cube/Array/3D와 LayerParameterKey, 동일 에셋 no-op·atomic staging·실패/경합 해제를 공용 실행기에 연결했다. BP715·core289/service341·SDK630. 실제 배포 C++ 호출/T 키 BP·GL/GPU 픽셀/셰이더 객체·원본/SHA 검증은 [082](MATERIAL_TEXTURE_PARAMETERS_082.md).

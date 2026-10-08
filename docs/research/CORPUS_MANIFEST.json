@@ -1096,6 +1096,42 @@
       "openIssues": [
         "Only fixed installed shader texture accessors; complete outgoing implementation/API inventory remains open.",
         "CubeTextureNode and Texture3DNode own bodies read; only TextureNode level/depth methods read; linked backends/loaders/API and independent verification remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Pipelines.js",
+          "record": "docs/MATERIAL_TEXTURE_PARAMETERS_082.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/RenderPipeline.js",
+          "record": "docs/MATERIAL_TEXTURE_PARAMETERS_082.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Pipeline.js",
+          "record": "docs/MATERIAL_TEXTURE_PARAMETERS_082.md"
+        }
+      ]
+    },
+    {
+      "id": "unreal-material-api-5.5-supplement",
+      "engine": "Unreal",
+      "version": "5.5",
+      "locale": "en",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/Materials/UMaterialInstanceDynamic/SetTextureParameterValue?application_version=5.5"
+      ],
+      "hosts": [
+        "dev.epicgames.com"
+      ],
+      "pathPrefix": "/documentation/en-us/unreal-engine/API/",
+      "knownInventory": {
+        "discoveryScope": "Historical SetTextureParameterValue supplement only; not the 5.8 API inventory."
+      },
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Own setter article read in 082; linked class/header/source and historical API units not independently verified."
       ]
     }
   ],
