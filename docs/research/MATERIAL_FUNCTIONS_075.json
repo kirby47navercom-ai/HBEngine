@@ -1,0 +1,239 @@
+{
+  "id": "075",
+  "date": "2026-10-08",
+  "priorCommit": "2efc358",
+  "feature": "Reusable typed material functions using existing editor, CPU/GLSL/TSL, BP/C++ materials and packaging",
+  "sources": [
+    {
+      "id": "unreal-functions",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-functions-overview",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-functions-overview",
+      "status": 200,
+      "bytes": 111666,
+      "sha256": "6dd6d35db33b92f8b53be0ff05133cea5a6b6e4a5e95dfe01333333192f4e49b"
+    },
+    {
+      "id": "unity-subgraph",
+      "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sub-graph.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sub-graph.html",
+      "status": 200,
+      "bytes": 11245,
+      "sha256": "ea31697e50ddb03dafc7dae1655d0c89cb743e1607b64439f8f2f4b2fff32c27"
+    }
+  ],
+  "reading": {
+    "unreal": "own complete technical article, including numeric/texture/staticBool/materialAttributes type table; linked reference pages, media and source implementation unread",
+    "unity": "own complete Sub Graph article 17.0.4; linked nodes/samples/media and source implementation unread",
+    "wholeCorpusGate": false
+  },
+  "validation": {
+    "windows": {
+      "editor": {
+        "directory": "native/build/gpu-editor-HRAwU2",
+        "acceptanceSha256": "6a24be63b702a351464844ff44b64e75a56f091a2619da6c4ad6c0273ec56f66",
+        "checkedFiles": {
+          "prototype/index.html": "c792254f3d726496a9d07cfbb89487e85abdd391587c428b83f77f1ff40d19b4",
+          "prototype/app.js": "9213f9cc939f66248f1c267c3913390c462e0921b31ffd41d8ef4810bcd8e959",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+          "prototype/scene-rendering.js": "f003a670ea188924dd8a86cccf7fccf0a4a565367ebf902141d43f0dc0b69d6c",
+          "prototype/engine-services.js": "cddd4d970e76a4e5921a2015fe7cd4b6d0040e6bace896477553bc2ec0fc0be8",
+          "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+          "tools/editor-automation.mjs": "4b0b02f811a542b941031eb21d2b3dc4ae18e67582baeed106bcb3d71ba64500",
+          "tools/check-gpu-editor.mjs": "7e1138e588981de63a66a82442e82dbd9516b331402ce62ae86a1a42fc9a5160",
+          "prototype/material-runtime.js": "69f0f93c31df6ee6d07b6c93c515c5f9383cc2d25b6f386fccaa40ca71ea3c65",
+          "prototype/material-editor.js": "66f8d51368e3abc149404c91f6a381f5fd52736bd1d553c9bf29a2e445cc32cf",
+          "prototype/asset-documents.js": "8c101910acc2209453edddbb246930a3b018fc7ce1332d9f6f80488fc8250d5b",
+          "prototype/gpu-materials.js": "c6849041686868b722ab2fec8ed61fd53dffc8a1e7ca122add9df9a52f9f5bd2",
+          "prototype/scene-editor.css": "6f371422b364a04756009660290765cfbeaeac7499ea620c2c0583f496e22bb1",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "functionMode": true,
+        "originalsPreserved": true,
+        "intentionalSaves": [
+          "Assets/MF_Tone.hbmaterialfunction.json",
+          "Assets/MF_Surface.hbmaterialfunction.json"
+        ],
+        "proof": {
+          "selfDropRejected": true,
+          "check": {
+            "width": 888,
+            "height": 382,
+            "nodes": 5,
+            "ports": 0,
+            "metadata": true
+          },
+          "library": {
+            "label": "MF_Tone",
+            "title": ""
+          },
+          "revisionProtected": true,
+          "undoRedo": true,
+          "savePropagated": true,
+          "searchInsert": true,
+          "multiDropSingleUndo": true,
+          "intentionallySaved": [
+            "Assets/MF_Tone.hbmaterialfunction.json",
+            "Assets/MF_Surface.hbmaterialfunction.json"
+          ]
+        }
+      },
+      "gpuPlayer": {
+        "directory": "native/build/gpu-scene-hbyOLC",
+        "acceptanceSha256": "d2376e2db6ca2c9261743558b43407c8f6989b97644890df7da1b657df18368d",
+        "checkedFiles": {
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "cddd4d970e76a4e5921a2015fe7cd4b6d0040e6bace896477553bc2ec0fc0be8",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "8a7d57390580ec11069a3cf4550ffb41f5e2dd7cd4942dd35ffa54048993003f",
+          "prototype/gpu-materials.js": "c6849041686868b722ab2fec8ed61fd53dffc8a1e7ca122add9df9a52f9f5bd2",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "69f0f93c31df6ee6d07b6c93c515c5f9383cc2d25b6f386fccaa40ca71ea3c65",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "9213f9cc939f66248f1c267c3913390c462e0921b31ffd41d8ef4810bcd8e959",
+          "native/include/HBEngine/Game.hpp": "719cf68df1ad9ca43d3d97d3520b35046daecbc8ea734ea0a7bbe97cf24d0490",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "f003a670ea188924dd8a86cccf7fccf0a4a565367ebf902141d43f0dc0b69d6c",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "4b0b02f811a542b941031eb21d2b3dc4ae18e67582baeed106bcb3d71ba64500",
+          "native/include/HBEngine/Bridge.hpp": "0b42d2a92255399f4fc6a88a2dea86e0757e88d3c08de37dbeddd07bd692fa16",
+          "tools/check-gpu-scene.mjs": "85b5f1cec0af3aa0806901204c5f851c4d149ad16ffc1be27a60acad6d42636b",
+          "prototype/material-editor.js": "66f8d51368e3abc149404c91f6a381f5fd52736bd1d553c9bf29a2e445cc32cf",
+          "prototype/asset-documents.js": "8c101910acc2209453edddbb246930a3b018fc7ce1332d9f6f80488fc8250d5b",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "functionMode": true,
+        "originalsPreserved": true,
+        "intentionalSaves": [],
+        "proof": null
+      },
+      "glPlayer": {
+        "directory": "native/build/gpu-scene-OHr8zt",
+        "acceptanceSha256": "0213e159f94606d3a4567efeb59453380df95353d6d34daf1c6374c0b04442f2",
+        "checkedFiles": {
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "cddd4d970e76a4e5921a2015fe7cd4b6d0040e6bace896477553bc2ec0fc0be8",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "8a7d57390580ec11069a3cf4550ffb41f5e2dd7cd4942dd35ffa54048993003f",
+          "prototype/gpu-materials.js": "c6849041686868b722ab2fec8ed61fd53dffc8a1e7ca122add9df9a52f9f5bd2",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "69f0f93c31df6ee6d07b6c93c515c5f9383cc2d25b6f386fccaa40ca71ea3c65",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "9213f9cc939f66248f1c267c3913390c462e0921b31ffd41d8ef4810bcd8e959",
+          "native/include/HBEngine/Game.hpp": "719cf68df1ad9ca43d3d97d3520b35046daecbc8ea734ea0a7bbe97cf24d0490",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "f003a670ea188924dd8a86cccf7fccf0a4a565367ebf902141d43f0dc0b69d6c",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "4b0b02f811a542b941031eb21d2b3dc4ae18e67582baeed106bcb3d71ba64500",
+          "native/include/HBEngine/Bridge.hpp": "0b42d2a92255399f4fc6a88a2dea86e0757e88d3c08de37dbeddd07bd692fa16",
+          "tools/check-gpu-scene.mjs": "85b5f1cec0af3aa0806901204c5f851c4d149ad16ffc1be27a60acad6d42636b",
+          "prototype/material-editor.js": "66f8d51368e3abc149404c91f6a381f5fd52736bd1d553c9bf29a2e445cc32cf",
+          "prototype/asset-documents.js": "8c101910acc2209453edddbb246930a3b018fc7ce1332d9f6f80488fc8250d5b",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "functionMode": true,
+        "originalsPreserved": true,
+        "intentionalSaves": [],
+        "proof": null
+      }
+    },
+    "coreLog": "native/build/material-functions-core-075.log",
+    "coreLogSha256": "5933c508065aa3289ca2dc7b4fdd449a1f3ea0e75be4ae7c034f554b01294674",
+    "blueprintNodes": 713,
+    "materialCatalogEntries": 57,
+    "ordinaryShaderNodes": 53,
+    "typedFunctionShaderCases": 4,
+    "existingSDKConnected": 628,
+    "fpsClaim": false,
+    "noLongStabilityRerun": true,
+    "mdProof": "native/build/material-functions-md-075.json",
+    "aiPreviewLiteral": true
+  },
+  "remaining": [
+    "texture object/staticBool/materialAttributes function ports",
+    "function extraction, per-expression preview and inline node thumbnails",
+    "material layer/blend assets and instance stack editing",
+    "remaining accumulated WORK_ORDER_051 requirements; installation after first group"
+  ],
+  "installationChanged": false,
+  "userMD": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "beforeBytes": 179828,
+      "afterBytes": 181696,
+      "beforeSha256": "1c4f62f017126f014c0a6751967b5b8eb87cf76d8c539fe197032eb919aa960d",
+      "afterSha256": "94dd42fe47b349a8012b194779ab3ecb28315bb89a736d493593d2b2f28fed97",
+      "prefixPreserved": true,
+      "appendBytes": 1868
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "beforeBytes": 66135,
+      "afterBytes": 68003,
+      "beforeSha256": "52513525f49af9ddf7d66ce2daa0c0912903387925097ae91e80646eef021ab1",
+      "afterSha256": "6f0213ac1f6ef78c6f787755251df9f266e2a8aa6c7d0dced7c32f2879e669dd",
+      "prefixPreserved": true,
+      "appendBytes": 1868
+    }
+  ]
+}

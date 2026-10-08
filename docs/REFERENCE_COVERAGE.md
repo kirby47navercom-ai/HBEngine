@@ -238,3 +238,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 
 
 - 063: 충돌의 미연결 async 대기/바인딩 재검색 절감. BP→실제C++ Enter/Exit/Hit/방향/컴포넌트/배치 동일성·62컴포넌트 검사 통과, 부분CPU1.6947→.5478ms. GPU 고정게임4회608파일 보존/오류0·종료0이나 공격p95 목표false. [상세](research/COLLISION_DISPATCH_063.md). 062 88599ff 푸시 완료; 다음 접촉 수명/누적 세부, 설치 대기.
+
+
+## 075 — 머테리얼 함수
+
+075 자체 UE Material Functions Overview/Unity Sub Graph17.0.4 전체 기술 본문을 대조하고 독립 함수·편집/타입/저장 전파·공용 렌더/배포를 검증했다. 연결 콘텐츠/전체 corpus 미승격. [상세](MATERIAL_FUNCTIONS_075.md); Texture/StaticBool/Attributes·추출·Layer/Blend 세부는 남는다.

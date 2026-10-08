@@ -965,3 +965,8 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 ## 074 — 2D 관절 회전 제한
 
 세2D IK bind 기준 ID 최소/최대·혼합/잠금/길이 보존·UI/범위기즈모·SDK/BP2·AI를 구현했다. 실제 EditorfszJTj/releasePlayerTt6Pda·코어/3D/리타게팅/기존실제C++·713 BP/628SDK 연결 통과, 원본/오류0/종료0/서버 정리/제품 SHA 일치. docs/2D_IK_CONSTRAINTS_074.md와 증거 JSON을 참조. 기존 설치/프로필/원본 불변. 전체051/추가목표·전체corpus·FPS/RAM 미완료를 유지하며 다음 머테리얼 함수·레이어 등 누적 세부를 계속한다.
+
+
+## 075 — 머테리얼 함수
+
+075 머테리얼 함수 독립 에셋/Preview·네 숫자 타입·중첩/안정적 핀ID/우측 속성·검색/다중 드래그·Undo/저장 전파·공용 GLSL/TSL/CPU·기존 BP/C++·빌드 검증 완료. 최종 EditorHRAwU2/PlayerGPUhbyOLC/GLOHr8zt와 코어/713 BP/628SDK, 실제 픽셀·제품SHA/오류0/종료0/서버 정리 통과. docs/MATERIAL_FUNCTIONS_075.md 참조. 051 전체 선행/설치 대기; 다음 Layer/Blend·미구현 함수 포트/추출/임의 미리보기 및 누적 세부.

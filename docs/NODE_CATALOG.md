@@ -1056,3 +1056,8 @@
 | tagAny | Has Any / 하나 이상의 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAny | 공통 C++ + VM |
 | tagAll | Has All / 모든 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAll | 공통 C++ + VM |
 | tagQuery | Matches Query / 태그 조건 쿼리 | target: object, query: string | return: bool | hb::Tags::MatchesQuery | 공통 C++ + VM |
+
+
+## 075 — 머테리얼 함수
+
+075 머테리얼 함수: Function Input/Output과 외부 Call을 material domain에 추가했다. 숫자 네 타입·안정적 경계 ID·미리보기·필수 입력·설명/표시 순서·검색/함수 의존성은 MATERIAL_FUNCTIONS_075.md와 schema.material.functions를 따른다. BP713/SDK628은 기존 경로를 재사용해 증가하지 않는다.

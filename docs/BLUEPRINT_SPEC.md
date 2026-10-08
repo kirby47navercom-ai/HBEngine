@@ -347,3 +347,8 @@ ParticleSystem의 기존 여섯 sortMode와 C++/BP Projectiles는 GPU draw 경�
 ## 074 — 2D 관절 회전 제한
 
 IK2D SetRotationLimit/ClearRotationLimit 두 SDK 선언에서 같은 BP 서비스를 생성한다. 안정적 뼈 ID·bind 상대 도 범위·공용 검증·실제 잠금/해제와 작성/Undo/dryRun은 [074](2D_IK_CONSTRAINTS_074.md). BP713·공용C++628(core289/service339) 검사 통과, 전체 선행·설치 대기 유지.
+
+
+## 075 — 머테리얼 함수
+
+075 머테리얼 함수 그래프는 BP 함수와 다른 셰이더 도메인이다. 내부 파라미터는 기존 materialSet/materialFloat와 hb::Materials::Set/SetFloat가 제어한다. 실제 C++/BP→인스턴스/중첩 함수→GL/GPU 픽셀 검증은 MATERIAL_FUNCTIONS_075.md.

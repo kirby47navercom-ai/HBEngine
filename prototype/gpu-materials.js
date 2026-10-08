@@ -12,7 +12,7 @@ const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));r
 
 // The same persisted graph, pin types, defaults and validation feed GLSL and TSL.
 export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{}}={}){
-  data=structuredClone(data);data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');
+  data=structuredClone(data);data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
   const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textures=[],loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
   const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...value),type);
   const surfaceValue=input=>{const raw=surface[input.key];if(typeof raw==='number'){const u=uniformValue(raw,'float');surfaceUniforms.set(input.key,u);return u;}return valueNode(raw,input.type);};

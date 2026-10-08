@@ -261,3 +261,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 074 — 2D 관절 회전 제한
 
 Unity2D Animation13.0.6 2DIK 자체 전체 기술 본문 및 CCDSolver2D 자체 Properties/Methods 재읽기·원문/SHA 보존. 연결 콘텐츠/상속 API/실제 패키지 구현 미독; 기존 출처이며 신규발견0, 전체 corpus gate 미승격. 세 솔버 관절 제한/공용 SDK2·EditorfszJTj/PlayerTt6Pda 증거는 [074](../2D_IK_CONSTRAINTS_074.md).
+
+
+## 075 — 머테리얼 함수
+
+075 UE Material Functions Overview와 Unity ShaderGraph17.0.4 Sub Graph 자체 기술 본문 전체 읽기·원문/SHA 보존. 연결 API/샘플/영상·엔진 구현 미독, 전체 corpus gate false. 구현/실제 Editor·GL/GPU 배포 증거는 [075](../MATERIAL_FUNCTIONS_075.md).

@@ -4,7 +4,7 @@ import {validDataAsset} from './data-assets.js';
 import {defaultBlueprint,makeNode,componentDefaults,validBlueprint,defaultTimeline,validTimeline} from './blueprint-model.js';
 import {defaultSurface,validSurface,validScene,defaultEnvironment} from './model.js';
 import {blueprintClasses} from './class-types.js';
-import {materialGraph,materialDefaults,validMaterialGraph,validMaterialSurface,validAssetPath} from './material-runtime.js';
+import {materialGraph,materialFunctionGraph,materialDefaults,validMaterialGraph,validMaterialFunction,validMaterialSurface,validAssetPath} from './material-runtime.js';
 import {twoDTypes,twoDSuffix,create2DAsset,valid2DAsset} from './two-d-assets.js';
 import {gameplayTypes,gameplaySuffix,createGameplayAsset,validGameplayAsset,gameplayValidationError} from './gameplay-assets.js';
 import {createWidgetAsset,validWidgetAsset} from './ui-assets.js';
@@ -17,8 +17,8 @@ import {blueprintInstanceDefaults} from './blueprint-overrides.js';
 import {isBlueprintParent} from './blueprint-model.js';
 export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
-export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
-export const assetTypes={blueprint:{label:'블루프린트 클래스',prefix:'BP_',group:'게임플레이'},code:{label:'C++ 클래스',prefix:'',group:'게임플레이'},inputaction:{label:'Input Action',prefix:'IA_',group:'입력'},inputmapping:{label:'Input Mapping Context',prefix:'IMC_',group:'입력'},material:{label:'머테리얼',prefix:'M_',group:'렌더링'},materialinstance:{label:'머테리얼 인스턴스',prefix:'MI_',group:'렌더링'},physicalmaterial:{label:'물리 머테리얼',prefix:'PM_',group:'물리'},prefab:{label:'프리팹',prefix:'PF_',group:'게임플레이'},gameconfig:{label:'게임 설정',prefix:'GS_',group:'프로젝트'},audioasset:{label:'오디오 에셋',prefix:'S_',group:'오디오'},animation:{label:'트랜스폼 애니메이션',prefix:'AN_',group:'애니메이션'},curve:{label:'커브',prefix:'Curve_',group:'애니메이션'},data:{label:'데이터 에셋',prefix:'DA_',group:'데이터'},scene:{label:'레벨',prefix:'L_',group:'월드'}};
+export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialfunction:'.hbmaterialfunction.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
+export const assetTypes={materialfunction:{label:'머테리얼 함수',prefix:'MF_',group:'머테리얼'},blueprint:{label:'블루프린트 클래스',prefix:'BP_',group:'게임플레이'},code:{label:'C++ 클래스',prefix:'',group:'게임플레이'},inputaction:{label:'Input Action',prefix:'IA_',group:'입력'},inputmapping:{label:'Input Mapping Context',prefix:'IMC_',group:'입력'},material:{label:'머테리얼',prefix:'M_',group:'렌더링'},materialinstance:{label:'머테리얼 인스턴스',prefix:'MI_',group:'렌더링'},physicalmaterial:{label:'물리 머테리얼',prefix:'PM_',group:'물리'},prefab:{label:'프리팹',prefix:'PF_',group:'게임플레이'},gameconfig:{label:'게임 설정',prefix:'GS_',group:'프로젝트'},audioasset:{label:'오디오 에셋',prefix:'S_',group:'오디오'},animation:{label:'트랜스폼 애니메이션',prefix:'AN_',group:'애니메이션'},curve:{label:'커브',prefix:'Curve_',group:'애니메이션'},data:{label:'데이터 에셋',prefix:'DA_',group:'데이터'},scene:{label:'레벨',prefix:'L_',group:'월드'}};
 Object.assign(assetSuffix,retargetAssetSuffix);Object.assign(assetTypes,retargetAssetTypes);
 Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
@@ -54,6 +54,7 @@ export function createAsset(kind,name,parent='Actor'){
     root.components=type.components.map((type,i)=>({id:'component_'+i,name:type,type,properties:componentDefaults(type)}));root.settings={parentClass:parent,tickEnabled:true,tickInterval:0,overlapEnabled:true};return root;
   }
   if(kind==='scene')return {version:1,sceneName:name,objects:[],surface:copy(defaultSurface),environment:copy(defaultEnvironment)};
+  if(kind==='materialfunction')return {version:1,name,surface:copy(materialDefaults),description:'',category:'사용자 함수',expose:true,graph:materialFunctionGraph()};
   if(kind==='material')return {version:1,name,surface:copy(materialDefaults),graph:materialGraph()};
   if(kind==='materialinstance')return {version:1,name,parent:'',parameters:{},surfaceOverrides:{}};
   if(kind==='physicalmaterial')return {version:1,name,friction:.5,restitution:.1,density:1,frictionCombine:'average',restitutionCombine:'average'};
@@ -85,7 +86,8 @@ export function validAsset(kind,data){
   if(kind==='data')return validDataAsset(data);
   if(kind==='curve')return validTimeline(data.timeline);
   if(kind==='animation')return data?.version===1&&typeof data.name==='string'&&data.name.length<=80&&typeof data.model==='string'&&data.model.length<=1000&&validTimeline(data.timeline);
-  if(kind==='material')return data?.version===1&&validMaterialSurface(data.surface)&&(!data.graph||validMaterialGraph(data.graph));
+  if(kind==='materialfunction')return validMaterialFunction(data);
+  if(kind==='material')return data?.version===1&&validMaterialSurface(data.surface)&&(!data.graph||data.graph.mode===undefined&&validMaterialGraph(data.graph));
   if(kind==='materialinstance')return validAssetPath(data.parent)&&data.parameters&&typeof data.parameters==='object'&&!Array.isArray(data.parameters)&&Object.keys(data.parameters).length<=128&&Object.entries(data.parameters).every(([key,value])=>/^[A-Za-z_가-힣][\w가-힣]{0,79}$/.test(key)&&(Number.isFinite(value)&&Math.abs(value)<=10000||Array.isArray(value)&&value.length===3&&value.every(v=>Number.isFinite(v)&&Math.abs(v)<=10000)||typeof value==='string'&&validAssetPath(value)))&&data.surfaceOverrides&&typeof data.surfaceOverrides==='object'&&!Array.isArray(data.surfaceOverrides)&&Object.keys(data.surfaceOverrides).every(key=>key in materialDefaults)&&validMaterialSurface({...materialDefaults,...data.surfaceOverrides});
   if(kind==='physicalmaterial')return Number.isFinite(data.friction)&&data.friction>=0&&data.friction<=10&&Number.isFinite(data.restitution)&&data.restitution>=0&&data.restitution<=1&&Number.isFinite(data.density)&&data.density>0&&data.density<=10000&&['frictionCombine','restitutionCombine'].every(key=>['average','min','max','multiply'].includes(data[key]));
   if(kind==='prefab')return typeof data.root==='string'&&data.objects?.some(object=>object.id===data.root)&&validScene({version:1,objects:data.objects,surface:defaultSurface});

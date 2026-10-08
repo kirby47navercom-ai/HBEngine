@@ -61,7 +61,7 @@ import {bakeRenderCollision,geometryColliderTypes} from './collision-geometry.js
 import {editCollisionGeometry} from './collision-editor.js';
 import {sceneRendering,visualComponentSignature} from './scene-rendering.js';
 import {MaterialEditor} from './material-editor.js';
-import {materialPresets,makeMaterialPreset,createThreeMaterial,resolveMaterialAsset,materialDefaults,validMaterialSurface} from './material-runtime.js';
+import {materialPresets,makeMaterialPreset,createThreeMaterial,resolveMaterialAsset,refreshMaterialFunctionCall,materialDefaults,validMaterialSurface} from './material-runtime.js';
 import {renderTwoDEditor} from './two-d-editor.js';
 import {GameplayEditor} from './gameplay-editor.js';
 import {gameplayTypes} from './gameplay-assets.js';
@@ -112,7 +112,7 @@ const readAsset=async path=>clone(assetDocs.items.get(path)?.data||await(await e
 let runtimeGame=new RuntimeGame(),travelInput;
 const blueprintWorkspace=new BlueprintWorkspace(async path=>await(await editorRequest(fileUrl(path))).json(),path=>assetDocs.items.get(path)?.data,async path=>await(await editorRequest(fileUrl(path))).text());
 let visuals;const makeEditorVisuals=()=>sceneRendering({gameRenderer:mainRenderer,editor:true,runtimeWorld:()=>!!editWorld&&objects!==editWorld,read:readAsset,fileUrl,loadModel,current:id=>meshMap.get(id),all:()=>[...meshMap.values()],error:message=>log(String(message),'ERROR')});
-let materialEditor,previewMaterialSignature='',renderGameView=true;
+let materialEditor,previewMaterialSignature='',previewMaterialRequest=0,renderGameView=true;
 const corePreview=createCorePreview();
 corePreview.object=id=>objects.find(o=>o.id===(id==='self'?selected:id));
 corePreview.updateObject=o=>{applyObject(o);changed();};
@@ -134,11 +134,13 @@ function log(message, kind = 'INFO') {
   $('#log-count').textContent = logs.length;
   $('#console-logs').innerHTML = logs.map(l => `<div class="log-row"><time>${l.time}</time><span class="log-kind">${l.kind}</span><span>${escapeHtml(l.message)}</span></div>`).join('');
 }
+function propagateMaterialFunctions(docs){if(!docs.some(d=>d?.kind==='materialfunction'))return;const definitions=new Map(docs.filter(d=>d?.kind==='materialfunction').map(d=>[d.path,d.data]));for(const dependent of assetDocs.items.values()){if(!['material','materialfunction'].includes(dependent.kind))continue;const next=clone(dependent.data);for(const n of next.graph?.nodes||[])if(n.key==='functionCall'&&definitions.has(n.asset))refreshMaterialFunctionCall(next.graph,n.id,definitions.get(n.asset));if(JSON.stringify(next)===JSON.stringify(dependent.data))continue;dependent.history.push({kind:dependent.kind,data:clone(dependent.data)});if(dependent.history.length>undoLimit)dependent.history.shift();dependent.future=[];dependent.data=next;dependent.dirty=true;if(dependent===assetDocs.current){history=dependent.history;future=dependent.future;installDocumentData(dependent);}}previewMaterialSignature='';updateSurface();const paths=[...definitions.keys()];for(const o of objects){const g=meshMap.get(o.id),path=o.materialAsset||objectComponents(o).find(c=>c.type==='MeshRenderer')?.properties.material;if(path&&g?.userData.materialData?.functionDependencies?.some(p=>paths.includes(p)))visuals.material(o,path).catch(e=>log(e.message,'ERROR'));}}
 async function save(all=false) {
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 저장하세요.');
   if(running)return notify('실행을 종료한 뒤 저장하세요.');assetPanes.get(assetDocs.active)?.editor?.flush?.();captureDocument();
   const docs=all?[...assetDocs.items.values()].filter(d=>d.dirty):[assetDocs.current];
   try{for(const doc of docs.filter(Boolean)){if(!assetSuffix[doc.kind]&&doc.kind!=='text')continue;await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}
+    propagateMaterialFunctions(docs);
     dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;$('#status-text').textContent=dirty?'저장하지 않은 에셋':'준비됨';$('#save-status').textContent='프로젝트 저장됨';renderDocumentTabs();queueRecovery();await Promise.all([...projectBrowsers.values()].map(browser=>browser.refresh()));notify(all?'모든 에셋 저장됨':'에셋 저장됨');return true;
   }catch(error){notify('저장 실패: '+error.message);return false;}
 }
@@ -258,9 +260,9 @@ function renderInspector() {
   if(control){const [id,key,axis,layer]=control;[...pane.querySelectorAll('[data-scene-component]')].find(el=>el.dataset.sceneComponent===id&&el.dataset.componentField===key&&el.dataset.componentAxis===axis&&el.dataset.componentLayer===layer)?.focus({preventScroll:true});}if(sameObject)for(const [el,top] of scrolls)el.scrollTop=top;
   icons(pane);
 }
-function updateSurface() {
+async function updateSurface() {
   surfaceMaterial.color.set(surface.color); surfaceMaterial.roughness=surface.roughness;surfaceMaterial.metalness=surface.metalness; if(sun)sun.intensity=environment.sunEnabled?surface.light:0;
-  const edited=editingSurface();if(previewSphere){const doc=assetDocs.current;if(doc?.kind==='material'){const signature=JSON.stringify(doc.data);if(signature!==previewMaterialSignature){try{const next=createThreeMaterial(THREE,doc.data,{renderer:previewRenderer,fileUrl,onError:message=>log(String(message),'ERROR')});previewSphere.material.dispose();previewSphere.material=next;previewMaterialSignature=signature;}catch(error){log(error.message,'ERROR');}}}else{previewSphere.material.color.set(edited.color);previewSphere.material.roughness=edited.roughness;previewSphere.material.metalness=edited.metalness;previewMaterialSignature='';}}
+  const request=++previewMaterialRequest,edited=editingSurface();if(previewSphere){const doc=assetDocs.current;if(['material','materialfunction'].includes(doc?.kind)){const signature=JSON.stringify(doc.data);if(signature!==previewMaterialSignature){try{const data=await resolveMaterialAsset(doc.data,readAsset);if(request!==previewMaterialRequest||assetDocs.current!==doc)return;const next=createThreeMaterial(THREE,data,{renderer:previewRenderer,fileUrl,onError:message=>log(String(message),'ERROR')});previewSphere.material.dispose();previewSphere.material=next;previewMaterialSignature=signature;}catch(error){if(request===previewMaterialRequest)log(error.message,'ERROR');}}}else{previewSphere.material.color.set(edited.color);previewSphere.material.roughness=edited.roughness;previewSphere.material.metalness=edited.metalness;previewMaterialSignature='';}}
   $$('[data-surface]').forEach(input=>{const key=input.dataset.surface;if(editorActiveElement()!==input)input.value=key==='light'?surface.light:edited[key];const output=input.parentElement.querySelector('output')||input.previousElementSibling?.querySelector('output');if(output)output.textContent=Number(key==='light'?surface.light:edited[key]).toFixed(key==='light'?1:2);});
   if(assetDocs.current?.kind==='material')$$('[data-material-surface]').forEach(input=>{if(editorActiveElement()!==input)input.value=edited[input.dataset.materialSurface];});
   $('#environment-light-value').textContent=surface.light.toFixed(1);
@@ -295,7 +297,7 @@ function setWorkspace(name,activate=true) {for(const doc of dock?.detached?.docu
   $('.hierarchy .panel-heading h2').textContent=name==='blueprint'?'블루프린트':sceneMode?'아웃라이너':'에셋';
   const add=$('.hierarchy .panel-heading .icon-button');add.dataset.action=name==='blueprint'?'add-blueprint-node':sceneMode?'add-menu':'create-asset';add.ariaLabel=name==='blueprint'?'노드 추가':sceneMode?'오브젝트 추가':'에셋 만들기';add.title=add.ariaLabel;
   const doc=assetDocs.current,nativeBlueprint=name==='blueprint'&&!!graphs.blueprint.native;$('#scene-file-name').textContent=assetTitle(doc?.path||activeScenePath);$('[data-action="build-native"]').hidden=!nativeBlueprint;$('[data-action="build-native"]').disabled=!nativeBlueprint||!!doc.building;$('#external-code-button').hidden=!nativeBlueprint;$('#workspace-path').textContent=doc?.path.split('/').slice(0,-1).join('/')||'Assets';$('#workspace-name').textContent=doc?assetTitle(doc.path):sceneName;$('#workspace-kind').textContent=name==='blueprint'?graphs.blueprint.settings?.parentClass||'Actor':assetTypes[name]?.label||name;$('#workspace-symbol').innerHTML=icon(assetIcon(name));
-  const preview=$('.material-preview');if(preview.parentElement!==$('.hierarchy'))$('.hierarchy').append(preview);preview.hidden=name!=='material';
+  const preview=$('.material-preview');if(preview.parentElement!==$('.hierarchy'))$('.hierarchy').append(preview);preview.hidden=!['material','materialfunction'].includes(name);
   $('#asset-side-summary')?.remove();if(!sceneMode&&name!=='blueprint'){const summary=document.createElement('div');summary.id='asset-side-summary';summary.className='editor-asset-summary';summary.innerHTML=icon(assetIcon(name))+'<h3>'+escapeHtml(doc?.data.name||assetTitle(doc?.path||''))+'</h3><p>'+escapeHtml(doc?.path||'')+'</p><button data-action="browse-document">'+icon('folder')+'콘텐츠에서 찾기</button>';$('.hierarchy').append(summary);}
   renderInspector();if(graphs[name])renderGraph(name);if(name==='blueprint')renderBlueprintSidebar();resize();drawWires();
 }
@@ -542,7 +544,7 @@ function confirmCollapse(){
 function focusGraph(selectionOnly=false){const c=$('#blueprint-graph'),nodes=$$('.bp-node',c).filter(n=>!selectionOnly||!selectedNodes.size||selectedNodes.has(n.dataset.node)),left=nodes.length?Math.min(...nodes.map(n=>n.offsetLeft)):0,top=nodes.length?Math.min(...nodes.map(n=>n.offsetTop)):0,right=nodes.length?Math.max(...nodes.map(n=>n.offsetLeft+n.offsetWidth)):300,bottom=nodes.length?Math.max(...nodes.map(n=>n.offsetTop+n.offsetHeight)):150;setGraphZoom(Math.min((c.clientWidth-40)/(right-left),(c.clientHeight-40)/(bottom-top),1));blueprintPan={x:(c.clientWidth-(right-left)*blueprintZoom)/2-left*blueprintZoom,y:(c.clientHeight-(bottom-top)*blueprintZoom)/2-top*blueprintZoom};drawBlueprintWires();}
 function renderGraph(name){
   if(name==='blueprint')return renderBlueprintGraph();if(name!=='material'||assetDocs.current?.kind!=='material')return;
-  if(!materialEditor)materialEditor=new MaterialEditor($('#material-graph'),()=>assetDocs.current,{before:remember,change:()=>{graphs.material=assetDocs.current.data.graph;changed();updateSurface();renderAssetInspector();},error:notify,files:()=>projectAssetFiles,undo,redo,view:queueRecovery});else materialEditor.render();
+  if(!materialEditor)materialEditor=new MaterialEditor($('#material-graph'),()=>assetDocs.current,{before:remember,change:()=>{graphs.material=assetDocs.current.data.graph;changed();updateSurface();renderAssetInspector();},error:notify,select:renderAssetInspector,files:()=>projectAssetFiles,readAsset,openAsset:path=>openProjectAsset({path,kind:'materialfunction',name:assetTitle(path)}),undo,redo,view:queueRecovery});else materialEditor.render();
 }
 function drawWires(){drawBlueprintWires();materialEditor?.drawWires();}
 function connectPin(button){if(button.closest('#blueprint-graph'))connectBlueprintPin(button);}
@@ -1079,7 +1081,7 @@ function animate(now){dock?.requestAnimationFrame?dock.requestAnimationFrame(ani
   if((!dock||dock.visible('scene'))&&mainRenderer&&scene){orbit?.update(dt);if(selectionBox?.visible)selectionBox.update();const gameCamera=running&&renderGameView?visuals.gameCamera(objects,{width:$('#scene-canvas').clientWidth,height:$('#scene-canvas').clientHeight},runtime?.sequenceCamera):null;transform.getHelper().visible=!gameCamera&&transform.enabled;selectionBox.visible=!gameCamera&&!!transform.object;visuals.syncNavigation(objects);visuals.syncDecals();if(mainPresentation.settings.realtime||mainPresentation.needsRender||running||orbit?.isNavigating){const pf=profiler.begin('뷰포트 렌더'),start=performance.now(),drawBefore=mainRenderer.hbBackend==='webgpu'?mainRenderer.info.render.drawCalls:0,trianglesBefore=mainRenderer.hbBackend==='webgpu'?mainRenderer.info.render.triangles:0;renderViewport(null,gameCamera,dt);if(pf)pf.samples.push({name:mainRenderer.hbBackend+' 렌더 제출',parent:'',start:start-pf.start,duration:performance.now()-start});profiler.finish(pf,{drawCalls:(mainRenderer.info.render.drawCalls??mainRenderer.info.render.calls)-drawBefore,triangles:mainRenderer.info.render.triangles-trianglesBefore,geometries:mainRenderer.info.memory.geometries,textures:mainRenderer.info.memory.textures});}}
 
   visuals.updateMaterialTime(running?runtime.core.time:now/1000);
-  if((!dock||dock.visible('material'))&&previewRenderer){previewControls.update(dt);previewSphere.rotation.y+=dt*.09;previewSphere.material.userData.updateTime?.(now/1000);previewRenderer.info.reset();previewRenderer.render(previewScene,previewCamera);finishGameRendererFrame(previewRenderer);}
+  if((!dock||dock.visible('material')||assetDocs.current?.kind==='materialfunction'&&dock.visible('asset:'+assetDocs.current.path))&&previewRenderer){previewControls.update(dt);previewSphere.rotation.y+=dt*.09;previewSphere.material.userData.updateTime?.(now/1000);previewRenderer.info.reset();previewRenderer.render(previewScene,previewCamera);finishGameRendererFrame(previewRenderer);}
 
 }
 const layout=$('.editor-grid');
@@ -1098,7 +1100,7 @@ $$('[data-resize]').forEach(handle=>{
   handle.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();resizePanel(handle.dataset.resize,['ArrowRight','ArrowUp'].includes(e.key)?10:-10);}});
 });
 let recoveryTimer;
-function editingSurface(){return assetDocs.current?.kind==='material'?assetDocs.current.data.surface:workspace==='scene'?(objects.find(o=>o.id===selected)?.materialSurface||surface):surface;}
+function editingSurface(){return ['material','materialfunction'].includes(assetDocs.current?.kind)?assetDocs.current.data.surface:workspace==='scene'?(objects.find(o=>o.id===selected)?.materialSurface||surface):surface;}
 function dataEditorHooks(){return {before:remember,change:changed,error:notify,readAsset,captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
 async function placeAsset(file){
   if(file.kind==='model')return placeModel(file);if(file.kind==='blueprint')return placeBlueprint(file);
@@ -1142,6 +1144,7 @@ function renderDocumentTabs(){
   $('#document-tabs').innerHTML=[...assetDocs.items.values()].map(d=>`<div class="asset-tab ${d.path===assetDocs.active?'active':''}" data-kind="${d.kind}"><button role="tab" aria-selected="${d.path===assetDocs.active}" draggable="true" data-document="${escapeHtml(d.path)}" title="${escapeHtml(d.path)}">${icon(assetIcon(d.kind,d.data?.settings?.parentClass))}<span>${escapeHtml(assetTitle(d.path))}</span>${d.dirty?'<i class="modified" aria-label="저장하지 않은 변경"></i>':''}</button><button class="tab-close" data-close-document="${escapeHtml(d.path)}" aria-label="${escapeHtml(assetTitle(d.path))} 닫기">${icon('close')}</button></div>`).join('');
 }
 function installDocumentData(doc){
+  previewMaterialSignature='';if(doc.kind==='materialfunction')$('.material-preview-caption h3').textContent=doc.data.name;
   if(doc.kind==='scene'){sceneNavigation.items=clone(doc.view.sceneNavigation?.items||[]);sceneNavigation.index=doc.view.sceneNavigation?.index??-1;runtimeSettings=clone(doc.data.runtime||defaultRuntimeSettings);objects=clone(doc.data.objects);surface=clone(doc.data.surface);environment=clone(doc.data.environment||defaultEnvironment);sceneName=doc.data.sceneName||assetTitle(doc.path);activeScenePath=doc.path;setView(runtimeSettings.dimension==='2d'?'2d':'3d');rebuildWorld();applyEnvironment();renderHierarchy();}
   if(doc.kind==='blueprint'){
     graphs.blueprint=blueprintWorkspace.view(doc.path,doc.data);if(doc.view.nativeMetadata)graphs.blueprint={...graphs.blueprint,native:doc.view.nativeMetadata};for(const key of ['functions','macros','comments','dispatchers','interfaces'])graphs.blueprint[key]??=[];if(!graphs.blueprint.inheritance)graphs.blueprint.construction??=clone(defaultBlueprint.construction);activeBlueprintPath=doc.path;
@@ -1156,8 +1159,8 @@ function installDocumentData(doc){
   if(['animation','curve'].includes(doc.kind)){
     const pane=assetPanes.get(doc.path);if(pane?.editor){pane.editor.selection.clear();pane.editor.trackId=doc.data.timeline.tracks[0]?.id;pane.editor.render();}
   }
-  if(['spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
-  else if(!['scene','blueprint','material','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
+  if(['materialfunction','spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
+  else if(!['scene','blueprint','material','materialfunction','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
   updateSurface();renderInspector();
 }
 const projectAssetFiles=[],inputActionTypes=new Map();
@@ -1171,6 +1174,10 @@ function ensureAssetPane(doc){
   const pane={id,element};assetPanes.set(doc.path,pane);
   dock.entries.set(id,{id,title:assetTypes[doc.kind]?.label||doc.kind,element,path:doc.path});
   if(doc.kind==='text'){const input=document.createElement('textarea');input.value=doc.data;input.ariaLabel=assetTitle(doc.path)+' 내용';input.onfocus=remember;input.oninput=()=>{doc.data=input.value;changed();};element.append(input);documents.set(id,element);}
+  else if(doc.kind==='materialfunction'){
+    element.className='workspace-view material-function-workspace';const graph=document.createElement('div');graph.className='material-function-graph';element.append(graph);
+    pane.editor=new MaterialEditor(graph,()=>doc,{before:remember,change:()=>{changed();updateSurface();renderAssetInspector();},files:()=>projectAssetFiles,readAsset,openAsset:path=>openProjectAsset({path,kind:'materialfunction',name:assetTitle(path)}),error:notify,select:renderAssetInspector,undo,redo,view:queueRecovery});pane.dispose=()=>pane.editor.dispose();
+  }
   else if(['animation','curve'].includes(doc.kind)){
     element.className='workspace-view asset-curve-workspace';
     const curve=document.createElement('div');element.append(curve);
@@ -1211,16 +1218,20 @@ function activateDocument(path,reset=false,capture=true){
 async function closeDocument(path){
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 문서를 닫으세요.');
   if(running)return notify('실행을 종료한 뒤 문서를 닫으세요.');captureDocument();const doc=assetDocs.items.get(path);if(!doc)return;
-  if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await assetDocs.save(doc,(p,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path:p,text,expected})}));if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
+  if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await assetDocs.save(doc,(p,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path:p,text,expected})}));propagateMaterialFunctions([doc]);if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
   const closingWorld=doc.kind==='scene'&&activeScenePath===path;let worldDoc=closingWorld?[...assetDocs.items.values()].filter(d=>d.kind==='scene'&&d!==doc).at(-1):null,worldSaved;
   if(closingWorld&&!worldDoc){try{worldSaved=JSON.parse(doc.saved);if(!validScene(worldSaved))throw Error('장면 저장 기준 검증 실패');}catch(error){return notify(error.message);}}
   const componentId='components:'+path;dock.entries.get(componentId)?.dispose?.();dock.entries.get(componentId)?.element.remove();dock.entries.delete(componentId);const wasActive=assetDocs.active===path;assetDocs.close(path,true);const documentId='asset:'+path;dock.entries.get(documentId)?.dispose?.();documents.get(documentId)?.remove();documents.delete(documentId);dock.entries.delete(documentId);const pane=assetPanes.get(path);pane?.editor?.dispose?.();pane?.dispose?.();if(pane){pane.element.remove();dock.entries.delete(pane.id);assetPanes.delete(path);}for(const id of [...timelineWindows.keys()])if(id.startsWith('timeline:'+path+':')){timelineWindows.get(id)?.dispose?.();dock.entries.get(id)?.element.remove();dock.entries.delete(id);timelineWindows.delete(id);}
   if(closingWorld){worldDoc??=assetDocs.open(doc.path,'scene',worldSaved);installDocumentData(worldDoc);}
   if(wasActive){const next=assetDocs.active||[...assetDocs.items.keys()].at(-1);assetDocs.active=null;if(next)activateDocument(next);else{try{const data=doc.kind==='scene'?JSON.parse(doc.saved):await(await editorRequest(fileUrl(activeScenePath))).json();const d=assetDocs.open(activeScenePath,'scene',data);activateDocument(d.path);}catch(error){notify(error.message);}}}else renderDocumentTabs();dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;queueRecovery();
 }
+function materialNodeProperties(doc){const editor=doc.kind==='material'?materialEditor:assetPanes.get(doc.path)?.editor,node=doc.data.graph?.nodes.find(n=>editor?.selected.has(n.id));return node?'<section class="component-section material-node-details" data-material-node="'+node.id+'"><h3>'+escapeHtml(node.portName||node.title)+'</h3>'+editor.nodeField(node,true)+'</section>':'';}
+for(const type of ['change','click'])document.addEventListener(type,event=>{if(!event.target.closest('#inspector-content .material-node-details'))return;const doc=assetDocs.current,editor=doc?.kind==='material'?materialEditor:assetPanes.get(doc?.path)?.editor;if(editor instanceof MaterialEditor)editor[type](event);});
+function materialFunctionProperties(doc){const d=doc.data;return '<section class="component-section"><h3>함수</h3>'+[['name','이름'],['category','분류'],['description','설명']].map(([key,label])=>'<div class="property-row"><label>'+label+'</label><input data-material-function-setting="'+key+'" value="'+escapeHtml(d[key])+'"></div>').join('')+'<label><input type="checkbox" data-material-function-setting="expose" '+(d.expose?'checked':'')+'>함수 목록에 표시</label><div class="property-row"><label>미리보기 출력</label><select data-material-function-setting="previewOutput">'+d.graph.nodes.filter(n=>n.key==='functionOutput').toSorted((a,b)=>a.priority-b.priority).map((n,i)=>'<option value="'+n.id+'" '+((d.previewOutput||d.graph.nodes.filter(n=>n.key==='functionOutput').toSorted((a,b)=>a.priority-b.priority)[0].id)===n.id?'selected':'')+'>'+escapeHtml(n.portName)+'</option>').join('')+'</select></div></section>';}
+document.addEventListener('change',event=>{const key=event.target.dataset.materialFunctionSetting,doc=assetDocs.current;if(!key||doc?.kind!=='materialfunction')return;const next=clone(doc.data);next[key]=event.target.type==='checkbox'?event.target.checked:event.target.value;if(!validAsset(doc.kind,next))return notify('함수 속성을 확인하세요.');remember();doc.data=next;changed();updateSurface();renderAssetInspector();});
 function renderAssetInspector(){
   const doc=assetDocs.current;if(!doc)return;const kind=doc.kind;
-  $('#inspector-content').innerHTML=`<div class="editor-asset-summary">${icon(assetIcon(kind))}<h3>${escapeHtml(doc.data.name||assetTitle(doc.path))}</h3><p>${escapeHtml(assetTypes[kind]?.label||kind)}</p><p>${escapeHtml(doc.path)}</p></div>`+(kind==='material'?`<section class="component-section"><h3>표면</h3>${materialProperties()}${materialSurfaceDetails()}</section><section class="component-section"><button data-action="apply-material" data-icon="check">선택 오브젝트에 적용</button></section>`:kind==='blueprint'?'':`<section class="component-section"><div class="property-row"><span>상태</span><span>${doc.dirty?'수정됨':'저장됨'}</span></div></section>`);icons($('#inspector-content'));
+  $('#inspector-content').innerHTML=`<div class="editor-asset-summary">${icon(assetIcon(kind))}<h3>${escapeHtml(doc.data.name||assetTitle(doc.path))}</h3><p>${escapeHtml(assetTypes[kind]?.label||kind)}</p><p>${escapeHtml(doc.path)}</p></div>`+(kind==='materialfunction'?(materialNodeProperties(doc)||materialFunctionProperties(doc)):kind==='material'?`${materialNodeProperties(doc)}<section class="component-section"><h3>표면</h3>${materialProperties()}${materialSurfaceDetails()}</section><section class="component-section"><button data-action="apply-material" data-icon="check">선택 오브젝트에 적용</button></section>`:kind==='blueprint'?'':`<section class="component-section"><div class="property-row"><span>상태</span><span>${doc.dirty?'수정됨':'저장됨'}</span></div></section>`);icons($('#inspector-content'));
 }
 function renameDocumentPaths(from,to){
   captureDocument();
@@ -1380,7 +1391,7 @@ async function replayFileBatch(id,redo=false,fromHistory=false){
   }finally{authoringBatchBusy=false;}
 }
 function automationGraph(data,view='event'){if(!['event',...(data.construction?['construction']:[]),...data.functions.map(d=>d.id),...data.macros.map(d=>d.id)].includes(view))throw Error('그래프 ID를 확인하세요.');return graphContext(data,view);}
-if(session.acceptance)window.hbEditorRendererDebug={ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:(id)=>{if(id==='material'){updateSurface();previewSphere.material.userData.updateTime?.(performance.now()/1000);previewRenderer.render(previewScene,previewCamera);finishGameRendererFrame(previewRenderer);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
+if(session.acceptance)window.hbEditorRendererDebug={ready:()=>!!mainRenderer&&!!previewRenderer&&$('#render-fallback').hidden,inspect:()=>({renderer:gameRendererInfo(mainRenderer),previewRenderer:gameRendererInfo(previewRenderer),materials:visuals.materialState(),particles:[...meshMap.values()].filter(g=>g.userData.particleState).map(g=>({id:g.userData.objectId,...g.userData.particleState.simulation.debugState?.()})),views:extraViewports.map(v=>({id:v.id,shared:v.sharedRenderer,width:v.canvas.width,height:v.canvas.height})),logs}),capture:async(id)=>{if(id==='material'){await updateSurface();await previewSphere.material.userData.ready;previewSphere.material.userData.updateTime?.(performance.now()/1000);previewRenderer.render(previewScene,previewCamera);finishGameRendererFrame(previewRenderer);return previewRenderer.domElement.toDataURL('image/png');}const v=extraViewports.find(v=>v.id===id);renderViewport(v);return (v?.canvas||mainRenderer.domElement).toDataURL('image/png');},wait:()=>Promise.all([...meshMap.values()].map(g=>g.userData.ready))};
 window.hbEngineWindows={detach:id=>dock.detach(id),redock:id=>dock.redock(id),redockAll:()=>dock.redockAll(),state:()=>({count:dock.windowCount,detached:[...dock.entries.values()].filter(e=>e.detached).map(e=>e.id)})};
 const disconnectAutomation=connectAutomation({request:editorRequest,state:automationState,methods:{
   'viewport.get':({id='scene'}={})=>{const v=automationViewport(id);return {id,backend:(v?.renderer||mainRenderer).hbBackend||'webgl2',sharedRenderer:!!v?.sharedRenderer,direction:v?.mode||viewMode,presentation:clone((v?.presentation||mainPresentation).settings),state:(v?.controls||orbit).getState(),bookmarks:(v?.controls||orbit).getBookmarks(),piloting:pilotObject};},
@@ -1493,7 +1504,7 @@ function showDiskConflict(doc,disk,draft=doc.data){
     if(key==='compare'){if(!dialog.querySelector('.disk-compare')){const views=document.createElement('div');views.className='disk-compare';for(const [name,value] of [['내 편집',draft],['디스크',disk]]){const area=document.createElement('textarea');area.readOnly=true;area.ariaLabel=name;area.value=doc.kind==='text'?value:JSON.stringify(value,null,2);views.append(area);}dialog.insertBefore(views,controls);}return;}
     button.disabled=true;try{
       if(key==='disk')await receiveDiskDocument(doc,disk);
-      else{const oldSaved=doc.saved,oldData=doc.data;doc.saved=JSON.stringify(disk);doc.data=structuredClone(draft);try{await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}catch(error){doc.saved=oldSaved;doc.data=oldData;throw error;}if(doc.kind==='blueprint')await blueprintWorkspace.prepare(doc.path,doc.data);if(doc.path===assetDocs.active)activateDocument(doc.path,true,false);}
+      else{const oldSaved=doc.saved,oldData=doc.data;doc.saved=JSON.stringify(disk);doc.data=structuredClone(draft);try{await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}catch(error){doc.saved=oldSaved;doc.data=oldData;throw error;}propagateMaterialFunctions([doc]);if(doc.kind==='blueprint')await blueprintWorkspace.prepare(doc.path,doc.data);if(doc.path===assetDocs.active)activateDocument(doc.path,true,false);}
       finish();
     }catch(error){message.textContent='저장하지 못했어요: '+error.message;}finally{button.disabled=false;}
   };controls.append(button);}dialog.append(controls);dialog.addEventListener('cancel',event=>event.preventDefault());document.body.append(dialog);dialog.showModal();

@@ -39,3 +39,10 @@
 .shortcut-list td:first-child,.shortcut-list th:first-child{min-width:105px;white-space:nowrap}
 
 .component-layer-list{display:grid;gap:5px;max-height:180px;overflow:auto}.component-layer-list label{display:flex;align-items:center;gap:7px;min-width:0}.component-layer-list input{width:auto;flex:none}
+
+.material-function-workspace{display:flex;min-height:0}.material-function-graph{position:relative;flex:1;min-width:0;min-height:0;overflow:hidden;background:var(--panel)}
+
+.material-node-details .material-node-field{padding:6px 0;display:grid;grid-template-columns:64px minmax(0,1fr)}
+.material-node-details .material-node-field:has(input[type=checkbox]){display:flex}.material-node-field input[type=checkbox]{width:auto;flex:none}.material-node-details .material-vector-input{padding:6px 0}
+
+.material-node-field>span{flex:none;white-space:nowrap;min-width:40px}.material-node-field:has([data-material-function-open]){flex-wrap:wrap;overflow-wrap:anywhere}

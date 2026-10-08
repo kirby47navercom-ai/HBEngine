@@ -634,3 +634,8 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 ## 074 — 2D 관절 회전 제한
 
 2D 제한은 bind 로컬Z 대비 -180..180, 순서 min≤max·주기상 가까운 끝점, 양수혼합 뒤 경계/0weight입력보존이다. Limb는 해석식+제약CCD, FABRIK는 전방투영, CCD는 관절단계제약. Editor0gneJY 실패는 솔버선택 상태에 bone입력을 찾은 harness원인; arm선택 후 최종fszJTj/PlayerTt6Pda 통과. 원본/제품 SHA/수명 정리·코어와 실제C++ 회귀 통과. 전체 FPS/RAM/설치 미승격.
+
+
+## 075 — 머테리얼 함수
+
+075 EditorhmMTNV 실패는 file polling의 EDITOR_BUSY를 즉시 실패시킨 검사 클라이언트였고 Busy일 때만 기존 45초 기한 내 재시도했다. 최종HRAwU2/GPUhbyOLC/GLOHr8zt 및 모든 tested SHA 일치. 함수 내부는 로드 시 평탄화, 원본 정의 불변; 핀 구조 변경은 명시적 갱신, loaded 문서는 저장 전파/Undo. 함수 input/output 상세는 우측, 원본/사용자창/설치 불변. 8시간/FPS/RAM/전체 corpus 미승격.

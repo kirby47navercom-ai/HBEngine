@@ -80,3 +80,6 @@
 
 
 - 074: 세2D IK의 bind 로컬 최소/최대·잠금/혼합/길이 보존·ID 검증·관절 UI/범위 기즈모·Undo/AI·SDK/BP2를 공용 실행에 연결. 최종 EditorfszJTj/releasePlayerTt6Pda·기존2D/3D/리타게팅/실제C++·713노드/628 SDK연결·원본/오류0/종료0/서버 정리/제품 SHA 통과. [상세](2D_IK_CONSTRAINTS_074.md). 073b71eed0 푸시 완료; 전체 선행/설치 대기 유지, 다음 머테리얼 함수·레이어 등 누적 세부.
+
+
+- 075: 머테리얼 함수 독립 에셋·네 타입/다중 출력·Preview/필수 입력·검색/다중 드래그·우측 속성·핀 ID/갱신·Undo/저장 전파·공용 CPU/GLSL/TSL·기존 BP/C++/배포를 연결. 코어/메인·최종 EditorHRAwU2/GPUPlayerhbyOLC/GLPlayerOHr8zt·실제 픽셀·SHA/오류0/종료0/서버 정리 통과. [상세](MATERIAL_FUNCTIONS_075.md). 0742efc358 푸시 완료; 함수의 다른 포트/추출/미리보기·Layer/Blend 및 전체 선행 세부/설치 대기 유지.
