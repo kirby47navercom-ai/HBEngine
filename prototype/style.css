@@ -347,3 +347,20 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .collision-editor-footer output {flex:1;min-width:0;font-size:12px;color:#e4a39a}
 .collision-editor-footer .primary-button {background:#386ca0;border-color:#4d82b6;color:#fff}
 @media(max-width:760px){.collision-editor-body{grid-template-columns:minmax(0,1fr) 230px}.collision-point input{width:58px}}
+
+/* Shared by the graph inspector and the material instance editor. */
+.material-layer-entry{border:1px solid var(--line,#41464d);border-radius:3px;margin:8px 0;background:#252a30;padding:8px;}
+.material-layer-entry summary{display:flex;align-items:center;gap:7px;cursor:pointer;min-height:24px;}
+.material-layer-entry summary strong{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.material-layer-entry summary small{color:#a5b3c1;}
+.material-layer-actions{display:flex;align-items:center;gap:4px;margin:8px 0;}
+.material-layer-actions label{flex:1;display:flex;align-items:center;gap:4px;}
+.material-layer-entry button,.material-layer-add button{min-width:26px;}
+.material-layer-stack .material-node-field{display:grid;grid-template-columns:54px minmax(0,1fr);gap:8px;margin:7px 0;align-items:center;}
+.material-layer-stack input:not([type=checkbox]),.material-layer-stack select{min-width:0;width:100%;}
+.material-layer-parameter{display:grid;gap:4px;margin:8px 0;padding-top:6px;border-top:1px solid #3b424a;}
+.material-layer-parameter label{display:flex;align-items:center;gap:5px;}
+.material-layer-add{display:flex;gap:6px;}
+.material-attribute-choice{display:flex;gap:6px;align-items:center;margin:6px 0;}
+.material-node [data-pin-type=attributes]{background:#e3e4d6;border-color:#e3e4d6;}
+.material-layer-stack .asset-vector-fields{display:flex;gap:4px;}

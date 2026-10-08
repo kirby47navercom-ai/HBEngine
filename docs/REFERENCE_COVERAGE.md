@@ -243,3 +243,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 075 — 머테리얼 함수
 
 075 자체 UE Material Functions Overview/Unity Sub Graph17.0.4 전체 기술 본문을 대조하고 독립 함수·편집/타입/저장 전파·공용 렌더/배포를 검증했다. 연결 콘텐츠/전체 corpus 미승격. [상세](MATERIAL_FUNCTIONS_075.md); Texture/StaticBool/Attributes·추출·Layer/Blend 세부는 남는다.
+
+
+## 076 — 속성 묶음·머테리얼 레이어
+
+UE Using Material Layers/Material Attributes Expressions 및 Unity HDRP17.0.4 Layered Lit/Inspector Reference 네 자체 기술 본문을 대조했다. Attributes 함수 타입·Layer/Blend 독립 에셋/스택·인스턴스와 실제 GL/GPU·C++/BP·AI 저장을 검증했다. 연결 콘텐츠/전체 corpus 미승격. [상세](MATERIAL_LAYERS_076.md). Texture/StaticBool·추출/개별 미리보기·height/influence/triplanar/detail/displacement·추가 도메인/GI·WebGL2 Float 재생성 비용은 남는다.

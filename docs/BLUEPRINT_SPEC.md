@@ -352,3 +352,8 @@ IK2D SetRotationLimit/ClearRotationLimit 두 SDK 선언에서 같은 BP 서비�
 ## 075 — 머테리얼 함수
 
 075 머테리얼 함수 그래프는 BP 함수와 다른 셰이더 도메인이다. 내부 파라미터는 기존 materialSet/materialFloat와 hb::Materials::Set/SetFloat가 제어한다. 실제 C++/BP→인스턴스/중첩 함수→GL/GPU 픽셀 검증은 MATERIAL_FUNCTIONS_075.md.
+
+
+## 076 — 머테리얼 레이어 파라미터
+
+Materials::LayerParameterKey SDK 선언에서 순수 BP materialLayerParameter를 생성한다. 안정적 항목 ID·한글/영문 이름·Layer/Blend 구분과 기존 materialFloat로 반복 Layer를 독립 제어한다. BP714·서비스340/core289·SDK629 연결, 실제 C++/BP→GPU/GL 픽셀·인스턴스/숨김·AI 묶음 저장 검증은 [076](MATERIAL_LAYERS_076.md).

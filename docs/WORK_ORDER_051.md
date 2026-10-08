@@ -83,3 +83,6 @@
 
 
 - 075: 머테리얼 함수 독립 에셋·네 타입/다중 출력·Preview/필수 입력·검색/다중 드래그·우측 속성·핀 ID/갱신·Undo/저장 전파·공용 CPU/GLSL/TSL·기존 BP/C++/배포를 연결. 코어/메인·최종 EditorHRAwU2/GPUPlayerhbyOLC/GLPlayerOHr8zt·실제 픽셀·SHA/오류0/종료0/서버 정리 통과. [상세](MATERIAL_FUNCTIONS_075.md). 0742efc358 푸시 완료; 함수의 다른 포트/추출/미리보기·Layer/Blend 및 전체 선행 세부/설치 대기 유지.
+
+
+- 076: Attributes/Layer/Blend·스택/독립 값·인스턴스 상속/복원·복제 ID·SDK/BP/AI·캐시 갱신/원자적 저장을 연결했다. 코어/714 BP·629 SDK·최종 EditorWAJ76y/GPUPlayerK92uTA/GLPlayeri24w02 실제 픽셀·원본/SHA·오류0/종료0/서버 정리 통과. [상세](MATERIAL_LAYERS_076.md). 0759d83d07 푸시 완료; WebGL2 Float 재생성 비용과 다른 누적 세부/선행 설치 순서 유지.

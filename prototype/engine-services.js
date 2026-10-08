@@ -1,3 +1,4 @@
+import {materialLayerParameterKey,validMaterialParameters} from './material-runtime.js';
 import {orderRetargetActors} from './animation-retarget.js';
 import {rememberAnimationBindPose} from './animation-skeleton.js';
 import {ProjectileWorld,readProjectilePattern} from './projectile-runtime.js';
@@ -321,6 +322,7 @@ export function engineOperations(hooks){
       const changes={light2dSetCookieSprite:{cookieSprite:a.sprite,cookieTexture:''},light2dSetCookieTexture:{cookieSprite:'',cookieTexture:a.texture,cookieWidth:a.width,cookieHeight:a.height},light2dSetVolume:{volumetric:a.enabled,volumeIntensity:a.intensity,volumeShadowStrength:a.shadowStrength},light2dSetOrder:{lightOrder:a.order},light2dSetOverlap:{overlapOperation:a.mode},light2dSetBlendStyle:{blendStyle:a.index},light2dSetEnabled:{enabled:a.enabled},light2dSetType:{lightType:a.type},light2dSetColor:{color:a.color},light2dSetIntensity:{intensity:a.value},light2dSetRange:{innerRadius:a.innerRadius,outerRadius:a.outerRadius,falloff:a.falloff??1},light2dSetAngles:{innerAngle:a.innerAngle,outerAngle:a.outerAngle},light2dSetNormal:{normalMode:a.mode,normalDistance:a.distance??1},light2dSetLayers:{targetSortingLayers:a.layers},light2dSetShape:{shapePath:a.path,shapeFalloff:a.falloffDistance??.5},light2dSetShadows:{shadows:a.enabled,shadowStrength:a.strength??1,shadowSoftness:a.softness??0,shadowResolution:a.resolution??128}};
       const change=changes[key];if(!change||!validComponentProperties('Light2D',{...p,...change}))throw Error('2D 광원 속성을 확인하세요.');Object.assign(component.properties??={},structuredClone(change));await hooks.update?.(o);return {};
     }
+    if(key==='materialLayerParameter'){if(!/^[A-Za-z0-9_]{1,32}$/.test(a.id)||!validMaterialParameters({[a.name]:0}))throw Error('레이어 ID나 파라미터 이름을 확인하세요.');return {return:materialLayerParameterKey(a.id,a.name,a.blend)};}
     if(['setMaterial','materialFloat','lightIntensity'].includes(key)){
       const o=target(a,b,vm);if(key==='lightIntensity'&&objectComponents(o).some(c=>c.type==='Light2D'))return operation('light2dSetIntensity',{target:o.id,value:a.value},b,vm);const group=hooks.mesh(o.id);if(!group)throw Error('렌더 대상이 없어요.');
       if(key==='lightIntensity'){let light;group.traverse(child=>{if(child.isLight)light=child;});if(!light)throw Error('광원 대상이 아니에요.');light.intensity=Math.max(0,a.value);return {};}

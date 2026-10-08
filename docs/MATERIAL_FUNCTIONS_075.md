@@ -29,3 +29,6 @@ release Player `gpu-scene-hbyOLC`(WebGPU)와 `gpu-scene-OHr8zt`(WebGL2)는 중�
 [Unreal Material Functions Overview](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-functions-overview)의 자체 기술 본문 전체와 [Unity Shader Graph 17.0.4 Sub Graph](https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sub-graph.html)의 자체 기술 본문 전체를 읽고 독립 에셋·입출력 경계·미리보기/기본값·라이브러리·중첩·파라미터·전파의 의미를 대조했다. 원문과 SHA는 `native/build/material-functions-research-075`에 보존했다. 연결된 노드/API·전체 참조·영상·샘플·엔진 구현까지 읽었다는 의미는 아니며 전체 corpus gate는 false를 유지한다.
 
 Texture object/StaticBool/MaterialAttributes 포트, 선택 노드 함수 추출, 임의 식 미리보기/노드 썸네일, 머테리얼 Layer/Blend 에셋과 인스턴스 스택은 별도 남은 구현이다. 이 항목을 완료로 세지 않는다. 051의 선행 누적 세부와 설치 갱신 순서를 유지한다. 이번 결과는 설치 갱신·전체 FPS/RAM·실기기·상용 엔진 전체 기능/동등성 완료 판정을 바꾸지 않는다.
+
+
+076 후속: 위 075 당시 미구현 목록 중 Attributes 함수 포트와 Layer/Blend 독립 에셋·인스턴스 스택은 [076](MATERIAL_LAYERS_076.md)에서 구현·검증했다. 나머지 포트·추출/개별 미리보기와 전체 누적 선행 목표는 유지한다.

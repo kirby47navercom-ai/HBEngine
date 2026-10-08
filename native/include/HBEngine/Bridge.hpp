@@ -458,6 +458,15 @@ inline void Perception::ReportNoise(Actor* target,const Vec3& position,float lou
 inline void particleCommand(Actor* target,const char* key,const Json& args){auto& state=gameplayField(target,"particles");if(state.is_object()&&state.value("backend",std::string{}).find("WebGPU")==0)engineQuery(key,args);else engineCommand(key,args);}
 inline void Particles::Play(Actor* target){particleCommand(target,"particlePlay",{{"target",bridgeId(target)}});}
 inline void Materials::Set(Actor* target,const std::string& material,int slot){engineCommand("setMaterial",{{"target",bridgeId(target)},{"material",material},{"slot",slot}});}
+inline std::string Materials::LayerParameterKey(const std::string& id,const std::string& name,bool blend){
+    const auto ascii=[](unsigned char c){return c>='A'&&c<='Z'||c>='a'&&c<='z'||c>='0'&&c<='9'||c=='_';};
+    if(id.empty()||id.size()>32||!std::all_of(id.begin(),id.end(),ascii))throw std::runtime_error("Invalid material layer ID");
+    const auto chars=hb_detail::characters(name);if(chars.empty()||chars.size()>80)throw std::runtime_error("Invalid material parameter name");
+    for(size_t i=0;i<chars.size();++i){const auto& ch=chars[i];const auto c=static_cast<unsigned char>(ch[0]);bool valid=ch.size()==1&&ascii(c)&&(!i?!(c>='0'&&c<='9'):true);
+        if(ch.size()==3){const auto b=static_cast<unsigned char>(ch[1]),d=static_cast<unsigned char>(ch[2]);const unsigned cp=((c&15)<<12)|((b&63)<<6)|(d&63);valid=(c&240)==224&&(b&192)==128&&(d&192)==128&&cp>=0xAC00&&cp<=0xD7A3;}if(!valid)throw std::runtime_error("Invalid material parameter name");}
+    return "layer."+id+(blend?".blend.":".layer.")+name;
+}
+
 inline void Materials::SetFloat(Actor* target,const std::string& parameter,float value){engineCommand("materialFloat",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
 inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
 inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}

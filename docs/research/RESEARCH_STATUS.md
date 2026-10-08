@@ -266,3 +266,8 @@ Unity2D Animation13.0.6 2DIK 자체 전체 기술 본문 및 CCDSolver2D 자체 
 ## 075 — 머테리얼 함수
 
 075 UE Material Functions Overview와 Unity ShaderGraph17.0.4 Sub Graph 자체 기술 본문 전체 읽기·원문/SHA 보존. 연결 API/샘플/영상·엔진 구현 미독, 전체 corpus gate false. 구현/실제 Editor·GL/GPU 배포 증거는 [075](../MATERIAL_FUNCTIONS_075.md).
+
+
+## 076 — 속성 묶음·머테리얼 레이어
+
+UE Using Material Layers/Material Attributes Expressions, Unity HDRP17.0.4 Layered Lit/Inspector Reference 자체 기술 본문 전체 읽기·원문/SHA 보존. 각 페이지의 연결 API/패키지 소스·샘플·영상은 미독이며 전체 corpus gate false 유지. 구현/실제 Editor·GL/GPU 배포/남은 세부의 증거는 [076](../MATERIAL_LAYERS_076.md).

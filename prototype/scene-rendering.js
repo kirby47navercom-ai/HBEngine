@@ -6,7 +6,7 @@ import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
 import {enabledComponent,objectComponents,componentDefaults} from './scene-components.js';
 import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-assets.js';
 import {tilemapColliders} from './tilemap-runtime.js';
-import {createThreeMaterial,resolveMaterialAsset} from './material-runtime.js';
+import {createThreeMaterial,materialParameterKey,resolveMaterialAsset} from './material-runtime.js';
 import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering,spriteEffectsUniforms,createSpriteMaskMaterial} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
@@ -20,7 +20,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   read=cacheAssetReader(read);
   const twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
   const textureSources=new Map();let textureBytes=0,textureEpoch=0;
-  function invalidateAssets(){textureEpoch++;read.clear();for(const entry of textureSources.values())entry.promise.then(t=>t.dispose(),()=>{});textureSources.clear();textureBytes=0;}
+  function invalidateAssets(textures=true){read.clear();if(!textures)return;textureEpoch++;for(const entry of textureSources.values())entry.promise.then(t=>t.dispose(),()=>{});textureSources.clear();textureBytes=0;}
   const texture=async(path,normal=false)=>{
     const key=JSON.stringify([path,normal]);let entry=textureSources.get(key);
     if(entry){textureSources.delete(key);textureSources.set(key,entry);}else{
@@ -115,7 +115,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   }
   async function materialFloat(object,key,value){
     const group=current(object.id),source=group?.userData.materialData;if(!source)throw Error('노드 머테리얼을 먼저 지정하세요.');
-    const data=structuredClone(source),node=data.graph.nodes.find(n=>n.parameter===key);
+    const data=structuredClone(source),node=data.graph.nodes.find(n=>materialParameterKey(n)===key);
     if(node){if(typeof node.value!=='number')throw Error('Float 파라미터가 아니에요.');data.parameters={...data.parameters,[key]:value};}else{const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key;if(!['roughness','metalness','opacity','emissiveIntensity'].includes(property))throw Error('머테리얼 파라미터가 없어요: '+key);data.surface[property]=value;}
     const owned=[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial),updated=owned.length&&owned.every(r=>r.userData.updateFloat?.(key,value));if(!updated){const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});replaceMaterials(group,result);}group.userData.materialData=data;
   }

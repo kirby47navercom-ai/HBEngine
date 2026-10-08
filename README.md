@@ -1,15 +1,15 @@
 # HBEngine
 
-현재 작업 단계는 **전체 공식 본문·API 분석 선행(`research_only`)**이다. 아래 기능은 연구 단계 이전의 구현 이력이며 Unity·Unreal 전체 분석 완료를 뜻하지 않는다. 실제 읽은 범위·미독·전체 분모와 조건은 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다.
+사용자의 후속 구현 지시에 따라 [누적 작업·검증·설치 순서](docs/WORK_ORDER_051.md)로 진행한다. Unity·Unreal 전체 공식 본문·API 분석 gate는 false이며 일부 구현이나 문서 읽기로 승격하지 않는다. 실제 읽은 범위·미독·전체 분모는 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다. 최신 [머테리얼 함수](docs/MATERIAL_FUNCTIONS_075.md)·[Attributes/Layer/Blend와 인스턴스](docs/MATERIAL_LAYERS_076.md)는 공용 CPU/GLSL/TSL·C++/BP·AI/패키징의 실제 창 검증을 포함한다.
 
-C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
+C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2 또는 선택한 WebGPU, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
 
 ## 현재 구현
 
 - **독립 게임 빌드**: 파일 → 빌드 프로필(`Ctrl+Shift+B`)에서 프로필별 개발/배포 구성·게임 이름·창 크기·장면 목록을 저장한다. 열린 장면/콘텐츠 브라우저 드롭으로 추가하고 포함·제외·순서·시작 장면을 설정한다. 검사·모두 저장하고 빌드·취소·빌드 후 실행·출력 폴더를 제공한다. 게임 전용 파일과 사전 컴파일 C++ worker를 `Builds/<프로필>/<고유 빌드>`에 구성하며 Game.exe가 같은 BP/컴포넌트/게임 서비스를 실행한다. [설정·실행 계약과 조사 근거](docs/BUILD_PLAYER_RESEARCH.md).
 - **엔진 실행과 프로젝트**: HBEngine.exe를 실행하면 최근 프로젝트·새 프로젝트·찾아 열기가 있는 허브를 연다. 프로젝트 루트의 `.hbproject` JSON은 UUID·엔진/파일 버전·시작 레벨·시작 BP를 지정한다. 생성 후 바로 편집기에 들어가며 기존 폴더와 파일을 덮어쓰지 않는다. 프로젝트별 복구·도킹·Project 폴더·SaveGame을 `Saved/Editor/storage.json`에 보존해 실행 포트가 달라져도 이어간다. 최초 일반 실행 또는 `--register`로 현재 Windows 사용자에게 `.hbproject` 더블클릭 연결을 등록한다.
-- **473개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
-- **289개 코어 C++ API + 102개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
+- **714개 기본 노드**: 이벤트, 흐름 제어, 수학, 정수·논리·비교, Vec2/Vec3, 회전, 좌표 변환, 색상, 문자열, 자료형별 배열, 시간·타이머·측정, 오브젝트와 게임 서비스. 사용자 함수·매크로·변수·C++ 공개 선언에서 생성되는 노드는 이 숫자에 포함하지 않는다. [전체 이름·핀·C++ 대응 목록](docs/NODE_CATALOG.md).
+- **289개 코어 C++ API + 340개 실행 서비스 API**: C++17 함수와 브라우저 실행을 제공한다. 게임 프레임워크·물리·블랙보드·행동트리·FSM·몽타주·시퀀스·경로 이동·인지·파티클·태그를 같은 플레이 월드에 연결한다. 추가한 221개 함수는 모두 실제 C++/JS 결과를 비교한다. 자료형별 배열 복사 연산은 원본을 유지하며, 변수 변경은 Set/Add/Remove 실행 노드로 구분한다.
 - **블루프린트 실행**: Construction → BeginPlay → Tick·입력·Overlap → EndPlay, 함수·매크로, 조건·반복·중단, Delay·재시작 지연, 타이머·Timeline, 변수·배열, 디스패처·인터페이스 호출. 중단점·Step·Continue와 실제 계산한 핀 값을 지원한다. Stop은 편집 장면을 복원한다.
 - **사용자 C++ 실행**: Project에서 C++ 클래스를 만들고 설치된 Visual Studio(또는 VS Code)에서 .h/.cpp를 편집한다. C++ 클래스 기반 블루프린트에서 파일 변경을 다시 읽어 g++로 빌드한다. 공개 함수·속성·static 함수·반환·출력 참조·객체 ID를 연결하고 C++ 이벤트를 BP로 전달한다. C++ 변환 변경은 실행 월드에 반영한다. [실행 예제](prototype/examples/BP_NativeDoor.blueprint.json).
 - **그래프 제작**: 한글/영어 우클릭 검색, 핀 연결·분할·합치기·변수 승격, 다중/영역 선택, 복사·복제·Undo/Redo, 함수·매크로 추출, Construction, 주석·세부 속성·모든 내부 그래프 검색. 그래프당 1,000개 노드를 저장할 수 있다.

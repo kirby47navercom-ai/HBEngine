@@ -292,3 +292,8 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 
 
 2026-10-08 접촉 이벤트: 공용 노드 catalog/schema의 overlapStay·hitStay·endHit 및 effectivePins를 이용한다. Stay delta는 고정 물리 시간(float), Exit hit는 마지막 접촉의 hit=false와 유효 상대/null이다. AI 수정·핀 연결·컴포넌트 선택은 사람 UI와 같은 문서/검증/런타임을 사용한다. 삭제·풀 수명과 실제 C++/Rapier 검증은 [064](research/CONTACT_LIFETIME_064.md)에 있다.
+
+
+## 머테리얼 Attributes·Layer/Blend(076)
+
+`schema.material.attributes`는 11개 표면 필드·Make/Set/Get/Break/Blend와 타입 검증을, `schema.material.layers`는 독립 `materiallayer`/`materialblend` 에셋·고정 경계·스택 배열·배경·독립 값·인스턴스 `layerStacks`를 공개한다. Layer 항목 ID로 `layer.ID.layer.NAME`/`layer.ID.blend.NAME`을 구분한다. `hb::Materials::LayerParameterKey`/순수 BP `materialLayerParameter`와 기존 SetFloat를 사용한다. 사람과 AI는 같은 문서·revision·dryRun·검증·Undo·Save/여러 파일 계약을 쓴다. 저장/그룹 Undo는 의존 머테리얼과 부모/레이어 캐시를 갱신하며 다른 문서를 자동 저작하지 않는다. [작성/실행/실제 검증](MATERIAL_LAYERS_076.md).

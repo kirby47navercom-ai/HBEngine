@@ -1,0 +1,377 @@
+{
+  "id": "076",
+  "date": "2026-10-08",
+  "priorCommit": "9d83d07",
+  "feature": "Typed material attributes, independent reusable layers/blends and instance stack editing using shared CPU/GLSL/TSL, native BP/C++ and transactional files",
+  "sources": [
+    {
+      "id": "unreal-layers",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-material-layers-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-material-layers-in-unreal-engine",
+      "status": 200,
+      "bytes": 98437,
+      "sha256": "39520bd3c265d8eea0679b46c5171c4cb3f6ac8d1b3f5545c9c22bd27dbeb799",
+      "ownArticleRead": true
+    },
+    {
+      "id": "unreal-attributes",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/material-attributes-expressions-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/material-attributes-expressions-in-unreal-engine",
+      "status": 200,
+      "bytes": 69767,
+      "sha256": "c3d44407dc3dd42370ffa8a3c76fb9222244b2ae12cb96067966d5305529cd40",
+      "ownArticleRead": true
+    },
+    {
+      "id": "unity-layered-lit",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material.html",
+      "status": 200,
+      "bytes": 10746,
+      "sha256": "c5b10d30cf5d4effe7fc3adeded9c0113e0b41a3279795414bda0ad580cefa43",
+      "ownArticleRead": true
+    },
+    {
+      "id": "unity-layered-lit-inspector",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material-inspector-reference.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material-inspector-reference.html",
+      "status": 200,
+      "bytes": 44508,
+      "sha256": "1fbf28904611410591e203d509e27261fd6bd9f8e0fbcd89b114ece6f95398c1",
+      "ownArticleRead": true
+    }
+  ],
+  "reading": {
+    "scope": "Four own complete technical articles; linked API, package source, samples and media unread",
+    "wholeCorpusGate": false
+  },
+  "validation": {
+    "windows": {
+      "editor": {
+        "directory": "native/build/gpu-editor-WAJ76y",
+        "acceptanceSha256": "8c9577061a2d0f9308302701aa4e3485be40e7e647bf2c17f44faa0ab763e4e7",
+        "checkedFiles": {
+          "prototype/index.html": "c792254f3d726496a9d07cfbb89487e85abdd391587c428b83f77f1ff40d19b4",
+          "prototype/app.js": "77c24587427e2a36a4c8778fdfbb3087080efb6216608ed68945ac2665655d88",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+          "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+          "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+          "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+          "tools/editor-automation.mjs": "9670ecf8decc55c4289db83ff77a2ed111beeef5601ea13101928870f8f5a0fc",
+          "tools/check-gpu-editor.mjs": "0f94d5ccf7c00cc0a130f5a24aa6381bb75d9268964e1863093927e8752dd9c3",
+          "prototype/material-runtime.js": "f0a4c7dd0d9a9965291e57e0d4e913ea9afabda1a8fcd80cad50981ab4084788",
+          "prototype/material-editor.js": "014209fdc9e6f53d974f329b2aaa2b46968503f553ae8fae62356a079982360b",
+          "prototype/asset-documents.js": "455cc10f5a0f89b44db5217f8efe4ba3638183e7828b6176dd26f31956a60964",
+          "prototype/gpu-materials.js": "c7d41a5b65adfcf8ed4466e30e274278a4fa9757e763146442ae3904abf8dd1c",
+          "prototype/scene-editor.css": "6f371422b364a04756009660290765cfbeaeac7499ea620c2c0583f496e22bb1",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "3fdfc2ae104e768e1d3bad65bbfb63fddac20566feead77817411ef93d7bc0dc",
+          "prototype/material-layers-ui.js": "064c04d31837b8fc6df2a6fba76567eb52486382ffbc73b84dc1a1193f376ef8",
+          "prototype/asset-editor-ui.js": "9d1cd036866eff3eacf4d71b925180df887115b2e526a9a20388e9f53451ce14",
+          "prototype/style.css": "dcc34c83bd11df1e21c3d97e0a20ff6d580bf727b5c176284a2a42fe3e5a7062",
+          "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+          "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "originalsPreserved": true,
+        "proof": {
+          "separateLayerBlendGraphs": true,
+          "attributeSelection": true,
+          "independentParameters": true,
+          "duplicateReorderHide": true,
+          "multiDropSingleUndo": true,
+          "stackCopyIndependentIds": true,
+          "instanceDoesNotModifyParent": true,
+          "dryRunRevisionPreserved": true,
+          "atomicFileGroupValidated": true,
+          "actualFileGroupAndUndo": true,
+          "surfacePinSwitchPreservesInputs": true,
+          "inheritedStackControls": true,
+          "savedLayerBodyRefresh": {
+            "bright": {
+              "width": 888,
+              "height": 302,
+              "changed": 89404,
+              "cyan": 24024,
+              "magenta": 0,
+              "mean": 65.08898882326035
+            },
+            "dark": {
+              "width": 888,
+              "height": 302,
+              "changed": 89404,
+              "cyan": 24024,
+              "magenta": 0,
+              "mean": 44.996319581170575
+            },
+            "restored": {
+              "width": 888,
+              "height": 302,
+              "changed": 89404,
+              "cyan": 24024,
+              "magenta": 0,
+              "mean": 65.08898882326035
+            },
+            "groupedDark": {
+              "width": 888,
+              "height": 302,
+              "changed": 89404,
+              "cyan": 24024,
+              "magenta": 0,
+              "mean": 44.996319581170575
+            },
+            "groupedRestored": {
+              "width": 888,
+              "height": 302,
+              "changed": 89404,
+              "cyan": 24024,
+              "magenta": 0,
+              "mean": 65.08898882326035
+            }
+          },
+          "intentionallySaved": []
+        }
+      },
+      "webgpu": {
+        "directory": "native/build/gpu-scene-K92uTA",
+        "acceptanceSha256": "66e47fed2443f8cfdfd4964a293659f8dd32b07200e6df74dd753bcb81166df0",
+        "checkedFiles": {
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "4a20b3d6a55d185522a9ff87e6ea69e70a0fd0bd6160d6ffca28b515d8f6400a",
+          "prototype/gpu-materials.js": "c7d41a5b65adfcf8ed4466e30e274278a4fa9757e763146442ae3904abf8dd1c",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "f0a4c7dd0d9a9965291e57e0d4e913ea9afabda1a8fcd80cad50981ab4084788",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "77c24587427e2a36a4c8778fdfbb3087080efb6216608ed68945ac2665655d88",
+          "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "9670ecf8decc55c4289db83ff77a2ed111beeef5601ea13101928870f8f5a0fc",
+          "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b",
+          "tools/check-gpu-scene.mjs": "e41e4552732eadd521733619571fb9a10afc1417e81e47f2754d59da6554a38d",
+          "prototype/material-editor.js": "014209fdc9e6f53d974f329b2aaa2b46968503f553ae8fae62356a079982360b",
+          "prototype/asset-documents.js": "455cc10f5a0f89b44db5217f8efe4ba3638183e7828b6176dd26f31956a60964",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "3fdfc2ae104e768e1d3bad65bbfb63fddac20566feead77817411ef93d7bc0dc",
+          "prototype/material-layers-ui.js": "064c04d31837b8fc6df2a6fba76567eb52486382ffbc73b84dc1a1193f376ef8",
+          "prototype/asset-editor-ui.js": "9d1cd036866eff3eacf4d71b925180df887115b2e526a9a20388e9f53451ce14",
+          "prototype/style.css": "dcc34c83bd11df1e21c3d97e0a20ff6d580bf727b5c176284a2a42fe3e5a7062"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "originalsPreserved": true,
+        "proof": {
+          "dark": [
+            2,
+            2,
+            2,
+            255
+          ],
+          "bright": [
+            245,
+            245,
+            245,
+            255
+          ],
+          "hidden": [
+            2,
+            2,
+            2,
+            255
+          ],
+          "actualCppLayerKey": true,
+          "actualBlueprintLayerKey": true,
+          "independentRepeatedLayer": true,
+          "materialReused": true,
+          "initialParameters": {
+            "layer.background.layer.Amount": 0,
+            "layer.upper.layer.Amount": 0.2,
+            "layer.upper.blend.Alpha": 0.5
+          },
+          "changedParameters": {
+            "layer.background.layer.Amount": 0,
+            "layer.upper.layer.Amount": 5,
+            "layer.upper.blend.Alpha": 0.5
+          }
+        }
+      },
+      "webgl2": {
+        "directory": "native/build/gpu-scene-i24w02",
+        "acceptanceSha256": "29602b160205c2ce732704a6cd11dcebd5057580a42d471aea893027165b10b6",
+        "checkedFiles": {
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "4a20b3d6a55d185522a9ff87e6ea69e70a0fd0bd6160d6ffca28b515d8f6400a",
+          "prototype/gpu-materials.js": "c7d41a5b65adfcf8ed4466e30e274278a4fa9757e763146442ae3904abf8dd1c",
+          "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+          "prototype/material-runtime.js": "f0a4c7dd0d9a9965291e57e0d4e913ea9afabda1a8fcd80cad50981ab4084788",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+          "prototype/app.js": "77c24587427e2a36a4c8778fdfbb3087080efb6216608ed68945ac2665655d88",
+          "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+          "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+          "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+          "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+          "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+          "tools/editor-automation.mjs": "9670ecf8decc55c4289db83ff77a2ed111beeef5601ea13101928870f8f5a0fc",
+          "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b",
+          "tools/check-gpu-scene.mjs": "e41e4552732eadd521733619571fb9a10afc1417e81e47f2754d59da6554a38d",
+          "prototype/material-editor.js": "014209fdc9e6f53d974f329b2aaa2b46968503f553ae8fae62356a079982360b",
+          "prototype/asset-documents.js": "455cc10f5a0f89b44db5217f8efe4ba3638183e7828b6176dd26f31956a60964",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "3fdfc2ae104e768e1d3bad65bbfb63fddac20566feead77817411ef93d7bc0dc",
+          "prototype/material-layers-ui.js": "064c04d31837b8fc6df2a6fba76567eb52486382ffbc73b84dc1a1193f376ef8",
+          "prototype/asset-editor-ui.js": "9d1cd036866eff3eacf4d71b925180df887115b2e526a9a20388e9f53451ce14",
+          "prototype/style.css": "dcc34c83bd11df1e21c3d97e0a20ff6d580bf727b5c176284a2a42fe3e5a7062"
+        },
+        "ok": true,
+        "errors": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "originalsPreserved": true,
+        "proof": {
+          "dark": [
+            2,
+            2,
+            2,
+            255
+          ],
+          "bright": [
+            245,
+            245,
+            245,
+            255
+          ],
+          "hidden": [
+            2,
+            2,
+            2,
+            255
+          ],
+          "actualCppLayerKey": true,
+          "actualBlueprintLayerKey": true,
+          "independentRepeatedLayer": true,
+          "materialReused": false,
+          "initialParameters": {
+            "layer.background.layer.Amount": 0,
+            "layer.upper.layer.Amount": 0.2,
+            "layer.upper.blend.Alpha": 0.5
+          },
+          "changedParameters": {
+            "layer.background.layer.Amount": 0,
+            "layer.upper.layer.Amount": 5,
+            "layer.upper.blend.Alpha": 0.5
+          }
+        }
+      }
+    },
+    "coreLog": "native/build/material-layers-core-076.log",
+    "coreLogSha256": "1b1ad259ddff98fc2dd0b1adf005088d0dc9f27204d255e93a5ac546bd7aeece",
+    "blueprintNodes": 714,
+    "engineServices": 340,
+    "coreCppAPIs": 289,
+    "cppConnected": 629,
+    "materialCatalogEntries": 63,
+    "ordinaryShaderNodes": 53,
+    "layerEntriesTested": 10,
+    "sourceShaMatches": true,
+    "noLongStabilityRerun": true,
+    "fpsClaim": false,
+    "mdProof": "native/build/material-layers-md-076.json"
+  },
+  "previousFailures": [
+    {
+      "directory": "native/build/gpu-editor-tHD2tn",
+      "reason": "incorrect asset kind predicate caused runtime exceptions; fixed before final validation"
+    },
+    {
+      "directory": "native/build/gpu-editor-Rgqp1M",
+      "reason": "save round trip uses editor pretty JSON but fixture was compact JSON; data and pixel checks passed, fixture written with editor format before final byte-preservation check"
+    }
+  ],
+  "remaining": [
+    "WebGL2 Float update still recreates material; WebGPU retains uniforms/material",
+    "Texture Object/StaticBool function ports, selection extraction and individual expression preview",
+    "Height blend/main layer influence/triplanar/detail/displacement/additional material domains and shading/GI/native renderer",
+    "WORK_ORDER_051 remaining accumulated requirements; installation after preceding group"
+  ],
+  "installationChanged": false,
+  "userMD": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "beforeBytes": 181696,
+      "afterBytes": 183704,
+      "beforeSha256": "94dd42fe47b349a8012b194779ab3ecb28315bb89a736d493593d2b2f28fed97",
+      "afterSha256": "d4f7f1f3857bfe4dbf80c389424454dbfde5bfb30f6c48d5986208fcbb58394e",
+      "prefixPreserved": true,
+      "appendBytes": 2008,
+      "prefixBackup": "native/build/material-layers-md-076-prefix-0.bin"
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "beforeBytes": 68003,
+      "afterBytes": 70011,
+      "beforeSha256": "6f0213ac1f6ef78c6f787755251df9f266e2a8aa6c7d0dced7c32f2879e669dd",
+      "afterSha256": "35d2169ad718e4d9fba73c26ff3cba29856e1aab7ef986c49a95af0718256d9b",
+      "prefixPreserved": true,
+      "appendBytes": 2008,
+      "prefixBackup": "native/build/material-layers-md-076-prefix-1.bin"
+    }
+  ]
+}

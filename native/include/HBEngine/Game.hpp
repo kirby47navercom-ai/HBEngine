@@ -488,6 +488,7 @@ HB_CLASS()
 class Materials : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setMaterial", KoreanName="머테리얼 지정", Category="머테리얼") static void Set(Actor* target,const std::string& material,int slot=0);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="materialLayerParameter", KoreanName="레이어 파라미터 이름", Category="머테리얼") static std::string LayerParameterKey(const std::string& id,const std::string& name,bool blend=false);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialFloat", KoreanName="머테리얼 실수 설정", Category="머테리얼") static void SetFloat(Actor* target,const std::string& parameter,float value);
 };
 HB_CLASS()
