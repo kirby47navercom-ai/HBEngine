@@ -71,3 +71,5 @@
 - 069: Enum domain·기본/이름 핀·sparse 값·상태 전이·C++ enum Set/Get·BP wire·AI 계약을 공용 포즈 실행기에 연결. 실제 EditorU6Kc5a/releasePlayer5p7bBX·기존 검사/원본·정리 통과. [상세](ANIMATION_ENUM_SELECTION_069.md). 068a65b17c 푸시 완료, 선행 누적 순서·설치 대기. 다음 rootMotion 공식 본문 대조/실행 순서 확인, 구현 완료 미표시.
 
 - 070: 루트 모션 클립/몽타주·네 모드/고정·혼합·2D/3D 물리/중력·BP/C++/AI·미리보기 연결. 코어/166 실제 물리·기존 회귀, 최종 Editor RkHfhj/release Player5ZENzn 원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. [상세](ANIMATION_ROOT_MOTION_070.md). 069570b2f4 푸시 완료; 설치 대기·전체 선행 순서와 전역 FPS/RAM 미승격 유지. 다음3D IK/리타게팅 세부.
+
+- 071:3D Two Bone/FABRIK·네 공간/Actor 목표·SDK/BP8·AI/미리보기·실제 뼈·재생/늘이기 보존·실행 중 선택/속성 정리. 최종 Editor animation-ik-editor-Xb2cNs/release Player animation-ik-player-KpvwcF·기존 회귀/705노드·원본/오류0/종료0/서버 정리/제품 SHA 통과. [상세](ANIMATION_IK_071.md). 07020c03b7 푸시 완료; 누적 선행 순서/설치 대기 유지. 다음 리타게팅 및 누적 세부.

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **697개**, 실제 공통 C++ API **612개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **705개**, 실제 공통 C++ API **620개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -53,7 +53,7 @@
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
-| 애니메이션 그래프 | 16 | 16 |
+| 애니메이션 그래프 | 24 | 24 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -907,6 +907,14 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| animGraphIKTarget | Set IKTarget / IK 목표 위치 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKTarget | 공통 C++ + VM |
+| animGraphIKHint | Set IKHint / IK 관절 힌트 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKHint | 공통 C++ + VM |
+| animGraphIKRotation | Set IKRotation / IK 목표 회전 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKRotation | 공통 C++ + VM |
+| animGraphIKWeight | Set IKWeight / IK 가중치 지정 | exec: exec, target: object, node: string, value: float | then: exec | hb::AnimationGraph::SetIKWeight | 공통 C++ + VM |
+| animGraphIKTargetActor | Set IKTarget Actor / IK 목표 오브젝트 지정 | exec: exec, target: object, node: string, effector: object | then: exec | hb::AnimationGraph::SetIKTargetActor | 공통 C++ + VM |
+| animGraphIKHintActor | Set IKHint Actor / IK 힌트 오브젝트 지정 | exec: exec, target: object, node: string, effector: object | then: exec | hb::AnimationGraph::SetIKHintActor | 공통 C++ + VM |
+| animGraphIKTip | Get IKTip Position / IK 끝 뼈 위치 | target: object, node: string | return: vec3 | hb::AnimationGraph::GetIKTipPosition | 공통 C++ + VM |
+| animGraphIKError | Get IKError / IK 목표 거리 | target: object, node: string | return: float | hb::AnimationGraph::GetIKError | 공통 C++ + VM |
 | animGraphRootMode | Set Root Motion Mode / 루트 모션 모드 지정 | exec: exec, target: object, mode: string | then: exec | hb::AnimationGraph::SetRootMotionMode | 공통 C++ + VM |
 | animGraphRootPosition | Get Root Motion Position / 루트 모션 이동량 | target: object | return: vec3 | hb::AnimationGraph::GetRootMotionPosition | 공통 C++ + VM |
 | animGraphRootRotation | Get Root Motion Rotation / 루트 모션 회전량 | target: object | return: vec3 | hb::AnimationGraph::GetRootMotionRotation | 공통 C++ + VM |

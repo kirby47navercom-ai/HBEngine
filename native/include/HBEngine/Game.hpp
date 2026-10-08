@@ -366,6 +366,14 @@ public:
 HB_CLASS()
 class AnimationGraph : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKTarget", KoreanName="IK 목표 위치 지정", Category="애니메이션 그래프") static void SetIKTarget(Actor* target,const std::string& node,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKHint", KoreanName="IK 관절 힌트 지정", Category="애니메이션 그래프") static void SetIKHint(Actor* target,const std::string& node,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKRotation", KoreanName="IK 목표 회전 지정", Category="애니메이션 그래프") static void SetIKRotation(Actor* target,const std::string& node,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKWeight", KoreanName="IK 가중치 지정", Category="애니메이션 그래프") static void SetIKWeight(Actor* target,const std::string& node,float value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKTargetActor", KoreanName="IK 목표 오브젝트 지정", Category="애니메이션 그래프") static void SetIKTargetActor(Actor* target,const std::string& node,Actor* effector);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKHintActor", KoreanName="IK 힌트 오브젝트 지정", Category="애니메이션 그래프") static void SetIKHintActor(Actor* target,const std::string& node,Actor* effector);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKTip", KoreanName="IK 끝 뼈 위치", Category="애니메이션 그래프") static Vec3 GetIKTipPosition(Actor* target,const std::string& node);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKError", KoreanName="IK 목표 거리", Category="애니메이션 그래프") static float GetIKError(Actor* target,const std::string& node);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRootMode", KoreanName="루트 모션 모드 지정", Category="애니메이션 그래프") static void SetRootMotionMode(Actor* target,const std::string& mode);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRootPosition", KoreanName="루트 모션 이동량", Category="애니메이션 그래프") static Vec3 GetRootMotionPosition(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRootRotation", KoreanName="루트 모션 회전량", Category="애니메이션 그래프") static Vec3 GetRootMotionRotation(Actor* target);

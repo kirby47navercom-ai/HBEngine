@@ -1,0 +1,270 @@
+{
+  "id": "071",
+  "date": "2026-10-08",
+  "priorCommit": "20c03b7",
+  "feature": "3D Two Bone IK/FABRIK",
+  "sources": [
+    {
+      "id": "unreal-two-bone",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-two-bone-ik-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-two-bone-ik-in-unreal-engine",
+      "status": 200,
+      "bytes": 71432,
+      "sha256": "bdcdb94a16f6a0f25c0621e65e44f8a86f89412a48e33176ff2e729332dec2cd",
+      "scope": "Own guide41lines including full properties table read; images/links/runtime bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unreal-fabrik",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fabrik-animation-blueprint-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fabrik-animation-blueprint-in-unreal-engine",
+      "status": 200,
+      "bytes": 68681,
+      "sha256": "0b766bf991f04a302db0f5130faaa748fb9936734ce1bf38a91770c0f58f594d",
+      "scope": "Own guide48lines including full properties table read; images/links/paper/runtime bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unreal-two-bone-api",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_TwoBoneIK",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_TwoBoneIK",
+      "status": 200,
+      "bytes": 88804,
+      "sha256": "f17123c29a357d1d23bcdd4760c8e379817877c3849870c2c17466556498fb28",
+      "scope": "Own API147lines declaration/fields/functions summary read; linked methods and actual engine implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unreal-fabrik-api",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_Fabrik",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_Fabrik",
+      "status": 200,
+      "bytes": 82449,
+      "sha256": "d1b361c3212033348480274ed75e9e0da9e05be0909124ae83ea2a63012b60ff",
+      "scope": "Own API120lines declaration/fields/functions summary read; linked methods and actual engine implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-two-bone",
+      "sourceId": "unity-packages",
+      "url": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/manual/constraints/TwoBoneIKConstraint.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/manual/constraints/TwoBoneIKConstraint.html",
+      "status": 200,
+      "bytes": 11773,
+      "sha256": "c5273b92f56390ad476139a56e2eb24db5cfdd993ffa0b1bba0e7bbd372a0d8f",
+      "scope": "Returned1.4.1 own article115-178 full text/table/auto setup read; images/links/unity implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-rig-workflow",
+      "sourceId": "unity-packages",
+      "url": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/manual/RiggingWorkflow.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/manual/RiggingWorkflow.html",
+      "status": 200,
+      "bytes": 16226,
+      "sha256": "98405d03ffc3d3937ee53c71fc5dd3fa1c082c730c70ecc2cf8034fa36be2a45",
+      "scope": "Returned1.4.1 own article115-180 full text/order/components/bone renderer/effectors/rig transform read; video/images/linked API/actual job implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-two-bone-data",
+      "sourceId": "unity-packages",
+      "url": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/api/UnityEngine.Animations.Rigging.TwoBoneIKConstraintData.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.animation.rigging@1.4/api/UnityEngine.Animations.Rigging.TwoBoneIKConstraintData.html",
+      "status": 200,
+      "bytes": 22491,
+      "sha256": "d5aeb2872957d46b2907347f5488710a6935e085bd91fcf8939e6eb067431322",
+      "scope": "Returned1.4.1 own struct118-416 declaration/property descriptions read; inherited APIs/linked types/implementation unread",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "officialImplementationSource": {
+    "registry": {
+      "metadataUrl": "https://packages.unity.com/com.unity.animation.rigging",
+      "version": "1.4.1",
+      "dist": {
+        "shasum": "ae5f251e1ed4767c6e0945cd4250d5af8cd82112",
+        "tarball": "https://download.packages.unity.com/com.unity.animation.rigging/-/com.unity.animation.rigging-1.4.1.tgz"
+      },
+      "bytes": 96588789,
+      "sha256": "0fc2ef2c9598154d9a02d3c1ea8934b36abd94dc2dcd3fd444812805ad9daa2e"
+    },
+    "readFiles": [
+      {
+        "member": "package/Runtime/Utils/AnimationRuntimeUtils.cs",
+        "bytes": 19060,
+        "sha256": "57349e36a8994276ff6bf4b58e8a7ef32bab58128f0eddffe4e9a109ea06edd8",
+        "wholeFileRead": false,
+        "readScope": "lines 1..300: entire SolveTwoBoneIK, inverse helpers, TriangleAngle and SolveFABRIK; remaining utility file unread"
+      },
+      {
+        "member": "package/Runtime/AnimationRig/Constraints/ChainIKConstraint.cs",
+        "bytes": 4943,
+        "sha256": "0465c93d9206fc7d296476de3681072d96ce43664c6b2d26572777da595b88f6",
+        "wholeFileRead": true,
+        "readScope": "whole file: fields, validity/defaults and job/binder math/offsets/weights/lifetime"
+      },
+      {
+        "member": "package/Runtime/AnimationJobs/ChainIKConstraintJob.cs",
+        "bytes": 8819,
+        "sha256": "a72bb649e7c98e2d3b4422616cfc18ee91b13a878b2af668d66677ae672ec942",
+        "wholeFileRead": true,
+        "readScope": "whole file: fields, validity/defaults and job/binder math/offsets/weights/lifetime"
+      },
+      {
+        "member": "package/Runtime/AnimationRig/Constraints/TwoBoneIKConstraint.cs",
+        "bytes": 4563,
+        "sha256": "d4255256d1db92ef220fd96ab294485e0418c4891c923a8af92314b5c6e3e6d6",
+        "wholeFileRead": true,
+        "readScope": "whole file: fields, validity/defaults and job/binder math/offsets/weights/lifetime"
+      },
+      {
+        "member": "package/Runtime/AnimationJobs/TwoBoneIKConstraintJob.cs",
+        "bytes": 6650,
+        "sha256": "61e61929220ab3f098dac57dfe98487c5dfc84f7dc8bb8a39fc293d9064db37c",
+        "wholeFileRead": true,
+        "readScope": "whole file: fields, validity/defaults and job/binder math/offsets/weights/lifetime"
+      }
+    ],
+    "otherPackageFilesRead": false,
+    "importedIntoEngine": false
+  },
+  "discovery": {
+    "unreal-manual": {
+      "input": 2,
+      "added": 2
+    },
+    "unreal-cpp": {
+      "input": 2,
+      "added": 2
+    },
+    "unity-packages": {
+      "input": 3,
+      "added": 0
+    }
+  },
+  "validation": {
+    "core": "tools/check-animation-ik.mjs",
+    "actualWindows": {
+      "editor": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-ik-editor-Xb2cNs",
+        "acceptanceSha256": "f8273fad2c9a04d31fefafea03e4fe2244b2768d7322b710cd0eac69fae7002a",
+        "assertionsSha256": "2438438e2add3143104da0e6e494289c1536db52d4d1239ad543cfd511c2db53",
+        "checkedFiles": {
+          "prototype/animation-ik.js": "43dcd4d307e883f71ed11689ff21ddeae43154262173fadcf7684d54a354105f",
+          "prototype/animation-ik-editor.js": "3ae29bf5e2ce653498135d2084ee75c60a7a3b88ccb5b88aa8b9aa22f47f390b",
+          "prototype/animation-graph-editor.css": "8eee650d0576cb6448d7cd536f06b830ee75a282d6f887c2666a9bae84b4064f",
+          "tools/animation-ik-window-actions.mjs": "abf6ce32d8293285db2816448b6791d58f9aa4e6142bee6806bbda5a82707554",
+          "native/include/HBEngine/Game.hpp": "73e7e37fc87fc3c13496b00cf2b1c2a060f06e3925138adbcc3c007fa3105d5b",
+          "native/include/HBEngine/Bridge.hpp": "3866286a99f26ccc7bf49c501c899f33d24fe78f1c6fd4c23eaf471bfc76ecbf",
+          "prototype/engine-services.js": "c9ab196d2d71457cc91c7171cea37b8c1644386d4d4b73ebe0c4256cd27c07ff",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "4a5a16623b81facea88d07896cc51a28303695245b1c2beb1c84eb775303fab3",
+          "prototype/animation-graph-assets.js": "96292bfb4cb32f55758d2835507c570030b4e19af1caefd800c211f8ddaf8a2e",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "3d9ec5a3f74ad4ffc501cd98ec0b35e8d6a2c77cfecf85371e3acbe3dfdbb3da",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "e56c8bf5329b2863bd810e82b6af210695edc97b783bf448947f02e98df48d33",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "dacdfa6aa3b70a53e2f9f5abdb108ee74a75658d14bc512ad5aaac3d76ebc95b",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      },
+      "player": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-ik-player-KpvwcF",
+        "acceptanceSha256": "4a936ddbbf1b0fc79652be32f96218283757f7cd11d757c3fd7781633deac62c",
+        "assertionsSha256": "a47fc2e75614f96bc4d7222144f9414469b53b9c6a39d07f21fc3db81dd0af08",
+        "checkedFiles": {
+          "prototype/animation-ik.js": "43dcd4d307e883f71ed11689ff21ddeae43154262173fadcf7684d54a354105f",
+          "prototype/animation-ik-editor.js": "3ae29bf5e2ce653498135d2084ee75c60a7a3b88ccb5b88aa8b9aa22f47f390b",
+          "prototype/animation-graph-editor.css": "8eee650d0576cb6448d7cd536f06b830ee75a282d6f887c2666a9bae84b4064f",
+          "tools/animation-ik-window-actions.mjs": "abf6ce32d8293285db2816448b6791d58f9aa4e6142bee6806bbda5a82707554",
+          "native/include/HBEngine/Game.hpp": "73e7e37fc87fc3c13496b00cf2b1c2a060f06e3925138adbcc3c007fa3105d5b",
+          "native/include/HBEngine/Bridge.hpp": "3866286a99f26ccc7bf49c501c899f33d24fe78f1c6fd4c23eaf471bfc76ecbf",
+          "prototype/engine-services.js": "c9ab196d2d71457cc91c7171cea37b8c1644386d4d4b73ebe0c4256cd27c07ff",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "4a5a16623b81facea88d07896cc51a28303695245b1c2beb1c84eb775303fab3",
+          "prototype/animation-graph-assets.js": "96292bfb4cb32f55758d2835507c570030b4e19af1caefd800c211f8ddaf8a2e",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "3d9ec5a3f74ad4ffc501cd98ec0b35e8d6a2c77cfecf85371e3acbe3dfdbb3da",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "e56c8bf5329b2863bd810e82b6af210695edc97b783bf448947f02e98df48d33",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "dacdfa6aa3b70a53e2f9f5abdb108ee74a75658d14bc512ad5aaac3d76ebc95b",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      }
+    },
+    "regression": [
+      "animation-graph",
+      "animation-states",
+      "animation-sync",
+      "animation-blend-space",
+      "animation-montage",
+      "root-motion",
+      "scene-runtime-62",
+      "blueprint-705",
+      "generated-api"
+    ],
+    "rendererBindingsCompared": true,
+    "previousFailedChecksPreserved": true
+  },
+  "wholeCorpusGate": false,
+  "allEngineGoalsComplete": false,
+  "installationUpdated": false,
+  "installedVersion": "7df780dd9a47cf5b",
+  "performanceTargetsPromoted": false,
+  "readBoundary": "7 own guide/API pages; four pinned source files whole; utility lines 1..300; linked method bodies/media/paper and remaining package files unread",
+  "remaining": [
+    "retargeting",
+    "Full Body IK/Control Rig",
+    "joint angular limits",
+    "automatic grounding",
+    "IK target drag gizmos",
+    "cumulative WORK_ORDER_051 requirements"
+  ],
+  "originalMdPreservation": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "priorBytes": 176004,
+      "priorSha256": "1fccba37bb694ff403b8408f695f3b97456d75e6c3d8d9817771bb999792142e",
+      "preservedPrefixSha256": "1fccba37bb694ff403b8408f695f3b97456d75e6c3d8d9817771bb999792142e",
+      "afterSha256": "1201a1f13faddd7ee8976d3895dc1ba5ba29df716efbc141f1cfa0b21af5cb2c",
+      "appendOnly": true
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "priorBytes": 62311,
+      "priorSha256": "5f6c446a8fbff356cbceaf10d2762ed3743e91aaa5a5943614753801a64c69a8",
+      "preservedPrefixSha256": "5f6c446a8fbff356cbceaf10d2762ed3743e91aaa5a5943614753801a64c69a8",
+      "afterSha256": "7787077677630c5298f610a63d8aa6f8ab16cd69a9e2635048c786b0f7935c14",
+      "appendOnly": true
+    }
+  ]
+}

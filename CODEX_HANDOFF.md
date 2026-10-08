@@ -1,3 +1,7 @@
+# 071 3D IK — 2026-10-08
+
+070 20c03b7 푸시 완료. Two Bone/FABRIK 포즈 노드·네 공간·목표/힌트 Actor·가중치/Alpha 배율·회전/늘이기/비틀림·참조 재생 보존·SDK/BP8·AI·속성/별도 미리보기를 연결했다. 최종 Editor animation-ik-editor-Xb2cNs/release Player animation-ik-player-KpvwcF에서 실제 뼈 바인딩/블프→C++ 값 일치·원본/오류0/종료0/서버 정리·현재 제품 SHA 일치 통과. 코어와 기존 회귀·705노드/62컴포넌트 통과. 공식 문서7주소와 고정 Unity1.4.1 소스4파일 전체/utility 일부 읽기 경계·미독·실패 증거 보존. [구현/근거](docs/ANIMATION_IK_071.md), [증거](docs/research/ANIMATION_IK_071.json). 선행 누적 전체→설치 갱신→조사 추가 순서 유지. 설치/사용 창 변경 없음, FPS/RAM/전체 corpus 완료 승격 없음. 다음 리타게팅 및 누적 세부.
+
 # 070 루트 모션 — 2026-10-08
 
 069 570b2f4 푸시 완료. 클립/몽타주 네 모드·root lock/force lock·루프 회전·혼합/마스크/상태·2D/3D 물리 이동/벽/걷기 중력/비행·완료 tail/Seek/Pause·SDK3/BP3/AI schema/별도 미리보기를 연결했다. 코어 및166 실제 물리/C++·기존 회귀 통과. 최종 Editor RkHfhj/release Player5ZENzn의 현재 제품 SHA 일치·원본·오류0·종료0·서버 정리 확인. 키네마틱 세로 이동 오류를 공용 축 필터에서 수정. 루트 추출 없이 forceLock 적용도 검증. 공식 UE/Unity/Rapier 직접 읽기5주소 범위·본문/예제와 연결 API/엔진 본체 미독 구분. [구현/근거/경계](docs/ANIMATION_ROOT_MOTION_070.md), [증거](docs/research/ANIMATION_ROOT_MOTION_070.json). 누적 선행 작업 전체 뒤 설치 갱신, 그 뒤 조사 추가 작업 순서 유지. 현재 설치/사용 창 변경 없음, 전체 RAM/PCmobile/전체 corpus 완료 승격 없음. 다음 누적 3D IK·리타게팅 경로를 조사하고 구현한다.

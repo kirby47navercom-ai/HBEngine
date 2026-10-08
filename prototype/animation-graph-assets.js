@@ -1,3 +1,4 @@
+import {animationIKTypes,animationIKDefaults,validAnimationIK} from './animation-ik.js';
 import {rootMotionModes,rootMotionDefaults,validRootMotion} from './animation-root-motion.js';
 import {makeAnimationMachine,validAnimationMachine,animationStateLimits,animationBlendCurves,addAnimationState,validAnimationParameter} from './animation-state-assets.js';
 import {defaultAnimationSync,validAnimationSync} from './animation-sync.js';
@@ -6,6 +7,8 @@ const numeric=v=>Number.isFinite(v)&&Math.abs(v)<=100000;
 const text=(v,max=1000)=>typeof v==='string'&&v.length<=max;
 const identifier=v=>text(v,80)&&/^[A-Za-z_가-힣][\w가-힣]*$/.test(v);
 export const animationGraphNodes={
+  twoBoneIK:{label:'Two Bone IK · 두 관절 IK',inputs:['pose'],group:'골격 제어'},
+  fabrik:{label:'FABRIK · 체인 IK',inputs:['pose'],group:'골격 제어'},
   output:{label:'Output Pose · 최종 포즈',inputs:['pose'],group:'출력'},
   rest:{label:'Reference Pose · 기준 포즈',inputs:[],group:'포즈'},
   stateMachine:{label:'State Machine · 포즈 상태 머신',inputs:[],group:'상태'},
@@ -25,7 +28,7 @@ export const animationGraphNodes={
 export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','blend2d','direct','selectInt','selectEnum'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
 export function makeAnimationNode(type,x=100,y=100){
   if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
-  const properties={clip:{rootMotion:rootMotionDefaults(),clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectEnum:{parameter:'Mode',curve:'linear',childUpdate:'active',samples:[{input:'pose0',value:null,duration:.2},{input:'pose1',value:1,duration:.2}]},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
+  const properties={twoBoneIK:animationIKDefaults('twoBoneIK'),fabrik:animationIKDefaults('fabrik'),clip:{rootMotion:rootMotionDefaults(),clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectEnum:{parameter:'Mode',curve:'linear',childUpdate:'active',samples:[{input:'pose0',value:null,duration:.2},{input:'pose1',value:1,duration:.2}]},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
   return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:type==='stateMachine'?makeAnimationMachine():structuredClone(properties)};
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
@@ -41,6 +44,7 @@ export function validAnimationGraph(data){
       if(!text(node.id,120)||!node.id||!animationGraphNodes[node.type]||!text(node.name,80)||!numeric(node.x)||!numeric(node.y)||!node.inputs||typeof node.inputs!=='object'||Array.isArray(node.inputs)||!node.properties||typeof node.properties!=='object'||Array.isArray(node.properties))return false;
       const p=node.properties;
       if(node.type==='stateMachine'&&!validAnimationMachine(p,data.parameters))return false;
+      if(animationIKTypes.includes(node.type)&&(!validAnimationIK(node.type,p)||!param(p.parameter,'float')))return false;
       if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0||!validAnimationSync(p)||!validRootMotion(p.rootMotion)))return false;
       if(node.type==='sync'&&(!text(p.group,80)||!p.group))return false;
       if(node.type==='slot'&&(!text(p.group,80)||!p.group.trim()||!text(p.slot,80)||!p.slot.trim()||typeof p.alwaysUpdateSource!=='boolean'))return false;
