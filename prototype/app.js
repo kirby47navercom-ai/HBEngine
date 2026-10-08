@@ -61,7 +61,7 @@ import {bakeRenderCollision,geometryColliderTypes} from './collision-geometry.js
 import {editCollisionGeometry} from './collision-editor.js';
 import {sceneRendering,visualComponentSignature} from './scene-rendering.js';
 import {MaterialEditor} from './material-editor.js';
-import {materialPresets,makeMaterialPreset,createThreeMaterial,resolveMaterialAsset,refreshMaterialFunctionCall,materialDefaults,validMaterialSurface} from './material-runtime.js';
+import {extractMaterialFunction,materialPresets,makeMaterialPreset,createThreeMaterial,resolveMaterialAsset,refreshMaterialFunctionCall,materialDefaults,validMaterialSurface} from './material-runtime.js';
 import {renderTwoDEditor} from './two-d-editor.js';
 import {GameplayEditor} from './gameplay-editor.js';
 import {gameplayTypes} from './gameplay-assets.js';
@@ -551,7 +551,7 @@ function confirmCollapse(){
 function focusGraph(selectionOnly=false){const c=$('#blueprint-graph'),nodes=$$('.bp-node',c).filter(n=>!selectionOnly||!selectedNodes.size||selectedNodes.has(n.dataset.node)),left=nodes.length?Math.min(...nodes.map(n=>n.offsetLeft)):0,top=nodes.length?Math.min(...nodes.map(n=>n.offsetTop)):0,right=nodes.length?Math.max(...nodes.map(n=>n.offsetLeft+n.offsetWidth)):300,bottom=nodes.length?Math.max(...nodes.map(n=>n.offsetTop+n.offsetHeight)):150;setGraphZoom(Math.min((c.clientWidth-40)/(right-left),(c.clientHeight-40)/(bottom-top),1));blueprintPan={x:(c.clientWidth-(right-left)*blueprintZoom)/2-left*blueprintZoom,y:(c.clientHeight-(bottom-top)*blueprintZoom)/2-top*blueprintZoom};drawBlueprintWires();}
 function renderGraph(name){
   if(name==='blueprint')return renderBlueprintGraph();if(name!=='material'||assetDocs.current?.kind!=='material')return;
-  if(!materialEditor)materialEditor=new MaterialEditor($('#material-graph'),()=>assetDocs.current,{before:remember,change:()=>{graphs.material=assetDocs.current.data.graph;changed();updateSurface();renderAssetInspector();},error:notify,select:renderAssetInspector,files:()=>projectAssetFiles,readAsset,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'materialfunction',name:assetTitle(path)}),undo,redo,view:queueRecovery});else materialEditor.render();
+  if(!materialEditor)materialEditor=new MaterialEditor($('#material-graph'),()=>assetDocs.current,{before:remember,change:()=>{graphs.material=assetDocs.current.data.graph;changed();updateSurface();renderAssetInspector();},error:notify,select:renderAssetInspector,files:()=>projectAssetFiles,readAsset,extract:openMaterialExtraction,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'materialfunction',name:assetTitle(path)}),undo,redo,view:queueRecovery});else materialEditor.render();
 }
 function drawWires(){drawBlueprintWires();materialEditor?.drawWires();}
 function connectPin(button){if(button.closest('#blueprint-graph'))connectBlueprintPin(button);}
@@ -1108,7 +1108,7 @@ $$('[data-resize]').forEach(handle=>{
 });
 let recoveryTimer;
 function editingSurface(){if(assetDocs.current?.kind==='materialinstance')return {...surface,...assetDocs.current.view.parentParameters?.surface,...assetDocs.current.data.surfaceOverrides};return ['material','materialfunction','materiallayer','materialblend'].includes(assetDocs.current?.kind)?assetDocs.current.data.surface:workspace==='scene'?(objects.find(o=>o.id===selected)?.materialSurface||surface):surface;}
-function dataEditorHooks(){return {before:remember,change:()=>{changed();if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
+function dataEditorHooks(){return {before:remember,change:()=>{changed();if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,extract:openMaterialExtraction,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
 async function placeAsset(file){
   if(file.kind==='model')return placeModel(file);if(file.kind==='blueprint')return placeBlueprint(file);
   if(running)throw Error('실행을 종료한 뒤 배치하세요.');
@@ -1183,7 +1183,7 @@ function ensureAssetPane(doc){
   if(doc.kind==='text'){const input=document.createElement('textarea');input.value=doc.data;input.ariaLabel=assetTitle(doc.path)+' 내용';input.onfocus=remember;input.oninput=()=>{doc.data=input.value;changed();};element.append(input);documents.set(id,element);}
   else if(['materialfunction','materiallayer','materialblend'].includes(doc.kind)){
     element.className='workspace-view material-function-workspace';const graph=document.createElement('div');graph.className='material-function-graph';element.append(graph);
-    pane.editor=new MaterialEditor(graph,()=>doc,{before:remember,change:()=>{changed();updateSurface();renderAssetInspector();},files:()=>projectAssetFiles,readAsset,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'materialfunction',name:assetTitle(path)}),error:notify,select:renderAssetInspector,undo,redo,view:queueRecovery});pane.dispose=()=>pane.editor.dispose();
+    pane.editor=new MaterialEditor(graph,()=>doc,{before:remember,change:()=>{changed();updateSurface();renderAssetInspector();},files:()=>projectAssetFiles,readAsset,extract:openMaterialExtraction,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'materialfunction',name:assetTitle(path)}),error:notify,select:renderAssetInspector,undo,redo,view:queueRecovery});pane.dispose=()=>pane.editor.dispose();
   }
   else if(['animation','curve'].includes(doc.kind)){
     element.className='workspace-view asset-curve-workspace';
@@ -1222,13 +1222,16 @@ function activateDocument(path,reset=false,capture=true){
     if(doc.kind==='scene'&&!running&&orbit){if(doc.view.camera&&!doc.view.cameraNeedsFit){setView(doc.view.cameraMode||'3d');orbit.setState(doc.view.camera);}else{doc.view.cameraNeedsFit=true;const controls=orbit,initial=JSON.stringify([controls.getState().position,controls.getState().target]),groups=[...meshMap.values()];ready=Promise.allSettled(groups.map(g=>g.userData.ready)).then(()=>{if(assetDocs.active!==doc.path||running||orbit!==controls)return;const moved=JSON.stringify([controls.getState().position,controls.getState().target])!==initial;if(!moved){const bounds=new THREE.Box3();for(const o of objects)if(o.visible!==false&&!['light','directionalLight','skyAtmosphere','skyLight','volumetricCloud','heightFog'].includes(o.kind)){const g=meshMap.get(o.id);if(g)bounds.union(new THREE.Box3().setFromObject(g));}if(!bounds.isEmpty())fitViewportSelection(activeCamera,controls,bounds);}doc.view.camera=controls.getState();doc.view.cameraMode=viewMode;delete doc.view.cameraNeedsFit;mainPresentation.needsRender=true;queueRecovery();});}mainPresentation.needsRender=true;}$('#blueprint-results').hidden=true;$('#node-palette').hidden=true;$('#floating-menu').hidden=true;
   }finally{switchingDocument=false;}queueRecovery();return ready;
 }
+function removeDocumentViews(path){
+  const componentId='components:'+path;dock.entries.get(componentId)?.dispose?.();dock.entries.get(componentId)?.element.remove();dock.entries.delete(componentId);assetDocs.close(path,true);const documentId='asset:'+path;dock.entries.get(documentId)?.dispose?.();documents.get(documentId)?.remove();documents.delete(documentId);dock.entries.delete(documentId);const pane=assetPanes.get(path);pane?.editor?.dispose?.();pane?.dispose?.();if(pane){pane.element.remove();dock.entries.delete(pane.id);assetPanes.delete(path);}for(const id of [...timelineWindows.keys()])if(id.startsWith('timeline:'+path+':')){timelineWindows.get(id)?.dispose?.();dock.entries.get(id)?.element.remove();dock.entries.delete(id);timelineWindows.delete(id);}
+}
 async function closeDocument(path){
   if(authoringBatchBusy)return notify('파일 묶음 저장을 마친 뒤 문서를 닫으세요.');
   if(running)return notify('실행을 종료한 뒤 문서를 닫으세요.');captureDocument();const doc=assetDocs.items.get(path);if(!doc)return;
   if(doc.dirty){const choice=await closeChoice(assetTitle(path));if(choice==='cancel')return;if(choice==='save'){try{await assetDocs.save(doc,(p,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path:p,text,expected})}));propagateMaterialFunctions([doc]);if(doc.dirty)return notify('저장 중 새 변경 사항이 생겼어요. 다시 저장한 뒤 닫으세요.');}catch(error){return notify('저장 실패: '+error.message);}}}
   const closingWorld=doc.kind==='scene'&&activeScenePath===path;let worldDoc=closingWorld?[...assetDocs.items.values()].filter(d=>d.kind==='scene'&&d!==doc).at(-1):null,worldSaved;
   if(closingWorld&&!worldDoc){try{worldSaved=JSON.parse(doc.saved);if(!validScene(worldSaved))throw Error('장면 저장 기준 검증 실패');}catch(error){return notify(error.message);}}
-  const componentId='components:'+path;dock.entries.get(componentId)?.dispose?.();dock.entries.get(componentId)?.element.remove();dock.entries.delete(componentId);const wasActive=assetDocs.active===path;assetDocs.close(path,true);const documentId='asset:'+path;dock.entries.get(documentId)?.dispose?.();documents.get(documentId)?.remove();documents.delete(documentId);dock.entries.delete(documentId);const pane=assetPanes.get(path);pane?.editor?.dispose?.();pane?.dispose?.();if(pane){pane.element.remove();dock.entries.delete(pane.id);assetPanes.delete(path);}for(const id of [...timelineWindows.keys()])if(id.startsWith('timeline:'+path+':')){timelineWindows.get(id)?.dispose?.();dock.entries.get(id)?.element.remove();dock.entries.delete(id);timelineWindows.delete(id);}
+  const wasActive=assetDocs.active===path;removeDocumentViews(path);
   if(closingWorld){worldDoc??=assetDocs.open(doc.path,'scene',worldSaved);installDocumentData(worldDoc);}
   if(wasActive){const next=assetDocs.active||[...assetDocs.items.keys()].at(-1);assetDocs.active=null;if(next)activateDocument(next);else{try{const data=doc.kind==='scene'?JSON.parse(doc.saved):await(await editorRequest(fileUrl(activeScenePath))).json();const d=assetDocs.open(activeScenePath,'scene',data);activateDocument(d.path);}catch(error){notify(error.message);}}}else renderDocumentTabs();dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;queueRecovery();
 }
@@ -1334,6 +1337,19 @@ async function automationAuthoringEdit(params,kind,edit){
   try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}
   return {path:doc.path,dirty:true,result,revision:await documentRevision(doc.data)};
 }
+async function openMaterialExtraction(doc,nodeIds,positions,ownerDocument){
+  const revision=await documentRevision(doc.data),dialog=ownerDocument.createElement('dialog');dialog.className='material-extract-dialog';dialog.innerHTML='<form method="dialog"><div class="dialog-heading"><h2>머테리얼 함수로 묶기</h2><button value="cancel" class="icon-button" aria-label="닫기">'+icon('close')+'</button></div><div class="bp-dialog-fields"><label>이름<input name="name" value="MF_NewFunction" maxlength="80" required pattern="[A-Za-z_가-힣][A-Za-z0-9_가-힣]*" aria-label="머테리얼 함수 이름"></label></div><div class="dialog-footer"><button value="cancel" formnovalidate>취소</button><button value="create" class="primary-button">묶기</button></div></form>';ownerDocument.body.append(dialog);
+  const name=await new Promise(resolve=>{dialog.addEventListener('close',()=>resolve(dialog.returnValue==='create'?dialog.querySelector('input').value:null),{once:true});dialog.querySelector('input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();dialog.querySelector('button[value=create]').click();}});dialog.showModal();dialog.querySelector('input').select();});dialog.remove();if(!name)return;
+  const fileName=name.startsWith('MF_')?name:'MF_'+name,targetPath=doc.path.slice(0,doc.path.lastIndexOf('/')+1)+fileName+'.hbmaterialfunction.json';return automationMaterialExtract({path:doc.path,expectedRevision:revision,nodeIds,positions,name:fileName,targetPath});
+}
+async function automationMaterialExtract(params){
+  const {doc}=await automationDocument(params,true);if(!materialAssetKinds.includes(doc.kind)||doc.kind==='materialinstance')throw Error('머테리얼 그래프 문서를 확인하세요.');
+  const result=extractMaterialFunction(doc.data,params.nodeIds,params.targetPath,params.name,params.positions||{}),[source,target]=await Promise.all([automationFile(doc.path),automationFile(params.targetPath)]);
+  if(target.exists||target.editorRevision!==null)throw Error('함수 파일이 이미 있어요. 다른 이름을 사용하세요.');
+  const drafts=new Map([[doc.path,result.data],[target.path,result.functionData]]);await resolveMaterialAsset(result.data,async path=>drafts.has(path)?clone(drafts.get(path)):JSON.parse(await(await editorRequest(fileUrl(path))).text()));await automationDocument(params,true);
+  const batch=await applyFileBatch({entries:[{path:source.path,expectedRevision:source.revision,expectedEditorRevision:params.expectedRevision,data:result.data},{path:target.path,expectedRevision:target.revision,data:result.functionData}],dryRun:params.dryRun});
+  return {...batch,path:doc.path,targetPath:target.path,callId:result.callId,functionData:result.functionData};
+}
 let authoringBatchBusy=false;
 const authoringBatches=new Map(); // ponytail: session Undo retains the existing 40 groups; durable file journals stay on disk.
 const batchConflict=message=>Object.assign(Error(message),{code:'REVISION_CONFLICT'});
@@ -1349,7 +1365,7 @@ async function prepareBatchViews(rows,side){
   return candidate;
 }
 function finishFileBatch(group,side,candidate,observed){
-  captureDocument();for(const row of group.rows){const doc=assetDocs.items.get(row.path),data=side==='after'?row.after:row.before;if(row.viewOnly||!doc||data===null)continue;
+  captureDocument();for(const row of group.rows){const doc=assetDocs.items.get(row.path),data=side==='after'?row.after:row.before;if(row.viewOnly||!doc)continue;if(data===null){removeDocumentViews(row.path);continue;}
     const before=observed.get(row.path);if(before?.doc===doc&&JSON.stringify(doc.data)===before.data)doc.data=clone(side==='after'?row.after:row.editorBefore??row.before);
     doc.saved=JSON.stringify(data);doc.dirty=JSON.stringify(doc.data)!==doc.saved;delete doc.view.nativeBuild;delete doc.view.nativeMetadata;delete doc.view.sourceModified;delete doc.view.diskConflict;diskModified.delete(row.path);
   }
@@ -1385,12 +1401,12 @@ async function applyFileBatch(params){
     const result=await(await editorRequest('/api/asset/batch',{method:'POST',body:JSON.stringify({entries})})).json();if(result.noChange)return result;await checkBatchCompletion(result,observed);
     const group={id:result.transaction,transaction:result.transaction,rows,undone:false};authoringBatches.set(group.id,group);if(authoringBatches.size>undoLimit)authoringBatches.delete(authoringBatches.keys().next().value);finishFileBatch(group,'after',candidate,observed);
     for(const row of rows){const doc=assetDocs.items.get(row.path);if(!observed.has(row.path)||doc?.data==null||JSON.stringify(doc.data)!==JSON.stringify(row.after))continue;doc.history.push({batch:group.id});if(doc.history.length>undoLimit)doc.history.shift();doc.future.splice(0);}
-    if(assetDocs.current){history=assetDocs.current.history;future=assetDocs.current.future;}log('AI 파일 묶음 저장: '+result.paths.join(', '));return {...result,documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};
+    if(assetDocs.current){history=assetDocs.current.history;future=assetDocs.current.future;}log('파일 묶음 저장: '+result.paths.join(', '));return {...result,documents:await Promise.all(rows.filter(row=>!row.viewOnly).map(async row=>({path:row.path,revision:row.after===null?null:await documentRevision(row.after)})))};
   }finally{authoringBatchBusy=false;}
 }
 async function replayFileBatch(id,redo=false,fromHistory=false){
   automationEditable();const group=authoringBatches.get(id);if(!group||group.undone!==redo)throw Error('되돌릴 파일 묶음을 확인하세요.');captureDocument();const observed=new Map();
-  for(const row of group.rows){const doc=assetDocs.items.get(row.path);if(!doc)continue;const expected=redo?row.editorBefore??row.before:row.after;if(JSON.stringify(doc.data)!==JSON.stringify(expected)||fromHistory&&(redo?doc.future:doc.history).at(-1)?.batch!==id)throw batchConflict('먼저 문서의 새 편집을 되돌리세요: '+row.path);observed.set(row.path,{doc,data:JSON.stringify(doc.data)});}
+  for(const row of group.rows){const doc=assetDocs.items.get(row.path);if(!doc)continue;const expected=redo?row.editorBefore??row.before:row.after;if(JSON.stringify(doc.data)!==JSON.stringify(expected)||fromHistory&&(redo?doc.future:doc.history).at(-1)?.batch!==id&&!(row.before===null&&(redo?doc.future:doc.history).length===0))throw batchConflict('먼저 문서의 새 편집을 되돌리세요: '+row.path);observed.set(row.path,{doc,data:JSON.stringify(doc.data)});}
   authoringBatchBusy=true;try{
     const side=redo?'after':'before',candidate=await prepareBatchViews(group.rows,side);automationEditable(false,true);captureDocument();for(const [path,before] of observed)if(assetDocs.items.get(path)!==before.doc||JSON.stringify(before.doc.data)!==before.data)throw batchConflict('되돌리기 중 문서가 변경됐어요: '+path);
     const result=await(await editorRequest('/api/asset/batch/undo',{method:'POST',body:JSON.stringify({transaction:group.transaction})})).json();try{await checkBatchCompletion(result,observed);}catch(error){if(error.restoredTransaction)group.transaction=error.restoredTransaction;throw error;}group.transaction=result.transaction;group.undone=!redo;finishFileBatch(group,side,candidate,observed);
@@ -1466,6 +1482,7 @@ const disconnectAutomation=connectAutomation({request:editorRequest,state:automa
   'document.patch':async params=>{const {doc}=await automationDocument(params,true),next=patchAsset(doc.kind,doc.data,params.operations);if(doc.kind==='blueprint'){await blueprintWorkspace.prepare(doc.path,next);await automationDocument(params,true);}if(params.dryRun)return {valid:true,revision:await documentRevision(next),data:next};activateDocument(doc.path);const previous=clone(doc.data),previousHistory=[...history],previousFuture=[...future],previousDirty=doc.dirty;remember();try{doc.data=next;installDocumentData(doc);changed();}catch(error){doc.data=previous;doc.dirty=previousDirty;history=doc.history=previousHistory;future=doc.future=previousFuture;try{installDocumentData(doc);}catch{}throw error;}log('AI 명령으로 에셋 수정: '+doc.path);return {path:doc.path,revision:await documentRevision(doc.data),dirty:true};},
   'document.save':async params=>{const {doc}=await automationDocument(params,true);activateDocument(doc.path);if(!await save())throw Error('저장 실패');return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'files.get':async({path})=>{const {expected,...file}=await automationFile(path);return file;},
+  'material.extract':automationMaterialExtract,
   'files.apply':applyFileBatch,
   'files.undo':({transaction})=>replayFileBatch(transaction),
   'files.redo':({transaction})=>replayFileBatch(transaction,true),

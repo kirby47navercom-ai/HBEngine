@@ -300,3 +300,10 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 
 
 077: 기존 Materials::SetFloat/materialFloat의 WebGL2 경로도 연결된 Float uniform을 갱신해 머테리얼을 유지한다. LayerParameterKey의 Layer/Blend 이름·instance/data 계약은 076 그대로다. 1000 writes·clone/검증·실제 에디터/배포·원본 보존은 [077](MATERIAL_UNIFORMS_077.md).
+
+
+## 머테리얼 함수 추출·정적 입력(078)
+
+`schema.material.functions.types`는 float/vec2/vec3/vec4/texture2d/staticBool/attributes를 공개한다. Texture Object→Sample의 textureObject 핀, Static Bool→Switch의 condition 핀을 사용한다. Static Switch의 valueType은 numeric 또는 동일 typed type이다. Bool instance/layer 값은 JSON boolean이다.
+
+`material.extract {path,expectedRevision,nodeIds,targetPath,name,positions?,dryRun?}`은 보호 root를 제외한 선택을 독립 MF 에셋으로 저장하고 호출로 교체한다. 현재 의존성/서명/순환 검사 후 기존 files.apply를 사용한다. 새 경로는 기존 파일을 덮어쓰지 않는다. dryRun/단일 Undo/Redo·생성 파일/tab·fan-out·literal 보존 계약과 실제 창은 [078](MATERIAL_TYPED_FUNCTIONS_078.md). 예시는 `tools/check-material-typed.mjs`/`tools/material-typed-window-actions.mjs`다.

@@ -1,0 +1,481 @@
+{
+  "id": "078",
+  "date": "2026-10-08",
+  "priorCommit": "885c879",
+  "feature": "Atomic selection extraction and typed Texture2D/StaticBool inputs with existing shader lowering and editor/AI contracts",
+  "sources": [
+    {
+      "id": "unreal-functions",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-functions-overview",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-functions-overview",
+      "status": 200,
+      "bytes": 111650,
+      "sha256": "3644d1a4540f533deb96df7b829d13a15c5c99f04f92b3bc1d85cc865077d359",
+      "readScope": "own complete technical article via web; linked references/media/source not read"
+    },
+    {
+      "id": "unity-extract",
+      "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Create-Sub-Graph.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Create-Sub-Graph.html",
+      "status": 200,
+      "bytes": 10100,
+      "sha256": "b84e446347dd905e67767b298e898db848303eb496df9974591a25a268f9a3af",
+      "readScope": "own complete technical article via web; linked articles/stage/source not read"
+    },
+    {
+      "id": "unity-properties",
+      "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Property-Types.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Property-Types.html",
+      "status": 200,
+      "bytes": 27917,
+      "sha256": "c0dda8c8d4b4913f885819733365b30bb2a4fbee01388f5c84e8f032a5324bbe",
+      "readScope": "common property controls and texture/bool property sections only"
+    }
+  ],
+  "wholeCorpusGate": false,
+  "linkedArticlesMediaAPISourceRead": false,
+  "windows": [
+    {
+      "kind": "editor-webgl2",
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-editor-BBInhr\\acceptance.json",
+      "sha256": "bb909565d276770b13e9f8bbc7e50dba1fd45b78f68cd8a90fa32c277a9c1c77",
+      "checkedFiles": {
+        "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+        "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+        "prototype/index.html": "c792254f3d726496a9d07cfbb89487e85abdd391587c428b83f77f1ff40d19b4",
+        "prototype/app.js": "8a411a083f2f95ae79fcea0fb3409107c0eefdf2c5ec7a80a5aa7c5ea1d717c7",
+        "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+        "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+        "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+        "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+        "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+        "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+        "tools/editor-automation.mjs": "4d42d516a2674be67d0f6745490cce28e1c6d64511bd2724c218d449b634052c",
+        "tools/check-gpu-editor.mjs": "43084adb9c6bd120e1e030f1c1dd6bf3160b449a61c1309b96fc3b676040acef",
+        "prototype/material-runtime.js": "804963fc003db3a59804a915cf703a3659327f5ca3ec4b140dde521e96e32f1e",
+        "prototype/material-editor.js": "f36c40e0e5f491958301b6464df16c4c2f396751b4b68243b8e403f6d2b549c6",
+        "prototype/asset-documents.js": "31c1defded3a705e09f1aefefbeb360619401c373375db086d0f83b98e8a42e3",
+        "prototype/gpu-materials.js": "4f76369287b7a2ec785126e0d235d30798f467dcce2f7bdd8e7c7ed0e9cb663d",
+        "prototype/scene-editor.css": "4dec508b5b85334ab4d14141a4ebd8bbd3282a71229672dc05babfa3206d9ce6",
+        "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+        "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+        "prototype/material-layers-ui.js": "00ce8533fee598a170335d2b85c75ad817f8eeeaa01a750fccf514a2527a76ef",
+        "prototype/asset-editor-ui.js": "860849f90d289b9b77194c3091ff52256dba0894568cdda6209df7800fcbeb61",
+        "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f",
+        "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+        "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b"
+      },
+      "allCheckedHashesMatchFinal": true,
+      "typedProof": {
+        "dryRun": true,
+        "protectedRoot": true,
+        "humanMenu": true,
+        "atomicSave": true,
+        "fanOut": true,
+        "literalPreserved": true,
+        "undoRedo": true,
+        "openedCreatedTabRemoved": true,
+        "ui": {
+          "texturePins": 3,
+          "boolPins": 3,
+          "textureFields": 1,
+          "boolFields": 1
+        },
+        "field": {
+          "type": "checkbox",
+          "checked": true
+        },
+        "restored": true
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "errors": [],
+      "serverClosed": true,
+      "originalsPreserved": true
+    },
+    {
+      "kind": "player-webgpu",
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-viFKGa\\acceptance.json",
+      "sha256": "4b305a3660142c5fe889b79f39d31ec475d8ea3a3e6cc57f171359ad7c4991aa",
+      "checkedFiles": {
+        "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+        "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+        "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+        "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+        "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+        "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+        "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+        "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+        "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+        "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+        "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+        "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+        "prototype/core-api.js": "4a20b3d6a55d185522a9ff87e6ea69e70a0fd0bd6160d6ffca28b515d8f6400a",
+        "prototype/gpu-materials.js": "4f76369287b7a2ec785126e0d235d30798f467dcce2f7bdd8e7c7ed0e9cb663d",
+        "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+        "prototype/material-runtime.js": "804963fc003db3a59804a915cf703a3659327f5ca3ec4b140dde521e96e32f1e",
+        "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+        "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+        "prototype/app.js": "8a411a083f2f95ae79fcea0fb3409107c0eefdf2c5ec7a80a5aa7c5ea1d717c7",
+        "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+        "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+        "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+        "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+        "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+        "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+        "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+        "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+        "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+        "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+        "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+        "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+        "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+        "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+        "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+        "tools/editor-automation.mjs": "4d42d516a2674be67d0f6745490cce28e1c6d64511bd2724c218d449b634052c",
+        "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b",
+        "tools/check-gpu-scene.mjs": "d4594df8a82c21f4ceb5822658cd139fb8a54e1841a46498b995d168f90b53d7",
+        "prototype/material-editor.js": "f36c40e0e5f491958301b6464df16c4c2f396751b4b68243b8e403f6d2b549c6",
+        "prototype/asset-documents.js": "31c1defded3a705e09f1aefefbeb360619401c373375db086d0f83b98e8a42e3",
+        "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+        "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+        "prototype/material-layers-ui.js": "00ce8533fee598a170335d2b85c75ad817f8eeeaa01a750fccf514a2527a76ef",
+        "prototype/asset-editor-ui.js": "860849f90d289b9b77194c3091ff52256dba0894568cdda6209df7800fcbeb61",
+        "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+      },
+      "allCheckedHashesMatchFinal": true,
+      "typedProof": {
+        "cases": [
+          {
+            "mode": "False",
+            "center": [
+              21,
+              29,
+              35,
+              255
+            ],
+            "stats": {
+              "red": 129600,
+              "cyan": 0,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 2,
+              "textures": 4
+            }
+          },
+          {
+            "mode": "True",
+            "center": [
+              21,
+              29,
+              35,
+              255
+            ],
+            "stats": {
+              "red": 0,
+              "cyan": 129600,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 2,
+              "textures": 5
+            }
+          },
+          {
+            "mode": "False",
+            "center": [
+              21,
+              29,
+              35,
+              255
+            ],
+            "stats": {
+              "red": 129600,
+              "cyan": 0,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 2,
+              "textures": 4
+            }
+          },
+          {
+            "mode": "True",
+            "center": [
+              21,
+              29,
+              35,
+              255
+            ],
+            "stats": {
+              "red": 0,
+              "cyan": 129600,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 2,
+              "textures": 5
+            }
+          }
+        ],
+        "nativePixel": [
+          21,
+          29,
+          35,
+          255
+        ],
+        "nativeColors": {
+          "red": 129600,
+          "cyan": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "easyCppSetMaterial": true,
+        "staticPruned": true,
+        "textureSampled": true,
+        "instanceOverride": true,
+        "repeatResourcesStable": true
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "errors": [],
+      "serverClosed": true,
+      "originalsPreserved": true
+    },
+    {
+      "kind": "player-webgl2",
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-PnhjVX\\acceptance.json",
+      "sha256": "4fd5d3333d9ad1306f6902a7c4126e1e5842e7ff58d99cc344c0116be3cd87d0",
+      "checkedFiles": {
+        "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+        "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+        "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+        "prototype/projectile-rendering.js": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42",
+        "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+        "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+        "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+        "prototype/two-d-shadows.js": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9",
+        "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+        "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+        "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+        "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+        "prototype/core-api.js": "4a20b3d6a55d185522a9ff87e6ea69e70a0fd0bd6160d6ffca28b515d8f6400a",
+        "prototype/gpu-materials.js": "4f76369287b7a2ec785126e0d235d30798f467dcce2f7bdd8e7c7ed0e9cb663d",
+        "prototype/gpu-environment.js": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290",
+        "prototype/material-runtime.js": "804963fc003db3a59804a915cf703a3659327f5ca3ec4b140dde521e96e32f1e",
+        "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+        "prototype/bloom-rendering.js": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a",
+        "prototype/app.js": "8a411a083f2f95ae79fcea0fb3409107c0eefdf2c5ec7a80a5aa7c5ea1d717c7",
+        "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+        "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+        "prototype/game-renderer.js": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc",
+        "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+        "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+        "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+        "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+        "prototype/player.js": "1c763e35d5f4cb60223cff1efdadcfe4ddb35a0040d0ee5850a60696962ceeae",
+        "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+        "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+        "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+        "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+        "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+        "tools/player-server.mjs": "42292acd7352c7ecf919429ec25fee5971ecc083051f1948ca83e191d3868406",
+        "tools/build-game.mjs": "40d086b9e9ce3ab0762cd3b3fbeca9df7fae7df9b7ef2a9f6f35f8d452a3e66c",
+        "tools/editor-automation.mjs": "4d42d516a2674be67d0f6745490cce28e1c6d64511bd2724c218d449b634052c",
+        "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b",
+        "tools/check-gpu-scene.mjs": "d4594df8a82c21f4ceb5822658cd139fb8a54e1841a46498b995d168f90b53d7",
+        "prototype/material-editor.js": "f36c40e0e5f491958301b6464df16c4c2f396751b4b68243b8e403f6d2b549c6",
+        "prototype/asset-documents.js": "31c1defded3a705e09f1aefefbeb360619401c373375db086d0f83b98e8a42e3",
+        "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+        "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+        "prototype/material-layers-ui.js": "00ce8533fee598a170335d2b85c75ad817f8eeeaa01a750fccf514a2527a76ef",
+        "prototype/asset-editor-ui.js": "860849f90d289b9b77194c3091ff52256dba0894568cdda6209df7800fcbeb61",
+        "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+      },
+      "allCheckedHashesMatchFinal": true,
+      "typedProof": {
+        "cases": [
+          {
+            "mode": "False",
+            "center": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "stats": {
+              "red": 129600,
+              "cyan": 0,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 1
+            }
+          },
+          {
+            "mode": "True",
+            "center": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "stats": {
+              "red": 0,
+              "cyan": 129600,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 2
+            }
+          },
+          {
+            "mode": "False",
+            "center": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "stats": {
+              "red": 129600,
+              "cyan": 0,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 1
+            }
+          },
+          {
+            "mode": "True",
+            "center": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "stats": {
+              "red": 0,
+              "cyan": 129600,
+              "width": 1280,
+              "height": 720
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 2
+            }
+          }
+        ],
+        "nativePixel": [
+          39,
+          47,
+          52,
+          255
+        ],
+        "nativeColors": {
+          "red": 129600,
+          "cyan": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "easyCppSetMaterial": true,
+        "staticPruned": true,
+        "textureSampled": true,
+        "instanceOverride": true,
+        "repeatResourcesStable": true
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "errors": [],
+      "serverClosed": true,
+      "originalsPreserved": true
+    }
+  ],
+  "coreLog": {
+    "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\material-typed-core-final-078.log",
+    "sha256": "484b494337aed9b76c414136c0e1be52af8a247da8f7229f7fc8511a10eeba48"
+  },
+  "acceptanceLog": {
+    "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\material-typed-acceptance-078.log",
+    "sha256": "6a7b0e0c7aed0610d83cd3025974e3ab235b6396baab258ab3398d66326a41f5"
+  },
+  "testFileHashes": {
+    "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+    "tools/check-asset-transactions.mjs": "f8ce826e77ea01ae9d52a09582f35a4fea3af4deb7b9841246ecf41cbb0d1a7c",
+    "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2"
+  },
+  "userMarkdownAppend": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "backup": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\material-typed-md-078-prefix-0.bin",
+      "prefixBytes": 185434,
+      "prefixSha256": "03eb7b2e912c6d30d60302647d79d34b40c53b06308818e8b9477c30abae21d9",
+      "afterSha256": "7584daaa933fa6b1b0050878ef0bbf69f9ae3981d040577cf8f732757f555943",
+      "originalPrefixUnchanged": true
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "backup": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\material-typed-md-078-prefix-1.bin",
+      "prefixBytes": 71741,
+      "prefixSha256": "2df286b4da93e45a98c825da4fc184836770baa5d2082447378ca620d440ac73",
+      "afterSha256": "1852237ac6e82fd83def1f7b33b4f571396ef0c741aaf038921a7fe68542ad86",
+      "originalPrefixUnchanged": true
+    }
+  ],
+  "earlierFailures": [
+    {
+      "case": "Initial bool graph literal guard",
+      "fixed": "Preliminary graph validation admits typed bool/resource values; per-pin typed validation remains strict"
+    },
+    {
+      "case": "VM transaction regression harness missing 076 material refresh globals",
+      "fixed": "Harness uses production dependencies, no-op UI hooks and real files; final regression passed"
+    },
+    {
+      "path": "native/build/gpu-editor-KrDUMh/failure.json",
+      "case": "Undo after later opening created function tab",
+      "fixed": "Untouched post-creation tab can follow grouped creation Undo; edited data still guarded"
+    },
+    {
+      "path": "native/build/gpu-scene-J2RC63/failure.json",
+      "case": "Center pixel sampled background instead of rendered cube",
+      "fixed": "Count the actual rendered color region, retain screenshots and center sample separately"
+    },
+    {
+      "paths": [
+        "native/build/gpu-scene-YnRGSz/failure.json",
+        "native/build/gpu-scene-afzykn/failure.json"
+      ],
+      "case": "Two-times RGB ratio ignored PBR/tone mapping of cyan",
+      "fixed": "Controlled cyan SVG and >24 channel difference across >1000 pixels; white fallback cannot satisfy cyan test; final129600 measured pixels"
+    }
+  ],
+  "installedUpdatePending": true,
+  "installedVersion": "7df780dd9a47cf5b",
+  "fpsClaim": false,
+  "physicalMobileVerified": false,
+  "remaining": [
+    "Cube/Array/Volume/External texture ports",
+    "individual expression previews/thumbnails",
+    "height/influence/triplanar/detail/displacement; further shader domains/GI/lightmaps/reflection/postprocess",
+    "native DX11/HLSL main renderer",
+    "all preceding 051 cumulative authoring/runtime/editor/platform/performance targets"
+  ]
+}

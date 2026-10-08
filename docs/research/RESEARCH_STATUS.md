@@ -276,3 +276,8 @@ UE Using Material Layers/Material Attributes Expressions, Unity HDRP17.0.4 Layer
 ## 077 — Float uniform
 
 Three Material의 needsUpdate/version·hook/cacheKey·clone/dispose API 구역과 Uniform 자체 기술 본문, 설치된 0.180.0 Material/Uniform/WebGLRenderer의 관련 소스를 대조했다. 나머지 소스/API와 전체 Unity/Unreal corpus 미승격. 구현·실제 GL Editor/배포와 원문/SHA 범위는 [077](../MATERIAL_UNIFORMS_077.md).
+
+
+## 078 — 머테리얼 함수 추출·정적 입력
+
+Unreal5.8 함수 Overview 자체 기술 본문과 Unity17.0.4 Create a Sub Graph 자체 본문 전체를 읽었다. Property Types는 공통/Boolean/Texture2D 구역만 읽었다. Unity Boolean(float)과 Unreal StaticBool(compile time)을 구분했다. 원문/SHA·미독·구현/실제 창과 이전 실패는 [078](../MATERIAL_TYPED_FUNCTIONS_078.md). 전체 corpus gate false 유지.

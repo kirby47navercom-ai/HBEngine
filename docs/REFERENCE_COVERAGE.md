@@ -253,3 +253,8 @@ UE Using Material Layers/Material Attributes Expressions 및 Unity HDRP17.0.4 La
 ## 077 — Float uniform·인스턴스 레이어 배치
 
 Three Material 관련 API/Uniform 자체 본문과 설치 r180의 uniform upload/종료 구역을 대조해 WebGL2 재생성 비용을 줄였다. 선택 구역 확인은 전체 dependency/Unity/Unreal corpus 분석이 아니다. 실제 Editor/Player·원본·자원 보존은 [077](MATERIAL_UNIFORMS_077.md).
+
+
+## 078 — 머테리얼 함수 추출·Texture2D/StaticBool
+
+Unreal5.8 Material Functions Overview 자체 기술 본문 전체, Unity17.0.4 Create a Sub Graph 자체 본문 전체와 Property Types 공통/Boolean/Texture2D 구역만 읽었다. typed 객체/정적 분기·선택 추출을 기존 graph/compiler/파일 transaction에 연결했다. 연결 API/영상/소스 및 전체 corpus 미승격. [실제 창/남은 세부](MATERIAL_TYPED_FUNCTIONS_078.md).

@@ -1,6 +1,6 @@
 import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3,Vector4,NoColorSpace,RepeatWrapping,ClampToEdgeWrapping,DoubleSide,FrontSide} from 'three/webgpu';
 import * as T from 'three/tsl';
-import {materialParameterKey,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs} from './material-runtime.js';
+import {materialParameterKey,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs} from './material-runtime.js';
 
 const specs=new Map(materialCatalog.map(s=>[s.key,s]));
 const vector=(value,size)=>Array.from({length:size},(_,i)=>Array.isArray(value)?value[i]??value[0]:value);
@@ -12,7 +12,7 @@ const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));r
 
 // The same persisted graph, pin types, defaults and validation feed GLSL and TSL.
 export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{}}={}){
-  data=resolveMaterialAttributes(structuredClone(data));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
+  data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
   const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textures=[],loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
   const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...value),type);
   const surfaceValue=input=>{const raw=surface[input.key];if(typeof raw==='number'){const u=uniformValue(raw,'float');surfaceUniforms.set(input.key,u);return u;}return valueNode(raw,input.type);};
@@ -24,7 +24,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       const value=data.parameters?.[materialParameterKey(node)]??node.value??.5;if(key.endsWith('Parameter')){let list=parameters.get(materialParameterKey(node));if(!list){list=[];parameters.set(materialParameterKey(node),list);}code=uniformValue(value,type);list.push(code);}else code=valueNode(value,type);
     }else if(key==='uv')code=T.uv();else if(key==='time')code=clock;else if(key==='worldPosition')code=T.positionWorld;else if(key==='worldNormal')code=T.normalWorld.normalize();else if(key==='viewDirection')code=T.cameraPosition.sub(T.positionWorld).normalize();
     else{
-      const args={};for(const input of specs.get(key).inputs){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
+      const args={};for(const input of specs.get(key).inputs.filter(p=>p.id!=='textureObject')){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
         if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=T.cameraPosition.sub(T.positionWorld).normalize();else if(input.id==='uv'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
       }
       const {a,b,value:v}=args;

@@ -89,3 +89,6 @@
 
 
 - 077: WebGL2 Float uniform/프로그램 키·레거시/표면/scoped 값·clone/수명과 인스턴스 레이어 배치/15px 아이콘을 연결했다. 1000쓰기로 ID/version/program 보존, 최종 GL EditorGVDL8F/releasePlayerQoBTLQ 실제 C++/BP 픽셀·동일 머테리얼/지오메트리/텍스처·원본/SHA·오류0/종료0/서버 정리 통과. [상세](MATERIAL_UNIFORMS_077.md). 0764d6b235 푸시 완료; 전체 선행/설치 대기 유지.
+
+
+- 078: 선택 노드→독립 머테리얼 함수·typed texture2d/staticBool·정적 shader branch·MI/Layer·사람/AI 묶음 저장/Undo·생성 탭 수명·UI 배치를 연결했다. 최종 EditorBBInhr/GPUPlayerviFKGa/GLPlayerPnhjVX 실제129600픽셀·C++ 적용·sampler 차이/반복 자원·원본/SHA·오류0/exit0/서버 종료 통과. [상세](MATERIAL_TYPED_FUNCTIONS_078.md). 077885c879 푸시 완료; 전체 선행/설치 대기와 추가 포트·개별 preview 및 분야별 누적 세부 유지.
