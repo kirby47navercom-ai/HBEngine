@@ -440,6 +440,8 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dIsEnabled", KoreanName="2D IK 솔버 활성화 조회", Category="2D IK") static bool IsEnabled(Actor* target,const std::string& solver);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetMasterWeight", KoreanName="2D IK 전체 가중치 지정", Category="2D IK") static void SetMasterWeight(Actor* target,float value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="ik2dGetMasterWeight", KoreanName="2D IK 전체 가중치 조회", Category="2D IK") static float GetMasterWeight(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dSetRotationLimit", KoreanName="2D IK 관절 회전 제한 지정", Category="2D IK") static void SetRotationLimit(Actor* target,const std::string& solver,const std::string& bone,float minimum,float maximum);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="ik2dClearRotationLimit", KoreanName="2D IK 관절 회전 제한 해제", Category="2D IK") static void ClearRotationLimit(Actor* target,const std::string& solver,const std::string& bone);
 };
 HB_CLASS()
 class Montage : public Library {

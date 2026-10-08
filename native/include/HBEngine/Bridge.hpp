@@ -429,6 +429,8 @@ inline void IK2D::SetEnabled(Actor* target,const std::string& solver,bool value)
 inline bool IK2D::IsEnabled(Actor* target,const std::string& solver){return bridgeIKSolver(target,solver).at("enabled").get<bool>();}
 inline void IK2D::SetMasterWeight(Actor* target,float value){engineCommand("ik2dSetMasterWeight",{{"target",bridgeId(target)},{"value",value}});gameplayField(target,"spriteSkin")["ik"]["weight"]=Json(value);}
 inline float IK2D::GetMasterWeight(Actor* target){return gameplayField(target,"spriteSkin").at("ik").at("weight").get<float>();}
+inline void IK2D::SetRotationLimit(Actor* target,const std::string& solver,const std::string& bone,float minimum,float maximum){if(!std::isfinite(minimum)||!std::isfinite(maximum)||minimum<-180||maximum>180||minimum>maximum)throw std::runtime_error("2D IK rotation limit must be ordered within -180..180");engineCommand("ik2dSetRotationLimit",{{"target",bridgeId(target)},{"solver",solver},{"bone",bone},{"minimum",minimum},{"maximum",maximum}});}
+inline void IK2D::ClearRotationLimit(Actor* target,const std::string& solver,const std::string& bone){engineCommand("ik2dClearRotationLimit",{{"target",bridgeId(target)},{"solver",solver},{"bone",bone}});}
 inline void Montage::Pause(Actor* target,bool paused){engineCommand("montagePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void Montage::JumpToSection(Actor* target,const std::string& section){engineCommand("montageJump",{{"target",bridgeId(target)},{"section",section}});}
 inline void Montage::SetNextSection(Actor* target,const std::string& section,const std::string& next){engineCommand("montageNext",{{"target",bridgeId(target)},{"section",section},{"next",next}});}

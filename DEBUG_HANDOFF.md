@@ -629,3 +629,8 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 
 
 - 2026-10-07 사용자 설치 갱신(044/041/042/043 유지): sourcee8c34ae/bundle51cf0713e445a496, C:\Users\kirby\HBEngine\Versions\51cf0713e445a496\HBEngine.exe. 1796파일/8변경SHA·최종SDK SHA와 물리production2SHA가 일치해요. 기존533b2b30a45cf205 설치/사용자창·프로필을 보존했고 바로가기/HKCU 연결이 새경로와 같아요. 다음 실행부터 C++ 질의 인덱스 개선과 개수 제한 제거/AI 묶음 저장이 적용돼요. SDK 변경은 기존 빌드해시의 입력이므로 새 사용자 C++ 빌드에 반영돼요. 증거 native/build/query-world-user-install-044.json. 사용자 게임/기존 수출본은 덮어쓰지 않았고 새 모바일 패키지/실기기 검사는 실행하지 않았어요.
+
+
+## 074 — 2D 관절 회전 제한
+
+2D 제한은 bind 로컬Z 대비 -180..180, 순서 min≤max·주기상 가까운 끝점, 양수혼합 뒤 경계/0weight입력보존이다. Limb는 해석식+제약CCD, FABRIK는 전방투영, CCD는 관절단계제약. Editor0gneJY 실패는 솔버선택 상태에 bone입력을 찾은 harness원인; arm선택 후 최종fszJTj/PlayerTt6Pda 통과. 원본/제품 SHA/수명 정리·코어와 실제C++ 회귀 통과. 전체 FPS/RAM/설치 미승격.

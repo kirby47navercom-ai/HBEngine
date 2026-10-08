@@ -1,0 +1,123 @@
+{
+  "id": "074",
+  "date": "2026-10-08",
+  "priorCommit": "b71eed0",
+  "feature": "2D bind-relative named-ID angular constraints for three solvers, editor/gizmos and shared BP/C++",
+  "sources": [
+    {
+      "id": "unity-2dik",
+      "url": "https://docs.unity3d.com/Packages/com.unity.2d.animation@13.0/manual/2DIK.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.2d.animation@13.0/manual/2DIK.html",
+      "status": 200,
+      "bytes": 23195,
+      "sha256": "2b4fbdfec24b9d04698f3a5d5a019804bfa1ffe0c785ae5c672ed39722c5c5bc"
+    },
+    {
+      "id": "unity-ccd",
+      "url": "https://docs.unity3d.com/Packages/com.unity.2d.animation@13.0/api/UnityEngine.U2D.IK.CCDSolver2D.html",
+      "finalURL": "https://docs.unity3d.com/Packages/com.unity.2d.animation@13.0/api/UnityEngine.U2D.IK.CCDSolver2D.html",
+      "status": 200,
+      "bytes": 44014,
+      "sha256": "0463869a4b252725a19e390ba8c65af778636168a97d57d5afe4c15c17ccad21"
+    }
+  ],
+  "reading": {
+    "unityManual": "own complete technical article reread; links/media/implementation unread",
+    "unityCCD": "own Properties and Methods reread; inherited APIs and source implementation unread",
+    "wholeCorpusGate": false,
+    "newDiscovery": 0
+  },
+  "validation": {
+    "windows": {
+      "editor": {
+        "directory": "native\\build\\sprite-ik-limits-editor-fszJTj",
+        "acceptanceSha256": "cda37857ce62f6b5f64f991fbc51a53862955825367a01b0c6aeadb2dc03788b",
+        "assertionsSha256": "abd0d44f73d995e62c69a0ba30eaba1c04b3663ef228a4640998af599de1b166",
+        "checkedFiles": {
+          "prototype/ik2d-assets.js": "bbec053c21ca890d5269c43e9728f94e87d84df134e8db04e5481446de561707",
+          "prototype/sprite-rig-ik.js": "e836177addcd7472c1c22ad4e8261805ca8048068d47bd0d257196ff0dd0710e",
+          "prototype/sprite-rig-ik-editor.js": "657acea8888de3cc8b1931ea6c4ccdb002e724f94171413ad9598987b5d1b58c",
+          "prototype/sprite-rig-editor.js": "c9a33b3688efcafa8f2b8f26dff5725b619d8769a7363f0d76baeafa60761da8",
+          "prototype/sprite-rig-editor.css": "a1f094d35c3275f6420d03717f3703011f8e0d69b80960d9f5d656605b8e982f",
+          "prototype/engine-services.js": "cddd4d970e76a4e5921a2015fe7cd4b6d0040e6bace896477553bc2ec0fc0be8",
+          "native/include/HBEngine/Game.hpp": "719cf68df1ad9ca43d3d97d3520b35046daecbc8ea734ea0a7bbe97cf24d0490",
+          "native/include/HBEngine/Bridge.hpp": "0b42d2a92255399f4fc6a88a2dea86e0757e88d3c08de37dbeddd07bd692fa16",
+          "tools/editor-automation.mjs": "3a73e6314d2d5aa079b0898f8513ddb2681dc47f10fc40b8d8d7bf47a5b29a8a",
+          "tools/check-sprite-rig-window.mjs": "ceb745947af70a8a6f22d0b8377b326385de2e44fcd22885e956bbc3aa8a24d8"
+        },
+        "ok": true,
+        "errors": 0,
+        "originalPreserved": true,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "pixels": null
+      },
+      "player": {
+        "directory": "native\\build\\sprite-ik-limits-player-Tt6Pda",
+        "acceptanceSha256": "27c91e5d5fd39ae5aee14ed00b25a55aca8c330e83da1b63586df717e05dfa25",
+        "assertionsSha256": "c67372c0cd7a1fa237f03cfd4c93c64daa096c71c38dba56b6dcf97e0235b4a8",
+        "checkedFiles": {
+          "prototype/ik2d-assets.js": "bbec053c21ca890d5269c43e9728f94e87d84df134e8db04e5481446de561707",
+          "prototype/sprite-rig-ik.js": "e836177addcd7472c1c22ad4e8261805ca8048068d47bd0d257196ff0dd0710e",
+          "prototype/sprite-rig-ik-editor.js": "657acea8888de3cc8b1931ea6c4ccdb002e724f94171413ad9598987b5d1b58c",
+          "prototype/sprite-rig-editor.js": "c9a33b3688efcafa8f2b8f26dff5725b619d8769a7363f0d76baeafa60761da8",
+          "prototype/sprite-rig-editor.css": "a1f094d35c3275f6420d03717f3703011f8e0d69b80960d9f5d656605b8e982f",
+          "prototype/engine-services.js": "cddd4d970e76a4e5921a2015fe7cd4b6d0040e6bace896477553bc2ec0fc0be8",
+          "native/include/HBEngine/Game.hpp": "719cf68df1ad9ca43d3d97d3520b35046daecbc8ea734ea0a7bbe97cf24d0490",
+          "native/include/HBEngine/Bridge.hpp": "0b42d2a92255399f4fc6a88a2dea86e0757e88d3c08de37dbeddd07bd692fa16",
+          "tools/editor-automation.mjs": "3a73e6314d2d5aa079b0898f8513ddb2681dc47f10fc40b8d8d7bf47a5b29a8a",
+          "tools/check-sprite-rig-window.mjs": "ceb745947af70a8a6f22d0b8377b326385de2e44fcd22885e956bbc3aa8a24d8"
+        },
+        "ok": true,
+        "errors": 0,
+        "originalPreserved": true,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "pixels": {
+          "count": 4704,
+          "width": 1280,
+          "height": 720
+        }
+      }
+    },
+    "coreLog": "native/build/ik2d-limits-core-074.log",
+    "coreLogSha256": "05f9ec1bef58d44c849113fb792cd17a1b3923dad0a4fd7a6b61c3c5ec6ea46d",
+    "counts": {
+      "blueprint": 713,
+      "coreApi": 289,
+      "serviceApi": 339,
+      "cppConnected": 628
+    },
+    "earlierFailure": {
+      "directory": "native/build/sprite-ik-limits-editor-0gneJY",
+      "cause": "harness queried bone property after selecting solver; fixed selecting arm before runtime property assertion",
+      "runtimeExceptions": 0
+    }
+  },
+  "installChanged": false,
+  "fpsRamMobilePromoted": false,
+  "userMdAppend": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "beforeBytes": 179187,
+      "beforeSha256": "1774bbf263d22c06620379c301811aead606659eef395cba5e76c674c5c16cac",
+      "afterBytes": 179828,
+      "afterSha256": "1c4f62f017126f014c0a6751967b5b8eb87cf76d8c539fe197032eb919aa960d",
+      "entirePriorPrefixPreserved": true
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "beforeBytes": 65494,
+      "beforeSha256": "aea8bf203fa8a58b79a13f3a54f02e68d704eaa6d9cee5ceaaf90c56b8824f91",
+      "afterBytes": 66135,
+      "afterSha256": "52513525f49af9ddf7d66ce2daa0c0912903387925097ae91e80646eef021ab1",
+      "entirePriorPrefixPreserved": true
+    }
+  ]
+}

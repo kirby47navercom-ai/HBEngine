@@ -960,3 +960,8 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 
 
 - 2026-10-07 사용자 설치 갱신(044/041/042/043 유지): sourcee8c34ae/bundle51cf0713e445a496, C:\Users\kirby\HBEngine\Versions\51cf0713e445a496\HBEngine.exe. 1796파일/8변경SHA·최종SDK SHA와 물리production2SHA가 일치해요. 기존533b2b30a45cf205 설치/사용자창·프로필을 보존했고 바로가기/HKCU 연결이 새경로와 같아요. 다음 실행부터 C++ 질의 인덱스 개선과 개수 제한 제거/AI 묶음 저장이 적용돼요. SDK 변경은 기존 빌드해시의 입력이므로 새 사용자 C++ 빌드에 반영돼요. 증거 native/build/query-world-user-install-044.json. 사용자 게임/기존 수출본은 덮어쓰지 않았고 새 모바일 패키지/실기기 검사는 실행하지 않았어요.
+
+
+## 074 — 2D 관절 회전 제한
+
+세2D IK bind 기준 ID 최소/최대·혼합/잠금/길이 보존·UI/범위기즈모·SDK/BP2·AI를 구현했다. 실제 EditorfszJTj/releasePlayerTt6Pda·코어/3D/리타게팅/기존실제C++·713 BP/628SDK 연결 통과, 원본/오류0/종료0/서버 정리/제품 SHA 일치. docs/2D_IK_CONSTRAINTS_074.md와 증거 JSON을 참조. 기존 설치/프로필/원본 불변. 전체051/추가목표·전체corpus·FPS/RAM 미완료를 유지하며 다음 머테리얼 함수·레이어 등 누적 세부를 계속한다.

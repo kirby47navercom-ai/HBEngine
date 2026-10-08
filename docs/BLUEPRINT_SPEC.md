@@ -342,3 +342,8 @@ ParticleSystem의 기존 여섯 sortMode와 C++/BP Projectiles는 GPU draw 경�
 
 
 2026-10-08 접촉 수명/Stay 후속: Overlap Stay·Collision Stay·Collision Exit는 같은 카탈로그/AI schema와 Collider 상세에서 생성하고 대상 컴포넌트를 선택한다. 고정 물리 dt를 실제 사용자 C++ float에 전달하며 화면 fallback 중복·수면 solid Stay를 막는다. 삭제/풀 반환 owner를 호출하지 않고 제거된 상대는 null, 재사용 바인딩은 새 수명으로 처리한다. 마지막 HitResult/수신자 법선을 보존하는 solid Exit와 실제 Rapier2D/3D 및 비배치=배치 검증은 [064](research/CONTACT_LIFETIME_064.md)에 있다. 기존 Event Hit의 첫 접촉 계약과 자료형 검증을 유지하며 UE 전체 Hit/Unity Collision 동등성은 주장하지 않는다.
+
+
+## 074 — 2D 관절 회전 제한
+
+IK2D SetRotationLimit/ClearRotationLimit 두 SDK 선언에서 같은 BP 서비스를 생성한다. 안정적 뼈 ID·bind 상대 도 범위·공용 검증·실제 잠금/해제와 작성/Undo/dryRun은 [074](2D_IK_CONSTRAINTS_074.md). BP713·공용C++628(core289/service339) 검사 통과, 전체 선행·설치 대기 유지.

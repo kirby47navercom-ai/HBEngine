@@ -39,3 +39,8 @@ schema.spriteRig.ik는 실제 종류·한도·관절 의미·좌표·컴포넌�
 `test:sprite-ik-editor-window`는 고유 임시 프로젝트/프로필/포트의 화면 밖 비활성 Editor에서 목표 물리 드래그·사람 솔버 생성·AI 생성/재정렬/dryRun·Undo·저장·배치·시작 위치/HUD·실행 중 실제 포즈·공용 BP/C++·원본 보존·정상 종료/서버 정리를 검사해요. `test:sprite-ik-player-window`는 실제 release Game.exe와 같은 프로젝트의 headless 결과를 대조해요. 최종 Editor `native/build/sprite-ik-editor-wbOkUc`, release Player `native/build/sprite-ik-player-jYGbhc`가 통과했어요. 양쪽 오류 배열은 비었고 원본 보존·exit0·서버 종료를 확인한 뒤 acceptance.json을 기록했어요. 실제 PNG의 한글 HUD와 변형 메시를 확인했고 Player GPU에서 마젠타 픽셀4704개를 읽었어요. 코어 sprite-ik와 sprite-rig-WRn0j7, main545·API 생성 대조·integration·runtime·시작 상태 회귀도 통과했어요. 사용자 설치본/게임 원본/창은 변경하지 않아요.
 
 이 기능 뒤에도 2D 조명/그림자·입자 마스크·타일 충돌, 상태/혼합/동기화 애니메이션·몽타주, 머테리얼·월드·네이티브 렌더·게임 프레임워크·C++·모바일/배포·성능을 포함한 전체 누적 작업을 유지해요.
+
+
+## 074 — 2D 관절 회전 제한
+
+세 솔버에 바인드 로컬 Z 최소/최대·관절 잠금·양수 혼합 뒤 제한, ID 기반 작성/기즈모/Undo·공용 SDK/BP2·AI 계약을 추가했다. 이전 문서의 관절 각도 한계 미제공 상태를 이 범위에서 대체한다. Unity의 목표 회전 고정과 분리하며 계산의 상세와 실제 Editor/release Player 증거는 [074](2D_IK_CONSTRAINTS_074.md)에 있다. 기존 계산 한도는 유지하고 전체 엔진/FPS/모바일 판정은 바꾸지 않는다.

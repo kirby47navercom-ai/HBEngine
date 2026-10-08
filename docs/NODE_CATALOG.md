@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **711개**, 실제 공통 C++ API **626개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **713개**, 실제 공통 C++ API **628개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -57,7 +57,7 @@
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
-| 2D IK | 12 | 12 |
+| 2D IK | 14 | 14 |
 | 몽타주 | 13 | 13 |
 | 시퀀스 | 5 | 5 |
 | AI 내비게이션 | 4 | 4 |
@@ -987,6 +987,8 @@
 | ik2dIsEnabled | Is Enabled / 2D IK 솔버 활성화 조회 | target: object, solver: string | return: bool | hb::IK2D::IsEnabled | 공통 C++ + VM |
 | ik2dSetMasterWeight | Set Master Weight / 2D IK 전체 가중치 지정 | exec: exec, target: object, value: float | then: exec | hb::IK2D::SetMasterWeight | 공통 C++ + VM |
 | ik2dGetMasterWeight | Get Master Weight / 2D IK 전체 가중치 조회 | target: object | return: float | hb::IK2D::GetMasterWeight | 공통 C++ + VM |
+| ik2dSetRotationLimit | Set Rotation Limit / 2D IK 관절 회전 제한 지정 | exec: exec, target: object, solver: string, bone: string, minimum: float, maximum: float | then: exec | hb::IK2D::SetRotationLimit | 공통 C++ + VM |
+| ik2dClearRotationLimit | Clear Rotation Limit / 2D IK 관절 회전 제한 해제 | exec: exec, target: object, solver: string, bone: string | then: exec | hb::IK2D::ClearRotationLimit | 공통 C++ + VM |
 
 ## 몽타주
 
