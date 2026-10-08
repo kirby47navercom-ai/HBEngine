@@ -263,3 +263,7 @@ Unreal5.8 Material Functions Overview 자체 기술 본문 전체, Unity17.0.4 C
 ## 079 — expression 미리보기
 
 UE5.8 Previewing and Applying와 Unity ShaderGraph17.0.4 Main Preview/Preview Node 자체 기술 본문 전체(Generated Code 포함)를 읽었다. linked API/영상/소스/전체 corpus 미승격. 노드·출력 선택/종료와 입력 불변 흐름을 적용했고 메시/환경/Realtime 설명은 다음 세부로 유지한다. [실제 범위·GL/GPU 증거](MATERIAL_PREVIEW_079.md).
+
+## 080 — 미리보기 장면
+
+079의 UE5.8 Previewing/Main Preview 직접 읽기를 재사용하고 Unity17.0.4 Preview Mode Control 자체 기술 본문 전체를 읽었다. explicit 2D/3D와 자동 Inherit를 구분한다. 메시/모델·환경/조명·Realtime·공용 카메라/AI와 최종 GL/GPU 증거는 [080](MATERIAL_PREVIEW_SCENE_080.md). 연결 본문/소스·전체 corpus는 미승격.

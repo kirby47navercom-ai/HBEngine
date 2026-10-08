@@ -81,7 +81,7 @@ export class ViewportControls extends EventDispatcher{
   _pointerDown(e){
     if(!this.enabled||e.button>2||editable(e.target)||this.options.shouldHandle?.(e)===false)return;e.preventDefault();this.domElement.focus?.({preventScroll:true});this._shift=e.shiftKey;
     if(this._gesture){const g=this._gesture;if(e.pointerId!==g.id)return;if(g.marquee&&((e.buttons&3)===3||e.buttons&4)){if(g.moved)this._marqueeEvent(e,'cancel');g.marquee=null;}g.buttons=e.buttons;g.x=e.clientX;g.y=e.clientY;return;}
-    const marquee=this.camera.isOrthographicCamera&&!e.altKey&&(e.button===0||e.button===2&&e.ctrlKey)?(e.ctrlKey&&e.button===2?'subtract':e.shiftKey?'add':'replace'):null;
+    const marquee=this.camera.isOrthographicCamera&&!this.options.orbitOnLeftDrag&&!e.altKey&&(e.button===0||e.button===2&&e.ctrlKey)?(e.ctrlKey&&e.button===2?'subtract':e.shiftKey?'add':'replace'):null;
     this._gesture={id:e.pointerId,buttons:e.buttons||[1,4,2][e.button],button:e.button,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false,marquee,baseFov:this.camera.fov};this._lastDragged=false;this.domElement.setPointerCapture?.(e.pointerId);this.dispatchEvent({type:'start'});
   }
   _marqueeEvent(e,stage){const g=this._gesture,rect=this.domElement.getBoundingClientRect();this.options.onMarquee?.({stage,mode:g.marquee,x1:g.startX-rect.left,y1:g.startY-rect.top,x2:e.clientX-rect.left,y2:e.clientY-rect.top,event:e});}
@@ -89,6 +89,7 @@ export class ViewportControls extends EventDispatcher{
     const g=this._gesture;if(!this.enabled||!g||e.pointerId!==g.id)return;if(!e.buttons){this._pointerUp(e,true);return;}e.preventDefault();this._shift=e.shiftKey;const dx=e.clientX-g.x,dy=e.clientY-g.y;g.x=e.clientX;g.y=e.clientY;g.buttons=e.buttons;
     if(!g.moved&&Math.hypot(e.clientX-g.startX,e.clientY-g.startY)>=4){g.moved=true;if(g.marquee)this._marqueeEvent(e,'start');}if(!g.moved)return;
     if(g.marquee){this._marqueeEvent(e,'move');return;}
+    if(this.options.orbitOnLeftDrag&&g.buttons===1){this.camera.isOrthographicCamera?this._pan(dx,dy):this._orbit(dx,dy);return;}
     if(e.altKey){if(g.buttons&4)this._pan(dx,dy);else if(g.buttons&2)this._dolly(dy*.01*(this.settings.invertDolly?-1:1),e,true);else if(g.buttons&1){if(this.camera.isOrthographicCamera)this._pan(dx,dy);else this._orbit(dx,dy);}return;}
     if(this.camera.isOrthographicCamera){if((g.buttons&3)===3)this._zoomOrtho(-dy*.01,e);else if(g.buttons&6)this._pan(dx,dy);return;}
     if((g.buttons&3)===3||g.buttons&4)this._pan(dx,dy);else if(g.buttons&2)this._look(dx,dy);else if(g.buttons&1){this._look(dx,0,true);const forward=this._forward();forward.y=0;if(forward.lengthSq()<1e-12)forward.set(0,0,-1);this._translate(forward.normalize().multiplyScalar(dy*this._unitsPerPixel()));}
@@ -103,7 +104,7 @@ export class ViewportControls extends EventDispatcher{
   }
   cancel(){if(!this._gesture){this._keys?.clear();this._shift=false;return;}const g=this._gesture;this._pointerUp({pointerId:g.id,buttons:0,clientX:g.x,clientY:g.y},true);}
   _wheel(e){if(!this.enabled||this.options.shouldHandle?.(e)===false)return;e.preventDefault();e.stopPropagation();const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?this.domElement.getBoundingClientRect().height:1);if(!delta)return;
-    if(this._gesture?.buttons&2&&!e.altKey&&!this._gesture.marquee){this.setSettings({speed:MathUtils.clamp(this.settings.speed*Math.exp(MathUtils.clamp(-delta*.002,-4,4)),.001,1e6)});}else if(this.camera.isOrthographicCamera)this._zoomOrtho(-delta*.002*this.settings.scrollZoomSpeed,e);else this._dolly(delta/120*.35*this.settings.scrollZoomSpeed,e,!!e.altKey);this.dispatchEvent({type:'end'});
+    if(this._gesture?.buttons&2&&!e.altKey&&!this._gesture.marquee){this.setSettings({speed:MathUtils.clamp(this.settings.speed*Math.exp(MathUtils.clamp(-delta*.002,-4,4)),.001,1e6)});}else if(this.camera.isOrthographicCamera)this._zoomOrtho(-delta*.002*this.settings.scrollZoomSpeed,e);else this._dolly(delta/120*.35*this.settings.scrollZoomSpeed,e,!!e.altKey||this.options.orbitOnLeftDrag);this.dispatchEvent({type:'end'});
   }
   _keyDown(e){if(!this.enabled||editable(e.target)||!this._focused()&&!this._gesture)return;const code=eventCode(e);this._shift=e.shiftKey;if(code==='Escape'&&this._gesture){this.cancel();e.preventDefault();e.stopPropagation();return;}
     if(this.isFlying&&flyCodes.has(code)){this._keys.add(code);e.preventDefault();e.stopPropagation();return;}

@@ -177,3 +177,5 @@ RMB+WASD/QE로 이동하고 RMB+휠로 속도를 바꾼다. Alt+좌/중/우 드�
 
 
 079은 [개별 노드·출력 핀 미리보기](docs/MATERIAL_PREVIEW_079.md)를 사람 우클릭/Ctrl+T·문서별 view와 AI material.preview에 연결했다. 84 출력과 실제 GL/GPU 에디터의 픽셀·에셋/Undo·원본/SHA·종료 검사가 통과했다. 설치 순서는 051 그대로다.
+
+080은 [머테리얼 미리보기 장면](docs/MATERIAL_PREVIEW_SCENE_080.md)에 메시/모델·직교/3D 조작·문서별 카메라·조명/노출·Realtime·AI material.scene을 연결했다. 최종 GL/GPU 창에서 정지 시 유휴 렌더 중단·카메라 복원·원본/Undo/SHA·종료를 확인했다. 설치 순서는 051 유지.

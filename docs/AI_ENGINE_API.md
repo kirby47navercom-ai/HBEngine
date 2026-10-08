@@ -312,3 +312,7 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 ## 머테리얼 expression 미리보기(079)
 
 `material.preview {path,node?,pin?,reset?,expectedRevision?}`은 current view 조회/출력 선택/표면 복귀를 지원한다. node 생략은 조회, reset=true는 종료, pin 생략은 첫 출력(FunctionOutput은 value 입력). 서명/revision·필수 입력을 검사하고 원본/dirty/Undo는 바꾸지 않는다. numeric→발광 RGB·Float 반복·Vec2 XY0·Vec4 XYZ·Texture 샘플·Bool0/1·Attributes PBR, upstream slice와 기존 resolver/compiler를 사용한다. [계약/실제 창](MATERIAL_PREVIEW_079.md).
+
+## 머테리얼 미리보기 장면(080)
+
+`material.scene {path,patch?,reset?,expectedRevision?}`는 view 조회/변경/기본값 복귀다. patch는 mesh/model/direction/mode/realtime/autoRotate/grid/background/backgroundColor/lightScale/environment/exposure를 받는다. 모델은 Assets의 기존 OBJ/FBX/glTF/GLB만 허용하며 타입/범위/미등록 필드를 검사한다. 원본·revision·dirty·Undo는 유지한다. [기본값·사람 조작·최종 창 증거](MATERIAL_PREVIEW_SCENE_080.md).

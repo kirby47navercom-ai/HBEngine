@@ -286,3 +286,7 @@ Unreal5.8 함수 Overview 자체 기술 본문과 Unity17.0.4 Create a Sub Graph
 ## 079 — 노드·출력 미리보기
 
 Unreal5.8 Previewing and Applying 및 Unity17.0.4 Main Preview/Preview Node의 자체 본문 전체를 읽었다. 링크·미디어·소스/전체 corpus gate false 유지. view-only 선택·84 출력·실제 GL/GPU·에셋/Undo/SHA/원본·종료와 미구현 구분은 [079](../MATERIAL_PREVIEW_079.md).
+
+## 080 — 미리보기 장면
+
+079의 두 자체 본문 읽기를 재사용하고 Unity17.0.4 Preview Mode Control 자체 본문 전체를 추가로 읽었다. 원문 SHA/경계·explicit 카메라와 Inherit 차이·실제 GL/GPU/정지 렌더·문서 복원은 [080](../MATERIAL_PREVIEW_SCENE_080.md). 연결 문서/미디어/API/소스·전체 corpus gate false 유지.
