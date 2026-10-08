@@ -267,3 +267,7 @@ UE5.8 Previewing and Applying와 Unity ShaderGraph17.0.4 Main Preview/Preview No
 ## 080 — 미리보기 장면
 
 079의 UE5.8 Previewing/Main Preview 직접 읽기를 재사용하고 Unity17.0.4 Preview Mode Control 자체 기술 본문 전체를 읽었다. explicit 2D/3D와 자동 Inherit를 구분한다. 메시/모델·환경/조명·Realtime·공용 카메라/AI와 최종 GL/GPU 증거는 [080](MATERIAL_PREVIEW_SCENE_080.md). 연결 본문/소스·전체 corpus는 미승격.
+
+## 081 — 큐브/배열/볼륨 텍스처
+
+Unity17.0.4 Sample Cubemap/2D Array/3D 자체 기술 본문/표/코드 전체, UE5.8 Texture Asset Editor 자체 앞부분(Types부터 Mip Load Options), Three r180 CubeTextureNode/Texture3DNode 전체와 TextureNode level/depth만 읽고 대조했다. 새 보조 source와 발견 provenance를 등록했으며 연결/남은 본문/API/소스·전체 corpus는 미승격. [구현·35소스 최종 GL/GPU·미독/후속](MATERIAL_TEXTURE_FAMILIES_081.md).

@@ -13,7 +13,7 @@
 
 ## 실제 검증
 
-최종 분리 Win32/WebView2 창의 WebGL2 `gpu-editor-KHG7gW`, WebGPU `gpu-editor-YVTXYC`에서 기본 메시 네 개와 OBJ 선택, 픽셀, 실제 직교 휠/드래그, 모든 방향, 세 보기 모드, 광원/환경, Ctrl+R, 문서 전환 후 비기본 2D 카메라/배율 복원, 실패 보존, 에셋/Undo 불변을 확인했다. 각 receipt의 30개 소스 SHA가 최종 코드와 일치하며 오류 0·종료 0·원본 보존·서버 종료가 통과했다. 재확인은 `node tools/check-gpu-editor.mjs --preview-scene-only [--gl]`로 관련 기능만 실행한다.
+최종 분리 Win32/WebView2 창의 WebGL2 `gpu-editor-KHG7gW`, WebGPU `gpu-editor-YVTXYC`에서 기본 메시 네 개와 OBJ 선택, 픽셀, 실제 직교 휠/드래그, 모든 방향, 세 보기 모드, 광원/환경, Ctrl+R, 문서 전환 후 비기본 2D 카메라/배율 복원, 실패 보존, 에셋/Undo 불변을 확인했다. 각 receipt의 30개 소스 SHA가 최종 코드와 일치하며 오류 0·종료 0·원본 보존·서버 종료가 통과했다. 재확인은 `node tools/check-gpu-editor.mjs --preview-scene-only [--webgl]`로 관련 기능만 실행한다.
 
 WebGL2의 정지 전후 frames=1526/time=25.5056, WebGPU frames=1509/time=25.3592로 각각 유지됐고 회전도 동일했다. 이는 유휴 작업 중단 증거이며 전체 게임 FPS/RAM 측정은 아니다. 기존 코어의 설정 32조합·뷰포트 수학 185·표시 228·expression 84·머테리얼 68·BP 714/C++ 연결 회귀도 통과했다. 직전 전체 창 검사 두 개와 카메라 재초점 실패/수리도 증거에 보존한다.
 

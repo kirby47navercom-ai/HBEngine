@@ -290,3 +290,7 @@ Unreal5.8 Previewing and Applying 및 Unity17.0.4 Main Preview/Preview Node의 �
 ## 080 — 미리보기 장면
 
 079의 두 자체 본문 읽기를 재사용하고 Unity17.0.4 Preview Mode Control 자체 본문 전체를 추가로 읽었다. 원문 SHA/경계·explicit 카메라와 Inherit 차이·실제 GL/GPU/정지 렌더·문서 복원은 [080](../MATERIAL_PREVIEW_SCENE_080.md). 연결 문서/미디어/API/소스·전체 corpus gate false 유지.
+
+## 081 — 텍스처 리소스 계열
+
+Unity17.0.4 세 Sample 자체 기술 본문 전체·UE5.8 Texture Editor 앞부분·설치/공식 r180 두 전체 accessor와 TextureNode 두 메서드를 읽었다. 원문/발췌 SHA와 3계열 발견 추가(UE1/Three3 신규, Unity3 기존 provenance), 구현·실제 GL/GPU·미독/후속은 [081](../MATERIAL_TEXTURE_FAMILIES_081.md). 전체 corpus gate false 유지.

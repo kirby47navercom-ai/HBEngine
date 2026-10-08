@@ -1,3 +1,5 @@
+import * as THREE from 'three/webgpu';
+import {materialTextureTypes,textureNodeType,texturePlaceholder,loadMaterialTexture} from './texture-assets.js';
 import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3,Vector4,NoColorSpace,RepeatWrapping,ClampToEdgeWrapping,DoubleSide,FrontSide} from 'three/webgpu';
 import * as T from 'three/tsl';
 import {materialParameterKey,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs} from './material-runtime.js';
@@ -11,7 +13,7 @@ const hash=p=>p.dot(T.vec2(127.1,311.7)).sin().mul(43758.5453).fract();
 const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));return T.mix(T.mix(hash(i),hash(i.add(T.vec2(1,0))),u.x),T.mix(hash(i.add(T.vec2(0,1))),hash(i.add(1)),u.x),u.y);};
 
 // The same persisted graph, pin types, defaults and validation feed GLSL and TSL.
-export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{}}={}){
+export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
   data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
   const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textures=[],loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
   const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...value),type);
@@ -25,13 +27,13 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
     }else if(key==='uv')code=T.uv();else if(key==='time')code=clock;else if(key==='worldPosition')code=T.positionWorld;else if(key==='worldNormal')code=T.normalWorld.normalize();else if(key==='viewDirection')code=T.cameraPosition.sub(T.positionWorld).normalize();
     else{
       const args={};for(const input of specs.get(key).inputs.filter(p=>p.id!=='textureObject')){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
-        if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=T.cameraPosition.sub(T.positionWorld).normalize();else if(input.id==='uv'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
+        if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=T.cameraPosition.sub(T.positionWorld).normalize();else if(input.id==='direction'&&key==='sampleCube'&&node.inputValues?.direction===undefined)args.direction=T.normalWorld.normalize();else if(input.id==='uv'&&input.type==='vec2'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
       }
       const {a,b,value:v}=args;
-      if(key==='texture'){
+      if(materialTextureTypes[textureNodeType(key)]?.sample===key){
         const rgbaKey=id+':rgba';let sample=cache.get(rgbaKey);if(!sample){const path=data.parameters?.[materialParameterKey(node)]??node.texture;if(!path)code=T.vec4(1);else{
-          const placeholder=new DataTexture(new Uint8Array([255,255,255,255]),1,1);placeholder.needsUpdate=true;textures.push(placeholder);const sampleNode=T.texture(placeholder,args.uv);
-          loading.push(new TextureLoader().loadAsync(fileUrl(path)).then(map=>{if(disposed){map.dispose();return;}map.colorSpace=NoColorSpace;map.wrapS=map.wrapT=node.wrap!=='clamp'?RepeatWrapping:ClampToEdgeWrapping;map.needsUpdate=true;textures.push(map);sampleNode.value=map;},()=>onError('텍스처를 읽을 수 없어요: '+path)));
+          const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);textures.push(placeholder);const sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz),args.lod.max(0)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
+          loading.push(loadMaterialTexture(THREE,{path,type,wrap:node.wrap},data.textureAssets,fileUrl,renderer).then(map=>{if(disposed){map.dispose();return;}textures.push(map);sampleNode.value=map;},error=>{onError('텍스처를 읽을 수 없어요: '+path+' · '+error.message);if(type!=='texture2d')throw error;}));
           code=node.colorSpace==='linear'?sampleNode:T.vec4(T.sRGBTransferEOTF(sampleNode.rgb),sampleNode.a);
         }sample={code,type:'vec4'};cache.set(rgbaKey,sample);}code=output==='rgba'?sample.code:sample.code[output];
       }else if(key==='split')code=v[output];else if(key==='combine')code=T[type](...['x','y','z','w'].slice(0,Number(type.slice(3))).map(k=>args[k]));

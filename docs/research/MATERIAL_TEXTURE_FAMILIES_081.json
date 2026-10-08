@@ -1,0 +1,798 @@
+{
+  "step": "081",
+  "baseCommit": "45c632d",
+  "createdAt": "2026-10-08T09:06:29.470084+00:00",
+  "wholeCorpusGate": false,
+  "research": {
+    "createdAt": "2026-10-08T08:29:45.541606+00:00",
+    "wholeCorpusGate": false,
+    "sources": [
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sample-Cubemap-Node.html",
+        "sha256": "297a52b6d5dc8e714a58767bcc6e2b6ddb60f29e270386bea0a37825ffbd843e",
+        "bytes": 11216,
+        "rawFile": "native/build/material-texture-family-research-081/Sample-Cubemap-Node.html",
+        "version": "17.0.4",
+        "readScope": "own complete article including tables/generated code; linked documents/media/source unread"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sample-Texture-2D-Array-Node.html",
+        "sha256": "9cbb59a70d623cefde68a04439273f9653b05d3e97807c8147d44730a26e54c2",
+        "bytes": 20476,
+        "rawFile": "native/build/material-texture-family-research-081/Sample-Texture-2D-Array-Node.html",
+        "version": "17.0.4",
+        "readScope": "own complete article including tables/generated code; linked documents/media/source unread"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Sample-Texture-3D-Node.html",
+        "sha256": "6b9c0f4b861f4dbe56d007c5871256f940b241416defb73857f01f5fefc30d5a",
+        "bytes": 15739,
+        "rawFile": "native/build/material-texture-family-research-081/Sample-Texture-3D-Node.html",
+        "version": "17.0.4",
+        "readScope": "own complete article including tables/generated code; linked documents/media/source unread"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/CubeTextureNode.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-family-research-081/CubeTextureNode.js",
+        "bytes": 4961,
+        "sha256": "740b366b793086bdbc421121cb49391b231c9c73f739d5b6816ee46bdd79ac3c",
+        "readScope": "own complete installed source read; imports/linked implementations unread",
+        "localSourceMatches": true
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/Texture3DNode.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-family-research-081/Texture3DNode.js",
+        "bytes": 4535,
+        "sha256": "32790447f07053719912260e4d9a73f217bb574c773726e66bbe96c84e616c39",
+        "readScope": "own complete installed source read; imports/linked implementations unread",
+        "localSourceMatches": true
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/TextureNode.js",
+        "version": "r180 / installed 0.180.0",
+        "rawFile": "native/build/material-texture-family-research-081/TextureNode.js",
+        "bytes": 22085,
+        "sha256": "a8323f6d977faefad3bf38f6da92f36b9273e48cea7c5889a1c4bcaa33f4ea14",
+        "readScope": "only level() and depth() methods read; remaining source unread this step",
+        "localSourceMatches": true
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-asset-editor-in-unreal-engine",
+        "version": "5.8 from web title",
+        "snapshotFile": "native/build/material-texture-family-research-081/unreal-texture-editor-web.txt",
+        "snapshotKind": "web response excerpt, not raw HTML",
+        "bytes": 17088,
+        "sha256": "c9f653ab5b19541eace24e922c0482b75b481514c57191e3c694d17a5db15bb9",
+        "readScope": "web own lines 0-189: types/interface/face DDS order/slice/LOD/compression/settings through Mip Load Options; remaining own body/linked content/media/source unread",
+        "rawHtml": "403; no raw HTML hash claimed"
+      }
+    ],
+    "blockedSources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-expressions-in-unreal-engine",
+        "reason": "web open inaccessible; no reading claimed"
+      }
+    ],
+    "mapping": {
+      "cubeFaces": [
+        "+X",
+        "-X",
+        "+Y",
+        "-Y",
+        "+Z",
+        "-Z"
+      ],
+      "cube": "world normal default; direction and LOD; Three TSL X compensated for DDS face convention",
+      "array": "UV and nearest layer index; equal-size ordered RGBA images",
+      "volume": "vec3 UV; linear interpolation over ordered RGBA slices",
+      "remaining": [
+        "sampler-state nodes",
+        "array/volume mip chain",
+        "external textures",
+        "HDR/compressed texture formats",
+        "dedicated texture preview/channel/mip tools",
+        "runtime texture parameter replacement"
+      ]
+    },
+    "discoveryImports": [
+      {
+        "family": "unity-packages",
+        "exitCode": 0,
+        "output": "{\"sourceId\":\"unity-packages\",\"added\":0,\"inputEntries\":3}\n"
+      },
+      {
+        "family": "unreal-manual",
+        "exitCode": 0,
+        "output": "{\"sourceId\":\"unreal-manual\",\"added\":1,\"inputEntries\":1}\n"
+      },
+      {
+        "family": "threejs-material-supplement",
+        "exitCode": 0,
+        "output": "{\"sourceId\":\"threejs-material-supplement\",\"added\":3,\"inputEntries\":3}\n"
+      }
+    ]
+  },
+  "implementation": {
+    "materialNodes": 77,
+    "expressionPreviewOutputs": 108,
+    "assetKinds": [
+      "cubemap",
+      "texturearray",
+      "volumetexture"
+    ],
+    "types": [
+      "texturecube",
+      "texturearray",
+      "texture3d"
+    ],
+    "sameCPUGLSLTSLPath": true,
+    "typedFunctionsExtractionStaticSwitchMIAndLayers": true,
+    "decode": "cube six images; array/volume sequential image decode to RGBA buffer at load only",
+    "hardwareLimits": "renderer dimension and array layer limits",
+    "cubeConvention": "DDS +X/-X/+Y/-Y/+Z/-Z; TSL X compensated",
+    "loadFailure": "new resource failures reject ready; preview/scene retain existing material and dispose candidate",
+    "cpp": "existing Materials::Set applies asset; no new runtime texture-parameter setter",
+    "noPerFrameDecode": true
+  },
+  "core": {
+    "receipt": "native/build/material-texture-families-core-final-081.log",
+    "sha256": "b06e4d64a7db948774af9d625718b850a776b33849fc987a1726b39bc73ac4c5",
+    "passed": true
+  },
+  "windows": [
+    {
+      "receipt": "native/build/gpu-editor-Z9ZlyK/acceptance.json",
+      "sha256": "b220c35e85fa9532e201020697eeb89ab6a86f08c0ed1299d101b4063dc263eb",
+      "backend": "WebGPU",
+      "checkedSourceCount": 35,
+      "allSourceHashesMatch": true,
+      "proof": {
+        "steps": [
+          {
+            "type": "texturecube",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24960,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 60.15191919191919
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "red",
+            "value": [
+              1,
+              0,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24960,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 60.15191919191919
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "green",
+            "value": [
+              -1,
+              0,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 24960,
+              "blueDifference": 0,
+              "yellowDifference": 24336,
+              "mean": 96.5939393939394
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "blue",
+            "value": [
+              0,
+              1,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 24960,
+              "yellowDifference": 0,
+              "mean": 48.04484848484849
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "cyan",
+            "value": [
+              0,
+              -1,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 624,
+              "magenta": 0,
+              "cyanDifference": 24960,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 127.22666666666667
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "magenta",
+            "value": [
+              0,
+              0,
+              1
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 24960,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 108.38060606060606
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "yellow",
+            "value": [
+              0,
+              0,
+              -1
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 24960,
+              "mean": 118.07151515151516
+            }
+          },
+          {
+            "type": "texturearray",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 624,
+              "magenta": 0,
+              "cyanDifference": 24960,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 127.22666666666667
+            }
+          },
+          {
+            "type": "texturearray",
+            "expected": "red",
+            "value": 0,
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24960,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 60.15191919191919
+            }
+          },
+          {
+            "type": "texturearray",
+            "expected": "cyan",
+            "value": 1,
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 624,
+              "magenta": 0,
+              "cyanDifference": 24960,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 127.22666666666667
+            }
+          },
+          {
+            "type": "texture3d",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 89.36121212121212
+            }
+          },
+          {
+            "type": "texture3d",
+            "expected": "red",
+            "value": [
+              0.25,
+              0.75,
+              0.25
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24960,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 60.15191919191919
+            }
+          },
+          {
+            "type": "texture3d",
+            "expected": "cyan",
+            "value": [
+              0.25,
+              0.75,
+              0.75
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 624,
+              "magenta": 0,
+              "cyanDifference": 24960,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 127.22666666666667
+            }
+          }
+        ],
+        "resourceEditors": true,
+        "typedObjectPreview": true,
+        "invalidPatchPreserved": true,
+        "originalFilesPreserved": true,
+        "undoRestoredCleanDocuments": true
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "errors": [],
+      "originalsPreserved": true,
+      "serverClosed": true
+    },
+    {
+      "receipt": "native/build/gpu-editor-rCFmwH/acceptance.json",
+      "sha256": "d3ac6f46f6255c2b7f27efb4db1f35766216e20096c5b10ee921e4e8db1fd37e",
+      "backend": "WebGL2",
+      "checkedSourceCount": 35,
+      "allSourceHashesMatch": true,
+      "proof": {
+        "steps": [
+          {
+            "type": "texturecube",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24336,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 58.95959595959596
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "red",
+            "value": [
+              1,
+              0,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24336,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 58.95959595959596
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "green",
+            "value": [
+              -1,
+              0,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 24336,
+              "blueDifference": 0,
+              "yellowDifference": 24336,
+              "mean": 95.6589898989899
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "blue",
+            "value": [
+              0,
+              1,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 24336,
+              "yellowDifference": 0,
+              "mean": 47.00484848484849
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "cyan",
+            "value": [
+              0,
+              -1,
+              0
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 24336,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 124.93131313131313
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "magenta",
+            "value": [
+              0,
+              0,
+              1
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 24336,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 106.17454545454545
+            }
+          },
+          {
+            "type": "texturecube",
+            "expected": "yellow",
+            "value": [
+              0,
+              0,
+              -1
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 24336,
+              "mean": 115.8549494949495
+            }
+          },
+          {
+            "type": "texturearray",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 24336,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 124.93131313131313
+            }
+          },
+          {
+            "type": "texturearray",
+            "expected": "red",
+            "value": 0,
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24336,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 58.95959595959596
+            }
+          },
+          {
+            "type": "texturearray",
+            "expected": "cyan",
+            "value": 1,
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 24336,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 124.93131313131313
+            }
+          },
+          {
+            "type": "texture3d",
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 86.5878787878788
+            }
+          },
+          {
+            "type": "texture3d",
+            "expected": "red",
+            "value": [
+              0.25,
+              0.75,
+              0.25
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 24336,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 58.95959595959596
+            }
+          },
+          {
+            "type": "texture3d",
+            "expected": "cyan",
+            "value": [
+              0.25,
+              0.75,
+              0.75
+            ],
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 24960,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 24336,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "blueDifference": 0,
+              "yellowDifference": 0,
+              "mean": 124.93131313131313
+            }
+          }
+        ],
+        "resourceEditors": true,
+        "typedObjectPreview": true,
+        "invalidPatchPreserved": true,
+        "originalFilesPreserved": true,
+        "undoRestoredCleanDocuments": true
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "errors": [],
+      "originalsPreserved": true,
+      "serverClosed": true
+    }
+  ],
+  "earlierFailures": [
+    {
+      "receipt": "native/build/gpu-editor-vDCcfV/failure.json",
+      "sha256": "2b4c471757eec0f9779261a69ab9af317d4ec5e1150d8b98ccc35651c4eb91f2",
+      "reason": "test incorrectly expected cyan at volume center; actual gray interpolation preserved in PNG; expect blend then test both slices"
+    },
+    {
+      "receipt": "native/build/gpu-editor-OqfzPe/failure.json",
+      "sha256": "969d593babcccfceef0349d52bd4f32841cc02d6e4444a4ceec2c55baa46c7b2",
+      "reason": "all resource checks passed but native close was protected by unsaved owned-test edits; actual Undo to original and save-all with zero dirty files clears state; no bypass/discard"
+    },
+    {
+      "receipt": "native/build/gpu-editor-7MUYDj/acceptance.json",
+      "sha256": "98b0ab39d85bde1f942cddc747d83bb74bac718ab7a4a1f15837f6221f724038",
+      "reason": "passed before final graphless legacy material compatibility guard and its core test"
+    }
+  ],
+  "installation": {
+    "updated": false,
+    "installedVersion": "7df780dd9a47cf5b",
+    "order": "051 cumulative preceding work then installation then further researched work"
+  },
+  "fpsClaim": false,
+  "physicalMobileVerified": false,
+  "packagedPlayerVerifiedThisStep": false,
+  "checkedSourceFiles": {
+    "prototype/texture-assets.js": "11db74897432df4c0cc06af0322083c5f911e6f05acf9865ac977b691a9c1717",
+    "prototype/icons.js": "cce24c59deaa8ed3971407dad7ea19cc69714c5144fba10f9f9d3213f075d75c",
+    "tools/project-service.mjs": "6583d8b316834c10186848ab9e6eba1ca95ddd68ee405e744cb24622c930acf4",
+    "tools/material-texture-family-window-actions.mjs": "1f0ad23a3a3ed75e55230e001764d9fef51b9c63b501badeccd47cf73bc63348",
+    "tools/check-material-texture-families.mjs": "479b07d4cdb7c712e2271ec7f45743fc64df47c8178554719e0be50e484bca2a",
+    "prototype/material-preview-scene.js": "9b532d1a11118b303e15b1a12d40ef997f72a87b91c268708aab902a6e0bd013",
+    "prototype/viewport-controls.js": "b64e0a6c4f39ea686adab0e782a300ce3e35aed2c26930371b45039930da2237",
+    "tools/check-material-preview-scene.mjs": "edc742d0154cb52812ffc434a279b123f6e9c85e040ee89b99518ec3ef501230",
+    "tools/material-preview-scene-window-actions.mjs": "63018c13fd511653f625446fe8b95dfe90bab90d2b900e4b17c66cfdd8e28cce",
+    "tools/material-preview-window-actions.mjs": "82822faa152206548caea179a1d60e53bc588118e392ac3eae468ee0383b44e4",
+    "tools/check-material-preview.mjs": "f4740a06a9018f8d0e4e501dc50f7039b39438e190069d3e809ea82bc6220f21",
+    "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+    "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+    "prototype/index.html": "45cd1ec9190b5662108bfe92ea6be66528cb203c396ac917ac2662dfd2de5c20",
+    "prototype/app.js": "831a9c90092559a097ed5afef2532c20825e87be852b697bca3f9a2281e212ce",
+    "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+    "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+    "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+    "prototype/scene-rendering.js": "ef9db77f4c866baaca7013b7026f35783a0b7cdf83f1293ae3653e42b909483d",
+    "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+    "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+    "tools/editor-automation.mjs": "d7ead0fad76e0feeff709f3340d95c1501d688d801c774401d6d0d456ff022ba",
+    "tools/check-gpu-editor.mjs": "a60e600c3578e54d89d260c28ef409f14c4919aac6d9fd391d7dafe59000a353",
+    "prototype/material-runtime.js": "aacbb6e389eb23d34a259392335ce1dd12c420be58795b9bb11f3440beba4137",
+    "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+    "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+    "prototype/gpu-materials.js": "15ed2adcb3495846103bbd2ba06329dd9a63f25b7526833f2e04020b12357019",
+    "prototype/scene-editor.css": "0d5a581b7aa50041432dc92fa7e899042af640c45dfbc7e775a349172279ec45",
+    "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+    "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+    "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+    "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+    "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f",
+    "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+    "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b"
+  },
+  "packageSha256": "15dce3dc8647c2a144e3b9de7beea5fc0b842b73bb7428c8b94c82e78b95d087",
+  "earlierCoreFailure": {
+    "receipt": "native/build/material-texture-families-core-081.log",
+    "sha256": "16eb8ae9f51f743251c99a66e7eb0ccec5cc5cbea644461518e32db50215f409",
+    "repair": "check-assets VM range included new global DOM listener; use actual removeDocumentViews/closeDocument range and unrelated propagation stub"
+  },
+  "userMdAppend": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "prefixBytes": 189615,
+      "prefixSha256": "d12f72af3f2ac6920c23f5aecccb522a242f2bb6baa519c89742c26dab520962",
+      "prefixBackup": "native/build/material-texture-families-md-081-prefix-0.bin",
+      "afterSha256": "0f5a0bf15dc94f273bf9251849b55aa9368e508aba21466c3259f163bdceba1a",
+      "originalPrefixPreserved": true
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "prefixBytes": 75922,
+      "prefixSha256": "5b5c69bc47aa8db6513c34a6fde7d56c30baa6c26f37fae894f32386a8637e17",
+      "prefixBackup": "native/build/material-texture-families-md-081-prefix-1.bin",
+      "afterSha256": "ba0349e2ae5ffec0cb281a934cc759b109bec0396581c65b8b7df0add2d61971",
+      "originalPrefixPreserved": true
+    }
+  ]
+}

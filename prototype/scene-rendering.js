@@ -111,7 +111,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
   function adopt(group,child){child.traverse(node=>{if(node.geometry)own(group,node.geometry);if(node.isLight)own(group,node);for(const m of node.material?(Array.isArray(node.material)?node.material:[node.material]):[]){own(group,m);for(const v of Object.values(m))if(v?.isTexture)own(group,v);}node.userData.objectId=group.userData.objectId;});group.add(child);}
   async function material(object,path,slot){
     const group=current(object.id);if(!group)return;const token=group.userData.materialRequest=(group.userData.materialRequest||0)+1,data=await resolveMaterialAsset(await read(path),read);if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed)return;
-    const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});await result.userData.ready;if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed){result.dispose();return;}replaceMaterials(group,result,slot);group.userData.materialData=data;
+    const result=createThreeMaterial(THREE,data,{fileUrl,onError:error,renderer:gameRenderer});try{await result.userData.ready;}catch(e){result.dispose();throw e;}if(current(object.id)!==group||token!==group.userData.materialRequest||group.userData.disposed){result.dispose();return;}replaceMaterials(group,result,slot);group.userData.materialData=data;
   }
   async function materialFloat(object,key,value){
     const group=current(object.id),source=group?.userData.materialData;if(!source)throw Error('노드 머테리얼을 먼저 지정하세요.');

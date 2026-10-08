@@ -1075,6 +1075,28 @@
         "Only fixed installed animation-source seeds; complete outgoing implementation/API inventory remains open.",
         "CCDIKSolver135..259 and SkeletonUtils1..305 portions read; remaining bodies/helpers/media and independent verification are open."
       ]
+    },
+    {
+      "id": "threejs-material-supplement",
+      "engine": "Three.js",
+      "version": "0.180.0-r180",
+      "locale": "source-code",
+      "roots": [
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/CubeTextureNode.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/Texture3DNode.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/TextureNode.js"
+      ],
+      "hosts": [
+        "raw.githubusercontent.com",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Only fixed installed shader texture accessors; complete outgoing implementation/API inventory remains open.",
+        "CubeTextureNode and Texture3DNode own bodies read; only TextureNode level/depth methods read; linked backends/loaders/API and independent verification remain open."
+      ]
     }
   ],
   "supplementalBaselines": [

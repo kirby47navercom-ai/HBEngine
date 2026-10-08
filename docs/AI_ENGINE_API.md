@@ -316,3 +316,7 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 ## 머테리얼 미리보기 장면(080)
 
 `material.scene {path,patch?,reset?,expectedRevision?}`는 view 조회/변경/기본값 복귀다. patch는 mesh/model/direction/mode/realtime/autoRotate/grid/background/backgroundColor/lightScale/environment/exposure를 받는다. 모델은 Assets의 기존 OBJ/FBX/glTF/GLB만 허용하며 타입/범위/미등록 필드를 검사한다. 원본·revision·dirty·Undo는 유지한다. [기본값·사람 조작·최종 창 증거](MATERIAL_PREVIEW_SCENE_080.md).
+
+## 텍스처 리소스 계열(081)
+
+콘텐츠 생성 kind에 cubemap/texturearray/volumetexture를 추가했다. `version:1,name,dimension:kind,images:[Assets 이미지 경로]`를 기존 document.patch/files.apply/Undo/Save로 편집한다. cube는 여섯 면 +X/-X/+Y/-Y/+Z/-Z, 다른 둘은 순서 있는 슬라이스다. 함수 핀 texturecube/texturearray/texture3d와 Object/Parameter/Sample을 사용하며 종류가 다른 연결은 거절한다. 리소스 노드의 material.preview도 지원한다. [사람 UI·타입·렌더/검증·남은 세부](MATERIAL_TEXTURE_FAMILIES_081.md).

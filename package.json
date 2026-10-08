@@ -149,7 +149,10 @@
     "test:material-layers-player": "node tools/check-gpu-scene.mjs --layers",
     "test:material-layers-player-gl": "node tools/check-gpu-scene.mjs --layers --webgl",
     "test:material-preview": "node tools/check-material-preview.mjs",
-    "test:material-preview-scene": "node tools/check-material-preview-scene.mjs"
+    "test:material-preview-scene": "node tools/check-material-preview-scene.mjs",
+    "test:material-texture-families": "node tools/check-material-texture-families.mjs",
+    "test:material-texture-families-editor": "node tools/check-gpu-editor.mjs --texture-families-only",
+    "test:material-texture-families-editor-gl": "node tools/check-gpu-editor.mjs --texture-families-only --webgl"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",
