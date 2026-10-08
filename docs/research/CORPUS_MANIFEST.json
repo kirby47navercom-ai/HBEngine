@@ -1054,6 +1054,27 @@
           "record": "docs/research/2D_COOKIE_VOLUME_035.md"
         }
       ]
+    },
+    {
+      "id": "threejs-animation-supplement",
+      "engine": "Three.js",
+      "version": "0.180.0-r180",
+      "locale": "source-code",
+      "roots": [
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/animation/CCDIKSolver.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/utils/SkeletonUtils.js"
+      ],
+      "hosts": [
+        "raw.githubusercontent.com",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Only fixed installed animation-source seeds; complete outgoing implementation/API inventory remains open.",
+        "CCDIKSolver135..259 and SkeletonUtils1..305 portions read; remaining bodies/helpers/media and independent verification are open."
+      ]
     }
   ],
   "supplementalBaselines": [

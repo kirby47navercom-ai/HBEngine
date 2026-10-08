@@ -1,3 +1,7 @@
+# 073 CCD IK — 2026-10-08
+
+07227238e5 푸시 완료. 기존 골격 솔버에 CCD·양방향 계산·직선 정지점 보정·입력 Quaternion 기준 이름별 전체 각도 제한/0잠금·공용 SetIKRotationLimit C++/BP·AI/관절 UI/Undo/Save를 연결. 리타게팅 IK 선을 실제 렌더 부모로 이동하고 프로필/Alpha0/비활성/종료 수명 정리. 최종 Editor animation-ccd-editor-o1ggrE/release Player animation-ccd-player-FM13zf에서 실제 glTF 뼈·C++/BP 목표/제약/조회·원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. 2D IK 및 기존 그래프/상태/Sync·711 BP/626 C++ 연결(계산289·서비스337) 통과. UE3 자체본문/API요약·Three r180 설치SHA 대조 부분 읽기와 미독/보조 inventory 유지. [상세](docs/ANIMATION_CCD_073.md), [증거](docs/research/ANIMATION_CCD_073.json). 전체 선행→설치 갱신→조사 추가 순서 유지; 설치/사용 창/전역 FPS·RAM·전체 corpus 상태 변경 없음. 다음 2D 관절 제약과 나머지 애니메이션/누적 세부.
+
 # 072 골격 리타게팅 — 2026-10-08
 
 071 391bc15 푸시 완료. RIG_/RT_/SK_ 제작·기준 포즈/프로필·매핑/필터·Copy Base Pose 선택·다른 관절 수 FK/프로필별 FABRIK·원본 선행 Tick·배율/루트/골반·베이크→공통 Clip·SDK/BP5·AI patch/Undo/Save를 연결했다. 최종 실제 Editor animation-retarget-editor-5FiN9K/release Player animation-retarget-player-29kNB1에서 glTF 렌더 뼈·C++ 설정/BP 조회→C++ 일치·원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. 코어 및 기존 회귀/62컴포넌트·710노드/625 C++ 연결(계산289·서비스336) 유지. Save/Undo 전용 에디터 갱신·프로필 IK 참조·끝 키 중복을 수정하고 실패 기록 보존. 공식10주소 자체 본문/API 요약의 직접 읽기 범위와 미독을 구분했다. [상세](docs/ANIMATION_RETARGET_072.md), [증거](docs/research/ANIMATION_RETARGET_072.json). 전체 선행→설치 갱신→조사 추가 순서 유지. 설치/사용 창·장시간 FPS/RAM·전체 corpus 완료 승격 없음. 다음 남은 연산/애니메이션과 누적 세부.

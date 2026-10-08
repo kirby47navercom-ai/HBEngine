@@ -371,6 +371,7 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRetargetWeight", KoreanName="리타게팅 가중치 지정", Category="애니메이션 그래프") static void SetRetargetWeight(Actor* target,const std::string& node,float value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRetargetScale", KoreanName="리타게팅 실제 배율", Category="애니메이션 그래프") static float GetRetargetScale(Actor* target,const std::string& node);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRetargetProfile", KoreanName="리타게팅 활성 프로필", Category="애니메이션 그래프") static std::string GetRetargetProfile(Actor* target,const std::string& node);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKRotationLimit", KoreanName="CCD 관절 회전 제한", Category="애니메이션 그래프") static void SetIKRotationLimit(Actor* target,const std::string& node,const std::string& bone,float value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKTarget", KoreanName="IK 목표 위치 지정", Category="애니메이션 그래프") static void SetIKTarget(Actor* target,const std::string& node,const Vec3& value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKHint", KoreanName="IK 관절 힌트 지정", Category="애니메이션 그래프") static void SetIKHint(Actor* target,const std::string& node,const Vec3& value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKRotation", KoreanName="IK 목표 회전 지정", Category="애니메이션 그래프") static void SetIKRotation(Actor* target,const std::string& node,const Vec3& value);

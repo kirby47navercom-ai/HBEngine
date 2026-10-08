@@ -1,0 +1,194 @@
+{
+  "id": "073",
+  "date": "2026-10-08",
+  "priorCommit": "27238e5",
+  "feature": "3D CCD chain, named per-input rotation limits, shared BP/C++ mutation and actual retarget IK debug rendering",
+  "sources": [
+    {
+      "id": "ue-ccd",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-ccdik-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-blueprint-ccdik-in-unreal-engine",
+      "status": 200,
+      "bytes": 73820,
+      "sha256": "b14df5c30f068500235416c2dafce3bcce4fc6d3dd0b4df5f80ef2bc60e4f695",
+      "scope": "own58lines guide/setup/property table read; linked media/API and actual solver implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-ccd-api",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_CCDIK",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/AnimGraphRuntime/FAnimNode_CCDIK",
+      "status": 200,
+      "bytes": 78135,
+      "sha256": "31d0594a23648a1eb01b50d7ed488229b64ec296199843d455dce0abc3459e9d",
+      "scope": "own117lines declaration/fields/functions summaries read; linked functions/engine implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-control-ccd",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/ControlRig/FRigUnit_CCDIKItemArray",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/ControlRig/FRigUnit_CCDIKItemArray",
+      "status": 200,
+      "bytes": 67983,
+      "sha256": "7ef4220efd69a78d757a658c9d443056cdf41143e5e0b52633908462c44d463b",
+      "scope": "own73lines declaration/fields/function summary read; source body and linked limit-item implementation unread",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "installedSource": {
+    "file": "node_modules/three/examples/jsm/animation/CCDIKSolver.js",
+    "version": "0.180.0",
+    "sha256": "1963816dbdb97ba9d330a209bf8a02a125dd52a0e0ab7f58e8f8b359131a97f2",
+    "bytes": 13341,
+    "wholeFileRead": false,
+    "readScope": "135..259: link-space cyclic update/angle/min-max Euler/constraint/chain blend portion; other body/helper unread"
+  },
+  "discovery": {
+    "unrealManualNew": 1,
+    "unrealCppNew": 2,
+    "threeSourceNew": 2,
+    "supplementSource": "threejs-animation-supplement",
+    "rawDownloadPromotesReading": false
+  },
+  "validation": {
+    "currentShaWindows": {
+      "editor": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-ccd-editor-o1ggrE",
+        "acceptanceSha256": "ef52f746f80c0aca5731f7bd5904259f8c4fae3d85a669561e9aea1deb1a8562",
+        "assertionsSha256": "97756e7df1d27418d6c770f6acd06d7270fd1994328f80d71f9caca7feaec5e7",
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "3a4783b96dbfaf949e81f2682940ac9741f37e3066ae9d29442f7a753dabc2c4",
+          "prototype/animation-retarget.js": "74ab12b4d9a6f3c98aaf4d4bf9ff13e257a04aca9b96d16be1f9c9807be3dac4",
+          "prototype/animation-retarget-editor.js": "f12d02d3a229c21f76e21ac11d9a9a23b156902c7864de92a8e53498c9973f86",
+          "prototype/animation-retarget-bake.js": "7707b863c3145acd757189ea053769d9d95164cb757866d3dc1a150a069ffc5d",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "832a9c53882554ff6aa857017df965d471387cbf468960e59344dc87fd400f2f",
+          "prototype/app.js": "74378d31366c173f15abe2bef78089bb1a20bcc5922441b2a42593372c448aba",
+          "tools/headless-model.mjs": "e83349123dd99f937b8d8ed913d459b94e924e200ef0a9be7017e0d4f50f1827",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "5bcbb70d6fbfd47b44aa2e2261b3d48e50d6c98d8b84e722e8c72fed58e9e589",
+          "prototype/animation-ik-editor.js": "c9b5bcb0d80cb46429d7bd61cf866d5cca3fb691cecd600a8b0f699d39df543e",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "220e039947a34348e3d51d714cf215f83074f3578ea130ea7faea96b30737980",
+          "native/include/HBEngine/Game.hpp": "8e741aefd6bfa19d55f919fbc8953f1cbf7738337dc4f1f9d3be833a82ca6790",
+          "native/include/HBEngine/Bridge.hpp": "6884425393794402844a7f61663b9d8370742b7ddb967e054a6d0229ab6e5130",
+          "prototype/engine-services.js": "66ce1ba6d240032110f5cb5ccfb7a98c099da88300670a3ad3b090f9cf91f2f9",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "5af957ef56a811df39b85997e47a3c4322b0309c461a233805a9e82176950d77",
+          "prototype/animation-graph-assets.js": "b2f1a023cd8410e82cf90d04d1023ddcdc93e4594ef933a291786e73026b9d85",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "8e02aeaad26a41060de310e77a9086807fecf487dd600c08438858b7e8561416",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "6546278a4dd114adf64e4b0dab181ac8a73ea2727894f4fc705325ca7954fa01",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "3c51e062f856c32a30d4e7a5897ee92c904c2e16eef4086e17d827bf0b8ceaca",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      },
+      "player": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-ccd-player-FM13zf",
+        "acceptanceSha256": "0727bcc5dfc695ffef15fff3612e9d55b768dffd3fea635e0adeafaebed7ccd3",
+        "assertionsSha256": "17cc1e16e5022f0f92da676a1d56b44e319add589ec1ed4c9335ca9050fe5355",
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "3a4783b96dbfaf949e81f2682940ac9741f37e3066ae9d29442f7a753dabc2c4",
+          "prototype/animation-retarget.js": "74ab12b4d9a6f3c98aaf4d4bf9ff13e257a04aca9b96d16be1f9c9807be3dac4",
+          "prototype/animation-retarget-editor.js": "f12d02d3a229c21f76e21ac11d9a9a23b156902c7864de92a8e53498c9973f86",
+          "prototype/animation-retarget-bake.js": "7707b863c3145acd757189ea053769d9d95164cb757866d3dc1a150a069ffc5d",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "832a9c53882554ff6aa857017df965d471387cbf468960e59344dc87fd400f2f",
+          "prototype/app.js": "74378d31366c173f15abe2bef78089bb1a20bcc5922441b2a42593372c448aba",
+          "tools/headless-model.mjs": "e83349123dd99f937b8d8ed913d459b94e924e200ef0a9be7017e0d4f50f1827",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "5bcbb70d6fbfd47b44aa2e2261b3d48e50d6c98d8b84e722e8c72fed58e9e589",
+          "prototype/animation-ik-editor.js": "c9b5bcb0d80cb46429d7bd61cf866d5cca3fb691cecd600a8b0f699d39df543e",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "220e039947a34348e3d51d714cf215f83074f3578ea130ea7faea96b30737980",
+          "native/include/HBEngine/Game.hpp": "8e741aefd6bfa19d55f919fbc8953f1cbf7738337dc4f1f9d3be833a82ca6790",
+          "native/include/HBEngine/Bridge.hpp": "6884425393794402844a7f61663b9d8370742b7ddb967e054a6d0229ab6e5130",
+          "prototype/engine-services.js": "66ce1ba6d240032110f5cb5ccfb7a98c099da88300670a3ad3b090f9cf91f2f9",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "5af957ef56a811df39b85997e47a3c4322b0309c461a233805a9e82176950d77",
+          "prototype/animation-graph-assets.js": "b2f1a023cd8410e82cf90d04d1023ddcdc93e4594ef933a291786e73026b9d85",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "8e02aeaad26a41060de310e77a9086807fecf487dd600c08438858b7e8561416",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "6546278a4dd114adf64e4b0dab181ac8a73ea2727894f4fc705325ca7954fa01",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "3c51e062f856c32a30d4e7a5897ee92c904c2e16eef4086e17d827bf0b8ceaca",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      }
+    },
+    "core": "native/build/ccd-core-073.log",
+    "regression": "native/build/ccd-regressions-073.log",
+    "scope": [
+      "Two Bone/FABRIK/CCD and limits/seed directions/animated input",
+      "retarget IK debug parent/alpha/source/disposal",
+      "SpriteSkin2D IK existing path",
+      "graph/states/sync",
+      "711 BP nodes",
+      "626 C++ connections (289 core/337 services)",
+      "generated API"
+    ],
+    "initialNumericalFailures": [
+      "CCD seed on final joint was cancelled before bending an animated straight tail-first chain",
+      "root-first sweep aligned a straight chain to the target and stalled before an internal target"
+    ],
+    "priorWindowProof": "native/build/animation-ccd-editor-lD5umN; product pass, author checkbox check strengthened afterward"
+  },
+  "wholeCorpusGate": false,
+  "allEngineGoalsComplete": false,
+  "performanceTargetsPromoted": false,
+  "installationUpdated": false,
+  "installedVersion": "7df780dd9a47cf5b",
+  "remaining": [
+    "bind-relative axis/hinge/twist minimum/maximum constraints",
+    "Full Body IK/Control Rig/grounding/target gizmos",
+    "SpriteSkin2D angular constraints and dedicated retargeting",
+    "ANIMATION_RETARGET_072 remaining operations",
+    "cumulative WORK_ORDER_051 requirements"
+  ],
+  "originalMdPreservation": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "priorBytes": 177980,
+      "priorSha256": "ac16cad3d9a5674fb1f1cee7dd58829344dd202176036ab5af3bab091a1c6af8",
+      "preservedPrefixSha256": "ac16cad3d9a5674fb1f1cee7dd58829344dd202176036ab5af3bab091a1c6af8",
+      "afterSha256": "1774bbf263d22c06620379c301811aead606659eef395cba5e76c674c5c16cac",
+      "appendOnly": true
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "priorBytes": 64287,
+      "priorSha256": "6798b767cea4685b31d40ebc3a1f7e970a8e95a197d22223b58fe4d1fc5e2711",
+      "preservedPrefixSha256": "6798b767cea4685b31d40ebc3a1f7e970a8e95a197d22223b58fe4d1fc5e2711",
+      "afterSha256": "aea8bf203fa8a58b79a13f3a54f02e68d704eaa6d9cee5ceaaf90c56b8824f91",
+      "appendOnly": true
+    }
+  ]
+}

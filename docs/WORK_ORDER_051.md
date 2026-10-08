@@ -75,3 +75,5 @@
 - 071:3D Two Bone/FABRIK·네 공간/Actor 목표·SDK/BP8·AI/미리보기·실제 뼈·재생/늘이기 보존·실행 중 선택/속성 정리. 최종 Editor animation-ik-editor-Xb2cNs/release Player animation-ik-player-KpvwcF·기존 회귀/705노드·원본/오류0/종료0/서버 정리/제품 SHA 통과. [상세](ANIMATION_IK_071.md). 07020c03b7 푸시 완료; 누적 선행 순서/설치 대기 유지. 다음 리타게팅 및 누적 세부.
 
 - 072: 리그·프로필/기준 포즈·체인 매핑·다른 관절 수 FK/프로필별 IK·선행 원본 Tick·베이크 클립·SDK/BP5·AI·전용 편집기를 연결. 최종 Editor5FiN9K/releasePlayer29kNB1·코어/기존 회귀·710노드/625 SDK연결·원본/오류0/종료0/서버 정리/제품 SHA 통과. [상세](ANIMATION_RETARGET_072.md). 071391bc15 푸시 완료; 임의 Op Stack/LOD/Avatar/Muscle·커브/모프·2D 전용 리타게팅 등 세부와 전체 선행/설치 대기를 유지.
+
+- 073: CCD IK·양방향/직선 정지점 보정·이름별 전체 회전 제한·공용 SDK/BP1·AI/관절 UI/Undo·실제 리타게팅 IK 선과 수명 정리. 최종 Editoro1ggrE/releasePlayerFM13zf·세 솔버/2D IK/기존 회귀·711노드/626 SDK연결·원본/오류0/종료0/서버 정리/제품 SHA 통과. [상세](ANIMATION_CCD_073.md). 07227238e5 푸시 완료; 다음2D 관절 제약·FullBody/ControlRig/리타게팅 등 누적 세부, 설치 대기 유지.

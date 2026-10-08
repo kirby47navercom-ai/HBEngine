@@ -1,3 +1,7 @@
+# 073 CCD IK 직접 읽기
+
+UE5.8 CCD guide58줄·API117줄·ControlRig ItemArray73줄 자체 본문/표/선언 요약을 읽었다. 설치 Three0.180.0 CCDIKSolver135~259줄 부분과072 SkeletonUtils 앞부분을 공식 r180 원문 SHA로 대조하고 보조 source2를 전체 corpus에 등록했다. 연결 본문/미디어·남은 구현과 분모/독립 검증은 열린 상태다. [구현/범위/증거](../ANIMATION_CCD_073.md).
+
 # 072 골격 리타게팅 직접 읽기
 
 UE5.8 리그/Runtime/Op Stack 자체 본문·표3과 API3 자체 선언/필드/함수 요약, Unity6000.0 Retarget/Avatar/Configure/Mapping 자체 본문4를 읽었다. 원문10 SHA·읽기 경계, Unreal 신규 발견6·Unity 기존4 provenance와 구현/검증은 [072 기록](../ANIMATION_RETARGET_072.md)에 남긴다. 연결 함수 구현·미디어·Muscle/Mecanim과 전체 corpus gate는 미승격이다.

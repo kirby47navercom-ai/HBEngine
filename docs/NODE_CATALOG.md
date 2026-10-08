@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **710개**, 실제 공통 C++ API **625개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **711개**, 실제 공통 C++ API **626개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -53,7 +53,7 @@
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
-| 애니메이션 그래프 | 29 | 29 |
+| 애니메이션 그래프 | 30 | 30 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -912,6 +912,7 @@
 | animGraphRetargetWeight | Set Retarget Weight / 리타게팅 가중치 지정 | exec: exec, target: object, node: string, value: float | then: exec | hb::AnimationGraph::SetRetargetWeight | 공통 C++ + VM |
 | animGraphRetargetScale | Get Retarget Scale / 리타게팅 실제 배율 | target: object, node: string | return: float | hb::AnimationGraph::GetRetargetScale | 공통 C++ + VM |
 | animGraphRetargetProfile | Get Retarget Profile / 리타게팅 활성 프로필 | target: object, node: string | return: string | hb::AnimationGraph::GetRetargetProfile | 공통 C++ + VM |
+| animGraphIKRotationLimit | Set IKRotation Limit / CCD 관절 회전 제한 | exec: exec, target: object, node: string, bone: string, value: float | then: exec | hb::AnimationGraph::SetIKRotationLimit | 공통 C++ + VM |
 | animGraphIKTarget | Set IKTarget / IK 목표 위치 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKTarget | 공통 C++ + VM |
 | animGraphIKHint | Set IKHint / IK 관절 힌트 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKHint | 공통 C++ + VM |
 | animGraphIKRotation | Set IKRotation / IK 목표 회전 지정 | exec: exec, target: object, node: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKRotation | 공통 C++ + VM |

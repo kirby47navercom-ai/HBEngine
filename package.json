@@ -133,7 +133,9 @@
     "test:android-deploy": "node --experimental-test-module-mocks --disable-warning=ExperimentalWarning tools/check-android-deploy.mjs",
     "test:animation-retarget": "node tools/check-animation-retarget.mjs",
     "test:animation-retarget-editor": "node tools/check-animation-graph-window.mjs --retarget --editor",
-    "test:animation-retarget-player": "node tools/check-animation-graph-window.mjs --retarget"
+    "test:animation-retarget-player": "node tools/check-animation-graph-window.mjs --retarget",
+    "test:animation-ccd-editor": "node tools/check-animation-graph-window.mjs --ccd --editor",
+    "test:animation-ccd-player": "node tools/check-animation-graph-window.mjs --ccd"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",
