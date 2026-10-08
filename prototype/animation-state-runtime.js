@@ -1,3 +1,4 @@
+import {motionBuffer,resetMotion} from './animation-root-motion.js';
 const clamp=v=>Math.max(0,Math.min(1,v));
 const compare=(value,c)=>({true:()=>value===true,false:()=>value===false,eq:()=>value===c.value,ne:()=>value!==c.value,gt:()=>value>c.value,ge:()=>value>=c.value,lt:()=>value<c.value,le:()=>value<=c.value}[c.op]());
 export function animationCurve(value,type){const x=clamp(value);return type==='smooth'?x*x*(3-2*x):type==='easeIn'?x*x:type==='easeOut'?1-(1-x)*(1-x):x;}
@@ -9,7 +10,7 @@ export function crossedAnimationExit(previous,current,exit,loop){
 
 // Each state owns its clocks and intermediate pose buffers, including shared pose nodes.
 export class AnimationPoseMachine {
-  constructor(owner,node,context,key){this.owner=owner;this.node=node;this.key=key;this.context=context;this.states=new Map(node.properties.states.map(s=>[s.id,s]));this.contexts=new Map(node.properties.states.map(s=>[s.id,owner.makeContext(node.inputs[s.input],key+'/'+s.id)]));this.ordered=[...node.properties.transitions].sort((a,b)=>a.priority-b.priority||node.properties.transitions.indexOf(a)-node.properties.transitions.indexOf(b));this.current='';this.transition=null;this.lastFrame=-1;this.initialized=false;this.frozen=owner.allocatePose();this.lastPose=owner.allocatePose();this.frozenSprites=new Map();this.lastResult=null;this.limited=false;}
+  constructor(owner,node,context,key){this.owner=owner;this.node=node;this.key=key;this.context=context;this.states=new Map(node.properties.states.map(s=>[s.id,s]));this.contexts=new Map(node.properties.states.map(s=>[s.id,owner.makeContext(node.inputs[s.input],key+'/'+s.id)]));this.ordered=[...node.properties.transitions].sort((a,b)=>a.priority-b.priority||node.properties.transitions.indexOf(a)-node.properties.transitions.indexOf(b));this.current='';this.transition=null;this.lastFrame=-1;this.initialized=false;this.motion=owner.hasRootMotion?motionBuffer():null;this.frozen=owner.allocatePose();this.lastPose=owner.allocatePose();this.frozenSprites=new Map();this.lastResult=null;this.limited=false;}
   event(name,phase,state,transition){if(name)this.owner.queueEvent({name,phase,machine:this.key,state:state?.id||'',stateName:state?.name||'',transition:transition?.id||''});}
   stateContext(id){return this.contexts.get(id);}
   enter(id,offset=0,force=false){const s=this.states.get(id),ctx=this.stateContext(id);if(force||s.resetOnEntry||offset){this.owner.resetContext(ctx,offset||s.offset);ctx.time=0;}this.event(s.onEnter,'enter',s);return s;}
@@ -40,9 +41,9 @@ export class AnimationPoseMachine {
     if(t){t.time+=delta;t.weight=animationCurve(t.duration?t.time/t.duration:1,t.rule.curve);}
   }
   evaluate(delta,out,evaluate){
-    this.prepare(delta);const t=this.transition;
+    this.prepare(delta);if(this.motion)resetMotion(this.motion);const t=this.transition;
     const sample=id=>{const s=this.states.get(id);return evaluate(this.node.inputs[s.input],this.stateContext(id),delta*s.speed);};
-    let result;if(t){const a=t.frozen?{pose:this.frozen,sprites:this.frozenSprites}:sample(t.from),b=sample(t.to);this.owner.mix(out,a.pose,b.pose,t.weight);result={pose:out,sprites:this.owner.mergeSprites(a.sprites,b.sprites,t.weight)};if(t.time>=t.duration)this.finish();}else{const value=sample(this.current);for(let i=0;i<out.length;i++)out[i].set(value.pose[i]);result={pose:out,sprites:value.sprites};}for(let i=0;i<this.lastPose.length;i++)this.lastPose[i].set(result.pose[i]);this.lastResult={pose:this.lastPose,sprites:result.sprites};return result;
+    let result;if(t){const a=t.frozen?{pose:this.frozen,sprites:this.frozenSprites}:sample(t.from),b=sample(t.to);this.owner.mix(out,a.pose,b.pose,t.weight);if(this.motion)this.owner.mixRootMotion(this.motion,a.rootMotion,b.rootMotion,t.weight);result={pose:out,sprites:this.owner.mergeSprites(a.sprites,b.sprites,t.weight),rootMotion:this.motion};if(t.time>=t.duration)this.finish();}else{const value=sample(this.current);for(let i=0;i<out.length;i++)out[i].set(value.pose[i]);if(this.motion)this.motion.set(value.rootMotion||resetMotion(this.motion));result={pose:out,sprites:value.sprites,rootMotion:this.motion};}for(let i=0;i<this.lastPose.length;i++)this.lastPose[i].set(result.pose[i]);this.lastResult={pose:this.lastPose,sprites:result.sprites};return result;
   }
   snapshot(){const t=this.transition,current=this.states.get(this.current),next=t&&this.states.get(t.to);return {id:this.node.id,name:this.node.name,key:this.key,state:current?.id||'',stateName:current?.name||'',nextState:next?.id||'',nextName:next?.name||'',...this.current?this.timing(this.current):{time:0,normalized:0,length:0},transition:t?{id:t.rule.id,from:t.from,to:t.to,time:t.time,duration:t.duration,progress:t.duration?clamp(t.time/t.duration):1,weight:t.weight}:null,limited:this.limited,states:[...this.states.values()].map(s=>({id:s.id,name:s.name,time:this.stateContext(s.id).time,weight:t?s.id===t.to&&s.id===t.from?1:s.id===t.to?t.weight:s.id===t.from?1-t.weight:0:s.id===this.current?1:0}))};}
 }

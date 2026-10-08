@@ -1,0 +1,177 @@
+{
+  "id": "070",
+  "date": "2026-10-08",
+  "priorCommit": "570b2f4",
+  "feature": "Root Motion",
+  "sources": [
+    {
+      "id": "unreal-root",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/root-motion-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/root-motion-in-unreal-engine",
+      "status": 200,
+      "bytes": 86808,
+      "sha256": "ab03a88cbaa35cd3ee6066f54eef3c71197dab68d00804ce8fd78399fb93915f",
+      "scope": "UE5.8 own111lines including enabling, root locks, four modes, weighted extraction, movement/gravity and debugging text read; images/media and linked pages not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-root",
+      "sourceId": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/RootMotion.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/RootMotion.html",
+      "status": 200,
+      "bytes": 19274,
+      "sha256": "e638ecf0e528c88ea7f39376e224a73306fc25f807c5ed4914385b51feaef3d9",
+      "scope": "Unity6000.0 own article body125-194 including Body/Root transforms, rotation/Y/XZ bake/offset/feet, loop pose and generic root nodes read; images, linked APIs and full Avatar/retarget implementation not read",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-delta-position",
+      "sourceId": "unity-scriptreference",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Animator-deltaPosition.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Animator-deltaPosition.html",
+      "status": 200,
+      "bytes": 15345,
+      "sha256": "816f7addba9700a336c3c81fd68b4ba4176e9b770443ceb34813638ee4e0b3e0",
+      "scope": "Own declaration+description+requirement234-244 read; linked Animator/applyRootMotion pages unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-animator-move",
+      "sourceId": "unity-scriptreference",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorMove.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/MonoBehaviour.OnAnimatorMove.html",
+      "status": 200,
+      "bytes": 17617,
+      "sha256": "37fe06d4df485ad359a4cbfd5703f5d755d76a128b5f3833ffc884010496eba6",
+      "scope": "Own description+full sample and see-also scope234-278 read; linked StateMachineBehaviour/Animator APIs unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "rapier-controller",
+      "sourceId": "dependency-api",
+      "url": "https://rapier.rs/docs/user_guides/javascript/character_controller/",
+      "finalURL": "https://rapier.rs/docs/user_guides/javascript/character_controller/",
+      "status": 200,
+      "bytes": 153756,
+      "sha256": "554025c3a310f27ec7f01fb3b5ef09e7cd959cf744efdb5a5477e8e77955eb5a",
+      "scope": "Own character-controller section31-191 read: obstacle-adjusted translation, lifecycle, filters, gravity, rotation limitation; linked APIs/examples images unread. Installed 0.21 wrapper compute/free also inspected for filter borrow fix.",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "wholeCorpusComplete": false,
+  "wholeEngineComplete": false,
+  "core": {
+    "path": "native/build/root-motion-core-final7-070.log",
+    "passed": true,
+    "fpsBenchmark": false
+  },
+  "physics": {
+    "path": "native/build/root-motion-physics-final-070.log",
+    "passed": true,
+    "assertions": 166,
+    "actualCpp": true
+  },
+  "regressions": [
+    "animation-graph",
+    "animation-states",
+    "animation-sync",
+    "animation-blend-space",
+    "animation-montage",
+    "scene-runtime",
+    "check.mjs",
+    "generate-api --check",
+    "check-assets.mjs actual C++ class/pointer compilation"
+  ],
+  "windowEvidence": {
+    "editor": {
+      "path": "native/build/animation-root-motion-editor-RkHfhj",
+      "ok": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "originalPreserved": true,
+      "errors": 0,
+      "checkedFiles": {
+        "native/include/HBEngine/Game.hpp": "54db727d1567c7e14c6b8a66a16582b0785642ab038b53fb9ea2b331846a95d7",
+        "native/include/HBEngine/Bridge.hpp": "437ce4efaa7428ae226f416b1e674231140e675ad1d41de3bf9a75ca717d55ea",
+        "prototype/engine-services.js": "7f1d69710857d7716a3b3dbd12791e80991e80850bf94777f7f1f43b3f73e628",
+        "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+        "prototype/gameplay-preview.js": "e17eb4ccab73c3295dd8f9ea8b694ceee1dafca20de041494c262cf78664c666",
+        "prototype/animation-graph-assets.js": "bb1ff1aebad8423bb4e1e7b39d33327c20c88f65bfd293fe2123d2b3ea6f53bb",
+        "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+        "prototype/animation-graph-editor.js": "56ce7c4c1ec4e3c4d4e299a2645ecd24b21d110a1a5df1f2708b350c1bf74413",
+        "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+        "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+        "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+        "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+        "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+        "prototype/animation-graph-runtime.js": "bc7875e9b50d844750f4f3cd4b748ef40fa1debe2dc24bdd0457df26153f4452",
+        "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+        "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+        "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+        "tools/editor-automation.mjs": "3eb9360d925a219efdf7672cc2987df32376bbd650ea64c3be38df7c20eeb89e",
+        "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+      }
+    },
+    "player": {
+      "path": "native/build/animation-root-motion-player-5ZENzn",
+      "ok": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "originalPreserved": true,
+      "errors": 0,
+      "checkedFiles": {
+        "native/include/HBEngine/Game.hpp": "54db727d1567c7e14c6b8a66a16582b0785642ab038b53fb9ea2b331846a95d7",
+        "native/include/HBEngine/Bridge.hpp": "437ce4efaa7428ae226f416b1e674231140e675ad1d41de3bf9a75ca717d55ea",
+        "prototype/engine-services.js": "7f1d69710857d7716a3b3dbd12791e80991e80850bf94777f7f1f43b3f73e628",
+        "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+        "prototype/gameplay-preview.js": "e17eb4ccab73c3295dd8f9ea8b694ceee1dafca20de041494c262cf78664c666",
+        "prototype/animation-graph-assets.js": "bb1ff1aebad8423bb4e1e7b39d33327c20c88f65bfd293fe2123d2b3ea6f53bb",
+        "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+        "prototype/animation-graph-editor.js": "56ce7c4c1ec4e3c4d4e299a2645ecd24b21d110a1a5df1f2708b350c1bf74413",
+        "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+        "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+        "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+        "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+        "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+        "prototype/animation-graph-runtime.js": "bc7875e9b50d844750f4f3cd4b748ef40fa1debe2dc24bdd0457df26153f4452",
+        "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+        "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+        "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+        "tools/editor-automation.mjs": "3eb9360d925a219efdf7672cc2987df32376bbd650ea64c3be38df7c20eeb89e",
+        "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+      }
+    }
+  },
+  "installedVersion": "C:/Users/kirby/HBEngine/Versions/7df780dd9a47cf5b",
+  "installedUpdated": false,
+  "wholePC120Mobile60Verified": false,
+  "longRunMemoryResolved": false,
+  "actualAndroidDeviceVerified": false,
+  "iosMacXcodeAvailable": false,
+  "limitations": [
+    "Humanoid Body/feet bake",
+    "root motion rotational continuous sweep",
+    "Motion Warping/Root Motion Sources",
+    "network prediction",
+    "retargeting whole engine"
+  ],
+  "priorEvidencePreserved": [
+    "native/build/animation-root-motion-editor-WrGFa8",
+    "native/build/animation-root-motion-editor-jjgNeW",
+    "native/build/animation-root-motion-editor-dqU1Dk",
+    "native/build/animation-root-motion-editor-YA2o2X",
+    "native/build/animation-root-motion-player-BAXF1J",
+    "native/build/animation-root-motion-player-n118Yn",
+    "native/build/root-motion-core-final4-070.log",
+    "native/build/root-motion-core-final5-070.log"
+  ],
+  "originalMdPrefixProof": "native/build/root-motion-md-070.json"
+}

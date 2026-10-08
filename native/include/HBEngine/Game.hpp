@@ -366,6 +366,9 @@ public:
 HB_CLASS()
 class AnimationGraph : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRootMode", KoreanName="루트 모션 모드 지정", Category="애니메이션 그래프") static void SetRootMotionMode(Actor* target,const std::string& mode);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRootPosition", KoreanName="루트 모션 이동량", Category="애니메이션 그래프") static Vec3 GetRootMotionPosition(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphRootRotation", KoreanName="루트 모션 회전량", Category="애니메이션 그래프") static Vec3 GetRootMotionRotation(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphPlay", KoreanName="애니메이션 그래프 재생", Category="애니메이션 그래프") static void Play(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphStop", KoreanName="애니메이션 그래프 정지", Category="애니메이션 그래프") static void Stop(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphPause", KoreanName="애니메이션 그래프 일시 정지", Category="애니메이션 그래프") static void Pause(Actor* target,bool paused);

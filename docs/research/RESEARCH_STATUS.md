@@ -1,3 +1,7 @@
+# 070 루트 모션 직접 읽기
+
+UE5.8 자체111줄, Unity6000.0 자체본문125–194와 deltaPosition234–244/OnAnimatorMove234–278, Rapier 자체31–191와 설치 wrapper 부분을 직접 읽었다. 연결 API·이미지/영상·실제 엔진 본체와 전체 corpus gate는 미승격이다. 최종 실제 Editor/Player·코어·물리 검증과 읽기 경계는 [070 기록](../ANIMATION_ROOT_MOTION_070.md)에 보존한다.
+
 # 069 / 다음070 읽기
 
 UE5.8 Enum runtime 자체62줄·editor 자체125줄의 선언/필드/함수 요약을 직접 읽고 큐2개 추가. 기존068 guide/ChildMode/Unity SetInteger 읽기 재사용. RootMotion UE 자체111줄/Unity6000.0 본문125–194도 직접 읽고 다음 구현 경로 대조, guide1신규/Unity기존 provenance. 이미지·연결 API·실제 C++ 본체/전체 corpus gate 미승격. [증거와 구현](../ANIMATION_ENUM_SELECTION_069.md).

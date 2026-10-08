@@ -1,3 +1,7 @@
+# 070 루트 모션 공용 함수
+
+SDK SetRootMotionMode/GetRootMotionPosition/GetRootMotionRotation과 BP3개가 같은 Actor/그래프 실행기와 물리를 사용한다. 최종 실제 Editor/Player·코어·물리 검증과 읽기 경계는 [070 기록](ANIMATION_ROOT_MOTION_070.md)에 보존한다.
+
 # 069 애니메이션 Enum 실행
 
 animGraphSetEnum/GetEnum 공용 서비스와 C++ SetEnum/GetEnum/GetEnumValue<E> 연결·실제 실행 통과. BP wire는 Integer, 실행 graph enum domain 검증이며 일반 BP Enum 자료형/자동 C++ Enum 리플렉션 완료로 세지 않는다. [상세](ANIMATION_ENUM_SELECTION_069.md).

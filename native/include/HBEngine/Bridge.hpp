@@ -363,6 +363,9 @@ inline void States::SetBool(Actor* target,const std::string& key,bool value){eng
 inline void States::SetString(Actor* target,const std::string& key,const std::string& value){engineCommand("stateSetString",{{"target",bridgeId(target)},{"key",key},{"value",value}});}
 inline void Montage::Play(Actor* target,const std::string& asset,const std::string& section){engineCommand("playMontage",{{"target",bridgeId(target)},{"asset",asset},{"section",section}});}
 inline void Montage::Stop(Actor* target,float blendTime){engineCommand("montageStop",{{"target",bridgeId(target)},{"blendTime",blendTime}});}
+inline void AnimationGraph::SetRootMotionMode(Actor* target,const std::string& mode){if(mode!="none"&&mode!="ignore"&&mode!="all"&&mode!="montages")throw std::invalid_argument("root motion mode");engineCommand("animGraphRootMode",{{"target",bridgeId(target)},{"mode",mode}});auto& root=gameplayField(target,"animationGraph")["rootMotion"];root["mode"]=mode;root["position"]=Json(Vec3{});root["rotation"]=Json(Vec3{});}
+inline Vec3 AnimationGraph::GetRootMotionPosition(Actor* target){return gameplayField(target,"animationGraph").at("rootMotion").at("position").get<Vec3>();}
+inline Vec3 AnimationGraph::GetRootMotionRotation(Actor* target){return gameplayField(target,"animationGraph").at("rootMotion").at("rotation").get<Vec3>();}
 inline void AnimationGraph::Play(Actor* target,const std::string& asset){engineCommand("animGraphPlay",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void AnimationGraph::Stop(Actor* target){engineCommand("animGraphStop",{{"target",bridgeId(target)}});}
 inline void AnimationGraph::Pause(Actor* target,bool paused){engineCommand("animGraphPause",{{"target",bridgeId(target)},{"paused",paused}});}

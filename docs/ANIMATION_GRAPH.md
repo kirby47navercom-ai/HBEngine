@@ -1,3 +1,7 @@
+# 070 루트 모션
+
+클립/몽타주 추출·고정·혼합·2D/3D 물리 실행·제작/별도 미리보기·공용 BP/C++/AI를 연결했다. 최종 실제 Editor/Player·코어·물리 검증과 읽기 경계는 [070 기록](ANIMATION_ROOT_MOTION_070.md)에 보존한다.
+
 # 069 열거형 선택
 
 15번째 selectEnum, named sparse domain/default pose/독립 혼합·미리보기/상태 조건/BP·C++·AI 연결. 실제 Editor와 releasePlayer 통과. [구현·근거·한계](ANIMATION_ENUM_SELECTION_069.md).
