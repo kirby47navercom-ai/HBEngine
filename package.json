@@ -147,7 +147,8 @@
     "test:material-layers": "node tools/check-material-layers.mjs",
     "test:material-layers-editor": "node tools/check-gpu-editor.mjs --layers",
     "test:material-layers-player": "node tools/check-gpu-scene.mjs --layers",
-    "test:material-layers-player-gl": "node tools/check-gpu-scene.mjs --layers --webgl"
+    "test:material-layers-player-gl": "node tools/check-gpu-scene.mjs --layers --webgl",
+    "test:material-preview": "node tools/check-material-preview.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

@@ -92,3 +92,6 @@
 
 
 - 078: 선택 노드→독립 머테리얼 함수·typed texture2d/staticBool·정적 shader branch·MI/Layer·사람/AI 묶음 저장/Undo·생성 탭 수명·UI 배치를 연결했다. 최종 EditorBBInhr/GPUPlayerviFKGa/GLPlayerPnhjVX 실제129600픽셀·C++ 적용·sampler 차이/반복 자원·원본/SHA·오류0/exit0/서버 종료 통과. [상세](MATERIAL_TYPED_FUNCTIONS_078.md). 077885c879 푸시 완료; 전체 선행/설치 대기와 추가 포트·개별 preview 및 분야별 누적 세부 유지.
+
+
+- 079: 노드/출력 미리보기·Ctrl+T·문서별 view·AI 조회/선택/종료를 upstream 임시 그래프와 기존 resolver/compiler에 연결했다. 84 출력·기존 코어와 실제 GL KtwBLs/GPU PMw2yw의 색 영역/단축키/문서·원본/Undo/SHA/errors0/exit0/서버 종료 통과. [상세](MATERIAL_PREVIEW_079.md). 078facc0eb 푸시 완료. 다음 preview 메시/표시·환경/Realtime 및 전체 선행 세부/설치 대기 유지.

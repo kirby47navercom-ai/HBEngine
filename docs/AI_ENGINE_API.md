@@ -307,3 +307,8 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 `schema.material.functions.types`는 float/vec2/vec3/vec4/texture2d/staticBool/attributes를 공개한다. Texture Object→Sample의 textureObject 핀, Static Bool→Switch의 condition 핀을 사용한다. Static Switch의 valueType은 numeric 또는 동일 typed type이다. Bool instance/layer 값은 JSON boolean이다.
 
 `material.extract {path,expectedRevision,nodeIds,targetPath,name,positions?,dryRun?}`은 보호 root를 제외한 선택을 독립 MF 에셋으로 저장하고 호출로 교체한다. 현재 의존성/서명/순환 검사 후 기존 files.apply를 사용한다. 새 경로는 기존 파일을 덮어쓰지 않는다. dryRun/단일 Undo/Redo·생성 파일/tab·fan-out·literal 보존 계약과 실제 창은 [078](MATERIAL_TYPED_FUNCTIONS_078.md). 예시는 `tools/check-material-typed.mjs`/`tools/material-typed-window-actions.mjs`다.
+
+
+## 머테리얼 expression 미리보기(079)
+
+`material.preview {path,node?,pin?,reset?,expectedRevision?}`은 current view 조회/출력 선택/표면 복귀를 지원한다. node 생략은 조회, reset=true는 종료, pin 생략은 첫 출력(FunctionOutput은 value 입력). 서명/revision·필수 입력을 검사하고 원본/dirty/Undo는 바꾸지 않는다. numeric→발광 RGB·Float 반복·Vec2 XY0·Vec4 XYZ·Texture 샘플·Bool0/1·Attributes PBR, upstream slice와 기존 resolver/compiler를 사용한다. [계약/실제 창](MATERIAL_PREVIEW_079.md).

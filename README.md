@@ -174,3 +174,6 @@ RMB+WASD/QE로 이동하고 RMB+휠로 속도를 바꾼다. Alt+좌/중/우 드�
 탭 우클릭 → 새 창으로 분리 또는 상단 창 메뉴에서 실제 Windows 창을 연다. 아웃라이너·속성도 별도 창으로 열 수 있고, 닫기/모든 창 합치기로 복귀한다. 환경 메뉴는 하늘·태양광·하늘광·구름·높이 안개를 실제 Scene Actor로 추가하고 기존 맵은 명시적으로 환경 Actor로 변환한다. Ctrl+L로 태양을 돌리며 Shift를 함께 누르면 두 번째 대기광원을 조절한다.
 
 입력과 표시의 검증은 `test:viewport`, 실제 OS 창은 `test:detached`다. 근거와 구현 범위는 [뷰포트](docs/VIEWPORT_CONTROLS_RESEARCH.md)·[환경](docs/ENVIRONMENT_ACTORS_RESEARCH.md)·[독립 창](docs/DETACHED_WINDOWS_RESEARCH.md)에 기록했다.
+
+
+079은 [개별 노드·출력 핀 미리보기](docs/MATERIAL_PREVIEW_079.md)를 사람 우클릭/Ctrl+T·문서별 view와 AI material.preview에 연결했다. 84 출력과 실제 GL/GPU 에디터의 픽셀·에셋/Undo·원본/SHA·종료 검사가 통과했다. 설치 순서는 051 그대로다.

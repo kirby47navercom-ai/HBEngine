@@ -48,3 +48,5 @@
 .material-node-field>span{flex:none;white-space:nowrap;min-width:40px}.material-node-field:has([data-material-function-open]){flex-wrap:wrap;overflow-wrap:anywhere}
 
 .material-node .pin-row:has(>.material-vector-input){flex-wrap:wrap}.material-node .pin-row>.material-vector-input{flex:0 0 calc(100% - 15px);padding:3px 0 3px 15px}.material-node .pin-row>.material-vector-input input{flex:1;width:0!important;min-width:0}
+
+.material-node.previewing{border-color:#69a7de;box-shadow:0 0 0 1px #69a7de}.material-preview-badge{margin-left:auto;color:#9ecbfa;font-size:10px;white-space:nowrap}.material-preview-source{display:flex;align-items:center;gap:4px;font-size:11px;color:#9ecbfa}.material-preview-source[hidden]{display:none}.material-preview-source>span{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.material-preview-source>button{padding:0 5px;font-size:15px;line-height:20px}

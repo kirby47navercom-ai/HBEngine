@@ -1,0 +1,459 @@
+{
+  "step": "079",
+  "createdAt": "2026-10-08T07:50:37.586841+00:00",
+  "baseCommit": "facc0eb",
+  "wholeCorpusGate": false,
+  "research": {
+    "fetchedAt": "2026-10-08T07:44:14.613085+00:00",
+    "sources": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/previewing-and-applying-your-materials-in-unreal-engine",
+        "effectiveUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/previewing-and-applying-your-materials-in-unreal-engine",
+        "bytes": 93102,
+        "sha256": "dd9bc2a19d8d5ab2871a3adbd9b668afbd1e2b0896723f3e0538be9d8ed400b7",
+        "scope": "UE 5.8; own complete article read; linked articles, images, media and source unread",
+        "rawFile": "native\\build\\material-preview-research-079\\unreal.html"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Main-Preview.html",
+        "effectiveUrl": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Main-Preview.html",
+        "bytes": 9592,
+        "sha256": "bd2f9a1d375cea1d778a9ed5e2252ba84e5e740f610d0d0fb1aacd8aa4991807",
+        "scope": "Shader Graph 17.0.4; own complete article read; linked articles and source unread",
+        "rawFile": "native\\build\\material-preview-research-079\\unity-main.html"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Preview-Node.html",
+        "effectiveUrl": "https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Preview-Node.html",
+        "bytes": 10295,
+        "sha256": "1c5156ddb1ba758ba72b21e46b6d92faf09c4c1bfb5b4729807a5a4d6fae5954",
+        "scope": "Shader Graph 17.0.4; own complete article incl. Description, Ports and Generated Code read; linked articles and source unread",
+        "rawFile": "native\\build\\material-preview-research-079\\unity-node.html"
+      }
+    ],
+    "wholeCorpusGate": false
+  },
+  "implementation": {
+    "command": "material.preview",
+    "viewOnly": true,
+    "previewPorts": 84,
+    "materialNodes": 68,
+    "blueprintNodes": 714,
+    "cppConnected": 629,
+    "projection": "numeric -> emissive RGB; float replicated, vec2 XY0, vec4 XYZ, texture sampled RGB, bool 0/1, attributes PBR",
+    "upstreamDependenciesOnly": true,
+    "sharedResolverCompiler": true,
+    "nodeThumbnails": false,
+    "perFrameCompilation": false,
+    "recovery": "existing queueRecovery; actual proof covers document switching, not fresh-process recovery"
+  },
+  "core": {
+    "log": "native/build/material-preview-core-079.log",
+    "sha256": "09058b717e2c58bc467d7e9aa72201f68d87239a5a84f5fc09b2f5cd9d58d59b",
+    "passed": true
+  },
+  "windows": [
+    {
+      "receipt": "native/build/gpu-editor-KtwBLs/acceptance.json",
+      "sha256": "c5d8306e39a1e36e26bd4787ebbc8540a49ab903798763b9500b586e526404fd",
+      "backend": "WebGL2",
+      "previewProof": {
+        "steps": [
+          {
+            "selection": {
+              "node": "sample",
+              "pin": "a",
+              "type": "float",
+              "label": "A"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 46.79084175084175
+            }
+          },
+          {
+            "selection": {
+              "node": "atlas",
+              "pin": "value",
+              "type": "texture2d",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11739,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 11661,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 60.13874579124579
+            }
+          },
+          {
+            "selection": {
+              "node": "enabled",
+              "pin": "value",
+              "type": "staticBool",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 9396,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 8.721902356902357
+            }
+          },
+          {
+            "selection": {
+              "node": "choose",
+              "pin": "value",
+              "type": "vec3",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 11661,
+              "greenDifference": 0,
+              "mean": 35.183964646464645
+            }
+          },
+          {
+            "path": "Assets/MF_Preview.hbmaterialfunction.json",
+            "selection": {
+              "node": "result",
+              "pin": "value",
+              "type": "vec3",
+              "label": "Output"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11744,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 11660,
+              "mean": 47.8988468013468
+            }
+          },
+          {
+            "path": "Assets/ML_Preview.hbmateriallayer.json",
+            "selection": {
+              "node": "result",
+              "pin": "value",
+              "type": "attributes",
+              "label": "Material Attributes"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 7968,
+              "cyanDifference": 0,
+              "redDifference": 133,
+              "greenDifference": 0,
+              "mean": 58.98984848484849
+            }
+          },
+          {
+            "path": "Assets/M_PreviewLayers.hbmaterial.json",
+            "selection": {
+              "node": "layers",
+              "pin": "value",
+              "type": "attributes",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11739,
+              "cyan": 0,
+              "magenta": 7967,
+              "cyanDifference": 0,
+              "redDifference": 130,
+              "greenDifference": 0,
+              "mean": 58.99075757575758
+            }
+          }
+        ],
+        "assetUnchanged": true,
+        "historyUnchanged": true,
+        "viewRecoveryIndependent": true,
+        "invalidPreviewPreserved": true,
+        "modalInvalidCancel": true
+      },
+      "checkedFiles": {
+        "tools/material-preview-window-actions.mjs": "82822faa152206548caea179a1d60e53bc588118e392ac3eae468ee0383b44e4",
+        "tools/check-material-preview.mjs": "f4740a06a9018f8d0e4e501dc50f7039b39438e190069d3e809ea82bc6220f21",
+        "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+        "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+        "prototype/index.html": "45cd1ec9190b5662108bfe92ea6be66528cb203c396ac917ac2662dfd2de5c20",
+        "prototype/app.js": "925c87ff1c15d72c90ebba32632d6917ba6f0206da97b4ed595e7e91de67a478",
+        "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+        "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+        "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+        "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+        "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+        "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+        "tools/editor-automation.mjs": "294922f792c7d6934eaebcd3ef66f6bc1048c7a579e2103e91246b3792322ead",
+        "tools/check-gpu-editor.mjs": "7403625258926256e5ce8c948573f0da7239dc941b4eceb67f274b9296bb712c",
+        "prototype/material-runtime.js": "fb39b7cd5b21c3859a2d14fdb6aaf7cdce87562c15bcb0a13eba66d3db8ce666",
+        "prototype/material-editor.js": "dcd17ac6a5ec8eba45352ab2b7ce58cd5ccf3d57690a0c9ddb01bf4add3feb91",
+        "prototype/asset-documents.js": "31c1defded3a705e09f1aefefbeb360619401c373375db086d0f83b98e8a42e3",
+        "prototype/gpu-materials.js": "4f76369287b7a2ec785126e0d235d30798f467dcce2f7bdd8e7c7ed0e9cb663d",
+        "prototype/scene-editor.css": "f77ec4eb3fd716a53e50d881cd7f7cdd72b5d7f633745590ed7371c7e6dac3cf",
+        "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+        "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+        "prototype/material-layers-ui.js": "00ce8533fee598a170335d2b85c75ad817f8eeeaa01a750fccf514a2527a76ef",
+        "prototype/asset-editor-ui.js": "860849f90d289b9b77194c3091ff52256dba0894568cdda6209df7800fcbeb61",
+        "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f",
+        "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+        "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b"
+      },
+      "finalSourceMatches": true,
+      "originalsPreserved": true,
+      "errors": 0,
+      "exitCode": 0,
+      "serverClosed": true
+    },
+    {
+      "receipt": "native/build/gpu-editor-PMw2yw/acceptance.json",
+      "sha256": "106b41ccb2dff6e68aa348b75edf3c8fc1b91231cafc27057500b64e53a4c3b4",
+      "backend": "WebGPU",
+      "previewProof": {
+        "steps": [
+          {
+            "selection": {
+              "node": "sample",
+              "pin": "a",
+              "type": "float",
+              "label": "A"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 47.857180134680135
+            }
+          },
+          {
+            "selection": {
+              "node": "atlas",
+              "pin": "value",
+              "type": "texture2d",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 79,
+              "magenta": 0,
+              "cyanDifference": 11740,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 61.00224747474748
+            }
+          },
+          {
+            "selection": {
+              "node": "enabled",
+              "pin": "value",
+              "type": "staticBool",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 9440,
+              "cyan": 0,
+              "magenta": 0,
+              "cyanDifference": 0,
+              "redDifference": 0,
+              "greenDifference": 0,
+              "mean": 8.812676767676768
+            }
+          },
+          {
+            "selection": {
+              "node": "choose",
+              "pin": "value",
+              "type": "vec3",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 10,
+              "cyanDifference": 0,
+              "redDifference": 11740,
+              "greenDifference": 0,
+              "mean": 35.61028619528619
+            }
+          },
+          {
+            "path": "Assets/MF_Preview.hbmaterialfunction.json",
+            "selection": {
+              "node": "result",
+              "pin": "value",
+              "type": "vec3",
+              "label": "Output"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11741,
+              "cyan": 66,
+              "magenta": 0,
+              "cyanDifference": 13,
+              "redDifference": 0,
+              "greenDifference": 11741,
+              "mean": 48.50010101010101
+            }
+          },
+          {
+            "path": "Assets/ML_Preview.hbmateriallayer.json",
+            "selection": {
+              "node": "result",
+              "pin": "value",
+              "type": "attributes",
+              "label": "Material Attributes"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11740,
+              "cyan": 0,
+              "magenta": 8033,
+              "cyanDifference": 0,
+              "redDifference": 126,
+              "greenDifference": 0,
+              "mean": 59.676885521885524
+            }
+          },
+          {
+            "path": "Assets/M_PreviewLayers.hbmaterial.json",
+            "selection": {
+              "node": "layers",
+              "pin": "value",
+              "type": "attributes",
+              "label": "Value"
+            },
+            "pixels": {
+              "width": 220,
+              "height": 180,
+              "changed": 11743,
+              "cyan": 0,
+              "magenta": 8030,
+              "cyanDifference": 0,
+              "redDifference": 129,
+              "greenDifference": 0,
+              "mean": 59.692382154882154
+            }
+          }
+        ],
+        "assetUnchanged": true,
+        "historyUnchanged": true,
+        "viewRecoveryIndependent": true,
+        "invalidPreviewPreserved": true,
+        "modalInvalidCancel": true
+      },
+      "checkedFiles": {
+        "tools/material-preview-window-actions.mjs": "82822faa152206548caea179a1d60e53bc588118e392ac3eae468ee0383b44e4",
+        "tools/check-material-preview.mjs": "f4740a06a9018f8d0e4e501dc50f7039b39438e190069d3e809ea82bc6220f21",
+        "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+        "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+        "prototype/index.html": "45cd1ec9190b5662108bfe92ea6be66528cb203c396ac917ac2662dfd2de5c20",
+        "prototype/app.js": "925c87ff1c15d72c90ebba32632d6917ba6f0206da97b4ed595e7e91de67a478",
+        "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+        "prototype/gpu-particles.js": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4",
+        "prototype/viewport-presentation.js": "ca2617f2e4aef0299a3f97c2b652b0bd019e2b9afbdf1efba39d2760021f0c15",
+        "prototype/scene-rendering.js": "76c2e1b0f313c5b72bcba8eec57f62c1fc33a43ce6dcc3de0a8b379adf985101",
+        "prototype/engine-services.js": "eb32adf7b147d009e9a7307564c51ddfa6c1ce6cf389c9ec8734281b4ba196aa",
+        "tools/serve.mjs": "0f85fc8386f63312f1060e751620ba950474869acfc0e2f8dce0402147de5b31",
+        "tools/editor-automation.mjs": "294922f792c7d6934eaebcd3ef66f6bc1048c7a579e2103e91246b3792322ead",
+        "tools/check-gpu-editor.mjs": "7403625258926256e5ce8c948573f0da7239dc941b4eceb67f274b9296bb712c",
+        "prototype/material-runtime.js": "fb39b7cd5b21c3859a2d14fdb6aaf7cdce87562c15bcb0a13eba66d3db8ce666",
+        "prototype/material-editor.js": "dcd17ac6a5ec8eba45352ab2b7ce58cd5ccf3d57690a0c9ddb01bf4add3feb91",
+        "prototype/asset-documents.js": "31c1defded3a705e09f1aefefbeb360619401c373375db086d0f83b98e8a42e3",
+        "prototype/gpu-materials.js": "4f76369287b7a2ec785126e0d235d30798f467dcce2f7bdd8e7c7ed0e9cb663d",
+        "prototype/scene-editor.css": "f77ec4eb3fd716a53e50d881cd7f7cdd72b5d7f633745590ed7371c7e6dac3cf",
+        "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+        "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+        "prototype/material-layers-ui.js": "00ce8533fee598a170335d2b85c75ad817f8eeeaa01a750fccf514a2527a76ef",
+        "prototype/asset-editor-ui.js": "860849f90d289b9b77194c3091ff52256dba0894568cdda6209df7800fcbeb61",
+        "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f",
+        "native/include/HBEngine/Game.hpp": "b6aa5ca1ae57a25ff7751ef998bb396ce72a4db6a7e74e194581987767dfec57",
+        "native/include/HBEngine/Bridge.hpp": "fc0d0aa1a3eb8b222f3bc5af0567b0ca301f191f46adafbf8ec838e86588333b"
+      },
+      "finalSourceMatches": true,
+      "originalsPreserved": true,
+      "errors": 0,
+      "exitCode": 0,
+      "serverClosed": true
+    }
+  ],
+  "earlierFailures": [
+    {
+      "case": "initial core fixture",
+      "reason": "test referred to nonexistent engineSchema.editorMethods; use exported editorMethods",
+      "productChange": false
+    },
+    {
+      "receipt": "native/build/gpu-editor-XiXafA/failure.json",
+      "reason": "cyan ratio 1.8 rejected actual tone mapped cyan (157..166,228..229,226..227); changed assertion to difference >24 with bright channels >80 and positive red/green controls",
+      "productChange": false
+    }
+  ],
+  "installation": {
+    "updated": false,
+    "installedVersion": "7df780dd9a47cf5b",
+    "reason": "051 accumulated preceding work and batch acceptance order retained"
+  },
+  "fpsClaim": false,
+  "physicalMobileVerified": false,
+  "remaining": "all accumulated 051 requirements; preview meshes/modes/realtime/environment controls, inline thumbnails, other texture types/shader domains/layers, native renderer, animation/gameplay/world/audio/C++/mobile/AI details",
+  "userMdAppend": [
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "prefixBytes": 187546,
+      "prefixSha256": "7584daaa933fa6b1b0050878ef0bbf69f9ae3981d040577cf8f732757f555943",
+      "afterSha256": "9759803a429f80ea27575567666844b4a7a16cf133ca45ba78a1d435848c050f",
+      "preserved": true
+    },
+    {
+      "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "prefixBytes": 73853,
+      "prefixSha256": "1852237ac6e82fd83def1f7b33b4f571396ef0c741aaf038921a7fe68542ad86",
+      "afterSha256": "7df597fd4232f50b034ce8cf913337366f7303b9c603d9b52156b72a767a59b8",
+      "preserved": true
+    }
+  ]
+}

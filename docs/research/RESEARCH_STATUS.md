@@ -281,3 +281,8 @@ Three Material의 needsUpdate/version·hook/cacheKey·clone/dispose API 구역�
 ## 078 — 머테리얼 함수 추출·정적 입력
 
 Unreal5.8 함수 Overview 자체 기술 본문과 Unity17.0.4 Create a Sub Graph 자체 본문 전체를 읽었다. Property Types는 공통/Boolean/Texture2D 구역만 읽었다. Unity Boolean(float)과 Unreal StaticBool(compile time)을 구분했다. 원문/SHA·미독·구현/실제 창과 이전 실패는 [078](../MATERIAL_TYPED_FUNCTIONS_078.md). 전체 corpus gate false 유지.
+
+
+## 079 — 노드·출력 미리보기
+
+Unreal5.8 Previewing and Applying 및 Unity17.0.4 Main Preview/Preview Node의 자체 본문 전체를 읽었다. 링크·미디어·소스/전체 corpus gate false 유지. view-only 선택·84 출력·실제 GL/GPU·에셋/Undo/SHA/원본·종료와 미구현 구분은 [079](../MATERIAL_PREVIEW_079.md).

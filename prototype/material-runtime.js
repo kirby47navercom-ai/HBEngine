@@ -180,7 +180,7 @@ export async function materialLayerParameters(stacks,read){
   for(const entry of Object.values(stacks).flat())for(const domain of ['layer','blend']){const path=domain==='layer'?entry.asset:entry.blend;if(!path)continue;
     if(!definitions.has(path)){const d=await read(path);if(!validMaterialLayer(d,domain==='blend'))throw Error('머테리얼 레이어 에셋 오류: '+path);definitions.set(path,materialParameters(await resolveMaterialAsset(d,read)));}
     const overrides=domain==='layer'?entry.parameters:entry.blendParameters;
-    for(const p of definitions.get(path)){const v=overrides[p.label]??p.value,valid=p.type==='texture'?typeof v==='string':p.type==='vec3'?Array.isArray(v)&&v.length===3&&v.every(finite):finite(v);items.push({...p,name:materialLayerParameterKey(entry.id,p.label,domain==='blend'),scope:{id:entry.id,domain},value:copy(valid?v:p.value)});}
+    for(const p of definitions.get(path)){const v=overrides[p.label]??p.value,valid=p.type==='bool'?typeof v==='boolean':p.type==='texture'?validAssetPath(v):p.type==='vec3'?Array.isArray(v)&&v.length===3&&v.every(finite):finite(v);items.push({...p,name:materialLayerParameterKey(entry.id,p.label,domain==='blend'),scope:{id:entry.id,domain},value:copy(valid?v:p.value)});}
   }return items;
 }
 export async function resolveMaterialLayers(data,read){
@@ -195,6 +195,30 @@ export async function resolveMaterialLayers(data,read){
   const resolve=ref=>{const seen=new Set();while(aliases.has(ref.node)){if(seen.has(ref.node))throw Error('머테리얼 레이어 순환');seen.add(ref.node);ref=aliases.get(ref.node);}return ref;};
   for(const e of normalizedMaterialEdges(g))if(aliases.has(e.from.node)&&!aliases.has(e.to.node))edges.push({from:resolve(e.from),to:copy(e.to)});
   const graph={...g,nodes,edges:edges.map(e=>({from:resolve(e.from),to:e.to}))};if(!validMaterialGraph(graph))throw Error('머테리얼 레이어 그래프 한도 또는 연결 오류');return {...data,graph,layerStacks:stacks,layerDependencies:[...dependencies]};
+}
+// A view-only upstream slice; authored IDs, values and graph remain unchanged.
+export function materialPreviewGraph(data,selection){
+  if(!validMaterialGraph(data?.graph)||!validMaterialSurface(data.surface)||!selection||typeof selection.node!=='string'||selection.pin!==undefined&&typeof selection.pin!=='string')throw Error('미리보기 노드와 출력 핀을 확인하세요.');
+  const g=data.graph,node=g.nodes.find(n=>n.id===selection.node),wires=normalizedMaterialEdges(g);if(!node)throw Error('미리보기 노드가 없어요.');
+  const output=nodeKey(node)==='functionOutput',pins=materialPins(node,g)[output?'inputs':'outputs'],p=pins.find(p=>p.id===(selection.pin??pins[0]?.id));if(!p)throw Error('미리보기 출력 핀을 확인하세요.');
+  const selected={node:node.id,pin:p.id,type:p.type,label:p.label},nodes=[],edges=[],keep=new Set();let serial=0;
+  const visit=id=>{if(keep.has(id))return;keep.add(id);for(const e of wires.filter(e=>e.to.node===id))visit(e.from.node);};
+  let source={node:node.id,pin:p.id};const edge=output&&wires.find(e=>e.to.node===node.id&&e.to.pin===p.id);if(edge)source=copy(edge.from);if(!output||edge)visit(source.node);
+  nodes.push(...g.nodes.filter(n=>keep.has(n.id)).map(copy));edges.push(...wires.filter(e=>keep.has(e.from.node)&&keep.has(e.to.node)).map(copy));
+  const add=(key,values={})=>{const n=makeMaterialNode(key);do{n.id='mp_'+serial++;}while(g.nodes.some(v=>v.id===n.id));Object.assign(n,values);nodes.push(n);return n;},wire=(from,n,pin)=>edges.push({from:copy(from),to:{node:n.id,pin}});
+  if(output&&!edge){const value=copy(node.inputValues?.value??materialLiteralDefault(p.type)),n=add(p.type==='attributes'?'makeAttributes':p.type==='texture2d'?'textureObject':p.type==='staticBool'?'staticBool':p.type==='float'?'scalar':'vector'+p.type.slice(3),p.type==='attributes'?{inputValues:value}:p.type==='texture2d'?{texture:value}:{value});source={node:n.id,pin:'value'};}
+  if(p.type==='texture2d'){const n=add('texture');delete n.parameter;wire(source,n,'textureObject');source={node:n.id,pin:'rgb'};}
+  else if(p.type==='staticBool'){const n=add('staticSwitch',{inputValues:{a:1,b:0}});wire(source,n,'condition');source={node:n.id,pin:'value'};}
+  else if(p.type==='vec2'||p.type==='vec4'){const pad=add('add',{inputValues:{b:[0,0,0,0]}}),split=add('split'),combine=add('combine');wire(source,pad,'a');wire({node:pad.id,pin:'value'},split,'value');for(const id of p.type==='vec2'?['x','y']:['x','y','z'])wire({node:split.id,pin:id},combine,id);source={node:combine.id,pin:'rgb'};}
+  const root=add(g.mode==='function'?'functionOutput':'surface',g.mode==='function'?{portName:'Preview',valueType:p.type==='attributes'?'attributes':'vec3'}:{useAttributes:p.type==='attributes'});wire(source,root,g.mode==='function'?'value':p.type==='attributes'?'attributes':'baseColor');
+  const preview={...copy(data),graph:{...(g.mode?{mode:g.mode}:{}),nodes,edges},...(g.mode?{previewOutput:root.id}:{})};delete preview.parent;delete preview.domain;
+  if(p.type!=='attributes')preview.surface={...materialDefaults,color:'#000000',roughness:1,metalness:0,emissiveIntensity:1};
+  if(!validMaterialGraph(preview.graph))throw Error('미리보기 그래프 연결이나 한도를 확인하세요.');return {data:preview,selection:selected};
+}
+export async function resolveMaterialPreview(data,selection,read){
+  const preview=materialPreviewGraph(data,selection),resolved=await resolveMaterialAsset(preview.data,read);
+  if(preview.selection.type!=='attributes'){const root=resolved.graph.nodes.find(n=>nodeKey(n)==='surface');resolved.graph.edges=normalizedMaterialEdges(resolved.graph).map(e=>e.to.node===root.id&&e.to.pin==='baseColor'?{from:e.from,to:{node:root.id,pin:'emissive'}}:e);}
+  return {data:resolved,selection:preview.selection};
 }
 export async function resolveMaterialFunctions(data,read){
   const graph=data.graph;if(!graph||graph.mode!=='function'&&!graph.nodes?.some(n=>nodeKey(n)==='functionCall'))return data;

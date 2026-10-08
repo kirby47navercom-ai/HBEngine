@@ -258,3 +258,8 @@ Three Material 관련 API/Uniform 자체 본문과 설치 r180의 uniform upload
 ## 078 — 머테리얼 함수 추출·Texture2D/StaticBool
 
 Unreal5.8 Material Functions Overview 자체 기술 본문 전체, Unity17.0.4 Create a Sub Graph 자체 본문 전체와 Property Types 공통/Boolean/Texture2D 구역만 읽었다. typed 객체/정적 분기·선택 추출을 기존 graph/compiler/파일 transaction에 연결했다. 연결 API/영상/소스 및 전체 corpus 미승격. [실제 창/남은 세부](MATERIAL_TYPED_FUNCTIONS_078.md).
+
+
+## 079 — expression 미리보기
+
+UE5.8 Previewing and Applying와 Unity ShaderGraph17.0.4 Main Preview/Preview Node 자체 기술 본문 전체(Generated Code 포함)를 읽었다. linked API/영상/소스/전체 corpus 미승격. 노드·출력 선택/종료와 입력 불변 흐름을 적용했고 메시/환경/Realtime 설명은 다음 세부로 유지한다. [실제 범위·GL/GPU 증거](MATERIAL_PREVIEW_079.md).
