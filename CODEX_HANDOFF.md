@@ -1,3 +1,7 @@
+# 072 골격 리타게팅 — 2026-10-08
+
+071 391bc15 푸시 완료. RIG_/RT_/SK_ 제작·기준 포즈/프로필·매핑/필터·Copy Base Pose 선택·다른 관절 수 FK/프로필별 FABRIK·원본 선행 Tick·배율/루트/골반·베이크→공통 Clip·SDK/BP5·AI patch/Undo/Save를 연결했다. 최종 실제 Editor animation-retarget-editor-5FiN9K/release Player animation-retarget-player-29kNB1에서 glTF 렌더 뼈·C++ 설정/BP 조회→C++ 일치·원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. 코어 및 기존 회귀/62컴포넌트·710노드/625 C++ 연결(계산289·서비스336) 유지. Save/Undo 전용 에디터 갱신·프로필 IK 참조·끝 키 중복을 수정하고 실패 기록 보존. 공식10주소 자체 본문/API 요약의 직접 읽기 범위와 미독을 구분했다. [상세](docs/ANIMATION_RETARGET_072.md), [증거](docs/research/ANIMATION_RETARGET_072.json). 전체 선행→설치 갱신→조사 추가 순서 유지. 설치/사용 창·장시간 FPS/RAM·전체 corpus 완료 승격 없음. 다음 남은 연산/애니메이션과 누적 세부.
+
 # 071 3D IK — 2026-10-08
 
 070 20c03b7 푸시 완료. Two Bone/FABRIK 포즈 노드·네 공간·목표/힌트 Actor·가중치/Alpha 배율·회전/늘이기/비틀림·참조 재생 보존·SDK/BP8·AI·속성/별도 미리보기를 연결했다. 최종 Editor animation-ik-editor-Xb2cNs/release Player animation-ik-player-KpvwcF에서 실제 뼈 바인딩/블프→C++ 값 일치·원본/오류0/종료0/서버 정리·현재 제품 SHA 일치 통과. 코어와 기존 회귀·705노드/62컴포넌트 통과. 공식 문서7주소와 고정 Unity1.4.1 소스4파일 전체/utility 일부 읽기 경계·미독·실패 증거 보존. [구현/근거](docs/ANIMATION_IK_071.md), [증거](docs/research/ANIMATION_IK_071.json). 선행 누적 전체→설치 갱신→조사 추가 순서 유지. 설치/사용 창 변경 없음, FPS/RAM/전체 corpus 완료 승격 없음. 다음 리타게팅 및 누적 세부.

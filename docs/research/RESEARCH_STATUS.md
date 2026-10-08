@@ -1,3 +1,7 @@
+# 072 골격 리타게팅 직접 읽기
+
+UE5.8 리그/Runtime/Op Stack 자체 본문·표3과 API3 자체 선언/필드/함수 요약, Unity6000.0 Retarget/Avatar/Configure/Mapping 자체 본문4를 읽었다. 원문10 SHA·읽기 경계, Unreal 신규 발견6·Unity 기존4 provenance와 구현/검증은 [072 기록](../ANIMATION_RETARGET_072.md)에 남긴다. 연결 함수 구현·미디어·Muscle/Mecanim과 전체 corpus gate는 미승격이다.
+
 # 071 3D IK 직접 읽기
 
 UE5.8 Two Bone/FABRIK guide2 자체 표 전체와 API2 자체 선언/필드/요약, Unity1.4.1 guide/API3 자체 본문·표·설명을 읽었다. 공식 registry 고정1.4.1 소스4파일 전체와 AnimationRuntimeUtils1~300줄을 직접 대조했다. 연결 본문/미디어/남은 패키지와 전체 gate는 미승격. 발견 원장 신규UE4·기존Unity3 provenance를 반영했다. [구현/범위/실제 증거](../ANIMATION_IK_071.md).

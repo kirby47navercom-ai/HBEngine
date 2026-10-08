@@ -1,3 +1,4 @@
+import {retargetAssetTypes,retargetAssetSuffix,createRetargetAsset,validRetargetAsset} from './animation-retarget-assets.js';
 import {nativeSourceReference} from './native-model.js';
 import {validDataAsset} from './data-assets.js';
 import {defaultBlueprint,makeNode,componentDefaults,validBlueprint,defaultTimeline,validTimeline} from './blueprint-model.js';
@@ -18,6 +19,7 @@ export {materialGraph,evaluateMaterial} from './material-runtime.js';
 const copy=v=>structuredClone(v);
 export const assetSuffix={blueprint:'.hbblueprint.json',material:'.hbmaterial.json',materialinstance:'.hbmaterialinstance.json',physicalmaterial:'.hbphysicalmaterial.json',prefab:'.hbprefab.json',gameconfig:'.hbgameconfig.json',audioasset:'.hbaudioasset.json',animation:'.hbanimation.json',scene:'.hbscene.json',inputaction:'.hbinputaction.json',inputmapping:'.hbinputmapping.json',curve:'.hbcurve.json',data:'.hbdata.json'};
 export const assetTypes={blueprint:{label:'블루프린트 클래스',prefix:'BP_',group:'게임플레이'},code:{label:'C++ 클래스',prefix:'',group:'게임플레이'},inputaction:{label:'Input Action',prefix:'IA_',group:'입력'},inputmapping:{label:'Input Mapping Context',prefix:'IMC_',group:'입력'},material:{label:'머테리얼',prefix:'M_',group:'렌더링'},materialinstance:{label:'머테리얼 인스턴스',prefix:'MI_',group:'렌더링'},physicalmaterial:{label:'물리 머테리얼',prefix:'PM_',group:'물리'},prefab:{label:'프리팹',prefix:'PF_',group:'게임플레이'},gameconfig:{label:'게임 설정',prefix:'GS_',group:'프로젝트'},audioasset:{label:'오디오 에셋',prefix:'S_',group:'오디오'},animation:{label:'트랜스폼 애니메이션',prefix:'AN_',group:'애니메이션'},curve:{label:'커브',prefix:'Curve_',group:'애니메이션'},data:{label:'데이터 에셋',prefix:'DA_',group:'데이터'},scene:{label:'레벨',prefix:'L_',group:'월드'}};
+Object.assign(assetSuffix,retargetAssetSuffix);Object.assign(assetTypes,retargetAssetTypes);
 Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
@@ -40,6 +42,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
   if(kind in twoDTypes)return create2DAsset(kind,name);
   if(kind in gameplayTypes)return createGameplayAsset(kind,name);
+  if(kind in retargetAssetTypes)return createRetargetAsset(kind,name);
   if(kind==='widget')return createWidgetAsset(name);
   if(kind==='audiomixer')return createAudioMixer(name);
   if(kind==='animgraph')return createAnimationGraph(name);
@@ -70,6 +73,7 @@ export function validAsset(kind,data){
   if(kind in gameplayTypes)return validGameplayAsset(kind,data);
   if(kind==='widget')return validWidgetAsset(data);
   if(kind==='audiomixer')return validAudioMixer(data);
+  if(kind in retargetAssetTypes)return validRetargetAsset(kind,data);
   if(kind==='animgraph')return validAnimationGraph(data);
   if(kind==='spriterig')return validSpriteRig(data);
   if(kind==='text')return typeof data==='string'&&data.length<=1048576;

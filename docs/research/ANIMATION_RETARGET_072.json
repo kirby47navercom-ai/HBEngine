@@ -1,0 +1,280 @@
+{
+  "id": "072",
+  "date": "2026-10-08",
+  "priorCommit": "391bc15",
+  "feature": "Named skeletal rigs/profiles, FK/IK retarget pose, isolated authoring/preview, baked clips and shared BP/C++ execution",
+  "sources": [
+    {
+      "id": "ue-retarget",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/ik-rig-animation-retargeting-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/ik-rig-animation-retargeting-in-unreal-engine",
+      "status": 200,
+      "bytes": 362987,
+      "sha256": "0ad59a478c48595d23cdc05c148e6ea8b087985e48f059794edac8ce39ff1af2",
+      "scope": "own311lines whole guide/body/tables and override sets read; linked pages/media/engine bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-runtime",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/runtime-ik-retargeting-in-unreal-engine",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/runtime-ik-retargeting-in-unreal-engine",
+      "status": 200,
+      "bytes": 68221,
+      "sha256": "140937f00f5f426fe42ab17f71526a9127555e06c79800e1a8a7165cd344d08d",
+      "scope": "own61lines full setup/hidden source tick requirements read; media/linked prerequisites and actual node body unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-ops",
+      "sourceId": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/retargeting-operation-stack-in-unreal-engine-5-8",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/retargeting-operation-stack-in-unreal-engine-5-8",
+      "status": 200,
+      "bytes": 775665,
+      "sha256": "517940fdff437d7178cfe85f72460d3ab8d2eaf411fb0d5d79e6dcd1864d6107",
+      "scope": "own 0..1001 whole article/tables/operations read via web and cached Copy Base Pose/Run IK section; linked media, experimental implementation and engine bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-chain-map",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/IKRig/FRetargetChainMapping",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/IKRig/FRetargetChainMapping",
+      "status": 200,
+      "bytes": 74707,
+      "sha256": "38b03a0ecffa50a62d04e6db1d1c7f6f8a0460d512ddc6d6fef43fc891a6d482",
+      "scope": "own62lines full struct fields/member summaries read; linked overload bodies/engine source unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-deprecated-chain-map",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/IKRig/UIKRetargeter/GetChainMapping",
+      "finalURL": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/IKRig/UIKRetargeter/GetChainMapping",
+      "status": 200,
+      "bytes": 59379,
+      "sha256": "5894010be435c9a89108525d47a4c37fe56ac07d38e102e68ce1297589a4df17",
+      "scope": "own full overload declarations/descriptions and5.6 refactor/deprecation explanation read; implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-retarget",
+      "sourceId": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/Retargeting.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/Retargeting.html",
+      "status": 200,
+      "bytes": 14454,
+      "sha256": "312114550b6ad700a6ddb57193bda870b3a112821eeb1b1c776740190fb842d2",
+      "scope": "own article126..197 full text/hierarchy/controller reuse requirements read; images/linked API and Mecanim implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-avatar",
+      "sourceId": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/AvatarCreationandSetup.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/AvatarCreationandSetup.html",
+      "status": 200,
+      "bytes": 14283,
+      "sha256": "db6ec5f54d7ffc10e199408b0d5c308df0c6f5325211b27e0d7fd23dd0a93bd2",
+      "scope": "own125..191 full intro/topic table read; separately read configuring/mapping bodies; linked muscles/mask/API bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-configure-avatar",
+      "sourceId": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/ConfiguringtheAvatar.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/ConfiguringtheAvatar.html",
+      "status": 200,
+      "bytes": 28911,
+      "sha256": "7952f4d79e0661bc7756221f0f026a4841c84e00114911ca0fe48cc3be0bc8d0",
+      "scope": "own126..277 full humanoid import/setup/mapping strategies/bind and T pose/mask body read; linked APIs/media/Mecanim engine implementation unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "unity-avatar-mapping",
+      "sourceId": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-Avatar.html",
+      "finalURL": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-Avatar.html",
+      "status": 200,
+      "bytes": 16006,
+      "sha256": "f862cf7662dbde58a8e575d28a2f1b3354d248482fd07b73afb0080ca5ce68f7",
+      "scope": "own126..175 full mapping pane/required-vs-optional/template reuse/mask body read; linked API/muscles/engine bodies unread",
+      "rawCacheIsNotFullRead": true
+    },
+    {
+      "id": "ue-runtime-node",
+      "sourceId": "unreal-cpp",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/IKRig/FAnimNode_RetargetPoseFromMesh",
+      "finalURL": "https://dev.epicgames.com/documentation/unreal-engine/API/Plugins/IKRig/FAnimNode_RetargetPoseFromMesh?lang=en-US",
+      "status": 200,
+      "bytes": 90210,
+      "sha256": "2c65d01b0a89eed41aebaa32eab95a81d0f6cea280348e8934f9676ce9e3585e",
+      "scope": "own135lines full declaration/fields/functions summaries read; linked functions and engine bodies unread",
+      "rawCacheIsNotFullRead": true
+    }
+  ],
+  "discovery": {
+    "unrealManualNew": 3,
+    "unrealCppNew": 3,
+    "unityManualNew": 0,
+    "unityExistingProvenance": 4,
+    "rawDownloadPromotesReading": false
+  },
+  "validation": {
+    "currentShaWindows": {
+      "editor": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-retarget-editor-5FiN9K",
+        "acceptanceSha256": "42e8c89d9a29b5dd9959318301560e914c1e9f30b334470d2912630c213f59ed",
+        "assertionsSha256": "adf15a3f1a32860c88a59043c98da8f4c80e96cf9d9c09a0c6591d0d72fd2014",
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "3a4783b96dbfaf949e81f2682940ac9741f37e3066ae9d29442f7a753dabc2c4",
+          "prototype/animation-retarget.js": "bcf7a0931efc259a56747eb5b0331f4cb2d8c83ca29a9a958d0b88db82a0f778",
+          "prototype/animation-retarget-editor.js": "f12d02d3a229c21f76e21ac11d9a9a23b156902c7864de92a8e53498c9973f86",
+          "prototype/animation-retarget-bake.js": "7707b863c3145acd757189ea053769d9d95164cb757866d3dc1a150a069ffc5d",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "832a9c53882554ff6aa857017df965d471387cbf468960e59344dc87fd400f2f",
+          "prototype/app.js": "74378d31366c173f15abe2bef78089bb1a20bcc5922441b2a42593372c448aba",
+          "tools/headless-model.mjs": "e83349123dd99f937b8d8ed913d459b94e924e200ef0a9be7017e0d4f50f1827",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "43dcd4d307e883f71ed11689ff21ddeae43154262173fadcf7684d54a354105f",
+          "prototype/animation-ik-editor.js": "3ae29bf5e2ce653498135d2084ee75c60a7a3b88ccb5b88aa8b9aa22f47f390b",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "abf6ce32d8293285db2816448b6791d58f9aa4e6142bee6806bbda5a82707554",
+          "native/include/HBEngine/Game.hpp": "e0f9b3f9238eaff9db37a93ff48055850649e1b0165bb7e630f80554b7f566d4",
+          "native/include/HBEngine/Bridge.hpp": "c64bcc5155c6e19ffcca781376f5964abf92125cf9225e020b13a4ce7f15f57f",
+          "prototype/engine-services.js": "8e165e9923a2cce555c73ef9b2897bf6d05c737c1b1fd0d200b864d6cb94d305",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "5af957ef56a811df39b85997e47a3c4322b0309c461a233805a9e82176950d77",
+          "prototype/animation-graph-assets.js": "6ca382fe9916924bb055db46a411d7fc65fe6e7bcb8a579da2b28f241275cd72",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "8502f002bb30d50bd34fc134ede05a6a5e6210b10737485c3249331dfe7fe0e4",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "7cf6621e5a6cd90c0ac80575a2d3c0de52216ebfca1434c9ae28dfc0db03fbc8",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "f0d68b15114bec615a385d3b09e4c05b6be290e3db1bd25a2a818183a0b07603",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      },
+      "player": {
+        "directory": "C:/Users/kirby/OneDrive/바탕 화면/git/engineCreate/native/build/animation-retarget-player-29kNB1",
+        "acceptanceSha256": "1ec48786596235c7a1628e3d112cf1c436555707d583e89388618713c0c83772",
+        "assertionsSha256": "33ad2d46a36a3734a0c2f60aab4e26852b335b261fe61c210499092a71a70193",
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "3a4783b96dbfaf949e81f2682940ac9741f37e3066ae9d29442f7a753dabc2c4",
+          "prototype/animation-retarget.js": "bcf7a0931efc259a56747eb5b0331f4cb2d8c83ca29a9a958d0b88db82a0f778",
+          "prototype/animation-retarget-editor.js": "f12d02d3a229c21f76e21ac11d9a9a23b156902c7864de92a8e53498c9973f86",
+          "prototype/animation-retarget-bake.js": "7707b863c3145acd757189ea053769d9d95164cb757866d3dc1a150a069ffc5d",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "832a9c53882554ff6aa857017df965d471387cbf468960e59344dc87fd400f2f",
+          "prototype/app.js": "74378d31366c173f15abe2bef78089bb1a20bcc5922441b2a42593372c448aba",
+          "tools/headless-model.mjs": "e83349123dd99f937b8d8ed913d459b94e924e200ef0a9be7017e0d4f50f1827",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "43dcd4d307e883f71ed11689ff21ddeae43154262173fadcf7684d54a354105f",
+          "prototype/animation-ik-editor.js": "3ae29bf5e2ce653498135d2084ee75c60a7a3b88ccb5b88aa8b9aa22f47f390b",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "abf6ce32d8293285db2816448b6791d58f9aa4e6142bee6806bbda5a82707554",
+          "native/include/HBEngine/Game.hpp": "e0f9b3f9238eaff9db37a93ff48055850649e1b0165bb7e630f80554b7f566d4",
+          "native/include/HBEngine/Bridge.hpp": "c64bcc5155c6e19ffcca781376f5964abf92125cf9225e020b13a4ce7f15f57f",
+          "prototype/engine-services.js": "8e165e9923a2cce555c73ef9b2897bf6d05c737c1b1fd0d200b864d6cb94d305",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "5af957ef56a811df39b85997e47a3c4322b0309c461a233805a9e82176950d77",
+          "prototype/animation-graph-assets.js": "6ca382fe9916924bb055db46a411d7fc65fe6e7bcb8a579da2b28f241275cd72",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "8502f002bb30d50bd34fc134ede05a6a5e6210b10737485c3249331dfe7fe0e4",
+          "prototype/animation-state-editor.js": "6ef18b56e8d806391419a364b9af7a10da78e752c9ae74199a7a6dd3f14299ae",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b",
+          "prototype/physics-world.js": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6",
+          "prototype/scene-components.js": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b",
+          "prototype/animation-graph-runtime.js": "7cf6621e5a6cd90c0ac80575a2d3c0de52216ebfca1434c9ae28dfc0db03fbc8",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9",
+          "prototype/gameplay-editor.js": "882652732ea71097621791899526df32e86b3cf2c0b4a718640884188b03b9c8",
+          "tools/editor-automation.mjs": "f0d68b15114bec615a385d3b09e4c05b6be290e3db1bd25a2a818183a0b07603",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "ok": true,
+        "errors": 0,
+        "exitCode": 0,
+        "originalPreserved": true,
+        "serverClosed": true
+      }
+    },
+    "core": "native/build/retarget-core-072-final.log",
+    "regression": "native/build/retarget-regressions-072-final.log",
+    "regressionScope": [
+      "animation-ik",
+      "animation-graph",
+      "animation-states",
+      "animation-sync",
+      "animation-blend-space",
+      "animation-montage",
+      "scene-editor/runtime-62",
+      "assets",
+      "blueprint-710",
+      "generated-api-289-calculations/336-services"
+    ],
+    "previousFailedChecksPreserved": [
+      {
+        "directory": "native/build/animation-retarget-editor-RHzdVQ",
+        "failure": "own debugger page timeout, cause unconfirmed"
+      },
+      {
+        "directory": "native/build/animation-retarget-editor-zifClS",
+        "failure": "retarget source chooser absent after document Save/Undo"
+      },
+      {
+        "directory": "native/build/animation-retarget-editor-k4oKtA",
+        "failure": "captured generic asset form; fixed installDocumentData dedicated editor registration"
+      }
+    ]
+  },
+  "wholeCorpusGate": false,
+  "allEngineGoalsComplete": false,
+  "installationUpdated": false,
+  "installedVersion": "7df780dd9a47cf5b",
+  "performanceTargetsPromoted": false,
+  "readBoundary": "10 own guide/API bodies/tables/declaration summaries; linked engine methods/media/Muscle/Mecanim implementation unread; Three SkeletonUtils source prefix only, not whole file",
+  "remaining": [
+    "arbitrary retarget operation stack and combined override sets",
+    "source pose/component modes and LOD thresholds",
+    "human Avatar/Muscle/automatic T pose/mapping templates",
+    "joint angular limits, Full Body IK and Control Rig",
+    "curve/morph transfer and bake",
+    "speed planting/stride/pole-vector/pin/filter/spatial contact and generated root motion",
+    "dedicated SpriteSkin2D retargeting",
+    "mobile retarget verification",
+    "cumulative WORK_ORDER_051 requirements"
+  ],
+  "originalMdPreservation": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_개선_요청.md",
+      "priorBytes": 176756,
+      "priorSha256": "1201a1f13faddd7ee8976d3895dc1ba5ba29df716efbc141f1cfa0b21af5cb2c",
+      "preservedPrefixSha256": "1201a1f13faddd7ee8976d3895dc1ba5ba29df716efbc141f1cfa0b21af5cb2c",
+      "afterSha256": "ac16cad3d9a5674fb1f1cee7dd58829344dd202176036ab5af3bab091a1c6af8",
+      "appendOnly": true
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\Auric_Loop\\docs\\엔진_요청_프레임.md",
+      "priorBytes": 63063,
+      "priorSha256": "7787077677630c5298f610a63d8aa6f8ab16cd69a9e2635048c786b0f7935c14",
+      "preservedPrefixSha256": "7787077677630c5298f610a63d8aa6f8ab16cd69a9e2635048c786b0f7935c14",
+      "afterSha256": "6798b767cea4685b31d40ebc3a1f7e970a8e95a197d22223b58fe4d1fc5e2711",
+      "appendOnly": true
+    }
+  ]
+}

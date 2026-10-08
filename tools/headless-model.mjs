@@ -1,3 +1,4 @@
+import {rememberAnimationBindPose} from '../prototype/animation-skeleton.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as THREE from 'three';
@@ -57,7 +58,7 @@ export async function loadHeadlessModel(project,name){
       }return group.children.length===1?group.children[0]:group;
     }
   }));
-  try{const result=await loader.parseAsync(JSON.stringify(json),'');if(!result.scene)throw Error('glTF 기본 장면이 없어요.');for(const scene of result.scenes)scene.traverse(node=>{if(node.skeleton)resources.add(node.skeleton);});result.scene.userData.headlessResources=resources;return {object:result.scene,animations:result.animations};}
+  try{const result=await loader.parseAsync(JSON.stringify(json),'');if(!result.scene)throw Error('glTF 기본 장면이 없어요.');for(const scene of result.scenes)scene.traverse(node=>{if(node.skeleton)resources.add(node.skeleton);});result.scene.userData.headlessResources=resources;rememberAnimationBindPose(result.scene);return {object:result.scene,animations:result.animations};}
   catch(error){for(const resource of resources)resource.dispose();throw error;}
 }
 export function disposeHeadlessModel(group){const resources=group?.userData.headlessResources;if(resources){for(const resource of resources)resource.dispose();resources.clear();}}

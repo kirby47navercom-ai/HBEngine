@@ -1,3 +1,4 @@
+import {retargetNodeDefaults,validRetargetNode} from './animation-retarget-assets.js';
 import {animationIKTypes,animationIKDefaults,validAnimationIK} from './animation-ik.js';
 import {rootMotionModes,rootMotionDefaults,validRootMotion} from './animation-root-motion.js';
 import {makeAnimationMachine,validAnimationMachine,animationStateLimits,animationBlendCurves,addAnimationState,validAnimationParameter} from './animation-state-assets.js';
@@ -7,6 +8,7 @@ const numeric=v=>Number.isFinite(v)&&Math.abs(v)<=100000;
 const text=(v,max=1000)=>typeof v==='string'&&v.length<=max;
 const identifier=v=>text(v,80)&&/^[A-Za-z_가-힣][\w가-힣]*$/.test(v);
 export const animationGraphNodes={
+  retargetPose:{label:'Retarget Pose · 골격 리타게팅',inputs:['pose'],group:'리타게팅'},
   twoBoneIK:{label:'Two Bone IK · 두 관절 IK',inputs:['pose'],group:'골격 제어'},
   fabrik:{label:'FABRIK · 체인 IK',inputs:['pose'],group:'골격 제어'},
   output:{label:'Output Pose · 최종 포즈',inputs:['pose'],group:'출력'},
@@ -28,7 +30,7 @@ export const animationGraphNodes={
 export function animationInputs(node){return node.type==='stateMachine'?node.properties.states.map(s=>s.input):['blend1d','blend2d','direct','selectInt','selectEnum'].includes(node.type)?node.properties.samples.map(s=>s.input):animationGraphNodes[node.type]?.inputs||[];}
 export function makeAnimationNode(type,x=100,y=100){
   if(!animationGraphNodes[type])throw Error('애니메이션 노드 종류 오류');
-  const properties={twoBoneIK:animationIKDefaults('twoBoneIK'),fabrik:animationIKDefaults('fabrik'),clip:{rootMotion:rootMotionDefaults(),clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectEnum:{parameter:'Mode',curve:'linear',childUpdate:'active',samples:[{input:'pose0',value:null,duration:.2},{input:'pose1',value:1,duration:.2}]},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
+  const properties={retargetPose:retargetNodeDefaults(),twoBoneIK:animationIKDefaults('twoBoneIK'),fabrik:animationIKDefaults('fabrik'),clip:{rootMotion:rootMotionDefaults(),clip:'',loop:true,rate:1,offset:0,sync:defaultAnimationSync(),notifies:[],notifyStates:[]},sync:{group:'Locomotion'},slot:{group:'DefaultGroup',slot:'DefaultSlot',alwaysUpdateSource:false},blend:{alpha:.5,parameter:''},blend1d:{parameter:'Speed',notifyMode:'all',samples:[{input:'pose0',threshold:0},{input:'pose1',threshold:1}]},blend2d:{parameterX:'Strafe',parameterY:'Speed',mode:'cartesian',notifyMode:'all',axes:{x:defaultAnimationAxis('Right'),y:defaultAnimationAxis('Forward')},samples:[{input:'pose0',x:0,y:0},{input:'pose1',x:1,y:0},{input:'pose2',x:0,y:1}]},direct:{normalize:true,samples:[{input:'pose0',parameter:'',weight:1},{input:'pose1',parameter:'',weight:0}]},select:{parameter:'Moving',duration:.2},selectEnum:{parameter:'Mode',curve:'linear',childUpdate:'active',samples:[{input:'pose0',value:null,duration:.2},{input:'pose1',value:1,duration:.2}]},selectInt:{parameter:'PoseIndex',curve:'linear',childUpdate:'active',samples:[{input:'pose0',duration:.2},{input:'pose1',duration:.2}]},layer:{alpha:1,parameter:'',filters:[{bone:'*',depth:0}]},additive:{alpha:1,parameter:''}}[type]||{};
   return {id:crypto.randomUUID(),type,name:animationGraphNodes[type].label.split(' · ')[0],x,y,inputs:{},properties:type==='stateMachine'?makeAnimationMachine():structuredClone(properties)};
 }
 export function createAnimationGraph(name){const output=makeAnimationNode('output',680,180),rest=makeAnimationNode('rest',140,180);output.inputs.pose=rest.id;return {version:1,name,model:'',parameters:[{name:'Speed',type:'float',value:0},{name:'Moving',type:'bool',value:false}],output:output.id,nodes:[rest,output]};}
@@ -43,6 +45,7 @@ export function validAnimationGraph(data){
     for(const node of nodes.values()){
       if(!text(node.id,120)||!node.id||!animationGraphNodes[node.type]||!text(node.name,80)||!numeric(node.x)||!numeric(node.y)||!node.inputs||typeof node.inputs!=='object'||Array.isArray(node.inputs)||!node.properties||typeof node.properties!=='object'||Array.isArray(node.properties))return false;
       const p=node.properties;
+      if(node.type==='retargetPose'&&(!validRetargetNode(p)||!param(p.parameter,'float')))return false;
       if(node.type==='stateMachine'&&!validAnimationMachine(p,data.parameters))return false;
       if(animationIKTypes.includes(node.type)&&(!validAnimationIK(node.type,p)||!param(p.parameter,'float')))return false;
       if(node.type==='clip'&&(!text(p.clip)||typeof p.loop!=='boolean'||!numeric(p.rate)||p.rate<0||p.rate>100||!numeric(p.offset)||p.offset<0||!validAnimationSync(p)||!validRootMotion(p.rootMotion)))return false;
@@ -66,5 +69,5 @@ export function validAnimationGraph(data){
     return data.nodes.every(n=>height(n.id)<=65);
   }catch{return false;}
 }
-export function validateAnimationProgram(data){if(!validAnimationGraph(data))throw Error('애니메이션 그래프 검증 실패');const nodes=new Map(data.nodes.map(n=>[n.id,n])),seen=new Set();function visit(id){if(seen.has(id))return;seen.add(id);const node=nodes.get(id);for(const input of animationInputs(node)){if(!node.inputs[input])throw Error(node.name+'의 '+input+' 포즈를 연결하세요.');visit(node.inputs[input]);}if(node.type==='clip'&&!node.properties.clip)throw Error(node.name+'의 클립을 지정하세요.');}visit(data.output);return seen;}
+export function validateAnimationProgram(data){if(!validAnimationGraph(data))throw Error('애니메이션 그래프 검증 실패');const nodes=new Map(data.nodes.map(n=>[n.id,n])),seen=new Set();function visit(id){if(seen.has(id))return;seen.add(id);const node=nodes.get(id);for(const input of animationInputs(node)){if(!node.inputs[input])throw Error(node.name+'의 '+input+' 포즈를 연결하세요.');visit(node.inputs[input]);}if(node.type==='retargetPose'&&!node.properties.asset)throw Error(node.name+'의 리타게터를 지정하세요.');if(node.type==='clip'&&!node.properties.clip)throw Error(node.name+'의 클립을 지정하세요.');}visit(data.output);return seen;}
 export function distributeAnimationThresholds(node,min,max){if(node.type!=='blend1d'||!numeric(min)||!numeric(max)||max<=min)throw Error('임계값 범위를 확인하세요.');const samples=node.properties.samples;for(let i=0;i<samples.length;i++)samples[i].threshold=min+(max-min)*i/Math.max(1,samples.length-1);}

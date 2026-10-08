@@ -1,3 +1,5 @@
+import {RetargetEditor} from './animation-retarget-editor.js';
+import {retargetAssetTypes} from './animation-retarget-assets.js';
 import {renderGameViewport} from './game-camera.js';
 import {createGameRenderer,gameRendererInfo,finishGameRendererFrame} from './game-renderer.js';
 import {RuntimeGame} from './runtime-game.js';
@@ -288,7 +290,7 @@ function createMap(){
 function setWorkspace(name,activate=true) {for(const doc of dock?.detached?.documents?.()||[])doc.body.dataset.editor=name;
   if(name==='code'){const path=assetDocs.current?.data.native?.headerPath||projectAssetFiles.find(f=>f.kind==='code'&&f.path===codeHeaderPath)?.path||projectAssetFiles.find(f=>f.kind==='code'&&/\.(h|hpp|cpp)$/i.test(f.path))?.path;if(path)openCodeExternal(path);else project?.createDialog('code');return;}
   if(activate&&assetDocs.current?.kind!==name){const target=[...assetDocs.items.values()].reverse().find(d=>d.kind===name);if(target){activateDocument(target.path);return;}const defaults={blueprint:activeBlueprintPath,material:projectAssetFiles.find(f=>f.kind==='material')?.path,scene:activeScenePath};if(defaults[name])openProjectAsset({kind:name,path:defaults[name],name:assetTitle(defaults[name])}).catch(e=>notify(e.message));else project?.createDialog(name);return;}
-  workspace=name;document.body.dataset.editor=name;$('.editor-grid').classList.toggle('dedicated-editor',['spriterig','animgraph','widget','audiomixer','sprite','tilemap','spriteanimation'].includes(name));$('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';
+  workspace=name;document.body.dataset.editor=name;$('.editor-grid').classList.toggle('dedicated-editor',['spriterig','animgraph','widget','audiomixer','sprite','tilemap','spriteanimation',...Object.keys(retargetAssetTypes)].includes(name));$('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';
   const sceneMode=name==='scene';for(const el of $$('.hierarchy > .search-field,.hierarchy > .scene-root,.hierarchy > #hierarchy-list,.hierarchy > .hierarchy-footer'))el.hidden=!sceneMode;
   $('.hierarchy .panel-heading h2').textContent=name==='blueprint'?'블루프린트':sceneMode?'아웃라이너':'에셋';
   const add=$('.hierarchy .panel-heading .icon-button');add.dataset.action=name==='blueprint'?'add-blueprint-node':sceneMode?'add-menu':'create-asset';add.ariaLabel=name==='blueprint'?'노드 추가':sceneMode?'오브젝트 추가':'에셋 만들기';add.title=add.ariaLabel;
@@ -476,7 +478,7 @@ function renderAssets(){for(const browser of projectBrowsers.values())browser.re
 async function openCodeExternal(path){try{const result=await (await editorRequest('/api/editor/open',{method:'POST',body:JSON.stringify({path})})).json();notify(result.editor+'에서 열었어요.');}catch(error){notify(error.message);}}
 async function openProjectAsset(file){
   if(file.kind==='code'){codeHeaderPath=/\.(h|hpp)$/i.test(file.path)?file.path:file.path.replace(/\.cpp$/i,'.h');codeSourcePath=file.path.replace(/\.(?:cpp|h|hpp)$/i,'.cpp');return openCodeExternal(file.path);}
-  if(running&&!gameplayTypes[file.kind]&&!['blueprint','animgraph','spriterig'].includes(file.kind)&&file.path!==activeScenePath)throw Error('실행 중에는 현재 장면과 블루프린트·게임플레이 진단 에셋을 열 수 있어요.');
+  if(running&&!gameplayTypes[file.kind]&&!['blueprint','animgraph','spriterig',...Object.keys(retargetAssetTypes)].includes(file.kind)&&file.path!==activeScenePath)throw Error('실행 중에는 현재 장면과 블루프린트·게임플레이 진단 에셋을 열 수 있어요.');
   if(assetDocs.items.has(file.path)){captureDocument();const doc=assetDocs.items.get(file.path);if(doc.kind==='blueprint')await blueprintWorkspace.prepare(doc.path,doc.data);return activateDocument(file.path);}
   if(assetSuffix[file.kind]){const data=await (await editorRequest(fileUrl(file.path))).json();if(file.kind==='blueprint')await blueprintWorkspace.prepare(file.path,data);assetDocs.open(file.path,file.kind,data);return activateDocument(file.path);}
   const id='asset:'+file.path;if(documents.has(id)){activateDocument(file.path);return;}const element=document.createElement('div');element.className='workspace-view asset-document';const entry={id,title:file.name,element,path:file.path};
@@ -1154,7 +1156,7 @@ function installDocumentData(doc){
   if(['animation','curve'].includes(doc.kind)){
     const pane=assetPanes.get(doc.path);if(pane?.editor){pane.editor.selection.clear();pane.editor.trackId=doc.data.timeline.tracks[0]?.id;pane.editor.render();}
   }
-  if(['spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
+  if(['spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
   else if(!['scene','blueprint','material','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
   updateSurface();renderInspector();
 }
@@ -1184,6 +1186,7 @@ function ensureAssetPane(doc){
   }else if(['sprite','tilemap','spriteanimation'].includes(doc.kind))pane.editor=renderTwoDEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,read:readAsset,placeAsset:()=>placeAsset({path:doc.path,kind:doc.kind}),createAsset:async(kind,name,data)=>{const folder=doc.path.split('/').slice(0,-1).join('/');const result=await(await editorRequest('/api/asset/create',{method:'POST',body:JSON.stringify({folder,kind,name})})).json();await editorRequest(fileUrl(result.path),{method:'PUT',body:JSON.stringify(data,null,2)});renderAssets();return result;}});
   else if(gameplayTypes[doc.kind]){pane.editor=new GameplayEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,running:()=>running,read:readAsset,open:async path=>{let file=projectAssetFiles.find(f=>f.path===path);if(!file){await refreshAssetIndex();file=projectAssetFiles.find(f=>f.path===path);}if(!file)throw Error('하위 트리 파일이 없어요.');await openProjectAsset(file);},asset:async(name,kind)=>{const data=await(await editorRequest('/api/project?recursive=1')).json();return resolvePlayAsset(data.entries,name,kind);},world:()=>({objects,groups:meshMap,selected,scene:runtimeScenePath||activeScenePath,dimension:runtimeSettings.dimension}),place:()=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))});pane.dispose=()=>pane.editor.dispose();}
   else if(doc.kind==='widget'){pane.editor=new WidgetEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify});pane.dispose=()=>pane.editor.dispose();}
+  else if(doc.kind in retargetAssetTypes){pane.editor=new RetargetEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,running:()=>running,read:readAsset,asset:async(name,kind)=>resolvePlayAsset(projectAssetFiles,name,kind),world:()=>({objects,groups:meshMap,selected,scene:runtimeScenePath||activeScenePath}),createAsset:async(kind,name,data)=>{if(!validAsset(kind,data))throw Error('클립 검증 실패');const folder=doc.path.split('/').slice(0,-1).join('/'),result=await(await editorRequest('/api/asset/create',{method:'POST',body:JSON.stringify({folder,kind,name})})).json();await editorRequest(fileUrl(result.path),{method:'PUT',body:JSON.stringify(data,null,2)});await refreshAssetIndex();renderAssets();return result;}});pane.dispose=()=>pane.editor.dispose();}
   else if(doc.kind==='animgraph'){pane.editor=new AnimationGraphEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,running:()=>running,read:readAsset,asset:async(name,kind)=>resolvePlayAsset(projectAssetFiles,name,kind),world:()=>({objects,groups:meshMap,selected,scene:runtimeScenePath||activeScenePath})});pane.dispose=()=>pane.editor.dispose();}
   else if(doc.kind==='spriterig'){pane.editor=new SpriteRigEditor(element,doc,()=>projectAssetFiles,{before:remember,change:changed,error:notify,running:()=>running,read:readAsset,runtimePose:()=>{const matches=objects.filter(o=>o.components?.some(c=>c.type==='SpriteSkin'&&c.properties?.rig===doc.path)),o=matches.find(o=>o.id===selected)||matches[0];return meshMap.get(o?.id)?.userData.spriteSkin;},place:()=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))});pane.dispose=()=>pane.editor.dispose();}
   else if(doc.kind==='audiomixer'){pane.editor=new AudioMixerEditor(element,doc,{before:remember,change:changed,error:notify,files:()=>projectAssetFiles});pane.dispose=()=>pane.editor.dispose();}
@@ -1191,7 +1194,7 @@ function ensureAssetPane(doc){
   return id;
 }
 function activateDocument(path,reset=false,capture=true){
-  if(running&&!switchingDocument&&!gameplayTypes[assetDocs.items.get(path)?.kind]&&!['blueprint','animgraph','spriterig'].includes(assetDocs.items.get(path)?.kind)&&path!==activeScenePath)return notify('실행 중에는 현재 장면과 블루프린트·게임플레이 진단 에셋을 열 수 있어요.');
+  if(running&&!switchingDocument&&!gameplayTypes[assetDocs.items.get(path)?.kind]&&!['blueprint','animgraph','spriterig',...Object.keys(retargetAssetTypes)].includes(assetDocs.items.get(path)?.kind)&&path!==activeScenePath)return notify('실행 중에는 현재 장면과 블루프린트·게임플레이 진단 에셋을 열 수 있어요.');
   if(!assetDocs.items.has(path))return;
   if(assetDocs.active===path&&!reset){renderInspector();return;}
   if(capture)captureDocument();switchingDocument=true;const doc=assetDocs.select(path);workspace=doc.kind;history=doc.history;future=doc.future;let ready;
