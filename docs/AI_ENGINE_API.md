@@ -297,3 +297,6 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 ## 머테리얼 Attributes·Layer/Blend(076)
 
 `schema.material.attributes`는 11개 표면 필드·Make/Set/Get/Break/Blend와 타입 검증을, `schema.material.layers`는 독립 `materiallayer`/`materialblend` 에셋·고정 경계·스택 배열·배경·독립 값·인스턴스 `layerStacks`를 공개한다. Layer 항목 ID로 `layer.ID.layer.NAME`/`layer.ID.blend.NAME`을 구분한다. `hb::Materials::LayerParameterKey`/순수 BP `materialLayerParameter`와 기존 SetFloat를 사용한다. 사람과 AI는 같은 문서·revision·dryRun·검증·Undo·Save/여러 파일 계약을 쓴다. 저장/그룹 Undo는 의존 머테리얼과 부모/레이어 캐시를 갱신하며 다른 문서를 자동 저작하지 않는다. [작성/실행/실제 검증](MATERIAL_LAYERS_076.md).
+
+
+077: 기존 Materials::SetFloat/materialFloat의 WebGL2 경로도 연결된 Float uniform을 갱신해 머테리얼을 유지한다. LayerParameterKey의 Layer/Blend 이름·instance/data 계약은 076 그대로다. 1000 writes·clone/검증·실제 에디터/배포·원본 보존은 [077](MATERIAL_UNIFORMS_077.md).

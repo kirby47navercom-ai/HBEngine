@@ -56,3 +56,6 @@ release Player `gpu-scene-K92uTA`(WebGPU)와 `gpu-scene-i24w02`(WebGL2)는 같�
 [Unreal Using Material Layers](https://dev.epicgames.com/documentation/en-us/unreal-engine/using-material-layers-in-unreal-engine)의 독립 Layer/Blend와 인스턴스 스택 흐름, [Material Attributes Expressions](https://dev.epicgames.com/documentation/en-us/unreal-engine/material-attributes-expressions-in-unreal-engine)의 묶음/선택 편집을 대조했다. [Unity HDRP 17.0.4 Layered Lit](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material.html)와 [Inspector Reference](https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/layered-lit-material-inspector-reference.html)의 자체 본문을 읽었다. Unity의 해당 셰이더의 4개 제한을 HBEngine 전체 스택의 제한으로 적용하지 않았다.
 
 네 자체 기술 본문의 읽기와 원문/SHA 보존은 연결된 API·패키지 구현·샘플·영상 또는 두 엔진 전체 분석 완료를 뜻하지 않는다. 전체 corpus gate는 false다. HDRP의 Height Blend·Main Layer Influence·Triplanar·Detail/Displacement와 모든 셰이딩 모델을 이번 기능으로 완료 처리하지 않는다. Texture Object/StaticBool 함수 포트, 선택 노드 함수 추출, 임의 표현식/썸네일 미리보기, 추가 도메인/GI/라이트맵·네이티브 렌더러와 051의 다른 누적 세부는 후속 작업이다. 선행 완료→검증→사용자 설치 갱신→조사 기반 추가 작업 순서를 유지한다.
+
+
+077 후속: 위 076 당시 남은 WebGL2 Float 재생성 비용은 [077](MATERIAL_UNIFORMS_077.md)의 연결된 uniform 경로에서 줄였다. 인스턴스의 레이어 배치·아이콘도 보완했다. 바인딩 없는 변경 fallback과 나머지 누적 요구/설치 순서는 유지한다.

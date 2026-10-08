@@ -1,6 +1,6 @@
 # HBEngine
 
-사용자의 후속 구현 지시에 따라 [누적 작업·검증·설치 순서](docs/WORK_ORDER_051.md)로 진행한다. Unity·Unreal 전체 공식 본문·API 분석 gate는 false이며 일부 구현이나 문서 읽기로 승격하지 않는다. 실제 읽은 범위·미독·전체 분모는 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다. 최신 [머테리얼 함수](docs/MATERIAL_FUNCTIONS_075.md)·[Attributes/Layer/Blend와 인스턴스](docs/MATERIAL_LAYERS_076.md)는 공용 CPU/GLSL/TSL·C++/BP·AI/패키징의 실제 창 검증을 포함한다.
+사용자의 후속 구현 지시에 따라 [누적 작업·검증·설치 순서](docs/WORK_ORDER_051.md)로 진행한다. Unity·Unreal 전체 공식 본문·API 분석 gate는 false이며 일부 구현이나 문서 읽기로 승격하지 않는다. 실제 읽은 범위·미독·전체 분모는 [현재 연구 상태](docs/research/RESEARCH_STATUS.md)에 기록한다. 최신 [머테리얼 함수](docs/MATERIAL_FUNCTIONS_075.md)·[Attributes/Layer/Blend와 인스턴스](docs/MATERIAL_LAYERS_076.md)는 공용 CPU/GLSL/TSL·C++/BP·AI/패키징의 실제 창 검증을 포함한다. [WebGL Float 재사용·인스턴스 레이어 배치](docs/MATERIAL_UNIFORMS_077.md)도 이어서 검증했다.
 
 C++ / Win32 / DirectX 11 기반 자체 2D·2.5D·3D 게임 엔진을 만드는 프로젝트다. 현재는 **Windows x64 HBEngine.exe + WebView2 편집기 + 실제 C++ 빌드 호스트 + 블루프린트 실행기 + 독립 게임 Game.exe 패키지**를 연결했다. 편집기와 게임 창은 Win32 C++ 프로그램이고 렌더링은 Three.js/WebGL2 또는 선택한 WebGPU, 물리는 Rapier 2D/3D WASM이다. DirectX 11/HLSL 렌더러와 타깃별 에셋 cook·installer는 별도 제작 항목이다.
 

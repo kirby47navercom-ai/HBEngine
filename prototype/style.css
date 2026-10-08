@@ -364,3 +364,5 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .material-attribute-choice{display:flex;gap:6px;align-items:center;margin:6px 0;}
 .material-node [data-pin-type=attributes]{background:#e3e4d6;border-color:#e3e4d6;}
 .material-layer-stack .asset-vector-fields{display:flex;gap:4px;}
+
+.material-layer-stack svg{width:15px;height:15px;flex:none;stroke-width:1.6;}

@@ -271,3 +271,8 @@ Unity2D Animation13.0.6 2DIK 자체 전체 기술 본문 및 CCDSolver2D 자체 
 ## 076 — 속성 묶음·머테리얼 레이어
 
 UE Using Material Layers/Material Attributes Expressions, Unity HDRP17.0.4 Layered Lit/Inspector Reference 자체 기술 본문 전체 읽기·원문/SHA 보존. 각 페이지의 연결 API/패키지 소스·샘플·영상은 미독이며 전체 corpus gate false 유지. 구현/실제 Editor·GL/GPU 배포/남은 세부의 증거는 [076](../MATERIAL_LAYERS_076.md).
+
+
+## 077 — Float uniform
+
+Three Material의 needsUpdate/version·hook/cacheKey·clone/dispose API 구역과 Uniform 자체 기술 본문, 설치된 0.180.0 Material/Uniform/WebGLRenderer의 관련 소스를 대조했다. 나머지 소스/API와 전체 Unity/Unreal corpus 미승격. 구현·실제 GL Editor/배포와 원문/SHA 범위는 [077](../MATERIAL_UNIFORMS_077.md).

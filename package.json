@@ -142,6 +142,7 @@
     "test:animation-retarget-player": "node tools/check-animation-graph-window.mjs --retarget",
     "test:animation-ccd-editor": "node tools/check-animation-graph-window.mjs --ccd --editor",
     "test:animation-ccd-player": "node tools/check-animation-graph-window.mjs --ccd",
+    "test:material-uniforms": "node tools/check-material-uniforms.mjs",
     "test:material-layers": "node tools/check-material-layers.mjs",
     "test:material-layers-editor": "node tools/check-gpu-editor.mjs --layers",
     "test:material-layers-player": "node tools/check-gpu-scene.mjs --layers",

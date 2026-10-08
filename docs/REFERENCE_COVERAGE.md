@@ -248,3 +248,8 @@ GPU에서 빈 슬롯을 찾아 새 입자를 넣고, 수명이 끝난 슬롯을 
 ## 076 — 속성 묶음·머테리얼 레이어
 
 UE Using Material Layers/Material Attributes Expressions 및 Unity HDRP17.0.4 Layered Lit/Inspector Reference 네 자체 기술 본문을 대조했다. Attributes 함수 타입·Layer/Blend 독립 에셋/스택·인스턴스와 실제 GL/GPU·C++/BP·AI 저장을 검증했다. 연결 콘텐츠/전체 corpus 미승격. [상세](MATERIAL_LAYERS_076.md). Texture/StaticBool·추출/개별 미리보기·height/influence/triplanar/detail/displacement·추가 도메인/GI·WebGL2 Float 재생성 비용은 남는다.
+
+
+## 077 — Float uniform·인스턴스 레이어 배치
+
+Three Material 관련 API/Uniform 자체 본문과 설치 r180의 uniform upload/종료 구역을 대조해 WebGL2 재생성 비용을 줄였다. 선택 구역 확인은 전체 dependency/Unity/Unreal corpus 분석이 아니다. 실제 Editor/Player·원본·자원 보존은 [077](MATERIAL_UNIFORMS_077.md).
