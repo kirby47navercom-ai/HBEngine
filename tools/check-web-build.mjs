@@ -71,6 +71,17 @@ async function checkBrowser(url,template,out){
       const probe=await evaluate('window.hbPlayerDebug.call("Player","TopDownShooter.Probe")');assert.equal(probe.outputs.result,false);
     }
     const report=await evaluate('window.hbPlayerDebug.report()');assert.equal(report.error,null);assert.equal(errors.length,0,JSON.stringify(errors));assert.equal(httpErrors.length,0,JSON.stringify(httpErrors));
+    const pointerPolicy=await evaluate(`(async()=>{
+      const {createWidgetAsset,createWidgetNode}=await import('./prototype/ui-assets.js');
+      const {renderWidgetTree}=await import('./prototype/ui-runtime.js');
+      const data=createWidgetAsset('Pointer regression'),host=document.createElement('div');host.className='hb-ui-host';Object.assign(host.style,{position:'fixed',inset:'auto',left:'400px',top:'200px',width:'300px',height:'160px',zIndex:'10000'});
+      for(const [type,id,offset] of [['Image','picture',[0,0,300,160]],['Text','label',[0,100,300,60]],['Button','button',[0,0,80,40]],['TextInput','input',[100,0,100,40]],['Image','clickable',[100,60,80,30]]]){const node=createWidgetNode(type,id);node.name=id;node.slot.offset=offset;if(id==='clickable')node.events.click='Clicked';data.nodes.push(node);}
+      const behindPicture=document.elementFromPoint(680,280),behindText=document.elementFromPoint(680,330);document.body.append(host);
+      let view=renderWidgetTree(host,data);
+      const runtime={picturePasses:document.elementFromPoint(680,280)===behindPicture,textPasses:document.elementFromPoint(680,330)===behindText,button:document.elementFromPoint(420,220)?.closest('[data-widget-id]')?.dataset.widgetId,input:document.elementFromPoint(520,220)?.dataset.widgetId,clickable:document.elementFromPoint(520,270)?.closest('[data-widget-id]')?.dataset.widgetId};
+      view.dispose();view=renderWidgetTree(host,data,{preview:true});const preview=document.elementFromPoint(680,280)?.closest('[data-widget-id]')?.dataset.widgetId;view.dispose();host.remove();return {...runtime,preview};
+    })()`);
+    assert.deepEqual(pointerPolicy,{picturePasses:true,textPasses:true,button:'button',input:'input',clickable:'clickable',preview:'picture'});
     await fs.writeFile(path.join(work,template+'.png'),Buffer.from((await cdp('Page.captureScreenshot',{format:'png'})).data,'base64'));
     await evaluate('(async()=>{const s=await import("./prototype/project-session.js");s.storage.setItem(s.storageKey("hbengine.savegame.webtest"),"한글 저장");await s.flushStorage();})()');
     await cdp('Page.reload');await until(()=>evaluate('window.hbPlayerDebug?.ready()'),'saved game reload');

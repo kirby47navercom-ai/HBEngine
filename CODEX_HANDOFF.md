@@ -978,3 +978,7 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 
 
 083 배포 완료: Pages https://kirby47navercom-ai.github.io/HBEngine/ · gh-pages5e0b326. 공개 HTTPS 실실행/CPP질의·PC/터치·저장/새로고침/오류0 통과. 사용자 설치 dcc7dfb86fcb2208(1923파일)·바로가기/HKCU 연결 갱신, 설치production12 SHA/격리 API schema/웹 dryRun/SDK 상태 확인. 이전7df780dd9a47cf5b 설치·원본·현재 창 유지, 다음 실행부터 적용. 최신058–082도 포함됐다. Android/iOS Safari·장기 성능·전체 분석/기능 완료는 미검증/미완료로 유지.
+
+## 084 — Auric Loop 두 버전 웹 게시
+
+Auric_Loop의 원격 main a19fcf7·weapon-socket 355289f를 별도 복사본에서 C++ Wasm으로 빌드하고 /main/·/weapon-socket/에 게시했다. 사용자 선택대로 공개 제외 UI 그림 55/116개는 원본 바이트 없이 새 SVG로 대체했다. 공개 HTTPS의 시작·선택·이동·공격, UI 144/158개 로딩·오류0 통과. 최종 공개 런타임 SHA/제외 원본 hash0 확인. gh-pages afe6606, 5225파일. 원본·미커밋 자료·두 소스 브랜치·사용자 앱/설치본 불변. 장식 UI의 클릭 통과/명시적 이벤트/편집기 선택을 공용 코드·DOM 회귀 검사로 수정했다. 5천 파일 재게시의 로그 잘림 문제도 Git 자체 삭제로 수정·실재게시 검증했다. docs/AURIC_WEB_PUBLICATION_084.md 참조. 실제 폰·Safari·전체 완주·장기 성능은 미검증이며 누적 051/추가 목표와 전체 corpus false는 유지한다.

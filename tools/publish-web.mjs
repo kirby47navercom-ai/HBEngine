@@ -32,6 +32,7 @@ export async function publishWeb(directory,remote,{signal,onProgress=()=>{}}={})
   };
   const page=await api('GET');if(page.httpStatus!==404&&(page.source?.branch!=='gh-pages'||page.source?.path!=='/'))throw Error('기존 GitHub Pages의 다른 게시 설정을 덮어쓰지 않아요.');
   const work=await fs.mkdtemp(path.join(os.tmpdir(),'hbengine-pages-'));
+  const checkedWork=await fs.realpath(work),temporary=await fs.realpath(os.tmpdir());if(!checkedWork.toLowerCase().startsWith((temporary+path.sep).toLowerCase()))throw Error('게시 임시 경로 오류');
   const git=(args)=>runTool('git',args,{cwd:work,env,signal});
   try{
     const exists=(await git(['ls-remote','--heads',remote,'refs/heads/gh-pages'])).trim();
@@ -39,7 +40,7 @@ export async function publishWeb(directory,remote,{signal,onProgress=()=>{}}={})
       await git(['clone','--depth','1','--single-branch','--branch','gh-pages',remote,'.']);
       let previous;try{previous=JSON.parse(await fs.readFile(path.join(work,'game.hbpack.json'),'utf8'));}catch{}
       if(previous?.target!=='web'||previous.id!==manifest.id)throw Error('gh-pages에 다른 게임이나 사이트가 있어요. 별도 저장소를 사용하세요.');
-      for(const name of (await git(['ls-files','-z'])).split('\0').filter(Boolean)){if(!safe(name))throw Error('게시 브랜치 파일 경로 오류');await fs.unlink(path.join(work,name));}
+      await git(['rm','--quiet','-r','-f','--','.']);
     }else{await git(['init','-b','gh-pages']);await git(['remote','add','origin',remote]);}
     for(const [name,bytes] of files){const file=path.join(work,name);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,bytes);}
     const name=execFileSync('git',['config','user.name'],{encoding:'utf8'}).trim(),email=execFileSync('git',['config','user.email'],{encoding:'utf8'}).trim();
