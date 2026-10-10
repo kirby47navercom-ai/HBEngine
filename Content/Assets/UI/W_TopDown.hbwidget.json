@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "name": "W_TopDown",
+  "referenceSize": [
+    1280,
+    720
+  ],
+  "scaleMode": "scale",
+  "nodes": [
+    {
+      "id": "root",
+      "name": "Root",
+      "parent": "",
+      "type": "Canvas",
+      "slot": {
+        "anchors": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "offset": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "alignment": [
+          0,
+          0
+        ],
+        "zIndex": 0,
+        "fill": 0
+      },
+      "properties": {
+        "inputKey": "space",
+        "inputMode": "keys",
+        "axisX": "MoveX",
+        "axisY": "MoveY",
+        "keyUp": "w",
+        "keyDown": "s",
+        "keyLeft": "a",
+        "keyRight": "d",
+        "deadZone": 0.15,
+        "floating": false,
+        "deviceVisibility": "all",
+        "text": "",
+        "texture": "",
+        "font": "",
+        "rotation": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "fillDirection": "leftToRight",
+        "fillTexture": "",
+        "backgroundTexture": "",
+        "nineSlice": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fontSize": 24,
+        "color": "#e4e9ef",
+        "background": "#00000000",
+        "accent": "#589ad6",
+        "hover": "#365778",
+        "pressed": "#1e4061",
+        "borderColor": "#4a5f73",
+        "borderWidth": 0,
+        "radius": 4,
+        "opacity": 1,
+        "visible": true,
+        "enabled": true,
+        "focusable": true,
+        "tooltip": "",
+        "align": "left",
+        "value": 0,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "padding": 8,
+        "gap": 8,
+        "columns": 2,
+        "checked": false,
+        "placeholder": "",
+        "maxLength": 256,
+        "wrap": true
+      },
+      "events": {},
+      "bindings": {}
+    },
+    {
+      "id": "60dd48b0-b419-47ca-bc2a-95ccee53e177",
+      "name": "Move",
+      "parent": "root",
+      "type": "Joystick",
+      "slot": {
+        "anchors": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "offset": [
+          48,
+          -48,
+          220,
+          220
+        ],
+        "alignment": [
+          0,
+          1
+        ],
+        "zIndex": 20,
+        "fill": 0
+      },
+      "properties": {
+        "inputKey": "space",
+        "inputMode": "keys",
+        "axisX": "MoveX",
+        "axisY": "MoveY",
+        "keyUp": "w",
+        "keyDown": "s",
+        "keyLeft": "a",
+        "keyRight": "d",
+        "deadZone": 0.15,
+        "floating": false,
+        "deviceVisibility": "touch",
+        "text": "",
+        "texture": "",
+        "font": "",
+        "rotation": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "fillDirection": "leftToRight",
+        "fillTexture": "",
+        "backgroundTexture": "",
+        "nineSlice": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fontSize": 24,
+        "color": "#e4e9ef",
+        "background": "#1c253b99",
+        "accent": "#589ad6",
+        "hover": "#365778",
+        "pressed": "#1e4061",
+        "borderColor": "#4a5f73",
+        "borderWidth": 0,
+        "radius": 4,
+        "opacity": 1,
+        "visible": true,
+        "enabled": true,
+        "focusable": true,
+        "tooltip": "",
+        "align": "left",
+        "value": 0,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "padding": 8,
+        "gap": 8,
+        "columns": 2,
+        "checked": false,
+        "placeholder": "",
+        "maxLength": 256,
+        "wrap": true
+      },
+      "events": {},
+      "bindings": {}
+    },
+    {
+      "id": "60c72978-e687-4e9f-8a4e-092c2ccc1b17",
+      "name": "Attack",
+      "parent": "root",
+      "type": "TouchButton",
+      "slot": {
+        "anchors": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "offset": [
+          -48,
+          -48,
+          112,
+          112
+        ],
+        "alignment": [
+          1,
+          1
+        ],
+        "zIndex": 20,
+        "fill": 0
+      },
+      "properties": {
+        "inputKey": "LeftMouseButton",
+        "inputMode": "keys",
+        "axisX": "MoveX",
+        "axisY": "MoveY",
+        "keyUp": "w",
+        "keyDown": "s",
+        "keyLeft": "a",
+        "keyRight": "d",
+        "deadZone": 0.15,
+        "floating": false,
+        "deviceVisibility": "touch",
+        "text": "공격",
+        "texture": "",
+        "font": "",
+        "rotation": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "fillDirection": "leftToRight",
+        "fillTexture": "",
+        "backgroundTexture": "",
+        "nineSlice": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fontSize": 24,
+        "color": "#e4e9ef",
+        "background": "#263443bb",
+        "accent": "#589ad6",
+        "hover": "#365778",
+        "pressed": "#1e4061",
+        "borderColor": "#4a5f73",
+        "borderWidth": 0,
+        "radius": 100,
+        "opacity": 1,
+        "visible": true,
+        "enabled": true,
+        "focusable": true,
+        "tooltip": "",
+        "align": "center",
+        "value": 0,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "padding": 8,
+        "gap": 8,
+        "columns": 2,
+        "checked": false,
+        "placeholder": "",
+        "maxLength": 256,
+        "wrap": true
+      },
+      "events": {},
+      "bindings": {}
+    },
+    {
+      "id": "title",
+      "name": "Title",
+      "parent": "root",
+      "type": "Text",
+      "slot": {
+        "anchors": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "offset": [
+          32,
+          24,
+          600,
+          48
+        ],
+        "alignment": [
+          0,
+          0
+        ],
+        "zIndex": 0,
+        "fill": 0
+      },
+      "properties": {
+        "inputKey": "space",
+        "inputMode": "keys",
+        "axisX": "MoveX",
+        "axisY": "MoveY",
+        "keyUp": "w",
+        "keyDown": "s",
+        "keyLeft": "a",
+        "keyRight": "d",
+        "deadZone": 0.15,
+        "floating": false,
+        "deviceVisibility": "all",
+        "text": "HBEngine Web shooter2d",
+        "texture": "",
+        "font": "",
+        "rotation": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "fillDirection": "leftToRight",
+        "fillTexture": "",
+        "backgroundTexture": "",
+        "nineSlice": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "fontSize": 28,
+        "color": "#e4e9ef",
+        "background": "#00000000",
+        "accent": "#589ad6",
+        "hover": "#365778",
+        "pressed": "#1e4061",
+        "borderColor": "#4a5f73",
+        "borderWidth": 0,
+        "radius": 4,
+        "opacity": 1,
+        "visible": true,
+        "enabled": true,
+        "focusable": true,
+        "tooltip": "",
+        "align": "left",
+        "value": 0,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "padding": 8,
+        "gap": 8,
+        "columns": 2,
+        "checked": false,
+        "placeholder": "",
+        "maxLength": 256,
+        "wrap": true
+      },
+      "events": {},
+      "bindings": {}
+    }
+  ],
+  "safeArea": true,
+  "adaptiveOrientation": true
+}

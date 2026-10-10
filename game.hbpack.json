@@ -1,0 +1,886 @@
+{
+  "version": 1,
+  "id": "85d6c268-4f81-4268-a80e-5a0254278dab",
+  "name": "HBEngine Web shooter2d",
+  "target": "web",
+  "renderBackend": "webgl2",
+  "configuration": "development",
+  "targetFrameRate": 120,
+  "framePacing": "fixed",
+  "width": 1280,
+  "height": 720,
+  "gameInstance": "",
+  "startupScene": "Assets/Scenes/Garden.hbscene.json",
+  "startupBlueprint": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+  "entries": [
+    {
+      "path": "Source/DoorController.cpp",
+      "name": "DoorController.cpp",
+      "kind": "code"
+    },
+    {
+      "path": "Source/DoorController.h",
+      "name": "DoorController.h",
+      "kind": "code"
+    },
+    {
+      "path": "Source/TopDownShooter.cpp",
+      "name": "TopDownShooter.cpp",
+      "kind": "code"
+    },
+    {
+      "path": "Source/TopDownShooter.h",
+      "name": "TopDownShooter.h",
+      "kind": "code"
+    },
+    {
+      "path": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+      "name": "BP_Garden.hbblueprint.json",
+      "kind": "blueprint"
+    },
+    {
+      "path": "Assets/Blueprints/BP_TopDownShooter.hbblueprint.json",
+      "name": "BP_TopDownShooter.hbblueprint.json",
+      "kind": "blueprint"
+    },
+    {
+      "path": "Assets/Materials/Moss_stone.hbmaterial.json",
+      "name": "Moss_stone.hbmaterial.json",
+      "kind": "material"
+    },
+    {
+      "path": "Assets/Models/Cube.obj",
+      "name": "Cube.obj",
+      "kind": "model"
+    },
+    {
+      "path": "Assets/Scenes/Garden.hbscene.json",
+      "name": "Garden.hbscene.json",
+      "kind": "scene"
+    },
+    {
+      "path": "Assets/UI/W_TopDown.hbwidget.json",
+      "name": "W_TopDown.hbwidget.json",
+      "kind": "widget"
+    }
+  ],
+  "nativeModules": [
+    {
+      "signature": "184b9afa969b946cf1ddf063408ba9706369e12dff2352b3cf311853108efa7e",
+      "metadata": {
+        "version": 1,
+        "classes": [
+          {
+            "name": "TopDownShooter",
+            "base": "Actor",
+            "blueprintable": true,
+            "properties": [],
+            "functions": [
+              {
+                "name": "Update",
+                "label": "Update",
+                "category": "탑다운 슈터",
+                "pure": false,
+                "static": false,
+                "event": "none",
+                "inputs": [
+                  {
+                    "id": "delta",
+                    "label": "delta",
+                    "type": "float",
+                    "array": false
+                  },
+                  {
+                    "id": "bullets",
+                    "label": "bullets",
+                    "type": "object",
+                    "array": true,
+                    "className": "Actor"
+                  },
+                  {
+                    "id": "enemies",
+                    "label": "enemies",
+                    "type": "object",
+                    "array": true,
+                    "className": "Actor"
+                  }
+                ],
+                "outputs": [],
+                "returnType": "void",
+                "parameters": [
+                  {
+                    "name": "delta",
+                    "cppType": "float",
+                    "out": false
+                  },
+                  {
+                    "name": "bullets",
+                    "cppType": "const std::vector<hb::Actor*>&",
+                    "out": false
+                  },
+                  {
+                    "name": "enemies",
+                    "cppType": "const std::vector<hb::Actor*>&",
+                    "out": false
+                  }
+                ],
+                "ko": "조준·발사·탄환 재사용"
+              },
+              {
+                "name": "Probe",
+                "label": "Probe",
+                "category": "C++",
+                "pure": false,
+                "static": false,
+                "event": "none",
+                "inputs": [],
+                "outputs": [
+                  {
+                    "id": "result",
+                    "label": "Return value",
+                    "type": "bool",
+                    "array": false
+                  }
+                ],
+                "returnType": "bool",
+                "parameters": []
+              }
+            ]
+          }
+        ],
+        "workerProtocol": 3,
+        "nativeBatch": 1,
+        "nativeModuleQueries": 1,
+        "nativeStateCommit": 1,
+        "nativeBatchOperations": 1,
+        "nativeFrameBatch": 1,
+        "nativeModuleFrameBatch": 1,
+        "nativeInputBatch": 1,
+        "nativeStateBatch": 1,
+        "nativeSpawn": 1,
+        "nativeActorLifetime": 1,
+        "nativeGameSession": 1
+      },
+      "header": "#pragma once\n#include <HBEngine/Game.hpp>\n#include <map>\nHB_CLASS(Blueprintable)\nclass TopDownShooter : public hb::Actor {\npublic:\n  HB_FUNCTION(BlueprintCallable, KoreanName=\"조준·발사·탄환 재사용\", Category=\"탑다운 슈터\")\n  void Update(float delta,const std::vector<hb::Actor*>& bullets,const std::vector<hb::Actor*>& enemies);\nHB_FUNCTION(BlueprintCallable) bool Probe();\nprivate:\n  float cooldown=0;\n  hb::Vec3 facing{1,0,0};\n  std::map<hb::Actor*,float> lifetime;\n};\n",
+      "source": "#include \"TopDownShooter.h\"\nvoid TopDownShooter::Update(float delta,const std::vector<hb::Actor*>& bullets,const std::vector<hb::Actor*>& enemies){\n  for(auto it=lifetime.begin();it!=lifetime.end();){it->second-=delta;if(it->second<=0){hb::ActorPool::Release(it->first);it=lifetime.erase(it);}else ++it;}\n  auto* player=hb::Gameplay::GetPlayerPawn();if(!player)return;\n  const auto position=hb::Scene::GetPosition(player);\n  hb::Vec3 direction{hb::Input::GetAxis(\"d\")-hb::Input::GetAxis(\"a\"),hb::Input::GetAxis(\"w\")-hb::Input::GetAxis(\"s\"),0};\n  if(hb::VectorMath::VectorLengthSquared(direction)>.01f)facing=hb::VectorMath::NormalizeVector(direction);\n  hb::Vec3 aim;if(hb::Input::GetMouseWorldPosition(hb::Vec3{0,0,1},position,aim)){\n    direction=aim-position;if(hb::VectorMath::VectorLengthSquared(direction)>.01f)facing=hb::VectorMath::NormalizeVector(direction);\n  }\n  hb::Sprites::SetFlip(player,facing.x<0,false);\n  cooldown-=delta;if(hb::Input::IsKeyDown(\"LeftMouseButton\")&&cooldown<=0){\n    hb::Transform spawn;spawn.position=position+facing*.55f;\n    if(auto* bullet=hb::ActorPool::Acquire(bullets,spawn)){hb::Physics::SetVelocity(bullet,facing*12);lifetime[bullet]=1.5f;cooldown=.09f;}\n  }\n  for(auto* enemy:enemies){if(!hb::ActorPool::IsActive(enemy))continue;\n    const auto enemyPosition=hb::Scene::GetPosition(enemy);hb::Physics::SetVelocity(enemy,hb::VectorMath::NormalizeVector(position-enemyPosition)*1.2f);\n    for(auto* bullet:bullets)if(hb::ActorPool::IsActive(bullet)&&hb::VectorMath::DistanceSquared(enemyPosition,hb::Scene::GetPosition(bullet))<.25f){\n      hb::ActorPool::Release(bullet);lifetime.erase(bullet);hb::ActorPool::Release(enemy);lifetime[enemy]=2;break;\n    }\n  }\n  for(auto* enemy:enemies)if(!hb::ActorPool::IsActive(enemy)&&lifetime.find(enemy)==lifetime.end()){\n    hb::Transform spawn;spawn.position=hb::Vec3{-6,4,.1f};hb::ActorPool::Acquire(std::vector<hb::Actor*>{enemy},spawn);\n  }\n}\n\nbool TopDownShooter::Probe(){return hb::Physics::Raycast({0,3,0},{0,-3,0},2,-1,false,this).hit;}\n"
+    }
+  ],
+  "redirects": {},
+  "files": [
+    {
+      "path": "Content/Source/DoorController.cpp",
+      "bytes": 408,
+      "sha256": "fa72376b7aef28f4741f33927cc083114a3b16078a5e31074b6e2301f71434ae"
+    },
+    {
+      "path": "Content/Source/DoorController.h",
+      "bytes": 655,
+      "sha256": "367ca0f1161b25bbb7c307a35349150ca41e3c968b6dbb9b698e0a33a4b30e98"
+    },
+    {
+      "path": "Content/Source/TopDownShooter.cpp",
+      "bytes": 2027,
+      "sha256": "8ddd3de32554139f2955f66f20f2a0e71e5f41e0be01727a3c6155973668b76c"
+    },
+    {
+      "path": "Content/Source/TopDownShooter.h",
+      "bytes": 488,
+      "sha256": "36d586efd8b3388eecc7c77898479b8ba7aacebeffdcc33372b8463e3d5fc836"
+    },
+    {
+      "path": "Content/Assets/Blueprints/BP_Garden.hbblueprint.json",
+      "bytes": 3357,
+      "sha256": "1ab9c5ae325aed30eafa124f6f303804473340b8e9916a6e61b0cfa0f5f9e874"
+    },
+    {
+      "path": "Content/Assets/Blueprints/BP_TopDownShooter.hbblueprint.json",
+      "bytes": 7355,
+      "sha256": "4ee8e893d5ef12440813f311e218f2df765d01712eb939e41ba9cdcf4eed0846"
+    },
+    {
+      "path": "Content/Assets/Materials/Moss_stone.hbmaterial.json",
+      "bytes": 125,
+      "sha256": "a666d4f3588cbe750757cd068c39989fdd4890f12fd98b0c7851cb3c5484c0db"
+    },
+    {
+      "path": "Content/Assets/Models/Cube.obj",
+      "bytes": 191,
+      "sha256": "91d8dde73d82b4d619ac8000d48ea8e5a7b19312d7b20b47ed019be1e93424cf"
+    },
+    {
+      "path": "Content/Assets/Scenes/Garden.hbscene.json",
+      "bytes": 303164,
+      "sha256": "80cb0f01a4ad1c3a6f4ccedd4ee93f1708721aabe3990ed92c7586a79c999ff7"
+    },
+    {
+      "path": "Content/Assets/UI/W_TopDown.hbwidget.json",
+      "bytes": 7210,
+      "sha256": "dbaec23224dad527df8433784fd4ea46bcfc730b26e6aede9beae67c0e6aae91"
+    },
+    {
+      "path": "prototype/player.js",
+      "bytes": 26191,
+      "sha256": "5afc45c28f95331f19f46b6d61fefedf162542cf29250927d0c3d25cf92b38e0"
+    },
+    {
+      "path": "prototype/game-renderer.js",
+      "bytes": 2109,
+      "sha256": "eede6316cacd68449430c6b0a547111d224c4d8f59b2048038b14f03b8cfc0cc"
+    },
+    {
+      "path": "node_modules/three/package.json",
+      "bytes": 4635,
+      "sha256": "aa42494664dba4cf76d89c6975ee38321a402f09a048672e190bad6f13beec93"
+    },
+    {
+      "path": "node_modules/three/build/three.module.js",
+      "bytes": 603113,
+      "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+    },
+    {
+      "path": "node_modules/three/build/three.core.js",
+      "bytes": 1403455,
+      "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+    },
+    {
+      "path": "prototype/gpu-particles.js",
+      "bytes": 16636,
+      "sha256": "8ff934050b46a502f3a95053800093399a8e2a7305cc76be99f35ab770bf1fc4"
+    },
+    {
+      "path": "node_modules/three/build/three.webgpu.js",
+      "bytes": 1875505,
+      "sha256": "c6b225365368fc052bd96ebfae1363324ea526e59f15a60e201e1257c3adc12f"
+    },
+    {
+      "path": "node_modules/three/build/three.tsl.js",
+      "bytes": 32271,
+      "sha256": "ac2c7cd43ce90d006c12e2ace3e0af98a1bd538162c661e4199b50edcf508d92"
+    },
+    {
+      "path": "prototype/scene-systems.js",
+      "bytes": 13579,
+      "sha256": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f"
+    },
+    {
+      "path": "prototype/collision-geometry.js",
+      "bytes": 7750,
+      "sha256": "2b401ad2186dec0fae08b66618cb645f0d9f4b286798306843e767fd4179be43"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "bytes": 45862,
+      "sha256": "9d4223938190c345944c35376cff59e678d371489ea8ddf8be7a2100a888e23b"
+    },
+    {
+      "path": "prototype/light-blend-styles.js",
+      "bytes": 1278,
+      "sha256": "91727c064b7ad045b2ecc7bfc85aeb8de1d260d316e8640a846cb817ded28579"
+    },
+    {
+      "path": "prototype/scene-runtime.js",
+      "bytes": 20665,
+      "sha256": "73e3bd058727545dae253d5fb66d4d1772a4ac4413ff909a6c2cc3c96f6c078d"
+    },
+    {
+      "path": "prototype/blueprint-model.js",
+      "bytes": 59049,
+      "sha256": "4b6a3504445fef30fbce8ace889c5c2df6c90121e86350f1e89f6c1f74dfe677"
+    },
+    {
+      "path": "prototype/class-types.js",
+      "bytes": 1832,
+      "sha256": "eca243f8292c963fd46165dafbe647701f604e6f1a45f7802ebbc149c3ec4575"
+    },
+    {
+      "path": "prototype/native-model.js",
+      "bytes": 11884,
+      "sha256": "7106b00549aeea9d52ba67e66f4c7a2c5a4db14b5a8b9fcc748902f9d2cf02bc"
+    },
+    {
+      "path": "prototype/native-initializer.js",
+      "bytes": 2079,
+      "sha256": "a043da9e111966c7b4f99d8e75f62a46329c7b9b8be1df35fdbe357d33035e19"
+    },
+    {
+      "path": "prototype/core-api.js",
+      "bytes": 484134,
+      "sha256": "40e4c26138f99a2b15e0931df27a2da0bdb8d90a927e207a56c03ad1d6dec0b5"
+    },
+    {
+      "path": "prototype/blueprint-inheritance.js",
+      "bytes": 19958,
+      "sha256": "d7e95ab4e019a5b387495e39d1a01814ef504426a7d62fd643b80f00a8da6cbc"
+    },
+    {
+      "path": "prototype/runtime-input.js",
+      "bytes": 10472,
+      "sha256": "1a041ee073e4ac57883c8ca395b693f5ba2791bc74d99b1257589cf66bf4864f"
+    },
+    {
+      "path": "prototype/gpu-materials.js",
+      "bytes": 11673,
+      "sha256": "72352688a2ca884c0032049b3c7a1203f0d623fcebda6ee11353dac50f0f1e31"
+    },
+    {
+      "path": "prototype/texture-assets.js",
+      "bytes": 5215,
+      "sha256": "9e541225699bde121e86ff2e4db4c5e05cf1410ebfa05f79548565f900f7aded"
+    },
+    {
+      "path": "prototype/material-texture-bindings.js",
+      "bytes": 2828,
+      "sha256": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1"
+    },
+    {
+      "path": "prototype/material-runtime.js",
+      "bytes": 88268,
+      "sha256": "fe08a9c9d0577852c05a58119efb86fb91d192098d44220a842fbff8d76cf4d3"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "bytes": 4266,
+      "sha256": "83d03bfd924cdc9c8a95b20f7eaedc40a259319e91c09dffc95b9ae755a73290"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/tsl/display/BloomNode.js",
+      "bytes": 14849,
+      "sha256": "466a4bbaa205ed188fdede889305ab41cb73de4f3c52d53b28306d358da60861"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "bytes": 2667,
+      "sha256": "d0de7e1653801f4274f907681e4eaeee937f66825c3566443695013a13c4a80a"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/EffectComposer.js",
+      "bytes": 8477,
+      "sha256": "4b8c855f28eed2570bed898adc0ab89c585a8a281ecb6d905c09d00697f9f50a"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/shaders/CopyShader.js",
+      "bytes": 729,
+      "sha256": "a33057d5ac91c43304c186ac0e8816e62bb2ed471d3a00ff3018dfd5c0389718"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/ShaderPass.js",
+      "bytes": 3228,
+      "sha256": "e2500a5913b26bbf5148ceaae644c6edcff06a18b01494ee37bf856353d2ab9d"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/Pass.js",
+      "bytes": 4218,
+      "sha256": "444b409c235ead986893c472e720da1b779a56985c7d10b279c7944b52bd61c5"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/MaskPass.js",
+      "bytes": 4694,
+      "sha256": "7cd08eee9d5d6f5578beaddbdcbe9c384f6873810af27f22ab7db3ceeb127aa3"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/RenderPass.js",
+      "bytes": 4112,
+      "sha256": "fd91229aacc5830e3984b0f2bdefcf566163ea028f4c1f1ab233fa6665a133ac"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js",
+      "bytes": 14388,
+      "sha256": "d92742959879b461f25348b2abddc7ca0d48527e7718340bcfa29fa771e2799a"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/shaders/LuminosityHighPassShader.js",
+      "bytes": 1291,
+      "sha256": "5044f780b6e6cf863947f64c36fe1587132f7fbe395ada863cd1e5f0388dcf1e"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/postprocessing/OutputPass.js",
+      "bytes": 4029,
+      "sha256": "f5b81c96e76b6b28b4b3ba8c41c4aeb982b1e03f3d82883242d951b2ab082fa2"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/shaders/OutputShader.js",
+      "bytes": 1876,
+      "sha256": "353479f77a8d7e2629d49ccac9fc2f5dbfdda5442e0adf867b00377a2fcb0cb2"
+    },
+    {
+      "path": "prototype/gpu-2d-rendering.js",
+      "bytes": 6121,
+      "sha256": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea"
+    },
+    {
+      "path": "prototype/gpu-2d-lighting.js",
+      "bytes": 10149,
+      "sha256": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9"
+    },
+    {
+      "path": "prototype/runtime-game.js",
+      "bytes": 5320,
+      "sha256": "334bb95180fc89622debabc281663f643a0d3b2ade31a7e29ddf085ee167694c"
+    },
+    {
+      "path": "prototype/asset-documents.js",
+      "bytes": 19572,
+      "sha256": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81"
+    },
+    {
+      "path": "prototype/animation-retarget-assets.js",
+      "bytes": 5567,
+      "sha256": "3a4783b96dbfaf949e81f2682940ac9741f37e3066ae9d29442f7a753dabc2c4"
+    },
+    {
+      "path": "prototype/data-assets.js",
+      "bytes": 1752,
+      "sha256": "03c1be3a1c68ca6420f80baedf7256798dc3502fe835a65480501f74738e42ca"
+    },
+    {
+      "path": "prototype/game-json.js",
+      "bytes": 1059,
+      "sha256": "f4a677f626cb3f2550e11f61569e69b6037d2ed0ea1afa7bbcc13754772b04bd"
+    },
+    {
+      "path": "prototype/model.js",
+      "bytes": 6830,
+      "sha256": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e"
+    },
+    {
+      "path": "prototype/build-profile.js",
+      "bytes": 4793,
+      "sha256": "06b41b6274c378f3c02f81556d6599f756acd1372e7c0cbf760ed78484823943"
+    },
+    {
+      "path": "prototype/project-session.js",
+      "bytes": 7130,
+      "sha256": "ad1c9c4fc8457c9e2ff9907ea1b9b632dcf6f7a71545bde650593d0fd345e153"
+    },
+    {
+      "path": "prototype/scene-editor.js",
+      "bytes": 7257,
+      "sha256": "a163733ec86414056d75dc868ba75239db06553806013c4d7a12aaa55c607833"
+    },
+    {
+      "path": "prototype/icons.js",
+      "bytes": 7987,
+      "sha256": "cce24c59deaa8ed3971407dad7ea19cc69714c5144fba10f9f9d3213f075d75c"
+    },
+    {
+      "path": "prototype/sorting-layers.js",
+      "bytes": 2558,
+      "sha256": "7a85af873241772f907821650186fd0ecc909eaa296dfe1e2bd5f08dc1306a1d"
+    },
+    {
+      "path": "prototype/blueprint-overrides.js",
+      "bytes": 3684,
+      "sha256": "10e00a64f686680f6223775466f258ff261cc0854d5326b2728a70c3b5002e48"
+    },
+    {
+      "path": "prototype/two-d-assets.js",
+      "bytes": 13337,
+      "sha256": "afd38c19378f39f0af572b93edd04def56791df840c5738adb8e5fc124c86c92"
+    },
+    {
+      "path": "prototype/sprite-import.js",
+      "bytes": 5917,
+      "sha256": "0d249f7a782f8e6621baa5c415af4358968b5d44cdf4b61d937766a846bd04fa"
+    },
+    {
+      "path": "prototype/gameplay-assets.js",
+      "bytes": 15883,
+      "sha256": "eb5fc6a46644128ead988c8c47e7cb69ca4eab0095010747aa195b789b32cb3a"
+    },
+    {
+      "path": "prototype/animation-root-motion.js",
+      "bytes": 5818,
+      "sha256": "6333908d65b32807a5e6f76429a8eddba65c7ab5d4a16a70276ac302c192fb6b"
+    },
+    {
+      "path": "prototype/animation-sync.js",
+      "bytes": 10604,
+      "sha256": "49f5bf01f0b17c50facc5cd8115d153a718efd58a6727d8a9a2e101d396c68cc"
+    },
+    {
+      "path": "prototype/animation-notify-runtime.js",
+      "bytes": 5603,
+      "sha256": "b3ed8c21edac63ef648d2b11ea6cd3212cafae0f90bb153340eb8e48a0bccba2"
+    },
+    {
+      "path": "prototype/ui-assets.js",
+      "bytes": 11205,
+      "sha256": "0b0c271072854e17f7902c43168d5c57270d58a447d9d52a633c4d60857d8509"
+    },
+    {
+      "path": "prototype/virtual-controls.js",
+      "bytes": 6840,
+      "sha256": "1136fb0401f4bd20e7f000ee39d5a21f0289ea5bb207c604c11963306eccbc13"
+    },
+    {
+      "path": "prototype/audio-mixer.js",
+      "bytes": 15739,
+      "sha256": "2627d65aa851770fb2ff72025e3df24ff29f7056a3b4328b9d84fe35bd8fbb5a"
+    },
+    {
+      "path": "prototype/buffered-audio.js",
+      "bytes": 4913,
+      "sha256": "84354cb3eb035c0b221d5303a014eeddea7c5413cf0c86acda86deb6f65ef36f"
+    },
+    {
+      "path": "prototype/input-actions.js",
+      "bytes": 7534,
+      "sha256": "21f01345e94b20f6e3449b534d0edb14fb8589114f2002be791c85f818da22f5"
+    },
+    {
+      "path": "prototype/animation-graph-assets.js",
+      "bytes": 10847,
+      "sha256": "b2f1a023cd8410e82cf90d04d1023ddcdc93e4594ef933a291786e73026b9d85"
+    },
+    {
+      "path": "prototype/animation-ik.js",
+      "bytes": 21482,
+      "sha256": "5bcbb70d6fbfd47b44aa2e2261b3d48e50d6c98d8b84e722e8c72fed58e9e589"
+    },
+    {
+      "path": "prototype/animation-state-assets.js",
+      "bytes": 6908,
+      "sha256": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34"
+    },
+    {
+      "path": "prototype/animation-blend-space.js",
+      "bytes": 7955,
+      "sha256": "f984aaa0143c9d9d352fde0a217c815d6122e77bf6037c6ca66930e78fa3cc48"
+    },
+    {
+      "path": "prototype/sprite-rig-assets.js",
+      "bytes": 12980,
+      "sha256": "3cb52e8c8070c439a811e5e23ce7812488c9a7fe5b1896bfc40fe784a794dcf5"
+    },
+    {
+      "path": "prototype/ik2d-assets.js",
+      "bytes": 3097,
+      "sha256": "bbec053c21ca890d5269c43e9728f94e87d84df134e8db04e5481446de561707"
+    },
+    {
+      "path": "prototype/native-spawn.js",
+      "bytes": 9823,
+      "sha256": "b20ed9f84806f75808d8cee68b9133e0c20537cd98b17065840a3ac448cfbb8b"
+    },
+    {
+      "path": "prototype/native-module-query.js",
+      "bytes": 5832,
+      "sha256": "71c6348565ab5022d4049ea54c7a0c5a411cc6b8edf03b1dc4e7adcb2f4b430a"
+    },
+    {
+      "path": "prototype/native-channel.js",
+      "bytes": 2737,
+      "sha256": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593"
+    },
+    {
+      "path": "prototype/native-transport.js",
+      "bytes": 15212,
+      "sha256": "ce2d690eb549f717642641e9ab7a049da398bc9ea30f4fc7c7f16dec50f70546"
+    },
+    {
+      "path": "prototype/frame-profiler.js",
+      "bytes": 1807,
+      "sha256": "541335bb0274fa7674d94fbbfa21d6cbcbc65e6c3096ab0d19b524a23287ea04"
+    },
+    {
+      "path": "prototype/frame-loop.js",
+      "bytes": 1061,
+      "sha256": "c811d2b7304fe833d81b0d3159e95e68714c1b1337432180261088945f69ecda"
+    },
+    {
+      "path": "prototype/game-camera.js",
+      "bytes": 5127,
+      "sha256": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/environments/RoomEnvironment.js",
+      "bytes": 4899,
+      "sha256": "c20f0b4677f6128a138d7152b85cbef9091f4f45cdfa05adca04d40c1697c7ae"
+    },
+    {
+      "path": "prototype/project-browser.js",
+      "bytes": 27199,
+      "sha256": "70285e9e90b5d92c59f1d5473a2637e98aea246977aa5a9b2c890969178fa469"
+    },
+    {
+      "path": "prototype/play-world.js",
+      "bytes": 6352,
+      "sha256": "4903305a7c8e5478d4279a505218621f329c97a8982e6e4c0f9a9fc3c25925b9"
+    },
+    {
+      "path": "prototype/runtime-actors.js",
+      "bytes": 1685,
+      "sha256": "4c5d4d155fa36ea2de48d350c96bf946ecb46f906dfb17282b579213190ff18c"
+    },
+    {
+      "path": "prototype/runtime-spawn.js",
+      "bytes": 7345,
+      "sha256": "8046540d6b5c903f427c26c193d66721a31bb4e3da967dc8a6398d046e1d8e10"
+    },
+    {
+      "path": "prototype/blueprint-runtime.js",
+      "bytes": 61025,
+      "sha256": "0abab8d34d68605aa630d5a0481505a1c972cf96b0e591c22556f06b850abcf3"
+    },
+    {
+      "path": "prototype/core-preview.js",
+      "bytes": 9856,
+      "sha256": "117c4c46c4522026532be821acb679ae8d7cd6afc8999685cd3b86e1a4cc7032"
+    },
+    {
+      "path": "prototype/library-spec.js",
+      "bytes": 24611,
+      "sha256": "6e648209139a91b2295cfe6545b2e0aae27d500b1954a03df0db6d4f7bf1b626"
+    },
+    {
+      "path": "prototype/native-tick-batch.js",
+      "bytes": 11612,
+      "sha256": "aeb2b98e8134dec9c4d413a2623aa0d41716b1c5092a1ab98dc19c975b2b929e"
+    },
+    {
+      "path": "prototype/native-protocol.js",
+      "bytes": 17707,
+      "sha256": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "bytes": 79288,
+      "sha256": "f5c021332171094371a7ceed87f4a515dfafe61302df68319f03899a982af5a3"
+    },
+    {
+      "path": "prototype/animation-retarget.js",
+      "bytes": 16688,
+      "sha256": "74ab12b4d9a6f3c98aaf4d4bf9ff13e257a04aca9b96d16be1f9c9807be3dac4"
+    },
+    {
+      "path": "prototype/animation-skeleton.js",
+      "bytes": 752,
+      "sha256": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848"
+    },
+    {
+      "path": "prototype/projectile-runtime.js",
+      "bytes": 10016,
+      "sha256": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72"
+    },
+    {
+      "path": "prototype/projectile-rendering.js",
+      "bytes": 3799,
+      "sha256": "6ba62e4ac2c450c0beaefbd65bf89811fe1e6afc6b477bb2f6591daa28413f42"
+    },
+    {
+      "path": "prototype/runtime-storage.js",
+      "bytes": 3287,
+      "sha256": "f6c730331f7567d706dd50973f67620d34bbdc1e354972ddd10738f82d91e521"
+    },
+    {
+      "path": "prototype/tilemap-runtime.js",
+      "bytes": 6175,
+      "sha256": "1ece2554d8f1a142779a32fd4866a4f639be734007677af2c3bdaaa3c8d5ede9"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/loaders/OBJLoader.js",
+      "bytes": 22922,
+      "sha256": "e3ceb6a8ed48ca146049a8f0879c7acbf884d430f2e728779af26c6ea3a57c65"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+      "bytes": 114739,
+      "sha256": "67ac5551fdafa6e349bd80c8f8e5e39c136d6b2fb1ad647db9abb21dc86f9e4a"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
+      "bytes": 35539,
+      "sha256": "fda7e946b8e0b5ab39b779206589e7a1079a22eb24efb89d7223e03fdfb1f751"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/loaders/FBXLoader.js",
+      "bytes": 104876,
+      "sha256": "d97724a6bea228003e02c64651d969a9a62003a00be314ef6995c390116f547d"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/libs/fflate.module.js",
+      "bytes": 89384,
+      "sha256": "209a4412eb48ce609edb4391992a792ffcc3983d30ee7e2b0b89a8c470f3cd8a"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/curves/NURBSCurve.js",
+      "bytes": 3888,
+      "sha256": "bef2607618a7778455e71a1f0bd206951c382d313e2e245808cc7d3533d60fb6"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/curves/NURBSUtils.js",
+      "bytes": 10802,
+      "sha256": "c6bd7c4137d585098923f189687898ea3e8762ea3ecbe255d749a56353894379"
+    },
+    {
+      "path": "prototype/physics-world.js",
+      "bytes": 40033,
+      "sha256": "ef7204f7063d273e61bc488cb88b2254e746fd0a6936918cdd462581aeca9ee6"
+    },
+    {
+      "path": "node_modules/@dimforge/rapier2d-compat/dist/rapier.mjs",
+      "bytes": 3409863,
+      "sha256": "ee54305ce57d5e5131b9dd4672c42ce50fea2baf245ad6efe731703c5cc05c14"
+    },
+    {
+      "path": "node_modules/@dimforge/rapier3d-compat/dist/rapier.mjs",
+      "bytes": 4340292,
+      "sha256": "02dc6a4e2fffc013bab08fbb44fa68f501d8303615e9afe4c7d89ad4eedda0d0"
+    },
+    {
+      "path": "prototype/gameplay-runtime.js",
+      "bytes": 62266,
+      "sha256": "953b7764d0c572da406cd26b062d7ca5aa89257f628aaeecf58eaf14770a2cb9"
+    },
+    {
+      "path": "prototype/ui-runtime.js",
+      "bytes": 21348,
+      "sha256": "4b3daadbf27784d48505765ccce94d5a7dddf038e5b8f23efc11598313ab2ff2"
+    },
+    {
+      "path": "prototype/animation-graph-runtime.js",
+      "bytes": 33502,
+      "sha256": "6546278a4dd114adf64e4b0dab181ac8a73ea2727894f4fc705325ca7954fa01"
+    },
+    {
+      "path": "prototype/animation-state-runtime.js",
+      "bytes": 8381,
+      "sha256": "9ad8c21e55d8cb7492ce37f118f7a6a5c134e2707f69cbcb56c0a8040ff912c7"
+    },
+    {
+      "path": "prototype/animation-pose-plan.js",
+      "bytes": 6546,
+      "sha256": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b"
+    },
+    {
+      "path": "prototype/animation-montage-runtime.js",
+      "bytes": 5690,
+      "sha256": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "bytes": 40709,
+      "sha256": "0b0552e4f7feb2c877a0f753379cfde22c0f8b7064c041fd8bd074793684d87f"
+    },
+    {
+      "path": "node_modules/three/examples/jsm/geometries/DecalGeometry.js",
+      "bytes": 10112,
+      "sha256": "0c6893ccd5a5d3e3aa95a92db4c30172d03d89e97e146de334244c8476fd20b2"
+    },
+    {
+      "path": "prototype/two-d-rendering.js",
+      "bytes": 11631,
+      "sha256": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9"
+    },
+    {
+      "path": "prototype/two-d-lighting.js",
+      "bytes": 15754,
+      "sha256": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b"
+    },
+    {
+      "path": "prototype/two-d-shadows.js",
+      "bytes": 20435,
+      "sha256": "6fbdc9b2e071e1fa66b5e0483854b75ed8893b5f7a7022fd4b5022c0079012e9"
+    },
+    {
+      "path": "prototype/two-d-light-cookies.js",
+      "bytes": 1853,
+      "sha256": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283"
+    },
+    {
+      "path": "prototype/sprite-rig-runtime.js",
+      "bytes": 5779,
+      "sha256": "4d8d642879e57a39a90149af5b5e38a2490bd26d7f9b688cbfb38a3769f44fae"
+    },
+    {
+      "path": "prototype/sprite-rig-ik.js",
+      "bytes": 11119,
+      "sha256": "e836177addcd7472c1c22ad4e8261805ca8048068d47bd0d257196ff0dd0710e"
+    },
+    {
+      "path": "prototype/scene-primitives.js",
+      "bytes": 7610,
+      "sha256": "f5cbb5b33d1c128df25b4b5396b5cd3a6cd15c136d3bdcf75b5d52ceb118cee2"
+    },
+    {
+      "path": "prototype/scene-environment.js",
+      "bytes": 24108,
+      "sha256": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b"
+    },
+    {
+      "path": "prototype/web-player.js",
+      "bytes": 2823,
+      "sha256": "8ef540dda69d64142c275c3e4f4f8132202f9bb1daa8d295ffd8d4623722c430"
+    },
+    {
+      "path": "prototype/mobile-player.js",
+      "bytes": 14488,
+      "sha256": "64b3da091b670a70a41fc7536409d0eedc2807c998b5c30b77bcb37df6d60093"
+    },
+    {
+      "path": "prototype/native-physics-query.js",
+      "bytes": 2303,
+      "sha256": "6edcec8cde91d097753262790b330bd12c12c9f2702c343cf65987385ab57a38"
+    },
+    {
+      "path": "prototype/player.css",
+      "bytes": 1788,
+      "sha256": "13fe5aeb66fa9edbe103bbad92da6ea0a03aa2b377c3e77e24728628b5c174a2"
+    },
+    {
+      "path": "prototype/ui-runtime.css",
+      "bytes": 2927,
+      "sha256": "9adc736b2aa638df4188d642c082285bfa6ae86d395acc55305744026fb93671"
+    },
+    {
+      "path": "licenses/Three.txt",
+      "bytes": 1081,
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
+    {
+      "path": "licenses/Rapier2D.txt",
+      "bytes": 11343,
+      "sha256": "4c05555705e3efde601fb1252ae48f1d63992af8a8fb8947745b7fa834e8f519"
+    },
+    {
+      "path": "licenses/Rapier3D.txt",
+      "bytes": 11343,
+      "sha256": "4c05555705e3efde601fb1252ae48f1d63992af8a8fb8947745b7fa834e8f519"
+    },
+    {
+      "path": "licenses/Emscripten.txt",
+      "bytes": 5093,
+      "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86"
+    },
+    {
+      "path": "licenses/musl.txt",
+      "bytes": 6196,
+      "sha256": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b"
+    },
+    {
+      "path": "licenses/nlohmann-json.txt",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    {
+      "path": "Binaries/game.mjs",
+      "bytes": 77248,
+      "sha256": "23f9e2b69debdaad01319be8d657ccff23031648cd29016f7f4231cc0eeca96f"
+    },
+    {
+      "path": "Binaries/game.wasm",
+      "bytes": 1212068,
+      "sha256": "26a1dfdac16435126cca26110fef3a19eb5fe14293d5b711c573ad557d1a148e"
+    },
+    {
+      "path": "index.html",
+      "bytes": 2026,
+      "sha256": "9301e8b5acb098280566abed5bf04561e5254d8047b16db08900e5277aa6fab0"
+    },
+    {
+      "path": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
