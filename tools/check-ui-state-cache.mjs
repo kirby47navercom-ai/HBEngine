@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {createAsset} from '../prototype/asset-documents.js';
 import {WidgetSystem} from '../prototype/ui-runtime.js';
 import {NativeWorldClient} from '../prototype/native-transport.js';
+import {engineOperations} from '../prototype/engine-services.js';
 
 const asset=createAsset('widget','HUD'),node=asset.nodes[0];node.name='Title';node.properties.text='원본';node.bindings.text='title';
 const actor={id:'player',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},binding={self:actor.id,root:{variables:[{id:'title',name:'Title'}]},variables:new Map([['title','첫 화면']])};
@@ -14,8 +15,25 @@ await ui.tick(vm);const first=actor.gameplayDebug.ui;assert.equal(first.HUD.Titl
 await ui.tick(vm);assert.equal(actor.gameplayDebug.ui,first,'unchanged bindings reuse the same snapshot');
 await operation('uiSetText',{text:'첫 화면'});assert.equal(actor.gameplayDebug.ui,first,'unchanged setter does no work');
 await operation('uiSetVisible',{visible:false});assert.equal(first.HUD.Title.visible,true);assert.equal(actor.gameplayDebug.ui.HUD.Title.visible,false);
+const state=ui.state(actor.id,'HUD');let updates=0,snapshots=0;state.view={update:()=>updates++,dispose(){},endFrame(){}};const sync=ui.sync.bind(ui);ui.sync=(...args)=>{snapshots++;sync(...args);};
+await ui.writeBatch(async()=>{
+  for(let i=0;i<60;i++)await operation('uiSetPosition',{position:[i,i+1]});
+  await operation('uiSetText',{text:'묶음 안의 값'});
+  assert.equal((await operation('uiGetText')).return,'묶음 안의 값','getters see unflushed writes');
+},vm);
+assert.equal(updates,1);assert.equal(snapshots,1,'one native UI snapshot per write batch');assert.deepEqual(actor.gameplayDebug.ui.HUD.Title.slot.offset.slice(0,2),[59,60]);
+const saved=actor.gameplayDebug.ui;
+await operation('uiSetPosition',{position:[59,60]});assert.equal(actor.gameplayDebug.ui,saved,'unchanged position does not clone or publish');
+await assert.rejects(()=>ui.writeBatch(async()=>{await operation('uiSetOpacity',{opacity:.5});await operation('uiSetScale',{scale:[-1,1]});},vm),/범위/);
+assert.equal(actor.gameplayDebug.ui.HUD.Title.opacity,.5,'successful writes flush even on a later error');assert.deepEqual(state.data.nodes[0].properties.scale,[1,1],'invalid write cannot mutate node');assert.equal(ui.batchDepth,0);
+await assert.rejects(()=>operation('uiSetPosition',{position:[20000,0]}),/범위/);assert.deepEqual(state.data.nodes[0].slot.offset.slice(0,2),[59,60]);
 const client=new NativeWorldClient(),packets=[];const send=packet=>{packets.push(packet);return {worldSequence:packet.worldSequence,objects:[]};};
 await client.call({objects:[actor]}, {workerProtocol:3},send);assert.deepEqual(client.world[0],JSON.parse(JSON.stringify(actor)),'cached native JSON preserves all UI and actor fields');
 binding.variables.set('title','바뀐 글자');await ui.tick(vm);await client.call({objects:[actor]}, {workerProtocol:3},send);assert.equal(client.world[0].gameplayDebug.ui.HUD.Title.text,'바뀐 글자');assert.ok(packets[1].objectPatch.length>0);
 await operation('uiRemove');assert.equal(actor.gameplayDebug.ui.HUD,undefined);assert.equal(first.HUD.Title.text,'첫 화면');ui.dispose(vm);
-console.log('UI state: detached immutable snapshots, unchanged setters/bindings, exact native JSON and changed/remove updates passed');
+const nativeActor={id:'native',position:[0,0,0],rotation:[0,0,0],scale:[1,1,1]},nativeBinding={self:'native',root:{components:[],variables:[]}},nativeVM={objects:[nativeActor],object:id=>id==='native'?nativeActor:null,bindings:[nativeBinding]};
+const services=engineOperations({readAsset:async()=>asset});let calls=0;nativeActor.gameplayDebug={};Object.defineProperty(nativeActor.gameplayDebug,'ui',{get(){return this.snapshot;},set(v){calls++;this.snapshot=v;},configurable:true});
+await services.operation('uiShow',{instance:'HUD',asset:'HUD'},nativeBinding,nativeVM);calls=0;
+await services.applyNativeOperations([{key:'uiSetOpacity',args:{instance:'HUD',element:'Title',opacity:.2}},{key:'uiSetPosition',args:{instance:'HUD',element:'Title',position:[1,2]}},{key:'uiGetText',args:{instance:'HUD',element:'Title'}},{key:'uiSetScale',args:{instance:'HUD',element:'Title',scale:[2,2]}}],nativeBinding,nativeVM);
+assert.equal(calls,2,'contiguous setters coalesce; a read is a flush boundary');assert.equal(nativeActor.gameplayDebug.ui.HUD.Title.opacity,.2);assert.deepEqual(nativeActor.gameplayDebug.ui.HUD.Title.scale,[2,2]);services.dispose();
+console.log('UI state: immutable snapshots, batch/get/error boundaries, unchanged/invalid setters, native service coalescing and exact native JSON passed');

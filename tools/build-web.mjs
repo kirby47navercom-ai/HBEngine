@@ -7,6 +7,7 @@ import {mobileSources} from './build-mobile.mjs';
 import {runTool} from './mobile-android.mjs';
 import {assetKind} from './project-service.mjs';
 import {frameSettings} from '../prototype/build-profile.js';
+import {packWebResources} from './pack-web-resources.mjs';
 
 const root=path.resolve(import.meta.dirname,'..'),json=value=>JSON.stringify(value,null,2)+'\n';
 export async function webCapability(){
@@ -69,8 +70,8 @@ export async function buildWeb(record,profile,{content,natives,report},{dryRun=f
     html=html.replaceAll('"/prototype/','"./prototype/').replaceAll('"/node_modules/','"./node_modules/').replace('<script type="module" src="./prototype/player.js"></script>','<script type="module">import {startWebPlayer} from "./prototype/web-player.js";startWebPlayer().catch(startupFailure);</script>');
     await write('index.html',Buffer.from(html));await write('.nojekyll',Buffer.alloc(0));
     const manifest={version:1,id:record.manifest.id,name:profile.productName,target:'web',renderBackend:report.renderBackend,configuration:profile.configuration,...frameSettings(profile),width:profile.width,height:profile.height,gameInstance:report.gameInstance||'',startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files};
-    await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});
-    const result={...report,id,output:out,artifact:path.join(out,'index.html'),artifactType:'web',totalFiles:files.length,totalBytes:files.reduce((n,f)=>n+f.bytes,0)};
+    await packWebResources(out,manifest);await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});
+    const result={...report,id,output:out,artifact:path.join(out,'index.html'),artifactType:'web',totalFiles:manifest.files.length,totalBytes:manifest.files.reduce((n,f)=>n+f.bytes,0)};
     await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}
 }
