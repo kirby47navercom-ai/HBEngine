@@ -101,3 +101,9 @@
 - 081: 큐브맵/배열/볼륨 에셋·순서 폼·아홉 typed 노드·함수/MI/레이어/미리보기·공용 CPU/GLSL/TSL·참조/수정 전파·생성 시 변환/실패 수명 연결. 최종 GPU Z9ZlyK/GL rCFmwH의 면6·슬라이스/보간·폼/Undo·35소스SHA/원본/오류0/종료0/서버 정리와 코어 통과. [상세](MATERIAL_TEXTURE_FAMILIES_081.md). 08045c632d 푸시 완료. sampler/mip/HDR/외부·런타임 texture setter와 전체 선행/설치 대기 유지.
 
 - 082: 런타임 typed 텍스처 setter·C++/BP/공용 Play/Preview/Player·파라미터 원점/Layer 키·빈 기본값·atomic staging/실패/요청/해제·동일 에셋 no-op 연결. 최종 배포 GL8lWGnN/GPULvhZc4의 네 종류 실제 C++/BP 픽셀·실제 shader/pipeline identity·동일 에셋10회 loader 증가0·자원/원본/각51SHA·오류0/exit0/서버 종료 및 코어 통과. [상세](MATERIAL_TEXTURE_PARAMETERS_082.md). 0819f10fe5 푸시 완료. sampler/mip/HDR/도메인·전체 선행 세부/설치 대기 및 추가 조사 목표 유지.
+
+
+- 083: 웹 정적 빌드·하위 주소·공용 Player/모바일 프로토콜·C++ WebAssembly·저장·터치·게시 도구를 연결한다. [웹 제작 흐름과 검증](WEB_GAME_EXPORT_083.md). 전체 051/추가 세부·전체 corpus·실기기/성능 목표를 유지한다.
+
+
+- 083 완료: 정적 하위 주소/해시·기존 코어715/289·모바일 브리지·실제 C++ Wasm 2D/3D·키보드/마우스/터치/저장 통과. GitHub Pages 공개 주소에서도 실제 실행 확인(오류/HTTP 실패 0). 사용자 설치 dcc7dfb86fcb2208 갱신, production12 SHA/schema/웹 검사·바로가기 확인. 058–082를 포함한 현재 제작 코드가 새 설치에 반영됐다. 기존 원본/실행 창 보존; 전체 corpus와 051/추가 세부·실기기/성능 목표를 유지한다.

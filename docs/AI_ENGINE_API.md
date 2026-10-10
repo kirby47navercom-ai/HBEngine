@@ -324,3 +324,8 @@ node tools/build-game.mjs C:/Games/MyGame/MyGame.hbproject windows
 ## 런타임 텍스처 파라미터(082)
 
 SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(object)/parameter(string)/texture(string)를 받는다. 기존 BP/C++ 문서 편집·함수 연결·실행 경로를 공유한다. Texture2D/Cube/Array/3D는 sampler의 파라미터 원점과 자료형을 유지한다. LayerParameterKey로 레이어 범위를 지정한다. 파라미터 staging은 실행 중 원본 파일을 쓰지 않으며 실패/경합에 이전 텍스처를 유지한다. [사람 API·실제 C++/BP 배포/자원 검증](MATERIAL_TEXTURE_PARAMETERS_082.md).
+
+
+## 웹 빌드(083)
+
+`build.targets.web`과 기존 빌드 프로필·검사·작업·취소 API를 사용한다. `POST /api/build/tools/web`는 Emscripten 설치 작업을 시작한다. 결과 `artifactType:web`, `artifact:index.html`, `output`을 확인하고 `/api/build/open`의 run/reveal을 사용한다. 정적 게시 CLI는 `tools/publish-web.mjs <검증한 출력 폴더> <GitHub HTTPS 저장소>`이며 기존 다른 사이트·게임을 덮어쓰지 않는다. [제작·배포·원본 공개 범위](WEB_GAME_EXPORT_083.md).

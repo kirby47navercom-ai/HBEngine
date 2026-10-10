@@ -970,3 +970,11 @@ Freeform 구현/검증은 docs/2D_LIGHTING.md 후속에 기록했어요. shapePa
 ## 075 — 머테리얼 함수
 
 075 머테리얼 함수 독립 에셋/Preview·네 숫자 타입·중첩/안정적 핀ID/우측 속성·검색/다중 드래그·Undo/저장 전파·공용 GLSL/TSL/CPU·기존 BP/C++·빌드 검증 완료. 최종 EditorHRAwU2/PlayerGPUhbyOLC/GLOHr8zt와 코어/713 BP/628SDK, 실제 픽셀·제품SHA/오류0/종료0/서버 정리 통과. docs/MATERIAL_FUNCTIONS_075.md 참조. 051 전체 선행/설치 대기; 다음 Layer/Blend·미구현 함수 포트/추출/임의 미리보기 및 누적 세부.
+
+
+## 083 — 웹 게임 내보내기
+
+사용자가 먼저 요청한 웹 정적 내보내기를 기존 Player·모바일 AOT 기반으로 연결했다. C++는 Emscripten 6.0.12 Wasm, 게임은 index.html/상대 경로/브라우저 저장/터치 60 프레임 설정을 사용한다. 게시 도구는 검증한 파일만 gh-pages에 올리고 다른 사이트/게임을 거절한다. 사용자 게임 원본·프로필·기존 실행 창은 검사에 사용하지 않는다. 최종 검사/공개 주소/설치 기록은 docs/research/WEB_GAME_EXPORT_083.json을 참조한다. 누적 051/추가 목표와 전체 corpus false를 유지한다.
+
+
+083 배포 완료: Pages https://kirby47navercom-ai.github.io/HBEngine/ · gh-pages5e0b326. 공개 HTTPS 실실행/CPP질의·PC/터치·저장/새로고침/오류0 통과. 사용자 설치 dcc7dfb86fcb2208(1923파일)·바로가기/HKCU 연결 갱신, 설치production12 SHA/격리 API schema/웹 dryRun/SDK 상태 확인. 이전7df780dd9a47cf5b 설치·원본·현재 창 유지, 다음 실행부터 적용. 최신058–082도 포함됐다. Android/iOS Safari·장기 성능·전체 분석/기능 완료는 미검증/미완료로 유지.

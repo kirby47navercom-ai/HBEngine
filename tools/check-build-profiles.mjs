@@ -20,6 +20,7 @@ for(const acceptLicense of [false,undefined,'true','false',1,null]){await assert
 await fs.symlink(outside,path.join(record.root,'Builds'),process.platform==='win32'?'junction':'dir');
 jobs.jobs.set('escape',{id:'escape',root:record.root,status:'done',result:{executable:path.join(record.root,'Builds/Game.exe')}});
 await assert.rejects(jobs.open(record,'escape','run'),/빌드 경로/);
+await fs.writeFile(path.join(outside,'index.html'),'never open this fixture');jobs.jobs.set('web-escape',{id:'web-escape',root:record.root,status:'done',result:{artifact:path.join(record.root,'Builds/index.html'),artifactType:'web'}});await assert.rejects(jobs.open(record,'web-escape','run'),/빌드 경로/);
 assert.deepEqual((await fs.readdir(path.join(record.root,'Settings'))).filter(f=>f.endsWith('.tmp')),[]);
 let unlock;const gate=new Promise(resolve=>{unlock=resolve;});jobs.queue=gate;
 let switched=false;const saving=jobs.save(record,modified,initial.revision,()=>{if(switched)throw Error('프로젝트 변경');});

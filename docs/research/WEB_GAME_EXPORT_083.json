@@ -1,0 +1,316 @@
+{
+  "step": "083",
+  "date": "2026-10-10",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "sourceScope": "bounded Emscripten modularized output and Asyncify ccall; GitHub Pages static publication and REST configuration",
+  "compiler": "Emscripten 6.0.12",
+  "proof": {
+    "ok": true,
+    "cpp": true,
+    "browser": true,
+    "outputs": [
+      {
+        "target": "web",
+        "renderer": "Browser/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "web",
+          "name": "Windows",
+          "configuration": "development",
+          "productName": "HBEngine Web shooter2d",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Garden.hbscene.json",
+              "enabled": true
+            }
+          ],
+          "target": "web"
+        },
+        "startupScene": "Assets/Scenes/Garden.hbscene.json",
+        "gameInstance": "",
+        "files": 10,
+        "bytes": 324980,
+        "nativeModules": 1,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-10T13-53-10-102Z-5082a795",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web shooter2d\\Builds\\web\\2026-10-10T13-53-10-102Z-5082a795",
+        "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web shooter2d\\Builds\\web\\2026-10-10T13-53-10-102Z-5082a795\\index.html",
+        "artifactType": "web",
+        "totalFiles": 143,
+        "totalBytes": 15545565,
+        "browser": {
+          "ready": true,
+          "keyboard": true,
+          "cppMouseAttack": true,
+          "errors": [],
+          "httpErrors": [],
+          "frames": 68
+        }
+      },
+      {
+        "target": "web",
+        "renderer": "Browser/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "web",
+          "name": "Windows",
+          "configuration": "development",
+          "productName": "HBEngine Web gameplay3d",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Garden.hbscene.json",
+              "enabled": true
+            }
+          ],
+          "target": "web"
+        },
+        "startupScene": "Assets/Scenes/Garden.hbscene.json",
+        "gameInstance": "",
+        "files": 12,
+        "bytes": 31810,
+        "nativeModules": 0,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-10T13-53-34-442Z-1022abc1",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-10T13-53-34-442Z-1022abc1",
+        "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-10T13-53-34-442Z-1022abc1\\index.html",
+        "artifactType": "web",
+        "totalFiles": 140,
+        "totalBytes": 13950714,
+        "browser": {
+          "ready": true,
+          "keyboard": true,
+          "cppMouseAttack": false,
+          "errors": [],
+          "httpErrors": [],
+          "frames": 57
+        }
+      }
+    ]
+  },
+  "pages": {
+    "url": "https://kirby47navercom-ai.github.io/HBEngine/",
+    "branch": "gh-pages",
+    "files": 144,
+    "commit": "5e0b326e26d0a17626e31098bc508c7ff7be764d"
+  },
+  "tests": {
+    "core": "715 Blueprint nodes / 289 core SDK signatures passed",
+    "profiles": "revision/save/junction rejection passed",
+    "mobileBridge": "lifecycle/storage/query passed"
+  },
+  "userOriginalProjectUsed": false,
+  "foregroundChanged": false,
+  "androidDeviceVerified": false,
+  "iosSafariVerified": false,
+  "installation": {
+    "ok": true,
+    "files": [
+      "prototype/build-profile.js",
+      "prototype/build-panel.js",
+      "prototype/web-player.js",
+      "prototype/mobile-player.js",
+      "tools/build-game.mjs",
+      "tools/build-web.mjs",
+      "tools/build-jobs.mjs",
+      "tools/web-server.mjs",
+      "tools/publish-web.mjs",
+      "tools/prepare-web.mjs",
+      "tools/editor-automation.mjs",
+      "tools/serve.mjs"
+    ],
+    "installation": {
+      "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dcc7dfb86fcb2208",
+      "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dcc7dfb86fcb2208\\HBEngine.exe",
+      "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+      "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+      "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dcc7dfb86fcb2208\\HBEngine.exe",
+      "bundleHash": "dcc7dfb86fcb22081d18d72431e8c28d2688ce83a712034b4984f570d8f04dbd",
+      "files": 1923
+    },
+    "installedSchema": true,
+    "webDryRun": {
+      "target": "web",
+      "renderer": "Browser/WebGL2",
+      "renderBackend": "webgl2",
+      "profile": {
+        "id": "web",
+        "name": "Windows",
+        "configuration": "development",
+        "productName": "HBEngine Web shooter2d",
+        "width": 1280,
+        "height": 720,
+        "scenes": [
+          {
+            "path": "Assets/Scenes/Garden.hbscene.json",
+            "enabled": true
+          }
+        ],
+        "target": "web"
+      },
+      "startupScene": "Assets/Scenes/Garden.hbscene.json",
+      "gameInstance": "",
+      "files": 10,
+      "bytes": 324980,
+      "nativeModules": 1,
+      "warnings": [
+        "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+      ],
+      "capability": {
+        "ready": true,
+        "sdk": "C:\\Users\\kirby\\.codex\\toolchains\\emsdk",
+        "compiler": "C:\\Users\\kirby\\.codex\\toolchains\\emsdk\\upstream\\emscripten\\em++.py",
+        "config": "C:\\Users\\kirby\\.codex\\toolchains\\emsdk\\.emscripten"
+      }
+    },
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\Versions\\dcc7dfb86fcb2208\\HBEngine.exe",
+    "userData": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-installed-SzD4ih\\profile",
+    "pid": 33464
+  },
+  "hashes": {
+    "prototype/build-panel.js": "2f2c6769459c8c066a010dcd262ed9784c09d5a66a7b5be590a0c7198c7d89c0",
+    "prototype/build-profile.js": "06b41b6274c378f3c02f81556d6599f756acd1372e7c0cbf760ed78484823943",
+    "prototype/mobile-player.js": "64b3da091b670a70a41fc7536409d0eedc2807c998b5c30b77bcb37df6d60093",
+    "prototype/web-player.js": "8ef540dda69d64142c275c3e4f4f8132202f9bb1daa8d295ffd8d4623722c430",
+    "tools/build-game.mjs": "e55e892277f6c8b275b2eac1fa0d33ea73417bac8b2c80773c82302f1683e2cb",
+    "tools/build-web.mjs": "6f6a1d49bd192979537432e7e9a89fa8f2cdbc553f19ce58911329ce292494bc",
+    "tools/build-jobs.mjs": "c51cfae0fbca8d7b08d236437d0c0293bfa3a4c63d09db3c4adf371a664e2f69",
+    "tools/web-server.mjs": "cfeccdc8f92b37d6ae8528f8b8843439dba03203400fae68e7663b0050fae9c2",
+    "tools/publish-web.mjs": "d93b5d80023f7d2f7406b328aa61079c966c7ae3fc2986cb3fa06317a3f24e2e",
+    "tools/prepare-web.mjs": "e327cdeff2275f85189ef0d67e96c1d0a46a81d3ddac108e6aae3da39813ec3a",
+    "tools/check-web-build.mjs": "b153430573476ecd79b5f18b88e5fcdd204904c28a340cbfb44f67b0c60c0dc7",
+    "tools/serve.mjs": "147af43da17bdc8abe7782a3c4c5061fde58bc5ea5a6b0dfadcb541c9236268b",
+    "tools/editor-automation.mjs": "2c3c8b659c6529012c378cb8869af67fa695536311321b949a3eaea859c5f415"
+  },
+  "publicProof": {
+    "ok": true,
+    "cpp": true,
+    "browser": true,
+    "outputs": [
+      {
+        "target": "web",
+        "renderer": "Browser/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "web",
+          "name": "Windows",
+          "configuration": "development",
+          "productName": "HBEngine Web shooter2d",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Garden.hbscene.json",
+              "enabled": true
+            }
+          ],
+          "target": "web"
+        },
+        "startupScene": "Assets/Scenes/Garden.hbscene.json",
+        "gameInstance": "",
+        "files": 10,
+        "bytes": 324980,
+        "nativeModules": 1,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-10T13-53-10-102Z-5082a795",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web shooter2d\\Builds\\web\\2026-10-10T13-53-10-102Z-5082a795",
+        "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web shooter2d\\Builds\\web\\2026-10-10T13-53-10-102Z-5082a795\\index.html",
+        "artifactType": "web",
+        "totalFiles": 143,
+        "totalBytes": 15545565,
+        "browser": {
+          "ready": true,
+          "keyboard": true,
+          "cppMouseAttack": true,
+          "errors": [],
+          "httpErrors": [],
+          "frames": 61
+        }
+      },
+      {
+        "target": "web",
+        "renderer": "Browser/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "web",
+          "name": "Windows",
+          "configuration": "development",
+          "productName": "HBEngine Web gameplay3d",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Garden.hbscene.json",
+              "enabled": true
+            }
+          ],
+          "target": "web"
+        },
+        "startupScene": "Assets/Scenes/Garden.hbscene.json",
+        "gameInstance": "",
+        "files": 12,
+        "bytes": 31810,
+        "nativeModules": 0,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-10T13-53-34-442Z-1022abc1",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-10T13-53-34-442Z-1022abc1",
+        "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-oCVCtB\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-10T13-53-34-442Z-1022abc1\\index.html",
+        "artifactType": "web",
+        "totalFiles": 140,
+        "totalBytes": 13950714,
+        "browser": {
+          "ready": true,
+          "keyboard": true,
+          "cppMouseAttack": false,
+          "errors": [],
+          "httpErrors": [],
+          "frames": 58
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://emscripten.org/docs/getting_started/downloads.html",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    },
+    {
+      "url": "https://emscripten.org/docs/compiling/Modularized-Output.html",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    },
+    {
+      "url": "https://emscripten.org/docs/porting/asyncify.html",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    },
+    {
+      "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    },
+    {
+      "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    },
+    {
+      "url": "https://docs.github.com/en/rest/pages/pages?apiVersion=2022-11-28",
+      "reading": "bounded sections; inventory/API/media completeness not claimed",
+      "independentWholeBodyVerification": false
+    }
+  ]
+}

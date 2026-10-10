@@ -1133,6 +1133,78 @@
       "openIssues": [
         "Own setter article read in 082; linked class/header/source and historical API units not independently verified."
       ]
+    },
+    {
+      "id": "emscripten-web-runtime",
+      "engine": "Emscripten",
+      "version": "compiler 6.0.12; live docs 6.0.13-git",
+      "locale": "en",
+      "roots": [
+        "https://emscripten.org/docs/getting_started/downloads.html",
+        "https://emscripten.org/docs/compiling/Modularized-Output.html",
+        "https://emscripten.org/docs/porting/asyncify.html"
+      ],
+      "hosts": [
+        "emscripten.org",
+        "github.com",
+        "raw.githubusercontent.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "scopeNote": "083 bounded sections for static export, modularization, Asyncify calls, branch publication and Pages REST; no whole corpus or independent full-body verification.",
+      "openIssues": [
+        "Expand linked API, limitations, compiler libraries, browser compatibility and editions; complete denominator and independent body/API/media analysis remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://emscripten.org/docs/getting_started/downloads.html",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        },
+        {
+          "url": "https://emscripten.org/docs/compiling/Modularized-Output.html",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        },
+        {
+          "url": "https://emscripten.org/docs/porting/asyncify.html",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        }
+      ]
+    },
+    {
+      "id": "github-pages-platform",
+      "engine": "GitHub",
+      "version": "2026-10-10 public docs snapshot",
+      "locale": "en",
+      "roots": [
+        "https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site",
+        "https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site",
+        "https://docs.github.com/en/rest/pages/pages?apiVersion=2022-11-28"
+      ],
+      "hosts": [
+        "docs.github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "scopeNote": "083 bounded sections for static export, modularization, Asyncify calls, branch publication and Pages REST; no whole corpus or independent full-body verification.",
+      "openIssues": [
+        "Expand linked API, limitations, compiler libraries, browser compatibility and editions; complete denominator and independent body/API/media analysis remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        },
+        {
+          "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        },
+        {
+          "url": "https://docs.github.com/en/rest/pages/pages?apiVersion=2022-11-28",
+          "record": "docs/research/WEB_GAME_EXPORT_083.json"
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

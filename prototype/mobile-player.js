@@ -7,7 +7,7 @@ import {canonicalWorld} from './native-protocol.js';
 import {resolveBuildPath,kioskSettings,validKioskSettings,frameSettings,validFrameSettings} from './build-profile.js';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(s=>!s||s==='.'||s==='..');
-export function mobileBackend(manifest,{read,request,rendererQuery}){
+export function mobileBackend(manifest,{read,request,rendererQuery,mobile=true,baseURL='/'}){
   if(!validKioskSettings(manifest)||!validFrameSettings(manifest))throw Error('키오스크 패키지 설정 오류');
   if(manifest.version!==1||!Array.isArray(manifest.entries)||!Array.isArray(manifest.nativeModules)||!safe(manifest.startupScene))throw Error('모바일 패키지 형식 오류');
   const session={id:manifest.id,name:manifest.name,projectFile:'game.hbpack.json',startupScene:manifest.startupScene,startupBlueprint:manifest.startupBlueprint,gameInstance:manifest.gameInstance||'',legacyStorage:false,player:true};
@@ -38,7 +38,7 @@ export function mobileBackend(manifest,{read,request,rendererQuery}){
     const body=()=>{const raw=options.body||'{}';if(typeof raw!=='string'||raw.length>8388608)throw Error('모바일 요청 크기 오류');return JSON.parse(raw);};
     try{
       if(url.pathname==='/api/session'&&method==='GET')return json(session);
-      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,...frameSettings({...manifest,mobile:true}),kiosk:kioskSettings(manifest),configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile:true});
+      if(url.pathname==='/api/player'&&method==='GET')return json({name:manifest.name,...frameSettings({...manifest,mobile}),kiosk:kioskSettings(manifest),configuration:manifest.configuration,redirects:manifest.redirects,width:manifest.width,height:manifest.height,scene:manifest.startupScene,mobile});
       if(url.pathname==='/api/project'&&method==='GET')return json({entries:manifest.entries});
       if(url.pathname==='/api/file'&&method==='GET'){const resolved=resolve(url.searchParams.get('path'));if(!resolved)return json({error:'게임 파일이 없어요.'},404);return read('Content/'+resolved);}
       if(url.pathname==='/api/game-data'&&method==='POST'){const data=body();return json({value:await persistentQueries(data.key,data.args)});}
@@ -56,7 +56,7 @@ export function mobileBackend(manifest,{read,request,rendererQuery}){
     }catch(error){return json({error:error.message},400);}
   };
   backend.setRendererQuery=handler=>{if(handler!==undefined&&typeof handler!=='function')throw Error('렌더러 질의 연결 오류');rendererQuery=handler;};
-  backend.fileUrl=name=>{const resolved=resolve(name);if(!resolved)throw Error('게임 파일이 없어요: '+name);return '/Content/'+resolved.split('/').map(encodeURIComponent).join('/');};
+  backend.fileUrl=name=>{const resolved=resolve(name);if(!resolved)throw Error('게임 파일이 없어요: '+name);return baseURL+'Content/'+resolved.split('/').map(encodeURIComponent).join('/');};
   return backend;
 }
 

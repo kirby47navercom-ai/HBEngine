@@ -5,8 +5,15 @@ import {randomUUID} from 'node:crypto';
 import {readBuildProfiles,saveBuildProfiles,buildGame} from './build-game.mjs';
 import {androidDevices,deployAndroid} from './android-deploy.mjs';
 import {prepareAndroid} from './prepare-android.mjs';
+import {startWebServer} from './web-server.mjs';
+import {prepareWeb} from './prepare-web.mjs';
 export class BuildJobs{
   constructor(){this.jobs=new Map();this.queue=Promise.resolve();}
+  async prepareWebTools(record){
+    if([...this.jobs.values()].some(j=>j.status==='running'))throw Error('진행 중인 빌드가 끝난 뒤 도구를 준비하세요.');
+    const id=randomUUID(),controller=new AbortController(),job={id,root:record.root,kind:'web-tools',status:'running',stage:'웹 C++ 도구 준비',controller};this.jobs.set(id,job);
+    prepareWeb({signal:controller.signal,onProgress:stage=>{job.stage=stage;}}).then(result=>{job.result=result;job.status='done';},error=>{job.error=error.message;job.status=controller.signal.aborted?'canceled':'error';});return this.get(record,id);
+  }
   async prepareTools(record,{acceptLicense=false}={}){
     if(acceptLicense!==true)throw Error('Google Android SDK 이용약관에 직접 동의해야 해요.');
     if([...this.jobs.values()].some(j=>j.status==='running'))throw Error('진행 중인 빌드가 끝난 뒤 도구를 준비하세요.');
@@ -26,11 +33,18 @@ export class BuildJobs{
   }
   async open(record,id,action){
     if(!['run','reveal'].includes(action))throw Error('빌드 동작 오류');const job=this.get(record,id);if(job.status!=='done'||!job.result?.executable&&!job.result?.artifact)throw Error('완료된 게임 빌드가 없어요.');
+    if(job.result.artifactType==='web'){
+      const file=await fs.realpath(job.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);
+      if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!file.toLowerCase().startsWith((base+path.sep).toLowerCase())||path.basename(file)!=='index.html')throw Error('웹 빌드 경로 오류');
+      const item=this.jobs.get(id);if(action==='run'){item.webServerPromise??=startWebServer(path.dirname(file));item.webServer=await item.webServerPromise;if(this.closed)throw Error('편집기가 종료됐어요.');}
+      const args=action==='run'?[item.webServer.url]:[path.dirname(file)];
+      await new Promise((resolve,reject)=>{const child=spawn(path.join(process.env.SystemRoot,'explorer.exe'),args,{stdio:'ignore',detached:true,windowsHide:true});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {ok:true,action,url:item.webServer?.url};
+    }
     if(action==='run'&&!job.result.executable)throw Error('모바일 앱은 휴대폰에 설치하거나 Mac의 Xcode에서 실행하세요.');
     const exe=await fs.realpath(job.result.executable||job.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!exe.toLowerCase().startsWith((base+path.sep).toLowerCase())||!(job.result.executable?path.basename(exe)==='Game.exe':['Game.apk','Game.aab','HBGame.xcodeproj'].includes(path.basename(exe))))throw Error('빌드 경로 오류');
     const env={...process.env};for(const key of ['PORT','HB_USER_DATA_DIR','HB_PROJECT_FILE','HB_PROJECT_DIR','HB_READY_FILE','HB_PLAYER_SMOKE'])delete env[key];
     const program=action==='run'?exe:path.join(process.env.SystemRoot,'explorer.exe'),args=action==='run'?[]:[path.dirname(exe)];
     await new Promise((resolve,reject)=>{const child=spawn(program,args,{cwd:path.dirname(exe),env,shell:false,detached:true,stdio:'ignore',windowsHide:false});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {ok:true,action};
   }
-  close(){for(const job of this.jobs.values())if(job.status==='running')job.controller.abort(Error('편집기가 종료됐어요.'));}
+  close(){this.closed=true;for(const job of this.jobs.values()){if(job.status==='running')job.controller.abort(Error('편집기가 종료됐어요.'));job.webServerPromise?.then(server=>server.close()).catch(()=>{});}}
 }

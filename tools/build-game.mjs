@@ -77,7 +77,7 @@ export async function moduleClosure(entry,seen=new Set()){
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
-  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
+  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(profileTarget(profile)==='web')return (await import('./build-web.mjs')).buildWeb(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
   if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 빌드하세요.');
   const desktop=await fs.access(path.join(root,'HBPlayer.exe')).then(()=>root,()=>path.join(root,'dist/HBEngine'));await fs.access(path.join(desktop,'HBPlayer.exe'));
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});
