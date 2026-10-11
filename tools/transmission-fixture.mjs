@@ -31,5 +31,5 @@ export async function checkTransmissionPlayer({evaluate,ready,inspect,pixels,cdp
   await evaluate('window.hbPlayerDebug.open("Assets/Scenes/TransmissionTilt.hbscene.json")');await ready();await set('Transmission',1);await set('Thickness',.3);await set('IOR',1);const straight=await pixels('transmission-ior-one');await set('IOR',1.5);const bent=await pixels('transmission-refracted');assert.ok(Math.abs(straight[0]-bent[0])+Math.abs(straight[1]-bent[1])>40,JSON.stringify({straight,bent}));
   await set('Roughness',1);const rough=await pixels('transmission-rough');assert.notDeepEqual(rough,bent);
   await set('Transmission',0);const released=await state();await pixels('transmission-released');const final=await state();if(final.material.program)assert.equal(final.renderer.transmissionTextureBytes,0);
-  return {passed:true,off,on,bp,straight,bent,rough,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:true,recursiveOrDepthTrace:false,fpsClaim:false};
+  return {passed:true,off,on,bp,straight,bent,rough,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:final.material.program?true:null,recursiveOrDepthTrace:false,fpsClaim:false};
 }

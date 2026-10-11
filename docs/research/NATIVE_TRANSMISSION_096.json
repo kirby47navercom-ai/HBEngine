@@ -157,6 +157,20 @@
       "scope": "Final shared graph/pin/CPU/scalar/connected transmission/clone/validation, layer workflow, API consistency.",
       "bytes": 900,
       "sha256": "d1fb9bd31af7de1454432b3be4b4dc1c01c4a891dc116d5db2c6caeeaa32f41e"
+    },
+    {
+      "path": "native/build/gpu-scene-PjVzov/acceptance.json",
+      "command": "node tools/check-gpu-scene.mjs --transmission-only --webgl",
+      "scope": "Final WebGL2 evidence flag correction: zero-byte resource release is verified only for D3D11. Browser flag null; pixel/C++/BP/identity/exit checks pass, product rendering source unchanged.",
+      "bytes": 14760,
+      "sha256": "d2db98f65cf1824b0a577b598b333c8c8aabaa133e7a08742d5db15295747bb2"
+    },
+    {
+      "path": "native/build/gpu-scene-8RsF1t/acceptance.json",
+      "command": "node tools/check-gpu-scene.mjs --transmission-only",
+      "scope": "Final WebGPU evidence flag correction: zero-byte resource release is verified only for D3D11. Browser flag null; pixel/C++/BP/identity/exit checks pass, product rendering source unchanged.",
+      "bytes": 15125,
+      "sha256": "0d94ebccddf2c6ee5360dd0e597f5bcca36c2da433943f0e84e53e3a906ae211"
     }
   ],
   "products": [
@@ -247,8 +261,8 @@
     },
     {
       "path": "tools/transmission-fixture.mjs",
-      "bytes": 5541,
-      "sha256": "2f434d541edfc6a006699891cba86adf36921dc1817f6b4b1e4ef287ab3a4d3a"
+      "bytes": 5569,
+      "sha256": "9f9841b9f80a25b30e011721ffed8ee1bb548f2ad382c2cb5a5871509a07d511"
     }
   ],
   "initialFailures": {
@@ -307,7 +321,8 @@
     "userInstallUpdated": false,
     "installedVersion": "dcc7dfb86fcb2208",
     "foregroundUntouched": true,
-    "originalGamesUntouched": true
+    "originalGamesUntouched": true,
+    "browserZeroValueCaptureReleaseVerified": false
   },
   "next": "Native additional shading/volume/vector parameters, remaining postprocess/GI and accumulated engine details. Installed update follows preceding rendering group; no user app/profile/game edits in this slice.",
   "developmentDesktop": {
@@ -325,5 +340,6 @@
         "sha256": "9aed0364836ee0f942eefc464897f82d54d5d1ff95cb3bbf3d12365c063ba203"
       }
     ]
-  }
+  },
+  "evidenceScopeCorrection": "Old browser helper releaseWhenUnused true was unconditional metadata. Actual bytes assertion runs only when native program exists. Corrected browser flag to null and reran both browser focused players; retained prior artifacts. Browser shaders/features may remain cached after uniform0."
 }
