@@ -1205,6 +1205,57 @@
           "record": "docs/research/WEB_GAME_EXPORT_083.json"
         }
       ]
+    },
+    {
+      "id": "microsoft-native-render-platform",
+      "engine": "Microsoft Windows supplement",
+      "version": "D3D11 and WebView2 Win32",
+      "locale": "en",
+      "roots": [
+        "https://learn.microsoft.com/en-us/windows/win32/",
+        "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/",
+        "https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/Graphics/Direct3D11/"
+      ],
+      "hosts": [
+        "learn.microsoft.com",
+        "microsoft.github.io"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller2?view=webview2-1.0.2849.39",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/for-best-performance--use-dxgi-flip-model",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_query",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-getdata",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_async_getdata_flag",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/Graphics/Direct3D11/constant.D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT.html",
+          "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        }
+      ],
+      "openIssues": [
+        "Bounded native rendering implementation sources only; full Windows/WebView2 API discovery and independent verification remain open."
+      ]
     }
   ],
   "supplementalBaselines": [

@@ -1,0 +1,37 @@
+#include <HBEngine/SceneRender.hpp>
+#include <nlohmann/json.hpp>
+#include <cassert>
+#include <chrono>
+#include <iostream>
+#include <fstream>
+template<class F> void rejects(F&& f){bool rejected=false;try{f();}catch(const std::exception&){rejected=true;}assert(rejected);}
+int main(int argc,char** argv){
+#ifdef HB_COMPUTE_UNAVAILABLE
+    (void)argc;(void)argv;
+    rejects([]{hb::gpu::Device gpu;hb::gpu::SceneRenderer renderer(gpu,64,64);});std::cout<<"{\"unavailableGuard\":true}";
+#else
+    using namespace hb::gpu;Device gpu;SceneRenderer renderer(gpu,64,64);
+    const std::vector<SceneVertex> vertices={{{-.8f,-.8f,.5f}},{{.8f,-.8f,.5f}},{{.8f,.8f,.5f}},{{-.8f,.8f,.5f}}};
+    const std::vector<std::uint32_t> indices={0,1,2,0,2,3};auto mesh=renderer.createMesh(vertices,indices);SceneMaterial red;red.unlit=true;red.toneMapped=false;red.color={1,0,0,1};
+    renderer.begin({});renderer.draw(mesh,identity,identity,red);auto rgba=renderer.readPixels();const auto center=(32*64+32)*4;assert(rgba[center]>250&&rgba[center+1]<3);
+    SceneMaterial green=red;green.color={0,1,0,1};auto behind=identity;behind[14]=.2f;renderer.draw(mesh,behind,identity,green);rgba=renderer.readPixels();assert(rgba[center]>250&&rgba[center+1]<3);
+    green.depthTest=false;green.depthWrite=false;renderer.draw(mesh,behind,identity,green);rgba=renderer.readPixels();assert(rgba[center]<3&&rgba[center+1]>250);
+    auto blue=renderer.createTexture(1,1,{0,0,255,255});SceneMaterial white=red;white.color={1,1,1,1};renderer.begin({});renderer.draw(mesh,identity,identity,white,{&blue});rgba=renderer.readPixels();assert(rgba[center+2]>250&&rgba[center]<3);
+    SceneMaterial pbr;pbr.toneMapped=false;pbr.doubleSided=true;SceneFrame dark;dark.ambient={0,0,0,1};renderer.setLights({});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]<3);
+    renderer.setLights({{{0,0,0,0},{0,0,1,0},{1,1,1,3},{1,0,2,0}}});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]>100);
+    renderer.setLights({{{0,0,2,1},{0,0,0,0},{1,1,1,3},{1,0,2,0}}});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]>50);
+    renderer.setLights({{{0,0,2,2},{0,0,-1,0},{1,1,1,3},{.8f,.8f,2,0}}});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]>50);renderer.setLights({{{0,0,2,2},{1,0,0,0},{1,1,1,3},{.8f,.8f,2,0}}});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]<3);
+    renderer.setLights({{{0,0,0,3},{0,0,1,0},{1,0,0,1},{0,0,1,0}}});renderer.begin(dark);renderer.draw(mesh,identity,identity,pbr);rgba=renderer.readPixels();assert(rgba[center]>250&&rgba[center+2]<3);auto down=identity;down[10]=-1;renderer.begin(dark);renderer.draw(mesh,identity,down,pbr);rgba=renderer.readPixels();assert(rgba[center+2]>250&&rgba[center]<3);renderer.setLights({});
+    rejects([&]{renderer.createMesh(vertices,{0,1,99});});rejects([&]{renderer.createTexture(2,1,{1,2,3,4});});rejects([&]{renderer.draw(mesh,identity,identity,white,{}, {},0,99);});
+    auto invalid=identity;invalid[1]=std::numeric_limits<float>::quiet_NaN();rejects([&]{renderer.draw(mesh,invalid,identity,white);});
+    SceneFrame bad;bad.viewport={0,0,1e10f,64};rejects([&]{renderer.begin(bad);});SceneMaterial badSky=white;badSky.sunDirection[0]=std::numeric_limits<float>::quiet_NaN();rejects([&]{renderer.draw(mesh,identity,identity,badSky);});
+    auto stripes=renderer.createTexture(2,1,{255,0,0,255,0,255,0,255},false,false);SceneMaterial uv=white;uv.emissive={1,1,1,1};uv.uvX[0][2]=.25f;uv.uvX[4][2]=.75f;renderer.begin({});renderer.draw(mesh,identity,identity,uv,{&stripes,nullptr,nullptr,nullptr,&stripes},{1,0,0,0,1,0});rgba=renderer.readPixels();assert(rgba[center]>250&&rgba[center+1]>250&&rgba[center+2]<3);
+    SceneFrame letterbox;letterbox.clear={0,0,0,1};letterbox.viewport={16,16,32,32};letterbox.viewportClear=std::array<float,4>{0,0,1,1};renderer.begin(letterbox);rgba=renderer.readPixels();assert(rgba[center+2]>250&&rgba[(8*64+8)*4+2]<3);
+    SceneFrame crop;crop.scissor=std::array<float,4>{32,0,32,64};renderer.begin(crop);renderer.draw(mesh,identity,identity,red);rgba=renderer.readPixels();assert(rgba[center]>250&&rgba[(32*64+16)*4]<3);
+    SceneFrame fog;fog.fog={0,0,1,.2f};fog.fogRange={0,1000,0,0};fog.heightFog={1,0,0,1};renderer.begin(fog);renderer.draw(mesh,identity,identity,white);rgba=renderer.readPixels();assert(rgba[center+2]>250&&rgba[center]<150);
+    auto program=renderer.createProgram("StructuredBuffer<float> values:register(t7);","base.rgb=float3(values[0],values[1],0);",{1,0});renderer.begin({});renderer.draw(mesh,identity,identity,white,{}, {},0,0,&program);rgba=renderer.readPixels();assert(rgba[center]>250&&rgba[center+1]<3);renderer.setProgramParameters(program,{0,1});renderer.begin({});renderer.draw(mesh,identity,identity,white,{}, {},0,0,&program);rgba=renderer.readPixels();assert(rgba[center]<3&&rgba[center+1]>250);rejects([&]{renderer.createProgram("invalid hlsl;","",{});});
+    std::size_t compiledNodes=0;if(argc>1){std::ifstream input(argv[1]);nlohmann::json catalog;input>>catalog;for(const auto& entry:catalog){try{auto node=renderer.createProgram(entry.at("declarations"),entry.at("evaluation"),entry.at("uniforms").get<std::vector<float>>());renderer.begin({});renderer.draw(mesh,identity,identity,white,{}, {},0,0,&node);++compiledNodes;}catch(const std::exception& e){throw std::runtime_error(entry.at("key").get<std::string>()+": "+e.what());}}}
+    const auto uploads=renderer.uploads(),captures=renderer.captures();const auto start=std::chrono::steady_clock::now();for(int frame=0;frame<12;frame++){renderer.begin({});for(int i=0;i<2049;i++)renderer.draw(mesh,identity,identity,red);}const auto elapsed=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();assert(renderer.uploads()==uploads);assert(renderer.captures()==captures);assert(renderer.draws()==2049);renderer.resize(96,48);renderer.begin({});renderer.draw(mesh,identity,identity,red);assert(renderer.readPixels().size()==96*48*4);
+    nlohmann::json proof={{"passed",true},{"compiledNodes",compiledNodes},{"hlslParameterPixel",true},{"depth",true},{"unlitTexture",true},{"independentTextureUV",true},{"pixelViewportClear",true},{"separateScissor",true},{"heightFogPixel",true},{"pbrDirectional",true},{"pbrPoint",true},{"pbrSpotAndCone",true},{"hemisphereNormalPixel",true},{"validation",true},{"resize",true},{"drawsPerFrame",2049},{"constantBuffers",3},{"newUploadsDuring12Frames",renderer.uploads()-uploads},{"automaticReadbacks",0},{"submitMsPer2049Draws",elapsed/12},{"gpuCompletionMeasured",false}};std::cout<<proof.dump();
+#endif
+}

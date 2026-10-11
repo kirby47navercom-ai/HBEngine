@@ -16,7 +16,7 @@ export class BloomRendering{
   constructor(){this.views=new Map();this.rect=new Vector4();}
   render(renderer,scene,camera,objects){
     const p=bloomSettings(objects);let view=this.views.get(renderer);
-    if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
+    if(p&&renderer.hbBackend==='d3d11')throw Error('DirectX 블룸 패스 변환이 필요해요.');if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
     renderer.getViewport(this.rect);const ratio=renderer.getPixelRatio(),w=Math.max(1,Math.round(this.rect.z*ratio)),h=Math.max(1,Math.round(this.rect.w*ratio));
     if(!view){const composer=new EffectComposer(renderer),render=new RenderPass(scene,camera),bloom=new UnrealBloomPass(new Vector2(w,h),p.bloomStrength,p.bloomRadius,p.bloomThreshold),output=new OutputPass();composer.setPixelRatio(1);composer.addPass(render);composer.addPass(bloom);composer.addPass(output);view={composer,render,bloom,output,width:0,height:0,scale:0};this.views.set(renderer,view);}
     if(view.width!==w||view.height!==h){view.composer.setSize(w,h);view.width=w;view.height=h;}

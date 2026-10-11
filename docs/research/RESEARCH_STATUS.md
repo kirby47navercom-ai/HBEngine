@@ -298,3 +298,7 @@ Unity17.0.4 세 Sample 자체 기술 본문 전체·UE5.8 Texture Editor 앞부�
 ## 082 — 동적 텍스처 setter
 
 Unity SetTexture 자체 기술 본문과 UE5.5 setter 자체 API/UE5.8 클래스 표 두 setter 범위를 구분했다. Three r180 cache/pipeline 제한 범위·원문/설치 SHA와 신규 역사 supplement를 기록했다. 구현·일괄 코어·최종 실제 배포 GL/GPU·동일 에셋 비용/셰이더 객체·미독/전체 선행은 [082](../MATERIAL_TEXTURE_PARAMETERS_082.md). 전체 corpus gate false 유지.
+
+## 086 — Microsoft 네이티브 렌더링 연결
+
+D3DCompile·GPU Query/GetData/DONOTFLUSH의 자체 API 본문, DXGI flip-model 자체 본문, WebView2 Controller2의 배경 속성 구간과 샘플러 슬롯 상수를 읽었다. 원문 7개 SHA와 추가 discovery seeds를 보존했다. Windows 장면/HLSL 구현·GPU/실제 격리 실행기/기존 웹 회귀의 증거는 [086](../NATIVE_SCENE_RENDERING_086.md). 참조 API 전체·연결 문서/미디어·Unreal/Unity 전체 corpus의 독립 검증으로 승격하지 않았다. 전체 gate false와 다음 네이티브 그림자/후처리·환경광/애니메이션/2D/입자 범위를 유지한다.

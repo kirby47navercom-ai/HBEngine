@@ -1,0 +1,325 @@
+{
+  "step": "086",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "sourceScope": "seven selected Microsoft Windows/WebView2 pages or interface sections; independently verified whole corpus false",
+  "sources": [
+    {
+      "id": "webview-background",
+      "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller2?view=webview2-1.0.2849.39",
+      "readScope": "DefaultBackgroundColor property, alpha and CSS transparency; selected interface section",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.840Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/webview-background.html",
+      "sha256": "b92ac50c3d9800129afbb205a9b4dc6d5a8cfadf8b644f1eaee889e3e436549f",
+      "bytes": 51607
+    },
+    {
+      "id": "flip-model",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3ddxgi/for-best-performance--use-dxgi-flip-model",
+      "readScope": "article body: requirements, presentation tradeoffs and HWND interoperability",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.857Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/flip-model.html",
+      "sha256": "bd1326d31c5a8157704140f520ab57c6e6a5fd8584ae61c7ae697bbd02907c3c",
+      "bytes": 59347
+    },
+    {
+      "id": "d3dcompile",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile",
+      "readScope": "syntax, arguments, errors, remarks and requirements",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.828Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/d3dcompile.html",
+      "sha256": "8f201d1167ce92fabaee76faca8e585526de92e469bc0aa62464352060d152bf",
+      "bytes": 56150
+    },
+    {
+      "id": "gpu-queries",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_query",
+      "readScope": "enum body; timestamp/disjoint lifetime and frequency",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.857Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/gpu-queries.html",
+      "sha256": "4bf6188c9171830a442a9f5b5b50c96eefa55c959a9124bf35eee209dbb3d44f",
+      "bytes": 63748
+    },
+    {
+      "id": "getdata",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-getdata",
+      "readScope": "article body; immediate context and S_OK/S_FALSE",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.832Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/getdata.html",
+      "sha256": "1295369a4a78f748e5458c99be5b3e96c9f0811d5d1b72fa2591bb3ac9751c2b",
+      "bytes": 53683
+    },
+    {
+      "id": "dontflush",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_async_getdata_flag",
+      "readScope": "enum body; DONOTFLUSH and polling warning",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.818Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/dontflush.html",
+      "sha256": "f145b40e1c3ee7f4144a0e9ed4f3093bfacf2a608247cb6e28acdcffeae0b753",
+      "bytes": 49787
+    },
+    {
+      "id": "sampler-slots",
+      "url": "https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/Graphics/Direct3D11/constant.D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT.html",
+      "readScope": "constant definition 16; compiler SDK header cross-check",
+      "readStatus": "selected-page read",
+      "independentVerification": false,
+      "retrievedAt": "2026-10-11T09:12:02.791Z",
+      "snapshot": "native/build/native-scene-research-nc4Lsl/sampler-slots.html",
+      "sha256": "7543cad3449eba2017518da31bfbc1ba78038f03bb22a458b57111ebdb8eed6d",
+      "bytes": 3505
+    }
+  ],
+  "sourceSha": {
+    "native/include/HBEngine/SceneRender.hpp": "d61703ac9fc8f9b7859ce5c2ce912e58c6153962aae41df5ba51cc0594201fd3",
+    "native/include/HBEngine/Render.hpp": "daeec90219a30effefa4ea7d5ca1c6cf1b4da7c9078195602f5573afcc11db47",
+    "native/include/HBEngine/Compute.hpp": "37f51dd6f0f2d02515eb10cefc78c8a286490b24f59fdd213252139b7e25a5dc",
+    "native/desktop/SceneRenderBridge.hpp": "9a8d3e4eaa973ab5002209cf4a9b36577ef496325da227e74a454b7df00f21bb",
+    "native/desktop/HBEngine.cpp": "f1e77fd2298046c5bdae6ac4c270305ea02aca9be9b3514ce57f016ca8f28eba",
+    "native/tests/scene-render.cpp": "e235005a7d372f9221d66a6eef3c3968980ec55bea3c25fed7a85446b1741f97",
+    "prototype/native-scene-renderer.js": "d950354deb0e7a46f82a13e1abb0df0b3a572a6a31fee74c802673d653d73a6c",
+    "prototype/native-materials.js": "6e4a3f8fa5535cdd4fab684227737c6745881ee2f32045e41660e70a089459c3",
+    "prototype/game-renderer.js": "657a3dcb6dfaae0effedca3050d2321a3a3b628fcce133abb40b451cf621e211",
+    "prototype/player.js": "26121b9d17d2938c66560a79c8be432d311adfc5bf5f5ef15831effa42766706",
+    "prototype/player.css": "45a8610ecaf2204914dece5e6136df5cd37b39a1ba8e6e34810898152974b9b1",
+    "prototype/build-profile.js": "c8c7236b3d4fd2b7443fe6ce181b00ca426cfd8a88ba07dc7984604f7845966c",
+    "prototype/build-panel.js": "6a56efcf6cd565faa6c11c3d7187f9247b0632e3a51db1cc6cf3a18aef872e5a",
+    "prototype/bloom-rendering.js": "e3015e67db59a3f565341bfffda3138fb2d1b28788036d3a1288b164ee820261",
+    "tools/build-desktop.mjs": "78143d99efaf96b29d94d12b43198b481eead7703fdbed81415cbb2adebd72a4",
+    "tools/build-game.mjs": "f9699f0b8b7e1e67a736e119f9e14e9bdddba8bd69711396529eb11cd2c1c4e9",
+    "tools/editor-automation.mjs": "d1a0adc2ae69e05de079cb5f60cc87a9e4ae71429951f5ad2e2b432d87cccd81",
+    "tools/player-server.mjs": "99f430328adc3567e7e694e6cdedb0d5c00e28a474d736f1296bac15995166fc"
+  },
+  "contract": {
+    "profileField": "windowsRenderer",
+    "values": [
+      "scene",
+      "d3d11"
+    ],
+    "default": "scene",
+    "backend": "D3D11",
+    "sceneData": "shared scene/mesh/sprite transforms; GPU resource cache and sparse frame updates",
+    "nativeApi": "HBEngine/SceneRender.hpp; hb::gpu::SceneRenderer",
+    "supported": [
+      "static indexed triangles",
+      "unlit sprites/SVG/atlas",
+      "PBR base/normal/roughness/metalness/emissive/AO maps",
+      "ambient/hemisphere/directional/point/spot lights",
+      "sky gradient and sun disk",
+      "linear/exp2/height fog",
+      "typed material graph to HLSL: math/vector/UV/time/2D texture/scalars; resolved functions/layers",
+      "mipmaps/repeat/mirror/clamp",
+      "depth/blend/culling",
+      "viewport/resize/pixel-perfect letterboxing",
+      "DOM HUD and existing input/VM/C++"
+    ],
+    "unsupported": [
+      "clearcoat/transmission HLSL; cube/array/volume textures",
+      "skinning/instances/morphs",
+      "main-scene particle adapter",
+      "sprite masks/2D light shader",
+      "GI/reflection captures",
+      "bloom/shadow pass"
+    ],
+    "unsupportedBehavior": "unsupported geometry/texture/node shaders raise errors; shadow and GI passes unavailable; no hidden backend fallback",
+    "frameResources": 3,
+    "gpuTime": "three timestamp/disjoint slots, asynchronous GetData DONOTFLUSH; completed GPU draw scope only",
+    "samplers": "D3D11 hardware limit 16 per node shader; scene objects not capped",
+    "automaticReadbacks": 0
+  },
+  "checks": {
+    "nativeGpu": {
+      "path": "native/build/native-scene-RCQyBT/acceptance.json",
+      "hardware": {
+        "automaticReadbacks": 0,
+        "compiledNodes": 54,
+        "constantBuffers": 3,
+        "depth": true,
+        "drawsPerFrame": 2049,
+        "gpuCompletionMeasured": false,
+        "heightFogPixel": true,
+        "hemisphereNormalPixel": true,
+        "hlslParameterPixel": true,
+        "independentTextureUV": true,
+        "newUploadsDuring12Frames": 0,
+        "passed": true,
+        "pbrDirectional": true,
+        "pbrPoint": true,
+        "pbrSpotAndCone": true,
+        "pixelViewportClear": true,
+        "resize": true,
+        "separateScissor": true,
+        "submitMsPer2049Draws": 4.203416666666667,
+        "unlitTexture": true,
+        "validation": true
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    "nativeWindow": {
+      "path": "native/build/native-scene-window-kxEDl8/acceptance.json",
+      "passed": true,
+      "checks": {
+        "passed": true,
+        "windowsBuild": true,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "svgOrientation": true,
+        "blueprintInput": true,
+        "cppMovement": true,
+        "hlslNodeMaterial": true,
+        "hlslTexturePixel": true,
+        "pixelPerfectLetterbox": true,
+        "cppBlueprintMaterialParameters": true,
+        "shaderParameterReuse": true,
+        "textureReplacementReleased": true,
+        "asynchronousGpuTiming": true,
+        "koreanHud": true,
+        "transparentOverlay": true,
+        "resize": true,
+        "sceneResourcesReleased": true,
+        "automaticReadbacks": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true,
+        "fpsClaim": false
+      },
+      "initialResources": {
+        "backend": "D3D11",
+        "info": {
+          "calls": 1
+        },
+        "memory": {
+          "geometries": 1,
+          "textures": 1
+        },
+        "calls": 1,
+        "captures": 0,
+        "gpuTimeMs": 0.007168,
+        "gpuTimingFrame": 9,
+        "meshes": 1,
+        "presents": 10,
+        "programs": 0,
+        "textures": 1,
+        "uploads": 2,
+        "drawUpdates": 0,
+        "constantBuffers": 3,
+        "automaticReadbacks": 0
+      },
+      "finalResources": {
+        "backend": "D3D11",
+        "info": {
+          "calls": 1
+        },
+        "memory": {
+          "geometries": 1,
+          "textures": 1
+        },
+        "calls": 1,
+        "captures": 16,
+        "gpuTimeMs": 0.009216,
+        "gpuTimingFrame": 148,
+        "meshes": 1,
+        "presents": 149,
+        "programs": 0,
+        "textures": 1,
+        "uploads": 22,
+        "drawUpdates": 0,
+        "constantBuffers": 3,
+        "automaticReadbacks": 0
+      },
+      "exceptions": [],
+      "evidenceImages": [
+        "sprite-native.png",
+        "hud-webview.png",
+        "perspective-pbr-sky.png",
+        "hlsl-texture.png",
+        "hlsl-cpp-bright.png",
+        "pixel-viewport.png"
+      ],
+      "compositedMonitorPixelsChecked": false,
+      "dpiChecked": false
+    },
+    "legacyWeb": {
+      "path": "native/build/web-export-n40BQH/acceptance.json",
+      "passed": true,
+      "cppRecompiled": false,
+      "browser": true,
+      "outputs": [
+        {
+          "target": "web",
+          "renderBackend": "webgl2",
+          "browser": {
+            "ready": true,
+            "keyboard": true,
+            "cppMouseAttack": false,
+            "errors": [],
+            "httpErrors": [],
+            "frames": 56
+          },
+          "totalFiles": 143,
+          "totalBytes": 13978784
+        },
+        {
+          "target": "web",
+          "renderBackend": "webgl2",
+          "browser": {
+            "ready": true,
+            "keyboard": true,
+            "cppMouseAttack": false,
+            "errors": [],
+            "httpErrors": [],
+            "frames": 56
+          },
+          "totalFiles": 143,
+          "totalBytes": 13979027
+        }
+      ]
+    },
+    "buildProfiles": true,
+    "materialTyped": true,
+    "materialFloatUniforms": true,
+    "renderResourceOwnership": true,
+    "base64ChunkBoundaries": true,
+    "base64InvalidEncodingRejected": true
+  },
+  "performance": {
+    "automaticFrameReadbacks": 0,
+    "objectsArtificiallyCapped": false,
+    "drawsPerFrame": 2049,
+    "frames": 12,
+    "cpuSubmitMs": 4.203416666666667,
+    "gpuCompletionOfSubmitBenchmarkMeasured": false,
+    "wholeGame120fpsProven": false,
+    "mobile60fpsProven": false
+  },
+  "preserved": {
+    "userInstall": "dcc7dfb86fcb2208",
+    "userInstallUpdated": false,
+    "userGamesUnmodified": true,
+    "userExistingWindowsUntouched": true
+  },
+  "remaining": [
+    "clearcoat/transmission HLSL; cube/array/volume textures",
+    "skinning/instances/morphs",
+    "main-scene particle adapter",
+    "sprite masks/2D light shader",
+    "GI/reflection captures",
+    "bloom/shadow pass"
+  ]
+}

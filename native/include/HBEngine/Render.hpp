@@ -30,6 +30,7 @@ inline Matrix perspective(float fovDegrees,float aspect,float nearPlane=.1f,floa
 // The same structured buffer is a compute UAV and then a vertex-stage SRV.
 // No positions are copied to the CPU or uploaded again for rendering.
 class ParticleRenderer {
+    friend class SceneRenderer;
     Device& gpu;
     detail::Com<ID3D11Texture2D> color,depth,staging;
     detail::Com<ID3D11RenderTargetView> target;

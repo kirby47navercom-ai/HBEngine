@@ -1,0 +1,101 @@
+import * as THREE from 'three';
+import {createNativeMaterial} from './native-materials.js';
+
+const clipDepth=new THREE.Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1);
+const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
+export function rgbaBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
+export function packedGeometry(geometry){
+  const p=geometry.attributes.position,n=geometry.attributes.normal,u=geometry.attributes.uv,c=geometry.attributes.color;
+  if(!p||p.itemSize!==3)throw Error('DirectX 메시 위치 자료를 확인하세요.');
+  const vertices=[];for(let i=0;i<p.count;i++)vertices.push(p.getX(i),p.getY(i),p.getZ(i),n?.getX(i)??0,n?.getY(i)??0,n?.getZ(i)??1,u?.getX(i)??0,u?.getY(i)??0,c?.getX(i)??1,c?.getY(i)??1,c?.getZ(i)??1,c?.itemSize===4?c.getW(i):1);
+  const indices=geometry.index?Array.from({length:geometry.index.count},(_,i)=>geometry.index.getX(i)):Array.from({length:p.count},(_,i)=>i);
+  if(indices.length%3||vertices.some(v=>!Number.isFinite(v))||indices.some(i=>!Number.isInteger(i)||i<0||i>=p.count))throw Error('DirectX 삼각형 자료를 확인하세요.');return {vertices,indices};
+}
+export function nativeMaterial(material){
+  if(material.isShaderMaterial&&material.uniforms.topColor){const u=material.uniforms;return {color:[1,1,1,1],emissive:[0,0,0,0],roughness:1,metalness:0,alphaCutoff:0,unlit:true,toneMapped:false,depthTest:true,depthWrite:false,doubleSided:true,backSide:false,vertexColors:false,blend:2,uvX:Array.from({length:6},()=>[1,0,0,0]),uvY:Array.from({length:6},()=>[0,1,0,0]),normalScale:[1,1],sky:true,skyTop:[...u.topColor.value.toArray(),1],skyHorizon:[...u.horizonColor.value.toArray(),1],sunDirection:[...u.sunDirection.value.toArray(),u.sunDiskPower.value],sunColor:[...u.sunColor.value.toArray(),1]};}
+  if(!material.isMeshStandardMaterial&&!material.isMeshBasicMaterial&&!material.isSpriteMaterial)throw Error('DirectX 셰이더 변환이 필요해요: '+material.type);
+  if(material.userData.hbMaterial&&!material.userData.hbNativeProgram||material.userData.hbSpriteMask?.hbSpriteMaskMode.value||material.userData.hbLight2D)throw Error('DirectX 머테리얼·마스크·2D 조명 변환이 필요해요.');
+  if(material.transmission>0||material.clearcoat>0)throw Error('DirectX 투과·코팅 셰이더 변환이 필요해요.');
+  const transforms=[material.map,material.normalMap,material.roughnessMap,material.metalnessMap,material.emissiveMap,material.aoMap].map(map=>{if(map?.matrixAutoUpdate)map.updateMatrix();return map?.matrix.elements||[1,0,0,0,1,0,0,0,1];}),effects=material.userData.hbSpriteEffects;
+  const color=material.color?.clone()||new THREE.Color(1,1,1);color.lerp(new THREE.Color(1,1,1),Math.min(1,Math.max(0,effects?.hbSpriteFlash.value||0)));
+  const emission=effects?.hbSpriteEmission.value||0,emissive=material.emissive?.toArray()||[0,0,0];for(let i=0;i<3;i++)emissive[i]+=color.toArray()[i]*emission;
+  return {color:[...color.toArray(),material.opacity],emissive:[...emissive,material.emissiveIntensity??1],roughness:material.roughness??1,metalness:material.metalness??0,alphaCutoff:material.alphaTest||0,unlit:!material.isMeshStandardMaterial,toneMapped:material.toneMapped,depthTest:material.depthTest,depthWrite:material.depthWrite,doubleSided:material.side===THREE.DoubleSide,backSide:material.side===THREE.BackSide,vertexColors:material.vertexColors,blend:material.blending===THREE.AdditiveBlending?1:material.transparent?0:2,uvX:transforms.map(uv=>[uv[0],uv[3],uv[6],0]),uvY:transforms.map(uv=>[uv[1],uv[4],uv[7],0]),normalScale:material.normalScale?.toArray()||[1,1]};
+}
+export async function createNativeSceneRenderer(canvas,onError=()=>{}){
+  const bridge=window.chrome?.webview;if(!bridge)throw Error('DirectX 실행 파일에서 열어 주세요.');
+  const pending=new Map();let sequence=0,disposed=false,ratio=1,width=canvas.clientWidth||1,height=canvas.clientHeight||1;
+  const viewport=new THREE.Vector4(0,0,width,height),scissor=viewport.clone(),clearColor=new THREE.Color(0);let scissorTest=false,clearAlpha=1,explicitClear=null;
+  const receive=event=>{const m=event.data;if(m?.channel!=='hb.render')return;const r=pending.get(m.id);if(!r)return;pending.delete(m.id);clearTimeout(r.timer);m.ok?r.resolve(m.value):r.reject(Error(m.error));};bridge.addEventListener('message',receive);
+  function send(op,data){if(disposed)return Promise.reject(Error('DirectX 렌더러가 닫혔어요.'));const id=++sequence;return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{pending.delete(id);reject(Error('DirectX 응답 시간이 초과됐어요: '+op));},15000);pending.set(id,{resolve,reject,timer});try{bridge.postMessage({channel:'hb.render',id,op,data});}catch(error){pending.delete(id);clearTimeout(timer);reject(error);}});}
+  try{await send('init',{width:Math.max(1,width),height:Math.max(1,height)});}catch(error){bridge.removeEventListener('message',receive);throw error;}
+  document.documentElement.classList.add('native-scene');
+  const geometries=new Map(),textures=new Map(),programs=new Map(),previous=new Map(),spriteGeometry=new THREE.PlaneGeometry(1,1),normalMatrix=new THREE.Matrix4(),at=new THREE.Vector3(),cameraAt=new THREE.Vector3(),lightAt=new THREE.Vector3(),targetAt=new THREE.Vector3(),frustum=new THREE.Frustum(),projectionView=new THREE.Matrix4();
+  let frameJob=null,oldOrder='',oldLights='',lastUpdateCount=0,stats={calls:0,meshes:0,textures:0,uploads:0,captures:0,presents:0};
+  const tracked=new WeakSet(),released={meshes:new Set(),textures:new Set(),programs:new Set()};
+  const attributes=new WeakMap();let nextAttribute=0;const attributeId=a=>{if(!a)return 0;if(!attributes.has(a))attributes.set(a,++nextAttribute);return attributes.get(a);};
+  function track(resource,kind,id,cache){if(tracked.has(resource))return;tracked.add(resource);resource.addEventListener('dispose',()=>{cache.delete(id);released[kind].add(id);});}
+  const info={autoReset:false,memory:{geometries:0,textures:0},render:{calls:0,triangles:0,points:0,lines:0},reset(){this.render.calls=this.render.triangles=0;}};
+  function geometryResource(geometry,resources){
+    track(geometry,'meshes',geometry.uuid,geometries);
+    const signature=JSON.stringify([attributeId(geometry.index),geometry.index?.version,...Object.entries(geometry.attributes).map(([name,a])=>[name,attributeId(a),a.isInterleavedBufferAttribute?a.data.version:a.version,a.count])]);
+    if(geometries.get(geometry.uuid)!==signature){resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry)});geometries.set(geometry.uuid,signature);}return geometry.uuid;
+  }
+  function textureResource(texture,resources){
+    if(!texture)return '';if(texture.isCubeTexture||texture.isDataArrayTexture||texture.isData3DTexture)throw Error('DirectX 텍스처 종류 변환이 필요해요.');if(texture.channel!==0)throw Error('DirectX 추가 UV 채널 변환이 필요해요.');
+    const key=texture.uuid;if(textures.get(key)!==texture.version){
+      track(texture,'textures',key,textures);
+      const image=texture.image,w=image?.width||image?.videoWidth,h=image?.height||image?.videoHeight;if(!w||!h)throw Error('DirectX 텍스처가 준비되지 않았어요.');
+      const off=document.createElement('canvas');off.width=w;off.height=h;const context=off.getContext('2d',{willReadFrequently:true});
+      if(texture.isDataTexture){if(texture.format!==THREE.RGBAFormat||texture.type!==THREE.UnsignedByteType)throw Error('DirectX RGBA8 자료 변환이 필요해요.');context.putImageData(new ImageData(new Uint8ClampedArray(image.data),w,h),0,0);}else context.drawImage(image,0,0);
+      const bytes=context.getImageData(0,0,w,h).data;if(texture.flipY){const row=w*4;for(let y=0;y<Math.floor(h/2);y++){const top=bytes.slice(y*row,(y+1)*row);bytes.copyWithin(y*row,(h-y-1)*row,(h-y)*row);bytes.set(top,(h-y-1)*row);}}
+      resources.push({kind:'texture',id:key,width:w,height:h,rgbaBase64:rgbaBase64(bytes),srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps});textures.set(key,texture.version);
+    }return key;
+  }
+  const wrap=value=>value===THREE.RepeatWrapping?0:value===THREE.MirroredRepeatWrapping?1:2;
+  function encode(scene,camera){
+    scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraAt);projectionView.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projectionView);
+    const resources=[],updates=[],items=[],seen=new Set(),lights=[],ambient=[0,0,0,1],parameters=[],used={meshes:new Set(),textures:new Set(),programs:new Set()};
+    scene.traverse(node=>{
+      if(!visible(node)||node.userData.editorHelper)return;
+      if(node.isLight){
+        if(node.isAmbientLight){const c=node.color.toArray();for(let i=0;i<3;i++)ambient[i]+=c[i]*node.intensity;return;}
+        if(node.isHemisphereLight){node.getWorldPosition(lightAt);lights.push([0,0,0,3,...lightAt.normalize().toArray(),0,...node.color.toArray(),node.intensity,...node.groundColor.toArray(),0]);return;}
+        if(node.isDirectionalLight||node.isPointLight||node.isSpotLight){node.getWorldPosition(lightAt);let dir;if(node.target){node.target.getWorldPosition(targetAt);dir=node.isDirectionalLight?lightAt.clone().sub(targetAt):targetAt.clone().sub(lightAt);}else dir=new THREE.Vector3(0,0,1);lights.push([...lightAt.toArray(),node.isDirectionalLight?0:node.isSpotLight?2:1,...dir.normalize().toArray(),node.distance||0,...node.color.toArray(),node.intensity,Math.cos(node.angle||0),Math.cos((node.angle||0)*(1-(node.penumbra||0))),node.decay??2,0]);return;}throw Error('DirectX 광원 셰이더 변환이 필요해요: '+node.type);
+      }
+      if(node.isPoints||node.isLine)throw Error('DirectX 파티클·선 렌더러 변환이 필요해요.');if(!node.isMesh&&!node.isSprite)return;if(!node.layers.test(camera.layers))return;
+      node.onBeforeRender(renderer,scene,camera,node.geometry,node.material,null);
+      if(node.isSkinnedMesh||node.isInstancedMesh||node.morphTargetInfluences?.some(v=>v!==0))throw Error('DirectX 스킨·인스턴스·모프 변환이 필요해요.');if(node.frustumCulled&&!node.isSprite&&!frustum.intersectsObject(node))return;
+      const geometry=node.isSprite?spriteGeometry:node.geometry,materials=Array.isArray(node.material)?node.material:[node.material],parts=Array.isArray(node.material)?geometry.groups:[{start:0,count:geometry.index?.count||geometry.attributes.position.count,materialIndex:0}];
+      let world=node.matrixWorld;if(node.isSprite){const scale=new THREE.Vector3();node.matrixWorld.decompose(at,new THREE.Quaternion(),scale);world=new THREE.Matrix4().compose(at,camera.getWorldQuaternion(new THREE.Quaternion()),scale);world.multiply(new THREE.Matrix4().makeTranslation(.5-node.center.x,.5-node.center.y,0));}
+      for(let index=0;index<parts.length;index++){
+        const part=parts[index],material=materials[part.materialIndex];if(!material?.visible)continue;const start=Math.max(part.start,geometry.drawRange.start),end=Math.min(part.start+part.count,geometry.drawRange.start+geometry.drawRange.count),count=end-start;if(count<=0)continue;
+        const id=node.uuid+':'+index,maps=[material.map,material.normalMap,material.roughnessMap,material.metalnessMap,material.emissiveMap,material.aoMap],properties=nativeMaterial(material);normalMatrix.copy(world).invert().transpose();
+        const program=material.userData.hbNativeProgram;if(program){track(material,'programs',program.id,programs);const signature=JSON.stringify(program.uniforms);if(!programs.has(program.id))resources.push({kind:'program',id:program.id,declarations:program.declarations,evaluation:program.evaluation,uniforms:program.uniforms});else if(programs.get(program.id)!==signature)parameters.push({id:program.id,values:program.uniforms});programs.set(program.id,signature);}
+        const draw={id,mesh:geometryResource(geometry,resources),world:world.toArray(),normal:normalMatrix.toArray(),maps:maps.map(t=>textureResource(t,resources)),sampling:maps.map(t=>t?((t.magFilter===THREE.NearestFilter?1:0)+wrap(t.wrapS)*2+wrap(t.wrapT)*6):0),first:start,count,material:properties},signature=JSON.stringify(draw);
+        if(program){draw.program=program.id;draw.programMaps=program.maps.map(t=>textureResource(t,resources));draw.programSampling=program.maps.map(t=>(t.magFilter===THREE.NearestFilter?1:0)+wrap(t.wrapS)*2+wrap(t.wrapT)*6);}
+        used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));const stamp=program?JSON.stringify(draw):signature;if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);node.getWorldPosition(at);items.push({id,order:node.renderOrder,transparent:material.transparent,depth:at.distanceToSquared(cameraAt)});
+      }
+    });
+    items.sort((a,b)=>a.order-b.order||Number(a.transparent)-Number(b.transparent)||(a.transparent?b.depth-a.depth:a.depth-b.depth)||a.id.localeCompare(b.id));
+    const order=items.map(item=>item.id),orderSignature=JSON.stringify(order),lightSignature=JSON.stringify(lights),remove=[...previous.keys()].filter(id=>!seen.has(id));for(const id of remove)previous.delete(id);
+    const rect=viewport,bg=scene.background?.isColor?scene.background:clearColor;
+    const data={width:canvas.width,height:canvas.height,updates,remove,viewProjection:clipDepth.clone().multiply(projectionView).toArray(),clear:[...bg.clone().convertLinearToSRGB().toArray(),clearAlpha],eye:[...cameraAt.toArray(),1],ambient,fog:scene.fog?[...scene.fog.color.toArray(),scene.fog.density||0]:[0,0,0,0],fogRange:scene.fog?[scene.fog.near||0,scene.fog.far||100000,0,0]:[0,0,0,0],viewport:[rect.x*ratio,canvas.height-(rect.y+rect.w)*ratio,rect.z*ratio,rect.w*ratio],exposure:renderer.toneMappingExposure};
+    if(scissorTest)data.scissor=[scissor.x*ratio,canvas.height-(scissor.y+scissor.w)*ratio,scissor.z*ratio,scissor.w*ratio];
+    if(explicitClear){data.clear=explicitClear;data.viewportClear=[...bg.toArray(),clearAlpha];explicitClear=null;}
+    if(oldOrder!==orderSignature){data.order=order;oldOrder=orderSignature;}if(oldLights!==lightSignature){data.lights=lights;oldLights=lightSignature;}data.release=Object.fromEntries(Object.entries(released).map(([kind,ids])=>{const keys=[...ids].filter(id=>!used[kind].has(id));ids.clear();return [kind,keys];}));const fog=scene.userData.resolvedEnvironment?.fog;if(fog&&!fog.legacy){data.fog=[...fog.color.slice(0,3),fog.density];data.fogRange=[fog.startDistance,fog.cutoffDistance,0,0];data.heightFog=[1,fog.heightFalloff,fog.height,fog.maxOpacity];}data.parameters=parameters;data.time=renderer.hbTime||0;lastUpdateCount=updates.length;return {resources,data};
+  }
+  const renderer={hbBackend:'d3d11',domElement:canvas,info,shadowMap:{enabled:false},xr:{enabled:false},toneMappingExposure:1,autoClear:true,
+    hbMaterial:(data,options)=>createNativeMaterial(THREE,data,{...options,renderer}),
+    getPixelRatio:()=>ratio,setPixelRatio(value){ratio=value;this.setSize(width,height,false);},
+    setSize(w,h,style=false){width=w;height=h;canvas.width=Math.max(1,Math.round(w*ratio));canvas.height=Math.max(1,Math.round(h*ratio));viewport.set(0,0,w,h);scissor.copy(viewport);if(style){canvas.style.width=w+'px';canvas.style.height=h+'px';}},getSize:target=>target.set(width,height),getDrawingBufferSize:target=>target.set(canvas.width,canvas.height),
+    getViewport:target=>target.copy(viewport),setViewport(x,y,w,h){if(x?.isVector4)viewport.copy(x);else viewport.set(x,y,w,h);},getScissor:target=>target.copy(scissor),setScissor(x,y,w,h){if(x?.isVector4)scissor.copy(x);else scissor.set(x,y,w,h);},getScissorTest:()=>scissorTest,setScissorTest:value=>scissorTest=value,
+    getClearColor:target=>target.copy(clearColor),getClearAlpha:()=>clearAlpha,setClearColor(value,alpha=1){clearColor.set(value);clearAlpha=alpha;},clear(){explicitClear=[...clearColor.clone().convertLinearToSRGB().toArray(),clearAlpha];},getRenderTarget:()=>null,setRenderTarget(target){if(target)throw Error('DirectX 화면 패스 변환이 필요해요.');},
+    render(scene,camera){if(frameJob)throw Error('DirectX 이전 프레임 전송이 진행 중이에요.');const packet=encode(scene,camera);frameJob=(async()=>{if(packet.resources.length)await send('upload',packet.resources);stats=await send('frame',packet.data);info.render.calls=stats.calls;info.memory.geometries=stats.meshes;info.memory.textures=stats.textures;})();frameJob.catch(onError);},
+    async hbFinishFrame(){if(!frameJob)return;const job=frameJob;try{await job;}finally{frameJob=null;}},
+    async hbReleaseScene(){await this.hbFinishFrame();await send('reset',{});geometries.clear();textures.clear();programs.clear();previous.clear();for(const ids of Object.values(released))ids.clear();oldOrder=oldLights='';},
+    hbDiagnostics:()=>({backend:'D3D11',info:{calls:stats.calls},memory:{geometries:stats.meshes,textures:stats.textures},...stats,drawUpdates:lastUpdateCount,constantBuffers:3,automaticReadbacks:0}),
+    async hbCapture(){await this.hbFinishFrame();const result=await send('capture',{}),off=document.createElement('canvas');off.width=result.width;off.height=result.height;off.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(result.rgba),result.width,result.height),0,0);return off.toDataURL('image/png');},
+    async dispose(){if(disposed)return;await this.hbReleaseScene();await send('dispose',{});disposed=true;bridge.removeEventListener('message',receive);document.documentElement.classList.remove('native-scene');spriteGeometry.dispose();for(const r of pending.values()){clearTimeout(r.timer);r.reject(Error('DirectX 렌더러 종료'));}pending.clear();}
+  };
+  renderer.setSize(width,height,false);return renderer;
+}

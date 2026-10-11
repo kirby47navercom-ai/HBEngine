@@ -158,7 +158,9 @@
     "check:gpu-scene:texture-parameters:webgl": "node tools/check-gpu-scene.mjs --texture-parameters-only --webgl",
     "test:web": "node tools/check-web-build.mjs",
     "test:web-browser": "node tools/check-web-build.mjs --cpp --browser",
-    "web:tools": "node tools/prepare-web.mjs"
+    "web:tools": "node tools/prepare-web.mjs",
+    "test:native-scene": "node tools/check-native-scene-render.mjs",
+    "test:native-scene-window": "node tools/check-native-scene-window.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

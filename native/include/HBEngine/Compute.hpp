@@ -79,6 +79,7 @@ public:
 };
 class Device {
     friend class ParticleRenderer;
+    friend class SceneRenderer;
     detail::Com<ID3D11Device> device;
     detail::Com<ID3D11DeviceContext> context;
     std::mutex mutex;

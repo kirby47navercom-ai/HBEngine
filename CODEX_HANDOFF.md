@@ -988,3 +988,9 @@ Auric_Loop의 원격 main a19fcf7·weapon-socket 355289f를 별도 복사본에�
 메인 타이틀의 매 UI 쓰기마다 전체 에셋/스냅샷을 복사하던 병목을 연속 쓰기 묶음·단일 요소 검증·동일 값 재사용·JSON 스냅샷 1회 정규화로 줄였다. 동일 대체 그림·동일 타이틀의 순차 CPU 검사에서 프레임 작업274.45→27.41ms(5초)였다. 공개 개별 이미지/애니메이션 다운로드 멈춤은 cooked 작은 이미지/메타데이터 묶음으로 줄였다. 120fps 합격이 아니다. 사용자가 이후 기존 그림 그대로 GitHub 게시를 지시해 원본 55/116개를 복구하고 임의 대체 SVG·redirect·글자 좌표 수정을 되돌렸다. 공용 UI/통신/배율·묶음/한글 경로/BFCache 수명·2D/3D 웹 빌드 회귀와 격리 실제 입력 통과. docs/AURIC_WEB_PERFORMANCE_085.md 및 기존084 임시 폴더의 공개 검증/게시 JSON 참조. 원본/설치본/사용자창 불변, 전체 분석/누적 목표/실기기/완주/장기 성능은 미승격이다.
 
 085 최종 재게시: Auric gh-pages a5f0a79 · 두 주소와 공개 런타임5 SHA/원본 그림171개 SHA 일치, 임의 대체 파일0. 원본 공개 지시가 현재 정책이다. public-qa.json은 원본 복구 전 같은 코드의 입력/성능, public-images-qa.json은 원본 복구 후 화면/로딩 결과다. 1,538/3,197개 리소스를 묶었으며 기존 Wasm을 다시 컴파일하지 않았다.
+
+## 086 — 네이티브 장면·HLSL 머테리얼
+
+사용자의 렌더링부터 계속하라는 지시에 따라 Windows Game.exe의 선택 가능한 DirectX 11 장면 경로를 추가했다. 기존 Device/ParticleRenderer 화면과 자원을 재사용하며 정적 메시·SVG/아틀라스·PBR/direct/hemisphere lights·하늘/높이 안개·픽셀 여백/scissor·54종 HLSL 노드를 연결했다. C++/BP 이동·Float 파라미터/실제 텍스처 픽셀·교체/장면/종료 해제·비동기 GPU 시간은 native-scene-window-kxEDl8 통과. GPU 픽셀/2049드로우12프레임 재사용은 native-scene-RCQyBT, 기존 웹 2D/3D 회귀는 web-export-n40BQH. base64 텍스처 전송과 변경 드로우만 전송, 자동 이미지/위치 readback 없음. 사용자 설치/원본/기존 창 불변. docs/NATIVE_SCENE_RENDERING_086.md와 증거 JSON 참조.
+
+다음은 같은 네이티브 경로의 그림자/후처리·환경광, 스킨/인스턴스/모프·입자/2D광원/텍스처 종류다. 기존 WebGL/WebGPU의 구현과 대조하고 중복 구현하지 않는다. D3D11 경로의 geometry/texture/node shader 미지원은 명시 오류이며 shadow/GI 패스는 아직 실행하지 않는다. 전체051/누적 세부·전체 corpus false·설치 갱신 대기 유지. 실제120/60fps·전체 프로세스 RAM·DPI/합성 화면/장기 측정은 이 증거에서 합격하지 않았다. 작업은 계속 백그라운드/격리이며 원본과 현재 앱을 검사에 사용하지 않는다.

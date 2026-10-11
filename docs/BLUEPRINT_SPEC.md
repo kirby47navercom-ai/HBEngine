@@ -361,3 +361,7 @@ Materials::LayerParameterKey SDK 선언에서 순수 BP materialLayerParameter�
 ## 082 — 머테리얼 텍스처 서비스
 
 Materials::SetTexture SDK 선언에서 materialTexture 노드를 생성한다. 자료형을 유지하는 Texture2D/Cube/Array/3D와 LayerParameterKey, 동일 에셋 no-op·atomic staging·실패/경합 해제를 공용 실행기에 연결했다. BP715·core289/service341·SDK630. 실제 배포 C++ 호출/T 키 BP·GL/GPU 픽셀/셰이더 객체·원본/SHA 검증은 [082](MATERIAL_TEXTURE_PARAMETERS_082.md).
+
+## 086 — DirectX 장면 실행
+
+Windows 빌드의 `windowsRenderer: d3d11`은 기존 BP 입력/이동/머테리얼 서비스와 C++ `Scene::SetPosition`·`Materials::SetFloat`를 그대로 실행한다. 노드 머테리얼의 공용 해석 결과를 HLSL로 컴파일하고 Float 변경은 숫자 버퍼만 갱신한다. 실제 게임의 E 키 BP/C++ 이동·M 키 발광·텍스처 픽셀/셰이더 재사용은 [086](NATIVE_SCENE_RENDERING_086.md). 새 BP 노드나 별도 머테리얼 스키마를 추가하지 않았다. 네이티브 미연결 렌더 패스와 전체 FPS/엔진 완료는 별도로 남긴다.
