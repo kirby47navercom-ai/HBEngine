@@ -377,3 +377,7 @@ PostProcessVolume의 활성화·우선순위·블룸 임계값/강도/반경/해
 ## 089 — 투사체 네이티브 공용 연결
 
 기존 projectileFire/projectileClear와 C++ Projectiles::FireText/Clear를 D3D11 스타일별 compact GPU 배치로 연결했다. 이동·수명·충돌·소유자·JSON 제작 흐름은 공용 서비스를 사용하며 별도 BP 노드를 복제하지 않는다. 실제 P 키 BP/C++·전체/분할 SVG·2049 단일배치·자원 수명 증거는 [089](NATIVE_INSTANCING_089.md). GPU 시뮬레이션이나 전체 FPS의 완료를 의미하지 않는다.
+
+## 090 — 뼈대·모프 실행과 쉬운 공용 함수
+
+기존 임포트/Animation Graph 포즈를 D3D11 GPU skin/morph와 그림자에 연결했다. C++ Morphs::GetNames/GetWeight/SetWeight와 morphNames/morphWeight/morphSetWeight BP를 Game.hpp에서 함께 생성하고 동일 서비스를 사용한다. 다중 메시의 이름 충돌은 mesh 인자로 해소하며 유한 가중치·없는 이름을 검증한다. 초기/애니메이션 gameplayDebug.morphs·C++ 같은 호출 Set/Get·실제 H/J 키 화면/해제 증거는 [090](NATIVE_DEFORMATION_090.md). 기존 UI·AI 노드 검색/실행 스키마를 사용한다. 네 영향 초과·cloth·인스턴스별 모프·보수적 animated bounds는 후속이며 전체 애니메이션/엔진 완료로 승격하지 않는다.

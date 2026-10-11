@@ -364,6 +364,13 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="stateSetString", KoreanName="상태 파라미터 문자열 지정", Category="상태 머신") static void SetString(Actor* target,const std::string& key,const std::string& value);
 };
 HB_CLASS()
+class Morphs : public Library {
+public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="morphNames", KoreanName="모프 이름 목록", Category="메시 모프") static std::vector<std::string> GetNames(Actor* target,const std::string& mesh="");
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="morphWeight", KoreanName="모프 가중치 가져오기", Category="메시 모프") static float GetWeight(Actor* target,const std::string& name,const std::string& mesh="");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="morphSetWeight", KoreanName="모프 가중치 지정", Category="메시 모프") static void SetWeight(Actor* target,const std::string& name,float value,const std::string& mesh="");
+};
+HB_CLASS()
 class AnimationGraph : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRetargetSource", KoreanName="리타게팅 원본 골격 지정", Category="애니메이션 그래프") static void SetRetargetSource(Actor* target,const std::string& node,Actor* source);

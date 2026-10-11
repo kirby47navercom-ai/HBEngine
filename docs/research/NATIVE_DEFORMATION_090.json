@@ -1,0 +1,451 @@
+{
+  "step": "090",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "unity-skinned",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-SkinnedMeshRenderer.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-SkinnedMeshRenderer.html",
+      "readScope": "Selected own renderer introduction and Properties/Materials sections (web lines 126-252): deformable mesh, bone influence quality 1/2/4/up to 32, animated bounds/offscreen and materials. Later GI/probes/ray tracing/additional sections and linked APIs unread in this slice.",
+      "snapshot": "native/build/native-deformation-research-PaqqYV/unity-skinned.html",
+      "sha256": "20414eacbc6c5a9f2f6bb07e2ba5d127afbba871ae60422f097584ce867e7bcd",
+      "retrievedAt": "2026-10-11T10:59:53.665Z",
+      "bytes": 36910,
+      "independentVerification": false
+    },
+    {
+      "id": "unity-blend-shapes",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/BlendShapes.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/BlendShapes.html",
+      "readScope": "Own technical body lines 127-209, including import, animated properties, 0..100 weights and scripting example; linked APIs/media unread.",
+      "snapshot": "native/build/native-deformation-research-PaqqYV/unity-blend-shapes.html",
+      "sha256": "803684448744eb6daefdd1fb14e09566e3bd0e1dbeedd2bce81dd58c9973b4ed",
+      "retrievedAt": "2026-10-11T10:59:53.648Z",
+      "bytes": 14702,
+      "independentVerification": false
+    },
+    {
+      "id": "unreal-morph",
+      "corpus": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fbx-morph-target-pipeline-in-unreal-engine",
+      "resolvedUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fbx-morph-target-pipeline-in-unreal-engine",
+      "readScope": "UE 5.8 own textual body lines 0-95: deltas, animation sequence/curves, Maya/3ds Max creation/export/import, names, FBX 2020.2 and override behavior; linked API/curves/import dialogs/media unread.",
+      "snapshot": "native/build/native-deformation-research-PaqqYV/unreal-morph.html",
+      "sha256": "3febda90d995176bc899840083c5f1223a4be91f23e1b4f74315622ac481334b",
+      "retrievedAt": "2026-10-11T10:59:53.687Z",
+      "bytes": 83503,
+      "independentVerification": false
+    },
+    {
+      "id": "ms-semantics",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics",
+      "readScope": "Selected system-value semantics lines 80-136, especially VS SV_VertexID and SV_InstanceID; other semantic sections/linked APIs unread.",
+      "snapshot": "native/build/native-deformation-research-PaqqYV/ms-semantics.html",
+      "sha256": "bbf1eac769f0c008e18e3467ef9f33a5c09a5ce6fccb3421493aaa3eaafc1dd4",
+      "retrievedAt": "2026-10-11T10:59:53.612Z",
+      "bytes": 73348,
+      "independentVerification": false
+    },
+    {
+      "id": "ms-vertex-id",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-input-assembler-stage-using",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-input-assembler-stage-using",
+      "readScope": "Selected introduction and VertexID lines 31-47: indexed DrawIndexed/Instanced vertex ID is the index value; primitive/instance sections/example and linked APIs unread.",
+      "snapshot": "native/build/native-deformation-research-PaqqYV/ms-vertex-id.html",
+      "sha256": "94b653486a7b00eea66a3a9315aedde2f4c7e31728dec0362f96f9994696b476",
+      "retrievedAt": "2026-10-11T10:59:53.617Z",
+      "bytes": 54741,
+      "independentVerification": false
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/skinning_vertex.glsl.js",
+      "sha256": "4422467001348636551ce64f1e6631d8a5032b7ac2788596c2dc5269618c7602",
+      "readScope": "r180 whole small shader chunk",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/skinnormal_vertex.glsl.js",
+      "sha256": "5e6f1857d196e7ca79cc4e2ee35fbd128ca74003ad8b96484723d918ca631e49",
+      "readScope": "r180 whole small shader chunk",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/morphtarget_vertex.glsl.js",
+      "sha256": "9d1babad50bc8b1fff96e1ba9d6bff1e2126c2ce9c580b7a95365463fba84ea9",
+      "readScope": "r180 whole small shader chunk",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/morphnormal_vertex.glsl.js",
+      "sha256": "a5833b2d2b8ffc70a4d9ff76a9ffeda6bf5c2754374cde6a3f32bc0899a3e30c",
+      "readScope": "r180 whole small shader chunk",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/morphcolor_vertex.glsl.js",
+      "sha256": "961d07b672ba39450833cfaa2949eb2b44c14481ab65bac11c3cdc23b8626886",
+      "readScope": "r180 whole small shader chunk",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/objects/Skeleton.js",
+      "sha256": "35751767022ca5e02032351f68212ef163a142e3a13b67b908c9d7f9122ba5cf",
+      "readScope": "r180 selected update method lines 198-224; rest unread in this slice",
+      "wholeFileRead": false,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/objects/SkinnedMesh.js",
+      "sha256": "c595d8462d084f72d93d5ffa74a64ce03739f5c4b2313797e1ef965ff44004cc",
+      "readScope": "r180 selected updateMatrixWorld 288-304 and applyBoneTransform 317-347; other methods unread in this slice",
+      "wholeFileRead": false,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/webgl/WebGLMorphtargets.js",
+      "sha256": "2ce90a7fbe8d817b2addec2e70047c5c240dd366ba2b5a4ffb52acf5b5758907",
+      "readScope": "r180 selected first 95 lines: morph channel packing and alpha; rest unread in this slice",
+      "wholeFileRead": false,
+      "independentVerification": false
+    }
+  ],
+  "evidence": [
+    {
+      "file": "native/build/native-scene-RnODqd/acceptance.json",
+      "sha256": "7e64ddf80f6320297486874fecc385f5cb244cd80bfb8563944c7a9623dad348",
+      "passed": true,
+      "checks": {
+        "hardware": {
+          "alphaCutoutShadow": true,
+          "automaticReadbacks": 0,
+          "bloomComputePixel": true,
+          "bloomReuseRelease": true,
+          "bloomScissorBars": true,
+          "bloomThresholdExposure": true,
+          "compactShotBloom": true,
+          "compactShotXYXZ": true,
+          "compiledNodes": 54,
+          "constantBuffers": 3,
+          "deformationPoseReuse": true,
+          "deformationValidation": true,
+          "deformedShadowPixel": true,
+          "depth": true,
+          "directionalShadowPixel": true,
+          "drawsPerFrame": 2049,
+          "gpuBindAffineWeights": true,
+          "gpuCompletionMeasured": false,
+          "gpuMorphPositionNormalColor": true,
+          "gpuSkinPixel": true,
+          "heightFogPixel": true,
+          "hemisphereNormalPixel": true,
+          "hlslOpacityShadow": true,
+          "hlslParameterPixel": true,
+          "independentShadowLights": true,
+          "independentTextureUV": true,
+          "instanceCount2049SingleDraw": true,
+          "instanceFrameResources": 3,
+          "instanceValidation": true,
+          "instancedColorPixel": true,
+          "instancedShadowPixel": true,
+          "morphBeforeSkin": true,
+          "newUploadsDuring12Frames": 0,
+          "passed": true,
+          "pbrDirectional": true,
+          "pbrPoint": true,
+          "pbrSpotAndCone": true,
+          "pixelViewportClear": true,
+          "pointShadowFace": true,
+          "receiveShadowToggle": true,
+          "resize": true,
+          "separateScissor": true,
+          "shadowResourceRelease": true,
+          "spotShadowPixel": true,
+          "submitMsPer2049Draws": 4.517441666666667,
+          "unlitTexture": true,
+          "validation": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-Oj5b4y/acceptance.json",
+      "sha256": "a09e470749e30ba03ecde65a76592d3405bb9a3dd6339a8d1f262f878869ffed",
+      "passed": true,
+      "checks": {
+        "deformation": {
+          "cpp": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "bp": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "direct": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "directBp": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "directWeight": 1,
+          "rest": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "reset": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "renderer": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 0
+            },
+            "bloomAllocations": 0,
+            "bloomComposites": 0,
+            "bloomDispatches": 0,
+            "bloomLevels": 0,
+            "bloomTextureBytes": 0,
+            "calls": 1,
+            "captures": 25,
+            "deformationBufferBytes": 608,
+            "deformations": 1,
+            "gpuTimeMs": 0.023552,
+            "gpuTimingFrame": 235,
+            "instanceBatches": 0,
+            "instanceBufferBytes": 0,
+            "instanceUpdates": 0,
+            "meshes": 1,
+            "poseUpdates": 1,
+            "presents": 236,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 18,
+            "shadowTextureBytes": 0,
+            "textures": 0,
+            "uploads": 33,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          },
+          "poseUpdates": 2,
+          "released": true,
+          "automaticReadbacks": 0
+        },
+        "projectileCount2049": true,
+        "projectileCirclePixel": true,
+        "projectileSingleDraw": true,
+        "projectileResourceRelease": true,
+        "projectileFrameReuse": true,
+        "bloomCppBlueprint": true,
+        "bloomHdrReuseRelease": true,
+        "bloomResize": true,
+        "bloomPixelLetterbox": true,
+        "shadowLightTransform": true,
+        "shadowMovementReuse": true,
+        "shadowBytes": true,
+        "shadowCacheReused": true,
+        "shadowCppBlueprint": true,
+        "shadowOpacityPixel": true,
+        "passed": true,
+        "windowsBuild": true,
+        "svgOrientation": true,
+        "blueprintInput": true,
+        "cppMovement": true,
+        "hlslNodeMaterial": true,
+        "hlslTexturePixel": true,
+        "pixelPerfectLetterbox": true,
+        "cppBlueprintMaterialParameters": true,
+        "shaderParameterReuse": true,
+        "textureReplacementReleased": true,
+        "asynchronousGpuTiming": true,
+        "koreanHud": true,
+        "transparentOverlay": true,
+        "resize": true,
+        "sceneResourcesReleased": true,
+        "serverClosed": true,
+        "installedUserAppUntouched": true,
+        "fpsClaim": false,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "focusedChecks": [
+    {
+      "command": "node tools/check-native-deformation.mjs",
+      "passed": true,
+      "scope": "actual Three vertex comparison including non-unit weights/translated bind inverse; packing/default channels/validation; common morph service and catalogue; sparse pose/shadow/static resource/release mock bridge"
+    },
+    {
+      "command": "node tools/check-render-resources.mjs",
+      "passed": true,
+      "scope": "existing resource ownership/light/sprite reuse and model replacement clears stale C++ morph snapshot"
+    },
+    {
+      "command": "node tools/check-animation-graph.mjs",
+      "passed": true,
+      "scope": "existing shared animation graph; earlier focused run in this slice"
+    },
+    {
+      "command": "node tools/generate-api.mjs --check",
+      "passed": true,
+      "scope": "header-derived C++ and Blueprint catalogue parity"
+    },
+    {
+      "command": "node tools/build-desktop.mjs",
+      "passed": true,
+      "scope": "repository development exe/dist only; installed version untouched"
+    }
+  ],
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "781fee040b60b0341a03949b13b0afe068dde43cf9485de668870c2daa685668"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "7df8a9b8f47070d2205db533631bd25fefee5faf2fa3966cc01a1bb2a7ea6072"
+    },
+    {
+      "file": "native/include/HBEngine/Game.hpp",
+      "sha256": "29384dd3027aa534c95534bb9fc58561e53c9887e3ab0ffba370d72c92c0d0ec"
+    },
+    {
+      "file": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "79144310eb33462de11d2f5a4f814666f9661c31d1aec1e72cac9ae9c8c269b1"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "4b8446a1b511e334c7531c7b99a2cb35c4ca4ebf9dd9c5161e1ba5d48f507085"
+    },
+    {
+      "file": "prototype/morph-controls.js",
+      "sha256": "4b5a8be5629167687f25a1ecf5809fdf98d800c0ba79329ecfdf97ceaed04055"
+    },
+    {
+      "file": "prototype/engine-services.js",
+      "sha256": "beaac7fc82ccf64c91588cb4f52caad17c76029dc2222a0dd6cfc9079bf35da1"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "63895011a5cf0c8a2821bdf15b34ac0113eb0a6637058193c7ca6934772e870c"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "b7c987e7b4a085e3a9a13bf82f3c1ec4e61b00e24c34c0ae431c8d828c11f56b"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "8f8f08339e55e21735e284289213e0baa39145443b6c401b7191539b7a2c1001"
+    },
+    {
+      "file": "tools/check-native-deformation.mjs",
+      "sha256": "2f87e7ea05cf60124fa660b24d5676449259df80d9c3564c87bfee8c26ebbfc1"
+    },
+    {
+      "file": "tools/check-render-resources.mjs",
+      "sha256": "f201f3b47e5466b7a17590dbb7387b8713c4cc165fb789659b23393788ccadc3"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "795ff85deea3b9352934772689b54a6f9855a5914a4669610f78e251aeaf52ea"
+    },
+    {
+      "file": "tools/native-deformation-fixture.mjs",
+      "sha256": "33861df8d52f1b932e2c73af89d475b6f23f141bd6b088c8419e8dc4b4a18eff"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "786cd9646370b87fc17a3efaf8ec2ea482957ce7aaee60a82d28a1af9bab52ec"
+    }
+  ],
+  "implementation": [
+    "four joint linear skinning and relative/absolute morph position/normal/color; morph then skin then instance/world",
+    "bind-inverse translation correction preserves non-unit weight affine position instead of requiring a normalized-weight restriction",
+    "same indexed vertex deformation in main draw and alpha shadow shader; existing HLSL nodes, bloom and instances retained",
+    "shared imported animations, AnimationGraph and montage/IK poses; no new animation evaluator",
+    "Morphs::GetNames/GetWeight/SetWeight shared engine operations and three generated Blueprint nodes; same-call C++ set/get cache",
+    "initial/update/rebuild snapshot, finite names/weights and ambiguous-name failure before mutation",
+    "changed pose only, immutable geometry/skin/morph; DEFAULT frame buffers and resource counters/release/reset"
+  ],
+  "resourceContract": {
+    "skinBytesPerVertex": 32,
+    "morphBytesPerVertexPerTarget": 48,
+    "boneBytes": 64,
+    "morphWeightsPaddedToVec4": true,
+    "bindTranslationVec4PerSkinnedPose": 1,
+    "poseFrameBuffers": 3,
+    "fixtureBufferBytes": 608,
+    "objectCapAdded": false,
+    "normalFrameReadback": false
+  },
+  "retainedFailures": [
+    {
+      "file": "native/build/native-scene-window-RsCgVW/failure.json",
+      "cause": "fixture omitted Deform from build profile scene list; fixture corrected"
+    },
+    {
+      "file": "native/build/native-scene-window-rDNDsr/failure.json",
+      "cause": "fixture captured before the animation tick; waits for actual bone/morph slots"
+    },
+    {
+      "file": "native/build/native-scene-window-vZLLwM/failure.json",
+      "cause": "fixture inspected result instead of native outputs.result; corrected"
+    }
+  ],
+  "remaining": [
+    "influences beyond four, skin quality options, dual quaternion and cloth",
+    "per-instance morph texture, GPU culling/sorting and shared deformation buffers across meshes",
+    "animated conservative frustum bounds; deformed meshes currently stay submitted offscreen to preserve visibility",
+    "full Unreal FBX 2020.2 importer/options parity not established; actual Windows fixture uses glTF",
+    "native ParticleSystem, 2D masks/lights, GI/reflection, further texture families and cumulative engine details",
+    "whole corpus/APIs independent evidence gate; no total analysis completion claim",
+    "whole-game PC120/mobile60, whole-process RAM, long soak, physical Android/iOS/thermal acceptance"
+  ],
+  "claims": {
+    "fpsClaim": false,
+    "wholeProcessRamMeasured": false,
+    "physicalMobileValidated": false,
+    "independentCorpusVerification": false
+  }
+}

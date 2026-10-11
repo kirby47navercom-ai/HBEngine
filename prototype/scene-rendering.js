@@ -2,6 +2,7 @@ import {BloomRendering} from './bloom-rendering.js';
 import {resolveSprite} from './sprite-import.js';
 import {createGameCamera,selectGameCamera} from './game-camera.js';
 import * as THREE from 'three';
+import {morphSnapshot} from './morph-controls.js';
 import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
 import {enabledComponent,objectComponents,componentDefaults,validComponentProperties} from './scene-components.js';
 import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-assets.js';
@@ -209,6 +210,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     if(group.userData.disposed)return;if(rig){const pose=new SpriteRigPose(rig,{geometry:group.userData.spriteMesh?.geometry,requireSprite:true});group.add(pose.group);group.userData.spriteSkin=pose;group.userData.animations=[...group.userData.animations||[],...pose.animations];if(group.userData.spriteMesh)group.userData.spriteMesh.position.set(0,0,0);}
     group.traverse(child=>{child.userData.objectId=object.id;if(child.isLight&&object.kind==='light'){const p=enabledComponent(object,child.type)||(child.isPointLight?enabledComponent(object,'DirectionalLight'):null);if(p){child.position.set(0,0,0);child.castShadow=p.castShadow;configureLightShadow(child,p);}}if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
+    object.gameplayDebug={...object.gameplayDebug,morphs:morphSnapshot(group)};
   }
   function updateMaterialTime(time){for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}
   function materialState(){return all().flatMap(group=>[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial).map(r=>({object:group.userData.objectId,id:r.uuid,type:r.type,version:r.version,textures:r.userData.textureState?.(),backend:r.userData.hbGPU?'WebGPU':'WebGL2',parameters:structuredClone(r.userData.materialSource.parameters||{}),surface:structuredClone(r.userData.materialSource.surface||{}),...r.userData.materialState?.()})));}

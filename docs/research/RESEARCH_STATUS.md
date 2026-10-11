@@ -314,3 +314,7 @@ UE5.8 Bloom·Unity6000.0 URP Bloom(17.0 패키지 URL 이동)·Microsoft Compute
 ## 089 — indexed instancing·구조 버퍼 제약
 
 Microsoft DrawIndexedInstanced·StructuredBuffer·CPU access flags 자체 기술/API 본문과 Three r180 InstancedMesh 지정 get/set/dispose 메서드를 읽었다. CPU access/MISC 조합 금지에 맞춰 DEFAULT 구조 버퍼/UpdateSubresource를 사용한다. 원문3 SHA·지정 읽기/미독, 구현/실제 GPU·Windows·공용 loader CPU 증거 및 zero rect NaN 오류는 [089](../NATIVE_INSTANCING_089.md). 전체 corpus/API 독립 검증 완료로 승격하지 않았고 discovery/전체 gate false를 유지한다.
+
+## 090 — 변형 메시·blend shape·indexed vertex ID
+
+Unity6000.0 Skinned Mesh Renderer 소개/Properties/Materials 지정 구역과 BlendShapes 자체 기술 본문, UE5.8 FBX Morph Target Pipeline 자체 글, MS semantics system-value/VertexID 지정 구역을 읽었다. 원문5 SHA·범위/연결 API·미디어 미독과 Three r180 shader chunks/Skeleton.update 지정 대조는 [090](../NATIVE_DEFORMATION_090.md)/JSON. Unity0~100↔HB0~1, 네 영향↔Unity최대32, FBX importer/메뉴 동등성·독립 검증 미승격을 명시했다. static GPU skin/morph·C++/BP3함수·실제 Windows 증거는 전체 corpus/API/엔진 완료가 아니며 discovery와 전체 gate false를 유지한다.

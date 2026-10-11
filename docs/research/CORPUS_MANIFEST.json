@@ -45,6 +45,14 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-bloom.html",
           "record": "docs/research/NATIVE_BLOOM_088.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-SkinnedMeshRenderer.html",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/BlendShapes.html",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
         }
       ]
     },
@@ -281,6 +289,10 @@
         {
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/bloom-in-unreal-engine",
           "record": "docs/research/NATIVE_BLOOM_088.json"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fbx-morph-target-pipeline-in-unreal-engine",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
         }
       ]
     },
@@ -1090,6 +1102,40 @@
       "openIssues": [
         "Only fixed installed animation-source seeds; complete outgoing implementation/API inventory remains open.",
         "CCDIKSolver135..259 and SkeletonUtils1..305 portions read; remaining bodies/helpers/media and independent verification are open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/skinning_vertex.glsl.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/skinnormal_vertex.glsl.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/morphtarget_vertex.glsl.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/morphnormal_vertex.glsl.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/morphcolor_vertex.glsl.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/objects/Skeleton.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/objects/SkinnedMesh.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/webgl/WebGLMorphtargets.js",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        }
       ]
     },
     {
@@ -1291,6 +1337,14 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_cpu_access_flag",
           "record": "docs/research/NATIVE_INSTANCING_089.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-input-assembler-stage-using",
+          "record": "docs/research/NATIVE_DEFORMATION_090.json"
         }
       ],
       "openIssues": [

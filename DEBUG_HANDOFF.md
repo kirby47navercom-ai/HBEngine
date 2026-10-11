@@ -649,3 +649,9 @@ B6eEdQ PNG의 중복 바깥 패널/작은 그래프와 이동 후 화면 밖 큐
 085 HTTPS 후속: dd5403d 공개 메인은 처음 쓰는 이미지/애니메이션의 개별 네트워크 await가 작업 p95 433.9ms까지 늘렸다. cook된 공개 파일만 resource bin으로 묶어 첫 다운로드 후 Blob/메모리 응답으로 연결한다. 전체 테이블/크기/경로 검사·파일 SHA/제외 원본 불포함·BFCache 보존을 검증했다. 공개 검사의 key 대기는 장면 전환 시 inspect=null와 시간 초기화를 허용하고 keyUp은 finally로 보장한다. 당시 분기 검사의 null.time 실패를 엔진 실행 오류로 바꾸지 않는다. 로컬 최종 두 버전 거점은 약63/64fps·물리 입력·이미지144/158·오류0이다. 실제 HTTPS 최종 결과는 public-qa.json으로 따로 확인한다.
 
 085 최종 그림 복구: 사용자가 임의 대체 타이틀에 이의를 제기하고 원본 그림을 그대로 GitHub에 게시하라고 지시했다. main55/weapon-socket116 원본을 바이트 그대로 복구하고 대체 파일/redirect0, 분기 글자 슬롯 원본 복구를 검증했다. 최종 게시 a5f0a79의 실제 HTTP/묶음 안 모든 원본 SHA가 일치한다. 원본 복구 전 public-qa(거점60/88fps, 각3초)를 최종 원본 게임의 성능으로 재사용하지 않는다. 이미지 복구 후에는 public-images-qa로 두 타이틀/원본UI/로딩만 추가 검사하며 전체 플레이 회귀를 반복하지 않는다.
+
+## 090 — 변형 실행 검사와 남은 비용
+
+RsCgVW의 게임 파일 없음은 fixture Deform 장면이 build profile 목록에서 누락된 원인이었고 목록에 추가했다. rDNDsr의 cpp 캡처는 native 파라미터 지정 직후 animation tick 전에 촬영한 bind pose였다. 실제 슬롯의 bone/morph 적용을 기다리는 조건으로 수정하고 렌더 코드를 임의 변경하지 않았다. vZLLwM은 C++ 반환 envelope outputs.result를 result로 읽던 검사 오류였고 필드를 수정했다. iTaWpc 및 최종090 원장의 Windows 검사에서 C++/H키와 직접 C++/J키 모프, 자원 수명·기존 회귀 통과. 절대 모프 변환의 RGB→RGBA 기본 알파와 없는 기본 법선은 집중 JS 검사로 보완했다. 네이티브 변형 메시 frustum 제외는 잘못된 bind bounds로 사라지지 않게 보류 중이며 offscreen draw/공유 buffer 축소는 다음 성능 작업이다. 사용자 설치본/원본/창은 검사에 사용하지 않았다.
+
+090 최종 경계 대조: 합성 bind inverse 이동이 뼈 가중치 합에 곱해지는 경우를 vec4 이동 보정으로 수정; Three 실제 정점 비교와 GPU RnODqd 픽셀 PASS. 모델 교체 시 morph snapshot을 빈 목록으로 갱신하여 오래된 C++ 값 제거. 중간 -Werror misleading-indentation(native/build/deformation-gpu-final.log 이전 실패, native-scene-t8q0UP)도 별도 줄로 수정; 새 최종 evidence는 090 JSON에 고정.
