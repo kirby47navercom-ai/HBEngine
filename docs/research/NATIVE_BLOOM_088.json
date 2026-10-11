@@ -1,0 +1,249 @@
+{
+  "step": "088",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "ue-bloom",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/bloom-in-unreal-engine",
+      "readScope": "Selected 5.8 page technical body: standard five-resolution Gaussian bloom, threshold/intensity, convolution performance, kernels and dirt; linked pages/media/APIs unread",
+      "resolvedUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/bloom-in-unreal-engine",
+      "snapshot": "native/build/native-bloom-research-GPGPFq/ue-bloom.html",
+      "sha256": "306cc11070792c0582ec29c09b012d060d6c9334b9f3e368c35cc6682d5d750b",
+      "bytes": 89629,
+      "retrievedAt": "2026-10-11T10:08:15.523Z",
+      "readStatus": "bounded technical body read; snapshot retrieval itself is not corpus analysis",
+      "independentVerification": false
+    },
+    {
+      "id": "unity-urp-bloom",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/post-processing-bloom.html",
+      "readScope": "Redirected 6000.0 manual technical body: gamma threshold, intensity/scatter/tint/clamp, downscale/iterations/filter, lens dirt and mobile costs; linked APIs unread",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-bloom.html",
+      "snapshot": "native/build/native-bloom-research-GPGPFq/unity-urp-bloom.html",
+      "sha256": "2882be89bd61ef450178c9a6be3928e91c00d5c62ffefcdd6111fbea3b7b3baa",
+      "bytes": 16327,
+      "retrievedAt": "2026-10-11T10:08:15.619Z",
+      "readStatus": "bounded technical body read; snapshot retrieval itself is not corpus analysis",
+      "independentVerification": false
+    },
+    {
+      "id": "ms-compute-overview",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-advanced-stages-compute-shader",
+      "readScope": "Technical body: shader model 4/5 thread-group/UAV limits, RWTexture, atomic/synchronization; implementation uses cs_5_0, not cs_4_x",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-advanced-stages-compute-shader",
+      "snapshot": "native/build/native-bloom-research-GPGPFq/ms-compute-overview.html",
+      "sha256": "b7034c380ebcaada10e7100bd97ed004277c10bec837c266b870046111433ee8",
+      "bytes": 54027,
+      "retrievedAt": "2026-10-11T10:08:15.282Z",
+      "readStatus": "bounded technical body read; snapshot retrieval itself is not corpus analysis",
+      "independentVerification": false
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js",
+      "readScope": "render stages and selected separable/composite shader methods, r180; not whole source",
+      "sha256": "d92742959879b461f25348b2abddc7ca0d48527e7718340bcfa29fa771e2799a",
+      "wholeFileRead": false,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/examples/jsm/postprocessing/OutputPass.js",
+      "readScope": "render/output color-space and tone-map selection, r180; not whole source",
+      "sha256": "f5b81c96e76b6b28b4b3ba8c41c4aeb982b1e03f3d82883242d951b2ab082fa2",
+      "wholeFileRead": false,
+      "independentVerification": false
+    }
+  ],
+  "evidence": [
+    {
+      "file": "native/build/native-scene-DuBwqX/acceptance.json",
+      "sha256": "4ccb88f4eaa53272c01e6219fcf4574856fb14e8fcd76219888d2720d0a79a28",
+      "passed": true,
+      "details": {
+        "alphaCutoutShadow": true,
+        "automaticReadbacks": 0,
+        "bloomComputePixel": true,
+        "bloomReuseRelease": true,
+        "bloomScissorBars": true,
+        "bloomThresholdExposure": true,
+        "compiledNodes": 54,
+        "constantBuffers": 3,
+        "depth": true,
+        "directionalShadowPixel": true,
+        "drawsPerFrame": 2049,
+        "gpuCompletionMeasured": false,
+        "heightFogPixel": true,
+        "hemisphereNormalPixel": true,
+        "hlslOpacityShadow": true,
+        "hlslParameterPixel": true,
+        "independentShadowLights": true,
+        "independentTextureUV": true,
+        "newUploadsDuring12Frames": 0,
+        "passed": true,
+        "pbrDirectional": true,
+        "pbrPoint": true,
+        "pbrSpotAndCone": true,
+        "pixelViewportClear": true,
+        "pointShadowFace": true,
+        "receiveShadowToggle": true,
+        "resize": true,
+        "separateScissor": true,
+        "shadowResourceRelease": true,
+        "spotShadowPixel": true,
+        "submitMsPer2049Draws": 3.974133333333333,
+        "unlitTexture": true,
+        "validation": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-MAs9LY/acceptance.json",
+      "sha256": "b2b687eb2f5f199e9d0aea9c6b7d8743a3d9ed7d586e8591b7fb2c61336c2c55",
+      "passed": true,
+      "details": {
+        "bloomPixels": {
+          "Bloom": {
+            "dark": [
+              27,
+              37,
+              43,
+              255
+            ],
+            "bright": [
+              226,
+              37,
+              43,
+              255
+            ],
+            "off": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "bp": [
+              226,
+              37,
+              43,
+              255
+            ],
+            "bytes": 3070400,
+            "allocations": 3
+          },
+          "BloomSprite": {
+            "dark": [
+              27,
+              37,
+              43,
+              255
+            ],
+            "bright": [
+              232,
+              231,
+              233,
+              255
+            ],
+            "off": [
+              39,
+              47,
+              52,
+              255
+            ],
+            "bp": [
+              232,
+              231,
+              233,
+              255
+            ],
+            "bytes": 3070400,
+            "allocations": 6
+          }
+        },
+        "bloomCppBlueprint": true,
+        "bloomResize": true,
+        "bloomPixelLetterbox": true,
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "errors": [],
+        "finalBloomBytes": 0
+      }
+    },
+    {
+      "file": "native/build/2d-effects-window-7RLxea/acceptance.json",
+      "sha256": "aa0acbc916c65c71f7a7538a4793346c00183fbaa08322f02e888ecedc12f3b0",
+      "passed": true,
+      "details": {
+        "cases": 2,
+        "errors": []
+      }
+    }
+  ],
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "1effb2e2602e8540ab488ca913bd66063bdbb9c79840e36c261157a221db0bb8"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "912a7eb7b4fcbe03db8ab3eb89970b28cd25f0b2b0a67c6db74f3678677e8e8a"
+    },
+    {
+      "file": "native/include/HBEngine/Compute.hpp",
+      "sha256": "083a5ead77fc5efad9e68e24c649c6f25d795664db21db33bf6b057d3403f81e"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "af1aa565beaf204ea9e575f4abef09bd1b3eb4bc594c0dad2d2d55b0b548530f"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "d8550e95f2da6cecab27bc29f2c9f5d61d888a539df932bf0855a57c069bbc63"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "5bc539c6fecbc3df9ffc6cafc8d5ebf153db0c6f22df6875e146eec2967f6dab"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "045657291632c775ec986e2b6a4618d93474f6808c590d93b02d46e7b865bd94"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "56494be56e979426a894ced60e14303ea00ee2959b7c907931216d4a89b42181"
+    }
+  ],
+  "implemented": [
+    "Windows D3D11 linear R16 HDR scene",
+    "compute extraction/downsample + separable Gaussian up to five levels",
+    "exposure/ACES/sRGB output; viewport/scissor and pixel bars",
+    "existing PostProcessVolume/UI/AI/serialization/CPP/BP fields; native adapter",
+    "lazy targets, three dynamic constant buffers, no automatic readback; release/resize diagnostics"
+  ],
+  "differences": [
+    "HB threshold is linear with .01 knee, not Unity gamma input or UE threshold -1/all convention",
+    "normalized five-level Gaussian weights; not exact Unreal/Unity bloom pixel parity",
+    "whole HDR image including toneMapped=false/sky receives final output transform; DOM HUD is separate"
+  ],
+  "remaining": [
+    "convolution FFT, lens dirt/tint/quality iteration authoring",
+    "local volume bounds/blending",
+    "GI/reflection and native skinning/instances/morphs/particles/2D shader adapters",
+    "whole FPS/RAM, phone thermal/DPI/composited monitor QA, full source corpus/API/engine scope"
+  ],
+  "retainedFailures": [
+    "native/build/native-scene-w7CfbV/failure.json: Device friendship compile fixed",
+    "native/build/native-scene-33P7Xv/failure.json: test sampled x30 outside small quad; x31 checks actual scissor coverage"
+  ],
+  "claims": {
+    "pc120fps": false,
+    "mobile60fps": false,
+    "wholeProcessMemoryMeasured": false,
+    "physicalAndroid": false,
+    "ios": false
+  }
+}

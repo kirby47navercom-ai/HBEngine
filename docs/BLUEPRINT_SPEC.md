@@ -369,3 +369,7 @@ Windows 빌드의 `windowsRenderer: d3d11`은 기존 BP 입력/이동/머테리�
 ## 087 — 그림자 제작과 C++/BP 공용 연결
 
 광원 그림자 해상도/범위/bias/필터/강도는 기존 Light 컴포넌트 속성, AI schema·patch·Undo·저장, C++ Components::SetBool/SetFloat와 BP componentSetBool/Float를 사용한다. D3D11 실제 S/T키 BP와 C++ 토글/opacity/이동은 [087](NATIVE_SHADOWS_087.md). 독립 API/별도 장면 파일을 만들지 않았다.
+
+## 088 — 후처리 제작과 C++/BP 공용 연결
+
+PostProcessVolume의 활성화·우선순위·블룸 임계값/강도/반경/해상도 배율을 기존 컴포넌트 서비스로 D3D11 HDR/compute에 연결했다. 별도 노드를 복제하지 않는다. 실제 C++ 설정과 N/B 키 BP가 2D SVG·3D HLSL 머테리얼의 번짐·타깃 할당/해제에 도달하는 증거는 [088](NATIVE_BLOOM_088.md). AI Windows 렌더 스키마의 지원/후속 범위도 갱신했다.

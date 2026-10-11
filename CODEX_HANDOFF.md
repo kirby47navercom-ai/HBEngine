@@ -998,3 +998,7 @@ Auric_Loop의 원격 main a19fcf7·weapon-socket 355289f를 별도 복사본에�
 ## 087 — 네이티브 광원 그림자
 
 086 85699ae 푸시 완료. D3D11 directional/spot+point6 깊이 배열·PBR receive·HLSL alpha cutoff·PCF/bias/slopeClamp·static reuse·offscreen casters·자원 bytes/해제를 연결. 공용 Light 생성 Y=1을0으로 수정해 작성 좌표·방향 일치, legacy광원 설정과 속성/AI/BP/C++ 기존 컴포넌트 서비스를 사용. GPU lMZaDR 54HLSL/픽셀/2049×12 no upload/readback, 실제 Windows OXEZfA cast/receive·Cpp/BP opacity/toggle/movement·static reuse/bytes·기존 SVG/HUD/lifecycle PASS. shared62/render-resources, 웹 GAINwR PASS. 실패 acne→slopebias,lightY→0,BP렌더완료 대기 기록 보존. 연구4페이지+Three 지정읽기 SHA/manifest; 전체 gate false. docs/NATIVE_SHADOWS_087.md/JSON. 설치/원본/사용 창 불변. 다음 native HDR/bloom/postprocess·환경광/animation/particles/2D 그리고 누적목표, 전체 선행→설치 갱신→연구 추가 순서 유지.
+
+## 088 — 네이티브 HDR·컴퓨트 블룸
+
+087 3761102 푸시 완료. 기존 PostProcessVolume 설정/AI/저장/Undo/CPP/BP와 D3D11 lazy HDR R16 타깃→최대5단 compute 추출/가로세로 Gaussian→노출/ACES/sRGB 합성 연결. viewport/scissor/도트여백·threshold/strength/radius/scale·3상수버퍼·off/zero/scene release·resize/cache diagnostics. GPU DuBwqX 54HLSL/그림자/2049×12/블룸 픽셀·검증·재사용 PASS, Windows MAs9LY 2D SVG/3D node material·CPP/N/B키BP·halo/임계/resize/zero/release/lifecycle PASS, 기존GL 2d-effects-window-7RLxea 및 render-resources PASS. 연구 UE/Unity/MS3본문+Three2지정메서드·원문SHA/manifest/미독 보존. docs/NATIVE_BLOOM_088.md/JSON. 정규화 Gaussian은 정확한 UE/Unity 픽셀 동등성이 아님; whole HDR tone mapping, 로컬 볼륨 blend/FFT/dirt/quality 후속. 설치/원본/현재창 불변; 누적선행→설치갱신→연구추가 순서, whole corpus/whole engine/120·60fps/실기기/RAM false 유지. 다음 native GI/reflection·geometry/particle/2D adapter 연결은 기존구현 재사용하여 진행.

@@ -306,3 +306,7 @@ D3DCompile·GPU Query/GetData/DONOTFLUSH의 자체 API 본문, DXGI flip-model �
 ## 087 — 광원 그림자 공식 본문 대조
 
 Unreal Shadowing 자체 본문, Unity6000.3 shadow performance 자체 본문(6000.0과 별도), Microsoft depth resource/bias 자체 본문과 Three r180 PointLightShadow 전체·Light/Spot 지정 메서드를 읽었다. 원문4 SHA·지정 읽기/미독 경계·추가 discovery와 실제 구현/검증은 [087](../NATIVE_SHADOWS_087.md)에 남긴다. 수집/구현 통과를 전체 corpus/API 독립 검증 완료로 승격하지 않았다.
+
+## 088 — HDR/블룸·compute 본문 대조
+
+UE5.8 Bloom·Unity6000.0 URP Bloom(17.0 패키지 URL 이동)·Microsoft Compute Overview 자체 기술 본문과 Three r180 bloom/output 지정 메서드를 읽었다. 원문3 SHA와 읽기/미독 경계, Gaussian/선형 임계값/전체 출력 변환의 HB 차이, 구현·실제 GPU/Windows/기존GL 증거는 [088](../NATIVE_BLOOM_088.md). 연결 API·미디어·전체 문서와 독립 검증은 승격하지 않고 추가 discovery/전체 gate false를 유지한다.
