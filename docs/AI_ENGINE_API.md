@@ -332,4 +332,8 @@ SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(objec
 
 ## DirectX GPU 파티클(091)
 
-기존 ParticleSystem 컴포넌트 스키마·document.patch/Undo/Save·BP/C++ 제작 API를 그대로 사용한다. Windows 빌드 windowsRenderer=d3d11에서 CPU는 shared seeded birth/timing만 준비하며 GPU가 이동/소멸·alive count·정렬·간접 빌보드 draw를 맡는다. inspect의 renderer 진단에 particlePools/particleBufferBytes/particleSteps/particleBirths/particleSortPasses/particleCountReadbacks/particleIndexAllocations/particleEmissionAllocations가 나온다. 객체 gameplayDebug.particles의 backend는 D3D11 compute, count는 명시 GetCount 전에는 null, cpuSimulationParticles/automaticPositionReadbacks는0이다. 빈/일시정지 상태와 카메라 변화에 따라 작업을 생략하며 같은 동작을 별도 AI 전용 에셋으로 만들지 않는다. 마스크/2D 광원·추가 입자 렌더러는 windowsBuild.unsupported에 남긴다. [실행·읽기·남은 경계](NATIVE_PARTICLES_091.md).
+기존 ParticleSystem 컴포넌트 스키마·document.patch/Undo/Save·BP/C++ 제작 API를 그대로 사용한다. Windows 빌드 windowsRenderer=d3d11에서 CPU는 shared seeded birth/timing만 준비하며 GPU가 이동/소멸·alive count·정렬·간접 빌보드 draw를 맡는다. inspect의 renderer 진단에 particlePools/particleBufferBytes/particleSteps/particleBirths/particleSortPasses/particleCountReadbacks/particleIndexAllocations/particleEmissionAllocations가 나온다. 객체 gameplayDebug.particles의 backend는 D3D11 compute, count는 명시 GetCount 전에는 null, cpuSimulationParticles/automaticPositionReadbacks는0이다. 빈/일시정지 상태와 카메라 변화에 따라 작업을 생략하며 같은 동작을 별도 AI 전용 에셋으로 만들지 않는다. 후속092에서 스프라이트/타일 2D 광원과 스프라이트/파티클 마스크를 연결했다. 추가 입자 렌더러·조명·그림자는 후속이다. [실행·읽기·남은 경계](NATIVE_PARTICLES_091.md).
+
+## DirectX 2D 공용 연결(092)
+
+기존 SpriteMask/Light2D/ShadowCaster2D/CompositeShadowCaster2D와 SpriteRenderer/TilemapRenderer/ParticleSystem 속성을 사용한다. Windows d3d11의 지원 목록·twoDResources·sampler 제한은 windowsBuild에서 조회한다. renderer.targets2d/target2dBytes는 현재 타깃 추정, passes2d/draws2d는 누적 횟수이며 자동 readback이 아니다. 같은 document.patch/Undo/Save·BP·C++를 사용하고 별도 AI 전용 파일이나 게임 함수를 추가하지 않는다. [계약/원출처/실제 창](NATIVE_2D_092.md).

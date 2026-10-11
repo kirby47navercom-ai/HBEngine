@@ -1,3 +1,7 @@
+# 092 — DirectX 공용2D — 2026-10-11
+
+091 24c0528 pushed. 기존 SpriteMask/Light2D/ShadowCaster2D/composite·sprite cookie array·normal/blend/mask/volume과 masked native particles 연결. 공용 C++/BP/AI 제작 API 재사용, 보조 pass 같은 frame upload, static cache·resize/dispose/travel 및128B CB3. GPU/Windows 실제 픽셀·I/L BP·C++·리소스0 검증, schema/docs/읽기7 snapshot·미독/실패 보존. [092](docs/NATIVE_2D_092.md), [증거](docs/research/NATIVE_2D_092.json). 설치/사용 창/원본 변경 없음. 전체 corpus/FPS/RAM/휴대폰/iOS 미승격. 다음 native GI/반사·추가 텍스처/셰이딩/후처리 및 누적 세부, 선행 묶음 뒤 설치 갱신.
+
 # 073 CCD IK — 2026-10-08
 
 07227238e5 푸시 완료. 기존 골격 솔버에 CCD·양방향 계산·직선 정지점 보정·입력 Quaternion 기준 이름별 전체 각도 제한/0잠금·공용 SetIKRotationLimit C++/BP·AI/관절 UI/Undo/Save를 연결. 리타게팅 IK 선을 실제 렌더 부모로 이동하고 프로필/Alpha0/비활성/종료 수명 정리. 최종 Editor animation-ccd-editor-o1ggrE/release Player animation-ccd-player-FM13zf에서 실제 glTF 뼈·C++/BP 목표/제약/조회·원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. 2D IK 및 기존 그래프/상태/Sync·711 BP/626 C++ 연결(계산289·서비스337) 통과. UE3 자체본문/API요약·Three r180 설치SHA 대조 부분 읽기와 미독/보조 inventory 유지. [상세](docs/ANIMATION_CCD_073.md), [증거](docs/research/ANIMATION_CCD_073.json). 전체 선행→설치 갱신→조사 추가 순서 유지; 설치/사용 창/전역 FPS·RAM·전체 corpus 상태 변경 없음. 다음 2D 관절 제약과 나머지 애니메이션/누적 세부.

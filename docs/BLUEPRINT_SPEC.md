@@ -385,3 +385,7 @@ PostProcessVolume의 활성화·우선순위·블룸 임계값/강도/반경/해
 ## 091 — 파티클 네이티브 공용 연결
 
 ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C++ Particles::Play/Stop/Pause/Emit/GetCount를 D3D11 GPU 시뮬레이션·간접 빌보드 draw에 연결했다. 같은 seeded birth/timing을 사용하고 살아 있는 위치는 CPU에 복제하지 않는다. C++ 즉시 명령/개수 조회가 새 compute backend를 인식하도록 수정했다. 실제 K키 BP·C++·2049 단일 draw·2D/3D SVG·블룸·정지 정렬 재사용·장면 해제 증거는 [091](NATIVE_PARTICLES_091.md). 마스크/전용 2D 광원, mesh/ribbon/stretch/SubUV와 입자 그림자는 별도이며 전체 Niagara/Unity 기능 완료로 승격하지 않는다.
+
+## 092 — 2D 마스크·광원·그림자 공용 연결
+
+기존 spriteSetMask와 light2dSetIntensity/SetShadows·Components 속성 노드, C++ Sprites::SetMaskInteraction 및 Light2D 함수가 Windows d3d11에 도달한다. sorting 범위·4 블렌드 스타일·normal·cookie·shadow/volume 자료는 공용 컴포넌트와 AI schema/Undo/Save를 공유한다. 실제 I/L 키 BP·C++ 토글·masked GPU particles·resize/장면 해제 증거는 [092](NATIVE_2D_092.md). 파티클 조명/그림자와 엔진 전체 완료를 이 단계로 승격하지 않는다.

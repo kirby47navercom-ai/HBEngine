@@ -1,0 +1,742 @@
+{
+  "step": "092",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "unity-2d-create",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2d-light-properties-explained.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2d-light-properties-explained.html",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-create.html",
+      "sha256": "42c2e7778fed0ac13de36a0fdf402e984f98201c64106d28fe4ea4760cb48067",
+      "bytes": 15211,
+      "retrievedAt": "2026-10-11T13:03:19.288Z",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "readScope": "Own text/table technical body web126-176; introduction/create workflow and performance notes. Linked pages/media not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-create.body.html",
+      "bodySha256": "5b15e30ed34078b915097ce07bd88289eee1eab012c9225912abe758a204d0f6",
+      "bodyMethod": "Unity own article HTML _leavefeedback to _content, including heading/table/captions; navigation/footer excluded",
+      "version": "6000.0",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.178Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "XY influence independent of light depth; layer targets select receivers; separate layer targets increase RT work in URP",
+        "Creation guide says all types volume; component reference excludes Global; HB follows component contract",
+        "Freeform self intersection guidance informs existing valid-shape editing; no claim to reproduce URP batching"
+      ]
+    },
+    {
+      "id": "unity-2d-light",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DLightProperties.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DLightProperties.html",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-light.html",
+      "sha256": "d4f9d57d4497f5ca65e4eafe637300acce6763abf12d28538d1d18f3bf6aadf2",
+      "bytes": 25269,
+      "retrievedAt": "2026-10-11T13:03:19.306Z",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "readScope": "Own technical text/property tables web126-434: type/intensity/layer, point/spot/freeform shape/Sprite, blending/overlap/order, shadows, volume and normal settings. Linked APIs/editor/media not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-light.body.html",
+      "bodySha256": "c619cfd51b65d51ed42be6f3a452c03d964c26cdf3cb8d6930334d099c60214d",
+      "bodyMethod": "Unity own article HTML _leavefeedback to _content, including heading/table/captions; navigation/footer excluded",
+      "version": "6000.0",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "Global vs spot/freeform/sprite properties and inner/outer radii/cone; four blend styles, ascending order and alpha overlap",
+        "Shadow/volume strength range0..1; normal disabled/fast/accurate and synthetic distance; Global exclusions",
+        "HB reuses common table/kernel including existing034 overlap formula; no new source-independent guessed functions"
+      ]
+    },
+    {
+      "id": "unity-2d-shadow",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DShadows.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DShadows.html",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-shadow.html",
+      "sha256": "704ce0ee47a0ce5286ae90250fed267ee3101d9d49cdead5840816b1f641a8fb",
+      "bytes": 14383,
+      "retrievedAt": "2026-10-11T13:03:18.492Z",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "readScope": "Own text workflow web127-169: Shadow Caster/shape editing/composite nesting. Image captions read, visuals/linked APIs not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native\\build\\native-2d-research-xZ6fJ3\\unity-2d-shadow.body.html",
+      "bodySha256": "5f4f2146b90b4a5aa7cac41b6493a610c9a902ada60919783a29bc2707673288",
+      "bodyMethod": "Unity own article HTML _leavefeedback to _content, including heading/table/captions; navigation/footer excluded",
+      "version": "6000.0",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "Explicit ShadowCaster component, shape source and points, parent Composite grouping",
+        "HB shared polygon geometry and composite stencil owners reused; native clear/scissor are platform-specific",
+        "No Unity native/rendergraph/source implementation parity claim"
+      ]
+    },
+    {
+      "id": "unity-sprite-mask",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/mask/sprite-mask-reference.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/mask/sprite-mask-reference.html",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\unity-sprite-mask.html",
+      "sha256": "99dbd6ce58165c1fc51a5744ade1b8fe275b6820d912099f40b4000a39a7831f",
+      "bytes": 17539,
+      "retrievedAt": "2026-10-11T13:03:19.295Z",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "readScope": "Own text/property tables web126-243: Sprite/Supported Renderer source, sort point, cutoff, rendering mask and front-inclusive/back-exclusive custom range. Linked APIs/media not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native\\build\\native-2d-research-xZ6fJ3\\unity-sprite-mask.body.html",
+      "bodySha256": "8b9e624612a406dd900c3d648056b83ea4abd125153a2b9000dc98b99cc42f65",
+      "bodyMethod": "Unity own article HTML _leavefeedback to _content, including heading/table/captions; navigation/footer excluded",
+      "version": "6000.0",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "Texture alpha controls visibility, not illumination; optional custom sorting interval",
+        "Current Unity Back endpoint exclusive; existing HB both endpoints inclusive retained for asset compatibility",
+        "Supported Renderer source/rendering-layer-mask/new sort-point options remain separate authoring work"
+      ]
+    },
+    {
+      "id": "unity-secondary",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/SecondaryTextures.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/SecondaryTextures.html",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\unity-secondary.html",
+      "sha256": "dc34a409e389f0f7ae3c225b95b94ea30b573db3870f67c3aa18b9fbda7a7f65",
+      "bytes": 18496,
+      "retrievedAt": "2026-10-11T13:03:18.495Z",
+      "httpStatus": 200,
+      "contentType": "text/html,text/html; charset=utf-8",
+      "readScope": "Own text/steps/captions web126-211: normal vs light mask vs visibility mask, non-sRGB/same UV, sprite editor secondary texture names/import/apply, normal distance/quality. Images/video/linked packages not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native\\build\\native-2d-research-xZ6fJ3\\unity-secondary.body.html",
+      "bodySha256": "c5026f35c93605bb71669a2f69b26d6e76eca2eb202da03a99e7b7553b61d936",
+      "bodyMethod": "Unity own article HTML _leavefeedback to _content, including heading/table/captions; navigation/footer excluded",
+      "version": "6000.0",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "Normal/light-mask are secondary maps, share base UV and use non-sRGB imports; visibility mask is distinct",
+        "Sprite Editor Secondary Textures name _NormalMap/_MaskTex, picker/drag/apply and normal quality/distance",
+        "HB shared material maps reused; no Unity full-size normal prepass introduced"
+      ]
+    },
+    {
+      "id": "microsoft-blend",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-blend-state",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-blend-state",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\microsoft-blend.html",
+      "sha256": "b674823f941ab18f642fd7a2129b380767a16035c7845c09d1e2f4fadc8b8c4c",
+      "bytes": 57971,
+      "retrievedAt": "2026-10-11T13:03:18.446Z",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "readScope": "Own technical body web31-103: blend descriptor/create/bind, alpha-to-coverage and dual-output blending overview. Linked APIs not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native/build/native-2d-research-xZ6fJ3/microsoft-blend.body.html",
+      "bodySha256": "bc93549f9c4bc35dddd18c12bcc8a1c71403732035704b4b3aaeadae968b4c5c",
+      "bodyMethod": "MS Learn content div to own related section or closing main; extracted HTML archived, scoped direct reading",
+      "version": "D3D11",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "Output merger blend descriptor and binding, sample coverage and write masks; blend happens after PS",
+        "Native MAX/ADD/no-write states for shadow coverage; no MSAA/dual-output feature claim"
+      ]
+    },
+    {
+      "id": "microsoft-stencil",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc",
+      "snapshot": "native\\build\\native-2d-research-xZ6fJ3\\microsoft-stencil.html",
+      "sha256": "5b902e085a8d1c7e6cce0e804a9ae8a621769b8f0e5df4a09fe10e762b78acf4",
+      "bytes": 53604,
+      "retrievedAt": "2026-10-11T13:03:18.376Z",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "readScope": "Own syntax/members/default table/format requirements web32-117. Linked enums/context/device APIs not read.",
+      "readEvidence": "Own HTML article text/table/code/captions re-extracted and directly read from archived bodySha256; web scoped text also read. Visuals/dynamic/linked pages excluded.",
+      "independentVerification": false,
+      "unread": "Linked pages/APIs/implementation/media/dynamic tabs and whole corpus",
+      "bodyPath": "native/build/native-2d-research-xZ6fJ3/microsoft-stencil.body.html",
+      "bodySha256": "a8d82e7ae347b6609812d47d9060b7ab1eb9b5852371c97defe8493a8ce07d8c",
+      "bodyMethod": "MS Learn content div to own related section or closing main; extracted HTML archived, scoped direct reading",
+      "version": "D3D11",
+      "locale": "en",
+      "reader": "/root",
+      "readAt": "2026-10-11T13:17:49.179Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "sameSnapshotBodyReread": true,
+      "analysis": [
+        "D3D11_DEPTH_STENCIL_DESC signature/members/default states and D24S8/D32S8 formats",
+        "Native always/equal/not-equal replacement controls shared composite color coverage; reset writes stencil only"
+      ]
+    }
+  ],
+  "reusedCodeScopes": [
+    {
+      "file": "prototype/two-d-rendering.js",
+      "readScope": "Whole mask/sorting/range/lifetime module read; platform hooks reused",
+      "wholeFileRead": true
+    },
+    {
+      "file": "prototype/two-d-lighting.js",
+      "readScope": "Shared GLSL light/shadow sampling kernel, packed data/texture contracts and resource hooks; not whole upstream engine source",
+      "wholeFileRead": false
+    },
+    {
+      "file": "prototype/two-d-shadows.js",
+      "readScope": "Shared atlas/geometry/composite draw and platform clear paths; not whole Unity source",
+      "wholeFileRead": false
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "file": "docs/NATIVE_2D_092.md",
+      "sha256": "396512ed15e0b11169be75db117ddbd197da1faf028614fea89c7fcf988b1527"
+    },
+    {
+      "file": "docs/research/2D_SHADOW_CONTRACT_030.md",
+      "sha256": "4421b7ffe66ca9bedba239c4418dbb7f0bd97978e0441f4c1b789183615d77f6"
+    },
+    {
+      "file": "docs/research/2D_BLEND_STYLES_033.md",
+      "sha256": "1e0b53364128477e7c1690f013e585676b653400c7d60c3fa3352beb429bc253"
+    },
+    {
+      "file": "docs/research/2D_LIGHT_OVERLAP_034.md",
+      "sha256": "8e7c44686446a1cfe36a96f28e1420ab455bc0a26d438a14d5cedc8d4b60df73"
+    },
+    {
+      "file": "docs/research/2D_COOKIE_VOLUME_035.md",
+      "sha256": "837539e9cbfc27154eae5c5ba66d706facd0e1dc43c74b06afcb24e801017981"
+    }
+  ],
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/Scene2D.hpp",
+      "sha256": "96bc3ae82573f68ae976977f8402a7213c23e1267b6c2dbe8840d7b5f963541e"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "9afbc89489e246130c40cad5618d00ae85b52bebf19d170845b53fa803d778a7"
+    },
+    {
+      "file": "native/include/HBEngine/Render.hpp",
+      "sha256": "4a18aaf0db0ef866997ca1074f6d36afd25a5b9d1363b6a32e9f977410d68872"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "0406937dcafc07fe7a6327285271bddd22277eb88b0f096a7ca05e062c1a2e2d"
+    },
+    {
+      "file": "prototype/native-2d.js",
+      "sha256": "09ff40ddb4757e4028532d8ee826458a0b24435bddfbc81015b8cfa20ff4c7ad"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "1ddada666e384be9d1ccebd6a5d1a4484e69233987244f0a0525dab0720aa9df"
+    },
+    {
+      "file": "prototype/native-particles.js",
+      "sha256": "ddeb3ce33d4731ee6c6baab9a59bc4aa204921436360960be9b43b242fb56b80"
+    },
+    {
+      "file": "prototype/two-d-shadows.js",
+      "sha256": "5f407205a19e33af0b06182b5695484e31c634a64e7ce461c31bc2b0837a5583"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "9b155a43cb22dfbd975da0971312a85f9d224349cb894baa8502c2246d9cee45"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "7085b6233a2b13cdabfe57a960021e6a09665489966b677b99cd18a7edc83744"
+    },
+    {
+      "file": "native/tests/scene-2d.hpp",
+      "sha256": "d992499f7cdff44631bcb87b8435cced4bfdc9d0d83add75b16d724424b82255"
+    },
+    {
+      "file": "tools/check-native-2d.mjs",
+      "sha256": "350660b53b0d0fd9f2ab77f753f5d5b6a45fe2892abd2530795d16c9905301a7"
+    },
+    {
+      "file": "tools/check-native-particles.mjs",
+      "sha256": "8821ac34f186cc4e64e4e8b842d6549a859d0dc1a9207264de4262f0c32ec58e"
+    },
+    {
+      "file": "tools/native-2d-fixture.mjs",
+      "sha256": "7537a70427fa99642c272a233ecc8337654cc770231ab87ff29c0a838562fb40"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "65d851feb9c041c3b6e1f4eea567d4d1b8011b361608bd11047d956e21d36e1a"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "gpu",
+      "file": "native/build/native-scene-M92Mv7/acceptance.json",
+      "sha256": "5b7041390ddcfdecd78599ee0d82949661abd7ca32ea7cbf9edfc9f291699f77",
+      "passed": true,
+      "checks": {
+        "blendAndMaskPixels": true,
+        "draws": 3,
+        "freeformRGFloatPixel": true,
+        "insideOutsidePixels": true,
+        "oneLayerCookieArrayPixel": true,
+        "passed": true,
+        "passes": 3,
+        "sortingLayerLights": true,
+        "stencilResetKeepsColor": true,
+        "targetBytes": 32768,
+        "validation": true
+      },
+      "regression": {
+        "compiledNodes": 54,
+        "particles": true,
+        "deformation": true,
+        "bloom": true,
+        "shadows": true,
+        "automaticReadbacks": 0
+      },
+      "submissionOnly": 3.9390583333333336,
+      "gpuCompletionMeasured": false
+    },
+    {
+      "kind": "window",
+      "file": "native/build/native-scene-window-JkSL1P/acceptance.json",
+      "sha256": "5a87c0b1209ad304497c62453222bf068eccbc39787e9ac9bc4184a7b91de830",
+      "passed": true,
+      "checks": {
+        "passed": true,
+        "inside": [
+          [
+            232,
+            0,
+            0,
+            255
+          ],
+          [
+            39,
+            47,
+            52,
+            255
+          ]
+        ],
+        "outside": [
+          [
+            39,
+            47,
+            52,
+            255
+          ],
+          [
+            0,
+            0,
+            232,
+            255
+          ]
+        ],
+        "shadow": [
+          59,
+          59,
+          59,
+          255
+        ],
+        "unshadow": [
+          233,
+          233,
+          233,
+          255
+        ],
+        "dark": [
+          59,
+          59,
+          59,
+          255
+        ],
+        "cookie": [
+          [
+            232,
+            232,
+            232,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ]
+        ],
+        "particles": [
+          [
+            255,
+            47,
+            52,
+            255
+          ],
+          [
+            39,
+            47,
+            52,
+            255
+          ]
+        ],
+        "cpp": true,
+        "blueprint": true,
+        "cacheReused": true,
+        "resize": true,
+        "release": true,
+        "initial": {
+          "backend": "D3D11",
+          "info": {
+            "calls": 1
+          },
+          "memory": {
+            "geometries": 2,
+            "textures": 3
+          },
+          "bloomAllocations": 10,
+          "bloomComposites": 135,
+          "bloomDispatches": 0,
+          "bloomLevels": 0,
+          "bloomTextureBytes": 0,
+          "calls": 1,
+          "captures": 61,
+          "deformationBufferBytes": 0,
+          "deformations": 0,
+          "draws2d": 1,
+          "gpuTimeMs": 0.026624,
+          "gpuTimingFrame": 664,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 43,
+          "meshes": 2,
+          "particleBirths": 2066,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 7,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 3,
+          "particlePools": 0,
+          "particleSortPasses": 395,
+          "particleSteps": 5,
+          "passes2d": 1,
+          "poseUpdates": 7,
+          "presents": 665,
+          "programs": 0,
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 28,
+          "shadowTextureBytes": 0,
+          "target2dBytes": 1440000,
+          "targets2d": 1,
+          "textures": 3,
+          "uploads": 69,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 1,
+          "automaticReadbacks": 0
+        },
+        "cached": {
+          "backend": "D3D11",
+          "info": {
+            "calls": 1
+          },
+          "memory": {
+            "geometries": 3,
+            "textures": 5
+          },
+          "bloomAllocations": 10,
+          "bloomComposites": 135,
+          "bloomDispatches": 0,
+          "bloomLevels": 0,
+          "bloomTextureBytes": 0,
+          "calls": 1,
+          "captures": 64,
+          "deformationBufferBytes": 0,
+          "deformations": 0,
+          "draws2d": 5,
+          "gpuTimeMs": 0.27136,
+          "gpuTimingFrame": 696,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 43,
+          "meshes": 3,
+          "particleBirths": 2066,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 7,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 3,
+          "particlePools": 0,
+          "particleSortPasses": 395,
+          "particleSteps": 5,
+          "passes2d": 6,
+          "poseUpdates": 7,
+          "presents": 697,
+          "programs": 0,
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 28,
+          "shadowTextureBytes": 0,
+          "target2dBytes": 131072,
+          "targets2d": 1,
+          "textures": 5,
+          "uploads": 81,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 0,
+          "automaticReadbacks": 0
+        },
+        "resized": {
+          "backend": "D3D11",
+          "info": {
+            "calls": 1
+          },
+          "memory": {
+            "geometries": 1,
+            "textures": 3
+          },
+          "bloomAllocations": 10,
+          "bloomComposites": 135,
+          "bloomDispatches": 0,
+          "bloomLevels": 0,
+          "bloomTextureBytes": 0,
+          "calls": 1,
+          "captures": 72,
+          "deformationBufferBytes": 0,
+          "deformations": 0,
+          "draws2d": 10,
+          "gpuTimeMs": 0.04608,
+          "gpuTimingFrame": 765,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 43,
+          "meshes": 1,
+          "particleBirths": 2067,
+          "particleBufferBytes": 40132,
+          "particleCountReadbacks": 7,
+          "particleEmissionAllocations": 1,
+          "particleIndexAllocations": 4,
+          "particlePools": 1,
+          "particleSortPasses": 395,
+          "particleSteps": 19,
+          "passes2d": 12,
+          "poseUpdates": 7,
+          "presents": 766,
+          "programs": 0,
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 28,
+          "shadowTextureBytes": 0,
+          "target2dBytes": 1440000,
+          "targets2d": 1,
+          "textures": 3,
+          "uploads": 102,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 1,
+          "automaticReadbacks": 0
+        }
+      },
+      "regression": {
+        "koreanHud": true,
+        "hlslNodeMaterial": true,
+        "shadowCppBlueprint": true,
+        "bloomCppBlueprint": true,
+        "particles": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "installedUserAppUntouched": true,
+      "automaticReadbacks": 0
+    },
+    {
+      "kind": "image",
+      "file": "native/build/native-scene-window-R17izi/2d-mask-inside.png",
+      "sha256": "a55fff5898b1a6b17ca0b083a3b10e2eec831bf41bd507ab78f520e7429c2bc2",
+      "visuallyReviewed": true,
+      "scope": "First accepted Windows run; direction/shape reviewed; final same-path assertions in un956c, not an exhaustive visual review"
+    },
+    {
+      "kind": "image",
+      "file": "native/build/native-scene-window-R17izi/2d-shadow.png",
+      "sha256": "399e49022885ece0d4a549102ebace80dbfb962fdf01ecdba45741196758157c",
+      "visuallyReviewed": true,
+      "scope": "First accepted Windows run; direction/shape reviewed; final same-path assertions in un956c, not an exhaustive visual review"
+    },
+    {
+      "kind": "image",
+      "file": "native/build/native-scene-window-R17izi/2d-cookie-array.png",
+      "sha256": "9c8b85c53cf580006c936e7df148a897fc4d12eb0b212a3d45f7efaa85dbb4e0",
+      "visuallyReviewed": true,
+      "scope": "First accepted Windows run; direction/shape reviewed; final same-path assertions in un956c, not an exhaustive visual review"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node tools/check-native-2d.mjs",
+      "passed": true,
+      "scope": "shared range/cache/single-frame queue and sampling"
+    },
+    {
+      "command": "node tools/check-native-particles.mjs",
+      "passed": true,
+      "scope": "shared particle adapter mask instead of old unsupported error"
+    },
+    {
+      "command": "node tools/check-2d-shadows.mjs",
+      "passed": true,
+      "scope": "shared stencil/shape/composite API regression"
+    },
+    {
+      "command": "node tools/check-2d-lighting.mjs",
+      "passed": true,
+      "scope": "shared layer/CPP/BP services"
+    },
+    {
+      "command": "node tools/check-light-cookies.mjs",
+      "passed": true,
+      "scope": "shared cookies/volume"
+    },
+    {
+      "command": "node tools/check-light-blend-styles.mjs",
+      "passed": true,
+      "scope": "shared mask/blend styles"
+    },
+    {
+      "command": "node tools/check-render-resources.mjs",
+      "passed": true,
+      "scope": "shared geometry/material ownership"
+    },
+    {
+      "command": "node tools/generate-api.mjs --check",
+      "passed": true,
+      "scope": "SDK-derived BP parity"
+    },
+    {
+      "command": "node native/build/check-schema-092.mjs",
+      "passed": true,
+      "scope": "AI shared component/native support/diagnostic constants"
+    },
+    {
+      "command": "node tools/build-desktop.mjs",
+      "passed": true,
+      "scope": "repository exe/dist only"
+    }
+  ],
+  "resourceContract": {
+    "lazyMaskTargets": true,
+    "staticMaskSignatureCache": true,
+    "sharedShadowDirtyCache": true,
+    "rgba8BytesPerPixel": 4,
+    "optionalStencilBytesPerPixel": 4,
+    "frameConstantBuffers": 3,
+    "bytesPer2DConstantBuffer": 128,
+    "currentTargetCountsAndBytes": true,
+    "cumulativePassAndDrawCounts": true,
+    "normalFrameReadback": false,
+    "explicitParticleGetCountReadback": true,
+    "resizeDisposeTravelRelease": true,
+    "materialSamplerLimitWithout2D": 16,
+    "materialSamplerLimitWith2D": 13,
+    "objectCapAdded": false,
+    "bytesAreScopedGpuEstimate": true
+  },
+  "retainedFailures": [
+    {
+      "file": "native/build/native-scene-x4ocZG/failure.json",
+      "cause": "New C++ active2D guard misleading indentation under Werror; fixed"
+    },
+    {
+      "file": "native/build/native-scene-YL0mwh/failure.json",
+      "cause": "Graph-generated source retained offscreen base sampler, overlapped s0; non-aux graph shader strips auxiliary branch; >13 material samplers preserve non-2D graph path and explicitly reject combined2D"
+    },
+    {
+      "file": "native/build/native-scene-window-1SCdwi",
+      "cause": "Fixture supplied intensity instead of value BP pin; corrected before actual render test"
+    },
+    {
+      "file": "native/build/native-scene-window-NOnkku/failure.json",
+      "cause": "Fixture expected almost-black outside mask, actual clear [39,47,52]; threshold corrected, visible230 pixels and masking assertions retained"
+    },
+    {
+      "file": "native/build/native-scene-window-MmbIpk/failure.json",
+      "cause": "Fixture expected lifetime particle count readbacks0 after preceding explicit GetCount7; now compares before/after unchanged rather than resetting diagnostics; no product count readback bug"
+    }
+  ],
+  "incidentalDiscovery": [
+    {
+      "requestedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/mask/apply-mask-sprite.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/SecondaryTextures.html",
+      "claim": "unexpected redirect; requested sprite-mask topic not counted as read; SecondaryTextures separately recorded above"
+    }
+  ],
+  "remaining": [
+    "Native GI/reflection and general node cube/array/volume textures, clearcoat/transmission and additional postprocess",
+    "Native pixel-perfect vertex snap and further 2D authoring/module details including current Unity mask endpoint/source/rendering-layer options",
+    "Particle lighting/shadows/mesh/ribbon/stretch/SubUV/vertex streams/events/collision and optional radix performance",
+    "Whole engine/corpus independent verification and cumulative prior goals before installed update",
+    "Whole game PC120/mobile60, whole RAM/long soak, physical mobile/iOS/thermal"
+  ],
+  "claims": {
+    "fpsClaim": false,
+    "wholeProcessRamMeasured": false,
+    "physicalMobileValidated": false,
+    "independentCorpusVerification": false
+  }
+}

@@ -7,7 +7,6 @@ export class NativeParticleSimulation extends ParticleSimulation {
   constructor(renderer,group,p,map=null){
     super(p);this.renderer=renderer;this.group=group;this.map=map;this.capacity=p.maxParticles;this.disposed=false;this.submissions=0;this.readbacks=0;this.birthUploads=0;this.birthUploadBytes=0;
     if(!Number.isSafeInteger(this.capacity)||this.capacity<1||this.capacity>Math.floor(0xffffffff/32))throw Error('DirectX 파티클 용량이 버퍼 한계를 넘어섰어요.');
-    if(p.maskInteraction&&p.maskInteraction!=='none')throw Error('DirectX 파티클 마스크 패스 연결이 필요해요.');
     if(!sorts.includes(p.sortMode||'none'))throw Error('DirectX 파티클 정렬 설정 오류');
     this.id=group.uuid+':particles';this.mesh=new Mesh(new PlaneGeometry(1,1),new MeshBasicMaterial({transparent:true,depthWrite:false}));this.mesh.frustumCulled=false;this.mesh.userData.objectId=group.userData.objectId;this.mesh.renderOrder=p.sortingOrder||0;
     Object.assign(this.mesh.userData,{hbNativeParticle:this,particleRenderer:true,draw2dId:'particles',draw2d:{sortingLayer:p.sortingLayer||'default',sortingOrder:p.sortingOrder||0,maskInteraction:p.maskInteraction||'none'}});

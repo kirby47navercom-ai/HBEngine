@@ -57,6 +57,26 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html",
           "record": "docs/research/NATIVE_PARTICLES_091.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2d-light-properties-explained.html",
+          "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DLightProperties.html",
+          "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/2DShadows.html",
+          "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/sprite/mask/sprite-mask-reference.html",
+          "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/SecondaryTextures.html",
+          "record": "docs/research/NATIVE_2D_092.json"
         }
       ]
     },
@@ -1361,6 +1381,14 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-copystructurecount",
           "record": "docs/research/NATIVE_PARTICLES_091.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-blend-state",
+          "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc",
+          "record": "docs/research/NATIVE_2D_092.json"
         }
       ],
       "openIssues": [
