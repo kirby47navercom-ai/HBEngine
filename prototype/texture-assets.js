@@ -23,7 +23,7 @@ export async function loadMaterialTexture(THREE,binding,resources,fileUrl,render
   else{
     const d=validateTextureImages(kind,resources?.[binding.path]),loader=new THREE.ImageLoader(),first=await loader.loadAsync(fileUrl(d.images[0])),w=first.width,h=first.height;
     if(!w||!h||type==='texturecube'&&w!==h)throw Error('텍스처 이미지 크기를 맞춰 주세요.');
-    const gl=renderer?.isWebGLRenderer?renderer.getContext():renderer?.backend?.gl,limits=renderer?.backend?.device?.limits,maxSize=type==='texture3d'?(gl?.getParameter(gl.MAX_3D_TEXTURE_SIZE)??limits?.maxTextureDimension3D):(gl?.getParameter(gl.MAX_TEXTURE_SIZE)??limits?.maxTextureDimension2D),maxLayers=type==='texturearray'?(gl?.getParameter(gl.MAX_ARRAY_TEXTURE_LAYERS)??limits?.maxTextureArrayLayers):type==='texture3d'?maxSize:undefined;
+    const gl=renderer?.isWebGLRenderer?renderer.getContext():renderer?.backend?.gl,limits=renderer?.backend?.device?.limits??renderer?.hbTextureLimits,maxSize=type==='texture3d'?(gl?.getParameter(gl.MAX_3D_TEXTURE_SIZE)??limits?.maxTextureDimension3D):(gl?.getParameter(gl.MAX_TEXTURE_SIZE)??limits?.maxTextureDimension2D),maxLayers=type==='texturearray'?(gl?.getParameter(gl.MAX_ARRAY_TEXTURE_LAYERS)??limits?.maxTextureArrayLayers):type==='texture3d'?maxSize:undefined;
     if(maxSize&&(w>maxSize||h>maxSize)||maxLayers&&d.images.length>maxLayers)throw Error('현재 그래픽 장치의 텍스처 크기나 슬라이스 한도를 넘었어요.');
     const sameSize=image=>{if(image.width!==w||image.height!==h)throw Error('텍스처 이미지 크기를 맞춰 주세요.');return image;};
     if(type==='texturecube')map=new THREE.CubeTexture([first,...await Promise.all(d.images.slice(1).map(async p=>sameSize(await loader.loadAsync(fileUrl(p)))))]);

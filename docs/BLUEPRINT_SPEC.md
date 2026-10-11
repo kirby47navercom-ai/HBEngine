@@ -1,5 +1,7 @@
 2026-10-08 후속: [CCD IK](ANIMATION_CCD_073.md)에 세 번째 3D 솔버·이름별 전체 회전 제한·공용 C++/BP·AI/Undo/미리보기와 실제 Editor/Player 검증을 연결했다. 2D IK 기존 경로는 유지하고 새 2D 각도 제약·Full Body IK/Control Rig·리타게팅 연산 등 남은 세부를 유지한다.
 
+2026-10-12: [DirectX 일반 텍스처](NATIVE_MATERIAL_TEXTURES_094.md). 기존 cube/array/volume 에셋·노드·함수/레이어/MI와 Materials SetTexture C++·BP·AI 제작 계약을 네이티브 업로드/HLSL에 연결해요. GPU 여섯 면·mip LOD·레이어/볼륨·R 반복/클램프와 실제 Windows 네 종류 교체·프로그램/자원 수명 검증을 기록해요. 전체 corpus/FPS/실기기·설치 갱신은 승격하지 않아요.
+
 2026-10-11: [반사 프로브](NATIVE_PROBES_093.md). ReflectionProbe의 실제 제작 필드/검증과 ReflectionProbes C++·BP3, 기존 Components/document.patch·Undo/Save를 공유해요. DirectX HDR/GGX compute/SH9/BRDF·box/fade·두 프로브와 브라우저 PMREM·한 프로브, 자원 진단/해제·실행 검증 및 미구현 경계를 명시해요.
 
 2026-10-08 후속: [골격 리타게팅](ANIMATION_RETARGET_072.md)에 리그·기준 포즈·프로필/체인 매핑·FK/IK·시작 포즈·루트/골반 배율·베이크 클립·공용 SDK/BP5·AI·별도 미리보기와 실제 Editor/Player 검증을 연결했다. 임의 Op Stack/LOD/Muscle·커브/모프·2D 전용 리타게팅과 다른 누적 세부를 유지한다.

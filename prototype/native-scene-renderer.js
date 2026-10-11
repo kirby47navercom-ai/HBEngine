@@ -9,6 +9,26 @@ const clipDepth=new THREE.Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1);
 const isDeformed=node=>!!node.isSkinnedMesh||Object.values(node.geometry?.morphAttributes||{}).some(a=>a.length);
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
 export function rgbaBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
+export function packedTexture(texture){
+  if(texture.channel!==0)throw Error('DirectX 추가 UV 채널 변환이 필요해요.');
+  const cube=!!texture.isCubeTexture,volume=!!texture.isData3DTexture,array=!!texture.isDataArrayTexture,images=cube?texture.image:[texture.image],first=images?.[0]?.isDataTexture?images[0].image:images?.[0],w=first?.width||first?.videoWidth,h=first?.height||first?.videoHeight,layers=cube?6:volume||array?first?.depth:1;
+  if(!Number.isSafeInteger(w)||!Number.isSafeInteger(h)||w<=0||h<=0||!Number.isSafeInteger(layers)||layers<=0||w>(volume?2048:16384)||h>(volume?2048:16384)||layers>(volume||array?2048:6)||cube&&(images.length!==6||w!==h))throw Error('DirectX 텍스처 크기와 슬라이스를 확인하세요.');
+  const channels=texture.format===THREE.RGBAFormat?4:texture.format===THREE.RGFormat?2:0,floating=texture.type===THREE.FloatType;
+  if(w*h*layers*channels*(floating?4:1)>2147483647)throw Error('텍스처 데이터 크기를 확인하세요.');
+  if(!channels||channels!==4&&!floating||!floating&&texture.type!==THREE.UnsignedByteType||floating&&texture.colorSpace===THREE.SRGBColorSpace)throw Error('DirectX 텍스처 형식을 확인하세요.');
+  const data=first.data;if(!cube&&data){
+    if(data.length!==w*h*layers*channels||!(floating?data instanceof Float32Array:data instanceof Uint8Array||data instanceof Uint8ClampedArray)||floating&&data.some(v=>!Number.isFinite(v)))throw Error('DirectX 텍스처 자료 크기와 값을 확인하세요.');
+    const bytes=new Uint8Array(data.buffer,data.byteOffset,data.byteLength).slice();
+    if(texture.flipY){const row=w*channels*(floating?4:1);for(let z=0;z<layers;z++)for(let y=0;y<Math.floor(h/2);y++){const a=(z*h+y)*row,b=(z*h+h-y-1)*row,top=bytes.slice(a,a+row);bytes.copyWithin(a,b,b+row);bytes.set(top,b);}}
+    return {kind:'dataTexture',width:w,height:h,layers,array,dimension:volume?'volume':'2d',channels,floating,srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps,rgbaBase64:rgbaBase64(bytes)};
+  }
+  if(floating||channels!==4||volume||array)throw Error('DirectX 텍스처 자료 변환을 확인하세요.');
+  const bytes=new Uint8Array(w*h*layers*4),off=document.createElement('canvas');off.width=w;off.height=h;const context=off.getContext('2d',{willReadFrequently:true});if(!context)throw Error('텍스처 이미지 변환을 시작할 수 없어요.');
+  try{for(const [z,face] of images.entries()){const image=face.isDataTexture?face.image:face;if((image.width||image.videoWidth)!==w||(image.height||image.videoHeight)!==h)throw Error('큐브맵 이미지 크기를 맞춰 주세요.');context.clearRect(0,0,w,h);if(image.data){if(face.type!==THREE.UnsignedByteType||face.format!==THREE.RGBAFormat||image.data.length!==w*h*4)throw Error('큐브맵 RGBA8 자료를 확인하세요.');context.putImageData(new ImageData(new Uint8ClampedArray(image.data),w,h),0,0);}else context.drawImage(image,0,0);bytes.set(context.getImageData(0,0,w,h).data,z*w*h*4);}
+    if(texture.flipY){const row=w*4;for(let z=0;z<layers;z++)for(let y=0;y<Math.floor(h/2);y++){const a=(z*h+y)*row,b=(z*h+h-y-1)*row,top=bytes.slice(a,a+row);bytes.copyWithin(a,b,b+row);bytes.set(top,b);}}
+  }finally{off.width=off.height=0;}
+  return {kind:'dataTexture',width:w,height:h,layers,array:false,dimension:cube?'cube':'2d',channels:4,floating:false,srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps,rgbaBase64:rgbaBase64(bytes)};
+}
 export function nativeShadows(light){
   if(!light.castShadow||!light.shadow||!['DirectionalLight','PointLight','SpotLight'].includes(light.type))return [];
   light.target?.updateWorldMatrix(true,false);const shadow=light.shadow,records=[];
@@ -99,20 +119,10 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
     const values=packedPose(node),pose=JSON.stringify(values);if(entry.pose!==pose){poses.push({id,...values});entry.pose=pose;}return id;
   }
   function textureResource(texture,resources){
-    if(!texture)return '';if(texture.userData.hbNativeTarget)return targetResource(texture.userData.hbNativeTarget,resources);if(texture.isCubeTexture||texture.isData3DTexture)throw Error('DirectX 텍스처 종류 변환이 필요해요.');if(texture.channel!==0)throw Error('DirectX 추가 UV 채널 변환이 필요해요.');
+    if(!texture)return '';if(texture.userData.hbNativeTarget)return targetResource(texture.userData.hbNativeTarget,resources);
     const key=texture.uuid;if(textures.get(key)!==texture.version){
       track(texture,'textures',key,textures);
-      const image=texture.image,w=image?.width||image?.videoWidth,h=image?.height||image?.videoHeight;if(!w||!h)throw Error('DirectX 텍스처가 준비되지 않았어요.');
-      if(texture.isDataArrayTexture||texture.isDataTexture&&texture.type===THREE.FloatType){
-        const channels=texture.format===THREE.RGBAFormat?4:texture.format===THREE.RGFormat?2:0,layers=texture.isDataArrayTexture?image.depth:1,floating=texture.type===THREE.FloatType;
-        if(!channels||!Number.isSafeInteger(layers)||layers<=0||image.data.length!==w*h*layers*channels||(!floating&&texture.type!==THREE.UnsignedByteType))throw Error('DirectX 2D 자료 텍스처 크기/형식을 확인하세요.');
-        if(floating&&image.data.some(v=>!Number.isFinite(v)))throw Error('DirectX 2D 자료 텍스처 값은 유한해야 해요.');
-        const bytes=new Uint8Array(image.data.buffer,image.data.byteOffset,image.data.byteLength);resources.push({kind:'dataTexture',id:key,width:w,height:h,layers,array:!!texture.isDataArrayTexture,channels,floating,srgb:texture.colorSpace===THREE.SRGBColorSpace,rgbaBase64:rgbaBase64(bytes)});textures.set(key,texture.version);return key;
-      }
-      const off=document.createElement('canvas');off.width=w;off.height=h;const context=off.getContext('2d',{willReadFrequently:true});
-      if(texture.isDataTexture){if(texture.format!==THREE.RGBAFormat||texture.type!==THREE.UnsignedByteType)throw Error('DirectX RGBA8 자료 변환이 필요해요.');context.putImageData(new ImageData(new Uint8ClampedArray(image.data),w,h),0,0);}else context.drawImage(image,0,0);
-      const bytes=context.getImageData(0,0,w,h).data;if(texture.flipY){const row=w*4;for(let y=0;y<Math.floor(h/2);y++){const top=bytes.slice(y*row,(y+1)*row);bytes.copyWithin(y*row,(h-y-1)*row,(h-y)*row);bytes.set(top,(h-y-1)*row);}}
-      resources.push({kind:'texture',id:key,width:w,height:h,rgbaBase64:rgbaBase64(bytes),srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps});textures.set(key,texture.version);
+      resources.push({id:key,...packedTexture(texture)});textures.set(key,texture.version);
     }return key;
   }
   function targetResource(target,resources){const id=target.texture.uuid,stamp='target:'+target.width+':'+target.height+':'+target.stencilBuffer;track(target,'textures',id,textures);if(textures.get(id)!==stamp){resources.push({kind:'target2d',id,width:target.width,height:target.height,stencil:target.stencilBuffer});textures.set(id,stamp);maskPassCache.delete(id);}return id;}
@@ -154,7 +164,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
         const program=material.userData.hbNativeProgram;if(program){track(material,'programs',program.id,programs);const signature=JSON.stringify(program.uniforms);if(!programs.has(program.id))resources.push({kind:'program',id:program.id,declarations:program.declarations,evaluation:program.evaluation,uniforms:program.uniforms});else if(programs.get(program.id)!==signature)parameters.push({id:program.id,values:program.uniforms});programs.set(program.id,signature);}
         const settings=native2DSettings(material,[canvas.width,canvas.height]),effects2d=native2DTextures(material),twoD=settings.pass[1]||settings.pass[2]?{settings,maps:effects2d.map(t=>textureResource(t,resources)),maskSampling:material.hbLight2DMaskTexture?(material.hbLight2DMaskTexture.magFilter===THREE.NearestFilter?1:0)+wrap(material.hbLight2DMaskTexture.wrapS)*2+wrap(material.hbLight2DMaskTexture.wrapT)*6:16}:undefined;twoD?.maps.forEach(id=>{if(id)used.textures.add(id);});
         const draw={twoD,id,mesh:geometryResource(geometry,resources),world:world.toArray(),normal:normalMatrix.toArray(),maps:maps.map(t=>textureResource(t,resources)),sampling:maps.map(t=>t?((t.magFilter===THREE.NearestFilter?1:0)+wrap(t.wrapS)*2+wrap(t.wrapT)*6):0),first:start,count,material:properties,probes:properties.unlit||properties.sky?[]:selectReflectionProbes(probes,node.getWorldPosition(at).toArray()),shadowAlphaCutoff:node.customDepthMaterial?.alphaTest??properties.alphaCutoff},signature=JSON.stringify(draw);
-        if(deformation)draw.deformation=deformation;if(instanced){draw.instances=instanceResource(node,resources);used.instances.add(draw.instances);}if(program){draw.program=program.id;draw.programMaps=program.maps.map(t=>textureResource(t,resources));draw.programSampling=program.maps.map(t=>(t.magFilter===THREE.NearestFilter?1:0)+wrap(t.wrapS)*2+wrap(t.wrapT)*6);}
+        if(deformation)draw.deformation=deformation;if(instanced){draw.instances=instanceResource(node,resources);used.instances.add(draw.instances);}if(program){draw.program=program.id;draw.programMaps=program.maps.map(t=>textureResource(t,resources));draw.programSampling=program.maps.map(t=>(t.magFilter===THREE.NearestFilter?1:0)+wrap(t.wrapS)*2+wrap(t.wrapT)*6+wrap(t.wrapR)*18);}
         used.meshes.add(draw.mesh);draw.maps.forEach(id=>used.textures.add(id));if(draw.program)used.programs.add(draw.program);draw.programMaps?.forEach(id=>used.textures.add(id));const stamp=program||instanced||deformed?JSON.stringify(draw):signature;if(previous.get(id)!==stamp){updates.push(draw);previous.set(id,stamp);}seen.add(id);if(probes.length&&!node.userData.draw2d)probeDraws.push({id,node,deformed,sky:!!properties.sky});for(const record of casts)record.casters.push(id);if((casts.length||probes.length&&!node.userData.draw2d)&&program?.animated)animatedCaster=true;if(inView){node.getWorldPosition(at);items.push({id,order:node.renderOrder,transparent:material.transparent,depth:at.distanceToSquared(cameraAt)});}
       }
     });
@@ -173,7 +183,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
     if(explicitClear){data.clear=explicitClear;data.viewportClear=[...bg.toArray(),clearAlpha];explicitClear=null;}
     if(oldOrder!==orderSignature){data.order=order;oldOrder=orderSignature;}if(oldLights!==lightSignature){data.lights=lights;oldLights=lightSignature;}data.release=Object.fromEntries(Object.entries(released).map(([kind,ids])=>{const keys=[...ids].filter(id=>!used[kind].has(id));ids.clear();return [kind,keys];}));const fog=scene.userData.resolvedEnvironment?.fog;if(fog&&!fog.legacy){data.fog=[...fog.color.slice(0,3),fog.density];data.fogRange=[fog.startDistance,fog.cutoffDistance,0,0];data.heightFog=[1,fog.heightFalloff,fog.height,fog.maxOpacity];}const bloom=renderer.hbBloomSettings;data.bloom=bloom?[bloom.bloomThreshold,bloom.bloomStrength,bloom.bloomRadius,bloom.bloomResolutionScale]:null;data.passes2d=offscreenPasses.splice(0);data.particles=particleCommands.splice(0);data.parameters=parameters;data.poses=poses;data.time=renderer.hbTime||0;lastUpdateCount=updates.length;return {resources,data};
   }
-  const renderer={hbBackend:'d3d11',hbBloomSettings:null,hbBloom(){return {render(r,scene,camera,objects){r.hbBloomSettings=bloomSettings(objects);r.render(scene,camera);},disposeRenderer(r){r.hbBloomSettings=null;},dispose(){renderer.hbBloomSettings=null;}};},capabilities:{maxTextureSize:16384},hbMaskTarget:native2DTarget,hbShadowTarget:native2DTarget,hbMaskMaterial:nativeMaskMaterial,hbShadowMaterials:nativeShadowMaterials,domElement:canvas,info,shadowMap:{enabled:false},xr:{enabled:false},toneMappingExposure:1,autoClear:true,
+  const renderer={hbBackend:'d3d11',hbTextureLimits:{maxTextureDimension2D:16384,maxTextureDimension3D:2048,maxTextureArrayLayers:2048},hbBloomSettings:null,hbBloom(){return {render(r,scene,camera,objects){r.hbBloomSettings=bloomSettings(objects);r.render(scene,camera);},disposeRenderer(r){r.hbBloomSettings=null;},dispose(){renderer.hbBloomSettings=null;}};},capabilities:{maxTextureSize:16384},hbMaskTarget:native2DTarget,hbShadowTarget:native2DTarget,hbMaskMaterial:nativeMaskMaterial,hbShadowMaterials:nativeShadowMaterials,domElement:canvas,info,shadowMap:{enabled:false},xr:{enabled:false},toneMappingExposure:1,autoClear:true,
     hbNativeParticles:nativeParticles,hbQueueParticles:command=>{if(disposed)throw Error('DirectX 렌더러가 닫혔어요.');particleCommands.push(command);},hbParticles:(group,p,map)=>new NativeParticleSimulation(renderer,group,p,map),
     async hbParticleCount(id){await this.hbFinishFrame();const result=await send('particles',{commands:particleCommands.splice(0),count:id});return result.count;},
     hbMaterial:(data,options)=>createNativeMaterial(THREE,data,{...options,renderer}),hbProjectile:createNativeProjectileMaterial,

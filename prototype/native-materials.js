@@ -15,11 +15,14 @@ ${['float','float2','float3','float4'].map(t=>`${t} hbMod(${t} a,${t} b){return 
 float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){float3 q0=ddx(eyePosition),q1=ddy(eyePosition);float2 st0=ddx(uv),st1=ddy(uv);float3 s=safeNormal(q0*st1.y-q1*st0.y),t=safeNormal(-q0*st1.x+q1*st0.x);return safeNormal(s*mapN.x+t*mapN.y+n*mapN.z);}`;
 export function compileNativeMaterial(data){
   const plan=compileMaterial(data,{uniformParameters:true});
-  if(plan.textures.some(t=>t.type!=='texture2d'))throw Error('DirectX 큐브·배열·볼륨 텍스처 셰이더 변환이 필요해요.');
   if(plan.textures.length>16)throw Error('DirectX 11 셰이더의 샘플러 16개 한도를 넘었어요.');
   if(plan.values.clearcoat!=='0.0'||plan.values.transmission!=='0.0')throw Error('DirectX 코팅·투과 노드 셰이더 변환이 필요해요.');
-  const declarations=helpers+'\n'+plan.textures.map((t,i)=>`Texture2D ${t.uniform}:register(t${8+i});SamplerState hbSampler${i}:register(s${i});float4 hbSample${i}(float2 uv){return ${t.uniform}.Sample(hbSampler${i},uv);}`).join('\n');
-  let lines=hlsl(plan.lines);for(const [i,t] of plan.textures.entries())lines=lines.replaceAll('texture2D('+t.uniform+',','hbSample'+i+'(');
+  const declarations=helpers+'\n'+plan.textures.map((t,i)=>{
+    const type={texture2d:'Texture2D',texturecube:'TextureCube',texturearray:'Texture2DArray',texture3d:'Texture3D'}[t.type];if(!type)throw Error('DirectX 텍스처 자료형을 확인하세요.');
+    const cube=t.type==='texturecube',args=t.type==='texture2d'?'float2 uv':cube?'float3 uv,float lod':'float3 uv';
+    return `${type} ${t.uniform}:register(t${8+i});SamplerState hbSampler${i}:register(s${i});float4 hbSample${i}(${args}){return ${t.uniform}.${cube?'SampleLevel':'Sample'}(hbSampler${i},uv${cube?',lod':''});}`;
+  }).join('\n');
+  let lines=hlsl(plan.lines);for(const [i,t] of plan.textures.entries())for(const call of ['texture2D','textureLod','texture'])lines=lines.replaceAll(call+'('+t.uniform+',','hbSample'+i+'(');
   // The existing GLSL graph plan is already typed, flattened and topologically ordered.
   const evaluation='float2 hbUv=i.uv;float3 hbWorldPosition=i.at,hbWorldNormal=n,cameraPosition=eye.xyz;float hbTime=normalScale.w;\n'+plan.floatBindings.map((b,i)=>`float ${b.uniform}=hbParameters[${i}];`).join('\n')+'\n'+lines+`\nbase.rgb=${hlsl(plan.values.baseColor)};base.a=${hlsl(plan.values.opacity)};rough=clamp(${hlsl(plan.values.roughness)},.04,1);metal=saturate(${hlsl(plan.values.metallic)});emit=${hlsl(plan.values.emissive)}*emissive.a;ao=saturate(${hlsl(plan.values.ao)});`+(plan.normalConnected?`n=hbNormal(i.at,n,${hlsl(plan.values.normal)},hbUv);`:'');
   return {...plan,declarations,evaluation};

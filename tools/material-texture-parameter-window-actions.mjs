@@ -13,8 +13,8 @@ export async function writeRuntimeTextureAssets(write,scene,bp){
     const level=structuredClone(scene);level.objects=level.objects.filter(o=>['Camera','Driver'].includes(o.id));level.objects.find(o=>o.id==='Driver').blueprintAsset=blueprintPath;level.objects.push({...createPlacedObject('cube',{id:'TextureCube'}),materialAsset:material,position:[0,-2,0],scale:[4,4,4]});await write('Assets/Scenes/Texture_'+type+'.hbscene.json',level);
   }
 }
-export async function checkRuntimeTexturePlayer({evaluate,inspect,pixels,ready,cdp,until}){
-  const cases=[],state=async()=>{const s=await inspect();return {material:s.materials.find(m=>m.object==='TextureCube'),memory:s.renderer.memory,programs:s.renderer.programs,shaderIdentity:await evaluate('window.hbPlayerDebug.shaderIdentity()')};};
+export async function checkRuntimeTexturePlayer({evaluate,inspect,pixels,ready,cdp,until,shaderIdentity=()=>evaluate('window.hbPlayerDebug.shaderIdentity()')}){
+  const cases=[],state=async()=>{const s=await inspect();return {material:s.materials.find(m=>m.object==='TextureCube'),memory:s.renderer.memory,programs:s.renderer.programs,shaderIdentity:await shaderIdentity(s)};};
   for(const type of Object.keys(materialTextureTypes)){
     await evaluate('window.hbPlayerDebug.open('+JSON.stringify('Assets/Scenes/Texture_'+type+'.hbscene.json')+')');await ready();const red=await pixels('runtime-'+type+'-red'),initial=await state();assert.ok(red[0]>red[1]+50&&red[0]>red[2]+50,JSON.stringify(red));
     await evaluate('window.hbPlayerDebug.call("Driver","SceneGPU.SetTexture",'+JSON.stringify({target:'TextureCube',parameter:'Paint',texture:runtimeTexturePath(type,true)})+')');const cyan=await pixels('runtime-'+type+'-cpp-cyan');assert.ok(cyan[1]>cyan[0]+50&&cyan[2]>cyan[0]+50,JSON.stringify(cyan));

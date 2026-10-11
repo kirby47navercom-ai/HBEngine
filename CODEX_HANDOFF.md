@@ -1,3 +1,7 @@
+# 094 — DirectX 일반 머테리얼 텍스처 — 2026-10-12
+
+093 afec405 pushed. 기존 cube/array/volume 에셋·노드·Texture Parameter/함수/레이어/MI·SetTexture CPP/BP/AI를 HLSL/네이티브 업로드/자원 수명으로 연결. GPU6면/mip LOD/배열 반올림/볼륨 보간/R 반복·클램프/sRGB/거부·57node 및 기존2D/프로브 회귀; 실제Windows uNo5mE 네 종류 빨강→CPP청록→실제T키BP빨강·반복10회 무로드/프로그램·메모리수 유지·해제/오류0/exit0. GPU0mMKYr와unavailableguard 통과, 선행 컴파일/fixture s0/30s timeout/guard 실패 보존. [094](docs/NATIVE_MATERIAL_TEXTURES_094.md), [증거](docs/research/NATIVE_MATERIAL_TEXTURES_094.json). 사용자 설치/게임/사용 창 변경 없음. 다음 native 코팅/투과 셰이딩·후처리/GI/누적 세부, 선행 렌더 묶음 뒤 설치 갱신. 전체corpus/FPS/실기기/장시간검증 미승격.
+
 # 093 — 반사 프로브/캡처 간접광 — 2026-10-11
 
 092 3d348ee pushed. ReflectionProbe 제작 필드/검증/범위와 공용 C++·BP3·AI schema, D3D11 HDR six-face/GGX compute/SH9/공유 BRDF·box/fade/두 프로브를 연결. Browser PMREM/TSL·한 프로브·shared uniforms와 WebGPU 색상 변환 수정. 최종 GPU/실제Windows·WebGL·WebGPU·C++ Off/Refresh·BP On·static reuse·자원0/오류0/종료0 검증. [093](docs/NATIVE_PROBES_093.md), [증거](docs/research/NATIVE_PROBES_093.json). 설치/사용 창/원본 변경 없음. 전체 corpus/FPS/RAM/휴대폰/iOS 미승격. 다음 native 일반 cube/array/volume graph texture·셰이딩/후처리 및 남은 GI·누적 세부, 선행 묶음 뒤 설치 갱신.

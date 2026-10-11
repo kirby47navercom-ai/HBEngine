@@ -1,5 +1,7 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-12: [DirectX 일반 텍스처](NATIVE_MATERIAL_TEXTURES_094.md). 기존 cube/array/volume 에셋·노드·함수/레이어/MI와 Materials SetTexture C++·BP·AI 제작 계약을 네이티브 업로드/HLSL에 연결해요. GPU 여섯 면·mip LOD·레이어/볼륨·R 반복/클램프와 실제 Windows 네 종류 교체·프로그램/자원 수명 검증을 기록해요. 전체 corpus/FPS/실기기·설치 갱신은 승격하지 않아요.
+
 2026-10-11: [반사 프로브](NATIVE_PROBES_093.md). ReflectionProbe의 실제 제작 필드/검증과 ReflectionProbes C++·BP3, 기존 Components/document.patch·Undo/Save를 공유해요. DirectX HDR/GGX compute/SH9/BRDF·box/fade·두 프로브와 브라우저 PMREM·한 프로브, 자원 진단/해제·실행 검증 및 미구현 경계를 명시해요.
 
 2026-10-06: [실행 중 생성·찾기 계약](AURIC_RUNTIME_SPAWN.md). 공용 C++ 선언에서 생성한 Scene Spawn/Destroy/클래스·태그·ID 찾기 노드를 기존 그래프 API로 편집해요. BP 부모/클래스 기본값·Prefab 로컬 ID/컴포넌트 오브젝트 참조·PooledActor.maxInactive는 사람 UI와 동일한 저장 schema와 검증을 사용해요. 기존 ActorPool API도 유지해요.

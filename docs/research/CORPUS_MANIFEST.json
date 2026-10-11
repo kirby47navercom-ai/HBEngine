@@ -1409,6 +1409,22 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_tex2d_array_uav",
           "record": "docs/research/NATIVE_PROBES_093.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createtexture3d",
+          "record": "docs/research/NATIVE_MATERIAL_TEXTURES_094.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_shader_resource_view_desc",
+          "record": "docs/research/NATIVE_MATERIAL_TEXTURES_094.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplelevel",
+          "record": "docs/research/NATIVE_MATERIAL_TEXTURES_094.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_texture3d_desc",
+          "record": "docs/research/NATIVE_MATERIAL_TEXTURES_094.json"
         }
       ],
       "openIssues": [

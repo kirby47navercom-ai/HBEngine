@@ -122,7 +122,7 @@ private:
     detail::Com<ID3D11InputLayout> layout;
     std::array<detail::Com<ID3D11Buffer>,3> constants;
     std::array<detail::Com<ID3D11RasterizerState>,3> rasters,shadowRasters;
-    std::array<detail::Com<ID3D11SamplerState>,18> samplers;
+    std::array<detail::Com<ID3D11SamplerState>,54> samplers;
     detail::Com<ID3D11Buffer> lights;
     detail::Com<ID3D11ShaderResourceView> lightView;
     std::uint32_t lightCount=0,lightCapacity=0;
@@ -235,7 +235,7 @@ public:
         for(std::size_t i=0;i<stencils2D.size();i++){D3D11_DEPTH_STENCIL_DESC d{};d.DepthFunc=D3D11_COMPARISON_ALWAYS;d.StencilEnable=i!=0;d.StencilReadMask=d.StencilWriteMask=255;d.FrontFace.StencilFunc=i==2?D3D11_COMPARISON_NOT_EQUAL:i==3?D3D11_COMPARISON_EQUAL:D3D11_COMPARISON_ALWAYS;d.FrontFace.StencilFailOp=d.FrontFace.StencilDepthFailOp=D3D11_STENCIL_OP_KEEP;d.FrontFace.StencilPassOp=D3D11_STENCIL_OP_REPLACE;d.BackFace=d.FrontFace;detail::check(gpu.device->CreateDepthStencilState(&d,&stencils2D[i].p),"2D stencil state");}
         for(auto& timing:timings){D3D11_QUERY_DESC desc{D3D11_QUERY_TIMESTAMP,0};detail::check(gpu.device->CreateQuery(&desc,&timing.begin.p),"GPU start timestamp");detail::check(gpu.device->CreateQuery(&desc,&timing.end.p),"GPU end timestamp");desc.Query=D3D11_QUERY_TIMESTAMP_DISJOINT;detail::check(gpu.device->CreateQuery(&desc,&timing.frequency.p),"GPU timestamp frequency");}
         for(std::size_t i=0;i<rasters.size();i++){D3D11_RASTERIZER_DESC rs{};rs.FillMode=D3D11_FILL_SOLID;rs.CullMode=i==0?D3D11_CULL_BACK:i==1?D3D11_CULL_FRONT:D3D11_CULL_NONE;rs.FrontCounterClockwise=TRUE;rs.DepthClipEnable=TRUE;rs.ScissorEnable=TRUE;detail::check(gpu.device->CreateRasterizerState(&rs,&rasters[i].p),"Scene raster state");rs.SlopeScaledDepthBias=1;rs.DepthBiasClamp=.01f;detail::check(gpu.device->CreateRasterizerState(&rs,&shadowRasters[i].p),"Shadow slope bias state");}
-        for(std::size_t i=0;i<samplers.size();i++){D3D11_SAMPLER_DESC s{};s.Filter=i%2?D3D11_FILTER_MIN_MAG_MIP_POINT:D3D11_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+(i/2)%3);s.AddressV=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+i/6);s.AddressW=s.AddressV;s.MaxLOD=D3D11_FLOAT32_MAX;detail::check(gpu.device->CreateSamplerState(&s,&samplers[i].p),"Scene sampler state");}
+        for(std::size_t i=0;i<samplers.size();i++){D3D11_SAMPLER_DESC s{};s.Filter=i%2?D3D11_FILTER_MIN_MAG_MIP_POINT:D3D11_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+(i/2)%3);s.AddressV=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+(i/6)%3);s.AddressW=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+i/18);s.MaxLOD=D3D11_FLOAT32_MAX;detail::check(gpu.device->CreateSamplerState(&s,&samplers[i].p),"Scene sampler state");}
     }
     Mesh createMesh(const std::vector<SceneVertex>& vertices,const std::vector<std::uint32_t>& indices){
         if(vertices.empty()||indices.empty()||indices.size()%3||vertices.size()>UINT_MAX/sizeof(SceneVertex)||indices.size()>UINT_MAX/4)throw std::runtime_error("Scene mesh byte size invalid");
@@ -279,19 +279,24 @@ public:
     }
     Texture createTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){
         if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||rgba.size()!=std::size_t(width)*height*4)throw std::runtime_error("Scene texture dimensions or bytes invalid");
-        std::lock_guard<std::mutex> lock(gpu.mutex);Texture out;out.owner=gpu.device.p;detail::Com<ID3D11Texture2D> image;D3D11_TEXTURE2D_DESC desc{};desc.Width=width;desc.Height=height;desc.MipLevels=mipmaps?0:1;desc.ArraySize=1;desc.Format=srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM;desc.SampleDesc.Count=1;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_SHADER_RESOURCE|(mipmaps?D3D11_BIND_RENDER_TARGET:0);desc.MiscFlags=mipmaps?D3D11_RESOURCE_MISC_GENERATE_MIPS:0;detail::check(gpu.device->CreateTexture2D(&desc,nullptr,&image.p),"Scene texture");gpu.context->UpdateSubresource(image.p,0,nullptr,rgba.data(),width*4,0);detail::check(gpu.device->CreateShaderResourceView(image.p,nullptr,&out.view.p),"Scene texture view");if(mipmaps)gpu.context->GenerateMips(out.view.p);++uploads_;return out;
+        return createDataTexture(width,height,rgba,4,false,1,srgb,false,"2d",mipmaps);
     }
 
-    Texture createDataTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false){
-        const std::uint64_t pitch=std::uint64_t(width)*channels*(floating?4:1),size=pitch*height*layers;
-        if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||!layers||layers>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||(channels!=4&&!(floating&&channels==2))||size!=bytes.size()||(srgb&&(floating||channels!=4)))throw std::runtime_error("2D texture dimensions or bytes invalid");
+    Texture createDataTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false){
+        const bool cube=dimension=="cube",volume=dimension=="volume";const UINT limit=volume?D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION:D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+        if((dimension!="2d"&&!cube&&!volume)||(array&&(cube||volume))||!width||!height||width>limit||height>limit||!layers||layers>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||(cube&&(layers!=6||width!=height))||(!array&&!cube&&!volume&&layers!=1)||(channels!=4&&!(floating&&channels==2))||(srgb&&(floating||channels!=4)))throw std::runtime_error("Material texture dimensions or bytes invalid");
+        const std::uint64_t pitch=std::uint64_t(width)*channels*(floating?4:1),size=pitch*height*layers;if(size!=bytes.size())throw std::runtime_error("Material texture dimensions or bytes invalid");
         if(floating)for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
         std::lock_guard<std::mutex> lock(gpu.mutex);Texture out;out.owner=gpu.device.p;out.width=width;out.height=height;out.layers=layers;out.bytes=size;
-        D3D11_TEXTURE2D_DESC d{};d.Width=width;d.Height=height;d.MipLevels=1;d.ArraySize=layers;d.Format=floating?(channels==2?DXGI_FORMAT_R32G32_FLOAT:DXGI_FORMAT_R32G32B32A32_FLOAT):(srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM);d.SampleDesc.Count=1;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_SHADER_RESOURCE;
-        detail::Com<ID3D11Texture2D> image;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&image.p),"2D data texture");for(UINT i=0;i<layers;i++)gpu.context->UpdateSubresource(image.p,i,nullptr,bytes.data()+std::size_t(i)*pitch*height,static_cast<UINT>(pitch),0);
-        // A one-layer cookie still binds to Texture2DArray in HLSL.
-        D3D11_SHADER_RESOURCE_VIEW_DESC v{};v.Format=d.Format;v.ViewDimension=array?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=1;if(array){v.Texture2DArray.MipLevels=1;v.Texture2DArray.ArraySize=layers;}
-        detail::check(gpu.device->CreateShaderResourceView(image.p,&v,&out.view.p),"2D data view");++uploads_;return out;
+        const DXGI_FORMAT format=floating?(channels==2?DXGI_FORMAT_R32G32_FLOAT:DXGI_FORMAT_R32G32B32A32_FLOAT):(srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM);UINT support=0;detail::check(gpu.device->CheckFormatSupport(format,&support),"Material texture support");if(mipmaps&&!(support&D3D11_FORMAT_SUPPORT_MIP_AUTOGEN))throw std::runtime_error("Material texture format cannot generate mips");
+        UINT mips=1;if(mipmaps)for(UINT extent=std::max(width,std::max(height,volume?layers:1u));extent>1;extent/=2)++mips;
+        out.bytes=0;for(UINT level=0;level<mips;level++)out.bytes+=std::uint64_t(std::max(1u,width>>level))*std::max(1u,height>>level)*(volume?std::max(1u,layers>>level):layers)*channels*(floating?4:1);
+        const UINT bind=D3D11_BIND_SHADER_RESOURCE|(mipmaps?D3D11_BIND_RENDER_TARGET:0),misc=mipmaps?D3D11_RESOURCE_MISC_GENERATE_MIPS:0;
+        if(volume){D3D11_TEXTURE3D_DESC d{};d.Width=width;d.Height=height;d.Depth=layers;d.MipLevels=mips;d.Format=format;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=bind;d.MiscFlags=misc;detail::Com<ID3D11Texture3D> image;detail::check(gpu.device->CreateTexture3D(&d,nullptr,&image.p),"Volume data texture");gpu.context->UpdateSubresource(image.p,0,nullptr,bytes.data(),static_cast<UINT>(pitch),static_cast<UINT>(pitch*height));detail::check(gpu.device->CreateShaderResourceView(image.p,nullptr,&out.view.p),"Volume data view");}
+        else{D3D11_TEXTURE2D_DESC d{};d.Width=width;d.Height=height;d.MipLevels=mips;d.ArraySize=layers;d.Format=format;d.SampleDesc.Count=1;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=bind;d.MiscFlags=misc|(cube?D3D11_RESOURCE_MISC_TEXTURECUBE:0);detail::Com<ID3D11Texture2D> image;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&image.p),"Material data texture");for(UINT i=0;i<layers;i++)gpu.context->UpdateSubresource(image.p,i*mips,nullptr,bytes.data()+std::size_t(i)*pitch*height,static_cast<UINT>(pitch),0);
+            // A one-layer cookie still binds to Texture2DArray in HLSL.
+            D3D11_SHADER_RESOURCE_VIEW_DESC v{};v.Format=format;v.ViewDimension=cube?D3D11_SRV_DIMENSION_TEXTURECUBE:array?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;if(array){v.Texture2DArray.MipLevels=mips;v.Texture2DArray.ArraySize=layers;}detail::check(gpu.device->CreateShaderResourceView(image.p,&v,&out.view.p),"Material data view");}
+        if(mipmaps){gpu.context->GenerateMips(out.view.p);}++uploads_;return out;
     }
     Texture createRenderTarget(std::uint32_t width,std::uint32_t height,bool stencil=false){
         if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)throw std::runtime_error("2D target dimensions invalid");

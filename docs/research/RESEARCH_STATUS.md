@@ -1,5 +1,7 @@
 ## 093 — 반사 프로브 지정 읽기/실행
 
+2026-10-12 후속: [094 네이티브 텍스처](../NATIVE_MATERIAL_TEXTURES_094.md), [기계 기록](NATIVE_MATERIAL_TEXTURES_094.json). Microsoft5개 자체 기술 본문/선언/표/예제와081의 부분 Unity/Unreal/Three 분석을 연결했어요. 링크·이미지·상속·전체 API/독립 corpus 검증을 승격하지 않고 새 주소만 발견 대기열에 추가해요. 네 종류 GPU/실제 Windows·C++/BP 교체/재사용·기존2D 회귀 통과, 설치/사용 창/원본 변경 없음.
+
 Unity Inspector/RenderProbe, Unreal capture 구역/Epic split-sum 구역, Stanford SH 구역, Microsoft cube/array UAV를 읽고 원문7 SHA/부분 읽기/미독을 [093](../NATIVE_PROBES_093.md)에 기록했다. 캡처 HDR/GGX compute/SH9/BRDF·box/fade·C++/BP/AI 제작을 실제 GPU/Windows/WebGL/WebGPU에서 검증했다. Sphere/oriented/baked/HDRI/time slicing/multi-bounce/SSR·browser multiple-probe 및 남은 셰이딩·전체 corpus/FPS/RAM/실기기 gate는 미승격이다.
 
 ## 092 — 네이티브2D 지정 읽기/실행
