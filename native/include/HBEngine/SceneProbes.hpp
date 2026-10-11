@@ -91,12 +91,13 @@ inline constexpr const char* sceneProbeFunctions=R"HLSL(
 float probeBasis(uint i,float3 d){return i==0?.282094792:i==1?.488602512*d.y:i==2?.488602512*d.z:i==3?.488602512*d.x:i==4?1.092548431*d.x*d.y:i==5?1.092548431*d.y*d.z:i==6?.315391565*(3*d.z*d.z-1):i==7?1.092548431*d.x*d.z:.546274215*(d.x*d.x-d.y*d.y);}
 float probeWeight(ProbeSettings p,float3 at){if(p.options.x<.5||any(at<p.minimum.xyz)||any(at>p.maximum.xyz))return 0;float3 edge=min(at-p.minimum.xyz,p.maximum.xyz-at);return p.options.z*(p.minimum.w>0?saturate(min(edge.x,min(edge.y,edge.z))/p.minimum.w):1);}
 float3 probeDirection(ProbeSettings p,float3 at,float3 r){if(p.options.w<.5)return r;float3 safe=float3(abs(r.x)<1e-6?(r.x<0?-1e-6:1e-6):r.x,abs(r.y)<1e-6?(r.y<0?-1e-6:1e-6):r.y,abs(r.z)<1e-6?(r.z<0?-1e-6:1e-6):r.z);float3 t=max((p.minimum.xyz-at)/safe,(p.maximum.xyz-at)/safe);return at+r*min(t.x,min(t.y,t.z))-p.center.xyz;}
-float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSettings p,float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){
- float nv=saturate(dot(n,v));float3 f0=lerp(.04,base,metal),f=f0+(max(1-rough,f0)-f0)*pow(1-nv,5),irradiance=0;[unroll]for(uint i=0;i<9;i++)irradiance+=sh[i].rgb*probeBasis(i,n);
+float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSettings p,float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float dielectricF0){
+ float nv=saturate(dot(n,v));float3 f0=lerp(dielectricF0,base,metal),f=f0+(max(1-rough,f0)-f0)*pow(1-nv,5),irradiance=0;[unroll]for(uint i=0;i<9;i++)irradiance+=sh[i].rgb*probeBasis(i,n);
  float2 brdf=probeBrdf.SampleLevel(linear2d,float2(nv,rough),0);float3 reflected=cube.SampleLevel(linear2d,probeDirection(p,at,reflect(-v,n)),rough*p.maximum.w).rgb;
  return (max(irradiance,0)*base*(1-f)*(1-metal)*(p.options.y/3.141592654)+reflected*(f0*brdf.x+brdf.y))*p.center.w*ao;
 }
-float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao)*b;return c/max(1,total);}
+float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float dielectricF0){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0)*b;return c/max(1,total);}
+float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){return indirectProbes(at,n,v,base,rough,metal,ao,.04);}
 )HLSL";
 #endif
 }

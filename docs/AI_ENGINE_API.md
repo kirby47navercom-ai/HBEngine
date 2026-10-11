@@ -1,3 +1,5 @@
+2026-10-12: [코팅층·분리 노멀·IOR](NATIVE_COATING_095.md). 기존 Surface/속성·함수/레이어/인스턴스와 SetFloat CPP/BP/AI를 DirectX 직접광/프로브 및 GLSL/TSL에 연결해요. AO/Clearcoat/CoatRoughness/IOR 별칭·분리 노멀·값 변경 재사용, 실제 세 실행기 C++/C키 BP와 마지막 레이어/MI 검증을 기록해요. 네이티브 투과·추가 셰이딩/GI 및 설치 갱신 순서는 유지해요.
+
 # 사람과 AI가 함께 편집하는 HBEngine
 
 2026-10-12: [DirectX 일반 텍스처](NATIVE_MATERIAL_TEXTURES_094.md). 기존 cube/array/volume 에셋·노드·함수/레이어/MI와 Materials SetTexture C++·BP·AI 제작 계약을 네이티브 업로드/HLSL에 연결해요. GPU 여섯 면·mip LOD·레이어/볼륨·R 반복/클램프와 실제 Windows 네 종류 교체·프로그램/자원 수명 검증을 기록해요. 전체 corpus/FPS/실기기·설치 갱신은 승격하지 않아요.

@@ -16,7 +16,7 @@ float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){float3 q0=ddx
 export function compileNativeMaterial(data){
   const plan=compileMaterial(data,{uniformParameters:true});
   if(plan.textures.length>16)throw Error('DirectX 11 셰이더의 샘플러 16개 한도를 넘었어요.');
-  if(plan.values.clearcoat!=='0.0'||plan.values.transmission!=='0.0')throw Error('DirectX 코팅·투과 노드 셰이더 변환이 필요해요.');
+  if(plan.values.transmission!=='0.0')throw Error('DirectX 투과 노드 셰이더 변환이 필요해요.');
   const declarations=helpers+'\n'+plan.textures.map((t,i)=>{
     const type={texture2d:'Texture2D',texturecube:'TextureCube',texturearray:'Texture2DArray',texture3d:'Texture3D'}[t.type];if(!type)throw Error('DirectX 텍스처 자료형을 확인하세요.');
     const cube=t.type==='texturecube',args=t.type==='texture2d'?'float2 uv':cube?'float3 uv,float lod':'float3 uv';
@@ -24,7 +24,7 @@ export function compileNativeMaterial(data){
   }).join('\n');
   let lines=hlsl(plan.lines);for(const [i,t] of plan.textures.entries())for(const call of ['texture2D','textureLod','texture'])lines=lines.replaceAll(call+'('+t.uniform+',','hbSample'+i+'(');
   // The existing GLSL graph plan is already typed, flattened and topologically ordered.
-  const evaluation='float2 hbUv=i.uv;float3 hbWorldPosition=i.at,hbWorldNormal=n,cameraPosition=eye.xyz;float hbTime=normalScale.w;\n'+plan.floatBindings.map((b,i)=>`float ${b.uniform}=hbParameters[${i}];`).join('\n')+'\n'+lines+`\nbase.rgb=${hlsl(plan.values.baseColor)};base.a=${hlsl(plan.values.opacity)};rough=clamp(${hlsl(plan.values.roughness)},.04,1);metal=saturate(${hlsl(plan.values.metallic)});emit=${hlsl(plan.values.emissive)}*emissive.a;ao=saturate(${hlsl(plan.values.ao)});`+(plan.normalConnected?`n=hbNormal(i.at,n,${hlsl(plan.values.normal)},hbUv);`:'');
+  const evaluation='float2 hbUv=i.uv;float3 hbWorldPosition=i.at,hbWorldNormal=n,cameraPosition=eye.xyz;float hbTime=normalScale.w;\n'+plan.floatBindings.map((b,i)=>`float ${b.uniform}=hbParameters[${i}];`).join('\n')+'\n'+lines+`\nbase.rgb=${hlsl(plan.values.baseColor)};base.a=${hlsl(plan.values.opacity)};rough=clamp(${hlsl(plan.values.roughness)},.04,1);metal=saturate(${hlsl(plan.values.metallic)});emit=${hlsl(plan.values.emissive)}*emissive.a;ao=saturate(${hlsl(plan.values.ao)});coat=saturate(${hlsl(plan.values.clearcoat)});coatRough=clamp(${hlsl(plan.values.clearcoatRoughness)},.04,1);ior=clamp(${hlsl(plan.values.ior)},1,2.5);`+(plan.coatNormalConnected?`cn=hbNormal(i.at,cn,${hlsl(plan.values.clearcoatNormal)},hbUv);`:'')+(plan.normalConnected?`n=hbNormal(i.at,n,${hlsl(plan.values.normal)},hbUv);`:'');
   return {...plan,declarations,evaluation};
 }
 export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},renderer}={}){
@@ -35,7 +35,7 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
   material.userData.ready=Promise.all(plan.textures.map((texture,i)=>bindings.add(texture,map=>{maps[i]=map;map.colorSpace=THREE.NoColorSpace;})));
   material.userData.updateTime=value=>{time=value;renderer.hbTime=value;};
   material.userData.updateFloat=(key,value)=>{
-    if(disposed)return false;if(!Number.isFinite(value))throw Error('Float 파라미터 값을 확인하세요.');const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity'}[key]||key;
+    if(disposed)return false;if(!Number.isFinite(value))throw Error('Float 파라미터 값을 확인하세요.');const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity',AO:'ao',Clearcoat:'clearcoat',CoatRoughness:'clearcoatRoughness',IOR:'ior'}[key]||key;
     const parameter=plan.floatBindings.findIndex(b=>b.kind==='parameter'&&b.key===key),index=parameter>=0?parameter:plan.floatBindings.findIndex(b=>b.kind==='surface'&&b.key===property);
     if(index>=0){values[index]=value;if(parameter>=0)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;}
     if(materialParameters(data).some(p=>p.name===key&&p.type!=='float'))throw Error('Float 파라미터가 아니에요.');

@@ -1,0 +1,809 @@
+{
+  "version": 1,
+  "date": "2026-10-12",
+  "previousCommit": "438673f68f193d6c59115768ccc63883754bc461",
+  "scope": "native clearcoat direct/probe layered reflection, independent coating normal in shared graph/attributes/layers/MI/GLSL/TSL/HLSL, shared SetFloat aliases and sequence capture; lazy first-use WebGL coating feature activation",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl.js",
+      "status": 200,
+      "path": "native/build/coating-research-095/lights_physical_pars_fragment.glsl.js",
+      "bytes": 18422,
+      "sha256": "1b4146e447c9fc15356058907f2bc544da644b5db6c6693e17d86ca67a4acce8",
+      "readScope": "Own installed/raw source: GGX correlated visibility/D_GGX lines64-86; BRDF_GGX_Clearcoat lines118-144; RE_Direct clearcoat lines479-493 and RE_IndirectSpecular clearcoat lines512-518. Other lobes/LTC/unrelated code not analyzed; linked implementations unread.",
+      "wholeCorpus": false,
+      "installedSource": {
+        "path": "node_modules/three/src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl.js",
+        "sha256": "1b4146e447c9fc15356058907f2bc544da644b5db6c6693e17d86ca67a4acce8",
+        "bytes": 18422
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/lights_physical_fragment.glsl.js",
+      "status": 200,
+      "path": "native/build/coating-research-095/lights_physical_fragment.glsl.js",
+      "bytes": 4124,
+      "sha256": "9b8b7d86fa70e2064977aea207c0cfcd44bc6975a86e36ce38ebc009fc22a2ee",
+      "readScope": "IOR F0 and USE_CLEARCOAT factors/roughness only; unrelated sheen/anisotropy/transmission implementations unread",
+      "wholeCorpus": false,
+      "installedSource": {
+        "path": "node_modules/three/src/renderers/shaders/ShaderChunk/lights_physical_fragment.glsl.js",
+        "sha256": "9b8b7d86fa70e2064977aea207c0cfcd44bc6975a86e36ce38ebc009fc22a2ee",
+        "bytes": 4124
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderLib/meshphysical.glsl.js",
+      "status": 200,
+      "path": "native/build/coating-research-095/meshphysical.glsl.js",
+      "bytes": 5584,
+      "sha256": "7d48a4017f014606599ebb7c7325f3892eba92d74a68955bae90aa58852347f4",
+      "readScope": "final USE_CLEARCOAT Fresnel attenuation/composition only; remaining shader body and include implementations unread",
+      "wholeCorpus": false,
+      "installedSource": {
+        "path": "node_modules/three/src/renderers/shaders/ShaderLib/meshphysical.glsl.js",
+        "sha256": "7d48a4017f014606599ebb7c7325f3892eba92d74a68955bae90aa58852347f4",
+        "bytes": 5584
+      }
+    },
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/shader-complex-lit.html",
+      "status": 200,
+      "path": "native/build/coating-research-095/shader-complex-lit.html",
+      "bytes": 31309,
+      "sha256": "f5e5d3cbb1fe06f057e3cf5bb4d48731465525f85f111ecdc43c9ecb787f096a",
+      "readScope": "HTML parsed text: Clear Coat/Mask/Smoothness and adjacent Environment Reflections description; other body/API/images unread",
+      "wholeCorpus": false
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-dual-normals-with-clear-coat-in-unreal-engine",
+      "status": 200,
+      "path": "native/build/coating-research-095/unreal-dual-normals.html",
+      "bytes": 80189,
+      "sha256": "acb854225ebc4c7e419785b4f9e63ec016c48168fb977617a4242763773f67a6",
+      "rawIsTechnicalArticle": true,
+      "readVia": "web.run own lines 0-91; screenshots/downloads/linked API unread",
+      "readScope": "web.run own lines0-91 explanation/procedure/parameter tables; images/linked documents/API/download contents unread",
+      "wholeCorpus": false
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "ccbf77aa5d8f4fb13e626f316adae6239f98817ecec5d3755531b6f9584993da",
+      "bytes": 63616
+    },
+    {
+      "path": "native/include/HBEngine/SceneProbes.hpp",
+      "sha256": "03f5508c7fd3710154231d45aac58576968f48eee44cc940ef3d8f8d5b986214",
+      "bytes": 13934
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "f2fae5caa0c032ef65bf0f275ad966360319730fd607d462e90dcb635e6f2798",
+      "bytes": 27957
+    },
+    {
+      "path": "prototype/material-runtime.js",
+      "sha256": "51b623f9e1f2f9d7329d309bf2ea83f2d5b7c5aaf0cb804d5d469e0acbcd721a",
+      "bytes": 89445
+    },
+    {
+      "path": "prototype/gpu-materials.js",
+      "sha256": "2b9278d195af612998132b98a7ef51b291a085dede885cd957a7eacf30287008",
+      "bytes": 12346
+    },
+    {
+      "path": "prototype/native-materials.js",
+      "sha256": "5cfd1731196bbbe7b842fa60ca97511d4ac4c19451df61d569353c64917e68de",
+      "bytes": 6878
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "c4dc873bb5a29a40137be0e00f3d558f30f45395a14fd25f2305bde760fbdafe",
+      "bytes": 39130
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "271d48181b3b13dc8c58ccd6301736e870336bfad4497d5648715187e05b8913",
+      "bytes": 42790
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "c1c04d141ae0e1231006840c522903e8f786eb152edde884fb322686c355b5e8",
+      "bytes": 81406
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "sha256": "d4f8eb81311979ef5f17bc13afb03ba41283110276cc51fe59167574b55e837b",
+      "bytes": 50157
+    },
+    {
+      "path": "tools/coating-fixture.mjs",
+      "sha256": "576e9325d5d0b31873f29bf0ea9c7927903a5e5c0a6468755fde899813b6f448",
+      "bytes": 5570
+    },
+    {
+      "path": "tools/check-gpu-scene.mjs",
+      "sha256": "6aa94138ed7eb6e594a9cde764ee33cc15b37e2cf8389f16d90b0d3ee4b97482",
+      "bytes": 73059
+    },
+    {
+      "path": "tools/check-native-scene-window.mjs",
+      "sha256": "936a1707d5ed5618cba4c88942b53fa02ab32ca1da405205906976da9bafbd7b",
+      "bytes": 35815
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "c584029cb99cd6a985b21d671b4364692ff8174fb32b98db04659e9dd0eda139",
+      "bytes": 9430
+    },
+    {
+      "path": "native/tests/scene-render.cpp",
+      "sha256": "cdf5de0b66757b464fcff29cbf04be3e45b73227e3e4a19708d1865484683b4e",
+      "bytes": 20752
+    },
+    {
+      "path": "native/tests/scene-probes.hpp",
+      "sha256": "4f738ce71d722c90131e0f16ba42d467d523dcb17d1c6987f8dd7b5b603030ba",
+      "bytes": 4518
+    },
+    {
+      "path": "tools/check-material-uniforms.mjs",
+      "sha256": "476aa96fe2a18389306654c9af49589ad1ca210e51535576b91e2fc7613e3ee8",
+      "bytes": 6725
+    },
+    {
+      "path": "tools/check-material-layers.mjs",
+      "sha256": "8e17fd45aa5115eea29a284f5ff43aa383afb7fed42fc0d13f2368cb920daac4",
+      "bytes": 9742
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "native/build/native-scene-PwLoaD/acceptance.json",
+      "sha256": "5c4aa1849dc19f063d141aff80ac1a5b89b34128d819cdbfa130e6b0e3feecd9",
+      "bytes": 6281
+    },
+    {
+      "path": "native/build/native-scene-window-TkRnfX/acceptance.json",
+      "sha256": "1ae078c44c3f3cdb0d89c2e001c955cf43175e74295a71a39311e1612aec50e6",
+      "bytes": 9126
+    },
+    {
+      "path": "native/build/gpu-scene-dqLwSw/acceptance.json",
+      "sha256": "3ee0933c812ea1ebb88c8d56f5c8647df6afd39566110731ecd9de2695f677b3",
+      "bytes": 10707
+    },
+    {
+      "path": "native/build/gpu-scene-E5RBEh/acceptance.json",
+      "sha256": "0c1e0739c267d186e443c3897a09fc802f0b125755930c2317d7dc3880c87639",
+      "bytes": 11641
+    },
+    {
+      "path": "native/build/gpu-scene-9ssC6K/failure.json",
+      "sha256": "13be30673b44234a6032b41b28998d25e51394023c8efb709bf4e460b6465e50",
+      "bytes": 1696
+    },
+    {
+      "path": "native/build/gpu-scene-fWKZAb/failure.json",
+      "sha256": "372950beb1b1e72befa2533fe853084df3dda08cd75544bd91813080636202b8",
+      "bytes": 1696
+    },
+    {
+      "path": "native/build/coating-final-unit-checks-095.json",
+      "sha256": "62ab45007bc5d035d1dcf68885b1c36de12f96f2e0b48680ba2ee5b5353a9665",
+      "bytes": 821
+    },
+    {
+      "path": "native/build/coating-line-endings-095.json",
+      "sha256": "d42704b8e39ce24f78800037a6665104dd6a198f582c5ad65c8ced2b7b37ffa4",
+      "bytes": 3677
+    },
+    {
+      "path": "native/build/coating-desktop-final-095.log",
+      "sha256": "f659bcc9f0b64711910ed07b14be90cec564945524da3ac6f6748b7935defbad",
+      "bytes": 168
+    },
+    {
+      "path": "HBEngine.exe",
+      "sha256": "7d013a654d412274bc3cbf8307bb07f907184c0190d3b15fd03b945797b6937c",
+      "bytes": 1658368
+    },
+    {
+      "path": "dist/HBEngine/HBEngine.exe",
+      "sha256": "7d013a654d412274bc3cbf8307bb07f907184c0190d3b15fd03b945797b6937c",
+      "bytes": 1658368
+    },
+    {
+      "path": "native/build/gpu-scene-CEzvyK/acceptance.json",
+      "sha256": "43271d0997805811f229b3dd25507e11473487dea419e28916a23d3630872932",
+      "bytes": 10815
+    },
+    {
+      "path": "native/build/coating-desktop-lazy-095.log",
+      "sha256": "f659bcc9f0b64711910ed07b14be90cec564945524da3ac6f6748b7935defbad",
+      "bytes": 168
+    }
+  ],
+  "commands": [
+    "node tools/check-native-scene-render.mjs",
+    "node tools/build-desktop.mjs",
+    "node tools/check-native-scene-window.mjs --coating-only",
+    "node tools/check-gpu-scene.mjs --coating-only --webgl",
+    "node tools/check-gpu-scene.mjs --coating-only",
+    "node tools/check-material-uniforms.mjs",
+    "node tools/check-material-layers.mjs",
+    "node tools/check-material-workflow.mjs",
+    "node tools/generate-api.mjs --check",
+    "git diff --check",
+    "node tools/check-gpu-scene.mjs --coating-only --webgl (after lazy activation)",
+    "node tools/build-desktop.mjs (final lazy activation)"
+  ],
+  "proof": {
+    "hardware": {
+      "compiledNodes": 60,
+      "directCoating": true,
+      "roughness": true,
+      "validation": true,
+      "coatProbe": true,
+      "iorProbe": true,
+      "legacy": {
+        "alphaCutoutShadow": true,
+        "automaticReadbacks": 0,
+        "bloomComputePixel": true,
+        "bloomReuseRelease": true,
+        "bloomScissorBars": true,
+        "bloomThresholdExposure": true,
+        "clearcoatDirectPixel": true,
+        "clearcoatRoughnessPixel": true,
+        "clearcoatValidation": true,
+        "compactShotBloom": true,
+        "compactShotXYXZ": true,
+        "compiledNodes": 60,
+        "constantBuffers": 3,
+        "deformationPoseReuse": true,
+        "deformationValidation": true,
+        "deformedShadowPixel": true,
+        "depth": true,
+        "directionalShadowPixel": true,
+        "drawsPerFrame": 2049,
+        "gpuBindAffineWeights": true,
+        "gpuCompletionMeasured": false,
+        "gpuMorphPositionNormalColor": true,
+        "gpuSkinPixel": true,
+        "heightFogPixel": true,
+        "hemisphereNormalPixel": true,
+        "hlslOpacityShadow": true,
+        "hlslParameterPixel": true,
+        "independentShadowLights": true,
+        "independentTextureUV": true,
+        "instanceCount2049SingleDraw": true,
+        "instanceFrameResources": 3,
+        "instanceValidation": true,
+        "instancedColorPixel": true,
+        "instancedShadowPixel": true,
+        "materialTextures": {
+          "arrayHalfUpLayer": true,
+          "cubeMipLOD": true,
+          "dimensionValidation": true,
+          "independentWrapR": true,
+          "mipStorageBytes": 120,
+          "samples": [
+            {
+              "rgb": [
+                255,
+                0,
+                0
+              ],
+              "type": "texturecube",
+              "value": [
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "rgb": [
+                0,
+                255,
+                0
+              ],
+              "type": "texturecube",
+              "value": [
+                -1,
+                0,
+                0
+              ]
+            },
+            {
+              "rgb": [
+                0,
+                0,
+                255
+              ],
+              "type": "texturecube",
+              "value": [
+                0,
+                1,
+                0
+              ]
+            },
+            {
+              "rgb": [
+                0,
+                255,
+                255
+              ],
+              "type": "texturecube",
+              "value": [
+                0,
+                -1,
+                0
+              ]
+            },
+            {
+              "rgb": [
+                255,
+                0,
+                255
+              ],
+              "type": "texturecube",
+              "value": [
+                0,
+                0,
+                1
+              ]
+            },
+            {
+              "rgb": [
+                255,
+                255,
+                0
+              ],
+              "type": "texturecube",
+              "value": [
+                0,
+                0,
+                -1
+              ]
+            },
+            {
+              "rgb": [
+                255,
+                0,
+                0
+              ],
+              "type": "texturearray",
+              "value": 0
+            },
+            {
+              "rgb": [
+                255,
+                0,
+                0
+              ],
+              "type": "texturearray",
+              "value": 0.49
+            },
+            {
+              "rgb": [
+                0,
+                255,
+                255
+              ],
+              "type": "texturearray",
+              "value": 0.5
+            },
+            {
+              "rgb": [
+                0,
+                255,
+                255
+              ],
+              "type": "texturearray",
+              "value": 1
+            },
+            {
+              "rgb": [
+                255,
+                0,
+                0
+              ],
+              "type": "texture3d",
+              "value": [
+                0.25,
+                0.75,
+                0.25
+              ]
+            },
+            {
+              "rgb": [
+                127,
+                127,
+                127
+              ],
+              "type": "texture3d",
+              "value": [
+                0.25,
+                0.75,
+                0.5
+              ]
+            },
+            {
+              "rgb": [
+                0,
+                255,
+                255
+              ],
+              "type": "texture3d",
+              "value": [
+                0.25,
+                0.75,
+                0.75
+              ]
+            },
+            {
+              "rgb": [
+                255,
+                0,
+                0
+              ],
+              "type": "texture3d",
+              "value": [
+                0.25,
+                0.75,
+                1.25
+              ]
+            }
+          ],
+          "sixFaces": true,
+          "srgbDecode": true,
+          "volumeInterpolation": true
+        },
+        "morphBeforeSkin": true,
+        "newUploadsDuring12Frames": 0,
+        "particles": {
+          "allSixSortModes": true,
+          "automaticPositionReadbacks": 0,
+          "capacity": 2049,
+          "explicitCountsOnly": true,
+          "gpuStepAndExpiry": true,
+          "hdrComputeBloom": true,
+          "indexAllocations": 1,
+          "indirectLivingCount": true,
+          "multiCapacityIndexReuse": true,
+          "passed": true,
+          "resourceRelease": true,
+          "sharedDepth": true,
+          "textureOrientation": true,
+          "viewportScissor": true,
+          "viewportSizeClamp": true
+        },
+        "passed": true,
+        "pbrDirectional": true,
+        "pbrPoint": true,
+        "pbrSpotAndCone": true,
+        "pixelViewportClear": true,
+        "pointShadowFace": true,
+        "probes": {
+          "automaticReadbacks": 0,
+          "blend": [
+            99,
+            99,
+            0
+          ],
+          "boundsAndIntensityPixel": true,
+          "boxProjectionPixel": true,
+          "coatProbePixel": true,
+          "diffuse": [
+            0,
+            137,
+            0
+          ],
+          "ggxRoughnessPixel": true,
+          "iorProbePixel": true,
+          "probeBytes32": 118912,
+          "projected": [
+            0,
+            0,
+            255
+          ],
+          "rough": [
+            116,
+            0,
+            104
+          ],
+          "shDiffusePixel": true,
+          "sharedResourceRelease": true,
+          "sharp": [
+            255,
+            0,
+            0
+          ],
+          "sixFaceHDRCapture": true,
+          "staticReuse": true,
+          "twoProbeBlendPixel": true,
+          "validation": true
+        },
+        "receiveShadowToggle": true,
+        "resize": true,
+        "separateScissor": true,
+        "shadowResourceRelease": true,
+        "spotShadowPixel": true,
+        "submitMsPer2049Draws": 3.6155666666666666,
+        "twoD": {
+          "blendAndMaskPixels": true,
+          "draws": 3,
+          "freeformRGFloatPixel": true,
+          "insideOutsidePixels": true,
+          "oneLayerCookieArrayPixel": true,
+          "passed": true,
+          "passes": 3,
+          "sortingLayerLights": true,
+          "stencilResetKeepsColor": true,
+          "targetBytes": 32768,
+          "validation": true
+        },
+        "unlitTexture": true,
+        "validation": true
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    "windows": {
+      "pixels": {
+        "off": [
+          7,
+          7,
+          7,
+          255
+        ],
+        "on": [
+          225,
+          225,
+          225,
+          255
+        ],
+        "rough": [
+          16,
+          16,
+          16,
+          255
+        ],
+        "bp": [
+          225,
+          225,
+          225,
+          255
+        ],
+        "noFresnel": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "highFresnel": [
+          37,
+          37,
+          37,
+          255
+        ],
+        "normals": {
+          "CoatingBaseTilt": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "CoatingTopTilt": [
+            7,
+            7,
+            7,
+            255
+          ]
+        }
+      },
+      "uploads": [
+        4,
+        4
+      ],
+      "sameMaterial": true,
+      "sameProgram": true,
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    "webgl": {
+      "pixels": {
+        "off": [
+          7,
+          7,
+          7,
+          255
+        ],
+        "on": [
+          219,
+          219,
+          219,
+          255
+        ],
+        "rough": [
+          18,
+          18,
+          18,
+          255
+        ],
+        "bp": [
+          219,
+          219,
+          219,
+          255
+        ],
+        "noFresnel": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "highFresnel": [
+          46,
+          46,
+          46,
+          255
+        ],
+        "normals": {
+          "CoatingBaseTilt": [
+            219,
+            219,
+            219,
+            255
+          ],
+          "CoatingTopTilt": [
+            9,
+            9,
+            9,
+            255
+          ]
+        }
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true,
+      "firstVersion": 0,
+      "activeVersion": 2,
+      "finalVersion": 2,
+      "defaultCoatingDisabledVerifiedByUnit": true
+    },
+    "webgpu": {
+      "pixels": {
+        "off": [
+          7,
+          7,
+          7,
+          255
+        ],
+        "on": [
+          219,
+          219,
+          219,
+          255
+        ],
+        "rough": [
+          18,
+          18,
+          18,
+          255
+        ],
+        "bp": [
+          219,
+          219,
+          219,
+          255
+        ],
+        "noFresnel": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "highFresnel": [
+          46,
+          46,
+          46,
+          255
+        ],
+        "normals": {
+          "CoatingBaseTilt": [
+            219,
+            219,
+            219,
+            255
+          ],
+          "CoatingTopTilt": [
+            9,
+            9,
+            9,
+            255
+          ]
+        }
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    "finalUnits": [
+      {
+        "command": "node tools/check-material-uniforms.mjs",
+        "passed": true,
+        "output": "WebGL Float uniform: 1000 writes/no material version or program changes, scalar/surface, scoped layer/blend, clone isolation, validation PASS"
+      },
+      {
+        "command": "node tools/check-material-layers.mjs",
+        "passed": true,
+        "output": "머테리얼 속성·독립 레이어·블렌드·인스턴스 순서/표시/복원·타입·순환·내보내기·원본 보존 PASS"
+      },
+      {
+        "command": "node tools/check-material-workflow.mjs",
+        "passed": true,
+        "output": "HBEngine 머테리얼: 77종 노드, PBR·수학·UV·텍스처 계산, GLSL 생성, 인스턴스·참조·프리팹·에셋 검증 통과"
+      },
+      {
+        "command": "node tools/generate-api.mjs --check",
+        "passed": true,
+        "output": ""
+      }
+    ]
+  },
+  "failures": [
+    {
+      "paths": [
+        "native/build/gpu-scene-9ssC6K/failure.json",
+        "native/build/gpu-scene-fWKZAb/failure.json"
+      ],
+      "cause": "shared sceneRendering materialFloat surface allowlist lacked Clearcoat; fixed shared renderer/sequence capture and existing service alias maps; actual Windows/web final attempts pass"
+    },
+    {
+      "path": "native/build/coating-line-endings-095.json",
+      "cause": "Python writes temporarily changed LF to CRLF; restored existing LF without broad behavioral changes; raw tested-source hashes kept in original acceptance, no rewriting proof"
+    }
+  ],
+  "verificationBoundaries": [
+    "actual windows/GPU shaders were tested before LF normalization; own compiled shaders unchanged by endings",
+    "final CPU/MI/attribute blend clearcoatNormal handling and schema edits verified by final units, not another whole platform run",
+    "final desktop build refreshed development artifact only, installed user shortcut/version untouched",
+    "browser clearcoat-specific reflection-probe indirect lighting not covered by coating window fixture",
+    "no FPS/completion/RAM/mobile/whole-corpus completion claim",
+    "final lazy WebGL material code and final source bytes covered by CEzvyK actual run; WebGPU/native code unchanged except common graph metadata/CPU/MI normal paths checked by units"
+  ],
+  "remaining": [
+    "native transmission/refraction pass",
+    "anisotropy/sheen/iridescence/subsurface",
+    "additional postprocessing/GI/remaining accumulated details",
+    "finish preceding rendering group before user install update"
+  ],
+  "gates": {
+    "passedThisScope": true,
+    "wholeCorpus": false,
+    "fullAPI": false,
+    "independentCorpusVerification": false,
+    "completeEngine": false,
+    "installedUserUpdated": false,
+    "originalGamesChanged": false,
+    "foregroundUserWindowChanged": false,
+    "realMobileChecked": false,
+    "wholeGameFPSClaim": false
+  }
+}

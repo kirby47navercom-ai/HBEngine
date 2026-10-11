@@ -1,3 +1,5 @@
+2026-10-12 후속: [095 코팅](../NATIVE_COATING_095.md), [기계 기록](NATIVE_COATING_095.json). UE5.8 dual-normal 자체 본문/표, UnityURP17 Clear Coat/인접 반사 구역, Three r180 GGX/IOR/코팅 합성 지정 구역을 읽고 원문5 SHA·부분 읽기/미독과 설치 소스를 대조했어요. 실제 DirectX/WebGL/WebGPU CPP/BP·분리 노멀/IOR·재사용 및 GPU60노드/프로브 회귀 통과; 전체 corpus/API/독립 검증/FPS/실기기·설치 완료는 승격하지 않아요.
+
 ## 093 — 반사 프로브 지정 읽기/실행
 
 2026-10-12 후속: [094 네이티브 텍스처](../NATIVE_MATERIAL_TEXTURES_094.md), [기계 기록](NATIVE_MATERIAL_TEXTURES_094.json). Microsoft5개 자체 기술 본문/선언/표/예제와081의 부분 Unity/Unreal/Three 분석을 연결했어요. 링크·이미지·상속·전체 API/독립 corpus 검증을 승격하지 않고 새 주소만 발견 대기열에 추가해요. 네 종류 GPU/실제 Windows·C++/BP 교체/재사용·기존2D 회귀 통과, 설치/사용 창/원본 변경 없음.

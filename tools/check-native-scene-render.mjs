@@ -1,3 +1,4 @@
+import {coatingMaterial} from './coating-fixture.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -33,6 +34,8 @@ for(const type of ['texturecube','texturearray','texture3d']){
   const choices=type==='texturecube'?[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]:type==='texturearray'?[0,.49,.5,1]:[[.25,.75,.25],[.25,.75,.5],[.25,.75,.75],[.25,.75,1.25]];
   for(const value of choices){const data=textureFamilyFixture(type);data.graph.nodes[1].inputValues[type==='texturecube'?'direction':type==='texturearray'?'index':'uv']=value;const plan=compileNativeMaterial(data);programs.push({key:type+JSON.stringify(value),type,value,declarations:plan.declarations,evaluation:plan.evaluation,uniforms:plan.floatBindings.map(b=>b.value)});}
 }
+for(const [name,base,coat] of [['Coating',false,false],['CoatingBaseTilt',true,false],['CoatingTopTilt',false,true]]){const data=coatingMaterial(name,base,coat),plan=compileNativeMaterial(data);programs.push({key:name,declarations:plan.declarations,evaluation:plan.evaluation,uniforms:plan.floatBindings.map(b=>b.value)});}
+const physical=new THREE.MeshPhysicalMaterial({clearcoat:1,clearcoatRoughness:.3,ior:2});assert.deepEqual(nativeMaterial(physical).physical,[1,.3,2,0]);physical.transmission=1;assert.throws(()=>nativeMaterial(physical));physical.dispose();
 const arrayTexture=new THREE.DataArrayTexture(new Uint8Array([255,0,0,255,0,255,255,255]),1,1,2);assert.equal(packedTexture(arrayTexture).layers,2);assert.equal(packedTexture(arrayTexture).array,true);arrayTexture.dispose();
 const volumeTexture=new THREE.Data3DTexture(new Uint8Array([255,0,0,255,0,255,255,255]),1,1,2);assert.equal(packedTexture(volumeTexture).dimension,'volume');volumeTexture.image.depth=2049;assert.throws(()=>packedTexture(volumeTexture));volumeTexture.dispose();
 const badFloat=new THREE.DataTexture(new Float32Array([NaN,0,0,1]),1,1,THREE.RGBAFormat,THREE.FloatType);assert.throws(()=>packedTexture(badFloat));badFloat.dispose();
