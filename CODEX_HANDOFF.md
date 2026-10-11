@@ -1,3 +1,7 @@
+# 093 — 반사 프로브/캡처 간접광 — 2026-10-11
+
+092 3d348ee pushed. ReflectionProbe 제작 필드/검증/범위와 공용 C++·BP3·AI schema, D3D11 HDR six-face/GGX compute/SH9/공유 BRDF·box/fade/두 프로브를 연결. Browser PMREM/TSL·한 프로브·shared uniforms와 WebGPU 색상 변환 수정. 최종 GPU/실제Windows·WebGL·WebGPU·C++ Off/Refresh·BP On·static reuse·자원0/오류0/종료0 검증. [093](docs/NATIVE_PROBES_093.md), [증거](docs/research/NATIVE_PROBES_093.json). 설치/사용 창/원본 변경 없음. 전체 corpus/FPS/RAM/휴대폰/iOS 미승격. 다음 native 일반 cube/array/volume graph texture·셰이딩/후처리 및 남은 GI·누적 세부, 선행 묶음 뒤 설치 갱신.
+
 # 092 — DirectX 공용2D — 2026-10-11
 
 091 24c0528 pushed. 기존 SpriteMask/Light2D/ShadowCaster2D/composite·sprite cookie array·normal/blend/mask/volume과 masked native particles 연결. 공용 C++/BP/AI 제작 API 재사용, 보조 pass 같은 frame upload, static cache·resize/dispose/travel 및128B CB3. GPU/Windows 실제 픽셀·I/L BP·C++·리소스0 검증, schema/docs/읽기7 snapshot·미독/실패 보존. [092](docs/NATIVE_2D_092.md), [증거](docs/research/NATIVE_2D_092.json). 설치/사용 창/원본 변경 없음. 전체 corpus/FPS/RAM/휴대폰/iOS 미승격. 다음 native GI/반사·추가 텍스처/셰이딩/후처리 및 누적 세부, 선행 묶음 뒤 설치 갱신.

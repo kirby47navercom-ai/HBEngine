@@ -13,10 +13,11 @@ import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering,spriteEffectsUniforms,createSpriteMaskMaterial} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {cacheAssetReader} from './runtime-storage.js';
+import {ReflectionProbesRendering} from './reflection-probes.js';
 import {light2DUniforms} from './two-d-lighting.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
-const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
+const visualTypes=new Set(['ReflectionProbe','MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
 export function configureLightShadow(light,p){
   const shadow=light.shadow;if(!shadow)return;const d=componentDefaults(light.type);p={...d,...p};if(!validComponentProperties(light.type,p))throw Error('그림자 해상도와 근거리·원거리를 확인하세요.');
@@ -24,8 +25,9 @@ export function configureLightShadow(light,p){
   if(light.isDirectionalLight){shadow.camera.left=shadow.camera.bottom=-p.shadowExtent;shadow.camera.right=shadow.camera.top=p.shadowExtent;}shadow.camera.updateProjectionMatrix();
 }
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer,runtimeWorld}){
+  let materialTime=0;
   read=cacheAssetReader(read);
-  const twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
+  const probes=new ReflectionProbesRendering(),twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
   const textureSources=new Map();let textureBytes=0,textureEpoch=0;
   function invalidateAssets(textures=true){read.clear();if(!textures)return;textureEpoch++;for(const entry of textureSources.values())entry.promise.then(t=>t.dispose(),()=>{});textureSources.clear();textureBytes=0;}
   const texture=async(path,normal=false)=>{
@@ -187,12 +189,13 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     }
   }
   async function build(object,group){
-    group.userData.spriteActor=object;const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
+    group.userData.reflectionProbes=[];group.userData.spriteActor=object;const components=objectComponents(object),meshComponent=components.find(c=>c.type==='MeshRenderer'),renderer=meshComponent?{...componentDefaults('MeshRenderer'),...meshComponent.properties}:null;
     group.userData.componentSignature=visualComponentSignature(object);const meshPath=renderer?.mesh||object.asset;
     if(meshPath){const loaded=await loadModel(meshPath);if(group.userData.disposed){const temporary=new THREE.Group();adopt(temporary,loaded.object);dispose(temporary);return;}adopt(group,loaded.object);group.userData.animations=loaded.animations;}
     const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
     if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
+      if(component.type==='ReflectionProbe'){(group.userData.reflectionProbes??=[]).push({id:component.id,properties:p});if(editor){const box=new THREE.Box3(new THREE.Vector3(...p.size).multiplyScalar(-.5).add(new THREE.Vector3(...p.offset)),new THREE.Vector3(...p.size).multiplyScalar(.5).add(new THREE.Vector3(...p.offset))),helper=new THREE.Box3Helper(box,0x8aaccf);helper.userData.editorHelper=true;own(group,helper.geometry);own(group,helper.material);group.add(helper);}}
       if(component.type==='Renderer2D')group.userData.renderer2d=p;
       if(component.type==='Light2D')await light2d(group,p);
       if(component.type==='ShadowCaster2D'){group.userData.shadowCaster2d=p;if(editor&&p.source==='shape')lightOutline(group,{lightType:'freeform',shapePath:p.shapePath,color:[.9,.85,.5]});}
@@ -212,8 +215,8 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
     object.gameplayDebug={...object.gameplayDebug,morphs:morphSnapshot(group)};
   }
-  function updateMaterialTime(time){for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}
+  function updateMaterialTime(time){materialTime=time;for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}
   function materialState(){return all().flatMap(group=>[...group.userData.resources||[]].filter(r=>r.userData?.hbMaterial).map(r=>({object:group.userData.objectId,id:r.uuid,type:r.type,version:r.version,textures:r.userData.textureState?.(),backend:r.userData.hbGPU?'WebGPU':'WebGL2',parameters:structuredClone(r.userData.materialSource.parameters||{}),surface:structuredClone(r.userData.materialSource.surface||{}),...r.userData.materialState?.()})));}
   const gameCamera=(objects,aspect,override)=>selectGameCamera(objects,aspect,override,current);
-  return {particleDiagnostics:id=>current(id)?.userData.particleState?.simulation.diagnostics?.(),build,dispose,updateMaterialTime,materialState,prepareSpawn,invalidateAssets,material,materialFloat,materialTexture,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed){if(state.gpu)state.simulation.sort(camera);else writeParticles(group,state,camera);}}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>bloom.disposeRenderer(renderer),dispose2D:()=>{twoD.dispose();bloom.dispose();invalidateAssets();}};
+  return {particleDiagnostics:id=>current(id)?.userData.particleState?.simulation.diagnostics?.(),build,dispose,updateMaterialTime,materialState,prepareSpawn,invalidateAssets,material,materialFloat,materialTexture,spriteFrame,spriteFlip,tilemapFrame,preparePhysics,gameCamera,syncDecals,tickParticles,particleSnapshot,createParticleState:gameRenderer?.hbParticles?async(object,restart)=>{const group=current(object.id);await group?.userData.ready;const state=group?.userData.particleState?.simulation;if(!state||state.disposed)throw Error('GPU 파티클 준비가 필요해요.');if(restart){state.reset();state.playing=true;}return state;}:undefined,syncNavigation,prepare2D:(renderer,scene,camera,layers,options)=>{scene.userData.hbMaterialTime=materialTime;probes.prepare(renderer,scene);const groups=all();for(const group of groups){group.userData.spriteSkin?.update();const state=group.userData.particleState;if(state&&state.properties.sortMode!=='none'&&!group.userData.disposed){if(state.gpu)state.simulation.sort(camera);else writeParticles(group,state,camera);}}return twoD.prepare(renderer,scene,camera,groups,layers,options);},renderBloom:(renderer,scene,camera,objects)=>bloom.render(renderer,scene,camera,objects),disposeRenderer:renderer=>{bloom.disposeRenderer(renderer);probes.disposeRenderer(renderer);},dispose2D:()=>{twoD.dispose();bloom.dispose();probes.dispose();invalidateAssets();}};
 }

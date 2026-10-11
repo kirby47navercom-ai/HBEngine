@@ -70,7 +70,7 @@ export async function createGPURenderer(canvas){
     return generator;
   };renderer.hbParticles=(group,p,map)=>new GPUParticleSimulation(renderer,group,p,map);
   const {createGPUMaterial}=await import('./gpu-materials.js');renderer.hbMaterial=createGPUMaterial;
-  const {createGPUSkyMaterial,applyGPUFog,GPUBloomRendering}=await import('./gpu-environment.js');renderer.hbSkyMaterial=createGPUSkyMaterial;renderer.hbFog=applyGPUFog;renderer.hbBloom=()=>new GPUBloomRendering();
+  const {createGPUSkyMaterial,applyGPUFog,GPUBloomRendering,createGPUProbeEnvironment}=await import('./gpu-environment.js');renderer.hbProbeEnvironment=createGPUProbeEnvironment;renderer.hbSkyMaterial=createGPUSkyMaterial;renderer.hbFog=applyGPUFog;renderer.hbBloom=()=>new GPUBloomRendering();
   const {createGPUSpriteMaterial,createGPUMaskMaterial,createGPUProjectileMaterial,createGPUViewportMaterial,gpuSpriteMask,gpuMaskTarget}=await import('./gpu-2d-rendering.js');const lightingTextures=new Map();renderer.hbSprite=(map,p,normal)=>createGPUSpriteMaterial(map,p,normal,lightingTextures);renderer.hbLight2DVolume=()=>{const m=renderer.hbSprite(null,{shading:'lit2d',blendMode:'additive'},null);m.depthTest=false;return m;};renderer.hbProjectile=createGPUProjectileMaterial;renderer.hbViewportMaterial=createGPUViewportMaterial;renderer.hbMaskMaterial=createGPUMaskMaterial;renderer.hbSpriteMask=gpuSpriteMask;renderer.hbMaskTarget=gpuMaskTarget;
   const {gpuShadowMaterials}=await import('./gpu-2d-lighting.js');renderer.hbShadowMaterials=gpuShadowMaterials;renderer.hbShadowTarget=gpuMaskTarget;
   const framebuffers=new Set(),copyFramebuffer=renderer.copyFramebufferToTexture.bind(renderer);

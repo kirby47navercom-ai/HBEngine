@@ -1,5 +1,7 @@
 2026-10-08 후속: [CCD IK](ANIMATION_CCD_073.md)에 세 번째 3D 솔버·이름별 전체 회전 제한·공용 C++/BP·AI/Undo/미리보기와 실제 Editor/Player 검증을 연결했다. 2D IK 기존 경로는 유지하고 새 2D 각도 제약·Full Body IK/Control Rig·리타게팅 연산 등 남은 세부를 유지한다.
 
+2026-10-11: [반사 프로브](NATIVE_PROBES_093.md). ReflectionProbe의 실제 제작 필드/검증과 ReflectionProbes C++·BP3, 기존 Components/document.patch·Undo/Save를 공유해요. DirectX HDR/GGX compute/SH9/BRDF·box/fade·두 프로브와 브라우저 PMREM·한 프로브, 자원 진단/해제·실행 검증 및 미구현 경계를 명시해요.
+
 2026-10-08 후속: [골격 리타게팅](ANIMATION_RETARGET_072.md)에 리그·기준 포즈·프로필/체인 매핑·FK/IK·시작 포즈·루트/골반 배율·베이크 클립·공용 SDK/BP5·AI·별도 미리보기와 실제 Editor/Player 검증을 연결했다. 임의 Op Stack/LOD/Muscle·커브/모프·2D 전용 리타게팅과 다른 누적 세부를 유지한다.
 
 2026-10-08 후속: [3D IK](ANIMATION_IK_071.md)에 Two Bone/FABRIK·공용 C++/BP8·네 공간/가중치/늘이기·AI 편집 계약·실제 뼈 실행·격리 Editor/Player 검증을 연결했다. 이전 미구현 목록은 당시 이력이며 리타게팅과 나머지 누적 세부를 유지한다.

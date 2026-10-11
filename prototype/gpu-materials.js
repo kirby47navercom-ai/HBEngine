@@ -7,7 +7,7 @@ import {materialParameterKey,materialTextureParameter,resolveMaterialInputs,reso
 
 const specs=new Map(materialCatalog.map(s=>[s.key,s]));
 const vector=(value,size)=>Array.from({length:size},(_,i)=>Array.isArray(value)?value[i]??value[0]:value);
-const valueNode=(value,type)=>typeof value==='string'?T.vec3(new Color(value)):type==='float'?T.float(Array.isArray(value)?value[0]:value):T[type](...vector(value,Number(type.slice(3))));
+const valueNode=(value,type)=>typeof value==='string'?T.vec3(...new Color(value).toArray()):type==='float'?T.float(Array.isArray(value)?value[0]:value):T[type](...vector(value,Number(type.slice(3))));
 const cast=(node,type,target)=>type===target?node:target==='float'?node.x:type==='float'?T[target](node):Number(type.slice(3))>Number(target.slice(3))?node['xyzw'.slice(0,Number(target.slice(3)))]:T[target](node,...Array(Number(target.slice(3))-Number(type.slice(3))).fill(0));
 const smooth=(a,b,v)=>{const x=v.sub(a).div(b.sub(a).max(1e-6)).clamp(0,1);return x.mul(x).mul(x.mul(-2).add(3));};
 const hash=p=>p.dot(T.vec2(127.1,311.7)).sin().mul(43758.5453).fract();
@@ -17,7 +17,7 @@ const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));r
 export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
   data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
   const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textureBindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
-  const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...value),type);
+  const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...(typeof value==='string'?new Color(value).toArray():value)),type);
   const surfaceValue=input=>{const raw=surface[input.key];if(typeof raw==='number'){const u=uniformValue(raw,'float');surfaceUniforms.set(input.key,u);return u;}return valueNode(raw,input.type);};
   const expression=(id,output='value')=>{
     const token=id+':'+output;if(cache.has(token))return cache.get(token);const node=nodes.get(id),key=materialNodeKey(node),pins=materialPins(node,graph),type=pins.outputs.find(p=>p.id===output)?.type||'float';let code;

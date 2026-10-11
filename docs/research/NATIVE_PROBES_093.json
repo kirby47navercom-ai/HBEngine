@@ -1,0 +1,595 @@
+{
+  "step": "093",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "unity-inspector",
+      "corpus": "unity-manual",
+      "version": "6000.0",
+      "locale": "en",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/unity-inspector.html",
+      "sha256": "ce8b2a0a754a361f62199fa0cb8f92303bda30d0a05e964b7d0a6b9177ce3c36",
+      "bytes": 20469,
+      "bodyPath": "native/build/probe-research-mh1xjd/unity-inspector.txt",
+      "bodySha256": "d643666810e40c0a42a995917c866ac9729aaad5e8134c16d37d8e5af3d745de",
+      "bodyMethod": "HTML clean text extraction; scoped text only",
+      "readScope": "Own Inspector Type/Dynamic/Refresh/Time Slicing/Importance/Intensity/Box Projection/size/offset/capture-setting sections read. Linked pages/media and complete APIs not read.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "unity-render",
+      "corpus": "unity-scriptreference",
+      "version": "6000.0",
+      "locale": "en",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ReflectionProbe.RenderProbe.html",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ReflectionProbe.RenderProbe.html",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/unity-render.html",
+      "sha256": "4f734c51a34ff10bf6fd3fd0ab45bf513be6fa01a54ef03d491104e028eba59a",
+      "bytes": 16447,
+      "bodyPath": "native/build/probe-research-mh1xjd/unity-render.txt",
+      "bodySha256": "09917778a422222c005c81e7fde97db7e3e0abbf4cee8b9fc4620a2eaa455d65",
+      "bodyMethod": "HTML clean text extraction; scoped text only",
+      "readScope": "Own RenderProbe declaration, target and render request ID return/description read. IsFinishedRendering and timeSlicingMode linked pages not read.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "ms-textures",
+      "corpus": "microsoft-native-render-platform",
+      "version": "D3D11",
+      "locale": "en",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/ms-textures.html",
+      "sha256": "a7623fa778f871b8670276bae872f87527da20c6c5f47fa5c570de665042ce7f",
+      "bytes": 55390,
+      "bodyPath": "native/build/probe-research-mh1xjd/ms-textures.txt",
+      "bodySha256": "5455161aeb2997db8b3e6feb6ed6a22deba87edee577ae481097eb54ed5ef5a9",
+      "bodyMethod": "HTML clean text extraction; scoped text only",
+      "readScope": "Using a 2D Texture Array as a Texture Cube section and feature-level/full-cube note directly read from archived text. Other texture sections not promoted.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "ms-uav",
+      "corpus": "microsoft-native-render-platform",
+      "version": "D3D11",
+      "locale": "en",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_tex2d_array_uav",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_tex2d_array_uav",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/ms-uav.html",
+      "sha256": "ae25c0873389a90ba1c18c155dc0f5f900492f464c4f73e7d7207e6a21e78b08",
+      "bytes": 49844,
+      "bodyPath": "native/build/probe-research-mh1xjd/ms-uav.txt",
+      "bodySha256": "a224161aedc0be37376a0f58bb8c9caeb7680669004e1ff2231602dbfcc22c3e",
+      "bodyMethod": "HTML clean text extraction; scoped text only",
+      "readScope": "D3D11_TEX2D_ARRAY_UAV declaration, MipSlice/FirstArraySlice/ArraySize member descriptions read; linked types/functions not read.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "epic-captures",
+      "corpus": "unreal-manual",
+      "version": "5.8",
+      "locale": "en",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+      "resolvedUrl": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/epic-captures.html",
+      "sha256": "5a9262d6b0f0d0a3c8e549413038244aec3fa57cfc1e480a0c9e6d6a0708f04b",
+      "bytes": 119177,
+      "bodyPath": "native/build/probe-research-mh1xjd/epic-captures.txt",
+      "bodySha256": "29cc93c53f674f609a0a4e7851fa20a76ea329b82263b0e52eb507e4ea1f192f",
+      "bodyMethod": "HTML clean text extraction; scoped text only",
+      "readScope": "Sphere/box influence, smaller-capture priority, roughness mips/Lightmass mixing scoped web text read; archived specified cubemap and beginning of resolution workflow also read. Images, remainder and linked pages not read.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "epic-shading",
+      "corpus": "supplemental-paper",
+      "version": "SIGGRAPH 2013",
+      "locale": "en",
+      "url": "https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf",
+      "resolvedUrl": "https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/epic-shading.pdf",
+      "sha256": "5af943f7f978a03a15c234cef623c05d9c0b62d44292511619b762b0436751e6",
+      "bytes": 2947929,
+      "bodyPath": "native/build/probe-research-mh1xjd/epic-shading.txt",
+      "bodySha256": "923a3d8520723cb76ecc7ec61c2db521fede60a9aa462b7292c2ead070eae869",
+      "bodyMethod": "pypdf 6.12.2 text extraction; scoped lines only",
+      "readScope": "Local pypdf text lines195-208 and243-356: split-sum rationale, GGX environment prefilter and BRDF-integral/LUT decomposition read. Other sections and whole paper not reviewed.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    },
+    {
+      "id": "stanford-sh",
+      "corpus": "supplemental-paper",
+      "version": "SIGGRAPH 2001",
+      "locale": "en",
+      "url": "https://graphics.stanford.edu/papers/envmap/envmap.pdf",
+      "resolvedUrl": "https://graphics.stanford.edu/papers/envmap/envmap.pdf",
+      "httpStatus": 200,
+      "snapshot": "native/build/probe-research-mh1xjd/stanford-sh.pdf",
+      "sha256": "0ea018d0592d3b794d1af6d1053d8ecc92d7a330c1acb4dba00991f43858d1fb",
+      "bytes": 990095,
+      "bodyPath": "native/build/probe-research-mh1xjd/stanford-sh.txt",
+      "bodySha256": "2bb98dc9de9d0977f7ac9d53525f0b4f49753e5661d5b2e965dd99175c21b2fa",
+      "bodyMethod": "pypdf 6.12.2 text extraction; scoped lines only",
+      "readScope": "Local pypdf text lines129-188 SH basis and convolution-band equations read. Other sections and whole paper not reviewed.",
+      "reader": "/root",
+      "readRecordedAt": "2026-10-11T14:28:12.101Z",
+      "bodyTextRead": true,
+      "wholePageReviewed": false,
+      "independentVerification": false,
+      "unread": "Other sections where scoped; linked pages/APIs/media/dynamic content; whole corpus"
+    }
+  ],
+  "reusedCodeScopes": [
+    {
+      "path": "node_modules/three/src/materials/nodes/MeshStandardNodeMaterial.js",
+      "sha256": "034d23274d96286c169ca047515d8b9edfc25825f44ad33d5439961c6c6d0aab",
+      "bytes": 4764
+    },
+    {
+      "path": "node_modules/three/src/nodes/lighting/EnvironmentNode.js",
+      "sha256": "43c66570ab61d3d3bbcc04391fece990816b91a33602f2d74fcddbd7d89bd286",
+      "bytes": 3721
+    },
+    {
+      "path": "node_modules/three/src/nodes/pmrem/PMREMNode.js",
+      "sha256": "e50c9185d7b1da13d517cec50b41c1a3c74a581e5334d55fd7c79b6aab3bb63c",
+      "bytes": 7769
+    },
+    {
+      "path": "node_modules/three/src/renderers/common/extras/PMREMGenerator.js",
+      "sha256": "f25c09a6b704529e7630490c98d9554c5f88b6e82f0907f59507f42acd98db7a",
+      "bytes": 26757
+    },
+    {
+      "path": "node_modules/three/src/nodes/math/MathNode.js",
+      "sha256": "55edf5db86b8d8c0ef2fd41add95e850a9eeb677335283da9c62dc312f56c9be",
+      "bytes": 28901
+    },
+    {
+      "path": "node_modules/three/src/nodes/core/NodeBuilder.js",
+      "sha256": "4e08661efb7138671afcfc3cb1aec9d2a206eaf94c063ed8e144b16b3d30b94c",
+      "bytes": 67247
+    }
+  ],
+  "productFiles": [
+    {
+      "path": "native/include/HBEngine/SceneProbes.hpp",
+      "sha256": "05c069159172b12a94df2d9e76822781951e8fd9465cf092d035aecaec2b1cd5",
+      "bytes": 13709
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "d90d347f7c87da27b99901894a928012a059abb090639bb0beeedfa2a5eadc53",
+      "bytes": 61346
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "8f11162eae5d46a7c180da96c13baefab0bd1e75a7b7954c8754cf5bd9f80929",
+      "bytes": 25086
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "bcb7b598cc1f8cf48c1d5f290ed6a0d17452ec8eed05932f54a769b7197beb77",
+      "bytes": 27811
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "sha256": "2af42241681308c90e978cfcae8e2b85ae27a7759a265bb1681347dd60f6c6e0",
+      "bytes": 101044
+    },
+    {
+      "path": "native/include/HBEngine/Session.hpp",
+      "sha256": "bffbe610a0693b87885b9b74fdd6ee8a32d942619c23e7719b7ef82ffa200f9b",
+      "bytes": 12738
+    },
+    {
+      "path": "prototype/reflection-probes.js",
+      "sha256": "baa8feb0f498c359b7de12a6bd0f968d021b28feb8b2f7d24403391053a1d4f4",
+      "bytes": 11662
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "94d75f8c6a744ce8638037e78847f4749a9583c08c3d2ef72248b4a61a61830d",
+      "bytes": 37456
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "55bcd2d6b83ffa7e3b7c19bea6b54f22487da1c03db542547d7e7ba86f76137c",
+      "bytes": 42671
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "221e4354c44189b2ee2ce34c14b8cdd583c87fde584986a2b332c8d3ed5a93de",
+      "bytes": 48087
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "80b4e509a422832c04fabf5fbd9b374379d2771fb3ea555927502533d9901d32",
+      "bytes": 6244
+    },
+    {
+      "path": "prototype/gpu-materials.js",
+      "sha256": "6a774c75c4ef609ffc55921be71a81952ca7dc0291fe3aea5f433a99c9db3e2b",
+      "bytes": 11739
+    },
+    {
+      "path": "prototype/gpu-particles.js",
+      "sha256": "ae5e8fbb8334224c7d75780fea7c4833d32ded52aba708bc9efb94f3c8eca435",
+      "bytes": 16716
+    },
+    {
+      "path": "prototype/game-renderer.js",
+      "sha256": "fe60283560cd1c9f8f92774613e5af1521271c5c7c0d113df00130cc91d84cf1",
+      "bytes": 2444
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "f37a8294780729a6b79013094cc5e41625095d842bce40b6c1baf5d739745a2f",
+      "bytes": 81256
+    },
+    {
+      "path": "prototype/placement-catalog.js",
+      "sha256": "d8b491f09efba0d0bc13d0b06b492da4282c6a1f39cb762b86daddaa9dfefd89",
+      "bytes": 5105
+    },
+    {
+      "path": "prototype/core-api.js",
+      "sha256": "6fdde043bc101ac76a36a077971596a86f52d68e989c491ef364d0849b3f2db4",
+      "bytes": 490083
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "sha256": "9dc229ea10a75729ceebeba6c07d2251dfa4872a33b64d7dad7570dbac6cccf7",
+      "bytes": 49883
+    },
+    {
+      "path": "HBEngine.exe",
+      "sha256": "804b96e350d8c4b385a54370ece7dc1aff22d39c1032684dc18e2fff387ae750",
+      "bytes": 1658368
+    },
+    {
+      "path": "dist/HBEngine/HBEngine.exe",
+      "sha256": "804b96e350d8c4b385a54370ece7dc1aff22d39c1032684dc18e2fff387ae750",
+      "bytes": 1658368
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "path": "native/build/native-scene-2YYMCq/acceptance.json",
+      "sha256": "a6653dee12baf534042ef11997dee82a8b4eea7b068ed469b319caefb2daaacd",
+      "bytes": 3051
+    },
+    {
+      "path": "native/build/native-scene-window-GVaxWp/acceptance.json",
+      "sha256": "0bbb6203ba1c82b20d3073e5f3cce2c640361e843288e1992b816c5c1f6ebc39",
+      "bytes": 193072
+    },
+    {
+      "path": "native/build/gpu-scene-R1TdAI/acceptance.json",
+      "sha256": "ccee6144a7a8fd329b659bca54b0411ea79c265ca135cdcac1ab2e04126311ed",
+      "bytes": 82762
+    },
+    {
+      "path": "native/build/gpu-scene-cJTsQn/acceptance.json",
+      "sha256": "860f0182411c15e5b228e4092cfd4c4c8787ddf20ee0d738a323b94dcac86c9f",
+      "bytes": 83760
+    },
+    {
+      "path": "native/build/native-scene-window-GVaxWp/probe-reflection.png",
+      "sha256": "16afebac415805882926bcfc86f2602738f67ab7192529f5757f57d4e5454fd7",
+      "bytes": 8964
+    },
+    {
+      "path": "native/build/native-scene-window-GVaxWp/probe-cpp-off.png",
+      "sha256": "9725a02ce59173fdb268cfb9d9bbb9ade34b7554049aec5fd6f74a663ecbe339",
+      "bytes": 8961
+    },
+    {
+      "path": "native/build/gpu-scene-R1TdAI/probe-reflection.png",
+      "sha256": "417b5ab8556e93b2ca9345ad17cccb97296b344c24f6d08154df6f349cf0c6ce",
+      "bytes": 20908
+    },
+    {
+      "path": "native/build/gpu-scene-cJTsQn/probe-reflection.png",
+      "sha256": "f638bed06e7c1ae85a105a4dc1d6b2d3c324df131139eb142e825b8845702e7f",
+      "bytes": 20909
+    },
+    {
+      "path": "tools/check-reflection-probes.mjs",
+      "sha256": "9cd6765a19fa01391876e0b8b65ef0709fbc010cde3ed0b13acbb4db6f1e3f70",
+      "bytes": 5803
+    },
+    {
+      "path": "tools/native-probe-fixture.mjs",
+      "sha256": "3760fed2de64f1603883eed1ba7cf28cf8f3861625359f3a2d780b4cf97e01cb",
+      "bytes": 6604
+    },
+    {
+      "path": "tools/check-native-scene-window.mjs",
+      "sha256": "95a363918c10f91d8162b3d5da3a69cb90f9387e9c34de3cf5d47443b53bdfad",
+      "bytes": 34599
+    },
+    {
+      "path": "tools/check-gpu-scene.mjs",
+      "sha256": "233554ecddc709137d3056961f5da6482edc9e3c7555971c6faa790e61a42979",
+      "bytes": 71863
+    },
+    {
+      "path": "native/tests/scene-probes.hpp",
+      "sha256": "a3f03447fd78a7f4bf8a3b0e85ac0f2a9af15121db30f4535c39388fb9533e35",
+      "bytes": 4166
+    },
+    {
+      "path": "native/tests/scene-render.cpp",
+      "sha256": "8f0843a9681155e3392cf51dd0ad56cd164fe358d3092f916d45013085668ff3",
+      "bytes": 19575
+    }
+  ],
+  "checks": {
+    "shared": "node tools/check-reflection-probes.mjs PASS; validation, views, priority, refresh, shared uniforms/restoration, sky error restoration, TSL XYZ color",
+    "generated": "node tools/generate-api.mjs --check PASS",
+    "schema": "ReflectionProbe fields and nativeResources read from engineSchema PASS",
+    "gpu": "node tools/check-native-scene-render.mjs PASS; existing54 HLSL nodes and native regression; explicit far-clipped sky assertion executed",
+    "desktopBuild": "node tools/build-desktop.mjs PASS",
+    "windows": "node tools/check-native-scene-window.mjs PASS",
+    "webgl": "node tools/check-gpu-scene.mjs --probes-only --webgl PASS",
+    "webgpu": "node tools/check-gpu-scene.mjs --probes-only PASS"
+  },
+  "evidence": {
+    "gpu": {
+      "automaticReadbacks": 0,
+      "blend": [
+        99,
+        99,
+        0
+      ],
+      "boundsAndIntensityPixel": true,
+      "boxProjectionPixel": true,
+      "diffuse": [
+        0,
+        137,
+        0
+      ],
+      "ggxRoughnessPixel": true,
+      "probeBytes32": 118912,
+      "projected": [
+        0,
+        0,
+        255
+      ],
+      "rough": [
+        116,
+        0,
+        104
+      ],
+      "shDiffusePixel": true,
+      "sharedResourceRelease": true,
+      "sharp": [
+        255,
+        0,
+        0
+      ],
+      "sixFaceHDRCapture": true,
+      "staticReuse": true,
+      "twoProbeBlendPixel": true,
+      "validation": true
+    },
+    "windows": {
+      "bright": [
+        252,
+        120,
+        108,
+        255
+      ],
+      "dark": [
+        84,
+        101,
+        96,
+        255
+      ],
+      "capturesBefore": 1,
+      "capturesAfter": 2,
+      "staticReuse": true,
+      "releasedProbes": 0,
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "webgl": {
+      "bright": [
+        255,
+        155,
+        87,
+        255
+      ],
+      "dark": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "released": {
+        "count": 0
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "webgpu": {
+      "bright": [
+        255,
+        155,
+        87,
+        255
+      ],
+      "dark": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "released": {
+        "count": 0
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "resourceContract": {
+    "native": "HDR six-face capture; GGX compute mips; GPU SH9; shared BRDF LUT; filter16B CB3 and draw128B CB3; no automatic readback; two selected probes; existing geometry/deformation/instance resource ownership",
+    "browser": "Three r180 PMREM; one selected probe per material; authored uniform/hooks shared while probe state separate",
+    "default128ProbeBytesEstimate": 1900672,
+    "probe32Bytes": 118912,
+    "sharedBrdfBytes": 131072,
+    "excludes": "constant buffers, driver alignment, process/GPU whole memory",
+    "firstCapture": "synchronous six faces/filter submissions, no time slicing; high resolution/count can delay frames",
+    "disabled": "no lazy probe allocations, scene reset releases",
+    "sceneObjectCap": null
+  },
+  "retainedFailures": [
+    {
+      "path": "native/build/probes-gpu-093.log",
+      "sha256": "e426b521d7fb7d6995496e3c2075fd61ab4dca73158f568eb80ba0728adbb1dd",
+      "bytes": 57159,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-093.log",
+      "sha256": "be1b35f2a95891e3e32d94a19876b4aed3519b3c2f7c38f0712dd0c623ace33c",
+      "bytes": 662,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-base-093.log",
+      "sha256": "f4cc78b89c3721beeed2e052fb50b81bec76567abe98d6e248d058bc6274376a",
+      "bytes": 663,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-cache-093.log",
+      "sha256": "c11e2d6ead399b01b1c0f197a5b02719be4acee772e5250b423058a1569cfb83",
+      "bytes": 663,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-diagnosis-093.log",
+      "sha256": "444389667fb4de80ae3e7eae56ae7b0b872c677838bacc4093ef20705759d793",
+      "bytes": 1769,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-direction-093.log",
+      "sha256": "7f3ae7990db892f7bcf05ca4d49cf2dd1220a0bd59ec876400a289d6866565b7",
+      "bytes": 663,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-node-093.log",
+      "sha256": "27d1216b8390ddb46c268699b394c27f0468a609b6f9c4b766f01a683a263a0d",
+      "bytes": 663,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-webgpu-shader-093.log",
+      "sha256": "56cd078266676ef9a55bd60deab2ab997afce6968b7fcba0fcab3bd0477f573e",
+      "bytes": 23820,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-window-093.log",
+      "sha256": "dccf03ddc59022cf1206f0de338c7fe241c631b16026807b097ae4eaad80e61b",
+      "bytes": 1062,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-window-final-pass-093.log",
+      "sha256": "fe82752260acfffd8ed8bee2a9525eeb9d73e55b785941158d3bf958abe713b5",
+      "bytes": 756,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-window-pack-093.log",
+      "sha256": "100dce48cc15be3f2a8f2b6e234fba40b87b06c3f026fa9458f29e91b0de4395",
+      "bytes": 696,
+      "retained": true
+    },
+    {
+      "path": "native/build/probes-window-pivot-093.log",
+      "sha256": "42571e66bf088bd12f0d5cc157e964d695391684709133f7d185285f001a3c3b",
+      "bytes": 699,
+      "retained": true
+    }
+  ],
+  "incidentalDiscovery": {
+    "webgpuColor": "Color RGB supplied to vec3 generated XYZ zeros; converted to three actual numeric components in shared material path; GPU screenshot and assertion regression",
+    "webgpuNodes": "custom LightingNode was wrapped in EnvironmentNode; setupEnvironment binding/restoration corrected; mixed direction calculation/cache/sign components corrected",
+    "fixture": "invalid vec3 node kind corrected to vector3; scene profile inclusion fixed; cube pivot at base corrected; absolute color threshold changed to red dominance and on/off delta after actual exposure pixels",
+    "scopeError": "temporary sceneRendering time tracking referenced absent scene; changed to factory clock transferred through prepare2D and reverified; failed evidence retained"
+  },
+  "remaining": [
+    "multi-bounce GI/lightmap/APV/DDGI; SSR/planar/ray-traced reflections",
+    "sphere/oriented volume, more-than-two native or multi-probe browser blending; large mesh origin selection",
+    "baked persistence/HDRI/time slicing/per-probe dirty sets/culling masks",
+    "native general cube/array/volume node textures; clearcoat/transmission and added postprocess",
+    "browser anisotropy/clearcoat-specific box-reflection normal and roughness",
+    "PC120/mobile60 game performance, process RAM/mobile hardware/iOS/heat and full corpus"
+  ],
+  "claims": {
+    "pixelBehaviorVerified": true,
+    "wholeGameFps": false,
+    "wholeMemoryMeasured": false,
+    "mobileHardware": false,
+    "wholeDocumentationRead": false,
+    "userProjectsTouched": false,
+    "userWindowTouched": false,
+    "userInstallUpdated": false
+  }
+}

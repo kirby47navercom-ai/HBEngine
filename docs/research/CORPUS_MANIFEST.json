@@ -77,6 +77,10 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/SecondaryTextures.html",
           "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html",
+          "record": "docs/research/NATIVE_PROBES_093.json"
         }
       ]
     },
@@ -122,6 +126,10 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ParticleSystemRenderer-maxParticleSize.html",
           "record": "docs/research/PARTICLE_SORT_037.md"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ReflectionProbe.RenderProbe.html",
+          "record": "docs/research/NATIVE_PROBES_093.json"
         }
       ]
     },
@@ -321,6 +329,10 @@
         {
           "url": "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US",
           "record": "docs/research/NATIVE_PARTICLES_091.json"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/reflections-captures-in-unreal-engine",
+          "record": "docs/research/NATIVE_PROBES_093.json"
         }
       ]
     },
@@ -1389,6 +1401,14 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_depth_stencil_desc",
           "record": "docs/research/NATIVE_2D_092.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro",
+          "record": "docs/research/NATIVE_PROBES_093.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_tex2d_array_uav",
+          "record": "docs/research/NATIVE_PROBES_093.json"
         }
       ],
       "openIssues": [

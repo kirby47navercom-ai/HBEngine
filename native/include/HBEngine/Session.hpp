@@ -51,6 +51,9 @@ inline Color Components::GetColor(Actor* t,const std::string& c,const std::strin
 inline void Components::SetVector(Actor* t,const std::string& c,const std::string& p,const Vec3& value){Set(t,c,p,value);}
 inline void Components::SetColor(Actor* t,const std::string& c,const std::string& p,const Color& value){Set(t,c,p,value);}
 inline void Movement2D::SetSpeed(Actor* t,float v){engineCommand("movement2dSpeed",{{"target",bridgeId(t)},{"speed",v}});}
+inline void ReflectionProbes::Refresh(Actor* t,const std::string& c){engineCommand("reflectionProbeRefresh",{{"target",bridgeId(t)},{"component",c}});auto& p=bridgeComponent(t,c);p["refreshVersion"]=(p.value("refreshVersion",0)+1)%16777216;}
+inline void ReflectionProbes::SetIntensity(Actor* t,float v,const std::string& c){engineCommand("reflectionProbeIntensity",{{"target",bridgeId(t)},{"component",c},{"value",v}});bridgeComponent(t,c)["intensity"]=v;}
+inline void ReflectionProbes::SetDiffuseIntensity(Actor* t,float v,const std::string& c){engineCommand("reflectionProbeDiffuse",{{"target",bridgeId(t)},{"component",c},{"value",v}});bridgeComponent(t,c)["diffuseIntensity"]=v;}
 inline void Camera::SetOrthoSize(Actor* t,float v){engineCommand("cameraOrthoSize",{{"target",bridgeId(t)},{"size",v}});bridgeComponent(t,"Camera")["orthographicSize"]=v;}
 inline void Camera::Follow(Actor* t,Actor* v){engineCommand("cameraFollow",{{"target",bridgeId(t)},{"subject",bridgeId(v)}});}
 inline std::string Projectiles::FireText(const std::string& json){if(json.size()>262144)throw std::runtime_error("projectile JSON limit");auto pattern=Json::parse(json);const auto handle="projectiles_"+bridgeGameSession+"_"+std::to_string(++bridgeAudioSerial);pattern["handle"]=handle;engineCommand("projectileFire",{{"json",pattern.dump()}});return handle;}

@@ -94,6 +94,13 @@ public:
     static void Set(Actor* target,const std::string& component,const std::string& property,const Json& value){SetText(target,component,property,value.dump());}
 };
 HB_CLASS()
+class ReflectionProbes : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeRefresh", KoreanName="반사 프로브 갱신", Category="렌더링") static void Refresh(Actor* target,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeIntensity", KoreanName="반사 강도 지정", Category="렌더링") static void SetIntensity(Actor* target,float value,const std::string& component="ReflectionProbe");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="reflectionProbeDiffuse", KoreanName="간접광 강도 지정", Category="렌더링") static void SetDiffuseIntensity(Actor* target,float value,const std::string& component="ReflectionProbe");
+};
+HB_CLASS()
 class Movement2D : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="movement2dSpeed", KoreanName="2D 이동 속도 지정", Category="2D 이동") static void SetSpeed(Actor* target,float speed);

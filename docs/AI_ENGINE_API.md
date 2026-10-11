@@ -1,5 +1,7 @@
 # 사람과 AI가 함께 편집하는 HBEngine
 
+2026-10-11: [반사 프로브](NATIVE_PROBES_093.md). ReflectionProbe의 실제 제작 필드/검증과 ReflectionProbes C++·BP3, 기존 Components/document.patch·Undo/Save를 공유해요. DirectX HDR/GGX compute/SH9/BRDF·box/fade·두 프로브와 브라우저 PMREM·한 프로브, 자원 진단/해제·실행 검증 및 미구현 경계를 명시해요.
+
 2026-10-06: [실행 중 생성·찾기 계약](AURIC_RUNTIME_SPAWN.md). 공용 C++ 선언에서 생성한 Scene Spawn/Destroy/클래스·태그·ID 찾기 노드를 기존 그래프 API로 편집해요. BP 부모/클래스 기본값·Prefab 로컬 ID/컴포넌트 오브젝트 참조·PooledActor.maxInactive는 사람 UI와 동일한 저장 schema와 검증을 사용해요. 기존 ActorPool API도 유지해요.
 
 2026-10-05 추가: [구간 알림·이벤트 인자](ANIMATION_NOTIFIES.md). schema.animationGraph.sync.notifyStates/notifyParameters는 실제 이름/자료형/한도·Begin/Tick/End/수명 계약을 제공해요. 문서 패치·revision/dryRun·Undo/Save는 사람과 같고 runtime.state의 animationGraph.notifyStates에 현재 인스턴스/시계/진행률을 제공해요.

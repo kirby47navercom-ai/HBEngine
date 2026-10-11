@@ -1,7 +1,21 @@
-import {MeshBasicNodeMaterial,Color,Vector3,BackSide,PostProcessing} from 'three/webgpu';
-import {uniform,positionLocal,positionWorld,cameraPosition,vec4,float,fog,rangeFogFactor,mix} from 'three/tsl';
+import {MeshBasicNodeMaterial,Color,Vector3,Vector4,BackSide,PostProcessing,LightingNode} from 'three/webgpu';
+import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,rangeFogFactor,mix,pmremTexture,normalWorld,normalView,positionViewDirection,roughness,cameraViewMatrix,cache} from 'three/tsl';
 import {bloom} from 'three/addons/tsl/display/BloomNode.js';
 import {pass} from 'three/tsl';
+
+export function createGPUProbeEnvironment(probe,map){
+  const center=uniform(new Vector3()),minimum=uniform(new Vector3()),maximum=uniform(new Vector3()),options=uniform(new Vector4()),environment=pmremTexture(map);
+  class ProbeEnvironment extends LightingNode{
+    setup(builder){
+      const r=mix(positionViewDirection.negate().reflect(normalView),normalView,roughness.mul(roughness)).normalize().transformDirection(cameraViewMatrix),safe=r.abs().max(.000001).mul(vec3(...[r.x,r.y,r.z].map(v=>v.greaterThanEqual(0).select(1,-1)))),t=maximum.sub(positionWorld).div(safe).max(minimum.sub(positionWorld).div(safe)),box=positionWorld.add(r.mul(t.x.min(t.y).min(t.z))).sub(center),direction=options.y.greaterThan(.5).select(box,r);
+      const edge=positionWorld.sub(minimum).min(maximum.sub(positionWorld)),distance=edge.x.min(edge.y).min(edge.z),fade=distance.lessThan(0).select(float(0),options.z.greaterThan(0).select(distance.div(options.z.max(.000001)).clamp(0,1),float(1))),intensity=options.w.mul(fade);
+      const radiance=environment.context({getUV:()=>direction,getTextureLevel:()=>roughness}).mul(intensity),irradiance=environment.context({getUV:()=>normalWorld,getTextureLevel:()=>float(1)}).mul(Math.PI).mul(intensity).mul(options.x);
+      builder.context.radiance.addAssign(cache(radiance));builder.context.iblIrradiance.addAssign(cache(irradiance));
+      if(builder.context.lightingModel.clearcoatRadiance)builder.context.lightingModel.clearcoatRadiance.addAssign(radiance);
+    }
+  }
+  const state={node:new ProbeEnvironment(),update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.minimum);maximum.value.fromArray(p.maximum);options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
+}
 import {bloomSettings} from './bloom-rendering.js';
 
 export function createGPUSkyMaterial(source){

@@ -1,3 +1,7 @@
+## 093 — 반사 프로브 지정 읽기/실행
+
+Unity Inspector/RenderProbe, Unreal capture 구역/Epic split-sum 구역, Stanford SH 구역, Microsoft cube/array UAV를 읽고 원문7 SHA/부분 읽기/미독을 [093](../NATIVE_PROBES_093.md)에 기록했다. 캡처 HDR/GGX compute/SH9/BRDF·box/fade·C++/BP/AI 제작을 실제 GPU/Windows/WebGL/WebGPU에서 검증했다. Sphere/oriented/baked/HDRI/time slicing/multi-bounce/SSR·browser multiple-probe 및 남은 셰이딩·전체 corpus/FPS/RAM/실기기 gate는 미승격이다.
+
 ## 092 — 네이티브2D 지정 읽기/실행
 
 Unity6000.0 자체 제작/광원 속성/그림자/마스크/secondary 본문·표5와 Microsoft blend/stencil 본문·선언2를 읽고 snapshot/SHA·부분 읽기와 연결 API/미디어 미독을 [092](../NATIVE_2D_092.md)에 남겼다. 기존 공용 마스크·Light2D·composite/cookie/volume과 C++/BP를 DirectX에 연결하고 실제 GPU/Windows·cache/resize/release를 검증했다. Unity back-exclusive와 HB back-inclusive 범위, global 볼륨 guide/속성 표 차이, 2D sampler 예약3개를 명시한다. 전체 corpus·독립 검증·누적 엔진·FPS/RAM/실기기 gate는 미승격이다.
