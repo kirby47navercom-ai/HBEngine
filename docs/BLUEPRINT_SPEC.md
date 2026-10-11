@@ -373,3 +373,7 @@ Windows 빌드의 `windowsRenderer: d3d11`은 기존 BP 입력/이동/머테리�
 ## 088 — 후처리 제작과 C++/BP 공용 연결
 
 PostProcessVolume의 활성화·우선순위·블룸 임계값/강도/반경/해상도 배율을 기존 컴포넌트 서비스로 D3D11 HDR/compute에 연결했다. 별도 노드를 복제하지 않는다. 실제 C++ 설정과 N/B 키 BP가 2D SVG·3D HLSL 머테리얼의 번짐·타깃 할당/해제에 도달하는 증거는 [088](NATIVE_BLOOM_088.md). AI Windows 렌더 스키마의 지원/후속 범위도 갱신했다.
+
+## 089 — 투사체 네이티브 공용 연결
+
+기존 projectileFire/projectileClear와 C++ Projectiles::FireText/Clear를 D3D11 스타일별 compact GPU 배치로 연결했다. 이동·수명·충돌·소유자·JSON 제작 흐름은 공용 서비스를 사용하며 별도 BP 노드를 복제하지 않는다. 실제 P 키 BP/C++·전체/분할 SVG·2049 단일배치·자원 수명 증거는 [089](NATIVE_INSTANCING_089.md). GPU 시뮬레이션이나 전체 FPS의 완료를 의미하지 않는다.

@@ -1279,6 +1279,18 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-advanced-stages-compute-shader",
           "record": "docs/research/NATIVE_BLOOM_088.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexedinstanced",
+          "record": "docs/research/NATIVE_INSTANCING_089.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/sm5-object-structuredbuffer",
+          "record": "docs/research/NATIVE_INSTANCING_089.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_cpu_access_flag",
+          "record": "docs/research/NATIVE_INSTANCING_089.json"
         }
       ],
       "openIssues": [

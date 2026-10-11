@@ -7,6 +7,11 @@ struct SceneVertex {
     std::array<float,2> uv{};
     std::array<float,4> color{1,1,1,1};
 };
+struct SceneInstance {
+    Matrix world=identity,normal=identity;
+    std::array<float,4> color{1,1,1,1};
+};
+static_assert(sizeof(SceneInstance)==144,"HLSL instance buffer layout");
 struct SceneLight {
     // position.w: directional=0, point=1, spot=2, hemisphere=3; direction.w: range (0=infinite).
     std::array<float,4> position{},direction{0,0,1,0},color{1,1,1,1},cone{1,0,2,0};
@@ -24,6 +29,7 @@ struct SceneMaterial {
     ParticleBlend blend=ParticleBlend::Opaque;
     std::array<std::array<float,4>,6> uvX{{{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0}}},uvY{{{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0}}};
     std::array<float,2> normalScale{1,1};
+    std::array<float,4> shotShape{1,1,0,0};
     bool sky=false;
     std::array<float,4> skyTop{},skyHorizon{},sunDirection{0,1,0,350},sunColor{};
 };
@@ -43,6 +49,17 @@ struct SceneFrame {
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class SceneRenderer {
 public:
+    struct Instances {
+        friend class SceneRenderer;
+    private:
+        std::array<detail::Com<ID3D11Buffer>,3> buffers;
+        std::array<detail::Com<ID3D11ShaderResourceView>,3> views;
+        ID3D11Device* owner=nullptr;std::uint32_t capacity=0,count=0,stride=sizeof(SceneInstance);std::size_t slot=0;
+    public:
+        Instances()=default;Instances(Instances&&)=default;Instances& operator=(Instances&&)=default;
+        std::uint64_t bytes() const{return std::uint64_t(capacity)*stride*buffers.size();}
+        bool positionsOnly() const{return stride==16;}
+    };
     struct Mesh {
         friend class SceneRenderer;
     private:
@@ -107,19 +124,25 @@ private:
         Matrix viewProjection,world,normal;
         std::array<float,4> color,emissive,surface,eye,ambient;
         std::array<std::array<float,4>,6> uvX,uvY;
-        std::array<float,4> flags,normalScale,fog,fogRange,heightFog,skyTop,skyHorizon,sunDirection,sunColor;
+        std::array<float,4> flags,normalScale,fog,fogRange,heightFog,skyTop,skyHorizon,sunDirection,sunColor,shotShape;
     };
     template<class T> static bool finite(const T& a){return std::all_of(a.begin(),a.end(),[](float v){return std::isfinite(v);});}
+    void uploadInstances(Instances& target,const void* data,std::size_t count){
+        if(target.owner!=gpu.device.p||count>target.capacity)throw std::runtime_error("Instance data or owner invalid");
+        std::lock_guard<std::mutex> lock(gpu.mutex);if(count){const auto next=(target.slot+1)%target.buffers.size();D3D11_BOX box{0,0,0,static_cast<UINT>(count*target.stride),1,1};gpu.context->UpdateSubresource(target.buffers[next].p,0,&box,data,0,0);target.slot=next;}target.count=static_cast<UINT>(count);
+    }
     static constexpr const char* shader=R"HLSL(
-cbuffer Settings:register(b0){float4x4 vp,world,normalMatrix;float4 tint,emissive,surface,eye,ambient,uvX[6],uvY[6],flags,normalScale,fog,fogRange,heightFog,skyTop,skyHorizon,sunDirection,sunColor;};
+cbuffer Settings:register(b0){float4x4 vp,world,normalMatrix;float4 tint,emissive,surface,eye,ambient,uvX[6],uvY[6],flags,normalScale,fog,fogRange,heightFog,skyTop,skyHorizon,sunDirection,sunColor,shotShape;};
 struct Light{float4 position,direction,color,cone;};StructuredBuffer<Light> lights:register(t6);
 Texture2D baseMap:register(t0),normalMap:register(t1),roughMap:register(t2),metalMap:register(t3),emissiveMap:register(t4),aoMap:register(t5);
 SamplerState baseSampler:register(s0),normalSampler:register(s1),roughSampler:register(s2),metalSampler:register(s3),emissiveSampler:register(s4),aoSampler:register(s5);
 Texture2DArray<float> shadowMap:register(t24);
 struct Shadow{float4x4 vp;float4 parameters,size;};StructuredBuffer<Shadow> shadows:register(t25);
+struct Instance{float4x4 world,normal;float4 color;};StructuredBuffer<Instance> instances:register(t26);
+StructuredBuffer<float4> shots:register(t27);
 struct Input{float3 position:POSITION;float3 normal:NORMAL;float2 uv:TEXCOORD;float4 color:COLOR;};
-struct Output{float4 position:SV_POSITION;float3 at:TEXCOORD0;float3 normal:TEXCOORD1;float2 uv:TEXCOORD2;float4 color:COLOR;};
-Output VS(Input i){Output o;float4 at=mul(world,float4(i.position,1));o.position=mul(vp,at);o.at=at.xyz;o.normal=mul((float3x3)normalMatrix,i.normal);o.uv=i.uv;o.color=flags.w==1?i.color:float4(1,1,1,1);return o;}
+struct Output{float4 position:SV_POSITION;float3 at:TEXCOORD0;float3 normal:TEXCOORD1;float2 uv:TEXCOORD2;float4 color:COLOR;float4 instanceColor:TEXCOORD3;};
+Output VS(Input i,uint id:SV_InstanceID){Output o;float4 position=float4(i.position,1);float3 normal=i.normal;o.instanceColor=1;if((uint)flags.x&256){Instance item=instances[id];position=mul(item.world,position);normal=mul((float3x3)item.normal,normal);o.instanceColor=item.color;}else if((uint)flags.x&512){float2 offset=i.position.xy*shotShape.xy;position=float4(shots[id].xyz+(shotShape.z>0?float3(offset.x,0,offset.y):float3(offset,0)),1);if(shotShape.z>0)normal=float3(0,-1,0);}float4 at=mul(world,position);o.position=mul(vp,at);o.at=at.xyz;o.normal=mul((float3x3)normalMatrix,normal);o.uv=i.uv;o.color=flags.w==1?i.color:float4(1,1,1,1);return o;}
 float2 mapUv(float2 uv,uint slot){return float2(dot(uvX[slot].xyz,float3(uv,1)),dot(uvY[slot].xyz,float3(uv,1)));}
 float3 safeNormal(float3 v){return v*rsqrt(max(dot(v,v),1e-12));}
 float shadowFactor(Light light,float3 position,float3 normal){
@@ -141,6 +164,7 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
  float3 emit=emissive.rgb*emissive.a*((maps&16)?emissiveMap.Sample(emissiveSampler,mapUv(i.uv,4)).rgb:1);
  float ao=(maps&32)?aoMap.Sample(aoSampler,mapUv(i.uv,5)).r:1;
  // HB_MATERIAL_EVAL
+ base*=i.instanceColor;
  clip(base.a-surface.z);float3 outColor=base.rgb;
  if(surface.w<.5){outColor=base.rgb*ambient.rgb*ao+emit;float3 v=safeNormal(eye.xyz-i.at),f0=lerp(.04,base.rgb,metal);float nv=max(dot(n,v),1e-4);
   for(uint j=0;j<(uint)flags.y;j++){Light light=lights[j];if(light.position.w>2.5){outColor+=base.rgb*lerp(light.cone.rgb,light.color.rgb,dot(n,safeNormal(light.direction.xyz))*.5+.5)*light.color.a*ao;continue;}float3 delta=light.position.xyz-i.at;float dist=length(delta);float3 l=light.position.w<.5?safeNormal(light.direction.xyz):safeNormal(delta);float attenuation=1;
@@ -170,6 +194,20 @@ public:
         for(const auto& v:vertices)if(!finite(v.position)||!finite(v.normal)||!finite(v.uv)||!finite(v.color))throw std::runtime_error("Scene vertex invalid");
         for(auto i:indices)if(i>=vertices.size())throw std::runtime_error("Scene index out of bounds");
         std::lock_guard<std::mutex> lock(gpu.mutex);Mesh result;result.owner=gpu.device.p;result.count=static_cast<std::uint32_t>(indices.size());D3D11_BUFFER_DESC desc{};desc.Usage=D3D11_USAGE_IMMUTABLE;desc.ByteWidth=static_cast<UINT>(vertices.size()*sizeof(SceneVertex));desc.BindFlags=D3D11_BIND_VERTEX_BUFFER;D3D11_SUBRESOURCE_DATA data{vertices.data(),0,0};detail::check(gpu.device->CreateBuffer(&desc,&data,&result.vertices.p),"Scene vertices");desc.ByteWidth=static_cast<UINT>(indices.size()*4);desc.BindFlags=D3D11_BIND_INDEX_BUFFER;data.pSysMem=indices.data();detail::check(gpu.device->CreateBuffer(&desc,&data,&result.indices.p),"Scene indices");++uploads_;return result;
+    }
+    Instances createInstances(std::size_t capacity,bool positionsOnly=false){
+        const UINT stride=positionsOnly?16:sizeof(SceneInstance);if(!capacity||capacity>UINT_MAX/stride)throw std::runtime_error("Instance buffer capacity invalid");
+        std::lock_guard<std::mutex> lock(gpu.mutex);Instances out;out.owner=gpu.device.p;out.capacity=static_cast<UINT>(capacity);out.stride=stride;D3D11_BUFFER_DESC desc{};desc.ByteWidth=out.capacity*stride;desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_SHADER_RESOURCE;desc.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;desc.StructureByteStride=stride;for(std::size_t i=0;i<out.buffers.size();i++){detail::check(gpu.device->CreateBuffer(&desc,nullptr,&out.buffers[i].p),"Instance frame buffer");detail::check(gpu.device->CreateShaderResourceView(out.buffers[i].p,nullptr,&out.views[i].p),"Instance frame view");}++uploads_;return out;
+    }
+    void setInstances(Instances& target,const std::vector<SceneInstance>& values){
+        if(target.stride!=sizeof(SceneInstance))throw std::runtime_error("Instance data format invalid");
+        for(const auto& item:values)if(!finite(item.world)||!finite(item.normal)||!finite(item.color))throw std::runtime_error("Instance values must be finite");
+        uploadInstances(target,values.data(),values.size());
+    }
+    void setShotPositions(Instances& target,const std::vector<std::array<float,4>>& values){
+        if(target.stride!=16)throw std::runtime_error("Shot position format invalid");
+        for(const auto& item:values)if(!finite(item))throw std::runtime_error("Shot positions must be finite");
+        uploadInstances(target,values.data(),values.size());
     }
     Texture createTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& rgba,bool srgb=true,bool mipmaps=true){
         if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||rgba.size()!=std::size_t(width)*height*4)throw std::runtime_error("Scene texture dimensions or bytes invalid");
@@ -217,13 +255,14 @@ public:
         {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}frame=value;surface.clear(value.clear);bloom.begin(surface.width(),surface.height(),value.viewport,value.bloom,value.clear);draws_=shadowDraws_=0;
         if(value.viewportClear){if(!background.vertices.p)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
-    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={}){
-        const auto blend=static_cast<std::size_t>(material.blend);if(mesh.owner!=gpu.device.p||!finite(world)||!finite(normal)||!finite(material.color)||!finite(material.emissive)||!finite(material.normalScale)||!finite(material.skyTop)||!finite(material.skyHorizon)||!finite(material.sunDirection)||!finite(material.sunColor)||!std::isfinite(material.roughness)||!std::isfinite(material.metalness)||!std::isfinite(material.alphaCutoff)||blend>=3||first>mesh.count)throw std::runtime_error("Scene draw invalid");for(std::size_t i=0;i<6;i++)if(!finite(material.uvX[i])||!finite(material.uvY[i]))throw std::runtime_error("Scene texture transform invalid");if(!count)count=mesh.count-first;if(count>mesh.count-first||count%3||first%3)throw std::runtime_error("Scene draw range invalid");
+    void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr){
+        if(instances){if(instances->owner!=gpu.device.p)throw std::runtime_error("Instance draw owner invalid");if(!instances->count)return;}
+        const auto blend=static_cast<std::size_t>(material.blend);if(mesh.owner!=gpu.device.p||!finite(world)||!finite(normal)||!finite(material.color)||!finite(material.emissive)||!finite(material.normalScale)||!finite(material.shotShape)||!finite(material.skyTop)||!finite(material.skyHorizon)||!finite(material.sunDirection)||!finite(material.sunColor)||!std::isfinite(material.roughness)||!std::isfinite(material.metalness)||!std::isfinite(material.alphaCutoff)||blend>=3||first>mesh.count)throw std::runtime_error("Scene draw invalid");for(std::size_t i=0;i<6;i++)if(!finite(material.uvX[i])||!finite(material.uvY[i]))throw std::runtime_error("Scene texture transform invalid");if(!count)count=mesh.count-first;if(count>mesh.count-first||count%3||first%3)throw std::runtime_error("Scene draw range invalid");
         std::array<ID3D11ShaderResourceView*,128> views{};std::array<ID3D11SamplerState*,16> states{};std::uint32_t mask=0;for(std::size_t i=0;i<maps.size();i++){if(sampling[i]>=samplers.size()||(maps[i]&&maps[i]->owner!=gpu.device.p))throw std::runtime_error("Scene texture owner or sampler invalid");if(maps[i]){views[i]=maps[i]->view.p;mask|=1u<<i;}states[i]=samplers[sampling[i]].p;}views[6]=lightView.p;const UINT viewCount=26,samplerCount=program?static_cast<UINT>(programMaps.size()):6;if(program){if(program->owner!=gpu.device.p||programMaps.size()>D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT||programMaps.size()!=programSampling.size())throw std::runtime_error("Material program bindings invalid");views[7]=program->values.p;for(std::size_t i=0;i<programMaps.size();i++){if(!programMaps[i]||programMaps[i]->owner!=gpu.device.p||programSampling[i]>=samplers.size())throw std::runtime_error("Material texture owner or sampler invalid");views[8+i]=programMaps[i]->view.p;states[i]=samplers[programSampling[i]].p;}}
-        views[24]=activeShadow<0?shadowView.p:nullptr;views[25]=shadowDataView.p;if(material.receiveShadow)mask|=64u;if(activeShadow<0&&bloom.active()){mask|=128u;bloom.markDirty();}
-        std::lock_guard<std::mutex> lock(gpu.mutex);Constants data{frame.viewProjection,world,normal,material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lightCount),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor};auto* cb=constants[slot].p;slot=(slot+1)%constants.size();D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(gpu.context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Scene draw constants");std::memcpy(mapped.pData,&data,sizeof(data));gpu.context->Unmap(cb,0);
+        views[24]=activeShadow<0?shadowView.p:nullptr;views[25]=shadowDataView.p;if(material.receiveShadow)mask|=64u;if(activeShadow<0&&bloom.active()){mask|=128u;bloom.markDirty();}if(instances)mask|=instances->stride==16?512u:256u;
+        std::lock_guard<std::mutex> lock(gpu.mutex);Constants data{frame.viewProjection,world,normal,material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lightCount),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor,material.shotShape};auto* cb=constants[slot].p;slot=(slot+1)%constants.size();D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(gpu.context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Scene draw constants");std::memcpy(mapped.pData,&data,sizeof(data));gpu.context->Unmap(cb,0);
         const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;D3D11_VIEWPORT viewport{custom?rect[0]:0,custom?rect[1]:0,custom?rect[2]:float(surface.width()),custom?rect[3]:float(surface.height()),0,1};const auto crop=frame.scissor.value_or(std::array<float,4>{viewport.TopLeftX,viewport.TopLeftY,viewport.Width,viewport.Height});D3D11_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};auto* target=bloom.active()?bloom.target():surface.target.p;gpu.context->OMSetRenderTargets(activeShadow<0?1:0,activeShadow<0?&target:nullptr,activeShadow<0?surface.depthTarget.p:shadowTargets[activeShadow].p);gpu.context->OMSetBlendState(surface.blends[activeShadow<0?blend:2].p,nullptr,UINT_MAX);gpu.context->OMSetDepthStencilState(surface.depths[activeShadow<0?((material.depthTest?1:0)|(material.depthWrite?2:0)):3].p,0);gpu.context->RSSetState((activeShadow<0?rasters:shadowRasters)[material.doubleSided?2:material.backSide?1:0].p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&scissor);
-        UINT stride=sizeof(SceneVertex),offset=0;auto* vb=mesh.vertices.p;gpu.context->IASetInputLayout(layout.p);gpu.context->IASetVertexBuffers(0,1,&vb,&stride,&offset);gpu.context->IASetIndexBuffer(mesh.indices.p,DXGI_FORMAT_R32_UINT,0);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(activeShadow<0?(program?program->shader.p:pixel.p):(program?program->shadowShader.p:shadowPixel.p),nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->PSSetSamplers(0,samplerCount,states.data());gpu.context->DrawIndexed(count,first,0);views.fill(nullptr);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->OMSetRenderTargets(0,nullptr,nullptr);if(activeShadow<0)++draws_;else ++shadowDraws_;detail::check(gpu.device->GetDeviceRemovedReason(),"Scene device lost");
+        UINT stride=sizeof(SceneVertex),offset=0;auto* vb=mesh.vertices.p;std::array<ID3D11ShaderResourceView*,2> instanceViews{};if(instances)instanceViews[instances->stride==16?1:0]=instances->views[instances->slot].p;gpu.context->IASetInputLayout(layout.p);gpu.context->IASetVertexBuffers(0,1,&vb,&stride,&offset);gpu.context->IASetIndexBuffer(mesh.indices.p,DXGI_FORMAT_R32_UINT,0);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->VSSetShaderResources(26,2,instanceViews.data());gpu.context->PSSetShader(activeShadow<0?(program?program->shader.p:pixel.p):(program?program->shadowShader.p:shadowPixel.p),nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->PSSetSamplers(0,samplerCount,states.data());if(instances)gpu.context->DrawIndexedInstanced(count,instances->count,first,0,0);else gpu.context->DrawIndexed(count,first,0);instanceViews.fill(nullptr);gpu.context->VSSetShaderResources(26,2,instanceViews.data());views.fill(nullptr);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->OMSetRenderTargets(0,nullptr,nullptr);if(activeShadow<0)++draws_;else ++shadowDraws_;detail::check(gpu.device->GetDeviceRemovedReason(),"Scene device lost");
     }
     void drawParticles(const Particles& particles,const ParticleStyle& style={}){if(activeShadow>=0||bloom.active())throw std::runtime_error("Particles require a native HDR/shadow scene adapter");surface.draw(particles,style);}
     void resize(std::uint32_t width,std::uint32_t height){surface.resize(width,height);}

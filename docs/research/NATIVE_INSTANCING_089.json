@@ -1,0 +1,251 @@
+{
+  "step": "089",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "draw-indexed-instanced",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexedinstanced",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawindexedinstanced",
+      "readScope": "API body syntax/parameters/remarks; per-instance vertex buffer needed only when input layout class uses it; linked interfaces/API unread",
+      "snapshot": "native/build/native-instance-research-89yaNt/draw-indexed-instanced.html",
+      "sha256": "5d2ec0e667ac620b7401e5dcf36bf4f839027a5cbddcdf80eaf71333dd37a3fb",
+      "retrievedAt": "2026-10-11T10:33:33.218Z",
+      "bytes": 51785,
+      "independentVerification": false
+    },
+    {
+      "id": "structured-buffer",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/sm5-object-structuredbuffer",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/sm5-object-structuredbuffer",
+      "readScope": "Technical body: UNKNOWN SRV format, shader model and supported stages; linked methods/interfaces unread",
+      "snapshot": "native/build/native-instance-research-89yaNt/structured-buffer.html",
+      "sha256": "bb2814d6dd82b4b2b52c8068d89ca8ab46ccd495b21aba16a6415c279f39c924",
+      "retrievedAt": "2026-10-11T10:33:33.297Z",
+      "bytes": 48865,
+      "independentVerification": false
+    },
+    {
+      "id": "cpu-access-flags",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_cpu_access_flag",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_cpu_access_flag",
+      "readScope": "Enum technical body/constants/remarks; CPU access flags cannot combine with MISC flags, so structured instance buffers use DEFAULT and UpdateSubresource; linked API unread",
+      "snapshot": "native/build/native-instance-research-89yaNt/cpu-access-flags.html",
+      "sha256": "37e9f0da366bd7c2759120ade4672afc8c973eac97a2bce5bca1cfeab79c01fe",
+      "retrievedAt": "2026-10-11T10:33:33.297Z",
+      "bytes": 50994,
+      "independentVerification": false
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/src/objects/InstancedMesh.js",
+      "readScope": "r180 selected getMatrixAt/setMatrixAt/setColorAt/dispose methods; not whole file or morph implementation",
+      "sha256": "f0dfa4a7d1738d5bdc282a8103dcbd051deb0c002277c11da3fb69e4e3b295a3",
+      "wholeFileRead": false,
+      "independentVerification": false
+    }
+  ],
+  "evidence": [
+    {
+      "file": "native/build/native-scene-LgxkK6/acceptance.json",
+      "sha256": "9c4bdf75b5c4c24ddd953399a370f319be17513ce49942fffaaa5a6aa43fa7e0",
+      "passed": true,
+      "checks": {
+        "alphaCutoutShadow": true,
+        "automaticReadbacks": 0,
+        "bloomComputePixel": true,
+        "bloomReuseRelease": true,
+        "bloomScissorBars": true,
+        "bloomThresholdExposure": true,
+        "compactShotBloom": true,
+        "compactShotXYXZ": true,
+        "compiledNodes": 54,
+        "constantBuffers": 3,
+        "depth": true,
+        "directionalShadowPixel": true,
+        "drawsPerFrame": 2049,
+        "gpuCompletionMeasured": false,
+        "heightFogPixel": true,
+        "hemisphereNormalPixel": true,
+        "hlslOpacityShadow": true,
+        "hlslParameterPixel": true,
+        "independentShadowLights": true,
+        "independentTextureUV": true,
+        "instanceCount2049SingleDraw": true,
+        "instanceFrameResources": 3,
+        "instanceValidation": true,
+        "instancedColorPixel": true,
+        "instancedShadowPixel": true,
+        "newUploadsDuring12Frames": 0,
+        "passed": true,
+        "pbrDirectional": true,
+        "pbrPoint": true,
+        "pbrSpotAndCone": true,
+        "pixelViewportClear": true,
+        "pointShadowFace": true,
+        "receiveShadowToggle": true,
+        "resize": true,
+        "separateScissor": true,
+        "shadowResourceRelease": true,
+        "spotShadowPixel": true,
+        "submitMsPer2049Draws": 3.930058333333333,
+        "unlitTexture": true,
+        "validation": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-ziaoRF/acceptance.json",
+      "sha256": "734456d4ebc88b7acee9cc30e14d116f7e4e6a499f1ea98a5d1d587a4d65900f",
+      "passed": true,
+      "checks": {
+        "svg": [
+          [
+            232,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            232,
+            255
+          ]
+        ],
+        "childAtlas": [
+          [
+            232,
+            0,
+            0,
+            255
+          ],
+          [
+            232,
+            0,
+            0,
+            255
+          ]
+        ],
+        "bp": [
+          [
+            232,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            232,
+            255
+          ]
+        ],
+        "background": [
+          39,
+          47,
+          52,
+          255
+        ],
+        "singleProjectileBytes": 48,
+        "singleProjectileCalls": 1,
+        "count2049": true,
+        "singleDraw": true,
+        "circle": true,
+        "reuse": true,
+        "release": true,
+        "finalInstanceBytes": 0,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "unit": {
+    "command": "node tools/check-projectile-rendering.mjs",
+    "passed": true,
+    "scope": "CPU authoring/loader mapping for GL and native factories, not actual GL draw",
+    "checks": [
+      "zero/full image rect",
+      "child slice resolve",
+      "UV/aspect",
+      "pending texture load disposed after clear"
+    ]
+  },
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "62e90cf87a11c332c9f1fd086f61511f30c734d2240f69ebedd1464055211169"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "a2fb6e53b2d7bf1139927e2bbf8b73f2c808c51b53357566c17520f46b22be9e"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "c86cf6b2b518db454f913dfbd7b872bd8fef779fc276ddd3d547b7370afb5a5e"
+    },
+    {
+      "file": "prototype/projectile-rendering.js",
+      "sha256": "39c5e4c82a20b0b19bbac17b76eaa61955e92b16e4b4cbca4a9341116bbbfaae"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "ade8a5e4a94a0bf801e0625daa6f4d4713662423ce53129ac9963796e17bc5c8"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "8f8f08339e55e21735e284289213e0baa39145443b6c401b7191539b7a2c1001"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "bf96d500909380636a70ee8631dc084dd865078c6c35764a286497741e68290f"
+    },
+    {
+      "file": "tools/check-projectile-rendering.mjs",
+      "sha256": "f3ea0f2d24ea5cc1cd195e9d00993b5eca42f7664b6c264a8821ca95b3e268bf"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "c4db70c6f5a65ca82b48ae941c6e28bb271cbc51525f10cc655289fca42dceb7"
+    }
+  ],
+  "implementation": [
+    "indexed instancing with local transform/inverse-transpose normal/color; standard material and alpha shadow",
+    "native common projectile service adapter; compact float4 positions, XY/XZ GPU quad expansion",
+    "three DEFAULT structured frame buffers; UpdateSubresource and no CPU_ACCESS/MISC conflict",
+    "sparse instance attribute updates; static mesh ignores shotPosition changes",
+    "power-of-two projectile buffer growth bounded by source capacity; peak retained until style release",
+    "full-image rect and source-sheet child resolution shared by GL/GPU/native projectile loader"
+  ],
+  "resourceContract": {
+    "fullInstanceBytes": 144,
+    "compactShotBytes": 16,
+    "frameBuffers": 3,
+    "oneShotEstimateBytes": 48,
+    "objectCapAdded": false,
+    "normalFrameReadback": false
+  },
+  "remaining": [
+    "GPU simulation and swept collision conversion for projectiles; existing CPU movement/collision retained",
+    "arbitrary custom instance shaders, instance morph/negative scale, GPU culling/sorting/indirect batches",
+    "native ParticleSystem adapter, skinning/morph, 2D masks/lights and other native rendering backlog",
+    "whole corpus/APIs and all cumulative engine details",
+    "whole game PC120/mobile60 FPS, RAM/thermal/DPI/phone acceptance"
+  ],
+  "retainedFailures": [
+    "native/build/native-scene-lpdo8A/failure.json: warning-as-error guard formatting fixed",
+    "native/build/native-scene-window-io334t/failure.json: zero sprite rect produced null shotShape (NaN), fixed in shared loader",
+    "native/build/native-scene-window-gOmVZm/failure.json: incorrect black-background test assumption; compare actual untouched background"
+  ],
+  "claims": {
+    "fps": false,
+    "wholeProcessMemory": false,
+    "physicalAndroid": false,
+    "ios": false
+  }
+}
