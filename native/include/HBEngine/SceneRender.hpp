@@ -11,10 +11,16 @@ struct SceneLight {
     // position.w: directional=0, point=1, spot=2, hemisphere=3; direction.w: range (0=infinite).
     std::array<float,4> position{},direction{0,0,1,0},color{1,1,1,1},cone{1,0,2,0};
 };
+struct SceneShadow {
+    Matrix viewProjection=identity;
+    std::array<float,4> parameters{-.0001f,0,1,1},size{512,512,0,0};
+    bool operator==(const SceneShadow& other) const{return viewProjection==other.viewProjection&&parameters==other.parameters&&size==other.size;}
+};
+static_assert(sizeof(SceneShadow)==96,"HLSL shadow buffer layout");
 struct SceneMaterial {
     std::array<float,4> color{1,1,1,1},emissive{0,0,0,1};
     float roughness=.7f,metalness=0,alphaCutoff=0;
-    bool unlit=false,toneMapped=true,depthTest=true,depthWrite=true,doubleSided=false,backSide=false,vertexColors=false;
+    bool unlit=false,toneMapped=true,depthTest=true,depthWrite=true,doubleSided=false,backSide=false,vertexColors=false,receiveShadow=true;
     ParticleBlend blend=ParticleBlend::Opaque;
     std::array<std::array<float,4>,6> uvX{{{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0},{1,0,0,0}}},uvY{{{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0},{0,1,0,0}}};
     std::array<float,2> normalScale{1,1};
@@ -54,7 +60,7 @@ public:
     struct Program {
         friend class SceneRenderer;
     private:
-        detail::Com<ID3D11PixelShader> shader;
+        detail::Com<ID3D11PixelShader> shader,shadowShader;
         detail::Com<ID3D11Buffer> parameters;
         detail::Com<ID3D11ShaderResourceView> values;
         std::vector<float> current;ID3D11Device* owner=nullptr;
@@ -65,14 +71,24 @@ private:
     Device& gpu;
     ParticleRenderer surface;
     detail::Com<ID3D11VertexShader> vertex;
-    detail::Com<ID3D11PixelShader> pixel;
+    detail::Com<ID3D11PixelShader> pixel,shadowPixel;
     detail::Com<ID3D11InputLayout> layout;
     std::array<detail::Com<ID3D11Buffer>,3> constants;
-    std::array<detail::Com<ID3D11RasterizerState>,3> rasters;
+    std::array<detail::Com<ID3D11RasterizerState>,3> rasters,shadowRasters;
     std::array<detail::Com<ID3D11SamplerState>,18> samplers;
     detail::Com<ID3D11Buffer> lights;
     detail::Com<ID3D11ShaderResourceView> lightView;
     std::uint32_t lightCount=0,lightCapacity=0;
+    std::vector<SceneLight> lightDefinitions;
+    detail::Com<ID3D11Texture2D> shadowImage;
+    detail::Com<ID3D11ShaderResourceView> shadowView,shadowDataView;
+    detail::Com<ID3D11Buffer> shadowBuffer;
+    std::vector<detail::Com<ID3D11DepthStencilView>> shadowTargets;
+    std::vector<SceneShadow> shadows;
+    std::uint32_t shadowWidth=0,shadowHeight=0;
+    // shortcut: mixed map sizes share the largest layer size; split arrays if measured VRAM requires it.
+    int activeShadow=-1;SceneFrame shadowFrame;
+    std::uint64_t shadowDraws_=0,shadowPasses_=0;
     std::size_t slot=0;
     std::uint64_t draws_=0,uploads_=0;
     struct Timing {detail::Com<ID3D11Query> begin,end,frequency;bool pending=false;std::uint64_t sequence=0;};
@@ -98,11 +114,21 @@ cbuffer Settings:register(b0){float4x4 vp,world,normalMatrix;float4 tint,emissiv
 struct Light{float4 position,direction,color,cone;};StructuredBuffer<Light> lights:register(t6);
 Texture2D baseMap:register(t0),normalMap:register(t1),roughMap:register(t2),metalMap:register(t3),emissiveMap:register(t4),aoMap:register(t5);
 SamplerState baseSampler:register(s0),normalSampler:register(s1),roughSampler:register(s2),metalSampler:register(s3),emissiveSampler:register(s4),aoSampler:register(s5);
+Texture2DArray<float> shadowMap:register(t24);
+struct Shadow{float4x4 vp;float4 parameters,size;};StructuredBuffer<Shadow> shadows:register(t25);
 struct Input{float3 position:POSITION;float3 normal:NORMAL;float2 uv:TEXCOORD;float4 color:COLOR;};
 struct Output{float4 position:SV_POSITION;float3 at:TEXCOORD0;float3 normal:TEXCOORD1;float2 uv:TEXCOORD2;float4 color:COLOR;};
 Output VS(Input i){Output o;float4 at=mul(world,float4(i.position,1));o.position=mul(vp,at);o.at=at.xyz;o.normal=mul((float3x3)normalMatrix,i.normal);o.uv=i.uv;o.color=flags.w==1?i.color:float4(1,1,1,1);return o;}
 float2 mapUv(float2 uv,uint slot){return float2(dot(uvX[slot].xyz,float3(uv,1)),dot(uvY[slot].xyz,float3(uv,1)));}
 float3 safeNormal(float3 v){return v*rsqrt(max(dot(v,v),1e-12));}
+float shadowFactor(Light light,float3 position,float3 normal){
+ if(light.cone.w<=0)return 1;uint index=(uint)light.cone.w-1;
+ if(light.position.w>.5&&light.position.w<1.5){float3 d=position-light.position.xyz,a=abs(d);index+=a.x>=a.y&&a.x>=a.z?(d.x>0?0:1):a.z>=a.y?(d.z>0?2:3):(d.y>0?4:5);}
+ Shadow s=shadows[index];float4 at=mul(s.vp,float4(position+normal*s.parameters.y,1));if(at.w<=0)return 1;float3 clipPosition=at.xyz/at.w;float2 uv=clipPosition.xy*float2(.5,-.5)+.5;if(any(uv<0)||any(uv>1)||clipPosition.z<0||clipPosition.z>1)return 1;
+ float z=clipPosition.z+s.parameters.x,result=0;int2 size=(int2)s.size.xy,center=(int2)(uv*size);int radius=(int)ceil(s.parameters.z);
+ if(radius==0)result=z<=shadowMap.Load(int4(clamp(center,0,size-1),index,0));else{[unroll]for(int y=-1;y<=1;y++){[unroll]for(int x=-1;x<=1;x++){int2 pixel=clamp(center+(int2)round(float2(x,y)*s.parameters.z),0,size-1);result+=(z<=shadowMap.Load(int4(pixel,index,0)))?1:0;}}result/=9;}
+ return lerp(1,result,s.parameters.w);
+}
 float3 srgb(float3 v){return lerp(12.92*v,1.055*pow(max(v,0),1.0/2.4)-.055,step(.0031308,v));}
 float3 aces(float3 v){return saturate((v*(2.51*v+.03))/(v*(2.43*v+.59)+.14));}
 float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
@@ -118,22 +144,24 @@ float4 PS(Output i,bool front:SV_IsFrontFace):SV_TARGET{
  if(surface.w<.5){outColor=base.rgb*ambient.rgb*ao+emit;float3 v=safeNormal(eye.xyz-i.at),f0=lerp(.04,base.rgb,metal);float nv=max(dot(n,v),1e-4);
   for(uint j=0;j<(uint)flags.y;j++){Light light=lights[j];if(light.position.w>2.5){outColor+=base.rgb*lerp(light.cone.rgb,light.color.rgb,dot(n,safeNormal(light.direction.xyz))*.5+.5)*light.color.a*ao;continue;}float3 delta=light.position.xyz-i.at;float dist=length(delta);float3 l=light.position.w<.5?safeNormal(light.direction.xyz):safeNormal(delta);float attenuation=1;
    if(light.position.w>.5){attenuation=1/max(pow(dist,light.cone.z),.01);if(light.direction.w>0)attenuation*=pow(saturate(1-pow(dist/light.direction.w,4)),2);if(light.position.w>1.5){float angle=dot(-l,safeNormal(light.direction.xyz));attenuation*=light.cone.y>light.cone.x?smoothstep(light.cone.x,light.cone.y,angle):step(light.cone.x,angle);}}
-   float nl=saturate(dot(n,l));float3 h=safeNormal(l+v);float nh=saturate(dot(n,h)),vh=saturate(dot(v,h));float a=rough*rough,a2=a*a,d=a2/max(3.14159265*pow(nh*nh*(a2-1)+1,2),1e-5),k=pow(rough+1,2)/8,g=(nv/(nv*(1-k)+k))*(nl/(nl*(1-k)+k));float3 f=f0+(1-f0)*pow(1-vh,5);float3 spec=d*g*f/max(4*nv*nl,1e-4);outColor+=((1-f)*(1-metal)*base.rgb/3.14159265+spec)*light.color.rgb*light.color.a*nl*attenuation;
+   if(maps&64)attenuation*=shadowFactor(light,i.at,n);float nl=saturate(dot(n,l));float3 h=safeNormal(l+v);float nh=saturate(dot(n,h)),vh=saturate(dot(v,h));float a=rough*rough,a2=a*a,d=a2/max(3.14159265*pow(nh*nh*(a2-1)+1,2),1e-5),k=pow(rough+1,2)/8,g=(nv/(nv*(1-k)+k))*(nl/(nl*(1-k)+k));float3 f=f0+(1-f0)*pow(1-vh,5);float3 spec=d*g*f/max(4*nv*nl,1e-4);outColor+=((1-f)*(1-metal)*base.rgb/3.14159265+spec)*light.color.rgb*light.color.a*nl*attenuation;
   }
  }else outColor+=emit;
  if(fogRange.y>0){float distance=length(eye.xyz-i.at),amount=fog.w>0?1-exp(-fog.w*fog.w*distance*distance):smoothstep(fogRange.x,fogRange.y,distance);if(heightFog.x>0){amount=0;if(distance>fogRange.x&&distance<fogRange.y&&fog.w>0){float start=eye.y+(i.at.y-eye.y)*fogRange.x/max(distance,.0001),span=heightFog.y*(i.at.y-start),integral=abs(span)<.001?1:(1-exp(-clamp(span,-40,40)))/span;float optical=fog.w*exp(clamp(-heightFog.y*(start-heightFog.z),-40,40))*(distance-fogRange.x)*integral;amount=min(heightFog.w,1-exp(-max(optical,0)));}}outColor=lerp(outColor,fog.rgb,saturate(amount));}
  if(flags.z>0)outColor=aces(outColor*normalScale.z);return float4(srgb(max(outColor,0)),base.a);
-})HLSL";
+}
+void ShadowPS(Output i,bool front:SV_IsFrontFace){PS(i,front);}
+)HLSL";
 public:
     SceneRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):gpu(device),surface(device,width,height,hwnd){
         std::lock_guard<std::mutex> lock(gpu.mutex);auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");
-        for(const auto* entry:{"VS","PS"}){detail::Com<ID3DBlob> code,error;const auto result=compile(shader,std::strlen(shader),"HBSceneRender",nullptr,nullptr,entry,entry[0]=='V'?"vs_5_0":"ps_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Scene shader compile failed");
+        for(const auto* entry:{"VS","PS","ShadowPS"}){detail::Com<ID3DBlob> code,error;const auto result=compile(shader,std::strlen(shader),"HBSceneRender",nullptr,nullptr,entry,entry[0]=='V'?"vs_5_0":"ps_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Scene shader compile failed");
             if(entry[0]=='V'){detail::check(gpu.device->CreateVertexShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&vertex.p),"Scene vertex shader");const D3D11_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D11_INPUT_PER_VERTEX_DATA,0}};detail::check(gpu.device->CreateInputLayout(elements,4,code->GetBufferPointer(),code->GetBufferSize(),&layout.p),"Scene vertex layout");}
-            else detail::check(gpu.device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&pixel.p),"Scene pixel shader");
+            else detail::check(gpu.device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,entry[0]=='S'?&shadowPixel.p:&pixel.p),"Scene pixel shader");
         }
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& buffer:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"Scene frame constants");
         for(auto& timing:timings){D3D11_QUERY_DESC desc{D3D11_QUERY_TIMESTAMP,0};detail::check(gpu.device->CreateQuery(&desc,&timing.begin.p),"GPU start timestamp");detail::check(gpu.device->CreateQuery(&desc,&timing.end.p),"GPU end timestamp");desc.Query=D3D11_QUERY_TIMESTAMP_DISJOINT;detail::check(gpu.device->CreateQuery(&desc,&timing.frequency.p),"GPU timestamp frequency");}
-        for(std::size_t i=0;i<rasters.size();i++){D3D11_RASTERIZER_DESC rs{};rs.FillMode=D3D11_FILL_SOLID;rs.CullMode=i==0?D3D11_CULL_BACK:i==1?D3D11_CULL_FRONT:D3D11_CULL_NONE;rs.FrontCounterClockwise=TRUE;rs.DepthClipEnable=TRUE;rs.ScissorEnable=TRUE;detail::check(gpu.device->CreateRasterizerState(&rs,&rasters[i].p),"Scene raster state");}
+        for(std::size_t i=0;i<rasters.size();i++){D3D11_RASTERIZER_DESC rs{};rs.FillMode=D3D11_FILL_SOLID;rs.CullMode=i==0?D3D11_CULL_BACK:i==1?D3D11_CULL_FRONT:D3D11_CULL_NONE;rs.FrontCounterClockwise=TRUE;rs.DepthClipEnable=TRUE;rs.ScissorEnable=TRUE;detail::check(gpu.device->CreateRasterizerState(&rs,&rasters[i].p),"Scene raster state");rs.SlopeScaledDepthBias=1;rs.DepthBiasClamp=.01f;detail::check(gpu.device->CreateRasterizerState(&rs,&shadowRasters[i].p),"Shadow slope bias state");}
         for(std::size_t i=0;i<samplers.size();i++){D3D11_SAMPLER_DESC s{};s.Filter=i%2?D3D11_FILTER_MIN_MAG_MIP_POINT:D3D11_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+(i/2)%3);s.AddressV=static_cast<D3D11_TEXTURE_ADDRESS_MODE>(1+i/6);s.AddressW=s.AddressV;s.MaxLOD=D3D11_FLOAT32_MAX;detail::check(gpu.device->CreateSamplerState(&s,&samplers[i].p),"Scene sampler state");}
     }
     Mesh createMesh(const std::vector<SceneVertex>& vertices,const std::vector<std::uint32_t>& indices){
@@ -149,7 +177,7 @@ public:
     Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
         if(declarations.size()+evaluation.size()>1048576)throw std::runtime_error("Material HLSL source too large");
         std::string source=shader;const auto entry=source.find("float4 PS("),marker=source.find("// HB_MATERIAL_EVAL");source.replace(marker,std::strlen("// HB_MATERIAL_EVAL"),evaluation);source.insert(entry,declarations+"\n");
-        Program out;out.owner=gpu.device.p;{std::lock_guard<std::mutex> lock(gpu.mutex);auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");detail::Com<ID3DBlob> code,error;const auto result=compile(source.data(),source.size(),"HBNodeMaterial",nullptr,nullptr,"PS","ps_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Node material compile failed");detail::check(gpu.device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&out.shader.p),"Node material shader");}
+        Program out;out.owner=gpu.device.p;{std::lock_guard<std::mutex> lock(gpu.mutex);auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");for(const auto* entry:{"PS","ShadowPS"}){detail::Com<ID3DBlob> code,error;const auto result=compile(source.data(),source.size(),"HBNodeMaterial",nullptr,nullptr,entry,"ps_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Node material compile failed");detail::check(gpu.device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,entry[0]=='S'?&out.shadowShader.p:&out.shader.p),"Node material shader");}}
         setProgramParameters(out,parameters);++uploads_;return out;
     }
     void setProgramParameters(Program& program,const std::vector<float>& values){
@@ -161,32 +189,53 @@ public:
     }
     void setLights(const std::vector<SceneLight>& values){
         if(values.size()>UINT_MAX/sizeof(SceneLight))throw std::runtime_error("Scene light byte size invalid");
-        for(const auto& l:values)if(!finite(l.position)||!finite(l.direction)||!finite(l.color)||!finite(l.cone))throw std::runtime_error("Scene light invalid");
+        for(const auto& l:values)if(!finite(l.position)||!finite(l.direction)||!finite(l.color)||!finite(l.cone)||l.position[3]<0||l.position[3]>3||std::floor(l.position[3])!=l.position[3]||(l.position[3]<3&&(l.cone[3]<0||std::floor(l.cone[3])!=l.cone[3])))throw std::runtime_error("Scene light invalid");
         std::lock_guard<std::mutex> lock(gpu.mutex);const auto count=static_cast<UINT>(values.size());if(count>lightCapacity){D3D11_BUFFER_DESC desc{};desc.ByteWidth=count*sizeof(SceneLight);desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_SHADER_RESOURCE;desc.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;desc.StructureByteStride=sizeof(SceneLight);detail::Com<ID3D11Buffer> buffer;detail::Com<ID3D11ShaderResourceView> view;detail::check(gpu.device->CreateBuffer(&desc,nullptr,&buffer.p),"Scene lights");detail::check(gpu.device->CreateShaderResourceView(buffer.p,nullptr,&view.p),"Scene lights view");lights=std::move(buffer);lightView=std::move(view);lightCapacity=count;}
-        if(count){D3D11_BOX box{0,0,0,count*static_cast<UINT>(sizeof(SceneLight)),1,1};gpu.context->UpdateSubresource(lights.p,0,&box,values.data(),0,0);}lightCount=count;
+        if(count){D3D11_BOX box{0,0,0,count*static_cast<UINT>(sizeof(SceneLight)),1,1};gpu.context->UpdateSubresource(lights.p,0,&box,values.data(),0,0);}lightCount=count;lightDefinitions=values;
     }
+    void setShadows(const std::vector<SceneShadow>& values){
+        if(activeShadow>=0)throw std::runtime_error("Shadow pass is active");
+        if(values.size()>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION)throw std::runtime_error("Shadow array exceeds D3D11 resource limits");
+        std::uint32_t width=0,height=0;
+        for(const auto& s:values){if(!finite(s.viewProjection)||!finite(s.parameters)||!finite(s.size)||s.parameters[2]<0||s.parameters[2]>16||s.parameters[3]<0||s.parameters[3]>1)throw std::runtime_error("Shadow settings invalid");for(std::size_t i=0;i<2;i++)if(s.size[i]<1||s.size[i]>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||std::floor(s.size[i])!=s.size[i])throw std::runtime_error("Shadow dimensions invalid");width=std::max(width,static_cast<std::uint32_t>(s.size[0]));height=std::max(height,static_cast<std::uint32_t>(s.size[1]));}
+        if(values==shadows)return;
+        std::lock_guard<std::mutex> lock(gpu.mutex);
+        if(values.empty()){shadowTargets.clear();shadowImage={};shadowView={};shadowBuffer={};shadowDataView={};shadows.clear();shadowWidth=shadowHeight=0;return;}
+        if(width!=shadowWidth||height!=shadowHeight||values.size()!=shadows.size()){
+            detail::Com<ID3D11Texture2D> image;detail::Com<ID3D11ShaderResourceView> view,bufferView;detail::Com<ID3D11Buffer> buffer;std::vector<detail::Com<ID3D11DepthStencilView>> targets(values.size());D3D11_TEXTURE2D_DESC desc{};desc.Width=width;desc.Height=height;desc.MipLevels=1;desc.ArraySize=static_cast<UINT>(values.size());desc.Format=DXGI_FORMAT_R32_TYPELESS;desc.SampleDesc.Count=1;desc.BindFlags=D3D11_BIND_DEPTH_STENCIL|D3D11_BIND_SHADER_RESOURCE;detail::check(gpu.device->CreateTexture2D(&desc,nullptr,&image.p),"Shadow array");
+            D3D11_SHADER_RESOURCE_VIEW_DESC srv{};srv.Format=DXGI_FORMAT_R32_FLOAT;srv.ViewDimension=D3D11_SRV_DIMENSION_TEXTURE2DARRAY;srv.Texture2DArray.MipLevels=1;srv.Texture2DArray.ArraySize=desc.ArraySize;detail::check(gpu.device->CreateShaderResourceView(image.p,&srv,&view.p),"Shadow array view");for(UINT i=0;i<desc.ArraySize;i++){D3D11_DEPTH_STENCIL_VIEW_DESC dsv{};dsv.Format=DXGI_FORMAT_D32_FLOAT;dsv.ViewDimension=D3D11_DSV_DIMENSION_TEXTURE2DARRAY;dsv.Texture2DArray.FirstArraySlice=i;dsv.Texture2DArray.ArraySize=1;detail::check(gpu.device->CreateDepthStencilView(image.p,&dsv,&targets[i].p),"Shadow layer");}
+            D3D11_BUFFER_DESC data{};data.ByteWidth=static_cast<UINT>(values.size()*sizeof(SceneShadow));data.Usage=D3D11_USAGE_DEFAULT;data.BindFlags=D3D11_BIND_SHADER_RESOURCE;data.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;data.StructureByteStride=sizeof(SceneShadow);detail::check(gpu.device->CreateBuffer(&data,nullptr,&buffer.p),"Shadow matrices");detail::check(gpu.device->CreateShaderResourceView(buffer.p,nullptr,&bufferView.p),"Shadow matrix view");shadowImage=std::move(image);shadowView=std::move(view);shadowTargets=std::move(targets);shadowBuffer=std::move(buffer);shadowDataView=std::move(bufferView);shadowWidth=width;shadowHeight=height;++uploads_;
+        }gpu.context->UpdateSubresource(shadowBuffer.p,0,nullptr,values.data(),0,0);shadows=values;
+    }
+    void beginShadow(std::size_t index){if(activeShadow>=0||index>=shadows.size())throw std::runtime_error("Shadow pass index invalid");shadowFrame=frame;frame.viewProjection=shadows[index].viewProjection;frame.viewport={0,0,shadows[index].size[0],shadows[index].size[1]};frame.scissor.reset();activeShadow=static_cast<int>(index);std::lock_guard<std::mutex> lock(gpu.mutex);ID3D11ShaderResourceView* empty=nullptr;gpu.context->PSSetShaderResources(24,1,&empty);gpu.context->ClearDepthStencilView(shadowTargets[index].p,D3D11_CLEAR_DEPTH,1,0);++shadowPasses_;}
+    void endShadow(){if(activeShadow<0)return;std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);frame=shadowFrame;activeShadow=-1;}
     void begin(const SceneFrame& value){
+        endShadow();for(const auto& light:lightDefinitions)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
         if(!finite(value.viewProjection)||!finite(value.clear)||!finite(value.eye)||!finite(value.ambient)||!finite(value.fog)||!finite(value.fogRange)||!finite(value.heightFog)||!finite(value.viewport)||(value.viewportClear&&!finite(*value.viewportClear))||!std::isfinite(value.exposure)||value.exposure<0||!std::isfinite(value.time))throw std::runtime_error("Scene frame invalid");
         const auto validate=[](const std::array<float,4>& rect){if(!finite(rect))throw std::runtime_error("Scene viewport invalid");for(std::size_t i=0;i<2;i++)if(rect[i]<D3D11_VIEWPORT_BOUNDS_MIN||rect[i]>D3D11_VIEWPORT_BOUNDS_MAX||rect[i+2]<0||rect[i]+rect[i+2]>D3D11_VIEWPORT_BOUNDS_MAX)throw std::runtime_error("Scene viewport bounds invalid");};validate(value.viewport);if(value.scissor)validate(*value.scissor);if((value.viewport[2]==0)!=(value.viewport[3]==0))throw std::runtime_error("Scene viewport size invalid");
-        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}frame=value;surface.clear(value.clear);draws_=0;
+        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}frame=value;surface.clear(value.clear);draws_=shadowDraws_=0;
         if(value.viewportClear){if(!background.vertices.p)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
     void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={}){
         const auto blend=static_cast<std::size_t>(material.blend);if(mesh.owner!=gpu.device.p||!finite(world)||!finite(normal)||!finite(material.color)||!finite(material.emissive)||!finite(material.normalScale)||!finite(material.skyTop)||!finite(material.skyHorizon)||!finite(material.sunDirection)||!finite(material.sunColor)||!std::isfinite(material.roughness)||!std::isfinite(material.metalness)||!std::isfinite(material.alphaCutoff)||blend>=3||first>mesh.count)throw std::runtime_error("Scene draw invalid");for(std::size_t i=0;i<6;i++)if(!finite(material.uvX[i])||!finite(material.uvY[i]))throw std::runtime_error("Scene texture transform invalid");if(!count)count=mesh.count-first;if(count>mesh.count-first||count%3||first%3)throw std::runtime_error("Scene draw range invalid");
-        std::array<ID3D11ShaderResourceView*,128> views{};std::array<ID3D11SamplerState*,16> states{};std::uint32_t mask=0;for(std::size_t i=0;i<maps.size();i++){if(sampling[i]>=samplers.size()||(maps[i]&&maps[i]->owner!=gpu.device.p))throw std::runtime_error("Scene texture owner or sampler invalid");if(maps[i]){views[i]=maps[i]->view.p;mask|=1u<<i;}states[i]=samplers[sampling[i]].p;}views[6]=lightView.p;const UINT viewCount=program?static_cast<UINT>(8+programMaps.size()):7,samplerCount=program?static_cast<UINT>(programMaps.size()):6;if(program){if(program->owner!=gpu.device.p||programMaps.size()>D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT||programMaps.size()!=programSampling.size())throw std::runtime_error("Material program bindings invalid");views[7]=program->values.p;for(std::size_t i=0;i<programMaps.size();i++){if(!programMaps[i]||programMaps[i]->owner!=gpu.device.p||programSampling[i]>=samplers.size())throw std::runtime_error("Material texture owner or sampler invalid");views[8+i]=programMaps[i]->view.p;states[i]=samplers[programSampling[i]].p;}}
+        std::array<ID3D11ShaderResourceView*,128> views{};std::array<ID3D11SamplerState*,16> states{};std::uint32_t mask=0;for(std::size_t i=0;i<maps.size();i++){if(sampling[i]>=samplers.size()||(maps[i]&&maps[i]->owner!=gpu.device.p))throw std::runtime_error("Scene texture owner or sampler invalid");if(maps[i]){views[i]=maps[i]->view.p;mask|=1u<<i;}states[i]=samplers[sampling[i]].p;}views[6]=lightView.p;const UINT viewCount=26,samplerCount=program?static_cast<UINT>(programMaps.size()):6;if(program){if(program->owner!=gpu.device.p||programMaps.size()>D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT||programMaps.size()!=programSampling.size())throw std::runtime_error("Material program bindings invalid");views[7]=program->values.p;for(std::size_t i=0;i<programMaps.size();i++){if(!programMaps[i]||programMaps[i]->owner!=gpu.device.p||programSampling[i]>=samplers.size())throw std::runtime_error("Material texture owner or sampler invalid");views[8+i]=programMaps[i]->view.p;states[i]=samplers[programSampling[i]].p;}}
+        views[24]=activeShadow<0?shadowView.p:nullptr;views[25]=shadowDataView.p;if(material.receiveShadow)mask|=64u;
         std::lock_guard<std::mutex> lock(gpu.mutex);Constants data{frame.viewProjection,world,normal,material.color,material.emissive,{material.roughness,material.metalness,material.alphaCutoff,material.unlit?1.f:0.f},frame.eye,frame.ambient,material.uvX,material.uvY,{float(mask),float(lightCount),material.toneMapped?1.f:0.f,material.sky?2.f:material.vertexColors?1.f:0.f},{material.normalScale[0],material.normalScale[1],frame.exposure,frame.time},frame.fog,frame.fogRange,frame.heightFog,material.skyTop,material.skyHorizon,material.sunDirection,material.sunColor};auto* cb=constants[slot].p;slot=(slot+1)%constants.size();D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(gpu.context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Scene draw constants");std::memcpy(mapped.pData,&data,sizeof(data));gpu.context->Unmap(cb,0);
-        const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;D3D11_VIEWPORT viewport{custom?rect[0]:0,custom?rect[1]:0,custom?rect[2]:float(surface.width()),custom?rect[3]:float(surface.height()),0,1};const auto crop=frame.scissor.value_or(std::array<float,4>{viewport.TopLeftX,viewport.TopLeftY,viewport.Width,viewport.Height});D3D11_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};auto* target=surface.target.p;gpu.context->OMSetRenderTargets(1,&target,surface.depthTarget.p);gpu.context->OMSetBlendState(surface.blends[blend].p,nullptr,UINT_MAX);gpu.context->OMSetDepthStencilState(surface.depths[(material.depthTest?1:0)|(material.depthWrite?2:0)].p,0);gpu.context->RSSetState(rasters[material.doubleSided?2:material.backSide?1:0].p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&scissor);
-        UINT stride=sizeof(SceneVertex),offset=0;auto* vb=mesh.vertices.p;gpu.context->IASetInputLayout(layout.p);gpu.context->IASetVertexBuffers(0,1,&vb,&stride,&offset);gpu.context->IASetIndexBuffer(mesh.indices.p,DXGI_FORMAT_R32_UINT,0);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(program?program->shader.p:pixel.p,nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->PSSetSamplers(0,samplerCount,states.data());gpu.context->DrawIndexed(count,first,0);views.fill(nullptr);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->OMSetRenderTargets(0,nullptr,nullptr);++draws_;detail::check(gpu.device->GetDeviceRemovedReason(),"Scene device lost");
+        const auto& rect=frame.viewport;const bool custom=rect[2]>0&&rect[3]>0;D3D11_VIEWPORT viewport{custom?rect[0]:0,custom?rect[1]:0,custom?rect[2]:float(surface.width()),custom?rect[3]:float(surface.height()),0,1};const auto crop=frame.scissor.value_or(std::array<float,4>{viewport.TopLeftX,viewport.TopLeftY,viewport.Width,viewport.Height});D3D11_RECT scissor{static_cast<LONG>(std::floor(crop[0])),static_cast<LONG>(std::floor(crop[1])),static_cast<LONG>(std::ceil(crop[0]+crop[2])),static_cast<LONG>(std::ceil(crop[1]+crop[3]))};auto* target=surface.target.p;gpu.context->OMSetRenderTargets(activeShadow<0?1:0,activeShadow<0?&target:nullptr,activeShadow<0?surface.depthTarget.p:shadowTargets[activeShadow].p);gpu.context->OMSetBlendState(surface.blends[activeShadow<0?blend:2].p,nullptr,UINT_MAX);gpu.context->OMSetDepthStencilState(surface.depths[activeShadow<0?((material.depthTest?1:0)|(material.depthWrite?2:0)):3].p,0);gpu.context->RSSetState((activeShadow<0?rasters:shadowRasters)[material.doubleSided?2:material.backSide?1:0].p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&scissor);
+        UINT stride=sizeof(SceneVertex),offset=0;auto* vb=mesh.vertices.p;gpu.context->IASetInputLayout(layout.p);gpu.context->IASetVertexBuffers(0,1,&vb,&stride,&offset);gpu.context->IASetIndexBuffer(mesh.indices.p,DXGI_FORMAT_R32_UINT,0);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(activeShadow<0?(program?program->shader.p:pixel.p):(program?program->shadowShader.p:shadowPixel.p),nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->PSSetSamplers(0,samplerCount,states.data());gpu.context->DrawIndexed(count,first,0);views.fill(nullptr);gpu.context->PSSetShaderResources(0,viewCount,views.data());gpu.context->OMSetRenderTargets(0,nullptr,nullptr);if(activeShadow<0)++draws_;else ++shadowDraws_;detail::check(gpu.device->GetDeviceRemovedReason(),"Scene device lost");
     }
-    void drawParticles(const Particles& particles,const ParticleStyle& style={}){surface.draw(particles,style);}
+    void drawParticles(const Particles& particles,const ParticleStyle& style={}){if(activeShadow>=0)throw std::runtime_error("Particles require a separate shadow pass");surface.draw(particles,style);}
     void resize(std::uint32_t width,std::uint32_t height){surface.resize(width,height);}
-    void finish(){std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
+    void finish(){endShadow();std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
     bool present(std::uint32_t interval=0){finish();return surface.present(interval);}
     std::vector<std::uint8_t> readPixels(){finish();return surface.readPixels();}
     std::uint32_t width() const{return surface.width();}std::uint32_t height() const{return surface.height();}
     std::uint64_t draws() const{return draws_;}std::uint64_t uploads() const{return uploads_;}std::uint64_t presents() const{return surface.presents();}std::uint64_t captures() const{return surface.captures();}
     std::optional<double> gpuTimeMs() const{return gpuMilliseconds;}
     std::uint64_t gpuTimingFrame() const{return timingSequence;}
+    std::size_t shadowLayers() const{return shadows.size();}
+    std::uint64_t shadowTextureBytes() const{return std::uint64_t(shadowWidth)*shadowHeight*shadows.size()*4;}
+    std::uint64_t shadowDraws() const{return shadowDraws_;}std::uint64_t shadowPasses() const{return shadowPasses_;}
 };
 #else
 class SceneRenderer {public:SceneRenderer(Device&,std::uint32_t,std::uint32_t,void* =nullptr){throw std::runtime_error("Scene renderer requires Windows D3D11 hardware");}};

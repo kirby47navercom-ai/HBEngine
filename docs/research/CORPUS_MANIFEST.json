@@ -265,7 +265,11 @@
         "Restricted platform documentation and embedded media remain unresolved."
       ],
       "additionalDiscoverySeeds": [
-        "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US"
+        "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US",
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shadowing-in-unreal-engine",
+          "record": "docs/research/NATIVE_SHADOWS_087.json"
+        }
       ]
     },
     {
@@ -1251,10 +1255,42 @@
         {
           "url": "https://microsoft.github.io/windows-docs-rs/doc/windows/Win32/Graphics/Direct3D11/constant.D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT.html",
           "record": "docs/research/NATIVE_SCENE_RENDERING_086.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/uwp/gaming/create-depth-buffer-resource--view--and-sampler-state",
+          "record": "docs/research/NATIVE_SHADOWS_087.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-output-merger-stage-depth-bias",
+          "record": "docs/research/NATIVE_SHADOWS_087.json"
         }
       ],
       "openIssues": [
         "Bounded native rendering implementation sources only; full Windows/WebView2 API discovery and independent verification remain open."
+      ]
+    },
+    {
+      "id": "unity-shadow-6000.3-supplement",
+      "engine": "Unity supplemental",
+      "version": "6000.3",
+      "locale": "en",
+      "roots": [
+        "https://docs.unity.com/en-us/engine/6000.3/manual/lighting-overview/shadows/"
+      ],
+      "hosts": [
+        "docs.unity.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected shadow body only; separate baseline, linked APIs and independent corpus verification remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.unity.com/en-us/engine/6000.3/manual/lighting-overview/shadows/shadow-performance",
+          "record": "docs/research/NATIVE_SHADOWS_087.json"
+        }
       ]
     }
   ],

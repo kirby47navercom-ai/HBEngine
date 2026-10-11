@@ -27,7 +27,7 @@ export function compileNativeMaterial(data){
 export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},renderer}={}){
   const data=structuredClone(input),plan=compileNativeMaterial(data),surface={...materialDefaults,...data.surface},bindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),maps=[],values=plan.floatBindings.map(b=>b.value);let disposed=false,time=0;
   const material=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:surface.roughness,metalness:surface.metalness,emissive:'#ffffff',emissiveIntensity:surface.emissiveIntensity,transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?THREE.DoubleSide:THREE.FrontSide});
-  const program={id:crypto.randomUUID(),declarations:plan.declarations,evaluation:plan.evaluation,uniforms:values,maps};
+  const program={id:crypto.randomUUID(),declarations:plan.declarations,evaluation:plan.evaluation,uniforms:values,maps,animated:/\bhbTime\b/.test(plan.lines+Object.values(plan.values).join(' '))};
   material.userData.hbMaterial=true;material.userData.hbNativeProgram=program;material.userData.materialSource=data;
   material.userData.ready=Promise.all(plan.textures.map((texture,i)=>bindings.add(texture,map=>{maps[i]=map;map.colorSpace=THREE.NoColorSpace;})));
   material.userData.updateTime=value=>{time=value;renderer.hbTime=value;};

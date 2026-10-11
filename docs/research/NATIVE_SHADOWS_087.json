@@ -1,0 +1,3278 @@
+{
+  "step": "087",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "ue-shadowing",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shadowing-in-unreal-engine",
+      "readScope": "Selected page body: shadow methods, per-light controls, quality and performance; linked APIs/pages/media unread",
+      "snapshot": "native/build/native-shadow-research-A2Q3Hx/ue-shadowing.html",
+      "sha256": "fa2df3a659ecd01197f8d84833c73181f72f4b8e849abd7bc7cceec4f27cbedf",
+      "retrievedAt": "2026-10-11T09:49:34.133Z",
+      "bytes": 108184,
+      "readStatus": "bounded page body read",
+      "independentVerification": false
+    },
+    {
+      "id": "unity-shadow-performance-6000.3",
+      "url": "https://docs.unity.com/en-us/engine/6000.3/manual/lighting-overview/shadows/shadow-performance",
+      "readScope": "Selected 6000.3 supplemental page body: caster depth pass, cost, bias/normal bias/acne/peter-panning, unlit/receive limitations; separate from 6000.0 baseline",
+      "snapshot": "native/build/native-shadow-research-A2Q3Hx/unity-shadow-performance-6000.3.html",
+      "sha256": "91cb0c6f03a66793c842e842689e047159109bea4d23b6cced1c8eb4bb390e68",
+      "retrievedAt": "2026-10-11T09:49:34.703Z",
+      "bytes": 503871,
+      "readStatus": "bounded page body read",
+      "independentVerification": false
+    },
+    {
+      "id": "ms-depth-resources",
+      "url": "https://learn.microsoft.com/en-us/windows/uwp/gaming/create-depth-buffer-resource--view--and-sampler-state",
+      "readScope": "Article body: depth resources/views, light cameras, viewport, device-dependent lifetime; example depth formats differ from implemented D32",
+      "snapshot": "native/build/native-shadow-research-A2Q3Hx/ms-depth-resources.html",
+      "sha256": "5ae933da155e34c89a5936cd26a15541774ad279837927741c475dcf85e51867",
+      "retrievedAt": "2026-10-11T09:49:34.963Z",
+      "bytes": 59144,
+      "readStatus": "bounded page body read",
+      "independentVerification": false
+    },
+    {
+      "id": "ms-depth-bias",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-output-merger-stage-depth-bias",
+      "readScope": "Article body and formulas: float/UNORM slope-scaled bias, clamp, clipping and acne tradeoffs",
+      "snapshot": "native/build/native-shadow-research-A2Q3Hx/ms-depth-bias.html",
+      "sha256": "319d8eaed3c5d26128488ab3514a5e3e9a45c8511139d6eaea2cee190f37a30f",
+      "retrievedAt": "2026-10-11T09:49:35.195Z",
+      "bytes": 52267,
+      "readStatus": "bounded page body read",
+      "independentVerification": false
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/src/lights/PointLightShadow.js",
+      "readScope": "whole source file, pinned r180; six face order and camera range",
+      "sha256": "422fb5c3d9453a1d7f0eadbe98f093a55f93c4abf3fa405675ed1bd38552c0ad",
+      "wholeFileRead": true,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/lights/LightShadow.js",
+      "readScope": "updateMatrices/frustum/viewport/dispose selected methods, not whole file",
+      "sha256": "6fd65be61a776721f799622788cd288eefb33290918329b012bff019ee5807b3",
+      "wholeFileRead": false,
+      "independentVerification": false
+    },
+    {
+      "file": "node_modules/three/src/lights/SpotLightShadow.js",
+      "readScope": "constructor/focus/updateMatrices/copy selected body, not whole file",
+      "sha256": "5a983974745d905559102e7a97669d316bf2e31516e952fae2a6103d7a09b074",
+      "wholeFileRead": false,
+      "independentVerification": false
+    }
+  ],
+  "unread": [
+    "Unity 6000.0 ShadowOverview.html: retrieval unavailable",
+    "Microsoft structured matrix search results: discovery only",
+    "linked APIs/media/CSM/VSM/baked/ray-traced implementations"
+  ],
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "351b99616c32c1eafa85eb8ad02774b469bdbedcfcb216492d893df07dcd6535"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "1eb8e0fda7d7e8cc372277bd179d65b8fbfec6a2b3356ad905e36af501f40a8a"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "12243d5ad8fb52b37bceb2bb1f449a0af02759bc3787fad45b234d8f1ca72731"
+    },
+    {
+      "file": "prototype/native-materials.js",
+      "sha256": "843f1d0451b591352e54dd0b2caa0035c49dc5e163cc4eb81d2a9b670afe43dc"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "64f26b60644dcc216447ba3ad51146ca8e47ed004c5e9b07929331a3ed29932f"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "5a02eb96969cd28f9782329516f2306feceabbbe5897754e6ad29ecc53c2f2e3"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "3d38c7b42c95a19719e5a3c2ec686a5fbf79b7d6f09076264c9e24ebb80b0409"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "70396825efb1b3a61a91992ee6c29e251ab19e7508e2f81412741e584b53a860"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "9ce83ea10b577eecdfbc27ef4bc2d619bd33088e8fd0b927f628b9edeb9c7484"
+    },
+    {
+      "file": "tools/check-render-resources.mjs",
+      "sha256": "2c193fbf13d22157782321eca738c1bca0dc360fa9e88077ef442f1ecc8af866"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "2a68724f9e4b9c6cc497d028d9b7bb18dbe7bf6020afe5ed7ab1397f9489bcde"
+    }
+  ],
+  "tests": [
+    {
+      "kind": "gpu",
+      "directory": "native/build/native-scene-lMZaDR",
+      "result": {
+        "hardware": {
+          "alphaCutoutShadow": true,
+          "automaticReadbacks": 0,
+          "compiledNodes": 54,
+          "constantBuffers": 3,
+          "depth": true,
+          "directionalShadowPixel": true,
+          "drawsPerFrame": 2049,
+          "gpuCompletionMeasured": false,
+          "heightFogPixel": true,
+          "hemisphereNormalPixel": true,
+          "hlslOpacityShadow": true,
+          "hlslParameterPixel": true,
+          "independentShadowLights": true,
+          "independentTextureUV": true,
+          "newUploadsDuring12Frames": 0,
+          "passed": true,
+          "pbrDirectional": true,
+          "pbrPoint": true,
+          "pbrSpotAndCone": true,
+          "pixelViewportClear": true,
+          "pointShadowFace": true,
+          "receiveShadowToggle": true,
+          "resize": true,
+          "separateScissor": true,
+          "shadowResourceRelease": true,
+          "spotShadowPixel": true,
+          "submitMsPer2049Draws": 4.232616666666667,
+          "unlitTexture": true,
+          "validation": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "kind": "windows",
+      "directory": "native/build/native-scene-window-OXEZfA",
+      "result": {
+        "shadowLightTransform": true,
+        "shadowMovementReuse": true,
+        "shadowBytes": true,
+        "shadowPixels": {
+          "Directional": {
+            "dark": [
+              25,
+              41,
+              24,
+              255
+            ],
+            "lit": [
+              159,
+              175,
+              143,
+              255
+            ],
+            "transparent": [
+              159,
+              175,
+              143,
+              255
+            ],
+            "layers": 1
+          },
+          "Point": {
+            "dark": [
+              25,
+              41,
+              24,
+              255
+            ],
+            "lit": [
+              209,
+              218,
+              197,
+              255
+            ],
+            "transparent": [
+              209,
+              218,
+              197,
+              255
+            ],
+            "layers": 6
+          },
+          "Spot": {
+            "dark": [
+              25,
+              41,
+              24,
+              255
+            ],
+            "lit": [
+              209,
+              218,
+              197,
+              255
+            ],
+            "transparent": [
+              209,
+              218,
+              197,
+              255
+            ],
+            "layers": 1
+          }
+        },
+        "shadowCacheReused": true,
+        "shadowCppBlueprint": true,
+        "shadowOpacityPixel": true,
+        "passed": true,
+        "backend": "D3D11",
+        "windowsBuild": true,
+        "first": {
+          "scene": "Assets/Scenes/Garden.hbscene.json",
+          "time": 0.1437999999988824,
+          "nativeTiming": {
+            "parseMs": 0.017,
+            "snapshotMs": 0.0041,
+            "workerMs": 0.0331,
+            "mode": "clock",
+            "bytes": 714,
+            "patchOperations": 0,
+            "prepareMs": 0.005099999999856664,
+            "replyBytes": 315,
+            "returnedObjects": 0,
+            "rpcMs": 0.14660000000003492,
+            "decodeMs": 0.0008000000000265572,
+            "validateMs": 0.01499999999987267,
+            "replyValidationMs": 0.005200000000058935,
+            "channel": "websocket",
+            "clientApplyMs": 0
+          },
+          "nativeFrameGroups": {
+            "parallel": 0,
+            "sequential": 10
+          },
+          "animation": [],
+          "spriteSkin": [],
+          "work": {
+            "scopes": [],
+            "delays": [],
+            "timers": [],
+            "timelines": [],
+            "subscriptions": []
+          },
+          "input": {
+            "keys": {},
+            "pointer": {
+              "valid": false,
+              "inside": false,
+              "position": [
+                0,
+                0
+              ],
+              "size": [
+                1,
+                1
+              ],
+              "delta": [
+                0,
+                0
+              ],
+              "origin": [
+                0,
+                0,
+                0
+              ],
+              "direction": [
+                0,
+                0,
+                0
+              ],
+              "rayValid": false
+            },
+            "lastDevice": "keyboard",
+            "pressed": [],
+            "released": [],
+            "actions": []
+          },
+          "objects": [
+            {
+              "id": "Driver",
+              "name": "Empty Actor",
+              "kind": "empty",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_0",
+                      "defaults": {
+                        "position": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "rotation": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "scale": [
+                          1,
+                          1,
+                          1
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_1",
+                      "defaults": {
+                        "enabled": true,
+                        "mesh": "",
+                        "material": "",
+                        "visible": true,
+                        "castShadow": true,
+                        "receiveShadow": true
+                      }
+                    }
+                  ]
+                }
+              ],
+              "blueprintAsset": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+              "nativeClass": "NativeScene",
+              "nativeProperties": {},
+              "actorClasses": [
+                "BP_NativeScene",
+                "Assets/Blueprints/BP_Garden.hbblueprint.json",
+                "BP_Garden",
+                "NativeScene",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Camera",
+              "name": "Camera",
+              "kind": "camera",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                10
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "537b957a-bde5-45d0-a1a3-c073cf6b5107",
+                  "name": "Camera",
+                  "type": "Camera",
+                  "properties": {
+                    "enabled": true,
+                    "projection": "orthographic",
+                    "fieldOfView": 60,
+                    "orthographicSize": 4,
+                    "near": 0.1,
+                    "far": 1000,
+                    "priority": 0,
+                    "main": true,
+                    "followTarget": "",
+                    "followOffset": [
+                      0,
+                      3,
+                      6
+                    ],
+                    "pixelPerfect": false,
+                    "pixelReferenceWidth": 640,
+                    "pixelReferenceHeight": 360,
+                    "pixelPixelsPerUnit": 32
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Sprite",
+              "name": "Sprite",
+              "kind": "sprite",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "8a3ac12a-4062-4043-9c6a-f2a25d92a05a",
+                  "name": "SpriteRenderer",
+                  "type": "SpriteRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "sprite": "",
+                    "drawMode": "simple",
+                    "texture": "Assets/Original.svg",
+                    "color": [
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    "width": 4,
+                    "height": 4,
+                    "pixelsPerUnit": 100,
+                    "flipX": false,
+                    "flipY": false,
+                    "sortingOrder": 0,
+                    "billboard": false,
+                    "visible": true,
+                    "tileOrigin": "bottomLeft",
+                    "borderLeft": 0,
+                    "borderBottom": 0,
+                    "borderRight": 0,
+                    "borderTop": 0,
+                    "sortPoint": "center",
+                    "useCustomSize": false,
+                    "sortingLayer": "default",
+                    "maskInteraction": "none",
+                    "shading": "unlit",
+                    "blendMode": "translucent",
+                    "emissiveIntensity": 0,
+                    "alphaCutoff": 0.5,
+                    "normalTexture": "",
+                    "lightMaskTexture": "",
+                    "normalStrength": 1,
+                    "normalFlipY": false,
+                    "castShadow": false,
+                    "receiveShadow": false
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "gameinstance_27d5d65f-8474-4d13-9c32-12ad116d2585",
+              "name": "GameInstance",
+              "kind": "empty",
+              "group": "GAMEPLAY",
+              "frameworkRole": "gameInstance",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "components": [],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "767232a7-bbfd-457d-b960-e723427492b4",
+              "name": "GameMode",
+              "kind": "gameMode",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameMode",
+              "frameworkRole": "gameMode",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameMode",
+                  "type": "GameMode",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.13333333333333333
+                  }
+                }
+              ],
+              "gameState": "b3810529-47df-4d82-b37a-54f08726008c",
+              "playerController": "f33f96fa-7778-49bc-9a00-cb82054adc84",
+              "defaultPawn": null,
+              "actorClasses": [
+                "GameMode",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "b3810529-47df-4d82-b37a-54f08726008c",
+              "name": "GameState",
+              "kind": "gameState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameState",
+              "frameworkRole": "gameState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameState",
+                  "type": "GameState",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.13333333333333333
+                  }
+                }
+              ],
+              "actorClasses": [
+                "GameState",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "f33f96fa-7778-49bc-9a00-cb82054adc84",
+              "name": "PlayerController",
+              "kind": "controller",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerController",
+              "frameworkRole": "playerController",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerController",
+                  "type": "PlayerController",
+                  "properties": {
+                    "enabled": true,
+                    "pawn": "",
+                    "inputEnabled": true
+                  }
+                }
+              ],
+              "pawn": null,
+              "playerState": "db7a3206-7149-41f2-961d-bde7b271d080",
+              "gameMode": "767232a7-bbfd-457d-b960-e723427492b4",
+              "gameState": "b3810529-47df-4d82-b37a-54f08726008c",
+              "actorClasses": [
+                "PlayerController",
+                "Controller",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "db7a3206-7149-41f2-961d-bde7b271d080",
+              "name": "PlayerState",
+              "kind": "playerState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerState",
+              "frameworkRole": "playerState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerState",
+                  "type": "PlayerState",
+                  "properties": {
+                    "enabled": true,
+                    "playerName": "Player",
+                    "score": 0
+                  }
+                }
+              ],
+              "actorClasses": [
+                "PlayerState",
+                "Actor"
+              ],
+              "grounded": false
+            }
+          ],
+          "physics": {
+            "backend": "rapier",
+            "fixedStep": 0.016666666666666666,
+            "elapsed": 0.13333333333333333,
+            "dimensions": [
+              {
+                "dimension": 2,
+                "bodies": [],
+                "joints": []
+              },
+              {
+                "dimension": 3,
+                "bodies": [],
+                "joints": []
+              }
+            ]
+          },
+          "projectiles": {
+            "count": 0,
+            "capacity": 0,
+            "pendingHits": 0,
+            "styles": 0
+          },
+          "camera": {
+            "position": [
+              0,
+              0,
+              10
+            ],
+            "projection": "OrthographicCamera"
+          },
+          "render2D": {
+            "renderers": 1,
+            "maskPasses": 0,
+            "maskTargets": 0,
+            "lights": 0,
+            "lightBytes": 0
+          },
+          "sprites": [
+            {
+              "id": "Sprite",
+              "flip": [
+                1,
+                1,
+                1
+              ],
+              "sprite": null,
+              "image": [
+                32,
+                32
+              ],
+              "children": 1,
+              "resources": {
+                "material": "7aaaecd5-7e03-487e-b0dc-df6dbf18222c",
+                "geometry": "82ccdb44-5923-4c78-8c36-0cd5805603e9"
+              },
+              "surface": {
+                "material": "MeshBasicMaterial",
+                "transparent": true,
+                "depthWrite": false,
+                "alphaCutoff": 0,
+                "normalImage": [
+                  0,
+                  0
+                ],
+                "normalScale": null,
+                "normalColorSpace": null,
+                "castShadow": false,
+                "receiveShadow": false,
+                "light2d": null
+              }
+            }
+          ],
+          "lights2d": [],
+          "environment": {
+            "mode": "legacy",
+            "sky": false,
+            "fog": null,
+            "capture": {
+              "count": 0,
+              "size": [
+                0,
+                0
+              ]
+            }
+          },
+          "materials": [],
+          "renderer": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 1
+            },
+            "calls": 1,
+            "captures": 0,
+            "gpuTimeMs": 0.009216,
+            "gpuTimingFrame": 9,
+            "meshes": 1,
+            "presents": 10,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 0,
+            "shadowTextureBytes": 0,
+            "textures": 1,
+            "uploads": 2,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          }
+        },
+        "pixels": [
+          [
+            232,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            232,
+            255
+          ]
+        ],
+        "idle": {
+          "scene": "Assets/Scenes/Garden.hbscene.json",
+          "time": 1.1347000066749748,
+          "nativeTiming": {
+            "parseMs": 0.0152,
+            "snapshotMs": 0.0034,
+            "workerMs": 0.0288,
+            "mode": "clock",
+            "bytes": 715,
+            "patchOperations": 0,
+            "prepareMs": 0.005300000000261207,
+            "replyBytes": 315,
+            "returnedObjects": 0,
+            "rpcMs": 0.13670000000001892,
+            "decodeMs": 0.0008000000002539309,
+            "validateMs": 0.013500000000021828,
+            "replyValidationMs": 0.005599999999958527,
+            "channel": "websocket",
+            "clientApplyMs": 0
+          },
+          "nativeFrameGroups": {
+            "parallel": 0,
+            "sequential": 44
+          },
+          "animation": [],
+          "spriteSkin": [],
+          "work": {
+            "scopes": [],
+            "delays": [],
+            "timers": [],
+            "timelines": [],
+            "subscriptions": []
+          },
+          "input": {
+            "keys": {},
+            "pointer": {
+              "valid": false,
+              "inside": false,
+              "position": [
+                0,
+                0
+              ],
+              "size": [
+                1,
+                1
+              ],
+              "delta": [
+                0,
+                0
+              ],
+              "origin": [
+                0,
+                0,
+                0
+              ],
+              "direction": [
+                0,
+                0,
+                0
+              ],
+              "rayValid": false
+            },
+            "lastDevice": "keyboard",
+            "pressed": [],
+            "released": [],
+            "actions": []
+          },
+          "objects": [
+            {
+              "id": "Driver",
+              "name": "Empty Actor",
+              "kind": "empty",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_0",
+                      "defaults": {
+                        "position": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "rotation": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "scale": [
+                          1,
+                          1,
+                          1
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_1",
+                      "defaults": {
+                        "enabled": true,
+                        "mesh": "",
+                        "material": "",
+                        "visible": true,
+                        "castShadow": true,
+                        "receiveShadow": true
+                      }
+                    }
+                  ]
+                }
+              ],
+              "blueprintAsset": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+              "nativeClass": "NativeScene",
+              "nativeProperties": {},
+              "actorClasses": [
+                "BP_NativeScene",
+                "Assets/Blueprints/BP_Garden.hbblueprint.json",
+                "BP_Garden",
+                "NativeScene",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Camera",
+              "name": "Camera",
+              "kind": "camera",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                10
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "537b957a-bde5-45d0-a1a3-c073cf6b5107",
+                  "name": "Camera",
+                  "type": "Camera",
+                  "properties": {
+                    "enabled": true,
+                    "projection": "orthographic",
+                    "fieldOfView": 60,
+                    "orthographicSize": 4,
+                    "near": 0.1,
+                    "far": 1000,
+                    "priority": 0,
+                    "main": true,
+                    "followTarget": "",
+                    "followOffset": [
+                      0,
+                      3,
+                      6
+                    ],
+                    "pixelPerfect": false,
+                    "pixelReferenceWidth": 640,
+                    "pixelReferenceHeight": 360,
+                    "pixelPixelsPerUnit": 32
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Sprite",
+              "name": "Sprite",
+              "kind": "sprite",
+              "group": "WORLD",
+              "position": [
+                3,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "8a3ac12a-4062-4043-9c6a-f2a25d92a05a",
+                  "name": "SpriteRenderer",
+                  "type": "SpriteRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "sprite": "Assets/S_B.hbsprite.json",
+                    "drawMode": "simple",
+                    "texture": "Assets/Original.svg",
+                    "color": [
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    "width": 4,
+                    "height": 4,
+                    "pixelsPerUnit": 100,
+                    "flipX": false,
+                    "flipY": false,
+                    "sortingOrder": 0,
+                    "billboard": false,
+                    "visible": true,
+                    "tileOrigin": "bottomLeft",
+                    "borderLeft": 0,
+                    "borderBottom": 0,
+                    "borderRight": 0,
+                    "borderTop": 0,
+                    "sortPoint": "center",
+                    "useCustomSize": false,
+                    "sortingLayer": "default",
+                    "maskInteraction": "none",
+                    "shading": "unlit",
+                    "blendMode": "translucent",
+                    "emissiveIntensity": 0,
+                    "alphaCutoff": 0.5,
+                    "normalTexture": "",
+                    "lightMaskTexture": "",
+                    "normalStrength": 1,
+                    "normalFlipY": false,
+                    "castShadow": false,
+                    "receiveShadow": false
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false,
+              "currentSprite": "Assets/S_B.hbsprite.json"
+            },
+            {
+              "id": "gameinstance_27d5d65f-8474-4d13-9c32-12ad116d2585",
+              "name": "GameInstance",
+              "kind": "empty",
+              "group": "GAMEPLAY",
+              "frameworkRole": "gameInstance",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "components": [],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "767232a7-bbfd-457d-b960-e723427492b4",
+              "name": "GameMode",
+              "kind": "gameMode",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameMode",
+              "frameworkRole": "gameMode",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameMode",
+                  "type": "GameMode",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 1.1333333333333342
+                  }
+                }
+              ],
+              "gameState": "b3810529-47df-4d82-b37a-54f08726008c",
+              "playerController": "f33f96fa-7778-49bc-9a00-cb82054adc84",
+              "defaultPawn": null,
+              "actorClasses": [
+                "GameMode",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "b3810529-47df-4d82-b37a-54f08726008c",
+              "name": "GameState",
+              "kind": "gameState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameState",
+              "frameworkRole": "gameState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameState",
+                  "type": "GameState",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 1.1333333333333342
+                  }
+                }
+              ],
+              "actorClasses": [
+                "GameState",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "f33f96fa-7778-49bc-9a00-cb82054adc84",
+              "name": "PlayerController",
+              "kind": "controller",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerController",
+              "frameworkRole": "playerController",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerController",
+                  "type": "PlayerController",
+                  "properties": {
+                    "enabled": true,
+                    "pawn": "",
+                    "inputEnabled": true
+                  }
+                }
+              ],
+              "pawn": null,
+              "playerState": "db7a3206-7149-41f2-961d-bde7b271d080",
+              "gameMode": "767232a7-bbfd-457d-b960-e723427492b4",
+              "gameState": "b3810529-47df-4d82-b37a-54f08726008c",
+              "actorClasses": [
+                "PlayerController",
+                "Controller",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "db7a3206-7149-41f2-961d-bde7b271d080",
+              "name": "PlayerState",
+              "kind": "playerState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerState",
+              "frameworkRole": "playerState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerState",
+                  "type": "PlayerState",
+                  "properties": {
+                    "enabled": true,
+                    "playerName": "Player",
+                    "score": 0
+                  }
+                }
+              ],
+              "actorClasses": [
+                "PlayerState",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "41ba5b25-1d68-405a-8196-23884f0fe900",
+              "name": "Text",
+              "kind": "widget",
+              "visible": true,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "text": "한글 HUD · DirectX",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  }
+                }
+              ],
+              "grounded": false
+            }
+          ],
+          "physics": {
+            "backend": "rapier",
+            "fixedStep": 0.016666666666666666,
+            "elapsed": 1.1333333333333342,
+            "dimensions": [
+              {
+                "dimension": 2,
+                "bodies": [],
+                "joints": []
+              },
+              {
+                "dimension": 3,
+                "bodies": [],
+                "joints": []
+              }
+            ]
+          },
+          "projectiles": {
+            "count": 0,
+            "capacity": 0,
+            "pendingHits": 0,
+            "styles": 0
+          },
+          "camera": {
+            "position": [
+              0,
+              0,
+              10
+            ],
+            "projection": "OrthographicCamera"
+          },
+          "render2D": {
+            "renderers": 1,
+            "maskPasses": 0,
+            "maskTargets": 0,
+            "lights": 0,
+            "lightBytes": 0
+          },
+          "sprites": [
+            {
+              "id": "Sprite",
+              "flip": [
+                1,
+                1,
+                1
+              ],
+              "sprite": "Assets/S_B.hbsprite.json",
+              "image": [
+                32,
+                32
+              ],
+              "children": 1,
+              "resources": {
+                "material": "7aaaecd5-7e03-487e-b0dc-df6dbf18222c",
+                "geometry": "82ccdb44-5923-4c78-8c36-0cd5805603e9"
+              },
+              "surface": {
+                "material": "MeshBasicMaterial",
+                "transparent": true,
+                "depthWrite": false,
+                "alphaCutoff": 0,
+                "normalImage": [
+                  0,
+                  0
+                ],
+                "normalScale": null,
+                "normalColorSpace": null,
+                "castShadow": false,
+                "receiveShadow": false,
+                "light2d": null
+              }
+            }
+          ],
+          "lights2d": [],
+          "environment": {
+            "mode": "legacy",
+            "sky": false,
+            "fog": null,
+            "capture": {
+              "count": 0,
+              "size": [
+                0,
+                0
+              ]
+            }
+          },
+          "materials": [],
+          "renderer": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 1
+            },
+            "calls": 1,
+            "captures": 8,
+            "gpuTimeMs": 0.001024,
+            "gpuTimingFrame": 50,
+            "meshes": 1,
+            "presents": 51,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 0,
+            "shadowTextureBytes": 0,
+            "textures": 1,
+            "uploads": 8,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          }
+        },
+        "threeState": {
+          "scene": "Assets/Scenes/Three.hbscene.json",
+          "time": 0.12419999999925493,
+          "nativeTiming": {
+            "parseMs": 0.013,
+            "snapshotMs": 0.0031,
+            "workerMs": 0.0251,
+            "mode": "clock",
+            "bytes": 712,
+            "patchOperations": 0,
+            "prepareMs": 0.004399999999805004,
+            "replyBytes": 314,
+            "returnedObjects": 0,
+            "rpcMs": 0.12530000000015207,
+            "decodeMs": 0.0007000000000516593,
+            "validateMs": 0.010999999999967258,
+            "replyValidationMs": 0.0048000000001593435,
+            "channel": "websocket",
+            "clientApplyMs": 0
+          },
+          "nativeFrameGroups": {
+            "parallel": 0,
+            "sequential": 12
+          },
+          "animation": [],
+          "spriteSkin": [],
+          "work": {
+            "scopes": [],
+            "delays": [],
+            "timers": [],
+            "timelines": [],
+            "subscriptions": []
+          },
+          "input": {
+            "keys": {},
+            "pointer": {
+              "valid": false,
+              "inside": false,
+              "position": [
+                0,
+                0
+              ],
+              "size": [
+                1,
+                1
+              ],
+              "delta": [
+                0,
+                0
+              ],
+              "origin": [
+                0,
+                0,
+                0
+              ],
+              "direction": [
+                0,
+                0,
+                0
+              ],
+              "rayValid": false
+            },
+            "lastDevice": "keyboard",
+            "pressed": [],
+            "released": [],
+            "actions": []
+          },
+          "objects": [
+            {
+              "id": "Driver",
+              "name": "Empty Actor",
+              "kind": "empty",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_0",
+                      "defaults": {
+                        "position": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "rotation": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "scale": [
+                          1,
+                          1,
+                          1
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_1",
+                      "defaults": {
+                        "enabled": true,
+                        "mesh": "",
+                        "material": "",
+                        "visible": true,
+                        "castShadow": true,
+                        "receiveShadow": true
+                      }
+                    }
+                  ]
+                }
+              ],
+              "blueprintAsset": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+              "nativeClass": "NativeScene",
+              "nativeProperties": {},
+              "actorClasses": [
+                "BP_NativeScene",
+                "Assets/Blueprints/BP_Garden.hbblueprint.json",
+                "BP_Garden",
+                "NativeScene",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Camera",
+              "name": "Camera",
+              "kind": "camera",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                10
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "57c3409a-30ef-4b56-ad3a-933115ede78d",
+                  "name": "Camera",
+                  "type": "Camera",
+                  "properties": {
+                    "enabled": true,
+                    "projection": "perspective",
+                    "fieldOfView": 60,
+                    "orthographicSize": 5,
+                    "near": 0.1,
+                    "far": 1000,
+                    "priority": 0,
+                    "main": true,
+                    "followTarget": "",
+                    "followOffset": [
+                      0,
+                      3,
+                      6
+                    ],
+                    "pixelPerfect": false,
+                    "pixelReferenceWidth": 640,
+                    "pixelReferenceHeight": 360,
+                    "pixelPixelsPerUnit": 32
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Cube",
+              "name": "Cube",
+              "kind": "cube",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                20,
+                30,
+                0
+              ],
+              "scale": [
+                2,
+                2,
+                2
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  }
+                },
+                {
+                  "id": "component_2",
+                  "name": "BoxCollider",
+                  "type": "BoxCollider",
+                  "properties": {
+                    "enabled": true,
+                    "center": [
+                      0,
+                      0.5,
+                      0
+                    ],
+                    "collisionMode": "both",
+                    "trigger": false,
+                    "layer": 0,
+                    "mask": 4294967295,
+                    "physicalMaterial": "",
+                    "friction": 0.5,
+                    "frictionCombine": "average",
+                    "restitution": 0,
+                    "restitutionCombine": "average",
+                    "density": 1,
+                    "extent": [
+                      0.5,
+                      0.5,
+                      0.5
+                    ]
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "gameinstance_27d5d65f-8474-4d13-9c32-12ad116d2585",
+              "name": "GameInstance",
+              "kind": "empty",
+              "group": "GAMEPLAY",
+              "frameworkRole": "gameInstance",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "components": [],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "3131a73f-90d2-4518-b393-823155828825",
+              "name": "GameMode",
+              "kind": "gameMode",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameMode",
+              "frameworkRole": "gameMode",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameMode",
+                  "type": "GameMode",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.11666666666666665
+                  }
+                }
+              ],
+              "gameState": "e97f14b3-55ef-40d2-b509-16d754eded72",
+              "playerController": "63d3202a-e0d2-4742-9bc8-9c85384dac69",
+              "defaultPawn": null,
+              "actorClasses": [
+                "GameMode",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "e97f14b3-55ef-40d2-b509-16d754eded72",
+              "name": "GameState",
+              "kind": "gameState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameState",
+              "frameworkRole": "gameState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameState",
+                  "type": "GameState",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.11666666666666665
+                  }
+                }
+              ],
+              "actorClasses": [
+                "GameState",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "63d3202a-e0d2-4742-9bc8-9c85384dac69",
+              "name": "PlayerController",
+              "kind": "controller",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerController",
+              "frameworkRole": "playerController",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerController",
+                  "type": "PlayerController",
+                  "properties": {
+                    "enabled": true,
+                    "pawn": "",
+                    "inputEnabled": true
+                  }
+                }
+              ],
+              "pawn": null,
+              "playerState": "72ef7954-8690-49b6-a656-cd803201b5d9",
+              "gameMode": "3131a73f-90d2-4518-b393-823155828825",
+              "gameState": "e97f14b3-55ef-40d2-b509-16d754eded72",
+              "actorClasses": [
+                "PlayerController",
+                "Controller",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "72ef7954-8690-49b6-a656-cd803201b5d9",
+              "name": "PlayerState",
+              "kind": "playerState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerState",
+              "frameworkRole": "playerState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerState",
+                  "type": "PlayerState",
+                  "properties": {
+                    "enabled": true,
+                    "playerName": "Player",
+                    "score": 0
+                  }
+                }
+              ],
+              "actorClasses": [
+                "PlayerState",
+                "Actor"
+              ],
+              "grounded": false
+            }
+          ],
+          "physics": {
+            "backend": "rapier",
+            "fixedStep": 0.016666666666666666,
+            "elapsed": 0.11666666666666665,
+            "dimensions": [
+              {
+                "dimension": 2,
+                "bodies": [],
+                "joints": []
+              },
+              {
+                "dimension": 3,
+                "bodies": [
+                  {
+                    "id": "Cube",
+                    "bodyType": "static",
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "velocity": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "angularVelocity": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "mass": 8,
+                    "sleeping": false,
+                    "colliders": 1
+                  }
+                ],
+                "joints": []
+              }
+            ]
+          },
+          "projectiles": {
+            "count": 0,
+            "capacity": 0,
+            "pendingHits": 0,
+            "styles": 0
+          },
+          "camera": {
+            "position": [
+              0,
+              0,
+              10
+            ],
+            "projection": "PerspectiveCamera"
+          },
+          "render2D": {
+            "renderers": 0,
+            "maskPasses": 0,
+            "maskTargets": 0
+          },
+          "sprites": [],
+          "lights2d": [],
+          "environment": {
+            "mode": "legacy",
+            "sky": true,
+            "fog": null,
+            "capture": {
+              "count": 0,
+              "size": [
+                0,
+                0
+              ]
+            }
+          },
+          "materials": [],
+          "renderer": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 2
+            },
+            "memory": {
+              "geometries": 2,
+              "textures": 0
+            },
+            "calls": 2,
+            "captures": 8,
+            "gpuTimeMs": 0.003072,
+            "gpuTimingFrame": 62,
+            "meshes": 2,
+            "presents": 63,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 0,
+            "shadowTextureBytes": 0,
+            "textures": 0,
+            "uploads": 10,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          }
+        },
+        "final": {
+          "scene": "Assets/Scenes/Garden.hbscene.json",
+          "time": 0.12469999999925496,
+          "nativeTiming": {
+            "parseMs": 0.0131,
+            "snapshotMs": 0.0032,
+            "workerMs": 0.0254,
+            "mode": "clock",
+            "bytes": 715,
+            "patchOperations": 0,
+            "prepareMs": 0.004399999999805004,
+            "replyBytes": 316,
+            "returnedObjects": 0,
+            "rpcMs": 0.11179999999967549,
+            "decodeMs": 0.0003999999998995918,
+            "validateMs": 0.009399999999914144,
+            "replyValidationMs": 0.004600000000209548,
+            "channel": "websocket",
+            "clientApplyMs": 0.09999999962747097
+          },
+          "nativeFrameGroups": {
+            "parallel": 0,
+            "sequential": 13
+          },
+          "animation": [],
+          "spriteSkin": [],
+          "work": {
+            "scopes": [],
+            "delays": [],
+            "timers": [],
+            "timelines": [],
+            "subscriptions": []
+          },
+          "input": {
+            "keys": {},
+            "pointer": {
+              "valid": false,
+              "inside": false,
+              "position": [
+                0,
+                0
+              ],
+              "size": [
+                1,
+                1
+              ],
+              "delta": [
+                0,
+                0
+              ],
+              "origin": [
+                0,
+                0,
+                0
+              ],
+              "direction": [
+                0,
+                0,
+                0
+              ],
+              "rayValid": false
+            },
+            "lastDevice": "keyboard",
+            "pressed": [],
+            "released": [],
+            "actions": []
+          },
+          "objects": [
+            {
+              "id": "Driver",
+              "name": "Empty Actor",
+              "kind": "empty",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_0",
+                      "defaults": {
+                        "position": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "rotation": [
+                          0,
+                          0,
+                          0
+                        ],
+                        "scale": [
+                          1,
+                          1,
+                          1
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "component_1",
+                  "name": "MeshRenderer",
+                  "type": "MeshRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "mesh": "",
+                    "material": "",
+                    "visible": true,
+                    "castShadow": true,
+                    "receiveShadow": true
+                  },
+                  "blueprintSources": [
+                    {
+                      "name": "BP_NativeScene",
+                      "id": "component_1",
+                      "defaults": {
+                        "enabled": true,
+                        "mesh": "",
+                        "material": "",
+                        "visible": true,
+                        "castShadow": true,
+                        "receiveShadow": true
+                      }
+                    }
+                  ]
+                }
+              ],
+              "blueprintAsset": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+              "nativeClass": "NativeScene",
+              "nativeProperties": {},
+              "actorClasses": [
+                "BP_NativeScene",
+                "Assets/Blueprints/BP_Garden.hbblueprint.json",
+                "BP_Garden",
+                "NativeScene",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Camera",
+              "name": "Camera",
+              "kind": "camera",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                10
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "537b957a-bde5-45d0-a1a3-c073cf6b5107",
+                  "name": "Camera",
+                  "type": "Camera",
+                  "properties": {
+                    "enabled": true,
+                    "projection": "orthographic",
+                    "fieldOfView": 60,
+                    "orthographicSize": 4,
+                    "near": 0.1,
+                    "far": 1000,
+                    "priority": 0,
+                    "main": true,
+                    "followTarget": "",
+                    "followOffset": [
+                      0,
+                      3,
+                      6
+                    ],
+                    "pixelPerfect": false,
+                    "pixelReferenceWidth": 640,
+                    "pixelReferenceHeight": 360,
+                    "pixelPixelsPerUnit": 32
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "Sprite",
+              "name": "Sprite",
+              "kind": "sprite",
+              "group": "WORLD",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "visible": true,
+              "components": [
+                {
+                  "id": "8a3ac12a-4062-4043-9c6a-f2a25d92a05a",
+                  "name": "SpriteRenderer",
+                  "type": "SpriteRenderer",
+                  "properties": {
+                    "enabled": true,
+                    "sprite": "",
+                    "drawMode": "simple",
+                    "texture": "Assets/Original.svg",
+                    "color": [
+                      1,
+                      1,
+                      1,
+                      1
+                    ],
+                    "width": 4,
+                    "height": 4,
+                    "pixelsPerUnit": 100,
+                    "flipX": false,
+                    "flipY": false,
+                    "sortingOrder": 0,
+                    "billboard": false,
+                    "visible": true,
+                    "tileOrigin": "bottomLeft",
+                    "borderLeft": 0,
+                    "borderBottom": 0,
+                    "borderRight": 0,
+                    "borderTop": 0,
+                    "sortPoint": "center",
+                    "useCustomSize": false,
+                    "sortingLayer": "default",
+                    "maskInteraction": "none",
+                    "shading": "unlit",
+                    "blendMode": "translucent",
+                    "emissiveIntensity": 0,
+                    "alphaCutoff": 0.5,
+                    "normalTexture": "",
+                    "lightMaskTexture": "",
+                    "normalStrength": 1,
+                    "normalFlipY": false,
+                    "castShadow": false,
+                    "receiveShadow": false
+                  }
+                }
+              ],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "gameinstance_27d5d65f-8474-4d13-9c32-12ad116d2585",
+              "name": "GameInstance",
+              "kind": "empty",
+              "group": "GAMEPLAY",
+              "frameworkRole": "gameInstance",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "components": [],
+              "actorClasses": [
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "66174fe9-ba2b-4168-8eb6-cbb8ef14d184",
+              "name": "GameMode",
+              "kind": "gameMode",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameMode",
+              "frameworkRole": "gameMode",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameMode",
+                  "type": "GameMode",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.11666666666666665
+                  }
+                }
+              ],
+              "gameState": "5ba03353-2a08-4c73-88df-964afa44ed13",
+              "playerController": "32d811ac-ee68-4c02-8042-574acac5514c",
+              "defaultPawn": null,
+              "actorClasses": [
+                "GameMode",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "5ba03353-2a08-4c73-88df-964afa44ed13",
+              "name": "GameState",
+              "kind": "gameState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "GameState",
+              "frameworkRole": "gameState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "GameState",
+                  "type": "GameState",
+                  "properties": {
+                    "enabled": true,
+                    "matchState": "playing",
+                    "elapsed": 0.11666666666666665
+                  }
+                }
+              ],
+              "actorClasses": [
+                "GameState",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "32d811ac-ee68-4c02-8042-574acac5514c",
+              "name": "PlayerController",
+              "kind": "controller",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerController",
+              "frameworkRole": "playerController",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerController",
+                  "type": "PlayerController",
+                  "properties": {
+                    "enabled": true,
+                    "pawn": "",
+                    "inputEnabled": true
+                  }
+                }
+              ],
+              "pawn": null,
+              "playerState": "d85b094a-37b9-46a6-b336-731c630f816d",
+              "gameMode": "66174fe9-ba2b-4168-8eb6-cbb8ef14d184",
+              "gameState": "5ba03353-2a08-4c73-88df-964afa44ed13",
+              "actorClasses": [
+                "PlayerController",
+                "Controller",
+                "Actor"
+              ],
+              "grounded": false
+            },
+            {
+              "id": "d85b094a-37b9-46a6-b336-731c630f816d",
+              "name": "PlayerState",
+              "kind": "playerState",
+              "group": "GAMEPLAY",
+              "visible": false,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ],
+              "nativeClass": "PlayerState",
+              "frameworkRole": "playerState",
+              "components": [
+                {
+                  "id": "component_0",
+                  "name": "Transform",
+                  "type": "Transform",
+                  "properties": {
+                    "position": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "rotation": [
+                      0,
+                      0,
+                      0
+                    ],
+                    "scale": [
+                      1,
+                      1,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "component_1",
+                  "name": "PlayerState",
+                  "type": "PlayerState",
+                  "properties": {
+                    "enabled": true,
+                    "playerName": "Player",
+                    "score": 0
+                  }
+                }
+              ],
+              "actorClasses": [
+                "PlayerState",
+                "Actor"
+              ],
+              "grounded": false
+            }
+          ],
+          "physics": {
+            "backend": "rapier",
+            "fixedStep": 0.016666666666666666,
+            "elapsed": 0.11666666666666665,
+            "dimensions": [
+              {
+                "dimension": 2,
+                "bodies": [],
+                "joints": []
+              },
+              {
+                "dimension": 3,
+                "bodies": [],
+                "joints": []
+              }
+            ]
+          },
+          "projectiles": {
+            "count": 0,
+            "capacity": 0,
+            "pendingHits": 0,
+            "styles": 0
+          },
+          "camera": {
+            "position": [
+              0,
+              0,
+              10
+            ],
+            "projection": "OrthographicCamera"
+          },
+          "render2D": {
+            "renderers": 1,
+            "maskPasses": 0,
+            "maskTargets": 0,
+            "lights": 0,
+            "lightBytes": 0
+          },
+          "sprites": [
+            {
+              "id": "Sprite",
+              "flip": [
+                1,
+                1,
+                1
+              ],
+              "sprite": null,
+              "image": [
+                32,
+                32
+              ],
+              "children": 1,
+              "resources": {
+                "material": "50d31454-a600-4e24-842d-bdb859a64ec0",
+                "geometry": "26c00ac4-71c2-4456-ad39-d86645174aeb"
+              },
+              "surface": {
+                "material": "MeshBasicMaterial",
+                "transparent": true,
+                "depthWrite": false,
+                "alphaCutoff": 0,
+                "normalImage": [
+                  0,
+                  0
+                ],
+                "normalScale": null,
+                "normalColorSpace": null,
+                "castShadow": false,
+                "receiveShadow": false,
+                "light2d": null
+              }
+            }
+          ],
+          "lights2d": [],
+          "environment": {
+            "mode": "legacy",
+            "sky": false,
+            "fog": null,
+            "capture": {
+              "count": 0,
+              "size": [
+                0,
+                0
+              ]
+            }
+          },
+          "materials": [],
+          "renderer": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 1,
+              "textures": 1
+            },
+            "calls": 1,
+            "captures": 28,
+            "gpuTimeMs": 0.018432,
+            "gpuTimingFrame": 267,
+            "meshes": 1,
+            "presents": 268,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 18,
+            "shadowTextureBytes": 0,
+            "textures": 1,
+            "uploads": 38,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          }
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "svgOrientation": true,
+        "blueprintInput": true,
+        "cppMovement": true,
+        "hlslNodeMaterial": true,
+        "hlslTexturePixel": true,
+        "pixelPerfectLetterbox": true,
+        "cppBlueprintMaterialParameters": true,
+        "shaderParameterReuse": true,
+        "textureReplacementReleased": true,
+        "asynchronousGpuTiming": true,
+        "koreanHud": true,
+        "transparentOverlay": true,
+        "resize": true,
+        "sceneResourcesReleased": true,
+        "automaticReadbacks": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true,
+        "fpsClaim": false
+      }
+    },
+    {
+      "kind": "legacy-web",
+      "directory": "native/build/web-export-GAINwR",
+      "result": {
+        "ok": true,
+        "cpp": false,
+        "browser": true,
+        "outputs": [
+          {
+            "target": "web",
+            "renderer": "Browser/WebGL2",
+            "renderBackend": "webgl2",
+            "profile": {
+              "id": "web",
+              "name": "Windows",
+              "configuration": "development",
+              "productName": "HBEngine Web gameplay2d",
+              "width": 1280,
+              "height": 720,
+              "scenes": [
+                {
+                  "path": "Assets/Scenes/Garden.hbscene.json",
+                  "enabled": true
+                }
+              ],
+              "target": "web"
+            },
+            "startupScene": "Assets/Scenes/Garden.hbscene.json",
+            "gameInstance": "",
+            "files": 12,
+            "bytes": 31567,
+            "nativeModules": 0,
+            "warnings": [
+              "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+            ],
+            "id": "2026-10-11T09-48-47-661Z-dab267d1",
+            "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-GAINwR\\HBEngine Web gameplay2d\\Builds\\web\\2026-10-11T09-48-47-661Z-dab267d1",
+            "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-GAINwR\\HBEngine Web gameplay2d\\Builds\\web\\2026-10-11T09-48-47-661Z-dab267d1\\index.html",
+            "artifactType": "web",
+            "totalFiles": 143,
+            "totalBytes": 13983937,
+            "browser": {
+              "ready": true,
+              "keyboard": true,
+              "cppMouseAttack": false,
+              "errors": [],
+              "httpErrors": [],
+              "frames": 58
+            }
+          },
+          {
+            "target": "web",
+            "renderer": "Browser/WebGL2",
+            "renderBackend": "webgl2",
+            "profile": {
+              "id": "web",
+              "name": "Windows",
+              "configuration": "development",
+              "productName": "HBEngine Web gameplay3d",
+              "width": 1280,
+              "height": 720,
+              "scenes": [
+                {
+                  "path": "Assets/Scenes/Garden.hbscene.json",
+                  "enabled": true
+                }
+              ],
+              "target": "web"
+            },
+            "startupScene": "Assets/Scenes/Garden.hbscene.json",
+            "gameInstance": "",
+            "files": 12,
+            "bytes": 32108,
+            "nativeModules": 0,
+            "warnings": [
+              "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+            ],
+            "id": "2026-10-11T09-48-50-003Z-efc24b0a",
+            "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-GAINwR\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-11T09-48-50-003Z-efc24b0a",
+            "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\web-export-GAINwR\\HBEngine Web gameplay3d\\Builds\\web\\2026-10-11T09-48-50-003Z-efc24b0a\\index.html",
+            "artifactType": "web",
+            "totalFiles": 143,
+            "totalBytes": 13984478,
+            "browser": {
+              "ready": true,
+              "keyboard": true,
+              "cppMouseAttack": false,
+              "errors": [],
+              "httpErrors": [],
+              "frames": 56
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "sharedRegression": [
+    "check-scene-runtime: 62 components pass",
+    "check-render-resources: cast positions, legacy settings and owned releases pass"
+  ],
+  "failuresPreserved": [
+    "native-scene-window-Y5So7B: alpha test obscured by self-shadow acne",
+    "native-scene-window-pQdVKV and KPwhsv: caster shadow outside center due to default light local Y=1",
+    "native-scene-window-hO0idD: test read authored BP state before renderer completion"
+  ],
+  "limits": [
+    "mixed resolutions allocate each array layer at maximum dimensions",
+    "dirty frame refreshes all light maps",
+    "time in any caster graph refreshes shadows conservatively",
+    "no CSM/VSM/contact/baked/raytrace",
+    "native bloom/GI/IBL/skinning/instances/morphs/particle adapter/2D dedicated lights remain",
+    "no overall FPS or full RAM/thermal/device claim"
+  ],
+  "sourceHashNote": "Tracked source hashes after CRLF-to-LF normalization. No executable semantics changed after final runtime tests; original acceptance reports retain their own packaged sources."
+}

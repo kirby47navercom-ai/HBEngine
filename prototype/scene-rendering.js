@@ -3,7 +3,7 @@ import {resolveSprite} from './sprite-import.js';
 import {createGameCamera,selectGameCamera} from './game-camera.js';
 import * as THREE from 'three';
 import {DecalGeometry} from 'three/addons/geometries/DecalGeometry.js';
-import {enabledComponent,objectComponents,componentDefaults} from './scene-components.js';
+import {enabledComponent,objectComponents,componentDefaults,validComponentProperties} from './scene-components.js';
 import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-assets.js';
 import {tilemapColliders} from './tilemap-runtime.js';
 import {createThreeMaterial,materialParameterKey,materialParameters,resolveMaterialAsset} from './material-runtime.js';
@@ -17,6 +17,11 @@ import {light2DUniforms} from './two-d-lighting.js';
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)));
+export function configureLightShadow(light,p){
+  const shadow=light.shadow;if(!shadow)return;const d=componentDefaults(light.type);p={...d,...p};if(!validComponentProperties(light.type,p))throw Error('그림자 해상도와 근거리·원거리를 확인하세요.');
+  shadow.mapSize.set(p.shadowMapWidth,p.shadowMapHeight);shadow.bias=p.shadowBias;shadow.normalBias=p.shadowNormalBias;shadow.radius=p.shadowRadius;shadow.intensity=p.shadowIntensity;shadow.camera.near=p.shadowNear;shadow.camera.far=p.shadowFar;
+  if(light.isDirectionalLight){shadow.camera.left=shadow.camera.bottom=-p.shadowExtent;shadow.camera.right=shadow.camera.top=p.shadowExtent;}shadow.camera.updateProjectionMatrix();
+}
 export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor=false,error,gameRenderer,runtimeWorld}){
   read=cacheAssetReader(read);
   const twoD=new TwoDRendering(),bloom=gameRenderer?.hbBloom?.()||new BloomRendering(),particlePoint=new THREE.Vector3(),particleInverse=new THREE.Matrix4();
@@ -199,10 +204,10 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
       if(component.type==='ParticleSystem'){await particles(group,p);const state=group.userData.particleState?.simulation;if(state?.debugState&&(!editor||runtimeWorld?.()))object.gameplayDebug={...object.gameplayDebug,particles:state.debugState()};}
       if(component.type==='NavigationGrid'&&p.debug){const axes=p.plane==='XY'?[0,1]:[0,2],points=[];for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]){const v=[0,0,0];v[axes[0]]=x*p.extent[axes[0]];v[axes[1]]=y*p.extent[axes[1]];points.push(new THREE.Vector3(...v));}const geometry=new THREE.BufferGeometry().setFromPoints(points),material=new THREE.LineBasicMaterial({color:0x63c8ad});own(group,geometry);own(group,material);const line=new THREE.Line(geometry,material);line.userData.editorHelper=true;group.add(line);}
       if(component.type==='Camera'){const camera=createGameCamera(p);group.add(camera);group.userData.gameCamera=camera;}
-      if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);own(group,light);light.castShadow=p.castShadow;if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}
+      if(['DirectionalLight','PointLight','SpotLight'].includes(component.type)&&object.kind!=='light'){const color=new THREE.Color(...p.color.slice(0,3)),light=component.type==='DirectionalLight'?new THREE.DirectionalLight(color,p.intensity):component.type==='PointLight'?new THREE.PointLight(color,p.intensity,p.radius,p.decay):new THREE.SpotLight(color,p.intensity,p.radius,THREE.MathUtils.degToRad(p.angle),p.penumbra);own(group,light);light.position.set(0,0,0);light.castShadow=p.castShadow;configureLightShadow(light,p);if(light.target){light.target.position.set(0,0,-1);group.add(light.target);}group.add(light);}
     }
     if(group.userData.disposed)return;if(rig){const pose=new SpriteRigPose(rig,{geometry:group.userData.spriteMesh?.geometry,requireSprite:true});group.add(pose.group);group.userData.spriteSkin=pose;group.userData.animations=[...group.userData.animations||[],...pose.animations];if(group.userData.spriteMesh)group.userData.spriteMesh.position.set(0,0,0);}
-    group.traverse(child=>{child.userData.objectId=object.id;if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
+    group.traverse(child=>{child.userData.objectId=object.id;if(child.isLight&&object.kind==='light'){const p=enabledComponent(object,child.type)||(child.isPointLight?enabledComponent(object,'DirectionalLight'):null);if(p){child.position.set(0,0,0);child.castShadow=p.castShadow;configureLightShadow(child,p);}}if(child.isMesh&&!child.userData.sprite){child.visible=renderer?.visible!==false&&renderer?.enabled!==false;child.castShadow=renderer?.castShadow!==false;child.receiveShadow=renderer?.receiveShadow!==false;}});
     const path=renderer?.material||object.materialAsset;if(path)await material(object,path);
   }
   function updateMaterialTime(time){for(const group of all())for(const resource of group.userData.resources||[])resource.userData?.updateTime?.(time);}

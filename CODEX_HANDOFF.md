@@ -994,3 +994,7 @@ Auric_Loop의 원격 main a19fcf7·weapon-socket 355289f를 별도 복사본에�
 사용자의 렌더링부터 계속하라는 지시에 따라 Windows Game.exe의 선택 가능한 DirectX 11 장면 경로를 추가했다. 기존 Device/ParticleRenderer 화면과 자원을 재사용하며 정적 메시·SVG/아틀라스·PBR/direct/hemisphere lights·하늘/높이 안개·픽셀 여백/scissor·54종 HLSL 노드를 연결했다. C++/BP 이동·Float 파라미터/실제 텍스처 픽셀·교체/장면/종료 해제·비동기 GPU 시간은 native-scene-window-kxEDl8 통과. GPU 픽셀/2049드로우12프레임 재사용은 native-scene-RCQyBT, 기존 웹 2D/3D 회귀는 web-export-n40BQH. base64 텍스처 전송과 변경 드로우만 전송, 자동 이미지/위치 readback 없음. 사용자 설치/원본/기존 창 불변. docs/NATIVE_SCENE_RENDERING_086.md와 증거 JSON 참조.
 
 다음은 같은 네이티브 경로의 그림자/후처리·환경광, 스킨/인스턴스/모프·입자/2D광원/텍스처 종류다. 기존 WebGL/WebGPU의 구현과 대조하고 중복 구현하지 않는다. D3D11 경로의 geometry/texture/node shader 미지원은 명시 오류이며 shadow/GI 패스는 아직 실행하지 않는다. 전체051/누적 세부·전체 corpus false·설치 갱신 대기 유지. 실제120/60fps·전체 프로세스 RAM·DPI/합성 화면/장기 측정은 이 증거에서 합격하지 않았다. 작업은 계속 백그라운드/격리이며 원본과 현재 앱을 검사에 사용하지 않는다.
+
+## 087 — 네이티브 광원 그림자
+
+086 85699ae 푸시 완료. D3D11 directional/spot+point6 깊이 배열·PBR receive·HLSL alpha cutoff·PCF/bias/slopeClamp·static reuse·offscreen casters·자원 bytes/해제를 연결. 공용 Light 생성 Y=1을0으로 수정해 작성 좌표·방향 일치, legacy광원 설정과 속성/AI/BP/C++ 기존 컴포넌트 서비스를 사용. GPU lMZaDR 54HLSL/픽셀/2049×12 no upload/readback, 실제 Windows OXEZfA cast/receive·Cpp/BP opacity/toggle/movement·static reuse/bytes·기존 SVG/HUD/lifecycle PASS. shared62/render-resources, 웹 GAINwR PASS. 실패 acne→slopebias,lightY→0,BP렌더완료 대기 기록 보존. 연구4페이지+Three 지정읽기 SHA/manifest; 전체 gate false. docs/NATIVE_SHADOWS_087.md/JSON. 설치/원본/사용 창 불변. 다음 native HDR/bloom/postprocess·환경광/animation/particles/2D 그리고 누적목표, 전체 선행→설치 갱신→연구 추가 순서 유지.

@@ -365,3 +365,7 @@ Materials::SetTexture SDK 선언에서 materialTexture 노드를 생성한다. �
 ## 086 — DirectX 장면 실행
 
 Windows 빌드의 `windowsRenderer: d3d11`은 기존 BP 입력/이동/머테리얼 서비스와 C++ `Scene::SetPosition`·`Materials::SetFloat`를 그대로 실행한다. 노드 머테리얼의 공용 해석 결과를 HLSL로 컴파일하고 Float 변경은 숫자 버퍼만 갱신한다. 실제 게임의 E 키 BP/C++ 이동·M 키 발광·텍스처 픽셀/셰이더 재사용은 [086](NATIVE_SCENE_RENDERING_086.md). 새 BP 노드나 별도 머테리얼 스키마를 추가하지 않았다. 네이티브 미연결 렌더 패스와 전체 FPS/엔진 완료는 별도로 남긴다.
+
+## 087 — 그림자 제작과 C++/BP 공용 연결
+
+광원 그림자 해상도/범위/bias/필터/강도는 기존 Light 컴포넌트 속성, AI schema·patch·Undo·저장, C++ Components::SetBool/SetFloat와 BP componentSetBool/Float를 사용한다. D3D11 실제 S/T키 BP와 C++ 토글/opacity/이동은 [087](NATIVE_SHADOWS_087.md). 독립 API/별도 장면 파일을 만들지 않았다.
