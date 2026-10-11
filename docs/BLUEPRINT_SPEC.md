@@ -1,3 +1,5 @@
+2026-10-12: [투과·두께·굴절](NATIVE_TRANSMISSION_096.md). 기존 Surface/속성·함수/레이어/인스턴스와 SetFloat CPP/BP/AI에 Thickness·Transmission 별칭을 연결하고, DirectX HDR 불투명 장면 캡처/mip·IOR/노멀·거칠기와 해제를 구현했어요. WebGPU 투과 노드와 그리기 목록 활성화를 함께 고쳤어요. 실제 세 실행기 C++/T키 BP·재사용·오류0, GPU60노드 회귀와 최종 sampler/Bloom 조합·공용 검증은 기계 기록에 있어요. 중첩/화면 밖/깊이 추적·체적 흡수/분산과 남은 셰이딩/후처리/GI·설치 갱신 순서는 유지해요.
+
 2026-10-12: [코팅층·분리 노멀·IOR](NATIVE_COATING_095.md). 기존 Surface/속성·함수/레이어/인스턴스와 SetFloat CPP/BP/AI를 DirectX 직접광/프로브 및 GLSL/TSL에 연결해요. AO/Clearcoat/CoatRoughness/IOR 별칭·분리 노멀·값 변경 재사용, 실제 세 실행기 C++/C키 BP와 마지막 레이어/MI 검증을 기록해요. 네이티브 투과·추가 셰이딩/GI 및 설치 갱신 순서는 유지해요.
 
 2026-10-08 후속: [CCD IK](ANIMATION_CCD_073.md)에 세 번째 3D 솔버·이름별 전체 회전 제한·공용 C++/BP·AI/Undo/미리보기와 실제 Editor/Player 검증을 연결했다. 2D IK 기존 경로는 유지하고 새 2D 각도 제약·Full Body IK/Control Rig·리타게팅 연산 등 남은 세부를 유지한다.

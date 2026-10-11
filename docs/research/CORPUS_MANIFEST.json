@@ -200,6 +200,12 @@
           "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/manual/shader-complex-lit.html",
           "record": "docs/research/NATIVE_COATING_095.json",
           "scope": "partial own article/source sections; no corpus promotion"
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Override-Screen-Space-Refraction.html",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Own article HTML113-147 via web: color buffer/probe hierarchy, Screen Weight Distance, Volume authoring and property table. Linked hierarchy/transparent/material pages, image pixels and API implementations unread.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -343,6 +349,12 @@
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-dual-normals-with-clear-coat-in-unreal-engine",
           "record": "docs/research/NATIVE_COATING_095.json",
           "scope": "partial own article/source sections; no corpus promotion"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-refraction-in-unreal-engine",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Own English article lines0-96 via web: IOR table, material/MI/normal/panner workflow and depth-bias discussion. Images, videos, linked materials/API not read.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -1236,6 +1248,18 @@
           "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderLib/meshphysical.glsl.js",
           "record": "docs/research/NATIVE_COATING_095.json",
           "scope": "partial own article/source sections; no corpus promotion"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Installed source65-204: bicubic sampling, Snell ray/local-scale/thickness, IOR roughness and attenuation, dispersion excerpt;204-end non-dispersion projection/sample/Fresnel composition. Header/first64 and linked BRDF bodies unread. Native uses bilinear mip/fade and no volume absorption/dispersion/depth tracing; no parity claim.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_fragment.glsl.js",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Whole own installed chunk assignments, texture modulation, getIBLVolumeRefraction invocation and totalDiffuse mix. Included helpers other than noted transmission_pars sections unread.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -1450,6 +1474,18 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_texture3d_desc",
           "record": "docs/research/NATIVE_MATERIAL_TEXTURES_094.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-generatemips",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Own signature/parameter/remarks/format table/requirements lines24-114 via web. Linked interfaces/enums/API bodies unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-copysubresourceregion",
+          "record": "docs/research/NATIVE_TRANSMISSION_096.json",
+          "readScope": "Own signature/parameters/remarks/box example/requirements lines24-141 via web. Linked performance/interface bodies unread.",
+          "wholeCorpus": false
         }
       ],
       "openIssues": [

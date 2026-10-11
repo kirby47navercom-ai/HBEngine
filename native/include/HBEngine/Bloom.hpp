@@ -70,12 +70,12 @@ float4 PS(Vertex v):SV_TARGET{
     }
 public:
     explicit BloomPass(Device& device):gpu(device){}
-    void begin(UINT w,UINT h,const std::array<float,4>& viewport,const std::optional<SceneBloom>& value,const std::array<float,4>& clear){
+    void begin(UINT w,UINT h,const std::array<float,4>& viewport,const std::optional<SceneBloom>& value,const std::array<float,4>& clear,bool forceHDR=false){
         dispatches_=0;pending=false;if(value&&(!std::isfinite(value->threshold)||value->threshold<0||value->threshold>64||!std::isfinite(value->strength)||value->strength<0||value->strength>10||!std::isfinite(value->radius)||value->radius<0||value->radius>1||!std::isfinite(value->resolutionScale)||value->resolutionScale<.25f||value->resolutionScale>1))throw std::runtime_error("Bloom settings invalid");
-        if(!value||value->strength==0){release();return;}settings=*value;area=viewport;if(area[2]==0||area[3]==0)area={0,0,float(w),float(h)};
+        if((!value||value->strength==0)&&!forceHDR){release();return;}settings=value.value_or(SceneBloom{});if(!value)settings.strength=0;area=viewport;if(area[2]==0||area[3]==0)area={0,0,float(w),float(h)};
         const float right=std::min(float(w),area[0]+area[2]),bottom=std::min(float(h),area[1]+area[3]);area[0]=std::max(0.f,area[0]);area[1]=std::max(0.f,area[1]);area[2]=std::max(0.f,right-area[0]);area[3]=std::max(0.f,bottom-area[1]);if(area[2]==0||area[3]==0){release();return;}
         const auto bw=std::max(1u,static_cast<UINT>(std::round(area[2]*settings.resolutionScale))),bh=std::max(1u,static_cast<UINT>(std::round(area[3]*settings.resolutionScale)));std::lock_guard<std::mutex> lock(gpu.mutex);programs();
-        if(scene.width!=w||scene.height!=h||levels.empty()||levels.front()[0].width!=bw||levels.front()[0].height!=bh){auto next=image(w,h,true);std::vector<std::array<Image,2>> chain;for(UINT x=bw,y=bh;chain.size()<5;){chain.push_back({image(x,y,false),image(x,y,false)});if(x==1&&y==1)break;x=std::max(1u,x/2);y=std::max(1u,y/2);}scene=std::move(next);levels=std::move(chain);++allocations_;}
+        if(scene.width!=w||scene.height!=h||((settings.strength>0)&&(levels.empty()||levels.front()[0].width!=bw||levels.front()[0].height!=bh))||((settings.strength==0)&&!levels.empty())){auto next=image(w,h,true);std::vector<std::array<Image,2>> chain;for(UINT x=bw,y=bh;settings.strength>0&&chain.size()<5;){chain.push_back({image(x,y,false),image(x,y,false)});if(x==1&&y==1)break;x=std::max(1u,x/2);y=std::max(1u,y/2);}scene=std::move(next);levels=std::move(chain);++allocations_;}
         std::array<float,4> linear=clear;for(std::size_t i=0;i<3;i++)linear[i]=linear[i]<=.04045f?linear[i]/12.92f:std::pow((linear[i]+.055f)/1.055f,2.4f);gpu.context->ClearRenderTargetView(scene.target.p,linear.data());pending=true;
     }
     void complete(ID3D11RenderTargetView* output,float exposure,const std::optional<std::array<float,4>>& scissor){
@@ -87,6 +87,7 @@ public:
     }
     void markDirty(){pending=true;}
     bool active() const{return scene.target.p!=nullptr;}ID3D11RenderTargetView* target() const{return scene.target.p;}
+    ID3D11Texture2D* colorTexture() const{return scene.texture.p;}
     void release(){levels.clear();scene=Image{};pending=false;}
     std::uint64_t textureBytes() const{std::uint64_t bytes=std::uint64_t(scene.width)*scene.height*8;for(const auto& layer:levels)bytes+=std::uint64_t(layer[0].width)*layer[0].height*16;return bytes;}
     std::uint64_t dispatches() const{return dispatches_;}std::uint64_t allocations() const{return allocations_;}std::uint64_t composites() const{return composites_;}
