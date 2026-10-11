@@ -1010,3 +1010,11 @@ Auric_Loop의 원격 main a19fcf7·weapon-socket 355289f를 별도 복사본에�
 ## 090 — 네이티브 뼈대·모프와 공용 함수
 
 089 b0b916a 푸시 완료. D3D11 static32B skin/48B target delta + 3 DEFAULT pose buffers, morph→skin→instance/world·동일 변형 그림자·희소 포즈/geometry 재사용·bytes/해제 연결. 공용 Morphs::GetNames/GetWeight/SetWeight 및 BP3개·초기/애니메이션/모델 교체 morph snapshot·동일 C++ 호출 Set/Get·중복/유한값 검증 추가. GPU RnODqd 위치/법선/색상/음수/바인드 이동·비정규화 뼈 가중치/순서/shadow/validation 및 기존54HLSL/HDR/인스턴스 PASS. 최종 Windows 경로·SHA와 C++/H키 포즈·직접 C++/J키 모프·608B/정지 포즈/해제 및 기존2D/3D 회귀는 docs/research/NATIVE_DEFORMATION_090.json. JS/기존 animation graph/render resources/API 생성 일치 PASS. docs/NATIVE_DEFORMATION_090.md, Unity2/UE1/MS2 자체 지정 본문과 Three 지정 코드 SHA/미독·전체gate false. 네 영향/선형 스킨, animated frustum 제외 보류로 offscreen draw 비용은 후속. 다음 native ParticleSystem/2D·GI/reflection/텍스처 및 누적요구. 설치/원본/기존 창 불변; 누적선행→설치갱신→연구추가 순서·전체FPS/RAM/실기기 미승격 유지.
+
+## 091 — 공용 파티클 네이티브 장면 연결
+
+090 8f96177 푸시 완료. 공용 seeded birth/timing을 재사용하고 D3D11 상태 32B·힘/중력/감쇠/수명·GPU alive/count·여섯 선택 정렬·indirect billboard를 장면 깊이/HDR/블룸/viewport/scissor에 연결했다. SVG 방향, 로컬/월드 공간, 색/크기/화면 크기, 숨긴 효과 갱신, 빈 효과 draw 생략, 정지 상태·카메라의 indices 재사용, 공유 버퍼 성장/해제/진단을 포함한다. 파티클만 카메라에 따라 바뀌는 draw는 광원 그림자 재생성을 유발하지 않는다. C++ particleCommand/GetCount는 compute backend를 공통 인식하고 기존 Play/Stop/Pause/Emit/GetCount·BP·AI/Undo/Save를 사용한다.
+
+최종 GPU/Windows 경로·SHA와 2049 단일 draw, K키/C++·2D/3D/HDR·정지 재사용·해제·기존 회귀는 docs/research/NATIVE_PARTICLES_091.json. 별도 GPU 65,537 효과/Android 헤더, 공용 particle/render resource/SDK 검사도 통과했다. Unity/UE/MS 네 지정 본문/표의 snapshot SHA·미독 경계를 기록하고 전체 gate는 유지한다. docs/NATIVE_PARTICLES_091.md와 AI schema, 오래된 DX11 미구현 문구를 갱신했다. 설치본·원본·사용 창은 건드리지 않았다. 누적 선행 작업 → 설치 갱신 → 추가 연구 작업 순서를 유지한다.
+
+다음은 native 2D masks/lights/shadows, GI/reflection, texture families와 추가 particle mesh/ribbon/facing/SubUV/streams/lighting/shadows, 나머지 누적 세부다. 실제 전체 FPS/RAM/phone/long soak와 전체 corpus는 미승격이다.

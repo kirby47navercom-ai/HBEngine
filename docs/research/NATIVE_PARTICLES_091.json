@@ -1,0 +1,609 @@
+{
+  "step": "091",
+  "date": "2026-10-11",
+  "wholeCorpusGate": false,
+  "wholeEngineComplete": false,
+  "installedUserAppUpdated": false,
+  "sources": [
+    {
+      "id": "unity-particles-renderer",
+      "corpus": "unity-manual",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html",
+      "readScope": "Own technical Renderer module body and property table, web lines 126-455. Billboard/mesh/stretch/alignment, viewport size, materials, sorting, masks, instancing and vertex streams read. Linked module/API pages and image interaction not read in this slice.",
+      "resolvedUrl": "https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html",
+      "snapshot": "native/build/native-particles-research-EDwJKj/unity-particles-renderer.html",
+      "sha256": "44ea6f8e34eed9cd9e73aea392d229872ed5a6744259368a802f96029e395435",
+      "retrievedAt": "2026-10-11T12:12:46.965Z",
+      "bytes": 33211,
+      "independentVerification": false
+    },
+    {
+      "id": "unreal-niagara-renderer",
+      "corpus": "unreal-manual",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US",
+      "readScope": "Own Sprite Renderer section, web lines 150-205, complete table and option lists including facing/pivot, sort modes, SubUV, bindings, cutout/opacity and sort order. Intro/component/light and portions of Mesh/Ribbon/Decal seen incidentally; rest article, linked API/media not a whole-page reading claim.",
+      "resolvedUrl": "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US",
+      "snapshot": "native/build/native-particles-research-EDwJKj/unreal-niagara-renderer.html",
+      "sha256": "72ebb84fd62aa4b152ef764f29014d179be2befb368faeddd661ea824d400490",
+      "retrievedAt": "2026-10-11T12:12:47.046Z",
+      "bytes": 162011,
+      "independentVerification": false
+    },
+    {
+      "id": "microsoft-indirect-particles",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawinstancedindirect",
+      "readScope": "Own technical body, web lines 32-67: signature/parameters, indirect argument requirements, buffer flag, support and requirements. Linked API pages not read here.",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawinstancedindirect",
+      "snapshot": "native/build/native-particles-research-EDwJKj/microsoft-indirect-particles.html",
+      "sha256": "44f885ab208f927d76104238c6855ae98dde16e349c205e59b970ae877f47e95",
+      "retrievedAt": "2026-10-11T12:12:46.924Z",
+      "bytes": 51362,
+      "independentVerification": false
+    },
+    {
+      "id": "microsoft-particle-count",
+      "corpus": "microsoft-native-render-platform",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-copystructurecount",
+      "readScope": "Own technical body, web lines 32-70: signature/parameters, byte offset/destination, APPEND/COUNTER hidden count and requirements. Linked API pages not read here.",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-copystructurecount",
+      "snapshot": "native/build/native-particles-research-EDwJKj/microsoft-particle-count.html",
+      "sha256": "be990fa07b621deeeffb30347e84ab70ef52c4818d36279c28cabec77144d81e",
+      "retrievedAt": "2026-10-11T12:12:46.945Z",
+      "bytes": 51545,
+      "independentVerification": false
+    }
+  ],
+  "reusedCodeScopes": [
+    {
+      "file": "prototype/scene-systems.js",
+      "readScope": "ParticleSimulation class lines 31-50; whole class, not all file",
+      "wholeFileRead": false,
+      "independentVerification": false
+    },
+    {
+      "file": "prototype/gpu-particles.js",
+      "readScope": "GPUParticleSimulation class for CPU births only, GPU alive/indirect/sort, camera size and resource lifetime; remainder renderer adapters not a whole upstream source claim",
+      "wholeFileRead": false,
+      "independentVerification": false
+    }
+  ],
+  "productFiles": [
+    {
+      "file": "native/include/HBEngine/Compute.hpp",
+      "sha256": "a1280969a92872287158fe13947966e89f1a9a70825e59a8dd6fe87bb7eee23e"
+    },
+    {
+      "file": "native/include/HBEngine/Render.hpp",
+      "sha256": "404145d609e5beaaa95b6df2be166de95477d39bceedacb3e62331d392c7545a"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "99323b84d21a7f3589b0e909616c426bd436ebf049b3a5ebc3b65f157311d1c1"
+    },
+    {
+      "file": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "51da4ee4e592a0c9832f354e288d1dc69525dd472e1ec597ef7ace0a92668ae1"
+    },
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "55ce2fe7bf93eab44e4453f679a9d15b2dc98278acccf96a357b26a08cf218c8"
+    },
+    {
+      "file": "prototype/native-particles.js",
+      "sha256": "a7a0d3aae7f106baca3f1e879a4af1f3a48da4f44d3df6c91169d8fb065f171a"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "03f3266a17eaaac69c892f6d5ebd1b4fcee37fda30e134b37da6f96c51d562cd"
+    },
+    {
+      "file": "prototype/scene-systems.js",
+      "sha256": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "63895011a5cf0c8a2821bdf15b34ac0113eb0a6637058193c7ca6934772e870c"
+    },
+    {
+      "file": "prototype/engine-services.js",
+      "sha256": "beaac7fc82ccf64c91588cb4f52caad17c76029dc2222a0dd6cfc9079bf35da1"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "183deb21bd9b3fadd01231c66fd3eda4ef4be03f364e4305e91cd2eeb1400358"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "95c602cc74ff17b5782ec1c45dfe279fba3cd4e756333fbde1944d06a88f0059"
+    },
+    {
+      "file": "native/tests/particle-scene.hpp",
+      "sha256": "735d1ce27e8f2ca2a3518c211eb83c3afb16caef821a1dd248402e6db49372e7"
+    },
+    {
+      "file": "tools/check-native-particles.mjs",
+      "sha256": "b5510c4a573cecf94006d0c35b7f94e4e51faaf69815530e0782bf898bd24a6a"
+    },
+    {
+      "file": "tools/native-particle-fixture.mjs",
+      "sha256": "db6b1710836ad32e07d1e8e6287d31319d83963393373cb654f38dd91a4ffd17"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "e9495ee10cc84f24056827350ad108ada9604b25a54ddc9995905dfafca19ebf"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "8f8f08339e55e21735e284289213e0baa39145443b6c401b7191539b7a2c1001"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "gpu",
+      "file": "native/build/native-scene-QzrxKN/acceptance.json",
+      "sha256": "9d9666f1d1d4bf410dfb99b500f04d62872f84d29a0358b083f7799516969871",
+      "passed": true,
+      "checks": {
+        "hardware": {
+          "alphaCutoutShadow": true,
+          "automaticReadbacks": 0,
+          "bloomComputePixel": true,
+          "bloomReuseRelease": true,
+          "bloomScissorBars": true,
+          "bloomThresholdExposure": true,
+          "compactShotBloom": true,
+          "compactShotXYXZ": true,
+          "compiledNodes": 54,
+          "constantBuffers": 3,
+          "deformationPoseReuse": true,
+          "deformationValidation": true,
+          "deformedShadowPixel": true,
+          "depth": true,
+          "directionalShadowPixel": true,
+          "drawsPerFrame": 2049,
+          "gpuBindAffineWeights": true,
+          "gpuCompletionMeasured": false,
+          "gpuMorphPositionNormalColor": true,
+          "gpuSkinPixel": true,
+          "heightFogPixel": true,
+          "hemisphereNormalPixel": true,
+          "hlslOpacityShadow": true,
+          "hlslParameterPixel": true,
+          "independentShadowLights": true,
+          "independentTextureUV": true,
+          "instanceCount2049SingleDraw": true,
+          "instanceFrameResources": 3,
+          "instanceValidation": true,
+          "instancedColorPixel": true,
+          "instancedShadowPixel": true,
+          "morphBeforeSkin": true,
+          "newUploadsDuring12Frames": 0,
+          "particles": {
+            "allSixSortModes": true,
+            "automaticPositionReadbacks": 0,
+            "capacity": 2049,
+            "explicitCountsOnly": true,
+            "gpuStepAndExpiry": true,
+            "hdrComputeBloom": true,
+            "indexAllocations": 1,
+            "indirectLivingCount": true,
+            "multiCapacityIndexReuse": true,
+            "passed": true,
+            "resourceRelease": true,
+            "sharedDepth": true,
+            "textureOrientation": true,
+            "viewportScissor": true,
+            "viewportSizeClamp": true
+          },
+          "passed": true,
+          "pbrDirectional": true,
+          "pbrPoint": true,
+          "pbrSpotAndCone": true,
+          "pixelViewportClear": true,
+          "pointShadowFace": true,
+          "receiveShadowToggle": true,
+          "resize": true,
+          "separateScissor": true,
+          "shadowResourceRelease": true,
+          "spotShadowPixel": true,
+          "submitMsPer2049Draws": 3.0824083333333334,
+          "unlitTexture": true,
+          "validation": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "kind": "window",
+      "file": "native/build/native-scene-window-eYQRel/acceptance.json",
+      "sha256": "fcc0aae0df64fdf75ac3b8dbecc95585ef9a1da71a9ae8c473b94841c77de762",
+      "passed": true,
+      "checks": {
+        "particles": {
+          "passed": true,
+          "pixels": [
+            [
+              232,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              0,
+              232,
+              255
+            ]
+          ],
+          "hdr": [
+            255,
+            48,
+            57,
+            255
+          ],
+          "perspective": [
+            [
+              232,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              0,
+              232,
+              255
+            ]
+          ],
+          "cpp": true,
+          "blueprint": true,
+          "count2049SingleDraw": true,
+          "capacity": 2049,
+          "initial": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 0
+            },
+            "memory": {
+              "geometries": 0,
+              "textures": 0
+            },
+            "bloomAllocations": 0,
+            "bloomComposites": 0,
+            "bloomDispatches": 0,
+            "bloomLevels": 0,
+            "bloomTextureBytes": 0,
+            "calls": 0,
+            "captures": 25,
+            "deformationBufferBytes": 0,
+            "deformations": 0,
+            "gpuTimeMs": 0,
+            "gpuTimingFrame": 229,
+            "instanceBatches": 0,
+            "instanceBufferBytes": 0,
+            "instanceUpdates": 0,
+            "meshes": 0,
+            "particleBirths": 0,
+            "particleBufferBytes": 65568,
+            "particleCountReadbacks": 0,
+            "particleEmissionAllocations": 0,
+            "particleIndexAllocations": 0,
+            "particlePools": 1,
+            "particleSortPasses": 0,
+            "particleSteps": 0,
+            "poseUpdates": 0,
+            "presents": 230,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 26,
+            "shadowTextureBytes": 0,
+            "textures": 0,
+            "uploads": 31,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          },
+          "before": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 0,
+              "textures": 1
+            },
+            "bloomAllocations": 0,
+            "bloomComposites": 0,
+            "bloomDispatches": 0,
+            "bloomLevels": 0,
+            "bloomTextureBytes": 0,
+            "calls": 1,
+            "captures": 25,
+            "deformationBufferBytes": 0,
+            "deformations": 0,
+            "gpuTimeMs": 0,
+            "gpuTimingFrame": 230,
+            "instanceBatches": 0,
+            "instanceBufferBytes": 0,
+            "instanceUpdates": 0,
+            "meshes": 0,
+            "particleBirths": 5,
+            "particleBufferBytes": 106808,
+            "particleCountReadbacks": 1,
+            "particleEmissionAllocations": 1,
+            "particleIndexAllocations": 1,
+            "particlePools": 1,
+            "particleSortPasses": 79,
+            "particleSteps": 1,
+            "poseUpdates": 0,
+            "presents": 231,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 26,
+            "shadowTextureBytes": 0,
+            "textures": 1,
+            "uploads": 32,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          },
+          "idle": {
+            "backend": "D3D11",
+            "info": {
+              "calls": 1
+            },
+            "memory": {
+              "geometries": 0,
+              "textures": 1
+            },
+            "bloomAllocations": 0,
+            "bloomComposites": 0,
+            "bloomDispatches": 0,
+            "bloomLevels": 0,
+            "bloomTextureBytes": 0,
+            "calls": 1,
+            "captures": 26,
+            "deformationBufferBytes": 0,
+            "deformations": 0,
+            "gpuTimeMs": 0.029696,
+            "gpuTimingFrame": 247,
+            "instanceBatches": 0,
+            "instanceBufferBytes": 0,
+            "instanceUpdates": 0,
+            "meshes": 0,
+            "particleBirths": 5,
+            "particleBufferBytes": 106808,
+            "particleCountReadbacks": 1,
+            "particleEmissionAllocations": 1,
+            "particleIndexAllocations": 1,
+            "particlePools": 1,
+            "particleSortPasses": 79,
+            "particleSteps": 1,
+            "poseUpdates": 0,
+            "presents": 248,
+            "programs": 0,
+            "shadowDraws": 0,
+            "shadowLayers": 0,
+            "shadowPasses": 26,
+            "shadowTextureBytes": 0,
+            "textures": 1,
+            "uploads": 32,
+            "drawUpdates": 0,
+            "constantBuffers": 3,
+            "automaticReadbacks": 0
+          },
+          "resourceRelease": true,
+          "automaticPositionReadbacks": 0
+        },
+        "projectileCount2049": true,
+        "projectileCirclePixel": true,
+        "projectileSingleDraw": true,
+        "projectileResourceRelease": true,
+        "projectileFrameReuse": true,
+        "bloomCppBlueprint": true,
+        "bloomHdrReuseRelease": true,
+        "bloomResize": true,
+        "bloomPixelLetterbox": true,
+        "shadowLightTransform": true,
+        "shadowMovementReuse": true,
+        "shadowBytes": true,
+        "shadowCacheReused": true,
+        "shadowCppBlueprint": true,
+        "shadowOpacityPixel": true,
+        "passed": true,
+        "windowsBuild": true,
+        "svgOrientation": true,
+        "blueprintInput": true,
+        "cppMovement": true,
+        "hlslNodeMaterial": true,
+        "hlslTexturePixel": true,
+        "pixelPerfectLetterbox": true,
+        "cppBlueprintMaterialParameters": true,
+        "shaderParameterReuse": true,
+        "textureReplacementReleased": true,
+        "asynchronousGpuTiming": true,
+        "koreanHud": true,
+        "transparentOverlay": true,
+        "resize": true,
+        "sceneResourcesReleased": true,
+        "serverClosed": true,
+        "installedUserAppUntouched": true,
+        "fpsClaim": false,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "kind": "standalone",
+      "file": "native/build/gpu-render-N2Lu76/acceptance.json",
+      "sha256": "45a50627f0843787607987495302025a6b89fbb16458ef0878942ee9e305ba66",
+      "passed": true,
+      "checks": {
+        "passed": true,
+        "checkedFiles": {
+          "native/include/HBEngine/Compute.hpp": "a1280969a92872287158fe13947966e89f1a9a70825e59a8dd6fe87bb7eee23e",
+          "native/include/HBEngine/Render.hpp": "404145d609e5beaaa95b6df2be166de95477d39bceedacb3e62331d392c7545a",
+          "native/tests/compute-render.cpp": "fad39130cabb77fe17ce5215bfb68d4e94b7739d18ba28e17f8983b56b066b2e",
+          "native/tests/compute-portable.cpp": "36793b511126b1424d85493aa31efe3e2ddb36b1ca4c4e99916166bf2ee801fd",
+          "docs/examples/NativeGPUWindow.cpp": "ee2bad919e72e485314566c2bda165f6b2b11259f3d768d50bc6630d4d786dd9",
+          "tools/check-gpu-render.mjs": "f0fa857119e7dd0562d23e2e1a8520a30720af4da8f5a3ca6651a189b0f59835"
+        },
+        "hardware": {
+          "alphaAdditive": true,
+          "backend": "Direct3D11 hardware cs_5_0",
+          "batchImageCaptures": 4,
+          "birthsPerFrame": 1024,
+          "computeBufferDirectlyDrawn": true,
+          "depthOcclusion": true,
+          "dispatchDrawFinalImageReadbackMs": [
+            1.4823,
+            1.6428,
+            1.5604
+          ],
+          "easyEffectAPI": true,
+          "emissionBatchImageCaptures": 4,
+          "emissionDispatchDrawFinalImageReadbackMs": [
+            1.3075,
+            1.1545,
+            1.0733
+          ],
+          "emissionLifecycle": {
+            "clearImmediately": true,
+            "emptyCapacity": 65,
+            "fractionalRate": true,
+            "invalidUpdatePreservesPixels": true,
+            "manualBurst": true,
+            "pauseResume": true,
+            "reusedBirthBuffer": true,
+            "stopRetainsUntilExpired": true
+          },
+          "emissionRequestBuffers": 1,
+          "expiredCull": true,
+          "frameConstants": 3,
+          "framesPerBatch": 20,
+          "gpuAliveCompaction": true,
+          "gpuIndirectInstanceCount": true,
+          "movingPixelProof": true,
+          "nearestAndLinearSampler": true,
+          "noGameFPSClaim": true,
+          "particlePositionReadbacks": 0,
+          "particles": 65537,
+          "passed": true,
+          "perspectiveArea": [
+            120,
+            32
+          ],
+          "privateHiddenSwapChain": true,
+          "resize": true,
+          "rgbaSpriteOrientation": true,
+          "sameHWNDRecreation": true,
+          "swapPresents": 3,
+          "worldTransform": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        },
+        "android": [
+          {
+            "target": "aarch64-linux-android26",
+            "headerSyntax": true,
+            "gpuBackend": false
+          },
+          {
+            "target": "x86_64-linux-android26",
+            "headerSyntax": true,
+            "gpuBackend": false
+          }
+        ],
+        "standaloneSampleBuilt": true,
+        "standaloneSampleLaunched": false,
+        "scope": "actual D3D11 hardware compute buffer -> vertex SRV -> instanced sprite triangles -> RGBA/depth target -> private hidden HWND flip swapchain; particle positions never read back",
+        "benchmark": "20 dispatch/draw frames and one final image readback, three bounded samples; not full-engine FPS, no mobile performance claim",
+        "existingWebGLSceneMigrated": false
+      }
+    }
+  ],
+  "focusedChecks": [
+    {
+      "command": "node tools/check-native-particles.mjs",
+      "passed": true,
+      "scope": "actual shared seeded births/timing, paused/stop/reset/empty, limits, services, camera style, mock native frame/hidden/count/disposal"
+    },
+    {
+      "command": "node tools/check-particle-renderers.mjs",
+      "passed": true,
+      "scope": "existing common C++/BP/AI component schema/editing/synchronous queries/property validation"
+    },
+    {
+      "command": "node tools/check-render-resources.mjs",
+      "passed": true,
+      "scope": "existing scene asset/component resources and ownership"
+    },
+    {
+      "command": "node tools/check-native-deformation.mjs",
+      "passed": true,
+      "scope": "existing packing/sparse pose/resource mock; initial run in this slice"
+    },
+    {
+      "command": "node tools/generate-api.mjs --check",
+      "passed": true,
+      "scope": "SDK-derived BP declaration parity"
+    },
+    {
+      "command": "node tools/build-desktop.mjs",
+      "passed": true,
+      "scope": "repository exe/dist; installed version untouched"
+    }
+  ],
+  "resourceContract": {
+    "residentBytesPerParticle": 32,
+    "birthBytesPerParticle": 32,
+    "frameConstantBuffers": 3,
+    "sharedGrowOnlyIndices": true,
+    "optionalGpuSortKeys": true,
+    "indicesReusedForUnchangedStateCamera": true,
+    "emptyEffectsSkipDraw": true,
+    "normalFramePositionReadback": false,
+    "normalFrameCountReadback": false,
+    "explicitGetCountReadback": true,
+    "objectCapAdded": false,
+    "bytesAreScopedGpuEstimate": true
+  },
+  "retainedFailures": [
+    {
+      "file": "native/build/native-scene-PeHPjT/failure.json",
+      "cause": "HLSL reserved point identifier in newly added sort shader; renamed before acceptance"
+    },
+    {
+      "file": "native/build/native-scene-window-puVPfy/failure.json",
+      "cause": "HDR fixture expected unmapped pure red instead of tone mapping; particles subsequently aligned with existing native tone curve and final run passed"
+    },
+    {
+      "file": "native/build/native-scene-window-WFL25V/failure.json",
+      "cause": "empty effect draw optimization exposed inspection before next rendered frame; fixture now waits for actual draw, final log replaces transient output"
+    }
+  ],
+  "remaining": [
+    "mesh/ribbon/stretch/horizontal/vertical/custom facing, pivot/rotation/SubUV/vertex streams",
+    "particle shadows, collision/lighting/GPU events and further modules",
+    "native sprite/particle masks and 2D light/shadow passes",
+    "radix sort for measured large changing effects; existing per-call 100000 emission/time sampling limits",
+    "native GI/reflection and cube/array/volume textures plus cumulative engine goals",
+    "whole engine/corpus independent verification gate",
+    "whole game PC120/mobile60, whole RAM, long soak, physical Android/iOS/thermal"
+  ],
+  "claims": {
+    "fpsClaim": false,
+    "wholeProcessRamMeasured": false,
+    "physicalMobileValidated": false,
+    "independentCorpusVerification": false
+  }
+}

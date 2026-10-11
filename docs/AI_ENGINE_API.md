@@ -329,3 +329,7 @@ SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(objec
 ## 웹 빌드(083)
 
 `build.targets.web`과 기존 빌드 프로필·검사·작업·취소 API를 사용한다. `POST /api/build/tools/web`는 Emscripten 설치 작업을 시작한다. 결과 `artifactType:web`, `artifact:index.html`, `output`을 확인하고 `/api/build/open`의 run/reveal을 사용한다. 정적 게시 CLI는 `tools/publish-web.mjs <검증한 출력 폴더> <GitHub HTTPS 저장소>`이며 기존 다른 사이트·게임을 덮어쓰지 않는다. [제작·배포·원본 공개 범위](WEB_GAME_EXPORT_083.md).
+
+## DirectX GPU 파티클(091)
+
+기존 ParticleSystem 컴포넌트 스키마·document.patch/Undo/Save·BP/C++ 제작 API를 그대로 사용한다. Windows 빌드 windowsRenderer=d3d11에서 CPU는 shared seeded birth/timing만 준비하며 GPU가 이동/소멸·alive count·정렬·간접 빌보드 draw를 맡는다. inspect의 renderer 진단에 particlePools/particleBufferBytes/particleSteps/particleBirths/particleSortPasses/particleCountReadbacks/particleIndexAllocations/particleEmissionAllocations가 나온다. 객체 gameplayDebug.particles의 backend는 D3D11 compute, count는 명시 GetCount 전에는 null, cpuSimulationParticles/automaticPositionReadbacks는0이다. 빈/일시정지 상태와 카메라 변화에 따라 작업을 생략하며 같은 동작을 별도 AI 전용 에셋으로 만들지 않는다. 마스크/2D 광원·추가 입자 렌더러는 windowsBuild.unsupported에 남긴다. [실행·읽기·남은 경계](NATIVE_PARTICLES_091.md).

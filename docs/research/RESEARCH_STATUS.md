@@ -1,3 +1,7 @@
+# 091 네이티브 파티클 지정 읽기
+
+Unity6000.0 Renderer 자체 기술 본문/표와 UE5.8 Niagara Sprite Renderer 절 전체 표/옵션, Microsoft 간접 draw/count 두 자체 선언·인자·제약을 읽고 원문4 SHA와 구역/미독 경계를 [091](../NATIVE_PARTICLES_091.md)과 JSON에 기록했다. 기존 공용 seeded birth/시간과 C++·BP·AI 컴포넌트를 D3D11 GPU 이동·alive/정렬·빌보드·깊이/HDR/블룸에 연결하고 실제 Windows 2D/3D·K키/C++·2049 단일 draw·일시정지 정렬 재사용·해제를 확인했다. 별도65,537 GPU 효과/Android 헤더는 좁은 회귀이며 전체 게임 FPS나 모바일 GPU 검증이 아니다. 연결 API·모듈/미디어/전체 corpus와 독립 검증·누적 엔진 완료는 미승격이고 native 2D 마스크/광원·GI/반사/추가 렌더 모듈은 후속이다.
+
 # 073 CCD IK 직접 읽기
 
 UE5.8 CCD guide58줄·API117줄·ControlRig ItemArray73줄 자체 본문/표/선언 요약을 읽었다. 설치 Three0.180.0 CCDIKSolver135~259줄 부분과072 SkeletonUtils 앞부분을 공식 r180 원문 SHA로 대조하고 보조 source2를 전체 corpus에 등록했다. 연결 본문/미디어·남은 구현과 분모/독립 검증은 열린 상태다. [구현/범위/증거](../ANIMATION_CCD_073.md).

@@ -53,6 +53,10 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/BlendShapes.html",
           "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysRendererModule.html",
+          "record": "docs/research/NATIVE_PARTICLES_091.json"
         }
       ]
     },
@@ -293,6 +297,10 @@
         {
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/fbx-morph-target-pipeline-in-unreal-engine",
           "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/unreal-engine/render-module-reference-for-niagara-effects-in-unreal-engine?lang=en-US",
+          "record": "docs/research/NATIVE_PARTICLES_091.json"
         }
       ]
     },
@@ -1345,6 +1353,14 @@
         {
           "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-input-assembler-stage-using",
           "record": "docs/research/NATIVE_DEFORMATION_090.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-drawinstancedindirect",
+          "record": "docs/research/NATIVE_PARTICLES_091.json"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-copystructurecount",
+          "record": "docs/research/NATIVE_PARTICLES_091.json"
         }
       ],
       "openIssues": [

@@ -45,7 +45,7 @@ animGraphSetEnum/GetEnum 공용 서비스와 C++ SetEnum/GetEnum/GetEnumValue<E>
 
 조사 갱신: 2026-10-03. 전체 공식 근거와 엔진 범위는 [엔진 분석](ENGINE_REFERENCE_ANALYSIS.md), 분야별 조사 상태와 코드 대조는 [조사 범위](REFERENCE_COVERAGE.md), 조작 계약은 [인터랙션 기준](EDITOR_INTERACTION_SPEC.md), 노드별 핀·C++ 대응은 [노드 카탈로그](NODE_CATALOG.md)에 있다.
 
-**실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. 현재 Game.exe의 렌더러는 WebView2/WebGL2이며 네이티브 DX11 렌더러와 동일하지 않다.
+**실행됨**은 공용 BlueprintRuntime/게임 서비스에 연결됐다는 뜻이고 **공통 C++**은 실제 C++ 함수도 존재한다는 뜻이다. 편집기 Play, 화면 없는 로직 검사, 독립 Windows Player의 검사 범위를 각각 구분한다. Game.exe는 기본 웹 장면 경로와 선택 가능한 Windows DirectX 11 장면 경로를 구분한다. D3D11 정적/인스턴스/뼈대·모프·그림자·HDR/HLSL·GPU ParticleSystem의 실제 범위와 증거는 086–091 기록을 따른다.
 
 ## 2026-10-04 입력·모바일·풀 연동
 
@@ -136,7 +136,7 @@ Project 파일과 브라우저 복구 저장은 장면·환경·BP/함수/매크
 
 기존 289개 코어 C++ API에 EngineService 19개(역할 조회/소유/이동/충격/힘/속도·월드/로컬 위치·장면 전환)를 실제 플레이 서비스로 연결했다. 정적 BP 카탈로그는 390개이며 사용자 C++ 노드는 등록된 함수에 따라 늘어난다. 노드 수만으로 기능 완료를 판단하지 않는다. C++ 변환·반환을 검증한 뒤 소유 실행 월드에 적용한다.
 
-Sprite/TileMap/SpriteAnimation, 물리/머테리얼 인스턴스, 게임 설정, 프리팹, 오디오 에셋도 독립 파일이다. 스프라이트 프레임 애니메이션은 기존 PlayAnimation 서비스로 실행된다. 머테리얼 54종 노드는 별도 타입 그래프와 GLSL 생성·실제 Three GPU 재질을 사용하며 BP 이벤트 그래프와 섞지 않는다. DX11/HLSL은 미구현 상태다.
+Sprite/TileMap/SpriteAnimation, 물리/머테리얼 인스턴스, 게임 설정, 프리팹, 오디오 에셋도 독립 파일이다. 스프라이트 프레임 애니메이션은 기존 PlayAnimation 서비스로 실행된다. 머테리얼 54종 노드는 별도 타입 그래프와 GLSL 생성·실제 Three GPU 재질을 사용하며 BP 이벤트 그래프와 섞지 않는다. Windows D3D11의 지정 54종 HLSL 실행과 해결된 머테리얼 함수/레이어 연결은 086 이후 기록을 따르며 모든 고급 셰이딩/텍스처 종류가 지원되는 것은 아니다.
 
 AI는 `/api/schema`의 공통 정의와 `document.get/patch/save`, Undo/Redo, native.build, Play/Stop/State를 사용한다. 사람의 저장 전 편집을 revision으로 보호하고 디스크 변경 시 저장을 거부·백업한다. `tools/run-project.mjs`는 같은 VM/물리/C++를 화면 없이 시나리오로 실행한다. 인터페이스와 한계는 [AI_ENGINE_API.md](AI_ENGINE_API.md), 실행 증거와 누적 미완료 분야는 [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md)에 이어 기록한다.
 
@@ -381,3 +381,7 @@ PostProcessVolume의 활성화·우선순위·블룸 임계값/강도/반경/해
 ## 090 — 뼈대·모프 실행과 쉬운 공용 함수
 
 기존 임포트/Animation Graph 포즈를 D3D11 GPU skin/morph와 그림자에 연결했다. C++ Morphs::GetNames/GetWeight/SetWeight와 morphNames/morphWeight/morphSetWeight BP를 Game.hpp에서 함께 생성하고 동일 서비스를 사용한다. 다중 메시의 이름 충돌은 mesh 인자로 해소하며 유한 가중치·없는 이름을 검증한다. 초기/애니메이션 gameplayDebug.morphs·C++ 같은 호출 Set/Get·실제 H/J 키 화면/해제 증거는 [090](NATIVE_DEFORMATION_090.md). 기존 UI·AI 노드 검색/실행 스키마를 사용한다. 네 영향 초과·cloth·인스턴스별 모프·보수적 animated bounds는 후속이며 전체 애니메이션/엔진 완료로 승격하지 않는다.
+
+## 091 — 파티클 네이티브 공용 연결
+
+ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C++ Particles::Play/Stop/Pause/Emit/GetCount를 D3D11 GPU 시뮬레이션·간접 빌보드 draw에 연결했다. 같은 seeded birth/timing을 사용하고 살아 있는 위치는 CPU에 복제하지 않는다. C++ 즉시 명령/개수 조회가 새 compute backend를 인식하도록 수정했다. 실제 K키 BP·C++·2049 단일 draw·2D/3D SVG·블룸·정지 정렬 재사용·장면 해제 증거는 [091](NATIVE_PARTICLES_091.md). 마스크/전용 2D 광원, mesh/ribbon/stretch/SubUV와 입자 그림자는 별도이며 전체 Niagara/Unity 기능 완료로 승격하지 않는다.

@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -177,6 +178,7 @@ class Particles {
     std::optional<Kernel> freeKernel,emitKernel,clearKernel;
     std::optional<Buffer> freeIndices,freeCount,requests;
     std::size_t requestCapacity=0,requestAllocations=0;
+    inline static std::atomic<std::uint64_t> sequence{0};const std::uint64_t identity_=++sequence;std::uint64_t revision_=0;
     static constexpr const char* source=R"(
 struct Particle { float4 positionAge; float4 velocityLife; };
 RWStructuredBuffer<Particle> particles : register(u0);
@@ -209,7 +211,7 @@ cbuffer Emit:register(b0){uint requestCount;float3 padding;};
 public:
     Particles(Device& device,const std::vector<float>& values):device(device),kernel(device.compile(source)),buffer(device.create(valid(values),8*sizeof(float))){}
     Particles(Device& device,std::size_t capacity):Particles(device,empty(capacity)){}
-    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){validStep(delta,force,gravity,drag);if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});}}
+    void step(float delta,const std::array<float,3>& force={0,0,0},float gravity=0,float drag=0){validStep(delta,force,gravity,drag);if(delta){const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(kernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1,{}, {delta,force[0],force[1],force[2],gravity,drag,0,0});++revision_;}}
     // Upload births only. Free-slot selection/overflow and existing state stay on GPU.
     void emit(const std::vector<float>& values){
         if(values.empty())return;
@@ -220,16 +222,18 @@ public:
         const auto groups=static_cast<std::uint32_t>((count()+63)/64);if(values.size()/8>count())device.uploadRange(*requests,0,std::vector<float>(values.begin(),values.begin()+births*8));else device.uploadRange(*requests,0,values);
         // ponytail: scan capacity per burst; persistent free lists if measured emission cost dominates.
         device.dispatch(*freeKernel,{&*freeIndices},std::min(groups,65535u),(groups+65534)/65535,1,{&buffer},{},{0});device.copyCount(*freeCount,0,*freeIndices);
-        const auto work=static_cast<std::uint32_t>((births+63)/64),requestCount=static_cast<std::uint32_t>(births);float packed;std::memcpy(&packed,&requestCount,sizeof(packed));device.dispatch(*emitKernel,{&buffer},std::min(work,65535u),(work+65534)/65535,1,{&*freeIndices,&*requests,&*freeCount},{packed});
+        const auto work=static_cast<std::uint32_t>((births+63)/64),requestCount=static_cast<std::uint32_t>(births);float packed;std::memcpy(&packed,&requestCount,sizeof(packed));device.dispatch(*emitKernel,{&buffer},std::min(work,65535u),(work+65534)/65535,1,{&*freeIndices,&*requests,&*freeCount},{packed});++revision_;
     }
-    void clear(){if(!clearKernel)clearKernel.emplace(device.compile(source,"Clear"));const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(*clearKernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1);frames.reset();}
+    void clear(){if(!clearKernel)clearKernel.emplace(device.compile(source,"Clear"));const auto groups=static_cast<std::uint32_t>((count()+63)/64);device.dispatch(*clearKernel,{&buffer},std::min(groups,65535u),(groups+65534)/65535,1);frames.reset();++revision_;}
     std::size_t emissionBufferAllocations() const{return requestAllocations;}
+    std::uint64_t storageBytes() const{return std::uint64_t(buffer.size()+(freeIndices?freeIndices->size():0)+(freeCount?freeCount->size():0)+(requests?requests->size():0))*sizeof(float); }
     std::vector<float> read(){return device.read(buffer);}
     bool enqueueReadback(){if(!frames)frames.emplace(device.createFrameResources(buffer));return device.enqueueFrame(*frames,buffer);}
     std::optional<FrameResult> pollReadback(){return frames?device.pollFrame(*frames):std::nullopt;}
     std::size_t pendingReadbacks() const{return frames?frames->pending():0;}
     std::size_t constantBufferAllocations() const{return kernel.constantBufferAllocations();}
-    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));frames.reset();}
+    void reset(const std::vector<float>& values){device.upload(buffer,valid(values));frames.reset();++revision_;}
+    std::uint64_t revision() const{return revision_;}std::uint64_t identityId() const{return identity_;}
     std::size_t count() const{return buffer.size()/8;}
 };
 }
