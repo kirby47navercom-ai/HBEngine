@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict';
+import {createPlacedObject} from '../prototype/placement-catalog.js';
+import {makeSceneComponent} from '../prototype/scene-components.js';
+export async function writeRendering103(write,scene){
+ const base=structuredClone(scene);base.runtime.dimension='3d';Object.assign(base.environment,{sunEnabled:false,skyEnabled:false,fogEnabled:false,cloudsEnabled:false,groundColor:'#000000'});
+ const cube=(id,position,scale,material)=>({...createPlacedObject('cube',{id}),position,scale,components:[makeSceneComponent('MeshRenderer',{material:'Assets/'+material+'.hbmaterial.json'})]});
+ const camera={...createPlacedObject('camera',{id:'Camera'}),position:[0,0,10],components:[makeSceneComponent('Camera',{main:true,physicalLens:true,aperture:.7})]},post={...createPlacedObject('empty',{id:'Post'}),components:[makeSceneComponent('PostProcessVolume',{bloomEnabled:false,dofMode:'physical',focusDistance:1,dofRadius:16,dofSamples:32})]},driver={...createPlacedObject('empty',{id:'PostDriver'}),blueprintAsset:'Assets/BP_PostDriver.hbblueprint.json'};
+ await write('Assets/Scenes/Lens103.hbscene.json',{...base,objects:[driver,camera,post,cube('Back',[0,-4,-2],[8,8,.1],'M_BackWhite'),cube('Front',[0,-4,0],[.12,8,.1],'M_PostGrey')]});
+}
+export async function checkRendering103({evaluate,ready,inspect,pixels,cdp,until}){
+ await evaluate('window.hbPlayerDebug.open("Assets/Scenes/Lens103.hbscene.json")');await ready();
+ const call=(name,args)=>evaluate('window.hbPlayerDebug.call("PostDriver","PostDriver.'+name+'",'+JSON.stringify(args)+')'),cf=(property,value)=>call('CameraFloat',{target:'Camera',property,value}),f=(property,value)=>call('Float',{target:'Post',property,value}),b=(property,value)=>call('Bool',{target:'Post',property,value});
+ const sharp=await pixels('103-sharp');await b('dofEnabled',true);const wide=await pixels('103-wide');assert.ok(wide[0]>sharp[0]+15,JSON.stringify({sharp,wide}));await cf('aperture',128);const closed=await pixels('103-closed');assert.ok(Math.abs(closed[0]-sharp[0])<=3,JSON.stringify({sharp,closed}));await cf('aperture',.7);
+ const row=()=>evaluate('(async()=>{const uri=await window.hbPlayerDebug.captureAsync(),image=await createImageBitmap(await(await fetch(uri)).blob()),canvas=new OffscreenCanvas(image.width,image.height),ctx=canvas.getContext("2d");ctx.drawImage(image,0,0);image.close();return [...ctx.getImageData(0,Math.floor(canvas.height/2),canvas.width,1).data];})()'),changed=(a,b)=>a.filter((v,i)=>i%4!==3&&Math.abs(v-b[i])>2).length;
+ const circle=await row();await cf('apertureCurvature',0);const polygon=await row(),polygonChannels=changed(circle,polygon);assert.ok(polygonChannels>6,String(polygonChannels));await cf('apertureRotation',35);const rotated=await row(),rotationChannels=changed(polygon,rotated);assert.ok(rotationChannels>6,String(rotationChannels));await cf('apertureRotation',0);await cf('apertureCurvature',1);
+ await f('focusDistance',9.95);const focused=await pixels('103-focused');assert.ok(Math.abs(focused[0]-sharp[0])<=3,JSON.stringify({sharp,focused}));await f('focusDistance',1);await cf('aperture',.7);for(const type of ['keyDown','keyUp'])await cdp('Input.dispatchKeyEvent',{type,key:'L',code:'KeyL',windowsVirtualKeyCode:76});await until(async()=> (await inspect()).objects.find(o=>o.id==='Camera').components.find(c=>c.type==='Camera').properties.aperture===128,'Blueprint L 조리개');const bp=await pixels('103-blueprint');assert.deepEqual(bp,closed);
+ await b('dofEnabled',false);assert.deepEqual(await pixels('103-disabled'),sharp);
+ return {passed:true,sharp,wide,closed,focused,bp,polygonChannels,rotationChannels,typedCpp:true,actualBlueprintL:true,scope:'Thin-lens CoC and bounded polygon gather pixels; no path-traced optics, occluded near-field layer or whole-game FPS assertion.'};
+}

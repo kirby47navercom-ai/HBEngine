@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {componentDefaults,makeSceneComponent,validComponentProperties,componentPropertyVisible} from '../prototype/scene-components.js';
+import {cameraFieldOfView,createGameCamera,selectGameCamera} from '../prototype/game-camera.js';
+import {packedPostProcess} from '../prototype/post-processing.js';
+import {resolvePostVolumes} from '../prototype/post-volume.js';
+const camera=componentDefaults('Camera'),post=componentDefaults('PostProcessVolume');assert.equal(camera.physicalLens,false);assert.equal(post.dofMode,'distance');assert.equal(post.dofSamples,12);assert.equal(cameraFieldOfView(camera),60);
+for(const invalid of [{focalLength:0},{sensorHeight:101},{aperture:.69},{aperture:129},{apertureBladeCount:5.5},{apertureBladeCount:2},{apertureCurvature:1.1},{apertureRotation:181}])assert.equal(validComponentProperties('Camera',invalid),false);
+for(const invalid of [{dofMode:'other'},{dofSamples:3},{dofSamples:32.1}])assert.equal(validComponentProperties('PostProcessVolume',invalid),false);
+const physical={...camera,physicalLens:true,focalLength:50,sensorHeight:24,aperture:2.8},view=createGameCamera(physical);assert.ok(Math.abs(view.fov-26.99146656)<1e-7);assert.ok(Math.abs(view.projectionMatrix.elements[5]-100/24)<1e-12);
+const pack=packedPostProcess({...post,dofMode:'physical'},0,view);assert.deepEqual(pack.lens,[.05,2.8,.024,1]);assert.deepEqual(pack.bokeh,[5,0,1,12]);assert.equal(packedPostProcess(post,0,view).lens[3],0);
+const ortho=createGameCamera({...physical,projection:'orthographic'});assert.equal(packedPostProcess({...post,dofMode:'physical'},0,ortho).lens[3],0);assert.equal(componentPropertyVisible('Camera','focalLength',{...physical,projection:'orthographic'}),false);assert.equal(componentPropertyVisible('Camera','focalLength',physical),true);assert.equal(componentPropertyVisible('Camera','fieldOfView',physical),false);
+const p=makeSceneComponent('Camera',{...physical,main:true}),object={id:'Camera',components:[p]},group={userData:{gameCamera:view}};p.properties.focalLength=100;selectGameCamera([object],1,null,()=>group);assert.ok(view.fov<14);assert.equal(packedPostProcess({...post,dofMode:'physical'},0,view).lens[0],.1);
+const volume={id:'Post',components:[makeSceneComponent('PostProcessVolume',{postOverrides:['dof'],weight:.5,dofMode:'physical',dofSamples:31})]};const resolved=resolvePostVolumes([volume]);assert.equal(resolved.dofMode,'physical');assert.equal(resolved.dofSamples,22);
+console.log('103 PASS: physical/manual lens defaults, mm/FOV/runtime updates, perspective-only DOF, sample spatial rounding, property visibility and typed guards');

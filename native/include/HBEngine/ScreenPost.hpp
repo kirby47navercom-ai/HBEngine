@@ -10,11 +10,13 @@ namespace hb::gpu { inline constexpr const char* screenPostShader=R"HLSL(
 #define hbPostSize dimensions.xy
 
 float hbLinearDepth(float d){return hbCamera.z>.5?mix(hbCamera.x,hbCamera.y,d):hbCamera.x*hbCamera.y/max(.000001,hbCamera.y-d*(hbCamera.y-hbCamera.x));}
+float hbLensRadius(float z){if(hbLens.w<.5)return clamp(abs(z-hbFocus.x)/max(hbFocus.y,.001),0.0,1.0)*hbFocus.z;float diameter=hbLens.x*hbLens.x*abs(1.0-hbFocus.x/max(z,.000001))/(hbLens.y*max(.000001,hbFocus.x-hbLens.x));return min(hbFocus.z,diameter/hbLens.z*hbPostSize.y*.5);}
+float hbAperture(float a){if(hbBokeh.x<3.0)return 1.0;float halfAngle=3.14159265359/hbBokeh.x,phase=fmod(a-hbBokeh.y+halfAngle,halfAngle*2.0)-halfAngle;return mix(cos(halfAngle)/cos(phase),1.0,hbBokeh.z);}
 float hbDepthAt(vec2 uv){return hbLinearDepth(texture2D(hbDepth,clamp(uv,0.0,1.0)).r);}
 vec3 hbScreenColor(sampler2D image,vec2 uv){
  vec3 c=texture2D(image,uv).rgb;float z=hbDepthAt(uv);
- if(hbFocus.w>0.0){float radius=clamp(abs(z-hbFocus.x)/max(hbFocus.y,.001),0.0,1.0)*hbFocus.z;vec3 sum=c;float total=1.0;
-  for(int i=0;i<12;i++){float a=float(i)*2.39996323;vec2 at=clamp(uv+vec2(cos(a),sin(a))*sqrt((float(i)+.5)/12.0)*radius/hbPostSize,0.0,1.0);float other=hbDepthAt(at),w=other<z-max(.02,z*.01)?0.0:1.0;sum+=texture2D(image,at).rgb*w;total+=w;}c=mix(c,sum/total,hbFocus.w);}
+ if(hbFocus.w>0.0){float radius=hbLensRadius(z);vec3 sum=c;float total=1.0;
+  [loop] for(int i=0;i<32;i++){if(float(i)>=hbBokeh.w)break;float a=float(i)*2.39996323+hbBokeh.y;vec2 at=clamp(uv+vec2(cos(a),sin(a))*sqrt((float(i)+.5)/hbBokeh.w)*hbAperture(a)*radius/hbPostSize,0.0,1.0);float other=hbDepthAt(at),w=other<z-max(.02,z*.01)?0.0:1.0;sum+=texture2D(image,at).rgb*w;total+=w;}c=mix(c,sum/total,hbFocus.w);}
  if(hbOcclusion.z>0.0&&texture2D(hbDepth,uv).r<.99999){float occ=0.0;vec2 delta=(max(1.0,hbOcclusion.x*hbPostSize.y*hbCamera.w/(hbCamera.z>.5?1.0:max(z,.01)))).xx/hbPostSize;
   for(int i=0;i<8;i++){float a=float(i)*.785398163;float other=hbDepthAt(clamp(uv+vec2(cos(a),sin(a))*delta,0.0,1.0));float difference=z-other;occ+=step(hbOcclusion.y,difference)*(1.0-smoothstep(0.0,hbOcclusion.x*2.0,difference));}c*=max(0.0,1.0-occ*.125*hbOcclusion.z);}
  return c;

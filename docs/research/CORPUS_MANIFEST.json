@@ -183,6 +183,24 @@
           "record": "docs/RENDERING_102.md",
           "readScope": "Own web text24–76 read: for syntax, loop/unroll/fastopt compilation attributes and incompatibilities. Linked shader-model/compiler implementation unread.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.high-definition/Documentation~/Post-Processing-Depth-of-Field.md",
+          "record": "docs/RENDERING_103.md",
+          "readScope": "Own markdown0–52 read: Volume focus/near-far ranges, physical lens/blades/curvature and path-tracing comparison. Linked snippets/API/media not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/cinematic-depth-of-field-in-unreal-engine",
+          "record": "docs/RENDERING_103.md",
+          "readScope": "Own web15–105 and119–196 read: focal length/mm, f-stop, focus/filmback, blades/curvature and independent exposure. Remaining quality fields, links/API/media not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://gpuopen.com/manuals/fidelityfx_sdk/techniques/depth-of-field/",
+          "record": "docs/RENDERING_103.md",
+          "readScope": "Own web789–812 read: thin-lens CoC radius, sign/unit conventions, radius limits and quality rings. Full tile/near-far/combination implementation and SDK API not read or imported.",
+          "wholeCorpus": false
         }
       ]
     },

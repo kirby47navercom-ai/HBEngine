@@ -1,0 +1,473 @@
+{
+  "version": 1,
+  "date": "2026-10-12T10:00:28.250Z",
+  "previousCommit": "bbf70a96015aced1cf88108316e3fd2a61ba3d19",
+  "scope": [
+    "Perspective Camera physical lens/mm FOV and runtime projection update through existing component CPP/BP/AI setters",
+    "PostProcessVolume physical/manual DOF mode, integer samples/spatial override, current per-camera thin-lens CoC on D3D11/GL/GPU",
+    "Circle/3–11 blade polygon/rotation/curvature bounded gather and prior foreground-depth guard",
+    "Debug captures serialized on existing busy ownership, await existing ready promises and refresh current game camera before render; capture returns Promise on all backends"
+  ],
+  "sources": [
+    {
+      "id": "unity-dof",
+      "url": "https://raw.githubusercontent.com/Unity-Technologies/Graphics/master/Packages/com.unity.render-pipelines.high-definition/Documentation~/Post-Processing-Depth-of-Field.md",
+      "status": 200,
+      "sha256": "9c26e422b4f198e28acc28f4b79e7c248118fd12f4cb260eeab07a2a403001df",
+      "bytes": 6517,
+      "snapshot": "native/build/rendering-research-103/unity-dof.source",
+      "readScope": "Own markdown0–52 read: Volume focus/near-far ranges, physical lens/blades/curvature and path-tracing comparison. Linked snippets/API/media not read.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "unreal-dof",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/cinematic-depth-of-field-in-unreal-engine",
+      "status": 200,
+      "sha256": "778d7728111b5346050822629945ff9c2131d433819097de26fc974fc441e30c",
+      "bytes": 137277,
+      "snapshot": "native/build/rendering-research-103/unreal-dof.source",
+      "readScope": "Own web15–105 and119–196 read: focal length/mm, f-stop, focus/filmback, blades/curvature and independent exposure. Remaining quality fields, links/API/media not read.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "amd-dof",
+      "url": "https://gpuopen.com/manuals/fidelityfx_sdk/techniques/depth-of-field/",
+      "status": 200,
+      "sha256": "0ba289929bae23712e93ace915d1b084aced0c27dc89c88c8fa21eef27301be1",
+      "bytes": 348230,
+      "snapshot": "native/build/rendering-research-103/amd-dof.source",
+      "readScope": "Own web789–812 read: thin-lens CoC radius, sign/unit conventions, radius limits and quality rings. Full tile/near-far/combination implementation and SDK API not read or imported.",
+      "wholeCorpus": false
+    }
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "2b53b7d7472770b3df916939d6ce4b4731fed7084302f94c18b9d8759843be25"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "5e02f56f1014da845b5287d66e85482f923e869564ef721e228671198a773cea"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenPost.hpp",
+      "sha256": "97858997278bb84f70ecb4a769d098dbe0b85b5e72c4f677175ce005ab29c50d"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "5a9cb733caf158bcea7d815cfb50164fbcddad3179c5e641b5a307a2d05e614b"
+    },
+    {
+      "file": "prototype/game-camera.js",
+      "sha256": "2e3a9befc5f11ac8e8ec99090055bfee57031ad989b11661edbbe5aad0b40fd1"
+    },
+    {
+      "file": "prototype/gpu-post-processing.js",
+      "sha256": "fb45182be4d23627b4033b6c9d09971cedeaa0c7c77829236a40ba6ca3ec2d56"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "45d6f6ba71b54622faba30f3e2ad49027db0aca7126ae11af8dda2fa91658cae"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "4da64250a49f69dbb905e38e794b126c98e1b33ec54aa0fe1502cc5510eaef39"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "d1ad8c63a27277b4a0358b0be3a3d7f11e012a7b1dc0774feae1388639b6eb35"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "48dc4a66d5fd5f7bfeef85709e5b1bf4e60134da92deb34c9d4e58ea9dfb2ef8"
+    },
+    {
+      "file": "tools/generate-screen-post.mjs",
+      "sha256": "ae775e9bc09519dcd879c00550a1a108c4d47ed51f94a5d260b8df056c5296e3"
+    },
+    {
+      "file": "tools/rendering-099-fixture.mjs",
+      "sha256": "0732d1aca71c1a0e8a58b9d928328ed60420dc9e6566d4497957943d8bfab646"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "4434ccd4462077c0df91dce9d210e7c0cf337aa0c4cee1ed14546c272e5f58cc"
+    },
+    {
+      "file": "native/tests/scene-rendering-103.hpp",
+      "sha256": "2f7c9e23653e10c6ed48dd8d5266f8d4019d96992bcceffa775438a2aa44a3a0"
+    },
+    {
+      "file": "tools/check-rendering-103.mjs",
+      "sha256": "c4f472f1b4f8e8b1cf16af97de2fb289ac66246fb7ce3652a60804b68104f73b"
+    },
+    {
+      "file": "tools/rendering-103-fixture.mjs",
+      "sha256": "f331508590e02bc6d79a070ba3cd92dda40fd5a4d8e89e3efefa8c7d8a1477db"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "5e02f56f1014da845b5287d66e85482f923e869564ef721e228671198a773cea"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenPost.hpp",
+      "sha256": "97858997278bb84f70ecb4a769d098dbe0b85b5e72c4f677175ce005ab29c50d"
+    },
+    {
+      "path": "prototype/game-camera.js",
+      "sha256": "2e3a9befc5f11ac8e8ec99090055bfee57031ad989b11661edbbe5aad0b40fd1"
+    },
+    {
+      "path": "prototype/gpu-post-processing.js",
+      "sha256": "fb45182be4d23627b4033b6c9d09971cedeaa0c7c77829236a40ba6ca3ec2d56"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "45d6f6ba71b54622faba30f3e2ad49027db0aca7126ae11af8dda2fa91658cae"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "sha256": "4da64250a49f69dbb905e38e794b126c98e1b33ec54aa0fe1502cc5510eaef39"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "d1ad8c63a27277b4a0358b0be3a3d7f11e012a7b1dc0774feae1388639b6eb35"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "48dc4a66d5fd5f7bfeef85709e5b1bf4e60134da92deb34c9d4e58ea9dfb2ef8"
+    },
+    {
+      "path": "tools/generate-screen-post.mjs",
+      "sha256": "ae775e9bc09519dcd879c00550a1a108c4d47ed51f94a5d260b8df056c5296e3"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "0732d1aca71c1a0e8a58b9d928328ed60420dc9e6566d4497957943d8bfab646"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "4434ccd4462077c0df91dce9d210e7c0cf337aa0c4cee1ed14546c272e5f58cc"
+    },
+    {
+      "path": "tools/check-rendering-103.mjs",
+      "sha256": "c4f472f1b4f8e8b1cf16af97de2fb289ac66246fb7ce3652a60804b68104f73b"
+    },
+    {
+      "path": "tools/rendering-103-fixture.mjs",
+      "sha256": "f331508590e02bc6d79a070ba3cd92dda40fd5a4d8e89e3efefa8c7d8a1477db"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-pBwfMz/acceptance.json",
+      "sha256": "fe48a31db16f459bb873d9471703a7c8bc88a502ad93155673239a43560c0c21",
+      "scope": "Final native GPU full60 material nodes, 2D/skin/morph/instances/particles/shadows/probes and098–103 plus unavailable guard. Physical pixel/thin lens/sample/shape/ranges/ownership proof; timings are not whole-frame FPS.",
+      "passed": true,
+      "rendering103": {
+        "closed": 85,
+        "disabledBytes": 0,
+        "focused": 59,
+        "passed": true,
+        "polygonAndRotation": true,
+        "rangeIntegerOrthoGuards": true,
+        "sharp": 59,
+        "textureBytesUnchanged": true,
+        "wide": 229
+      },
+      "priorRegressions": {
+        "rendering102": true,
+        "rendering101": true,
+        "rendering100": true,
+        "rendering099": true,
+        "rendering098": true,
+        "compiledNodes": 60
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-Y6e1f5/acceptance.json",
+      "sha256": "2ee87c7a5c93d6069a1a49ede1064b216b095ea3612da307420ce55049f60465",
+      "scope": "Final actual native Windows 098–103, CPP CameraFloat and actual L-key Blueprint aperture, focus/shape/rotation pixels, errors0/exit0/own server shutdown. Isolated project/profile/port.",
+      "passed": true,
+      "rendering103": {
+        "passed": true,
+        "sharp": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "wide": [
+          215,
+          215,
+          215,
+          255
+        ],
+        "closed": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "focused": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "bp": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "polygonChannels": 29,
+        "rotationChannels": 23,
+        "typedCpp": true,
+        "actualBlueprintL": true,
+        "scope": "Thin-lens CoC and bounded polygon gather pixels; no path-traced optics, occluded near-field layer or whole-game FPS assertion."
+      },
+      "priorRegressions": {
+        "rendering102": true,
+        "rendering101": true,
+        "rendering100": true,
+        "rendering099": true,
+        "rendering098": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    {
+      "file": "native/build/gpu-scene-d7bPqQ/acceptance.json",
+      "sha256": "6f6e4b0c35d107a6db9e5a6e1d4108b9bf2555542bc0bb95cce03363badd5518",
+      "scope": "Final actual WebGPU Windows 098–103, CPP CameraFloat and L-key Blueprint aperture, focus/shape/rotation pixels, errors0/exit0/own server shutdown and private project preserved.",
+      "passed": true,
+      "rendering103": {
+        "passed": true,
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "wide": [
+          174,
+          174,
+          174,
+          255
+        ],
+        "closed": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "focused": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "bp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "polygonChannels": 102,
+        "rotationChannels": 94,
+        "typedCpp": true,
+        "actualBlueprintL": true,
+        "scope": "Thin-lens CoC and bounded polygon gather pixels; no path-traced optics, occluded near-field layer or whole-game FPS assertion."
+      },
+      "priorRegressions": {
+        "rendering102": true,
+        "rendering101": true,
+        "rendering100": true,
+        "rendering099": true,
+        "rendering098": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-SDqRFQ/acceptance.json",
+      "sha256": "329733ddfda0b3c066762f5ba4fc08174ea5d3a9d3f127c00ac6c00fdeaf134d",
+      "scope": "Final actual WebGL2 Windows 098–103, CPP CameraFloat and L-key Blueprint aperture, focus/shape/rotation pixels, errors0/exit0/own server shutdown and private project preserved.",
+      "passed": true,
+      "rendering103": {
+        "passed": true,
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "wide": [
+          174,
+          174,
+          174,
+          255
+        ],
+        "closed": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "focused": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "bp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "polygonChannels": 111,
+        "rotationChannels": 95,
+        "typedCpp": true,
+        "actualBlueprintL": true,
+        "scope": "Thin-lens CoC and bounded polygon gather pixels; no path-traced optics, occluded near-field layer or whole-game FPS assertion."
+      },
+      "priorRegressions": {
+        "rendering102": true,
+        "rendering101": true,
+        "rendering100": true,
+        "rendering099": true,
+        "rendering098": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/cpu-rendering-103.json",
+      "sha256": "4ffb6fe8fd9336ed144e8663c466012eb811eef7bb41ebfc93708cbf8769a053",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-103.mjs",
+          "output": "103 PASS: physical/manual lens defaults, mm/FOV/runtime updates, perspective-only DOF, sample spatial rounding, property visibility and typed guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-102.mjs",
+          "output": "102 PASS: quality packing/ranges, integer guards, legacy and indirect overrides, no double spatial weighting and typed component edit",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-101.mjs",
+          "output": "101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-100.mjs",
+          "output": "{\"passed\":true,\"defaultsOff\":true,\"projectionRestored\":true,\"cameraAndOwnerResets\":true,\"depthReprojectionRoundTrip\":true,\"spatialOverrides\":true,\"typedValidation\":true}",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-099.mjs",
+          "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-effects.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-post.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "native/build/release-source-parity-103.json",
+      "sha256": "58091fbb502b1d391d4dad18ca07776cd4c4bb36680c157543ad1a63519ab2bd",
+      "sourceFiles": 472,
+      "synced": [
+        "prototype\\player.js"
+      ],
+      "scope": "All source files under prototype/tools/native/include except screenshots; no ignored build, user games or projects."
+    }
+  ],
+  "costs": {
+    "additionalTextureBytes": 0,
+    "additionalPostConstantBytes": 32,
+    "existingPostConstantBufferRing": 3,
+    "additionalConstantRingBytes": 96,
+    "defaultDepthOfFieldEnabled": false,
+    "defaultSamples": 12,
+    "maxSamples": 32,
+    "maxRadiusPixels": 16,
+    "automaticCpuGpuReadbacksAdded": 0,
+    "scope": "Format arithmetic and native ownership assertions; not full game FPS, VRAM/driver residency or zero CPU cost."
+  },
+  "failedOrCalibrationWork": [
+    "Initial native test compile mixed vector and size_t in one auto declaration; declarations split before final native gate.",
+    "Initial Windows camera aperture writes were authoring state changes before the active capture camera refreshed its properties. Debug capture/probe now awaits existing mesh readiness and refreshes the current game camera; normal runtime already updates camera every frame. All three final Windows gates pass, including exact closed/focused high-resolution values.",
+    "Initial native64px closed aperture bound3 was invalid for subpixel bilinear filtering at a narrow strip boundary. Final closed85 versus sharp59/wide229 requires at least30 below wide and at most30 above sharp; exact-focus59 independently preserves sharp. Final actual Windows high-resolution closed/focused equal sharp. No prior failed captures accepted.",
+    "Default12 manual path retained, post loop maximum32 dynamically bounded by samples and native generated [loop].",
+    "No shader diagnostics added or shipped; development release canonical472 source parity checked after capture fix."
+  ],
+  "limits": [
+    "No whole Unity/Unreal corpus/API analysis or exact engine equivalence claim",
+    "Physical lens DOF only on authored perspective physical cameras; orthographic/nonphysical camera keeps legacy distance-based calculation",
+    "Scene length interpreted as meters, lens/sensor as mm; focal plane closer than focal length is denominator-clamped, not optically valid",
+    "Bounded single-image gather, not occluded background recovery, separate near-field dilation/layers, point-light scatter, aberrations or path-traced lens transport",
+    "Prior advanced skin/hair/eye, colored transmission shadows, ambient-only AO, Hi-Z/geometry GI and previous-deformation-pose limits remain open",
+    "No actual phone, whole-game FPS/VRAM/RAM, eight-hour stress or running user-game inspection"
+  ],
+  "installation": {
+    "state": "Grouped checks passed; installation pending",
+    "restartUserWindows": false
+  }
+}
