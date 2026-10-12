@@ -627,7 +627,13 @@
     "No claim of whole UE/Unity corpus, complete engine or commercial parity."
   ],
   "installation": {
-    "state": "Pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "1ff51755053c1011d7690ab0224a7d6116c9dddd",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e",
+    "bundleHash": "2256716c53ad593eef5807a742779c7f143f858df217ee60a7d80f8213644d3c",
+    "files": 2084,
+    "receipt": "docs/research/USER_INSTALL_108.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }

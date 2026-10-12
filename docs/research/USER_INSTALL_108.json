@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-12T18:12:04.375Z",
+  "featureCommit": "1ff51755053c1011d7690ab0224a7d6116c9dddd",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e\\HBEngine.exe",
+    "bundleHash": "2256716c53ad593eef5807a742779c7f143f858df217ee60a7d80f8213644d3c",
+    "files": 2084
+  },
+  "executableSHA256": "1d334c01fd19122917160da5cd447d872bfe3c158268038663628eab4ba7a1db",
+  "playerSHA256": "ae59d8d6ca89cb698c553c926c4dd1f847ce97bf94e1de4760524a07222db385",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2256716c53ad593e\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "2f0289a7553b5046a33cc9eaec7fd88903fef1393ac2492a7be79087ad1789ac"
+    },
+    {
+      "path": "prototype/audio-mixer.js",
+      "sha256": "f078cf016dc33a7de600527431be4c4fcd068cfbfe768151cb7fbe6a123665ca"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "d4db3780b35d133ace9ee58ca7d0a6a4974fec620ece8f3a96aad6ec785b091c"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "58704d4da00cc30739c6481c3555d22b35720a9b4a2cc23859790e6d28f7b0e0"
+    },
+    {
+      "path": "tools/build-game.mjs",
+      "sha256": "119d1d2d55768b4c1eb0d25e4518f1252dda7414bcf512810af7043fcd0cc476"
+    },
+    {
+      "path": "tools/check-kiosk-watchdog.mjs",
+      "sha256": "f0b18657a5045354ce557291228b7dc4395e278c0ba2a97e4e1c25927eb6c49b"
+    },
+    {
+      "path": "tools/kiosk-watchdog.mjs",
+      "sha256": "645df0ee5afb50a0032343186874807e0ac0425a62400712388582909bf0faa0"
+    },
+    {
+      "path": "tools/player-server.mjs",
+      "sha256": "c6b072da0eafe0e8d45b1ac27c769b2c5cfff815b639f84daa96542f76d0df68"
+    },
+    {
+      "path": "prototype/native-audio-worklet.js",
+      "sha256": "5c737d03c55637448f2f4b957d2298c69a2ae170d9bc4f2f17135457917e8e34"
+    },
+    {
+      "path": "prototype/native-audio.js",
+      "sha256": "a3bd6f2d890f873a342e6f5a93bc39a0924d5040d41dbac449ae60292fab662c"
+    },
+    {
+      "path": "tools/check-native-audio-worklet.mjs",
+      "sha256": "0ad28f85086773bed7eae40ac07f1f9fe4382bcc33f15bdbbb9457110f751045"
+    },
+    {
+      "path": "tools/check-windows-game-identity.mjs",
+      "sha256": "2c5065e5074154e9b6a3fc6a18644934a7c96b04ab95711fc29d815b570638c5"
+    },
+    {
+      "path": "tools/windows-game-identity.mjs",
+      "sha256": "8e341c5463dea865c93b5c148a32ad3e8843cea5596fb4577eb3ad20222642a3"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f0d779094f10ebd7",
+    "bundleHash": "f0d779094f10ebd77417688a520a061ac0ed392524510c19bf6f5cc81fced2ed",
+    "manifestSHA256": "943ee2c93ffbfa33b043881cb75585c749ba3980a4865e25267f91e5e28ab419",
+    "allFilesChecked": 2076
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Top-level profile only; no user games/cache/session inspection.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}
