@@ -858,7 +858,13 @@
     "Transparent/2D/custom deformation motion,foreground rasterDOF and full Hi-Z stochastic/DDA refinement remain separate scope."
   ],
   "installation": {
-    "state": "Grouped checks passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "97ab4b317bdd0c9d27c92a26118176199bfeee2e",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\10d8bb9456929a1d",
+    "bundleHash": "10d8bb9456929a1d6302f8add8e419f5a409d8f8e7d646b7991afac76f77236b",
+    "files": 2052,
+    "receipt": "docs/research/USER_INSTALL_105.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
