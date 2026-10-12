@@ -1,3 +1,5 @@
+2026-10-13: [106 교차점 머테리얼·UV·법선·마스크](../RENDERING_106.md), [기계 기록](RENDERING_106.json). PBRT 보간/상호작용, HLSL loop/fastopt, Three Texture 지정 구역과 설치 r180 uniform/binding/RTT/NodeFrame/ACES/WebGL 프로그램 수명, ANGLE 지정 컴파일 구역을 부분 대조해요.16 원문/설치 SHA와 읽은 구역을 보존하고 발견 seed만 등록해요. 세 Windows 실행기와 네이티브 묶음,13 공용 검사로 교차점 UV·마스크·법선·C++ 변경·누적 초기화와 기존098–105·2D를 확인해요. 전체 본문/API gate,중첩 매질·HDRI·광선 mip/LOD·디노이저·실게임/폰 성능은 종료하지 않아요.
+
 2026-10-12: [105 광선 투과 그림자·경로 추적](../RENDERING_105.md), [기계 기록](RENDERING_105.json). UE5.8 색 투과 그림자, HDRP17.0.4 지정 경로 추적 구역, PBRT4 지정 throughput·NEE/MIS·투과율, Three TSL 지정 본문과 설치 r180 함수를 읽었어요. 원문9 SHA와 설치 TSL 일치를 기록해요. 세 Windows 실행기·네이티브·공용12 검사로 실제 카메라 광선·발광체·그림자 옵션·렌즈·유리와 기존 렌더링을 대조해요. 일반 그림자맵 색 저장·교차점 텍스처·중첩 매질·디노이저·전체 corpus/API·실게임/휴대폰 성능은 미완료 경계를 유지해요.
 
 2026-10-12: [100 시간 재투영·모션·화면 반사·간접광](../RENDERING_100.md), [기계 기록](RENDERING_100.json). Unity6000.0 AA/모션 자체 본문2개, UE5.8 SSR 자체 표와 보조4.27 SSGI 자체 본문, Three r180 지정 구역을 읽었어요. 원문5 SHA·버전/읽기 경계와 현재 SSGI 본문 미독을 보존해요. 실제 세 Windows 실행기 C++/H키 BP·카메라 이동/반사/간접광 및 네이티브60머테리얼·2D 회귀를 묶어 검증했어요. 카메라 속도/화면 공간 근사와 전체 corpus/API·실기기·게임 성능은 별개예요.

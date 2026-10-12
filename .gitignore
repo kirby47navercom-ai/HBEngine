@@ -6,3 +6,5 @@ native/build/
 prototype/core-api.js
 dist/
 /HBEngine.exe
+/native/include/HBEngine/RayPrograms.hpp
+/native/include/HBEngine/ScreenEffects.hpp

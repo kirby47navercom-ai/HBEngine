@@ -20,5 +20,5 @@ export function materialTextureBindings(THREE,{resources,fileUrl,renderer,onErro
     const valid=()=>!finished&&!disposed&&generations.get(parameter)===generation;
     return {valid,cancel,commit:()=>{if(!valid()){cancel();return false;}finished=true;const old=[];if(!unchanged)selected.forEach((s,i)=>{old.push(s.map);s.map=maps[i];s.loaded=true;s.path=path;owned.add(maps[i]);s.write(maps[i]);});for(const map of old)release(map);resources=Object.fromEntries(slots.filter(s=>s.type!=='texture2d').map(s=>[s.path,nextResources?.[s.path]??resources?.[s.path]]));return true;}};
   }
-  return {add,prepare,state:()=>({disposed,loads,owned:owned.size,bindings:slots.map(({parameter,type,path})=>({parameter,type,path}))}),dispose:()=>{if(disposed)return;disposed=true;for(const map of [...owned])release(map);}};
+  return {add,prepare,textures:()=>slots,state:()=>({disposed,loads,owned:owned.size,bindings:slots.map(({parameter,type,path})=>({parameter,type,path}))}),dispose:()=>{if(disposed)return;disposed=true;for(const map of [...owned])release(map);}};
 }

@@ -1472,7 +1472,8 @@
       ],
       "hosts": [
         "raw.githubusercontent.com",
-        "github.com"
+        "github.com",
+        "threejs.org"
       ],
       "discoveryClosed": false,
       "expectedPages": null,
@@ -1619,6 +1620,66 @@
           "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/lighting/EnvironmentNode.js",
           "record": "docs/research/RENDERING_098.json",
           "readScope": "77–100 radiance/irradiance caching portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://threejs.org/docs/pages/Texture.html",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Current documentation only lines311–321 transformUv/updateMatrix; not the whole documentation or installed-version equivalence.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/UniformsGroup.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Complete web compressed body0–22 read; local updateVector4 lines305–332 and actual binding use inspected. r180 offset+4 bug is reproduced on the real installed class.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/renderers/common/UniformsGroup.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "updateVector4305–332; typed buffer selection430–444; compared with fixed r180 remote source.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/renderers/common/Bindings.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "177–235 _update and NodeUniformsGroup lifecycle; remaining source unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/renderers/common/nodes/NodeUniform.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Vector4NodeUniform166–207 only, live value/type lookup; remaining types unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/nodes/utils/RTTNode.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "102–241 autoUpdate/updateBeforeType/setup/updateBefore; remaining export/type sections unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/nodes/core/NodeFrame.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "145–184 updateBefore frame/render maps only.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/nodes/core/ArrayNode.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "0–100 and export131–146; investigated abandoned register VM storage, no runtime use in106.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/renderers/shaders/ShaderChunk/tonemapping_pars_fragment.glsl.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "36–77 ACES matrices/RRT fit only; other tone mappers unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/blob/r180/src/renderers/WebGLRenderer.js",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "1050–1086 dispose/release program references and2048–2080 material program cache; remaining source unread.",
           "wholeCorpus": false
         }
       ]
@@ -1846,6 +1907,12 @@
           "record": "docs/research/NATIVE_TRANSMISSION_096.json",
           "readScope": "Own signature/parameters/remarks/box example/requirements lines24-141 via web. Linked performance/interface bodies unread.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-for",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Web own body32–76 loop/fastopt semantics; linked compiler/ShaderModel documentation unread.",
+          "wholeCorpus": false
         }
       ],
       "openIssues": [
@@ -1924,6 +1991,76 @@
           "url": "https://google.github.io/filament/main/filament.html",
           "record": "docs/research/RENDERING_098.json",
           "readScope": "Primary live manual selected anisotropy812–885 and cloth937–1004 excerpts; not whole sections/manual/API.",
+          "wholeCorpus": false
+        }
+      ]
+    },
+    {
+      "id": "pbrt-ray-material-supplement",
+      "engine": "PBRT official rendering supplement",
+      "version": "selected-snapshot-2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://www.pbr-book.org/4ed/Geometry_and_Transformations/Interactions"
+      ],
+      "hosts": [
+        "www.pbr-book.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected source excerpts only; linked APIs, complete inventory and whole-body verification remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://www.pbr-book.org/4ed/Geometry_and_Transformations/Interactions",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Web body lines0–76; interaction point, geometric/shading normals and UV. Outgoing links not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/4ed/Shapes/Triangle_Meshes",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Web sections184–212 and647–674 only: barycentric attributes; rest of page and outgoing implementation links unread.",
+          "wholeCorpus": false
+        }
+      ]
+    },
+    {
+      "id": "angle-render-compiler-supplement",
+      "engine": "ANGLE official compiler supplement",
+      "version": "selected-snapshot-2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://chromium.googlesource.com/angle/angle/+/refs/heads/main/src/libANGLE/renderer/d3d/ShaderD3D.cpp?format=TEXT"
+      ],
+      "hosts": [
+        "chromium.googlesource.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected source excerpts only; linked APIs, complete inventory and whole-body verification remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://chromium.googlesource.com/angle/angle/+/refs/heads/main/src/libANGLE/renderer/d3d/ShaderD3D.cpp?format=TEXT",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Decoded fixed snapshot lines190–224 only; D3D9 workaround flags, not a proven current D3D11 skip-optimize mechanism.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://chromium.googlesource.com/angle/angle/+/refs/heads/main/src/compiler/translator/hlsl/OutputHLSL.cpp?format=TEXT",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Decoded lines642–674,2425–2443,2570–2589 only: workaround macro and nested-break flag.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://chromium.googlesource.com/angle/angle/+/refs/heads/main/src/libANGLE/renderer/d3d/d3d11/Renderer11.cpp?format=TEXT",
+          "record": "docs/research/RENDERING_106.json",
+          "readScope": "Decoded lines3067–3115 only: default D3D11 level2 and failure fallbacks.",
           "wholeCorpus": false
         }
       ]

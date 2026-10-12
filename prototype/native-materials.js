@@ -44,7 +44,7 @@ export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},rendere
   material.userData.floatKeys=[...plan.floatBindings.map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
   material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
   material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const property=materialVectorProperty(key),parameter=plan.vectorBindings.find(b=>b.kind==='parameter'&&b.key===key),binding=parameter||plan.vectorBindings.find(b=>b.kind==='surface'&&b.key===property);if(!binding){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}values.splice(binding.offset,3,...value);if(parameter)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;};
-  material.userData.textureState=bindings.state;
+  material.userData.textureState=bindings.state;material.userData.rayTextures=bindings.textures;
   material.userData.materialState=()=>({backend:'D3D11',time,uniforms:values.slice(),program:program.id});
   material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await bindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};return true;};return transaction;};
   const dispose=material.dispose.bind(material);material.dispose=()=>{if(disposed)return;disposed=true;bindings.dispose();dispose();};material.clone=()=>createNativeMaterial(THREE,data,{fileUrl,onError,renderer});return material;
