@@ -996,7 +996,13 @@
     "No phone or whole-game FPS/RAM claim"
   ],
   "installation": {
-    "state": "Grouped checks passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "90df755cdd305660dab51fa4d847d6f0ad7827f5",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\88ca09279280c17e",
+    "bundleHash": "88ca09279280c17e1219d4f02913a21e41285949d508cc9be49c89254b6174f4",
+    "files": 2000,
+    "receipt": "docs/research/USER_INSTALL_099.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
