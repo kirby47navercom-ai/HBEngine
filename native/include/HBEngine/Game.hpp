@@ -504,6 +504,8 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setMaterial", KoreanName="머테리얼 지정", Category="머테리얼") static void Set(Actor* target,const std::string& material,int slot=0);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="materialLayerParameter", KoreanName="레이어 파라미터 이름", Category="머테리얼") static std::string LayerParameterKey(const std::string& id,const std::string& name,bool blend=false);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialTexture", KoreanName="머테리얼 텍스처 설정", Category="머테리얼") static void SetTexture(Actor* target,const std::string& parameter,const std::string& texture);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialVector", KoreanName="머테리얼 벡터 설정", Category="머테리얼") static void SetVector(Actor* target,const std::string& parameter,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialColor", KoreanName="머테리얼 색상 설정", Category="머테리얼") static void SetColor(Actor* target,const std::string& parameter,const Color& value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="materialFloat", KoreanName="머테리얼 실수 설정", Category="머테리얼") static void SetFloat(Actor* target,const std::string& parameter,float value);
 };
 HB_CLASS()

@@ -1,3 +1,5 @@
+2026-10-12: [색 흡수·벡터 파라미터·색 분산](../NATIVE_VOLUME_097.md). Materials SetVector/SetColor C++·BP2·AI, 공용 Surface/속성·함수/레이어/MI·GLSL/TSL/HLSL, Glass/TintedGlass/Prism을 연결했어요. 1,000회 typed uniform·clone·다중 슬롯 사전 거부와 전체 GPU60노드/기존2D·조명·파티클·프로브 회귀, 실제 세 실행기의 C++/T·V키 BP·흡수/분산/재사용·오류0/종료0를 검증했어요. 설치 갱신 후 영수증을 별도로 남기며 전체 corpus/FPS/실기기·남은 셰이딩/후처리/GI를 완료 처리하지 않아요.
+
 2026-10-12 후속: [096 투과·굴절](../NATIVE_TRANSMISSION_096.md), [기계 기록](NATIVE_TRANSMISSION_096.json). Unreal5.8/UnityHDRP17 자체 굴절 본문·표·제작 절차, Microsoft 두 API의 자체 선언/조건/표/예제, Three r180 지정 shader/RenderList 구역을 읽었어요. 원문8 SHA·설치 소스·부분 읽기/미독을 구분해요. 실제 DirectX/WebGL/WebGPU C++/T키 BP·굴절/mip·재사용·해제, GPU60노드 회귀 및 최종 sampler/Bloom 조합을 검증했어요. 전체 corpus/API/독립 검증/FPS/실기기·설치 상태는 승격하지 않아요.
 
 2026-10-12 후속: [095 코팅](../NATIVE_COATING_095.md), [기계 기록](NATIVE_COATING_095.json). UE5.8 dual-normal 자체 본문/표, UnityURP17 Clear Coat/인접 반사 구역, Three r180 GGX/IOR/코팅 합성 지정 구역을 읽고 원문5 SHA·부분 읽기/미독과 설치 소스를 대조했어요. 실제 DirectX/WebGL/WebGPU CPP/BP·분리 노멀/IOR·재사용 및 GPU60노드/프로브 회귀 통과; 전체 corpus/API/독립 검증/FPS/실기기·설치 완료는 승격하지 않아요.

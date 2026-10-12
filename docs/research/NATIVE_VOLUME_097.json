@@ -1,0 +1,5693 @@
+{
+  "version": 1,
+  "date": "2026-10-12",
+  "previousCommit": "e5f35bc39c5fb476b15c1c1cd61ee744e1f16dec",
+  "scope": "Shared vector/color runtime parameters and C++/BP/AI, volume absorption and dispersion across D3D11/GLSL/TSL, Glass/TintedGlass/Prism authoring; rendering group installation requested; scalar writes remove whole graph clone/rebuild fallback and atomically reject incompatible connected surface/slots",
+  "sources": [
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Surface-Type.html",
+      "scope": "HDRP17.0.4 own article HTML lines115–244: surface/transparent options and input property table; linked pages/images/API not read",
+      "file": "native\\build\\volume-research-097\\unity-surface.source",
+      "sha256": "50ea4a2efe2855d146a46c19151af4f85d4323bb1ea067de2882065a7760ea71",
+      "bytes": 19459,
+      "wholeSourceRead": false
+    },
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-transparency-in-unreal-engine-materials",
+      "scope": "UE5.8 own text lines0–131: parameter/MI workflow, tinted Thin Translucent, colored-shadow constraint, overdraw and sorting; linked pages/media/API not read",
+      "file": "native\\build\\volume-research-097\\unreal-transparency.source",
+      "sha256": "01a3b0ca156811447085df82f6793b28aab3e9a8022030c9091beae0dd9b2f04",
+      "bytes": 100353,
+      "wholeSourceRead": false
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+      "scope": "r180 lines114–208: local scale/ray/rough LOD, Beer attenuation, three-channel dispersion and composition; sampling implementation before114 reused096",
+      "file": "native\\build\\volume-research-097\\three-transmission.source",
+      "sha256": "586f774384f3442bdca1270d203b19f4cc318fd56ee522cdecc4a8b1cb9fc8fc",
+      "bytes": 7316,
+      "wholeSourceRead": false
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/materials/nodes/MeshPhysicalNodeMaterial.js",
+      "scope": "r180 lines210–233,298–340,413–435: attenuation/dispersion nodes, feature gates and setup. Other shading implementations not read in this batch",
+      "file": "native\\build\\volume-research-097\\three-node-physical.source",
+      "sha256": "839001afbe3cba1f8af581f79955cdd3999e6ace2ed091bf9965dce495f79410",
+      "bytes": 16446,
+      "wholeSourceRead": false
+    },
+    {
+      "installed": "node_modules/three/src/renderers/shaders/ShaderChunk/transmission_fragment.glsl.js",
+      "sha256": "c3c5f9e3afd3139ed55b20b876e76366943a9998f2d66b8f57ddf5947f0c3676",
+      "wholeSourceRead": true,
+      "scope": "Corresponding sections above; transmission_fragment whole locally read"
+    },
+    {
+      "installed": "node_modules/three/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+      "sha256": "586f774384f3442bdca1270d203b19f4cc318fd56ee522cdecc4a8b1cb9fc8fc",
+      "wholeSourceRead": false,
+      "scope": "Corresponding sections above; transmission_fragment whole locally read"
+    },
+    {
+      "installed": "node_modules/three/src/materials/nodes/MeshPhysicalNodeMaterial.js",
+      "sha256": "839001afbe3cba1f8af581f79955cdd3999e6ace2ed091bf9965dce495f79410",
+      "wholeSourceRead": false,
+      "scope": "Corresponding sections above; transmission_fragment whole locally read"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "f6c81364bf1ca394b48c68fb60cfc26aaa723931ccff621af6b110ae4c863f9d"
+    },
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "039993def9c5dd81587b194eb8317bddea6238b0019fdb8d7f64216ace1e262b"
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "sha256": "ff68e47eef11d2f59c30635a06e8c62aa62e44f81c02f79206f3171b78691459"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "1591af912f48dff4e8f1109463472cfd9f63db9dade8a6f688678941d72c86f4"
+    },
+    {
+      "path": "native/tests/scene-transmission.hpp",
+      "sha256": "6b12658341eeb7899362884a96f70e157e3c51a5eff385afc08426536a7f4e3a"
+    },
+    {
+      "path": "prototype/app.js",
+      "sha256": "a39a54d838347fc43f5d3caffdde5327604d571a9dbe5414bc423c6b08c44c1c"
+    },
+    {
+      "path": "prototype/blueprint-model.js",
+      "sha256": "40b0f8ce257c4b3bf6b576371ed8a7adc12008dfa36a1543c613187d0905e23b"
+    },
+    {
+      "path": "prototype/blueprint-runtime.js",
+      "sha256": "07e4f2454d8bb64cd404c7f0a6b55964de8fe9edb9c4c92ad8a3dcfcd4009646"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "e3758a1fd12cb2e44ace650b6893e39988f81f66f2bfc6b83e5105e690462cd4"
+    },
+    {
+      "path": "prototype/gameplay-preview.js",
+      "sha256": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf"
+    },
+    {
+      "path": "prototype/gpu-materials.js",
+      "sha256": "bd9597430448fb2f39e4f5d9db0332017678e58bdc44dd825a466609fd48846b"
+    },
+    {
+      "path": "prototype/material-runtime.js",
+      "sha256": "632722c8fc419287d51edff2fb37651fe1c8dd7fbdc58d66b9860829b3b0efed"
+    },
+    {
+      "path": "prototype/native-materials.js",
+      "sha256": "fc11a109b7566685aa87533ddc3eb9d7b100ad45fe5a405e8f15550f0e9773a2"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "d54f80c114fc82ef8f048fc4f0169be2c82b85719d2decf8350fa354435791ce"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "a84afaeb34781f1d546b3634e9e6e03b01e8dca207ffac6d89daf1bbdc86b344"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "18fe81d3241349575c7f127c0e4812d6179de818dc1e3e2aaaefba79b87f4492"
+    },
+    {
+      "path": "tools/check-gpu-scene.mjs",
+      "sha256": "2f89fb28cf098e2fb5281666bdba14f7713a43840e6c65dae736626a0973c302"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "b10befa4102ccc23dc150eba9146bdb2c1a6a91a01d63efa10cd5d1206e242c3"
+    },
+    {
+      "path": "tools/check-native-scene-window.mjs",
+      "sha256": "0b824748b8f551e9ff1c7549271c5c0b6e4506933c662057b28e66f6f66bfbf1"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "bbf842a3c372039515dadfdcb4c810245c7562c47964d18c34a8c5d8e8a883ca"
+    },
+    {
+      "path": "tools/check-material-volume.mjs",
+      "sha256": "15dd1c929ccbd777ccbe8c17076dde26b2de6608d09ca387bceec45c2041949c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "native/build/volume-final-units-097.json",
+      "sha256": "839bb64a24ae3c99aad937de695f13f3da72aad4ad033663ba81508b885e6f57",
+      "result": [
+        {
+          "command": "node tools/check-material-uniforms.mjs",
+          "exit": 0,
+          "stdout": "WebGL Float uniform: 1000 writes/no material version or program changes, scalar/surface, scoped layer/blend, clone isolation, validation PASS\n"
+        },
+        {
+          "command": "node tools/check-material-workflow.mjs",
+          "exit": 0,
+          "stdout": "HBEngine 머테리얼: 77종 노드, PBR·수학·UV·텍스처 계산, GLSL 생성, 인스턴스·참조·프리팹·에셋 검증 통과\n"
+        },
+        {
+          "command": "node tools/check-material-layers.mjs",
+          "exit": 0,
+          "stdout": "머테리얼 속성·독립 레이어·블렌드·인스턴스 순서/표시/복원·타입·순환·내보내기·원본 보존 PASS\n"
+        },
+        {
+          "command": "node tools/check-material-functions.mjs",
+          "exit": 0,
+          "stdout": "머테리얼 함수: 타입·다중 출력·미리보기·필수 입력·중첩·공용 파라미터·핀 갱신·복사·참조·원본 보존 PASS\n"
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "exit": 0,
+          "stdout": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS\n"
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "exit": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n"
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "exit": 0,
+          "stdout": ""
+        }
+      ]
+    },
+    {
+      "path": "native/build/native-scene-zkKmXb/acceptance.json",
+      "sha256": "73fdde54337fedafa6aa87e3fdade0bcc08056ab26bf9d70a14ab50db9b69fb2",
+      "result": {
+        "hardware": {
+          "alphaCutoutShadow": true,
+          "automaticReadbacks": 0,
+          "bloomComputePixel": true,
+          "bloomReuseRelease": true,
+          "bloomScissorBars": true,
+          "bloomThresholdExposure": true,
+          "clearcoatDirectPixel": true,
+          "clearcoatRoughnessPixel": true,
+          "clearcoatValidation": true,
+          "compactShotBloom": true,
+          "compactShotXYXZ": true,
+          "compiledNodes": 60,
+          "constantBuffers": 3,
+          "deformationPoseReuse": true,
+          "deformationValidation": true,
+          "deformedShadowPixel": true,
+          "depth": true,
+          "directionalShadowPixel": true,
+          "drawsPerFrame": 2049,
+          "gpuBindAffineWeights": true,
+          "gpuCompletionMeasured": false,
+          "gpuMorphPositionNormalColor": true,
+          "gpuSkinPixel": true,
+          "heightFogPixel": true,
+          "hemisphereNormalPixel": true,
+          "hlslOpacityShadow": true,
+          "hlslParameterPixel": true,
+          "independentShadowLights": true,
+          "independentTextureUV": true,
+          "instanceCount2049SingleDraw": true,
+          "instanceFrameResources": 3,
+          "instanceValidation": true,
+          "instancedColorPixel": true,
+          "instancedShadowPixel": true,
+          "materialTextures": {
+            "arrayHalfUpLayer": true,
+            "cubeMipLOD": true,
+            "dimensionValidation": true,
+            "independentWrapR": true,
+            "mipStorageBytes": 120,
+            "samples": [
+              {
+                "rgb": [
+                  255,
+                  0,
+                  0
+                ],
+                "type": "texturecube",
+                "value": [
+                  1,
+                  0,
+                  0
+                ]
+              },
+              {
+                "rgb": [
+                  0,
+                  255,
+                  0
+                ],
+                "type": "texturecube",
+                "value": [
+                  -1,
+                  0,
+                  0
+                ]
+              },
+              {
+                "rgb": [
+                  0,
+                  0,
+                  255
+                ],
+                "type": "texturecube",
+                "value": [
+                  0,
+                  1,
+                  0
+                ]
+              },
+              {
+                "rgb": [
+                  0,
+                  255,
+                  255
+                ],
+                "type": "texturecube",
+                "value": [
+                  0,
+                  -1,
+                  0
+                ]
+              },
+              {
+                "rgb": [
+                  255,
+                  0,
+                  255
+                ],
+                "type": "texturecube",
+                "value": [
+                  0,
+                  0,
+                  1
+                ]
+              },
+              {
+                "rgb": [
+                  255,
+                  255,
+                  0
+                ],
+                "type": "texturecube",
+                "value": [
+                  0,
+                  0,
+                  -1
+                ]
+              },
+              {
+                "rgb": [
+                  255,
+                  0,
+                  0
+                ],
+                "type": "texturearray",
+                "value": 0
+              },
+              {
+                "rgb": [
+                  255,
+                  0,
+                  0
+                ],
+                "type": "texturearray",
+                "value": 0.49
+              },
+              {
+                "rgb": [
+                  0,
+                  255,
+                  255
+                ],
+                "type": "texturearray",
+                "value": 0.5
+              },
+              {
+                "rgb": [
+                  0,
+                  255,
+                  255
+                ],
+                "type": "texturearray",
+                "value": 1
+              },
+              {
+                "rgb": [
+                  255,
+                  0,
+                  0
+                ],
+                "type": "texture3d",
+                "value": [
+                  0.25,
+                  0.75,
+                  0.25
+                ]
+              },
+              {
+                "rgb": [
+                  127,
+                  127,
+                  127
+                ],
+                "type": "texture3d",
+                "value": [
+                  0.25,
+                  0.75,
+                  0.5
+                ]
+              },
+              {
+                "rgb": [
+                  0,
+                  255,
+                  255
+                ],
+                "type": "texture3d",
+                "value": [
+                  0.25,
+                  0.75,
+                  0.75
+                ]
+              },
+              {
+                "rgb": [
+                  255,
+                  0,
+                  0
+                ],
+                "type": "texture3d",
+                "value": [
+                  0.25,
+                  0.75,
+                  1.25
+                ]
+              }
+            ],
+            "sixFaces": true,
+            "srgbDecode": true,
+            "volumeInterpolation": true
+          },
+          "morphBeforeSkin": true,
+          "newUploadsDuring12Frames": 0,
+          "particles": {
+            "allSixSortModes": true,
+            "automaticPositionReadbacks": 0,
+            "capacity": 2049,
+            "explicitCountsOnly": true,
+            "gpuStepAndExpiry": true,
+            "hdrComputeBloom": true,
+            "indexAllocations": 1,
+            "indirectLivingCount": true,
+            "multiCapacityIndexReuse": true,
+            "passed": true,
+            "resourceRelease": true,
+            "sharedDepth": true,
+            "textureOrientation": true,
+            "viewportScissor": true,
+            "viewportSizeClamp": true
+          },
+          "passed": true,
+          "pbrDirectional": true,
+          "pbrPoint": true,
+          "pbrSpotAndCone": true,
+          "pixelViewportClear": true,
+          "pointShadowFace": true,
+          "probes": {
+            "automaticReadbacks": 0,
+            "blend": [
+              99,
+              99,
+              0
+            ],
+            "boundsAndIntensityPixel": true,
+            "boxProjectionPixel": true,
+            "coatProbePixel": true,
+            "diffuse": [
+              0,
+              137,
+              0
+            ],
+            "ggxRoughnessPixel": true,
+            "iorProbePixel": true,
+            "probeBytes32": 118912,
+            "projected": [
+              0,
+              0,
+              255
+            ],
+            "rough": [
+              116,
+              0,
+              104
+            ],
+            "shDiffusePixel": true,
+            "sharedResourceRelease": true,
+            "sharp": [
+              255,
+              0,
+              0
+            ],
+            "sixFaceHDRCapture": true,
+            "staticReuse": true,
+            "twoProbeBlendPixel": true,
+            "validation": true
+          },
+          "receiveShadowToggle": true,
+          "resize": true,
+          "separateScissor": true,
+          "shadowResourceRelease": true,
+          "spotShadowPixel": true,
+          "submitMsPer2049Draws": 4.134525,
+          "transmission": {
+            "automaticReadbacks": 0,
+            "cropViewportScissor": true,
+            "dispersionChangedChannels": 510,
+            "hdrReuseWithoutBloomCompute": true,
+            "iorThicknessPixel": true,
+            "optionalBloomComposition": true,
+            "reuseReleaseResize": true,
+            "reuseSnapshotCopies": 4,
+            "roughMipPixel": true,
+            "samplerLimitValidation": true,
+            "thinBackground": true,
+            "validation": true,
+            "volumeColorDistanceThicknessWorldScale": true,
+            "volumeZeroThicknessDisabledDistance": true
+          },
+          "twoD": {
+            "blendAndMaskPixels": true,
+            "draws": 3,
+            "freeformRGFloatPixel": true,
+            "insideOutsidePixels": true,
+            "oneLayerCookieArrayPixel": true,
+            "passed": true,
+            "passes": 3,
+            "sortingLayerLights": true,
+            "stencilResetKeepsColor": true,
+            "targetBytes": 32768,
+            "validation": true
+          },
+          "unlitTexture": true,
+          "validation": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "path": "native/build/native-scene-window-2Cxii6/acceptance.json",
+      "sha256": "4a246b3ff47952fc360d80ae823b701ee77865222910820cb7a4a6dd658815a4",
+      "result": {
+        "passed": true,
+        "backend": "D3D11",
+        "coating": {
+          "passed": true,
+          "off": [
+            84,
+            101,
+            96,
+            255
+          ],
+          "on": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "bp": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "straight": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "bent": [
+            230,
+            0,
+            0,
+            255
+          ],
+          "rough": [
+            218,
+            10,
+            13,
+            255
+          ],
+          "dispersed": [
+            230,
+            0,
+            0,
+            255
+          ],
+          "dispersionChangedChannels": 8,
+          "white": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "red": [
+            230,
+            57,
+            57,
+            255
+          ],
+          "weak": [
+            230,
+            154,
+            154,
+            255
+          ],
+          "thick": [
+            230,
+            2,
+            2,
+            255
+          ],
+          "zero": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "zeroDisabled": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "dark": [
+            97,
+            5,
+            5,
+            255
+          ],
+          "green": [
+            57,
+            230,
+            57,
+            255
+          ],
+          "disabled": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 23,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 10,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.2304,
+              "gpuTimingFrame": 79,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 80,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 23,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "a7ed65c9-7e68-4744-bc52-a21e4612b720",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.4131000064015389,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                1,
+                1.5,
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                0.05000000074505806,
+                0.05000000074505806
+              ],
+              "program": "efd7065e-8fe5-419f-9e70-8e54e60a5be7"
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 38,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 16,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.2048,
+              "gpuTimingFrame": 94,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 95,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 38,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "a7ed65c9-7e68-4744-bc52-a21e4612b720",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.9708999959975481,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                1,
+                1.5,
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "efd7065e-8fe5-419f-9e70-8e54e60a5be7"
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 0,
+              "bloomComposites": 0,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 0,
+              "calls": 3,
+              "captures": 1,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.047104,
+              "gpuTimingFrame": 28,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 29,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 0,
+              "transmissionCopies": 0,
+              "transmissionTextureBytes": 0,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "fc9fdb1f-dd5c-4470-bccb-46535720d54d",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.34840000000596055,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                0,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "e0c7f919-2d43-4c71-9412-66a7e20163b1"
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 1,
+              "bloomComposites": 1,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 3,
+              "captures": 1,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.073728,
+              "gpuTimingFrame": 30,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 31,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 1,
+              "transmissionCopies": 1,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "fc9fdb1f-dd5c-4470-bccb-46535720d54d",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.4485999967455864,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                0,
+                1,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "e0c7f919-2d43-4c71-9412-66a7e20163b1"
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 2,
+              "bloomComposites": 4,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 3,
+              "captures": 2,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.093184,
+              "gpuTimingFrame": 33,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 35,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 2,
+              "transmissionCopies": 4,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "fc9fdb1f-dd5c-4470-bccb-46535720d54d",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.5835999941825867,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                0,
+                1,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "e0c7f919-2d43-4c71-9412-66a7e20163b1"
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 42,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 18,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.205824,
+              "gpuTimingFrame": 98,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 99,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 42,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "a7ed65c9-7e68-4744-bc52-a21e4612b720",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 1.0675000156313181,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                1,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "efd7065e-8fe5-419f-9e70-8e54e60a5be7"
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 42,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 0,
+              "calls": 2,
+              "captures": 18,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.205824,
+              "gpuTimingFrame": 99,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 101,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 42,
+              "transmissionTextureBytes": 0,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "a7ed65c9-7e68-4744-bc52-a21e4612b720",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 1.1598999952375888,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                1,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "efd7065e-8fe5-419f-9e70-8e54e60a5be7"
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": true,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      }
+    },
+    {
+      "path": "native/build/gpu-scene-lSBDRH/acceptance.json",
+      "sha256": "1808e8c741045cb38461b88cad9bbcb04da99dba60a5c2fcfdc5e8c65fc1251a",
+      "result": {
+        "passed": true,
+        "coating": {
+          "passed": true,
+          "off": [
+            133,
+            136,
+            135,
+            255
+          ],
+          "on": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bp": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "straight": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bent": [
+            247,
+            23,
+            25,
+            255
+          ],
+          "rough": [
+            226,
+            10,
+            31,
+            255
+          ],
+          "dispersed": [
+            247,
+            23,
+            25,
+            255
+          ],
+          "dispersionChangedChannels": 24,
+          "white": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "red": [
+            246,
+            75,
+            66,
+            255
+          ],
+          "weak": [
+            236,
+            151,
+            146,
+            255
+          ],
+          "thick": [
+            248,
+            19,
+            23,
+            255
+          ],
+          "zero": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "zeroDisabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "dark": [
+            73,
+            0,
+            5,
+            255
+          ],
+          "green": [
+            154,
+            226,
+            111,
+            255
+          ],
+          "disabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 214,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "c5a8b5ab-60bd-4612-8993-b5e1abd2d2a2",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 228,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "c5a8b5ab-60bd-4612-8993-b5e1abd2d2a2",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 92,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 1
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "868ed423-41e8-4a78-937e-7a91c2e44ef9",
+              "type": "MeshPhysicalMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 96,
+                "calls": 5,
+                "triangles": 60,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 2
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "868ed423-41e8-4a78-937e-7a91c2e44ef9",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 99,
+                "calls": 5,
+                "triangles": 60,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 2
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "868ed423-41e8-4a78-937e-7a91c2e44ef9",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 230,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "c5a8b5ab-60bd-4612-8993-b5e1abd2d2a2",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 232,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "c5a8b5ab-60bd-4612-8993-b5e1abd2d2a2",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": null,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "webgl": true,
+        "checkedFiles": {
+          "tools/coating-fixture.mjs": "576e9325d5d0b31873f29bf0ea9c7927903a5e5c0a6468755fde899813b6f448",
+          "tools/material-texture-parameter-window-actions.mjs": "cb2f94b992b13e74959bd70947f33918f676a092324039640d641f7b0a426995",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "34343fa4bdfcc8acb3904532926b48d89da24016ebc9bdce33960d90f2648028",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/blueprint-model.js": "40b0f8ce257c4b3bf6b576371ed8a7adc12008dfa36a1543c613187d0905e23b",
+          "prototype/blueprint-runtime.js": "07e4f2454d8bb64cd404c7f0a6b55964de8fe9edb9c4c92ad8a3dcfcd4009646",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "39c5e4c82a20b0b19bbac17b76eaa61955e92b16e4b4cbca4a9341116bbbfaae",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "5f407205a19e33af0b06182b5695484e31c634a64e7ce461c31bc2b0837a5583",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "e3758a1fd12cb2e44ace650b6893e39988f81f66f2bfc6b83e5105e690462cd4",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "0e4681a1bd11ffad8cb1355146b85951ebf9361e3ee58110695c69e8abbd1dea",
+          "prototype/gpu-materials.js": "bd9597430448fb2f39e4f5d9db0332017678e58bdc44dd825a466609fd48846b",
+          "prototype/gpu-environment.js": "80b4e509a422832c04fabf5fbd9b374379d2771fb3ea555927502533d9901d32",
+          "prototype/material-runtime.js": "632722c8fc419287d51edff2fb37651fe1c8dd7fbdc58d66b9860829b3b0efed",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "e3015e67db59a3f565341bfffda3138fb2d1b28788036d3a1288b164ee820261",
+          "prototype/app.js": "a39a54d838347fc43f5d3caffdde5327604d571a9dbe5414bc423c6b08c44c1c",
+          "native/include/HBEngine/Game.hpp": "ff68e47eef11d2f59c30635a06e8c62aa62e44f81c02f79206f3171b78691459",
+          "prototype/gpu-particles.js": "ae5e8fbb8334224c7d75780fea7c4833d32ded52aba708bc9efb94f3c8eca435",
+          "prototype/game-renderer.js": "fe60283560cd1c9f8f92774613e5af1521271c5c7c0d113df00130cc91d84cf1",
+          "prototype/scene-rendering.js": "18fe81d3241349575c7f127c0e4812d6179de818dc1e3e2aaaefba79b87f4492",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "221e4354c44189b2ee2ce34c14b8cdd583c87fde584986a2b332c8d3ed5a93de",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "a84afaeb34781f1d546b3634e9e6e03b01e8dca207ffac6d89daf1bbdc86b344",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "99f430328adc3567e7e694e6cdedb0d5c00e28a474d736f1296bac15995166fc",
+          "tools/build-game.mjs": "f9699f0b8b7e1e67a736e119f9e14e9bdddba8bd69711396529eb11cd2c1c4e9",
+          "tools/editor-automation.mjs": "d4f8eb81311979ef5f17bc13afb03ba41283110276cc51fe59167574b55e837b",
+          "native/include/HBEngine/Bridge.hpp": "039993def9c5dd81587b194eb8317bddea6238b0019fdb8d7f64216ace1e262b",
+          "tools/check-gpu-scene.mjs": "2f89fb28cf098e2fb5281666bdba14f7713a43840e6c65dae736626a0973c302",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    },
+    {
+      "path": "native/build/gpu-scene-PKBPXE/acceptance.json",
+      "sha256": "72b46d78f42019e0341f2cdf656e1e3bff57aca84bf7ec1f39e11f1637c19876",
+      "result": {
+        "passed": true,
+        "coating": {
+          "passed": true,
+          "off": [
+            134,
+            136,
+            136,
+            255
+          ],
+          "on": [
+            149,
+            228,
+            91,
+            255
+          ],
+          "bp": [
+            149,
+            228,
+            91,
+            255
+          ],
+          "straight": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bent": [
+            248,
+            23,
+            25,
+            255
+          ],
+          "rough": [
+            226,
+            9,
+            31,
+            255
+          ],
+          "dispersed": [
+            227,
+            186,
+            0,
+            255
+          ],
+          "dispersionChangedChannels": 129,
+          "white": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "red": [
+            246,
+            75,
+            66,
+            255
+          ],
+          "weak": [
+            237,
+            151,
+            147,
+            255
+          ],
+          "thick": [
+            248,
+            19,
+            23,
+            255
+          ],
+          "zero": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "zeroDisabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "dark": [
+            73,
+            0,
+            5,
+            255
+          ],
+          "green": [
+            154,
+            227,
+            112,
+            255
+          ],
+          "disabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 272,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "ad7c3557-0411-440a-882f-3c463ebe53bd",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.23360000118613244
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 300,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "ad7c3557-0411-440a-882f-3c463ebe53bd",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.31079999336600306
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 0,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 106,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "413e1546-671a-4506-81eb-779f337f0ae5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.233800000011921
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 116,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "413e1546-671a-4506-81eb-779f337f0ae5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.4134999863058329
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 122,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "413e1546-671a-4506-81eb-779f337f0ae5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.4735999811738729
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 306,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "ad7c3557-0411-440a-882f-3c463ebe53bd",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.3254999721944332
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 310,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "ad7c3557-0411-440a-882f-3c463ebe53bd",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.33629998163878916
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": null,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "webgl": false,
+        "checkedFiles": {
+          "tools/coating-fixture.mjs": "576e9325d5d0b31873f29bf0ea9c7927903a5e5c0a6468755fde899813b6f448",
+          "tools/material-texture-parameter-window-actions.mjs": "cb2f94b992b13e74959bd70947f33918f676a092324039640d641f7b0a426995",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "34343fa4bdfcc8acb3904532926b48d89da24016ebc9bdce33960d90f2648028",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/blueprint-model.js": "40b0f8ce257c4b3bf6b576371ed8a7adc12008dfa36a1543c613187d0905e23b",
+          "prototype/blueprint-runtime.js": "07e4f2454d8bb64cd404c7f0a6b55964de8fe9edb9c4c92ad8a3dcfcd4009646",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "39c5e4c82a20b0b19bbac17b76eaa61955e92b16e4b4cbca4a9341116bbbfaae",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "5f407205a19e33af0b06182b5695484e31c634a64e7ce461c31bc2b0837a5583",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "e3758a1fd12cb2e44ace650b6893e39988f81f66f2bfc6b83e5105e690462cd4",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "0e4681a1bd11ffad8cb1355146b85951ebf9361e3ee58110695c69e8abbd1dea",
+          "prototype/gpu-materials.js": "bd9597430448fb2f39e4f5d9db0332017678e58bdc44dd825a466609fd48846b",
+          "prototype/gpu-environment.js": "80b4e509a422832c04fabf5fbd9b374379d2771fb3ea555927502533d9901d32",
+          "prototype/material-runtime.js": "632722c8fc419287d51edff2fb37651fe1c8dd7fbdc58d66b9860829b3b0efed",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "e3015e67db59a3f565341bfffda3138fb2d1b28788036d3a1288b164ee820261",
+          "prototype/app.js": "a39a54d838347fc43f5d3caffdde5327604d571a9dbe5414bc423c6b08c44c1c",
+          "native/include/HBEngine/Game.hpp": "ff68e47eef11d2f59c30635a06e8c62aa62e44f81c02f79206f3171b78691459",
+          "prototype/gpu-particles.js": "ae5e8fbb8334224c7d75780fea7c4833d32ded52aba708bc9efb94f3c8eca435",
+          "prototype/game-renderer.js": "fe60283560cd1c9f8f92774613e5af1521271c5c7c0d113df00130cc91d84cf1",
+          "prototype/scene-rendering.js": "18fe81d3241349575c7f127c0e4812d6179de818dc1e3e2aaaefba79b87f4492",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "221e4354c44189b2ee2ce34c14b8cdd583c87fde584986a2b332c8d3ed5a93de",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "a84afaeb34781f1d546b3634e9e6e03b01e8dca207ffac6d89daf1bbdc86b344",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "99f430328adc3567e7e694e6cdedb0d5c00e28a474d736f1296bac15995166fc",
+          "tools/build-game.mjs": "f9699f0b8b7e1e67a736e119f9e14e9bdddba8bd69711396529eb11cd2c1c4e9",
+          "tools/editor-automation.mjs": "d4f8eb81311979ef5f17bc13afb03ba41283110276cc51fe59167574b55e837b",
+          "native/include/HBEngine/Bridge.hpp": "039993def9c5dd81587b194eb8317bddea6238b0019fdb8d7f64216ace1e262b",
+          "tools/check-gpu-scene.mjs": "2f89fb28cf098e2fb5281666bdba14f7713a43840e6c65dae736626a0973c302",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    }
+  ],
+  "devExecutables": [
+    {
+      "path": "HBEngine.exe",
+      "sha256": "995a9e83e67bb999d61885346c04a71840d13e6693935a05cddd78ae80b131a7"
+    },
+    {
+      "path": "dist/HBEngine/HBEngine.exe",
+      "sha256": "995a9e83e67bb999d61885346c04a71840d13e6693935a05cddd78ae80b131a7"
+    }
+  ],
+  "failedOrCalibrationWork": [
+    "native/build/native-scene-5GHzJy",
+    "native/build/native-scene-window-vlZAv3",
+    "native/build/native-scene-window-ZyBU1P",
+    "native/build/native-scene-window-WLyOnV",
+    "native/build/native-scene-window-NsVycO",
+    "native/build/gpu-scene-htAHyJ"
+  ],
+  "corrections": [
+    "Replacement scripts narrowed CPU/GLSL/preset scopes; syntax/import/BP BeginPlay corrected before product builds",
+    "sRGB comparison 1e-9 tolerance; 0 thickness comparison excludes changed sample position",
+    "Dispersion sampled entire color-boundary row instead of uniform red center; native capture awaited",
+    "Only test-owned unused native assets/source excluded to avoid compiling unrelated drivers",
+    "Final scalar-write guard/clone removal: units and three runtime checks repeated; native HLSL source and generated shader plan unchanged, broad GPU run retained."
+  ],
+  "bounds": {
+    "wholeCorpusRead": false,
+    "wholeApiRead": false,
+    "commercialParity": false,
+    "wholeGameFps": false,
+    "soak": false,
+    "physicalAndroid": false,
+    "ios": false,
+    "recursiveGlass": false,
+    "offscreenRefraction": false,
+    "depthRayTrace": false,
+    "browserReleaseWhenUnusedVerified": false
+  },
+  "installation": "Post-install receipt recorded separately; immutable bundle cannot contain its own complete bundle hash.",
+  "priorArtifacts": [
+    {
+      "path": "native/build/native-scene-window-dAzQaL/acceptance.json",
+      "sha256": "f36d85b197fad8e2323c879f3a90272ce9b8426567d21c1f595acfb9b7fa6a32",
+      "result": {
+        "passed": true,
+        "backend": "D3D11",
+        "coating": {
+          "passed": true,
+          "off": [
+            84,
+            101,
+            96,
+            255
+          ],
+          "on": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "bp": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "straight": [
+            0,
+            232,
+            0,
+            255
+          ],
+          "bent": [
+            230,
+            0,
+            0,
+            255
+          ],
+          "rough": [
+            218,
+            10,
+            13,
+            255
+          ],
+          "dispersed": [
+            230,
+            0,
+            0,
+            255
+          ],
+          "dispersionChangedChannels": 8,
+          "white": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "red": [
+            230,
+            57,
+            57,
+            255
+          ],
+          "weak": [
+            230,
+            154,
+            154,
+            255
+          ],
+          "thick": [
+            230,
+            2,
+            2,
+            255
+          ],
+          "zero": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "dark": [
+            97,
+            5,
+            5,
+            255
+          ],
+          "green": [
+            57,
+            230,
+            57,
+            255
+          ],
+          "disabled": [
+            230,
+            230,
+            230,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 25,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 10,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.243712,
+              "gpuTimingFrame": 82,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 83,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 25,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "8926217c-ff85-4dd6-9eda-089550b9acbe",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.41209996642172336,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                1,
+                1.5,
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                0.05000000074505806,
+                0.05000000074505806
+              ],
+              "program": "b542902d-8909-4968-8f57-97c1412b5a0d"
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 36,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 15,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.236544,
+              "gpuTimingFrame": 93,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 94,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 36,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "8926217c-ff85-4dd6-9eda-089550b9acbe",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.8605999715775251,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                1,
+                1.5,
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "b542902d-8909-4968-8f57-97c1412b5a0d"
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 0,
+              "bloomComposites": 0,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 0,
+              "calls": 3,
+              "captures": 1,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.057344,
+              "gpuTimingFrame": 30,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 31,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 0,
+              "transmissionCopies": 0,
+              "transmissionTextureBytes": 0,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "43ea1815-db7b-43c1-ba1b-988ed4aa22bf",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.32729999999701986,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                0,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "3ddbf48b-f2f6-4705-aa96-268fde9e6716"
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 1,
+              "bloomComposites": 1,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 3,
+              "captures": 1,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.100352,
+              "gpuTimingFrame": 32,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 33,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 1,
+              "transmissionCopies": 1,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "43ea1815-db7b-43c1-ba1b-988ed4aa22bf",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.45339998249709607,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                0,
+                1,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "3ddbf48b-f2f6-4705-aa96-268fde9e6716"
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 3
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 0
+              },
+              "bloomAllocations": 2,
+              "bloomComposites": 4,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 3,
+              "captures": 2,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.111616,
+              "gpuTimingFrame": 35,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 3,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 37,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 3,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 2,
+              "transmissionCopies": 4,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 12,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "43ea1815-db7b-43c1-ba1b-988ed4aa22bf",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.588499986037612,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                1,
+                0,
+                1,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                1,
+                1
+              ],
+              "program": "3ddbf48b-f2f6-4705-aa96-268fde9e6716"
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 39,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 1843200,
+              "calls": 2,
+              "captures": 17,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.256,
+              "gpuTimingFrame": 96,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 97,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 39,
+              "transmissionTextureBytes": 2457304,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "8926217c-ff85-4dd6-9eda-089550b9acbe",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.9579999350607395,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                1,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "b542902d-8909-4968-8f57-97c1412b5a0d"
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "D3D11",
+              "info": {
+                "calls": 2
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 0
+              },
+              "bloomAllocations": 4,
+              "bloomComposites": 39,
+              "bloomDispatches": 0,
+              "bloomLevels": 0,
+              "bloomTextureBytes": 0,
+              "calls": 2,
+              "captures": 17,
+              "deformationBufferBytes": 0,
+              "deformations": 0,
+              "draws2d": 0,
+              "gpuTimeMs": 0.108544,
+              "gpuTimingFrame": 98,
+              "instanceBatches": 0,
+              "instanceBufferBytes": 0,
+              "instanceUpdates": 0,
+              "meshes": 2,
+              "particleBirths": 0,
+              "particleBufferBytes": 0,
+              "particleCountReadbacks": 0,
+              "particleEmissionAllocations": 0,
+              "particleIndexAllocations": 0,
+              "particlePools": 0,
+              "particleSortPasses": 0,
+              "particleSteps": 0,
+              "passes2d": 0,
+              "poseUpdates": 0,
+              "presents": 99,
+              "probeCaptures": 0,
+              "probeDispatches": 0,
+              "probeTextureBytes": 0,
+              "programs": 2,
+              "reflectionProbes": 0,
+              "shadowDraws": 0,
+              "shadowLayers": 0,
+              "shadowPasses": 0,
+              "shadowTextureBytes": 0,
+              "target2dBytes": 0,
+              "targets2d": 0,
+              "textures": 0,
+              "transmissionAllocations": 4,
+              "transmissionCopies": 39,
+              "transmissionTextureBytes": 0,
+              "uploads": 22,
+              "drawUpdates": 0,
+              "constantBuffers": 3,
+              "maskCachedTargets": 0,
+              "probeCachedCaptures": 0,
+              "automaticReadbacks": 0
+            },
+            "material": {
+              "object": "Coated",
+              "id": "8926217c-ff85-4dd6-9eda-089550b9acbe",
+              "type": "MeshStandardMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "D3D11",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 1.052899944677949,
+              "uniforms": [
+                0,
+                0,
+                1,
+                1,
+                0,
+                0.1,
+                0,
+                1,
+                1.5,
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0.05,
+                1,
+                0.05
+              ],
+              "program": "b542902d-8909-4968-8f57-97c1412b5a0d"
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": true,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      }
+    },
+    {
+      "path": "native/build/gpu-scene-07cnMW/acceptance.json",
+      "sha256": "1919efc00110572ed9f01b4c6b5ab7ca990cf4f7b9d75ad680913fe0cd9dac7f",
+      "result": {
+        "passed": true,
+        "coating": {
+          "passed": true,
+          "off": [
+            133,
+            136,
+            135,
+            255
+          ],
+          "on": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bp": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "straight": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bent": [
+            247,
+            23,
+            25,
+            255
+          ],
+          "rough": [
+            226,
+            10,
+            31,
+            255
+          ],
+          "dispersed": [
+            247,
+            23,
+            25,
+            255
+          ],
+          "dispersionChangedChannels": 24,
+          "white": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "red": [
+            246,
+            75,
+            66,
+            255
+          ],
+          "weak": [
+            236,
+            151,
+            146,
+            255
+          ],
+          "thick": [
+            248,
+            19,
+            23,
+            255
+          ],
+          "zero": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "dark": [
+            73,
+            0,
+            5,
+            255
+          ],
+          "green": [
+            154,
+            226,
+            111,
+            255
+          ],
+          "disabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 216,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "91df3834-5fa1-463c-943a-e0bed183ba52",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 227,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "91df3834-5fa1-463c-943a-e0bed183ba52",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 93,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 1
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "198adc85-864f-416e-8966-62149e7d4beb",
+              "type": "MeshPhysicalMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 98,
+                "calls": 5,
+                "triangles": 60,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 2
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "198adc85-864f-416e-8966-62149e7d4beb",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 102,
+                "calls": 5,
+                "triangles": 60,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 3,
+                "textures": 2
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "198adc85-864f-416e-8966-62149e7d4beb",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 230,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "91df3834-5fa1-463c-943a-e0bed183ba52",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "WebGL2",
+              "programs": [
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                },
+                {
+                  "runnable": true
+                }
+              ],
+              "vendor": "WebKit",
+              "renderer": "WebKit WebGL",
+              "info": {
+                "frame": 232,
+                "calls": 3,
+                "triangles": 36,
+                "points": 0,
+                "lines": 0
+              },
+              "memory": {
+                "geometries": 2,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "91df3834-5fa1-463c-943a-e0bed183ba52",
+              "type": "MeshPhysicalMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGL2",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              }
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": null,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "webgl": true,
+        "checkedFiles": {
+          "tools/coating-fixture.mjs": "576e9325d5d0b31873f29bf0ea9c7927903a5e5c0a6468755fde899813b6f448",
+          "tools/material-texture-parameter-window-actions.mjs": "cb2f94b992b13e74959bd70947f33918f676a092324039640d641f7b0a426995",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "34343fa4bdfcc8acb3904532926b48d89da24016ebc9bdce33960d90f2648028",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/blueprint-model.js": "40b0f8ce257c4b3bf6b576371ed8a7adc12008dfa36a1543c613187d0905e23b",
+          "prototype/blueprint-runtime.js": "07e4f2454d8bb64cd404c7f0a6b55964de8fe9edb9c4c92ad8a3dcfcd4009646",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "39c5e4c82a20b0b19bbac17b76eaa61955e92b16e4b4cbca4a9341116bbbfaae",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "5f407205a19e33af0b06182b5695484e31c634a64e7ce461c31bc2b0837a5583",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "e3758a1fd12cb2e44ace650b6893e39988f81f66f2bfc6b83e5105e690462cd4",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "0e4681a1bd11ffad8cb1355146b85951ebf9361e3ee58110695c69e8abbd1dea",
+          "prototype/gpu-materials.js": "db75b8fecdb3d87632c4f29509a8c2e8b828915ab513ea483ddad73db66055fd",
+          "prototype/gpu-environment.js": "80b4e509a422832c04fabf5fbd9b374379d2771fb3ea555927502533d9901d32",
+          "prototype/material-runtime.js": "9f05913d7b5ff0689e94a63d6881b61d410fe8827965edacc6f69b8e823d0b41",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "e3015e67db59a3f565341bfffda3138fb2d1b28788036d3a1288b164ee820261",
+          "prototype/app.js": "a39a54d838347fc43f5d3caffdde5327604d571a9dbe5414bc423c6b08c44c1c",
+          "native/include/HBEngine/Game.hpp": "ff68e47eef11d2f59c30635a06e8c62aa62e44f81c02f79206f3171b78691459",
+          "prototype/gpu-particles.js": "ae5e8fbb8334224c7d75780fea7c4833d32ded52aba708bc9efb94f3c8eca435",
+          "prototype/game-renderer.js": "fe60283560cd1c9f8f92774613e5af1521271c5c7c0d113df00130cc91d84cf1",
+          "prototype/scene-rendering.js": "8aa3ab661c53d6cc99b0f0d83081cb46207de5d647131a06b51041c296a8f074",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "221e4354c44189b2ee2ce34c14b8cdd583c87fde584986a2b332c8d3ed5a93de",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "a84afaeb34781f1d546b3634e9e6e03b01e8dca207ffac6d89daf1bbdc86b344",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "99f430328adc3567e7e694e6cdedb0d5c00e28a474d736f1296bac15995166fc",
+          "tools/build-game.mjs": "f9699f0b8b7e1e67a736e119f9e14e9bdddba8bd69711396529eb11cd2c1c4e9",
+          "tools/editor-automation.mjs": "d4f8eb81311979ef5f17bc13afb03ba41283110276cc51fe59167574b55e837b",
+          "native/include/HBEngine/Bridge.hpp": "039993def9c5dd81587b194eb8317bddea6238b0019fdb8d7f64216ace1e262b",
+          "tools/check-gpu-scene.mjs": "2f89fb28cf098e2fb5281666bdba14f7713a43840e6c65dae736626a0973c302",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    },
+    {
+      "path": "native/build/gpu-scene-cFbl4c/acceptance.json",
+      "sha256": "8874c260ecb84a4802fc6e5f0d3f77d120bab7ce395ff6ba721fc8377421dc39",
+      "result": {
+        "passed": true,
+        "coating": {
+          "passed": true,
+          "off": [
+            134,
+            136,
+            136,
+            255
+          ],
+          "on": [
+            149,
+            228,
+            91,
+            255
+          ],
+          "bp": [
+            149,
+            228,
+            91,
+            255
+          ],
+          "straight": [
+            148,
+            228,
+            91,
+            255
+          ],
+          "bent": [
+            248,
+            23,
+            25,
+            255
+          ],
+          "rough": [
+            226,
+            9,
+            31,
+            255
+          ],
+          "dispersed": [
+            227,
+            186,
+            0,
+            255
+          ],
+          "dispersionChangedChannels": 129,
+          "white": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "red": [
+            246,
+            75,
+            66,
+            255
+          ],
+          "weak": [
+            237,
+            151,
+            147,
+            255
+          ],
+          "thick": [
+            248,
+            19,
+            23,
+            255
+          ],
+          "zero": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "zeroDisabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "dark": [
+            73,
+            0,
+            5,
+            255
+          ],
+          "green": [
+            154,
+            227,
+            112,
+            255
+          ],
+          "disabled": [
+            225,
+            225,
+            225,
+            255
+          ],
+          "volumeState": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 272,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "26e97176-c81f-4a81-bb46-6f6e3ff3db07",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  1,
+                  0.05000000074505806,
+                  0.05000000074505806
+                ]
+              },
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.22470001274347307
+            }
+          },
+          "volumeReuse": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 302,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "26e97176-c81f-4a81-bb46-6f6e3ff3db07",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 1,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.30850001001358035
+            }
+          },
+          "initial": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 0,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 108,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 4
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "810043b7-159a-4085-9589-c78fd10976e5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 0,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 0,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.24090000000596054
+            }
+          },
+          "active": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 116,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "810043b7-159a-4085-9589-c78fd10976e5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.3832999893724919
+            }
+          },
+          "reuse": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 122,
+                "frameCalls": 2,
+                "drawCalls": 4,
+                "triangles": 37,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 4,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "810043b7-159a-4085-9589-c78fd10976e5",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {},
+              "surface": {
+                "color": "#ffffff",
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 1,
+                "thickness": 0,
+                "ior": 1,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.44629997658729553
+            }
+          },
+          "released": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 306,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "26e97176-c81f-4a81-bb46-6f6e3ff3db07",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.31710002169013024
+            }
+          },
+          "final": {
+            "renderer": {
+              "backend": "WebGPU",
+              "framebufferTextures": 1,
+              "adapter": {},
+              "vendor": "nvidia",
+              "renderer": "lovelace",
+              "errors": [],
+              "info": {
+                "calls": 312,
+                "frameCalls": 2,
+                "drawCalls": 3,
+                "triangles": 25,
+                "points": 0,
+                "lines": 0,
+                "timestamp": 0
+              },
+              "compute": {
+                "calls": 0,
+                "frameCalls": 0,
+                "timestamp": 0
+              },
+              "particleResources": {},
+              "memory": {
+                "geometries": 3,
+                "textures": 5
+              }
+            },
+            "material": {
+              "object": "Coated",
+              "id": "26e97176-c81f-4a81-bb46-6f6e3ff3db07",
+              "type": "MeshPhysicalNodeMaterial",
+              "version": 2,
+              "textures": {
+                "disposed": false,
+                "loads": 0,
+                "owned": 0,
+                "bindings": []
+              },
+              "backend": "WebGPU",
+              "parameters": {
+                "AbsorptionTint": [
+                  0.05,
+                  1,
+                  0.05
+                ]
+              },
+              "surface": {
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "roughness": 0,
+                "metalness": 0,
+                "light": 3.2,
+                "normal": [
+                  0,
+                  0,
+                  1
+                ],
+                "emissive": "#000000",
+                "emissiveIntensity": 1,
+                "opacity": 1,
+                "ao": 1,
+                "clearcoat": 0,
+                "clearcoatRoughness": 0.1,
+                "clearcoatNormal": [
+                  0,
+                  0,
+                  1
+                ],
+                "transmission": 0,
+                "thickness": 1,
+                "ior": 1.5,
+                "attenuationColor": "#ffffff",
+                "attenuationDistance": 0,
+                "dispersion": 0,
+                "blendMode": "opaque",
+                "alphaTest": 0.5,
+                "doubleSided": false
+              },
+              "time": 0.3328000182658434
+            }
+          },
+          "cppBlueprint": true,
+          "screenSpaceOpaqueCapture": true,
+          "roughMip": true,
+          "uniformReuse": true,
+          "releaseWhenUnused": null,
+          "recursiveOrDepthTrace": false,
+          "fpsClaim": false
+        },
+        "webgl": false,
+        "checkedFiles": {
+          "tools/coating-fixture.mjs": "576e9325d5d0b31873f29bf0ea9c7927903a5e5c0a6468755fde899813b6f448",
+          "tools/material-texture-parameter-window-actions.mjs": "cb2f94b992b13e74959bd70947f33918f676a092324039640d641f7b0a426995",
+          "tools/check-material-texture-parameters.mjs": "1f1b834df094327dc80c3e4fbf8b54193d69363c3051cdf001443ea85356d92b",
+          "prototype/material-texture-bindings.js": "fd657e36f93d16ef50922dc52b730ae29e08d4e7573d4e5f56dabfd2056043f1",
+          "prototype/texture-assets.js": "34343fa4bdfcc8acb3904532926b48d89da24016ebc9bdce33960d90f2648028",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/blueprint-model.js": "40b0f8ce257c4b3bf6b576371ed8a7adc12008dfa36a1543c613187d0905e23b",
+          "prototype/blueprint-runtime.js": "07e4f2454d8bb64cd404c7f0a6b55964de8fe9edb9c4c92ad8a3dcfcd4009646",
+          "tools/material-typed-window-actions.mjs": "22254065d4921906de40059e6fbd0371feb1e653a0e3a6b1c0034bac4c274ff2",
+          "tools/check-material-typed.mjs": "d707d4cf4e4397a0bbbfa1759b34ef048eef1560edbd54d11cc9c7ac61963234",
+          "prototype/native-protocol.js": "fca4ef36ff28e292a9a0d98a0d00630480fa1186b3a29250430d630bfcb916ae",
+          "prototype/projectile-rendering.js": "39c5e4c82a20b0b19bbac17b76eaa61955e92b16e4b4cbca4a9341116bbbfaae",
+          "prototype/projectile-runtime.js": "e5978fddb00fd4e57e1150b0385669189ddb686fa355f5a24a21b1688f33ca72",
+          "prototype/gpu-2d-lighting.js": "bbbed8901653515693091e56f9ecf995b312eec9b9629b42e107e8ff847898a9",
+          "prototype/two-d-lighting.js": "098a502d505bb046e5d9a63308f5dcdb4086cb71520c0aa85b0151725d00ca2b",
+          "prototype/two-d-shadows.js": "5f407205a19e33af0b06182b5695484e31c634a64e7ce461c31bc2b0837a5583",
+          "prototype/two-d-light-cookies.js": "e5e8bdeaa67ee234ec464cdc8e5bb262aa816509d406aea7485368ff6adce283",
+          "prototype/gpu-2d-rendering.js": "cd621b873424de587912fdf55f54a4bce4ce65ac12a928c84c1e35714f3ae8ea",
+          "prototype/engine-services.js": "e3758a1fd12cb2e44ace650b6893e39988f81f66f2bfc6b83e5105e690462cd4",
+          "prototype/game-camera.js": "7b119af967bc03150d9cdcfdfa5d17e82ea2ffd75bcae4651a5063bb0207d650",
+          "prototype/core-api.js": "0e4681a1bd11ffad8cb1355146b85951ebf9361e3ee58110695c69e8abbd1dea",
+          "prototype/gpu-materials.js": "db75b8fecdb3d87632c4f29509a8c2e8b828915ab513ea483ddad73db66055fd",
+          "prototype/gpu-environment.js": "80b4e509a422832c04fabf5fbd9b374379d2771fb3ea555927502533d9901d32",
+          "prototype/material-runtime.js": "9f05913d7b5ff0689e94a63d6881b61d410fe8827965edacc6f69b8e823d0b41",
+          "prototype/scene-environment.js": "278cb6ac2e457d70bdbf07a569bf51534fbc3433c77a03d8cbe81eccccd2185b",
+          "prototype/bloom-rendering.js": "e3015e67db59a3f565341bfffda3138fb2d1b28788036d3a1288b164ee820261",
+          "prototype/app.js": "a39a54d838347fc43f5d3caffdde5327604d571a9dbe5414bc423c6b08c44c1c",
+          "native/include/HBEngine/Game.hpp": "ff68e47eef11d2f59c30635a06e8c62aa62e44f81c02f79206f3171b78691459",
+          "prototype/gpu-particles.js": "ae5e8fbb8334224c7d75780fea7c4833d32ded52aba708bc9efb94f3c8eca435",
+          "prototype/game-renderer.js": "fe60283560cd1c9f8f92774613e5af1521271c5c7c0d113df00130cc91d84cf1",
+          "prototype/scene-rendering.js": "8aa3ab661c53d6cc99b0f0d83081cb46207de5d647131a06b51041c296a8f074",
+          "prototype/scene-systems.js": "f45e975be183a559da2b7ff4eab2800102881e28203db3029cdb1a5ce490554f",
+          "prototype/scene-components.js": "221e4354c44189b2ee2ce34c14b8cdd583c87fde584986a2b332c8d3ed5a93de",
+          "prototype/two-d-rendering.js": "95537033c56f579d83cbad723091942ff87202fb3bd1872fed7033cf11d872d9",
+          "prototype/player.js": "a84afaeb34781f1d546b3634e9e6e03b01e8dca207ffac6d89daf1bbdc86b344",
+          "prototype/player.html": "7679656ba727279b7f94f919d1703022ee32eed1a640f8b24a271845fe2921bd",
+          "prototype/model.js": "e736196670f077496622f14460a87f0eb8d446aabd7d82677d04187f744c981e",
+          "prototype/native-channel.js": "2232a43b148aa7026070b14342d32ea6cf6ce39262a1b902863e6d0dd48f1593",
+          "tools/native-channel.mjs": "0ca2646ab1e64e003ceff807e45f62e4537e34987bbd16da9385322ab8678a21",
+          "tools/native-host.mjs": "f8b516e473455a08804b429cf40e84d2b10c25bd5b1c626e18571017f060edb0",
+          "tools/player-server.mjs": "99f430328adc3567e7e694e6cdedb0d5c00e28a474d736f1296bac15995166fc",
+          "tools/build-game.mjs": "f9699f0b8b7e1e67a736e119f9e14e9bdddba8bd69711396529eb11cd2c1c4e9",
+          "tools/editor-automation.mjs": "d4f8eb81311979ef5f17bc13afb03ba41283110276cc51fe59167574b55e837b",
+          "native/include/HBEngine/Bridge.hpp": "039993def9c5dd81587b194eb8317bddea6238b0019fdb8d7f64216ace1e262b",
+          "tools/check-gpu-scene.mjs": "2f89fb28cf098e2fb5281666bdba14f7713a43840e6c65dae736626a0973c302",
+          "prototype/material-editor.js": "7237129949af5116b83013fca55b47af33ab274c5855fde040c0caeb1e9096f9",
+          "prototype/asset-documents.js": "cf4039758dcd26cd730684a6d3a63b00bc2c3f22917b9234aebacd0007a99b81",
+          "tools/material-function-window-actions.mjs": "839eba61c87a3d81b13c1f829958431db3a4268a297fbfaf843375f1c5e246ad",
+          "tools/material-layers-window-actions.mjs": "ba6752fbce61f87bd76923162ada59f5b6ce0b9ab1195f68ecf031bd61ea77f2",
+          "prototype/material-layers-ui.js": "8d45728413b38ced927a3cda5af99315adf90e351f6e4d71b64d5d8068cb71c5",
+          "prototype/asset-editor-ui.js": "7c14bed0ffc3a259ff573c15fd83813de017e0737067aac3a315a8ef0bfdfa5c",
+          "prototype/style.css": "ea47565a93d5319ee1f8492882204d66071af68936540957dd5579025e56086f"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true,
+        "privateProjectPreserved": true
+      }
+    }
+  ]
+}

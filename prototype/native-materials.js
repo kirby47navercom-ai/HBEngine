@@ -1,4 +1,4 @@
-import {compileMaterial,materialDefaults,materialParameters} from './material-runtime.js';
+import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 function hlsl(code){
   code=code.replace(/\bvec([234])\b/g,'float$1').replace(/\bmix\b/g,'lerp').replace(/\bfract\b/g,'frac').replace(/\bmod\b/g,'hbMod');
@@ -23,23 +23,27 @@ export function compileNativeMaterial(data){
   }).join('\n');
   let lines=hlsl(plan.lines);for(const [i,t] of plan.textures.entries())for(const call of ['texture2D','textureLod','texture'])lines=lines.replaceAll(call+'('+t.uniform+',','hbSample'+i+'(');
   // The existing GLSL graph plan is already typed, flattened and topologically ordered.
-  const evaluation='float2 hbUv=i.uv;float3 hbWorldPosition=i.at,hbWorldNormal=n,cameraPosition=eye.xyz;float hbTime=normalScale.w;\n'+plan.floatBindings.map((b,i)=>`float ${b.uniform}=hbParameters[${i}];`).join('\n')+'\n'+lines+`\nbase.rgb=${hlsl(plan.values.baseColor)};base.a=${hlsl(plan.values.opacity)};rough=clamp(${hlsl(plan.values.roughness)},.04,1);metal=saturate(${hlsl(plan.values.metallic)});emit=${hlsl(plan.values.emissive)}*emissive.a;ao=saturate(${hlsl(plan.values.ao)});coat=saturate(${hlsl(plan.values.clearcoat)});coatRough=clamp(${hlsl(plan.values.clearcoatRoughness)},.04,1);ior=clamp(${hlsl(plan.values.ior)},1,2.5);transmission=saturate(${hlsl(plan.values.transmission)});thickness=max(${hlsl(plan.values.thickness)},0);`+(plan.coatNormalConnected?`cn=hbNormal(i.at,cn,${hlsl(plan.values.clearcoatNormal)},hbUv);`:'')+(plan.normalConnected?`n=hbNormal(i.at,n,${hlsl(plan.values.normal)},hbUv);`:'');
-  return {...plan,declarations,evaluation};
+  const vectorBindings=plan.vectorBindings.map((b,i)=>({...b,offset:plan.floatBindings.length+i*3})),uniformValues=[...plan.floatBindings.map(b=>b.value),...vectorBindings.flatMap(b=>b.value)];
+  const evaluation='float2 hbUv=i.uv;float3 hbWorldPosition=i.at,hbWorldNormal=n,cameraPosition=eye.xyz;float hbTime=normalScale.w;\n'+plan.floatBindings.map((b,i)=>`float ${b.uniform}=hbParameters[${i}];`).join('\n')+'\n'+vectorBindings.map(b=>`float3 ${b.uniform}=float3(hbParameters[${b.offset}],hbParameters[${b.offset+1}],hbParameters[${b.offset+2}]);`).join('\n')+'\n'+lines+`\nbase.rgb=${hlsl(plan.values.baseColor)};base.a=${hlsl(plan.values.opacity)};rough=clamp(${hlsl(plan.values.roughness)},.04,1);metal=saturate(${hlsl(plan.values.metallic)});emit=${hlsl(plan.values.emissive)}*emissive.a;ao=saturate(${hlsl(plan.values.ao)});coat=saturate(${hlsl(plan.values.clearcoat)});coatRough=clamp(${hlsl(plan.values.clearcoatRoughness)},.04,1);ior=clamp(${hlsl(plan.values.ior)},1,2.5);transmission=saturate(${hlsl(plan.values.transmission)});thickness=max(${hlsl(plan.values.thickness)},0);attenuationColor=saturate(${hlsl(plan.values.attenuationColor)});attenuationDistance=max(${hlsl(plan.values.attenuationDistance)},0);dispersion=clamp(${hlsl(plan.values.dispersion)},0,10);`+`cn=hbNormal(i.at,cn,${hlsl(plan.values.clearcoatNormal)},hbUv);n=hbNormal(i.at,n,${hlsl(plan.values.normal)},hbUv);`;
+  return {...plan,vectorBindings,uniformValues,declarations,evaluation};
 }
 export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},renderer}={}){
-  const data=structuredClone(input),plan=compileNativeMaterial(data),surface={...materialDefaults,...data.surface},bindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),maps=[],values=plan.floatBindings.map(b=>b.value);let disposed=false,time=0;
+  const data=structuredClone(input),plan=compileNativeMaterial(data),surface={...materialDefaults,...data.surface},bindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),maps=[],values=plan.uniformValues.slice();let disposed=false,time=0;
   const material=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:surface.roughness,metalness:surface.metalness,emissive:'#ffffff',emissiveIntensity:surface.emissiveIntensity,transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?THREE.DoubleSide:THREE.FrontSide});
   const program={id:crypto.randomUUID(),declarations:plan.declarations,evaluation:plan.evaluation,uniforms:values,maps,transmissive:plan.transmissionConnected||surface.transmission>0,animated:/\bhbTime\b/.test(plan.lines+Object.values(plan.values).join(' '))};
   material.userData.hbMaterial=true;material.userData.hbNativeProgram=program;material.userData.materialSource=data;
   material.userData.ready=Promise.all(plan.textures.map((texture,i)=>bindings.add(texture,map=>{maps[i]=map;map.colorSpace=THREE.NoColorSpace;})));
   material.userData.updateTime=value=>{time=value;renderer.hbTime=value;};
   material.userData.updateFloat=(key,value)=>{
-    if(disposed)return false;if(!Number.isFinite(value))throw Error('Float 파라미터 값을 확인하세요.');const property={Roughness:'roughness',Metallic:'metalness',Opacity:'opacity',EmissiveIntensity:'emissiveIntensity',AO:'ao',Clearcoat:'clearcoat',CoatRoughness:'clearcoatRoughness',IOR:'ior',Transmission:'transmission',Thickness:'thickness'}[key]||key;
+    if(disposed)return false;if(!Number.isFinite(value))throw Error('Float 파라미터 값을 확인하세요.');const property=materialFloatProperty(key);
     const parameter=plan.floatBindings.findIndex(b=>b.kind==='parameter'&&b.key===key),index=parameter>=0?parameter:plan.floatBindings.findIndex(b=>b.kind==='surface'&&b.key===property);
     if(index>=0){values[index]=value;if(parameter>=0)data.parameters={...data.parameters,[key]:value};else{data.surface={...data.surface,[property]:value};if(property==='transmission')program.transmissive=plan.transmissionConnected||value>0;}return true;}
     if(materialParameters(data).some(p=>p.name===key&&p.type!=='float'))throw Error('Float 파라미터가 아니에요.');
     if(property==='emissiveIntensity'){material.emissiveIntensity=value;data.surface={...data.surface,[property]:value};return true;}return false;
   };
+  material.userData.floatKeys=[...plan.floatBindings.map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
+  material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
+  material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const property=materialVectorProperty(key),parameter=plan.vectorBindings.find(b=>b.kind==='parameter'&&b.key===key),binding=parameter||plan.vectorBindings.find(b=>b.kind==='surface'&&b.key===property);if(!binding){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}values.splice(binding.offset,3,...value);if(parameter)data.parameters={...data.parameters,[key]:value};else data.surface={...data.surface,[property]:value};return true;};
   material.userData.textureState=bindings.state;
   material.userData.materialState=()=>({backend:'D3D11',time,uniforms:values.slice(),program:program.id});
   material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await bindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};return true;};return transaction;};

@@ -472,6 +472,8 @@ inline std::string Materials::LayerParameterKey(const std::string& id,const std:
 }
 
 inline void Materials::SetTexture(Actor* target,const std::string& parameter,const std::string& texture){engineCommand("materialTexture",{{"target",bridgeId(target)},{"parameter",parameter},{"texture",texture}});}
+inline void Materials::SetVector(Actor* target,const std::string& parameter,const Vec3& value){for(const float v:{value.x,value.y,value.z})if(!std::isfinite(v)||std::abs(v)>10000)throw std::runtime_error("invalid material vector");engineCommand("materialVector",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
+inline void Materials::SetColor(Actor* target,const std::string& parameter,const Color& value){for(const float v:{value.r,value.g,value.b,value.a})if(!std::isfinite(v)||v<0||v>10000)throw std::runtime_error("invalid material color");engineCommand("materialColor",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
 inline void Materials::SetFloat(Actor* target,const std::string& parameter,float value){engineCommand("materialFloat",{{"target",bridgeId(target)},{"parameter",parameter},{"value",value}});}
 inline void Particles::Stop(Actor* target,bool clear){particleCommand(target,"particleStop",{{"target",bridgeId(target)},{"clear",clear}});}
 inline void Particles::Pause(Actor* target,bool paused){particleCommand(target,"particlePause",{{"target",bridgeId(target)},{"paused",paused}});}

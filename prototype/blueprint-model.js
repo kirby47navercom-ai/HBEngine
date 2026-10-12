@@ -97,6 +97,8 @@ catalog.push(
   flow('stopSound','Stop Sound','소리 정지','오디오',[pin('sound','Sound','string')]),
   flow('setMaterial','Set Material','머테리얼 지정','렌더링',[pin('target','Target','object'),pin('material','Material','string'),pin('slot','Slot','int')]),
   flow('materialTexture','Set Material Texture','머테리얼 텍스처 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('texture','Texture','string')]),
+  flow('materialVector','Set Material Vector','머테리얼 벡터 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','vec3')]),
+  flow('materialColor','Set Material Color','머테리얼 색상 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','color')]),
   flow('materialFloat','Set Material Float','머테리얼 실수 설정','렌더링',[pin('target','Target','object'),pin('parameter','Parameter','string'),pin('value','Value','float')]),
   flow('lightIntensity','Set Light Intensity','광원 밝기 설정','렌더링',[pin('target','Light','object'),pin('value','Intensity','float')]),
   flow('openScene','Open Scene','장면 열기','장면',[pin('scene','Scene','string')]),
