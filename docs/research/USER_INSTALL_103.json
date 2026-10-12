@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-12T10:01:10.339Z",
+  "featureCommit": "87caff63542450b9252b113235f145726e0199a1",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458\\HBEngine.exe",
+    "bundleHash": "5c29cfc6dab9a458206c9c7164733decbbc3f74b35904c51e7911db3f90cf91f",
+    "files": 2028
+  },
+  "executableSHA256": "0320351e66792d7c149609b656cc3273ff63f476ca9228bedec864bffffd56b2",
+  "playerSHA256": "41752f2834f3b6172e9436a90f0cbafe2d91626e5abdc55a089460e622127a6b",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\5c29cfc6dab9a458\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "5e02f56f1014da845b5287d66e85482f923e869564ef721e228671198a773cea"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenPost.hpp",
+      "sha256": "97858997278bb84f70ecb4a769d098dbe0b85b5e72c4f677175ce005ab29c50d"
+    },
+    {
+      "path": "prototype/game-camera.js",
+      "sha256": "2e3a9befc5f11ac8e8ec99090055bfee57031ad989b11661edbbe5aad0b40fd1"
+    },
+    {
+      "path": "prototype/gpu-post-processing.js",
+      "sha256": "fb45182be4d23627b4033b6c9d09971cedeaa0c7c77829236a40ba6ca3ec2d56"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "45d6f6ba71b54622faba30f3e2ad49027db0aca7126ae11af8dda2fa91658cae"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "sha256": "4da64250a49f69dbb905e38e794b126c98e1b33ec54aa0fe1502cc5510eaef39"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "d1ad8c63a27277b4a0358b0be3a3d7f11e012a7b1dc0774feae1388639b6eb35"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "48dc4a66d5fd5f7bfeef85709e5b1bf4e60134da92deb34c9d4e58ea9dfb2ef8"
+    },
+    {
+      "path": "tools/generate-screen-post.mjs",
+      "sha256": "ae775e9bc09519dcd879c00550a1a108c4d47ed51f94a5d260b8df056c5296e3"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "0732d1aca71c1a0e8a58b9d928328ed60420dc9e6566d4497957943d8bfab646"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "4434ccd4462077c0df91dce9d210e7c0cf337aa0c4cee1ed14546c272e5f58cc"
+    },
+    {
+      "path": "tools/check-rendering-103.mjs",
+      "sha256": "c4f472f1b4f8e8b1cf16af97de2fb289ac66246fb7ce3652a60804b68104f73b"
+    },
+    {
+      "path": "tools/rendering-103-fixture.mjs",
+      "sha256": "f331508590e02bc6d79a070ba3cd92dda40fd5a4d8e89e3efefa8c7d8a1477db"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d0a68b211080b47",
+    "bundleHash": "0d0a68b211080b47f4f1a8e1809f5cc86271e5eb1dbecb2937716bef9cdf3edf",
+    "manifestSHA256": "66c37336a4baaef0b8dbce6bc749a8902feaef75b3910dedf325f3aaa727dc72",
+    "allFilesChecked": 2023
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Top-level profile files only; no browser cache/session or user game-content inspection.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}
