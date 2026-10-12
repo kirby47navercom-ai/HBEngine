@@ -14,9 +14,10 @@ export function createGPUProbeEnvironment(probe,map){
       if(builder.context.lightingModel.clearcoatRadiance)builder.context.lightingModel.clearcoatRadiance.addAssign(radiance);
     }
   }
-  const state={node:new ProbeEnvironment(),update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.minimum);maximum.value.fromArray(p.maximum);options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
+  const state={node:new ProbeEnvironment(),refraction(r,at,rough){const safe=r.abs().max(.000001).mul(vec3(...[r.x,r.y,r.z].map(v=>v.greaterThanEqual(0).select(1,-1)))),t=maximum.sub(at).div(safe).max(minimum.sub(at).div(safe)),box=at.add(r.mul(t.x.min(t.y).min(t.z))).sub(center),direction=options.y.greaterThan(.5).select(box,r),edge=at.sub(minimum).min(maximum.sub(at)),distance=edge.x.min(edge.y).min(edge.z),fade=distance.lessThan(0).select(float(0),options.z.greaterThan(0).select(distance.div(options.z.max(.000001)).clamp(0,1),float(1)));return cache(environment.context({getUV:()=>direction,getTextureLevel:()=>rough})).mul(options.w.mul(fade));},update(p,texture){environment.value=texture;if(p){center.value.fromArray(p.center);minimum.value.fromArray(p.minimum);maximum.value.fromArray(p.maximum);options.value.set(p.p.diffuseIntensity,p.p.boxProjection?1:0,p.p.blendDistance,p.p.intensity);}else options.value.w=0;}};state.update(probe,map);return state;
 }
-import {bloomSettings} from './bloom-rendering.js';
+import {postProcessSettings} from './post-processing.js';
+import {gpuPostProcessing} from './gpu-post-processing.js';
 
 export function createGPUSkyMaterial(source){
   const defaults={topColor:new Color(),horizonColor:new Color(),sunDirection:new Vector3(),sunColor:new Color(),moonDirection:new Vector3(),moonColor:new Color(),sunDiskPower:350},u={};
@@ -44,19 +45,20 @@ export function applyGPUFog(scene,resolved,state){
 export class GPUBloomRendering{
   constructor(){this.views=new Map();}
   render(renderer,scene,camera,objects){
-    const p=bloomSettings(objects);let view=this.views.get(renderer);
+    const p=postProcessSettings(objects);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled&&p.bloomStrength>0),chromatic=!!p?.chromaticAberrationEnabled,key=bloomOn+':'+chromatic;
+    if(view&&view.key!==key){this.release(view);this.views.delete(renderer);view=null;}
     if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
     if(!view){
-      const scenePass=pass(scene,camera),color=scenePass.getTextureNode('output'),effect=bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold),post=new PostProcessing(renderer);post.outputNode=color.add(effect);
-      view={scenePass,effect,post,scale:p.bloomResolutionScale};const setSize=effect.setSize.bind(effect);
+      const scenePass=pass(scene,camera),color=scenePass.getTextureNode('output'),effect=bloomOn?bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold):null,post=new PostProcessing(renderer),grading=gpuPostProcessing(effect?color.add(effect):color,chromatic);post.outputNode=grading.node;
+      view={scenePass,effect,post,grading,key,scale:p.bloomResolutionScale};const setSize=effect?.setSize.bind(effect);
       // r180 has no bloom resolutionScale; clamp the smallest of its five mip levels to one texel.
-      effect.setSize=(w,h)=>setSize(Math.max(32,w*view.scale),Math.max(32,h*view.scale));this.views.set(renderer,view);
+      if(effect)effect.setSize=(w,h)=>setSize(Math.max(32,w*view.scale),Math.max(32,h*view.scale));this.views.set(renderer,view);
     }
-    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;view.post.render();
+    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0);view.post.render();
   }
-  release(view){view.post.dispose();view.scenePass.dispose();view.effect.dispose();
+  release(view){view.grading.dispose();view.post.dispose();view.scenePass.dispose();view.effect?.dispose();
     // r180 BloomNode.dispose owns targets only; release its blur/filter material owners too.
-    for(const m of [...view.effect._separableBlurMaterials,view.effect._compositeMaterial,view.effect._highPassFilterMaterial])m?.dispose();
+    for(const m of [...(view.effect?._separableBlurMaterials||[]),view.effect?._compositeMaterial,view.effect?._highPassFilterMaterial])m?.dispose();
   }
   disposeRenderer(renderer){const view=this.views.get(renderer);if(view){this.release(view);this.views.delete(renderer);}}
   dispose(){for(const view of this.views.values())this.release(view);this.views.clear();}

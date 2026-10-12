@@ -2,6 +2,7 @@
 #include "Render.hpp"
 
 namespace hb::gpu {
+struct ScenePostProcess {std::array<float,4> grade{0,1,1,0},filter{1,1,1,1},effects{0,.2f,0,0},vignette{.5f,.5f,0,0},vignetteColor{0,0,0,1};};
 struct SceneBloom {float threshold=1,strength=.6f,radius=.4f,resolutionScale=.5f;};
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 class BloomPass {
@@ -11,12 +12,12 @@ class BloomPass {
     Image scene;std::vector<std::array<Image,2>> levels;
     detail::Com<ID3D11VertexShader> vertex;detail::Com<ID3D11PixelShader> pixel;detail::Com<ID3D11ComputeShader> extract,blur;
     detail::Com<ID3D11SamplerState> sampler;detail::Com<ID3D11RasterizerState> raster;detail::Com<ID3D11DepthStencilState> depth;detail::Com<ID3D11BlendState> blend;
-    struct Constants {std::array<float,4> dimensions{},area{},effect{},options{};};
+    struct Constants {std::array<float,4> dimensions{},area{},effect{},options{},grade{0,1,1,0},filter{1,1,1,1},effects{0,.2f,0,0},vignette{.5f,.5f,0,0},vignetteColor{};};
     std::array<detail::Com<ID3D11Buffer>,3> constants;std::size_t slot=0;
-    std::array<float,4> area{};SceneBloom settings;bool pending=false;
+    std::array<float,4> area{};SceneBloom settings;ScenePostProcess post;bool pending=false;
     std::uint64_t dispatches_=0,allocations_=0,composites_=0;
     static constexpr const char* shader=R"HLSL(
-cbuffer BloomSettings:register(b0){float4 dimensions,area,effect,options;};
+cbuffer BloomSettings:register(b0){float4 dimensions,area,effect,options,hbGrade,hbFilter,hbPostEffects,hbVignette,hbVignetteColor;};
 Texture2D<float4> source:register(t0),level0:register(t1),level1:register(t2),level2:register(t3),level3:register(t4),level4:register(t5);
 RWTexture2D<float4> destination:register(u0);SamplerState linearClamp:register(s0);
 float3 linearToSrgb(float3 v){return lerp(12.92*v,1.055*pow(max(v,0),1.0/2.4)-.055,step(.0031308,v));}
@@ -41,6 +42,7 @@ float3 aces(float3 v){v=min(v,1e8);return saturate((v*(2.51*v+.03))/(v*(2.43*v+.
 }
 struct Vertex{float4 position:SV_POSITION;float2 uv:TEXCOORD;};
 Vertex VS(uint id:SV_VertexID){Vertex v;v.uv=float2((id<<1)&2,id&2);v.position=float4(v.uv*float2(2,-2)+float2(-1,1),0,1);return v;}
+float3 hbGradeColor(float3 c){c*=exp2(hbGrade.x)*hbFilter.rgb;c=max(0,(c-.18)*hbGrade.y+.18);float y=dot(c,float3(.2126,.7152,.0722));c=lerp(y.xxx,c,hbGrade.z);float a=hbGrade.w;float3 axis=float3(.577350269,.577350269,.577350269);return max(0,c*cos(a)+cross(axis,c)*sin(a)+axis*dot(axis,c)*(1-cos(a)));}
 float4 PS(Vertex v):SV_TARGET{
  float3 glow=0;float weight=0;const float factors[5]={1,.8,.6,.4,.2};
  float w=lerp(factors[0],1.2-factors[0],effect.z);if(options.z>0){glow+=level0.SampleLevel(linearClamp,v.uv,0).rgb*w;weight+=w;}
@@ -49,7 +51,11 @@ float4 PS(Vertex v):SV_TARGET{
  w=lerp(factors[3],1.2-factors[3],effect.z);if(options.z>3){glow+=level3.SampleLevel(linearClamp,v.uv,0).rgb*w;weight+=w;}
  w=lerp(factors[4],1.2-factors[4],effect.z);if(options.z>4){glow+=level4.SampleLevel(linearClamp,v.uv,0).rgb*w;weight+=w;}
  float2 uv=(area.xy+v.uv*area.zw)/dimensions.xy;float4 original=source.SampleLevel(linearClamp,uv,0);
- return float4(linearToSrgb(aces(max(0,original.rgb+glow*effect.y/max(weight,.0001))*effect.w)),original.a);
+ float3 c=max(0,original.rgb+glow*effect.y/max(weight,.0001));
+ if(hbPostEffects.z>0){float2 delta=(v.uv-.5)*hbPostEffects.z*.015*area.zw/dimensions.xy;c.r+=source.SampleLevel(linearClamp,saturate(uv+delta),0).r-original.r;c.b+=source.SampleLevel(linearClamp,saturate(uv-delta),0).b-original.b;}
+ c=hbGradeColor(c);if(hbPostEffects.x>0){float2 d=(v.uv-hbVignette.xy)*2;d.x*=hbVignette.z>.5?area.z/area.w:1;float f=smoothstep(1-max(hbPostEffects.y,.001),1,length(d))*hbPostEffects.x;c=lerp(c,hbVignetteColor.rgb,f);}
+ if(hbPostEffects.w>0){float noise=frac(sin(dot(floor(v.uv*area.zw)+floor(hbVignette.w*60),float2(12.9898,78.233)))*43758.5453)-.5;c=max(0,c+noise*hbPostEffects.w*.08);}
+ return float4(linearToSrgb(aces(c*effect.w)),original.a);
 }
 )HLSL";
     void programs(){
@@ -70,9 +76,9 @@ float4 PS(Vertex v):SV_TARGET{
     }
 public:
     explicit BloomPass(Device& device):gpu(device){}
-    void begin(UINT w,UINT h,const std::array<float,4>& viewport,const std::optional<SceneBloom>& value,const std::array<float,4>& clear,bool forceHDR=false){
-        dispatches_=0;pending=false;if(value&&(!std::isfinite(value->threshold)||value->threshold<0||value->threshold>64||!std::isfinite(value->strength)||value->strength<0||value->strength>10||!std::isfinite(value->radius)||value->radius<0||value->radius>1||!std::isfinite(value->resolutionScale)||value->resolutionScale<.25f||value->resolutionScale>1))throw std::runtime_error("Bloom settings invalid");
-        if((!value||value->strength==0)&&!forceHDR){release();return;}settings=value.value_or(SceneBloom{});if(!value)settings.strength=0;area=viewport;if(area[2]==0||area[3]==0)area={0,0,float(w),float(h)};
+    void begin(UINT w,UINT h,const std::array<float,4>& viewport,const std::optional<SceneBloom>& value,const std::array<float,4>& clear,bool forceHDR=false,const std::optional<ScenePostProcess>& postValue=std::nullopt){
+        dispatches_=0;pending=false;post=postValue.value_or(ScenePostProcess{});for(const auto* row:{&post.grade,&post.filter,&post.effects,&post.vignette,&post.vignetteColor})for(float x:*row)if(!std::isfinite(x))throw std::runtime_error("Post-process non-finite value");if(std::abs(post.grade[0])>16||post.grade[1]<0||post.grade[1]>2||post.grade[2]<0||post.grade[2]>2||std::abs(post.grade[3])>3.141593f||post.effects[0]<0||post.effects[0]>1||post.effects[1]<.01f||post.effects[1]>1||post.effects[2]<0||post.effects[2]>1||post.effects[3]<0||post.effects[3]>1||post.vignette[0]<0||post.vignette[0]>1||post.vignette[1]<0||post.vignette[1]>1||post.vignette[2]<0||post.vignette[2]>1)throw std::runtime_error("Post-process settings invalid");for(float x:post.filter)if(x<0||x>1)throw std::runtime_error("Post-process filter invalid");for(float x:post.vignetteColor)if(x<0||x>1)throw std::runtime_error("Vignette color invalid");if(value&&(!std::isfinite(value->threshold)||value->threshold<0||value->threshold>64||!std::isfinite(value->strength)||value->strength<0||value->strength>10||!std::isfinite(value->radius)||value->radius<0||value->radius>1||!std::isfinite(value->resolutionScale)||value->resolutionScale<.25f||value->resolutionScale>1))throw std::runtime_error("Bloom settings invalid");
+        if((!value||value->strength==0)&&!forceHDR&&!postValue){release();return;}settings=value.value_or(SceneBloom{});if(!value)settings.strength=0;area=viewport;if(area[2]==0||area[3]==0)area={0,0,float(w),float(h)};
         const float right=std::min(float(w),area[0]+area[2]),bottom=std::min(float(h),area[1]+area[3]);area[0]=std::max(0.f,area[0]);area[1]=std::max(0.f,area[1]);area[2]=std::max(0.f,right-area[0]);area[3]=std::max(0.f,bottom-area[1]);if(area[2]==0||area[3]==0){release();return;}
         const auto bw=std::max(1u,static_cast<UINT>(std::round(area[2]*settings.resolutionScale))),bh=std::max(1u,static_cast<UINT>(std::round(area[3]*settings.resolutionScale)));std::lock_guard<std::mutex> lock(gpu.mutex);programs();
         if(scene.width!=w||scene.height!=h||((settings.strength>0)&&(levels.empty()||levels.front()[0].width!=bw||levels.front()[0].height!=bh))||((settings.strength==0)&&!levels.empty())){auto next=image(w,h,true);std::vector<std::array<Image,2>> chain;for(UINT x=bw,y=bh;settings.strength>0&&chain.size()<5;){chain.push_back({image(x,y,false),image(x,y,false)});if(x==1&&y==1)break;x=std::max(1u,x/2);y=std::max(1u,y/2);}scene=std::move(next);levels=std::move(chain);++allocations_;}
@@ -82,7 +88,7 @@ public:
         if(!pending)return;
         std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);Constants values;values.effect={settings.threshold,settings.strength,settings.radius,exposure};
         for(std::size_t index=0;index<levels.size();index++){auto& layer=levels[index];const auto& input=index?levels[index-1][0]:scene;values.dimensions={float(input.width),float(input.height),float(layer[0].width),float(layer[0].height)};values.area=index?std::array<float,4>{0,0,float(input.width),float(input.height)}:area;values.options={0,0,index==0?1.f:0.f,0};dispatch(extract.p,input,layer[0],values);values.dimensions={float(layer[0].width),float(layer[0].height),float(layer[0].width),float(layer[0].height)};values.options={1,0,0,0};dispatch(blur.p,layer[0],layer[1],values);values.options={0,1,0,0};dispatch(blur.p,layer[1],layer[0],values);}
-        values.dimensions={float(scene.width),float(scene.height),0,0};values.area=area;values.options={0,0,float(levels.size()),0};auto* cb=upload(values);std::array<ID3D11ShaderResourceView*,6> views{};views[0]=scene.view.p;for(std::size_t i=0;i<levels.size();i++)views[i+1]=levels[i][0].view.p;auto* state=sampler.p;D3D11_VIEWPORT viewport{area[0],area[1],area[2],area[3],0,1};const auto crop=scissor.value_or(area);D3D11_RECT rect{LONG(std::floor(crop[0])),LONG(std::floor(crop[1])),LONG(std::ceil(crop[0]+crop[2])),LONG(std::ceil(crop[1]+crop[3]))};
+        values.grade=post.grade;values.filter=post.filter;values.effects=post.effects;values.vignette=post.vignette;values.vignetteColor=post.vignetteColor;values.dimensions={float(scene.width),float(scene.height),0,0};values.area=area;values.options={0,0,float(levels.size()),0};auto* cb=upload(values);std::array<ID3D11ShaderResourceView*,6> views{};views[0]=scene.view.p;for(std::size_t i=0;i<levels.size();i++)views[i+1]=levels[i][0].view.p;auto* state=sampler.p;D3D11_VIEWPORT viewport{area[0],area[1],area[2],area[3],0,1};const auto crop=scissor.value_or(area);D3D11_RECT rect{LONG(std::floor(crop[0])),LONG(std::floor(crop[1])),LONG(std::ceil(crop[0]+crop[2])),LONG(std::ceil(crop[1]+crop[3]))};
         gpu.context->CSSetShader(nullptr,nullptr,0);gpu.context->OMSetRenderTargets(1,&output,nullptr);gpu.context->OMSetDepthStencilState(depth.p,0);gpu.context->OMSetBlendState(blend.p,nullptr,UINT_MAX);gpu.context->RSSetState(raster.p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&rect);gpu.context->IASetInputLayout(nullptr);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(pixel.p,nullptr,0);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,6,views.data());gpu.context->PSSetSamplers(0,1,&state);gpu.context->Draw(3,0);views.fill(nullptr);gpu.context->PSSetShaderResources(0,6,views.data());gpu.context->OMSetRenderTargets(0,nullptr,nullptr);detail::check(gpu.device->GetDeviceRemovedReason(),"Bloom device lost");pending=false;++composites_;
     }
     void markDirty(){pending=true;}

@@ -1,0 +1,830 @@
+{
+  "version": 1,
+  "date": "2026-10-12T05:14:36.346Z",
+  "previousCommit": "bd26e1fc2e4939e424befe6100ab10c2840e361a",
+  "scope": [
+    "Per-layer screen HDR/depth refraction with offscreen probe fallback",
+    "Shared sheen/anisotropy/thin-film/specular physical inputs",
+    "HDR color grading/vignette/chromatic aberration/grain with lazy Bloom",
+    "Refresh-based 1–8-bounce probe GI"
+  ],
+  "sources": [
+    {
+      "key": "ue-refraction",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-refraction-in-unreal-engine",
+      "readScope": "Own article web text lines0–96; links/media/APIs unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/ue-refraction.source",
+      "sha256": "da49872b63b58b92c68aca7730a9ff39ddf40686e3eaab39979104fdbe6fe2ea",
+      "bytes": 89220
+    },
+    {
+      "key": "ue-gi",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/global-illumination-in-unreal-engine",
+      "readScope": "Own overview web text lines0–56; linked Lightmass/Lumen/SSGI bodies unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/ue-gi.source",
+      "sha256": "4569fc8e356b7fb6f8da77441cb34486a6a4d67bcdc8762a8354bff776665fc0",
+      "bytes": 95884
+    },
+    {
+      "key": "ue-shading",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shading-models-in-unreal-engine",
+      "readScope": "Cloth section web lines161–179 only; remaining shading model bodies/API unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/ue-shading.source",
+      "sha256": "32f84538a0b8f8b5aad3c26d46ce7a52b854d5b14a87e878358a9dc1378f57ae",
+      "bytes": 94758
+    },
+    {
+      "key": "unity-hdrp-10-refraction",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.5/manual/Refraction-in-HDRP.html",
+      "readScope": "Archived HDRP10.5.1 own article HTML135–227 read; not current HDRP17, linked/media/API unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/unity-hdrp-10-refraction.source",
+      "sha256": "0fbd9a62bbc0b481c1951cdeacde1088dac337c4919ba551b7ed0bda7c23ca5d",
+      "bytes": 15297
+    },
+    {
+      "key": "unity-urp-color",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/Post-Processing-Color-Adjustments.html",
+      "readScope": "Unity6000.0 own article HTML122–173 read; linked package/API/media unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/unity-urp-color.source",
+      "sha256": "353800e3c4e288bdd073e2a64938951d9c197d1b5e9ba4fd78bd5aff7e957c4e",
+      "bytes": 13688
+    },
+    {
+      "key": "unity-urp-vignette",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-vignette.html",
+      "readScope": "Unity6000.0 own article HTML122–164 read; linked package/API/media unread.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/unity-urp-vignette.source",
+      "sha256": "c3bb20b12f6821b8b8f3dd9df96813d42838410fee84202e3dcbe10281dc5d48",
+      "bytes": 13230
+    },
+    {
+      "key": "filament-pbr",
+      "url": "https://google.github.io/filament/main/filament.html",
+      "readScope": "Primary live manual selected anisotropy812–885 and cloth937–1004 excerpts; not whole sections/manual/API.",
+      "wholeSourceRead": false,
+      "file": "native/build/rendering-research-098/filament-pbr.source",
+      "sha256": "306bd2a172ac7c56c232dd4404765d3c32810c78445a6adbe07c4fd911fe8d7c",
+      "bytes": 490021
+    },
+    {
+      "key": "WebGLRenderer.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/WebGLRenderer.js",
+      "readScope": "1848–1974 transmission pass and3159–3190 depth copy",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/WebGLRenderer.js",
+      "file": "native/build/rendering-research-098/WebGLRenderer.js.source",
+      "sha256": "35cea4871231c3fddc3517dcd03fc876bdb8f9e73f1a77042b35e3de0498c4cd",
+      "bytes": 102861,
+      "installedSHA256": "35cea4871231c3fddc3517dcd03fc876bdb8f9e73f1a77042b35e3de0498c4cd",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "lights_physical_pars_fragment.glsl.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl.js",
+      "readScope": "First155 lines sheen/aniso/spec/iridescence helpers only",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl.js",
+      "file": "native/build/rendering-research-098/lights_physical_pars_fragment.glsl.js.source",
+      "sha256": "1b4146e447c9fc15356058907f2bc544da644b5db6c6693e17d86ca67a4acce8",
+      "bytes": 18422,
+      "installedSHA256": "1b4146e447c9fc15356058907f2bc544da644b5db6c6693e17d86ca67a4acce8",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "transmission_pars_fragment.glsl.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+      "readScope": "114–end volume/LOD/dispersion body; earlier definitions partial",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+      "file": "native/build/rendering-research-098/transmission_pars_fragment.glsl.js.source",
+      "sha256": "586f774384f3442bdca1270d203b19f4cc318fd56ee522cdecc4a8b1cb9fc8fc",
+      "bytes": 7316,
+      "installedSHA256": "586f774384f3442bdca1270d203b19f4cc318fd56ee522cdecc4a8b1cb9fc8fc",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "transmission_fragment.glsl.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_fragment.glsl.js",
+      "readScope": "Own chunk assignment body",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/shaders/ShaderChunk/transmission_fragment.glsl.js",
+      "file": "native/build/rendering-research-098/transmission_fragment.glsl.js.source",
+      "sha256": "c3c5f9e3afd3139ed55b20b876e76366943a9998f2d66b8f57ddf5947f0c3676",
+      "bytes": 1117,
+      "installedSHA256": "c3c5f9e3afd3139ed55b20b876e76366943a9998f2d66b8f57ddf5947f0c3676",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "MeshPhysicalNodeMaterial.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/materials/nodes/MeshPhysicalNodeMaterial.js",
+      "readScope": "348–363 specular,413–435/457 controls and feature gates",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/materials/nodes/MeshPhysicalNodeMaterial.js",
+      "file": "native/build/rendering-research-098/MeshPhysicalNodeMaterial.js.source",
+      "sha256": "839001afbe3cba1f8af581f79955cdd3999e6ace2ed091bf9965dce495f79410",
+      "bytes": 16446,
+      "installedSHA256": "839001afbe3cba1f8af581f79955cdd3999e6ace2ed091bf9965dce495f79410",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "PhysicalLightingModel.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/PhysicalLightingModel.js",
+      "readScope": "start first185,400–435/530–576 transmission/multi-scatter portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/nodes/functions/PhysicalLightingModel.js",
+      "file": "native/build/rendering-research-098/PhysicalLightingModel.js.source",
+      "sha256": "886b03beccd283afdf5fa1991e3b695f13641701a7b711a90a00aaccc40dcfcb",
+      "bytes": 24850,
+      "installedSHA256": "886b03beccd283afdf5fa1991e3b695f13641701a7b711a90a00aaccc40dcfcb",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "BRDF_Sheen.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/BSDF/BRDF_Sheen.js",
+      "readScope": "Whole own Charlie/Neubelt helper",
+      "wholeSourceRead": true,
+      "installedPath": "node_modules/three/src/nodes/functions/BSDF/BRDF_Sheen.js",
+      "file": "native/build/rendering-research-098/BRDF_Sheen.js.source",
+      "sha256": "782b46cb8661bb86dd1ad64a0edee410d0cd2f347041a93ba77b1c0de1253705",
+      "bytes": 1845,
+      "installedSHA256": "782b46cb8661bb86dd1ad64a0edee410d0cd2f347041a93ba77b1c0de1253705",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "V_GGX_SmithCorrelated_Anisotropic.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/BSDF/V_GGX_SmithCorrelated_Anisotropic.js",
+      "readScope": "Whole own Smith helper",
+      "wholeSourceRead": true,
+      "installedPath": "node_modules/three/src/nodes/functions/BSDF/V_GGX_SmithCorrelated_Anisotropic.js",
+      "file": "native/build/rendering-research-098/V_GGX_SmithCorrelated_Anisotropic.js.source",
+      "sha256": "07a3aee5070d5413099e3e54637d960916877a105f7ac11b9cbdb0317306f792",
+      "bytes": 1157,
+      "installedSHA256": "07a3aee5070d5413099e3e54637d960916877a105f7ac11b9cbdb0317306f792",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "ViewportTextureNode.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/display/ViewportTextureNode.js",
+      "readScope": "Whole own reference-cache/updateBefore body",
+      "wholeSourceRead": true,
+      "installedPath": "node_modules/three/src/nodes/display/ViewportTextureNode.js",
+      "file": "native/build/rendering-research-098/ViewportTextureNode.js.source",
+      "sha256": "e0f7c9db313711bf1d64dc3e1c342986e82dbc5d131a382de2d2acc36a6033fd",
+      "bytes": 6141,
+      "installedSHA256": "e0f7c9db313711bf1d64dc3e1c342986e82dbc5d131a382de2d2acc36a6033fd",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "ViewportDepthTextureNode.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/display/ViewportDepthTextureNode.js",
+      "readScope": "Whole own shared-depth helper",
+      "wholeSourceRead": true,
+      "installedPath": "node_modules/three/src/nodes/display/ViewportDepthTextureNode.js",
+      "file": "native/build/rendering-research-098/ViewportDepthTextureNode.js.source",
+      "sha256": "d04dd47b39e50e57a183b9376409e2a0b3c5d417204788558d1beda55b50e0b4",
+      "bytes": 1565,
+      "installedSHA256": "d04dd47b39e50e57a183b9376409e2a0b3c5d417204788558d1beda55b50e0b4",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "WebGPUBackend.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/webgpu/WebGPUBackend.js",
+      "readScope": "2340–2460 framebuffer copy/end/restart/format portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/webgpu/WebGPUBackend.js",
+      "file": "native/build/rendering-research-098/WebGPUBackend.js.source",
+      "sha256": "e394bac8164b844b0bf9df425e90edaac96a1df2c0adc710bcf3623cd313ddc3",
+      "bytes": 64480,
+      "installedSHA256": "e394bac8164b844b0bf9df425e90edaac96a1df2c0adc710bcf3623cd313ddc3",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "WebGPUTexturePassUtils.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/webgpu/utils/WebGPUTexturePassUtils.js",
+      "readScope": "314–400 mip generation/bundle submission portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/webgpu/utils/WebGPUTexturePassUtils.js",
+      "file": "native/build/rendering-research-098/WebGPUTexturePassUtils.js.source",
+      "sha256": "c1dcabd23fe0279e583fa40b1d332377076d378cd261638a7811d1e88be69aad",
+      "bytes": 10492,
+      "installedSHA256": "c1dcabd23fe0279e583fa40b1d332377076d378cd261638a7811d1e88be69aad",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "Renderer.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Renderer.js",
+      "readScope": "1209–1274 HDR/output framebuffer and2539–2592 copy portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/renderers/common/Renderer.js",
+      "file": "native/build/rendering-research-098/Renderer.js.source",
+      "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+      "bytes": 81366,
+      "installedSHA256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "RTTNode.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/utils/RTTNode.js",
+      "readScope": "Own constructor/sizing/convertToTexture portions only",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/nodes/utils/RTTNode.js",
+      "priorSnapshotError": "HTTP 404",
+      "file": "native/build/rendering-research-098/RTTNode.js.source",
+      "sha256": "e88ca3b67509a02160a591ac262c14609da2a2269ff3d255b58d5f1a0505fab7",
+      "bytes": 6746,
+      "installedSHA256": "e88ca3b67509a02160a591ac262c14609da2a2269ff3d255b58d5f1a0505fab7",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "PMREMNode.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/pmrem/PMREMNode.js",
+      "readScope": "251–333 update/setup context portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/nodes/pmrem/PMREMNode.js",
+      "file": "native/build/rendering-research-098/PMREMNode.js.source",
+      "sha256": "e50c9185d7b1da13d517cec50b41c1a3c74a581e5334d55fd7c79b6aab3bb63c",
+      "bytes": 7769,
+      "installedSHA256": "e50c9185d7b1da13d517cec50b41c1a3c74a581e5334d55fd7c79b6aab3bb63c",
+      "exactInstalledMatch": true
+    },
+    {
+      "key": "EnvironmentNode.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/lighting/EnvironmentNode.js",
+      "readScope": "77–100 radiance/irradiance caching portions",
+      "wholeSourceRead": false,
+      "installedPath": "node_modules/three/src/nodes/lighting/EnvironmentNode.js",
+      "file": "native/build/rendering-research-098/EnvironmentNode.js.source",
+      "sha256": "43c66570ab61d3d3bbcc04391fece990816b91a33602f2d74fcddbd7d89bd286",
+      "bytes": 3721,
+      "installedSHA256": "43c66570ab61d3d3bbcc04391fece990816b91a33602f2d74fcddbd7d89bd286",
+      "exactInstalledMatch": true
+    }
+  ],
+  "products": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "3f3c320d680e4e95a1c2df4db2bcae55c8dcb6106a82ae748b8802e583bdfd68"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "88ee9ca8fcd63ec8ee217f52d719acd58991258d8776191e398b363189f46f96"
+    },
+    {
+      "file": "native/include/HBEngine/SceneProbes.hpp",
+      "sha256": "879edd11c64f2a7142fa74b2e40912a0437717c5e7ad7cc0473495d881e2c479"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "afedc20343a837b7043c43606548df07c61663312be7594b947d470baa2f8d09"
+    },
+    {
+      "file": "prototype/app.js",
+      "sha256": "0cf656aed180893035a41cf4edb00997b5fa654390c7f5763d15cd3625780c77"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "0e54e31d09d7deec8c67e3923153a862f51ba8f751eecea8f68dd7d1c051d906"
+    },
+    {
+      "file": "prototype/game-renderer.js",
+      "sha256": "a2d0f4f36430fa0deadf435d8040f25ab78bba6bb90f3a4586db5b924fd0e924"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "4feebc43aeabdf3073cbf86f9bc379a687188d3c10e9c7b4f3fc401d296787e4"
+    },
+    {
+      "file": "prototype/gpu-materials.js",
+      "sha256": "caba9928130bd2fb9dc61ed292754635d2d99d0e7db66becbacedefad9a3fb97"
+    },
+    {
+      "file": "prototype/material-runtime.js",
+      "sha256": "7ecb8b930aa734316dd28256e1c05c8e9678919aeb4fae225396b1a9672edeac"
+    },
+    {
+      "file": "prototype/native-materials.js",
+      "sha256": "e84e15249b1db81d29773d499417dc849b98e7c1645ef68ed7e90fb1ddc2b500"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "e6489c4bc22d89149c37d0999a07f989b29f02a27f51ae90e8b2466b443d7561"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "0b37318e2b05d5bd27214428447d6cf0c4a431390e40d253b8ef5471480fa586"
+    },
+    {
+      "file": "prototype/reflection-probes.js",
+      "sha256": "266275dfd533316b374f6f02311ca03a8da0e685bb69d629c1c57fab0a7bf44f"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "5187fd690f9b438913877f3b38c5bc7c5d82042be286817eeb02aec4dc4e841e"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "2693d1fc8f384f844cd7378db67718a71d67fbae2b3d78781a13377a323b9c59"
+    },
+    {
+      "file": "native/include/HBEngine/SceneShading.hpp",
+      "sha256": "9210b3da466c87593c5e50e3119d0ebb81a4ff0a6d7152a87db8548fadcf32a3"
+    },
+    {
+      "file": "prototype/gpu-post-processing.js",
+      "sha256": "6630154376c0f876bd4539665c90e6f387f7371629aa5bdb0ad64e45ca1a1c37"
+    },
+    {
+      "file": "prototype/gpu-refraction-copy.js",
+      "sha256": "6b5c2650cad125d909d3728e7fe21acbe1830dd45c51f85cd2b48416bb7a50d6"
+    },
+    {
+      "file": "prototype/gpu-refraction.js",
+      "sha256": "1ce2a8b18906ba2f1646324fbdcf5c28118e5f9723009824358cdcf0aafcd0e4"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "2bc8e34606be0c9b29eb71b9cb9703e0d173a29f30388ff8641a644f6ab90f24"
+    },
+    {
+      "file": "prototype/refraction-rendering.js",
+      "sha256": "4edef0d65be7cd00615ebe99fed57413b249b09c2f34a0e915037b3bc22bf8b1"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-bSXHl1/acceptance.json",
+      "sha256": "140a67710f92ff94d003ea0eb0c96a3cd6ca656586eeb3b7ac611859a7ac4f8b",
+      "command": "node tools/check-native-scene-render.mjs",
+      "scope": "HLSL60 and native scene regression; predates added foreground-depth test, which is separately checked below.",
+      "passed": true,
+      "proof": {
+        "compiledNodes": 60,
+        "rendering098": {
+          "anisotropyRotationPixel": true,
+          "gradingAndEffectsPixel": true,
+          "postOnlyNoBloomDispatch": true,
+          "secondBounceDiffusePixel": [
+            0,
+            154,
+            0
+          ],
+          "sheenPixel": true,
+          "thinFilmThicknessPixel": true
+        },
+        "transmission": {
+          "automaticReadbacks": 0,
+          "cropViewportScissor": true,
+          "dispersionChangedChannels": 568,
+          "hdrReuseWithoutBloomCompute": true,
+          "iorThicknessPixel": true,
+          "optionalBloomComposition": true,
+          "reuseReleaseResize": true,
+          "reuseSnapshotCopies": 4,
+          "roughMipPixel": true,
+          "samplerLimitValidation": true,
+          "thinBackground": true,
+          "validation": true,
+          "volumeColorDistanceThicknessWorldScale": true,
+          "volumeZeroThicknessDisabledDistance": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "file": "native/build/native-scene-umRBpD/acceptance.json",
+      "sha256": "18dd698239fe77a5e9d8936fd4193375bc11e3d6016ba2e4449a4e5b6d728697",
+      "command": "node tools/check-native-scene-render.mjs --transmission-only",
+      "scope": "Includes added foreground-depth pixel comparison.",
+      "passed": true,
+      "proof": {
+        "transmission": {
+          "automaticReadbacks": 0,
+          "cropViewportScissor": true,
+          "dispersionChangedChannels": 568,
+          "foregroundDepthRejectedPixel": true,
+          "hdrReuseWithoutBloomCompute": true,
+          "iorThicknessPixel": true,
+          "optionalBloomComposition": true,
+          "reuseReleaseResize": true,
+          "reuseSnapshotCopies": 4,
+          "roughMipPixel": true,
+          "samplerLimitValidation": true,
+          "thinBackground": true,
+          "validation": true,
+          "volumeColorDistanceThicknessWorldScale": true,
+          "volumeZeroThicknessDisabledDistance": true
+        },
+        "unavailable": {
+          "unavailableGuard": true
+        }
+      }
+    },
+    {
+      "file": "native/build/gpu-scene-N5ClbT/acceptance.json",
+      "sha256": "d35077fadd7eda2c3c56582cafefddea7e658667e9b0cfde34f8692bcb19f02e",
+      "command": "node tools/check-gpu-scene.mjs --transmission-only --webgl",
+      "scope": "Final GL product logic; later product changes were GPU-only, a comment and native JSON bounce validation.",
+      "passed": true,
+      "proof": {
+        "nested": [
+          229,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          125,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          131,
+          116,
+          96,
+          255
+        ],
+        "filmB": [
+          112,
+          118,
+          98,
+          255
+        ],
+        "neutral": [
+          148,
+          149,
+          149,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          150,
+          82,
+          255
+        ],
+        "noRefraction": [
+          170,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-W3Bbyq/acceptance.json",
+      "sha256": "d257f8bfea515e2b5e7e89e0547ad3ab43990f1f9e4045ec7de4bb974aa304b1",
+      "command": "node tools/check-gpu-scene.mjs --transmission-only",
+      "scope": "Final GPU logic after copy/mip order and specular node fixes; later GPU edit comment only.",
+      "passed": true,
+      "proof": {
+        "nested": [
+          230,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          130,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          112,
+          121,
+          101,
+          255
+        ],
+        "neutral": [
+          149,
+          149,
+          149,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          18,
+          18,
+          18,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          149,
+          80,
+          255
+        ],
+        "noRefraction": [
+          171,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/native-scene-window-o2984i/acceptance.json",
+      "sha256": "de3dfcfb44eb8cc885286a3d76fa33b570b296f9865554bc8cb4d3e99df187af",
+      "command": "node tools/check-native-scene-window.mjs --transmission-only",
+      "scope": "Final freshly-built native Windows player including integer packet guard.",
+      "passed": true,
+      "proof": {
+        "nested": [
+          221,
+          45,
+          45,
+          255
+        ],
+        "single": [
+          227,
+          227,
+          227,
+          255
+        ],
+        "sheen": [
+          119,
+          111,
+          95,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          102,
+          255
+        ],
+        "across": [
+          115,
+          108,
+          92,
+          255
+        ],
+        "filmA": [
+          129,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          118,
+          121,
+          99,
+          255
+        ],
+        "neutral": [
+          154,
+          155,
+          155,
+          255
+        ],
+        "exposed": [
+          198,
+          199,
+          199,
+          255
+        ],
+        "post": [
+          17,
+          17,
+          17,
+          255
+        ],
+        "gi": [
+          246,
+          118,
+          115,
+          255
+        ],
+        "offscreen": [
+          251,
+          1,
+          1,
+          255
+        ],
+        "noRefraction": [
+          195,
+          101,
+          96,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "installedUserAppUntouched": true
+    },
+    {
+      "file": "native/build/cpu-rendering-098.json",
+      "sha256": "ee1631ad8a85980ee789db9b8386b298fbcea2f8748e620d2e20506d3155b9f9",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-098.mjs",
+          "passed": true,
+          "ms": 190,
+          "output": "Rendering 098: physical surfaces/typed uniforms, presets, post-volume validation, GI bounce bounds and GPU post node construction PASS"
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "passed": true,
+          "ms": 257,
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS"
+        },
+        {
+          "command": "node tools/check-material-uniforms.mjs",
+          "passed": true,
+          "ms": 179,
+          "output": "WebGL Float uniform: 1000 writes/no material version or program changes, scalar/surface, scoped layer/blend, clone isolation, validation PASS"
+        },
+        {
+          "command": "node tools/check-material-workflow.mjs",
+          "passed": true,
+          "ms": 142,
+          "output": "HBEngine 머테리얼: 77종 노드, PBR·수학·UV·텍스처 계산, GLSL 생성, 인스턴스·참조·프리팹·에셋 검증 통과"
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "passed": true,
+          "ms": 304,
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과"
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "passed": true,
+          "output": ""
+        },
+        {
+          "command": "git diff --check",
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "devExecutables": [
+    {
+      "file": "dist/HBEngine/HBEngine.exe",
+      "sha256": "086ade1a98382eb314e69cf7f9c3eb2fb285a57b0437d90827b40c8750f2fb37"
+    },
+    {
+      "file": "dist/HBEngine/HBPlayer.exe",
+      "sha256": "2f4f31b43d7895078b2343f98207cc12be29e157aa2198a31337ddb50167ae48"
+    }
+  ],
+  "failedOrCalibrationWork": [
+    "Initial fixture schema defaults and normal RGB array corrected; failed artifacts retained.",
+    "Unused native local and missing HLSL forward declaration fixed before GPU runs; stale HBPlayer.exe rebuilt before window acceptance.",
+    "Offscreen emitter test expanded to both sides; TBN handedness/exact cross-backend direction parity is not asserted. Direct specular and diffuse GI disabled for the refraction-only control.",
+    "WebGPU default renderer already owns HDR; experimental extra HDR pass removed.",
+    "r180 viewport mip generation submitted before still-open frame copy produced stale/black first-frame samples. Same-frame encoder mip adapter and completed-GPU capture fixed; final GPU actual window rerun.",
+    "r180 setupSpecular ignored declared custom specular nodes. Override now binds authored uniforms and probe clones; final GPU actual window rerun.",
+    "Capture promise wrapper and console-error collection corrected; final GPU acceptance requires error0.",
+    "RTT source first requested from wrong display path (404); corrected to utils/RTTNode.js, exact installed SHA matched."
+  ],
+  "contracts": {
+    "surfaceOld16PinIndicesPreserved": true,
+    "newInputs": 10,
+    "sceneSchemaMigrationRequired": false,
+    "defaultExtraWeights": 0,
+    "defaultProbeBounces": 1,
+    "cppAndBlueprintReuseExistingServices": true,
+    "aiUsesSameDocumentsAndValidation": true,
+    "automaticFrameCPUReadbacks": 0,
+    "nativeAdditionalMaterialConstantsBytes": 64
+  },
+  "bounds": {
+    "wholeCorpusRead": false,
+    "wholeApiRead": false,
+    "rawSnapshotIsWholeReadProof": false,
+    "recursiveGeometryRayTracing": false,
+    "autoBackfaceThickness": false,
+    "coloredTransmissionShadows": false,
+    "LumenDDGIAPV": false,
+    "bakedLightmaps": false,
+    "fullUnrealShadingModels": false,
+    "spatialVolumeBlend": false,
+    "LUTAutoExposureDOFMotionBlurTAASSAO": false,
+    "exactCrossBackendPixels": false,
+    "exactTBNHandednessParity": false,
+    "nativeGISecondBounceEnergyPixel": true,
+    "browserGIThreeCapturesAndStaticReuse": true,
+    "allBackendGIBounceEnergyEquivalence": false,
+    "wholeGameFPS": false,
+    "longRuntimeRAM": false,
+    "physicalMobile": false,
+    "originalUserGamesModified": false,
+    "foregroundWindowsManipulated": false,
+    "backendPrivateAdapter": "Three.js r180 WebGPUTexturePassUtils; revalidate on upgrade",
+    "refraction": "Sorted raster layers with screen-depth endpoint rejection and captured probe fallback; not recursive geometric ray tracing",
+    "thinFilm": "Native simplified three-wavelength Airy approximation; browser physical model differs",
+    "post": "Highest-priority active component; native CA shifts base scene before unshifted glow, browsers shift composed color",
+    "probeSelection": "Native up to two probe blend; browser one selected probe",
+    "research": "Web body/excerpts directly read, later raw HTML snapshots hashed; full downloaded files and linked bodies not claimed read"
+  },
+  "installation": {
+    "state": "Build prepared; immutable user bundle installation and verification follow feature commit",
+    "receipt": "docs/research/USER_INSTALL_098.json",
+    "restartUserWindows": false
+  }
+}

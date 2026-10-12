@@ -81,6 +81,18 @@
         {
           "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ReflectionProbe.html",
           "record": "docs/research/NATIVE_PROBES_093.json"
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/Post-Processing-Color-Adjustments.html",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Unity6000.0 own article HTML122–173 read; linked package/API/media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-vignette.html",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Unity6000.0 own article HTML122–164 read; linked package/API/media unread.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -363,6 +375,24 @@
         {
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-transparency-in-unreal-engine-materials",
           "record": "docs/NATIVE_VOLUME_097.md"
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-refraction-in-unreal-engine",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Own article web text lines0–96; links/media/APIs unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/global-illumination-in-unreal-engine",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Own overview web text lines0–56; linked Lightmass/Lumen/SSGI bodies unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shading-models-in-unreal-engine",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Cloth section web lines161–179 only; remaining shading model bodies/API unread.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -1272,6 +1302,102 @@
         {
           "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/materials/nodes/MeshPhysicalNodeMaterial.js",
           "record": "docs/NATIVE_VOLUME_097.md"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/WebGLRenderer.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "1848–1974 transmission pass and3159–3190 depth copy",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "First155 lines sheen/aniso/spec/iridescence helpers only",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_pars_fragment.glsl.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "114–end volume/LOD/dispersion body; earlier definitions partial",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/shaders/ShaderChunk/transmission_fragment.glsl.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Own chunk assignment body",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/materials/nodes/MeshPhysicalNodeMaterial.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "348–363 specular,413–435/457 controls and feature gates",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/PhysicalLightingModel.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "start first185,400–435/530–576 transmission/multi-scatter portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/BSDF/BRDF_Sheen.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Whole own Charlie/Neubelt helper",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/functions/BSDF/V_GGX_SmithCorrelated_Anisotropic.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Whole own Smith helper",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/display/ViewportTextureNode.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Whole own reference-cache/updateBefore body",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/display/ViewportDepthTextureNode.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Whole own shared-depth helper",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/webgpu/WebGPUBackend.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "2340–2460 framebuffer copy/end/restart/format portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/webgpu/utils/WebGPUTexturePassUtils.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "314–400 mip generation/bundle submission portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Renderer.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "1209–1274 HDR/output framebuffer and2539–2592 copy portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/utils/RTTNode.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Own constructor/sizing/convertToTexture portions only",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/pmrem/PMREMNode.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "251–333 update/setup context portions",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/lighting/EnvironmentNode.js",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "77–100 radiance/irradiance caching portions",
+          "wholeCorpus": false
         }
       ]
     },
@@ -1525,6 +1651,58 @@
         {
           "url": "https://docs.unity.com/en-us/engine/6000.3/manual/lighting-overview/shadows/shadow-performance",
           "record": "docs/research/NATIVE_SHADOWS_087.json"
+        }
+      ]
+    },
+    {
+      "id": "unity-hdrp-10.5-archived-supplement",
+      "engine": "Unity supplemental",
+      "version": "10.5.1 archived",
+      "locale": "en",
+      "roots": [
+        "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.5/manual/Refraction-in-HDRP.html"
+      ],
+      "hosts": [
+        "docs.unity3d.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected bodies/excerpts only; linked API/source and whole corpus discovery remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@10.5/manual/Refraction-in-HDRP.html",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Archived HDRP10.5.1 own article HTML135–227 read; not current HDRP17, linked/media/API unread.",
+          "wholeCorpus": false
+        }
+      ]
+    },
+    {
+      "id": "filament-pbr-supplement",
+      "engine": "Filament official rendering supplement",
+      "version": "living-manual-snapshot-2026-10-12",
+      "locale": "en",
+      "roots": [
+        "https://google.github.io/filament/main/filament.html"
+      ],
+      "hosts": [
+        "google.github.io"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected bodies/excerpts only; linked API/source and whole corpus discovery remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://google.github.io/filament/main/filament.html",
+          "record": "docs/research/RENDERING_098.json",
+          "readScope": "Primary live manual selected anisotropy812–885 and cloth937–1004 excerpts; not whole sections/manual/API.",
+          "wholeCorpus": false
         }
       ]
     }
