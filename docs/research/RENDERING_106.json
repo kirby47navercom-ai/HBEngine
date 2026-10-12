@@ -890,7 +890,13 @@
     "r180 compatibility uses internal bindings API; recheck upon dependency upgrades."
   ],
   "installation": {
-    "state": "Grouped verification passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "058fe4f0bd55cda1fffb0e1af319c325d8cb56a4",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\31835dccb9f030a2",
+    "bundleHash": "31835dccb9f030a2247da9c8467c62769414accbd5b50c52628a9527b16e2904",
+    "files": 2064,
+    "receipt": "docs/research/USER_INSTALL_106.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
