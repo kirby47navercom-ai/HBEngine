@@ -2064,6 +2064,125 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "path-media-environment-filter-supplement",
+      "engine": "PBRT/AMD/Three official rendering supplement",
+      "version": "selected-snapshot-2026-10-13-and-installed-r180",
+      "locale": "en",
+      "roots": [
+        "https://pbr-book.org/4ed/Volume_Scattering/Media",
+        "https://pbr-book.org/4ed/Reflection_Models/Dielectric_BSDF",
+        "https://pbr-book.org/4ed/Volume_Scattering/Transmittance",
+        "https://pbr-book.org/4ed/Light_Sources/Infinite_Area_Lights",
+        "https://pbr-book.org/3ed-2018/Light_Transport_I_Surface_Reflection/Sampling_Light_Sources",
+        "https://radeon-pro.github.io/RadeonProRenderDocs/en/rif/filters/edge_avoiding_wavelet.html",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/RGBELoader.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/EXRLoader.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/core/ArrayNode.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/HDRLoader.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/tsl/TSLCore.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/TextureNode.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/core/UniformNode.js",
+        "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/exporters/EXRExporter.js"
+      ],
+      "hosts": [
+        "pbr-book.org",
+        "radeon-pro.github.io",
+        "raw.githubusercontent.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected excerpts and installed code only; complete page/API inventory, remaining bodies and outgoing links remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://pbr-book.org/4ed/Volume_Scattering/Media",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "MediumInterface introduction/inside-outside/GetMedium; supplied search body only; remaining medium implementations unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Reflection_Models/Dielectric_BSDF",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Web parsed lines35–146: smooth interface Fresnel/sample probability, relative eta and radiance eta squared; remaining rough/thin sections unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Volume_Scattering/Transmittance",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Web parsed lines0–40: segment multiplication, homogeneous Beer law, unbiased caveat; null scattering unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Light_Sources/Infinite_Area_Lights",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Web parsed lines156–185: image sampling, directional PDF, transform, variance; portal section unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/3ed-2018/Light_Transport_I_Surface_Reflection/Sampling_Light_Sources",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Web parsed lines253–344: lat-long, luminance/sine distribution, reconstructed support, sample/evaluation PDF; preceding sections unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://radeon-pro.github.io/RadeonProRenderDocs/en/rif/filters/edge_avoiding_wavelet.html",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own parsed body lines6–43: normal/depth/color/variance guidance, coefficient tradeoff and example; linked API/filter implementations unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/RGBELoader.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "RGBELoader entire 268 byte r180 deprecated alias; HDRLoader is used instead.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/EXRLoader.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own installed lines95–130 declaration,2565–2628 output type/allocation,2738–2753 setDataType; compression implementation unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/core/ArrayNode.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own lines1–105 declaration and examples; emission/later methods unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/HDRLoader.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own lines1–84 declaration/errors,141–232 header validation,354–452 RGBEFloat/Half conversion,typed output,setDataType; RLE implementation unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/tsl/TSLCore.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own installed lines479–523: explicit-layout global builder-constructor/ShaderNode cache and included function call; remaining TSL core unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/accessors/TextureNode.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own installed declaration/updateMatrix defaults and lines274–286,341–362: UV matrix transformation toggle; remaining texture implementation unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/core/UniformNode.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own installed lines44–76 name setter and148–177 uniform registration; remaining implementation unread",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/exporters/EXRExporter.js",
+          "record": "docs/research/RENDERING_107.json",
+          "readScope": "Own installed declaration/DataTexture parse branch,181–209 configuration,243–340 byte packing/compression dispatch and545–598 byte conversion; ZIP compressor body unread. Used only to create private fixture,not engine dependency change.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

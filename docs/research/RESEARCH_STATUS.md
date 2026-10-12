@@ -1,3 +1,5 @@
+2026-10-13: [107 중첩 매질·HDRI·디노이저](../RENDERING_107.md), [검사 기록](RENDERING_107.json). PBRT 경계/흡수/dielectric/환경 샘플링, AMD EAW 설명과 설치 Three r180 HDR/EXR/TSL 함수 캐시/텍스처 행렬 지정 구역만 읽고14 원문/설치 SHA와 미독 범위를 보존해요. 세 Windows 실행기와 네이티브 묶음,14 공용 검사로 닫힌 흡수·HDR/EXR·C++ 속성 변경·표시 노이즈 감소·원본 보존·기존098–106을 확인해요. 전체 본문/API gate와 참여 산란·2차 경계 디노이징·실게임/폰 성능은 종료하지 않아요.
+
 2026-10-13: [106 교차점 머테리얼·UV·법선·마스크](../RENDERING_106.md), [기계 기록](RENDERING_106.json). PBRT 보간/상호작용, HLSL loop/fastopt, Three Texture 지정 구역과 설치 r180 uniform/binding/RTT/NodeFrame/ACES/WebGL 프로그램 수명, ANGLE 지정 컴파일 구역을 부분 대조해요.16 원문/설치 SHA와 읽은 구역을 보존하고 발견 seed만 등록해요. 세 Windows 실행기와 네이티브 묶음,13 공용 검사로 교차점 UV·마스크·법선·C++ 변경·누적 초기화와 기존098–105·2D를 확인해요. 전체 본문/API gate,중첩 매질·HDRI·광선 mip/LOD·디노이저·실게임/폰 성능은 종료하지 않아요.
 
 2026-10-12: [105 광선 투과 그림자·경로 추적](../RENDERING_105.md), [기계 기록](RENDERING_105.json). UE5.8 색 투과 그림자, HDRP17.0.4 지정 경로 추적 구역, PBRT4 지정 throughput·NEE/MIS·투과율, Three TSL 지정 본문과 설치 r180 함수를 읽었어요. 원문9 SHA와 설치 TSL 일치를 기록해요. 세 Windows 실행기·네이티브·공용12 검사로 실제 카메라 광선·발광체·그림자 옵션·렌즈·유리와 기존 렌더링을 대조해요. 일반 그림자맵 색 저장·교차점 텍스처·중첩 매질·디노이저·전체 corpus/API·실게임/휴대폰 성능은 미완료 경계를 유지해요.

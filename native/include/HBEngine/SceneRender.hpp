@@ -116,7 +116,7 @@ public:
         Program()=default;Program(Program&&)=default;Program& operator=(Program&&)=default;
     };
 private:
-    Device& gpu;detail::Com<ID3D11ShaderResourceView> postLookupView,geometrySceneView;std::uint32_t postLookupSize=0;
+    Device& gpu;detail::Com<ID3D11ShaderResourceView> postLookupView,geometrySceneView,pathEnvironmentView;std::uint32_t postLookupSize=0;
     ParticleRenderer surface;BloomPass bloom;SceneProbes probes;
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     std::array<detail::Com<ID3D11Buffer>,3> probeConstants;
@@ -437,7 +437,7 @@ public:
     std::uint64_t particleStorageBytes() const{return surface.particleStorageBytes();}
     std::uint64_t particleIndexAllocations() const{return surface.particleIndexAllocations();}std::uint64_t particleSortPasses() const{return surface.particleSortPasses();}std::uint64_t particleCountReadbacks() const{return surface.particleCountReadbacks();}
     void resize(std::uint32_t width,std::uint32_t height){if(width!=surface.width()||height!=surface.height())releasePostProcess();surface.resize(width,height);}
-    void finish(){endProbe();end2D();endShadow();bloom.complete(surface.target.p,frame.exposure,frame.scissor,surface.depth.p,postLookupView.p,geometrySceneView.p);std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
+    void finish(){endProbe();end2D();endShadow();bloom.complete(surface.target.p,frame.exposure,frame.scissor,surface.depth.p,postLookupView.p,geometrySceneView.p,pathEnvironmentView.p);std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
     bool present(std::uint32_t interval=0){finish();return surface.present(interval);}
     std::vector<std::uint8_t> readPixels(){finish();return surface.readPixels();}
     std::uint32_t width() const{return surface.width();}std::uint32_t height() const{return surface.height();}
@@ -453,9 +453,10 @@ public:
     }
     std::uint64_t transmissionTextureBytes() const{std::uint64_t bytes=0;for(auto w=transmissionWidth,h=transmissionHeight;w&&h;w=std::max(1u,w/2),h=std::max(1u,h/2)){bytes+=std::uint64_t(w)*h*8;if(w==1&&h==1)break;}return bytes+std::uint64_t(transmissionWidth)*transmissionHeight*4;}
     std::uint64_t transmissionCopies() const{return transmissionCopies_;}std::uint64_t transmissionAllocations() const{return transmissionAllocations_;}
+    void setPathEnvironment(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||!value->width||!value->height))throw std::runtime_error("HDRI texture invalid");if(value){D3D11_SHADER_RESOURCE_VIEW_DESC d{};value->view->GetDesc(&d);if(d.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D||d.Format!=DXGI_FORMAT_R32G32B32A32_FLOAT)throw std::runtime_error("HDRI format invalid");}if(pathEnvironmentView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}pathEnvironmentView=std::move(next);}
     void setGeometryScene(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||!value->width||!value->height))throw std::runtime_error("Geometry GI texture invalid");if(value){D3D11_SHADER_RESOURCE_VIEW_DESC d{};value->view->GetDesc(&d);if(d.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D||d.Format!=DXGI_FORMAT_R32G32B32A32_FLOAT)throw std::runtime_error("Geometry GI format invalid");}if(geometrySceneView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}geometrySceneView=std::move(next);}
     void setPostLookup(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookupSize=value?value->height:0;if(postLookupView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}postLookupView=std::move(next);}
-    void releasePostProcess(){geometrySceneView={};postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
+    void releasePostProcess(){pathEnvironmentView={};geometrySceneView={};postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}
     std::uint64_t bloomDispatches() const{return bloom.dispatches();}
     std::uint64_t bloomAllocations() const{return bloom.allocations();}
