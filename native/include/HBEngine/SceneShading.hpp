@@ -22,5 +22,10 @@ float anisotropicSpecular(float3 n,float3 v,float3 l,float3 h,float3 t,float3 b,
  float gv=nl*length(float3(alphaT*dot(t,v),alphaB*dot(b,v),nv)),gl=nv*length(float3(alphaT*dot(t,l),alphaB*dot(b,l),nl));return d*.5/max(gv+gl,1e-6);
 }
 float sheenBRDF(float nh,float nv,float nl,float rough){float inv=1/(rough*rough),d=(2+inv)*pow(max(1-nh*nh,.0078125),inv*.5)/6.283185307;return d/max(4*(nl+nv-nl*nv),1e-6);}
+
+float3 hbScatterDiffuse(float nl,float3 view,float3 light,float3 tint,float skin,float foliage,float thickness){float wrap=max(0.0,(nl+.5)/1.5),back=pow(max(0.0,dot(-light,view)),4.0)*exp(-max(0.0,thickness));return tint*(skin*(wrap+back)+foliage*max(0.0,-nl))*.318309886;}
+float3 hbHairSpecular(float3 normal,float3 view,float3 light,float3 tangent,float3 tint,float rough,float shift){float3 h=safeNormal(view+light);if(dot(tangent,tangent)<.000001)tangent=cross(normal,abs(normal.z)<.9?float3(0,0,1):float3(0,1,0));float3 t1=safeNormal(tangent+normal*shift),t2=safeNormal(tangent-normal*(shift+.3));float exponent=clamp(2.0/max(rough*rough,.001)-2.0,1.0,2048.0),a=sqrt(max(0.0,1.0-pow(dot(t1,h),2.0))),b=sqrt(max(0.0,1.0-pow(dot(t2,h),2.0))),direction=max(0.0,dot(normal,light))+.25*max(0.0,-dot(normal,light));return (float3(.04,.04,.04)*pow(a,exponent)+tint*.12*pow(b,exponent*.5))*(exponent+2.0)*.159154943*direction;}
+float2 hbEyeUV(float2 uv,float3 view,float depth,float iris){return uv-view.xy/max(abs(view.z),.1)*max(depth,0.0)*clamp(iris,0.0,1.0);}
+
 )HLSL";
 }

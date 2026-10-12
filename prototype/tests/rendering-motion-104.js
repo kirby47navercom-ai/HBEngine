@@ -1,0 +1,19 @@
+// Readbacks belong to this acceptance fixture, never the normal renderer.
+export async function checkDeformationMotion104(webgl){
+ const THREE=await import(webgl?'three':'three/webgpu'),{ScreenFrameState}=await import('../screen-effects.js');
+ const renderer=webgl?new THREE.WebGLRenderer():new THREE.WebGPURenderer();renderer.outputColorSpace=THREE.LinearSRGBColorSpace;renderer.setSize(32,32);if(!webgl)await renderer.init();
+ const scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-1,1,1,-1,.1,10);camera.position.z=3;camera.coordinateSystem=webgl?THREE.WebGLCoordinateSystem:renderer.coordinateSystem;camera.updateProjectionMatrix();camera.updateMatrixWorld();
+ const geometry=new THREE.PlaneGeometry(2,2),count=geometry.attributes.position.count;
+ geometry.morphTargetsRelative=true;geometry.morphAttributes.position=[new THREE.Float32BufferAttribute(Array(count).fill([.2,0,0]).flat(),3)];
+ geometry.setAttribute('skinIndex',new THREE.Uint16BufferAttribute(new Uint16Array(count*4),4));geometry.setAttribute('skinWeight',new THREE.Float32BufferAttribute(Array(count).fill([1,0,0,0]).flat(),4));
+ const material=webgl?new THREE.MeshBasicMaterial():new THREE.MeshStandardNodeMaterial(),skin=new THREE.SkinnedMesh(geometry,material),bone=new THREE.Bone();skin.frustumCulled=false;skin.add(bone);skin.bind(new THREE.Skeleton([bone]));scene.add(skin);
+ const history=new ScreenFrameState();let pass,context,target,gpuPass;
+ if(webgl){const {ObjectMotionPass}=await import('../object-motion-gl.js');pass=new ObjectMotionPass();pass.setSize(32,32);target=pass.target;}
+ else{const {gpuObjectMotion,gpuSurfaceOutputs}=await import('../screen-effects-gpu.js');context=gpuObjectMotion(renderer);const T=await import('three/tsl');gpuPass=T.pass(scene,camera,{type:THREE.FloatType});gpuPass.getTextureNode('hbObjectMotion');gpuPass.setMRT(gpuSurfaceOutputs(false,context.node));target=gpuPass.renderTarget;}
+ const render=async time=>{scene.updateMatrixWorld(true);const frame=history.begin(camera,{motionBlurEnabled:true,motionBlurStrength:1},32,32,time,scene,!webgl);if(webgl)pass.render(renderer,scene,camera,frame);else{context.frame=frame;context.previous.fromArray(frame.packed.previousVP);gpuPass.updateBefore({renderer});}const pixels=webgl?new Uint16Array(4):await renderer.readRenderTargetPixelsAsync(target,16,16,1,1,1);if(webgl)renderer.readRenderTargetPixels(target,16,16,1,1,pixels);frame.end();if(context)context.frame=null;return webgl?Array.from(pixels,THREE.DataUtils.fromHalfFloat):Array.from(pixels);};
+ const proof={};try{
+  await render(0);bone.position.x=.2;skin.morphTargetInfluences[0]=1;const changed=await render(.016),still=await render(.032);if(!(changed[3]>0&&Math.abs(still[0]-changed[0]-.2)<.01))throw Error('Skin+morph previous coordinates '+JSON.stringify({changed,still}));proof.skinMorph={changed,still};
+  scene.remove(skin);const instances=new THREE.InstancedMesh(new THREE.PlaneGeometry(2,2),material,1);instances.frustumCulled=false;scene.add(instances);instances.setMatrixAt(0,new THREE.Matrix4());await render(.048);instances.setMatrixAt(0,new THREE.Matrix4().makeTranslation(.2,0,0));instances.instanceMatrix.needsUpdate=true;const moved=await render(.064),settled=await render(.080);if(!(moved[3]>0&&Math.abs(settled[0]-moved[0]-.1)<.01))throw Error('Instance previous coordinates '+JSON.stringify({moved,settled}));proof.instances={moved,settled};
+  instances.userData.hbMotionVectors='camera';const cameraOnly=await render(.096);if(cameraOnly[3]!==0)throw Error('Camera-only deformation flag');instances.userData.hbMotionVectors='none';const none=await render(.112);if(none[3]<2)throw Error('Force-no-motion flag');instances.geometry.dispose();proof.modes=true;return {passed:true,...proof};
+ }finally{history.reset();geometry.dispose();skin.skeleton.dispose();material.dispose();if(webgl)pass.dispose();else{renderer.setMRT(null);renderer.setRenderTarget(null);gpuPass.dispose();}renderer.dispose();}
+}

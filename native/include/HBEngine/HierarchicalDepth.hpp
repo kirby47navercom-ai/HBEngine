@@ -1,0 +1,23 @@
+#pragma once
+#include "Render.hpp"
+namespace hb::gpu {
+#if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
+class HierarchicalDepth {
+ Device& gpu;
+ struct Level{UINT width=0,height=0,offset=0;detail::Com<ID3D11Texture2D> texture;detail::Com<ID3D11ShaderResourceView> view;detail::Com<ID3D11UnorderedAccessView> output;};
+ std::vector<Level> levels;Level atlas;UINT width=0,height=0;detail::Com<ID3D11ComputeShader> compute;std::array<detail::Com<ID3D11Buffer>,3> buffers;std::size_t slot=0;
+ struct Constants{std::array<UINT,4> source,output;};
+ Level image(UINT w,UINT h,UINT offset,bool writable){Level l;l.width=w;l.height=h;l.offset=offset;D3D11_TEXTURE2D_DESC d{};d.Width=w;d.Height=h;d.MipLevels=d.ArraySize=d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.BindFlags=D3D11_BIND_SHADER_RESOURCE|(writable?D3D11_BIND_UNORDERED_ACCESS:0);detail::check(gpu.device->CreateTexture2D(&d,nullptr,&l.texture.p),"Hi-Z image");detail::check(gpu.device->CreateShaderResourceView(l.texture.p,nullptr,&l.view.p),"Hi-Z view");if(writable)detail::check(gpu.device->CreateUnorderedAccessView(l.texture.p,nullptr,&l.output.p),"Hi-Z output");return l;}
+ void program(){if(compute.p)return;const std::string source=R"HLSL(
+cbuffer Settings:register(b0){uint4 sourceInfo,outputInfo;};Texture2D<float2> previous:register(t0);RWTexture2D<float2> nextLevel:register(u0);
+[numthreads(8,8,1)]void Downsample(uint3 id:SV_DispatchThreadID){if(any(id.xy>=outputInfo.xy))return;float2 range=float2(1,0);[unroll]for(uint y=0;y<2;y++){[unroll]for(uint x=0;x<2;x++){uint2 pixel=min(id.xy*2+uint2(x,y),sourceInfo.xy-1)+sourceInfo.zw;float2 v=previous.Load(int3(pixel,0));if(outputInfo.z)v=v.xx;range=float2(min(range.x,v.x),max(range.y,v.y));}}nextLevel[id.xy]=range;}
+)HLSL";auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");detail::Com<ID3DBlob> code,error;auto result=compile(source.data(),source.size(),"HBHiZ",nullptr,nullptr,"Downsample","cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Hi-Z compile failed");detail::check(gpu.device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&compute.p),"Hi-Z compute");D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& b:buffers)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&b.p),"Hi-Z constants");}
+public:
+ explicit HierarchicalDepth(Device& device):gpu(device){}
+ ID3D11ShaderResourceView* build(ID3D11ShaderResourceView* depth,const std::array<float,4>& area){const UINT w=UINT(area[2]),h=UINT(area[3]);if(!depth||!w||!h)throw std::runtime_error("Hi-Z depth/area invalid");if(width!=w||height!=h){release();width=w;height=h;UINT a=w,b=h,offset=0;do{a=(a+1)/2;b=(b+1)/2;levels.push_back(image(a,b,offset,true));offset+=b;}while(a>1||b>1);atlas=image(levels.front().width,offset,0,false);}program();gpu.context->OMSetRenderTargets(0,nullptr,nullptr);auto* source=depth;UINT sw=w,sh=h;bool first=true;for(auto& l:levels){Constants c{{sw,sh,first?UINT(area[0]):0,first?UINT(area[1]):0},{l.width,l.height,first?1u:0u,0}};auto* cb=buffers[slot].p;slot=(slot+1)%buffers.size();D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(gpu.context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Hi-Z constants map");std::memcpy(mapped.pData,&c,sizeof(c));gpu.context->Unmap(cb,0);auto* output=l.output.p;gpu.context->CSSetShader(compute.p,nullptr,0);gpu.context->CSSetConstantBuffers(0,1,&cb);gpu.context->CSSetShaderResources(0,1,&source);gpu.context->CSSetUnorderedAccessViews(0,1,&output,nullptr);gpu.context->Dispatch((l.width+7)/8,(l.height+7)/8,1);output=nullptr;ID3D11ShaderResourceView* empty=nullptr;gpu.context->CSSetUnorderedAccessViews(0,1,&output,nullptr);gpu.context->CSSetShaderResources(0,1,&empty);D3D11_BOX box{0,0,0,l.width,l.height,1};gpu.context->CopySubresourceRegion(atlas.texture.p,0,0,l.offset,0,l.texture.p,0,&box);source=l.view.p;sw=l.width;sh=l.height;first=false;}gpu.context->CSSetShader(nullptr,nullptr,0);return atlas.view.p;}
+ std::array<float,4> shape()const{return {float(atlas.width),float(atlas.height),float(levels.size()),1};}
+ std::uint64_t bytes()const{std::uint64_t pixels=std::uint64_t(atlas.width)*atlas.height;for(const auto& l:levels)pixels+=std::uint64_t(l.width)*l.height;return pixels*8;}
+ void release(){levels.clear();atlas=Level{};width=height=0;}
+};
+#endif
+}

@@ -201,6 +201,30 @@
           "record": "docs/RENDERING_103.md",
           "readScope": "Own web789–812 read: thin-lens CoC radius, sign/unit conventions, radius limits and quality rings. Full tile/near-far/combination implementation and SDK API not read or imported.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine",
+          "record": "docs/RENDERING_104.md",
+          "readScope": "Own web lines0–55,109–188 read for surface cache, screen/fallback geometry and bounded quality costs. Remaining body, linked API, media and full implementation not analyzed. HB triangle BVH is not Lumen SDF/cards/hardware RT.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shading-models-in-unreal-engine",
+          "record": "docs/RENDERING_104.md",
+          "readScope": "Own web lines0–71,126–199 read: skin/foliage/hair dual lobes/tangent, eye geometry/UV dependency. Linked APIs, exact diffusion profiles, hair strands and eye geometry not analyzed or imported.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Motion-Vectors.html",
+          "record": "docs/RENDERING_104.md",
+          "readScope": "Own page body115–156 read: object then camera movement, renderer modes, alpha-clipped hair and transparent overwrite/depth limitations. Linked API and entire HDRP corpus not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://gpuopen.com/manuals/fidelityfx_sdk/techniques/stochastic-screen-space-reflections/",
+          "record": "docs/RENDERING_104.md",
+          "readScope": "Own web lines736–765,908–950 read: depth hierarchy/coarse ray intersections. Full SPD/SSSR stochastic traversal, denoiser and SDK APIs not analyzed or imported. HB min/max atlas uses per-level GPU passes.",
+          "wholeCorpus": false
         }
       ]
     },

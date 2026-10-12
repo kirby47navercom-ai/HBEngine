@@ -3,6 +3,7 @@ import {materialTextureTypes,textureNodeType,texturePlaceholder} from './texture
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3,Vector4,NoColorSpace,RepeatWrapping,ClampToEdgeWrapping,DoubleSide,FrontSide} from 'three/webgpu';
 import * as T from 'three/tsl';
+import {attachAdvancedShading} from './advanced-shading-gpu.js';
 import {attachGPURefraction} from './gpu-refraction.js';
 import {materialParameterKey,materialTextureParameter,resolveMaterialInputs,resolveMaterialAttributes,materialDefaults,materialGraph,materialCatalog,materialNodeKey,materialPins,normalizedMaterialEdges,validMaterialGraph,surfaceInputs,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 
@@ -49,6 +50,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       else if(key==='log2'||key==='squareRoot')code=v.max(key==='log2'?1e-6:0)[key==='log2'?'log2':'sqrt']();
       else if(key==='smoothstep')code=smooth(args.min,args.max,v);
       else if(['cross','distance','dot','min','max','step'].includes(key))code=T[key](a,b);
+      else if(key==='eyeUV')code=args.uv.sub(args.view.xy.div(args.view.z.abs().max(.1)).mul(args.depth.max(0)).mul(args.iris.clamp(0,1)));
       else if(key==='reflect')code=T.reflect(args.direction,args.normal.normalize());
       else if(['add','subtract','multiply','divide'].includes(key))code=a[({add:'add',subtract:'sub',multiply:'mul',divide:'div'})[key]](key==='divide'?T.mix(valueNode(1e-6,type),b,T.step(valueNode(1e-6,type),b.abs())):b);
       else if(key==='power')code=a.max(0).pow(b);else if(key==='lerp')code=T.mix(a,b,args.alpha);else if(key==='clamp')code=v.clamp(args.min,args.max);else if(key==='saturate')code=v.clamp(0,1);else if(key==='oneMinus')code=valueNode(1,type).sub(v);
@@ -63,7 +65,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
   const material=new MeshPhysicalNodeMaterial({color:'#ffffff',transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?DoubleSide:FrontSide});
   const emission=T.uniform(surface.emissiveIntensity);surfaceUniforms.set('emissiveIntensity',emission);
   material.colorNode=values.baseColor;material.roughnessNode=values.roughness.clamp(0,1);material.metalnessNode=values.metallic.clamp(0,1);material.opacityNode=values.opacity;material.emissiveNode=values.emissive.mul(emission);material.aoNode=values.ao.clamp(0,1);material.iorNode=values.ior.clamp(1,2.5);
-  material.normalNode=T.TBNViewMatrix.mul(values.normal.normalize()).normalize();
+  attachAdvancedShading(material,values);material.normalNode=T.TBNViewMatrix.mul(values.normal.normalize()).normalize();
   const enableCoat=()=>{material.clearcoatNode=values.clearcoat.clamp(0,1);material.clearcoatRoughnessNode=values.clearcoatRoughness.clamp(0,1);material.clearcoatNormalNode=T.TBNViewMatrix.mul(values.clearcoatNormal.normalize()).normalize();};
   if(connected.has('clearcoat')||surface.clearcoat>0||connected.has('clearcoatNormal'))enableCoat();
   const enableSheen=()=>{material.sheenNode=values.sheenColor.clamp(0,1).mul(values.sheen.clamp(0,1));material.sheenRoughnessNode=values.sheenRoughness.clamp(.07,1);};if(connected.has('sheen')||surface.sheen>0)enableSheen();

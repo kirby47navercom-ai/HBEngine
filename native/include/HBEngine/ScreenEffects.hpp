@@ -11,8 +11,35 @@ namespace hb::gpu { inline constexpr const char* screenEffectsShader=R"HLSL(
 vec3 hbWorldAt(vec2 uv,float depth){vec4 q=mul(hbInverseVP,vec4(uv.x*2.0-1.0,uv.y*hbCoordinates.z+hbCoordinates.w,depth*hbCoordinates.x+hbCoordinates.y,1.0));return q.xyz/q.w;}
 vec3 hbProject(vec3 p,mat4 vp){vec4 q=mul(vp,vec4(p,1.0));vec3 ndc=q.xyz/q.w;return vec3(ndc.x*.5+.5,(ndc.y-hbCoordinates.w)/hbCoordinates.z,(ndc.z-hbCoordinates.y)/hbCoordinates.x);}
 bool hbInside(vec3 p){return p.x>0.0&&p.x<1.0&&p.y>0.0&&p.y<1.0&&p.z>0.0&&p.z<1.0;}
+
+vec2 hbDepthRange(vec2 uv,float level){vec2 size=ceil(hbScreenSize*.5);float offset=0.0;for(int j=1;j<16;j++){if(float(j)>=level)break;offset+=size.y;size=ceil(size*.5);}return texture2D(hbDepthHierarchy,(vec2(floor(clamp(uv,float2(0,0),float2(.999999,.999999))*hbScreenSize/exp2(level)).x,floor(clamp(uv,float2(0,0),float2(.999999,.999999))*hbScreenSize/exp2(level)).y+offset)+.5)/hbHierarchy.xy).rg;}
+bool hbEmptySegment(vec3 start,vec3 end){if(hbHierarchy.w<.5||!hbInside(start)||!hbInside(end))return false;
+ vec2 lo=min(start.xy,end.xy),hi=max(start.xy,end.xy);float footprint=max((hi.x-lo.x)*hbScreenSize.x,(hi.y-lo.y)*hbScreenSize.y),level=clamp(ceil(log2(max(2.0,footprint)))+1.0,1.0,hbHierarchy.z);
+ float nearDepth=min(min(hbDepthRange(lo,level).x,hbDepthRange(hi,level).x),min(hbDepthRange(vec2(lo.x,hi.y),level).x,hbDepthRange(vec2(hi.x,lo.y),level).x));return max(start.z,end.z)<nearDepth;
+}
+
+
+vec4 hbGeometryLoad(float index){return texture2D(hbGeometryScene,(vec2(fmod(index,hbGeometryInfo.x),floor(index/hbGeometryInfo.x))+.5)/hbGeometryInfo.xy);}
+float hbGeometryTriangle(vec3 origin,vec3 direction,float triangleId){float at=hbGeometryInfo.w+triangleId*6.0;vec3 a=hbGeometryLoad(at).xyz,e1=hbGeometryLoad(at+1.0).xyz,e2=hbGeometryLoad(at+2.0).xyz,p=cross(direction,e2);float determinant=dot(e1,p);if(abs(determinant)<.0000001)return -1.0;float inverse=1.0/determinant;vec3 s=origin-a,q=cross(s,e1);float u=dot(s,p)*inverse,v=dot(direction,q)*inverse,t=dot(e2,q)*inverse;return u>=0.0&&v>=0.0&&u+v<=1.0&&t>hbGeometryLimits.y?t:-1.0;}
+vec4 hbGeometryTrace(vec3 origin,vec3 direction,float distance){float node=0.0,closest=distance,triangleId=-1.0;vec3 safeDirection=(step(vec3(0,0,0),direction)*2.0-1.0)*max(abs(direction),vec3(.0000001,.0000001,.0000001)),inverse=float3(1,1,1)/safeDirection;
+ [loop] for(int walk=0;walk<4096;walk++){if(node>=hbGeometryInfo.z||float(walk)>=hbGeometryLimits.x)break;vec4 lower=hbGeometryLoad(node*3.0),upper=hbGeometryLoad(node*3.0+1.0);vec3 a=(lower.xyz-origin)*inverse,b=(upper.xyz-origin)*inverse,nearAt=min(a,b),farAt=max(a,b);float nearDistance=max(max(nearAt.x,nearAt.y),nearAt.z),farDistance=min(min(farAt.x,farAt.y),farAt.z);if(farDistance<max(nearDistance,0.0)||nearDistance>closest){node=lower.w;continue;}float count=hbGeometryLoad(node*3.0+2.0).x;for(int j=0;j<4;j++){if(float(j)>=count)break;float id=upper.w+float(j),t=hbGeometryTriangle(origin,direction,id);if(t>0.0&&t<closest){closest=t;triangleId=id;}}node+=1.0;}
+ return vec4(closest,triangleId,triangleId>=0.0?1.0:0.0,node>=hbGeometryInfo.z?1.0:0.0);
+}
+vec3 hbGeometryLighting(vec3 worldPoint,vec3 normal,float triangleId){float at=hbGeometryInfo.w+triangleId*6.0;vec3 color=hbGeometryLoad(at+4.0).xyz,result=hbGeometryLoad(at+5.0).xyz;
+ [loop] for(int light=0;light<int(hbGeometryLimits.w);light++){float base=hbGeometryLimits.z+float(light)*4.0;vec4 p=hbGeometryLoad(base),d=hbGeometryLoad(base+1.0),c=hbGeometryLoad(base+2.0),cone=hbGeometryLoad(base+3.0);vec3 delta=p.xyz-worldPoint;float distance=length(delta),attenuation=1.0;vec3 direction=p.w<.5?normalize(d.xyz):delta/max(distance,.000001);
+  if(p.w>.5){attenuation=1.0/max(pow(distance,cone.z),.01);if(d.w>0.0)attenuation*=pow(clamp(1.0-pow(distance/d.w,4.0),0.0,1.0),2.0);if(p.w>1.5)attenuation*=smoothstep(cone.x,max(cone.x+.00001,cone.y),dot(-direction,normalize(d.xyz)));}
+  float cosine=max(dot(normal,direction),0.0);if(cosine>0.0&&attenuation>0.0){vec4 shadow=hbGeometryTrace(worldPoint+normal*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0));if(shadow.z<.5&&shadow.w>.5)result+=color*c.rgb*c.w*(cosine*attenuation*.318309886);}
+ }return result;
+}
+vec3 hbGeometryHemisphere(vec3 normal,float angle,float radius){vec3 tangent=normalize(cross(normal,abs(normal.z)<.9?vec3(0,0,1):vec3(0,1,0))),bitangent=cross(normal,tangent);return normalize(normal*sqrt(1.0-radius)+(tangent*cos(angle)+bitangent*sin(angle))*sqrt(radius));}
+vec3 hbGeometryIndirect(vec3 worldPoint,vec3 normal){vec3 total=vec3(0,0,0);[loop] for(int sampleIndex=0;sampleIndex<16;sampleIndex++){if(float(sampleIndex)>=hbGeometry.w)break;float phase=float(sampleIndex)*2.39996323+.392699;vec3 direction=hbGeometryHemisphere(normal,phase,(float(sampleIndex)+.5)/hbGeometry.w),origin=worldPoint+normal*hbGeometryLimits.y*2.0,throughput=vec3(1,1,1),sum=vec3(0,0,0);
+  [loop] for(int bounce=0;bounce<4;bounce++){if(float(bounce)>=hbGeometry.z)break;vec4 hit=hbGeometryTrace(origin,direction,hbGeometry.y);if(hit.z<.5||hit.w<.5)break;vec3 p=origin+direction*hit.x,n=hbGeometryLoad(hbGeometryInfo.w+hit.y*6.0+3.0).xyz;if(dot(n,direction)>0.0)n=-n;sum+=throughput*hbGeometryLighting(p,n,hit.y);throughput*=hbGeometryLoad(hbGeometryInfo.w+hit.y*6.0+4.0).xyz;origin=p+n*hbGeometryLimits.y*2.0;direction=hbGeometryHemisphere(n,phase+float(bounce+1)*1.618034,.5);}
+  total+=sum;
+ }return total*(3.141592654/max(1.0,hbGeometry.w));
+}
+
 vec4 hbRay(vec3 p,vec3 direction){float steps=hbIndirect.y,stepSize=hbReflection.z/steps,previousDifference=-1.0;
- [loop] for(int i=1;i<=64;i++){if(float(i)>steps)break;float distance=float(i)*stepSize;vec3 at=hbProject(p+direction*distance,hbCurrentVP);if(!hbInside(at))break;float d=texture2D(hbScreenDepth,at.xy).r;if(d>=.99999){previousDifference=-1.0;continue;}float difference=hbLinearDepth(at.z)-hbLinearDepth(d);
+ [loop] for(int i=1;i<=64;i++){if(float(i)>steps)break;if(float(i+3)<=steps&&hbEmptySegment(hbProject(p+direction*(float(i-1)*stepSize),hbCurrentVP),hbProject(p+direction*(float(i+3)*stepSize),hbCurrentVP))){i+=3;previousDifference=-1.0;continue;}float distance=float(i)*stepSize;vec3 at=hbProject(p+direction*distance,hbCurrentVP);if(!hbInside(at))break;float d=texture2D(hbScreenDepth,at.xy).r;if(d>=.99999){previousDifference=-1.0;continue;}float difference=hbLinearDepth(at.z)-hbLinearDepth(d);
   if(difference>0.0){
    if(previousDifference<=0.0&&hbIndirect.z>0.0){float loDistance=distance-stepSize,hiDistance=distance;
     [loop] for(int j=0;j<8;j++){if(float(j)>=hbIndirect.z)break;float mid=(loDistance+hiDistance)*.5;vec3 probe=hbProject(p+direction*mid,hbCurrentVP);float sceneDepth=texture2D(hbScreenDepth,probe.xy).r;if(sceneDepth<.99999&&hbLinearDepth(probe.z)>hbLinearDepth(sceneDepth))hiDistance=mid;else loDistance=mid;}
@@ -25,7 +52,9 @@ vec4 hbRay(vec3 p,vec3 direction){float steps=hbIndirect.y,stepSize=hbReflection
 }
 vec4 hbScreenResolve(vec2 uv){vec4 original=texture2D(hbScreenSource,uv);float depth=texture2D(hbScreenDepth,uv).r;vec3 c=original.rgb,p=hbWorldAt(uv,depth);vec4 nr=texture2D(hbSurfaceNormal,uv),am=texture2D(hbSurfaceAlbedo,uv);vec3 n=nr.xyz*2.0-1.0;
  if(depth<.99999&&dot(n,n)>.5){n=normalize(n);vec3 incident=hbEye.w>.5?hbForward.xyz:normalize(p-hbEye.xyz);vec3 start=p+n*min(.05,hbReflection.w*.25);
+  if(hbAmbientAO.z>0.0){float z=hbLinearDepth(depth),occ=0.0;float radius=max(1.0,hbAmbientAO.x*hbScreenSize.y*hbCamera.w/(hbCamera.z>.5?1.0:max(z,.01)));vec2 delta=vec2(radius,radius)/hbScreenSize;for(int i=0;i<8;i++){float a=float(i)*.785398163,other=hbLinearDepth(texture2D(hbScreenDepth,clamp(uv+vec2(cos(a),sin(a))*delta,0.0,1.0)).r),d=z-other;occ+=step(hbAmbientAO.y,d)*(1.0-smoothstep(0.0,hbAmbientAO.x*2.0,d));}c-=texture2D(hbSurfaceAmbient,uv).rgb*clamp(occ*.125*hbAmbientAO.z,0.0,1.0);}
   if(hbReflection.x>0.0&&nr.w<hbReflection.y){vec4 hit=hbRay(start,reflect(incident,n));vec3 f0=mix(vec3(.04,.04,.04),am.rgb,am.a),f=f0+(float3(1,1,1)-f0)*pow(1.0-max(0.0,dot(n,-incident)),5.0);float fade=1.0-smoothstep(hbReflection.y*.75,hbReflection.y,nr.w);c=mix(c,c*(float3(1,1,1)-f)+hit.rgb*f,hit.a*hbReflection.x*fade);}
+  if(hbGeometry.x>0.0&&hbGeometryInfo.z>0.0)c+=hbGeometryIndirect(p,n)*am.rgb*(1.0-am.a)*hbGeometry.x*.318309886;
   if(hbIndirect.x>0.0){vec3 tangent=normalize(cross(n,abs(n.z)<.9?vec3(0.0,0.0,1.0):vec3(0.0,1.0,0.0))),bitangent=cross(n,tangent),sum=vec3(0.0,0.0,0.0);[loop] for(int i=0;i<4;i++){float a=float(i)*1.570796327+.392699;vec3 direction=normalize(n*.70710678+(tangent*cos(a)+bitangent*sin(a))*.70710678);vec4 hit=hbRay(start,direction);sum+=hit.rgb*hit.a;}c+=sum*.25*am.rgb*(1.0-am.a)*hbIndirect.x;}
  }
  vec3 previous=hbProject(p,hbPreviousVP);bool reuse=hbTemporal.w>.5;

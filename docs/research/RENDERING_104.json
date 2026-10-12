@@ -1,0 +1,804 @@
+{
+  "version": 1,
+  "date": "2026-10-12T11:28:12.415Z",
+  "previousCommit": "f05e0fc29bdbf3a4621d8775c547cfd4394485dc",
+  "scope": [
+    "Conservative GPU min/max Hi-Z atlas and four-step empty segment skipping with odd viewport ownership",
+    "Stackless triangle BVH GI including offscreen emitters and blockers; bounded multi-bounce and direct hit lighting; static signature reuse",
+    "Shared skin/wax wrap and backscatter, thin leaf transmission lobe, polygonal hair two lobes, Eye UV and five presets; Surface/function/attributes/layers/CPP/BP/AI and inspector",
+    "Previous bones, morph weights and instance matrices for temporal/motion paths; successful-frame history, birth/topology/reset/camera/none modes and lazy release",
+    "Optional indirect-only AO with existing legacy AO retained, ambient MRT and coat/sheen/fog energy preservation",
+    "C++ standalone ScreenEffects now requests HDR even with no Bloom/PostProcess settings"
+  ],
+  "sources": [
+    {
+      "id": "unreal-lumen",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/lumen-technical-details-in-unreal-engine",
+      "status": 200,
+      "sha256": "97aab6d1caa801c836b5223398ef80d6f2e3308426827ee2efa635fe5867397b",
+      "bytes": 311312,
+      "snapshot": "native/build/rendering-research-104/unreal-lumen.source",
+      "readScope": "Own web lines0–55,109–188 read for surface cache, screen/fallback geometry and bounded quality costs. Remaining body, linked API, media and full implementation not analyzed. HB triangle BVH is not Lumen SDF/cards/hardware RT.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "unreal-shading",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shading-models-in-unreal-engine",
+      "status": 200,
+      "sha256": "f140b28534f07ff38a5b074422877b901d1b7c1e1e8578e7b72916d70e26d969",
+      "bytes": 94758,
+      "snapshot": "native/build/rendering-research-104/unreal-shading.source",
+      "readScope": "Own web lines0–71,126–199 read: skin/foliage/hair dual lobes/tangent, eye geometry/UV dependency. Linked APIs, exact diffusion profiles, hair strands and eye geometry not analyzed or imported.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "unity-motion",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Motion-Vectors.html",
+      "status": 200,
+      "sha256": "a2e066f27d5e5ceabb5d1524c8bc4d8708fb82684653f95e5e076baeefce1c5c",
+      "bytes": 13263,
+      "snapshot": "native/build/rendering-research-104/unity-motion.source",
+      "readScope": "Own page body115–156 read: object then camera movement, renderer modes, alpha-clipped hair and transparent overwrite/depth limitations. Linked API and entire HDRP corpus not read.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "amd-sssr",
+      "url": "https://gpuopen.com/manuals/fidelityfx_sdk/techniques/stochastic-screen-space-reflections/",
+      "status": 200,
+      "sha256": "f868a481ebe91dff255b9695758c72405ffcfb69e981a4c0867f1c4facbb38cf",
+      "bytes": 374083,
+      "snapshot": "native/build/rendering-research-104/amd-sssr.source",
+      "readScope": "Own web lines736–765,908–950 read: depth hierarchy/coarse ray intersections. Full SPD/SSSR stochastic traversal, denoiser and SDK APIs not analyzed or imported. HB min/max atlas uses per-level GPU passes.",
+      "wholeCorpus": false
+    }
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "2a90d58022ca95935c9613a5ced5e1c72354d4d86336a5aa3a457046354d6b63"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "8237569ea101d11b0fe49189d3472d493db07c7703c39f351c96c0c306dc7216"
+    },
+    {
+      "file": "native/include/HBEngine/Compute.hpp",
+      "sha256": "e0a2c3b4e6785b51cc634325f45928d06434181dc4253e06654ff8e744f1db6f"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "17eb38c7ae030006ff534452fc35285c52a72178c5219fbe76c41843398fc329"
+    },
+    {
+      "file": "native/include/HBEngine/SceneShading.hpp",
+      "sha256": "f1aa9f652d09673c2b81137cc749560091c018bba2a05bf2557d8258140c39cf"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "7344d64e499d30b94151ff5858a6f4355c0e16d2d85eb1b9fdfd9e93e9f66ce1"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "3d32c3b06a704fd6392145bc26620f23bc357e932ec4f64f380fe146e964ad02"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "438e4f06caecdf5d93e96c08acf247f5800edccb67fd9563952a43ccdb987fee"
+    },
+    {
+      "file": "prototype/app.js",
+      "sha256": "f0e010e583a2fecdd5baf771cb7dc80308bce2a72286ff2f8fd61fe178f2a81b"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "e8355d51da1054b91c6c6f5f5c339af25ca833507e4b6eee68073d067cb7630f"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "304c0b072280b796425b1e595053524cf2a558642809c16472a944db20def8e2"
+    },
+    {
+      "file": "prototype/gpu-materials.js",
+      "sha256": "c36ff316fb6b1d84c65eecc7bfb86ba649f7fab7440dc470bb98e49d2e7eb40c"
+    },
+    {
+      "file": "prototype/material-runtime.js",
+      "sha256": "c9fbae3c3a97f5c2d52e5fed8f74dd9b60ec135ae5188f7908dcafa6d03f1990"
+    },
+    {
+      "file": "prototype/native-materials.js",
+      "sha256": "d035e584c2bc8def49570f9b6cd7edf45f0d7ac5633f3fbe661f1aff7139a7a9"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "2c19344ffc6593784716214ef058b5b4cd7b7a4a88cbfe2af08480609c0c3e89"
+    },
+    {
+      "file": "prototype/object-motion-gl.js",
+      "sha256": "811e37b32e5527d21f4cb4145b2a1849807d44cd98d28e988b86c5ddd799e953"
+    },
+    {
+      "file": "prototype/object-motion.js",
+      "sha256": "7a4fd06fe1973ddf01bbaebfef378d5dd3dd5d4a849ae0ecd76882ce13609ef3"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "e0eeaf071db017800e82885c7d114b00bde2b4504172d0459bab410fb4a3a3ae"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "4ac4862689708a42bcd37b2f61a27e4106881ff6b92dd37a73a0660fb876a435"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "0feae74fb794bc34060b0604af7ee8c2f18ff896315448f0792226742c2c7150"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "3be34a86a542b8219796e9eb16450af590389b8908ac1b11d7beac11dbec716d"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "d9d32b1b88ab16e1e539f3ee33c1ba60cadf0f2563bf9764a622a74c6a2a0420"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "fd1f2cf13c02683baedf8d2c80061fffe563c582e9ccb41995f262e423ab57ee"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "2bad3314e0ba24b05be057a414980330902e160d4965856eb996b5779aa34aeb"
+    },
+    {
+      "file": "tools/check-gpu-scene.mjs",
+      "sha256": "fae97b5ea493f25754bac3e56251f2438212ab061e66c0d3a2f354920652711c"
+    },
+    {
+      "file": "tools/check-native-scene-window.mjs",
+      "sha256": "0a2fa20ed3a7933bfcc1ce371a60fa3033f4cfdebf5083490ed674cba0829de2"
+    },
+    {
+      "file": "tools/check-rendering-101.mjs",
+      "sha256": "b9b653b394b10ffe20e978555b9bf7d213dd71d06d805298c0f10f9ba89f6273"
+    },
+    {
+      "file": "tools/generate-screen-effects.mjs",
+      "sha256": "f7b4c41e9864f04cce6e9c0e20ddb902f920f6d7130fdf71be65875967044ce5"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "4b43cc9a44bfd9c40391da1d1bae4975be71f5d5f0eaa96357c1f9df6cdfcb15"
+    },
+    {
+      "file": "native/include/HBEngine/HierarchicalDepth.hpp",
+      "sha256": "a981f77fe56bf582547c43800d351d95670be8187474b17cea499126a26ead02"
+    },
+    {
+      "file": "native/tests/scene-rendering-104.hpp",
+      "sha256": "a991bb4bd262e6f39f66ec14440db95492124f0d04f2b46c2c946569d2981374"
+    },
+    {
+      "file": "prototype/advanced-shading-gpu.js",
+      "sha256": "85e8862f792a12ca05657df626f3d44fad1ac0e2e96f58197e5e398d694e351f"
+    },
+    {
+      "file": "prototype/advanced-shading.js",
+      "sha256": "e4036c75ba3ef881c0c366bc126b049ece891c058e6e26e9e6c5974238d3f295"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "1a802b26d9617661c39812eeacefb3daaf81704f0cbfabe3b5e0b62a0bf1cb33"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "f5f96b4fb2daff6f53021389ebfc6e0d3424719d1c297d9192dad4879796c074"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "718277eec9f0e14aef2a9bac9bc8eed6ce87e91ce1eb2aafd214a84905ec0998"
+    },
+    {
+      "file": "prototype/hierarchical-depth-gl.js",
+      "sha256": "e72b1b497fd14ad9c173ebbec35df915a578202b00f78da91253c0cca9b310f5"
+    },
+    {
+      "file": "prototype/hierarchical-depth-gpu.js",
+      "sha256": "507dd9fd549de7fbc9860c7c3d3bfafe3983c30b93ba2255784783a0ba74f803"
+    },
+    {
+      "file": "prototype/hierarchical-depth.js",
+      "sha256": "5729ff443ad593504cbbb3fa96e82cee66ebc4748c8540c857b09898b3d652a9"
+    },
+    {
+      "file": "prototype/motion-deformation-gpu.js",
+      "sha256": "40621b4f4defdab74a4c812c3a814e2bd3fcc193ba082d56ce69c9aa2d01a3d4"
+    },
+    {
+      "file": "prototype/tests/rendering-motion-104.js",
+      "sha256": "a4250d27c946a7c61817ed10369836f416b8847e4a134b33f7a6d1180c24d951"
+    },
+    {
+      "file": "tools/check-rendering-104.mjs",
+      "sha256": "9214d87f3746152d36a6325f67bb81d0eef162ec4f5b99411d96ce3108f46c90"
+    },
+    {
+      "file": "tools/rendering-104-fixture.mjs",
+      "sha256": "884f4217a7273f5454675c1b0e15a1771e82dd96c1c7498b4f66a288d4973ceb"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "8237569ea101d11b0fe49189d3472d493db07c7703c39f351c96c0c306dc7216"
+    },
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "sha256": "e0a2c3b4e6785b51cc634325f45928d06434181dc4253e06654ff8e744f1db6f"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "17eb38c7ae030006ff534452fc35285c52a72178c5219fbe76c41843398fc329"
+    },
+    {
+      "path": "native/include/HBEngine/SceneShading.hpp",
+      "sha256": "f1aa9f652d09673c2b81137cc749560091c018bba2a05bf2557d8258140c39cf"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "7344d64e499d30b94151ff5858a6f4355c0e16d2d85eb1b9fdfd9e93e9f66ce1"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "3d32c3b06a704fd6392145bc26620f23bc357e932ec4f64f380fe146e964ad02"
+    },
+    {
+      "path": "prototype/app.js",
+      "sha256": "f0e010e583a2fecdd5baf771cb7dc80308bce2a72286ff2f8fd61fe178f2a81b"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "sha256": "e8355d51da1054b91c6c6f5f5c339af25ca833507e4b6eee68073d067cb7630f"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "304c0b072280b796425b1e595053524cf2a558642809c16472a944db20def8e2"
+    },
+    {
+      "path": "prototype/gpu-materials.js",
+      "sha256": "c36ff316fb6b1d84c65eecc7bfb86ba649f7fab7440dc470bb98e49d2e7eb40c"
+    },
+    {
+      "path": "prototype/material-runtime.js",
+      "sha256": "c9fbae3c3a97f5c2d52e5fed8f74dd9b60ec135ae5188f7908dcafa6d03f1990"
+    },
+    {
+      "path": "prototype/native-materials.js",
+      "sha256": "d035e584c2bc8def49570f9b6cd7edf45f0d7ac5633f3fbe661f1aff7139a7a9"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "2c19344ffc6593784716214ef058b5b4cd7b7a4a88cbfe2af08480609c0c3e89"
+    },
+    {
+      "path": "prototype/object-motion-gl.js",
+      "sha256": "811e37b32e5527d21f4cb4145b2a1849807d44cd98d28e988b86c5ddd799e953"
+    },
+    {
+      "path": "prototype/object-motion.js",
+      "sha256": "7a4fd06fe1973ddf01bbaebfef378d5dd3dd5d4a849ae0ecd76882ce13609ef3"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "sha256": "e0eeaf071db017800e82885c7d114b00bde2b4504172d0459bab410fb4a3a3ae"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "4ac4862689708a42bcd37b2f61a27e4106881ff6b92dd37a73a0660fb876a435"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "0feae74fb794bc34060b0604af7ee8c2f18ff896315448f0792226742c2c7150"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "3be34a86a542b8219796e9eb16450af590389b8908ac1b11d7beac11dbec716d"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "d9d32b1b88ab16e1e539f3ee33c1ba60cadf0f2563bf9764a622a74c6a2a0420"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "fd1f2cf13c02683baedf8d2c80061fffe563c582e9ccb41995f262e423ab57ee"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "2bad3314e0ba24b05be057a414980330902e160d4965856eb996b5779aa34aeb"
+    },
+    {
+      "path": "tools/check-gpu-scene.mjs",
+      "sha256": "fae97b5ea493f25754bac3e56251f2438212ab061e66c0d3a2f354920652711c"
+    },
+    {
+      "path": "tools/check-native-scene-window.mjs",
+      "sha256": "0a2fa20ed3a7933bfcc1ce371a60fa3033f4cfdebf5083490ed674cba0829de2"
+    },
+    {
+      "path": "tools/check-rendering-101.mjs",
+      "sha256": "b9b653b394b10ffe20e978555b9bf7d213dd71d06d805298c0f10f9ba89f6273"
+    },
+    {
+      "path": "tools/generate-screen-effects.mjs",
+      "sha256": "f7b4c41e9864f04cce6e9c0e20ddb902f920f6d7130fdf71be65875967044ce5"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "4b43cc9a44bfd9c40391da1d1bae4975be71f5d5f0eaa96357c1f9df6cdfcb15"
+    },
+    {
+      "path": "native/include/HBEngine/HierarchicalDepth.hpp",
+      "sha256": "a981f77fe56bf582547c43800d351d95670be8187474b17cea499126a26ead02"
+    },
+    {
+      "path": "prototype/advanced-shading-gpu.js",
+      "sha256": "85e8862f792a12ca05657df626f3d44fad1ac0e2e96f58197e5e398d694e351f"
+    },
+    {
+      "path": "prototype/advanced-shading.js",
+      "sha256": "e4036c75ba3ef881c0c366bc126b049ece891c058e6e26e9e6c5974238d3f295"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "1a802b26d9617661c39812eeacefb3daaf81704f0cbfabe3b5e0b62a0bf1cb33"
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "f5f96b4fb2daff6f53021389ebfc6e0d3424719d1c297d9192dad4879796c074"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "718277eec9f0e14aef2a9bac9bc8eed6ce87e91ce1eb2aafd214a84905ec0998"
+    },
+    {
+      "path": "prototype/hierarchical-depth-gl.js",
+      "sha256": "e72b1b497fd14ad9c173ebbec35df915a578202b00f78da91253c0cca9b310f5"
+    },
+    {
+      "path": "prototype/hierarchical-depth-gpu.js",
+      "sha256": "507dd9fd549de7fbc9860c7c3d3bfafe3983c30b93ba2255784783a0ba74f803"
+    },
+    {
+      "path": "prototype/hierarchical-depth.js",
+      "sha256": "5729ff443ad593504cbbb3fa96e82cee66ebc4748c8540c857b09898b3d652a9"
+    },
+    {
+      "path": "prototype/motion-deformation-gpu.js",
+      "sha256": "40621b4f4defdab74a4c812c3a814e2bd3fcc193ba082d56ce69c9aa2d01a3d4"
+    },
+    {
+      "path": "prototype/tests/rendering-motion-104.js",
+      "sha256": "a4250d27c946a7c61817ed10369836f416b8847e4a134b33f7a6d1180c24d951"
+    },
+    {
+      "path": "tools/check-rendering-104.mjs",
+      "sha256": "9214d87f3746152d36a6325f67bb81d0eef162ec4f5b99411d96ce3108f46c90"
+    },
+    {
+      "path": "tools/rendering-104-fixture.mjs",
+      "sha256": "884f4217a7273f5454675c1b0e15a1771e82dd96c1c7498b4f66a288d4973ceb"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-x9IP3R/acceptance.json",
+      "sha256": "e09f7c432e2a3a58c10365ab3386736c1b0a15b1ec3e1fc19158f8f75861ef8f",
+      "scope": "Full actual native GPU: 61 HLSL nodes, 2D, particles, shadows, probes, skin/morph/instances, rendering098–104 and unavailable guard. Includes previous-pose blur pixels and optional ownership.",
+      "passed": true,
+      "rendering104": {
+        "ambientOnlyEmissionPreserved": true,
+        "geometryBounceRed": 245,
+        "hiZOddViewportThinEdge": true,
+        "hiZRelease": true,
+        "morphSkinInstanceMotionPixels": true,
+        "offscreenGeometryOcclusion": true,
+        "passed": true,
+        "previousPoseLazyRelease": true,
+        "runtimeAutomaticReadbacks": 0,
+        "skinLeafHairPixels": true
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true
+      },
+      "compiledNodes": 61,
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-YKaCM0/acceptance.json",
+      "sha256": "5643e325568f65d95068af285d039c480bfe6df425abb0f60d540483c07e0411",
+      "scope": "Final hidden D3D11 Windows player rendering098–104, actual C++/Blueprint, offscreen red bounce, Hi-Z on/off and shading pixels, error0/exit0/server closed.",
+      "passed": true,
+      "rendering104": {
+        "passed": true,
+        "off": [
+          84,
+          101,
+          96,
+          255
+        ],
+        "on": [
+          212,
+          101,
+          96,
+          255
+        ],
+        "ray": [
+          37,
+          58,
+          57,
+          255
+        ],
+        "hiz": [
+          37,
+          58,
+          57,
+          255
+        ],
+        "leaf": [
+          10,
+          77,
+          5,
+          255
+        ],
+        "skin": [
+          6,
+          55,
+          4,
+          255
+        ],
+        "deformation": null,
+        "typedCpp": true,
+        "optionalRelease": true,
+        "scope": "Bounded triangle bounce, coarse conservative Hi-Z skipping, surface lobes and indirect-only AO; no path tracing or full-game FPS assertion.",
+        "backend": "D3D11"
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    {
+      "file": "native/build/gpu-scene-1BOTa3/acceptance.json",
+      "sha256": "6fe6ccbcbbee7e6e68a1fa558feed33592a1b8c22b9c37ec3fab527ca6ff5920",
+      "scope": "Final hidden WebGPU Windows player rendering098–104 plus actual skin+morph and instance previous-coordinate pixels, modes and cleanup.",
+      "passed": true,
+      "rendering104": {
+        "passed": true,
+        "off": [
+          136,
+          139,
+          138,
+          255
+        ],
+        "on": [
+          220,
+          145,
+          142,
+          255
+        ],
+        "ray": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "hiz": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "leaf": [
+          0,
+          82,
+          15,
+          255
+        ],
+        "skin": [
+          2,
+          66,
+          14,
+          255
+        ],
+        "deformation": {
+          "passed": true,
+          "skinMorph": {
+            "changed": [
+              0.315673828125,
+              0.515625,
+              0.2929292917251587,
+              0.2929292917251587
+            ],
+            "still": [
+              0.515673816204071,
+              0.515625,
+              0.2929292917251587,
+              0.2929292917251587
+            ]
+          },
+          "instances": {
+            "moved": [
+              0.4156494140625,
+              0.515625,
+              0.2929292917251587,
+              0.2929292917251587
+            ],
+            "settled": [
+              0.5156494379043579,
+              0.515625,
+              0.2929292917251587,
+              0.2929292917251587
+            ]
+          },
+          "modes": true
+        },
+        "typedCpp": true,
+        "optionalRelease": true,
+        "scope": "Bounded triangle bounce, coarse conservative Hi-Z skipping, surface lobes and indirect-only AO; no path tracing or full-game FPS assertion.",
+        "backend": "WebGPU"
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-fs1LD0/acceptance.json",
+      "sha256": "07adde463c750e34bd8cb3fc25c9e2c82aefd36eb7b2734912bc884b91603825",
+      "scope": "Final hidden WebGL2 Windows player rendering098–104 plus actual skin+morph and instance previous-coordinate pixels, modes and cleanup.",
+      "passed": true,
+      "rendering104": {
+        "passed": true,
+        "off": [
+          136,
+          139,
+          138,
+          255
+        ],
+        "on": [
+          220,
+          145,
+          142,
+          255
+        ],
+        "ray": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "hiz": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "leaf": [
+          0,
+          82,
+          15,
+          255
+        ],
+        "skin": [
+          2,
+          66,
+          14,
+          255
+        ],
+        "deformation": {
+          "passed": true,
+          "skinMorph": {
+            "changed": [
+              0.315673828125,
+              0.515625,
+              0.292724609375,
+              0.292724609375
+            ],
+            "still": [
+              0.515625,
+              0.515625,
+              0.292724609375,
+              0.292724609375
+            ]
+          },
+          "instances": {
+            "moved": [
+              0.41552734375,
+              0.515625,
+              0.292724609375,
+              0.292724609375
+            ],
+            "settled": [
+              0.515625,
+              0.515625,
+              0.292724609375,
+              0.292724609375
+            ]
+          },
+          "modes": true
+        },
+        "typedCpp": true,
+        "optionalRelease": true,
+        "scope": "Bounded triangle bounce, coarse conservative Hi-Z skipping, surface lobes and indirect-only AO; no path tracing or full-game FPS assertion.",
+        "backend": "WebGL2"
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/cpu-rendering-104.json",
+      "sha256": "21199da9d3ab72e2e36518a7b83235a90522970e498a8e0d91fff1a327181752",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-104.mjs",
+          "output": "104 PASS: odd Hi-Z, stackless BVH/layout guards, offscreen authored GI/static reuse, skin/wax/leaf/hair/eye authoring, 2049 instance/skin/morph previous poses, reset/release and optional AO/GI guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-103.mjs",
+          "output": "103 PASS: physical/manual lens defaults, mm/FOV/runtime updates, perspective-only DOF, sample spatial rounding, property visibility and typed guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-102.mjs",
+          "output": "102 PASS: quality packing/ranges, integer guards, legacy and indirect overrides, no double spatial weighting and typed component edit",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-101.mjs",
+          "output": "101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-100.mjs",
+          "output": "{\"passed\":true,\"defaultsOff\":true,\"projectionRestored\":true,\"cameraAndOwnerResets\":true,\"depthReprojectionRoundTrip\":true,\"spatialOverrides\":true,\"typedValidation\":true}",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-099.mjs",
+          "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-effects.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-post.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "native/build/release-source-parity-104.json",
+      "sha256": "40f0f7d9a622e91a396980dc97fb9678ba98ad85e861ce3e077bcdeec13e68da",
+      "sourceFiles": 485,
+      "synced": [],
+      "scope": "All source files under prototype/tools/native/include except screenshots; no ignored build, user games or projects."
+    }
+  ],
+  "costs": {
+    "defaultHiZ": false,
+    "defaultGeometryGI": false,
+    "defaultAdvancedLobeWeights": 0,
+    "defaultAOMode": "all",
+    "hiZPixelBytes": 8,
+    "hiZImages": "atlas plus ceil-halved level chain",
+    "hiZConstantsBytes": 32,
+    "hiZConstantFrames": 3,
+    "geometryNodeBytes": 48,
+    "geometryTriangleBytes": 96,
+    "geometryLightBytes": 64,
+    "geometryRebuild": "CPU signature reuse; changing poses/geometry/materials/lights rebuild BVH and float image",
+    "nativeDrawConstantBytesAdded": 48,
+    "nativeDrawConstantRing": 3,
+    "nativeScreenConstantBytesAdded": 80,
+    "nativeScreenConstantRing": 3,
+    "ambientAOOptionalImageBytesPerPixel": 8,
+    "previousNativePoseBytes": "poseBytes * 3 when requested",
+    "previousNativeInstanceBytes": "capacity * 64 * 3 when requested",
+    "automaticRuntimeGPUCPUReadbacksAdded": 0,
+    "scope": "Logical format arithmetic and explicit resource assertions; no whole-frame FPS, device VRAM/RAM or mobile measurement."
+  },
+  "failuresResolved": [
+    "WebGPU depth loads are scalar, float range loads vectors: separate initial-depth and subsequent-range programs remove scalar .rg WGSL error.",
+    "Optional WebGPU atlas/BVH node bindings now point to a live history fallback before disposing disabled textures, preventing destroyed-texture submissions.",
+    "Native HLSL reserved triangle/point names and scalar-to-float2 constructors corrected in the generator, preserving generator --check.",
+    "Native ScreenEffects-only frame originally bypassed Bloom HDR allocation; shared activation includes screen settings and native GI now yields red245 versus black0.",
+    "Mixed-sign GPU AABB vectors use componentwise step, not scalar comparison select.",
+    "Acceptance fixtures use correct orthographic geometry normals, receiver dimensions, offscreen emitter extent and AO world-depth radius.",
+    "Browser deformation acceptance now renders through the actual scene PassNode/MRT configuration; native independently checks morph/skin/instance blurred versus force-no-motion pixels."
+  ],
+  "limits": [
+    "No whole Unreal/Unity corpus/API or exact-engine equivalence claim. Sources record read portions and remaining linked APIs/media.",
+    "Hi-Z coarse conservative skipping is not full SSSR/SPD/DDA, stochastic sampling or temporal denoising.",
+    "GI radiance evaluated per triangle centroid; no texture texel/UV/alpha coverage, transparent refraction, SDF/cards/surface cache/hardware RT or path tracing. Masked triangles treated solid.",
+    "Large changing scenes rebuild CPU BVH; performance gain and whole-game FPS remain unmeasured.",
+    "Surface wrap/backscatter and polygonal dual hair lobes are approximations, not diffusion-profile/strand transport or full Unreal eye model. Eye UV is available separately.",
+    "Transparent/2D/custom displacement/custom vertex motion, colored transmission shadows and foreground DOF reconstruction remain separate rendering scope.",
+    "No actual phone, whole-game stress/FPS/VRAM, or inspection of the running user game."
+  ],
+  "installation": {
+    "state": "Grouped checks passed; installation pending",
+    "restartUserWindows": false
+  }
+}
