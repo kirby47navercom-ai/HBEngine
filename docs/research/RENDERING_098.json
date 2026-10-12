@@ -823,8 +823,13 @@
     "research": "Web body/excerpts directly read, later raw HTML snapshots hashed; full downloaded files and linked bodies not claimed read"
   },
   "installation": {
-    "state": "Build prepared; immutable user bundle installation and verification follow feature commit",
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "49b27fd6dd4ece50570fb9e0c5a6565b20f125a3",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\723182f274f648a2",
+    "bundleHash": "723182f274f648a24b22a5f2f9c5fcb0ba881ec83028d206ad56c25087eb0444",
+    "files": 1987,
     "receipt": "docs/research/USER_INSTALL_098.json",
-    "restartUserWindows": false
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
