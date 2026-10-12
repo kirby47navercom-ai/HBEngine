@@ -954,8 +954,14 @@
     "Compressed EXR format/size coverage and all image variants not established by the uncompressed private fixture."
   ],
   "installation": {
-    "state": "Grouped verification passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "5e2c5e92f2955296bc6fa3db825fce3f312a33e4",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\f0d779094f10ebd7",
+    "bundleHash": "f0d779094f10ebd77417688a520a061ac0ed392524510c19bf6f5cc81fced2ed",
+    "files": 2076,
+    "receipt": "docs/research/USER_INSTALL_107.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   },
   "followup": {
     "priority": "After107 installation",
