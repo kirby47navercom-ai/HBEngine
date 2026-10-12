@@ -45,16 +45,16 @@ export function applyGPUFog(scene,resolved,state){
 export class GPUBloomRendering{
   constructor(){this.views=new Map();}
   render(renderer,scene,camera,objects){
-    const p=postProcessSettings(objects);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled&&p.bloomStrength>0),chromatic=!!p?.chromaticAberrationEnabled,key=bloomOn+':'+chromatic;
+    const p=postProcessSettings(objects,camera.getWorldPosition(new Vector3()),scene.userData.hbPostWorld);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled&&p.bloomStrength>0),chromatic=!!p?.chromaticAberrationEnabled,depthOn=!!(p?.dofEnabled||p?.aoEnabled),exposureOn=!!p?.autoExposureEnabled,aa=p?.antiAliasing==='fxaa',key=[bloomOn,chromatic,depthOn,exposureOn,aa].join(':');
     if(view&&view.key!==key){this.release(view);this.views.delete(renderer);view=null;}
     if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
     if(!view){
-      const scenePass=pass(scene,camera),color=scenePass.getTextureNode('output'),effect=bloomOn?bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold):null,post=new PostProcessing(renderer),grading=gpuPostProcessing(effect?color.add(effect):color,chromatic);post.outputNode=grading.node;
+      const scenePass=pass(scene,camera),color=scenePass.getTextureNode('output'),effect=bloomOn?bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold):null,post=new PostProcessing(renderer),grading=gpuPostProcessing(effect?color.add(effect):color,chromatic,{depth:depthOn?scenePass.getTextureNode('depth'):null,exposure:exposureOn,meterSource:color,aa,renderer});post.outputColorTransform=false;post.outputNode=grading.node;
       view={scenePass,effect,post,grading,key,scale:p.bloomResolutionScale};const setSize=effect?.setSize.bind(effect);
       // r180 has no bloom resolutionScale; clamp the smallest of its five mip levels to one texel.
       if(effect)effect.setSize=(w,h)=>setSize(Math.max(32,w*view.scale),Math.max(32,h*view.scale));this.views.set(renderer,view);
     }
-    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0);view.post.render();
+    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0,camera,scene);view.post.render();view.grading.after(renderer);
   }
   release(view){view.grading.dispose();view.post.dispose();view.scenePass.dispose();view.effect?.dispose();
     // r180 BloomNode.dispose owns targets only; release its blur/filter material owners too.

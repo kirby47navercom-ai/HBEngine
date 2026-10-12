@@ -116,7 +116,7 @@ public:
         Program()=default;Program(Program&&)=default;Program& operator=(Program&&)=default;
     };
 private:
-    Device& gpu;
+    Device& gpu;detail::Com<ID3D11ShaderResourceView> postLookupView;std::uint32_t postLookupSize=0;
     ParticleRenderer surface;BloomPass bloom;SceneProbes probes;
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     std::array<detail::Com<ID3D11Buffer>,3> probeConstants;
@@ -388,7 +388,7 @@ public:
         endProbe();end2D();endShadow();for(const auto& light:lightDefinitions)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
         if(!finite(value.viewProjection)||!finite(value.clear)||!finite(value.eye)||!finite(value.ambient)||!finite(value.fog)||!finite(value.fogRange)||!finite(value.heightFog)||!finite(value.viewport)||(value.viewportClear&&!finite(*value.viewportClear))||!std::isfinite(value.exposure)||value.exposure<0||!std::isfinite(value.time))throw std::runtime_error("Scene frame invalid");
         const auto validate=[](const std::array<float,4>& rect){if(!finite(rect))throw std::runtime_error("Scene viewport invalid");for(std::size_t i=0;i<2;i++)if(rect[i]<D3D11_VIEWPORT_BOUNDS_MIN||rect[i]>D3D11_VIEWPORT_BOUNDS_MAX||rect[i+2]<0||rect[i]+rect[i+2]>D3D11_VIEWPORT_BOUNDS_MAX)throw std::runtime_error("Scene viewport bounds invalid");};validate(value.viewport);if(value.scissor)validate(*value.scissor);if((value.viewport[2]==0)!=(value.viewport[3]==0))throw std::runtime_error("Scene viewport size invalid");
-        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}frame=value;surface.clear(value.clear);bloom.begin(surface.width(),surface.height(),value.viewport,value.bloom,value.clear,value.transmission,value.postProcess);transmissionReady=false;if(!value.transmission)releaseTransmission();draws_=shadowDraws_=0;
+        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}if(value.postProcess&&value.postProcess->lookup[1]>0&&value.postProcess->lookup[1]!=postLookupSize)throw std::runtime_error("Post lookup size mismatch");frame=value;surface.clear(value.clear);bloom.begin(surface.width(),surface.height(),value.viewport,value.bloom,value.clear,value.transmission,value.postProcess);transmissionReady=false;if(!value.transmission)releaseTransmission();draws_=shadowDraws_=0;
         if(value.viewportClear){if(!background.vertices.p)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
     void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const Bindings2D* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr){
@@ -420,7 +420,7 @@ public:
     std::uint64_t particleStorageBytes() const{return surface.particleStorageBytes();}
     std::uint64_t particleIndexAllocations() const{return surface.particleIndexAllocations();}std::uint64_t particleSortPasses() const{return surface.particleSortPasses();}std::uint64_t particleCountReadbacks() const{return surface.particleCountReadbacks();}
     void resize(std::uint32_t width,std::uint32_t height){if(width!=surface.width()||height!=surface.height())releasePostProcess();surface.resize(width,height);}
-    void finish(){endProbe();end2D();endShadow();bloom.complete(surface.target.p,frame.exposure,frame.scissor);std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
+    void finish(){endProbe();end2D();endShadow();bloom.complete(surface.target.p,frame.exposure,frame.scissor,surface.depth.p,postLookupView.p);std::lock_guard<std::mutex> lock(gpu.mutex);finishTiming();gpu.context->PSSetShader(nullptr,nullptr,0);gpu.context->VSSetShader(nullptr,nullptr,0);ID3D11Buffer* buffer=nullptr;UINT stride=0,offset=0;gpu.context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);gpu.context->IASetIndexBuffer(nullptr,DXGI_FORMAT_R32_UINT,0);}
     bool present(std::uint32_t interval=0){finish();return surface.present(interval);}
     std::vector<std::uint8_t> readPixels(){finish();return surface.readPixels();}
     std::uint32_t width() const{return surface.width();}std::uint32_t height() const{return surface.height();}
@@ -436,7 +436,8 @@ public:
     }
     std::uint64_t transmissionTextureBytes() const{std::uint64_t bytes=0;for(auto w=transmissionWidth,h=transmissionHeight;w&&h;w=std::max(1u,w/2),h=std::max(1u,h/2)){bytes+=std::uint64_t(w)*h*8;if(w==1&&h==1)break;}return bytes+std::uint64_t(transmissionWidth)*transmissionHeight*4;}
     std::uint64_t transmissionCopies() const{return transmissionCopies_;}std::uint64_t transmissionAllocations() const{return transmissionAllocations_;}
-    void releasePostProcess(){releaseTransmission();bloom.release();}
+    void setPostLookup(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookupSize=value?value->height:0;if(postLookupView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}postLookupView=std::move(next);}
+    void releasePostProcess(){postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}
     std::uint64_t bloomDispatches() const{return bloom.dispatches();}
     std::uint64_t bloomAllocations() const{return bloom.allocations();}

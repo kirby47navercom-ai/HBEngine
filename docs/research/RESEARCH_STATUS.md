@@ -1,3 +1,5 @@
+2026-10-12: [099 후처리 제작·실행 묶음](../RENDERING_099.md), [기계 기록](RENDERING_099.json). Unity6000.0 지정 자체 본문3개, UE5.8 선택 구역2개와 Three r180 지정 소스를 읽고 구현했어요. 원문 수집·지정 읽기·전체 corpus/API/실기기·전체 게임 성능을 구분해요. AO 원문은 저장했으나 자체 본문 미독이며 브라우저 접근 실패를 기록해요. 새 기능 검증·설치 상태는 해당 기록으로 확인해요.
+
 2026-10-12: [098 렌더링 묶음](../RENDERING_098.md), [기계 기록](RENDERING_098.json). UE 자체 굴절/GI·Cloth 구역, Unity6000.0 색 보정/비네트, 과거 HDRP10.5.1 굴절, Filament 부분 설명, Three r180 지정 구역을 읽었어요. 원문23 SHA·설치 소스16 일치를 기록하며 저장과 전체 읽기를 구분해요. 네 렌더링 묶음/세 실행기/C++·BP·AI 통합 검사; 전체 corpus/API·실기기/FPS·나머지 전체 엔진 상태는 승격하지 않아요.
 
 2026-10-12: [색 흡수·벡터 파라미터·색 분산](../NATIVE_VOLUME_097.md). Materials SetVector/SetColor C++·BP2·AI, 공용 Surface/속성·함수/레이어/MI·GLSL/TSL/HLSL, Glass/TintedGlass/Prism을 연결했어요. 1,000회 typed uniform·clone·다중 슬롯 사전 거부와 전체 GPU60노드/기존2D·조명·파티클·프로브 회귀, 실제 세 실행기의 C++/T·V키 BP·흡수/분산/재사용·오류0/종료0를 검증했어요. 설치 갱신 후 영수증을 별도로 남기며 전체 corpus/FPS/실기기·남은 셰이딩/후처리/GI를 완료 처리하지 않아요.

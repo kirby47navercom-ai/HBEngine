@@ -93,6 +93,24 @@
           "record": "docs/research/RENDERING_098.json",
           "readScope": "Unity6000.0 own article HTML122–164 read; linked package/API/media unread.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/Volumes.html",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Own h1 article body/Volume concepts read; linked configuration/profile/API/media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/depth-of-field-volume-override-reference.html",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Own h1 article body/override properties read; linked API and media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-color-lookup.html",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Own h1 Color Lookup article body read; linked texture/tutorial/API unread.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -392,6 +410,24 @@
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/shading-models-in-unreal-engine",
           "record": "docs/research/RENDERING_098.json",
           "readScope": "Cloth section web lines161–179 only; remaining shading model bodies/API unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-effects-in-unreal-engine",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Selected web text17–28,42–59,248–310 volume/DOF/exposure/AO/motion excerpts read; remaining own body/API/media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/auto-exposure-in-unreal-engine",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Selected web text12–38 and176–184 Basic/log luminance/properties read; remaining own body/API/media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/ambient-occlusion-in-unreal-engine",
+          "record": "docs/research/RENDERING_099.json",
+          "readScope": "Raw source saved; browser access failed. Body/API/media not read.",
           "wholeCorpus": false
         }
       ]

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {Matrix4,Vector3} from 'three';
+import {componentDefaults,makeSceneComponent,validComponentProperties} from '../prototype/scene-components.js';
+import {postVolumeWeight,resolvePostVolumes} from '../prototype/post-volume.js';
+import {postProcessSettings,packedPostProcess,lookupSize} from '../prototype/post-processing.js';
+import {renameAssetReferences} from '../prototype/asset-documents.js';
+const volume=(id,p,position=[0,0,0])=>({id,position,components:[makeSceneComponent('PostProcessVolume',{bloomEnabled:false,...p})]});
+const global=volume('global',{colorGradingEnabled:true,postExposure:1}),local=volume('local',{unbound:false,volumeSize:[2,2,2],blendDistance:2,priority:1,colorGradingEnabled:true,postExposure:3});
+assert.equal(resolvePostVolumes([global,local],[0,0,0]).postExposure,3);assert.equal(resolvePostVolumes([global,local],[2,0,0]).postExposure,2);assert.equal(resolvePostVolumes([global,local],[4,0,0]).postExposure,1);assert.equal(resolvePostVolumes([global,local],null).postExposure,1);
+const p=componentDefaults('PostProcessVolume');Object.assign(p,{unbound:false,volumeShape:'sphere',volumeRadius:2,weight:.5,blendDistance:2});assert.equal(postVolumeWeight({},p,[3,0,0]),.25);assert.equal(postVolumeWeight({},p,[3,0,0],new Matrix4().makeScale(2,1,1)),.5);assert.equal(postVolumeWeight({},p,[0,0,0],new Matrix4().makeScale(0,1,1)),0);
+const rotated=new Matrix4().makeRotationZ(Math.PI/2);rotated.setPosition(new Vector3(10,0,0));Object.assign(p,{volumeShape:'box',volumeSize:[2,6,2],weight:1,blendDistance:0});assert.equal(postVolumeWeight({},p,[12,0,0],rotated),1);assert.equal(postVolumeWeight({},p,[10,2,0],rotated),0);
+local.components[0].properties.postOverrides=['color'];const inherited=volume('bloom',{bloomEnabled:true,bloomStrength:2});assert.equal(resolvePostVolumes([inherited,local],[0,0,0]).bloomStrength,2);
+assert.equal(resolvePostVolumes([global,volume('off',{priority:1})]).colorGradingEnabled,false);assert.equal(resolvePostVolumes([volume('aa',{antiAliasing:'fxaa',weight:.5})]).aaStrength,.5);assert.equal(resolvePostVolumes([volume('lut',{colorLookup:'Assets/LUT.svg',weight:.5})]).lookupIntensity,.5);assert.equal(postProcessSettings([volume('off',{})]),null);assert.equal(resolvePostVolumes([volume('ae',{autoExposureEnabled:true,weight:.5})]).autoExposureWeight,.5);assert.equal(resolvePostVolumes([volume('ae',{autoExposureEnabled:true}),volume('off',{priority:1})]).autoExposureEnabled,false);
+for(const values of [{exposureMinEV:3,exposureMaxEV:2},{postOverrides:['bogus']},{postOverrides:['color','color']},{colorLookup:'../evil.png'},{gamma:[0,1,1]},{volumeSize:[0,1,1]},{dofRadius:17}])assert.equal(validComponentProperties('PostProcessVolume',values),false,JSON.stringify(values));
+assert.ok(validComponentProperties('PostProcessVolume',{colorLookup:'Assets/LUT.svg',antiAliasing:'fxaa',dofEnabled:true,aoEnabled:true}));assert.equal(lookupSize({image:{width:256,height:16}}),16);assert.equal(lookupSize({image:{width:256,height:15}}),0);
+const packed=packedPostProcess(p,1,{near:1,far:100,isOrthographicCamera:true});assert.deepEqual(packed.camera,[1,100,1,1]);for(const v of Object.values(packed))assert.ok(v.length===4&&v.every(Number.isFinite));
+const doc={components:[makeSceneComponent('PostProcessVolume',{colorLookup:'Assets/LUT.svg'})]};renameAssetReferences(doc,'Assets/LUT.svg','Assets/New.svg');assert.equal(doc.components[0].properties.colorLookup,'Assets/New.svg');
+console.log('099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards');

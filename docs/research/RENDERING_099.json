@@ -1,0 +1,1002 @@
+{
+  "version": 1,
+  "date": "2026-10-12T06:38:22.977Z",
+  "previousCommit": "f7ed754e5e06a9f63e03cbe5a0f1e2bcd8b88a09",
+  "scope": [
+    "Spatial box/sphere weighted override volumes",
+    "White balance/lift/gamma/gain",
+    "Linear strip LUT authoring/runtime/tone mapping",
+    "GPU Basic log metering/adaptation",
+    "Depth-aware blur/foreground guard",
+    "Projected contact depth occlusion",
+    "Display FXAA/separate native pass",
+    "Shared CPP/BP/AI validation and async asset readiness"
+  ],
+  "sources": [
+    {
+      "key": "unity-volume",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/Volumes.html",
+      "file": "native/build/rendering-research-099/unity-volume.source",
+      "sha256": "63f322cdb05c5d8b8d3d4ee2ccb15c925146d2f5d0b5a54e86ac910d57eacc7c",
+      "bytes": 15107,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Own h1 article body/Volume concepts read; linked configuration/profile/API/media unread."
+    },
+    {
+      "key": "unity-dof",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/depth-of-field-volume-override-reference.html",
+      "file": "native/build/rendering-research-099/unity-dof.source",
+      "sha256": "facdca810dc5f7044aa3232fb51a4b21a98439c1e5b270c63a965b130cdc6ed7",
+      "bytes": 16433,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Own h1 article body/override properties read; linked API and media unread."
+    },
+    {
+      "key": "unity-lut",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/post-processing-color-lookup.html",
+      "file": "native/build/rendering-research-099/unity-lut.source",
+      "sha256": "a041f47ac71a9ce3a9292b1247ab35bacee1358c166cbe3c7087d1ca5f6e4159",
+      "bytes": 12391,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Own h1 Color Lookup article body read; linked texture/tutorial/API unread."
+    },
+    {
+      "key": "ue-post",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/post-process-effects-in-unreal-engine",
+      "file": "native/build/rendering-research-099/ue-post.source",
+      "sha256": "2575a605dcb3f3598c2cb3b1785631b20a969fdd941cd86454e1e7485a6d1517",
+      "bytes": 158440,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Selected web text17–28,42–59,248–310 volume/DOF/exposure/AO/motion excerpts read; remaining own body/API/media unread."
+    },
+    {
+      "key": "ue-exposure",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/auto-exposure-in-unreal-engine",
+      "file": "native/build/rendering-research-099/ue-exposure.source",
+      "sha256": "ffad07831a88e2af740c7fb02118ef77bbf38567a340fff561d95d753ac923bf",
+      "bytes": 154876,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Selected web text12–38 and176–184 Basic/log luminance/properties read; remaining own body/API/media unread."
+    },
+    {
+      "key": "ue-ao",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/ambient-occlusion-in-unreal-engine",
+      "file": "native/build/rendering-research-099/ue-ao.source",
+      "sha256": "b8601350403221e0f2e382e8a1a3565f3f14871526a1d049c8084eb5f298a17b",
+      "bytes": 30730,
+      "wholeSourceRead": false,
+      "wholeCorpus": false,
+      "readScope": "Raw source saved; browser access failed. Body/API/media not read."
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/examples/jsm/shaders/OutputShader.js",
+      "sha256": "353479f77a8d7e2629d49ccac9fc2f5dbfdda5442e0adf867b00377a2fcb0cb2",
+      "readScope": "Own output shader source read; tone mapping before sRGB.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/display/ToneMappingNode.js",
+      "sha256": "96d1cb5d26afa1e2520b389ee61e05627b5ed2768dae324e82dc3465a3363943",
+      "readScope": "setup/export tail only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/utils/RTTNode.js",
+      "sha256": "e88ca3b67509a02160a591ac262c14609da2a2269ff3d255b58d5f1a0505fab7",
+      "readScope": "Own RTT module source read; dependency/API links not audited.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/PostProcessing.js",
+      "sha256": "d3622f53d1d4108a4e01f7c6c47aeb09684a0982d9c1fce04d0cb77bae912a68",
+      "readScope": "render/_update and output-transform context sections.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/Renderer.js",
+      "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+      "readScope": "copyTextureToTexture2606–2611 excerpt.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/accessors/TextureNode.js",
+      "sha256": "a8323f6d977faefad3bf38f6da92f36b9273e48cea7c5889a1c4bcaa33f4ea14",
+      "readScope": "UV flip/source texture setup296–309 excerpt.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/examples/jsm/shaders/FXAAShader.js",
+      "sha256": "b8303d179f9d5d40a052483e8cfb49c29afb6e60396080e472a6950b51700dac",
+      "readScope": "Main/export tail read; installed implementation reused, not whole shader analysis.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/examples/jsm/tsl/display/FXAANode.js",
+      "sha256": "fc6050ed5c728c5e06aff8657d9683d32fe7ba43b0cf89402614748733ec2e62",
+      "readScope": "Setup/export tail read; installed implementation reused, not whole module analysis.",
+      "wholeCorpus": false
+    }
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "e5f10ebae8675a066a6cd11c493ae91fa492d857eafabdff29baed125ba442ef"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "df47753045f8817cefe3717e8de0041ed65ca063530b7725a228e666394444a3"
+    },
+    {
+      "file": "native/include/HBEngine/Render.hpp",
+      "sha256": "073fd27ac6523498fc5e979790b4f38a37800314811171ceed11ca62853ef654"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "9c36e2da682d2f39545256ecc90ef13ffde9d47266b0da049f2d0e4bbce07dbe"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "6e45e77d614afa4f0badc0e827b6814267f45f218306625c4cb66e84418ddeb0"
+    },
+    {
+      "file": "prototype/app.js",
+      "sha256": "336fe0f286a2d47f99732960fc7fde56f7097f15259bd676ad8ab5c3130c4c3b"
+    },
+    {
+      "file": "prototype/asset-documents.js",
+      "sha256": "0598fb46c4118b3b0ae8d7058195bfc198dc4c76b982cf2c393c59a8be7a348d"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "e5af0f0ab978c44a35bb96b385cd97382783fa07d0802e82192794f1e8b7c310"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "78943567df610c7bc9a2d986e3290eeb0f90bd9e38cec393d4b99c31c6ecd0a7"
+    },
+    {
+      "file": "prototype/gpu-post-processing.js",
+      "sha256": "c7d828e703899b85ff8db2302725181de5a5f2551ea5062349117950fb47a5d9"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "31609e098b72758bb5880cc404bdc42771b89ff0366c65f5f961ffec58ecab4d"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "e43e66fbf336feaa1c7acb90aa04bc3c20c2b19109d7b2ca0884e8a4d524f357"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "d3e12369d0770af3b64aae2b7fd7c5218701a38d55073c4a9a8ed20a71abde93"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "f123c22e231e30da15312645ab0eae6352f144347733129b4a73e05116975240"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "d75c2edbdc31a7289635ee98250732dc61cc3fe01e7679c75e5df198ad4767bd"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "dbf6d67cd787d07f44aab0929c395f3ed90c57cac0203b605605a01b29951706"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "2fed405612c6d96aaec2092b80269457c102dd8fef840f76238d40efcfd64c2a"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenPost.hpp",
+      "sha256": "bb94c8efac6ae510c83260ab1f3fa018f46659a58edcf0f2fc745acbb1efcd14"
+    },
+    {
+      "file": "native/tests/scene-rendering-099.hpp",
+      "sha256": "76ab57dbd20a93e3c545d8953aa773ca4f15e7e11d63521873562bec31eab0ff"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "5f9b783668fd7341eb08221a1f89a0af401160d0e44dcd85f59cbd4bc1e46881"
+    },
+    {
+      "file": "tools/check-rendering-099.mjs",
+      "sha256": "2d4939aed16dd28d98f6cf5622baf6654319c703da9cffc7f27fb7b212a00e31"
+    },
+    {
+      "file": "tools/generate-screen-post.mjs",
+      "sha256": "8137c8160c4b628081b0ad84e10637928f630eaf8f146822a32bba2a8afbc792"
+    },
+    {
+      "file": "tools/rendering-099-fixture.mjs",
+      "sha256": "a6b416f8ac670f85c238d7881766ec5a614bee6c2cfb279b8a9d2b14bdcb7e14"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "df47753045f8817cefe3717e8de0041ed65ca063530b7725a228e666394444a3"
+    },
+    {
+      "path": "native/include/HBEngine/Render.hpp",
+      "sha256": "073fd27ac6523498fc5e979790b4f38a37800314811171ceed11ca62853ef654"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "9c36e2da682d2f39545256ecc90ef13ffde9d47266b0da049f2d0e4bbce07dbe"
+    },
+    {
+      "path": "prototype/app.js",
+      "sha256": "336fe0f286a2d47f99732960fc7fde56f7097f15259bd676ad8ab5c3130c4c3b"
+    },
+    {
+      "path": "prototype/asset-documents.js",
+      "sha256": "0598fb46c4118b3b0ae8d7058195bfc198dc4c76b982cf2c393c59a8be7a348d"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "sha256": "e5af0f0ab978c44a35bb96b385cd97382783fa07d0802e82192794f1e8b7c310"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "78943567df610c7bc9a2d986e3290eeb0f90bd9e38cec393d4b99c31c6ecd0a7"
+    },
+    {
+      "path": "prototype/gpu-post-processing.js",
+      "sha256": "c7d828e703899b85ff8db2302725181de5a5f2551ea5062349117950fb47a5d9"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "31609e098b72758bb5880cc404bdc42771b89ff0366c65f5f961ffec58ecab4d"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "e43e66fbf336feaa1c7acb90aa04bc3c20c2b19109d7b2ca0884e8a4d524f357"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "sha256": "d3e12369d0770af3b64aae2b7fd7c5218701a38d55073c4a9a8ed20a71abde93"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f123c22e231e30da15312645ab0eae6352f144347733129b4a73e05116975240"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "d75c2edbdc31a7289635ee98250732dc61cc3fe01e7679c75e5df198ad4767bd"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "dbf6d67cd787d07f44aab0929c395f3ed90c57cac0203b605605a01b29951706"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "2fed405612c6d96aaec2092b80269457c102dd8fef840f76238d40efcfd64c2a"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenPost.hpp",
+      "sha256": "bb94c8efac6ae510c83260ab1f3fa018f46659a58edcf0f2fc745acbb1efcd14"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "5f9b783668fd7341eb08221a1f89a0af401160d0e44dcd85f59cbd4bc1e46881"
+    },
+    {
+      "path": "tools/check-rendering-099.mjs",
+      "sha256": "2d4939aed16dd28d98f6cf5622baf6654319c703da9cffc7f27fb7b212a00e31"
+    },
+    {
+      "path": "tools/generate-screen-post.mjs",
+      "sha256": "8137c8160c4b628081b0ad84e10637928f630eaf8f146822a32bba2a8afbc792"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "a6b416f8ac670f85c238d7881766ec5a614bee6c2cfb279b8a9d2b14bdcb7e14"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-FVAs4Z/acceptance.json",
+      "sha256": "2b484ef8da350a684fc268974ee6800e29801e8f173d27a9465b2bbe93093885",
+      "scope": "Native full HLSL60/2D/particle/depth/probe/shadow/deformation/instancing regression before separate FXAA and projection refinement.",
+      "passed": true,
+      "rendering099": {
+        "contactOcclusionPixel": true,
+        "depthForegroundGuard": true,
+        "depthOfFieldPixel": true,
+        "exposureDispatches": 1,
+        "exposureLazyBytes": 16,
+        "fxaaPixel": true,
+        "gainPixel": true,
+        "gpuAutoExposureAdaptation": true,
+        "invalidCameraRejected": true,
+        "lookupPixel": true,
+        "resourcesReusedReleased": true,
+        "whiteBalancePixel": true
+      },
+      "rendering098": {
+        "anisotropyRotationPixel": true,
+        "gradingAndEffectsPixel": true,
+        "postOnlyNoBloomDispatch": true,
+        "secondBounceDiffusePixel": [
+          0,
+          154,
+          0
+        ],
+        "sheenPixel": true,
+        "thinFilmThicknessPixel": true
+      },
+      "compiledNodes": 60,
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-Wu5R0R/acceptance.json",
+      "sha256": "03485bc5976e52fe1746e37ab38aa991fa7589145cb7d7140e65258a97ac2863",
+      "scope": "Final native post-only GPU pixel/mean-luminance/adaptation/DOF foreground/projection/LUT dimension guards and unavailable guard.",
+      "passed": true,
+      "rendering099": {
+        "contactOcclusionPixel": true,
+        "depthForegroundGuard": true,
+        "depthOfFieldPixel": true,
+        "exposureDispatches": 1,
+        "exposureLazyBytes": 16,
+        "fxaaPixel": true,
+        "gainPixel": true,
+        "gpuAutoExposureAdaptation": true,
+        "invalidCameraRejected": true,
+        "lookupPixel": true,
+        "orthographicProjectionRadius": true,
+        "resourcesReusedReleased": true,
+        "whiteBalancePixel": true
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/gpu-scene-iDl30q/acceptance.json",
+      "sha256": "707d551ff9642a4c2e57bdd5f7ae13f059dde9dad9205fa77a81bdebff2f2910",
+      "scope": "Final GL Windows C++/H-key Blueprint, Basic metering/bloom, LUT identity/swap, depth/AO/FXAA and prior098 combination. GL resource-zero count not measured; older unconditional optionalResourcesReleased flag excluded.",
+      "passed": true,
+      "rendering099": {
+        "neutral": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "warm": [
+          88,
+          55,
+          32,
+          255
+        ],
+        "gain": [
+          89,
+          55,
+          55,
+          255
+        ],
+        "identity": [
+          55,
+          55,
+          54,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "auto": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "adapted": [
+          120,
+          120,
+          120,
+          255
+        ],
+        "autoOff": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blueprint": [
+          88,
+          55,
+          32,
+          255
+        ],
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blurred": [
+          207,
+          207,
+          207,
+          255
+        ],
+        "sharpAgain": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "ao": [
+          202,
+          202,
+          202,
+          255
+        ],
+        "aoOff": [
+          226,
+          226,
+          226,
+          255
+        ],
+        "aaChangedChannels": 24,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering098": {
+        "nested": [
+          229,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          125,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          131,
+          116,
+          96,
+          255
+        ],
+        "filmB": [
+          112,
+          118,
+          98,
+          255
+        ],
+        "neutral": [
+          148,
+          149,
+          149,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          150,
+          82,
+          255
+        ],
+        "noRefraction": [
+          170,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-R6CPrF/acceptance.json",
+      "sha256": "8fc4ea28229eacbb8d156621efa169f0e5abe6302dc4a4670e6e65b09df04196",
+      "scope": "Final GPU Windows C++/H-key Blueprint, Basic metering/bloom, LUT identity/swap, depth/AO/FXAA and prior098 combination. GPU resource-zero count not measured; older unconditional optionalResourcesReleased flag excluded.",
+      "passed": true,
+      "rendering099": {
+        "neutral": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "warm": [
+          89,
+          55,
+          32,
+          255
+        ],
+        "gain": [
+          89,
+          55,
+          55,
+          255
+        ],
+        "identity": [
+          55,
+          55,
+          54,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "auto": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "adapted": [
+          120,
+          120,
+          120,
+          255
+        ],
+        "autoOff": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blueprint": [
+          89,
+          55,
+          32,
+          255
+        ],
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blurred": [
+          200,
+          200,
+          200,
+          255
+        ],
+        "sharpAgain": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "ao": [
+          203,
+          203,
+          203,
+          255
+        ],
+        "aoOff": [
+          227,
+          227,
+          227,
+          255
+        ],
+        "aaChangedChannels": 24,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering098": {
+        "nested": [
+          230,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          130,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          112,
+          121,
+          101,
+          255
+        ],
+        "neutral": [
+          41,
+          42,
+          42,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          17,
+          17,
+          17,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          149,
+          80,
+          255
+        ],
+        "noRefraction": [
+          171,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/native-scene-window-kq0TbY/acceptance.json",
+      "sha256": "1df73de233937b82b8fc5040d6b237523742fd1edff12150a1dea0731f779fd2",
+      "scope": "Final built DirectX Windows, current fields, Basic metering/bloom, runtime assets, new effects and prior098 combination.",
+      "passed": true,
+      "rendering099": {
+        "neutral": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "warm": [
+          101,
+          61,
+          33,
+          255
+        ],
+        "gain": [
+          101,
+          61,
+          61,
+          255
+        ],
+        "identity": [
+          60,
+          60,
+          61,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          141,
+          141,
+          141,
+          255
+        ],
+        "auto": [
+          141,
+          141,
+          141,
+          255
+        ],
+        "adapted": [
+          136,
+          136,
+          136,
+          255
+        ],
+        "autoOff": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "blueprint": [
+          101,
+          61,
+          33,
+          255
+        ],
+        "sharp": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "blurred": [
+          224,
+          224,
+          224,
+          255
+        ],
+        "sharpAgain": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "ao": [
+          210,
+          210,
+          210,
+          255
+        ],
+        "aoOff": [
+          232,
+          232,
+          232,
+          255
+        ],
+        "aaChangedChannels": 12,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": true
+      },
+      "rendering098": {
+        "nested": [
+          221,
+          45,
+          45,
+          255
+        ],
+        "single": [
+          227,
+          227,
+          227,
+          255
+        ],
+        "sheen": [
+          119,
+          111,
+          95,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          102,
+          255
+        ],
+        "across": [
+          115,
+          108,
+          92,
+          255
+        ],
+        "filmA": [
+          129,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          118,
+          121,
+          99,
+          255
+        ],
+        "neutral": [
+          154,
+          155,
+          155,
+          255
+        ],
+        "exposed": [
+          198,
+          199,
+          199,
+          255
+        ],
+        "post": [
+          17,
+          17,
+          17,
+          255
+        ],
+        "gi": [
+          246,
+          118,
+          115,
+          255
+        ],
+        "offscreen": [
+          251,
+          1,
+          1,
+          255
+        ],
+        "noRefraction": [
+          195,
+          101,
+          96,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "installedUserAppUntouched": true
+    },
+    {
+      "file": "native/build/cpu-rendering-099.json",
+      "sha256": "aff3241f3f9325cc36801678ce8eb3b4e72a6d4c72a49c7db27d210d5f95dde0",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-099.mjs",
+          "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-098.mjs",
+          "output": "Rendering 098: physical surfaces/typed uniforms, presets, post-volume validation, GI bounce bounds and GPU post node construction PASS",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-post.mjs --check",
+          "output": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "output": "",
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "failedOrCalibrationWork": [
+    "HLSL scalar vec3 construction converted by generator; native header parity check retained.",
+    "GL OutputPass RawShader precision declaration moved before injected LUT functions.",
+    "Undefined LUT path stopped matching groups with no LUT; component visual rebuild now awaits resources.",
+    "GPU fallback LUT sampler changed from nearest to linear for runtime texture replacement.",
+    "Native FXAA separated from post effect calculation to avoid nine repeats of DOF/AO.",
+    "Full native repeat under concurrent Windows tests exceeded90s; no prolonged stress run. Earlier full regression and final post-only plus actual Windows checks used with explicit scopes.",
+    "Native generator projection conversion corrected; orthographic radius pixel assertion added.",
+    "AO fixture intensity set2 after correct projection yielded8–9 RGB units at intensity1; original >10 fixture threshold did not indicate a missing effect.",
+    "Basic log luminance additionally tested on a full-screen constant field, beyond fixed EV clamps.",
+    "GL/GPU optional resource-zero metadata was not an assertion; final report exposes null and this record excludes its old unconditional flag."
+  ],
+  "limits": [
+    "No whole corpus/API completion claim",
+    "Contact AO darkens composite; ambient-only SSAO/GTAO/G-buffer not implemented",
+    "Circular depth-aware blur, not physical lens/bokeh/transparent depth",
+    "Basic64samples, not histogram/EV100/exposure masks",
+    "LUT selection steps, no two-texture blend",
+    "GL/GPU owner release code/clean shutdown checked; exact texture-zero/driver residency not measured",
+    "TAA/reprojection/velocity/motion blur/SSR/SSGI remain open",
+    "Advanced skin/hair/eye, colored transmission shadows/geometry RT and GI baking remain open",
+    "No phone or whole-game FPS/RAM claim"
+  ],
+  "installation": {
+    "state": "Grouped checks passed; installation pending",
+    "restartUserWindows": false
+  }
+}

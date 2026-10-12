@@ -174,6 +174,7 @@ function applyObject(o) {
   }
   g.position.set(...o.position);g.rotation.set(...o.rotation.map(THREE.MathUtils.degToRad));g.scale.set(...o.scale);g.visible=o.visible;
   if(replaced){if(attached&&!running&&o.visible&&!o.locked)transform.attach(g);if(selected===o.id)selectionBox?.setFromObject(g);}
+  return g.userData.ready;
 }
 function rebuildWorld() {
   if(!scene) return;
