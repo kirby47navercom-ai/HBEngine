@@ -82,6 +82,7 @@ class Device {
     friend class ParticleRenderer;
     friend class SceneRenderer;
     friend class BloomPass;
+    friend class ScreenEffectsPass;
     friend class SceneProbes;
     detail::Com<ID3D11Device> device;
     detail::Com<ID3D11DeviceContext> context;

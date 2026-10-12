@@ -111,6 +111,18 @@
           "record": "docs/research/RENDERING_099.json",
           "readScope": "Own h1 Color Lookup article body read; linked texture/tutorial/API unread.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/anti-aliasing.html",
+          "record": "docs/RENDERING_100.md",
+          "readScope": "Own h1/article121–203 read via web text, including TAA motion-vector/ghosting restrictions and FXAA/mobile; outgoing API/media not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/Post-Processing-Motion-Blur.html",
+          "record": "docs/RENDERING_100.md",
+          "readScope": "Own h1/article122–177 read via web text; conflicting introductory camera-only statement and camera-and-object table both retained, not treated as proof of HB object velocity.",
+          "wholeCorpus": false
         }
       ]
     },
@@ -428,6 +440,24 @@
           "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/ambient-occlusion-in-unreal-engine",
           "record": "docs/research/RENDERING_099.json",
           "readScope": "Raw source saved; browser access failed. Body/API/media not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/screen-space-reflections-in-unreal-engine",
+          "record": "docs/RENDERING_100.md",
+          "readScope": "Own extracted web text0–11 read, intensity/quality/max roughness table; images/API/outgoing pages not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/unreal-engine/screen-space-global-illumination?application_version=4.27",
+          "record": "docs/RENDERING_100.md",
+          "readScope": "Supplemental4.27 own extracted web text0–54 read: supplementary GI, emissive, ray-count/steps, half-res, occluder limitations. Not current5.8 API equivalence.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/screen-space-global-illumination-in-unreal-engine",
+          "record": "docs/RENDERING_100.md",
+          "readScope": "Browser returned only heading; own body unread.",
           "wholeCorpus": false
         }
       ]
