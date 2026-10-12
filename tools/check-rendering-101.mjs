@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {Mesh,BoxGeometry,MeshBasicMaterial,Matrix4,InstancedMesh} from 'three';
+import {ObjectMotionHistory,objectMotionEnabled} from '../prototype/object-motion.js';
+import {componentDefaults,validComponentProperties} from '../prototype/scene-components.js';
+const h=new ObjectMotionHistory(),o=new Mesh(new BoxGeometry(),new MeshBasicMaterial());
+h.begin();assert.equal(h.get(o).flag,-1);h.end();o.matrixWorld.makeTranslation(2,0,0);h.begin();assert.equal(h.get(o).flag,1);assert.equal(h.get(o).world.elements[12],0);h.end();h.begin();assert.equal(h.get(o).world.elements[12],2);h.end();
+h.begin();h.end();h.begin();assert.equal(h.get(o).flag,-1);h.end();
+h.begin();o.geometry.attributes.position.needsUpdate=true;assert.equal(h.get(o).flag,-1);h.end();
+h.begin(true);assert.equal(h.get(o).flag,-1);h.end(false);h.begin();assert.equal(h.get(o).flag,-1);h.end();
+o.userData.hbMotionVectors='camera';h.begin();assert.equal(h.get(o).flag,0);h.end();o.userData.hbMotionVectors='none';h.begin();assert.equal(h.get(o).flag,2);h.end();
+const other=new ObjectMotionHistory();other.begin();o.userData.hbMotionVectors='perObject';assert.equal(other.get(o).flag,-1);other.end();
+const instanced=new InstancedMesh(o.geometry,o.material,2);h.begin();assert.equal(h.get(instanced).flag,0);h.end();o.isSkinnedMesh=true;h.begin();assert.equal(h.get(o).flag,0);h.end();delete o.isSkinnedMesh;
+assert.equal(objectMotionEnabled({ssrEnabled:true,ssrStrength:1}),false);assert.equal(objectMotionEnabled({antiAliasing:'taa',aaStrength:1}),true);assert.equal(componentDefaults('MeshRenderer').motionVectors,'perObject');
+for(const mode of ['perObject','camera','none'])assert.equal(validComponentProperties('MeshRenderer',{motionVectors:mode}),true);assert.equal(validComponentProperties('MeshRenderer',{motionVectors:'invalid'}),false);
+o.geometry.dispose();o.material.dispose();console.log('101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback');

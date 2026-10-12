@@ -1,4 +1,4 @@
-import {MeshBasicNodeMaterial,Color,Vector3,Vector4,BackSide,PostProcessing,LightingNode} from 'three/webgpu';
+import {MeshBasicNodeMaterial,Color,Vector3,Vector4,BackSide,PostProcessing,LightingNode,NodeUpdateType} from 'three/webgpu';
 import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,rangeFogFactor,mix,pmremTexture,normalWorld,normalView,positionViewDirection,roughness,cameraViewMatrix,cache} from 'three/tsl';
 import {bloom} from 'three/addons/tsl/display/BloomNode.js';
 import {pass} from 'three/tsl';
@@ -19,6 +19,7 @@ export function createGPUProbeEnvironment(probe,map){
 import {postProcessSettings} from './post-processing.js';
 import {screenEffectsEnabled,surfaceEffectsEnabled} from './screen-effects.js';
 import {gpuScreenEffects,gpuSurfaceOutputs,installGpuSurfaceKeys} from './screen-effects-gpu.js';
+import {objectMotionEnabled} from './object-motion.js';
 import {gpuPostProcessing} from './gpu-post-processing.js';
 
 export function createGPUSkyMaterial(source){
@@ -43,21 +44,22 @@ export function applyGPUFog(scene,resolved,state){
   const u=gpu.u;u.color.value.setRGB(...resolved.color.slice(0,3));u.enabled.value=resolved.legacy?0:1;u.near.value=resolved.near??0;u.far.value=resolved.far??1;scene.fogNode=gpu.node;
 }
 
+// Render the scene once per HB frame, including manual captures; Three's RAF is independent.
 // Reuse Three's pass/bloom owners; disabled effects allocate no frame targets.
 export class GPUBloomRendering{
   constructor(){this.views=new Map();}
   render(renderer,scene,camera,objects){
-    const p=postProcessSettings(objects,camera.getWorldPosition(new Vector3()),scene.userData.hbPostWorld);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled&&p.bloomStrength>0),chromatic=!!p?.chromaticAberrationEnabled,depthOn=!!(p?.dofEnabled||p?.aoEnabled),exposureOn=!!p?.autoExposureEnabled,aa=p?.antiAliasing==='fxaa',screenOn=screenEffectsEnabled(p),surfaceOn=surfaceEffectsEnabled(p),key=[bloomOn,chromatic,depthOn,exposureOn,aa,screenOn,surfaceOn].join(':');
+    const p=postProcessSettings(objects,camera.getWorldPosition(new Vector3()),scene.userData.hbPostWorld);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled&&p.bloomStrength>0),chromatic=!!p?.chromaticAberrationEnabled,depthOn=!!(p?.dofEnabled||p?.aoEnabled),exposureOn=!!p?.autoExposureEnabled,aa=p?.antiAliasing==='fxaa',screenOn=screenEffectsEnabled(p),surfaceOn=surfaceEffectsEnabled(p),motionOn=objectMotionEnabled(p),key=[bloomOn,chromatic,depthOn,exposureOn,aa,screenOn,surfaceOn,motionOn].join(':');
     if(view&&view.key!==key){this.release(view);this.views.delete(renderer);view=null;}
     if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
-    if(surfaceOn)installGpuSurfaceKeys(scene,renderer);
+    if(surfaceOn||motionOn)installGpuSurfaceKeys(scene,renderer);
     if(!view){
-      const scenePass=pass(scene,camera);if(surfaceOn)scenePass.setMRT(gpuSurfaceOutputs());const raw=scenePass.getTextureNode('output'),screen=screenOn?gpuScreenEffects(raw,scenePass.getTextureNode('depth'),surfaceOn?scenePass.getTextureNode('hbSurfaceNormal'):null,surfaceOn?scenePass.getTextureNode('hbSurfaceAlbedo'):null,renderer):null,color=screen?screen.node:raw,effect=bloomOn?bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold):null,post=new PostProcessing(renderer),grading=gpuPostProcessing(effect?color.add(effect):color,chromatic,{depth:depthOn?scenePass.getTextureNode('depth'):null,exposure:exposureOn,meterSource:raw,aa,renderer});post.outputColorTransform=false;post.outputNode=grading.node;
-      view={scenePass,effect,post,grading,screen,key,scale:p.bloomResolutionScale};const setSize=effect?.setSize.bind(effect);
+      const scenePass=pass(scene,camera,{samples:renderer.samples,type:renderer.getColorBufferType()});scenePass.updateBeforeType=NodeUpdateType.NONE;const raw=scenePass.getTextureNode('output'),screen=screenOn?gpuScreenEffects(raw,scenePass.getTextureNode('depth'),surfaceOn?scenePass.getTextureNode('hbSurfaceNormal'):null,surfaceOn?scenePass.getTextureNode('hbSurfaceAlbedo'):null,renderer,motionOn?scenePass.getTextureNode('hbObjectMotion'):null):null,color=screen?screen.node:raw,effect=bloomOn?bloom(color,p.bloomStrength,p.bloomRadius,p.bloomThreshold):null,post=new PostProcessing(renderer),grading=gpuPostProcessing(effect?color.add(effect):color,chromatic,{depth:depthOn?scenePass.getTextureNode('depth'):null,exposure:exposureOn,meterSource:raw,aa,renderer});post.outputColorTransform=false;post.outputNode=grading.node;
+      if(surfaceOn||motionOn)scenePass.setMRT(gpuSurfaceOutputs(surfaceOn,motionOn?screen.motionNode:null));view={scenePass,effect,post,grading,screen,key,scale:p.bloomResolutionScale};const setSize=effect?.setSize.bind(effect);
       // r180 has no bloom resolutionScale; clamp the smallest of its five mip levels to one texel.
       if(effect)effect.setSize=(w,h)=>setSize(Math.max(32,w*view.scale),Math.max(32,h*view.scale));this.views.set(renderer,view);
     }
-    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0,camera,scene);view.screen?.prepare(p,scene.userData.hbMaterialTime||0,camera,scene);try{view.post.render();view.grading.after(renderer);view.screen?.after();}catch(error){view.screen?.failed();throw error;}
+    view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0,camera,scene);view.screen?.prepare(p,scene.userData.hbMaterialTime||0,camera,scene);try{const target=renderer.getRenderTarget(),mrt=renderer.getMRT();try{view.scenePass.updateBefore({renderer});}finally{renderer.setRenderTarget(target);renderer.setMRT(mrt);}view.post.render();view.grading.after(renderer);view.screen?.after();}catch(error){view.screen?.failed();throw error;}
   }
   release(view){view.screen?.dispose();view.grading.dispose();view.post.dispose();view.scenePass.dispose();view.effect?.dispose();
     // r180 BloomNode.dispose owns targets only; release its blur/filter material owners too.

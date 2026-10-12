@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+const near=(a,b)=>assert.ok(a.every((v,i)=>i%4===3?v===b[i]:Math.abs(v-b[i])<=2),JSON.stringify({maxRgbDifference:Math.max(...a.map((v,i)=>i%4===3?0:Math.abs(v-b[i])))}));
+export async function checkRendering101({evaluate,ready,cdp,until}){
+ await evaluate('window.hbPlayerDebug.open("Assets/Scenes/Screen100.hbscene.json")');await ready();
+ const post=(name,property,value)=>evaluate('window.hbPlayerDebug.call("PostDriver","PostDriver.'+name+'",'+JSON.stringify({target:'Post',property,value})+')');
+ const mode=async value=>{await evaluate('window.hbPlayerDebug.call("PostDriver","PostDriver.Motion",'+JSON.stringify({target:'Pattern',value})+')');await ready();};
+ const frames=()=>evaluate('(async()=>{const images=await window.hbPlayerDebug.screenProbe([[-.3,-4,0],[.3,-4,0]],"Pattern"),rows=[];for(const uri of images){const image=await createImageBitmap(await(await fetch(uri)).blob()),canvas=new OffscreenCanvas(image.width,image.height),ctx=canvas.getContext("2d");ctx.drawImage(image,0,0);image.close();rows.push([...ctx.getImageData(0,Math.floor(canvas.height/2),canvas.width,1).data]);}return rows;})()');
+ const sharp=await frames();await post('Bool','motionBlurEnabled',true);await post('Float','motionBlurStrength',1);await post('Float','motionBlurClamp',.2);await post('Float','motionBlurSamples',16);
+ await mode('camera');const camera=await frames();near(camera[1],sharp[1]);await mode('perObject');const object=await frames(),changed=object[1].filter((v,i)=>i%4!==3&&Math.abs(v-sharp[1][i])>2).length;assert.ok(changed>2,JSON.stringify({rigidMotionChannels:changed}));assert.deepEqual(object[1].slice(40,44),sharp[1].slice(40,44));
+ await mode('none');const none=await frames();near(none[1],sharp[1]);await mode('perObject');for(const type of ['keyDown','keyUp'])await cdp('Input.dispatchKeyEvent',{type,key:'J',code:'KeyJ',windowsVirtualKeyCode:74});await until(async()=>await evaluate('window.hbPlayerDebug.inspect()?.objects.find(o=>o.id==="Pattern")?.components.find(c=>c.type==="MeshRenderer")?.properties.motionVectors==="none"'),'Blueprint J 모션 설정');const blueprint=await frames();near(blueprint[1],sharp[1]);
+ return {passed:true,rigidMotionChannels:changed,flatColorPreserved:true,stationaryCamera:true,typedCppModes:true,actualBlueprintJ:true,forceNoMotion:true,cameraOnly:true,scope:'Rigid opaque transform pixel proof; previous skeletal/morph/individual-instance vertices not asserted.'};
+}

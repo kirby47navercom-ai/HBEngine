@@ -123,6 +123,36 @@
           "record": "docs/RENDERING_100.md",
           "readScope": "Own h1/article122–177 read via web text; conflicting introductory camera-only statement and camera-and-object table both retained, not treated as proof of HB object velocity.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors.html",
+          "record": "docs/RENDERING_101.md",
+          "readScope": "Own article122–207 read: UV offset, camera vs object, opaque/alpha clip, transform/skin and requesting passes. Linked API/source/media unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors-render-pass.html",
+          "record": "docs/RENDERING_101.md",
+          "readScope": "Own article122–139 read: before post and camera/fullscreen plus object draw sequence. Linked implementation unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors-reference.html",
+          "record": "docs/RENDERING_101.md",
+          "readScope": "Own article122–157 table read: Camera Motion Only/Per Object/Force No Motion. HB rigid support is narrower.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UMaterialExpressionMotionVectorW-",
+          "record": "docs/RENDERING_101.md",
+          "readScope": "Own extracted0–64 declaration/experimental specifier/Input previous-frame world offset and method summaries read; inheritance/source/MIR implementations unread. Custom offset not implemented in this group.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/temporal-super-resolution-in-unreal-engine",
+          "record": "docs/RENDERING_101.md",
+          "readScope": "Browser returned heading; targeted find/open failed. Body unread; raw fetch is not a read.",
+          "wholeCorpus": false
         }
       ]
     },

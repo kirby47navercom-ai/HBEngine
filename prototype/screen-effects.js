@@ -1,21 +1,22 @@
 import {Matrix4,Vector3} from 'three';
+import {ObjectMotionHistory,objectMotionEnabled} from './object-motion.js';
 
 export const screenEffectsEnabled=p=>!!(p&&(p.antiAliasing==='taa'&&p.aaStrength>0||p.motionBlurEnabled&&p.motionBlurStrength>0||p.ssrEnabled&&p.ssrStrength>0||p.ssgiEnabled&&p.ssgiStrength>0));
 export const surfaceEffectsEnabled=p=>!!(p&&(p.ssrEnabled&&p.ssrStrength>0||p.ssgiEnabled&&p.ssgiStrength>0));
-export function packedScreenEffects(p){return {temporal:[p?.antiAliasing==='taa'?p.aaStrength:0,p?.temporalFeedback??.85,p?.historyDepthTolerance??.02,0],motion:[p?.motionBlurEnabled?p.motionBlurStrength:0,p?.motionBlurClamp??.05,p?.motionBlurSamples??8,0],reflection:[p?.ssrEnabled?p.ssrStrength:0,p?.ssrMaxRoughness??.8,p?.screenRayDistance??20,p?.screenRayThickness??.2],indirect:[p?.ssgiEnabled?p.ssgiStrength:0,p?.screenRaySteps??24,0,0]};}
+export function packedScreenEffects(p){return {temporal:[p?.antiAliasing==='taa'?p.aaStrength:0,p?.temporalFeedback??.85,p?.historyDepthTolerance??.02,0],motion:[p?.motionBlurEnabled?p.motionBlurStrength:0,p?.motionBlurClamp??.05,p?.motionBlurSamples??8,objectMotionEnabled(p)?1:0],reflection:[p?.ssrEnabled?p.ssrStrength:0,p?.ssrMaxRoughness??.8,p?.screenRayDistance??20,p?.screenRayThickness??.2],indirect:[p?.ssgiEnabled?p.ssgiStrength:0,p?.screenRaySteps??24,0,0]};}
 const halton=(index,base)=>{let value=0,f=1;while(index>0){f/=base;value+=f*(index%base);index=Math.floor(index/base);}return value;};
-// shortcut: camera-only velocity rejects depth changes; add deform/instance motion vectors for accurate moving-object history and blur.
+// Each viewport owns camera and rigid-object history; unsupported deformation falls back to camera velocity.
 export class ScreenFrameState{
- constructor(){this.jitter=[0,0];this.valid=false;this.index=0;this.previous=new Matrix4();this.projection=new Matrix4();this.position=new Vector3();this.direction=new Vector3();}
+ constructor(){this.objects=new ObjectMotionHistory();this.jitter=[0,0];this.valid=false;this.index=0;this.previous=new Matrix4();this.projection=new Matrix4();this.position=new Vector3();this.direction=new Vector3();}
  begin(camera,p,width,height,time,scene,zeroToOne=false){
   const base=camera.projectionMatrix.clone(),position=camera.getWorldPosition(new Vector3()),direction=camera.getWorldDirection(new Vector3());
   const taa=p?.antiAliasing==='taa'&&p.aaStrength>0;const reset=this.taa!==taa||!this.valid||this.camera!==camera||this.scene!==scene||this.width!==width||this.height!==height||this.version!==p?.historyVersion||time<this.time||time-this.time>.25||!this.projection.equals(base)||position.distanceTo(this.position)>Math.max(1,camera.near*100)||direction.dot(this.direction)<.5;
-  if(reset)this.index=0;let jitter=[0,0];
+  this.objects.begin(reset);if(reset)this.index=0;let jitter=[0,0];
   if(taa){this.index++;const x=(halton(this.index,2)-.5)*2/width,y=(halton(this.index,3)-.5)*2/height;jitter=[x*.5,y/(zeroToOne?-2:2)];camera.projectionMatrix.premultiply(new Matrix4().set(1,0,0,x,0,1,0,y,0,0,1,0,0,0,0,1));camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();}
   const vp=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);if(zeroToOne&&camera.coordinateSystem!==2001)vp.premultiply(new Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1));
   const packed=packedScreenEffects(p);packed.temporal[3]=reset?0:1;
   const result={...packed,jitter:[...jitter,...(reset?jitter:this.jitter)],inverseVP:vp.clone().invert().toArray(),currentVP:vp.toArray(),previousVP:(reset?vp:this.previous).toArray(),eye:[...position.toArray(),camera.isOrthographicCamera?1:0],forward:[...direction.toArray(),0],coordinates:zeroToOne?[1,0,-2,1]:[2,-1,2,-1],size:[width,height]};
-  return {packed:result,end:(success=true)=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset};
+  return {packed:result,objects:this.objects,end:(success=true)=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();this.objects.end(success);this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset};
  }
  reset(){this.valid=false;}
 }
@@ -31,7 +32,9 @@ vec4 hbScreenResolve(vec2 uv){vec4 original=texture2D(hbScreenSource,uv);float d
   if(hbReflection.x>0.0&&nr.w<hbReflection.y){vec4 hit=hbRay(start,reflect(incident,n));vec3 f0=mix(vec3(.04,.04,.04),am.rgb,am.a),f=f0+(1.0-f0)*pow(1.0-max(0.0,dot(n,-incident)),5.0);float fade=1.0-smoothstep(hbReflection.y*.75,hbReflection.y,nr.w);c=mix(c,c*(1.0-f)+hit.rgb*f,hit.a*hbReflection.x*fade);}
   if(hbIndirect.x>0.0){vec3 tangent=normalize(cross(n,abs(n.z)<.9?vec3(0.0,0.0,1.0):vec3(0.0,1.0,0.0))),bitangent=cross(n,tangent),sum=vec3(0.0,0.0,0.0);for(int i=0;i<4;i++){float a=float(i)*1.570796327+.392699;vec3 direction=normalize(n*.70710678+(tangent*cos(a)+bitangent*sin(a))*.70710678);vec4 hit=hbRay(start,direction);sum+=hit.rgb*hit.a;}c+=sum*.25*am.rgb*(1.0-am.a)*hbIndirect.x;}
  }
- vec3 previous=hbProject(p,hbPreviousVP);if(hbTemporal.w>.5&&depth<.99999&&hbInside(previous)){
+ vec3 previous=hbProject(p,hbPreviousVP);bool reuse=hbTemporal.w>.5;
+ if(hbMotion.w>.5){vec4 objectMotion=texture2D(hbObjectMotion,uv);if(objectMotion.a>1.5&&abs(objectMotion.a-2.0-depth)<.002)previous=vec3(uv-hbJitter.xy+hbJitter.zw,depth);else if(abs(abs(objectMotion.a)-depth)<.001&&abs(objectMotion.a)>.000001){if(objectMotion.a<0.0)reuse=false;else previous=objectMotion.xyz;}}
+ if(reuse&&depth<.99999&&hbInside(previous)){
   if(hbMotion.x>0.0){vec2 velocity=(uv-previous.xy-hbJitter.xy+hbJitter.zw)*hbMotion.x;float size=length(velocity);velocity*=min(1.0,hbMotion.y/max(size,.000001));vec3 sum=c;float total=1.0;for(int i=1;i<16;i++){if(float(i)>=hbMotion.z)break;vec2 at=clamp(uv+velocity*(float(i)/max(1.0,hbMotion.z-1.0)-.5),0.0,1.0);float d=texture2D(hbScreenDepth,at).r;if(abs(hbLinearDepth(d)-hbLinearDepth(depth))<max(.05,hbLinearDepth(depth)*.02)){sum+=texture2D(hbScreenSource,at).rgb;total+=1.0;}}c=sum/total;}
   if(hbTemporal.x>0.0){vec4 old=texture2D(hbScreenHistory,previous.xy);float expected=hbLinearDepth(previous.z),difference=abs(exp2(old.a)-expected);if(difference<max(.02,expected*hbTemporal.z)){vec3 lo=c,hi=c;for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){vec3 neighbor=texture2D(hbScreenSource,clamp(uv+vec2(float(x),float(y))/hbScreenSize,0.0,1.0)).rgb+c-original.rgb;lo=min(lo,neighbor);hi=max(hi,neighbor);}c=mix(c,clamp(old.rgb,lo,hi),hbTemporal.x*hbTemporal.y);}}
  }

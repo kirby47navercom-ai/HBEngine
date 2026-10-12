@@ -1,0 +1,1286 @@
+{
+  "version": 1,
+  "date": "2026-10-12T08:56:06.639Z",
+  "previousCommit": "dab29efcfdbcc37720d13b3139998679465e90dc",
+  "scope": [
+    "Rigid opaque previous-world motion for TAA and blur across D3D11/GL/GPU",
+    "MeshRenderer perObject/camera/none authoring through CPP/BP/AI existing component setter",
+    "Weak per-viewport history with birth/disappearance/geometry/failure reset",
+    "Renderer-shared GPU MRT graph and exactly one manually scheduled scene pass per HB render"
+  ],
+  "sources": [
+    {
+      "id": "unity-intro",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors.html",
+      "status": 200,
+      "sha256": "48d398769d52798acb4ba79442750fe385996f247f916de6976f5c2833880cf0",
+      "bytes": 18194,
+      "snapshot": "native/build/rendering-research-101/unity-intro.source",
+      "readScope": "Own article122–207 read: UV offset, camera vs object, opaque/alpha clip, transform/skin and requesting passes. Linked API/source/media unread.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "unity-pass",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors-render-pass.html",
+      "status": 200,
+      "sha256": "5546b8f0a956875c80b4f7e9ff81f4c1e98895826f86d224df1a4ee97ae5da9b",
+      "bytes": 12742,
+      "snapshot": "native/build/rendering-research-101/unity-pass.source",
+      "readScope": "Own article122–139 read: before post and camera/fullscreen plus object draw sequence. Linked implementation unread.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "unity-modes",
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/urp/features/motion-vectors-reference.html",
+      "status": 200,
+      "sha256": "3a0252d05d2ed75fde362e709f4c582775a2bc32f5c4d413b0d02304601aaa5b",
+      "bytes": 13732,
+      "snapshot": "native/build/rendering-research-101/unity-modes.source",
+      "readScope": "Own article122–157 table read: Camera Motion Only/Per Object/Force No Motion. HB rigid support is narrower.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "ue-offset",
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/UMaterialExpressionMotionVectorW-",
+      "status": 200,
+      "sha256": "2a30665fd34fac39307a657bb6a3b2ece6b3fec5914ad80b20917c1d81efeb22",
+      "bytes": 70049,
+      "snapshot": "native/build/rendering-research-101/ue-offset.source",
+      "readScope": "Own extracted0–64 declaration/experimental specifier/Input previous-frame world offset and method summaries read; inheritance/source/MIR implementations unread. Custom offset not implemented in this group.",
+      "wholeCorpus": false
+    },
+    {
+      "id": "ue-tsr-unread",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/temporal-super-resolution-in-unreal-engine",
+      "status": 200,
+      "sha256": "53060ea47794375851145f3e27b7247303fe69b0bac88cc765193d60e0d8ce2d",
+      "bytes": 324581,
+      "snapshot": "native/build/rendering-research-101/ue-tsr-unread.source",
+      "readScope": "Browser returned heading; targeted find/open failed. Body unread; raw fetch is not a read.",
+      "wholeCorpus": false
+    }
+  ],
+  "localSources": [
+    {
+      "file": "node_modules/three/src/nodes/accessors/VelocityNode.js",
+      "sha256": "e9de8e0a3e7da47d9ad37eb31de4773f502d6b2eee40c31a33cb2b904ab39e94",
+      "readScope": "Own module read; global previous-object cache is not reused as per-viewport history.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/WebGLRenderer.js",
+      "sha256": "35cea4871231c3fddc3517dcd03fc876bdb8f9e73f1a77042b35e3de0498c4cd",
+      "readScope": "onBeforeRender and uniformsNeedUpdate fragments only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/shaders/ShaderChunk/project_vertex.glsl.js",
+      "sha256": "74632caa5cc4a9812b1bb423aac7574748e648613c18898c6bf57d26b85600d3",
+      "readScope": "Own vertex chunk read; current instancing projection reused.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/core/UniformNode.js",
+      "sha256": "488e075f56e305569023db1a7540d4f1f790d51ed6cd5dff220265f04b80c263",
+      "readScope": "onObjectUpdate/update callback fragments only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/core/NodeFrame.js",
+      "sha256": "dd370595f760b7b2f0e499ade29641a1db4309c0ab07c234fd5d986df3082581",
+      "readScope": "FRAME/RENDER updateBeforeNode dispatch147–201 and object update fragments only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/display/PassNode.js",
+      "sha256": "80bebe6cc863d762c2700f26df77d2b647983a76f8c7c8b733bd0af2cd71a055",
+      "readScope": "Constructor/options, MRT/getTexture, updateBefore640–770, exported factory870–906 and cadence declaration fragments only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/utils/RTTNode.js",
+      "sha256": "e88ca3b67509a02160a591ac262c14609da2a2269ff3d255b58d5f1a0505fab7",
+      "readScope": "Update cadence/setup/resize/updateBefore115–254 and autoUpdate declaration only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/Renderer.js",
+      "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+      "readScope": "Debug shader method708–740 and _renderScene1275–1345/renderId fragments only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/Animation.js",
+      "sha256": "7d852501826f7c8d0f466b1c219acf0c6e866ccda62e2e707e0f75e53c75318b",
+      "readScope": "RAF frame update45–106 only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/PostProcessing.js",
+      "sha256": "d3622f53d1d4108a4e01f7c6c47aeb09684a0982d9c1fce04d0cb77bae912a68",
+      "readScope": "render/update/owners110–205 only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/core/VarNode.js",
+      "sha256": "464c7ba59acf88454eef7219944affcba1f3d5c04a22b63c6f51561f54d26dc4",
+      "readScope": "Var factory195–end only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/nodes/core/NodeUtils.js",
+      "sha256": "9379a8c33c338d1102cdbe12d5d4ad02fcd40c2749259363051ef2c3156c1c13",
+      "readScope": "Graph cache key70–106 only.",
+      "wholeCorpus": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/nodes/Nodes.js",
+      "sha256": "4c41a427a1faf43611cb28d95980fed273b0608d0c90dad9b0fc6ea39ed50bc0",
+      "readScope": "Builder cache176–220 only.",
+      "wholeCorpus": false
+    }
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "d6ef61c5c9d39456751e46c0127b44a0c0a36a69d2f89f0f2329dab121e1035e"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "85fde678bcf325fe3c96ad1c75b726ca8d385f405724eea3f1bc0195f2b97fad"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "d8470ec632db4c4c89b7ceab906dac6efbb4dc1007c6105f3f911de312ea4c3b"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "ecae2d01565b3087e874fecc2272ffb2e5388f0430430dd2eadf698cce611c8a"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "6133f38b846938f66f75e22faafd38d912ef0d21124f36b84116f4d48af3115d"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "74cb6017c81c4cd1e8140f5a471865ee3d9b7c52aa77e25d5ea8dcb68f6f1f0d"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "4b58a4f8ea741a904a00cf8374d69eb4f1da8b87dc8c4f64d9fd8f64a764732e"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "646d783b9e385d2c66eaf7fa2774fcf2769f4ff0cd7eda949a2d62727e96efc9"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "0f3129f561c06fb7703ccd23c0924fb0fc4d5414e1bcc7a09bc1d9b7064784af"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "dc65b2a053eb3b0d8241cbc0a41d7d0e40529cc77335a2105540c0fcb43f588b"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "f81d45bfa7220f72f1d30df316190e68243e892585d765d6e3bbf393fa02e3ba"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "160af74b27044460659b8818302c87da3b8c2d6aa261344d610f7436fb7d8f67"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "dff82b3c4f83e918f9af4564965ba4158602fc5073b3add4436c470e539aa9f5"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "8ea42d04b0b1e8d0c5135c127655bd8ea2b7f7321cce25f9d677fa1edc4807ca"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "650e70311abbed869b4380e221004e8ee9695305aa83a557c4d01a9e6ffc0785"
+    },
+    {
+      "file": "tools/rendering-099-fixture.mjs",
+      "sha256": "bb0a24c7d08421e316aaed413349bc770bf8e84187d427f2f9927d68e225a42c"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "e3bd9169ce4ec6cff0776280f177cbe2ae29acd0284e64ad152103cc7e41e4c8"
+    },
+    {
+      "file": "native/tests/scene-rendering-101.hpp",
+      "sha256": "fda162fbbd3412aafd7d354503d2b2a1c36c594d1f2a4672c52fa0a1e6255a60"
+    },
+    {
+      "file": "prototype/object-motion-gl.js",
+      "sha256": "5afef9ef8f5ec69335c9ed67b1f59776931b74498aacda0f888bd3e0e3114695"
+    },
+    {
+      "file": "prototype/object-motion.js",
+      "sha256": "cf3c1690005ac84209c02962df7fbc7c296a798fe22dfe9abf1a397e01010521"
+    },
+    {
+      "file": "tools/check-rendering-101.mjs",
+      "sha256": "a0274acab5feccc81aeb44a5a5ede47f332c38d1bb3a49263ae6f5b64fb0a2f3"
+    },
+    {
+      "file": "tools/rendering-101-fixture.mjs",
+      "sha256": "b7f10d7d7fee8d1fc5dcbe0ed92df5e5eb72c31074a9020085cc71f91fe488ce"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "85fde678bcf325fe3c96ad1c75b726ca8d385f405724eea3f1bc0195f2b97fad"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "d8470ec632db4c4c89b7ceab906dac6efbb4dc1007c6105f3f911de312ea4c3b"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "ecae2d01565b3087e874fecc2272ffb2e5388f0430430dd2eadf698cce611c8a"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "6133f38b846938f66f75e22faafd38d912ef0d21124f36b84116f4d48af3115d"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "sha256": "4b58a4f8ea741a904a00cf8374d69eb4f1da8b87dc8c4f64d9fd8f64a764732e"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "646d783b9e385d2c66eaf7fa2774fcf2769f4ff0cd7eda949a2d62727e96efc9"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "0f3129f561c06fb7703ccd23c0924fb0fc4d5414e1bcc7a09bc1d9b7064784af"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "dc65b2a053eb3b0d8241cbc0a41d7d0e40529cc77335a2105540c0fcb43f588b"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f81d45bfa7220f72f1d30df316190e68243e892585d765d6e3bbf393fa02e3ba"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "160af74b27044460659b8818302c87da3b8c2d6aa261344d610f7436fb7d8f67"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "dff82b3c4f83e918f9af4564965ba4158602fc5073b3add4436c470e539aa9f5"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "8ea42d04b0b1e8d0c5135c127655bd8ea2b7f7321cce25f9d677fa1edc4807ca"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "650e70311abbed869b4380e221004e8ee9695305aa83a557c4d01a9e6ffc0785"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "bb0a24c7d08421e316aaed413349bc770bf8e84187d427f2f9927d68e225a42c"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "e3bd9169ce4ec6cff0776280f177cbe2ae29acd0284e64ad152103cc7e41e4c8"
+    },
+    {
+      "path": "prototype/object-motion-gl.js",
+      "sha256": "5afef9ef8f5ec69335c9ed67b1f59776931b74498aacda0f888bd3e0e3114695"
+    },
+    {
+      "path": "prototype/object-motion.js",
+      "sha256": "cf3c1690005ac84209c02962df7fbc7c296a798fe22dfe9abf1a397e01010521"
+    },
+    {
+      "path": "tools/check-rendering-101.mjs",
+      "sha256": "a0274acab5feccc81aeb44a5a5ede47f332c38d1bb3a49263ae6f5b64fb0a2f3"
+    },
+    {
+      "path": "tools/rendering-101-fixture.mjs",
+      "sha256": "b7f10d7d7fee8d1fc5dcbe0ed92df5e5eb72c31074a9020085cc71f91fe488ce"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-CSEYni/acceptance.json",
+      "sha256": "3dc971279a26865f97f3be3704359bb5ffa3784301322af44e4990f42e5b9d88",
+      "scope": "Full native GPU 60 material nodes and prior 2D/skin/morph/instances/particles/shadow/probe/098/099/100/101 plus unavailable. Before final none marker and zero-flag CPU multiply optimization; final changed native shader covered by focused GPU and Windows below. Submission timing is not whole-frame FPS.",
+      "passed": true,
+      "rendering101": {
+        "birthRejectPixel": true,
+        "cameraOnlyPixel": true,
+        "disabledBytes": 0,
+        "forceNoMotionPixel": true,
+        "historyMotionHdrBytesPerPixel": 32,
+        "matrixAndModeGuards": true,
+        "passed": true,
+        "rigidObjectBlurPixel": true
+      },
+      "rendering100": {
+        "cameraMotionPixel": true,
+        "diffuseBouncePixel": true,
+        "historyLazyBytes": 65536,
+        "materialReflectionPixel": true,
+        "offAndRelease": true,
+        "rayQualityGuard": true,
+        "resetRejectsHistory": true,
+        "roughnessCutoff": true,
+        "temporalReprojectionPixel": true
+      },
+      "rendering099": {
+        "contactOcclusionPixel": true,
+        "depthForegroundGuard": true,
+        "depthOfFieldPixel": true,
+        "exposureDispatches": 1,
+        "exposureLazyBytes": 16,
+        "fxaaPixel": true,
+        "gainPixel": true,
+        "gpuAutoExposureAdaptation": true,
+        "invalidCameraRejected": true,
+        "lookupPixel": true,
+        "orthographicProjectionRadius": true,
+        "resourcesReusedReleased": true,
+        "whiteBalancePixel": true
+      },
+      "rendering098": {
+        "anisotropyRotationPixel": true,
+        "gradingAndEffectsPixel": true,
+        "postOnlyNoBloomDispatch": true,
+        "secondBounceDiffusePixel": [
+          0,
+          154,
+          0
+        ],
+        "sheenPixel": true,
+        "thinFilmThicknessPixel": true
+      },
+      "compiledNodes": 60,
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-UZe7mC/acceptance.json",
+      "sha256": "84f08dbed614a1a33880ea8b2dc6a2e0743ace80d91e5ffc1de86555703a9527",
+      "scope": "Final native GPU 099/100/101 rigid motion/birth/none/camera/matrix-mode guards/lazy bytes and unavailable guard.",
+      "passed": true,
+      "rendering101": {
+        "birthRejectPixel": true,
+        "cameraOnlyPixel": true,
+        "disabledBytes": 0,
+        "forceNoMotionPixel": true,
+        "historyMotionHdrBytesPerPixel": 32,
+        "matrixAndModeGuards": true,
+        "passed": true,
+        "rigidObjectBlurPixel": true
+      },
+      "rendering100": {
+        "cameraMotionPixel": true,
+        "diffuseBouncePixel": true,
+        "historyLazyBytes": 65536,
+        "materialReflectionPixel": true,
+        "offAndRelease": true,
+        "rayQualityGuard": true,
+        "resetRejectsHistory": true,
+        "roughnessCutoff": true,
+        "temporalReprojectionPixel": true
+      },
+      "rendering099": {
+        "contactOcclusionPixel": true,
+        "depthForegroundGuard": true,
+        "depthOfFieldPixel": true,
+        "exposureDispatches": 1,
+        "exposureLazyBytes": 16,
+        "fxaaPixel": true,
+        "gainPixel": true,
+        "gpuAutoExposureAdaptation": true,
+        "invalidCameraRejected": true,
+        "lookupPixel": true,
+        "orthographicProjectionRadius": true,
+        "resourcesReusedReleased": true,
+        "whiteBalancePixel": true
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-wS2xaM/acceptance.json",
+      "sha256": "475ef9443daf2ae9e7850430ea8e3ec375c61e00cea8cc05b3987da3f448fbcd",
+      "scope": "Final actual native Windows 098/099/100/101 CPP/J-key BP, fixed-camera object motion, modes, flat region, world-space camera probe, preserved project and clean shutdown.",
+      "passed": true,
+      "rendering101": {
+        "passed": true,
+        "rigidMotionChannels": 59,
+        "flatColorPreserved": true,
+        "stationaryCamera": true,
+        "typedCppModes": true,
+        "actualBlueprintJ": true,
+        "forceNoMotion": true,
+        "cameraOnly": true,
+        "scope": "Rigid opaque transform pixel proof; previous skeletal/morph/individual-instance vertices not asserted."
+      },
+      "rendering100": {
+        "passed": true,
+        "motionChannels": 17,
+        "taaChannels": 10,
+        "motionFlat": {
+          "before": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "after": [
+            232,
+            0,
+            0,
+            255
+          ],
+          "taa": [
+            232,
+            0,
+            0,
+            255
+          ]
+        },
+        "ssrOff": [
+          37,
+          58,
+          57,
+          255
+        ],
+        "ssr": [
+          242,
+          9,
+          9,
+          255
+        ],
+        "roughOff": [
+          37,
+          58,
+          57,
+          255
+        ],
+        "giOff": [
+          37,
+          58,
+          57,
+          255
+        ],
+        "gi": [
+          241,
+          58,
+          57,
+          255
+        ],
+        "typedCpp": true,
+        "actualBlueprintKey": true,
+        "optionalResourcesReleased": true
+      },
+      "rendering099": {
+        "neutral": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "warm": [
+          101,
+          61,
+          33,
+          255
+        ],
+        "gain": [
+          101,
+          61,
+          61,
+          255
+        ],
+        "identity": [
+          60,
+          60,
+          61,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          141,
+          141,
+          141,
+          255
+        ],
+        "auto": [
+          141,
+          141,
+          141,
+          255
+        ],
+        "adapted": [
+          136,
+          136,
+          136,
+          255
+        ],
+        "autoOff": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "blueprint": [
+          101,
+          61,
+          33,
+          255
+        ],
+        "sharp": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "blurred": [
+          224,
+          224,
+          224,
+          255
+        ],
+        "sharpAgain": [
+          61,
+          61,
+          61,
+          255
+        ],
+        "ao": [
+          210,
+          210,
+          210,
+          255
+        ],
+        "aoOff": [
+          232,
+          232,
+          232,
+          255
+        ],
+        "aaChangedChannels": 12,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": true
+      },
+      "rendering098": {
+        "nested": [
+          221,
+          45,
+          45,
+          255
+        ],
+        "single": [
+          227,
+          227,
+          227,
+          255
+        ],
+        "sheen": [
+          119,
+          111,
+          95,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          102,
+          255
+        ],
+        "across": [
+          115,
+          108,
+          92,
+          255
+        ],
+        "filmA": [
+          129,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          118,
+          121,
+          99,
+          255
+        ],
+        "neutral": [
+          154,
+          155,
+          155,
+          255
+        ],
+        "exposed": [
+          198,
+          199,
+          199,
+          255
+        ],
+        "post": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "gi": [
+          246,
+          118,
+          115,
+          255
+        ],
+        "offscreen": [
+          251,
+          1,
+          1,
+          255
+        ],
+        "noRefraction": [
+          195,
+          101,
+          96,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    {
+      "file": "native/build/gpu-scene-aBD79P/acceptance.json",
+      "sha256": "3acf9c5ab1e8a652ee3d7f3e5db8d380c179ea166fe0fd8f136f784e07d73520",
+      "scope": "Final actual WebGPU Windows 098/099/100/101 CPP/J-key BP, modes, flat region, one manually scheduled scene pass and clean shader/error shutdown.",
+      "passed": true,
+      "rendering101": {
+        "passed": true,
+        "rigidMotionChannels": 145,
+        "flatColorPreserved": true,
+        "stationaryCamera": true,
+        "typedCppModes": true,
+        "actualBlueprintJ": true,
+        "forceNoMotion": true,
+        "cameraOnly": true,
+        "scope": "Rigid opaque transform pixel proof; previous skeletal/morph/individual-instance vertices not asserted."
+      },
+      "rendering100": {
+        "passed": true,
+        "motionChannels": 42,
+        "taaChannels": 8,
+        "motionFlat": {
+          "before": [
+            251,
+            27,
+            26,
+            255
+          ],
+          "after": [
+            251,
+            27,
+            26,
+            255
+          ],
+          "taa": [
+            251,
+            27,
+            26,
+            255
+          ]
+        },
+        "ssrOff": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "ssr": [
+          105,
+          77,
+          77,
+          255
+        ],
+        "roughOff": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "giOff": [
+          82,
+          86,
+          86,
+          255
+        ],
+        "gi": [
+          255,
+          197,
+          154,
+          255
+        ],
+        "typedCpp": true,
+        "actualBlueprintKey": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering099": {
+        "neutral": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "warm": [
+          89,
+          55,
+          32,
+          255
+        ],
+        "gain": [
+          89,
+          55,
+          55,
+          255
+        ],
+        "identity": [
+          55,
+          55,
+          54,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "auto": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "adapted": [
+          120,
+          120,
+          120,
+          255
+        ],
+        "autoOff": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blueprint": [
+          89,
+          55,
+          32,
+          255
+        ],
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blurred": [
+          200,
+          200,
+          200,
+          255
+        ],
+        "sharpAgain": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "ao": [
+          203,
+          203,
+          203,
+          255
+        ],
+        "aoOff": [
+          227,
+          227,
+          227,
+          255
+        ],
+        "aaChangedChannels": 24,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering098": {
+        "nested": [
+          230,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          126,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          130,
+          115,
+          95,
+          255
+        ],
+        "filmB": [
+          112,
+          121,
+          101,
+          255
+        ],
+        "neutral": [
+          149,
+          149,
+          149,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          17,
+          17,
+          17,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          149,
+          80,
+          255
+        ],
+        "noRefraction": [
+          171,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-dskHO5/acceptance.json",
+      "sha256": "f795d489a3ddf049e0a1f30b5eda87d6fe17d11799c10a61036306d267f28c1e",
+      "scope": "Final actual WebGL2 Windows 098/099/100/101 CPP/J-key BP, modes and flat color preservation/clean shutdown.",
+      "passed": true,
+      "rendering101": {
+        "passed": true,
+        "rigidMotionChannels": 146,
+        "flatColorPreserved": true,
+        "stationaryCamera": true,
+        "typedCppModes": true,
+        "actualBlueprintJ": true,
+        "forceNoMotion": true,
+        "cameraOnly": true,
+        "scope": "Rigid opaque transform pixel proof; previous skeletal/morph/individual-instance vertices not asserted."
+      },
+      "rendering100": {
+        "passed": true,
+        "motionChannels": 41,
+        "taaChannels": 9,
+        "motionFlat": {
+          "before": [
+            250,
+            27,
+            25,
+            255
+          ],
+          "after": [
+            250,
+            27,
+            25,
+            255
+          ],
+          "taa": [
+            250,
+            27,
+            25,
+            255
+          ]
+        },
+        "ssrOff": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "ssr": [
+          255,
+          88,
+          55,
+          255
+        ],
+        "roughOff": [
+          78,
+          78,
+          78,
+          255
+        ],
+        "giOff": [
+          83,
+          86,
+          86,
+          255
+        ],
+        "gi": [
+          255,
+          128,
+          108,
+          255
+        ],
+        "typedCpp": true,
+        "actualBlueprintKey": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering099": {
+        "neutral": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "warm": [
+          88,
+          55,
+          32,
+          255
+        ],
+        "gain": [
+          89,
+          55,
+          55,
+          255
+        ],
+        "identity": [
+          55,
+          55,
+          54,
+          255
+        ],
+        "red": [
+          255,
+          71,
+          0,
+          255
+        ],
+        "metered": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "auto": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "adapted": [
+          120,
+          120,
+          120,
+          255
+        ],
+        "autoOff": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blueprint": [
+          88,
+          55,
+          32,
+          255
+        ],
+        "sharp": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "blurred": [
+          207,
+          207,
+          207,
+          255
+        ],
+        "sharpAgain": [
+          54,
+          54,
+          54,
+          255
+        ],
+        "ao": [
+          202,
+          202,
+          202,
+          255
+        ],
+        "aoOff": [
+          226,
+          226,
+          226,
+          255
+        ],
+        "aaChangedChannels": 24,
+        "typedCppBlueprint": true,
+        "lookupLinear": true,
+        "optionalResourcesReleased": null
+      },
+      "rendering098": {
+        "nested": [
+          229,
+          54,
+          53,
+          255
+        ],
+        "single": [
+          221,
+          221,
+          221,
+          255
+        ],
+        "sheen": [
+          118,
+          109,
+          97,
+          255
+        ],
+        "along": [
+          125,
+          118,
+          106,
+          255
+        ],
+        "across": [
+          116,
+          109,
+          98,
+          255
+        ],
+        "filmA": [
+          131,
+          116,
+          96,
+          255
+        ],
+        "filmB": [
+          112,
+          118,
+          98,
+          255
+        ],
+        "neutral": [
+          148,
+          149,
+          149,
+          255
+        ],
+        "exposed": [
+          195,
+          195,
+          195,
+          255
+        ],
+        "post": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "gi": [
+          255,
+          135,
+          85,
+          255
+        ],
+        "offscreen": [
+          255,
+          150,
+          82,
+          255
+        ],
+        "noRefraction": [
+          170,
+          29,
+          36,
+          255
+        ],
+        "probeCaptures": 3,
+        "staticReuse": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/cpu-rendering-101.json",
+      "sha256": "f23a376c3d488ef37ff22b204575603f23f9339bf28c37dd7d646047bcf090c3",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-101.mjs",
+          "output": "101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-100.mjs",
+          "output": "{\"passed\":true,\"defaultsOff\":true,\"projectionRestored\":true,\"cameraAndOwnerResets\":true,\"depthReprojectionRoundTrip\":true,\"spatialOverrides\":true,\"typedValidation\":true}",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-099.mjs",
+          "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-effects.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-post.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "costs": {
+    "motionTextureBytesPerPixel": 8,
+    "existingNativeHdrHistoryBytesPerPixel": 24,
+    "nativeBlurHdrHistoryMotionBytesPerPixel": 32,
+    "extraNativeDrawConstantBytes": 80,
+    "constantBufferRing": 3,
+    "extraGLMotionSceneDraws": 1,
+    "scenePassWebGPUPerHBRender": 1,
+    "automaticCpuReadbacksAdded": 0,
+    "defaultEnabled": false,
+    "scope": "Format arithmetic/ownership counters; GL depth cost, driver residency and whole-game FPS not measured."
+  },
+  "failedOrCalibrationWork": [
+    "Strict native compiler warnings fixed with guard braces/parentheses.",
+    "Half-float current UV quantization prevented by explicit force-none marker2+depth; current UV reconstructed at resolve.",
+    "Capture RGB tolerates2/255; alpha equal, motion differences must exceed2 and flat region remains separately asserted.",
+    "Per-view GPU MRT uniform callback cache replaced by renderer-shared graph with current frame injected.",
+    "GPU shader void variable caused by branch callback returned assignment; block callbacks corrected, final GPU actual shader/error gate passes.",
+    "Scene FRAME RAF cadence decoupled from HB captures; manually updated once with MRT/target finally restoration and automatic update disabled.",
+    "J-key fixture waits for actual component mode instead of immediate player-ready state.",
+    "Acceptance-only camera probe converts world input through parent to local position.",
+    "Diagnostic GPU readbacks/private shader dumps removed before final gates. Earlier failed captures not accepted."
+  ],
+  "limits": [
+    "No whole Unity/Unreal corpus/API read or exact engine equivalence claim",
+    "Previous skin/morph/individual-instance/particle/custom-vertex poses unsupported; camera fallback",
+    "Transparent/2D-only motion not included",
+    "WebGL alphaMap/UV transform-channel/displacement exact motion coverage unverified; map alpha at basic UV only",
+    "TSR body not read and experimental previous-offset expression not implemented",
+    "Prior screen-space SSR/SSGI are supplementary; no geometry raytracing/Hi-Z/baked GI/advanced skin-hair-eye or colored transmission shadow claim",
+    "No actual phone, whole-game FPS/RAM, eight-hour stress, driver residency or running user-game inspection"
+  ],
+  "installation": {
+    "state": "Grouped checks passed; installation pending",
+    "restartUserWindows": false
+  }
+}

@@ -1,3 +1,4 @@
+import {checkRendering101} from './rendering-101-fixture.mjs';
 import {writeRendering100,checkRendering100} from './rendering-100-fixture.mjs';
 import {writeRendering099,checkRendering099} from './rendering-099-fixture.mjs';
 import {writeRendering098,checkRendering098} from './rendering-098-fixture.mjs';
@@ -60,5 +61,5 @@ export async function checkTransmissionPlayer({evaluate,ready,inspect,pixels,cdp
   const rendering098=await checkRendering098({evaluate,ready,inspect,pixels});
   const rendering099=await checkRendering099({evaluate,ready,inspect,pixels,cdp});
   const rendering100=await checkRendering100({evaluate,ready,inspect,pixels,cdp});
-  return {rendering100,rendering099,rendering098,passed:true,off,on,bp,straight,bent,rough,dispersed,dispersionChangedChannels,white,red,weak,thick,zero,zeroDisabled,dark,green,disabled,volumeState,volumeReuse,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:final.material.program?true:null,recursiveOrDepthTrace:false,fpsClaim:false};
+  const rendering101=await checkRendering101({evaluate,ready,cdp,until});return {rendering101,rendering100,rendering099,rendering098,passed:true,off,on,bp,straight,bent,rough,dispersed,dispersionChangedChannels,white,red,weak,thick,zero,zeroDisabled,dark,green,disabled,volumeState,volumeReuse,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:final.material.program?true:null,recursiveOrDepthTrace:false,fpsClaim:false};
 }
