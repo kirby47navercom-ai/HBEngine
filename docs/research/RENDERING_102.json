@@ -1348,7 +1348,13 @@
     "Other accumulated advanced shading/GI and broader engine requirements are not declared complete"
   ],
   "installation": {
-    "state": "Grouped checks passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "f821a49b84ba5a5649ac5f5d3808198bcb09161f",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d0a68b211080b47",
+    "bundleHash": "0d0a68b211080b47f4f1a8e1809f5cc86271e5eb1dbecb2937716bef9cdf3edf",
+    "files": 2023,
+    "receipt": "docs/research/USER_INSTALL_102.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
