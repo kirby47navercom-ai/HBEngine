@@ -1280,7 +1280,13 @@
     "No actual phone, whole-game FPS/RAM, eight-hour stress, driver residency or running user-game inspection"
   ],
   "installation": {
-    "state": "Grouped checks passed; installation pending",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "84bc713278957c9f465ce9cca3fc95bc9379bdd4",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f",
+    "bundleHash": "472d3c69c855bb1f718fffb8f9bc321b225ed470612f57bf74d1e9239c1d7913",
+    "files": 2018,
+    "receipt": "docs/research/USER_INSTALL_101.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }

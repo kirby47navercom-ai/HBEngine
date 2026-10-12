@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-10-12T08:59:13.182Z",
+  "featureCommit": "84bc713278957c9f465ce9cca3fc95bc9379bdd4",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f\\HBEngine.exe",
+    "bundleHash": "472d3c69c855bb1f718fffb8f9bc321b225ed470612f57bf74d1e9239c1d7913",
+    "files": 2018
+  },
+  "executableSHA256": "d663fff6cb028be433f46c35ec31d60f10133771faffd2c793f06e8b16f6857d",
+  "playerSHA256": "44593ad9a09922a2795bdae1e7db8c6fbd07f1f054d48c04b6dc5e9f7e351dac",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\472d3c69c855bb1f\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "85fde678bcf325fe3c96ad1c75b726ca8d385f405724eea3f1bc0195f2b97fad"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "d8470ec632db4c4c89b7ceab906dac6efbb4dc1007c6105f3f911de312ea4c3b"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "ecae2d01565b3087e874fecc2272ffb2e5388f0430430dd2eadf698cce611c8a"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "6133f38b846938f66f75e22faafd38d912ef0d21124f36b84116f4d48af3115d"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "sha256": "4b58a4f8ea741a904a00cf8374d69eb4f1da8b87dc8c4f64d9fd8f64a764732e"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "646d783b9e385d2c66eaf7fa2774fcf2769f4ff0cd7eda949a2d62727e96efc9"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "0f3129f561c06fb7703ccd23c0924fb0fc4d5414e1bcc7a09bc1d9b7064784af"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "dc65b2a053eb3b0d8241cbc0a41d7d0e40529cc77335a2105540c0fcb43f588b"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f81d45bfa7220f72f1d30df316190e68243e892585d765d6e3bbf393fa02e3ba"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "sha256": "160af74b27044460659b8818302c87da3b8c2d6aa261344d610f7436fb7d8f67"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "dff82b3c4f83e918f9af4564965ba4158602fc5073b3add4436c470e539aa9f5"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "8ea42d04b0b1e8d0c5135c127655bd8ea2b7f7321cce25f9d677fa1edc4807ca"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "650e70311abbed869b4380e221004e8ee9695305aa83a557c4d01a9e6ffc0785"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "bb0a24c7d08421e316aaed413349bc770bf8e84187d427f2f9927d68e225a42c"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "e3bd9169ce4ec6cff0776280f177cbe2ae29acd0284e64ad152103cc7e41e4c8"
+    },
+    {
+      "path": "prototype/object-motion-gl.js",
+      "sha256": "5afef9ef8f5ec69335c9ed67b1f59776931b74498aacda0f888bd3e0e3114695"
+    },
+    {
+      "path": "prototype/object-motion.js",
+      "sha256": "cf3c1690005ac84209c02962df7fbc7c296a798fe22dfe9abf1a397e01010521"
+    },
+    {
+      "path": "tools/check-rendering-101.mjs",
+      "sha256": "a0274acab5feccc81aeb44a5a5ede47f332c38d1bb3a49263ae6f5b64fb0a2f3"
+    },
+    {
+      "path": "tools/rendering-101-fixture.mjs",
+      "sha256": "b7f10d7d7fee8d1fc5dcbe0ed92df5e5eb72c31074a9020085cc71f91fe488ce"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\42a38bca08470a45",
+    "bundleHash": "42a38bca08470a459f8af9372efa75d37d9e0fbb44c3aba5029a73f9ffc811af",
+    "manifestSHA256": "750d4002da93f82f03a151aa0a0d8a1c71f4737c961e72f959b406963cf7ea7d",
+    "allFilesChecked": 2011
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Top-level profile files only; no browser cache/session or user game-content inspection.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}
