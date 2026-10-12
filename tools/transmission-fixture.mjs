@@ -1,4 +1,5 @@
 import {checkRendering101} from './rendering-101-fixture.mjs';
+import {writeRendering102,checkRendering102} from './rendering-102-fixture.mjs';
 import {writeRendering100,checkRendering100} from './rendering-100-fixture.mjs';
 import {writeRendering099,checkRendering099} from './rendering-099-fixture.mjs';
 import {writeRendering098,checkRendering098} from './rendering-098-fixture.mjs';
@@ -33,14 +34,14 @@ export async function writeTransmissionFixture(write,scene){
     let material=transmissionMaterial(tilt===true);if(tilt==='volume'){const tint=makeMaterialNode('vectorParameter');tint.parameter='AbsorptionTint';tint.value=[1,1,1];material.graph.nodes.push(tint);material.graph.edges.push({from:{node:tint.id,pin:'value'},to:{node:'surface',pin:'attenuationColor'}});fixture.objects=fixture.objects.filter(o=>!['BackRed','BackGreen','TransmissionDriver'].includes(o.id));fixture.objects.push({...red,id:'BackWhite',components:[makeSceneComponent('MeshRenderer',{material:'Assets/M_BackWhite.hbmaterial.json'})]}, {...createPlacedObject('empty',{id:'VolumeDriver'}),blueprintAsset:'Assets/BP_Volume.hbblueprint.json'});}
     await write('Assets/M_'+name+'.hbmaterial.json',material);await write('Assets/Scenes/'+name+'.hbscene.json',fixture);
   }
-  await writeRendering098(write,scene);await writeRendering099(write,scene);await writeRendering100(write,scene);
+  await writeRendering098(write,scene);await writeRendering099(write,scene);await writeRendering100(write,scene);await writeRendering102(write,scene);
 }
 export async function trimTransmissionFixture(project,profile){
   const base=path.resolve('native/build'),root=project.root,relative=path.relative(base,root);if(!relative||relative.startsWith('..')||path.isAbsolute(relative))throw Error('격리된 렌더 검사 프로젝트가 필요해요.');
   for(const file of await project.files()){if(file.kind==='folder')continue;let remove=file.path.startsWith('Source/')&&!['Source/CoatingDriver.h','Source/CoatingDriver.cpp','Source/PostDriver.h','Source/PostDriver.cpp'].includes(file.path);if(file.kind==='blueprint'&&!['Assets/BP_Coating.hbblueprint.json','Assets/BP_PostDriver.hbblueprint.json'].includes(file.path)){const data=JSON.parse(await fs.readFile(await project.resolve(file.path),'utf8'));remove=!!data.native;}
     if(remove){const target=await project.resolve(file.path),rel=path.relative(root,target);if(rel.startsWith('..')||path.isAbsolute(rel))throw Error('검사 프로젝트 밖 파일 삭제 거부');await fs.unlink(target);}
   }
-  profile.scenes=['Transmission','TransmissionTilt','Volume','Nested','Lobes','Post098','GI098','Offscreen098','Post099','Depth099','AO099','AA099','Screen100','SSR100','SSGI100'].map(name=>({path:'Assets/Scenes/'+name+'.hbscene.json',enabled:true}));
+  profile.scenes=['Transmission','TransmissionTilt','Volume','Nested','Lobes','Post098','GI098','Offscreen098','Post099','Depth099','AO099','AA099','Screen100','SSR100','SSGI100','Ray102','RayGI102'].map(name=>({path:'Assets/Scenes/'+name+'.hbscene.json',enabled:true}));
 }
 export async function checkTransmissionPlayer({evaluate,ready,inspect,pixels,cdp,until}){
   const set=(parameter,value)=>evaluate('window.hbPlayerDebug.call("CoatingDriver","CoatingDriver.Set",'+JSON.stringify({target:'Coated',parameter,value})+')'),state=async()=>{const s=await inspect();return {renderer:s.renderer,material:s.materials.find(m=>m.object==='Coated')};};
@@ -61,5 +62,5 @@ export async function checkTransmissionPlayer({evaluate,ready,inspect,pixels,cdp
   const rendering098=await checkRendering098({evaluate,ready,inspect,pixels});
   const rendering099=await checkRendering099({evaluate,ready,inspect,pixels,cdp});
   const rendering100=await checkRendering100({evaluate,ready,inspect,pixels,cdp});
-  const rendering101=await checkRendering101({evaluate,ready,cdp,until});return {rendering101,rendering100,rendering099,rendering098,passed:true,off,on,bp,straight,bent,rough,dispersed,dispersionChangedChannels,white,red,weak,thick,zero,zeroDisabled,dark,green,disabled,volumeState,volumeReuse,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:final.material.program?true:null,recursiveOrDepthTrace:false,fpsClaim:false};
+  const rendering101=await checkRendering101({evaluate,ready,cdp,until});const rendering102=await checkRendering102({evaluate,ready,inspect,pixels,cdp,until});return {rendering102,rendering101,rendering100,rendering099,rendering098,passed:true,off,on,bp,straight,bent,rough,dispersed,dispersionChangedChannels,white,red,weak,thick,zero,zeroDisabled,dark,green,disabled,volumeState,volumeReuse,initial,active,reuse,released,final,cppBlueprint:true,screenSpaceOpaqueCapture:true,roughMip:true,uniformReuse:true,releaseWhenUnused:final.material.program?true:null,recursiveOrDepthTrace:false,fpsClaim:false};
 }
