@@ -1,0 +1,864 @@
+{
+  "version": 1,
+  "date": "2026-10-12T13:11:50.795Z",
+  "previousCommit": "9438a7e63ac8e848b712f8a616ebf3c6851fd65e",
+  "scope": [
+    "Actual camera-primary BVH progressive path tracing with diffuse/GGX mixture,f*cos/pdf,glass Fresnel/TIR/refraction,Beer absorption,alpha pass-through and Russian roulette",
+    "Uniform emissive triangle-area next-event sampling plus BSDF emitter-hit power-heuristic MIS; tested with one camera bounce and offscreen emitter",
+    "Colored multi-hit transmittance shadows for path and geometry-GI rays with artist cast/receive/light flags and conservative traversal exhaustion",
+    "Perspective physical camera circular thin-lens sampling,orthographic rays,exact camera/scene/material/pose/light/configuration/size/history reset and capped progressive reuse",
+    "Schema/inspector sections,finite/integer guards,Volume path and geometry overrides,existing Components/Materials CPP/BP/AI property operations and lazy release",
+    "WebGPU explicit shared function layouts prevent nested BVH inline expansion beyond64KiB uniform binding; no dependency added"
+  ],
+  "sources": [
+    {
+      "id": "unreal-colored-shadow",
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-colored-translucent-shadows-in-unreal-engine",
+      "status": 200,
+      "bytes": 100614,
+      "sha256": "8899eeb455afa08c6fc762397406a5d3568d6f11f81ed36800e17b3e206ab24d",
+      "snapshot": "native/build/rendering-research-105/unreal-colored-shadow.source",
+      "readScope": "UE5.8 own web0–115: opacity/tint, lighting compatibility table, static-light/material setup and shadow sharpness. Images/linked API and remaining body not analyzed.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "unity-path-index",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Ray-Tracing-Path-Tracing.html",
+      "status": 200,
+      "bytes": 9502,
+      "sha256": "d6c0f6d25f5d16167516c2c4bd5b2870d4ff0466b745895313227b146d78e69f",
+      "snapshot": "native/build/rendering-research-105/unity-path-index.source",
+      "readScope": "HDRP17.0.4 own115–138 index only; links do not imply linked corpus completeness.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "unity-path-understand",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-understand.html",
+      "status": 200,
+      "bytes": 23467,
+      "sha256": "1182cef067045658a30a38bd301568f9f92749cc5b3a29d020df65b270ed594e",
+      "snapshot": "native/build/rendering-research-105/unity-path-understand.source",
+      "readScope": "Own115–170: camera-ray recursion, stochastic noise/progressive convergence/reset, double-sided and box/sphere versus thin refraction table. Remaining sections, images and linked APIs not analyzed.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "unity-path-setup",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-setup.html",
+      "status": 200,
+      "bytes": 10605,
+      "sha256": "187d22594ba3731a252760b2f6aef0ac8f0527e0c1984d206155d5a370b964b9",
+      "snapshot": "native/build/rendering-research-105/unity-path-setup.source",
+      "readScope": "Own115–127 setup procedure/volume authoring only; linked hardware requirements/reference not read.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "unity-path-limitations",
+      "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-limitations.html",
+      "status": 200,
+      "bytes": 12114,
+      "sha256": "4cfea100eb727788b0d704bd28af5780bbabb54b881565fbc6b3b6a716f7cd76",
+      "snapshot": "native/build/rendering-research-105/unity-path-limitations.source",
+      "readScope": "Own114–148 limitations: DX12 in HDRP; shader derivatives/custom interpolators/displacement, eye/hair and other raster features excluded. HB software BVH uses existing compute/GL/TSL, not Unity backend code.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "pbrt-path",
+      "url": "https://pbr-book.org/4ed/Light_Transport_I_Surface_Reflection/A_Better_Path_Tracer",
+      "status": 200,
+      "bytes": 255029,
+      "sha256": "ea63527420cc72ab59d32d13effc576b2061fc5a2f502e284d648dba8f889cf1",
+      "snapshot": "native/build/rendering-research-105/pbrt-path.source",
+      "readScope": "Fourth edition own20–114: camera intersection/emission, BSDF f*cos/pdf, emitter next-event sampling, power-heuristic MIS and Russian roulette. HB uses uniform triangle-area emitter sampling and diffuse/GGX mixtures. Remaining derivation/linked API corpus not read.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "pbrt-transmittance",
+      "url": "https://pbr-book.org/4ed/Volume_Scattering/Transmittance",
+      "status": 200,
+      "bytes": 451059,
+      "sha256": "caced3064b7427fb9f91cacefd40c327b49950eb5a44863ca8505dce0d6dc857",
+      "snapshot": "native/build/rendering-research-105/pbrt-transmittance.source",
+      "readScope": "Fourth edition own0–40: multiplicative transmittance and homogeneous Beer attenuation. Formula images not fully extracted; no null-scattering/heterogeneous-medium analysis claim.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "three-tsl-doc",
+      "url": "https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language",
+      "status": 200,
+      "bytes": 514153,
+      "sha256": "b38d2c620bda1db383f1c9d0ca27cfd7eaac4ef4954d9cafdf97ff21d8cdec44",
+      "snapshot": "native/build/rendering-research-105/three-tsl-doc.source",
+      "readScope": "Own573–630 Fn and reusable variable documentation read. Not the whole wiki or current-version API corpus. Installed r180 implementation checked separately.",
+      "wholeCorpus": false,
+      "independentVerification": false
+    },
+    {
+      "id": "three-tsl-layout-r180",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/tsl/TSLCore.js",
+      "status": 200,
+      "bytes": 24719,
+      "sha256": "0d30e03b81f6b855af29955335031cf87e2a37fd9b1e8b77b526bd4a89e1ac78",
+      "snapshot": "native/build/rendering-research-105/three-tsl-layout-r180.source",
+      "readScope": "Own485–532 Fn layout code generation and963–993 setLayout implementation read in installed r180 and source compared by SHA. Other functions/linked builders not fully read.",
+      "wholeCorpus": false,
+      "independentVerification": false,
+      "installedSHA256": "0d30e03b81f6b855af29955335031cf87e2a37fd9b1e8b77b526bd4a89e1ac78",
+      "installedMatches": true
+    }
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "16bd18e83164c1ca4018354d87f0ca2b309963101901aefbd4bfd9bef8857e2e"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "002830c8606716d10fb6de2268f7c87e25a42f76d1f5776764f0464a392a210f"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "c75d93c47a4e4c9c626f8895d21d7c71918b3865dc7da163b80ccefcc28ef810"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "c58b8f20eb2c274b9d953518aa20ba65d9ae304b7867e20d8691d73a5182b48f"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "e2a9008e20b79c849da70b0a16d042b175bec0f63a13eeff9d2ecf8058306eeb"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "98409ff9d30b333a4b6b78877bd1f3e74caecca9e44582b63e5ba999b1c564e7"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "f871cdcfc6d66028369f4b1dd46d36f385e722a79bfe9738194f889a3e789ad4"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "6bf8b877538c37421b919afb9b9ad128134ff0a9f489de850e94786018d762e5"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "3b5d81983c785c55ad98857b6b765cb2e057cfafc4f942a31595a95b32c32c8c"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "12ab9e8fd8f53128d775adcc73abc7b120b197a587fed79b473f60d898c58445"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "8df0ecfd13a4ba096fd63da8ba66cc607f446a06e32ad33c69bd4c3c0fa2141c"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "6627867953ebe319921762f959138cb80aaf5dec138fbdaf9b5630d5c1526386"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "fc060147e9b7023ed4ae76889c652b7b47c7597f4b3189742ace9b5c4127442e"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "00b97179bb4ee9adcea65542e2deaacbd1a9b2b02f952ec87f090885682bb689"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "a628bdd2a5b94dd5fde00a61d4ac07302dc9a13dc63d85ce982ddad2445ad558"
+    },
+    {
+      "file": "tools/generate-screen-effects.mjs",
+      "sha256": "34e56bc6d91e4c47aab97c36ccc7861e16a0758a29486ba87c0358d7372ba363"
+    },
+    {
+      "file": "tools/rendering-099-fixture.mjs",
+      "sha256": "552eff84a02261de132e0cd02ea44e24497f7e773923fb1a34c7f66e77fa4376"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "0a3a805b34ecd437171104926b9490217d3bb518b47cfcd3119209c24b15cb1e"
+    },
+    {
+      "file": "native/tests/scene-rendering-105.hpp",
+      "sha256": "43a96c036845f7cd529edc39186fd14eb25c754f38e6a5025ac15d47a2c1a7a4"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "039389d2e70c16cc68f5033285fc5446224794a4e481dfea6aefc812f1acb67e"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "dce1f3c4855e4d28c2e81f96506bdce81a447096a3d5ba48ce33f36b349f8e1d"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "6afaab163828375f5ac1029438d214fd585f7b0535623b6cc9fa73de22cd38f8"
+    },
+    {
+      "file": "tools/check-rendering-105.mjs",
+      "sha256": "602a1fb9b8e3614dd91d709f295ba0723139fbc7db71b2b177fe6d5b0340708a"
+    },
+    {
+      "file": "tools/rendering-105-fixture.mjs",
+      "sha256": "3c5511a14addac5e34d4140a990aa03e6f11280b13558f3ca036c9ca919700d0"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "002830c8606716d10fb6de2268f7c87e25a42f76d1f5776764f0464a392a210f"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "c75d93c47a4e4c9c626f8895d21d7c71918b3865dc7da163b80ccefcc28ef810"
+    },
+    {
+      "path": "prototype/bloom-rendering.js",
+      "sha256": "e2a9008e20b79c849da70b0a16d042b175bec0f63a13eeff9d2ecf8058306eeb"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "98409ff9d30b333a4b6b78877bd1f3e74caecca9e44582b63e5ba999b1c564e7"
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "f871cdcfc6d66028369f4b1dd46d36f385e722a79bfe9738194f889a3e789ad4"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "6bf8b877538c37421b919afb9b9ad128134ff0a9f489de850e94786018d762e5"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "3b5d81983c785c55ad98857b6b765cb2e057cfafc4f942a31595a95b32c32c8c"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "sha256": "12ab9e8fd8f53128d775adcc73abc7b120b197a587fed79b473f60d898c58445"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "8df0ecfd13a4ba096fd63da8ba66cc607f446a06e32ad33c69bd4c3c0fa2141c"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "6627867953ebe319921762f959138cb80aaf5dec138fbdaf9b5630d5c1526386"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "fc060147e9b7023ed4ae76889c652b7b47c7597f4b3189742ace9b5c4127442e"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "00b97179bb4ee9adcea65542e2deaacbd1a9b2b02f952ec87f090885682bb689"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "a628bdd2a5b94dd5fde00a61d4ac07302dc9a13dc63d85ce982ddad2445ad558"
+    },
+    {
+      "path": "tools/generate-screen-effects.mjs",
+      "sha256": "34e56bc6d91e4c47aab97c36ccc7861e16a0758a29486ba87c0358d7372ba363"
+    },
+    {
+      "path": "tools/rendering-099-fixture.mjs",
+      "sha256": "552eff84a02261de132e0cd02ea44e24497f7e773923fb1a34c7f66e77fa4376"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "0a3a805b34ecd437171104926b9490217d3bb518b47cfcd3119209c24b15cb1e"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "039389d2e70c16cc68f5033285fc5446224794a4e481dfea6aefc812f1acb67e"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "dce1f3c4855e4d28c2e81f96506bdce81a447096a3d5ba48ce33f36b349f8e1d"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "6afaab163828375f5ac1029438d214fd585f7b0535623b6cc9fa73de22cd38f8"
+    },
+    {
+      "path": "tools/check-rendering-105.mjs",
+      "sha256": "602a1fb9b8e3614dd91d709f295ba0723139fbc7db71b2b177fe6d5b0340708a"
+    },
+    {
+      "path": "tools/rendering-105-fixture.mjs",
+      "sha256": "3c5511a14addac5e34d4140a990aa03e6f11280b13558f3ca036c9ca919700d0"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/native-scene-09Sp5E/acceptance.json",
+      "sha256": "01e8f53f04b4f5ee19f7e465ed5a7d0aef8d3df06d4debed83290840fac4c8e9",
+      "scope": "Full native hardware HLSL nodes,2D,particles,shadows,probes,skin/morph/instances,rendering098–105,validation and unavailable guard.",
+      "passed": true,
+      "rendering105": {
+        "cameraPrimaryRay": true,
+        "incompleteConservative": true,
+        "nativeValidation": true,
+        "offscreenShadowTint": [
+          155,
+          105,
+          105
+        ],
+        "opaqueBlocks": true,
+        "passed": true,
+        "progressiveFreeze": true,
+        "releaseWhenDisabled": true,
+        "runtimeReadbacks": 0
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true,
+        "rendering104": true
+      },
+      "compiledNodes": 61,
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    {
+      "file": "native/build/native-scene-window-IyZ8Mk/acceptance.json",
+      "sha256": "059c88f43fb5280e5dd7f4d5c955b7199954494edb8ca5168d9db98968c5415e",
+      "scope": "Final hidden D3D11 Windows player rendering098–105,typed CPP/BP,shadow flags,one-bounce emitter NEE,lens and glass pixels,error0/exit0/server closed. Exposure fixture waits for actual game time.",
+      "passed": true,
+      "rendering105": {
+        "passed": true,
+        "emission": [
+          245,
+          0,
+          0,
+          255
+        ],
+        "colored": [
+          134,
+          44,
+          34,
+          255
+        ],
+        "blocked": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "exhausted": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "shadows": {
+          "Filter": [
+            218,
+            211,
+            198,
+            255
+          ],
+          "Receiver": [
+            218,
+            211,
+            198,
+            255
+          ],
+          "Light": [
+            218,
+            211,
+            198,
+            255
+          ]
+        },
+        "indirect": [
+          86,
+          0,
+          0,
+          255
+        ],
+        "sharp": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "wide": [
+          245,
+          245,
+          245,
+          255
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "glass": [
+          244,
+          0,
+          0,
+          255
+        ],
+        "solid": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "typedCpp": true,
+        "backend": "D3D11",
+        "scope": "Actual camera BVH rays, one-bounce emitter NEE/MIS, progressive multi-bounce, physical lens, glass and colored shadow/filter budget; no whole-game FPS or exact solid-volume transport claim."
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true,
+        "rendering104": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    {
+      "file": "native/build/gpu-scene-ZtYHgK/acceptance.json",
+      "sha256": "bc31d1097891998c5f459cf4a3680e7533f0c9601ba7d659effe63d59500c8c1",
+      "scope": "Full hidden WebGPU rendering098–105,old translucency/shading,Hi-Z,GI,deformation,motion and cleanup. Prior to final fixture-only shadow/lens/one-bounce assertions and authoring labels.",
+      "passed": true,
+      "rendering105": {
+        "passed": true,
+        "emission": [
+          255,
+          92,
+          46,
+          255
+        ],
+        "colored": [
+          112,
+          36,
+          31,
+          255
+        ],
+        "blocked": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "exhausted": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "indirect": [
+          190,
+          0,
+          5,
+          255
+        ],
+        "sharp": [
+          130,
+          130,
+          130,
+          255
+        ],
+        "wide": [
+          238,
+          238,
+          238,
+          255
+        ],
+        "closed": [
+          130,
+          130,
+          130,
+          255
+        ],
+        "glass": [
+          255,
+          79,
+          40,
+          255
+        ],
+        "solid": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "typedCpp": true,
+        "backend": "WebGPU",
+        "scope": "Actual camera BVH rays, emitter MIS, progressive multi-bounce, physical lens, glass and colored shadow/filter budget; no whole-game FPS or exact solid-volume transport claim."
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true,
+        "rendering104": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-qdJkGn/acceptance.json",
+      "sha256": "7d67ae45a5376ef2e4c028ccb204a2f02f34e63d783c4b40951a8051f1e1347f",
+      "scope": "Final hidden WebGL2 rendering098–105,shadow flags,one-bounce emitter,lens and glass plus existing regression.099 exposure wait changed subsequently without runtime production edits.",
+      "passed": true,
+      "rendering105": {
+        "passed": true,
+        "emission": [
+          255,
+          92,
+          45,
+          255
+        ],
+        "colored": [
+          112,
+          36,
+          31,
+          255
+        ],
+        "blocked": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "exhausted": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "shadows": {
+          "Filter": [
+            210,
+            203,
+            190,
+            255
+          ],
+          "Receiver": [
+            210,
+            203,
+            190,
+            255
+          ],
+          "Light": [
+            210,
+            203,
+            190,
+            255
+          ]
+        },
+        "indirect": [
+          84,
+          0,
+          0,
+          255
+        ],
+        "sharp": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "wide": [
+          242,
+          242,
+          242,
+          255
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "glass": [
+          255,
+          89,
+          44,
+          255
+        ],
+        "solid": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "typedCpp": true,
+        "backend": "WebGL2",
+        "scope": "Actual camera BVH rays, one-bounce emitter NEE/MIS, progressive multi-bounce, physical lens, glass and colored shadow/filter budget; no whole-game FPS or exact solid-volume transport claim."
+      },
+      "priorRegressions": {
+        "rendering098": true,
+        "rendering099": true,
+        "rendering100": true,
+        "rendering101": true,
+        "rendering102": true,
+        "rendering103": true,
+        "rendering104": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/gpu-scene-tovOPW/acceptance.json",
+      "sha256": "015b931d8156f5403ba5e05292e8b23cd5ed03c2e6507de320b491276eb0d8a5",
+      "scope": "Final hidden WebGPU expanded105-only:actual shadow flags,one-bounce NEE,lens/glass,CPP and clean shutdown.",
+      "passed": true,
+      "rendering105": {
+        "passed": true,
+        "emission": [
+          255,
+          92,
+          46,
+          255
+        ],
+        "colored": [
+          112,
+          36,
+          31,
+          255
+        ],
+        "blocked": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "exhausted": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "shadows": {
+          "Filter": [
+            211,
+            203,
+            190,
+            255
+          ],
+          "Receiver": [
+            211,
+            203,
+            190,
+            255
+          ],
+          "Light": [
+            211,
+            203,
+            190,
+            255
+          ]
+        },
+        "indirect": [
+          36,
+          0,
+          0,
+          255
+        ],
+        "sharp": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "wide": [
+          225,
+          225,
+          225,
+          255
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "glass": [
+          255,
+          79,
+          40,
+          255
+        ],
+        "solid": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "typedCpp": true,
+        "backend": "WebGPU",
+        "scope": "Actual camera BVH rays, one-bounce emitter NEE/MIS, progressive multi-bounce, physical lens, glass and colored shadow/filter budget; no whole-game FPS or exact solid-volume transport claim."
+      },
+      "priorRegressions": {},
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true,
+      "privateProjectPreserved": true
+    },
+    {
+      "file": "native/build/cpu-rendering-105.json",
+      "sha256": "cc4778521144865f002ca069925f17da9f568664f6c17b81e1e7ccd5c1cb3502",
+      "commands": [
+        {
+          "command": "node tools/check-rendering-105.mjs",
+          "output": "{\"passed\":true,\"legacyOpaqueWorld\":true,\"transparentPacking\":true,\"signatureReuse\":true,\"castShadowInvalidation\":true,\"progressiveReset\":true,\"finiteBoundary\":true,\"defaultsOff\":true,\"physicalLens\":true}",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-104.mjs",
+          "output": "104 PASS: odd Hi-Z, stackless BVH/layout guards, offscreen authored GI/static reuse, skin/wax/leaf/hair/eye authoring, 2049 instance/skin/morph previous poses, reset/release and optional AO/GI guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-103.mjs",
+          "output": "103 PASS: physical/manual lens defaults, mm/FOV/runtime updates, perspective-only DOF, sample spatial rounding, property visibility and typed guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-102.mjs",
+          "output": "102 PASS: quality packing/ranges, integer guards, legacy and indirect overrides, no double spatial weighting and typed component edit",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-101.mjs",
+          "output": "101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-100.mjs",
+          "output": "{\"passed\":true,\"defaultsOff\":true,\"projectionRestored\":true,\"cameraAndOwnerResets\":true,\"depthReprojectionRoundTrip\":true,\"spatialOverrides\":true,\"typedValidation\":true}",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-rendering-099.mjs",
+          "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-engine-integration.mjs",
+          "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/check-material-volume.mjs",
+          "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-effects.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-screen-post.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "command": "node tools/generate-api.mjs --check",
+          "output": "",
+          "stderr": "",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "native/build/release-source-parity-105.json",
+      "sha256": "2db3293b2ae51322a8d3f5c701ee4f801cc85bd9410ddd7464f82e27af57d0c5",
+      "sourceFiles": 490,
+      "synced": [],
+      "scope": "All source files under prototype/tools/native/include except screenshots; no ignored build, user games or projects."
+    }
+  ],
+  "costs": {
+    "defaultPathTracing": false,
+    "defaultColoredRayShadows": false,
+    "geometryNodeBytes": 48,
+    "geometryTriangleBytes": 96,
+    "geometryLightBytes": 64,
+    "transportExtraBytesPerTriangle": 32,
+    "emitterIndexBytes": 16,
+    "nativeScreenConstantBytesAdded": 80,
+    "nativeScreenConstantFrames": 3,
+    "pathHistoryBytesPerPixel": 16,
+    "pathHistory": "Existing two RGBA16F screen-history images; raw HDR source/post resources remain",
+    "geometryRebuild": "CPU signature reuse; actual geometry/poses/material/light changes rebuild BVH and float image",
+    "automaticRuntimeGPUCPUReadbacksAdded": 0,
+    "scope": "Logical format arithmetic,resource reuse and explicit release proof; no whole-frame FPS,VRAM/RAM or phone measurement."
+  },
+  "failuresResolved": [
+    "HLSL exact-word fract conversion preserves refract; native vector constructors and loop annotations corrected in shared generator.",
+    "TSL result variables avoid early void shader returns and mixed void/value If branches.",
+    "WebGPU uniform buffer exceeded64KiB with inline nested NEE/BVH; explicit shared load/intersection/trace/hemisphere/BRDF layouts fix full legacy and new renderers.",
+    "Native emitter fixture isolates emission from white direct light; diagnostic248/199/199 was lit output,not missing dispatch.",
+    "Lens fixture uses .032-width strip to cover pixels at both native640×360 and browser1280×720.",
+    "Existing099 exposure fixture waits .12 actual game-time seconds instead of six RAF callbacks that can precede completed async native rendering; original adaptation assertions retained.",
+    "Native transport/layout guards and CPU tests cover emitter IDs/count/offset,light and mesh flags,historyVersion reset,Volume override and conservative exhaustion."
+  ],
+  "limits": [
+    "No whole Unreal/Unity corpus/API,exact-engine equivalence or all remaining rendering closure claim.",
+    "Ray material evaluated at triangle centroid; no per-hit texture UV/normal/alpha coverage. Glass is thin-interface approximation without closed-solid or nested medium stack.",
+    "Colored shadows apply to path and geometry-GI rays; raster shadow maps remain depth-only.",
+    "Constant RGB environment; no HDRI importance sampling,atmosphere or participating volume transport.",
+    "Path BSDF covers diffuse/GGX/glass; exact skin/hair/coat/sheen transport,denoiser and exact caustics remain.",
+    "2D sprites/custom GPU vertex/displacement geometry are excluded from BVH; existing default raster2D preserved.",
+    "Large changing scenes rebuild CPU BVH; no whole-game FPS/phone/VRAM proof.",
+    "Transparent/2D/custom deformation motion,foreground rasterDOF and full Hi-Z stochastic/DDA refinement remain separate scope."
+  ],
+  "installation": {
+    "state": "Grouped checks passed; installation pending",
+    "restartUserWindows": false
+  }
+}

@@ -225,6 +225,60 @@
           "record": "docs/RENDERING_104.md",
           "readScope": "Own web lines736–765,908–950 read: depth hierarchy/coarse ray intersections. Full SPD/SSSR stochastic traversal, denoiser and SDK APIs not analyzed or imported. HB min/max atlas uses per-level GPU passes.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-colored-translucent-shadows-in-unreal-engine",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "UE5.8 own web0–115: opacity/tint, lighting compatibility table, static-light/material setup and shadow sharpness. Images/linked API and remaining body not analyzed.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Ray-Tracing-Path-Tracing.html",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "HDRP17.0.4 own115–138 index only; links do not imply linked corpus completeness.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-understand.html",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Own115–170: camera-ray recursion, stochastic noise/progressive convergence/reset, double-sided and box/sphere versus thin refraction table. Remaining sections, images and linked APIs not analyzed.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-setup.html",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Own115–127 setup procedure/volume authoring only; linked hardware requirements/reference not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/path-tracing-limitations.html",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Own114–148 limitations: DX12 in HDRP; shader derivatives/custom interpolators/displacement, eye/hair and other raster features excluded. HB software BVH uses existing compute/GL/TSL, not Unity backend code.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Light_Transport_I_Surface_Reflection/A_Better_Path_Tracer",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Fourth edition own20–114: camera intersection/emission, BSDF f*cos/pdf, emitter next-event sampling, power-heuristic MIS and Russian roulette. HB uses uniform triangle-area emitter sampling and diffuse/GGX mixtures. Remaining derivation/linked API corpus not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Volume_Scattering/Transmittance",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Fourth edition own0–40: multiplicative transmittance and homogeneous Beer attenuation. Formula images not fully extracted; no null-scattering/heterogeneous-medium analysis claim.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Own573–630 Fn and reusable variable documentation read. Not the whole wiki or current-version API corpus. Installed r180 implementation checked separately.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/nodes/tsl/TSLCore.js",
+          "record": "docs/RENDERING_105.md",
+          "readScope": "Own485–532 Fn layout code generation and963–993 setLayout implementation read in installed r180 and source compared by SHA. Other functions/linked builders not fully read.",
+          "wholeCorpus": false
         }
       ]
     },

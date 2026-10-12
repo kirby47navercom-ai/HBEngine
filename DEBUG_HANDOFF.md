@@ -1,3 +1,7 @@
+# 105 native path diagnostic — 2026-10-12
+
+Resolved: native emitter pixel was248/199/199 from white direct lighting, not a missing dispatch. Isolate emission with light intensity0; native post-only camera rays, transmission shadows, freeze, guards and release pass in mKaIQy. Native640×360 lens fixture needed a wider .032 strip than the original subpixel .012 strip. WebGPU NEE expanded inline BVH calls past the64KiB uniform binding limit; shared explicit TSL layouts resolve it, full WebGPU ZtYHgK and WebGL qdJkGn pass. The existing099 six-RAF exposure wait could observe no completed asynchronous native frames; wait for .12 game-time seconds and retain pixel adaptation assertions. Final grouped checks and installation are recorded in105 evidence; failed captures stay separate.
+
 # 073 CCD IK — 2026-10-08
 
 07227238e5 푸시 완료. 기존 골격 솔버에 CCD·양방향 계산·직선 정지점 보정·입력 Quaternion 기준 이름별 전체 각도 제한/0잠금·공용 SetIKRotationLimit C++/BP·AI/관절 UI/Undo/Save를 연결. 리타게팅 IK 선을 실제 렌더 부모로 이동하고 프로필/Alpha0/비활성/종료 수명 정리. 최종 Editor animation-ccd-editor-o1ggrE/release Player animation-ccd-player-FM13zf에서 실제 glTF 뼈·C++/BP 목표/제약/조회·원본/오류0/종료0/서버 정리·제품 SHA 일치 통과. 2D IK 및 기존 그래프/상태/Sync·711 BP/626 C++ 연결(계산289·서비스337) 통과. UE3 자체본문/API요약·Three r180 설치SHA 대조 부분 읽기와 미독/보조 inventory 유지. [상세](docs/ANIMATION_CCD_073.md), [증거](docs/research/ANIMATION_CCD_073.json). 전체 선행→설치 갱신→조사 추가 순서 유지; 설치/사용 창/전역 FPS·RAM·전체 corpus 상태 변경 없음. 다음 2D 관절 제약과 나머지 애니메이션/누적 세부.
