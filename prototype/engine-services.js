@@ -52,7 +52,7 @@ export async function loadModel(asset){
 export function engineOperations(hooks){
   hooks={mesh:()=>null,...hooks};
   const sessionId=hooks.game?.id;
-  const audioSession=hooks.game?.audioRuntime&&hooks.game.audioRuntime.sessionId===sessionId?hooks.game.audioRuntime:{sessionId,audio:new Map(),pending:new Map(),errors:[],routing:null,epoch:0,unlocked:false,paused:false};
+  const audioSession=hooks.game?.audioRuntime&&hooks.game.audioRuntime.sessionId===sessionId?hooks.game.audioRuntime:{sessionId,audio:new Map(),pending:new Map(),errors:[],routing:null,epoch:0,unlocked:globalThis.hbNativeAudio===true,paused:false};
   audioSession.history??=[];if(hooks.game)hooks.game.audioRuntime=audioSession;
   const audio=audioSession.audio,mixers=new Map(),animations=new Map(),graphs=new Map(),graphRequests=new Map(),widgets=new Map();
   const ui=new WidgetSystem({readAsset:path=>readAsset(path),overlay:hooks.overlay,fileUrl,runtime:()=>hooks.game?.inputRuntime||currentVM,inputSignal:hooks.game?.inputLifetime.signal});

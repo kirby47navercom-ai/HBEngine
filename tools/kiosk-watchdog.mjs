@@ -2,9 +2,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {spawn} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
+import {windowsGameIdentity} from './windows-game-identity.mjs';
 
 export async function kioskWatchdog(executable,{signal,maxRestarts=20,onRestart=()=>{},onStart=()=>{},args=[]}={}){
-  const file=path.resolve(executable);if(path.basename(file).toLowerCase()!=='game.exe'||!(await fs.stat(file)).isFile())throw Error('배포된 Game.exe 경로를 지정하세요.');
+  const file=path.resolve(executable),manifest=JSON.parse(await fs.readFile(path.join(path.dirname(file),'game.hbpack.json'),'utf8')),expected=manifest.windowsApplication?windowsGameIdentity(manifest.id).executable:'Game.exe';if(path.basename(file).toLowerCase()!==expected.toLowerCase()||!(await fs.stat(file)).isFile())throw Error('배포된 게임 실행 파일 경로를 지정하세요.');
   let restarts=0;while(!signal?.aborted){const started=Date.now(),child=spawn(file,args,{cwd:path.dirname(file),windowsHide:false,stdio:'ignore'}),abort=()=>child.kill();signal?.addEventListener('abort',abort,{once:true});
     let status;try{status=await new Promise((resolve,reject)=>{child.once('error',reject);child.once('exit',(code,termination)=>resolve({code,termination}));onStart({pid:child.pid,executable:file,restarts});});}finally{signal?.removeEventListener('abort',abort);}
     if(signal?.aborted||status.code===0)return {restarts,status};if(++restarts>maxRestarts)throw Error('비정상 종료 반복으로 자동 재실행을 중단했어요.');

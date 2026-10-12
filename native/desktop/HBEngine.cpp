@@ -20,13 +20,19 @@
 #include <stdexcept>
 #include <memory>
 #include <map>
+#include <cstdio>
 namespace fs=std::filesystem;
+#ifdef HB_GAME_PLAYER
+#include "WindowsGameIdentity.hpp"
+#include "NativeAudio.hpp"
+#endif
 struct State {
     HWND window=nullptr; HANDLE job=nullptr,process=nullptr;
     ICoreWebView2Controller* controller=nullptr; ICoreWebView2* view=nullptr;
     ICoreWebView2Environment* environment=nullptr;
 #ifdef HB_GAME_PLAYER
     SceneRenderBridge sceneRenderer;
+    NativeAudio audio;
 #endif
     fs::path root,userData,ready,log,smoke; std::wstring url; bool closing=false,smokeSuccess=false,failed=false,development=true,windowSmoke=false,windowSmokeStarted=false,editorAcceptance=false,kiosk=false,kioskFullscreen=false,kioskPreventMinimize=false,operatorUnlocked=false;
     ~State(){if(view)view->Release();if(controller){controller->Close();controller->Release();}if(environment)environment->Release();if(job)CloseHandle(job);if(process)CloseHandle(process);}
@@ -154,9 +160,12 @@ public:
                     if(packet.value("channel","")=="hb.render"){
                         response={{"channel","hb.render"},{"id",packet.at("id")},{"ok",true}};response["value"]=app.sceneRenderer.command(packet,app.window,app.development);
                         if(packet.at("op")=="init"){ICoreWebView2Controller2* transparent=nullptr;const auto result=app.controller->QueryInterface(IID_ICoreWebView2Controller2,reinterpret_cast<void**>(&transparent));if(FAILED(result))throw std::runtime_error("Transparent WebView2 controller unavailable");const auto background=transparent->put_DefaultBackgroundColor({0,0,0,0});transparent->Release();if(FAILED(background))throw std::runtime_error("Transparent WebView2 background unavailable");}
+                    }else if(packet.value("channel","")=="hb.audio"){
+                        response={{"channel","hb.audio"},{"ok",true}};if(packet.contains("id"))response["id"]=packet.at("id");
+                        const auto op=packet.at("op").get<std::string>();if(op=="init")app.audio.initialize(app.environment,app.view);else if(op=="close")app.audio.shutdown();else if(op=="stats")response["value"]=app.audio.stats();else if(op=="block"){response["slot"]=packet.at("slot");app.audio.submit(packet.at("slot").get<unsigned>(),packet.at("serial").get<uint64_t>());}else throw std::runtime_error("Windows audio command");
                     }
                 }catch(const std::exception& issue){response["ok"]=false;response["error"]=issue.what();}
-                CoTaskMemFree(raw);if(response.contains("id"))app.view->PostWebMessageAsJson(wide(response.dump()).c_str());
+                CoTaskMemFree(raw);if(response.contains("id")||response.contains("slot"))app.view->PostWebMessageAsJson(wide(response.dump()).c_str());
             }
         }
 #endif
@@ -165,7 +174,12 @@ public:
             if(app.windowSmoke&&!app.windowSmokeStarted){app.windowSmokeStarted=true;app.view->ExecuteScript(L"import('/prototype/tests/detached-window-cases.js').then(test=>test.detachedWindowCases()).catch(error=>window.chrome.webview.postMessage('hbengine.windows.failed:'+error.message));",nullptr);CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;}
 #endif
             const auto workspace=std::wstring(message)==L"hbengine.ready.hub"?"hub":std::wstring(message)==L"hbengine.ready.player"?"player":"editor";
-            write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\""+std::string(workspace)+"\",\"port\":"+std::string(app.url.begin()+17,app.url.end()-1)+"}");app.smokeSuccess=true;
+#ifdef HB_GAME_PLAYER
+            nlohmann::json proof={{"ok",true},{"embedded",true},{"workspace",workspace},{"port",std::stoi(std::string(app.url.begin()+17,app.url.end()-1))}};LPWSTR applicationId=nullptr;if(SUCCEEDED(GetCurrentProcessExplicitAppUserModelID(&applicationId))&&applicationId){proof["applicationId"]=utf8(applicationId);CoTaskMemFree(applicationId);}write(app.smoke,proof.dump());
+#else
+            write(app.smoke,"{\"ok\":true,\"embedded\":true,\"workspace\":\""+std::string(workspace)+"\",\"port\":"+std::string(app.url.begin()+17,app.url.end()-1)+"}");
+#endif
+            app.smokeSuccess=true;
             if(app.editorAcceptance){CoTaskMemFree(source);CoTaskMemFree(message);return S_OK;}
             const auto result=app.view->ExecuteScript(L"window.hbEngineRequestClose();",nullptr);if(FAILED(result))error(L"편집기를 종료하지 못했어요.",result);
         }
@@ -263,6 +277,7 @@ LRESULT CALLBACK windowProcedure(HWND window,UINT message,WPARAM wParam,LPARAM l
 #ifdef HB_GAME_PLAYER
         // Release D3D COM objects before function-local system DLL loaders exit.
         app.sceneRenderer.shutdown();
+        app.audio.shutdown();
 #endif
 #ifndef HB_GAME_PLAYER
         closeDetached();
@@ -288,6 +303,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
     try{
         wchar_t buffer[32768];GetModuleFileNameW(nullptr,buffer,32768);const fs::path executable=buffer;const auto folder=executable.parent_path();
         #ifdef HB_GAME_PLAYER
+        int stampCount=0;auto stampArguments=CommandLineToArgvW(GetCommandLineW(),&stampCount);if(stampCount==4&&std::wstring(stampArguments[1])==L"--stamp-game"){const fs::path target=stampArguments[2];const std::wstring title=stampArguments[3];LocalFree(stampArguments);int result=0;try{stampGameExecutable(target,title);}catch(const std::exception& issue){std::fprintf(stderr,"%s\n",issue.what());result=1;}CoUninitialize();return result;}LocalFree(stampArguments);
+        #endif
+        #ifdef HB_GAME_PLAYER
         app.root=folder;
         const auto serverScript=L"tools/player-server.mjs";
         #else
@@ -311,7 +329,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         if(!project.empty()||registerOnly||app.windowSmoke)throw std::runtime_error("player argument");
         const auto game=nlohmann::json::parse(read(app.root/L"game.hbpack.json"));app.development=game.value("configuration",std::string{})=="development";
         const auto kiosk=game.value("kiosk",nlohmann::json::object());app.kiosk=kiosk.value("enabled",false);app.kioskFullscreen=app.kiosk&&kiosk.value("fullscreen",true);app.kioskPreventMinimize=app.kiosk&&kiosk.value("preventMinimize",true);
-        if(env(L"HB_USER_DATA_DIR").empty()){const auto id=game.at("id").get<std::string>();if(!std::regex_match(id,std::regex("[0-9a-f-]{36}")))throw std::runtime_error("game identity");app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine"/L"Games"/wide(id);fs::create_directories(app.userData/L"Sessions");}
+        const auto gameId=wide(game.at("id").get<std::string>());const auto sessionId=gameIdentity(gameId);std::wstring appId=L"HBEngine.Game.";for(wchar_t c:gameId)if(c!=L'-')appId+=c;if(FAILED(SetCurrentProcessExplicitAppUserModelID(appId.c_str())))throw std::runtime_error("Windows application identity");
+        app.audio.configure(sessionId,wide(game.at("name").get<std::string>()),executable.wstring(),env(L"HB_PLAYER_ACCEPTANCE")==L"1"&&env(L"HB_AUDIO_SILENT_TEST")==L"1");
+        if(env(L"HB_USER_DATA_DIR").empty()){app.userData=fs::path(env(L"LOCALAPPDATA"))/L"HBEngine"/L"Games"/gameId;fs::create_directories(app.userData/L"Sessions");}
         SetEnvironmentVariableW(L"HB_PLAYER_SMOKE",app.smoke.empty()?nullptr:L"1");
         #endif
 #ifndef HB_GAME_PLAYER

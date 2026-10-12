@@ -1,3 +1,7 @@
+# 108 final — independent Windows audio — 2026-10-13
+
+Changing display/group alone cannot change the observed shared persistent msedgewebview2 identifier. Keep per-project UDF/saves; route only existing engine mixed PCM to own WASAPI host session with stable GUID/AppID and product metadata. Shared slots are acknowledged before reuse; worklet credit bounds prevent unbounded IPC after main-thread stalls. No-gesture package regression was real: native audio session starts unlocked and lazily resumes, while web/mobile policies remain. Do not infer whole-game FPS from bounded transport; underflows is partial queued reads, not acoustic glitch proof. Private artifacts and exact limits are in108 evidence.
+
 # 107 final grouped resolution — 2026-10-13
 
 Original pixel assertions/timeouts retained. Raw GL passes omit unused denoiser source, and HDRI-free programs exclude environment NEE. Denoiser-only exclusion was falsified; fresh106 passes after environment specialization. Final records list both failed UqmzSe and passing grouped result. Native hardware core/post/107 and three actual players retain098–106 regression checks. All temporary probe globals removed; dependency bytes unchanged; no normal user-window launch/restart. Next user request is independent packaged-game/audio identity, after107 installation.

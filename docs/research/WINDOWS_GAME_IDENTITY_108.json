@@ -1,0 +1,633 @@
+{
+  "version": 1,
+  "date": "2026-10-12T18:04:46.431Z",
+  "previousCommit": "587fc25115541aa934617fd5ac8bc97a2cfa71ec",
+  "scope": [
+    "Windows packaged-game executable identity, PE product metadata, explicit AppUserModelID, per-project UDF/save preservation",
+    "Web Audio engine master/mixer/spatial/BP/C++ commands route shared PCM to project-GUID WASAPI in own game executable; no shared WebView2 hardware sink",
+    "Four worklet buffers with acknowledged shared slots and bounded native queue, lazy creation/idle release, device-change callback and clean shutdown",
+    "Kiosk executable resolution and legacy Game.exe runtime compatibility; native-autoplay starts without user gesture"
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/HBEngine.cpp",
+      "sha256": "af6cd2211c3da9f1f04063f1a5eddeeec5e3bc3b7b7d3a2d8629816b1183d027"
+    },
+    {
+      "file": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "2f0289a7553b5046a33cc9eaec7fd88903fef1393ac2492a7be79087ad1789ac"
+    },
+    {
+      "file": "prototype/audio-mixer.js",
+      "sha256": "f078cf016dc33a7de600527431be4c4fcd068cfbfe768151cb7fbe6a123665ca"
+    },
+    {
+      "file": "prototype/engine-services.js",
+      "sha256": "d4db3780b35d133ace9ee58ca7d0a6a4974fec620ece8f3a96aad6ec785b091c"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "58704d4da00cc30739c6481c3555d22b35720a9b4a2cc23859790e6d28f7b0e0"
+    },
+    {
+      "file": "tools/build-game.mjs",
+      "sha256": "119d1d2d55768b4c1eb0d25e4518f1252dda7414bcf512810af7043fcd0cc476"
+    },
+    {
+      "file": "tools/check-kiosk-watchdog.mjs",
+      "sha256": "f0b18657a5045354ce557291228b7dc4395e278c0ba2a97e4e1c25927eb6c49b"
+    },
+    {
+      "file": "tools/kiosk-watchdog.mjs",
+      "sha256": "645df0ee5afb50a0032343186874807e0ac0425a62400712388582909bf0faa0"
+    },
+    {
+      "file": "tools/player-server.mjs",
+      "sha256": "c6b072da0eafe0e8d45b1ac27c769b2c5cfff815b639f84daa96542f76d0df68"
+    },
+    {
+      "file": "native/desktop/NativeAudio.hpp",
+      "sha256": "f345c96e552cdc63db50f31d6edf00af17825c8971d7ac7c956d0cb76d1dcb91"
+    },
+    {
+      "file": "native/desktop/WindowsGameIdentity.hpp",
+      "sha256": "c18165aa95419a4e9747e51fb4f2e87529e0f3c4cd4395c4ff3a86769d2d0ec6"
+    },
+    {
+      "file": "native/tests/audio-identity.cpp",
+      "sha256": "da56fd08a1f9ad7446ac836399caa61b15153241778dfdf5884e0d9893b10e77"
+    },
+    {
+      "file": "prototype/native-audio-worklet.js",
+      "sha256": "5c737d03c55637448f2f4b957d2298c69a2ae170d9bc4f2f17135457917e8e34"
+    },
+    {
+      "file": "prototype/native-audio.js",
+      "sha256": "a3bd6f2d890f873a342e6f5a93bc39a0924d5040d41dbac449ae60292fab662c"
+    },
+    {
+      "file": "tools/check-native-audio-worklet.mjs",
+      "sha256": "0ad28f85086773bed7eae40ac07f1f9fe4382bcc33f15bdbbb9457110f751045"
+    },
+    {
+      "file": "tools/check-windows-game-identity.mjs",
+      "sha256": "2c5065e5074154e9b6a3fc6a18644934a7c96b04ab95711fc29d815b570638c5"
+    },
+    {
+      "file": "tools/windows-game-identity.mjs",
+      "sha256": "8e341c5463dea865c93b5c148a32ad3e8843cea5596fb4577eb3ad20222642a3"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "2f0289a7553b5046a33cc9eaec7fd88903fef1393ac2492a7be79087ad1789ac"
+    },
+    {
+      "path": "prototype/audio-mixer.js",
+      "sha256": "f078cf016dc33a7de600527431be4c4fcd068cfbfe768151cb7fbe6a123665ca"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "d4db3780b35d133ace9ee58ca7d0a6a4974fec620ece8f3a96aad6ec785b091c"
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "58704d4da00cc30739c6481c3555d22b35720a9b4a2cc23859790e6d28f7b0e0"
+    },
+    {
+      "path": "tools/build-game.mjs",
+      "sha256": "119d1d2d55768b4c1eb0d25e4518f1252dda7414bcf512810af7043fcd0cc476"
+    },
+    {
+      "path": "tools/check-kiosk-watchdog.mjs",
+      "sha256": "f0b18657a5045354ce557291228b7dc4395e278c0ba2a97e4e1c25927eb6c49b"
+    },
+    {
+      "path": "tools/kiosk-watchdog.mjs",
+      "sha256": "645df0ee5afb50a0032343186874807e0ac0425a62400712388582909bf0faa0"
+    },
+    {
+      "path": "tools/player-server.mjs",
+      "sha256": "c6b072da0eafe0e8d45b1ac27c769b2c5cfff815b639f84daa96542f76d0df68"
+    },
+    {
+      "path": "prototype/native-audio-worklet.js",
+      "sha256": "5c737d03c55637448f2f4b957d2298c69a2ae170d9bc4f2f17135457917e8e34"
+    },
+    {
+      "path": "prototype/native-audio.js",
+      "sha256": "a3bd6f2d890f873a342e6f5a93bc39a0924d5040d41dbac449ae60292fab662c"
+    },
+    {
+      "path": "tools/check-native-audio-worklet.mjs",
+      "sha256": "0ad28f85086773bed7eae40ac07f1f9fe4382bcc33f15bdbbb9457110f751045"
+    },
+    {
+      "path": "tools/check-windows-game-identity.mjs",
+      "sha256": "2c5065e5074154e9b6a3fc6a18644934a7c96b04ab95711fc29d815b570638c5"
+    },
+    {
+      "path": "tools/windows-game-identity.mjs",
+      "sha256": "8e341c5463dea865c93b5c148a32ad3e8843cea5596fb4577eb3ad20222642a3"
+    }
+  ],
+  "sources": [
+    {
+      "id": "webview-udf",
+      "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder",
+      "file": "native/build/identity-research-108/webview-udf.html",
+      "sha256": "73dbfb9bc152f619911f2d362073a44bb433e8eb6843d254401856d9c5cd87ea",
+      "bytes": 88181,
+      "readScope": "One shared UDF means shared processes/session; custom writable UDF and lifecycle scope. Existing per-project UDF already split.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "app-id",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-setcurrentprocessexplicitappusermodelid",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-setcurrentprocessexplicitappusermodelid",
+      "file": "native/build/identity-research-108/app-id.html",
+      "sha256": "660c5548556039ff3a66a7b0130fac04a3abb3a8206259c157c746d49b05af6a",
+      "bytes": 52339,
+      "readScope": "Definition and startup-before-UI requirement, lines32–66. Taskbar identity only; not proof of audio independence.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "grouping",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setgroupingparam",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setgroupingparam",
+      "file": "native/build/identity-research-108/grouping.html",
+      "sha256": "e5f40db0f62e9bac33d9d804016892ab00f152f3bdff66bfc39b69d2fb3454b5",
+      "bytes": 53402,
+      "readScope": "Signature, parameters, return errors and shared slider remarks, lines32–77.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "display-name",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setdisplayname",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setdisplayname",
+      "file": "native/build/identity-research-108/display-name.html",
+      "sha256": "d2aec0d380a045b254b380f2ae006373ebf046b838483b730e46b951091b9a5b",
+      "bytes": 54000,
+      "readScope": "Signature, lifetime and default display semantics, lines32–80.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "session-id",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessionidentifier",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessionidentifier",
+      "file": "native/build/identity-research-108/session-id.html",
+      "sha256": "ead5a5522e6c5f95f4ddf79e6d79e9069d7b9af642092bcfe910c376b8e6b8a3",
+      "bytes": 52051,
+      "readScope": "Session identifier versus instance identifier and memory ownership, lines32–68.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "wasapi-init",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize",
+      "file": "native/build/identity-research-108/wasapi-init.html",
+      "sha256": "c283a13915ddd9c7f9a4fb6e897caba210b9ad424975225af90b96f08c954453",
+      "bytes": 83366,
+      "readScope": "Shared/event parameters, session GUID and error conditions, lines32–117; remaining full remarks not promoted.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "shared-buffer",
+      "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2sharedbuffer?view=webview2-1.0.4191.47",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2sharedbuffer?view=webview2-1.0.4191.47",
+      "file": "native/build/identity-research-108/shared-buffer.html",
+      "sha256": "d777f488f7a41020921fc1f63c1bfbedea334f547dee642092ba2555061b97e8",
+      "bytes": 52359,
+      "readScope": "get_Buffer/CreateSharedBuffer/PostSharedBuffer and distinct native/script close lifetimes, lines40–90. SDK4258.31 signatures independently compiled.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "js-webview",
+      "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/javascript/webview",
+      "resolvedUrl": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/javascript/webview",
+      "file": "native/build/identity-research-108/js-webview.html",
+      "sha256": "e9c768407e96d35357e36bfcaf2de7d3193cfc383cbb37abd3f5f6effa29277e",
+      "bytes": 67831,
+      "readScope": "message/sharedbufferreceived/releaseBuffer methods, lines31–47. Remaining host-object catalogue not promoted.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "silent-sink",
+      "url": "https://developer.chrome.com/blog/audiocontext-setsinkid/",
+      "resolvedUrl": "https://developer.chrome.com/blog/audiocontext-setsinkid/",
+      "file": "native/build/identity-research-108/silent-sink.html",
+      "sha256": "cf9486d945a1522eca97b40da4caea3b519c729e69e7121f1c3cfe68d6ccffe1",
+      "bytes": 108649,
+      "readScope": "Silent sink clock still renders graph, detection/support, lines75–98. No microphone permission used.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "chromium-wasapi",
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/media/audio/win/audio_low_latency_output_win.cc",
+      "resolvedUrl": "https://raw.githubusercontent.com/chromium/chromium/main/media/audio/win/audio_low_latency_output_win.cc",
+      "file": "native/build/identity-research-108/chromium-wasapi.cpp",
+      "sha256": "a7262cb41cd077e12f8b512dfae0a9000b06ce2d7a5eb34fc2a8b97a43681a42",
+      "bytes": 55146,
+      "readScope": "Output Open/SharedModeInitialize passes null session GUID except communications; lines372–423. Current-main source supports diagnosis; no assertion this matches exact installed154 binary.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    },
+    {
+      "id": "webview-audio-issue",
+      "url": "https://github.com/MicrosoftEdge/WebView2Feedback/issues/2236",
+      "resolvedUrl": "https://github.com/MicrosoftEdge/WebView2Feedback/issues/2236",
+      "file": "native/build/identity-research-108/webview-audio-issue.html",
+      "sha256": "888e189d7c106595a2688dbdf933f50709c564d992d06f94d3e50b7e9413a37b",
+      "bytes": 463596,
+      "readScope": "Original scenario, MSFT2024 status,2026 grouping report and recent linked commits, lines161–169,335–345,401–432. Issue discussion is evidence, not API guarantee.",
+      "scope": "Selected API definitions/remarks and source sections; fetching whole HTML is not whole-body analysis."
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/audio108-baseline-oyWXKq/sessions.json",
+      "sha256": "59d033c66eb609ac776cbfaec6368032fe7a53f5f04f6d9cb3bd0b0020d960e8"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\acceptance.json",
+      "sha256": "c5303eae89dc21b1bdddce16bc6f735235e6410d408ed2bc4e9cb79cb2c6cf98"
+    },
+    {
+      "file": "native/build/package-proof.json",
+      "sha256": "d7dfbb563885b437191d35077f2ea60f39d758b0ff640270018adce1d4936d55"
+    },
+    {
+      "file": "native/build/cpu-identity-108.json",
+      "sha256": "b771975e799db448f352de096ad8b9201a71d70949c2a82065d0612a99a660aa",
+      "commands": [
+        {
+          "command": "node tools/check-native-audio-worklet.mjs",
+          "passed": true,
+          "elapsedMs": 62,
+          "output": "네이티브 오디오: 스테레오 PCM·버퍼 4개 상한·느린 UI·무음·종료 통과",
+          "stderr": ""
+        },
+        {
+          "command": "node tools/check-buffered-audio.mjs",
+          "passed": true,
+          "elapsedMs": 112,
+          "output": "버퍼 오디오: 반복·탐색·피치·일시정지/재개·종료 이벤트·늦은 재생/디코딩 정리·PCM 공유/캐시 예산 검사 통과",
+          "stderr": ""
+        },
+        {
+          "command": "node tools/check-streaming-audio.mjs",
+          "passed": true,
+          "elapsedMs": 72,
+          "output": "스트리밍 소스 재사용·동시 재생·옛 핸들/이벤트 격리·늦은 play·미연결 정리·믹서 변경분 예약 통과",
+          "stderr": ""
+        },
+        {
+          "command": "node tools/check-ui-audio.mjs",
+          "passed": true,
+          "elapsedMs": 3559,
+          "output": "위젯 앵커·계층·바인딩·실제 블루프린트/C++ 실행·믹서 재정의/스냅샷·참조 순환/레지스트리·실측 프레임 검사 통과",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "file": "native/build/release-source-parity-108.json",
+      "sha256": "4d2b4c975850c51dcf5dbcbdc11c29b419983ed8f7ae9eff77a9711c050d5a1f",
+      "sourceFiles": 513
+    },
+    {
+      "file": "native/build/kiosk-watchdog-O5PiRL/acceptance.json",
+      "sha256": "c8c7e88b0cacac2bcb55adf4ba7bfe5f34b71c592248515f8b9ff9a3a485ffb2",
+      "passed": true,
+      "silentTest": true
+    }
+  ],
+  "acceptance": {
+    "passed": true,
+    "dir": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X",
+    "metadata": [
+      {
+        "FileDescription": "독립 게임 A",
+        "InternalName": "HBGame_772ca375c1284473ac9c6ccd7c4d066d",
+        "OriginalFilename": "HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe",
+        "ProductName": "독립 게임 A"
+      },
+      {
+        "FileDescription": "독립 게임 B",
+        "InternalName": "HBGame_419a04f57f8b40f0a69053b85a33e4bc",
+        "OriginalFilename": "HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe",
+        "ProductName": "독립 게임 B"
+      }
+    ],
+    "initial": [
+      {
+        "group": "{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}|1%b40268",
+        "mute": true,
+        "name": "독립 게임 A",
+        "owner": 40268,
+        "pid": 40268,
+        "state": 1,
+        "volume": 1
+      },
+      {
+        "group": "{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}|1%b51376",
+        "mute": true,
+        "name": "독립 게임 B",
+        "owner": 51376,
+        "pid": 51376,
+        "state": 1,
+        "volume": 1
+      }
+    ],
+    "modified": [
+      {
+        "group": "{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}|1%b40268",
+        "mute": false,
+        "name": "독립 게임 A",
+        "owner": 40268,
+        "pid": 40268,
+        "state": 1,
+        "volume": 0
+      },
+      {
+        "group": "{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}|1%b51376",
+        "mute": true,
+        "name": "독립 게임 B",
+        "owner": 51376,
+        "pid": 51376,
+        "state": 1,
+        "volume": 0.6100000143051147
+      }
+    ],
+    "volume": [
+      {
+        "group": "{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}|1%b40268",
+        "mute": true,
+        "name": "독립 게임 A",
+        "owner": 40268,
+        "pid": 40268,
+        "state": 1,
+        "volume": 0.23000000417232513
+      },
+      {
+        "group": "{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}|1%b51376",
+        "mute": true,
+        "name": "독립 게임 B",
+        "owner": 51376,
+        "pid": 51376,
+        "state": 1,
+        "volume": 0.6100000143051147
+      }
+    ],
+    "retained": [
+      {
+        "group": "{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 A\\Builds\\windows\\2026-10-12T17-59-44-770Z-5afea89b\\HBGame_772ca375c1284473ac9c6ccd7c4d066d.exe%b{772CA375-C128-4473-AC9C-6CCD7C4D066D}|1%b21576",
+        "mute": true,
+        "name": "독립 게임 A",
+        "owner": 21576,
+        "pid": 21576,
+        "state": 1,
+        "volume": 0.23000000417232513
+      },
+      {
+        "group": "{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "icon": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe,-101",
+        "id": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}",
+        "instance": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\windows-game-identity-pFPa0X\\독립 게임 B\\Builds\\windows\\2026-10-12T17-59-45-380Z-fd3bbf31\\HBGame_419a04f57f8b40f0a69053b85a33e4bc.exe%b{419A04F5-7F8B-40F0-A690-53B85A33E4BC}|1%b51376",
+        "mute": true,
+        "name": "독립 게임 B",
+        "owner": 51376,
+        "pid": 51376,
+        "state": 1,
+        "volume": 0.6100000143051147
+      }
+    ],
+    "stats": [
+      {
+        "available": true,
+        "deviceFrames": 1056,
+        "droppedFrames": 0,
+        "error": 0,
+        "peak": 0.06103701889514923,
+        "queuedFrames": 960,
+        "renderedFrames": 191552,
+        "sharedBytes": 16384,
+        "submittedFrames": 192512,
+        "underflows": 2
+      },
+      {
+        "available": true,
+        "deviceFrames": 1056,
+        "droppedFrames": 0,
+        "error": 0,
+        "peak": 0.06103701889514923,
+        "queuedFrames": 1184,
+        "renderedFrames": 119136,
+        "sharedBytes": 16384,
+        "submittedFrames": 120320,
+        "underflows": 0
+      }
+    ],
+    "legacyGameExe": true,
+    "invalidBlockRejected": true,
+    "silent": true,
+    "privateProfiles": true,
+    "exits": [
+      {
+        "pid": 40268,
+        "code": 0
+      },
+      {
+        "pid": 51376,
+        "code": 0
+      },
+      {
+        "pid": 21576,
+        "code": 0
+      },
+      {
+        "pid": 43776,
+        "code": 0
+      }
+    ],
+    "limitations": [
+      "Physical listening and output-device hotplug/routing UI are not automated here.",
+      "Mixing is still Web Audio; bounded shared PCM blocks feed WASAPI from the packaged game process."
+    ]
+  },
+  "package": {
+    "dir": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9",
+    "project": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9\\배포 검증\\배포 검증.hbproject",
+    "outputs": [
+      {
+        "target": "windows-x64",
+        "renderer": "WebView2/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "two_d",
+          "name": "2d",
+          "configuration": "development",
+          "productName": "배포 \"검증\"",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Garden.hbscene.json",
+              "enabled": true
+            },
+            {
+              "path": "Assets/Scenes/Second.hbscene.json",
+              "enabled": true
+            }
+          ]
+        },
+        "startupScene": "Assets/Scenes/Renamed.hbscene.json",
+        "gameInstance": "",
+        "files": 16,
+        "bytes": 123548,
+        "nativeModules": 1,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-12T17-56-55-857Z-f368d1d5",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9\\배포 검증\\Builds\\two_d\\2026-10-12T17-56-55-857Z-f368d1d5",
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9\\배포 검증\\Builds\\two_d\\2026-10-12T17-56-55-857Z-f368d1d5\\HBGame_10fd2187d8014d768b6bbe9106feb7b6.exe",
+        "windowsApplication": {
+          "id": "HBEngine.Game.10fd2187d8014d768b6bbe9106feb7b6",
+          "executable": "HBGame_10fd2187d8014d768b6bbe9106feb7b6.exe"
+        },
+        "totalFiles": 237,
+        "totalBytes": 118129051
+      },
+      {
+        "target": "windows-x64",
+        "renderer": "WebView2/WebGL2",
+        "renderBackend": "webgl2",
+        "profile": {
+          "id": "three_d",
+          "name": "3d",
+          "configuration": "release",
+          "productName": "배포 \"검증\"",
+          "width": 1280,
+          "height": 720,
+          "scenes": [
+            {
+              "path": "Assets/Scenes/Second.hbscene.json",
+              "enabled": true
+            }
+          ]
+        },
+        "startupScene": "Assets/Scenes/Second.hbscene.json",
+        "gameInstance": "",
+        "files": 15,
+        "bytes": 105367,
+        "nativeModules": 1,
+        "warnings": [
+          "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+        ],
+        "id": "2026-10-12T17-56-58-386Z-0baeb293",
+        "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9\\배포 검증\\Builds\\three_d\\2026-10-12T17-56-58-386Z-0baeb293",
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\package-check-aGMCo9\\배포 검증\\Builds\\three_d\\2026-10-12T17-56-58-386Z-0baeb293\\HBGame_10fd2187d8014d768b6bbe9106feb7b6.exe",
+        "windowsApplication": {
+          "id": "HBEngine.Game.10fd2187d8014d768b6bbe9106feb7b6",
+          "executable": "HBGame_10fd2187d8014d768b6bbe9106feb7b6.exe"
+        },
+        "totalFiles": 236,
+        "totalBytes": 110577172
+      }
+    ]
+  },
+  "diagnostics": {
+    "baselineSharedPersistentIdentifier": "{0.0.0.00000000}.{3e8f9de8-b8e6-47cc-824e-dedb10f7da22}|\\Device\\HarddiskVolume3\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\154.0.4258.62\\msedgewebview2.exe%b{00000000-0000-0000-0000-000000000000}",
+    "baselineSeparateGroupsDidNotSeparateIdentifier": true,
+    "resolved": [
+      "Spatial fixture attenuation explained .00665 peak; explicit nonspatial .5 test fixture preserves .01 assertion.",
+      "CDP serialization of AudioSinkInfo does not include prototype type getter; read .type explicitly.",
+      "No-gesture packaged regression found queued audio; native permission marks desktop session unlocked, initializes sink lazily and resumes explicitly.",
+      "Existing C++ UTF-8 identifier helper gets explicit boolean parentheses for compiler16.1 -Werror."
+    ],
+    "failures": [
+      "windows-game-identity-qsteAT compiler output absolute UTF-8 path; relative compiler output and Unicode wmain preserve Korean paths",
+      "windows-game-identity-VypmXk spatial peak timeout",
+      "First CoreAudio pass sink-info serialization assertion",
+      "package-check-YgJWNo no-gesture idle audio state"
+    ]
+  },
+  "costs": {
+    "sampleRate": 48000,
+    "channels": 2,
+    "blockFrames": 512,
+    "blockDurationMs": 10.666666666666666,
+    "sharedBytes": 16384,
+    "nativeQueueAllocatedBytes": 32768,
+    "nativeQueuedFramesMax": 2048,
+    "workletBuffersMax": 4,
+    "workletOutstandingMessagesMax": 3,
+    "perVoiceTransport": false,
+    "pcmJsonSerialization": false,
+    "webServerAudioTransport": false,
+    "unusedNativeQueueAllocation": false,
+    "idleDeviceReleaseMs": 300,
+    "wasapiObservedDeviceFrames": 1056,
+    "acceptancePCMStats": [
+      {
+        "available": true,
+        "deviceFrames": 1056,
+        "droppedFrames": 0,
+        "error": 0,
+        "peak": 0.06103701889514923,
+        "queuedFrames": 960,
+        "renderedFrames": 191552,
+        "sharedBytes": 16384,
+        "submittedFrames": 192512,
+        "underflows": 2
+      },
+      {
+        "available": true,
+        "deviceFrames": 1056,
+        "droppedFrames": 0,
+        "error": 0,
+        "peak": 0.06103701889514923,
+        "queuedFrames": 1184,
+        "renderedFrames": 119136,
+        "sharedBytes": 16384,
+        "submittedFrames": 120320,
+        "underflows": 0
+      }
+    ],
+    "performanceClaim": "Bounded transport and real PCM verified, no whole-game FPS or acoustic latency claim; underflows counter counts partial queued reads, not hardware glitch measurement."
+  },
+  "limits": [
+    "Windows x64 stereo48k float output with system resampling; existing mixing remains Web Audio.",
+    "Previously exported games must be exported again; original projects/old packages were not edited.",
+    "GetSessionIdentifier observed persistence covers same packaged executable path, not arbitrary relocation across directories.",
+    "Physical speaker listening, per-app output routing UI, device hotplug, microphone/media outside engine AudioRouting and phone hardware are not validated here.",
+    "No claim of whole UE/Unity corpus, complete engine or commercial parity."
+  ],
+  "installation": {
+    "state": "Pending",
+    "restartUserWindows": false
+  }
+}

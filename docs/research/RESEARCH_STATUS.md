@@ -1,3 +1,5 @@
+2026-10-13: [108 Windows 게임별 앱·오디오](../WINDOWS_GAME_IDENTITY_108.md), [증거](WINDOWS_GAME_IDENTITY_108.json). Microsoft UDF/AppID/CoreAudio/SharedBuffer API, Chrome 무음 sink와 Chromium 출력의 지정 구역을 읽고11 원문 SHA/읽기 경계를 기록해요. API 이름·그룹 변경만으로 해결했다는 추측을 피하고 실제 두 게임의 공유 식별자 재현과 자체 WASAPI 출력·음량·음소거·재시작·2D/3D C++·키오스크를 대조해요. 전체 본문/API gate 승격과 실기기·실게임 FPS 주장은 하지 않아요.
+
 2026-10-13: [107 중첩 매질·HDRI·디노이저](../RENDERING_107.md), [검사 기록](RENDERING_107.json). PBRT 경계/흡수/dielectric/환경 샘플링, AMD EAW 설명과 설치 Three r180 HDR/EXR/TSL 함수 캐시/텍스처 행렬 지정 구역만 읽고14 원문/설치 SHA와 미독 범위를 보존해요. 세 Windows 실행기와 네이티브 묶음,14 공용 검사로 닫힌 흡수·HDR/EXR·C++ 속성 변경·표시 노이즈 감소·원본 보존·기존098–106을 확인해요. 전체 본문/API gate와 참여 산란·2차 경계 디노이징·실게임/폰 성능은 종료하지 않아요.
 
 2026-10-13: [106 교차점 머테리얼·UV·법선·마스크](../RENDERING_106.md), [기계 기록](RENDERING_106.json). PBRT 보간/상호작용, HLSL loop/fastopt, Three Texture 지정 구역과 설치 r180 uniform/binding/RTT/NodeFrame/ACES/WebGL 프로그램 수명, ANGLE 지정 컴파일 구역을 부분 대조해요.16 원문/설치 SHA와 읽은 구역을 보존하고 발견 seed만 등록해요. 세 Windows 실행기와 네이티브 묶음,13 공용 검사로 교차점 UV·마스크·법선·C++ 변경·누적 초기화와 기존098–105·2D를 확인해요. 전체 본문/API gate,중첩 매질·HDRI·광선 mip/LOD·디노이저·실게임/폰 성능은 종료하지 않아요.

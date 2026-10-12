@@ -25,6 +25,7 @@ import {scenePrimitives} from './scene-primitives.js';
 import {createSky,applySceneEnvironment,syncSkyToCamera,disposeSceneEnvironment} from './scene-environment.js';
 const $=s=>document.querySelector(s),canvas=$('#game-canvas'),overlay=$('#game-ui'),menu=$('#pause-menu');
 const config=await(await editorRequest('/api/player')).json();document.title=config.name;
+globalThis.hbNativeAudio=config.nativeAudio===true;globalThis.hbNativeAudioAcceptance=config.acceptance===true;
 const readAsset=async path=>(await editorRequest(fileUrl(path))).json(),readText=async path=>(await editorRequest(fileUrl(path))).text();
 let renderer,world,visuals,primitives,vm,services,objects=[],builds=new Map(),currentScene,activeCamera,fallback,environment,sky,environmentContext,frame=0,sceneFrame=0,busy=false,closed=false,closing=false,failureCleanup,mobileActive=true,mobileSuspended=false,last=performance.now(),queued=0,sceneEpoch=0;
 const kiosk=kioskSettings(config);let operatorMenu=false,lastInteraction=performance.now(),kioskResetting=false;

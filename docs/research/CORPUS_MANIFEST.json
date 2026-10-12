@@ -2183,6 +2183,105 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "windows-game-audio-identity-supplement",
+      "engine": "Microsoft Windows/WebView2 and Chromium audio supplement",
+      "version": "selected-snapshot-2026-10-13; WebView2 SDK1.0.4258.31/runtime154.0.4258.62",
+      "locale": "en",
+      "roots": [
+        "https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder",
+        "https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-setcurrentprocessexplicitappusermodelid",
+        "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setgroupingparam",
+        "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setdisplayname",
+        "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessionidentifier",
+        "https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize",
+        "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2sharedbuffer?view=webview2-1.0.4191.47",
+        "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/javascript/webview",
+        "https://developer.chrome.com/blog/audiocontext-setsinkid/",
+        "https://raw.githubusercontent.com/chromium/chromium/main/media/audio/win/audio_low_latency_output_win.cc",
+        "https://github.com/MicrosoftEdge/WebView2Feedback/issues/2236"
+      ],
+      "hosts": [
+        "learn.microsoft.com",
+        "developer.chrome.com",
+        "raw.githubusercontent.com",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected API/source sections only; remaining bodies/outgoing API references are open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/user-data-folder",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "One shared UDF means shared processes/session; custom writable UDF and lifecycle scope. Existing per-project UDF already split.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-setcurrentprocessexplicitappusermodelid",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Definition and startup-before-UI requirement, lines32–66. Taskbar identity only; not proof of audio independence.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setgroupingparam",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Signature, parameters, return errors and shared slider remarks, lines32–77.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol-setdisplayname",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Signature, lifetime and default display semantics, lines32–80.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/audiopolicy/nf-audiopolicy-iaudiosessioncontrol2-getsessionidentifier",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Session identifier versus instance identifier and memory ownership, lines32–68.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/audioclient/nf-audioclient-iaudioclient-initialize",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Shared/event parameters, session GUID and error conditions, lines32–117; remaining full remarks not promoted.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2sharedbuffer?view=webview2-1.0.4191.47",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "get_Buffer/CreateSharedBuffer/PostSharedBuffer and distinct native/script close lifetimes, lines40–90. SDK4258.31 signatures independently compiled.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/javascript/webview",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "message/sharedbufferreceived/releaseBuffer methods, lines31–47. Remaining host-object catalogue not promoted.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://developer.chrome.com/blog/audiocontext-setsinkid/",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Silent sink clock still renders graph, detection/support, lines75–98. No microphone permission used.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://raw.githubusercontent.com/chromium/chromium/main/media/audio/win/audio_low_latency_output_win.cc",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Output Open/SharedModeInitialize passes null session GUID except communications; lines372–423. Current-main source supports diagnosis; no assertion this matches exact installed154 binary.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/MicrosoftEdge/WebView2Feedback/issues/2236",
+          "record": "docs/research/WINDOWS_GAME_IDENTITY_108.json",
+          "readScope": "Original scenario, MSFT2024 status,2026 grouping report and recent linked commits, lines161–169,335–345,401–432. Issue discussion is evidence, not API guarantee.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [
