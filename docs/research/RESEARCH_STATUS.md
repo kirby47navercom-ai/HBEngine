@@ -1,3 +1,5 @@
+2026-10-13: [112 BVH/구면 HDRI/분리 행](../RENDERING_112.md), [증거](RENDERING_112.json). Embree44-line refit API own body and selected PBRT environment-light sections2 source SHA snapshots; own normalized-area guard and spherical filters, not library integration or whole linked corpus. Actual rendering/CPP/CPU/atomic guards verified; no whole-game/phone/corpus gate promotion.
+
 2026-10-13: [111 CPU/WebGPU/HDRI](../RENDERING_111.md), [용량](../STORAGE_111.md), [증거](RENDERING_111.json). Selected MDN writeTexture API and installed Three r180 lifecycle/DataTexture source sections4 SHA snapshots. PBRT mip/cone selected source context reused from109; no complete corpus or spec/API coverage claim. Actual four execution routes and CPU exactness checked; no whole-game/phone gate promotion.
 
 2026-10-13: [110 atlas 갱신](../RENDERING_110.md), [증거](RENDERING_110.json). Microsoft UpdateSubresource 선언·자원 조건·행 pitch·복사·경합·2D 예제와 설치 Three r180 행 갱신/onUpdate/전체 WebGPU 업로드 지정 구역5개의 SHA를 기록해요. 자원 재사용·부분 전송·입력 거부·누락 행 보존과098–107/109를 실제 네 실행 경로에서 대조해요. WebGPU 전체 업로드·CPU 재포장·실게임/폰 성능·전체 문서/API gate는 미승격이에요.

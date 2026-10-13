@@ -1,0 +1,521 @@
+{
+  "version": 1,
+  "date": "2026-10-13T08:41:02.154Z",
+  "previousCommit": "52acf1898451403fca59b0803f4cf4fa3e5c819f",
+  "scope": [
+    "Stable-topology triangle BVH refit with quality fallback for transforms, vertex edits, skin, morph and instances.",
+    "Native disjoint dirty-row command; changed-only marshal/finite scan and complete-batch validation before writes.",
+    "Solid-angle HDRI mips, longitude seam, polar caps and trilinear LOD; legacy PDF/alias/toggle preserved.",
+    "Persistent disk hygiene; existing automatic QA cleanup and final shared-cache pruning."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "2728a10684cbbfce4ad871f732f6524ac5c5eb3520fc99e1463d690ac16e83ac"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "dd6f5ae1ca834cd86d796d265601499716490e5fa5f4b44eaca1823786e6058d"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "faac39ca5fda2936f5b5528e07ae2108e58bb32de0a0e688d51bb64351047ef3"
+    },
+    {
+      "file": "native/tests/ray-scene-bridge.cpp",
+      "sha256": "a6def451aa24bd810e10e87caf9ccf5eca7d525cdebf8edf26595b75a92dc2d0"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "bde8a399fd6ed90d41198e84fef725f72127b3f5f4decdf45d8ac45107e8ab74"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "da18fd7477f58d45d2021836612d6f41f460ceac7374c2f51341e2f327bc0e1d"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "9ba36bd1e888ee4be0f35b1ee878cc803bfdbd5b5797af7426aae4df2c5ccbfd"
+    },
+    {
+      "file": "prototype/path-environment-gpu.js",
+      "sha256": "e7ba4397768f0f1e3bea2b61d8a86e56ac449524fb708670498bab2481ba45ff"
+    },
+    {
+      "file": "prototype/path-environment-shader.js",
+      "sha256": "63e074dc49b9d253deec53e3e25802c54f0ca955e5f86a5f321669c547e10133"
+    },
+    {
+      "file": "prototype/path-environment.js",
+      "sha256": "a8ec1225ef9209b66445c5dbff36e1db286f5e02de1f1e4465f5c99970c17644"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "14387c05c6396dafca509c2626874caa02499ebe51f57c4115664b94ca4b1743"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "7ff45ab526abf2c7336a04c88057b30acefde7843a00d8ce052b4b70e5971426"
+    },
+    {
+      "file": "native/tests/scene-rendering-112.hpp",
+      "sha256": "9e9fe2fc1ad02a13ade7e252c0d01b58d3e55d5710f1f7da68cdd87c37b00d47"
+    },
+    {
+      "file": "tools/check-rendering-112.mjs",
+      "sha256": "4bef0d3eeeec53a3a309e7c9385f985509b52c18e036d22e3305abd9705d471c"
+    },
+    {
+      "file": "tools/rendering-112-fixture.mjs",
+      "sha256": "ddda177709f9a97152d3092b6283ebeaaf2b4f2ab15a5a44ce334f7333b98fea"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "d389c0a7f407cf2f641938ff34be8977eba19515e8968f88d787f2e64e4a60b0"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "dd6f5ae1ca834cd86d796d265601499716490e5fa5f4b44eaca1823786e6058d"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "faac39ca5fda2936f5b5528e07ae2108e58bb32de0a0e688d51bb64351047ef3"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "da18fd7477f58d45d2021836612d6f41f460ceac7374c2f51341e2f327bc0e1d"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "9ba36bd1e888ee4be0f35b1ee878cc803bfdbd5b5797af7426aae4df2c5ccbfd"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "e7ba4397768f0f1e3bea2b61d8a86e56ac449524fb708670498bab2481ba45ff"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "63e074dc49b9d253deec53e3e25802c54f0ca955e5f86a5f321669c547e10133"
+    },
+    {
+      "path": "prototype/path-environment.js",
+      "sha256": "a8ec1225ef9209b66445c5dbff36e1db286f5e02de1f1e4465f5c99970c17644"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "14387c05c6396dafca509c2626874caa02499ebe51f57c4115664b94ca4b1743"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "7ff45ab526abf2c7336a04c88057b30acefde7843a00d8ce052b4b70e5971426"
+    },
+    {
+      "path": "tools/check-rendering-112.mjs",
+      "sha256": "4bef0d3eeeec53a3a309e7c9385f985509b52c18e036d22e3305abd9705d471c"
+    },
+    {
+      "path": "tools/rendering-112-fixture.mjs",
+      "sha256": "ddda177709f9a97152d3092b6283ebeaaf2b4f2ab15a5a44ce334f7333b98fea"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "d389c0a7f407cf2f641938ff34be8977eba19515e8968f88d787f2e64e4a60b0"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/RenderKit/embree/master/doc/src/api/rtcSetGeometryBuildQuality.md",
+      "file": "native/build/rendering-research-112/embree-refit.md",
+      "sha256": "ce8c522acad74ab8346eb037b573a093a5b123ead8e05ae8d60d468535c9b0e8",
+      "bytes": 1465,
+      "readScope": "Entire44-line API page; vertex-only refit versus rebuild quality modes. Our SAH guard/packing is independent implementation, not an Embree integration.",
+      "wholeBodyRead": true
+    },
+    {
+      "url": "https://www.pbr-book.org/3ed-2018/Light_Sources/Infinite_Area_Lights",
+      "file": "native/build/rendering-research-112/infinite-light.html",
+      "sha256": "f1c342187c991be230df61e8b6e2261cb944ed9a0e3dfe41e45e2181b4c40bb4",
+      "bytes": 35047,
+      "readScope": "Selected own lat-long, mip lookup and sinTheta sampling context; no linked MIPMap, API or image-page coverage claim. Own cos-boundary integration and pole-cap implementation.",
+      "wholeBodyRead": false
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "cpu",
+      "file": "native/build/cpu-rendering-112.json",
+      "sha256": "6cf4f59f06b533db4d7283b13386b3fb9e218553f50034679bd40273ada6c87b"
+    },
+    {
+      "gate": "refit",
+      "file": "native/build/rendering-112-cpu.json",
+      "sha256": "f18b2a1e4fa5fb5adf86a6650436f235b2586e29fda14ce692503e3ed604f4f3"
+    },
+    {
+      "gate": "hardware",
+      "file": "native/build/native-scene-S0afs4/grouped-acceptance112.json",
+      "sha256": "88fe69e3b38b59d8c07e0ce1b79b95febee1ad4851117f052ddeab70b800a09a"
+    },
+    {
+      "gate": "bridge",
+      "file": "native/build/ray-scene-bridge-jn8sYI/acceptance.json",
+      "sha256": "44e71cc5bd27d27d74637c3eccde9ab84057c9817ed4cad953f9fd7f1f3e6061"
+    },
+    {
+      "gate": "nativeGroup",
+      "file": "native/build/native-scene-window-Jtuvoc/acceptance.json",
+      "sha256": "8355d7f3c9f18a942fa0d5ff919c19b5c80324b55ec626d31d5a861dd938edc9"
+    },
+    {
+      "gate": "native112",
+      "file": "native/build/native-scene-window-qkJYQw/acceptance.json",
+      "sha256": "a5634afa0a7a191f792a7d6f1391270cfbd0aa731ba66866429463e501eb311a"
+    },
+    {
+      "gate": "webgl112",
+      "file": "native/build/gpu-scene-eReaqC/acceptance.json",
+      "sha256": "f70fb54283978d0cdd89f4dfe10ca88463aef35b2a0a5130e30621f8d7919d89"
+    },
+    {
+      "gate": "webgpuGroup",
+      "file": "native/build/gpu-scene-lpUCjr/acceptance.json",
+      "sha256": "d7f402bae9eda3835a8959ccb46dda23c3c6f96e3a9ba277a902b92ca3453859"
+    },
+    {
+      "gate": "webglGroupDiagnostic",
+      "file": "native/build/gpu-scene-lEJCoN/failure.json",
+      "sha256": "0b5eef6c9a37da8ff6a20b89518772b9ae676acf52f769aa41f9c6fa477878be"
+    },
+    {
+      "gate": "webgpuReservedWordDiagnostic",
+      "file": "native/build/gpu-scene-uF67Rz/failure.json",
+      "sha256": "62e05f6bad7092ec6342195658e12f6e38e47d66d95b3c4579c395ee7823d54b"
+    },
+    {
+      "gate": "desktopBuild",
+      "file": "native/build/desktop-rendering-112.log",
+      "sha256": "f659bcc9f0b64711910ed07b14be90cec564945524da3ac6f6748b7935defbad"
+    },
+    {
+      "gate": "sourceParity",
+      "file": "native/build/release-source-parity-112.json",
+      "sha256": "ca8801df95893107b7ccb3f28b165cec60795115054b048953475ed0b2c80410"
+    },
+    {
+      "gate": "globalCleanup",
+      "file": "native/build/cache-prune-112.log",
+      "sha256": "bd4f7d3d70001e8945aed492bf7cb9b8c88d33789f62a45c455ef4414434d127"
+    }
+  ],
+  "acceptance": {
+    "cpu": [
+      {
+        "command": "node tools/check-rendering-112.mjs --record",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-test-artifacts.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-111.mjs --record",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-110.mjs --record",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-109.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-107.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-106.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-105.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-104.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-103.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-102.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-101.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-100.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-rendering-099.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-engine-integration.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/check-material-volume.mjs",
+        "passed": true
+      },
+      {
+        "command": "node tools/generate-screen-effects.mjs --check",
+        "passed": true
+      },
+      {
+        "command": "node tools/generate-screen-post.mjs --check",
+        "passed": true
+      },
+      {
+        "command": "node tools/generate-api.mjs --check",
+        "passed": true
+      }
+    ],
+    "refit": {
+      "passed": true,
+      "refitTranslations": 20,
+      "rayQueries": 60,
+      "qualityRebuild": true,
+      "topologyRebuild": true,
+      "deformedVerticesRefit": true,
+      "instancesMorphSkinRefit": true,
+      "invalidRefitAtomic": true,
+      "nativeSparseBytes": 256,
+      "nativeAtlasBytes": 4096,
+      "onlyChangedRowsValidated": true,
+      "invalidPatchRejected": true,
+      "hdrSolidAngleMean": true,
+      "hdrLegacyPDFPreserved": true,
+      "poleRecords": true
+    },
+    "bridge": {
+      "batchAtomicGuards": 7,
+      "jsonIntegerRangeGuards": 19,
+      "passed": true,
+      "rejectedPatchesDidNotWrite": true,
+      "validPatches": 6
+    },
+    "hardware112": {
+      "batchAtomicGuards": 5,
+      "nativeSparseBytes": 32,
+      "passed": true,
+      "pole": [
+        165,
+        0,
+        165
+      ],
+      "rotatedPole": [
+        165,
+        0,
+        165
+      ],
+      "seamLeft": [
+        232,
+        0,
+        231
+      ],
+      "seamRight": [
+        231,
+        0,
+        232
+      ],
+      "untouchedRows": true
+    },
+    "hardwareCorePassed": true,
+    "hardwareSegments": [
+      "core",
+      "post",
+      "rendering107"
+    ],
+    "unavailable": {
+      "unavailableGuard": true
+    },
+    "native112": {
+      "passed": true,
+      "seamLeft": [
+        232,
+        0,
+        232,
+        255
+      ],
+      "seamRight": [
+        232,
+        0,
+        232,
+        255
+      ],
+      "typedCPP": true,
+      "bvhRefit": {
+        "refits": 1,
+        "rebuilds": 1
+      },
+      "backend": "D3D11"
+    },
+    "webgl112": {
+      "passed": true,
+      "seamLeft": [
+        248,
+        41,
+        228,
+        255
+      ],
+      "seamRight": [
+        247,
+        40,
+        228,
+        255
+      ],
+      "typedCPP": true,
+      "bvhRefit": null,
+      "backend": "WebGL2"
+    },
+    "webgpu112": {
+      "passed": true,
+      "seamLeft": [
+        248,
+        41,
+        228,
+        255
+      ],
+      "seamRight": [
+        248,
+        40,
+        228,
+        255
+      ],
+      "typedCPP": true,
+      "bvhRefit": null,
+      "backend": "WebGPU"
+    },
+    "fullNativeAndWebGPU098Through107109111112": true,
+    "webglCoverage": "Prior098–111 unchanged sequential assertions completed before new112 color assertion. Final focused112 passes. Full earlier run is retained as failure, not relabeled PASS.",
+    "errorsInFinalRuns": [],
+    "normalExits": true,
+    "serversClosed": true
+  },
+  "storage": {
+    "cleanup": [
+      {
+        "receipt": "native/build/cache-prune-1791879568148",
+        "sha256": "0c134c1c3688570a7b89a84b47f387a88e9beca631f870448b903339d5b4dbc7",
+        "bytes": 190565437,
+        "files": 806,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791879757298",
+        "sha256": "63c8fcc6fb92137b47760a448cd207e6104c3481ca6fcbc938247ade0d399224",
+        "bytes": 164051239,
+        "files": 711,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791879791647",
+        "sha256": "a418d655fd36634c0eaa894fa26a37d0b4e11129f276d19f615a0db36ea4963b",
+        "bytes": 177985465,
+        "files": 809,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791880031340",
+        "sha256": "02bb295641cc936b991d893636da237a9e1fa673cd7609ee5e6bc9c24a020c13",
+        "bytes": 150504320,
+        "files": 658,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791880215882",
+        "sha256": "54e0dd23abdb1dc9b49cf15d61dde3018deba3182a9b625f1d2a64a40bae9d04",
+        "bytes": 151306210,
+        "files": 715,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791880512781",
+        "sha256": "737b5e4c939fa3063525d832136069d2570edf00f2f692dd7053fcccad9ea514",
+        "bytes": 164051454,
+        "files": 711,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791880578468",
+        "sha256": "c97810061befb943681ea09095a77b7728dc26393fadb0292143867da75c6967",
+        "bytes": 186371137,
+        "files": 920,
+        "deleted": 2,
+        "skipped": []
+      },
+      {
+        "receipt": "native/build/cache-prune-1791880611057",
+        "sha256": "1bd8de5e6acd54d33b3708a17bd067dd26d09ad60a59f316001d76d9438c6f16",
+        "bytes": 84513965,
+        "files": 56,
+        "deleted": 4,
+        "skipped": []
+      }
+    ],
+    "retiredBytes": 1269349227,
+    "automaticQACompletionCleanup": true,
+    "sharedWorkersRetained": 32,
+    "sourceParityFiles": 527,
+    "originalGamesModified": false,
+    "userProfilesDeleted": false,
+    "dependenciesAdded": 0,
+    "newLargeAssetsAdded": 0,
+    "retained": "Sources, fixture projects, reports, screenshots, package manifests, SDK and immutable installed versions; no raw report duplication in this record."
+  },
+  "costs": {
+    "refitStillCollectsTriangles": true,
+    "bvhSortSkippedOnStableRefit": true,
+    "nativeSparseTest": {
+      "bytes": 256,
+      "fullAtlasBytes": 4096
+    },
+    "automaticReadbacksAdded": 0,
+    "hdrExtraPoleTexelsPerLevel": 2,
+    "wholeGameFPSMeasured": false
+  },
+  "diagnostics": {
+    "resolved": [
+      "WGSL meta layout parameter was reserved and invalidated WebGPU post shaders; renamed mipInfo. Final full WebGPU old100 and all other assertions pass without loosening thresholds.",
+      "Native112 private inverse projection initially used incompatible GL settings; corrected only private fixture and verified seam/pole pixels.",
+      "Quality fallback fixture now creates overlapping partitions; initial spread reduced normalized cost and correctly retained refit.",
+      "Actual C++ Move fixture captures initial active path frame and waits two frames, then asserts actor position and native BVH counters.",
+      "New112 GL seam assertion now tests R/B dominance and left/right continuity; Three ACES introduces green cross-talk. Production tone mapping and prior rendering assertions unchanged."
+    ],
+    "historicalFailuresPreserved": true
+  },
+  "limits": [
+    "Triangle collection and prefix packing remain; no BLAS/TLAS or whole-game120/60FPS measurement.",
+    "Spherical bilinear/trilinear filter is not anisotropic cone integration; base PDF is preserved.",
+    "Batch atomicity covers one atlas command, not all resources of a frame. First/resize/topology changes intentionally can use full upload.",
+    "Advanced path lobes, caustics, secondary denoising and accumulated engine/mobile/full-corpus tasks remain separate."
+  ],
+  "installation": {
+    "state": "Pending grouped release verification",
+    "restartUserWindows": false
+  }
+}

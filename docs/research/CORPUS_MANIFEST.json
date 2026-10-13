@@ -2375,6 +2375,40 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "bvh-spherical-environment-supplement",
+      "engine": "BVH and spherical HDRI rendering supplement",
+      "version": "Selected2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://raw.githubusercontent.com/RenderKit/embree/master/doc/src/api/rtcSetGeometryBuildQuality.md",
+        "https://www.pbr-book.org/3ed-2018/Light_Sources/Infinite_Area_Lights"
+      ],
+      "hosts": [
+        "raw.githubusercontent.com",
+        "www.pbr-book.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Only listed page/sections read; linked library/API/image corpus remains open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://raw.githubusercontent.com/RenderKit/embree/master/doc/src/api/rtcSetGeometryBuildQuality.md",
+          "record": "docs/research/RENDERING_112.json",
+          "readScope": "Entire44-line API page; vertex-only refit versus rebuild quality modes. Our SAH guard/packing is independent implementation, not an Embree integration.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/3ed-2018/Light_Sources/Infinite_Area_Lights",
+          "record": "docs/research/RENDERING_112.json",
+          "readScope": "Selected own lat-long, mip lookup and sinTheta sampling context; no linked MIPMap, API or image-page coverage claim. Own cos-boundary integration and pole-cap implementation.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

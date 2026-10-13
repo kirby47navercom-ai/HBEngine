@@ -332,12 +332,14 @@ public:
             D3D11_SHADER_RESOURCE_VIEW_DESC v{};v.Format=format;v.ViewDimension=cube?D3D11_SRV_DIMENSION_TEXTURECUBE:array?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;if(array){v.Texture2DArray.MipLevels=mips;v.Texture2DArray.ArraySize=layers;}detail::check(gpu.device->CreateShaderResourceView(image.p,&v,&out.view.p),"Material data view");}
         if(mipmaps){gpu.context->GenerateMips(out.view.p);}++uploads_;return out;
     }
-    void updateRayScene(Texture& value,std::uint32_t width,std::uint32_t height,std::uint32_t row,std::uint32_t rows,const std::vector<std::uint8_t>& bytes){
-        const auto pitch=std::uint64_t(width)*16;if(value.owner!=gpu.device.p||!value.view.p||value.width!=width||value.height!=height||value.layers!=1||!width||!height||row>=height||!rows||rows>height-row||bytes.size()!=pitch*rows)throw std::runtime_error("Ray scene update dimensions or bytes invalid");
-        for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("Ray scene update must be finite");}
+    struct RayScenePatch{std::uint32_t row,rows;std::vector<std::uint8_t> bytes;};
+    void updateRayScenes(Texture& value,std::uint32_t width,std::uint32_t height,const std::vector<RayScenePatch>& patches){
+        const auto pitch=std::uint64_t(width)*16;if(value.owner!=gpu.device.p||!value.view.p||value.width!=width||value.height!=height||value.layers!=1||!width||!height||patches.empty()||patches.size()>height)throw std::runtime_error("Ray scene update dimensions invalid");
         D3D11_SHADER_RESOURCE_VIEW_DESC view{};value.view->GetDesc(&view);if(view.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D||view.Format!=DXGI_FORMAT_R32G32B32A32_FLOAT||view.Texture2D.MipLevels!=1)throw std::runtime_error("Ray scene update format invalid");
-        std::lock_guard<std::mutex> lock(gpu.mutex);detail::Com<ID3D11Resource> resource;value.view->GetResource(&resource.p);const D3D11_BOX box{0,row,0,width,row+rows,1};gpu.context->UpdateSubresource(resource.p,0,&box,bytes.data(),static_cast<UINT>(pitch),0);++raySceneUpdates_;raySceneUpdateBytes_+=bytes.size();
+        std::uint32_t end=0;for(const auto& p:patches){if(p.row<end||p.row>=height||!p.rows||p.rows>height-p.row||p.bytes.size()!=pitch*p.rows)throw std::runtime_error("Ray scene update rows or bytes invalid");end=p.row+p.rows;for(std::size_t i=0;i<p.bytes.size();i+=4){float v;std::memcpy(&v,p.bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("Ray scene update must be finite");}}
+        std::lock_guard<std::mutex> lock(gpu.mutex);detail::Com<ID3D11Resource> resource;value.view->GetResource(&resource.p);for(const auto& p:patches){const D3D11_BOX box{0,p.row,0,width,p.row+p.rows,1};gpu.context->UpdateSubresource(resource.p,0,&box,p.bytes.data(),static_cast<UINT>(pitch),0);++raySceneUpdates_;raySceneUpdateBytes_+=p.bytes.size();}
     }
+    void updateRayScene(Texture& value,std::uint32_t width,std::uint32_t height,std::uint32_t row,std::uint32_t rows,const std::vector<std::uint8_t>& bytes){updateRayScenes(value,width,height,{{row,rows,bytes}});}
     Texture createRenderTarget(std::uint32_t width,std::uint32_t height,bool stencil=false){
         if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)throw std::runtime_error("2D target dimensions invalid");
         std::lock_guard<std::mutex> lock(gpu.mutex);Texture out;out.owner=gpu.device.p;out.width=width;out.height=height;out.bytes=std::uint64_t(width)*height*(stencil?8:4);

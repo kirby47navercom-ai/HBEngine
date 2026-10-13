@@ -1,14 +1,15 @@
 export const pathEnvironmentGLSL=`
 vec4 hbEnvironmentLoad(float index){float count=hbPathMap.y*hbPathMap.z,total=hbPathOptions.z>.5?hbPathMap.x:count+ceil(count*.5),width=min(4096.0,total),height=ceil(total/width);return texture2D(hbPathEnvironmentScene,(vec2(index-floor(index/width)*width,floor(index/width))+.5)/vec2(width,height));}
 float hbEnvironmentBase(){return hbPathOptions.z>.5?0.0:hbPathMap.x;}
-vec2 hbEnvironmentUV(vec3 d){return vec2(fract((atan(d.z,d.x)-hbPathMap.w)*.159154943+.5),acos(clamp(d.y,-1.0,1.0))*.318309886);}
-vec3 hbEnvironmentLevel(vec2 uv,float level){vec4 meta=hbEnvironmentLoad(hbPathOptions.z+level);vec2 cell=min(floor(uv*meta.yz),meta.yz-1.0);return hbEnvironmentLoad(meta.x+cell.y*meta.y+cell.x).rgb;}
+vec2 hbEnvironmentUV(vec3 d){return vec2(fract(((dot(d.xz,d.xz)<1e-12?0.0:atan(d.z,d.x))-hbPathMap.w)*.159154943+.5),acos(clamp(d.y,-1.0,1.0))*.318309886);}
+vec3 hbEnvironmentCell(vec4 meta,vec2 cell){cell.x-=floor(cell.x/meta.y)*meta.y;cell.y=clamp(cell.y,0.0,meta.z-1.0);return hbEnvironmentLoad(meta.x+cell.y*meta.y+cell.x).rgb;}
+vec3 hbEnvironmentLevel(vec2 uv,float level){vec4 meta=hbEnvironmentLoad(hbPathOptions.z+level);vec2 position=uv*meta.yz-.5,cell=floor(position),f=fract(position);vec3 first=mix(hbEnvironmentCell(meta,cell),hbEnvironmentCell(meta,cell+vec2(1,0)),f.x),last=mix(hbEnvironmentCell(meta,cell+vec2(0,1)),hbEnvironmentCell(meta,cell+vec2(1,1)),f.x),result=mix(first,last,f.y);if(meta.w>.5&&uv.y*meta.z<.5)result=mix(hbEnvironmentLoad(meta.w).rgb,first,uv.y*meta.z*2.0);if(meta.w>.5&&(1.0-uv.y)*meta.z<.5)result=mix(hbEnvironmentLoad(meta.w+1.0).rgb,last,(1.0-uv.y)*meta.z*2.0);return result;}
 vec4 hbEnvironmentLod(vec3 d,float spread){
 #ifdef HB_RAY_NO_ENV
 return vec4(hbPathEnvironment.rgb,0.0);
 #else
 if(hbPathMap.y<.5)return vec4(hbPathEnvironment.rgb,0.0);vec2 uv=hbEnvironmentUV(d);float id=floor(uv.y*hbPathMap.z)*hbPathMap.y+floor(uv.x*hbPathMap.y);vec4 v=hbEnvironmentLoad(hbEnvironmentBase()+min(id,hbPathMap.y*hbPathMap.z-1.0));
-if(hbPathOptions.z>.5&&spread>0.0){float latitude=max(.00001,sqrt(max(0.0,1.0-d.y*d.y))),footprint=max(spread*hbPathMap.y*.159154943/latitude,spread*hbPathMap.z*.318309886),last=floor(log2(max(hbPathMap.y,hbPathMap.z))),lod=clamp(log2(max(1.0,footprint)),0.0,last),level=floor(lod);v.rgb=mix(hbEnvironmentLevel(uv,level),hbEnvironmentLevel(uv,min(last,level+1.0)),fract(lod));}return vec4(v.rgb*hbPathOptions.x,v.a);
+if(hbPathOptions.z>.5){float latitude=max(.00001,sqrt(max(0.0,1.0-d.y*d.y))),footprint=max(spread*hbPathMap.y*.159154943/latitude,spread*hbPathMap.z*.318309886),last=floor(log2(max(hbPathMap.y,hbPathMap.z))),lod=clamp(log2(max(1.0,footprint)),0.0,last),level=floor(lod);v.rgb=mix(hbEnvironmentLevel(uv,level),hbEnvironmentLevel(uv,min(last,level+1.0)),fract(lod));}return vec4(v.rgb*hbPathOptions.x,v.a);
 #endif
 }
 vec4 hbEnvironment(vec3 d){return hbEnvironmentLod(d,0.0);}

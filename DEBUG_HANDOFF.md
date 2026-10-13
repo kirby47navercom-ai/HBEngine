@@ -1,3 +1,16 @@
+# 112 final grouped verification
+
+WGSL meta layout parameter was reserved and invalidated WebGPU post shaders; renamed mipInfo. Final full WebGPU old100 and all other assertions pass without loosening thresholds.
+Native112 private inverse projection initially used incompatible GL settings; corrected only private fixture and verified seam/pole pixels.
+Quality fallback fixture now creates overlapping partitions; initial spread reduced normalized cost and correctly retained refit.
+Actual C++ Move fixture captures initial active path frame and waits two frames, then asserts actor position and native BVH counters.
+New112 GL seam assertion now tests R/B dominance and left/right continuity; Three ACES introduces green cross-talk. Production tone mapping and prior rendering assertions unchanged.
+Final full WebGPU lpUCjr errors0/exit0; native core S0afs4, native player full Jtuvoc/final qkJYQw, GL final eReaqC and CPU/bridge pass. Original GPU reserved-word and GL color failures retained.
+
+# 112 diagnostic notes
+
+Grouped CPU19 and bridge19 integer plus7 batch guards pass. Initial quality fixture spread objects widely; normalized SAH got cheaper, so it correctly retained refit. Use overlapping dense placement to exercise degradation rebuild, without changing threshold. Native112 fixture first used GL coordinate settings rejected by native validator, then incorrectly inverted z; actual hbWorldAt maps depth through coordinates.x/y and screen y through z/w. Corrected only private inverseVP to native identity/swap axes; native112 seam/poles/batch pixels pass. Actual D3D112 Move fixture must capture initial active path frame before checking BVH counters; after initial capture+two animation frames, current b3x7by proves1 refit/1 build. Full GL old098–111 pass; final new seam criterion falsely assumed zero green after ACES. Three ACES color matrices map magenta to[248,41,228], so verify strong R/B dominance and<5 left/right difference, preserve old assertions. No production tone mapping changes.
+
 # 111 resolved batch — exact packets, partial uploads, HDRI and disk bounds
 
 Atomic overflow fixture initially used Number.MAX_VALUE translation, causing degenerate triangles rather than Float32 overflow. Changed only private fixture to finite nondegenerate1e40 scale; atlas remains unchanged on rejection.
