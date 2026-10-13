@@ -754,7 +754,12 @@
     "defaultOff": true,
     "zeroStrengthReleasesCache": true,
     "currentAndActiveProjectProtected": true,
-    "versionsPolicy": "Retire obsolete full installs after verified switch; preserve modified files only"
+    "versionsPolicy": "Retire obsolete full installs after verified switch; preserve modified files only",
+    "updateRemovedBytes": 170517653,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "030bc7f62e25bb07"
+    ]
   },
   "diagnostics": [
     "Original full-resolution WebGPU device hang retained; fixed-size GPU photon pass replaces per-shading-point light tracing.",
@@ -771,7 +776,17 @@
     "No physical phone or whole-game FPS/thermal/equivalence certification."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "4d2c2ceab6195fd66642f998cf06846b03bcbe38",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\030bc7f62e25bb07",
+    "bundleHash": "030bc7f62e25bb07e7bc2966e0e5e96f61d239202fe518b4df76075fd178820c",
+    "files": 2143,
+    "remainingVersions": [
+      "030bc7f62e25bb07"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_117.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
