@@ -964,7 +964,12 @@
     "temporalExtraBytesPerPixel": 24,
     "temporalDefaultOff": true,
     "zeroTemporalReleases": true,
-    "versionsPolicy": "Retire obsolete full installs after verified switch; preserve modified/current/active/project files."
+    "versionsPolicy": "Retire obsolete full installs after verified switch; preserve modified/current/active/project files.",
+    "updateRemovedBytes": 170666545,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "05b2ea9263b8c853"
+    ]
   },
   "diagnostics": [
     "Native HLSL uniform/function name collision corrected at the existing helper; failure retained.",
@@ -981,7 +986,17 @@
     "No physical-phone, whole-game FPS/thermal or whole-engine equivalence claims."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "129e3894e32bc81a780f48828c5f931c8565a27e",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\05b2ea9263b8c853",
+    "bundleHash": "05b2ea9263b8c853d000ca61c8343c83abde69ba954eac663f167c8c9b272ab2",
+    "files": 2148,
+    "remainingVersions": [
+      "05b2ea9263b8c853"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_118.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
