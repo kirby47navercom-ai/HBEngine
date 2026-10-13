@@ -2534,6 +2534,40 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "motion-secondary-lens-supplement",
+      "engine": "Selected PBRT/NRD rendering contracts",
+      "version": "Selected2026-10-14",
+      "locale": "en",
+      "roots": [
+        "https://pbr-book.org/3ed-2018/Texture/Sampling_and_Antialiasing",
+        "https://github.com/NVIDIA-RTX/NRD/blob/master/README.md"
+      ],
+      "hosts": [
+        "pbr-book.org",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected own sections only; full source/API/engine corpus unclosed."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://pbr-book.org/3ed-2018/Texture/Sampling_and_Antialiasing",
+          "readScope": "Own10.1.1 tangent-plane/offset solve lines19–86 and10.1.3 reflection/transmission differentials lines118–144; linked implementation/API bodies not read.",
+          "record": "docs/research/RENDERING_119.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/NVIDIA-RTX/NRD/blob/master/README.md",
+          "readScope": "Own PSR contracts lines746–778: virtual position, normal, motion, hit distance and curvature caveats; linked API/code bodies not read.",
+          "record": "docs/research/RENDERING_119.json",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

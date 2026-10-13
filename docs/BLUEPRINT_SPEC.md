@@ -407,3 +407,7 @@ ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C+
 ## 118 — 발광면/HDRI 코스틱·시간/렌즈 필터
 
 기존 후처리 컴포넌트에 시간 필터 혼합과 렌즈 필터 세기 추가. 공용 컴포넌트 C++ Get/SetFloat·BP·AI 스키마와 동일 범위 검증을 사용한다. 발광 머테리얼/HDRI도 기존 에셋·파라미터를 재사용한다. 원본 누적과 필터 이력은 독립이며 시간 필터가 꺼지면 추가 이력이 해제된다. 실제 검증은 [118 기록](research/RENDERING_118.json)을 따른다.
+
+## 119 — 모션 재투영·이차 렌즈 공용 경로
+
+118의 시간/렌즈 필터와 DOF/초점 속성을 그대로 사용한다. CPP Get/SetFloat·SetBool, 컴포넌트 속성 BP, 상세 속성·AI revision patch가 같은 값을 편집한다. 모션 재투영은 같은 속성에서 자동 적용되며 별도 AI 설정이나 노드 복제는 없다. 포장·실제 창·원본 복원·설치 증거와 국소 근사 범위는 [119](RENDERING_119.md)를 따른다.

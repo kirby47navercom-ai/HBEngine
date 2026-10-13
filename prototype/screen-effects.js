@@ -17,13 +17,13 @@ export class ScreenFrameState{
   const base=camera.projectionMatrix.clone(),position=camera.getWorldPosition(new Vector3()),direction=camera.getWorldDirection(new Vector3());
   const taa=!p?.pathTracingEnabled&&p?.antiAliasing==='taa'&&p.aaStrength>0;const pathReset=this.taa!==taa||!this.valid||this.camera!==camera||this.scene!==scene||this.width!==width||this.height!==height||this.version!==p?.historyVersion||time<this.time;
   // A raster temporal gap is not a transport change; the path key checks exact camera/scene changes.
-  const reset=pathReset||time-this.time>.25||!this.projection.equals(base)||position.distanceTo(this.position)>Math.max(1,camera.near*100)||direction.dot(this.direction)<.5;
+  const filterReset=pathReset||!this.projection.equals(base)||position.distanceTo(this.position)>Math.max(1,camera.near*100)||direction.dot(this.direction)<.5;const reset=filterReset||time-this.time>.25;
   this.objects.begin(reset);if(reset)this.index=0;let jitter=[0,0];
   if(taa){this.index++;const x=(halton(this.index,2)-.5)*2/width,y=(halton(this.index,3)-.5)*2/height;jitter=[x*.5,y/(zeroToOne?-2:2)];camera.projectionMatrix.premultiply(new Matrix4().set(1,0,0,x,0,1,0,y,0,0,1,0,0,0,0,1));camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();}
   const vp=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);if(zeroToOne&&camera.coordinateSystem!==2001)vp.premultiply(new Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1));
-  const packed=packedScreenEffects(p);packed.temporal[3]=reset?0:1;
-  const result={...packed,jitter:[...jitter,...(reset?jitter:this.jitter)],inverseVP:vp.clone().invert().toArray(),currentVP:vp.toArray(),previousVP:(reset?vp:this.previous).toArray(),eye:[...position.toArray(),camera.isOrthographicCamera?1:0],forward:[...direction.toArray(),0],coordinates:zeroToOne?[1,0,-2,1]:[2,-1,2,-1],size:[width,height]};
-  return {packed:result,objects:this.objects,end:(success=true)=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();this.objects.end(success);this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset,pathReset};
+  const packed=packedScreenEffects(p);packed.temporal[3]=reset?0:1;packed.pathFilter[2]=filterReset?0:1;
+  const result={...packed,jitter:[...jitter,...(reset?jitter:this.jitter)],inverseVP:vp.clone().invert().toArray(),currentVP:vp.toArray(),previousVP:((packed.path[0]>0?filterReset:reset)?vp:this.previous).toArray(),eye:[...position.toArray(),camera.isOrthographicCamera?1:0],forward:[...direction.toArray(),0],coordinates:zeroToOne?[1,0,-2,1]:[2,-1,2,-1],size:[width,height]};
+  return {packed:result,objects:this.objects,end:(success=true)=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();this.objects.end(success);this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset,pathReset,filterReset};
  }
  reset(){this.valid=false;this.objects.clear();}
 }

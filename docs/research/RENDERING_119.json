@@ -1,0 +1,1994 @@
+{
+  "version": 1,
+  "date": "2026-10-13T18:12:39.178Z",
+  "localDate": "2026-10-14",
+  "previousCommit": "25de703cbf8dc8fa57ad7654f0e90c828b284779",
+  "scope": [
+    "Previous triangle barycentric correspondence and camera projection for display-history reprojection; rigid/skin/morph/instance packing.",
+    "MC reset on actual motion; stable validity refresh preserves MC; camera cuts/manual version/failure and material/light/environment changes reject history.",
+    "Pixel/aperture finite differentials through reflection/refraction/nested media/TIR, secondary CoC footprint and zero raw restoration.",
+    "Independent WebGPU guide transport factories; auxiliary8B/pixel allocated only when temporal or lens filtering needs it.",
+    "Existing CPP/BP/human/AI schema and revision-guarded patch preserved; native motion address bounds validated at begin."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "8aa0498b8f5f7fb0ba3d51a91fdea83eda396e805bd790a236948984146383cb"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "c7e5d06011117aeb52dc745f8c56655f0ed5e9208e076b75d75f74b74d5fd812"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "181eb6c8ec4c05417cfca806ebf8a15fb17923c90a58f77fad0f1ea2f6d7a4ab"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "a503274481d1bb3c4289528227da3d4855ceb43ead077808b3cdf9260514b831"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "ad8e4d593a97b57f807ead15b54543a1ee7b9d03e329a59eafddb8492ad26692"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "e44cab1a021cda4249d857f91eb78e4dd9835970930570bc08e0844f8ae8ade6"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "9e33afb9c0f389ce827d24655e1d9e8a863650f6fd1e63c337baaaeb5b2d018f"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "1dba7eac713e5e0ed1ad09b726020010ff56e50270c1bddff7325422088f23b1"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "197018791e5aa351fca0696c84dc0ce19bb4b6fc9ea8093acd2597b31b1fcc79"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "9b2f96b911100eaa3eff026790af5363d8e243eadf92bdf59ebfab18c0b3ec6f"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "e63809874a45906388dfecd66c75b7e4ab85f39b19059d7bbf442ace3b698146"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "30a7770b5428d62715109f9946fcceba5a05cc3268b285a9bae95bbfe808a981"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "693c35d001092ce3a74beb402190107dd6d3d1604a25543f6a59e9ad5d6c7ae5"
+    },
+    {
+      "file": "native/tests/scene-rendering-119.hpp",
+      "sha256": "f908f0b509dbd5ff46631b5ce77616035d56e9980d9680aab9d9596070a71481"
+    },
+    {
+      "file": "prototype/path-guide-gpu.js",
+      "sha256": "7332fa349200571ed16e155ca6fb09304cb676e42326dd2a374983a79213d251"
+    },
+    {
+      "file": "tools/check-rendering-119.mjs",
+      "sha256": "e600cd03c288ffeb58e481c4f5020827a956e5777533909abc03133bf504493f"
+    },
+    {
+      "file": "tools/rendering-119-fixture.mjs",
+      "sha256": "150cdd61a69a5c32bd5230b713f1503a1eaf0da653f484bad099d6f9c78526cb"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "8aa0498b8f5f7fb0ba3d51a91fdea83eda396e805bd790a236948984146383cb"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "181eb6c8ec4c05417cfca806ebf8a15fb17923c90a58f77fad0f1ea2f6d7a4ab"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "a503274481d1bb3c4289528227da3d4855ceb43ead077808b3cdf9260514b831"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "ad8e4d593a97b57f807ead15b54543a1ee7b9d03e329a59eafddb8492ad26692"
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "e44cab1a021cda4249d857f91eb78e4dd9835970930570bc08e0844f8ae8ade6"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "9e33afb9c0f389ce827d24655e1d9e8a863650f6fd1e63c337baaaeb5b2d018f"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "1dba7eac713e5e0ed1ad09b726020010ff56e50270c1bddff7325422088f23b1"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "197018791e5aa351fca0696c84dc0ce19bb4b6fc9ea8093acd2597b31b1fcc79"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "9b2f96b911100eaa3eff026790af5363d8e243eadf92bdf59ebfab18c0b3ec6f"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "e63809874a45906388dfecd66c75b7e4ab85f39b19059d7bbf442ace3b698146"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "30a7770b5428d62715109f9946fcceba5a05cc3268b285a9bae95bbfe808a981"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "693c35d001092ce3a74beb402190107dd6d3d1604a25543f6a59e9ad5d6c7ae5"
+    },
+    {
+      "path": "prototype/path-guide-gpu.js",
+      "sha256": "7332fa349200571ed16e155ca6fb09304cb676e42326dd2a374983a79213d251"
+    },
+    {
+      "path": "tools/check-rendering-119.mjs",
+      "sha256": "e600cd03c288ffeb58e481c4f5020827a956e5777533909abc03133bf504493f"
+    },
+    {
+      "path": "tools/rendering-119-fixture.mjs",
+      "sha256": "150cdd61a69a5c32bd5230b713f1503a1eaf0da653f484bad099d6f9c78526cb"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "5e6cb848a1043a2aa177ff3f2309f545cb221202f14b6de6ba80fb73a2592ccb"
+    },
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29"
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "cpu",
+      "file": "native/build/rendering-119-cpu.json",
+      "sha256": "8cb59ce8f95ca89eb3f425a044131275c956864bffe18c43ebd575b8d24b71b8"
+    },
+    {
+      "gate": "sharedSchema",
+      "file": "native/build/rendering-118-cpu.json",
+      "sha256": "e7444a991934ed4df5fa41013f56537290e9007ca03f3b1a24063fc72cb289ff"
+    },
+    {
+      "gate": "legacyCPU",
+      "file": "native/build/cpu-rendering-119.json",
+      "sha256": "6cf4f59f06b533db4d7283b13386b3fb9e218553f50034679bd40273ada6c87b"
+    },
+    {
+      "gate": "native",
+      "file": "native/build/native-rendering-119-grouped.json",
+      "sha256": "e3272d8b75e3accca78fc111dfb6f864a6f9e34251eaa84a9c179022abbd2bf0"
+    },
+    {
+      "gate": "directx",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-LP0LnF\\acceptance.json",
+      "sha256": "9e4792ca462553070ec777a48279039cc110838ef30ba1e399e3c87a944603c0"
+    },
+    {
+      "gate": "webgpu",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-yvvBbG\\acceptance.json",
+      "sha256": "c6d7a7221fa24003108fa81583e387f3056219621233077903efa2da0a001769"
+    },
+    {
+      "gate": "webgl",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-53fMGC\\acceptance.json",
+      "sha256": "29b17b559b7080cb06d35b3a45dc6e9dcbaf39bcbe2086d9c48ebd4a4b51a316"
+    },
+    {
+      "gate": "cleanup",
+      "file": "native/build/cache-prune-119.json",
+      "sha256": "d314e62eec99d2dc5d3c119cf79538bfb6c8089805b92afb221ae17c77fb2434"
+    },
+    {
+      "gate": "nativeBinaryCleanup",
+      "file": "native/build/native-binary-cleanup-119.json",
+      "sha256": "ac11633df235ad09d8a1bc41a2398b705c2f8dd5430e91d85302005f78dd21b3"
+    },
+    {
+      "gate": "originalFailure0",
+      "file": "native/build/gpu-scene-mTnF1I/failure.json",
+      "sha256": "7f4b76f24bf4703fc3fcecb439ae0c7ebb6cb230caaa2311646a38553b97c333"
+    },
+    {
+      "gate": "originalFailure1",
+      "file": "native/build/gpu-scene-jRZAPx/failure.json",
+      "sha256": "24c6119ac843fccd8210c380fec5574ea043bca308ec9640461567a3239f80d3"
+    },
+    {
+      "gate": "originalFailure2",
+      "file": "native/build/gpu-scene-Mw8mOU/failure.json",
+      "sha256": "152c618b41539647d83dfae357accbd94d4c9da56cb39bb42fd158fd73d021ae"
+    },
+    {
+      "gate": "originalFailure3",
+      "file": "native/build/native-scene-PNTy6A/failure.json",
+      "sha256": "f3df6c48703b2d2d94bcc40a368b1d46ba1cab6b673b6876d6361cc36387fb68"
+    },
+    {
+      "gate": "originalFailure4",
+      "file": "native/build/native-scene-PNTy6A/progress.json",
+      "sha256": "c4582e7b80599bbbb73e75d3562cffe28d8462bd4d672a29567e5d85f1661d1f"
+    },
+    {
+      "gate": "originalFailure5",
+      "file": "native/build/gpu-scene-aAkVPi/failure.json",
+      "sha256": "b5b27693dbfb16e98b90d0bbfc0bc0b932cd3793c91dfbba493d2ec083ea740d"
+    },
+    {
+      "gate": "originalFailure6",
+      "file": "native/build/gpu-scene-faEU03/failure.json",
+      "sha256": "4a11d53cc0b3f258211d67a635846276a5761f5d87dd65bc004c0b4e840643b9"
+    },
+    {
+      "gate": "originalFailure7",
+      "file": "native/build/gl119-trace-summary.json",
+      "sha256": "6cb646da5fac43e533d389b6b1f2be341afb199ba5f1e7293f66f223b6311705"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://pbr-book.org/3ed-2018/Texture/Sampling_and_Antialiasing",
+      "readScope": "Own10.1.1 tangent-plane/offset solve lines19–86 and10.1.3 reflection/transmission differentials lines118–144; linked implementation/API bodies not read.",
+      "record": "docs/research/RENDERING_119.json",
+      "wholeCorpus": false
+    },
+    {
+      "url": "https://github.com/NVIDIA-RTX/NRD/blob/master/README.md",
+      "readScope": "Own PSR contracts lines746–778: virtual position, normal, motion, hit distance and curvature caveats; linked API/code bodies not read.",
+      "record": "docs/research/RENDERING_119.json",
+      "wholeCorpus": false
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "previousTriangleBarycentricMotion": true,
+      "cameraMotionKeepsFilterHistory": true,
+      "objectMotionKeepsFilterHistory": true,
+      "skinMorphAndInstanceCorrespondence": true,
+      "rawMonteCarloResetsOnMotion": true,
+      "staticRefreshKeepsMonteCarloSamples": true,
+      "materialChangeRejects": true,
+      "firstFrameAndFailureRejects": true,
+      "disabledMotionStorageReleased": true,
+      "finiteSecondaryLensPackets": true
+    },
+    "sharedSchema": {
+      "passed": true,
+      "temporalClamp": true,
+      "depthNormalClassRejection": true,
+      "invalidHistoryAndZeroAreRaw": true,
+      "cameraLensSceneEnvironmentAndFailureResets": true,
+      "rasterGapKeepsStaticPathSamples": true,
+      "manualVersionAndFailureReset": true,
+      "typedBoundsAndAISchema": true,
+      "AIRevisionGuardedAtomicPatch": true,
+      "areaAndHDRIWithoutAnalyticLights": true,
+      "mixedSources": true,
+      "finitePackets": true
+    },
+    "legacyCPU": {
+      "passed": 19,
+      "commands": [
+        "node tools/check-rendering-112.mjs --record",
+        "node tools/check-test-artifacts.mjs",
+        "node tools/check-rendering-111.mjs --record",
+        "node tools/check-rendering-110.mjs --record",
+        "node tools/check-rendering-109.mjs",
+        "node tools/check-rendering-107.mjs",
+        "node tools/check-rendering-106.mjs",
+        "node tools/check-rendering-105.mjs",
+        "node tools/check-rendering-104.mjs",
+        "node tools/check-rendering-103.mjs",
+        "node tools/check-rendering-102.mjs",
+        "node tools/check-rendering-101.mjs",
+        "node tools/check-rendering-100.mjs",
+        "node tools/check-rendering-099.mjs",
+        "node tools/check-engine-integration.mjs",
+        "node tools/check-material-volume.mjs",
+        "node tools/generate-screen-effects.mjs --check",
+        "node tools/generate-screen-post.mjs --check",
+        "node tools/generate-api.mjs --check"
+      ]
+    },
+    "native": {
+      "segments": [
+        "core",
+        "post",
+        "rendering118",
+        "rendering119",
+        "rendering117",
+        "rendering116",
+        "rendering107"
+      ],
+      "alphaCutoutShadow": true,
+      "automaticReadbacks": 0,
+      "bloomComputePixel": true,
+      "bloomReuseRelease": true,
+      "bloomScissorBars": true,
+      "bloomThresholdExposure": true,
+      "clearcoatDirectPixel": true,
+      "clearcoatRoughnessPixel": true,
+      "clearcoatValidation": true,
+      "compactShotBloom": true,
+      "compactShotXYXZ": true,
+      "compiledNodes": 61,
+      "constantBuffers": 3,
+      "deformationPoseReuse": true,
+      "deformationValidation": true,
+      "deformedShadowPixel": true,
+      "depth": true,
+      "directionalShadowPixel": true,
+      "drawsPerFrame": 2049,
+      "gpuBindAffineWeights": true,
+      "gpuCompletionMeasured": false,
+      "gpuMorphPositionNormalColor": true,
+      "gpuSkinPixel": true,
+      "heightFogPixel": true,
+      "hemisphereNormalPixel": true,
+      "hlslOpacityShadow": true,
+      "hlslParameterPixel": true,
+      "independentShadowLights": true,
+      "independentTextureUV": true,
+      "instanceCount2049SingleDraw": true,
+      "instanceFrameResources": 3,
+      "instanceValidation": true,
+      "instancedColorPixel": true,
+      "instancedShadowPixel": true,
+      "materialTextures": {
+        "arrayHalfUpLayer": true,
+        "cubeMipLOD": true,
+        "dimensionValidation": true,
+        "independentWrapR": true,
+        "mipStorageBytes": 120,
+        "samples": [
+          {
+            "rgb": [
+              255,
+              0,
+              0
+            ],
+            "type": "texturecube",
+            "value": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "rgb": [
+              0,
+              255,
+              0
+            ],
+            "type": "texturecube",
+            "value": [
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "rgb": [
+              0,
+              0,
+              255
+            ],
+            "type": "texturecube",
+            "value": [
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "rgb": [
+              0,
+              255,
+              255
+            ],
+            "type": "texturecube",
+            "value": [
+              0,
+              -1,
+              0
+            ]
+          },
+          {
+            "rgb": [
+              255,
+              0,
+              255
+            ],
+            "type": "texturecube",
+            "value": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "rgb": [
+              255,
+              255,
+              0
+            ],
+            "type": "texturecube",
+            "value": [
+              0,
+              0,
+              -1
+            ]
+          },
+          {
+            "rgb": [
+              255,
+              0,
+              0
+            ],
+            "type": "texturearray",
+            "value": 0
+          },
+          {
+            "rgb": [
+              255,
+              0,
+              0
+            ],
+            "type": "texturearray",
+            "value": 0.49
+          },
+          {
+            "rgb": [
+              0,
+              255,
+              255
+            ],
+            "type": "texturearray",
+            "value": 0.5
+          },
+          {
+            "rgb": [
+              0,
+              255,
+              255
+            ],
+            "type": "texturearray",
+            "value": 1
+          },
+          {
+            "rgb": [
+              255,
+              0,
+              0
+            ],
+            "type": "texture3d",
+            "value": [
+              0.25,
+              0.75,
+              0.25
+            ]
+          },
+          {
+            "rgb": [
+              127,
+              127,
+              127
+            ],
+            "type": "texture3d",
+            "value": [
+              0.25,
+              0.75,
+              0.5
+            ]
+          },
+          {
+            "rgb": [
+              0,
+              255,
+              255
+            ],
+            "type": "texture3d",
+            "value": [
+              0.25,
+              0.75,
+              0.75
+            ]
+          },
+          {
+            "rgb": [
+              255,
+              0,
+              0
+            ],
+            "type": "texture3d",
+            "value": [
+              0.25,
+              0.75,
+              1.25
+            ]
+          }
+        ],
+        "sixFaces": true,
+        "srgbDecode": true,
+        "volumeInterpolation": true
+      },
+      "morphBeforeSkin": true,
+      "newUploadsDuring12Frames": 0,
+      "particles": {
+        "allSixSortModes": true,
+        "automaticPositionReadbacks": 0,
+        "capacity": 2049,
+        "explicitCountsOnly": true,
+        "gpuStepAndExpiry": true,
+        "hdrComputeBloom": true,
+        "indexAllocations": 1,
+        "indirectLivingCount": true,
+        "multiCapacityIndexReuse": true,
+        "passed": true,
+        "resourceRelease": true,
+        "sharedDepth": true,
+        "textureOrientation": true,
+        "viewportScissor": true,
+        "viewportSizeClamp": true
+      },
+      "passed": true,
+      "pbrDirectional": true,
+      "pbrPoint": true,
+      "pbrSpotAndCone": true,
+      "pixelViewportClear": true,
+      "pointShadowFace": true,
+      "probes": {
+        "automaticReadbacks": 0,
+        "blend": [
+          99,
+          99,
+          0
+        ],
+        "boundsAndIntensityPixel": true,
+        "boxProjectionPixel": true,
+        "coatProbePixel": true,
+        "diffuse": [
+          0,
+          137,
+          0
+        ],
+        "ggxRoughnessPixel": true,
+        "iorProbePixel": true,
+        "probeBytes32": 118912,
+        "projected": [
+          0,
+          0,
+          255
+        ],
+        "rough": [
+          116,
+          0,
+          104
+        ],
+        "shDiffusePixel": true,
+        "sharedResourceRelease": true,
+        "sharp": [
+          255,
+          0,
+          0
+        ],
+        "sixFaceHDRCapture": true,
+        "staticReuse": true,
+        "twoProbeBlendPixel": true,
+        "validation": true
+      },
+      "receiveShadowToggle": true,
+      "rendering098": {
+        "anisotropyRotationPixel": true,
+        "gradingAndEffectsPixel": true,
+        "postOnlyNoBloomDispatch": true,
+        "secondBounceDiffusePixel": [
+          0,
+          154,
+          0
+        ],
+        "sheenPixel": true,
+        "thinFilmThicknessPixel": true
+      },
+      "rendering099": {
+        "contactOcclusionPixel": true,
+        "depthForegroundGuard": true,
+        "depthOfFieldPixel": true,
+        "exposureDispatches": 1,
+        "exposureLazyBytes": 16,
+        "fxaaPixel": true,
+        "gainPixel": true,
+        "gpuAutoExposureAdaptation": true,
+        "invalidCameraRejected": true,
+        "lookupPixel": true,
+        "orthographicProjectionRadius": true,
+        "resourcesReusedReleased": true,
+        "whiteBalancePixel": true
+      },
+      "rendering100": {
+        "cameraMotionPixel": true,
+        "diffuseBouncePixel": true,
+        "historyLazyBytes": 65536,
+        "materialReflectionPixel": true,
+        "offAndRelease": true,
+        "rayQualityGuard": true,
+        "resetRejectsHistory": true,
+        "roughnessCutoff": true,
+        "temporalReprojectionPixel": true
+      },
+      "rendering101": {
+        "birthRejectPixel": true,
+        "cameraOnlyPixel": true,
+        "disabledBytes": 0,
+        "forceNoMotionPixel": true,
+        "historyMotionHdrBytesPerPixel": 32,
+        "matrixAndModeGuards": true,
+        "passed": true,
+        "rigidObjectBlurPixel": true
+      },
+      "rendering102": {
+        "coarseMiss": 149,
+        "disabledBytes": 0,
+        "edgeFade": 224,
+        "indirectHit": 227,
+        "integerAndRangeGuards": true,
+        "passed": true,
+        "qualityBufferBytesUnchanged": true,
+        "refinedHit": 228
+      },
+      "rendering103": {
+        "closed": 85,
+        "disabledBytes": 0,
+        "focused": 59,
+        "passed": true,
+        "polygonAndRotation": true,
+        "rangeIntegerOrthoGuards": true,
+        "sharp": 59,
+        "textureBytesUnchanged": true,
+        "wide": 229
+      },
+      "rendering104": {
+        "ambientOnlyEmissionPreserved": true,
+        "geometryBounceRed": 245,
+        "hiZOddViewportThinEdge": true,
+        "hiZRelease": true,
+        "morphSkinInstanceMotionPixels": true,
+        "offscreenGeometryOcclusion": true,
+        "passed": true,
+        "previousPoseLazyRelease": true,
+        "runtimeAutomaticReadbacks": 0,
+        "skinLeafHairPixels": true
+      },
+      "rendering105": {
+        "cameraPrimaryRay": true,
+        "incompleteConservative": true,
+        "nativeValidation": true,
+        "offscreenShadowTint": [
+          155,
+          105,
+          105
+        ],
+        "opaqueBlocks": true,
+        "passed": true,
+        "progressiveFreeze": true,
+        "releaseWhenDisabled": true,
+        "runtimeReadbacks": 0
+      },
+      "rendering106": {
+        "UVAndTexture": true,
+        "actualHLSLBytecode": true,
+        "alphaRejectsIntersection": true,
+        "disabledResourcesZero": true,
+        "legacyLayout": true,
+        "normalMap": true,
+        "passed": true,
+        "pixels": {
+          "checker": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              245,
+              245,
+              245
+            ]
+          ],
+          "color": [
+            [
+              245,
+              0,
+              0
+            ],
+            [
+              0,
+              245,
+              0
+            ]
+          ],
+          "mask": [
+            [
+              0,
+              245,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "normal": [
+            [
+              218,
+              218,
+              218
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "proceduralGraph": true,
+        "typedProgramGuards": 6
+      },
+      "resize": true,
+      "separateScissor": true,
+      "shadowResourceRelease": true,
+      "spotShadowPixel": true,
+      "submitMsPer2049Draws": 3.0517583333333334,
+      "transmission": {
+        "automaticReadbacks": 0,
+        "cropViewportScissor": true,
+        "dispersionChangedChannels": 568,
+        "foregroundDepthRejectedPixel": true,
+        "hdrReuseWithoutBloomCompute": true,
+        "iorThicknessPixel": true,
+        "optionalBloomComposition": true,
+        "reuseReleaseResize": true,
+        "reuseSnapshotCopies": 4,
+        "roughMipPixel": true,
+        "samplerLimitValidation": true,
+        "thinBackground": true,
+        "validation": true,
+        "volumeColorDistanceThicknessWorldScale": true,
+        "volumeZeroThicknessDisabledDistance": true
+      },
+      "twoD": {
+        "blendAndMaskPixels": true,
+        "draws": 3,
+        "freeformRGFloatPixel": true,
+        "insideOutsidePixels": true,
+        "oneLayerCookieArrayPixel": true,
+        "passed": true,
+        "passes": 3,
+        "sortingLayerLights": true,
+        "stencilResetKeepsColor": true,
+        "targetBytes": 32768,
+        "validation": true
+      },
+      "unlitTexture": true,
+      "validation": true,
+      "rendering119": {
+        "disabledResourcesZero": true,
+        "glass": {
+          "filtered": [
+            25.4853515625,
+            6.984160423278809
+          ],
+          "raw": [
+            24.6640625,
+            203.76409912109375
+          ],
+          "zeroLensExactRaw": true
+        },
+        "mirror": {
+          "filtered": [
+            27.095703125,
+            14.275997161865234
+          ],
+          "raw": [
+            25.5546875,
+            348.92864990234375
+          ],
+          "zeroLensExactRaw": true
+        },
+        "motion": {
+          "changedChannels": 5925,
+          "rawSamplesResetWhileFilterReprojects": true
+        },
+        "passed": true
+      },
+      "rendering118": {
+        "actualComputeShader": true,
+        "area": {
+          "off": 216,
+          "on": 174,
+          "weak": 156,
+          "zero": 216,
+          "zeroExactRaw": true
+        },
+        "direct": {
+          "off": 16,
+          "on": 16,
+          "weak": 16,
+          "zero": 16,
+          "zeroExactRaw": true
+        },
+        "disabledResourcesZero": true,
+        "hdri": {
+          "off": 234,
+          "on": 232,
+          "weak": 204,
+          "zero": 234,
+          "zeroExactRaw": true
+        },
+        "lens": {
+          "disabledTemporalReleases": true,
+          "focusResetHasNoStaleHistory": true,
+          "nativeGuards": 5,
+          "raw": [
+            242.07421875,
+            98.66050720214844
+          ],
+          "spatial": [
+            244.3701171875,
+            5.42063045501709
+          ],
+          "temporalBytes": 98304,
+          "temporalChangedChannels": 2460,
+          "zeroLensIsRaw": true
+        },
+        "mixed": {
+          "off": 236,
+          "on": 235,
+          "weak": 208,
+          "zero": 236,
+          "zeroExactRaw": true
+        },
+        "passed": true
+      },
+      "rendering117": {
+        "actualComputeShader": true,
+        "caustic": {
+          "off": 0,
+          "on": 130,
+          "photonCacheBytes": 32768,
+          "zero": 0,
+          "zeroReleasesCache": true
+        },
+        "disabledResourcesZero": true,
+        "glassNoise": {
+          "filtered": [
+            237.9228515625,
+            280.4833059310913
+          ],
+          "raw": [
+            235.935546875,
+            543.6696739196777
+          ],
+          "zeroIsRaw": true
+        },
+        "mirrorNoise": {
+          "filtered": [
+            229.4453125,
+            1411.0165405273438
+          ],
+          "raw": [
+            228.4638671875,
+            2119.733069419861
+          ],
+          "zeroIsRaw": true
+        },
+        "nativeCausticGuards": 5,
+        "passed": true
+      },
+      "rendering116": {
+        "closedMediumRadiance": true,
+        "colors": {
+          "closed": [
+            220,
+            220,
+            220
+          ],
+          "matched": [
+            0,
+            0,
+            0
+          ],
+          "normalFlat": [
+            0,
+            0,
+            0
+          ],
+          "normalLeak": [
+            0,
+            0,
+            0
+          ],
+          "rough": [
+            240,
+            240,
+            240
+          ],
+          "smooth": [
+            0,
+            0,
+            0
+          ]
+        },
+        "geometricNormalGuard": true,
+        "passed": true,
+        "roughDirectTransmission": true,
+        "smoothAndMatchedDeltaPreserved": true,
+        "whiteEnvironment128Samples": {
+          "closed": 0.9052687149130987,
+          "rough": 0.9864651884976634
+        }
+      },
+      "rendering107": {
+        "actualHLSLBytecode": true,
+        "disabledResourcesZero": true,
+        "edgeBackgroundUnchanged": true,
+        "environment": {
+          "first": [
+            0,
+            245,
+            0
+          ],
+          "rotated": [
+            232,
+            232,
+            0
+          ],
+          "zero": [
+            0,
+            0,
+            0
+          ]
+        },
+        "inside": {
+          "first": [
+            15,
+            165,
+            15
+          ]
+        },
+        "insideNestedMedia": true,
+        "nested": {
+          "first": [
+            3,
+            171,
+            3
+          ]
+        },
+        "noise": {
+          "filtered": [
+            205.427734375,
+            4552.686183929443
+          ],
+          "first": [
+            242,
+            242,
+            242
+          ],
+          "lazyBytes": 98304,
+          "raw": [
+            206.8720703125,
+            6360.041251182556
+          ],
+          "zeroIsRaw": true
+        },
+        "passed": true,
+        "rawHistoryPreserved": true,
+        "typedGuards": 4
+      },
+      "rendering109": {
+        "actualHLSLBytecode": true,
+        "disabledResourcesZero": true,
+        "glass": {
+          "mip": {
+            "mean": 115.021484375,
+            "variance": 0.021022796630859375
+          },
+          "raw": {
+            "mean": 114.0302734375,
+            "variance": 277.65240383148193
+          }
+        },
+        "mirror": {
+          "mip": {
+            "mean": 117.888671875,
+            "variance": 80.44268417358398
+          },
+          "raw": {
+            "mean": 115.7431640625,
+            "variance": 529.6635274887085
+          }
+        },
+        "passed": true,
+        "primary": {
+          "mip": {
+            "mean": 115,
+            "variance": 0
+          },
+          "raw": {
+            "mean": 113.998046875,
+            "variance": 277.15233993530273
+          }
+        },
+        "primaryReflectionRefraction": true,
+        "primaryWorld": {
+          "mip": {
+            "mean": 115,
+            "variance": 0
+          },
+          "raw": {
+            "mean": 116.06640625,
+            "variance": 331.65965270996094
+          }
+        }
+      },
+      "rendering110": {
+        "automaticReadbacks": 0,
+        "changedRowPixel": true,
+        "fullBytes": 128,
+        "guards": 9,
+        "invalidUpdatesAtomic": true,
+        "passed": true,
+        "patchBytes": 32,
+        "resourceReused": true,
+        "untouchedRowsPreserved": true
+      },
+      "rendering111": {
+        "disabledResourcesZero": true,
+        "hdrLOD": true,
+        "invalidMipLayout": true,
+        "legacyLayout": true,
+        "mip": {
+          "mean": 231.9931640625,
+          "variance": 0.008742332458496094
+        },
+        "passed": true,
+        "raw": {
+          "mean": 117.4755859375,
+          "variance": 14981.005263328552
+        }
+      },
+      "rendering112": {
+        "batchAtomicGuards": 5,
+        "nativeSparseBytes": 32,
+        "passed": true,
+        "pole": [
+          165,
+          0,
+          165
+        ],
+        "rotatedPole": [
+          165,
+          0,
+          165
+        ],
+        "seamLeft": [
+          232,
+          0,
+          231
+        ],
+        "seamRight": [
+          231,
+          0,
+          232
+        ],
+        "untouchedRows": true
+      },
+      "rendering115": {
+        "anisotropicRotationEnergyInvariant": true,
+        "anisotropyRotation": true,
+        "charlieSheen": true,
+        "clearcoatAndNormal": true,
+        "colors": {
+          "00legacy": [
+            21,
+            21,
+            21
+          ],
+          "01specOff": [
+            0,
+            0,
+            0
+          ],
+          "99legacy": [
+            21,
+            21,
+            21
+          ],
+          "anisoX": [
+            235,
+            235,
+            235
+          ],
+          "anisoY": [
+            26,
+            26,
+            26
+          ],
+          "coatFlat": [
+            25,
+            25,
+            25
+          ],
+          "coatOff": [
+            10,
+            10,
+            10
+          ],
+          "coatOn": [
+            219,
+            219,
+            219
+          ],
+          "film400": [
+            110,
+            157,
+            153
+          ],
+          "film700": [
+            135,
+            109,
+            135
+          ],
+          "sheen": [
+            0,
+            65,
+            0
+          ],
+          "specOff": [
+            0,
+            0,
+            0
+          ],
+          "specOn": [
+            21,
+            21,
+            21
+          ]
+        },
+        "filmThickness": true,
+        "furnace128Samples": {
+          "00legacy": [
+            0.03781359507532888,
+            0.03781359507532888,
+            0.03781359507532888
+          ],
+          "01specOff": [
+            0,
+            0,
+            0
+          ],
+          "99legacy": [
+            0.03781359507532888,
+            0.03781359507532888,
+            0.03781359507532888
+          ],
+          "anisoX": [
+            0.38601154617470945,
+            0.38601154617470945,
+            0.38601154617470945
+          ],
+          "anisoY": [
+            0.38058794734840745,
+            0.38058794734840745,
+            0.38058794734840745
+          ],
+          "coatFlat": [
+            0.04804821134691385,
+            0.04804821134691385,
+            0.04804821134691385
+          ],
+          "coatOff": [
+            0.012397954287492002,
+            0.012397954287492002,
+            0.012397954287492002
+          ],
+          "coatOn": [
+            0.04870873777158502,
+            0.04870873777158502,
+            0.04870873777158502
+          ],
+          "film400": [
+            0.22865625766242367,
+            0.4096019172123238,
+            0.3816198778586333
+          ],
+          "film700": [
+            0.3218975295089407,
+            0.23389337865412782,
+            0.3305816757485603
+          ],
+          "sheen": [
+            0,
+            0.10761999443571622,
+            0
+          ],
+          "specOff": [
+            0,
+            0,
+            0
+          ],
+          "specOn": [
+            0.03781359507532888,
+            0.03781359507532888,
+            0.03781359507532888
+          ]
+        },
+        "legacyAdvancedVariantCacheSwitch": true,
+        "passed": true,
+        "specularControl": true
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      },
+      "corePostProof": "native/build/native-scene-PNTy6A/progress.json",
+      "guardRepair": "Move existing motion block range validation from resolve to begin; core/post use zero offset."
+    },
+    "players": {
+      "directx": {
+        "passed": true,
+        "rendering119": {
+          "passed": true,
+          "GlassLens": {
+            "raw": {
+              "mean": 27.21484375,
+              "variance": 552.2839202880859
+            },
+            "filtered": {
+              "mean": 29.0615234375,
+              "variance": 5.200316429138184
+            },
+            "zero": {
+              "mean": 27.21484375,
+              "variance": 552.2839202880859
+            }
+          },
+          "MirrorLens": {
+            "raw": {
+              "mean": 25.2724609375,
+              "variance": 669.2665853500366
+            },
+            "filtered": {
+              "mean": 27.9619140625,
+              "variance": 4.220229148864746
+            },
+            "zero": {
+              "mean": 25.2724609375,
+              "variance": 669.2665853500366
+            }
+          },
+          "cameraMotion": {
+            "changedChannels": 2340
+          },
+          "objectMotion": {
+            "changedChannels": 2385
+          },
+          "typedCPP": true,
+          "backend": "D3D11"
+        },
+        "rendering118": {
+          "passed": true,
+          "Area": {
+            "off": [
+              213,
+              213,
+              213,
+              255
+            ],
+            "on": [
+              199,
+              199,
+              199,
+              255
+            ],
+            "weak": [
+              177,
+              177,
+              177,
+              255
+            ],
+            "zero": [
+              213,
+              213,
+              213,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "on": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "weak": [
+              224,
+              224,
+              224,
+              255
+            ],
+            "zero": [
+              250,
+              250,
+              250,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "on": [
+              244,
+              244,
+              244,
+              255
+            ],
+            "weak": [
+              219,
+              219,
+              219,
+              255
+            ],
+            "zero": [
+              250,
+              250,
+              250,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "on": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "weak": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "zero": [
+              16,
+              16,
+              16,
+              255
+            ]
+          },
+          "Lens": {
+            "raw": {
+              "mean": 234.5693359375,
+              "variance": 1344.122145652771
+            },
+            "spatial": {
+              "mean": 244.3330078125,
+              "variance": 0.24555110931396484
+            },
+            "temporal": {
+              "mean": 244.3330078125,
+              "variance": 0.24555110931396484
+            },
+            "focused": {
+              "mean": 238.560546875,
+              "variance": 286.96508407592773
+            },
+            "zero": {
+              "mean": 234.5693359375,
+              "variance": 1344.122145652771
+            },
+            "typedCPP": true
+          },
+          "backend": "D3D11"
+        },
+        "regressions": [
+          "rendering119",
+          "rendering118",
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgpu": {
+        "passed": true,
+        "rendering119": {
+          "passed": true,
+          "GlassLens": {
+            "raw": {
+              "mean": 18.73828125,
+              "variance": 332.26353454589844
+            },
+            "filtered": {
+              "mean": 19.47265625,
+              "variance": 4.4914398193359375
+            },
+            "zero": {
+              "mean": 18.73828125,
+              "variance": 332.26353454589844
+            }
+          },
+          "MirrorLens": {
+            "raw": {
+              "mean": 16.9169921875,
+              "variance": 402.70697689056396
+            },
+            "filtered": {
+              "mean": 18.0009765625,
+              "variance": 4.295897483825684
+            },
+            "zero": {
+              "mean": 16.9169921875,
+              "variance": 402.70697689056396
+            }
+          },
+          "cameraMotion": {
+            "changedChannels": 2250
+          },
+          "objectMotion": {
+            "changedChannels": 2265
+          },
+          "typedCPP": true,
+          "backend": "WebGPU"
+        },
+        "rendering118": {
+          "passed": true,
+          "Area": {
+            "off": [
+              188,
+              188,
+              188,
+              255
+            ],
+            "on": [
+              193,
+              193,
+              193,
+              255
+            ],
+            "weak": [
+              167,
+              167,
+              167,
+              255
+            ],
+            "zero": [
+              188,
+              188,
+              188,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "on": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "weak": [
+              222,
+              222,
+              222,
+              255
+            ],
+            "zero": [
+              246,
+              246,
+              246,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "on": [
+              247,
+              247,
+              247,
+              255
+            ],
+            "weak": [
+              224,
+              224,
+              224,
+              255
+            ],
+            "zero": [
+              246,
+              246,
+              246,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "on": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "weak": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "zero": [
+              11,
+              11,
+              11,
+              255
+            ]
+          },
+          "Lens": {
+            "raw": {
+              "mean": 232.87890625,
+              "variance": 665.4951019287109
+            },
+            "spatial": {
+              "mean": 240.7724609375,
+              "variance": 0.1913900375366211
+            },
+            "temporal": {
+              "mean": 240.7666015625,
+              "variance": 0.1925954818725586
+            },
+            "focused": {
+              "mean": 236.6708984375,
+              "variance": 82.06454372406006
+            },
+            "zero": {
+              "mean": 232.87890625,
+              "variance": 665.4951019287109
+            },
+            "typedCPP": true
+          },
+          "backend": "WebGPU"
+        },
+        "regressions": [
+          "rendering119",
+          "rendering118",
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgl": {
+        "passed": true,
+        "rendering119": {
+          "passed": true,
+          "GlassLens": {
+            "raw": {
+              "mean": 21.1455078125,
+              "variance": 399.82550716400146
+            },
+            "filtered": {
+              "mean": 22.19921875,
+              "variance": 4.4915618896484375
+            },
+            "zero": {
+              "mean": 21.1455078125,
+              "variance": 399.82550716400146
+            }
+          },
+          "MirrorLens": {
+            "raw": {
+              "mean": 17.876953125,
+              "variance": 440.27392196655273
+            },
+            "filtered": {
+              "mean": 19.0673828125,
+              "variance": 2.49252986907959
+            },
+            "zero": {
+              "mean": 17.876953125,
+              "variance": 440.27392196655273
+            }
+          },
+          "cameraMotion": {
+            "changedChannels": 2337
+          },
+          "objectMotion": {
+            "changedChannels": 2310
+          },
+          "typedCPP": true,
+          "backend": "WebGL2"
+        },
+        "rendering118": {
+          "passed": true,
+          "Area": {
+            "off": [
+              147,
+              147,
+              147,
+              255
+            ],
+            "on": [
+              152,
+              152,
+              152,
+              255
+            ],
+            "weak": [
+              93,
+              93,
+              93,
+              255
+            ],
+            "zero": [
+              147,
+              147,
+              147,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "on": [
+              242,
+              242,
+              242,
+              255
+            ],
+            "weak": [
+              203,
+              203,
+              203,
+              255
+            ],
+            "zero": [
+              246,
+              246,
+              246,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "on": [
+              241,
+              241,
+              241,
+              255
+            ],
+            "weak": [
+              201,
+              201,
+              201,
+              255
+            ],
+            "zero": [
+              246,
+              246,
+              246,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "on": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "weak": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "zero": [
+              11,
+              11,
+              11,
+              255
+            ]
+          },
+          "Lens": {
+            "raw": {
+              "mean": 232.3916015625,
+              "variance": 831.8183279037476
+            },
+            "spatial": {
+              "mean": 240.783203125,
+              "variance": 0.9510459899902344
+            },
+            "temporal": {
+              "mean": 240.783203125,
+              "variance": 0.9510459899902344
+            },
+            "focused": {
+              "mean": 234.1904296875,
+              "variance": 591.5330724716187
+            },
+            "zero": {
+              "mean": 232.3916015625,
+              "variance": 831.8183279037476
+            },
+            "typedCPP": true
+          },
+          "backend": "WebGL2"
+        },
+        "regressions": [
+          "rendering119",
+          "rendering118",
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    }
+  },
+  "storage": {
+    "cleanup": {
+      "scope": "Completed private119 fixtures only; normal user profiles, projects, builds and shared native caches untouched",
+      "automaticBuildAndBrowserCleanup": true,
+      "entries": [
+        {
+          "work": "native-scene-YtRU2f",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "native-scene-PNTy6A",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "native-scene-8lvYOg",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-mTnF1I",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-jRZAPx",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-Mw8mOU",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-LXu5nb",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-yvvBbG",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "native-scene-window-LP0LnF",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-aAkVPi",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-9NV578",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-faEU03",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-MA0IiR",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        },
+        {
+          "work": "gpu-scene-53fMGC",
+          "deleted": 0,
+          "bytes": 0,
+          "receipt": null
+        }
+      ],
+      "deleted": 0,
+      "bytes": 0,
+      "failures": []
+    },
+    "nativeTestBinaries": {
+      "bytes": 5052512,
+      "files": [
+        {
+          "bytes": 1592920,
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-YtRU2f\\hardware.exe",
+          "sha256": "4EA1D3BC119FC9BBCEA63CA95217BAD1132F675126DF57C5EF32DD201CA33F8F"
+        },
+        {
+          "bytes": 136876,
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-YtRU2f\\unavailable.exe",
+          "sha256": "849093FFD490415B85B26729696BDC0585239A37E7A0327E5EF40D5126871315"
+        },
+        {
+          "bytes": 1592920,
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-PNTy6A\\hardware.exe",
+          "sha256": "F11FBCF9877A7C5B15D6E56685B19C72C4426373AB23332FFEAD9E0829DA29D8"
+        },
+        {
+          "bytes": 1592920,
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-8lvYOg\\hardware.exe",
+          "sha256": "47DEBD2B36DB9D8AEFFE15EA96F8F1549382D863C029605D361F0B21894F2507"
+        },
+        {
+          "bytes": 136876,
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-8lvYOg\\unavailable.exe",
+          "sha256": "E66802FAE2B178F00298D7D46E16D2B623650641EA2ABBEE1FC2290BA8A47D8C"
+        }
+      ],
+      "scope": "Completed private native test binaries only; reports and fixture inputs retained"
+    },
+    "newDependencies": 0,
+    "newAutomaticReadbacks": 0,
+    "auxiliaryBytesPerPixel": 8,
+    "temporalHistoryBytesPerPixel": 24,
+    "previousTriangleBytes": 48,
+    "defaultTemporalOff": true,
+    "auxiliaryLazyAllocationAndRelease": true,
+    "versionsPolicy": "Verify switch then retire unmodified obsolete versions; protect active/project/current files."
+  },
+  "diagnostics": [
+    "Shared explicit-layout TSL function nodes captured another RTT builder uniform binding; create independent transport per guide.",
+    "Keep all existing thresholds and deadlines.119 fixture HDRI intensity0.01 avoids8-bit clipping that hid radiance/noise changes.",
+    "The initial previous-position validity refresh requires another atlas update even in static scenes, without incrementing transport build/sample reset.",
+    "WebGL previous-guide target had never been rendered into or initialized: trace showed valid history and correct UVs but zero old guide. Initialize its render target storage before GPU copy; no production instrumentation/readback.",
+    "Positive motion address is a new valid packet form; its existing range check must run at begin to preserve prompt trust-boundary rejection. Core/post zero-offset checks from initial grouped pass are retained and all affected native groups rerun after the guard move."
+  ],
+  "limits": [
+    "Secondary refraction reprojection is a local virtual-depth approximation; curved/oblique surfaces or large motion can be inaccurate. Static virtual projection bias is canceled.",
+    "Lens differentials use tangent planes and a32-pixel cap; grazing or divergent TIR branches reject guides. Rough/background/incomplete unsupported guides remain raw.",
+    "Actual moving-window proof is diffuse camera/object motion; skin/morph/instances have CPU correspondence proof, not animated-window captures.",
+    "WebGPU render-graph feature configuration changes may restart raw accumulation; continuous scene motion still reprojects display history independently.",
+    "Own selected primary-source sections only; no NRD integration or complete source/API/Unreal/Unity corpus claim.",
+    "No physical-phone, whole-game FPS or thermal claim."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}
