@@ -26,6 +26,7 @@ foreach ($entry in $plan.entries) {
     if (Test-Path -LiteralPath $ancestor) { if ((Get-Item -LiteralPath $ancestor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw ('링크 경로 정리 금지: ' + $rel) } }
     $ancestor = Split-Path -Parent $ancestor
   }
+  if (-not (Test-Path -LiteralPath $target)) { continue }
   $active = @($processes | Where-Object { ($_.ExecutablePath -and $_.ExecutablePath.StartsWith($target + '\', [StringComparison]::OrdinalIgnoreCase)) -or ($_.CommandLine -and $_.CommandLine.IndexOf($target,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
   if ($active) { $skipped += $rel; continue }
   try { Remove-Item -LiteralPath $target -Recurse -Force; $deleted += $entry } catch { $failures += @{path=$rel;error=$_.Exception.Message} }

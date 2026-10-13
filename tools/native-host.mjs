@@ -14,6 +14,7 @@ import {prepareNative,jsonInclude} from './prepare-native.mjs';
 import {NativePhysicsQueries} from './native-physics-query.mjs';
 import {nativeModuleRequest,mergeNativeReply} from '../prototype/native-module-query.js';
 import {spawnQueryRequest,spawnQueryCursor} from '../prototype/native-spawn.js';
+import {pruneTestArtifacts} from './test-artifacts.mjs';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
@@ -64,7 +65,10 @@ export class NativeHost extends NativeProtocol {
       }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),...objects].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));}
     }
     signal?.throwIfAborted();
-    const token=randomUUID(),session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}return {token,metadata,cacheKey:hash,cacheHit,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    const token=randomUUID(),session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}
+    const now=new Date();await fs.utimes(binary,now,now);await pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)}).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
+    try{signal?.throwIfAborted();}catch(error){this.sessions.delete(token);throw error;}
+    return {token,metadata,cacheKey:hash,cacheHit,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
   async call(token,request,from,rendererQuery){
     const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();

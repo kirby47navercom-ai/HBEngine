@@ -1,3 +1,9 @@
+# 113 — cache bounds and cleanup lifecycle verified
+
+Resource test assertions passed, but old cleanup prefix discovery missed native/build plus separate native-resources literal. Added recognition of that exact source form; final resource test/teardown exit0.
+Maintenance cancellation removes the unreturned host session; actual build cancellation/retry/concurrent worker returns also pass.
+Reports retained; fake cache instance protected-source/active-process tests do not use user projects. Runtime cleanup is after build, not frame hot path.
+
 # 112 final grouped verification
 
 WGSL meta layout parameter was reserved and invalidated WebGPU post shaders; renamed mipInfo. Final full WebGPU old100 and all other assertions pass without loosening thresholds.

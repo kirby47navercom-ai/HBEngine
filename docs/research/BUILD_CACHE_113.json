@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "date": "2026-10-13T08:57:09.856Z",
+  "previousCommit": "7b6b0252d65576ebc376778244349a043b0c936e",
+  "scope": [
+    "Automatic current-instance C++ cache cleanup after successful builds/cache hits; most recent32 plus referenced/active modules preserved.",
+    "No empty cleanup receipts; concurrent unique receipt paths and missing-path tolerance.",
+    "Separated path-style QA roots recognized without dropping deletion bounds."
+  ],
+  "sourceProducts": [
+    {
+      "file": "tools/native-host.mjs",
+      "sha256": "bf8cc6df6f642c7007b12c601c044496472a1db694c0473ebbbc22e6fabeb4fc"
+    },
+    {
+      "file": "tools/test-artifacts.mjs",
+      "sha256": "3135b04f16b3e4e8ef35bfd78784bd9fafc1167b2cee0678ee1fdc11f4610935"
+    },
+    {
+      "file": "tools/remove-test-cache.ps1",
+      "sha256": "2629c391eb0e3062fd87e6a05d14445065ff5f29e62c5a04a907d45be8896fae"
+    },
+    {
+      "file": "tools/check-native-cache.mjs",
+      "sha256": "a47705af5711128d6c487800e087252dfd86e177c907440f1a58f051bf1f82ab"
+    }
+  ],
+  "products": [
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "bf8cc6df6f642c7007b12c601c044496472a1db694c0473ebbbc22e6fabeb4fc"
+    },
+    {
+      "path": "tools/test-artifacts.mjs",
+      "sha256": "3135b04f16b3e4e8ef35bfd78784bd9fafc1167b2cee0678ee1fdc11f4610935"
+    },
+    {
+      "path": "tools/remove-test-cache.ps1",
+      "sha256": "2629c391eb0e3062fd87e6a05d14445065ff5f29e62c5a04a907d45be8896fae"
+    },
+    {
+      "path": "tools/check-native-cache.mjs",
+      "sha256": "a47705af5711128d6c487800e087252dfd86e177c907440f1a58f051bf1f82ab"
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "retention",
+      "file": "native/build/cache-retention-0Dtc0M/acceptance.json",
+      "sha256": "e6dd9f4aa1434738c51d21705753ab901796ad4b9ecf85093b4b46a2a486f727"
+    },
+    {
+      "gate": "cancel",
+      "file": "native/build/native-cancel-38wJ9X/proof.json",
+      "sha256": "369586983a89714e2c74ef348ceedc3b6726735da297e066e2624406c8fd0829"
+    },
+    {
+      "gate": "resources",
+      "file": "native/build/native-resources-sZU8AQ/acceptance.json",
+      "sha256": "77da7ab21e155bdfacdddba156279ab68f7e99e6903baea2da89277049cfccad"
+    },
+    {
+      "gate": "testCleanup",
+      "file": "native/build/test-artifacts-113-final.log",
+      "sha256": "04540cb817288887855b05f01ae9d8dd2b14a7dabfaad5a247020856267ea6db"
+    },
+    {
+      "gate": "cleanup",
+      "file": "native/build/cache-prune-113.log",
+      "sha256": "7bdaaf2ebf884acc2d306750aa8790521f1c5ac3b373de4b1e0cff0aa3902a4b"
+    },
+    {
+      "gate": "historicalCleanupFailure",
+      "file": "native/build/native-resources-113.log",
+      "sha256": "c81c0cdd81b1b408275adc50e44ef6b67937c054f55da9b4e607cb6263264323"
+    }
+  ],
+  "acceptance": {
+    "retention": {
+      "passed": true,
+      "latest32Retained": true,
+      "referencedBinaryProtected": true,
+      "activeProcessProtected": true,
+      "inactiveRetired": true,
+      "unrelatedSourcePreserved": true,
+      "noEmptyReceipts": true,
+      "cancelDuringMaintenance": true,
+      "privateInstance": true
+    },
+    "cancellation": {
+      "fixture": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-cancel-38wJ9X",
+      "id": "21c5afab-daae-416d-909c-5ddbf538ac4a",
+      "cancel": {
+        "directory": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\6192cab5ad40654bcbd9",
+        "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\6192cab5ad40654bcbd9\\worker.exe",
+        "partialObserved": true,
+        "partialKind": "object",
+        "cacheCreated": false,
+        "temporaryFiles": 0
+      },
+      "retry": {
+        "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\6192cab5ad40654bcbd9\\worker.exe",
+        "result": 42,
+        "temporaryFiles": 0
+      },
+      "concurrent": {
+        "binary": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\plugins\\bda393dcf5cd8479069b\\worker.exe",
+        "attempts": 2,
+        "results": [
+          42,
+          42
+        ],
+        "temporaryFiles": 0
+      }
+    },
+    "resources": {
+      "passed": true,
+      "hostLifecycle": true,
+      "privateDataOmitted": true,
+      "readOnly": true,
+      "developmentAndSmokeOnly": true,
+      "editorRouteAndSchema": true,
+      "originGuard": true,
+      "serverClosed": true
+    },
+    "testCleanup": {
+      "passed": true,
+      "outsidePathsRejected": true,
+      "sourceAndEvidenceRetained": true,
+      "buildRemoved": true,
+      "manifestRetained": true
+    },
+    "cacheMaintenanceCancellation": true,
+    "existingCompileCancelRetryConcurrent": true,
+    "actualCppReturnValuesVerified": true,
+    "originalGamesModified": false,
+    "userWindowsRestarted": false
+  },
+  "storage": {
+    "automaticBuildCacheCleanup": true,
+    "mostRecent": 32,
+    "referencedAndActiveProtected": true,
+    "cleanupAfterTests": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "originalUserAssetsOrGameBuildsPruned": false,
+    "newDependencies": 0,
+    "largeAssetsAdded": 0
+  },
+  "binaryReuse": {
+    "from": "docs/research/USER_INSTALL_112.json",
+    "executableSHA256": "b9d829df11b352c4b702707d3c8fa3ca0ea18b664e1769403fe5298c9b367611",
+    "playerSHA256": "ca8158c570a78fb713aa008dd92ee76d32755588bcced20919b0f1c715cdd1a3",
+    "nativeProductionSourceChanged": false
+  },
+  "diagnostics": [
+    "Resource test assertions passed, but old cleanup prefix discovery missed native/build plus separate native-resources literal. Added recognition of that exact source form; final resource test/teardown exit0.",
+    "Maintenance cancellation removes the unreturned host session; actual build cancellation/retry/concurrent worker returns also pass."
+  ],
+  "limits": [
+    "Windows native cache only. Recent32 plus live/referenced items, not a hard cap that destroys active modules.",
+    "Retired binaries may need recompilation on later reuse. Original assets and user-requested exported games remain user-owned.",
+    "This storage follow-up does not add new rendering or claim whole-engine/phone/FPS completion."
+  ],
+  "installation": {
+    "state": "Pending final source and install verification",
+    "restartUserWindows": false
+  }
+}
