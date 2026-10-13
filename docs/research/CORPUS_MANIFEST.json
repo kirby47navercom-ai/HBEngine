@@ -2349,6 +2349,32 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "ray-upload-hdri-supplement",
+      "engine": "WebGPU/Three ray atlas and HDRI supplement",
+      "version": "Three0.180.0; selected2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/GPUQueue/writeTexture"
+      ],
+      "hosts": [
+        "developer.mozilla.org"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected API/source sections; full WebGPU spec, other library bodies and complete engine corpus not read."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/GPUQueue/writeTexture",
+          "record": "docs/research/RENDERING_111.json",
+          "readScope": "Own API declaration, origin/TypedArray/row pitch/extent/COPY_DST validation lines186–286 and small example; linked spec/API bodies not read.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

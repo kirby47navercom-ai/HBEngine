@@ -1,4 +1,5 @@
 import {shooterTemplate} from '../prototype/shooter-template.js';
+import {retainTestEvidence} from './test-artifacts.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -34,6 +35,7 @@ export async function ensureProjectManifest(root,name=path.basename(root)){
 export async function createProject(name,directory,template='garden'){
   if(!['garden','2d','3d','gameplay2d','gameplay3d','shooter2d'].includes(template))throw Error('프로젝트 템플릿 오류');
   if(!validName(name))throw Error('프로젝트 이름을 확인하세요.');directory=absolute(directory);await fs.mkdir(directory,{recursive:true});directory=await fs.realpath(directory);const root=path.join(directory,name);
+  retainTestEvidence(directory);
   // Exclusive mkdir reserves a new project without changing an existing folder or its files.
   await fs.mkdir(root);const project=await new ProjectService(root).init(true);if(template.startsWith('gameplay')||template==='shooter2d'){const data=template==='shooter2d'?shooterTemplate(name):gameplayTemplate(name,template==='gameplay2d'?'2d':'3d');for(const [file,value] of Object.entries(data.files))await project.write(file,typeof value==='string'?value:JSON.stringify(value,null,2));await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(data.scene,null,2));}else if(template!=='garden')await project.write('Assets/Scenes/Garden.hbscene.json',JSON.stringify(makeStarterScene(name,template),null,2));return ensureProjectManifest(root,name);
 }

@@ -1,3 +1,18 @@
+# 111 resolved batch — exact packets, partial uploads, HDRI and disk bounds
+
+Atomic overflow fixture initially used Number.MAX_VALUE translation, causing degenerate triangles rather than Float32 overflow. Changed only private fixture to finite nondegenerate1e40 scale; atlas remains unchanged on rejection.
+Native111 camera eye.w first marked orthographic despite perspective fixture. Set proper perspective flag; raw versus mip variance is measured.
+HDRI bool missing post-volume group prevented C++ false toggle reaching renderer. Added shared group entry and verified actual C++ transitions.
+Native raw alphaTest/transparent participate in compiled material cache key; threshold change invalidates cached plan.
+UTF8 plan parsing on Windows and disappearing WebView lockfile race corrected before final cache safety check.
+Focused original denoiser captures saw one0→255 red pixel drift; diagnostics captured identical raw/zero with equal bridge parameters, and final grouped native/GL/GPU old-strength threshold remains unchanged and passes. No claim of mathematical determinism on all drivers.
+Old107 HDRI mode explicitly legacy, equivalent to pre111 behavior; new111 tests filtered mode separately. Existing smoke soak setting allows aggregate grouped suite, individual event/pixel timeouts unchanged.
+Private diagnostics and receipts are retained under native/build; exported runtime and WebView profiles are reproducible/retired. Failures must keep original report. Current source checks and native/core/full D3D/GL/GPU pass.
+
+# 111 diagnostics — storage/renderer batch
+
+Disk prune132GiB logical completed with protected source/profile/active paths; UTF8 plan reader and disappearing WebView lockfile races corrected. HDRI bool missing postGroups was the actual setting propagation defect, fixed; focused actual D3D111 passes. Native111 camera flag first fixture incorrectly marked orthographic, corrected to perspective; native107/109/110/111 and unavailable gate pass. Full window run hit existing180s smoke deadline; focused107 still finds exactly one 0→255 red-channel pixel between raw and strength0. Legacy LOD toggle did not resolve that one-pixel drift, so do not weaken threshold or retry that hypothesis. Next isolate pixel coordinates, complete frames and bridge constants around captures, including camera and post-processing state; test deterministic complete raw history rather than change denoiser algorithm without evidence.
+
 # 110 resolved — ray atlas reuse and update bounds — 2026-10-13
 
 Same-size GPU resource reuse preserves packet layout and accumulation invalidation. GL ranges are full RGBA rows, unioned across prepare calls and bounded by height; onUpdate/native transfer clears them. Native sends first-to-last row span, so gaps still transfer; WebGPU installed r180 ignores updateRanges and still writes full texture. Review removed a shadowing permissive branch; bridge test rejects19 malformed integers/ranges and verifies no invalid writes. Current D3D player rebuilt before tAiHVe; earlier SNqTpL is historical valid-pixel evidence. CPU cost expectation calibrated to actual128 texture row granularity (16.7%); exact byte-equivalence and old pixel/deadline assertions unchanged. Full four backend/native gates and source parity required before install. Next reduce CPU repack/WebGPU upload without claiming FPS from payload size.
