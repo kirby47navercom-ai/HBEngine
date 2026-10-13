@@ -2,7 +2,7 @@
 
 이전 포즈 typed 포장·쓰기 전 모양/finite/float32/delta검증, 안정 ID Map 재사용·동수 교체 ID 제거·실패 이력 거부. 수정 전 NaN허용/원본 변경 재현; 수정 후6거부/원본 동일·typed 정점호환·8배치 byte parity. CPU8 묶음과 최종 actualD3D MFVMhV 카메라/오브젝트/이차 렌즈·CPP/원본/errors0/exit0/서버 해제 통과. 네이티브/셰이더 변화가 없어121 실행파일 재사용. [123](docs/RENDERING_123.md).
 
-묶음 CPU·native·실제 D3D/GL/GPU 검증과 설치 전환 진행; gate는 RENDERING_123.json 실제 결과를 따른다. 사용자 창/프로젝트 보존과 Versions 전환 뒤 이전 사본 정리.
+설치 검증 완료: C:\Users\kirby\HBEngine\Versions\4b75b106780c4eb3; 새 명세 2174개, 소스 2개·실행파일·바로가기·연결 대조. 이전 2171개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_123.json). 사용자 창/프로젝트 보존과 Versions 전환 뒤 이전 사본 정리.
 
 기존 누적 계획의 월드 교차 정점 공유·곡면/비스듬한 이차 필터·광자 분산 및 엔진 각 분야를 계속한다. 이번 포장 대조를 전체 FPS나 전체 분석 완료로 승격하지 않는다.
 

@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "date": "2026-10-13T21:09:03.724Z",
+  "featureCommit": "cf68060cdcf851ddf27792cf760f3cd0f73ff1b3",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3\\HBEngine.exe",
+    "bundleHash": "4b75b106780c4eb3be2d2061506425592dc176f3a7e75f01638c147faa73d8d1",
+    "files": 2174,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 2172,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee47c229cd7ffb45",
+          "bytes": 171017798,
+          "manifestSHA256": "261d81f85e8c0fb00bf9da85af1a7bc7957f2f2f7137b905bbe7e0f4c2218fa3"
+        }
+      ],
+      "bytes": 171017798,
+      "failures": [],
+      "date": "2026-10-13T21:09:02.2731553Z",
+      "skipped": [],
+      "preserved": [],
+      "remaining": [
+        "4b75b106780c4eb3"
+      ]
+    }
+  },
+  "executableSHA256": "e1496dfbbd9cf76001be3bad83df4bbc74ad6f5a521510dfaf039ab31b5bc57e",
+  "playerSHA256": "a8cb611ab22bd214e735595cd9bb93b39b9c77873b56f509d27557e53f8c7810",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "priorManifestInventoriedBeforeRetirement": true,
+    "obsoleteVersionRetired": true,
+    "activeOrProjectVersionProtected": false,
+    "modifiedFilesPreserved": true,
+    "topLevelProfileFilesUnchanged": true,
+    "failedStagingAbsent": true,
+    "singleMaintenanceReceipt": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "d633897024fa729eab9624839879899ce20e048e7c550e779e44d8ef5715d462",
+      "size": 20647
+    },
+    {
+      "path": "tools/check-rendering-123.mjs",
+      "sha256": "8e4d165ef33d7ac280b9e160811ad4f60ead44748fc8c632d22ff5ad16875f6c",
+      "size": 3981
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee47c229cd7ffb45",
+    "bundleHash": "ee47c229cd7ffb45acf007cb1db017c2377f4cd0452f44f3af9dbf69a81f6d1d",
+    "manifestSHA256": "261d81f85e8c0fb00bf9da85af1a7bc7957f2f2f7137b905bbe7e0f4c2218fa3",
+    "allFilesCheckedBeforeUpdate": 2171,
+    "observedModifiedFiles": 0,
+    "retired": true
+  },
+  "preservationInventory": {
+    "file": "native/build/preinstall-123.json",
+    "sha256": "f2f7383678a3395db5a452c0864572100b76bea975dcb9a5e89d46cf3900448d",
+    "duplicatedInventoryInReceipt": false
+  },
+  "remainingVersions": [
+    "4b75b106780c4eb3"
+  ],
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Before-update immutable install inventory and top-level profile only; original games untouched.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}

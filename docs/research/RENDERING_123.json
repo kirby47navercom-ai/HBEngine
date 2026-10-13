@@ -209,7 +209,12 @@
     "newFrameTargets": 0,
     "newAutomaticReadbacks": 0,
     "previousPoseFormatBytesPerTriangle": 48,
-    "historyMapReusedWithStableIDs": true
+    "historyMapReusedWithStableIDs": true,
+    "updateRemovedBytes": 171017798,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "4b75b106780c4eb3"
+    ]
   },
   "nativeBinaries": {
     "reusedFrom121": true,
@@ -221,7 +226,17 @@
     "No phone/full-engine/full-corpus claim."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "cf68060cdcf851ddf27792cf760f3cd0f73ff1b3",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3",
+    "bundleHash": "4b75b106780c4eb3be2d2061506425592dc176f3a7e75f01638c147faa73d8d1",
+    "files": 2174,
+    "remainingVersions": [
+      "4b75b106780c4eb3"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_123.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
