@@ -403,3 +403,7 @@ ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C+
 ## 092 — 2D 마스크·광원·그림자 공용 연결
 
 기존 spriteSetMask와 light2dSetIntensity/SetShadows·Components 속성 노드, C++ Sprites::SetMaskInteraction 및 Light2D 함수가 Windows d3d11에 도달한다. sorting 범위·4 블렌드 스타일·normal·cookie·shadow/volume 자료는 공용 컴포넌트와 AI schema/Undo/Save를 공유한다. 실제 I/L 키 BP·C++ 토글·masked GPU particles·resize/장면 해제 증거는 [092](NATIVE_2D_092.md). 파티클 조명/그림자와 엔진 전체 완료를 이 단계로 승격하지 않는다.
+
+## 118 — 발광면/HDRI 코스틱·시간/렌즈 필터
+
+기존 후처리 컴포넌트에 시간 필터 혼합과 렌즈 필터 세기 추가. 공용 컴포넌트 C++ Get/SetFloat·BP·AI 스키마와 동일 범위 검증을 사용한다. 발광 머테리얼/HDRI도 기존 에셋·파라미터를 재사용한다. 원본 누적과 필터 이력은 독립이며 시간 필터가 꺼지면 추가 이력이 해제된다. 실제 검증은 [118 기록](research/RENDERING_118.json)을 따른다.

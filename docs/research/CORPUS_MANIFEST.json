@@ -2485,6 +2485,55 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "area-hdri-temporal-lens-supplement",
+      "engine": "Selected PBRT/NRD rendering contracts",
+      "version": "Selected2026-10-14",
+      "locale": "en",
+      "roots": [
+        "https://pbr-book.org/4ed/Light_Sources/Area_Lights",
+        "https://www.pbr-book.org/3ed-2018/Light_Sources/Infinite_Area_Lights",
+        "https://www.pbr-book.org/3ed-2018/Camera_Models/Projective_Camera_Models",
+        "https://github.com/NVIDIA-RTX/NRD"
+      ],
+      "hosts": [
+        "pbr-book.org",
+        "www.pbr-book.org",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected own sections only; full source/API/engine corpus unclosed."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://pbr-book.org/4ed/Light_Sources/Area_Lights",
+          "readScope": "Selected own12.4 lines0–86: geometry, emission, alpha, sidedness and solid-angle sampling. Linked shape/API bodies not read.",
+          "record": "docs/research/RENDERING_118.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/3ed-2018/Light_Sources/Infinite_Area_Lights",
+          "readScope": "Own lines17–29,37–58: luminance/latitude sampling distribution, bounds and environment radiance. Linked SampleLe/14.2.4 bodies not read.",
+          "record": "docs/research/RENDERING_118.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/3ed-2018/Camera_Models/Projective_Camera_Models",
+          "readScope": "Selected own lines302–316,325–348: CoC, thin-lens radius/focus and sampling. Other camera bodies/API not read.",
+          "record": "docs/research/RENDERING_118.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/NVIDIA-RTX/NRD",
+          "readScope": "Own overview213–215 and HISTORY CONFIDENCE906–925: guide/temporal responsiveness and history reset. NRD source, samples and full API not read.",
+          "record": "docs/research/RENDERING_118.json",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [
