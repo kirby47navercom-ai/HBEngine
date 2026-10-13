@@ -1,3 +1,9 @@
+# 116 — 거친 굴절·가시 법선·광원 혼합·가이드 경량화 — 2026-10-13
+
+GGX VNDF와 반사 PDF, 거친 유전체 BSDF/굴절 Jacobian/Fresnel, 직접·발광·HDRI 혼합 PDF, 기하 노멀 빛샘 거부, IOR 기반 경로 종료 보정 연결. 기존 C++ Roughness/IOR/Transmission/ClosedVolume 재사용. 불투명 거칠기 그래프가 굴절 코드를 켜지 않게 하고 WebGL 가이드/필터에서 조명 적분기를 제외. 새 RT/데이터 필드/읽기/에셋/의존성 없음. CPU19+가시 법선4만/독립 적분, native 전체61노드·2D·그림자·입자·변형·후처리 및 최종128샘플 유리 에너지 검사 통과. 최종 실제 실행기 묶음 검증·설치 대조 진행. [116](docs/RENDERING_116.md).
+
+남은 원장의 BLAS/TLAS·코스틱·이차 반사 디노이징 및 누적 엔진 작업 유지. 얇은 경계는 기존 관례, 거칠기<.05/같은 IOR는 델타. Versions 이전 사본은 전환 뒤 자동 정리; 현재/실행/프로젝트·변경 파일 보존. 전체 문서·엔진·FPS·휴대폰 검증 완료로 계산하지 않음.
+
 # 115 / 114 — 표면 경로 추적·설치 버전 정리 — 2026-10-13
 
 코팅/코팅 노멀·반사 강도/색·Charlie Sheen·UV 비등방성·박막을 경로 BRDF/PDF와 기존 C++ 머테리얼 함수에 연결. 일반5필드/확장10필드, 추가9맵, 날카로운 표면 디노이저 보호 및 native cache 상위 비트 충돌 수정. CPU19+새 수치 적분·bridge19/7·native 전체+최종128샘플·실제 DirectX/WebGL/WebGPU 묶음 통과. 이전 설치5개903274158바이트 정리, 변경4파일45313바이트 보존. 업데이트 뒤 이전 Versions 자동 정리 및 복사 실패 임시 폴더 제거; 현재/실행 중/프로젝트 보호. [구현](docs/RENDERING_115.md), [증거](docs/research/RENDERING_115.json), [정리](docs/INSTALL_RETENTION_114.md). 설치 검증 완료: C:\Users\kirby\HBEngine\Versions\9719262a2adb4bbb; 새 명세 2126개, 소스 28개·실행파일·바로가기·연결 대조. 이전 2114개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_115.json).

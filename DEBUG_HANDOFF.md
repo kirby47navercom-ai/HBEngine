@@ -1,3 +1,11 @@
+# 116 resolved grouped GL reduction
+
+First grouped GL tT3tVg stalls entering Denoise107 after EXR; report retained. Cold focused107 with bounded shader tracing BwJiHq passes, so that is not substituted as full proof. Guide/filter clones retained unreachable path lighting; remove only transport section, share unchanged camera cone, preserve all ray attributes and existing107 assertions. Native shader bytes are exactly identical after extraction. Narrow rough-dielectric feature presence to transmission writes or nonzero transmission plus roughness writes. Independent parser/source reduction and dynamic/opaque presence tests pass. Final full GL Ro6uvz and D3D EFrhPo pass unchanged pixel/time gates. Original failure is not relabeled; reductions are verified outcomes, not an independently isolated driver timing cause.
+
+# 116 grouped GL diagnostic
+
+Native core/post/new dielectric and energy plus full actual D3D/WebGPU pass. GL first grouped tT3tVg misses unchanged Runtime.evaluate30s with no weakened assertions. Inspect last completed scene and exact shader compile/link blocking before choosing a change. Conservative physical-field presence currently marks rough dielectric for any field0 write, including roughness on an opaque surface; narrow to transmission writes or nonzero transmission plus roughness writes. Also preserve ordinary forward-only light sampling; rear-hemisphere visibility is only needed for active rough dielectric. This is a hypothesis/unused-work correction, not an established driver cause. Failed report retained.
+
 # 115 / 114 final grouped resolution
 
 Initial native-window109 missed unchanged frame15s deadline. Private bridge trace proves ordinary518 quality/no advanced fields. Removed unreachable advanced helpers from ordinary GL/HLSL source and preserved legacy inline direction; final grouped DirectX passes without assertion/deadline changes. This does not claim independently measured shader compile timing.

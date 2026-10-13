@@ -1,0 +1,587 @@
+{
+  "version": 1,
+  "date": "2026-10-13T13:28:01.185Z",
+  "previousCommit": "fb19196262b06b76f1ee371bc487bfbf455d82ec",
+  "scope": [
+    "GGX visible-normal sampling and matching basic/anisotropic/coat reflection PDFs.",
+    "Rough dielectric Fresnel/refraction Jacobian/radiance plus full reflection/transmission mixture in analytic/emissive/HDRI NEE and continuation MIS.",
+    "Geometric normal hemisphere rejection, invisible-coat rejection and eta-compensated termination survival.",
+    "Transmission-specific presence and GL guide/filter transport-source removal; native shader byte-equivalent camera extraction."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "5cd70a60c6c23babbd6e0a2818d55815cfe3f8f3b835f3283628ea4b45232cff"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "27fd8f3e3db554d885e503ea9cb6a5f620d43e9d762864bc035e0d40624ac512"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "fe928015b99cbef1e94ca09a80c0fa07113b30fb77f8b4530eb3f101b9e9b222"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "87131aab4042beb3f5d64ece12e02b7af08c45f42e02db91ec98b8a614ce348b"
+    },
+    {
+      "file": "prototype/path-environment-gpu.js",
+      "sha256": "110f4c9cda25601453d4a8040b3a5bf2e709a604f9c3032c3bb26c670f5ef6c9"
+    },
+    {
+      "file": "prototype/path-environment-shader.js",
+      "sha256": "60e7820e74ff2f14c2d8ae4e545ef7eebf2df8c2bf8e4d683cb455d5a37c3a77"
+    },
+    {
+      "file": "prototype/path-media-shader.js",
+      "sha256": "b0607eb3d8a083d553cbed4da3bf01f0fa2edd2efe38473bdab8a3d93ab78b6d"
+    },
+    {
+      "file": "prototype/path-surface-gpu.js",
+      "sha256": "3196a91d6dfd976afe92537f3453d70ffb5e6407e0eeeaf1bd3fd3d334eceb28"
+    },
+    {
+      "file": "prototype/path-surface-shader.js",
+      "sha256": "3c2087f08646b395fb8b9f95651885bdb818c09e2972614e641cebbfd334abc9"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "1ab1c0a26922c8045bd5c8cbdaf29cdbf178b10df1998acce032bbd389ed6bb5"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "fb189728ddc5a80e6bebb8f1c0f70de2d7fcf3860409f6f5500bf444b89a8c38"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "e26f9320aafaaac7594a33a35756c6618636daa1cbe873f515600202193aa828"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "b2d60d0046a7ab0c2910fa721d97a15be9a21b53c3f2a7cf135477f2850315b5"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "29a45ff114d058bf8b6b93feda4914755e1823a40844942568f808f91b6a5333"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "0a38902d0830c99c73214afc148f54c11bf38de86a8980c59e71a2dc4471f24e"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "d5059557567398ac45813b79284745a2ad4394535577d508e43d70e6d907d652"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "762a5a62c6e41ee69c486ceed4c2d17c10d29be0094328a09fb8342600e492e2"
+    },
+    {
+      "file": "native/tests/scene-rendering-116.hpp",
+      "sha256": "83eaf15b499af0f411ab4ea56c60f6548882ed562aad28ff2667be9ebae4dc4c"
+    },
+    {
+      "file": "prototype/path-guide-shader.js",
+      "sha256": "0a0926de4e76334beb5bc88bcc7776002d8c248e83b7c69458bc7ebecf7b7086"
+    },
+    {
+      "file": "prototype/path-microfacet-gpu.js",
+      "sha256": "aea12985c06e4b396fd6a7fe2eff6f1a807ab36208a8f273e6d990120c13a34b"
+    },
+    {
+      "file": "prototype/path-microfacet-shader.js",
+      "sha256": "4c2aedce7e740ee7770bb03c0d6a8b7d484d51e5a5a8875636fede2e737368f9"
+    },
+    {
+      "file": "tools/check-rendering-116.mjs",
+      "sha256": "1846e3e51d0364ea1cc2b65e493393c35c6880c307a83edbe6e5ce16319f7a94"
+    },
+    {
+      "file": "tools/rendering-116-fixture.mjs",
+      "sha256": "bc0e85fae82fede43a6d2944e2ad0275b9ec338a387fde3c9bf24768cdccc2b5"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "5cd70a60c6c23babbd6e0a2818d55815cfe3f8f3b835f3283628ea4b45232cff"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "fe928015b99cbef1e94ca09a80c0fa07113b30fb77f8b4530eb3f101b9e9b222"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "87131aab4042beb3f5d64ece12e02b7af08c45f42e02db91ec98b8a614ce348b"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "110f4c9cda25601453d4a8040b3a5bf2e709a604f9c3032c3bb26c670f5ef6c9"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "60e7820e74ff2f14c2d8ae4e545ef7eebf2df8c2bf8e4d683cb455d5a37c3a77"
+    },
+    {
+      "path": "prototype/path-media-shader.js",
+      "sha256": "b0607eb3d8a083d553cbed4da3bf01f0fa2edd2efe38473bdab8a3d93ab78b6d"
+    },
+    {
+      "path": "prototype/path-surface-gpu.js",
+      "sha256": "3196a91d6dfd976afe92537f3453d70ffb5e6407e0eeeaf1bd3fd3d334eceb28"
+    },
+    {
+      "path": "prototype/path-surface-shader.js",
+      "sha256": "3c2087f08646b395fb8b9f95651885bdb818c09e2972614e641cebbfd334abc9"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "1ab1c0a26922c8045bd5c8cbdaf29cdbf178b10df1998acce032bbd389ed6bb5"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "fb189728ddc5a80e6bebb8f1c0f70de2d7fcf3860409f6f5500bf444b89a8c38"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "e26f9320aafaaac7594a33a35756c6618636daa1cbe873f515600202193aa828"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "b2d60d0046a7ab0c2910fa721d97a15be9a21b53c3f2a7cf135477f2850315b5"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "29a45ff114d058bf8b6b93feda4914755e1823a40844942568f808f91b6a5333"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "0a38902d0830c99c73214afc148f54c11bf38de86a8980c59e71a2dc4471f24e"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "d5059557567398ac45813b79284745a2ad4394535577d508e43d70e6d907d652"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "762a5a62c6e41ee69c486ceed4c2d17c10d29be0094328a09fb8342600e492e2"
+    },
+    {
+      "path": "prototype/path-guide-shader.js",
+      "sha256": "0a0926de4e76334beb5bc88bcc7776002d8c248e83b7c69458bc7ebecf7b7086"
+    },
+    {
+      "path": "prototype/path-microfacet-gpu.js",
+      "sha256": "aea12985c06e4b396fd6a7fe2eff6f1a807ab36208a8f273e6d990120c13a34b"
+    },
+    {
+      "path": "prototype/path-microfacet-shader.js",
+      "sha256": "4c2aedce7e740ee7770bb03c0d6a8b7d484d51e5a5a8875636fede2e737368f9"
+    },
+    {
+      "path": "tools/check-rendering-116.mjs",
+      "sha256": "1846e3e51d0364ea1cc2b65e493393c35c6880c307a83edbe6e5ce16319f7a94"
+    },
+    {
+      "path": "tools/rendering-116-fixture.mjs",
+      "sha256": "bc0e85fae82fede43a6d2944e2ad0275b9ec338a387fde3c9bf24768cdccc2b5"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "cffe923171bdccf71ba6afd23218de4ee2d28b312046c8382ebaab00c9175eec"
+    },
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29"
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "cpu",
+      "file": "native/build/rendering-116-cpu.json",
+      "sha256": "1dbec26ae1224090553e9526bf2c7e068e462a9d51f5d8880f13adaf71bdad0f"
+    },
+    {
+      "gate": "legacyCPU",
+      "file": "native/build/cpu-rendering-116.json",
+      "sha256": "6cf4f59f06b533db4d7283b13386b3fb9e218553f50034679bd40273ada6c87b"
+    },
+    {
+      "gate": "nativeCore",
+      "file": "native/build/native-scene-BWdEby/acceptance.json",
+      "sha256": "bb7cc97e1fa58478e6d6052c8cd02b9ca7534a7a36812c8b3787d58737781c56"
+    },
+    {
+      "gate": "nativeEnergy",
+      "file": "native/build/native-scene-I7LYQk/acceptance.json",
+      "sha256": "67fe754ee73c562baa63ebd007bba23931d3d0dc00bb1aec58dab9502fd5e871"
+    },
+    {
+      "gate": "directx",
+      "file": "native/build/native-scene-window-EFrhPo/acceptance.json",
+      "sha256": "f56c381c9ca57c85b840b8251774645f00d73dcff846e267e72d89219c5abbe9"
+    },
+    {
+      "gate": "webgl",
+      "file": "native/build/gpu-scene-Ro6uvz/acceptance.json",
+      "sha256": "ebb8a3df195d4e99b6e4821d91ac536b1166ecde4b6a90b5168e676026fd48a3"
+    },
+    {
+      "gate": "webgpu",
+      "file": "native/build/gpu-scene-jvfhLZ/acceptance.json",
+      "sha256": "6249d8b0e522733365bcd3e43b08519a1c6edd278271f75262793205f145ac3c"
+    },
+    {
+      "gate": "cleanup",
+      "file": "native/build/cache-prune-116.log",
+      "sha256": "7bdaaf2ebf884acc2d306750aa8790521f1c5ac3b373de4b1e0cff0aa3902a4b"
+    },
+    {
+      "gate": "glFailure",
+      "file": "native/build/gpu-scene-tT3tVg/failure.json",
+      "sha256": "63fecec04a8a20e22c05e61db44f902956b4e81c5d5860db33107ad030e5bc87"
+    },
+    {
+      "gate": "glFocusedTrace",
+      "file": "native/build/gpu-scene-BwJiHq/acceptance.json",
+      "sha256": "5acd45300eabcc95d9a499e1495a4fbddff446e0d32c00c1f345c51e0fdedc16"
+    },
+    {
+      "gate": "initialStartupFailure",
+      "file": "native/build/gpu-scene-e3a3By/failure.json",
+      "sha256": "fd89bcdd5d11f0e6e8e7f186d9e6234089d4d576c1b8d9bf5181e2ef6a22bc64"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.pbr-book.org/4ed/Reflection_Models/Rough_Dielectric_BSDF",
+      "readScope": "Selected rough dielectric evaluation, half-direction Jacobian, Fresnel selection and radiance scaling sections74–194; outgoing links/unread smooth-interface chapter not included.",
+      "file": "native/build/rendering-research-116/rough-dielectric.html",
+      "sha256": "930ca433cd0ae624c911b8c635d92f5ffb9e4d5ef4e94fb6d19f32f09c0aa0bd",
+      "bytes": 195431,
+      "wholeBodyRead": false
+    },
+    {
+      "url": "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
+      "readScope": "Selected masking/shadowing and visible-normal distribution/sampling sections114–234; full body and linked APIs not read.",
+      "file": "native/build/rendering-research-115/microfacet.html",
+      "sha256": "b45dca162e9e3517661e0b08a4f184efe641afdbce355904429de2f6b415bd41",
+      "wholeBodyRead": false,
+      "reusedExistingSnapshot": true
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "visibleNormalSamples": 40000,
+      "projectedDensityIntegrals": [
+        0.9999880213219398,
+        0.9999943574537473,
+        0.9999157189460923,
+        0.999943078198778
+      ],
+      "ordinaryPresenceOff": true,
+      "opaqueRoughnessDoesNotEnableDielectric": true,
+      "dynamicTransmissionEnablesDielectric": true,
+      "guideHasNoLightingIntegrator": true,
+      "guideSourceRatio": 0.02558180849173921,
+      "roughPresenceAndReset": true,
+      "closedMediumPacket": true,
+      "finitePackets": true,
+      "etaSurvivalRoundTrip": true
+    },
+    "legacyCPU": {
+      "passed": 19,
+      "commands": [
+        "node tools/check-rendering-112.mjs --record",
+        "node tools/check-test-artifacts.mjs",
+        "node tools/check-rendering-111.mjs --record",
+        "node tools/check-rendering-110.mjs --record",
+        "node tools/check-rendering-109.mjs",
+        "node tools/check-rendering-107.mjs",
+        "node tools/check-rendering-106.mjs",
+        "node tools/check-rendering-105.mjs",
+        "node tools/check-rendering-104.mjs",
+        "node tools/check-rendering-103.mjs",
+        "node tools/check-rendering-102.mjs",
+        "node tools/check-rendering-101.mjs",
+        "node tools/check-rendering-100.mjs",
+        "node tools/check-rendering-099.mjs",
+        "node tools/check-engine-integration.mjs",
+        "node tools/check-material-volume.mjs",
+        "node tools/generate-screen-effects.mjs --check",
+        "node tools/generate-screen-post.mjs --check",
+        "node tools/generate-api.mjs --check"
+      ]
+    },
+    "nativeCore": {
+      "passed": true,
+      "compiledRasterNodes": 61,
+      "segments": [
+        "core",
+        "post",
+        "rendering107"
+      ],
+      "note": "Initial full core/post/new116 before guide-only GL pruning; native algorithm string unchanged by camera extraction."
+    },
+    "nativeFinal": {
+      "closedMediumRadiance": true,
+      "colors": {
+        "closed": [
+          220,
+          220,
+          220
+        ],
+        "matched": [
+          0,
+          0,
+          0
+        ],
+        "normalFlat": [
+          0,
+          0,
+          0
+        ],
+        "normalLeak": [
+          0,
+          0,
+          0
+        ],
+        "rough": [
+          240,
+          240,
+          240
+        ],
+        "smooth": [
+          0,
+          0,
+          0
+        ]
+      },
+      "geometricNormalGuard": true,
+      "passed": true,
+      "roughDirectTransmission": true,
+      "smoothAndMatchedDeltaPreserved": true,
+      "whiteEnvironment128Samples": {
+        "closed": 0.9052687149130987,
+        "rough": 0.9864651884976634
+      }
+    },
+    "players": {
+      "directx": {
+        "passed": true,
+        "rendering116": {
+          "passed": true,
+          "rough": [
+            253,
+            253,
+            253,
+            255
+          ],
+          "smooth": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "matched": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "restored": [
+            253,
+            253,
+            253,
+            255
+          ],
+          "normalLeak": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "typedCPP": true,
+          "roughDirectLighting": true,
+          "normalGeometryHemisphereGuard": true,
+          "backend": "D3D11"
+        },
+        "regressions": [
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgl": {
+        "passed": true,
+        "rendering116": {
+          "passed": true,
+          "rough": [
+            251,
+            251,
+            251,
+            255
+          ],
+          "smooth": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "matched": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "restored": [
+            251,
+            251,
+            251,
+            255
+          ],
+          "normalLeak": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "typedCPP": true,
+          "roughDirectLighting": true,
+          "normalGeometryHemisphereGuard": true,
+          "backend": "WebGL2"
+        },
+        "regressions": [
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgpu": {
+        "passed": true,
+        "rendering116": {
+          "passed": true,
+          "rough": [
+            251,
+            251,
+            251,
+            255
+          ],
+          "smooth": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "matched": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "restored": [
+            251,
+            251,
+            251,
+            255
+          ],
+          "normalLeak": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "typedCPP": true,
+          "roughDirectLighting": true,
+          "normalGeometryHemisphereGuard": true,
+          "backend": "WebGPU"
+        },
+        "regressions": [
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    }
+  },
+  "storage": {
+    "versionsPolicy": "Current and active/project-protected only; obsolete full copies retired after verified switch",
+    "existingRetentionTool": "tools/prune-install-versions.mjs",
+    "cleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "newDependencies": 0,
+    "newLargeAssets": 0,
+    "newResearchHtmlBytes": 195431,
+    "reusedExistingResearchSnapshot": true,
+    "newRenderTargets": 0,
+    "newRayDataFields": 0,
+    "newAutomaticReadbacks": 0
+  },
+  "diagnostics": [
+    "First private closedVolume used bool, rejected by existing numeric material validator; fixed fixture to1 and retained original log. Production validation not weakened.",
+    "Initial actual GPU debug target startup expired while desktop build overlapped. Subsequent isolated full runs pass; this is not asserted as an independently established startup cause.",
+    "First grouped GL tT3tVg missed30s entering Denoise107 after EXR. Cold focused trace BwJiHq passes, not substituted for full proof. Guide/filter retained unreachable path lighting; remove it with shared unchanged camera cone and narrower transmission presence. Final full GL/D3D/GPU all pass original assertions/deadlines. Source transport ratio is measured, not whole-driver/FPS timing."
+  ],
+  "limits": [
+    "roughness<.05 and matching IOR retain delta behavior.",
+    "Closed boundaries use medium/radiance scaling; thin boundaries retain legacy single-interface/tint convention, not a physical two-interface sheet.",
+    "Single-scattering GGX and existing conservative coated BSDF; no complete coupled coated dielectric/multilayer spectral model.",
+    "No BLAS/TLAS, separate caustic solver, full secondary/lens denoising or all renderer/backlog completion claim.",
+    "Selected primary-source sections only, not whole corpus/API or linked bodies.",
+    "Desktop three-backend pixel/CPU/native energy validation; no phone/whole-game FPS/thermal claim."
+  ],
+  "installation": {
+    "state": "Pending source and user installation verification",
+    "restartUserWindows": false
+  }
+}

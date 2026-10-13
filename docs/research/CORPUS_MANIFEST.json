@@ -2010,7 +2010,8 @@
       "locale": "en",
       "roots": [
         "https://www.pbr-book.org/4ed/Geometry_and_Transformations/Interactions",
-        "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory"
+        "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
+        "https://www.pbr-book.org/4ed/Reflection_Models/Rough_Dielectric_BSDF"
       ],
       "hosts": [
         "www.pbr-book.org"
@@ -2038,6 +2039,22 @@
           "url": "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
           "record": "docs/research/RENDERING_115.json",
           "readScope": "Selected distribution, projected normalization, anisotropy and masking sections; own full-NDF sampling, not PBRT visible-normal sampling. Linked bodies/media not read.",
+          "sha256": "b45dca162e9e3517661e0b08a4f184efe641afdbce355904429de2f6b415bd41",
+          "wholeBodyRead": false,
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/4ed/Reflection_Models/Rough_Dielectric_BSDF",
+          "record": "docs/research/RENDERING_116.json",
+          "readScope": "Selected rough dielectric evaluation, half-direction Jacobian, Fresnel selection and radiance scaling sections74–194; outgoing links/unread smooth-interface chapter not included.",
+          "sha256": "930ca433cd0ae624c911b8c635d92f5ffb9e4d5ef4e94fb6d19f32f09c0aa0bd",
+          "wholeBodyRead": false,
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
+          "record": "docs/research/RENDERING_116.json",
+          "readScope": "Selected masking/shadowing and visible-normal distribution/sampling sections114–234; full body and linked APIs not read.",
           "sha256": "b45dca162e9e3517661e0b08a4f184efe641afdbce355904429de2f6b415bd41",
           "wholeBodyRead": false,
           "wholeCorpus": false
