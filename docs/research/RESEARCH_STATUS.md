@@ -360,3 +360,6 @@ Microsoft DrawIndexedInstanced·StructuredBuffer·CPU access flags 자체 기술
 ## 090 — 변형 메시·blend shape·indexed vertex ID
 
 Unity6000.0 Skinned Mesh Renderer 소개/Properties/Materials 지정 구역과 BlendShapes 자체 기술 본문, UE5.8 FBX Morph Target Pipeline 자체 글, MS semantics system-value/VertexID 지정 구역을 읽었다. 원문5 SHA·범위/연결 API·미디어 미독과 Three r180 shader chunks/Skeleton.update 지정 대조는 [090](../NATIVE_DEFORMATION_090.md)/JSON. Unity0~100↔HB0~1, 네 영향↔Unity최대32, FBX importer/메뉴 동등성·독립 검증 미승격을 명시했다. static GPU skin/morph·C++/BP3함수·실제 Windows 증거는 전체 corpus/API/엔진 완료가 아니며 discovery와 전체 gate false를 유지한다.
+
+## 121 — 금속 광자 평가 대조
+PBRT4 Conductor BRDF 자체 반사 반구·microfacet 방향 Jacobian·BRDF/PDF 지정 구역을 읽었다. 연결 API 전체·추가 coat 모델 본문과 분리하며 기존115 공용 평가 재사용과121 실제 실행 검사를 연결한다. 조회가 실패한3판 Photon_Mapping URL은 읽음으로 세지 않는다. 기존 전체 discovery/본문/API gate를 승격하지 않는다. [121](../RENDERING_121.md).
