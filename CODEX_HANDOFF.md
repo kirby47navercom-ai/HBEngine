@@ -2,7 +2,7 @@
 
 순금속/완전 유전체 GGX 광자·중첩 매질/TIR·중복 경로 소유권, 고정1024광자·32KiB의 점진 반경, 사람/CPP/BP/AI 공용 두 속성. WebGPU 원본 이력/상태/기하 소유권 전달. 경계 입력 고정·G2/G1 간소식844독립 대조; 큰 조명 계산을 감싸는 TSL If를 출력 가중치로 바꿔106/rough-on30초 초과 해소. 원래 시간/샘플/해상도 유지.
 
-묶음 CPU·native·실제 D3D/GL/GPU 검증과 설치 전환 진행; gate는 RENDERING_120.json 실제 결과를 따른다. 사용자 창 재시작·원본 게임 수정 없음. [120](docs/RENDERING_120.md).
+설치 검증 완료: C:\Users\kirby\HBEngine\Versions\011bf2527fa0bbb6; 새 명세 2163개, 소스 21개·실행파일·바로가기·연결 대조. 이전 2154개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_120.json). 사용자 창 재시작·원본 게임 수정 없음. [120](docs/RENDERING_120.md).
 
 다음 계획: 기존 누적 작업을 줄이지 않는다. 광자 후보 추첨의 불필요한 기하 선택을 줄이고 추가 금속 로브를 공유 BRDF로 연결하는121 준비는 native/build/rendering-121-preparation.json.336삼각형/80후보 분류·설계만 완료이며 실행 기능은 아직 아님. 원래 월드 교차 기록 공유·이차 필터·렌더링/엔진 각 분야와 corpus/실기기/성능 목표 유지.
 

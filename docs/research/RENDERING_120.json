@@ -1046,7 +1046,12 @@
         }
       ],
       "bytes": 5064260
-    }
+    },
+    "updateRemovedBytes": 428097642,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "011bf2527fa0bbb6"
+    ]
   },
   "sources": [
     {
@@ -1076,7 +1081,17 @@
     "Native core/post and earlier actual D3D unaffected scopes retained; final actual D3D120 uses rebuilt release executable."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "904c569ba6f72e300ab339a25f63321fa7e332b3",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\011bf2527fa0bbb6",
+    "bundleHash": "011bf2527fa0bbb6aee08815f32704c78a045e36bd0a499bf6c59a65da6b8dd4",
+    "files": 2163,
+    "remainingVersions": [
+      "011bf2527fa0bbb6"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_120.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
