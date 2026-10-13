@@ -1,3 +1,5 @@
+2026-10-13: [110 atlas 갱신](../RENDERING_110.md), [증거](RENDERING_110.json). Microsoft UpdateSubresource 선언·자원 조건·행 pitch·복사·경합·2D 예제와 설치 Three r180 행 갱신/onUpdate/전체 WebGPU 업로드 지정 구역5개의 SHA를 기록해요. 자원 재사용·부분 전송·입력 거부·누락 행 보존과098–107/109를 실제 네 실행 경로에서 대조해요. WebGPU 전체 업로드·CPU 재포장·실게임/폰 성능·전체 문서/API gate는 미승격이에요.
+
 2026-10-13: [109 광선 밉·LOD](../RENDERING_109.md), [증거](RENDERING_109.json). PBRT 이미지 필터·접평면/UV 지정 구역, NVIDIA 초록과 설치 Three r180 지정 구역6개의 SHA/미독 범위를 보존해요. 보수적 광선 원뿔·선형 NPOT 밉과 실제 기능별 셰이더를 구현하고, 재빌드한 DirectX 실행기·하드웨어·WebGL2·WebGPU에서098–107/109를 묶어 확인해요. 전체 문서/API·EWA·알파 커버리지·실게임/폰 성능과 남은 엔진 작업을 완료 처리하지 않아요.
 
 2026-10-13: [108 Windows 게임별 앱·오디오](../WINDOWS_GAME_IDENTITY_108.md), [증거](WINDOWS_GAME_IDENTITY_108.json). Microsoft UDF/AppID/CoreAudio/SharedBuffer API, Chrome 무음 sink와 Chromium 출력의 지정 구역을 읽고11 원문 SHA/읽기 경계를 기록해요. API 이름·그룹 변경만으로 해결했다는 추측을 피하고 실제 두 게임의 공유 식별자 재현과 자체 WASAPI 출력·음량·음소거·재시작·2D/3D C++·키오스크를 대조해요. 전체 본문/API gate 승격과 실기기·실게임 FPS 주장은 하지 않아요.

@@ -142,7 +142,7 @@ private:
     detail::Com<ID3D11Texture2D> transmissionImage,transmissionDepth;detail::Com<ID3D11ShaderResourceView> transmissionView,transmissionDepthView;
     std::uint32_t transmissionWidth=0,transmissionHeight=0,transmissionMips=0;bool transmissionReady=false;std::uint64_t transmissionCopies_=0,transmissionAllocations_=0;
     std::size_t slot=0;
-    std::uint64_t draws_=0,uploads_=0;
+    std::uint64_t draws_=0,uploads_=0,raySceneUpdates_=0,raySceneUpdateBytes_=0;
     struct Timing {detail::Com<ID3D11Query> begin,end,frequency;bool pending=false;std::uint64_t sequence=0;};
     std::array<Timing,3> timings;
     int activeTiming=-1;std::size_t timingSlot=0;std::uint64_t frameSequence=0,timingSequence=0;
@@ -332,6 +332,12 @@ public:
             D3D11_SHADER_RESOURCE_VIEW_DESC v{};v.Format=format;v.ViewDimension=cube?D3D11_SRV_DIMENSION_TEXTURECUBE:array?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;if(array){v.Texture2DArray.MipLevels=mips;v.Texture2DArray.ArraySize=layers;}detail::check(gpu.device->CreateShaderResourceView(image.p,&v,&out.view.p),"Material data view");}
         if(mipmaps){gpu.context->GenerateMips(out.view.p);}++uploads_;return out;
     }
+    void updateRayScene(Texture& value,std::uint32_t width,std::uint32_t height,std::uint32_t row,std::uint32_t rows,const std::vector<std::uint8_t>& bytes){
+        const auto pitch=std::uint64_t(width)*16;if(value.owner!=gpu.device.p||!value.view.p||value.width!=width||value.height!=height||value.layers!=1||!width||!height||row>=height||!rows||rows>height-row||bytes.size()!=pitch*rows)throw std::runtime_error("Ray scene update dimensions or bytes invalid");
+        for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("Ray scene update must be finite");}
+        D3D11_SHADER_RESOURCE_VIEW_DESC view{};value.view->GetDesc(&view);if(view.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D||view.Format!=DXGI_FORMAT_R32G32B32A32_FLOAT||view.Texture2D.MipLevels!=1)throw std::runtime_error("Ray scene update format invalid");
+        std::lock_guard<std::mutex> lock(gpu.mutex);detail::Com<ID3D11Resource> resource;value.view->GetResource(&resource.p);const D3D11_BOX box{0,row,0,width,row+rows,1};gpu.context->UpdateSubresource(resource.p,0,&box,bytes.data(),static_cast<UINT>(pitch),0);++raySceneUpdates_;raySceneUpdateBytes_+=bytes.size();
+    }
     Texture createRenderTarget(std::uint32_t width,std::uint32_t height,bool stencil=false){
         if(!width||!height||width>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION||height>D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)throw std::runtime_error("2D target dimensions invalid");
         std::lock_guard<std::mutex> lock(gpu.mutex);Texture out;out.owner=gpu.device.p;out.width=width;out.height=height;out.bytes=std::uint64_t(width)*height*(stencil?8:4);
@@ -441,7 +447,7 @@ public:
     bool present(std::uint32_t interval=0){finish();return surface.present(interval);}
     std::vector<std::uint8_t> readPixels(){finish();return surface.readPixels();}
     std::uint32_t width() const{return surface.width();}std::uint32_t height() const{return surface.height();}
-    std::uint64_t draws() const{return draws_;}std::uint64_t uploads() const{return uploads_;}std::uint64_t presents() const{return surface.presents();}std::uint64_t captures() const{return surface.captures();}
+    std::uint64_t draws() const{return draws_;}std::uint64_t uploads() const{return uploads_;}std::uint64_t raySceneUpdates() const{return raySceneUpdates_;}std::uint64_t raySceneUpdateBytes() const{return raySceneUpdateBytes_;}std::uint64_t presents() const{return surface.presents();}std::uint64_t captures() const{return surface.captures();}
     std::optional<double> gpuTimeMs() const{return gpuMilliseconds;}
     std::uint64_t gpuTimingFrame() const{return timingSequence;}
     void releaseTransmission(){std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,2> emptyViews{};gpu.context->PSSetShaderResources(44,2,emptyViews.data());transmissionView={};transmissionDepthView={};transmissionImage={};transmissionDepth={};transmissionWidth=transmissionHeight=transmissionMips=0;transmissionReady=false;}

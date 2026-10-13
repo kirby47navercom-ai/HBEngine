@@ -22,6 +22,7 @@ template<class F> void rejects(F&& f){bool rejected=false;try{f();}catch(const s
 #include "scene-rendering-106.hpp"
 #include "scene-rendering-107.hpp"
 #include "scene-rendering-109.hpp"
+#include "scene-rendering-110.hpp"
 #endif
 int main(int argc,char** argv){
  if(argc<3){std::cerr<<"Usage: scene-render catalog ray-materials.json\n";return 2;}
@@ -32,7 +33,7 @@ int main(int argc,char** argv){
     (void)argc;(void)argv;
     rejects([]{hb::gpu::Device gpu;hb::gpu::SceneRenderer renderer(gpu,64,64);});std::cout<<"{\"unavailableGuard\":true}";
 #else
-    using namespace hb::gpu;Device gpu;SceneRenderer renderer(gpu,64,64);if(std::string(argv[1])=="--rendering-109-only"){std::cout<<nlohmann::json({{"rendering109",rendering109Proof(gpu,argv[2])},{"passed",true}}).dump();return 0;}if(std::string(argv[1])=="--rendering-107-only"){std::cout<<nlohmann::json({{"rendering107",rendering107Proof(gpu,argv[2])},{"rendering109",rendering109Proof(gpu,argv[2])},{"passed",true}}).dump();return 0;}const auto transmissionProof=checkTransmission(renderer);if(argc>1&&std::string(argv[1])=="--post-only"){std::cout<<nlohmann::json({{"rendering106",rendering106Proof(gpu,argv[2])},{"rendering105",rendering105Proof(gpu)},{"rendering104",rendering104Proof(gpu)},{"rendering103",rendering103Proof(gpu)},{"rendering102",rendering102Proof(gpu)},{"rendering101",rendering101Proof(gpu)},{"rendering100",rendering100Proof(gpu)},{"rendering099",rendering099Proof(gpu)},{"passed",true}}).dump();return 0;}
+    using namespace hb::gpu;Device gpu;SceneRenderer renderer(gpu,64,64);if(std::string(argv[1])=="--rendering-109-only"){std::cout<<nlohmann::json({{"rendering109",rendering109Proof(gpu,argv[2])},{"passed",true}}).dump();return 0;}if(std::string(argv[1])=="--rendering-107-only"){std::cout<<nlohmann::json({{"rendering107",rendering107Proof(gpu,argv[2])},{"rendering109",rendering109Proof(gpu,argv[2])},{"rendering110",rendering110Proof(gpu)},{"passed",true}}).dump();return 0;}const auto transmissionProof=checkTransmission(renderer);if(argc>1&&std::string(argv[1])=="--post-only"){std::cout<<nlohmann::json({{"rendering106",rendering106Proof(gpu,argv[2])},{"rendering105",rendering105Proof(gpu)},{"rendering104",rendering104Proof(gpu)},{"rendering103",rendering103Proof(gpu)},{"rendering102",rendering102Proof(gpu)},{"rendering101",rendering101Proof(gpu)},{"rendering100",rendering100Proof(gpu)},{"rendering099",rendering099Proof(gpu)},{"passed",true}}).dump();return 0;}
     if(argc>1&&std::string(argv[1])=="--transmission-only"){std::cout<<transmissionProof.dump();return 0;}
     const std::vector<SceneVertex> vertices={{{-.8f,-.8f,.5f}},{{.8f,-.8f,.5f}},{{.8f,.8f,.5f}},{{-.8f,.8f,.5f}}};
     const std::vector<std::uint32_t> indices={0,1,2,0,2,3};auto mesh=renderer.createMesh(vertices,indices);SceneMaterial red;red.unlit=true;red.toneMapped=false;red.color={1,0,0,1};

@@ -2323,6 +2323,32 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "ray-atlas-update-supplement",
+      "engine": "D3D11 and installed Three atlas update supplement",
+      "version": "D3D11 immediate context; Three0.180.0; selected2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-updatesubresource"
+      ],
+      "hosts": [
+        "learn.microsoft.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected own API sections; deferred context workaround, linked media/API and remaining library source bodies unread."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-updatesubresource",
+          "record": "docs/research/RENDERING_110.json",
+          "readScope": "Own declaration, resource box/row-pitch, usage restrictions, snapshots/contention and2D example; extracted34–137. Deferred context workaround138–198 and linked media/APIs not read. Immediate context only.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

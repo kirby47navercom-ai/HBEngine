@@ -13,6 +13,13 @@ const clipDepth=new THREE.Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1);
 const isDeformed=node=>!!node.isSkinnedMesh||Object.values(node.geometry?.morphAttributes||{}).some(a=>a.length);
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
 export function rgbaBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
+export function packedRaySceneUpdate(texture){
+ const {data,width,height}=texture.image||{},stride=width*4;
+ if(!texture.userData.hbRayScene||texture.type!==THREE.FloatType||texture.format!==THREE.RGBAFormat||texture.flipY||texture.generateMipmaps||!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||width<1||height<1||width>16384||height>16384||!(data instanceof Float32Array)||data.length!==stride*height||data.some(v=>!Number.isFinite(v))||!texture.updateRanges.length)throw Error('광선 atlas 변경 구간을 확인하세요.');
+ // shortcut: One native dirty-row span includes gaps; split spans when separated edits dominate transfer.
+ let first=height,last=0;for(const r of texture.updateRanges){if(!Number.isSafeInteger(r.start)||!Number.isSafeInteger(r.count)||r.start<0||r.count<=0||r.start%stride||r.count%stride||r.start+r.count>data.length)throw Error('광선 atlas 변경 행을 확인하세요.');first=Math.min(first,r.start/stride);last=Math.max(last,(r.start+r.count)/stride);}
+ const bytes=new Uint8Array(data.buffer,data.byteOffset+first*stride*4,(last-first)*stride*4);return {kind:'raySceneUpdate',width,height,row:first,rows:last-first,rgbaBase64:rgbaBase64(bytes)};
+}
 export function packedTexture(texture){
   if(texture.channel!==0)throw Error('DirectX 추가 UV 채널 변환이 필요해요.');
   const cube=!!texture.isCubeTexture,volume=!!texture.isData3DTexture,array=!!texture.isDataArrayTexture,images=cube?texture.image:[texture.image],first=images?.[0]?.isDataTexture?images[0].image:images?.[0],w=first?.width||first?.videoWidth,h=first?.height||first?.videoHeight,layers=cube?6:volume||array?first?.depth:1;
@@ -126,7 +133,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
     if(!texture)return '';if(texture.userData.hbNativeTarget)return targetResource(texture.userData.hbNativeTarget,resources);
     const key=texture.uuid;if(textures.get(key)!==texture.version){
       track(texture,'textures',key,textures);
-      resources.push({id:key,...packedTexture(texture)});textures.set(key,texture.version);
+      resources.push({id:key,...(textures.has(key)&&texture.userData.hbRayScene&&texture.updateRanges.length?packedRaySceneUpdate(texture):packedTexture(texture))});textures.set(key,texture.version);if(texture.userData.hbRayScene)texture.clearUpdateRanges();
     }return key;
   }
   function targetResource(target,resources){const id=target.texture.uuid,stamp='target:'+target.width+':'+target.height+':'+target.stencilBuffer;track(target,'textures',id,textures);if(textures.get(id)!==stamp){resources.push({kind:'target2d',id,width:target.width,height:target.height,stencil:target.stencilBuffer});textures.set(id,stamp);maskPassCache.delete(id);}return id;}

@@ -1,0 +1,449 @@
+{
+  "version": 1,
+  "date": "2026-10-13T05:24:59.090Z",
+  "previousCommit": "f6a83e013d69389f802965a0cd1dd69023b4ea1c",
+  "scope": [
+    "Common ray atlas DataTexture reuse at equal dimensions; row differences, pending range union, full resize and version stability.",
+    "WebGL changed RGBA rows; native bounded contiguous row-span payload into existing RGBA float resource with UpdateSubresource. WebGPU resource reuse with complete upload.",
+    "Existing C++/BP/AI property changes, existing path history invalidation and rendering098–107/109 preserved."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "8474b466db9ac747a2c3f55c36fa2f57f8c33369b6eb6b9582d83ebb86310f02"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "b045a44d44590b4146dbd5c0b3ee9eff97c1a233400594c36b5cdbf9e5a989c5"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "8b2bf0216ec911f92e8ca9aa6956eeab9d065fa9afaee23cb8f18a05d9aaf60f"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "acc2027fb19d72a253c356ced678f780b12825d104c4f3563f33ce1ed04943f6"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "090ab0808fa9c1d4cb4ee06617a3a6d82c6244260bb141f62dce4a173189cfb0"
+    },
+    {
+      "file": "tools/rendering-109-fixture.mjs",
+      "sha256": "a319d1cc491c39d82de6a1c4b7e84598b5654b886d80959be18df0ce33d7c1ef"
+    },
+    {
+      "file": "native/tests/ray-scene-bridge.cpp",
+      "sha256": "7513f073b9dac00acde573419df3dbd3d77c86f7bb82262a8bc6a22146803762"
+    },
+    {
+      "file": "native/tests/scene-rendering-110.hpp",
+      "sha256": "bb6ead427d0e16f102344eaa68a2e5f1eca3e70f833d5691655612d3c3af26cb"
+    },
+    {
+      "file": "tools/check-ray-scene-bridge.mjs",
+      "sha256": "762b13cc08d7c3e4daaa4f0e82c3ec35cfe7b4949e570883cfdab4868b8328c3"
+    },
+    {
+      "file": "tools/check-rendering-110.mjs",
+      "sha256": "4776a274406c7a26dfc49c7f26c46dcc2cbb4601fa34baf140c466b0bac4e0a8"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "b045a44d44590b4146dbd5c0b3ee9eff97c1a233400594c36b5cdbf9e5a989c5"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "acc2027fb19d72a253c356ced678f780b12825d104c4f3563f33ce1ed04943f6"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "090ab0808fa9c1d4cb4ee06617a3a6d82c6244260bb141f62dce4a173189cfb0"
+    },
+    {
+      "path": "tools/rendering-109-fixture.mjs",
+      "sha256": "a319d1cc491c39d82de6a1c4b7e84598b5654b886d80959be18df0ce33d7c1ef"
+    },
+    {
+      "path": "tools/check-ray-scene-bridge.mjs",
+      "sha256": "762b13cc08d7c3e4daaa4f0e82c3ec35cfe7b4949e570883cfdab4868b8328c3"
+    },
+    {
+      "path": "tools/check-rendering-110.mjs",
+      "sha256": "4776a274406c7a26dfc49c7f26c46dcc2cbb4601fa34baf140c466b0bac4e0a8"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-updatesubresource",
+      "file": "native/build/rendering-research-110/update-subresource.html",
+      "sha256": "eae1ef3138c8a9e3a02b6fc0a12cd337b432ba3c4803d1f09effc5da4d6f1a53",
+      "bytes": 61124,
+      "readScope": "Own declaration, resource box/row-pitch, usage restrictions, snapshots/contention and2D example; extracted34–137. Deferred context workaround138–198 and linked media/APIs not read. Immediate context only.",
+      "wholeBodyRead": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/webgl/WebGLTextures.js",
+      "sha256": "b163f0d958d36ed9985ebecfa8b69e6496642bb26e56a5af1b499a92b350ff79",
+      "bytes": 66805,
+      "readScope": "r180 updateTexture753–850 RGBA contiguous single-row ranges and clearing; update/onUpdate call sites.",
+      "wholeBodyRead": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/webgpu/utils/WebGPUTextureUtils.js",
+      "sha256": "43a9d31ffe839542cd275aff8d1c48ce165f044d14e28d1a8e5ba54faf508843",
+      "bytes": 43572,
+      "readScope": "r180 updateTexture443–529 DataTexture branch and complete upload; no updateRanges handling in this branch.",
+      "wholeBodyRead": false
+    },
+    {
+      "file": "node_modules/three/src/textures/Texture.js",
+      "sha256": "ca120e07c101c3137fa25b13a2fc07ac7baf58c7e85690f0a584f7f39393bc87",
+      "bytes": 18364,
+      "readScope": "r180 updateRanges declarations302–315 and addUpdateRange/clearUpdateRanges425–446.",
+      "wholeBodyRead": false
+    },
+    {
+      "file": "node_modules/three/src/renderers/common/Textures.js",
+      "sha256": "47b8c045d7d400db92e4a19c51032c876dfd961743ebd51c3770955f98695edd",
+      "bytes": 11382,
+      "readScope": "r180 onUpdate(texture) call site only; not whole body.",
+      "wholeBodyRead": false
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "hardware",
+      "file": "native/build/native-scene-HzQqjW/acceptance.json",
+      "sha256": "9877507d21ff348180eff1940983d991e991c6efaff85055e47d84535dbe50e9"
+    },
+    {
+      "gate": "native",
+      "file": "native/build/native-scene-window-tAiHVe/acceptance.json",
+      "sha256": "94b2011c4cc2b0b07d981977d51df5c42f2198fc794bfd84a2db482536ef1860"
+    },
+    {
+      "gate": "webgl",
+      "file": "native/build/gpu-scene-n3mg5l/acceptance.json",
+      "sha256": "876f2b50bbdb6e0f7fdf5f7931a2ee54fc0a7679025a10055af80c5deda4cade"
+    },
+    {
+      "gate": "webgpu",
+      "file": "native/build/gpu-scene-Z1Pnx4/acceptance.json",
+      "sha256": "27b24cd8b3e090522286462ebabdb2a21bc8a728448e30cea8d569961ccdc1e4"
+    },
+    {
+      "gate": "bridge",
+      "file": "native/build/ray-scene-bridge-ZkoyuW/acceptance.json",
+      "sha256": "f20b78e764af66e720243f0fc85d8a5e1978b202837bfaa251085e2309d96a39"
+    },
+    {
+      "gate": "cpu",
+      "file": "native/build/cpu-rendering-110.json",
+      "sha256": "c0310b960e40b18e5658f9056248425164e8d1dae8ba48bda786d6d44f7bb140"
+    },
+    {
+      "gate": "atlas",
+      "file": "native/build/ray-atlas-110.json",
+      "sha256": "c51b9e63a58b298a927361fcf76da59ac9f48307e00168847e3dc99b9a69a656"
+    }
+  ],
+  "acceptance": {
+    "hardware": {
+      "automaticReadbacks": 0,
+      "changedRowPixel": true,
+      "fullBytes": 128,
+      "guards": 9,
+      "invalidUpdatesAtomic": true,
+      "passed": true,
+      "patchBytes": 32,
+      "resourceReused": true,
+      "untouchedRowsPreserved": true
+    },
+    "native": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 97.4443359375,
+            "variance": 734.774245262146
+          },
+          "far": {
+            "mean": 115,
+            "variance": 0
+          },
+          "rayAtlas": {
+            "updates": 1,
+            "bytes": 65536
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 97.427734375,
+            "variance": 733.2818870544434
+          },
+          "far": {
+            "mean": 114.9697265625,
+            "variance": 0.0938100814819336
+          },
+          "rayAtlas": {
+            "updates": 1,
+            "bytes": 65536
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 88.62109375,
+            "variance": 675.1806488037109
+          },
+          "far": {
+            "mean": 104.3046875,
+            "variance": 82.94427490234375
+          },
+          "rayAtlas": {
+            "updates": 1,
+            "bytes": 65536
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 184.296875,
+            "variance": 925.952880859375
+          },
+          "far": {
+            "mean": 203,
+            "variance": 0
+          },
+          "rayAtlas": {
+            "updates": 1,
+            "bytes": 65536
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "D3D11"
+    },
+    "webgl": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 85.083984375,
+            "variance": 631.9284934997559
+          },
+          "far": {
+            "mean": 101,
+            "variance": 0
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 85.0556640625,
+            "variance": 631.540846824646
+          },
+          "far": {
+            "mean": 100.984375,
+            "variance": 0.056396484375
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 73.30078125,
+            "variance": 531.8118743896484
+          },
+          "far": {
+            "mean": 87.451171875,
+            "variance": 89.75738143920898
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 173.0400390625,
+            "variance": 1024.0442953109741
+          },
+          "far": {
+            "mean": 193,
+            "variance": 0
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "WebGL2"
+    },
+    "webgpu": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 85.2421875,
+            "variance": 635.2343139648438
+          },
+          "far": {
+            "mean": 101,
+            "variance": 0
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 85.2109375,
+            "variance": 633.9555053710938
+          },
+          "far": {
+            "mean": 100.96875,
+            "variance": 0.0615234375
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 82.7197265625,
+            "variance": 637.6900014877319
+          },
+          "far": {
+            "mean": 98.119140625,
+            "variance": 44.65572738647461
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 173.4111328125,
+            "variance": 1028.1600713729858
+          },
+          "far": {
+            "mean": 193,
+            "variance": 0
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "WebGPU"
+    },
+    "bridge": {
+      "jsonIntegerRangeGuards": 19,
+      "passed": true,
+      "rejectedPatchesDidNotWrite": true,
+      "validPatches": 2
+    },
+    "atlas": {
+      "passed": true,
+      "frames": 20,
+      "resourceReused": true,
+      "partialCopyMatchesFullPacket": true,
+      "pendingRangesUnionBounded": true,
+      "resizeReallocates": true,
+      "invalidRangesAndValuesRejected": true,
+      "atlasBytes": 393216,
+      "translationPatchBytes": 65536,
+      "translationBytesFraction": 0.16666666666666666,
+      "webgpu": "Resource reused; installed Three r180 still uploads complete DataTexture."
+    },
+    "grouped098Through107And109": true,
+    "errors": [],
+    "normalExits": true,
+    "serversClosed": true
+  },
+  "cpu": [
+    {
+      "command": "node tools/check-rendering-110.mjs --record",
+      "output": "{\"passed\":true,\"frames\":20,\"resourceReused\":true,\"partialCopyMatchesFullPacket\":true,\"pendingRangesUnionBounded\":true,\"resizeReallocates\":true,\"invalidRangesAndValuesRejected\":true,\"atlasBytes\":393216,\"translationPatchBytes\":65536,\"translationBytesFraction\":0.16666666666666666,\"webgpu\":\"Resource reused; installed Three r180 still uploads complete DataTexture.\"}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-109.mjs",
+      "output": "{\"passed\":true,\"oddNPOTArea\":true,\"linearColorAndAlpha\":true,\"cacheAndInvalidation\":true,\"arrayCubeVolume\":true,\"graphCoordinateAncestors\":true,\"finitePackets\":true,\"geometryReuse\":true,\"minFilterResetsHistory\":true,\"lightPresenceInvalidation\":true,\"screenOnlyPrunesRayCode\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-107.mjs",
+      "output": "{\"passed\":true,\"closedMediumSchema\":true,\"HDRIAliasExactSolidAngles\":true,\"blackHDRIFinite\":true,\"cacheAndValidation\":true,\"perMeshMediumIDs\":true,\"historyResetAndDenoiseIsolation\":true,\"edgeWeights\":true,\"lazyOff\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-106.mjs",
+      "output": "{\"passed\":true,\"operators\":35,\"shaderStructureRelease\":true,\"immutableHeaderGuard\":true,\"familyTexturePacking\":true,\"constantFold\":true,\"liveRegisterReuse\":true,\"textureCacheAndInvalidation\":true,\"UVInvalidation\":true,\"instancedNormals\":true,\"rawImportedMaps\":true,\"RGBAFloatBoundary\":true,\"legacyGI\":true,\"disabledRelease\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-engine-integration.mjs",
+      "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-screen-effects.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-ray-programs.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-api.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    }
+  ],
+  "diagnostics": {
+    "resolved": [
+      "Review found duplicate permissive raySceneUpdate branch shadowing integer checks. Removed it; real bridge19 integer/range guards reject overflow/fraction/string/negative/zero and preserve update counter.",
+      "Hardware row pixels/native data validation and grouped GL/GPU proved initial resource behavior. Fresh build14:16:36 then current tAiHVe actual window supersedes earlier SNqTpL binary for final native proof."
+    ],
+    "calibration": "Initial new cost assertion assumed<10% at128 texture; actual64KiB row over384KiB atlas is16.7%. Assert strict reduction and exact full-packet equality; report measured ratio, do not promise10% for all sizes. Existing pixel and frame deadlines unchanged.",
+    "previousNativeWindow": "native/build/native-scene-window-SNqTpL/acceptance.json",
+    "currentNativeWindow": "native/build/native-scene-window-tAiHVe/acceptance.json",
+    "releaseWhitespaceNormalization": "Removed extra final blank lines in new tests/tools/doc; no runtime production changes after final gates."
+  },
+  "costs": {
+    "cpuExampleAtlasBytes": 393216,
+    "cpuExampleTranslationPatchBytes": 65536,
+    "cpuExampleTranslationBytesFraction": 0.16666666666666666,
+    "nativeMaterialChangeSpanBytes": {
+      "primary": 65536,
+      "glass": 65536,
+      "mirror": 65536,
+      "lit": 65536
+    },
+    "newAtlasGPUAllocationOnSameDimensions": false,
+    "automaticGPUReadbacksAdded": 0,
+    "webgpuCompleteUpload": true,
+    "cpuFullBVHAndAtlasRepackStillPresent": true,
+    "performanceClaim": "Verified transferred row payloads, resource reuse and rendered pixels; no FPS/GPU-completion/phone claim."
+  },
+  "limits": [
+    "Native first-to-last dirty-row span includes unchanged gaps; large separated changes can transmit full atlas.",
+    "Installed Three r180 WebGPU uploads full DataTexture even while resource is reused.",
+    "CPU geometry/BVH rebuild, atlas repacking and row comparison remain; this is not complete movement-cost elimination.",
+    "UpdateSubresource can incur driver copies/contention; no guaranteed whole-game120/60FPS or hardware-latency result.",
+    "The ray atlas is optional; 2D sprites stay on existing renderer paths, no new automatic readback.",
+    "Advanced ray lobes/caustics, secondary denoising, complete UE/Unity corpus/API and accumulated engine/mobile work remain separate."
+  ],
+  "installation": {
+    "state": "Pending grouped release verification",
+    "restartUserWindows": false
+  }
+}
