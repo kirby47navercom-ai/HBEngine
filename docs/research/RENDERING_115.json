@@ -818,7 +818,12 @@
       "receipt": null
     },
     "newDependencies": 0,
-    "newLargeAssets": 0
+    "newLargeAssets": 0,
+    "updateRemovedBytes": 170340380,
+    "totalObsoleteVersionsRetired": 6,
+    "finalVersions": [
+      "9719262a2adb4bbb"
+    ]
   },
   "diagnostics": [
     "Initial native-window109 missed unchanged frame15s deadline. Private bridge trace proves ordinary518 quality/no advanced fields. Removed unreachable advanced helpers from ordinary GL/HLSL source and preserved legacy inline direction; final grouped DirectX passes without assertion/deadline changes. This does not claim independently measured shader compile timing.",
@@ -834,7 +839,17 @@
     "Active old versions and user projects preserved until safe retirement; no forced user window restart."
   ],
   "installation": {
-    "state": "Pending verified source sync and user install",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "efc834c1f2b9ff6353a10f19a9bc0304a0134889",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9719262a2adb4bbb",
+    "bundleHash": "9719262a2adb4bbb7a6e47670c50870aaa2d2223ba1310ac891e7f1978275485",
+    "files": 2126,
+    "remainingVersions": [
+      "9719262a2adb4bbb"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_115.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
