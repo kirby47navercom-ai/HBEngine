@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "date": "2026-10-13T08:58:00.940Z",
+  "featureCommit": "a34ab9ba693a67e4f88d47b1ce3f2130d0fa743e",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b\\HBEngine.exe",
+    "bundleHash": "2229fcf1ad625a5bcbac0cd721f928ca3a2b2c53f794faf9df186992f12cd625",
+    "files": 2114
+  },
+  "executableSHA256": "b9d829df11b352c4b702707d3c8fa3ca0ea18b664e1769403fe5298c9b367611",
+  "playerSHA256": "ca8158c570a78fb713aa008dd92ee76d32755588bcced20919b0f1c715cdd1a3",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "observedConcurrentEditsPreserved": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "tools/native-host.mjs",
+      "sha256": "bf8cc6df6f642c7007b12c601c044496472a1db694c0473ebbbc22e6fabeb4fc"
+    },
+    {
+      "path": "tools/test-artifacts.mjs",
+      "sha256": "3135b04f16b3e4e8ef35bfd78784bd9fafc1167b2cee0678ee1fdc11f4610935"
+    },
+    {
+      "path": "tools/remove-test-cache.ps1",
+      "sha256": "2629c391eb0e3062fd87e6a05d14445065ff5f29e62c5a04a907d45be8896fae"
+    },
+    {
+      "path": "tools/check-native-cache.mjs",
+      "sha256": "a47705af5711128d6c487800e087252dfd86e177c907440f1a58f051bf1f82ab"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "preservationInventory": {
+    "file": "native/build/preinstall-113.json",
+    "sha256": "9460ff1014acd1bb7433c4c7131fed68bcd77693c6856046b52b3865b53ff1f6",
+    "verifiedFiles": 2112,
+    "duplicatedInventoryInReceipt": false
+  },
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6",
+    "bundleHash": "7b6dfdd7b5d5b3e638be627ef354b1620022fd1979b6c402072196d539699577",
+    "manifestSHA256": "2c60114dad5d2fac8ad2fa8be020c706f9e59fcd17434951a4adbe57d72a1ab8",
+    "allFilesChecked": 2111,
+    "manifestMatches": 2111,
+    "concurrentEdits": [],
+    "concurrentEditNote": null
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Prior install manifest files and top-level profile only; original user games not changed.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}

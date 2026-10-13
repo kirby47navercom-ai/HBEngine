@@ -165,7 +165,13 @@
     "This storage follow-up does not add new rendering or claim whole-engine/phone/FPS completion."
   ],
   "installation": {
-    "state": "Pending final source and install verification",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "a34ab9ba693a67e4f88d47b1ce3f2130d0fa743e",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\2229fcf1ad625a5b",
+    "bundleHash": "2229fcf1ad625a5bcbac0cd721f928ca3a2b2c53f794faf9df186992f12cd625",
+    "files": 2114,
+    "receipt": "docs/research/USER_INSTALL_113.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
