@@ -1,3 +1,9 @@
+# 115 / 114 — 표면 경로 추적·설치 버전 정리 — 2026-10-13
+
+코팅/코팅 노멀·반사 강도/색·Charlie Sheen·UV 비등방성·박막을 경로 BRDF/PDF와 기존 C++ 머테리얼 함수에 연결. 일반5필드/확장10필드, 추가9맵, 날카로운 표면 디노이저 보호 및 native cache 상위 비트 충돌 수정. CPU19+새 수치 적분·bridge19/7·native 전체+최종128샘플·실제 DirectX/WebGL/WebGPU 묶음 통과. 이전 설치5개903274158바이트 정리, 변경4파일45313바이트 보존. 업데이트 뒤 이전 Versions 자동 정리 및 복사 실패 임시 폴더 제거; 현재/실행 중/프로젝트 보호. [구현](docs/RENDERING_115.md), [증거](docs/research/RENDERING_115.json), [정리](docs/INSTALL_RETENTION_114.md). 설치 대조·갱신 대기.
+
+다음: 기존 미완료 원장의 거친 굴절·계층 BVH·코스틱·이차 반사 디노이징과 누적 엔진 작업. 이번5종 묶음을 전체 엔진/문서 완료로 계산하지 않음. 사용자 창 강제 재시작·원본 게임 수정 없음.
+
 # 113 — 사용자 설치본 C++ 캐시 자동 정리 — 2026-10-13
 
 Successful build/cache hits prune this instance cache to most recent32 plus referenced/active modules. Existing bounded PowerShell cleanup reused; no empty receipts, unique concurrent paths and missing-target tolerance. Isolated35-entry active/reference/retirement tests, real C++ maintenance cancellation, compile cancellation/retry/concurrent42 returns, host diagnostic lifecycle and QA cleanup pass. Split native/build fixture path recognition corrected and final teardown exit0. 112 rendering binaries unchanged and reused. [113](docs/BUILD_CACHE_113.md), [evidence](docs/research/BUILD_CACHE_113.json). Installation verified: C:\Users\kirby\HBEngine\Versions\2229fcf1ad625a5b; 2114 new manifest files, 4 shipped source hashes, both executable hashes, shortcuts and hbproject association verified. All 2111 prior files checked (0 concurrent edits preserved) and 1 top-level profile hashes unchanged. [Install receipt](docs/research/USER_INSTALL_113.json). No normal launch or foreground restart. Original games/profile/SDK/user windows preserved; cached old binaries can need recompilation. Continue accumulated rendering/engine goals from112.

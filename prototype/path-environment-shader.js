@@ -18,7 +18,7 @@ vec3 hbEnvironmentDirect(vec3 point,vec3 n,vec3 view,float id,float seed,float w
 #ifdef HB_RAY_NO_ENV
 return vec3(0,0,0);
 #else
-if(hbPathMap.y<.5||hbPathOptions.x<=0.0)return vec3(0,0,0);vec4 sampleDirection=hbEnvironmentDirection(seed);vec3 d=sampleDirection.xyz;float cosine=max(0.0,dot(n,d)),pdf=sampleDirection.w;if(cosine<=0.0||pdf<=0.0)return vec3(0,0,0);vec4 p=hbRayField0Lod(id,point,view,width),b=hbPathBRDF(n,view,d,hbRayField1Lod(id,point,view,width).rgb,p.x,max(.02,p.y));float opaque=1.0-p.z*(1.0-p.x);vec3 visible=hbGeometryVisibilityLod(point+d*hbGeometryLimits.y*2.0,d,hbGeometry.y,width);if(hbGeometryLoad(hbTransport.x+id*2.0+1.0).y<.5)visible=vec3(1,1,1);return hbEnvironmentLod(d,spread).rgb*b.rgb*visible*(cosine*opaque/pdf)*hbPathMIS(pdf,b.a*opaque);
+if(hbPathMap.y<.5||hbPathOptions.x<=0.0)return vec3(0,0,0);vec4 sampleDirection=hbEnvironmentDirection(seed);vec3 d=sampleDirection.xyz;float cosine=max(0.0,dot(n,d)),pdf=sampleDirection.w;if(cosine<=0.0||pdf<=0.0)return vec3(0,0,0);vec4 p=hbRayField0Lod(id,point,view,width),b=hbPathSurfaceBRDF(n,view,d,hbRayField1Lod(id,point,view,width).rgb,p.x,max(.02,p.y),id,point,width);float opaque=1.0-p.z*(1.0-p.x);vec3 visible=hbGeometryVisibilityLod(point+d*hbGeometryLimits.y*2.0,d,hbGeometry.y,width);if(hbGeometryLoad(hbTransport.x+id*2.0+1.0).y<.5)visible=vec3(1,1,1);return hbEnvironmentLod(d,spread).rgb*b.rgb*visible*(cosine*opaque/pdf)*hbPathMIS(pdf,b.a*opaque);
 #endif
 }
 `;

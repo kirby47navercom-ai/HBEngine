@@ -1992,6 +1992,14 @@
           "record": "docs/research/RENDERING_098.json",
           "readScope": "Primary live manual selected anisotropy812–885 and cloth937–1004 excerpts; not whole sections/manual/API.",
           "wholeCorpus": false
+        },
+        {
+          "url": "https://google.github.io/filament/main/filament.html",
+          "record": "docs/research/RENDERING_115.json",
+          "readScope": "Selected clear-coat/anisotropic/Charlie cloth sections724–1004; own layer attenuation and scalar/three-wavelength approximations. Full book/media/corpus not read.",
+          "sha256": "306bd2a172ac7c56c232dd4404765d3c32810c78445a6adbe07c4fd911fe8d7c",
+          "wholeBodyRead": false,
+          "wholeCorpus": false
         }
       ]
     },
@@ -2001,7 +2009,8 @@
       "version": "selected-snapshot-2026-10-13",
       "locale": "en",
       "roots": [
-        "https://www.pbr-book.org/4ed/Geometry_and_Transformations/Interactions"
+        "https://www.pbr-book.org/4ed/Geometry_and_Transformations/Interactions",
+        "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory"
       ],
       "hosts": [
         "www.pbr-book.org"
@@ -2023,6 +2032,14 @@
           "url": "https://www.pbr-book.org/4ed/Shapes/Triangle_Meshes",
           "record": "docs/research/RENDERING_106.json",
           "readScope": "Web sections184–212 and647–674 only: barycentric attributes; rest of page and outgoing implementation links unread.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
+          "record": "docs/research/RENDERING_115.json",
+          "readScope": "Selected distribution, projected normalization, anisotropy and masking sections; own full-NDF sampling, not PBRT visible-normal sampling. Linked bodies/media not read.",
+          "sha256": "b45dca162e9e3517661e0b08a4f184efe641afdbce355904429de2f6b415bd41",
+          "wholeBodyRead": false,
           "wholeCorpus": false
         }
       ]

@@ -5,6 +5,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
+import {pruneInstalledVersions} from './prune-install-versions.mjs';
 const exec=promisify(execFile),repository=path.resolve(import.meta.dirname,'..');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const inside=(base,value)=>{const relative=path.relative(base,value);return !relative||!relative.startsWith('..'+path.sep)&&relative!=='..'&&!path.isAbsolute(relative);};
@@ -36,9 +37,14 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
   if(exists){const manifest=JSON.parse(await fs.readFile(path.join(directory,'HBEngine.install.json'),'utf8'));const installed=await inventory(directory);if(manifest.bundleHash!==bundleHash||JSON.stringify(installed)!==JSON.stringify(files))throw Error('기존 설치 파일이 달라요. 덮어쓰지 않아요: '+directory);}
   else{
     const staging=path.join(versions,'.install-'+randomUUID());await fs.mkdir(staging);
-    for(const file of files){const target=path.join(staging,file.path);await fs.mkdir(path.dirname(target),{recursive:true});await fs.copyFile(path.join(source,file.path),target);if(sha(await fs.readFile(target))!==file.sha256)throw Error('배포본이 복사 중 변경됐어요: '+file.path);}
-    await fs.writeFile(path.join(staging,'HBEngine.install.json'),JSON.stringify({version:1,bundleHash,installedAt:new Date().toISOString(),profile:'%LOCALAPPDATA%/HBEngine/User',files},null,2)+'\n',{flag:'wx'});
-    await fs.rename(staging,directory);
+    try{
+      for(const file of files){const target=path.join(staging,file.path);await fs.mkdir(path.dirname(target),{recursive:true});await fs.copyFile(path.join(source,file.path),target);if(sha(await fs.readFile(target))!==file.sha256)throw Error('배포본이 복사 중 변경됐어요: '+file.path);}
+      await fs.writeFile(path.join(staging,'HBEngine.install.json'),JSON.stringify({version:1,bundleHash,installedAt:new Date().toISOString(),profile:'%LOCALAPPDATA%/HBEngine/User',files},null,2)+'\n',{flag:'wx'});
+      await fs.rename(staging,directory);
+    }catch(error){
+      if(path.dirname(path.resolve(staging))!==path.resolve(versions)||!/^\.install-[a-f0-9-]{36}$/.test(path.basename(staging)))throw Error('임시 설치 정리 범위 오류',{cause:error});
+      await fs.rm(staging,{recursive:true,force:true});throw error;
+    }
   }
   const executable=path.join(directory,'HBEngine.exe'),link=path.join(destination,'HBEngine.lnk');let desktopShortcut=null;
   if(shortcut){
@@ -47,7 +53,8 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
     const {stdout}=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command','[Console]::OutputEncoding=[Text.UTF8Encoding]::new(); '+script],{windowsHide:true,encoding:'utf8'});desktopShortcut=stdout.trim()||null;
     await exec(executable,['--register'],{cwd:directory,windowsHide:true,timeout:30000,env:{...process.env,HB_USER_DATA_DIR:path.join(os.tmpdir(),'HBEngine-register-'+randomUUID())}});
   }
-  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length};
+  const cleanup=await pruneInstalledVersions(destination,directory);
+  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length,cleanup};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2);if(args.length>1)throw Error('사용법: node tools/install-editor.mjs [설치 폴더]');

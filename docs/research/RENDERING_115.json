@@ -1,0 +1,840 @@
+{
+  "version": 1,
+  "date": "2026-10-13T10:52:30.666Z",
+  "previousCommit": "e099ca3d08aea167cf1c11070b2c45013119950c",
+  "scope": [
+    "Path BSDF clearcoat/independent normal, specular color/intensity, Charlie sheen, UV anisotropy/rotation and three-wavelength thin-film approximation.",
+    "Matching continuation/direct/emissive/HDRI mixture PDF; sharp-coat/aniso denoiser bypass.",
+    "Conditional five/ten-field ABI, nine raw physical maps and full native variant cache identity.",
+    "Verified update retires obsolete Versions, preserves current/active/projects and modified files only; failed own staging cleaned."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "7811b007ced20c2b2830c42201cff4281f8204fc816b94990b480ad8fe11d2fb"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "cad289f01555bd5d0f88aeb8adb0081441999dff98364881df870cbaa9abba66"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "d6ef505e97d1fed6aad9b38e53a5e00d5fb6c638028cb166f0865ed0d32079a8"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "96bc795197437f0d4899becaa9872821f55074ac53832e7ee2134ebb7b0b047e"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "96d51e7027e1170512b5028533de64f69e289d0854c9dcbd2b3c458997037d49"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "0be20d30ca83c828738fd26ae47e623a6809ea97cef651e0d2525eda065de872"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "011c1e1e04c9e3ff879ad68f1e25dd43d92260ddd56176b96fb6a2678df6ff66"
+    },
+    {
+      "file": "prototype/path-environment-gpu.js",
+      "sha256": "b6f39269e6f937389d2effb0a7d5556a7155803e2ed51abaee4f067357ae60db"
+    },
+    {
+      "file": "prototype/path-environment-shader.js",
+      "sha256": "11620a84c0aa73db17f0a4905d7da0aca9c5e52a500b81d867a0d58dde0df2ba"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "620eefc4b948f5c3d1bad0cd774ddadc13a10648885894cfe3c06c92f6fb10f7"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "142d3f4a16b8772fd1a0585c5e45684785ff2042470920150c379254ee613108"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "f1cfaa302208bf5a13963d8fc6d1c9be07420d4f994e024fb47ee16a10a63530"
+    },
+    {
+      "file": "prototype/ray-material-gpu.js",
+      "sha256": "5abb4bc42830daca5a6e5c0523719bee68b50d8175a473f396a5cda46b6061ba"
+    },
+    {
+      "file": "prototype/ray-material-shader.js",
+      "sha256": "62097e16a0cb1b4c3901089def58c64f9c364a8bb7f70d6941ada4a730aedaf5"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "1bbc82837e06e665889ded4ed6bfc985edd683a867833f91cb0d5feec307ef9d"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "2d499dd097a41dd47221c2e394ec56dd80e0c64b2e06aa3c08b58d3d3e923c1c"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "e8a5dc46df73999ed139c5f554a848f4dc44a6b3ec19563f59f16d12ba739dfd"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "9857f2bdf6430ef057e8bf3ae2378e331f723df29e56ae643f25e88b28d00fa9"
+    },
+    {
+      "file": "tools/install-editor.mjs",
+      "sha256": "c2ca87977ee0ed347e56e231e949b0ac02aabe786180f7ef06412007f4b463e2"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "cf65f00be2f952463f9290992400bfd00659f786db5be750b2b0bef10c7b7b61"
+    },
+    {
+      "file": "native/tests/scene-rendering-115.hpp",
+      "sha256": "6cb9ccfe4720e6f0f0dc4e228b8c69f0d38392cd0e2b99ba7a4bb381d6702e6a"
+    },
+    {
+      "file": "prototype/path-surface-gpu.js",
+      "sha256": "855d8cad5f9be3480f4a6c86a8e8c1d83b0098878f21b6a9bb666282e557341b"
+    },
+    {
+      "file": "prototype/path-surface-shader.js",
+      "sha256": "014c9412b213fb1ed4a1e781d50e7082b852cacd6d41cb23dcc66687548832e7"
+    },
+    {
+      "file": "tools/check-install-version-retention.mjs",
+      "sha256": "4085877f51514ac31e74e8eeef6c48fec307e7c2c986e1357a38d7532f9b9383"
+    },
+    {
+      "file": "tools/check-rendering-115.mjs",
+      "sha256": "d58dc052df49f8dcff6aa97ca6d5aced98ac6f2ee4ee04033609724b1635352f"
+    },
+    {
+      "file": "tools/prune-install-versions.mjs",
+      "sha256": "ddc8e213db3197cbe89a0f2716edcd21d9698abdd52c22fea2ff73d7e5ee922f"
+    },
+    {
+      "file": "tools/remove-install-versions.ps1",
+      "sha256": "352e27ee8fcf4a7dbb14f10a410c835fe88258fdccad22fabb1661b91bf01e3d"
+    },
+    {
+      "file": "tools/rendering-115-fixture.mjs",
+      "sha256": "8f2ac23e2c4c0ea07267e5b705aedbf12e5ed6c0978addd3dfc41d4d19160d5e"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "7811b007ced20c2b2830c42201cff4281f8204fc816b94990b480ad8fe11d2fb"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "d6ef505e97d1fed6aad9b38e53a5e00d5fb6c638028cb166f0865ed0d32079a8"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "96bc795197437f0d4899becaa9872821f55074ac53832e7ee2134ebb7b0b047e"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "96d51e7027e1170512b5028533de64f69e289d0854c9dcbd2b3c458997037d49"
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "0be20d30ca83c828738fd26ae47e623a6809ea97cef651e0d2525eda065de872"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "011c1e1e04c9e3ff879ad68f1e25dd43d92260ddd56176b96fb6a2678df6ff66"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "b6f39269e6f937389d2effb0a7d5556a7155803e2ed51abaee4f067357ae60db"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "11620a84c0aa73db17f0a4905d7da0aca9c5e52a500b81d867a0d58dde0df2ba"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "620eefc4b948f5c3d1bad0cd774ddadc13a10648885894cfe3c06c92f6fb10f7"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "142d3f4a16b8772fd1a0585c5e45684785ff2042470920150c379254ee613108"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "f1cfaa302208bf5a13963d8fc6d1c9be07420d4f994e024fb47ee16a10a63530"
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "sha256": "5abb4bc42830daca5a6e5c0523719bee68b50d8175a473f396a5cda46b6061ba"
+    },
+    {
+      "path": "prototype/ray-material-shader.js",
+      "sha256": "62097e16a0cb1b4c3901089def58c64f9c364a8bb7f70d6941ada4a730aedaf5"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "1bbc82837e06e665889ded4ed6bfc985edd683a867833f91cb0d5feec307ef9d"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "2d499dd097a41dd47221c2e394ec56dd80e0c64b2e06aa3c08b58d3d3e923c1c"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "e8a5dc46df73999ed139c5f554a848f4dc44a6b3ec19563f59f16d12ba739dfd"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "9857f2bdf6430ef057e8bf3ae2378e331f723df29e56ae643f25e88b28d00fa9"
+    },
+    {
+      "path": "tools/install-editor.mjs",
+      "sha256": "c2ca87977ee0ed347e56e231e949b0ac02aabe786180f7ef06412007f4b463e2"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "cf65f00be2f952463f9290992400bfd00659f786db5be750b2b0bef10c7b7b61"
+    },
+    {
+      "path": "prototype/path-surface-gpu.js",
+      "sha256": "855d8cad5f9be3480f4a6c86a8e8c1d83b0098878f21b6a9bb666282e557341b"
+    },
+    {
+      "path": "prototype/path-surface-shader.js",
+      "sha256": "014c9412b213fb1ed4a1e781d50e7082b852cacd6d41cb23dcc66687548832e7"
+    },
+    {
+      "path": "tools/check-install-version-retention.mjs",
+      "sha256": "4085877f51514ac31e74e8eeef6c48fec307e7c2c986e1357a38d7532f9b9383"
+    },
+    {
+      "path": "tools/check-rendering-115.mjs",
+      "sha256": "d58dc052df49f8dcff6aa97ca6d5aced98ac6f2ee4ee04033609724b1635352f"
+    },
+    {
+      "path": "tools/prune-install-versions.mjs",
+      "sha256": "ddc8e213db3197cbe89a0f2716edcd21d9698abdd52c22fea2ff73d7e5ee922f"
+    },
+    {
+      "path": "tools/remove-install-versions.ps1",
+      "sha256": "352e27ee8fcf4a7dbb14f10a410c835fe88258fdccad22fabb1661b91bf01e3d"
+    },
+    {
+      "path": "tools/rendering-115-fixture.mjs",
+      "sha256": "8f2ac23e2c4c0ea07267e5b705aedbf12e5ed6c0978addd3dfc41d4d19160d5e"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "ac37b796394e37c379053098d4de43ab960f9a0165a46a0e80aba66e72d39548"
+    },
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29"
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "cpu",
+      "file": "native/build/rendering-115-cpu.json",
+      "sha256": "7f92519b779713cc67fea6f38c9d6b23eef4f9c3c97dc08a8677b7f9e1f749b2"
+    },
+    {
+      "gate": "legacyCPU",
+      "file": "native/build/cpu-rendering-112.json",
+      "sha256": "6cf4f59f06b533db4d7283b13386b3fb9e218553f50034679bd40273ada6c87b"
+    },
+    {
+      "gate": "bridge",
+      "file": "native/build/ray-scene-bridge-v2tV7L/acceptance.json",
+      "sha256": "44e71cc5bd27d27d74637c3eccde9ab84057c9817ed4cad953f9fd7f1f3e6061"
+    },
+    {
+      "gate": "nativeCore",
+      "file": "native/build/native-scene-Kw30My/acceptance.json",
+      "sha256": "5c7b1cd324d570b9926289ae3d26c2f1795b06f26397b27c01078e7d02b18b6c"
+    },
+    {
+      "gate": "nativeFinal",
+      "file": "native/build/native-scene-dnZUrG/acceptance.json",
+      "sha256": "16edc1a46fddbb772c091d05a035e7492ec197472e20648d0e218d9a8ea96d98"
+    },
+    {
+      "gate": "directx",
+      "file": "native/build/native-scene-window-HTYmlj/acceptance.json",
+      "sha256": "8d3ff00d317d81a113cf226a6f246d61e70691bad792e11ac74bc7a949e3e2b9"
+    },
+    {
+      "gate": "webgl",
+      "file": "native/build/gpu-scene-ASJCsw/acceptance.json",
+      "sha256": "4c88d11275a406f563c5b85eb939eb4929dd485c33c887d91880a6f4ae36959d"
+    },
+    {
+      "gate": "webgpu",
+      "file": "native/build/gpu-scene-CENUQU/acceptance.json",
+      "sha256": "37120d8b7f64e2a055e330cf15ca3f0ef6fded6549ba7e3a3cae512fef86d626"
+    },
+    {
+      "gate": "retention",
+      "file": "native/build/install-retention-TJ5cRr/acceptance.json",
+      "sha256": "93b7967373c03bba771895cb3598ae7d87f0208ad968e3ae801b232fad6273ee"
+    },
+    {
+      "gate": "actualRetirement",
+      "file": "native/build/versions-cleanup-114.log",
+      "sha256": "c79cf11bee49366081a358ba47a87427f02b82d01acd3d339a3691d9ce0193de"
+    },
+    {
+      "gate": "testCleanup",
+      "file": "native/build/cache-prune-115.log",
+      "sha256": "7bdaaf2ebf884acc2d306750aa8790521f1c5ac3b373de4b1e0cff0aa3902a4b"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory",
+      "readScope": "Selected distribution, projected normalization, anisotropy and masking sections; own full-NDF sampling, not PBRT visible-normal sampling. Linked bodies/media not read.",
+      "file": "native/build/rendering-research-115/microfacet.html",
+      "sha256": "b45dca162e9e3517661e0b08a4f184efe641afdbce355904429de2f6b415bd41",
+      "bytes": 704875,
+      "wholeBodyRead": false
+    },
+    {
+      "url": "https://google.github.io/filament/main/filament.html",
+      "readScope": "Selected clear-coat/anisotropic/Charlie cloth sections724–1004; own layer attenuation and scalar/three-wavelength approximations. Full book/media/corpus not read.",
+      "file": "native/build/rendering-research-115/filament.html",
+      "sha256": "306bd2a172ac7c56c232dd4404765d3c32810c78445a6adbe07c4fd911fe8d7c",
+      "bytes": 490021,
+      "wholeBodyRead": false
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "legacyFiveFields": true,
+      "conditionalTenFields": true,
+      "dynamicScalarPacking": true,
+      "advancedPresenceAndMasks": true,
+      "uniformPatchReusesAtlas": true,
+      "rawPhysicalCacheInvalidation": true,
+      "rawNineMapChannels": true,
+      "ggxProjectedNormalization": true,
+      "charlieProjectedNormalization": true
+    },
+    "legacyCPU": {
+      "passed": 19,
+      "commands": [
+        "node tools/check-rendering-112.mjs --record",
+        "node tools/check-test-artifacts.mjs",
+        "node tools/check-rendering-111.mjs --record",
+        "node tools/check-rendering-110.mjs --record",
+        "node tools/check-rendering-109.mjs",
+        "node tools/check-rendering-107.mjs",
+        "node tools/check-rendering-106.mjs",
+        "node tools/check-rendering-105.mjs",
+        "node tools/check-rendering-104.mjs",
+        "node tools/check-rendering-103.mjs",
+        "node tools/check-rendering-102.mjs",
+        "node tools/check-rendering-101.mjs",
+        "node tools/check-rendering-100.mjs",
+        "node tools/check-rendering-099.mjs",
+        "node tools/check-engine-integration.mjs",
+        "node tools/check-material-volume.mjs",
+        "node tools/generate-screen-effects.mjs --check",
+        "node tools/generate-screen-post.mjs --check",
+        "node tools/generate-api.mjs --check"
+      ],
+      "record": "native/build/cpu-rendering-112.json"
+    },
+    "bridge": {
+      "batchAtomicGuards": 7,
+      "jsonIntegerRangeGuards": 19,
+      "passed": true,
+      "rejectedPatchesDidNotWrite": true,
+      "validPatches": 6
+    },
+    "nativeCore": {
+      "passed": true,
+      "compiledRasterNodes": 61,
+      "segments": [
+        "core",
+        "post",
+        "rendering107"
+      ]
+    },
+    "nativeFinal": {
+      "anisotropicRotationEnergyInvariant": true,
+      "anisotropyRotation": true,
+      "charlieSheen": true,
+      "clearcoatAndNormal": true,
+      "colors": {
+        "00legacy": [
+          21,
+          21,
+          21
+        ],
+        "01specOff": [
+          0,
+          0,
+          0
+        ],
+        "99legacy": [
+          21,
+          21,
+          21
+        ],
+        "anisoX": [
+          235,
+          235,
+          235
+        ],
+        "anisoY": [
+          26,
+          26,
+          26
+        ],
+        "coatFlat": [
+          25,
+          25,
+          25
+        ],
+        "coatOff": [
+          10,
+          10,
+          10
+        ],
+        "coatOn": [
+          219,
+          219,
+          219
+        ],
+        "film400": [
+          110,
+          157,
+          153
+        ],
+        "film700": [
+          135,
+          109,
+          135
+        ],
+        "sheen": [
+          0,
+          65,
+          0
+        ],
+        "specOff": [
+          0,
+          0,
+          0
+        ],
+        "specOn": [
+          21,
+          21,
+          21
+        ]
+      },
+      "filmThickness": true,
+      "furnace128Samples": {
+        "00legacy": [
+          0.03781359507532888,
+          0.03781359507532888,
+          0.03781359507532888
+        ],
+        "01specOff": [
+          0,
+          0,
+          0
+        ],
+        "99legacy": [
+          0.03781359507532888,
+          0.03781359507532888,
+          0.03781359507532888
+        ],
+        "anisoX": [
+          0.38601154617470945,
+          0.38601154617470945,
+          0.38601154617470945
+        ],
+        "anisoY": [
+          0.38058794734840745,
+          0.38058794734840745,
+          0.38058794734840745
+        ],
+        "coatFlat": [
+          0.04804821134691385,
+          0.04804821134691385,
+          0.04804821134691385
+        ],
+        "coatOff": [
+          0.012397954287492002,
+          0.012397954287492002,
+          0.012397954287492002
+        ],
+        "coatOn": [
+          0.048833398614269545,
+          0.048833398614269545,
+          0.048833398614269545
+        ],
+        "film400": [
+          0.22865625766242367,
+          0.4096019172123238,
+          0.3816198778586333
+        ],
+        "film700": [
+          0.3218975295089407,
+          0.23389337865412782,
+          0.3305816757485603
+        ],
+        "sheen": [
+          0,
+          0.10761999443571622,
+          0
+        ],
+        "specOff": [
+          0,
+          0,
+          0
+        ],
+        "specOn": [
+          0.03781359507532888,
+          0.03781359507532888,
+          0.03781359507532888
+        ]
+      },
+      "legacyAdvancedVariantCacheSwitch": true,
+      "passed": true,
+      "specularControl": true
+    },
+    "players": {
+      "directx": {
+        "passed": true,
+        "rendering115": {
+          "passed": true,
+          "coatOff": [
+            23,
+            23,
+            23,
+            255
+          ],
+          "coatOn": [
+            239,
+            239,
+            239,
+            255
+          ],
+          "coatFlat": [
+            49,
+            49,
+            49,
+            255
+          ],
+          "specOn": [
+            43,
+            43,
+            43,
+            255
+          ],
+          "specOff": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "sheen": [
+            0,
+            110,
+            0,
+            255
+          ],
+          "sheenRed": [
+            110,
+            0,
+            0,
+            255
+          ],
+          "anisoX": [
+            247,
+            247,
+            247,
+            255
+          ],
+          "anisoY": [
+            51,
+            51,
+            51,
+            255
+          ],
+          "film400": [
+            164,
+            203,
+            200,
+            255
+          ],
+          "film700": [
+            186,
+            163,
+            187,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "D3D11"
+        },
+        "regressions": [
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgl": {
+        "passed": true,
+        "rendering115": {
+          "passed": true,
+          "coatOff": [
+            18,
+            18,
+            18,
+            255
+          ],
+          "coatOn": [
+            235,
+            235,
+            235,
+            255
+          ],
+          "coatFlat": [
+            40,
+            40,
+            40,
+            255
+          ],
+          "specOn": [
+            35,
+            35,
+            35,
+            255
+          ],
+          "specOff": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "sheen": [
+            0,
+            94,
+            0,
+            255
+          ],
+          "sheenRed": [
+            83,
+            0,
+            0,
+            255
+          ],
+          "anisoX": [
+            244,
+            244,
+            244,
+            255
+          ],
+          "anisoY": [
+            42,
+            42,
+            42,
+            255
+          ],
+          "film400": [
+            159,
+            193,
+            190,
+            255
+          ],
+          "film700": [
+            174,
+            150,
+            173,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "WebGL2"
+        },
+        "regressions": [
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgpu": {
+        "passed": true,
+        "rendering115": {
+          "passed": true,
+          "coatOff": [
+            18,
+            18,
+            18,
+            255
+          ],
+          "coatOn": [
+            236,
+            236,
+            236,
+            255
+          ],
+          "coatFlat": [
+            40,
+            40,
+            40,
+            255
+          ],
+          "specOn": [
+            35,
+            35,
+            35,
+            255
+          ],
+          "specOff": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "sheen": [
+            0,
+            94,
+            0,
+            255
+          ],
+          "sheenRed": [
+            83,
+            0,
+            0,
+            255
+          ],
+          "anisoX": [
+            244,
+            244,
+            244,
+            255
+          ],
+          "anisoY": [
+            42,
+            42,
+            42,
+            255
+          ],
+          "film400": [
+            160,
+            193,
+            190,
+            255
+          ],
+          "film700": [
+            174,
+            150,
+            174,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "WebGPU"
+        },
+        "regressions": [
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    },
+    "retention": {
+      "passed": true,
+      "currentProtected": true,
+      "activeProtected": true,
+      "userProjectProtected": true,
+      "modifiedSourcePreserved": true,
+      "obsoleteRemoved": true,
+      "nextInstallReplacesPrior": true,
+      "singleMaintenanceReceipt": true,
+      "boundsRejected": true,
+      "failedStagingRemoved": true
+    }
+  },
+  "storage": {
+    "initialRemovedBytes": 903274158,
+    "initialRemovedVersions": 5,
+    "preservedFiles": 4,
+    "preservedBytes": 45313,
+    "currentOnlyWhenInactive": true,
+    "fullBundleBackups": 0,
+    "latestMaintenanceReceiptOnly": true,
+    "failedStagingRemoved": true,
+    "testCleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "newDependencies": 0,
+    "newLargeAssets": 0
+  },
+  "diagnostics": [
+    "Initial native-window109 missed unchanged frame15s deadline. Private bridge trace proves ordinary518 quality/no advanced fields. Removed unreachable advanced helpers from ordinary GL/HLSL source and preserved legacy inline direction; final grouped DirectX passes without assertion/deadline changes. This does not claim independently measured shader compile timing.",
+    "Native variant key packed19 quality bits above48 opcode bits; upper three bits could collide. Full quality identity added; actual legacy21 -> advanced spec0 -> legacy21 cache transition and 128-sample energy checks pass.",
+    "Private shader callback implicit returns produced invalid WGSL; braced void callbacks fixed. Final full WebGPU errors0. Private point-light color/intensity and furnace frame completion calibrated without relaxing assertions."
+  ],
+  "limits": [
+    "Three-wavelength film and conservative sheen/coating attenuation; not full spectral polarization/multilayer coupled glass.",
+    "Full-NDF GGX sampling; not VNDF or full rough-refraction BTDF.",
+    "No BLAS/TLAS, path caustics or full secondary/lens specular denoising claim.",
+    "Selected source sections read, not whole official corpus/API/linked tutorials.",
+    "No whole-game FPS or phone/device thermal verification.",
+    "Active old versions and user projects preserved until safe retirement; no forced user window restart."
+  ],
+  "installation": {
+    "state": "Pending verified source sync and user install",
+    "restartUserWindows": false
+  }
+}
