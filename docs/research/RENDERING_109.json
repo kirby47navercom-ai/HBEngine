@@ -1,0 +1,663 @@
+{
+  "version": 1,
+  "date": "2026-10-13T04:55:57.949Z",
+  "previousCommit": "6c0d5e8a88ae0d874d7b48bb0347de3fd2ac7a58",
+  "scope": [
+    "Ray-cone texture LOD in primary/reflected/refracted paths, geometry GI and textured visibility evaluation; existing typed material C++/BP/AI parameters.",
+    "Linear RGB/alpha NPOT mip chains for 2D/cube/array/volume, static sampler variants, cache versioning and finite float-address validation.",
+    "Actual-feature shader specialization on WebGL and D3D11; no analytic lights/HDRI/GI/path branches only omitted when absent."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "2e1fe3da163c84c5f5da47e45a386097056abbd1ca775cb7e5cf627ccf2d2a77"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "c20d6d73b7d01f2491ccef3c58311a78e76d79c9555375f5a18263d0be3c2124"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "608259e24cf0be8f3a8a0b51ad0eba69f49b654d39ed5faa9da0f987c64efc48"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "5e180b98baa57a224b73d88e7b9b0fd1a307ed9179629970c2c536d1ae0fddc8"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "c60846b8726d4019afb25c810510a830432e349e68815a7a0ba26978cb9688c0"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "2139675414ac9740cbaf2852b54f49c15961b3d4c0c9c2821a5bfa27401cbb7e"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "3bee4b1ca5e602b8c81da74e2897ca1ffe1498fd5fd9238f4312565bf591d671"
+    },
+    {
+      "file": "prototype/path-environment-gpu.js",
+      "sha256": "6bf9e54965ae54e960ef461c510eb446f5c6bf10bcef35586035bfc570d98f5e"
+    },
+    {
+      "file": "prototype/path-environment-shader.js",
+      "sha256": "221fa4be4b4ac59a58e7ed99c33a1bfa71414abc88d4850bb5e7e6a132efd2c6"
+    },
+    {
+      "file": "prototype/path-media-gpu.js",
+      "sha256": "7cc647b9023d987d5ca6fe54e6106f96186c92f596f808a8c04936deb4c9797c"
+    },
+    {
+      "file": "prototype/path-media-shader.js",
+      "sha256": "93edadedf6d3742d4691190382b4bfab642df51af0740f290972d13020aa8cd5"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "d80b43237cf16a3f1445d6d700e0a78eedc47fea9c954e08177c4326bc75e578"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "a1f5177bf646c87773a706673fc5ea8bf96886fbb277e50409905d399f06a9e0"
+    },
+    {
+      "file": "prototype/ray-material-gpu.js",
+      "sha256": "d6bf2586dfe84c211c59029514c72598e06d6fb479c37543dcb5b4cf7a9e45d8"
+    },
+    {
+      "file": "prototype/ray-material-shader.js",
+      "sha256": "e954affdedec430bacabcb1e3965922363452d46dbff87786ccedca0edee5ee8"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "b14be29a6855b0d151bbc4933758055f7fd5d72c07a9d4eb0d0a08b7fe66f3e9"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "5e87873173e093eeb24d367c2326f382bf0187d42bb340c47500545025395c4b"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "245f4b392915bd0113a6157d56fa5d5a4f9a5370d31120626f90e7160761ae25"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "c25cbc8e8183a5b9ada7a7fb10f2171da913c9c6831fd1d564673e5e648d9570"
+    },
+    {
+      "file": "tools/check-rendering-106.mjs",
+      "sha256": "5125d131a331d7f711ecaa190b1b736349209049809a23da85ab449ef04fc077"
+    },
+    {
+      "file": "tools/generate-ray-programs.mjs",
+      "sha256": "91d653ab8408878716300512f046706fdf217aa995806c335cee97fc6f072175"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "c2e4a957eb12d61e3bd24b613f096b8c0fdf9428f8df7d8b6da41e6890a2eaa9"
+    },
+    {
+      "file": "native/tests/scene-rendering-109.hpp",
+      "sha256": "16e1ac18b7239ab39c82b03252e5b377e276cf8c8cdde3e25c027c9f5f3b785b"
+    },
+    {
+      "file": "prototype/ray-mip.js",
+      "sha256": "bbde7bbb5fc5986d5ef85ce7cfc995e2a0cd9291767276ba00c1151e056e58b9"
+    },
+    {
+      "file": "prototype/ray-texture-shader.js",
+      "sha256": "41e7a5183b2fd6833af4027cad91b4fc00aa8a58ec72aa6edd0f8b847ea86ec5"
+    },
+    {
+      "file": "tools/check-rendering-109.mjs",
+      "sha256": "0ebddfafa55a20079a11f435d959830b4ead1002dff805b27735b330cc823af2"
+    },
+    {
+      "file": "tools/rendering-109-fixture.mjs",
+      "sha256": "2ad18e47416a34abbddd7caa3fa9f8adb61a6cd54aa864e52cdc02735048b90c"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "2e1fe3da163c84c5f5da47e45a386097056abbd1ca775cb7e5cf627ccf2d2a77"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "608259e24cf0be8f3a8a0b51ad0eba69f49b654d39ed5faa9da0f987c64efc48"
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "5e180b98baa57a224b73d88e7b9b0fd1a307ed9179629970c2c536d1ae0fddc8"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "c60846b8726d4019afb25c810510a830432e349e68815a7a0ba26978cb9688c0"
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "2139675414ac9740cbaf2852b54f49c15961b3d4c0c9c2821a5bfa27401cbb7e"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "3bee4b1ca5e602b8c81da74e2897ca1ffe1498fd5fd9238f4312565bf591d671"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "6bf9e54965ae54e960ef461c510eb446f5c6bf10bcef35586035bfc570d98f5e"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "221fa4be4b4ac59a58e7ed99c33a1bfa71414abc88d4850bb5e7e6a132efd2c6"
+    },
+    {
+      "path": "prototype/path-media-gpu.js",
+      "sha256": "7cc647b9023d987d5ca6fe54e6106f96186c92f596f808a8c04936deb4c9797c"
+    },
+    {
+      "path": "prototype/path-media-shader.js",
+      "sha256": "93edadedf6d3742d4691190382b4bfab642df51af0740f290972d13020aa8cd5"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "d80b43237cf16a3f1445d6d700e0a78eedc47fea9c954e08177c4326bc75e578"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "a1f5177bf646c87773a706673fc5ea8bf96886fbb277e50409905d399f06a9e0"
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "sha256": "d6bf2586dfe84c211c59029514c72598e06d6fb479c37543dcb5b4cf7a9e45d8"
+    },
+    {
+      "path": "prototype/ray-material-shader.js",
+      "sha256": "e954affdedec430bacabcb1e3965922363452d46dbff87786ccedca0edee5ee8"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "b14be29a6855b0d151bbc4933758055f7fd5d72c07a9d4eb0d0a08b7fe66f3e9"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "5e87873173e093eeb24d367c2326f382bf0187d42bb340c47500545025395c4b"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "245f4b392915bd0113a6157d56fa5d5a4f9a5370d31120626f90e7160761ae25"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "c25cbc8e8183a5b9ada7a7fb10f2171da913c9c6831fd1d564673e5e648d9570"
+    },
+    {
+      "path": "tools/check-rendering-106.mjs",
+      "sha256": "5125d131a331d7f711ecaa190b1b736349209049809a23da85ab449ef04fc077"
+    },
+    {
+      "path": "tools/generate-ray-programs.mjs",
+      "sha256": "91d653ab8408878716300512f046706fdf217aa995806c335cee97fc6f072175"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "c2e4a957eb12d61e3bd24b613f096b8c0fdf9428f8df7d8b6da41e6890a2eaa9"
+    },
+    {
+      "path": "prototype/ray-mip.js",
+      "sha256": "bbde7bbb5fc5986d5ef85ce7cfc995e2a0cd9291767276ba00c1151e056e58b9"
+    },
+    {
+      "path": "prototype/ray-texture-shader.js",
+      "sha256": "41e7a5183b2fd6833af4027cad91b4fc00aa8a58ec72aa6edd0f8b847ea86ec5"
+    },
+    {
+      "path": "tools/check-rendering-109.mjs",
+      "sha256": "0ebddfafa55a20079a11f435d959830b4ead1002dff805b27735b330cc823af2"
+    },
+    {
+      "path": "tools/rendering-109-fixture.mjs",
+      "sha256": "2ad18e47416a34abbddd7caa3fa9f8adb61a6cd54aa864e52cdc02735048b90c"
+    }
+  ],
+  "generatedProducts": [
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29",
+      "ignoredGenerated": true
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "45776f883bd15900b8b199374c56a5dd5e00267f81984983356a84a8bff020f0",
+      "ignoredGenerated": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "pbr-mip",
+      "url": "https://pbr-book.org/4ed/Textures_and_Materials/Image_Texture",
+      "status": 200,
+      "file": "native/build/rendering-research-109/pbr-mip.html",
+      "sha256": "5099f81719eb5768428772210350e3f4312cbd23a246f6aa812ae75eac4335e2",
+      "bytes": 223250,
+      "readScope": "Selected image cache/evaluation overview and filtering/LOD sections, extracted lines0–115,125–153,218–269; EWA body and remaining sections not fully read.",
+      "representation": "Downloaded HTML; hash does not imply whole body read",
+      "wholeBodyRead": false
+    },
+    {
+      "id": "pbr-footprint",
+      "url": "https://pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+      "status": 200,
+      "file": "native/build/rendering-research-109/pbr-footprint.html",
+      "sha256": "118696d8f63ff8a584ff6213130ae96b3585cc24474a26a5d795c0bcbbf1f3a8",
+      "bytes": 825059,
+      "readScope": "Selected tangent-plane/UV derivative and reflection/refraction discussion, extracted lines134–206; remaining full body/API references not read.",
+      "representation": "Downloaded HTML; hash does not imply whole body read",
+      "wholeBodyRead": false
+    },
+    {
+      "id": "nvidia-cones",
+      "url": "https://research.nvidia.com/publication/2019-03_texture-level-detail-strategies-real-time-ray-tracing",
+      "status": 200,
+      "file": "native/build/rendering-research-109/nvidia-cones.html",
+      "sha256": "b05434c9b2bc7797d63e80de075731865903b3e250f97f8ffd970b2d7984a968",
+      "bytes": 36837,
+      "readScope": "Abstract only, extracted lines76–79; linked book/PDF not read.",
+      "representation": "Downloaded HTML; hash does not imply whole body read",
+      "wholeBodyRead": false
+    },
+    {
+      "id": "three-filters",
+      "file": "node_modules/three/src/constants.js",
+      "sha256": "9f3966a9a11298b478a013556dc2d61a217e79792830e0841726c3d6b193b1a2",
+      "bytes": 31557,
+      "readScope": "Installed r180 nearest/linear and four mip filter constants and adjacent descriptions.",
+      "wholeBodyRead": false
+    },
+    {
+      "id": "three-texture",
+      "file": "node_modules/three/src/textures/Texture.js",
+      "sha256": "ca120e07c101c3137fa25b13a2fc07ac7baf58c7e85690f0a584f7f39393bc87",
+      "bytes": 18364,
+      "readScope": "Installed r180 constructor/filter defaults, generateMipmaps and copy assignments; remaining body not fully read.",
+      "wholeBodyRead": false
+    },
+    {
+      "id": "three-webgl-program",
+      "file": "node_modules/three/src/renderers/webgl/WebGLProgram.js",
+      "sha256": "d1ce381d6bfd7a632e708b1cd49b3332c16c5d0165a9532ab20788f6fafcc7fa",
+      "bytes": 31448,
+      "readScope": "Installed r180 WebGL2 texture macros lines870–885; onFirstUse compile/link diagnostic section lines912 onward; remaining implementation not fully read.",
+      "wholeBodyRead": false
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "native",
+      "file": "native/build/native-scene-window-sJN2Kf/acceptance.json",
+      "sha256": "1270b319f25b40a4b4230890b6d1f3e52a7d6847c6f66db562755c11aa8206d4"
+    },
+    {
+      "gate": "hardware",
+      "file": "native/build/native-scene-gxaaD7/acceptance.json",
+      "sha256": "a1f2c382d36623fea3135eefc49e9cf58730edc67c36d53069217c9c1af21626"
+    },
+    {
+      "gate": "webgl",
+      "file": "native/build/gpu-scene-upZiRg/acceptance.json",
+      "sha256": "8773ecda20c6ba9da903f27a864aad6810767efe17429c40d40fb86ea550b78d"
+    },
+    {
+      "gate": "webgpu",
+      "file": "native/build/gpu-scene-MK8CrG/acceptance.json",
+      "sha256": "edb7fc12af459149b8ca48eaf614b6c862c360b86931d4c7a3c0d50d56d92d61"
+    },
+    {
+      "gate": "cpu",
+      "file": "native/build/cpu-rendering-109.json",
+      "sha256": "f024468af53929a3ad4b430cadffaa6df66868e66f9f54dcf8ca94bffa1d52c5"
+    }
+  ],
+  "acceptance": {
+    "hardware": {
+      "actualHLSLBytecode": true,
+      "disabledResourcesZero": true,
+      "glass": {
+        "mip": {
+          "mean": 115.021484375,
+          "variance": 0.021022796630859375
+        },
+        "raw": {
+          "mean": 114.0302734375,
+          "variance": 277.65240383148193
+        }
+      },
+      "mirror": {
+        "mip": {
+          "mean": 111.2587890625,
+          "variance": 113.75236415863037
+        },
+        "raw": {
+          "mean": 109.4404296875,
+          "variance": 594.2210607528687
+        }
+      },
+      "passed": true,
+      "primary": {
+        "mip": {
+          "mean": 115,
+          "variance": 0
+        },
+        "raw": {
+          "mean": 113.998046875,
+          "variance": 277.15233993530273
+        }
+      },
+      "primaryReflectionRefraction": true,
+      "primaryWorld": {
+        "mip": {
+          "mean": 115,
+          "variance": 0
+        },
+        "raw": {
+          "mean": 116.06640625,
+          "variance": 331.65965270996094
+        }
+      }
+    },
+    "native": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 97.4443359375,
+            "variance": 734.774245262146
+          },
+          "far": {
+            "mean": 115,
+            "variance": 0
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 97.427734375,
+            "variance": 733.2818870544434
+          },
+          "far": {
+            "mean": 114.9697265625,
+            "variance": 0.0938100814819336
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 88.62109375,
+            "variance": 675.1806488037109
+          },
+          "far": {
+            "mean": 104.7841796875,
+            "variance": 82.4426794052124
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 184.296875,
+            "variance": 925.952880859375
+          },
+          "far": {
+            "mean": 203,
+            "variance": 0
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "D3D11"
+    },
+    "webgl": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 85.083984375,
+            "variance": 631.9284934997559
+          },
+          "far": {
+            "mean": 101,
+            "variance": 0
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 85.0771484375,
+            "variance": 631.3114309310913
+          },
+          "far": {
+            "mean": 100.984375,
+            "variance": 0.056396484375
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 74.4033203125,
+            "variance": 510.2738561630249
+          },
+          "far": {
+            "mean": 87.451171875,
+            "variance": 89.75738143920898
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 173.0400390625,
+            "variance": 1024.0442953109741
+          },
+          "far": {
+            "mean": 193,
+            "variance": 0
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "WebGL2"
+    },
+    "webgpu": {
+      "passed": true,
+      "typedCPP": true,
+      "primaryReflectionRefraction": true,
+      "pixels": {
+        "primary": {
+          "near": {
+            "mean": 85.2421875,
+            "variance": 635.2343139648438
+          },
+          "far": {
+            "mean": 101,
+            "variance": 0
+          }
+        },
+        "glass": {
+          "near": {
+            "mean": 85.2109375,
+            "variance": 633.9555053710938
+          },
+          "far": {
+            "mean": 100.96875,
+            "variance": 0.0615234375
+          }
+        },
+        "mirror": {
+          "near": {
+            "mean": 82.7197265625,
+            "variance": 637.6900014877319
+          },
+          "far": {
+            "mean": 98.119140625,
+            "variance": 44.65572738647461
+          }
+        },
+        "lit": {
+          "near": {
+            "mean": 173.4111328125,
+            "variance": 1028.1600713729858
+          },
+          "far": {
+            "mean": 193,
+            "variance": 0
+          },
+          "off": {
+            "mean": 0,
+            "variance": 0
+          }
+        }
+      },
+      "backend": "WebGPU"
+    },
+    "grouped098Through107": true,
+    "errors": [],
+    "normalExits": true,
+    "serversClosed": true
+  },
+  "cpu": [
+    {
+      "command": "node tools/check-rendering-109.mjs",
+      "output": "{\"passed\":true,\"oddNPOTArea\":true,\"linearColorAndAlpha\":true,\"cacheAndInvalidation\":true,\"arrayCubeVolume\":true,\"graphCoordinateAncestors\":true,\"finitePackets\":true,\"geometryReuse\":true,\"minFilterResetsHistory\":true,\"lightPresenceInvalidation\":true,\"screenOnlyPrunesRayCode\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-107.mjs",
+      "output": "{\"passed\":true,\"closedMediumSchema\":true,\"HDRIAliasExactSolidAngles\":true,\"blackHDRIFinite\":true,\"cacheAndValidation\":true,\"perMeshMediumIDs\":true,\"historyResetAndDenoiseIsolation\":true,\"edgeWeights\":true,\"lazyOff\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-106.mjs",
+      "output": "{\"passed\":true,\"operators\":35,\"shaderStructureRelease\":true,\"immutableHeaderGuard\":true,\"familyTexturePacking\":true,\"constantFold\":true,\"liveRegisterReuse\":true,\"textureCacheAndInvalidation\":true,\"UVInvalidation\":true,\"instancedNormals\":true,\"rawImportedMaps\":true,\"RGBAFloatBoundary\":true,\"legacyGI\":true,\"disabledRelease\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-105.mjs",
+      "output": "{\"passed\":true,\"legacyOpaqueWorld\":true,\"transparentPacking\":true,\"signatureReuse\":true,\"castShadowInvalidation\":true,\"progressiveReset\":true,\"finiteBoundary\":true,\"defaultsOff\":true,\"physicalLens\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-104.mjs",
+      "output": "104 PASS: odd Hi-Z, stackless BVH/layout guards, offscreen authored GI/static reuse, skin/wax/leaf/hair/eye authoring, 2049 instance/skin/morph previous poses, reset/release and optional AO/GI guards",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-103.mjs",
+      "output": "103 PASS: physical/manual lens defaults, mm/FOV/runtime updates, perspective-only DOF, sample spatial rounding, property visibility and typed guards",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-102.mjs",
+      "output": "102 PASS: quality packing/ranges, integer guards, legacy and indirect overrides, no double spatial weighting and typed component edit",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-101.mjs",
+      "output": "101 PASS: rigid-object ownership/history, birth/reappearance/geometry/failure/reset, independent viewports, modes/typed guards and unsupported pose fallback",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-100.mjs",
+      "output": "{\"passed\":true,\"defaultsOff\":true,\"projectionRestored\":true,\"cameraAndOwnerResets\":true,\"depthReprojectionRoundTrip\":true,\"spatialOverrides\":true,\"typedValidation\":true}",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-rendering-099.mjs",
+      "output": "099 PASS: spatial/weighted/override volumes, camera pack, neutral modes, LUT dimensions/reference rename, typed field guards",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-engine-integration.mjs",
+      "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/check-material-volume.mjs",
+      "output": "Volume/vector material: three backends, 1000 updates, typed/scoped uniforms, clone, validation, glass presets, atomic multi-slot rejection PASS",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-screen-effects.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-screen-post.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": "node tools/generate-api.mjs --check",
+      "output": "",
+      "stderr": "",
+      "passed": true
+    }
+  ],
+  "extraGeneratorCheck": {
+    "command": "node tools/generate-ray-programs.mjs --check",
+    "passed": true
+  },
+  "diagnostics": {
+    "resolved": [
+      "Missing derivative worldPointX/Y rename and texture coordinate graph dimensions corrected; fixture validity and all pixel assertions retained.",
+      "Feature-presence flags remove unused direct-light inlining; screen-only GL source pruning removes ray modules; GI-only NO_PATH guard avoids path integrator inlining.",
+      "Native cache key/flags include actual analytic light, GI, path and HDRI state. Fresh desktop binary built and flag literals checked before packaging actual-window test."
+    ],
+    "falsifiedAsSoleCause": [
+      "Kind/filter specialization alone, dedicated alpha evaluator, implicit atlas derivative removal, sharing evaluator, pruning unused seeds, constant-field guard alone.",
+      "Opacity-only point filter hypothesis failed and was reverted; shipped cutout keeps level-zero semantics."
+    ],
+    "evidence": [
+      "MQ3BeK trace: screen-only GL288 carried40134 bytes of unused ray modules; blank compile/link result after8.834s with context not lost.",
+      "mVRMtk repeated native timeout from a prebuilt13:34:43 binary predating flags; not current-source failure. Fresh binary13:44:14 then sJN2Kf full pass."
+    ],
+    "assertionsAndTimeoutsUnchanged": true
+  },
+  "costs": {
+    "large2DCubeArrayMipExtraFraction": 0.3333333333333333,
+    "cubicVolumeMipExtraFraction": 0.14285714285714285,
+    "ratiosExcludeThinSmallTexturesAndPackingCopies": true,
+    "mipCPUCacheReusedOnObjectMovement": true,
+    "integratedBVHAtlasStillRepackedUploadedOnMovement": true,
+    "automaticGPUReadbacksAdded": 0,
+    "disabledRayPathResourceAllocation": false,
+    "performanceClaim": "Measured texture image variance, resource release and regression gates; no whole-game FPS/120/60/mobile performance claim."
+  },
+  "limits": [
+    "Conservative ray cone with tangent projection, not complete curved-surface ray differentials.",
+    "Isotropic min/mag/mip filtering; no EWA/anisotropy or seamless cube face filtering.",
+    "Image-sampled coordinate derivatives stop at texture values; cutout stays level0 without alpha-coverage-preserving mips.",
+    "No manual mip chains, extra HDRI background mips or 2D sprite ray BVH.",
+    "Cube/array/volume mip construction tested on CPU; actual109 ray pixels cover 2D textures.",
+    "Installed user windows are not restarted; original game files and old bundles are preserved.",
+    "Whole Unreal/Unity corpus/API, remaining engine/rendering features and actual phone performance remain open."
+  ],
+  "installation": {
+    "state": "Pending grouped release verification",
+    "restartUserWindows": false
+  }
+}

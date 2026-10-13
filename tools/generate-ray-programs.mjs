@@ -1,3 +1,5 @@
+import {rayTextureVariants,rayTextureAlphaGLSL} from '../prototype/ray-texture-shader.js';
+import {rayMaterialGLSL} from '../prototype/ray-material-shader.js';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {rayOperations} from '../prototype/ray-materials.js';
@@ -9,6 +11,7 @@ const output=String.raw`#pragma once
 #include <vector>
 #include <string>
 #include <set>
+#include <cctype>
 #include <stdexcept>
 namespace hb::gpu {
 struct RayProgram {int key=0;std::vector<std::array<int,11>> instructions;};
@@ -17,7 +20,7 @@ inline void validateRayProgram(const RayProgram& p){
  std::array<bool,64> assigned{};
  for(const auto& i:p.instructions){if(i[0]<0||i[0]>=50||i[2]<1||i[2]>4||i[3]<1||i[3]>4)throw std::runtime_error("Ray operation invalid");for(int j=4;j<8;j++)if(i[j]<-1||i[j]>=64||(i[j]>=0&&!assigned[i[j]]))throw std::runtime_error("Ray operand invalid");
   if(i[0]==8){if(i[1]!=-1||i[8]<0||i[9]<1||i[8]+i[9]>4||i[10]<1||i[10]>4||i[4]<0)throw std::runtime_error("Ray output invalid");}
-  else{if(i[1]<0||i[1]>=64||(i[0]==9?(i[8]<0||i[8]>3||i[9]<0||i[9]>1||i[10]<0||i[10]>1):(i[8]!=0||i[9]!=0||i[10]!=0)))throw std::runtime_error("Ray register invalid");assigned[i[1]]=true;}
+  else{if(i[1]<0||i[1]>=64||(i[0]==9?(i[8]<0||i[8]>3||i[9]<0||i[9]>1||i[10]<0||i[10]>11):(i[8]!=0||i[9]!=0||i[10]!=0)))throw std::runtime_error("Ray register invalid");assigned[i[1]]=true;}
  }
 }
 template<class Json> inline std::vector<RayProgram> readRayPrograms(const Json& data){
@@ -31,16 +34,32 @@ template<class Json> inline std::vector<RayProgram> readRayPrograms(const Json& 
 inline std::string rayProgramShader(const std::vector<RayProgram>& programs){
  static const std::array<const char*,50> expressions={
 ${expressions}
- };std::string source;std::set<int> keys;
- for(const auto& p:programs){validateRayProgram(p);if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");std::set<int> registers;for(const auto& i:p.instructions)if(i[0]!=8)registers.insert(i[1]);source+="vec4 hbRayProgram"+std::to_string(p.key)+"(float pointer,float id,vec3 point,vec3 view,vec4 result){";for(int r:registers)source+="vec4 r"+std::to_string(r)+"=vec4(0,0,0,0);";source+="vec2 uv=hbRayUV(id,point);vec3 normal=hbRaySmoothNormal(id,point);";
+ };static const std::array<const char*,48> textureVariants={
+${Array.from({length:48},(_,id)=>'R"HB('+rayTextureVariants(rayMaterialGLSL,[[Math.floor(id/12),id%12]]).replace(/\bfract\(/g,'frac(')+')HB"').join(',\n')}
+ };std::string source=R"HB(
+${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
+)HB";std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(i[8]*12+i[10]);for(int kind:kinds)source+=textureVariants.at(kind);
+
+ for(int pass=0;pass<2;pass++){const bool alpha=pass==1;keys.clear();const std::string programName=alpha?"hbRayProgramAlpha":"hbRayProgram",executeName=alpha?"hbRayExecuteAlpha":"hbRayExecute";for(const auto& p:programs){validateRayProgram(p);if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");
+  std::array<int,64> definitions;definitions.fill(-1);std::vector<std::array<int,4>> parents(p.instructions.size());std::vector<bool> needed(p.instructions.size(),false);std::set<int> registers,derived;
+  for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];for(int j=0;j<4;j++)parents[n][j]=i[j+4]<0?-1:definitions[i[j+4]];if(i[0]==9&&!alpha)for(int j=0;j<2;j++)if(parents[n][j]>=0)needed[parents[n][j]]=true;if(i[0]!=8){definitions[i[1]]=int(n);registers.insert(i[1]);}}
+  for(int n=int(p.instructions.size())-1;n>=0;n--)if(needed[n]&&p.instructions[n][0]!=9)for(int parent:parents[n])if(parent>=0)needed[parent]=true;
+  for(std::size_t n=0;n<p.instructions.size();n++)if(needed[n])derived.insert(p.instructions[n][1]);
+  source+="vec4 "+programName+std::to_string(p.key)+"(float pointer,float id,vec3 point,vec3 view,vec4 result,float width){";for(int r:registers)source+="vec4 r"+std::to_string(r)+"=vec4(0,0,0,0);";for(int r:derived)for(char axis:{'X','Y'})source+="vec4 r"+std::string(1,axis)+std::to_string(r)+"=vec4(0,0,0,0);";
+  source+="vec2 uv=hbRayUV(id,point);vec3 normal=hbRaySmoothNormal(id,point);vec3 pointX=point+hbRayOffset(id,view,width,0.0),pointY=point+hbRayOffset(id,view,width,1.0);vec2 uvX=hbRayUV(id,pointX),uvY=hbRayUV(id,pointY);vec3 normalX=hbRaySmoothNormal(id,pointX),normalY=hbRaySmoothNormal(id,pointY);";
   for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];source+="{vec4 value=hbGeometryLoad(pointer+"+std::to_string(n*3+2)+".0),meta=vec4(";for(int j=0;j<4;j++)source+=(j?",":"")+std::to_string(i[j])+".0";source+=")";for(int j=0;j<4;j++)source+=","+std::string(1,char('a'+j))+"="+(i[j+4]<0?std::string("vec4(0,0,0,0)"):"r"+std::to_string(i[j+4]));source+=";";
    if(i[0]==8){for(int channel=i[8];channel<i[8]+i[9];channel++)source+="result["+std::to_string(channel)+"]=a["+std::to_string(i[10]<2?0:channel-i[8])+"]*value.z;";}
-   else{std::string expression=expressions[i[0]];if(i[0]==9){expression.replace(expression.find("value.z"),7,std::to_string(i[8])+".0");expression.replace(expression.find("value.y"),7,std::to_string(i[9])+".0");expression.replace(expression.find("value.w"),7,std::to_string(i[10])+".0");}source+="vec4 v="+expression+";";if(i[2]==1)source+="v=vec4(v.x,v.x,v.x,v.x);";else if(i[2]==2)source+="v.zw=vec2(0,0);";else if(i[2]==3)source+="v.w=0.0;";source+="r"+std::to_string(i[1])+"=v;";}source+="}";
+   else{std::string expression=alpha&&i[0]==9?"hbRayTextureAlpha(value.x,a.xyz,b.x,value.y,value.z,value.w)":expressions[i[0]];if(i[0]==9){if(!alpha)for(char axis:{'X','Y'})source+="vec4 a"+std::string(1,axis)+"="+(i[4]<0?"a":"r"+std::string(1,axis)+std::to_string(i[4]))+";";if(alpha)expression.replace(expression.find("value.z"),7,std::to_string(i[8])+".0");else{expression.replace(expression.find("hbRayTexture("),13,"hbRayTextureKind"+std::to_string(i[8])+"Filter"+std::to_string(i[10])+"(");expression.erase(expression.find(",value.z"),8);}expression.replace(expression.find("value.y"),7,std::to_string(i[9])+".0");expression.replace(expression.find("value.w"),7,std::to_string(i[10])+".0");}
+    auto trim=[&](const std::string& name){if(i[2]==1)return name+"=vec4("+name+".x,"+name+".x,"+name+".x,"+name+".x);";if(i[2]==2)return name+".zw=vec2(0,0);";if(i[2]==3)return name+".w=0.0;";return std::string();};source+="vec4 v="+expression+";"+trim("v")+"r"+std::to_string(i[1])+"=v;";
+    if(needed[n])for(char axis:{'X','Y'}){const std::string suffix(1,axis);source+="{";for(int j=0;j<4;j++)source+="vec4 "+std::string(1,char('a'+j))+suffix+"="+(i[j+4]<0?std::string(1,char('a'+j)):"r"+suffix+std::to_string(i[j+4]))+";";
+     std::string ex;for(std::size_t pos=0;pos<expression.size();){if(std::isalpha(static_cast<unsigned char>(expression[pos]))||expression[pos]=='_'){std::size_t end=pos+1;while(end<expression.size()&&(std::isalnum(static_cast<unsigned char>(expression[end]))||expression[end]=='_'))end++;const std::string token=expression.substr(pos,end-pos);ex+=token;if(token=="a"||token=="b"||token=="c"||token=="d"||token=="point"||token=="uv"||token=="normal")ex+=suffix;pos=end;}else ex+=expression[pos++];}if(i[0]==9)ex="v";source+="vec4 v"+suffix+"="+ex+";"+trim("v"+suffix)+"r"+suffix+std::to_string(i[1])+"=v"+suffix+";}";
+    }
+   }source+="}";
   }source+="return result;}\n";
- }source+="vec4 hbRayExecute(float key,float pointer,float id,vec3 point,vec3 view,vec4 result){";for(const auto& p:programs)source+="if(key=="+std::to_string(p.key)+".0)return hbRayProgram"+std::to_string(p.key)+"(pointer,id,point,view,result);";return source+"return result;}";
+ }source+="vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){";for(const auto& p:programs)source+="if(key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width);";source+="return result;}";}return source;
 }
 }
 `;
 const path=new URL('../native/include/HBEngine/RayPrograms.hpp',import.meta.url);
-const expected=output.replace(/\bpoint\b/g,'worldPoint');
+const expected=output.replace(/\bpoint(X|Y)?\b/g,m=>'worldPoint'+m.slice(5));
 if(process.argv.includes('--check'))assert.equal(fs.readFileSync(path,'utf8'),expected);else if(!fs.existsSync(path)||fs.readFileSync(path,'utf8')!==expected){if(fs.existsSync(new URL('../HBEngine.install.json',import.meta.url)))throw Error('설치본 생성 헤더가 달라요. 새 버전으로 다시 설치하세요.');fs.writeFileSync(path,expected);}

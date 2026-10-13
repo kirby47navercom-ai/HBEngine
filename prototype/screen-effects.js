@@ -51,11 +51,17 @@ vec4 hbRay(vec3 p,vec3 direction){float steps=hbIndirect.y,stepSize=hbReflection
 #ifdef HB_PATH_ONLY
 vec4 hbScreenResolve(vec2 uv){return hbPathResolve(uv);}
 #else
-vec4 hbScreenResolve(vec2 uv){if(hbPath.x>.5)return hbPathResolve(uv);vec4 original=texture2D(hbScreenSource,uv);float depth=texture2D(hbScreenDepth,uv).r;vec3 c=original.rgb,p=hbWorldAt(uv,depth);vec4 nr=texture2D(hbSurfaceNormal,uv),am=texture2D(hbSurfaceAlbedo,uv);vec3 n=nr.xyz*2.0-1.0;
+vec4 hbScreenResolve(vec2 uv){
+#ifndef HB_RAY_NO_PATH
+if(hbPath.x>.5)return hbPathResolve(uv);
+#endif
+vec4 original=texture2D(hbScreenSource,uv);float depth=texture2D(hbScreenDepth,uv).r;vec3 c=original.rgb,p=hbWorldAt(uv,depth);vec4 nr=texture2D(hbSurfaceNormal,uv),am=texture2D(hbSurfaceAlbedo,uv);vec3 n=nr.xyz*2.0-1.0;
  if(depth<.99999&&dot(n,n)>.5){n=normalize(n);vec3 incident=hbEye.w>.5?hbForward.xyz:normalize(p-hbEye.xyz);vec3 start=p+n*min(.05,hbReflection.w*.25);
   if(hbAmbientAO.z>0.0){float z=hbLinearDepth(depth),occ=0.0;float radius=max(1.0,hbAmbientAO.x*hbScreenSize.y*hbCamera.w/(hbCamera.z>.5?1.0:max(z,.01)));vec2 delta=vec2(radius,radius)/hbScreenSize;for(int i=0;i<8;i++){float a=float(i)*.785398163,other=hbLinearDepth(texture2D(hbScreenDepth,clamp(uv+vec2(cos(a),sin(a))*delta,0.0,1.0)).r),d=z-other;occ+=step(hbAmbientAO.y,d)*(1.0-smoothstep(0.0,hbAmbientAO.x*2.0,d));}c-=texture2D(hbSurfaceAmbient,uv).rgb*clamp(occ*.125*hbAmbientAO.z,0.0,1.0);}
   if(hbReflection.x>0.0&&nr.w<hbReflection.y){vec4 hit=hbRay(start,reflect(incident,n));vec3 f0=mix(vec3(.04,.04,.04),am.rgb,am.a),f=f0+(1.0-f0)*pow(1.0-max(0.0,dot(n,-incident)),5.0);float fade=1.0-smoothstep(hbReflection.y*.75,hbReflection.y,nr.w);c=mix(c,c*(1.0-f)+hit.rgb*f,hit.a*hbReflection.x*fade);}
+#ifndef HB_RAY_NO_GI
   if(hbGeometry.x>0.0&&hbGeometryInfo.z>0.0)c+=hbGeometryIndirect(p,n)*am.rgb*(1.0-am.a)*hbGeometry.x*.318309886;
+#endif
   if(hbIndirect.x>0.0){vec3 tangent=normalize(cross(n,abs(n.z)<.9?vec3(0.0,0.0,1.0):vec3(0.0,1.0,0.0))),bitangent=cross(n,tangent),sum=vec3(0.0,0.0,0.0);for(int i=0;i<4;i++){float a=float(i)*1.570796327+.392699;vec3 direction=normalize(n*.70710678+(tangent*cos(a)+bitangent*sin(a))*.70710678);vec4 hit=hbRay(start,direction);sum+=hit.rgb*hit.a;}c+=sum*.25*am.rgb*(1.0-am.a)*hbIndirect.x;}
  }
  vec3 previous=hbProject(p,hbPreviousVP);bool reuse=hbTemporal.w>.5;

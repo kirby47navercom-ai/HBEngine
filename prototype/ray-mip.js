@@ -1,0 +1,34 @@
+import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from 'three';
+
+const cache=new WeakMap();
+export const rayMipFilter=map=>map.generateMipmaps===false?0:({[NearestMipmapNearestFilter]:1,[LinearMipmapNearestFilter]:2,[NearestMipmapLinearFilter]:3,[LinearMipmapLinearFilter]:4}[map.minFilter]||0);
+export const releaseRayMips=maps=>{for(const map of maps||[])cache.delete(map);};
+export function rayMipChain(map,pixels,srgb,volume=false){
+ const key=[pixels.version,pixels.width,pixels.height,pixels.depth,srgb,volume,!!rayMipFilter(map)].join(':'),prior=cache.get(map);
+ if(prior?.pixels===pixels&&prior.chains.has(key))return prior.chains.get(key);
+ const chains=prior?.pixels===pixels?prior.chains:new Map(),data=new Float32Array(pixels.data.length);
+ for(let i=0;i<data.length;i++){let v=pixels.data[i]/(pixels.float?1:255);if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 픽셀 값을 확인하세요.');if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 선형 색 값을 확인하세요.');data[i]=v;}
+ const levels=[{width:pixels.width,height:pixels.height,depth:pixels.depth,data}];
+ if(rayMipFilter(map))while(levels.at(-1).width>1||levels.at(-1).height>1||volume&&levels.at(-1).depth>1){
+  const source=levels.at(-1),width=Math.max(1,Math.floor(source.width/2)),height=Math.max(1,Math.floor(source.height/2)),depth=volume?Math.max(1,Math.floor(source.depth/2)):source.depth,out=new Float32Array(width*height*depth*4);
+  // Area weights retain odd edge texels; array/cube layers remain independent.
+  for(let z=0;z<depth;z++)for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+   const low=[x*source.width/width,y*source.height/height,volume?z*source.depth/depth:z],high=[(x+1)*source.width/width,(y+1)*source.height/height,volume?(z+1)*source.depth/depth:z+1],weight=(high[0]-low[0])*(high[1]-low[1])*(high[2]-low[2]),target=(x+(y+z*height)*width)*4;
+   for(let iz=Math.floor(low[2]);iz<Math.ceil(high[2]);iz++)for(let iy=Math.floor(low[1]);iy<Math.ceil(high[1]);iy++)for(let ix=Math.floor(low[0]);ix<Math.ceil(high[0]);ix++){
+    const w=(Math.min(ix+1,high[0])-Math.max(ix,low[0]))*(Math.min(iy+1,high[1])-Math.max(iy,low[1]))*(Math.min(iz+1,high[2])-Math.max(iz,low[2]))/weight,at=(ix+(iy+iz*source.height)*source.width)*4;
+    for(let c=0;c<4;c++)out[target+c]+=source.data[at+c]*w;
+   }
+  }levels.push({width,height,depth,data:out});
+ }
+ chains.set(key,levels);cache.set(map,{pixels,chains});return levels;
+}
+
+// Mark coordinate ancestors before register reuse; no derivative storage for unrelated shading.
+export function rayCoordinateInstructions(instructions){
+ const definitions=new Map(),parents=[],needed=new Set();
+ for(let n=0;n<instructions.length;n++){const i=instructions[n];parents[n]=i.slice(4,8).map(r=>definitions.get(r)).filter(n=>n!==undefined);if(i[0]===9){for(const r of i.slice(4,6)){const p=definitions.get(r);if(p!==undefined)needed.add(p);}}if(i[0]!==8)definitions.set(i[1],n);}
+ for(let n=instructions.length-1;n>=0;n--)if(needed.has(n)&&instructions[n][0]!==9)for(const p of parents[n])needed.add(p);
+ return needed;
+}
+export const rayTextureFlags=map=>(map.magFilter===NearestFilter?1:0)+2*(rayMipFilter(map)||(rayMinNearest(map)?5:0));
+export const rayMinNearest=map=>[NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter].includes(map.minFilter);

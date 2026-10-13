@@ -2282,6 +2282,47 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "ray-texture-lod-supplement",
+      "engine": "PBRT/NVIDIA and installed Three ray texture supplement",
+      "version": "PBRT4; Nvidia2019 abstract; Three0.180.0; selected2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://pbr-book.org/4ed/Textures_and_Materials/Image_Texture",
+        "https://pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+        "https://research.nvidia.com/publication/2019-03_texture-level-detail-strategies-real-time-ray-tracing"
+      ],
+      "hosts": [
+        "pbr-book.org",
+        "research.nvidia.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected source sections only; NVIDIA linked book/PDF, remaining bodies and outgoing references unread."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://pbr-book.org/4ed/Textures_and_Materials/Image_Texture",
+          "record": "docs/research/RENDERING_109.json",
+          "readScope": "Selected image cache/evaluation overview and filtering/LOD sections, extracted lines0–115,125–153,218–269; EWA body and remaining sections not fully read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+          "record": "docs/research/RENDERING_109.json",
+          "readScope": "Selected tangent-plane/UV derivative and reflection/refraction discussion, extracted lines134–206; remaining full body/API references not read.",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://research.nvidia.com/publication/2019-03_texture-level-detail-strategies-real-time-ray-tracing",
+          "record": "docs/research/RENDERING_109.json",
+          "readScope": "Abstract only, extracted lines76–79; linked book/PDF not read.",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [
