@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "date": "2026-10-13T08:42:42.100Z",
+  "featureCommit": "6f93e55508d39f2c765fa43f3e1b5823187c6389",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6\\HBEngine.exe",
+    "bundleHash": "7b6dfdd7b5d5b3e638be627ef354b1620022fd1979b6c402072196d539699577",
+    "files": 2111
+  },
+  "executableSHA256": "b9d829df11b352c4b702707d3c8fa3ca0ea18b664e1769403fe5298c9b367611",
+  "playerSHA256": "ca8158c570a78fb713aa008dd92ee76d32755588bcced20919b0f1c715cdd1a3",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "observedConcurrentEditsPreserved": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "dd6f5ae1ca834cd86d796d265601499716490e5fa5f4b44eaca1823786e6058d"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "faac39ca5fda2936f5b5528e07ae2108e58bb32de0a0e688d51bb64351047ef3"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "da18fd7477f58d45d2021836612d6f41f460ceac7374c2f51341e2f327bc0e1d"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "9ba36bd1e888ee4be0f35b1ee878cc803bfdbd5b5797af7426aae4df2c5ccbfd"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "e7ba4397768f0f1e3bea2b61d8a86e56ac449524fb708670498bab2481ba45ff"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "63e074dc49b9d253deec53e3e25802c54f0ca955e5f86a5f321669c547e10133"
+    },
+    {
+      "path": "prototype/path-environment.js",
+      "sha256": "a8ec1225ef9209b66445c5dbff36e1db286f5e02de1f1e4465f5c99970c17644"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "14387c05c6396dafca509c2626874caa02499ebe51f57c4115664b94ca4b1743"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "7ff45ab526abf2c7336a04c88057b30acefde7843a00d8ce052b4b70e5971426"
+    },
+    {
+      "path": "tools/check-rendering-112.mjs",
+      "sha256": "4bef0d3eeeec53a3a309e7c9385f985509b52c18e036d22e3305abd9705d471c"
+    },
+    {
+      "path": "tools/rendering-112-fixture.mjs",
+      "sha256": "ddda177709f9a97152d3092b6283ebeaaf2b4f2ab15a5a44ce334f7333b98fea"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "d389c0a7f407cf2f641938ff34be8977eba19515e8968f88d787f2e64e4a60b0"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "preservationInventory": {
+    "file": "native/build/preinstall-112.json",
+    "sha256": "3a4b201ddf62d642f99ec5f4210aa061e7611f93b58ecd8870976e1e784f4cfd",
+    "verifiedFiles": 2107,
+    "duplicatedInventoryInReceipt": false
+  },
+  "previous": {
+    "directory": "C:/Users/kirby/HBEngine/Versions/e2df694742a0b25a",
+    "bundleHash": "e2df694742a0b25a83ca4721599004536249c98c7fa4fe5c9aa6684b874323eb",
+    "manifestSHA256": "6e843fae98bd7aa00e190fca508ba4c9069570163e848d5f5d8bd653a71a2c57",
+    "allFilesChecked": 2106,
+    "manifestMatches": 2106,
+    "concurrentEdits": [],
+    "concurrentEditNote": "Actual pre-install file hashes preserved, including any prior local edits."
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Prior install manifest files and top-level profile only; original user games not changed.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}

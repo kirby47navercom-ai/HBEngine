@@ -515,7 +515,13 @@
     "Advanced path lobes, caustics, secondary denoising and accumulated engine/mobile/full-corpus tasks remain separate."
   ],
   "installation": {
-    "state": "Pending grouped release verification",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "6f93e55508d39f2c765fa43f3e1b5823187c6389",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b6dfdd7b5d5b3e6",
+    "bundleHash": "7b6dfdd7b5d5b3e638be627ef354b1620022fd1979b6c402072196d539699577",
+    "files": 2111,
+    "receipt": "docs/research/USER_INSTALL_112.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
