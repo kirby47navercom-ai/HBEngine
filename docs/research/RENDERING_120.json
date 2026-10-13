@@ -1,0 +1,1082 @@
+{
+  "version": 1,
+  "date": "2026-10-13T20:15:42.105Z",
+  "baseCommit": "01ea3e8ab84b15a0c7b805c0dfb032d118fdc586",
+  "sourceProducts": [
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "7e69a78df956c912efed58d53d0dae8da93699a9e6c1292af1948d7b6425b164"
+    },
+    {
+      "file": "prototype/path-caustics-gpu.js",
+      "sha256": "ae33381b5978d9855371f4cf2b13766441fc63b6f474436b263aea7dbb479c84"
+    },
+    {
+      "file": "prototype/path-caustics-shader.js",
+      "sha256": "2de262c13873efcea376b3cd7080f8f9c7e98afd5441a34e5b2e4d42e219f528"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "896b4ddbdd08acfae58db13f6ec0de63e617c69aacce4b172af8b4d2a0d9bec1"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "f91cb2132cd2fe8d701868342d1bfa1ab15fb5a75c9ef8bc1404d8c0b8462e03"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "cef9fa9e14ba5d0522c45ded2041f09a58e2d4efee7afabb0a8c6ceee95b98c6"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "7824d82a1fbfbdc6f9468c0cd6decf9853eaa5a05249dfb33db12eef56a3fbb9"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "f854202b55ddb2b1b9bf06e9c1cece6f867b36783ac837dba92895e7e670f7b5"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "689509c51a2089bc0675772cc2cde62957b331eb23ddf4d6c4c807a137c4a346"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "866e0091f1cea3dcd23d2de6d9c73bd481928c682714e748e66094b3b849207d"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "12d6a720e856ab6410c658b0dbd962b86104812a9745594de341e2637f346045"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "40bb7b8d4f444fbabff4a93d6e1f9fbca6b1698e6f46629ef9ab86ea3428bee5"
+    },
+    {
+      "file": "tools/rendering-118-fixture.mjs",
+      "sha256": "227bbddf9b473d655f5ab8d3373d51e278793b2b67366749eff7d6634dcdd527"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "ef96a64cb2ee69a7c73c9704c4a1c46161574697610c0af03956240d214c86bf"
+    },
+    {
+      "file": "prototype/path-photon-shader.js",
+      "sha256": "01f1983452c751e95cb45a5bf81a218894a471d33ab7b3b2e2d160dc4399e0b5"
+    },
+    {
+      "file": "tools/check-path-history-ownership.mjs",
+      "sha256": "d23c13c59fa844519125621e1debadfd827b251415cd690a36a72e594cdce694"
+    },
+    {
+      "file": "tools/check-photon-importance.mjs",
+      "sha256": "e4fb3cab966193b7307c8a8c51bff2ab787a6cabfc5abf4d76304f5b1a511f34"
+    },
+    {
+      "file": "tools/check-photon-shader.mjs",
+      "sha256": "4c842be395498a2336be83bb72a37e5dbce54e3d1bc4cce7ad2db758c6acf4dd"
+    },
+    {
+      "file": "tools/check-rendering-120.mjs",
+      "sha256": "541f652f1c2571b87b3cb675f41500c38e6d5c51810c62fe0104d96692bd03a2"
+    },
+    {
+      "file": "tools/rendering-120-fixture.mjs",
+      "sha256": "5d641292038474cd824f5687de2125a3df702c1613f96825831bf13471a6a769"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "2ca60aac027f83057bb9e5a58172d19b2a9a00db715c4293e83eb2da731d434d"
+    }
+  ],
+  "products": [
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "7e69a78df956c912efed58d53d0dae8da93699a9e6c1292af1948d7b6425b164",
+      "size": 10727
+    },
+    {
+      "path": "prototype/path-caustics-gpu.js",
+      "sha256": "ae33381b5978d9855371f4cf2b13766441fc63b6f474436b263aea7dbb479c84",
+      "size": 9536
+    },
+    {
+      "path": "prototype/path-caustics-shader.js",
+      "sha256": "2de262c13873efcea376b3cd7080f8f9c7e98afd5441a34e5b2e4d42e219f528",
+      "size": 7026
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "896b4ddbdd08acfae58db13f6ec0de63e617c69aacce4b172af8b4d2a0d9bec1",
+      "size": 23262
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "f91cb2132cd2fe8d701868342d1bfa1ab15fb5a75c9ef8bc1404d8c0b8462e03",
+      "size": 17132
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "cef9fa9e14ba5d0522c45ded2041f09a58e2d4efee7afabb0a8c6ceee95b98c6",
+      "size": 3222
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "7824d82a1fbfbdc6f9468c0cd6decf9853eaa5a05249dfb33db12eef56a3fbb9",
+      "size": 6731
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f854202b55ddb2b1b9bf06e9c1cece6f867b36783ac837dba92895e7e670f7b5",
+      "size": 59036
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "689509c51a2089bc0675772cc2cde62957b331eb23ddf4d6c4c807a137c4a346",
+      "size": 13711
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "866e0091f1cea3dcd23d2de6d9c73bd481928c682714e748e66094b3b849207d",
+      "size": 17933
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "12d6a720e856ab6410c658b0dbd962b86104812a9745594de341e2637f346045",
+      "size": 13730
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "40bb7b8d4f444fbabff4a93d6e1f9fbca6b1698e6f46629ef9ab86ea3428bee5",
+      "size": 12747
+    },
+    {
+      "path": "tools/rendering-118-fixture.mjs",
+      "sha256": "227bbddf9b473d655f5ab8d3373d51e278793b2b67366749eff7d6634dcdd527",
+      "size": 7823
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "ef96a64cb2ee69a7c73c9704c4a1c46161574697610c0af03956240d214c86bf",
+      "size": 20223
+    },
+    {
+      "path": "prototype/path-photon-shader.js",
+      "sha256": "01f1983452c751e95cb45a5bf81a218894a471d33ab7b3b2e2d160dc4399e0b5",
+      "size": 2152
+    },
+    {
+      "path": "tools/check-path-history-ownership.mjs",
+      "sha256": "d23c13c59fa844519125621e1debadfd827b251415cd690a36a72e594cdce694",
+      "size": 2505
+    },
+    {
+      "path": "tools/check-photon-importance.mjs",
+      "sha256": "e4fb3cab966193b7307c8a8c51bff2ab787a6cabfc5abf4d76304f5b1a511f34",
+      "size": 2038
+    },
+    {
+      "path": "tools/check-photon-shader.mjs",
+      "sha256": "4c842be395498a2336be83bb72a37e5dbce54e3d1bc4cce7ad2db758c6acf4dd",
+      "size": 1685
+    },
+    {
+      "path": "tools/check-rendering-120.mjs",
+      "sha256": "541f652f1c2571b87b3cb675f41500c38e6d5c51810c62fe0104d96692bd03a2",
+      "size": 4246
+    },
+    {
+      "path": "tools/rendering-120-fixture.mjs",
+      "sha256": "5d641292038474cd824f5687de2125a3df702c1613f96825831bf13471a6a769",
+      "size": 3984
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "2ca60aac027f83057bb9e5a58172d19b2a9a00db715c4293e83eb2da731d434d",
+      "size": 73334
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-jyXNcw\\acceptance.json",
+      "sha256": "f64b5c1ec25a3f8b31a6328b0ea50c4c6141e1f661371dd348387234d032deca"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-fdc6EC\\acceptance.json",
+      "sha256": "e8ca7bcc14d4aca3cb81223ae2dd3c3b2d52501bcefba87909f18dc5433b6289"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-HUy8Pf\\acceptance.json",
+      "sha256": "b8aa33a62847e05405544c426a92c1d39c62bcce0fcc89af1619d96c24ece9e1"
+    },
+    {
+      "file": "native/build/rendering-120-cpu.json",
+      "sha256": "4202da8a88313397e780c355d819da7b0901389c1a319ce46bfa4d3f4f1ca78c"
+    },
+    {
+      "file": "native/build/path-history-ownership-120.json",
+      "sha256": "9c55972263681b4d772a87f6ca073de8cbbcf102a6a067791509c1b1214d0c56"
+    },
+    {
+      "file": "native/build/photon-importance-120.json",
+      "sha256": "3c5214d3737db3e1a5308bfab8526150c5faffe1063b705ecf5c05d15676c597"
+    },
+    {
+      "file": "native/build/native-rendering-120-final-photons.log",
+      "sha256": "b3011d87403b85e8280557d7ae05fb8e1595b87254464fbed691494fc686dc1a"
+    },
+    {
+      "file": "native/build/photon-shader-120.json",
+      "sha256": "85d8c2ca35516edbcd39b017892735c438563fda254c82178c530b19c31beb16"
+    },
+    {
+      "file": "native/build/cpu-120-final.json",
+      "sha256": "b811cab278730cb0c782acdfa047acae5d06c8e003fdd16cc1834da26c0190fb"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-edaal8\\acceptance.json",
+      "sha256": "7beda09ac61ab82fbde9f2229877f20d89c8ee30715a63c0cf4bf4faa2c1e559"
+    }
+  ],
+  "scope": [
+    "GGX photon importance transport for rough pure dielectric and metal boundaries; nested media/TIR and reciprocal caustic-path ownership.",
+    "Fixed-memory batch progressive radius schedule, common component metadata and revision-guarded AI editing.",
+    "WebGPU raw history/state/world ownership transfer through display graph changes; native/GL raw semantics retained."
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "defaultOffAndTypedBounds": true,
+      "legacyMissingFieldsKeepDefaultOff": true,
+      "progressiveRadiusMonotonicAndBounded": true,
+      "alphaOneKeepsRadius": true,
+      "rawAndFilterKeysIgnoreDerivedRadius": true,
+      "transportAndFailureReset": true,
+      "commonCPPBlueprintHumanAISchema": true,
+      "atomicPatchPreservesOriginalOnFailure": true,
+      "roughGlassFixturesAndHDRISources": true
+    },
+    "ownership": {
+      "passed": true,
+      "detachedOwnerDoesNotDisposeOrResetRetainedHistory": true,
+      "retainedWorldAndSamplesReused": true,
+      "secondDetachRejected": true,
+      "cameraAndFailureResetRetainedSamples": true,
+      "finalOwnerReleasesHistoryAndGeometry": true,
+      "actualGPUProofSeparate": true
+    },
+    "importance": {
+      "passed": true,
+      "independentFullBSDFOverPDFMatchesCompactWeight": true,
+      "importanceModeHasNoRadianceEtaSquare": true,
+      "cases": 844,
+      "reflections": 480,
+      "transmissions": 364,
+      "tir": 164,
+      "maxError": 6.661338147750939e-16
+    },
+    "shader": {
+      "passed": true,
+      "photonDependenciesPreserved": true,
+      "noUnusedCameraGIOrBSDFIntegrator": true,
+      "sourceCharacters": 64582,
+      "photonCharacters": 33138,
+      "cameraCharacters": 56481,
+      "ratio": 0.5131151094732278,
+      "malformedSourceRejected": true
+    },
+    "finalCPU": [
+      {
+        "command": "node tools/check-rendering-120.mjs --record",
+        "passed": true,
+        "output": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}"
+      },
+      {
+        "command": "node tools/check-path-history-ownership.mjs --record",
+        "passed": true,
+        "output": "{\"passed\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}"
+      },
+      {
+        "command": "node tools/check-photon-importance.mjs --record",
+        "passed": true,
+        "output": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}"
+      },
+      {
+        "command": "node tools/check-photon-shader.mjs --record",
+        "passed": true,
+        "output": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":64582,\"photonCharacters\":33138,\"cameraCharacters\":56481,\"ratio\":0.5131151094732278,\"malformedSourceRejected\":true}"
+      },
+      {
+        "command": "node tools/check-engine-integration.mjs",
+        "passed": true,
+        "output": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과"
+      },
+      {
+        "command": "node tools/check-test-artifacts.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}"
+      },
+      {
+        "command": "node tools/generate-api.mjs --check",
+        "passed": true,
+        "output": ""
+      },
+      {
+        "command": "node tools/generate-screen-effects.mjs --check",
+        "passed": true,
+        "output": ""
+      }
+    ],
+    "native": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-edaal8\\acceptance.json",
+      "affectedFile": "native/build/native-rendering-120-final-photons.log",
+      "affectedSegments": [
+        "rendering120",
+        "rendering118",
+        "rendering117"
+      ],
+      "segments": [
+        "core",
+        "post",
+        "rendering120",
+        "rendering119",
+        "rendering118",
+        "rendering117",
+        "rendering116",
+        "rendering107"
+      ],
+      "rendering120": {
+        "actualComputeShader": true,
+        "area": {
+          "off": 200,
+          "on": 117,
+          "weak": 73,
+          "zero": 200,
+          "zeroExactRaw": true
+        },
+        "direct": {
+          "off": 16,
+          "on": 16,
+          "weak": 16,
+          "zero": 16,
+          "zeroExactRaw": true
+        },
+        "disabledResourcesZero": true,
+        "hdri": {
+          "off": 235,
+          "on": 235,
+          "weak": 218,
+          "zero": 235,
+          "zeroExactRaw": true
+        },
+        "mixed": {
+          "off": 239,
+          "on": 238,
+          "weak": 220,
+          "zero": 239,
+          "zeroExactRaw": true
+        },
+        "passed": true
+      },
+      "passed": true,
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    "players": {
+      "d3d": {
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-jyXNcw\\acceptance.json",
+        "sha256": "f64b5c1ec25a3f8b31a6328b0ea50c4c6141e1f661371dd348387234d032deca",
+        "passed": true,
+        "rendering120": {
+          "passed": true,
+          "Area": {
+            "off": [
+              117,
+              117,
+              117,
+              255
+            ],
+            "on": [
+              151,
+              151,
+              151,
+              255
+            ],
+            "weak": [
+              96,
+              96,
+              96,
+              255
+            ],
+            "zero": [
+              117,
+              117,
+              117,
+              255
+            ],
+            "progressive": [
+              158,
+              158,
+              158,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "on": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "weak": [
+              224,
+              224,
+              224,
+              255
+            ],
+            "zero": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "progressive": [
+              247,
+              247,
+              247,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "on": [
+              244,
+              244,
+              244,
+              255
+            ],
+            "weak": [
+              220,
+              220,
+              220,
+              255
+            ],
+            "zero": [
+              250,
+              250,
+              250,
+              255
+            ],
+            "progressive": [
+              243,
+              243,
+              243,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "on": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "weak": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "zero": [
+              16,
+              16,
+              16,
+              255
+            ],
+            "progressive": [
+              16,
+              16,
+              16,
+              255
+            ]
+          },
+          "history": {
+            "filterGraphTogglePreservesRaw": true,
+            "temporalGraphTogglePreservesRaw": true,
+            "transportChangeUpdatesRaw": true
+          },
+          "typedCPP": true,
+          "backend": "D3D11"
+        },
+        "regressions": [
+          "rendering120"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgpu": {
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-fdc6EC\\acceptance.json",
+        "sha256": "e8ca7bcc14d4aca3cb81223ae2dd3c3b2d52501bcefba87909f18dc5433b6289",
+        "passed": true,
+        "rendering120": {
+          "passed": true,
+          "Area": {
+            "off": [
+              146,
+              146,
+              146,
+              255
+            ],
+            "on": [
+              171,
+              171,
+              171,
+              255
+            ],
+            "weak": [
+              134,
+              134,
+              134,
+              255
+            ],
+            "zero": [
+              146,
+              146,
+              146,
+              255
+            ],
+            "progressive": [
+              174,
+              174,
+              174,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              244,
+              244,
+              244,
+              255
+            ],
+            "on": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "weak": [
+              224,
+              224,
+              224,
+              255
+            ],
+            "zero": [
+              244,
+              244,
+              244,
+              255
+            ],
+            "progressive": [
+              245,
+              245,
+              245,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              245,
+              245,
+              245,
+              255
+            ],
+            "on": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "weak": [
+              226,
+              226,
+              226,
+              255
+            ],
+            "zero": [
+              245,
+              245,
+              245,
+              255
+            ],
+            "progressive": [
+              245,
+              245,
+              245,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "on": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "weak": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "zero": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "progressive": [
+              11,
+              11,
+              11,
+              255
+            ]
+          },
+          "history": {
+            "filterGraphTogglePreservesRaw": true,
+            "temporalGraphTogglePreservesRaw": true,
+            "transportChangeUpdatesRaw": true
+          },
+          "typedCPP": true,
+          "backend": "WebGPU"
+        },
+        "regressions": [
+          "rendering120",
+          "rendering119",
+          "rendering118",
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgl": {
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-HUy8Pf\\acceptance.json",
+        "sha256": "b8aa33a62847e05405544c426a92c1d39c62bcce0fcc89af1619d96c24ece9e1",
+        "passed": true,
+        "rendering120": {
+          "passed": true,
+          "Area": {
+            "off": [
+              147,
+              147,
+              147,
+              255
+            ],
+            "on": [
+              139,
+              139,
+              139,
+              255
+            ],
+            "weak": [
+              84,
+              84,
+              84,
+              255
+            ],
+            "zero": [
+              147,
+              147,
+              147,
+              255
+            ],
+            "progressive": [
+              147,
+              147,
+              147,
+              255
+            ]
+          },
+          "HDRI": {
+            "off": [
+              245,
+              245,
+              245,
+              255
+            ],
+            "on": [
+              241,
+              241,
+              241,
+              255
+            ],
+            "weak": [
+              204,
+              204,
+              204,
+              255
+            ],
+            "zero": [
+              245,
+              245,
+              245,
+              255
+            ],
+            "progressive": [
+              240,
+              240,
+              240,
+              255
+            ]
+          },
+          "Mixed": {
+            "off": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "on": [
+              241,
+              241,
+              241,
+              255
+            ],
+            "weak": [
+              204,
+              204,
+              204,
+              255
+            ],
+            "zero": [
+              246,
+              246,
+              246,
+              255
+            ],
+            "progressive": [
+              239,
+              239,
+              239,
+              255
+            ]
+          },
+          "Direct": {
+            "off": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "on": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "weak": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "zero": [
+              11,
+              11,
+              11,
+              255
+            ],
+            "progressive": [
+              11,
+              11,
+              11,
+              255
+            ]
+          },
+          "history": {
+            "filterGraphTogglePreservesRaw": true,
+            "temporalGraphTogglePreservesRaw": true,
+            "transportChangeUpdatesRaw": true
+          },
+          "typedCPP": true,
+          "backend": "WebGL2"
+        },
+        "regressions": [
+          "rendering120",
+          "rendering119",
+          "rendering118",
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    },
+    "commonChecks": [
+      "check-rendering-116 --record",
+      "check-rendering-117",
+      "check-rendering-118",
+      "check-rendering-119",
+      "check-engine-integration",
+      "check-test-artifacts",
+      "generate-api --check",
+      "generate-screen-effects --check",
+      "git diff --check"
+    ],
+    "commonCheckEvidence": "Successful executions in this Codex turn; no repeated long soak or FPS measurement."
+  },
+  "storage": {
+    "newDependencies": 0,
+    "newAutomaticReadbacks": 0,
+    "newFrameTargets": 0,
+    "photonPaths": 1024,
+    "photonCacheBytes": 32768,
+    "progressiveDefaultOff": true,
+    "ownershipDisposalAndFailureCovered": true,
+    "versionsPolicy": "Verify/switch then retire obsolete unmodified versions; retain active/project/current/modified files.",
+    "cleanup": [
+      {
+        "work": "native-scene-edaal8",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "native-scene-tDTXlW",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "native-scene-window-KEWLcF",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-geVx1J",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-1xVoem",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-TuuY3H",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-GkXzQ7",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-opYxCw",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-s993YX",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-dGb0F6",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-1U2Eaw",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-N3JYfv",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-gyeX4l",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-Yqbxj7",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-DOGvHb",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-tDwcGK",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-fdc6EC",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "gpu-scene-HUy8Pf",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "native-scene-window-jyXNcw",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      },
+      {
+        "work": "native-scene-1S9J9s",
+        "deleted": 0,
+        "bytes": 0,
+        "receipt": null
+      }
+    ],
+    "nativeTestBinaries": {
+      "scope": "Only named completed native120 fixtures; reports and source retained",
+      "removed": [
+        {
+          "bytes": 1595812,
+          "kind": "completed private native test binary",
+          "sha256": "6951cec9c49b592b1a9edab19d81df95fcf310a58481735715238ceef09faa12",
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-edaal8\\hardware.exe"
+        },
+        {
+          "bytes": 136876,
+          "kind": "completed private native test binary",
+          "sha256": "257c87215d9a48a8817964fe9c7ec2a105dfa321feb2162244d669bbbd703f3f",
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-edaal8\\unavailable.exe"
+        },
+        {
+          "bytes": 1598884,
+          "kind": "completed private native test binary",
+          "sha256": "12acbed9529894a102046ba0ae0d62d2f45260985597240f0852f65f1fea6501",
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-tDTXlW\\hardware.exe"
+        },
+        {
+          "bytes": 1595812,
+          "kind": "completed private native test binary",
+          "sha256": "ae5127ce34fe2cdd327f74d4279a81592f6e1fb6155e8015c5adc6538f269de2",
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-1S9J9s\\hardware.exe"
+        },
+        {
+          "bytes": 136876,
+          "kind": "completed private native test binary",
+          "sha256": "4900fdf55604558048f02e6ad502c075c599a1112e7120771ce314ac09e9f141",
+          "path": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-1S9J9s\\unavailable.exe"
+        }
+      ],
+      "bytes": 5064260
+    }
+  },
+  "sources": [
+    {
+      "url": "https://www.pbr-book.org/4ed/Reflection_Models/Rough_Dielectric_BSDF",
+      "read": "Own evaluation, rough sampling and importance/radiance clauses; linked APIs not read."
+    },
+    {
+      "url": "https://www.pbr-book.org/3ed-2018/Light_Transport_III_Bidirectional_Methods/Stochastic_Progressive_Photon_Mapping",
+      "read": "Selected16.2.2 kernel/progressive/count-radius update clauses; not entire owner/implementation."
+    }
+  ],
+  "limits": [
+    "Finite biased batch KDE with sample limit; no per-visible-point SPPM flux/count history or infinite convergence claim.",
+    "Rough mixed partial-metal/partial-transmission remains camera transport; rough photon boundaries are pure metal or full dielectric.",
+    "Rough metallic extra coating/sheen/anisotropy photon lobes still base GGX.",
+    "Existing119 curved/oblique secondary reprojection, tangent-plane32px lens limits remain.",
+    "No physical-phone/FPS/thermal/full-engine/full-corpus claim.",
+    "Observed cold mixed-GL preparation29.5s; later captures~0.13s in the private diagnostic. Initial compile cost remains open; not whole-game FPS."
+  ],
+  "diagnostics": [
+    "No-photon plain lighting fixes106 normal-map shader deadline.",
+    "Multiplicative main-light ownership resolves first rough-caustic enable timeout; no deadline/resolution/sample changes.",
+    "Compact G2/G1 importance matches844 independent full BSDF/PDF cases; freeze boundary inputs before direction updates.",
+    "Native affected photon segments retain separate120s deadlines; initial combined harness deadline failure kept.",
+    "WebGL photon-only/camera-only source specialization removes unused code.",
+    "Mixed GL initial capture29536ms vs warm130ms: cold first capture and remaining15 accumulation captures use two separately bounded30s requests, same16 frames/64samples/resolution/assertions; no initial-performance claim.",
+    "Native core/post and earlier actual D3D unaffected scopes retained; final actual D3D120 uses rebuilt release executable."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}
