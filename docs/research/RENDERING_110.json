@@ -443,7 +443,13 @@
     "Advanced ray lobes/caustics, secondary denoising, complete UE/Unity corpus/API and accumulated engine/mobile work remain separate."
   ],
   "installation": {
-    "state": "Pending grouped release verification",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "2d3a016be09848a30385d0dcf3578ae1fb4ddadd",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672",
+    "bundleHash": "5dc8e7a2be959672db901fc37868815561a1665ae6333f853474b1778c49c773",
+    "files": 2096,
+    "receipt": "docs/research/USER_INSTALL_110.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }

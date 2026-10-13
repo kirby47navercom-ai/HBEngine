@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "date": "2026-10-13T05:28:13.280Z",
+  "featureCommit": "2d3a016be09848a30385d0dcf3578ae1fb4ddadd",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672\\HBEngine.exe",
+    "bundleHash": "5dc8e7a2be959672db901fc37868815561a1665ae6333f853474b1778c49c773",
+    "files": 2096
+  },
+  "executableSHA256": "35ef01ec28295a8d5487bc6acb5204812c9c921e6d54a47e02a4d7fc2804ce14",
+  "playerSHA256": "e0c7a8d7f24a36a7391b97635559c717cbf5aadf20abd901533872466b24f451",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "oldVersionAllManifestFilesUnchanged": true,
+    "topLevelProfileFilesUnchanged": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\5dc8e7a2be959672\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "b045a44d44590b4146dbd5c0b3ee9eff97c1a233400594c36b5cdbf9e5a989c5"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "acc2027fb19d72a253c356ced678f780b12825d104c4f3563f33ce1ed04943f6"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "090ab0808fa9c1d4cb4ee06617a3a6d82c6244260bb141f62dce4a173189cfb0"
+    },
+    {
+      "path": "tools/rendering-109-fixture.mjs",
+      "sha256": "a319d1cc491c39d82de6a1c4b7e84598b5654b886d80959be18df0ce33d7c1ef"
+    },
+    {
+      "path": "tools/check-ray-scene-bridge.mjs",
+      "sha256": "762b13cc08d7c3e4daaa4f0e82c3ec35cfe7b4949e570883cfdab4868b8328c3"
+    },
+    {
+      "path": "tools/check-rendering-110.mjs",
+      "sha256": "4776a274406c7a26dfc49c7f26c46dcc2cbb4601fa34baf140c466b0bac4e0a8"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\089b6ead1bdf01d7",
+    "bundleHash": "089b6ead1bdf01d7748dd5b612ad30432893cda43e0ec05242c699b8cb76aaba",
+    "manifestSHA256": "839549bef4372bbdf03296fe3604e29b8517bedc50ce34230eb7931e6367db6d",
+    "allFilesChecked": 2091
+  },
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Top-level profile only; no user games/cache/session inspection.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}
