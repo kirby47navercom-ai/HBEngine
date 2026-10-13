@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "date": "2026-10-13T21:08:33.429Z",
+  "baseCommit": "8ca50eecbdf61dd2507d700ac9d11cba33bc4587",
+  "scope": [
+    "Typed previous-pose packing without growing arrays.",
+    "Validate previous pose shape/finite/float32/delta before writing reused atlas or material block.",
+    "Commit reuses fixed-ID motion map, prunes same-count replacement IDs, rejects failed frame history."
+  ],
+  "sourceProducts": [
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "d633897024fa729eab9624839879899ce20e048e7c550e779e44d8ef5715d462"
+    },
+    {
+      "file": "tools/check-rendering-123.mjs",
+      "sha256": "8e4d165ef33d7ac280b9e160811ad4f60ead44748fc8c632d22ff5ad16875f6c"
+    }
+  ],
+  "products": [
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "d633897024fa729eab9624839879899ce20e048e7c550e779e44d8ef5715d462",
+      "size": 20647
+    },
+    {
+      "path": "tools/check-rendering-123.mjs",
+      "sha256": "8e4d165ef33d7ac280b9e160811ad4f60ead44748fc8c632d22ff5ad16875f6c",
+      "size": 3981
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-MFVMhV\\acceptance.json",
+      "sha256": "174e58c0c00699680ca04d21cc1c86a2e9c75bc59e068c09fdbd0d26c1588434"
+    },
+    {
+      "file": "native/build/rendering-123-before.json",
+      "sha256": "612612a876dd343cac3965cf31d62525d7d5b58a32ceef63526fc7ccbffbde40"
+    },
+    {
+      "file": "native/build/rendering-123-cpu.json",
+      "sha256": "e00321598309ca6c0a3bab9c404cca62c48a32c4d43c4af6e54f4ba21cd78cc0"
+    },
+    {
+      "file": "native/build/rendering-122-cpu-123.json",
+      "sha256": "2fc0b5a6b097411a15e53c0d15bbaefc927ef08b3e721606bf9c276a2f70f510"
+    },
+    {
+      "file": "native/build/cpu-123-final.json",
+      "sha256": "83d45260badb8eacddee15033b6a02cde2e57f4522eda61990c1e7afa18a4ba4"
+    },
+    {
+      "file": "native/build/geometry-gi-before-123.txt",
+      "sha256": "0174c269e2b94807529917811a1566d9a5c06e10510be98e329f98cbba33f0b2"
+    }
+  ],
+  "acceptance": {
+    "before": {
+      "accepted": true,
+      "priorAtlasMutated": true
+    },
+    "cpu": {
+      "passed": true,
+      "invalidPreviousRecordsRejectedAtomically": 6,
+      "finiteMotionDelta": true,
+      "movedRowsPreserved": true,
+      "missingPreviousValidBit": 0,
+      "currentRecordLayoutUnchanged": true,
+      "typedPreviousVerticesCompatible": true,
+      "stableHistoryMapReused": true,
+      "sameCountReplacementPrunesStaleIDs": true,
+      "failedFrameClearsHistory": true,
+      "automaticReadbacks": 0
+    },
+    "packingByteParityAndPartialTiming": {
+      "passed": true,
+      "triangles": 5376,
+      "instances": 32,
+      "staticBufferReused": true,
+      "unchangedRowsZero": true,
+      "changedRowsAndMotionPreserved": true,
+      "invalidUVAtomic": true,
+      "emptyScene": true,
+      "atlasBytes": 1441792,
+      "baseline": {
+        "allEightLayoutsByteIdentical": true,
+        "alternatingPairs": 12,
+        "oldMedianMs": 14.189600000000041,
+        "newMedianMs": 6.872500000000059,
+        "scope": "Fixed prepared triangle input, packing only; excludes collection, upload, rendering and game FPS."
+      }
+    },
+    "finalCPU": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      ]
+    },
+    "actualD3D": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-MFVMhV\\acceptance.json",
+      "rendering119": {
+        "passed": true,
+        "GlassLens": {
+          "raw": {
+            "mean": 27.21484375,
+            "variance": 552.2839202880859
+          },
+          "filtered": {
+            "mean": 29.0615234375,
+            "variance": 5.200316429138184
+          },
+          "zero": {
+            "mean": 27.21484375,
+            "variance": 552.2839202880859
+          }
+        },
+        "MirrorLens": {
+          "raw": {
+            "mean": 25.2724609375,
+            "variance": 669.2665853500366
+          },
+          "filtered": {
+            "mean": 27.9619140625,
+            "variance": 4.220229148864746
+          },
+          "zero": {
+            "mean": 25.2724609375,
+            "variance": 669.2665853500366
+          }
+        },
+        "cameraMotion": {
+          "changedChannels": 2340
+        },
+        "objectMotion": {
+          "changedChannels": 2379
+        },
+        "typedCPP": true,
+        "backend": "D3D11"
+      },
+      "errors": 0,
+      "exit": 0,
+      "serverClosed": true
+    }
+  },
+  "storage": {
+    "newDependencies": 0,
+    "newFrameTargets": 0,
+    "newAutomaticReadbacks": 0,
+    "previousPoseFormatBytesPerTriangle": 48,
+    "historyMapReusedWithStableIDs": true
+  },
+  "nativeBinaries": {
+    "reusedFrom121": true,
+    "reason": "No C++/shader/CB change; JS runtime and test/doc sync only."
+  },
+  "limits": [
+    "Packing-only timing includes122+123, not whole FPS/collection/upload.",
+    "World hit-record sharing and119 curved/oblique filter approximations remain.",
+    "No phone/full-engine/full-corpus claim."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}
