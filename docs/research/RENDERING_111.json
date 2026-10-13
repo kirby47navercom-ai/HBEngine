@@ -6424,7 +6424,23 @@
     "Large simultaneous changes can still upload full atlas; first/new resources intentionally full."
   ],
   "installation": {
-    "state": "Pending grouped release verification",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "6f5705cf74d4258fbe01acaec2b4df746b21ff77",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\e2df694742a0b25a",
+    "bundleHash": "e2df694742a0b25a83ca4721599004536249c98c7fa4fe5c9aa6684b874323eb",
+    "files": 2106,
+    "receipt": "docs/research/USER_INSTALL_111.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true,
+    "concurrentPriorEdit": [
+      {
+        "path": "tools/build-game.mjs",
+        "manifestSHA256": "119d1d2d55768b4c1eb0d25e4518f1252dda7414bcf512810af7043fcd0cc476",
+        "observedSHA256": "1a8ee00dd3028244b72d6ded98332b79843199db1e9d258c0217a0e99f4a9702",
+        "modifiedAt": "2026-10-13T07:25:30.096Z",
+        "afterBaselineSnapshot": true
+      }
+    ],
+    "concurrentPriorEditPreserved": true
   }
 }
