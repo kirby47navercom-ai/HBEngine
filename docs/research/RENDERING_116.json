@@ -565,7 +565,12 @@
     "reusedExistingResearchSnapshot": true,
     "newRenderTargets": 0,
     "newRayDataFields": 0,
-    "newAutomaticReadbacks": 0
+    "newAutomaticReadbacks": 0,
+    "updateRemovedBytes": 170452518,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "1c4b72094ba8370e"
+    ]
   },
   "diagnostics": [
     "First private closedVolume used bool, rejected by existing numeric material validator; fixed fixture to1 and retained original log. Production validation not weakened.",
@@ -581,7 +586,17 @@
     "Desktop three-backend pixel/CPU/native energy validation; no phone/whole-game FPS/thermal claim."
   ],
   "installation": {
-    "state": "Pending source and user installation verification",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "fc4240d4bf190aa59b5fa9837d5638b6b89f5bfd",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e",
+    "bundleHash": "1c4b72094ba8370e13229254d4774351970b0bce3f99655030ca62378ee646c2",
+    "files": 2134,
+    "remainingVersions": [
+      "1c4b72094ba8370e"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_116.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }

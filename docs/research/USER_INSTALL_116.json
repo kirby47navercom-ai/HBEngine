@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "date": "2026-10-13T13:33:28.342Z",
+  "featureCommit": "fc4240d4bf190aa59b5fa9837d5638b6b89f5bfd",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e\\HBEngine.exe",
+    "bundleHash": "1c4b72094ba8370e13229254d4774351970b0bce3f99655030ca62378ee646c2",
+    "files": 2134,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 2127,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9719262a2adb4bbb",
+          "bytes": 170452518,
+          "manifestSHA256": "208536ff014bac10bcb0304b572eb2c36e8907ad133dad2848cb76fcfe63f003"
+        }
+      ],
+      "bytes": 170452518,
+      "failures": [],
+      "date": "2026-10-13T13:33:16.3285712Z",
+      "skipped": [],
+      "preserved": [],
+      "remaining": [
+        "1c4b72094ba8370e"
+      ]
+    }
+  },
+  "executableSHA256": "9537d64e5baf20eda17a52be3a8c6f1fccbf65f84b5f8f3f6cacc067e41b12b5",
+  "playerSHA256": "bdf92e3646727820e77ffb4c00a3d4727330d1949a04012d9cae61b79820c4e5",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "priorManifestInventoriedBeforeRetirement": true,
+    "obsoleteVersionRetired": true,
+    "activeOrProjectVersionProtected": false,
+    "modifiedFilesPreserved": true,
+    "topLevelProfileFilesUnchanged": true,
+    "failedStagingAbsent": true,
+    "singleMaintenanceReceipt": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\1c4b72094ba8370e\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "5cd70a60c6c23babbd6e0a2818d55815cfe3f8f3b835f3283628ea4b45232cff"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "fe928015b99cbef1e94ca09a80c0fa07113b30fb77f8b4530eb3f101b9e9b222"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "87131aab4042beb3f5d64ece12e02b7af08c45f42e02db91ec98b8a614ce348b"
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "110f4c9cda25601453d4a8040b3a5bf2e709a604f9c3032c3bb26c670f5ef6c9"
+    },
+    {
+      "path": "prototype/path-environment-shader.js",
+      "sha256": "60e7820e74ff2f14c2d8ae4e545ef7eebf2df8c2bf8e4d683cb455d5a37c3a77"
+    },
+    {
+      "path": "prototype/path-media-shader.js",
+      "sha256": "b0607eb3d8a083d553cbed4da3bf01f0fa2edd2efe38473bdab8a3d93ab78b6d"
+    },
+    {
+      "path": "prototype/path-surface-gpu.js",
+      "sha256": "3196a91d6dfd976afe92537f3453d70ffb5e6407e0eeeaf1bd3fd3d334eceb28"
+    },
+    {
+      "path": "prototype/path-surface-shader.js",
+      "sha256": "3c2087f08646b395fb8b9f95651885bdb818c09e2972614e641cebbfd334abc9"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "1ab1c0a26922c8045bd5c8cbdaf29cdbf178b10df1998acce032bbd389ed6bb5"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "fb189728ddc5a80e6bebb8f1c0f70de2d7fcf3860409f6f5500bf444b89a8c38"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "e26f9320aafaaac7594a33a35756c6618636daa1cbe873f515600202193aa828"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "b2d60d0046a7ab0c2910fa721d97a15be9a21b53c3f2a7cf135477f2850315b5"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "29a45ff114d058bf8b6b93feda4914755e1823a40844942568f808f91b6a5333"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "0a38902d0830c99c73214afc148f54c11bf38de86a8980c59e71a2dc4471f24e"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "d5059557567398ac45813b79284745a2ad4394535577d508e43d70e6d907d652"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "762a5a62c6e41ee69c486ceed4c2d17c10d29be0094328a09fb8342600e492e2"
+    },
+    {
+      "path": "prototype/path-guide-shader.js",
+      "sha256": "0a0926de4e76334beb5bc88bcc7776002d8c248e83b7c69458bc7ebecf7b7086"
+    },
+    {
+      "path": "prototype/path-microfacet-gpu.js",
+      "sha256": "aea12985c06e4b396fd6a7fe2eff6f1a807ab36208a8f273e6d990120c13a34b"
+    },
+    {
+      "path": "prototype/path-microfacet-shader.js",
+      "sha256": "4c2aedce7e740ee7770bb03c0d6a8b7d484d51e5a5a8875636fede2e737368f9"
+    },
+    {
+      "path": "tools/check-rendering-116.mjs",
+      "sha256": "1846e3e51d0364ea1cc2b65e493393c35c6880c307a83edbe6e5ce16319f7a94"
+    },
+    {
+      "path": "tools/rendering-116-fixture.mjs",
+      "sha256": "bc0e85fae82fede43a6d2944e2ad0275b9ec338a387fde3c9bf24768cdccc2b5"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "cffe923171bdccf71ba6afd23218de4ee2d28b312046c8382ebaab00c9175eec"
+    },
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29"
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b",
+      "currentSHA256": "95b9b1d3fe2dcf92356fb64f9fef90de9c0f15e3e0a183352d3d0487c3451a2b"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9719262a2adb4bbb",
+    "bundleHash": "9719262a2adb4bbb7a6e47670c50870aaa2d2223ba1310ac891e7f1978275485",
+    "manifestSHA256": "208536ff014bac10bcb0304b572eb2c36e8907ad133dad2848cb76fcfe63f003",
+    "allFilesCheckedBeforeUpdate": 2126,
+    "observedModifiedFiles": 0,
+    "retired": true
+  },
+  "preservationInventory": {
+    "file": "native/build/preinstall-116.json",
+    "sha256": "d53e555feae923b36e30d28d9dddc567a60c72dab5a7521bffea99e4350e95cf",
+    "duplicatedInventoryInReceipt": false
+  },
+  "remainingVersions": [
+    "1c4b72094ba8370e"
+  ],
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Before-update manifest inventory and top-level profile only; original games not modified.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}
