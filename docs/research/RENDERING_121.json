@@ -981,7 +981,12 @@
     "photonCacheBytes": 32768,
     "candidateBytes": 4,
     "typedPrefixAndAttributeScratchOnly": true,
-    "versionsPolicy": "Verify/switch then retire obsolete unmodified versions; retain active/project/current/modified files."
+    "versionsPolicy": "Verify/switch then retire obsolete unmodified versions; retain active/project/current/modified files.",
+    "updateRemovedBytes": 170945302,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "ee47c229cd7ffb45"
+    ]
   },
   "sources": [
     {
@@ -1005,7 +1010,17 @@
     "No whole-engine/corpus/phone/gameFPS claim."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "5a93988723f6afea19e043fdc20a020681c2a094",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee47c229cd7ffb45",
+    "bundleHash": "ee47c229cd7ffb45acf007cb1db017c2377f4cd0452f44f3af9dbf69a81f6d1d",
+    "files": 2171,
+    "remainingVersions": [
+      "ee47c229cd7ffb45"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_121.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
