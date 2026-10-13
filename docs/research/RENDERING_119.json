@@ -1970,7 +1970,12 @@
     "previousTriangleBytes": 48,
     "defaultTemporalOff": true,
     "auxiliaryLazyAllocationAndRelease": true,
-    "versionsPolicy": "Verify switch then retire unmodified obsolete versions; protect active/project/current files."
+    "versionsPolicy": "Verify switch then retire unmodified obsolete versions; protect active/project/current files.",
+    "updateRemovedBytes": 170763719,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "fc0a71afc30aabc6"
+    ]
   },
   "diagnostics": [
     "Shared explicit-layout TSL function nodes captured another RTT builder uniform binding; create independent transport per guide.",
@@ -1988,7 +1993,17 @@
     "No physical-phone, whole-game FPS or thermal claim."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "3584d26594130a9eb90c9f9d2ac7a759239fac11",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fc0a71afc30aabc6",
+    "bundleHash": "fc0a71afc30aabc68b98e9d1a7c7fb45a6f573a8d8cb8f9d8b7caf6a12e1d81f",
+    "files": 2154,
+    "remainingVersions": [
+      "fc0a71afc30aabc6"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_119.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
