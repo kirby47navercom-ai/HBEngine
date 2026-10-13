@@ -1,0 +1,777 @@
+{
+  "version": 1,
+  "date": "2026-10-13T15:19:14.364Z",
+  "previousCommit": "e83efbcb2a68afaf114b5dd10b1a958a953c7709",
+  "scope": [
+    "Shared local BLAS and instance TLAS; legacy/single-instance flat shader and packet compatibility.",
+    "Local vertex and per-mesh world-triangle reuse; pose/geometry/material/topology invalidation, refit-quality and finite-update guards.",
+    "1024 GPU light paths in a fixed32KiB per-viewport photon atlas, bounded density gathering, closed media/Fresnel/absorption and analytic shadow deduplication.",
+    "Glass/mirror secondary-hit spatial guides with reverse mirror normals and first secondary distance; raw Monte Carlo history retained.",
+    "No-emitter shader presence including dynamic material changes; native O3 captured-frame compiler/bytecode reduction.",
+    "Shared authoring/CPP/BP/AI component fields, native guards, lazy resource release and installation retention."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "a93c36b74e23681807aabefc8188a8ca1cb5879e72423ecf9fd50859b139c3e6"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "870c7da16591d8edceedf37a87a2f3094c2595fb409b270df32d90b61a58b601"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "045995c418a4bc6f352e773f09765ad7323fa65bc7c3d350a45adf8740ad949c"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "b885166d4365a1b34bd98b0321fecfce96192eeffb22ddd50eff2ce5c3d60a9b"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "bbcdf873be74292c4c8d101d69c640268505d4431e9d01ed2eeac98c0aa894d1"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "7f5f5f44f70c8ea6855ae2737e00f43f0b7659c90769f5f2ad1af7ab773e7b44"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "8fc5d151e535f62ed9eebdfd35e6f85620689e1dd48620778d8964b136c2991e"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "fd550e13770dd682be8f9b0d31f1bbd1de7a1b7c2a28adb481a2ec15b6fd39d0"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "730903ce4b164a8efa3a60a8b0f34ff914b4c1ea5db6323a1be6f519aadd5db2"
+    },
+    {
+      "file": "prototype/path-guide-shader.js",
+      "sha256": "c4f694a91be7aa33877a7e0a4e7e0cab41477b39f545347a645c5c54e7d81954"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "685a0b6efda5fecf919515b7143c1e9dd810d9105ef3cf7821b51122aa58e4a1"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "9ca67e20e3411a635965ab0f54dbf6f297edf22bcf7d0709e2e763d43e61a900"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "1f33ed95d97ef75fbc2011db44ff0b62aa925103ce9c07165e58dfcb2692c474"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "fb2f9ec3f4abb89e94191e6807a6c0e986bc8ebd22ca2c8ca8d5fcccf1d42ef7"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "30155eae38459f5ddf00773e1a43017463da13f4e3bd8ba7e5f1b16ac7e4d948"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "4e73ea800b43054ddc433912e7b8db75b227e34be350f80be3feccd205df0bd7"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "56c4f130e3a659168fb5e094df40fb6d21af017ec491c0be1cb2fd833aefeb51"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "2b2e80eddb752ec3155cab6a81aaf3ec660f0591d89a13fbcd6b6d8cf1d528fc"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "4cbd7a7756972151bda38a64e0fd1456324fab45d3bba89cc1f5fa4ad1a8755f"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "5a141366675ce652741a37647348cd8036b4bf624bb6b106cf49adae4578569e"
+    },
+    {
+      "file": "tools/check-rendering-112.mjs",
+      "sha256": "85453642ca0f4781cd427b9e17849f6de52b993ca9ac0b9917a0f8b4b61e3369"
+    },
+    {
+      "file": "tools/check-rendering-116.mjs",
+      "sha256": "d07c8981abfcb83e9ce7a8152adb195e7763c2bf236f91f8c11054a0c51ead12"
+    },
+    {
+      "file": "tools/ray-material-fixture.mjs",
+      "sha256": "1f3bb8302783d922b64f710fbc569ead7343a70f811ac104b9e67e8b725fa988"
+    },
+    {
+      "file": "tools/rendering-107-fixture.mjs",
+      "sha256": "e576154a0e11aff59c3e38af3504b6d580d3a1d4701fe4e7ab49dabe7c6dec92"
+    },
+    {
+      "file": "tools/rendering-109-fixture.mjs",
+      "sha256": "167b68b08e165ceca6f974c1647369afcb4de64d2db6fa8380e74cbe6e2da6db"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "f207914d3520327db5345e81c2ba857225329f50bb40379e685a654e47b07bba"
+    },
+    {
+      "file": "native/tests/scene-rendering-117.hpp",
+      "sha256": "9ca1c72ab3f7a362995917e420b1aa878be3339f7ffe897dc778ffcf07b8a1f5"
+    },
+    {
+      "file": "prototype/geometry-bvh.js",
+      "sha256": "c3cfa9e2c43600cea3b8454b275c6d308eb98e935aef5b4b8f2b4c797d02750b"
+    },
+    {
+      "file": "prototype/path-caustics-gpu.js",
+      "sha256": "0f4c78fd75eed471bb76a64cd8c3e01a440746b7c7e7142bcf1a41bcdd7d1b53"
+    },
+    {
+      "file": "prototype/path-caustics-shader.js",
+      "sha256": "b678049f3e59fe17cdcb858fcab50cd046483e8b3ad1a424ead4000dcdaa3f2c"
+    },
+    {
+      "file": "tools/check-rendering-117.mjs",
+      "sha256": "610df4061795c61a7b9646c38ae5e7e8cd7946b83bf14f1fd9abc77c97d05fa0"
+    },
+    {
+      "file": "tools/rendering-117-fixture.mjs",
+      "sha256": "6b88b844b660b76aa3977ec55dea73c2552a56274a745460a0984efd9bfb06d0"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "a93c36b74e23681807aabefc8188a8ca1cb5879e72423ecf9fd50859b139c3e6"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "870c7da16591d8edceedf37a87a2f3094c2595fb409b270df32d90b61a58b601"
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "b885166d4365a1b34bd98b0321fecfce96192eeffb22ddd50eff2ce5c3d60a9b"
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "bbcdf873be74292c4c8d101d69c640268505d4431e9d01ed2eeac98c0aa894d1"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "7f5f5f44f70c8ea6855ae2737e00f43f0b7659c90769f5f2ad1af7ab773e7b44"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "8fc5d151e535f62ed9eebdfd35e6f85620689e1dd48620778d8964b136c2991e"
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "fd550e13770dd682be8f9b0d31f1bbd1de7a1b7c2a28adb481a2ec15b6fd39d0"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "730903ce4b164a8efa3a60a8b0f34ff914b4c1ea5db6323a1be6f519aadd5db2"
+    },
+    {
+      "path": "prototype/path-guide-shader.js",
+      "sha256": "c4f694a91be7aa33877a7e0a4e7e0cab41477b39f545347a645c5c54e7d81954"
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "685a0b6efda5fecf919515b7143c1e9dd810d9105ef3cf7821b51122aa58e4a1"
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "9ca67e20e3411a635965ab0f54dbf6f297edf22bcf7d0709e2e763d43e61a900"
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "1f33ed95d97ef75fbc2011db44ff0b62aa925103ce9c07165e58dfcb2692c474"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "fb2f9ec3f4abb89e94191e6807a6c0e986bc8ebd22ca2c8ca8d5fcccf1d42ef7"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "30155eae38459f5ddf00773e1a43017463da13f4e3bd8ba7e5f1b16ac7e4d948"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "4e73ea800b43054ddc433912e7b8db75b227e34be350f80be3feccd205df0bd7"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "56c4f130e3a659168fb5e094df40fb6d21af017ec491c0be1cb2fd833aefeb51"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "2b2e80eddb752ec3155cab6a81aaf3ec660f0591d89a13fbcd6b6d8cf1d528fc"
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "4cbd7a7756972151bda38a64e0fd1456324fab45d3bba89cc1f5fa4ad1a8755f"
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "5a141366675ce652741a37647348cd8036b4bf624bb6b106cf49adae4578569e"
+    },
+    {
+      "path": "tools/check-rendering-112.mjs",
+      "sha256": "85453642ca0f4781cd427b9e17849f6de52b993ca9ac0b9917a0f8b4b61e3369"
+    },
+    {
+      "path": "tools/check-rendering-116.mjs",
+      "sha256": "d07c8981abfcb83e9ce7a8152adb195e7763c2bf236f91f8c11054a0c51ead12"
+    },
+    {
+      "path": "tools/ray-material-fixture.mjs",
+      "sha256": "1f3bb8302783d922b64f710fbc569ead7343a70f811ac104b9e67e8b725fa988"
+    },
+    {
+      "path": "tools/rendering-107-fixture.mjs",
+      "sha256": "e576154a0e11aff59c3e38af3504b6d580d3a1d4701fe4e7ab49dabe7c6dec92"
+    },
+    {
+      "path": "tools/rendering-109-fixture.mjs",
+      "sha256": "167b68b08e165ceca6f974c1647369afcb4de64d2db6fa8380e74cbe6e2da6db"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "f207914d3520327db5345e81c2ba857225329f50bb40379e685a654e47b07bba"
+    },
+    {
+      "path": "prototype/geometry-bvh.js",
+      "sha256": "c3cfa9e2c43600cea3b8454b275c6d308eb98e935aef5b4b8f2b4c797d02750b"
+    },
+    {
+      "path": "prototype/path-caustics-gpu.js",
+      "sha256": "0f4c78fd75eed471bb76a64cd8c3e01a440746b7c7e7142bcf1a41bcdd7d1b53"
+    },
+    {
+      "path": "prototype/path-caustics-shader.js",
+      "sha256": "b678049f3e59fe17cdcb858fcab50cd046483e8b3ad1a424ead4000dcdaa3f2c"
+    },
+    {
+      "path": "tools/check-rendering-117.mjs",
+      "sha256": "610df4061795c61a7b9646c38ae5e7e8cd7946b83bf14f1fd9abc77c97d05fa0"
+    },
+    {
+      "path": "tools/rendering-117-fixture.mjs",
+      "sha256": "6b88b844b660b76aa3977ec55dea73c2552a56274a745460a0984efd9bfb06d0"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "5a955dc4627c8d93321dcca800e99502be7e62b35872ca9248d386605498d10a"
+    },
+    {
+      "path": "native/include/HBEngine/RayPrograms.hpp",
+      "sha256": "388510a1c85735b0a0e757133f4b8a43691b0b288bdbabd93c3461f542930d29"
+    }
+  ],
+  "artifacts": [
+    {
+      "gate": "cpu",
+      "file": "native/build/rendering-117-cpu.json",
+      "sha256": "4b908c7478fb26d604db1fdc6bf896f527f17c54f22f87d3a4fc7215beb5d95b"
+    },
+    {
+      "gate": "legacyCPU",
+      "file": "native/build/cpu-rendering-117.json",
+      "sha256": "6cf4f59f06b533db4d7283b13386b3fb9e218553f50034679bd40273ada6c87b"
+    },
+    {
+      "gate": "native",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-8GgDwu\\acceptance.json",
+      "sha256": "5d5905dd90ec9614e7ae5f3d6221358e1cc84e2908f627003d473b9c0442cab0"
+    },
+    {
+      "gate": "directx",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-IgCWC6\\acceptance.json",
+      "sha256": "3a422afc3700fc9c2c604129f3f5ccc4ad230a182c8ee8a6d9827aebae3f10a4"
+    },
+    {
+      "gate": "webgpu",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-3QQouh\\acceptance.json",
+      "sha256": "b600fd1a9bf32bae315aedf5e6b2807b124645aa2da981d64ec859b66dc3bb0c"
+    },
+    {
+      "gate": "webgl",
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-3GBMyX\\acceptance.json",
+      "sha256": "3d32b266bb928e8fb11649fb6df1523d28db3ca440fa54078d8b339600cd66f4"
+    },
+    {
+      "gate": "cleanup",
+      "file": "native/build/cache-prune-117.log",
+      "sha256": "7bdaaf2ebf884acc2d306750aa8790521f1c5ac3b373de4b1e0cff0aa3902a4b"
+    },
+    {
+      "gate": "compileBefore",
+      "file": "native/build/bench117-compile.log",
+      "sha256": "ca748bd5651b77d31a38f3d38fb30197fd5284674cf8aaee3b580b68fdea115c"
+    },
+    {
+      "gate": "compileAfter",
+      "file": "native/build/bench117-compile-pruned.log",
+      "sha256": "fd697a085e93e72f602f82a71d0c43b05602448a101de70ce57772fa4d37b7f0"
+    },
+    {
+      "gate": "originalFailure0",
+      "file": "native/build/gpu-scene-oZTj5r/failure.json",
+      "sha256": "c85ba0a19265c600a87c5705339cf4615399677968d7d81ca52dee322c39915f"
+    },
+    {
+      "gate": "originalFailure1",
+      "file": "native/build/gpu-scene-YpenUq/failure.json",
+      "sha256": "0860acf7fc074b682fc4380cd528d12d9a14d7a97f7f7a0fdd9d756ac7eee7c2"
+    },
+    {
+      "gate": "originalFailure2",
+      "file": "native/build/native-scene-oqt8lL/failure.json",
+      "sha256": "fcb90b54cbf8a501c18346d48b698dd32d4c96f88d94e19a9e73b5ebb0a13fbe"
+    },
+    {
+      "gate": "originalFailure3",
+      "file": "native/build/native-scene-window-IqLugZ/failure.json",
+      "sha256": "31c00601c68cb6cec74a4a2706ed2afd79e7867d29ca8b48648247fe5f5571a9"
+    },
+    {
+      "gate": "originalFailure4",
+      "file": "native/build/native-scene-window-lDKVuv/failure.json",
+      "sha256": "5bac59cb3aff926c6d8d6671b70f5430a1e687d006d0a138be30d91df0139ba5"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://developer.nvidia.com/rtx/raytracing/dxr/dx12-raytracing-tutorial/extra/dxr_tutorial_extra_refit",
+      "readScope": "Selected own lines1–16: per-instance BLAS/transform, TLAS refit, retained allocation. Linked DXR code/API/images not read."
+    },
+    {
+      "url": "https://www.pbr-book.org/3ed-2018/Light_Transport_III_Bidirectional_Methods/Stochastic_Progressive_Photon_Mapping",
+      "readScope": "Selected own 16.2.2 lines31–68 and77–79: finite-radius biased density estimation, kernel normalization and specular light paths; not the complete SPPM implementation/linked bodies."
+    },
+    {
+      "url": "https://github.com/NVIDIA-RTX/NRD",
+      "readScope": "Own hit-distance guidance lines666–686 and PSR lines767–795; source implementation, linked samples and full API not read."
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "instances": 64,
+      "sharedBLAS": 1,
+      "localVertexCalls": 115,
+      "transformUpdateVertexCalls": 0,
+      "transformUpdateReusedMeshes": 63,
+      "transformUpdateCollectedMeshes": 1,
+      "flatNodes": 8191,
+      "twoLevelNodes": 318,
+      "refitReusesBLAS": true,
+      "singularInstanceExcluded": true,
+      "nonFiniteAtomic": true,
+      "secondarySignAndNormalGuards": true,
+      "typedCausticGuards": true,
+      "causticHistoryReset": true,
+      "finiteFixtures": true,
+      "singleInstanceFlatFastPath": true,
+      "multipleInstanceHierarchyFlag": true,
+      "emitterPresenceAndMutation": true
+    },
+    "legacyCPU": {
+      "passed": 19,
+      "commands": [
+        "node tools/check-rendering-112.mjs --record",
+        "node tools/check-test-artifacts.mjs",
+        "node tools/check-rendering-111.mjs --record",
+        "node tools/check-rendering-110.mjs --record",
+        "node tools/check-rendering-109.mjs",
+        "node tools/check-rendering-107.mjs",
+        "node tools/check-rendering-106.mjs",
+        "node tools/check-rendering-105.mjs",
+        "node tools/check-rendering-104.mjs",
+        "node tools/check-rendering-103.mjs",
+        "node tools/check-rendering-102.mjs",
+        "node tools/check-rendering-101.mjs",
+        "node tools/check-rendering-100.mjs",
+        "node tools/check-rendering-099.mjs",
+        "node tools/check-engine-integration.mjs",
+        "node tools/check-material-volume.mjs",
+        "node tools/generate-screen-effects.mjs --check",
+        "node tools/generate-screen-post.mjs --check",
+        "node tools/generate-api.mjs --check"
+      ]
+    },
+    "native": {
+      "passed": true,
+      "compiledNodes": 61,
+      "segments": [
+        "core",
+        "post",
+        "rendering117",
+        "rendering116",
+        "rendering107"
+      ],
+      "rendering117": {
+        "actualComputeShader": true,
+        "caustic": {
+          "off": 0,
+          "on": 130,
+          "photonCacheBytes": 32768,
+          "zero": 0,
+          "zeroReleasesCache": true
+        },
+        "disabledResourcesZero": true,
+        "glassNoise": {
+          "filtered": [
+            237.9228515625,
+            280.4833059310913
+          ],
+          "raw": [
+            235.935546875,
+            543.6696739196777
+          ],
+          "zeroIsRaw": true
+        },
+        "mirrorNoise": {
+          "filtered": [
+            229.4453125,
+            1411.0165405273438
+          ],
+          "raw": [
+            228.4638671875,
+            2119.733069419861
+          ],
+          "zeroIsRaw": true
+        },
+        "nativeCausticGuards": 5,
+        "passed": true
+      },
+      "regressions": [
+        "rendering098",
+        "rendering099",
+        "rendering100",
+        "rendering101",
+        "rendering102",
+        "rendering103",
+        "rendering104",
+        "rendering105",
+        "rendering106",
+        "rendering117",
+        "rendering116",
+        "rendering107",
+        "rendering109",
+        "rendering110",
+        "rendering111",
+        "rendering112",
+        "rendering115"
+      ],
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    "players": {
+      "directx": {
+        "passed": true,
+        "rendering117": {
+          "passed": true,
+          "denoise": {
+            "GlassDenoise": {
+              "raw": {
+                "mean": 237.91796875,
+                "variance": 1747.8975677490234
+              },
+              "filtered": {
+                "mean": 238.4599609375,
+                "variance": 1492.7796468734741
+              },
+              "zero": {
+                "mean": 237.91796875,
+                "variance": 1747.8975677490234
+              }
+            },
+            "MirrorDenoise": {
+              "raw": {
+                "mean": 233.767578125,
+                "variance": 1415.9752769470215
+              },
+              "filtered": {
+                "mean": 234.7119140625,
+                "variance": 1145.0527486801147
+              },
+              "zero": {
+                "mean": 233.767578125,
+                "variance": 1415.9752769470215
+              }
+            }
+          },
+          "off": [
+            104,
+            94,
+            77,
+            255
+          ],
+          "on": [
+            249,
+            247,
+            244,
+            255
+          ],
+          "zero": [
+            104,
+            94,
+            77,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "D3D11"
+        },
+        "regressions": [
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgpu": {
+        "passed": true,
+        "rendering117": {
+          "passed": true,
+          "denoise": {
+            "GlassDenoise": {
+              "raw": {
+                "mean": 238.646484375,
+                "variance": 1082.2441673278809
+              },
+              "filtered": {
+                "mean": 239.2587890625,
+                "variance": 939.1195516586304
+              },
+              "zero": {
+                "mean": 238.646484375,
+                "variance": 1082.2441673278809
+              }
+            },
+            "MirrorDenoise": {
+              "raw": {
+                "mean": 231.658203125,
+                "variance": 714.3675498962402
+              },
+              "filtered": {
+                "mean": 233.5615234375,
+                "variance": 464.9376211166382
+              },
+              "zero": {
+                "mean": 231.658203125,
+                "variance": 714.3675498962402
+              }
+            }
+          },
+          "off": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "on": [
+            241,
+            238,
+            233,
+            255
+          ],
+          "zero": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "WebGPU"
+        },
+        "regressions": [
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      "webgl": {
+        "passed": true,
+        "rendering117": {
+          "passed": true,
+          "denoise": {
+            "GlassDenoise": {
+              "raw": {
+                "mean": 240.4150390625,
+                "variance": 939.6392660140991
+              },
+              "filtered": {
+                "mean": 240.9267578125,
+                "variance": 805.3354558944702
+              },
+              "zero": {
+                "mean": 240.4150390625,
+                "variance": 939.6392660140991
+              }
+            },
+            "MirrorDenoise": {
+              "raw": {
+                "mean": 232.107421875,
+                "variance": 804.5939292907715
+              },
+              "filtered": {
+                "mean": 233.7421875,
+                "variance": 584.7030639648438
+              },
+              "zero": {
+                "mean": 232.107421875,
+                "variance": 804.5939292907715
+              }
+            }
+          },
+          "off": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "on": [
+            247,
+            245,
+            241,
+            255
+          ],
+          "zero": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "typedCPP": true,
+          "backend": "WebGL2"
+        },
+        "regressions": [
+          "rendering117",
+          "rendering116",
+          "rendering115",
+          "rendering112",
+          "rendering111",
+          "rendering109",
+          "rendering107",
+          "rendering106",
+          "rendering105",
+          "rendering104",
+          "rendering103",
+          "rendering102",
+          "rendering101",
+          "rendering100",
+          "rendering099",
+          "rendering098"
+        ],
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    },
+    "compiler": {
+      "before": [
+        {
+          "bytecodeBytes": 142176,
+          "flags": 0,
+          "milliseconds": 14844.3889,
+          "result": 0,
+          "sourceBytes": 75545
+        },
+        {
+          "bytecodeBytes": 142176,
+          "flags": 32768,
+          "milliseconds": 14306.468,
+          "result": 0,
+          "sourceBytes": 75545
+        }
+      ],
+      "after": [
+        {
+          "bytecodeBytes": 91660,
+          "flags": 0,
+          "milliseconds": 7066.5643,
+          "result": 0,
+          "sourceBytes": 75688
+        },
+        {
+          "bytecodeBytes": 91660,
+          "flags": 32768,
+          "milliseconds": 7219.0544,
+          "result": 0,
+          "sourceBytes": 75688
+        }
+      ],
+      "optimizationUnchanged": true,
+      "nativeRPCMilliseconds": 15000,
+      "scope": "Same captured existing109-lit frame, compile-only comparison; no whole-game FPS claim."
+    }
+  },
+  "storage": {
+    "cleanup": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "newDependencies": 0,
+    "newLargeAssets": 0,
+    "newAutomaticReadbacks": 0,
+    "photonCacheBytes": 32768,
+    "defaultOff": true,
+    "zeroStrengthReleasesCache": true,
+    "currentAndActiveProjectProtected": true,
+    "versionsPolicy": "Retire obsolete full installs after verified switch; preserve modified files only"
+  },
+  "diagnostics": [
+    "Original full-resolution WebGPU device hang retained; fixed-size GPU photon pass replaces per-shading-point light tracing.",
+    "Separate photon RTT function owners resolve r180 captured texture binding loss.",
+    "Fixture bottom-pivot corrected; no production primitive pivot change.",
+    "Native original15s frame and QA deadlines retained; flat presence and no-emitter pruning plus captured-frame benchmark, then final grouped actual-player proof.",
+    "Independent native117/116 test sections use separate original120s bounded child calls; all legacy assertions/samples retained and per-segment progress persisted."
+  ],
+  "limits": [
+    "World-space triangle/material hit records remain per instance; BLAS nodes are shared.",
+    "Finite-radius, fixed1024 light-path photon estimates support analytic directional/point/spot lights and smooth specular boundaries; no rough/area-light/HDRI caustic light paths or progressive radius shrink.",
+    "Secondary spatial guides are not an NRD integration or curvature/temporal/lens/fully separated-lobe denoiser; unsupported/missing guides retain raw pixels.",
+    "Selected primary sections, not complete Unreal/Unity/source/API corpus.",
+    "No physical phone or whole-game FPS/thermal/equivalence certification."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

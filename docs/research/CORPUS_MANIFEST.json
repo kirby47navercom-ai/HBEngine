@@ -2443,6 +2443,48 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "hierarchy-photon-secondary-supplement",
+      "engine": "Selected NVIDIA/PBRT rendering contracts",
+      "version": "Selected2026-10-13",
+      "locale": "en",
+      "roots": [
+        "https://developer.nvidia.com/rtx/raytracing/dxr/dx12-raytracing-tutorial/extra/dxr_tutorial_extra_refit",
+        "https://www.pbr-book.org/3ed-2018/Light_Transport_III_Bidirectional_Methods/Stochastic_Progressive_Photon_Mapping",
+        "https://github.com/NVIDIA-RTX/NRD"
+      ],
+      "hosts": [
+        "developer.nvidia.com",
+        "www.pbr-book.org",
+        "github.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected sections only; complete source/API/engine corpus remains unclosed."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://developer.nvidia.com/rtx/raytracing/dxr/dx12-raytracing-tutorial/extra/dxr_tutorial_extra_refit",
+          "readScope": "Selected own lines1–16: per-instance BLAS/transform, TLAS refit, retained allocation. Linked DXR code/API/images not read.",
+          "record": "docs/research/RENDERING_117.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://www.pbr-book.org/3ed-2018/Light_Transport_III_Bidirectional_Methods/Stochastic_Progressive_Photon_Mapping",
+          "readScope": "Selected own 16.2.2 lines31–68 and77–79: finite-radius biased density estimation, kernel normalization and specular light paths; not the complete SPPM implementation/linked bodies.",
+          "record": "docs/research/RENDERING_117.json",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://github.com/NVIDIA-RTX/NRD",
+          "readScope": "Own hit-distance guidance lines666–686 and PSR lines767–795; source implementation, linked samples and full API not read.",
+          "record": "docs/research/RENDERING_117.json",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [
