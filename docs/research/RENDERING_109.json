@@ -657,7 +657,13 @@
     "Whole Unreal/Unity corpus/API, remaining engine/rendering features and actual phone performance remain open."
   ],
   "installation": {
-    "state": "Pending grouped release verification",
-    "restartUserWindows": false
+    "state": "Installed and all manifest/product/shortcut/association hashes verified",
+    "featureCommit": "9e78a1adf4a20c098ebbc5b156b28b4133a614bf",
+    "installedDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\089b6ead1bdf01d7",
+    "bundleHash": "089b6ead1bdf01d7748dd5b612ad30432893cda43e0ec05242c699b8cb76aaba",
+    "files": 2091,
+    "receipt": "docs/research/USER_INSTALL_109.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
