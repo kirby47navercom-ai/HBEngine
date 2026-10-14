@@ -1,3 +1,5 @@
+2026-10-14: [124 공유 교차 정점](../RENDERING_124.md)·[125 곡면 필터](../RENDERING_125.md)·[126 포즈 법선](../RENDERING_126.md)·[127 WebGPU 준비/탐색](../RENDERING_127.md), [묶음 증거](RENDERING_124.json). PBRT4 점/벡터/법선·광선 변환과 미분/표면 필터 지정 구역, 설치 Three r180 함수 cache·RTT·compileAsync/native promise·uniform 갱신 소스를 대조했다. 실제 세 실행 경로와 CPU/네이티브 검사 범위를 기록하며 전체 본문/API·게임/폰 성능 gate로 승격하지 않는다.
+
 2026-10-13: [112 BVH/구면 HDRI/분리 행](../RENDERING_112.md), [증거](RENDERING_112.json). Embree44-line refit API own body and selected PBRT environment-light sections2 source SHA snapshots; own normalized-area guard and spherical filters, not library integration or whole linked corpus. Actual rendering/CPP/CPU/atomic guards verified; no whole-game/phone/corpus gate promotion.
 
 2026-10-13: [111 CPU/WebGPU/HDRI](../RENDERING_111.md), [용량](../STORAGE_111.md), [증거](RENDERING_111.json). Selected MDN writeTexture API and installed Three r180 lifecycle/DataTexture source sections4 SHA snapshots. PBRT mip/cone selected source context reused from109; no complete corpus or spec/API coverage claim. Actual four execution routes and CPU exactness checked; no whole-game/phone gate promotion.

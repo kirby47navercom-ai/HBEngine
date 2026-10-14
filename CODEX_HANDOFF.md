@@ -1,3 +1,13 @@
+# 124–127 — 공유 교차 정점·곡면 필터·이전 포즈·WebGPU 준비 — 2026-10-14
+
+124: 내용/충돌/버전/interleaved 검사를 사용하는 clone BLAS 공유, 로컬 교차 정점과 기존6vec 논리 주소·5vec 물리 기록. CPU5376/168 tri 최대 위치 오차5.40e-8, atlas1179648→1114112B.125: 공용 pathTracingCurvedFilter 기본꺼짐·주변 실제 기하와 경계/TIR 거부·원본 누적 유지.126: 강체 이전 법선96B/instance·실패/꺼짐 해제.127: builder별 함수 바인딩·prefix/suffix/고정 슬롯/로컬 보간, BVH/교차값 고정, 렌즈전용 가이드, 타겟 선행크기·취소/거부·비동기 캡처 준비·광자 소유 갱신·보수적 로브 특수화.
+
+CPU23·현재 native124/guard·기존118/120 재사용 binary·실제D3D2yeIfA/GPUrGfXzx/GLDsDd5g의124/125/119 묶음·추가GPUv1tWao의121광자/고급금속·실제C++/원본/errors0/종료/서버해제 통과. 세 원장과 소스 SHA는 [124](docs/research/RENDERING_124.json), 설명은 [124](docs/RENDERING_124.md)·[125](docs/RENDERING_125.md)·[126](docs/RENDERING_126.md)·[127](docs/RENDERING_127.md).
+
+묶음 CPU·native·실제 D3D/GL/GPU 검증과 설치 전환 진행; gate는 RENDERING_124.json 실제 결과를 따른다.
+
+기존 누적 엔진 원장과 렌더링 계획을 유지한다. 스킨/모프 이전 법선은 접선 fallback이며 거친 다중 로브·전역 곡면 역해·실게임/폰/FPS·전체 corpus 완료로 승격하지 않는다. Versions는 검증 후 전환·이전 사본 정리 정책이다.
+
 # 123 — 모션 포장·이력 재사용·원본 보존 — 2026-10-14
 
 이전 포즈 typed 포장·쓰기 전 모양/finite/float32/delta검증, 안정 ID Map 재사용·동수 교체 ID 제거·실패 이력 거부. 수정 전 NaN허용/원본 변경 재현; 수정 후6거부/원본 동일·typed 정점호환·8배치 byte parity. CPU8 묶음과 최종 actualD3D MFVMhV 카메라/오브젝트/이차 렌즈·CPP/원본/errors0/exit0/서버 해제 통과. 네이티브/셰이더 변화가 없어121 실행파일 재사용. [123](docs/RENDERING_123.md).

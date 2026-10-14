@@ -1,7 +1,8 @@
+import {gpuFn} from './gpu-function-scope.js';
 import * as T from 'three/tsl';
 export function pathMediaNode({load,trace,ray},u,enabled=true){
- const id=T.Fn(([triangle])=>enabled?load(u.transport.x.add(triangle.mul(2)).add(1)).w:T.float(0)).setLayout({name:'hbMediumID',type:'float',inputs:[{name:'id',type:'float'}]});
- const valueAt=T.Fn(([triangle,p,view,width])=>{const a=ray.field(triangle,p,view,4,width);return T.vec4(a.w.greaterThan(0).select(a.rgb.max(.000001).log().negate().div(a.w.max(.000001)),T.vec3(0)),ray.field(triangle,p,view,0,width).w);}).setLayout({name:'hbMediumValue',type:'vec4',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'},{name:'view',type:'vec3'},{name:'width',type:'float'}]});
+ const id=gpuFn(([triangle])=>enabled?load(u.transport.x.add(triangle.mul(2)).add(1)).w:T.float(0)).setLayout({name:'hbMediumID',type:'float',inputs:[{name:'id',type:'float'}]});
+ const valueAt=gpuFn(([triangle,p,view,width])=>{const a=ray.field(triangle,p,view,4,width);return T.vec4(a.w.greaterThan(0).select(a.rgb.max(.000001).log().negate().div(a.w.max(.000001)),T.vec3(0)),ray.field(triangle,p,view,0,width).w);}).setLayout({name:'hbMediumValue',type:'vec4',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'},{name:'view',type:'vec3'},{name:'width',type:'float'}]});
  const value=(triangle,p,view,width=T.float(0))=>valueAt(triangle,p,view,width);
  const seed=(start,direction,shadowRay=false)=>{
   if(!enabled)return {ids:{element:()=>T.float(0)},media:{element:()=>T.vec4(0,0,0,1)},count:T.int(0).toVar()};

@@ -1,0 +1,1611 @@
+{
+  "version": 1,
+  "date": "2026-10-14T06:46:58.425Z",
+  "baseCommit": "57fd638653add7bed1e2cd9588233744acfdb90d",
+  "scope": [
+    "124: shared local intersection vertices with unchanged logical six-vector addresses; exact clone/collision/version guards and retained BLAS refit.",
+    "125: opt-in curved secondary footprint, object/material/front/TIR rejection, output filtering independent of Monte Carlo accumulation.",
+    "126: rigid previous-pose normal matrices,96 bytes per instance only with curved temporal filtering; common human/C++/Blueprint/AI component schema.",
+    "127: scoped WebGPU function bindings, fixed/suffix/local-bary reads, BVH/bounce snapshots, lens-only guide, pre-sized owned targets/photon pass, prepared captures and conservative material lobe specialization."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "3d2f34de973978321ceb39aff7f0bca29baed789cce18e42b1574caa7dafa4fc"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "831028f5e5266f2cfcf2b227e6c62cb9506b6dc228301e6e75752e36d19c1921"
+    },
+    {
+      "file": "native/tests/scene-render.cpp",
+      "sha256": "3833a53d76bd16d15c9ccc88e4f056968926ebe4b597ee05faa9b9f8dce3f16d"
+    },
+    {
+      "file": "native/tests/scene-rendering-124.hpp",
+      "sha256": "34a16e0bb8dd60ae2fde301308e27c093585fdccb9515920363551add5a86a70"
+    },
+    {
+      "file": "prototype/game-renderer.js",
+      "sha256": "ddd7b604254861fbc7805253e07fbe55072f61e76744e181b4e67d0d5677e002"
+    },
+    {
+      "file": "prototype/geometry-bvh.js",
+      "sha256": "51d94aae0cde86ada6da9a0358dbdd3160cb2fbece20328dfb0decbb3f2b7c9a"
+    },
+    {
+      "file": "prototype/geometry-gi-gpu.js",
+      "sha256": "1347600a9de91aa6dbcc86b21ffcb2c2b8546f08345342c54e226bf9855d80f5"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "6abbde0fcc1194dac22c99d9f1a4347ea80655c75644358184ce988b252bf2b3"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "6dd8980dac94c2290fd14e353aaa69bb497920c377a32308f5ef37800022a0b7"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "44d2cb4c3bbde4444db8e8bab8a4c088734275a55f7400d9bf6650b57317ce87"
+    },
+    {
+      "file": "prototype/gpu-function-scope.js",
+      "sha256": "25e1f10a6130ce880ba0c79bcc7009fde22970e877b615a821e430319e66e1dc"
+    },
+    {
+      "file": "prototype/gpu-path-preparation.js",
+      "sha256": "a98b704a9409bf26d1f7e3713e574133416f2c645c7335ba2f8b32fb0dc0fd4a"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "428b67feab7ec1a23395139c4feb3aa2a7aa8d261f615db81d182af40ef0a5c7"
+    },
+    {
+      "file": "prototype/path-caustics-gpu.js",
+      "sha256": "1018f854adfa2d0d5e61d91fe8eba3e41ce523688253742bad6ce17f15b369dc"
+    },
+    {
+      "file": "prototype/path-caustics-shader.js",
+      "sha256": "03f7445eb182dc478a6ed641d6cd46100bb4358fc0df23cfe93afcdb6109d95e"
+    },
+    {
+      "file": "prototype/path-curved-guide.js",
+      "sha256": "1fe15df6cfa11a61a5f0b2fabf4ca4be87ddc49dfacebe6968765604526b2161"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "2f3c8519bb7237436be53bd6f25fec75789b40eee37f3efdb17bcc39320182e3"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "99611e99a6a8a265459920b8cb6028783bdcb70f4914a8b6d18cca215bed0018"
+    },
+    {
+      "file": "prototype/path-environment-gpu.js",
+      "sha256": "72fd957095ab9a2ef482051fe035df26402f64a2ecf06123e002723a42ff780a"
+    },
+    {
+      "file": "prototype/path-guide-frames.js",
+      "sha256": "97a0a1ca9320d9adaafe75065c73b5d1ff15bdd2c20a2bc89d0fb8ceff02c204"
+    },
+    {
+      "file": "prototype/path-guide-gpu.js",
+      "sha256": "5e7b8bf23e479651769a28de2b721d4416cd224d817f8fb9e275c5259851899b"
+    },
+    {
+      "file": "prototype/path-media-gpu.js",
+      "sha256": "784fcb910138ab19c18fe9006ea2af4d8ec1d283111c2a8f7cc2a5e72de75dce"
+    },
+    {
+      "file": "prototype/path-microfacet-gpu.js",
+      "sha256": "c4c4222bf36a9dd39ab5090f0efd5106bb7424e4e89da0298237504bf7693435"
+    },
+    {
+      "file": "prototype/path-photon-shader.js",
+      "sha256": "79bf5167a2d1baa5a77bfb9c3eabd10fc6f2fcc92fda55768e0bb52441fcab3f"
+    },
+    {
+      "file": "prototype/path-surface-gpu.js",
+      "sha256": "0b14b820c810f78134de1e2fc6e142df9247e78da9a28e0f8d97b0f1eb8a4929"
+    },
+    {
+      "file": "prototype/path-surface-shader.js",
+      "sha256": "5e6ff93879b17951acb8bf6d54bb58c89da38885ecbf8ba9a1a378bc07d03f32"
+    },
+    {
+      "file": "prototype/path-tracing-gpu.js",
+      "sha256": "a51caa9c7e9367e913d0e9b5b83931618c387be02bd6756f5e3faf71b0e6e133"
+    },
+    {
+      "file": "prototype/path-tracing-shader.js",
+      "sha256": "7c426b5253c92d29cf5727ef5abfda421f23f8fd0bb7a466d4c37779e1318c05"
+    },
+    {
+      "file": "prototype/path-tracing.js",
+      "sha256": "fd8d8335554b1c64faf73d67657d60aefd547aa1762817d746c503243c748531"
+    },
+    {
+      "file": "prototype/player.js",
+      "sha256": "fb94e2f6f46d8a34c40f94c35db0370591b1c165a6913d16c538e696dde1e2f3"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "5c105bfe5b5e20da2d2b4c356a294ab34a7e1d46f58f9f1aa664ad62ee09c582"
+    },
+    {
+      "file": "prototype/ray-geometry-key.js",
+      "sha256": "a7b34d5ec04ebc26565022adb74753facd185729e9a17aa6b0d93c21466fde85"
+    },
+    {
+      "file": "prototype/ray-material-gpu.js",
+      "sha256": "408e2f961dd2abb9484a33ee8e7bd46bb75361013ec9052f7680212032875e4d"
+    },
+    {
+      "file": "prototype/ray-material-shader.js",
+      "sha256": "218f3823d6953616a2c65fd85be3786294593c789a204623c48af16b0a594c26"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "639a29a85f70c66740e923cb737540cd0a7f15dbc8414ca7139ff161e95ecd78"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "f893d5a56dd4715811b7d873be157c521688c45ed8708b09ecc7a0e69c029771"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "5b1682df06ca43936834645fc4be0c480b84446778b068d62be544c7d409a81d"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "68414232d42af51f30ca592b2134d35d5cd033b50210f2c693f07627635d7931"
+    },
+    {
+      "file": "prototype/screen-effects.js",
+      "sha256": "99e385748089f1def62af70154dec144e38fe03a224f63712d2a1fc19919d1a0"
+    },
+    {
+      "file": "prototype/shared-ray-bary-gpu.js",
+      "sha256": "498576d02e84cbbce23f1b63bf04bdf879f77e89c80a361370b96a8a6392dcba"
+    },
+    {
+      "file": "prototype/shared-ray-geometry-gpu.js",
+      "sha256": "c8ea6b3103ffd350da275048441923a2973b713292ff2abd412f9dcdee352323"
+    },
+    {
+      "file": "prototype/shared-ray-geometry.js",
+      "sha256": "36c880ed121e9316d5d24de0ba1973949a1cb5cda87d53a722eb1e41c8a5ac53"
+    },
+    {
+      "file": "prototype/shared-ray-record-gpu.js",
+      "sha256": "9ee6dfb902af30b8e87b91dbedf4c105dff0c1622ab4efd19104710fbdf8e2c4"
+    },
+    {
+      "file": "tools/check-gpu-function-scope.mjs",
+      "sha256": "bb0cceef05e3068ed0603cd5a67bbcdbffdb61fc4d21dc54bb98e7344f432f16"
+    },
+    {
+      "file": "tools/check-gpu-shared-shader.mjs",
+      "sha256": "2a928f0bf3d78574c852d0fff86ad6244023516b7febb651819c54f927f9c7da"
+    },
+    {
+      "file": "tools/check-native-scene-render.mjs",
+      "sha256": "5293db1e8f278ae464e52a364f06f4fdfc5eb4a0dacd5543573c014b67b3d1e7"
+    },
+    {
+      "file": "tools/check-path-history-ownership.mjs",
+      "sha256": "99f97f70f495163d66b91e9e5832e072ecd5809fbcac67f65d7b32eb77021804"
+    },
+    {
+      "file": "tools/check-rendering-124.mjs",
+      "sha256": "a0accc1bbfe870623cb5576b949b4dc70387ac99c1b2c43f8d210b3f823dbada"
+    },
+    {
+      "file": "tools/check-rendering-125.mjs",
+      "sha256": "68e667f0ac6a662aa13882b5abfbc1124a2f718ff417307d4c520ecd49d4cb62"
+    },
+    {
+      "file": "tools/check-rendering-126.mjs",
+      "sha256": "2cf759b744a04909c0b090c67dbbfb907ae24df0a348aea90de042932077fdf8"
+    },
+    {
+      "file": "tools/check-rendering-127.mjs",
+      "sha256": "98e3759184f68e4385c487a36cd5e6662879bcfe8e327d97301bfcbea10ae8d6"
+    },
+    {
+      "file": "tools/rendering-119-fixture.mjs",
+      "sha256": "422ec96a923d74506f4b008b323f82e2d64e1794cdef260f2231de7419c4ac98"
+    },
+    {
+      "file": "tools/rendering-124-fixture.mjs",
+      "sha256": "225eaf53be69808f768a9e08ea551ced8f11cef1c0a94afbd77ae200017be49b"
+    },
+    {
+      "file": "tools/rendering-125-fixture.mjs",
+      "sha256": "b3aeb63516ec7b1f5238ab1f0bfc6d54454d53b43d2650e7233a874f3f4aca9c"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "046362f4ee97bbe031a897e7e4da52f43c1a7e25178501ebba59c33ca4e8e039"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "831028f5e5266f2cfcf2b227e6c62cb9506b6dc228301e6e75752e36d19c1921",
+      "size": 29315
+    },
+    {
+      "path": "prototype/game-renderer.js",
+      "sha256": "ddd7b604254861fbc7805253e07fbe55072f61e76744e181b4e67d0d5677e002",
+      "size": 3217
+    },
+    {
+      "path": "prototype/geometry-bvh.js",
+      "sha256": "51d94aae0cde86ada6da9a0358dbdd3160cb2fbece20328dfb0decbb3f2b7c9a",
+      "size": 5874
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "1347600a9de91aa6dbcc86b21ffcb2c2b8546f08345342c54e226bf9855d80f5",
+      "size": 10825
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "6abbde0fcc1194dac22c99d9f1a4347ea80655c75644358184ce988b252bf2b3",
+      "size": 8879
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "6dd8980dac94c2290fd14e353aaa69bb497920c377a32308f5ef37800022a0b7",
+      "size": 22396
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "44d2cb4c3bbde4444db8e8bab8a4c088734275a55f7400d9bf6650b57317ce87",
+      "size": 11823
+    },
+    {
+      "path": "prototype/gpu-function-scope.js",
+      "sha256": "25e1f10a6130ce880ba0c79bcc7009fde22970e877b615a821e430319e66e1dc",
+      "size": 841
+    },
+    {
+      "path": "prototype/gpu-path-preparation.js",
+      "sha256": "a98b704a9409bf26d1f7e3713e574133416f2c645c7335ba2f8b32fb0dc0fd4a",
+      "size": 2865
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "428b67feab7ec1a23395139c4feb3aa2a7aa8d261f615db81d182af40ef0a5c7",
+      "size": 46674
+    },
+    {
+      "path": "prototype/path-caustics-gpu.js",
+      "sha256": "1018f854adfa2d0d5e61d91fe8eba3e41ce523688253742bad6ce17f15b369dc",
+      "size": 10549
+    },
+    {
+      "path": "prototype/path-caustics-shader.js",
+      "sha256": "03f7445eb182dc478a6ed641d6cd46100bb4358fc0df23cfe93afcdb6109d95e",
+      "size": 7771
+    },
+    {
+      "path": "prototype/path-curved-guide.js",
+      "sha256": "1fe15df6cfa11a61a5f0b2fabf4ca4be87ddc49dfacebe6968765604526b2161",
+      "size": 1931
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "2f3c8519bb7237436be53bd6f25fec75789b40eee37f3efdb17bcc39320182e3",
+      "size": 4979
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "99611e99a6a8a265459920b8cb6028783bdcb70f4914a8b6d18cca215bed0018",
+      "size": 10187
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "72fd957095ab9a2ef482051fe035df26402f64a2ecf06123e002723a42ff780a",
+      "size": 4906
+    },
+    {
+      "path": "prototype/path-guide-frames.js",
+      "sha256": "97a0a1ca9320d9adaafe75065c73b5d1ff15bdd2c20a2bc89d0fb8ceff02c204",
+      "size": 1335
+    },
+    {
+      "path": "prototype/path-guide-gpu.js",
+      "sha256": "5e7b8bf23e479651769a28de2b721d4416cd224d817f8fb9e275c5259851899b",
+      "size": 13723
+    },
+    {
+      "path": "prototype/path-media-gpu.js",
+      "sha256": "784fcb910138ab19c18fe9006ea2af4d8ec1d283111c2a8f7cc2a5e72de75dce",
+      "size": 3463
+    },
+    {
+      "path": "prototype/path-microfacet-gpu.js",
+      "sha256": "c4c4222bf36a9dd39ab5090f0efd5106bb7424e4e89da0298237504bf7693435",
+      "size": 2916
+    },
+    {
+      "path": "prototype/path-photon-shader.js",
+      "sha256": "79bf5167a2d1baa5a77bfb9c3eabd10fc6f2fcc92fda55768e0bb52441fcab3f",
+      "size": 2732
+    },
+    {
+      "path": "prototype/path-surface-gpu.js",
+      "sha256": "0b14b820c810f78134de1e2fc6e142df9247e78da9a28e0f8d97b0f1eb8a4929",
+      "size": 7809
+    },
+    {
+      "path": "prototype/path-surface-shader.js",
+      "sha256": "5e6ff93879b17951acb8bf6d54bb58c89da38885ecbf8ba9a1a378bc07d03f32",
+      "size": 5383
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "a51caa9c7e9367e913d0e9b5b83931618c387be02bd6756f5e3faf71b0e6e133",
+      "size": 23411
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "7c426b5253c92d29cf5727ef5abfda421f23f8fd0bb7a466d4c37779e1318c05",
+      "size": 17174
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "fd8d8335554b1c64faf73d67657d60aefd547aa1762817d746c503243c748531",
+      "size": 3610
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "fb94e2f6f46d8a34c40f94c35db0370591b1c165a6913d16c538e696dde1e2f3",
+      "size": 29710
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "5c105bfe5b5e20da2d2b4c356a294ab34a7e1d46f58f9f1aa664ad62ee09c582",
+      "size": 6757
+    },
+    {
+      "path": "prototype/ray-geometry-key.js",
+      "sha256": "a7b34d5ec04ebc26565022adb74753facd185729e9a17aa6b0d93c21466fde85",
+      "size": 659
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "sha256": "408e2f961dd2abb9484a33ee8e7bd46bb75361013ec9052f7680212032875e4d",
+      "size": 16836
+    },
+    {
+      "path": "prototype/ray-material-shader.js",
+      "sha256": "218f3823d6953616a2c65fd85be3786294593c789a204623c48af16b0a594c26",
+      "size": 19336
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "639a29a85f70c66740e923cb737540cd0a7f15dbc8414ca7139ff161e95ecd78",
+      "size": 27137
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f893d5a56dd4715811b7d873be157c521688c45ed8708b09ecc7a0e69c029771",
+      "size": 59159
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "5b1682df06ca43936834645fc4be0c480b84446778b068d62be544c7d409a81d",
+      "size": 13969
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "68414232d42af51f30ca592b2134d35d5cd033b50210f2c693f07627635d7931",
+      "size": 19945
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "99e385748089f1def62af70154dec144e38fe03a224f63712d2a1fc19919d1a0",
+      "size": 13830
+    },
+    {
+      "path": "prototype/shared-ray-bary-gpu.js",
+      "sha256": "498576d02e84cbbce23f1b63bf04bdf879f77e89c80a361370b96a8a6392dcba",
+      "size": 1308
+    },
+    {
+      "path": "prototype/shared-ray-geometry-gpu.js",
+      "sha256": "c8ea6b3103ffd350da275048441923a2973b713292ff2abd412f9dcdee352323",
+      "size": 2292
+    },
+    {
+      "path": "prototype/shared-ray-geometry.js",
+      "sha256": "36c880ed121e9316d5d24de0ba1973949a1cb5cda87d53a722eb1e41c8a5ac53",
+      "size": 1816
+    },
+    {
+      "path": "prototype/shared-ray-record-gpu.js",
+      "sha256": "9ee6dfb902af30b8e87b91dbedf4c105dff0c1622ab4efd19104710fbdf8e2c4",
+      "size": 1255
+    },
+    {
+      "path": "tools/check-gpu-function-scope.mjs",
+      "sha256": "bb0cceef05e3068ed0603cd5a67bbcdbffdb61fc4d21dc54bb98e7344f432f16",
+      "size": 917
+    },
+    {
+      "path": "tools/check-gpu-shared-shader.mjs",
+      "sha256": "2a928f0bf3d78574c852d0fff86ad6244023516b7febb651819c54f927f9c7da",
+      "size": 7671
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "5293db1e8f278ae464e52a364f06f4fdfc5eb4a0dacd5543573c014b67b3d1e7",
+      "size": 13155
+    },
+    {
+      "path": "tools/check-path-history-ownership.mjs",
+      "sha256": "99f97f70f495163d66b91e9e5832e072ecd5809fbcac67f65d7b32eb77021804",
+      "size": 2592
+    },
+    {
+      "path": "tools/check-rendering-124.mjs",
+      "sha256": "a0accc1bbfe870623cb5576b949b4dc70387ac99c1b2c43f8d210b3f823dbada",
+      "size": 4537
+    },
+    {
+      "path": "tools/check-rendering-125.mjs",
+      "sha256": "68e667f0ac6a662aa13882b5abfbc1124a2f718ff417307d4c520ecd49d4cb62",
+      "size": 3291
+    },
+    {
+      "path": "tools/check-rendering-126.mjs",
+      "sha256": "2cf759b744a04909c0b090c67dbbfb907ae24df0a348aea90de042932077fdf8",
+      "size": 2939
+    },
+    {
+      "path": "tools/check-rendering-127.mjs",
+      "sha256": "98e3759184f68e4385c487a36cd5e6662879bcfe8e327d97301bfcbea10ae8d6",
+      "size": 4887
+    },
+    {
+      "path": "tools/rendering-119-fixture.mjs",
+      "sha256": "422ec96a923d74506f4b008b323f82e2d64e1794cdef260f2231de7419c4ac98",
+      "size": 6874
+    },
+    {
+      "path": "tools/rendering-124-fixture.mjs",
+      "sha256": "225eaf53be69808f768a9e08ea551ced8f11cef1c0a94afbd77ae200017be49b",
+      "size": 5815
+    },
+    {
+      "path": "tools/rendering-125-fixture.mjs",
+      "sha256": "b3aeb63516ec7b1f5238ab1f0bfc6d54454d53b43d2650e7233a874f3f4aca9c",
+      "size": 5103
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "046362f4ee97bbe031a897e7e4da52f43c1a7e25178501ebba59c33ca4e8e039",
+      "size": 21339
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-2yeIfA\\acceptance.json",
+      "sha256": "b91d1ade0fe5f45389d9b544f4ba24831f0e1cfc8d89579578bb34412bc1ef99"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-rGfXzx\\acceptance.json",
+      "sha256": "a7eff5b0732521a0f0c916d545bdf3fe52771fd6e515ba30986a6261e5364be3"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-DsDd5g\\acceptance.json",
+      "sha256": "ad3b7cd35697756ce26c2d7756437412143754e797e22e1ae2b4552d2b720bf1"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-v1tWao\\acceptance.json",
+      "sha256": "14f8213d74e0eacf64ec31d4c7f2790e9549395f18aab03b05a4c8d331560e3d"
+    },
+    {
+      "file": "native/build/cpu-124-current.json",
+      "sha256": "91a61509f4c39f974f25156833860be57e7886bbb832ba009637dc55e701499d"
+    },
+    {
+      "file": "native/build/rendering-124-cpu.json",
+      "sha256": "70c6c652aefcad635203dc41fdd2b9d35db0348f3fa50f6090c268d59a115055"
+    },
+    {
+      "file": "native/build/rendering-125-cpu.json",
+      "sha256": "f0a2aed2c7e4209aaac6db2f403798312c34774513b6a457891cece445a39458"
+    },
+    {
+      "file": "native/build/rendering-126-cpu.json",
+      "sha256": "b520c76e355d12dabc4a3eaf733a231e50e34ff595f1d1fdd82f259820f74b75"
+    },
+    {
+      "file": "native/build/native-scene-acMegS/acceptance.json",
+      "sha256": "d8f7034b3ff7bedc52cc83dda2aa03ae6649dc90bcdc4ea749dc1f7ccc2936a8"
+    },
+    {
+      "file": "native/build/native-regressions-124.json",
+      "sha256": "6c723ccea1de6983167c1d262f2555618a58fda70cce4ddd9cb8d635beb67183"
+    },
+    {
+      "file": "native/build/rendering-127-cpu.json",
+      "sha256": "d82d6f6665b2ec5c6bc81040909d87a380c2a4044de6f24f74150cd13ae332bb"
+    },
+    {
+      "file": "native/build/gpu-shared-shader-124.json",
+      "sha256": "4f0aea723de6cfd8d34edae51a8af3c235ab39ab9dde137a572cc801509ef0d2"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "e6b3d2042b869e8a95ee9b1b769e4963abaafd90575d41abb933d598c4c37a98"
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-115.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"legacyFiveFields\":true,\"conditionalTenFields\":true,\"dynamicScalarPacking\":true,\"advancedPresenceAndMasks\":true,\"uniformPatchReusesAtlas\":true,\"rawPhysicalCacheInvalidation\":true,\"rawNineMapChannels\":true,\"ggxProjectedNormalization\":true,\"charlieProjectedNormalization\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-116.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"visibleNormalSamples\":40000,\"projectedDensityIntegrals\":[0.9999880213219398,0.9999943574537473,0.9999157189460923,0.999943078198778],\"ordinaryPresenceOff\":true,\"opaqueRoughnessDoesNotEnableDielectric\":true,\"dynamicTransmissionEnablesDielectric\":true,\"guideHasNoLightingIntegrator\":true,\"guideSourceRatio\":0.09236305477808876,\"roughPresenceAndReset\":true,\"closedMediumPacket\":true,\"finitePackets\":true,\"etaSurvivalRoundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-117.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"instances\":64,\"sharedBLAS\":1,\"localVertexCalls\":115,\"transformUpdateVertexCalls\":0,\"transformUpdateReusedMeshes\":63,\"transformUpdateCollectedMeshes\":1,\"flatNodes\":8191,\"twoLevelNodes\":382,\"refitReusesBLAS\":true,\"singularInstanceExcluded\":true,\"nonFiniteAtomic\":true,\"secondarySignAndNormalGuards\":true,\"typedCausticGuards\":true,\"causticHistoryReset\":true,\"finiteFixtures\":true,\"singleInstanceFlatFastPath\":true,\"multipleInstanceHierarchyFlag\":true,\"emitterPresenceAndMutation\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-118.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"temporalClamp\":true,\"depthNormalClassRejection\":true,\"invalidHistoryAndZeroAreRaw\":true,\"cameraLensSceneEnvironmentAndFailureResets\":true,\"rasterGapKeepsStaticPathSamples\":true,\"manualVersionAndFailureReset\":true,\"typedBoundsAndAISchema\":true,\"AIRevisionGuardedAtomicPatch\":true,\"areaAndHDRIWithoutAnalyticLights\":true,\"mixedSources\":true,\"finitePackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-120.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-122.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"instances\":32,\"staticBufferReused\":true,\"unchangedRowsZero\":true,\"changedRowsAndMotionPreserved\":true,\"invalidUVAtomic\":true,\"emptyScene\":true,\"atlasBytes\":1441792}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-124.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"sharedVertexTriangles\":168,\"legacyAtlasBytes\":1179648,\"sharedAtlasBytes\":1114112,\"maxPositionError\":5.3961675128277875e-8,\"nonUniformAndNegativeScale\":true,\"staticBufferReused\":true,\"changedRows\":true,\"singleInstanceLegacy\":true,\"clonedGeometryShared\":true,\"collisionIsolated\":true,\"interleavedVersionRecollected\":true,\"photonAndMotionAfterSharedPool\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-125.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalMappingCases\":24,\"maxNormalError\":7.771561172376096e-16,\"degeneratePreviousRejected\":true,\"defaultOff\":true,\"commonSchema\":true,\"filterChangePreservesRawSamples\":true,\"filterHistoryKeyChanges\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-126.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"nonUniformNormalAxisScale\":true,\"normalError\":2.8532166730247387e-8,\"instances\":8,\"gpuBytesPerInstance\":96,\"defaultOffReleasesMatrixHistory\":true,\"failedFrameClears\":true,\"filterToggleKeepsRawSamples\":true,\"extraReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-path-history-ownership.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"disposeBeforeFirstFrame\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-importance.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":67480,\"photonCharacters\":40188,\"cameraCharacters\":58634,\"ratio\":0.5955542382928275,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-127.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-function-scope.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"sameBuilderSharesFunction\":true,\"newBuilderHasFreshUniformBindings\":true,\"nodeCacheMethodPreserved\":true,\"ordinaryFunctionsUnchanged\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-shared-shader.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"cases\":[{\"advanced\":false,\"transmission\":false,\"prefix\":false,\"sourceBytes\":55453,\"functions\":37,\"uniforms\":20},{\"advanced\":false,\"transmission\":false,\"prefix\":true,\"sourceBytes\":55493,\"functions\":37,\"uniforms\":23},{\"advanced\":true,\"transmission\":false,\"prefix\":false,\"sourceBytes\":85272,\"functions\":45,\"uniforms\":20},{\"advanced\":true,\"transmission\":false,\"prefix\":true,\"sourceBytes\":85347,\"functions\":45,\"uniforms\":23},{\"advanced\":false,\"transmission\":true,\"prefix\":false,\"sourceBytes\":57764,\"functions\":38,\"uniforms\":20},{\"advanced\":false,\"transmission\":true,\"prefix\":true,\"sourceBytes\":57804,\"functions\":38,\"uniforms\":23},{\"advanced\":true,\"transmission\":true,\"prefix\":false,\"sourceBytes\":87583,\"functions\":46,\"uniforms\":20},{\"advanced\":true,\"transmission\":true,\"prefix\":true,\"sourceBytes\":87658,\"functions\":46,\"uniforms\":23}],\"lobes\":[{\"name\":\"coat\",\"features\":{\"coat\":true,\"aniso\":false,\"sheen\":false,\"film\":false},\"sourceBytes\":79093},{\"name\":\"aniso\",\"features\":{\"coat\":false,\"aniso\":true,\"sheen\":false,\"film\":false},\"sourceBytes\":78040},{\"name\":\"sheen\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":true,\"film\":false},\"sourceBytes\":79728},{\"name\":\"film\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":false,\"film\":true},\"sourceBytes\":78911}],\"guides\":[{\"auxiliary\":false,\"lens\":false,\"curved\":false,\"temporal\":false},{\"auxiliary\":false,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":false},{\"auxiliary\":true,\"lens\":false,\"curved\":false,\"temporal\":true},{\"auxiliary\":true,\"lens\":false,\"curved\":true,\"temporal\":true},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":true}],\"featureCacheChanges\":true,\"freshUniformBindings\":true,\"fixedSlotDecoders\":true,\"rawBVHPrefix\":true,\"weakTransmissionNotDropped\":true,\"lensAndTemporalGuideCombinations\":true,\"deviceInitializations\":0,\"draws\":0,\"actualGPUPixelsClaim\":false}\n",
+          "stderr": "THREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\n"
+        }
+      ]
+    },
+    "shared": {
+      "passed": true,
+      "triangles": 5376,
+      "sharedVertexTriangles": 168,
+      "legacyAtlasBytes": 1179648,
+      "sharedAtlasBytes": 1114112,
+      "maxPositionError": 5.3961675128277875e-8,
+      "nonUniformAndNegativeScale": true,
+      "staticBufferReused": true,
+      "changedRows": true,
+      "singleInstanceLegacy": true,
+      "clonedGeometryShared": true,
+      "collisionIsolated": true,
+      "interleavedVersionRecollected": true,
+      "photonAndMotionAfterSharedPool": true
+    },
+    "curved": {
+      "passed": true,
+      "normalMappingCases": 24,
+      "maxNormalError": 7.771561172376096e-16,
+      "degeneratePreviousRejected": true,
+      "defaultOff": true,
+      "commonSchema": true,
+      "filterChangePreservesRawSamples": true,
+      "filterHistoryKeyChanges": true
+    },
+    "pose": {
+      "passed": true,
+      "nonUniformNormalAxisScale": true,
+      "normalError": 2.8532166730247387e-8,
+      "instances": 8,
+      "gpuBytesPerInstance": 96,
+      "defaultOffReleasesMatrixHistory": true,
+      "failedFrameClears": true,
+      "filterToggleKeepsRawSamples": true,
+      "extraReadbacks": 0
+    },
+    "native": {
+      "hardware": {
+        "passed": true,
+        "rendering124": {
+          "actualComputeShader": true,
+          "center": [
+            61,
+            154,
+            208
+          ],
+          "passed": true,
+          "resourcesReleased": true,
+          "sharedGeometryGuards": 7,
+          "sharedLegacyCoreMaxDifference": 0
+        }
+      },
+      "unavailable": {
+        "unavailableGuard": true
+      }
+    },
+    "regressions": {
+      "passed": true,
+      "binarySHA256": "9a53e831c8e636d0636b0cf2b170d2dd09eced625fe8be99f158f8704c9a6b84",
+      "recompiled": false,
+      "results": [
+        {
+          "version": "118",
+          "result": {
+            "passed": true,
+            "rendering118": {
+              "actualComputeShader": true,
+              "area": {
+                "off": 216,
+                "on": 174,
+                "weak": 156,
+                "zero": 216,
+                "zeroExactRaw": true
+              },
+              "direct": {
+                "off": 16,
+                "on": 16,
+                "weak": 16,
+                "zero": 16,
+                "zeroExactRaw": true
+              },
+              "disabledResourcesZero": true,
+              "hdri": {
+                "off": 234,
+                "on": 232,
+                "weak": 204,
+                "zero": 234,
+                "zeroExactRaw": true
+              },
+              "lens": {
+                "disabledTemporalReleases": true,
+                "focusResetHasNoStaleHistory": true,
+                "nativeGuards": 5,
+                "raw": [
+                  242.07421875,
+                  98.66050720214844
+                ],
+                "spatial": [
+                  244.3701171875,
+                  5.42063045501709
+                ],
+                "temporalBytes": 98304,
+                "temporalChangedChannels": 2460,
+                "zeroLensIsRaw": true
+              },
+              "mixed": {
+                "off": 236,
+                "on": 235,
+                "weak": 208,
+                "zero": 236,
+                "zeroExactRaw": true
+              },
+              "passed": true
+            }
+          }
+        },
+        {
+          "version": "120",
+          "result": {
+            "passed": true,
+            "rendering120": {
+              "actualComputeShader": true,
+              "area": {
+                "off": 200,
+                "on": 117,
+                "weak": 73,
+                "zero": 200,
+                "zeroExactRaw": true
+              },
+              "direct": {
+                "off": 16,
+                "on": 16,
+                "weak": 16,
+                "zero": 16,
+                "zeroExactRaw": true
+              },
+              "disabledResourcesZero": true,
+              "hdri": {
+                "off": 235,
+                "on": 235,
+                "weak": 218,
+                "zero": 235,
+                "zeroExactRaw": true
+              },
+              "mixed": {
+                "off": 239,
+                "on": 238,
+                "weak": 220,
+                "zero": 239,
+                "zeroExactRaw": true
+              },
+              "passed": true
+            }
+          }
+        }
+      ]
+    },
+    "preparation": {
+      "passed": true,
+      "rendererStateRestoredBeforeAsyncWait": true,
+      "consumerBeforeDependencyCompilation": true,
+      "duplicateNodeCompiledOnce": true,
+      "cancellationStopsUnstartedFilters": true,
+      "rejectionRecorded": true,
+      "nativeRejectionForwarded": true,
+      "deviceMethodRestoredBeforeYield": true,
+      "captureWaitsForPreparedFrame": true,
+      "newAutomaticReadbacks": 0,
+      "newTargets": 0
+    },
+    "shaderBuilders": {
+      "passed": true,
+      "cases": [
+        {
+          "advanced": false,
+          "transmission": false,
+          "prefix": false,
+          "sourceBytes": 55453,
+          "functions": 37,
+          "uniforms": 20
+        },
+        {
+          "advanced": false,
+          "transmission": false,
+          "prefix": true,
+          "sourceBytes": 55493,
+          "functions": 37,
+          "uniforms": 23
+        },
+        {
+          "advanced": true,
+          "transmission": false,
+          "prefix": false,
+          "sourceBytes": 85272,
+          "functions": 45,
+          "uniforms": 20
+        },
+        {
+          "advanced": true,
+          "transmission": false,
+          "prefix": true,
+          "sourceBytes": 85347,
+          "functions": 45,
+          "uniforms": 23
+        },
+        {
+          "advanced": false,
+          "transmission": true,
+          "prefix": false,
+          "sourceBytes": 57764,
+          "functions": 38,
+          "uniforms": 20
+        },
+        {
+          "advanced": false,
+          "transmission": true,
+          "prefix": true,
+          "sourceBytes": 57804,
+          "functions": 38,
+          "uniforms": 23
+        },
+        {
+          "advanced": true,
+          "transmission": true,
+          "prefix": false,
+          "sourceBytes": 87583,
+          "functions": 46,
+          "uniforms": 20
+        },
+        {
+          "advanced": true,
+          "transmission": true,
+          "prefix": true,
+          "sourceBytes": 87658,
+          "functions": 46,
+          "uniforms": 23
+        }
+      ],
+      "lobes": [
+        {
+          "name": "coat",
+          "features": {
+            "coat": true,
+            "aniso": false,
+            "sheen": false,
+            "film": false
+          },
+          "sourceBytes": 79093
+        },
+        {
+          "name": "aniso",
+          "features": {
+            "coat": false,
+            "aniso": true,
+            "sheen": false,
+            "film": false
+          },
+          "sourceBytes": 78040
+        },
+        {
+          "name": "sheen",
+          "features": {
+            "coat": false,
+            "aniso": false,
+            "sheen": true,
+            "film": false
+          },
+          "sourceBytes": 79728
+        },
+        {
+          "name": "film",
+          "features": {
+            "coat": false,
+            "aniso": false,
+            "sheen": false,
+            "film": true
+          },
+          "sourceBytes": 78911
+        }
+      ],
+      "guides": [
+        {
+          "auxiliary": false,
+          "lens": false,
+          "curved": false,
+          "temporal": false
+        },
+        {
+          "auxiliary": false,
+          "lens": true,
+          "curved": false,
+          "temporal": false
+        },
+        {
+          "auxiliary": true,
+          "lens": true,
+          "curved": false,
+          "temporal": false
+        },
+        {
+          "auxiliary": true,
+          "lens": true,
+          "curved": true,
+          "temporal": false
+        },
+        {
+          "auxiliary": true,
+          "lens": false,
+          "curved": false,
+          "temporal": true
+        },
+        {
+          "auxiliary": true,
+          "lens": false,
+          "curved": true,
+          "temporal": true
+        },
+        {
+          "auxiliary": true,
+          "lens": true,
+          "curved": true,
+          "temporal": true
+        }
+      ],
+      "featureCacheChanges": true,
+      "freshUniformBindings": true,
+      "fixedSlotDecoders": true,
+      "rawBVHPrefix": true,
+      "weakTransmissionNotDropped": true,
+      "lensAndTemporalGuideCombinations": true,
+      "deviceInitializations": 0,
+      "draws": 0,
+      "actualGPUPixelsClaim": false
+    },
+    "advancedPhotonRegression": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-v1tWao\\acceptance.json",
+      "result": {
+        "passed": true,
+        "base": {
+          "off": [
+            235,
+            231,
+            224,
+            255
+          ],
+          "on": [
+            214,
+            207,
+            195,
+            255
+          ],
+          "weak": [
+            125,
+            115,
+            98,
+            255
+          ],
+          "zero": [
+            235,
+            231,
+            224,
+            255
+          ]
+        },
+        "coat": {
+          "off": [
+            45,
+            40,
+            32,
+            255
+          ],
+          "on": [
+            27,
+            23,
+            18,
+            255
+          ],
+          "weak": [
+            4,
+            3,
+            2,
+            255
+          ],
+          "zero": [
+            45,
+            40,
+            32,
+            255
+          ]
+        },
+        "sheen": {
+          "off": [
+            0,
+            2,
+            0,
+            255
+          ],
+          "on": [
+            0,
+            6,
+            0,
+            255
+          ],
+          "weak": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "zero": [
+            0,
+            2,
+            0,
+            255
+          ]
+        },
+        "aniso": {
+          "off": [
+            215,
+            209,
+            197,
+            255
+          ],
+          "on": [
+            170,
+            159,
+            142,
+            255
+          ],
+          "weak": [
+            73,
+            65,
+            54,
+            255
+          ],
+          "zero": [
+            215,
+            209,
+            197,
+            255
+          ]
+        },
+        "film": {
+          "off": [
+            235,
+            231,
+            224,
+            255
+          ],
+          "on": [
+            214,
+            207,
+            195,
+            255
+          ],
+          "weak": [
+            125,
+            115,
+            98,
+            255
+          ],
+          "zero": [
+            235,
+            231,
+            224,
+            255
+          ]
+        },
+        "targets": {
+          "off": [
+            146,
+            146,
+            146,
+            255
+          ],
+          "on": [
+            166,
+            166,
+            166,
+            255
+          ],
+          "weak": [
+            131,
+            131,
+            131,
+            255
+          ],
+          "zero": [
+            146,
+            146,
+            146,
+            255
+          ]
+        },
+        "typedCPP": true,
+        "backend": "WebGPU"
+      },
+      "errors": 0,
+      "exit": 0,
+      "serverClosed": true
+    },
+    "actual": [
+      {
+        "backend": "D3D11",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-2yeIfA\\acceptance.json",
+        "result": {
+          "passed": true,
+          "rendering124": {
+            "passed": true,
+            "initial": [
+              61,
+              154,
+              208,
+              255
+            ],
+            "moved": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "restored": [
+              61,
+              154,
+              208,
+              255
+            ],
+            "geometry": {
+              "logicalTriangles": 1344,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 168,
+              "atlasBytes": 327680,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": null
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 26.5654296875,
+              "variance": 204.07384395599365
+            },
+            "planar": {
+              "mean": 27.4326171875,
+              "variance": 1.1399908065795898
+            },
+            "filtered": {
+              "mean": 27.423828125,
+              "variance": 2.0781822204589844
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "rendering119": {
+            "passed": true,
+            "GlassLens": {
+              "raw": {
+                "mean": 27.21484375,
+                "variance": 552.2839202880859
+              },
+              "filtered": {
+                "mean": 29.0615234375,
+                "variance": 5.200316429138184
+              },
+              "zero": {
+                "mean": 27.21484375,
+                "variance": 552.2839202880859
+              }
+            },
+            "MirrorLens": {
+              "raw": {
+                "mean": 25.2724609375,
+                "variance": 669.2665853500366
+              },
+              "filtered": {
+                "mean": 27.9619140625,
+                "variance": 4.220229148864746
+              },
+              "zero": {
+                "mean": 25.2724609375,
+                "variance": 669.2665853500366
+              }
+            },
+            "cameraMotion": {
+              "changedChannels": 2346
+            },
+            "objectMotion": {
+              "changedChannels": 2385
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGPU",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-rGfXzx\\acceptance.json",
+        "result": {
+          "passed": true,
+          "rendering124": {
+            "passed": true,
+            "initial": [
+              65,
+              141,
+              197,
+              255
+            ],
+            "moved": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "restored": [
+              65,
+              141,
+              197,
+              255
+            ],
+            "geometry": {
+              "logicalTriangles": 1344,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 336,
+              "atlasBytes": 327680,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": null
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.19140625,
+              "variance": 140.63133239746094
+            },
+            "planar": {
+              "mean": 18.8759765625,
+              "variance": 0.4230947494506836
+            },
+            "filtered": {
+              "mean": 18.8818359375,
+              "variance": 0.5202169418334961
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "rendering119": {
+            "passed": true,
+            "GlassLens": {
+              "raw": {
+                "mean": 18.73828125,
+                "variance": 332.26353454589844
+              },
+              "filtered": {
+                "mean": 19.47265625,
+                "variance": 4.4914398193359375
+              },
+              "zero": {
+                "mean": 18.73828125,
+                "variance": 332.26353454589844
+              }
+            },
+            "MirrorLens": {
+              "raw": {
+                "mean": 16.9169921875,
+                "variance": 402.70697689056396
+              },
+              "filtered": {
+                "mean": 18.0009765625,
+                "variance": 4.295897483825684
+              },
+              "zero": {
+                "mean": 16.9169921875,
+                "variance": 402.70697689056396
+              }
+            },
+            "cameraMotion": {
+              "changedChannels": 2244
+            },
+            "objectMotion": {
+              "changedChannels": 2283
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGL2",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-DsDd5g\\acceptance.json",
+        "result": {
+          "passed": true,
+          "rendering124": {
+            "passed": true,
+            "initial": [
+              65,
+              140,
+              197,
+              255
+            ],
+            "moved": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "restored": [
+              65,
+              140,
+              197,
+              255
+            ],
+            "geometry": {
+              "logicalTriangles": 1344,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 168,
+              "atlasBytes": 327680,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": null
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.322265625,
+              "variance": 135.83169174194336
+            },
+            "planar": {
+              "mean": 18.9912109375,
+              "variance": 1.080977439880371
+            },
+            "filtered": {
+              "mean": 18.994140625,
+              "variance": 1.1073875427246094
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "rendering119": {
+            "passed": true,
+            "GlassLens": {
+              "raw": {
+                "mean": 21.1455078125,
+                "variance": 399.82550716400146
+              },
+              "filtered": {
+                "mean": 22.19921875,
+                "variance": 4.4915618896484375
+              },
+              "zero": {
+                "mean": 21.1455078125,
+                "variance": 399.82550716400146
+              }
+            },
+            "MirrorLens": {
+              "raw": {
+                "mean": 17.876953125,
+                "variance": 440.27392196655273
+              },
+              "filtered": {
+                "mean": 19.0673828125,
+                "variance": 2.49252986907959
+              },
+              "zero": {
+                "mean": 17.876953125,
+                "variance": 440.27392196655273
+              }
+            },
+            "cameraMotion": {
+              "changedChannels": 2307
+            },
+            "objectMotion": {
+              "changedChannels": 2307
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    ]
+  },
+  "storage": {
+    "newDependencies": 0,
+    "newAutomaticReadbacks": 0,
+    "newCurvedRenderTargets": 0,
+    "gpuPoseBytesPerInstance": 96,
+    "curveDefaultOff": true,
+    "oldVersionsAccumulated": false
+  },
+  "nativeBinaries": {
+    "rebuilt": true,
+    "editorSHA256": "5767d568e2feebd2b361c77d4f549112532cf7a0cbf2b0256cb1b56e7446216f",
+    "playerSHA256": "afe6dd039f449ac9d377c93983ec1a818f6a1fad3d2db02a99d015fcaa445e91"
+  },
+  "limits": [
+    "Whole game FPS,phone/full-engine/full-corpus not claimed.",
+    "Curved mode costs additional rays; cold shader preparation is separate from warm frame cost.",
+    "CPU world triangles/material records remain; GPU atlas savings are scene-dependent.",
+    "Skinned/morph previous normals use tangent fallback; global curved inverse solve and rough multi-lobe filtering remain approximate."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

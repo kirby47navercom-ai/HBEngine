@@ -1,12 +1,13 @@
+import {gpuFn} from './gpu-function-scope.js';
 import * as T from 'three/tsl';
 export function pathMicrofacetNode(smith,fresnel){
  const frame=n=>n.cross(n.z.abs().lessThan(.9).select(T.vec3(0,0,1),T.vec3(0,1,0))).normalize();
- const visible=T.Fn(([n,view,tangent,axes,angle,radius])=>{
+ const visible=gpuFn(([n,view,tangent,axes,angle,radius])=>{
   const bitangent=n.cross(tangent),v=T.vec3(view.dot(tangent).mul(axes.x),view.dot(bitangent).mul(axes.y),view.dot(n).max(.000001)).normalize(),x=T.vec3(1,0,0).toVar();T.If(v.xy.dot(v.xy).greaterThan(.000001),()=>{x.assign(T.vec3(v.y.negate(),v.x,0).normalize());});
   const y=v.cross(x),a=radius.sqrt().mul(angle.cos()),blend=v.z.add(1).mul(.5),b=T.float(1).sub(blend).mul(T.float(1).sub(a.mul(a)).max(0).sqrt()).add(blend.mul(radius.sqrt()).mul(angle.sin())),h=x.mul(a).add(y.mul(b)).add(v.mul(T.float(1).sub(a.mul(a)).sub(b.mul(b)).max(0).sqrt()));
   return tangent.mul(h.x.mul(axes.x)).add(bitangent.mul(h.y.mul(axes.y))).add(n.mul(h.z.max(.000001))).normalize();
  }).setLayout({name:'hbPathVisibleNormal',type:'vec3',inputs:[{name:'n',type:'vec3'},{name:'view',type:'vec3'},{name:'tangent',type:'vec3'},{name:'axes',type:'vec2'},{name:'angle',type:'float'},{name:'radius',type:'float'}]});
- const dielectric=T.Fn(([n,view,light,rough,ratio,radianceScale])=>{
+ const dielectric=gpuFn(([n,view,light,rough,ratio,radianceScale])=>{
   const result=T.vec4(0).toVar(),nv=n.dot(view),nl=n.dot(light),reflection=nl.greaterThan(0),sum=reflection.select(view.add(light),view.add(light.div(ratio.max(.000001))));
   T.If(nv.greaterThan(0).and(nl.abs().greaterThan(.000001)).and(sum.dot(sum).greaterThan(.00000001)),()=>{
    const original=sum.normalize(),h=original.dot(n).lessThan(0).select(original.negate(),original),vh=view.dot(h),lh=light.dot(h);

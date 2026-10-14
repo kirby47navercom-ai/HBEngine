@@ -9,9 +9,10 @@ export function rayProgramGLSL(programs){let code=rayTextureVariants(rayMaterial
 export const rayMaterialGLSL=`
 float hbRayMod(float a,float b){return a-b*floor(a/b);}
 vec4 hbRayScalar(float v){return vec4(v,v,v,v);}
-vec3 hbRayBary(float id,vec3 point){float at=hbGeometryInfo.w+id*6.0;vec3 delta=point-hbGeometryLoad(at).xyz,e1=hbGeometryLoad(at+1.0).xyz,e2=hbGeometryLoad(at+2.0).xyz;float a=dot(e1,e1),b=dot(e1,e2),c=dot(e2,e2),d=dot(delta,e1),e=dot(delta,e2),den=max(a*c-b*b,.000000000000000001),u=(c*d-b*e)/den,v=(a*e-b*d)/den;return vec3(1.0-u-v,u,v);}
+vec3 hbRayBary(float id,vec3 point){float at=hbGeometryInfo.w+id*6.0;vec3 delta=point-hbGeometryVertexLoad(at).xyz,e1=hbGeometryVertexLoad(at+1.0).xyz,e2=hbGeometryVertexLoad(at+2.0).xyz;float a=dot(e1,e1),b=dot(e1,e2),c=dot(e2,e2),d=dot(delta,e1),e=dot(delta,e2),den=max(a*c-b*b,.000000000000000001),u=(c*d-b*e)/den,v=(a*e-b*d)/den;return vec3(1.0-u-v,u,v);}
 float hbRayAttributes(float id){return hbTransport.y>1.5?hbGeometryLoad(hbTransport.x+id*2.0+1.0).z:0.0;}
-vec3 hbRayGeometric(float id){return normalize(hbGeometryLoad(hbGeometryInfo.w+id*6.0+3.0).xyz);}
+float hbRayOwner(float id){float at=hbRayAttributes(id);if(at<=0.0)return -id-1.0;float owner=hbGeometryLoad(at+2.0).w;return owner>0.0?owner:-id-1.0;}
+vec3 hbRayGeometric(float id){return normalize(hbGeometryVertexLoad(hbGeometryInfo.w+id*6.0+3.0).xyz);}
 vec3 hbRaySmoothNormal(float id,vec3 point){float at=hbRayAttributes(id);vec3 normal=hbRayGeometric(id);if(at>0.0){vec3 b=hbRayBary(id,point),candidate=hbGeometryLoad(at+2.0).xyz*b.x+hbGeometryLoad(at+3.0).xyz*b.y+hbGeometryLoad(at+4.0).xyz*b.z;if(dot(candidate,candidate)>.000001){candidate=normalize(candidate);normal=dot(normal,candidate)<0.0?-candidate:candidate;}}return normal;}
 vec2 hbRayUV(float id,vec3 point){float at=hbRayAttributes(id);if(at<=0.0)return vec2(0,0);vec3 b=hbRayBary(id,point);vec4 first=hbGeometryLoad(at);return first.xy*b.x+first.zw*b.y+hbGeometryLoad(at+1.0).xy*b.z;}
 vec3 hbRayOffset(float id,vec3 view,float width,float axis){vec3 n=hbRayGeometric(id),t=cross(n,view);if(dot(t,t)<.000001)t=cross(n,abs(n.z)<.9?vec3(0,0,1):vec3(0,1,0));t=normalize(t);return axis<.5?t*width:cross(n,t)*(width/max(.01,abs(dot(n,view))));}
@@ -62,17 +63,17 @@ result=hbRayRun(id,point,view,material,9.0,result,width);
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return v;}
 #endif
-vec4 hbRayField0Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=vec4(hbGeometryLoad(base).w,hbGeometryLoad(base+1.0).w,hbGeometryLoad(base+2.0).w,hbGeometryLoad(base+3.0).w);if(attributes<=0.0)return hbRayBound(result,0.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+0.0);
+vec4 hbRayField0Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=vec4(hbGeometryVertexLoad(base).w,hbGeometryVertexLoad(base+1.0).w,hbGeometryVertexLoad(base+2.0).w,hbGeometryVertexLoad(base+3.0).w);if(attributes<=0.0)return hbRayBound(result,0.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+0.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_0)
 result=hbRayRun(id,point,view,material,0.0,result,width);
 #endif
 return hbRayBound(result,0.0);}
-vec4 hbRayField1Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryLoad(base+4.0);if(attributes<=0.0)return hbRayBound(result,1.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+2.0);
+vec4 hbRayField1Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryVertexLoad(base+4.0);if(attributes<=0.0)return hbRayBound(result,1.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+2.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_1)
 result=hbRayRun(id,point,view,material,1.0,result,width);
 #endif
 return hbRayBound(result,1.0);}
-vec4 hbRayField2Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryLoad(base+5.0);if(attributes<=0.0)return hbRayBound(result,2.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+4.0);
+vec4 hbRayField2Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryVertexLoad(base+5.0);if(attributes<=0.0)return hbRayBound(result,2.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+4.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_2)
 result=hbRayRun(id,point,view,material,2.0,result,width);
 #endif
@@ -88,12 +89,12 @@ result=hbRayRun(id,point,view,material,4.0,result,width);
 #endif
 return hbRayBound(result,4.0);}
 float hbRayCutoff(float id){float at=hbRayAttributes(id);return at>0.0?hbGeometryLoad(hbGeometryLoad(at+1.0).z+6.0).w:0.0;}
-vec3 hbRayNormalLod(float id,vec3 point,vec3 view,float width){vec3 n=hbRaySmoothNormal(id,point);float at=hbRayAttributes(id);if(at<=0.0||hbGeometryLoad(hbGeometryLoad(at+1.0).z+7.0).z<.5)return n;vec4 uv=hbGeometryLoad(at);vec2 uv2=hbGeometryLoad(at+1.0).xy,du=uv.zw-uv.xy,dv=uv2-uv.xy;float determinant=du.x*dv.y-du.y*dv.x;if(abs(determinant)<.0000001)return n;float base=hbGeometryInfo.w+id*6.0;vec3 e1=hbGeometryLoad(base+1.0).xyz,e2=hbGeometryLoad(base+2.0).xyz,t=(e1*dv.y-e2*du.y)/determinant,b=(-e1*dv.x+e2*du.x)/determinant;t-=n*dot(n,t);if(dot(t,t)<.000001)return n;t=normalize(t);b=normalize(cross(n,t))*(dot(cross(n,t),b)<0.0?-1.0:1.0);vec3 map=hbRayField3Lod(id,point,view,width).xyz,candidate=(t*map.x+b*map.y+n*map.z),gn=hbRayGeometric(id);if(dot(candidate,candidate)<.000001)return n;candidate=normalize(candidate);return dot(candidate,gn)<0.0?-candidate:candidate;}
+vec3 hbRayNormalLod(float id,vec3 point,vec3 view,float width){vec3 n=hbRaySmoothNormal(id,point);float at=hbRayAttributes(id);if(at<=0.0||hbGeometryLoad(hbGeometryLoad(at+1.0).z+7.0).z<.5)return n;vec4 uv=hbGeometryLoad(at);vec2 uv2=hbGeometryLoad(at+1.0).xy,du=uv.zw-uv.xy,dv=uv2-uv.xy;float determinant=du.x*dv.y-du.y*dv.x;if(abs(determinant)<.0000001)return n;float base=hbGeometryInfo.w+id*6.0;vec3 e1=hbGeometryVertexLoad(base+1.0).xyz,e2=hbGeometryVertexLoad(base+2.0).xyz,t=(e1*dv.y-e2*du.y)/determinant,b=(-e1*dv.x+e2*du.x)/determinant;t-=n*dot(n,t);if(dot(t,t)<.000001)return n;t=normalize(t);b=normalize(cross(n,t))*(dot(cross(n,t),b)<0.0?-1.0:1.0);vec3 map=hbRayField3Lod(id,point,view,width).xyz,candidate=(t*map.x+b*map.y+n*map.z),gn=hbRayGeometric(id);if(dot(candidate,candidate)<.000001)return n;candidate=normalize(candidate);return dot(candidate,gn)<0.0?-candidate:candidate;}
 #ifdef HB_PATH_ADVANCED
-vec3 hbRayCoatNormalLod(float id,vec3 point,vec3 view,float width){vec3 n=hbRaySmoothNormal(id,point);float at=hbRayAttributes(id);if(at<=0.0||hbGeometryLoad(at+1.0).w<9.5||hbGeometryLoad(hbGeometryLoad(at+1.0).z+19.0).z<.5)return n;vec4 uv=hbGeometryLoad(at);vec2 uv2=hbGeometryLoad(at+1.0).xy,du=uv.zw-uv.xy,dv=uv2-uv.xy;float determinant=du.x*dv.y-du.y*dv.x;if(abs(determinant)<.0000001)return n;float base=hbGeometryInfo.w+id*6.0;vec3 e1=hbGeometryLoad(base+1.0).xyz,e2=hbGeometryLoad(base+2.0).xyz,t=(e1*dv.y-e2*du.y)/determinant,b=(-e1*dv.x+e2*du.x)/determinant;t-=n*dot(n,t);if(dot(t,t)<.000001)return n;t=normalize(t);b=normalize(cross(n,t))*(dot(cross(n,t),b)<0.0?-1.0:1.0);vec3 map=hbRayField9Lod(id,point,view,width).xyz,candidate=(t*map.x+b*map.y+n*map.z),gn=hbRayGeometric(id);if(dot(candidate,candidate)<.000001)return n;candidate=normalize(candidate);return dot(candidate,gn)<0.0?-candidate:candidate;}
+vec3 hbRayCoatNormalLod(float id,vec3 point,vec3 view,float width){vec3 n=hbRaySmoothNormal(id,point);float at=hbRayAttributes(id);if(at<=0.0||hbGeometryLoad(at+1.0).w<9.5||hbGeometryLoad(hbGeometryLoad(at+1.0).z+19.0).z<.5)return n;vec4 uv=hbGeometryLoad(at);vec2 uv2=hbGeometryLoad(at+1.0).xy,du=uv.zw-uv.xy,dv=uv2-uv.xy;float determinant=du.x*dv.y-du.y*dv.x;if(abs(determinant)<.0000001)return n;float base=hbGeometryInfo.w+id*6.0;vec3 e1=hbGeometryVertexLoad(base+1.0).xyz,e2=hbGeometryVertexLoad(base+2.0).xyz,t=(e1*dv.y-e2*du.y)/determinant,b=(-e1*dv.x+e2*du.x)/determinant;t-=n*dot(n,t);if(dot(t,t)<.000001)return n;t=normalize(t);b=normalize(cross(n,t))*(dot(cross(n,t),b)<0.0?-1.0:1.0);vec3 map=hbRayField9Lod(id,point,view,width).xyz,candidate=(t*map.x+b*map.y+n*map.z),gn=hbRayGeometric(id);if(dot(candidate,candidate)<.000001)return n;candidate=normalize(candidate);return dot(candidate,gn)<0.0?-candidate:candidate;}
 #endif
 vec4 hbRayField0(float id,vec3 point,vec3 view){return hbRayField0Lod(id,point,view,0.0);}
-vec4 hbRayField1(float id,vec3 point,vec3 view){float at=hbRayAttributes(id);vec4 result=hbGeometryLoad(hbGeometryInfo.w+id*6.0+4.0);if(at>0.0){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+2.0);
+vec4 hbRayField1(float id,vec3 point,vec3 view){float at=hbRayAttributes(id);vec4 result=hbGeometryVertexLoad(hbGeometryInfo.w+id*6.0+4.0);if(at>0.0){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+2.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_1)
  vec4 program=hbGeometryLoad(material+3.0);if(program.y>.5){
 #ifdef HB_WEBGL_RAY_DATA
