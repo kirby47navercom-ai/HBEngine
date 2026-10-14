@@ -1,0 +1,346 @@
+{
+  "version": 1,
+  "date": "2026-10-14T06:47:51.476Z",
+  "featureCommit": "6577b6673a63bfc4457784a892334b19943cfbf7",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294\\HBEngine.exe",
+    "bundleHash": "2918599db24bc29471bad8dc963f0a217bf7f41eb5686786d181d39b478e6bf5",
+    "files": 2198,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 2175,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3",
+          "bytes": 171035890,
+          "manifestSHA256": "aa4b41da0c24855f53ad20b6d9b82ef78daa8ceb43e1bb2787045710efcbe53e"
+        }
+      ],
+      "bytes": 171035890,
+      "failures": [],
+      "date": "2026-10-14T06:47:37.5956745Z",
+      "skipped": [],
+      "preserved": [],
+      "remaining": [
+        "2918599db24bc294"
+      ]
+    }
+  },
+  "executableSHA256": "5767d568e2feebd2b361c77d4f549112532cf7a0cbf2b0256cb1b56e7446216f",
+  "playerSHA256": "afe6dd039f449ac9d377c93983ec1a818f6a1fad3d2db02a99d015fcaa445e91",
+  "checks": {
+    "manifestInventoryHashes": true,
+    "shippedProductHashes": true,
+    "shortcutAndAssociation": true,
+    "priorManifestInventoriedBeforeRetirement": true,
+    "obsoleteVersionRetired": true,
+    "activeOrProjectVersionProtected": false,
+    "modifiedFilesPreserved": true,
+    "topLevelProfileFilesUnchanged": true,
+    "failedStagingAbsent": true,
+    "singleMaintenanceReceipt": true
+  },
+  "links": {
+    "projectCommand": "\"C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294\\HBEngine.exe\" \"%1\"",
+    "desktopTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294\\HBEngine.exe",
+    "shortcutTarget": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294\\HBEngine.exe",
+    "extension": "HBEngine.Project"
+  },
+  "products": [
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "831028f5e5266f2cfcf2b227e6c62cb9506b6dc228301e6e75752e36d19c1921",
+      "size": 29315
+    },
+    {
+      "path": "prototype/game-renderer.js",
+      "sha256": "ddd7b604254861fbc7805253e07fbe55072f61e76744e181b4e67d0d5677e002",
+      "size": 3217
+    },
+    {
+      "path": "prototype/geometry-bvh.js",
+      "sha256": "51d94aae0cde86ada6da9a0358dbdd3160cb2fbece20328dfb0decbb3f2b7c9a",
+      "size": 5874
+    },
+    {
+      "path": "prototype/geometry-gi-gpu.js",
+      "sha256": "1347600a9de91aa6dbcc86b21ffcb2c2b8546f08345342c54e226bf9855d80f5",
+      "size": 10825
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "sha256": "6abbde0fcc1194dac22c99d9f1a4347ea80655c75644358184ce988b252bf2b3",
+      "size": 8879
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "sha256": "6dd8980dac94c2290fd14e353aaa69bb497920c377a32308f5ef37800022a0b7",
+      "size": 22396
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "sha256": "44d2cb4c3bbde4444db8e8bab8a4c088734275a55f7400d9bf6650b57317ce87",
+      "size": 11823
+    },
+    {
+      "path": "prototype/gpu-function-scope.js",
+      "sha256": "25e1f10a6130ce880ba0c79bcc7009fde22970e877b615a821e430319e66e1dc",
+      "size": 841
+    },
+    {
+      "path": "prototype/gpu-path-preparation.js",
+      "sha256": "a98b704a9409bf26d1f7e3713e574133416f2c645c7335ba2f8b32fb0dc0fd4a",
+      "size": 2865
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "428b67feab7ec1a23395139c4feb3aa2a7aa8d261f615db81d182af40ef0a5c7",
+      "size": 46674
+    },
+    {
+      "path": "prototype/path-caustics-gpu.js",
+      "sha256": "1018f854adfa2d0d5e61d91fe8eba3e41ce523688253742bad6ce17f15b369dc",
+      "size": 10549
+    },
+    {
+      "path": "prototype/path-caustics-shader.js",
+      "sha256": "03f7445eb182dc478a6ed641d6cd46100bb4358fc0df23cfe93afcdb6109d95e",
+      "size": 7771
+    },
+    {
+      "path": "prototype/path-curved-guide.js",
+      "sha256": "1fe15df6cfa11a61a5f0b2fabf4ca4be87ddc49dfacebe6968765604526b2161",
+      "size": 1931
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "sha256": "2f3c8519bb7237436be53bd6f25fec75789b40eee37f3efdb17bcc39320182e3",
+      "size": 4979
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "sha256": "99611e99a6a8a265459920b8cb6028783bdcb70f4914a8b6d18cca215bed0018",
+      "size": 10187
+    },
+    {
+      "path": "prototype/path-environment-gpu.js",
+      "sha256": "72fd957095ab9a2ef482051fe035df26402f64a2ecf06123e002723a42ff780a",
+      "size": 4906
+    },
+    {
+      "path": "prototype/path-guide-frames.js",
+      "sha256": "97a0a1ca9320d9adaafe75065c73b5d1ff15bdd2c20a2bc89d0fb8ceff02c204",
+      "size": 1335
+    },
+    {
+      "path": "prototype/path-guide-gpu.js",
+      "sha256": "5e7b8bf23e479651769a28de2b721d4416cd224d817f8fb9e275c5259851899b",
+      "size": 13723
+    },
+    {
+      "path": "prototype/path-media-gpu.js",
+      "sha256": "784fcb910138ab19c18fe9006ea2af4d8ec1d283111c2a8f7cc2a5e72de75dce",
+      "size": 3463
+    },
+    {
+      "path": "prototype/path-microfacet-gpu.js",
+      "sha256": "c4c4222bf36a9dd39ab5090f0efd5106bb7424e4e89da0298237504bf7693435",
+      "size": 2916
+    },
+    {
+      "path": "prototype/path-photon-shader.js",
+      "sha256": "79bf5167a2d1baa5a77bfb9c3eabd10fc6f2fcc92fda55768e0bb52441fcab3f",
+      "size": 2732
+    },
+    {
+      "path": "prototype/path-surface-gpu.js",
+      "sha256": "0b14b820c810f78134de1e2fc6e142df9247e78da9a28e0f8d97b0f1eb8a4929",
+      "size": 7809
+    },
+    {
+      "path": "prototype/path-surface-shader.js",
+      "sha256": "5e6ff93879b17951acb8bf6d54bb58c89da38885ecbf8ba9a1a378bc07d03f32",
+      "size": 5383
+    },
+    {
+      "path": "prototype/path-tracing-gpu.js",
+      "sha256": "a51caa9c7e9367e913d0e9b5b83931618c387be02bd6756f5e3faf71b0e6e133",
+      "size": 23411
+    },
+    {
+      "path": "prototype/path-tracing-shader.js",
+      "sha256": "7c426b5253c92d29cf5727ef5abfda421f23f8fd0bb7a466d4c37779e1318c05",
+      "size": 17174
+    },
+    {
+      "path": "prototype/path-tracing.js",
+      "sha256": "fd8d8335554b1c64faf73d67657d60aefd547aa1762817d746c503243c748531",
+      "size": 3610
+    },
+    {
+      "path": "prototype/player.js",
+      "sha256": "fb94e2f6f46d8a34c40f94c35db0370591b1c165a6913d16c538e696dde1e2f3",
+      "size": 29710
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "sha256": "5c105bfe5b5e20da2d2b4c356a294ab34a7e1d46f58f9f1aa664ad62ee09c582",
+      "size": 6757
+    },
+    {
+      "path": "prototype/ray-geometry-key.js",
+      "sha256": "a7b34d5ec04ebc26565022adb74753facd185729e9a17aa6b0d93c21466fde85",
+      "size": 659
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "sha256": "408e2f961dd2abb9484a33ee8e7bd46bb75361013ec9052f7680212032875e4d",
+      "size": 16836
+    },
+    {
+      "path": "prototype/ray-material-shader.js",
+      "sha256": "218f3823d6953616a2c65fd85be3786294593c789a204623c48af16b0a594c26",
+      "size": 19336
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "sha256": "639a29a85f70c66740e923cb737540cd0a7f15dbc8414ca7139ff161e95ecd78",
+      "size": 27137
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "f893d5a56dd4715811b7d873be157c521688c45ed8708b09ecc7a0e69c029771",
+      "size": 59159
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "sha256": "5b1682df06ca43936834645fc4be0c480b84446778b068d62be544c7d409a81d",
+      "size": 13969
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "sha256": "68414232d42af51f30ca592b2134d35d5cd033b50210f2c693f07627635d7931",
+      "size": 19945
+    },
+    {
+      "path": "prototype/screen-effects.js",
+      "sha256": "99e385748089f1def62af70154dec144e38fe03a224f63712d2a1fc19919d1a0",
+      "size": 13830
+    },
+    {
+      "path": "prototype/shared-ray-bary-gpu.js",
+      "sha256": "498576d02e84cbbce23f1b63bf04bdf879f77e89c80a361370b96a8a6392dcba",
+      "size": 1308
+    },
+    {
+      "path": "prototype/shared-ray-geometry-gpu.js",
+      "sha256": "c8ea6b3103ffd350da275048441923a2973b713292ff2abd412f9dcdee352323",
+      "size": 2292
+    },
+    {
+      "path": "prototype/shared-ray-geometry.js",
+      "sha256": "36c880ed121e9316d5d24de0ba1973949a1cb5cda87d53a722eb1e41c8a5ac53",
+      "size": 1816
+    },
+    {
+      "path": "prototype/shared-ray-record-gpu.js",
+      "sha256": "9ee6dfb902af30b8e87b91dbedf4c105dff0c1622ab4efd19104710fbdf8e2c4",
+      "size": 1255
+    },
+    {
+      "path": "tools/check-gpu-function-scope.mjs",
+      "sha256": "bb0cceef05e3068ed0603cd5a67bbcdbffdb61fc4d21dc54bb98e7344f432f16",
+      "size": 917
+    },
+    {
+      "path": "tools/check-gpu-shared-shader.mjs",
+      "sha256": "2a928f0bf3d78574c852d0fff86ad6244023516b7febb651819c54f927f9c7da",
+      "size": 7671
+    },
+    {
+      "path": "tools/check-native-scene-render.mjs",
+      "sha256": "5293db1e8f278ae464e52a364f06f4fdfc5eb4a0dacd5543573c014b67b3d1e7",
+      "size": 13155
+    },
+    {
+      "path": "tools/check-path-history-ownership.mjs",
+      "sha256": "99f97f70f495163d66b91e9e5832e072ecd5809fbcac67f65d7b32eb77021804",
+      "size": 2592
+    },
+    {
+      "path": "tools/check-rendering-124.mjs",
+      "sha256": "a0accc1bbfe870623cb5576b949b4dc70387ac99c1b2c43f8d210b3f823dbada",
+      "size": 4537
+    },
+    {
+      "path": "tools/check-rendering-125.mjs",
+      "sha256": "68e667f0ac6a662aa13882b5abfbc1124a2f718ff417307d4c520ecd49d4cb62",
+      "size": 3291
+    },
+    {
+      "path": "tools/check-rendering-126.mjs",
+      "sha256": "2cf759b744a04909c0b090c67dbbfb907ae24df0a348aea90de042932077fdf8",
+      "size": 2939
+    },
+    {
+      "path": "tools/check-rendering-127.mjs",
+      "sha256": "98e3759184f68e4385c487a36cd5e6662879bcfe8e327d97301bfcbea10ae8d6",
+      "size": 4887
+    },
+    {
+      "path": "tools/rendering-119-fixture.mjs",
+      "sha256": "422ec96a923d74506f4b008b323f82e2d64e1794cdef260f2231de7419c4ac98",
+      "size": 6874
+    },
+    {
+      "path": "tools/rendering-124-fixture.mjs",
+      "sha256": "225eaf53be69808f768a9e08ea551ced8f11cef1c0a94afbd77ae200017be49b",
+      "size": 5815
+    },
+    {
+      "path": "tools/rendering-125-fixture.mjs",
+      "sha256": "b3aeb63516ec7b1f5238ab1f0bfc6d54454d53b43d2650e7233a874f3f4aca9c",
+      "size": 5103
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "sha256": "046362f4ee97bbe031a897e7e4da52f43c1a7e25178501ebba59c33ca4e8e039",
+      "size": 21339
+    }
+  ],
+  "preservation": [
+    {
+      "file": "C:\\Users\\kirby\\AppData\\Local\\HBEngine\\User\\recent-projects.json",
+      "sha256": "ea59f0bcd9e962846f8a7db41788a8445a30d3c97cbb9cb60b73c1fe0eb0c467",
+      "currentSHA256": "ea59f0bcd9e962846f8a7db41788a8445a30d3c97cbb9cb60b73c1fe0eb0c467"
+    }
+  ],
+  "previous": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4b75b106780c4eb3",
+    "bundleHash": "4b75b106780c4eb3be2d2061506425592dc176f3a7e75f01638c147faa73d8d1",
+    "manifestSHA256": "aa4b41da0c24855f53ad20b6d9b82ef78daa8ceb43e1bb2787045710efcbe53e",
+    "allFilesCheckedBeforeUpdate": 2174,
+    "observedModifiedFiles": 0,
+    "retired": true
+  },
+  "preservationInventory": {
+    "file": "native/build/preinstall-124.json",
+    "sha256": "24f622c7d3b20cf605ab178163993bc7e52f17a7a56e279ba3eef12e18bf5390",
+    "duplicatedInventoryInReceipt": false
+  },
+  "remainingVersions": [
+    "2918599db24bc294"
+  ],
+  "scope": {
+    "normalAppStarted": false,
+    "userWindowsRestarted": false,
+    "originalGameFilesModified": false,
+    "profileReadScope": "Before-update immutable install inventory and top-level profile only; original games untouched.",
+    "phoneVerification": false,
+    "wholeGamePerformance": false,
+    "receiptStoredOutsideImmutableBundle": true
+  }
+}

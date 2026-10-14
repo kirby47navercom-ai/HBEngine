@@ -4,7 +4,7 @@
 
 CPU23·현재 native124/guard·기존118/120 재사용 binary·실제D3D2yeIfA/GPUrGfXzx/GLDsDd5g의124/125/119 묶음·추가GPUv1tWao의121광자/고급금속·실제C++/원본/errors0/종료/서버해제 통과. 세 원장과 소스 SHA는 [124](docs/research/RENDERING_124.json), 설명은 [124](docs/RENDERING_124.md)·[125](docs/RENDERING_125.md)·[126](docs/RENDERING_126.md)·[127](docs/RENDERING_127.md).
 
-묶음 CPU·native·실제 D3D/GL/GPU 검증과 설치 전환 진행; gate는 RENDERING_124.json 실제 결과를 따른다.
+설치 검증 완료: C:\Users\kirby\HBEngine\Versions\2918599db24bc294; 새 명세 2198개, 소스 52개·실행파일·바로가기·연결 대조. 이전 2174개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_124.json).
 
 기존 누적 엔진 원장과 렌더링 계획을 유지한다. 스킨/모프 이전 법선은 접선 fallback이며 거친 다중 로브·전역 곡면 역해·실게임/폰/FPS·전체 corpus 완료로 승격하지 않는다. Versions는 검증 후 전환·이전 사본 정리 정책이다.
 

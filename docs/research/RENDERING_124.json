@@ -1591,7 +1591,12 @@
     "newCurvedRenderTargets": 0,
     "gpuPoseBytesPerInstance": 96,
     "curveDefaultOff": true,
-    "oldVersionsAccumulated": false
+    "oldVersionsAccumulated": false,
+    "updateRemovedBytes": 171035890,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "2918599db24bc294"
+    ]
   },
   "nativeBinaries": {
     "rebuilt": true,
@@ -1605,7 +1610,17 @@
     "Skinned/morph previous normals use tangent fallback; global curved inverse solve and rough multi-lobe filtering remain approximate."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "6577b6673a63bfc4457784a892334b19943cfbf7",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\2918599db24bc294",
+    "bundleHash": "2918599db24bc29471bad8dc963f0a217bf7f41eb5686786d181d39b478e6bf5",
+    "files": 2198,
+    "remainingVersions": [
+      "2918599db24bc294"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_124.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
   }
 }
