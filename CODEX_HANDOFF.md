@@ -4,7 +4,7 @@ SkyLight HDRI를 경로 추적 없이 GGX/SH9/BRDF·지역 프로브 fallback·�
 
 네이티브 4097광원·비활성 빌드·CPU25·환경34·실제 D3D11/wuQQb5의 래스터/CPP/그림자/128과 GL/dobP23·GPU/prn66a의128/124/125/119 회귀·errors0/exit0/서버해제 통과. 화면 밖 HDRI 굴절과 네이티브 캡처도 확인. [검증 원장](docs/research/RASTER_LIGHTING_131.json).
 
-설치 전환 대기: 131 묶음 검증 파일과 바로가기·프로필·이전 버전을 대조한다.
+설치 검증 완료: C:\Users\kirby\HBEngine\Versions\0672b6fdfc6dbc80; 새 명세 2215개, 소스 15개·실행파일·바로가기·연결 대조. 이전 2209개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_131.json).
 
 기존 누적 목표·미완료 렌더링/엔진 원장 유지. 전체 corpus/API·UE MegaLights/HWRT·DFAO/Lightmass·실게임 FPS·휴대폰 검증으로 승격하지 않는다.
 

@@ -903,7 +903,24 @@
     "Complete engine/manual/API corpus analysis remains open; linked D3D specification and failed NVIDIA PDF retrieval are registered separately."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "5344245f4d6d22fed889383c9d2fd82856c81519",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0672b6fdfc6dbc80",
+    "bundleHash": "0672b6fdfc6dbc80f3ddfaf09b719c9b9e22b84f5cc12bf4a87a294ed17e4739",
+    "files": 2215,
+    "remainingVersions": [
+      "0672b6fdfc6dbc80"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_131.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 171312097,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "0672b6fdfc6dbc80"
+    ]
   }
 }
