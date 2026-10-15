@@ -8,6 +8,6 @@
 
 검증: CPU12+확장10, GL HxDX4t의 복잡 노멀/모프/곡면/시간/HDRI/affine; Editor4JnYi1의 HTTP/실제 WebAudio/UI/Undo/2D/C++/BP/보존; release D3D11 R0IoBZ의 C++/BP/오디오/2D/릴리스 캡처 금지; development D3D11 Z31BbY의 같은 기능과 실제13676px 스프라이트. 오류0/종료0/서버 해제. 그림 직접 열어 UI·포즈를 확인했다. 실패 기록/원인은 DEBUG_HANDOFF 유지.
 
-설치: 전환 준비 중; 완료 후 USER_INSTALL_156.json으로 갱신. 기존설치 a596df89fc3cc306/Versions1과 사용자 프로필·창·게임을 보호한다.
+설치 완료: C:/Users/kirby/HBEngine/Versions/16e137715970d7cd. USER_INSTALL_156.json의2270파일 전체SHA/크기·23기능 제품·두 실행파일·생성API·바로가기2개/.hbproject·설치본 로컬 원장/실제 EXE 시작·서버종료·프로필/장면 보존을 확인했다. 이전 사본171842046B 정리,Versions1개다. 묶음 검사 캐시574396713B도 정리했다. 사용자 창을 재시작하지 않았다.
 
 다음: 원장 RND-06의 GL 첫path~7.9초/시간가이드~7.4초 및 GPU 초기 준비, RND-07의 이전 의존 노멀/mip,2D 다른 체인/IK bake,world terrain/LOD/streaming/nav/제작/플랫폼/실기기/전체 엔진 잔여. 구현 범위 밖 목표를 지우지 않는다. 사용자 창/원본/프로필은 검사용으로 쓰지 않고, 검사 산출물은 tools/test-artifacts.mjs로 정리한다. Versions는 현재1개만 남긴다.

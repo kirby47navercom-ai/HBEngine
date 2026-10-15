@@ -1,6 +1,6 @@
 # 156–164 — 원장·오디오·2D 리타게팅 — 2026-10-16
 
-새 격리 통합 검사: 미리듣기 입력은 선택 버스로 들어가므로 Master 선택 상태에서 Music 미터를 검사하던 fixture를 Music 선택으로 수정. 숨긴 창의 물리 키는 viewport focus가 없어 전달되지 않았으므로 실제 runtime.input 계약으로 변경했고 native Blend/Get/BP/Legacy까지 통과했다. 2초 Fade는 두 입력 RPC와 다음 조회 이전에 끝나므로 진단용 fixture Fade만6초로 두며 runtime/기존 deadline은 유지한다. ndE00a의 새 리타게팅 수동 폼은 자체 modal이 열린 채 shared authoring API를 호출해 automationEditable의 EDITOR_BUSY를 맞았다. 기존 머테리얼 추출과 같이 제출 때 modal을 닫고, 실패하면 동일 폼을 다시 열며 revision·Undo·공통 검증을 유지한다. 재현/실패 로그는 native/build에 보존한다. 통과한 GL 장면은 불변 소스라 다시 실행하지 않는다.
+새 격리 통합 검사: 미리듣기 입력은 선택 버스로 들어가므로 Master 선택 상태에서 Music 미터를 검사하던 fixture를 Music 선택으로 수정. 숨긴 창의 물리 키는 viewport focus가 없어 전달되지 않았으므로 실제 runtime.input 계약으로 변경했고 native Blend/Get/BP/Legacy까지 통과했다. 2초 Fade는 두 입력 RPC와 다음 조회 이전에 끝나므로 진단용 fixture Fade만6초로 두며 runtime/기존 deadline은 유지한다. ndE00a의 새 리타게팅 수동 폼은 자체 modal이 열린 채 shared authoring API를 호출해 automationEditable의 EDITOR_BUSY를 맞았다. 기존 머테리얼 추출과 같이 제출 때 modal을 닫고, 실패하면 동일 폼을 다시 열며 revision·Undo·공통 검증을 유지한다. 재현/실패 로그는 native/build에 보존한다. 통과한 GL 장면은 불변 소스라 다시 실행하지 않는다. 최종 Editor4JnYi1·D3D11 release R0IoBZ/development Z31BbY 및 설치 EXE가 오류0/종료0으로 통과했다. 릴리스는 캡처 금지를 유지하고 개발 빌드에서13676px 변형을 확인했다. 첫 Player fixture의 기본 WebGL2 프로필과 release 캡처 금지에 대한 잘못된 가정은 검사 설정/분기로 수정했으며 런타임 제한은 완화하지 않았다. 설치 검증의 잘못된 registry 기본값 조회식은 GetValue로 고쳤고 실제 연결/전체SHA/프로필/EXE를 재확인했다.
 
 # 145–150 — 초기 준비와 누적 변환 — 2026-10-15
 

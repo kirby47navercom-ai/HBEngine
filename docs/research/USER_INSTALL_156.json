@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "date": "2026-10-15T16:06:50.931Z",
+  "featureCommit": "a1ebc24d63aae4aee9439dbf06e17f567eecc074",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd\\HBEngine.exe",
+    "bundleHash": "16e137715970d7cd987c878698a971512d06a8e255bf1ee47d4558793510e7ed",
+    "files": 2270,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 2253,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306",
+          "bytes": 171842046,
+          "manifestSHA256": "286677fa4bd57f39d1ee18f2b14b1ba040797c43b636b009559f4724ba2cf92d"
+        }
+      ],
+      "bytes": 171842046,
+      "failures": [],
+      "date": "2026-10-15T16:05:13.7838648Z",
+      "skipped": [],
+      "preserved": [],
+      "remaining": [
+        "16e137715970d7cd"
+      ]
+    }
+  },
+  "verification": {
+    "passed": true,
+    "manifestFiles": 2270,
+    "manifestBytes": 171632845,
+    "allManifestHashes": true,
+    "sourceProducts": 23,
+    "sourceProductsMatch": true,
+    "generatedApi": true,
+    "desktopBinariesMatch": true,
+    "shortcuts": {
+      "association": "\"C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd\\HBEngine.exe\" \"%1\"",
+      "links": [
+        {
+          "link": "C:/Users/kirby/HBEngine/HBEngine.lnk",
+          "target": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd\\HBEngine.exe",
+          "workingDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd"
+        },
+        {
+          "link": "C:/Users/kirby/OneDrive/바탕 화면/HBEngine 사용자용.lnk",
+          "target": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd\\HBEngine.exe",
+          "workingDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd"
+        }
+      ]
+    },
+    "profileFiles": 1,
+    "userProfileUnchanged": true,
+    "versions": [
+      "16e137715970d7cd"
+    ],
+    "installedLocalStatus": {
+      "verified": 39,
+      "partial": 28,
+      "unimplemented": 8,
+      "unverified": 3
+    },
+    "installedNativeSmoke": {
+      "ok": true,
+      "embedded": true,
+      "workspace": "editor",
+      "port": 7917,
+      "exit": 0,
+      "serverClosed": true,
+      "fixtureSceneUnchanged": true
+    },
+    "originalGamesUsedForTests": false,
+    "userWindowsRestarted": false,
+    "cleanup": {
+      "failures": [],
+      "freeAfter": 471645569024,
+      "freeBefore": 471617892352,
+      "deleted": 1,
+      "date": "2026-10-15T16:06:50.8038568Z",
+      "files": 403,
+      "bytes": 27378055,
+      "skipped": [],
+      "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792080410193-717c7db7-f5a0-4597-9874-d9fbde1d17d5"
+    }
+  },
+  "verificationHarnessCorrection": "Registry association was correct on install. Replaced a malformed PowerShell default-value property expression with GetValue and reran manifest/links/profile/installed CLI/native smoke verification."
+}
