@@ -954,7 +954,24 @@
     "This synthetic correctness/resource suite does not establish whole-game FPS, phone performance, complete engine/API/manual equivalence or hardware ray tracing."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "28aef5c262ab104450d724bd96958e52be410805",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7817329d71ea84e7",
+    "bundleHash": "7817329d71ea84e70a95d2c2c1eb8681b854bd8ab991960d22bbad27b7457c65",
+    "files": 2223,
+    "remainingVersions": [
+      "7817329d71ea84e7"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_134.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 171407660,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "7817329d71ea84e7"
+    ]
   }
 }
