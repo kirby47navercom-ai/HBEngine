@@ -998,7 +998,24 @@
     "Global curved inverse, rough multi-lobe transport, DFAO/Lightmass/hardware ray tracing and prior non-rendering engine goals remain in the cumulative ledger. Synthetic correctness/resource checks do not establish whole-game FPS or phone performance."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "9cce8851dc5dbe5a2939c2d0bfda714dd4371411",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\07f60ef23e2f7911",
+    "bundleHash": "07f60ef23e2f79113fca58c3f8c1fb232e9a802b258595b5050b190bdc8b4e85",
+    "files": 2230,
+    "remainingVersions": [
+      "07f60ef23e2f7911"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_138.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 171497238,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "07f60ef23e2f7911"
+    ]
   }
 }
