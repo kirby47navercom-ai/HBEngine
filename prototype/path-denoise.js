@@ -11,7 +11,11 @@ float differentialIDs[4];vec3 ro[4],rd[4],planes[16],planeNormals[16],currentPla
 ro[0]=hbEye.w>.5?hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),0.0):origin;ro[1]=hbEye.w>.5?hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),0.0):origin;rd[0]=normalize(hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),.9999)-ro[0]);rd[1]=normalize(hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),.9999)-ro[1]);vec3 focus=origin+direction*hbPathLens.y/max(.000001,dot(direction,forward));ro[2]=origin+right*hbPathLens.x;ro[3]=origin+up*hbPathLens.x;rd[2]=normalize(focus-ro[2]);rd[3]=normalize(focus-ro[3]);
 float ids[16];vec4 media[16];int count;hbMediumSeed(origin,direction,false,ids,media,count);vec3 mirrors[8];int mirrorCount=0;
 for(int bounce=0;bounce<min(16,int(hbPath.y));bounce++){
-if(count<0)break;vec4 hit=hbGeometryTraceCone(origin,direction,hbGeometry.y,vec2(width,cone.y));if(hit.z<.5||hit.w<.5)break;width+=cone.y*hit.x;if(bounce==1)secondaryDistance=hit.x;vec3 p=origin+direction*hit.x,normal=hbRayNormalLod(hit.y,p,-direction,width),geometric=hbRayGeometric(hit.y);bool front=dot(geometric,direction)<0.0;vec3 n=front?normal:-normal;vec4 physical=hbRayField0Lod(hit.y,p,-direction,width);bool glass=physical.z>.5,mirror=physical.x>.5&&physical.y<.4;
+if(count<0)break;vec4 hit=hbGeometryTraceCone(origin,direction,hbGeometry.y,vec2(width,cone.y));if(hit.z<.5||hit.w<.5)break;width+=cone.y*hit.x;if(bounce==1)secondaryDistance=hit.x;vec3 p=origin+direction*hit.x,normal=hbRayNormalLod(hit.y,p,-direction,width),geometric=hbRayGeometric(hit.y);bool front=dot(geometric,direction)<0.0;vec3 n=front?normal:-normal;vec4 physical=hbRayField0Lod(hit.y,p,-direction,width);bool glass=false;
+#ifndef HB_GUIDE_OPAQUE
+glass=physical.z>.5;
+#endif
+bool mirror=physical.x>.5&&physical.y<.4;
 #ifdef HB_PATH_ADVANCED
 vec4 coat=hbRayField5Lod(hit.y,p,-direction,width);mirror=mirror||(coat.x>.5&&coat.y<.05);
 #endif

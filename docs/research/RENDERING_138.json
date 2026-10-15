@@ -1,0 +1,1004 @@
+{
+  "version": 1,
+  "date": "2026-10-15T12:55:06.035Z",
+  "baseCommit": "cbbd8c211ebfc23d8fba51b98d6e6d906c2403d9",
+  "scope": [
+    "Previous tangent-space normal reconstruction from committed smooth normals, edges and stable UVs; mirrored coordinates, rigid/deformed histories and degenerate rejection in GLSL/TSL/native HLSL.",
+    "UV and normalScale history invalidation, conservative rejection of world/view/time dependent normal programs; one WebGPU tangent call, shared smooth interpolation, opaque GL guide and constant two-differential non-lens GPU variants.",
+    "Cloud wind phase drives existing realtime sky capture at the common 250ms minimum interval; manual freeze; native capture draw/pose snapshot and bounded pending request coalescing.",
+    "Native sky face capture, mip copy, per-mip GGX and final diffuse SH separated across submitted frames; only complete filtered cubes become visible, existing full probe filtering shares the same stage operation."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "3f674f4516a6e0285396707987a1bb71ae5909a3fd82497199f13d4933fd2983"
+    },
+    {
+      "file": "native/include/HBEngine/SceneProbes.hpp",
+      "sha256": "695df2da600d2d226c644d5ca3425d856b033468e829f7ad375f464759bdb3e3"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "22f98e6d2853eeec33d7cdc8bc6d5be0ef7c1e035bd016cd321905795beb0c8b"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "d10ceaa8ec95a80eaf3d4718dd24c385a0720761c49f619e348a3f8b3361af9a"
+    },
+    {
+      "file": "native/tests/raster-lighting.cpp",
+      "sha256": "4e47c392ca9f0a0d587881009ed5c9f8cb94d1741de8a43ceaaf328d9684a612"
+    },
+    {
+      "file": "prototype/geometry-gi.js",
+      "sha256": "f9df02b8b512df6430d121a0ec5f18647b89658bf651b1b3c7868b67a42304b8"
+    },
+    {
+      "file": "prototype/path-curved-guide.js",
+      "sha256": "6b6cb713b435bfc932d423a65ef1442e2f74a0d5f369689938cadc28b17fe02c"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "b9803539a62be554cab6c80db56b11eab799c4938b065ffe1644e7db9b22c8a2"
+    },
+    {
+      "file": "prototype/path-guide-frames.js",
+      "sha256": "d8dcc0e61667897fcfec1c4372b11f47aca91525826c23aa757b00ca7aae41e7"
+    },
+    {
+      "file": "prototype/path-guide-gpu.js",
+      "sha256": "b3c9b0a5721c1fec946e13f3ce217945df46280d5ffa82068887918dccf9612a"
+    },
+    {
+      "file": "prototype/path-previous-normal-gpu.js",
+      "sha256": "a2b84fe761f1ec131b6a32e0ab152a8fe51d53a400c62ab682f1114aeaec5615"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "ee3efa085f6568323db5fc81e3a6a35b9293610413ae9f4fc1700a883bd5dea0"
+    },
+    {
+      "file": "prototype/scene-environment.js",
+      "sha256": "0fbfcf813ab0556d70c759bb0bd1eed6c31c0be938e8602560b05d20ed84dda2"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "94dd6d52c837c548a25b2f41551f52e992a13ec627fc1f7741aa45d3cd633072"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "b68a56066950807ad77bddb8e77d12a038d1af27f2c4128662fd23f8bc1f68c6"
+    },
+    {
+      "file": "tools/rendering-134-fixture.mjs",
+      "sha256": "dc9047037b99b681441922a694ea6539b46f6ce66ef73b3abb22d7f570e67944"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "bee4a84dc70e5676065d2a9867060beac76bddde2a362e48f7c6807e5d075df4"
+    },
+    {
+      "file": "prototype/path-tangent-guide.js",
+      "sha256": "1d8ada909901e1d56915130b6aeb245803c638b4e5551c71801e61afb5ee8fa7"
+    },
+    {
+      "file": "tools/check-rendering-138.mjs",
+      "sha256": "b5798279900b22251e4c8eae0d076f4163b72a2895548e1746daa530fcf3310e"
+    },
+    {
+      "file": "tools/rendering-138-fixture.mjs",
+      "sha256": "d74709810ba27803c51e47056bbe328ca44de84ea6c2971c17098135fe16b2b0"
+    },
+    {
+      "file": "tools/tangent-guide-probe.mjs",
+      "sha256": "3b24415c8eb97b17a93ed53d56acfa6a473bc0b66ddc4ca03ba3da50ec1930e5"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/SceneProbes.hpp",
+      "size": 18308,
+      "sha256": "695df2da600d2d226c644d5ca3425d856b033468e829f7ad375f464759bdb3e3"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "size": 88582,
+      "sha256": "22f98e6d2853eeec33d7cdc8bc6d5be0ef7c1e035bd016cd321905795beb0c8b"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "size": 30165,
+      "sha256": "d10ceaa8ec95a80eaf3d4718dd24c385a0720761c49f619e348a3f8b3361af9a"
+    },
+    {
+      "path": "prototype/geometry-gi.js",
+      "size": 23427,
+      "sha256": "f9df02b8b512df6430d121a0ec5f18647b89658bf651b1b3c7868b67a42304b8"
+    },
+    {
+      "path": "prototype/path-curved-guide.js",
+      "size": 3119,
+      "sha256": "6b6cb713b435bfc932d423a65ef1442e2f74a0d5f369689938cadc28b17fe02c"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "size": 10239,
+      "sha256": "b9803539a62be554cab6c80db56b11eab799c4938b065ffe1644e7db9b22c8a2"
+    },
+    {
+      "path": "prototype/path-guide-frames.js",
+      "size": 2451,
+      "sha256": "d8dcc0e61667897fcfec1c4372b11f47aca91525826c23aa757b00ca7aae41e7"
+    },
+    {
+      "path": "prototype/path-guide-gpu.js",
+      "size": 12610,
+      "sha256": "b3c9b0a5721c1fec946e13f3ce217945df46280d5ffa82068887918dccf9612a"
+    },
+    {
+      "path": "prototype/path-previous-normal-gpu.js",
+      "size": 3392,
+      "sha256": "a2b84fe761f1ec131b6a32e0ab152a8fe51d53a400c62ab682f1114aeaec5615"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "size": 27184,
+      "sha256": "ee3efa085f6568323db5fc81e3a6a35b9293610413ae9f4fc1700a883bd5dea0"
+    },
+    {
+      "path": "prototype/scene-environment.js",
+      "size": 26807,
+      "sha256": "0fbfcf813ab0556d70c759bb0bd1eed6c31c0be938e8602560b05d20ed84dda2"
+    },
+    {
+      "path": "prototype/screen-effects-gl.js",
+      "size": 14143,
+      "sha256": "94dd6d52c837c548a25b2f41551f52e992a13ec627fc1f7741aa45d3cd633072"
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "size": 53186,
+      "sha256": "b68a56066950807ad77bddb8e77d12a038d1af27f2c4128662fd23f8bc1f68c6"
+    },
+    {
+      "path": "tools/rendering-134-fixture.mjs",
+      "size": 6656,
+      "sha256": "dc9047037b99b681441922a694ea6539b46f6ce66ef73b3abb22d7f570e67944"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "size": 23598,
+      "sha256": "bee4a84dc70e5676065d2a9867060beac76bddde2a362e48f7c6807e5d075df4"
+    },
+    {
+      "path": "prototype/path-tangent-guide.js",
+      "size": 3056,
+      "sha256": "1d8ada909901e1d56915130b6aeb245803c638b4e5551c71801e61afb5ee8fa7"
+    },
+    {
+      "path": "tools/check-rendering-138.mjs",
+      "size": 5799,
+      "sha256": "b5798279900b22251e4c8eae0d076f4163b72a2895548e1746daa530fcf3310e"
+    },
+    {
+      "path": "tools/rendering-138-fixture.mjs",
+      "size": 5446,
+      "sha256": "d74709810ba27803c51e47056bbe328ca44de84ea6c2971c17098135fe16b2b0"
+    },
+    {
+      "path": "tools/tangent-guide-probe.mjs",
+      "size": 2441,
+      "sha256": "3b24415c8eb97b17a93ed53d56acfa6a473bc0b66ddc4ca03ba3da50ec1930e5"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/rendering-138-cpu.json",
+      "sha256": "dbe07d7cf9a2cfdf6c2382e6efea2dd08c17baa03e67382e7fba601e864c7058"
+    },
+    {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "67829c3ac287f85f64aaf50b849f2e5697b60338f053005b48184a4204464d78"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-BkpAjA\\acceptance.json",
+      "sha256": "208867f2a2484c7007c101b4b4cce4ce952750705da846c4e8fcef5b8c50a5b1"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-YfNUL1\\acceptance.json",
+      "sha256": "c8bdc81361ab9132d16b31213d7e13af80da396bf727b561bdc7546554f36711"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-kbhlIi\\acceptance.json",
+      "sha256": "24a5c9cb09e50d6c5537ff99441750de631941a36407a40953710dd1f114995a"
+    },
+    {
+      "file": "native/build/rendering-138-cpu-group.json",
+      "sha256": "c276fe24fa473fa1e7959f48fbf42f4cbd0dd558a1c6990f3412de59821635e6"
+    },
+    {
+      "file": "native/build/environment-rendering-138.log",
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "a093ffa043f7943caee339d9e38b3583148f5da49b520fb0fe28f2888099e651"
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-115.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"legacyFiveFields\":true,\"conditionalTenFields\":true,\"dynamicScalarPacking\":true,\"advancedPresenceAndMasks\":true,\"uniformPatchReusesAtlas\":true,\"rawPhysicalCacheInvalidation\":true,\"rawNineMapChannels\":true,\"ggxProjectedNormalization\":true,\"charlieProjectedNormalization\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-116.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"visibleNormalSamples\":40000,\"projectedDensityIntegrals\":[0.9999880213219398,0.9999943574537473,0.9999157189460923,0.999943078198778],\"ordinaryPresenceOff\":true,\"opaqueRoughnessDoesNotEnableDielectric\":true,\"dynamicTransmissionEnablesDielectric\":true,\"guideHasNoLightingIntegrator\":true,\"guideSourceRatio\":0.09219348659003831,\"roughPresenceAndReset\":true,\"closedMediumPacket\":true,\"finitePackets\":true,\"etaSurvivalRoundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-117.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"instances\":64,\"sharedBLAS\":1,\"localVertexCalls\":115,\"transformUpdateVertexCalls\":0,\"transformUpdateReusedMeshes\":63,\"transformUpdateCollectedMeshes\":1,\"flatNodes\":8191,\"twoLevelNodes\":382,\"refitReusesBLAS\":true,\"singularInstanceExcluded\":true,\"nonFiniteAtomic\":true,\"secondarySignAndNormalGuards\":true,\"typedCausticGuards\":true,\"causticHistoryReset\":true,\"finiteFixtures\":true,\"singleInstanceFlatFastPath\":true,\"multipleInstanceHierarchyFlag\":true,\"emitterPresenceAndMutation\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-118.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"temporalClamp\":true,\"depthNormalClassRejection\":true,\"invalidHistoryAndZeroAreRaw\":true,\"cameraLensSceneEnvironmentAndFailureResets\":true,\"rasterGapKeepsStaticPathSamples\":true,\"manualVersionAndFailureReset\":true,\"typedBoundsAndAISchema\":true,\"AIRevisionGuardedAtomicPatch\":true,\"areaAndHDRIWithoutAnalyticLights\":true,\"mixedSources\":true,\"finitePackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-120.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-122.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"instances\":32,\"staticBufferReused\":true,\"unchangedRowsZero\":true,\"changedRowsAndMotionPreserved\":true,\"invalidUVAtomic\":true,\"emptyScene\":true,\"atlasBytes\":1441792}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-124.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"sharedVertexTriangles\":168,\"legacyAtlasBytes\":1179648,\"sharedAtlasBytes\":1114112,\"maxPositionError\":5.3961675128277875e-8,\"nonUniformAndNegativeScale\":true,\"staticBufferReused\":true,\"changedRows\":true,\"singleInstanceLegacy\":true,\"clonedGeometryShared\":true,\"collisionIsolated\":true,\"interleavedVersionRecollected\":true,\"photonAndMotionAfterSharedPool\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-125.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalMappingCases\":24,\"maxNormalError\":7.771561172376096e-16,\"degeneratePreviousRejected\":true,\"defaultOff\":true,\"commonSchema\":true,\"filterChangePreservesRawSamples\":true,\"filterHistoryKeyChanges\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-126.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"nonUniformNormalAxisScale\":true,\"normalError\":2.8532166730247387e-8,\"instances\":8,\"gpuBytesPerInstance\":96,\"defaultOffReleasesMatrixHistory\":true,\"failedFrameClears\":true,\"filterToggleKeepsRawSamples\":true,\"extraReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-path-history-ownership.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"disposeBeforeFirstFrame\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-importance.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":68464,\"photonCharacters\":40190,\"cameraCharacters\":59531,\"ratio\":0.5870238373451742,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-127.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-function-scope.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"sameBuilderSharesFunction\":true,\"newBuilderHasFreshUniformBindings\":true,\"nodeCacheMethodPreserved\":true,\"ordinaryFunctionsUnchanged\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-shared-shader.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"cases\":[{\"advanced\":false,\"transmission\":false,\"prefix\":false,\"sourceBytes\":55525,\"functions\":37,\"uniforms\":20},{\"advanced\":false,\"transmission\":false,\"prefix\":true,\"sourceBytes\":55565,\"functions\":37,\"uniforms\":23},{\"advanced\":true,\"transmission\":false,\"prefix\":false,\"sourceBytes\":85344,\"functions\":45,\"uniforms\":20},{\"advanced\":true,\"transmission\":false,\"prefix\":true,\"sourceBytes\":85419,\"functions\":45,\"uniforms\":23},{\"advanced\":false,\"transmission\":true,\"prefix\":false,\"sourceBytes\":57836,\"functions\":38,\"uniforms\":20},{\"advanced\":false,\"transmission\":true,\"prefix\":true,\"sourceBytes\":57876,\"functions\":38,\"uniforms\":23},{\"advanced\":true,\"transmission\":true,\"prefix\":false,\"sourceBytes\":87655,\"functions\":46,\"uniforms\":20},{\"advanced\":true,\"transmission\":true,\"prefix\":true,\"sourceBytes\":87730,\"functions\":46,\"uniforms\":23}],\"lobes\":[{\"name\":\"coat\",\"features\":{\"coat\":true,\"aniso\":false,\"sheen\":false,\"film\":false},\"sourceBytes\":79165},{\"name\":\"aniso\",\"features\":{\"coat\":false,\"aniso\":true,\"sheen\":false,\"film\":false},\"sourceBytes\":78112},{\"name\":\"sheen\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":true,\"film\":false},\"sourceBytes\":79800},{\"name\":\"film\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":false,\"film\":true},\"sourceBytes\":78983}],\"guides\":[{\"auxiliary\":false,\"lens\":false,\"curved\":false,\"temporal\":false},{\"auxiliary\":false,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":false},{\"auxiliary\":true,\"lens\":false,\"curved\":false,\"temporal\":true},{\"auxiliary\":true,\"lens\":false,\"curved\":true,\"temporal\":true},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":true}],\"manyLightBytes\":57173,\"featureCacheChanges\":true,\"freshUniformBindings\":true,\"fixedSlotDecoders\":true,\"rawBVHPrefix\":true,\"weakTransmissionNotDropped\":true,\"lensAndTemporalGuideCombinations\":true,\"deviceInitializations\":0,\"draws\":0,\"actualGPUPixelsClaim\":false}\n",
+          "stderr": "THREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\n"
+        },
+        {
+          "name": "check-lighting-tools.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"lights\":4096,\"positivePowerCDF\":true,\"probabilityIntegral\":40916,\"zeroPowerFinite\":true,\"cdfOnlyWhenNeeded\":true,\"staticAtlasReused\":true,\"disabledLayoutPreserved\":true,\"skyHDRIRotation\":true,\"legacyClearsSkySource\":true,\"toolBindings\":true,\"invalidInputBeforeMutation\":true,\"sharedCommands\":true,\"revisionBinding\":true,\"toolPatch\":true,\"codeExecution\":false}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":68464,\"photonCharacters\":40190,\"cameraCharacters\":59531,\"ratio\":0.5870238373451742,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-134.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"morphNormalOnlyTriangles\":2,\"skinNormalTriangles\":1,\"deformedGPUBytesPerTriangle\":48,\"oldNormalsPreserved\":true,\"relativeIdentityMorph\":true,\"absoluteIdentityMorph\":true,\"identityBufferShared\":true,\"malformedImportAtomic\":true,\"normalOnlyHistoryAdvances\":true,\"staticPacketReused\":true,\"invalidHistoryAtomic\":true,\"failedAndOffRelease\":true,\"shadowDependencies\":[\"textures\",\"parameters\",\"poses\",\"instances\",\"meshes\",\"animated\"],\"unrelatedShadowRefresh\":false,\"resourceRelease\":true,\"nativeSkyManualAndExplicitRecapture\":true,\"nativeSkyDisableRelease\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-138.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"opaqueGuideVariantChangesWithTransmission\":true,\"UVInvalidatesHistory\":true,\"normalStrengthInvalidatesAndRebuilds\":true,\"worldDependentNormalRejectsHistory\":true,\"deformedBytesUnchanged\":48,\"nativeCloudWindSchedulesCapture\":true,\"cloudRateLimitMS\":250,\"manualModeFrozen\":true,\"browserCloudWindSchedulesCapture\":true,\"commonAISchema\":true,\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "core": {
+      "file": "native/build/rendering-138-cpu.json",
+      "sha256": "dbe07d7cf9a2cfdf6c2382e6efea2dd08c17baa03e67382e7fba601e864c7058",
+      "passed": true,
+      "opaqueGuideVariantChangesWithTransmission": true,
+      "UVInvalidatesHistory": true,
+      "normalStrengthInvalidatesAndRebuilds": true,
+      "worldDependentNormalRejectsHistory": true,
+      "deformedBytesUnchanged": 48,
+      "nativeCloudWindSchedulesCapture": true,
+      "cloudRateLimitMS": 250,
+      "manualModeFrozen": true,
+      "browserCloudWindSchedulesCapture": true,
+      "commonAISchema": true,
+      "dependenciesAdded": 0,
+      "automaticReadbacks": 0
+    },
+    "nativeRasterRegression": {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "67829c3ac287f85f64aaf50b849f2e5697b60338f053005b48184a4204464d78",
+      "passed": true,
+      "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\raster-lighting-131",
+      "typedDefault": true,
+      "postVolumeOverride": true,
+      "rasterWithoutPathTracing": true,
+      "hardware": {
+        "passed": true,
+        "lights": 4097,
+        "tileReferencePixelsExact": true,
+        "staticDispatchReuse": true,
+        "offsetViewport": true,
+        "perspectiveCameraOverlap": true,
+        "unboundedAndSpotLights": true,
+        "hdrDiffuseAndSpecular": true,
+        "rotationPixels": true,
+        "intensityNoRefilter": true,
+        "localProbeOverridesSky": true,
+        "disableRelease": true,
+        "automaticReadbacks": 0,
+        "slicedFilterPixelsExact": true,
+        "oneFilterDispatchPerStep": true,
+        "incompleteProbeHidden": true,
+        "tileBytesAt4097": 8256
+      },
+      "unavailable": {
+        "passed": true,
+        "available": false
+      }
+    },
+    "environment": {
+      "file": "native/build/environment-rendering-138.log",
+      "checks": 34,
+      "passed": true,
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    "actual": [
+      {
+        "backend": "D3D11",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-BkpAjA\\acceptance.json",
+        "sha256": "208867f2a2484c7007c101b4b4cce4ce952750705da846c4e8fcef5b8c50a5b1",
+        "result": {
+          "passed": true,
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "D3D11",
+            "texturedTwistedMorph": true,
+            "uniformTangentPerturbation": false,
+            "changedChannels": 664,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "D3D11",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2046,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": {
+              "lit": [
+                144,
+                160,
+                161,
+                255
+              ],
+              "dark": [
+                51,
+                51,
+                51,
+                255
+              ],
+              "captures": 2,
+              "faces": 12,
+              "facesPerRequest": 6,
+              "filterStagesPerRequest": 8,
+              "filterStagesPerFrame": 1,
+              "manualRecapture": true,
+              "intensityNoRecapture": true,
+              "disabledRelease": true
+            }
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 26.5654296875,
+              "variance": 204.07384395599365
+            },
+            "planar": {
+              "mean": 27.4326171875,
+              "variance": 1.1399908065795898
+            },
+            "filtered": {
+              "mean": 27.4248046875,
+              "variance": 2.1212987899780273
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "raster131": {
+            "passed": true,
+            "backend": "D3D11",
+            "rasterPathTracingDisabled": true,
+            "lights": 96,
+            "sky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rotated": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "full": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "restored": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "direct": [
+              60,
+              60,
+              60,
+              255
+            ],
+            "restoredSky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rasterTileBytes": 14720,
+            "rotationWithoutRefilter": true,
+            "shadowStaticReuse": true,
+            "unrelatedShadowPasses": 0,
+            "changedLightPasses": [
+              1,
+              1
+            ],
+            "parameterLightPasses": [
+              1,
+              1
+            ],
+            "typedCPP": true,
+            "automaticReadbacks": 0
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "sampled": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "restored": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "D3D11"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      },
+      {
+        "backend": "WebGL2",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-YfNUL1\\acceptance.json",
+        "sha256": "c8bdc81361ab9132d16b31213d7e13af80da396bf727b561bdc7546554f36711",
+        "result": {
+          "passed": true,
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": {
+              "passed": true,
+              "twist": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "mirrored": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "degenerate": [
+                127,
+                127,
+                127,
+                255
+              ],
+              "error": 0,
+              "tangentTwistDegrees": 90,
+              "smoothNormalUnchanged": true,
+              "mirroredUV": true,
+              "degenerateRejected": true
+            },
+            "backend": "WebGL2",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 844,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGL2",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2827,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.322265625,
+              "variance": 135.83169174194336
+            },
+            "planar": {
+              "mean": 18.9912109375,
+              "variance": 1.080977439880371
+            },
+            "filtered": {
+              "mean": 18.994140625,
+              "variance": 1.1073875427246094
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGL2"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGPU",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-kbhlIi\\acceptance.json",
+        "sha256": "24a5c9cb09e50d6c5537ff99441750de631941a36407a40953710dd1f114995a",
+        "result": {
+          "passed": true,
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "WebGPU",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 858,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGPU",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2814,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.19140625,
+              "variance": 140.63133239746094
+            },
+            "planar": {
+              "mean": 18.8759765625,
+              "variance": 0.4230947494506836
+            },
+            "filtered": {
+              "mean": 18.8818359375,
+              "variance": 0.5202169418334961
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGPU"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    ],
+    "visualQA": {
+      "file": "native/build/native-scene-window-sZBPix/138-twisted-normal-map.png",
+      "inspected": true,
+      "scope": "Synthetic directional environment and strong normal perturbation on curved mirror; diagnostic pixel stimulus, not a whole-game visual/performance claim."
+    }
+  },
+  "cost": {
+    "additionalTangentHistoryBytes": 0,
+    "deformedNormalBytesPerTriangle": 48,
+    "rigidFrameBytesPerInstance": 96,
+    "defaultOff": true,
+    "skyFacesPerFrame": 1,
+    "skyFilterStagesPerFrame": 1,
+    "filterDispatchesPerStepMaximum": 1,
+    "skyPendingCubes": 1,
+    "skyResolution64FilterStages": 8,
+    "completeCubeReplacement": true,
+    "cloudMinimumIntervalMS": 250,
+    "automaticReadbacks": 0,
+    "dependenciesAdded": 0,
+    "objectLimitAdded": false
+  },
+  "research": {
+    "registration": "tangent-frame-time-sliced-sky-supplement",
+    "record": "docs/RENDERING_138.md",
+    "wholeCorpus": false
+  },
+  "nativeBinaries": {
+    "rebuilt": true,
+    "editorSHA256": "dd611ba99e8fbf4a880af3bff491b652a80acab868decd4fcffb5c9f71663c96",
+    "playerSHA256": "918e7a7d866a3e4aa7c71f7a4c90b7d21f2fa5c36e39f33c2ae334a4c9d8aeef"
+  },
+  "limits": [
+    "Previous time/world/view dependent normal texture samples and old mip footprint are not retained; those histories are rejected or invalidated instead of pretending current samples equal previous ones.",
+    "Native actual fixture covers a texture normal map; WebGL/WebGPU actual curved-guide fixtures use uniform tangent perturbation. WebGL additionally checks exact 90-degree twist, mirrored UV and degenerate normals through a tiny independent GPU vector readback.",
+    "Complex normal-map graph cold compilation exceeded actual WebGL/WebGPU RPC deadlines in diagnostic attempts. Native cold stages measured about 6.5 to 13.3 seconds. This cost is a remaining optimization, not a passed all-material performance gate. See DEBUG_HANDOFF.md.",
+    "Global curved inverse, rough multi-lobe transport, DFAO/Lightmass/hardware ray tracing and prior non-rendering engine goals remain in the cumulative ledger. Synthetic correctness/resource checks do not establish whole-game FPS or phone performance."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

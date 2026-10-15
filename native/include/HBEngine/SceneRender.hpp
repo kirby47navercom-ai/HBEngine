@@ -376,6 +376,7 @@ public:
         std::array<ID3D11ShaderResourceView*,5> empty{};gpu.context->PSSetShaderResources(39,5,empty.data());gpu.context->ClearRenderTargetView(target.faces[faceIndex].p,clear.data());gpu.context->ClearDepthStencilView(target.depth.p,D3D11_CLEAR_DEPTH,1,0);
     }
     void endProbe(){if(!activeProbe)return;std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);activeProbe=nullptr;frame=savedProbe;}
+    bool filterProbeStep(Probe& target,std::uint32_t stage){if(activeProbe)throw std::runtime_error("End probe capture before filtering");return probes.filterStep(target,stage);}
     void filterProbe(Probe& target){if(activeProbe)throw std::runtime_error("End probe capture before filtering");probes.filter(target);}
     void releaseProbes(){endProbe();{std::lock_guard<std::mutex> lock(gpu.mutex);std::array<ID3D11ShaderResourceView*,9> empty{};gpu.context->PSSetShaderResources(39,9,empty.data());}setSkyEnvironment(nullptr);probes.release();}
     std::uint64_t probeDispatches() const{return probes.dispatches();}std::uint64_t probeCaptures() const{return probes.captures();}std::uint64_t probeSharedBytes() const{return probes.storageBytes();}

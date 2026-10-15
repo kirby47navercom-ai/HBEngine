@@ -2655,6 +2655,17 @@
       "wholeCorpus": false,
       "state": "selected_sky_and_temporal_sections_read_local_three_compared_gltf_full_body_pending",
       "readScope": "Sky capture/update/time slicing sections and temporal reprojection explanation retrieved; installed Three morph renderer code compared; complete glTF and linked APIs remain open."
+    },
+    {
+      "id": "tangent-frame-time-sliced-sky-supplement",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/sky-lights-in-unreal-engine",
+        "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#materials-normaltextureinfo"
+      ],
+      "record": "docs/RENDERING_138.md",
+      "wholeCorpus": false,
+      "state": "selected_sky_time_slicing_and_normal_texture_sections_read_full_linked_API_pending",
+      "readScope": "Sky realtime capture, CPU-free GPU processing, time slicing and completion stages compared. glTF tangent-space normals and coordinate convention compared to installed ray materials; full specification and linked APIs remain pending."
     }
   ],
   "supplementalBaselines": [

@@ -1,3 +1,5 @@
+2026-10-15: [접선 가이드·구름 갱신·분산 하늘 필터](RENDERING_138.md). SkyLight.realTimeCapture/captureVersion과 기존 Components C++·BP·AI 경로를 그대로 사용해요. 공용 스키마에 필터 단계 진단을 추가해요.
+
 2026-10-15: [변형 가이드·그림자·장면 하늘](RENDERING_134.md). 기존 곡면/시간 필터·Components C++/BP/AI 속성·명령을 재사용하고 SkyLight.captureVersion으로 명시적인 재캡처를 요청해요. 별도 AI 상태나 저장 통로를 만들지 않아요.
 
 2026-10-15: [DirectX 래스터 조명](RASTER_LIGHTING_131.md). 기존 SkyLight HDRI·회전·밝기와 PostProcessVolume.rasterLightCulling을 사람·Components C++/BP·AI 공용 스키마로 연결해요. 광원 타일 비트셋은 개수 제한 없이 전체 평가와 같은 결과를 보존하고, 읽기 전용 메모리·갱신 진단을 공개해요.
