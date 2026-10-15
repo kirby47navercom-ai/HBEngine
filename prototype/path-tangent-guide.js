@@ -12,7 +12,7 @@ vec3 hbPathTangentNormal(float id,vec3 normal,vec3 now,vec3 prior){
  float attributes=hbRayAttributes(id),old=hbPathFilter.w+id*3.0,base=hbGeometryInfo.w+id*6.0;
  vec4 uv=hbGeometryLoad(attributes);vec2 uv2=hbGeometryLoad(attributes+1.0).xy,du=uv.zw-uv.xy,dv=uv2-uv.xy;
  float determinant=du.x*dv.y-du.y*dv.x;if(abs(determinant)<1e-7)return prior*(dot(now,normal)<0.0?-1.0:1.0);
- vec3 e1=hbGeometryVertexLoad(base+1.0).xyz,e2=hbGeometryVertexLoad(base+2.0).xyz,a=hbGeometryLoad(old+1.0).xyz,b=hbGeometryLoad(old+2.0).xyz;
+ vec3 e1=hbGeometryRecord1(id).xyz,e2=hbGeometryRecord2(id).xyz,a=hbGeometryLoad(old+1.0).xyz,b=hbGeometryLoad(old+2.0).xyz;
  vec3 t=(e1*dv.y-e2*du.y)/determinant,bt=(-e1*dv.x+e2*du.x)/determinant,pt=(a*dv.y-b*du.y)/determinant,pb=(-a*dv.x+b*du.x)/determinant;
  t-=now*dot(now,t);pt-=prior*dot(prior,pt);if(length(t)<1e-10||length(pt)<1e-10||length(cross(a,b))<1e-10)return vec3(0,0,0);
  t=normalize(t);pt=normalize(pt);bt=normalize(cross(now,t))*(dot(cross(now,t),bt)<0.0?-1.0:1.0);pb=normalize(cross(prior,pt))*(dot(cross(prior,pt),pb)<0.0?-1.0:1.0);

@@ -2666,6 +2666,19 @@
       "wholeCorpus": false,
       "state": "selected_sky_time_slicing_and_normal_texture_sections_read_full_linked_API_pending",
       "readScope": "Sky realtime capture, CPU-free GPU processing, time slicing and completion stages compared. glTF tangent-space normals and coordinate convention compared to installed ray materials; full specification and linked APIs remain pending."
+    },
+    {
+      "id": "shader-variable-bytecode-cache-supplement",
+      "engine": "HBEngine dependencies",
+      "roots": [
+        "https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language#variables",
+        "https://raw.githubusercontent.com/wiki/mrdoob/three.js/Three.js-Shading-Language.md",
+        "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile"
+      ],
+      "record": "docs/RENDERING_141.md",
+      "wholeCorpus": false,
+      "state": "selected_TSL_variables_and_D3DCompile_contract_compared_full_linked_API_pending",
+      "readScope": "TSL Variables reusable variable section and local r180 VarNode.generate implementation compared; D3DCompile input/flags/bytecode/error contract read. Entire Wiki, linked APIs and full dependency corpus remain open."
     }
   ],
   "supplementalBaselines": [

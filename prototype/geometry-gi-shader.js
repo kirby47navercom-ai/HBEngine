@@ -1,3 +1,4 @@
+import {sharedRayRecordsGLSL} from './shared-ray-record-gl.js';
 import {rayMaterialGLSL} from './ray-material-shader.js';
 import {megaLightsGLSL} from './mega-lights.js';
 export const geometryGIGLSL=`
@@ -23,6 +24,7 @@ vec4 hbGeometryVertexLoad(float index){float count=hbGeometryRecords.x,start=hbG
  }return hbGeometryRawLoad(index>=start+count*6.0?index-count:index);
 }
 #endif
+${sharedRayRecordsGLSL}
 ${rayMaterialGLSL}
 float hbGeometryTriangleCone(vec3 origin,vec3 direction,vec3 localOrigin,vec3 localDirection,float triangle,vec2 rayCone){float at=hbGeometryInfo.w+triangle*6.0;vec3 a,e1,e2,o=origin,d=direction;
 #ifdef HB_GEOMETRY_SHARED

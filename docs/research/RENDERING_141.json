@@ -1,0 +1,1353 @@
+{
+  "version": 1,
+  "date": "2026-10-15T13:30:52.477Z",
+  "baseCommit": "a8147241565a92a100bdfbe5d701ce4720fe5235",
+  "scope": [
+    "141: TSL snapshots material normal results, UV interpolation and texture coordinates so normal fields execute once per hit; preserve original UV/Shift/texture/normalMap graph.",
+    "142: Shared GLSL/generated HLSL fixed triangle slots separate position transformation from scalar/material reads without changing six-vec logical/five-vec shared layout.",
+    "143: Reuse native ray source/current compute variants; replace eight-entry ordered eviction with an accounted eight-MiB LRU bytecode/key budget and runtime statistics.",
+    "144: Read-only common AI schema/native/WebGPU stage, duration and cache diagnostics; reject already-completed pipeline failures during capture and recapture latest pending preparation."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "1f361d591ff85c2af7792b2fe0ee1d6c3fad41a798efabec44abb219b2c00e54"
+    },
+    {
+      "file": "native/include/HBEngine/Bloom.hpp",
+      "sha256": "3af688ebea1627c1a1c5b339ac4d69c601830c313147b9a25db6fd5fc03a12e8"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "3e2a43bcbcae6d58d2215d444dc1cbfb663754a17ac34805baa14ad7c872c293"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "sha256": "137ff77a00bac7424b9d0c0027e00195c3952164aecddb3ff7c5520d189d1311"
+    },
+    {
+      "file": "native/include/HBEngine/ShaderBytecodeCache.hpp",
+      "sha256": "306bd2de0e53362a1efc63d7b5a6a5438725eb91990ef9b57bf99e881d797b8b"
+    },
+    {
+      "file": "native/tests/shader-cache.cpp",
+      "sha256": "a7b7d53bd9abf776c2b1813919ebebe98ffd9a876fdbaacf04df5859a68ba9c5"
+    },
+    {
+      "file": "prototype/geometry-gi-shader.js",
+      "sha256": "53be635a49183ff96a257ca4d149637dacdf93d10c65ca4e33f76c8eebf3e598"
+    },
+    {
+      "file": "prototype/gpu-path-preparation.js",
+      "sha256": "95bc2479cdc8f51b81171ddf95da885a137557fee58ed35b000443b53c1cbdba"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "ed37504367ee3f4e0dea8067c014240d27f8c3bafff26a210e850c67ed34c8ed"
+    },
+    {
+      "file": "prototype/path-curved-guide.js",
+      "sha256": "f5dd37faed2ea64cbc466fbdfc6602494710336015bb18f4c1715c867e24a7ec"
+    },
+    {
+      "file": "prototype/path-denoise-gpu.js",
+      "sha256": "465c18feb528ce3bfcc8b7a6708891425001e602834e7bd28cb7d6200de2e128"
+    },
+    {
+      "file": "prototype/path-tangent-guide.js",
+      "sha256": "c5b8679907b0cb89b32709ed8aa67edaa235858f6017430bba4c06b47eb7123d"
+    },
+    {
+      "file": "prototype/ray-material-gpu.js",
+      "sha256": "8f3c88a579f058944b40a96a1d2c5dd16e494a8281608aa1a7ca35704b35de77"
+    },
+    {
+      "file": "prototype/ray-material-shader.js",
+      "sha256": "4710649c27797783b07eb2297970e1f7ac454376d09113cdb96f0effa0e8d492"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "0f7cd1cfa0bcea97d4905bf6ecbafd706da624309a4898a70975bcdcff52d8d6"
+    },
+    {
+      "file": "prototype/shared-ray-record-gl.js",
+      "sha256": "e5a969bc557ff8edc27f1d8e6fad99ac0e7da6a2aade66690c1eec30d59a2faf"
+    },
+    {
+      "file": "tools/check-rendering-127.mjs",
+      "sha256": "114f9be0a72694d0775ec8e28d5d0878a943db9185656ab784ac3dfc1327e2e0"
+    },
+    {
+      "file": "tools/check-rendering-141.mjs",
+      "sha256": "1e60fc1b6235d51093236e78902ddbc1c1c65ea97a44dcb8119c5fb0018db17b"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "789a800a17b7cf332ff754311816f8a98a38d5da06660f0873b46c0383036101"
+    },
+    {
+      "file": "tools/rendering-141-fixture.mjs",
+      "sha256": "906e08434a3e288a6137785d1a06911e350a44918032f89e172f8c3bd74c5c69"
+    },
+    {
+      "file": "tools/tangent-guide-probe.mjs",
+      "sha256": "99737f1002335394faf97bea0f0c1c8a3ad2baec9d40d4a61424c277e9d354f3"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "22a6ae04d4115477254f7f52dffe2f73c847c81e88a96cb031fe191fd5ca831b"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Bloom.hpp",
+      "size": 24114,
+      "sha256": "3af688ebea1627c1a1c5b339ac4d69c601830c313147b9a25db6fd5fc03a12e8"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "size": 88676,
+      "sha256": "3e2a43bcbcae6d58d2215d444dc1cbfb663754a17ac34805baa14ad7c872c293"
+    },
+    {
+      "path": "native/include/HBEngine/ScreenEffectsPass.hpp",
+      "size": 31220,
+      "sha256": "137ff77a00bac7424b9d0c0027e00195c3952164aecddb3ff7c5520d189d1311"
+    },
+    {
+      "path": "native/include/HBEngine/ShaderBytecodeCache.hpp",
+      "size": 1874,
+      "sha256": "306bd2de0e53362a1efc63d7b5a6a5438725eb91990ef9b57bf99e881d797b8b"
+    },
+    {
+      "path": "prototype/geometry-gi-shader.js",
+      "size": 9121,
+      "sha256": "53be635a49183ff96a257ca4d149637dacdf93d10c65ca4e33f76c8eebf3e598"
+    },
+    {
+      "path": "prototype/gpu-path-preparation.js",
+      "size": 3460,
+      "sha256": "95bc2479cdc8f51b81171ddf95da885a137557fee58ed35b000443b53c1cbdba"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "size": 48459,
+      "sha256": "ed37504367ee3f4e0dea8067c014240d27f8c3bafff26a210e850c67ed34c8ed"
+    },
+    {
+      "path": "prototype/path-curved-guide.js",
+      "size": 3105,
+      "sha256": "f5dd37faed2ea64cbc466fbdfc6602494710336015bb18f4c1715c867e24a7ec"
+    },
+    {
+      "path": "prototype/path-denoise-gpu.js",
+      "size": 5155,
+      "sha256": "465c18feb528ce3bfcc8b7a6708891425001e602834e7bd28cb7d6200de2e128"
+    },
+    {
+      "path": "prototype/path-tangent-guide.js",
+      "size": 3038,
+      "sha256": "c5b8679907b0cb89b32709ed8aa67edaa235858f6017430bba4c06b47eb7123d"
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "size": 16993,
+      "sha256": "8f3c88a579f058944b40a96a1d2c5dd16e494a8281608aa1a7ca35704b35de77"
+    },
+    {
+      "path": "prototype/ray-material-shader.js",
+      "size": 19177,
+      "sha256": "4710649c27797783b07eb2297970e1f7ac454376d09113cdb96f0effa0e8d492"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "size": 20066,
+      "sha256": "0f7cd1cfa0bcea97d4905bf6ecbafd706da624309a4898a70975bcdcff52d8d6"
+    },
+    {
+      "path": "prototype/shared-ray-record-gl.js",
+      "size": 1223,
+      "sha256": "e5a969bc557ff8edc27f1d8e6fad99ac0e7da6a2aade66690c1eec30d59a2faf"
+    },
+    {
+      "path": "tools/check-rendering-127.mjs",
+      "size": 5039,
+      "sha256": "114f9be0a72694d0775ec8e28d5d0878a943db9185656ab784ac3dfc1327e2e0"
+    },
+    {
+      "path": "tools/check-rendering-141.mjs",
+      "size": 4616,
+      "sha256": "1e60fc1b6235d51093236e78902ddbc1c1c65ea97a44dcb8119c5fb0018db17b"
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "size": 53833,
+      "sha256": "789a800a17b7cf332ff754311816f8a98a38d5da06660f0873b46c0383036101"
+    },
+    {
+      "path": "tools/rendering-141-fixture.mjs",
+      "size": 3345,
+      "sha256": "906e08434a3e288a6137785d1a06911e350a44918032f89e172f8c3bd74c5c69"
+    },
+    {
+      "path": "tools/tangent-guide-probe.mjs",
+      "size": 2539,
+      "sha256": "99737f1002335394faf97bea0f0c1c8a3ad2baec9d40d4a61424c277e9d354f3"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "size": 24498,
+      "sha256": "22a6ae04d4115477254f7f52dffe2f73c847c81e88a96cb031fe191fd5ca831b"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/rendering-141-cpu.json",
+      "sha256": "0f5549af2a0124fc4d565ca5ee4bb36e8dad2ca1d0d895fb2f989b05e568eee6"
+    },
+    {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "67829c3ac287f85f64aaf50b849f2e5697b60338f053005b48184a4204464d78"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-peLTv7\\acceptance.json",
+      "sha256": "38a2f118da8828fb5e2c834d89c4edff77e00e19f6ae97b9d036d4758f81e598"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-8914r1\\acceptance.json",
+      "sha256": "5568aac072eb856324da947a2ed6da4d6f667a20ddb350fafeadfce4364cec10"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-Alg1w2\\acceptance.json",
+      "sha256": "9761dab3f7fc716ef2da8d1701b8ff56b290dece0b8ecd3a10ab423c9aa26662"
+    },
+    {
+      "file": "native/build/d3d-141-final.log",
+      "sha256": "c5236f603a049833c186c6ee7d99a2a666b0ded3fbb34542431008a0f5fbb262"
+    },
+    {
+      "file": "native/build/webgl-141-final.log",
+      "sha256": "1ff21488d2ec9931292ce6274c13419932528b2a1319606930760b56969d99c0"
+    },
+    {
+      "file": "native/build/webgpu-141-final.log",
+      "sha256": "01f38a1c3b7f60851318b97d54d5279d980ae1690d0c30c48255cd69a780d1ec"
+    },
+    {
+      "file": "native/build/normal-141-before.wgsl",
+      "sha256": "356b382dfc23c84f54fc3e41d99f9508c8723b8c0ba210e08871b80d3fb6de33"
+    },
+    {
+      "file": "native/build/normal-141-coordinates.wgsl",
+      "sha256": "be2aa52e94fa9306ed474c6a37201966a0177c2fdecde6fdb985a8a46542506b"
+    },
+    {
+      "file": "native/build/rendering-141-cpu-group.json",
+      "sha256": "45633e328f9e8cf63f4ffdfe868eb0396514017a89afabdfe7c3d81d6b6e1dcf"
+    },
+    {
+      "file": "native/build/environment-rendering-141.log",
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "a50469ec234b28a01f7a1685c32c228ddbb7f7e89137f5a22ae1960f50472ee9"
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-115.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"legacyFiveFields\":true,\"conditionalTenFields\":true,\"dynamicScalarPacking\":true,\"advancedPresenceAndMasks\":true,\"uniformPatchReusesAtlas\":true,\"rawPhysicalCacheInvalidation\":true,\"rawNineMapChannels\":true,\"ggxProjectedNormalization\":true,\"charlieProjectedNormalization\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-116.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"visibleNormalSamples\":40000,\"projectedDensityIntegrals\":[0.9999880213219398,0.9999943574537473,0.9999157189460923,0.999943078198778],\"ordinaryPresenceOff\":true,\"opaqueRoughnessDoesNotEnableDielectric\":true,\"dynamicTransmissionEnablesDielectric\":true,\"guideHasNoLightingIntegrator\":true,\"guideSourceRatio\":0.09219348659003831,\"roughPresenceAndReset\":true,\"closedMediumPacket\":true,\"finitePackets\":true,\"etaSurvivalRoundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-117.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"instances\":64,\"sharedBLAS\":1,\"localVertexCalls\":115,\"transformUpdateVertexCalls\":0,\"transformUpdateReusedMeshes\":63,\"transformUpdateCollectedMeshes\":1,\"flatNodes\":8191,\"twoLevelNodes\":382,\"refitReusesBLAS\":true,\"singularInstanceExcluded\":true,\"nonFiniteAtomic\":true,\"secondarySignAndNormalGuards\":true,\"typedCausticGuards\":true,\"causticHistoryReset\":true,\"finiteFixtures\":true,\"singleInstanceFlatFastPath\":true,\"multipleInstanceHierarchyFlag\":true,\"emitterPresenceAndMutation\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-118.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"temporalClamp\":true,\"depthNormalClassRejection\":true,\"invalidHistoryAndZeroAreRaw\":true,\"cameraLensSceneEnvironmentAndFailureResets\":true,\"rasterGapKeepsStaticPathSamples\":true,\"manualVersionAndFailureReset\":true,\"typedBoundsAndAISchema\":true,\"AIRevisionGuardedAtomicPatch\":true,\"areaAndHDRIWithoutAnalyticLights\":true,\"mixedSources\":true,\"finitePackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-120.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-122.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"instances\":32,\"staticBufferReused\":true,\"unchangedRowsZero\":true,\"changedRowsAndMotionPreserved\":true,\"invalidUVAtomic\":true,\"emptyScene\":true,\"atlasBytes\":1441792}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-124.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"sharedVertexTriangles\":168,\"legacyAtlasBytes\":1179648,\"sharedAtlasBytes\":1114112,\"maxPositionError\":5.3961675128277875e-8,\"nonUniformAndNegativeScale\":true,\"staticBufferReused\":true,\"changedRows\":true,\"singleInstanceLegacy\":true,\"clonedGeometryShared\":true,\"collisionIsolated\":true,\"interleavedVersionRecollected\":true,\"photonAndMotionAfterSharedPool\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-125.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalMappingCases\":24,\"maxNormalError\":7.771561172376096e-16,\"degeneratePreviousRejected\":true,\"defaultOff\":true,\"commonSchema\":true,\"filterChangePreservesRawSamples\":true,\"filterHistoryKeyChanges\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-126.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"nonUniformNormalAxisScale\":true,\"normalError\":2.8532166730247387e-8,\"instances\":8,\"gpuBytesPerInstance\":96,\"defaultOffReleasesMatrixHistory\":true,\"failedFrameClears\":true,\"filterToggleKeepsRawSamples\":true,\"extraReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-path-history-ownership.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"disposeBeforeFirstFrame\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-importance.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":69898,\"photonCharacters\":41624,\"cameraCharacters\":60965,\"ratio\":0.5954962946007039,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-127.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-function-scope.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"sameBuilderSharesFunction\":true,\"newBuilderHasFreshUniformBindings\":true,\"nodeCacheMethodPreserved\":true,\"ordinaryFunctionsUnchanged\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-shared-shader.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"cases\":[{\"advanced\":false,\"transmission\":false,\"prefix\":false,\"sourceBytes\":55421,\"functions\":37,\"uniforms\":20},{\"advanced\":false,\"transmission\":false,\"prefix\":true,\"sourceBytes\":55461,\"functions\":37,\"uniforms\":23},{\"advanced\":true,\"transmission\":false,\"prefix\":false,\"sourceBytes\":85240,\"functions\":45,\"uniforms\":20},{\"advanced\":true,\"transmission\":false,\"prefix\":true,\"sourceBytes\":85315,\"functions\":45,\"uniforms\":23},{\"advanced\":false,\"transmission\":true,\"prefix\":false,\"sourceBytes\":57732,\"functions\":38,\"uniforms\":20},{\"advanced\":false,\"transmission\":true,\"prefix\":true,\"sourceBytes\":57772,\"functions\":38,\"uniforms\":23},{\"advanced\":true,\"transmission\":true,\"prefix\":false,\"sourceBytes\":87551,\"functions\":46,\"uniforms\":20},{\"advanced\":true,\"transmission\":true,\"prefix\":true,\"sourceBytes\":87626,\"functions\":46,\"uniforms\":23}],\"lobes\":[{\"name\":\"coat\",\"features\":{\"coat\":true,\"aniso\":false,\"sheen\":false,\"film\":false},\"sourceBytes\":79061},{\"name\":\"aniso\",\"features\":{\"coat\":false,\"aniso\":true,\"sheen\":false,\"film\":false},\"sourceBytes\":78008},{\"name\":\"sheen\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":true,\"film\":false},\"sourceBytes\":79696},{\"name\":\"film\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":false,\"film\":true},\"sourceBytes\":78879}],\"guides\":[{\"auxiliary\":false,\"lens\":false,\"curved\":false,\"temporal\":false},{\"auxiliary\":false,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":false},{\"auxiliary\":true,\"lens\":false,\"curved\":false,\"temporal\":true},{\"auxiliary\":true,\"lens\":false,\"curved\":true,\"temporal\":true},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":true}],\"manyLightBytes\":57069,\"featureCacheChanges\":true,\"freshUniformBindings\":true,\"fixedSlotDecoders\":true,\"rawBVHPrefix\":true,\"weakTransmissionNotDropped\":true,\"lensAndTemporalGuideCombinations\":true,\"deviceInitializations\":0,\"draws\":0,\"actualGPUPixelsClaim\":false}\n",
+          "stderr": "THREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\n"
+        },
+        {
+          "name": "check-lighting-tools.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"lights\":4096,\"positivePowerCDF\":true,\"probabilityIntegral\":40916,\"zeroPowerFinite\":true,\"cdfOnlyWhenNeeded\":true,\"staticAtlasReused\":true,\"disabledLayoutPreserved\":true,\"skyHDRIRotation\":true,\"legacyClearsSkySource\":true,\"toolBindings\":true,\"invalidInputBeforeMutation\":true,\"sharedCommands\":true,\"revisionBinding\":true,\"toolPatch\":true,\"codeExecution\":false}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":69898,\"photonCharacters\":41624,\"cameraCharacters\":60965,\"ratio\":0.5954962946007039,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-134.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"morphNormalOnlyTriangles\":2,\"skinNormalTriangles\":1,\"deformedGPUBytesPerTriangle\":48,\"oldNormalsPreserved\":true,\"relativeIdentityMorph\":true,\"absoluteIdentityMorph\":true,\"identityBufferShared\":true,\"malformedImportAtomic\":true,\"normalOnlyHistoryAdvances\":true,\"staticPacketReused\":true,\"invalidHistoryAtomic\":true,\"failedAndOffRelease\":true,\"shadowDependencies\":[\"textures\",\"parameters\",\"poses\",\"instances\",\"meshes\",\"animated\"],\"unrelatedShadowRefresh\":false,\"resourceRelease\":true,\"nativeSkyManualAndExplicitRecapture\":true,\"nativeSkyDisableRelease\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-138.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"opaqueGuideVariantChangesWithTransmission\":true,\"UVInvalidatesHistory\":true,\"normalStrengthInvalidatesAndRebuilds\":true,\"worldDependentNormalRejectsHistory\":true,\"deformedBytesUnchanged\":48,\"nativeCloudWindSchedulesCapture\":true,\"cloudRateLimitMS\":250,\"manualModeFrozen\":true,\"browserCloudWindSchedulesCapture\":true,\"commonAISchema\":true,\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-141.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalProgramCallsPerHit\":1,\"stageDiagnostics\":true,\"rendererStateRestoredBeforeYield\":true,\"preparationDoesNotDraw\":true,\"failedPreparationCaptureRejected\":true,\"latestPreparationCapture\":true,\"bytecodeCache\":{\"passed\":true,\"payloadBudget\":true,\"LRU\":true,\"replace\":true,\"oversizedRejectedWithoutMutation\":true,\"zeroBudget\":true},\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "core": {
+      "file": "native/build/rendering-141-cpu.json",
+      "sha256": "0f5549af2a0124fc4d565ca5ee4bb36e8dad2ca1d0d895fb2f989b05e568eee6",
+      "passed": true,
+      "normalProgramCallsPerHit": 1,
+      "stageDiagnostics": true,
+      "rendererStateRestoredBeforeYield": true,
+      "preparationDoesNotDraw": true,
+      "failedPreparationCaptureRejected": true,
+      "latestPreparationCapture": true,
+      "bytecodeCache": {
+        "passed": true,
+        "payloadBudget": true,
+        "LRU": true,
+        "replace": true,
+        "oversizedRejectedWithoutMutation": true,
+        "zeroBudget": true
+      },
+      "dependenciesAdded": 0,
+      "automaticReadbacks": 0
+    },
+    "nativeRasterRegression": {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "67829c3ac287f85f64aaf50b849f2e5697b60338f053005b48184a4204464d78",
+      "passed": true,
+      "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\raster-lighting-131",
+      "typedDefault": true,
+      "postVolumeOverride": true,
+      "rasterWithoutPathTracing": true,
+      "hardware": {
+        "passed": true,
+        "lights": 4097,
+        "tileReferencePixelsExact": true,
+        "staticDispatchReuse": true,
+        "offsetViewport": true,
+        "perspectiveCameraOverlap": true,
+        "unboundedAndSpotLights": true,
+        "hdrDiffuseAndSpecular": true,
+        "rotationPixels": true,
+        "intensityNoRefilter": true,
+        "localProbeOverridesSky": true,
+        "disableRelease": true,
+        "automaticReadbacks": 0,
+        "slicedFilterPixelsExact": true,
+        "oneFilterDispatchPerStep": true,
+        "incompleteProbeHidden": true,
+        "tileBytesAt4097": 8256
+      },
+      "unavailable": {
+        "passed": true,
+        "available": false
+      },
+      "scope": "Standalone hardware/disabled build precedes local current-program-key micro-optimization; final actual D3D below uses the final native binaries and includes raster131/135 regression."
+    },
+    "environment": {
+      "file": "native/build/environment-rendering-141.log",
+      "checks": 34,
+      "passed": true,
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    "actual": [
+      {
+        "backend": "D3D11",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-peLTv7\\acceptance.json",
+        "sha256": "38a2f118da8828fb5e2c834d89c4edff77e00e19f6ae97b9d036d4758f81e598",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "D3D11",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 664,
+            "timings": {
+              "pathTracingEnabled": 125.51410000000033,
+              "pathTracingDenoise": 2695.754100000002,
+              "pathTracingCurvedFilter": 141.68139999999767,
+              "pathTracingDenoiseTemporal": 4490.629400000002
+            },
+            "preparation": null,
+            "compilation": {
+              "compilations": 5,
+              "cacheHits": 0,
+              "cacheMisses": 5,
+              "cacheEvictions": 0,
+              "cacheBytes": 452638,
+              "cacheBudgetBytes": 8388608,
+              "lastCompileMS": 31,
+              "totalCompileMS": 11156,
+              "sourceBuilds": 1
+            },
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "D3D11",
+            "texturedTwistedMorph": true,
+            "uniformTangentPerturbation": false,
+            "changedChannels": 664,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "D3D11",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2046,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": {
+              "lit": [
+                144,
+                160,
+                161,
+                255
+              ],
+              "dark": [
+                51,
+                51,
+                51,
+                255
+              ],
+              "captures": 2,
+              "faces": 12,
+              "facesPerRequest": 6,
+              "filterStagesPerRequest": 8,
+              "filterStagesPerFrame": 1,
+              "manualRecapture": true,
+              "intensityNoRecapture": true,
+              "disabledRelease": true
+            }
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 26.5654296875,
+              "variance": 204.07384395599365
+            },
+            "planar": {
+              "mean": 27.4326171875,
+              "variance": 1.1399908065795898
+            },
+            "filtered": {
+              "mean": 27.4248046875,
+              "variance": 2.1212987899780273
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "sampled": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "restored": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "raster131": {
+            "passed": true,
+            "backend": "D3D11",
+            "rasterPathTracingDisabled": true,
+            "lights": 96,
+            "sky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rotated": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "full": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "restored": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "direct": [
+              60,
+              60,
+              60,
+              255
+            ],
+            "restoredSky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rasterTileBytes": 14720,
+            "rotationWithoutRefilter": true,
+            "shadowStaticReuse": true,
+            "unrelatedShadowPasses": 0,
+            "changedLightPasses": [
+              1,
+              1
+            ],
+            "parameterLightPasses": [
+              1,
+              1
+            ],
+            "typedCPP": true,
+            "automaticReadbacks": 0
+          },
+          "warm141": {
+            "passed": true,
+            "backend": "D3D11",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 664,
+            "timings": {
+              "pathTracingEnabled": 93.26149999999325,
+              "pathTracingDenoise": 154.2896000000037,
+              "pathTracingCurvedFilter": 127.21280000000843,
+              "pathTracingDenoiseTemporal": 238.34380000000237
+            },
+            "preparation": null,
+            "compilation": {
+              "compilations": 19,
+              "cacheHits": 7,
+              "cacheMisses": 19,
+              "cacheEvictions": 0,
+              "cacheBytes": 1375296,
+              "cacheBudgetBytes": 8388608,
+              "lastCompileMS": 469,
+              "totalCompileMS": 32218,
+              "sourceBuilds": 4
+            },
+            "typedCPP": true,
+            "disabledRelease": true
+          }
+        },
+        "timingEvidence": {
+          "file": "native/build/d3d-141-final.log",
+          "sha256": "c5236f603a049833c186c6ee7d99a2a666b0ded3fbb34542431008a0f5fbb262",
+          "sequence": [
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": true,
+              "elapsedMS": 5588
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoise",
+              "value": true,
+              "elapsedMS": 2696
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": true,
+              "elapsedMS": 130
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoiseTemporal",
+              "value": 0.8,
+              "elapsedMS": 4491
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": false,
+              "elapsedMS": 142
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": false,
+              "elapsedMS": 126
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingEnabled",
+              "value": true,
+              "elapsedMS": 216
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingDenoise",
+              "value": true,
+              "elapsedMS": 154
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingCurvedFilter",
+              "value": true,
+              "elapsedMS": 124
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingDenoiseTemporal",
+              "value": 0.8,
+              "elapsedMS": 238
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingCurvedFilter",
+              "value": false,
+              "elapsedMS": 127
+            },
+            {
+              "visit": 1,
+              "property": "pathTracingEnabled",
+              "value": false,
+              "elapsedMS": 93
+            }
+          ],
+          "originalJSONCaveat": "Original timings object overwrote enable times on later disable; immutable sequence logs above retain both. Fixture now records property/value/time arrays. Pixel/resource assertions are unchanged; no actual rerun for this reporting-only fix."
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      },
+      {
+        "backend": "WebGL2",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-8914r1\\acceptance.json",
+        "sha256": "5568aac072eb856324da947a2ed6da4d6f667a20ddb350fafeadfce4364cec10",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "WebGL2",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 844,
+            "timings": {
+              "pathTracingEnabled": 25.426699999999983,
+              "pathTracingDenoise": 3837.928900000001,
+              "pathTracingCurvedFilter": 57.45669999999882,
+              "pathTracingDenoiseTemporal": 8589.8462
+            },
+            "preparation": null,
+            "compilation": null,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": {
+              "passed": true,
+              "twist": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "mirrored": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "degenerate": [
+                127,
+                127,
+                127,
+                255
+              ],
+              "error": 0,
+              "tangentTwistDegrees": 90,
+              "smoothNormalUnchanged": true,
+              "mirroredUV": true,
+              "degenerateRejected": true
+            },
+            "backend": "WebGL2",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 844,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGL2",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2827,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.322265625,
+              "variance": 135.83169174194336
+            },
+            "planar": {
+              "mean": 18.9912109375,
+              "variance": 1.080977439880371
+            },
+            "filtered": {
+              "mean": 18.994140625,
+              "variance": 1.1073875427246094
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGL2"
+          }
+        },
+        "timingEvidence": {
+          "file": "native/build/webgl-141-final.log",
+          "sha256": "1ff21488d2ec9931292ce6274c13419932528b2a1319606930760b56969d99c0",
+          "sequence": [
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": true,
+              "elapsedMS": 7967
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoise",
+              "value": true,
+              "elapsedMS": 3838
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": true,
+              "elapsedMS": 68
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoiseTemporal",
+              "value": 0.8,
+              "elapsedMS": 8590
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": false,
+              "elapsedMS": 57
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": false,
+              "elapsedMS": 25
+            }
+          ],
+          "originalJSONCaveat": "Original timings object overwrote enable times on later disable; immutable sequence logs above retain both. Fixture now records property/value/time arrays. Pixel/resource assertions are unchanged; no actual rerun for this reporting-only fix."
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGPU",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-Alg1w2\\acceptance.json",
+        "sha256": "9761dab3f7fc716ef2da8d1701b8ff56b290dece0b8ecd3a10ab423c9aa26662",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "WebGPU",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 858,
+            "timings": {
+              "pathTracingEnabled": 42.6919999999991,
+              "pathTracingDenoise": 1053.0071000000007,
+              "pathTracingCurvedFilter": 1690.9318999999996,
+              "pathTracingDenoiseTemporal": 9042.730899999999
+            },
+            "preparation": {
+              "pending": false,
+              "currentStage": "ready",
+              "elapsedMS": 8916.39999999851,
+              "stages": [
+                {
+                  "stage": "post",
+                  "elapsedMS": 19
+                },
+                {
+                  "stage": "temporal-filter",
+                  "elapsedMS": 48.399999998509884
+                },
+                {
+                  "stage": "spatial-filter-2",
+                  "elapsedMS": 68.90000000596046
+                },
+                {
+                  "stage": "spatial-filter-1",
+                  "elapsedMS": 55.5
+                },
+                {
+                  "stage": "spatial-filter-0",
+                  "elapsedMS": 51.70000000298023
+                },
+                {
+                  "stage": "lens-motion-guide",
+                  "elapsedMS": 8559.60000000149
+                },
+                {
+                  "stage": "normal-guide",
+                  "elapsedMS": 36.79999999701977
+                },
+                {
+                  "stage": "path",
+                  "elapsedMS": 76.39999999850988
+                }
+              ],
+              "completed": 8,
+              "total": 8,
+              "cancelled": false,
+              "error": null
+            },
+            "compilation": null,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "WebGPU",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 858,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGPU",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2814,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.19140625,
+              "variance": 140.63133239746094
+            },
+            "planar": {
+              "mean": 18.8759765625,
+              "variance": 0.4230947494506836
+            },
+            "filtered": {
+              "mean": 18.8818359375,
+              "variance": 0.5202169418334961
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGPU"
+          }
+        },
+        "timingEvidence": {
+          "file": "native/build/webgpu-141-final.log",
+          "sha256": "01f38a1c3b7f60851318b97d54d5279d980ae1690d0c30c48255cd69a780d1ec",
+          "sequence": [
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": true,
+              "elapsedMS": 4109
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoise",
+              "value": true,
+              "elapsedMS": 1053
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": true,
+              "elapsedMS": 186
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingDenoiseTemporal",
+              "value": 0.8,
+              "elapsedMS": 9043
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingCurvedFilter",
+              "value": false,
+              "elapsedMS": 1691
+            },
+            {
+              "visit": 0,
+              "property": "pathTracingEnabled",
+              "value": false,
+              "elapsedMS": 43
+            }
+          ],
+          "originalJSONCaveat": "Original timings object overwrote enable times on later disable; immutable sequence logs above retain both. Fixture now records property/value/time arrays. Pixel/resource assertions are unchanged; no actual rerun for this reporting-only fix."
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    ],
+    "generatedShader": [
+      {
+        "tag": "before",
+        "file": "native/build/normal-141-before.wgsl",
+        "bytes": 73552,
+        "normalFieldCalls": 12,
+        "sha256": "356b382dfc23c84f54fc3e41d99f9508c8723b8c0ba210e08871b80d3fb6de33"
+      },
+      {
+        "tag": "coordinates",
+        "file": "native/build/normal-141-coordinates.wgsl",
+        "bytes": 70630,
+        "normalFieldCalls": 1,
+        "sha256": "be2aa52e94fa9306ed474c6a37201966a0177c2fdecde6fdb985a8a46542506b"
+      }
+    ],
+    "visualQA": {
+      "file": "native/build/native-scene-window-peLTv7/141-complex-normal-map.png",
+      "inspected": true,
+      "scope": "Strong diagnostic normal perturbation on a curved mirror and directional HDRI; noisy, cropped synthetic stimulus, not polished whole-game visual QA."
+    }
+  },
+  "cost": {
+    "normalProgramEvaluationsPerHit": 1,
+    "nativeCacheAccountedBudgetBytes": 8388608,
+    "nativeCacheAccounting": "two key payloads + bytecode + 128 allowance per entry; not an exact process heap cap",
+    "diskCacheAdded": false,
+    "diagnosticPreparationsRetained": 1,
+    "additionalGPUStorageBytes": 0,
+    "automaticReadbacks": 0,
+    "dependenciesAdded": 0,
+    "objectLimitAdded": false
+  },
+  "research": {
+    "registration": "shader-variable-bytecode-cache-supplement",
+    "record": "docs/RENDERING_141.md",
+    "wholeCorpus": false
+  },
+  "nativeBinaries": {
+    "rebuilt": true,
+    "editorSHA256": "d42e7cc1af78633b85906de867b1883f406dfacc7b8a7321973722d66a9f3a1f",
+    "playerSHA256": "b54cd35e5ee51ceb811312677602da0ebe7bc22a9fd75462f496b43cf7081378"
+  },
+  "limits": [
+    "First preparation still takes seconds: final WebGPU temporal preparation lens-motion-guide stage8559.6ms. Specific original complex graph passes existing deadlines, not all-graph/driver instant compilation.",
+    "D3D warm revisit measures settings plus capture/ready after other scenes; cache hits and stable intra-scene source/compilation counters are verified, not a claim of zero compilation across every visited scene.",
+    "The baseline generated WGSL is a retained before-edit probe, not a second driver timing benchmark. Runtime timing logs include CPU/IPC/render readiness; no whole-frame FPS or mobile extrapolation.",
+    "Previous animated normal samples/mip footprint, global curved inverse, rough multi-lobe transport, DFAO/Lightmass/HWRT and existing engine-wide goals remain on the cumulative ledger. Whole corpus/API/commercial completeness and phone performance are not established."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

@@ -13,7 +13,7 @@ vec3 hbPathPreviousNormal(float id,vec3 point,vec3 normal){
    if(mappedNormal)return hbPathTangentNormal(id,normal,smoothValue,prior);return length(mapped)>1e-10?normalize(mapped):vec3(0,0,0);
   }
  }
- float at=hbGeometryInfo.w+id*6.0,old=hbPathFilter.w+id*3.0;vec3 e1=hbGeometryVertexLoad(at+1.0).xyz,e2=hbGeometryVertexLoad(at+2.0).xyz,a=hbGeometryLoad(old+1.0).xyz,b=hbGeometryLoad(old+2.0).xyz,n=cross(e1,e2),previous=cross(a,b);float area=length(n),oldArea=length(previous);if(area<1e-10||oldArea<1e-10)return vec3(0,0,0);n/=area;previous/=oldArea;vec3 mapped=cross(b,previous)*(dot(normal,e1)/oldArea)+cross(previous,a)*(dot(normal,e2)/oldArea)+previous*dot(normal,n);return length(mapped)>1e-10?normalize(mapped):vec3(0,0,0);}
+ float at=hbGeometryInfo.w+id*6.0,old=hbPathFilter.w+id*3.0;vec3 e1=hbGeometryRecord1(id).xyz,e2=hbGeometryRecord2(id).xyz,a=hbGeometryLoad(old+1.0).xyz,b=hbGeometryLoad(old+2.0).xyz,n=cross(e1,e2),previous=cross(a,b);float area=length(n),oldArea=length(previous);if(area<1e-10||oldArea<1e-10)return vec3(0,0,0);n/=area;previous/=oldArea;vec3 mapped=cross(b,previous)*(dot(normal,e1)/oldArea)+cross(previous,a)*(dot(normal,e2)/oldArea)+previous*dot(normal,n);return length(mapped)>1e-10?normalize(mapped):vec3(0,0,0);}
 `;
 export function previousGuideNormal(normal,current,previous){
  const sub=(a,b)=>a.map((v,i)=>v-b[i]),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],unit=a=>{const length=Math.hypot(...a);return length>1e-10?a.map(v=>v/length):null;};

@@ -1,3 +1,5 @@
+2026-10-15: [복잡 노멀맵·컴파일 재사용·준비 진단](RENDERING_141.md). 머테리얼/Components의 C++·BP·사람·AI 공용 속성은 유지하고, 기존 엔진 스키마에 shaderCompilation/pipelinePreparation의 읽기 전용 단계·시간·캐시 계약을 추가해요.
+
 2026-10-15: [접선 가이드·구름 갱신·분산 하늘 필터](RENDERING_138.md). SkyLight.realTimeCapture/captureVersion과 기존 Components C++·BP·AI 경로를 그대로 사용해요. 공용 스키마에 필터 단계 진단을 추가해요.
 
 2026-10-15: [변형 가이드·그림자·장면 하늘](RENDERING_134.md). 기존 곡면/시간 필터·Components C++/BP/AI 속성·명령을 재사용하고 SkyLight.captureVersion으로 명시적인 재캡처를 요청해요. 별도 AI 상태나 저장 통로를 만들지 않아요.

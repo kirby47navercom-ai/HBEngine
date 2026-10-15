@@ -483,6 +483,7 @@ public:
     void setGeometryScene(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||!value->width||!value->height))throw std::runtime_error("Geometry GI texture invalid");if(value){D3D11_SHADER_RESOURCE_VIEW_DESC d{};value->view->GetDesc(&d);if(d.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2D||d.Format!=DXGI_FORMAT_R32G32B32A32_FLOAT)throw std::runtime_error("Geometry GI format invalid");}if(geometrySceneView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}geometrySceneView=std::move(next);}
     void setPostLookup(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookupSize=value?value->height:0;if(postLookupView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}postLookupView=std::move(next);}
     void releasePostProcess(){pathEnvironmentView={};geometrySceneView={};postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
+    std::array<std::uint64_t,9> shaderCompilationInfo()const{return bloom.compilationInfo();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}
     std::uint64_t bloomDispatches() const{return bloom.dispatches();}
     std::uint64_t bloomAllocations() const{return bloom.allocations();}

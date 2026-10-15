@@ -108,6 +108,7 @@ public:
     bool active() const{return scene.target.p!=nullptr;}ID3D11RenderTargetView* target() const{return scene.target.p;}
     ID3D11Texture2D* colorTexture() const{return scene.texture.p;}
     void release(){screen.release();levels.clear();scene=Image{};aaImage=Image{};exposureImages={};exposureValid=false;depthView={};depthImage={};pending=false;}
+    std::array<std::uint64_t,9> compilationInfo()const{return screen.compilationInfo();}
     std::uint64_t textureBytes() const{std::uint64_t bytes=std::uint64_t(scene.width)*scene.height*8;for(const auto& layer:levels)bytes+=std::uint64_t(layer[0].width)*layer[0].height*16;for(const auto& image:exposureImages)bytes+=std::uint64_t(image.width)*image.height*8;bytes+=std::uint64_t(aaImage.width)*aaImage.height*4;return bytes+screen.bytes();}
     std::uint64_t dispatches() const{return dispatches_;}std::uint64_t allocations() const{return allocations_;}std::uint64_t composites() const{return composites_;}
     std::size_t levelCount() const{return levels.size();}
