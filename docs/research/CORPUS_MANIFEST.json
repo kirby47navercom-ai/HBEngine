@@ -2642,6 +2642,19 @@
           "state": "retrieval_failed_body_unread"
         }
       ]
+    },
+    {
+      "id": "deformed-guide-sky-capture-supplement",
+      "roots": [
+        "https://dev.epicgames.com/documentation/unreal-engine/sky-lights-in-unreal-engine?lang=en-US",
+        "https://dev.epicgames.com/documentation/unreal-engine/temporal-upscalers-in-unreal-engine?lang=en-US",
+        "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes-morph-targets",
+        "https://github.com/mrdoob/three.js/blob/r180/src/renderers/webgl/WebGLMorphtargets.js"
+      ],
+      "record": "docs/RENDERING_134.md",
+      "wholeCorpus": false,
+      "state": "selected_sky_and_temporal_sections_read_local_three_compared_gltf_full_body_pending",
+      "readScope": "Sky capture/update/time slicing sections and temporal reprojection explanation retrieved; installed Three morph renderer code compared; complete glTF and linked APIs remain open."
     }
   ],
   "supplementalBaselines": [

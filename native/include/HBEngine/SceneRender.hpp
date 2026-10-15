@@ -365,12 +365,14 @@ public:
         if(skySource.p!=texture->view.p||skySize!=size){auto next=probes.create(size);probes.importEquirect(next,texture->view.p);probes.filter(next);skyProbe=std::move(next);skySource={};skySource.p=texture->view.p;skySource->AddRef();skySize=size;}
         const float radians=rotation*.01745329252f;skySettings.center={0,0,0,intensity};skySettings.minimum={std::sin(radians),std::cos(radians),0,0};skySettings.maximum={0,0,0,float(skyProbe.mips-1)};skySettings.options={1,1,1,0};
     }
+    void setSkyProbe(Probe&& target,float intensity=1){if(target.owner!=gpu.device.p||!target.ready)throw std::runtime_error("Sky probe invalid");if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skyProbe=std::move(target);skySource={};skySize=0;skySettings.center={0,0,0,intensity};skySettings.minimum={0,1,0,0};skySettings.maximum={0,0,0,float(skyProbe.mips-1)};skySettings.options={1,1,1,0};}
+    void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
     std::uint64_t skyEnvironmentBytes() const{return skyProbe.available()?skyProbe.storageBytes():0;}
     std::uint64_t lightTileBytes() const{return lightTiles.bytes();}std::uint64_t lightTileDispatches() const{return lightTiles.dispatches();}
     Probe createProbe(std::uint32_t size){return probes.create(size);}
-    void beginProbe(Probe& target,std::uint32_t faceIndex,const Matrix& projection,const std::array<float,4>& eye,const std::array<float,4>& clear,bool indirect=false){
+    void beginProbe(Probe& target,std::uint32_t faceIndex,const Matrix& projection,const std::array<float,4>& eye,const std::array<float,4>& clear,bool indirect=false,bool environment=false){
         if(activeProbe||activeShadow>=0||active2D||target.owner!=gpu.device.p||faceIndex>=6||!finite(projection)||!finite(eye)||!finite(clear))throw std::runtime_error("Probe capture binding invalid");
-        std::lock_guard<std::mutex> lock(gpu.mutex);savedProbe=frame;frame.viewProjection=projection;frame.eye=eye;frame.viewport={0,0,float(target.size),float(target.size)};frame.scissor.reset();activeProbe=&target;probeIndirect=indirect;probeFace=faceIndex;
+        std::lock_guard<std::mutex> lock(gpu.mutex);savedProbe=frame;frame.viewProjection=projection;frame.eye=eye;frame.viewport={0,0,float(target.size),float(target.size)};frame.scissor.reset();activeProbe=&target;probeIndirect=indirect;probeFace=faceIndex;if(environment){frame.fog={0,0,0,0};frame.fogRange={0,0,0,0};frame.heightFog={0,0,0,1};}
         std::array<ID3D11ShaderResourceView*,5> empty{};gpu.context->PSSetShaderResources(39,5,empty.data());gpu.context->ClearRenderTargetView(target.faces[faceIndex].p,clear.data());gpu.context->ClearDepthStencilView(target.depth.p,D3D11_CLEAR_DEPTH,1,0);
     }
     void endProbe(){if(!activeProbe)return;std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);activeProbe=nullptr;frame=savedProbe;}

@@ -1,3 +1,4 @@
+import {prepareModelMorphs} from './model-morph.js';
 import {materialLayerParameterKey,materialVectorValue,materialFloatProperty,validMaterialParameters} from './material-runtime.js';
 import {morphSnapshot,morphNames,morphWeight,setMorphWeight} from './morph-controls.js';
 import {orderRetargetActors} from './animation-retarget.js';
@@ -45,8 +46,8 @@ export async function loadModel(asset){
   const manager=new THREE.LoadingManager(),folder=asset.split('/').slice(0,-1).join('/');manager.setURLModifier(url=>{if(url.startsWith('data:')||url.startsWith('blob:'))return url;if(/^https?:/.test(url))throw Error('외부 모델 의존성은 프로젝트에 가져오세요.');return fileUrl((folder?folder+'/':'')+url.replace(/^\.\//,''));});
   const response=await editorRequest(fileUrl(asset)),extension=asset.split('.').pop().toLowerCase();
   if(extension==='obj')return {object:new OBJLoader(manager).parse(await response.text()),animations:[]};
-  if(extension==='fbx'){const object=new FBXLoader(manager).parse(await response.arrayBuffer(),'');rememberAnimationBindPose(object);return {object,animations:object.animations};}
-  if(['glb','gltf'].includes(extension)){const data=extension==='gltf'?await response.text():await response.arrayBuffer();const result=await new Promise((resolve,reject)=>new GLTFLoader(manager).parse(data,'',resolve,reject));rememberAnimationBindPose(result.scene);return {object:result.scene,animations:result.animations};}
+  if(extension==='fbx'){const object=new FBXLoader(manager).parse(await response.arrayBuffer(),'');prepareModelMorphs(object);rememberAnimationBindPose(object);return {object,animations:object.animations};}
+  if(['glb','gltf'].includes(extension)){const data=extension==='gltf'?await response.text():await response.arrayBuffer();const result=await new Promise((resolve,reject)=>new GLTFLoader(manager).parse(data,'',resolve,reject));prepareModelMorphs(result.scene);rememberAnimationBindPose(result.scene);return {object:result.scene,animations:result.animations};}
   throw Error('미리보기 임포터가 없는 모델: '+extension);
 }
 export function engineOperations(hooks){
