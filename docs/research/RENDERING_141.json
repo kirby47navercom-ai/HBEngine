@@ -1347,7 +1347,24 @@
     "Previous animated normal samples/mip footprint, global curved inverse, rough multi-lobe transport, DFAO/Lightmass/HWRT and existing engine-wide goals remain on the cumulative ledger. Whole corpus/API/commercial completeness and phone performance are not established."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "9453a1ef2e5092b38866ab92d71fde0b87b01c8e",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\306d792c005bd522",
+    "bundleHash": "306d792c005bd522728e09c49aab070f1cbe47135a5da132a4aadfcda00cdf34",
+    "files": 2237,
+    "remainingVersions": [
+      "306d792c005bd522"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_141.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 171586758,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "306d792c005bd522"
+    ]
   }
 }
