@@ -4,7 +4,7 @@
 
 CPU25 묶음·환경34개 기존 검사·실제 D3D/gayRmn, GL/mCy4BO, GPU/fGrEzH의 24광원→4표본/밝기 유지·HDRI/0/복원·기존124·실제C++·errors0/exit0/서버해제. D3D는125/119 회귀도 포함. 실제 편집기bk4cRh에서 버튼/API·Undo·정의patch·저장·CSS·캡처 검토 통과. 원장은 docs/research/LIGHTING_TOOLS_128.json.
 
-설치 전환 대기: 128 묶음 검증 파일과 바로가기·프로필·이전 버전을 대조한다.
+설치 검증 완료: C:\Users\kirby\HBEngine\Versions\5999de9c7c55cfce; 새 명세 2209개, 소스 31개·실행파일·바로가기·연결 대조. 이전 2198개 파일 사전 확인 후 이전 사본 자동 정리. Versions 1개. [설치 기록](docs/research/USER_INSTALL_128.json).
 
 기존 누적 렌더링·2D/2.5D/3D·모바일·엔진 전 분야 목표를 축소하지 않는다. HB 다중 광원은 경로 추적/기하 GI, HDRI Native 증거는 경로 추적이며 UE 전체 MegaLights/deferred/Native 전역 IBL·실게임 FPS·휴대폰/전체 corpus 완료가 아니다. 전역 곡면 역해/거친 다중 로브·스킨 이전법선의 기존 제한과 다음 작업을 유지한다.
 

@@ -933,7 +933,24 @@
     "Whole-game FPS, phones, complete engine/corpus/API equivalence are not claimed."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "e503979c2a83cfc89bbdc7283f3ca8f1e0c99eda",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5999de9c7c55cfce",
+    "bundleHash": "5999de9c7c55cfce440684d21e101309dd018105e64fc3b805e4b6c2504370f6",
+    "files": 2209,
+    "remainingVersions": [
+      "5999de9c7c55cfce"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_128.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 485956110,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "5999de9c7c55cfce"
+    ]
   }
 }
