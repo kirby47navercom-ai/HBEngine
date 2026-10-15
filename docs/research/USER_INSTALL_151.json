@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "date": "2026-10-15T15:01:46.107Z",
+  "featureCommit": "c13fc5876c393da4e8e05293f721301f292b4e53",
+  "installed": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306\\HBEngine.exe",
+    "bundleHash": "a596df89fc3cc3069137cf506a39c9c1127b4bad9507e138facd2b4e48558df0",
+    "files": 2252,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 2245,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0fc254411f3040",
+          "bytes": 171785105,
+          "manifestSHA256": "586959b01539520bb86c480c261b10344157478ddd7d8747a5071d29bfb28468"
+        }
+      ],
+      "bytes": 171785105,
+      "failures": [],
+      "date": "2026-10-15T15:00:45.7235193Z",
+      "skipped": [],
+      "preserved": [],
+      "remaining": [
+        "a596df89fc3cc306"
+      ]
+    }
+  },
+  "verified": {
+    "manifestFiles": 2252,
+    "bytes": 171435952,
+    "allFilesSHA256": true,
+    "sourceProducts": 17,
+    "generatedAPI": true,
+    "binaries": {
+      "HBEngine.exe": "075b4f4333ea8362d6c4cf9c170910b07660be08ff490b7b32accb908405504b",
+      "HBPlayer.exe": "3553f374407c91e765cfc8e71f146368f5002b86d07a510811c93e853f9fbf65"
+    },
+    "userProfileTopFilesUnchanged": true,
+    "versions": [
+      "a596df89fc3cc306"
+    ],
+    "originalGamesUsedForTests": false,
+    "userWindowsRestarted": false,
+    "shortcuts": {
+      "passed": true,
+      "association": "\"C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306\\HBEngine.exe\" \"%1\"",
+      "links": [
+        {
+          "link": "C:/Users/kirby/HBEngine/HBEngine.lnk",
+          "target": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306\\HBEngine.exe",
+          "workingDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306"
+        },
+        {
+          "link": "C:/Users/kirby/OneDrive/바탕 화면/HBEngine 사용자용.lnk",
+          "target": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306\\HBEngine.exe",
+          "workingDirectory": "C:\\Users\\kirby\\HBEngine\\Versions\\a596df89fc3cc306"
+        }
+      ]
+    }
+  },
+  "initialVerificationCorrection": "First receipt attempt expected HBPlayer.exe at repository root. Build produces it under dist/HBEngine. Compared installed player to the actual built release product; source/manifest/links/profile/Versions checks rerun and passed."
+}

@@ -115,3 +115,5 @@
 - 123: 모션 이전 정점 typed 포장·쓰기 전 값/범위 검증·실패 원본 보존·성공 이력 Map 재사용·오브젝트 교체 pruning. CPU8·기존8배치 byte parity·최종 actualD3D119 모션/이차 렌즈·CPP 통과. 실행파일 재컴파일 없이 검증된 스크립트 묶음 설치 갱신/이전 사본 정리. 누적 전체 계획 유지. [123](RENDERING_123.md).
 
 - 151–155: GL KHR 준비/취소/래스터 fallback·ready 캡처·필터 소스 중복 제거·공용 진단,3D bind XYZ 제약·기존 속성/Undo/AI·공용 CPP/BP2노드/lazy 자원. CPU11·실제GL rPDp4r/Editor XB0xsQ/Player gl7SZW/profiler Xt60CZ 통과. [기록](RENDERING_151.md). 가이드 총 링크·전체 프레임/폰·다른 엔진 분야와 corpus gate는 유지. 검증 뒤 설치 전환.
+
+- 151–155 설치 완료: a596df89fc3cc306·명세2252 전체SHA/17제품/바로가기/프로필 대조, 이전 사본 약164MiB 정리·Versions1개. [설치](research/USER_INSTALL_151.json). 전체 엔진 목표를 완료 처리하지 않으며 다음 무거운 가이드 준비·이전 애니메이션 노멀/mip·렌더링/제작/플랫폼 누적 세부를 유지한다.

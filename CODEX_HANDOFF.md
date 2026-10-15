@@ -2,7 +2,7 @@
 
 GL KHR 준비/취소·래스터 fallback·ready 캡처, 이미지 필터만의 GLSL, 공용 profiler/AI 오류/드라이버 상태, 세3D IK의 bind XYZ 제약·속성/Undo/AI·SDK/BP2노드·lazy scratch를 구현했다. [설명](docs/RENDERING_151.md)·[계약](docs/ANIMATION_JOINT_LIMITS_154.md).
 
-CPU11·실제 GL rPDp4r(141/138/134/125/128/HDRI/24성분 affine), Editor XB0xsQ/releasePlayer gl7SZW의 실제 C++/BP·뼈/원본/종료, GL profiler Xt60CZ 통과. 필터3255B/가이드48616B, GL 첫 path8018ms·가이드7411ms는 여전한 총 드라이버 비용이다. 비동기 대기와 전체 링크 속도를 혼동하지 않는다. [검증](docs/research/RENDERING_151.json). 사용자 설치 전환 대기.
+CPU11·실제 GL rPDp4r(141/138/134/125/128/HDRI/24성분 affine), Editor XB0xsQ/releasePlayer gl7SZW의 실제 C++/BP·뼈/원본/종료, GL profiler Xt60CZ 통과. 필터3255B/가이드48616B, GL 첫 path8018ms·가이드7411ms는 여전한 총 드라이버 비용이다. 비동기 대기와 전체 링크 속도를 혼동하지 않는다. [검증](docs/research/RENDERING_151.json). 설치 전환 완료: C:/Users/kirby/HBEngine/Versions/a596df89fc3cc306. 명세2252파일 전체SHA·변경17제품·실행파일/생성API·바로가기2개/.hbproject·프로필 보존을 확인했다. 이전 사본171,785,105B 정리, Versions1개. [설치](docs/research/USER_INSTALL_151.json).
 
 다음: GL 무거운 guide/첫path와 WebGPU 첫path/가이드 최적화, 이전 애니메이션 노멀 표본·mip, 전역 곡면 역해·거친 다중 로브·베이크/HWRT. FullBody/ControlRig·접지·리타게팅과 2D/2.5D/3D·월드/에셋/게임시스템·제작/배포/모바일/성능/AI 전체 누적 목표 및 corpus/API gate 유지. Versions1·사용자 창/원본/프로필 보존.
 
