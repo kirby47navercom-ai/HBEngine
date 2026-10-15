@@ -113,3 +113,5 @@
 - 121·122: 광자 후보 선별·역확률 보정·금속 코팅/sheen/비등방성/박막 공유, 기하/UV/법선 typed 포장. 실제 D3D/GPU/GL·네이티브117/118/120/121·CPU16 묶음과8배치 byte parity 통과. 설치 묶음 갱신과 이전 Versions 정리. 기존 누적 원장/다음 월드 교차 정점 공유·곡면 필터 등 유지. [121](RENDERING_121.md)·[122](RENDERING_122.md).
 
 - 123: 모션 이전 정점 typed 포장·쓰기 전 값/범위 검증·실패 원본 보존·성공 이력 Map 재사용·오브젝트 교체 pruning. CPU8·기존8배치 byte parity·최종 actualD3D119 모션/이차 렌즈·CPP 통과. 실행파일 재컴파일 없이 검증된 스크립트 묶음 설치 갱신/이전 사본 정리. 누적 전체 계획 유지. [123](RENDERING_123.md).
+
+- 151–155: GL KHR 준비/취소/래스터 fallback·ready 캡처·필터 소스 중복 제거·공용 진단,3D bind XYZ 제약·기존 속성/Undo/AI·공용 CPP/BP2노드/lazy 자원. CPU11·실제GL rPDp4r/Editor XB0xsQ/Player gl7SZW/profiler Xt60CZ 통과. [기록](RENDERING_151.md). 가이드 총 링크·전체 프레임/폰·다른 엔진 분야와 corpus gate는 유지. 검증 뒤 설치 전환.

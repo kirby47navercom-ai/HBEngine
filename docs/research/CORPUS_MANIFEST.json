@@ -2692,6 +2692,20 @@
       "wholeCorpus": false,
       "state": "selected_TSL_local_r180_renderer_and_MDN_async_contract_compared_W3C_full_body_unread",
       "readScope": "Reusable variables and local r180 VarNode/QuadMesh/float32 renderer readback implementation compared. MDN descriptor/Promise/readiness/error contract read. W3C retrieval failed due tool body size limit; full specification and linked API units remain pending."
+    },
+    {
+      "id": "gl-preparation-bind-joint-supplement-151",
+      "engine": "HBEngine dependencies",
+      "roots": [
+        "https://threejs.org/docs/pages/WebGLRenderer.html",
+        "https://developer.mozilla.org/en-US/docs/Web/API/KHR_parallel_shader_compile",
+        "https://registry.khronos.org/webgl/extensions/KHR_parallel_shader_compile/",
+        "https://threejs.org/docs/pages/CCDIKSolver.html"
+      ],
+      "record": "docs/RENDERING_151.md",
+      "wholeCorpus": false,
+      "state": "selected_primary_docs_and_local_r180_implementation_compared_linked_full_specs_pending",
+      "readScope": "WebGLRenderer compile/compileAsync/properties/debug; MDN nonblocking completion/fallback/total-time text and example; CCDIK BoneLink/update; local r180 compile/program/material disposal and CCD rotationMin/Max source. Khronos full specification and outgoing APIs remain unread."
     }
   ],
   "supplementalBaselines": [

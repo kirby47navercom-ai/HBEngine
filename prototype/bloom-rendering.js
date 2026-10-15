@@ -21,7 +21,7 @@ export class BloomRendering{
  constructor(){this.views=new Map();this.rect=new Vector4();this.eye=new Vector3();}
  render(renderer,scene,camera,objects){
   const p=postProcessSettings(objects,camera.getWorldPosition(this.eye),scene.userData.hbPostWorld)||(hasTransmission(scene)?{bloomStrength:0,bloomRadius:0,bloomThreshold:1,bloomResolutionScale:.5}:null);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled!==false&&p?.bloomStrength>0);
-  if(!p){if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
+  if(!p){renderer.hbPathPreparation=null;if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
   renderer.getViewport(this.rect);const ratio=renderer.getPixelRatio(),w=Math.max(1,Math.round(this.rect.z*ratio)),h=Math.max(1,Math.round(this.rect.w*ratio));
   const screenOn=screenEffectsEnabled(p),surfaceOn=surfaceEffectsEnabled(p),motionOn=objectMotionEnabled(p),ambientOn=ambientOcclusionEnabled(p),key=[screenOn,surfaceOn,motionOn,ambientOn].join(':');if(view&&view.key!==key){this.release(view);this.views.delete(renderer);view=null;}
   if(surfaceOn)installSurfaceOutputs(scene,ambientOn);
@@ -44,10 +44,10 @@ export class BloomRendering{
   const packed=packedPostProcess(p,time,camera),map=scene.userData.hbPostLookup?.(p.colorLookup);packed.lookup[1]=lookupSize(map);packed.adapt[2]=Math.min(.1,Math.max(0,time-view.time));packed.adapt[3]=view.meter&&!reset?1:0;
   for(const [k,v]of Object.entries(packed))view.post.uniforms[postUniformNames[k]].value.fromArray(v);view.post.uniforms.hbPostSize.value.set(w,h);view.post.uniforms.hbLookupMap.value=map||null;
   if(p.autoExposureEnabled&&!view.meter){const material=new ShaderMaterial({uniforms:{hbMeterSource:{value:null},hbPreviousExposure:{value:null},hbExposure:view.post.uniforms.hbExposure,hbAdapt:view.post.uniforms.hbAdapt},vertexShader,fragmentShader:meterGLSL,depthTest:false,depthWrite:false,toneMapped:false}),images=[0,1].map(()=>new WebGLRenderTarget(1,1,{type:HalfFloatType,depthBuffer:false}));view.meter={material,quad:new FullScreenQuad(material),images,index:0};}else if(!p.autoExposureEnabled&&view.meter){this.releaseMeter(view);}
-  view.aa.enabled=p.antiAliasing==='fxaa'&&p.aaStrength>0;view.aa.uniforms.resolution.value.set(1/w,1/h);view.aa.uniforms.hbAAAmount.value=p.aaStrength??0;view.time=time;const frame=view.screen?.state.begin(camera,p,w,h,time,scene);if(frame)view.screen.prepare(frame,camera,scene,p);let success=false;try{view.motion?.render(renderer,scene,camera,frame);view.composer.render();success=true;}finally{if(!success)view.screen?.failed();frame?.end(success);}
+  view.aa.enabled=p.antiAliasing==='fxaa'&&p.aaStrength>0;view.aa.uniforms.resolution.value.set(1/w,1/h);view.aa.uniforms.hbAAAmount.value=p.aaStrength??0;view.time=time;const frame=view.screen?.state.begin(camera,p,w,h,time,scene);if(frame)view.screen.prepare(frame,camera,scene,p);const preparation=view.screen?.preparePipeline(renderer,view.raw)||null;renderer.hbPathPreparation=preparation;if(preparation?.error){frame?.end(false);throw preparation.error;}if(preparation?.pending){try{renderer.render(scene,camera);}finally{frame?.end(false);}return;}let success=false;try{view.motion?.render(renderer,scene,camera,frame);view.composer.render();success=true;}finally{if(!success)view.screen?.failed();frame?.end(success);}
  }
  releaseMeter(view){view.meter?.images.forEach(t=>t.dispose());view.meter?.material.dispose();view.meter?.quad.dispose();view.meter=null;}
  release(view){this.releaseMeter(view);view.screen?.dispose();view.motion?.dispose();view.raw?.dispose();view.composer.dispose();view.render.dispose();view.bloom?.dispose();view.post.dispose();view.output.dispose();view.aa.dispose();}
- disposeRenderer(renderer){const view=this.views.get(renderer);if(view){this.release(view);this.views.delete(renderer);}}
+ disposeRenderer(renderer){renderer.hbPathPreparation=null;const view=this.views.get(renderer);if(view){this.release(view);this.views.delete(renderer);}}
  dispose(){for(const view of this.views.values())this.release(view);this.views.clear();}
 }

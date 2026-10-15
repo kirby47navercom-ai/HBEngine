@@ -50,5 +50,8 @@ vec4 hbPathTemporalResolve(vec2 uv){vec4 original=texture2D(hbScreenSource,uv),c
  return vec4(mix(original.rgb,clamp(texture2D(hbDenoiseHistory,motion.xy).rgb,lo,hi),hbPathFilter.x),original.a);
 }
 `;
+// Image filters consume guides only; do not compile the unused ray traversal,
+// material evaluator or guide solver again for each spatial/temporal pass.
+export const pathDenoiseFilterGLSL=pathDenoiseGLSL.slice(pathDenoiseGLSL.indexOf('float hbPathCoC('));
 export function temporalDenoiseColor(current,previous,center,oldGuide,neighbors,feedback,valid=true){if(!valid||feedback<=0||center[3]*oldGuide[3]<=0||center.slice(0,3).reduce((s,v,i)=>s+v*oldGuide[i],0)<.95||Math.abs(center[3]-oldGuide[3])>Math.max(.00001,Math.abs(center[3])*.02))return [...current];return current.map((v,i)=>{const lo=Math.min(v,...neighbors.map(n=>n[i])),hi=Math.max(v,...neighbors.map(n=>n[i]));return v*(1-feedback)+Math.max(lo,Math.min(hi,previous[i]))*feedback;});}
 export function denoiseWeight(center,guide,color,other,x,y,stride=1){if(center[3]*guide[3]<=0)return 0;const dot=(a,b)=>a.slice(0,3).reduce((s,v,i)=>s+v*b[i],0),delta=other.map((v,i)=>v-color[i]);return Math.max(0,dot(center,guide))**32*Math.exp(-Math.abs(Math.abs(center[3])-Math.abs(guide[3]))/Math.max(.00001,Math.abs(center[3])*.02*stride))*Math.exp(-dot(delta,delta)/Math.max(.001,dot(color,color)+.1))*(x===0?6:Math.abs(x)===1?4:1)*(y===0?6:Math.abs(y)===1?4:1);}

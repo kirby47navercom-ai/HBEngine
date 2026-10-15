@@ -14,7 +14,7 @@ const stageLabel=s=>s?.startsWith('spatial-filter-')?'공간 필터 '+s.slice(15
 export function shaderCompilationTable(renderers){
  const rows=[],row=(view,state,stage,time)=>'<tr><td>'+esc(view)+'</td><td>'+esc(state)+'</td><td>'+esc(stage)+'</td><td>'+(Number.isFinite(time)?time.toFixed(2):'—')+'</td></tr>';
  for(const {id,backend,pipelinePreparation:p,shaderCompilation:n}of renderers||[]){
-  if(p){rows.push(row(id+' · '+backend,p.error?'실패':p.cancelled?'취소':p.pending?'준비 중':'준비됨',stageLabel(p.currentStage),p.elapsedMS));for(const s of p.stages)rows.push(row('', '단계',stageLabel(s.stage),s.elapsedMS));}
+  if(p){rows.push(row(id+' · '+backend,p.error?'실패':p.cancelled?'취소':p.pending?'준비 중':'준비됨',stageLabel(p.currentStage),p.elapsedMS));for(const s of p.stages)rows.push(row('', '단계',stageLabel(s.stage),s.elapsedMS));if(p.parallelSupported===false)rows.push(row('','드라이버','병렬 컴파일 미지원',null));if(p.error)rows.push(row('','오류',p.error,null));}
   if(n?.cacheBudgetBytes>0){rows.push(row(id+' · '+backend,'컴파일 '+n.compilations+' · 재사용 '+n.cacheHits,'캐시 '+(n.cacheBytes/1048576).toFixed(2)+' / '+(n.cacheBudgetBytes/1048576).toFixed(2)+' MiB',n.lastCompileMS));}
  }
  return rows.length?'<table><caption>셰이더 준비 · CPU/드라이버 대기 포함</caption><thead><tr><th>작업창</th><th>상태</th><th>단계</th><th>시간 ms</th></tr></thead><tbody>'+rows.join('')+'</tbody></table>':'';

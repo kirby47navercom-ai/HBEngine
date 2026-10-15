@@ -1,3 +1,7 @@
+# 154–155 — 기준 포즈 XYZ 관절 제약의 공용 C++/BP/AI 연결
+
+AnimationGraph의 Two Bone/FABRIK/CCD에 선택적 jointLimits를 추가한다. 같은 Game.hpp 선언에서 SetIKJointLimit/ClearIKJointLimit와 한국어·영어 검색 BP 노드2개를 생성한다. 범위·관절 검증, 속성창/Undo/저장, AI document.patch/dryRun/revision과 runtime 상태를 공유한다. 실제 Editor/배포 Player에서 C++ 설정·해제/잘못된 범위 거절, BP 잠금·해제와 실제 골격 바인딩을 확인했다. 세 솔버·2D IK·리타게팅·루트 모션·725 BP노드/공용 계산289 회귀 통과. bind XYZ는 기존 입력 포즈 cone 및 Full Body/Control Rig와 구별한다. [계약](ANIMATION_JOINT_LIMITS_154.md)·[묶음 검증](research/RENDERING_151.json). 전체 누적 목표·corpus gate는 유지한다.
+
 2026-10-15: [초기 준비·프로파일러·C++ 빌드 진단](RENDERING_145.md). profiler.read와 실제 표가 동일한 rendering[]을 반환하고, native.build는 실제 compiler/workerProtocol을 반환해요. 외부 소스 참조 그래프는 공용 blueprint.connect로 해석된 C++ 핀을 연결하며 revision/Undo/저장 모델은 유지해요.
 
 2026-10-15: [복잡 노멀맵·컴파일 재사용·준비 진단](RENDERING_141.md). 머테리얼/Components의 C++·BP·사람·AI 공용 속성은 유지하고, 기존 엔진 스키마에 shaderCompilation/pipelinePreparation의 읽기 전용 단계·시간·캐시 계약을 추가해요.

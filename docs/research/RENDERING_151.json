@@ -1,0 +1,368 @@
+{
+  "version": 1,
+  "date": "2026-10-15T14:59:14.431Z",
+  "baseCommit": "8faf779ddd5465e2032505fea74051b1c9b151f6",
+  "scope": [
+    "151 WebGL optional path pipeline preparation, cancellation and ready-only captures; raster remains selected while preparation yields",
+    "152 Spatial/temporal image filter shader source excludes unused ray/material/guide algorithms; filter body unchanged",
+    "153 Shared GL stage/driver/error diagnostics in existing profiler and AI API",
+    "154 Bind-relative canonical XYZ joint constraints in Two Bone/FABRIK/CCD; legacy pose/length/placement preserved",
+    "155 Same property editor/revision/dryRun/Undo, C++ SDK and generated BP service nodes; constraint scratch allocated only while used"
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/include/HBEngine/Bridge.hpp",
+      "sha256": "204dd5534d1a5097873be71c50e5e60f6f1c2434d62a99c44df45db9b3c579e0"
+    },
+    {
+      "file": "native/include/HBEngine/Game.hpp",
+      "sha256": "5278bb6488b667a168a3b226ed41a25c801cd321de5dcd6a3073dcd67d3ea8c0"
+    },
+    {
+      "file": "package.json",
+      "sha256": "1f615ca3d5d9651a4ed668c4174af109f5a09826b6f8d6f14a4c5e01e839edb4"
+    },
+    {
+      "file": "prototype/animation-graph-editor.js",
+      "sha256": "7ba5dde7ddf2dc0a7b7f4112ebee93e048fc48bc487dd6b4ef6c1a369f017013"
+    },
+    {
+      "file": "prototype/animation-graph-runtime.js",
+      "sha256": "a1cbb209c58a4cf381975f0726151d3aa558ddc9b7e1234d6bde00ffdd251d58"
+    },
+    {
+      "file": "prototype/animation-ik-editor.js",
+      "sha256": "1b9effcd42d52004ebe58f897970f6829aa383bd2c3e8a19686740df681ec17a"
+    },
+    {
+      "file": "prototype/animation-ik.js",
+      "sha256": "b16fc0e376f720d65175e0d3e88d46518c1dd872d5a1ff73487f2dc9dacbb73f"
+    },
+    {
+      "file": "prototype/bloom-rendering.js",
+      "sha256": "19d72d7d23ef3bd2084fd493bf8d64814179299ac8481fdb23d53c551867b894"
+    },
+    {
+      "file": "prototype/engine-services.js",
+      "sha256": "33844ffd8b864a5f5549bf42fcdf441c017670faa0f95485345e5536a0974458"
+    },
+    {
+      "file": "prototype/game-renderer.js",
+      "sha256": "b76677350c64483248548203cd3e1310a4054c43a39525cfc592ca515c93b754"
+    },
+    {
+      "file": "prototype/gpu-path-preparation.js",
+      "sha256": "d60a9f12690d1ddebe19c061ef06338a698b14b4507dfea40cd7d72e69ed6d08"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "7974b29c043ad38ed6b9d88334e5e5e712686a41fbeaafbaf746cc058fd7d6b7"
+    },
+    {
+      "file": "prototype/profiler.js",
+      "sha256": "d797ed8a544086340827eef12cf8c83878d8720f1ad85e6b78a01d1b9b94ee1a"
+    },
+    {
+      "file": "prototype/screen-effects-gl.js",
+      "sha256": "fddf242a78917509751914e5f56cb5455af19689bc258aef6efe83386fd3fd90"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "39598c76f0b35611fdf9ba9bf38d09d6a5731381dff073a18290780f0cd77776"
+    },
+    {
+      "file": "prototype/animation-joint-limits.js",
+      "sha256": "c9226b665f57005a3e45f240893096bc69b890f9f898ea4124e9d1357cdef1f5"
+    },
+    {
+      "file": "prototype/gl-path-preparation.js",
+      "sha256": "5adf496cae0063694f2f73523d0fc28ff5f1dfe5352789d86e04959b145d2cfa"
+    }
+  ],
+  "cpu": {
+    "file": "native/build/rendering-151-group.json",
+    "passed": true,
+    "checks": 11,
+    "jointsAfterLazyScratchChange": "check-animation-joint-limits.mjs passed again after lazy resource refinement"
+  },
+  "runtime": {
+    "webgl": {
+      "file": "native/build/gpu-scene-rPDp4r/acceptance.json",
+      "sha256": "eafacc1e0321bfc80b4611131441f26cf94843bc71ef4b3eb6c2e6593fbbc76d",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    "editor": {
+      "file": "native/build/animation-ccd-editor-XB0xsQ/acceptance.json",
+      "sha256": "adeda6e7fc5f8716633bd97bdaa268de57f78602bdfdba1e9ee19bf871e73e7d",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    "player": {
+      "file": "native/build/animation-ccd-player-gl7SZW/acceptance.json",
+      "sha256": "ff0e66095faf3af37f53227556827093564a1cea1988f28b314e569d259ff115",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    },
+    "profiler": {
+      "file": "native/build/compilation-profiler-window-Xt60CZ/acceptance.json",
+      "sha256": "965ffe960d55b792e007e56b8c0c589e36f95a14068a005e1d2827191ab62ee8",
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "serverClosed": true
+    }
+  },
+  "rendering": {
+    "passed": true,
+    "rendering141": {
+      "passed": true,
+      "backend": "WebGL2",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 844,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 8018.491900000008
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 3816.9224000000104
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 113.05050000001211
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 7767.734300000011
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 47.88560000000871
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 33.211000000010245
+        }
+      ],
+      "preparation": {
+        "pending": false,
+        "currentStage": "ready",
+        "elapsedMS": 7432.30000000447,
+        "stages": [
+          {
+            "stage": "path",
+            "elapsedMS": 0.10000000149011612
+          },
+          {
+            "stage": "normal-guide",
+            "elapsedMS": 0
+          },
+          {
+            "stage": "lens-motion-guide",
+            "elapsedMS": 7411.10000000149
+          },
+          {
+            "stage": "spatial-filter-1",
+            "elapsedMS": 0
+          },
+          {
+            "stage": "temporal-filter",
+            "elapsedMS": 21.100000001490116
+          },
+          {
+            "stage": "post",
+            "elapsedMS": 0
+          }
+        ],
+        "completed": 6,
+        "total": 6,
+        "cancelled": false,
+        "error": null,
+        "parallelSupported": true
+      },
+      "compilation": null,
+      "typedCPP": true,
+      "disabledRelease": true
+    },
+    "affine145": {
+      "passed": true,
+      "cases": 8,
+      "components": 24,
+      "maxBounces": 16,
+      "maxError": 0.0000013076554719049227,
+      "reference": "Independent reverse plane reflection/refraction walk",
+      "float32Readback": true
+    },
+    "rendering138": {
+      "passed": true,
+      "tangentProbe": {
+        "passed": true,
+        "twist": [
+          204,
+          127,
+          229,
+          255
+        ],
+        "mirrored": [
+          204,
+          127,
+          229,
+          255
+        ],
+        "degenerate": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "error": 0,
+        "tangentTwistDegrees": 90,
+        "smoothNormalUnchanged": true,
+        "mirroredUV": true,
+        "degenerateRejected": true
+      },
+      "backend": "WebGL2",
+      "texturedTwistedMorph": false,
+      "uniformTangentPerturbation": true,
+      "changedChannels": 844,
+      "deformedNormalBytes": 8064,
+      "typedCPP": true,
+      "disabledRelease": true
+    },
+    "rendering134": {
+      "passed": true,
+      "backend": "WebGL2",
+      "deformedNormalTriangles": 168,
+      "deformedNormalBytes": 8064,
+      "changedChannels": 2827,
+      "disabledRelease": true,
+      "typedCPP": true,
+      "nativeSky": null
+    },
+    "rendering125": {
+      "passed": true,
+      "raw": {
+        "mean": 18.322265625,
+        "variance": 135.83169174194336
+      },
+      "planar": {
+        "mean": 18.9912109375,
+        "variance": 1.080977439880371
+      },
+      "filtered": {
+        "mean": 18.994140625,
+        "variance": 1.1073875427246094
+      },
+      "zeroIsRaw": true,
+      "pose": {
+        "analyticLights": 0,
+        "lightBudget": 0,
+        "logicalTriangles": 1346,
+        "sharedVertices": true,
+        "uniqueVertexTriangles": 170,
+        "atlasBytes": 393216,
+        "poseMatrixInstances": 9,
+        "poseMatrixBytes": 864,
+        "deformedNormalTriangles": 0,
+        "deformedNormalBytes": 0,
+        "changedAtlasRows": 1
+      },
+      "disabled": {
+        "analyticLights": 0,
+        "lightBudget": 0,
+        "logicalTriangles": 1346,
+        "sharedVertices": true,
+        "uniqueVertexTriangles": 170,
+        "atlasBytes": 393216,
+        "poseMatrixInstances": 0,
+        "poseMatrixBytes": 0,
+        "deformedNormalTriangles": 0,
+        "deformedNormalBytes": 0,
+        "changedAtlasRows": 4
+      },
+      "typedCPP": true,
+      "backend": "WebGL2"
+    },
+    "lighting128": {
+      "passed": true,
+      "full": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "sampled": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "restored": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "analyticLights": 24,
+      "lightBudget": 4,
+      "sky": [
+        111,
+        152,
+        195,
+        255
+      ],
+      "dark": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "skyRestored": [
+        111,
+        152,
+        195,
+        255
+      ],
+      "typedCPP": true,
+      "backend": "WebGL2"
+    }
+  },
+  "visualInspection": {
+    "jointProperties": "native/build/animation-ccd-editor-XB0xsQ/ik-joint-limits.png",
+    "profiler": "native/build/compilation-profiler-window-Xt60CZ/compilation-profiler.png",
+    "readableFields": true,
+    "profilerFirstRowFullyVisible": true
+  },
+  "limits": [
+    "KHR extension unsupported path can block driver linking and is reported as unsupported",
+    "Actual complex GL initial path 8018ms and lens-motion-guide 7411ms are not improved to instant compilation; responsive polling is distinct from total driver time",
+    "Not an overall FPS/RAM/mobile/whole-corpus or complete engine parity claim",
+    "XYZ canonical Y [-90,90]; node Alpha and later graph blends retain their existing semantics; not FullBody/ControlRig"
+  ],
+  "storage": {
+    "newDependencies": 0,
+    "newAutomaticGPUReadbacks": 0,
+    "frameConstraintAllocations": 0,
+    "testBuildsAndProfilesPrunedByOwner": true,
+    "VersionsTarget": 1
+  }
+}

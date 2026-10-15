@@ -367,3 +367,7 @@ Unity6000.0 Skinned Mesh Renderer 소개/Properties/Materials 지정 구역과 B
 
 ## 121 — 금속 광자 평가 대조
 PBRT4 Conductor BRDF 자체 반사 반구·microfacet 방향 Jacobian·BRDF/PDF 지정 구역을 읽었다. 연결 API 전체·추가 coat 모델 본문과 분리하며 기존115 공용 평가 재사용과121 실제 실행 검사를 연결한다. 조회가 실패한3판 Photon_Mapping URL은 읽음으로 세지 않는다. 기존 전체 discovery/본문/API gate를 승격하지 않는다. [121](../RENDERING_121.md).
+
+## 151–155 — 비차단 GL 준비와 bind XYZ 제작 계약
+
+Three WebGLRenderer compile/compileAsync/properties/debug, MDN KHR 완료 상태/지원 없는 fallback·총 링크 시간, Three CCDIK BoneLink/update와 설치 r180 프로그램 수명/rotationMin·Max 지정 소스를 읽어 비교했다. bind 상대 canonical XYZ는 HB 고유 계약으로 구별한다. 연결된 Khronos 전체 사양/API/엔진 문서 전체는 미독이며 manifest supplement에 등록했다. [구현·실제 실행·남은 범위](../RENDERING_151.md). 전체 discovery/본문/API gate를 올리지 않는다.

@@ -1,3 +1,11 @@
+# 151–155 — GL 비동기 준비·필터 경량화·기준 포즈 XYZ 제약 — 2026-10-15
+
+GL KHR 준비/취소·래스터 fallback·ready 캡처, 이미지 필터만의 GLSL, 공용 profiler/AI 오류/드라이버 상태, 세3D IK의 bind XYZ 제약·속성/Undo/AI·SDK/BP2노드·lazy scratch를 구현했다. [설명](docs/RENDERING_151.md)·[계약](docs/ANIMATION_JOINT_LIMITS_154.md).
+
+CPU11·실제 GL rPDp4r(141/138/134/125/128/HDRI/24성분 affine), Editor XB0xsQ/releasePlayer gl7SZW의 실제 C++/BP·뼈/원본/종료, GL profiler Xt60CZ 통과. 필터3255B/가이드48616B, GL 첫 path8018ms·가이드7411ms는 여전한 총 드라이버 비용이다. 비동기 대기와 전체 링크 속도를 혼동하지 않는다. [검증](docs/research/RENDERING_151.json). 사용자 설치 전환 대기.
+
+다음: GL 무거운 guide/첫path와 WebGPU 첫path/가이드 최적화, 이전 애니메이션 노멀 표본·mip, 전역 곡면 역해·거친 다중 로브·베이크/HWRT. FullBody/ControlRig·접지·리타게팅과 2D/2.5D/3D·월드/에셋/게임시스템·제작/배포/모바일/성능/AI 전체 누적 목표 및 corpus/API gate 유지. Versions1·사용자 창/원본/프로필 보존.
+
 # 145–150 — 준비 지연·누적 변환·계획/대기/프로파일러·C++ 진단 — 2026-10-15
 
 가이드 노멀/굴절/좌표 공유, 비렌즈2칸, 기존 역순 평면 복원과 같은 affine 누적 변환(GLSL/HLSL/TSL), 머테리얼별1회 계획, 오래된 준비 대기 취소, 프레임 기록 없는 공용 프로파일러/AI 진단·작은 창 가시성, 실제 compiler/workerProtocol 빌드 응답을 구현한다. 추가 런타임 GPU 저장/읽기·의존성·객체 제한 없음. [설명](docs/RENDERING_145.md).

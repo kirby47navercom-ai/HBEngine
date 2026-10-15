@@ -162,7 +162,11 @@
     "test:native-scene": "node tools/check-native-scene-render.mjs",
     "test:native-scene-window": "node tools/check-native-scene-window.mjs",
     "clean:test-cache": "node tools/test-artifacts.mjs",
-    "test:artifact-storage": "node tools/check-test-artifacts.mjs"
+    "test:artifact-storage": "node tools/check-test-artifacts.mjs",
+    "test:render-preparation": "node tools/check-rendering-127.mjs && node tools/check-rendering-151.mjs",
+    "test:animation-joint-limits": "node tools/check-animation-joint-limits.mjs",
+    "test:animation-joint-limits-editor": "node tools/check-animation-graph-window.mjs --ccd --editor",
+    "test:animation-joint-limits-player": "node tools/check-animation-graph-window.mjs --ccd"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

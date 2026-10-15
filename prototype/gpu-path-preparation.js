@@ -17,10 +17,10 @@ export function startGPUPathPreparation(renderer,post,screen){
  return state;
 }
 
-export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:(state.stages||[]).map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null}:null;}
+export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:(state.stages||[]).map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null,...state.parallelSupported===undefined?{}:{parallelSupported:state.parallelSupported}}:null;}
 
 export function cancelGPUPathPreparation(state){
- if(!state||state.cancelled)return;state.cancelled=true;state.currentStage='cancelled';state.resolveCancellation?.();
+ if(!state||state.cancelled)return;state.cancelled=true;state.currentStage='cancelled';state.resolveCancellation?.();state.resolvePoll?.();
 }
 
 // GPU compilation itself cannot be interrupted; obsolete waiters can leave immediately.

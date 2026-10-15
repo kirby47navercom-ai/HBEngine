@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import * as T from 'three';
+import {createAnimationGraph,makeAnimationNode,validAnimationGraph} from '../prototype/animation-graph-assets.js';
+import {AnimationGraphPlayer} from '../prototype/animation-graph-runtime.js';
+import {validJointLimit,validJointLimits} from '../prototype/animation-joint-limits.js';
+const degrees=180/Math.PI;
+for(const type of ['twoBoneIK','fabrik','ccdIK']){
+ const group=new T.Group(),bones=[0,1,2].map(i=>{const b=new T.Bone();b.name='Joint'+i;if(i)b.position.x=1;return b;});group.add(bones[0]);bones[0].add(bones[1]);bones[1].add(bones[2]);bones[0].rotation.z=.4;bones[1].rotation.x=.2;const bind=bones.map(b=>b.quaternion.clone());
+ const data=createAnimationGraph('Limits'),node=makeAnimationNode(type);Object.assign(node.properties,{root:'Joint0',tip:'Joint2',target:[0,2,1],jointLimits:[{bone:'Joint0',minimum:[-10,-5,-15],maximum:[10,5,15]},{bone:'Joint1',minimum:[0,0,0],maximum:[0,0,0]}]});node.inputs.pose=data.nodes[0].id;data.nodes.splice(1,0,node);data.nodes.at(-1).inputs.pose=node.id;assert.ok(validAnimationGraph(data));
+ const object={id:'Rig',name:'Rig',kind:'empty',position:[7,3,0],rotation:[0,0,0],scale:[1,1,1],components:[]},player=await AnimationGraphPlayer.load(data,{object,group,objects:()=>[object]});const rest=player.rest.map(p=>Array.from(p));
+ for(let frame=0;frame<100;frame++){await player.tick(1/60);const delta=bind[0].clone().invert().multiply(bones[0].quaternion),e=new T.Euler().setFromQuaternion(delta,'XYZ');for(let axis=0;axis<3;axis++){const angle=[e.x,e.y,e.z][axis]*degrees;assert.ok(angle>=node.properties.jointLimits[0].minimum[axis]-.0001&&angle<=node.properties.jointLimits[0].maximum[axis]+.0001,type+' axis bound');}assert.ok(bind[1].angleTo(bones[1].quaternion)<.0001,type+' joint locked to bind, not input pose');for(let i=1;i<3;i++)assert.ok(Math.abs(bones[i].position.length()-1)<.0001);}
+ assert.deepEqual(player.rest.map(p=>Array.from(p)),rest);assert.deepEqual(object.position,[7,3,0]);player.setIK(node.id,'jointLimit',{bone:'Joint0',minimum:[0,0,0],maximum:[0,0,0]});await player.tick(0);assert.ok(bind[0].angleTo(bones[0].quaternion)<.0001);assert.equal(object.gameplayDebug.animationGraph.ik[0].jointLimits.length,2);player.setIK(node.id,'clearJointLimit','Joint0');assert.equal(object.gameplayDebug.animationGraph.ik[0].jointLimits.length,1);assert.throws(()=>player.setIK(node.id,'jointLimit',{bone:'Absent',minimum:[0,0,0],maximum:[0,0,0]}),/체인/);assert.throws(()=>player.setIK(node.id,'jointLimit',{bone:'Joint0',minimum:[1,0,0],maximum:[0,0,0]}),/범위/);player.dispose();
+ delete node.properties.jointLimits;assert.ok(validAnimationGraph(data),'legacy graph needs no migration');
+}
+for(const bad of [null,{}, {bone:'x',minimum:[0,NaN,0],maximum:[0,0,0]}, {bone:'x',minimum:[0,-91,0],maximum:[0,0,0]},{bone:'x',minimum:[2,0,0],maximum:[1,0,0]}])assert.equal(validJointLimit(bad),false);assert.equal(validJointLimits([{bone:'x',minimum:[0,0,0],maximum:[0,0,0]},{bone:'x',minimum:[0,0,0],maximum:[0,0,0]}]),false);
+console.log('3D bind XYZ limits: all three solvers, nonzero bind rotations, locks, runtime set/clear, 100-frame stability, lengths/placement/rest/legacy preservation and invalid inputs PASS');
