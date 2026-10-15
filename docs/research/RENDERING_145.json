@@ -1446,7 +1446,24 @@
     "Whole-engine cumulative 2D/2.5D/3D, editing/assets/game systems/CPP-BP/platform/export goals and full documentation/API analysis remain separate, not silently waived."
   ],
   "installation": {
-    "state": "Pending verified user installation",
-    "restartUserWindows": false
+    "state": "Verified install, products, shortcuts, association and automatic retirement",
+    "featureCommit": "540e71e5e60d048b49fbfe3ead8885c9d28c08af",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0fc254411f3040",
+    "bundleHash": "5c0fc254411f3040a3bc966865c88695e0166b09703c53f1381ba0b358251f2d",
+    "files": 2244,
+    "remainingVersions": [
+      "5c0fc254411f3040"
+    ],
+    "previousRetired": true,
+    "receipt": "docs/research/USER_INSTALL_145.json",
+    "restartUserWindows": false,
+    "recordUpdateOutsideImmutableBundle": true
+  },
+  "storage": {
+    "updateRemovedBytes": 171681807,
+    "obsoleteVersionsRetired": 1,
+    "finalVersions": [
+      "5c0fc254411f3040"
+    ]
   }
 }
