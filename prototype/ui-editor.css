@@ -12,3 +12,8 @@
 .document-toolbar strong{display:flex;align-items:center;gap:7px}.document-toolbar strong svg{width:16px;height:16px;flex:none}.mixer-snapshot input{width:100%;min-width:0;font-size:11px}.mixer-snapshot>button{padding:3px 6px}
 .ui-vector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:156px;flex:0 0 156px}.ui-vector input{width:100%;box-sizing:border-box;padding:4px}.ui-vector-cell{display:flex;align-items:center;gap:3px;min-width:0}.ui-vector-cell small{font-size:9px;flex:none;min-width:15px}.ui-vector-cell input{min-width:0;flex:1}@media(max-width:1000px){.ui-vector{width:128px;flex-basis:128px}}
 .ui-palette{display:flex;flex-direction:column;min-height:0}.ui-palette h3,.ui-palette>input{flex:none}.ui-palette-list{flex:1 1 140px;min-height:56px}.ui-hierarchy{flex:1 1 84px;min-height:56px;overflow:auto}
+.profiler-empty-history .profiler-frame-chart{display:none}
+.profiler-empty-history .profiler-frame-summary{display:none}
+.profiler-panel .profiler-details{min-height:0}
+.profiler-panel .profiler-frame-chart{max-height:25%}
+.profiler-details caption{text-align:left;padding:4px 0 8px;color:#aabbcf}

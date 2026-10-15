@@ -2679,6 +2679,19 @@
       "wholeCorpus": false,
       "state": "selected_TSL_variables_and_D3DCompile_contract_compared_full_linked_API_pending",
       "readScope": "TSL Variables reusable variable section and local r180 VarNode.generate implementation compared; D3DCompile input/flags/bytecode/error contract read. Entire Wiki, linked APIs and full dependency corpus remain open."
+    },
+    {
+      "id": "guide-composition-compilation-profiler-supplement",
+      "engine": "HBEngine dependencies",
+      "roots": [
+        "https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language#variables",
+        "https://developer.mozilla.org/en-US/docs/Web/API/GPUDevice/createRenderPipelineAsync",
+        "https://www.w3.org/TR/webgpu/#dom-gpudevice-createrenderpipelineasync"
+      ],
+      "record": "docs/RENDERING_145.md",
+      "wholeCorpus": false,
+      "state": "selected_TSL_local_r180_renderer_and_MDN_async_contract_compared_W3C_full_body_unread",
+      "readScope": "Reusable variables and local r180 VarNode/QuadMesh/float32 renderer readback implementation compared. MDN descriptor/Promise/readiness/error contract read. W3C retrieval failed due tool body size limit; full specification and linked API units remain pending."
     }
   ],
   "supplementalBaselines": [

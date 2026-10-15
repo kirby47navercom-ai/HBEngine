@@ -1,3 +1,5 @@
+2026-10-15: [초기 준비·프로파일러·C++ 빌드 진단](RENDERING_145.md). profiler.read와 실제 표가 동일한 rendering[]을 반환하고, native.build는 실제 compiler/workerProtocol을 반환해요. 외부 소스 참조 그래프는 공용 blueprint.connect로 해석된 C++ 핀을 연결하며 revision/Undo/저장 모델은 유지해요.
+
 2026-10-15: [복잡 노멀맵·컴파일 재사용·준비 진단](RENDERING_141.md). 머테리얼/Components의 C++·BP·사람·AI 공용 속성은 유지하고, 기존 엔진 스키마에 shaderCompilation/pipelinePreparation의 읽기 전용 단계·시간·캐시 계약을 추가해요.
 
 2026-10-15: [접선 가이드·구름 갱신·분산 하늘 필터](RENDERING_138.md). SkyLight.realTimeCapture/captureVersion과 기존 Components C++·BP·AI 경로를 그대로 사용해요. 공용 스키마에 필터 단계 진단을 추가해요.

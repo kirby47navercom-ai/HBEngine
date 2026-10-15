@@ -1,0 +1,1452 @@
+{
+  "version": 1,
+  "date": "2026-10-15T14:16:41.770Z",
+  "baseCommit": "52d1920b28729abd55864a4078225c9e3382bdd1",
+  "scope": [
+    "145: Snapshot repeated guide neighbour normal/refraction, previous-coordinate barycentric and matrix/normal loads; use two differential slots without a lens and four with a lens.",
+    "146: Compose the same previous/current virtual reflection/refraction mappings forward as affine frames, replacing reverse plane/event arrays and normal mirror history in GLSL/generated HLSL/TSL.",
+    "147: Inspect/union each unique visible material once per scene shader-plan pass; retain every instance/hierarchy count and recheck edits on later passes.",
+    "148: Wake obsolete preparation waiters/captures on cancellation without pretending to interrupt GPU driver work; retain live failures and synchronous renderer-state restoration.",
+    "149: Live compilation stage/time/native-cache rows in the existing profiler and the same read-only profiler.read/JSON provider even with frame recording disabled; hide empty charts so first rows remain visible in a compact dock.",
+    "150: native.build returns actual compiler and worker protocol from the live build result; external-source graph connections use the existing resolved/revision-guarded blueprint.connect API."
+  ],
+  "sourceProducts": [
+    {
+      "file": "prototype/app.js",
+      "sha256": "58a2fd8d396645f0c8c4a9e37457c16240e70ef939d9543d6c8220416f5b954c"
+    },
+    {
+      "file": "prototype/game-renderer.js",
+      "sha256": "6afbe19f724d60c1fad8b917f4269f521825d3e0d55387ee9406725fd03b2c38"
+    },
+    {
+      "file": "prototype/gpu-environment.js",
+      "sha256": "b711d41b7760e762c62b5ccee7ab33c82f14ff0cbcf02dacf663a3249e380e76"
+    },
+    {
+      "file": "prototype/gpu-path-preparation.js",
+      "sha256": "6ad791721cd387e200a7be9912b2366f555bc883670a6c445a55345682c8f212"
+    },
+    {
+      "file": "prototype/path-denoise.js",
+      "sha256": "250ceec3d512461a03dd5943086fc0886cc6827fbba11407c7d2904a6dab09a1"
+    },
+    {
+      "file": "prototype/path-guide-gpu.js",
+      "sha256": "a8deccc2bba12b38c35c752476b75b539a68ab8d193dcaa6df740c3184f5b7b0"
+    },
+    {
+      "file": "prototype/path-previous-normal-gpu.js",
+      "sha256": "d1238f1f1e0019af92814ceafbf7659bfd68d8067fe6c49a97ec5e3802019003"
+    },
+    {
+      "file": "prototype/profiler.js",
+      "sha256": "a93277f2ac6d7ffa2c5709d9560b7d568869f70b414c4b1e5df1074f97786db2"
+    },
+    {
+      "file": "prototype/ray-material-gpu.js",
+      "sha256": "9a1757ed773793ece3b31db089c601ce3fc6adaff4312fa0f13f46c88cbcfdd2"
+    },
+    {
+      "file": "prototype/ray-materials.js",
+      "sha256": "0be3caed7ab61e8a82a0f94561effc3fc1cbc9b2e00a95d6fdd52b06888a2d90"
+    },
+    {
+      "file": "prototype/screen-effects-gpu.js",
+      "sha256": "cb78571945467d22391fded1a84da2000e6781f5be3233447b44c19c80b4446c"
+    },
+    {
+      "file": "prototype/ui-editor.css",
+      "sha256": "1f7824e39b18cb7769482de6a021b5ec1d325a065558eaa85d16153ce86f9ef7"
+    },
+    {
+      "file": "tools/check-editor-api-window.mjs",
+      "sha256": "f7870a7c472500ad831e4b9e3ebd000acabdbfa0e9853ec7e610ccdcf5a23862"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "44a9f86c56c87e1d928ccddb4f83d0c8b37eb8edf05a1181d4766b9a2486e6b2"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "cc1b902d38ca4ddc43bc941f886fe8df07d23b35fd67ecf19d7435eaea9d4504"
+    },
+    {
+      "file": "prototype/path-guide-affine.js",
+      "sha256": "919b01d8e80db09a935e48662c158441c7aeb1686c0345d8c9f8299a6c187afa"
+    },
+    {
+      "file": "tools/affine-guide-probe.mjs",
+      "sha256": "4459abebe829a83b5da58c4c744d6e90145c2125c3c48073221a99863d08468c"
+    },
+    {
+      "file": "tools/check-compilation-profiler-window.mjs",
+      "sha256": "626ea47eca7be7fa21eb0ae27362c4c9d0f72de2530e8d6225f645fd9d96d682"
+    },
+    {
+      "file": "tools/check-rendering-145.mjs",
+      "sha256": "91621a0d7b39bc3bd0fe11772e4a533943a8c21fb27750f9b5e60f206545d816"
+    }
+  ],
+  "products": [
+    {
+      "path": "prototype/app.js",
+      "size": 343267,
+      "sha256": "58a2fd8d396645f0c8c4a9e37457c16240e70ef939d9543d6c8220416f5b954c"
+    },
+    {
+      "path": "prototype/game-renderer.js",
+      "size": 3511,
+      "sha256": "6afbe19f724d60c1fad8b917f4269f521825d3e0d55387ee9406725fd03b2c38"
+    },
+    {
+      "path": "prototype/gpu-environment.js",
+      "size": 11901,
+      "sha256": "b711d41b7760e762c62b5ccee7ab33c82f14ff0cbcf02dacf663a3249e380e76"
+    },
+    {
+      "path": "prototype/gpu-path-preparation.js",
+      "size": 4119,
+      "sha256": "6ad791721cd387e200a7be9912b2366f555bc883670a6c445a55345682c8f212"
+    },
+    {
+      "path": "prototype/path-denoise.js",
+      "size": 10109,
+      "sha256": "250ceec3d512461a03dd5943086fc0886cc6827fbba11407c7d2904a6dab09a1"
+    },
+    {
+      "path": "prototype/path-guide-gpu.js",
+      "size": 11360,
+      "sha256": "a8deccc2bba12b38c35c752476b75b539a68ab8d193dcaa6df740c3184f5b7b0"
+    },
+    {
+      "path": "prototype/path-previous-normal-gpu.js",
+      "size": 3536,
+      "sha256": "d1238f1f1e0019af92814ceafbf7659bfd68d8067fe6c49a97ec5e3802019003"
+    },
+    {
+      "path": "prototype/profiler.js",
+      "size": 8574,
+      "sha256": "a93277f2ac6d7ffa2c5709d9560b7d568869f70b414c4b1e5df1074f97786db2"
+    },
+    {
+      "path": "prototype/ray-material-gpu.js",
+      "size": 17009,
+      "sha256": "9a1757ed773793ece3b31db089c601ce3fc6adaff4312fa0f13f46c88cbcfdd2"
+    },
+    {
+      "path": "prototype/ray-materials.js",
+      "size": 27239,
+      "sha256": "0be3caed7ab61e8a82a0f94561effc3fc1cbc9b2e00a95d6fdd52b06888a2d90"
+    },
+    {
+      "path": "prototype/screen-effects-gpu.js",
+      "size": 20090,
+      "sha256": "cb78571945467d22391fded1a84da2000e6781f5be3233447b44c19c80b4446c"
+    },
+    {
+      "path": "prototype/ui-editor.css",
+      "size": 9181,
+      "sha256": "1f7824e39b18cb7769482de6a021b5ec1d325a065558eaa85d16153ce86f9ef7"
+    },
+    {
+      "path": "tools/check-editor-api-window.mjs",
+      "size": 7507,
+      "sha256": "f7870a7c472500ad831e4b9e3ebd000acabdbfa0e9853ec7e610ccdcf5a23862"
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "size": 54581,
+      "sha256": "44a9f86c56c87e1d928ccddb4f83d0c8b37eb8edf05a1181d4766b9a2486e6b2"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "size": 24724,
+      "sha256": "cc1b902d38ca4ddc43bc941f886fe8df07d23b35fd67ecf19d7435eaea9d4504"
+    },
+    {
+      "path": "prototype/path-guide-affine.js",
+      "size": 1634,
+      "sha256": "919b01d8e80db09a935e48662c158441c7aeb1686c0345d8c9f8299a6c187afa"
+    },
+    {
+      "path": "tools/affine-guide-probe.mjs",
+      "size": 4668,
+      "sha256": "4459abebe829a83b5da58c4c744d6e90145c2125c3c48073221a99863d08468c"
+    },
+    {
+      "path": "tools/check-compilation-profiler-window.mjs",
+      "size": 7417,
+      "sha256": "626ea47eca7be7fa21eb0ae27362c4c9d0f72de2530e8d6225f645fd9d96d682"
+    },
+    {
+      "path": "tools/check-rendering-145.mjs",
+      "size": 5115,
+      "sha256": "91621a0d7b39bc3bd0fe11772e4a533943a8c21fb27750f9b5e60f206545d816"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/rendering-145-cpu.json",
+      "sha256": "8bc8c8a1b2b28f74bc7a587d972908c7bd33c86ade40bfa74a1d8f82db9f2cd9"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-4CcmOm\\acceptance.json",
+      "sha256": "b3398213e470ea7217eb3928cf31409b3d544b14706a7ce60e78c60dbdb4f8ef"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-QCVVvK\\acceptance.json",
+      "sha256": "52484b52e9f217a288664b1973be4acfc9870780f6db96f7a2cfac9ec94b28cb"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-OcreA1\\acceptance.json",
+      "sha256": "4fa15a996e18ec9921d1662f953d04164fe20ad7458c25030e4747977820270e"
+    },
+    {
+      "file": "native/build/d3d-145-final.log",
+      "sha256": "12b1e19e685c2d44340425bdda4c286db60f06c4904ea407679340f0ac21e21a"
+    },
+    {
+      "file": "native/build/webgl-145-final.log",
+      "sha256": "3541ed521d6ef8600a4492a90c40c40c24fa7f5f4eee12aca21f6b5075d40a3d"
+    },
+    {
+      "file": "native/build/webgpu-145-final.log",
+      "sha256": "361026c3d2f870c3c2f1f103bdb00f13bbd2d8df1bdcfaf3c4e36abad3ec522a"
+    },
+    {
+      "file": "native/build/guide-145-before.wgsl",
+      "sha256": "9dbfc5a2cb00a6a7f4f1b99f1898301d1ec789d2d56b3af62ff9734b96f08fe5"
+    },
+    {
+      "file": "native/build/guide-145-affine.wgsl",
+      "sha256": "28abdcdb2ffc15f45bc679112bf788282310e1f7e07fdea1608c877c3c39bc8c"
+    },
+    {
+      "file": "native/build/rendering-145-cpu-group.json",
+      "sha256": "a0e3052b39fa8fdb8b5ceedc05924ecdbc38300eb0f30475fc3324fca409a1dc"
+    },
+    {
+      "file": "native/build/environment-rendering-145.log",
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    {
+      "file": "native/build/gpu-scene-lLvr3x/acceptance.json",
+      "sha256": "679868fae88b3ff0bdcdbd8d2db4f2eb65597e0cc66cd43cba395815cb16fd24"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\compilation-profiler-window-8Za6zS\\acceptance.json",
+      "sha256": "ac89ad793cde266905b88e0367a9c179512eeabd815826f1aa2a9e6e5e1d2885"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\editor-api-window-Khswba\\acceptance.json",
+      "sha256": "7f6de6d32048ff4524ee344791508ddd02dab417b45a56780c5b4e8428d91af7"
+    },
+    {
+      "file": "native/build/editor-2d-145-release.log",
+      "sha256": "33feb118ddda6524a9a5921caa6c884f4760755da74e44d142def9ac16616045"
+    },
+    {
+      "file": "native/build/profiler-145-visible.log",
+      "sha256": "1e37915b54c482ab143b8733f1885d2418b886ea46827442a44390d6b24ad60d"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "91164fdb94ac9a49a31046cfade6be34bf746c436a2b7c579a12696bbb1d0458"
+    }
+  ],
+  "acceptance": {
+    "cpu": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-115.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"legacyFiveFields\":true,\"conditionalTenFields\":true,\"dynamicScalarPacking\":true,\"advancedPresenceAndMasks\":true,\"uniformPatchReusesAtlas\":true,\"rawPhysicalCacheInvalidation\":true,\"rawNineMapChannels\":true,\"ggxProjectedNormalization\":true,\"charlieProjectedNormalization\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-116.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"visibleNormalSamples\":40000,\"projectedDensityIntegrals\":[0.9999880213219398,0.9999943574537473,0.9999157189460923,0.999943078198778],\"ordinaryPresenceOff\":true,\"opaqueRoughnessDoesNotEnableDielectric\":true,\"dynamicTransmissionEnablesDielectric\":true,\"guideHasNoLightingIntegrator\":true,\"guideSourceRatio\":0.09219348659003831,\"roughPresenceAndReset\":true,\"closedMediumPacket\":true,\"finitePackets\":true,\"etaSurvivalRoundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-117.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"instances\":64,\"sharedBLAS\":1,\"localVertexCalls\":115,\"transformUpdateVertexCalls\":0,\"transformUpdateReusedMeshes\":63,\"transformUpdateCollectedMeshes\":1,\"flatNodes\":8191,\"twoLevelNodes\":382,\"refitReusesBLAS\":true,\"singularInstanceExcluded\":true,\"nonFiniteAtomic\":true,\"secondarySignAndNormalGuards\":true,\"typedCausticGuards\":true,\"causticHistoryReset\":true,\"finiteFixtures\":true,\"singleInstanceFlatFastPath\":true,\"multipleInstanceHierarchyFlag\":true,\"emitterPresenceAndMutation\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-118.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"temporalClamp\":true,\"depthNormalClassRejection\":true,\"invalidHistoryAndZeroAreRaw\":true,\"cameraLensSceneEnvironmentAndFailureResets\":true,\"rasterGapKeepsStaticPathSamples\":true,\"manualVersionAndFailureReset\":true,\"typedBoundsAndAISchema\":true,\"AIRevisionGuardedAtomicPatch\":true,\"areaAndHDRIWithoutAnalyticLights\":true,\"mixedSources\":true,\"finitePackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-120.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-122.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"instances\":32,\"staticBufferReused\":true,\"unchangedRowsZero\":true,\"changedRowsAndMotionPreserved\":true,\"invalidUVAtomic\":true,\"emptyScene\":true,\"atlasBytes\":1441792}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-124.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"sharedVertexTriangles\":168,\"legacyAtlasBytes\":1179648,\"sharedAtlasBytes\":1114112,\"maxPositionError\":5.3961675128277875e-8,\"nonUniformAndNegativeScale\":true,\"staticBufferReused\":true,\"changedRows\":true,\"singleInstanceLegacy\":true,\"clonedGeometryShared\":true,\"collisionIsolated\":true,\"interleavedVersionRecollected\":true,\"photonAndMotionAfterSharedPool\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-125.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalMappingCases\":24,\"maxNormalError\":7.771561172376096e-16,\"degeneratePreviousRejected\":true,\"defaultOff\":true,\"commonSchema\":true,\"filterChangePreservesRawSamples\":true,\"filterHistoryKeyChanges\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-126.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"nonUniformNormalAxisScale\":true,\"normalError\":2.8532166730247387e-8,\"instances\":8,\"gpuBytesPerInstance\":96,\"defaultOffReleasesMatrixHistory\":true,\"failedFrameClears\":true,\"filterToggleKeepsRawSamples\":true,\"extraReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-path-history-ownership.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"disposeBeforeFirstFrame\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-importance.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":69898,\"photonCharacters\":41624,\"cameraCharacters\":60965,\"ratio\":0.5954962946007039,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-127.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-function-scope.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"sameBuilderSharesFunction\":true,\"newBuilderHasFreshUniformBindings\":true,\"nodeCacheMethodPreserved\":true,\"ordinaryFunctionsUnchanged\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-shared-shader.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"cases\":[{\"advanced\":false,\"transmission\":false,\"prefix\":false,\"sourceBytes\":54070,\"functions\":37,\"uniforms\":20},{\"advanced\":false,\"transmission\":false,\"prefix\":true,\"sourceBytes\":54110,\"functions\":37,\"uniforms\":23},{\"advanced\":true,\"transmission\":false,\"prefix\":false,\"sourceBytes\":83889,\"functions\":45,\"uniforms\":20},{\"advanced\":true,\"transmission\":false,\"prefix\":true,\"sourceBytes\":83964,\"functions\":45,\"uniforms\":23},{\"advanced\":false,\"transmission\":true,\"prefix\":false,\"sourceBytes\":56381,\"functions\":38,\"uniforms\":20},{\"advanced\":false,\"transmission\":true,\"prefix\":true,\"sourceBytes\":56421,\"functions\":38,\"uniforms\":23},{\"advanced\":true,\"transmission\":true,\"prefix\":false,\"sourceBytes\":86200,\"functions\":46,\"uniforms\":20},{\"advanced\":true,\"transmission\":true,\"prefix\":true,\"sourceBytes\":86275,\"functions\":46,\"uniforms\":23}],\"lobes\":[{\"name\":\"coat\",\"features\":{\"coat\":true,\"aniso\":false,\"sheen\":false,\"film\":false},\"sourceBytes\":77710},{\"name\":\"aniso\",\"features\":{\"coat\":false,\"aniso\":true,\"sheen\":false,\"film\":false},\"sourceBytes\":76657},{\"name\":\"sheen\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":true,\"film\":false},\"sourceBytes\":78345},{\"name\":\"film\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":false,\"film\":true},\"sourceBytes\":77528}],\"guides\":[{\"auxiliary\":false,\"lens\":false,\"curved\":false,\"temporal\":false},{\"auxiliary\":false,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":false},{\"auxiliary\":true,\"lens\":false,\"curved\":false,\"temporal\":true},{\"auxiliary\":true,\"lens\":false,\"curved\":true,\"temporal\":true},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":true}],\"manyLightBytes\":55718,\"featureCacheChanges\":true,\"freshUniformBindings\":true,\"fixedSlotDecoders\":true,\"rawBVHPrefix\":true,\"weakTransmissionNotDropped\":true,\"lensAndTemporalGuideCombinations\":true,\"deviceInitializations\":0,\"draws\":0,\"actualGPUPixelsClaim\":false}\n",
+          "stderr": "THREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\n"
+        },
+        {
+          "name": "check-lighting-tools.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"lights\":4096,\"positivePowerCDF\":true,\"probabilityIntegral\":40916,\"zeroPowerFinite\":true,\"cdfOnlyWhenNeeded\":true,\"staticAtlasReused\":true,\"disabledLayoutPreserved\":true,\"skyHDRIRotation\":true,\"legacyClearsSkySource\":true,\"toolBindings\":true,\"invalidInputBeforeMutation\":true,\"sharedCommands\":true,\"revisionBinding\":true,\"toolPatch\":true,\"codeExecution\":false}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":69898,\"photonCharacters\":41624,\"cameraCharacters\":60965,\"ratio\":0.5954962946007039,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-134.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"morphNormalOnlyTriangles\":2,\"skinNormalTriangles\":1,\"deformedGPUBytesPerTriangle\":48,\"oldNormalsPreserved\":true,\"relativeIdentityMorph\":true,\"absoluteIdentityMorph\":true,\"identityBufferShared\":true,\"malformedImportAtomic\":true,\"normalOnlyHistoryAdvances\":true,\"staticPacketReused\":true,\"invalidHistoryAtomic\":true,\"failedAndOffRelease\":true,\"shadowDependencies\":[\"textures\",\"parameters\",\"poses\",\"instances\",\"meshes\",\"animated\"],\"unrelatedShadowRefresh\":false,\"resourceRelease\":true,\"nativeSkyManualAndExplicitRecapture\":true,\"nativeSkyDisableRelease\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-138.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"opaqueGuideVariantChangesWithTransmission\":true,\"UVInvalidatesHistory\":true,\"normalStrengthInvalidatesAndRebuilds\":true,\"worldDependentNormalRejectsHistory\":true,\"deformedBytesUnchanged\":48,\"nativeCloudWindSchedulesCapture\":true,\"cloudRateLimitMS\":250,\"manualModeFrozen\":true,\"browserCloudWindSchedulesCapture\":true,\"commonAISchema\":true,\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-141.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalProgramCallsPerHit\":1,\"stageDiagnostics\":true,\"rendererStateRestoredBeforeYield\":true,\"preparationDoesNotDraw\":true,\"failedPreparationCaptureRejected\":true,\"latestPreparationCapture\":true,\"bytecodeCache\":{\"passed\":true,\"payloadBudget\":true,\"LRU\":true,\"replace\":true,\"oversizedRejectedWithoutMutation\":true,\"zeroBudget\":true},\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-145.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"materialReads\":{\"instances\":4097,\"before\":4097,\"after\":1},\"materialEditsStillReplanned\":true,\"alternatingPlanCPUTiming\":{\"pairs\":12},\"cancellationWakesWithoutDriverCompletion\":true,\"cancelledFailureHandled\":true,\"captureRecapturesAfterCancellation\":true,\"profilerAvailableWithoutRecording\":true,\"profilerAndAIShareDiagnostics\":true,\"profilerEscapesText\":true,\"extraGPUStorage\":0,\"automaticReadbacks\":0,\"dependenciesAdded\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-profiler-native.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "C++ 프로파일러: 직렬화/명령 적용/사용자 함수/왕복 분리·중첩 시간 표시·비정상 값 제외·기록 상한 통과\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "core": {
+      "file": "native/build/rendering-145-cpu.json",
+      "sha256": "8bc8c8a1b2b28f74bc7a587d972908c7bd33c86ade40bfa74a1d8f82db9f2cd9",
+      "passed": true,
+      "materialReads": {
+        "instances": 4097,
+        "before": 4097,
+        "after": 1
+      },
+      "materialEditsStillReplanned": true,
+      "alternatingPlanCPUTiming": {
+        "pairs": [
+          {
+            "before": 20.78649999999999,
+            "after": 0.4613999999999976
+          },
+          {
+            "after": 0.4344000000000108,
+            "before": 18.410200000000003
+          },
+          {
+            "before": 17.812600000000003,
+            "after": 0.26080000000001746
+          },
+          {
+            "after": 0.222500000000025,
+            "before": 17.75630000000001
+          },
+          {
+            "before": 17.66749999999996,
+            "after": 0.22059999999999036
+          },
+          {
+            "after": 0.21280000000001564,
+            "before": 18.356899999999996
+          },
+          {
+            "before": 17.77120000000002,
+            "after": 0.22289999999998145
+          },
+          {
+            "after": 0.21410000000003038,
+            "before": 17.84280000000001
+          },
+          {
+            "before": 17.78340000000003,
+            "after": 0.233600000000024
+          },
+          {
+            "after": 0.21769999999997935,
+            "before": 17.803300000000036
+          },
+          {
+            "before": 18.067799999999977,
+            "after": 0.5346000000000117
+          },
+          {
+            "after": 0.4344000000000392,
+            "before": 18.05590000000001
+          }
+        ],
+        "scope": "signature/plan construction only; same live 4097 meshes/material, not frame FPS"
+      },
+      "cancellationWakesWithoutDriverCompletion": true,
+      "cancelledFailureHandled": true,
+      "captureRecapturesAfterCancellation": true,
+      "profilerAvailableWithoutRecording": true,
+      "profilerAndAIShareDiagnostics": true,
+      "profilerEscapesText": true,
+      "extraGPUStorage": 0,
+      "automaticReadbacks": 0,
+      "dependenciesAdded": 0
+    },
+    "environment": {
+      "file": "native/build/environment-rendering-145.log",
+      "checks": 34,
+      "passed": true,
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    "actual": [
+      {
+        "backend": "D3D11",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-4CcmOm\\acceptance.json",
+        "sha256": "b3398213e470ea7217eb3928cf31409b3d544b14706a7ce60e78c60dbdb4f8ef",
+        "logFile": "native/build/d3d-145-final.log",
+        "logSHA256": "12b1e19e685c2d44340425bdda4c286db60f06c4904ea407679340f0ac21e21a",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "D3D11",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 664,
+            "timings": [
+              {
+                "property": "pathTracingEnabled",
+                "value": true,
+                "elapsedMS": 5736.683999999999
+              },
+              {
+                "property": "pathTracingDenoise",
+                "value": true,
+                "elapsedMS": 2473.914499999999
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": true,
+                "elapsedMS": 158.4873000000007
+              },
+              {
+                "property": "pathTracingDenoiseTemporal",
+                "value": 0.8,
+                "elapsedMS": 4145.112100000002
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": false,
+                "elapsedMS": 149.45910000000003
+              },
+              {
+                "property": "pathTracingEnabled",
+                "value": false,
+                "elapsedMS": 123.23779999999897
+              }
+            ],
+            "preparation": null,
+            "compilation": {
+              "compilations": 5,
+              "cacheHits": 0,
+              "cacheMisses": 5,
+              "cacheEvictions": 0,
+              "cacheBytes": 454022,
+              "cacheBudgetBytes": 8388608,
+              "lastCompileMS": 47,
+              "totalCompileMS": 10859,
+              "sourceBuilds": 1
+            },
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "affine145": null,
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "D3D11",
+            "texturedTwistedMorph": true,
+            "uniformTangentPerturbation": false,
+            "changedChannels": 664,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "D3D11",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2046,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": {
+              "lit": [
+                144,
+                160,
+                161,
+                255
+              ],
+              "dark": [
+                51,
+                51,
+                51,
+                255
+              ],
+              "captures": 2,
+              "faces": 12,
+              "facesPerRequest": 6,
+              "filterStagesPerRequest": 8,
+              "filterStagesPerFrame": 1,
+              "manualRecapture": true,
+              "intensityNoRecapture": true,
+              "disabledRelease": true
+            }
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 26.5654296875,
+              "variance": 204.07384395599365
+            },
+            "planar": {
+              "mean": 27.4326171875,
+              "variance": 1.1399908065795898
+            },
+            "filtered": {
+              "mean": 27.4248046875,
+              "variance": 2.1212987899780273
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "sampled": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "restored": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "D3D11"
+          },
+          "raster131": {
+            "passed": true,
+            "backend": "D3D11",
+            "rasterPathTracingDisabled": true,
+            "lights": 96,
+            "sky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rotated": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "full": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "restored": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "direct": [
+              60,
+              60,
+              60,
+              255
+            ],
+            "restoredSky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rasterTileBytes": 14720,
+            "rotationWithoutRefilter": true,
+            "shadowStaticReuse": true,
+            "unrelatedShadowPasses": 0,
+            "changedLightPasses": [
+              1,
+              1
+            ],
+            "parameterLightPasses": [
+              1,
+              1
+            ],
+            "typedCPP": true,
+            "automaticReadbacks": 0
+          },
+          "warm141": {
+            "passed": true,
+            "backend": "D3D11",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 664,
+            "timings": [
+              {
+                "property": "pathTracingEnabled",
+                "value": true,
+                "elapsedMS": 200.17819999999483
+              },
+              {
+                "property": "pathTracingDenoise",
+                "value": true,
+                "elapsedMS": 94.74349999999686
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": true,
+                "elapsedMS": 103.69999999999709
+              },
+              {
+                "property": "pathTracingDenoiseTemporal",
+                "value": 0.8,
+                "elapsedMS": 165.11589999998978
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": false,
+                "elapsedMS": 124.80629999999655
+              },
+              {
+                "property": "pathTracingEnabled",
+                "value": false,
+                "elapsedMS": 102.98030000001017
+              }
+            ],
+            "preparation": null,
+            "compilation": {
+              "compilations": 19,
+              "cacheHits": 7,
+              "cacheMisses": 19,
+              "cacheEvictions": 0,
+              "cacheBytes": 1379544,
+              "cacheBudgetBytes": 8388608,
+              "lastCompileMS": 547,
+              "totalCompileMS": 32109,
+              "sourceBuilds": 4
+            },
+            "typedCPP": true,
+            "disabledRelease": true
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      },
+      {
+        "backend": "WebGL2",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-QCVVvK\\acceptance.json",
+        "sha256": "52484b52e9f217a288664b1973be4acfc9870780f6db96f7a2cfac9ec94b28cb",
+        "logFile": "native/build/webgl-145-final.log",
+        "logSHA256": "3541ed521d6ef8600a4492a90c40c40c24fa7f5f4eee12aca21f6b5075d40a3d",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "WebGL2",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 844,
+            "timings": [
+              {
+                "property": "pathTracingEnabled",
+                "value": true,
+                "elapsedMS": 7993.9241999999995
+              },
+              {
+                "property": "pathTracingDenoise",
+                "value": true,
+                "elapsedMS": 3699.3287999999993
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": true,
+                "elapsedMS": 114.66669999999976
+              },
+              {
+                "property": "pathTracingDenoiseTemporal",
+                "value": 0.8,
+                "elapsedMS": 7606.535599999997
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": false,
+                "elapsedMS": 45.89919999999984
+              },
+              {
+                "property": "pathTracingEnabled",
+                "value": false,
+                "elapsedMS": 31.18239999999787
+              }
+            ],
+            "preparation": null,
+            "compilation": null,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "affine145": {
+            "passed": true,
+            "cases": 8,
+            "components": 24,
+            "maxBounces": 16,
+            "maxError": 0.0000013076554719049227,
+            "reference": "Independent reverse plane reflection/refraction walk",
+            "float32Readback": true
+          },
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": {
+              "passed": true,
+              "twist": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "mirrored": [
+                204,
+                127,
+                229,
+                255
+              ],
+              "degenerate": [
+                127,
+                127,
+                127,
+                255
+              ],
+              "error": 0,
+              "tangentTwistDegrees": 90,
+              "smoothNormalUnchanged": true,
+              "mirroredUV": true,
+              "degenerateRejected": true
+            },
+            "backend": "WebGL2",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 844,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGL2",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2827,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.322265625,
+              "variance": 135.83169174194336
+            },
+            "planar": {
+              "mean": 18.9912109375,
+              "variance": 1.080977439880371
+            },
+            "filtered": {
+              "mean": 18.994140625,
+              "variance": 1.1073875427246094
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGL2"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGPU",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-OcreA1\\acceptance.json",
+        "sha256": "4fa15a996e18ec9921d1662f953d04164fe20ad7458c25030e4747977820270e",
+        "logFile": "native/build/webgpu-145-final.log",
+        "logSHA256": "361026c3d2f870c3c2f1f103bdb00f13bbd2d8df1bdcfaf3c4e36abad3ec522a",
+        "result": {
+          "passed": true,
+          "rendering141": {
+            "passed": true,
+            "backend": "WebGPU",
+            "complexNormalTexture": true,
+            "UVParameterGraph": true,
+            "changedChannels": 858,
+            "timings": [
+              {
+                "property": "pathTracingEnabled",
+                "value": true,
+                "elapsedMS": 3727.5606999999995
+              },
+              {
+                "property": "pathTracingDenoise",
+                "value": true,
+                "elapsedMS": 936.4010999999991
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": true,
+                "elapsedMS": 189.0030999999999
+              },
+              {
+                "property": "pathTracingDenoiseTemporal",
+                "value": 0.8,
+                "elapsedMS": 2528.137199999999
+              },
+              {
+                "property": "pathTracingCurvedFilter",
+                "value": false,
+                "elapsedMS": 900.4731000000011
+              },
+              {
+                "property": "pathTracingEnabled",
+                "value": false,
+                "elapsedMS": 35.482599999999366
+              }
+            ],
+            "preparation": {
+              "pending": false,
+              "currentStage": "ready",
+              "elapsedMS": 2378,
+              "stages": [
+                {
+                  "stage": "post",
+                  "elapsedMS": 20.899999998509884
+                },
+                {
+                  "stage": "temporal-filter",
+                  "elapsedMS": 49.20000000298023
+                },
+                {
+                  "stage": "spatial-filter-2",
+                  "elapsedMS": 68
+                },
+                {
+                  "stage": "spatial-filter-1",
+                  "elapsedMS": 55.29999999701977
+                },
+                {
+                  "stage": "spatial-filter-0",
+                  "elapsedMS": 50.899999998509884
+                },
+                {
+                  "stage": "lens-motion-guide",
+                  "elapsedMS": 2026.8000000044703
+                },
+                {
+                  "stage": "normal-guide",
+                  "elapsedMS": 34.099999994039536
+                },
+                {
+                  "stage": "path",
+                  "elapsedMS": 72.80000000447035
+                }
+              ],
+              "completed": 8,
+              "total": 8,
+              "cancelled": false,
+              "error": null
+            },
+            "compilation": null,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "affine145": {
+            "passed": true,
+            "cases": 8,
+            "components": 24,
+            "maxBounces": 16,
+            "maxError": 0.0000013076554719049227,
+            "reference": "Independent reverse plane reflection/refraction walk",
+            "float32Readback": true
+          },
+          "rendering138": {
+            "passed": true,
+            "tangentProbe": null,
+            "backend": "WebGPU",
+            "texturedTwistedMorph": false,
+            "uniformTangentPerturbation": true,
+            "changedChannels": 858,
+            "deformedNormalBytes": 8064,
+            "typedCPP": true,
+            "disabledRelease": true
+          },
+          "rendering134": {
+            "passed": true,
+            "backend": "WebGPU",
+            "deformedNormalTriangles": 168,
+            "deformedNormalBytes": 8064,
+            "changedChannels": 2814,
+            "disabledRelease": true,
+            "typedCPP": true,
+            "nativeSky": null
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.19140625,
+              "variance": 140.63133239746094
+            },
+            "planar": {
+              "mean": 18.8759765625,
+              "variance": 0.4230947494506836
+            },
+            "filtered": {
+              "mean": 18.8818359375,
+              "variance": 0.5202169418334961
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "deformedNormalTriangles": 0,
+              "deformedNormalBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGPU"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    ],
+    "generatedShader": [
+      {
+        "tag": "before",
+        "file": "native/build/guide-145-before.wgsl",
+        "bytes": 68865,
+        "normalCallSites": 11,
+        "record1CallSites": 15,
+        "sha256": "9dbfc5a2cb00a6a7f4f1b99f1898301d1ec789d2d56b3af62ff9734b96f08fe5"
+      },
+      {
+        "tag": "affine",
+        "file": "native/build/guide-145-affine.wgsl",
+        "bytes": 58086,
+        "normalCallSites": 2,
+        "record1CallSites": 4,
+        "sha256": "28abdcdb2ffc15f45bc679112bf788282310e1f7e07fdea1608c877c3c39bc8c"
+      }
+    ],
+    "preparationComparison": {
+      "beforeMS": 8767.393499999998,
+      "afterMS": 2528.137199999999,
+      "reductionFraction": 0.7116432380957921,
+      "beforeFile": "native/build/gpu-scene-lLvr3x/acceptance.json",
+      "beforeSHA256": "679868fae88b3ff0bdcdbd8d2db4f2eb65597e0cc66cd43cba395815cb16fd24",
+      "sameOriginalComplexGraph": true,
+      "sameSamplesAndDeadlines": true,
+      "scope": "Original graph/settings/capture/ready on same machine, isolated profiles; driver cache not forcibly purged; no whole-startup/FPS/device claim."
+    },
+    "editorProfiler": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\compilation-profiler-window-8Za6zS\\acceptance.json",
+      "sha256": "ac89ad793cde266905b88e0367a9c179512eeabd815826f1aa2a9e6e5e1d2885",
+      "passed": true,
+      "dir": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\compilation-profiler-window-8Za6zS",
+      "rendering": [
+        {
+          "id": "뷰포트",
+          "backend": "webgpu",
+          "pipelinePreparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 3290.1999999955297,
+            "stages": [
+              {
+                "stage": "post",
+                "elapsedMS": 92.5
+              },
+              {
+                "stage": "path",
+                "elapsedMS": 3197.5
+              }
+            ],
+            "completed": 2,
+            "total": 2,
+            "cancelled": false,
+            "error": null
+          },
+          "shaderCompilation": null
+        },
+        {
+          "id": "머테리얼",
+          "backend": "webgpu",
+          "pipelinePreparation": null,
+          "shaderCompilation": null
+        }
+      ],
+      "withoutFrameRecording": true,
+      "sameHumanAndAI": true,
+      "sceneRevisionUnchanged": true,
+      "ordinaryPatchUndo": true,
+      "visible": {
+        "firstRowVisible": true,
+        "chartHidden": true,
+        "detailHeight": 128
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "editor2DAndCPP": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\editor-api-window-Khswba\\acceptance.json",
+      "sha256": "7f6de6d32048ff4524ee344791508ddd02dab417b45a56780c5b4e8428d91af7",
+      "log": "native/build/editor-2d-145-release.log",
+      "logSHA256": "33feb118ddda6524a9a5921caa6c884f4760755da74e44d142def9ac16616045",
+      "date": "2026-10-15T14:14:59.191Z",
+      "dir": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\editor-api-window-Khswba",
+      "project": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\editor-api-window-Khswba\\integration-qa-1792073617047\\integration-qa-1792073617047.hbproject",
+      "shell": {
+        "ok": true,
+        "embedded": true,
+        "workspace": "editor",
+        "port": 9961
+      },
+      "protocol": 3,
+      "positions": [
+        [
+          2,
+          3,
+          0
+        ],
+        [
+          2,
+          3,
+          0
+        ]
+      ],
+      "errors": [],
+      "scope": "Existing read/edit/revision/Undo/save/2D physics/pause/travel/failure restoration suite, then C++ BeginPlay/input/replay in a real editor. Connections use public blueprint.connect so serialized external source references resolve through the same workspace as manual editing."
+    },
+    "visualQA": {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\compilation-profiler-window-8Za6zS\\compilation-profiler.png",
+      "inspected": true,
+      "scope": "Compact dock first compilation row visibility tested; live read-only diagnostic table in existing editor UI, not a whole-editor art audit."
+    }
+  },
+  "cost": {
+    "additionalGPUStorageBytes": 0,
+    "automaticRuntimeReadbacks": 0,
+    "dependenciesAdded": 0,
+    "objectLimitAdded": false,
+    "temporalVirtualFrameDeclaredScalarsBefore": 224,
+    "temporalVirtualFrameDeclaredScalarsAfter": 24,
+    "differentialCapacity": {
+      "withoutLens": 2,
+      "lens": 4
+    },
+    "localValuesAreNotMeasuredRegisterOrSpillBytes": true,
+    "nativeCacheAccountedBudgetBytes": 8388608,
+    "latestPreparationOnly": true,
+    "diagnosticsUseExistingProfilerTimer": true,
+    "perPreparationCancellationPromise": 1
+  },
+  "research": {
+    "registration": "guide-composition-compilation-profiler-supplement",
+    "record": "docs/RENDERING_145.md",
+    "wholeCorpus": false
+  },
+  "nativeBinaries": {
+    "rebuilt": true,
+    "editorSHA256": "88a22cd8b170382c4f2104a1fc1178f05e43df1a67a13cb3029c0173cd962cad",
+    "playerSHA256": "8a0425b75b86e37e69f14d013710bf9faaf736a6e4f732e437bd11a0e08db4e0"
+  },
+  "limits": [
+    "WebGPU time-filter setting preparation remains about2.53s including about2.03s lens-motion-guide. First path activation remains about3.73s in this run. GL/Native initial compilation also remains nonzero; no all-shader instant compile guarantee.",
+    "Affine composition preserves the existing local virtual-plane model; it does not solve global curved inverses, animated previous material samples/mip footprints, rough multi-lobe transport, DFAO/Lightmass or HWRT.",
+    "CPU material-plan timings concern repeated signature/union on shared materials only; unique-material scenes and full-game FPS/mobile behavior need their own measurements.",
+    "Cancellation releases obsolete waiters, not already-submitted driver compilation; completion/failure ownership still settles asynchronously.",
+    "Whole-engine cumulative 2D/2.5D/3D, editing/assets/game systems/CPP-BP/platform/export goals and full documentation/API analysis remain separate, not silently waived."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

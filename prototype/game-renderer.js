@@ -20,6 +20,10 @@ export function checkGPUScene(renderer,data){
   if(data.runtime?.renderBackend&&data.runtime.renderBackend!=='webgpu')throw Error('장면 이동에서는 실행 렌더러를 바꿀 수 없어요.');
 }
 export function finishGameRendererFrame(renderer){renderer.hbFrameInfo={render:{...renderer.info.render},compute:{...renderer.info.compute}};}
+export function gameRendererCompilationInfo(renderer){
+ if(!renderer)return null;
+ return {backend:renderer.hbBackend,pipelinePreparation:gpuPathPreparationInfo(renderer.hbPathPreparation),shaderCompilation:renderer.hbBackend==='d3d11'?renderer.hbDiagnostics().shaderCompilation||null:null};
+}
 export function gameRendererInfo(renderer){
   if(renderer.hbBackend==='d3d11')return renderer.hbDiagnostics();
   const completed=renderer.hbFrameInfo,info={...(completed?.render||renderer.info.render)};

@@ -4,6 +4,7 @@ import {ColorManagement,NoToneMapping} from 'three';
 // Keep the raster viewport responsive while optional path filters compile.
 export function startGPUPathPreparation(renderer,post,screen){
  const state={pending:true,completed:0,total:1,error:null,cancelled:false,currentStage:'post',started:performance.now(),elapsedMS:0,stages:[]};
+ state.cancelledDone=new Promise(resolve=>{state.resolveCancellation=resolve;});
  const compile=(quad,target)=>{const previous={target:renderer.getRenderTarget(),mrt:renderer.getMRT(),tone:renderer.toneMapping,color:renderer.outputColorSpace},frame=renderer._nodes?.nodeFrame,update=frame?.updateBeforeNode,owned=frame&&Object.hasOwn(frame,'updateBeforeNode'),device=renderer.backend?.device,create=device?.createRenderPipelineAsync,ownCreate=device&&Object.hasOwn(device,'createRenderPipelineAsync'),pipelines=[];try{renderer.setRenderTarget(target);renderer.setMRT(null);renderer.toneMapping=NoToneMapping;renderer.outputColorSpace=ColorManagement.workingColorSpace;
  // r180 compileAsync also visits RTT update-before hooks. Compile descriptors only;
  // keep those hooks registered for the later real frame, with no preparation draw.
@@ -16,9 +17,18 @@ export function startGPUPathPreparation(renderer,post,screen){
  return state;
 }
 
-export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:state.stages.map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null}:null;}
+export function gpuPathPreparationInfo(state){return state?{pending:state.pending,currentStage:state.currentStage,elapsedMS:state.pending?performance.now()-state.started:state.elapsedMS,stages:(state.stages||[]).map(s=>({...s})),completed:state.completed,total:state.total,cancelled:state.cancelled,error:state.error?.message||null}:null;}
+
+export function cancelGPUPathPreparation(state){
+ if(!state||state.cancelled)return;state.cancelled=true;state.currentStage='cancelled';state.resolveCancellation?.();
+}
+
+// GPU compilation itself cannot be interrupted; obsolete waiters can leave immediately.
+export async function waitForGPUPathPreparation(renderer){
+ for(;;){const state=renderer.hbPathPreparation;if(state?.error)throw state.error;if(!state?.pending||state.cancelled)return gpuPathPreparationInfo(state);await(state.cancelledDone?Promise.race([state.done,state.cancelledDone]):state.done);}
+}
 
 export async function capturePreparedFrame(renderer,capture){
- for(;;){const image=await capture(),state=renderer.hbPathPreparation;if(state?.error)throw state.error;if(!state?.pending)return image;await state.done;if(state.error)throw state.error;}
+ for(;;){const image=await capture(),state=renderer.hbPathPreparation;if(state?.error)throw state.error;if(!state?.pending||state.cancelled)return image;await waitForGPUPathPreparation(renderer);}
 
 }

@@ -1,4 +1,4 @@
-import {startGPUPathPreparation} from './gpu-path-preparation.js';
+import {startGPUPathPreparation,cancelGPUPathPreparation} from './gpu-path-preparation.js';
 import {rayShaderPlanForScene} from './ray-materials.js';
 import {MeshBasicNodeMaterial,Color,Vector3,Vector4,BackSide,PostProcessing,LightingNode,NodeUpdateType} from 'three/webgpu';
 import {uniform,positionLocal,positionWorld,cameraPosition,vec3,vec4,float,fog,rangeFogFactor,mix,pmremTexture,normalWorld,normalView,positionViewDirection,roughness,cameraViewMatrix,cache} from 'three/tsl';
@@ -66,7 +66,7 @@ export class GPUBloomRendering{
     renderer.hbPathPreparation=view.preparation||null;if(view.preparation?.error)throw view.preparation.error;if(view.preparation?.pending){renderer.render(scene,camera);return;}
     view.scale=p.bloomResolutionScale;view.scenePass.scene=scene;view.scenePass.camera=camera;if(view.effect){view.effect.strength.value=p.bloomStrength;view.effect.radius.value=p.bloomRadius;view.effect.threshold.value=p.bloomThreshold;}view.grading.update(p,scene.userData.hbMaterialTime||0,camera,scene);view.screen?.prepare(p,scene.userData.hbMaterialTime||0,camera,scene);try{const target=renderer.getRenderTarget(),mrt=renderer.getMRT();try{view.scenePass.updateBefore({renderer});}finally{renderer.setRenderTarget(target);renderer.setMRT(mrt);}view.screen?.buildHierarchy();view.screen?.renderPasses(renderer);view.post.render();view.grading.after(renderer);view.screen?.after();}catch(error){view.screen?.failed();throw error;}
   }
-  release(view){if(view.preparation)view.preparation.cancelled=true;view.screen?.dispose();view.grading.dispose();view.post.dispose();view.scenePass.dispose();view.effect?.dispose();
+  release(view){cancelGPUPathPreparation(view.preparation);view.screen?.dispose();view.grading.dispose();view.post.dispose();view.scenePass.dispose();view.effect?.dispose();
     // r180 BloomNode.dispose owns targets only; release its blur/filter material owners too.
     for(const m of [...(view.effect?._separableBlurMaterials||[]),view.effect?._compositeMaterial,view.effect?._highPassFilterMaterial])m?.dispose();
   }

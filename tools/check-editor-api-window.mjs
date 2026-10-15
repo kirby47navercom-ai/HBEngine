@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {createProject} from './project-manifest.mjs';
 import {editorCommand} from './hb.mjs';
-import {makeNode,connect} from '../prototype/blueprint-model.js';
+import {makeNode} from '../prototype/blueprint-model.js';
 
 const root=path.resolve(import.meta.dirname,'..'),dir=await fs.mkdtemp(path.join(root,'native/build/editor-api-window-')),sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function until(test,label){const end=Date.now()+45000;while(Date.now()<end){const value=await test();if(value)return value;await sleep(100);}throw Error(label+' timeout');}
@@ -17,7 +17,7 @@ child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);const 
 const pending=new Map(),errors=[];
 try {
   const shell=await until(async()=>{if(ended)throw Error(output);try{return JSON.parse(await fs.readFile(proof,'utf8'));}catch{}},'isolated editor');assert.ok(shell.ok);
-  const base='http://127.0.0.1:'+shell.port,call=(method,params)=>editorCommand(base,method,params);
+  const base='http://127.0.0.1:'+shell.port,call=async(method,params)=>(await until(async()=>{try{return {value:await editorCommand(base,method,params)};}catch(error){if(error.code==='EDITOR_BUSY')return false;throw error;}},'idle '+method)).value;
   await until(async()=>{const state=await(await fetch(base+'/api/automation')).json();return state.clients.length===1;},'editor registration');
   checker=spawn(process.execPath,[path.join(root,'tools/check-editor-api.mjs'),base],{cwd:root,windowsHide:true,stdio:'inherit'});
   await new Promise((resolve,reject)=>{checker.once('error',reject);checker.once('exit',code=>code===0?resolve():reject(Error('editor API check exit '+code)));});
@@ -28,9 +28,10 @@ try {
   const evaluate=async expression=>{const r=await cdp('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.text);return r.result.value;};
   await cdp('Runtime.enable');
   const bpPath='Assets/BP_AutomationNative.hbblueprint.json';await call('document.open',{path:bpPath});const bp=await call('document.get',{path:bpPath}),graph=structuredClone(bp.data);
-  graph.nodes=[{...makeNode('beginPlay'),id:'start'},{...makeNode('nativeCall'),id:'move',nativeId:'AutomationActor.Move'},{...makeNode('input'),id:'key',options:{key:'X'}},{...makeNode('nativeCall'),id:'inputMove',nativeId:'AutomationActor.Move'}];graph.edges=[];assert.ok(connect(graph,{node:'start',pin:'then'},{node:'move',pin:'exec'}).ok);assert.ok(connect(graph,{node:'key',pin:'then'},{node:'inputMove',pin:'exec'}).ok);
-  await call('document.patch',{path:bpPath,expectedRevision:bp.revision,operations:[{op:'replace',path:'/nodes',value:graph.nodes},{op:'replace',path:'/edges',value:graph.edges}]});
-  const built=await call('native.build',{path:bpPath});assert.ok(built.built);const saved=await call('document.get',{path:bpPath});assert.equal(saved.data.native.workerProtocol,3);await call('document.save',{path:bpPath,expectedRevision:saved.revision});
+  graph.nodes=[{...makeNode('beginPlay'),id:'start'},{...makeNode('nativeCall'),id:'move',nativeId:'AutomationActor.Move'},{...makeNode('input'),id:'key',options:{key:'X'}},{...makeNode('nativeCall'),id:'inputMove',nativeId:'AutomationActor.Move'}];graph.edges=[];
+  let patched=await call('document.patch',{path:bpPath,expectedRevision:bp.revision,operations:[{op:'replace',path:'/nodes',value:graph.nodes},{op:'replace',path:'/edges',value:graph.edges}]});
+  for(const [from,to]of [['start','move'],['key','inputMove']])patched=await call('blueprint.connect',{path:bpPath,expectedRevision:patched.revision,from:{node:from,pin:'then'},to:{node:to,pin:'exec'}});assert.equal((await call('document.get',{path:bpPath})).data.edges.length,2,'공용 API가 외부 C++ 메타데이터를 해석해 실행 핀을 연결한다');
+  const built=await call('native.build',{path:bpPath});assert.ok(built.built);const saved=await call('document.get',{path:bpPath});assert.equal(built.workerProtocol,3);assert.ok(typeof built.compiler==='string'&&built.compiler.length>0);assert.ok(saved.data.native.headerPath&&saved.data.native.sourcePath,'저장 에셋은 외부 소스 참조를 유지한다');await call('document.save',{path:bpPath,expectedRevision:saved.revision});
   const scenePath=record.manifest.startupScene;await call('document.open',{path:scenePath});const scene=await call('document.get',{path:scenePath});
   const probe={id:'BridgeProbe',name:'BridgeProbe',kind:'cube',visible:true,position:[0,3,0],rotation:[0,0,0],scale:[1,1,1],blueprintAsset:bpPath,components:[]};
   await call('document.patch',{path:scenePath,expectedRevision:scene.revision,operations:[{op:'add',path:'/objects/'+scene.data.objects.length,value:probe}]});

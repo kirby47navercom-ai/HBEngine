@@ -1,15 +1,17 @@
+import {virtualGuideGLSL} from './path-guide-affine.js';
 import {curvedGuideGLSL} from './path-curved-guide.js';
 // Display filtering never feeds the Monte Carlo history.
 // shortcut: differential footprints are local; reject grazing/TIR branch changes and cap the radius at32 pixels.
 export const pathDenoiseGLSL=`
 ${curvedGuideGLSL}
+${virtualGuideGLSL}
 vec2 hbPathOffset(vec3 x,vec3 y,vec3 delta){float a=dot(x,x),b=dot(x,y),c=dot(y,y),d=a*c-b*b;if(d<=max(1e-20,a*c*1e-6))return vec2(0,0);return vec2(c*dot(x,delta)-b*dot(y,delta),a*dot(y,delta)-b*dot(x,delta))/d;}
 vec3 hbPathPreviousPoint(float id,vec3 p){vec3 b=hbRayBary(id,p);float at=hbPathFilter.w+id*3.0;return hbGeometryLoad(at).xyz+hbGeometryLoad(at+1.0).xyz*b.y+hbGeometryLoad(at+2.0).xyz*b.z;}
 vec4 hbPathGuideTrace(vec2 uv,bool auxiliary){
 vec3 nearPoint=hbWorldAt(uv,0.0),farPoint=hbWorldAt(uv,.9999),origin=hbEye.w>.5?nearPoint:hbEye.xyz,direction=normalize(farPoint-origin),cameraDirection=direction,forward=normalize(hbForward.xyz),right=normalize(hbWorldAt(uv+vec2(.01,0),0.0)-nearPoint),up=normalize(cross(right,forward));vec2 cone=hbRayCameraCone(uv);float width=cone.x,secondaryDistance=0.0,oldSecondary=0.0;vec3 oldFirst=origin,oldPoint=origin;bool previousValid=true,lensDifferentials=hbPathLens.x>0.0&&hbEye.w<.5&&hbPathFilter.y>0.0,curved=auxiliary&&hbGeometryRecords.w>.5&&(lensDifferentials||hbPathFilter.x>0.0),differentials=lensDifferentials||curved;int differentialCount=lensDifferentials?4:2;
-float differentialIDs[4];vec3 ro[4],rd[4],planes[16],planeNormals[16],currentPlanes[16],currentNormals[16];float etaAt[16],eventAt[16];
+float differentialIDs[4];vec3 ro[4],rd[4];HBPathVirtualFrame priorFrame=hbPathVirtualIdentity(),currentFrame=hbPathVirtualIdentity(),mirrorFrame=hbPathVirtualIdentity();
 ro[0]=hbEye.w>.5?hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),0.0):origin;ro[1]=hbEye.w>.5?hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),0.0):origin;rd[0]=normalize(hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),.9999)-ro[0]);rd[1]=normalize(hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),.9999)-ro[1]);vec3 focus=origin+direction*hbPathLens.y/max(.000001,dot(direction,forward));ro[2]=origin+right*hbPathLens.x;ro[3]=origin+up*hbPathLens.x;rd[2]=normalize(focus-ro[2]);rd[3]=normalize(focus-ro[3]);
-float ids[16];vec4 media[16];int count;hbMediumSeed(origin,direction,false,ids,media,count);vec3 mirrors[8];int mirrorCount=0;
+float ids[16];vec4 media[16];int count;hbMediumSeed(origin,direction,false,ids,media,count);int mirrorCount=0;
 for(int bounce=0;bounce<min(16,int(hbPath.y));bounce++){
 if(count<0)break;vec4 hit=hbGeometryTraceCone(origin,direction,hbGeometry.y,vec2(width,cone.y));if(hit.z<.5||hit.w<.5)break;width+=cone.y*hit.x;if(bounce==1)secondaryDistance=hit.x;vec3 p=origin+direction*hit.x,normal=hbRayNormalLod(hit.y,p,-direction,width),geometric=hbRayGeometric(hit.y);bool front=dot(geometric,direction)<0.0;vec3 n=front?normal:-normal;vec4 physical=hbRayField0Lod(hit.y,p,-direction,width);bool glass=false;
 #ifndef HB_GUIDE_OPAQUE
@@ -25,14 +27,14 @@ if(curved){oldN=hbPathPreviousNormal(hit.y,p,normal);if(dot(oldN,oldN)<.5)previo
 vec4 phCoat=hbRayField5Lod(h.y,dp[j],-rd[j],width);phMirror=phMirror||(phCoat.x>.5&&phCoat.y<.05);
 #endif
 if(!glass&&phMirror!=mirror)return vec4(0,0,0,0);}else{float denominator=dot(geometric,rd[j]);if(abs(denominator)<.00001)return vec4(0,0,0,0);float t=dot(geometric,p-ro[j])/denominator;if(t<0.0)return vec4(0,0,0,0);dp[j]=ro[j]+rd[j]*t;}}
-if(!glass&&!mirror){if(physical.y<.1&&physical.x<=.5)return vec4(0,0,0,0);for(int j=7;j>=0;j--)if(j<mirrorCount)normal=reflect(normal,mirrors[j]);float depth=bounce==0?max(.00001,hbLinearDepth(hbProject(p,hbCurrentVP).z)):-max(.00001,secondaryDistance),coc=0.0;
+if(!glass&&!mirror){if(physical.y<.1&&physical.x<=.5)return vec4(0,0,0,0);if(!auxiliary)normal=hbPathVirtualPoint(mirrorFrame,normal);float depth=bounce==0?max(.00001,hbLinearDepth(hbProject(p,hbCurrentVP).z)):-max(.00001,secondaryDistance),coc=0.0;
 if(lensDifferentials){vec3 x=dp[0]-p,y=dp[1]-p;coc=min(32.0,max(length(hbPathOffset(x,y,dp[2]-p)),length(hbPathOffset(x,y,dp[3]-p))));}
 if(!auxiliary)return vec4(normal,depth);
-vec3 virtualPoint=oldP,virtualCurrent=p;for(int j=15;j>=0;j--)if(j<bounce){vec3 delta=virtualPoint-planes[j];virtualPoint=planes[j]+(eventAt[j]>.5?reflect(delta,planeNormals[j]):delta*etaAt[j]);vec3 currentDelta=virtualCurrent-currentPlanes[j];virtualCurrent=currentPlanes[j]+(eventAt[j]>.5?reflect(currentDelta,currentNormals[j]):currentDelta*etaAt[j]);}
+vec3 virtualPoint=hbPathVirtualPoint(priorFrame,oldP),virtualCurrent=hbPathVirtualPoint(currentFrame,p);
 vec3 oldUV=hbProject(virtualPoint,hbPreviousVP);oldUV.xy+=uv-hbProject(virtualCurrent,hbCurrentVP).xy;float expected=bounce==0?max(.00001,hbLinearDepth(oldUV.z)):-max(.00001,oldSecondary);if(!previousValid||!hbInside(oldUV))oldUV.xy=vec2(-1,-1);return vec4(oldUV.xy,expected,coc);}
 float eta=1.0;bool reflection=true;if(glass){float volume=hbMediumID(hit.y),incoming=count>0?media[clamp(count-1,0,15)].w:1.0,outgoing=front?physical.w:1.0;if(volume>0.0&&!front){int found=-1;for(int j=0;j<count;j++)if(ids[j]==volume)found=j;if(found<0)break;if(found!=count-1)outgoing=incoming;else if(count>1)outgoing=media[clamp(count-2,0,15)].w;}if(volume<.5){incoming=front?1.0:physical.w;outgoing=front?physical.w:1.0;}eta=incoming/max(.000001,outgoing);vec3 next=refract(direction,n,eta);reflection=dot(next,next)<.000001;if(reflection)direction=reflect(direction,n);else{direction=normalize(next);if(volume>0.0)hbMediumChange(volume,hbMediumValueLod(hit.y,p,-direction,width),front,ids,media,count);}}
-else direction=reflect(direction,n);if(reflection){if(mirrorCount<8)mirrors[mirrorCount++]=n;else break;}
-planes[bounce]=oldP;planeNormals[bounce]=oldN;currentPlanes[bounce]=p;currentNormals[bounce]=curved?normal:geometric;etaAt[bounce]=eta;eventAt[bounce]=reflection?1.0:0.0;
+else direction=reflect(direction,n);if(reflection){if(mirrorCount<8){if(!auxiliary)hbPathVirtualAppend(mirrorFrame,vec3(0,0,0),n,1.0,true);mirrorCount++;}else break;}
+if(auxiliary){hbPathVirtualAppend(priorFrame,oldP,oldN,eta,reflection);hbPathVirtualAppend(currentFrame,p,curved?normal:geometric,eta,reflection);}
 if(differentials)for(int j=0;j<differentialCount;j++){vec3 dn=hbRayNormalLod(differentialIDs[j],dp[j],-rd[j],width);if(!front)dn=-dn;vec3 next=reflection?reflect(rd[j],dn):refract(rd[j],dn,eta);if(dot(next,next)<.000001||(glass&&reflection&&dot(refract(rd[j],dn,eta),refract(rd[j],dn,eta))>.000001))return vec4(0,0,0,0);rd[j]=normalize(next);ro[j]=dp[j]+rd[j]*hbGeometryLimits.y*2.0;}
 origin=p+direction*hbGeometryLimits.y*2.0;
 }return vec4(0,0,0,0);}
