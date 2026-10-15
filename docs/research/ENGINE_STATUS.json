@@ -1,0 +1,1333 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-16",
+  "basisRevision": "f5c7191a9e9fac5aba5ddac4f9343f80fced1204",
+  "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
+  "exhaustiveUEUnity": false,
+  "completionPercent": null,
+  "statuses": {
+    "verified": "정의한 범위 구현·검증 근거 있음",
+    "partial": "구현된 부분과 추가 구현이 함께 있음",
+    "unimplemented": "아래 remaining의 제작/실행 경로 미구현",
+    "unverified": "실행 경로 또는 일부 표본은 있으나 요구 조건 검증 안 됨"
+  },
+  "items": [
+    {
+      "id": "PRJ-01",
+      "area": "project",
+      "title": "설치형 실행기·프로젝트 생성/열기",
+      "status": "verified",
+      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로",
+      "remaining": [],
+      "sources": [
+        "tools/project-manifest.mjs",
+        "tools/install-editor.mjs"
+      ],
+      "evidence": [
+        "docs/research/USER_INSTALL_151.json"
+      ]
+    },
+    {
+      "id": "PRJ-02",
+      "area": "project",
+      "title": "실행/편집 상태와 사용자 작업 격리",
+      "status": "verified",
+      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트",
+      "remaining": [],
+      "sources": [
+        "prototype/project-session.js",
+        "tools/project-manifest.mjs"
+      ],
+      "evidence": [
+        "docs/USER_DEVELOPMENT_SEPARATION.md"
+      ]
+    },
+    {
+      "id": "PRJ-03",
+      "area": "project",
+      "title": "복구 저장·데이터 호환",
+      "status": "partial",
+      "implemented": "버전 데이터 검증·복구 경로",
+      "remaining": [
+        "중단·디스크 부족·다양한 구버전 전환의 통합 검증"
+      ],
+      "sources": [
+        "prototype/asset-documents.js",
+        "tools/project-storage.mjs"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "AST-01",
+      "area": "assets",
+      "title": "드래그 가져오기·의존 참조",
+      "status": "verified",
+      "implemented": "파일/폴더 가져오기·참조 이름 변경·재열기",
+      "remaining": [],
+      "sources": [
+        "prototype/asset-documents.js",
+        "tools/project-storage.mjs"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "AST-02",
+      "area": "assets",
+      "title": "모델 임포트 하위 에셋·재가져오기",
+      "status": "partial",
+      "implemented": "모델/클립 로딩과 형식별 로더",
+      "remaining": [
+        "메시·골격·클립 하위 ID 보존",
+        "임포트 오버라이드 유지·단위/좌표계·형식별 품질 검증"
+      ],
+      "sources": [
+        "prototype/scene-rendering.js",
+        "tools/project-storage.mjs"
+      ],
+      "evidence": [
+        "docs/ENGINE_PLAN.md"
+      ]
+    },
+    {
+      "id": "AST-03",
+      "area": "assets",
+      "title": "임포트 캐시·쿠킹·압축",
+      "status": "partial",
+      "implemented": "의존성을 따라 배포 리소스 수집·중복 런타임 축소",
+      "remaining": [
+        "지속 캐시 무효화",
+        "대상 플랫폼별 텍스처/모델 쿠킹·압축 컨테이너"
+      ],
+      "sources": [
+        "tools/build-game.mjs",
+        "tools/build-mobile.mjs"
+      ],
+      "evidence": [
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "AST-04",
+      "area": "assets",
+      "title": "프리팹·변형·오버라이드",
+      "status": "partial",
+      "implemented": "프리팹 생성·인스턴스 구성",
+      "remaining": [
+        "변형 상속·속성별 적용/되돌리기·중첩 갱신과 충돌 해결"
+      ],
+      "sources": [
+        "prototype/asset-documents.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "AST-05",
+      "area": "assets",
+      "title": "미디어 변환·동기화",
+      "status": "partial",
+      "implemented": "이미지/오디오·등록 모델과 미디어 읽기 경로",
+      "remaining": [
+        "추가 코덱 변환기",
+        "영상·오디오·시퀀스 동기화와 seek 정밀도"
+      ],
+      "sources": [
+        "tools/project-storage.mjs",
+        "prototype/audio-mixer.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_PLAN.md",
+        "docs/research/WEB_MEDIA_CONTRACTS_023.md"
+      ]
+    },
+    {
+      "id": "EDT-01",
+      "area": "editor",
+      "title": "문서 탭·에셋별 전용 편집기",
+      "status": "verified",
+      "implemented": "BP·머테리얼·애니메이션·게임플레이 에셋을 구분한 문서",
+      "remaining": [],
+      "sources": [
+        "prototype/app.js",
+        "prototype/asset-editor-ui.js"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "EDT-02",
+      "area": "editor",
+      "title": "독립 창·도킹·복원",
+      "status": "partial",
+      "implemented": "독립 창과 재도킹·세션 배치",
+      "remaining": [
+        "다중 모니터/DPI·종료/복구·대화상자 중 창 이동의 추가 안정성 검증"
+      ],
+      "sources": [
+        "prototype/dock-layout.js",
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/DETACHED_WINDOWS_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "EDT-03",
+      "area": "editor",
+      "title": "작업창별 탐색·콘텐츠 브라우저",
+      "status": "verified",
+      "implemented": "독립 탐색 기록·폴더·검색/필터·다중 선택·생성 메뉴",
+      "remaining": [],
+      "sources": [
+        "prototype/project-browser.js",
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "EDT-04",
+      "area": "editor",
+      "title": "계층·컴포넌트 제작",
+      "status": "verified",
+      "implemented": "계층/부모·복제/그룹·등록 컴포넌트 속성 편집",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-components.js",
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "EDT-05",
+      "area": "editor",
+      "title": "Undo·단축키·재지정",
+      "status": "partial",
+      "implemented": "문서별 Undo와 등록 조작 단축키/설정",
+      "remaining": [
+        "모든 전용 편집기 조작의 재지정·포커스/텍스트 입력 충돌 대조"
+      ],
+      "sources": [
+        "prototype/editor-shortcuts.js",
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/EDITOR_INTERACTION_SPEC.md"
+      ]
+    },
+    {
+      "id": "EDT-06",
+      "area": "editor",
+      "title": "프로젝트 제작 도구 확장",
+      "status": "verified",
+      "implemented": "데이터 도구 에셋·입력 바인딩·동일 명령/Undo 실행",
+      "remaining": [],
+      "sources": [
+        "prototype/editor-tool-assets.js",
+        "prototype/editor-tool.js"
+      ],
+      "evidence": [
+        "docs/LIGHTING_TOOLS_128.md"
+      ]
+    },
+    {
+      "id": "EDT-07",
+      "area": "editor",
+      "title": "현지화·접근성",
+      "status": "partial",
+      "implemented": "한국어/영어 검색과 DOM 기본 입력 접근",
+      "remaining": [
+        "지역화 테이블·문화권 전환",
+        "전용 편집기 키보드/스크린리더·색약/배율 검증"
+      ],
+      "sources": [
+        "prototype/app.js",
+        "prototype/ui-assets.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "2D-01",
+      "area": "2d",
+      "title": "스프라이트·타일·애니메이션 입력",
+      "status": "verified",
+      "implemented": "스프라이트/타일맵과 게임 중 교체·반전·플레이어 조회",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-rendering.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/INPUT_SPRITE_TILEMAP.md",
+        "docs/AURIC_RUNTIME_FEATURES.md"
+      ]
+    },
+    {
+      "id": "2D-02",
+      "area": "2d",
+      "title": "2D 조명·노멀·그림자",
+      "status": "verified",
+      "implemented": "공용 GL/GPU 조명·쿠키·노멀·블렌드·그림자",
+      "remaining": [],
+      "sources": [
+        "prototype/two-d-lighting.js",
+        "prototype/gpu-2d-lighting.js"
+      ],
+      "evidence": [
+        "docs/research/GPU_2D_LIGHTING_053.md"
+      ]
+    },
+    {
+      "id": "2D-03",
+      "area": "2d",
+      "title": "마스크·윤곽선·정렬·픽셀 정렬",
+      "status": "verified",
+      "implemented": "스프라이트/타일/입자 마스크와 효과·정렬",
+      "remaining": [],
+      "sources": [
+        "prototype/two-d-rendering.js",
+        "prototype/gpu-2d-rendering.js"
+      ],
+      "evidence": [
+        "docs/research/GPU_2D_052.md",
+        "docs/research/GPU_EFFECTS_054.md"
+      ]
+    },
+    {
+      "id": "2D-04",
+      "area": "2d",
+      "title": "2D 골격·세 IK·각도 제한",
+      "status": "verified",
+      "implemented": "Sprite rig·skin·Limb/CCD/FABRIK와 bind 각도 제약·8개 BP Return 핀과 C++ 실제 조회 대조",
+      "remaining": [],
+      "sources": [
+        "prototype/ik2d-assets.js",
+        "prototype/sprite-rig-assets.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/2D_IK_CONSTRAINTS_074.md",
+        "docs/ENGINE_WORK_156.md"
+      ]
+    },
+    {
+      "id": "2D-05",
+      "area": "2d",
+      "title": "2D 전용 리타게팅",
+      "status": "partial",
+      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생",
+      "remaining": [
+        "다른 체인/계층을 대응하는 2D 포즈 솔버 리타게팅",
+        "실행 중 IK/제약까지 포함한 재표본화 베이크"
+      ],
+      "sources": [
+        "prototype/sprite-rig-assets.js",
+        "prototype/sprite-rig-retarget.js",
+        "prototype/sprite-rig-retarget-editor.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_RETARGET_072.md",
+        "docs/ENGINE_WORK_156.md"
+      ]
+    },
+    {
+      "id": "2D-06",
+      "area": "2d",
+      "title": "자동 타일·2.5D 제작 통합",
+      "status": "partial",
+      "implemented": "타일 제작·2D/3D 공존과 카메라 차원",
+      "remaining": [
+        "복합 자동 타일 규칙·동기 충돌 편집",
+        "2.5D 제작 샘플·서로 다른 렌더 경로 품질 대조"
+      ],
+      "sources": [
+        "prototype/scene-rendering.js",
+        "prototype/placement-catalog.js"
+      ],
+      "evidence": [
+        "docs/2D_RENDERING_SHORTCUTS.md"
+      ]
+    },
+    {
+      "id": "WLD-01",
+      "area": "world",
+      "title": "도형 배치·월드 편집",
+      "status": "verified",
+      "implemented": "원시 도형·광원·카메라·환경 액터 배치/속성",
+      "remaining": [],
+      "sources": [
+        "prototype/placement-catalog.js",
+        "prototype/scene-components.js"
+      ],
+      "evidence": [
+        "docs/ENVIRONMENT_ACTORS_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "WLD-02",
+      "area": "world",
+      "title": "폴리곤·메시 저작",
+      "status": "partial",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자",
+      "remaining": [
+        "정점/간선/면 선택·토폴로지 작업·실제 충돌/UV 갱신"
+      ],
+      "sources": [
+        "prototype/placement-catalog.js",
+        "prototype/scene-rendering.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_PLAN.md"
+      ]
+    },
+    {
+      "id": "WLD-03",
+      "area": "world",
+      "title": "지형 브러시·폴리지",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "지형 높이/레이어 브러시",
+        "폴리지 산포·인스턴스 편집·충돌·Undo"
+      ],
+      "sources": [
+        "prototype/scene-components.js",
+        "prototype/placement-catalog.js"
+      ],
+      "evidence": [
+        "docs/WORK_ORDER_051.md"
+      ]
+    },
+    {
+      "id": "WLD-04",
+      "area": "world",
+      "title": "LOD 제작·전환",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "메시 LOD 생성/저작·거리/화면 크기 전환·충돌/애니메이션 LOD"
+      ],
+      "sources": [
+        "prototype/scene-rendering.js"
+      ],
+      "evidence": [
+        "docs/WORK_ORDER_051.md"
+      ]
+    },
+    {
+      "id": "WLD-05",
+      "area": "world",
+      "title": "월드 분할·레벨 스트리밍",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "Additive 로드/언로드",
+        "셀·액터 수명·참조·물리/스크립트 합류와 재진입"
+      ],
+      "sources": [
+        "prototype/project-session.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "WLD-06",
+      "area": "world",
+      "title": "내비게이션·군중",
+      "status": "partial",
+      "implemented": "평면 충돌 그리드 기반 경로",
+      "remaining": [
+        "실제 다각형 NavMesh·경사·오프메시 링크·동적 타일",
+        "군중 회피·에디터 베이크"
+      ],
+      "sources": [
+        "prototype/scene-systems.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "RND-01",
+      "area": "rendering",
+      "title": "DirectX11·WebGL2·WebGPU 실행",
+      "status": "verified",
+      "implemented": "실제 장면/머테리얼/조명 공용 렌더와 네이티브 경로",
+      "remaining": [],
+      "sources": [
+        "prototype/game-renderer.js",
+        "prototype/native-scene-renderer.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_145.md"
+      ]
+    },
+    {
+      "id": "RND-02",
+      "area": "rendering",
+      "title": "인스턴스·변형·부분 전송",
+      "status": "verified",
+      "implemented": "정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-rendering.js",
+        "prototype/shared-ray-geometry.js"
+      ],
+      "evidence": [
+        "docs/NATIVE_INSTANCING_089.md",
+        "docs/NATIVE_DEFORMATION_090.md",
+        "docs/RENDERING_123.md"
+      ]
+    },
+    {
+      "id": "RND-03",
+      "area": "rendering",
+      "title": "광원·HDRI·환경 액터",
+      "status": "verified",
+      "implemented": "래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-environment.js",
+        "prototype/mega-lights.js"
+      ],
+      "evidence": [
+        "docs/RASTER_LIGHTING_131.md",
+        "docs/RENDERING_138.md"
+      ]
+    },
+    {
+      "id": "RND-04",
+      "area": "rendering",
+      "title": "GI·경로 추적·중첩 매질",
+      "status": "verified",
+      "implemented": "소프트웨어 기하 GI/경로 추적·매질·HDRI 표본",
+      "remaining": [],
+      "sources": [
+        "prototype/path-tracing.js",
+        "prototype/path-media-shader.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_107.md",
+        "docs/RENDERING_145.md"
+      ]
+    },
+    {
+      "id": "RND-05",
+      "area": "rendering",
+      "title": "굴절·코스틱·공간/시간/렌즈 필터",
+      "status": "partial",
+      "implemented": "굴절/색 투과·광자·이차 필터·변형 모션 이력",
+      "remaining": [
+        "전역 곡면 역해",
+        "거친 복합 로브/참여 매질 산란의 정밀 확장"
+      ],
+      "sources": [
+        "prototype/path-denoise.js",
+        "prototype/path-caustics-shader.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_145.md",
+        "docs/RENDERING_151.md"
+      ]
+    },
+    {
+      "id": "RND-06",
+      "area": "rendering",
+      "title": "초기 셰이더 준비 비용",
+      "status": "partial",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화",
+      "remaining": [
+        "복잡 그래프 GL 첫 path 약7.9초/시간 가이드 약7.4초 추가 절감",
+        "WebGPU 첫 path/약2초 가이드 추가 절감"
+      ],
+      "sources": [
+        "prototype/gl-path-preparation.js",
+        "prototype/path-guide-gpu.js",
+        "prototype/path-guide-specialization.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_145.md",
+        "docs/RENDERING_151.md",
+        "docs/ENGINE_WORK_156.md"
+      ]
+    },
+    {
+      "id": "RND-07",
+      "area": "rendering",
+      "title": "이전 노멀·mip 이력",
+      "status": "partial",
+      "implemented": "이전 정점/노멀/UV 접선과 정적 노멀맵 복원",
+      "remaining": [
+        "시간/월드/시점 의존 노멀 이전 표본",
+        "mip footprint 보존"
+      ],
+      "sources": [
+        "prototype/path-curved-guide.js",
+        "prototype/path-previous-normal-gpu.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_138.md"
+      ]
+    },
+    {
+      "id": "RND-08",
+      "area": "rendering",
+      "title": "DFAO·베이크·HWRT",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "거리장 AO",
+        "Lightmass 계열 베이크/라이트맵",
+        "하드웨어 레이 트레이싱 가속"
+      ],
+      "sources": [
+        "prototype/geometry-gi.js",
+        "prototype/game-renderer.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_145.md"
+      ]
+    },
+    {
+      "id": "MAT-01",
+      "area": "materials",
+      "title": "함수·레이어·인스턴스·타입",
+      "status": "verified",
+      "implemented": "함수 추출·typed ports·스택/MI·파라미터·실제 셰이더",
+      "remaining": [],
+      "sources": [
+        "prototype/material-runtime.js"
+      ],
+      "evidence": [
+        "docs/MATERIAL_TYPED_FUNCTIONS_078.md",
+        "docs/MATERIAL_LAYERS_076.md"
+      ]
+    },
+    {
+      "id": "MAT-02",
+      "area": "materials",
+      "title": "미리보기·런타임 텍스처",
+      "status": "verified",
+      "implemented": "개별 출력/메시·환경 미리보기와 네 종류 텍스처 setter",
+      "remaining": [],
+      "sources": [
+        "prototype/material-runtime.js",
+        "prototype/material-texture-bindings.js"
+      ],
+      "evidence": [
+        "docs/MATERIAL_PREVIEW_SCENE_080.md",
+        "docs/MATERIAL_TEXTURE_PARAMETERS_082.md"
+      ]
+    },
+    {
+      "id": "MAT-03",
+      "area": "materials",
+      "title": "텍스처 고급 설정·도메인",
+      "status": "partial",
+      "implemented": "2D/Cube/Array/3D 텍스처와 표면 셰이딩",
+      "remaining": [
+        "Sampler State·배열/볼륨 mip",
+        "압축 컨테이너·전용 채널 검사",
+        "추가 머테리얼 도메인"
+      ],
+      "sources": [
+        "prototype/texture-assets.js",
+        "prototype/material-runtime.js"
+      ],
+      "evidence": [
+        "docs/MATERIAL_TEXTURE_FAMILIES_081.md"
+      ]
+    },
+    {
+      "id": "ANM-01",
+      "area": "animation",
+      "title": "그래프·Blend Space·상태·슬롯",
+      "status": "verified",
+      "implemented": "선택/상태·혼합/레이어·동기·notifies·몽타주 슬롯",
+      "remaining": [],
+      "sources": [
+        "prototype/animation-graph-runtime.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_GRAPH.md",
+        "docs/ANIMATION_MONTAGE_SLOTS.md",
+        "docs/ANIMATION_ENUM_SELECTION_069.md"
+      ]
+    },
+    {
+      "id": "ANM-02",
+      "area": "animation",
+      "title": "루트 모션",
+      "status": "verified",
+      "implemented": "클립/몽타주 추출·모드·물리/중력·2D/3D 이동",
+      "remaining": [],
+      "sources": [
+        "prototype/animation-root-motion.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_ROOT_MOTION_070.md"
+      ]
+    },
+    {
+      "id": "ANM-03",
+      "area": "animation",
+      "title": "3D IK·bind XYZ 제약",
+      "status": "verified",
+      "implemented": "Two Bone/FABRIK/CCD·공간/대상·기준 포즈 제한·SDK/BP",
+      "remaining": [],
+      "sources": [
+        "prototype/animation-ik.js",
+        "prototype/animation-joint-limits.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_JOINT_LIMITS_154.md",
+        "docs/RENDERING_151.md"
+      ]
+    },
+    {
+      "id": "ANM-04",
+      "area": "animation",
+      "title": "골격 리타게팅·베이크",
+      "status": "partial",
+      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크",
+      "remaining": [
+        "커브/모프·이벤트 베이크",
+        "임의 연산 스택·LOD/Avatar/Muscle",
+        "정지 발·Stride/Pole/접촉"
+      ],
+      "sources": [
+        "prototype/animation-retarget.js",
+        "prototype/animation-retarget-bake.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_RETARGET_072.md"
+      ]
+    },
+    {
+      "id": "ANM-05",
+      "area": "animation",
+      "title": "Full Body IK·Control Rig",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "다중 체인/관절 연결 솔버",
+        "리그 저작·컨트롤·기즈모·재생/베이크"
+      ],
+      "sources": [
+        "prototype/animation-graph-assets.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_IK_071.md",
+        "docs/RENDERING_151.md"
+      ]
+    },
+    {
+      "id": "ANM-06",
+      "area": "animation",
+      "title": "시퀀스·녹화 제작",
+      "status": "partial",
+      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행",
+      "remaining": [
+        "Take Recorder·다중 actor/컴포넌트 녹화",
+        "전문 시네마틱 트랙·동기화/베이크"
+      ],
+      "sources": [
+        "prototype/gameplay-editor.js",
+        "prototype/gameplay-runtime.js"
+      ],
+      "evidence": [
+        "docs/ANIMATION_TIMELINE_CONTROLS.md"
+      ]
+    },
+    {
+      "id": "PHY-01",
+      "area": "physics",
+      "title": "2D·3D 물리/콜라이더/질의",
+      "status": "verified",
+      "implemented": "Rapier·중력·충돌/트리거·회전·질량·CCD·모터·공용 SDK",
+      "remaining": [],
+      "sources": [
+        "prototype/physics-world.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/PHYSICS_RUNTIME_RESEARCH.md",
+        "docs/research/CONTACT_LIFETIME_064.md"
+      ]
+    },
+    {
+      "id": "PHY-02",
+      "area": "physics",
+      "title": "관절 프레임·cloth/차량/파괴",
+      "status": "partial",
+      "implemented": "기본 관절·모터와 형상 편집",
+      "remaining": [
+        "독립 연결 프레임/기준 각도",
+        "cloth·vehicle·destruction 시스템"
+      ],
+      "sources": [
+        "prototype/physics-world.js"
+      ],
+      "evidence": [
+        "docs/PHYSICS_RUNTIME_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "GAM-01",
+      "area": "gameplay",
+      "title": "게임 프레임워크·입력·생성",
+      "status": "verified",
+      "implemented": "GameMode/Controller·캐릭터·입력·마우스·생성/풀·배치 보존",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-components.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/AURIC_RUNTIME_FEATURES.md",
+        "docs/AURIC_RUNTIME_SPAWN.md"
+      ]
+    },
+    {
+      "id": "GAM-02",
+      "area": "gameplay",
+      "title": "행동트리·Blackboard·계층 FSM",
+      "status": "verified",
+      "implemented": "태스크 Start/Tick/Abort·조건 observer·subtree·서비스·계층 전이",
+      "remaining": [],
+      "sources": [
+        "prototype/gameplay-runtime.js"
+      ],
+      "evidence": [
+        "docs/BEHAVIOR_OBSERVERS_SUBTREES.md",
+        "docs/BEHAVIOR_TASK_LIFECYCLE.md",
+        "docs/HIERARCHICAL_FSM.md"
+      ]
+    },
+    {
+      "id": "GAM-03",
+      "area": "gameplay",
+      "title": "행동트리 고급 태스크·EQS",
+      "status": "partial",
+      "implemented": "기본 행동트리/감지/태그 실행",
+      "remaining": [
+        "일반 병렬 결과 집계·FinishAbort/native BTTask",
+        "EQS·Smart Object/Mass 계열"
+      ],
+      "sources": [
+        "prototype/gameplay-runtime.js",
+        "prototype/scene-systems.js"
+      ],
+      "evidence": [
+        "docs/BEHAVIOR_OBSERVERS_SUBTREES.md"
+      ]
+    },
+    {
+      "id": "GAM-04",
+      "area": "gameplay",
+      "title": "Ability·효과/태그 체계",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "재사용 ability·cooldown·비용·효과/태그 수명·예측과 제작 UI"
+      ],
+      "sources": [
+        "prototype/scene-components.js",
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "NET-01",
+      "area": "network",
+      "title": "복제·RPC·권한·예측",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "게임 host/client·소유권·상태 복제/RPC·재접속",
+        "예측/보정·지연/손실 검증"
+      ],
+      "sources": [
+        "prototype/engine-services.js"
+      ],
+      "evidence": [
+        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "VFX-01",
+      "area": "effects",
+      "title": "입자·투사체·GPU 계산",
+      "status": "verified",
+      "implemented": "입자 모듈·GPU 방출/간접 draw·정렬·탄환 서비스/충돌",
+      "remaining": [],
+      "sources": [
+        "prototype/scene-systems.js",
+        "prototype/gpu-particles.js"
+      ],
+      "evidence": [
+        "docs/research/GPU_EMISSION_049.md",
+        "docs/research/GPU_EFFECTS_054.md"
+      ]
+    },
+    {
+      "id": "VFX-02",
+      "area": "effects",
+      "title": "이펙트 고급 저작",
+      "status": "partial",
+      "implemented": "등록 ParticleSystem·Decal·효과 속성",
+      "remaining": [
+        "트레일·서브 이미터·시트 애니메이션 고급 모듈",
+        "범용 VFX 그래프/디버깅"
+      ],
+      "sources": [
+        "prototype/scene-components.js",
+        "prototype/scene-systems.js"
+      ],
+      "evidence": [
+        "docs/WORK_ORDER_051.md"
+      ]
+    },
+    {
+      "id": "UI-01",
+      "area": "ui",
+      "title": "위젯·레이아웃·SVG·입력",
+      "status": "verified",
+      "implemented": "전용 위젯·모서리/배율/안전 영역·SVG·한글·포커스/이벤트",
+      "remaining": [],
+      "sources": [
+        "prototype/ui-assets.js",
+        "prototype/ui-runtime.js"
+      ],
+      "evidence": [
+        "docs/UI_SCALING_SVG.md",
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "UI-02",
+      "area": "ui",
+      "title": "모바일 조작 UI",
+      "status": "verified",
+      "implemented": "조이스틱·방향/버튼·동시 터치·해제·안전 영역",
+      "remaining": [],
+      "sources": [
+        "prototype/runtime-input.js",
+        "prototype/ui-runtime.js"
+      ],
+      "evidence": [
+        "docs/INPUT_MOBILE_POOL.md",
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "UI-03",
+      "area": "ui",
+      "title": "복합/월드 UI·가상화·지역화",
+      "status": "partial",
+      "implemented": "기본 위젯 트리·데이터 바인딩",
+      "remaining": [
+        "재사용 위젯/스타일 자산",
+        "큰 목록 가상화·월드 UI",
+        "지역화 테이블·입력 접근성 통합"
+      ],
+      "sources": [
+        "prototype/ui-assets.js",
+        "prototype/ui-runtime.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "AUD-01",
+      "area": "audio",
+      "title": "믹서·공간 음향·스트리밍",
+      "status": "verified",
+      "implemented": "버스·노출값·snapshot·RMS·PCM/stream·정지/복귀·앱 분리",
+      "remaining": [],
+      "sources": [
+        "prototype/audio-mixer.js",
+        "prototype/buffered-audio.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/WINDOWS_GAME_IDENTITY_108.md",
+        "docs/research/AUDIO_STREAMING_LIFETIME_032.md"
+      ]
+    },
+    {
+      "id": "AUD-02",
+      "area": "audio",
+      "title": "가중 스냅샷·보간 곡선",
+      "status": "verified",
+      "implemented": "정규화 가중 snapshot·네 곡선·중단/override·공용 SDK/BP·편집기 적용/미리듣기",
+      "remaining": [],
+      "sources": [
+        "prototype/audio-mixer.js",
+        "prototype/audio-editor.js",
+        "native/include/HBEngine/Game.hpp"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/ENGINE_WORK_156.md"
+      ]
+    },
+    {
+      "id": "AUD-03",
+      "area": "audio",
+      "title": "오디오 고급 DSP/가상화",
+      "status": "partial",
+      "implemented": "gain/filter/compressor·routing/계측",
+      "remaining": [
+        "FX 순서·send/return·reverb/delay/sidechain",
+        "voice 우선순위/가상화·native DSP"
+      ],
+      "sources": [
+        "prototype/audio-mixer.js",
+        "prototype/native-audio.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+      ]
+    },
+    {
+      "id": "CPP-01",
+      "area": "cpp-blueprint",
+      "title": "블루프린트 제작/실행·공용 SDK",
+      "status": "verified",
+      "implemented": "변수/함수/매크로·이벤트·타임라인·핀 변환/분할·C++ 공개",
+      "remaining": [],
+      "sources": [
+        "prototype/blueprint-model.js",
+        "prototype/blueprint-runtime.js",
+        "native/include/HBEngine/Game.hpp"
+      ],
+      "evidence": [
+        "docs/BLUEPRINT_SPEC.md"
+      ]
+    },
+    {
+      "id": "CPP-02",
+      "area": "cpp-blueprint",
+      "title": "다중 소스·빌드·웹/모바일 AOT",
+      "status": "verified",
+      "implemented": "외부 C++ 소스·실제 compiler/프로토콜·다중 모듈·Wasm/AOT",
+      "remaining": [],
+      "sources": [
+        "tools/native-project.mjs",
+        "tools/native-host.mjs"
+      ],
+      "evidence": [
+        "docs/PROJECT_NATIVE_SOURCES.md",
+        "docs/WEB_GAME_EXPORT_083.md",
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "CPP-03",
+      "area": "cpp-blueprint",
+      "title": "코드 재적용·네이티브 디버거",
+      "status": "partial",
+      "implemented": "C++ 재빌드·호스트 교체·기본 BP debug/step",
+      "remaining": [
+        "인스턴스 상태를 보존하는 live reload",
+        "native debugger/브레이크·스택·스레드 연결"
+      ],
+      "sources": [
+        "prototype/native-channel.js",
+        "tools/native-host.mjs"
+      ],
+      "evidence": [
+        "docs/BLUEPRINT_SPEC.md"
+      ]
+    },
+    {
+      "id": "AI-01",
+      "area": "automation",
+      "title": "원자적 여러 문서 편집",
+      "status": "verified",
+      "implemented": "revision·dryRun·document.patch/files.apply·Undo 공용 계약",
+      "remaining": [],
+      "sources": [
+        "tools/editor-automation.mjs",
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/AI_ENGINE_API.md",
+        "docs/research/AI_ASSET_TRANSACTIONS_041.md"
+      ]
+    },
+    {
+      "id": "AI-02",
+      "area": "automation",
+      "title": "코드/기능 상태 최신 조회",
+      "status": "verified",
+      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분",
+      "remaining": [],
+      "sources": [
+        "tools/engine-status.mjs",
+        "tools/hb.mjs",
+        "tools/serve.mjs"
+      ],
+      "evidence": [
+        "docs/ENGINE_STATUS.md",
+        "docs/ENGINE_WORK_156.md"
+      ]
+    },
+    {
+      "id": "AI-03",
+      "area": "automation",
+      "title": "에디터 확장 API 확대",
+      "status": "partial",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령",
+      "remaining": [
+        "추가 제작 분야 전용 명령",
+        "버전 호환 확장 ABI·툴 배포·안전한 코드 확장"
+      ],
+      "sources": [
+        "prototype/editor-tool.js",
+        "tools/editor-automation.mjs"
+      ],
+      "evidence": [
+        "docs/LIGHTING_TOOLS_128.md"
+      ]
+    },
+    {
+      "id": "DBG-01",
+      "area": "debugging",
+      "title": "프레임/컴파일 프로파일러",
+      "status": "verified",
+      "implemented": "실측 구간/호출·300프레임·셰이더 준비·AI/JSON",
+      "remaining": [],
+      "sources": [
+        "prototype/profiler.js",
+        "prototype/game-renderer.js"
+      ],
+      "evidence": [
+        "docs/RENDERING_151.md"
+      ]
+    },
+    {
+      "id": "DBG-02",
+      "area": "debugging",
+      "title": "GPU 시간·메모리/크래시 진단",
+      "status": "partial",
+      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단",
+      "remaining": [
+        "편집기 GPU timer/스레드 flow",
+        "할당·누수·크래시 덤프·장치 연결"
+      ],
+      "sources": [
+        "prototype/profiler.js",
+        "prototype/game-renderer.js"
+      ],
+      "evidence": [
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/research/HOST_MEMORY_062.md"
+      ]
+    },
+    {
+      "id": "BLD-01",
+      "area": "platform",
+      "title": "Windows·웹 게임 배포",
+      "status": "verified",
+      "implemented": "독립 앱 ID/오디오·실행파일·정적 웹·C++ Wasm·공개 실행",
+      "remaining": [],
+      "sources": [
+        "tools/build-game.mjs",
+        "tools/build-web.mjs"
+      ],
+      "evidence": [
+        "docs/WINDOWS_GAME_IDENTITY_108.md",
+        "docs/WEB_GAME_EXPORT_083.md"
+      ]
+    },
+    {
+      "id": "BLD-02",
+      "area": "platform",
+      "title": "Android 빌드·가상 기기",
+      "status": "verified",
+      "implemented": "ARM64/x86_64 APK/AAB·서명/정렬·설치·게임/터치·복귀",
+      "remaining": [],
+      "sources": [
+        "tools/build-mobile.mjs",
+        "tools/mobile-android.mjs"
+      ],
+      "evidence": [
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "BLD-03",
+      "area": "platform",
+      "title": "iOS 원격 빌드·시뮬레이터",
+      "status": "verified",
+      "implemented": "Xcode 두 대상·C++/물리/UI·반복 오디오·백그라운드 복귀",
+      "remaining": [],
+      "sources": [
+        "tools/build-mobile.mjs",
+        "native/mobile/ios/Main.mm"
+      ],
+      "evidence": [
+        "docs/MOBILE_EXPORT.md",
+        "docs/IOS_REMOTE_DISTRIBUTION.md"
+      ]
+    },
+    {
+      "id": "BLD-04",
+      "area": "platform",
+      "title": "실제 휴대폰·스토어 배포",
+      "status": "unverified",
+      "implemented": "모바일 출력/빌드 경로 있음",
+      "remaining": [
+        "실물 기기 설치/열/배터리/음향",
+        "Apple 서명·IPA/TestFlight·스토어 배포"
+      ],
+      "sources": [
+        "tools/build-mobile.mjs"
+      ],
+      "evidence": [
+        "docs/IOS_REMOTE_DISTRIBUTION.md",
+        "docs/MOBILE_EXPORT.md"
+      ]
+    },
+    {
+      "id": "BLD-05",
+      "area": "platform",
+      "title": "모바일 편집기",
+      "status": "unimplemented",
+      "implemented": "",
+      "remaining": [
+        "프로젝트 저장/복구·터치 편집·모바일 C++ 제작 제약",
+        "실제 Android/iOS 에디터 앱"
+      ],
+      "sources": [
+        "prototype/app.js"
+      ],
+      "evidence": [
+        "docs/research/MOBILE_EDITOR_BODY_012.md"
+      ]
+    },
+    {
+      "id": "BLD-06",
+      "area": "platform",
+      "title": "번들·패치·협업/소스 관리",
+      "status": "partial",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트",
+      "remaining": [
+        "증분 콘텐츠 번들/패치·검증/롤백",
+        "에셋 diff/merge·VCS 작업 UI"
+      ],
+      "sources": [
+        "tools/build-game.mjs",
+        "tools/project-storage.mjs"
+      ],
+      "evidence": [
+        "docs/WORK_ORDER_051.md"
+      ]
+    },
+    {
+      "id": "PER-01",
+      "area": "performance",
+      "title": "PC120·모바일60 전체 프레임",
+      "status": "unverified",
+      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감",
+      "remaining": [
+        "대표/고부하 장면 p95/p99·장시간 안정성",
+        "실제 모바일 지속60·발열/배터리"
+      ],
+      "sources": [
+        "tools/check-auric-frame.mjs"
+      ],
+      "evidence": [
+        "docs/research/SPAWN_CATALOG_LIFETIME_067.md",
+        "docs/MOBILE_PERFORMANCE_BUDGET.md"
+      ]
+    },
+    {
+      "id": "PER-02",
+      "area": "performance",
+      "title": "용량·캐시·설치 한 개 유지",
+      "status": "verified",
+      "implemented": "검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리",
+      "remaining": [],
+      "sources": [
+        "tools/test-artifacts.mjs",
+        "tools/prune-install-versions.mjs"
+      ],
+      "evidence": [
+        "docs/research/USER_INSTALL_151.json",
+        "docs/INSTALL_RETENTION_114.md"
+      ]
+    },
+    {
+      "id": "PER-03",
+      "area": "performance",
+      "title": "대규모 월드·장시간 RAM",
+      "status": "unverified",
+      "implemented": "일부 자원 수명·큐/서명/업로드 개선과 소규모 재현",
+      "remaining": [
+        "대규모 메시/스켈레톤/탄막·전환 반복",
+        "프로세스 전체 RAM/VRAM 장기 증가 원인 종결"
+      ],
+      "sources": [
+        "prototype/scene-rendering.js",
+        "prototype/physics-world.js"
+      ],
+      "evidence": [
+        "docs/research/MEMORY_CONTROL_060.md",
+        "docs/research/HOST_MEMORY_062.md"
+      ]
+    },
+    {
+      "id": "RES-01",
+      "area": "research",
+      "title": "Unreal/Unity 전체 본문·API 대조",
+      "status": "partial",
+      "implemented": "출처 원장·개별 본문/소스 대조·증거/미독 경계",
+      "remaining": [
+        "전체 discovery 분모·추가 버전/API/미디어 대조",
+        "전체 독립 분석 gate"
+      ],
+      "sources": [
+        "docs/research/CORPUS_MANIFEST.json"
+      ],
+      "evidence": [
+        "docs/research/RESEARCH_STATUS.md",
+        "docs/research/ANALYSIS_PROTOCOL.md"
+      ]
+    },
+    {
+      "id": "AUD-04",
+      "area": "audio",
+      "title": "스냅샷/파라미터별 전환 오버라이드",
+      "status": "verified",
+      "implemented": "대상 snapshot/버스/파라미터별 네 곡선·시작/끝 step·가중 보간·기본값 상속·편집/Undo·공용 C++/BP/AI",
+      "remaining": [],
+      "sources": [
+        "prototype/audio-mixer.js",
+        "prototype/audio-editor.js",
+        "native/include/HBEngine/Game.hpp"
+      ],
+      "evidence": [
+        "docs/ENGINE_WORK_156.md"
+      ]
+    }
+  ]
+}

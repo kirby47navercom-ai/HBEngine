@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **725개**, 실제 공통 C++ API **640개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **728개**, 실제 공통 C++ API **643개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -21,7 +21,7 @@
 | 물리 | 16 | 14 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 12 | 9 |
+| 오디오 | 15 | 12 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
@@ -421,7 +421,10 @@
 | mixerSet | Set Float / 믹서 파라미터 지정 | exec: exec, target: object, asset: string, parameter: string, value: float | then: exec | hb::AudioMixer::SetFloat | 공통 C++ + VM |
 | mixerGet | Get Float / 믹서 파라미터 가져오기 | target: object, asset: string, parameter: string | return: float | hb::AudioMixer::GetFloat | 공통 C++ + VM |
 | mixerClear | Clear Float / 믹서 파라미터 재정의 해제 | exec: exec, target: object, asset: string, parameter: string | then: exec | hb::AudioMixer::ClearFloat | 공통 C++ + VM |
-| mixerSnapshot | Transition To / 믹서 스냅샷 전환 | exec: exec, target: object, asset: string, snapshot: string, duration: float | then: exec | hb::AudioMixer::TransitionTo | 공통 C++ + VM |
+| mixerSnapshot | Transition To / 믹서 스냅샷 전환 | exec: exec, target: object, asset: string, snapshot: string, duration: float, curve: string | then: exec | hb::AudioMixer::TransitionTo | 공통 C++ + VM |
+| mixerSnapshots | Transition To Snapshots / 믹서 스냅샷 가중 혼합 전환 | exec: exec, target: object, asset: string, snapshots: string[], weights: float[], duration: float, curve: string | then: exec | hb::AudioMixer::TransitionToSnapshots | 공통 C++ + VM |
+| mixerSetTransition | Set Snapshot Transition / 스냅샷 파라미터 전환 지정 | exec: exec, target: object, asset: string, snapshot: string, bus: string, parameter: string, curve: string | then: exec | hb::AudioMixer::SetSnapshotTransition | 공통 C++ + VM |
+| mixerClearTransition | Clear Snapshot Transition / 스냅샷 파라미터 전환 해제 | exec: exec, target: object, asset: string, snapshot: string, bus: string, parameter: string | then: exec | hb::AudioMixer::ClearSnapshotTransition | 공통 C++ + VM |
 
 ## 사용자 정의
 

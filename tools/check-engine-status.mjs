@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {readEngineStatus,validateEngineStatus,engineStatusMarkdown} from './engine-status.mjs';
+const data=await readEngineStatus();assert.ok(data.totalItems>=77);assert.equal(data.completionPercent,null);assert.equal(data.exhaustiveUEUnity,false);assert.equal(Object.values(data.counts).reduce((a,b)=>a+b,0),data.totalItems);
+for(const item of data.items)for(const file of [...item.sources,...item.evidence])await fs.access(file);
+const remaining=await readEngineStatus({status:'unimplemented'});assert.equal(remaining.totalItems,data.totalItems);assert.equal(remaining.matchedItems,data.counts.unimplemented);assert.ok(remaining.items.every(i=>i.remaining.length&&i.status==='unimplemented'));
+const exact=await readEngineStatus({id:'RND-06',area:'rendering',search:'셰이더'});assert.equal(exact.items.length,1);const empty=await readEngineStatus({area:'missing-area'});assert.equal(empty.matchedItems,0);assert.equal(empty.totalItems,data.totalItems);
+exact.items[0].remaining.push('caller mutation');assert.ok(!(await readEngineStatus({id:'RND-06'})).items[0].remaining.includes('caller mutation'));
+for(const bad of [{status:'complete'},{path:'../../secrets'},null,[],{search:'x'.repeat(301)}])await assert.rejects(()=>readEngineStatus(bad));const duplicate=structuredClone(data);duplicate.items.push(duplicate.items[0]);assert.throws(()=>validateEngineStatus(duplicate),/항목/);const wrong=structuredClone(data);wrong.items.find(i=>i.status==='verified').remaining=['not done'];assert.throws(()=>validateEngineStatus(wrong),/항목/);
+assert.equal(await fs.readFile('docs/ENGINE_STATUS.md','utf8'),engineStatusMarkdown(data),'human status view must match canonical JSON');console.log(JSON.stringify({passed:true,items:data.totalItems,counts:data.counts,scopedTotals:true,allEvidencePathsExist:true,filtersValidated:true,noGlobalCompletionPercent:true,humanViewInSync:true}));

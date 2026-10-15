@@ -166,7 +166,13 @@
     "test:render-preparation": "node tools/check-rendering-127.mjs && node tools/check-rendering-151.mjs",
     "test:animation-joint-limits": "node tools/check-animation-joint-limits.mjs",
     "test:animation-joint-limits-editor": "node tools/check-animation-graph-window.mjs --ccd --editor",
-    "test:animation-joint-limits-player": "node tools/check-animation-graph-window.mjs --ccd"
+    "test:animation-joint-limits-player": "node tools/check-animation-graph-window.mjs --ccd",
+    "test:engine-status": "node tools/check-engine-status.mjs",
+    "test:render-guide-preparation": "node tools/check-rendering-157.mjs",
+    "test:mixer-blends": "node tools/check-mixer-blends.mjs",
+    "test:mixer-blends-editor": "node tools/check-mixer-blends-window.mjs",
+    "test:mixer-parameter-transitions": "node tools/check-mixer-transitions.mjs",
+    "test:2d-retarget": "node tools/check-sprite-rig-retarget.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

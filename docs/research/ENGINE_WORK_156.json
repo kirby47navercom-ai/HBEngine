@@ -1,0 +1,512 @@
+{
+  "version": 1,
+  "date": "2026-10-15T16:02:27.564Z",
+  "baseline": "f5c7191a9e9fac5aba5ddac4f9343f80fced1204",
+  "range": "156–164",
+  "scope": "Canonical cumulative status,GL submission/guide specialization,weighted and per-parameter audio transitions,2D clip retargeting and8 BP getters",
+  "canonical": {
+    "items": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 28,
+      "unimplemented": 8,
+      "unverified": 3
+    },
+    "wholeEnginePercent": null,
+    "exhaustiveUEUnity": false
+  },
+  "cpuGroup156": {
+    "passed": true,
+    "results": [
+      {
+        "file": "tools/check-engine-status.mjs",
+        "exit": 0,
+        "elapsedMS": 85.2733,
+        "output": "{\"passed\":true,\"items\":78,\"counts\":{\"verified\":36,\"partial\":29,\"unimplemented\":10,\"unverified\":3},\"scopedTotals\":true,\"allEvidencePathsExist\":true,\"filtersValidated\":true,\"noGlobalCompletionPercent\":true,\"humanViewInSync\":true}\n"
+      },
+      {
+        "file": "tools/check-rendering-157.mjs",
+        "exit": 0,
+        "elapsedMS": 195.64260000000002,
+        "output": "{\"passed\":true,\"allLinksQueuedBeforeWait\":true,\"independentStageProgress\":true,\"cancellationStopsAllPolls\":true,\"noLensSpecialization\":{\"normalBytes\":2971,\"auxBytes\":9859,\"sharedBytes\":12851,\"materialBytes\":[38736,3255,45622],\"lensSourcePreserved\":true,\"targetsReused\":true},\"newAutomaticReadbacks\":0,\"newTargets\":0}\n"
+      },
+      {
+        "file": "tools/check-mixer-blends.mjs",
+        "exit": 0,
+        "elapsedMS": 2981.5150000000003,
+        "output": "Mixer weighted snapshots, curves, interruption/override, validation, legacy protocol, generated arrays and actual C++ PASS\n"
+      },
+      {
+        "file": "tools/check-rendering-151.mjs",
+        "exit": 0,
+        "elapsedMS": 203.60499999999956,
+        "output": "{\"passed\":true,\"rasterCanContinueDuringPreparation\":true,\"captureWaitsForPath\":true,\"cancelledPollsStop\":true,\"driverUnsupportedReported\":true,\"shaderFailurePropagated\":true,\"rendererTargetFaceMipAndMaterialRestored\":true,\"filterBodiesUnchanged\":true,\"filterBytes\":3255,\"fullGuideBytes\":38736,\"extraGPUReadbacks\":0,\"dependenciesAdded\":0}\n"
+      },
+      {
+        "file": "tools/check-rendering-145.mjs",
+        "exit": 0,
+        "elapsedMS": 497.9666000000002,
+        "output": "{\"passed\":true,\"materialReads\":{\"instances\":4097,\"before\":4097,\"after\":1},\"materialEditsStillReplanned\":true,\"alternatingPlanCPUTiming\":{\"pairs\":12},\"cancellationWakesWithoutDriverCompletion\":true,\"cancelledFailureHandled\":true,\"captureRecapturesAfterCancellation\":true,\"profilerAvailableWithoutRecording\":true,\"profilerAndAIShareDiagnostics\":true,\"profilerEscapesText\":true,\"extraGPUStorage\":0,\"automaticReadbacks\":0,\"dependenciesAdded\":0}\n"
+      },
+      {
+        "file": "tools/check-rendering-127.mjs",
+        "exit": 0,
+        "elapsedMS": 82.54190000000017,
+        "output": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n"
+      },
+      {
+        "file": "tools/check-ui-audio.mjs",
+        "exit": 0,
+        "elapsedMS": 3626.6294999999996,
+        "output": "위젯 앵커·계층·바인딩·실제 블루프린트/C++ 실행·믹서 재정의/스냅샷·참조 순환/레지스트리·실측 프레임 검사 통과\n"
+      },
+      {
+        "file": "tools/check-audio-sources.mjs",
+        "exit": 0,
+        "elapsedMS": 349.9427999999998,
+        "output": "오디오 소스 중복 클립·실행 중 볼륨·비활성화·Stop 이후 비동기 재생 정리 검사 통과\n"
+      },
+      {
+        "file": "tools/check-streaming-audio.mjs",
+        "exit": 0,
+        "elapsedMS": 85.15819999999985,
+        "output": "스트리밍 소스 재사용·동시 재생·옛 핸들/이벤트 격리·늦은 play·미연결 정리·믹서 변경분 예약 통과\n"
+      },
+      {
+        "file": "tools/check-buffered-audio.mjs",
+        "exit": 0,
+        "elapsedMS": 128.0012999999999,
+        "output": "버퍼 오디오: 반복·탐색·피치·일시정지/재개·종료 이벤트·늦은 재생/디코딩 정리·PCM 공유/캐시 예산 검사 통과\n"
+      },
+      {
+        "file": "tools/check.mjs",
+        "exit": 0,
+        "elapsedMS": 183.09179999999924,
+        "output": "HBEngine UI: 저장 데이터 검증, 파일 분류, 실행용 장면 분리 검사 통과\nHBEngine Blueprint: 이벤트, 타입 연결, 배열, 핀 분할/합치기, JSON 검증 통과\nHBEngine Blueprint: 함수·매크로 추출, 경계 연결 보존, 내부 편집, Construction 분리 검사 통과\nHBEngine Blueprint: 726개 노드, 상세 속성, 주석 저장 검사 통과\nHBEngine C++: 헤더 등록, 상속 기본값, 순수 함수, 이벤트 재정의, 디스패처·인터페이스 검사 통과\nHBEngine Blueprint: 타임라인 보간, 클래스 멤버, 붙여넣기·원본 보존 검사 통과\nHBEngine 공통 API: C++ 선언·289개 노드 서명 일치, 벡터·시간·타이머·측정·이동·연결된 계산 검사 통과\nHBEngine Project: 목록·타일 전환, 선택 유지, 프로젝트별 표시 방식 복원 검사 통과\n"
+      },
+      {
+        "file": "tools/generate-api.mjs",
+        "exit": 0,
+        "elapsedMS": 117.60779999999886,
+        "output": ""
+      }
+    ]
+  },
+  "cpuGroup162": {
+    "passed": true,
+    "results": [
+      {
+        "file": "tools/check-mixer-blends.mjs",
+        "exit": 0,
+        "elapsedMS": 3100.4516,
+        "output": "Mixer weighted snapshots, curves, interruption/override, validation, legacy protocol, generated arrays and actual C++ PASS\n"
+      },
+      {
+        "file": "tools/check-mixer-transitions.mjs",
+        "exit": 0,
+        "elapsedMS": 80.27060000000029,
+        "output": "Target snapshot/parameter transitions, weighted curves, step/clear, validation and shared routing PASS\n"
+      },
+      {
+        "file": "tools/check-sprite-rig-retarget.mjs",
+        "exit": 0,
+        "elapsedMS": 94.38729999999987,
+        "output": "2D bind-relative retarget/name/manual mappings/keys/scaling/runtime skinning and preservation PASS\n"
+      },
+      {
+        "file": "tools/check-sprite-rig.mjs",
+        "exit": 0,
+        "elapsedMS": 647.2169,
+        "output": "2D rig bind/weights/brush/smooth/edge/reparent/clips/pose graph/services/real C++/headless/original: C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\sprite-rig-5rtdBS\n"
+      },
+      {
+        "file": "tools/check-2d-return-pins.mjs",
+        "exit": 0,
+        "elapsedMS": 183.60969999999998,
+        "output": "All 8 SpriteSkin/IK2D getters: declared and linked BP Return pins + legacy direct aliases PASS\n"
+      },
+      {
+        "file": "tools/check-sprite-ik.mjs",
+        "exit": 0,
+        "elapsedMS": 159.22050000000002,
+        "output": "2D IK three solvers, bind angular constraints/reach/locks/blend/periodic bounds, shared mutation/validation, lengths/cache/legacy: passed\n"
+      },
+      {
+        "file": "tools/check-ui-audio.mjs",
+        "exit": 0,
+        "elapsedMS": 3598.3651,
+        "output": "위젯 앵커·계층·바인딩·실제 블루프린트/C++ 실행·믹서 재정의/스냅샷·참조 순환/레지스트리·실측 프레임 검사 통과\n"
+      },
+      {
+        "file": "tools/check-audio-sources.mjs",
+        "exit": 0,
+        "elapsedMS": 361.7051999999994,
+        "output": "오디오 소스 중복 클립·실행 중 볼륨·비활성화·Stop 이후 비동기 재생 정리 검사 통과\n"
+      },
+      {
+        "file": "tools/check.mjs",
+        "exit": 0,
+        "elapsedMS": 179.8060000000005,
+        "output": "HBEngine UI: 저장 데이터 검증, 파일 분류, 실행용 장면 분리 검사 통과\nHBEngine Blueprint: 이벤트, 타입 연결, 배열, 핀 분할/합치기, JSON 검증 통과\nHBEngine Blueprint: 함수·매크로 추출, 경계 연결 보존, 내부 편집, Construction 분리 검사 통과\nHBEngine Blueprint: 728개 노드, 상세 속성, 주석 저장 검사 통과\nHBEngine C++: 헤더 등록, 상속 기본값, 순수 함수, 이벤트 재정의, 디스패처·인터페이스 검사 통과\nHBEngine Blueprint: 타임라인 보간, 클래스 멤버, 붙여넣기·원본 보존 검사 통과\nHBEngine 공통 API: C++ 선언·289개 노드 서명 일치, 벡터·시간·타이머·측정·이동·연결된 계산 검사 통과\nHBEngine Project: 목록·타일 전환, 선택 유지, 프로젝트별 표시 방식 복원 검사 통과\n"
+      },
+      {
+        "file": "tools/generate-api.mjs",
+        "exit": 0,
+        "elapsedMS": 117.48549999999977,
+        "output": ""
+      }
+    ]
+  },
+  "webgl": {
+    "evidence": "native/build/gpu-scene-HxDX4t/acceptance.json",
+    "passed": true,
+    "rendering141": {
+      "passed": true,
+      "backend": "WebGL2",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 844,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 7887.531300000002
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1203.1202000000048
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 39.84769999999844
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 7383.837499999994
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 46.020999999993364
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 26.50350000000617
+        }
+      ],
+      "preparation": {
+        "pending": false,
+        "currentStage": "ready",
+        "elapsedMS": 6873.60000000149,
+        "stages": [
+          {
+            "stage": "path",
+            "elapsedMS": 0.5
+          },
+          {
+            "stage": "normal-guide",
+            "elapsedMS": 0.5
+          },
+          {
+            "stage": "lens-motion-guide",
+            "elapsedMS": 6873.60000000149
+          },
+          {
+            "stage": "spatial-filter-1",
+            "elapsedMS": 0.10000000149011612
+          },
+          {
+            "stage": "temporal-filter",
+            "elapsedMS": 21.399999998509884
+          },
+          {
+            "stage": "post",
+            "elapsedMS": 0
+          }
+        ],
+        "completed": 6,
+        "total": 6,
+        "cancelled": false,
+        "error": null,
+        "parallelSupported": true,
+        "concurrent": true
+      },
+      "compilation": null,
+      "typedCPP": true,
+      "disabledRelease": true
+    },
+    "affine145": {
+      "passed": true,
+      "cases": 8,
+      "components": 24,
+      "maxBounces": 16,
+      "maxError": 0.0000013076554719049227,
+      "reference": "Independent reverse plane reflection/refraction walk",
+      "float32Readback": true
+    },
+    "rendering138": {
+      "passed": true,
+      "tangentProbe": {
+        "passed": true,
+        "twist": [
+          204,
+          127,
+          229,
+          255
+        ],
+        "mirrored": [
+          204,
+          127,
+          229,
+          255
+        ],
+        "degenerate": [
+          127,
+          127,
+          127,
+          255
+        ],
+        "error": 0,
+        "tangentTwistDegrees": 90,
+        "smoothNormalUnchanged": true,
+        "mirroredUV": true,
+        "degenerateRejected": true
+      },
+      "backend": "WebGL2",
+      "texturedTwistedMorph": false,
+      "uniformTangentPerturbation": true,
+      "changedChannels": 844,
+      "deformedNormalBytes": 8064,
+      "typedCPP": true,
+      "disabledRelease": true
+    },
+    "rendering134": {
+      "passed": true,
+      "backend": "WebGL2",
+      "deformedNormalTriangles": 168,
+      "deformedNormalBytes": 8064,
+      "changedChannels": 2827,
+      "disabledRelease": true,
+      "typedCPP": true,
+      "nativeSky": null
+    },
+    "rendering125": {
+      "passed": true,
+      "raw": {
+        "mean": 18.322265625,
+        "variance": 135.83169174194336
+      },
+      "planar": {
+        "mean": 18.9912109375,
+        "variance": 1.080977439880371
+      },
+      "filtered": {
+        "mean": 18.994140625,
+        "variance": 1.1073875427246094
+      },
+      "zeroIsRaw": true,
+      "pose": {
+        "analyticLights": 0,
+        "lightBudget": 0,
+        "logicalTriangles": 1346,
+        "sharedVertices": true,
+        "uniqueVertexTriangles": 170,
+        "atlasBytes": 393216,
+        "poseMatrixInstances": 9,
+        "poseMatrixBytes": 864,
+        "deformedNormalTriangles": 0,
+        "deformedNormalBytes": 0,
+        "changedAtlasRows": 1
+      },
+      "disabled": {
+        "analyticLights": 0,
+        "lightBudget": 0,
+        "logicalTriangles": 1346,
+        "sharedVertices": true,
+        "uniqueVertexTriangles": 170,
+        "atlasBytes": 393216,
+        "poseMatrixInstances": 0,
+        "poseMatrixBytes": 0,
+        "deformedNormalTriangles": 0,
+        "deformedNormalBytes": 0,
+        "changedAtlasRows": 4
+      },
+      "typedCPP": true,
+      "backend": "WebGL2"
+    },
+    "lighting128": {
+      "passed": true,
+      "full": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "sampled": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "restored": [
+        119,
+        119,
+        119,
+        255
+      ],
+      "analyticLights": 24,
+      "lightBudget": 4,
+      "sky": [
+        111,
+        152,
+        195,
+        255
+      ],
+      "dark": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "skyRestored": [
+        111,
+        152,
+        195,
+        255
+      ],
+      "typedCPP": true,
+      "backend": "WebGL2"
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "serverClosed": true,
+    "sourceBoundary": "Guide/filter owners unchanged after this pass. Later changes are audio/2D authoring/2D return aliases only."
+  },
+  "editor": {
+    "evidence": "native/build/mixer-blends-window-4JnYi1/acceptance.json",
+    "httpStatus": true,
+    "previewRealAudio": true,
+    "manualRetarget": true,
+    "revisionDryRunUndoRedoSave": true,
+    "cppBPAndRuntimePose": true,
+    "parameterCurves": true,
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "serverClosed": true
+  },
+  "player": {
+    "release": {
+      "evidence": "native/build/retarget-player-R0IoBZ/acceptance.json",
+      "backend": "D3D11",
+      "passed": true,
+      "renderCaptureGuardPreserved": true,
+      "audioState": "running",
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "development": {
+      "evidence": "native/build/retarget-player-Z31BbY/acceptance.json",
+      "backend": "D3D11",
+      "passed": true,
+      "coloredSpritePixels": 13676,
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "visualReview": {
+    "viewed": [
+      "native/build/mixer-blends-window-4JnYi1/sprite-retarget-dialog.png",
+      "native/build/mixer-blends-window-4JnYi1/mixer-blend-ui.png",
+      "native/build/mixer-blends-window-4JnYi1/mixer-parameter-curves.png",
+      "native/build/retarget-player-Z31BbY/retarget-player.png"
+    ],
+    "result": "Readable existing editor controls;compact folded mixer settings and2-column rig mapping dialog;deformed2D target sprite visible in D3D11. No new image assets."
+  },
+  "updateCost": {
+    "scope": "Node CPU MixerState.update only,4 buses/2 snapshots/28 overridden numeric parameters,10000 updates; not whole game FPS",
+    "medianMS": 0.00269999999999726,
+    "p95MS": 0.003700000000002035,
+    "maximumMS": 0.17689999999999628,
+    "automaticGPUReadbacks": 0,
+    "newTimers": 0,
+    "newDependencies": 0
+  },
+  "sourceProducts": {
+    "prototype/app.js": "8f56a107b6725b0992275016b1e51562a64db6ad3740227fdfa15ff5bd71e21c",
+    "prototype/audio-mixer.js": "46f26cacb866a149f8864630507526f8ed0d89b5e92e425c59c8dd2aa1245ab0",
+    "prototype/audio-editor.js": "419917e3ed8631f449bbf61cc778e016ac926e38170122747641e53d1017b17d",
+    "prototype/engine-services.js": "41f3aa97fea003681244754b3ca594623945d1ff110dc850a59fb12aefe6e73c",
+    "prototype/gl-path-preparation.js": "74892cd01ab33e753e1e0a1f2e938581358d3c23f1b8f9d35f4566951ee3d614",
+    "prototype/gpu-path-preparation.js": "1f524bd43003c4d59f8b923608e3565ebe76cef02b64d9775fc5dbee7be8780c",
+    "prototype/path-guide-specialization.js": "367a0cf120873fdfe54f2e5e9b2effc976f1713323711d13b8f5690aa039b932",
+    "prototype/profiler.js": "f6804fbb3091eb903e81293b1c84b289825759d0ac02338c61638cd2a0b8f7bc",
+    "prototype/screen-effects-gl.js": "3c4c7e2a85a22205e5c40e8d6e9fa8895f655254fdc839554302b048eae429a2",
+    "prototype/sprite-rig-retarget.js": "6e9ab3e8f17d33029995f432fb7eafe17e3be9773dfadb267d90627b53803ae9",
+    "prototype/sprite-rig-retarget-editor.js": "4a2681d8daa7ecf417fe06790eae0aca6e5359ce423e5c12df876f861eac8f66",
+    "prototype/sprite-rig-editor.js": "763117637bb70c6fa2e8ca53389989c030b6be8abccc935e778b4f063090cb3a",
+    "prototype/sprite-rig-editor.css": "1c01c53b4740450a75103db8ea29fad36a9c81b0ba52731544bb4c17070aff60",
+    "prototype/ui-editor.css": "762c0611793cb37efe5b86a40f56262ff19fbf9d2a614498c05b620a617ccd7d",
+    "prototype/core-api.js": "bffb8af8eb66ea9808b38b9a6dfaae44877f65a352993a43a9b9374e6da22ea6",
+    "native/include/HBEngine/Game.hpp": "d6d2988d193b1fbe31c6de261e6795647bc2eab6d4f03900b65716def23de896",
+    "native/include/HBEngine/Bridge.hpp": "b6a239d272a6d64c5f0b320d70ee8d43957ae13ffa6bc621289bc79e657fcd8b",
+    "tools/engine-status.mjs": "43842df9b03e868073fcc884e3eafae78ba53168f72b3000158ec0813db65ce9",
+    "tools/editor-automation.mjs": "87e7bbef3d925bb641f025e9da09b9d627e54f40016ecd5142ab98358ccd8346",
+    "tools/hb.mjs": "dec115859597c28c856e35f2eb3f30910d15d98a560545c7b7c0e70f6cfc5044",
+    "tools/serve.mjs": "d81bd54797386e619221520c32e49615a9880a158888527bae0ea20ccc38dd13",
+    "docs/research/ENGINE_STATUS.json": "ca51cdf5efa97baf26149d4892ab85d5bbf43b31023e38a8ae33bc7fb2ebee2b",
+    "docs/ENGINE_STATUS.md": "487de782c94d7813a61065dccd87c3086cee00f6a0563255cc267ec326014bb4"
+  },
+  "limitations": [
+    "GL first path7888ms/temporal guide7384ms remain; one cold sequential comparison is not a controlled FPS benchmark",
+    "2D retargeting preserves direct parent correspondence; different chains and live IK bake remain",
+    "Full corpus/API analysis,terrain/LOD/networking/mobile editor/physical-device/long-running performance remain in canonical status"
+  ],
+  "failuresPreserved": [
+    "native/build/engine-work-156-group-first.json",
+    "native/build/engine-work-156-group-cpp-failure.json",
+    "native/build/engine-work-156-group-cpp-path-failure.json",
+    "native/build/mixer-159-preview-routing-failure.log",
+    "native/build/mixer-159-hidden-key-failure.log",
+    "native/build/mixer-159-short-transition-observation-failure.log",
+    "native/build/mixer-163-fixture-pin-failure.log",
+    "native/build/retarget-163-modal-busy-failure.log",
+    "native/build/retarget-164-return-pin-failure.log",
+    "native/build/engine-work-162-cleanup-prefix-failure.json",
+    "native/build/retarget-164-profile-default-failure.log",
+    "native/build/retarget-164-release-capture-policy-failure.log"
+  ],
+  "desktopBuild": {
+    "passed": true,
+    "evidence": "native/build/desktop-build-156.log",
+    "editorSHA256": "8f766b2e599a190eab899197b210b3e5585c7009ce6999546e627c3bf6e0794c",
+    "playerSHA256": "56a8c51ecc95de1692244ffe626786e18b1a99f99f9dd8e394366ff371538cf2",
+    "sourceProductsMatch": true
+  },
+  "storage": {
+    "failures": [],
+    "freeAfter": 471636312064,
+    "freeBefore": 471056257024,
+    "deleted": 10,
+    "date": "2026-10-15T16:04:04.6271905Z",
+    "files": 4308,
+    "bytes": 574396713,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792080236904-3bb15184-b116-41b6-8ae9-f041ef061e6d"
+  }
+}

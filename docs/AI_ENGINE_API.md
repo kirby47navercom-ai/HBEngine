@@ -349,3 +349,13 @@ SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(objec
 ## DirectX 2D 공용 연결(092)
 
 기존 SpriteMask/Light2D/ShadowCaster2D/CompositeShadowCaster2D와 SpriteRenderer/TilemapRenderer/ParticleSystem 속성을 사용한다. Windows d3d11의 지원 목록·twoDResources·sampler 제한은 windowsBuild에서 조회한다. renderer.targets2d/target2dBytes는 현재 타깃 추정, passes2d/draws2d는 누적 횟수이며 자동 readback이 아니다. 같은 document.patch/Undo/Save·BP·C++를 사용하고 별도 AI 전용 파일이나 게임 함수를 추가하지 않는다. [계약/원출처/실제 창](NATIVE_2D_092.md).
+
+## 현재 구현과 잔여 조회
+
+`node tools/hb.mjs status --local`은 에디터나 서버를 열지 않고 docs/research/ENGINE_STATUS.json을 읽는다. 실행 서버의 GET /api/engine/status는 id/area/status/search를 필터링한다. totalItems는 등록 전체, matchedItems는 필터 결과다. 전체 UE/Unity API 분모/완료율과 혼동하지 않는다. 정의한 범위의 verified/partial/unimplemented/unverified와 sources/evidence/remaining을 함께 사용한다. 인간 문서는 docs/ENGINE_STATUS.md이며 같은 원장에서 동기화한다.
+
+오디오 가중 전환은 schema.audio.weightedSnapshots와 mixerSnapshots 노드의 string/float 배열을 사용한다. SetFloat override와 기존 단일 mixerSnapshot을 유지한다. runtime.audio.mixers[asset].transition은 진행/곡선/정규화 가중치를 읽기 전용으로 공개하고 완료 후 null이다. 편집기 미리듣기와 가중치/시간/곡선 view 설정은 에셋 revision을 변경하지 않는다. 값 적용은 기존 Undo/저장 경로다.
+
+2026-10-16: rig.clip.retarget {path,expectedRevision,source,sourceRevision?,clip,mapping?,positionMode?,name?,dryRun?}는 수동 2D 리타게팅과 같은 변환/Undo를 쓴다. mapping은 {source,target} 안정 ID 배열, 생략하면 뼈 이름을 맞춘다. 이동 boneLength/relative/none; 같은 부모 계층을 검증한다. source의 열린 초안이 우선이며 files.get의 editorRevision 또는 revision을 기준으로 보호할 수 있다. 결과 clip은 기존 SpriteSkin/AnimationGraph/C++/BP 재생 경로를 쓴다.
+
+AudioMixer::SetSnapshotTransition/ClearSnapshotTransition과 BP mixerSetTransition/mixerClearTransition은 런타임 사본을 바꾼다. 저작 자료는 snapshots[].transitions[bus][parameter]이고, 값 '' 대신 필드를 지우면 상속한다. 숫자는 네 연속 곡선/stepStart/stepEnd, bool은 step 두 종류다. 가중 혼합은 각 대상의 곡선을 가중하며 이미 진행 중인 계획은 바꾸지 않는다. runtime.audio.mixers[].transition.parameterOverrides는 요청 시만 생성한다.

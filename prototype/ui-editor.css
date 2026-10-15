@@ -17,3 +17,5 @@
 .profiler-panel .profiler-details{min-height:0}
 .profiler-panel .profiler-frame-chart{max-height:25%}
 .profiler-details caption{text-align:left;padding:4px 0 8px;color:#aabbcf}
+
+.mixer-blend{border-top:1px solid #424a55;font-size:12px}.mixer-blend summary{padding:10px;background:#303740;font-weight:600;cursor:pointer}.mixer-blend>label{margin:9px 10px;display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:8px;align-items:center;overflow-wrap:anywhere}.mixer-blend input,.mixer-blend select{width:100%;min-width:0}.mixer-blend-actions{display:flex;gap:6px;margin:10px}.mixer-blend-actions button{flex:1;white-space:nowrap}

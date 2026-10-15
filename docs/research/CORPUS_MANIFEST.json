@@ -2706,6 +2706,31 @@
       "wholeCorpus": false,
       "state": "selected_primary_docs_and_local_r180_implementation_compared_linked_full_specs_pending",
       "readScope": "WebGLRenderer compile/compileAsync/properties/debug; MDN nonblocking completion/fallback/total-time text and example; CCDIK BoneLink/update; local r180 compile/program/material disposal and CCD rotationMin/Max source. Khronos full specification and outgoing APIs remain unread."
+    },
+    {
+      "id": "weighted-mixer-and-concurrent-guide-supplement-156",
+      "engine": "Unity and HBEngine dependencies",
+      "roots": [
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Audio.AudioMixer.TransitionToSnapshots.html",
+        "https://docs.unity3d.com/6000.0/Documentation/Manual/AudioMixerInspectors.html",
+        "https://developer.mozilla.org/en-US/docs/Web/API/KHR_parallel_shader_compile"
+      ],
+      "record": "docs/ENGINE_WORK_156.md",
+      "wholeCorpus": false,
+      "state": "own_snapshot_API_and_selected_inspector_overrides_KHR_example_read_full_linked_API_pending",
+      "readScope": "TransitionToSnapshots declaration/parameters/description, Inspector exposed parameters and transition override sections, KHR submit-before-poll example. Inspector figures/outgoing APIs and full engine corpus unread. Target snapshot/per-parameter overrides registered as AUD-04, not waived."
+    },
+    {
+      "id": "sprite-rig-retarget-163",
+      "engine": "Unity",
+      "version": "2D Animation10.2.4 / Unity6000.0 baseline",
+      "urls": [
+        "https://docs.unity3d.com/Packages/com.unity.2d.animation@10.2/manual/ex-skeleton-sharing.html"
+      ],
+      "record": "docs/ENGINE_WORK_156.md",
+      "wholeCorpus": false,
+      "state": "own_skeleton_sharing_body_read_linked_PSD_and_sample_media_unread",
+      "readScope": "Own article including skeleton/library relationship; linked PSD importer/full skin swap/APIs/media not read. CopyPasteSkele fetch failed; no coverage awarded."
     }
   ],
   "supplementalBaselines": [
@@ -2745,6 +2770,7 @@
     "Independently reconcile the complete accumulated HB requirements with source contracts and C++/node/human/AI behavior; a source-only gate is not engine completion.",
     "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope.",
     "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units.",
-    "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification."
+    "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification.",
+    "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled."
   ]
 }

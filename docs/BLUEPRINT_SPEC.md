@@ -1,3 +1,7 @@
+# 156–164 — 공용 원장·오디오 전환·2D 제작/조회
+
+가중 스냅샷 배열, 대상 파라미터 전환 지정/해제를 Game.hpp 한 선언에서 C++/BP로 제공한다. 현재 BP728개·공용 계산289개다. 예전 mixerSnapshot 명령은 유지한다. SpriteSkin/IK2D8 getter의 선언 return 핀을 실제 반환에 맞춰 연결 오류를 수정했다. 2D 리타게팅으로 만든 클립은 기존 SpriteSkin/AnimationGraph와 같은 재생/조회 경로를 사용한다. 사람/AI의 저작은 같은 revision·dryRun·Undo/저장이다. [구체적 계약/검증](ENGINE_WORK_156.md)·[현재 원장](ENGINE_STATUS.md).
+
 # 154–155 — 기준 포즈 XYZ 관절 제약의 공용 C++/BP/AI 연결
 
 AnimationGraph의 Two Bone/FABRIK/CCD에 선택적 jointLimits를 추가한다. 같은 Game.hpp 선언에서 SetIKJointLimit/ClearIKJointLimit와 한국어·영어 검색 BP 노드2개를 생성한다. 범위·관절 검증, 속성창/Undo/저장, AI document.patch/dryRun/revision과 runtime 상태를 공유한다. 실제 Editor/배포 Player에서 C++ 설정·해제/잘못된 범위 거절, BP 잠금·해제와 실제 골격 바인딩을 확인했다. 세 솔버·2D IK·리타게팅·루트 모션·725 BP노드/공용 계산289 회귀 통과. bind XYZ는 기존 입력 포즈 cone 및 Full Body/Control Rig와 구별한다. [계약](ANIMATION_JOINT_LIMITS_154.md)·[묶음 검증](research/RENDERING_151.json). 전체 누적 목표·corpus gate는 유지한다.

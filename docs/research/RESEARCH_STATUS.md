@@ -1,3 +1,7 @@
+# 2026-10-16 — 156–164 지정 재대조와 구현 원장
+
+최신 누적 기능/잔여는 [ENGINE_STATUS](../ENGINE_STATUS.md) 단일 원장에서 읽는다. 새 읽기: Unity AudioMixer 가중 전환 API 자체·Inspector 지정 구역, 2D Animation10.2.4 Skeleton Sharing 자체. 재대조: MDN KHR 제출 후 준비 조회 예제. 미독: Inspector 그림/연결 API 전체·2D PSD/교체 샘플/미디어·전체 corpus. CopyPasteSkele 접근 실패는 읽음이 아니다. 추가 발견7000.0도 별도 원장에 유지한다. 구현/실제 실행 증거는 [ENGINE_WORK_156](../ENGINE_WORK_156.md)이며 전체 분석 gate를 승격하지 않는다. 다음 조사는 기존 전역 큐와 추가된2D 연결 계약을 함께 따른다.
+
 2026-10-15: [128–130 다중 광원·스카이라이트·편집기 도구](../LIGHTING_TOOLS_128.md). Unreal MegaLights의 표본/중요도/성능과 SkyLight 출처·갱신, Unity EditorWindow 제작 흐름과 Undo 선언/기록 원칙을 지정 구역에서 대조하고 supplemental seeds를 등록했다. 연결 API 전체 분석·UE renderer 통합으로 승격하지 않는다. 실행·설치 증거는 별도 원장을 따른다.
 
 2026-10-14: [124 공유 교차 정점](../RENDERING_124.md)·[125 곡면 필터](../RENDERING_125.md)·[126 포즈 법선](../RENDERING_126.md)·[127 WebGPU 준비/탐색](../RENDERING_127.md), [묶음 증거](RENDERING_124.json). PBRT4 점/벡터/법선·광선 변환과 미분/표면 필터 지정 구역, 설치 Three r180 함수 cache·RTT·compileAsync/native promise·uniform 갱신 소스를 대조했다. 실제 세 실행 경로와 CPU/네이티브 검사 범위를 기록하며 전체 본문/API·게임/폰 성능 gate로 승격하지 않는다.

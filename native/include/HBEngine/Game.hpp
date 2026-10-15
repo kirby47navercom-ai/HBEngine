@@ -153,7 +153,10 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSet", KoreanName="믹서 파라미터 지정", Category="오디오") static void SetFloat(Actor* target,const std::string& asset,const std::string& parameter,float value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mixerGet", KoreanName="믹서 파라미터 가져오기", Category="오디오") static float GetFloat(Actor* target,const std::string& asset,const std::string& parameter);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerClear", KoreanName="믹서 파라미터 재정의 해제", Category="오디오") static void ClearFloat(Actor* target,const std::string& asset,const std::string& parameter);
-    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSnapshot", KoreanName="믹서 스냅샷 전환", Category="오디오") static void TransitionTo(Actor* target,const std::string& asset,const std::string& snapshot,float duration);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSnapshot", KoreanName="믹서 스냅샷 전환", Category="오디오") static void TransitionTo(Actor* target,const std::string& asset,const std::string& snapshot,float duration,const std::string& curve="linear");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSnapshots", KoreanName="믹서 스냅샷 가중 혼합 전환", Category="오디오") static void TransitionToSnapshots(Actor* target,const std::string& asset,const std::vector<std::string>& snapshots,const std::vector<float>& weights,float duration,const std::string& curve="linear");
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSetTransition", KoreanName="스냅샷 파라미터 전환 지정", Category="오디오") static void SetSnapshotTransition(Actor* target,const std::string& asset,const std::string& snapshot,const std::string& bus,const std::string& parameter,const std::string& curve);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerClearTransition", KoreanName="스냅샷 파라미터 전환 해제", Category="오디오") static void ClearSnapshotTransition(Actor* target,const std::string& asset,const std::string& snapshot,const std::string& bus,const std::string& parameter);
 };
 // These services share the editor/game-world operation contract with Blueprint.
 // The native host supplies the implementation and applies commands after each call.

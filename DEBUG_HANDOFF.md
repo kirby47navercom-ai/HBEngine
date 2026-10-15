@@ -1,3 +1,7 @@
+# 156–164 — 원장·오디오·2D 리타게팅 — 2026-10-16
+
+새 격리 통합 검사: 미리듣기 입력은 선택 버스로 들어가므로 Master 선택 상태에서 Music 미터를 검사하던 fixture를 Music 선택으로 수정. 숨긴 창의 물리 키는 viewport focus가 없어 전달되지 않았으므로 실제 runtime.input 계약으로 변경했고 native Blend/Get/BP/Legacy까지 통과했다. 2초 Fade는 두 입력 RPC와 다음 조회 이전에 끝나므로 진단용 fixture Fade만6초로 두며 runtime/기존 deadline은 유지한다. ndE00a의 새 리타게팅 수동 폼은 자체 modal이 열린 채 shared authoring API를 호출해 automationEditable의 EDITOR_BUSY를 맞았다. 기존 머테리얼 추출과 같이 제출 때 modal을 닫고, 실패하면 동일 폼을 다시 열며 revision·Undo·공통 검증을 유지한다. 재현/실패 로그는 native/build에 보존한다. 통과한 GL 장면은 불변 소스라 다시 실행하지 않는다.
+
 # 145–150 — 초기 준비와 누적 변환 — 2026-10-15
 
 수정 전 GPU/lLvr3x의 시간 필터 설정8767ms. 노멀/굴절/보간/행렬 공유 뒤3iGQAf는2645ms. 최종 OcreA1는2528ms, lens-motion-guide2026.8ms. 생성 가이드68865→58086B, hbRayNormal 호출11→2/record1 15→4. GLSL·생성HLSL·TSL 역순 평면 배열을 같은 순서의 누적 affine 변환으로 교체한다. GPU OcreA1/GL QCVVvK의8경로×3성분 float32/독립 역순 기준 최대오차1.31e-6. 실제 D3D4CcmOm/GPU/GL 141/138/134/125/128·C++와 native131/135/재방문 통과. CPU30·환경34 통과. 전체 엔진/FPS/폰/문서 완료가 아니다.

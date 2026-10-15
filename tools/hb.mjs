@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {readEngineStatus} from './engine-status.mjs';
 import {pathToFileURL} from 'node:url';
 
 export async function engineRequest(base,route,data){const response=await fetch(base+route,{method:data===undefined?'GET':'POST',headers:{'X-HB-Editor':'1','Content-Type':'application/json'},...(data===undefined?{}:{body:JSON.stringify(data)})});const result=await response.json();if(!response.ok)throw Error(result.error);return result;}
@@ -9,7 +10,7 @@ export async function editorCommand(base,method,params={},options={}){
   if(command.error)throw Object.assign(Error(command.error.message),{code:command.error.code});return command.result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){try{
-  const args=process.argv.slice(2),take=(flag,fallback)=>{const index=args.indexOf(flag);return index<0?fallback:args.splice(index,2)[1];},base=take('--url','http://127.0.0.1:5173'),clientId=take('--client'),[method='help',input]=args;
+  const args=process.argv.slice(2),take=(flag,fallback)=>{const index=args.indexOf(flag);return index<0?fallback:args.splice(index,2)[1];},base=take('--url','http://127.0.0.1:5173'),clientId=take('--client'),localIndex=args.indexOf('--local'),local=localIndex>=0;if(local)args.splice(localIndex,1);const [method='help',input]=args;
   const params=input?JSON.parse(input.startsWith('@')?await fs.readFile(input.slice(1),'utf8'):input):{};
-  const output=method==='help'?{usage:'node tools/hb.mjs schema | clients | editor.state | document.get | document.patch @params.json [--url URL] [--client ID]',details:'docs/AI_ENGINE_API.md'}:method==='schema'?await engineRequest(base,'/api/schema'):method==='clients'?await engineRequest(base,'/api/automation'):await editorCommand(base,method,params,{clientId});console.log(JSON.stringify(output,null,2));
+  const output=method==='help'?{usage:'node tools/hb.mjs status [--local] | schema | clients | editor.state | document.get | document.patch @params.json [--url URL] [--client ID]',details:'docs/AI_ENGINE_API.md'}:method==='status'?(local?await readEngineStatus(params):await engineRequest(base,'/api/engine/status?'+new URLSearchParams(params))):method==='schema'?await engineRequest(base,'/api/schema'):method==='clients'?await engineRequest(base,'/api/automation'):await editorCommand(base,method,params,{clientId});console.log(JSON.stringify(output,null,2));
 }catch(error){console.error(JSON.stringify({error:error.message,code:error.code||'REQUEST_FAILED'}));process.exitCode=1;}}

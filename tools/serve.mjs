@@ -12,6 +12,7 @@ import {ProjectService} from './project-service.mjs';
 import {NativeHost} from './native-host.mjs';
 import {readNativeFiles} from './native-project.mjs';
 import {ProjectStorage,storageLimit} from './project-storage.mjs';
+import {readEngineStatus} from './engine-status.mjs';
 import {EditorAutomation,engineSchema} from './editor-automation.mjs';
 const root=path.resolve(import.meta.dirname,'..'),desktop=process.env.HB_DESKTOP==='1',requestedPort=Number(process.env.PORT??5173),quietRoot=path.join(root,'Projects/QuietGarden');
 if(!Number.isInteger(requestedPort)||requestedPort<0||requestedPort>65535)throw Error('서버 포트 범위 오류');
@@ -71,6 +72,7 @@ const server=http.createServer(async(req,res)=>{try{
       if(url.pathname==='/api/build/deploy'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await buildJobs.deploy(record,data.id,data.serial));}
       if(url.pathname==='/api/build/cancel'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,buildJobs.cancel(record,data.id));}
     }
+    if(url.pathname==='/api/engine/status'&&req.method==='GET')return json(res,await readEngineStatus(Object.fromEntries(q)));
     if(url.pathname==='/api/schema'&&req.method==='GET')return json(res,engineSchema());
     if(url.pathname==='/api/automation'&&req.method==='GET')return json(res,automation.state());
     if(url.pathname==='/api/automation/command'&&req.method==='GET')return json(res,automation.get(q.get('id')));
