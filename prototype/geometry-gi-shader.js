@@ -1,4 +1,5 @@
 import {rayMaterialGLSL} from './ray-material-shader.js';
+import {megaLightsGLSL} from './mega-lights.js';
 export const geometryGIGLSL=`
 vec3 hbGeometryVisibility(vec3 origin,vec3 direction,float distance);
 vec3 hbGeometryVisibilityLod(vec3 origin,vec3 direction,float distance,float width);
@@ -42,10 +43,11 @@ vec4 hbGeometryTraceCone(vec3 origin,vec3 direction,float distance,vec2 rayCone)
 }
 #endif
 vec4 hbGeometryTrace(vec3 origin,vec3 direction,float distance){return hbGeometryTraceCone(origin,direction,distance,vec2(0,0));}
+${megaLightsGLSL}
 vec3 hbGeometryLightingLod(vec3 point,vec3 normal,float triangle,float width){float at=hbGeometryInfo.w+triangle*6.0;vec3 color=hbRayField1Lod(triangle,point,normal,width).rgb,result=hbRayField2Lod(triangle,point,normal,width).rgb;
- for(int light=0;light<int(hbGeometryLimits.w);light++){float base=hbGeometryLimits.z+float(light)*4.0;vec4 p=hbGeometryLoad(base),d=hbGeometryLoad(base+1.0),c=hbGeometryLoad(base+2.0),cone=hbGeometryLoad(base+3.0);vec3 delta=p.xyz-point;float distance=length(delta),attenuation=1.0;vec3 direction=p.w<.5?normalize(d.xyz):delta/max(distance,.000001);
+ for(int light=0;light<int(hbLightBudget());light++){vec2 choice=hbSelectLight(float(light),dot(point,vec3(17.719,113.13,31.7))+hbPath.w);float base=hbGeometryLimits.z+choice.x*4.0;vec4 p=hbGeometryLoad(base),d=hbGeometryLoad(base+1.0),c=hbGeometryLoad(base+2.0),cone=hbGeometryLoad(base+3.0);vec3 delta=p.xyz-point;float distance=length(delta),attenuation=1.0;vec3 direction=p.w<.5?normalize(d.xyz):delta/max(distance,.000001);
   if(p.w>.5){attenuation=1.0/max(pow(distance,cone.z),.01);if(d.w>0.0)attenuation*=pow(clamp(1.0-pow(distance/d.w,4.0),0.0,1.0),2.0);if(p.w>1.5)attenuation*=smoothstep(cone.x,max(cone.x+.00001,cone.y),dot(-direction,normalize(d.xyz)));}
-  float cosine=max(dot(normal,direction),0.0);if(cosine>0.0&&attenuation>0.0){vec4 shadow=hbGeometryTrace(point+normal*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0));vec3 visibility=hbTransport.y>.5?hbGeometryVisibilityLod(point+normal*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0),width):(shadow.z<.5&&shadow.w>.5?vec3(1,1,1):vec3(0,0,0));if(hbTransport.y>.5&&(cone.w<.5||hbGeometryLoad(hbTransport.x+triangle*2.0+1.0).y<.5))visibility=vec3(1,1,1);float diffuse=hbTransport.y>.5?1.0-hbRayField0Lod(triangle,point,normal,width).x:1.0;result+=color*c.rgb*c.w*(cosine*attenuation*.318309886*diffuse)*visibility;}
+  float cosine=max(dot(normal,direction),0.0);if(cosine>0.0&&attenuation>0.0){vec4 shadow=hbGeometryTrace(point+normal*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0));vec3 visibility=hbTransport.y>.5?hbGeometryVisibilityLod(point+normal*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0),width):(shadow.z<.5&&shadow.w>.5?vec3(1,1,1):vec3(0,0,0));if(hbTransport.y>.5&&(cone.w<.5||hbGeometryLoad(hbTransport.x+triangle*2.0+1.0).y<.5))visibility=vec3(1,1,1);float diffuse=hbTransport.y>.5?1.0-hbRayField0Lod(triangle,point,normal,width).x:1.0;result+=color*c.rgb*c.w*(cosine*attenuation*choice.y*.318309886*diffuse)*visibility;}
  }return result;
 }
 vec3 hbGeometryHemisphere(vec3 normal,float angle,float radius){vec3 tangent=normalize(cross(normal,abs(normal.z)<.9?vec3(0,0,1):vec3(0,1,0))),bitangent=cross(normal,tangent);return normalize(normal*sqrt(1.0-radius)+(tangent*cos(angle)+bitangent*sin(angle))*sqrt(radius));}

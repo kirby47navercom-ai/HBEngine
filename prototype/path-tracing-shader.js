@@ -33,16 +33,16 @@ if(transmission>0.0&&rough>=.05&&abs(ratio-1.0)>.0001)value+=hbPathDielectric(n,
 #endif
 return value;}
 
-vec3 hbPathDirect(vec3 point,vec3 n,vec3 view,float triangle,float width,float ratio){
+vec3 hbPathDirect(vec3 point,vec3 n,vec3 view,float triangle,float width,float ratio,float seed){
 #ifdef HB_RAY_NO_ANALYTIC_LIGHTS
  return vec3(0,0,0);
 #else
 float at=hbGeometryInfo.w+triangle*6.0;vec3 albedo=hbRayField1Lod(triangle,point,view,width).rgb;vec4 physical=hbRayField0Lod(triangle,point,view,width);float metal=physical.x,roughness=max(.02,physical.y),transmission=physical.z*(1.0-metal);vec3 result=vec3(0,0,0);
- for(int light=0;light<int(hbGeometryLimits.w);light++){float base=hbGeometryLimits.z+float(light)*4.0;vec4 p=hbGeometryLoad(base),d=hbGeometryLoad(base+1.0),c=hbGeometryLoad(base+2.0),cone=hbGeometryLoad(base+3.0);vec3 delta=p.xyz-point;float distance=length(delta),attenuation=1.0;vec3 direction=p.w<.5?normalize(d.xyz):delta/max(distance,.000001);if(p.w>.5){attenuation=1.0/max(pow(distance,cone.z),.01);if(d.w>0.0)attenuation*=pow(clamp(1.0-pow(distance/d.w,4.0),0.0,1.0),2.0);if(p.w>1.5)attenuation*=smoothstep(cone.x,max(cone.x+.00001,cone.y),dot(-direction,normalize(d.xyz)));}float cosine=abs(dot(n,direction));if(cosine>0.0&&attenuation>0.0){vec3 visibility=hbGeometryVisibilityLod(point+direction*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0),width);if(cone.w<.5||hbGeometryLoad(hbTransport.x+triangle*2.0+1.0).y<.5)visibility=vec3(1,1,1);
+ for(int light=0;light<int(hbLightBudget());light++){vec2 choice=hbSelectLight(float(light),seed);float base=hbGeometryLimits.z+choice.x*4.0;vec4 p=hbGeometryLoad(base),d=hbGeometryLoad(base+1.0),c=hbGeometryLoad(base+2.0),cone=hbGeometryLoad(base+3.0);vec3 delta=p.xyz-point;float distance=length(delta),attenuation=1.0;vec3 direction=p.w<.5?normalize(d.xyz):delta/max(distance,.000001);if(p.w>.5){attenuation=1.0/max(pow(distance,cone.z),.01);if(d.w>0.0)attenuation*=pow(clamp(1.0-pow(distance/d.w,4.0),0.0,1.0),2.0);if(p.w>1.5)attenuation*=smoothstep(cone.x,max(cone.x+.00001,cone.y),dot(-direction,normalize(d.xyz)));}float cosine=abs(dot(n,direction));if(cosine>0.0&&attenuation>0.0){vec3 visibility=hbGeometryVisibilityLod(point+direction*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0),width);if(cone.w<.5||hbGeometryLoad(hbTransport.x+triangle*2.0+1.0).y<.5)visibility=vec3(1,1,1);
 #ifndef HB_PATH_NO_CAUSTICS
 else if(hbPathCaustics.x>.5&&hbPathCaustics.w>0.0){vec4 blocker=hbGeometryTrace(point+direction*hbGeometryLimits.y*2.0,direction,p.w<.5?hbGeometry.y:max(0.0,distance-hbGeometryLimits.y*2.0));if(blocker.z>.5&&hbGeometryLoad(hbTransport.x+blocker.y*2.0+1.0).x>.5){vec4 surface=hbRayField0Lod(blocker.y,point+direction*(blocker.x+hbGeometryLimits.y*2.0),-direction,width);if(hbCausticBoundary(surface)&&surface.z>.5)visibility=vec3(0,0,0);}}
 #endif
-result+=hbPathBSDF(n,view,direction,albedo,metal,roughness,triangle,point,width,ratio).rgb*c.rgb*c.w*(cosine*attenuation)*visibility;}
+result+=hbPathBSDF(n,view,direction,albedo,metal,roughness,triangle,point,width,ratio).rgb*c.rgb*c.w*(cosine*attenuation*choice.y)*visibility;}
  }return result;
 
 #endif
@@ -72,7 +72,7 @@ vec3 hbPathSample(vec3 origin,vec3 direction,float seed,vec2 initialCone){float 
 #ifndef HB_PATH_NO_CAUSTICS
 photonWeight=hbCausticBoundary(physical)&&(diffuseSeen||causticChain)&&hbPathCaustics.x>.5&&hbPathCaustics.w>0.0?0.0:1.0;
 #endif
-radiance+=throughput*(hbRayField2Lod(hit.y,point,-direction,width).rgb*emissionWeight+hbPathDirect(point,n,-direction,hit.y,width,ratio)+hbPathEmissiveDirect(point,n,-direction,hit.y,randomBase,width,ratio)+hbEnvironmentDirect(point,n,-direction,hit.y,randomBase,width,spread,ratio)+hbPathCaustic(point,n,hit.y,randomBase,width))*photonWeight;previousPoint=point;if(hbCausticBoundary(physical)){if(diffuseSeen)causticChain=true;}else{diffuseSeen=metal<=.5&&transmission<=.5;causticChain=false;}
+radiance+=throughput*(hbRayField2Lod(hit.y,point,-direction,width).rgb*emissionWeight+hbPathDirect(point,n,-direction,hit.y,width,ratio,randomBase)+hbPathEmissiveDirect(point,n,-direction,hit.y,randomBase,width,ratio)+hbEnvironmentDirect(point,n,-direction,hit.y,randomBase,width,spread,ratio)+hbPathCaustic(point,n,hit.y,randomBase,width))*photonWeight;previousPoint=point;if(hbCausticBoundary(physical)){if(diffuseSeen)causticChain=true;}else{diffuseSeen=metal<=.5&&transmission<=.5;causticChain=false;}
   float choose=hbPathRandom(randomBase+2.0),u=hbPathRandom(randomBase+3.0),angle=hbPathRandom(randomBase+4.0)*6.283185307;
   if(choose<transmission){
 #ifdef HB_PATH_ROUGH_DIELECTRIC

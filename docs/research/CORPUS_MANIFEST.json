@@ -2568,6 +2568,61 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "many-lights-editor-tools-supplement",
+      "engine": "Selected Unreal lighting and Unity editor tooling contracts",
+      "version": "Selected2026-10-15",
+      "locale": "en",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/megalights-in-unreal-engine",
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/sky-lights-in-unreal-engine",
+        "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-HowTo-CreateEditorWindow.html",
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObject.html",
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/EditorWindow.html"
+      ],
+      "hosts": [
+        "dev.epicgames.com",
+        "docs.unity3d.com"
+      ],
+      "discoveryClosed": false,
+      "expectedPages": null,
+      "expectedApiUnits": null,
+      "openIssues": [
+        "Selected mechanism/authoring sections only; linked API/platform/volume/denoising and complete engine corpus remain open."
+      ],
+      "additionalDiscoverySeeds": [
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/megalights-in-unreal-engine",
+          "readScope": "Own fixed-budget stochastic direct light sampling, importance selection, denoising, performance and platform sections; HB uses software BVH and has no UE renderer dependency.",
+          "record": "docs/LIGHTING_TOOLS_128.md",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/sky-lights-in-unreal-engine",
+          "readScope": "Own Scene Capture and source/mobility descriptions, recapture and specified cubemap; no linked API or full Lightmass/DFAO/RTC implementation audit.",
+          "record": "docs/LIGHTING_TOOLS_128.md",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-HowTo-CreateEditorWindow.html",
+          "readScope": "Own custom window, controls, resizing and hot reload workflow; HB uses existing dock/schema/commands rather than Unity code or UI Toolkit runtime.",
+          "record": "docs/LIGHTING_TOOLS_128.md",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Undo.RecordObject.html",
+          "readScope": "Own signature, parameters and description introduction; hierarchy/create/destroy have separate APIs, not audited here.",
+          "record": "docs/LIGHTING_TOOLS_128.md",
+          "wholeCorpus": false
+        },
+        {
+          "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/EditorWindow.html",
+          "readScope": "API page discovered and retrieved; full member/body analysis pending.",
+          "record": "docs/LIGHTING_TOOLS_128.md",
+          "wholeCorpus": false
+        }
+      ]
     }
   ],
   "supplementalBaselines": [

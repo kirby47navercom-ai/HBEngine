@@ -1,3 +1,13 @@
+# 128–130 — 다중 광원·스카이라이트·제작 도구 — 2026-10-15
+
+128: power CDF/균등 floor·확률 보정·표본 예산·기본 꺼짐/전용 shader variant·Native 경계/stride 분리.129: 기존 SkyLight HDR·EXR/회전/우선순위·해제·Post HDRI 없을 때 경로 추적 연결.130: 편집기 도구 에셋/메뉴/도킹·자료형 입력·실제 버튼/AI 공용 명령·revision/Undo·정의 편집/저장. [설명/지정 출처](docs/LIGHTING_TOOLS_128.md).
+
+CPU25 묶음·환경34개 기존 검사·실제 D3D/gayRmn, GL/mCy4BO, GPU/fGrEzH의 24광원→4표본/밝기 유지·HDRI/0/복원·기존124·실제C++·errors0/exit0/서버해제. D3D는125/119 회귀도 포함. 실제 편집기bk4cRh에서 버튼/API·Undo·정의patch·저장·CSS·캡처 검토 통과. 원장은 docs/research/LIGHTING_TOOLS_128.json.
+
+설치 전환 대기: 128 묶음 검증 파일과 바로가기·프로필·이전 버전을 대조한다.
+
+기존 누적 렌더링·2D/2.5D/3D·모바일·엔진 전 분야 목표를 축소하지 않는다. HB 다중 광원은 경로 추적/기하 GI, HDRI Native 증거는 경로 추적이며 UE 전체 MegaLights/deferred/Native 전역 IBL·실게임 FPS·휴대폰/전체 corpus 완료가 아니다. 전역 곡면 역해/거친 다중 로브·스킨 이전법선의 기존 제한과 다음 작업을 유지한다.
+
 # 124–127 — 공유 교차 정점·곡면 필터·이전 포즈·WebGPU 준비 — 2026-10-14
 
 124: 내용/충돌/버전/interleaved 검사를 사용하는 clone BLAS 공유, 로컬 교차 정점과 기존6vec 논리 주소·5vec 물리 기록. CPU5376/168 tri 최대 위치 오차5.40e-8, atlas1179648→1114112B.125: 공용 pathTracingCurvedFilter 기본꺼짐·주변 실제 기하와 경계/TIR 거부·원본 누적 유지.126: 강체 이전 법선96B/instance·실패/꺼짐 해제.127: builder별 함수 바인딩·prefix/suffix/고정 슬롯/로컬 보간, BVH/교차값 고정, 렌즈전용 가이드, 타겟 선행크기·취소/거부·비동기 캡처 준비·광자 소유 갱신·보수적 로브 특수화.

@@ -1,3 +1,4 @@
+import {createEditorTool,validEditorTool} from './editor-tool-assets.js';
 import {textureAssetTypes,textureAssetSuffix,createTextureAsset,validTextureAsset,materialTextureTypes} from './texture-assets.js';
 import {retargetAssetTypes,retargetAssetSuffix,createRetargetAsset,validRetargetAsset} from './animation-retarget-assets.js';
 import {nativeSourceReference} from './native-model.js';
@@ -24,6 +25,7 @@ Object.assign(assetSuffix,textureAssetSuffix);Object.assign(assetTypes,textureAs
 Object.assign(assetSuffix,retargetAssetSuffix);Object.assign(assetTypes,retargetAssetTypes);
 Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
+assetSuffix.editortool='.hbeditortool.json';assetTypes.editortool={label:'편집기 도구',prefix:'ET_',group:'편집기'};
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
 assetSuffix.animgraph='.hbanimgraph.json';assetTypes.animgraph={label:'애니메이션 그래프',prefix:'AG_',group:'애니메이션'};
@@ -46,6 +48,7 @@ export function createAsset(kind,name,parent='Actor'){
   if(kind in twoDTypes)return create2DAsset(kind,name);
   if(kind in gameplayTypes)return createGameplayAsset(kind,name);
   if(kind in retargetAssetTypes)return createRetargetAsset(kind,name);
+  if(kind==='editortool')return createEditorTool(name);
   if(kind==='widget')return createWidgetAsset(name);
   if(kind==='audiomixer')return createAudioMixer(name);
   if(kind==='animgraph')return createAnimationGraph(name);
@@ -77,6 +80,7 @@ export function validAsset(kind,data){
   if(kind in textureAssetTypes)return validTextureAsset(kind,data);
   if(kind in twoDTypes)return valid2DAsset(kind,data);
   if(kind in gameplayTypes)return validGameplayAsset(kind,data);
+  if(kind==='editortool')return validEditorTool(data);
   if(kind==='widget')return validWidgetAsset(data);
   if(kind==='audiomixer')return validAudioMixer(data);
   if(kind in retargetAssetTypes)return validRetargetAsset(kind,data);
@@ -106,7 +110,7 @@ export function instantiatePrefab(data,{position=[0,0,0],id=()=>crypto.randomUUI
   const objects=copy(data.objects).map(object=>{const old=object.id,parent=object.parent||object.parentId;object.id=ids.get(old);if(parent&&ids.has(parent)){object.parent=ids.get(parent);if(object.parentId!==undefined)object.parentId=object.parent;}else{delete object.parent;delete object.parentId;object.position=object.position.map((value,index)=>value+position[index]);}object.prefabRoot=ids.get(data.root);return object;});
   if(!validScene({version:1,objects,surface:defaultSurface}))throw Error('프리팹 계층 검증 실패');return objects;
 }
-export function renameAssetReferences(value,from,to){const keys=new Set(['colorLookup','blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','parentClass','texture','normalTexture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn','clip','sheet','blend','chordAction','context','sprite','rig','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if((keys.has(key)||key==='value'&&(materialTextureTypes[value.valueType]||materialTextureTypes[value.type])||key==='textureObject'||key==='preview'&&materialTextureTypes[value.valueType])&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='images'&&Array.isArray(item)&&value.dimension in textureAssetTypes){for(let i=0;i<item.length;i++){const next=remap(item[i]);if(next!==item[i]){item[i]=next;changed=true;}}}else if(key==='inputValues'&&item&&typeof item==='object'&&(value.key==='functionInput'&&materialTextureTypes[value.valueType]||value.key==='functionCall')){for(const [id,v] of Object.entries(item)){if(value.key==='functionInput'||value.signature?.inputs.some(p=>p.id===id&&materialTextureTypes[p.type])){const next=remap(v);if(next!==v){item[id]=next;changed=true;}}}}else if(['parameters','blendParameters','nativeDefaults','nativeProperties','overrides'].includes(key)&&item&&typeof item==='object'){const walk=object=>{for(const [name,parameter] of Object.entries(object)){if(typeof parameter==='string'){const next=remap(parameter);if(next!==parameter){object[name]=next;changed=true;}}else if(parameter&&typeof parameter==='object')walk(parameter);}};walk(item);}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
+export function renameAssetReferences(value,from,to){const keys=new Set(['cubemap','colorLookup','blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','parent','parentClass','texture','normalTexture','vectorTexture','physicalMaterial','sourceMesh','prefabAsset','gameConfigAsset','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn','clip','sheet','blend','chordAction','context','sprite','rig','tileset','blackboard','mixer','widget']);const remap=path=>typeof path==='string'&&(path===from||path.startsWith(from+'/'))?to+path.slice(from.length):path;let changed=false;if(!value||typeof value!=='object')return false;for(const [key,item] of Object.entries(value)){if((keys.has(key)||key==='value'&&(materialTextureTypes[value.valueType]||materialTextureTypes[value.type])||key==='textureObject'||key==='preview'&&materialTextureTypes[value.valueType])&&typeof item==='string'){const next=remap(item);if(next!==item){value[key]=next;changed=true;}}else if(key==='images'&&Array.isArray(item)&&value.dimension in textureAssetTypes){for(let i=0;i<item.length;i++){const next=remap(item[i]);if(next!==item[i]){item[i]=next;changed=true;}}}else if(key==='inputValues'&&item&&typeof item==='object'&&(value.key==='functionInput'&&materialTextureTypes[value.valueType]||value.key==='functionCall')){for(const [id,v] of Object.entries(item)){if(value.key==='functionInput'||value.signature?.inputs.some(p=>p.id===id&&materialTextureTypes[p.type])){const next=remap(v);if(next!==v){item[id]=next;changed=true;}}}}else if(['parameters','blendParameters','nativeDefaults','nativeProperties','overrides'].includes(key)&&item&&typeof item==='object'){const walk=object=>{for(const [name,parameter] of Object.entries(object)){if(typeof parameter==='string'){const next=remap(parameter);if(next!==parameter){object[name]=next;changed=true;}}else if(parameter&&typeof parameter==='object')walk(parameter);}};walk(item);}else if(item&&typeof item==='object')changed=renameAssetReferences(item,from,to)||changed;}return changed;}
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}

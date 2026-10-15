@@ -20,7 +20,7 @@ import {RefractionRendering} from './refraction-rendering.js';
 import {light2DUniforms} from './two-d-lighting.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
-const visualTypes=new Set(['ReflectionProbe','MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D']);
+const visualTypes=new Set(['ReflectionProbe','MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D','SkyLight']);
 export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)||c.type==='PostProcessVolume').map(c=>c.type==='PostProcessVolume'?{type:c.type,enabled:c.properties?.enabled,colorLookup:c.properties?.colorLookup,pathTracingHDRI:c.properties?.pathTracingHDRI}:c));
 export function configureLightShadow(light,p){
   const shadow=light.shadow;if(!shadow)return;const d=componentDefaults(light.type);p={...d,...p};if(!validComponentProperties(light.type,p))throw Error('그림자 해상도와 근거리·원거리를 확인하세요.');
@@ -206,6 +206,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const skin=components.find(c=>c.type==='SpriteSkin'&&c.properties?.enabled!==false)?.properties,rig=skin?.rig?await read(skin.rig):null;
     if(rig&&!components.some(c=>c.type==='SpriteRenderer'&&c.properties?.enabled!==false))throw Error('Sprite Skin에는 활성 Sprite Renderer가 필요해요.');
     for(const component of components){const p={...componentDefaults(component.type),...component.properties};if(p.enabled===false)continue;
+      if(component.type==='SkyLight'&&p.source==='hdri'&&p.cubemap){const map=await loadPathEnvironment(p.cubemap,fileUrl);map.mapping=THREE.EquirectangularReflectionMapping;own(group,map);group.userData.skyEnvironment={path:p.cubemap,texture:map};}
       if(component.type==='PostProcessVolume'&&p.pathTracingHDRI){const map=await loadPathEnvironment(p.pathTracingHDRI,fileUrl);own(group,map);group.userData.pathEnvironment={path:p.pathTracingHDRI,texture:map};}
       if(component.type==='PostProcessVolume'&&p.colorLookup){const map=await texture(p.colorLookup,true);if(!lookupSize(map)){map.dispose();throw Error('LUT 이미지는 N² × N 크기여야 해요. N: 2~64');}map.flipY=false;map.generateMipmaps=false;map.minFilter=map.magFilter=THREE.LinearFilter;map.needsUpdate=true;own(group,map);group.userData.postLookup={path:p.colorLookup,texture:map};}
       if(component.type==='ReflectionProbe'){(group.userData.reflectionProbes??=[]).push({id:component.id,properties:p});if(editor){const box=new THREE.Box3(new THREE.Vector3(...p.size).multiplyScalar(-.5).add(new THREE.Vector3(...p.offset)),new THREE.Vector3(...p.size).multiplyScalar(.5).add(new THREE.Vector3(...p.offset))),helper=new THREE.Box3Helper(box,0x8aaccf);helper.userData.editorHelper=true;own(group,helper.geometry);own(group,helper.material);group.add(helper);}}

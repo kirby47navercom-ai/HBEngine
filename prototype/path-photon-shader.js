@@ -13,6 +13,6 @@ export function pathPhotonFragment(source){
  if(geometryEnd<0||random<geometryEnd||visibility<random||smith<visibility||brdf<smith)throw Error('광자 셰이더 구역을 확인하세요.');
  const fresnel=source.indexOf('vec3 hbPathFresnel('),frame=source.indexOf('vec3 hbPathFrame(',brdf),advanced='#ifdef HB_PATH_ADVANCED\n'+source.slice(fresnel,smith)+source.slice(brdf,frame)+pathSurfaceGLSL.slice(0,pathSurfaceGLSL.indexOf('vec4 hbPathDirection('))+'\n#endif\n#endif\n';
  // Camera projection and owner tags are unused by light-emitted photon paths.
- const attributes=source.slice(0,geometryEnd).replace(/float hbRayOwner\(float id\)\{[^}]*\}\n/,'').replace(/vec3 (?:hbWorldAt|hbProject)\([^)]*\)\{[^}]*\}\n/g,'');
+ const attributes=source.slice(0,geometryEnd).replace(/\/\/ HB_MEGALIGHTS_BEGIN[\s\S]*?\/\/ HB_MEGALIGHTS_END\n/,'').replace(/float hbRayOwner\(float id\)\{[^}]*\}\n/,'').replace(/vec3 (?:hbWorldAt|hbProject)\([^)]*\)\{[^}]*\}\n/g,'');
  return attributes+pathCausticBoundaryGLSL+'\n'+source.slice(random,visibility)+source.slice(smith,brdf)+pathMicrofacetGLSL.split('#ifdef HB_PATH_ROUGH_DIELECTRIC')[0]+advanced+pathEnvironmentGLSL.slice(0,pathEnvironmentGLSL.indexOf('vec3 hbEnvironmentDirect('))+pathCausticsGLSL.slice(0,pathCausticsGLSL.indexOf('vec4 hbCausticLoad('))+'void main(){float index=floor(vUv.y*16.0)*128.0+floor(vUv.x*128.0);gl_FragColor=hbPathPhoton(index-floor(index/1024.0)*1024.0,floor(index/1024.0));}';
 }
