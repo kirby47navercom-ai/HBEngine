@@ -1,0 +1,909 @@
+{
+  "version": 1,
+  "date": "2026-10-15T09:47:27.800Z",
+  "baseCommit": "3055290ab12099f72afbf5857295851e8d2bcb65",
+  "scope": [
+    "131: ordinary native D3D11 raster SkyLight HDR/EXR, GPU equirectangular cube conversion, GGX mips/SH9/BRDF reuse, rotation/intensity/source lifetime and local probe coverage fallback including offscreen refraction.",
+    "132: exact raster light range culling in GPU 16px tile bitsets, no fixed per-tile light capacity, static camera/light reuse, offsets and perspective overlap, opt-out/release and shared typed schema.",
+    "133: per-shadow-layer dirty stamps for geometry changes; static and unrelated-object reuse; conservative texture/parameter/pose/animated refresh."
+  ],
+  "sourceProducts": [
+    {
+      "file": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "58e50f2872ab8a5f661b80c15609913289a2866491e23cd014823ad18b9399d5"
+    },
+    {
+      "file": "native/include/HBEngine/Compute.hpp",
+      "sha256": "41879d03583a7e91211da7fc102d2cb14776ec62d33a78cd27d3fea1304a3392"
+    },
+    {
+      "file": "native/include/HBEngine/SceneProbes.hpp",
+      "sha256": "28e1a361cc01fe08c010c6c7f2b7fb9205d14fb23af9584dd2e47b19ba9172e8"
+    },
+    {
+      "file": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "2a8cbe141d6a70e1ee56ca01b98edc1c686f5808df2a5feb75394c76b2961831"
+    },
+    {
+      "file": "prototype/native-scene-renderer.js",
+      "sha256": "59ae991d310a5a7c8e5698694e218f188f9e0cf3ab0cbc3385b6c36422b255a1"
+    },
+    {
+      "file": "prototype/post-processing.js",
+      "sha256": "836a352655bcbc98c82cc04b64908d1cb6b61164f54f077d61c0744d5492e458"
+    },
+    {
+      "file": "prototype/post-volume.js",
+      "sha256": "4f6d8e236cb511200679b9103af274bee188bbd6233d3376674ed74110de9dc0"
+    },
+    {
+      "file": "prototype/scene-components.js",
+      "sha256": "6b889e38bcdcce38a396e4c86137222486f3db26f34a83c824aa78aeffbd75b2"
+    },
+    {
+      "file": "prototype/scene-environment.js",
+      "sha256": "e050129cc3798e5766ea34e68dd67675fe61e9d624ccd45e0ca88f185ef78de3"
+    },
+    {
+      "file": "prototype/scene-rendering.js",
+      "sha256": "a8818cc6321da8d2168b7580db05bb75f3eb93904c771f6f3d88beb34adda21a"
+    },
+    {
+      "file": "tools/editor-automation.mjs",
+      "sha256": "aef98f6d033bd5ceb9cfafe2e66ef5733ff92468290a5d00a5e9f5086ed3884a"
+    },
+    {
+      "file": "tools/lighting128-fixture.mjs",
+      "sha256": "377e171ee4d805c28bf8e1742269df651cb64e7448a1a3776bcb39b0f6009745"
+    },
+    {
+      "file": "tools/transmission-fixture.mjs",
+      "sha256": "2735a0b9435320b1193e7c7291274815d527b70ade5f27ae6107272b23fb20aa"
+    },
+    {
+      "file": "native/include/HBEngine/SceneLightTiles.hpp",
+      "sha256": "e146c47c7681e37c0eb7308c957aa14d4835c728ee539637ee76c256b54124cc"
+    },
+    {
+      "file": "native/tests/raster-lighting.cpp",
+      "sha256": "e9bf36b2c9edea133eb8bcdf2e7861d0088c7f8978bbd15e29344eae1c0ff52f"
+    },
+    {
+      "file": "tools/check-raster-lighting.mjs",
+      "sha256": "275c1a41aacbb33a91a7984378628811fd1952b7bfb0218b7570ec9fef4af251"
+    },
+    {
+      "file": "tools/raster131-fixture.mjs",
+      "sha256": "bea2e160db121543d21a4d45cff65b47904c8ab774b55648349479e7a1efdfd3"
+    }
+  ],
+  "products": [
+    {
+      "path": "native/include/HBEngine/Compute.hpp",
+      "size": 25192,
+      "sha256": "41879d03583a7e91211da7fc102d2cb14776ec62d33a78cd27d3fea1304a3392"
+    },
+    {
+      "path": "native/include/HBEngine/SceneProbes.hpp",
+      "size": 17931,
+      "sha256": "28e1a361cc01fe08c010c6c7f2b7fb9205d14fb23af9584dd2e47b19ba9172e8"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "size": 87686,
+      "sha256": "2a8cbe141d6a70e1ee56ca01b98edc1c686f5808df2a5feb75394c76b2961831"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "size": 47435,
+      "sha256": "59ae991d310a5a7c8e5698694e218f188f9e0cf3ab0cbc3385b6c36422b255a1"
+    },
+    {
+      "path": "prototype/post-processing.js",
+      "size": 7201,
+      "sha256": "836a352655bcbc98c82cc04b64908d1cb6b61164f54f077d61c0744d5492e458"
+    },
+    {
+      "path": "prototype/post-volume.js",
+      "size": 6818,
+      "sha256": "4f6d8e236cb511200679b9103af274bee188bbd6233d3376674ed74110de9dc0"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "size": 60017,
+      "sha256": "6b889e38bcdcce38a396e4c86137222486f3db26f34a83c824aa78aeffbd75b2"
+    },
+    {
+      "path": "prototype/scene-environment.js",
+      "size": 25120,
+      "sha256": "e050129cc3798e5766ea34e68dd67675fe61e9d624ccd45e0ca88f185ef78de3"
+    },
+    {
+      "path": "prototype/scene-rendering.js",
+      "size": 46400,
+      "sha256": "a8818cc6321da8d2168b7580db05bb75f3eb93904c771f6f3d88beb34adda21a"
+    },
+    {
+      "path": "tools/editor-automation.mjs",
+      "size": 52524,
+      "sha256": "aef98f6d033bd5ceb9cfafe2e66ef5733ff92468290a5d00a5e9f5086ed3884a"
+    },
+    {
+      "path": "tools/lighting128-fixture.mjs",
+      "size": 5508,
+      "sha256": "377e171ee4d805c28bf8e1742269df651cb64e7448a1a3776bcb39b0f6009745"
+    },
+    {
+      "path": "tools/transmission-fixture.mjs",
+      "size": 22253,
+      "sha256": "2735a0b9435320b1193e7c7291274815d527b70ade5f27ae6107272b23fb20aa"
+    },
+    {
+      "path": "native/include/HBEngine/SceneLightTiles.hpp",
+      "size": 6057,
+      "sha256": "e146c47c7681e37c0eb7308c957aa14d4835c728ee539637ee76c256b54124cc"
+    },
+    {
+      "path": "tools/check-raster-lighting.mjs",
+      "size": 3370,
+      "sha256": "275c1a41aacbb33a91a7984378628811fd1952b7bfb0218b7570ec9fef4af251"
+    },
+    {
+      "path": "tools/raster131-fixture.mjs",
+      "size": 5440,
+      "sha256": "bea2e160db121543d21a4d45cff65b47904c8ab774b55648349479e7a1efdfd3"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "9f835813c3f258913a7b4fdcb5290e49b9ca1b40a83b10c1010121e6bf047712"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-wuQQb5\\acceptance.json",
+      "sha256": "6227e24e31c12fc2b0eab60644d7bb7be1f79045b63cb81be6b1c6dcba739221"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-dobP23\\acceptance.json",
+      "sha256": "f913efd597398bed7c1271f4d910618f824d1fc33a288b1184e33cc0d1faef8c"
+    },
+    {
+      "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-prn66a\\acceptance.json",
+      "sha256": "a9ac44748a2b4f91a93e5942b4d6f0817f933926fda367898f6156339757e131"
+    },
+    {
+      "file": "native/build/lighting-tools-cpu-group.json",
+      "sha256": "4b62590debe5d33a8dd1a4821e5adc3ad69bc8b48c37b03697a7789a4500d0b9"
+    },
+    {
+      "file": "native/build/environment-raster-131.log",
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    {
+      "file": "native/include/HBEngine/ScreenEffects.hpp",
+      "sha256": "dfeb0c151abe10c5f74a2ca3eeb19351c122b7c39d63bce375eff3673092662d"
+    },
+    {
+      "file": "native/tests/raster-lighting.cpp",
+      "sha256": "e9bf36b2c9edea133eb8bcdf2e7861d0088c7f8978bbd15e29344eae1c0ff52f"
+    }
+  ],
+  "acceptance": {
+    "native": {
+      "file": "native/build/raster-lighting-131/acceptance.json",
+      "sha256": "9f835813c3f258913a7b4fdcb5290e49b9ca1b40a83b10c1010121e6bf047712",
+      "passed": true,
+      "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\raster-lighting-131",
+      "typedDefault": true,
+      "postVolumeOverride": true,
+      "rasterWithoutPathTracing": true,
+      "hardware": {
+        "passed": true,
+        "lights": 4097,
+        "tileReferencePixelsExact": true,
+        "staticDispatchReuse": true,
+        "offsetViewport": true,
+        "perspectiveCameraOverlap": true,
+        "unboundedAndSpotLights": true,
+        "hdrDiffuseAndSpecular": true,
+        "rotationPixels": true,
+        "intensityNoRefilter": true,
+        "localProbeOverridesSky": true,
+        "disableRelease": true,
+        "automaticReadbacks": 0,
+        "tileBytesAt4097": 8256
+      },
+      "unavailable": {
+        "passed": true,
+        "available": false
+      },
+      "offscreenTransmissionAssertionsExecuted": true
+    },
+    "cpu": {
+      "passed": true,
+      "results": [
+        {
+          "name": "check-rendering-112.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"refitTranslations\":20,\"rayQueries\":60,\"qualityRebuild\":true,\"topologyRebuild\":true,\"deformedVerticesRefit\":true,\"instancesMorphSkinRefit\":true,\"invalidRefitAtomic\":true,\"nativeSparseBytes\":256,\"nativeAtlasBytes\":4096,\"onlyChangedRowsValidated\":true,\"invalidPatchRejected\":true,\"hdrSolidAngleMean\":true,\"hdrLegacyPDFPreserved\":true,\"poleRecords\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-115.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"legacyFiveFields\":true,\"conditionalTenFields\":true,\"dynamicScalarPacking\":true,\"advancedPresenceAndMasks\":true,\"uniformPatchReusesAtlas\":true,\"rawPhysicalCacheInvalidation\":true,\"rawNineMapChannels\":true,\"ggxProjectedNormalization\":true,\"charlieProjectedNormalization\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-116.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"visibleNormalSamples\":40000,\"projectedDensityIntegrals\":[0.9999880213219398,0.9999943574537473,0.9999157189460923,0.999943078198778],\"ordinaryPresenceOff\":true,\"opaqueRoughnessDoesNotEnableDielectric\":true,\"dynamicTransmissionEnablesDielectric\":true,\"guideHasNoLightingIntegrator\":true,\"guideSourceRatio\":0.09219348659003831,\"roughPresenceAndReset\":true,\"closedMediumPacket\":true,\"finitePackets\":true,\"etaSurvivalRoundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-117.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"instances\":64,\"sharedBLAS\":1,\"localVertexCalls\":115,\"transformUpdateVertexCalls\":0,\"transformUpdateReusedMeshes\":63,\"transformUpdateCollectedMeshes\":1,\"flatNodes\":8191,\"twoLevelNodes\":382,\"refitReusesBLAS\":true,\"singularInstanceExcluded\":true,\"nonFiniteAtomic\":true,\"secondarySignAndNormalGuards\":true,\"typedCausticGuards\":true,\"causticHistoryReset\":true,\"finiteFixtures\":true,\"singleInstanceFlatFastPath\":true,\"multipleInstanceHierarchyFlag\":true,\"emitterPresenceAndMutation\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-118.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"temporalClamp\":true,\"depthNormalClassRejection\":true,\"invalidHistoryAndZeroAreRaw\":true,\"cameraLensSceneEnvironmentAndFailureResets\":true,\"rasterGapKeepsStaticPathSamples\":true,\"manualVersionAndFailureReset\":true,\"typedBoundsAndAISchema\":true,\"AIRevisionGuardedAtomicPatch\":true,\"areaAndHDRIWithoutAnalyticLights\":true,\"mixedSources\":true,\"finitePackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-119.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"previousTriangleBarycentricMotion\":true,\"cameraMotionKeepsFilterHistory\":true,\"objectMotionKeepsFilterHistory\":true,\"skinMorphAndInstanceCorrespondence\":true,\"rawMonteCarloResetsOnMotion\":true,\"staticRefreshKeepsMonteCarloSamples\":true,\"materialChangeRejects\":true,\"firstFrameAndFailureRejects\":true,\"disabledMotionStorageReleased\":true,\"finiteSecondaryLensPackets\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-120.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"defaultOffAndTypedBounds\":true,\"legacyMissingFieldsKeepDefaultOff\":true,\"progressiveRadiusMonotonicAndBounded\":true,\"alphaOneKeepsRadius\":true,\"rawAndFilterKeysIgnoreDerivedRadius\":true,\"transportAndFailureReset\":true,\"commonCPPBlueprintHumanAISchema\":true,\"atomicPatchPreservesOriginalOnFailure\":true,\"roughGlassFixturesAndHDRISources\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-121.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":338,\"candidates\":82,\"unusedTargetFraction\":0.757396449704142,\"packedBytesPerCandidate\":4,\"dynamicPhysicalFieldConservativelyIncluded\":true,\"oldPacketFallback\":true,\"disabledStorageReleased\":true,\"motionAfterCandidateBlock\":true,\"staticReuseAndChangedRows\":true,\"selectionPDFExpectationPreserved\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-122.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"instances\":32,\"staticBufferReused\":true,\"unchangedRowsZero\":true,\"changedRowsAndMotionPreserved\":true,\"invalidUVAtomic\":true,\"emptyScene\":true,\"atlasBytes\":1441792}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-123.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"invalidPreviousRecordsRejectedAtomically\":6,\"finiteMotionDelta\":true,\"movedRowsPreserved\":true,\"missingPreviousValidBit\":0,\"currentRecordLayoutUnchanged\":true,\"typedPreviousVerticesCompatible\":true,\"stableHistoryMapReused\":true,\"sameCountReplacementPrunesStaleIDs\":true,\"failedFrameClearsHistory\":true,\"automaticReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-124.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"triangles\":5376,\"sharedVertexTriangles\":168,\"legacyAtlasBytes\":1179648,\"sharedAtlasBytes\":1114112,\"maxPositionError\":5.3961675128277875e-8,\"nonUniformAndNegativeScale\":true,\"staticBufferReused\":true,\"changedRows\":true,\"singleInstanceLegacy\":true,\"clonedGeometryShared\":true,\"collisionIsolated\":true,\"interleavedVersionRecollected\":true,\"photonAndMotionAfterSharedPool\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-125.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"normalMappingCases\":24,\"maxNormalError\":7.771561172376096e-16,\"degeneratePreviousRejected\":true,\"defaultOff\":true,\"commonSchema\":true,\"filterChangePreservesRawSamples\":true,\"filterHistoryKeyChanges\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-126.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"nonUniformNormalAxisScale\":true,\"normalError\":2.8532166730247387e-8,\"instances\":8,\"gpuBytesPerInstance\":96,\"defaultOffReleasesMatrixHistory\":true,\"failedFrameClears\":true,\"filterToggleKeepsRawSamples\":true,\"extraReadbacks\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-path-history-ownership.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"disposeBeforeFirstFrame\":true,\"detachedOwnerDoesNotDisposeOrResetRetainedHistory\":true,\"retainedWorldAndSamplesReused\":true,\"secondDetachRejected\":true,\"cameraAndFailureResetRetainedSamples\":true,\"finalOwnerReleasesHistoryAndGeometry\":true,\"actualGPUProofSeparate\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-importance.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"independentFullBSDFOverPDFMatchesCompactWeight\":true,\"importanceModeHasNoRadianceEtaSquare\":true,\"cases\":844,\"reflections\":480,\"transmissions\":364,\"tir\":164,\"maxError\":6.661338147750939e-16}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":68464,\"photonCharacters\":40190,\"cameraCharacters\":59531,\"ratio\":0.5870238373451742,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-engine-integration.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "AI 스키마·원자적 문서 패치·명령 중복/교차 창 방지·에셋 ID/의존성/재가져오기·GPU 자원 수명 검사 통과\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-test-artifacts.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"outsidePathsRejected\":true,\"sourceAndEvidenceRetained\":true,\"buildRemoved\":true,\"manifestRetained\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "generate-api.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "generate-screen-effects.mjs",
+          "args": [
+            "--check"
+          ],
+          "code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "name": "check-rendering-127.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"rendererStateRestoredBeforeAsyncWait\":true,\"consumerBeforeDependencyCompilation\":true,\"duplicateNodeCompiledOnce\":true,\"cancellationStopsUnstartedFilters\":true,\"rejectionRecorded\":true,\"nativeRejectionForwarded\":true,\"deviceMethodRestoredBeforeYield\":true,\"captureWaitsForPreparedFrame\":true,\"newAutomaticReadbacks\":0,\"newTargets\":0}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-function-scope.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"sameBuilderSharesFunction\":true,\"newBuilderHasFreshUniformBindings\":true,\"nodeCacheMethodPreserved\":true,\"ordinaryFunctionsUnchanged\":true}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-gpu-shared-shader.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"cases\":[{\"advanced\":false,\"transmission\":false,\"prefix\":false,\"sourceBytes\":55525,\"functions\":37,\"uniforms\":20},{\"advanced\":false,\"transmission\":false,\"prefix\":true,\"sourceBytes\":55565,\"functions\":37,\"uniforms\":23},{\"advanced\":true,\"transmission\":false,\"prefix\":false,\"sourceBytes\":85344,\"functions\":45,\"uniforms\":20},{\"advanced\":true,\"transmission\":false,\"prefix\":true,\"sourceBytes\":85419,\"functions\":45,\"uniforms\":23},{\"advanced\":false,\"transmission\":true,\"prefix\":false,\"sourceBytes\":57836,\"functions\":38,\"uniforms\":20},{\"advanced\":false,\"transmission\":true,\"prefix\":true,\"sourceBytes\":57876,\"functions\":38,\"uniforms\":23},{\"advanced\":true,\"transmission\":true,\"prefix\":false,\"sourceBytes\":87655,\"functions\":46,\"uniforms\":20},{\"advanced\":true,\"transmission\":true,\"prefix\":true,\"sourceBytes\":87730,\"functions\":46,\"uniforms\":23}],\"lobes\":[{\"name\":\"coat\",\"features\":{\"coat\":true,\"aniso\":false,\"sheen\":false,\"film\":false},\"sourceBytes\":79165},{\"name\":\"aniso\",\"features\":{\"coat\":false,\"aniso\":true,\"sheen\":false,\"film\":false},\"sourceBytes\":78112},{\"name\":\"sheen\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":true,\"film\":false},\"sourceBytes\":79800},{\"name\":\"film\",\"features\":{\"coat\":false,\"aniso\":false,\"sheen\":false,\"film\":true},\"sourceBytes\":78983}],\"guides\":[{\"auxiliary\":false,\"lens\":false,\"curved\":false,\"temporal\":false},{\"auxiliary\":false,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":false,\"temporal\":false},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":false},{\"auxiliary\":true,\"lens\":false,\"curved\":false,\"temporal\":true},{\"auxiliary\":true,\"lens\":false,\"curved\":true,\"temporal\":true},{\"auxiliary\":true,\"lens\":true,\"curved\":true,\"temporal\":true}],\"manyLightBytes\":57173,\"featureCacheChanges\":true,\"freshUniformBindings\":true,\"fixedSlotDecoders\":true,\"rawBVHPrefix\":true,\"weakTransmissionNotDropped\":true,\"lensAndTemporalGuideCombinations\":true,\"deviceInitializations\":0,\"draws\":0,\"actualGPUPixelsClaim\":false}\n",
+          "stderr": "THREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\nTHREE.TSL: \"atan2\" is overloaded. Use \"atan\" instead.\n"
+        },
+        {
+          "name": "check-lighting-tools.mjs",
+          "args": [
+            "--record"
+          ],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"lights\":4096,\"positivePowerCDF\":true,\"probabilityIntegral\":40916,\"zeroPowerFinite\":true,\"cdfOnlyWhenNeeded\":true,\"staticAtlasReused\":true,\"disabledLayoutPreserved\":true,\"skyHDRIRotation\":true,\"legacyClearsSkySource\":true,\"toolBindings\":true,\"invalidInputBeforeMutation\":true,\"sharedCommands\":true,\"revisionBinding\":true,\"toolPatch\":true,\"codeExecution\":false}\n",
+          "stderr": ""
+        },
+        {
+          "name": "check-photon-shader.mjs",
+          "args": [],
+          "code": 0,
+          "stdout": "{\"passed\":true,\"photonDependenciesPreserved\":true,\"noUnusedCameraGIOrBSDFIntegrator\":true,\"sourceCharacters\":68464,\"photonCharacters\":40190,\"cameraCharacters\":59531,\"ratio\":0.5870238373451742,\"malformedSourceRejected\":true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "environment": {
+      "passed": true,
+      "checks": 34,
+      "file": "native/build/environment-raster-131.log",
+      "sha256": "38563abe7bcc3ee3212957a0001df9feb2f6a54566515a0f39eb60c8e678ae77"
+    },
+    "actual": [
+      {
+        "backend": "D3D11",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-scene-window-wuQQb5\\acceptance.json",
+        "sha256": "6227e24e31c12fc2b0eab60644d7bb7be1f79045b63cb81be6b1c6dcba739221",
+        "result": {
+          "passed": true,
+          "raster131": {
+            "passed": true,
+            "backend": "D3D11",
+            "rasterPathTracingDisabled": true,
+            "lights": 96,
+            "sky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rotated": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "full": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "restored": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "direct": [
+              60,
+              60,
+              60,
+              255
+            ],
+            "restoredSky": [
+              131,
+              168,
+              203,
+              255
+            ],
+            "rasterTileBytes": 14720,
+            "rotationWithoutRefilter": true,
+            "shadowStaticReuse": true,
+            "unrelatedShadowPasses": 0,
+            "changedLightPasses": [
+              1,
+              1
+            ],
+            "typedCPP": true,
+            "automaticReadbacks": 0
+          },
+          "lighting128": {
+            "passed": true,
+            "full": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "sampled": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "restored": [
+              133,
+              133,
+              133,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              115,
+              165,
+              206,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "D3D11"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true,
+        "installedUserAppUntouched": true
+      },
+      {
+        "backend": "WebGL2",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-dobP23\\acceptance.json",
+        "sha256": "f913efd597398bed7c1271f4d910618f824d1fc33a288b1184e33cc0d1faef8c",
+        "result": {
+          "passed": true,
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              111,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "rendering124": {
+            "passed": true,
+            "initial": [
+              65,
+              140,
+              197,
+              255
+            ],
+            "moved": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "restored": [
+              65,
+              140,
+              197,
+              255
+            ],
+            "geometry": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1344,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 168,
+              "atlasBytes": 327680,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": null
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.322265625,
+              "variance": 135.83169174194336
+            },
+            "planar": {
+              "mean": 18.9912109375,
+              "variance": 1.080977439880371
+            },
+            "filtered": {
+              "mean": 18.994140625,
+              "variance": 1.1073875427246094
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 170,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          },
+          "rendering119": {
+            "passed": true,
+            "GlassLens": {
+              "raw": {
+                "mean": 21.1455078125,
+                "variance": 399.82550716400146
+              },
+              "filtered": {
+                "mean": 22.19921875,
+                "variance": 4.4915618896484375
+              },
+              "zero": {
+                "mean": 21.1455078125,
+                "variance": 399.82550716400146
+              }
+            },
+            "MirrorLens": {
+              "raw": {
+                "mean": 17.876953125,
+                "variance": 440.27392196655273
+              },
+              "filtered": {
+                "mean": 19.0673828125,
+                "variance": 2.49252986907959
+              },
+              "zero": {
+                "mean": 17.876953125,
+                "variance": 440.27392196655273
+              }
+            },
+            "cameraMotion": {
+              "changedChannels": 2307
+            },
+            "objectMotion": {
+              "changedChannels": 2307
+            },
+            "typedCPP": true,
+            "backend": "WebGL2"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      },
+      {
+        "backend": "WebGPU",
+        "file": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\gpu-scene-prn66a\\acceptance.json",
+        "sha256": "a9ac44748a2b4f91a93e5942b4d6f0817f933926fda367898f6156339757e131",
+        "result": {
+          "passed": true,
+          "lighting128": {
+            "passed": true,
+            "full": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "sampled": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "restored": [
+              119,
+              119,
+              119,
+              255
+            ],
+            "analyticLights": 24,
+            "lightBudget": 4,
+            "sky": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "dark": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "skyRestored": [
+              112,
+              152,
+              195,
+              255
+            ],
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "rendering124": {
+            "passed": true,
+            "initial": [
+              65,
+              141,
+              197,
+              255
+            ],
+            "moved": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "restored": [
+              65,
+              141,
+              197,
+              255
+            ],
+            "geometry": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1344,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 336,
+              "atlasBytes": 327680,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": null
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "rendering125": {
+            "passed": true,
+            "raw": {
+              "mean": 18.19140625,
+              "variance": 140.63133239746094
+            },
+            "planar": {
+              "mean": 18.8759765625,
+              "variance": 0.4230947494506836
+            },
+            "filtered": {
+              "mean": 18.8818359375,
+              "variance": 0.5202169418334961
+            },
+            "zeroIsRaw": true,
+            "pose": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 9,
+              "poseMatrixBytes": 864,
+              "changedAtlasRows": 1
+            },
+            "disabled": {
+              "analyticLights": 0,
+              "lightBudget": 0,
+              "logicalTriangles": 1346,
+              "sharedVertices": true,
+              "uniqueVertexTriangles": 338,
+              "atlasBytes": 393216,
+              "poseMatrixInstances": 0,
+              "poseMatrixBytes": 0,
+              "changedAtlasRows": 4
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          },
+          "rendering119": {
+            "passed": true,
+            "GlassLens": {
+              "raw": {
+                "mean": 18.73828125,
+                "variance": 332.26353454589844
+              },
+              "filtered": {
+                "mean": 19.47265625,
+                "variance": 4.4914398193359375
+              },
+              "zero": {
+                "mean": 18.73828125,
+                "variance": 332.26353454589844
+              }
+            },
+            "MirrorLens": {
+              "raw": {
+                "mean": 16.9169921875,
+                "variance": 402.70697689056396
+              },
+              "filtered": {
+                "mean": 18.0009765625,
+                "variance": 4.295897483825684
+              },
+              "zero": {
+                "mean": 16.9169921875,
+                "variance": 402.70697689056396
+              }
+            },
+            "cameraMotion": {
+              "changedChannels": 2244
+            },
+            "objectMotion": {
+              "changedChannels": 2283
+            },
+            "typedCPP": true,
+            "backend": "WebGPU"
+          }
+        },
+        "errors": 0,
+        "exit": 0,
+        "serverClosed": true
+      }
+    ],
+    "visualQA": {
+      "file": "native/build/native-scene-window-NPjhfc/131-raster-hdri.png",
+      "inspected": true,
+      "scope": "Isolated native player receiver fixture; blue HDRI diffuse illumination, no engine UI or user game modified."
+    }
+  },
+  "cost": {
+    "tilePixels": 16,
+    "bitsetFormula": "ceil(width/16)*ceil(height/16)*ceil(lightCount/32)*4",
+    "tileBytesAt4097For64Square": 8256,
+    "tileBytesAt96For640x360": 14720,
+    "staticTileDispatchReuse": true,
+    "rotationOrIntensityDoesNotRefilter": true,
+    "unrelatedObjectShadowPasses": 0,
+    "oneCasterChangedShadowPasses": 1,
+    "dependenciesAdded": 0,
+    "automaticReadbacks": 0,
+    "objectLimitAdded": false
+  },
+  "research": {
+    "registration": "native-raster-lighting-supplement",
+    "record": "docs/RASTER_LIGHTING_131.md",
+    "wholeCorpus": false
+  },
+  "nativeBinaries": {
+    "rebuilt": true,
+    "editorSHA256": "9fac691e290599d5ef58efd912d14a3d0d7b1498b7d4120509610a1436d78500",
+    "playerSHA256": "fda001d3572b6b8346af0202ebd581ee7ba01e9ef9ed0ab468f004da1f51c086"
+  },
+  "limits": [
+    "Tile culling uses side planes, not a depth prepass; unbounded/global lights are retained and heavy overlap still costs per light.",
+    "Changing textures, poses, parameters or time-dependent shader casters still conservatively refreshes shadow layers.",
+    "Raster IBL uses existing finite-sample GGX/SH9 probe approximation; no Lightmass, DFAO, hardware ray tracing or UE MegaLights equivalence is claimed.",
+    "Synthetic 4097-light correctness and resource evidence are not a whole-game FPS or phone benchmark.",
+    "Complete engine/manual/API corpus analysis remains open; linked D3D specification and failed NVIDIA PDF retrieval are registered separately."
+  ],
+  "installation": {
+    "state": "Pending verified user installation",
+    "restartUserWindows": false
+  }
+}

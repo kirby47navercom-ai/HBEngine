@@ -1,3 +1,5 @@
+2026-10-15: [DirectX 래스터 조명](RASTER_LIGHTING_131.md). 기존 SkyLight HDRI·회전·밝기와 PostProcessVolume.rasterLightCulling을 사람·Components C++/BP·AI 공용 스키마로 연결해요. 광원 타일 비트셋은 개수 제한 없이 전체 평가와 같은 결과를 보존하고, 읽기 전용 메모리·갱신 진단을 공개해요.
+
 2026-10-15: [다중 광원·SkyLight·편집기 도구](LIGHTING_TOOLS_128.md). 기존 Components Get/Set Bool/Float/String C++·BP와 공용 속성 schema에 새 광원 설정을 연결해요. 실제 C++/세 실행기·문서 revision·Undo 검증은 별도 묶음 원장에 기록해요.
 
 2026-10-13: [두 단계 BVH·GPU 코스틱·이차 표면 필터](RENDERING_117.md). 기존 컴포넌트 속성 Get/Set·C++·AI에 코스틱 설정 네 개를 연결해요. 기본 꺼짐·32KiB GPU 캐시·세기 0 해제·이력 초기화·자료형 범위 검사를 사용해요.

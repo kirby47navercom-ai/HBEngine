@@ -21,7 +21,7 @@ import {light2DUniforms} from './two-d-lighting.js';
 
 // Scene-owned GPU resources are released together when an object is rebuilt.
 const visualTypes=new Set(['ReflectionProbe','MeshRenderer','SpriteRenderer','SpriteSkin','TilemapRenderer','SpriteMask','SortingGroup','ShadowCaster2D','CompositeShadowCaster2D','Decal','ParticleSystem','NavigationGrid','Camera','DirectionalLight','PointLight','SpotLight','Light2D','Renderer2D','SkyLight']);
-export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)||c.type==='PostProcessVolume').map(c=>c.type==='PostProcessVolume'?{type:c.type,enabled:c.properties?.enabled,colorLookup:c.properties?.colorLookup,pathTracingHDRI:c.properties?.pathTracingHDRI}:c));
+export const visualComponentSignature=object=>JSON.stringify(objectComponents(object).filter(c=>visualTypes.has(c.type)||c.type==='PostProcessVolume').map(c=>c.type==='PostProcessVolume'?{type:c.type,enabled:c.properties?.enabled,colorLookup:c.properties?.colorLookup,pathTracingHDRI:c.properties?.pathTracingHDRI}:c.type==='SkyLight'?{type:c.type,enabled:c.properties?.enabled,source:c.properties?.source,cubemap:c.properties?.cubemap}:c));
 export function configureLightShadow(light,p){
   const shadow=light.shadow;if(!shadow)return;const d=componentDefaults(light.type);p={...d,...p};if(!validComponentProperties(light.type,p))throw Error('그림자 해상도와 근거리·원거리를 확인하세요.');
   shadow.mapSize.set(p.shadowMapWidth,p.shadowMapHeight);shadow.bias=p.shadowBias;shadow.normalBias=p.shadowNormalBias;shadow.radius=p.shadowRadius;shadow.intensity=p.shadowIntensity;shadow.camera.near=p.shadowNear;shadow.camera.far=p.shadowFar;

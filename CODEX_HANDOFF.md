@@ -1,3 +1,13 @@
+# 131–133 — DirectX 래스터 HDRI·광원 타일링·그림자 변경 범위 — 2026-10-15
+
+SkyLight HDRI를 경로 추적 없이 GGX/SH9/BRDF·지역 프로브 fallback·굴절에 연결. 회전/밝기 이미지·GPU 필터 재생성 제거. GPU 16px 타일 비트셋은 광원 수 제한 없이 보수적 구/평면 제거·정적 재사용·옵션 해제. 그림자 레이어별 변경 범위 분리. 사람/CPP/BP/AI 공용 속성·진단·문서 유지. [설명](docs/RASTER_LIGHTING_131.md).
+
+네이티브 4097광원·비활성 빌드·CPU25·환경34·실제 D3D11/wuQQb5의 래스터/CPP/그림자/128과 GL/dobP23·GPU/prn66a의128/124/125/119 회귀·errors0/exit0/서버해제 통과. 화면 밖 HDRI 굴절과 네이티브 캡처도 확인. [검증 원장](docs/research/RASTER_LIGHTING_131.json).
+
+설치 전환 대기: 131 묶음 검증 파일과 바로가기·프로필·이전 버전을 대조한다.
+
+기존 누적 목표·미완료 렌더링/엔진 원장 유지. 전체 corpus/API·UE MegaLights/HWRT·DFAO/Lightmass·실게임 FPS·휴대폰 검증으로 승격하지 않는다.
+
 # 128–130 — 다중 광원·스카이라이트·제작 도구 — 2026-10-15
 
 128: power CDF/균등 floor·확률 보정·표본 예산·기본 꺼짐/전용 shader variant·Native 경계/stride 분리.129: 기존 SkyLight HDR·EXR/회전/우선순위·해제·Post HDRI 없을 때 경로 추적 연결.130: 편집기 도구 에셋/메뉴/도킹·자료형 입력·실제 버튼/AI 공용 명령·revision/Undo·정의 편집/저장. [설명/지정 출처](docs/LIGHTING_TOOLS_128.md).

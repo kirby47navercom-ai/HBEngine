@@ -27,16 +27,17 @@ public:
     };
 private:
     Device& gpu;
-    detail::Com<ID3D11ComputeShader> prefilter,integrate,diffuse;
+    detail::Com<ID3D11ComputeShader> prefilter,integrate,diffuse,equirect;
     detail::Com<ID3D11SamplerState> sampler;
     std::array<detail::Com<ID3D11Buffer>,3> constants;std::size_t slot=0;
     detail::Com<ID3D11ShaderResourceView> brdf;
     std::uint64_t dispatches_=0,captures_=0;
     static constexpr const char* shader=R"HLSL(
 cbuffer FilterSettings:register(b0){float4 settings;};
-TextureCube<float4> source:register(t0);SamplerState linearClamp:register(s0);
+TextureCube<float4> source:register(t0);Texture2D<float4> panorama:register(t1);SamplerState linearClamp:register(s0);SamplerState panoramaSampler:register(s1);
 RWTexture2DArray<float4> filtered:register(u0);RWStructuredBuffer<float4> coefficients:register(u1);RWTexture2D<float2> brdf:register(u2);
 float3 faceDirection(uint f,float2 uv){float2 p=uv*2-1;float3 d=f==0?float3(1,-p.y,-p.x):f==1?float3(-1,-p.y,p.x):f==2?float3(p.x,1,p.y):f==3?float3(p.x,-1,-p.y):f==4?float3(p.x,-p.y,1):float3(-p.x,-p.y,-1);return normalize(d);}
+[numthreads(8,8,1)]void Equirect(uint3 id:SV_DispatchThreadID){if(any(id.xy>=(uint2)settings.xx)||id.z>=6)return;float3 d=faceDirection(id.z,(id.xy+.5)/settings.x);float2 uv=float2(atan2(d.z,d.x)/6.283185307+.5,asin(clamp(d.y,-1,1))/3.141592654+.5);filtered[id]=float4(panorama.SampleLevel(panoramaSampler,uv,0).rgb,1);}
 float radical(uint n){n=(n<<16)|(n>>16);n=((n&0x55555555)<<1)|((n&0xAAAAAAAA)>>1);n=((n&0x33333333)<<2)|((n&0xCCCCCCCC)>>2);n=((n&0x0F0F0F0F)<<4)|((n&0xF0F0F0F0)>>4);n=((n&0x00FF00FF)<<8)|((n&0xFF00FF00)>>8);return n*2.3283064365386963e-10;}
 float3 sampleGGX(float2 xi,float rough,float3 n){float a=rough*rough,phi=6.283185307*xi.x,c=sqrt((1-xi.y)/max(1+(a*a-1)*xi.y,1e-6)),s=sqrt(max(0,1-c*c));float3 h=float3(cos(phi)*s,sin(phi)*s,c),up=abs(n.z)<.999?float3(0,0,1):float3(1,0,0),t=normalize(cross(up,n));return t*h.x+cross(n,t)*h.y+n*h.z;}
 [numthreads(8,8,1)]void Prefilter(uint3 id:SV_DispatchThreadID){if(any(id.xy>=(uint2)settings.xx)||id.z>=6)return;float3 n=faceDirection(id.z,(id.xy+.5)/settings.x),sum=0;float weight=0;
@@ -51,7 +52,7 @@ float basis(uint i,float3 d){return i==0?.282094792:i==1?.488602512*d.y:i==2?.48
     void prepare(){
         if(brdf.p)return;
         std::lock_guard<std::mutex> lock(gpu.mutex);auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");
-        for(const auto& entry:std::array<std::pair<const char*,detail::Com<ID3D11ComputeShader>*>,3>{{{"Prefilter",&prefilter},{"Integrate",&integrate},{"Diffuse",&diffuse}}}){detail::Com<ID3DBlob> code,error;auto hr=compile(shader,std::strlen(shader),"HBProbeFilter",nullptr,nullptr,entry.first,"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(hr))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Probe compute compilation failed");detail::check(gpu.device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&entry.second->p),"Probe compute shader");}
+        for(const auto& entry:std::array<std::pair<const char*,detail::Com<ID3D11ComputeShader>*>,4>{{{"Prefilter",&prefilter},{"Integrate",&integrate},{"Diffuse",&diffuse},{"Equirect",&equirect}}}){detail::Com<ID3DBlob> code,error;auto hr=compile(shader,std::strlen(shader),"HBProbeFilter",nullptr,nullptr,entry.first,"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(hr))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Probe compute compilation failed");detail::check(gpu.device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&entry.second->p),"Probe compute shader");}
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=16;cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& b:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&b.p),"Probe filter constants");
         D3D11_SAMPLER_DESC s{};s.Filter=D3D11_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=s.AddressV=s.AddressW=D3D11_TEXTURE_ADDRESS_CLAMP;s.MaxLOD=D3D11_FLOAT32_MAX;detail::check(gpu.device->CreateSamplerState(&s,&sampler.p),"Probe filter sampler");
         D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=128;d.MipLevels=d.ArraySize=d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.BindFlags=D3D11_BIND_UNORDERED_ACCESS|D3D11_BIND_SHADER_RESOURCE;detail::Com<ID3D11Texture2D> image;detail::Com<ID3D11ShaderResourceView> view;detail::Com<ID3D11UnorderedAccessView> output;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&image.p),"Probe BRDF image");detail::check(gpu.device->CreateShaderResourceView(image.p,nullptr,&view.p),"Probe BRDF view");detail::check(gpu.device->CreateUnorderedAccessView(image.p,nullptr,&output.p),"Probe BRDF output");
@@ -63,11 +64,19 @@ public:
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
         prepare();
         std::lock_guard<std::mutex> lock(gpu.mutex);Probe out;out.owner=gpu.device.p;out.size=size;for(UINT n=size;n;n/=2)++out.mips;
-        D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=size;d.MipLevels=1;d.ArraySize=6;d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.BindFlags=D3D11_BIND_RENDER_TARGET|D3D11_BIND_SHADER_RESOURCE;d.MiscFlags=D3D11_RESOURCE_MISC_TEXTURECUBE;
+        D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=size;d.MipLevels=1;d.ArraySize=6;d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;d.BindFlags=D3D11_BIND_RENDER_TARGET|D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;d.MiscFlags=D3D11_RESOURCE_MISC_TEXTURECUBE;
         detail::check(gpu.device->CreateTexture2D(&d,nullptr,&out.capture.p),"Probe HDR capture");detail::check(gpu.device->CreateShaderResourceView(out.capture.p,nullptr,&out.source.p),"Probe capture view");for(UINT f=0;f<6;f++){D3D11_RENDER_TARGET_VIEW_DESC v{};v.Format=d.Format;v.ViewDimension=D3D11_RTV_DIMENSION_TEXTURE2DARRAY;v.Texture2DArray.FirstArraySlice=f;v.Texture2DArray.ArraySize=1;detail::check(gpu.device->CreateRenderTargetView(out.capture.p,&v,&out.faces[f].p),"Probe face target");}
         d.MipLevels=out.mips;d.BindFlags=D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&out.filtered.p),"Probe filtered cube");detail::check(gpu.device->CreateShaderResourceView(out.filtered.p,nullptr,&out.view.p),"Probe filtered view");out.levels.resize(out.mips);for(UINT m=1;m<out.mips;m++){D3D11_UNORDERED_ACCESS_VIEW_DESC u{};u.Format=d.Format;u.ViewDimension=D3D11_UAV_DIMENSION_TEXTURE2DARRAY;u.Texture2DArray.MipSlice=m;u.Texture2DArray.ArraySize=6;detail::check(gpu.device->CreateUnorderedAccessView(out.filtered.p,&u,&out.levels[m].p),"Probe mip output");}
         d.MipLevels=d.ArraySize=1;d.Format=DXGI_FORMAT_D32_FLOAT;d.BindFlags=D3D11_BIND_DEPTH_STENCIL;d.MiscFlags=0;detail::Com<ID3D11Texture2D> depth;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&depth.p),"Probe capture depth");detail::check(gpu.device->CreateDepthStencilView(depth.p,nullptr,&out.depth.p),"Probe depth view");
         D3D11_BUFFER_DESC b{};b.ByteWidth=9*16;b.Usage=D3D11_USAGE_DEFAULT;b.BindFlags=D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS;b.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;b.StructureByteStride=16;detail::check(gpu.device->CreateBuffer(&b,nullptr,&out.coefficients.p),"Probe SH coefficients");detail::check(gpu.device->CreateShaderResourceView(out.coefficients.p,nullptr,&out.irradiance.p),"Probe SH view");detail::check(gpu.device->CreateUnorderedAccessView(out.coefficients.p,nullptr,&out.coefficientOutput.p),"Probe SH output");return out;
+    }
+    void importEquirect(Probe& target,ID3D11ShaderResourceView* panorama){
+        if(target.owner!=gpu.device.p||!panorama)throw std::runtime_error("Sky HDRI owner invalid");
+        std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);
+        std::array<ID3D11ShaderResourceView*,128> empty{};gpu.context->PSSetShaderResources(0,128,empty.data());
+        D3D11_UNORDERED_ACCESS_VIEW_DESC desc{};desc.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;desc.ViewDimension=D3D11_UAV_DIMENSION_TEXTURE2DARRAY;desc.Texture2DArray.ArraySize=6;detail::Com<ID3D11UnorderedAccessView> out;detail::check(gpu.device->CreateUnorderedAccessView(target.capture.p,&desc,&out.p),"Sky HDRI cube output");
+        D3D11_SAMPLER_DESC sd{};sd.Filter=D3D11_FILTER_MIN_MAG_MIP_LINEAR;sd.AddressU=D3D11_TEXTURE_ADDRESS_WRAP;sd.AddressV=sd.AddressW=D3D11_TEXTURE_ADDRESS_CLAMP;sd.MaxLOD=D3D11_FLOAT32_MAX;detail::Com<ID3D11SamplerState> wrap;detail::check(gpu.device->CreateSamplerState(&sd,&wrap.p),"Sky HDRI sampler");
+        auto* cb=constants[slot].p;slot=(slot+1)%constants.size();D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(gpu.context->Map(cb,0,D3D11_MAP_WRITE_DISCARD,0,&mapped),"Sky HDRI constants");const std::array<float,4> v{float(target.size),0,0,0};std::memcpy(mapped.pData,v.data(),16);gpu.context->Unmap(cb,0);auto* u=out.p;auto* s=wrap.p;gpu.context->CSSetConstantBuffers(0,1,&cb);gpu.context->CSSetShaderResources(1,1,&panorama);gpu.context->CSSetSamplers(1,1,&s);gpu.context->CSSetUnorderedAccessViews(0,1,&u,nullptr);gpu.context->CSSetShader(equirect.p,nullptr,0);gpu.context->Dispatch((target.size+7)/8,(target.size+7)/8,6);++dispatches_;u=nullptr;panorama=nullptr;gpu.context->CSSetUnorderedAccessViews(0,1,&u,nullptr);gpu.context->CSSetShaderResources(1,1,&panorama);gpu.context->CSSetShader(nullptr,nullptr,0);
     }
     void filter(Probe& target){
         if(target.owner!=gpu.device.p)throw std::runtime_error("Probe filter owner invalid");
@@ -80,12 +89,12 @@ public:
     ID3D11ShaderResourceView* brdfView() const{return brdf.p;}
     std::uint64_t dispatches() const{return dispatches_;}std::uint64_t captures() const{return captures_;}
     std::uint64_t storageBytes() const{return brdf.p?128*128*8:0;}
-    void release(){brdf={};prefilter={};integrate={};diffuse={};sampler={};for(auto& c:constants)c={};}
+    void release(){brdf={};prefilter={};integrate={};diffuse={};equirect={};sampler={};for(auto& c:constants)c={};}
 };
 
 inline constexpr const char* sceneProbeDeclarations=R"HLSL(
-struct ProbeSettings{float4 center,minimum,maximum,options;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[2];};
-TextureCube<float4> probe0:register(t39),probe1:register(t40);StructuredBuffer<float4> probeSH0:register(t41),probeSH1:register(t42);Texture2D<float2> probeBrdf:register(t43);
+struct ProbeSettings{float4 center,minimum,maximum,options;};cbuffer ProbeBindings:register(b2){ProbeSettings probeSettings[3];};
+TextureCube<float4> probe0:register(t39),probe1:register(t40);StructuredBuffer<float4> probeSH0:register(t41),probeSH1:register(t42);Texture2D<float2> probeBrdf:register(t43);TextureCube<float4> skyProbe:register(t46);StructuredBuffer<float4> skySH:register(t47);
 )HLSL";
 inline constexpr const char* sceneProbeFunctions=R"HLSL(
 float probeBasis(uint i,float3 d){return i==0?.282094792:i==1?.488602512*d.y:i==2?.488602512*d.z:i==3?.488602512*d.x:i==4?1.092548431*d.x*d.y:i==5?1.092548431*d.y*d.z:i==6?.315391565*(3*d.z*d.z-1):i==7?1.092548431*d.x*d.z:.546274215*(d.x*d.x-d.y*d.y);}
@@ -96,8 +105,10 @@ float3 probeLight(TextureCube<float4> cube,StructuredBuffer<float4> sh,ProbeSett
  float2 brdf=probeBrdf.SampleLevel(linear2d,float2(nv,rough),0);float3 reflected=cube.SampleLevel(linear2d,probeDirection(p,at,reflect(-v,n)),rough*p.maximum.w).rgb;
  return (max(irradiance,0)*base*(1-f)*(1-metal)*diffuseWeight*(p.options.y/3.141592654)+reflected*(f0*brdf.x+brdf.y))*p.center.w*ao;
 }
-float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;return c/max(a+b,1e-6);}
-float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;return c/max(1,total);}
+float3 skyDirection(float3 d){ProbeSettings p=probeSettings[2];return float3(p.minimum.y*d.x-p.minimum.x*d.z,d.y,p.minimum.x*d.x+p.minimum.y*d.z);}
+float3 skyLight(float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectric,float diffuseWeight){return probeLight(skyProbe,skySH,probeSettings[2],float3(0,0,0),skyDirection(n),skyDirection(v),base,rough,metal,ao,dielectric,diffuseWeight);}
+float3 refractedProbes(float3 at,float3 direction,float rough,out float coverage){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at);coverage=saturate(a+b);float3 c=0;if(a>0)c+=probe0.SampleLevel(linear2d,probeDirection(probeSettings[0],at,direction),rough*probeSettings[0].maximum.w).rgb*probeSettings[0].center.w*a;if(b>0)c+=probe1.SampleLevel(linear2d,probeDirection(probeSettings[1],at,direction),rough*probeSettings[1].maximum.w).rgb*probeSettings[1].center.w*b;float sky=probeSettings[2].options.x*(1-coverage);c=c/max(a+b,1e-6)*coverage;if(sky>0)c+=skyProbe.SampleLevel(linear2d,skyDirection(direction),rough*probeSettings[2].maximum.w).rgb*probeSettings[2].center.w*sky;coverage=saturate(coverage+sky);return c/max(coverage,1e-6);}
+float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float3 dielectricF0,float diffuseWeight){float a=probeWeight(probeSettings[0],at),b=probeWeight(probeSettings[1],at),total=a+b;float3 c=0;if(a>0)c+=probeLight(probe0,probeSH0,probeSettings[0],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*a;if(b>0)c+=probeLight(probe1,probeSH1,probeSettings[1],at,n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*b;c=c/max(1,total);float sky=probeSettings[2].options.x*(1-saturate(total));if(sky>0)c+=skyLight(n,v,base,rough,metal,ao,dielectricF0,diffuseWeight)*sky;return c;}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao,float dielectricF0){return indirectProbes(at,n,v,base,rough,metal,ao,dielectricF0,1);}
 float3 indirectProbes(float3 at,float3 n,float3 v,float3 base,float rough,float metal,float ao){return indirectProbes(at,n,v,base,rough,metal,ao,.04);}
 )HLSL";

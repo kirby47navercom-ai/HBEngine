@@ -2623,6 +2623,25 @@
           "wholeCorpus": false
         }
       ]
+    },
+    {
+      "id": "native-raster-lighting-supplement",
+      "engine": "HBEngine comparison",
+      "roots": [
+        "https://dev.epicgames.com/documentation/unreal-engine/sky-lights-in-unreal-engine?lang=en-US",
+        "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createunorderedaccessview",
+        "https://microsoft.github.io/DirectX-Specs/d3d/archive/D3D11_3_FunctionalSpec.htm"
+      ],
+      "record": "docs/RASTER_LIGHTING_131.md",
+      "state": "selected_sections_compared_linked_API_pending",
+      "wholeCorpus": false,
+      "readScope": "Epic specified environment / diffuse-reflection / recapture sections and Microsoft UAV resource/conflict remarks retrieved and compared; linked APIs and complete D3D11.3 specification body pending.",
+      "pendingSources": [
+        {
+          "url": "https://developer.download.nvidia.com/compute/DevZone/docs/html/DirectCompute/DirectCompute_Programming_Guide.pdf",
+          "state": "retrieval_failed_body_unread"
+        }
+      ]
     }
   ],
   "supplementalBaselines": [
