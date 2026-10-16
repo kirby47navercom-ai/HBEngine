@@ -8,3 +8,6 @@
 범위: 능력 시스템의 게임 시계 범위다. 전체 C++/BP timer·UTC/PCM/영상/외부 시간코드 동기화나 네트워크 재시뮬레이션의 정밀도를 함께 구현한 것은 아님 / 매우 작은 주기와 큰 시각/프레임에서 안전 정수 해상도를 벗어나면 명시 오류로 거부한다. 무한 이벤트 생성으로 우회하지 않음
 
 근거: [ENGINE_WORK_222.json](research/ENGINE_WORK_222.json). 설치는 별도 영수증에 기록한다.
+
+
+221–222 설치 확인: be51b1db8dde157a·명세2718파일 실행후SHA동일·passive속성/태그 집계 재사용·실제CPP/BP 주기3틱/Health147/Stat108·현재Inspector/AI·218속성세트/Undo/비용/효과/작은Take팝업 회귀 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치194263160B 제거. USER_INSTALL_222.json.

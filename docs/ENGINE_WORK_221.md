@@ -8,3 +8,6 @@
 범위: 측정은 AbilitySystem.tick CPU 합계이며 게임 전체 프레임·FPS·GPU/IPC/VRAM 측정이 아니다 / 시간이 변하는 효과/능력 수명 행과 C++ JSON 전달 등 다른 프레임 비용은 유지한다. 전체PC120/실폰60 성능 gate와 구분
 
 근거: [ENGINE_WORK_221.json](research/ENGINE_WORK_221.json). 설치는 별도 영수증에 기록한다.
+
+
+221–222 설치 확인: be51b1db8dde157a·명세2718파일 실행후SHA동일·passive속성/태그 집계 재사용·실제CPP/BP 주기3틱/Health147/Stat108·현재Inspector/AI·218속성세트/Undo/비용/효과/작은Take팝업 회귀 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치194263160B 제거. USER_INSTALL_222.json.

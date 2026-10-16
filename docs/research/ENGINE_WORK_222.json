@@ -36,5 +36,12 @@
     "매우 작은 주기와 큰 시각/프레임에서 안전 정수 해상도를 벗어나면 명시 오류로 거부한다. 무한 이벤트 생성으로 우회하지 않음"
   ],
   "executionVerified": true,
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_222.json",
+    "receiptSHA256": "5459b06afc1910b5940d14b479210698ae900bfefab09adcce6999ebaf11112e",
+    "sourceCommit": "121d9af31d6df49bf1fbb218dd950b9aec278308",
+    "versions": [
+      "be51b1db8dde157a"
+    ]
+  }
 }

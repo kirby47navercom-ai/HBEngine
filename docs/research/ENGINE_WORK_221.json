@@ -32,5 +32,12 @@
     "시간이 변하는 효과/능력 수명 행과 C++ JSON 전달 등 다른 프레임 비용은 유지한다. 전체PC120/실폰60 성능 gate와 구분"
   ],
   "executionVerified": true,
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_222.json",
+    "receiptSHA256": "5459b06afc1910b5940d14b479210698ae900bfefab09adcce6999ebaf11112e",
+    "sourceCommit": "121d9af31d6df49bf1fbb218dd950b9aec278308",
+    "versions": [
+      "be51b1db8dde157a"
+    ]
+  }
 }

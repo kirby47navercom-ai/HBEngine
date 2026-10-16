@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "121d9af31d6df49bf1fbb218dd950b9aec278308",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a\\HBEngine.exe",
+  "bundleHash": "be51b1db8dde157a8f46654751f9d56216c10f9869916d9187ade7cbf6e2703b",
+  "files": 2718,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2724,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284",
+        "bytes": 194263160,
+        "manifestSHA256": "4078e0c715c20d876f4c149ba7a66e58da3e8d28490bade43c26530888dd0689"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T21:27:55.5784841Z",
+    "bytes": 194263160,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "be51b1db8dde157a"
+    ]
+  },
+  "work": "native/build/engine-222-install-ErCRP0",
+  "versions": [
+    "be51b1db8dde157a"
+  ],
+  "manifestVerifiedFiles": 2718,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/ability-clock-222-window-EnDmDo/acceptance.json",
+      "sha256": "af15125b828f4ad93d9dfee4b6b0396dc94d45b0e5b7ce2f33bdd7520339bdef"
+    },
+    {
+      "path": "native/build/ability-set-218-window-i1YHVv/acceptance.json",
+      "sha256": "bbfe2d0959ff44a83135d2a09aa9dff1f30ae454a997e572f34c7e72e89526b1"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/ability-clock-222-window-EnDmDo/passive-and-periodic-current-values.png",
+      "sha256": "36a057c77339888d0b95161ec914ba2d7b139207c00159f36623c3feb82d6be3",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/ability-set-218-window-i1YHVv/bounded-take-filter-menu.png",
+      "sha256": "de32c2c49845c72c0c5db9edeb28b08aff8e94712dda4cb078be4a592c62cb41",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/ability-set-218-window-i1YHVv/live-attributes-abilities-and-effects.png",
+      "sha256": "732d9653fa36e424661b1c918bc5ee0b779ff04b6da0d4aedb222774bd333e3a",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2718,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Actual User read only for inventory.",
+  "storage": {
+    "path": "native/build/storage-222-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
