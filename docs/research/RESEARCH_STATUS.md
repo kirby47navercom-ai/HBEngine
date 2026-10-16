@@ -383,3 +383,7 @@ Three WebGLRenderer compile/compileAsync/properties/debug, MDN KHR 완료 상태
 ## 166 — 지정 제작 본문 재대조
 
 UE5.8 PolyGroup Edit 선택/조작, Animation Curves 구동 종류/키, Take Recorder sources/Actor component recorded properties, Unity6000.4 terrain holes 브러시 본문과 Node crypto.sign Ed25519 구역을 조회·대조했다. 연결 reference/API/미디어 전체와 전원 차단 플랫폼 내구성은 미독/미검증으로 구별했다. supplemental166과 scopeExpansionPending에 범위를 등록했다. [166 구현/차이/실행 증거](../ENGINE_WORK_166.md). 전체 본문·API gate를 승격하지 않는다.
+
+## 167 — 추가 레벨·외부 IK·포털 경로 대조
+
+Unreal Level Streaming 개요/Blueprint load-unload, Unity6000.0 Additive/UnloadSceneAsync의 지정 API 설명, 2D Animation10.2 IK 목표/솔버, Recast Detour findStraightPath 포털·오프메시 지정 구역을 읽고 HB의 명령/수명·반경/키 베이크 차이를 기록했다. 전체 본문/API/미디어·다른 버전·전체 소스 독립 분석은 승격하지 않았다. supplemental167과 scopeExpansionPending에 후속 범위를 등록했다. [구현·차이·실행 근거](../ENGINE_WORK_167.md).

@@ -54,7 +54,7 @@ export const editorMethods={
   'world.foliage.scatter':{params:{path:'foliage 문서',expectedRevision:'revision',terrain:'선택: 지형 경로',settings:'{center:[x,z],radius,count,minDistance,scale:[min,max],seed}',dryRun:'검증만'}},
   'world.foliage.edit':{params:{path:'foliage 문서',expectedRevision:'revision',settings:'{operation:transform/delete/duplicate,ids:[안정ID],position?,rotation?,scale?,delta?}',dryRun:'검증만'}},
   'world.foliage.erase':{params:{path:'foliage 문서',expectedRevision:'revision',position:'[x,z]',radius:'반경',dryRun:'검증만'}},
-  'rig.clip.retarget':{params:{path:'대상 스프라이트 리그 문서',expectedRevision:'대상 현재 revision',source:'원본 hbspriterig 경로; 열린 초안 우선',sourceRevision:'선택: files.get의 editorRevision 또는 revision',clip:'원본 clip ID',mapping:'선택: {source,target} 안정적 뼈 ID 배열; 생략하면 이름 일치',positionMode:'boneLength/relative/none/pose (기본 boneLength); pose는 fps/ik 지원',name:'선택: 새 이름, 중복 거절',dryRun:'검증만; Undo/저장 동일'}},
+  'rig.clip.retarget':{params:{path:'대상 스프라이트 리그 문서',expectedRevision:'대상 현재 revision',source:'원본 hbspriterig 경로; 열린 초안 우선',sourceRevision:'선택: files.get의 editorRevision 또는 revision',clip:'원본 clip ID',mapping:'선택: {source,target} 안정적 뼈 ID 배열; 생략하면 이름 일치',positionMode:'boneLength/relative/none/pose (기본 boneLength); pose는 fps/ik 지원',mapMode:'exact/hierarchy; mapping 생략 시 적용',sceneTargets:'pose: {actors:[{id,transform,timeline?}],sourceTargets:[{solver,actor,offset?}],targetTargets:[],sourceTransform?,targetTransform?}',name:'선택: 새 이름, 중복 거절',dryRun:'검증만; Undo/저장 동일'}},
   'rig.ik.add':{params:{path:'스프라이트 리그 문서',expectedRevision:'현재 revision',settings:'{name,type:limb/ccd/fabrik,root,effector}; 안정적 뼈 ID',dryRun:'검증만'}},
   'anim.state.add':{params:{path:'포즈 그래프 문서',expectedRevision:'현재 revision',machine:'stateMachine 노드 ID',settings:'{name,x,y}; 상태와 기준 포즈 생성',dryRun:'검증만'}},
   'anim.state.remove':{params:{path:'포즈 그래프 문서',expectedRevision:'현재 revision',machine:'stateMachine 노드 ID',state:'상태 ID; 소유 포즈·관련 전이 함께 제거',dryRun:'검증만'}},
@@ -110,6 +110,10 @@ export const editorMethods={
   'runtime.play':{params:{userGesture:'자동 조작 세션의 오디오 시작 허용 여부 (기본 false)'}},'runtime.stop':{params:{}},'runtime.pause':{params:{}},'runtime.resume':{params:{}},
   'runtime.audio':{params:{}},'runtime.call':{params:{target:'실행 오브젝트 ID',functionId:'공개 C++ Class.Function',args:'선언된 함수 인자 객체; 대상 핀은 자동 연결'}},
   'runtime.input':{params:{key:'키 또는 LeftMouseButton/RightMouseButton/MiddleMouseButton/MouseWheelAxis (선택)',value:'-1~1 (생략: 1, 놓기: 0)',source:'입력 소스 ID (선택; 여러 가상/물리 장치 입력을 합산)',pointer:'{position:[x,y],size:[width,height],inside?:boolean} · 뷰포트 좌상단 기준 CSS 픽셀 (선택)'}},
+  'runtime.levels':{params:{},readOnly:true},
+  'runtime.level.load':{params:{path:'추가 scene 에셋',instance:'고유 ASCII 이름 (1..60)',transform:'선택:{position,rotation,scale}; 에디터 원본은 수정하지 않음'}},
+  'runtime.level.unload':{params:{instance:'불러온 레벨 이름; 자원/스크립트/물리 수명 정리'}},
+  'runtime.level.visible':{params:{instance:'레벨 이름',visible:'boolean; 렌더 표시'}},
   'runtime.openScene':{params:{path:'장면 에셋의 전체 프로젝트 상대 경로'}},
   'runtime.state':{params:{}},'native.build':{params:{path:'C++이 연결된 블루프린트 경로'},returns:{built:'빌드 성공 여부',owner:'실제 빌드 소유 문서',compiler:'사용한 컴파일러',workerProtocol:'빌드된 worker의 실제 프로토콜; 저장 에셋에 파생 메타데이터를 복제하지 않음'}}
 };

@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "e7f1e76",
+  "scope": "지금까지 조사/계획한 전체 원장에 대한 구현 지속; 작업 번호/검사 일부를 전체 완료로 계산하지 않음",
+  "targetIds": [
+    "WLD-05",
+    "WLD-06",
+    "2D-05",
+    "ANM-06",
+    "AI-03"
+  ],
+  "parentRowsCompleted": 0,
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 32,
+      "unimplemented": 4,
+      "unverified": 3
+    },
+    "completionPercent": null,
+    "exhaustiveUEUnity": false
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-167-J2MGB2/acceptance.json",
+      "sha256": "177226214811c7f3ea4399d195c1f2a4fa31e5c6042707c5fc75d40fde7966d6",
+      "summary": {
+        "passed": 11,
+        "groups": 11
+      }
+    },
+    "runtime": {
+      "path": "native/build/engine-167-runtime-IPMxCS/acceptance.json",
+      "sha256": "1f4781ada5cb7c8588dc250ec561861c6f99aa75084335940f2749730b07974e",
+      "summary": {
+        "passed": true,
+        "cpp": {
+          "gone": true,
+          "loaded": true,
+          "reloaded": true,
+          "ticks": 24,
+          "worldX": 12
+        },
+        "samples": [
+          {
+            "frame": 3,
+            "objects": 10,
+            "loaded": true
+          },
+          {
+            "frame": 7,
+            "objects": 7,
+            "chunkEnds": 1,
+            "loaded": false
+          },
+          {
+            "frame": 12,
+            "objects": 10,
+            "chunkEnds": 1,
+            "loaded": true
+          },
+          {
+            "frame": 14,
+            "objects": 10,
+            "chunkEnds": 1,
+            "loaded": true
+          },
+          {
+            "frame": 17,
+            "objects": 10,
+            "chunkEnds": 1,
+            "loaded": true
+          }
+        ]
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-167-window-H5VLqC/acceptance.json",
+      "sha256": "7213ed0da36b52b891d522e2444eefcc1d7ee5872f8c02a58ce3b22b629c878d",
+      "summary": {
+        "passed": true,
+        "levelInspector": true,
+        "rigSceneTargets": true,
+        "rigAIDryRunUndo": true,
+        "aiLoadUnload": true,
+        "sourcePreserved": true,
+        "cpp": {
+          "gone": true,
+          "loaded": true,
+          "reloaded": true,
+          "ticks": 234,
+          "worldX": 12
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "previous165": {
+      "path": "native/build/batch-165-O2frMi/report.json",
+      "sha256": "2065e6693eac05252452c000da2488cdb3e12204113da905293e395e609952b5",
+      "summary": {
+        "passed": 17,
+        "groups": 17
+      }
+    },
+    "previous166": {
+      "path": "native/build/batch-166-WhiTiV/report.json",
+      "sha256": "b7f8e9717bb51c23bbc24cae76775219ee8544779a476c00685e20dc22c01f09",
+      "summary": {
+        "passed": 12,
+        "groups": 12
+      }
+    },
+    "development": {
+      "path": "native/build/engine-167-player-mFyLpK/acceptance.json",
+      "sha256": "1d1c433f95293ee622904f5f16ab9006de3fb3ab3f44fb74037af00e72a5289f",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "backend": "D3D11",
+        "automaticReadbacks": 0,
+        "cpp": {
+          "gone": true,
+          "loaded": true,
+          "reloaded": true,
+          "ticks": 27,
+          "worldX": 12
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "release": {
+      "path": "native/build/engine-167-player-jdLWuU/acceptance.json",
+      "sha256": "cd672a614bdd388003b96fdc270e381ce6ed8f2d5842259fcd51e28a49ecf910",
+      "summary": {
+        "passed": true,
+        "configuration": "release",
+        "backend": "D3D11",
+        "automaticReadbacks": 0,
+        "cpp": {
+          "gone": true,
+          "loaded": true,
+          "reloaded": true,
+          "ticks": 28,
+          "worldX": 12
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "additionalChecks": [
+    "check.mjs",
+    "check-native.mjs",
+    "check-sprite-rig-retarget.mjs",
+    "check-ui-audio.mjs",
+    "check-gameplay-workflow.mjs",
+    "check-animation-retarget.mjs",
+    "generate-api.mjs --check",
+    "check-engine-status.mjs"
+  ],
+  "failuresFixed": [
+    "추가 루트 변환 적용 누락",
+    "C++ 사전 생성 액터의 levelInstance 누락",
+    "추가 레벨에서 처음 필요한 생성 카탈로그가 편집기 native 요청에 반영되지 않음",
+    "디버그 정지 중 수명 명령이 그래프 gate에서 대기: 명시적 재개 조건/프레임 직렬화",
+    "초기화 중 자식→상위 인스턴스의 재귀 대기 선제 거부",
+    "언로드 시 타입 있는 외부 native/BP 참조의 null 재배치"
+  ],
+  "testCorrections": [
+    "fixture spawn 클래스 cube→Actor 등록 이름",
+    "목표 vec3 timeline track interpolation 필수",
+    "과거 NavMesh 중간점 개수 가정→직선 단축/폭/경유 검증",
+    "추가 레벨을 패키징 프로필 장면 목록에 활성화",
+    "닫힌 원본 리그 조회는 document.get 대신 files.get"
+  ],
+  "lightweight": {
+    "newDependencies": 0,
+    "automaticGPUReadbacks": 0,
+    "cellCheckIntervalSeconds": 0.25,
+    "constantTakeFrames": 600,
+    "constantTakeKeysPerTrackMax": 5
+  },
+  "remainingLedger": "docs/research/ENGINE_STATUS.json",
+  "installation": "docs/research/USER_INSTALL_167.json"
+}

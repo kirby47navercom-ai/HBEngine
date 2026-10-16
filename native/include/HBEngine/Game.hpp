@@ -670,6 +670,16 @@ private:
     inline static std::string owner_,scope_;
 };
 HB_CLASS()
+class Levels : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="levelLoad", KoreanName="추가 레벨 불러오기", Category="월드 스트리밍") static void Load(const std::string& scene,const std::string& instance,const Transform& transform);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="levelUnload", KoreanName="추가 레벨 내리기", Category="월드 스트리밍") static void Unload(const std::string& instance);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="levelLoaded", KoreanName="추가 레벨 로드됨", Category="월드 스트리밍") static bool IsLoaded(const std::string& instance);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="levelActor", KoreanName="추가 레벨 액터", Category="월드 스트리밍") static Actor* GetActor(const std::string& instance,const std::string& localId);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="levelInstances", KoreanName="불러온 레벨 목록", Category="월드 스트리밍") static std::vector<std::string> GetInstances();
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="levelVisible", KoreanName="추가 레벨 표시", Category="월드 스트리밍") static void SetVisible(const std::string& instance,bool visible);
+};
+HB_CLASS()
 class Scene : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneSpawn", KoreanName="에셋/클래스 생성", Category="오브젝트") static Actor* Spawn(const std::string& blueprintOrPrefab,const Transform& transform,const std::string& actorId="");

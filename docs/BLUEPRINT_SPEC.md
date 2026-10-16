@@ -439,3 +439,7 @@ ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C+
 ## 166 — 애니메이션 커브와 속성 Take
 
 AnimationGraph::GetCurve/animGraphGetCurve는 같은 포즈 혼합 결과의 named curve를 조회한다. 커브 저작/모프/머테리얼 구동·Take 기본 컴포넌트 키는 기존 그래프/시퀀스 실행을 쓴다. 실제 C++·블루프린트 실행과 범위는 [166](ENGINE_WORK_166.md), 남은 상위 범위는 단일 상태 원장을 따른다.
+
+## 167 — 레벨 수명 공용 노드
+
+Levels::Load/Unload/IsLoaded/GetActor/GetInstances/SetVisible와 levelLoad/levelUnload/levelLoaded/levelActor/levelInstances/levelVisible는 같은 실행 서비스를 사용한다. 총 노드753개. 영구 월드 유지, 결정적 ID, Construction/BeginPlay/EndPlay와 생성 액터·물리 수명, 사람의 LevelStreaming 컴포넌트와 AI 명령이 같은 데이터로 이어진다. C++ 변경은 서비스 큐, 결과 조회는 후속 호출 기준이다. [계약/검사](ENGINE_WORK_167.md).

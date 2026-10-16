@@ -367,3 +367,7 @@ AudioMixer::SetSnapshotTransition/ClearSnapshotTransition과 BP mixerSetTransiti
 ## 166 — 월드 세부 저작·커브·패치
 
 world.mesh.edit의 operation은 간선 splitEdges, weld(tolerance/preserveUV), duplicateFaces, flatNormals/smoothNormals/setNormals(normal), uvPack(padding)를 추가 지원한다. world.terrain.brush의 hole/fillHole/stamp는 같은 자산/충돌 자료를 바꾼다. world.foliage.edit는 안정 ID의 transform/duplicate/delete를 수행한다. 모두 expectedRevision/dryRun/Undo 계약을 유지한다. 커브와 component sequence track 예제·서명/복구 patch CLI는 [166](ENGINE_WORK_166.md)에 있다.
+
+## 167 — 추가 레벨과 2D 외부 IK
+
+runtime.levels/load/unload/visible는 실행 사본을 조작하고 저작 revision을 바꾸지 않는다. 수명 변경은 현재 프레임 뒤 직렬화하며 디버그 일시 정지 해제 후 요청한다. rig.clip.retarget는 mapMode hierarchy 및 sceneTargets를 추가 지원하며 기존 revision/dryRun/Undo를 공유한다. 입력 예제·장면/솔버 ID 계약·빌드 장면 포함 조건은 [167](ENGINE_WORK_167.md).

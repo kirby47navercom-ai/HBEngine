@@ -30,7 +30,8 @@ export async function preparePlayWorld(objects,settings,{readAsset,readText,buil
   await prepareActorBindings(objects,{readAsset:read,readText,buildNative,builds,nativeBuilds,loaded});
   for(const object of objects){object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
   const spawnCatalog=spawnRequested(loaded.bindings,objects)?await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds}):null;
-  return {...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
+  const result={...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
+  result.prepareLevel=async rows=>{const level=await prepareActorBindings(rows,{readAsset:read,readText,buildNative,builds,nativeBuilds});if(spawnRequested(level.bindings,rows)&&!result.spawnCatalog)result.spawnCatalog=await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds});return {...level,spawnCatalog:result.spawnCatalog};};return result;
 }
 
 export async function requestSceneTravel(vm,name,{readAsset,asset,arguments:args={}}){

@@ -1,13 +1,13 @@
-# HBEngine — 166 — 2026-10-16
+# HBEngine — 167 — 2026-10-16
 
-현재 요청: 165의20항목 남은 세부를 여러 개 묶어 제작/실행·마지막 검사·사용자 설치 갱신. AI 친화성/가벼움/Versions1 유지. 한국어 존댓말 주인님/짚짱. 한글 커밋·푸시, 사용자 창/프로필/게임 보호. 에이전트 추가 요청 없음.
+현재 사용자 지시: 지금까지 조사/계획한 전체 기능을 구현하는 것이다. 작업 번호/일부 묶음 목표의 완료로 답변 범위를 좁히지 않는다. 직전 전체완료 오해를 인정하고 실제 누적 원장 기준으로 구현을 이어왔다. 주인님/짚짱·한국어 존댓말. 사용자 창·프로필·게임 보호, 마지막 묶음 검사·설치 갱신·한글 커밋/푸시·Versions1. 새 에이전트 요청 없음.
 
-166 구현: 메시 간선 선택/분할·용접/면복제·노멀/면별UV, 지형 holes/fill/stamp와 제한 영향 계산, 안정ID 폴리지 개별변환/복제/삭제, 가중 자동타일/인접 사본/회전프리뷰, 커브 편집/포즈혼합/속성·모프·머테리얼 구동 및 C++/BP GetCurve, 기본 컴포넌트 Take/속성 트랙/복원·비재귀축약, 위젯 디자이너 locale/style 공용resolver, Ed25519/복구저널 증분패치.
+167 구현: additive 다중 레벨 인스턴스/변환·LevelStreaming manual/always/distance·ID/타입 참조 재배치·물리/입력/스크립트/생성액터 수명·실패/취소/재진입·C++6/BP6/AI4/아웃라이너; 2D 계층/좌우 이름 대응·외부 actor IK 목표/키·월드 변환 베이크(limb/CCD/FABRIK); 평면 포털 funnel/오프메시 보존; Take 바인딩 설명 재사용·일정구간 온라인 축약.
 
-상세 docs/ENGINE_WORK_166.md + research/ENGINE_WORK_166.json. 165의20대상 중9부모행에 추가했으며 부모전체 완료0. 단일 원장 ENGINE_STATUS.json/md,78행 verified39/partial31/unimplemented5/unverified3. 전체 UE/Unity 분석 gate false/전체완료율 미확정. 지정 본문은 corpus supplemental166, 연결 API/미디어 미독 보존.
+코드 소유자: prototype/level-streaming.js, actor-references.js, play-world.js, engine-services.js, app.js/player.js/tools/run-project.mjs, navigation-funnel.js/navigation-mesh.js, retarget-scene-targets.js/sprite-rig-retarget[-editor].js, sequence-properties/take-recorder. native Levels SDK·자동생성API 노드753. 새 종속성/상시poll/자동GPU readback 없음.
 
-검사: 새12군/165회귀17군, core/native/UI-audio/gameplay/retarget/API. 실제C++ curveHeat, 숨김Editor12종/폴리지Undo/위젯en/컴포넌트Take, WebGPU/PCM, dev/release D3D11 Player. 소규모릴리스185frame 평균work2.53ms/p95 2.60ms,113.90fps(초기포함, 일반보장아님). 설치 C:/Users/kirby/HBEngine/Versions/8f19c8e49c8e1cf0 전환/실제 기동 완료. USER_INSTALL_166.json:2319파일 SHA·사용자프로필10385파일 보존·바로가기/연결·Versions1. 이전ef759067d9303b95 172366728B 정리. 구현 e665c94. 빌드와 실제EXE실행을 동시에 하면 dist runtime/node.exe 잠김; 순차로 실행한다.
+검사: CPU11군·실제 C++/BP 반복Load/Unload·숨김 Win32 Editor/2D폼/AI dryRun/Undo/레벨명령/원본보존·dev/release D3D11 패키지. 165 17군/166 12군 및 core/native/UIaudio/gameplay/retarget/API/status 통과. ENGINE_WORK_167.md/JSON에 경로/SHA/실패수정. 설치는 USER_INSTALL_167.json 후속 기록. dist빌드/실제EXE 실행은 순차로 한다(동시복사시 runtime/node.exe 잠김).
 
-소유자: mesh-topology/world-assets/world-rendering/world-asset-editor, sequence-properties/take-recorder/gameplay-runtime, animation-curve-sampler/animation-graph-runtime, widget-presentation/ui-editor/ui-runtime, tools/content-patch.mjs. schema/SDK/AI same owners. 새dependency·상시poll·GPU자동readback 없음. tools/check-batch-166[-runtime/-window/-player].mjs 재현. player --release --performance는 짧은185frame관찰, window --executable 경로 --smoke-only는 설치 실제 기동.
+전체 원장 docs/research/ENGINE_STATUS.json → docs/ENGINE_STATUS.md + hb status --local/API. 78등록행 verified39/partial32/unimplemented4/unverified3. WLD05를 partial로 옮겼으나 상위전체완료0. 전체UE/Unity 본문/API 분석 gate false/분모·완료율 미확정. supplementary167 지정 API/문서 구역만 읽고 연결/다른버전 미독 유지.
 
-다음: 여전히 메시bevel/연속UV, 지형텍스처/GPU/부분전송, LOD/동적Nav, import/cook/prefab 세부, 다른모프mapping/고급리타게팅, audio/skeletal/구조체Take, ability network/GPU별입자event, 위젯world상속/nativeDSP, patch전원차단/원격/키배포/VCS 등 최신 원장 remaining. 작은완료범위를 전체완료로 보고하지 않는다. Mac/Xcode·Android기기 없음. 누적과 남은19행도 유지.
+남은 전체 목표는 원장의 remaining을 유지한다: 자동공간분할/HLOD/셀예산, 동적Nav/정밀반경/군중, import/cook/prefab 세부, 2D 임의제약/정지발, 애니/녹화·렌더·물리·게임플레이/네트워크·위젯/오디오·CPP도구/AI/디버그·모바일/배포/성능 등. 원장 일부를 전체요구의 상한으로 삼지 않는다. Mac/Xcode와 Android기기는 없다.

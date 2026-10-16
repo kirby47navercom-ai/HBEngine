@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **747개**, 실제 공통 C++ API **662개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **753개**, 실제 공통 C++ API **668개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -71,6 +71,7 @@
 | 능력|효과 | 3 | 3 |
 | AI|EQS | 2 | 2 |
 | 게임플레이 태그 | 7 | 7 |
+| 월드 스트리밍 | 6 | 6 |
 
 ## 범위와 사용 규칙
 
@@ -1132,3 +1133,14 @@
 | tagAny | Has Any / 하나 이상의 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAny | 공통 C++ + VM |
 | tagAll | Has All / 모든 태그 확인 | target: object, tags: string[], exact: bool | return: bool | hb::Tags::HasAll | 공통 C++ + VM |
 | tagQuery | Matches Query / 태그 조건 쿼리 | target: object, query: string | return: bool | hb::Tags::MatchesQuery | 공통 C++ + VM |
+
+## 월드 스트리밍
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| levelLoad | Load / 추가 레벨 불러오기 | exec: exec, scene: string, instance: string, transform: transform | then: exec | hb::Levels::Load | 공통 C++ + VM |
+| levelUnload | Unload / 추가 레벨 내리기 | exec: exec, instance: string | then: exec | hb::Levels::Unload | 공통 C++ + VM |
+| levelLoaded | Is Loaded / 추가 레벨 로드됨 | instance: string | return: bool | hb::Levels::IsLoaded | 공통 C++ + VM |
+| levelActor | Get Actor / 추가 레벨 액터 | instance: string, localId: string | return: object | hb::Levels::GetActor | 공통 C++ + VM |
+| levelInstances | Get Instances / 불러온 레벨 목록 | — | return: string[] | hb::Levels::GetInstances | 공통 C++ + VM |
+| levelVisible | Set Visible / 추가 레벨 표시 | exec: exec, instance: string, visible: bool | then: exec | hb::Levels::SetVisible | 공통 C++ + VM |

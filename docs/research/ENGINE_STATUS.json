@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "7ab93a8",
+  "basisRevision": "e7f1e76",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -336,10 +336,9 @@
       "area": "2d",
       "title": "2D 전용 리타게팅",
       "status": "partial",
-      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결",
+      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 · 167: 계층/좌우 이름 대응·장면 외부 IK 목표/변환 키·리그 월드 변환 베이크·limb/CCD/FABRIK 실제 표본 재생",
       "remaining": [
-        "자동 체인 대응과 외부 actor IK 목표 베이크",
-        "임의 제약/정지 발의 전체 재표본화 검증"
+        "임의 제약/정지 발의 전체 재표본화 검증·고급 자동 체인 대응"
       ],
       "sources": [
         "prototype/sprite-rig-assets.js",
@@ -349,7 +348,8 @@
       "evidence": [
         "docs/ANIMATION_RETARGET_072.md",
         "docs/ENGINE_WORK_156.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_167.json"
       ]
     },
     {
@@ -453,18 +453,21 @@
       "id": "WLD-05",
       "area": "world",
       "title": "월드 분할·레벨 스트리밍",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "추가 레벨 다중 인스턴스/변환·수동/항상/거리 셀·참조 재배치·물리/스크립트 합류·실패 취소/재진입·CPP/BP/AI/아웃라이너",
       "remaining": [
-        "Additive 로드/언로드",
-        "셀·액터 수명·참조·물리/스크립트 합류와 재진입"
+        "자동 공간 분할/HLOD·메모리 예산 기반 셀 스케줄링·큰 맵 검증"
       ],
       "sources": [
         "prototype/project-session.js",
-        "prototype/engine-services.js"
+        "prototype/engine-services.js",
+        "prototype/level-streaming.js",
+        "prototype/play-world.js",
+        "prototype/actor-references.js"
       ],
       "evidence": [
-        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+        "docs/ENGINE_WORKFLOW_RESEARCH.md",
+        "docs/research/ENGINE_WORK_167.json"
       ]
     },
     {
@@ -472,10 +475,10 @@
       "area": "world",
       "title": "내비게이션·군중",
       "status": "partial",
-      "implemented": "평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피",
+      "implemented": "평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존",
       "remaining": [
         "동적 타일·장애물 carving·에이전트 NavArea",
-        "정밀 funnel/반경 오프셋·RVO/Mass 군중"
+        "비평면 정밀 funnel/경계 침식·반경 보장·RVO/Mass 군중"
       ],
       "sources": [
         "prototype/scene-systems.js",
@@ -483,7 +486,8 @@
       ],
       "evidence": [
         "docs/ENGINE_WORKFLOW_RESEARCH.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_167.json"
       ]
     },
     {
@@ -768,7 +772,7 @@
       "area": "animation",
       "title": "시퀀스·녹화 제작",
       "status": "partial",
-      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약",
+      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 · 167: 속성 설명 재사용·일정 구간 온라인 축약/변화 시각 보존",
       "remaining": [
         "배열/구조체/동적 컴포넌트 생성삭제·오디오/골격 녹화",
         "전문 시네마틱 트랙·외부 동기화/베이크"
@@ -781,7 +785,8 @@
       "evidence": [
         "docs/ANIMATION_TIMELINE_CONTROLS.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_166.json"
+        "docs/research/ENGINE_WORK_166.json",
+        "docs/research/ENGINE_WORK_167.json"
       ]
     },
     {
@@ -1138,7 +1143,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1150,7 +1155,8 @@
       "evidence": [
         "docs/LIGHTING_TOOLS_128.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_166.json"
+        "docs/research/ENGINE_WORK_166.json",
+        "docs/research/ENGINE_WORK_167.json"
       ]
     },
     {
@@ -1378,5 +1384,5 @@
       ]
     }
   ],
-  "latestBatch": "165"
+  "latestBatch": "167"
 }

@@ -147,3 +147,7 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 166 — 165의 세부 제작·실행 확장 (2026-10-16)
 
 메시 간선/용접/노멀/UV, 지형 holes/stamp, 폴리지 개별 편집, 가중 자동타일, 커브 구동/블렌딩/C++ getter, 컴포넌트 Take와 복원, 위젯 디자이너 지역화/스타일, 패치 저널/서명을 묶었다. 세부/실행/검사/남은 범위는 docs/ENGINE_WORK_166.md와 research/ENGINE_WORK_166.json. 기존 20행 중 9행 추가이며 상위 전체 완료로 승격하지 않았다. 설치/Versions1은 research/USER_INSTALL_166.json으로 기록한다.
+
+## 167 — 누적 전체 원장 기준의 추가 구현 (2026-10-16)
+
+사용자의 전체 조사 구현 요구를 작업 번호/일부 목표 완료로 축소하지 않는다. 추가 레벨/거리 셀·다중 인스턴스·참조/물리/스크립트/생성 액터 수명·C++/BP/AI, 2D 계층/외부 IK 목표 베이크, 평면 NavMesh 포털 경로, Take 설명 재사용/온라인 축약을 구현했다. 상세와 실제 검사는 docs/ENGINE_WORK_167.md, research/ENGINE_WORK_167.json. 전체 원장은 ENGINE_STATUS.json/md이며 다른 남은 부모/세부를 유지한다. 사용자 설치 결과는 research/USER_INSTALL_167.json으로 기록한다.

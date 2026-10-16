@@ -2773,7 +2773,8 @@
     "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification.",
     "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled.",
     "165: Register/reconcile each linked API, image/media, terrain/LOD/Prefab/localization/UI virtualization/audio DSP/GAS/EQS source. Selected body contracts and HB implementation do not close the global corpus.",
-    "166: PolyGroup operations/reference/media, Unity6000.4 terrain/mask API, animation curve retarget/morph APIs, Take recorder sources and Node crypto/fs platform durability remain independently scoped."
+    "166: PolyGroup operations/reference/media, Unity6000.4 terrain/mask API, animation curve retarget/morph APIs, Take recorder sources and Node crypto/fs platform durability remain independently scoped.",
+    "167: Reconcile linked Level Streaming/World Partition lifecycle APIs, Unity AsyncOperation/Resources memory ownership, 2D IK solver package APIs and Detour corridor/radius/crowd APIs. Selected implementation checks do not close the whole corpus."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -2801,6 +2802,19 @@
       "https://nodejs.org/api/crypto.html#cryptosignalgorithm-data-key-callback"
     ],
     "scope": "selected body sections: selection/weld, terrain visibility/collision, curve targets, component recording, Ed25519 signing; linked APIs/media not fully read",
+    "globalGatePromotion": false
+  },
+  "supplemental167": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://dev.epicgames.com/documentation/unreal-engine/level-streaming-overview-in-unreal-engine?lang=en-US",
+      "https://dev.epicgames.com/documentation/unreal-engine/loading-and-unloading-levels-using-blueprints-in-unreal-engine?lang=en-US",
+      "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.LoadSceneMode.Additive.html",
+      "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.UnloadSceneAsync.html",
+      "https://docs.unity3d.com/Packages/com.unity.2d.animation@10.2/manual/2DIK.html",
+      "https://github.com/recastnavigation/recastnavigation/blob/main/Detour/Source/DetourNavMeshQuery.cpp"
+    ],
+    "scope": "selected body/API sections: additive ownership/unload, 2D IK targets/solvers; Detour findStraightPath corridor/portal section. Linked APIs/media/other versions and whole source not fully analyzed.",
     "globalGatePromotion": false
   }
 }
