@@ -110,8 +110,8 @@ export class ProjectService {
     });this.writeQueue=task.catch(()=>{});return task;
   }
   write(relative,data,guard=()=>{}){const task=this.writeQueue.then(()=>{guard();return this.writeFile(relative,data);});this.writeQueue=task.catch(()=>{});return task;}
-  checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map()}={}){
-    if(!Array.isArray(entries)||!entries.length||entries.length>64||typeof dryRun!=='boolean')throw Error('저장 묶음은1~64개 파일이어야 해요.');
+  checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map(),guards=[]}={}){
+    if(!Array.isArray(entries)||!entries.length||entries.length>64||typeof dryRun!=='boolean'||!Array.isArray(guards))throw Error('저장 묶음과 읽기 기준을 확인하세요.');
     const task=this.writeQueue.then(async()=>{
       guard();const rows=[],drafts=new Map(),seen=new Set();let bytes=0;
       for(const entry of entries){
@@ -128,8 +128,10 @@ export class ProjectService {
         const paths=new Set((await this.files()).filter(f=>f.kind==='blueprint').map(f=>f.path));for(const row of rows)if(row.path.endsWith('.hbblueprint.json'))paths.add(row.path);
         for(const name of paths){const raw=drafts.has(name.toLowerCase())?drafts.get(name.toLowerCase()):await fs.readFile(await this.resolve(name),'utf8');if(raw!==null)await this.validateBlueprint(name,JSON.parse(raw),drafts);}
       }
-      guard();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path)};
-      return commitAssetBatch(this,rows,guard);
+      const readGuards=[],guardPaths=new Set();for(const entry of guards){if(!entry||typeof entry.path!=='string'||entry.expected!==null&&typeof entry.expected!=='string')throw Error('읽기 기준 파일을 확인하세요.');const file=await this.inspectDocument(entry.path),key=file.path.toLowerCase();if(seen.has(key)||guardPaths.has(key))throw Error('읽기 기준과 저장 파일 경로가 중복돼요.');guardPaths.add(key);bytes+=Buffer.byteLength(entry.expected||'');if(bytes>8388608)throw Error('저장 묶음과 읽기 기준은 합계8MB까지 지원해요.');if(file.expected!==entry.expected)throw Object.assign(Error('참조 원본이 변경됐어요: '+file.path),{status:409,code:'REVISION_CONFLICT'});readGuards.push({path:file.path,expected:entry.expected});}
+      const checkReads=async()=>{guard();for(const entry of readGuards)if((await this.inspectDocument(entry.path)).expected!==entry.expected)throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});};
+      await checkReads();if(dryRun)return {valid:true,paths:rows.map(r=>r.path),changes:rows.filter(r=>r.before!==r.after).map(r=>r.path),guards:readGuards.map(r=>r.path)};
+      return commitAssetBatch(this,rows,guard,checkReads);
     });this.writeQueue=task.catch(()=>{});return task;
   }
   async inspectDocument(relative){

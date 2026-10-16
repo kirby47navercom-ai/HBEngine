@@ -42,8 +42,8 @@ export async function recoverAssetTransactions(project){
   for(const name of names){if(!/^[a-f\d-]{36}\.json$/.test(name))continue;const journal=await readAssetTransaction(project,name.slice(0,-5));if(journal.state==='prepared')await rollback(project,journal);}
 }
 
-export async function commitAssetBatch(project,rows,guard){
-  rows=rows.filter(row=>row.before!==row.after);if(!rows.length)return {ok:true,noChange:true,paths:[]};
+export async function commitAssetBatch(project,rows,guard,checkReads=async()=>{}){
+  await checkReads();rows=rows.filter(row=>row.before!==row.after);if(!rows.length)return {ok:true,noChange:true,paths:[]};
   const journal={version:1,id:randomUUID(),state:'prepared',createdAt:new Date().toISOString(),rows:rows.map(row=>({...row,beforeHash:hash(row.before),afterHash:hash(row.after),indexBefore:project.index[row.path]?structuredClone(project.index[row.path]):null}))};
   const writingPaths=new Set();
   await project.resolve('Saved/Transactions',true,false);await store(project,journal);
@@ -53,7 +53,7 @@ export async function commitAssetBatch(project,rows,guard){
       if(row.after===null)await fs.unlink(file);else await put(file,row.after,row.before===null);
       if(row.after===null)delete project.index[row.path];else if(row.restoreIndex)project.index[row.path]=structuredClone(row.restoreIndex);else project.index[row.path]??={id:randomUUID()};
     }
-    guard();await project.saveIndex();journal.state='committed';await store(project,journal);
+    guard();await checkReads();await project.saveIndex();journal.state='committed';await store(project,journal);
   }catch(error){journal.state='prepared';try{await rollback(project,journal,writingPaths);}catch(recovery){throw Object.assign(Error(error.message+'; 복구 기록을 보존했어요: '+journal.id+' ('+recovery.message+')'),{status:409,code:'TRANSACTION_RECOVERY_REQUIRED',transaction:journal.id,cause:error});}throw error;}
   return {ok:true,transaction:journal.id,paths:journal.rows.map(row=>row.path),backup:'Saved/Transactions/'+journal.id+'.json'};
 }

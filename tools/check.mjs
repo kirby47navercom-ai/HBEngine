@@ -127,17 +127,18 @@ const completeCatalog=clone(defaultBlueprint);completeCatalog.nodes=catalog.filt
 const {ProjectBrowser}=await import('../prototype/project-browser.js');
 const {storage,storageKey}=await import('../prototype/project-session.js');
 const viewKey=storageKey('hbengine.project.view'),savedView=storage.getItem(viewKey),browserKey=storageKey('hbengine.project.browsers'),savedBrowsers=storage.getItem(browserKey);
+const previousResizeObserver=globalThis.ResizeObserver;globalThis.ResizeObserver=class{observe(){}disconnect(){}};
 try{
   storage.removeItem(viewKey);
   storage.removeItem(browserKey);
-  const grid={dataset:{}},heading={},labels=[],buttons=['list','tiles'].map(view=>({dataset:{projectView:view},setAttribute(key,value){this[key]=value;}}));
-  const fields=new Map();const element={querySelector:selector=>selector==='[data-project-grid]'?grid:selector==='.project-list-heading'?heading:(fields.has(selector)?fields.get(selector):(fields.set(selector,{}),fields.get(selector))),querySelectorAll:selector=>selector==='[data-project-view]'?buttons:labels,addEventListener(){}};
+  const grid={dataset:{},clientWidth:900,clientHeight:300,scrollTop:0,contains:()=>false,addEventListener(){},removeEventListener(){}},heading={},labels=[],buttons=['list','tiles'].map(view=>({dataset:{projectView:view},setAttribute(key,value){this[key]=value;}}));
+  const fields=new Map();const element={ownerDocument:{activeElement:null},querySelector:selector=>selector==='[data-project-grid]'?grid:selector==='.project-list-heading'?heading:(fields.has(selector)?fields.get(selector):(fields.set(selector,{}),fields.get(selector))),querySelectorAll:selector=>selector==='[data-project-view]'?buttons:labels,addEventListener(){}};
   class BrowserCheck extends ProjectBrowser {refresh(){}}
   const browser=new BrowserCheck(element,{});assert.equal(browser.view,'list','파일 브라우저 기본 목록');assert.equal(heading.hidden,false);
   browser.entries=[{name:'Hero.hbblueprint.json',path:'Assets/Hero.hbblueprint.json'}];browser.selected.add(browser.entries[0].path);browser.anchor=0;labels.push({});const selected=browser.selected,entries=browser.entries;
-  browser.setView('tiles');assert.equal(grid.dataset.view,'tiles');assert.equal(labels[0].textContent,'Hero');assert.equal(buttons[1]['aria-pressed'],'true');assert.equal(heading.hidden,true);
+  browser.setView('tiles');assert.equal(grid.dataset.view,'tiles');assert.match(grid.innerHTML,/class="asset-name">Hero<\/span>/);assert.equal(buttons[1]['aria-pressed'],'true');assert.equal(heading.hidden,true);
   assert.equal(browser.selected,selected);assert.equal(browser.entries,entries);assert.equal(browser.anchor,0);assert.equal(new BrowserCheck({...element,querySelectorAll:selector=>selector==='[data-project-view]'?buttons:[]},{}).view,'tiles','프로젝트 표시 방식 복원');
-  browser.setView('list');assert.equal(labels[0].textContent,'Hero.hbblueprint.json');assert.equal(storage.getItem(viewKey),'list');assert.notEqual(storageKey('hbengine.project.view',{id:'one'}),storageKey('hbengine.project.view',{id:'two'}));
+  browser.setView('list');assert.match(grid.innerHTML,/class="asset-name">Hero.hbblueprint.json<\/span>/);assert.equal(storage.getItem(viewKey),'list');assert.notEqual(storageKey('hbengine.project.view',{id:'one'}),storageKey('hbengine.project.view',{id:'two'}));
   browser.setView('invalid');assert.equal(browser.view,'list','손상된 표시 방식 무시');
-}finally{if(savedView===null)storage.removeItem(viewKey);else storage.setItem(viewKey,savedView);if(savedBrowsers===null)storage.removeItem(browserKey);else storage.setItem(browserKey,savedBrowsers);}
+}finally{if(previousResizeObserver===undefined)delete globalThis.ResizeObserver;else globalThis.ResizeObserver=previousResizeObserver;if(savedView===null)storage.removeItem(viewKey);else storage.setItem(viewKey,savedView);if(savedBrowsers===null)storage.removeItem(browserKey);else storage.setItem(browserKey,savedBrowsers);}
 console.log('HBEngine Project: 목록·타일 전환, 선택 유지, 프로젝트별 표시 방식 복원 검사 통과');

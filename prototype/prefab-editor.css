@@ -16,3 +16,5 @@
 @media(max-width:900px){.asset-document.prefab-workspace{grid-template-columns:155px minmax(120px,1fr)}}
 
 .prefab-toolbar [data-stage-mode]{max-width:108px}.prefab-toolbar [data-stage-environment]{max-width:160px}.prefab-toolbar [data-stage-appearance]{max-width:108px}
+.prefab-view-option{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.prefab-view-option[hidden]{display:none}
+.prefab-snap-options{position:relative}.prefab-snap-options summary{padding:4px 7px;border:1px solid var(--border);border-radius:3px;cursor:pointer;white-space:nowrap}.prefab-snap-options>div{position:absolute;top:100%;right:0;z-index:30;width:190px;padding:10px;background:var(--panel);border:1px solid var(--border);box-shadow:0 5px 15px #0006;display:grid;gap:8px}.prefab-snap-options label{display:flex;align-items:center;justify-content:space-between;gap:8px}.prefab-snap-options input[type=number]{width:92px;min-width:0}.prefab-snap-options select{max-width:120px}

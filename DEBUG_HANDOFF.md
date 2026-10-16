@@ -1,3 +1,11 @@
+# 207–209 — 해결과 검사 기록
+
+207 원인 확정: activateDocument가120ms 뒤 예약한 프리팹 동기화가 장면 저장보다 늦게 끝나 dirty를 다시 세움. 대기·진행 중 동기화를 저장 전에 마치는 flushPrefabRefresh와 editor.synchronize를 추가. 실제 rp5IN0는 모든 보기·표면/정점·Undo·원본 보존 뒤 오류0/종료0. 종료 제한이나 dirty 보호는 유지.209 첫 CPU 검사는 실제 VM start/tick/stop API와 다른 begin/advance/end를 사용한 검사 오류로 정정. D3D 첫 실행은5개 모델·포즈/되감기·복원·서버 종료까지 통과 후 보고서 built.report.renderer 오조회로 실패했으며, 실제 반환 built.renderer로 수정한 PWfsDw가 보고서/종료0까지 통과. WebGL 2B3TbP/실제 에디터 ZkMInQ도 통과.
+
+# 207 — 격리 창 종료 진단 — 2026-10-17
+
+회색/변경 표시/격자 설정/표면·정점 스냅/dry-run/Undo/루트·숨김 거부 및 디스크 불변은 통과했지만, 종료 직전 장면 dirty=true로 beforeUnload가 막힘. s0jZCN의 첫 실패는 큐브 원점이 바닥(y=0..1)인데 중심형 큐브(y=-.5...5)로 기대한 검사 오류여서 기대 표면 y=0으로 정정. 이후 두 번의 종료 실패는 단순히 비활성 장면 저장 또는 두 문서 저장 반복으로 해결되지 않았음. 다음은 captureDocument/activateDocument/save가 동기화하는 장면 snapshot의 정확 차이를 조회하고 원인 확인 후 한 번만 재검사. 종료 제한을 늘리거나 dirty 검사를 끄지 않음. 실제 사용자 프로필/프로세스와 설치205는 불변.
+
 # 156–164 — 원장·오디오·2D 리타게팅 — 2026-10-16
 
 새 격리 통합 검사: 미리듣기 입력은 선택 버스로 들어가므로 Master 선택 상태에서 Music 미터를 검사하던 fixture를 Music 선택으로 수정. 숨긴 창의 물리 키는 viewport focus가 없어 전달되지 않았으므로 실제 runtime.input 계약으로 변경했고 native Blend/Get/BP/Legacy까지 통과했다. 2초 Fade는 두 입력 RPC와 다음 조회 이전에 끝나므로 진단용 fixture Fade만6초로 두며 runtime/기존 deadline은 유지한다. ndE00a의 새 리타게팅 수동 폼은 자체 modal이 열린 채 shared authoring API를 호출해 automationEditable의 EDITOR_BUSY를 맞았다. 기존 머테리얼 추출과 같이 제출 때 modal을 닫고, 실패하면 동일 폼을 다시 열며 revision·Undo·공통 검증을 유지한다. 재현/실패 로그는 native/build에 보존한다. 통과한 GL 장면은 불변 소스라 다시 실행하지 않는다. 최종 Editor4JnYi1·D3D11 release R0IoBZ/development Z31BbY 및 설치 EXE가 오류0/종료0으로 통과했다. 릴리스는 캡처 금지를 유지하고 개발 빌드에서13676px 변형을 확인했다. 첫 Player fixture의 기본 WebGL2 프로필과 release 캡처 금지에 대한 잘못된 가정은 검사 설정/분기로 수정했으며 런타임 제한은 완화하지 않았다. 설치 검증의 잘못된 registry 기본값 조회식은 GetValue로 고쳤고 실제 연결/전체SHA/프로필/EXE를 재확인했다.

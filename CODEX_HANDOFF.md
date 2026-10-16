@@ -1,3 +1,15 @@
+# 현재 인계 — 206–209 구현·실제 실행 통과, 설치 갱신 준비
+
+중첩 Apply 대상/기본·변형·반복배치/상위 광역 오버라이드 분리/구조 추가삭제·ID/원자 Undo와 읽기 CAS, 회색·보기 전용 인스턴스 수정 표시·격자/표면/정점 스냅, 저장 전 프리팹 동기화 장벽, 골격 모델 변경/제거·독립 키 축약/현재시각 재바인딩/Seek/복원과 요청형 AI 포즈 페이지. 주요 소유자 prefab-apply.js, prefab-preview-context.js, sequence-state.js, engine-services.js.
+
+실제 증거: prefab-206-window-tgcEoG, prefab-207-window-rp5IN0, skeletal-209-window-ZkMInQ, skeletal-209-player-2B3TbP(WebGL), skeletal-209-player-d3d-PWfsDw(D3D11), CPU206 FGnuug/guard uNVYss/207ltqVXW/208BTrJSj/209oSTgYe. 각 acceptance.json. 기존169 CPU23/기본check/자산묶음 회귀 통과. DEBUG_HANDOFF에 테스트 실패와 저장 경합 원인/해결.
+
+다음 즉시: 한국어 구현 커밋→206–209 근거/정본 원장/등록 읽기/AI 문서 갱신→문서 커밋. 네이티브 소스 변경 없어 기존 배포 바이너리를 재사용하고 prototype/tools/docs를 동기화. 새 install209 원샷(205도구 재사용 실행 금지)을 만들어 현재 사용자 프로필 전후SHA·Versions1·링크2/.hbproject 검증. 설치 뒤 새 EXE에206/207/209 실제창 묶음 검사를 실행하고 전체파일 SHA·영수증 기록·푸시. 검사 캐시 공식정리. 여기서 끝내지 말고 정본 잔여의 다른 분야 구현도 계속.
+
+현재 설치205 1fadf9f7d5c394c8는 개발 중 불변. install205/finish205/docs200-205 실행완료·재실행금지. 새209 설치 도구 아직 없음. 전역39/34/2/3·추가부분은 partial 유지. 남음: 안쪽 C++/BP 참조 자료형의 적용 라우팅(안전거부), 정확한 장면 조명/대규모 조합, 네이티브 배열·spawn Take/PCMclock 등. 전체 UE/Unity 분석 gate 미승격, 물리·렌더·월드/모바일 잔여 삭제 금지.
+
+---
+
 # 현재 인계 — 200–205 사용자 설치 검증 완료·누적 잔여 계속
 
 설치 C:\Users\kirby\HBEngine\Versions\1fadf9f7d5c394c8\HBEngine.exe·source 4d7216e98db7c99aecea073282636e132d36ab3e·bundle 1fadf9f7d5c394c886d2d73da124b7fe242db3d123b1fbcf6a3c74ef1f495917·2614파일 실행후SHA동일. User10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변·Versions1·링크2/.hbproject. USER_INSTALL_205.json. install205/finish205 및 docs200-205 실행완료·재실행금지.
