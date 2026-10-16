@@ -256,3 +256,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 188: 9개 전용 제작 문맥 조작56개/총111 공용 단축키·프로필/AI·고정 키 우회 방지·실제 분리 창 입력/버튼·몽타주 focus와 late clipboard 소유권. 실제 제작/Undo/저장까지 검사, ENGINE_WORK_188.md/JSON.
+
+
+189: 비시간 노멀 그래프의 이전 Time 계산 특화. WebGPU 소스144B 호출 제거, 실제 GL 전체 링크 두 순서·D3D 컴파일/장시간 Time·3백엔드 픽셀/새 DirectX 게임 검증. 같은 프로그램/버퍼/가이드 수 유지. Complex141 초기 지연과 전체 FPS를 별도 잔여로 유지. ENGINE_WORK_189.md/JSON.

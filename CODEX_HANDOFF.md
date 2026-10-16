@@ -1,3 +1,11 @@
+# 189 비시간 가이드 특화 검증/Win32 빌드 완료 — 187–189 묶음 설치 직전
+
+1881fd8487 originpush/1874c3c429 originpush. 설치아직1860d173fc14c7b696a Versions1. 189제품·문서미커밋, docs189.mjs실행완료재실행금지. Time없는rayprogram은 ray.hasTime=false/previousNormalGPU노드호출미생성, 공용GLSL/HLSL기존HB_RAY_OP_2로이전Time호출제외. baselineWGSL48004→47860(강제Time보존변형48004). CPUvxhgEA PASS. static actualD3D QETCvO214.836ms/forcedoldTimevariantVHp9g3316.498ms/TimeLongSr0KGH319.69ms pixel모두5.93e-8. GL/GPUstaticPixelsA3t9J8/역순Y6oyCX PASS. GL full6programlinks 강제2732.8→정적2244.4ms, 역순정적2095/강제2584.1ms. 공유기하없는단일packet범위라과거Complex1419초해결/FPS라고주장금지. 최신Win32build40954 exit0후실제D3D게임VwWIZs PASS/Timehistory·atlas/source/compilecounts stable/errors0/exit0. old141/157/fullGPU생성 PASS. check187native --static/--force-time/--long-clock과window --static/--compile/--reverse추가(기본Time검사는유지). Testnativeopmask는생산과같이info.operations에서만define.
+
+다음: 189커밋push→dist proto/tools/docs/include/desktop최신동기(189binarybuild이미완료)→새install189를install186읽어복제(186직접재실행금지)→격리설치check188window최종heldStep+modifier+detachedtoolbar·187window --long-clock로GL/GPUTime회귀→프로필/명세/링크/연결/Versions1 영수증187188189모두연결→receiptpush→다음누적계속. 188 CPU8taFFxn/창M3A1Rf/embeddedblend-spaceu26nIZ·syncXEFBn3·CPPplayerFiHYup PASS. current56commands/111total/9contexts. 마지막heldStep은설치에서새로확인필수. RFxU18montage이미지실제시각검토했으며새설치PNG는아직.
+
+가능한다음190연구방향: geometry-gi collect의animated가graph최상위Time/Panner존재만봐서미연결Time노드도재포장하고,함수/레이어안Time을놓칠가능성. cachedRayMaterial/compileRayMaterial의함수해석/시간캐시키소유자부터읽고재현필요(아직조사·변경안함). 또는전역원장남은분야계속.
+
 # 188 실창/차트 회귀 완료 — 189 비시간 셰이더 이전 표본 특화 후 함께 설치
 
 188 CPU8 taFFxn / managed·modifier거절 window M3A1Rf PASS. actual 기존blend-space editoru26nIZ / sync editorXEFBn3 PASS (하위chart는parentgraph scope양보해sample/wire만Delete; globals·revisionguard유지). 기본CPP releasePlayerFiHYup PASS. 최신repeat태그는설치smoke에서heldStep명시확인필요. 188docs실행완료재실행금지. 다음188한국어커밋push→189Time가없는그래프가이전Time표본코드를생성하지않도록기존op2특화/실제컴파일과픽셀검증→187/188/189 묶음install189·검사·영수증push→다음누적계속. 설치아직186 Versions1.

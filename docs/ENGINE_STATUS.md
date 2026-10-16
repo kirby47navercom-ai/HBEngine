@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `4c3c429`
+갱신일: 2026-10-16 · 대조 기준 커밋: `1fd8487`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -69,7 +69,7 @@
 | RND-03 광원·HDRI·환경 액터 | verified | 래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 | 이 행의 범위는 검증됨 | [RASTER_LIGHTING_131.md](RASTER_LIGHTING_131.md) · [RENDERING_138.md](RENDERING_138.md) |
 | RND-04 GI·경로 추적·중첩 매질 | verified | 소프트웨어 기하 GI/경로 추적·매질·HDRI 표본 | 이 행의 범위는 검증됨 | [RENDERING_107.md](RENDERING_107.md) · [RENDERING_145.md](RENDERING_145.md) |
 | RND-05 굴절·코스틱·공간/시간/렌즈 필터 | partial | 굴절/색 투과·광자·이차 필터·변형 모션 이력 | 전역 곡면 역해 · 거친 복합 로브/참여 매질 산란의 정밀 확장 | [RENDERING_145.md](RENDERING_145.md) · [RENDERING_151.md](RENDERING_151.md) |
-| RND-06 초기 셰이더 준비 비용 | partial | GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 | 복잡 그래프 GL 첫 path 약7.9초/시간 가이드 약7.4초 추가 절감 · WebGPU 첫 path/약2초 가이드 추가 절감 | [RENDERING_145.md](RENDERING_145.md) · [RENDERING_151.md](RENDERING_151.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
+| RND-06 초기 셰이더 준비 비용 | partial | GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 | 복잡 그래프 GL 첫 path 약7.9초/시간 가이드 약7.4초 추가 절감 · WebGPU 첫 path/약2초 가이드 추가 절감 | [RENDERING_145.md](RENDERING_145.md) · [RENDERING_151.md](RENDERING_151.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) · [ENGINE_WORK_189.json](research/ENGINE_WORK_189.json) |
 | RND-07 이전 노멀·mip 이력 | partial | 이전 정점/노멀/UV 접선과 정적 노멀맵 복원 ·187: 불투명 Normal 전용 Time 그래프 이전 절대 시간·GPU 재표본/기존 TBN·실패/되감기 무효화·공용 프로그램/기존 버퍼·실제 3백엔드 픽셀/게임 | 월드/시점 의존 노멀 이전 입력·투명체 이전 굴절 분기·다른 시간 표면 필드 · 이전 mip footprint 보존 | [RENDERING_138.md](RENDERING_138.md) · [ENGINE_WORK_187.json](research/ENGINE_WORK_187.json) |
 | RND-08 DFAO·베이크·HWRT | unimplemented | — | 거리장 AO · Lightmass 계열 베이크/라이트맵 · 하드웨어 레이 트레이싱 가속 | [RENDERING_145.md](RENDERING_145.md) |
 

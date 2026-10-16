@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "4c3c429",
+  "basisRevision": "1fd8487",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -631,7 +631,7 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임",
       "remaining": [
         "복잡 그래프 GL 첫 path 약7.9초/시간 가이드 약7.4초 추가 절감",
         "WebGPU 첫 path/약2초 가이드 추가 절감"
@@ -639,12 +639,16 @@
       "sources": [
         "prototype/gl-path-preparation.js",
         "prototype/path-guide-gpu.js",
-        "prototype/path-guide-specialization.js"
+        "prototype/path-guide-specialization.js",
+        "prototype/ray-material-gpu.js",
+        "prototype/path-previous-normal-gpu.js",
+        "prototype/path-curved-guide.js"
       ],
       "evidence": [
         "docs/RENDERING_145.md",
         "docs/RENDERING_151.md",
-        "docs/ENGINE_WORK_156.md"
+        "docs/ENGINE_WORK_156.md",
+        "docs/research/ENGINE_WORK_189.json"
       ]
     },
     {
@@ -1565,5 +1569,5 @@
       ]
     }
   ],
-  "latestBatch": "188"
+  "latestBatch": "189"
 }

@@ -442,3 +442,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 188: editor.shortcuts.get.commands는 전용 scope·keys·when·repeat를 포함해요. when=notify는 선택 구간/핸들에서만 적용하며 repeat=true는 누른 채 이동할 수 있어요. 같은 editor.shortcuts.set expectedRevision/dryRun 및 사용자 프로필을 사용해요. 일반 창/분리 HWND가 같은 제작 명령을 사용해요.
+
+
+189: 기존 ray opcode 정보로 비시간 이전 노멀을 특화해요. profiler.read의 준비 단계·동시성·시간을 그대로 조회하며 새 GPU 읽기/변형 캐시나 다른 제작 API가 필요하지 않아요. 단일 가이드의 링크 시간과 전체 게임 프레임 시간을 구분해요.
