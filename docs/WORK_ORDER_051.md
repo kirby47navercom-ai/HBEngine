@@ -143,3 +143,7 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 기준2d563b7의 잔여39행 중20행에 제작·실행 구현을 추가했다. 단순 명칭이나 새 계획을 완료로 계산하지 않는다. 메시/지형/폴리지/LOD/내비·프리팹/쿠킹/패치·2D 리타게팅/규칙·베이크/녹화·GAS/EQS·지역화/ListView/DSP/VFX·공용AI 경로. 범위/검사/남은 세부: docs/ENGINE_WORK_165.md, docs/research/ENGINE_WORK_165.json, docs/ENGINE_STATUS.md. 설치 전환은 USER_INSTALL_165.json에 후속 기록한다.
 
 설치 확인: ef759067d9303b95, 2307파일 해시와 격리 설치본 실제 실행 통과. Versions1·프로필10385파일 보존. 이전 설치172041922B 정리. 구현 da8e6e9; 영수증 docs/research/USER_INSTALL_165.json.
+
+## 166 — 165의 세부 제작·실행 확장 (2026-10-16)
+
+메시 간선/용접/노멀/UV, 지형 holes/stamp, 폴리지 개별 편집, 가중 자동타일, 커브 구동/블렌딩/C++ getter, 컴포넌트 Take와 복원, 위젯 디자이너 지역화/스타일, 패치 저널/서명을 묶었다. 세부/실행/검사/남은 범위는 docs/ENGINE_WORK_166.md와 research/ENGINE_WORK_166.json. 기존 20행 중 9행 추가이며 상위 전체 완료로 승격하지 않았다. 설치/Versions1은 research/USER_INSTALL_166.json으로 기록한다.

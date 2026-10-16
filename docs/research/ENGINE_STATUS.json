@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "2d563b7",
+  "basisRevision": "7ab93a8",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -251,7 +251,7 @@
       "area": "editor",
       "title": "현지화·접근성",
       "status": "partial",
-      "implemented": "한국어/영어 검색과 DOM 기본 입력 접근 · 165: 문자열 테이블 편집·문화권/언어 fallback·포맷/복수·RTL·위젯 접근성 이름",
+      "implemented": "한국어/영어 검색과 DOM 기본 입력 접근 · 165: 문자열 테이블 편집·문화권/언어 fallback·포맷/복수·RTL·위젯 접근성 이름 · 166: 위젯 디자이너의 문화권 미리보기와 실행 공용 지역화/스타일 resolver",
       "remaining": [
         "편집기 자체 전체 번역 카탈로그",
         "전용 편집기 키보드/스크린리더·색약/배율 검증"
@@ -263,7 +263,8 @@
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -356,9 +357,9 @@
       "area": "2d",
       "title": "자동 타일·2.5D 제작 통합",
       "status": "partial",
-      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI",
+      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시",
       "remaining": [
-        "확장 규칙/랜덤 타일 및 대형 맵 증분 갱신",
+        "확장 이웃 규칙·대형 맵 청크 렌더/충돌 증분 재생성",
         "2.5D 제작 샘플·세 렌더 경로 품질 대조"
       ],
       "sources": [
@@ -368,7 +369,8 @@
       ],
       "evidence": [
         "docs/2D_RENDERING_SHORTCUTS.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -391,10 +393,10 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹",
       "remaining": [
-        "간선 선택·용접/bevel·추가 토폴로지 연산",
-        "UV 섬/패킹·커스텀 노멀 저작"
+        "bevel·bridge·edge loop 등 추가 토폴로지 연산",
+        "연속 UV 섬 편집·고급 패킹/심 저작"
       ],
       "sources": [
         "prototype/placement-catalog.js",
@@ -403,7 +405,8 @@
       ],
       "evidence": [
         "docs/ENGINE_PLAN.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -411,10 +414,10 @@
       "area": "world",
       "title": "지형 브러시·폴리지",
       "status": "partial",
-      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱",
+      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결",
       "remaining": [
-        "지형 holes/스탬프/텍스처 레이어·대규모 GPU 브러시",
-        "개별 폴리지 선택/변형·대규모 편집 성능"
+        "텍스처 지형 레이어·대규모 GPU 브러시/부분 버퍼 업로드",
+        "대규모 폴리지 선택/브러시 프레임·메모리 검증"
       ],
       "sources": [
         "prototype/scene-components.js",
@@ -423,7 +426,8 @@
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -725,9 +729,9 @@
       "area": "animation",
       "title": "골격 리타게팅·베이크",
       "status": "partial",
-      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생",
+      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 · 166: 커브 키 편집·속성/모프/머테리얼 구동·포즈 가중 혼합·C++/BP GetCurve·디버그 스냅샷",
       "remaining": [
-        "커브의 전체 런타임 구동/블렌딩·이름이 다른 모프 대응",
+        "이름이 다른 모프 매핑·대상간 정교한 보정",
         "임의 연산 스택·LOD/Avatar/Muscle",
         "정지 발·Stride/Pole/접촉"
       ],
@@ -737,7 +741,8 @@
       ],
       "evidence": [
         "docs/ANIMATION_RETARGET_072.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -763,9 +768,9 @@
       "area": "animation",
       "title": "시퀀스·녹화 제작",
       "status": "partial",
-      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI",
+      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약",
       "remaining": [
-        "컴포넌트 전 속성·오디오/골격 녹화",
+        "배열/구조체/동적 컴포넌트 생성삭제·오디오/골격 녹화",
         "전문 시네마틱 트랙·외부 동기화/베이크"
       ],
       "sources": [
@@ -775,7 +780,8 @@
       ],
       "evidence": [
         "docs/ANIMATION_TIMELINE_CONTROLS.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -973,7 +979,7 @@
       "area": "ui",
       "title": "복합/월드 UI·가상화·지역화",
       "status": "partial",
-      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK",
+      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기",
       "remaining": [
         "위젯 하위 조합/상속·월드 UI",
         "가변 행/트리 가상화·전체 입력/스크린리더 검증"
@@ -985,7 +991,8 @@
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -1131,7 +1138,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1142,7 +1149,8 @@
       ],
       "evidence": [
         "docs/LIGHTING_TOOLS_128.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {
@@ -1266,10 +1274,10 @@
       "area": "platform",
       "title": "번들·패치·협업/소스 관리",
       "status": "partial",
-      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI",
       "remaining": [
-        "전원 차단 복구 저널·서명/원격 패치 전달",
-        "에셋 diff/merge·VCS 작업 UI"
+        "실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포",
+        "파일/폴더 형태 전환·에셋 diff/merge·VCS 작업 UI"
       ],
       "sources": [
         "tools/build-game.mjs",
@@ -1278,7 +1286,8 @@
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_166.json"
       ]
     },
     {

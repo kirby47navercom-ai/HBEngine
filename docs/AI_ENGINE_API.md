@@ -363,3 +363,7 @@ SDK Materials::SetTexture에서 생성된 materialTexture 노드는 target(objec
 2026-10-16: rig.clip.retarget {path,expectedRevision,source,sourceRevision?,clip,mapping?,positionMode?,name?,dryRun?}는 수동 2D 리타게팅과 같은 변환/Undo를 쓴다. mapping은 {source,target} 안정 ID 배열, 생략하면 뼈 이름을 맞춘다. 이동 boneLength/relative/none; 같은 부모 계층을 검증한다. source의 열린 초안이 우선이며 files.get의 editorRevision 또는 revision을 기준으로 보호할 수 있다. 결과 clip은 기존 SpriteSkin/AnimationGraph/C++/BP 재생 경로를 쓴다.
 
 AudioMixer::SetSnapshotTransition/ClearSnapshotTransition과 BP mixerSetTransition/mixerClearTransition은 런타임 사본을 바꾼다. 저작 자료는 snapshots[].transitions[bus][parameter]이고, 값 '' 대신 필드를 지우면 상속한다. 숫자는 네 연속 곡선/stepStart/stepEnd, bool은 step 두 종류다. 가중 혼합은 각 대상의 곡선을 가중하며 이미 진행 중인 계획은 바꾸지 않는다. runtime.audio.mixers[].transition.parameterOverrides는 요청 시만 생성한다.
+
+## 166 — 월드 세부 저작·커브·패치
+
+world.mesh.edit의 operation은 간선 splitEdges, weld(tolerance/preserveUV), duplicateFaces, flatNormals/smoothNormals/setNormals(normal), uvPack(padding)를 추가 지원한다. world.terrain.brush의 hole/fillHole/stamp는 같은 자산/충돌 자료를 바꾼다. world.foliage.edit는 안정 ID의 transform/duplicate/delete를 수행한다. 모두 expectedRevision/dryRun/Undo 계약을 유지한다. 커브와 component sequence track 예제·서명/복구 patch CLI는 [166](ENGINE_WORK_166.md)에 있다.

@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "7ab93a8",
+  "scope": "165의20대상 중9개 원장의 세부 저작/실행 확장; 상위 전체 완료 승격 없음",
+  "targetIds": [
+    "WLD-02",
+    "WLD-03",
+    "2D-06",
+    "ANM-04",
+    "ANM-06",
+    "EDT-07",
+    "UI-03",
+    "AI-03",
+    "BLD-06"
+  ],
+  "parentRowsCompleted": 0,
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 31,
+      "unimplemented": 5,
+      "unverified": 3
+    },
+    "completionPercent": null
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/batch-166-kVc8xi/report.json",
+      "sha256": "b7f8e9717bb51c23bbc24cae76775219ee8544779a476c00685e20dc22c01f09",
+      "summary": {
+        "passed": 12,
+        "groups": 12
+      }
+    },
+    "previous": {
+      "path": "native/build/batch-165-4AmVSr/report.json",
+      "sha256": "2065e6693eac05252452c000da2488cdb3e12204113da905293e395e609952b5",
+      "summary": {
+        "passed": 17,
+        "groups": 17
+      }
+    },
+    "runtime": {
+      "path": "native/build/batch-166-runtime-JvmKs9/acceptance.json",
+      "sha256": "4028089d548c953cbbea4c9f7370a86aa5515510f563bb091829e817cd1ee3da",
+      "summary": {
+        "passed": true,
+        "curveHeat": 0.7333333492279053
+      }
+    },
+    "editor": {
+      "path": "native/build/batch-166-window-sVzM5y/acceptance.json",
+      "sha256": "7552176d373d3c9f079acf4e65b9486ff744011aba09bb03215e5e9f8e59724c",
+      "summary": {
+        "passed": true,
+        "ui": [
+          "mesh",
+          "terrain",
+          "foliage",
+          "lod",
+          "ability",
+          "effect",
+          "environmentquery",
+          "stringtable",
+          "uistyle",
+          "navmesh",
+          "skeletalclip",
+          "widget"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "curveHeat": 1
+      }
+    },
+    "development": {
+      "path": "native/build/batch-166-player-nnZPZg/acceptance.json",
+      "sha256": "ad6c1c1533bfa74e9c20d0ff1db87c05945989c9d4f73b1c01003d5b2f71a008",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "automaticReadbacks": 0,
+        "curveHeat": 0.21889999508857727
+      }
+    },
+    "release": {
+      "path": "native/build/batch-166-player-2ut3GN/acceptance.json",
+      "sha256": "16cdae3dbbe59829e4790a3740da3882522add30b2a66bfb5b6e1f81f07b53b1",
+      "summary": {
+        "passed": true,
+        "configuration": "release",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "automaticReadbacks": 0,
+        "curveHeat": 0.2093999981880188
+      }
+    },
+    "performance": {
+      "path": "native/build/batch-166-player-wq85Fk/acceptance.json",
+      "sha256": "782e4e60410796a50af7c86af5ece20a2ed4a0efb8699acde474f45c15388f31",
+      "summary": {
+        "targetFrameRate": 120,
+        "budgetMs": 8.333333333333334,
+        "overBudget": 1,
+        "frames": 184,
+        "fps": 113.90367710741678,
+        "intervalMs": {
+          "mean": 8.77934782611935,
+          "p50": 8.5,
+          "p95": 9.5
+        },
+        "workMs": {
+          "mean": 2.5266304338431875,
+          "p50": 2,
+          "p95": 2.6000000089406967
+        },
+        "simulationMs": {
+          "mean": 2.030978259994932,
+          "p95": 2
+        },
+        "renderSubmissionMs": {
+          "mean": 0.4576086959113245,
+          "p95": 0.6000000089406967
+        },
+        "over16ms": 1,
+        "over33ms": 1,
+        "observation": {
+          "frames": 185,
+          "time": 1.625999725714326,
+          "drawCalls": 4
+        },
+        "scope": "동일 비교 기준 없는 180프레임 소규모 실제 릴리스 장면 관찰. 일반/대형/모바일 보장 아님"
+      }
+    }
+  },
+  "regressions": {
+    "core": true,
+    "native": true,
+    "uiAudio": true,
+    "gameplayWorkflow": true,
+    "animationRetarget": true,
+    "apiSignature": true,
+    "diffWhitespace": true
+  },
+  "limitations": [
+    "지형 GPU 브러시/부분 업로드 및 대형 맵 청크 렌더/충돌 재생성 미구현",
+    "Take 배열/구조체/동적 생성삭제·오디오/골격 녹화는 별도",
+    "메시 bevel/연속 UV섬·서로 다른 모프 이름 매핑·위젯 상속/월드UI 남음",
+    "패치 실제 전원차단/디스크장애/원격전달/키배포 미검증; 파일↔폴더 형태 전환은 선행 거부",
+    "Android실기기/Mac 없음; 모바일/엔진전체 성능 완료 주장 없음"
+  ],
+  "sourceHashes": {
+    "prototype/mesh-topology.js": "d6a6b41ffbbc5fb3ef0a188623b22450166b27f49ceff0fa8d54d2aa4ffb7c3f",
+    "prototype/world-assets.js": "e8cf6188fde1e17dadec3da1ba26dd8b9dcea749201acd768a4a4ad8f9e751f5",
+    "prototype/world-rendering.js": "dd16362d07833e6bebeaec87d30afed029aa4af4a3be20bbc7d984e2c549e502",
+    "prototype/take-recorder.js": "3b7ee6878c733aab7242d0978fda70e321684a78d07369932c9c2c1d15a20641",
+    "prototype/sequence-properties.js": "db61d2a85816e4ddc4bab7026b24751a3514b358282090d1ac95a8f39f3f8d2a",
+    "prototype/animation-graph-runtime.js": "66c6ab8a32f795e05735214000a05f6aceda2dd70e7329c506a8a8992b65c91b",
+    "prototype/widget-presentation.js": "ab2c1d28e91b879d016ca6a54a02a870f7439289dec54e77a5e3e6ccae38577e",
+    "tools/content-patch.mjs": "4e6ab0db3fe44aa81cd81e5aac516cd64335bfb0e2875b2e65dc1050617b3982"
+  }
+}

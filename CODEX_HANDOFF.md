@@ -1,15 +1,13 @@
-# HBEngine — 165 — 2026-10-16
+# HBEngine — 166 — 2026-10-16
 
-현재 지시: 짧은 기능 하나로 끝내지 말고 누적 잔여를 큰 묶음으로 구현·검사·설치 갱신. 사용자 요구는 AI와 사람 모두 다루기 쉬운 가벼운 C++/Win32/DirectX 자체 2D·2.5D·3D 엔진. 한국어 커밋/푸시, 사용자 작업/프로필 보호, Versions1.
+현재 요청: 165의20항목 남은 세부를 여러 개 묶어 제작/실행·마지막 검사·사용자 설치 갱신. AI 친화성/가벼움/Versions1 유지. 한국어 존댓말 주인님/짚짱. 한글 커밋·푸시, 사용자 창/프로필/게임 보호. 에이전트 추가 요청 없음.
 
-165 묶음은 기준2d563b7 잔여39행 중20행에 실제 제작/실행을 추가했다. 상위 행 전체 완료로 승격하지 않았다. 현재 등록78행: verified39 / partial31 / unimplemented5 / unverified3. 전체 corpus/API 분석 gate 미통과. 전체 기능 완료율은 미확정.
+166 구현: 메시 간선 선택/분할·용접/면복제·노멀/면별UV, 지형 holes/fill/stamp와 제한 영향 계산, 안정ID 폴리지 개별변환/복제/삭제, 가중 자동타일/인접 사본/회전프리뷰, 커브 편집/포즈혼합/속성·모프·머테리얼 구동 및 C++/BP GetCurve, 기본 컴포넌트 Take/속성 트랙/복원·비재귀축약, 위젯 디자이너 locale/style 공용resolver, Ed25519/복구저널 증분패치.
 
-최신 단일 기준: docs/ENGINE_STATUS.md + docs/research/ENGINE_STATUS.json. 20행 범위·제약·사용 경로: docs/ENGINE_WORK_165.md. 계획/기계 검사: docs/research/BATCH_165_PLAN.json, ENGINE_WORK_165.json. 구현 커밋 da8e6e9. 사용자 설치 C:/Users/kirby/HBEngine/Versions/ef759067d9303b95 전환 완료. USER_INSTALL_165.json에 실제 설치/실행/2307 파일 해시를 기록했다. 이전16e137715970d7cd 172041922B 정리, Versions1. 사용자 프로필10385파일 SHA 보존. 루트/바탕 화면 바로가기와 .hbproject 연결도 새 설치로 전환했다.
+상세 docs/ENGINE_WORK_166.md + research/ENGINE_WORK_166.json. 165의20대상 중9부모행에 추가했으며 부모전체 완료0. 단일 원장 ENGINE_STATUS.json/md,78행 verified39/partial31/unimplemented5/unverified3. 전체 UE/Unity 분석 gate false/전체완료율 미확정. 지정 본문은 corpus supplemental166, 연결 API/미디어 미독 보존.
 
-추가 구현: glTF/GLB/OBJ 하위ID/override, 쿠킹 캐시, 프리팹 상속/중첩/override; 메시·지형·폴리지·LOD 전용 제작과 충돌; 삼각 NavMesh/링크/국소 군중 회피; 2D 계층 포즈 베이크/자동 타일; 모프/커브/notify 베이크 보존/Take; 능력/효과/속성/비용/쿨다운/태그/주기; EQS/일반 병렬; 지역화/스타일/가상 목록; DSP/send; GPU 시트/이미터 리본/하위 수명; AI 전용 명령; 오프라인 증분 압축 패치.
+검사: 새12군/165회귀17군, core/native/UI-audio/gameplay/retarget/API. 실제C++ curveHeat, 숨김Editor12종/폴리지Undo/위젯en/컴포넌트Take, WebGPU/PCM, dev/release D3D11 Player. 소규모릴리스185frame 평균work2.53ms/p95 2.60ms,113.90fps(초기포함, 일반보장아님). 설치는 현재 전환 준비 중; 완료 뒤 USER_INSTALL_166.json과 이 문서 설치 경로를 갱신한다. 빌드와 실제EXE실행을 동시에 하면 dist runtime/node.exe 잠김; 순차로 실행한다.
 
-검사: check-batch-165 17검사군; runtime 실제 C++/BP/하위이미터 생성/해제; 숨김 실제 Editor10종/브러시 Undo/10만행 DOM11개/언어/실제 PCM/Take버튼; WebGPU 실제 파이프라인 CPU 입자/읽기0; D3D11 시트 적/청 실제픽셀; 개발/릴리스 독립 D3D11 플레이어와 릴리스 캡처차단. 기존 core/native/UI-audio/gameplay/retarget 회귀 통과. 상세 영수증 경로/SHA는 ENGINE_WORK_165.json. 원본 게임·사용자 창/프로필에 검사하지 않았다.
+소유자: mesh-topology/world-assets/world-rendering/world-asset-editor, sequence-properties/take-recorder/gameplay-runtime, animation-curve-sampler/animation-graph-runtime, widget-presentation/ui-editor/ui-runtime, tools/content-patch.mjs. schema/SDK/AI same owners. 새dependency·상시poll·GPU자동readback 없음. tools/check-batch-166[-runtime/-window/-player].mjs 재현. player --release --performance는 짧은185frame관찰, window --executable 경로 --smoke-only는 설치 실제 기동.
 
-다음에는 원장의 parentScopeRemaining을 계속 구현한다. 메시 간선/용접/bevel·UV, GPU 대형 지형/holes/foliage개별편집, 애니메이션/충돌LOD, 동적 NavMesh/RVO, 전체 압축 쿠킹, 인스턴스 prefab override병합, network ability prediction, particle별 GPU events/ribbon, 전체 컴포넌트 Take, world UI/접근성, native DSP/sidechain, patch crash journal/VCS 및 원장의 다른19행도 남아 있다. 이미 추가한 작은 범위를 되풀이하거나 재조사만으로 완료를 만들지 않는다.
-
-Android 실제 휴대폰 없음, Mac/Xcode 없음. 이전 PC/Android/iOS/Web 구현과 미검증을 구분한다. 새 업데이트는 user install tool로만 하고 사용자 설치를 개발 중 직접 수정하지 않는다. 무거운 중복 검사/프로필/빌드/버전을 쌓지 않는다. tools/test-artifacts.mjs 정리와 실행 중 경로 보호를 유지한다.
+다음: 여전히 메시bevel/연속UV, 지형텍스처/GPU/부분전송, LOD/동적Nav, import/cook/prefab 세부, 다른모프mapping/고급리타게팅, audio/skeletal/구조체Take, ability network/GPU별입자event, 위젯world상속/nativeDSP, patch전원차단/원격/키배포/VCS 등 최신 원장 remaining. 작은완료범위를 전체완료로 보고하지 않는다. Mac/Xcode·Android기기 없음. 누적과 남은19행도 유지.

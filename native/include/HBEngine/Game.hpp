@@ -385,6 +385,7 @@ public:
 HB_CLASS()
 class AnimationGraph : public Library {
 public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphGetCurve", KoreanName="애니메이션 커브 값", Category="애니메이션 그래프") static float GetCurve(Actor* target,const std::string& key);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRetargetSource", KoreanName="리타게팅 원본 골격 지정", Category="애니메이션 그래프") static void SetRetargetSource(Actor* target,const std::string& node,Actor* source);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRetargetSetProfile", KoreanName="리타게팅 프로필 지정", Category="애니메이션 그래프") static void SetRetargetProfile(Actor* target,const std::string& node,const std::string& value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRetargetWeight", KoreanName="리타게팅 가중치 지정", Category="애니메이션 그래프") static void SetRetargetWeight(Actor* target,const std::string& node,float value);

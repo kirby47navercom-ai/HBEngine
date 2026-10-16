@@ -379,3 +379,7 @@ PBRT4 Conductor BRDF 자체 반사 반구·microfacet 방향 Jacobian·BRDF/PDF 
 ## 151–155 — 비차단 GL 준비와 bind XYZ 제작 계약
 
 Three WebGLRenderer compile/compileAsync/properties/debug, MDN KHR 완료 상태/지원 없는 fallback·총 링크 시간, Three CCDIK BoneLink/update와 설치 r180 프로그램 수명/rotationMin·Max 지정 소스를 읽어 비교했다. bind 상대 canonical XYZ는 HB 고유 계약으로 구별한다. 연결된 Khronos 전체 사양/API/엔진 문서 전체는 미독이며 manifest supplement에 등록했다. [구현·실제 실행·남은 범위](../RENDERING_151.md). 전체 discovery/본문/API gate를 올리지 않는다.
+
+## 166 — 지정 제작 본문 재대조
+
+UE5.8 PolyGroup Edit 선택/조작, Animation Curves 구동 종류/키, Take Recorder sources/Actor component recorded properties, Unity6000.4 terrain holes 브러시 본문과 Node crypto.sign Ed25519 구역을 조회·대조했다. 연결 reference/API/미디어 전체와 전원 차단 플랫폼 내구성은 미독/미검증으로 구별했다. supplemental166과 scopeExpansionPending에 범위를 등록했다. [166 구현/차이/실행 증거](../ENGINE_WORK_166.md). 전체 본문·API gate를 승격하지 않는다.

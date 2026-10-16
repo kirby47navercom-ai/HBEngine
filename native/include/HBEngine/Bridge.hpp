@@ -398,6 +398,7 @@ inline void AnimationGraph::Stop(Actor* target){engineCommand("animGraphStop",{{
 inline void AnimationGraph::Pause(Actor* target,bool paused){engineCommand("animGraphPause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void AnimationGraph::SetFloat(Actor* target,const std::string& key,float value){engineCommand("animGraphSetFloat",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}
 inline void AnimationGraph::SetBool(Actor* target,const std::string& key,bool value){engineCommand("animGraphSetBool",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}
+inline float AnimationGraph::GetCurve(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("curves").value(key,0.0f);}
 inline float AnimationGraph::GetFloat(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<float>();}
 inline bool AnimationGraph::GetBool(Actor* target,const std::string& key){return gameplayField(target,"animationGraph").at("parameters").at(key).get<bool>();}
 inline void AnimationGraph::SetInteger(Actor* target,const std::string& key,int value){engineCommand("animGraphSetInt",{{"target",bridgeId(target)},{"key",key},{"value",value}});gameplayField(target,"animationGraph")["parameters"][key]=Json(value);}

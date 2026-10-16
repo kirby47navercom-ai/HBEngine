@@ -2772,7 +2772,8 @@
     "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units.",
     "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification.",
     "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled.",
-    "165: Register/reconcile each linked API, image/media, terrain/LOD/Prefab/localization/UI virtualization/audio DSP/GAS/EQS source. Selected body contracts and HB implementation do not close the global corpus."
+    "165: Register/reconcile each linked API, image/media, terrain/LOD/Prefab/localization/UI virtualization/audio DSP/GAS/EQS source. Selected body contracts and HB implementation do not close the global corpus.",
+    "166: PolyGroup operations/reference/media, Unity6000.4 terrain/mask API, animation curve retarget/morph APIs, Take recorder sources and Node crypto/fs platform durability remain independently scoped."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -2788,6 +2789,18 @@
       "https://dev.epicgames.com/documentation/en-us/unreal-engine/environment-query-system-in-unreal-engine"
     ],
     "scope": "selected body sections; linked APIs/images/media not fully read",
+    "globalGatePromotion": false
+  },
+  "supplemental166": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/polygroup-edit-tool-in-unreal-engine",
+      "https://docs.unity3d.com/6000.4/Documentation/Manual/terrain-PaintHoles.html",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curves-in-unreal-engine",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine",
+      "https://nodejs.org/api/crypto.html#cryptosignalgorithm-data-key-callback"
+    ],
+    "scope": "selected body sections: selection/weld, terrain visibility/collision, curve targets, component recording, Ed25519 signing; linked APIs/media not fully read",
     "globalGatePromotion": false
   }
 }

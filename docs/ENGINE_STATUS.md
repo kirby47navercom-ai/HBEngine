@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `2d563b7`
+갱신일: 2026-10-16 · 대조 기준 커밋: `7ab93a8`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -36,7 +36,7 @@
 | EDT-04 계층·컴포넌트 제작 | verified | 계층/부모·복제/그룹·등록 컴포넌트 속성 편집 | 이 행의 범위는 검증됨 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 | EDT-05 Undo·단축키·재지정 | partial | 문서별 Undo와 등록 조작 단축키/설정 | 모든 전용 편집기 조작의 재지정·포커스/텍스트 입력 충돌 대조 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 | EDT-06 프로젝트 제작 도구 확장 | verified | 데이터 도구 에셋·입력 바인딩·동일 명령/Undo 실행 | 이 행의 범위는 검증됨 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) |
-| EDT-07 현지화·접근성 | partial | 한국어/영어 검색과 DOM 기본 입력 접근 · 165: 문자열 테이블 편집·문화권/언어 fallback·포맷/복수·RTL·위젯 접근성 이름 | 편집기 자체 전체 번역 카탈로그 · 전용 편집기 키보드/스크린리더·색약/배율 검증 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| EDT-07 현지화·접근성 | partial | 한국어/영어 검색과 DOM 기본 입력 접근 · 165: 문자열 테이블 편집·문화권/언어 fallback·포맷/복수·RTL·위젯 접근성 이름 · 166: 위젯 디자이너의 문화권 미리보기와 실행 공용 지역화/스타일 resolver | 편집기 자체 전체 번역 카탈로그 · 전용 편집기 키보드/스크린리더·색약/배율 검증 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 2D·2.5D
 
@@ -47,15 +47,15 @@
 | 2D-03 마스크·윤곽선·정렬·픽셀 정렬 | verified | 스프라이트/타일/입자 마스크와 효과·정렬 | 이 행의 범위는 검증됨 | [GPU_2D_052.md](research/GPU_2D_052.md) · [GPU_EFFECTS_054.md](research/GPU_EFFECTS_054.md) |
 | 2D-04 2D 골격·세 IK·각도 제한 | verified | Sprite rig·skin·Limb/CCD/FABRIK와 bind 각도 제약·8개 BP Return 핀과 C++ 실제 조회 대조 | 이 행의 범위는 검증됨 | [2D_IK_CONSTRAINTS_074.md](2D_IK_CONSTRAINTS_074.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
 | 2D-05 2D 전용 리타게팅 | partial | 같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 | 자동 체인 대응과 외부 actor IK 목표 베이크 · 임의 제약/정지 발의 전체 재표본화 검증 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
-| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI | 확장 규칙/랜덤 타일 및 대형 맵 증분 갱신 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 | 확장 이웃 규칙·대형 맵 청크 렌더/충돌 증분 재생성 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 월드 제작
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | WLD-01 도형 배치·월드 편집 | verified | 원시 도형·광원·카메라·환경 액터 배치/속성 | 이 행의 범위는 검증됨 | [ENVIRONMENT_ACTORS_RESEARCH.md](ENVIRONMENT_ACTORS_RESEARCH.md) |
-| WLD-02 폴리곤·메시 저작 | partial | 기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 | 간선 선택·용접/bevel·추가 토폴로지 연산 · UV 섬/패킹·커스텀 노멀 저작 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
-| WLD-03 지형 브러시·폴리지 | partial | 165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 | 지형 holes/스탬프/텍스처 레이어·대규모 GPU 브러시 · 개별 폴리지 선택/변형·대규모 편집 성능 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| WLD-02 폴리곤·메시 저작 | partial | 기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 | bevel·bridge·edge loop 등 추가 토폴로지 연산 · 연속 UV 섬 편집·고급 패킹/심 저작 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
+| WLD-03 지형 브러시·폴리지 | partial | 165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 | 텍스처 지형 레이어·대규모 GPU 브러시/부분 버퍼 업로드 · 대규모 폴리지 선택/브러시 프레임·메모리 검증 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 | WLD-04 LOD 제작·전환 | partial | 165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 | 애니메이션/충돌 LOD 저작과 전환 · 고품질 단순화·교차 페이드·품질 대조 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
 | WLD-05 월드 분할·레벨 스트리밍 | unimplemented | — | Additive 로드/언로드 · 셀·액터 수명·참조·물리/스크립트 합류와 재진입 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) |
 | WLD-06 내비게이션·군중 | partial | 평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 | 동적 타일·장애물 carving·에이전트 NavArea · 정밀 funnel/반경 오프셋·RVO/Mass 군중 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
@@ -88,9 +88,9 @@
 | ANM-01 그래프·Blend Space·상태·슬롯 | verified | 선택/상태·혼합/레이어·동기·notifies·몽타주 슬롯 | 이 행의 범위는 검증됨 | [ANIMATION_GRAPH.md](ANIMATION_GRAPH.md) · [ANIMATION_MONTAGE_SLOTS.md](ANIMATION_MONTAGE_SLOTS.md) · [ANIMATION_ENUM_SELECTION_069.md](ANIMATION_ENUM_SELECTION_069.md) |
 | ANM-02 루트 모션 | verified | 클립/몽타주 추출·모드·물리/중력·2D/3D 이동 | 이 행의 범위는 검증됨 | [ANIMATION_ROOT_MOTION_070.md](ANIMATION_ROOT_MOTION_070.md) |
 | ANM-03 3D IK·bind XYZ 제약 | verified | Two Bone/FABRIK/CCD·공간/대상·기준 포즈 제한·SDK/BP | 이 행의 범위는 검증됨 | [ANIMATION_JOINT_LIMITS_154.md](ANIMATION_JOINT_LIMITS_154.md) · [RENDERING_151.md](RENDERING_151.md) |
-| ANM-04 골격 리타게팅·베이크 | partial | 리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 | 커브의 전체 런타임 구동/블렌딩·이름이 다른 모프 대응 · 임의 연산 스택·LOD/Avatar/Muscle · 정지 발·Stride/Pole/접촉 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| ANM-04 골격 리타게팅·베이크 | partial | 리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 · 166: 커브 키 편집·속성/모프/머테리얼 구동·포즈 가중 혼합·C++/BP GetCurve·디버그 스냅샷 | 이름이 다른 모프 매핑·대상간 정교한 보정 · 임의 연산 스택·LOD/Avatar/Muscle · 정지 발·Stride/Pole/접촉 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 | ANM-05 Full Body IK·Control Rig | unimplemented | — | 다중 체인/관절 연결 솔버 · 리그 저작·컨트롤·기즈모·재생/베이크 | [ANIMATION_IK_071.md](ANIMATION_IK_071.md) · [RENDERING_151.md](RENDERING_151.md) |
-| ANM-06 시퀀스·녹화 제작 | partial | 시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI | 컴포넌트 전 속성·오디오/골격 녹화 · 전문 시네마틱 트랙·외부 동기화/베이크 | [ANIMATION_TIMELINE_CONTROLS.md](ANIMATION_TIMELINE_CONTROLS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| ANM-06 시퀀스·녹화 제작 | partial | 시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 | 배열/구조체/동적 컴포넌트 생성삭제·오디오/골격 녹화 · 전문 시네마틱 트랙·외부 동기화/베이크 | [ANIMATION_TIMELINE_CONTROLS.md](ANIMATION_TIMELINE_CONTROLS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 물리
 
@@ -127,7 +127,7 @@
 |---|---|---|---|---|
 | UI-01 위젯·레이아웃·SVG·입력 | verified | 전용 위젯·모서리/배율/안전 영역·SVG·한글·포커스/이벤트 | 이 행의 범위는 검증됨 | [UI_SCALING_SVG.md](UI_SCALING_SVG.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |
 | UI-02 모바일 조작 UI | verified | 조이스틱·방향/버튼·동시 터치·해제·안전 영역 | 이 행의 범위는 검증됨 | [INPUT_MOBILE_POOL.md](INPUT_MOBILE_POOL.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |
-| UI-03 복합/월드 UI·가상화·지역화 | partial | 기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK | 위젯 하위 조합/상속·월드 UI · 가변 행/트리 가상화·전체 입력/스크린리더 검증 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| UI-03 복합/월드 UI·가상화·지역화 | partial | 기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 | 위젯 하위 조합/상속·월드 UI · 가변 행/트리 가상화·전체 입력/스크린리더 검증 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 오디오
 
@@ -152,7 +152,7 @@
 |---|---|---|---|---|
 | AI-01 원자적 여러 문서 편집 | verified | revision·dryRun·document.patch/files.apply·Undo 공용 계약 | 이 행의 범위는 검증됨 | [AI_ENGINE_API.md](AI_ENGINE_API.md) · [AI_ASSET_TRANSACTIONS_041.md](research/AI_ASSET_TRANSACTIONS_041.md) |
 | AI-02 코드/기능 상태 최신 조회 | verified | 안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 | 이 행의 범위는 검증됨 | [ENGINE_STATUS.md](ENGINE_STATUS.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 디버깅
 
@@ -170,7 +170,7 @@
 | BLD-03 iOS 원격 빌드·시뮬레이터 | verified | Xcode 두 대상·C++/물리/UI·반복 오디오·백그라운드 복귀 | 이 행의 범위는 검증됨 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) |
 | BLD-04 실제 휴대폰·스토어 배포 | unverified | 모바일 출력/빌드 경로 있음 | 실물 기기 설치/열/배터리/음향 · Apple 서명·IPA/TestFlight·스토어 배포 | [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |
 | BLD-05 모바일 편집기 | unimplemented | — | 프로젝트 저장/복구·터치 편집·모바일 C++ 제작 제약 · 실제 Android/iOS 에디터 앱 | [MOBILE_EDITOR_BODY_012.md](research/MOBILE_EDITOR_BODY_012.md) |
-| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI | 전원 차단 복구 저널·서명/원격 패치 전달 · 에셋 diff/merge·VCS 작업 UI | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI | 실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포 · 파일/폴더 형태 전환·에셋 diff/merge·VCS 작업 UI | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 
 ## 성능·용량
 

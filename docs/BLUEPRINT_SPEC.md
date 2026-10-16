@@ -435,3 +435,7 @@ ParticleSystem의 기존 제작 속성과 particlePlay/Stop/Pause/Emit/Count, C+
 ## 119 — 모션 재투영·이차 렌즈 공용 경로
 
 118의 시간/렌즈 필터와 DOF/초점 속성을 그대로 사용한다. CPP Get/SetFloat·SetBool, 컴포넌트 속성 BP, 상세 속성·AI revision patch가 같은 값을 편집한다. 모션 재투영은 같은 속성에서 자동 적용되며 별도 AI 설정이나 노드 복제는 없다. 포장·실제 창·원본 복원·설치 증거와 국소 근사 범위는 [119](RENDERING_119.md)를 따른다.
+
+## 166 — 애니메이션 커브와 속성 Take
+
+AnimationGraph::GetCurve/animGraphGetCurve는 같은 포즈 혼합 결과의 named curve를 조회한다. 커브 저작/모프/머테리얼 구동·Take 기본 컴포넌트 키는 기존 그래프/시퀀스 실행을 쓴다. 실제 C++·블루프린트 실행과 범위는 [166](ENGINE_WORK_166.md), 남은 상위 범위는 단일 상태 원장을 따른다.
