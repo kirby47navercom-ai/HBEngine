@@ -67,6 +67,16 @@ public:
     static Json GetTable(const std::string& path,const std::string& rowId){return Json::parse(GetTableText(path,rowId));}
 };
 HB_CLASS()
+class Network : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="netConnect", KoreanName="네트워크 연결", Category="네트워크") static void Connect(Actor* target,const std::string& endpoint,const std::string& accessKey,bool authority);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="netDisconnect", KoreanName="네트워크 연결 종료", Category="네트워크") static void Disconnect(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="netRPC", KoreanName="네트워크 RPC 전송", Category="네트워크") static void SendRPC(Actor* target,const std::string& event,const std::string& json,bool multicast);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="netSetOwner", KoreanName="네트워크 소유권 지정", Category="네트워크") static void SetOwner(Actor* target,const std::string& peer);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="netInfo", KoreanName="네트워크 상태 JSON", Category="네트워크") static std::string GetStateText(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="netAuthority", KoreanName="네트워크 권한 확인", Category="네트워크") static bool HasAuthority(Actor* target);
+};
+HB_CLASS()
 class Audio : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioVoiceBudget", KoreanName="음성 예산 설정", Category="오디오") static void SetVoiceBudget(Actor* target,int real,int tracked);

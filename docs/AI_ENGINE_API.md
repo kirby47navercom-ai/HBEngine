@@ -393,3 +393,10 @@ scene.prefab.adopt {path,expectedRevision,object,ids?,dryRun?}는 루트 아래 
 world.mesh.edit의 operation은 uvCut/uvTransform/uvUnwrap/uvPackIslands를 추가한다. settings는 faces,wholeIsland,offset:[u,v],scale:[u,v],rotation:도,padding을 받는다. world.mesh.uv.view {path,expectedRevision?,open?,center?,zoom?,faces?,fit?}는 카메라/선택을 조회·설정하며 에셋 revision/Undo를 바꾸지 않는다.
 
 anim.ik.bone.add/remove는 effector 명령과 같은 path/expectedRevision/node/dryRun을 받는다. add.settings는 bone/rotationStiffness/positionStiffness/preferredAngle, remove는 bone이다. 루트 외의 양의 positionStiffness는 거부한다. AudioListener/Source/오디오 에셋은 기존 schema/document.patch/Undo를 쓴다. C++/BP 루트·회전3과 음성 예산·우선순위·실제/가상 조회4를 공유한다. 총767노드. getter 관측은 명령 적용 후 프레임 기준이다. [세부](ENGINE_WORK_170.md).
+
+
+## 171 — 실행 중 C++과 네트워크·추가 제작
+
+`native.reapply {path,dryRun?}`는 실행 중인 C++ 블루프린트의 실제 소스에서 호환성을 검사한다. dryRun은 빌드/월드 변경 없이 검사한다. 실제 적용은 기존 공개 속성·월드·BP 상태를 유지하며 비공개/정적 C++ 저장소와 네이티브 타이머는 재생성된다. 타입/기존 함수 시그니처 변경과 빌드 중 소스 변경은 거부한다. `runtime.network`는 연결·소유권·sequence/RPC 진단만 읽는다.
+
+Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·우선순위, LOD collisionLevel, 위젯 TreeView/variableRows/selectedItemId/listItems의 `id/children/height`, retarget 프로필 morphMappings의 `source/sourceMesh/target/targetMesh/scale/offset/min/max`, ability/effect cues의 `tag/event/on`은 기존 schema/document.patch/expectedRevision/dryRun/Undo를 쓴다. `world.mesh.edit`의 uvStitch는 분리 노멀을 보존한 UV 경계 좌표 맞춤이다. 선택 토폴로지 병합과 구별한다. 게임용 네트워크6함수는 C++/BP와 동일 서비스다. 총773노드·공유코어289. [계약·실행·경계](ENGINE_WORK_171.md).

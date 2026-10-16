@@ -1,11 +1,12 @@
+import {listLayout} from './list-layout.js';
 import {virtualDefaults} from './virtual-controls.js';
 import {validAssetPath} from './material-runtime.js';
 
-export const widgetTypes={Canvas:'캔버스',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ListView:'가상 목록',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
+export const widgetTypes={Canvas:'캔버스',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ListView:'가상 목록',TreeView:'가상 트리',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
 export const widgetContainers=new Set(['Canvas','Panel','HorizontalBox','VerticalBox','Grid','ScrollBox']);
 export const widgetEvents=['click','changed','submit','focus','blur','pressed','released'];
 export const widgetScaleRules={fit:'화면 안에 맞춤',width:'너비 기준',height:'높이 기준',match:'너비·높이 혼합',cover:'화면 채우기'};
-export const widgetDefaults={...virtualDefaults,stringTable:'',textKey:'',textArguments:'{}',style:'',styleName:'Default',styleOverrides:'',ariaLabel:'',rowHeight:40,listItems:'[]',selectedIndex:-1,text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
+export const widgetDefaults={...virtualDefaults,stringTable:'',textKey:'',textArguments:'{}',style:'',styleName:'Default',styleOverrides:'',ariaLabel:'',rowHeight:40,variableRows:false,listItems:'[]',selectedIndex:-1,selectedItemId:'',text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
 export function createWidgetNode(type='Text',id=crypto.randomUUID(),parent='root'){
   if(!Object.hasOwn(widgetTypes,type))throw Error('위젯 종류를 확인하세요.');
   const properties={...widgetDefaults,text:{Text:'텍스트',Button:'버튼',TouchButton:'공격',CheckBox:'선택'}[type]||''};
@@ -31,6 +32,9 @@ export function validWidgetAsset(data){
 }
 export function validWidgetProperties(n){
     const s=n.slot,p=n.properties;
+    if(p?.selectedItemId!==undefined&&!text(p.selectedItemId,160))return false;
+    if(p?.variableRows!==undefined&&typeof p.variableRows!=='boolean')return false;
+    if(['ListView','TreeView'].includes(n.type)){try{listLayout(JSON.parse(p?.listItems||'[]'),{rowHeight:p?.rowHeight||40,variable:p?.variableRows||false,tree:n.type==='TreeView'});}catch{return false;}}
     if(!s||!vector(s.anchors,4,0,1)||s.anchors[0]>s.anchors[2]||s.anchors[1]>s.anchors[3]||!vector(s.offset,4,-16384,16384)||!vector(s.alignment,2,0,1)||!Number.isInteger(s.zIndex)||!finite(s.zIndex,-1000,1000)||!finite(s.fill,0,100))return false;
     if(p&&(p.stringTable!==undefined&&!validAssetPath(p.stringTable)||p.style!==undefined&&!validAssetPath(p.style)||p.textKey!==undefined&&!text(p.textKey,120)||p.styleName!==undefined&&!text(p.styleName,80)||p.ariaLabel!==undefined&&!text(p.ariaLabel,1000)||p.styleOverrides!==undefined&&!text(p.styleOverrides,1000)||p.rowHeight!==undefined&&!finite(p.rowHeight,8,4096)||p.selectedIndex!==undefined&&(!Number.isInteger(p.selectedIndex)||p.selectedIndex< -1)))return false;
     for(const [key,array] of [['textArguments',false],['listItems',true]])if(p?.[key]!==undefined){try{const v=JSON.parse(p[key]);if(array?(!Array.isArray(v)||v.length>100000):(!v||typeof v!=='object'||Array.isArray(v)))return false;}catch{return false;}}
@@ -39,7 +43,7 @@ export function validWidgetProperties(n){
     if(p.vectorTexture!==undefined&&(!validAssetPath(p.vectorTexture)||p.vectorTexture&&!/\.svg$/i.test(p.vectorTexture))||p.imageFit!==undefined&&!['contain','cover','fill','none','scale-down'].includes(p.imageFit)||p.imageRendering!==undefined&&!['auto','pixelated'].includes(p.imageRendering))return false;
     if(!['color','background','accent','hover','pressed','borderColor'].every(k=>color(p[k]))||!['visible','enabled','focusable','checked','wrap'].every(k=>typeof p[k]==='boolean'))return false;
     if(!finite(p.fontSize,6,256)||!finite(p.borderWidth,0,32)||!finite(p.radius,0,512)||!finite(p.opacity,0,1)||!finite(p.padding,0,512)||!finite(p.gap,0,512)||!Number.isInteger(p.columns)||!finite(p.columns,1,32)||!Number.isInteger(p.maxLength)||!finite(p.maxLength,1,10000))return false;
-    if(!finite(p.min,-1e6,1e6)||!finite(p.max,-1e6,1e6)||p.min>=p.max||!finite(p.value,p.min,p.max)||!finite(p.step,.000001,1e6))return false;
+    if(!finite(p.min,-1e6,1e6)||!finite(p.max,-1e6,1e6)||p.min>=p.max||!(['ListView','TreeView'].includes(n.type)?Number.isInteger(p.value)&&p.value>=-1&&p.value<=100000:finite(p.value,p.min,p.max))||!finite(p.step,.000001,1e6))return false;
     for(const key of ['inputKey','axisX','axisY','keyUp','keyDown','keyLeft','keyRight'])if(p[key]!==undefined&&(!text(p[key],80)||!p[key]))return false;
     if(p.inputMode!==undefined&&!['keys','axes'].includes(p.inputMode)||p.deadZone!==undefined&&!finite(p.deadZone,0,.95)||p.floating!==undefined&&typeof p.floating!=='boolean'||p.deviceVisibility!==undefined&&!['all','touch','mouse'].includes(p.deviceVisibility))return false;
     return true;

@@ -457,3 +457,8 @@ AnimationGraph::SetIKEffectorTarget/Actor/Weight/GetIKEffectorError와 animGraph
 ## 170 — 루트·회전 IK와 음성 관리
 
 AnimationGraph::SetIKEffectorRotation/SetIKEffectorRotationWeight/SetIKRootSettings 및 Audio::SetVoiceBudget/SetPriority/GetRealVoiceCount/GetVirtualVoiceCount를 같은 서비스의7노드로 생성했다. 총767노드/코어289. 실제 C++와 BP가 같은 실행기로 이어지고 기존 입력 J키·목표 변경을 보존했다. PCM 실제2/가상6과 우선순위 변경·시계, 루트 이동 한계와 목표 회전, UV/프리팹 제작/Undo의 근거는 [170](ENGINE_WORK_170.md).
+
+
+## 171 — 네트워크와 코드 재적용
+
+Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용 서비스6노드로 생성했다. Network Session/Replica의 안정 ID·소유권과 허용 RPC 이벤트를 사용한다. 클라이언트의 비소유 상태 변경과 멀티캐스트를 거부한다. getter는 명령이 반영된 후속 프레임의 관측값이다. 공개 C++ 상태를 유지하는 런타임 재적용은 기존 BP 변수/타이머를 유지하며 원래 BeginPlay를 반복하지 않는다. 전체773노드/코어289. 액터 전체 수명 복제·예측·비공개 C++ 상태와의 경계는 [171](ENGINE_WORK_171.md)를 따른다.

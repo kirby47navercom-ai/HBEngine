@@ -1,0 +1,528 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "2e870ac",
+  "scope": "누적 전체 잔여 구현의 연속; 이 번호와 기능 수는 전체 요구의 대체 분모가 아님",
+  "targetIds": [
+    "WLD-02",
+    "WLD-04",
+    "WLD-05",
+    "MAT-03",
+    "ANM-04",
+    "GAM-04",
+    "NET-01",
+    "UI-03",
+    "CPP-03",
+    "AI-03",
+    "BLD-06"
+  ],
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 34,
+      "unimplemented": 2,
+      "unverified": 3
+    },
+    "exhaustiveUEUnity": false,
+    "completionPercent": null
+  },
+  "nodes": {
+    "total": 773,
+    "added": 6,
+    "sharedCore": 289
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-171-PSQKwy/acceptance.json",
+      "sha256": "b8c036d5f5556e3504da2d2571d034d387e122a0eda54bba23ed6806ae40bb7b",
+      "summary": {
+        "passed": 18,
+        "total": 18,
+        "checks": [
+          {
+            "name": "file-folder patch transitions and untouched files",
+            "passed": true
+          },
+          {
+            "name": "tree transition rollback after a real rename failure",
+            "passed": true
+          },
+          {
+            "name": "interrupted process journal restores file-folder shapes",
+            "passed": true
+          },
+          {
+            "name": "variable row offsets and 100000-item visible range",
+            "passed": true
+          },
+          {
+            "name": "tree expansion, ancestor collapse, IDs and widget schema",
+            "passed": true
+          },
+          {
+            "name": "UV boundary alignment preserves split normals and input",
+            "passed": true
+          },
+          {
+            "name": "independent min/mag, mip disable and anisotropic sampler encoding",
+            "passed": true
+          },
+          {
+            "name": "separate collision LOD and old asset compatibility",
+            "passed": true
+          },
+          {
+            "name": "live reload reflected state and incompatible change rejection",
+            "passed": true
+          },
+          {
+            "name": "streaming priority and estimate budget without count growth",
+            "passed": true
+          },
+          {
+            "name": "runtime automatic cells unload before budgeted replacement",
+            "passed": true
+          },
+          {
+            "name": "morph name mapping scale, offset and alpha",
+            "passed": true
+          },
+          {
+            "name": "retarget graph and baked morph track use renamed target",
+            "passed": true
+          },
+          {
+            "name": "ability/effect cue lifetime and periodic catch-up event",
+            "passed": true
+          },
+          {
+            "name": "network state validation and shortest rotation interpolation",
+            "passed": true
+          },
+          {
+            "name": "real host/client ownership, state, RPC and reconnect",
+            "passed": true
+          },
+          {
+            "name": "late join receives every snapshot chunk",
+            "passed": true
+          },
+          {
+            "name": "network byte budget rejects the entire update",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "nativeSampler": {
+      "path": "native/build/engine-171-native-pqXQao/acceptance.json",
+      "sha256": "6501fb7e17d91e6cb1326783d33742f85a8beb2f77f5b5a60ee98912c642f009",
+      "summary": {
+        "passed": true,
+        "independentMinMag": true,
+        "noMip": true,
+        "anisotropy": 8,
+        "reuse": true,
+        "invalidGuard": true
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-171-window-er0TJc/acceptance.json",
+      "sha256": "e4733d05ffffeaccbb693fac4861fcc6394b468f4a0aa009a9ad5321a881b10f",
+      "summary": {
+        "passed": true,
+        "tree": {
+          "expanded": "true",
+          "pooled": 12
+        },
+        "reload": {
+          "counterBefore": 1,
+          "counterAfter": 11,
+          "positionPreserved": true
+        },
+        "network": {
+          "connected": true,
+          "replica": true,
+          "rpc": 7,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 2
+          }
+        },
+        "cpp": {
+          "blocked": true,
+          "handError": 1,
+          "mixGain": 1,
+          "networkAuthority": false,
+          "opened": true,
+          "realVoices": 2,
+          "rejected": true,
+          "reloadCounter": 0,
+          "ticks": 1814,
+          "virtualVoices": 6
+        },
+        "pcm": {
+          "initial": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "initialSources": 2,
+          "selected": true,
+          "after": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "afterSources": 2,
+          "phaseError": 0,
+          "silentSink": true
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "errors": []
+      }
+    },
+    "release": {
+      "path": "native/build/engine-171-player-InOpsb/acceptance.json",
+      "sha256": "18e057e784c994c2e0e710bf95e7f7d0648fca1208beef8497e5948b3775f420",
+      "summary": {
+        "passed": true,
+        "configuration": "release",
+        "backend": "D3D11",
+        "network": {
+          "connected": true,
+          "replica": true,
+          "rpc": 7,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 2
+          }
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "errors": []
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-171-player-A4SmHN/acceptance.json",
+      "sha256": "06134cfdfa9b6f980e505625923c61d51ad4a4507ed275aac060dd5f2972e414",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "backend": "WebGPU",
+        "network": {
+          "connected": true,
+          "replica": true,
+          "rpc": 7,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 2
+          }
+        },
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "errors": []
+      }
+    },
+    "developmentRegression": {
+      "path": "native/build/engine-170-player-T31WPz/acceptance.json",
+      "sha256": "706204bf723661cfb00e8a6b9b4dad60e19e8934130871757efe968ed3bd79e8",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "backend": "D3D11",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "errors": []
+      }
+    },
+    "regression170": {
+      "path": "native/build/engine-170-o7r2tq/acceptance.json",
+      "sha256": "3761e901f6e699221d996907d6235116321ac75b83a0f41b10f2599b4962ec14",
+      "summary": {
+        "passed": 17,
+        "total": 17,
+        "results": [
+          {
+            "name": "프리팹 자식 포함·구조 적용·새 인스턴스와 계층 참조",
+            "passed": true
+          },
+          {
+            "name": "프리팹 자식 삭제 적용·복원·외부 자식 보호",
+            "passed": true
+          },
+          {
+            "name": "추가 자식 복원·원본과 다른 프리팹 포함 거부",
+            "passed": true
+          },
+          {
+            "name": "변형 컴포넌트 안정 ID 속성·추가·삭제와 부모 변경 상속",
+            "passed": true
+          },
+          {
+            "name": "변형의 새 자식은 상속 부모를 참조·해석 후 계층 검증",
+            "passed": true
+          },
+          {
+            "name": "UV 섬 분리와 선택 이동·속성/원본 보존",
+            "passed": true
+          },
+          {
+            "name": "UV 섬 패킹은 연결·종횡비·0..1 여백 보존",
+            "passed": true
+          },
+          {
+            "name": "UV 평면 펼치기와 원본 기하·노멀 불변",
+            "passed": true
+          },
+          {
+            "name": "IK 회전 목표·루트 고정·과거 에셋 호환",
+            "passed": true
+          },
+          {
+            "name": "IK PrePull·최대 루트 이동과 전역 alpha",
+            "passed": true
+          },
+          {
+            "name": "IK Pin과 제외/강성·잘못된 뼈 설정 거부",
+            "passed": true
+          },
+          {
+            "name": "가상 PCM은 소스 없이 시계·반복·피치·탐색·종료 유지",
+            "passed": true
+          },
+          {
+            "name": "음성 선택은 우선순위·거리·볼륨과 안정 순서",
+            "passed": true
+          },
+          {
+            "name": "타일 셀 인덱스 재사용·불변 수정·삭제·다른 레이어 유지",
+            "passed": true
+          },
+          {
+            "name": "기존 전체 컴포넌트 오버라이드와 직접 속성 적용",
+            "passed": true
+          },
+          {
+            "name": "IK 뼈 저작과 Listener 예산의 공용 검증",
+            "passed": true
+          },
+          {
+            "name": "가상 음성은 장치 재개 없이 시작하고 외부 자식 구조 복원은 거부",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "regression169": {
+      "path": "native/build/engine-169-MmwOiJ/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11",
+      "summary": {
+        "passed": 23,
+        "total": 23,
+        "results": [
+          {
+            "name": "확장 이웃·지정 타일·원본 인덱스와 역 의존 갱신",
+            "passed": true
+          },
+          {
+            "name": "대칭·빈 칸·다른 타일·회전 규칙",
+            "passed": true
+          },
+          {
+            "name": "먼 이웃 변경의 렌더 청크·충돌 dirty 전달",
+            "passed": true
+          },
+          {
+            "name": "대칭 UV와 기하 범위",
+            "passed": true
+          },
+          {
+            "name": "NavArea 비용·마스크·동적 삼각 장애물",
+            "passed": true
+          },
+          {
+            "name": "삼각 SAT·높이·32번 비트 경계",
+            "passed": true
+          },
+          {
+            "name": "장면 컴포넌트·이동 장애물·부모 변환",
+            "passed": true
+          },
+          {
+            "name": "2D XY 영역 비용과 금지 구역",
+            "passed": true
+          },
+          {
+            "name": "다중 목표 IK 그래프·공유 관절·길이 보존",
+            "passed": true
+          },
+          {
+            "name": "분기 체인 다중 목표·제외 관절·기준 포즈 불변",
+            "passed": true
+          },
+          {
+            "name": "다중 IK 가중치·목표 API·소실 목표",
+            "passed": true
+          },
+          {
+            "name": "골격 포즈 형식·중복·쓰기 전 검증",
+            "passed": true
+          },
+          {
+            "name": "Take 구성 생성/삭제·구조체 값·골격 키·압축",
+            "passed": true
+          },
+          {
+            "name": "녹화 시퀀스 재생·되감기·삭제/추가·원상 복원",
+            "passed": true
+          },
+          {
+            "name": "오디오 큐 녹화·중첩 음성·종료 구간",
+            "passed": true
+          },
+          {
+            "name": "두 경계 연결·방향·UV/색 보존",
+            "passed": true
+          },
+          {
+            "name": "개별 면 인셋·내접 한계·실패 원본 보존",
+            "passed": true
+          },
+          {
+            "name": "원본과 같아진 명시적 프리팹 수정의 다음 상속 보존",
+            "passed": true
+          },
+          {
+            "name": "사이드체인 Attack/Release·게인·독립 신호/순환 거부",
+            "passed": true
+          },
+          {
+            "name": "오디오 반복 큐의 원본 위치/배속 분할",
+            "passed": true
+          },
+          {
+            "name": "골격 시퀀스 quaternion 보간·긴 회전 키 축약",
+            "passed": true
+          },
+          {
+            "name": "같은 프레임 구성 교체의 원자 검증·원본 보존",
+            "passed": true
+          },
+          {
+            "name": "DirectX 실선의 픽셀 폭·근평면 자르기·재사용·해제",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "regression166": {
+      "path": "native/build/batch-166-SdpGLn/report.json",
+      "sha256": "b7f8e9717bb51c23bbc24cae76775219ee8544779a476c00685e20dc22c01f09",
+      "summary": {
+        "passed": 12,
+        "results": [
+          {
+            "name": "간선 분할·방향 보존·선택 검증",
+            "passed": true
+          },
+          {
+            "name": "용접 UV 경계·면 복제·중복 제거",
+            "passed": true
+          },
+          {
+            "name": "커스텀 노멀·플랫/스무스·UV 패킹의 실제 버퍼",
+            "passed": true
+          },
+          {
+            "name": "지형 구멍/복원·스탬프·렌더/충돌 일치",
+            "passed": true
+          },
+          {
+            "name": "안정 ID 폴리지 변환/복제/삭제와 GPU 인스턴스",
+            "passed": true
+          },
+          {
+            "name": "자동 타일 가중 랜덤 결정성·증분 경계·원본 보존",
+            "passed": true
+          },
+          {
+            "name": "Take 컴포넌트/색/이산 키·긴 녹화 축약",
+            "passed": true
+          },
+          {
+            "name": "실제 공용 실행기 속성 시퀀스 재생·중지 복원",
+            "passed": true
+          },
+          {
+            "name": "커브 보간·모프/속성/머테리얼 구동과 블렌딩",
+            "passed": true
+          },
+          {
+            "name": "위젯 디자이너/실행 공용 지역화·스타일·override",
+            "passed": true
+          },
+          {
+            "name": "서명된 패치·변조 거부·명세 정렬",
+            "passed": true
+          },
+          {
+            "name": "패치 프로세스 중단 후 원본 복구·잔여 정리",
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "additionalChecks": [
+    "syntax of modified/new JS",
+    "check.mjs",
+    "generate-api --check",
+    "check-native.mjs",
+    "check-ui-audio.mjs",
+    "check-animation-retarget.mjs",
+    "check-material-texture-families.mjs"
+  ],
+  "fixedFailures": [
+    "rollback treated two absent hashes as an installed output; required actual and after entries before unlink",
+    "C++ RPC used a nonexistent JSON helper; native compilation now passes",
+    "UI proof kept a recycled DOM row reference while scrolling; snapshot attribute before scrolling",
+    "test selector and native function ID quoting corrected"
+  ],
+  "cost": {
+    "newDependencies": 0,
+    "automaticGPUReadbacks": 0,
+    "networkWhenUnused": "no socket/retry timer/frame scan",
+    "snapshotChunkRows": 64,
+    "defaultSerializedNetworkBudget": 16777216,
+    "nativeSamplerCache": "clear before draw after512; at most draw bindings added before next clear",
+    "treeDOMRowsInEditor": 12,
+    "virtualListFixtureItems": 100000
+  },
+  "limitsDocument": "docs/ENGINE_WORK_171.md",
+  "userInstallation": "docs/research/USER_INSTALL_171.json",
+  "installedSmokePending": true
+}

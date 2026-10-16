@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "b5d240f",
+  "basisRevision": "2e870ac",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -406,7 +406,7 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기 · 171: UV 분리 노멀/기하 보존 경계 좌표 맞추기",
       "remaining": [
         "bevel·edge loop·정점 수가 다른/열린 경계 연결·영역 단위 inset",
         "곡면 고급 unwrap·normal split seam stitch·최적 회전/고급 패킹"
@@ -416,14 +416,16 @@
         "prototype/scene-rendering.js",
         "prototype/world-assets.js",
         "prototype/mesh-topology.js",
-        "prototype/world-asset-editor.js"
+        "prototype/world-asset-editor.js",
+        "prototype/mesh-uv.js"
       ],
       "evidence": [
         "docs/ENGINE_PLAN.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
         "docs/research/ENGINE_WORK_169.json",
-        "docs/research/ENGINE_WORK_170.json"
+        "docs/research/ENGINE_WORK_170.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -452,9 +454,9 @@
       "area": "world",
       "title": "LOD 제작·전환",
       "status": "partial",
-      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더",
+      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결",
       "remaining": [
-        "애니메이션/충돌 LOD 저작과 전환",
+        "카메라/거리 기반 애니메이션·충돌 LOD 자동 전환",
         "고품질 단순화·교차 페이드·품질 대조"
       ],
       "sources": [
@@ -463,7 +465,8 @@
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -471,20 +474,22 @@
       "area": "world",
       "title": "월드 분할·레벨 스트리밍",
       "status": "partial",
-      "implemented": "추가 레벨 다중 인스턴스/변환·수동/항상/거리 셀·참조 재배치·물리/스크립트 합류·실패 취소/재진입·CPP/BP/AI/아웃라이너",
+      "implemented": "추가 레벨 다중 인스턴스/변환·수동/항상/거리 셀·참조 재배치·물리/스크립트 합류·실패 취소/재진입·CPP/BP/AI/아웃라이너 · 171: 자동 거리 셀의 추정 비용/우선순위/개수 예산·회차당 로드·먼 셀 선제 해제",
       "remaining": [
-        "자동 공간 분할/HLOD·메모리 예산 기반 셀 스케줄링·큰 맵 검증"
+        "자동 공간 분할/HLOD·실제 메모리 측정 기반 셀 스케줄링·큰 맵 검증"
       ],
       "sources": [
         "prototype/project-session.js",
         "prototype/engine-services.js",
         "prototype/level-streaming.js",
         "prototype/play-world.js",
-        "prototype/actor-references.js"
+        "prototype/actor-references.js",
+        "prototype/streaming-budget.js"
       ],
       "evidence": [
         "docs/ENGINE_WORKFLOW_RESEARCH.md",
-        "docs/research/ENGINE_WORK_167.json"
+        "docs/research/ENGINE_WORK_167.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -689,9 +694,9 @@
       "area": "materials",
       "title": "텍스처 고급 설정·도메인",
       "status": "partial",
-      "implemented": "2D/Cube/Array/3D 텍스처와 표면 셰이딩 · 165: 축별 주소·nearest/linear·mip 생성 Sampler State·노드 UI와 공용 텍스처 전달",
+      "implemented": "2D/Cube/Array/3D 텍스처와 표면 셰이딩 · 165: 축별 주소·nearest/linear·mip 생성 Sampler State·노드 UI와 공용 텍스처 전달 · 171: DirectX 독립 min/mag/mip·mip 비사용·anisotropy1–16·제한 상태 캐시·실제 장치 GetDesc",
       "remaining": [
-        "DirectX min/mag 분리·LOD bias/anisotropy·배열/볼륨 mip 세부",
+        "LOD bias·배열/볼륨 mip 생성 세부",
         "압축 컨테이너·전용 채널 검사·추가 도메인"
       ],
       "sources": [
@@ -701,7 +706,8 @@
       ],
       "evidence": [
         "docs/MATERIAL_TEXTURE_FAMILIES_081.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -755,20 +761,21 @@
       "area": "animation",
       "title": "골격 리타게팅·베이크",
       "status": "partial",
-      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 · 166: 커브 키 편집·속성/모프/머테리얼 구동·포즈 가중 혼합·C++/BP GetCurve·디버그 스냅샷",
+      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 · 166: 커브 키 편집·속성/모프/머테리얼 구동·포즈 가중 혼합·C++/BP GetCurve·디버그 스냅샷 · 171: 다른 모프 이름/메시·배율/오프셋/범위 매핑·공용 포즈 슬롯·보정 모프 베이크·전용 폼",
       "remaining": [
-        "이름이 다른 모프 매핑·대상간 정교한 보정",
-        "임의 연산 스택·LOD/Avatar/Muscle",
+        "대상간 정교한 모프/체형 보정·임의 연산 스택·LOD/Avatar/Muscle",
         "정지 발·Stride/Pole/접촉"
       ],
       "sources": [
         "prototype/animation-retarget.js",
-        "prototype/animation-retarget-bake.js"
+        "prototype/animation-retarget-bake.js",
+        "prototype/retarget-morphs.js"
       ],
       "evidence": [
         "docs/ANIMATION_RETARGET_072.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_166.json"
+        "docs/research/ENGINE_WORK_166.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -909,9 +916,9 @@
       "area": "gameplay",
       "title": "Ability·효과/태그 체계",
       "status": "partial",
-      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP",
+      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP · 171: 능력 활성/종료·효과 적용/주기/제거 Cue 태그/이벤트·전용 목록·실패 롤백",
       "remaining": [
-        "네트워크 예측/복제·게임플레이 Cue·고급 타깃/계산",
+        "네트워크 능력 예측/복제·자동 VFX/음향 Cue 자산·고급 타깃/계산",
         "속성 세트/능력 목록의 풍부한 제작 UI"
       ],
       "sources": [
@@ -921,24 +928,29 @@
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
-        "docs/research/ENGINE_WORK_165.json"
+        "docs/research/ENGINE_WORK_165.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
       "id": "NET-01",
       "area": "network",
       "title": "복제·RPC·권한·예측",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "171: 설정 가능한 호스트/클라이언트 릴레이·키/소유권·안정 ID 필드 복제·변환 보간·허용 RPC·스냅샷 재접속·컴포넌트/C++BP6·실제 두 연결 실행",
       "remaining": [
-        "게임 host/client·소유권·상태 복제/RPC·재접속",
-        "예측/보정·지연/손실 검증"
+        "전용 권위 서버 규칙·액터 생성/삭제 전체 수명 복제·관심 영역",
+        "예측 입력/재시뮬레이션·지연/손실 보정·호스트 이전/플랫폼 서비스"
       ],
       "sources": [
-        "prototype/engine-services.js"
+        "prototype/engine-services.js",
+        "prototype/network-runtime.js",
+        "tools/multiplayer-server.mjs",
+        "prototype/network-state.js"
       ],
       "evidence": [
-        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+        "docs/ENGINE_WORKFLOW_RESEARCH.md",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -1014,10 +1026,10 @@
       "area": "ui",
       "title": "복합/월드 UI·가상화·지역화",
       "status": "partial",
-      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기",
+      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 · 171: TreeView 펼침/키보드·안정 ID 선택·명시 가변 높이·누적 높이/이진 검색·보이는 행 재사용·디자이너/게임 공용",
       "remaining": [
         "위젯 하위 조합/상속·월드 UI",
-        "가변 행/트리 가상화·전체 입력/스크린리더 검증"
+        "내용 기반 자동 높이 측정·전체 입력/스크린리더 검증"
       ],
       "sources": [
         "prototype/ui-assets.js",
@@ -1027,7 +1039,8 @@
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_166.json"
+        "docs/research/ENGINE_WORK_166.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -1125,17 +1138,19 @@
       "area": "cpp-blueprint",
       "title": "코드 재적용·네이티브 디버거",
       "status": "partial",
-      "implemented": "C++ 재빌드·호스트 교체·기본 BP debug/step",
+      "implemented": "C++ 재빌드·호스트 교체·기본 BP debug/step · 171: 실행 중 새 worker 준비·기존 공개 속성/월드/BP 상태 유지·프레임 장벽·타입/시그니처 거부·레벨 빌드 캐시 갱신·이전 worker 해제·사람/AI",
       "remaining": [
-        "인스턴스 상태를 보존하는 live reload",
+        "비공개/정적 C++ 저장소·네이티브 타이머·구조 변경의 상태 전환",
         "native debugger/브레이크·스택·스레드 연결"
       ],
       "sources": [
         "prototype/native-channel.js",
-        "tools/native-host.mjs"
+        "tools/native-host.mjs",
+        "prototype/native-reload.js"
       ],
       "evidence": [
-        "docs/BLUEPRINT_SPEC.md"
+        "docs/BLUEPRINT_SPEC.md",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -1176,7 +1191,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1196,7 +1211,8 @@
         "docs/research/ENGINE_WORK_167.json",
         "docs/research/ENGINE_WORK_168.json",
         "docs/research/ENGINE_WORK_169.json",
-        "docs/research/ENGINE_WORK_170.json"
+        "docs/research/ENGINE_WORK_170.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -1321,10 +1337,10 @@
       "area": "platform",
       "title": "번들·패치·협업/소스 관리",
       "status": "partial",
-      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구",
       "remaining": [
         "실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포",
-        "파일/폴더 형태 전환·에셋 diff/merge·VCS 작업 UI"
+        "에셋 diff/merge·VCS 작업 UI"
       ],
       "sources": [
         "tools/build-game.mjs",
@@ -1334,7 +1350,8 @@
       "evidence": [
         "docs/WORK_ORDER_051.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_166.json"
+        "docs/research/ENGINE_WORK_166.json",
+        "docs/research/ENGINE_WORK_171.json"
       ]
     },
     {
@@ -1430,5 +1447,5 @@
       ]
     }
   ],
-  "latestBatch": "168"
+  "latestBatch": "171"
 }

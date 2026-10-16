@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **767개**, 실제 공통 C++ API **682개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **773개**, 실제 공통 C++ API **688개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -39,6 +39,7 @@
 | 색상 | 10 | 10 |
 | 게임 | 6 | 6 |
 | 데이터 | 2 | 2 |
+| 네트워크 | 6 | 6 |
 | 2D 이동 | 1 | 1 |
 | 투사체 | 4 | 4 |
 | 카메라 | 4 | 4 |
@@ -696,6 +697,17 @@
 | --- | --- | --- | --- | --- | --- |
 | dataJsonRead | Get Text / 데이터 에셋 JSON | path: string | return: string | hb::Data::GetText | 공통 C++ + VM |
 | dataTableRead | Get Table Text / 데이터 표 행 | path: string, rowId: string | return: string | hb::Data::GetTableText | 공통 C++ + VM |
+
+## 네트워크
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| netConnect | Connect / 네트워크 연결 | exec: exec, target: object, endpoint: string, accessKey: string, authority: bool | then: exec | hb::Network::Connect | 공통 C++ + VM |
+| netDisconnect | Disconnect / 네트워크 연결 종료 | exec: exec, target: object | then: exec | hb::Network::Disconnect | 공통 C++ + VM |
+| netRPC | Send RPC / 네트워크 RPC 전송 | exec: exec, target: object, event: string, json: string, multicast: bool | then: exec | hb::Network::SendRPC | 공통 C++ + VM |
+| netSetOwner | Set Owner / 네트워크 소유권 지정 | exec: exec, target: object, peer: string | then: exec | hb::Network::SetOwner | 공통 C++ + VM |
+| netInfo | Get State Text / 네트워크 상태 JSON | target: object | return: string | hb::Network::GetStateText | 공통 C++ + VM |
+| netAuthority | Has Authority / 네트워크 권한 확인 | target: object | return: bool | hb::Network::HasAuthority | 공통 C++ + VM |
 
 ## 2D 이동
 

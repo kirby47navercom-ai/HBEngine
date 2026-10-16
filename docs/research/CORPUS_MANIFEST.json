@@ -2858,5 +2858,21 @@
     ],
     "scope": "Selected body/API rereading: prefab structural/apply-all workflow; real/virtual voice and priority; root/orientation/stiffness; UV editor selection/manual actions overview; NavigationCompleted WebErrorStatus. Linked actions/API/media and entire engine corpora not read.",
     "globalGatePromotion": false
+  },
+  "supplemental171": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-uxml-element-TreeView.html",
+      "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_sampler_desc",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-live-coding-to-recompile-unreal-engine-applications-at-runtime",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-owner-and-owning-connection-in-unreal-engine",
+      "https://dev.epicgames.com/documentation/unreal-engine/remote-procedure-calls-in-unreal-engine?lang=en-US",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/StreamingAssets.html"
+    ],
+    "scope": "Selected body sections: TreeView hierarchy/refresh/virtualization/focus; sampler filter/anisotropy/mip; Live Coding settings/modules/reinstancing; actor ownership and owning connection; RPC overview/declaration. StreamingAssets retrieved only, not used as world-streaming analysis. Remaining RPC sections, linked APIs, media and entire corpora not read.",
+    "failedReads": [
+      "https://docs.unity3d.com/Packages/com.unity.probuilder@6.0/manual/UV_Stitch.html"
+    ],
+    "globalGatePromotion": false
   }
 }
