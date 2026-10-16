@@ -215,3 +215,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 179: RuntimeLOD의2D XY/2.5D XZ/3D 거리·히스테리시스·포즈 표시 간격/논리 시간 분리·공용 C++/문서/Undo, 명시 WorldCollision LOD 전환·취소/정리·32MiB 추정 캐시·AI 진단을 실제 제작/게임에 연결했다. ENGINE_WORK_179.md/JSON 근거와 남은 계산/골격/다중카메라 범위를 구별한다.
+
+
+179 설치 확인: f95666ae3ee3a41f·명세2458파일 실행 후 SHA 일치·격리 설치 EXE의 실행 LOD 포즈 Hz·충돌 선택·사람 편집/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173816469바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_179.json.

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "1853cc09b867602cea9bf668217da887f51bc628",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f95666ae3ee3a41f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f95666ae3ee3a41f\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f95666ae3ee3a41f\\HBEngine.exe",
+  "bundleHash": "f95666ae3ee3a41f9d211d1c49ca5a35edece2b991cc22e4d65bcb43044b44e1",
+  "files": 2458,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2450,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f93e39b28c8c3c3e",
+        "bytes": 173816469,
+        "manifestSHA256": "fa8a8bfca0c9568ea9b65ec3c777fc61b592e2036cb9f0506943746289c48cef"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T10:05:35.6258638Z",
+    "bytes": 173816469,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f95666ae3ee3a41f"
+    ]
+  },
+  "work": "native/build/engine-179-install-wVIaOK",
+  "versions": [
+    "f95666ae3ee3a41f"
+  ],
+  "manifestVerifiedFiles": 2458,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2458,
+  "installedSmoke": {
+    "path": "native/build/engine-179-installed-sxgjSd/acceptance.json",
+    "sha256": "20ed9a2303da744800b8dde622d7485868f6c9194010c07821f68c1116cd5006",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/f95666ae3ee3a41f/HBEngine.exe",
+    "lod": {
+      "humanRate": true,
+      "collisionChoice": true,
+      "undo": true,
+      "saved": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-179-installed-sxgjSd/lod-inspector.png",
+      "sha256": "5988855459feca2ad803727f84166c4a6ae224c202d5b21c60ff42dbde3cd324",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

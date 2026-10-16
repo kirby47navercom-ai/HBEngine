@@ -13,3 +13,6 @@ World Collision에서 **실행 LOD 거리 단계**를 명시적으로 고르면 
 대조한 본문: [UE5.8 Animation Budget Allocator](https://dev.epicgames.com/documentation/unreal-engine/animation-budget-allocator-in-unreal-engine)0–265의 등록·중요도·AlwaysTick·업데이트 간격/예산 구분, [Unity6000.7 Animator](https://docs.unity.com/en-us/engine/6000.7/manual/animation-section/animation-mecanim/class-animator)164–210의 시간/물리·포즈 쓰기 구분, [Unity6000.0 CullingGroup](https://docs.unity.com/en-us/engine/6000.0/manual/cameras/occlusion-culling/culling-group-api/api)182–208의 거리 구간/카메라 참조. 연결 API·플러그인 구현·미디어와 전체 corpus는 읽은 것으로 세지 않는다.
 
 전체 애니메이션 계산 자체의 절감, 레거시 골격 Mixer·골격 수 LOD·보간·시야 가림·CPU-ms 예산 할당, 고품질 단순화/교차 페이드는 별도로 남긴다. 캐시 추정 예산과 실제 프로세스 RAM/VRAM 측정도 구분한다.
+
+
+179 설치 확인: f95666ae3ee3a41f·명세2458파일 실행 후 SHA 일치·격리 설치 EXE의 실행 LOD 포즈 Hz·충돌 선택·사람 편집/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173816469바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_179.json.

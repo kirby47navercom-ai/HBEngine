@@ -1579,6 +1579,25 @@
           }
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-179-installed-sxgjSd/acceptance.json",
+      "sha256": "20ed9a2303da744800b8dde622d7485868f6c9194010c07821f68c1116cd5006",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/f95666ae3ee3a41f/HBEngine.exe",
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "additionalChecks": [
@@ -1587,7 +1606,6 @@
   ],
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "Opt-in RuntimeLOD affects AnimationGraph bone writes and sprite frame presentation. Logical graph time, evaluation, curves, actor-root transforms and notifies continue each frame",
     "Root motion, montage, retarget source and physics/skin-linked actors always refresh their pose. Legacy skeletal Animator mixer evaluation, IK calculations, bone-count LOD, interpolation, occlusion/frustum significance and dynamic CPU-ms animation budgets are separate work",
@@ -1602,5 +1620,13 @@
     "First native ray proof compared the nearest hit in a fixture with overlapping terrain/actors. Near hit was another surface at y1; target-filtered RaycastAll now proves the intended collider at y0.5 then10.5",
     "First game sample used40 requestAnimationFrames and assumed at least0.3s. High-refresh displays can finish sooner; sampling now uses0.6s of simulation time and records samples before assertions",
     "Early validation test used a guessed export name; switched to the actual validPhysicsSnapshot export before physics assertions"
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_179.json",
+    "receiptSHA256": "ae678d8087c7badae3d8de31f38fdf1165722c2a5e9631dc3cb2cc9266bde9db",
+    "sourceCommit": "1853cc09b867602cea9bf668217da887f51bc628",
+    "versions": [
+      "f95666ae3ee3a41f"
+    ]
+  }
 }
