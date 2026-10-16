@@ -43,11 +43,14 @@ export function cachedRayMaterial(material,time=0){
  if(old&&key.length===old.key.length&&key.every((v,i)=>v===old.key[i])&&(!old.timed||old.time===time))return old.value;
  const value=compileRayMaterial(material,time);compiledMaterials.set(material,{key,time,value,timed:value.programs.some(p=>p.some(i=>i[0]===2))});return value;
 }
-export function compileRayMaterial(material,time=0){
+export function rayMaterialSource(material){
  const original=material.userData.materialSource;
  // Engine assets already have resolved functions/layers. Keep their parameter names and pin casts.
  const raw={surface:{...rayAdvancedSurface(material),color:material.color?.toArray()||[1,1,1],roughness:material.roughness??1,metalness:material.metalness??0,emissive:material.emissive?.toArray()||[0,0,0],emissiveIntensity:material.emissiveIntensity??1,opacity:material.opacity??1,transmission:material.transmission??0,ior:material.ior??1.5,thickness:material.thickness??0,attenuationColor:material.attenuationColor?.toArray()||[1,1,1],attenuationDistance:Number.isFinite(material.attenuationDistance)?material.attenuationDistance:0,blendMode:material.alphaTest?'masked':material.transparent?'translucent':'opaque',alphaTest:material.alphaTest||0}};
- const data=resolveMaterialAttributes(resolveMaterialInputs(original||directMaterialGraph(raw,rayTextureSlots(material),material)));
+ return resolveMaterialAttributes(resolveMaterialInputs(original||directMaterialGraph(raw,rayTextureSlots(material),material)));
+}
+export function compileRayMaterial(material,time=0){
+ const data=rayMaterialSource(material);
  const surface={...materialDefaults,...data.surface},graph=data.graph,edges=graph?normalizedMaterialEdges(graph):[],nodes=new Map(graph?.nodes.map(n=>[n.id,n])||[]),root=graph?.nodes.find(n=>materialNodeKey(n)==='surface'),slots=rayTextureSlots(material),textures=[];
  const keys={metallic:'metalness',baseColor:'color',emissive:'emissive',normal:'normal',attenuationColor:'attenuationColor'},evaluated=evaluateMaterial(data,{linearColors:true,time}),dynamicMemo=new Map();
  const dynamic=id=>{if(dynamicMemo.has(id))return dynamicMemo.get(id);const node=nodes.get(id),key=materialNodeKey(node),yes=['uv','time','worldPosition','worldNormal','viewDirection','texture','sampleCube','sampleArray','sampleVolume','fresnel','noise','checker','radialGradient','linearGradient','tilingOffset','panner','rotateUV','eyeUV'].includes(key)||edges.filter(e=>e.to.node===id).some(e=>dynamic(e.from.node));dynamicMemo.set(id,yes);return yes;};

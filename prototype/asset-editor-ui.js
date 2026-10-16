@@ -1,3 +1,4 @@
+import {LightmapEditor} from './lightmap-editor.js';
 import {TextureViewer} from './texture-viewer.js';
 import {structuredAssetKinds,renderStructuredAssetEditor} from './structured-asset-editor.js';
 import {textureAssetTypes,materialTextureTypes} from './texture-assets.js';
@@ -14,7 +15,7 @@ const field=(label,path,value,{type='number',min,max,step='.01'}={})=>`<label>${
 const vectorField=(label,path,value)=>`<label>${esc(label)}<span class="asset-vector-fields">${value.map((v,i)=>`<input type="number" step=".05" value="${v}" data-editor-field="${path}.${i}" aria-label="${esc(label)} ${'XYZW'[i]}">`).join('')}</span></label>`;
 const assetField=(label,path,value,files,kinds)=>`<label>${esc(label)}<select data-editor-field="${path}">${assetOptions(files,kinds,value)}</select></label>`;
 export function renderDataEditor(element,doc,files,hooks){
-  element.hbTextureViewer?.dispose();const d=doc.data,kind=doc.kind;element.hbAssetDocument=doc;if(structuredAssetKinds.includes(kind))return renderStructuredAssetEditor(element,doc,files,hooks);
+  element.hbTextureViewer?.dispose();const d=doc.data,kind=doc.kind;element.hbAssetDocument=doc;if(kind==='lightmap'){element.hbTextureViewer=new LightmapEditor(element,doc,hooks);return;}if(structuredAssetKinds.includes(kind))return renderStructuredAssetEditor(element,doc,files,hooks);
   element.innerHTML=`<header class="asset-editor-heading"><span class="asset-symbol ${kind}">${icon(assetIcon(kind))}</span><div><small>${assetTypes[kind].label}</small><h2>${esc(d.name)}</h2></div></header><div class="asset-form"></div>`;
   const form=element.querySelector('.asset-form');
   if(kind in textureAssetTypes)form.innerHTML=`<section><div class="form-section-heading"><h3>이미지</h3>${kind==='cubemap'?'':'<button data-texture-add>'+icon('plus')+' 추가</button>'}</div>${d.images.map((path,i)=>`<div class="texture-image-row">${assetField(kind==='cubemap'?['+X','−X','+Y','−Y','+Z','−Z'][i]:'슬라이스 '+i,'images.'+i,path,files,['texture'])}${kind==='cubemap'?'':`<button data-texture-move="${i}" data-direction="-1" ${i===0?'disabled':''} aria-label="슬라이스 위로">${icon('arrowUp')}</button><button data-texture-move="${i}" data-direction="1" ${i===d.images.length-1?'disabled':''} aria-label="슬라이스 아래로">${icon('arrowDown')}</button><button data-texture-remove="${i}" ${d.images.length===1?'disabled':''} aria-label="슬라이스 삭제">${icon('close')}</button>`}</div>`).join('')}</section>`;

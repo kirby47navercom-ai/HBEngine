@@ -1,3 +1,4 @@
+import {lightmapSuffix,createLightmapAsset,validLightmapAsset} from './lightmap-assets.js';
 import {normalizeModelImport,validModelImport} from './model-import.js';
 import {validPrefabExtension,prefabDocumentRows} from './prefab-variants.js';
 import {abilityAssetTypes,abilityAssetSuffix,createAbilityAsset,validAbilityAsset} from './ability-assets.js';
@@ -33,6 +34,7 @@ Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
 Object.assign(assetSuffix,worldAssetSuffix);Object.assign(assetTypes,worldAssetTypes);
 Object.assign(assetTypes,abilityAssetTypes,navigationAssetTypes,presentationAssetTypes);Object.assign(assetSuffix,abilityAssetSuffix,navigationAssetSuffix,presentationAssetSuffix);
+assetSuffix.lightmap=lightmapSuffix;assetTypes.lightmap={label:'베이크 라이트맵',prefix:'LM_',group:'렌더링'};
 assetSuffix.modelimport='.import.json';assetTypes.modelimport={label:'모델 가져오기',prefix:'',group:'에셋',sourceOnly:true};
 assetSuffix.editortool='.hbeditortool.json';assetTypes.editortool={label:'편집기 도구',prefix:'ET_',group:'편집기'};
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
@@ -54,6 +56,7 @@ export const defaultGameConfig={dimension:'3d',startupScene:'',startupBlueprint:
 export function createAsset(kind,name,parent='Actor'){
   if(kind==='modelimport')throw Error('원본 모델의 가져오기 설정을 여세요.');
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
+  if(kind==='lightmap')return createLightmapAsset(name);
   if(kind in abilityAssetTypes)return createAbilityAsset(kind,name);
   if(kind in navigationAssetTypes)return createNavigationAsset(kind,name);
   if(kind in presentationAssetTypes)return createPresentationAsset(kind,name);
@@ -91,6 +94,7 @@ export function createAsset(kind,name,parent='Actor'){
 }
 export function assetValidationError(kind,data){return kind in gameplayTypes?gameplayValidationError(kind,data):kind+" 에셋 검증 실패";}
 export function validAsset(kind,data){
+  if(kind==='lightmap')return validLightmapAsset(data);
   if(kind==='modelimport')return validModelImport(data);
   if(kind in abilityAssetTypes)return validAbilityAsset(kind,data);
   if(kind in navigationAssetTypes)return validNavigationAsset(kind,data);

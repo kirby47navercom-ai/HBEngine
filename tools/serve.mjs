@@ -86,6 +86,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/editor/open'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,await openExternal(owner,data.path));}
     if(url.pathname==='/api/asset/create'&&req.method==='POST'){const data=JSON.parse(await readBody());return json(res,data.kind==='code'?await createCppClass(owner,data.folder||'Source',data.name,data.parent):await owner.create(data.folder||'Assets',data.kind,data.name,data.parent));}
     if(url.pathname==='/api/asset/info'&&req.method==='GET'){const result=await owner.assetInfo(q.get('path'));checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/fingerprint'&&req.method==='GET'){const result=await owner.inspectFingerprint(url.searchParams.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/document'&&req.method==='GET'){const result=await owner.inspectDocument(q.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/registry'&&req.method==='GET'){const result=await owner.assetRegistry();checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/model-import'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.prepareModelImport(data.path);checkOwner(owner);return json(res,result);}

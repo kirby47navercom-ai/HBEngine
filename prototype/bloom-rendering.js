@@ -20,7 +20,7 @@ import {ObjectMotionPass} from './object-motion-gl.js';
 export class BloomRendering{
  constructor(){this.views=new Map();this.rect=new Vector4();this.eye=new Vector3();}
  render(renderer,scene,camera,objects){
-  const p=postProcessSettings(objects,camera.getWorldPosition(this.eye),scene.userData.hbPostWorld)||(hasTransmission(scene)?{bloomStrength:0,bloomRadius:0,bloomThreshold:1,bloomResolutionScale:.5}:null);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled!==false&&p?.bloomStrength>0);
+  const p=postProcessSettings(objects,camera.getWorldPosition(this.eye),scene.userData.hbPostWorld)||(hasTransmission(scene)?{bloomStrength:0,bloomRadius:0,bloomThreshold:1,bloomResolutionScale:.5}:null);scene.userData.hbBeforeLighting?.(p);let view=this.views.get(renderer);const bloomOn=!!(p?.bloomEnabled!==false&&p?.bloomStrength>0);
   if(!p){renderer.hbPathPreparation=null;if(view){this.release(view);this.views.delete(renderer);}renderer.render(scene,camera);return;}
   renderer.getViewport(this.rect);const ratio=renderer.getPixelRatio(),w=Math.max(1,Math.round(this.rect.z*ratio)),h=Math.max(1,Math.round(this.rect.w*ratio));
   const screenOn=screenEffectsEnabled(p),surfaceOn=surfaceEffectsEnabled(p),motionOn=objectMotionEnabled(p),ambientOn=ambientOcclusionEnabled(p),key=[screenOn,surfaceOn,motionOn,ambientOn].join(':');if(view&&view.key!==key){this.release(view);this.views.delete(renderer);view=null;}
