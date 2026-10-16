@@ -47,3 +47,6 @@ AI `anim.ik.effector.add/remove`, `runtime.take.start/finish`, `sequence.take.ap
 [Unity Rule Tile4.0.2](https://docs.unity3d.com/Packages/com.unity.2d.tilemap.extras@4.0/manual/RuleTile.html)의 확장 이웃/회전/대칭과 [NavMeshModifierVolume2.0](https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/NavMeshModifierVolume.html)의 영역 부피 본문을 대조했다. [Unreal Control Rig Full-Body IK](https://dev.epicgames.com/documentation/en-us/unreal-engine/control-rig-full-body-ik-in-unreal-engine)의 목표·관절/루트 설정과 HB 솔버의 차이를 구분했다. [Unity AudioGroup Inspector6000.0](https://docs.unity3d.com/kr/6000.0/Manual/AudioMixerInspectors.html)의 Send/Duck Volume 지정 본문을 읽었다. HB는 지정 버스 RMS를 직접 사용하며 Unity의 모든 DSP 체인 동등 구현은 아니다. 연결 API·이미지·전체 버전 corpus 읽음으로 승격하지 않는다.
 
 CPU23군, 실제 C++/내비/IK, 숨김 Win32 편집기의 사람·AI·녹화·Undo·실제 오디오, DirectX 개발/배포 실행기와 WebGPU 실행기를 확인했다. 기존165–168·IK/관절·2D·오디오·native/전송·생성API 회귀를 묶었다. 정확한 결과와 SHA, 첫 실행에서 발견한 실패 및 수정은 실행 근거에 남긴다. 검사 표본은 PC120·모바일60·대규모 장시간 성능의 보장이 아니다. 설치/사용자 데이터 보존은 USER_INSTALL_169.json에 별도로 기록한다.
+
+
+사용자 설치 전환: `C:/Users/kirby/HBEngine/Versions/5e97fbc46c607b17`. 명세2356파일 SHA, 설치 EXE의 IK 사람/AI/Undo·Take·C++·실제 무음 오디오 신호, 프리팹 Apply/Revert/원자 Undo·상속/Play 복원을 확인했다. 사용자 프로필10385파일 SHA가 전후 일치했다. 두 바로가기와 .hbproject 연결을 확인하고 이전 설치183607599바이트 및 동일 SDK 백업1907000바이트를 정리했다. Versions1. [설치 근거](research/USER_INSTALL_169.json).

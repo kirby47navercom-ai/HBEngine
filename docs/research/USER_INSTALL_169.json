@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "4e3620584f40ff8be3803503295c0b563f3b12ab",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17\\HBEngine.exe",
+  "bundleHash": "5e97fbc46c607b171968a9d06ec03a43b5cfe35d15225036b35d7091483afb11",
+  "files": 2356,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2353,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf",
+        "bytes": 183607599,
+        "manifestSHA256": "0f28f9ddaa5cc4bf1d98d6eecb2ab9a3f1895ea8883799e8e05a5e09d55bf9a2"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "skipped": [],
+    "date": "2026-10-16T04:34:56.0434148Z",
+    "bytes": 183607599,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "5e97fbc46c607b17"
+    ]
+  },
+  "work": "native/build/engine-169-install-b4N5vC",
+  "versions": [
+    "5e97fbc46c607b17"
+  ],
+  "manifestVerifiedFiles": 2356,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "installedSmoke": {
+    "path": "native/build/engine-169-installed-GOAWjW/acceptance.json",
+    "sha256": "54651f2805c493f21994b86434dc84a872263af3b54f13bed0143dc50b9bf692",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/5e97fbc46c607b17/HBEngine.exe",
+    "humanIKGoals": true,
+    "aiGoalsDryRunUndo": true,
+    "navInspector": true,
+    "cpp": {
+      "blocked": true,
+      "handError": 3.1401848636255743e-16,
+      "mixGain": 1,
+      "opened": true,
+      "rejected": true,
+      "ticks": 1086
+    },
+    "take": {
+      "tracks": [
+        {
+          "type": "position",
+          "keys": 2
+        },
+        {
+          "type": "rotation",
+          "keys": 2
+        },
+        {
+          "type": "scale",
+          "keys": 2
+        },
+        {
+          "type": "visible",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "skeletalPose",
+          "keys": 4
+        }
+      ],
+      "dryRunUndo": true
+    },
+    "humanDucking": true,
+    "audio": {
+      "attack": 0.2062659658674183,
+      "release": 0.9894199190065908,
+      "silentSink": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "prefabRegression": {
+    "path": "native/build/engine-168-installed-fQqMLy/acceptance.json",
+    "sha256": "a0317808aee12261d045293d44efb646d4e51e91aefbaae30355bebc439c3ffd",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/5e97fbc46c607b17/HBEngine.exe",
+    "prefabDryRun": true,
+    "humanApplyRevert": true,
+    "atomicUndo": true,
+    "liveInheritance": true,
+    "cpp": {
+      "after": -1,
+      "before": 0,
+      "inheritedY": 6,
+      "ticks": 197
+    },
+    "tilemap": {
+      "before": {
+        "id": "Tilemap",
+        "chunks": 16,
+        "tiles": 16383,
+        "rebuiltChunks": 1,
+        "totalRebuilt": 19,
+        "updates": 4,
+        "geometryBytes": 2293620,
+        "frustumCulling": true,
+        "geometries": [
+          [
+            "Ground|0:0",
+            "33f306d9-938c-4f83-97ee-4514d695dcc6"
+          ],
+          [
+            "Ground|1:0",
+            "c53fdc9e-f856-4cef-9d11-da2d42fb80b8"
+          ],
+          [
+            "Ground|2:0",
+            "50e4ed1e-8e57-41d4-a26a-8a646f3e9fd8"
+          ],
+          [
+            "Ground|3:0",
+            "b425e369-45fb-4fb0-97f2-0bccf60102c1"
+          ],
+          [
+            "Ground|0:1",
+            "792435c1-28fb-49d9-956f-12d588a4332f"
+          ],
+          [
+            "Ground|1:1",
+            "a27a8a92-0fc9-400d-be57-aa25a905d4bf"
+          ],
+          [
+            "Ground|2:1",
+            "505a2cc7-1edd-4556-9a67-08695fdecba2"
+          ],
+          [
+            "Ground|3:1",
+            "bc3206a2-04d4-4d19-8c70-2b167a72bd06"
+          ],
+          [
+            "Ground|0:2",
+            "169d2977-c28b-41c9-add8-8e42c0383799"
+          ],
+          [
+            "Ground|1:2",
+            "faa6dad8-8ee9-43fc-be46-d1a51fc341e3"
+          ],
+          [
+            "Ground|2:2",
+            "4e385971-8fa1-452b-b079-094321406dcf"
+          ],
+          [
+            "Ground|3:2",
+            "98e9f6d4-07d5-4c4d-9d94-a48be0e44da2"
+          ],
+          [
+            "Ground|0:3",
+            "25ac6732-d4da-42f9-8613-189a707c270b"
+          ],
+          [
+            "Ground|1:3",
+            "e379445d-468e-4215-bca0-a6c8472bd10e"
+          ],
+          [
+            "Ground|2:3",
+            "112a4293-7322-4f74-960e-0eb06639a481"
+          ],
+          [
+            "Ground|3:3",
+            "712489dc-64c9-4940-92e9-caaaa21e8f9d"
+          ]
+        ]
+      },
+      "after": {
+        "id": "Tilemap",
+        "chunks": 16,
+        "tiles": 16384,
+        "rebuiltChunks": 1,
+        "totalRebuilt": 20,
+        "updates": 5,
+        "geometryBytes": 2293760,
+        "frustumCulling": true,
+        "geometries": [
+          [
+            "Ground|0:0",
+            "b4a23d26-e9a5-4753-a7c0-7c711ce16510"
+          ],
+          [
+            "Ground|1:0",
+            "c53fdc9e-f856-4cef-9d11-da2d42fb80b8"
+          ],
+          [
+            "Ground|2:0",
+            "50e4ed1e-8e57-41d4-a26a-8a646f3e9fd8"
+          ],
+          [
+            "Ground|3:0",
+            "b425e369-45fb-4fb0-97f2-0bccf60102c1"
+          ],
+          [
+            "Ground|0:1",
+            "792435c1-28fb-49d9-956f-12d588a4332f"
+          ],
+          [
+            "Ground|1:1",
+            "a27a8a92-0fc9-400d-be57-aa25a905d4bf"
+          ],
+          [
+            "Ground|2:1",
+            "505a2cc7-1edd-4556-9a67-08695fdecba2"
+          ],
+          [
+            "Ground|3:1",
+            "bc3206a2-04d4-4d19-8c70-2b167a72bd06"
+          ],
+          [
+            "Ground|0:2",
+            "169d2977-c28b-41c9-add8-8e42c0383799"
+          ],
+          [
+            "Ground|1:2",
+            "faa6dad8-8ee9-43fc-be46-d1a51fc341e3"
+          ],
+          [
+            "Ground|2:2",
+            "4e385971-8fa1-452b-b079-094321406dcf"
+          ],
+          [
+            "Ground|3:2",
+            "98e9f6d4-07d5-4c4d-9d94-a48be0e44da2"
+          ],
+          [
+            "Ground|0:3",
+            "25ac6732-d4da-42f9-8613-189a707c270b"
+          ],
+          [
+            "Ground|1:3",
+            "e379445d-468e-4215-bca0-a6c8472bd10e"
+          ],
+          [
+            "Ground|2:3",
+            "112a4293-7322-4f74-960e-0eb06639a481"
+          ],
+          [
+            "Ground|3:3",
+            "712489dc-64c9-4940-92e9-caaaa21e8f9d"
+          ]
+        ]
+      },
+      "unchangedGeometries": 15
+    },
+    "sourcePreserved": true,
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-169-installed-GOAWjW/ik-goals.png",
+      "sha256": "2ba1dfecad8662fbe50d140831387b8ee02851cc08c0eb833861bf75b2e1bf97",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-169-installed-GOAWjW/mixer-ducking.png",
+      "sha256": "bc80826a9314a5ff6aa50e3d3c281d802a71f680a9d080df0e82915581b86dd4",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-169-installed-GOAWjW/recorded-take.png",
+      "sha256": "8f3e6d5cfec5f6f8b09d5b587c5d84a4a44f934719aae1d6b9c6da94b934b3fe",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

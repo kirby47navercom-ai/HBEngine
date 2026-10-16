@@ -381,6 +381,6 @@ scene.prefab.inspect {path,object}는 루트/자식 ID에서 연결 루트, sour
 
 ## 169 — 다중 IK·Take·제작 세부
 
-`anim.ik.effector.add {path,expectedRevision,node,settings?,dryRun?}`와 `anim.ik.effector.remove {path,expectedRevision,node,goal,dryRun?}`는 FullBodyIK의 안정 목표ID를 편집한다. settings는 id/bone/target/targetActor/space/weight이며 사람과 같은 검증·Undo를 사용한다. `runtime.take.start {targets,name?,fps?,includeComponents?,includeStructure?,includeSkeleton?,includeAudio?}` / `runtime.take.finish`는 실행 프레임 장벽에서 녹화를 제어한다. 중첩 settings가 아닌 직접 필드를 받으며 targets는 실제 런타임 ID 배열이다. `sequence.take.apply {path,expectedRevision,data,dryRun?}`는 검증한 결과를 기존 시퀀스에 적용하고 Undo한다. world.mesh.edit의 operation에 bridge/insetFaces(amount)를 추가한다.
+`anim.ik.effector.add {path,expectedRevision,node,settings?,dryRun?}`와 `anim.ik.effector.remove {path,expectedRevision,node,goal,dryRun?}`는 FullBodyIK의 안정 목표ID를 편집한다. settings는 id/bone/target/targetActor/space/weight이며 사람과 같은 검증·Undo를 사용한다. `runtime.take.start {targets,name?,fps?,includeComponents?,includeStructure?,includeSkeleton?,includeAudio?}` / `runtime.take.finish`는 실행 프레임 장벽에서 녹화를 제어한다. 중첩 settings가 아닌 직접 필드를 받으며 targets는 실제 런타임 ID 배열이다. `sequence.take.apply {path,expectedRevision,data,dryRun?}`는 검증한 결과를 기존 시퀀스에 적용하고 Undo한다. world.mesh.edit의 operation에 bridge/insetFaces(distance)를 추가한다.
 
 NavigationArea와 Agent areaMask/areaCosts, 자동타일 extended/transform, 믹서 bus.ducking은 기존 document.patch/schema/Undo로 편집한다. 게임용 목표 API4개·사이드체인API3개는 C++/BP 공유이며 총760노드다. [형식·비용·남은 세부](ENGINE_WORK_169.md).

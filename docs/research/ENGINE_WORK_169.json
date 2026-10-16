@@ -247,5 +247,11 @@
     "unchangedLineGeometryReused": true
   },
   "limitsDocument": "docs/ENGINE_WORK_169.md",
-  "userInstallation": "docs/research/USER_INSTALL_169.json"
+  "userInstallation": "docs/research/USER_INSTALL_169.json",
+  "installation": {
+    "path": "docs/research/USER_INSTALL_169.json",
+    "sha256": "3204e2bc554b9cb2d1f4ae208045dcc28f544b1358594e1c5680d89895d3f76a",
+    "sourceCommit": "4e3620584f40ff8be3803503295c0b563f3b12ab",
+    "verified": true
+  }
 }

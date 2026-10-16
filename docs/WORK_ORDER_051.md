@@ -164,3 +164,5 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 169 — 제작 전반의 추가 구현 (2026-10-16)
 
 확장/대칭 자동타일과 먼 청크갱신, NavArea 비용/마스크/이동장애물, 다중 IK 목표UI/C++/BP/AI, 구성/골격/오디오Take 및 시퀀스 복원, 메시 bridge/inset, 명시 프리팹 수정의도, 믹서 사이드체인, DirectX실선과 동일 SDK캐시 백업 정리를 함께 연결했다. CPU23군·실제 C++·숨김 Editor/사람/AI/Undo/실제오디오·D3D11 dev/release·WebGPU 및 관련165–168회귀 통과. 전체 누적 목표를 이 번호로 축소하지 않는다. 세부 ENGINE_WORK_169.md/research/ENGINE_WORK_169.json; 설치는 USER_INSTALL_169.json에 기록한다.
+
+169 설치 확인: 5e97fbc46c607b17·2356파일 SHA·격리 설치 EXE169와168 프리팹 회귀 통과·프로필10385파일 보존·Versions1. 기능4e36205, 설치 근거 research/USER_INSTALL_169.json.
