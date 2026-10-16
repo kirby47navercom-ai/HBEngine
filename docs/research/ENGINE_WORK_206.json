@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "04dfc66",
+  "implementationRevision": "c3d3c86649f17f31a98c0cd59a9c706d9c95b98a",
+  "targetIds": [
+    "AST-04",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-apply-206-FGnuug/acceptance.json",
+      "sha256": "c70359cf3fe806a65220ecbc6cd30605b7e954128f43f876488dd59abf0a4f2e"
+    },
+    {
+      "path": "native/build/prefab-guards-206-uNVYss/acceptance.json",
+      "sha256": "94e3492d31c05920481d260e77426a049c94bc2c5932f48910931c7aeb64b5c5"
+    },
+    {
+      "path": "native/build/prefab-206-window-tgcEoG/acceptance.json",
+      "sha256": "0c8ae71bd13057b0278e32ea34933be44371c4f9f1f9b791c9d5700e02c7e376"
+    }
+  ],
+  "implemented": [
+    "변형·기본·안쪽 원본의 안정 대상 key 조회와 사람 적용 메뉴; 상위 광역 오버라이드를 필요한 잎 속성으로 분리해 선택 속성만 하위 원본으로 이동",
+    "자식 추가·삭제의 안쪽 적용, 월드 ID 유지·로컬 namespace 이동·반복 배치/다른 변형의 고아 오버라이드 정리; 컴포넌트/배열 전체 적용 범위 표시와 명시 opt-in",
+    "같은 파일 묶음 Undo/Redo와 sourceRevisions/CAS; 수정하지 않는 참조 원본도 commit 전후 검사하고 경합 시 전체 롤백; 외부 원본 참조는 보존",
+    "실제 편집기 메뉴·dry-run·원본/장면 UndoRedo·조회 후 원본 편집 거부·안쪽 자식 추가와 Play"
+  ],
+  "limits": [
+    "안쪽 nativeProperties/변수 override는 자료형 메타데이터가 연결되지 않아 안전 거부; 알려진 컴포넌트의 오브젝트 참조만 재매핑/검사",
+    "All은 바깥 원본. 놓인 루트 Transform 기본 보호 유지; Unity 개별 default override Apply와 같은 기능이라고 주장하지 않음",
+    "복잡한 모든 중첩/변형과 대규모 인스턴스 비용 검증은 잔여"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabInstanceOverrides.html",
+      "scope": "Own126–158 read in prior turn: override categories, source precedence and root placement; not the full page/API."
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PrefabUtility.ApplyPropertyOverride.html",
+      "scope": "Own234–273 declaration, assetPath target choice, default-override exception and short-array expansion; current body reread. HB keeps placed root protection and requires scope expansion opt-in."
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PrefabUtility.ApplyAddedGameObject.html",
+      "scope": "Own234–271 declaration and explicit nested/outer asset destination; current body reread."
+    },
+    {
+      "url": "https://docs.unity3d.com/2018.4/Documentation/Manual/PrefabOverridesMultiLevel.html",
+      "scope": "Legacy2018.4 own160–184 read in prior turn: All outer-only; individual target choice and reverting intermediate overrides on inner Apply. Cross-checked current6000.0 APIs above; not represented as a current full-manual read."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

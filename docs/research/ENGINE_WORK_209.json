@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "04dfc66",
+  "implementationRevision": "c3d3c86649f17f31a98c0cd59a9c706d9c95b98a",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/skeletal-take-209-oSTgYe/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3"
+    },
+    {
+      "path": "native/build/skeletal-209-window-ZkMInQ/acceptance.json",
+      "sha256": "43b8333f7c9ad909a3aed4711db1e24dfc73fff49a0e93bfb444a0504d43d84a"
+    },
+    {
+      "path": "native/build/skeletal-209-player-2B3TbP/acceptance.json",
+      "sha256": "6569b06fd9c1b799b413d6d370f9f34a263b01272162ba2e76760b69015f550e"
+    },
+    {
+      "path": "native/build/skeletal-209-player-d3d-PWfsDw/acceptance.json",
+      "sha256": "aabda9f0c55f9c1be128a30c5c79691287e12c75a2796f538d7b0b7aa75fe080"
+    },
+    {
+      "path": "native/build/engine-169-0G7XAi/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11"
+    }
+  ],
+  "implemented": [
+    "다른 뼈 이름/수와 골격 제거를 한 Take에 기록; 구간별 독립 키 축약과 서로 다른 layout 경계의 step 처리",
+    "컴포넌트/모델 교체 완료 뒤 현재 재생 시각의 포즈에 바인딩; 이전/다음 Seek·빈 골격·Stop의 원본 모델/포즈 복원",
+    "runtime.sequencePose 요청형 페이지와 development/smoke player 디버그 조회; 자동 매 프레임 스냅샷/추가 GPU readback 없음",
+    "실제 glTF A/B/제거/복원·BP 시퀀스 조작·실제 Take→제작창 dry-run/적용/Undo·Windows WebGL 및 DirectX11 게임 EXE·기존169 CPU23군"
+  ],
+  "limits": [
+    "모델 변경을 함께 기록하려면 구성 또는 컴포넌트 녹화 필요. 골격 포즈만으로 모델 에셋을 자동 추론하지 않음",
+    "임의 네이티브 배열/구조체, 액터 생성 녹화, 마이크/stem/PCM 시계 정렬·영상 결합은 잔여",
+    "큰 DCC 리그·복잡 모프/근육·모바일 실기기 품질/지속 성능 전체를 검증한 것은 아님"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine?application_version=5.7",
+      "scope": "Own25–33 and76–115: source/recorder/playable-track relationship and per-actor/component properties, reduce/include/exclude, parent hierarchy and spawnable/possessable choices. HB209 implements model/skeleton changes independently; not a claim that this page proves a general skeletal-swap implementation. Other body, microphone/timecode/settings/API links unread."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "04dfc66",
+  "implementationRevision": "c3d3c86649f17f31a98c0cd59a9c706d9c95b98a",
+  "targetIds": [
+    "AST-04",
+    "AI-03",
+    "PRJ-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-sync-208-BTrJSj/acceptance.json",
+      "sha256": "bbc8f065aa7a06fbf56ccf47ce6bf19bda149b700656e6d569baa258385aebb7"
+    },
+    {
+      "path": "native/build/prefab-207-window-rp5IN0/acceptance.json",
+      "sha256": "4066ee07aba476d8d321be33413c9f40914f0873bd27ada457b293f00d9658fe"
+    }
+  ],
+  "implemented": [
+    "대기 타이머와 진행 중 읽기를 await하고 장면 저장 전에 동기화를 완료; 120ms 지연 갱신 때문에 저장 직후 dirty가 다시 켜지던 경합 해결",
+    "editor.synchronize는 같은 완료 장벽과 문서 revision/dirty를 반환; 자동 저장·추가 Undo 없음",
+    "동기화 중 사람 편집은 stamp 검사 후 새 기준으로 재처리; 읽기 실패는 원본 보존과 명시 오류/재시도"
+  ],
+  "limits": [
+    "다른 모든 비동기 엔진 작업을 포함하는 전역 idle 장벽은 아님",
+    "디스크 부족·강제 종료 전체 복구 행의 미검증 조건은 그대로 유지"
+  ],
+  "bodyRead": [],
+  "executionVerified": true,
+  "installationPending": true
+}

@@ -23,3 +23,8 @@ AI schema는 시간·그리드·단축키·진단을 공개하고 사람이 쓰�
 `node tools/check-gameplay-timeline.mjs`는 유한/범위 입력·30/60fps·경계·256×1024키·종료/반복·미리보기 독립 시간을 검사해요. DOM/실제 EXE의 근거로 세지 않아요. 실제 창 검사는 `node tools/check-animation-graph-window.mjs --editor --montage`와 `node tools/check-animation-graph-window.mjs --montage`로 격리 프로젝트/프로필/포트에서 실행해요. 물리적 키/마우스·단위 전환·에셋 revision/data 보존, C++ 몽타주·시퀀스 Pause/Seek/Stop·실행선/편집선·원래 위치 복원·원본 바이트·종료/서버 정리를 확인하며 개별 결과/실패는 인계에 기록해요.
 
 곡선 제작/자동 기록·키 다중 선택/확대/선택 맞춤·조작 재지정 전체, 공유 Skeleton/애니메이션 메타·몽타주 구간 알림/교체 혼합·압축/루트 모션/리타깃과 전체2D/렌더/월드/게임/C++/AI/UI/오디오/모바일/배포/가벼움 세부는 계속 구현해요. 전체 분석/전체 엔진 완료로 보고하지 않아요.
+
+
+## 209 — 녹화 중 모델·골격 변경
+
+Take에서 `골격`과 `구성`(또는 컴포넌트)을 켜면 MeshRenderer 모델 교체·제거와 뼈 포즈를 함께 기록한다. 서로 다른 뼈 배열의 경계는 step이며 각 구간 안에서만 보간·키 축약한다. 재생은 모델 준비 뒤 현재 시각의 골격을 연결하고 Seek/Stop 복원도 같은 경로를 쓴다. 포즈만 녹화하면 모델 교체 정보는 생기지 않는다. 제작창 적용/dry-run/Undo는 기존 sequence.take.apply 계약이며 actual glTF 모델 A/B와 빈 골격을 Editor·Windows WebGL/D3D EXE에서 확인했다. 전문 시네마틱·임의 C++ 상태·PCM 시각 정렬 전체 지원을 뜻하지 않는다.

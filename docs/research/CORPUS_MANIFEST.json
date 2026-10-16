@@ -3198,5 +3198,50 @@
     ],
     "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
     "globalGatePromotion": false
+  },
+  "supplemental206": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabInstanceOverrides.html",
+        "scope": "Own126–158 read in prior turn: override categories, source precedence and root placement; not the full page/API."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PrefabUtility.ApplyPropertyOverride.html",
+        "scope": "Own234–273 declaration, assetPath target choice, default-override exception and short-array expansion; current body reread. HB keeps placed root protection and requires scope expansion opt-in."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/PrefabUtility.ApplyAddedGameObject.html",
+        "scope": "Own234–271 declaration and explicit nested/outer asset destination; current body reread."
+      },
+      {
+        "url": "https://docs.unity3d.com/2018.4/Documentation/Manual/PrefabOverridesMultiLevel.html",
+        "scope": "Legacy2018.4 own160–184 read in prior turn: All outer-only; individual target choice and reverting intermediate overrides on inner Apply. Cross-checked current6000.0 APIs above; not represented as a current full-manual read."
+      }
+    ],
+    "unread": "Listed scopes only; linked APIs/media/implementation and full UE/Unity corpus remain outside this reading. No full corpus completion claim.",
+    "globalGatePromotion": false
+  },
+  "supplemental207": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+        "scope": "Reread own125–230: isolation/context, root lock, regular/gray/hidden context, Show Overrides, scene snapping and editing environment. This body was already registered203; rereading is not new corpus coverage. Auto Save and linked API/media implementations are not implemented by207."
+      }
+    ],
+    "unread": "Listed scopes only; linked APIs/media/implementation and full UE/Unity corpus remain outside this reading. No full corpus completion claim.",
+    "globalGatePromotion": false
+  },
+  "supplemental209": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine?application_version=5.7",
+        "scope": "Own25–33 and76–115: source/recorder/playable-track relationship and per-actor/component properties, reduce/include/exclude, parent hierarchy and spawnable/possessable choices. HB209 implements model/skeleton changes independently; not a claim that this page proves a general skeletal-swap implementation. Other body, microphone/timecode/settings/API links unread."
+      }
+    ],
+    "unread": "Listed scopes only; linked APIs/media/implementation and full UE/Unity corpus remain outside this reading. No full corpus completion claim.",
+    "globalGatePromotion": false
   }
 }

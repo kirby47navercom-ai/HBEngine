@@ -300,3 +300,8 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 200–205 설치 확인: 1fadf9f7d5c394c8·명세2614파일 실행 후 SHA 동일·실제 설치 EXE 프리팹 문맥/환경/잠금/Undo/저장/동기화/Play·131파일/112MiB UI·1만 콘텐츠17/13/50카드와 Alt뒤로·문자 탐색·재생성후1만선택, 오류0/종료0. User10385파일 SHA불변·링크2/.hbproject·이전 설치184807680B 정리·Versions1. USER_INSTALL_205.json.
+
+
+## 206–209 — 2026-10-17
+
+중첩 Apply 원본/구조/참조 CAS·파일 묶음 Undo, 문맥 gray/인스턴스 수정 투영/격자·표면·정점 스냅, 저장 전 동기화 장벽, 골격 모델 변경/제거 Take·구간 축약/현재시각 바인딩/Seek/복원을 구현했다. 실제 편집기와 WebGL·DirectX11 게임 EXE 및 기존169 CPU23군/기본·파일묶음 회귀를 검사했다. 원장 AST-04/ANM-06/AI-03/PRJ-03의 구체 구현/잔여를 대조 갱신했다. 다른 누적 잔여와 전체 분석 gate는 유지한다. 설치 전환/Versions1·사용자 원본 확인은 USER_INSTALL_209.json에 후속 기록한다.

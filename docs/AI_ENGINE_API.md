@@ -470,3 +470,14 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 204: project.browser.read {id?:"project",offset?:0,limit?:100}은 total/nextOffset/rendered/entries를 반환한다. limit1000은 응답 페이지 크기이며 자산 수 제한이 아니다. project.browser.view {id?,settings:{folder?,view?:"list"|"tiles",selected?:경로배열,focus?:전체목록인덱스}}는 같은 탐색/선택/포커스를 사용하며 원본 에셋을 수정하지 않는다.
 
 200: build report.streaming은 chunkBytes/fileBackedFiles/fileBackedBytes/bufferedBytes를 제공한다. JSON/glTF/C++는 검사 버퍼이며 불투명 소스와 런타임은 파일 참조다. 중단·원본 변경은 출력 실패로 보고하고 완료 명세를 만들지 않는다.
+
+
+## 206–209: 프리팹 대상·보기·동기화와 녹화 포즈
+
+`scene.prefab.applyTargets({path,object,localId,property})`의 revision·sourceRevisions·targets를 조회한다. 선택한 key를 `scene.prefab.apply`의 targetKey와 함께 보내며 expectedRevision과 sourceRevisions를 유지한다. expands면 effectiveProperty/scope를 먼저 확인하고 allowExpansion:true를 명시한다. All은 바깥 원본이다. 개별 자식 추가/삭제는 property:[]이며 안쪽 적용도 같은 파일 묶음 Undo를 쓴다. 안쪽 공개 C++/BP 참조 메타데이터 미연결 범위는 안전 거부한다.
+
+`prefab.stage.view`의 appearance(normal/gray/hidden), showOverrides와 snap({enabled,mode:grid/surface/vertex,translation,rotation:도,scale})은 보기 전용이다. `prefab.stage.snap({path,expectedRevision,object,ray:{origin,direction},mode,target,dryRun})`은 실제 잠금 장면 지오메트리를 사용하고 같은 Transform 편집/Undo를 거친다. hidden 배경은 타깃이 아니고 문맥 root는 잠긴다.
+
+`editor.synchronize()`는 대기/진행 중 프리팹 상속 동기화를 마치고 각 문서 revision/dirty를 반환한다. 저장도 같은 장벽을 사용한다. 자동 저장이나 전역 작업 완료 명령은 아니다.
+
+`runtime.sequencePose({target,offset:0,limit:64})`는 현재 실제 모델의 뼈·로컬 포즈·제어 시각과 nextOffset을 요청할 때만 반환한다. limit 최대512는 한 페이지 예산이며 골격 수 제한을 추가하지 않는다. 구성 또는 컴포넌트 녹화와 골격을 함께 켜면 모델 교체/제거를 Take에 남기고 이후 시퀀스에서 재생/되감기/정지 복원한다.

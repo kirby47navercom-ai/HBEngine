@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "04dfc66",
+  "implementationRevision": "c3d3c86649f17f31a98c0cd59a9c706d9c95b98a",
+  "targetIds": [
+    "AST-04",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-view-207-ltqVXW/acceptance.json",
+      "sha256": "1ea59597d61c13e6a3773c99ee0fb99fc1f2ab06890e3b5cf82e45621c91a5a3"
+    },
+    {
+      "path": "native/build/prefab-207-window-rp5IN0/acceptance.json",
+      "sha256": "4066ee07aba476d8d321be33413c9f40914f0873bd27ada457b293f00d9658fe"
+    }
+  ],
+  "implemented": [
+    "원본 공유 머테리얼을 바꾸지 않는 잠금 배경 grayscale 셰이더 복제; 숨김/교체/종료 시 소유 자원 해제",
+    "현재 원본 변경과 인스턴스 수정의 비파괴 미리보기; root 배치/크기를 중복 적용하지 않고 문서 revision/디스크 보존",
+    "격자 이동·회전·크기 간격과 장면 표면/삼각 정점 스냅; 회전·비균일 부모의 월드→로컬 변환; 같은 Transform 편집/한 Undo/AI revision·dryRun",
+    "실제 UI 변경 표시와 gray·normal·hidden, 표면/정점/Undo·root lock·숨긴 대상 거부"
+  ],
+  "limits": [
+    "배경은 명시 갱신 스냅샷이며 미리보기 조명을 사용; 정확 장면 조명 일치 미구현",
+    "변경 표시는 현재 원본에 존재하는 오브젝트 대상. 인스턴스에만 추가한 오브젝트의 미리보기·고급 모든 shader/HDR/2D 조합은 별도 검증 필요",
+    "표면 스냅은 선택 pivot, 정점 스냅은 맞힌 삼각형의 가장 가까운 정점; 고급 모서리/다중 선택/회전 정렬 스냅을 주장하지 않음"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+      "scope": "Reread own125–230: isolation/context, root lock, regular/gray/hidden context, Show Overrides, scene snapping and editing environment. This body was already registered203; rereading is not new corpus coverage. Auto Save and linked API/media implementations are not implemented by207."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}
