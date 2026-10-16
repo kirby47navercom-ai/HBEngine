@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "58fcb8a7b48031d1be6140bed353ca1a9dfb17fa",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e\\HBEngine.exe",
+  "bundleHash": "4d2deed78317a98efe13bf0a9ae378d6d7fdf69e4e4ea27911fbf13080b7f426",
+  "files": 2367,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2375,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17",
+        "bytes": 197029229,
+        "manifestSHA256": "62182b23efca6387b8e0a86e40dfa8379cc8d26648d1b7423b2338fae2591e69"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T05:24:43.0771799Z",
+    "bytes": 197029229,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\5e97fbc46c607b17\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "4d2deed78317a98e"
+    ]
+  },
+  "work": "native/build/engine-170-install-sdwkxv",
+  "versions": [
+    "4d2deed78317a98e"
+  ],
+  "manifestVerifiedFiles": 2367,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2367,
+  "installedSmoke": {
+    "path": "native/build/engine-170-installed-6FEw2B/acceptance.json",
+    "sha256": "3c3125c86c3102bfaace0bbb3d4e4bc688d9855b4b1da02ecdf56a647b9c9b65",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/4d2deed78317a98e/HBEngine.exe",
+    "prefabStructure": true,
+    "uvHumanDragUndo": true,
+    "voiceState": {
+      "voiceBudget": {
+        "real": 2,
+        "tracked": 32,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "recent": [],
+      "queued": 0,
+      "errors": [],
+      "state": "running",
+      "clock": 3.021333333333333,
+      "mixers": {},
+      "levels": {},
+      "voices": [
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": false,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": false,
+          "priority": 0,
+          "playing": true,
+          "time": 3.021333333333333,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        }
+      ]
+    },
+    "humanIKGoals": true,
+    "aiGoalsDryRunUndo": true,
+    "navInspector": true,
+    "cpp": {
+      "blocked": true,
+      "handError": 1,
+      "mixGain": 1,
+      "opened": true,
+      "realVoices": 2,
+      "rejected": true,
+      "ticks": 1817,
+      "virtualVoices": 6
+    },
+    "take": {
+      "tracks": [
+        {
+          "type": "position",
+          "keys": 2
+        },
+        {
+          "type": "rotation",
+          "keys": 2
+        },
+        {
+          "type": "scale",
+          "keys": 2
+        },
+        {
+          "type": "visible",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "skeletalPose",
+          "keys": 4
+        }
+      ],
+      "dryRunUndo": true
+    },
+    "humanDucking": true,
+    "pcm": {
+      "initial": {
+        "real": 2,
+        "tracked": 16,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "initialSources": 2,
+      "selected": true,
+      "after": {
+        "real": 2,
+        "tracked": 16,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "afterSources": 2,
+      "phaseError": 0,
+      "silentSink": true
+    },
+    "audio": {
+      "attack": 0.2062659658674183,
+      "release": 0.9894199190065908,
+      "silentSink": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "testScript": {
+      "path": "tools/check-engine-170-window.mjs",
+      "sha256": "9b31671b40a48e36c7c2919c63ca1e953251c4a7dd9c9575132fe1bdfcda046f",
+      "assertions": [
+        "UV view API preserves document revision",
+        "IK bone.add dryRun / add / Undo"
+      ]
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-170-installed-6FEw2B/uv-islands.png",
+      "sha256": "dcfcadbd90b5e110b7e869b8d7e79a63e2a3bec02306e5369a70d6941305ce03",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-170-installed-6FEw2B/prefab-structure.png",
+      "sha256": "affa6c96dee41047f6b162f3bee2eaf70f200b2db4d24ee1493c57f1234dae6a",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-170-installed-6FEw2B/ik-goals.png",
+      "sha256": "c49fefbbda2fe5b7524ba83a9562f9bc723b91e2c96b8e0198d276d0d7003aee",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

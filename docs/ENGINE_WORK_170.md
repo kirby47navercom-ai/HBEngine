@@ -45,3 +45,6 @@ AI `scene.prefab.adopt`, `scene.prefab.apply {all:true}` 또는 `property:[]`, `
 [Unreal5.8 FullBodyIK](https://dev.epicgames.com/documentation/en-us/unreal-engine/control-rig-full-body-ik-in-unreal-engine)의 루트/강성/회전 목표 지정 본문과 [ProBuilder6.0.9 UV Editor](https://docs.unity3d.com/Packages/com.unity.probuilder@6.0/manual/uv-editor.html)의 선택·수동 편집 구역을 대조했다. 연결 API·manual UV actions 전체와 전체 corpus 읽음으로 승격하지 않는다. [WebView2 NavigationCompleted](https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2navigationcompletedeventargs?view=webview2-1.0.4258.31)의 오류 상태 계약도 읽고 시작 실패에 상태 코드를 남기게 했다. 단순 IsSuccess=false만으로 원인을 단정하지 않는다.
 
 구체적 검사·실패 수정과 SHA는 실행 근거에 기록한다. 사용자 설치와 데이터 보존은 USER_INSTALL_170.json으로 별도 확인한다. 설치·단위 검사·선택한 시나리오를 전체 엔진/PC120·모바일60 성능 완료로 계산하지 않는다.
+
+
+170 사용자 설치 확인: `C:/Users/kirby/HBEngine/Versions/4d2deed78317a98e`. 명세2367파일 SHA를 실행 후에도 확인했다. 설치 EXE에서 프리팹 자식/전체 Apply·원자 Undo, UV 사람 드래그/Undo·AI 보기의 문서 revision 보존, IK 사람 목표와 AI 뼈 설정 dryRun/추가/Undo, C++ 내비/IK/음성, Take와 믹서 편집을 확인했다. 실제 Web Audio 소스2개/가상6개, 우선순위 전환 후 소스2개·시계 오차0이었다. 장치 출력은 무음 sink를 사용했으므로 청각 음질 검증으로 계산하지 않는다. 사용자 프로필10385파일 SHA가 전후 일치했고 두 바로가기와 .hbproject 연결을 확인했다. 이전 설치197029229바이트를 정리해 Versions는1개다. [설치 근거](research/USER_INSTALL_170.json).

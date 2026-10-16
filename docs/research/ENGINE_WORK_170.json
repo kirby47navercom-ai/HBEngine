@@ -281,6 +281,53 @@
         },
         "finalVoiceCountsAssertionPassed": true
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-170-installed-6FEw2B/acceptance.json",
+      "sha256": "3c3125c86c3102bfaace0bbb3d4e4bc688d9855b4b1da02ecdf56a647b9c9b65",
+      "summary": {
+        "passed": true,
+        "prefabStructure": true,
+        "uvHumanDragUndo": true,
+        "uvViewRevision": true,
+        "ikBoneDryRunAddUndo": true,
+        "cpp": {
+          "blocked": true,
+          "handError": 1,
+          "mixGain": 1,
+          "opened": true,
+          "realVoices": 2,
+          "rejected": true,
+          "ticks": 1817,
+          "virtualVoices": 6
+        },
+        "pcm": {
+          "initial": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "initialSources": 2,
+          "selected": true,
+          "after": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "afterSources": 2,
+          "phaseError": 0,
+          "silentSink": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "additionalChecks": [
@@ -310,5 +357,6 @@
     "logicalPCMSourcesInSignalTest": 8
   },
   "limitsDocument": "docs/ENGINE_WORK_170.md",
-  "userInstallation": "docs/research/USER_INSTALL_170.json"
+  "userInstallation": "docs/research/USER_INSTALL_170.json",
+  "userInstallationReceiptSHA256": "712765563a2cf580ce84f547c92d754124baf6955f6febcbba99e8dfc42998a4"
 }

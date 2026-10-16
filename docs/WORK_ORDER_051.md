@@ -171,3 +171,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 170 — 구조·UV·IK·오디오·2D 비용의 연속 구현 (2026-10-16)
 
 프리팹 자식 구조/전체 Apply와 변형 안정 컴포넌트, 전용 UV 캔버스/섬 조작, IK 루트·회전·뼈 설정, 실제/가상 음성 예산·우선순위·시계·C++/BP, 반복 타일 조회 인덱스를 함께 연결했다. 사람/AI 제작·Undo와 실제 Editor/D3D11 개발/배포/WebGPU에서 확인했다. Native 시작 실패 진단과 검사 도구의 오래된 계수/정리도 바로잡았다. 범위/잔여/검사는 ENGINE_WORK_170.md/research/ENGINE_WORK_170.json. 전체 누적 목표의 완료로 축소하지 않는다. 설치는 USER_INSTALL_170.json에 기록한다.
+
+
+170 설치 확인: 4d2deed78317a98e·2367파일 실행 후 SHA·격리 설치 EXE/사람/AI/Undo/C++/실제 PCM 소스 전환 통과·프로필10385파일 보존·Versions1. 기능58fcb8a, 설치 근거 research/USER_INSTALL_170.json.
