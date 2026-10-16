@@ -185,3 +185,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 172: 안정 ID 3방향 병합·충돌 선택·Undo/AI, 프로젝트 Git 변경/diff/stage/commit·로컬 작성자·부모 저장소 보호. CPU13군/Win32 사람·AI 검증. ENGINE_WORK_172.md와 research/ENGINE_WORK_172.json. 설치는 다음 누적 구현과 함께 전환.
+
+
+173: 복제 프리팹 생성/삭제·자식/호스트 풀·정적 삭제 표식·동적 바이트 회수·연결별 거리/소유자·late join/reconnect. CPU6군/기존18회귀·실제 D3D 출시/WebGPU 게임에서 호스트/클라이언트+C++ Spawn/Destroy. ENGINE_WORK_173.md/research/ENGINE_WORK_173.json. 다음 UI와 최종 설치 전환.

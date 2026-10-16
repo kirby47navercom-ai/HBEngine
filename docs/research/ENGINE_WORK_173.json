@@ -1,0 +1,313 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "e31e6c1",
+  "targetIds": [
+    "NET-01",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-173-NJAfCZ/acceptance.json",
+      "sha256": "62d846236f4c65ef7dcd193e1447f1591a0050fbe686aa9cf5a76cc612bc05be",
+      "result": {
+        "passed": 6,
+        "total": 6,
+        "checks": [
+          {
+            "name": "replica descriptors, distance/owner-only relevance and spawn catalog detection",
+            "passed": true
+          },
+          {
+            "name": "real two-socket dynamic prefab/children, distance despawn/reentry and ownership scope",
+            "passed": true
+          },
+          {
+            "name": "pool release/reacquire and dynamic deletion reclaim relay state bytes",
+            "passed": true
+          },
+          {
+            "name": "static outside interest hides immediately, restores, and deletion survives late join",
+            "passed": true
+          },
+          {
+            "name": "late join and reconnect do not duplicate a live prefab or resurrect deleted actors",
+            "passed": true
+          },
+          {
+            "name": "non-host destroy and descriptor mutation are rejected atomically",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "d3dRelease": {
+      "path": "native/build/engine-173-player-SSOFaF/acceptance.json",
+      "sha256": "fac88dbdbc3c5227cd7b6b6e6d7bd97d170aeeef828389d069194fa83adfbed6",
+      "result": {
+        "passed": true,
+        "network": {
+          "realClientCatalog": true,
+          "interestDespawnReentry": true,
+          "realClientDestroy": true,
+          "cppHostSpawnDestroy": true,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "retainedTombstones": 0,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 21
+          }
+        },
+        "configuration": "release",
+        "renderer": {
+          "lineMeshes": 2,
+          "backend": "D3D11",
+          "rayGeometry": null,
+          "bvh": null,
+          "info": {
+            "calls": 7
+          },
+          "memory": {
+            "geometries": 7,
+            "textures": 1
+          },
+          "bloomAllocations": 0,
+          "bloomComposites": 0,
+          "bloomDispatches": 0,
+          "bloomLevels": 0,
+          "bloomTextureBytes": 0,
+          "calls": 7,
+          "captures": 0,
+          "deformationBufferBytes": 720,
+          "deformations": 1,
+          "draws2d": 0,
+          "gpuTimeMs": 0.036864,
+          "gpuTimingFrame": 14,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 0,
+          "meshes": 7,
+          "particleBirths": 0,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 0,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 0,
+          "particlePools": 0,
+          "particleSortPasses": 0,
+          "particleSteps": 0,
+          "passes2d": 0,
+          "poseUpdates": 1,
+          "presents": 15,
+          "probeCaptures": 0,
+          "probeDispatches": 0,
+          "probeTextureBytes": 0,
+          "programs": 0,
+          "rasterLightTileBytes": 0,
+          "rasterLightTileDispatches": 0,
+          "raySceneUpdateBytes": 0,
+          "raySceneUpdates": 0,
+          "reflectionProbes": 0,
+          "shaderCompilation": {
+            "compilations": 0,
+            "cacheHits": 0,
+            "cacheMisses": 0,
+            "cacheEvictions": 0,
+            "cacheBytes": 0,
+            "cacheBudgetBytes": 8388608,
+            "lastCompileMS": 0,
+            "totalCompileMS": 0,
+            "sourceBuilds": 0
+          },
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 0,
+          "shadowTextureBytes": 0,
+          "skyCaptureFace": 0,
+          "skyCaptureFilterStage": 0,
+          "skyCapturePending": false,
+          "skyCapturePendingBytes": 0,
+          "skyEnvironmentBytes": 0,
+          "skyFilterSteps": 0,
+          "skySceneCaptures": 0,
+          "skySceneFaces": 0,
+          "target2dBytes": 0,
+          "targets2d": 0,
+          "textures": 1,
+          "transmissionAllocations": 0,
+          "transmissionCopies": 0,
+          "transmissionTextureBytes": 0,
+          "uploads": 9,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 0,
+          "probeCachedCaptures": 0,
+          "shadowTrackedDraws": 0,
+          "shadowTrackedResources": 0,
+          "automaticReadbacks": 0
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-173-player-1o4CdI/acceptance.json",
+      "sha256": "9b948be8ffc94a5a8881ca524a9d5192eb478b52957fc343838599b0ca1d52c4",
+      "result": {
+        "passed": true,
+        "network": {
+          "realClientCatalog": true,
+          "interestDespawnReentry": true,
+          "realClientDestroy": true,
+          "cppHostSpawnDestroy": true,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "retainedTombstones": 0,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 21
+          }
+        },
+        "configuration": "development",
+        "renderer": {
+          "backend": "WebGPU",
+          "pipelinePreparation": null,
+          "rayGeometry": null,
+          "rayAtlasUpload": {
+            "fullUploads": 0,
+            "partialUploads": 0,
+            "writeCalls": 0,
+            "queuedBytes": 0
+          },
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 57,
+            "frameCalls": 2,
+            "drawCalls": 12,
+            "triangles": 16386,
+            "points": 0,
+            "lines": 11,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 8,
+            "textures": 5
+          }
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "regression171": {
+      "path": "native/build/engine-171-yXuGwo/acceptance.json",
+      "sha256": "b8c036d5f5556e3504da2d2571d034d387e122a0eda54bba23ed6806ae40bb7b",
+      "result": {
+        "passed": 18,
+        "total": 18,
+        "checks": [
+          {
+            "name": "file-folder patch transitions and untouched files",
+            "passed": true
+          },
+          {
+            "name": "tree transition rollback after a real rename failure",
+            "passed": true
+          },
+          {
+            "name": "interrupted process journal restores file-folder shapes",
+            "passed": true
+          },
+          {
+            "name": "variable row offsets and 100000-item visible range",
+            "passed": true
+          },
+          {
+            "name": "tree expansion, ancestor collapse, IDs and widget schema",
+            "passed": true
+          },
+          {
+            "name": "UV boundary alignment preserves split normals and input",
+            "passed": true
+          },
+          {
+            "name": "independent min/mag, mip disable and anisotropic sampler encoding",
+            "passed": true
+          },
+          {
+            "name": "separate collision LOD and old asset compatibility",
+            "passed": true
+          },
+          {
+            "name": "live reload reflected state and incompatible change rejection",
+            "passed": true
+          },
+          {
+            "name": "streaming priority and estimate budget without count growth",
+            "passed": true
+          },
+          {
+            "name": "runtime automatic cells unload before budgeted replacement",
+            "passed": true
+          },
+          {
+            "name": "morph name mapping scale, offset and alpha",
+            "passed": true
+          },
+          {
+            "name": "retarget graph and baked morph track use renamed target",
+            "passed": true
+          },
+          {
+            "name": "ability/effect cue lifetime and periodic catch-up event",
+            "passed": true
+          },
+          {
+            "name": "network state validation and shortest rotation interpolation",
+            "passed": true
+          },
+          {
+            "name": "real host/client ownership, state, RPC and reconnect",
+            "passed": true
+          },
+          {
+            "name": "late join receives every snapshot chunk",
+            "passed": true
+          },
+          {
+            "name": "network byte budget rejects the entire update",
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "dependenciesAdded": 0,
+  "limits": [
+    "호스트 게임이 규칙 권위이며 릴레이가 서버 게임 시뮬레이션을 실행하지 않음",
+    "거리 관심 영역은 클라이언트가 보낸 기준 위치이므로 비밀 정보 보호/치트 방지 경계가 아님; 소유자 전용은 별도 서버 필터",
+    "등록된 로컬 프리팹과 같은 구조/버전 필요; 네트워크로 코드/에셋을 배포하지 않음",
+    "동적 원격 인스턴스는 숨길 때 제거하고 재진입 때 재생성; 호스트 풀 재사용 지원, 클라이언트 원격 풀 유지 미구현",
+    "정적 삭제 tombstone은 장면 수명 동안 남고 설정 상태 예산에 포함; 동적 삭제는 상태 바이트 회수",
+    "관심 위치 변경은 전체 상태 순회이며 공간 인덱스/대형 네트워크 성능은 잔여",
+    "호스트 마이그레이션·입력 예측·이력/재시뮬레이션·오브젝트 참조/부착 동적 변경·장면 세대 전환·전용 Cue 복제 미완료"
+  ],
+  "installation": "다음 UI 제작과 함께 최종 통합 검사/사용자 전환"
+}

@@ -407,3 +407,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 172: supplemental172의 SmartMerge/Unreal source control/Git status 지정 본문을 읽고 대조했다. 미독 링크/API와 전체 gate는 유지한다. 구현/검증/경계 ENGINE_WORK_172.md.
+
+
+173: supplemental173의 Actor Relevancy 본문·Object Spawning 지정 등록/권위/삭제/풀 본문을 대조했다. 실패 visibility URL·미독 API/미디어/전체 gate를 별도 유지한다.

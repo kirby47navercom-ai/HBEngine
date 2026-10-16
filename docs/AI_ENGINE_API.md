@@ -403,3 +403,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 172: document.merge는 base/theirs와 expectedRevision을 받고 충돌이 있거나 dryRun이면 결과만 반환한다. resolutions는 안정 경로별 ours/theirs/base 또는 {value}. 깨끗하고 유효한 결과만 기존 document.patch/Undo로 적용한다. sourcecontrol.status/diff는 읽기 전용, stage/commit/configure는 expectedIndexRevision 필수. init은 명시적 프로젝트 저장소 생성, configure는 프로젝트 로컬 작성자만 변경한다. 원격 자동 push 없음. 상세 ENGINE_WORK_172.md.
+
+
+173: NetworkReplica.relevancyRadius(0 전체)/ownerOnly·NetworkSession.interestTarget를 기존 컴포넌트 schema/document.patch로 편집한다. 생성 프리팹의 루트 Replica가 필요하고 동적 인스턴스는 고유 object ID를 복제 ID로 쓴다. 기존 Scene.Spawn/Destroy와 C++/BP 공용 서비스가 복제 생성/삭제까지 연결된다. runtime.network는 remote 수를 포함한다. ENGINE_WORK_173.md의 권한·장면/예측 경계를 따른다.

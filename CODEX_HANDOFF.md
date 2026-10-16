@@ -1,4 +1,8 @@
-# HBEngine — 171 설치 완료, 누적 잔여 계속 — 2026-10-16
+# HBEngine — 172 기능 커밋, 173 네트워크 수명·관심 영역 진행 — 2026-10-16
+
+현재172 기능 e31e6c1 커밋(main, 아직 push 전). 안정 ID 에셋3방향 병합/사람 충돌 선택/검증·revision·Undo, 프로젝트 Git 상태/텍스트diff/선택 stage/unstage/commit/로컬 작성자/부모repo쓰기보호. CPU13군 engine-172-xUCQ2e; 숨긴Win32 사람/AI/Undo/Git커밋 engine-172-window-7vjGj3 PASS/errors[]/exit0. merge-ui/git-ui 시각 확인. 종료초기두실패는 Garden dirty 확인창 대기, 최종 임시 문서 discard 선택. 저장 뒤 다시 dirty되는 기존 경로 미종결, DEBUG_HANDOFF 기록. docs172.mjs 실행 완료: 재실행 금지.172 설치는173과 함께 마지막 전환하며 현재171 Versions1 유지. sourcecontrol의 Git 충돌 마커 파일은 외부 편집기; 정상JSON 세버전 병합만 내부지원, 원격/push/잠금/시각graphdiff미구현.
+
+지금173 착수: NET01의 host 생성/삭제·허용 로컬 prefab catalog 인스턴스/late join/reconnect·관심영역/ownerOnly·범위외 spawn/despawn을 기존 Scene::Spawn/Destroy와 NetworkReplica/Session에 연결. 기존 network-runtime.js/network-state.js/multiplayer-server.mjs/engine-services.js/runtime-spawn.js/scene-components.js 읽음. 아직173제품코드 작성 전. 자동 rawcode전송 금지·클라이언트임의생성권한금지·파일비밀키공개주의·상태메모리회수/스냅샷중순서·풀재사용 처리 필요. 새의존성없이. 단계마다사용자턴끝내지말고계속. 아래171내용은완료기록이다.
 
 사용자 최종 지시: “남은거 다 하라고”. 여러 분야의 제작/실행까지 계속 구현하고 마지막 검사·설치 갱신. 원장 전체/UE Unity 전체 분석 완료로 축소·허위 보고 금지. 주인님/짚짱·자연스러운 존댓말. AI 친화/가벼움/Versions1·사용자 창/프로필/게임 보호. 새 에이전트 요청 없음, spawn 금지. 현재 단계는 구현/검증. 최종 응답을 아직 하지 않고 이어 작업 중이다.
 

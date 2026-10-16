@@ -2885,5 +2885,19 @@
     "bodyRead": "Unity SmartMerge overview/options/Git invocation/arrays/exclusions/comparisons; Unreal source control overview/status/diff/submit; Git status description/porcelain v1-z",
     "unread": "linked APIs/external tool guides/media/entire corpus",
     "globalGatePromotion": false
+  },
+  "supplemental173": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-relevancy-in-unreal-engine",
+      "https://docs.unity.cn/Packages/com.unity.netcode.gameobjects@2.13/manual/basics/object-spawning.html"
+    ],
+    "scope": "Actor Relevancy body logic/editor fields; Object Spawning registration/authority/despawn/pooled lifetime, selected code examples",
+    "failedReads": [
+      "https://docs-multiplayer.unity3d.com/netcode/1.8.1/basics/object-visibility/",
+      "https://docs.unity.cn/Packages/com.unity.netcode.gameobjects@2.13/manual/basics/object-visibility.html"
+    ],
+    "unread": "linked APIs, full pooling sample tail, whole corpus",
+    "globalGatePromotion": false
   }
 }

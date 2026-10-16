@@ -462,3 +462,6 @@ AnimationGraph::SetIKEffectorRotation/SetIKEffectorRotationWeight/SetIKRootSetti
 ## 171 — 네트워크와 코드 재적용
 
 Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용 서비스6노드로 생성했다. Network Session/Replica의 안정 ID·소유권과 허용 RPC 이벤트를 사용한다. 클라이언트의 비소유 상태 변경과 멀티캐스트를 거부한다. getter는 명령이 반영된 후속 프레임의 관측값이다. 공개 C++ 상태를 유지하는 런타임 재적용은 기존 BP 변수/타이머를 유지하며 원래 BeginPlay를 반복하지 않는다. 전체773노드/코어289. 액터 전체 수명 복제·예측·비공개 C++ 상태와의 경계는 [171](ENGINE_WORK_171.md)를 따른다.
+
+
+173: 기존 Scene::Spawn/Destroy의 NetworkReplica 프리팹은 호스트의 생성/풀 반환/제거를 원격 카탈로그와 연결한다. 네트워크 클래스에 새 함수 이름을 따로 만들지 않고 같은 C++/노드를 사용한다. NetworkSession 관심 기준·Replica 거리/소유자 상세 폼과 AI schema를 공용으로 쓴다. 773노드/코어289 유지. 원격 코드 실행/에셋 다운로드 없음.
