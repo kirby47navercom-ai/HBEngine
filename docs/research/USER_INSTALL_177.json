@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "b3cce8da6cb032ca781def32da08df3ae74940f6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6ecfb60380268ecd",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\6ecfb60380268ecd\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\6ecfb60380268ecd\\HBEngine.exe",
+  "bundleHash": "6ecfb60380268ecd94326b1e88330b7529abc77bc9978ed2fc73b5fc3e859149",
+  "files": 2434,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2427,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a2c8c587c0dfb8ef",
+        "bytes": 173530766,
+        "manifestSHA256": "667c58542e0b144a938b29f4841c8f96690d3365fc3ba86884b31cf91518d89b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T08:27:31.2881494Z",
+    "bytes": 173530766,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "6ecfb60380268ecd"
+    ]
+  },
+  "work": "native/build/engine-177-install-zUQL12",
+  "versions": [
+    "6ecfb60380268ecd"
+  ],
+  "manifestVerifiedFiles": 2434,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2434,
+  "installedSmoke": {
+    "path": "native/build/engine-177-installed-lIbJ5E/acceptance.json",
+    "sha256": "497f41de8800a7eb30a5e3cc329834eb388aa2e9dec9c87fe2e2b1d7eadc71ca",
+    "passed": true,
+    "autoRows": {
+      "human": true,
+      "undo": true,
+      "designer": true,
+      "virtualLifecycle": {
+        "natural": {
+          "rows": 2,
+          "pool": 2,
+          "measured": 2,
+          "totalHeight": 672,
+          "auto": true
+        },
+        "fixed": {
+          "rows": 2,
+          "pool": 2,
+          "measured": 0,
+          "totalHeight": 64,
+          "auto": false
+        },
+        "ended": {
+          "rows": 0,
+          "pool": 0,
+          "measured": 0,
+          "totalHeight": 0,
+          "auto": false
+        },
+        "children": 0
+      }
+    },
+    "vehicle": {
+      "humanWheelProperties": true,
+      "addRemove": true,
+      "undo": true,
+      "blueprint": true
+    },
+    "joints": {
+      "human": true,
+      "ai": true,
+      "undo": true
+    },
+    "executable": "C:/Users/kirby/HBEngine/Versions/6ecfb60380268ecd/HBEngine.exe",
+    "widget": {
+      "humanOverrides": true,
+      "preview": true,
+      "undo": true
+    },
+    "merge": {
+      "human": true,
+      "dryRun": true,
+      "stableConflict": "/name",
+      "undo": true,
+      "ai": true
+    },
+    "git": {
+      "humanStage": true,
+      "humanCommit": true,
+      "diff": true,
+      "identity": "HB UI 검사|ui@example.invalid|HB UI 검사|ui@example.invalid",
+      "head": "cd546dc949dc747726d17451d393712548a4b42b"
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-177-installed-lIbJ5E/auto-editor.png",
+      "sha256": "5d9be62821b5feec86c0569a02eb3a9ffb2205c779a9647df31c8f0e3c8c0aeb",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

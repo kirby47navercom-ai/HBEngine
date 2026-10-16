@@ -203,3 +203,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 177: 목록/트리 자동내용높이·부분누적합·표시행풀·너비/글꼴/1.5배·키보드/비활성·C++자료교체선택·종료수명을 제작/실행에 연결했다. ENGINE_WORK_177.md/JSON 근거. 누적 잔여는 정본 원장을 유지한다.
+
+
+177 설치 확인: 6ecfb60380268ecd·명세2434파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173530766바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_177.json.

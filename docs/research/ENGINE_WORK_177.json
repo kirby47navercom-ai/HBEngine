@@ -1519,6 +1519,78 @@
           "signal": null
         }
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-177-installed-lIbJ5E/acceptance.json",
+      "sha256": "497f41de8800a7eb30a5e3cc329834eb388aa2e9dec9c87fe2e2b1d7eadc71ca",
+      "result": {
+        "passed": true,
+        "autoRows": {
+          "human": true,
+          "undo": true,
+          "designer": true,
+          "virtualLifecycle": {
+            "natural": {
+              "rows": 2,
+              "pool": 2,
+              "measured": 2,
+              "totalHeight": 672,
+              "auto": true
+            },
+            "fixed": {
+              "rows": 2,
+              "pool": 2,
+              "measured": 0,
+              "totalHeight": 64,
+              "auto": false
+            },
+            "ended": {
+              "rows": 0,
+              "pool": 0,
+              "measured": 0,
+              "totalHeight": 0,
+              "auto": false
+            },
+            "children": 0
+          }
+        },
+        "vehicle": {
+          "humanWheelProperties": true,
+          "addRemove": true,
+          "undo": true,
+          "blueprint": true
+        },
+        "joints": {
+          "human": true,
+          "ai": true,
+          "undo": true
+        },
+        "executable": "C:/Users/kirby/HBEngine/Versions/6ecfb60380268ecd/HBEngine.exe",
+        "widget": {
+          "humanOverrides": true,
+          "preview": true,
+          "undo": true
+        },
+        "merge": {
+          "human": true,
+          "dryRun": true,
+          "stableConflict": "/name",
+          "undo": true,
+          "ai": true
+        },
+        "git": {
+          "humanStage": true,
+          "humanCommit": true,
+          "diff": true,
+          "identity": "HB UI 검사|ui@example.invalid|HB UI 검사|ui@example.invalid",
+          "head": "cd546dc949dc747726d17451d393712548a4b42b"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "newDependencies": 0,
@@ -1533,5 +1605,12 @@
   "failedAttempts": [
     "rcT74p: 너비 복원 검사에서 원래 inline calc를 빈 문자열로 지워 부모전체폭이 됨; 원래 width 문자열을 저장/복원하도록 검사 수정. 제품 측정 완화 없음"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_177.json",
+    "receiptSHA256": "472d2d7a5aafbef70667f16bccfaf9dd3f6553bcfb070859ec1dacae0fceab4e",
+    "sourceCommit": "b3cce8da6cb032ca781def32da08df3ae74940f6",
+    "versions": [
+      "6ecfb60380268ecd"
+    ]
+  }
 }

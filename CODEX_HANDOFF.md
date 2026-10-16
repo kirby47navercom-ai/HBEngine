@@ -1,3 +1,11 @@
+# 누적177 설치까지 완료 — 178 모델 임포트 작업 계속
+
+main b3cce8da6cb032ca781def32da08df3ae74940f6 originpush완료. 설치 C:/Users/kirby/HBEngine/Versions/6ecfb60380268ecd/HBEngine.exe, bundle6ecfb60380268ecd94326b1e88330b7529abc77bc9978ed2fc73b5fc3e859149. 명세2434파일 실행후SHA일치.177installed-lIbJ5E PASS(사람autoRows/Undo/designer/virtual모드전환·종료/late갱신+176전체회귀), auto-editor.png 시각확인. 사용자프로필10385파일전후/검사후 SHA 동일46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26. 바로가기2/.hbproject연결,이전176173530766바이트정리,Versions1. finish177.mjs완료재실행금지,공유testcache추가정리0. USER_INSTALL177와WORK177설치링크완료. receipt문서커밋push가다음.
+
+178아직코드없음/조사·기존소유자확인중: prototype/engine-services.js export loadModel은OBJ/FBX/GLTFloader,finish가sidecar(asset.import.json)의subassets만applyModelOverrides(name기준)하고예외모두무시. FBXLoader .ID와GLTFparser.associations보존을확인하고중복이름런타임대응필요. tools/project-service.mjs scanAsset regexGLTF/GLB/OBJ만modelSubassets; reimport와overrideModelSubasset이{version,source,subassets}만sidecar에써나머지임포트설정이있다면보존안됨. 기존 /api/asset/model-override·asset/info·reimport JSON엔드포인트는있으나app UI엔subasset없음. app placeAsset(file)model은placeModel(file)로배치, 별도임포트Inspector/창연결필요. tools/headless-model.mjs는GLTF2만원본64MiB/버퍼128MiB,공용Three GLTFLoader로pose/Animationgraph·C++쿼리에서사용; 새unit/axis설정은이경로에도같이반영해야함.
+
+178공식본문실제읽음: UE5.8 FBXImportOptionsReference 전체0–170줄(연결API/media미독),Unity6000.5 ModeltabImportSettings본문183–319(연결Rig/Animation/MaterialAPI미독). URLs https://dev.epicgames.com/documentation/unreal-engine/fbx-import-options-reference-in-unreal-engine 및 https://docs.unity.com/en-us/engine/6000.5/manual/assets-and-media/asset-types/models/importing/fbximporter-model . supplemental178등록필요. Unity7000검색결과는읽기범위에계산금지. 소스모델단위/축·원본계층/리그와재가져오기·노멀/UV/collision/LOD흐름의구분대조. HBwraproot변환으로animation대상을유지할지공용loader수정전에FBXGlobalSettings/GLTFassociations·AnimationRoot소유를더확인한다. 이름중복index추측으로override적용금지.
+
 # 누적177 UI 자동 높이 검증·설치 준비, 다음178 모델 에셋
 
 주인님 최신지시 남은거전부계속. 아직최종답변없음. 175176 feature0c00cb7/receipta6b9662 origin/main동일. 현재177UI제품/문서미커밋. autoRows공유정의/Editorcheckbox/validation/runtime,MeasuredListLayout Fenwick,표시행DOM측정/resize/typography/rAF·scrollanchor/bottom·명시높이우선·고정호환/overflowclip·observer/frame/source/DOM해제·늦은갱신거부. ListView/TreeView 포커스·runtime비활성입력거부. ListView자료교체사라진선택-1,SetValue범위원자거부. 새deps/GPU회수0. autoheighttext행만,100k/깊이32/4096높이 기존검증. 복합행/CSS초대형scroll높이분할/전체a11y미완료.
