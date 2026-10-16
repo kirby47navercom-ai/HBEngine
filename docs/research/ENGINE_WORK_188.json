@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "4c3c429",
+  "targetIds": [
+    "EDT-05",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-188-taFFxn/acceptance.json",
+      "sha256": "ab3ddf31ddbb032221e104462a93ec0279b99ec11e1b1168a77232ae5ab26280",
+      "result": {
+        "passed": 8,
+        "total": 8,
+        "commands": 56,
+        "checks": [
+          {
+            "name": "all dedicated default chords resolve only in their active context, with unique commands and no global conflict",
+            "passed": true
+          },
+          {
+            "name": "remaps suppress old shifted and unshifted keys while keeping different editors independent",
+            "passed": true
+          },
+          {
+            "name": "text, IME, dialogs, flight and game input ownership prevent editor mutations",
+            "passed": true
+          },
+          {
+            "name": "old explicit global keys preserve profiles and disable newly conflicting implicit defaults",
+            "passed": true
+          },
+          {
+            "name": "notify shortcuts preserve the selected resize handle, exact frame step, validation and unrelated data",
+            "passed": true
+          },
+          {
+            "name": "rig clipboard is shared by original and reassigned commands, copies values and preserves metadata",
+            "passed": true
+          },
+          {
+            "name": "disposed, preview and game guards reject direct dispatch without changing owners",
+            "passed": true
+          },
+          {
+            "name": "late material clipboard replies never paste into a switched document, disposed editor or running game",
+            "passed": true
+          }
+        ],
+        "newDependencies": 0,
+        "newTimers": 0
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-188-window-M3A1Rf/acceptance.json",
+      "sha256": "c2052eb5bcf6f2d967e9d0b7a4e3c4e7748d6a54d8926059b5161553ccda5132",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "results": {
+          "material": {
+            "remap": true,
+            "legacySuppressed": true,
+            "modifiedLegacySuppressed": true,
+            "undoRedo": true
+          },
+          "materialfunction": {
+            "remap": true,
+            "legacySuppressed": true,
+            "modifiedLegacySuppressed": true,
+            "undoRedo": true
+          },
+          "curve": {
+            "remap": true,
+            "legacySuppressed": true,
+            "keyAddedAndDeleted": true
+          },
+          "rig": {
+            "toolRemap": true,
+            "oldShiftKeySuppressed": true
+          },
+          "tilemap": {
+            "toolRemap": true,
+            "legacySuppressed": true
+          },
+          "animation": {
+            "remappedDelete": true,
+            "legacySuppressed": true,
+            "undo": true
+          },
+          "sequence": {
+            "frameRemap": true,
+            "legacySuppressed": true,
+            "fpsPreserved": true
+          },
+          "notify": {
+            "remappedHandle": true,
+            "legacySuppressed": true,
+            "exactFrameStep": true,
+            "endPreserved": true
+          },
+          "input": {
+            "textOwned": true,
+            "imeOwned": true
+          },
+          "detached": {
+            "realWindow": true,
+            "remapBeforeLocalHandler": true,
+            "legacySuppressed": true,
+            "toolbarSaveAfterGlobalRemap": true,
+            "toolbarUndoRedo": true
+          },
+          "settingsRestored": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "previousShortcutRegression": {
+      "path": "native/build/engine-183-qKbIoH/acceptance.json",
+      "sha256": "833c8ea2a68442691b4ae5ba857d0071701895ac6242cde04d95b174902f4015",
+      "result": {
+        "passed": 6,
+        "total": 6,
+        "checks": [
+          {
+            "name": "widget/modeling scope routes defaults without stealing viewport/graph or text input",
+            "passed": true
+          },
+          {
+            "name": "reassigned keys suppress legacy behavior and remain independent across dedicated editors",
+            "passed": true
+          },
+          {
+            "name": "old explicit global mappings win over new implicit defaults without resetting profiles",
+            "passed": true
+          },
+          {
+            "name": "widget dispatch preserves stretched margins, root safety, preview and disposal guards",
+            "passed": true
+          },
+          {
+            "name": "mesh selection modes and operations share the real editor action owner",
+            "passed": true
+          },
+          {
+            "name": "explicit assignment conflicts and failed persistence roll back without changing saved keys",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "blendSpaceEditor": {
+      "path": "native/build/animation-blend-space-editor-u26nIZ/acceptance.json",
+      "sha256": "e367683a003695336a575970b0939daba7970104301ffd0492a34ada2b4faa68",
+      "result": {
+        "ok": true,
+        "retargetMode": false,
+        "ccdMode": false,
+        "ikMode": false,
+        "rootMotionMode": false,
+        "editor": true,
+        "enumBlendMode": false,
+        "intBlendMode": false,
+        "replacementOnly": false,
+        "montageMode": false,
+        "montageReplacement": false,
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "aaab2bda476938c2ee402e4725a781d45bebe396295c5e9154832f27f779a7ec",
+          "prototype/animation-retarget.js": "b98b78dc5481ddf86a06a3e5a79a6c1aeb338d8618e6716d9e77f9a53f146004",
+          "prototype/animation-retarget-editor.js": "73ad20e2d0ed10573692f0a722f86682f88c2ae4b9e035e00b6166fc71f89d78",
+          "prototype/animation-retarget-bake.js": "8eb7572a94a4f82edd7a4e9e7959956e2e6a6420a6ff1c91de9b4e0f1121d176",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "098d35ff985d703ffb4ba9e93906e8a2bb75164f745ca2fa77fe2299f2220bf1",
+          "prototype/app.js": "8665b670f9cf3196b9fadfec8a7b393149f30f0bd4790ce989dcdeb0882af90f",
+          "tools/headless-model.mjs": "25bccda6f1bbdcce14cfb7c7959ea50299f3d0d234ac6b2efd37eef26402c439",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "04d98cc238a1c0c8cc84886b4f46667f162d3e9018ca6ba2bf8c0fdd7aa380b4",
+          "prototype/animation-ik-editor.js": "b2c8bbad6d93fcd5ebd2c604a81d0e1eb60a2eb32a042f94077b51a974d44b92",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "f3cfe1e8ccf1564f02bdcf9b4dd006ac5959bea3554c3232e2d294a12d9523dd",
+          "native/include/HBEngine/Game.hpp": "22de3c20cacc674bac3808871e971e3d41b46c1f680344a058802d3f27fba265",
+          "native/include/HBEngine/Bridge.hpp": "2a4bef6bcc1089ab8929bf35852fdd67f63a40cd45adae23e3223661412f917c",
+          "prototype/engine-services.js": "4e983006f86f845769f5fc08d8e2d3ced74912e3b6cd03706a4d999d5e8bd83f",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/animation-graph-assets.js": "19858d8ff0d73ec19b8ca1c88ad4a07c20a2c301f0ec3b53b4ce43c6af64e023",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "5ebf79ec575609d91ea6e83c9ffaf0d9722661094f44fe7f253a612d2b1dbffc",
+          "prototype/animation-state-editor.js": "d6ce8d04198b5bca50a4a1a629d8db19deb442b7d70f912c7ed312e6c2ba3a8a",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "a12d7d7b8d7d12e33cbc03e7082bcfa0a0b6dbff124535ff6dc1d392082be0fb",
+          "prototype/physics-world.js": "44315ee8676b09a773f09460f97f222f04bc5ff072e7fe00a8136cb356e32fbb",
+          "prototype/scene-components.js": "dbb5530e5de6d03b341241f6ee89f77320f80c376f6df4b20330faef41085158",
+          "prototype/animation-graph-runtime.js": "1a1d6d7a8c72d78ea483467f99a98b43aefdf0e7b7b759412a3fede038e11a21",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "7b613806ccec468333ca7a9a24b1e6ac0214265d48ace0c4ac46a9e345eed8ef",
+          "prototype/gameplay-editor.js": "a54a54693dee3aaf2a5b91294c851dbe21280f08b50266b98af488aaab902219",
+          "tools/editor-automation.mjs": "630bca616e59626da0b60c28631f97dafcd3b7a5538e76453a1119b58b97bb23",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "notifyPolicyMode": false,
+        "blendSpaceMode": true,
+        "statesMode": false,
+        "syncMode": false,
+        "notifyMode": false,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "assertions": "assertions.json",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true
+      }
+    },
+    "cppPlayerRegression": {
+      "path": "native/build/animation-graph-player-FiHYup/acceptance.json",
+      "sha256": "0fc40325714679fdd02e5445d8cdb7438eb4c93a0c9f46536c6bc94b72159644",
+      "result": {
+        "ok": true,
+        "retargetMode": false,
+        "ccdMode": false,
+        "ikMode": false,
+        "rootMotionMode": false,
+        "editor": false,
+        "enumBlendMode": false,
+        "intBlendMode": false,
+        "replacementOnly": false,
+        "montageMode": false,
+        "montageReplacement": false,
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "aaab2bda476938c2ee402e4725a781d45bebe396295c5e9154832f27f779a7ec",
+          "prototype/animation-retarget.js": "b98b78dc5481ddf86a06a3e5a79a6c1aeb338d8618e6716d9e77f9a53f146004",
+          "prototype/animation-retarget-editor.js": "73ad20e2d0ed10573692f0a722f86682f88c2ae4b9e035e00b6166fc71f89d78",
+          "prototype/animation-retarget-bake.js": "8eb7572a94a4f82edd7a4e9e7959956e2e6a6420a6ff1c91de9b4e0f1121d176",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "098d35ff985d703ffb4ba9e93906e8a2bb75164f745ca2fa77fe2299f2220bf1",
+          "prototype/app.js": "8665b670f9cf3196b9fadfec8a7b393149f30f0bd4790ce989dcdeb0882af90f",
+          "tools/headless-model.mjs": "25bccda6f1bbdcce14cfb7c7959ea50299f3d0d234ac6b2efd37eef26402c439",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "04d98cc238a1c0c8cc84886b4f46667f162d3e9018ca6ba2bf8c0fdd7aa380b4",
+          "prototype/animation-ik-editor.js": "b2c8bbad6d93fcd5ebd2c604a81d0e1eb60a2eb32a042f94077b51a974d44b92",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "f3cfe1e8ccf1564f02bdcf9b4dd006ac5959bea3554c3232e2d294a12d9523dd",
+          "native/include/HBEngine/Game.hpp": "22de3c20cacc674bac3808871e971e3d41b46c1f680344a058802d3f27fba265",
+          "native/include/HBEngine/Bridge.hpp": "2a4bef6bcc1089ab8929bf35852fdd67f63a40cd45adae23e3223661412f917c",
+          "prototype/engine-services.js": "4e983006f86f845769f5fc08d8e2d3ced74912e3b6cd03706a4d999d5e8bd83f",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/animation-graph-assets.js": "19858d8ff0d73ec19b8ca1c88ad4a07c20a2c301f0ec3b53b4ce43c6af64e023",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "5ebf79ec575609d91ea6e83c9ffaf0d9722661094f44fe7f253a612d2b1dbffc",
+          "prototype/animation-state-editor.js": "d6ce8d04198b5bca50a4a1a629d8db19deb442b7d70f912c7ed312e6c2ba3a8a",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "a12d7d7b8d7d12e33cbc03e7082bcfa0a0b6dbff124535ff6dc1d392082be0fb",
+          "prototype/physics-world.js": "44315ee8676b09a773f09460f97f222f04bc5ff072e7fe00a8136cb356e32fbb",
+          "prototype/scene-components.js": "dbb5530e5de6d03b341241f6ee89f77320f80c376f6df4b20330faef41085158",
+          "prototype/animation-graph-runtime.js": "1a1d6d7a8c72d78ea483467f99a98b43aefdf0e7b7b759412a3fede038e11a21",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "7b613806ccec468333ca7a9a24b1e6ac0214265d48ace0c4ac46a9e345eed8ef",
+          "prototype/gameplay-editor.js": "a54a54693dee3aaf2a5b91294c851dbe21280f08b50266b98af488aaab902219",
+          "tools/editor-automation.mjs": "630bca616e59626da0b60c28631f97dafcd3b7a5538e76453a1119b58b97bb23",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "notifyPolicyMode": false,
+        "blendSpaceMode": false,
+        "statesMode": false,
+        "syncMode": false,
+        "notifyMode": false,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-graph-player-FiHYup\\애니메이션 포즈 혼합 검증\\Builds\\windows\\2026-10-16T13-49-58-035Z-481130d5\\HBGame_b8b3cd96a2564b8eb2a91e1645b06ef2.exe",
+        "assertions": "assertions.json",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true
+      }
+    },
+    "animationSyncEditor": {
+      "path": "native/build/animation-sync-editor-XEFBn3/acceptance.json",
+      "sha256": "1bf1e4ec62937d8074dbed4231382d69a9c9ecd87f91069e30d3a464c073df04",
+      "result": {
+        "ok": true,
+        "retargetMode": false,
+        "ccdMode": false,
+        "ikMode": false,
+        "rootMotionMode": false,
+        "editor": true,
+        "enumBlendMode": false,
+        "intBlendMode": false,
+        "replacementOnly": false,
+        "montageMode": false,
+        "montageReplacement": false,
+        "checkedFiles": {
+          "prototype/animation-retarget-assets.js": "aaab2bda476938c2ee402e4725a781d45bebe396295c5e9154832f27f779a7ec",
+          "prototype/animation-retarget.js": "b98b78dc5481ddf86a06a3e5a79a6c1aeb338d8618e6716d9e77f9a53f146004",
+          "prototype/animation-retarget-editor.js": "73ad20e2d0ed10573692f0a722f86682f88c2ae4b9e035e00b6166fc71f89d78",
+          "prototype/animation-retarget-bake.js": "8eb7572a94a4f82edd7a4e9e7959956e2e6a6420a6ff1c91de9b4e0f1121d176",
+          "prototype/animation-skeleton.js": "dda6ce509ef884a4afea8386b19a4e7caeaf76d9b315a2d7bafd4c545a1e9848",
+          "prototype/asset-documents.js": "098d35ff985d703ffb4ba9e93906e8a2bb75164f745ca2fa77fe2299f2220bf1",
+          "prototype/app.js": "8665b670f9cf3196b9fadfec8a7b393149f30f0bd4790ce989dcdeb0882af90f",
+          "tools/headless-model.mjs": "25bccda6f1bbdcce14cfb7c7959ea50299f3d0d234ac6b2efd37eef26402c439",
+          "tools/animation-retarget-window-actions.mjs": "7d08b3bf9fe9b9177f7fe55e351533106df0ad8e5094347dcdf606d59787f101",
+          "prototype/animation-ik.js": "04d98cc238a1c0c8cc84886b4f46667f162d3e9018ca6ba2bf8c0fdd7aa380b4",
+          "prototype/animation-ik-editor.js": "b2c8bbad6d93fcd5ebd2c604a81d0e1eb60a2eb32a042f94077b51a974d44b92",
+          "prototype/animation-graph-editor.css": "5c7045014385afe6fee57ebe9e81791b9314f7aff40b3368761fd61e86d9ab21",
+          "tools/animation-ik-window-actions.mjs": "f3cfe1e8ccf1564f02bdcf9b4dd006ac5959bea3554c3232e2d294a12d9523dd",
+          "native/include/HBEngine/Game.hpp": "22de3c20cacc674bac3808871e971e3d41b46c1f680344a058802d3f27fba265",
+          "native/include/HBEngine/Bridge.hpp": "2a4bef6bcc1089ab8929bf35852fdd67f63a40cd45adae23e3223661412f917c",
+          "prototype/engine-services.js": "4e983006f86f845769f5fc08d8e2d3ced74912e3b6cd03706a4d999d5e8bd83f",
+          "prototype/animation-state-assets.js": "07936cf1cf935ef8ceb25dfc01749d9fbfd7c38ddf3fef4a8c6b9328e86fee34",
+          "prototype/gameplay-preview.js": "d85a675ea2973c871cae4210f84e422a8e9e2aaf2ce24a38f7af44a9368df6bf",
+          "prototype/animation-graph-assets.js": "19858d8ff0d73ec19b8ca1c88ad4a07c20a2c301f0ec3b53b4ce43c6af64e023",
+          "prototype/animation-pose-plan.js": "7f7427ebbdefe2e3a8430970752d9958a9d42f688ad6166cc55907ff911a1a7b",
+          "prototype/animation-graph-editor.js": "5ebf79ec575609d91ea6e83c9ffaf0d9722661094f44fe7f253a612d2b1dbffc",
+          "prototype/animation-state-editor.js": "d6ce8d04198b5bca50a4a1a629d8db19deb442b7d70f912c7ed312e6c2ba3a8a",
+          "tools/animation-int-window-actions.mjs": "6fd70c6e7fe5ea3904a2ccb3f2d0563b8fb85fe9be163aaddad85573d53fc24e",
+          "prototype/animation-root-motion.js": "a12d7d7b8d7d12e33cbc03e7082bcfa0a0b6dbff124535ff6dc1d392082be0fb",
+          "prototype/physics-world.js": "44315ee8676b09a773f09460f97f222f04bc5ff072e7fe00a8136cb356e32fbb",
+          "prototype/scene-components.js": "dbb5530e5de6d03b341241f6ee89f77320f80c376f6df4b20330faef41085158",
+          "prototype/animation-graph-runtime.js": "1a1d6d7a8c72d78ea483467f99a98b43aefdf0e7b7b759412a3fede038e11a21",
+          "prototype/animation-montage-runtime.js": "f727749eeec669b45bcad9225866ff36be8bd6d605c8f363a70b338cd49a5420",
+          "prototype/gameplay-runtime.js": "7b613806ccec468333ca7a9a24b1e6ac0214265d48ace0c4ac46a9e345eed8ef",
+          "prototype/gameplay-editor.js": "a54a54693dee3aaf2a5b91294c851dbe21280f08b50266b98af488aaab902219",
+          "tools/editor-automation.mjs": "630bca616e59626da0b60c28631f97dafcd3b7a5538e76453a1119b58b97bb23",
+          "tools/animation-montage-window-actions.mjs": "9bc3aed4b6e726488d816af11a14d947140fec939660397a739e722e540ea9a9"
+        },
+        "notifyPolicyMode": false,
+        "blendSpaceMode": false,
+        "statesMode": false,
+        "syncMode": true,
+        "notifyMode": false,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "assertions": "assertions.json",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "serverClosed": true
+      }
+    }
+  },
+  "additionalChecks": [
+    "check-editor-shortcuts:111 commands",
+    "check-material-workflow:78 material nodes",
+    "check-gameplay-timeline:30/60fps/key boundaries",
+    "check-animation-sync",
+    "check-ui-layout",
+    "generate-api --check",
+    "check-detached-window-frames"
+  ],
+  "newCommands": 56,
+  "totalCommands": 111,
+  "newDependencies": 0,
+  "newTimers": 0,
+  "automaticGPUReadbacks": 0,
+  "installationPending": true,
+  "limits": [
+    "These 56 commands cover existing keyboard operations and selected existing toolbar actions in nine dedicated contexts. Collision/UV/retarget/audio and remaining special tool interactions still need their own complete remap coverage. Embedded blend-space and animation-notify charts keep their local key ownership; parent graph deletion must not consume chart sample keys.",
+    "The development window proof predates the final held-frame repeat assertion. Installed smoke must verify that assertion with the final source.",
+    "No claim of UE/Unity full shortcut parity, engine-wide completion, sustained FPS or real-phone validation."
+  ],
+  "failedAttempts": [
+    "Fixture assumptions were corrected: the rig starts in bone mode; material title is .node-title; hidden previous editor fields must not receive focus; a scrubbed fractional time moves to the next FPS boundary, rather than adding a frame to its rounded display value. Signed values and validation thresholds were not weakened.",
+    "Clicking a montage segment rerendered its DOM and lost the selected resize-handle focus. The actual pointer-up path now restores that handle, and the remapped exact-step test passes.",
+    "An initial owner-toolbar callback assignment ran before dock initialization and prevented startup. Register the hoisted command callback through DockLayout construction options instead.",
+    "Pending material clipboard reads could write into a switched document or disposed editor. The actual async method now validates document ownership, running state and disposal before mutation; successful paste remains tested.",
+    "The first embedded blend-space regression passed sample-only deletion, then its old fixture hit the editor disk-poll busy guard during Undo. Extended the existing three-attempt/250ms EDITOR_BUSY-only retry to these editor modes; revision conflicts and other errors remain failures. The completed actual editor regression retains all sample/wire/preview/C++ assertions."
+  ]
+}

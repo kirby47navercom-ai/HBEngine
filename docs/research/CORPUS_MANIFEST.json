@@ -3030,5 +3030,20 @@
       }
     ],
     "globalGatePromotion": false
+  },
+  "supplemental188": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-editor-ui",
+        "scope": "218–278 selected graph mouse/keyboard controls and hotkeys"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.0/manual/unity-editor/editor-navigating-managing/shortcuts-manager",
+        "scope": "319–360 contextual conflicts;400–431 default profile/custom tool key ownership"
+      }
+    ],
+    "unread": "Linked APIs/media and remainder of full corpus",
+    "globalGatePromotion": false
   }
 }

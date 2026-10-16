@@ -97,7 +97,7 @@ export const editorMethods={
   'state.add':{params:{path:'상태 머신 문서',expectedRevision:'현재 revision',parent:'부모 상태 ID (생략: 루트)',name:'고유 이름 (선택)',position:'[x,y] (선택)',submachine:'기본 하위 상태까지 생성 (선택)',dryRun:'검증만'}},
   'state.reparent':{params:{path:'상태 머신 문서',expectedRevision:'현재 revision',state:'상태 ID',parent:'부모 상태 ID (빈 값: 루트)',dryRun:'검증만'}},
   'state.remove':{params:{path:'상태 머신 문서',expectedRevision:'현재 revision',state:'상태 ID (하위 트리·연결 함께 삭제)',dryRun:'검증만'}},
-  'editor.shortcuts.get':{description:'단축키 명령·프로필·revision 조회',params:{}},
+  'editor.shortcuts.get':{description:'단축키 명령·프로필·revision 조회. commands의 scope는 창 문맥, when=notify는 선택한 몽타주 구간/핸들, repeat는 누른 채 반복 가능한 이동 명령이에요.',params:{}},
   'editor.shortcuts.set':{params:{data:'version/active/profiles/bindings 전체 JSON',expectedRevision:'get의 revision',dryRun:'검증만'}},
   'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
   'runtime.lod':{description:'실행 LOD 단계/포즈 스케줄과 충돌 캐시 예산 조회; GPU 읽기 없음',params:{}},

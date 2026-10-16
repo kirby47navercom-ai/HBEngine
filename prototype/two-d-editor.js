@@ -46,6 +46,7 @@ export class TwoDEditor {
     this.el.onchange=event=>this.changeField(event.target);
     this.el.onclick=event=>{const button=event.target.closest('button');if(button&&this.el.contains(button)){event.stopPropagation();this.action(button);}};
     this.el.onkeydown=event=>{
+      if(this.hooks.managedShortcuts)return;
       if(event.isComposing||event.target.matches('input,textarea,select,[contenteditable]')||event.ctrlKey||event.metaKey||event.altKey)return;
       if(kind==='tilemap'&&({b:'brush',d:'erase',u:'rectangle',g:'fill',i:'pick'})[event.key.toLowerCase()]){event.preventDefault();event.stopPropagation();this.tool=({b:'brush',d:'erase',u:'rectangle',g:'fill',i:'pick'})[event.key.toLowerCase()];this.updateTools();}
       else if(kind==='spriteanimation'&&event.code==='Space'){event.preventDefault();event.stopPropagation();this.togglePlay();}

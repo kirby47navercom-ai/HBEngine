@@ -1,3 +1,21 @@
+# 188 실창/차트 회귀 완료 — 189 비시간 셰이더 이전 표본 특화 후 함께 설치
+
+188 CPU8 taFFxn / managed·modifier거절 window M3A1Rf PASS. actual 기존blend-space editoru26nIZ / sync editorXEFBn3 PASS (하위chart는parentgraph scope양보해sample/wire만Delete; globals·revisionguard유지). 기본CPP releasePlayerFiHYup PASS. 최신repeat태그는설치smoke에서heldStep명시확인필요. 188docs실행완료재실행금지. 다음188한국어커밋push→189Time가없는그래프가이전Time표본코드를생성하지않도록기존op2특화/실제컴파일과픽셀검증→187/188/189 묶음install189·검사·영수증push→다음누적계속. 설치아직186 Versions1.
+
+# 187 렌더링 검증·커밋 완료 / 188 전용 편집기 단축키 묶음 검증 중
+
+주인님 최신지시: 남은거 모두 계속, 길게 구현·그룹검사·설치업데이트, AI친화/가벼움/Versions1. 이 세션 최종답변 없음. 새 에이전트 요청 없음(스폰 금지). 사용자 앱/프로필/프로젝트를 검사에 쓰지 않는다.
+
+187 main4c3c429 originpush완료. 불투명 Normal-only Time 그래프 이전 절대 시간, forward.w 재사용/vec2 timeContext 공용프로그램, 기존TBN 복원, failure/rewind/edit invalidate. transmission TIR/world/view/다른Time필드 보수적거절. delta설계 long float취소문제→절대시간으로고침. CPU7 aIro2R; actualD3DCompute low2Tjp62/longMy2XOi; WebGL+GPU pixels lowPMMcUs/longQ5pM5j(max5.93e-8); packagedgames D3DooQ8Zx/WebGPUexIWy9/GL Oidpv0 PASS. old106/110/138/141/157 등 관련회귀PASS. docs187.mjs실행완료재실행금지. 생성SDKheaders 최신절대시간, root/dist Win32 EXE absolute shader로build완료(그뒤188JS만수정). 설치는186 0d173fc14c7b696a, 187+188 함께 설치할예정. RND07 partial, 초기coldshader지연/mip/world/view 미해결유지.
+
+188 미커밋: asset-shortcut-commands.js 56명령/9문맥(총111), 공용profiles/CAS AI/충돌·옛명시global우선이행. material/curve/animgraph/BT/FSM/sequence/montage/rig/tile/sprite. asset-shortcuts실제기존메서드/UIButton에디스패치. 원래handler managedShortcuts flag로고정키우회막고Escape유지; standalone/BlueprintTimeline기존키호환. root scope/notify선택문맥/target ownerDocument dialog·IME/typing/flight/gameguard. detached keycapture를ownerdoc먼저전달하고처리시원래event중단. detached toolbar는가짜CtrlS대신검증된ownerCommand직접호출(사용자save키재지정과별개버튼). ownercallback초기dock없을때직접대입한실패는생성options에hoistedfunction으로고침. 몽타주 포인터up렌더뒤선택구간/resize핸들포커스복구. MaterialClipboard await뒤문서교체/종료/game거절+mutate/Disposeguard. keyresolve profile1회/배열복제제거. 재생프레임/notify/위젯nudge만repeat허용(최신추가).
+
+CPU1888 DT9Hev PASS(클립보드정상/late4경우실제함수), 기존1836 qKbIoH/shortcuts111/material/timeline/sync/UIlayout/API생성/detachedframe PASS. 실제window Vjhra1은56문맥 편집+detached HWND/remap/toolbar save(AltS)/UndoRedo·입력IME·errors0/exit0 PASS, 그뒤 managedlegacy우회와repeat 추가. 현재83955실행은managed modifier거절확인중(launch전repeat미포함). 최신tools/check-engine-188-window에held sequence repeat추가했으므로 설치smoke또는최종dev검사에서확인필요. RFxU18/shortcuts-editor.png 실제로열어몽타주GUI확인, 설치최종캡처아직. 실패검사들은오류기록보존: selector/class/title(header가아니라.node-title), rig초기도구bone, 임의scrub시간의next frame 경계와2자리표시(0으로설정한정확range로교정), 숨은이전문서속성rate를focus한오류(현재visible transportinput사용) 등. 제품의몽타주focus/clipboardlate/초기ownerCallback버그는실제로고침. threshold/quality낮추지않음.
+
+다음: currentwindow결과확인→최신repeat/제작조작 실제창검증→docs188/status/corpus읽음scope정리·최종diff/커밋push→dist proto/tools/docs/include/desktop 동기화(Win32바이너리187build이미최신)→새install188(install186복제하되186직접재실행금지)→격리설치check188window+187 GPUclock check→manifest/profile/shortcut/.hbproject/Versions1 영수증(187/188둘다연결)→receiptpush→다음누적남은목표계속. 현재사용자프로필baseline10385/SHA46024720...d26은이전설치값; 새설치시직전/직후현재인벤토리로보존검증. 현재C:free~462GB, Versions1 확인. 테스트폐기공식pruneTestArtifacts만.
+
+---
+
 # 누적186 설치 완료 — 187 렌더링 이전 노멀·mip 이력 조사 계속
 
 maincd1acac feature originpush. 설치0d173fc14c7b696a/2517명세파일 실행후 SHA일치. installed9C4fcI PASS/새 prefabStage 명시16항목(human변형/컴포넌트/값/Undo/2D생성·복사키/부모·cycle·sourceConflict·inner원본탐색·dryRun·비연결장면/배치·원본보존·저장)/이전회귀/errors0/exit0. 캡처prefab-stage-2d/components 실제시각확인. profile10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1/바로가기2/.hbproject/이전185174602775bytes정리. finish186완료 재실행금지. 영수증커밋push후187계속. 187아직제품코드없음. RND07 previousNormalGPU는현재mapped normal을이전geometry/tangent로이동하며 시간/월드/시점의존그래프의이전표본이remaining. ray-materials.cachedRayMaterial/compileRayMaterial는timeprogram·world/viewdynamic표현지원. geometry-gi는previousNormals인자·pack이력저장. 다음연결소유자/실측재현·공식근거확인후구현. 전체원장목표계속/새agent금지/최종안함. 아래186설치전기록은역사.

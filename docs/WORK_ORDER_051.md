@@ -253,3 +253,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 187: 불투명 시간 노멀맵의 이전 절대 시간·GPU 표본/TBN 복원·실패/되감기 무효화·실제 DirectX/WebGL/WebGPU 픽셀 및 패키징 게임 검사. 기존 GPU 버퍼/프로그램 재사용. 상세 ENGINE_WORK_187.md/JSON. 이전 mip·월드/시점·투명 이전 분기는 현재 원장에 유지.
+
+
+188: 9개 전용 제작 문맥 조작56개/총111 공용 단축키·프로필/AI·고정 키 우회 방지·실제 분리 창 입력/버튼·몽타주 focus와 late clipboard 소유권. 실제 제작/Undo/저장까지 검사, ENGINE_WORK_188.md/JSON.

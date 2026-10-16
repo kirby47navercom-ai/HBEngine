@@ -437,3 +437,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 187: Time152–161/TSR308–328의 읽은 자체 본문을 supplemental187에 등록. 연결 API/미디어·전체 페이지·전역 gate 승격 없음.
+
+
+188: Material Editor 조작/키218–278 및 Unity Shortcuts 문맥/충돌319–360·프로필/도구400–431을 supplemental188로 등록. 연결 API/미디어/전역 gate 승격 없음.

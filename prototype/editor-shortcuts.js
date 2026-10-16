@@ -1,4 +1,6 @@
-const command=(id,label,scope,keys,action=id,editing=false)=>({id,label,scope,keys,action,editing});
+import {assetShortcutCommands,assetShortcutCategories} from './asset-shortcut-commands.js';
+export {assetShortcutCategories} from './asset-shortcut-commands.js';
+const command=(id,label,scope,keys,action=id,editing=false)=>({id,label,scope,keys,action,editing,repeat:id.startsWith('widgetNudge')});
 export const shortcutCommands=[
   command('save','저장','global',['Primary+KeyS'],'save',true),command('saveAll','모두 저장','global',['Primary+Shift+KeyS'],'save-all',true),
   command('undo','실행 취소','global',['Primary+KeyZ']),command('redo','다시 실행','global',['Primary+Shift+KeyZ','Primary+KeyY']),
@@ -18,12 +20,13 @@ export const shortcutCommands=[
   command('meshFocus','메시 선택 프레이밍','modeling',['KeyF']),command('meshSelectAll','메시 전체 선택','modeling',['Primary+KeyA']),
   command('meshBridge','메시 경계 연결','modeling',['Alt+KeyB']),command('meshInset','메시 영역 인셋','modeling',['KeyI']),command('meshRetriangulate','메시 영역 재삼각화','modeling',[]),
   command('meshDuplicateFaces','메시 선택 면 복제','modeling',['Primary+KeyD']),command('meshDeleteFaces','메시 선택 면 삭제','modeling',['Delete','Backspace']),command('meshFlipFaces','메시 선택 면 뒤집기','modeling',['Alt+KeyF']),
+ ...assetShortcutCommands,
 ];
 const byId=new Map(shortcutCommands.map(c=>[c.id,c]));
-const scopes={global:['viewport','blueprint','widget','modeling','other'],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint'],widget:['widget'],modeling:['modeling']};
+const scopes={global:['viewport','blueprint','widget','modeling','other',...assetShortcutCategories.map(c=>c[0])],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint'],widget:['widget'],modeling:['modeling'],...Object.fromEntries(assetShortcutCategories.map(([scope])=>[scope,[scope]]))};
 const overlap=(a,b)=>scopes[a].some(s=>scopes[b].includes(s));
 export const defaultShortcutData=()=>({version:1,active:'default',profiles:[{id:'default',name:'Default',bindings:{}}]});
-export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Arrow(?:Left|Right|Up|Down)|Space|Delete|Backspace|Tab|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
+export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Arrow(?:Left|Right|Up|Down)|Space|Delete|Backspace|Tab|Enter|Home|End|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
 export function eventChord(event){if(event.isComposing||!event.code)return null;const chord=(event.ctrlKey||event.metaKey?'Primary+':'')+(event.shiftKey?'Shift+':'')+(event.altKey?'Alt+':'')+event.code;return validChord(chord)?chord:null;}
 export function shortcutLabel(chord){return chord?.replace('Primary+','Ctrl+').replace(/Key([A-Z])/,'$1').replace(/Digit(\d)/,'$1').replace('Space','Space')||'—';}
 const bindings=(profile,id)=>profile.bindings[id]??byId.get(id).keys;
@@ -31,7 +34,7 @@ export function shortcutConflicts(profile){const conflicts=[];for(let i=0;i<shor
 // Newly introduced default keys must not invalidate an older user profile.
 // Explicit assignments win; only conflicting implicit defaults are disabled.
 export function normalizeShortcutData(data){
- if(!data||!Array.isArray(data.profiles))return data;const next=structuredClone(data),added=new Set(shortcutCommands.filter(c=>['widget','modeling'].includes(c.scope)).map(c=>c.id));
+ if(!data||!Array.isArray(data.profiles))return data;const next=structuredClone(data),added=new Set(shortcutCommands.filter(c=>['widget','modeling',...assetShortcutCategories.map(c=>c[0])].includes(c.scope)).map(c=>c.id));
  for(const profile of next.profiles){if(profile?.id==='default'||!profile?.bindings||typeof profile.bindings!=='object'||Array.isArray(profile.bindings))continue;try{const implicit=new Set([...added].filter(id=>!Object.hasOwn(profile.bindings,id)));for(const conflict of shortcutConflicts(profile)){const id=conflict.commands.find(id=>implicit.has(id));if(id)profile.bindings[id]=bindings(profile,id).filter(chord=>chord!==conflict.chord);}}catch{}}
  return next;
 }
@@ -53,10 +56,10 @@ export class EditorShortcuts{
   cloneProfile(name){if(typeof name!=='string'||!name.trim()||name.length>80)throw Error('프로필 이름을 확인하세요.');const next=this.snapshot(),profile={...structuredClone(this.profile()),id:crypto.randomUUID(),name:name.trim()};next.profiles.push(profile);next.active=profile.id;return this.replace(next);}
   activate(id){return this.replace({...this.snapshot(),active:id});}
   deleteProfile(){if(this.data.active==='default')throw Error('Default 프로필은 유지해야 해요.');return this.replace({...this.snapshot(),active:'default',profiles:this.data.profiles.filter(p=>p.id!==this.data.active)});}
-  resolve(event,{scope='other',editing=false,dialog=false,navigating=false,running=false}={}){
-    if(dialog)return {};const chord=eventChord(event);if(!chord)return {};const eligible=c=>scopes[c.scope].includes(scope)&&(!editing||c.editing)&&(!navigating||c.scope==='global')&&(!running||['play','pause','stop','help','command','shortcuts'].includes(c.id));
-    const match=shortcutCommands.find(c=>eligible(c)&&this.keys(c.id).includes(chord));if(match)return {command:match,consume:true};
+  resolve(event,{scope='other',editing=false,dialog=false,navigating=false,running=false,contexts=[]}={}){
+    if(dialog)return {};const chord=eventChord(event);if(!chord)return {};const profile=this.profile();const eligible=c=>scopes[c.scope].includes(scope)&&(!c.when||contexts.includes(c.when))&&(!editing||c.editing)&&(!navigating||c.scope==='global')&&(!running||['play','pause','stop','help','command','shortcuts'].includes(c.id));
+    const match=shortcutCommands.find(c=>eligible(c)&&bindings(profile,c.id).includes(chord));if(match)return {command:match,consume:true};
     const legacy=event.shiftKey?chord.replace('Shift+',''):chord;
-    return {consume:shortcutCommands.some(c=>eligible(c)&&(c.keys.includes(chord)||legacy!==chord&&c.keys.includes(legacy)))};
+    return {consume:shortcutCommands.some(c=>(eligible(c)||running&&!editing&&!navigating&&c.scope===scope&&assetShortcutCategories.some(([s])=>s===scope)&&(!c.when||contexts.includes(c.when)))&&(c.keys.includes(chord)||legacy!==chord&&c.keys.includes(legacy)))};
   }
 }

@@ -439,3 +439,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 187: renderer.rayGeometry.materialTimeShift / previousMaterialTime은 마지막 성공한 프레임 기준의 진단이에요. 불투명 Normal 전용 Time 그래프만 이전 시간을 재평가하며 world/view/다른 시간 필드·transmission은 이력 거절을 유지해요. 시간은 기존 forward.w로 전달하며 추가 GPU 이미지/자동 읽기가 없어요.
+
+
+188: editor.shortcuts.get.commands는 전용 scope·keys·when·repeat를 포함해요. when=notify는 선택 구간/핸들에서만 적용하며 repeat=true는 누른 채 이동할 수 있어요. 같은 editor.shortcuts.set expectedRevision/dryRun 및 사용자 프로필을 사용해요. 일반 창/분리 HWND가 같은 제작 명령을 사용해요.
