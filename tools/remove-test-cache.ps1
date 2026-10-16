@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$PlanFile)
+﻿param([Parameter(Mandatory=$true)][string]$PlanFile)
 $ErrorActionPreference = 'Stop'
 function Get-NodeSHA([string]$Path) {
   $stream = [IO.File]::OpenRead($Path); $hash = [Security.Cryptography.SHA256]::Create()
@@ -19,6 +19,7 @@ foreach ($entry in $plan.entries) {
   $rel = $target.Substring($expected.Length + 1)
   $valid = switch ($entry.kind) {
     'fixture-build' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\Builds$' -and @(Get-ChildItem -LiteralPath (Split-Path -Parent $target) -File -Filter '*.hbproject').Count -gt 0 }
+    'fixture-chrome-profile' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\(?:.+\\)?chrome-[A-Za-z0-9]{6}$' -and (Test-Path -LiteralPath (Join-Path $target 'Local State') -PathType Leaf) -and (Test-Path -LiteralPath (Join-Path $target 'Default/Preferences') -PathType Leaf) }
     'fixture-profile' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\WebView2$' }
     'fixture-native-cache' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\native\\build\\plugins$' }
     'fixture-engine-node' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\(?:.+\\)?(?:Engine|baseline-engine)\\runtime\\node\.exe$' }
