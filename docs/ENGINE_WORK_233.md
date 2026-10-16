@@ -10,3 +10,6 @@
 
 - 같은 소유자의 속성 계산이며 GameplayEffect source/target capture·레벨별 magnitude/실행 계산 전체 구현은 아니다
 - 종속 기본값 직접 쓰기/비용/순간·주기 효과 대상은 거부하고 지속 집계 효과를 사용한다
+
+
+232–235 사용자 설치 b1c44f99c245d540 갱신·명세2802파일 실행후SHA동일·사람 커브 계산/읽기폭/상속 출처/재정의 Undo·C++/BP 세대 완료 재적용·AI/Inspector 재적용·1000속성/100태그·독립 D3D 패키지 오류0/exit0. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치176217655B 제거. USER_INSTALL_235.json.

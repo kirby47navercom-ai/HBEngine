@@ -10,3 +10,6 @@
 
 - HB JSON 합성은 Unreal UAttributeSet의 동일 클래스/네트워크 구현이 아니다
 - 사람 모두 저장은 종속 순서이며 전체 원자 저장은 files.apply 묶음을 사용한다
+
+
+232–235 사용자 설치 b1c44f99c245d540 갱신·명세2802파일 실행후SHA동일·사람 커브 계산/읽기폭/상속 출처/재정의 Undo·C++/BP 세대 완료 재적용·AI/Inspector 재적용·1000속성/100태그·독립 D3D 패키지 오류0/exit0. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치176217655B 제거. USER_INSTALL_235.json.

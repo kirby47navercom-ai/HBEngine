@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "24daf8cf73b505de7d4ff391565f9f8b81c20f44",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540\\HBEngine.exe",
+  "bundleHash": "b1c44f99c245d54042ed1cd7be5515a7097bf8bbb928e918a37d9927fa1b11c2",
+  "files": 2802,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2778,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6c37aa3d3466f4a5",
+        "bytes": 176217655,
+        "manifestSHA256": "45b9764ca7493f8c84891760739f5156966302a4a246f6bba3a7121f9502f442"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T23:48:48.5968123Z",
+    "bytes": 176217655,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "b1c44f99c245d540"
+    ]
+  },
+  "work": "native/build/engine-235-install-qQP5VU",
+  "versions": [
+    "b1c44f99c245d540"
+  ],
+  "manifestVerifiedFiles": 2802,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/ability-authoring-233-window-yLnis1/acceptance.json",
+      "sha256": "b5fea98cf9fdb763cba873b18f586c694661c7473302acdc2fe4945eba17b774"
+    },
+    {
+      "path": "native/build/ability-composition-232-window-BZCqP7/acceptance.json",
+      "sha256": "fbc61d0f7a1ec1178eec5c9c381158354a02c2c84782af1b1f0331efd58c6927"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/ability-authoring-233-window-yLnis1/derived-attribute-curve-authoring.png",
+      "sha256": "c812374f49196f20515af5afe93f9f94c158d6666a1cbf8b258fdadb0311b7eb",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/ability-authoring-233-window-yLnis1/thousand-attribute-paged-editor.png",
+      "sha256": "a6f5087d86e99b33590f6578b8f1b5b3e95c9a963ff07528de76d3e91fbec935",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/ability-authoring-233-window-yLnis1/paged-live-ability-inspector.png",
+      "sha256": "d538a708ee260de09d705d8d2bb5ae4dca1ed6a6b7dce72c8b6e27bc12b6d861",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/ability-composition-232-window-BZCqP7/ability-composition-origins.png",
+      "sha256": "2bc8546c2f53e9b0a9f2742fdbcecc250ee4e025eac5b5e723d8bd4667492150",
+      "visuallyInspected": false
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2802,
+  "privateChecks": "Hidden owned editor and standalone D3D game. Unique project/profile/port. Authoring/curve/CPP/BP completed reapply and1000 attributes/100 tags/paging/Undo. Actual User read-only inventory.",
+  "storage": {
+    "path": "native/build/storage-235-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
