@@ -453,3 +453,5 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 195–196: UE 애니메이션 예산/텍스처 제작 및 Unity culling/preview의 지정 본문 구역을 supplemental195/196에 등록. 본문 범위 밖·연결 API/미디어·전역 gate 승격 없음.
 
 199: Unity SamplePosition과 Three Triangle의 지정 최근접/거리/필터/target 본문을 supplemental199에 등록. 나머지 API/구현·전역 gate 승격 없음.
+
+200–205: Node24 read/opendir·Unity AssetBundle 소유/로드·RFC 구간·Unity 프리팹 문맥·WAI listbox의 지정 자체 본문만 supplemental200/201/202/203/204로 등록. 연결 API/전역 corpus gate 승격 없음. 상세 읽기/미독 구역은 CORPUS_MANIFEST에 둔다.

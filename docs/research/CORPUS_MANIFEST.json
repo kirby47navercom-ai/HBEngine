@@ -3139,5 +3139,64 @@
     ],
     "unread": "All body sections outside listed ranges, linked API/source/media and global corpus.",
     "globalGatePromotion": false
+  },
+  "supplemental200": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://nodejs.org/docs/latest-v24.x/api/fs.html",
+        "scope": "Own filehandle.read745–761 and opendir1441–1472; reuse buffer/partial EOF, async directory lifetime. Remaining APIs/implementation unread."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/AssetBundles-Native.html",
+        "scope": "Own126–183: per-asset async load, manifest references and unload ownership. Linked APIs/Addressables/implementation unread. HB uses its own loose-file manifest, not Unity AssetBundles."
+      }
+    ],
+    "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
+    "globalGatePromotion": false
+  },
+  "supplemental201": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+        "scope": "Own2872–2885,2940,3005–3049,3058–3070: If-Range, suffix/overflow/empty representations, GET-only/unknown units. Other protocol sections and multipart implementation unread."
+      }
+    ],
+    "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
+    "globalGatePromotion": false
+  },
+  "supplemental202": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://nodejs.org/docs/latest-v24.x/api/fs.html",
+        "scope": "Own filehandle.read745–761 and opendir1441–1472; reuse buffer/partial EOF, async directory lifetime. Remaining APIs/implementation unread."
+      }
+    ],
+    "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
+    "globalGatePromotion": false
+  },
+  "supplemental203": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+        "scope": "Own125–224: isolation/context, locked scene, source transforms, editing environments and view options. Links/media/API/implementation unread. Gray/snap/show-overrides/auto-save and nested Apply routing not implemented by203."
+      }
+    ],
+    "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
+    "globalGatePromotion": false
+  },
+  "supplemental204": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/",
+        "scope": "Own36–94: focus versus selection, modifier navigation, type-ahead, off-DOM position/set size. Links/examples/AT implementations unread; no whole-screen-reader certification."
+      }
+    ],
+    "unread": "Outside listed sections, linked API/media/implementation and full UE/Unity corpus; global gate unchanged.",
+    "globalGatePromotion": false
   }
 }

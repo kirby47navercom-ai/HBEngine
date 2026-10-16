@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "3ef20b8",
+  "targetIds": [
+    "AST-01",
+    "EDT-03",
+    "PER-02"
+  ],
+  "checks": [
+    {
+      "path": "native/build/stream-import-202-J9vJdG/acceptance.json",
+      "sha256": "78b317a0057c4e8ea8e9760b9d38b09749c23c9f279f1b000d642e1c89a1ff39"
+    },
+    {
+      "path": "native/build/prefab-203-editor-YE40BT/acceptance.json",
+      "sha256": "9fa1991754e28c888fe7febf4836ae60f3be343e91d419ef5784d95e2bd450b1"
+    },
+    {
+      "path": "native/build/browser-204-VREt0d/acceptance.json",
+      "sha256": "741ec1a6348502991b56137826a1a06e18f0583bf60cccd29e8340dfe3ca33fb"
+    }
+  ],
+  "implemented": [
+    "HTTP request/File body is recorded to a hidden staging file with backpressure; only a complete transfer is registered. Exclusive same-name suffixing preserves existing files. Abort, source error, size mismatch and project-switch409 clean the partial upload.",
+    "Removed100MB upload/UI and100-file queue/drop cut-offs. Iterative folder traversal; original root/child order retained. Import dialog renders100 rows per page and processes all queued files sequentially."
+  ],
+  "limits": [
+    "FBX/glTF/OBJ parser/cook/decoder costs and unsupported codecs are separate; a big file can still require substantial memory when decoded.",
+    "100 is a visible page size, not a limit on the number imported."
+  ],
+  "bodyRead": [
+    {
+      "url": "https://nodejs.org/docs/latest-v24.x/api/fs.html",
+      "scope": "Own filehandle.read745–761 and opendir1441–1472; reuse buffer/partial EOF, async directory lifetime. Remaining APIs/implementation unread."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "ad8c8ca",
+  "targetIds": [
+    "EDT-03",
+    "EDT-05",
+    "EDT-07",
+    "AI-03",
+    "PER-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-203-editor-MP70Fd/acceptance.json",
+      "sha256": "5c687e6d729d5541c0fea5de4d0e802ebcc272cb414e40f6b0971a68a64c812e"
+    },
+    {
+      "path": "native/build/browser-204-VREt0d/acceptance.json",
+      "sha256": "741ec1a6348502991b56137826a1a06e18f0583bf60cccd29e8340dfe3ca33fb"
+    }
+  ],
+  "implemented": [
+    "Viewport plus overscan rows only, stable global indices and aria positions; scroll/resize-triggered one-shot redraw, observer/frame release on dispose.",
+    "List/tiles, keyboard arrows/Home/End/Page/Space/type-ahead, Ctrl/Shift selection and selection restoration no1000 cap. Persisted current selection is stored once rather than duplicated in its history slot.",
+    "Target-browser shortcut ownership prevents viewport E/tool shortcuts stealing filename input. Actual Alt-back routes to the browser under the event target.",
+    "project.browser.read offset/limit/nextOffset/rendered counts and project.browser.view folder/view/selection/focus call the same human UI functions."
+  ],
+  "limits": [
+    "10k metadata is still retained; DOM cost reduction is not a whole-game FPS/IO benchmark.",
+    "Complete AT/IME/cross-window shortcut/accessibility verification and other asset file clipboard operations remain separate."
+  ],
+  "bodyRead": [
+    {
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/",
+      "scope": "Own36–94: focus versus selection, modifier navigation, type-ahead, off-DOM position/set size. Links/examples/AT implementations unread; no whole-screen-reader certification."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

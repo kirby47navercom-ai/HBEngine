@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "9e9d6b5",
+  "targetIds": [
+    "PER-02"
+  ],
+  "checks": [
+    {
+      "path": "native/build/storage-browser-205-VC8abA/acceptance.json",
+      "sha256": "0b845f16e6e3f2097916f0020817fc77b35c97fd7faf637085e948dde0cfe8cc"
+    },
+    {
+      "path": "native/build/artifact-node-198-Ds46qy/acceptance.json",
+      "sha256": "1d93dd2b8aef53ffeaa65974698d1aa6d09bbde28f80acf4ab79c3c769e45700"
+    }
+  ],
+  "implemented": [
+    "Only known private test roots and chrome-XXXXXX profiles with Local State/Default Preferences markers are scheduled. PowerShell revalidates kind/path/reparse/markers and protects active command-line references.",
+    "Actual owned child proves active preservation then closed deletion; unknown profile and source fixtures preserved. Existing identical Node original/modified/live guards pass."
+  ],
+  "limits": [
+    "No deletion of user profiles, SDK, project originals or unrelated browser sessions."
+  ],
+  "bodyRead": [],
+  "executionVerified": true,
+  "installationPending": true,
+  "storageSummary": {
+    "path": "native/build/storage-205-summary.json",
+    "sha256": "59e8efc877c5b1deca51c804d4eccc6bf7e17cccfe9fc067891f3a7adf215bd9"
+  }
+}

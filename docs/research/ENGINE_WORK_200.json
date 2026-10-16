@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "3ef20b8",
+  "targetIds": [
+    "AST-03",
+    "BLD-01",
+    "BLD-02",
+    "BLD-03",
+    "PER-02"
+  ],
+  "checks": [
+    {
+      "path": "native/build/stream-build-200-zfgQXg/acceptance.json",
+      "sha256": "4e37b01fb71611ce9dda662fc88b7e1a926f400d4f1a70fbf123ff7ad67c37e2"
+    },
+    {
+      "path": "native/build/package-check-5tRhsG/package-proof.json",
+      "sha256": "0660f4e698c05d50bb850261814e232f1282f89dba53727a565c04b7216aca9d"
+    },
+    {
+      "path": "native/build/package-check-5tRhsG/desktop-2d/runtime-report.json",
+      "sha256": "29f1e21a71200c69cf743472aa83b74f6a186a081789dc38dd5bb7780debc289"
+    },
+    {
+      "path": "native/build/package-check-5tRhsG/desktop-3d/runtime-report.json",
+      "sha256": "533f1d5baec37a491e7c8b9f40a335f952c37484069edf8b3b48d88137f2b28e"
+    },
+    {
+      "path": "native/build/web-export-SuUnRy/acceptance.json",
+      "sha256": "397e81854652e6bcd96568f67ff46fd8bbd25813a90825d932973628e1deebfc"
+    }
+  ],
+  "implemented": [
+    "Opaque content/runtime binaries use file-backed immutable descriptors and a reusable64KiB buffer; no100MiB-per-file/1GiB-total build rejection. Structured JSON/glTF/C++ sources still materialize for validation.",
+    "Project walking uses async directory iteration, no10k file/depth32 traversal cut-off. Build shares this metadata scan with native-source discovery; existing native source compilation safety limits remain.",
+    "Copy snapshots detect source replacement/modification; exclusive outputs and cancellation remove only this call's partial file; component-wise output parent checks reject external junctions.",
+    "Player verification, mobile artifact SHA and publishing preparation stream hashes; web startup prepack16MiB budget, remainder stays at ordinary asset URLs. Old oversized prepacks use lazy fallback.",
+    "Project-specific Windows EXE reopening checks project ID, own build path and manifest SHA, while accepting old Game.exe packages."
+  ],
+  "limits": [
+    "Opaque copy is bounded; structured documents/import parsers, decoders and SDK/ZIP tool memory are separate.",
+    "Actual1174422918B loose content exported to all four targets; Android arm64 debug APK/sign/alignment verified, iOS Xcode source export only; no phone/Mac validation.",
+    "Test Node external delta22993789B/RSS103616512B is this sampled process, not child compiler/browser memory or total game FPS."
+  ],
+  "bodyRead": [
+    {
+      "url": "https://nodejs.org/docs/latest-v24.x/api/fs.html",
+      "scope": "Own filehandle.read745–761 and opendir1441–1472; reuse buffer/partial EOF, async directory lifetime. Remaining APIs/implementation unread."
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/AssetBundles-Native.html",
+      "scope": "Own126–183: per-asset async load, manifest references and unload ownership. Linked APIs/Addressables/implementation unread. HB uses its own loose-file manifest, not Unity AssetBundles."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true,
+  "storageSummary": {
+    "path": "native/build/storage-205-summary.json",
+    "sha256": "59e8efc877c5b1deca51c804d4eccc6bf7e17cccfe9fc067891f3a7adf215bd9"
+  }
+}

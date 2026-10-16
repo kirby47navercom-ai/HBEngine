@@ -1,3 +1,15 @@
+# 현재 인계 — 200–205 구현/묶음검사 완료·사용자 설치 전환 진행
+
+200대용량 스트림빌드/검증/게시,201공용HTTP구간,202스트림/대량임포트,203잠금프리팹문맥/격리환경,204가상콘텐츠/키/AI페이지,205검사Chrome정리. 코드3ef20b8/9e9d6b5/ad8c8ca. docs/research/ENGINE_WORK_200–205.json에 원문 범위와 실제 근거 SHA. 정본 ENGINE_STATUS 갱신/검사 PASS(39/34/2/3; 전역 완료율 없음).
+
+확인: stream-build-200-zfgQXg 1.174GB Windows/web/arm64 APK/iOS소스 내보내기, http-media-201-yspwfb 3서버78요청, stream-import-202-J9vJdG 실제112MiB HTTP/취소/409/보존, prefab-203-editor-YE40BT 실제 문맥·환경/Undo/저장/동기화/Play 및131파일/112MiB UI, prefab-203-editor-MP70Fd 실제1만목록/17·13·50카드/Alt뒤로·E입력·재생성후1만선택. 205VC8abA/198Ds46qy 보존검사. 원본/재현근거 보존, 생성payload10개/검색0B파일10020개 해제. storage-205-summary.json 18영수증/20항목/논리6758487994B 정리.
+
+다음 즉시 할 일: docs/source 커밋 후 dist/HBEngine의 prototype/tools/docs만 동기화(네이티브 소스 변경없음·재컴파일 불필요). 새 install205/finish205 원샷 도구를 만들어 사용자 프로필 전후SHA/Versions1·링크2를 확인하며 갱신. 실제 설치 EXE로 check-prefab-context-203-window.mjs --executable ... 전체1회 실행(204새키입력 포함). 모든설치파일 SHA 재확인·영수증 USER_INSTALL_205.json·설치근거 docs갱신·한국어커밋푸시. 설치 전 active사용자프로세스 있으면 도구가보류하며 종료시키지 말 것.
+
+주의: native/build/docs200-205.mjs 실행완료·재실행금지. 이전 install199/finish199 등도 완료·재실행금지. 현재 사용자설치199 d8258c4376678b5b, User10385파일 과거SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26. 새실제사용변화는 새설치전후만 비교. 이 작업 끝으로 멈추지 말고 누적원장다분야 잔여 계속(다음후보 중첩프리팹 Apply 목적지 라우팅/재질압축/렌더계획 등). 외부 SDK/실기기·Mac 미확보는 동일.
+
+---
+
 # 현재 인계 — 194–199 사용자 설치 검증 완료·누적 잔여 계속
 
 설치 C:\Users\kirby\HBEngine\Versions\d8258c4376678b5b\HBEngine.exe · source 057f65aa51e1a8471a1b17441c452e69bd9122a0 · bundle d8258c4376678b5b2f9ec3e6c077c1f88de47558e8f402092b590b33cc6f35fd ·2589파일/실행후SHA동일·Versions1/링크2/.hbproject. User10385파일 SHA 46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 전후불변. USER_INSTALL_199.json/194–199실행근거 연결. install199/finish199 실행완료·재실행금지. 이전193+생성캐시251725633B 정리·수정소스백업은1076B라이선스1개만 보존.

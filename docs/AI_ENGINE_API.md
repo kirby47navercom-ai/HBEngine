@@ -464,3 +464,9 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 197: RuntimeLOD.staggerAnimation 기본true, interpolatePose 기본false예요. 공용 Components/문서 편집을 사용해요. interpolated/interpolationDelay/interpolationBudgetLimited 진단과 poseBytes로 선택형 지연/메모리를 확인할 수 있어요. 보간은 한 갱신 주기 지연을 만들고, 보호 경로와 기본 추가 버퍼0을 유지해요.
 
 199: runtime.navigation은 활성 게임의 경로/회피와 meshes별 투영 인덱스 질의 수·후보/삼각 평가 수를 복사해 반환해요. 읽기가 실행 인덱스를 바꾸지 않아요. 기하 편집 뒤 NavigationMesh를 다시 컴파일하고, 기존 공용 Navigation MoveTo/경로와 EQS가 같은 투영을 사용해요.
+
+203: prefab.stage.view {path?,settings?:{mode:"isolation"|"context",scene,instance,environment,appearance:"normal"|"hidden"}}는 같은 프리팹 UI의 보기만 바꾼다. context는 scene의 원본과 일치하는 instance 루트ID가 필요하고 루트 Transform 편집을 잠근다. sceneRevision은 배경 스냅샷 기준이며 새로고침은 settings:{}로 요청한다. 배경은 stage 편집/선택 대상이 아니다.
+
+204: project.browser.read {id?:"project",offset?:0,limit?:100}은 total/nextOffset/rendered/entries를 반환한다. limit1000은 응답 페이지 크기이며 자산 수 제한이 아니다. project.browser.view {id?,settings:{folder?,view?:"list"|"tiles",selected?:경로배열,focus?:전체목록인덱스}}는 같은 탐색/선택/포커스를 사용하며 원본 에셋을 수정하지 않는다.
+
+200: build report.streaming은 chunkBytes/fileBackedFiles/fileBackedBytes/bufferedBytes를 제공한다. JSON/glTF/C++는 검사 버퍼이며 불투명 소스와 런타임은 파일 참조다. 중단·원본 변경은 출력 실패로 보고하고 완료 명세를 만들지 않는다.

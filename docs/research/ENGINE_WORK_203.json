@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "3ef20b8",
+  "targetIds": [
+    "AST-04",
+    "EDT-01",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-context-203-ZzldOu/acceptance.json",
+      "sha256": "499409aeb49ca08ec629e8161e7afcca066537826b80de1c53555da46bc46cf0"
+    },
+    {
+      "path": "native/build/prefab-203-editor-YE40BT/acceptance.json",
+      "sha256": "9fa1991754e28c888fe7febf4836ae60f3be343e91d419ef5784d95e2bd450b1"
+    }
+  ],
+  "implemented": [
+    "Scene instance Open enters context; Alt Open uses isolation. Authored local matrices stay in source, a preview wrapper maps to the instance world matrix including parent rotation/nonuniform scale.",
+    "Locked background excludes the instance/member/attached subtrees; background absent from stage hierarchy/picking, root Transform locked in context. Child authoring/Undo/save and explicit instance refresh/actual Play verified.",
+    "Isolation can select a scene environment; normal/hidden background allocates only when selected and releases preview groups on hide/close. Same view settings via prefab.stage.view/get, no asset revision changes."
+  ],
+  "limits": [
+    "Background is an explicit refreshable preview snapshot with preview lighting; gray/snap/overrides/lights equivalence and nested Apply routing remain.",
+    "No new standalone simulation or source scene mutation by the preview. First-open view restoration race found by real window QA and fixed."
+  ],
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+      "scope": "Own125–224: isolation/context, locked scene, source transforms, editing environments and view options. Links/media/API/implementation unread. Gray/snap/show-overrides/auto-save and nested Apply routing not implemented by203."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

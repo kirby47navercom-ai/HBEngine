@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b9ee262",
+  "implementationRevision": "3ef20b8",
+  "targetIds": [
+    "AST-05",
+    "BLD-01"
+  ],
+  "checks": [
+    {
+      "path": "native/build/http-media-201-yspwfb/acceptance.json",
+      "sha256": "520a3bcf5f6fb52fe9da03f8900b623be87f97150892f851cb815793cf61687f"
+    }
+  ],
+  "implemented": [
+    "Editor/player/web use one64KiB stream/response-close cleanup. Inclusive/open-ended/suffix ranges, decimal overflow clamping, empty files, HEAD, case-insensitive unit, unknown unit and unmatched If-Range behavior.",
+    "Three live servers passed78 request cases, including source/headers/body checks."
+  ],
+  "limits": [
+    "Single byte range only; no multipart/decoder codec/PTS or sequence clock synchronization claim.",
+    "No validators advertised; If-Range falls back to the complete representation."
+  ],
+  "bodyRead": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "scope": "Own2872–2885,2940,3005–3049,3058–3070: If-Range, suffix/overflow/empty representations, GET-only/unknown units. Other protocol sections and multipart implementation unread."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}
