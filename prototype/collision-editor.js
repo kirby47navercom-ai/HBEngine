@@ -15,7 +15,7 @@ export function geometryControls(type,p,id,{blueprint=false,disabled=false}={}){
 }
 
 // Component data stays untouched while the modal owns its draft and undo stack.
-export function editCollisionGeometry(type,properties,{apply,error,title,maximumPoints=512,singlePath=false}){
+export function editCollisionGeometry(type,properties,{apply,error,title,maximumPoints=512,singlePath=false,document=globalThis.document,closeBeforeApply=false}){
   let draft=clone(properties),path=0,vertex=0,scale=90,origin=[0,0],snap=.1,drag=null,renderer,world,camera,controls,mesh,observer,frame;
   const past=[],future=[],dialog=document.createElement('dialog'),is3D=type==='MeshCollider';dialog.className='collision-editor';
   dialog.innerHTML=`<div class="dialog-heading"><h2>${title|| (is3D?'메시 충돌':'2D 충돌 형상')}</h2><button data-close aria-label="닫기">${icon('close')}</button></div><div class="collision-editor-toolbar"><button data-undo aria-label="형상 실행 취소">${icon('undo')}</button><button data-redo aria-label="형상 다시 실행">${icon('redo')}</button><button data-fit>전체 보기</button>${is3D?'<label>방식 <select data-mode aria-label="형상 방식"><option value="convex">Convex · 볼록</option><option value="mesh">Triangle Mesh · 삼각형 표면</option></select></label>':'<label>격자 <input data-snap type="number" value="0.1" min="0" max="100" step="0.1" aria-label="형상 격자 간격"></label>'}<output data-stats></output></div><div class="collision-editor-body"><canvas tabindex="0" aria-label="충돌 형상 뷰포트"></canvas><aside>${is3D?'<label>정점 <textarea data-json="vertices" spellcheck="false" aria-label="충돌 정점"></textarea></label><label>삼각형 인덱스 <textarea data-json="indices" spellcheck="false" aria-label="충돌 삼각형 인덱스"></textarea></label>':'<div class="collision-paths"></div><div class="collision-point-actions"><button data-add-point>점 추가</button><button data-remove-point>점 삭제</button></div><div class="collision-point-list"></div>'}</aside></div><div class="collision-editor-footer"><output data-error role="status"></output><button data-close>취소</button><button data-apply class="primary-button">적용</button></div>`;
@@ -59,7 +59,7 @@ export function editCollisionGeometry(type,properties,{apply,error,title,maximum
     else if(b.hasAttribute('data-add-point'))addPoint();else if(b.hasAttribute('data-remove-point'))removePoint();
     else if(b.hasAttribute('data-add-path')){checkpoint();const x=Math.max(...draft.paths.flat().map(p=>p[0]))+1;draft.paths.push([[x,0],[x+1,0],[x+1,1],[x,1]]);path=draft.paths.length-1;vertex=0;render();}
     else if(b.hasAttribute('data-remove-path')){checkpoint();draft.paths.splice(path,1);render();}
-    else if(b.hasAttribute('data-apply')&&validate()){b.disabled=true;try{await apply(clone(draft));dialog.close();}catch(reason){report(reason.message);error?.(reason.message);}}
+    else if(b.hasAttribute('data-apply')&&validate()){b.disabled=true;try{if(closeBeforeApply)dialog.close();await apply(clone(draft));if(!closeBeforeApply)dialog.close();}catch(reason){report(reason.message);error?.(reason.message);}}
   };
   dialog.onchange=e=>{const el=e.target;try{
     if(el.hasAttribute('data-point')){const value=Number(el.value);if(!Number.isFinite(value)||Math.abs(value)>10000)throw Error('좌표 범위는 -10,000~10,000이에요.');checkpoint();points()[Number(el.dataset.point)][Number(el.dataset.axis)]=value;render();}

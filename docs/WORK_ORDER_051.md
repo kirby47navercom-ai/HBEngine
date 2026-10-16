@@ -244,3 +244,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 185 설치 확인: 4c2fe681686c5505·명세2506파일 실행 후 SHA 일치·격리 설치 EXE의 새 공용 조회 노드 표시/Undo·중첩 프리팹 UndoRedo·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174446335바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_185.json.
+
+
+186: 프리팹 격리 제작창·2D/3D/기즈모·계층/컴포넌트·복사/그룹/원본 탐색·AI 동일 제작 명령·CAS/dryRun/Undo·중첩 부모 구조와 implicit 안정 ID를 실제 제작/DirectX/WebGPU/C++ 실행까지 연결. 상세 ENGINE_WORK_186.md/JSON.

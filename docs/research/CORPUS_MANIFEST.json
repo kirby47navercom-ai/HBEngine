@@ -3004,5 +3004,17 @@
     "unread": "연결API·모든Prefab모드/미디어·전체corpus",
     "failedOpen": "PrefabOverrides.html returned Internal Error; not counted",
     "globalGatePromotion": false
+  },
+  "supplemental186": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/Manual/EditingInPrefabMode.html",
+        "scope": "Unity6000.6본문125–238: 격리/문맥·계층/원본 탐색·공유 원본/배치 구분·저장"
+      }
+    ],
+    "unread": "연결 API·미디어·전역 corpus 및 Unreal Components Mode 본문",
+    "failedOpen": "https://dev.epicgames.com/documentation/en-us/unreal-engine/components-mode-in-blueprints?application_version=5.6 returned Internal Error; not counted",
+    "globalGatePromotion": false
   }
 }

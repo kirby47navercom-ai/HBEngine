@@ -1,5 +1,5 @@
 import {meshEdges} from './mesh-topology.js';
-export function assetShortcutScope(pane,kind,focused){return pane?.id===focused?kind==='widget'?'widget':kind==='mesh'?'modeling':'other':'other';}
+export function assetShortcutScope(pane,kind,focused){return pane?.id===focused?kind==='widget'?'widget':kind==='mesh'?'modeling':kind==='prefab'?'viewport':'other':'other';}
 export function dispatchAssetShortcut(id,editor){
  if(!editor||editor.disposed)return false;
  if(id.startsWith('widget')&&editor.doc.kind==='widget'){

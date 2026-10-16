@@ -1,0 +1,46 @@
+import * as THREE from 'three';
+import {TransformControls} from 'three/addons/controls/TransformControls.js';
+import {scenePrimitives} from './scene-primitives.js';
+import {sceneRendering} from './scene-rendering.js';
+import {defaultSurface} from './model.js';
+import {createViewportControls} from './viewport-controls.js';
+import {fitViewportSelection} from './viewport-presentation.js';
+import {editorAnimationFrame,cancelEditorAnimationFrame} from './detached-window.js';
+
+export class PrefabPreview {
+  constructor(element,hooks){
+    this.element=element;this.hooks=hooks;this.groups=new Map();this.epoch=0;this.dirty=true;this.disposed=false;
+    const document=element.ownerDocument;this.canvas=document.createElement('canvas');this.canvas.tabIndex=0;this.canvas.ariaLabel='프리팹 뷰포트';element.append(this.canvas);
+    this.renderer=new THREE.WebGLRenderer({canvas:this.canvas,antialias:true});this.renderer.setPixelRatio(Math.min(document.defaultView.devicePixelRatio||1,2));
+    this.world=new THREE.Scene();this.world.background=new THREE.Color('#252a32');this.content=new THREE.Group();this.world.add(this.content);
+    this.world.add(new THREE.HemisphereLight(0xffffff,0x46563e,2));const sun=new THREE.DirectionalLight(0xffffff,3);sun.position.set(3,6,3);this.world.add(sun);
+    this.grid=new THREE.GridHelper(100,100,0x566474,0x343e4e);this.world.add(this.grid);
+    this.perspective=new THREE.PerspectiveCamera(45,1,.01,100000);this.ortho=new THREE.OrthographicCamera(-5,5,5,-5,.001,100000);this.camera=this.perspective;
+    this.controls=createViewportControls(this.camera,this.canvas,{onFocus:()=>this.fit()});this.controls.addEventListener('change',()=>this.dirty=true);
+    this.transform=new TransformControls(this.camera,this.canvas);this.transform.setSize(.75);this.world.add(this.transform.getHelper());
+    this.transform.addEventListener('dragging-changed',e=>{this.controls.enabled=!e.value;});
+    this.transform.addEventListener('objectChange',()=>this.dirty=true);
+    this.transform.addEventListener('mouseUp',()=>{const group=this.transform.object;if(group){const value={position:group.position.toArray(),rotation:[group.rotation.x,group.rotation.y,group.rotation.z].map(THREE.MathUtils.radToDeg),scale:group.scale.toArray()};hooks.transform(group.userData.objectId,value);}});
+    this.helper=new THREE.Box3Helper(new THREE.Box3(),0x8ebdf5);this.helper.visible=false;this.world.add(this.helper);
+    let down;this.canvas.addEventListener('pointerdown',e=>{if(e.button===0)down=[e.clientX,e.clientY];});
+    this.canvas.addEventListener('pointerup',e=>{if(e.button!==0||!down||this.transform.axis||Math.hypot(e.clientX-down[0],e.clientY-down[1])>4)return;down=null;const rect=this.canvas.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,1-(e.clientY-rect.top)/rect.height*2),this.camera);for(const hit of ray.intersectObject(this.content,true)){let o=hit.object;while(o&&this.groups.get(o.userData.objectId)!==o)o=o.parent;if(o){hooks.select(o.userData.objectId);break;}}});
+    this.observer=new ResizeObserver(()=>this.resize());this.observer.observe(element);
+    this.primitives=scenePrimitives(defaultSurface);this.rendering=sceneRendering({read:hooks.read,fileUrl:hooks.fileUrl,loadModel:hooks.load,current:id=>this.groups.get(id),all:()=>[...this.groups.values()],editor:true,error:hooks.error});
+    const frame=()=>{if(this.disposed)return;if(hooks.visible()&&element.isConnected){this.controls.update();if(this.dirty){try{this.world.updateMatrixWorld(true);if(this.selected){const g=this.groups.get(this.selected);if(g){this.helper.box.setFromObject(g);this.helper.visible=!this.helper.box.isEmpty();}}this.rendering.prepare2D(this.renderer,this.world,this.camera,hooks.sortingLayers?.());this.renderer.render(this.world,this.camera);}catch(e){hooks.error(e.message);}this.dirty=false;}}this.frame=editorAnimationFrame(element,frame);};this.frame=editorAnimationFrame(element,frame);
+  }
+  resize(){const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h||this.disposed)return;this.renderer.setSize(w,h,false);const aspect=w/h;this.perspective.aspect=aspect;this.perspective.updateProjectionMatrix();this.ortho.left=-5*aspect;this.ortho.right=5*aspect;this.ortho.updateProjectionMatrix();this.dirty=true;}
+  direction(mode){this.camera=mode==='2d'?this.ortho:this.perspective;this.camera.position.set(...(mode==='2d'?[0,0,10]:[6,4,6]));this.camera.up.set(0,1,0);this.camera.lookAt(0,0,0);this.camera.userData.viewportDirection=mode;this.controls.object=this.camera;this.controls.target.set(0,0,0);this.transform.camera=this.camera;this.grid.rotation.x=mode==='2d'?Math.PI/2:0;this.resize();this.fit();}
+  release(){this.transform.detach();this.helper.visible=false;const old=[...this.groups.values()];for(const g of old)g.removeFromParent();for(const g of old)this.rendering.dispose(g);this.groups.clear();}
+  async update(rows,{fit=false}={}){
+    const epoch=++this.epoch;this.canvas.dataset.prefabReady='false';this.release();this.rendering.invalidateAssets();
+    for(const o of rows){const g=this.primitives.build(o);g.position.fromArray(o.position);g.rotation.set(...o.rotation.map(THREE.MathUtils.degToRad));g.scale.fromArray(o.scale);g.visible=o.visible!==false;this.groups.set(o.id,g);}
+    for(const o of rows){const g=this.groups.get(o.id);(this.groups.get(o.parent)||this.content).add(g);}
+    await Promise.all(rows.map(async o=>{const g=this.groups.get(o.id);try{await this.rendering.build(o,g);}catch(e){if(!this.disposed&&epoch===this.epoch)this.hooks.error(e.message);}}));
+    if(this.disposed||epoch!==this.epoch)return;this.canvas.dataset.prefabReady='true';this.select(this.selected);if(fit)this.fit();this.dirty=true;
+  }
+  select(id){this.selected=id;const g=this.groups.get(id);this.transform.detach();if(g&&this.tool!=='select')this.transform.attach(g);this.helper.visible=!!g;this.dirty=true;}
+  setTool(tool){this.tool=tool;this.transform.detach();if(tool!=='select'){this.transform.setMode({move:'translate',rotate:'rotate',scale:'scale'}[tool]||'translate');const g=this.groups.get(this.selected);if(g)this.transform.attach(g);}this.dirty=true;}
+  snapshot(){return {ready:!this.disposed&&this.canvas.dataset.prefabReady==='true',actors:this.groups.size,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,programs:this.renderer.info.programs?.length||0,drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles};}
+  fit(all=false){this.world.updateMatrixWorld(true);const root=!all&&this.groups.get(this.selected)||this.content,bounds=new THREE.Box3().setFromObject(root);if(bounds.isEmpty())bounds.set(new THREE.Vector3(-1,-1,-1),new THREE.Vector3(1,1,1));const size=Math.max(...bounds.getSize(new THREE.Vector3()).toArray(),.001);this.camera.near=Math.max(.00001,size/10000);this.camera.far=Math.max(100,size*100);this.camera.updateProjectionMatrix();this.controls.setSettings({speed:Math.min(1e6,Math.max(.001,size))});fitViewportSelection(this.camera,this.controls,bounds);this.dirty=true;}
+  dispose(){if(this.disposed)return;this.disposed=true;++this.epoch;cancelEditorAnimationFrame(this.element,this.frame);this.observer.disconnect();this.controls.dispose();this.release();this.transform.dispose();this.helper.geometry.dispose();this.helper.material.dispose();this.grid.geometry.dispose();this.grid.material.dispose();this.rendering.disposeRenderer(this.renderer);this.rendering.dispose2D();this.primitives.dispose();this.renderer.dispose();this.world.clear();this.canvas.remove();}
+}

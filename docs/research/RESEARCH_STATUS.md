@@ -431,3 +431,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 184: Unity6000.6 NestedPrefabs125–149/PrefabInstanceOverrides126–215 본문을 supplemental184에 등록. 실패URL·연결API·전체gate와 구분.
+
+
+186: Unity6000.6 EditingInPrefabMode 본문125–238을 supplemental186에 등록. Unreal Components Mode 주소 실패는 읽음으로 계산하지 않으며 연결 API/미디어·전역 gate 유지.

@@ -1,3 +1,5 @@
+import {PrefabEditor} from './prefab-editor.js';
+import {editPrefabStage,resolvePrefabStage} from './prefab-authoring.js';
 import {assetShortcutScope,dispatchAssetShortcut} from './asset-shortcuts.js';
 import {ModelPreview} from './model-preview.js';
 import {ModelImportEditor} from './model-import-editor.js';
@@ -338,7 +340,7 @@ function createMap(){
 function setWorkspace(name,activate=true) {for(const doc of dock?.detached?.documents?.()||[])doc.body.dataset.editor=name;
   if(name==='code'){const path=assetDocs.current?.data.native?.headerPath||projectAssetFiles.find(f=>f.kind==='code'&&f.path===codeHeaderPath)?.path||projectAssetFiles.find(f=>f.kind==='code'&&/\.(h|hpp|cpp)$/i.test(f.path))?.path;if(path)openCodeExternal(path);else project?.createDialog('code');return;}
   if(activate&&assetDocs.current?.kind!==name){const target=[...assetDocs.items.values()].reverse().find(d=>d.kind===name);if(target){activateDocument(target.path);return;}const defaults={blueprint:activeBlueprintPath,material:projectAssetFiles.find(f=>f.kind==='material')?.path,scene:activeScenePath};if(defaults[name])openProjectAsset({kind:name,path:defaults[name],name:assetTitle(defaults[name])}).catch(e=>notify(e.message));else project?.createDialog(name);return;}
-  workspace=name;document.body.dataset.editor=name;$('.editor-grid').classList.toggle('dedicated-editor',['editortool','spriterig','animgraph','widget','audiomixer','sprite','tilemap','spriteanimation',...Object.keys(retargetAssetTypes)].includes(name));$('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';
+  workspace=name;document.body.dataset.editor=name;$('.editor-grid').classList.toggle('prefab-editor',name==='prefab');$('.editor-grid').classList.toggle('dedicated-editor',['editortool','spriterig','animgraph','widget','audiomixer','sprite','tilemap','spriteanimation',...Object.keys(retargetAssetTypes)].includes(name));$('.hierarchy').classList.toggle('blueprint-mode',name==='blueprint');$('#blueprint-sidebar').hidden=name!=='blueprint';
   const sceneMode=name==='scene';for(const el of $$('.hierarchy > .search-field,.hierarchy > .scene-root,.hierarchy > #hierarchy-list,.hierarchy > .hierarchy-footer'))el.hidden=!sceneMode;
   $('.hierarchy .panel-heading h2').textContent=name==='blueprint'?'블루프린트':sceneMode?'아웃라이너':'에셋';
   const add=$('.hierarchy .panel-heading .icon-button');add.dataset.action=name==='blueprint'?'add-blueprint-node':sceneMode?'add-menu':'create-asset';add.ariaLabel=name==='blueprint'?'노드 추가':sceneMode?'오브젝트 추가':'에셋 만들기';add.title=add.ariaLabel;
@@ -438,12 +440,12 @@ document.addEventListener('change',event=>{const input=event.target;if(!input.ma
 });
 document.addEventListener('click',event=>{const button=event.target.closest('[data-wheel-add],[data-wheel-remove]');if(!button||running)return;const object=objects.find(o=>o.id===selected),component=object&&objectComponents(object).find(c=>c.id===button.dataset.sceneComponent);if(!component)return;try{const p={...componentDefaults(component.type),...component.properties},wheels=structuredClone(p.wheels);if(button.hasAttribute('data-wheel-add'))wheels.push(defaultWheel(wheels.length));else wheels.splice(Number(button.dataset.wheelRemove),1);const next=editComponentProperty(component.type,p,'wheels',wheels);if(!validComponentProperties(component.type,next))throw Error('휠은 1~256개이며 각 설정 범위를 확인하세요.');editScene(()=>component.properties=next,{rebuild:true});}catch(error){notify(error.message);}});
 function focusedProjectBrowser(){return projectBrowsers.get(focusedWindow)||project;}
-async function collisionBakeData(component,object=null){
+async function collisionBakeData(component,object=null,previewGroup=null){
   if(component.type!=='MeshCollider')throw Error('메시 충돌 컴포넌트를 선택하세요.');
   const p={...componentDefaults(component.type),...component.properties};let group,temporary=false;
   try{
     if(p.sourceMesh){const loaded=await loadModel(p.sourceMesh);group=new THREE.Group();group.userData.objectId='collision-source';group.add(loaded.object);group.traverse(node=>node.userData.objectId='collision-source');temporary=true;}
-    else{group=object&&meshMap.get(object.id);if(!group)throw Error('원본 모델을 선택하거나 장면의 렌더 메시를 사용하세요.');await group.userData.ready;}
+    else{group=previewGroup||object&&meshMap.get(object.id);if(!group)throw Error('원본 모델을 선택하거나 장면의 렌더 메시를 사용하세요.');await group.userData.ready;}
     const geometry=bakeRenderCollision(group),next={...p,...geometry};if(!validComponentProperties(component.type,next))throw Error('이 메시에서 볼록 충돌을 만들 수 없어요. 삼각형 표면 방식을 사용하세요.');return next;
   }finally{if(temporary&&group){const resources=new Set();group.traverse(node=>{if(node.geometry)resources.add(node.geometry);for(const material of node.material?(Array.isArray(node.material)?node.material:[node.material]):[]){resources.add(material);for(const value of Object.values(material))if(value?.isTexture)resources.add(value);}if(node.skeleton?.boneTexture)resources.add(node.skeleton.boneTexture);});for(const resource of resources)resource.dispose();}}
 }
@@ -1096,7 +1098,7 @@ function openShortcutSettings(){
   const element=document.createElement('div'),editor=shortcutEditor(element,editorShortcuts,{error:notify});dock.add({id:'shortcuts',kind:'settings',title:'단축키',element,shortcutEditor:editor,dispose:()=>editor.dispose()});
 }
 function dispatchEditorShortcut(command){
-  const id=command.id;if(id.startsWith('widget')||id.startsWith('mesh'))return dispatchAssetShortcut(id,assetPanes.get(assetDocs.active)?.editor);
+  const id=command.id;if(workspace==='prefab'&&focusedWindow===assetPanes.get(assetDocs.active)?.id&&assetPanes.get(assetDocs.active).editor.shortcut(id))return; if(id.startsWith('widget')||id.startsWith('mesh'))return dispatchAssetShortcut(id,assetPanes.get(assetDocs.active)?.editor);
   if(id==='close')return ['shortcuts','build-profiles'].includes(focusedWindow)?dock.close(focusedWindow):closeDocument(assetDocs.active);
   if(id==='save'){const panel=dock.entries.get(focusedWindow)?.buildPanel;return panel?panel.save().catch(error=>notify(error.message)):save();}
   if(id==='build')return openBuildProfiles();
@@ -1115,7 +1117,7 @@ function dispatchEditorShortcut(command){
 }
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.isComposing||dock?.entries.get('shortcuts')?.shortcutEditor?.recording())return;
-  const scope=focusedWindow==='blueprint'?'blueprint':focusedWindow==='scene'||focusedWindow.startsWith('viewport:')?'viewport':assetShortcutScope(assetPanes.get(assetDocs.active),assetDocs.current?.kind,focusedWindow),editing=!!e.target.closest('input,textarea,select,[contenteditable]'),dialog=$$('dialog').some(d=>d.open),navigating=scope==='viewport'&&!!(extraViewports.find(v=>v.id===focusedWindow)?.controls||orbit)?.isFlying||scope==='modeling'&&!!assetPanes.get(assetDocs.active)?.editor?.controls?.isFlying;
+  const scope=focusedWindow==='blueprint'?'blueprint':focusedWindow==='scene'||focusedWindow.startsWith('viewport:')?'viewport':assetShortcutScope(assetPanes.get(assetDocs.active),assetDocs.current?.kind,focusedWindow),editing=!!e.target.closest('input,textarea,select,[contenteditable]'),dialog=$$('dialog').some(d=>d.open),navigating=workspace==='prefab'?!!assetPanes.get(assetDocs.active)?.editor?.preview?.controls.isFlying:scope==='viewport'&&!!(extraViewports.find(v=>v.id===focusedWindow)?.controls||orbit)?.isFlying||scope==='modeling'&&!!assetPanes.get(assetDocs.active)?.editor?.controls?.isFlying;
   const resolved=editorShortcuts.resolve(e,{scope,editing,dialog,navigating,running});if(!resolved.consume)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(resolved.command)try{dispatchEditorShortcut(resolved.command);}catch(error){notify(error.message);}
 },true);
 document.addEventListener('keydown',e=>{
@@ -1251,6 +1253,7 @@ function installDocumentData(doc){
     const pane=assetPanes.get(doc.path);if(pane?.editor){pane.editor.selection.clear();pane.editor.trackId=doc.data.timeline.tracks[0]?.id;pane.editor.render();}
   }
   if(doc.kind in worldAssetTypes){const editor=assetPanes.get(doc.path)?.editor;editor?.render();editor?.rebuild().catch(e=>notify(e.message));refreshWorldAssets();}
+  else if(doc.kind==='prefab')assetPanes.get(doc.path)?.editor?.render(true);
   else if(['modelimport','editortool','materialfunction','materiallayer','materialblend','spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
   else if(!['scene','blueprint','material','materialfunction','materiallayer','materialblend','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
   updateSurface();renderInspector();
@@ -1266,6 +1269,9 @@ function ensureAssetPane(doc){
   const pane={id,element};assetPanes.set(doc.path,pane);
   dock.entries.set(id,{id,title:assetTypes[doc.kind]?.label||doc.kind,element,path:doc.path});
   if(doc.kind==='text'){const input=document.createElement('textarea');input.value=doc.data;input.ariaLabel=assetTitle(doc.path)+' 내용';input.onfocus=remember;input.oninput=()=>{doc.data=input.value;changed();};element.append(input);documents.set(id,element);}
+  else if(doc.kind==='prefab'){
+    pane.editor=new PrefabEditor(element,doc,()=>projectAssetFiles,{read:readAsset,fileUrl,load:loadModel,visible:()=>dock.visible(pane.id),sortingLayers:()=>runtimeSettings.sortingLayers,error:notify,inspect:()=>{if(assetDocs.current===doc)renderAssetInspector();},view:queueRecovery,back:()=>activateDocument(activeScenePath),open:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'prefab',name:assetTitle(path)}).catch(e=>notify(e.message)),bake:collisionBakeData,shortcutText,edit:(settings,expectedRevision,expectedSources)=>automationPrefabEdit({path:doc.path,settings,expectedRevision,expectedSources,requireActive:true})});pane.dispose=()=>pane.editor.dispose();
+  }
   else if(doc.kind==='modelimport'){
     pane.editor=new ModelImportEditor(element,doc,{before:remember,change:changed,error:notify,load:loadModel,visible:()=>dock.visible(pane.id),save:async()=>{activateDocument(doc.path);if(!await save())throw Error('모델 설정 저장 실패');},reimport:async()=>{
       if(doc.dirty)throw Error('변경한 설정을 저장한 뒤 다시 가져오세요.');
@@ -1335,6 +1341,7 @@ for(const type of ['change','click'])document.addEventListener(type,event=>{if(!
 function materialFunctionProperties(doc){const d=doc.data;return '<section class="component-section"><h3>'+assetTypes[doc.kind].label+'</h3>'+[['name','이름'],['category','분류'],['description','설명']].map(([key,label])=>'<div class="property-row"><label>'+label+'</label><input data-material-function-setting="'+key+'" value="'+escapeHtml(d[key])+'"></div>').join('')+(doc.kind==='materialfunction'?'<label><input type="checkbox" data-material-function-setting="expose" '+(d.expose?'checked':'')+'>함수 목록에 표시</label>':'')+'<div class="property-row"><label>미리보기 출력</label><select data-material-function-setting="previewOutput">'+d.graph.nodes.filter(n=>n.key==='functionOutput').toSorted((a,b)=>a.priority-b.priority).map((n,i)=>'<option value="'+n.id+'" '+((d.previewOutput||d.graph.nodes.filter(n=>n.key==='functionOutput').toSorted((a,b)=>a.priority-b.priority)[0].id)===n.id?'selected':'')+'>'+escapeHtml(n.portName)+'</option>').join('')+'</select></div></section>';}
 document.addEventListener('change',event=>{const key=event.target.dataset.materialFunctionSetting,doc=assetDocs.current;if(!key||!['materialfunction','materiallayer','materialblend'].includes(doc?.kind))return;const next=clone(doc.data);next[key]=event.target.type==='checkbox'?event.target.checked:event.target.value;if(!validAsset(doc.kind,next))return notify('함수 속성을 확인하세요.');remember();doc.data=next;changed();updateSurface();renderAssetInspector();});
 function renderAssetInspector(){
+  if(assetDocs.current?.kind==='prefab'){assetPanes.get(assetDocs.active)?.editor?.renderInspector($('#inspector-content'));return;}
   const doc=assetDocs.current;if(!doc)return;const kind=doc.kind;
   $('#inspector-content').innerHTML=`<div class="editor-asset-summary">${icon(assetIcon(kind))}<h3>${escapeHtml(doc.data.name||assetTitle(doc.path))}</h3><p>${escapeHtml(assetTypes[kind]?.label||kind)}</p><p>${escapeHtml(doc.path)}</p></div>`+(['materialfunction','materiallayer','materialblend'].includes(kind)?(materialNodeProperties(doc)||materialFunctionProperties(doc)):kind==='material'?`${materialNodeProperties(doc)}<section class="component-section"><h3>표면</h3>${materialProperties()}${materialSurfaceDetails()}</section><section class="component-section"><button data-action="apply-material" data-icon="check">선택 오브젝트에 적용</button></section>`:kind==='blueprint'?'':`<section class="component-section"><div class="property-row"><span>상태</span><span>${doc.dirty?'수정됨':'저장됨'}</span></div></section>`);icons($('#inspector-content'));
 }
@@ -1424,8 +1431,15 @@ function automationViewport(id){if(id==='scene')return null;const view=extraView
 function automationEditable(inspect=false,ownBatch=false){if(running&&!inspect||startingPlay||stoppingPlay)throw Error('실행 종료 후 편집할 수 있어요.');if(authoringBatchBusy&&!ownBatch||diskPolling||transform?.dragging||$$('dialog').some(dialog=>dialog.open))throw Object.assign(Error('편집 중인 동작을 먼저 마무리하세요.'),{code:'EDITOR_BUSY'});}
 async function automationDocument(params,mutate=false){if(mutate)automationEditable();captureDocument();const doc=assetDocs.items.get(params.path||assetDocs.active);if(!doc)throw Error('문서를 먼저 여세요.');const before=JSON.stringify(doc.data),revision=await documentRevision(doc.data);captureDocument();if(assetDocs.items.get(doc.path)!==doc||JSON.stringify(doc.data)!==before||mutate&&params.expectedRevision!==revision)throw Object.assign(Error('문서가 변경됐어요. 최신 revision을 조회하세요.'),{code:'REVISION_CONFLICT'});return {doc,revision};}
 async function automationRetargetSpriteClip(params){await automationDocument(params,true);const file=await automationFile(params.source);if(file.kind!=='spriterig'||!file.exists)throw Error('원본 2D 리그 경로를 확인하세요.');if(params.sourceRevision!==undefined&&params.sourceRevision!==(file.editorRevision||file.revision))throw batchConflict('원본 리그가 변경됐어요.');const source=file.editorData||file.data;return automationAuthoringEdit(params,'spriterig',data=>{const result=params.positionMode==='pose'?bakeSpriteRigRetarget(source,data,params):retargetSpriteRigClip(source,data,params);data.clips.push(result.clip);return result;});}
+async function automationPrefabEdit(params){
+  const {doc}=await automationDocument(params,true);if(doc.kind!=='prefab')throw Error('프리팹 문서가 필요해요.');const sources=new Map();
+  const read=async path=>{if(sources.has(path))return clone(sources.get(path));const value=await readAsset(path);if(params.expectedSources&&params.expectedSources[path]!==await documentRevision(value))throw Object.assign(Error('중첩 프리팹 원본이 바뀌었어요. 다시 여세요.'),{code:'REVISION_CONFLICT'});sources.set(path,clone(value));return value;};
+  const next=await editPrefabStage(doc.path,doc.data,read,params.settings);
+  for(const [path,value] of sources)if(JSON.stringify(await readAsset(path))!==JSON.stringify(value))throw Object.assign(Error('편집 중 프리팹 원본이 바뀌었어요.'),{code:'REVISION_CONFLICT'});
+  return automationAuthoringEdit(params,'prefab',data=>{for(const key of Object.keys(data))delete data[key];Object.assign(data,next.data);return next.result;});
+}
 async function automationAuthoringEdit(params,kind,edit){
-  const {doc}=await automationDocument(params,true);if(doc.kind!==kind)throw Error('문서 종류를 확인하세요.');const draft=kind==='blueprint'?blueprintWorkspace.view(doc.path,doc.data):clone(doc.data),result=edit(draft),next=kind==='blueprint'?serializeBlueprint(draft):draft;if(!validAsset(kind,next))throw Error('편집 결과 검증 실패');
+  const {doc}=await automationDocument(params,true);if(doc.kind!==kind)throw Error('문서 종류를 확인하세요.');if(params.requireActive&&assetDocs.active!==doc.path)throw Object.assign(Error('작업 문서가 바뀌었어요.'),{code:'REVISION_CONFLICT'});const draft=kind==='blueprint'?blueprintWorkspace.view(doc.path,doc.data):clone(doc.data),result=edit(draft),next=kind==='blueprint'?serializeBlueprint(draft):draft;if(!validAsset(kind,next))throw Error('편집 결과 검증 실패');
   if(kind==='blueprint'){await blueprintWorkspace.prepare(doc.path,next);await automationDocument(params,true);}
   if(params.dryRun)return {valid:true,data:next,result,revision:await documentRevision(next)};
   if(JSON.stringify(next)===JSON.stringify(doc.data))return {path:doc.path,revision:await documentRevision(doc.data),dirty:doc.dirty,noChange:true,result};
@@ -1576,6 +1590,8 @@ const editorCommandMethods={
   'scene.prefab.unpack':params=>automationAuthoringEdit(params,'scene',d=>{const root=prefabRootFor(d.objects,d.objects.find(o=>o.id===params.object));if(!root)throw Error('연결된 프리팹이 없어요.');d.objects=unpackPrefabInstance(d.objects,root);return {root:root.id};}),
   'scene.prefab.adopt':params=>automationAuthoringEdit(params,'scene',d=>{const root=prefabRootFor(d.objects,d.objects.find(o=>o.id===params.object));if(!root)throw Error('연결된 프리팹이 없어요.');d.objects=adoptPrefabChildren(d.objects,root,{ids:params.ids});return {root:root.id};}),
   'scene.prefab.apply':applyLinkedPrefabProperty,
+  'prefab.stage.get':async params=>{const {doc,revision}=await automationDocument(params);if(doc.kind!=='prefab')throw Error('프리팹 문서가 필요해요.');const sources={};const resolved=await resolvePrefabStage(doc.path,doc.data,async path=>{const value=await readAsset(path);sources[path]=await documentRevision(value);return value;});return {path:doc.path,revision,resolved,sources,preview:assetPanes.get(doc.path)?.editor?.preview?.snapshot()||null};},
+  'prefab.stage.edit':automationPrefabEdit,
   'prefab.override':params=>automationAuthoringEdit(params,'prefab',d=>{setPrefabOverride(d,params.object,params.property,params.value,{remove:params.remove??false});return {overrides:d.overrides.length};}),
   'prefab.revert':params=>automationAuthoringEdit(params,'prefab',d=>{revertPrefabOverride(d,params.object,params.property);return {overrides:d.overrides.length};}),
   'tilemap.rules.resolve':params=>automationAuthoringEdit(params,'tilemap',d=>{Object.assign(d,resolveAutoTiles(d,params.settings));return {layers:d.layers.length};}),

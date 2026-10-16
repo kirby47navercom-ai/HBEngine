@@ -433,3 +433,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 185: sceneInstanceActor(instance,localId,includeInactive=false),sceneInstanceActors(instance,includeInactive=false),sceneInstanceLocalId(instance) 노드는 Scene의 같은 C++ 함수와 연결된다. localId는 원본 Actor ID(중첩 anchor/child)이며 표시 이름/생성 월드 ID가 아니다. null/일반 Actor는 null/[]/빈문자열, 삭제 Actor 제외. localId 최대1000 UTF-8 bytes. SDK+generate-api 결과를 함께 사용한다.
+
+
+186: prefab.stage.get {path} → resolved,revision,sources,preview 자원 정보. prefab.stage.edit {path,expectedRevision,expectedSources?,dryRun?,settings:{operation,object,...}} → 같은 원본 제작/Undo. operation: property/transform/create/duplicate/paste/group/ungroup/remove/reparent/component.add/component.remove/component.set/component.reset/component.properties. 부모는 안정 로컬ID, reparent.keepWorld 기본 true. paste.objects는 닫힌 계층 JSON. 사람 UI와 같은 공용 함수·안쪽 원본 revision 충돌 거부. reparented:[{object,parent}]는 해석 후 검증되는 선택 필드.

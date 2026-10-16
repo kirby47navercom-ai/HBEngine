@@ -51,6 +51,8 @@ export const editorMethods={
   'scene.prefab.adopt':{params:{path:'장면',expectedRevision:'revision',object:'연결 루트 ID',ids:'선택: 포함할 자식 월드 ID 배열',dryRun:'검증만; Undo'}},
   'scene.prefab.apply':{params:{path:'장면',expectedRevision:'revision',sourceRevision:'선택:원본 문서 revision',object:'루트/자식 ID',localId:'원본 오브젝트 ID',property:'속성 경로; []는 중첩 포함 자식 추가/삭제. 바깥 원본 additions/removed에 기록하며 안쪽 자산은 보존',all:'true면 모든 수정의 원자적 적용',dryRun:'검증만; 원본/장면 파일 묶음 Undo 공유'}},
   'scene.prefab.unpack':{params:{path:'장면',expectedRevision:'revision',object:'루트/자식 ID',dryRun:'검증만'}},
+  'prefab.stage.get':{description:'격리 제작창과 같은 중첩·상속 계층 조회',params:{path:'열린 프리팹 문서'}},
+  'prefab.stage.edit':{description:'격리 제작창과 같은 원본 편집; 단일 Undo·다른 장면/안쪽 원본 보존',params:{path:'프리팹 문서',expectedRevision:'현재 revision',expectedSources:'선택: stage.get의 sources 맵',settings:'operation property/transform/create/duplicate/paste/group/ungroup/remove/reparent/component.add/component.remove/component.set/component.reset/component.properties; object 안정 로컬ID, property 경로, value, parent, key, type, component; paste.objects 계층 배열; reparent.keepWorld 기본 true',dryRun:'검증만'}},
   'prefab.override':{params:{path:'프리팹 문서',expectedRevision:'revision',object:'안정 오브젝트 ID',property:'속성 경로 배열',value:'형식 있는 값',remove:'선택:true면 속성/안정 컴포넌트 삭제',dryRun:'검증만'}},
   'prefab.revert':{params:{path:'프리팹 문서',expectedRevision:'revision',object:'안정 오브젝트 ID',property:'속성 경로 배열',dryRun:'검증만'}},
   'tilemap.rules.resolve':{params:{path:'타일맵 문서',expectedRevision:'revision',settings:'선택: layerId, cells 배열',dryRun:'검증만'}},

@@ -1,3 +1,7 @@
+# 누적186 제작·실행 검증 — 설치 준비 후 계속
+
+mainc25e27b/185설치4c2fe681686c5505,186제품/문서미커밋. PrefabAuthoring불변/CAS/expectedSources/dryRun/Undo, reparented구조+implicitType_index·기본world변형보존·clipboard/group/중첩flatten. PrefabEditor+Preview 기존SceneRendering/controls/TransformControls·2D/3D·sharedInspector/geometry/vehicle·숨은leftsummary제거·원본별탭탐색·접힘/스크롤·rightmenu. actual초기buttondisabled종료후복구문제수정. CPU9WbXug4/1847 5xnGvS/17017BmETB2/1836vFTo5a PASS. window0GaTnn실제새stage+모든이전회귀 PASS/captures2시각확인. 기존summary에stage필드누락이라installedtest에명시필드추가함;dev결과사후변경안함. D3DwZn6PD/WebGPUHcGGeP 실제새source변형Cppy4/상속부모/AudioSourcevolume.35+기존회귀 PASS. UIlayout/APIcheck PASS. 최종사소한alias/부모오버라이드정리뒤CPU9PASS. docs186완료 재실행금지. 다음diff/status→commit/push→dist동기/install186→새설치check186-window(프리팹stage명시결과/캡처)→프로필/manifest/Versions1검증 영수증→누적목표계속. snapshot API 추가와최종부모alias는설치스모크포함필요. 새agent금지/실사용앱보호/최종안함.
+
 # 누적185 설치 완료 — 186 프리팹 격리 제작창 계속
 
 main9bf3287 feature originpush. 설치4c2fe681686c5505/2506명세파일 실행후 SHA일치. installedBcwIzA PASS/새 공용 조회 BP노드 실제생성·표시·Undo·저장/중첩Apply·원본Scene동시UndoRedo·기존키/슬롯/메시/LOD/errors0/exit0. instance-node/nested-prefab 캡처 실제시각확인. profile10385파일SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1/바로가기2/.hbproject연결/이전184174446335bytes정리. finish185완료 재실행금지. 영수증커밋push후186계속. 186제품코드아직없음: 기존SceneRendering/viewportControls/컴포넌트Inspector/CAS/Undo를 재사용한 격리 프리팹 제작창, nested/inherited property·structure authoring검토. 현재mainScene를프리팹으로위장하거나실사용자프로젝트수정금지. 새agent금지/최종답변안함. 아래185설치전기록은역사.

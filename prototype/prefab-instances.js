@@ -2,12 +2,12 @@ import {validPrefabLink} from './prefab-link.js';
 import {objectComponents} from './scene-components.js';
 import {remapActorReferences} from './actor-references.js';
 import {validScene,defaultSurface} from './model.js';
-import {resolvePrefab,setPrefabOverride} from './prefab-variants.js';
+import {resolvePrefab,setPrefabOverride,prefabComponents} from './prefab-variants.js';
 const copy=v=>v===undefined?undefined:structuredClone(v);
 const excluded=new Set(['id','prefabAsset','prefabRoot','prefabLocalId','prefabLink','gameplayDebug','actorClasses','tileColliders','runtimeTilemap','runtimeTilemapPath','tilemapDirty','currentSprite']);
 const safe=p=>Array.isArray(p)&&p.length>0&&p.length<=32&&p.every(k=>(typeof k==='string'||Number.isInteger(k))&&!['__proto__','prototype','constructor'].includes(String(k)));
 const equal=(a,b)=>a===b||Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>equal(v,b[i]))||a&&b&&typeof a==='object'&&typeof b==='object'&&!Array.isArray(a)&&!Array.isArray(b)&&Object.keys(a).length===Object.keys(b).length&&Object.keys(a).every(k=>Object.hasOwn(b,k)&&equal(a[k],b[k]));
-function normalize(rows){return rows.map(value=>{const o=copy(value);for(const key of excluded)if(key!=='id')delete o[key];if(o.components===undefined){objectComponents(o);o.components.forEach((c,i)=>c.id=c.type+'_'+i);}return o;});}
+function normalize(rows){return rows.map(value=>{const o=copy(value);for(const key of excluded)if(key!=='id')delete o[key];prefabComponents(o);return o;});}
 function checkLink(root){const l=root?.prefabLink;if(!validPrefabLink(l))throw Error('프리팹 인스턴스 연결 데이터 오류');return l;}
 function worldRows(local,link){const ids=new Map(Object.entries(link.ids)),rows=copy(local);for(const o of rows){const local=o.id;o.id=ids.get(local);o.prefabAsset=link.asset;o.prefabRoot=link.ids[link.root];o.prefabLocalId=local;}remapActorReferences(rows,[],ids);return rows;}
 function localRows(objects,link){const rows=objects.filter(o=>o.prefabRoot===link.ids[link.root]).map(o=>{const v=copy(o);v.id=o.prefabLocalId;for(const k of excluded)if(k!=='id')delete v[k];return v;}),ids=new Map(Object.entries(link.ids).map(([a,b])=>[b,a]));remapActorReferences(rows,[],ids);return rows;}
