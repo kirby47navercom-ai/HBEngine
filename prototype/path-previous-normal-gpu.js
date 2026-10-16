@@ -7,7 +7,7 @@ export function previousNormalGPU(transport,u){
   T.If(attributes.greaterThan(0).and(current.greaterThan(-1.5)).and(current.lessThan(-.5).or(current.greaterThan(0))).and(old.greaterThan(0)),()=>{
    const weights=ray.bary(id,point).toVar(),raw=load(attributes.add(2)).xyz.mul(weights.x).add(load(attributes.add(3)).xyz.mul(weights.y)).add(load(attributes.add(4)).xyz.mul(weights.z)).toVar();
    T.If(raw.length().greaterThan(1e-10),()=>{
-    smoothValue.assign(raw.normalize().mul(raw.dot(ray.geometric(id)).lessThan(0).select(-1,1)));const mode=load(load(attributes.add(1)).z.add(7)).z.toVar();mappedMode.assign(mode.greaterThan(.5));if(ray.hasTime)T.If(mode.greaterThan(1.5),()=>{sample.assign(ray.normalTime(id,point,view,width,u.forward.w));});
+    smoothValue.assign(raw.normalize().mul(raw.dot(ray.geometric(id)).lessThan(0).select(-1,1)));const mode=load(load(attributes.add(1)).z.add(7)).z.toVar();mappedMode.assign(mode.greaterThan(.5));if(ray.hasNormalTime??ray.hasTime)T.If(mode.greaterThan(1.5),()=>{sample.assign(ray.normalTime(id,point,view,width,u.forward.w));});
     T.If(current.lessThan(-.5),()=>{
      prior.assign(load(old).xyz.mul(weights.x).add(load(old.add(1)).xyz.mul(weights.y)).add(load(old.add(2)).xyz.mul(weights.z)));
      T.If(prior.length().greaterThan(1e-10),()=>{const at=u.pathFilter.w.add(id.mul(3)),face=load(at.add(1)).xyz.cross(load(at.add(2)).xyz);prior.assign(prior.normalize().mul(prior.dot(face).lessThan(0).select(-1,1)));

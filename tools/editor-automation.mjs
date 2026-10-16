@@ -106,6 +106,7 @@ export const editorMethods={
   'modelimport.preview':{description:'CPU 경계·메시 수·표시 상태 조회; GPU 읽기 없음',params:{path:'열린 모델 가져오기 문서'}},
   'modelimport.open':{description:'원본 모델의 검증된 가져오기 문서를 열어요. 반환 path/revision으로 document.patch/save/undo를 사용하세요.',params:{path:'gltf/glb/obj/fbx 프로젝트 상대 경로'}},
   'document.open':{params:{path:'프로젝트 상대 경로'}},
+  'texture.view':{description:'열린 이미지/큐브맵/배열/볼륨의 비파괴 채널·확대·면/슬라이스·원본 픽셀 조회',params:{path:'열린 텍스처 경로 (생략하면 활성 문서)',settings:'선택: channel rgba/rgb/r/g/b/a, filter nearest/linear, zoom fit/fill 또는 1/1024–256, pan [CSS px,px], index 면/슬라이스',pixel:'선택: 원본 [x,y] 정수 좌표'}},
   'document.get':{params:{path:'열린 문서 경로 (생략하면 활성 문서)'}},
   'document.merge':{params:{path:'JSON 에셋 문서',expectedRevision:'현재 revision',base:'공통 기준 JSON',theirs:'다른 버전 JSON',resolutions:'선택: 충돌 id -> ours/theirs/base 또는 {value}',dryRun:'미해결/검증/미리보기만; 파일·Undo 변경 없음'}},
   'merge.open':{params:{path:'에셋 문서',base:'선택 기준',theirs:'선택 다른 버전'}},

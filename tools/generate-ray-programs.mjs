@@ -14,9 +14,9 @@ const output=String.raw`#pragma once
 #include <cctype>
 #include <stdexcept>
 namespace hb::gpu {
-struct RayProgram {int key=0;std::vector<std::array<int,11>> instructions;};
+struct RayProgram {int key=0;std::vector<std::array<int,11>> instructions;unsigned fieldMask=1023;};
 inline void validateRayProgram(const RayProgram& p){
- if(p.key<1||p.key>16777215||p.instructions.empty()||p.instructions.size()>4096)throw std::runtime_error("Ray program layout invalid");
+ if(!p.fieldMask||p.fieldMask>1023||p.key<1||p.key>16777215||p.instructions.empty()||p.instructions.size()>4096)throw std::runtime_error("Ray program layout invalid");
  std::array<bool,64> assigned{};
  for(const auto& i:p.instructions){if(i[0]<0||i[0]>=50||i[2]<1||i[2]>4||i[3]<1||i[3]>4)throw std::runtime_error("Ray operation invalid");for(int j=4;j<8;j++)if(i[j]<-1||i[j]>=64||(i[j]>=0&&!assigned[i[j]]))throw std::runtime_error("Ray operand invalid");
   if(i[0]==8){if(i[1]!=-1||i[8]<0||i[9]<1||i[8]+i[9]>4||i[10]<1||i[10]>4||i[4]<0)throw std::runtime_error("Ray output invalid");}
@@ -28,6 +28,7 @@ template<class Json> inline std::vector<RayProgram> readRayPrograms(const Json& 
  std::vector<RayProgram> result;std::set<int> keys;
  for(const auto& item:data){if(!item.is_object()||!item.at("key").is_number_integer()||item.at("key").template get<double>()<1||item.at("key").template get<double>()>16777215||!item.at("instructions").is_array())throw std::runtime_error("Ray program invalid");RayProgram p;p.key=item.at("key").template get<int>();if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");
   for(const auto& row:item.at("instructions")){if(!row.is_array()||row.size()!=11)throw std::runtime_error("Ray instruction invalid");std::array<int,11> instruction{};for(int n=0;n<11;n++){if(!row[n].is_number_integer()||row[n].template get<double>()<-1||row[n].template get<double>()>16777215)throw std::runtime_error("Ray integer operand required");instruction[n]=row[n].template get<int>();}p.instructions.push_back(instruction);}
+  if(item.contains("fields")){const auto& fields=item.at("fields");if(!fields.is_array()||fields.empty()||fields.size()>10)throw std::runtime_error("Ray program fields invalid");p.fieldMask=0;for(const auto& field:fields){if(!field.is_number_integer()||field.template get<double>()<0||field.template get<double>()>9)throw std::runtime_error("Ray program field invalid");const unsigned bit=1u<<field.template get<int>();if(p.fieldMask&bit)throw std::runtime_error("Ray program field duplicate");p.fieldMask|=bit;}}
   validateRayProgram(p);result.push_back(std::move(p));
  }return result;
 }
@@ -56,7 +57,7 @@ ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
     }
    }source+="}";
   }source+="return result;}\n";
- }source+="vec4 "+executeName+"Time(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(const auto& p:programs)source+="if(key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width,timeContext);";source+="return result;}vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return "+executeName+"Time(key,pointer,id,point,view,result,width,vec2(0,0));}";}return source;
+ }source+="vec4 "+executeName+"FieldTime(float field,float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(const auto& p:programs){std::string condition;if(p.fieldMask!=1023){condition="(field<-.5";for(int f=0;f<10;f++)if(p.fieldMask&(1u<<f))condition+="||field=="+std::to_string(f)+".0";condition+=")&&";}source+="if("+condition+"key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width,timeContext);";}source+="return result;}vec4 "+executeName+"Time(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){return "+executeName+"FieldTime(-1.0,key,pointer,id,point,view,result,width,timeContext);}vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return "+executeName+"Time(key,pointer,id,point,view,result,width,vec2(0,0));}";}return source;
 }
 }
 `;

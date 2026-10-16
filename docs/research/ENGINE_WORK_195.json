@@ -1,0 +1,580 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "8b9e3db",
+  "targetIds": [
+    "WLD-04",
+    "PER-01"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/animation-195-3afAqM/acceptance.json",
+      "sha256": "62e59adf7ae9b6ff4540a27a8002e4d1ee185acd26553f983a3f9a199813a251",
+      "result": {
+        "passed": 5,
+        "total": 5,
+        "checks": [
+          {
+            "name": "skipped frames advance clocks and notifications without sampling or applying a bone pose",
+            "passed": true
+          },
+          {
+            "name": "30/60/120 clocks preserve the same loop notify stream and current scheduled pose",
+            "passed": true
+          },
+          {
+            "name": "opt-out, root transforms, curves, root motion and interruption snapshots stay evaluated",
+            "passed": true
+          },
+          {
+            "name": "pause, resume, zero delta, disposal and invalid delta preserve the evaluation lifecycle",
+            "passed": true
+          },
+          {
+            "name": "bone-heavy skip avoids all interpolants without adding pose buffers",
+            "passed": true
+          }
+        ],
+        "metrics": [
+          {
+            "hz": 30,
+            "frames": 120,
+            "fullSamples": 120,
+            "reducedSamples": 20,
+            "events": 4
+          },
+          {
+            "hz": 60,
+            "frames": 240,
+            "fullSamples": 240,
+            "reducedSamples": 20,
+            "events": 4
+          },
+          {
+            "hz": 120,
+            "frames": 480,
+            "fullSamples": 480,
+            "reducedSamples": 20,
+            "events": 4
+          },
+          {
+            "bones": 256,
+            "skippedFrames": 60,
+            "avoidedInterpolants": 15360,
+            "elapsedMS": 0.3445000000000107,
+            "poseBytes": 12288
+          }
+        ],
+        "newDependencies": 0,
+        "newPoseBuffers": 0,
+        "scope": "Distance scheduled local bone/sprite presentation; protected state/curve/root/retarget/slot paths and global CPU-ms allocation remain separate."
+      }
+    },
+    "lodRegression": {
+      "path": "native/build/engine-179-Ny8rqU/acceptance.json",
+      "sha256": "196248be392027d8676eaf4225eed5b1ba9351d222476684d158589026a772ef",
+      "result": {
+        "passed": 10,
+        "total": 10,
+        "checks": [
+          {
+            "name": "typed component keeps valid distance order and explicit zero full-rate semantics",
+            "passed": true
+          },
+          {
+            "name": "distance hysteresis crosses every boundary correctly on teleports",
+            "passed": true
+          },
+          {
+            "name": "30/60/120-Hz clocks give the same visual rate without dropping simulation time",
+            "passed": true
+          },
+          {
+            "name": "2D XY ignores camera depth, billboards and explicit XYZ/XZ keep their planes",
+            "passed": true
+          },
+          {
+            "name": "no-camera headless queries preserve mirrored collision band and always refresh pose",
+            "passed": true
+          },
+          {
+            "name": "skipped bone writes retain clock and notifies then apply the current pose",
+            "passed": true
+          },
+          {
+            "name": "actual Rapier collision geometry changes independently of rendering",
+            "passed": true
+          },
+          {
+            "name": "cache reuse and dynamic-body policy avoid unnecessary shape replacement",
+            "passed": true
+          },
+          {
+            "name": "bounded cache eviction leaves already installed collision arrays usable",
+            "passed": true
+          },
+          {
+            "name": "release/disposal cancels pending writes and removed component clears only world geometry",
+            "passed": true
+          }
+        ],
+        "samples": [
+          {
+            "hz": 30,
+            "seconds": 4,
+            "poseWrites": 20
+          },
+          {
+            "hz": 60,
+            "seconds": 4,
+            "poseWrites": 20
+          },
+          {
+            "hz": 120,
+            "seconds": 4,
+            "poseWrites": 20
+          }
+        ]
+      }
+    },
+    "editor": {
+      "path": "native/build/animation-195-editor-a87MSp/acceptance.json",
+      "sha256": "d65d5d1db695037302d22d779e7bfd203ca66b292840aa2974a15b0c8e642d86",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanInspector": true,
+        "undo": true,
+        "saved": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3d": {
+      "path": "native/build/animation-195-player-w7U3to/acceptance.json",
+      "sha256": "dc48d2cb222c6ac63c8aa14a60c14c660a80834b6feec1f29a97482e0bb609c3",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-195-player-w7U3to\\Animation195-1792167712875\\Builds\\windows\\2026-10-16T16-21-52-964Z-d328a4dd\\HBGame_e9221803141046df98681c3e0d759a6c.exe",
+        "backend": "D3D11",
+        "cppToggle": true,
+        "renderedPixel": [
+          149,
+          223,
+          232,
+          255
+        ],
+        "first": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.2260000000000001,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "6a6843af-2bc4-4335-92bd-c08175791581",
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06"
+          ],
+          "weights": {
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06": 1
+          },
+          "clips": [
+            {
+              "id": "1268e5fd-b50d-40b2-b364-08eb7015bf06",
+              "time": 0.2260000000000001
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 3,
+            "skipped": 16,
+            "lastEvaluatedFrame": 17,
+            "reduced": true,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "full": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.8504999999999998,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "6a6843af-2bc4-4335-92bd-c08175791581",
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06"
+          ],
+          "weights": {
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06": 1
+          },
+          "clips": [
+            {
+              "id": "1268e5fd-b50d-40b2-b364-08eb7015bf06",
+              "time": 0.8504999999999998
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 18,
+            "skipped": 16,
+            "lastEvaluatedFrame": 34,
+            "reduced": false,
+            "trace": "evaluated-pose"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "final": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.9599000000059602,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "6a6843af-2bc4-4335-92bd-c08175791581",
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06"
+          ],
+          "weights": {
+            "1268e5fd-b50d-40b2-b364-08eb7015bf06": 1
+          },
+          "clips": [
+            {
+              "id": "1268e5fd-b50d-40b2-b364-08eb7015bf06",
+              "time": 0.9599000000059602
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 18,
+            "skipped": 28,
+            "lastEvaluatedFrame": 34,
+            "reduced": true,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/animation-195-player-JQbWFM/acceptance.json",
+      "sha256": "9b7070e80cd39dba75d68634ddb4f01d6fa04cb8f082ac314c7e8bf99d96b5bf",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-195-player-JQbWFM\\Animation195-1792167728212\\Builds\\windows\\2026-10-16T16-22-08-300Z-51847178\\HBGame_57f23e4ed5f14b5bb91fcdb676a3a9b4.exe",
+        "backend": "WebGPU",
+        "cppToggle": true,
+        "renderedPixel": [
+          170,
+          217,
+          226,
+          255
+        ],
+        "first": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.23409999999403963,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "70213fc9-10bf-4fea-91a6-8e3198aa3e01",
+            "a8df97d0-a662-483e-8ede-1c895be3919b"
+          ],
+          "weights": {
+            "a8df97d0-a662-483e-8ede-1c895be3919b": 1
+          },
+          "clips": [
+            {
+              "id": "a8df97d0-a662-483e-8ede-1c895be3919b",
+              "time": 0.23409999999403963
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 3,
+            "skipped": 15,
+            "lastEvaluatedFrame": 15,
+            "reduced": true,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "full": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.4346999999880793,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "70213fc9-10bf-4fea-91a6-8e3198aa3e01",
+            "a8df97d0-a662-483e-8ede-1c895be3919b"
+          ],
+          "weights": {
+            "a8df97d0-a662-483e-8ede-1c895be3919b": 1
+          },
+          "clips": [
+            {
+              "id": "a8df97d0-a662-483e-8ede-1c895be3919b",
+              "time": 0.4346999999880793
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 17,
+            "skipped": 17,
+            "lastEvaluatedFrame": 34,
+            "reduced": false,
+            "trace": "evaluated-pose"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "final": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.5427999999821188,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "70213fc9-10bf-4fea-91a6-8e3198aa3e01",
+            "a8df97d0-a662-483e-8ede-1c895be3919b"
+          ],
+          "weights": {
+            "a8df97d0-a662-483e-8ede-1c895be3919b": 1
+          },
+          "clips": [
+            {
+              "id": "a8df97d0-a662-483e-8ede-1c895be3919b",
+              "time": 0.5427999999821188
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 17,
+            "skipped": 30,
+            "lastEvaluatedFrame": 34,
+            "reduced": true,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 48
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-budget-allocator-in-unreal-engine",
+      "scope": "Own page text0–227, including displayed public API excerpt. Rest of console reference, linked API/media/plugin implementation not analyzed."
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AnimatorCullingMode.html",
+      "scope": "Own technical text237–253 only; three culling modes. Linked enums/implementations unread."
+    }
+  ],
+  "limits": [
+    "Only local bone/sprite presentation can skip full evaluation; actor transforms/curves/state machines/slots/retarget/root/physics/montage/source dependencies stay conservative.",
+    "Global CPU-ms allocation, pose interpolation, legacy Mixer/bone count LOD and full-game/mobile sustained performance remain.",
+    "Full calculation opt-out retains separately configured visual write frequency. planned-clips diagnostics are not a fresh evaluated full pose."
+  ],
+  "failedAttempts": [
+    "Initial strict equality used float32 interpolation output as exact JS decimal; retain float32-appropriate error.",
+    "CDP page screenshot cannot capture the native D3D surface. Use actual hbPlayerDebug.capture and assert a colored pixel. The source fixture now explicitly uses an unlit material so its actor-only environment needs no light.",
+    "A bound pose snapshot follows the configured5Hz presentation even after full calculation opt-out; verify the displayed sample within its .2s interval and CPU exact-current visual samples separately."
+  ],
+  "installationPending": true,
+  "newDependencies": 0,
+  "automaticRuntimeGPUReadbacks": 0,
+  "regressions": {
+    "path": "native/build/regression-194-195.json",
+    "sha256": "4de6a55e3bb0d299475725a8ff7674fa172eb50916bf8bdfa6d8eae5af881a38",
+    "result": [
+      {
+        "file": "tools/check-rendering-106.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"operators\":35,\"shaderStructureRelease\":true,\"immutableHeaderGuard\":true,\"familyTexturePacking\":true,\"constantFold\":true,\"liveRegisterReuse\":true,\"textureCacheAndInvalidation\":true,\"UVInvalidation\":true,\"instancedNormals\":true,\"rawImportedMaps\":true,\"RGBAFloatBoundary\":true,\"legacyGI\":true,\"disabledRelease\":true}\n"
+      },
+      {
+        "file": "tools/check-rendering-138.mjs",
+        "passed": true,
+        "output": "{\"passed\":true,\"opaqueGuideVariantChangesWithTransmission\":true,\"UVInvalidatesHistory\":true,\"normalStrengthInvalidatesAndRebuilds\":true,\"worldDependentNormalRejectsHistory\":true,\"deformedBytesUnchanged\":48,\"nativeCloudWindSchedulesCapture\":true,\"cloudRateLimitMS\":250,\"manualModeFrozen\":true,\"browserCloudWindSchedulesCapture\":true,\"commonAISchema\":true,\"dependenciesAdded\":0,\"automaticReadbacks\":0}\n"
+      },
+      {
+        "file": "tools/check-animation-graph.mjs",
+        "passed": true,
+        "output": "Animation graph: authoring, quaternion blend, 1D/direct/bool/integer/enum/additive, child modes/interrupts/independent clocks, bone filters, sprites, references and shared execution passed\n"
+      },
+      {
+        "file": "tools/check-animation-sync.mjs",
+        "passed": true,
+        "output": "Animation sync: roles/leader handoff, marker/repeated intervals, fallback, graph groups, legacy, notify ordering/weight/loops, BP services, 2D sprites/state clocks and bounds passed\n"
+      },
+      {
+        "file": "tools/check-animation-notify-policy.mjs",
+        "passed": true,
+        "output": "Animation notify policy: 1D/2D all/highest/none, ranges/End, stable ties, minWeight, nested/shared paths, unchanged pose/sync/clock, legacy and skipped ordinary cost passed\n"
+      },
+      {
+        "file": "tools/check-animation-root-motion.mjs",
+        "passed": true,
+        "output": "Root Motion: loops/turns, modes, placement, blends/states/masks, 2D/3D 30/60/120 fixed steps, dynamic/kinematic walls, gravity/flying/parents, montage tails/seek/pause and shared engine functions PASS\n"
+      },
+      {
+        "file": "tools/check-animation-montage.mjs",
+        "passed": true,
+        "output": "Montage slots: shared sampling, missing bindings/masks, groups, clocks, fade/hold, callback seek/stop, async cancellation, atomic replacement, legacy controls, 2D sprites and placed transforms passed\n"
+      },
+      {
+        "file": "tools/check-animation-retarget.mjs",
+        "passed": true,
+        "output": "Retarget chain interpolation / IK / reference and source preservation / shared services order / schema: passed\n"
+      }
+    ]
+  }
+}

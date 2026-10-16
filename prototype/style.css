@@ -1,3 +1,4 @@
+@import url('./texture-viewer.css');
 :root { color-scheme: dark; --bg:#202226; --panel:#292c31; --raised:#30343a; --field:#202328; --line:#444a54; --text:#e4e7ed; --muted:#b1b8c4; --faint:#939eae; --accent:#5089c9; --accent-dark:#354b65; --blue:#5089c9; --gold:#d1af76; --red:#d99ba1; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.5 'Segoe UI', 'Malgun Gothic', sans-serif; }

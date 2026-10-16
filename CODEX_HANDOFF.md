@@ -215,3 +215,6 @@ docs/research/ENGINE_STATUS.json latest174/78행 verified39 partial34 unimplemen
 exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도구출력이없어도새검사중복실행말고artifact/PID/session확인. 비멱등 native/build/write/wire/fix/docs 스크립트재실행금지. native/build는무시된임시작업스크립트/근거; 보고서/소스/캡처/명세보존, 생성Builds/WebView2/cache만tools/test-artifacts.mjs정리. PowerShell삭제는리터럴절대경로범위검증후네이티브cmdlet사용. 사용자앱/공유node/worker무차별kill금지. getCim으로지금검사의고유PID확인. 승인정책never: sandbox_permissions쓰지않음. 새의존성추가없고지금까지자동GPU읽기추가0.
 
 175–176최종회귀:90610의check-physics166+실제CPP질의/힘/각충격량/BPsplit PASS완료. 이어진선택check-editor-api.mjs는고정5181서버없어ECONNREFUSED,제품실패와구별·176격리EXE API는통과. docs175176에기록.
+
+
+194–196(2026-10-17): 필드별 ray 특화/시간 의존성, 로컬 뼈·스프라이트 포즈 계산 생략, 비파괴 텍스처 채널/픽셀/면·슬라이스/줌/AI. ENGINE_WORK_194/195/196 JSON에 실제 CPU/3백엔드/Win32/공용C++ 근거. 원장 latest194–196,78행/상태 수 유지. 설치는196 영수증을 확인. 남은 작업은 정본 ENGINE_STATUS.json remaining을 계속 구현하며 단일 복잡 그래프 cold compile/보호 애니메이션/쿠킹GPU mip 등을 완료로 승격하지 않음. finish193/install193/docs194-196 등 일회용 스크립트 재실행 금지.

@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "8b9e3db",
+  "targetIds": [
+    "MAT-03",
+    "EDT-01",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/texture-196-YOUucw/acceptance.json",
+      "sha256": "a5a1b33665caf56a1699fe8b1a2420e89e2ce72535ebd2d1456d2fd2cd341d5c",
+      "result": {
+        "passed": 3,
+        "total": 3,
+        "checks": [
+          {
+            "name": "fit, fill, 1:1 and pan use image coordinates independently of device scale",
+            "passed": true
+          },
+          {
+            "name": "display channels keep original alpha in RGBA and use grayscale for individual channels",
+            "passed": true
+          },
+          {
+            "name": "strict view settings reject invalid slices, scale, fields and nonfinite pan without coercion",
+            "passed": true
+          }
+        ],
+        "maximumPreviewPixels": 4194304,
+        "sourcePixelProbeCanvasPixels": 1,
+        "newDependencies": 0,
+        "permanentTimers": 0
+      }
+    },
+    "editor": {
+      "path": "native/build/texture-196-editor-OBuFg7/acceptance.json",
+      "sha256": "099c30a6ddca8c3d8802189679050cc587b5a4fa4b7e442190ff993d0dc3a51d",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanChannel": true,
+        "actualChannelPixels": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "sourceAlpha": [
+          0,
+          255,
+          0,
+          128
+        ],
+        "sourceProbe": {
+          "x": 3,
+          "y": 4,
+          "rgba": [
+            255,
+            0,
+            0,
+            255
+          ]
+        },
+        "zoomWheel": true,
+        "middlePan": [
+          35,
+          19.96875
+        ],
+        "originalUnchanged": true,
+        "families": [
+          {
+            "kind": "cubemap",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "texturearray",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "volumetexture",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          }
+        ],
+        "closedResourcesReleased": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/texture-asset-editor-in-unreal-engine",
+      "scope": "Own text0–141: toolbar/channels/zoom/background/face/slice/source information/mip concepts. Compression/details beyond141 and linked media/API unread."
+    },
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/EditorGUI.DrawPreviewTexture.html",
+      "scope": "Own declaration/parameters/description234–297. Linked APIs/sample code/media not analyzed."
+    }
+  ],
+  "limits": [
+    "8-bit browser-decoded source preview, not GPU cooked mip inspection, HDR linear probe, compression cooking or 3D volume ray view.",
+    "4194304-pixel display canvas budget does not cap browser decoded original image memory.",
+    "No new dependency/permanent render loop/full original CPU pixel cache; display changes are non-destructive."
+  ],
+  "failedAttempts": [
+    "Wheel anchoring at a fractional CSS center can produce subpixel initial pan; physical MMB drag asserts its exact delta from the pre-drag state rather than assuming the anchored offset was zero."
+  ],
+  "installationPending": true,
+  "newDependencies": 0,
+  "automaticRuntimeGPUReadbacks": 0
+}

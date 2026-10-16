@@ -3094,5 +3094,35 @@
     ],
     "unread": "Rest of WebAudio/WAVE corpus and linked APIs/images/media",
     "globalGatePromotion": false
+  },
+  "supplemental195": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-budget-allocator-in-unreal-engine",
+        "scope": "Own page text0–227, including displayed public API excerpt. Rest of console reference, linked API/media/plugin implementation not analyzed."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AnimatorCullingMode.html",
+        "scope": "Own technical text237–253 only; three culling modes. Linked enums/implementations unread."
+      }
+    ],
+    "unread": "All source body sections outside specified ranges and linked API/media/implementations; global corpus gate unchanged.",
+    "globalGatePromotion": false
+  },
+  "supplemental196": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/texture-asset-editor-in-unreal-engine",
+        "scope": "Own text0–141: toolbar/channels/zoom/background/face/slice/source information/mip concepts. Compression/details beyond141 and linked media/API unread."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/EditorGUI.DrawPreviewTexture.html",
+        "scope": "Own declaration/parameters/description234–297. Linked APIs/sample code/media not analyzed."
+      }
+    ],
+    "unread": "All source body sections outside specified ranges and linked API/media/implementations; global corpus gate unchanged.",
+    "globalGatePromotion": false
   }
 }

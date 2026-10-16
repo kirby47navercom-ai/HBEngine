@@ -457,3 +457,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 193: installEditor/설치 CLI가 deferred:true,reason:"running-install",active:[{pid,version,name}],bundleHash,source,destination,files를 반환하면 설치 완료/업데이트라고 보고하지 않는다. 사용 중인 이전 버전은 중단하지 않고 배포본을 준비한 채 종료 후 같은 설치를 재시도한다. active PID는 종료 권한이 아니다.
+
+
+194–196: ray program.fields는 선택적인0–9 정수 고유 배열이며 누락된 옛 자료는 모든 필드에 대응해요. 키/아틀라스 배치는 그대로예요. RuntimeLOD.reducePoseEvaluation은 기본true이고 공용 Components SetBool/문서 패치로 편집해요. animationGraph.poseEvaluation.trace가 planned-clips이면 active/weights는 계산한 포즈 전체가 아닌 현재 계획 방문/클립 정보예요. texture.view({path,settings:{channel,filter,zoom,pan,index},pixel:[x,y]})는 열린 텍스처의 사람 UI와 같은 보기/원본8비트 픽셀을 반환해요. source document revision/dirty를 바꾸지 않아요.

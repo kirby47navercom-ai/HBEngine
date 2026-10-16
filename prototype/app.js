@@ -1,3 +1,4 @@
+import {TextureViewer} from './texture-viewer.js';
 import {saveCapturedAudio,captureSaveSettings} from './audio-capture-save.js';
 import {PrefabEditor} from './prefab-editor.js';
 import {editPrefabStage,resolvePrefabStage} from './prefab-authoring.js';
@@ -546,7 +547,7 @@ async function openProjectAsset(file){
   if(assetSuffix[file.kind]){const data=await (await editorRequest(fileUrl(file.path))).json();if(file.kind==='blueprint')await blueprintWorkspace.prepare(file.path,data);assetDocs.open(file.path,file.kind,data);return activateDocument(file.path);}
   const id='asset:'+file.path;if(documents.has(id)){activateDocument(file.path);return;}const element=document.createElement('div');element.className='workspace-view asset-document';const entry={id,title:file.name,element,path:file.path};
   const toolbar=document.createElement('div');toolbar.className='document-toolbar';toolbar.textContent=file.path;element.append(toolbar);
-  if(file.kind==='texture'){const img=document.createElement('img');img.src=fileUrl(file.path);img.alt=file.name;element.append(img);}
+  if(file.kind==='texture'){entry.preview=new TextureViewer(element,{sources:[file.path],fileUrl,error:notify});entry.reload=()=>{entry.preview.sources=[entry.path];return entry.preview.load();};entry.dispose=()=>entry.preview.dispose();}
   else if(file.kind==='media'){const player=document.createElement(/\.(wav|mp3|ogg|flac)$/i.test(file.path)?'audio':'video');player.src=fileUrl(file.path);player.controls=true;player.onerror=()=>notify('브라우저 디코더가 이 파일을 재생하지 못해요.');element.append(player);}
   else if(file.kind==='model'){
     const place=document.createElement('button');place.textContent='장면에 배치';toolbar.append(place);place.onclick=()=>placeModel({...file,path:entry.path,name:entry.title}).catch(error=>notify(error.message));
@@ -1197,7 +1198,7 @@ $$('[data-resize]').forEach(handle=>{
 });
 let recoveryTimer;
 function editingSurface(){if(assetDocs.current?.kind==='materialinstance')return {...surface,...assetDocs.current.view.parentParameters?.surface,...assetDocs.current.data.surfaceOverrides};return ['material','materialfunction','materiallayer','materialblend'].includes(assetDocs.current?.kind)?assetDocs.current.data.surface:workspace==='scene'?(objects.find(o=>o.id===selected)?.materialSurface||surface):surface;}
-function dataEditorHooks(){return {before:remember,change:()=>{changed();if(assetDocs.current?.kind in textureAssetTypes)refreshMaterialAssets([assetDocs.current.path]);else if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,extract:openMaterialExtraction,preview:setMaterialPreview,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
+function dataEditorHooks(){return {fileUrl,before:remember,change:()=>{changed();if(assetDocs.current?.kind in textureAssetTypes)refreshMaterialAssets([assetDocs.current.path]);else if(assetDocs.current?.kind==='materialinstance')updateSurface();},error:notify,readAsset,extract:openMaterialExtraction,preview:setMaterialPreview,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)),captureSelection:()=>copySceneObjects(objects,sceneSelection),instantiate:doc=>placeAsset({path:doc.path,kind:doc.kind}).catch(error=>notify(error.message))};}
 async function placeAsset(file){
   if(file.kind==='model')return placeModel(file);if(file.kind==='blueprint')return placeBlueprint(file);
   if(running)throw Error('실행을 종료한 뒤 배치하세요.');
@@ -1271,7 +1272,7 @@ function ensureAssetPane(doc){
   if(documents.has(id))return id;
   if(assetPanes.has(doc.path))return assetPanes.get(doc.path).id;
   const element=document.createElement('div');element.className='workspace-view asset-document';
-  const pane={id,element};assetPanes.set(doc.path,pane);
+  const pane={id,element,dispose:()=>element.hbTextureViewer?.dispose()};assetPanes.set(doc.path,pane);
   dock.entries.set(id,{id,title:assetTypes[doc.kind]?.label||doc.kind,element,path:doc.path});
   if(doc.kind==='text'){const input=document.createElement('textarea');input.value=doc.data;input.ariaLabel=assetTitle(doc.path)+' 내용';input.onfocus=remember;input.oninput=()=>{doc.data=input.value;changed();};element.append(input);documents.set(id,element);}
   else if(doc.kind==='prefab'){
@@ -1630,6 +1631,7 @@ const editorCommandMethods={
   'modelimport.preview':async params=>{const {doc}=await automationDocument(params);if(doc.kind!=='modelimport')throw Error('모델 가져오기 문서가 필요해요.');const preview=assetPanes.get(doc.path)?.editor?.preview;if(!preview)throw Error('미리보기 창을 여세요.');await preview.ready;return {path:doc.path,...preview.snapshot()};},
   'modelimport.open':async({path})=>{automationEditable();if(typeof path!=='string'||!/\.(gltf|glb|obj|fbx)$/i.test(path))throw Error('원본 모델 경로가 필요해요.');const doc=await openModelImport({path});return {path:doc.path,kind:doc.kind,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'document.open':async({path})=>{automationEditable(true);if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},
+  'texture.view':params=>{const doc=assetDocs.items.get(params.path||assetDocs.active),viewer=doc&&dock.entries.get('asset:'+doc.path)?.element.hbTextureViewer;if(!viewer)throw Error('열린 텍스처 문서를 지정하세요.');if(params.settings!==undefined)viewer.set(params.settings);if(params.pixel!==undefined){if(!Array.isArray(params.pixel)||params.pixel.length!==2)throw Error('픽셀 좌표를 확인하세요.');viewer.pick(...params.pixel);}return viewer.snapshot();},
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.merge':async params=>{const {doc,revision}=await automationDocument(params,true),result=mergeAsset(params.base,doc.data,params.theirs,{resolutions:params.resolutions||{}});if(params.dryRun||!result.clean)return {...result,valid:validAsset(doc.kind,result.data),revision};const applied=await editorCommandMethods['document.patch']({...params,operations:[{op:'replace',path:'',value:result.data}]});return {...applied,conflicts:[],resolved:result.resolved};},
   'merge.open':params=>openAssetMerge(params.path,params),
