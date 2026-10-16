@@ -41,3 +41,5 @@ CPU 12개 군, 실제 C++/Rapier 충돌, 숨김 Win32 편집기의 사람 Apply/
 [Unity Prefab instance overrides](https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabInstanceOverrides.html)의 원본/인스턴스 우선순위와 루트 배치 예외, [Prefab variants](https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabVariants.html)의 상속·오버라이드 구역을 대조했다. HB는 자체 안정 ID와 세 방향 병합을 사용한다. 원문의 전체 연결 API·미디어까지 읽었다고 계산하지 않는다.
 
 [Unity 6000.0 Tilemap Renderer reference](https://docs.unity.com/en-us/engine/6000.0/manual/unity2d/tilemaps/reference/tilemap-renderer)의 모드·컬링 경계·정렬 속성 본문을 읽었다. HB의 청크/개별 정렬과 선택 근거이며 Unity SRP Batcher를 구현했다는 의미가 아니다. 예전 class-TilemapRenderer 주소의 접근 실패는 읽음으로 계산하지 않는다. 새 포털과 검색에서 발견한 7000.0 API/연결 문서는 corpus 확장 대기열로 등록한다. 전체 Unreal/Unity 본문/API 분석 gate는 올리지 않는다.
+
+사용자 설치 전환: `C:/Users/kirby/HBEngine/Versions/1f2d1495906edcbf`. 명세2343파일 SHA, 실제 설치 EXE의 사람 Apply/Revert·원자 Undo·AI dryRun·C++/타일 청크·Play 저작 속성 복원과 종료를 확인했다. 속성 창 캡처에 진단 오버라이드가 없었다. 사용자 프로필10385파일 SHA 보존, 바로가기2개/.hbproject 일치, 이전 설치200,756,532바이트 정리와 Versions1을 확인했다. [설치 근거](research/USER_INSTALL_168.json).

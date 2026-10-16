@@ -157,3 +157,5 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 168 — 프리팹 상속·2D 청크·C++ 전송 (2026-10-16)
 
 원본/변형/중첩의 배치 인스턴스 live 갱신·3방향/축별 병합·사람 Apply/Revert/충돌/원자 Undo·AI6명령·Play/타입 참조, 직교/등각 렌더/충돌 청크·변경 자원 재사용·숨김 무재생성, 불변 타일/UI의 C++ 전송 재사용을 연결했다. CPU12군·실제 C++/물리·Editor·D3D11 dev/release·WebGPU와 기존165/166/167·2D·전송/코어 회귀 통과. 16청크 중 한 칸 수정에 기하1개/충돌1개 재생성, 기하15개 유지. 전체 기능/PC120/폰 성능의 완료로 승격하지 않는다. 상세 ENGINE_WORK_168.md/research/ENGINE_WORK_168.json, 설치는 research/USER_INSTALL_168.json에 후속 기록한다.
+
+168 설치 확인: 1f2d1495906edcbf·2343명세파일 SHA·격리 설치 EXE/사람 Apply/Revert/AI/C++/Play 복원 통과. 프로필10385파일 보존·Versions1·이전 설치200756532B 정리. 구현 f6654d2, 영수증 research/USER_INSTALL_168.json.

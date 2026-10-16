@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "f6654d2407b4758d9b76553c1b657e09aa51d04b",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\1f2d1495906edcbf\\HBEngine.exe",
+  "bundleHash": "1f2d1495906edcbfbb724572be1f62ed1ae6e77feadb638fbb1e7496f5b58ec4",
+  "files": 2343,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2353,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468",
+        "bytes": 200756532,
+        "manifestSHA256": "2d7ecb2b262ddd3672aad81c2a59e3c04478a7680d61355567240495a51679ff"
+      }
+    ],
+    "bytes": 200756532,
+    "failures": [],
+    "date": "2026-10-16T03:32:22.9264385Z",
+    "skipped": [],
+    "preserved": [
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp",
+        "bytes": 953436
+      },
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\27ca4525cebc9468\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "bytes": 64
+      }
+    ],
+    "remaining": [
+      "1f2d1495906edcbf"
+    ]
+  },
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "work": "native/build/engine-168-install-G8N32G",
+  "versions": [
+    "1f2d1495906edcbf"
+  ],
+  "manifestVerifiedFiles": 2343,
+  "profilePreservedAfterSmoke": true,
+  "profileInventorySHA256": "c182443be74f7bf957937a01a646165ec765b0e2969307a211ceecb7c7340aac",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedSmoke": {
+    "path": "native/build/engine-168-installed-IXgVJC/acceptance.json",
+    "sha256": "dc5dc6c0e538877e52721c73659c401180cf26012ba0cf59a91229b25751be26",
+    "passed": true,
+    "prefabDryRun": true,
+    "humanApplyRevert": true,
+    "atomicUndo": true,
+    "liveInheritance": true,
+    "cpp": {
+      "after": -1,
+      "before": 0,
+      "inheritedY": 6,
+      "ticks": 202
+    },
+    "unchangedGeometries": 15,
+    "sourcePreserved": true,
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "capture": {
+    "path": "native/build/engine-168-installed-IXgVJC/prefab-inspector.png",
+    "sha256": "399234bf442431ff9420ff516eb914197d2d59c2111722cd5d681d879f2db5ef",
+    "visuallyInspected": true,
+    "transientOverrideRows": 0
+  }
+}

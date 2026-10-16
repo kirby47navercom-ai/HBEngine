@@ -185,6 +185,32 @@
           "signal": null
         }
       }
+    },
+    "installed": {
+      "path": "native/build/engine-168-installed-IXgVJC/acceptance.json",
+      "sha256": "dc5dc6c0e538877e52721c73659c401180cf26012ba0cf59a91229b25751be26",
+      "summary": {
+        "path": "native/build/engine-168-installed-IXgVJC/acceptance.json",
+        "sha256": "dc5dc6c0e538877e52721c73659c401180cf26012ba0cf59a91229b25751be26",
+        "passed": true,
+        "prefabDryRun": true,
+        "humanApplyRevert": true,
+        "atomicUndo": true,
+        "liveInheritance": true,
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 6,
+          "ticks": 202
+        },
+        "unchangedGeometries": 15,
+        "sourcePreserved": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "initialPerformance": {
@@ -246,7 +272,9 @@
   "testCorrections": [
     "프리팹 복사본의 중복 방지 이름은 이름 override로 인정",
     "숨김 EXE 닫기 전에 fixture 문서 저장 (실제 미저장 보호 유지)",
-    "WebGPU에는 D3D11 presents 대신 실제 backend/calls/errors 검사"
+    "WebGPU에는 D3D11 presents 대신 실제 backend/calls/errors 검사",
+    "설치 EXE의 원본 저장 직후 기존 disk poll 잠금과 document.open 경합: EDITOR_BUSY 전제조건 거부에만 최대5초 재시도, revision 충돌/다른 오류는 그대로 실패",
+    "비동기 머테리얼 준비가 생성하는 gameplayDebug.morphs는 저작 속성 보존 비교에서 제외; 변환/컴포넌트/프리팹 연결/나머지 모든 필드는 계속 엄격 대조하며 inspector 변경 목록에 진단 노출 없음도 검사"
   ],
   "lightweight": {
     "newDependencies": 0,
@@ -264,5 +292,10 @@
     "notes": "Changed map indexing/validation and physics synchronization still have costs. Instance baseline metadata costs remain."
   },
   "remainingLedger": "docs/research/ENGINE_STATUS.json",
-  "installation": "docs/research/USER_INSTALL_168.json"
+  "installation": "docs/research/USER_INSTALL_168.json",
+  "storage": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
 }
