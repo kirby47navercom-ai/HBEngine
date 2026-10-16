@@ -110,7 +110,7 @@ const server=http.createServer(async(req,res)=>{try{
   const pathname=decodeURIComponent(url.pathname);
   if(desktop&&!project&&pathname==='/prototype/index.html')return res.writeHead(302,{Location:'/'}).end();
   const file=pathname==='/'?path.join(root,desktop&&!project?'prototype/project-hub.html':'prototype/index.html'):path.resolve(root,'.'+pathname);
-  if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/(three\/|@dimforge\/rapier[23]d-compat\/))/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
+  if(!file.startsWith(root+path.sep)||!/^\/(prototype\/|docs\/|native\/include\/|node_modules\/(three\/|xatlas-wasm\/|@dimforge\/rapier[23]d-compat\/))/.test(pathname)&&pathname!=='/'||pathname.includes('/../')||pathname.includes('/native/build/'))return json(res,{error:'파일 범위 밖 요청'},403);
   const stat=await fs.promises.stat(file);if(!stat.isFile())return res.writeHead(404).end();stream(req,res,file,stat.size);
 }catch(error){json(res,{error:error.message},error.status||(error.code==='ENOENT'?404:400));}});
 const nativeChannel=attachNativeChannel(server,{origin:()=>"http://127.0.0.1:"+port,scope:()=>{const owner=project,host=native;checkOwner(owner);return async(data,query)=>{checkOwner(owner);const result=await host.call(data.token,data.request,undefined,query);checkOwner(owner);return result;};}});

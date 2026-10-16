@@ -21,14 +21,18 @@ function stitch(data,faces){
  if(!joined)throw Error('선택한 섬 사이에 연결 가능한 경계가 없어요.');
 }
 export function meshUVSelection(data,faces,{wholeIsland=true}={}){const selected=new Set(faces);return wholeIsland?meshUVIslands(data).filter(island=>island.some(f=>selected.has(f))).flat():[...selected];}
-function detach(data,faces){const selected=new Set(faces),outside=new Set(),remap=new Map();for(let f=0;f<data.indices.length/3;f++)if(!selected.has(f))for(let k=0;k<3;k++)outside.add(data.indices[f*3+k]);for(const f of selected)for(let k=0;k<3;k++){const i=f*3+k,id=data.indices[i];if(!outside.has(id))continue;if(!remap.has(id)){remap.set(id,data.vertices.length);for(const key of ['vertices','uvs','normals','colors'])if(data[key])data[key].push([...data[key][id]]);}data.indices[i]=remap.get(id);}}
+function detach(data,faces){const selected=new Set(faces),outside=new Set(),remap=new Map();for(let f=0;f<data.indices.length/3;f++)if(!selected.has(f))for(let k=0;k<3;k++)outside.add(data.indices[f*3+k]);for(const f of selected)for(let k=0;k<3;k++){const i=f*3+k,id=data.indices[i];if(!outside.has(id))continue;if(!remap.has(id)){remap.set(id,data.vertices.length);for(const key of ['vertices','uvs','uvs1','normals','colors'])if(data[key])data[key].push([...data[key][id]]);}data.indices[i]=remap.get(id);}}
 function chart(data,faces){const ids=[...new Set(faces.flatMap(f=>data.indices.slice(f*3,f*3+3)))],min=[Infinity,Infinity],max=[-Infinity,-Infinity];for(const id of ids)for(let k=0;k<2;k++){min[k]=Math.min(min[k],data.uvs[id][k]);max[k]=Math.max(max[k],data.uvs[id][k]);}return {ids,min,size:max.map((v,k)=>Math.max(1e-8,v-min[k]))};}
 function pack(data,faces,padding){
   if(!Number.isFinite(padding)||padding<0||padding>=.5)throw Error('UV 여백은 0 이상 0.5 미만이에요.');const selected=new Set(faces),charts=meshUVIslands(data).filter(g=>g.some(f=>selected.has(f))).map(g=>chart(data,g));charts.sort((a,b)=>b.size[1]-a.size[1]||b.size[0]-a.size[0]);
   const fit=(scale,save=false)=>{let x=padding,y=padding,row=0;for(const c of charts){const w=c.size[0]*scale,h=c.size[1]*scale;if(w+2*padding>1||h+2*padding>1)return false;if(x+w+padding>1){x=padding;y+=row+padding;row=0;}if(y+h+padding>1)return false;if(save)c.at=[x,y];x+=w+padding;row=Math.max(row,h);}return true;};
   if(!charts.length)return;if(!fit(0))throw Error('UV 섬 수에 비해 여백이 커요.');let low=0,high=1/charts.reduce((m,c)=>Math.max(m,...c.size),1e-8);for(let i=0;i<28;i++){const mid=(low+high)/2;if(fit(mid))low=mid;else high=mid;}fit(low,true);for(const c of charts)for(const id of c.ids)data.uvs[id]=data.uvs[id].map((v,k)=>c.at[k]+(v-c.min[k])*low);
 }
-export function editMeshUV(data,{operation,faces=[],wholeIsland=true,offset=[0,0],scale=[1,1],rotation=0,padding=.02}={}){
+export function editMeshUV(data,{operation,faces=[],wholeIsland=true,offset=[0,0],scale=[1,1],rotation=0,padding=.02,channel=0}={}){
+  if(![0,1].includes(channel))throw Error('UV 채널은 0 또는 1이에요.');
+  if(operation==='uvCopy'){const next=structuredClone(data);next.uvs1=structuredClone(data.uvs);return next;}
+  if(operation==='uvRemove'){if(channel!==1)throw Error('기본 UV 채널은 삭제할 수 없어요.');const next=structuredClone(data);delete next.uvs1;return next;}
+  if(channel===1){if(!data.uvs1)throw Error('UV 1 채널을 먼저 만드세요.');const next=editMeshUV({...data,uvs:data.uvs1,uvs1:data.uvs},{operation,faces,wholeIsland,offset,scale,rotation,padding,channel:0});return next&&{...next,uvs:next.uvs1,uvs1:next.uvs};}
   if(!['uvCut','uvTransform','uvUnwrap','uvPackIslands','uvStitch'].includes(operation))return null;
   if(!Array.isArray(faces)||faces.some(f=>!Number.isInteger(f)||f<0||f>=data.indices.length/3)||typeof wholeIsland!=='boolean')throw Error('UV 면 선택을 확인하세요.');
   const selected=operation==='uvCut'?[...new Set(faces)]:faces.length?meshUVSelection(data,faces,{wholeIsland}):Array.from({length:data.indices.length/3},(_,i)=>i);if(!selected.length)throw Error('UV 면을 선택하세요.');const next=structuredClone(data);detach(next,selected);

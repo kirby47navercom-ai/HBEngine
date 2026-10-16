@@ -178,6 +178,7 @@
     "@dimforge/rapier2d-compat": "0.21.0",
     "@dimforge/rapier3d-compat": "0.21.0",
     "three": "0.180.0",
-    "ws": "8.22.0"
+    "ws": "8.22.0",
+    "xatlas-wasm": "0.1.3"
   }
 }

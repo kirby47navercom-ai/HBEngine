@@ -55,7 +55,7 @@ export function packedGeometry(geometry){
   if(!p||p.itemSize!==3)throw Error('DirectX 메시 위치 자료를 확인하세요.');
   const vertices=[];for(let i=0;i<p.count;i++)vertices.push(p.getX(i),p.getY(i),p.getZ(i),n?.getX(i)??0,n?.getY(i)??0,n?.getZ(i)??1,u?.getX(i)??0,u?.getY(i)??0,geometry.attributes.extrude?.getX(i)??c?.getX(i)??1,geometry.attributes.turn?.getX(i)??c?.getY(i)??1,geometry.attributes.weight?.getX(i)??c?.getZ(i)??1,c?.itemSize===4?c.getW(i):1);
   const indices=geometry.index?Array.from({length:geometry.index.count},(_,i)=>geometry.index.getX(i)):Array.from({length:p.count},(_,i)=>i);
-  if(indices.length%3||vertices.some(v=>!Number.isFinite(v))||indices.some(i=>!Number.isInteger(i)||i<0||i>=p.count))throw Error('DirectX 삼각형 자료를 확인하세요.');return {vertices,indices};
+  if(indices.length%3||vertices.some(v=>!Number.isFinite(v))||indices.some(i=>!Number.isInteger(i)||i<0||i>=p.count))throw Error('DirectX 삼각형 자료를 확인하세요.');const secondary=geometry.attributes.uv1;if(secondary&&(secondary.itemSize!==2||secondary.count!==p.count))throw Error('DirectX UV 1 개수를 확인하세요.');const uv1=secondary?Array.from({length:p.count},(_,i)=>[secondary.getX(i),secondary.getY(i)]).flat():null;if(uv1?.some(v=>!Number.isFinite(v)))throw Error('DirectX UV 1 좌표를 확인하세요.');return {vertices,indices,...(uv1?{uv1}:{})};
 }
 export function packedInstances(node){
   const shots=node.geometry?.attributes.shotPosition,projectile=node.material?.userData.hbNativeProjectile,capacity=node.isInstancedMesh?node.instanceMatrix.count:shots?.count,count=node.isInstancedMesh?node.count:node.geometry.instanceCount;

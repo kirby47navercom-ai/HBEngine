@@ -20,6 +20,8 @@ import {prefabInstanceMarkup as renderPrefabInstance} from './prefab-instance-ui
 import {adoptPrefabChildren,clearAppliedPrefabOverride,createPrefabInstance,prefabRootFor,prefabInstanceChanges,refreshPrefabInstance,revertPrefabProperty,applyPrefabProperty,unpackPrefabInstance,revertAllPrefabProperties} from './prefab-instances.js';
 import {prefabApplyPlan} from './prefab-apply.js';
 import {sceneWorldMatrix} from './scene-runtime.js';
+import {inspectMeshUV} from './mesh-uv-inspection.js';
+import {generateMeshAtlas} from './mesh-atlas.js';
 import {bakeNavigationMesh} from './navigation-mesh.js';
 import {resolveAutoTiles} from './auto-tiles.js';
 import {resolvePrefab,setPrefabOverride,revertPrefabOverride} from './prefab-variants.js';
@@ -1656,8 +1658,10 @@ const editorCommandMethods={
   'prefab.revert':params=>automationAuthoringEdit(params,'prefab',d=>{revertPrefabOverride(d,params.object,params.property);return {overrides:d.overrides.length};}),
   'tilemap.rules.resolve':params=>automationAuthoringEdit(params,'tilemap',d=>{Object.assign(d,resolveAutoTiles(d,params.settings));return {layers:d.layers.length};}),
   'navigation.bake':async params=>{const source=await readAsset(params.source);return automationAuthoringEdit(params,'navmesh',d=>{const next=bakeNavigationMesh(params.source.endsWith('.hbterrain.json')?terrainMesh(source):source,{name:d.name,maxSlope:params.maxSlope??d.maxSlope});Object.assign(d,next);return {triangles:d.indices.length/3};});},
-  'world.mesh.uv.view':async params=>{const {doc}=await automationDocument(params,!!params.expectedRevision);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');const editor=assetPanes.get(doc.path)?.editor;if(!editor)throw Error('메시 편집기를 열어 주세요.');const patch=Object.fromEntries(['open','center','zoom','faces','fit'].filter(k=>params[k]!==undefined).map(k=>[k,params[k]]));return Object.keys(patch).length?editor.setUVView(patch):editor.uvState();},
-  'world.mesh.edit':params=>automationAuthoringEdit(params,'mesh',d=>{Object.assign(d,editMesh(d,params.settings));return {vertices:d.vertices.length,triangles:d.indices.length/3};}),
+  'world.mesh.uv.view':async params=>{const {doc}=await automationDocument(params,!!params.expectedRevision);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');const editor=assetPanes.get(doc.path)?.editor;if(!editor)throw Error('메시 편집기를 열어 주세요.');const patch=Object.fromEntries(['open','center','zoom','faces','fit','channel'].filter(k=>params[k]!==undefined).map(k=>[k,params[k]]));return Object.keys(patch).length?editor.setUVView(patch):editor.uvState();},
+  'world.mesh.uv.inspect':async params=>{const {doc}=await automationDocument(params,!!params.expectedRevision);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');return inspectMeshUV(doc.data,params.settings);},
+  'world.mesh.uv.generate':async params=>{const {doc}=await automationDocument(params,true);if(doc.kind!=='mesh')throw Error('메시 문서가 필요해요.');const revision=await documentRevision(doc.data),result=await generateMeshAtlas(clone(doc.data),params.settings||{});return automationAuthoringEdit({...params,expectedRevision:revision},'mesh',d=>{for(const key of Object.keys(d))delete d[key];Object.assign(d,result.data);return result.layout;});},
+  'world.mesh.edit':params=>automationAuthoringEdit(params,'mesh',d=>{const next=editMesh(d,params.settings);for(const key of Object.keys(d))delete d[key];Object.assign(d,next);return {vertices:d.vertices.length,triangles:d.indices.length/3};}),
   'world.terrain.brush':params=>automationAuthoringEdit(params,'terrain',d=>{Object.assign(d,terrainBrush(d,params.settings));return {samples:d.heights.length};}),
   'world.foliage.scatter':async params=>{await automationDocument(params,true);const terrain=params.terrain?await readAsset(params.terrain):undefined;return automationAuthoringEdit(params,'foliage',d=>{Object.assign(d,scatterFoliage(d,{...params.settings,terrain}));return {instances:d.instances.length};});},
   'world.foliage.edit':params=>automationAuthoringEdit(params,'foliage',d=>{Object.assign(d,editFoliage(d,params.settings));return {instances:d.instances.length};}),
