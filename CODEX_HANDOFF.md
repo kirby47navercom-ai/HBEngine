@@ -1,3 +1,15 @@
+# 현재 인계 — 194–199 실행 검증 완료·최신 설치 전환
+
+정본 docs/research/ENGINE_STATUS.json:78행/verified39 partial34 unimplemented2 unverified3, 전체 분모·완료율 미확정.194 필드별 ray/legacy·3백엔드 픽셀/GL 링크,195 포즈 계산 생략,196 텍스처 채널/픽셀/슬라이스,197 분산/지연 보간,198 안전 런타임 정리,199 NavMesh 투영 BVH/진단. 상세 ENGINE_WORK_194–199.md/JSON.
+
+197 실제 editorMX0L7i·D3DZttJaa/GPU17rUWm,199 editorhn1KLx·D3DVskozv/GPUSWK128 PASS. 기본 플레이어30FPS/격리 프로필·경로·오류0/종료0.198 전역 동일 Node41개/논리3.759GB 정리·C: 관찰+3.755GB·소스/프로젝트/근거 보존. 전역 정리 중 새 빌드/검사 시작 금지(작성 중 산출물 삭제 경쟁 방지).
+
+현재 사용자 설치193 3a617ac1aed4378f/Versions1,196 갱신은 사용자 Node 사용 중 사전 보류됨. dist196 준비본(e0c382d)은 현재 최신197–199로 동기화해야 함. 새 install199를 만들어 한 번 실행하고 실제 USER_INSTALL_199 영수증과 설치 EXE 검사를 완료할 것. install192/193/196 및 finish193/docs194-196 일회용 재실행 금지. 사용 중인 경로/프로세스는 중단·이동·수정 금지. source만 작업하고 사용자 프로필은 검사에 쓰지 말 것.
+
+새 source 변경이 없으므로 같은 검사 반복 금지. 후속 분야는 정본 remaining 전체에서 계속 구현(특정 묶음/사용자 열거만으로 축소 금지). 이후는 과거 경과 기록.
+
+---
+
 # 190–193 설치/영수증 완료 — 194 복잡 그래프 초기 컴파일 조사 계속
 
 설치 C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe. source d0b07ecdffa1399bd554e25d317411acc74f4a15(bundle3a617ac1aed4378ff16cd81de37dd67acdfbe6c5536b6ca2acb9c3f47bb7d673)/2560manifest파일·실행후전부SHA동일·Versions1/링크2/.hbproject. User프로필10385SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26전후불변. finish193.mjs 실행완료재실행금지. 이전189설치+캐시439132589bytes정리. UserInstall193/Work190191192193영수증연결완료. 다음receipt커밋push부터.
@@ -226,3 +238,5 @@ exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도�
 198: test-artifacts/remove-test-cache에 격리 Engine 동일 Node 사본 정리 추가. 실제자식/전체Engine보호·계획뒤수정·원본SHA·소스/명세보존 PASS, artifact-node-198-wgRLv8. 하드링크검사논리91.7MB를실제회수로표현금지. 사용자실행중이므로전역대량정리보류. 준비196dist는e0c382d동결·197/198아직설치미반영. 차후유휴시197실제창/D3D/GPU를묶어검사하고최신배포/설치Versions1전환.
 
 199source/CPU6+16711/16923 완료·실제검사대기. NavMesh.project 기존buildGeometryBVH/고정기하, 쿼리필터 live·동률원래ID·거리exact·재진입scratch격리.2048tri20질의40960→160후보동일결과. runtime.navigation 메타/app단어와player.inspect meshes진단. 새파일navigation-projection.js. --indexed --3d [--webgpu]191window준비(800tri)·아직미실행.197실제보간/196업데이트/전역저장공간정리도여전히user193프로세스사용중대기.
+
+197/199 실제 검사통과:197editorMX0L7i(DPI기본/사람2checkbox·Undo),197D3DZttJaa/WebGPU17rUWm(색픽셀·C++전환/보간),199editorhn1KLx(runtime.navigation/C++),199D3DVskozv/WebGPUSWK128(800tri4도착/거리/최소분리). 프로필독립·플레이어30FPS·비성능스트레스. 196불변dist를최신197–199소스/도구/문서로동기화하고새설치199를마쳐야함. install196재실행금지.

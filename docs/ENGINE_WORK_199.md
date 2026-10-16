@@ -10,4 +10,4 @@ CPU6군에서 XY/XZ/경사면300질의, 거리/영역/이동 장애물·동률·
 
 본문 대조: [Unity NavMesh.SamplePosition](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AI.NavMesh.SamplePosition.html)234–282/321–368의 최대 거리·영역 필터·다층/큰 반경 비용, [Three Triangle](https://threejs.org/docs/pages/Triangle.html)0–41의 결과 벡터 소유. HB의 기존 투영 거리 규칙을 보존하는 데 사용했다. 동적 carving/비평면 정밀 funnel/ORCA 경계 제약은 별도 잔여다.
 
-사용자 설치 런타임이 사용 중이어서 실제 창/C++ 브리지/패키징 검사는 대기한다. `check-navigation-191-window.mjs --indexed --3d`와 `--webgpu`용800삼각형 제작 표본을 준비했다. 새 실행 근거·사용자 설치 반영으로 계산하지 않는다.
+이후 낮은 부하의 격리 기본 표본에서 실제 편집기 C++/runtime.navigation과 DirectX/WebGPU 게임을 확인했다.800삼각형에서4에이전트가 도착했고 각 백엔드의8투영 질의·최근25후보·최소 분리/공용 속도 조회를 검증했다. 두 플레이어는30FPS 표본이며 성능 스트레스/FPS 보장과 구별한다. 사용자 설치 반영은 별도 영수증으로 확인한다.

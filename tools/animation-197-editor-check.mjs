@@ -1,0 +1,5 @@
+import assert from'node:assert/strict';
+export async function checkAnimation197Editor({evaluate,cdp,call,path}){
+ for(const field of['interpolatePose','staggerAnimation']){const selector='[data-component-field='+field+']',p=await evaluate('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');for(let p=e.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS")p.open=true;e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2};})()');for(const type of['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...p,button:'left',clickCount:1});let doc=await call('document.get',{path});assert.equal(doc.data.objects.find(o=>o.id==='Bones').components.find(c=>c.id==='lod').properties[field],false);await call('editor.undo',{path,expectedRevision:doc.revision});doc=await call('document.get',{path});assert.equal(doc.data.objects.find(o=>o.id==='Bones').components.find(c=>c.id==='lod').properties[field],true);}
+ return{humanInterpolation:true,humanStaggering:true,settingsUndo:true};
+}

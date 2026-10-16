@@ -32,10 +32,25 @@
     }
   },
   "existingRetentionRegression": "node tools/check-test-artifacts.mjs passed: outside-path rejection, source/evidence/build-manifest preservation.",
-  "bulkCleanupDeferred": true,
-  "bulkCleanupReason": "Installed user Node/worker active; avoid large disk scans/hashes during user work.",
+  "bulkCleanupDeferred": false,
   "newDependencies": 0,
   "alwaysOnServices": 0,
   "userProcessTermination": false,
-  "installationPending": true
+  "installationPending": true,
+  "bulkCleanup": {
+    "path": "native/build/storage-198-final.json",
+    "sha256": "cb8c8d587b9efac864eb9fc58c5db6f2da2a3398af1908a385884f404d8f2ddc",
+    "result": {
+      "failures": [],
+      "freeAfter": 463056703488,
+      "freeBefore": 459301703680,
+      "deleted": 41,
+      "date": "2026-10-16T16:56:45.0040824Z",
+      "files": 41,
+      "bytes": 3759470728,
+      "skipped": [],
+      "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792169792235-2d38ac85-bfbd-43df-ac7e-cc33a3c3a554"
+    },
+    "scope": "41 identical private copied Node executable references; source/project/reports retained. Logical removed bytes and C drive observation are separate."
+  }
 }

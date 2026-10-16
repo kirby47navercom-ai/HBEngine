@@ -59,19 +59,408 @@
         "alwaysOnTimers": 0,
         "executionVerification": "CPU only while installed user runtime is in use; hidden editor/player grouped checks pending."
       }
+    },
+    "editor": {
+      "path": "native/build/animation-197-editor-MX0L7i/acceptance.json",
+      "sha256": "6307b663b519ff93413275ea42892b99963bccce88395c053faee2754ccdd933",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanInspector": true,
+        "undo": true,
+        "saved": true,
+        "humanInterpolation": true,
+        "humanStaggering": true,
+        "settingsUndo": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3d": {
+      "path": "native/build/animation-197-player-ZttJaa/acceptance.json",
+      "sha256": "ceb1290978aafec6c2b1171d1287d89ffbd60cb8a82c6f661bffa3c2a26a02ef",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-197-player-ZttJaa\\Animation195-1792169611074\\Builds\\windows\\2026-10-16T16-53-31-162Z-e8f2c1f5\\HBGame_0adf16501cc54abda7734a9c398f6b4a.exe",
+        "backend": "D3D11",
+        "interpolation": true,
+        "cppToggle": true,
+        "renderedPixel": [
+          149,
+          223,
+          232,
+          255
+        ],
+        "first": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.43370000001788134,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "b22dbbd8-c297-462a-8ec0-dae49bac1408",
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb"
+          ],
+          "weights": {
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb": 1
+          },
+          "clips": [
+            {
+              "id": "a176ab2d-7669-438d-8bf3-2234e8658dfb",
+              "time": 0.43370000001788134
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 4,
+            "skipped": 10,
+            "lastEvaluatedFrame": 11,
+            "reduced": true,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "full": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 1.1356000000238418,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "b22dbbd8-c297-462a-8ec0-dae49bac1408",
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb"
+          ],
+          "weights": {
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb": 1
+          },
+          "clips": [
+            {
+              "id": "a176ab2d-7669-438d-8bf3-2234e8658dfb",
+              "time": 1.1356000000238418
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 12,
+            "skipped": 10,
+            "lastEvaluatedFrame": 22,
+            "reduced": false,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "evaluated-pose"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "final": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 1.3677000000178812,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "b22dbbd8-c297-462a-8ec0-dae49bac1408",
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb"
+          ],
+          "weights": {
+            "a176ab2d-7669-438d-8bf3-2234e8658dfb": 1
+          },
+          "clips": [
+            {
+              "id": "a176ab2d-7669-438d-8bf3-2234e8658dfb",
+              "time": 1.3677000000178812
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 13,
+            "skipped": 16,
+            "lastEvaluatedFrame": 28,
+            "reduced": true,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/animation-197-player-17rUWm/acceptance.json",
+      "sha256": "72f59ba24dd64966749792b0221f9e0aae44436cdb11e8e4a488ac2f9c248b38",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\animation-197-player-17rUWm\\Animation195-1792169662036\\Builds\\windows\\2026-10-16T16-54-22-121Z-2ccdd8cd\\HBGame_e80aee6d7ea6408ea16c262591305f53.exe",
+        "backend": "WebGPU",
+        "interpolation": true,
+        "cppToggle": true,
+        "renderedPixel": [
+          170,
+          217,
+          226,
+          255
+        ],
+        "first": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.4349000000059604,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "2fe33eb1-67ce-4125-87fc-246faf8cba88",
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be"
+          ],
+          "weights": {
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be": 1
+          },
+          "clips": [
+            {
+              "id": "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be",
+              "time": 0.4349000000059604
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 4,
+            "skipped": 10,
+            "lastEvaluatedFrame": 11,
+            "reduced": true,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "planned-clips"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "full": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.7350999999940395,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "2fe33eb1-67ce-4125-87fc-246faf8cba88",
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be"
+          ],
+          "weights": {
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be": 1
+          },
+          "clips": [
+            {
+              "id": "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be",
+              "time": 0.7350999999940395
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 11,
+            "skipped": 12,
+            "lastEvaluatedFrame": 23,
+            "reduced": false,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "evaluated-pose"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "final": {
+          "asset": "Assets/AG_Bones.hbanimgraph.json",
+          "time": 0.9409000000059605,
+          "paused": false,
+          "ik": [],
+          "retarget": [],
+          "rootMotion": {
+            "mode": "none",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ]
+          },
+          "curves": {},
+          "parameters": {
+            "Speed": 0,
+            "Moving": false
+          },
+          "active": [
+            "2fe33eb1-67ce-4125-87fc-246faf8cba88",
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be"
+          ],
+          "weights": {
+            "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be": 1
+          },
+          "clips": [
+            {
+              "id": "2dfbf44b-97e5-4ebe-a9f1-0176c90ed8be",
+              "time": 0.9409000000059605
+            }
+          ],
+          "machines": [],
+          "selections": [],
+          "syncGroups": [],
+          "notifyStates": [],
+          "blendSpaces": [],
+          "poseEvaluation": {
+            "evaluated": 12,
+            "skipped": 17,
+            "lastEvaluatedFrame": 29,
+            "reduced": false,
+            "interpolationBudgetLimited": false,
+            "interpolated": true,
+            "interpolationDelay": 0.2,
+            "trace": "evaluated-pose"
+          },
+          "bindings": 1,
+          "poseBytes": 120
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "researchReuse": "ENGINE_WORK_195.json bodyRead ranges, no new body/API promotion",
-  "verificationPending": [
-    "node tools/check-animation-195-window.mjs --interpolate --editor",
-    "node tools/check-animation-195-window.mjs --interpolate",
-    "node tools/check-animation-195-window.mjs --interpolate --webgpu"
-  ],
-  "verificationDeferredReason": "Installed user193 Node/worker processes active; avoid heavy private builds/GPU tests during user work.",
   "installationPending": true,
   "limits": [
     "Opt-in visual interpolation delays one update interval; no prediction/root/physics/curve/state machine/retarget change.",
     "Stable phase distributes periodic work but mandatory first pose is still evaluated for all actors.",
     "CPU schedule counts and small bone correctness are not sustained game FPS, mobile performance or general animation CPU-ms budgeting."
-  ]
+  ],
+  "executionVerified": true,
+  "executionProfile": "Private basic fixtures;30FPS players, no sustained stress/whole-game FPS claim"
 }

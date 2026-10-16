@@ -211,6 +211,125 @@
           }
         ]
       }
+    },
+    "editor": {
+      "path": "native/build/navigation-199-editor-hn1KLx/acceptance.json",
+      "sha256": "2082358193462d1604d6d39877f5264cdd7e9b06b9edf874b798a2ca933c7cb5",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanInspector": true,
+        "zeroNeighborBudget": true,
+        "undo": true,
+        "saved": true,
+        "blueprintRendered": true,
+        "editorProjection": {
+          "paths": 4,
+          "planes": {
+            "XZ": {
+              "agents": 4,
+              "indexCapacity": 4,
+              "scratchCapacity": 4,
+              "bytes": 656
+            }
+          },
+          "meshes": [
+            {
+              "actor": "Grid",
+              "queries": 8,
+              "lastNodes": 19,
+              "lastCandidates": 25,
+              "lastTriangles": 25,
+              "totalTriangles": 150,
+              "indexNodes": 255,
+              "indexedTriangles": 800
+            }
+          ]
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3d": {
+      "path": "native/build/navigation-199-player-Vskozv/acceptance.json",
+      "sha256": "3da99ec7e61a1b2ef5ebd651ec6a5500055f74a71ca150b4be18d700fc4c1300",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\navigation-199-player-Vskozv\\Crowd191-1792169611070\\Builds\\windows\\2026-10-16T16-53-31-158Z-12a6c158\\HBGame_885bbf84ff04483c820e124c4200ba2c.exe",
+        "backend": "D3D11",
+        "plane": "XZ",
+        "nativeSetup": true,
+        "blueprintSetup": true,
+        "allArrived": true,
+        "minimumSeparation": 0.600280225276947,
+        "nativeSteeringRead": 2.4523491859436035,
+        "nativePreferredRead": 2.5,
+        "finalTime": 3.5672998428344727,
+        "navigation": {
+          "paths": 4,
+          "planes": {},
+          "meshes": [
+            {
+              "actor": "Grid",
+              "queries": 8,
+              "lastNodes": 19,
+              "lastCandidates": 25,
+              "lastTriangles": 25,
+              "totalTriangles": 150,
+              "indexNodes": 255,
+              "indexedTriangles": 800
+            }
+          ]
+        },
+        "indexedProjection": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/navigation-199-player-SWK128/acceptance.json",
+      "sha256": "6f607e7cf96ce450d93d285aa739ace892fcb6ffade3f64364475793fdd3be96",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\navigation-199-player-SWK128\\Crowd191-1792169662036\\Builds\\windows\\2026-10-16T16-54-22-120Z-f9f2bef0\\HBGame_c43cdcf5a5664cf5a87ae28d034fcc5d.exe",
+        "backend": "WebGPU",
+        "plane": "XZ",
+        "nativeSetup": true,
+        "blueprintSetup": true,
+        "allArrived": true,
+        "minimumSeparation": 0.6023726463317871,
+        "nativeSteeringRead": 2.4378256797790527,
+        "nativePreferredRead": 2.5,
+        "finalTime": 3.5341997146606445,
+        "navigation": {
+          "paths": 4,
+          "planes": {},
+          "meshes": [
+            {
+              "actor": "Grid",
+              "queries": 8,
+              "lastNodes": 19,
+              "lastCandidates": 25,
+              "lastTriangles": 25,
+              "totalTriangles": 150,
+              "indexNodes": 255,
+              "indexedTriangles": 800
+            }
+          ]
+        },
+        "indexedProjection": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "bodyRead": [
@@ -223,15 +342,12 @@
       "scope": "Own text0–41: Triangle constructor/corner references/closestPointToPoint target ownership. Remaining methods/source/media unread."
     }
   ],
-  "verificationPending": [
-    "node tools/check-navigation-191-window.mjs --indexed --3d",
-    "node tools/check-navigation-191-window.mjs --indexed --3d --webgpu",
-    "runtime.navigation actual editor endpoint"
-  ],
   "installationPending": true,
   "limits": [
     "Compiled fixed navigation geometry only; recreate the NavigationMesh after editing vertices/centers/portals. Live area/cost/obstacle query filters preserve their existing behavior.",
     "Nearest-point search is not NavMesh carving, edge erosion, nonplanar funnel or ORCA boundary constraints.",
     "Index construction/storage has a one-time cost. CPU local candidate count is not full game FPS or a mobile benchmark."
-  ]
+  ],
+  "executionVerified": true,
+  "executionProfile": "Private basic fixtures;30FPS players, no sustained stress/whole-game FPS claim"
 }
