@@ -20,3 +20,6 @@ Lookup is a CPU world scan; the single-member JS path does not allocate an all-a
 Backend disposal stops queued native jobs and rejects late results; it does not forcibly stop C++ already executing on the platform. The existing platform timeout still bounds an unresponsive request.
 
 Portable mobile AOT modules run on this PC; iOS export is a project, not an Xcode/phone/store build.
+
+
+185 설치 확인: 4c2fe681686c5505·명세2506파일 실행 후 SHA 일치·격리 설치 EXE의 새 공용 조회 노드 표시/Undo·중첩 프리팹 UndoRedo·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174446335바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_185.json.

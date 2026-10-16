@@ -1,4 +1,8 @@
-# 누적185 공용 인스턴스 조회 검증 — 설치 준비 후 계속
+# 누적185 설치 완료 — 186 프리팹 격리 제작창 계속
+
+main9bf3287 feature originpush. 설치4c2fe681686c5505/2506명세파일 실행후 SHA일치. installedBcwIzA PASS/새 공용 조회 BP노드 실제생성·표시·Undo·저장/중첩Apply·원본Scene동시UndoRedo·기존키/슬롯/메시/LOD/errors0/exit0. instance-node/nested-prefab 캡처 실제시각확인. profile10385파일SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1/바로가기2/.hbproject연결/이전184174446335bytes정리. finish185완료 재실행금지. 영수증커밋push후186계속. 186제품코드아직없음: 기존SceneRendering/viewportControls/컴포넌트Inspector/CAS/Undo를 재사용한 격리 프리팹 제작창, nested/inherited property·structure authoring검토. 현재mainScene를프리팹으로위장하거나실사용자프로젝트수정금지. 새agent금지/최종답변안함. 아래185설치전기록은역사.
+
+# 누적185 공용 인스턴스 조회 검증 — 설치 전 기록
 
 mainf66c361 origin동일/184설치7b716ddfe6174204·2497files·profile10385SHA불변·Versions1/영수증완료.185제품/문서미커밋. SceneGetInstanceActor/Actors/LocalId+runtimeActorsJS/BridgeCpp,BPsame781/Cpp696/core289. familyspawnRoot+spawnLocalId 또는prefabRoot+prefabLocalId,memberalias/root/null/inactive/destroyed/foreign세대·UTF8query1000bytes. cpp일반sameworldscan/no새cache/JSsingle조회candidatearray없음. generateApi서비스분류존중 및새핀한글. mobileBackenddispose뒤lateCppreply반영거부. CPU5x3wSLw(Cpp/BP실제),Editor d22iLu typednode생성/Undo PASS(최종핀한글·노드340,40위치는설치스모크서확인),D3DNpVd0C/WebGPUjh8O4O actualmemberNestedFresh_2/localadded_nested/count4/sameCppSpawnLookuptrue+기존회귀 PASS. MobileAOTv56W4L 두모듈stablelookup/sharedphysics PASS; lifecyclel7rVT4 lateReply/queuedPlatform1/dispose자원0 PASS; actorfind52xBpR3회귀/layout PASS. 최종CPU뒤JSlookupallocation최적화/UTF8포함했고5casepass. docs185완료재실행금지.
 다음diff/status/API→한국어동일authorcommitpush→SDK/include+generatedcore-api/NODE_CATALOG 포함 sync/install185→check185window새EXE고유profile/manifest/profile/Versions1·instance-node캡처시각→영수증push→누적목표계속. NativeActor레이아웃/hostABI불변/CPPworkerhash에Game/Bridgeheader포함이라기존캐시자동무효화,editorEXE재빌드불필요. 새agent금지/실사용창보호/최종답변안함.

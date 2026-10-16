@@ -1786,18 +1786,79 @@
           "compiled C++ matches shared search, dynamic_cast reads HP10, and preceding tag writes are visible in the same function"
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-185-installed-BcwIzA/acceptance.json",
+      "sha256": "9bd07e4b4ac98aaaa1c33d7fc10b3e678f8f034da4b8896e671bf10d24060b94",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/4c2fe681686c5505/HBEngine.exe",
+        "instanceNode": {
+          "typedCreation": true,
+          "editorRendered": true,
+          "undo": true,
+          "saved": true
+        },
+        "nestedPrefab": {
+          "humanAdditionApply": true,
+          "sourcePreserved": true,
+          "baselineUpdated": true,
+          "atomicSourceAndSceneUndoRedo": true
+        },
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "nodes": 781,
   "cppNodes": 696,
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "Instance lookup uses stable authored local IDs, not display names or guessed runtime IDs. Ordinary actors/null/missing instance return null, empty list or empty local ID. A root or any living member can identify the family.",
     "GetInstanceActor localId is limited to1000 UTF-8 bytes consistently in JS/C++. includeInactive includes pooled actors but destroyed actors remain excluded. GetInstanceLocalId reads inactive metadata.",
     "Lookup is a CPU world scan; the single-member JS path does not allocate an all-actor candidate array. There is no new global cache/scene-object cap. This is not proof of sustained large-world FPS/RAM.",
     "Backend disposal stops queued native jobs and rejects late results; it does not forcibly stop C++ already executing on the platform. The existing platform timeout still bounds an unresponsive request.",
     "Portable mobile AOT modules run on this PC; iOS export is a project, not an Xcode/phone/store build."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_185.json",
+    "receiptSHA256": "34320815c919cb5901a949e977c1deca999c631e6e84f04e439c2a29db805436",
+    "sourceCommit": "9bf328713fd72c4904cef35bab037155e784f691",
+    "versions": [
+      "4c2fe681686c5505"
+    ]
+  }
 }
