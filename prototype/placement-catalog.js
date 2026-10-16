@@ -29,6 +29,7 @@ export const placementCatalog=[
   ['physicsCube','Physics Cube · 물리 큐브','물리','cube',{Rigidbody:{}}],
   ['physicsSphere','Physics Sphere · 물리 구','물리','sphere',{Rigidbody:{}}],
   ['trigger','Trigger Box · 감지 영역','물리','empty',{BoxCollider:{trigger:true}}],
+  ['animationBudget','Animation Budget · 애니메이션 예산','최적화','empty',{AnimationBudget:{}}],
   ['directionalLight','Directional Light · 태양광','조명'],['pointLight','Point Light · 점 광원','조명'],['spotLight','Spot Light · 스포트 광원','조명'],
   ['megaLights','Mega Lights · 다중 광원','조명','empty',{PostProcessVolume:{bloomEnabled:false,pathTracingEnabled:true,pathTracingDenoise:true,megaLightsEnabled:true}}],
   ['skyAtmosphere','Sky Atmosphere · 하늘 대기','환경'],['skyLight','Sky Light · 주변광','환경'],['volumetricCloud','Volumetric Cloud · 구름','환경'],['heightFog','Exponential Height Fog · 높이 안개','환경'],['reflectionProbe','Reflection Probe · 반사 프로브','환경','empty',{ReflectionProbe:{}}],['postProcess','Post Process Volume · 후처리','환경','empty',{PostProcessVolume:{}}],

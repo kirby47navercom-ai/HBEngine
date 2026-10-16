@@ -470,6 +470,10 @@ inline const Json* bridgeMontageGroup(Actor* target,const std::string& group){au
 inline float Montage::GetGroupPosition(Actor* target,const std::string& group){const auto* s=bridgeMontageGroup(target,group);return s?s->at("time").get<float>():0.0f;}
 inline float Montage::GetGroupWeight(Actor* target,const std::string& group){const auto* s=bridgeMontageGroup(target,group);return s?s->at("weight").get<float>():0.0f;}
 inline bool Montage::IsGroupPlaying(Actor* target,const std::string& group){return bridgeMontageGroup(target,group)!=nullptr;}
+inline void AnimationBudget::SetBudget(Actor* target,float budgetMS){if(!std::isfinite(budgetMS)||budgetMS<.001f||budgetMS>1000)throw std::invalid_argument("animation budget must be in [.001,1000] ms");Components::SetFloat(target,"AnimationBudget","budgetMS",budgetMS);}
+inline void AnimationBudget::SetEnabled(Actor* target,bool enabled){Components::SetBool(target,"AnimationBudget","enabled",enabled);}
+inline float AnimationBudget::GetObservedMS(Actor* target){auto& state=gameplayField(target,"animationBudget");return state.is_null()?0.f:state.value("observedMS",0.f);}
+inline int AnimationBudget::GetThrottledCount(Actor* target){auto& state=gameplayField(target,"animationBudget");return state.is_null()?0:state.value("throttled",0);}
 inline void LevelSequence::Play(Actor* target,const std::string& asset){engineCommand("playSequence",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"target",bridgeId(target)}});}
 inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}

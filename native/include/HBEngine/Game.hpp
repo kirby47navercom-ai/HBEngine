@@ -513,6 +513,14 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="montagePlayingGroup", KoreanName="몽타주 그룹 재생 중", Category="몽타주") static bool IsGroupPlaying(Actor* target,const std::string& group);
 };
 HB_CLASS()
+class AnimationBudget : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animationBudgetSet", KoreanName="애니메이션 포즈 예산 지정", Category="애니메이션 최적화") static void SetBudget(Actor* target,float budgetMS=2.f);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animationBudgetEnable", KoreanName="애니메이션 포즈 예산 사용", Category="애니메이션 최적화") static void SetEnabled(Actor* target,bool enabled=true);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animationBudgetObserved", KoreanName="관측 애니메이션 갱신 시간", Category="애니메이션 최적화") static float GetObservedMS(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animationBudgetThrottled", KoreanName="생략한 시각 포즈 수", Category="애니메이션 최적화") static int GetThrottledCount(Actor* target);
+};
+HB_CLASS()
 class LevelSequence : public Library {
 public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playSequence", KoreanName="레벨 시퀀스 재생", Category="시퀀스") static void Play(Actor* target,const std::string& asset);

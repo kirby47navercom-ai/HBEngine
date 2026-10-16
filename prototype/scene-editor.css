@@ -61,3 +61,4 @@
 
 .bp-detail-row:has(>.vehicle-wheels){display:block}.bp-detail-row>.vehicle-wheels{margin-top:6px}
 .vehicle-wheels .component-property:has(>.component-vector){display:block}.vehicle-wheels .component-vector{margin-top:5px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.animation-budget-readout{margin:10px 0 0;padding:9px 0 0;border-top:1px solid var(--border);display:grid;gap:5px;font-variant-numeric:tabular-nums}.animation-budget-readout>div{display:flex;justify-content:space-between;gap:10px}.animation-budget-readout dt{color:var(--muted)}.animation-budget-readout dd{margin:0;color:var(--text)}.animation-budget-readout [data-animation-budget-overload]{color:#dfb66d;font-size:11px}.animation-budget-readout [hidden]{display:none}
