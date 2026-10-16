@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "8052bf1",
+  "implementationRevision": "b432bacd5bd8a4fd6a902130892b563992b438a3",
+  "targetIds": [
+    "GAM-03",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/eqs-2d-220-e1W4eT/acceptance.json",
+      "sha256": "523ad531f0936852482db3c490009c68cbba671288dd3be9c62f74043b3e97de"
+    },
+    {
+      "path": "native/build/eqs-2d-220-window-4vDSea/acceptance.json",
+      "sha256": "4f134974f5909056ebf3db1def48168202321b3833bcab55d4b793825c7efa14"
+    },
+    {
+      "path": "native/build/eqs-2d-220-player-w61mrz/acceptance.json",
+      "sha256": "877a9a92653cb8cb426ce4f349dede4d59faf1ecfcfdf0afb520fe7d03b7e5ce"
+    },
+    {
+      "path": "native/build/eqs-debug-217-OTxGF2/acceptance.json",
+      "sha256": "a7037d15bf581b7c9f90440c544b0dcc62019133f4ae5e17fecb7f6b24de1fdc"
+    }
+  ],
+  "implemented": [
+    "EQS grid/ring의 XY/XZ 생성 평면·기존 무지정 XZ 호환; XY actors 반경·distance/dot는 Z깊이 제외·height는 기존 world Y 유지·기본 forward도 선택 평면 사용",
+    "XY 질의는 실제 Physics2D 콜라이더로 가림을 검사하고 XZ는 기존3D 유지; XY가 같은 깊이만 다른 점은 zero-ray/물리생성을 생략·무관한3D NavMesh로 XY를 평탄화하지 않음",
+    "구형 에셋도 원본 자동수정 없이 생성평면 선택 UI 제공·편집/Undo/저장·AI schema/진단 plane과 기존 C++/BP Run/Results 공용 실행",
+    "실제 2D 장면의 양쪽 원형 후보·정적 벽 가림·뷰포트 점수 및 별도 DirectX 게임 BP BeginPlay 질의 검증·디버그 off 경로와 GPU읽기0"
+  ],
+  "limits": [
+    "임의 회전 평면·EQS별 레이어/깊이 필터·XY NavMesh 투영/공간 인덱스/정적 테스트 Pawn·중간 단계 선택은 잔여",
+    "거리/방향은 선택 평면 정책이며 기존 XZ 질의의3D 거리 의미는 변경하지 않음. 전체 NavMesh/군중/행동트리 기능 완료로 표현하지 않음"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D.Raycast.html",
+      "scope": "Returned Unity6000 HTML body own234–293 read: 2D origin/direction, optional layer/depth filters, hit/occlusion semantics. HB220 uses existing 2D physics query, no new per-EQS depth filter. Attempted Physics2DReference Manual URL inaccessible."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

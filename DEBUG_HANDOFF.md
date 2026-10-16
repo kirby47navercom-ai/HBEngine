@@ -884,3 +884,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 214–217: 215 실제 C++ float32의1.8을 JS 엄격 동일 비교하여 검사 실패→1e-6 허용 오차로 월드 TRS 검증(rFeL65).216 행 선택에 data-select-item 대신 data-select-track 필요(KvYTPZ).217 Play가 scene도크로 이동한 뒤 숨은 query버튼을 CDP좌표로 누른 검사 실패→query도크를 명시 활성화(Bu6rBF).217 첫 실제 캡처에서 점수 라벨 겹침 발견→점512/10Hz 유지하면서 겹치지 않는64라벨만 표시·Bu6rBF시각확인. 제품 예외/콘솔 오류와 검사 선택자 문제를 구별한다.
+
+
+218–220: fixture의 BP를 C++헤더보다 먼저 써서 검증 ENOENT→헤더/소스 먼저쓰기. 다음fixture가 현SDK Actor에 virtual BeginPlay를 잘못가정하여 컴파일실패→BP BeginPlay에서 등록Initialize를 호출하는 실제계약으로 수정; 이경로의 초기값준비 UgzhqE/GXOozw 확인.217설치216검사 캡처문자열 내부따옴표 오류→dataset비교로 검사만수정(mNHYHp). Take팝업이 작은assetpane에서 잘림을 실제설치캡처로발견→pane하단계산/scroll·끝필드bounds 검사 UgzhqE; 가로바최종수정은설치220추가확인.

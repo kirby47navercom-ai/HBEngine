@@ -3307,5 +3307,24 @@
     ],
     "globalGatePromotion": false,
     "unread": "Only stated body scopes. Rereads do not increase coverage; no claim to entire UE/Unity API/media analysis."
+  },
+  "supplemental218_220": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/gameplay-attributes-and-attribute-sets-for-the-gameplay-ability-system-in-unreal-engine",
+        "scope": "Returned UE5.8 body own0–115 and118–152 read: attribute base/current, set registration/default data, helper access and limits. UE default metadata min/max does not itself clamp; HB explicitly enforces bounds. Linked API/media not read."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Physics2D.Raycast.html",
+        "scope": "Returned Unity6000 HTML body own234–293 read: 2D origin/direction, optional layer/depth filters, hit/occlusion semantics. HB220 uses existing 2D physics query, no new per-EQS depth filter. Attempted Physics2DReference Manual URL inaccessible."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/AIModule/UBTTask_BlueprintBase?lang=en-US",
+        "scope": "Returned UE5.8 own0–138 body read for future abort lifecycle work, not implemented here. Alternate /BehaviorTree/Tasks/ URL returned blank and is not evidence."
+      }
+    ],
+    "globalGatePromotion": false,
+    "unread": "Only stated scopes, no whole corpus/API/media completion claim."
   }
 }

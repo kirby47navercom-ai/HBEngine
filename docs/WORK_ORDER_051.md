@@ -332,3 +332,8 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 214–217 설치 확인: 06ccb1d58c0eca3d·명세2689파일 실행후SHA동일·설치EXE 프리팹 추가/잠금/2D3D·생성 필터/실제 C++/Take·수동 변수트랙/검색focus/배열 키/Undo/CPP getter·EQS 단계진단/실제화면/겹침라벨/API페이지/종료 통과. 예외·콘솔오류0/종료0·캡처4 시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치194264932B 제거. USER_INSTALL_217.json. 작은 작업창에서 Take 설정 팝업이 잘리는 UI 문제는218에서 후속 수정한다.
+
+
+## 218–220 — 2026-10-17
+
+속성·시작 능력 세트 에셋/표/컴포넌트·원자 초기화·참조/풀 정리·실제 C++BP/게임, 실행 속성/능력/효과 Inspector·AI페이지와 작은pane Take 설정, XY2D EQS 생성/점수/Physics2D벽·구형 에셋UI/Undo·별도 D3D 게임을 연결했다. 근거와 명시 잔여는 ENGINE_WORK_218–220.json이다. 새 SDK ABI나 전체 엔진/연구 gate의 완료로 표현하지 않는다. 설치는 USER_INSTALL_220.json에 후속 기록한다.
