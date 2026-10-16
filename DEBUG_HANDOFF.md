@@ -881,3 +881,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - nullable BP 값에 ?? 기본값을 쓰면 의도한 null이 사라질 수 있어 Map.has/Object.hasOwn로 고쳤다. Hit 값의 벡터 배열도 깊은 복사해 재생에서 원시 키를 변경하지 않음을 CPU로 확인했다.
 - 새 실시간 구조 검사에서 addComponent/getComponent가 만드는 kind:component 참조 핸들이 아웃라이너에 액터로 보였다. sceneRows와 개수에 공용 isSceneActor를 쓰며 실제 핸들 자체는 삭제하지 않는다. 후속 설치 검사에 alias 비노출을 포함했다.
 - 제작 preview가 일부 simulation 컴포넌트를 제거하는 기존 설계와 component 트랙이 충돌하지 않도록 해당 미리보기 데이터만 걸렀다. 타입 교체 구성 키의 시각 구간은 유지하고 원본 JSON은 불변이다. CPU4JdfVL에서 검증했다.
+
+
+214–217: 215 실제 C++ float32의1.8을 JS 엄격 동일 비교하여 검사 실패→1e-6 허용 오차로 월드 TRS 검증(rFeL65).216 행 선택에 data-select-item 대신 data-select-track 필요(KvYTPZ).217 Play가 scene도크로 이동한 뒤 숨은 query버튼을 CDP좌표로 누른 검사 실패→query도크를 명시 활성화(Bu6rBF).217 첫 실제 캡처에서 점수 라벨 겹침 발견→점512/10Hz 유지하면서 겹치지 않는64라벨만 표시·Bu6rBF시각확인. 제품 예외/콘솔 오류와 검사 선택자 문제를 구별한다.

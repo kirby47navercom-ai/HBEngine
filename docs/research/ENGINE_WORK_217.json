@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "376e0a3",
+  "implementationRevision": "9da5ea046d9971fa7a15befb8b8fd22c2ad5a974",
+  "targetIds": [
+    "GAM-03",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/eqs-debug-217-IPW77n/acceptance.json",
+      "sha256": "0116d408ef194347b37e17a781d9ddb1490f04cd40be6e3d0549526cf66f8a6b"
+    },
+    {
+      "path": "native/build/eqs-debug-217-window-Bu6rBF/acceptance.json",
+      "sha256": "15c6685a78e158ab37306e8bae4d1e8e014757cff9c2892e6e717224921a0b0c"
+    },
+    {
+      "path": "native/build/eqs-debug-217-player-154JNV/acceptance.json",
+      "sha256": "6b44fdbc57ad4a322c1d542c4a4026cd2123e0fa52002085ac459ec3798b8617"
+    }
+  ],
+  "implemented": [
+    "선택 진단에서 생성/투영/최종 통과·실패 수·단계별 원시 값/정규화 점수·거부 단계·관측 wall ms를 보관; 진단을 끈 질의 결과는 기존과 동일",
+    "환경 질의 제작 UI의 대상/실행·단계 요약·점수/실패 후보 표시와 실제 카메라 기반 뷰포트 마커; 10Hz 위치 투영·겹침 방지 점수 라벨·2D DOM 표시·GPU 읽기 없음",
+    "runtime.eqs.run/read/view의 공용 런타임 연산/프레임 장벽·페이지 deep-copy·보기 종료 메모리 해제/세계 Stop 정리·원본 scene/query revision 불변",
+    "진단표본 기본4096/명시1..100000·뷰포트512점/겹침 없는64라벨로 진단 비용 제한을 공개; 후보 계산/결과 개수에는 적용하지 않음",
+    "격자/링 질의에서 불필요한 전체 actor 상태/월드 위치 복사 제거; actors 생성기는 필요한 fields만 준비하고 부모행렬 캐시 공유·가상 참조 제외",
+    "실제 D3D 게임 C++ EnvironmentQuery::Run/Results의 필터/점수와 디버그 비활성 경로 대조"
+  ],
+  "limits": [
+    "정적 편집 테스트 Pawn·중간 단계 선택/자동 재질의·EQS 공간 인덱스·SmartObject/Mass·native BTTask FinishAbort는 잔여",
+    "뷰포트는 현재 주 뷰포트의 화면 표식이며 실제 구 메시/깊이 차폐·모든 분리창/장치 조합은 검증하지 않음",
+    "후보 생성/테스트는 기존 CPU 질의다. 네이티브 GPU EQS나 시간 제한 분할 스케줄러로 표현하지 않음"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/environment-query-testing-pawn-in-unreal-engine",
+      "scope": "Returned UE5.8 body own0–43 read: colored score/failed candidates, step/labels/highlight and requery properties. Linked API/media not read; HB supports stated runtime diagnostic subset."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

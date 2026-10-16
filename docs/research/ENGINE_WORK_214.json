@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "376e0a3",
+  "implementationRevision": "9da5ea046d9971fa7a15befb8b8fd22c2ad5a974",
+  "targetIds": [
+    "AST-04",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/prefab-additions-214-jqwu85/acceptance.json",
+      "sha256": "868e90476b3f11a4305c9da774e2908e88e54bc78589b799d67bb53a25beef22"
+    },
+    {
+      "path": "native/build/prefab-additions-214-window-ntRHfh/acceptance.json",
+      "sha256": "aea055271feca1b87bcb13d3cfd637d4ed1c52c0e4528139318fb44e26c8a752"
+    },
+    {
+      "path": "native/build/prefab-apply-206-HUrpHW/acceptance.json",
+      "sha256": "c70359cf3fe806a65220ecbc6cd30605b7e954128f43f876488dd59abf0a4f2e"
+    },
+    {
+      "path": "native/build/prefab-view-207-Rixpfr/acceptance.json",
+      "sha256": "1ea59597d61c13e6a3773c99ee0fb99fc1f2ab06890e3b5cf82e45621c91a5a3"
+    }
+  ],
+  "implemented": [
+    "변경 표시에서 인스턴스에만 추가한 등록/미등록 자식과 다른 프리팹 계층을 실제 월드 배치로 표시; 배경 이중 표시와 원본/가상ID 충돌 회피",
+    "추가 전용 객체의 선택/기즈모/스냅/원본 편집 보호·선택 해제; 원본에 Apply된 객체는 정상 편집 대상으로 복귀",
+    "prefab.stage.preview 요청형 실제 배치/선택/readonly 조회·2D/3D 실제 창·부모 회전/비균일 크기·원본 JSON 불변·기존 중첩 Apply 회귀"
+  ],
+  "limits": [
+    "원본에 없는 객체는 표시용이며 장면에서 편집한다. 고급 C++/BP 타입 참조 Apply·정확한 장면 조명·복잡 변형/중첩 대규모 검증은 잔여"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+      "scope": "Existing207 source reread, own193–219 context/gray/root lock/ShowOverrides; not additional corpus coverage."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

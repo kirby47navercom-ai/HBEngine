@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "376e0a3",
+  "implementationRevision": "9da5ea046d9971fa7a15befb8b8fd22c2ad5a974",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "checks": [
+    {
+      "path": "native/build/take-filter-215-xaEyTe/acceptance.json",
+      "sha256": "c81f131099f78c0e50e11daa2118276c706f7bf814524a25543b82e63f6e6cf8"
+    },
+    {
+      "path": "native/build/spawn-take-211-lm3iR5/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8"
+    },
+    {
+      "path": "native/build/take-filter-215-window-rFeL65/acceptance.json",
+      "sha256": "d3f732610a308d65100c32a710d57c9b176cf8eefeded52ae52f1e2f0396148a"
+    },
+    {
+      "path": "native/build/take-filter-215-player-Z0xecR/acceptance.json",
+      "sha256": "24956f6d8d9db00b55fb4b9e489beb94f23ab61b47b8eae3796336cf0aac9efa"
+    }
+  ],
+  "implemented": [
+    "카메라 또는 선택한 여러 대상 기준 반경·XYZ/XY/XZ·종류/정확 C++ 클래스 OR·필수 컴포넌트 AND를 제작 설정과 runtime.take.start에 연결",
+    "처음 활성 표본에서 편입 판정 후 거리/종류가 달라져도 수명·풀 재사용 기록 유지; 시작 전 기존 객체/가상핸들/Take 복사본 제외",
+    "필터에서 빠진 부모의 자식은 월드 TRS로 기록; 부모 회전/크기·여러 기준점·거리0·설정복사/잘못된 값 거부; 실제 C++ 생성/삭제·독립 제작 preview·D3D 게임에서 sprite만 재생",
+    "녹화 시작 첫 표본까지 성공한 뒤 recorder를 설치하여 시작 실패 시 반쪽 recorder를 남기지 않음"
+  ],
+  "limits": [
+    "첫 활성 녹화 표본에서 판정한다. 표본 사이에 생성/삭제되는 객체·기존 객체의 수명/동적 재부모화·사용자 클래스 상속 조건·선택 프리셋/전문 시간코드는 잔여",
+    "반경0은 거리 제한 없음. 게임 오브젝트 개수 제한을 추가한 것이 아니다. 기록과 디코딩/자료형의 기존 명시 예산은 유지"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine?application_version=5.7",
+      "scope": "Existing211 own156–159 reread; radius0 and spawned-only/type filters. HB adds explicit camera/targets and XY/XZ/XYZ policy; not an identical UE type hierarchy implementation or additional corpus coverage."
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

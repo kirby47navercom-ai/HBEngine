@@ -324,3 +324,8 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 212–213 설치 확인: 85700fd5ac4494a6·명세2666파일 실행 후SHA동일·설치 EXE에서 typed C++/BP Take/배열 키/Undo·독립 preview·실제 C++ getter/Seek/복원·실행Inspector 값/새컴포넌트·가상핸들 제외·210 예산/C++ 현재값 회귀 통과. 예외/콘솔오류0·종료0·캡처3 직접 시각확인. User10385파일 SHA불변·링크2/.hbproject·이전설치194200685B 제거·Versions1. USER_INSTALL_213.json.
+
+
+## 214–217 — 2026-10-17
+
+프리팹 추가 전용 자식/다른 프리팹의 실제 문맥·읽기전용/2D3D/AI조회, 생성 Take의 반경/기준/평면/종류/클래스/컴포넌트 필터와 수명, 수동 C++/BP typed 변수·배열 트랙의 제작 UI/AI/Undo/preview/실제 D3D getter, 선택 EQS 단계 진단/실패 이유/점수·뷰포트/페이지·C++ 실행과 불필요한 전체 월드 복사 제거를 연결했다. 근거/범위는 ENGINE_WORK_214–217.json이며 전체 잔여와 분석 gate는 유지한다. 설치 후 User/Versions1/파일명세와 실제 설치창 근거를 USER_INSTALL_217.json에 기록한다.

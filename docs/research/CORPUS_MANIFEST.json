@@ -3288,5 +3288,24 @@
     ],
     "unread": "Only stated UE5.8 body scopes;5.7 URLs inaccessible. Linked API/source/media and entire UE/Unity corpus remain outside this read.",
     "globalGatePromotion": false
+  },
+  "supplemental214_217": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html",
+        "scope": "Existing207 source reread, own193–219 context/gray/root lock/ShowOverrides; not additional corpus coverage."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine?application_version=5.7",
+        "scope": "Existing211 own156–159 reread; radius0 and spawned-only/type filters. HB adds explicit camera/targets and XY/XZ/XYZ policy; not an identical UE type hierarchy implementation or additional corpus coverage."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/environment-query-testing-pawn-in-unreal-engine",
+        "scope": "Returned UE5.8 body own0–43 read: colored score/failed candidates, step/labels/highlight and requery properties. Linked API/media not read; HB supports stated runtime diagnostic subset."
+      }
+    ],
+    "globalGatePromotion": false,
+    "unread": "Only stated body scopes. Rereads do not increase coverage; no claim to entire UE/Unity API/media analysis."
   }
 }
