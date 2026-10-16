@@ -1604,6 +1604,7 @@ const editorCommandMethods={
   'state.add':params=>automationAuthoringEdit(params,'statemachine',data=>({state:addState(data,{parent:params.parent,name:params.name,position:params.position,submachine:params.submachine})})),
   'state.reparent':params=>automationAuthoringEdit(params,'statemachine',data=>{reparentState(data,params.state,params.parent);return {state:params.state};}),
   'state.remove':params=>automationAuthoringEdit(params,'statemachine',data=>({removed:removeState(data,params.state)})),
+  'runtime.lod':()=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.lodState();},
   'modelimport.preview':async params=>{const {doc}=await automationDocument(params);if(doc.kind!=='modelimport')throw Error('모델 가져오기 문서가 필요해요.');const preview=assetPanes.get(doc.path)?.editor?.preview;if(!preview)throw Error('미리보기 창을 여세요.');await preview.ready;return {path:doc.path,...preview.snapshot()};},
   'modelimport.open':async({path})=>{automationEditable();if(typeof path!=='string'||!/\.(gltf|glb|obj|fbx)$/i.test(path))throw Error('원본 모델 경로가 필요해요.');const doc=await openModelImport({path});return {path:doc.path,kind:doc.kind,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'document.open':async({path})=>{automationEditable(true);if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},

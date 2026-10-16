@@ -1,4 +1,4 @@
-# 누적178 설치 검증 완료 — 179 LOD 실행 정책 조사 계속
+NaN# 누적178 설치 검증 완료 — 179 LOD 실행 정책 조사 계속
 
 주인님 남은거전부계속, 최종답변안함. main a10400df077c6b51e085ca7b8abc12b7aebe0ccd featurepush. 설치 C:/Users/kirby/HBEngine/Versions/f93e39b28c8c3c3e/HBEngine.exe, bundlef93e39b28c8c3c3e619f2531127e5b96f7075eccae2e3d929ed45f6c280180cb,2449명세파일실행후SHA동일. USER_INSTALL178/WORK178설치링크완료. profile10385파일 전후/검사후SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. 바로가기2/.hbproject연결/Versions1, 이전177173638771bytes정리. 설치smokeengine-178-installed-ElB4K6 PASS/errors0/exit0, 모델/미연결캡처2개실제시각확인(최종CSS라벨가독성수정반영). finish178.mjs 완료재실행금지. 다음 영수증한글커밋push부터.
 

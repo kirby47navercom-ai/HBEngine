@@ -474,3 +474,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 177: 새노드 증가 없이 기존 UI::SetListItems/SetValue/GetValue·같은 BP UI서비스에서 자동행높이를 사용한다. 카탈로그778/공통C++693 유지. C++자료교체·선택읽기와 입력/위젯 제작·Undo를 실제 게임에서 확인했다.
+
+
+179: RuntimeLOD는 일반 컴포넌트로 Scene/BP 제작과 문서 Undo/AI patch를 공유한다. 별도 노드 수를 늘리지 않고 기존 Components 수치/문자 서비스로 거리 기준/강제 단계·표시 Hz를 사용한다. 같은 서비스의 실제 C++ 호출 뒤 물리 동기화와 대상 RaycastAll을 검증했다.

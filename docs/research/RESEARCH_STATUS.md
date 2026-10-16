@@ -422,3 +422,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 178: UE5.8 FBX Import Options 본문0–170/Unity6000.5 Model Import Settings 본문183–319를 supplemental178에 등록했다. 연결 API/다른 탭·미디어/전체 독립 분석 gate는 올리지 않았다.
+
+
+179: UE Animation Budget Allocator 본문0–265/UnityAnimator164–210/CullingGroup182–208를 supplemental179에 등록했다. 표시 쓰기 절감과 전체 계산/예산 할당 구현을 구별하고 연결 API·전체 gate는 유지한다.

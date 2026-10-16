@@ -2950,5 +2950,16 @@
     "scope": "UE5.8본문0–170/Unity6000.5본문183–319. Source identity/reimport, units and axes, import settings. Installed Three FBX Model.ID/UnitScaleFactor and GLTF parser.associations source inspected.",
     "unread": "연결 API/Rig/Animation/Materials 본문/미디어/전체 corpus. Unity7000 검색결과는 본문 읽기로 계산하지 않음",
     "globalGatePromotion": false
+  },
+  "supplemental179": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://dev.epicgames.com/documentation/unreal-engine/animation-budget-allocator-in-unreal-engine",
+      "https://docs.unity.com/en-us/engine/6000.7/manual/animation-section/animation-mecanim/class-animator",
+      "https://docs.unity.com/en-us/engine/6000.0/manual/cameras/occlusion-culling/culling-group-api/api"
+    ],
+    "scope": "UE5.8 본문0–265(API interface 발췌/console table 포함),Unity6000.7Animator164–210, Unity6000.0CullingGroup182–208. 거리/표시 갱신과 논리/루트/물리 시간 구분.",
+    "unread": "연결 API/플러그인 구현/미디어/전체 corpus",
+    "globalGatePromotion": false
   }
 }

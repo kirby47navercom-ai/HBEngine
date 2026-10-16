@@ -418,3 +418,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 178: modelimport.open({path:원본.gltf/glb/obj/fbx})→편집 가능한 .import.json의 path/kind/revision. 기존 document.get/patch/save·editor.undo/redo 사용. modelimport.preview({path:설정문서})→ready/meshes/visible/CPU bounds, GPU 읽기 없음. settings와 subassets/unresolvedSubassets는 검증된 JSON, sourceOnly 종류이므로 새 빈 에셋 생성 대신 원본에서 연다. 미연결의 수동 대응은 새 대상 overrides에 복사하고 미연결 행을 제거하는 한 번의 문서 patch/Undo로 표현한다.
+
+
+179: RuntimeLOD 컴포넌트(distanceMode:auto/xy/xz/xyz,nearDistance/farDistance,boundsRadius,hysteresis,forcedLevel:-1~2,midAnimationRate/farAnimationRate,alwaysAnimate)를 일반 Scene/BP 문서 patch/Undo로 편집한다. WorldCollision.lodMode:fixed|runtime. runtime.lod는 실행 중 스케줄/충돌 캐시 추정치/예산을 읽는다. C++/BP 기존 Components::SetFloat/GetFloat로 forcedLevel과 Hz를 편집한다. collisionLevel 진단은 요청 거리 구간이며 실제 자산의 부족한 단계는 마지막 단계로 제한한다. 모드0Hz는 모든 프레임이며 논리 이벤트/곡선은 표시 간격과 별개다.
