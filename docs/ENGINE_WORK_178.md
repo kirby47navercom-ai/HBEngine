@@ -13,3 +13,6 @@ AI는 modelimport.open으로 반환받은 문서 path/revision에 기존 documen
 [17군 CPU 및 실제 Win32 제작·DirectX 출시 게임·WebGPU 게임 근거](research/ENGINE_WORK_178.json). 실제 FBX 메시/파일 단위, 사람 배율/표시/미연결 재연결/Undo, 게임 모델 표시와 같은 C++ 루트 이동 조회를 확인했다. 성능/FPS 또는 실제 휴대폰의 검증 결과로 세지 않는다.
 
 대조한 범위는 [UE5.8 FBX Import Options](https://dev.epicgames.com/documentation/unreal-engine/fbx-import-options-reference-in-unreal-engine) 본문0–170과 [Unity6000.5 Model Import Settings](https://docs.unity.com/en-us/engine/6000.5/manual/assets-and-media/asset-types/models/importing/fbximporter-model) 본문183–319이다. 연결 API·Rig/Animation/Materials 문서·미디어·전체 corpus는 읽은 것으로 세지 않는다. FBX 전체 애니메이션의 C++ 헤드리스 지원, 재질 추출/대응, 임포터의 형식별 기하/노멀/UV/LOD 품질과 추가 코덱은 원장에 구별해 남긴다.
+
+
+178 설치 확인: f93e39b28c8c3c3e·명세2449파일 실행 후 SHA 일치·격리 설치 EXE의 모델 단위/축·FBX·사람 설정·재가져오기/미연결 대응·Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173638771바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_178.json.

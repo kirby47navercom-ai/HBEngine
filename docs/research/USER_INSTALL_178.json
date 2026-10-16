@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "a10400df077c6b51e085ca7b8abc12b7aebe0ccd",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f93e39b28c8c3c3e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f93e39b28c8c3c3e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f93e39b28c8c3c3e\\HBEngine.exe",
+  "bundleHash": "f93e39b28c8c3c3e619f2531127e5b96f7075eccae2e3d929ed45f6c280180cb",
+  "files": 2449,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2435,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6ecfb60380268ecd",
+        "bytes": 173638771,
+        "manifestSHA256": "d13d768c27b4e553fd1442a4060e6a99a447fc96d4a22a7dd8a3b76831582bb7"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T09:35:30.8930533Z",
+    "bytes": 173638771,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "f93e39b28c8c3c3e"
+    ]
+  },
+  "work": "native/build/engine-178-install-FzzDYY",
+  "versions": [
+    "f93e39b28c8c3c3e"
+  ],
+  "manifestVerifiedFiles": 2449,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2449,
+  "installedSmoke": {
+    "path": "native/build/engine-178-installed-ElB4K6/acceptance.json",
+    "sha256": "db85f783121dc3d752eefa496fdcaedeb740686e9d6f18044c7c6cc88d4fb39b",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/f93e39b28c8c3c3e/HBEngine.exe",
+    "model": {
+      "humanTransform": true,
+      "undo": true,
+      "aiPreview": true,
+      "savedRuntimeSettings": true,
+      "ambiguousReimport": true,
+      "humanRemap": true,
+      "remapUndoRedo": true,
+      "realFBX": {
+        "path": "Assets/Models/Twin.fbx.import.json",
+        "ready": true,
+        "meshes": 2,
+        "visible": 2,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            1,
+            1,
+            0
+          ],
+          "size": [
+            1,
+            1,
+            0
+          ]
+        }
+      }
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-178-installed-ElB4K6/model-import-editor.png",
+      "sha256": "5a28179bc6c50a54d9d10473b110b39f005d3ad9172a25bb1e34596672110175",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-178-installed-ElB4K6/model-import-remap.png",
+      "sha256": "96e9b06e870abf6458ea68ed403285fd675fc74db8d747a20d74227725771f19",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

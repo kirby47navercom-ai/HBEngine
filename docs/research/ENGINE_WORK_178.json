@@ -2065,6 +2065,51 @@
         },
         "originalPreserved": true
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-178-installed-ElB4K6/acceptance.json",
+      "sha256": "db85f783121dc3d752eefa496fdcaedeb740686e9d6f18044c7c6cc88d4fb39b",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/f93e39b28c8c3c3e/HBEngine.exe",
+        "model": {
+          "humanTransform": true,
+          "undo": true,
+          "aiPreview": true,
+          "savedRuntimeSettings": true,
+          "ambiguousReimport": true,
+          "humanRemap": true,
+          "remapUndoRedo": true,
+          "realFBX": {
+            "path": "Assets/Models/Twin.fbx.import.json",
+            "ready": true,
+            "meshes": 2,
+            "visible": 2,
+            "bounds": {
+              "min": [
+                0,
+                0,
+                0
+              ],
+              "max": [
+                1,
+                1,
+                0
+              ],
+              "size": [
+                1,
+                1,
+                0
+              ]
+            }
+          }
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "additionalChecks": [
@@ -2074,7 +2119,6 @@
   ],
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "FBX binary 32/64-bit metadata header/ID parsing is tested with synthetic records; actual rendered FBX proof is ASCII triangle geometry through the installed Three loader",
     "FBX runtime ID matching inherits Three numeric-ID precision. Unsafe IDs are not guessed by index",
@@ -2091,5 +2135,13 @@
     "C++ Vec3 transport returns an array, while the new assertion read .x; test now decodes the real array and saves the unmodified response",
     "New source-identity validation correctly rejected the rename-conflict fixture sidecar pointing to another model; fixture now names its actual target",
     "Headless checks passed but own retained test cache was rejected by static-prefix detection; pruning now recognizes its already validated in-process ownership registration"
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_178.json",
+    "receiptSHA256": "02750df4d745dba7356e923560dc4505b7255483782d3e3a583b7d655c9173ae",
+    "sourceCommit": "a10400df077c6b51e085ca7b8abc12b7aebe0ccd",
+    "versions": [
+      "f93e39b28c8c3c3e"
+    ]
+  }
 }

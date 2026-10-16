@@ -1,3 +1,9 @@
+# 누적178 설치 검증 완료 — 179 LOD 실행 정책 조사 계속
+
+주인님 남은거전부계속, 최종답변안함. main a10400df077c6b51e085ca7b8abc12b7aebe0ccd featurepush. 설치 C:/Users/kirby/HBEngine/Versions/f93e39b28c8c3c3e/HBEngine.exe, bundlef93e39b28c8c3c3e619f2531127e5b96f7075eccae2e3d929ed45f6c280180cb,2449명세파일실행후SHA동일. USER_INSTALL178/WORK178설치링크완료. profile10385파일 전후/검사후SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. 바로가기2/.hbproject연결/Versions1, 이전177173638771bytes정리. 설치smokeengine-178-installed-ElB4K6 PASS/errors0/exit0, 모델/미연결캡처2개실제시각확인(최종CSS라벨가독성수정반영). finish178.mjs 완료재실행금지. 다음 영수증한글커밋push부터.
+
+178아래제품/검증상세참고. sourceOnlymodelimport.normal문서+AIopen/preview, rawFBX/glTF단위/축·ID/중복/보존/수동remap/Undo/CAS/pairedrename·게임/C++루트scale까지완료. 179아직코드없음, 공식추가조사전. WLD04남은카메라/거리 animation/collisionLOD검토. 기존world-rendering.js loadWorldVisual(lod) levelsworldasset만,updateWorldLODs renderer카메라/화면높이chooseLOD +hysteresis/forced. 충돌worldCollisionGeometry는data.collisionLevel고정, prepareWorldColliders가WorldCollision+MeshRenderer메시를tileColliders worldCollider_청크로미리굽는다. SceneRendering.prepare2D(camera)에서LOD시각선택,engine-services startPhase에서prepareWorldColliders. AnimationGraphPlayer tick/engine-services graphsMap+systems tick 소유자더읽기필요. actor별RuntimeLOD정책은2D/3D공통/camera없을때원본/강제레벨·정책검증필요,rootmotion/notifies/게임플레이물리 의미바꾸면안됨. WorldLOD정적메시/physicsLOD밴드도캐시/스왑수명/네이티브질의일치검토. 먼저주소/소유자확인하고공식본문읽은범위만등록할것. 새agent금지.
+
 # 누적178 모델 임포트 구현/검증, 설치 준비 — 계속 작업
 
 주인님 최신 남은거다하라고, 최종답변안함/계속. main82bf4e1 origin동일(177설치영수증),178제품/문서미커밋. 새agent허가없음. 실제사용자창/프로필보호/격리EXE/Versions1.
