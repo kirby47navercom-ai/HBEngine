@@ -1,3 +1,11 @@
+# 누적177 UI 자동 높이 검증·설치 준비, 다음178 모델 에셋
+
+주인님 최신지시 남은거전부계속. 아직최종답변없음. 175176 feature0c00cb7/receipta6b9662 origin/main동일. 현재177UI제품/문서미커밋. autoRows공유정의/Editorcheckbox/validation/runtime,MeasuredListLayout Fenwick,표시행DOM측정/resize/typography/rAF·scrollanchor/bottom·명시높이우선·고정호환/overflowclip·observer/frame/source/DOM해제·늦은갱신거부. ListView/TreeView 포커스·runtime비활성입력거부. ListView자료교체사라진선택-1,SetValue범위원자거부. 새deps/GPU회수0. autoheighttext행만,100k/깊이32/4096높이 기존검증. 복합행/CSS초대형scroll높이분할/전체a11y미완료.
+
+177 CPU5 lScjRb(100k/10k수정표본0.706ms·게임FPS아님), 기존17118 fVNMHB/UILayout/생성API PASS. Editor GJx4B8 humanauto checkbox/Undo/designer+직접virtual고정→auto→고정·dispose/late갱신 PASS; D3Drelease wrO0da(font30/18·zoom1.5 포함), WebGPU kbohTl(latestdispose/overflow포함/fontzoom) PASS. 기본UIworld/merge/Git/2D3D관절/차량/실제양역할네트워크까지모두회귀. auto-editor/jaEvlMauto-rows 시각확인. rcT74p 실패는검사width원래calc를빈문자열로지움,원문저장복원후통과. 최신UISetValue범위추가뒤CPU5확인,나머지product핵심변경없음. docs177.mjs지금실행완료·재실행금지. 다음commit소스→sync/install177→설치177Window+프로필SHA/Versions1/manifest→영수증push→178계속. 현재설치176 a2c8c587c0dfb8ef은검증완료,수정금지.
+
+다음178 AST02 조사전: tools/model-subassets.mjs 전체읽음(기존GLB/gltf/OBJ, HBid/uniquename/index sourcekey,이름중복은index fallback,overrides). prototype/model-subasset-overrides.js은name으로모든Mesh 일괄적용이라중복이름안전성부족. tools/project-service.mjs scanAsset은gltf/glb/obj만metadata추출. FBX도FileKindimport는가능하지만metadata미지원. 아직178제품코드없음/공식조사안함. model loading 소유자/registry importer settings/AI contract 먼저찾고공식Unitymodelimporter/UEFBX/glTF안정식별자대조후실제작업계속. FBX binarymetadata읽기/Model.ID(ThreeFBXLoader) 대응가능성,GLTFparser.associations런타임보존확인필요. index추측으로잘못된override재적용금지. 모델unit/axis·전용subassetUI·실제재가져오기흐름까지구현검토.
+
 # 175–176 설치·검증 완료, 누적177 UI 자동 행 높이 구현 계속
 
 0c00cb7ef1ef5292b34b9744430edd60397b4047 feature origin/main push완료. 실제 사용자 설치 C:/Users/kirby/HBEngine/Versions/a2c8c587c0dfb8ef/HBEngine.exe, bundlea2c8c587c0dfb8efd402fcfeb1e6c6d05e0ea8f34f4e5c0be4f2eb61ea3c4a66. 명세2426파일 실행후전체SHA일치, 이전15669948df76f42e/173280443바이트정리, Versions1,2바로가기/.hbproject연결검증. 사용자프로필10385파일 전후/설치검사후 SHA동일46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26.

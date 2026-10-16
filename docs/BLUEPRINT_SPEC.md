@@ -471,3 +471,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 175–176: Physics::SetJointFrames/SetJointMotor/SetJointLimits/SetVehicleInput/GetVehicleSpeed와 동일 서비스 5개가 카탈로그에 추가됐다. 총778노드/공통C++693함수. C++실제컴파일/관절·차량 실행과 BP노드 실제 실행 확인. Blueprint 컴포넌트 상세에서 휠을 일반 입력/추가/삭제/Undo로 편집한다.
+
+
+177: 새노드 증가 없이 기존 UI::SetListItems/SetValue/GetValue·같은 BP UI서비스에서 자동행높이를 사용한다. 카탈로그778/공통C++693 유지. C++자료교체·선택읽기와 입력/위젯 제작·Undo를 실제 게임에서 확인했다.

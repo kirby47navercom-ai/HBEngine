@@ -412,3 +412,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 175–176: component schema PhysicsConstraint/2D의 useFrames/frameRotation/autoConnectedFrame/connectedFrameRotation/connectedAxis/referenceAngle/motorMaxForce; RaycastVehicle의 wheels(semantic vehiclewheels array)·구동/조향/제동을 공용 revision/patch/Undo로 편집한다. wheel.position은 차체m, 각 숫자/boolean은 schema검증을 따른다. placement vehicle 레시피 사용. SDK Physics::SetJointFrames/SetJointMotor/SetJointLimits/SetVehicleInput/GetVehicleSpeed와 동일 BP서비스. gameplayDebug.vehicle.speed/wheels에 접촉/힘/회전/조향 공개.
+
+
+177: ListView/TreeView properties.autoRows=true는 실제 내용 높이를 측정한다. rowHeight는 최소/추정치, variableRows=true의 item.height는 우선한다. 기존 문서 revision/patch/Undo와 UI::SetListItems/SetValue를 공유한다. ListView 인덱스는 -1 또는 자료범위 안이며 교체로 사라진 선택은 -1로 비운다. UI03의 복합행/큰스크롤·상속/명명슬롯·3DUI 잔여와 구별한다.

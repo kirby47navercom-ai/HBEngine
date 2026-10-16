@@ -2931,5 +2931,14 @@
     "scope": "RapierPython98줄 차량설명+실제JS0.21ray_cast_vehicle_controller.d.ts 전체API대조; Unity2023.2본문0–103; UE5.8본문0–244 휠/차체/애니/설정/입력. Python과JS바인딩을구별",
     "unread": "Unity104이후 시각wheel코드·UE245이후/연결API·미디어·전체corpus",
     "globalGatePromotion": false
+  },
+  "supplemental177": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://docs.unity.com/en-us/engine/6000.6/manual/uitoolkits/uielements/uie-element-ref/uie-uxml-element-list-view"
+    ],
+    "scope": "본문318–443: ListView/ScrollView·재활용/refresh/rebuild·Fixed/DynamicHeight·키보드/포커스. HB 측정/부분합 자체구현",
+    "unread": "나머지본문/연결API/미디어/전체corpus",
+    "globalGatePromotion": false
   }
 }

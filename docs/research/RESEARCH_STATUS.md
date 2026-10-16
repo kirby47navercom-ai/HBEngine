@@ -416,3 +416,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 175–176: CORPUS_MANIFEST supplemental175/176에 공식본문 선택범위와 로컬Rapier0.21API대조를 등록했다. Python가이드/JS실제바인딩, Unity2023.2/6000.7beta·UE5.8 버전을 구별했다. 미독 링크/API/미디어와 전체gate는 유지한다.
+
+
+177: Unity6000.6 ListView본문318–443 선택구역을 supplemental177에 등록했다. 나머지 본문/연결API/미디어 미독과 전체gate를 유지한다.
