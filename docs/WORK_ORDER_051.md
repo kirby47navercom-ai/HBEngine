@@ -206,3 +206,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 177 설치 확인: 6ecfb60380268ecd·명세2434파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173530766바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_177.json.
+
+
+178: 모델 가져오기 전용 제작/미리보기·단위/축·FBX/중복이름 안정대응·미연결 수동연결/Undo·설정/원본 이름변경·일반 저장충돌·패키징·glTF C++ 루트모션을 연결했다. ENGINE_WORK_178.md/JSON에 실제 실행/경계와 조사한 본문 범위를 구별했다.

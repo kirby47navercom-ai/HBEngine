@@ -1,4 +1,4 @@
-import {Vector3,Quaternion,Euler,Matrix4} from 'three';
+import {Vector3,Quaternion,Euler,Matrix4,Matrix3} from 'three';
 import {sampleTimeline} from './blueprint-model.js';
 
 export const rootMotionModes=['none','ignore','all','montages'];
@@ -23,7 +23,7 @@ export class AnimationRootTrack {
     for(const t of this.tracks){const s=owner.slots[t.slot],property=s.binding?.parsedPath.propertyName||s.key.slice(5);if(s.rest.length!==(property==='quaternion'?4:3)||s.binding?.propertyIndex!==undefined)throw Error('루트 모션에는 전체 위치·Quaternion 트랙이 필요해요.');}
     this.position=new Vector3();this.rotation=new Quaternion();this.scale=new Vector3(1,1,1);this.matrix=new Matrix4();this.first=new Matrix4();this.end=new Matrix4();this.cycle=new Matrix4();this.previous=new Matrix4();this.current=new Matrix4();this.power=new Matrix4();this.factor=new Matrix4();this.deltaMatrix=new Matrix4();this.basis=new Quaternion();this.parentMatrix=new Matrix4();this.lockValues=new Map();this.length=owner.clips.get(id).length;
     this.sample(0,this.first);this.sample(this.length,this.end);this.cycle.copy(this.first).invert().multiply(this.end);
-    this.first.decompose(this.position,this.basis,this.scale);if(target&&target!==owner.group){let parent=target.parent;this.parentMatrix.identity();while(parent&&parent!==owner.group){parent.updateMatrix();this.parentMatrix.premultiply(parent.matrix);parent=parent.parent;}this.parentMatrix.decompose(this.position,this.rotation,this.scale);this.basis.premultiply(this.rotation);}
+    this.first.decompose(this.position,this.basis,this.scale);this.translationBasis=this.basis.clone();this.parentLinear=new Matrix3();if(target&&target!==owner.group){let parent=target.parent;this.parentMatrix.identity();while(parent&&parent!==owner.group){parent.updateMatrix();this.parentMatrix.premultiply(parent.matrix);parent=parent.parent;}this.parentMatrix.decompose(this.position,this.rotation,this.scale);this.basis.premultiply(this.rotation);this.parentLinear.setFromMatrix4(this.parentMatrix);}
     for(const t of this.tracks){const s=owner.slots[t.slot],q=s.type==='quaternion',value=this.p.lock==='reference'?s.rest:this.p.lock==='zero'?(q?[0,0,0,1]:[0,0,0]):this.value(t,0);this.lockValues.set(t.slot,new Float64Array(value));}
   }
   value(t,time){const v=t.interpolant?t.interpolant.evaluate(time):sampleTimeline(t.track,time);return t.rotation?new Quaternion().setFromEuler(new Euler(...v.map(x=>x*Math.PI/180))).toArray():v;}
@@ -32,6 +32,6 @@ export class AnimationRootTrack {
     if(!loop)return this.sample(Math.max(0,Math.min(this.length,time)),out).premultiply(this.deltaMatrix.copy(this.first).invert());
     const cycles=Math.floor(time/this.length);if(!Number.isSafeInteger(cycles))throw Error('루트 모션 반복 시간 범위 오류');this.power.identity();this.factor.copy(this.cycle);let n=Math.abs(cycles);if(cycles<0)this.factor.invert();while(n){if(n%2)this.power.multiply(this.factor);n=Math.floor(n/2);if(n)this.factor.multiply(this.factor);}this.sample(time-cycles*this.length,out).premultiply(this.deltaMatrix.copy(this.first).invert());return out.premultiply(this.power);
   }
-  extract(previous,current,loop,out){resetMotion(out);if(previous===current)return out;this.unwrapped(previous,loop,this.previous);this.unwrapped(current,loop,this.current);this.deltaMatrix.copy(this.previous).invert().multiply(this.current).decompose(this.position,this.rotation,this.scale);this.position.applyQuaternion(this.basis).toArray(out);this.rotation.premultiply(this.basis).multiply(this.rotationScratch??=this.basis.clone().invert()).normalize().toArray(out,3);if(!out.every(Number.isFinite))throw Error('루트 모션 계산 오류');return out;}
+  extract(previous,current,loop,out){resetMotion(out);if(previous===current)return out;this.unwrapped(previous,loop,this.previous);this.unwrapped(current,loop,this.current);this.deltaMatrix.copy(this.previous).invert().multiply(this.current).decompose(this.position,this.rotation,this.scale);this.position.applyQuaternion(this.translationBasis).applyMatrix3(this.parentLinear).toArray(out);this.rotation.premultiply(this.basis).multiply(this.rotationScratch??=this.basis.clone().invert()).normalize().toArray(out,3);if(!out.every(Number.isFinite))throw Error('루트 모션 계산 오류');return out;}
   lock(pose){for(const [index,value] of this.lockValues)pose[index].set(value);}
 }

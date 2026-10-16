@@ -1,4 +1,5 @@
-import {modelSubassets} from './model-subassets.mjs';
+import {modelSubassetReport} from './model-subassets.mjs';
+import {modelSource,readModelImport,writeModelImport} from './model-import-state.mjs';
 import {assetSuffix,assetTypes,createAsset,validAsset,assetValidationError} from '../prototype/asset-documents.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -11,7 +12,7 @@ import {commitAssetBatch,recoverAssetTransactions,readAssetTransaction} from './
 const textExtensions=new Set(['.h','.hpp','.cpp','.c','.json','.txt','.md','.hlsl','.glsl','.obj','.gltf','.csv','.yaml','.yml','.svg']);
 const referenceKeys=new Set(['asset','blueprintAsset','materialAsset','spriteAsset','tilemapAsset','tilemap','gameConfig','mesh','material','texture','cookieSprite','cookieTexture','normalTexture','vectorTexture','sheet','chordAction','context','sprite','tileset','physicalMaterial','sourceMesh','model','rig','animation','clip','blackboard','mixer','widget','audio','source','headerPath','sourcePath','inputMapping','action','parent','parentClass','startupScene','startupBlueprint','defaultInputMapping','gameMode','gameState','gameInstance','defaultController','playerState','defaultPawn']);
 export function assetReferences(data,filename){const result=new Set(),visit=(value,key)=>{if(typeof value==='string'&&(referenceKeys.has(key)||/^(Assets|Source)\/[^#]*\.[A-Za-z0-9]+(?:#[A-Za-z_]\w*)?$/.test(value))&&value&&!value.startsWith('data:')&&!/^[a-z]+:/i.test(value)&&value.includes('.'))result.add(key==='gameInstance'&&value.startsWith('Source/')?value.split('#')[0]:value);else if(Array.isArray(value))value.forEach(item=>visit(item,key));else if(value&&typeof value==='object')Object.entries(value).forEach(([k,v])=>visit(v,k));};visit(data,'');if(filename.endsWith('.gltf'))for(const item of [...data.buffers||[],...data.images||[]])if(item.uri&&!/^(?:[a-z]+:|\/)/i.test(item.uri))result.add(path.posix.normalize(path.posix.join(path.posix.dirname(filename),item.uri)));return [...result].sort();}
-export function assetKind(name){return Object.entries(assetSuffix).find(([,suffix])=>name.endsWith(suffix))?.[0]||(/\.(cpp|hpp|h|c|hlsl|glsl)$/i.test(name)?'code':fileKind(name)==='unsupported'?'file':fileKind(name));}
+export function assetKind(name){if(/\.(gltf|glb|obj|fbx)\.import\.json$/i.test(name))return 'modelimport';return Object.entries(assetSuffix).filter(([kind])=>kind!=='modelimport').find(([,suffix])=>name.endsWith(suffix))?.[0]||(/\.(cpp|hpp|h|c|hlsl|glsl)$/i.test(name)?'code':fileKind(name)==='unsupported'?'file':fileKind(name));}
 export class ProjectService {
   constructor(root){this.root=path.resolve(root);this.index={};this.redirects={};this.queue=Promise.resolve();this.writeQueue=Promise.resolve();}
   async init(seed=false){await fs.mkdir(this.root,{recursive:true});this.root=await fs.realpath(this.root);try{this.index=JSON.parse(await fs.readFile(path.join(this.root,'.hbassets.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
@@ -39,12 +40,13 @@ export class ProjectService {
   }
   saveIndex(){const task=this.queue.then(async()=>{const file=path.join(this.root,'.hbassets.json'),temp=file+'.tmp';await fs.writeFile(temp,JSON.stringify(this.index,null,2));await fs.rename(temp,file);});this.queue=task.catch(()=>{});return task;}
   async scanAsset(relative,force=false){
-    const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('에셋 파일을 선택하세요.');const canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=this.index[canonical]??={id:randomUUID()};
-    if(!force&&entry.hash&&entry.modified===stat.mtimeMs&&entry.size===stat.size)return entry;
-    const hash=createHash('sha256');for await(const chunk of createReadStream(file))hash.update(chunk);const digest=hash.digest('hex');let dependencies=[],error=null;
-    if(/\.(json|gltf)$/i.test(file)){try{if(stat.size>16777216)throw Error('참조 분석 JSON은 16 MB까지 지원해요.');const data=JSON.parse(await fs.readFile(file,'utf8'));const kind=assetKind(canonical);if(assetSuffix[kind]&&!validAsset(kind,data))throw Error('에셋 데이터 검증 실패');dependencies=assetReferences(data,canonical);}catch(problem){error=problem.message;}}
-    if(/\.(gltf|glb|obj)$/i.test(canonical)){try{entry.subassets=modelSubassets(await fs.readFile(file),canonical,entry.id,entry.subassets);}catch(problem){error=problem.message;}}
-    const changed=entry.hash!==digest;Object.assign(entry,{hash:digest,size:stat.size,modified:stat.mtimeMs,dependencies,error,status:error?'error':'ready'});if(force||changed){entry.revision=(entry.revision||0)+1;entry.importedAt=new Date().toISOString();}return entry;
+    const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('에셋 파일을 선택하세요.');const canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=this.index[canonical]??={id:randomUUID()},model=modelSource(canonical);let metadata=null,metadataError=null;
+    if(model){try{if(force)this.modelImportCache?.delete(canonical);metadata=await readModelImport(this,canonical);}catch(error){metadataError=error.message;}}
+    if(!force&&entry.hash&&entry.modified===stat.mtimeMs&&entry.size===stat.size){if(model){if(metadata&&(!metadata.sourceHash||metadata.sourceHash===entry.hash)){const rows=new Map(metadata.subassets.map(row=>[row.id,row]));for(const row of entry.subassets||[])row.overrides=structuredClone(rows.get(row.id)?.overrides||{});}entry.importSettings=metadata?.settings||null;entry.importNeedsReimport=!!(metadata?.sourceHash&&metadata.sourceHash!==entry.hash);entry.error=entry.modelSourceError||metadataError;entry.status=entry.error?'error':'ready';}return entry;}
+    let bytes,digest;if(model){bytes=await fs.readFile(file);digest=createHash('sha256').update(bytes).digest('hex');}else{const hash=createHash('sha256');for await(const chunk of createReadStream(file))hash.update(chunk);digest=hash.digest('hex');}let dependencies=[],error=metadataError;
+    if(/\.(json|gltf)$/i.test(file)){try{if(stat.size>16777216)throw Error('참조 분석 JSON은 16 MB까지 지원해요.');const data=JSON.parse(bytes?bytes.toString('utf8'):await fs.readFile(file,'utf8'));const kind=assetKind(canonical);if(assetSuffix[kind]&&!validAsset(kind,data))throw Error('에셋 데이터 검증 실패');dependencies=assetReferences(data,canonical);}catch(problem){error=problem.message;}}
+    if(model){try{const previous=metadata?[...metadata.subassets,...(metadata.unresolvedSubassets||[])]:[...(entry.subassets||[]),...(entry.unresolvedSubassets||[])],report=modelSubassetReport(bytes,canonical,entry.id,previous);Object.assign(entry,{subassets:report.rows,unresolvedSubassets:report.unresolved,modelDetected:report.detected,modelWarnings:report.warnings,modelSourceError:null,importSettings:metadata?.settings||null,importNeedsReimport:!!(metadata?.sourceHash&&metadata.sourceHash!==digest)});}catch(problem){entry.modelSourceError=problem.message;error=problem.message;}}
+    const after=await fs.stat(file);if(after.mtimeMs!==stat.mtimeMs||after.size!==stat.size)throw Error('가져오는 동안 원본이 변경됐어요. 다시 시도하세요.');const changed=entry.hash!==digest;Object.assign(entry,{hash:digest,size:stat.size,modified:stat.mtimeMs,dependencies,error,status:error?'error':'ready'});if(force||changed){entry.revision=(entry.revision||0)+1;entry.importedAt=new Date().toISOString();}return entry;
   }
   async registry(){const files=(await this.files()).filter(file=>file.kind!=='folder');for(const file of files)await this.scanAsset(file.path);await this.saveIndex();return files;}
   async assetRegistry(){
@@ -61,11 +63,12 @@ export class ProjectService {
   }
   async reimport(paths){
     if(!Array.isArray(paths)||!paths.length||paths.length>1000||paths.some(p=>typeof p!=='string'))throw Error('다시 가져올 파일을 선택하세요.');await this.registry();const changed=[];
-    for(const relative of new Set(paths)){const file=await this.resolve(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=await this.scanAsset(canonical,true);if(entry.error)throw Error(canonical+': '+entry.error);if(entry.subassets){const metadata=canonical+'.import.json';try{await this.read(metadata);await this.write(metadata,JSON.stringify({version:1,source:canonical,subassets:entry.subassets},null,2));}catch(error){if(error.code!=='ENOENT')throw error;}}changed.push(canonical);}
+    for(const relative of new Set(paths)){const file=await this.resolve(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=await this.scanAsset(canonical,true);if(entry.error)throw Error(canonical+': '+entry.error);if(modelSource(canonical)){try{await this.read(canonical+'.import.json');await writeModelImport(this,canonical,entry);}catch(error){if(error.code!=='ENOENT')throw error;}}changed.push(canonical);}
     const affected=new Set(changed);let more=true;while(more){more=false;for(const [source,entry] of Object.entries(this.index)){if(affected.has(source))continue;for(const dependency of entry.dependencies||[]){let canonical=dependency;try{canonical=path.relative(this.root,await this.resolve(dependency)).split(path.sep).join('/');}catch{}if(affected.has(canonical)){affected.add(source);more=true;break;}}}}await this.saveIndex();return {changed,affected:[...affected]};
   }
-  async overrideModelSubasset(relative,id,overrides){if(!overrides||Object.keys(overrides).some(k=>!['visible','castShadow','receiveShadow'].includes(k)||typeof overrides[k]!=='boolean'))throw Error('모델 오버라이드 속성 오류');const entry=await this.scanAsset(relative,true),row=entry.subassets?.find(s=>s.id===id);if(!row)throw Error('모델 하위 에셋이 없어요.');row.overrides={...overrides};await this.write(relative+'.import.json',JSON.stringify({version:1,source:relative,subassets:entry.subassets},null,2));await this.saveIndex();return row;}
-  async import(folder,name,data){if(!name||name.includes('/')||name.includes('\\'))throw Error('가져올 파일 이름 오류');const dir=await this.resolve(folder);if(!(await fs.stat(dir)).isDirectory())throw Error('가져올 폴더가 없어요.');const ext=path.extname(name),stem=name.slice(0,name.length-ext.length);for(let i=0;i<10000;i++){const relative=(folder?folder+'/':'')+stem+(i?'_'+i:'')+ext,file=await this.resolve(relative,true);let handle;try{handle=await fs.open(file,'wx');await handle.writeFile(data);await handle.close();handle=null;this.index[relative]={id:randomUUID(),importedAt:new Date().toISOString(),status:'source'};await this.saveIndex();return {path:relative,kind:assetKind(relative)};}catch(error){if(handle){await handle.close().catch(()=>{});await fs.unlink(file).catch(()=>{});}if(error.code!=='EEXIST')throw error;}}throw Error('같은 이름의 파일이 너무 많아요.');}
+  async prepareModelImport(relative){if(!modelSource(relative))throw Error('가져오기 설정을 지원하는 원본 모델을 선택하세요.');const file=await this.resolve(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=await this.scanAsset(canonical,true);if(entry.error)throw Error(entry.error);const existing=await readModelImport(this,canonical),data=existing?.version===2&&existing.sourceHash===entry.hash?existing:await writeModelImport(this,canonical,entry);await this.saveIndex();return {path:canonical+'.import.json',kind:'modelimport',data};}
+  async overrideModelSubasset(relative,id,overrides){if(!overrides||Object.keys(overrides).some(k=>!['visible','castShadow','receiveShadow'].includes(k)||typeof overrides[k]!=='boolean'))throw Error('모델 오버라이드 속성 오류');const entry=await this.scanAsset(relative,true),row=entry.subassets?.find(s=>s.id===id);if(!row||row.kind!=='mesh')throw Error('메시 하위 에셋을 선택하세요.');if(entry.error)throw Error(entry.error);row.overrides={...overrides};await writeModelImport(this,relative,entry);await this.saveIndex();return row;}
+  async import(folder,name,data){if(!name||name.includes('/')||name.includes('\\'))throw Error('가져올 파일 이름 오류');const dir=await this.resolve(folder);if(!(await fs.stat(dir)).isDirectory())throw Error('가져올 폴더가 없어요.');const ext=path.extname(name),stem=name.slice(0,name.length-ext.length);for(let i=0;i<10000;i++){const relative=(folder?folder+'/':'')+stem+(i?'_'+i:'')+ext,file=await this.resolve(relative,true);let handle;try{handle=await fs.open(file,'wx');await handle.writeFile(data);await handle.close();handle=null;this.index[relative]={id:randomUUID(),importedAt:new Date().toISOString(),status:'source'};if(modelSource(relative)){const entry=await this.scanAsset(relative,true);if(!entry.error)await writeModelImport(this,relative,entry);}await this.saveIndex();return {path:relative,kind:assetKind(relative),warning:this.index[relative].error||null};}catch(error){if(handle){await handle.close().catch(()=>{});await fs.unlink(file).catch(()=>{});}if(error.code!=='EEXIST')throw error;}}throw Error('같은 이름의 파일이 너무 많아요.');}
   async mkdir(relative){await fs.mkdir(await this.resolve(relative,true),{recursive:true});}
   async read(relative){const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('파일이 아니에요.');return {file,size:stat.size};}
   checkedWrite(relative,text,expected,guard=()=>{}){
@@ -88,7 +91,7 @@ export class ProjectService {
         const kind=assetKind(canonical);let actual;try{actual=before===null?null:JSON.stringify(assetSuffix[kind]?JSON.parse(before):before);}catch{actual=undefined;}
         if(actual!==entry.expected)throw Object.assign(Error('외부에서 변경된 파일이에요: '+canonical),{status:409,code:'REVISION_CONFLICT'});
         if(entry.text===null&&before===null)throw Error('삭제할 파일이 없어요.');bytes+=Buffer.byteLength(before||'')+Buffer.byteLength(entry.text||'');if(bytes>8388608)throw Error('저장 묶음 원본과 변경 내용은 합계8MB까지 지원해요.');
-        if(entry.text!==null&&assetSuffix[kind]){const data=JSON.parse(entry.text);if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+canonical);}
+        if(entry.text!==null&&assetSuffix[kind]){const data=JSON.parse(entry.text);if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+canonical);if(kind==='modelimport')await this.validateModelImportSource(canonical,data);}
         rows.push({path:canonical,before,after:entry.text,...(restoreIndex.has(key)?{restoreIndex:restoreIndex.get(key)}:{})});drafts.set(key,entry.text);
       }
       if(rows.some(r=>/\.(hbblueprint\.json|h|hpp|cpp|c)$/i.test(r.path))){
@@ -114,7 +117,8 @@ export class ProjectService {
     const readText=async requested=>{const target=await this.canonicalFile(requested),key=path.relative(this.root,target).split(path.sep).join('/').toLowerCase();if(drafts.has(key)){const text=drafts.get(key);if(text===null)throw Error('삭제된 블루프린트/C++ 참조: '+requested);return text;}return fs.readFile(target,'utf8');};
     return createBlueprintResolver(async requested=>JSON.parse(await readText(requested)),readText)(canonical);
   }
-  async writeFile(relative,data){if(!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 텍스트 파일이 아니에요.');const file=await this.resolve(relative,true);const kind=assetKind(relative);if(assetSuffix[kind]&&!validAsset(kind,JSON.parse(data)))throw Error(assetValidationError(kind,JSON.parse(data))+': '+relative);if(relative.endsWith('.hbscene.json')&&!validScene(JSON.parse(data)))throw Error('장면 검증 실패');if(relative.endsWith('.hbblueprint.json'))await this.validateBlueprint(relative,JSON.parse(data));await fs.mkdir(path.dirname(file),{recursive:true});const temp=file+'.'+randomUUID()+'.tmp';try{await fs.writeFile(temp,data,{flag:'wx'});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(()=>{});}this.index[relative]??={id:randomUUID()};await this.saveIndex();}
+  async validateModelImportSource(relative,data){const source=relative.slice(0,-'.import.json'.length);if(await this.canonicalFile(data.source)!==await this.canonicalFile(source))throw Error('가져오기 설정의 원본 모델 경로가 달라요.');}
+  async writeFile(relative,data){if(!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 텍스트 파일이 아니에요.');const file=await this.resolve(relative,true);const kind=assetKind(relative);if(assetSuffix[kind]&&!validAsset(kind,JSON.parse(data)))throw Error(assetValidationError(kind,JSON.parse(data))+': '+relative);if(kind==='modelimport'){await this.validateModelImportSource(relative,JSON.parse(data));}if(relative.endsWith('.hbscene.json')&&!validScene(JSON.parse(data)))throw Error('장면 검증 실패');if(relative.endsWith('.hbblueprint.json'))await this.validateBlueprint(relative,JSON.parse(data));await fs.mkdir(path.dirname(file),{recursive:true});const temp=file+'.'+randomUUID()+'.tmp';try{await fs.writeFile(temp,data,{flag:'wx'});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(()=>{});}this.index[relative]??={id:randomUUID()};await this.saveIndex();}
   async create(folder,kind,name,parent){
     if(!assetTypes[kind]||kind==='code')throw Error('에셋 종류 오류');
     const data=createAsset(kind,name,parent);if(!validAsset(kind,data))throw Error('생성 데이터 검증 실패');
@@ -123,15 +127,33 @@ export class ProjectService {
     await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(data,null,2),{flag:'wx'});
     this.index[relative]={id:randomUUID()};await this.saveIndex();return {path:relative,name:path.basename(relative),kind};
   }
-  async rename(from,to){
+  rename(from,to){
+    const task=this.writeQueue.then(()=>this.renameFiles(from,to));this.writeQueue=task.catch(()=>{});return task;
+  }
+  async renameFiles(from,to){
     if(!from||!to||to.startsWith(from+'/'))throw Error('이름 변경 경로 오류');
     const old=await this.resolve(from),next=await this.resolve(to,true,false),source=path.relative(this.root,old).split(path.sep).join('/');
     if(next.startsWith(old+path.sep))throw Error('이름 변경 경로 오류');
-    try{await fs.access(next);throw Error('같은 이름이 이미 있어요.');}catch(error){if(error.code!=='ENOENT')throw error;}
-    const redirects={...this.redirects};delete redirects[to];redirects[source]=to;
-    await fs.rename(old,next);const redirectFile=path.join(this.root,'.hbredirects.json'),temp=redirectFile+'.'+randomUUID()+'.tmp';
-    try{await fs.writeFile(temp,JSON.stringify(redirects,null,2),{flag:'wx'});await fs.rename(temp,redirectFile);this.redirects=redirects;}catch(error){await fs.rename(next,old);throw error;}finally{await fs.unlink(temp).catch(()=>{});}
-    for(const key of Object.keys(this.index))if(key===source||key.startsWith(source+'/')){this.index[to+key.slice(source.length)]=this.index[key];delete this.index[key];}await this.saveIndex();
+    const moves=[[old,next,source,to]];
+    if(modelSource(source)){
+      if(path.extname(source).toLowerCase()!==path.extname(to).toLowerCase())throw Error('이름 변경으로 모델 형식을 바꿀 수 없어요.');
+      try{const sidecar=await this.resolve(source+'.import.json');moves.push([sidecar,await this.resolve(to+'.import.json',true,false),source+'.import.json',to+'.import.json']);}catch(error){if(error.code!=='ENOENT')throw error;}
+    }
+    for(const [,target] of moves){try{await fs.access(target);throw Error('같은 이름이 이미 있어요.');}catch(error){if(error.code!=='ENOENT')throw error;}}
+    const previousRedirects=this.redirects,previousIndex=structuredClone(this.index),redirects={...this.redirects};
+    for(const [,,fromPath,toPath] of moves){delete redirects[toPath];redirects[fromPath]=toPath;}
+    const completed=[],redirectFile=path.join(this.root,'.hbredirects.json'),temp=redirectFile+'.'+randomUUID()+'.tmp';let redirectsWritten=false;
+    try{
+      for(const [fromFile,toFile] of moves){await fs.rename(fromFile,toFile);completed.push([fromFile,toFile]);}
+      await fs.writeFile(temp,JSON.stringify(redirects,null,2),{flag:'wx'});await fs.rename(temp,redirectFile);redirectsWritten=true;this.redirects=redirects;
+      for(const [,,fromPath,toPath] of moves)for(const key of Object.keys(this.index))if(key===fromPath||key.startsWith(fromPath+'/')){this.index[toPath+key.slice(fromPath.length)]=this.index[key];delete this.index[key];}
+      this.modelImportCache?.clear();await this.saveIndex();
+    }catch(error){
+      this.index=previousIndex;this.redirects=previousRedirects;
+      for(const [fromFile,toFile] of completed.reverse())await fs.rename(toFile,fromFile);
+      if(redirectsWritten){await fs.writeFile(temp,JSON.stringify(previousRedirects,null,2));await fs.rename(temp,redirectFile);await this.saveIndex();}
+      throw error;
+    }finally{await fs.unlink(temp).catch(()=>{});}
   }
 
 }

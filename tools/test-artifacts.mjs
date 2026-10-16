@@ -19,7 +19,7 @@ export async function pruneTestArtifacts(work=null,{nativeCacheOnly=false,protec
   if(process.platform!=='win32')return {skipped:'Windows 전용 검사 캐시 정리'};
   if(nativeCacheOnly&&work)throw Error('공용 캐시 정리는 작업 디렉터리를 지정하지 않아요.');
   const prefixes=new Set();for(const name of await fs.readdir(import.meta.dirname)){if(!/\.mjs$/.test(name))continue;const text=await fs.readFile(path.join(import.meta.dirname,name),'utf8');for(const pattern of [/native\/build\/([a-z0-9-]+)-/g,/native\/build['"]\),['"]([a-z0-9-]+)-['"]/g])for(const m of text.matchAll(pattern))prefixes.add(m[1]+'-');}
-  const owned=name=>/^[a-z0-9-]+-[A-Za-z0-9]{6}$/.test(name)&&[...prefixes].some(p=>name.startsWith(p));
+  const owned=name=>/^[a-z0-9-]+-[A-Za-z0-9]{6}$/.test(name)&&(scheduled.has(name)||[...prefixes].some(p=>name.startsWith(p)));
   const names=nativeCacheOnly?[]:work?[path.basename(path.resolve(work))]:(await fs.readdir(build,{withFileTypes:true})).filter(e=>e.isDirectory()&&!e.isSymbolicLink()&&owned(e.name)).map(e=>e.name);
   if(work&&(!inside(build,path.resolve(work))||path.dirname(path.resolve(work))!==build||!owned(names[0])))throw Error('검사 디렉터리 범위를 확인하세요.');
   const entries=[],manifests=[],receipt=path.join(build,'cache-prune-'+Date.now()+'-'+randomUUID());

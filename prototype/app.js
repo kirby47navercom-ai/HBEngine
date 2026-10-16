@@ -1,3 +1,5 @@
+import {ModelPreview} from './model-preview.js';
+import {ModelImportEditor} from './model-import-editor.js';
 import {defaultWheel,editVehicleWheel} from './vehicle-config.js';
 import {AssetMergePanel} from './asset-merge-panel.js';
 import {SourceControlPanel} from './source-control-panel.js';
@@ -168,7 +170,7 @@ async function save(all=false) {
   if(running)return notify('실행을 종료한 뒤 저장하세요.');assetPanes.get(assetDocs.active)?.editor?.flush?.();captureDocument();
   const docs=all?[...assetDocs.items.values()].filter(d=>d.dirty):[assetDocs.current];
   try{for(const doc of docs.filter(Boolean)){if(!assetSuffix[doc.kind]&&doc.kind!=='text')continue;await assetDocs.save(doc,(path,text,expected)=>editorRequest('/api/asset/write',{method:'POST',body:JSON.stringify({path,text,expected})}));}
-    propagateMaterialFunctions(docs);
+    propagateMaterialFunctions(docs);refreshModelImports(docs);
     dirty=[...assetDocs.items.values()].some(d=>d.dirty);$('#dirty-mark').hidden=!dirty;$('#status-text').textContent=dirty?'저장하지 않은 에셋':'준비됨';$('#save-status').textContent='프로젝트 저장됨';renderDocumentTabs();queueRecovery();await Promise.all([...projectBrowsers.values()].map(browser=>browser.refresh()));notify(all?'모든 에셋 저장됨':'에셋 저장됨');return true;
   }catch(error){notify('저장 실패: '+error.message);return false;}
 }
@@ -454,10 +456,10 @@ async function openColliderEditor(button){
 }
 async function reloadImportedAssets(result){
   if(running)throw Error('실행 종료 후 장면을 갱신하세요.');captureDocument();const affected=new Set(result.affected),active=assetDocs.current;
-  for(const doc of assetDocs.items.values())if(affected.has(doc.path)&&!doc.dirty){const data=await(await editorRequest(fileUrl(doc.path))).json();if(!validAsset(doc.kind,data))throw Error('다시 가져온 에셋 검증 실패: '+doc.path);doc.data=data;doc.saved=JSON.stringify(data);doc.history.length=0;doc.future.length=0;}
-  if(active)installDocumentData(active);rebuildWorld();updateSurface();renderDocumentTabs();queueRecovery();notify(result.changed.length+'개 에셋 갱신');
+  for(const doc of assetDocs.items.values())if(affected.has(doc.path)&&!doc.dirty&&assetSuffix[doc.kind]){const data=await(await editorRequest(fileUrl(doc.path))).json();if(!validAsset(doc.kind,data))throw Error('다시 가져온 에셋 검증 실패: '+doc.path);doc.data=data;doc.saved=JSON.stringify(data);doc.history.length=0;doc.future.length=0;}
+  if(active)installDocumentData(active);for(const entry of dock.entries.values())if(affected.has(entry.path))entry.reload?.();rebuildWorld();updateSurface();renderDocumentTabs();queueRecovery();notify(result.changed.length+'개 에셋 갱신');
 }
-function projectHooks(){return {references:file=>openReferenceViewer(file.path),open:openProjectAsset,reimport:reloadImportedAssets,error:notify,import:()=>doAction('import'),wrap:wrapSource,rename:renameDocumentPaths,files:files=>{assets.splice(0,assets.length,...files);refreshAssetIndex();},newBrowser:folder=>createProjectWindow({folder,target:dock.paneFor(focusedWindow)}),windowMenu:event=>openMenu({ownerDocument:event.target?.ownerDocument,getBoundingClientRect:()=>({left:event.clientX,bottom:event.clientY})},[['오브젝트 배치','window:placement'],['콘텐츠 브라우저','window:project'],['뷰포트','window:viewport'],['출력 로그','window:console'],['소스 관리','window:sourcecontrol'],['월드 설정','window:world']]),select:file=>{$('#inspector-content').innerHTML='<div class="editor-asset-summary">'+icon(assetIcon(file.kind))+'<h3>'+escapeHtml(assetTitle(file.path))+'</h3><p>'+escapeHtml(file.path)+'</p><p>'+escapeHtml(assetTypes[file.kind]?.label||file.kind)+' · '+((file.size||0)/1024).toFixed(1)+' KB</p></div>';}};}
+function projectHooks(){return {modelImport:openModelImport,references:file=>openReferenceViewer(file.path),open:openProjectAsset,reimport:reloadImportedAssets,error:notify,import:()=>doAction('import'),wrap:wrapSource,rename:renameDocumentPaths,files:files=>{assets.splice(0,assets.length,...files);refreshAssetIndex();},newBrowser:folder=>createProjectWindow({folder,target:dock.paneFor(focusedWindow)}),windowMenu:event=>openMenu({ownerDocument:event.target?.ownerDocument,getBoundingClientRect:()=>({left:event.clientX,bottom:event.clientY})},[['오브젝트 배치','window:placement'],['콘텐츠 브라우저','window:project'],['뷰포트','window:viewport'],['출력 로그','window:console'],['소스 관리','window:sourcecontrol'],['월드 설정','window:world']]),select:file=>{$('#inspector-content').innerHTML='<div class="editor-asset-summary">'+icon(assetIcon(file.kind))+'<h3>'+escapeHtml(assetTitle(file.path))+'</h3><p>'+escapeHtml(file.path)+'</p><p>'+escapeHtml(assetTypes[file.kind]?.label||file.kind)+' · '+((file.size||0)/1024).toFixed(1)+' KB</p></div>';}};}
 function openReferenceViewer(path){const id='references:'+path;if(dock.entries.has(id))return dock.open(id);const element=document.createElement('div'),viewer=new ReferenceViewer(element,path,{open:openProjectAsset,error:notify});dock.add({id,kind:'references',title:'참조 · '+assetTitle(path),element,navigateHistory:direction=>viewer.navigateHistory(direction),dispose:()=>viewer.dispose()},dock.paneFor(focusedWindow));}
 function createProjectWindow({id,folder,target}={}){if(!id){let number=2;while(projectBrowsers.has('project:'+number)&&number<999)number++;id='project:'+number;}if(dock?.entries.has(id)){dock.open(id,target);return dock.entries.get(id);}const element=document.createElement('div');element.className='workspace-view extra-project-browser';const header=document.createElement('div');header.className='document-toolbar';const breadcrumb=document.createElement('span');header.append(breadcrumb);const content=document.createElement('div');content.className='assets-content';element.append(header,content);const browser=new ProjectBrowser(content,breadcrumb,projectHooks(),{id,folder});projectBrowsers.set(id,browser);const entry={id,kind:'project',title:'콘텐츠 브라우저 '+id.split(':')[1],element,browser,navigateHistory:direction=>browser.navigateHistory(direction),dispose:()=>{browser.dispose();projectBrowsers.delete(id);}};if(dock)dock.add(entry,target||dock.paneFor(focusedWindow)||dock.leaves().at(-1));return entry;}
 function openBuildProfiles(){if(dock.entries.has('build-profiles'))return dock.open('build-profiles');const element=document.createElement('div'),panel=new BuildPanel(element,{session,openScenes:()=>[...assetDocs.items.values()].filter(d=>d.kind==='scene').map(d=>d.path),saveAll:()=>save(true),error:error=>notify(error.message)});dock.add({id:'build-profiles',kind:'build',title:'빌드 프로필',element,buildPanel:panel,dispose:()=>panel.dispose()},dock.paneFor('scene'));}
@@ -539,10 +541,25 @@ async function openProjectAsset(file){
   const toolbar=document.createElement('div');toolbar.className='document-toolbar';toolbar.textContent=file.path;element.append(toolbar);
   if(file.kind==='texture'){const img=document.createElement('img');img.src=fileUrl(file.path);img.alt=file.name;element.append(img);}
   else if(file.kind==='media'){const player=document.createElement(/\.(wav|mp3|ogg|flac)$/i.test(file.path)?'audio':'video');player.src=fileUrl(file.path);player.controls=true;player.onerror=()=>notify('브라우저 디코더가 이 파일을 재생하지 못해요.');element.append(player);}
-  else if(file.kind==='model'){const button=document.createElement('button');button.textContent='장면에 배치';toolbar.append(button);button.onclick=()=>placeModel({...file,path:entry.path,name:entry.title}).catch(error=>notify(error.message));const result=await loadModel(file.path),canvas=document.createElement('canvas');canvas.ariaLabel='모델 미리보기';element.append(canvas);const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));const world=new THREE.Scene();world.background=new THREE.Color('#252f32');world.add(new THREE.HemisphereLight(0xffffff,0x46563e,2));const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(3,6,3);world.add(light);world.add(result.object);const bounds=new THREE.Box3().setFromObject(result.object),center=bounds.getCenter(new THREE.Vector3()),size=Math.max(...bounds.getSize(new THREE.Vector3()).toArray(),1),view=new THREE.PerspectiveCamera(45,1,.01,size*100);view.position.copy(center).add(new THREE.Vector3(size,size,size*1.5));const controls=createViewportControls(view,canvas,{onFocus:()=>fitViewportSelection(view,controls,bounds),settings:{speed:Math.max(.01,size)}});controls.target.copy(center);view.lookAt(center);controls.update(0);const observer=new ResizeObserver(()=>{if(!canvas.clientWidth||!canvas.clientHeight)return;renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);view.aspect=canvas.clientWidth/canvas.clientHeight;view.updateProjectionMatrix();});observer.observe(element);let disposed=false;entry.dispose=()=>{disposed=true;observer.disconnect();controls.dispose();renderer.dispose();const resources=new Set();world.traverse(child=>{if(child.geometry)resources.add(child.geometry);for(const material of child.material?(Array.isArray(child.material)?child.material:[child.material]):[]){resources.add(material);for(const value of Object.values(material))if(value?.isTexture)resources.add(value);}if(child.skeleton?.boneTexture)resources.add(child.skeleton.boneTexture);});for(const resource of resources)resource.dispose();};const render=()=>{if(disposed||!element.isConnected)return;if(dock.visible(entry.id)){controls.update();renderer.render(world,view);}dock.requestAnimationFrame(render);};dock.requestAnimationFrame(render);}
+  else if(file.kind==='model'){
+    const place=document.createElement('button');place.textContent='장면에 배치';toolbar.append(place);place.onclick=()=>placeModel({...file,path:entry.path,name:entry.title}).catch(error=>notify(error.message));
+    const settings=document.createElement('button');settings.textContent='가져오기 설정';toolbar.append(settings);settings.onclick=()=>openModelImport({...file,path:entry.path}).catch(error=>notify(error.message));
+    const preview=document.createElement('div');preview.className='source-model-preview';element.append(preview);
+    entry.reload=()=>{entry.preview?.dispose();entry.preview=new ModelPreview(preview,{load:()=>loadModel(entry.path),visible:()=>dock.visible(entry.id),error:notify});};entry.reload();entry.dispose=()=>entry.preview?.dispose();
+  }
   else if(file.text){const text=await (await editorRequest(fileUrl(file.path))).text();if(text.length>1048576)throw Error('편집 가능한 파일 크기 초과');file.kind='text';assetDocs.open(file.path,'text',text);const textarea=document.createElement('textarea');textarea.value=text;textarea.ariaLabel=file.name+' 내용';textarea.spellcheck=false;element.append(textarea);textarea.onfocus=remember;textarea.oninput=()=>{assetDocs.items.get(entry.path).data=textarea.value;changed();};}
   else throw Error('미리보기 임포터가 없는 파일: '+file.name);
   documents.set(id,element);dock.entries.set(id,entry);if(!assetDocs.items.has(file.path))assetDocs.open(file.path,file.kind,{name:file.name});activateDocument(file.path);
+}
+async function openModelImport(file){
+  if(running)throw Error('실행을 종료한 뒤 모델 가져오기 설정을 여세요.');
+  const path=file.path+'.import.json';if(assetDocs.items.has(path)){activateDocument(path);return assetDocs.items.get(path);}
+  const result=await(await editorRequest('/api/asset/model-import',{method:'POST',body:JSON.stringify({path:file.path})})).json();
+  await refreshAssetIndex();await openProjectAsset({path:result.path,kind:'modelimport',name:assetTitle(result.path)});return assetDocs.items.get(result.path);
+}
+function refreshModelImports(docs){
+  const sources=new Set(docs.filter(doc=>doc?.kind==='modelimport'&&!doc.dirty).map(doc=>doc.path.replace(/\.import\.json$/i,'')));if(!sources.size)return;
+  rebuildWorld();for(const entry of dock.entries.values())if(sources.has(entry.path))entry.reload?.();
 }
 async function placeBlueprint(file){
   const owner=assetDocs.items.get(activeScenePath);if(owner?.kind!=='scene')throw Error('블루프린트를 배치할 장면을 여세요.');
@@ -1233,7 +1250,7 @@ function installDocumentData(doc){
     const pane=assetPanes.get(doc.path);if(pane?.editor){pane.editor.selection.clear();pane.editor.trackId=doc.data.timeline.tracks[0]?.id;pane.editor.render();}
   }
   if(doc.kind in worldAssetTypes){const editor=assetPanes.get(doc.path)?.editor;editor?.render();editor?.rebuild().catch(e=>notify(e.message));refreshWorldAssets();}
-  else if(['editortool','materialfunction','materiallayer','materialblend','spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
+  else if(['modelimport','editortool','materialfunction','materiallayer','materialblend','spriterig','audiomixer','widget','animgraph','sprite','tilemap','spriteanimation',...Object.keys(gameplayTypes),...Object.keys(retargetAssetTypes)].includes(doc.kind))assetPanes.get(doc.path)?.editor?.render();
   else if(!['scene','blueprint','material','materialfunction','materiallayer','materialblend','animation','curve','text'].includes(doc.kind)&&assetPanes.has(doc.path))renderDataEditor(assetPanes.get(doc.path).element,doc,projectAssetFiles,dataEditorHooks());
   updateSurface();renderInspector();
 }
@@ -1248,7 +1265,15 @@ function ensureAssetPane(doc){
   const pane={id,element};assetPanes.set(doc.path,pane);
   dock.entries.set(id,{id,title:assetTypes[doc.kind]?.label||doc.kind,element,path:doc.path});
   if(doc.kind==='text'){const input=document.createElement('textarea');input.value=doc.data;input.ariaLabel=assetTitle(doc.path)+' 내용';input.onfocus=remember;input.oninput=()=>{doc.data=input.value;changed();};element.append(input);documents.set(id,element);}
+  else if(doc.kind==='modelimport'){
+    pane.editor=new ModelImportEditor(element,doc,{before:remember,change:changed,error:notify,load:loadModel,visible:()=>dock.visible(pane.id),save:async()=>{activateDocument(doc.path);if(!await save())throw Error('모델 설정 저장 실패');},reimport:async()=>{
+      if(doc.dirty)throw Error('변경한 설정을 저장한 뒤 다시 가져오세요.');
+      const result=await(await editorRequest('/api/asset/reimport',{method:'POST',body:JSON.stringify({paths:[doc.path.replace(/\.import\.json$/i,'')]})})).json();await reloadImportedAssets(result);
+      if(assetDocs.items.get(doc.path)!==doc||assetPanes.get(doc.path)!==pane)return;pane.editor.dispose();assetPanes.delete(doc.path);dock.entries.delete(pane.id);element.remove();activateDocument(doc.path,true);
+    }});pane.dispose=()=>pane.editor.dispose();
+  }
   else if(['materialfunction','materiallayer','materialblend'].includes(doc.kind)){
+
     element.className='workspace-view material-function-workspace';const graph=document.createElement('div');graph.className='material-function-graph';element.append(graph);
     pane.editor=new MaterialEditor(graph,()=>doc,{before:remember,change:()=>{changed();updateSurface();renderAssetInspector();},files:()=>projectAssetFiles,readAsset,extract:openMaterialExtraction,preview:setMaterialPreview,openAsset:path=>openProjectAsset(projectAssetFiles.find(f=>f.path===path)||{path,kind:'materialfunction',name:assetTitle(path)}),error:notify,select:renderAssetInspector,undo,redo,view:queueRecovery});pane.dispose=()=>pane.editor.dispose();
   }
@@ -1314,7 +1339,7 @@ function renderAssetInspector(){
 }
 function renameDocumentPaths(from,to){
   captureDocument();
-  const remap=p=>typeof p==='string'&&(p===from||p.startsWith(from+'/'))?to+p.slice(from.length):p;
+  const remap=p=>typeof p==='string'&&(p===from||p.startsWith(from+'/')||/\.(gltf|glb|obj|fbx)$/i.test(from)&&p===from+'.import.json')?to+p.slice(from.length):p;
   const paneId=id=>{for(const prefix of ['asset:','components:'])if(id?.startsWith(prefix))return prefix+remap(id.slice(prefix.length));if(id?.startsWith('timeline:')){const split=id.lastIndexOf(':');return 'timeline:'+remap(id.slice(9,split))+id.slice(split);}return id;};
   const layout=n=>{if(!n)return;if(n.tabs){n.tabs=n.tabs.map(paneId);n.active=paneId(n.active);}else{layout(n.a);layout(n.b);}};
   const referenceKeys=new Set(['blueprintAsset','materialAsset','asset','inputMapping','headerPath','sourcePath','action','model','texture','spriteAsset','tilemapAsset','prefabAsset','parent','parentClass','physicalMaterial','sourceMesh','defaultInputMapping','startupScene','startupBlueprint','clip','tileset','sprite','gameConfig','gameMode','gameState','playerController','playerState','defaultPawn']);
@@ -1579,6 +1604,8 @@ const editorCommandMethods={
   'state.add':params=>automationAuthoringEdit(params,'statemachine',data=>({state:addState(data,{parent:params.parent,name:params.name,position:params.position,submachine:params.submachine})})),
   'state.reparent':params=>automationAuthoringEdit(params,'statemachine',data=>{reparentState(data,params.state,params.parent);return {state:params.state};}),
   'state.remove':params=>automationAuthoringEdit(params,'statemachine',data=>({removed:removeState(data,params.state)})),
+  'modelimport.preview':async params=>{const {doc}=await automationDocument(params);if(doc.kind!=='modelimport')throw Error('모델 가져오기 문서가 필요해요.');const preview=assetPanes.get(doc.path)?.editor?.preview;if(!preview)throw Error('미리보기 창을 여세요.');await preview.ready;return {path:doc.path,...preview.snapshot()};},
+  'modelimport.open':async({path})=>{automationEditable();if(typeof path!=='string'||!/\.(gltf|glb|obj|fbx)$/i.test(path))throw Error('원본 모델 경로가 필요해요.');const doc=await openModelImport({path});return {path:doc.path,kind:doc.kind,revision:await documentRevision(doc.data),dirty:doc.dirty};},
   'document.open':async({path})=>{automationEditable(true);if(typeof path!=='string')throw Error('에셋 경로가 필요해요.');if(!projectAssetFiles.some(file=>file.path===path))await refreshAssetIndex();const file=projectAssetFiles.find(file=>file.path===path);if(!file)throw Error('프로젝트 파일이 없어요.');await openProjectAsset(file);return automationState();},
   'document.get':async params=>{const {doc,revision}=await automationDocument(params);return {path:doc.path,kind:doc.kind,revision,dirty:doc.dirty,data:clone(doc.data)};},
   'document.merge':async params=>{const {doc,revision}=await automationDocument(params,true),result=mergeAsset(params.base,doc.data,params.theirs,{resolutions:params.resolutions||{}});if(params.dryRun||!result.clean)return {...result,valid:validAsset(doc.kind,result.data),revision};const applied=await editorCommandMethods['document.patch']({...params,operations:[{op:'replace',path:'',value:result.data}]});return {...applied,conflicts:[],resolved:result.resolved};},

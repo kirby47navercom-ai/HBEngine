@@ -419,3 +419,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 177: Unity6000.6 ListView본문318–443 선택구역을 supplemental177에 등록했다. 나머지 본문/연결API/미디어 미독과 전체gate를 유지한다.
+
+
+178: UE5.8 FBX Import Options 본문0–170/Unity6000.5 Model Import Settings 본문183–319를 supplemental178에 등록했다. 연결 API/다른 탭·미디어/전체 독립 분석 gate는 올리지 않았다.

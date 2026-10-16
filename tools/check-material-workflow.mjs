@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {AssetDocuments,createAsset,validAsset,assetSuffix,instantiatePrefab,renameAssetReferences} from '../prototype/asset-documents.js';
 import {materialCatalog,materialGraph,materialDefaults,makeMaterialNode,materialPins,connectMaterial,disconnectMaterial,removeMaterialNodes,copyMaterialNodes,pasteMaterialNodes,validMaterialGraph,evaluateMaterial,compileMaterial,createThreeMaterial,resolveMaterialAsset,materialParameters} from '../prototype/material-runtime.js';
-for(const kind of Object.keys(assetSuffix))assert.ok(validAsset(kind,createAsset(kind,'Workflow_'+kind)),kind+' 실제 생성/검증');
+for(const kind of Object.keys(assetSuffix).filter(kind=>kind!=='modelimport'))assert.ok(validAsset(kind,createAsset(kind,'Workflow_'+kind)),kind+' 실제 생성/검증');
 const material=createAsset('material','Master'),legacy={version:1,surface:{color:'#123456',roughness:.3,metalness:.8,light:2},graph:materialGraph()};
 assert.equal(validMaterialGraph({nodes:legacy.graph.nodes,edges:[null]}),false,'손상된 edge 거부');assert.equal(validMaterialGraph({nodes:[null],edges:[]}),false,'손상된 node 거부');assert.ok(validAsset('material',legacy));assert.equal(evaluateMaterial(legacy).color,'#123456');assert.equal(evaluateMaterial(legacy).roughness,.3);
 const scalar=makeMaterialNode('scalarParameter'),multiply=makeMaterialNode('multiply'),normal=makeMaterialNode('normalMap'),texture=makeMaterialNode('texture'),uv=makeMaterialNode('panner');scalar.parameter='Roughness';scalar.value=.25;multiply.inputValues.b=2;texture.texture='Assets/Normal.png';texture.colorSpace='linear';

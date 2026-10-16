@@ -1,3 +1,6 @@
+import {createHash} from 'node:crypto';
+import {normalizeModelImport,tagModelSubassets,applyModelImportTransform} from '../prototype/model-import.js';
+import {applyModelOverrides} from '../prototype/model-subasset-overrides.js';
 import {rememberAnimationBindPose} from '../prototype/animation-skeleton.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -58,7 +61,7 @@ export async function loadHeadlessModel(project,name){
       }return group.children.length===1?group.children[0]:group;
     }
   }));
-  try{const result=await loader.parseAsync(JSON.stringify(json),'');if(!result.scene)throw Error('glTF 기본 장면이 없어요.');for(const scene of result.scenes)scene.traverse(node=>{if(node.skeleton)resources.add(node.skeleton);});result.scene.userData.headlessResources=resources;rememberAnimationBindPose(result.scene);return {object:result.scene,animations:result.animations};}
+  try{const result=await loader.parseAsync(JSON.stringify(json),'');if(!result.scene)throw Error('glTF 기본 장면이 없어요.');for(const scene of result.scenes)scene.traverse(node=>{if(node.skeleton)resources.add(node.skeleton);});result.scene.userData.headlessResources=resources;let loaded={object:result.scene,animations:result.animations};tagModelSubassets(result.scene,{format:'gltf',associations:result.parser.associations,json:result.parser.json});let metadata;try{metadata=normalizeModelImport(JSON.parse((await read(name+'.import.json')).toString('utf8')));}catch(error){if(error.code!=='ENOENT')throw error;}if(metadata){if(metadata.sourceHash&&metadata.sourceHash!==createHash('sha256').update(source).digest('hex'))throw Error('모델 원본이 변경됐어요. 다시 가져오세요: '+name);applyModelOverrides(loaded.object,metadata.subassets,{trustedIndices:!!metadata.sourceHash});loaded=applyModelImportTransform(loaded,metadata,{format:'gltf'});}rememberAnimationBindPose(loaded.object);return loaded;}
   catch(error){for(const resource of resources)resource.dispose();throw error;}
 }
 export function disposeHeadlessModel(group){const resources=group?.userData.headlessResources;if(resources){for(const resource of resources)resource.dispose();resources.clear();}}

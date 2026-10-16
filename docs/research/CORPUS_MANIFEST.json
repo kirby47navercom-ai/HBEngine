@@ -2917,7 +2917,7 @@
       "https://dev.epicgames.com/documentation/en-us/unreal-engine/physics-constraint-reference-in-unreal-engine",
       "https://docs.unity.com/en-us/engine/6000.7/manual/physics-section/physics-overview/joints-section/create-configurable-joint/class-configurable-joint"
     ],
-    "scope": "Rapier JS joints本文161줄·로컬0.21선언/프레임API; UE constraint linear/angular limits/motors·Unity6000.7beta anchors/axis/limits/motor 선택본문",
+    "scope": "Rapier JS joints본문161줄·로컬0.21선언/프레임API; UE constraint linear/angular limits/motors·Unity6000.7beta anchors/axis/limits/motor 선택본문",
     "unread": "linked APIs/media/full corpus",
     "globalGatePromotion": false
   },
@@ -2939,6 +2939,16 @@
     ],
     "scope": "본문318–443: ListView/ScrollView·재활용/refresh/rebuild·Fixed/DynamicHeight·키보드/포커스. HB 측정/부분합 자체구현",
     "unread": "나머지본문/연결API/미디어/전체corpus",
+    "globalGatePromotion": false
+  },
+  "supplemental178": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://dev.epicgames.com/documentation/unreal-engine/fbx-import-options-reference-in-unreal-engine",
+      "https://docs.unity.com/en-us/engine/6000.5/manual/assets-and-media/asset-types/models/importing/fbximporter-model"
+    ],
+    "scope": "UE5.8본문0–170/Unity6000.5본문183–319. Source identity/reimport, units and axes, import settings. Installed Three FBX Model.ID/UnitScaleFactor and GLTF parser.associations source inspected.",
+    "unread": "연결 API/Rig/Animation/Materials 본문/미디어/전체 corpus. Unity7000 검색결과는 본문 읽기로 계산하지 않음",
     "globalGatePromotion": false
   }
 }

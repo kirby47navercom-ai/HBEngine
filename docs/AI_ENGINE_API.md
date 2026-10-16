@@ -415,3 +415,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 177: ListView/TreeView properties.autoRows=true는 실제 내용 높이를 측정한다. rowHeight는 최소/추정치, variableRows=true의 item.height는 우선한다. 기존 문서 revision/patch/Undo와 UI::SetListItems/SetValue를 공유한다. ListView 인덱스는 -1 또는 자료범위 안이며 교체로 사라진 선택은 -1로 비운다. UI03의 복합행/큰스크롤·상속/명명슬롯·3DUI 잔여와 구별한다.
+
+
+178: modelimport.open({path:원본.gltf/glb/obj/fbx})→편집 가능한 .import.json의 path/kind/revision. 기존 document.get/patch/save·editor.undo/redo 사용. modelimport.preview({path:설정문서})→ready/meshes/visible/CPU bounds, GPU 읽기 없음. settings와 subassets/unresolvedSubassets는 검증된 JSON, sourceOnly 종류이므로 새 빈 에셋 생성 대신 원본에서 연다. 미연결의 수동 대응은 새 대상 overrides에 복사하고 미연결 행을 제거하는 한 번의 문서 patch/Undo로 표현한다.

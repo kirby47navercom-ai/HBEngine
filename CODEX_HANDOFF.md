@@ -1,3 +1,10 @@
+# 누적178 모델 임포트 구현/검증, 설치 준비 — 계속 작업
+
+주인님 최신 남은거다하라고, 최종답변안함/계속. main82bf4e1 origin동일(177설치영수증),178제품/문서미커밋. 새agent허가없음. 실제사용자창/프로필보호/격리EXE/Versions1.
+178제품: model-import.js 단위/축/루트wrap+typedvalid/migration/remap, fbx-metadata32/64&ASCII boundedmetadata, model-subassets 안정explicit/name/uniquefingerprint/ambiguoushash, mesh typo meshe→mesh. 원본loaderassociations/FBX.ID태그+SHAguard+O(n)override table, scene-rendering하위flags덮기수정, headlessglTF동일단위/flags/원본SHA·staticparent루트모션scale반영. Ownernewdrop메타생성/prepare/reimport보존/pairedrename롤백/CASsourceguard, sourceOnlymodelimport일반문서. ModelPreview공유소스/메타UI 실제GL/dirtyrender/dispose; typedimportpane·virtual목록/필터·미연결수동remap/Undo·modelimport.open/preview. CSS최종라벨너비수정은설치smoke캡처로확인필요. docs178작성완료재실행금지.
+검증 CPU9 1atIwb,owner8 7gizja,기존headless X7I7mC/rootmotion/assets/material PASS. Win32 AEPHTF, releaseD3D S2PygM,WebGPU ci2Hgh PASS. 실제C++Vec3[] imported-call.y~.0082(배율 .01/위축x); 모델2개중1표시·bounds3m. FBX진짜ASCIItriangle2Model1001/1002+unit1cm→1m. 32/64binary는metadata합성자료만. HeadlessFBX전부지원/재질추출UI/geometry품질 미완료명시. Windowfixture씬dirtyclosePrompt는생성fixture만discard,사용자아님. sourcepreview최초fitViewportSelection잘못모듈/종류querysourceunit선택 문제모두수정. testArtifacts는검증된sameprocessretain등록을owned로인정하여headless정리exit1고침.
+다음: 최종diff/상태/API검사·한국어동일작성자커밋push→배포파일sync/install178(install177참고숫자178복제,직접177재실행금지)→새EXE check178-window/captures+manifest/profile/Versions1영수증push→179 WLD04자동animation/collisionLOD 등누적계속. 178관련native/build연결/변경스크립트모두비멱등,재실행금지. 현재설치1776ecfb60380268ecd/2434files unchanged.
+
 # 누적177 설치까지 완료 — 178 모델 임포트 작업 계속
 
 main b3cce8da6cb032ca781def32da08df3ae74940f6 originpush완료. 설치 C:/Users/kirby/HBEngine/Versions/6ecfb60380268ecd/HBEngine.exe, bundle6ecfb60380268ecd94326b1e88330b7529abc77bc9978ed2fc73b5fc3e859149. 명세2434파일 실행후SHA일치.177installed-lIbJ5E PASS(사람autoRows/Undo/designer/virtual모드전환·종료/late갱신+176전체회귀), auto-editor.png 시각확인. 사용자프로필10385파일전후/검사후 SHA 동일46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26. 바로가기2/.hbproject연결,이전176173530766바이트정리,Versions1. finish177.mjs완료재실행금지,공유testcache추가정리0. USER_INSTALL177와WORK177설치링크완료. receipt문서커밋push가다음.

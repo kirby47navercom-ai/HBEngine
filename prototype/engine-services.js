@@ -2,6 +2,7 @@ import {NetworkWorld} from './network-runtime.js';
 import {captureSkeletalPose,applySkeletalPose,SkeletalPoseTrack} from './sequence-state.js';
 import {RuntimeLevels,levelKeys} from './level-streaming.js';
 import {prepareWorldColliders} from './world-rendering.js';
+import {normalizeModelImport,tagModelSubassets,validModelImport,applyModelImportTransform} from './model-import.js';
 import {applyModelOverrides} from './model-subasset-overrides.js';
 import {TakeRecorder} from './take-recorder.js';
 import {AbilitySystem} from './ability-runtime.js';
@@ -52,14 +53,17 @@ export function validRuntimeSave(data,vm){
       const binding=vm.bindings.find(b=>b.self===state?.self);return binding&&state.values&&typeof state.values==='object'&&!Array.isArray(state.values)&&Object.entries(state.values).every(([id,value])=>{const variable=binding.root.variables.find(v=>v.id===id);return variable&&(variable.container==='array'?Array.isArray(value)&&value.length<=128&&value.every(v=>validValue(variable.type,v)):validValue(variable.type,value));});
     });
 }
-export async function loadModel(asset){
+export async function loadModel(asset,{metadata:explicit}={}){
   const manager=new THREE.LoadingManager(),folder=asset.split('/').slice(0,-1).join('/');manager.setURLModifier(url=>{if(url.startsWith('data:')||url.startsWith('blob:'))return url;if(/^https?:/.test(url))throw Error('외부 모델 의존성은 프로젝트에 가져오세요.');return fileUrl((folder?folder+'/':'')+url.replace(/^\.\//,''));});
-  const finish=async result=>{try{const metadata=await editorRequest(fileUrl(asset+'.import.json'));if(metadata.ok)applyModelOverrides(result.object,(await metadata.json()).subassets);}catch{}return result;};
-  const response=await editorRequest(fileUrl(asset)),extension=asset.split('.').pop().toLowerCase();
-  if(extension==='obj')return finish({object:new OBJLoader(manager).parse(await response.text()),animations:[]});
-  if(extension==='fbx'){const object=new FBXLoader(manager).parse(await response.arrayBuffer(),'');prepareModelMorphs(object);rememberAnimationBindPose(object);return finish({object,animations:object.animations});}
-  if(['glb','gltf'].includes(extension)){const data=extension==='gltf'?await response.text():await response.arrayBuffer();const result=await new Promise((resolve,reject)=>new GLTFLoader(manager).parse(data,'',resolve,reject));prepareModelMorphs(result.scene);rememberAnimationBindPose(result.scene);return finish({object:result.scene,animations:result.animations});}
-  throw Error('미리보기 임포터가 없는 모델: '+extension);
+  const response=await editorRequest(fileUrl(asset)),bytes=await response.arrayBuffer(),extension=asset.split('.').pop().toLowerCase(),format=['gltf','glb'].includes(extension)?'gltf':extension;let result,parser;
+  if(extension==='obj')result={object:new OBJLoader(manager).parse(new TextDecoder().decode(bytes)),animations:[]};
+  else if(extension==='fbx'){const object=new FBXLoader(manager).parse(bytes,'');prepareModelMorphs(object);result={object,animations:object.animations};}
+  else if(['glb','gltf'].includes(extension)){const loaded=await new Promise((resolve,reject)=>new GLTFLoader(manager).parse(extension==='gltf'?new TextDecoder().decode(bytes):bytes,'',resolve,reject));parser=loaded.parser;prepareModelMorphs(loaded.scene);result={object:loaded.scene,animations:loaded.animations};}
+  else throw Error('미리보기 임포터가 없는 모델: '+extension);
+  try{tagModelSubassets(result.object,{format,associations:parser?.associations,json:parser?.json});let metadata=explicit;if(explicit===undefined){try{metadata=await(await editorRequest(fileUrl(asset+'.import.json'))).json();}catch(error){if(error.status!==404)throw error;}}
+    if(metadata){metadata=normalizeModelImport(metadata);if(!validModelImport(metadata))throw Error('모델 가져오기 설정을 확인하세요.');let trustedIndices=false;if(metadata.sourceHash){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(hash!==metadata.sourceHash)throw Error('모델 원본이 변경됐어요. 다시 가져오기를 실행하세요: '+asset);trustedIndices=true;}applyModelOverrides(result.object,metadata.subassets,{trustedIndices});result=applyModelImportTransform(result,metadata,{format});result.object.userData.hbModelMetadata=metadata;}
+    if(explicit===null)result.sourceHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');rememberAnimationBindPose(result.object);return result;
+  }catch(error){const resources=new Set();result.object.traverse(o=>{if(o.geometry)resources.add(o.geometry);for(const m of o.material?(Array.isArray(o.material)?o.material:[o.material]):[]){resources.add(m);for(const t of Object.values(m))if(t?.isTexture)resources.add(t);}if(o.skeleton)resources.add(o.skeleton);});for(const r of resources)r.dispose();throw error;}
 }
 export function engineOperations(hooks){
   hooks={mesh:()=>null,...hooks};

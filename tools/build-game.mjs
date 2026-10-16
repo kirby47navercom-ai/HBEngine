@@ -44,7 +44,7 @@ export async function inspectBuild(record,profile){
     if(content.has(canonical))return canonical;
     if(assetKind(canonical)==='scene'&&!enabled.has(canonical))throw Error('빌드에서 제외한 장면 참조: '+name);
     if(info.size>104857600)throw Error('빌드 파일 100MB 제한: '+name);
-    const bytes=await fs.readFile(info.file);size+=bytes.length;if(size>1073741824)throw Error('빌드 콘텐츠 1GB 제한');content.set(canonical,bytes);return canonical;
+    const bytes=await fs.readFile(info.file);size+=bytes.length;if(size>1073741824)throw Error('빌드 콘텐츠 1GB 제한');content.set(canonical,bytes);if(/\.(gltf|glb|obj|fbx)$/i.test(canonical)){try{await record.project.read(canonical+'.import.json');await include(canonical+'.import.json');}catch(error){if(error.code!=='ENOENT')throw error;}}return canonical;
   };
   let gameInstanceAsset=record.manifest.gameInstance||'';
   for(const file of nativeFiles)await include(file.path);

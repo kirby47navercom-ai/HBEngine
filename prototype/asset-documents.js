@@ -1,3 +1,4 @@
+import {normalizeModelImport,validModelImport} from './model-import.js';
 import {validPrefabExtension} from './prefab-variants.js';
 import {abilityAssetTypes,abilityAssetSuffix,createAbilityAsset,validAbilityAsset} from './ability-assets.js';
 import {navigationAssetTypes,navigationAssetSuffix,createNavigationAsset,validNavigationAsset} from './navigation-mesh.js';
@@ -32,6 +33,7 @@ Object.assign(assetSuffix,twoDSuffix);Object.assign(assetTypes,twoDTypes);
 Object.assign(assetSuffix,gameplaySuffix);Object.assign(assetTypes,gameplayTypes);
 Object.assign(assetSuffix,worldAssetSuffix);Object.assign(assetTypes,worldAssetTypes);
 Object.assign(assetTypes,abilityAssetTypes,navigationAssetTypes,presentationAssetTypes);Object.assign(assetSuffix,abilityAssetSuffix,navigationAssetSuffix,presentationAssetSuffix);
+assetSuffix.modelimport='.import.json';assetTypes.modelimport={label:'모델 가져오기',prefix:'',group:'에셋',sourceOnly:true};
 assetSuffix.editortool='.hbeditortool.json';assetTypes.editortool={label:'편집기 도구',prefix:'ET_',group:'편집기'};
 assetSuffix.widget='.hbwidget.json';assetTypes.widget={label:'위젯 UI',prefix:'W_',group:'사용자 인터페이스'};
 assetSuffix.audiomixer='.hbaudiomixer.json';assetTypes.audiomixer={label:'오디오 믹서',prefix:'MX_',group:'오디오'};
@@ -50,6 +52,7 @@ export async function loadSceneBindings(objects,read,readText){
 }
 export const defaultGameConfig={dimension:'3d',startupScene:'',startupBlueprint:'',defaultInputMapping:'',gameMode:'',gameState:'',gameInstance:'',defaultController:'',playerState:'',defaultPawn:'',spawnPosition:[0,1,0],autoSpawnPlayer:true,gravity:[0,-9.81,0],fixedDeltaTime:1/60,maxSubsteps:8,window:{width:1280,height:720,fullscreen:false,vsync:true}};
 export function createAsset(kind,name,parent='Actor'){
+  if(kind==='modelimport')throw Error('원본 모델의 가져오기 설정을 여세요.');
   if(!name||name.length>80||/[<>:"/\\|?*\x00-\x1f]/.test(name))throw Error('에셋 이름을 확인하세요.');
   if(kind in abilityAssetTypes)return createAbilityAsset(kind,name);
   if(kind in navigationAssetTypes)return createNavigationAsset(kind,name);
@@ -88,6 +91,7 @@ export function createAsset(kind,name,parent='Actor'){
 }
 export function assetValidationError(kind,data){return kind in gameplayTypes?gameplayValidationError(kind,data):kind+" 에셋 검증 실패";}
 export function validAsset(kind,data){
+  if(kind==='modelimport')return validModelImport(data);
   if(kind in abilityAssetTypes)return validAbilityAsset(kind,data);
   if(kind in navigationAssetTypes)return validNavigationAsset(kind,data);
   if(kind in presentationAssetTypes)return validPresentationAsset(kind,data);
@@ -129,10 +133,10 @@ export function renameAssetReferences(value,from,to){const keys=new Set(['terrai
 // One data record per path. Switching a view must never replace another asset's edits.
 export class AssetDocuments {
   constructor(){this.items=new Map();this.active=null;}
-  open(path,kind,data){if(!this.items.has(path)){if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+path);this.items.set(path,{path,kind,data:copy(data),saved:JSON.stringify(data),history:[],future:[],view:{},dirty:false});}return this.items.get(path);}
+  open(path,kind,data){if(kind==='modelimport')data=normalizeModelImport(data);if(!this.items.has(path)){if(!validAsset(kind,data))throw Error(assetValidationError(kind,data)+': '+path);this.items.set(path,{path,kind,data:copy(data),saved:JSON.stringify(data),history:[],future:[],view:{},dirty:false});}return this.items.get(path);}
   select(path){if(!this.items.has(path))throw Error('열린 문서가 없어요.');this.active=path;return this.current;}
   get current(){return this.items.get(this.active);}
   async save(doc,write){const before=JSON.stringify(doc.data),data=copy(doc.data);if(doc.kind==='blueprint'&&data.native){const metadata=doc.view?.nativeMetadata;data.native=nativeSourceReference(metadata&&metadata.headerPath===data.native.headerPath&&metadata.sourcePath===data.native.sourcePath?metadata:data.native);}if(!validAsset(doc.kind,data))throw Error(assetValidationError(doc.kind,data)+': '+doc.path);const text=doc.kind==='text'?data:JSON.stringify(data,null,2);await write(doc.path,text,doc.saved);const savedData=doc.kind==='text'?text:JSON.parse(text);if(JSON.stringify(doc.data)===before)doc.data=savedData;doc.saved=JSON.stringify(savedData);doc.dirty=JSON.stringify(doc.data)!==doc.saved;}
   close(path,discard=false){const doc=this.items.get(path);if(doc?.dirty&&!discard)return false;this.items.delete(path);if(this.active===path)this.active=[...this.items.keys()].at(-1)||null;return true;}
-  rename(from,to){for(const [path,doc] of [...this.items]){if(path===from||path.startsWith(from+'/')){const next=to+path.slice(from.length);this.items.delete(path);doc.path=next;this.items.set(next,doc);if(this.active===path)this.active=next;}if(renameAssetReferences(doc.data,from,to))doc.dirty=true;for(const snapshot of [...doc.history,...doc.future])renameAssetReferences(snapshot,from,to);}}
+  rename(from,to){for(const [path,doc] of [...this.items]){if(path===from||path.startsWith(from+'/')||/\.(gltf|glb|obj|fbx)$/i.test(from)&&path===from+'.import.json'){const next=to+path.slice(from.length);this.items.delete(path);doc.path=next;this.items.set(next,doc);if(this.active===path)this.active=next;}if(renameAssetReferences(doc.data,from,to))doc.dirty=true;for(const snapshot of [...doc.history,...doc.future])renameAssetReferences(snapshot,from,to);}}
 }
