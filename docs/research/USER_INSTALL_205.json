@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "4d7216e98db7c99aecea073282636e132d36ab3e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1fadf9f7d5c394c8",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1fadf9f7d5c394c8\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\1fadf9f7d5c394c8\\HBEngine.exe",
+  "bundleHash": "1fadf9f7d5c394c886d2d73da124b7fe242db3d123b1fbcf6a3c74ef1f495917",
+  "files": 2614,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2599,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b",
+        "bytes": 184807680,
+        "manifestSHA256": "c3c86c789c5ec315face1390faeb5f5e275230cfb1c46b504f43389a117368ae"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T18:11:29.2990963Z",
+    "bytes": 184807680,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "1fadf9f7d5c394c8"
+    ]
+  },
+  "work": "native/build/engine-205-install-oXLptG",
+  "versions": [
+    "1fadf9f7d5c394c8"
+  ],
+  "manifestVerifiedFiles": 2614,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": {
+    "path": "native/build/prefab-203-installed-iUMI9V/acceptance.json",
+    "sha256": "01a6f3c26955cc8ac4964acfa81ec3d875ee4b61148b37fc79a461afa47478bf",
+    "result": {
+      "passed": true,
+      "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1fadf9f7d5c394c8\\HBEngine.exe",
+      "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\prefab-203-installed-iUMI9V",
+      "checks": {
+        "humanInstanceOpen": true,
+        "contextWorldPlacement": [
+          1.4648358264288726,
+          0.5331566389068428,
+          -0.7499999999999999,
+          0,
+          -0.513030214988503,
+          1.4095389311788626,
+          0,
+          0,
+          0.8457233587073174,
+          0.30781812899310174,
+          1.299038105676658,
+          0,
+          0.7904264634573075,
+          0.28769170507476194,
+          0.7499999999999999,
+          1
+        ],
+        "lockedBackdropAndRoot": true,
+        "localChildEditUndoSave": true,
+        "sceneUntouchedUntilExplicitRefresh": true,
+        "backgroundHideReleasesObjects": true,
+        "isolationEnvironment": true,
+        "invalidContextRejected": true,
+        "sharedAIView": true,
+        "importUI": {
+          "files": 131,
+          "visibleRows": 100,
+          "pageTwo": 31,
+          "largeBytes": 117440512,
+          "sha256": "2ab0da916cbf202975f1e4eda8929eaba1db7e84d319fb2e42b91acfef7e9a35"
+        },
+        "prefabRefreshAndActualPlay": true,
+        "contentBrowser": {
+          "actualBrowserAPI": true,
+          "physicalAltBackUsesTargetBrowser": true,
+          "total": 10000,
+          "initialCards": 17,
+          "lastCards": 13,
+          "tilesCards": 50,
+          "fullRangeSelection": true,
+          "backRestoresSelection": true,
+          "responsiveColumns": true,
+          "globalIndicesAndSelectedClass": true,
+          "readPagesCoverTail": true,
+          "typeAheadAndEnd": true,
+          "allSelectionRestoredAfterRecreate": true
+        }
+      },
+      "errors": [],
+      "sceneRevision": "4b66521fe84435d83ba0c7b52e7be525f84def6968c20c4ad9388b35bb8c3524",
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/prefab-203-installed-iUMI9V/prefab-context.png",
+      "sha256": "dea7595e140a3ed2982ce902fc67037b41d144c162de7dbba411c239a75db73e",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/prefab-203-installed-iUMI9V/import-queue.png",
+      "sha256": "3cb68df895e060f6c2b72d4725f685b980ffcd6bdd5f2413b0602090d6e84121",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2614,
+  "privateChecks": "Unique project/profile/port; actual User directory only read for before/after inventory.",
+  "storageSummary": {
+    "path": "native/build/storage-205-summary.json",
+    "sha256": "59e8efc877c5b1deca51c804d4eccc6bf7e17cccfe9fc067891f3a7adf215bd9"
+  }
+}

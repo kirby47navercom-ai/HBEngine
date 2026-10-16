@@ -7,3 +7,6 @@
 project.browser.read의 offset/limit/nextOffset과 project.browser.view의 폴더/표시/선택/포커스는 사람과 같은 함수를 사용한다. limit1000은 한 응답의 페이지 크기이며 에셋 수 제한이 아니다. [WAI listbox](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)36–94와 대조했다. 메타데이터 자체는 전체를 유지하며 전체 게임FPS·모든 스크린리더/IME·다른 파일 클립보드 동작의 완료로 확대하지 않는다.
 
 근거: [ENGINE_WORK_204.json](research/ENGINE_WORK_204.json). 사용자 설치 전환은 별도 영수증에서 확인한다.
+
+
+200–205 설치 확인: 1fadf9f7d5c394c8·명세2614파일 실행 후 SHA 동일·실제 설치 EXE 프리팹 문맥/환경/잠금/Undo/저장/동기화/Play·131파일/112MiB UI·1만 콘텐츠17/13/50카드와 Alt뒤로·문자 탐색·재생성후1만선택, 오류0/종료0. User10385파일 SHA불변·링크2/.hbproject·이전 설치184807680B 정리·Versions1. USER_INSTALL_205.json.

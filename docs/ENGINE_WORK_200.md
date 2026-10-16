@@ -9,3 +9,6 @@
 [Node 파일 읽기/순회](https://nodejs.org/docs/latest-v24.x/api/fs.html), [Unity 에셋 로드/소유](https://docs.unity3d.com/6000.0/Documentation/Manual/AssetBundles-Native.html)의 지정 본문과 대조했다. 압축 쿠킹·큰 구조 문서/모델 디코더·SDK 메모리는 별도 잔여다.
 
 근거: [ENGINE_WORK_200.json](research/ENGINE_WORK_200.json). 사용자 설치 전환은 별도 영수증에서 확인한다.
+
+
+200–205 설치 확인: 1fadf9f7d5c394c8·명세2614파일 실행 후 SHA 동일·실제 설치 EXE 프리팹 문맥/환경/잠금/Undo/저장/동기화/Play·131파일/112MiB UI·1만 콘텐츠17/13/50카드와 Alt뒤로·문자 탐색·재생성후1만선택, 오류0/종료0. User10385파일 SHA불변·링크2/.hbproject·이전 설치184807680B 정리·Versions1. USER_INSTALL_205.json.

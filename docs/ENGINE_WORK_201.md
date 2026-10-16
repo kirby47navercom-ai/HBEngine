@@ -5,3 +5,6 @@
 3개 실제 서버에서78요청의 상태/헤더/본문과 원본 보존을 확인했다. [RFC9110](https://www.rfc-editor.org/rfc/rfc9110.html)의 지정 구간을 대조했다. 단일 바이트 구간 구현이며 multipart·새 영상 코덱·PTS/시퀀스 동기화 전체를 구현했다는 뜻이 아니다.
 
 근거: [ENGINE_WORK_201.json](research/ENGINE_WORK_201.json). 사용자 설치 전환은 별도 영수증에서 확인한다.
+
+
+200–205 설치 확인: 1fadf9f7d5c394c8·명세2614파일 실행 후 SHA 동일·실제 설치 EXE 프리팹 문맥/환경/잠금/Undo/저장/동기화/Play·131파일/112MiB UI·1만 콘텐츠17/13/50카드와 Alt뒤로·문자 탐색·재생성후1만선택, 오류0/종료0. User10385파일 SHA불변·링크2/.hbproject·이전 설치184807680B 정리·Versions1. USER_INSTALL_205.json.

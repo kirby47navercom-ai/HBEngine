@@ -1,3 +1,13 @@
+# 현재 인계 — 200–205 사용자 설치 검증 완료·누적 잔여 계속
+
+설치 C:\Users\kirby\HBEngine\Versions\1fadf9f7d5c394c8\HBEngine.exe·source 4d7216e98db7c99aecea073282636e132d36ab3e·bundle 1fadf9f7d5c394c886d2d73da124b7fe242db3d123b1fbcf6a3c74ef1f495917·2614파일 실행후SHA동일. User10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변·Versions1·링크2/.hbproject. USER_INSTALL_205.json. install205/finish205 및 docs200-205 실행완료·재실행금지.
+
+실제 설치 검사 prefab-203-installed-iUMI9V 전체 PASS/오류0/종료0·스크린샷2 시각확인. 131파일/112MiB 임포트, 프리팹 문맥/격리 환경·Undo/저장/동기화/Play,1만콘텐츠17/13/50 DOM·키/AI/Alt뒤로/전선택 재생성. 200–205 SDK/빌드/HTTP 근거는 각 ENGINE_WORK JSON. 이전설치184807680B/검사논리6758487994B 정리·유저원본보존.
+
+다음: 한국어 커밋·push main 후, 여기서 끝내지 말고 정본 누적 잔여 구현 이어가기. 후보206 중첩프리팹 Apply 목적지 라우팅을 읽기 시작했으나 코드 없음. prefab-instances.js applyPrefabProperty(33), app.js applyLinkedPrefabProperty(1541)·outer-only 현재동작. 안쪽 적용은 namespace/actor참조·중간광역오버라이드 분해·원자적여러문서Undo가 필요. Unity PrefabInstanceOverrides 126–158 읽음(미등록), PrefabOverridesMultiLevel.html은 열기 실패. 다음읽기 등록과 구현 전에 후속 문서 탐색 필요. 다른 렌더/물리/게임/AI 잔여도 유지. 전체분모 gate 불변.
+
+---
+
 # 현재 인계 — 200–205 구현/묶음검사 완료·사용자 설치 전환 진행
 
 200대용량 스트림빌드/검증/게시,201공용HTTP구간,202스트림/대량임포트,203잠금프리팹문맥/격리환경,204가상콘텐츠/키/AI페이지,205검사Chrome정리. 코드3ef20b8/9e9d6b5/ad8c8ca. docs/research/ENGINE_WORK_200–205.json에 원문 범위와 실제 근거 SHA. 정본 ENGINE_STATUS 갱신/검사 PASS(39/34/2/3; 전역 완료율 없음).

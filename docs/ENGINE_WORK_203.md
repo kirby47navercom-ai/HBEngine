@@ -7,3 +7,6 @@
 실제 편집창에서 인스턴스 열기, 잠금, 자식 편집·Undo·저장, 원본 장면 보존, 명시 동기화 후 실제 게임 재생을 확인했다. 최초 보기 복원과 인스턴스 열기가 겹치던 순서 문제도 고쳤다. [Unity 프리팹 편집](https://docs.unity3d.com/6000.0/Documentation/Manual/EditingInPrefabMode.html)125–224와 대조했다. 회색/오버라이드 표시·스냅/조명 일치·중첩 Apply 목적지는 잔여로 유지한다.
 
 근거: [ENGINE_WORK_203.json](research/ENGINE_WORK_203.json). 사용자 설치 전환은 별도 영수증에서 확인한다.
+
+
+200–205 설치 확인: 1fadf9f7d5c394c8·명세2614파일 실행 후 SHA 동일·실제 설치 EXE 프리팹 문맥/환경/잠금/Undo/저장/동기화/Play·131파일/112MiB UI·1만 콘텐츠17/13/50카드와 Alt뒤로·문자 탐색·재생성후1만선택, 오류0/종료0. User10385파일 SHA불변·링크2/.hbproject·이전 설치184807680B 정리·Versions1. USER_INSTALL_205.json.
