@@ -862,3 +862,13 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 172: 9HKKLp/W9BNMd의 종료0 실패는 임시 Garden dirty 확인창 대기였다. 7vjGj3에서 before-close/close-prompt 기록으로 확인하고 해당 임시 문서의 저장 안 함을 선택해 종료0. 저장 후 다음 editor.state에서 장면이 다시 dirty로 보이는 경로는 아직 종결하지 않았다. 저장 시간을 늘리는 가설 반복 금지. 실제 사용자 문서는 검사에 사용하지 않는다.
+
+
+## 210–211 실행 진단 (2026-10-17)
+
+- 애니메이션 예산: 실제 float32 .001f가 .0010000000474974513으로 전달된다. 검사 기대값을 Math.fround(.001)로 고쳤으며 임의 허용 오차로 제품 오류를 숨기지 않았다. 실제 C++ SDK·창·D3D 게임을 확인했다.
+- 생성 Take의 첫 CPU 루프 검사는 VM의 기존 .1초 delta 한도를 무시했다. .65 한 번 대신 .05를13회 진행해 실제 루프를 검사했다. 이어 발견한 VM.stop 후 복사본 잔류는 실제 결함이며 engine-services.stop에 공용 stopSequences를 연결했다. stopSequence finally/owned clear로 실패 때도 정리한다.
+- 첫 실제 창 fixture는 SpriteRenderer.sprite에 SVG 파일을 직접 주어 JSON 파싱에 실패했다(igzbNB). 스프라이트 문서→SVG로 올바른 계약을 사용했다. middle 변수를 CDP 표현식에 잘못 전달한 별도 검사 실패도 수정했다.
+- 제작 미리보기에서 런타임 BP가 제공한 MeshRenderer 속성이 없던 문제(xADCht)는 소스 장면에 BP 컴포넌트를 설치하지 않던 경로가 원인이다. 코드 실행 없이 기존 loadSceneBindings/installBlueprintInstances로 같은 안정 ID/오버라이드를 설치한다.
+- 새 비동기 메타데이터 읽기 중 world만 생성되고 visuals가 없을 때 render가 tickParticles를 호출하던 경합도 재현했다. 초기화 동안 렌더를 보류하고 cleanup에서 world/visuals를 무효화했다. NpEIaF에서 동일 녹화→적용→preview read→C++ 재생/Seek/Stop과 예외0/종료0 통과. 앞선 실패를 PASS 근거로 사용하지 않는다.
+- NpEIaF 캡처는 마지막 내부 활성 탭이 viewport라 실제 sequence 패널이 전경에 보이지 않았다. 상태 검사는 유효하나 제작 UI 시각 확인으로 주장하지 않는다. 후속 설치 검사는 asset dock 탭을 명시 선택하도록 고쳤다.

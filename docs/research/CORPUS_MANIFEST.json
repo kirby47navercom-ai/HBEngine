@@ -3243,5 +3243,39 @@
     ],
     "unread": "Listed scopes only; linked APIs/media/implementation and full UE/Unity corpus remain outside this reading. No full corpus completion claim.",
     "globalGatePromotion": false
+  },
+  "supplemental210": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-budget-allocator-in-unreal-engine?application_version=5.7",
+        "scope": "Own0–16/47–114/185–210 read: soft CPU-ms target, significance/frequency/interpolation/diagnostics, never-skip and reduced-work/measurement APIs. Not the entire plugin/source/API."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/CullingGroupAPI.html",
+        "scope": "Own136–158 read: sphere representation, camera/reference per group and combination of per-camera results; async frustum/static occlusion. HB210 combines distance importance only, not a CullingGroup occlusion implementation."
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/CullingGroup.SetBoundingDistances.html",
+        "scope": "Own234–260 read: nearest sphere-edge distance and bands. HB uses its own existing RuntimeLOD bands; not full API parity."
+      }
+    ],
+    "unread": "Only stated body scopes read; linked source/API/media and full UE/Unity corpus remain outside this reading. No overall corpus completion claim.",
+    "globalGatePromotion": false
+  },
+  "supplemental211": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/spawn-temporary-actors-in-unreal-engine-cinematics?application_version=5.7",
+        "scope": "Own14–27/47–71 read: existing versus temporary bindings, bool lifetime, sequence ownership and spawn/despawn. HB211 owns passive visual copies only; root/external ownership, class switching and general gameplay replay are not implemented."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine?application_version=5.7",
+        "scope": "Own156–162 read in addition to209: newly spawned actors, proximity/type filters and world source. HB211 captures actors appearing after recording starts, with no proximity/type filter yet; it does not claim source/media/timecode coverage."
+      }
+    ],
+    "unread": "Only stated body scopes read; linked source/API/media and full UE/Unity corpus remain outside this reading. No overall corpus completion claim.",
+    "globalGatePromotion": false
   }
 }

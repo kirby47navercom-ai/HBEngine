@@ -481,3 +481,12 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 `editor.synchronize()`는 대기/진행 중 프리팹 상속 동기화를 마치고 각 문서 revision/dirty를 반환한다. 저장도 같은 장벽을 사용한다. 자동 저장이나 전역 작업 완료 명령은 아니다.
 
 `runtime.sequencePose({target,offset:0,limit:64})`는 현재 실제 모델의 뼈·로컬 포즈·제어 시각과 nextOffset을 요청할 때만 반환한다. limit 최대512는 한 페이지 예산이며 골격 수 제한을 추가하지 않는다. 구성 또는 컴포넌트 녹화와 골격을 함께 켜면 모델 교체/제거를 Take에 남기고 이후 시퀀스에서 재생/되감기/정지 복원한다.
+
+
+## 210–211: 선택 애니메이션 예산·생성 Take
+
+AnimationBudget 컴포넌트(enabled,budgetMS,minRate,maxRate,initialCostMS,smoothing,priority)를 같은 scene 편집/revision/Undo로 설정한다. RuntimeLOD.animationPriority가 actor 우선순위다. runtime.lod.animationBudget의 observedMS는 graph.tick wall 시간이고 전체 프레임/GPU 시간이 아니다. minimumExceedsBudget는 최소Hz+보호work 때문에 초과한 경우다. C++ hb::AnimationBudget의 SetBudget/SetEnabled/GetObservedMS/GetThrottledCount와 BP4노드가 같은 속성/명령을 쓴다.
+
+runtime.take.start에 includeSpawned:true를 주면 시작 뒤 추가된 오브젝트를 spawn bool 트랙과 시각 템플릿으로 기록한다. 고유 ID의 passive 복사본만 재생하며 사용자 코드/물리를 다시 실행하지 않는다. 임의 native 상태/기존 대상 수명/소스 필터까지 기록하는 기능은 아니다. sequence.take.apply는 기존 dryRun/expectedRevision/Undo와 동일하다. runtime.state의 소유자 gameplayDebug.sequence.spawned에서 source/id 대응을 조회한다.
+
+timeline.preview.read({path})는 열린 sequenceasset/montage 제작 미리보기의 time,busy,error,objects를 요청할 때만 반환한다. 원본/스크러버 시각을 바꾸지 않으며 busy가 false가 된 뒤 실제 독립 복사본을 확인한다.

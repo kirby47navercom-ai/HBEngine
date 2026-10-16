@@ -308,3 +308,8 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 206–209 설치 확인: e1016dd208e2307b·명세2637파일 실행 후SHA동일·실제 설치 EXE로 중첩 Apply/구조/원자UndoRedo·gray/수정투영/표면정점스냅·저장종료·모델골격교체 Take/Seek/복원/제작창 통과, 예외/콘솔오류0·종료0. User10385파일 SHA불변·링크2/.hbproject·이전설치175243449B 정리·Versions1. USER_INSTALL_209.json.
+
+
+## 210–211 — 2026-10-17
+
+선택 시각 포즈의 관측 ms 예산/최소Hz/보호 work·다중 카메라 구 경계·재사용/위상·C++/BP4함수와 Inspector 진단, 생성·삭제/풀 재사용 Take·2D/3D 시각 템플릿/계층·독립 ID·Seek/Stop/VM종료·BP 컴포넌트 미리보기/비동기 초기화 경합·AI 미리보기 조회를 구현했다. 실제 창/공용 C++와 Windows D3D11 게임, CPU/기존16923군/기본검사 근거는 ENGINE_WORK_210/211.json이다. 전역 상태/분석 gate는 유지하고 세부 구현/잔여를 대조 갱신했다. 설치는 USER_INSTALL_211.json에 후속 기록한다.

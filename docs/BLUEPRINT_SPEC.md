@@ -489,3 +489,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 191: ConfigureAvoidance(target,mode="orca",horizon=2,neighborDistance=5,maxNeighbors=16,priority=50), GetSteeringVelocity/GetPreferredVelocity(target)는 실제 공용 C++/BP 서비스3개다. 카탈로그784/공용 C++699. GetPath/속도 배열은 복사 반환한다.
+
+
+210: AnimationBudget SetBudget(target,budgetMS=2), SetEnabled(target,enabled=true), GetObservedMS/GetThrottledCount(target) 공용 SDK/BP4함수. 카탈로그788·공용 C++703(Core289와 별도). 같은 컴포넌트 쓰기·완료 프레임 진단이며 전체 FPS/강제 ms 한도 보장은 아니다.
