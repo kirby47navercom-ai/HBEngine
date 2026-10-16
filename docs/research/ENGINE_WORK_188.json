@@ -342,6 +342,75 @@
         },
         "serverClosed": true
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-188-installed-Akq2lD/acceptance.json",
+      "sha256": "a8a35f3c57601b0fb2d3f6b08c7166a127fbb3d7504354dd71d52523ac7a752d",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/44a236f286ae030e/HBEngine.exe",
+        "results": {
+          "material": {
+            "remap": true,
+            "legacySuppressed": true,
+            "modifiedLegacySuppressed": true,
+            "undoRedo": true
+          },
+          "materialfunction": {
+            "remap": true,
+            "legacySuppressed": true,
+            "modifiedLegacySuppressed": true,
+            "undoRedo": true
+          },
+          "curve": {
+            "remap": true,
+            "legacySuppressed": true,
+            "keyAddedAndDeleted": true
+          },
+          "rig": {
+            "toolRemap": true,
+            "oldShiftKeySuppressed": true
+          },
+          "tilemap": {
+            "toolRemap": true,
+            "legacySuppressed": true
+          },
+          "animation": {
+            "remappedDelete": true,
+            "legacySuppressed": true,
+            "undo": true
+          },
+          "sequence": {
+            "frameRemap": true,
+            "legacySuppressed": true,
+            "fpsPreserved": true,
+            "heldStep": true
+          },
+          "notify": {
+            "remappedHandle": true,
+            "legacySuppressed": true,
+            "exactFrameStep": true,
+            "endPreserved": true
+          },
+          "input": {
+            "textOwned": true,
+            "imeOwned": true
+          },
+          "detached": {
+            "realWindow": true,
+            "remapBeforeLocalHandler": true,
+            "legacySuppressed": true,
+            "toolbarSaveAfterGlobalRemap": true,
+            "toolbarUndoRedo": true
+          },
+          "settingsRestored": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "additionalChecks": [
@@ -358,10 +427,8 @@
   "newDependencies": 0,
   "newTimers": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "These 56 commands cover existing keyboard operations and selected existing toolbar actions in nine dedicated contexts. Collision/UV/retarget/audio and remaining special tool interactions still need their own complete remap coverage. Embedded blend-space and animation-notify charts keep their local key ownership; parent graph deletion must not consume chart sample keys.",
-    "The development window proof predates the final held-frame repeat assertion. Installed smoke must verify that assertion with the final source.",
     "No claim of UE/Unity full shortcut parity, engine-wide completion, sustained FPS or real-phone validation."
   ],
   "failedAttempts": [
@@ -370,5 +437,13 @@
     "An initial owner-toolbar callback assignment ran before dock initialization and prevented startup. Register the hoisted command callback through DockLayout construction options instead.",
     "Pending material clipboard reads could write into a switched document or disposed editor. The actual async method now validates document ownership, running state and disposal before mutation; successful paste remains tested.",
     "The first embedded blend-space regression passed sample-only deletion, then its old fixture hit the editor disk-poll busy guard during Undo. Extended the existing three-attempt/250ms EDITOR_BUSY-only retry to these editor modes; revision conflicts and other errors remain failures. The completed actual editor regression retains all sample/wire/preview/C++ assertions."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_189.json",
+    "receiptSHA256": "1ca10af803e96c802b05b2d269add5601cfb9aac1550a03dbb6c9a93d4c4bb82",
+    "sourceCommit": "481e15ee354ca876a421cdaea954e34b50a8a7d7",
+    "versions": [
+      "44a236f286ae030e"
+    ]
+  }
 }

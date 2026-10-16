@@ -9,3 +9,6 @@
 CPU7개와 기존106/110/138/141 회귀, 실제 하드웨어 D3D11 Compute 및 WebGL/WebGPU의 부호 있는 법선 픽셀을 검사했다. 0→0.5와 1000000.01→1000000.04 시간 표본의 최대 성분 오차는 약5.93e-8이다. 실제 패키징 게임 3개 렌더 경로에서 이력·아틀라스 크기와 D3D 프로그램 재사용·오류0/종료0을 별도로 확인했다. 단순 프로브의 컴파일 시간은 복잡 그래프의 초기 컴파일 지연이나 전체 게임 FPS를 뜻하지 않는다. [검증](research/ENGINE_WORK_187.json).
 
 설계 대조: [Unreal Time 표현식](https://dev.epicgames.com/documentation/en-us/unreal-engine/constant-material-expressions-in-unreal-engine#time)의 Time 본문152–161과 [TSR](https://dev.epicgames.com/documentation/en-us/unreal-engine/temporal-super-resolution-in-unreal-engine)의308–328에 나온 이전 프레임 입력/셰이딩 거절 설명을 읽었다. 후자는 WPO 설명으로, 올바른 이전 입력을 제공한다는 설계 원칙을 HB 노멀 표본에 적용한 추론이며 Unreal TSR과 같은 알고리즘이라는 뜻은 아니다. 연결 API·미디어·문서 전체 분석으로 계산하지 않는다.
+
+
+187–189 설치 확인: 44a236f286ae030e·명세2538파일 실행 후 SHA 일치·설치 EXE 제작 조작/키 반복/입력·IME/Undo/분리 HWND/사용자 키와 독립 버튼·설정 복원 및 장시간 GL/GPU 시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치174512983바이트 정리·Versions1. 근거 docs/research/USER_INSTALL_189.json.

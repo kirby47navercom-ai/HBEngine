@@ -259,3 +259,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 189: 비시간 노멀 그래프의 이전 Time 계산 특화. WebGPU 소스144B 호출 제거, 실제 GL 전체 링크 두 순서·D3D 컴파일/장시간 Time·3백엔드 픽셀/새 DirectX 게임 검증. 같은 프로그램/버퍼/가이드 수 유지. Complex141 초기 지연과 전체 FPS를 별도 잔여로 유지. ENGINE_WORK_189.md/JSON.
+
+
+187–189 설치 확인: 44a236f286ae030e·명세2538파일 실행 후 SHA 일치·설치 EXE 제작 조작/키 반복/입력·IME/Undo/분리 HWND/사용자 키와 독립 버튼·설정 복원 및 장시간 GL/GPU 시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치174512983바이트 정리·Versions1. 근거 docs/research/USER_INSTALL_189.json.

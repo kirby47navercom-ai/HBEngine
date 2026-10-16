@@ -902,9 +902,54 @@
           "signal": null
         }
       }
+    },
+    "installedTimePixels": {
+      "path": "native/build/rendering-187-installed-ibXVIY/acceptance.json",
+      "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+      "result": {
+        "passed": true,
+        "webgl": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "webgpu": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
-  "installationPending": true,
   "newDependencies": 0,
   "newHistoryTargets": 0,
   "automaticGPUReadbacks": 0,
@@ -917,5 +962,13 @@
     "An initial scalar delta-time design produced float32 cancellation after long uptime. Replaced it with absolute committed prior time and an enabled flag in the common program context; the existing forward.w uniform carries the absolute clock.",
     "Camera-less packing initially assumed forward existed. Initialize the existing reserved vector before binding; a nonzero previous clock is verified.",
     "The first probe fixture had shader literal/CDP and camera-construction mistakes. Fixed the harness and preserved strict signed normal pixel checks."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_189.json",
+    "receiptSHA256": "1ca10af803e96c802b05b2d269add5601cfb9aac1550a03dbb6c9a93d4c4bb82",
+    "sourceCommit": "481e15ee354ca876a421cdaea954e34b50a8a7d7",
+    "versions": [
+      "44a236f286ae030e"
+    ]
+  }
 }

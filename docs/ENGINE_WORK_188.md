@@ -11,3 +11,6 @@
 CPU8개·기존 단축키6개와 머테리얼/타임라인/알림/UI/API/분리 창 프레임 회귀를 묶어 검사했다. 실제 Editor에서는 머테리얼/함수 복제와 삭제/조합키 우회 거절·Undo/Redo, 커브 키 편집, 2D 리그/타일 도구, 애니메이션 노드 삭제,30fps 스텝, 몽타주 핸들 정확한10/60초 이동·끝 보존, 입력/IME, 실제 새 HWND의 재지정 키·저장/Undo/Redo, 설정 복원·저장·오류0/종료0을 확인했다. 최종 키 반복 검사는 설치 영수증에 따로 기록한다. [근거](research/ENGINE_WORK_188.json).
 
 대조한 공식 본문은 [Unreal Material Editor UI](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-material-editor-ui)의218–278 조작/키 구역과 [Unity Shortcuts Manager](https://docs.unity.com/en-us/engine/6000.0/manual/unity-editor/editor-navigating-managing/shortcuts-manager)의319–360 문맥/충돌 및400–431 기본 프로필/도구 입력 설명이다. 문맥·프로필·키 소유권을 HB의 기존 편집기 구조에 적용했다. 연결 API/미디어와 전체 엔진 조사 gate로 확대하지 않는다.
+
+
+187–189 설치 확인: 44a236f286ae030e·명세2538파일 실행 후 SHA 일치·설치 EXE 제작 조작/키 반복/입력·IME/Undo/분리 HWND/사용자 키와 독립 버튼·설정 복원 및 장시간 GL/GPU 시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치174512983바이트 정리·Versions1. 근거 docs/research/USER_INSTALL_189.json.

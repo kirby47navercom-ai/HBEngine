@@ -1,3 +1,11 @@
+# 187–189 설치·영수증 완료 — 190 불필요한 시간 재포장 조사 계속
+
+최신주인지시 남은거모두/길게계속. 세션최종답변없음. 신규agents요청없어스폰금지. 1874c3c429/1881fd8487/189481e15e mainoriginpush. 설치 C:/Users/kirby/HBEngine/Versions/44a236f286ae030e/HBEngine.exe source481e15e bundle44a236f286ae030e8ceec196eed231fccb894e80db4bfd054ecce68828d7ec55. 2538manifest파일 실행후재SHA일치. 설치188Akq2lD PASS/heldStep(2/30정확)·modifierlegacy차단·모든전용키/Undo·실제detachedHWND remap/AltS설정뒤save버튼/UndoRedo·입력/IME·settings복원/errors0/exit0. 설치GPU187 ibXVIY longclockGL/GPU pixels5.93e-8/errors0/exit0. 설치MontagePNG 직접열어시각검토. ActualUser프로필10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26전후불변. 바로가기2/.hbproject. 이전186174512983바이트삭제/Versions1. finish189.mjs실행완료재실행금지. USER_INSTALL189영수증과ENGINE_WORK187188189모두연결. 영수증커밋push가바로다음.
+
+190아직제품변경없음. geometry-gi collect(animated)가최상위graph.nodes Time/Panner존재만보고있어미연결Time도signatureTime→fullprepare/MCreset할가능성. cachedRayMaterial은이미 실제compiledprogram.Timeopcode기준 timed 캐시하므로미연결Time은컴파일값재사용됨. compileRayMaterial주석은함수/레이어가이미resolved되어전달된다고명시: 중첩Time누락버그는입증안됨(추정으로고치지말것). collectGeometryGI의Transport/nontransport/normalTimeOnly 캐시소유와성능부터재현할것. GeometryGIWorld.commit은motionPrepared=!packed.motionChanged라정적인motion은초기2frame후재사용가능. 새작업은이미설치된44버전을건드리지않고repo격리fixture로계속. 189근거/한계/절차는아래기록. 전역원장전체목표계속유지.
+
+---
+
 # 189 비시간 가이드 특화 검증/Win32 빌드 완료 — 187–189 묶음 설치 직전
 
 1881fd8487 originpush/1874c3c429 originpush. 설치아직1860d173fc14c7b696a Versions1. 189제품·문서미커밋, docs189.mjs실행완료재실행금지. Time없는rayprogram은 ray.hasTime=false/previousNormalGPU노드호출미생성, 공용GLSL/HLSL기존HB_RAY_OP_2로이전Time호출제외. baselineWGSL48004→47860(강제Time보존변형48004). CPUvxhgEA PASS. static actualD3D QETCvO214.836ms/forcedoldTimevariantVHp9g3316.498ms/TimeLongSr0KGH319.69ms pixel모두5.93e-8. GL/GPUstaticPixelsA3t9J8/역순Y6oyCX PASS. GL full6programlinks 강제2732.8→정적2244.4ms, 역순정적2095/강제2584.1ms. 공유기하없는단일packet범위라과거Complex1419초해결/FPS라고주장금지. 최신Win32build40954 exit0후실제D3D게임VwWIZs PASS/Timehistory·atlas/source/compilecounts stable/errors0/exit0. old141/157/fullGPU생성 PASS. check187native --static/--force-time/--long-clock과window --static/--compile/--reverse추가(기본Time검사는유지). Testnativeopmask는생산과같이info.operations에서만define.

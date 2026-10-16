@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "481e15ee354ca876a421cdaea954e34b50a8a7d7",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e\\HBEngine.exe",
+  "bundleHash": "44a236f286ae030e8ceec196eed231fccb894e80db4bfd054ecce68828d7ec55",
+  "files": 2538,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2518,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d173fc14c7b696a",
+        "bytes": 174512983,
+        "manifestSHA256": "01bf5a8499964e3e0072dd18badad463ff7e62d2448b0aed87fc0fc146a21112"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T14:09:38.6271619Z",
+    "bytes": 174512983,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "44a236f286ae030e"
+    ]
+  },
+  "work": "native/build/engine-189-install-I7ap0j",
+  "versions": [
+    "44a236f286ae030e"
+  ],
+  "manifestVerifiedFiles": 2538,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2538,
+  "installedSmoke": {
+    "path": "native/build/engine-188-installed-Akq2lD/acceptance.json",
+    "sha256": "a8a35f3c57601b0fb2d3f6b08c7166a127fbb3d7504354dd71d52523ac7a752d",
+    "result": {
+      "passed": true,
+      "executable": "C:/Users/kirby/HBEngine/Versions/44a236f286ae030e/HBEngine.exe",
+      "results": {
+        "material": {
+          "remap": true,
+          "legacySuppressed": true,
+          "modifiedLegacySuppressed": true,
+          "undoRedo": true
+        },
+        "materialfunction": {
+          "remap": true,
+          "legacySuppressed": true,
+          "modifiedLegacySuppressed": true,
+          "undoRedo": true
+        },
+        "curve": {
+          "remap": true,
+          "legacySuppressed": true,
+          "keyAddedAndDeleted": true
+        },
+        "rig": {
+          "toolRemap": true,
+          "oldShiftKeySuppressed": true
+        },
+        "tilemap": {
+          "toolRemap": true,
+          "legacySuppressed": true
+        },
+        "animation": {
+          "remappedDelete": true,
+          "legacySuppressed": true,
+          "undo": true
+        },
+        "sequence": {
+          "frameRemap": true,
+          "legacySuppressed": true,
+          "fpsPreserved": true,
+          "heldStep": true
+        },
+        "notify": {
+          "remappedHandle": true,
+          "legacySuppressed": true,
+          "exactFrameStep": true,
+          "endPreserved": true
+        },
+        "input": {
+          "textOwned": true,
+          "imeOwned": true
+        },
+        "detached": {
+          "realWindow": true,
+          "remapBeforeLocalHandler": true,
+          "legacySuppressed": true,
+          "toolbarSaveAfterGlobalRemap": true,
+          "toolbarUndoRedo": true
+        },
+        "settingsRestored": true
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "installedTimePixels": {
+    "path": "native/build/rendering-187-installed-ibXVIY/acceptance.json",
+    "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+    "result": {
+      "passed": true,
+      "webgl": {
+        "pixels": [
+          [
+            0.9999845623970032,
+            0.003921567462384701,
+            0.003921567462384701,
+            1
+          ],
+          [
+            0.003921567462384701,
+            0.003921567462384701,
+            0.9999845623970032,
+            1
+          ]
+        ],
+        "maxError": 5.925724455568826e-8
+      },
+      "webgpu": {
+        "pixels": [
+          [
+            0.9999845623970032,
+            0.003921567462384701,
+            0.003921567462384701,
+            1
+          ],
+          [
+            0.003921567462384701,
+            0.003921567462384701,
+            0.9999845623970032,
+            1
+          ]
+        ],
+        "maxError": 5.925724455568826e-8
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "command": "node tools/check-rendering-187-window.mjs --long-clock --executable C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e\\HBEngine.exe"
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-188-installed-Akq2lD/shortcuts-editor.png",
+      "sha256": "c22f97b6e18e35f98de94eeb0484d7319cedda88842eedad2950014331122e21",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "failures": [],
+    "freeAfter": 462104989696,
+    "freeBefore": 462045036544,
+    "deleted": 3,
+    "date": "2026-10-16T14:13:35.6026657Z",
+    "files": 1090,
+    "bytes": 58777041,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792160011227-d9fed3b6-7d0a-4b10-8e0a-2b4fb28aa49f"
+  }
+}
