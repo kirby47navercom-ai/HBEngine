@@ -1,10 +1,11 @@
+import {periodicEffectCount} from './ability-clock.js';
 import {validAbilityAsset} from './ability-assets.js';
 import {hasGameplayTag} from './scene-systems.js';
 const finite=v=>Number.isFinite(v)&&Math.abs(v)<=1e9;
 const attributeName=v=>typeof v==='string'&&/^[\w가-힣 .-]{1,80}$/.test(v);
 // One owner state is shared by native commands, graph nodes and editor-authored assets.
 export class AbilitySystem {
-  constructor(read){this.read=read;this.owners=new Map();this.time=0;this.serial=0;this.events=[];}
+  constructor(read){this.read=read;this.owners=new Map();this.time=0;this.timeCompensation=0;this.serial=0;this.events=[];}
   cue(s,data,phase,args={}){for(const row of data.cues||[])if(row.on===phase)this.events.push({owner:s.object.id,event:row.event,args:{...args,tag:row.tag,phase}});}
   removeEffect(s,handle,reason){const e=s.effects.get(handle);if(!e)return;s.effects.delete(handle);this.cue(s,e.data,'remove',{effect:e.asset,handle,reason});}
   state(o){let s=this.owners.get(o.id);if(!s){s={object:o,attributes:new Map(),effects:new Map(),abilities:new Map(),baseTags:new Set(o.tags||[])};this.owners.set(o.id,s);}return s;}
@@ -20,13 +21,20 @@ export class AbilitySystem {
   }
   tagChange(o,tag,add){const s=this.owners.get(o.id);if(!s)return;if(add)s.baseTags.add(tag);else s.baseTags.delete(tag);this.sync(s);}
   value(s,name){const a=s.attributes.get(name);if(!a)throw Error('등록되지 않은 속성: '+name);let v=a.base;for(const e of s.effects.values())if(e.data.period===0)for(const m of e.data.modifiers)if(m.attribute===name){if(m.operation==='add')v+=m.magnitude*e.stacks;else if(m.operation==='multiply')v*=m.magnitude**e.stacks;else v=m.magnitude;}return Math.max(a.min,Math.min(a.max,v));}
-  sync(s){const tags=new Set(s.baseTags);for(const e of s.effects.values())for(const tag of e.data.grantedTags)tags.add(tag);for(const a of s.abilities.values())if(a.active)for(const tag of a.data.grantedTags)tags.add(tag);s.object.tags=[...tags];s.object.gameplayDebug={...s.object.gameplayDebug,ability:{time:this.time,attributes:Object.fromEntries([...s.attributes].map(([k,a])=>[k,{...a,current:this.value(s,k)}])),effects:[...s.effects.values()].map(e=>({handle:e.handle,asset:e.asset,stacks:e.stacks,remaining:e.end===Infinity?-1:Math.max(0,e.end-this.time)})),abilities:Object.fromEntries([...s.abilities].map(([k,a])=>[k,{active:a.active,cooldown:Math.max(0,a.ready-this.time)}]))}};}
+  sync(s,{attributes=true,tags=true}={}){
+    const previous=s.object.gameplayDebug?.ability;
+    // Cooldown/remaining time changes every frame. Attribute aggregation and
+    // granted tags change only when their source state changes.
+    if(tags||!previous){const next=new Set(s.baseTags);for(const e of s.effects.values())for(const tag of e.data.grantedTags)next.add(tag);for(const a of s.abilities.values())if(a.active)for(const tag of a.data.grantedTags)next.add(tag);s.object.tags=[...next];}
+    const values=attributes||!previous?Object.fromEntries([...s.attributes].map(([k,a])=>[k,{...a,current:this.value(s,k)}])):previous.attributes;
+    s.object.gameplayDebug={...s.object.gameplayDebug,ability:{time:this.time,attributes:values,effects:[...s.effects.values()].map(e=>({handle:e.handle,asset:e.asset,stacks:e.stacks,remaining:e.end===Infinity?-1:Math.max(0,e.end-this.time)})),abilities:Object.fromEntries([...s.abilities].map(([k,a])=>[k,{active:a.active,cooldown:Math.max(0,a.ready-this.time)}]))}};
+  }
   modify(s,mods,stacks=1){const next=new Map([...s.attributes].map(([k,a])=>[k,{...a}]));for(const m of mods){const a=next.get(m.attribute);if(!a)throw Error('효과 속성이 없어요: '+m.attribute);const v=m.operation==='add'?a.base+m.magnitude*stacks:m.operation==='multiply'?a.base*m.magnitude**stacks:m.magnitude;if(!finite(v))throw Error('효과 속성 계산 범위 초과');a.base=Math.max(a.min,Math.min(a.max,v));}s.attributes=next;}
   validateModifiers(s,data){for(const m of data.modifiers)if(!s.attributes.has(m.attribute))throw Error('효과 속성이 없어요: '+m.attribute);}
   apply(s,asset,data){this.validateModifiers(s,data);if(data.duration===0){this.modify(s,data.modifiers);this.cue(s,data,'apply',{effect:asset,handle:'',stacks:1});return '';}
     const matches=[...s.effects.values()].filter(e=>e.asset===asset),prior=matches[0];if(data.stackPolicy==='independent'&&matches.length>=data.stackLimit)return '';let e=prior;
     if(e&&data.stackPolicy==='reject')return '';
-    if(!e||data.stackPolicy==='independent'){e={handle:'effect_'+(++this.serial),asset,data,stacks:1,end:data.duration<0?Infinity:this.time+data.duration,next:this.time+data.period};s.effects.set(e.handle,e);}
+    if(!e||data.stackPolicy==='independent'){e={handle:'effect_'+(++this.serial),asset,data,stacks:1,periodAnchor:this.time,periodTicks:0,end:data.duration<0?Infinity:this.time+data.duration,next:this.time+data.period};s.effects.set(e.handle,e);}
     else{e.stacks=Math.min(data.stackLimit,e.stacks+1);if(data.stackPolicy==='extend')e.end=data.duration<0?Infinity:e.end+data.duration;else e.end=data.duration<0?Infinity:this.time+data.duration;}
     if(data.period>0&&data.executeOnApply)this.modify(s,data.modifiers,e.stacks);this.cue(s,data,'apply',{effect:asset,handle:e.handle,stacks:e.stacks});return e.handle;
   }
@@ -52,9 +60,9 @@ export class AbilitySystem {
     else if(key==='effectList')return {return:JSON.stringify(o.gameplayDebug?.ability?.effects||[])};
     else throw Error('능력 함수 오류: '+key);this.sync(s);return {};
   }
-  async tick(delta,vm){this.time+=delta;for(const [id,s] of this.owners){if(!vm.object(id)||s.object.poolActive===false){this.remove(id);continue;}let dirty=false;for(const [handle,e] of s.effects){const until=Math.min(this.time,e.end);if(e.data.period>0&&e.next<=until){const count=Math.floor((until-e.next)/e.data.period)+1; // Exact catch-up; no lost periodic damage after a long frame.
-          const mods=e.data.modifiers.map(m=>m.operation==='add'?{...m,magnitude:m.magnitude*count}:m.operation==='multiply'?{...m,magnitude:m.magnitude**count}:m);this.modify(s,mods,e.stacks);e.next+=count*e.data.period;this.cue(s,e.data,'period',{effect:e.asset,handle:e.handle,count,stacks:e.stacks});dirty=true;}if(e.end<=this.time){this.removeEffect(s,handle,'expired');dirty=true;}}
-      for(const a of s.abilities.values())if(a.active&&a.end<=this.time){this.end(s,a,'completed');dirty=true;}const cooldown=[...s.abilities.values()].some(a=>a.ready>this.time);if(dirty||s.effects.size||cooldown||s.cooldown||[...s.abilities.values()].some(a=>a.active))this.sync(s);s.cooldown=cooldown;}
+  async tick(delta,vm){if(!Number.isFinite(delta)||delta<0)throw Error('능력 시스템 시간 간격을 확인하세요.');if(delta>0){const corrected=delta-this.timeCompensation,nextTime=this.time+corrected;if(!Number.isFinite(nextTime))throw Error('능력 시스템 시간 범위를 넘었어요.');this.timeCompensation=(nextTime-this.time)-corrected;this.time=nextTime;}for(const [id,s] of this.owners){if(!vm.object(id)||s.object.poolActive===false){this.remove(id);continue;}let dirty=false;for(const [handle,e] of s.effects){const until=Math.min(this.time,e.end),count=e.data.period>0?periodicEffectCount(e,until):0;if(count>0){ // Exact catch-up; no lost periodic damage after a long frame.
+          const mods=e.data.modifiers.map(m=>m.operation==='add'?{...m,magnitude:m.magnitude*count}:m.operation==='multiply'?{...m,magnitude:m.magnitude**count}:m);this.modify(s,mods,e.stacks);e.periodTicks+=count;e.next=e.periodAnchor+(e.periodTicks+1)*e.data.period;this.cue(s,e.data,'period',{effect:e.asset,handle:e.handle,count,stacks:e.stacks});dirty=true;}if(e.end<=this.time){this.removeEffect(s,handle,'expired');dirty=true;}}
+      for(const a of s.abilities.values())if(a.active&&a.end<=this.time){this.end(s,a,'completed');dirty=true;}const cooldown=[...s.abilities.values()].some(a=>a.ready>this.time);if(dirty||s.effects.size||cooldown||s.cooldown||[...s.abilities.values()].some(a=>a.active))this.sync(s,{attributes:dirty,tags:dirty});s.cooldown=cooldown;}
     for(const event of this.events.splice(0)){if(!vm.active||!vm.object(event.owner))continue;for(const b of vm.bindings.filter(b=>b.self===event.owner))await vm.custom(b,event.event,event.args);}
   }
   remove(id){const state=this.owners.get(id);if(state)state.object.tags=[...state.baseTags];this.owners.delete(id);this.events=this.events.filter(e=>e.owner!==id);}
