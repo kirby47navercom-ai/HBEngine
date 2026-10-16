@@ -1,4 +1,6 @@
-# 누적184 중첩 프리팹 검증 완료 — 설치 준비 후 계속
+# 누적184 설치 완료 — 185 인스턴스 자식 공용 조회 함수 계속
+
+main87ddf86 featurepush/설치7b716ddfe6174204,2497manifest실행후SHA검증,184installedCSdfVW PASS(중첩humanApply/inner보존·sourceSceneUndoRedo+키/슬롯/메시/LOD)오류0/종료0. 캡처nested-prefab/slot-filled/region-editor실제시각확인. profile10385SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1/링크2/연결확인/이전183174323655bytes정리. finish184완료재실행금지. 다음receipt커밋push.185아직제품코드없음/설계: C++Scene::GetInstanceActor(instance,localId,includeInactive=false),GetInstanceActors,GetInstanceLocalId 공용BP서비스를기존runtime-actors.js +Bridge.hpp메모리조회에연결검토. family는spawnRoot/spawnLocalId 또는prefabRoot/prefabLocalId,내부생성IDunderscore를추측하지않게함. null/일반액터/삭제·inactive/다른인스턴스분리·즉시Spawn조회/후속스냅샷·공용CPP/BP실행검증필요. SDKheader static함수추가만이면ABI바이너리재빌드불필요하나SDK와generatedAPI모두배포필수. user전체누적계속/최종안함/새agent금지. 기존NativeWorld스냅샷에familyfields유지되는지근거확인필요(실제Cpp다음호출조회로검증). 아래설치전역사.
 
 main285e6fa origin동일/183설치3bffac6f21389589(2490files·profile10385SHA불변·Versions1)영수증완료.184소스/문서미커밋. additions/qualifiedremoved outerApply·finalresolve/build·computedresolvedAnchors inherit중복/원본교체정리·qualifiedoverride지연·adopt기본컴포넌트stableID. CPU7TGjkwX/16812URPBIC/17017I4S61U PASS. 실제windowwgx080 humanApply/inner보존/원본Scene동시UndoRedo PASS; D3DUefi89/WebGPUdp7FKt C++Spawn/GetActorsWithTag(added2/original0)·기존회귀 PASS. docs184완료재실행금지. SDK/hostABI변경없음. 다음diff/status/API→commitpush→sync/install184→check184window새설치/manifest/profile/Versions1/capture→영수증push→누적계속. 새agent금지/최종답변안함/실사용자창보호. 다음prefabStage/다른분야원장확대계속.
 

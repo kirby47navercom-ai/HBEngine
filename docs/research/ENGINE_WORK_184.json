@@ -1746,11 +1746,58 @@
           }
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-184-installed-CSdfVW/acceptance.json",
+      "sha256": "f441310da3413e768c1082f50852a6b2e36c07c7372e9e4ac0b9caf59dd15c8c",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/7b716ddfe6174204/HBEngine.exe",
+        "nestedPrefab": {
+          "humanAdditionApply": true,
+          "sourcePreserved": true,
+          "baselineUpdated": true,
+          "atomicSourceAndSceneUndoRedo": true
+        },
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "Structure Apply writes the outer linked prefab. Choosing the inner source as a separate write destination, an isolated prefab editing stage and all Unity prefab modes remain separate.",
     "The optional additions array contains authored actors whose parents may live in the resolved nested hierarchy. Local validation checks actor fields and partial hierarchy; final resolve/build validation checks actual parents, duplicate IDs, cycles and hierarchy limits. Raw resolvedAnchors metadata is ignored; the resolver computes it.",
@@ -1761,5 +1808,13 @@
     "First adopted raw actor had implicit components absent from current state but present in normalized baseline, leaving a false component-removal override. Observed the exact diff then normalized implicit components with stable IDs when adopting.",
     "First C++ fixture assumed slash-based spawned child IDs. Existing JS/C++ spawn uses stable index suffixes; kept engine identity unchanged and used existing GetActorsWithTag with unique authored tags.",
     "First editor fixture queried an unopened source document. Opened the source first, then verified the actual Inspector apply and atomic source+scene Undo/Redo."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_184.json",
+    "receiptSHA256": "cee5f1b3fbf295ec29829ab4491fcdc556ded87b8a1bd5b62f26e273f93aa67b",
+    "sourceCommit": "87ddf86d8fea09db80743b30a881a1ffc69bbd5f",
+    "versions": [
+      "7b716ddfe6174204"
+    ]
+  }
 }

@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "87ddf86d8fea09db80743b30a881a1ffc69bbd5f",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7b716ddfe6174204",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7b716ddfe6174204\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7b716ddfe6174204\\HBEngine.exe",
+  "bundleHash": "7b716ddfe6174204852ff512ab46c94d5744d3a139c8f792dd66c509070d9e9f",
+  "files": 2497,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2491,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3bffac6f21389589",
+        "bytes": 174323655,
+        "manifestSHA256": "2b9d92235bc6056c46d34abb85523f7c6d0e77a56b85c0422294e08b9df1e20f"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T11:27:43.1819493Z",
+    "bytes": 174323655,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "7b716ddfe6174204"
+    ]
+  },
+  "work": "native/build/engine-184-install-QrIPin",
+  "versions": [
+    "7b716ddfe6174204"
+  ],
+  "manifestVerifiedFiles": 2497,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2497,
+  "installedSmoke": {
+    "path": "native/build/engine-184-installed-CSdfVW/acceptance.json",
+    "sha256": "f441310da3413e768c1082f50852a6b2e36c07c7372e9e4ac0b9caf59dd15c8c",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/7b716ddfe6174204/HBEngine.exe",
+    "nestedPrefab": {
+      "humanAdditionApply": true,
+      "sourcePreserved": true,
+      "baselineUpdated": true,
+      "atomicSourceAndSceneUndoRedo": true
+    },
+    "shortcuts": {
+      "remappedMesh": true,
+      "legacySuppressed": true,
+      "typingSafe": true,
+      "widgetNudge": true,
+      "widgetDuplicate": true,
+      "contextMenuLabels": true,
+      "originalSettingsRestored": true
+    },
+    "meshAuthoring": {
+      "humanInset": true,
+      "failedSelectionPreserved": true,
+      "undo": true,
+      "aiDryRun": true,
+      "unequalBridge": true,
+      "saved": true
+    },
+    "namedSlots": {
+      "humanAssignment": true,
+      "emptyPlaceholder": true,
+      "undo": true,
+      "saved": true
+    },
+    "lod": {
+      "humanRate": true,
+      "collisionChoice": true,
+      "undo": true,
+      "saved": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-184-installed-CSdfVW/nested-prefab.png",
+      "sha256": "618bdb80372f9bbe8bf823fd71df95b9e05d0a4a0f3184499d13dd1cc6e49546",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-184-installed-CSdfVW/slot-filled.png",
+      "sha256": "6c75ce4be82369289f1f2b93324edce25a5a05c1409a6f161d8c00a27206c7b1",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-184-installed-CSdfVW/region-editor.png",
+      "sha256": "01f1204e76f838b302ae2fcc93fdc2599c0c6bffb6a812bbd06bcced6791b6e4",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
