@@ -9,7 +9,7 @@ export const shortcutCommands=[
   command('close','작업 문서 닫기','global',['Primary+KeyW'],'close',true),command('maximize','작업창 최대화','global',['Primary+Space']),
   command('play','게임 실행','global',['F5']),command('pause','게임 일시 정지','global',['F6']),command('stop','게임 종료','global',['Shift+F5']),
   command('selectTool','선택 도구','viewport',['KeyQ']),command('moveTool','이동 도구','viewport',['KeyW']),command('rotateTool','회전 도구','viewport',['KeyE']),command('scaleTool','크기 도구','viewport',['KeyR']),
-  command('focusScene','선택 프레이밍','viewport',['KeyF']),command('focusGraph','그래프 프레이밍','blueprint',['KeyF']),
+  command('navigationView','항법 메시 표시','viewport',['KeyP']),command('focusScene','선택 프레이밍','viewport',['KeyF']),command('focusGraph','그래프 프레이밍','blueprint',['KeyF']),
   ...['copy','cut','paste','duplicate','selectAll'].map((id,i)=>command(id,{copy:'복사',cut:'잘라내기',paste:'붙여넣기',duplicate:'복제',selectAll:'모두 선택'}[id],'authoring',['Primary+Key'+['C','X','V','D','A'][i]])),
   command('group','그룹 만들기','viewport',['Primary+KeyG']),command('ungroup','그룹 해제','viewport',['Primary+Shift+KeyG']),
   command('rename','이름 변경','viewport',['F2']),command('delete','선택 삭제','authoring',['Delete']),
