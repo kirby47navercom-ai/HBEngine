@@ -218,3 +218,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 179 설치 확인: f95666ae3ee3a41f·명세2458파일 실행 후 SHA 일치·격리 설치 EXE의 실행 LOD 포즈 Hz·충돌 선택·사람 편집/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173816469바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_179.json.
+
+
+180: C++ 질의 월드/형상을 gameSession 단위로 공유하고 승인·동시 스냅샷·직접 좌표 변경·reset/마지막 모듈/페이지 종료·유휴1개 보관을 검증했다. Windows/모바일/웹 배포의 공식 최소화 Three 파일을 공용 수집해 모바일 표본15.15→12.55MB, 라이브러리2592217바이트 절감. ENGINE_WORK_180.md/JSON 근거. 전체 FPS·실물 휴대폰과 장시간 메모리 결과로 확대하지 않는다.

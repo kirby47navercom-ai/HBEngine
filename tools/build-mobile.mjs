@@ -1,3 +1,4 @@
+import {packagedRuntimeBytes} from './packaged-runtime.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID,createHash} from 'node:crypto';
@@ -38,7 +39,7 @@ export async function buildMobile(record,profile,prepared,{signal,onProgress=()=
   await fs.mkdir(out,{recursive:true});const real=await fs.realpath(out),base=await fs.realpath(record.root);if(!real.toLowerCase().startsWith((base+path.sep).toLowerCase()))throw Error('모바일 빌드 경로가 프로젝트 밖이에요.');
   const assets=path.join(out,'Assets'),files=[],copied=new Set();
   const write=async(name,data)=>{signal?.throwIfAborted();const destination=path.join(assets,name);await fs.mkdir(path.dirname(destination),{recursive:true});await fs.writeFile(destination,data,{flag:'wx'});files.push({path:name,bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')});};
-  const copy=async(from,to)=>{if(copied.has(to))return;await write(to,await fs.readFile(from));copied.add(to);};
+  const copy=async(from,to)=>{if(copied.has(to))return;await write(to,await packagedRuntimeBytes(from));copied.add(to);};
   try{
     onProgress('모바일 콘텐츠');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     const closure=await moduleClosure('prototype/player.js');await moduleClosure('prototype/mobile-player.js',closure);for(const file of closure)await copy(file,path.relative(root,file).split(path.sep).join('/'));

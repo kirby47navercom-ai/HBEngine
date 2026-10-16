@@ -10,6 +10,7 @@ import {mobileBackend} from '../prototype/mobile-player.js';
 import {webNative,webStorage} from '../prototype/web-player.js';
 import {startWebServer} from './web-server.mjs';
 import {webFiles} from './publish-web.mjs';
+import {packagedRuntimeBytes} from './packaged-runtime.mjs';
 
 const root=path.resolve(import.meta.dirname,'..');await fs.mkdir(path.join(root,'native/build'),{recursive:true});
 const work=await fs.mkdtemp(path.join(root,'native/build/web-export-')),cpp=process.argv.includes('--cpp'),browser=process.argv.includes('--browser');
@@ -33,7 +34,7 @@ for(const template of [cpp?'shooter2d':'gameplay2d','gameplay3d']){
   const html=await fs.readFile(result.artifact,'utf8');assert.match(html,/startWebPlayer/);assert.doesNotMatch(html,/"\/(?:prototype|node_modules)\//);assert.equal(result.artifactType,'web');
   assert.equal(manifest.webResources.path,'game.resources.bin');assert.equal(manifest.webResources.bytes,manifest.files.find(f=>f.path==='game.resources.bin').bytes);
   assert.equal(manifest.files.some(f=>/node\.exe|\.exe$|serve\.mjs|app\.js$/.test(f.path)),false);assert.ok(manifest.files.some(f=>f.path.includes('rapier2d-compat')));assert.ok(manifest.files.some(f=>f.path.includes('rapier3d-compat')));
-  for(const file of manifest.files){const bytes=await fs.readFile(path.join(result.output,file.path));assert.equal(bytes.length,file.bytes);assert.equal(digest(bytes),file.sha256);if(file.path.startsWith('prototype/')||file.path.startsWith('node_modules/'))assert.equal(digest(await fs.readFile(path.join(root,file.path))),file.sha256,'reused runtime source: '+file.path);}
+  for(const file of manifest.files){const bytes=await fs.readFile(path.join(result.output,file.path));assert.equal(bytes.length,file.bytes);assert.equal(digest(bytes),file.sha256);if(file.path.startsWith('prototype/')||file.path.startsWith('node_modules/'))assert.equal(digest(await packagedRuntimeBytes(path.join(root,file.path))),file.sha256,'packaged runtime source: '+file.path);}
   const backend=mobileBackend(manifest,{read:async()=>new Response('{}'),request:store,mobile:false,baseURL:'https://example.test/HBEngine/'});
   const config=await (await backend('/api/player')).json();assert.equal(config.mobile,false);assert.equal(config.targetFrameRate,120);assert.match(backend.fileUrl(manifest.startupScene),/^https:\/\/example.test\/HBEngine\/Content\//);await assert.rejects(async()=>backend.fileUrl('../escape'),/경로/);
   const uploaded=await webFiles(result.output);assert.equal(uploaded.files.has('build-report.json'),false);assert.equal(uploaded.files.size,manifest.files.length+1);

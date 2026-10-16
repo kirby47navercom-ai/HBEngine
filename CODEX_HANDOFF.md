@@ -1,3 +1,8 @@
+# 누적180 구현·검증 완료 — 설치 준비 후 누적 목표 계속
+
+main d4ac12d까지 origin동일, 179설치영수증완료.180현재미커밋. 주인님 남은거전체계속/최종안함/새agent금지. PhysicsQueryWorld/Pool bygameSession sharedacrossclasses·atomicimmutablequery·querylocal128/auth·idle1·activeunbounded·resetretireallowners·close/release/pagehidecleanup. 비용transport+hostinspect. 공식minThree공용배포함수 Windows/mobile/web,source/editor원본보존/MIT/coreidentity,2592217bytes절감,모바일12553711bytes/기존15MBguard. CPU9 2nRyE8/nativeZTSEF5/D3DSVOwzz/WebGPUEWHpbL/mobileAOTs1xb0Q/webCpp1SEeTW/packagedon5kj1 PASS. 실제8192triangleCppRPCwarmed16–17→8.9–9.7ms,query9–10→1.8–2ms(전체FPS아님),coldlibrary/snapshotserialization별도남음. docs180.mjs실행완료재실행금지.
+다음 diff/checkstatus→한국어동일작성자commit/push→sync/install180(179스크립트복제,직접재실행금지)→설치격리EXE/manifest/profile/Versions1영수증push→다음미구현목표계속. 현재설치179 f95666ae3ee3a41f/profile10385SHA불변.180완료로전체엔진완료라하지말것. 이전조사handoff아래는역사이며위최신상태우선.
+
 # 누적179 설치 검증 완료 — 180 C++ 물리 질의 성능 조사 계속
 
 main1853cc09b867602cea9bf668217da887f51bc628 featurepush. 설치C:/Users/kirby/HBEngine/Versions/f95666ae3ee3a41f/HBEngine.exe, bundlef95666ae3ee3a41f9d211d1c49ca5a35edece2b991cc22e4d65bcb43044b44e1/2458명세파일실행후SHA동일. 사용자프로필10385파일/전후검사후SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1, 바로가기2/.hbproject연결, 이전178173816469bytes정리. installedsxgjSd PASS/LOD사람Hz/충돌선택/Undo/저장/errors0/exit0, 캡처시각확인. USER_INSTALL179/WORK179설치링크완료. finish179완료재실행금지. 다음receipt커밋push.

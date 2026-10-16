@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `e152669`
+갱신일: 2026-10-16 · 대조 기준 커밋: `d4ac12d`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -170,15 +170,15 @@
 | BLD-03 iOS 원격 빌드·시뮬레이터 | verified | Xcode 두 대상·C++/물리/UI·반복 오디오·백그라운드 복귀 | 이 행의 범위는 검증됨 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) |
 | BLD-04 실제 휴대폰·스토어 배포 | unverified | 모바일 출력/빌드 경로 있음 | 실물 기기 설치/열/배터리/음향 · Apple 서명·IPA/TestFlight·스토어 배포 | [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |
 | BLD-05 모바일 편집기 | unimplemented | — | 프로젝트 저장/복구·터치 편집·모바일 C++ 제작 제약 · 실제 Android/iOS 에디터 앱 | [MOBILE_EDITOR_BODY_012.md](research/MOBILE_EDITOR_BODY_012.md) |
-| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit | 실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포 · Git 충돌 마커의 구조 병합·시각 노드 diff·원격 VCS/잠금 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) |
+| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 | 실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포 · Git 충돌 마커의 구조 병합·시각 노드 diff·원격 VCS/잠금 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) |
 
 ## 성능·용량
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
+| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) |
 | PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
-| PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_179.json](research/ENGINE_WORK_179.json) |
+| PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_179.json](research/ENGINE_WORK_179.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) |
 
 ## 연구 대조
 

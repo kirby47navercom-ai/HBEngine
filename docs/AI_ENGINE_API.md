@@ -421,3 +421,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 179: RuntimeLOD 컴포넌트(distanceMode:auto/xy/xz/xyz,nearDistance/farDistance,boundsRadius,hysteresis,forcedLevel:-1~2,midAnimationRate/farAnimationRate,alwaysAnimate)를 일반 Scene/BP 문서 patch/Undo로 편집한다. WorldCollision.lodMode:fixed|runtime. runtime.lod는 실행 중 스케줄/충돌 캐시 추정치/예산을 읽는다. C++/BP 기존 Components::SetFloat/GetFloat로 forcedLevel과 Hz를 편집한다. collisionLevel 진단은 요청 거리 구간이며 실제 자산의 부족한 단계는 마지막 단계로 제한한다. 모드0Hz는 모든 프레임이며 논리 이벤트/곡선은 표시 간격과 별개다.
+
+
+180: NativeHost.inspectResources().physicsQueries는 worlds/retiredWorlds/idleWorlds/activeContexts/worldBuilds/queries/maxIdleWorlds를 읽는다. C++ 응답 transport.physicsQueryMs/physicsQueryCount/physicsCacheReused는 해당 호출 비용과 시작 시 캐시 재사용 여부다. 진단은 필요할 때 읽으며 게임 FPS가 아니다. 캐시는 세션별·백엔드 유휴1개이며 reset/종료 시 해제한다.

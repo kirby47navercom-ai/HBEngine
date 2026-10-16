@@ -51,6 +51,7 @@ export async function startWebPlayer(host=window){
   const mobile=host.matchMedia('(pointer: coarse)').matches;
   const runtimeManifest=mobile?{...manifest,targetFrameRate:Math.min(60,manifest.targetFrameRate),framePacing:'display'}:manifest;
   const backend=mobileBackend(runtimeManifest,{read,request,mobile,baseURL:base.href});
+  host.addEventListener('pagehide',event=>{if(!event.persisted)backend.dispose();});
   host.hbMobileFileUrl=name=>{const url=backend.fileUrl(name);return resources.urls.get(url)||url;};host.hbMobileSetRendererQuery=backend.setRendererQuery;
   host.fetch=(input,options)=>{const url=new URL(typeof input==='string'?input:input.url,host.location.href);return url.origin===host.location.origin&&url.pathname.startsWith('/api/')?backend(input,options):original(input,options);};
   await import('./player.js');

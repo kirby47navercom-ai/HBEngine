@@ -477,3 +477,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 179: RuntimeLOD는 일반 컴포넌트로 Scene/BP 제작과 문서 Undo/AI patch를 공유한다. 별도 노드 수를 늘리지 않고 기존 Components 수치/문자 서비스로 거리 기준/강제 단계·표시 Hz를 사용한다. 같은 서비스의 실제 C++ 호출 뒤 물리 동기화와 대상 RaycastAll을 검증했다.
+
+
+180: 기존 Physics 공용 C++/BP 함수의 의미와 노드는 유지한다. C++ 백엔드 질의 월드 재사용은 호출당 승인과 직접 Transform 변경을 보존한다. Windows와 모바일 AOT2모듈의 같은 세션 공유/동시 질의/세대 정리를 검사했다.

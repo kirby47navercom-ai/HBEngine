@@ -1,3 +1,4 @@
+import {packagedRuntimeBytes} from './packaged-runtime.mjs';
 import {cookContent} from './cook-cache.mjs';
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
 import {parseNativeHeader,canonicalNativeText} from '../prototype/native-model.js';
@@ -72,7 +73,7 @@ export async function inspectBuild(record,profile){
   return {content,natives,report:{cook:cooked.report,target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
 export async function moduleClosure(entry,seen=new Set()){
-  const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=await fs.readFile(full,'utf8');
+  const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=(await packagedRuntimeBytes(full)).toString('utf8');
   for(const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g)){
     if(match[1]==='ws'){async function collect(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await collect(f);else if(/\.(?:js|mjs|json)$/.test(e.name)||e.name==='LICENSE')seen.add(f);}}await collect(path.join(root,'node_modules/ws'));}
     const specifier=match[1],dependency=specifier.startsWith('.')?path.relative(root,path.resolve(path.dirname(full),specifier)):specifier==='three'?'node_modules/three/build/three.module.js':specifier==='three/webgpu'?'node_modules/three/build/three.webgpu.js':specifier==='three/tsl'?'node_modules/three/build/three.tsl.js':specifier.startsWith('three/addons/')?'node_modules/three/examples/jsm/'+specifier.slice(13):null;
@@ -88,7 +89,7 @@ export async function buildGame(record,profile,{dryRun=false,signal,onProgress=(
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});
   const canonical=await fs.realpath(out);if(!canonical.toLowerCase().startsWith((record.root+path.sep).toLowerCase()))throw Error('빌드 경로가 프로젝트 밖이에요.');
   const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{failIfCanceled(signal);await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});artifacts.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
-  const copy=async(from,to)=>{if(!copied.has(to))await write(to,await fs.readFile(from));};
+  const copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeBytes(from));};
   try{
     const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata});}
     onProgress('콘텐츠 준비');for(const [name,bytes] of content)await write('Content/'+name,bytes);

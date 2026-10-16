@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "e152669",
+  "basisRevision": "d4ac12d",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1386,7 +1386,7 @@
       "area": "platform",
       "title": "번들·패치·협업/소스 관리",
       "status": "partial",
-      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포",
       "remaining": [
         "실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포",
         "Git 충돌 마커의 구조 병합·시각 노드 diff·원격 VCS/잠금"
@@ -1396,14 +1396,17 @@
         "tools/project-storage.mjs",
         "tools/content-patch.mjs",
         "prototype/asset-merge.js",
-        "tools/source-control.mjs"
+        "tools/source-control.mjs",
+        "prototype/native-physics-query.js",
+        "tools/packaged-runtime.mjs"
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
         "docs/research/ENGINE_WORK_171.json",
-        "docs/research/ENGINE_WORK_172.json"
+        "docs/research/ENGINE_WORK_172.json",
+        "docs/research/ENGINE_WORK_180.json"
       ]
     },
     {
@@ -1411,18 +1414,21 @@
       "area": "performance",
       "title": "PC120·모바일60 전체 프레임",
       "status": "unverified",
-      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본",
+      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포",
       "remaining": [
         "대표/고부하 장면 p95/p99·장시간 안정성",
         "실제 모바일 지속60·발열/배터리"
       ],
       "sources": [
-        "tools/check-auric-frame.mjs"
+        "tools/check-auric-frame.mjs",
+        "prototype/native-physics-query.js",
+        "tools/packaged-runtime.mjs"
       ],
       "evidence": [
         "docs/research/SPAWN_CATALOG_LIFETIME_067.md",
         "docs/MOBILE_PERFORMANCE_BUDGET.md",
-        "docs/research/ENGINE_WORK_168.json"
+        "docs/research/ENGINE_WORK_168.json",
+        "docs/research/ENGINE_WORK_180.json"
       ]
     },
     {
@@ -1449,7 +1455,7 @@
       "area": "performance",
       "title": "대규모 월드·장시간 RAM",
       "status": "unverified",
-      "implemented": "일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단",
+      "implemented": "일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포",
       "remaining": [
         "대규모 메시/스켈레톤/탄막·전환 반복",
         "프로세스 전체 RAM/VRAM 장기 증가 원인 종결"
@@ -1458,13 +1464,16 @@
         "prototype/scene-rendering.js",
         "prototype/physics-world.js",
         "prototype/runtime-lod.js",
-        "prototype/world-collision-lod.js"
+        "prototype/world-collision-lod.js",
+        "prototype/native-physics-query.js",
+        "tools/packaged-runtime.mjs"
       ],
       "evidence": [
         "docs/research/MEMORY_CONTROL_060.md",
         "docs/research/HOST_MEMORY_062.md",
         "docs/research/ENGINE_WORK_168.json",
-        "docs/research/ENGINE_WORK_179.json"
+        "docs/research/ENGINE_WORK_179.json",
+        "docs/research/ENGINE_WORK_180.json"
       ]
     },
     {
@@ -1502,5 +1511,5 @@
       ]
     }
   ],
-  "latestBatch": "179"
+  "latestBatch": "180"
 }

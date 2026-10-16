@@ -1,3 +1,4 @@
+import {packagedRuntimeBytes} from './packaged-runtime.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -49,7 +50,7 @@ export async function buildWeb(record,profile,{content,natives,report},{dryRun=f
   await fs.mkdir(out,{recursive:true});const real=await fs.realpath(out),base=await fs.realpath(record.root);if(!real.toLowerCase().startsWith((base+path.sep).toLowerCase()))throw Error('웹 빌드 경로가 프로젝트 밖이에요.');
   const files=[],copied=new Set();
   const write=async(name,bytes)=>{signal?.throwIfAborted();await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});files.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
-  const copy=async(name)=>{if(!copied.has(name))await write(name,await fs.readFile(path.join(root,name)));};
+  const copy=async(name)=>{if(!copied.has(name))await write(name,await packagedRuntimeBytes(path.join(root,name)));};
   try{
     onProgress('웹 콘텐츠');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     const closure=await moduleClosure('prototype/player.js');await moduleClosure('prototype/web-player.js',closure);

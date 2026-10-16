@@ -1,1 +1,1 @@
-export {NativePhysicsQueries} from '../prototype/native-physics-query.js';
+export {NativePhysicsQueries,NativePhysicsQueryWorld,NativePhysicsQueryPool} from '../prototype/native-physics-query.js';
