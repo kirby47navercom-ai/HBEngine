@@ -45,3 +45,5 @@ node tools/hb.mjs patch.recover '{"root":"게임 폴더"}'
 [Unreal Animation Curves](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-curves-in-unreal-engine)의 속성/모프/머테리얼 구동과 [Take Recorder](https://dev.epicgames.com/documentation/en-us/unreal-engine/take-recorder-in-unreal-engine)의 Actor/컴포넌트 속성 녹화·키 축약을 대조했다. HB의 이번 Take는 현재 존재하는 기본 속성을 다루며 Spawnable·Live Link·마이크 녹화까지 제공하지 않는다. [Node crypto.sign](https://nodejs.org/api/crypto.html#cryptosignalgorithm-data-key-callback)의 Ed25519 서명 계약도 참고했다. 새/재조회 지정 본문과 연결 API·이미지·미디어 미독 범위를 corpus에 별도로 등록했고 전체 분석 gate는 승격하지 않았다.
 
 릴리스 표본 185프레임(1.626초, 초기 프레임 포함)은 평균 작업2.53ms/p95 2.60ms, 관측113.90fps, 4draw였어요. PC120 설정과 자동 읽기0을 확인했지만 동등 기준 비교나 대형 씬/휴대폰 보장으로 계산하지 않았어요.
+
+설치 전환: `C:/Users/kirby/HBEngine/Versions/8f19c8e49c8e1cf0/HBEngine.exe`. 설치2319파일 해시·실제 숨김 기동·사용자 프로필10385파일 SHA 보존과 바로가기/.hbproject 연결을 확인했다. 이전 설치172366728B를 정리해 Versions1. [설치 기록](research/USER_INSTALL_166.json).

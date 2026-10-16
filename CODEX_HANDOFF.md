@@ -6,7 +6,7 @@
 
 상세 docs/ENGINE_WORK_166.md + research/ENGINE_WORK_166.json. 165의20대상 중9부모행에 추가했으며 부모전체 완료0. 단일 원장 ENGINE_STATUS.json/md,78행 verified39/partial31/unimplemented5/unverified3. 전체 UE/Unity 분석 gate false/전체완료율 미확정. 지정 본문은 corpus supplemental166, 연결 API/미디어 미독 보존.
 
-검사: 새12군/165회귀17군, core/native/UI-audio/gameplay/retarget/API. 실제C++ curveHeat, 숨김Editor12종/폴리지Undo/위젯en/컴포넌트Take, WebGPU/PCM, dev/release D3D11 Player. 소규모릴리스185frame 평균work2.53ms/p95 2.60ms,113.90fps(초기포함, 일반보장아님). 설치는 현재 전환 준비 중; 완료 뒤 USER_INSTALL_166.json과 이 문서 설치 경로를 갱신한다. 빌드와 실제EXE실행을 동시에 하면 dist runtime/node.exe 잠김; 순차로 실행한다.
+검사: 새12군/165회귀17군, core/native/UI-audio/gameplay/retarget/API. 실제C++ curveHeat, 숨김Editor12종/폴리지Undo/위젯en/컴포넌트Take, WebGPU/PCM, dev/release D3D11 Player. 소규모릴리스185frame 평균work2.53ms/p95 2.60ms,113.90fps(초기포함, 일반보장아님). 설치 C:/Users/kirby/HBEngine/Versions/8f19c8e49c8e1cf0 전환/실제 기동 완료. USER_INSTALL_166.json:2319파일 SHA·사용자프로필10385파일 보존·바로가기/연결·Versions1. 이전ef759067d9303b95 172366728B 정리. 구현 e665c94. 빌드와 실제EXE실행을 동시에 하면 dist runtime/node.exe 잠김; 순차로 실행한다.
 
 소유자: mesh-topology/world-assets/world-rendering/world-asset-editor, sequence-properties/take-recorder/gameplay-runtime, animation-curve-sampler/animation-graph-runtime, widget-presentation/ui-editor/ui-runtime, tools/content-patch.mjs. schema/SDK/AI same owners. 새dependency·상시poll·GPU자동readback 없음. tools/check-batch-166[-runtime/-window/-player].mjs 재현. player --release --performance는 짧은185frame관찰, window --executable 경로 --smoke-only는 설치 실제 기동.
 
