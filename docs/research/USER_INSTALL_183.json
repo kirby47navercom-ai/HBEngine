@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "39eef14f5947800839aa6df335425d39e14c2e07",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3bffac6f21389589",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3bffac6f21389589\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3bffac6f21389589\\HBEngine.exe",
+  "bundleHash": "3bffac6f21389589cbbba35f7f370fabb75cc802757408054dd339c36e230089",
+  "files": 2490,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2468,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0553dc1c96d71485",
+        "bytes": 174065839,
+        "manifestSHA256": "0c75ee4b4f40ec4705cf40d23fd445492951c75ef1f000d28e16c3d11f80786b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T11:10:55.5891788Z",
+    "bytes": 174065839,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3bffac6f21389589"
+    ]
+  },
+  "work": "native/build/engine-183-install-D6eca4",
+  "versions": [
+    "3bffac6f21389589"
+  ],
+  "manifestVerifiedFiles": 2490,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2490,
+  "installedSmoke": {
+    "path": "native/build/engine-183-installed-oM32Xq/acceptance.json",
+    "sha256": "98938e314a72182100f882caef63ce81f3d5c26a947c560292022a59324a1c92",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/3bffac6f21389589/HBEngine.exe",
+    "shortcuts": {
+      "remappedMesh": true,
+      "legacySuppressed": true,
+      "typingSafe": true,
+      "widgetNudge": true,
+      "widgetDuplicate": true,
+      "contextMenuLabels": true,
+      "originalSettingsRestored": true
+    },
+    "meshAuthoring": {
+      "humanInset": true,
+      "failedSelectionPreserved": true,
+      "undo": true,
+      "aiDryRun": true,
+      "unequalBridge": true,
+      "saved": true
+    },
+    "namedSlots": {
+      "humanAssignment": true,
+      "emptyPlaceholder": true,
+      "undo": true,
+      "saved": true
+    },
+    "lod": {
+      "humanRate": true,
+      "collisionChoice": true,
+      "undo": true,
+      "saved": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-183-installed-oM32Xq/lod-inspector.png",
+      "sha256": "0d1cf3599d986a124b72c4a4f6b1d3ab061271608627365ac6f12c1966365095",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-183-installed-oM32Xq/slot-empty.png",
+      "sha256": "c4d807b6013c5c083d6921f1ba6ef4753d291d092a9a407d51ec235b8e7e67ed",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-183-installed-oM32Xq/slot-filled.png",
+      "sha256": "ed36c7bfed6a30d538b986a75937b7e4a22fc5553bc39cd5e5a4de4e1cfc2b22",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-183-installed-oM32Xq/region-editor.png",
+      "sha256": "af4d7cf8ee40f30bcb18d312fc281b35f95fca12becfb09f4bf8ea944fe79bad",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

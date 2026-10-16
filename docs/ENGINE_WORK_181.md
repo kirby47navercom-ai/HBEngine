@@ -13,3 +13,6 @@ NamedSlot은 자식 하나를 받는다. 재사용 Widget.properties.widgetSlots
 원본256/펼침10000요소·깊이16의 기존 검증은 유지한다. 새 씬 객체 상한은 없다.
 
 iOS 프로젝트 수집/공용 실행 검증은 PC 결과이며 Xcode 컴파일·실물 기기 결과가 아니다.
+
+
+183 설치 확인: 3bffac6f21389589·명세2490파일 실행 후 SHA 일치·격리 설치 EXE의 실행 LOD 포즈 Hz·충돌 선택·사람 편집/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174065839바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_183.json.

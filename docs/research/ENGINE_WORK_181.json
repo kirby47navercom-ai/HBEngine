@@ -1610,10 +1610,17 @@
   },
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "위젯 클래스 전체 상속·실행 중 슬롯 자산 교체·UE Expose-on-Instance 정책은 별도다.",
     "원본256/펼침10000요소·깊이16의 기존 검증은 유지한다. 새 씬 객체 상한은 없다.",
     "iOS 프로젝트 수집/공용 실행 검증은 PC 결과이며 Xcode 컴파일·실물 기기 결과가 아니다."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_183.json",
+    "receiptSHA256": "c052146a1c862180182fc337576c705a54806fe46785022ce85c5b8650de97d9",
+    "sourceCommit": "39eef14f5947800839aa6df335425d39e14c2e07",
+    "versions": [
+      "3bffac6f21389589"
+    ]
+  }
 }

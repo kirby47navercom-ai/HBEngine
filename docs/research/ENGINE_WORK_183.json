@@ -82,14 +82,63 @@
           "signal": null
         }
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-183-installed-oM32Xq/acceptance.json",
+      "sha256": "98938e314a72182100f882caef63ce81f3d5c26a947c560292022a59324a1c92",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/3bffac6f21389589/HBEngine.exe",
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "다른 전용 편집기와 모든 조작의 명령화는 잔여 원장에 유지한다.",
     "기존 키2개/충돌 검사/프로필 계약을 사용하며 명시한 새 키끼리의 충돌은 거부한다.",
     "격리 PC 실제 키 입력 결과이며 다중 모니터·모바일·모든 보조 기술 검증과 구분한다."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_183.json",
+    "receiptSHA256": "c052146a1c862180182fc337576c705a54806fe46785022ce85c5b8650de97d9",
+    "sourceCommit": "39eef14f5947800839aa6df335425d39e14c2e07",
+    "versions": [
+      "3bffac6f21389589"
+    ]
+  }
 }

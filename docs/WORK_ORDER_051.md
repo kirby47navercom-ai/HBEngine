@@ -229,3 +229,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 181: NamedSlot 단일 자식·기본/교체/비움·중첩 이름공간·원본 불변/순환·예산 검사·Designer 선택/Undo·기존 C++/BP 이벤트·외부 Source 에셋 수집/이름 변경·AI schema sourceOnly 복구 — ENGINE_WORK_181.md/JSON 근거.
 182: 서로 다른 정점 수의 두 폐곡선/열린 경로 연결·선형 길이 대응/시작 오프셋·평면 영역 인셋/구멍·오목 경계/UV색 보간·재삼각화·실패 선택 보존·AI dryRun/revision/Undo·실제 렌더/충돌 C++ — ENGINE_WORK_182.md/JSON 근거.
 183: 위젯/메시 전용22명령 재지정·작업창/입력/IME/실행/비행 격리·기존 키 우회 차단·사용자 프로필 기본값 충돌 이행·우클릭 현재 키 표시·AI get/set revision — ENGINE_WORK_183.md/JSON 근거.
+
+
+183 설치 확인: 3bffac6f21389589·명세2490파일 실행 후 SHA 일치·격리 설치 EXE의 실행 LOD 포즈 Hz·충돌 선택·사람 편집/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174065839바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_183.json.
