@@ -67,7 +67,7 @@ export function engineOperations(hooks){
   const audioSession=hooks.game?.audioRuntime&&hooks.game.audioRuntime.sessionId===sessionId?hooks.game.audioRuntime:{sessionId,audio:new Map(),pending:new Map(),errors:[],routing:null,epoch:0,unlocked:globalThis.hbNativeAudio===true,paused:false};
   audioSession.history??=[];if(hooks.game)hooks.game.audioRuntime=audioSession;
   const audio=audioSession.audio,mixers=new Map(),animations=new Map(),graphs=new Map(),graphRequests=new Map(),widgets=new Map();
-  const ui=new WidgetSystem({readAsset:path=>readAsset(path),overlay:hooks.overlay,fileUrl,runtime:()=>hooks.game?.inputRuntime||currentVM,inputSignal:hooks.game?.inputLifetime.signal});
+  const ui=new WidgetSystem({camera:hooks.camera,readAsset:path=>readAsset(path),overlay:hooks.overlay,fileUrl,runtime:()=>hooks.game?.inputRuntime||currentVM,inputSignal:hooks.game?.inputLifetime.signal});
   const soundRouting=audioSession.routing??=new AudioRouting({readAsset:path=>readAsset(path)});
   const voiceObservers=new Set();let listenerBudget='';const releasingActors=new Set();let physics,graphSerial=0;
   const readAsset=cacheAssetReader(hooks.readAsset||(async(path)=>(await editorRequest(fileUrl(path))).json()));if(hooks.asset)hooks.asset=cacheAssetReader(hooks.asset);

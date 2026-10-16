@@ -406,3 +406,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 173: NetworkReplica.relevancyRadius(0 전체)/ownerOnly·NetworkSession.interestTarget를 기존 컴포넌트 schema/document.patch로 편집한다. 생성 프리팹의 루트 Replica가 필요하고 동적 인스턴스는 고유 object ID를 복제 ID로 쓴다. 기존 Scene.Spawn/Destroy와 C++/BP 공용 서비스가 복제 생성/삭제까지 연결된다. runtime.network는 remote 수를 포함한다. ENGINE_WORK_173.md의 권한·장면/예측 경계를 따른다.
+
+
+174: widget schema의 Widget 요소 properties.widgetAsset/widgetOverrides/widgetEvents/widgetBindings를 기존 문서 명령으로 편집한다. 오버라이드는 상대 요소 이름별 properties 객체(JSON 문자열), 이벤트/변수는 원래 이름→부모 이름 map이다. runtime 요소 경로 Player/Label을 기존 UI SDK에 사용한다. UIWidget.space=tracked/worldOffset/drawWidth/drawHeight/pivotX/pivotY/maxDistance/distanceScale/unitsPerPixel, UIBudget.maxInstances/maxNodes는 공용 컴포넌트 상세/schema를 따른다. authored 데이터와 펼친 런타임을 구분한다. ENGINE_WORK_174.md.

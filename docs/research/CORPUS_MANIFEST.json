@@ -2899,5 +2899,15 @@
     ],
     "unread": "linked APIs, full pooling sample tail, whole corpus",
     "globalGatePromotion": false
+  },
+  "supplemental174": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://dev.epicgames.com/documentation/unreal-engine/widget-components-in-unreal-engine",
+      "https://docs.unity.com/en-us/engine/6000.3/manual/uitoolkits/uielements/uie-structure-ui/uie-uxml/uie-reuse-uxml-files"
+    ],
+    "scope": "Widget Components property table; Unity template import/attribute and nested overrides/styles/limitations/content-container",
+    "unread": "linked APIs/media/full corpus",
+    "globalGatePromotion": false
   }
 }

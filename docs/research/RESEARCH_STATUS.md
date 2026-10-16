@@ -410,3 +410,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 173: supplemental173의 Actor Relevancy 본문·Object Spawning 지정 등록/권위/삭제/풀 본문을 대조했다. 실패 visibility URL·미독 API/미디어/전체 gate를 별도 유지한다.
+
+
+174: supplemental174의 Widget Component 속성표·UXML 재사용/중첩오버라이드·제약/content-container 본문을 대조했다. HB 화면 투영 UI와 원 엔진의 3D 메시 UI 경계를 구분한다. 미독 API/미디어와 전체 gate는 유지한다.

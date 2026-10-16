@@ -1,4 +1,12 @@
-# HBEngine — 172 기능 커밋, 173 네트워크 수명·관심 영역 진행 — 2026-10-16
+# HBEngine — 172·173 기능 커밋, UI 제작 잔여 계속 — 2026-10-16
+
+174 구현 중(미커밋). UI composition 모듈: Widget 참조/안정 namespace/중첩 override·event·binding/순환·깊이16/펼친10000 budget/readercache, 기존presentation공유. WidgetEditor 참조선택·요소별 사람 속성 입력/초기화+고급JSON. WorldUI는worldspace litmesh아닌tracked(screen projected billboard)로 명시: UIWidget space/offset/drawsize/pivot/range/distance scaling, camera hookeditor+player, behind/offscreen/inactive hide, GPU읽기0. UI Budget configurable maxinstances2048/maxnodes100000(기존32상한 제거), asyncshow failure/current actor/generation/cancel/order/예산 protection. 아직lighted/occludedUI mesh·클래스상속·namedslots 미완료.
+
+174 CPU7군 최종0MIl1u PASS; oldUIlayout/statecache/UIaudioCPU통과. 실제D3Ddev sXLXmF/최종release wux60x·WebGPU5I6b2x PASS(UI+C++/BP+173network실행). sXLXmF는초기fixtureUI가위로잘렸음:최초recty-64→오프셋제거y-28,실제camera16,-16확인후UIAnchor y-8로fixture수정. 최종5I6b2x world-ui.png 실제시각확인(온전한C++체력75와버튼+녹색2D타일). 물리좌표mouse클릭→mappedBP→C++텍스트·이동/숨김/복원·네트워크전체검사포함. D3Dreleasewux60x도현재수정후PASS.174 editor초기 svJ8f0은rawJSON입력/Undo PASS; 쉬운 요소 글자input을만든후 BKjaHq가검사스크립트textarea를아직집어문자열을넣어실패(제품검증은거부정상),입력selector수정하고최종다시실행중. 세션은현재 tool결과참조. 예전write/wire/fix 스크립트비멱등,재실행금지. docs174/상태/설치미작성.
+
+173 제품코드/근거/한글 기능 커밋 완료. 네트워크 동적 로컬카탈로그 spawn/despawn, 자식stableID, 호스트 pool release/reacquire, static초기hide/restore+삭제tombstone latejoin, dynamic삭제바이트회수, snapshot/reconnect stale제거, root거리/소유자범위, 128행4패킷perflush(총객체제한아님), client임의create/destroy/descriptor변조거부. 기존 C++ Scene::Spawn/Destroy/BP 서비스 공유, 노드773/코어289 유지. CPU6군 NJAfCZ +171CPU18 yXuGwo; 실제 D3Drelease SSOFaF/WebGPU1o4CdI에서 engineclient의remote생성/관심이탈/재진입/삭제와enginehost C++Spawn/Destroy→실제별도peer 확인. release카피는마지막netAuthority/생성초기debug/비권위destroyguard전, webGPU는마지막guard전; 설치최종에현소스검증필요. 새의존성0. docs173.mjs 이미실행 완료 재실행금지. 아래'아직173코드없음'은이전단계기록이므로무시.
+
+이어서174 UI03 위젯 하위 조합/월드UI 제작 경로를 확인중. ui-runtime.js/ui-assets.js/ui-editor.js 기존 코드 첫읽기. 172/173 설치는174와 마지막 함께 전환, 현재171 Versions1 유지. 사용자창/프로필 건드리지 말것. spawn금지. 추가로누적전체요구계속, 턴끝내지않음.
 
 현재172 기능 e31e6c1 커밋(main, 아직 push 전). 안정 ID 에셋3방향 병합/사람 충돌 선택/검증·revision·Undo, 프로젝트 Git 상태/텍스트diff/선택 stage/unstage/commit/로컬 작성자/부모repo쓰기보호. CPU13군 engine-172-xUCQ2e; 숨긴Win32 사람/AI/Undo/Git커밋 engine-172-window-7vjGj3 PASS/errors[]/exit0. merge-ui/git-ui 시각 확인. 종료초기두실패는 Garden dirty 확인창 대기, 최종 임시 문서 discard 선택. 저장 뒤 다시 dirty되는 기존 경로 미종결, DEBUG_HANDOFF 기록. docs172.mjs 실행 완료: 재실행 금지.172 설치는173과 함께 마지막 전환하며 현재171 Versions1 유지. sourcecontrol의 Git 충돌 마커 파일은 외부 편집기; 정상JSON 세버전 병합만 내부지원, 원격/push/잠금/시각graphdiff미구현.
 

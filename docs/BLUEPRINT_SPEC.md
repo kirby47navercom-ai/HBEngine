@@ -465,3 +465,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 173: 기존 Scene::Spawn/Destroy의 NetworkReplica 프리팹은 호스트의 생성/풀 반환/제거를 원격 카탈로그와 연결한다. 네트워크 클래스에 새 함수 이름을 따로 만들지 않고 같은 C++/노드를 사용한다. NetworkSession 관심 기준·Replica 거리/소유자 상세 폼과 AI schema를 공용으로 쓴다. 773노드/코어289 유지. 원격 코드 실행/에셋 다운로드 없음.
+
+
+174: 재사용 위젯은 기존 uiSetText/Value 등의 element에 Player/Label 같은 namespace 이름을 받는다. 자식 이벤트를 부모 customEvent에 매핑하고 자식 binding 이름을 부모 변수로 연결한다. 별도 SDK 중복 노드 없이 C++/BP가 같은 서비스를 사용한다. 총773/공유코어289 유지.

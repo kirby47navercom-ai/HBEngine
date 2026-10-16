@@ -188,3 +188,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 173: 복제 프리팹 생성/삭제·자식/호스트 풀·정적 삭제 표식·동적 바이트 회수·연결별 거리/소유자·late join/reconnect. CPU6군/기존18회귀·실제 D3D 출시/WebGPU 게임에서 호스트/클라이언트+C++ Spawn/Destroy. ENGINE_WORK_173.md/research/ENGINE_WORK_173.json. 다음 UI와 최종 설치 전환.
+
+
+174: 재사용 Widget 참조/중첩 속성·이벤트·변수·사람 입력/Undo·SDK 경로, 오브젝트 투영 UI·크기/기준점/거리, UI Budget·async수명. CPU9군/실제 Win32 제작·D3D 출시/WebGPU 게임+172/173 회귀. ENGINE_WORK_174.md/research/ENGINE_WORK_174.json. 누적 잔여 유지, 최종 설치는 USER_INSTALL_174.json에 별도 기록.

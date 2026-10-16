@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "e31e6c1",
+  "basisRevision": "6e76ea6",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1027,21 +1027,24 @@
       "area": "ui",
       "title": "복합/월드 UI·가상화·지역화",
       "status": "partial",
-      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 · 171: TreeView 펼침/키보드·안정 ID 선택·명시 가변 높이·누적 높이/이진 검색·보이는 행 재사용·디자이너/게임 공용",
+      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK · 166: 위젯 디자이너/실행기의 스타일/override/지역화 공용 해석과 비동기 오래된 미리보기 폐기 · 171: TreeView 펼침/키보드·안정 ID 선택·명시 가변 높이·누적 높이/이진 검색·보이는 행 재사용·디자이너/게임 공용 ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명",
       "remaining": [
-        "위젯 하위 조합/상속·월드 UI",
-        "내용 기반 자동 높이 측정·전체 입력/스크린리더 검증"
+        "위젯 클래스 상속/명명 슬롯·조명/깊이 차폐를 받는 3D UI 메시",
+        "내용 기반 자동 높이 측정·대규모 UI 풀/배치·전체 입력/스크린리더 검증"
       ],
       "sources": [
         "prototype/ui-assets.js",
         "prototype/ui-runtime.js",
-        "prototype/virtual-list.js"
+        "prototype/virtual-list.js",
+        "prototype/widget-composition.js",
+        "prototype/world-widget.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
-        "docs/research/ENGINE_WORK_171.json"
+        "docs/research/ENGINE_WORK_171.json",
+        "docs/research/ENGINE_WORK_174.json"
       ]
     },
     {
@@ -1192,7 +1195,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1205,7 +1208,9 @@
         "prototype/sequence-state.js",
         "prototype/take-recorder.js",
         "prototype/asset-merge.js",
-        "tools/source-control.mjs"
+        "tools/source-control.mjs",
+        "prototype/widget-composition.js",
+        "prototype/world-widget.js"
       ],
       "evidence": [
         "docs/LIGHTING_TOOLS_128.md",
@@ -1217,7 +1222,8 @@
         "docs/research/ENGINE_WORK_170.json",
         "docs/research/ENGINE_WORK_171.json",
         "docs/research/ENGINE_WORK_172.json",
-        "docs/research/ENGINE_WORK_173.json"
+        "docs/research/ENGINE_WORK_173.json",
+        "docs/research/ENGINE_WORK_174.json"
       ]
     },
     {
@@ -1455,5 +1461,5 @@
       ]
     }
   ],
-  "latestBatch": "173"
+  "latestBatch": "174"
 }

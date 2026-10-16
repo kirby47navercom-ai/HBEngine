@@ -2,16 +2,16 @@ import {listLayout} from './list-layout.js';
 import {virtualDefaults} from './virtual-controls.js';
 import {validAssetPath} from './material-runtime.js';
 
-export const widgetTypes={Canvas:'캔버스',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ListView:'가상 목록',TreeView:'가상 트리',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
-export const widgetContainers=new Set(['Canvas','Panel','HorizontalBox','VerticalBox','Grid','ScrollBox']);
+export const widgetTypes={Canvas:'캔버스',Widget:'재사용 위젯',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ListView:'가상 목록',TreeView:'가상 트리',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
+export const widgetContainers=new Set(['Widget','Canvas','Panel','HorizontalBox','VerticalBox','Grid','ScrollBox']);
 export const widgetEvents=['click','changed','submit','focus','blur','pressed','released'];
 export const widgetScaleRules={fit:'화면 안에 맞춤',width:'너비 기준',height:'높이 기준',match:'너비·높이 혼합',cover:'화면 채우기'};
-export const widgetDefaults={...virtualDefaults,stringTable:'',textKey:'',textArguments:'{}',style:'',styleName:'Default',styleOverrides:'',ariaLabel:'',rowHeight:40,variableRows:false,listItems:'[]',selectedIndex:-1,selectedItemId:'',text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
+export const widgetDefaults={...virtualDefaults,widgetAsset:'',widgetOverrides:'{}',widgetEvents:'{}',widgetBindings:'{}',stringTable:'',textKey:'',textArguments:'{}',style:'',styleName:'Default',styleOverrides:'',ariaLabel:'',rowHeight:40,variableRows:false,listItems:'[]',selectedIndex:-1,selectedItemId:'',text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
 export function createWidgetNode(type='Text',id=crypto.randomUUID(),parent='root'){
   if(!Object.hasOwn(widgetTypes,type))throw Error('위젯 종류를 확인하세요.');
   const properties={...widgetDefaults,text:{Text:'텍스트',Button:'버튼',TouchButton:'공격',CheckBox:'선택'}[type]||''};
   if(type==='TouchPad'){properties.axisX='LookX';properties.axisY='LookY';}if(['Joystick','DPad','TouchPad'].includes(type))properties.background='#1c253b99';if(type==='TouchButton'){properties.background='#263443bb';properties.align='center';properties.radius=100;}
-  if(['Text','Image','Spacer','Canvas','HorizontalBox','VerticalBox','Grid'].includes(type))properties.background='#00000000';
+  if(['Text','Image','Spacer','Widget','Canvas','HorizontalBox','VerticalBox','Grid'].includes(type))properties.background='#00000000';
   return {id,name:type,parent,type,slot:{anchors:[0,0,0,0],offset:[32,32,['Joystick','DPad','TouchPad'].includes(type)?220:type==='TouchButton'?112:type==='ProgressBar'?280:200,['Joystick','DPad','TouchPad'].includes(type)?220:type==='TouchButton'?112:type==='Text'?40:48],alignment:[0,0],zIndex:0,fill:0},properties,events:{},bindings:{}};
 }
 export function createWidgetAsset(name){const root=createWidgetNode('Canvas','root','');root.name='Root';root.slot.anchors=[0,0,1,1];root.slot.offset=[0,0,0,0];return {version:1,name,referenceSize:[1280,720],scaleMode:'constant',nodes:[root]};}
@@ -19,19 +19,22 @@ const text=(s,max=80)=>typeof s==='string'&&s.length<=max;
 const finite=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max;
 const vector=(v,size,min,max)=>Array.isArray(v)&&v.length===size&&v.every(n=>finite(n,min,max));
 const color=v=>typeof v==='string'&&/^#[\da-f]{6}([\da-f]{2})?$/i.test(v);
-export function validWidgetAsset(data){
-  if(data?.version!==1||!text(data.name)||!data.name||!vector(data.referenceSize,2,64,16384)||!['constant','scale'].includes(data.scaleMode)||(data.safeArea!==undefined&&typeof data.safeArea!=='boolean')||(data.adaptiveOrientation!==undefined&&typeof data.adaptiveOrientation!=='boolean')||!Array.isArray(data.nodes)||data.nodes.length<1||data.nodes.length>256)return false;
+export function validWidgetAsset(data,{expanded=false}={}){
+  if(data?.version!==1||!text(data.name)||!data.name||!vector(data.referenceSize,2,64,16384)||!['constant','scale'].includes(data.scaleMode)||(data.safeArea!==undefined&&typeof data.safeArea!=='boolean')||(data.adaptiveOrientation!==undefined&&typeof data.adaptiveOrientation!=='boolean')||!Array.isArray(data.nodes)||data.nodes.length<1||data.nodes.length>(expanded?10000:256))return false;
   if(data.scaleRule!==undefined&&!Object.hasOwn(widgetScaleRules,data.scaleRule)||data.scaleMatch!==undefined&&!finite(data.scaleMatch,0,1)||data.safeAreaPadding!==undefined&&!vector(data.safeAreaPadding,4,0,4096))return false;
   const nodes=new Map(data.nodes.map(n=>[n?.id,n]));if(nodes.size!==data.nodes.length||new Set(data.nodes.map(n=>n?.name)).size!==nodes.size)return false;
   const roots=data.nodes.filter(n=>n?.parent==='');if(roots.length!==1||roots[0].type!=='Canvas')return false;
   return data.nodes.every(n=>{
-    if(!text(n?.id)||!n.id||!text(n.name)||!n.name||!Object.hasOwn(widgetTypes,n.type)||!text(n.parent))return false;
-    let at=n;const seen=new Set();while(at.parent){if(seen.has(at.id)||seen.size>32)return false;seen.add(at.id);at=nodes.get(at.parent);if(!at||!widgetContainers.has(at.type))return false;}
+    if(!text(n?.id,expanded?2048:80)||!n.id||!text(n.name,expanded?2048:80)||!n.name||!Object.hasOwn(widgetTypes,n.type)||!text(n.parent,expanded?2048:80))return false;
+    let at=n;const seen=new Set();while(at.parent){if(seen.has(at.id)||seen.size>(expanded?64:32))return false;seen.add(at.id);at=nodes.get(at.parent);if(!at||!widgetContainers.has(at.type))return false;}
     return validWidgetProperties(n)&&n.events&&typeof n.events==='object'&&!Array.isArray(n.events)&&Object.entries(n.events).every(([k,v])=>widgetEvents.includes(k)&&text(v,80))&&n.bindings&&typeof n.bindings==='object'&&!Array.isArray(n.bindings)&&Object.entries(n.bindings).every(([k,v])=>['text','value','visible','enabled','checked'].includes(k)&&text(v,80));
   });
 }
 export function validWidgetProperties(n){
     const s=n.slot,p=n.properties;
+    if(p?.widgetAsset!==undefined&&!validAssetPath(p.widgetAsset)||p?.widgetReferenceSize!==undefined&&!vector(p.widgetReferenceSize,2,64,16384))return false;
+    for(const key of ['widgetOverrides','widgetEvents','widgetBindings'])if(p?.[key]!==undefined){try{if(typeof p[key]!=='string'||p[key].length>262144)return false;const map=JSON.parse(p[key]);if(!map||typeof map!=='object'||Array.isArray(map)||Object.keys(map).some(k=>['__proto__','constructor','prototype'].includes(k))||key!=='widgetOverrides'&&Object.values(map).some(v=>!text(v,80)))return false;}catch{return false;}}
+
     if(p?.selectedItemId!==undefined&&!text(p.selectedItemId,160))return false;
     if(p?.variableRows!==undefined&&typeof p.variableRows!=='boolean')return false;
     if(['ListView','TreeView'].includes(n.type)){try{listLayout(JSON.parse(p?.listItems||'[]'),{rowHeight:p?.rowHeight||40,variable:p?.variableRows||false,tree:n.type==='TreeView'});}catch{return false;}}
