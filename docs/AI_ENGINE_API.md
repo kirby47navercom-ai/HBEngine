@@ -409,3 +409,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 174: widget schema의 Widget 요소 properties.widgetAsset/widgetOverrides/widgetEvents/widgetBindings를 기존 문서 명령으로 편집한다. 오버라이드는 상대 요소 이름별 properties 객체(JSON 문자열), 이벤트/변수는 원래 이름→부모 이름 map이다. runtime 요소 경로 Player/Label을 기존 UI SDK에 사용한다. UIWidget.space=tracked/worldOffset/drawWidth/drawHeight/pivotX/pivotY/maxDistance/distanceScale/unitsPerPixel, UIBudget.maxInstances/maxNodes는 공용 컴포넌트 상세/schema를 따른다. authored 데이터와 펼친 런타임을 구분한다. ENGINE_WORK_174.md.
+
+
+175–176: component schema PhysicsConstraint/2D의 useFrames/frameRotation/autoConnectedFrame/connectedFrameRotation/connectedAxis/referenceAngle/motorMaxForce; RaycastVehicle의 wheels(semantic vehiclewheels array)·구동/조향/제동을 공용 revision/patch/Undo로 편집한다. wheel.position은 차체m, 각 숫자/boolean은 schema검증을 따른다. placement vehicle 레시피 사용. SDK Physics::SetJointFrames/SetJointMotor/SetJointLimits/SetVehicleInput/GetVehicleSpeed와 동일 BP서비스. gameplayDebug.vehicle.speed/wheels에 접촉/힘/회전/조향 공개.

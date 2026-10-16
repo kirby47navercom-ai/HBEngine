@@ -413,3 +413,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 174: supplemental174의 Widget Component 속성표·UXML 재사용/중첩오버라이드·제약/content-container 본문을 대조했다. HB 화면 투영 UI와 원 엔진의 3D 메시 UI 경계를 구분한다. 미독 API/미디어와 전체 gate는 유지한다.
+
+
+175–176: CORPUS_MANIFEST supplemental175/176에 공식본문 선택범위와 로컬Rapier0.21API대조를 등록했다. Python가이드/JS실제바인딩, Unity2023.2/6000.7beta·UE5.8 버전을 구별했다. 미독 링크/API/미디어와 전체gate는 유지한다.

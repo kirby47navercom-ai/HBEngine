@@ -468,3 +468,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 174: 재사용 위젯은 기존 uiSetText/Value 등의 element에 Player/Label 같은 namespace 이름을 받는다. 자식 이벤트를 부모 customEvent에 매핑하고 자식 binding 이름을 부모 변수로 연결한다. 별도 SDK 중복 노드 없이 C++/BP가 같은 서비스를 사용한다. 총773/공유코어289 유지.
+
+
+175–176: Physics::SetJointFrames/SetJointMotor/SetJointLimits/SetVehicleInput/GetVehicleSpeed와 동일 서비스 5개가 카탈로그에 추가됐다. 총778노드/공통C++693함수. C++실제컴파일/관절·차량 실행과 BP노드 실제 실행 확인. Blueprint 컴포넌트 상세에서 휠을 일반 입력/추가/삭제/Undo로 편집한다.

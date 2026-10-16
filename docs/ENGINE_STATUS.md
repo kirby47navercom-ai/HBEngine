@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `6e76ea6`
+갱신일: 2026-10-16 · 대조 기준 커밋: `104e275`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -97,7 +97,7 @@
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | PHY-01 2D·3D 물리/콜라이더/질의 | verified | Rapier·중력·충돌/트리거·회전·질량·CCD·모터·공용 SDK | 이 행의 범위는 검증됨 | [PHYSICS_RUNTIME_RESEARCH.md](PHYSICS_RUNTIME_RESEARCH.md) · [CONTACT_LIFETIME_064.md](research/CONTACT_LIFETIME_064.md) |
-| PHY-02 관절 프레임·cloth/차량/파괴 | partial | 기본 관절·모터와 형상 편집 | 독립 연결 프레임/기준 각도 · cloth·vehicle·destruction 시스템 | [PHYSICS_RUNTIME_RESEARCH.md](PHYSICS_RUNTIME_RESEARCH.md) |
+| PHY-02 관절 프레임·cloth/차량/파괴 | partial | 기본 관절·모터와 형상 편집 ·175–176: 2D/3D 독립관절프레임·영점·모터힘/SDK 및 RaycastVehicle 제작/휠편집/구동·조향·제동/서스펜션/실제렌더/동일C++·BP | cloth·destruction 시스템 · break force/plasticity·generic6DOF·multibody articulation · 차량 변속기/토크RPM·차동/ABS·타이어 부피/변형·bone 드라이버·손상/예측 확장 | [PHYSICS_RUNTIME_RESEARCH.md](PHYSICS_RUNTIME_RESEARCH.md) · [ENGINE_WORK_175.json](research/ENGINE_WORK_175.json) · [ENGINE_WORK_176.json](research/ENGINE_WORK_176.json) |
 
 ## 게임 시스템
 
@@ -152,7 +152,7 @@
 |---|---|---|---|---|
 | AI-01 원자적 여러 문서 편집 | verified | revision·dryRun·document.patch/files.apply·Undo 공용 계약 | 이 행의 범위는 검증됨 | [AI_ENGINE_API.md](AI_ENGINE_API.md) · [AI_ASSET_TRANSACTIONS_041.md](research/AI_ASSET_TRANSACTIONS_041.md) |
 | AI-02 코드/기능 상태 최신 조회 | verified | 안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 | 이 행의 범위는 검증됨 | [ENGINE_STATUS.md](ENGINE_STATUS.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명 | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) · [ENGINE_WORK_170.json](research/ENGINE_WORK_170.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) · [ENGINE_WORK_173.json](research/ENGINE_WORK_173.json) · [ENGINE_WORK_174.json](research/ENGINE_WORK_174.json) |
+| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit ·173: 로컬 카탈로그 복제 생성/삭제·자식/풀·late join/reconnect·거리/소유자 범위·정적 삭제 표식·동적 상태 회수·C++ 기존 Spawn/Destroy ·174: 재사용 위젯/중첩 오버라이드·사람 속성·namespace SDK/이벤트/변수·스타일/지역화·화면 투영 오브젝트 UI·공유 예산/비동기 수명 ·175–176: 2D/3D 독립관절프레임·영점·모터힘/SDK 및 RaycastVehicle 제작/휠편집/구동·조향·제동/서스펜션/실제렌더/동일C++·BP | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) · [ENGINE_WORK_170.json](research/ENGINE_WORK_170.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) · [ENGINE_WORK_173.json](research/ENGINE_WORK_173.json) · [ENGINE_WORK_174.json](research/ENGINE_WORK_174.json) · [ENGINE_WORK_175.json](research/ENGINE_WORK_175.json) · [ENGINE_WORK_176.json](research/ENGINE_WORK_176.json) |
 
 ## 디버깅
 

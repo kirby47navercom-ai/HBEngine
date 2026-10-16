@@ -337,6 +337,11 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="collisionEnabled", KoreanName="충돌 활성화", Category="물리") static void SetCollisionEnabled(Actor* target,bool enabled);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="getAngularVelocity", KoreanName="각속도 가져오기", Category="물리") static Vec3 GetAngularVelocity(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="setAngularVelocity", KoreanName="각속도 설정", Category="물리") static void SetAngularVelocity(Actor* target,const Vec3& velocity);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsJointFrames", KoreanName="관절 양쪽 프레임 설정", Category="물리 관절") static void SetJointFrames(Actor* target,const std::string& component,const Vec3& ownerRotation,const Vec3& connectedRotation,bool autoConnected=true,float referenceAngle=0);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsJointMotor", KoreanName="관절 모터 설정", Category="물리 관절") static void SetJointMotor(Actor* target,const std::string& component,bool enabled,float position,float velocity,float stiffness=100,float damping=10,float maxForce=0);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsJointLimits", KoreanName="관절 한계 설정", Category="물리 관절") static void SetJointLimits(Actor* target,const std::string& component,bool enabled,float lower,float upper);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsVehicleInput", KoreanName="차량 조종 입력", Category="물리 차량") static void SetVehicleInput(Actor* target,float throttle,float steering,float brake=0,float handbrake=0);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsVehicleSpeed", KoreanName="차량 속도 가져오기", Category="물리 차량") static float GetVehicleSpeed(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsMass", KoreanName="실제 질량 가져오기", Category="물리") static float GetMass(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsSleeping", KoreanName="수면 상태 가져오기", Category="물리") static bool IsSleeping(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsSleep", KoreanName="강체 수면 설정", Category="물리") static void SetSleeping(Actor* target,bool sleeping);

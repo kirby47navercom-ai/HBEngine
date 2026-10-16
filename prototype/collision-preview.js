@@ -1,3 +1,4 @@
+import {jointFrames} from './joint-frames.js';
 import * as THREE from 'three';
 import {sceneWorldMatrix} from './scene-runtime.js';
 import {componentDefaults,objectComponents} from './scene-components.js';
@@ -9,7 +10,7 @@ import {ConvexGeometry} from 'three/addons/geometries/ConvexGeometry.js';
 export class CollisionPreview {
   constructor(scene){
     this.group=new THREE.Group();this.group.userData.editorHelper=true;scene.add(this.group);this.items=new Map();
-    this.runtime=new Map();this.debugMaterial=new THREE.LineBasicMaterial({vertexColors:true,depthTest:false,transparent:true,opacity:.85});
+    this.joints=new Map();this.runtime=new Map();this.debugMaterial=new THREE.LineBasicMaterial({vertexColors:true,depthTest:false,transparent:true,opacity:.85});
     this.solid=new THREE.LineBasicMaterial({color:0x6fbad1,depthTest:false,transparent:true,opacity:.8});
     this.trigger=new THREE.LineBasicMaterial({color:0xe8c576,depthTest:false,transparent:true,opacity:.9});
   }
@@ -36,7 +37,9 @@ export class CollisionPreview {
         line.position.copy(position).add(new THREE.Vector3(...p.center).multiply(scale).applyQuaternion(line.quaternion));line.material=p.trigger||p.collisionMode==='query'?this.trigger:this.solid;
       }
     }
+    const jointKeys=new Set();if(!physicsDebug)for(const object of objects){if(!all&&!selection.has(object.id))continue;for(const component of objectComponents(object)){if(!['PhysicsConstraint','PhysicsConstraint2D'].includes(component.type)||component.properties?.enabled===false)continue;const p={...componentDefaults(component.type),...component.properties};if(!p.useFrames||!['fixed','hinge','slider'].includes(p.jointType))continue;const body=objects.find(o=>o.id===p.connectedBody),pose=o=>{const position=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();sceneWorldMatrix(o,objects).decompose(position,rotation,scale);return{position,rotation,scale};},a=pose(object),b=body?pose(body):{position:new THREE.Vector3(),rotation:new THREE.Quaternion(),scale:new THREE.Vector3(1,1,1)},frames=jointFrames(p,a,b,component.type.endsWith('2D')?2:3),key=object.id+':'+component.id; jointKeys.add(key);let line=this.joints.get(key);if(!line){line=new THREE.LineSegments(new THREE.BufferGeometry(),this.debugMaterial);line.userData.editorHelper=true;line.renderOrder=1002;this.joints.set(key,line);this.group.add(line);}const signature=JSON.stringify([p,a,b]);if(line.userData.signature===signature)continue;line.userData.signature=signature;const positions=[],colors=[],start=frames.anchorA.clone().applyQuaternion(a.rotation).add(a.position),end=frames.anchorB.clone().applyQuaternion(b.rotation).add(b.position);positions.push(...start.toArray(),...end.toArray());colors.push(1,.8,.2,1,.8,.2);for(const [point,q]of [[start,a.rotation.clone().multiply(frames.first)],[end,b.rotation.clone().multiply(frames.second)]])for(const [axis,color]of [[new THREE.Vector3(1,0,0),[1,.25,.2]],[new THREE.Vector3(0,1,0),[.25,1,.3]],[new THREE.Vector3(0,0,1),[.3,.6,1]]]){const tip=axis.applyQuaternion(q).multiplyScalar(.5).add(point);positions.push(...point.toArray(),...tip.toArray());colors.push(...color,...color);}line.geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));line.geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));line.geometry.computeBoundingSphere();}}
+    for(const [key,line]of this.joints)if(!jointKeys.has(key)){line.geometry.dispose();line.removeFromParent();this.joints.delete(key);}
     for(const [key,line] of this.items)if(!active.has(key)){line.geometry.dispose();line.removeFromParent();this.items.delete(key);}
   }
-  dispose(){this.group.removeFromParent();for(const line of [...this.items.values(),...this.runtime.values()])line.geometry.dispose();this.solid.dispose();this.trigger.dispose();this.debugMaterial.dispose();this.items.clear();this.runtime.clear();}
+  dispose(){this.group.removeFromParent();for(const line of [...this.items.values(),...this.runtime.values(),...this.joints.values()])line.geometry.dispose();this.solid.dispose();this.trigger.dispose();this.debugMaterial.dispose();this.items.clear();this.runtime.clear();this.joints.clear();}
 }

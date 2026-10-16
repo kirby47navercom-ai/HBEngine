@@ -2909,5 +2909,27 @@
     "scope": "Widget Components property table; Unity template import/attribute and nested overrides/styles/limitations/content-container",
     "unread": "linked APIs/media/full corpus",
     "globalGatePromotion": false
+  },
+  "supplemental175": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://rapier.rs/docs/user_guides/javascript/joints/",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/physics-constraint-reference-in-unreal-engine",
+      "https://docs.unity.com/en-us/engine/6000.7/manual/physics-section/physics-overview/joints-section/create-configurable-joint/class-configurable-joint"
+    ],
+    "scope": "Rapier JS joints本文161줄·로컬0.21선언/프레임API; UE constraint linear/angular limits/motors·Unity6000.7beta anchors/axis/limits/motor 선택본문",
+    "unread": "linked APIs/media/full corpus",
+    "globalGatePromotion": false
+  },
+  "supplemental176": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      "https://rapier.rs/docs/user_guides/python/vehicle_controller/",
+      "https://docs.unity.cn/2023.2/Documentation/Manual/WheelColliderTutorial.html",
+      "https://dev.epicgames.com/documentation/unreal-engine/how-to-set-up-vehicles-in-unreal-engine"
+    ],
+    "scope": "RapierPython98줄 차량설명+실제JS0.21ray_cast_vehicle_controller.d.ts 전체API대조; Unity2023.2본문0–103; UE5.8본문0–244 휠/차체/애니/설정/입력. Python과JS바인딩을구별",
+    "unread": "Unity104이후 시각wheel코드·UE245이후/연결API·미디어·전체corpus",
+    "globalGatePromotion": false
   }
 }

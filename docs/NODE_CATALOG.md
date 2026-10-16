@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **773개**, 실제 공통 C++ API **688개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **778개**, 실제 공통 C++ API **693개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -53,6 +53,8 @@
 | 2D 조명 | 38 | 38 |
 | 2D 그림자 | 13 | 13 |
 | 2D 타일맵 | 13 | 13 |
+| 물리 관절 | 3 | 3 |
+| 물리 차량 | 2 | 2 |
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
@@ -903,6 +905,21 @@
 | tileProcessChanges | Process Tilemap Changes / 타일 화면·충돌 즉시 갱신 | exec: exec, target: object | then: exec | hb::Tilemaps::ProcessTilemapChanges | 공통 C++ + VM |
 | tileHasChanges | Has Tilemap Changes / 타일 변경 대기 여부 | target: object | return: bool | hb::Tilemaps::HasTilemapChanges | 공통 C++ + VM |
 | tileLayerVisible | Set Layer Visible / 타일 레이어 표시 | exec: exec, target: object, layer: string, visible: bool | then: exec | hb::Tilemaps::SetLayerVisible | 공통 C++ + VM |
+
+## 물리 관절
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| physicsJointFrames | Set Joint Frames / 관절 양쪽 프레임 설정 | exec: exec, target: object, component: string, ownerRotation: vec3, connectedRotation: vec3, autoConnected: bool, referenceAngle: float | then: exec | hb::Physics::SetJointFrames | 공통 C++ + VM |
+| physicsJointMotor | Set Joint Motor / 관절 모터 설정 | exec: exec, target: object, component: string, enabled: bool, position: float, velocity: float, stiffness: float, damping: float, maxForce: float | then: exec | hb::Physics::SetJointMotor | 공통 C++ + VM |
+| physicsJointLimits | Set Joint Limits / 관절 한계 설정 | exec: exec, target: object, component: string, enabled: bool, lower: float, upper: float | then: exec | hb::Physics::SetJointLimits | 공통 C++ + VM |
+
+## 물리 차량
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| physicsVehicleInput | Set Vehicle Input / 차량 조종 입력 | exec: exec, target: object, throttle: float, steering: float, brake: float, handbrake: float | then: exec | hb::Physics::SetVehicleInput | 공통 C++ + VM |
+| physicsVehicleSpeed | Get Vehicle Speed / 차량 속도 가져오기 | target: object | return: float | hb::Physics::GetVehicleSpeed | 공통 C++ + VM |
 
 ## 물리 질의
 

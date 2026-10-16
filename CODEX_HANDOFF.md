@@ -1,4 +1,32 @@
+# HBEngine 누적 구현 계속 — 175–176 검증 후 설치 진행 — 2026-10-16
+
+주인님 최신지시 남은거다하라고. 전체누적을몇개묶음으로대체/완료선언하지않고계속구현. 새agent금지,실제사용자창/프로필/게임보호,숨긴격리EXE검사,Versions1. 이전172–174설치15669948df76f42e 및104e275 originpush완료.175–176지금제품/문서미커밋. 다음할일: 변경검토/진행90610확인→커밋/배포동기화/설치176→설치EXE검사→영수증commitpush→누적계속(예UI03자동내용높이). 최종답변안보냈다.
+
+175 독립관절프레임/기준각/최대모터힘 및공용SDK3개 완성. joint-frames.js2D Z각/slider XY축(수동connectedAxis포함),3D프레임. legacyuseFramesfalse보존. 새로운관절먼저준비/실패정리. motor/limit기준캐시보존·scale분해노이즈1e-8양자화. CollisionPreview축/앵커시각,무관옵션숨김. 최종CPU11 GImaR6; NativeKO5IXx;176Win32/D3DreleaseoqblZC/WebGPUxQ3YUg에서모두회귀. docs175/JSON 작성완료. Session.hpp2D수동slider0축guard추가뒤 check-physics가90610진행중(166WASM PASS후 C++부분). nativecore성공도이미확인.175WebGPUnOhhll PASS,선행실패와구별.
+
+176 실제 RapierRaycastVehicle 제작/차체mass1200·휠배열/서스펜션·구동/조향/제동/주차제동·마찰/groundmask·수면/수명/삭제/QueryOnly분리. 차량레시피,Scene/BP휠이름/위치/각치수/튜닝/구동체크·추가삭제·Undo. sharedschema/AIpatch, Physics::SetVehicleInput/GetVehicleSpeed 및동일BP노드(총778/공통C++693). speedbody+Z투영m/s,역방향음수. 원래nodecore289은별도Core.hpp매스함수개수로전체서비스개수아님. 타이어world m시각 scale상쇄·기하1/재질2공유. 새의존성/자동GPU회수0. 기본wheel.y=.1,차량cubeCollidercenter[0,.5,0]로기존cube원점과맞춤.
+
+176 CPU8 S0Z0l0, Nativep8a69w(realCPP13.324m/s/read-after-write/invalid/BP), Win32최종84KNHm(Scene휠/BP휠입력추가Undo+관절/UI/Git/merge), D3DreleaseoqblZC, 실제nativeD3D개발KvaTyt, WebGPUxQ3YUg PASS. 실제D3Dcapture/world.png·WebGPUworld.png와Win32vehicle-blueprint/vehicle-editor.png시각확인. BP위치vec3컨트롤이가로좁게잡혀숫자가가려진것발견하여CSS에서위치행전체폭으로수정(이CSS뒤설치smoke에서확인필요). releasePage.captureScreenshot은nativeD3D아닌WebViewUI만,시각증거로혼용금지.
+
+176실패기록: 최초WASMpredicate의collider.isSensor→borrow오류; mirrorp.trigger필터로고침. 수면차량controllerupdate가수면중velocity오염→무입력잠든차량skip·설정변경wake. 제동기본과대→engine2000/brake25/hand45/friction1.5로튜닝. V3TZnWfixturegravity0공중떠구동없음→176전용gravity-9.81. eDJ0C1선택자틀림(data-inspect-component)→실제data-select-component. 모두docs176에구별기록. 제품에검사완화안함.
+
+docs175176.mjs실행완료재실행금지. ENGINE_STATUS176(78행39verified34partial2unimplemented3unverified),PHY02독립프레임/기본차량항목구현반영하고cloth/파괴/generic6DOF/고급차량잔여명시. 전체완료율null/gatefalse. AI/BLUEPRINT/WORK_ORDER/CORPUSsupplemental175176갱신. registeredread범위만기록. gitdiffcheck/statuschecker/apigeneratorcheck통과. SDK정적함수만추가,Actor레이아웃변경없고nativehost/playerABI변경없어단순배포동기화가능하나SDK파일포함필수. NativeHost실제새CPP컴파일검증했다.
+
+업데이트절차: native/build/sync174.mjs읽어참고(직접재실행금지). fs.cp prototype/tools/docs/native/include/native/desktop→dist/HBEngine/해당경로(ignored생성API포함),설치스크립트174를176으로복제하여installEditor 호출. install전userprofileSHA재고commitHEADsource기록. 설치후check-engine-176-window --executable 새절대경로(고유profile)·BPvec3위치숫자전체확인. finish174를참고176영수증175176연결,Versions1/manifest전체SHA/바로가기/연결/userprofile보존확인,한국어동일authorcommitter커밋push. native/build비멱등스크립트재실행금지.
+
+아래는과거상세참고로현재상태는위가우선:
+
 # HBEngine 누적 잔여 계속 — 172–174 설치 확인 — 2026-10-16
+
+## 현재175 작업중 — 앞선 설치 완료 뒤 계속 구현
+
+main104e275까지origin동일(172–174기능+영수증push완료). 현재175 제품/검사코드미커밋. PhysicsConstraint/2D 독립 useFrames/frameRotation/autoConnectedFrame/connectedFrameRotation/connectedAxis/referenceAngle/motorMaxForce, joint-frames.js 공용 계산+Rapier0.21 public3D/raw2D프레임설정(임시rawfree). fixed/hinge/slider 양쪽프레임, legacyflagfalse보존. joint교체새것준비뒤기존해제/실패정리. motor/limit 변경때zero baseline보존; pose decompose scale노이즈가3D영점재캡처시키던실제n3qxRX실패를basisSignature1e-8반올림으로고침. ReferenceAngle baseline과분리캐시. 2D회전은XY검증/Z로프로젝션. 에디터CollisionPreview 편집모드프레임축/연결선,Play는Rapierdebug. SDK Physics::SetJointFrames/SetJointMotor/SetJointLimits3개,Session.hpp내부component mirror+finite/range/2Dguard,JS원자검증·sync/rollback. generate-api실행,총776노드(코어289). generated core-api.js는ignored이며패키징전generate확인필수.
+
+175 CPU10군16oq8Q PASS(2D/3D60°fixed,30°ref,45°rotatedslider목표.5,.866/torquecap.169°vs89.8°,후속motor/ref편집40°/60°). 이 CPU뒤추가된2DZproject는같은평면사례동일,최종회귀때확인. C++/BP실제 NativeHost KO5IXx PASS:2D/3D29.99995°,read-after-write30,3ops,invalidatomic;2DinvalidFrame거부·catalog776포함. 실제 D3Drelease engine-175-player-TWpPVz PASS(174UI/C++BP/173network전체회귀+2D/3DConfigureJoints45°). Editor engine-175-window-WIir0z PASS(사람ref60/Undo·AI frame20/Undo+기존174위젯/172Git/merge). joint-editor.png 아직시각확인전. 이전U7xIYq는검사끝모든doc저장+정상exit후추가CDPevaluate하여timeout난것:before-close.json dirtyfalse확인. 172/174/175windowharness에exit-race수정. 제품시작실패아님. 이전physicsCases166+실제CPP질의회귀통과(session97383완료).175WebGPU/정리/문서/상태/커밋/설치아직없음. 현재진행세션없음.
+
+다음176은PHY02차량예정,아직제품코드없고설계만. Rapier raycastvehiclecontroller publicd.ts읽음(디렉터리node_modules/@dimforge/rapier3d-compat/dist/control/ray_cast_vehicle_controller.d.ts),World.createVehicleController/removeVehicleController. mass기본차량1000~1500,단위m/kg/N·brakeimpulse. 조종/서스펜션/회전/조향/RAPIER 실제물리+wheel시각까지구현해야명목컴포넌트로끝나지않음. 기본4wheel RaycastVehicle 컴포넌트,물리3D동적chassis,Rigidbody양쪽차원관절과구분. 기존physics-world.sync/step+spaces라이프사이클연결,렌더sceneRendering(ownresources/dispose) wheelVisual메시공유2materials/geometry로추가. 각wheel물리숫자는chassisbodyframe m로계산(시각rootnonuniformscale와분리),시각wheelMatrix=group.matrixWorld.inverse*wheelWorldTRS로정확상쇄가능. sceneRendering.prepare2D는scene.updateMatrixWorld후allgroups루프있음. hooks.vehicleFrame를engineOperations→createRigidPhysics옵션으로연결하면lateststate를렌더group에전달가능. scenePlacement는객체한개recipe만반환:carrecipekindcube/scale1.8,.6,3.6/BoxCollider기본.5,컴포넌트wheel接続点m는±.9,-.3,±1.26등bodylocal으로설정. 휠visual자식은Actor아닌helpermesh로정리/반영. 기본차량레이시피+Inspector사람휠행편집/AI공유schema+C++조종/속도getter+실제게임검증까지필요. 기존구현재사용 우선.
+
+176조사 web본문: RapierPythonvehicle_controller 전체98줄(동일btRaycastVehicle개념/드라이브/QueryFilter/휠state;JSbinding은위d.ts대조),Unity2023.2WheelColliderTutorial lines0–103 읽음(뒤visualwheel코드미독),Unreal5.8how-to-set-up-vehicles는검색/열기276줄이나본문아직읽지않음. 새supplemental176등록필요(읽기/미독구별).175기준공식source본문 RapierJSjoints0.21전체161/UE5.8ConstraintRef선택linear/angularmotor/Unity6000.7ConfigurableJointpropsanchor/axis/limits/motor읽음;175supplemental등록필요. sourceurls는툴기록/서브scriptdocs에서확인. 새agentspawn금지/실제사용자창건드리지말것.
 
 주인님 최종 지시: 남은거 다 하라고. 누적 전체 요구/조사 구현을 몇 개 묶음으로 대체하거나 전체 UE/Unity 분석/엔진 완료라고 말하지 않는다. 주인님/짚짱·자연스러운 존댓말. 실제 구현을 계속하고 마지막 검증/사용자 설치 갱신. 새 에이전트 허가 없으므로 spawn금지. 사용자 창/프로필/게임 보호, 숨긴 격리 EXE+고유 프로젝트만 검사. AI 친화·가벼움·Versions1 유지. 최종 답변 안 보냈고 계속 작업 중이다.
 
@@ -30,3 +58,5 @@ docs/research/ENGINE_STATUS.json latest174/78행 verified39 partial34 unimplemen
 ## 실행/저장공간
 
 exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도구출력이없어도새검사중복실행말고artifact/PID/session확인. 비멱등 native/build/write/wire/fix/docs 스크립트재실행금지. native/build는무시된임시작업스크립트/근거; 보고서/소스/캡처/명세보존, 생성Builds/WebView2/cache만tools/test-artifacts.mjs정리. PowerShell삭제는리터럴절대경로범위검증후네이티브cmdlet사용. 사용자앱/공유node/worker무차별kill금지. getCim으로지금검사의고유PID확인. 승인정책never: sandbox_permissions쓰지않음. 새의존성추가없고지금까지자동GPU읽기추가0.
+
+175–176최종회귀:90610의check-physics166+실제CPP질의/힘/각충격량/BPsplit PASS완료. 이어진선택check-editor-api.mjs는고정5181서버없어ECONNREFUSED,제품실패와구별·176격리EXE API는통과. docs175176에기록.
