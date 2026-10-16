@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "e0c382d",
+  "preparedBundleHash": "ba28555779515694a6896881f5c0973969f4b52197e95af7a8b25243d6076c2a",
+  "preparedFiles": 2577,
+  "installedVersion": "3a617ac1aed4378f",
+  "versions": [
+    "3a617ac1aed4378f"
+  ],
+  "status": "deferred-running-install",
+  "noNewVersionCreated": true,
+  "noProcessTerminated": true,
+  "evidence": {
+    "path": "native/build/install-196-deferred.json",
+    "sha256": "b467706fac6db4e920f5ac8213ac45748d2cc7a2b9300df9b81ae8cfad40ac0e"
+  },
+  "reason": "Existing user editor/build Node and worker processes reference the installed runtime. Keep the current installation and prepare further work; do not rerun the one-shot install196.mjs."
+}
