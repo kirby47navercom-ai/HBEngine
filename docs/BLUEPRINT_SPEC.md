@@ -486,3 +486,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 185: Get Instance Actor/Actors/Local Id는 타입 있는 공용 C++ 순수 노드다. 인스턴스의 루트 또는 자식을 전달하고 원본 로컬 ID를 사용한다. 생성기에서 서비스 선언 분류를 존중하며 새 핀 라벨은 인스턴스/로컬 ID/비활성 포함이다. 노드781/공통 C++696(Core289와 별개).
+
+
+191: ConfigureAvoidance(target,mode="orca",horizon=2,neighborDistance=5,maxNeighbors=16,priority=50), GetSteeringVelocity/GetPreferredVelocity(target)는 실제 공용 C++/BP 서비스3개다. 카탈로그784/공용 C++699. GetPath/속도 배열은 복사 반환한다.

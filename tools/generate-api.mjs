@@ -8,7 +8,7 @@ export function generatedCore(){
   const group={Math:'수학',VectorMath:'벡터',Clock:'시간',Timers:'시간',Scene:'변환'};
   for(const c of native.classes)for(const f of c.functions){
     if(!f.nodeKey)throw Error(c.name+'.'+f.name+' 노드 ID 누락');
-    const instanceLabels=f.nodeKey.startsWith('sceneInstance')?{instance:'인스턴스',localId:'로컬 ID',includeInactive:'비활성 포함'}:{};
+    const instanceLabels=f.nodeKey.startsWith('sceneInstance')?{instance:'인스턴스',localId:'로컬 ID',includeInactive:'비활성 포함'}:f.nodeKey==='navigationAvoidance'?{target:'대상',mode:'회피 방식',horizon:'예측 시간',neighborDistance:'이웃 거리',maxNeighbors:'최대 이웃 · 0 전체',priority:'우선순위'}:{};
     const exec={id:'exec',label:'실행',type:'exec',array:false},then={id:'then',label:'다음',type:'exec',array:false};
     const defaults=Object.fromEntries(f.inputs.filter(p=>p.default!==undefined||['duration','speed','scale','alpha','tolerance','delta','maxLength'].includes(p.id)).map(p=>[p.id,p.default!==undefined?p.default:(p.id==='delta'?1/60:p.id==='tolerance'?.001:1)]));
     if(f.nodeKey.startsWith('physics')){if(f.inputs.some(p=>p.id==='mode'))defaults.mode='force';if(f.inputs.some(p=>p.id==='radius'))defaults.radius=.5;if(f.inputs.some(p=>p.id==='extent'))defaults.extent=[.5,.5,.5];}

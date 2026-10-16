@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16",
-  "basisRevision": "d1a7ca6",
+  "updatedAt": "2026-10-17",
+  "basisRevision": "8f1d8b6",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -523,22 +523,25 @@
       "area": "world",
       "title": "내비게이션·군중",
       "status": "partial",
-      "implemented": "평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 · 169: NavArea 32영역/비용/마스크·장면 부피·2D XY/XZ·이동 obstacle 삼각 SAT 차단·생성/UI",
+      "implemented": "평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 · 169: NavArea 32영역/비용/마스크·장면 부피·2D XY/XZ·이동 obstacle 삼각 SAT 차단·생성/UI ·191: opt-in ORCA 반평면/LP·XY/XZ/층/우선순위/정지·KD 이웃/재사용·Inspector/Undo·공용 C++/BP3·실제 D3D2D/WebGPU3D",
       "remaining": [
         "정밀 동적 타일/장애물 재분할 carving·부분 삼각 영역 비용",
-        "비평면 정밀 funnel/경계 침식·반경 보장·RVO/Mass 군중"
+        "비평면 정밀 funnel/경계 침식·반경 보장·NavMesh 제한 ORCA·가속/혼합 동적 부모 제약·Mass/Detour"
       ],
       "sources": [
         "prototype/scene-systems.js",
         "prototype/navigation-mesh.js",
         "prototype/navigation-query.js",
-        "prototype/scene-components.js"
+        "prototype/scene-components.js",
+        "prototype/orca-crowd.js",
+        "prototype/navigation-runtime.js"
       ],
       "evidence": [
         "docs/ENGINE_WORKFLOW_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_167.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_191.json"
       ]
     },
     {
@@ -1573,5 +1576,5 @@
       ]
     }
   ],
-  "latestBatch": "190"
+  "latestBatch": "191"
 }

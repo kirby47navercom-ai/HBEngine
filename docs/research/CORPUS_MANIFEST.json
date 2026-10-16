@@ -3045,5 +3045,35 @@
     ],
     "unread": "Linked APIs/media and remainder of full corpus",
     "globalGatePromotion": false
+  },
+  "supplemental191": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/using-avoidance-with-the-navigation-system-in-unreal-engine",
+        "scope": "UE5.8 own page text lines0–152: RVO/Detour differences, current/preferred velocities, quality and nav-boundary limitation. Linked API, images and media unread."
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/NavMeshAgent.html",
+        "scope": "AI Navigation2.0.16 own HTML text lines115–232: agent size/motion, avoidance priority0–99/lower higher, neighbor quality and traversal settings. Linked APIs and media unread."
+      },
+      {
+        "url": "https://gamma-web.iacs.umd.edu/ORCA/",
+        "scope": "Own introduction text0–54 only."
+      },
+      {
+        "url": "https://gamma-web.iacs.umd.edu/RVO2/documentation/2.0/whatsnew.html",
+        "scope": "Own text0–28: half-planes/LP, preferred velocity/path ownership, KD index, no acceleration constraints."
+      },
+      {
+        "url": "https://gamma.cs.unc.edu/ORCA/publications/ORCA.pdf",
+        "scope": "Author-original PDF downloaded1675999B. pypdf extracted printed pages5–11 read; definitions/equations5–10/current versus preferred velocity/infeasible fallback. Printed p6 raster visually inspected with pypdfium2. Other pages and linked code not analyzed."
+      }
+    ],
+    "failedOpen": [
+      "ORCA PDF web text reopen timed out; counted only actual local extraction/raster reading. UMD ORCA-1.pdf returned404 and was not counted."
+    ],
+    "unread": "Linked API/images/media, paper pages outside5–11, whole corpus",
+    "globalGatePromotion": false
   }
 }

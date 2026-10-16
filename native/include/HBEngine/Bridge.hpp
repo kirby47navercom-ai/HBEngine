@@ -479,6 +479,9 @@ inline void Navigation::MoveTo(Actor* target,const Vec3& destination){engineComm
 inline void Navigation::Stop(Actor* target){engineCommand("navigationStop",{{"target",bridgeId(target)}});}
 inline std::string Navigation::GetStatus(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?"idle":state.value("status",std::string{"idle"});}
 inline std::vector<Vec3> Navigation::GetPath(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?std::vector<Vec3>{}:state.value("path",std::vector<Vec3>{});}
+inline void Navigation::ConfigureAvoidance(Actor* target,const std::string& mode,float horizon,float neighborDistance,int maxNeighbors,int priority){engineCommand("navigationAvoidance",{{"target",bridgeId(target)},{"mode",mode},{"horizon",horizon},{"neighborDistance",neighborDistance},{"maxNeighbors",maxNeighbors},{"priority",priority}});}
+inline Vec3 Navigation::GetSteeringVelocity(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?Vec3{}:state.value("velocity",Vec3{});}
+inline Vec3 Navigation::GetPreferredVelocity(Actor* target){auto& state=gameplayField(target,"navigation");return state.is_null()?Vec3{}:state.value("preferred",Vec3{});}
 inline std::vector<Actor*> Perception::GetTargets(Actor* target){std::vector<Actor*> result;auto& states=gameplayField(target,"perception");if(states.is_array())for(const auto& state:states)if(state.value("sensed",false))result.push_back(bridgeActor(state.at("id")));return result;}
 inline void Perception::Forget(Actor* target){engineCommand("perceptionForget",{{"target",bridgeId(target)}});gameplayField(target,"perception")=Json::array();}
 inline void Perception::ReportNoise(Actor* target,const Vec3& position,float loudness,float radius,const std::string& tag){engineCommand("reportNoise",{{"target",bridgeId(target)},{"position",position},{"loudness",loudness},{"radius",radius},{"tag",tag}});}

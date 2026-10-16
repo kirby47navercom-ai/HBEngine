@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "8f1d8b6",
+  "targetIds": [
+    "WLD-06",
+    "BP-02",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/navigation-191-35wmCt/acceptance.json",
+      "sha256": "162290c695979c029adea951905b57018131b98ad846c31a430abb4574c2d0e1",
+      "result": {
+        "passed": 8,
+        "total": 8,
+        "checks": [
+          {
+            "name": "head-on and perpendicular flows keep disc separation while passing each other",
+            "passed": true
+          },
+          {
+            "name": "24-way circular crossing, passive obstacle, priority and overlap fallback",
+            "passed": true
+          },
+          {
+            "name": "nearest KD selection, height floors and limited or unlimited per-agent neighbor budgets are deterministic",
+            "passed": true
+          },
+          {
+            "name": "validation, pause, zero speed and pooled buffer lifetime preserve caller data",
+            "passed": true
+          },
+          {
+            "name": "world-space 2D/3D authoring, live settings, stop, pooled actors and hierarchy feed actual paths and steering",
+            "passed": true
+          },
+          {
+            "name": "ORCA motor uses the solved velocity in both legacy and Rapier movement; old acceleration remains",
+            "passed": true
+          },
+          {
+            "name": "Blueprint generated configuration and velocity nodes execute the same service and protect returned arrays",
+            "passed": true
+          },
+          {
+            "name": "compiled C++ configuration and steering getters agree with Blueprint snapshots",
+            "passed": true
+          }
+        ],
+        "performanceRows": [
+          {
+            "density": "sparse",
+            "agents": 1000,
+            "frameMS": [
+              13.203300000000013,
+              6.979900000000043,
+              6.336800000000039,
+              6.422500000000014,
+              6.048400000000015,
+              6.15160000000003,
+              7.717099999999959,
+              6.01929999999993
+            ],
+            "neighbors": [
+              2,
+              4
+            ],
+            "indexCapacity": 1024,
+            "scratchCapacity": 4,
+            "bytes": 98576
+          },
+          {
+            "density": "dense",
+            "agents": 1000,
+            "frameMS": [
+              15.723700000000008,
+              14.65689999999995,
+              14.679899999999975,
+              14.70679999999993,
+              14.569100000000049,
+              14.672000000000025,
+              14.359099999999899,
+              14.3596
+            ],
+            "neighbors": [
+              16,
+              16
+            ],
+            "indexCapacity": 1024,
+            "scratchCapacity": 16,
+            "bytes": 99392
+          }
+        ],
+        "scope": "Node ORCA solve only; no game FPS, phone or collision guarantee outside selected neighbors/plane.",
+        "newDependencies": 0
+      }
+    },
+    "editor": {
+      "path": "native/build/navigation-191-editor-jIWyKS/acceptance.json",
+      "sha256": "9b00055a80445c41f61542a92b64ee3db13105e7f25cfba59c6fac8daff4e251",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanInspector": true,
+        "zeroNeighborBudget": true,
+        "undo": true,
+        "saved": true,
+        "blueprintRendered": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3d2D": {
+      "path": "native/build/navigation-191-player-BRhWY3/acceptance.json",
+      "sha256": "733a46d8101901b4b80c74951fe87536dcf72328986aa09baad9faf60a6d7468",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\navigation-191-player-BRhWY3\\Crowd191-1792163143981\\Builds\\windows\\2026-10-16T15-05-44-062Z-990041f7\\HBGame_a513a5fd6ec64d4ba6841d8a67becf8e.exe",
+        "backend": "D3D11",
+        "plane": "XY",
+        "nativeSetup": true,
+        "blueprintSetup": true,
+        "allArrived": true,
+        "minimumSeparation": 0.6000159978866577,
+        "nativeSteeringRead": 0.995838463306427,
+        "nativePreferredRead": 2.5,
+        "finalTime": 6.367493152618408,
+        "navigation": {
+          "paths": 4,
+          "planes": {}
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu3D": {
+      "path": "native/build/navigation-191-player-hK6Bfq/acceptance.json",
+      "sha256": "c486c7a58aa91695128551ff39b964404b932f6e88dd2be72e7a63cc4a6a8a77",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\navigation-191-player-hK6Bfq\\Crowd191-1792163230413\\Builds\\windows\\2026-10-16T15-07-10-489Z-00087bfd\\HBGame_2123a0cb89914582b177a4a7e5cda985.exe",
+        "backend": "WebGPU",
+        "plane": "XZ",
+        "nativeSetup": true,
+        "blueprintSetup": true,
+        "allArrived": true,
+        "minimumSeparation": 0.6000160574913025,
+        "nativeSteeringRead": 2.087526798248291,
+        "nativePreferredRead": 2.5,
+        "finalTime": 5.926701857000589,
+        "navigation": {
+          "paths": 4,
+          "planes": {}
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "regressions": [
+    "check-scene-systems including real C++ and2D/3D template paths",
+    "check-scene-runtime",
+    "check-gameplay-workflow",
+    "check-physics166 Rapier assertions and native queries",
+    "check-test-artifacts",
+    "generate-api --check",
+    "rendering1905"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://dev.epicgames.com/documentation/unreal-engine/using-avoidance-with-the-navigation-system-in-unreal-engine",
+      "scope": "UE5.8 own page text lines0–152: RVO/Detour differences, current/preferred velocities, quality and nav-boundary limitation. Linked API, images and media unread."
+    },
+    {
+      "url": "https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/NavMeshAgent.html",
+      "scope": "AI Navigation2.0.16 own HTML text lines115–232: agent size/motion, avoidance priority0–99/lower higher, neighbor quality and traversal settings. Linked APIs and media unread."
+    },
+    {
+      "url": "https://gamma-web.iacs.umd.edu/ORCA/",
+      "scope": "Own introduction text0–54 only."
+    },
+    {
+      "url": "https://gamma-web.iacs.umd.edu/RVO2/documentation/2.0/whatsnew.html",
+      "scope": "Own text0–28: half-planes/LP, preferred velocity/path ownership, KD index, no acceleration constraints."
+    },
+    {
+      "url": "https://gamma.cs.unc.edu/ORCA/publications/ORCA.pdf",
+      "scope": "Author-original PDF downloaded1675999B. pypdf extracted printed pages5–11 read; definitions/equations5–10/current versus preferred velocity/infeasible fallback. Printed p6 raster visually inspected with pypdfium2. Other pages and linked code not analyzed."
+    }
+  ],
+  "newDependencies": 0,
+  "alwaysOnTimers": 0,
+  "automaticGPUReadbacks": 0,
+  "newGlobalAgentLimit": false,
+  "perAgentNeighborBudget": {
+    "default": 16,
+    "zero": "all within selected distance/height"
+  },
+  "installationPending": true,
+  "limits": [
+    "ORCA constrains planar disc velocities from selected neighbors at the observed current velocity. It is not Detour/Mass, NavMesh carving, acceleration-constrained control, nonplanar surface projection or a universal collision guarantee. Walls and dynamic physical response remain owned by the existing pathfinder/motor.",
+    "The legacy/simple mode remains the default. ORCA is opt-in, may produce best-effort infeasible output during overlaps/congestion, and can leave NavMesh boundaries. Mixed dynamic-parent motor hierarchies and physical acceleration constraints need further integration.",
+    "1000-agent Node solver samples are not total game FPS or a PC120/mobile60 guarantee. Dense16-neighbor warmed samples were around14–15ms and sparse around6–8ms on this machine; no phone or platform performance claim.",
+    "The full16-page paper and linked documentation/API/media were not all read; global corpus gate unchanged."
+  ],
+  "failedAttempts": [
+    "The first one-agent solve had no scratch array. Allocate a one-entry scratch on first solve even with no neighbors; zero speed outputs use canonical zero.",
+    "The first hierarchy harness assumed a grid path was perfectly horizontal. Compare the exact same standalone world path after moving the parent; keep the world-coordinate assertion.",
+    "The first native service harness used an incomplete fake VM. Use actual BlueprintRuntime.start/fixedTick/collisions instead.",
+    "Fixture source headers must be written before a Blueprint referencing them. The content-hash revision after Undo should equal the restored content revision. These harness errors were corrected without weakening collision assertions.",
+    "An old test deleted its owned fixture before scheduled cleanup. Cleanup now tolerates ENOENT in the validated owned path; outside-path, source/evidence and package-manifest retention assertions still pass."
+  ]
+}

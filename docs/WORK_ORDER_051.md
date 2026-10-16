@@ -265,3 +265,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 190: 정적 UV 재질의 미연결 Time/Panner 때문에 기하를 다시 준비하던 비용 제거. 기존 캐시/실제 opcode로 연결 변경·마스크/물리 Time·월드/시점 보수성 유지. CPU5/기존7·실제 D3D/GPU 게임 및 전송/BVH 재사용. PC120/모바일60 전체 검증과 구별. ENGINE_WORK_190.md/JSON. 다음 기능과 묶음 설치 예정.
+
+
+191: ORCA 로컬 회피 자체 수식/LP·2D/3D/층/이웃·공용 SDK/BP·Inspector/Undo·두 실제 게임 및 바이트/성능 표본. ENGINE_WORK_191.md/JSON.190과 묶음 설치 예정.

@@ -528,6 +528,9 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="navigationStop", KoreanName="경로 이동 정지", Category="AI 내비게이션") static void Stop(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationStatus", KoreanName="경로 이동 상태", Category="AI 내비게이션") static std::string GetStatus(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationPath", KoreanName="이동 경로 가져오기", Category="AI 내비게이션") static std::vector<Vec3> GetPath(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="navigationAvoidance", KoreanName="군중 회피 설정", Category="AI 내비게이션") static void ConfigureAvoidance(Actor* target,const std::string& mode="orca",float horizon=2,float neighborDistance=5,int maxNeighbors=16,int priority=50);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationVelocity", KoreanName="회피 이동 속도", Category="AI 내비게이션") static Vec3 GetSteeringVelocity(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="navigationPreferred", KoreanName="희망 이동 속도", Category="AI 내비게이션") static Vec3 GetPreferredVelocity(Actor* target);
 };
 HB_CLASS()
 class Perception : public Library {

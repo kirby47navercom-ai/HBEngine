@@ -440,3 +440,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 188: Material Editor 조작/키218–278 및 Unity Shortcuts 문맥/충돌319–360·프로필/도구400–431을 supplemental188로 등록. 연결 API/미디어/전역 gate 승격 없음.
+
+
+191: Unreal avoidance/Unity NavMeshAgent·ORCA 소개/원문 수식5–10을 지정 구역에서 읽고 supplemental191에 등록했다. 원문5–11쪽 외 본문·연결 API/미디어·전역 corpus gate는 미완으로 유지한다.

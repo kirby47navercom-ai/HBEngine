@@ -448,3 +448,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 190: 미연결 시간 노드는 정적 UV 기하를 매 프레임 재준비하지 않아요. 수동 플래그 대신 실제 컴파일 opcode와 기존 캐시를 사용해요. 기존 renderer.bvh/rayGeometry 및 네이티브 raySceneUpdates/Bytes로 관찰할 수 있고, CPU 준비 비용과 전체 게임 FPS는 구분해야 해요.
+
+
+191: NavigationAgent.avoidanceMode(simple/orca/none), avoidancePlane(auto/XY/XZ), avoidanceHorizon, neighborDistance, maxNeighbors(0 전체), avoidancePriority(0–99 낮을수록 우선), avoidanceBias를 기존 문서/컴포넌트 스키마·CAS/Undo로 편집한다. C++ Navigation 공용3함수와 BP 동일 서비스. player.inspect().navigation에 월드 경로 수/평면별 agents/indexCapacity/scratchCapacity/bytes, actor.gameplayDebug.navigation에 velocity/preferred/neighbors/infeasible/status가 있다. 속도는 월드 단위/초이며 물리 충돌 후 실제 변위와 구별한다.

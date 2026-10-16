@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `d1a7ca6`
+갱신일: 2026-10-17 · 대조 기준 커밋: `8f1d8b6`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -58,7 +58,7 @@
 | WLD-03 지형 브러시·폴리지 | partial | 165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 | 텍스처 지형 레이어·대규모 GPU 브러시/부분 버퍼 업로드 · 대규모 폴리지 선택/브러시 프레임·메모리 검증 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 | WLD-04 LOD 제작·전환 | partial | 165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 | 고품질 메시 단순화·교차 페이드·골격 수/충돌 단순화와 큰 씬 품질 대조 · 전체 애니메이션 계산·레거시 Mixer/골격 수 LOD·보간·다중 카메라/시야 중요도·CPU-ms 예산 할당 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_179.json](research/ENGINE_WORK_179.json) |
 | WLD-05 월드 분할·레벨 스트리밍 | partial | 추가 레벨 다중 인스턴스/변환·수동/항상/거리 셀·참조 재배치·물리/스크립트 합류·실패 취소/재진입·CPP/BP/AI/아웃라이너 · 171: 자동 거리 셀의 추정 비용/우선순위/개수 예산·회차당 로드·먼 셀 선제 해제 | 자동 공간 분할/HLOD·실제 메모리 측정 기반 셀 스케줄링·큰 맵 검증 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) |
-| WLD-06 내비게이션·군중 | partial | 평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 · 169: NavArea 32영역/비용/마스크·장면 부피·2D XY/XZ·이동 obstacle 삼각 SAT 차단·생성/UI | 정밀 동적 타일/장애물 재분할 carving·부분 삼각 영역 비용 · 비평면 정밀 funnel/경계 침식·반경 보장·RVO/Mass 군중 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
+| WLD-06 내비게이션·군중 | partial | 평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 · 169: NavArea 32영역/비용/마스크·장면 부피·2D XY/XZ·이동 obstacle 삼각 SAT 차단·생성/UI ·191: opt-in ORCA 반평면/LP·XY/XZ/층/우선순위/정지·KD 이웃/재사용·Inspector/Undo·공용 C++/BP3·실제 D3D2D/WebGPU3D | 정밀 동적 타일/장애물 재분할 carving·부분 삼각 영역 비용 · 비평면 정밀 funnel/경계 침식·반경 보장·NavMesh 제한 ORCA·가속/혼합 동적 부모 제약·Mass/Detour | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) · [ENGINE_WORK_191.json](research/ENGINE_WORK_191.json) |
 
 ## 렌더링
 
