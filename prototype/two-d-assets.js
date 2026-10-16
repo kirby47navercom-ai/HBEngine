@@ -24,7 +24,7 @@ export function valid2DAsset(kind,data){
   return data.layers.every(layer=>{
     if(!layer||!name(layer.id)||ids.has(layer.id)||!name(layer.name)||typeof layer.visible!=='boolean'||typeof layer.collision!=='boolean'||!Array.isArray(layer.tiles)||layer.tiles.length>data.width*data.height)return false;
     ids.add(layer.id);const cells=new Set();
-    return layer.tiles.every(tile=>{if(!tile||!integer(tile.x,0,data.width-1)||!integer(tile.y,0,data.height-1)||!integer(tile.index,0,1048575))return false;const key=tile.x+','+tile.y;if(cells.has(key))return false;cells.add(key);return true;});
+    return layer.tiles.every(tile=>{if(!tile||!integer(tile.x,0,data.width-1)||!integer(tile.y,0,data.height-1)||!integer(tile.index,0,1048575)||tile.sourceIndex!==undefined&&!integer(tile.sourceIndex,0,1048575)||tile.rotation!==undefined&&(!Number.isSafeInteger(tile.rotation)||tile.rotation<0)||['flipX','flipY','autoCollision'].some(k=>tile[k]!==undefined&&typeof tile[k]!=='boolean'))return false;const key=tile.x+','+tile.y;if(cells.has(key))return false;cells.add(key);return true;});
   });
 }
 /** Image rectangles use top-left pixel coordinates; UVs use bottom-left origin. */

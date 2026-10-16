@@ -377,3 +377,10 @@ runtime.levels/load/unload/visible는 실행 사본을 조작하고 저작 revis
 scene.prefab.inspect {path,object}는 루트/자식 ID에서 연결 루트, sourceRevision, changes/conflicts를 읽어요. scene.prefab.instantiate {path,expectedRevision,asset,position?,dryRun?}는 안정 ID 인스턴스를 만들어요. refresh/unpack는 {path,expectedRevision,object,dryRun?}, revert는 여기에 all:true 또는 localId/property를 받아요. apply는 localId/property 및 선택 sourceRevision을 받고 원본/장면을 기존 files.apply의 원자 Undo로 수정해요. property는 ['scale',0] 또는 ['components','StableComponentId','properties','enabled']처럼 안정 ID를 사용해요. 사람 속성 창도 같은 명령을 호출해요.
 
 자동 원본 갱신은 열린 문서의 파생 결과를 갱신하고 로컬 수정/충돌을 보존해요. runtime Tilemaps의 변경 셀은 렌더/충돌 청크에 전달되며 데이터 형식/기존 C++·BP 함수는 유지해요. TilemapRenderer renderMode=chunk/individual/layer, 기본 chunk예요. inspector의 긴 안내 대신 [형식·실행·남은 세부](ENGINE_WORK_168.md)를 참고해요.
+
+
+## 169 — 다중 IK·Take·제작 세부
+
+`anim.ik.effector.add {path,expectedRevision,node,settings?,dryRun?}`와 `anim.ik.effector.remove {path,expectedRevision,node,goal,dryRun?}`는 FullBodyIK의 안정 목표ID를 편집한다. settings는 id/bone/target/targetActor/space/weight이며 사람과 같은 검증·Undo를 사용한다. `runtime.take.start {targets,name?,fps?,includeComponents?,includeStructure?,includeSkeleton?,includeAudio?}` / `runtime.take.finish`는 실행 프레임 장벽에서 녹화를 제어한다. 중첩 settings가 아닌 직접 필드를 받으며 targets는 실제 런타임 ID 배열이다. `sequence.take.apply {path,expectedRevision,data,dryRun?}`는 검증한 결과를 기존 시퀀스에 적용하고 Undo한다. world.mesh.edit의 operation에 bridge/insetFaces(amount)를 추가한다.
+
+NavigationArea와 Agent areaMask/areaCosts, 자동타일 extended/transform, 믹서 bus.ducking은 기존 document.patch/schema/Undo로 편집한다. 게임용 목표 API4개·사이드체인API3개는 C++/BP 공유이며 총760노드다. [형식·비용·남은 세부](ENGINE_WORK_169.md).

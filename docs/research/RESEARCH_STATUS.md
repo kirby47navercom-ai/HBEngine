@@ -391,3 +391,8 @@ UE5.8 PolyGroup Edit 선택/조작, Animation Curves 구동 종류/키, Take Rec
 ## 167 — 추가 레벨·외부 IK·포털 경로 대조
 
 Unreal Level Streaming 개요/Blueprint load-unload, Unity6000.0 Additive/UnloadSceneAsync의 지정 API 설명, 2D Animation10.2 IK 목표/솔버, Recast Detour findStraightPath 포털·오프메시 지정 구역을 읽고 HB의 명령/수명·반경/키 베이크 차이를 기록했다. 전체 본문/API/미디어·다른 버전·전체 소스 독립 분석은 승격하지 않았다. supplemental167과 scopeExpansionPending에 후속 범위를 등록했다. [구현·차이·실행 근거](../ENGINE_WORK_167.md).
+
+
+## 169 — 확장 타일·영역·다중 IK·사이드체인 지정 대조
+
+Unity RuleTile4.0.2 확장 이웃/회전/대칭, AI Navigation2.0 ModifierVolume, UE Control Rig FullBodyIK 목표/루트/관절 설정, Unity6000.0 AudioGroup Inspector Send/Duck Volume 지정 본문을 읽었다. HB의 공유 CCD·보수적 삼각 차단·버스RMS는 별도 구현으로 구별한다. 연결 API/미디어/전체 corpus gate는 올리지 않고 supplemental169/scopeExpansionPending에 남긴다. [구현·실행·차이](../ENGINE_WORK_169.md).

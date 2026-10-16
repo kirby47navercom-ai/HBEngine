@@ -1,3 +1,4 @@
+import {FullBodyIK} from './animation-full-body.js';
 import {animationCurveSampler} from './animation-curve-sampler.js';
 import {AnimationRetarget} from './animation-retarget.js';
 import {rememberAnimationBindPose} from './animation-skeleton.js';
@@ -45,7 +46,7 @@ export class AnimationGraphPlayer {
       this.compiled.set(id,compiled);
     }
     this.retargets=new Map();for(const node of this.data.nodes)if(retargets.has(node.id)){const r=retargets.get(node.id);this.retargets.set(node.id,new AnimationRetarget(this,node,r.data,r.sourceRig,r.targetRig,slot,mesh));}this.retargetDebug=[...this.retargets.values()].map(s=>s.debug);
-    this.ik=new Map();for(const node of this.data.nodes)if(reachable.has(node.id)&&animationIKTypes.includes(node.type))this.ik.set(node.id,new AnimationIK(this,node,slot));
+    this.ik=new Map();for(const node of this.data.nodes)if(reachable.has(node.id)&&animationIKTypes.includes(node.type))this.ik.set(node.id,new (node.type==='fullBodyIK'?FullBodyIK:AnimationIK)(this,node,slot));
     this.ikDebug=[...this.ik.values()].map(s=>s.debug);
     if(this.slots.reduce((a,s)=>a+s.rest.length,0)>8192)throw Error('그래프 포즈 값 제한8192');
     this.rest=this.slots.map(s=>new Float64Array(s.rest));for(const id of reachable)this.poses.set(id,this.rest.map(v=>new Float64Array(v)));
@@ -59,7 +60,7 @@ export class AnimationGraphPlayer {
   retargetSources(){return [...new Set([...this.retargets.values()].map(s=>s.sourceId()).filter(Boolean))];}
   setRetarget(key,field,value){const solver=this.retargetSolver(key);if(field==='alpha'){if(!Number.isFinite(value)||value<0||value>1)throw Error('리타게팅 가중치 범위 오류');}else if(field==='profile'){if(typeof value!=='string'||solver.data.profiles.filter(p=>p.id===(value||solver.data.defaultProfile)||p.name===value).length!==1)throw Error('리타게팅 프로필이 없어요.');}else if(field!=='sourceActor'||typeof value!=='string'||value.length>160||value===this.object.id)throw Error('리타게팅 입력 오류');solver.override[field]=value;}
   ikSolver(key){const found=[...this.ik.values()].filter(s=>s.node.id===key||s.node.name===key);if(found.length!==1)throw Error('IK 노드의 고유 이름 또는 ID를 확인하세요: '+key);return found[0];}
-  setIK(key,field,value){const solver=this.ikSolver(key);if(field==='jointLimit'){solver.jointLimits.set(value);return;}if(field==='clearJointLimit'){solver.jointLimits.clear(value);return;}if(field==='rotationLimit'){solver.setRotationLimit(value?.bone,value?.limit);return;}if(!['target','hint','rotation','alpha','targetActor','hintActor'].includes(field)||['hint','hintActor'].includes(field)&&solver.node.type!=='twoBoneIK'||!validAnimationIK(solver.node.type,{...solver.p,...solver.override,[field]:value}))throw Error('IK 목표·힌트·가중치 범위를 확인하세요.');solver.override[field]=Array.isArray(value)?[...value]:value;}
+  setIK(key,field,value){const solver=this.ikSolver(key);if(solver.node.type==='fullBodyIK'&&!['alpha','jointLimit','clearJointLimit'].includes(field))throw Error('다중 목표 IK는 목표 ID로 편집하세요.');if(field==='jointLimit'){solver.jointLimits.set(value);return;}if(field==='clearJointLimit'){solver.jointLimits.clear(value);return;}if(field==='rotationLimit'){solver.setRotationLimit(value?.bone,value?.limit);return;}if(!['target','hint','rotation','alpha','targetActor','hintActor'].includes(field)||['hint','hintActor'].includes(field)&&solver.node.type!=='twoBoneIK'||!validAnimationIK(solver.node.type,{...solver.p,...solver.override,[field]:value}))throw Error('IK 목표·힌트·가중치 범위를 확인하세요.');solver.override[field]=Array.isArray(value)?[...value]:value;}
   setRootMotionMode(mode){if(!rootMotionModes.includes(mode))throw Error('루트 모션 모드를 확인하세요.');this.rootMotionMode=mode;if(mode!=='none'&&!this.hasRootMotion&&this.hasRootSlot){this.hasRootMotion=true;for(const c of this.contexts)for(const id of c.poses.keys())c.motions.set(id,motionBuffer());for(const machine of this.machines.values())machine.motion=motionBuffer();}resetMotion(this.lastRootMotion);}
   mixRootMotion(out,a,b,weight,mask){return mixMotion(out,a,b,weight*(mask?this.rootMask(mask):1));}
   rootMask(mask){const indices=[...this.rootMaskKeys].map(k=>this.slotKeys.get(k)).filter(i=>i!==undefined);return indices.length?Math.max(...indices.map(i=>mask[i]??1)):0;}

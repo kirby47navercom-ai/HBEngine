@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "1e1b580",
+  "scope": "누적 전체 조사/엔진 목표의 연속 구현; 이 문서의 번호나 검사 수는 전체 완료의 대체 범위가 아님",
+  "targetIds": [
+    "AST-04",
+    "2D-06",
+    "WLD-02",
+    "WLD-06",
+    "ANM-05",
+    "ANM-06",
+    "AUD-03",
+    "AI-03",
+    "RND-01",
+    "PER-02"
+  ],
+  "parentRowsCompleted": 0,
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 33,
+      "unimplemented": 3,
+      "unverified": 3
+    },
+    "completionPercent": null,
+    "exhaustiveUEUnity": false
+  },
+  "nodes": {
+    "total": 760,
+    "added": 7,
+    "sharedCore": 289
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-169-8ECl2s/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11",
+      "summary": {
+        "passed": 23,
+        "total": 23
+      }
+    },
+    "runtime": {
+      "path": "native/build/engine-169-runtime-f9BgVI/acceptance.json",
+      "sha256": "fbde7dc631194c330ff7a7be7bf9e1d6f7224d10a808c6611e1ccd6818fc1f6e",
+      "summary": {
+        "passed": true
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-169-window-hf1cnp/acceptance.json",
+      "sha256": "a22b7b70f93820f034774f699caa80753288337fe071e3563f861880d9953992",
+      "summary": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanIKGoals": true,
+        "aiGoalsDryRunUndo": true,
+        "navInspector": true,
+        "cpp": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 1,
+          "opened": true,
+          "rejected": true,
+          "ticks": 1084
+        },
+        "take": {
+          "tracks": [
+            {
+              "type": "position",
+              "keys": 2
+            },
+            {
+              "type": "rotation",
+              "keys": 2
+            },
+            {
+              "type": "scale",
+              "keys": 2
+            },
+            {
+              "type": "visible",
+              "keys": 2
+            },
+            {
+              "type": "componentState",
+              "keys": 2
+            },
+            {
+              "type": "componentState",
+              "keys": 2
+            },
+            {
+              "type": "skeletalPose",
+              "keys": 4
+            }
+          ],
+          "dryRunUndo": true
+        },
+        "humanDucking": true,
+        "audio": {
+          "attack": 0.2062659658674183,
+          "release": 0.9894199190065908,
+          "silentSink": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "development": {
+      "path": "native/build/engine-169-player-pTlFoK/acceptance.json",
+      "sha256": "74e4fec28e7a512549da088c347a2fed72f88818f57b5dd99c0415fa6f87e1bf",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "blueprintInput": true,
+        "backend": "D3D11",
+        "lineMeshes": 2,
+        "deformations": 1,
+        "automaticReadbacks": 0,
+        "handError": 3.1401849173675503e-16,
+        "cpp": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "rejected": true,
+          "ticks": 29
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "release": {
+      "path": "native/build/engine-169-player-aS01Kj/acceptance.json",
+      "sha256": "5a4bf0eb3364ba50ce742452eed5287fa6cf30271e937aa4263d9de3c535a7b5",
+      "summary": {
+        "passed": true,
+        "configuration": "release",
+        "blueprintInput": true,
+        "backend": "D3D11",
+        "lineMeshes": 2,
+        "deformations": 1,
+        "automaticReadbacks": 0,
+        "handError": 3.1401849173675503e-16,
+        "cpp": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "rejected": true,
+          "ticks": 28
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-169-player-IjmQtt/acceptance.json",
+      "sha256": "d15bf5be20d73109d70db9432c1c4399bed1c44a9e5bca495c08f064c419fc85",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "blueprintInput": true,
+        "backend": "WebGPU",
+        "handError": 3.1401849173675503e-16,
+        "cpp": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "rejected": true,
+          "ticks": 31
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "retention": {
+      "path": "native/build/install-retention-Iqugn5/acceptance.json",
+      "sha256": "3d0c64663a75ed7d6308e9703e9f6067eaf53015657999ba893dad4529f13e9c",
+      "summary": {
+        "passed": true,
+        "currentProtected": true,
+        "activeProtected": true,
+        "userProjectProtected": true,
+        "modifiedSourcePreserved": true,
+        "obsoleteRemoved": true,
+        "nextInstallReplacesPrior": true,
+        "singleMaintenanceReceipt": true,
+        "boundsRejected": true,
+        "failedStagingRemoved": true,
+        "knownRegenerableCacheNotBackedUp": true,
+        "historicalKnownCacheRemoved": true,
+        "modifiedDependencyPreserved": true
+      }
+    }
+  },
+  "regression": [
+    "165 CPU17",
+    "166 CPU12",
+    "167 CPU11",
+    "168 CPU12",
+    "check-animation-ik.mjs",
+    "check-animation-joint-limits.mjs",
+    "check-ui-audio.mjs",
+    "check-2d-extensions.mjs",
+    "check-native.mjs",
+    "check-native-transport.mjs",
+    "check.mjs",
+    "generate-api.mjs --check"
+  ],
+  "fixedFailures": [
+    {
+      "path": "native/build/engine-169-player-zFS8IO/failure.json",
+      "issue": "D3D11 Player frame0 on IK LineSegments",
+      "fix": "solid line pool on existing native triangle path; development/release actual execution passed"
+    },
+    {
+      "issue": "Take component values shared active clip cache; repeated clip stop and state clone",
+      "fix": "separate recordedValues and frame-batch validation"
+    },
+    {
+      "issue": "AI animation kind and Take validator reference; unsaved fixture closing test",
+      "fix": "existing animgraph kind/validAsset, save isolated fixture before close without bypassing product protection"
+    }
+  ],
+  "cost": {
+    "dependenciesAdded": 0,
+    "newIdlePollers": 0,
+    "automaticGPUReadbacks": 0,
+    "sharedBoneScratch": true,
+    "sequenceBindingsReused": true,
+    "unchangedLineGeometryReused": true
+  },
+  "limitsDocument": "docs/ENGINE_WORK_169.md",
+  "userInstallation": "docs/research/USER_INSTALL_169.json"
+}

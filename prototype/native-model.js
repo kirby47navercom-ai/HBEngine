@@ -23,8 +23,8 @@ function cppType(s){
   if(!type)throw Error('지원하지 않는 공개 자료형: '+s);return {type,array,...(key.endsWith('*')?{className:key.slice(0,-1).trim()}:{})};
 }
 const metadata=(flags,key,fallback)=>flags.match(new RegExp(key+'\\s*=\\s*"([^"]*)"'))?.[1]||fallback;
-export function parseNativeHeader(source){
-  if(typeof source!=='string'||source.length>100000)throw Error('헤더는 100 KB 이하로 입력하세요.');
+export function parseNativeHeader(source,{maxLength=100000}={}){
+  if(!Number.isInteger(maxLength)||maxLength<1||maxLength>1000000||typeof source!=='string'||source.length>maxLength)throw Error(maxLength===100000?'헤더는 100 KB 이하로 입력하세요.':'헤더 크기 제한: '+maxLength+'자');
   const text=source.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\/\/[^\n]*/g,'');const classes=[];
   const re=/HB_CLASS\(([^)]*)\)\s*class\s+(\w+)\s*:\s*public\s+(?:hb::)?(\w+)\s*\{/g;let match;
   while((match=re.exec(text))){let end=re.lastIndex,depth=1;for(;end<text.length&&depth;end++){if(text[end]==='{')depth++;if(text[end]==='}')depth--;}if(depth)throw Error(match[2]+' 클래스의 닫는 중괄호가 없어요.');

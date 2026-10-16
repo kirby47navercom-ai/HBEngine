@@ -1,6 +1,6 @@
 import {immutableNativeSnapshot} from './native-transport.js';
-import {TileCollisionChunks,affectedTileCells} from './tilemap-chunks.js';
-import {resolveAutoTiles} from './auto-tiles.js';
+import {TileCollisionChunks} from './tilemap-chunks.js';
+import {resolveAutoTiles,affectedAutoTileCells} from './auto-tiles.js';
 import * as THREE from 'three';
 import {valid2DAsset,applyTileTool,tileCellPoint,tileLocalToCell} from './two-d-assets.js';
 import {enabledComponent} from './scene-components.js';
@@ -43,6 +43,6 @@ export class RuntimeTilemaps {
       const tool=key==='tileSet'?'brush':key==='tileBoxFill'?'rectangle':'fill',cell={x:args.cell[0],y:args.cell[1]},end=key==='tileBoxFill'?{x:args.end[0],y:args.end[1]}:cell;
       const result=applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;cells=result.cells;
     }
-    if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new Map());const previous=changes.get(layer.id);if(cells&&previous!==null){const affected=next.autoTileRules?.length?affectedTileCells(cells):cells;changes.set(layer.id,[...new Map([...(previous||[]),...affected].map(c=>[c.join(':'),c])).values()]);}else changes.set(layer.id,null);}return {};
+    if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new Map());const previous=changes.get(layer.id);if(cells&&previous!==null){const affected=next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells;changes.set(layer.id,[...new Map([...(previous||[]),...affected].map(c=>[c.join(':'),c])).values()]);}else changes.set(layer.id,null);}return {};
   }
 }

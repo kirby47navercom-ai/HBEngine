@@ -152,6 +152,10 @@ public:
 HB_CLASS()
 class AudioMixer : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerDuckingSet", KoreanName="믹서 사이드체인 지정", Category="오디오") static void SetDucking(Actor* target,const std::string& asset,const std::string& bus,const std::string& source,float threshold,float ratio,float attack,float release);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerDuckingClear", KoreanName="믹서 사이드체인 해제", Category="오디오") static void ClearDucking(Actor* target,const std::string& asset,const std::string& bus);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mixerDuckingGain", KoreanName="믹서 사이드체인 게인", Category="오디오") static float GetDuckingGain(Actor* target,const std::string& asset,const std::string& bus);
+
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerSet", KoreanName="믹서 파라미터 지정", Category="오디오") static void SetFloat(Actor* target,const std::string& asset,const std::string& parameter,float value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="mixerGet", KoreanName="믹서 파라미터 가져오기", Category="오디오") static float GetFloat(Actor* target,const std::string& asset,const std::string& parameter);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="mixerClear", KoreanName="믹서 파라미터 재정의 해제", Category="오디오") static void ClearFloat(Actor* target,const std::string& asset,const std::string& parameter);
@@ -400,6 +404,10 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKWeight", KoreanName="IK 가중치 지정", Category="애니메이션 그래프") static void SetIKWeight(Actor* target,const std::string& node,float value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKTargetActor", KoreanName="IK 목표 오브젝트 지정", Category="애니메이션 그래프") static void SetIKTargetActor(Actor* target,const std::string& node,Actor* effector);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKHintActor", KoreanName="IK 힌트 오브젝트 지정", Category="애니메이션 그래프") static void SetIKHintActor(Actor* target,const std::string& node,Actor* effector);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorTarget", KoreanName="다중 IK 목표 위치 지정", Category="애니메이션 그래프") static void SetIKEffectorTarget(Actor* target,const std::string& node,const std::string& goal,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorActor", KoreanName="다중 IK 목표 오브젝트 지정", Category="애니메이션 그래프") static void SetIKEffectorActor(Actor* target,const std::string& node,const std::string& goal,Actor* effector);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorWeight", KoreanName="다중 IK 목표 가중치 지정", Category="애니메이션 그래프") static void SetIKEffectorWeight(Actor* target,const std::string& node,const std::string& goal,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKEffectorError", KoreanName="다중 IK 목표 오차", Category="애니메이션 그래프") static float GetIKEffectorError(Actor* target,const std::string& node,const std::string& goal);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKTip", KoreanName="IK 끝 뼈 위치", Category="애니메이션 그래프") static Vec3 GetIKTipPosition(Actor* target,const std::string& node);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKError", KoreanName="IK 목표 거리", Category="애니메이션 그래프") static float GetIKError(Actor* target,const std::string& node);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphRootMode", KoreanName="루트 모션 모드 지정", Category="애니메이션 그래프") static void SetRootMotionMode(Actor* target,const std::string& mode);

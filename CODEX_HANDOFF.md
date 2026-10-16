@@ -1,13 +1,13 @@
-# HBEngine — 168 — 2026-10-16
+# HBEngine — 169 설치 전환 단계 — 2026-10-16
 
-현재 사용자 지시: 지금까지 조사/계획한 전체 기능 구현. 번호/묶음 완료로 전체 목표를 축소하지 않는다. 주인님/짚짱·한국어 존댓말, 사용자 창/프로필/게임 보존, 묶음 검사·설치 업데이트·한글 커밋/푸시·Versions1. 새 에이전트 요청 없음.
+사용자: 누적 전체 조사/엔진 목표를 이어 여러 기능을 구현. 번호/설치 갱신을 중단 조건으로 쓰지 말 것. 주인님/짚짱·자연스러운 존댓말, 사용자 창/프로필/원본 보호, 검사 숨김·격리·소유 PID만 종료. Versions1·용량 관리·한국어 커밋/푸시. 새 에이전트 요청 없음.
 
-168 구현: 연결 프리팹 원본/부모/중첩 live 갱신·3방향/축별 local 보존·충돌/속성 Apply/Revert/원자 Undo·AI6명령·Play 최신 해석·타입 actor 참조. 직교32×32/등각 대각 띠/개별 정렬·렌더/충돌 변경 청크 재생성·숨김 재생성0, C++ 타일/UI 불변 스냅샷/JSON 재사용. 소유 prototype/prefab-{instances,instance-ui,link}.js, tilemap-chunks/runtime.js, native-transport.js, scene-rendering.js, app.js, play-world.js, actor-references.js. 기존 노드753, 종속성/상시poll/자동GPU읽기 추가0.
+169 구현: 확장/대칭 자동타일·먼 역의존 청크dirty/UV, NavArea 비용/32bit마스크/volume·이동 obstacle SAT 보수적 삼각 차단/2D그리드·메뉴/helper, shared-pose 다중 CCD FullBodyIK·목표UI/오차·C++/BP4·AI, 구성/골격/오디오큐 Take·시퀀스 복원/slerp/축약·프레임장벽, 메시 bridge/개별face inset, 명시Prefaboverride 의도 보존, 버스RMS사이드체인 UI/C++/BP3, DirectX실선 기존삼각스트립/평면clip/픽셀폭/재사용·해제, 공식SHA SDK캐시만 반복백업제외/역사중복정리.
 
-검사 CPU12군·실제 C++/Rapier·숨김 Editor 사람 Apply/Revert/Undo·AI dryRun/원본 갱신·Play 복원, D3D11 dev/release·WebGPU. 16,384타일16청크 중 변경기하1/나머지15유지. D3D11 짧은119프레임 work평균5.96/p95 9.70ms·interval평균11.62ms이며 통제A/B/PC120/모바일60 증거가 아니다. 165/166/167·2D·native/transport/UIaudio/core/API 회귀 통과. 최종 설치 EXE 사람 Apply/Revert/Undo·AI dryRun·C++·타일 기하15개 유지·Play 저작 속성 복원 PASS, 영수증 USER_INSTALL_168.json. Build/copy와 실행 검사는 순차로 한다(runtime/node.exe 잠김).
+노드760/코어289. 새 종속성·idle폴링·자동GPU읽기0. CPU23군 engine-169-8ECl2s PASS, C++ engine-169-runtime-f9BgVI, Editor human/AI/Take/audio hf1cnp, D3D11 dev pTlFoK/release aS01Kj, WebGPU IjmQtt PASS. 165–168/2D/IK/관절/native/전송/오디오/코어/API 회귀도 통과. frame0 LineSegments 실패를 NativeLinePool로 수정했고 sourceattribute교체/vertexColors 토글도 CPU검증. 마지막 166회귀 MA8IYW12군/2D확장/생성API/코어 재확인.
 
-원장 docs/research/ENGINE_STATUS.json → docs/ENGINE_STATUS.md + hb status --local/API.78등록행 verified39/partial32/unimplemented4/unverified3. 상위 전체 완료 승격0. UE/Unity 전체 본문/API gate false/분모·완료율 미확정;168 지정 계약만 대조, 연결/7000API/미디어 미완.
+원장/169문서/API/BP/corpus 지정읽기 갱신.78행 verified39/partial33/unimplemented3/unverified3. ANM05 미구현→부분, 상위완료0. 전체gatefalse/분모미확정. UE PBIK가 아닌 CCD; 정밀carving/고급rig/임의native구조·PCM/voice가상화/UV/bevel·대규모/실기기/PC120·mobile60 잔여 보존. Mac/Xcode/Android실기기 없음.
 
-남은 전체 목표는 원장 remaining과 누적 요청을 유지한다: prefab 명시적 같은값 override/모든 구조Apply/세밀 variant/stage, 확장 타일규칙/맵 비용/2.5D 품질, 렌더 cold compile/정밀 transport/GI/HWRT, 월드 자동분할/HLOD/예산/동적Nav,2D제약/정지발/애니/Take,물리/게임/네트워크/UI/오디오,CPP확장/AI/디버그,모바일/배포/성능 등. 원장 일부를 전체 요구의 상한으로 삼지 않는다. Mac/Xcode·Android기기는 없다.
+다음: 한국어 기능커밋 → docs최신dist 동기화 → 프로필전체SHA·사용자설치/이전정리 → 설치EXE169 human/AI/Take/audio 및168 prefab Apply/Undo 확인·캡처 → 프로필/명세/바로가기/.hbproject/Versions1·캐시정리·USER_INSTALL169 → 한국어 영수증커밋/main푸시. Shell바이너리변경없음; JS/SDK배포로 불필요 재컴파일 금지. 현재설치1f2d1495906edcbf, 프로필10385파일. 테스트/복사/배포실행은 node.exe 잠금 때문에 순차. 진행중 테스트 PID없음.
 
-최종 설치1f2d1495906edcbf·2343명세파일 SHA·프로필10385파일 SHA 보존·Versions1. 이전 설치200756532B 정리·바로가기2/.hbproject 검증. 구현f6654d2. 개발 중 설치본 수정 금지. 검증 후 새 hash로 전환/이전 설치 자동정리, 사용 프로필은 검사에 사용하지 않는다. 실행 중인 사용자 PID는 종료하지 않는다.
+정본: docs/ENGINE_STATUS.md, docs/research/ENGINE_STATUS.json, docs/ENGINE_WORK_169.md, docs/research/ENGINE_WORK_169.json. 자료/캡처 native/build/engine-169-*. tools/test-artifacts.mjs로 재생성 빌드/프로필만 정리. 설치/검사를 전체엔진완료로 표현하지 말 것.

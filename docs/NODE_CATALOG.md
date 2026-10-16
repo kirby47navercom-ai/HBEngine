@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **753개**, 실제 공통 C++ API **668개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **760개**, 실제 공통 C++ API **675개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -21,7 +21,7 @@
 | 물리 | 16 | 14 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 15 | 12 |
+| 오디오 | 18 | 15 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
@@ -56,7 +56,7 @@
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
 | 메시 모프 | 3 | 3 |
-| 애니메이션 그래프 | 33 | 33 |
+| 애니메이션 그래프 | 37 | 37 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -425,6 +425,9 @@
 | audioMusic | Play Music / 배경음 전환 | exec: exec, asset: string, fadeSeconds: float | then: exec | hb::Audio::PlayMusic | 공통 C++ + VM |
 | audioStopMusic | Stop Music / 배경음 정지 | exec: exec, fadeSeconds: float | then: exec | hb::Audio::StopMusic | 공통 C++ + VM |
 | audioPlayAt | Play At / 위치 소리 재생 | exec: exec, asset: string, position: vec3, volume: float, pitch: float, bus: string | then: exec, return: string | hb::Audio::PlayAt | 공통 C++ + VM |
+| mixerDuckingSet | Set Ducking / 믹서 사이드체인 지정 | exec: exec, target: object, asset: string, bus: string, source: string, threshold: float, ratio: float, attack: float, release: float | then: exec | hb::AudioMixer::SetDucking | 공통 C++ + VM |
+| mixerDuckingClear | Clear Ducking / 믹서 사이드체인 해제 | exec: exec, target: object, asset: string, bus: string | then: exec | hb::AudioMixer::ClearDucking | 공통 C++ + VM |
+| mixerDuckingGain | Get Ducking Gain / 믹서 사이드체인 게인 | target: object, asset: string, bus: string | return: float | hb::AudioMixer::GetDuckingGain | 공통 C++ + VM |
 | mixerSet | Set Float / 믹서 파라미터 지정 | exec: exec, target: object, asset: string, parameter: string, value: float | then: exec | hb::AudioMixer::SetFloat | 공통 C++ + VM |
 | mixerGet | Get Float / 믹서 파라미터 가져오기 | target: object, asset: string, parameter: string | return: float | hb::AudioMixer::GetFloat | 공통 C++ + VM |
 | mixerClear | Clear Float / 믹서 파라미터 재정의 해제 | exec: exec, target: object, asset: string, parameter: string | then: exec | hb::AudioMixer::ClearFloat | 공통 C++ + VM |
@@ -962,6 +965,10 @@
 | animGraphIKWeight | Set IKWeight / IK 가중치 지정 | exec: exec, target: object, node: string, value: float | then: exec | hb::AnimationGraph::SetIKWeight | 공통 C++ + VM |
 | animGraphIKTargetActor | Set IKTarget Actor / IK 목표 오브젝트 지정 | exec: exec, target: object, node: string, effector: object | then: exec | hb::AnimationGraph::SetIKTargetActor | 공통 C++ + VM |
 | animGraphIKHintActor | Set IKHint Actor / IK 힌트 오브젝트 지정 | exec: exec, target: object, node: string, effector: object | then: exec | hb::AnimationGraph::SetIKHintActor | 공통 C++ + VM |
+| animGraphIKEffectorTarget | Set IKEffector Target / 다중 IK 목표 위치 지정 | exec: exec, target: object, node: string, goal: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKEffectorTarget | 공통 C++ + VM |
+| animGraphIKEffectorActor | Set IKEffector Actor / 다중 IK 목표 오브젝트 지정 | exec: exec, target: object, node: string, goal: string, effector: object | then: exec | hb::AnimationGraph::SetIKEffectorActor | 공통 C++ + VM |
+| animGraphIKEffectorWeight | Set IKEffector Weight / 다중 IK 목표 가중치 지정 | exec: exec, target: object, node: string, goal: string, value: float | then: exec | hb::AnimationGraph::SetIKEffectorWeight | 공통 C++ + VM |
+| animGraphIKEffectorError | Get IKEffector Error / 다중 IK 목표 오차 | target: object, node: string, goal: string | return: float | hb::AnimationGraph::GetIKEffectorError | 공통 C++ + VM |
 | animGraphIKTip | Get IKTip Position / IK 끝 뼈 위치 | target: object, node: string | return: vec3 | hb::AnimationGraph::GetIKTipPosition | 공통 C++ + VM |
 | animGraphIKError | Get IKError / IK 목표 거리 | target: object, node: string | return: float | hb::AnimationGraph::GetIKError | 공통 C++ + VM |
 | animGraphRootMode | Set Root Motion Mode / 루트 모션 모드 지정 | exec: exec, target: object, mode: string | then: exec | hb::AnimationGraph::SetRootMotionMode | 공통 C++ + VM |

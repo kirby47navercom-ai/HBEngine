@@ -447,3 +447,8 @@ Levels::Load/Unload/IsLoaded/GetActor/GetInstances/SetVisible와 levelLoad/level
 ## 168 — 프리팹·타일 청크 공용 실행
 
 기존 Tilemaps C++/BP의 Set/SetMany/Fill/Clear/ProcessChanges를 변경 청크 렌더/충돌에 연결했다. 새 중복 노드 없이 총753개를 유지한다. Play 준비에서 연결 프리팹의 최신 원본과 로컬 수정 병합 후 타입 있는 C++/BP 액터 참조를 월드 ID로 재배치한다. 자동 문자열 변환/원본 게임 변경은 없다. 사람 속성 창·AI6명령·원자 Undo/Play 복원은 [168](ENGINE_WORK_168.md), 남은 전체 범위는 원장에 유지한다.
+
+
+## 169 — 다중 IK·오디오 사이드체인 공용 노드
+
+AnimationGraph::SetIKEffectorTarget/Actor/Weight/GetIKEffectorError와 animGraphIKEffectorTarget/Actor/Weight/Error가 안정 목표ID를 사용한다. AudioMixer::SetDucking/ClearDucking/GetDuckingGain과 mixerDuckingSet/Clear/Gain은 같은 버스 RMS 경로를 사용한다. Game.hpp에서 함께 생성하며 총760노드·공용코어289개다. 실제 C++ 호출·J키 BP 목표 변경·D3D11 dev/release/WebGPU, 편집기 음량 신호/Undo·Take 검사는 [169](ENGINE_WORK_169.md)를 따른다. 명령은 프레임 큐에 적용되며 관측값은 후속 호출 기준이다.

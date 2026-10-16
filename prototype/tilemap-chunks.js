@@ -23,7 +23,7 @@ export class TileChunkIndex{
  }
 }
 export function tileChunkGeometry(map,chunk,image){
- const positions=[],uvs=[],indices=[];for(const tile of chunk.tiles){const region=tileAtlasRect(map,tile.index,image);if(!region)continue;const [x,y,w,h]=tileRenderRect(map,tile),z=chunk.order*.001,v=positions.length/3,[u0,v0]=region.uv.offset,[uw,vh]=region.uv.repeat;positions.push(x,y,z,x+w,y,z,x+w,y+h,z,x,y+h,z);const corners=[[0,0],[1,0],[1,1],[0,1]];for(let k=0;k<4;k++){const uv=corners[(k+(tile.rotation||0))%4];uvs.push(u0+uv[0]*uw,v0+uv[1]*vh);}indices.push(v,v+1,v+2,v,v+2,v+3);}
+ const positions=[],uvs=[],indices=[];for(const tile of chunk.tiles){const region=tileAtlasRect(map,tile.index,image);if(!region)continue;const [x,y,w,h]=tileRenderRect(map,tile),z=chunk.order*.001,v=positions.length/3,[u0,v0]=region.uv.offset,[uw,vh]=region.uv.repeat;positions.push(x,y,z,x+w,y,z,x+w,y+h,z,x,y+h,z);const corners=[[0,0],[1,0],[1,1],[0,1]];for(let k=0;k<4;k++){const uv=corners[(k+(tile.rotation||0))%4];uvs.push(u0+(tile.flipX?1-uv[0]:uv[0])*uw,v0+(tile.flipY?1-uv[1]:uv[1])*vh);}indices.push(v,v+1,v+2,v,v+2,v+3);}
  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));g.setIndex(indices);g.computeVertexNormals();g.computeBoundingSphere();g.computeBoundingBox();return g;
 }
 // Collision chunks merge across collision layers, but never across a chunk boundary.

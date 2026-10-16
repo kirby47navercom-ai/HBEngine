@@ -15,7 +15,12 @@ Check-NoLinks $versions
 $protected = @($current)
 $link = Join-Path $root 'HBEngine.lnk'
 if (Test-Path -LiteralPath $link) { $shell = New-Object -ComObject WScript.Shell; $target = $shell.CreateShortcut($link).TargetPath; if ($target) { $protected += Split-Path -Parent $target } }
-$removedBytes = 0L; $removed = @(); $preserved = @(); $skipped = @($plan.skipped); $failures = @()
+$removedBytes = 0L; $removed = @(); $preserved = @(); $skipped = @($plan.skipped); $failures = @(); $generated = @(); $cacheBackupsRemoved = @()
+# Only exact, reproducible nlohmann 3.12.0 bytes are disposable. Modified headers remain user changes.
+$generatedHashes = @{
+  'native/build/deps/nlohmann/json.hpp' = 'aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63'
+  'native/build/deps/nlohmann/json.hpp.sha256' = '93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56'
+}
 function Is-Active([string]$directory) { return @(Get-CimInstance Win32_Process | Where-Object { ($_.ExecutablePath -and $_.ExecutablePath.StartsWith($directory + '\',[StringComparison]::OrdinalIgnoreCase)) -or ($_.CommandLine -and $_.CommandLine.IndexOf($directory,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0 }
 foreach ($entry in $plan.entries) {
   $directory = [IO.Path]::GetFullPath($entry.directory).TrimEnd('\')
@@ -36,6 +41,7 @@ foreach ($entry in $plan.entries) {
       $relative = $file.FullName.Substring($directory.Length + 1).Replace('\','/')
       if ($relative -eq 'HBEngine.install.json' -or $relative -match '^native/build/plugins/[a-f0-9]{20}/') { continue }
       $digest = (File-Digest $file.FullName)
+      if ($generatedHashes.ContainsKey($relative) -and $generatedHashes[$relative] -eq $digest) { $generated += @{path=$file.FullName;sha256=$digest;bytes=$file.Length}; continue }
       if (-not $known.ContainsKey($relative) -or $known[$relative].sha256 -ne $digest) {
         $backup = Join-Path (Join-Path (Join-Path $root 'PreservedChanges') (Split-Path -Leaf $directory)) $relative
         if (-not $backup.StartsWith($root + '\PreservedChanges\',[StringComparison]::OrdinalIgnoreCase)) { throw '수정 파일 보존 범위 오류' }
@@ -50,6 +56,21 @@ foreach ($entry in $plan.entries) {
     $removedBytes += $bytes; $removed += @{directory=$directory;bytes=$bytes;files=$files.Count;manifestSHA256=$entry.manifestSHA256}; $preserved += $backups
   } catch { $failures += @{directory=$directory;reason=$_.Exception.Message} }
 }
-$result = @{date=[DateTime]::UtcNow.ToString('o');removed=$removed;preserved=$preserved;skipped=$skipped;failures=$failures;bytes=$removedBytes;remaining=@(Get-ChildItem -LiteralPath $versions -Directory | Select-Object -ExpandProperty Name)}
+$backupRoot = Join-Path $root 'PreservedChanges'
+if (Test-Path -LiteralPath $backupRoot) {
+  Check-NoLinks $backupRoot
+  foreach ($version in Get-ChildItem -LiteralPath $backupRoot -Directory) {
+    if ($version.Name -notmatch '^[a-f0-9]{16}$') { continue }
+    foreach ($relative in $generatedHashes.Keys) {
+      $candidate = [IO.Path]::GetFullPath((Join-Path $version.FullName $relative))
+      if (-not $candidate.StartsWith($backupRoot + '\',[StringComparison]::OrdinalIgnoreCase)) { throw '생성 캐시 보존본 정리 범위 오류' }
+      if (Test-Path -LiteralPath $candidate) {
+        Check-NoLinks $candidate
+        if ((File-Digest $candidate) -eq $generatedHashes[$relative]) { $size=(Get-Item -LiteralPath $candidate).Length; Remove-Item -LiteralPath $candidate -Force; $cacheBackupsRemoved += @{path=$candidate;bytes=$size;sha256=$generatedHashes[$relative]} }
+      }
+    }
+  }
+}
+$result = @{date=[DateTime]::UtcNow.ToString('o');removed=$removed;preserved=$preserved;generated=$generated;cacheBackupsRemoved=$cacheBackupsRemoved;skipped=$skipped;failures=$failures;bytes=$removedBytes;remaining=@(Get-ChildItem -LiteralPath $versions -Directory | Select-Object -ExpandProperty Name)}
 $result | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $root 'Maintenance/latest-cleanup.json') -Encoding UTF8
 if ($failures.Count -gt 0) { throw '일부 설치 버전 정리 실패. Maintenance/latest-cleanup.json 확인' }

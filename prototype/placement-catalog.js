@@ -34,6 +34,10 @@ export const placementCatalog=[
   ['camera','Camera · 카메라','시네마틱'],['sequence','Sequence Player · 시퀀스 재생','시네마틱','empty',{SequencePlayer:{}}],['audio','Audio Source · 오디오','오디오'],
   ['decal','Decal · 데칼','효과'],['particles','Particle System · 입자','효과'],
   ['navigation','Navigation Grid · 경로 영역','AI'],
+  ['navigationArea','Navigation Area · 비용 영역','AI','empty',{NavigationArea:{}}],
+  ['navigationBlocker','Navigation Blocker · 이동 장애물','AI','empty',{NavigationObstacle:{},BoxCollider:{extent:[1,1,1]}}],
+  ['navigationArea2d','Navigation Area 2D · 비용 영역','2D','empty',{NavigationArea:{extent:[1,1,.1]}}],
+  ['navigationBlocker2d','Navigation Blocker 2D · 이동 장애물','2D','empty',{NavigationObstacle:{},BoxCollider2D:{extent:[1,1,.1]}}],
   ['aiCharacter','AI Character · AI 캐릭터','AI','character',{AIController:{},NavigationAgent:{},AIPerception:{},BehaviorTree:{}}],
 ].map(([key,label,category,kind=key,components={}])=>({key,label,category,kind,components}));
 

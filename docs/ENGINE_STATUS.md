@@ -1,10 +1,10 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `a47ed8c`
+갱신일: 2026-10-16 · 대조 기준 커밋: `1e1b580`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
-현재 등록 78항목: 정의한 범위 구현·검증 근거 있음 39개 / 구현된 부분과 추가 구현이 함께 있음 32개 / 아래 remaining의 제작/실행 경로 미구현 4개 / 실행 경로 또는 일부 표본은 있으나 요구 조건 검증 안 됨 3개
+현재 등록 78항목: 정의한 범위 구현·검증 근거 있음 39개 / 구현된 부분과 추가 구현이 함께 있음 33개 / 아래 remaining의 제작/실행 경로 미구현 3개 / 실행 경로 또는 일부 표본은 있으나 요구 조건 검증 안 됨 3개
 
 `node tools/hb.mjs status --local`은 창/서버 없이 읽는다. 실행 서버에서는 `GET /api/engine/status`를 사용한다. id·area·status·search 필터와 전체/일치 항목 수를 제공한다. 원장 갱신 후 `node tools/engine-status.mjs --write`로 이 문서를 동기화한다. 조회는 프로젝트 파일·실행 상태를 변경하지 않는다.
 
@@ -23,7 +23,7 @@
 | AST-01 드래그 가져오기·의존 참조 | verified | 파일/폴더 가져오기·참조 이름 변경·재열기 | 이 행의 범위는 검증됨 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 | AST-02 모델 임포트 하위 에셋·재가져오기 | partial | 모델/클립 로딩과 형식별 로더 · 165: glTF/GLB/OBJ 하위 에셋 안정 ID·재정렬 대응·렌더 오버라이드 sidecar와 재가져오기 보존 | FBX와 이름 중복/변경의 전체 하위 ID 대응 · 단위/좌표계·형식별 품질·하위 에셋 전용 UI | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
 | AST-03 임포트 캐시·쿠킹·압축 | partial | 의존성을 따라 배포 리소스 수집·중복 런타임 축소 · 165: 해시/대상/버전별 지속 JSON 쿠킹 캐시·128MiB LRU·빌드 공용 연결 | 텍스처/모델 대상별 압축 쿠킹과 전체 종속 캐시 · 압축 컨테이너·GPU 포맷 품질/용량 비교 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
-| AST-04 프리팹·변형·오버라이드 | partial | 프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 · 168: 연결 인스턴스의 원본/부모/중첩 실시간 상속·축별 수정 보존·충돌/속성 Apply/Revert UI·원자 Undo·Play 준비/타입 참조 재배치 | 원본과 같은 값이 되어도 명시적 오버라이드 의도 보존 · 오브젝트 추가/삭제 등 모든 구조적 Apply UI·별도 프리팹 편집 stage · 상속 컴포넌트의 세밀한 변형 오버라이드·대규모 인스턴스 비용 검증 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
+| AST-04 프리팹·변형·오버라이드 | partial | 프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 · 168: 연결 인스턴스의 원본/부모/중첩 실시간 상속·축별 수정 보존·충돌/속성 Apply/Revert UI·원자 Undo·Play 준비/타입 참조 재배치 · 169: 명시 오버라이드 경로 저장·원본 동일값 이후 의도 유지·Apply/Revert 해제 | 오브젝트 추가/삭제 등 모든 구조적 Apply UI·별도 프리팹 편집 stage · 상속 컴포넌트의 세밀한 변형 오버라이드·대규모 인스턴스 비용 검증 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | AST-05 미디어 변환·동기화 | partial | 이미지/오디오·등록 모델과 미디어 읽기 경로 | 추가 코덱 변환기 · 영상·오디오·시퀀스 동기화와 seek 정밀도 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [WEB_MEDIA_CONTRACTS_023.md](research/WEB_MEDIA_CONTRACTS_023.md) |
 
 ## 편집기
@@ -47,24 +47,24 @@
 | 2D-03 마스크·윤곽선·정렬·픽셀 정렬 | verified | 스프라이트/타일/입자 마스크와 효과·정렬 | 이 행의 범위는 검증됨 | [GPU_2D_052.md](research/GPU_2D_052.md) · [GPU_EFFECTS_054.md](research/GPU_EFFECTS_054.md) |
 | 2D-04 2D 골격·세 IK·각도 제한 | verified | Sprite rig·skin·Limb/CCD/FABRIK와 bind 각도 제약·8개 BP Return 핀과 C++ 실제 조회 대조 | 이 행의 범위는 검증됨 | [2D_IK_CONSTRAINTS_074.md](2D_IK_CONSTRAINTS_074.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
 | 2D-05 2D 전용 리타게팅 | partial | 같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 · 167: 계층/좌우 이름 대응·장면 외부 IK 목표/변환 키·리그 월드 변환 베이크·limb/CCD/FABRIK 실제 표본 재생 | 임의 제약/정지 발의 전체 재표본화 검증·고급 자동 체인 대응 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
-| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 | 확장 이웃 규칙 · 대규모 맵 인덱싱/검증·물리 동기화 비용·장시간 성능 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
+| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 · 169: 확장 이웃/명시 타일/빈셀 규칙·회전/대칭·먼 역의존 청크 갱신·게임/편집기 UV | 대규모 맵 인덱싱/검증·물리 동기화 비용·장시간 성능 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 
 ## 월드 제작
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | WLD-01 도형 배치·월드 편집 | verified | 원시 도형·광원·카메라·환경 액터 배치/속성 | 이 행의 범위는 검증됨 | [ENVIRONMENT_ACTORS_RESEARCH.md](ENVIRONMENT_ACTORS_RESEARCH.md) |
-| WLD-02 폴리곤·메시 저작 | partial | 기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 | bevel·bridge·edge loop 등 추가 토폴로지 연산 · 연속 UV 섬 편집·고급 패킹/심 저작 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
+| WLD-02 폴리곤·메시 저작 | partial | 기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo | bevel·edge loop·정점 수가 다른/열린 경계 연결·영역 단위 inset · 연속 UV 섬 편집·고급 패킹/심 저작 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | WLD-03 지형 브러시·폴리지 | partial | 165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱 · 166: 구멍/복원·재사용 샘플 스탬프와 브러시 영향 범위 계산·안정 ID 폴리지 선택/변환/복제/삭제·충돌/인스턴스 버퍼 연결 | 텍스처 지형 레이어·대규모 GPU 브러시/부분 버퍼 업로드 · 대규모 폴리지 선택/브러시 프레임·메모리 검증 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
 | WLD-04 LOD 제작·전환 | partial | 165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 | 애니메이션/충돌 LOD 저작과 전환 · 고품질 단순화·교차 페이드·품질 대조 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
 | WLD-05 월드 분할·레벨 스트리밍 | partial | 추가 레벨 다중 인스턴스/변환·수동/항상/거리 셀·참조 재배치·물리/스크립트 합류·실패 취소/재진입·CPP/BP/AI/아웃라이너 | 자동 공간 분할/HLOD·메모리 예산 기반 셀 스케줄링·큰 맵 검증 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
-| WLD-06 내비게이션·군중 | partial | 평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 | 동적 타일·장애물 carving·에이전트 NavArea · 비평면 정밀 funnel/경계 침식·반경 보장·RVO/Mass 군중 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
+| WLD-06 내비게이션·군중 | partial | 평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피 · 167: 평면 포털 funnel/오프메시 경유 보존 · 169: NavArea 32영역/비용/마스크·장면 부피·2D XY/XZ·이동 obstacle 삼각 SAT 차단·생성/UI | 정밀 동적 타일/장애물 재분할 carving·부분 삼각 영역 비용 · 비평면 정밀 funnel/경계 침식·반경 보장·RVO/Mass 군중 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 
 ## 렌더링
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| RND-01 DirectX11·WebGL2·WebGPU 실행 | verified | 실제 장면/머테리얼/조명 공용 렌더와 네이티브 경로 | 이 행의 범위는 검증됨 | [RENDERING_145.md](RENDERING_145.md) |
+| RND-01 DirectX11·WebGL2·WebGPU 실행 | verified | 실제 장면/머테리얼/조명 공용 렌더와 네이티브 경로 · 169: 단일 실선 Line/LineLoop/LineSegments의 DirectX 삼각 스트립·픽셀폭/평면clip/색·기하 재사용·IK debug Player 실행 | 이 행의 범위는 검증됨 | [RENDERING_145.md](RENDERING_145.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | RND-02 인스턴스·변형·부분 전송 | verified | 정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신 | 이 행의 범위는 검증됨 | [NATIVE_INSTANCING_089.md](NATIVE_INSTANCING_089.md) · [NATIVE_DEFORMATION_090.md](NATIVE_DEFORMATION_090.md) · [RENDERING_123.md](RENDERING_123.md) |
 | RND-03 광원·HDRI·환경 액터 | verified | 래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 | 이 행의 범위는 검증됨 | [RASTER_LIGHTING_131.md](RASTER_LIGHTING_131.md) · [RENDERING_138.md](RENDERING_138.md) |
 | RND-04 GI·경로 추적·중첩 매질 | verified | 소프트웨어 기하 GI/경로 추적·매질·HDRI 표본 | 이 행의 범위는 검증됨 | [RENDERING_107.md](RENDERING_107.md) · [RENDERING_145.md](RENDERING_145.md) |
@@ -89,8 +89,8 @@
 | ANM-02 루트 모션 | verified | 클립/몽타주 추출·모드·물리/중력·2D/3D 이동 | 이 행의 범위는 검증됨 | [ANIMATION_ROOT_MOTION_070.md](ANIMATION_ROOT_MOTION_070.md) |
 | ANM-03 3D IK·bind XYZ 제약 | verified | Two Bone/FABRIK/CCD·공간/대상·기준 포즈 제한·SDK/BP | 이 행의 범위는 검증됨 | [ANIMATION_JOINT_LIMITS_154.md](ANIMATION_JOINT_LIMITS_154.md) · [RENDERING_151.md](RENDERING_151.md) |
 | ANM-04 골격 리타게팅·베이크 | partial | 리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생 · 166: 커브 키 편집·속성/모프/머테리얼 구동·포즈 가중 혼합·C++/BP GetCurve·디버그 스냅샷 | 이름이 다른 모프 매핑·대상간 정교한 보정 · 임의 연산 스택·LOD/Avatar/Muscle · 정지 발·Stride/Pole/접촉 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
-| ANM-05 Full Body IK·Control Rig | unimplemented | — | 다중 체인/관절 연결 솔버 · 리그 저작·컨트롤·기즈모·재생/베이크 | [ANIMATION_IK_071.md](ANIMATION_IK_071.md) · [RENDERING_151.md](RENDERING_151.md) |
-| ANM-06 시퀀스·녹화 제작 | partial | 시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 · 167: 속성 설명 재사용·일정 구간 온라인 축약/변화 시각 보존 | 배열/구조체/동적 컴포넌트 생성삭제·오디오/골격 녹화 · 전문 시네마틱 트랙·외부 동기화/베이크 | [ANIMATION_TIMELINE_CONTROLS.md](ANIMATION_TIMELINE_CONTROLS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
+| ANM-05 Full Body IK·Control Rig | partial | 169: 공유 포즈 다중 체인 CCD FullBodyIK·안정 목표ID/위치/액터/가중치·기존XYZ제약/제외뼈·목표UI/오차·C++/BP4·AI | 루트 이동/늘이기·stiffness/preferred angle·목표 회전 등 솔버 세부 · 독립 리그 stage·컨트롤/기즈모·재생/베이크·대형 리그 품질/비용 | [ANIMATION_IK_071.md](ANIMATION_IK_071.md) · [RENDERING_151.md](RENDERING_151.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
+| ANM-06 시퀀스·녹화 제작 | partial | 시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 · 167: 속성 설명 재사용·일정 구간 온라인 축약/변화 시각 보존 · 169: JSON 컴포넌트 상태/생성삭제·원자 프레임 교체·골격 포즈 녹화/slerp/축약·실제 오디오 시작종료/반복 큐·복원·AI frame barrier | 임의 네이티브 배열/구조체·액터 생성 기록·실행 중 골격 교체 · PCM/마이크·모든 DSP/공간음/볼륨 자동화 녹음·전문 시네마틱/외부 동기화/베이크 | [ANIMATION_TIMELINE_CONTROLS.md](ANIMATION_TIMELINE_CONTROLS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 
 ## 물리
 
@@ -135,7 +135,7 @@
 |---|---|---|---|---|
 | AUD-01 믹서·공간 음향·스트리밍 | verified | 버스·노출값·snapshot·RMS·PCM/stream·정지/복귀·앱 분리 | 이 행의 범위는 검증됨 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [WINDOWS_GAME_IDENTITY_108.md](WINDOWS_GAME_IDENTITY_108.md) · [AUDIO_STREAMING_LIFETIME_032.md](research/AUDIO_STREAMING_LIFETIME_032.md) |
 | AUD-02 가중 스냅샷·보간 곡선 | verified | 정규화 가중 snapshot·네 곡선·중단/override·공용 SDK/BP·편집기 적용/미리듣기 | 이 행의 범위는 검증됨 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AUD-03 오디오 고급 DSP/가상화 | partial | gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 | sidechain·voice 우선순위/가상화 · C++ native DSP와 모바일 실제 장치 품질 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| AUD-03 오디오 고급 DSP/가상화 | partial | gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 | voice 우선순위/가상화 · C++ native DSP와 모바일 실제 장치 품질 | [AUTHORING_UI_AUDIO_RESEARCH.md](AUTHORING_UI_AUDIO_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | AUD-04 스냅샷/파라미터별 전환 오버라이드 | verified | 대상 snapshot/버스/파라미터별 네 곡선·시작/끝 step·가중 보간·기본값 상속·편집/Undo·공용 C++/BP/AI | 이 행의 범위는 검증됨 | [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
 
 ## C++·블루프린트
@@ -152,7 +152,7 @@
 |---|---|---|---|---|
 | AI-01 원자적 여러 문서 편집 | verified | revision·dryRun·document.patch/files.apply·Undo 공용 계약 | 이 행의 범위는 검증됨 | [AI_ENGINE_API.md](AI_ENGINE_API.md) · [AI_ASSET_TRANSACTIONS_041.md](research/AI_ASSET_TRANSACTIONS_041.md) |
 | AI-02 코드/기능 상태 최신 조회 | verified | 안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 | 이 행의 범위는 검증됨 | [ENGINE_STATUS.md](ENGINE_STATUS.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
+| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 
 ## 디버깅
 
@@ -177,7 +177,7 @@
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
-| PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) |
+| PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 
 ## 연구 대조
