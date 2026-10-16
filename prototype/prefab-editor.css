@@ -14,3 +14,5 @@
 .prefab-toolbar [aria-pressed=true]{color:#d8eaff;border-color:#6083aa;background:#34485e}
 .prefab-context{position:fixed;z-index:1100;min-width:190px;max-height:calc(100vh - 8px);overflow:auto;padding:4px;border:1px solid #565c66;background:#292e35;box-shadow:0 4px 14px #0009}.prefab-context button{display:flex;justify-content:space-between;gap:24px;width:100%;padding:6px 10px;text-align:left;white-space:nowrap}.prefab-context button:hover{background:#3b536e}.prefab-context small{color:#a8b5c7}.prefab-context hr{border:0;border-top:1px solid #48505a;margin:4px}
 @media(max-width:900px){.asset-document.prefab-workspace{grid-template-columns:155px minmax(120px,1fr)}}
+
+.prefab-toolbar [data-stage-mode]{max-width:108px}.prefab-toolbar [data-stage-environment]{max-width:160px}.prefab-toolbar [data-stage-appearance]{max-width:108px}

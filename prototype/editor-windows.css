@@ -140,3 +140,5 @@
 }
 
 .data-table-scroll{overflow:auto;max-height:70vh}.asset-data-table{border-collapse:collapse;min-width:100%;font-size:13px}.asset-data-table th,.asset-data-table td{border:1px solid #41464d;padding:5px;min-width:130px}.asset-data-table input,.asset-data-table textarea{width:100%;min-height:28px}.disk-compare{display:flex;gap:12px}.disk-compare textarea{width:45vw;height:55vh}.asset-value-control{display:flex;min-width:0}.asset-value-control select{flex:1;min-width:0}.ui-runtime-properties label{display:flex;gap:6px;margin:6px 0}.ui-runtime-properties input,.ui-runtime-properties select{min-width:0;flex:1}
+
+.project-grid[data-virtual=true]{display:block;position:relative;overflow-anchor:none}.project-virtual-space{position:relative;min-width:0}.project-virtual-items{position:absolute;left:0;right:0;display:grid;align-items:stretch}.project-grid[data-view=tiles] .project-virtual-items .asset-card{height:113px}.project-grid[data-view=list] .project-virtual-items .asset-card{height:35px}

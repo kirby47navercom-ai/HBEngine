@@ -1,3 +1,4 @@
+import {streamHttpFile} from './http-file.mjs';
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -14,10 +15,8 @@ export async function startWebServer(directory,{port=0,prefix='/'}={}){
       const name=decodeURIComponent(url.pathname.slice(prefix.length))||'index.html';
       if(/[\\:\x00-\x1f]/.test(name)||name.split('/').some(p=>!p||p==='.'||p==='..'))return res.writeHead(403).end();
       const file=await fs.realpath(path.join(root,name));if(!file.toLowerCase().startsWith((root+path.sep).toLowerCase()))return res.writeHead(403).end();
-      const stat=await fs.stat(file);if(!stat.isFile())return res.writeHead(404).end();let start=0,end=stat.size-1,status=200;
-      if(req.headers.range){const range=/^bytes=(\d+)-(\d*)$/.exec(req.headers.range);if(!range)return res.writeHead(416).end();start=Number(range[1]);end=range[2]?Math.min(Number(range[2]),end):end;if(start>end||start>=stat.size)return res.writeHead(416,{'Content-Range':'bytes */'+stat.size}).end();status=206;}
-      res.writeHead(status,{'Content-Type':mime[path.extname(name).toLowerCase()]||'application/octet-stream','Content-Length':Math.max(0,end-start+1),'X-Content-Type-Options':'nosniff','Cache-Control':'no-cache','Accept-Ranges':'bytes',...(status===206?{'Content-Range':`bytes ${start}-${end}/${stat.size}`}:{})});
-      if(req.method==='HEAD')return res.end();const stream=createReadStream(file,stat.size?{start,end}:{});stream.on('error',()=>res.destroy());stream.pipe(res);
+      const stat=await fs.stat(file);if(!stat.isFile())return res.writeHead(404).end();
+      streamHttpFile(req,res,file,stat.size,{'Content-Type':mime[path.extname(name).toLowerCase()]||'application/octet-stream','X-Content-Type-Options':'nosniff','Cache-Control':'no-cache'});
     }catch(error){if(!res.headersSent)res.writeHead(error.code==='ENOENT'?404:400).end();else res.destroy();}
   });
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',resolve);});

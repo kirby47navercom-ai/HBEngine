@@ -1,5 +1,6 @@
+import {fileContent,isFileContent,writeBuildContent,buildChunkBytes} from './build-content.mjs';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
-import {packagedRuntimeBytes} from './packaged-runtime.mjs';
+import {packagedRuntimeBytes,packagedRuntimeContent} from './packaged-runtime.mjs';
 import {cookContent} from './cook-cache.mjs';
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
 import {parseNativeHeader,canonicalNativeText} from '../prototype/native-model.js';
@@ -36,18 +37,17 @@ export async function saveBuildProfiles(record,data,expected,checkOwner=()=>{}){
   await fs.mkdir(path.dirname(old.file),{recursive:true});const temp=old.file+'.'+randomUUID()+'.tmp';
   try{await fs.writeFile(temp,json({version:1,profiles:data.profiles}),{flag:'wx'});checkOwner();await fs.rename(temp,old.file);return await readBuildProfiles(record);}finally{await fs.unlink(temp).catch(e=>{if(e.code!=='ENOENT')throw e;});}
 }
-export async function inspectBuild(record,profile){
+export async function inspectBuild(record,profile,{signal}={}){
   if(!validBuildProfile(profile))throw Error('빌드 프로필을 확인하세요.');
-  const files=await record.project.files(),enabled=new Set();for(const scene of profile.scenes.filter(s=>s.enabled))enabled.add(path.relative(record.root,await record.project.resolve(scene.path)).split(path.sep).join('/'));
+  const files=await record.project.files({signal}),enabled=new Set();for(const scene of profile.scenes.filter(s=>s.enabled))enabled.add(path.relative(record.root,await record.project.resolve(scene.path)).split(path.sep).join('/'));
   for(const name of enabled)if(!files.some(f=>f.path===name&&f.kind==='scene'))throw Error('빌드 장면이 없어요: '+name);
-  const content=new Map(),natives=new Map(),warnings=[],nativeFiles=await readNativeFiles(record.project);let size=0;
+  const content=new Map(),natives=new Map(),warnings=[],nativeFiles=await readNativeFiles(record.project,{files,signal});
   // Include all Assets for dynamic lookups; also follow actual project-file references outside Assets.
   const include=async name=>{
-    const info=await record.project.read(name),canonical=path.relative(record.root,info.file).split(path.sep).join('/');
+    signal?.throwIfAborted();const info=await record.project.read(name),canonical=path.relative(record.root,info.file).split(path.sep).join('/');
     if(content.has(canonical))return canonical;
     if(assetKind(canonical)==='scene'&&!enabled.has(canonical))throw Error('빌드에서 제외한 장면 참조: '+name);
-    if(info.size>104857600)throw Error('빌드 파일 100MB 제한: '+name);
-    const bytes=await fs.readFile(info.file);size+=bytes.length;if(size>1073741824)throw Error('빌드 콘텐츠 1GB 제한');content.set(canonical,bytes);if(/\.(gltf|glb|obj|fbx)$/i.test(canonical)){try{await record.project.read(canonical+'.import.json');await include(canonical+'.import.json');}catch(error){if(error.code!=='ENOENT')throw error;}}return canonical;
+    const bytes=/\.(json|gltf|h|hpp|hh|inl|cpp|cc|cxx|c)$/i.test(canonical)?await fs.readFile(info.file,{signal}):await fileContent(info.file,{root:record.root,signal});content.set(canonical,bytes);if(/\.(gltf|glb|obj|fbx)$/i.test(canonical)){try{await record.project.read(canonical+'.import.json');await include(canonical+'.import.json');}catch(error){if(error.code!=='ENOENT')throw error;}}return canonical;
   };
   let gameInstanceAsset=record.manifest.gameInstance||'';
   for(const file of nativeFiles)await include(file.path);
@@ -72,9 +72,9 @@ export async function inspectBuild(record,profile){
   const legacyBlueprints=new Map();for(const [name,bytes] of content)if(name.endsWith('.hbblueprint.json')){const bp=JSON.parse(bytes);const candidates=legacyBlueprints.get(bp.name)||[];candidates.push(name);legacyBlueprints.set(bp.name,candidates);}
   for(const [name,bytes] of content)if(name.endsWith('.hbscene.json')){const data=JSON.parse(bytes);let changed=false;for(const object of data.objects)if(object.blueprint&&!object.blueprintAsset){const matches=legacyBlueprints.get(object.blueprint)||[];if(matches.length!==1)throw Error(name+': 블루프린트 이름을 경로로 지정하세요: '+object.blueprint);object.blueprintAsset=matches[0];changed=true;}if(changed)content.set(name,Buffer.from(json(data)));}
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');
-  const cooked=await cookContent(record.project,content,profileTarget(profile));content.clear();for(const [name,bytes] of cooked.content)content.set(name,bytes);
+  const cooked=await cookContent(record.project,content,profileTarget(profile),{signal});content.clear();for(const [name,bytes] of cooked.content)content.set(name,bytes);
   const renderBackend=profileTarget(profile)==='windows-x64'&&profile.windowsRenderer==='d3d11'?'d3d11':JSON.parse(content.get([...enabled][0])).runtime?.renderBackend||'webgl2',renderer=renderBackend==='d3d11'?'D3D11 + WebView2 UI':buildTargets[profileTarget(profile)].renderer.replace(/WebGL2$/,renderBackend==='webgpu'?'WebGPU':'WebGL2');
-  return {content,natives,report:{cook:cooked.report,target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
+  return {content,natives,report:{cook:cooked.report,target:profileTarget(profile),renderer,renderBackend,profile:structuredClone(profile),startupScene:[...enabled][0],gameInstance:gameInstanceAsset,streaming:{chunkBytes:buildChunkBytes,fileBackedFiles:[...content.values()].filter(isFileContent).length,fileBackedBytes:[...content.values()].filter(isFileContent).reduce((n,b)=>n+b.length,0),bufferedBytes:[...content.values()].filter(b=>!isFileContent(b)).reduce((n,b)=>n+b.length,0)},files:content.size,bytes:[...content.values()].reduce((sum,b)=>sum+b.length,0),nativeModules:natives.size,warnings}};
 }
 export async function moduleClosure(entry,seen=new Set()){
   const full=path.resolve(root,entry);if(seen.has(full))return seen;seen.add(full);const source=(await packagedRuntimeBytes(full)).toString('utf8');
@@ -89,13 +89,13 @@ export async function moduleClosure(entry,seen=new Set()){
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){
-  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile);failIfCanceled(signal);if(profileTarget(profile)==='web')return (await import('./build-web.mjs')).buildWeb(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
+  failIfCanceled(signal);onProgress('검증');const {content,natives,report}=await inspectBuild(record,profile,{signal});failIfCanceled(signal);if(profileTarget(profile)==='web')return (await import('./build-web.mjs')).buildWeb(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(profileTarget(profile)!=='windows-x64')return (await import('./build-mobile.mjs')).buildMobile(record,profile,{content,natives,report},{signal,onProgress,dryRun});if(dryRun)return report;
   if(process.platform!=='win32'||process.arch!=='x64')throw Error('Windows x64에서 빌드하세요.');
   const desktop=await fs.access(path.join(root,'HBPlayer.exe')).then(()=>root,()=>path.join(root,'dist/HBEngine'));await fs.access(path.join(desktop,'HBPlayer.exe'));
   const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),relative='Builds/'+profile.id+'/'+id,out=await record.project.resolve(relative,true,false);await fs.mkdir(out,{recursive:true});
   const canonical=await fs.realpath(out);if(!canonical.toLowerCase().startsWith((record.root+path.sep).toLowerCase()))throw Error('빌드 경로가 프로젝트 밖이에요.');
-  const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{failIfCanceled(signal);await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});artifacts.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
-  const copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeBytes(from));};
+  const host=new NativeHost(),artifacts=[],copied=new Set();const write=async(name,bytes)=>{artifacts.push(await writeBuildContent(out,name,bytes,{signal}));copied.add(name);};
+  const copy=async(from,to)=>{if(!copied.has(to))await write(to,await packagedRuntimeContent(from,{signal}));};
   try{
     const nativeModules=[];onProgress('C++ 빌드');for(const [signature,item] of natives){failIfCanceled(signal);const result=await host.build(item.header,item.source,{configuration:profile.configuration,signal,files:item.files}),binary='Binaries/'+signature+'.exe';await copy(host.sessions.get(result.token).binary,binary);nativeModules.push({signature,binary,metadata:result.metadata});}
     onProgress('콘텐츠 준비');for(const [name,bytes] of content)await write('Content/'+name,bytes);

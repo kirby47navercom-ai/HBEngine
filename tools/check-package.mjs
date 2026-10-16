@@ -1,3 +1,4 @@
+import {contentChunks} from './build-content.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -34,7 +35,7 @@ const startup=record.manifest.startupScene,renamed='Assets/Scenes/Renamed.hbscen
 const plan=await buildGame(record,profile,{dryRun:true});assert.equal(plan.nativeModules,1);assert.equal(plan.startupScene,renamed);await assert.rejects(fs.access(path.join(record.root,'Builds')));
 await record.project.mkdir('Textures');await record.project.mkdir('External');await record.project.write('External/Nested.json',JSON.stringify({texture:'Textures/HUD.png'}));
 const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==','base64');await fs.writeFile(path.join(record.root,'Textures/HUD.png'),png);
-await record.project.write('Assets/ExternalRefs.json',JSON.stringify({asset:'External/Nested.json'}));const external=await inspectBuild(record,profile);assert.ok(external.content.has('External/Nested.json'));assert.deepEqual(external.content.get('Textures/HUD.png'),png);
+await record.project.write('Assets/ExternalRefs.json',JSON.stringify({asset:'External/Nested.json'}));const external=await inspectBuild(record,profile);assert.ok(external.content.has('External/Nested.json'));assert.deepEqual(Buffer.concat(await Array.fromAsync(contentChunks(external.content.get('Textures/HUD.png')))),png);
 await fs.writeFile(path.join(record.root,'Assets/Broken.hbscene.json'),'{}');await assert.rejects(inspectBuild(record,{...profile,scenes:[{path:'Assets/Broken.hbscene.json',enabled:true}]}),/검증/);
 const canceled=new AbortController();canceled.abort(Error('검사 취소'));await assert.rejects(buildGame(record,profile,{signal:canceled.signal}),/취소/);
 assert.equal(resolveBuildPath('Assets/Old/Sub/file.png',{'Assets/Old':'Assets/New'}),'Assets/New/Sub/file.png');assert.throws(()=>resolveBuildPath('Assets/A',{'Assets/A':'Assets/B','Assets/B':'Assets/A'}),/순환/);

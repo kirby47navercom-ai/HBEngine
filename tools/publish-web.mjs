@@ -1,3 +1,4 @@
+import {fileContent,hashBuildFile,writeBuildContent} from './build-content.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -7,13 +8,13 @@ import {digest} from './build-game.mjs';
 import {runTool} from './mobile-android.mjs';
 
 const safe=name=>typeof name==='string'&&name.length>0&&name.length<=2000&&!/[\\:\x00-\x1f]/.test(name)&&!name.startsWith('/')&&!name.split('/').some(v=>!v||v==='.'||v==='..'||v==='.git');
-export async function webFiles(directory){
+export async function webFiles(directory,{signal}={}){
   const root=await fs.realpath(directory),manifest=JSON.parse(await fs.readFile(path.join(root,'game.hbpack.json'),'utf8'));
   if(manifest.version!==1||manifest.target!=='web'||!Array.isArray(manifest.files)||!manifest.id)throw Error('웹 게임 빌드 폴더를 선택하세요.');
   const files=new Map();for(const entry of manifest.files){
-    if(!safe(entry.path)||files.has(entry.path)||!/^[0-9a-f]{64}$/.test(entry.sha256))throw Error('웹 패키지 파일 목록 오류');
+    signal?.throwIfAborted();if(!safe(entry.path)||!Number.isSafeInteger(entry.bytes)||entry.bytes<0||files.has(entry.path)||!/^[0-9a-f]{64}$/.test(entry.sha256))throw Error('웹 패키지 파일 목록 오류');
     const file=await fs.realpath(path.join(root,entry.path));if(!file.toLowerCase().startsWith((root+path.sep).toLowerCase()))throw Error('웹 패키지 경로 이탈');
-    const bytes=await fs.readFile(file);if(bytes.length!==entry.bytes||digest(bytes)!==entry.sha256)throw Error('웹 패키지 파일 변조: '+entry.path);files.set(entry.path,bytes);
+    const bytes=await fileContent(file,{root,signal}),checked=await hashBuildFile(file,{root,signal});if(checked.bytes!==entry.bytes||checked.sha256!==entry.sha256)throw Error('웹 패키지 파일 변조: '+entry.path);files.set(entry.path,bytes);
   }
   if(!files.has('index.html')||!files.has('.nojekyll'))throw Error('웹 게임 시작 파일이 없어요.');
   files.set('game.hbpack.json',Buffer.from(JSON.stringify(manifest,null,2)+'\n'));return {manifest,files};
@@ -22,7 +23,7 @@ export async function webFiles(directory){
 export async function publishWeb(directory,remote,{signal,onProgress=()=>{}}={}){
   const match=/^https:\/\/(?:([A-Za-z0-9_-]+)@)?github\.com\/([A-Za-z0-9_-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?$/.exec(remote||'');
   if(!match)throw Error('GitHub HTTPS 저장소 주소를 입력하세요.');
-  const [,username,owner,repo]=match,{manifest,files}=await webFiles(directory),env={...process.env,GIT_TERMINAL_PROMPT:'0',GCM_INTERACTIVE:'Never'};
+  const [,username,owner,repo]=match,{manifest,files}=await webFiles(directory,{signal}),env={...process.env,GIT_TERMINAL_PROMPT:'0',GCM_INTERACTIVE:'Never'};
   // Read the existing credential without placing it in an argument or log.
   const raw=execFileSync('git',['credential','fill'],{input:'protocol=https\nhost=github.com\n'+(username?'username='+username+'\n':'')+'\n',encoding:'utf8',env,stdio:['pipe','pipe','pipe']});
   const credentials=Object.fromEntries(raw.trim().split('\n').map(row=>{const i=row.indexOf('=');return [row.slice(0,i),row.slice(i+1)];}));if(!credentials.password)throw Error('GitHub Git 인증이 필요해요.');
@@ -42,7 +43,7 @@ export async function publishWeb(directory,remote,{signal,onProgress=()=>{}}={})
       if(previous?.target!=='web'||previous.id!==manifest.id)throw Error('gh-pages에 다른 게임이나 사이트가 있어요. 별도 저장소를 사용하세요.');
       await git(['rm','--quiet','-r','-f','--','.']);
     }else{await git(['init','-b','gh-pages']);await git(['remote','add','origin',remote]);}
-    for(const [name,bytes] of files){const file=path.join(work,name);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,bytes);}
+    for(const [name,bytes] of files)await writeBuildContent(work,name,bytes,{signal});
     const name=execFileSync('git',['config','user.name'],{encoding:'utf8'}).trim(),email=execFileSync('git',['config','user.email'],{encoding:'utf8'}).trim();
     await git(['config','user.name',name]);await git(['config','user.email',email]);await git(['add','--force','--all']);
     const changes=(await git(['status','--porcelain'])).trim();

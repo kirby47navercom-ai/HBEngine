@@ -1,4 +1,5 @@
-import {packagedRuntimeBytes} from './packaged-runtime.mjs';
+import {writeBuildContent} from './build-content.mjs';
+import {packagedRuntimeContent} from './packaged-runtime.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -49,8 +50,8 @@ export async function buildWeb(record,profile,{content,natives,report},{dryRun=f
   signal?.throwIfAborted();const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),out=await record.project.resolve('Builds/'+profile.id+'/'+id,true,false);
   await fs.mkdir(out,{recursive:true});const real=await fs.realpath(out),base=await fs.realpath(record.root);if(!real.toLowerCase().startsWith((base+path.sep).toLowerCase()))throw Error('웹 빌드 경로가 프로젝트 밖이에요.');
   const files=[],copied=new Set();
-  const write=async(name,bytes)=>{signal?.throwIfAborted();await fs.mkdir(path.dirname(path.join(out,name)),{recursive:true});await fs.writeFile(path.join(out,name),bytes,{flag:'wx'});files.push({path:name,bytes:bytes.length,sha256:digest(bytes)});copied.add(name);};
-  const copy=async(name)=>{if(!copied.has(name))await write(name,await packagedRuntimeBytes(path.join(root,name)));};
+  const write=async(name,bytes)=>{files.push(await writeBuildContent(out,name,bytes,{signal}));copied.add(name);};
+  const copy=async(name)=>{if(!copied.has(name))await write(name,await packagedRuntimeContent(path.join(root,name),{signal}));};
   try{
     onProgress('웹 콘텐츠');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     const closure=await moduleClosure('prototype/player.js');await moduleClosure('prototype/web-player.js',closure);
@@ -71,7 +72,7 @@ export async function buildWeb(record,profile,{content,natives,report},{dryRun=f
     html=html.replaceAll('"/prototype/','"./prototype/').replaceAll('"/node_modules/','"./node_modules/').replace('<script type="module" src="./prototype/player.js"></script>','<script type="module">import {startWebPlayer} from "./prototype/web-player.js";startWebPlayer().catch(startupFailure);</script>');
     await write('index.html',Buffer.from(html));await write('.nojekyll',Buffer.alloc(0));
     const manifest={version:1,id:record.manifest.id,name:profile.productName,target:'web',renderBackend:report.renderBackend,configuration:profile.configuration,...frameSettings(profile),width:profile.width,height:profile.height,gameInstance:report.gameInstance||'',startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules,redirects,files};
-    await packWebResources(out,manifest);await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});
+    await packWebResources(out,manifest,{signal});await fs.writeFile(path.join(out,'game.hbpack.json'),json(manifest),{flag:'wx'});
     const result={...report,id,output:out,artifact:path.join(out,'index.html'),artifactType:'web',totalFiles:manifest.files.length,totalBytes:manifest.files.reduce((n,f)=>n+f.bytes,0)};
     await fs.writeFile(path.join(out,'build-report.json'),json(result),{flag:'wx'});onProgress('완료');return result;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}

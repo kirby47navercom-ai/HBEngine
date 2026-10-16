@@ -1,3 +1,4 @@
+import {fileContent} from './build-content.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 const build=path.resolve(import.meta.dirname,'../node_modules/three/build');
@@ -12,4 +13,8 @@ export async function packagedRuntimeBytes(file){
   return Buffer.from(source);
  }
  return fs.readFile(full);
+}
+
+export async function packagedRuntimeContent(file,options={}){
+ const full=path.resolve(file);return path.dirname(full)===build&&bundles.has(path.basename(full))?packagedRuntimeBytes(full):fileContent(full,options);
 }

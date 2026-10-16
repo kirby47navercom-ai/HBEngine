@@ -1,7 +1,8 @@
-import {packagedRuntimeBytes} from './packaged-runtime.mjs';
+import {writeBuildContent,hashBuildFile} from './build-content.mjs';
+import {packagedRuntimeContent} from './packaged-runtime.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {randomUUID,createHash} from 'node:crypto';
+import {randomUUID} from 'node:crypto';
 import {moduleClosure} from './build-game.mjs';
 import {assetKind} from './project-service.mjs';
 import {nativeSources} from './native-source.mjs';
@@ -37,9 +38,9 @@ export async function buildMobile(record,profile,prepared,{signal,onProgress=()=
   if(target==='android'&&!capability.ready)throw Error(capability.error);
   signal?.throwIfAborted();const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8),out=path.join(record.root,'Builds',profile.id,id);
   await fs.mkdir(out,{recursive:true});const real=await fs.realpath(out),base=await fs.realpath(record.root);if(!real.toLowerCase().startsWith((base+path.sep).toLowerCase()))throw Error('모바일 빌드 경로가 프로젝트 밖이에요.');
-  const assets=path.join(out,'Assets'),files=[],copied=new Set();
-  const write=async(name,data)=>{signal?.throwIfAborted();const destination=path.join(assets,name);await fs.mkdir(path.dirname(destination),{recursive:true});await fs.writeFile(destination,data,{flag:'wx'});files.push({path:name,bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')});};
-  const copy=async(from,to)=>{if(copied.has(to))return;await write(to,await packagedRuntimeBytes(from));copied.add(to);};
+  const assets=path.join(out,'Assets'),files=[],copied=new Set();await fs.mkdir(assets);
+  const write=async(name,data)=>{files.push(await writeBuildContent(assets,name,data,{signal}));};
+  const copy=async(from,to)=>{if(copied.has(to))return;await write(to,await packagedRuntimeContent(from,{signal}));copied.add(to);};
   try{
     onProgress('모바일 콘텐츠');for(const [name,bytes] of content)await write('Content/'+name,bytes);
     const closure=await moduleClosure('prototype/player.js');await moduleClosure('prototype/mobile-player.js',closure);for(const file of closure)await copy(file,path.relative(root,file).split(path.sep).join('/'));
@@ -50,7 +51,7 @@ export async function buildMobile(record,profile,prepared,{signal,onProgress=()=
     const manifest={version:1,id:record.manifest.id,name:profile.productName,configuration:profile.configuration,target,renderBackend:report.renderBackend,mobile:settings,...frameSettings(profile),width:profile.width,height:profile.height,gameInstance:report.gameInstance||'',startupScene:report.startupScene,startupBlueprint:record.manifest.startupBlueprint,entries:[...content.keys()].map(p=>({path:p,name:path.basename(p),kind:assetKind(p)})),nativeModules:native.modules,redirects,files};
     await fs.writeFile(path.join(assets,'game.hbpack.json'),json(manifest),{flag:'wx'});
     const result=await platform.packageMobile({out,assets,profile,settings,native,signal,onProgress,capability});
-    if(result.artifactType!=='xcodeProject')result.artifactSha256=createHash('sha256').update(await fs.readFile(result.artifact)).digest('hex');
+    if(result.artifactType!=='xcodeProject')result.artifactSha256=(await hashBuildFile(result.artifact,{signal})).sha256;
     const output={...report,id,output:out,mobile:settings,...result,totalFiles:files.length,totalBytes:files.reduce((n,f)=>n+f.bytes,0)};
     await fs.writeFile(path.join(out,'build-report.json'),json(output),{flag:'wx'});onProgress('완료');return output;
   }catch(error){await fs.writeFile(path.join(out,'build-failed.json'),json({error:error.message,canceled:signal?.aborted===true}));throw error;}

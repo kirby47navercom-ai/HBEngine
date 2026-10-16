@@ -3,6 +3,9 @@ import {mobileBackend} from './mobile-player.js';
 export async function loadWebResources(pack,read,base,host=globalThis){
   const assets=new Map(),urls=new Map();if(!pack)return {assets,urls};
   if(pack.path!=='game.resources.bin'||!Number.isSafeInteger(pack.bytes)||pack.bytes<0||!Array.isArray(pack.files))throw Error('웹 리소스 묶음 형식 오류');
+  // Legacy packages may contain an unbounded preload pack. Keep their ordinary
+  // Content URLs usable without materializing that pack on startup.
+  if(pack.bytes>16*1024*1024)return {assets,urls,deferred:true};
   const response=await read(pack.path);if(!response.ok)throw Error('웹 리소스 묶음을 열 수 없어요.');const bytes=await response.arrayBuffer();
   if(bytes.byteLength!==pack.bytes)throw Error('웹 리소스 묶음 크기 오류');let end=0;
   for(const file of pack.files){

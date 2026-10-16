@@ -1,3 +1,5 @@
+import {windowsGameIdentity} from './windows-game-identity.mjs';
+import {hashBuildFile} from './build-content.mjs';
 import {spawn} from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -7,6 +9,15 @@ import {androidDevices,deployAndroid} from './android-deploy.mjs';
 import {prepareAndroid} from './prepare-android.mjs';
 import {startWebServer} from './web-server.mjs';
 import {prepareWeb} from './prepare-web.mjs';
+export async function checkedGameExecutable(record,result){
+  if(typeof result?.executable!=='string'||typeof result?.output!=='string')throw Error('빌드 경로 오류');
+  const exe=await fs.realpath(result.executable),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root),out=await fs.realpath(result.output);
+  if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!out.toLowerCase().startsWith((base+path.sep).toLowerCase())||path.dirname(exe).toLowerCase()!==out.toLowerCase())throw Error('빌드 경로 오류');
+  const manifest=JSON.parse(await fs.readFile(path.join(out,'game.hbpack.json'),'utf8')),identity=windowsGameIdentity(record.manifest.id),expected=manifest.windowsApplication?identity.executable:'Game.exe';
+  if(manifest.id!==record.manifest.id||manifest.windowsApplication&&(manifest.windowsApplication.id!==identity.id||manifest.windowsApplication.executable!==identity.executable)||path.basename(exe)!==expected)throw Error('빌드 실행 파일 ID 오류');
+  const entry=manifest.files?.find(f=>f.path===expected),checked=await hashBuildFile(exe,{root:out});if(!entry||checked.bytes!==entry.bytes||checked.sha256!==entry.sha256)throw Error('빌드 실행 파일 검증 실패');
+  return exe;
+}
 export class BuildJobs{
   constructor(){this.jobs=new Map();this.queue=Promise.resolve();}
   async prepareWebTools(record){
@@ -41,7 +52,7 @@ export class BuildJobs{
       await new Promise((resolve,reject)=>{const child=spawn(path.join(process.env.SystemRoot,'explorer.exe'),args,{stdio:'ignore',detached:true,windowsHide:true});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {ok:true,action,url:item.webServer?.url};
     }
     if(action==='run'&&!job.result.executable)throw Error('모바일 앱은 휴대폰에 설치하거나 Mac의 Xcode에서 실행하세요.');
-    const exe=await fs.realpath(job.result.executable||job.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!exe.toLowerCase().startsWith((base+path.sep).toLowerCase())||!(job.result.executable?path.basename(exe)==='Game.exe':['Game.apk','Game.aab','HBGame.xcodeproj'].includes(path.basename(exe))))throw Error('빌드 경로 오류');
+    const exe=job.result.executable?await checkedGameExecutable(record,job.result):await fs.realpath(job.result.artifact),base=await fs.realpath(path.join(record.root,'Builds')),root=await fs.realpath(record.root);if(!base.toLowerCase().startsWith((root+path.sep).toLowerCase())||!exe.toLowerCase().startsWith((base+path.sep).toLowerCase())||!(job.result.executable?true:['Game.apk','Game.aab','HBGame.xcodeproj'].includes(path.basename(exe))))throw Error('빌드 경로 오류');
     const env={...process.env};for(const key of ['PORT','HB_USER_DATA_DIR','HB_PROJECT_FILE','HB_PROJECT_DIR','HB_READY_FILE','HB_PLAYER_SMOKE'])delete env[key];
     const program=action==='run'?exe:path.join(process.env.SystemRoot,'explorer.exe'),args=action==='run'?[]:[path.dirname(exe)];
     await new Promise((resolve,reject)=>{const child=spawn(program,args,{cwd:path.dirname(exe),env,shell:false,detached:true,stdio:'ignore',windowsHide:false});child.once('error',reject);child.once('spawn',()=>{child.unref();resolve();});});return {ok:true,action};

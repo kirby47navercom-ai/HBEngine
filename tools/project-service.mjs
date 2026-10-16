@@ -33,7 +33,15 @@ export class ProjectService {
     return full;
   }
   async canonicalFile(relative){const file=await this.resolve(relative,true);return fs.realpath(file).catch(error=>{if(error.code==='ENOENT')return file;throw error;});}
-  async files(){const result=[];const visit=async(relative,depth=0)=>{if(depth>32||result.length>10000)throw Error('프로젝트 파일 검색 제한 초과');const dir=await this.resolve(relative);for(const entry of await fs.readdir(dir,{withFileTypes:true})){if(result.length>=10000)throw Error('프로젝트 파일 검색 제한 초과');if(entry.name.startsWith('.')||['Library','node_modules','build'].includes(entry.name)||!relative&&['Saved','Builds'].includes(entry.name)||entry.isSymbolicLink())continue;const name=relative?relative+'/'+entry.name:entry.name;if(entry.isDirectory()){result.push({path:name,name:entry.name,kind:'folder'});await visit(name,depth+1);}else if(entry.isFile()){const stat=await fs.stat(await this.resolve(name));this.index[name]??={id:randomUUID()};result.push({path:name,name:entry.name,kind:assetKind(entry.name),size:stat.size,modified:stat.mtimeMs,id:this.index[name].id,text:textExtensions.has(path.extname(name).toLowerCase())});}}};await visit('');return result.sort((a,b)=>(a.kind!=='folder')-(b.kind!=='folder')||a.path.localeCompare(b.path));}
+  async *walk({folder='',signal}={}){
+    await this.resolve(folder,false,false);const pending=[folder];
+    while(pending.length){signal?.throwIfAborted();const relative=pending.pop(),dir=await this.resolve(relative,false,false);
+      for await(const entry of await fs.opendir(dir)){signal?.throwIfAborted();if(entry.name.startsWith('.')||['Library','node_modules','build'].includes(entry.name)||!relative&&['Saved','Builds'].includes(entry.name)||entry.isSymbolicLink())continue;
+        const name=relative?relative+'/'+entry.name:entry.name;if(entry.isDirectory()){yield {path:name,name:entry.name,kind:'folder'};pending.push(name);}else if(entry.isFile()){const stat=await fs.lstat(await this.resolve(name,false,false));if(!stat.isFile()||stat.isSymbolicLink())continue;this.index[name]??={id:randomUUID()};yield {path:name,name:entry.name,kind:assetKind(entry.name),size:stat.size,modified:stat.mtimeMs,id:this.index[name].id,text:textExtensions.has(path.extname(name).toLowerCase())};}
+      }
+    }
+  }
+  async files(options){const result=[];for await(const entry of this.walk(options))result.push(entry);return result.sort((a,b)=>(a.kind!=='folder')-(b.kind!=='folder')||a.path.localeCompare(b.path));}
   async list({folder='',query='',type='all',contents=false,recursive=false}={}){await this.resolve(folder);const all=await this.files(),q=query.toLowerCase();let entries=all.filter(e=>(recursive?e.path.startsWith(folder?folder+'/':''):path.posix.dirname(e.path)===(folder||'.'))&&(type==='all'||e.kind===type));
     if(q){const matches=[];for(const e of entries){if(e.name.toLowerCase().includes(q)||e.path.toLowerCase().includes(q))matches.push(e);else if(contents&&e.text&&e.size<=1048576){const lines=(await fs.readFile(await this.resolve(e.path),'utf8')).split(/\r?\n/),line=lines.findIndex(s=>s.toLowerCase().includes(q));if(line>=0)matches.push({...e,line:line+1,match:lines[line].slice(0,160)});}}entries=matches;}
     await this.saveIndex();return {root:this.root,folder,entries,folders:all.filter(e=>e.kind==='folder'),total:all.filter(e=>e.kind!=='folder').length};
@@ -68,7 +76,29 @@ export class ProjectService {
   }
   async prepareModelImport(relative){if(!modelSource(relative))throw Error('가져오기 설정을 지원하는 원본 모델을 선택하세요.');const file=await this.resolve(relative),canonical=path.relative(this.root,file).split(path.sep).join('/'),entry=await this.scanAsset(canonical,true);if(entry.error)throw Error(entry.error);const existing=await readModelImport(this,canonical),data=existing?.version===2&&existing.sourceHash===entry.hash?existing:await writeModelImport(this,canonical,entry);await this.saveIndex();return {path:canonical+'.import.json',kind:'modelimport',data};}
   async overrideModelSubasset(relative,id,overrides){if(!overrides||Object.keys(overrides).some(k=>!['visible','castShadow','receiveShadow'].includes(k)||typeof overrides[k]!=='boolean'))throw Error('모델 오버라이드 속성 오류');const entry=await this.scanAsset(relative,true),row=entry.subassets?.find(s=>s.id===id);if(!row||row.kind!=='mesh')throw Error('메시 하위 에셋을 선택하세요.');if(entry.error)throw Error(entry.error);row.overrides={...overrides};await writeModelImport(this,relative,entry);await this.saveIndex();return row;}
-  async import(folder,name,data){if(!name||name.includes('/')||name.includes('\\'))throw Error('가져올 파일 이름 오류');const dir=await this.resolve(folder);if(!(await fs.stat(dir)).isDirectory())throw Error('가져올 폴더가 없어요.');const ext=path.extname(name),stem=name.slice(0,name.length-ext.length);for(let i=0;i<10000;i++){const relative=(folder?folder+'/':'')+stem+(i?'_'+i:'')+ext,file=await this.resolve(relative,true);let handle;try{handle=await fs.open(file,'wx');await handle.writeFile(data);await handle.close();handle=null;this.index[relative]={id:randomUUID(),importedAt:new Date().toISOString(),status:'source'};if(modelSource(relative)){const entry=await this.scanAsset(relative,true);if(!entry.error)await writeModelImport(this,relative,entry);}await this.saveIndex();return {path:relative,kind:assetKind(relative),warning:this.index[relative].error||null};}catch(error){if(handle){await handle.close().catch(()=>{});await fs.unlink(file).catch(()=>{});}if(error.code!=='EEXIST')throw error;}}throw Error('같은 이름의 파일이 너무 많아요.');}
+  async import(folder,name,data){return this.importStream(folder,name,[Buffer.isBuffer(data)?data:Buffer.from(data)]);}
+  async importStream(folder,name,input,guard=()=>{},{expectedBytes,signal}={}){
+    if(!name||name.includes('/')||name.includes('\\'))throw Error('가져올 파일 이름 오류');
+    if(expectedBytes!==undefined&&(!Number.isSafeInteger(expectedBytes)||expectedBytes<0))throw Error('가져올 파일 크기 오류');
+    const dir=await this.resolve(folder);if(!(await fs.stat(dir)).isDirectory())throw Error('가져올 폴더가 없어요.');
+    const stage=await this.resolve((folder?folder+'/':'')+'.hb-import-'+randomUUID()+'.tmp',true,false);let handle,published,previousIndex;
+    const check=()=>{signal?.throwIfAborted();guard();};
+    try{
+      check();handle=await fs.open(stage,'wx');let bytes=0;
+      for await(const chunk of input){check();if(!Buffer.isBuffer(chunk)&&!(chunk instanceof Uint8Array))throw Error('가져올 데이터 형식 오류');bytes+=chunk.byteLength;if(!Number.isSafeInteger(bytes)||expectedBytes!==undefined&&bytes>expectedBytes)throw Error('가져올 파일 크기 불일치');await handle.writeFile(chunk);}
+      check();if(expectedBytes!==undefined&&bytes!==expectedBytes)throw Error('가져올 파일 크기 불일치');await handle.close();handle=null;
+      const ext=path.extname(name),stem=name.slice(0,name.length-ext.length);
+      for(let i=0;Number.isSafeInteger(i);i++){
+        check();const relative=(folder?folder+'/':'')+stem+(i?'_'+i:'')+ext,file=await this.resolve(relative,true);
+        try{await fs.link(stage,file);}catch(error){if(error.code==='EEXIST')continue;if(!['EPERM','EACCES','EXDEV','ENOTSUP'].includes(error.code))throw error;try{await fs.copyFile(stage,file,1);}catch(copyError){if(copyError.code==='EEXIST')continue;throw copyError;}}
+        published={relative,file};check();previousIndex=this.index[relative];this.index[relative]={id:randomUUID(),importedAt:new Date().toISOString(),status:'source'};
+        if(modelSource(relative)){const entry=await this.scanAsset(relative,true);check();if(!entry.error)await writeModelImport(this,relative,entry);}
+        check();await this.saveIndex();return {path:relative,kind:assetKind(relative),bytes,warning:this.index[relative].error||null};
+      }
+      throw Error('가져올 파일 이름을 만들 수 없어요.');
+    }catch(error){await handle?.close().catch(()=>{});handle=null;if(published){await fs.unlink(published.file).catch(()=>{});if(previousIndex)this.index[published.relative]=previousIndex;else delete this.index[published.relative];}throw error;}
+    finally{await handle?.close();await fs.unlink(stage).catch(error=>{if(error.code!=='ENOENT')throw error;});}
+  }
   async mkdir(relative){await fs.mkdir(await this.resolve(relative,true),{recursive:true});}
   async read(relative){const file=await this.resolve(relative),stat=await fs.stat(file);if(!stat.isFile())throw Error('파일이 아니에요.');return {file,size:stat.size};}
   checkedWrite(relative,text,expected,guard=()=>{}){

@@ -9,10 +9,10 @@ export function checkedNativeFiles(files){
   let bytes=0;const seen=new Set();
   return files.map(file=>{if(!file||typeof file.path!=='string'||!nativeSourceFile(file.path)||file.path.length>2000||/[\\:\x00-\x1f]/.test(file.path)||file.path.split('/').some(part=>!part||part==='.'||part==='..')||seen.has(file.path.toLowerCase())||typeof file.content!=='string'||Buffer.byteLength(file.content)>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 경로·중복·500KB 크기를 확인하세요.');seen.add(file.path.toLowerCase());bytes+=Buffer.byteLength(file.content);if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기는 8MB까지 지원해요.');return {path:file.path,content:canonicalNativeText(file.content)};}).sort((a,b)=>a.path.localeCompare(b.path));
 }
-export async function readNativeFiles(project){
-  const files=(await project.files()).filter(file=>file.kind!=='folder'&&nativeSourceFile(file.path));
+export async function readNativeFiles(project,{files,signal}={}){
+  files=(files||await project.files({signal})).filter(file=>file.kind!=='folder'&&nativeSourceFile(file.path));
   if(files.length>nativeSourceLimits.maxFiles)throw Error('C++ Source 파일은 512개까지 지원해요.');
-  const result=[];let bytes=0;for(const file of files){const info=await project.read(file.path);if(info.size>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 파일 500KB 제한: '+file.path);bytes+=info.size;if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기 8MB 제한');result.push({path:file.path,content:await fs.readFile(info.file,'utf8')});}return checkedNativeFiles(result);
+  const result=[];let bytes=0;for(const file of files){signal?.throwIfAborted();const info=await project.read(file.path);if(info.size>nativeSourceLimits.maxFileBytes)throw Error('C++ Source 파일 500KB 제한: '+file.path);bytes+=info.size;if(bytes>nativeSourceLimits.maxTotalBytes)throw Error('C++ Source 전체 크기 8MB 제한');result.push({path:file.path,content:await fs.readFile(info.file,{encoding:'utf8',signal})});}return checkedNativeFiles(result);
 }
 export function nativeProjectLayout(header,source,generated,files){
   files=checkedNativeFiles(files);const primarySource=files.find(file=>/\.(cpp|cc|cxx)$/i.test(file.path)&&file.content===canonicalNativeText(source)),stem=file=>file.path.replace(/\.[^.]+$/,'').toLowerCase(),headers=files.filter(file=>/\.(h|hpp|hh)$/i.test(file.path)),matching=headers.filter(file=>file.content===canonicalNativeText(header)),primaryHeader=matching.find(file=>primarySource&&stem(file)===stem(primarySource))||matching[0];

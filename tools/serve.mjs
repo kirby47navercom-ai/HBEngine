@@ -1,3 +1,4 @@
+import {streamHttpFile} from './http-file.mjs';
 import {sourceControlStatus,sourceControlDiff,sourceControlStage,sourceControlCommit,sourceControlInit,sourceControlConfigure,sourceControlBase} from './source-control.mjs';
 import {configureNativePersistence} from './game-storage.mjs';
 import {BuildJobs} from './build-jobs.mjs';
@@ -41,15 +42,15 @@ const json=(res,data,status=200)=>res.writeHead(status,{'Content-Type':'applicat
 const changedProject=()=>Object.assign(Error('프로젝트가 변경됐어요. 다시 작업하세요.'),{status:409});
 const checkOwner=owner=>{if(project!==owner||stopping)throw changedProject();};
 async function body(req,limit=1048576){const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>limit)throw Error('요청 파일 크기 제한 초과');chunks.push(chunk);}return Buffer.concat(chunks);}
-function stream(req,res,file,size,projectFile=false){const mime=projectFile&&path.extname(file).toLowerCase()==='.html'?'text/plain; charset=utf-8':types[path.extname(file).toLowerCase()]||'application/octet-stream',range=req.headers.range?.match(/^bytes=(\d+)-(\d*)$/);let start=0,end=size-1,status=200;if(range){start=Number(range[1]);end=range[2]?Math.min(Number(range[2]),end):end;if(start>end||start>=size)return res.writeHead(416,{'Content-Range':'bytes */'+size}).end();status=206;}
-  res.writeHead(status,{'Content-Type':mime,'Content-Length':Math.max(0,end-start+1),'Cache-Control':'no-cache','Accept-Ranges':'bytes','X-Content-Type-Options':'nosniff',...(projectFile?{'Content-Security-Policy':(path.extname(file).toLowerCase()==='.svg'?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox")}:{}),...(range?{'Content-Range':'bytes '+start+'-'+end+'/'+size}:{})});const input=fs.createReadStream(file,size?{start,end}:{});input.on('error',()=>res.destroy());input.pipe(res);
+function stream(req,res,file,size,projectFile=false){const mime=projectFile&&path.extname(file).toLowerCase()==='.html'?'text/plain; charset=utf-8':types[path.extname(file).toLowerCase()]||'application/octet-stream';
+  return streamHttpFile(req,res,file,size,{'Content-Type':mime,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff',...(projectFile?{'Content-Security-Policy':(path.extname(file).toLowerCase()==='.svg'?"default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox":"default-src 'none'; sandbox")}: {})});
 }
 const server=http.createServer(async(req,res)=>{try{
   if(!['127.0.0.1:'+port,'localhost:'+port].includes(req.headers.host))return json(res,{error:'허용되지 않은 호스트'},403);
   const url=new URL(req.url,'http://127.0.0.1:'+port),q=url.searchParams;
   if(url.pathname.startsWith('/api/')){
     if(req.headers.origin&&!['http://127.0.0.1:'+port,'http://localhost:'+port].includes(req.headers.origin))return json(res,{error:'허용되지 않은 요청 출처'},403);
-    if(req.method!=='GET'&&req.headers['x-hb-editor']!=='1')return json(res,{error:'편집기 요청 헤더 필요'},403);
+    if(!['GET','HEAD'].includes(req.method)&&req.headers['x-hb-editor']!=='1')return json(res,{error:'편집기 요청 헤더 필요'},403);
     if(url.pathname==='/api/game-data'&&req.method==='POST'){const data=await body(req);if(!native.persistentQueries)throw Error('프로젝트 게임 데이터 서비스가 없어요.');return json(res,{value:await native.persistentQueries(data.key,data.args)});}
     if(url.pathname==='/api/session'&&req.method==='GET')return json(res,{...session,...(desktop&&process.env.HB_EDITOR_ACCEPTANCE==='1'?{acceptance:true}:{}),nativeChannel:nativeChannel.descriptor});
     if(url.pathname==='/api/launcher'&&req.method==='GET')return json(res,{projects:await recentProjects(defaultProject),defaultDirectory});
@@ -94,9 +95,9 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/asset/batch/undo'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.undoBatch(data.transaction,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/write'&&req.method==='POST'){const data=JSON.parse(await readBody(8388608)),result=await owner.checkedWrite(data.path,data.text,data.expected,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/project'&&req.method==='GET'){const result=await owner.list({folder:q.get('folder')||'',query:q.get('q')||'',type:q.get('type')||'all',contents:q.get('contents')==='1',recursive:q.get('recursive')==='1'});checkOwner(owner);return json(res,result);}
-    if(url.pathname==='/api/file'&&req.method==='GET'){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}
+    if(url.pathname==='/api/file'&&['GET','HEAD'].includes(req.method)){const info=await owner.read(q.get('path'));checkOwner(owner);return stream(req,res,info.file,info.size,true);}
     if(url.pathname==='/api/file'&&req.method==='PUT'){await owner.write(q.get('path'),(await readBody()).toString('utf8'),()=>checkOwner(owner));checkOwner(owner);return json(res,{ok:true});}
-    if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.import(q.get('folder')||'Assets',q.get('name'),await readBody(104857600));checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.importStream(q.get('folder')||'Assets',q.get('name'),req,()=>checkOwner(owner),{expectedBytes:req.headers['content-length']===undefined?undefined:Number(req.headers['content-length'])});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/folder'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.mkdir(data.path);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/rename'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.rename(data.from,data.to);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname.startsWith('/api/source-control/')&&req.method==='POST'){const data=JSON.parse(await readBody()),command=url.pathname.slice('/api/source-control/'.length),calls={status:()=>sourceControlStatus(owner.root),diff:()=>sourceControlDiff(owner.root,data.path,data),stage:()=>sourceControlStage(owner.root,data),commit:()=>sourceControlCommit(owner.root,data),init:()=>sourceControlInit(owner.root),configure:()=>sourceControlConfigure(owner.root,data),base:()=>sourceControlBase(owner.root,data.path)};if(!Object.hasOwn(calls,command))throw Error('소스 관리 명령이 없어요.');checkOwner(owner);const result=await calls[command]();checkOwner(owner);return json(res,result);}

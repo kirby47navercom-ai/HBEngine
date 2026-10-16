@@ -367,3 +367,5 @@ input,textarea,[contenteditable=true],#console-logs,.help-items,.dialog-descript
 .material-layer-stack .asset-vector-fields{display:flex;gap:4px;}
 
 .material-layer-stack svg{width:15px;height:15px;flex:none;stroke-width:1.6;}
+
+.import-pages{display:flex;align-items:center;justify-content:center;gap:12px;position:sticky;bottom:0;background:var(--panel,#292e35);padding:4px}.import-pages button{min-width:26px}
