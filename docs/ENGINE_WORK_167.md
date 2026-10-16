@@ -47,3 +47,5 @@ hb::Levels::Unload("EastRoom");
 [Unreal Level Streaming Overview](https://dev.epicgames.com/documentation/unreal-engine/level-streaming-overview-in-unreal-engine?lang=en-US)와 [Blueprint load/unload](https://dev.epicgames.com/documentation/unreal-engine/loading-and-unloading-levels-using-blueprints-in-unreal-engine?lang=en-US)의 영구 월드/추가 레벨·볼륨/명령 분리를 대조했다. HB의 distance 셀은 구형 진입/이탈 반경이며 Unreal World Partition과 같다고 계산하지 않는다.
 
 [Unity Additive](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.LoadSceneMode.Additive.html)와 [UnloadSceneAsync](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.UnloadSceneAsync.html)의 현재 장면 유지·관련 오브젝트 수명과 자원 수명의 구분을 읽었다. [Unity 2D IK](https://docs.unity3d.com/Packages/com.unity.2d.animation@10.2/manual/2DIK.html)의 외부 목표·체인/솔버 계약을 대조했다. [Recast Detour findStraightPath](https://github.com/recastnavigation/recastnavigation/blob/main/Detour/Source/DetourNavMeshQuery.cpp)의 포털 경로와 오프메시 경유 계약을 확인했다. 연결 API/다른 버전/전체 매뉴얼과 원문 전체 독립 분석은 미완으로 구별해 corpus에 등록했다.
+
+배포 게임의 추가 레벨과 생성 카탈로그에도 시작 장면과 같은 중단점 제거를 적용했다. 추가 레벨 모든 노드에 중단점을 지정한 D3D11 배포 패키지에서 시작/언로드/재진입이 멈추지 않는 것을 확인했다.

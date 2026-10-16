@@ -137,11 +137,12 @@
       }
     },
     "release": {
-      "path": "native/build/engine-167-player-jdLWuU/acceptance.json",
-      "sha256": "cd672a614bdd388003b96fdc270e381ce6ed8f2d5842259fcd51e28a49ecf910",
+      "path": "native/build/engine-167-player-S0X1l8/acceptance.json",
+      "sha256": "35acc0cf96350cb62b2e219748317597c79a1c0c87af806642bc4c789fe5f75d",
       "summary": {
         "passed": true,
         "configuration": "release",
+        "streamedBreakpointsIgnored": true,
         "backend": "D3D11",
         "automaticReadbacks": 0,
         "cpp": {
@@ -174,7 +175,8 @@
     "추가 레벨에서 처음 필요한 생성 카탈로그가 편집기 native 요청에 반영되지 않음",
     "디버그 정지 중 수명 명령이 그래프 gate에서 대기: 명시적 재개 조건/프레임 직렬화",
     "초기화 중 자식→상위 인스턴스의 재귀 대기 선제 거부",
-    "언로드 시 타입 있는 외부 native/BP 참조의 null 재배치"
+    "언로드 시 타입 있는 외부 native/BP 참조의 null 재배치",
+    "배포 게임의 추가 레벨/생성 템플릿에도 편집기 중단점 제거 적용"
   ],
   "testCorrections": [
     "fixture spawn 클래스 cube→Actor 등록 이름",
