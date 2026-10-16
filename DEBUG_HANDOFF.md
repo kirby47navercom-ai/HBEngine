@@ -887,3 +887,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 218–220: fixture의 BP를 C++헤더보다 먼저 써서 검증 ENOENT→헤더/소스 먼저쓰기. 다음fixture가 현SDK Actor에 virtual BeginPlay를 잘못가정하여 컴파일실패→BP BeginPlay에서 등록Initialize를 호출하는 실제계약으로 수정; 이경로의 초기값준비 UgzhqE/GXOozw 확인.217설치216검사 캡처문자열 내부따옴표 오류→dataset비교로 검사만수정(mNHYHp). Take팝업이 작은assetpane에서 잘림을 실제설치캡처로발견→pane하단계산/scroll·끝필드bounds 검사 UgzhqE; 가로바최종수정은설치220추가확인.
+
+
+222:221benchmark의baseline에서 period.1/duration.3 종료 시Health196!=194 검출. 반복 next+=period가end보다ULP만큼커져 마지막tick누락.221성능비교는비정수경계 .4/.3001로 분리하고222는원래경계/큰절대시각을독립수정:고정epoch+정수카운트/4ULP capped1/4period/Kahan시각.0/1008/1e9·70tick/zeroDelta/unsafe검사Ld1HA9·실제1whOQy/jeY4Hh 통과.221기준과 시간/remaining만1e-9허용하며속성/효과내용은정확비교.

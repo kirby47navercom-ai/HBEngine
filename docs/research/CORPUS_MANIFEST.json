@@ -3326,5 +3326,25 @@
     ],
     "globalGatePromotion": false,
     "unread": "Only stated scopes, no whole corpus/API/media completion claim."
+  },
+  "implementationAuthorization": {
+    "date": "2026-10-17",
+    "scope": "Later explicit user instructions resume cumulative implementation. research_only remains the baseline-corpus collection/analysis gate expected by reference-ledger; this is not a claim that the entire corpus passed.",
+    "globalGatePromotion": false
+  },
+  "nextRendering223Read": {
+    "date": "2026-10-17",
+    "implemented": false,
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/LightingGiUvs-GeneratingLightmappingUVs.html",
+        "scope": "Returned HTML own127–167 read: authored/generated UV1/UV2 channels,0..1/no-overlap/padding and distortion requirements. Linked APIs/media not read."
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/cpu-lightmass-global-illumination-in-unreal-engine",
+        "scope": "Returned UE5.8 body own0–137 and144–150 read: precomputed direct/indirect, area/colored shadows, sample volumes/AO/bent normal and limitations. No Lightmass/bake implementation added by reading."
+      }
+    ],
+    "plan": "Existing HB native SceneVertex has UV0 only; mesh-uv authored data has one UV set. Need preserved secondary channel + explicit chart validation/authoring then actual baked texture/radiance and all rendering/package consumers; do not label a vertex-color or UV-only feature as completed lightmap baking."
   }
 }

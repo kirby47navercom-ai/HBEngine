@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "b432bacd5bd8a4fd6a902130892b563992b438a3",
+  "basisRevision": "3e970d437ea2aca52cb0ec3bdfd6751604ce4f4e",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1019,7 +1019,7 @@
       "area": "gameplay",
       "title": "Ability·효과/태그 체계",
       "status": "partial",
-      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP · 171: 능력 활성/종료·효과 적용/주기/제거 Cue 태그/이벤트·전용 목록·실패 롤백 ·218: 속성·능력 세트 에셋/표·시작능력·원자초기화/호환·실제C++BP/D3D/풀태그 ·219: 실행 base/current/범위·능력/효과 수명 표와 선택 구조갱신",
+      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP · 171: 능력 활성/종료·효과 적용/주기/제거 Cue 태그/이벤트·전용 목록·실패 롤백 ·218: 속성·능력 세트 에셋/표·시작능력·원자초기화/호환·실제C++BP/D3D/풀태그 ·219: 실행 base/current/범위·능력/효과 수명 표와 선택 구조갱신 ·221: 불변 속성/태그 집계 재사용·변경 시 무효화·실제CPP/BP/Inspector/AI ·222: 주기 epoch/정수tick·종료 경계/큰시각/Kahan·unsafe 거부·실제D3D",
       "remaining": [
         "네트워크 능력 예측/복제·자동 VFX/음향 Cue 자산·고급 타깃/계산",
         "다중 세트/상속·종속 속성 계산/곡선·라이브 세트 재적용·대규모 목록 제작"
@@ -1029,14 +1029,17 @@
         "prototype/engine-services.js",
         "prototype/ability-runtime.js",
         "prototype/ability-assets.js",
-        "prototype/ability-inspector.js"
+        "prototype/ability-inspector.js",
+        "prototype/ability-clock.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_171.json",
         "docs/research/ENGINE_WORK_218.json",
-        "docs/research/ENGINE_WORK_219.json"
+        "docs/research/ENGINE_WORK_219.json",
+        "docs/research/ENGINE_WORK_221.json",
+        "docs/research/ENGINE_WORK_222.json"
       ]
     },
     {
@@ -1562,7 +1565,7 @@
       "area": "performance",
       "title": "PC120·모바일60 전체 프레임",
       "status": "unverified",
-      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단 ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군·실제 속성/Undo/저장·D3D/WebGPU/C++ 전환/보간/픽셀 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·210: 선택적 AnimationGraph pose의 관측 ms EMA 예산·후보/계획/포즈 재사용·원본 시간/보호 포즈 유지",
+      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단 ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군·실제 속성/Undo/저장·D3D/WebGPU/C++ 전환/보간/픽셀 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·210: 선택적 AnimationGraph pose의 관측 ms EMA 예산·후보/계획/포즈 재사용·원본 시간/보호 포즈 유지 ·221: 500tick CPU baseline51000→0 속성집계·교대5표본 약15~17.3→.3~1.13ms(전체FPS아님)",
       "remaining": [
         "대표/고부하 장면 p95/p99·장시간 안정성",
         "실제 모바일 지속60·발열/배터리"
@@ -1584,7 +1587,8 @@
         "docs/research/ENGINE_WORK_195.json",
         "docs/research/ENGINE_WORK_197.json",
         "docs/research/ENGINE_WORK_198.json",
-        "docs/research/ENGINE_WORK_210.json"
+        "docs/research/ENGINE_WORK_210.json",
+        "docs/research/ENGINE_WORK_221.json"
       ]
     },
     {
