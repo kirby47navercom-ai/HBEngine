@@ -8,3 +8,6 @@
 남은 범위: 안쪽 nativeProperties/변수 override는 자료형 메타데이터가 연결되지 않아 안전 거부; 알려진 컴포넌트의 오브젝트 참조만 재매핑/검사 / All은 바깥 원본. 놓인 루트 Transform 기본 보호 유지; Unity 개별 default override Apply와 같은 기능이라고 주장하지 않음 / 복잡한 모든 중첩/변형과 대규모 인스턴스 비용 검증은 잔여
 
 근거: [ENGINE_WORK_206.json](research/ENGINE_WORK_206.json). 설치 검증은 별도 영수증에 기록한다.
+
+
+206–209 설치 확인: e1016dd208e2307b·명세2637파일 실행 후SHA동일·실제 설치 EXE로 중첩 Apply/구조/원자UndoRedo·gray/수정투영/표면정점스냅·저장종료·모델골격교체 Take/Seek/복원/제작창 통과, 예외/콘솔오류0·종료0. User10385파일 SHA불변·링크2/.hbproject·이전설치175243449B 정리·Versions1. USER_INSTALL_209.json.

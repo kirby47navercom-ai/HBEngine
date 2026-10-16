@@ -1,3 +1,13 @@
+# 현재 인계 — 206–209 사용자 설치 검증 완료·정본 잔여 계속
+
+설치 C:\Users\kirby\HBEngine\Versions\e1016dd208e2307b\HBEngine.exe·source c698d058e62e67bd4383fec384db3a4043ec6118·bundle e1016dd208e2307b95205b268bd0de3ae1bf5c8dde90b7000a11196171478ddc·명세2637파일 실행후SHA동일·User10385파일 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변·Versions1·링크2/.hbproject. USER_INSTALL_209.json. install209/finish209/docs206-209 실행완료·재실행금지.
+
+실제 설치 세 창 CqKeye/3HaFG9/VKwyiZ 모두 예외/콘솔오류0·종료0.206 원본선택·속성/자식 구조·ID/원자UndoRedo,207 gray·현재 인스턴스 수정 보기·부모변환/표면/정점/dryRun·원본불변,208 저장전 동기화 장벽,209 glTF A/B/제거·Take·구간축약·Seek/Stop 복원·제작창과GL/D3D 게임EXE. 원장39/34/2/3이며 구현/잔여 갱신·전체 분석gate 미승격. 이전설치175243449B 제거·검사 캐시 공식정리.
+
+다음: 한국어 영수증 커밋·push main 후 계속 구현.210 후보 WLD-04 애니메이션 CPU-ms 예산/다중카메라 중요도 조사 시작, 코드 없음. 읽음(미등록): Epic5.7 Animation Budget Allocator own0–16/47–114/185–210; Unity6000.0 CullingGroupAPI own136–158/SetBoundingDistances own234–260. 다중 카메라는 개별 결과 결합, 가까운 구 경계 거리, never-skip/보호 포즈와 실제 ms 측정 구분 필요. 추가본문/API 미독. 기존 RuntimeLODPolicy는 단일 camera위치/거리구간·stagger/시각 poseRate, engineServices graph/rootMotion/montage/collision/retarget 보호 경로. 남은 전체 원장 목표는 그대로이며 이 작업으로 끝내지 말 것.
+
+---
+
 # 현재 인계 — 206–209 구현·실제 실행 통과, 설치 갱신 준비
 
 중첩 Apply 대상/기본·변형·반복배치/상위 광역 오버라이드 분리/구조 추가삭제·ID/원자 Undo와 읽기 CAS, 회색·보기 전용 인스턴스 수정 표시·격자/표면/정점 스냅, 저장 전 프리팹 동기화 장벽, 골격 모델 변경/제거·독립 키 축약/현재시각 재바인딩/Seek/복원과 요청형 AI 포즈 페이지. 주요 소유자 prefab-apply.js, prefab-preview-context.js, sequence-state.js, engine-services.js.

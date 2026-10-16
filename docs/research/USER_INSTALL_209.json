@@ -1,0 +1,438 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "c698d058e62e67bd4383fec384db3a4043ec6118",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b\\HBEngine.exe",
+  "bundleHash": "e1016dd208e2307b95205b268bd0de3ae1bf5c8dde90b7000a11196171478ddc",
+  "files": 2637,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2615,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1fadf9f7d5c394c8",
+        "bytes": 175243449,
+        "manifestSHA256": "50f5ead97f15681ef8b89f5e2d30a07d2dd22d9e1a0e43cf12d68298418e7b98"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T19:03:18.0463216Z",
+    "bytes": 175243449,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "e1016dd208e2307b"
+    ]
+  },
+  "work": "native/build/engine-209-install-xofDNc",
+  "versions": [
+    "e1016dd208e2307b"
+  ],
+  "manifestVerifiedFiles": 2637,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/prefab-206-window-CqKeye/acceptance.json",
+      "sha256": "49bad40f347a2dd81539bba61e46633c1027f4f3b39f03c27b9734c1d00f53bc",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b\\HBEngine.exe",
+        "checks": {
+          "humanTargetMenu": [
+            {
+              "key": "[\"Assets/PF_Variant206.hbprefab.json\",\"\"]",
+              "asset": "Assets/PF_Variant206.hbprefab.json",
+              "object": "left/body",
+              "namespace": "",
+              "level": 0,
+              "effectiveProperty": [
+                "components",
+                "ai",
+                "properties",
+                "speed"
+              ],
+              "scope": "property",
+              "expands": false
+            },
+            {
+              "key": "[\"Assets/PF_Outer206.hbprefab.json\",\"\"]",
+              "asset": "Assets/PF_Outer206.hbprefab.json",
+              "object": "left/body",
+              "namespace": "",
+              "level": 1,
+              "effectiveProperty": [
+                "components",
+                "ai",
+                "properties",
+                "speed"
+              ],
+              "scope": "property",
+              "expands": false
+            },
+            {
+              "key": "[\"Assets/PF_Inner206.hbprefab.json\",\"left/\"]",
+              "asset": "Assets/PF_Inner206.hbprefab.json",
+              "object": "body",
+              "namespace": "left/",
+              "level": 2,
+              "effectiveProperty": [
+                "components",
+                "ai",
+                "properties",
+                "speed"
+              ],
+              "scope": "property",
+              "expands": false
+            }
+          ],
+          "allSourcesAndSceneUndoRedo": true,
+          "readOnlyQueryAndDryRun": true,
+          "staleSourceRejectsWholeGroup": true,
+          "addedChildInnerApply": {
+            "added_a12a8a05-3c09-495e-a864-aeee6d1f1bcf": "left/added_a12a8a05-3c09-495e-a864-aeee6d1f1bcf"
+          },
+          "actualPlay": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "path": "native/build/prefab-207-window-3HaFG9/acceptance.json",
+      "sha256": "5c3fc214f55ba503386eb1925471c6381476d6af1aacc1f20dc4a7cab53eaee2",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b\\HBEngine.exe",
+        "checks": {
+          "grayContextSharedMaterialSafe": true,
+          "showOverridesViewOnly": true,
+          "currentSourceRestoredOnToggle": true,
+          "gridSettingsSharedUIAI": true,
+          "worldSurfaceSnapLocalPoseAndUndo": true,
+          "nearestVertexSnapAndUndo": true,
+          "dryRunAndRootLock": true,
+          "hiddenTargetsRejected": true,
+          "sceneAndPrefabDiskUntouched": true
+        },
+        "snap": {
+          "path": "Assets/PF_Context203.hbprefab.json",
+          "dirty": true,
+          "result": {
+            "operation": "transform",
+            "selected": "body",
+            "objects": 2
+          },
+          "revision": "e91ce02a2fb9c2ba2fd8b5ad40705dc1a3c1ca2a678cd82c9b7e9f92617e7180",
+          "hit": {
+            "target": "__hb_context__/Backdrop203",
+            "point": [
+              -1,
+              0,
+              -1.5
+            ],
+            "vertex": 8
+          }
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "path": "native/build/skeletal-209-window-VKwyiZ/acceptance.json",
+      "sha256": "c6a16372aa0997a97df1b2f6f9ec33ed7aba74bc84d5b3dcc0cfd59b37903023",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b\\HBEngine.exe",
+        "checks": {
+          "actualGLTFModelASkeleton": {
+            "actor": "Rig209",
+            "controlled": true,
+            "time": 0.2,
+            "total": 3,
+            "offset": 0,
+            "bones": [
+              {
+                "bone": "IKRoot",
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "IKMid",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0.09983341664682818,
+                  0.9950041652780259
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "IKTip",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "nextOffset": null
+          },
+          "actualGLTFModelBSkeleton": {
+            "actor": "Rig209",
+            "controlled": true,
+            "time": 1.2,
+            "total": 3,
+            "offset": 0,
+            "bones": [
+              {
+                "bone": "OtherRoot",
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "OtherMid",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0.34289780745545134,
+                  0.9393727128473789
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "OtherTip",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "nextOffset": null
+          },
+          "modelRemoved": {
+            "actor": "Rig209",
+            "controlled": true,
+            "time": 2.2,
+            "total": 0,
+            "offset": 0,
+            "bones": [],
+            "nextOffset": null
+          },
+          "forwardAndBackwardSeek": {
+            "actor": "Rig209",
+            "controlled": true,
+            "time": 3.2,
+            "total": 3,
+            "offset": 0,
+            "bones": [
+              {
+                "bone": "IKRoot",
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "IKMid",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0.19866933079506122,
+                  0.9800665778412416
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              },
+              {
+                "bone": "IKTip",
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "nextOffset": null
+          },
+          "recordedTopologyChanges": true,
+          "authoringDryRunApplyUndo": true,
+          "paginatedPoseInspection": {
+            "actor": "Rig209",
+            "controlled": true,
+            "time": 0.2,
+            "total": 3,
+            "offset": 0,
+            "bones": [
+              {
+                "bone": "IKRoot",
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "quaternion": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ]
+              }
+            ],
+            "nextOffset": 1
+          },
+          "actualStopRestore": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/prefab-206-window-CqKeye/apply-target-menu.png",
+      "sha256": "2c3fa605e45c3642023c366ca4537cf661e202b650af9dec303eb1123b89ca01",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/prefab-207-window-3HaFG9/show-overrides.png",
+      "sha256": "952b0089a80875c09c181cd5ff168d22aa4672aad76abd31488c847acd379ea4",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/skeletal-209-window-VKwyiZ/recorded-topology-take.png",
+      "sha256": "d5a6064e2a8ec561b91def5bfcc74e603679259e5f20dbf6cd6f59eedc0ffba3",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2637,
+  "privateChecks": "Unique project/profile/port. Actual User directory only read for inventory, never used by tests.",
+  "storage": {
+    "path": "native/build/storage-209-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
