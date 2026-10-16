@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "6c4d9c2e0296b8bd951f1b6c9f543b48f55a39cb",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\6c37aa3d3466f4a5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\6c37aa3d3466f4a5\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\6c37aa3d3466f4a5\\HBEngine.exe",
+  "bundleHash": "6c37aa3d3466f4a54f31ff683fccdd792979926743209d56c92ae10bf43f3297",
+  "files": 2777,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2765,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b632ce56672d0c14",
+        "bytes": 176162580,
+        "manifestSHA256": "54b8f637f9666a9ba1c1961915f30cd1296327c6b9a397f17d8de4847049de5c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T23:09:41.6659219Z",
+    "bytes": 176162580,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "6c37aa3d3466f4a5"
+    ]
+  },
+  "work": "native/build/engine-231-install-l22rMF",
+  "versions": [
+    "6c37aa3d3466f4a5"
+  ],
+  "manifestVerifiedFiles": 2777,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/navigation-plane-229-window-oWGanc/acceptance.json",
+      "sha256": "88d103d547d2ded9ee358dc025f7c6325abfd0beb96bb728db7853a551e3ce89"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-2n35bc/acceptance.json",
+      "sha256": "f1bdf582abf119580895657c2343b303450d5f335cdb7a24e1016cc0a9c9efb2"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/navigation-plane-229-window-oWGanc/xy-navmesh-area-colors.png",
+      "sha256": "59ee582cff3186e60272fef0f60b899e59a2f680baf5f95304c5a73237e5b135",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/navigation-plane-229-window-oWGanc/xy-navmesh-projected-eqs.png",
+      "sha256": "f2b77981d188ff70effd364ed51016dbca64eaa664a6f9b70d0eec7d81287bfd",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2777,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Installed editor tests XY authoring/P/atomic Undo/EQS and lightmap authoring regression. Actual User read-only inventory.",
+  "storage": {
+    "path": "native/build/storage-231-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}

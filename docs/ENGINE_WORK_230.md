@@ -10,3 +10,6 @@
 
 - NavMesh 전용 bake 변화이며 렌더 UV seam stitch 기능을 완료한 것은 아니다
 - 교차 기하의 boolean/voxel 재구성·미세 균열의 사용자 제어 용접은 별도 잔여
+
+
+229–231 설치 확인: 6c37aa3d3466f4a5·명세2777파일 실행후SHA동일·사람 XY NavMesh bake/Undo·AI dryRun·P 지연 항법 표시/off해제·원자 에셋 영역색 변경/Undo 실시간 반영·XY NavMesh EQS 투영/화면표시·기존225 UV1/라이트맵/원자Undo/API가드 회귀 통과. 오류0/종료0·캡처2시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치176162580B 제거. USER_INSTALL_231.json.

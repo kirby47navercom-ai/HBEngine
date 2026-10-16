@@ -1,16 +1,13 @@
-# HBEngine 현재 인계 — 228 설치 완료·누적 목표 계속
+# HBEngine 현재 인계 — 231 설치 완료·누적 목표 계속
 
 ## 사용자 규칙
 누적 원장 잔여를 여러 분야 구현·실제 제작/실행·그룹검사·업데이트. 여기서몇개로끝내지말것. 주인님/짚짱/해요체, 사용자 창/프로세스/원본 보호·숨김 소유 EXE와 고유 profile/프로젝트/CDP. Versions1·공식 정리·한국어commit/push main·새agent금지.
 
 ## 최신 증거/현재 설치
-설치228 C:\Users\kirby\HBEngine\Versions\b632ce56672d0c14\HBEngine.exe·source aa34a22c517534ce1a11a802cd3a0a4d0760402a·bundle b632ce56672d0c14f8871927d78f37f89a69fbd21df9879d8acc0822ddeaac46·2764파일 실행후SHA동일·User10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변·Versions1·링크2/.hbproject. USER_INSTALL_228.json SHAce31ae342db1cd6c6b87a4c06409a9fe66f7eb8f1cd4bdd6f2f79b922403fa0e. 실제설치창sxTaEd 사람UV1/베이크/원자Undo/AI/binary가드 및 설치본자체builder D3D/GL/GPU독립게임 오류0/exit0 통과·캡처3시각확인. install228/finish228/docs225-228 및 모든과거원샷완료재실행금지. 이전설치222 192727227B삭제.
+설치231 C:\Users\kirby\HBEngine\Versions\6c37aa3d3466f4a5\HBEngine.exe·source 6c4d9c2e0296b8bd951f1b6c9f543b48f55a39cb·bundle 6c37aa3d3466f4a54f31ff683fccdd792979926743209d56c92ae10bf43f3297·2777파일 실행후SHA동일·User10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변·Versions1·링크2/.hbproject. USER_INSTALL_231.json SHAc1d73e1e524b9db066a59a26b23672dd2574626f41733211e277ad6119bb9f10. 실제설치창oWGanc XYNavbake/P/원자Undo/EQS/영역색 동기화 및 225라이트맵편집회귀2n35bc 모두오류0/exit0·캡처2시각확인. install231/finish231/docs229-231 및 모든과거원샷완료재실행금지. 이전설치228 176162580B삭제.
 
 ## 이어갈 작업
-223 xatlasUV1/224선택NativeUV/225간접광라이트맵 제작실행/226NativeHalf/227바이너리가드/228환경반사 구현검증·설치완료. 누적원장RND08은partial(방향성/probe/대형분할/절차하늘/mip/HWRT/DFAO 잔여)·39/35/1/3. 다음 2D/3D NavMesh 제작/경로/EQS 연결 대조 시작. navigation-mesh/funnel/query는XZ고정, NavigationRuntime XY는navmesh우회함. 최신 남은canonical과실제후속코드를대조하며새기능진행. docs225–228참고. 새agent금지·사용자창방해금지·LF·한국어commitpush.
+223–231 구현검증·설치완료. 누적잔여계속하며 다음GAM04 능력세트합성/상속·종속속성/곡선·라이브재적용을 실제제작/CPP/BP로연결할예정. 아직232코드없음. ability-assets.js/ability-runtime.js/ability-set-editor.js 확인; initialize는단일abilitySet 로컬속성만로드,세트UI는로컬테이블만있음. 기존221집계재사용/222정확주기/Kahan시계유지. 복합세트순서/순환거부/캐시/원자저장/AI 페이지가필요. 새agent금지·사용자창방해금지·LF·한국어commitpush.
 
 ## 범위/잔여
 정본 docs/research/ENGINE_STATUS.json과동기화 docs/ENGINE_STATUS.md를우선.78항목39/35/1/3이며전체UE/Unity/상용엔진완료율아님. 생성필터215/수동변수바인딩216은이미구현했고잔여로반복하지말것. 미등록struct/중첩컨테이너/큰키·기존대상수명/재부모화·PCM동기·mobileeditor/실폰/iOS·고급렌더/physics/network등정본행의구체잔여계속. 모든과거원장완료/잔여대조없이전체완료를말하지말것.
-
-## 추가229–231 설치 준비
-구현c0e5bef+18a673c·아직사용자설치228. NavMesh XY bake/portal/funnel/SAT/차원/층/MoveTo/EQS/단순회피와고수준CPP/BP,230exact position seam Navbake(렌더 원본 불변),231 P지연Nav overlay/영역색·wire/link·인덱스공유·기존prefs보존·뷰포트별격리·off해제·AI boundedmetadata·타깃assetedit/atomicUndo재동기화. CPU229SfSUHW7군·230VBIxng4군·231qtAiXw4군·199a2W3P86·191qRDena7·batch165B8Pnyg17·167pVsEDg11·presentation228검사/shortcut112명령. 실제창reLZFt P/AI/원자파일Undo/사람Navbake/EQS/화면표시 PASS. CPP/BP XY D3D8IXZGE minsep.6022·XZ WebGPU aSJzLK minsep.60199/지름.6 PASS. docs229-231.started/done완료재실행금지,이후증거갱신정상. 다음dist sync→새install231원샷→설치본229window/P/atomicUndo+225editor-only회귀→새finish231→push→누적잔여계속. native변경없어재컴파일불필요. 사용자설정읽기inventory만/Versions1. NavOverlay sourceSave/changed+Filebatchinvalidate연결됨. sourceNav씬원본UV전환고급범위나일반renderUVstitch완료claim금지. corpus229_231정확열람scope추가.

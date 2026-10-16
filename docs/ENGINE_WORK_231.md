@@ -12,3 +12,6 @@
 
 - 색은 정적 bake 영역이다. 현재 장애물 carving이나 실시간 부분 삼각 비용의 완전 시각화는 별도 잔여
 - 표시 버퍼 바이트는 해당 진단 기하 비용이며 프로세스 전체 RAM/VRAM 또는 게임 FPS 측정이 아니다
+
+
+229–231 설치 확인: 6c37aa3d3466f4a5·명세2777파일 실행후SHA동일·사람 XY NavMesh bake/Undo·AI dryRun·P 지연 항법 표시/off해제·원자 에셋 영역색 변경/Undo 실시간 반영·XY NavMesh EQS 투영/화면표시·기존225 UV1/라이트맵/원자Undo/API가드 회귀 통과. 오류0/종료0·캡처2시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치176162580B 제거. USER_INSTALL_231.json.
