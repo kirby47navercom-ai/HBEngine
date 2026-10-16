@@ -19,13 +19,14 @@ const filterKinds=()=>new Map([['all','모든 타입'],...Object.entries(assetTy
 const folderPath=value=>typeof value==='string'&&value.length<=2000&&!/^(?:[A-Za-z]:|[\\/])/.test(value)&&!value.replaceAll('\\','/').split('/').includes('..');
 function navigationState(value){
   if(!value||!folderPath(value.folder))return null;
-  return {folder:value.folder,query:typeof value.query==='string'?value.query.slice(0,500):'',type:filterKinds().has(value.type)?value.type:'all',contents:value.contents===true,recursive:value.recursive!==false,selected:Array.isArray(value.selected)?value.selected.filter(path=>typeof path==='string'&&path.length<=2000).slice(0,1000):[]};
+  return {folder:value.folder,query:typeof value.query==='string'?value.query.slice(0,500):'',type:filterKinds().has(value.type)?value.type:'all',contents:value.contents===true,recursive:value.recursive!==false,selected:Array.isArray(value.selected)?value.selected.filter(path=>typeof path==='string'&&path.length<=2000):[]};
 }
 function browserStore(){
   try{const value=JSON.parse(storage.getItem(browserKey()));if(value?.version===1&&value.instances&&typeof value.instances==='object'&&!Array.isArray(value.instances))return value;}catch{}
   return {version:1,instances:{}};
 }
 export const savedBrowserIds=()=>Object.keys(browserStore().instances).filter(browserId);
+export function projectBrowserOwnsKey(event){if(event.isComposing)return false;const mod=event.ctrlKey||event.metaKey;if(mod&&event.key.toLowerCase()==='f')return true;if(event.target.closest?.('input,textarea,select,[contenteditable]'))return false;return ['ArrowDown','ArrowUp','ArrowLeft','ArrowRight','Home','End','PageDown','PageUp','Enter','Backspace','F2',' '].includes(event.key)&&!event.altKey||mod&&['a','f'].includes(event.key.toLowerCase())||!mod&&!event.altKey&&event.key.length===1;}
 export class ProjectBrowser {
   get document(){return this.el.ownerDocument||globalThis.document;}
   constructor(element,breadcrumb,hooks={},options={}){
@@ -53,8 +54,8 @@ export class ProjectBrowser {
     });
     element.addEventListener('dblclick',event=>{const card=event.target.closest('[data-project-entry]');if(card)this.open(this.entries[Number(card.dataset.projectEntry)]);});
     element.addEventListener('keydown',event=>{
-      if(event.isComposing||event.target.matches('input,textarea,select,[contenteditable]'))return;const mod=event.ctrlKey||event.metaKey;
-      if(mod&&event.key.toLowerCase()==='f'){event.preventDefault();event.stopPropagation();this.el.querySelector('[data-project-search]').focus();}
+      if(event.isComposing)return;const mod=event.ctrlKey||event.metaKey;if(event.target.matches('input,textarea,select,[contenteditable]')&&!(mod&&event.key.toLowerCase()==='f'))return;
+      if(mod&&event.key.toLowerCase()==='f'){event.preventDefault();event.stopPropagation();const search=this.el.querySelector('[data-project-search]');search.focus();search.select();}
       else if(mod&&event.key.toLowerCase()==='a'){event.preventDefault();event.stopPropagation();this.selected=new Set(this.entries.map(file=>file.path));this.selection();}
       else if(['ArrowDown','ArrowUp','ArrowLeft','ArrowRight','Home','End','PageDown','PageUp'].includes(event.key)&&this.entries.length){event.preventDefault();event.stopPropagation();const columns=this.virtualLayout?.columns||1,step=Math.max(1,Math.floor(this.grid.clientHeight/(this.virtualLayout?.stride||35)))*columns,current=Number(event.target.closest('[data-project-entry]')?.dataset.projectEntry??this.focusedIndex??this.anchor??0),delta={ArrowDown:columns,ArrowUp:-columns,ArrowLeft:-1,ArrowRight:1,PageDown:step,PageUp:-step}[event.key];this.focusEntry(event.key==='Home'?0:event.key==='End'?this.entries.length-1:current+delta,{select:!mod||event.shiftKey,event});}
       else if(event.key===' '&&this.entries.length){event.preventDefault();event.stopPropagation();const index=Number(event.target.closest('[data-project-entry]')?.dataset.projectEntry??this.focusedIndex??0);this.select(index,{ctrlKey:true});}
@@ -82,7 +83,7 @@ export class ProjectBrowser {
   }
   rememberNavigation(){
     if(this.disposed)return;const state=this.snapshot();this.history[this.historyIndex]=state;const store=browserStore();
-    store.instances[this.id]={...state,view:this.view,history:this.history,historyIndex:this.historyIndex};storage.setItem(browserKey(),JSON.stringify(store));
+    store.instances[this.id]={...state,view:this.view,history:this.history.map((item,index)=>index===this.historyIndex?{...item,selected:[]}:item),historyIndex:this.historyIndex};storage.setItem(browserKey(),JSON.stringify(store));
     if(this.id==='project'){storage.setItem(storageKey('hbengine.project.folder'),this.folder);storage.setItem(storageKey('hbengine.project.view'),this.view);}
   }
   updateNavigation(){
