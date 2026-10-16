@@ -52,5 +52,12 @@
     }
   ],
   "executionVerified": true,
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_211.json",
+    "receiptSHA256": "75da7815fceef6cded00b890d7bead3b587be95928bd4c5da0688a36640346a5",
+    "sourceCommit": "b5db9fde5ced412bc7ef7f77531c21a594f15234",
+    "versions": [
+      "757399520cda70d2"
+    ]
+  }
 }

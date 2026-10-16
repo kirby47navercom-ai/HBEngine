@@ -9,3 +9,6 @@
 남은 범위: 생성 표시 복사본은 시각 에셋/등록 시각 컴포넌트만 포함한다. C++/BP 내부 상태·게임플레이 시뮬레이션·GPU 입자 상태·네트워크 재현 전체는 아님 / 녹화 시작 전 대상의 삭제/재생성·임의 native 배열/구조체·동적 재부모화와 거리/종류 소스 필터는 잔여. 두 표본 사이에 생성·삭제된 매우 짧은 객체는 샘플 FPS 특성상 놓칠 수 있음 / 생성 트랙은 기존 소유 시퀀스에 한정; UE root/external owner/class change/full sequencer parity 및 전문 PCM/시간코드/실기기 검증은 아님
 
 근거: [ENGINE_WORK_211.json](research/ENGINE_WORK_211.json). 설치 검증은 별도 영수증에 기록한다.
+
+
+210–211 설치 확인: 757399520cda70d2·명세2654파일 실행 후 SHA동일·SDK 헤더 포함·설치 EXE의 예산 Inspector/Undo/C++와 생성 Take 설정/적용/Undo·독립 제작 미리보기/조회·CPP 재생/Seek/Stop 통과. 예외/콘솔오류0·종료0, 캡처3 직접 시각검토. User10385파일 SHA불변·링크2/.hbproject·이전설치175366600B 제거·Versions1. USER_INSTALL_211.json.

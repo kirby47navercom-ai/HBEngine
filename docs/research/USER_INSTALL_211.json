@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "b5db9fde5ced412bc7ef7f77531c21a594f15234",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\HBEngine.exe",
+  "bundleHash": "757399520cda70d2671dfdf71b24c583a01d7277c42f2f19c1acdfe47d9d1fcd",
+  "files": 2654,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2638,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e1016dd208e2307b",
+        "bytes": 175366600,
+        "manifestSHA256": "0378f01212deeffdbd6269c68945e2e8ccb7ff2fcd4d583a308139fe24e23894"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T19:51:11.5880860Z",
+    "bytes": 175366600,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "757399520cda70d2"
+    ]
+  },
+  "work": "native/build/engine-211-install-rjMFrO",
+  "versions": [
+    "757399520cda70d2"
+  ],
+  "manifestVerifiedFiles": 2654,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/animation-budget-210-window-Alva4u/acceptance.json",
+      "sha256": "d7599031d121ab914929e3b89e4f2281b29b40062331914d24bcf6e65f6a3c7e",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\HBEngine.exe",
+        "budget": {
+          "owner": "BudgetManager",
+          "enabled": true,
+          "budgetMS": 0.0010000000474974513,
+          "observedMS": 0,
+          "measuredActors": 16,
+          "evaluated": 2,
+          "throttled": 14,
+          "protected": 0,
+          "eligible": 16,
+          "estimatedProtectedMS": 0.08696439351125636,
+          "minimumDemandMS": 0.11186141040583295,
+          "allocatedDemandMS": 0.11186141040583295,
+          "minimumExceedsBudget": true
+        },
+        "cpp": {
+          "configured": true,
+          "observed": 0.09999999403953552,
+          "rejected": true,
+          "skipped": 16
+        },
+        "checks": {
+          "humanTypedInspectorAndUndo": true,
+          "CPPConfiguresSharedManager": true,
+          "actualGLTFBoneAnimationContinues": true,
+          "optionalPoseEvaluationsSkipped": true,
+          "protectedMinimumOverBudgetVisible": true,
+          "invalidCPPBudgetRejected": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "path": "native/build/spawn-take-211-window-kenw9a/acceptance.json",
+      "sha256": "f019c9de846ac268c9247f073310094230244bbbb9bd7ed638088bacce602107",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\HBEngine.exe",
+        "checks": {
+          "humanSpawnRecordCheckboxAndApply": true,
+          "CPPSceneSpawnMoveDestroy": true,
+          "twoSpawnTracks": true,
+          "spriteReferencePreserved": true,
+          "sharedUndoAndDryRun": true,
+          "CPPPlaySeekStop": true,
+          "privateActorIDs": true,
+          "rewindRespawnCleanup": true
+        },
+        "replay": [
+          {
+            "id": "take_e6b7b0dfed714a5997b9e5062a281649_0",
+            "name": "root",
+            "kind": "cube",
+            "visible": true,
+            "position": [
+              -2,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "materialSurface": {
+              "color": "#e4a44c",
+              "light": 2,
+              "metalness": 0,
+              "roughness": 0.5
+            },
+            "components": [
+              {
+                "id": "0a7dd513-5f06-4df4-ad62-ec8e0695fd9b",
+                "name": "MeshRenderer",
+                "properties": {
+                  "enabled": true,
+                  "mesh": "",
+                  "material": "",
+                  "visible": true,
+                  "castShadow": true,
+                  "receiveShadow": true,
+                  "motionVectors": "perObject"
+                },
+                "type": "MeshRenderer"
+              }
+            ],
+            "sequencePlayback": true,
+            "collisionEnabled": false,
+            "gameplayDebug": {
+              "morphs": []
+            },
+            "grounded": false
+          },
+          {
+            "id": "take_e6b7b0dfed714a5997b9e5062a281649_1",
+            "name": "sprite",
+            "kind": "sprite",
+            "visible": true,
+            "position": [
+              0,
+              1.7999999523162842,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "parent": "take_e6b7b0dfed714a5997b9e5062a281649_0",
+            "components": [
+              {
+                "id": "57795368-9ade-4f52-898e-60ef17b1bd8a",
+                "name": "SpriteRenderer",
+                "properties": {
+                  "enabled": true,
+                  "sprite": "Assets/S_Spawn211.hbsprite.json",
+                  "drawMode": "simple",
+                  "texture": "",
+                  "color": [
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "width": 1,
+                  "height": 1,
+                  "pixelsPerUnit": 100,
+                  "flipX": false,
+                  "flipY": false,
+                  "sortingOrder": 0,
+                  "billboard": false,
+                  "visible": true,
+                  "tileOrigin": "bottomLeft",
+                  "borderLeft": 0,
+                  "borderBottom": 0,
+                  "borderRight": 0,
+                  "borderTop": 0,
+                  "sortPoint": "center",
+                  "useCustomSize": false,
+                  "sortingLayer": "default",
+                  "maskInteraction": "none",
+                  "shading": "unlit",
+                  "blendMode": "translucent",
+                  "emissiveIntensity": 0,
+                  "alphaCutoff": 0.5,
+                  "normalTexture": "",
+                  "lightMaskTexture": "",
+                  "normalStrength": 1,
+                  "normalFlipY": false,
+                  "castShadow": false,
+                  "receiveShadow": false
+                },
+                "type": "SpriteRenderer"
+              }
+            ],
+            "sequencePlayback": true,
+            "collisionEnabled": false,
+            "gameplayDebug": {
+              "morphs": []
+            },
+            "grounded": false
+          }
+        ],
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/animation-budget-210-window-Alva4u/budget-runtime.png",
+      "sha256": "d0e462ec2b19ea4d064ae8231a4f384c666497c7ab957d7124c709b90a2ee251",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/spawn-take-211-window-kenw9a/recorded-spawn-tracks.png",
+      "sha256": "19efee00791fb2cdfb82951ca5fefe644e9025092a83e257d9a6886a5c6a13d6",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/spawn-take-211-window-kenw9a/authoring-spawn-preview.png",
+      "sha256": "01efa82d715f3090362cff6bb4f11e6d4e73382b14aa4bfdc2d23d5210e158fd",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2654,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Actual User only read for inventory. SDK headers included and manifest verified.",
+  "storage": {
+    "path": "native/build/storage-211-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
