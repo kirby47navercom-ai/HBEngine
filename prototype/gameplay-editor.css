@@ -34,3 +34,9 @@
 .sequence-binding-list>button[hidden]{display:none}
 
 .eqs-debug-point small{font:inherit}.eqs-debug-point small[hidden]{display:none}.eqs-debug-point.failed:before{border-radius:0;width:5px;height:5px}
+
+.ability-set-editor table{border-collapse:collapse;width:100%;table-layout:fixed}.ability-set-editor th{text-align:left;font-size:12px;color:var(--muted);font-weight:400}.ability-set-editor th:first-child{width:28%}.ability-set-editor th:last-child{width:50px}.ability-set-editor td{padding:4px 6px 4px 0}.ability-set-editor td input{width:100%;box-sizing:border-box;min-width:0}.ability-set-editor .form-section-heading{display:flex;align-items:center;gap:10px}.ability-set-editor .form-section-heading h3{margin-right:auto}.ability-set-reference{display:flex;gap:6px;margin:5px 0}.ability-set-reference>button:first-child{flex:1;text-align:left}
+
+.ability-readout{margin:8px 0;max-height:350px;overflow:auto}.ability-readout table{width:100%;font-size:11px;border-collapse:collapse;margin:6px 0}.ability-readout th{text-align:left;font-weight:400;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis}.ability-readout td{text-align:right;font-variant-numeric:tabular-nums}.ability-readout td,.ability-readout th{padding:4px 3px;border-bottom:1px solid var(--line)}
+
+.take-settings>div{min-width:270px;overflow-x:hidden}.take-settings .take-spawn-filter{min-width:0}.take-settings .take-spawn-filter label{grid-template-columns:100px minmax(0,1fr)}

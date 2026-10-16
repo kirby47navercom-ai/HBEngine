@@ -1,3 +1,4 @@
+import {abilityDebugPage,updateAbilityReadout} from './ability-inspector.js';
 import {EqsDebugOverlay,eqsDebugPage} from './eqs-debug.js';
 import {sequenceBindingChoices,appendSequenceBinding} from './sequence-bindings.js';
 import {updateRuntimeInspector,runtimeInspectorStructure} from './runtime-inspector-values.js';
@@ -1183,7 +1184,7 @@ window.addEventListener('beforeunload',e=>{persistRecovery();if(dirty&&!leavingP
 window.addEventListener('pagehide',()=>objectUrls.forEach(url=>URL.revokeObjectURL(url)));
 let previous=performance.now(),nextRuntimeInspectorUpdate=0;
 function animate(now){dock?.requestAnimationFrame?dock.requestAnimationFrame(animate):requestAnimationFrame(animate);const dt=Math.min((now-previous)/1000,.1);previous=now;
-  if(running&&now>=nextRuntimeInspectorUpdate){nextRuntimeInspectorUpdate=now+250;const owner=selected&&runtime?.object(selected);if(owner&&workspace==='scene'){const pane=$('#inspector-content'),signature=runtimeInspectorStructure(owner,runtime.bindings);if(pane.dataset.runtimeInspectorFor===owner.id&&pane.dataset.runtimeInspectorStructure!==signature)renderInspector();pane.dataset.runtimeInspectorFor=owner.id;pane.dataset.runtimeInspectorStructure=signature;updateRuntimeInspector(pane,owner,runtime.bindings);if(owner.components?.some(c=>c.type==='AnimationBudget'))updateAnimationBudgetReadout($('#inspector-content'),owner);}}
+  if(running&&now>=nextRuntimeInspectorUpdate){nextRuntimeInspectorUpdate=now+250;const owner=selected&&runtime?.object(selected);if(owner&&workspace==='scene'){const pane=$('#inspector-content'),signature=runtimeInspectorStructure(owner,runtime.bindings);if(pane.dataset.runtimeInspectorFor===owner.id&&pane.dataset.runtimeInspectorStructure!==signature)renderInspector();pane.dataset.runtimeInspectorFor=owner.id;pane.dataset.runtimeInspectorStructure=signature;updateRuntimeInspector(pane,owner,runtime.bindings);if(owner.components?.some(c=>c.type==='AbilitySystem'))updateAbilityReadout(pane,owner);if(owner.components?.some(c=>c.type==='AnimationBudget'))updateAnimationBudgetReadout($('#inspector-content'),owner);}}
   if(!running||paused)corePreview.delta=0;for(const [path,pane] of assetPanes)if(path===assetDocs.active||dock?.visible(pane.id))pane.editor?.runtimeState?.(objects,running);
   if(cloudGroup&&skyDome)syncSkyToCamera({skyDome,cloudGroup},activeCamera,mainPresentation.settings.realtime?dt:0);
   if(mainRenderer&&scene){mainRenderer.info.reset();visuals.tickParticles(objects,dt,running);mainPointerInput.refreshDocument();for(const view of extraViewports)if(dock.visible(view.id)){view.controls.update(dt);if(view.presentation.settings.realtime||view.presentation.needsRender||running)renderViewport(view,null,dt);}}
@@ -1680,6 +1681,7 @@ const editorCommandMethods={
   'state.add':params=>automationAuthoringEdit(params,'statemachine',data=>({state:addState(data,{parent:params.parent,name:params.name,position:params.position,submachine:params.submachine})})),
   'state.reparent':params=>automationAuthoringEdit(params,'statemachine',data=>{reparentState(data,params.state,params.parent);return {state:params.state};}),
   'state.remove':params=>automationAuthoringEdit(params,'statemachine',data=>({removed:removeState(data,params.state)})),
+  'runtime.abilities':params=>{if(!running)throw Error('게임 실행 중에 조회하세요.');return abilityDebugPage(runtime.object(params.target),params);},
   'runtime.eqs.run':params=>runtimeEqsOperation(params),
   'runtime.eqs.read':params=>{if(!running)throw Error('게임 실행 중에 조회하세요.');return {...eqsDebugPage(runtime?.object(params.target)?.gameplayDebug?.eqsDiagnostic,params),view:eqsDebugOverlay?.inspect()||{enabled:false}};},
   'runtime.eqs.view':params=>showEqsDebug(params.target,params),

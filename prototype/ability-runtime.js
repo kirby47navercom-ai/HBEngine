@@ -8,6 +8,16 @@ export class AbilitySystem {
   cue(s,data,phase,args={}){for(const row of data.cues||[])if(row.on===phase)this.events.push({owner:s.object.id,event:row.event,args:{...args,tag:row.tag,phase}});}
   removeEffect(s,handle,reason){const e=s.effects.get(handle);if(!e)return;s.effects.delete(handle);this.cue(s,e.data,'remove',{effect:e.asset,handle,reason});}
   state(o){let s=this.owners.get(o.id);if(!s){s={object:o,attributes:new Map(),effects:new Map(),abilities:new Map(),baseTags:new Set(o.tags||[])};this.owners.set(o.id,s);}return s;}
+  async initialize(object,settings,vm){
+    if(this.owners.has(object.id))return;
+    // Resolve the complete starting set before installing any owner state.
+    // Existing projects retain their Health/Mana and single starting ability.
+    const set=settings.abilitySet?await this.load(settings.abilitySet,'abilityset'):null,attributes=new Map([['Health',{base:settings.health,min:0,max:settings.health}],['Mana',{base:settings.mana,min:0,max:settings.mana}]]);
+    for(const row of set?.attributes||[])attributes.set(row.name,{base:row.base,min:row.min,max:row.max});
+    const paths=[...new Set([settings.ability,...set?.abilities||[]].filter(Boolean))],definitions=await Promise.all(paths.map(async path=>[path,await this.load(path,'ability')]));
+    if(vm.active===false||vm.object(object.id)!==object||object.poolActive===false||this.owners.has(object.id))return;
+    const state=this.state(object);state.attributes=attributes;for(const tag of set?.grantedTags||[])state.baseTags.add(tag);for(const [asset,data]of definitions)state.abilities.set(asset,{asset,data,ready:0,active:false,end:0});this.sync(state);
+  }
   tagChange(o,tag,add){const s=this.owners.get(o.id);if(!s)return;if(add)s.baseTags.add(tag);else s.baseTags.delete(tag);this.sync(s);}
   value(s,name){const a=s.attributes.get(name);if(!a)throw Error('등록되지 않은 속성: '+name);let v=a.base;for(const e of s.effects.values())if(e.data.period===0)for(const m of e.data.modifiers)if(m.attribute===name){if(m.operation==='add')v+=m.magnitude*e.stacks;else if(m.operation==='multiply')v*=m.magnitude**e.stacks;else v=m.magnitude;}return Math.max(a.min,Math.min(a.max,v));}
   sync(s){const tags=new Set(s.baseTags);for(const e of s.effects.values())for(const tag of e.data.grantedTags)tags.add(tag);for(const a of s.abilities.values())if(a.active)for(const tag of a.data.grantedTags)tags.add(tag);s.object.tags=[...tags];s.object.gameplayDebug={...s.object.gameplayDebug,ability:{time:this.time,attributes:Object.fromEntries([...s.attributes].map(([k,a])=>[k,{...a,current:this.value(s,k)}])),effects:[...s.effects.values()].map(e=>({handle:e.handle,asset:e.asset,stacks:e.stacks,remaining:e.end===Infinity?-1:Math.max(0,e.end-this.time)})),abilities:Object.fromEntries([...s.abilities].map(([k,a])=>[k,{active:a.active,cooldown:Math.max(0,a.ready-this.time)}]))}};}
@@ -47,6 +57,6 @@ export class AbilitySystem {
       for(const a of s.abilities.values())if(a.active&&a.end<=this.time){this.end(s,a,'completed');dirty=true;}const cooldown=[...s.abilities.values()].some(a=>a.ready>this.time);if(dirty||s.effects.size||cooldown||s.cooldown||[...s.abilities.values()].some(a=>a.active))this.sync(s);s.cooldown=cooldown;}
     for(const event of this.events.splice(0)){if(!vm.active||!vm.object(event.owner))continue;for(const b of vm.bindings.filter(b=>b.self===event.owner))await vm.custom(b,event.event,event.args);}
   }
-  remove(id){this.owners.delete(id);this.events=this.events.filter(e=>e.owner!==id);}
+  remove(id){const state=this.owners.get(id);if(state)state.object.tags=[...state.baseTags];this.owners.delete(id);this.events=this.events.filter(e=>e.owner!==id);}
   dispose(){for(const s of this.owners.values())s.object.tags=[...s.baseTags];this.owners.clear();this.events=[];}
 }
