@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "3e970d437ea2aca52cb0ec3bdfd6751604ce4f4e",
+  "basisRevision": "617d263041d9ad0e74a9eaa7f821e60249dcc511",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -457,10 +457,10 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기 · 171: UV 분리 노멀/기하 보존 경계 좌표 맞추기 ·182: 서로 다른 정점 수의 두 폐곡선/열린 경로 연결·선형 길이 대응/시작 오프셋·평면 영역 인셋/구멍·오목 경계/UV색 보간·재삼각화·실패 선택 보존·AI dryRun/revision/Undo·실제 렌더/충돌 C++",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기 · 171: UV 분리 노멀/기하 보존 경계 좌표 맞추기 ·182: 서로 다른 정점 수의 두 폐곡선/열린 경로 연결·선형 길이 대응/시작 오프셋·평면 영역 인셋/구멍·오목 경계/UV색 보간·재삼각화·실패 선택 보존·AI dryRun/revision/Undo·실제 렌더/충돌 C++ ·223: 별도UV1·전속성 보존·분리Worker xatlas 자동 곡면 차트/회전 패킹·겹침 검사·사람/AI/Undo/저장 ·224: 기존48B 정점 유지·선택8B UV1 네이티브 스트림/실제DirectX 픽셀",
       "remaining": [
         "bevel·edge loop·곡면 영역 offset/재투영·3D 연결 스트립의 고급 꼬임/교차 복구",
-        "곡면 고급 unwrap·normal split seam stitch·최적 회전/고급 패킹"
+        "normal split seam stitch·사용자 고정 chart 재패킹·다중 아틀라스·대형/비다양체 곡면 품질 검증"
       ],
       "sources": [
         "prototype/placement-catalog.js",
@@ -470,7 +470,10 @@
         "prototype/world-asset-editor.js",
         "prototype/mesh-uv.js",
         "prototype/mesh-boundaries.js",
-        "prototype/mesh-region.js"
+        "prototype/mesh-region.js",
+        "prototype/mesh-atlas.js",
+        "prototype/mesh-atlas-core.js",
+        "prototype/mesh-uv-inspection.js"
       ],
       "evidence": [
         "docs/ENGINE_PLAN.md",
@@ -479,7 +482,9 @@
         "docs/research/ENGINE_WORK_169.json",
         "docs/research/ENGINE_WORK_170.json",
         "docs/research/ENGINE_WORK_171.json",
-        "docs/research/ENGINE_WORK_182.json"
+        "docs/research/ENGINE_WORK_182.json",
+        "docs/research/ENGINE_WORK_223.json",
+        "docs/research/ENGINE_WORK_224.json"
       ]
     },
     {

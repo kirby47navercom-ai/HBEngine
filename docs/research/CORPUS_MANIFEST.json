@@ -3346,5 +3346,31 @@
       }
     ],
     "plan": "Existing HB native SceneVertex has UV0 only; mesh-uv authored data has one UV set. Need preserved secondary channel + explicit chart validation/authoring then actual baked texture/radiance and all rendering/package consumers; do not label a vertex-color or UV-only feature as completed lightmap baking."
+  },
+  "supplemental223_225": {
+    "date": "2026-10-17",
+    "reads": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/lighting-mode.html",
+        "ownBodyLines": "128-245",
+        "summary": "direct/indirect/specular/shadow modes and static lightmap/dynamic probe storage; links/media not read by this page read"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mode777/xatlas-wasm/main/API.md",
+        "ownRead": "create/add/generate/pack/options/output xref/destroy API sections; shipped0.1.3 actual ESM wrapper crosschecked",
+        "summary": "normalized atlas UV and vertex split require xref remapping; worker ownership and destruction"
+      },
+      {
+        "url": "https://github.com/repalash/xatlas.js/",
+        "ownRead": "README usage and installed0.2.0 API; not selected",
+        "summary": "observed Uint16 index/xref wrapper; chose Uint32-capable xatlas-wasm0.1.3 instead"
+      },
+      {
+        "url": "https://github.com/jpcy/xatlas/blob/master/LICENSE",
+        "ownRead": "MIT license text",
+        "summary": "license retained in docs/licenses/xatlas.txt"
+      }
+    ],
+    "implementationScope": "223 UV authoring and224 native coordinate prerequisite only; no claim of full UE/Unity/lightmap implementation"
   }
 }

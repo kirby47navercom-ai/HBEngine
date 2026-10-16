@@ -890,3 +890,5 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 222:221benchmark의baseline에서 period.1/duration.3 종료 시Health196!=194 검출. 반복 next+=period가end보다ULP만큼커져 마지막tick누락.221성능비교는비정수경계 .4/.3001로 분리하고222는원래경계/큰절대시각을독립수정:고정epoch+정수카운트/4ULP capped1/4period/Kahan시각.0/1008/1e9·70tick/zeroDelta/unsafe검사Ld1HA9·실제1whOQy/jeY4Hh 통과.221기준과 시간/remaining만1e-9허용하며속성/효과내용은정확비교.
+
+223/224: 테스트 도구의 g++ -o 절대 한글 경로는 linker가 오해독(9f1G3k)→root 상대 출력 경로 수정. 제품 문제 아님. 실제장치w4MAIF PASS. Python Windows write_text CRLF가 HEAD LF와 달라 대량diff 발생→Node로정본 LF복원. 새core/md2곳은후속정리.

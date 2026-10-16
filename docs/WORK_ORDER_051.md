@@ -348,3 +348,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 221–222 설치 확인: be51b1db8dde157a·명세2718파일 실행후SHA동일·passive속성/태그 집계 재사용·실제CPP/BP 주기3틱/Health147/Stat108·현재Inspector/AI·218속성세트/Undo/비용/효과/작은Take팝업 회귀 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치194263160B 제거. USER_INSTALL_222.json.
+
+
+223–224: 독립 UV1·xatlas Worker 자동 곡면 차트·겹침/퇴화 검사·사람/AI/Undo/저장·선택 Native UV 스트림·픽셀 출력 통과. 광선 베이크·재료/런타임 수신·패키징은 다음225로 이어 진행. 전체 베이크 완료로 표현하지 않음.
