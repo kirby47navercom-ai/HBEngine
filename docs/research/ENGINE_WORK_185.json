@@ -1,0 +1,1803 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "f66c361",
+  "targetIds": [
+    "CPP-01",
+    "AI-03",
+    "PER-03"
+  ],
+  "checks": {
+    "cpuAndCompiledCpp": {
+      "path": "native/build/engine-185-x3wSLw/acceptance.json",
+      "sha256": "8de1af11fb924edc7fb23e6a4b8a3290d4603235a5253f188646236958f1ca8b",
+      "result": {
+        "passed": 5,
+        "total": 5,
+        "checks": [
+          {
+            "name": "opaque IDs, nested local paths and instance isolation work for spawned and linked prefabs",
+            "passed": true
+          },
+          {
+            "name": "inactive, destruction, metadata, malformed input and detached families have explicit outcomes",
+            "passed": true
+          },
+          {
+            "name": "generated nodes keep exact typed C++ signatures and declared service categories",
+            "passed": true
+          },
+          {
+            "name": "real Blueprint pure chain finds nested member and prints its stable local ID",
+            "passed": true
+          },
+          {
+            "name": "compiled C++ matches shared Blueprint lookup and preserves inactive/linked state",
+            "passed": true
+          }
+        ],
+        "nodes": 781
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-185-window-d22iLu/acceptance.json",
+      "sha256": "65b210128e48a93cc8edb3144b64fd99531e39e6a294279e41ca4371512ee756",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "instanceNode": {
+          "typedCreation": true,
+          "editorRendered": true,
+          "undo": true,
+          "saved": true
+        },
+        "nestedPrefab": {
+          "humanAdditionApply": true,
+          "sourcePreserved": true,
+          "baselineUpdated": true,
+          "atomicSourceAndSceneUndoRedo": true
+        },
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3d": {
+      "path": "native/build/engine-185-player-NpVd0C/acceptance.json",
+      "sha256": "5310dcdcf1dc6556ad1795dbd42e83924331b9bf49c9418e7fdb1ff9eee7298e",
+      "result": {
+        "passed": true,
+        "instanceLookup": {
+          "member": "NestedFresh_2",
+          "localId": "added_nested",
+          "count": 4,
+          "sameCppSpawnRead": true,
+          "subsequentSnapshot": true
+        },
+        "nestedPrefab": {
+          "cppSpawnAndLookup": true,
+          "outerAdditionAndRemoval": true,
+          "innerSourcePreserved": true
+        },
+        "meshAuthoring": {
+          "regionRay": 0,
+          "bridgeRay": 2.000000238418579,
+          "externalAssetsPackaged": true
+        },
+        "lod": {
+          "diagnostics": {
+            "collisionCache": {
+              "entries": 2,
+              "estimatedBytes": 1600,
+              "budgetBytes": 33554432
+            },
+            "actors": [
+              {
+                "actor": "Imported",
+                "level": 2,
+                "rate": 0,
+                "visual": true,
+                "elapsed": 0,
+                "reason": "root-motion"
+              },
+              {
+                "actor": "LODVisual",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.11199999999999997,
+                "reason": ""
+              },
+              {
+                "actor": "LODSprite",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.11199999999999997,
+                "reason": ""
+              },
+              {
+                "actor": "LODCollision",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.11199999999999997,
+                "reason": ""
+              }
+            ]
+          },
+          "boneWrites": 3,
+          "spriteWrites": 2,
+          "protectedRoot": {
+            "level": 2,
+            "animationRate": 0,
+            "reason": "root-motion"
+          },
+          "nativeNear": 0.4999995231628418,
+          "nativeFar": 10.5,
+          "physicsCacheReused": true,
+          "queryMs": 7.967099999999846
+        },
+        "importedMotion": {
+          "x": 1.7541522942044526e-18,
+          "y": 0.007899999618530273,
+          "z": 0
+        },
+        "importedVisual": {
+          "meshes": [
+            {
+              "visible": true,
+              "source": {
+                "format": "gltf",
+                "index": 0,
+                "name": "Repeated"
+              }
+            },
+            {
+              "visible": false,
+              "source": {
+                "format": "gltf",
+                "index": 1,
+                "name": "Repeated"
+              }
+            }
+          ],
+          "size": [
+            1.0000000000000007,
+            3,
+            1
+          ]
+        },
+        "autoRows": {
+          "pool": 12,
+          "first": 152,
+          "secondTop": 152,
+          "width": 407,
+          "widthStyle": "max(0px, 33% + 0px)",
+          "narrow": 363,
+          "largeFont": 402,
+          "fractional": {
+            "height": 333.84375,
+            "natural": 223,
+            "next": 550.5,
+            "firstBottom": 549.84375
+          },
+          "keyboard": true,
+          "cppData": true,
+          "disabledInput": true,
+          "tree": true
+        },
+        "vehicle": {
+          "object": {
+            "id": "Vehicle",
+            "name": "Vehicle",
+            "kind": "cube",
+            "group": "WORLD",
+            "position": [
+              8.066303253173828,
+              -10.44134521484375,
+              0.7414547204971313
+            ],
+            "rotation": [
+              -1.0889718033822853,
+              2.2036122464508208,
+              0.19756963789034926
+            ],
+            "scale": [
+              1.8,
+              0.6,
+              3.6
+            ],
+            "visible": true,
+            "components": [
+              {
+                "id": "component_0",
+                "name": "Transform",
+                "type": "Transform",
+                "properties": {
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "scale": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              },
+              {
+                "id": "component_1",
+                "name": "MeshRenderer",
+                "type": "MeshRenderer",
+                "properties": {
+                  "enabled": true,
+                  "mesh": "",
+                  "material": "",
+                  "visible": true,
+                  "castShadow": true,
+                  "receiveShadow": true,
+                  "motionVectors": "perObject"
+                }
+              },
+              {
+                "id": "component_2",
+                "name": "BoxCollider",
+                "type": "BoxCollider",
+                "properties": {
+                  "enabled": true,
+                  "center": [
+                    0,
+                    0.5,
+                    0
+                  ],
+                  "collisionMode": "both",
+                  "trigger": false,
+                  "layer": 0,
+                  "mask": 4294967295,
+                  "physicalMaterial": "",
+                  "friction": 0.5,
+                  "frictionCombine": "average",
+                  "restitution": 0,
+                  "restitutionCombine": "average",
+                  "density": 1,
+                  "extent": [
+                    0.5,
+                    0.5,
+                    0.5
+                  ]
+                }
+              },
+              {
+                "id": "dd8b2d92-e1ef-46a0-8ed2-b7aef7fadd31",
+                "name": "Rigidbody",
+                "type": "Rigidbody",
+                "properties": {
+                  "enabled": true,
+                  "mass": 1200,
+                  "autoMass": false,
+                  "useGravity": true,
+                  "isKinematic": false,
+                  "drag": 0,
+                  "velocity": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "freezePosition": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "bodyType": "dynamic",
+                  "gravityScale": 1,
+                  "angularDrag": 0.05,
+                  "angularVelocity": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "collisionDetection": "discrete",
+                  "freezeRotation": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              },
+              {
+                "id": "16626abf-8c98-4e4b-bbf0-219481f33a39",
+                "name": "RaycastVehicle",
+                "type": "RaycastVehicle",
+                "properties": {
+                  "enabled": true,
+                  "engineForce": 2000,
+                  "maxSteerAngle": 30,
+                  "brakeImpulse": 25,
+                  "handbrakeImpulse": 45,
+                  "groundMask": -1,
+                  "showWheels": true,
+                  "throttle": 0.6000000238418579,
+                  "steering": 0.25,
+                  "brake": 0,
+                  "handbrake": 0,
+                  "wheels": [
+                    {
+                      "name": "Front Left",
+                      "position": [
+                        -0.9,
+                        0.1,
+                        1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 1,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": false
+                    },
+                    {
+                      "name": "Front Right",
+                      "position": [
+                        0.9,
+                        0.1,
+                        1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 1,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": false
+                    },
+                    {
+                      "name": "Rear Left",
+                      "position": [
+                        -0.9,
+                        0.1,
+                        -1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 0,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": true
+                    },
+                    {
+                      "name": "Rear Right",
+                      "position": [
+                        0.9,
+                        0.1,
+                        -1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 0,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": true
+                    }
+                  ]
+                }
+              }
+            ],
+            "actorClasses": [
+              "Actor"
+            ],
+            "gameplayDebug": {
+              "morphs": [],
+              "physics": {
+                "dimension": 3,
+                "bodyType": "dynamic",
+                "mass": 1200,
+                "sleeping": false,
+                "velocity": [
+                  0.2495434582233429,
+                  -0.07176806777715683,
+                  2.3826465606689453
+                ],
+                "angularVelocity": [
+                  -0.0008287437376566231,
+                  0.12356697022914886,
+                  0.0009228328708559275
+                ],
+                "ccd": false,
+                "colliders": 1
+              },
+              "vehicle": {
+                "speed": 2.38868676937379,
+                "wheelCount": 4,
+                "wheels": [
+                  {
+                    "position": [
+                      -0.9,
+                      0.1,
+                      1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.30005359649658203,
+                    "rotation": 2.0568459033966064,
+                    "steering": 0.13089969754219055,
+                    "contact": true,
+                    "force": 2175.23095703125
+                  },
+                  {
+                    "position": [
+                      0.9,
+                      0.1,
+                      1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.30491822957992554,
+                    "rotation": 1.875959873199463,
+                    "steering": 0.13089969754219055,
+                    "contact": true,
+                    "force": 1991.638427734375
+                  },
+                  {
+                    "position": [
+                      -0.9,
+                      0.1,
+                      -1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.2526043653488159,
+                    "rotation": 2.0409820079803467,
+                    "steering": 0,
+                    "contact": true,
+                    "force": 3897.116455078125
+                  },
+                  {
+                    "position": [
+                      0.9,
+                      0.1,
+                      -1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.257468044757843,
+                    "rotation": 1.8585374355316162,
+                    "steering": 0,
+                    "contact": true,
+                    "force": 3713.55810546875
+                  }
+                ]
+              }
+            },
+            "velocity": [
+              0.2495434582233429,
+              -0.07176806777715683,
+              2.3826465606689453
+            ],
+            "angularVelocity": [
+              -0.0008287437376566231,
+              0.12356697022914886,
+              0.0009228328708559275
+            ],
+            "grounded": false
+          },
+          "cppSpeed": {
+            "clock": {
+              "delta": 0.007000000216066837,
+              "paused": false,
+              "scale": 1,
+              "time": 2.1885998249053955
+            },
+            "clockBatchable": true,
+            "events": [],
+            "foreign": [],
+            "gameSession": {
+              "id": "0f293ef6-d7bf-4053-bce2-1c8a28d627b8",
+              "state": {}
+            },
+            "objects": [],
+            "ok": true,
+            "operations": [],
+            "outputs": {
+              "result": 2.3886866569519043
+            },
+            "timerCallbacks": [],
+            "timerEvents": [],
+            "transport": {
+              "invokeMs": 0.0055,
+              "parseMs": 0.0309,
+              "patchMs": 0.0377,
+              "restoreRows": 1,
+              "snapshotMs": 0.0142,
+              "syncMs": 0.0102,
+              "workerMs": 0.0998,
+              "mode": "patch",
+              "bytes": 1829,
+              "patchOperations": 6,
+              "prepareMs": 0.01069999999981519,
+              "replyBytes": 493,
+              "returnedObjects": 0,
+              "rpcMs": 0.2613000000001193,
+              "physicsQueryMs": 0,
+              "physicsQueryCount": 0,
+              "physicsCacheReused": true,
+              "decodeMs": 0.05209999999988213,
+              "validateMs": 3.007499999999709,
+              "replyValidationMs": 0.0194999999994252,
+              "upstreamMode": "patch",
+              "upstreamBytes": 1936,
+              "channel": "websocket",
+              "clientSerializeMs": 0.29999999701976776,
+              "clientPatchMs": 0.09999999403953552,
+              "clientAckMs": 0,
+              "worldRows": 38,
+              "reusedRows": 35,
+              "clientApplyMs": 0,
+              "frontendMs": 4.100000008940697,
+              "callCount": 1
+            },
+            "worldCommitted": [],
+            "worldSequence": 191
+          },
+          "wheelVisual": {
+            "id": "Vehicle",
+            "wheelCount": 4,
+            "contacts": 4,
+            "speed": 2.38868676937379,
+            "centers": [
+              [
+                7.215726986675017,
+                -10.620068485317894,
+                2.028738468911281
+              ],
+              [
+                9.014401944896061,
+                -10.620041879046573,
+                1.959513772338028
+              ],
+              [
+                7.11943647128685,
+                -10.620105348689307,
+                -0.46985704953981167
+              ],
+              [
+                8.918111426221836,
+                -10.62007778891918,
+                -0.5390817641111146
+              ]
+            ]
+          }
+        },
+        "joints": [
+          {
+            "id": "Joint2D",
+            "rotation": [
+              0,
+              0,
+              44.559314031895276
+            ],
+            "component": {
+              "enabled": true,
+              "jointType": "hinge",
+              "connectedBody": "",
+              "autoConnectedAnchor": true,
+              "anchor": [
+                0,
+                0,
+                0
+              ],
+              "connectedAnchor": [
+                0,
+                0,
+                0
+              ],
+              "axis": [
+                0,
+                0,
+                1
+              ],
+              "enableCollision": false,
+              "useFrames": true,
+              "frameRotation": [
+                0,
+                0,
+                0
+              ],
+              "autoConnectedFrame": true,
+              "connectedFrameRotation": [
+                0,
+                0,
+                0
+              ],
+              "connectedAxis": [
+                1,
+                0,
+                0
+              ],
+              "referenceAngle": 45,
+              "enableLimit": true,
+              "lowerLimit": -5,
+              "upperLimit": 5,
+              "useMotor": true,
+              "motorPosition": 0,
+              "motorVelocity": 0,
+              "motorStiffness": 100,
+              "motorMaxForce": 100,
+              "motorDamping": 10,
+              "distance": 1,
+              "stiffness": 100,
+              "damping": 5
+            }
+          },
+          {
+            "id": "Joint3D",
+            "rotation": [
+              -0.0000014806361221155614,
+              -1.7229179818961052e-7,
+              44.559292099548806
+            ],
+            "component": {
+              "enabled": true,
+              "jointType": "hinge",
+              "connectedBody": "",
+              "autoConnectedAnchor": true,
+              "anchor": [
+                0,
+                0,
+                0
+              ],
+              "connectedAnchor": [
+                0,
+                0,
+                0
+              ],
+              "axis": [
+                0,
+                0,
+                1
+              ],
+              "enableCollision": false,
+              "useFrames": true,
+              "frameRotation": [
+                0,
+                0,
+                0
+              ],
+              "autoConnectedFrame": true,
+              "connectedFrameRotation": [
+                0,
+                0,
+                0
+              ],
+              "connectedAxis": [
+                1,
+                0,
+                0
+              ],
+              "referenceAngle": 45,
+              "enableLimit": true,
+              "lowerLimit": -5,
+              "upperLimit": 5,
+              "useMotor": true,
+              "motorPosition": 0,
+              "motorVelocity": 0,
+              "motorStiffness": 100,
+              "motorMaxForce": 100,
+              "motorDamping": 10,
+              "distance": 1,
+              "stiffness": 100,
+              "damping": 5
+            }
+          }
+        ],
+        "worldUI": {
+          "projection": true,
+          "stableSize": {
+            "x": 192,
+            "y": 116,
+            "width": 320,
+            "height": 100,
+            "hidden": false
+          },
+          "offscreen": true,
+          "movement": true
+        },
+        "composition": {
+          "namedSlot": true,
+          "externalSourceContentPackaged": true,
+          "humanMappedBlueprintEvent": true,
+          "cppNestedText": true,
+          "overrides": true
+        },
+        "network": {
+          "realClientCatalog": true,
+          "interestDespawnReentry": true,
+          "realClientDestroy": true,
+          "cppHostSpawnDestroy": true,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "retainedTombstones": 0,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 21
+          }
+        },
+        "configuration": "release",
+        "renderer": {
+          "lineMeshes": 2,
+          "backend": "D3D11",
+          "rayGeometry": null,
+          "bvh": null,
+          "info": {
+            "calls": 28
+          },
+          "memory": {
+            "geometries": 21,
+            "textures": 2
+          },
+          "bloomAllocations": 0,
+          "bloomComposites": 0,
+          "bloomDispatches": 0,
+          "bloomLevels": 0,
+          "bloomTextureBytes": 0,
+          "calls": 28,
+          "captures": 0,
+          "deformationBufferBytes": 720,
+          "deformations": 1,
+          "draws2d": 0,
+          "gpuTimeMs": 0.166912,
+          "gpuTimingFrame": 365,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 0,
+          "meshes": 21,
+          "particleBirths": 0,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 0,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 0,
+          "particlePools": 0,
+          "particleSortPasses": 0,
+          "particleSteps": 0,
+          "passes2d": 0,
+          "poseUpdates": 1,
+          "presents": 366,
+          "probeCaptures": 0,
+          "probeDispatches": 0,
+          "probeTextureBytes": 0,
+          "programs": 0,
+          "rasterLightTileBytes": 0,
+          "rasterLightTileDispatches": 0,
+          "raySceneUpdateBytes": 0,
+          "raySceneUpdates": 0,
+          "reflectionProbes": 0,
+          "shaderCompilation": {
+            "compilations": 0,
+            "cacheHits": 0,
+            "cacheMisses": 0,
+            "cacheEvictions": 0,
+            "cacheBytes": 0,
+            "cacheBudgetBytes": 8388608,
+            "lastCompileMS": 0,
+            "totalCompileMS": 0,
+            "sourceBuilds": 0
+          },
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 0,
+          "shadowTextureBytes": 0,
+          "skyCaptureFace": 0,
+          "skyCaptureFilterStage": 0,
+          "skyCapturePending": false,
+          "skyCapturePendingBytes": 0,
+          "skyEnvironmentBytes": 0,
+          "skyFilterSteps": 0,
+          "skySceneCaptures": 0,
+          "skySceneFaces": 0,
+          "target2dBytes": 0,
+          "targets2d": 0,
+          "textures": 2,
+          "transmissionAllocations": 0,
+          "transmissionCopies": 0,
+          "transmissionTextureBytes": 0,
+          "uploads": 37,
+          "drawUpdates": 12,
+          "constantBuffers": 3,
+          "maskCachedTargets": 0,
+          "probeCachedCaptures": 0,
+          "shadowTrackedDraws": 0,
+          "shadowTrackedResources": 0,
+          "automaticReadbacks": 0
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-185-player-jh8O4O/acceptance.json",
+      "sha256": "e511e2fce0daf2b971fe7663124e5bcb2b3dd158a34fe2e1dbb9baac4e75bded",
+      "result": {
+        "passed": true,
+        "instanceLookup": {
+          "member": "NestedFresh_2",
+          "localId": "added_nested",
+          "count": 4,
+          "sameCppSpawnRead": true,
+          "subsequentSnapshot": true
+        },
+        "nestedPrefab": {
+          "cppSpawnAndLookup": true,
+          "outerAdditionAndRemoval": true,
+          "innerSourcePreserved": true
+        },
+        "meshAuthoring": {
+          "regionRay": 0,
+          "bridgeRay": 2.000000238418579,
+          "externalAssetsPackaged": true
+        },
+        "lod": {
+          "diagnostics": {
+            "collisionCache": {
+              "entries": 2,
+              "estimatedBytes": 1600,
+              "budgetBytes": 33554432
+            },
+            "actors": [
+              {
+                "actor": "Imported",
+                "level": 2,
+                "rate": 0,
+                "visual": true,
+                "elapsed": 0,
+                "reason": "root-motion"
+              },
+              {
+                "actor": "LODVisual",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.1135,
+                "reason": ""
+              },
+              {
+                "actor": "LODSprite",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.1135,
+                "reason": ""
+              },
+              {
+                "actor": "LODCollision",
+                "level": 2,
+                "rate": 5,
+                "visual": false,
+                "elapsed": 0.1135,
+                "reason": ""
+              }
+            ]
+          },
+          "boneWrites": 3,
+          "spriteWrites": 2,
+          "protectedRoot": {
+            "level": 2,
+            "animationRate": 0,
+            "reason": "root-motion"
+          },
+          "nativeNear": 0.4999995231628418,
+          "nativeFar": 10.5,
+          "physicsCacheReused": true,
+          "queryMs": 7.724299999999857
+        },
+        "importedMotion": {
+          "x": 1.754154362155984e-18,
+          "y": 0.00790000893175602,
+          "z": 0
+        },
+        "importedVisual": {
+          "meshes": [
+            {
+              "visible": true,
+              "source": {
+                "format": "gltf",
+                "index": 0,
+                "name": "Repeated"
+              }
+            },
+            {
+              "visible": false,
+              "source": {
+                "format": "gltf",
+                "index": 1,
+                "name": "Repeated"
+              }
+            }
+          ],
+          "size": [
+            1.0000000000000007,
+            3,
+            1
+          ]
+        },
+        "autoRows": {
+          "pool": 12,
+          "first": 152,
+          "secondTop": 152,
+          "width": 407,
+          "widthStyle": "max(0px, 33% + 0px)",
+          "narrow": 363,
+          "largeFont": 402,
+          "fractional": {
+            "height": 333.84375,
+            "natural": 223,
+            "next": 550.5,
+            "firstBottom": 549.84375
+          },
+          "keyboard": true,
+          "cppData": true,
+          "disabledInput": true,
+          "tree": true
+        },
+        "vehicle": {
+          "object": {
+            "id": "Vehicle",
+            "name": "Vehicle",
+            "kind": "cube",
+            "group": "WORLD",
+            "position": [
+              8.058145523071289,
+              -10.441336631774902,
+              0.6631230711936951
+            ],
+            "rotation": [
+              -1.087012035275493,
+              1.970809927769099,
+              0.19138289614044676
+            ],
+            "scale": [
+              1.8,
+              0.6,
+              3.6
+            ],
+            "visible": true,
+            "components": [
+              {
+                "id": "component_0",
+                "name": "Transform",
+                "type": "Transform",
+                "properties": {
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "scale": [
+                    1,
+                    1,
+                    1
+                  ]
+                }
+              },
+              {
+                "id": "component_1",
+                "name": "MeshRenderer",
+                "type": "MeshRenderer",
+                "properties": {
+                  "enabled": true,
+                  "mesh": "",
+                  "material": "",
+                  "visible": true,
+                  "castShadow": true,
+                  "receiveShadow": true,
+                  "motionVectors": "perObject"
+                }
+              },
+              {
+                "id": "component_2",
+                "name": "BoxCollider",
+                "type": "BoxCollider",
+                "properties": {
+                  "enabled": true,
+                  "center": [
+                    0,
+                    0.5,
+                    0
+                  ],
+                  "collisionMode": "both",
+                  "trigger": false,
+                  "layer": 0,
+                  "mask": 4294967295,
+                  "physicalMaterial": "",
+                  "friction": 0.5,
+                  "frictionCombine": "average",
+                  "restitution": 0,
+                  "restitutionCombine": "average",
+                  "density": 1,
+                  "extent": [
+                    0.5,
+                    0.5,
+                    0.5
+                  ]
+                }
+              },
+              {
+                "id": "bff8a107-a64e-4ab9-b5a2-512860d0f1ab",
+                "name": "Rigidbody",
+                "type": "Rigidbody",
+                "properties": {
+                  "enabled": true,
+                  "mass": 1200,
+                  "autoMass": false,
+                  "useGravity": true,
+                  "isKinematic": false,
+                  "drag": 0,
+                  "velocity": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "freezePosition": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "bodyType": "dynamic",
+                  "gravityScale": 1,
+                  "angularDrag": 0.05,
+                  "angularVelocity": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "collisionDetection": "discrete",
+                  "freezeRotation": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              },
+              {
+                "id": "081cfdc2-0506-41c0-9770-aea4d8b1d9c8",
+                "name": "RaycastVehicle",
+                "type": "RaycastVehicle",
+                "properties": {
+                  "enabled": true,
+                  "engineForce": 2000,
+                  "maxSteerAngle": 30,
+                  "brakeImpulse": 25,
+                  "handbrakeImpulse": 45,
+                  "groundMask": -1,
+                  "showWheels": true,
+                  "throttle": 0.6000000238418579,
+                  "steering": 0.25,
+                  "brake": 0,
+                  "handbrake": 0,
+                  "wheels": [
+                    {
+                      "name": "Front Left",
+                      "position": [
+                        -0.9,
+                        0.1,
+                        1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 1,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": false
+                    },
+                    {
+                      "name": "Front Right",
+                      "position": [
+                        0.9,
+                        0.1,
+                        1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 1,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": false
+                    },
+                    {
+                      "name": "Rear Left",
+                      "position": [
+                        -0.9,
+                        0.1,
+                        -1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 0,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": true
+                    },
+                    {
+                      "name": "Rear Right",
+                      "position": [
+                        0.9,
+                        0.1,
+                        -1.25
+                      ],
+                      "radius": 0.38,
+                      "width": 0.24,
+                      "restLength": 0.35,
+                      "travel": 0.25,
+                      "stiffness": 30,
+                      "compression": 4.4,
+                      "relaxation": 2.3,
+                      "maxForce": 100000,
+                      "friction": 1.5,
+                      "sideFriction": 1,
+                      "steer": 0,
+                      "drive": true,
+                      "brake": true,
+                      "handbrake": true
+                    }
+                  ]
+                }
+              }
+            ],
+            "actorClasses": [
+              "Actor"
+            ],
+            "gameplayDebug": {
+              "morphs": [],
+              "physics": {
+                "dimension": 3,
+                "bodyType": "dynamic",
+                "mass": 1200,
+                "sleeping": false,
+                "velocity": [
+                  0.22723105549812317,
+                  -0.07193906605243683,
+                  2.251190423965454
+                ],
+                "angularVelocity": [
+                  -0.0011594987008720636,
+                  0.11663171648979187,
+                  0.0009291442693211138
+                ],
+                "ccd": false,
+                "colliders": 1
+              },
+              "vehicle": {
+                "speed": 2.2559045237549036,
+                "wheelCount": 4,
+                "wheels": [
+                  {
+                    "position": [
+                      -0.9,
+                      0.1,
+                      1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.300046443939209,
+                    "rotation": 1.8387212753295898,
+                    "steering": 0.13089969754219055,
+                    "contact": true,
+                    "force": 2174.044677734375
+                  },
+                  {
+                    "position": [
+                      0.9,
+                      0.1,
+                      1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.30485767126083374,
+                    "rotation": 1.6769236326217651,
+                    "steering": 0.13089969754219055,
+                    "contact": true,
+                    "force": 1992.31103515625
+                  },
+                  {
+                    "position": [
+                      -0.9,
+                      0.1,
+                      -1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.25268882513046265,
+                    "rotation": 1.8245917558670044,
+                    "steering": 0,
+                    "contact": true,
+                    "force": 3897.67578125
+                  },
+                  {
+                    "position": [
+                      0.9,
+                      0.1,
+                      -1.25
+                    ],
+                    "radius": 0.38,
+                    "width": 0.24,
+                    "suspension": 0.2575000524520874,
+                    "rotation": 1.6614004373550415,
+                    "steering": 0,
+                    "contact": true,
+                    "force": 3715.942138671875
+                  }
+                ]
+              }
+            },
+            "velocity": [
+              0.22723105549812317,
+              -0.07193906605243683,
+              2.251190423965454
+            ],
+            "angularVelocity": [
+              -0.0011594987008720636,
+              0.11663171648979187,
+              0.0009291442693211138
+            ],
+            "grounded": false
+          },
+          "cppSpeed": {
+            "clock": {
+              "delta": 0.022600000724196434,
+              "paused": false,
+              "scale": 1,
+              "time": 2.0842998027801514
+            },
+            "clockBatchable": true,
+            "events": [],
+            "foreign": [],
+            "gameSession": {
+              "id": "b0e28bb0-c087-4544-8173-d30950a75ef1",
+              "state": {}
+            },
+            "objects": [],
+            "ok": true,
+            "operations": [],
+            "outputs": {
+              "result": 2.3886868953704834
+            },
+            "timerCallbacks": [],
+            "timerEvents": [],
+            "transport": {
+              "invokeMs": 0.0049,
+              "parseMs": 0.0561,
+              "patchMs": 0.06,
+              "restoreRows": 1,
+              "snapshotMs": 0.01,
+              "syncMs": 0.0082,
+              "workerMs": 0.1403,
+              "mode": "patch",
+              "bytes": 4117,
+              "patchOperations": 29,
+              "prepareMs": 0.014099999999871216,
+              "replyBytes": 489,
+              "returnedObjects": 0,
+              "rpcMs": 0.35090000000036525,
+              "physicsQueryMs": 0,
+              "physicsQueryCount": 0,
+              "physicsCacheReused": true,
+              "decodeMs": 0.09979999999995925,
+              "validateMs": 1.9117000000001099,
+              "replyValidationMs": 0.013500000000021828,
+              "upstreamMode": "patch",
+              "upstreamBytes": 4224,
+              "channel": "websocket",
+              "clientSerializeMs": 0.19999998807907104,
+              "clientPatchMs": 0.10000000894069672,
+              "clientAckMs": 0,
+              "worldRows": 38,
+              "reusedRows": 32,
+              "clientApplyMs": 0,
+              "frontendMs": 3,
+              "callCount": 1
+            },
+            "worldCommitted": [],
+            "worldSequence": 184
+          },
+          "wheelVisual": {
+            "id": "Vehicle",
+            "wheelCount": 4,
+            "contacts": 4,
+            "speed": 2.3222962435226546,
+            "centers": [
+              [
+                7.208898507517888,
+                -10.620066451316346,
+                1.9872669356447918
+              ],
+              [
+                9.007712238181767,
+                -10.620039800953851,
+                1.9217492492272241
+              ],
+              [
+                7.117758357460351,
+                -10.62010920623115,
+                -0.5115209545969652
+              ],
+              [
+                8.916572088124227,
+                -10.62008255586866,
+                -0.577038641014533
+              ]
+            ]
+          }
+        },
+        "joints": [
+          {
+            "id": "Joint2D",
+            "rotation": [
+              0,
+              0,
+              44.932368719077616
+            ],
+            "component": {
+              "enabled": true,
+              "jointType": "hinge",
+              "connectedBody": "",
+              "autoConnectedAnchor": true,
+              "anchor": [
+                0,
+                0,
+                0
+              ],
+              "connectedAnchor": [
+                0,
+                0,
+                0
+              ],
+              "axis": [
+                0,
+                0,
+                1
+              ],
+              "enableCollision": false,
+              "useFrames": true,
+              "frameRotation": [
+                0,
+                0,
+                0
+              ],
+              "autoConnectedFrame": true,
+              "connectedFrameRotation": [
+                0,
+                0,
+                0
+              ],
+              "connectedAxis": [
+                1,
+                0,
+                0
+              ],
+              "referenceAngle": 45,
+              "enableLimit": true,
+              "lowerLimit": -5,
+              "upperLimit": 5,
+              "useMotor": true,
+              "motorPosition": 0,
+              "motorVelocity": 0,
+              "motorStiffness": 100,
+              "motorMaxForce": 100,
+              "motorDamping": 10,
+              "distance": 1,
+              "stiffness": 100,
+              "damping": 5
+            }
+          },
+          {
+            "id": "Joint3D",
+            "rotation": [
+              -0.000001482789347976957,
+              -1.79238913456421e-7,
+              44.932350919089316
+            ],
+            "component": {
+              "enabled": true,
+              "jointType": "hinge",
+              "connectedBody": "",
+              "autoConnectedAnchor": true,
+              "anchor": [
+                0,
+                0,
+                0
+              ],
+              "connectedAnchor": [
+                0,
+                0,
+                0
+              ],
+              "axis": [
+                0,
+                0,
+                1
+              ],
+              "enableCollision": false,
+              "useFrames": true,
+              "frameRotation": [
+                0,
+                0,
+                0
+              ],
+              "autoConnectedFrame": true,
+              "connectedFrameRotation": [
+                0,
+                0,
+                0
+              ],
+              "connectedAxis": [
+                1,
+                0,
+                0
+              ],
+              "referenceAngle": 45,
+              "enableLimit": true,
+              "lowerLimit": -5,
+              "upperLimit": 5,
+              "useMotor": true,
+              "motorPosition": 0,
+              "motorVelocity": 0,
+              "motorStiffness": 100,
+              "motorMaxForce": 100,
+              "motorDamping": 10,
+              "distance": 1,
+              "stiffness": 100,
+              "damping": 5
+            }
+          }
+        ],
+        "worldUI": {
+          "projection": true,
+          "stableSize": {
+            "x": 192,
+            "y": 116,
+            "width": 320,
+            "height": 100,
+            "hidden": false
+          },
+          "offscreen": true,
+          "movement": true
+        },
+        "composition": {
+          "namedSlot": true,
+          "externalSourceContentPackaged": true,
+          "humanMappedBlueprintEvent": true,
+          "cppNestedText": true,
+          "overrides": true
+        },
+        "network": {
+          "realClientCatalog": true,
+          "interestDespawnReentry": true,
+          "realClientDestroy": true,
+          "cppHostSpawnDestroy": true,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "retainedTombstones": 0,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 21
+          }
+        },
+        "configuration": "development",
+        "renderer": {
+          "backend": "WebGPU",
+          "pipelinePreparation": null,
+          "rayGeometry": null,
+          "rayAtlasUpload": {
+            "fullUploads": 0,
+            "partialUploads": 0,
+            "writeCalls": 0,
+            "queuedBytes": 0
+          },
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 743,
+            "frameCalls": 2,
+            "drawCalls": 34,
+            "triangles": 17048,
+            "points": 0,
+            "lines": 11,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 22,
+            "textures": 6
+          }
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "mobileAot": {
+      "path": "native/build/engine-185-mobile-v56W4L/acceptance.json",
+      "sha256": "8ac460c6a3a91e9335d053e4737e4e0b45839b9fdc82bf5a3540e0c370d8038a",
+      "result": {
+        "ok": true,
+        "portableCpp": true,
+        "stableInstanceLookupAcrossAotModules": true,
+        "sharedPhysics": true,
+        "sharedQueryWorldAcrossAotModules": true,
+        "resetAndDisposeReleaseQueryWorld": true,
+        "rendererQueryRouting": true,
+        "actualGPUDevice": false,
+        "unicode": true,
+        "sourceIsolation": true,
+        "iosExport": {
+          "cook": {
+            "target": "ios",
+            "receipts": [
+              {
+                "path": "Assets/Blueprints/BP_Garden.hbblueprint.json",
+                "key": "9264d58555941a4c7fe9a7eaf48763dff62c758ae8a8b237f1f83aa4d7226d26",
+                "hit": false,
+                "sourceBytes": 3357,
+                "cookedBytes": 1816
+              },
+              {
+                "path": "Assets/BP_Mobile0.hbblueprint.json",
+                "key": "d68ecfc0865f2ee2820c4cc26ff5c12cb1e67fc36c2a70f25ac8ddeed2693321",
+                "hit": false,
+                "sourceBytes": 7633,
+                "cookedBytes": 3842
+              },
+              {
+                "path": "Assets/BP_Mobile1.hbblueprint.json",
+                "key": "35aa17831e8f4a2d213859332a8982df60a0763c03f7ca07e0aee33302d1f061",
+                "hit": false,
+                "sourceBytes": 7633,
+                "cookedBytes": 3842
+              },
+              {
+                "path": "Assets/Materials/Moss_stone.hbmaterial.json",
+                "key": "187734e0dddf6bb1fff244b7257e13ba3b410cc0ecd02bf08cd154df96364461",
+                "hit": false,
+                "sourceBytes": 125,
+                "cookedBytes": 89
+              },
+              {
+                "path": "Assets/MobileMixer.hbmixer.json",
+                "key": "dbce39ecab55eaa7398f993e41a3df50f43e3f1b13f6f4a63c07c055dbf05857",
+                "hit": false,
+                "sourceBytes": 886,
+                "cookedBytes": 886
+              },
+              {
+                "path": "Assets/S_Mobile.hbsprite.json",
+                "key": "f99771c98b7d6ac2b54db3f7d44ec172e79f77a666f6c7b629aa24c87d1e0cfd",
+                "hit": false,
+                "sourceBytes": 178,
+                "cookedBytes": 178
+              },
+              {
+                "path": "Assets/Scenes/Garden.hbscene.json",
+                "key": "100e7d51932edc156037c9ed94e5a881a92e5cf611e638cb2b567347363e624b",
+                "hit": false,
+                "sourceBytes": 13197,
+                "cookedBytes": 13197
+              },
+              {
+                "path": "Assets/W_Mobile.hbwidget.json",
+                "key": "766398d3b6f18e749e778c618d128934656a6675a17e3bc660b8acd43f2f90e0",
+                "hit": false,
+                "sourceBytes": 7507,
+                "cookedBytes": 7507
+              }
+            ],
+            "cacheBytes": 31869,
+            "removed": 0
+          },
+          "target": "ios",
+          "renderer": "WKWebView/WebGL2",
+          "renderBackend": "webgl2",
+          "profile": {
+            "id": "ios",
+            "name": "Windows",
+            "configuration": "development",
+            "productName": "모바일 출력",
+            "width": 1280,
+            "height": 720,
+            "scenes": [
+              {
+                "path": "Assets/Scenes/Garden.hbscene.json",
+                "enabled": true
+              }
+            ],
+            "target": "ios"
+          },
+          "startupScene": "Assets/Scenes/Garden.hbscene.json",
+          "gameInstance": "",
+          "files": 17,
+          "bytes": 212160,
+          "nativeModules": 2,
+          "warnings": [
+            "텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요."
+          ],
+          "id": "2026-10-16T11-36-11-346Z-7a3319f3",
+          "output": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\engine-185-mobile-v56W4L\\모바일 출력\\Builds\\ios\\2026-10-16T11-36-11-346Z-7a3319f3",
+          "mobile": {
+            "applicationId": "com.hbengine.game17a417818016410da8a693f8a5c7aac5",
+            "versionCode": 1,
+            "versionName": "1.0",
+            "orientation": "landscape",
+            "minSdk": 26,
+            "abis": [
+              "arm64-v8a"
+            ],
+            "format": "apk"
+          },
+          "artifact": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\engine-185-mobile-v56W4L\\모바일 출력\\Builds\\ios\\2026-10-16T11-36-11-346Z-7a3319f3\\HBGame.xcodeproj",
+          "artifactType": "xcodeProject",
+          "compileVerified": false,
+          "signingVerified": false,
+          "installVerified": false,
+          "launchVerified": false,
+          "capability": {
+            "ready": true,
+            "projectExport": true,
+            "compileReady": false,
+            "requires": "Mac + Xcode; device/archive signing requires Apple team",
+            "artifactType": "xcodeProject"
+          },
+          "totalFiles": 273,
+          "totalBytes": 12574786
+        },
+        "androidDeviceVerified": false,
+        "iosCompiled": false
+      }
+    },
+    "lateReply": {
+      "path": "native/build/engine-185-lifecycle-l7rVT4/acceptance.json",
+      "sha256": "64569e68833602539b63c624f8517f5341b65c6144acaf4194d335bc39292f21",
+      "result": {
+        "passed": true,
+        "lateCppReplyRejected": true,
+        "queuedCppCallDoesNotReachPlatform": true,
+        "idempotentDispose": true,
+        "queryResourcesReleased": true,
+        "sharedWebMobileBackend": true
+      }
+    },
+    "actorFindRegression": {
+      "path": "native/build/actor-find-52xBpR/acceptance.json",
+      "sha256": "de41eb50a155b79fa0a9a07534bec06d8d0040c9d783a93110d427742a6ac39f",
+      "result": {
+        "passed": true,
+        "cases": [
+          "JS BP/native/builtin ancestry, active/inactive, exact tags, ID/null and invalid inputs",
+          "shared Editor/Player/headless engine service returns the same results",
+          "compiled C++ matches shared search, dynamic_cast reads HP10, and preceding tag writes are visible in the same function"
+        ]
+      }
+    }
+  },
+  "nodes": 781,
+  "cppNodes": 696,
+  "newDependencies": 0,
+  "automaticGPUReadbacks": 0,
+  "installationPending": true,
+  "limits": [
+    "Instance lookup uses stable authored local IDs, not display names or guessed runtime IDs. Ordinary actors/null/missing instance return null, empty list or empty local ID. A root or any living member can identify the family.",
+    "GetInstanceActor localId is limited to1000 UTF-8 bytes consistently in JS/C++. includeInactive includes pooled actors but destroyed actors remain excluded. GetInstanceLocalId reads inactive metadata.",
+    "Lookup is a CPU world scan; the single-member JS path does not allocate an all-actor candidate array. There is no new global cache/scene-object cap. This is not proof of sustained large-world FPS/RAM.",
+    "Backend disposal stops queued native jobs and rejects late results; it does not forcibly stop C++ already executing on the platform. The existing platform timeout still bounds an unresponsive request.",
+    "Portable mobile AOT modules run on this PC; iOS export is a project, not an Xcode/phone/store build."
+  ]
+}

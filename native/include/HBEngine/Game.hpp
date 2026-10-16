@@ -717,6 +717,9 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindClass", KoreanName="클래스로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetAllActorsOfClass(const std::string& className,bool includeInactive=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindTag", KoreanName="태그로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetActorsWithTag(const std::string& tag,bool includeInactive=false);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindId", KoreanName="ID로 액터 찾기", Category="오브젝트") static Actor* FindActorById(const std::string& id,bool includeInactive=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneInstanceActor", KoreanName="인스턴스 로컬 ID로 액터 찾기", Category="오브젝트") static Actor* GetInstanceActor(Actor* instance,const std::string& localId,bool includeInactive=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneInstanceActors", KoreanName="인스턴스 액터 목록", Category="오브젝트") static std::vector<Actor*> GetInstanceActors(Actor* instance,bool includeInactive=false);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneInstanceLocalId", KoreanName="인스턴스 로컬 ID", Category="오브젝트") static std::string GetInstanceLocalId(Actor* instance);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openScene", KoreanName="장면 열기", Category="장면") static void Open(const std::string& scene);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="openSceneArgs", KoreanName="장면 열기와 인자", Category="장면") static void OpenWithArguments(const std::string& scene,const std::string& json);
     static void Open(const std::string& scene,const Json& arguments){OpenWithArguments(scene,arguments.dump());}

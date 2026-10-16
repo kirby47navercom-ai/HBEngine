@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **778개**, 실제 공통 C++ API **693개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **781개**, 실제 공통 C++ API **696개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -14,12 +14,12 @@
 | 클래스 | 2 | 0 |
 | 흐름 제어 | 16 | 0 |
 | 디버그 | 1 | 0 |
-| 변환 | 35 | 34 |
+| 변환 | 28 | 27 |
 | 벡터 | 34 | 34 |
 | 수학 | 52 | 50 |
 | 배열 | 95 | 88 |
 | 물리 | 16 | 14 |
-| 오브젝트 | 8 | 0 |
+| 오브젝트 | 16 | 8 |
 | C++ 공개 함수 | 1 | 0 |
 | 오디오 | 22 | 19 |
 | 사용자 정의 | 2 | 0 |
@@ -31,6 +31,7 @@
 | 애니메이션 | 2 | 0 |
 | 머테리얼 | 6 | 6 |
 | 렌더링 | 4 | 3 |
+| 장면 | 2 | 2 |
 | UI | 23 | 20 |
 | 저장 | 5 | 3 |
 | 정수 | 14 | 14 |
@@ -155,7 +156,6 @@
 | setScale | Set Scale / 크기 설정 | exec: exec, target: object, value: vec3 | then: exec | hb::Scene::SetScale | 공통 C++ + VM |
 | translate | Add Offset / 벡터로 위치 이동 오프셋 | exec: exec, target: object, value: vec3 | then: exec | hb::Scene::AddOffset | 공통 C++ + VM |
 | rotate | Add Rotation / 회전 더하기 | exec: exec, target: object, value: vec3 | then: exec | hb::Scene::AddRotation | 공통 C++ + VM |
-| openScene | Open / 장면 열기 | exec: exec, scene: string | then: exec | hb::Scene::Open | 공통 C++ + VM |
 | moveActorTowards | Move Actor Towards / 오브젝트 목표로 이동 | exec: exec, target: object, destination: vec3, speed: float, delta: float | then: exec, return: bool | hb::Scene::MoveActorTowards | 공통 C++ + VM |
 | transformPosition | Transform Position / 로컬 위치를 월드로 | transform: transform, value: vec3 | return: vec3 | hb::Extended::TransformPosition | 공통 C++ + VM |
 | inverseTransformPosition | Inverse Transform Position / 월드 위치를 로컬로 | transform: transform, value: vec3 | return: vec3 | hb::Extended::InverseTransformPosition | 공통 C++ + VM |
@@ -169,12 +169,6 @@
 | intToBool | Int To Bool / 정수를 불리언으로 | value: int | return: bool | hb::Extended::IntToBool | 공통 C++ + VM |
 | vector2ToVector3 | Vector2 To Vector3 / 벡터2를 벡터3로 | value: vec2, z: float | return: vec3 | hb::Extended::Vector2ToVector3 | 공통 C++ + VM |
 | vector3ToVector2 | Vector3 To Vector2 / 벡터3의 XY | value: vec3 | return: vec2 | hb::Extended::Vector3ToVector2 | 공통 C++ + VM |
-| sceneSpawn | Spawn / 에셋/클래스 생성 | exec: exec, blueprintOrPrefab: string, transform: transform, actorId: string | then: exec, return: object | hb::Scene::Spawn | 공통 C++ + VM |
-| sceneDestroy | Destroy / 생성 액터 제거/풀 반환 | exec: exec, target: object | then: exec | hb::Scene::Destroy | 공통 C++ + VM |
-| sceneFindClass | Get All Actors Of Class / 클래스로 액터 찾기 | className: string, includeInactive: bool | return: object[] | hb::Scene::GetAllActorsOfClass | 공통 C++ + VM |
-| sceneFindTag | Get Actors With Tag / 태그로 액터 찾기 | tag: string, includeInactive: bool | return: object[] | hb::Scene::GetActorsWithTag | 공통 C++ + VM |
-| sceneFindId | Find Actor By Id / ID로 액터 찾기 | id: string, includeInactive: bool | return: object | hb::Scene::FindActorById | 공통 C++ + VM |
-| openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
 | getWorldPosition | Get World Position / 월드 위치 가져오기 | target: object | return: vec3 | hb::Scene::GetWorldPosition | 공통 C++ + VM |
 | setWorldPosition | Set World Position / 월드 위치 설정 | exec: exec, target: object, position: vec3 | then: exec | hb::Scene::SetWorldPosition | 공통 C++ + VM |
 | getLocalPosition | Get Local Position / 로컬 위치 가져오기 | target: object | return: vec3 | hb::Scene::GetLocalPosition | 공통 C++ + VM |
@@ -409,6 +403,14 @@
 | destroy | Destroy Actor / 액터 제거 | exec: exec, target: object | then: exec | — | VM / 브라우저 서비스 |
 | visibility | Set Visibility / 표시 설정 | exec: exec, target: object, visible: bool | then: exec | — | VM / 브라우저 서비스 |
 | attach | Attach To / 부모에 연결 | exec: exec, target: object, parent: object | then: exec | — | VM / 브라우저 서비스 |
+| sceneSpawn | Spawn / 에셋/클래스 생성 | exec: exec, blueprintOrPrefab: string, transform: transform, actorId: string | then: exec, return: object | hb::Scene::Spawn | 공통 C++ + VM |
+| sceneDestroy | Destroy / 생성 액터 제거/풀 반환 | exec: exec, target: object | then: exec | hb::Scene::Destroy | 공통 C++ + VM |
+| sceneFindClass | Get All Actors Of Class / 클래스로 액터 찾기 | className: string, includeInactive: bool | return: object[] | hb::Scene::GetAllActorsOfClass | 공통 C++ + VM |
+| sceneFindTag | Get Actors With Tag / 태그로 액터 찾기 | tag: string, includeInactive: bool | return: object[] | hb::Scene::GetActorsWithTag | 공통 C++ + VM |
+| sceneFindId | Find Actor By Id / ID로 액터 찾기 | id: string, includeInactive: bool | return: object | hb::Scene::FindActorById | 공통 C++ + VM |
+| sceneInstanceActor | Get Instance Actor / 인스턴스 로컬 ID로 액터 찾기 | instance: object, localId: string, includeInactive: bool | return: object | hb::Scene::GetInstanceActor | 공통 C++ + VM |
+| sceneInstanceActors | Get Instance Actors / 인스턴스 액터 목록 | instance: object, includeInactive: bool | return: object[] | hb::Scene::GetInstanceActors | 공통 C++ + VM |
+| sceneInstanceLocalId | Get Instance Local Id / 인스턴스 로컬 ID | instance: object | return: string | hb::Scene::GetInstanceLocalId | 공통 C++ + VM |
 
 ## C++ 공개 함수
 
@@ -570,6 +572,13 @@
 | reflectionProbeRefresh | Refresh / 반사 프로브 갱신 | exec: exec, target: object, component: string | then: exec | hb::ReflectionProbes::Refresh | 공통 C++ + VM |
 | reflectionProbeIntensity | Set Intensity / 반사 강도 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetIntensity | 공통 C++ + VM |
 | reflectionProbeDiffuse | Set Diffuse Intensity / 간접광 강도 지정 | exec: exec, target: object, value: float, component: string | then: exec | hb::ReflectionProbes::SetDiffuseIntensity | 공통 C++ + VM |
+
+## 장면
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| openScene | Open / 장면 열기 | exec: exec, scene: string | then: exec | hb::Scene::Open | 공통 C++ + VM |
+| openSceneArgs | Open With Arguments / 장면 열기와 인자 | exec: exec, scene: string, json: string | then: exec | hb::Scene::OpenWithArguments | 공통 C++ + VM |
 
 ## UI
 

@@ -238,3 +238,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 184 설치 확인: 7b716ddfe6174204·명세2497파일 실행 후 SHA 일치·격리 설치 EXE의 중첩 프리팹 적용·원본/장면 UndoRedo·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174323655바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_184.json.
+
+
+185: Scene::GetInstanceActor/GetInstanceActors/GetInstanceLocalId 공용 C++·BP3개, 안정 로컬 ID와 inactive/삭제/인스턴스 격리·같은 함수 Spawn 직후/후속 호출·모바일 공용 AOT 검증. 서비스 분류/한글 핀 및 종료 뒤 늦은 C++ 응답 정리. ENGINE_WORK_185.md/JSON 근거.

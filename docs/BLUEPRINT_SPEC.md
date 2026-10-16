@@ -483,3 +483,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 181: 명명 슬롯 콘텐츠도 기존 UI 함수/BP 이벤트를 쓴다. 예: UI::SetText(owner,"WorldCard","Dialog/Body/Content/Label",text). 중복 노드를 추가하지 않고 공용 문서/빌드 종속성으로 검증한다.
+
+
+185: Get Instance Actor/Actors/Local Id는 타입 있는 공용 C++ 순수 노드다. 인스턴스의 루트 또는 자식을 전달하고 원본 로컬 ID를 사용한다. 생성기에서 서비스 선언 분류를 존중하며 새 핀 라벨은 인스턴스/로컬 ID/비활성 포함이다. 노드781/공통 C++696(Core289와 별개).

@@ -430,3 +430,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 184: scene.prefab.apply의 property:[]는 중첩 포함 자식 추가/삭제를 바깥 원본의 additions/removed에 기록한다. additions는 해석된 중첩 부모를 참조하는 일반 Actor 행이며 최종 resolve/build 계층 검증이 필요하다. resolvedAnchors는 계산 메타이며 원본에 적은 값은 사용하지 않는다. sourceRevision·dryRun·원본/장면 파일 묶음 Undo는 기존 계약과 같다.
+
+
+185: sceneInstanceActor(instance,localId,includeInactive=false),sceneInstanceActors(instance,includeInactive=false),sceneInstanceLocalId(instance) 노드는 Scene의 같은 C++ 함수와 연결된다. localId는 원본 Actor ID(중첩 anchor/child)이며 표시 이름/생성 월드 ID가 아니다. null/일반 Actor는 null/[]/빈문자열, 삭제 Actor 제외. localId 최대1000 UTF-8 bytes. SDK+generate-api 결과를 함께 사용한다.
