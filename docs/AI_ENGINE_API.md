@@ -490,3 +490,12 @@ AnimationBudget 컴포넌트(enabled,budgetMS,minRate,maxRate,initialCostMS,smoo
 runtime.take.start에 includeSpawned:true를 주면 시작 뒤 추가된 오브젝트를 spawn bool 트랙과 시각 템플릿으로 기록한다. 고유 ID의 passive 복사본만 재생하며 사용자 코드/물리를 다시 실행하지 않는다. 임의 native 상태/기존 대상 수명/소스 필터까지 기록하는 기능은 아니다. sequence.take.apply는 기존 dryRun/expectedRevision/Undo와 동일하다. runtime.state의 소유자 gameplayDebug.sequence.spawned에서 source/id 대응을 조회한다.
 
 timeline.preview.read({path})는 열린 sequenceasset/montage 제작 미리보기의 time,busy,error,objects를 요청할 때만 반환한다. 원본/스크러버 시각을 바꾸지 않으며 busy가 false가 된 뒤 실제 독립 복사본을 확인한다.
+
+
+## 212–213: 타입 있는 상태 녹화와 실행 검사
+
+runtime.take.start의 includeVariables:true는 공개 C++ 쓰기 속성/배열과 BP 변수/배열을 기록한다. variable 트랙은 variable(안정ID), nativeProperty 트랙은 className/property를 가지며 양쪽 모두 valueType/array와 검증된 keys를 저장한다. 배열은 step이고 기본 float/vector/color는 보간한다. 키JSON64KiB/배열128개 예산, readonly C++/미등록 struct/중첩 컨테이너는 제외한다. 같은 LevelSequence C++/BP Play/Pause/Seek/Stop과 worker snapshot/변수 Map에 연결하며 별도 per-frame nativeSet 질의는 없다.
+
+runtime.values({target,offset:0,limit:64})는 녹화 가능한 변수의 metadata/value와 total/nextOffset을 읽는다. limit 최대256은 한 페이지다. development player에서는 hbPlayerDebug.values(target,options). timeline.preview.read.values는 실제 독립 미리보기의 바인딩 값이다. 미리보기는 BP/C++ 선언/기본값을 읽고 사용자 코드/물리/AI를 재실행하지 않는다.
+
+scene.select는 실행 중에도 오브젝트를 선택/검사할 수 있다. 제작값 변경 명령의 실행 중 차단은 유지한다. 선택 Inspector는4Hz로 현재 leaf만 갱신하고 등록 컴포넌트/선언 구조가 바뀌었을 때만 레이아웃을 갱신한다. 참조 component/widget 핸들은 아웃라이너 액터 수에서 제외되지만 런타임 조회용 ID는 보존한다.

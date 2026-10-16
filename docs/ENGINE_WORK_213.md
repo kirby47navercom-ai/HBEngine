@@ -1,0 +1,10 @@
+# 213 — 실행 Inspector·구조 갱신·AI 선택과 아웃라이너
+
+- 기존4Hz UI 주기에서 선택 오브젝트의 실제 transform/컴포넌트·C++ 공개 속성·BP 변수/배열을 현재 DOM leaf에 반영; 활성 입력/caret·배치·문서/Undo 보존
+- 등록 컴포넌트/실행 메타데이터/휠 수 구조가 바뀐 경우에만 Inspector 재생성; 현재 runtime binding metadata를 사용하고 실행 값은 읽기 전용·배열 복사 가능
+- native/variable array JSON·vec/축·휠 배열/정렬 레이어 membership·현재 선택 항목만 임시 option 갱신; textContent로 안전하게 표시
+- 사람 선택과 같은 scene.select의 실행 중 보기 허용; authoring mutation 금지는 유지·문서 revision 불변; 참조용 component/widget 핸들은 실제 월드 액터 아웃라이너/개수에서 제외
+
+남은 범위: 선택된 Scene Inspector와 등록된 leaf/구조 범위다. 모든 전용 에셋 Inspector/특수 collision geometry/조건부 모듈 UI와 전체 DPI/분리창 조합을 검증한 것은 아님 / 실행 중 Inspector에서 C++/BP 속성을 직접 수정하는 기능을 새로 허용하지 않음; 코드/노드의 공용 쓰기 경로와 분리 / 실제 창은 새 RuntimeLOD 추가/현재값·읽기 전용·원본 revision을 검사. 모든 live reapply/SDK ABI 조합의 추가 검증은 잔여
+
+근거: [ENGINE_WORK_213.json](research/ENGINE_WORK_213.json). 설치 검증은 별도 영수증에 기록한다.

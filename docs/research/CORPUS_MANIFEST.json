@@ -3277,5 +3277,16 @@
     ],
     "unread": "Only stated body scopes read; linked source/API/media and full UE/Unity corpus remain outside this reading. No overall corpus completion claim.",
     "globalGatePromotion": false
+  },
+  "supplemental212": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/cinematic-transform-and-property-tracks-in-unreal-engine?lang=en-US",
+        "scope": "Returned UE5.8 body own54–113 read: bool/int/string/object are discrete; floats/vectors/color interpolate. Three attempted5.7 URLs were inaccessible and are not body-read evidence. HB212 uses its reflected value types and explicit step arrays; this page does not document HB native-array or custom-struct support."
+      }
+    ],
+    "unread": "Only stated UE5.8 body scopes;5.7 URLs inaccessible. Linked API/source/media and entire UE/Unity corpus remain outside this read.",
+    "globalGatePromotion": false
   }
 }

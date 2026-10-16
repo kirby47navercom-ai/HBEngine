@@ -872,3 +872,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - 제작 미리보기에서 런타임 BP가 제공한 MeshRenderer 속성이 없던 문제(xADCht)는 소스 장면에 BP 컴포넌트를 설치하지 않던 경로가 원인이다. 코드 실행 없이 기존 loadSceneBindings/installBlueprintInstances로 같은 안정 ID/오버라이드를 설치한다.
 - 새 비동기 메타데이터 읽기 중 world만 생성되고 visuals가 없을 때 render가 tickParticles를 호출하던 경합도 재현했다. 초기화 동안 렌더를 보류하고 cleanup에서 world/visuals를 무효화했다. NpEIaF에서 동일 녹화→적용→preview read→C++ 재생/Seek/Stop과 예외0/종료0 통과. 앞선 실패를 PASS 근거로 사용하지 않는다.
 - NpEIaF 캡처는 마지막 내부 활성 탭이 viewport라 실제 sequence 패널이 전경에 보이지 않았다. 상태 검사는 유효하나 제작 UI 시각 확인으로 주장하지 않는다. 후속 설치 검사는 asset dock 탭을 명시 선택하도록 고쳤다.
+
+
+## 212–213 진단 (2026-10-17)
+
+- 실제212 첫 검사는 실행 중 scene.select가 authoringEditable()에 막혔다. 이 메서드는 선택/검사만 하고 사람의 selectObject는 이미 Play에서 허용하므로 inspect=true 장벽으로 수정했다. 다른 authoring mutation 차단은 그대로다. 실제 창 PF0WEi에서 runtime 선택/현재값과 원본 scene revision 불변을 확인했다.
+- 다음 검사 CSS의 숫자 attribute 값을 따옴표 없이 써 querySelector SyntaxError가 났다. componentAxis 비교로 고쳤다. 제품 오류로 주장하거나 실패 로그를 PASS로 집계하지 않는다.
+- nullable BP 값에 ?? 기본값을 쓰면 의도한 null이 사라질 수 있어 Map.has/Object.hasOwn로 고쳤다. Hit 값의 벡터 배열도 깊은 복사해 재생에서 원시 키를 변경하지 않음을 CPU로 확인했다.
+- 새 실시간 구조 검사에서 addComponent/getComponent가 만드는 kind:component 참조 핸들이 아웃라이너에 액터로 보였다. sceneRows와 개수에 공용 isSceneActor를 쓰며 실제 핸들 자체는 삭제하지 않는다. 후속 설치 검사에 alias 비노출을 포함했다.
+- 제작 preview가 일부 simulation 컴포넌트를 제거하는 기존 설계와 component 트랙이 충돌하지 않도록 해당 미리보기 데이터만 걸렀다. 타입 교체 구성 키의 시각 구간은 유지하고 원본 JSON은 불변이다. CPU4JdfVL에서 검증했다.
