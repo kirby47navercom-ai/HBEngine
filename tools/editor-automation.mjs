@@ -102,6 +102,7 @@ export const editorMethods={
   'editor.shortcuts.get':{description:'단축키 명령·프로필·revision 조회. commands의 scope는 창 문맥, when=notify는 선택한 몽타주 구간/핸들, repeat는 누른 채 반복 가능한 이동 명령이에요.',params:{}},
   'editor.shortcuts.set':{params:{data:'version/active/profiles/bindings 전체 JSON',expectedRevision:'get의 revision',dryRun:'검증만'}},
   'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
+  'runtime.navigation':{description:'실행 경로/회피 및 각 NavMesh 투영 공간 인덱스의 누적/최근 후보 수 조회',params:{}},
   'runtime.lod':{description:'실행 LOD 단계/포즈 스케줄과 충돌 캐시 예산 조회; GPU 읽기 없음',params:{}},
   'modelimport.preview':{description:'CPU 경계·메시 수·표시 상태 조회; GPU 읽기 없음',params:{path:'열린 모델 가져오기 문서'}},
   'modelimport.open':{description:'원본 모델의 검증된 가져오기 문서를 열어요. 반환 path/revision으로 document.patch/save/undo를 사용하세요.',params:{path:'gltf/glb/obj/fbx 프로젝트 상대 경로'}},

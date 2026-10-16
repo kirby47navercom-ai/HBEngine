@@ -3124,5 +3124,20 @@
     ],
     "unread": "All source body sections outside specified ranges and linked API/media/implementations; global corpus gate unchanged.",
     "globalGatePromotion": false
+  },
+  "supplemental199": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AI.NavMesh.SamplePosition.html",
+        "scope": "Own declaration/parameters/description234–282 and321–368; distance/areas/multi-story/large-radius costs. Linked API, sample code and implementation unread."
+      },
+      {
+        "url": "https://threejs.org/docs/pages/Triangle.html",
+        "scope": "Own text0–41: Triangle constructor/corner references/closestPointToPoint target ownership. Remaining methods/source/media unread."
+      }
+    ],
+    "unread": "All body sections outside listed ranges, linked API/source/media and global corpus.",
+    "globalGatePromotion": false
   }
 }

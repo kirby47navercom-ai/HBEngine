@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "3f5c68e",
+  "targetIds": [
+    "WLD-06",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/navigation-199-noDTcP/acceptance.json",
+      "sha256": "15105113fd755385421d4fd18a798b9b3180ebbc181c13ab40c9adcecd67f8c0",
+      "result": {
+        "passed": 6,
+        "total": 6,
+        "checks": [
+          {
+            "name": "indexed closest points exactly match the prior scan for XY/XZ/slopes, radii and query filters",
+            "passed": true
+          },
+          {
+            "name": "same-distance results prefer original triangle IDs despite BVH traversal order",
+            "passed": true
+          },
+          {
+            "name": "empty/degenerate graphs, exact boundary distances and disallowed nearest candidates keep semantics",
+            "passed": true
+          },
+          {
+            "name": "dynamic areas/obstacles and recursive queries reuse the index without mutable scratch corruption",
+            "passed": true
+          },
+          {
+            "name": "shared runtime MoveTo and off-mesh links use the same projected graph and preserve route output",
+            "passed": true
+          },
+          {
+            "name": "bounded projection tests only local candidates instead of all triangles",
+            "passed": true
+          }
+        ],
+        "metrics": {
+          "sample": {
+            "triangles": 2048,
+            "queries": 20,
+            "linearCandidates": 40960,
+            "indexCandidates": 160,
+            "triangleEvaluations": 160,
+            "indexNodes": 511,
+            "combinedOracleAndIndexMS": 6.9726,
+            "scope": "Candidate counts and correctness, not a game FPS benchmark"
+          }
+        },
+        "newDependencies": 0,
+        "alwaysOnTimers": 0,
+        "geometryIndex": "Existing buildGeometryBVH, once per compiled NavigationMesh",
+        "executionVerification": "CPU shared runtime path only; actual window/native C++ bridge grouped checks queued during installed user activity."
+      }
+    },
+    "funnelAndSystems": {
+      "path": "native/build/engine-167-NhCovb/acceptance.json",
+      "sha256": "177226214811c7f3ea4399d195c1f2a4fa31e5c6042707c5fc75d40fde7966d6",
+      "result": {
+        "passed": 11,
+        "results": [
+          {
+            "name": "추가 레벨 두 인스턴스·계층/참조/변환·재진입",
+            "passed": true
+          },
+          {
+            "name": "레벨 내리기 물리 즉시 제거·외부 참조/부모 보존",
+            "passed": true
+          },
+          {
+            "name": "비동기 로드 취소·준비 실패의 원자적 정리",
+            "passed": true
+          },
+          {
+            "name": "거리 셀·히스테리시스·반복 로드/언로드",
+            "passed": true
+          },
+          {
+            "name": "중첩 레벨 순환 거부·부모 실패 후 정리",
+            "passed": true
+          },
+          {
+            "name": "중첩 자식의 초기화가 상위 로드를 기다리는 순환 거부",
+            "passed": true
+          },
+          {
+            "name": "타입을 가진 내부 참조만 재배치",
+            "passed": true
+          },
+          {
+            "name": "평면 삼각 메시 funnel·반경·오프메시 경유",
+            "passed": true
+          },
+          {
+            "name": "Take 바인딩 재사용·일정 값 메모리와 불연속 시각",
+            "passed": true
+          },
+          {
+            "name": "2D 계층 이름 대응·좌우/중복 거부",
+            "passed": true
+          },
+          {
+            "name": "2D 외부 IK 목표 키·월드 변환·세 솔버 재표본화",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "areasAndSystems": {
+      "path": "native/build/engine-169-dhwgge/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11",
+      "result": {
+        "passed": 23,
+        "total": 23,
+        "results": [
+          {
+            "name": "확장 이웃·지정 타일·원본 인덱스와 역 의존 갱신",
+            "passed": true
+          },
+          {
+            "name": "대칭·빈 칸·다른 타일·회전 규칙",
+            "passed": true
+          },
+          {
+            "name": "먼 이웃 변경의 렌더 청크·충돌 dirty 전달",
+            "passed": true
+          },
+          {
+            "name": "대칭 UV와 기하 범위",
+            "passed": true
+          },
+          {
+            "name": "NavArea 비용·마스크·동적 삼각 장애물",
+            "passed": true
+          },
+          {
+            "name": "삼각 SAT·높이·32번 비트 경계",
+            "passed": true
+          },
+          {
+            "name": "장면 컴포넌트·이동 장애물·부모 변환",
+            "passed": true
+          },
+          {
+            "name": "2D XY 영역 비용과 금지 구역",
+            "passed": true
+          },
+          {
+            "name": "다중 목표 IK 그래프·공유 관절·길이 보존",
+            "passed": true
+          },
+          {
+            "name": "분기 체인 다중 목표·제외 관절·기준 포즈 불변",
+            "passed": true
+          },
+          {
+            "name": "다중 IK 가중치·목표 API·소실 목표",
+            "passed": true
+          },
+          {
+            "name": "골격 포즈 형식·중복·쓰기 전 검증",
+            "passed": true
+          },
+          {
+            "name": "Take 구성 생성/삭제·구조체 값·골격 키·압축",
+            "passed": true
+          },
+          {
+            "name": "녹화 시퀀스 재생·되감기·삭제/추가·원상 복원",
+            "passed": true
+          },
+          {
+            "name": "오디오 큐 녹화·중첩 음성·종료 구간",
+            "passed": true
+          },
+          {
+            "name": "두 경계 연결·방향·UV/색 보존",
+            "passed": true
+          },
+          {
+            "name": "개별 면 인셋·내접 한계·실패 원본 보존",
+            "passed": true
+          },
+          {
+            "name": "원본과 같아진 명시적 프리팹 수정의 다음 상속 보존",
+            "passed": true
+          },
+          {
+            "name": "사이드체인 Attack/Release·게인·독립 신호/순환 거부",
+            "passed": true
+          },
+          {
+            "name": "오디오 반복 큐의 원본 위치/배속 분할",
+            "passed": true
+          },
+          {
+            "name": "골격 시퀀스 quaternion 보간·긴 회전 키 축약",
+            "passed": true
+          },
+          {
+            "name": "같은 프레임 구성 교체의 원자 검증·원본 보존",
+            "passed": true
+          },
+          {
+            "name": "DirectX 실선의 픽셀 폭·근평면 자르기·재사용·해제",
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "bodyRead": [
+    {
+      "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AI.NavMesh.SamplePosition.html",
+      "scope": "Own declaration/parameters/description234–282 and321–368; distance/areas/multi-story/large-radius costs. Linked API, sample code and implementation unread."
+    },
+    {
+      "url": "https://threejs.org/docs/pages/Triangle.html",
+      "scope": "Own text0–41: Triangle constructor/corner references/closestPointToPoint target ownership. Remaining methods/source/media unread."
+    }
+  ],
+  "verificationPending": [
+    "node tools/check-navigation-191-window.mjs --indexed --3d",
+    "node tools/check-navigation-191-window.mjs --indexed --3d --webgpu",
+    "runtime.navigation actual editor endpoint"
+  ],
+  "installationPending": true,
+  "limits": [
+    "Compiled fixed navigation geometry only; recreate the NavigationMesh after editing vertices/centers/portals. Live area/cost/obstacle query filters preserve their existing behavior.",
+    "Nearest-point search is not NavMesh carving, edge erosion, nonplanar funnel or ORCA boundary constraints.",
+    "Index construction/storage has a one-time cost. CPU local candidate count is not full game FPS or a mobile benchmark."
+  ]
+}

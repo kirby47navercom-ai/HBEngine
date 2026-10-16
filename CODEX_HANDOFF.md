@@ -224,3 +224,5 @@ exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도�
 197 source/CPU5군 완료·실제 창/GPU/패키징 대기. check-animation-195-window --interpolate --editor / --interpolate / --interpolate --webgpu 준비. 사용자 설치193 active Node/worker이므로 무거운 검사나 새 버전 전환 금지. CPU1200표본 주기피크1200→90–111, 계산총수12000동일; 기본 추가버퍼0/옵트인168B 한 뼈. 내용은 ENGINE_WORK_197.md/JSON, 남은전역목표그대로.
 
 198: test-artifacts/remove-test-cache에 격리 Engine 동일 Node 사본 정리 추가. 실제자식/전체Engine보호·계획뒤수정·원본SHA·소스/명세보존 PASS, artifact-node-198-wgRLv8. 하드링크검사논리91.7MB를실제회수로표현금지. 사용자실행중이므로전역대량정리보류. 준비196dist는e0c382d동결·197/198아직설치미반영. 차후유휴시197실제창/D3D/GPU를묶어검사하고최신배포/설치Versions1전환.
+
+199source/CPU6+16711/16923 완료·실제검사대기. NavMesh.project 기존buildGeometryBVH/고정기하, 쿼리필터 live·동률원래ID·거리exact·재진입scratch격리.2048tri20질의40960→160후보동일결과. runtime.navigation 메타/app단어와player.inspect meshes진단. 새파일navigation-projection.js. --indexed --3d [--webgpu]191window준비(800tri)·아직미실행.197실제보간/196업데이트/전역저장공간정리도여전히user193프로세스사용중대기.
