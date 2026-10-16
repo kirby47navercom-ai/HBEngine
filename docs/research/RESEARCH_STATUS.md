@@ -446,3 +446,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 192: W3C WebAudio 지정 worklet/메시지/시각/수명 본문과 Microsoft WAVEFORMATEX/RIFF 지정 구역을 supplemental192에 등록. 원문 전체·연결 API/미디어·전역 gate 승격 없음.
+
+
+193: 설치 수명/버전 정리는 로컬 실행 근거에 따른 보완이다. 새 외부 본문 읽기나 전역 연구 gate 승격을 기록하지 않는다.

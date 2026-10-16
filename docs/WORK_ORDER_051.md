@@ -271,3 +271,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 192: 실제 게임 믹스 PCM16 WAV·믹서 UI/게임 신호·AI 동일 녹음/저장·제한/수명/재시도·저장 에셋 재생·공용 worklet 배포 closure. ENGINE_WORK_192.md/JSON.190–192 설치 후 시간/예산 입력 포함 최종 확인 예정.
+
+
+193: 이전 설치 런타임을 사용하는 외부 Android 빌드 발견→중단 없이192 새 사본만 정리/Versions1 복원. 이후 설치 전·복사 후 사용 검사와 명시 보류를 구현. 실제 자식 프로세스/복사 중 시작/정상 교체·기존 보존 회귀 통과. ENGINE_WORK_193.md/JSON.

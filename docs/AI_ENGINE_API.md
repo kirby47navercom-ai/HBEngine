@@ -454,3 +454,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 192: runtime.audio.capture.start {maxSeconds?:60,maxBytes?:33554432}는 실제 게임 믹스를 시작한다. finish {folder?:"Assets/Recordings",name?}는 WAV 에셋 경로/frames/duration/sampleRate/channels/bits/reason/truncated를 반환한다. runtime.audio의 capture에 상태/PCM 바이트를 공개한다. 잘못된 저장 인자는 진행을 유지하고, 실패 후 finish 재시도로 같은 완료 자료를 저장한다. 종료 시 자동 저장하며 실패 자료는 같은 프로젝트에서 재시도한다. 녹음은 현재 렌더 스테레오 믹스이며 게임시각과 표본시각 동기화/마이크/멀티채널 stem은 별도다.
+
+
+193: installEditor/설치 CLI가 deferred:true,reason:"running-install",active:[{pid,version,name}],bundleHash,source,destination,files를 반환하면 설치 완료/업데이트라고 보고하지 않는다. 사용 중인 이전 버전은 중단하지 않고 배포본을 준비한 채 종료 후 같은 설치를 재시도한다. active PID는 종료 권한이 아니다.

@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-17 · 대조 기준 커밋: `89f99a0`
+갱신일: 2026-10-17 · 대조 기준 커밋: `c9fea91`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -12,8 +12,8 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| PRJ-01 설치형 실행기·프로젝트 생성/열기 | verified | Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) |
-| PRJ-02 실행/편집 상태와 사용자 작업 격리 | verified | 별도 실행 월드·프로필·임시 검사 프로젝트 | 이 행의 범위는 검증됨 | [USER_DEVELOPMENT_SEPARATION.md](USER_DEVELOPMENT_SEPARATION.md) |
+| PRJ-01 설치형 실행기·프로젝트 생성/열기 | verified | Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [ENGINE_WORK_193.json](research/ENGINE_WORK_193.json) |
+| PRJ-02 실행/편집 상태와 사용자 작업 격리 | verified | 별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 | 이 행의 범위는 검증됨 | [USER_DEVELOPMENT_SEPARATION.md](USER_DEVELOPMENT_SEPARATION.md) · [ENGINE_WORK_193.json](research/ENGINE_WORK_193.json) |
 | PRJ-03 복구 저장·데이터 호환 | partial | 버전 데이터 검증·복구 경로 | 중단·디스크 부족·다양한 구버전 전환의 통합 검증 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 
 ## 에셋

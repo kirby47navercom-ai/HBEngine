@@ -24,6 +24,11 @@ async function inventory(directory,relative=''){
   }
   return files;
 }
+export async function activeInstalledVersions(destination){
+  if(process.platform!=='win32')return [];const versions=path.join(destination,'Versions'),names=new Set((await fs.readdir(versions,{withFileTypes:true}).catch(e=>e.code==='ENOENT'?[]:Promise.reject(e))).filter(e=>e.isDirectory()&&!e.isSymbolicLink()&&/^[a-f0-9]{16}$/.test(e.name)).map(e=>e.name));if(!names.size)return [];
+  const quote=v=>"'"+v.replaceAll("'","''")+"'",script="$root="+quote(path.resolve(versions))+"; $pattern=[regex]::Escape($root)+'[\\\\/]([a-f0-9]{16})'; $rows=@(Get-CimInstance Win32_Process | ForEach-Object { $match=[regex]::Match(($_.ExecutablePath+' '+$_.CommandLine).Replace('/','\\'),$pattern,'IgnoreCase'); if($match.Success){[pscustomobject]@{pid=$_.ProcessId;version=$match.Groups[1].Value.ToLowerInvariant();name=$_.Name}} }); ConvertTo-Json -InputObject $rows -Compress";
+  const {stdout}=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command',script],{windowsHide:true,encoding:'utf8',timeout:30000});return JSON.parse(stdout).filter(p=>names.has(p.version));
+}
 export async function installEditor({source=path.join(repository,'dist/HBEngine'),destination=path.join(os.homedir(),'HBEngine'),shortcut=true}={}){
   if(process.platform!=='win32')throw Error('Windows 사용자용 편집기 설치예요.');
   source=await fs.realpath(source);destination=await canonicalDestination(destination);
@@ -31,6 +36,7 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
   const files=await inventory(source);
   for(const name of ['HBEngine.exe','WebView2Loader.dll','runtime/node.exe','tools/serve.mjs','prototype/index.html'])if(!files.some(file=>file.path===name))throw Error('배포 파일 누락: '+name);
   const bundleHash=sha(JSON.stringify(files)),versions=path.join(destination,'Versions'),directory=path.join(versions,bundleHash.slice(0,16));
+  const deferred=active=>({deferred:true,reason:'running-install',bundleHash,source,destination,active,files:files.length}),busy=(await activeInstalledVersions(destination)).filter(p=>p.version!==path.basename(directory));if(busy.length)return deferred(busy);
   await fs.mkdir(versions,{recursive:true});
   // Existing versions are verified, never overwritten. A failed copy has no shortcut.
   const exists=await fs.stat(directory).then(()=>true,error=>{if(error.code==='ENOENT')return false;throw error;});
@@ -40,6 +46,7 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
     try{
       for(const file of files){const target=path.join(staging,file.path);await fs.mkdir(path.dirname(target),{recursive:true});await fs.copyFile(path.join(source,file.path),target);if(sha(await fs.readFile(target))!==file.sha256)throw Error('배포본이 복사 중 변경됐어요: '+file.path);}
       await fs.writeFile(path.join(staging,'HBEngine.install.json'),JSON.stringify({version:1,bundleHash,installedAt:new Date().toISOString(),profile:'%LOCALAPPDATA%/HBEngine/User',files},null,2)+'\n',{flag:'wx'});
+      const active=(await activeInstalledVersions(destination)).filter(p=>p.version!==path.basename(directory));if(active.length){await fs.rm(staging,{recursive:true,force:true});return deferred(active);}
       await fs.rename(staging,directory);
     }catch(error){
       if(path.dirname(path.resolve(staging))!==path.resolve(versions)||!/^\.install-[a-f0-9-]{36}$/.test(path.basename(staging)))throw Error('임시 설치 정리 범위 오류',{cause:error});

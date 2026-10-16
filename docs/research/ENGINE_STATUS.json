@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "89f99a0",
+  "basisRevision": "c9fea91",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -17,14 +17,15 @@
       "area": "project",
       "title": "설치형 실행기·프로젝트 생성/열기",
       "status": "verified",
-      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로",
+      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증",
       "remaining": [],
       "sources": [
         "tools/project-manifest.mjs",
         "tools/install-editor.mjs"
       ],
       "evidence": [
-        "docs/research/USER_INSTALL_151.json"
+        "docs/research/USER_INSTALL_151.json",
+        "docs/research/ENGINE_WORK_193.json"
       ]
     },
     {
@@ -32,14 +33,16 @@
       "area": "project",
       "title": "실행/편집 상태와 사용자 작업 격리",
       "status": "verified",
-      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트",
+      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증",
       "remaining": [],
       "sources": [
         "prototype/project-session.js",
-        "tools/project-manifest.mjs"
+        "tools/project-manifest.mjs",
+        "tools/install-editor.mjs"
       ],
       "evidence": [
-        "docs/USER_DEVELOPMENT_SEPARATION.md"
+        "docs/USER_DEVELOPMENT_SEPARATION.md",
+        "docs/research/ENGINE_WORK_193.json"
       ]
     },
     {
@@ -1582,5 +1585,5 @@
       ]
     }
   ],
-  "latestBatch": "192"
+  "latestBatch": "193"
 }

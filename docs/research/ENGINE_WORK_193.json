@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "c9fea91",
+  "targetIds": [
+    "PRJ-01",
+    "PRJ-02"
+  ],
+  "checks": {
+    "preflight": {
+      "path": "native/build/install-193-wxbOjg/acceptance.json",
+      "sha256": "683d3bc0c0161f6240845235226e9b1cd5d0436746f3e801538ac101b4f11362",
+      "result": {
+        "passed": true,
+        "activeReferenceDetected": true,
+        "sameVersionVerifiedWithoutCopy": true,
+        "newVersionDeferredWithoutMutation": true,
+        "lateStartDuringCopyDeferredAndStagingRemoved": true,
+        "activeProcessNotInterrupted": true,
+        "completedAfterProcessExit": true,
+        "versions": 1,
+        "sourceSHA256": "dace0a6ac104697a2813fc8ffff58ce00072b59198d908fca997e0f969ce47a9",
+        "active": [
+          {
+            "pid": 46112,
+            "version": "38b29cabbf64c3ba",
+            "name": "node.exe"
+          }
+        ],
+        "cleanup": {
+          "removed": [
+            {
+              "files": 6,
+              "directory": "C:\\Users\\kirby\\AppData\\Local\\Temp\\HBEngine-install-193-3fhogT\\Versions\\38b29cabbf64c3ba",
+              "bytes": 1137,
+              "manifestSHA256": "dace0a6ac104697a2813fc8ffff58ce00072b59198d908fca997e0f969ce47a9"
+            }
+          ],
+          "failures": [],
+          "cacheBackupsRemoved": [],
+          "skipped": [],
+          "date": "2026-10-16T15:41:16.3924755Z",
+          "bytes": 1137,
+          "generated": [],
+          "preserved": [],
+          "remaining": [
+            "0ce1e135ca2d9354"
+          ]
+        }
+      }
+    },
+    "retention": {
+      "path": "native/build/install-retention-aRrs58/acceptance.json",
+      "sha256": "3d0c64663a75ed7d6308e9703e9f6067eaf53015657999ba893dad4529f13e9c",
+      "result": {
+        "passed": true,
+        "currentProtected": true,
+        "activeProtected": true,
+        "userProjectProtected": true,
+        "modifiedSourcePreserved": true,
+        "obsoleteRemoved": true,
+        "nextInstallReplacesPrior": true,
+        "singleMaintenanceReceipt": true,
+        "boundsRejected": true,
+        "failedStagingRemoved": true,
+        "knownRegenerableCacheNotBackedUp": true,
+        "historicalKnownCacheRemoved": true,
+        "modifiedDependencyPreserved": true
+      }
+    },
+    "actualProtectedBuild": {
+      "path": "native/build/install-192-deferred.json",
+      "sha256": "da4dcfaf88b28c68a57c0985644239fc4d211ccf735182f0caaf5c020f7387b1",
+      "result": {
+        "source": "c9fea91",
+        "destination": "C:\\Users\\kirby\\HBEngine",
+        "kept": "C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e",
+        "cleanup": {
+          "removed": [
+            {
+              "files": 2558,
+              "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b5c56efbdce08ae3",
+              "bytes": 174880763,
+              "manifestSHA256": "d6b969d4fbf926bf01aafffb0d5e68334e3cca408d50683d82638947f3be81ed"
+            }
+          ],
+          "failures": [],
+          "cacheBackupsRemoved": [],
+          "skipped": [],
+          "date": "2026-10-16T15:37:06.4848127Z",
+          "bytes": 174880763,
+          "generated": [],
+          "preserved": [],
+          "remaining": [
+            "44a236f286ae030e"
+          ]
+        },
+        "reason": "An external user Android build is using the old installed Node runtime. It was not interrupted. New release remains in workspace dist."
+      }
+    }
+  },
+  "installationPending": true,
+  "newDependencies": 0,
+  "newPersistentServices": 0,
+  "scope": "Before creating a new installed version or changing links, inspect processes whose executable/command line references another existing version. Repeat after copy and remove only own staging when busy. Return explicit deferred metadata without killing builds.",
+  "limits": [
+    "No claim that process inspection can eliminate every launch race after the final check. The deletion-time protection remains active; a version started after final preflight is protected rather than forcibly deleted.",
+    "An updater executing from a prior installed runtime must finish or use an outside runtime before switching to a new bundle. No persistent polling service or duplicate backup runtime is installed.",
+    "The local evidence does not establish all upgrade/disk-full/power-loss scenarios. PRJ03 broader recovery remains partial."
+  ]
+}
