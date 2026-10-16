@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "ac74610",
+  "implementationRevision": "209b66caa4eccb902589d60e392341890426780e",
+  "targetIds": [
+    "RND-08",
+    "MAT-02"
+  ],
+  "checks": [
+    {
+      "path": "native/build/lightmap-bake-225-PpAG9N/acceptance.json",
+      "sha256": "0393a963622de08eef4a717f63b2d9bb33b96efd6d12a5b47f492d249eec1fc6"
+    },
+    {
+      "path": "native/build/lightmap-environment-228-QTSTCp/acceptance.json",
+      "sha256": "f62ae3f179c3e2c85f4cc1efb4f34477c3fd3ac55a38a5dcdf7554068da10c16"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-WLu0UD/acceptance.json",
+      "sha256": "24a708e4c3cd2b3d4426107926c8aec7ea72e3a0eaeb0bed61e7bd5287cc7c46"
+    }
+  ],
+  "implemented": [
+    "기존 우선순위 SkyLight resolver의 실제 HDR/EXR Half/Float 원본·회전·간접 강도를 불변 작업 스냅샷으로 전달",
+    "기존 경로추적 atan2(z,x)-rotation 규칙의 HDRI 조회와 기하로 가려진 하늘빛의 확산 반사",
+    "원본 재료의 sampler/wrap을 따르는 CPU 샘플링·선형광 sRGB 보간·볼륨 trilinear·wrapR",
+    "primary 환경광은 실시간에 남겨 직접 하늘빛의 중복 베이크 방지·HDRI 원본 누락 명시 오류"
+  ],
+  "limits": [
+    "절차적 하늘은 현재 hemisphere 색을 사용한다. 구름/태양 원반까지 캡처한 베이크 환경맵은 추가 잔여",
+    "샘플러 mip/LOD/anisotropy·cube seam 및 volume mip 품질 확장은 별도 잔여",
+    "낮은 샘플의 Monte Carlo 오차는 남는다. 기본 bake는 CPU Worker이며 GPU/HWRT Lightmass와 동일하지 않다"
+  ],
+  "installationPending": true
+}
