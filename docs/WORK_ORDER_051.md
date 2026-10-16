@@ -179,3 +179,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 171 — 누적 잔여의 제작·실행 연결 (2026-10-16)
 
 네트워크 호스트/클라이언트·소유권/상태/RPC/재접속과 C++BP6, 공개 상태 유지 C++ 재적용·worker 해제, TreeView/명시 가변 높이, 다른 모프 이름 매핑/베이크, 능력/효과 Cue, 추정 비용 스트리밍, 별도 충돌LOD, UV 경계 좌표, DirectX 샘플러, 파일↔폴더 패치/중단 복구를 연결했다. 범위·미완료 경계·실행 근거는 ENGINE_WORK_171.md/research/ENGINE_WORK_171.json. 네트워크 전체/전용 서버·UE 전체 분석의 완료로 승격하지 않는다. 설치는 USER_INSTALL_171.json에 별도 기록한다.
+
+
+171 설치 확인: 77c55df75ff751bc·2382파일 실행 후 SHA·격리 설치 EXE/사람/AI/Undo/C++/실제 PCM 소스 전환 통과·프로필10385파일 보존·Versions1. 기능4d87d64, 설치 근거 research/USER_INSTALL_171.json.

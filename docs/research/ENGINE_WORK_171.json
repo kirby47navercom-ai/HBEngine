@@ -495,6 +495,76 @@
           }
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-171-installed-AuIa1K/acceptance.json",
+      "sha256": "8de7d5e4fcdebf3286650c46024d3a31b646fc0d947d06183e027a384e12d2f1",
+      "summary": {
+        "passed": true,
+        "tree": {
+          "expanded": "true",
+          "pooled": 12
+        },
+        "reload": {
+          "counterBefore": 1,
+          "counterAfter": 11,
+          "positionPreserved": true
+        },
+        "network": {
+          "connected": true,
+          "replica": true,
+          "rpc": 7,
+          "server": {
+            "peers": 2,
+            "actors": 1,
+            "stateBytes": 103,
+            "stateBudgetBytes": 16777216,
+            "sequence": 2
+          }
+        },
+        "prefabStructure": true,
+        "uvHumanDragUndo": true,
+        "uvViewRevision": true,
+        "ikBoneDryRunAddUndo": true,
+        "cpp": {
+          "blocked": true,
+          "handError": 1,
+          "mixGain": 1,
+          "networkAuthority": false,
+          "opened": true,
+          "realVoices": 2,
+          "rejected": true,
+          "reloadCounter": 0,
+          "ticks": 1815,
+          "virtualVoices": 6
+        },
+        "pcm": {
+          "initial": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "initialSources": 2,
+          "selected": true,
+          "after": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "afterSources": 2,
+          "phaseError": 0,
+          "silentSink": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "additionalChecks": [
@@ -524,5 +594,5 @@
   },
   "limitsDocument": "docs/ENGINE_WORK_171.md",
   "userInstallation": "docs/research/USER_INSTALL_171.json",
-  "installedSmokePending": true
+  "userInstallationReceiptSHA256": "f76c09411baeb413ed3ad71aed13daa8184e5ed005008e91d4b8b5464dd80c5e"
 }

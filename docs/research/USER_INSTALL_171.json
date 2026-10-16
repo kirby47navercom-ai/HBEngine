@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "4d87d64e92b3e5ca5534e082952eced30cde0477",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc\\HBEngine.exe",
+  "bundleHash": "77c55df75ff751bcf5688d5dd7cf23adfd5529de836d0fa6effb1eb9fdc4f074",
+  "files": 2382,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2379,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e",
+        "bytes": 187229328,
+        "manifestSHA256": "ef36ba9b42b0b99e4dba077762f49435e2c8860d4d1358c48c4ffc2445a3544c"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T06:16:46.3653061Z",
+    "bytes": 187229328,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\4d2deed78317a98e\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "77c55df75ff751bc"
+    ]
+  },
+  "work": "native/build/engine-171-install-1K9iBi",
+  "versions": [
+    "77c55df75ff751bc"
+  ],
+  "manifestVerifiedFiles": 2382,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2382,
+  "installedSmoke": {
+    "path": "native/build/engine-171-installed-AuIa1K/acceptance.json",
+    "sha256": "8de7d5e4fcdebf3286650c46024d3a31b646fc0d947d06183e027a384e12d2f1",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/77c55df75ff751bc/HBEngine.exe",
+    "treeProof": {
+      "expanded": "true",
+      "pooled": 12
+    },
+    "reload": {
+      "counterBefore": 1,
+      "counterAfter": 11,
+      "positionPreserved": true
+    },
+    "networkProof": {
+      "connected": true,
+      "replica": true,
+      "rpc": 7,
+      "server": {
+        "peers": 2,
+        "actors": 1,
+        "stateBytes": 103,
+        "stateBudgetBytes": 16777216,
+        "sequence": 2
+      }
+    },
+    "prefabStructure": true,
+    "uvHumanDragUndo": true,
+    "voiceState": {
+      "voiceBudget": {
+        "real": 2,
+        "tracked": 32,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "recent": [],
+      "queued": 0,
+      "errors": [],
+      "state": "running",
+      "clock": 3.032,
+      "mixers": {},
+      "levels": {},
+      "voices": [
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": false,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": true,
+          "priority": 128,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        },
+        {
+          "peak": 0,
+          "clip": "Assets/Silent.wav",
+          "virtual": false,
+          "priority": 0,
+          "playing": true,
+          "time": 3.032,
+          "readyState": 4,
+          "networkState": 1,
+          "error": null,
+          "duration": 8
+        }
+      ]
+    },
+    "humanIKGoals": true,
+    "aiGoalsDryRunUndo": true,
+    "navInspector": true,
+    "cpp": {
+      "blocked": true,
+      "handError": 1,
+      "mixGain": 1,
+      "networkAuthority": false,
+      "opened": true,
+      "realVoices": 2,
+      "rejected": true,
+      "reloadCounter": 0,
+      "ticks": 1815,
+      "virtualVoices": 6
+    },
+    "take": {
+      "tracks": [
+        {
+          "type": "position",
+          "keys": 2
+        },
+        {
+          "type": "rotation",
+          "keys": 2
+        },
+        {
+          "type": "scale",
+          "keys": 2
+        },
+        {
+          "type": "visible",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "componentState",
+          "keys": 2
+        },
+        {
+          "type": "skeletalPose",
+          "keys": 4
+        }
+      ],
+      "dryRunUndo": true
+    },
+    "humanDucking": true,
+    "pcm": {
+      "initial": {
+        "real": 2,
+        "tracked": 16,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "initialSources": 2,
+      "selected": true,
+      "after": {
+        "real": 2,
+        "tracked": 16,
+        "realActive": 2,
+        "virtualActive": 6,
+        "trackedActive": 8
+      },
+      "afterSources": 2,
+      "phaseError": 0,
+      "silentSink": true
+    },
+    "audio": {
+      "attack": 0.2062659658674183,
+      "release": 0.9894199190065908,
+      "silentSink": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    },
+    "testScript": {
+      "path": "tools/check-engine-171-window.mjs",
+      "sha256": "e1241f7ddfc1e4ab13404c1a20226cc7ac627244c97dfbc66d59f9e839474898",
+      "assertions": [
+        "UV view API preserves document revision",
+        "IK bone.add dryRun / add / Undo",
+        "Tree expansion and row recycling",
+        "native.reapply public counter 1 to11 without transform reset",
+        "C++ host state/RPC to actual peer"
+      ]
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-171-installed-AuIa1K/tree-ui.png",
+      "sha256": "8fcdcef79c901da2151f05db383451feba328c643c0da6e62fd050b3cdebb6d1",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-171-installed-AuIa1K/live-reload.png",
+      "sha256": "1c4561a785dc68412528ac16907330d68e185f6485f5598fa12758341506e492",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}
