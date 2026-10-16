@@ -1,4 +1,8 @@
-# 누적186 제작·실행 검증 — 설치 준비 후 계속
+# 누적186 설치 완료 — 187 렌더링 이전 노멀·mip 이력 조사 계속
+
+maincd1acac feature originpush. 설치0d173fc14c7b696a/2517명세파일 실행후 SHA일치. installed9C4fcI PASS/새 prefabStage 명시16항목(human변형/컴포넌트/값/Undo/2D생성·복사키/부모·cycle·sourceConflict·inner원본탐색·dryRun·비연결장면/배치·원본보존·저장)/이전회귀/errors0/exit0. 캡처prefab-stage-2d/components 실제시각확인. profile10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변. Versions1/바로가기2/.hbproject/이전185174602775bytes정리. finish186완료 재실행금지. 영수증커밋push후187계속. 187아직제품코드없음. RND07 previousNormalGPU는현재mapped normal을이전geometry/tangent로이동하며 시간/월드/시점의존그래프의이전표본이remaining. ray-materials.cachedRayMaterial/compileRayMaterial는timeprogram·world/viewdynamic표현지원. geometry-gi는previousNormals인자·pack이력저장. 다음연결소유자/실측재현·공식근거확인후구현. 전체원장목표계속/새agent금지/최종안함. 아래186설치전기록은역사.
+
+# 누적186 제작·실행 검증 — 설치 전 기록
 
 mainc25e27b/185설치4c2fe681686c5505,186제품/문서미커밋. PrefabAuthoring불변/CAS/expectedSources/dryRun/Undo, reparented구조+implicitType_index·기본world변형보존·clipboard/group/중첩flatten. PrefabEditor+Preview 기존SceneRendering/controls/TransformControls·2D/3D·sharedInspector/geometry/vehicle·숨은leftsummary제거·원본별탭탐색·접힘/스크롤·rightmenu. actual초기buttondisabled종료후복구문제수정. CPU9WbXug4/1847 5xnGvS/17017BmETB2/1836vFTo5a PASS. window0GaTnn실제새stage+모든이전회귀 PASS/captures2시각확인. 기존summary에stage필드누락이라installedtest에명시필드추가함;dev결과사후변경안함. D3DwZn6PD/WebGPUHcGGeP 실제새source변형Cppy4/상속부모/AudioSourcevolume.35+기존회귀 PASS. UIlayout/APIcheck PASS. 최종사소한alias/부모오버라이드정리뒤CPU9PASS. docs186완료 재실행금지. 다음diff/status→commit/push→dist동기/install186→새설치check186-window(프리팹stage명시결과/캡처)→프로필/manifest/Versions1검증 영수증→누적목표계속. snapshot API 추가와최종부모alias는설치스모크포함필요. 새agent금지/실사용앱보호/최종안함.
 

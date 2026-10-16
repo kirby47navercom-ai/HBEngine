@@ -17,3 +17,6 @@ CPU9·기존 프리팹/단축키 회귀·실제 편집기 키/컴포넌트/원�
 - The editor uses the existing common WebGL preview renderer and controls. Packaged games were separately tested using real D3D11 and WebGPU; this is not proof of native editor rendering parity.
 - Dirty/visible-only preview rendering, common resource disposal and existing caches are reused. No claim of large prefab FPS/RAM or an unlimited number of open GPU contexts.
 - No new phone, Xcode, iOS store or whole-engine completion evidence.
+
+
+186 설치 확인: 0d173fc14c7b696a·명세2517파일 실행 후 SHA 일치·격리 설치 EXE의 프리팹 격리 제작/컴포넌트/2D/복사/Undo/원본 탐색·충돌 거부·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174602775바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_186.json.

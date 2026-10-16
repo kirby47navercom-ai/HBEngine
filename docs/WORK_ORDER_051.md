@@ -247,3 +247,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 186: 프리팹 격리 제작창·2D/3D/기즈모·계층/컴포넌트·복사/그룹/원본 탐색·AI 동일 제작 명령·CAS/dryRun/Undo·중첩 부모 구조와 implicit 안정 ID를 실제 제작/DirectX/WebGPU/C++ 실행까지 연결. 상세 ENGINE_WORK_186.md/JSON.
+
+
+186 설치 확인: 0d173fc14c7b696a·명세2517파일 실행 후 SHA 일치·격리 설치 EXE의 프리팹 격리 제작/컴포넌트/2D/복사/Undo/원본 탐색·충돌 거부·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174602775바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_186.json.

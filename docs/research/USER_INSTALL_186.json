@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "cd1acac02d0da359eada43dad0804cb7ef9b50e3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d173fc14c7b696a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0d173fc14c7b696a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0d173fc14c7b696a\\HBEngine.exe",
+  "bundleHash": "0d173fc14c7b696a3930dcdf5180d590e522b7f952441e49a0dbcc71d9d1232d",
+  "files": 2517,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2507,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4c2fe681686c5505",
+        "bytes": 174602775,
+        "manifestSHA256": "890f92e3b0cb2377e44bb9e8e444865f27c60fe76ff67d50afe675c7abd81fb0"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T12:19:10.3078366Z",
+    "bytes": 174602775,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0d173fc14c7b696a"
+    ]
+  },
+  "work": "native/build/engine-186-install-lnms2u",
+  "versions": [
+    "0d173fc14c7b696a"
+  ],
+  "manifestVerifiedFiles": 2517,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2517,
+  "installedSmoke": {
+    "path": "native/build/engine-186-installed-9C4fcI/acceptance.json",
+    "sha256": "98a6617f390a8ce66b04676d6025abaea1c849ee45f9ef5871b7647457f02b42",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/0d173fc14c7b696a/HBEngine.exe",
+    "prefabStage": {
+      "humanTransform": true,
+      "humanComponent": true,
+      "componentProperty": true,
+      "undoRedo": true,
+      "humanSpriteCreate": true,
+      "keyboardDuplicate": true,
+      "keyboardCopyPaste": true,
+      "twoDPreview": true,
+      "reparent": true,
+      "cycleRejected": true,
+      "sourceConflict": true,
+      "innerSourceNavigation": true,
+      "dryRun": true,
+      "unrelatedSceneAndPlacementPreserved": true,
+      "innerSourcePreserved": true,
+      "saved": true
+    },
+    "instanceNode": {
+      "typedCreation": true,
+      "editorRendered": true,
+      "undo": true,
+      "saved": true
+    },
+    "nestedPrefab": {
+      "humanAdditionApply": true,
+      "sourcePreserved": true,
+      "baselineUpdated": true,
+      "atomicSourceAndSceneUndoRedo": true
+    },
+    "shortcuts": {
+      "remappedMesh": true,
+      "legacySuppressed": true,
+      "typingSafe": true,
+      "widgetNudge": true,
+      "widgetDuplicate": true,
+      "contextMenuLabels": true,
+      "originalSettingsRestored": true
+    },
+    "meshAuthoring": {
+      "humanInset": true,
+      "failedSelectionPreserved": true,
+      "undo": true,
+      "aiDryRun": true,
+      "unequalBridge": true,
+      "saved": true
+    },
+    "namedSlots": {
+      "humanAssignment": true,
+      "emptyPlaceholder": true,
+      "undo": true,
+      "saved": true
+    },
+    "lod": {
+      "humanRate": true,
+      "collisionChoice": true,
+      "undo": true,
+      "saved": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-186-installed-9C4fcI/prefab-stage-2d.png",
+      "sha256": "0aa811926e1df30a2b61e93c493a7f1747f7ea44f8c3974016badcbfd3a0da4a",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-186-installed-9C4fcI/prefab-stage-components.png",
+      "sha256": "eb6aac81f08a930a81c6052f04af0c745936488154dd4521fce253617c649bb5",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

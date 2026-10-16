@@ -1802,12 +1802,83 @@
           }
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-186-installed-9C4fcI/acceptance.json",
+      "sha256": "98a6617f390a8ce66b04676d6025abaea1c849ee45f9ef5871b7647457f02b42",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/0d173fc14c7b696a/HBEngine.exe",
+        "prefabStage": {
+          "humanTransform": true,
+          "humanComponent": true,
+          "componentProperty": true,
+          "undoRedo": true,
+          "humanSpriteCreate": true,
+          "keyboardDuplicate": true,
+          "keyboardCopyPaste": true,
+          "twoDPreview": true,
+          "reparent": true,
+          "cycleRejected": true,
+          "sourceConflict": true,
+          "innerSourceNavigation": true,
+          "dryRun": true,
+          "unrelatedSceneAndPlacementPreserved": true,
+          "innerSourcePreserved": true,
+          "saved": true
+        },
+        "instanceNode": {
+          "typedCreation": true,
+          "editorRendered": true,
+          "undo": true,
+          "saved": true
+        },
+        "nestedPrefab": {
+          "humanAdditionApply": true,
+          "sourcePreserved": true,
+          "baselineUpdated": true,
+          "atomicSourceAndSceneUndoRedo": true
+        },
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "editorScriptSHA256": "3dc42c225aae888d8658daf6647dff5479631399e0185e60bd0459472714ae3a",
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "The stage is an isolated asset editor. Main-scene locked background/context environments and automatic Apply-to-specific-inner-source routing remain separate work; the source button opens the actual inner asset in its own stage.",
     "Linked instances receive normal shared prefab refreshes. Tests preserve unrelated scene actors, instance placement and the inner source, not a byte-identical linked scene snapshot.",
@@ -1820,5 +1891,13 @@
     "Initial assertion required a byte-identical linked scene. Inspected the diff: shared source propagation correctly updated that instance. Kept strict checks for unrelated actors, root placement, inner source and source conflict rejection.",
     "A human component button remained disabled after the async edit completed. Restored the inspector after busy is cleared; actual picker/edit/Undo/Redo now passes.",
     "The development acceptance summary inherited older fields despite executing new assertions. The installed check writes explicit prefabStage results; no old result was retrospectively rewritten."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_186.json",
+    "receiptSHA256": "6e9e0f40174168631815036cd4991e6effe28d618aff451e55a7dcb3de5dc45c",
+    "sourceCommit": "cd1acac02d0da359eada43dad0804cb7ef9b50e3",
+    "versions": [
+      "0d173fc14c7b696a"
+    ]
+  }
 }
