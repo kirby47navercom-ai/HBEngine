@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "da8e6e9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ef759067d9303b95",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ef759067d9303b95\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ef759067d9303b95\\HBEngine.exe",
+  "bundleHash": "ef759067d9303b95ffc39d20200275ee6c1a940af0dcf685487d7c56d547efb0",
+  "files": 2307,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2271,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\16e137715970d7cd",
+        "bytes": 172041922,
+        "manifestSHA256": "a1fde132c0037787655c66389df9fe788503c283bbdf0fe5c7bd1f827b175bcc"
+      }
+    ],
+    "bytes": 172041922,
+    "failures": [],
+    "date": "2026-10-16T01:14:40.4163944Z",
+    "skipped": [],
+    "preserved": [],
+    "remaining": [
+      "ef759067d9303b95"
+    ]
+  },
+  "versions": [
+    "ef759067d9303b95"
+  ],
+  "profilePreserved": true,
+  "profileFiles": 10385,
+  "manifestVerifiedFiles": 2307,
+  "installedSmoke": {
+    "work": "native/build/batch-165-window-e99P85",
+    "shell": {
+      "ok": true,
+      "embedded": true,
+      "workspace": "editor",
+      "port": 4556
+    },
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "editorSHA256": "e7e25ad127a42aa14236caac38f4d71d14224da49cbcaf770a15d3884946dc6f",
+  "playerSHA256": "82df14ca79125ec4cbccef3943bed3a36667d4304905c60e6e9a247d71da919d"
+}

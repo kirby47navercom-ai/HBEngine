@@ -4,7 +4,7 @@
 
 165 묶음은 기준2d563b7 잔여39행 중20행에 실제 제작/실행을 추가했다. 상위 행 전체 완료로 승격하지 않았다. 현재 등록78행: verified39 / partial31 / unimplemented5 / unverified3. 전체 corpus/API 분석 gate 미통과. 전체 기능 완료율은 미확정.
 
-최신 단일 기준: docs/ENGINE_STATUS.md + docs/research/ENGINE_STATUS.json. 20행 범위·제약·사용 경로: docs/ENGINE_WORK_165.md. 계획/기계 검사: docs/research/BATCH_165_PLAN.json, ENGINE_WORK_165.json. 설치 전환 후 USER_INSTALL_165.json이 실제 버전을 기록한다. 이전 설치16e137715970d7cd는 새 전환 성공 후 정리한다.
+최신 단일 기준: docs/ENGINE_STATUS.md + docs/research/ENGINE_STATUS.json. 20행 범위·제약·사용 경로: docs/ENGINE_WORK_165.md. 계획/기계 검사: docs/research/BATCH_165_PLAN.json, ENGINE_WORK_165.json. 구현 커밋 da8e6e9. 사용자 설치 C:/Users/kirby/HBEngine/Versions/ef759067d9303b95 전환 완료. USER_INSTALL_165.json에 실제 설치/실행/2307 파일 해시를 기록했다. 이전16e137715970d7cd 172041922B 정리, Versions1. 사용자 프로필10385파일 SHA 보존. 루트/바탕 화면 바로가기와 .hbproject 연결도 새 설치로 전환했다.
 
 추가 구현: glTF/GLB/OBJ 하위ID/override, 쿠킹 캐시, 프리팹 상속/중첩/override; 메시·지형·폴리지·LOD 전용 제작과 충돌; 삼각 NavMesh/링크/국소 군중 회피; 2D 계층 포즈 베이크/자동 타일; 모프/커브/notify 베이크 보존/Take; 능력/효과/속성/비용/쿨다운/태그/주기; EQS/일반 병렬; 지역화/스타일/가상 목록; DSP/send; GPU 시트/이미터 리본/하위 수명; AI 전용 명령; 오프라인 증분 압축 패치.
 

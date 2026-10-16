@@ -141,3 +141,5 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 165 — 2026-10-16
 
 기준2d563b7의 잔여39행 중20행에 제작·실행 구현을 추가했다. 단순 명칭이나 새 계획을 완료로 계산하지 않는다. 메시/지형/폴리지/LOD/내비·프리팹/쿠킹/패치·2D 리타게팅/규칙·베이크/녹화·GAS/EQS·지역화/ListView/DSP/VFX·공용AI 경로. 범위/검사/남은 세부: docs/ENGINE_WORK_165.md, docs/research/ENGINE_WORK_165.json, docs/ENGINE_STATUS.md. 설치 전환은 USER_INSTALL_165.json에 후속 기록한다.
+
+설치 확인: ef759067d9303b95, 2307파일 해시와 격리 설치본 실제 실행 통과. Versions1·프로필10385파일 보존. 이전 설치172041922B 정리. 구현 da8e6e9; 영수증 docs/research/USER_INSTALL_165.json.
