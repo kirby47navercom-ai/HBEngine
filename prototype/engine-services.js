@@ -1,3 +1,4 @@
+import {recordableRuntimeValues} from './sequence-values.js';
 import {AnimationBudget} from './animation-budget.js';
 import {NavigationRuntime} from './navigation-runtime.js';
 import {RuntimeLODPolicy} from './runtime-lod.js';
@@ -401,6 +402,7 @@ export function engineOperations(hooks){
   };
   return {
     lodState:()=>({animationBudget:{owner:animationBudgetOwner?.id||null,...animationBudget.snapshot()},collisionCache:collisionLODs.stats(),actors:(currentVM?.objects||[]).flatMap(o=>{const state=lodStates.get(o);return state?[{actor:o.id,...state}]:[];})}),
+    valuesState:(id,{offset=0,limit=64}={})=>{const object=currentVM?.object(id);if(!object||!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>256)throw Error('변수 대상과 페이지를 확인하세요.');const rows=recordableRuntimeValues(object,currentVM.bindings);return {actor:id,total:rows.length,offset,values:structuredClone(rows.slice(offset,offset+limit)),nextOffset:offset+limit<rows.length?offset+limit:null};},
     animationState:()=>[...graphs.values()].map(player=>player.snapshot()),
     sequencePoseState:(id,{offset=0,limit=64}={})=>{if(typeof id!=='string'||!currentVM?.object(id)||!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>512)throw Error('시퀀스 포즈 대상과 페이지를 확인하세요.');const rows=captureSkeletalPose(hooks.mesh(id)),entry=sequencePoses.get(id);return {actor:id,controlled:!!entry,time:entry?.time??null,total:rows.length,offset,bones:rows.slice(offset,offset+limit),nextOffset:offset+limit<rows.length?offset+limit:null};},
     spriteSkinState:({vertices=false}={})=>(currentVM?.objects||[]).flatMap(o=>{const skin=hooks.mesh(o.id)?.userData.spriteSkin;return skin?[{actor:o.id,...skin.snapshot({vertices})}]:[];}),
@@ -411,7 +413,7 @@ export function engineOperations(hooks){
     unlockAudio,pauseAudio:paused=>{audioSession.paused=paused;if(paused)return soundRouting.context?.suspend();return audioSession.unlocked?unlockAudio():Promise.resolve();},
     operation,applyNativeOperations,gameplay:hooks.gameplay,physicsState:()=>physics?.inspect?.()||null,navigationState:()=>({...navigation.inspect(),meshes:(currentVM?.objects||[]).flatMap(o=>{const mesh=getNavigationMesh(o);return mesh?[{actor:o.id,...mesh.projectionInfo()}]:[];})}),projectileState:()=>({count:projectiles?.count||0,capacity:projectiles?.capacity||0,pendingHits:projectiles?.hits.length||0,styles:projectiles?.styles.size||0}),physicsDebug:()=>physics?.debug?.()||null,
     prepare:async vm=>{currentVM=vm;if(hooks.game)hooks.game.inputRuntime=vm;for(const [id,item] of pendingAudio){item.vm=vm;if(audioSession.unlocked)startVoice(id,item);}for(const o of vm.objects)await prepareNavigation(o,vm);await tilemaps.start(vm.objects);for(const o of [...vm.objects])await prepareActorWidgets(o,vm);},
-    beginTake:settings=>{if(take)throw Error('이미 녹화 중이에요.');take=new TakeRecorder({...settings,capture:o=>captureSkeletalPose(hooks.mesh(o.id))});take.sample(0,currentVM.objects);},endTake:()=>{if(!take)throw Error('녹화 중이 아니에요.');const data=take.finish();take=null;return data;},
+    beginTake:settings=>{if(take)throw Error('이미 녹화 중이에요.');take=new TakeRecorder({...settings,capture:o=>captureSkeletalPose(hooks.mesh(o.id)),captureValues:o=>recordableRuntimeValues(o,currentVM.bindings)});take.sample(0,currentVM.objects);},endTake:()=>{if(!take)throw Error('녹화 중이 아니에요.');const data=take.finish();take=null;return data;},
     get spawnCatalog(){return hooks.spawnCatalog;},
     start:async vm=>{currentVM=vm;await ensurePhysics(vm).loadMaterials(readAsset);for(const o of [...vm.objects])await startActor(o,vm);await systems.start(vm);},
     stop:async vm=>{let firstError;try{await systems.stopSequences(vm);}catch(error){firstError??=error;}for(const o of vm.objects)try{await systems.stopMontages(o.id,vm,'worldStopped');}catch(error){firstError??=error;}for(const id of [...graphs.keys()])try{await stopAnimation(id,vm,'worldStopped');}catch(error){firstError??=error;}if(firstError)throw firstError;},

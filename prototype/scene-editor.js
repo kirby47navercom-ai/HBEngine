@@ -34,7 +34,9 @@ export function sceneMatches(object,query){
     else if(key==='tag'&&term)match=(object.tags||[]).some(tag=>tag.toLowerCase()===term);
     else match=token.startsWith('+')?all.split(/\s+/).includes(token.slice(1)):all.includes(token);return exclude?!match:match;});
 }
+export const isSceneActor=object=>!['component','widget'].includes(object.kind);
 export function sceneRows(objects,query='',collapsed=new Set()){
+  objects=objects.filter(isSceneActor);
   const byId=new Map(objects.map(o=>[o.id,o])),children=new Map(),matches=new Set(objects.filter(o=>sceneMatches(o,query)).map(o=>o.id));
   for(const o of objects){const parent=o.parent||null;if(!children.has(parent))children.set(parent,[]);children.get(parent).push(o);}
   if(query)for(const o of objects.filter(o=>matches.has(o.id))){const seen=new Set([o.id]);for(let parent=o.parent;parent&&!seen.has(parent);parent=byId.get(parent)?.parent){seen.add(parent);matches.add(parent);}}
