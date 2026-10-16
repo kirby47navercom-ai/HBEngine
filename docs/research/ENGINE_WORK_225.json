@@ -36,5 +36,12 @@
     "수신체는 정적 메시/UV1이다. Skin/Instance/Morph 수신은 명시 거부하며 재질·빛 수정 뒤에는 재베이크한다",
     "실제 모바일 기기·장시간 월드 메모리·전체 프레임 목표를 이 표본으로 완료 판정하지 않는다"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_228.json",
+    "receiptSHA256": "ce31ae342db1cd6c6b87a4c06409a9fe66f7eb8f1cd4bdd6f2f79b922403fa0e",
+    "sourceCommit": "aa34a22c517534ce1a11a802cd3a0a4d0760402a",
+    "versions": [
+      "b632ce56672d0c14"
+    ]
+  }
 }

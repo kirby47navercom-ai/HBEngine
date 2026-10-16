@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "aa34a22c517534ce1a11a802cd3a0a4d0760402a",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b632ce56672d0c14",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\b632ce56672d0c14\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\b632ce56672d0c14\\HBEngine.exe",
+  "bundleHash": "b632ce56672d0c14f8871927d78f37f89a69fbd21df9879d8acc0822ddeaac46",
+  "files": 2764,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2735,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a",
+        "bytes": 192727227,
+        "manifestSHA256": "bfad695cd9eed4441589ab9d529546f018cf6af2bede8925f9df52aaa36da0e6"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T22:43:10.3949191Z",
+    "bytes": 192727227,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\be51b1db8dde157a\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "b632ce56672d0c14"
+    ]
+  },
+  "work": "native/build/engine-228-install-MOe8TF",
+  "versions": [
+    "b632ce56672d0c14"
+  ],
+  "manifestVerifiedFiles": 2764,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/lightmap-workflow-225-sxTaEd/acceptance.json",
+      "sha256": "6972302529b3e692723f1a2427f561aac94ace4a702b04a4863edcb0177408d4"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/lightmap-workflow-225-sxTaEd/half-atlas-linear-pixel-preview.png",
+      "sha256": "c6f7072bff9f510a0f24c78ef77e0544b21832795276d6f8280145ccf2e90ac0",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-sxTaEd/d3d11-0.png",
+      "sha256": "155f3104fb630065cc0f72fd346c258dcb543c47c04fdc36f4bfffbe4a4eb1e4",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-sxTaEd/webgpu-0.png",
+      "sha256": "f568f0106e7df6f258ed7f88444aab46b6abeaba5e154e6d1b40ef58a3a8f7b3",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2764,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Installed builder creates three actual games. Actual User read-only inventory.",
+  "storage": {
+    "path": "native/build/storage-228-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}

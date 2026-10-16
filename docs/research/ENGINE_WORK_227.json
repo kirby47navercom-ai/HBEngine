@@ -29,5 +29,12 @@
     "큰 바이너리는 응답/저널에 복제하지 않는다. 프로젝트 원본 쓰기 API를 추가한 것은 아니다",
     "모든 third-party importer의 숨은 sidecar를 자동 추적하는 전체 cook DAG는 별도 잔여"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_228.json",
+    "receiptSHA256": "ce31ae342db1cd6c6b87a4c06409a9fe66f7eb8f1cd4bdd6f2f79b922403fa0e",
+    "sourceCommit": "aa34a22c517534ce1a11a802cd3a0a4d0760402a",
+    "versions": [
+      "b632ce56672d0c14"
+    ]
+  }
 }

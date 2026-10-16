@@ -354,3 +354,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 225–228: 독립 UV1 간접광 BVH 베이크·공유 Half/gzip 페이지·HDRI/하늘빛 반사·재료 sampler/trilinear·DirectX Half 전송·사람/AI 원자 저장과 Undo·세 렌더러 독립 게임 수신/이동 무효화/복원·바이너리 원본 SHA 가드 구현. CPU13군·DX픽셀·D3D/GL/GPU 게임 오류0/종료0·별도 에디터 API/Undo/가드 통과. 설치 검증 진행 전이며 전체 엔진 완료를 뜻하지 않는다.
+
+
+223–228 설치 확인: b632ce56672d0c14·명세2764파일 실행후SHA동일·설치본 자체 빌더의 D3D/WebGL/WebGPU 세 게임·UV1 저작/베이크/선형 Half 미리보기·원자 Undo/Redo·AI dryRun/원본SHA가드 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치192727227B 제거. USER_INSTALL_228.json.

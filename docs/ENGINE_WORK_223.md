@@ -12,3 +12,6 @@
 - UV 기반과 차트 생성이며 실제 광선 베이크/라이트맵 조명은 아직 별도 작업이다. RND-08 상태를 UV-only로 완료 승격하지 않음
 - 자동 차트 표본은 큐브/토러스; 임의 대형/퇴화/비다양체의 품질 전체 보증 아님. topology 변경 뒤 UV 겹침 재검사/펼치기 필요
 - 고급 normal-split seam stitch·곡면 영역 편집·bevel/loop와 사용자 고정 chart 재패킹/다중 아틀라스는 잔여
+
+
+223–228 설치 확인: b632ce56672d0c14·명세2764파일 실행후SHA동일·설치본 자체 빌더의 D3D/WebGL/WebGPU 세 게임·UV1 저작/베이크/선형 Half 미리보기·원자 Undo/Redo·AI dryRun/원본SHA가드 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치192727227B 제거. USER_INSTALL_228.json.

@@ -27,5 +27,12 @@
     "2×2 예제32B 대64B는 텍스처 입력 비용 비교이며 전체 FPS 향상 수치가 아니다",
     "라이트맵 mip/비등방 필터·DX12/HWRT는 이 구현에 포함되지 않는다"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_228.json",
+    "receiptSHA256": "ce31ae342db1cd6c6b87a4c06409a9fe66f7eb8f1cd4bdd6f2f79b922403fa0e",
+    "sourceCommit": "aa34a22c517534ce1a11a802cd3a0a4d0760402a",
+    "versions": [
+      "b632ce56672d0c14"
+    ]
+  }
 }

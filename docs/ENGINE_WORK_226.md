@@ -11,3 +11,6 @@
 
 - 2×2 예제32B 대64B는 텍스처 입력 비용 비교이며 전체 FPS 향상 수치가 아니다
 - 라이트맵 mip/비등방 필터·DX12/HWRT는 이 구현에 포함되지 않는다
+
+
+223–228 설치 확인: b632ce56672d0c14·명세2764파일 실행후SHA동일·설치본 자체 빌더의 D3D/WebGL/WebGPU 세 게임·UV1 저작/베이크/선형 Half 미리보기·원자 Undo/Redo·AI dryRun/원본SHA가드 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치192727227B 제거. USER_INSTALL_228.json.

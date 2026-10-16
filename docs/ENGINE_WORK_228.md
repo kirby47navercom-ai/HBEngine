@@ -12,3 +12,6 @@
 - 절차적 하늘은 현재 hemisphere 색을 사용한다. 구름/태양 원반까지 캡처한 베이크 환경맵은 추가 잔여
 - 샘플러 mip/LOD/anisotropy·cube seam 및 volume mip 품질 확장은 별도 잔여
 - 낮은 샘플의 Monte Carlo 오차는 남는다. 기본 bake는 CPU Worker이며 GPU/HWRT Lightmass와 동일하지 않다
+
+
+223–228 설치 확인: b632ce56672d0c14·명세2764파일 실행후SHA동일·설치본 자체 빌더의 D3D/WebGL/WebGPU 세 게임·UV1 저작/베이크/선형 Half 미리보기·원자 Undo/Redo·AI dryRun/원본SHA가드 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치192727227B 제거. USER_INSTALL_228.json.

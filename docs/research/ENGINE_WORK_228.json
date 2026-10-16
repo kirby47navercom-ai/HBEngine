@@ -32,5 +32,12 @@
     "샘플러 mip/LOD/anisotropy·cube seam 및 volume mip 품질 확장은 별도 잔여",
     "낮은 샘플의 Monte Carlo 오차는 남는다. 기본 bake는 CPU Worker이며 GPU/HWRT Lightmass와 동일하지 않다"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_228.json",
+    "receiptSHA256": "ce31ae342db1cd6c6b87a4c06409a9fe66f7eb8f1cd4bdd6f2f79b922403fa0e",
+    "sourceCommit": "aa34a22c517534ce1a11a802cd3a0a4d0760402a",
+    "versions": [
+      "b632ce56672d0c14"
+    ]
+  }
 }
