@@ -8,3 +8,6 @@
 남은 범위: 선택된 Scene Inspector와 등록된 leaf/구조 범위다. 모든 전용 에셋 Inspector/특수 collision geometry/조건부 모듈 UI와 전체 DPI/분리창 조합을 검증한 것은 아님 / 실행 중 Inspector에서 C++/BP 속성을 직접 수정하는 기능을 새로 허용하지 않음; 코드/노드의 공용 쓰기 경로와 분리 / 실제 창은 새 RuntimeLOD 추가/현재값·읽기 전용·원본 revision을 검사. 모든 live reapply/SDK ABI 조합의 추가 검증은 잔여
 
 근거: [ENGINE_WORK_213.json](research/ENGINE_WORK_213.json). 설치 검증은 별도 영수증에 기록한다.
+
+
+212–213 설치 확인: 85700fd5ac4494a6·명세2666파일 실행 후SHA동일·설치 EXE에서 typed C++/BP Take/배열 키/Undo·독립 preview·실제 C++ getter/Seek/복원·실행Inspector 값/새컴포넌트·가상핸들 제외·210 예산/C++ 현재값 회귀 통과. 예외/콘솔오류0·종료0·캡처3 직접 시각확인. User10385파일 SHA불변·링크2/.hbproject·이전설치194200685B 제거·Versions1. USER_INSTALL_213.json.

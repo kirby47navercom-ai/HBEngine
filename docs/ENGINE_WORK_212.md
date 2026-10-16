@@ -9,3 +9,6 @@
 남은 범위: 등록된 기본 타입 bool/int/float/string/vec2/vec3/color/object/transform/hit 및 단일 std::vector/BP 배열에 한정. 배열128개/키JSON64KiB의 명시 검증 예산; 미등록 사용자 C++ struct/중첩 컨테이너·큰 키는 잔여 / C++ BlueprintReadOnly는 녹화/쓰기 대상에서 제외. private BP 변수는 로컬 디버그/녹화 대상일 수 있으나 UI 인스턴스 노출 설정을 바꾸지 않음 / 변수 바인딩의 별도 수동 생성 선택창·생성 표시 복사본의 게임 상태·전문 PCM/시간코드/실폰 검증은 잔여. 제작 미리보기는 사용자 C++/BP/물리를 다시 실행하는 게임 리플레이가 아님 / 실제 기본 C++/BP reflection/worker 스냅샷 경로를 쓴다. 별도 nativeSet RPC나 매 프레임 전체 디버그 복사·GPU 읽기는 추가하지 않음
 
 근거: [ENGINE_WORK_212.json](research/ENGINE_WORK_212.json). 설치 검증은 별도 영수증에 기록한다.
+
+
+212–213 설치 확인: 85700fd5ac4494a6·명세2666파일 실행 후SHA동일·설치 EXE에서 typed C++/BP Take/배열 키/Undo·독립 preview·실제 C++ getter/Seek/복원·실행Inspector 값/새컴포넌트·가상핸들 제외·210 예산/C++ 현재값 회귀 통과. 예외/콘솔오류0·종료0·캡처3 직접 시각확인. User10385파일 SHA불변·링크2/.hbproject·이전설치194200685B 제거·Versions1. USER_INSTALL_213.json.

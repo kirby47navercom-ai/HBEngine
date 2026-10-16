@@ -321,3 +321,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 ## 212–213 — 2026-10-17
 
 C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 deep-copy/다중 값 사전검증/읽기전용·선언 변경 거부·실제 worker/BP Map·Seek/Stop 복원을 제작 UI/배열 키 편집/독립 미리보기/runtime.values에 연결했다. 실제 녹화본을 DirectX11 게임으로 패키징해 C++ scalar/배열 getter와 BP 값/복원을 대조했다. 선택 Inspector는4Hz leaf 반영과 구조 변경 시에만 재생성하며 실행 중 AI 선택·원본 불변·참조 핸들의 아웃라이너 분리를 추가했다. 근거/범위는 ENGINE_WORK_212/213.json, 설치는 USER_INSTALL_213.json에 후속 기록한다. 전체 잔여/분석 gate는 유지한다.
+
+
+212–213 설치 확인: 85700fd5ac4494a6·명세2666파일 실행 후SHA동일·설치 EXE에서 typed C++/BP Take/배열 키/Undo·독립 preview·실제 C++ getter/Seek/복원·실행Inspector 값/새컴포넌트·가상핸들 제외·210 예산/C++ 현재값 회귀 통과. 예외/콘솔오류0·종료0·캡처3 직접 시각확인. User10385파일 SHA불변·링크2/.hbproject·이전설치194200685B 제거·Versions1. USER_INSTALL_213.json.

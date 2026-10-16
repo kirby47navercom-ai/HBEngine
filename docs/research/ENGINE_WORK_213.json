@@ -30,5 +30,12 @@
   ],
   "bodyRead": [],
   "executionVerified": true,
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_213.json",
+    "receiptSHA256": "fef7997c9d15bde70d5be26cf3c747a6954d5e664b78e3e1b6710b5cf0bbd83d",
+    "sourceCommit": "d456c154dbbac5ca680aea21bccd7e5a8d10396c",
+    "versions": [
+      "85700fd5ac4494a6"
+    ]
+  }
 }

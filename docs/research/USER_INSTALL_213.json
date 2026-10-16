@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "d456c154dbbac5ca680aea21bccd7e5a8d10396c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\HBEngine.exe",
+  "bundleHash": "85700fd5ac4494a6f04927ef834cad9907418ed4627603dc25257f15c9357648",
+  "files": 2666,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2671,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2",
+        "bytes": 194200685,
+        "manifestSHA256": "fa23d7caeb4885d691539572bd64d9d93b320a3d6a062844316923abeeccd826"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T20:19:42.0604256Z",
+    "bytes": 194200685,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\757399520cda70d2\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "85700fd5ac4494a6"
+    ]
+  },
+  "work": "native/build/engine-213-install-Pzg967",
+  "versions": [
+    "85700fd5ac4494a6"
+  ],
+  "manifestVerifiedFiles": 2666,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/animation-budget-210-window-jKfivK/acceptance.json",
+      "sha256": "ca381dfffab285602d84bb85ec90a3f95eda5822b304e8a70239fb848964fbc9",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\HBEngine.exe",
+        "budget": {
+          "owner": "BudgetManager",
+          "enabled": true,
+          "budgetMS": 0.0010000000474974513,
+          "observedMS": 0,
+          "measuredActors": 16,
+          "evaluated": 2,
+          "throttled": 14,
+          "protected": 0,
+          "eligible": 16,
+          "estimatedProtectedMS": 0.03872117066719247,
+          "minimumDemandMS": 0.061572588672693815,
+          "allocatedDemandMS": 0.061572588672693815,
+          "minimumExceedsBudget": true
+        },
+        "cpp": {
+          "configured": true,
+          "observed": 0.10000002384185791,
+          "rejected": true,
+          "skipped": 15
+        },
+        "checks": {
+          "humanTypedInspectorAndUndo": true,
+          "CPPConfiguresSharedManager": true,
+          "actualGLTFBoneAnimationContinues": true,
+          "optionalPoseEvaluationsSkipped": true,
+          "protectedMinimumOverBudgetVisible": true,
+          "invalidCPPBudgetRejected": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    {
+      "path": "native/build/sequence-values-212-window-Quo3Qw/acceptance.json",
+      "sha256": "40367577446de0659de966284a4e6ac34528a6e989ba8a6cb0522b7298a45ee5",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\HBEngine.exe",
+        "reads": [
+          {
+            "Ammo": [
+              1,
+              2
+            ],
+            "Focus": null,
+            "Offsets": [
+              [
+                2,
+                4
+              ]
+            ],
+            "Scalar": 2,
+            "gotCount": 2,
+            "gotFirst": 1,
+            "gotScalar": 2
+          },
+          {
+            "Ammo": [
+              3,
+              4,
+              5
+            ],
+            "Focus": "Other",
+            "Offsets": [
+              [
+                6,
+                8
+              ],
+              [
+                10,
+                12
+              ]
+            ],
+            "Scalar": 8,
+            "gotCount": 3,
+            "gotFirst": 3,
+            "gotScalar": 8
+          },
+          {
+            "Ammo": [
+              1
+            ],
+            "Focus": null,
+            "Offsets": [
+              [
+                0,
+                0
+              ]
+            ],
+            "Scalar": 0,
+            "gotCount": 1,
+            "gotFirst": 1,
+            "gotScalar": 0
+          }
+        ],
+        "times": {
+          "a": 0.37959999999403976,
+          "b": 3.4043000000119132
+        },
+        "checks": {
+          "humanRecordNativeAndVariables": true,
+          "arrayLengthsAndTypes": true,
+          "readOnlyExcluded": true,
+          "typedArrayEditorUndo": true,
+          "isolatedPreviewVariables": true,
+          "actualCPPReadsReplayedProperties": true,
+          "seekAndRestore": true,
+          "liveInspectorAndSceneRevisionPreserved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/animation-budget-210-window-jKfivK/budget-runtime.png",
+      "sha256": "08504a6aa62dc136c2f3f90d045e8ce0a415ced2d93eccc770547b200f7e8adf",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/sequence-values-212-window-Quo3Qw/live-typed-inspector.png",
+      "sha256": "d2f94fd3f8fe2b5e54b905ebe7f18175993fc3e4ef3825b4ccf119d851832448",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/sequence-values-212-window-Quo3Qw/typed-array-keys.png",
+      "sha256": "399e6fef97250c459d7c0106a4fa2c6eb73b2ea9c48eb1496e49654a81e37c7d",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2666,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Actual User only read for inventory. SDK headers included and manifest verified.",
+  "storage": {
+    "path": "native/build/storage-213-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
