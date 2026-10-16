@@ -117,6 +117,8 @@ export const editorMethods={
   'runtime.sequencePose':{description:'현재 모델의 실제 골격 로컬 포즈를 요청 시 조회; 자동 프레임 샘플링/추가 GPU 읽기 없음',params:{target:'오브젝트 ID',offset:'선택: 시작 0',limit:'선택: 페이지 64, 최대512'},result:'actor, controlled, time, total, offset, bones[{bone,position,quaternion,scale}], nextOffset'},
   'editor.synchronize':{description:'대기·진행 중 프리팹 동기화를 마치고 문서 기준 조회. 자동 저장·Undo 생성 없음; 저장도 같은 장벽을 사용',params:{}},
   'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
+  'runtime.abilitySet.apply':{description:'실행 중 능력 세트·곡선을 재로드하고 검증 후 원자 적용; 저장 문서 수정 없음',params:{target:'소유 오브젝트 ID',asset:'능력 세트 경로',preserveBase:'기존 직접 속성 기본값 유지·기본true',retainEffects:'활성 효과·핸들·시간 유지·기본true',section:'attributes/abilities/effects',offset:'기본0',limit:'1..256'}},
+  'abilityset.read':{description:'능력 세트 parent/includes/local의 합성 결과와 출처를 페이지 조회; 각 참조 revision 재확인·파일 수정 없음',params:{path:'세트 에셋 경로; 기본 활성 문서',expectedRevision:'선택: 루트의 현재 revision',section:'summary/attributes/abilities/tags/sources',offset:'기본0',limit:'1..256·기본64'},readOnly:true},
   'runtime.abilities':{params:{target:'오브젝트 ID',section:'attributes|abilities|effects·기본attributes',offset:'기본0',limit:'1..256·기본64'},readOnly:true,description:'현재 속성 기본/효과 포함 값·경계와 능력/효과 수명·AI 페이지; 사람은 실행 Inspector에서 동일 상태 조회'},
   'runtime.eqs.run':{params:{target:'실행 오브젝트 ID',context:'기준 오브젝트 ID',asset:'환경 질의 에셋 경로',debugLimit:'진단 표본 예산1..100000·기본4096'},description:'기존 C++/BP 질의 연산을 같은 프레임 장벽에서 실행하고 단계별 통과/실패/점수·ms 진단과 뷰포트 시각화'},
   'runtime.eqs.read':{params:{target:'오브젝트 ID',offset:'기본0',limit:'1..256·기본64',failed:'실패 후보 포함·기본true'},readOnly:true},

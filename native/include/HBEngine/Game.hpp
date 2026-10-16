@@ -572,6 +572,7 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="attributeDefine", KoreanName="속성 등록", Category="능력|속성") static void DefineAttribute(Actor* target,const std::string& attribute,float value,float min=0.f,float max=100.f);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="attributeSet", KoreanName="속성 기본값 지정", Category="능력|속성") static void SetAttribute(Actor* target,const std::string& attribute,float value);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="attributeGet", KoreanName="속성 현재값", Category="능력|속성") static float GetAttribute(Actor* target,const std::string& attribute);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilitySetApply", KoreanName="능력 세트 재적용", Category="능력|세트") static void ApplySet(Actor* target,const std::string& asset,bool preserveBase=true,bool retainEffects=true);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityGrant", KoreanName="능력 부여", Category="능력") static void Grant(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityActivate", KoreanName="능력 활성화", Category="능력") static void Activate(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityCancel", KoreanName="능력 취소", Category="능력") static void Cancel(Actor* target,const std::string& asset);

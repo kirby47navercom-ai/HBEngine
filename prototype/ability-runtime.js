@@ -1,3 +1,6 @@
+import {reapplyAbilitySet} from './ability-set-reapply.js';
+import {calculatedAttributeBase} from './ability-calculations.js';
+import {AbilitySetLibrary} from './ability-set-resolution.js';
 import {periodicEffectCount} from './ability-clock.js';
 import {validAbilityAsset} from './ability-assets.js';
 import {hasGameplayTag} from './scene-systems.js';
@@ -5,58 +8,62 @@ const finite=v=>Number.isFinite(v)&&Math.abs(v)<=1e9;
 const attributeName=v=>typeof v==='string'&&/^[\w가-힣 .-]{1,80}$/.test(v);
 // One owner state is shared by native commands, graph nodes and editor-authored assets.
 export class AbilitySystem {
-  constructor(read){this.read=read;this.owners=new Map();this.time=0;this.timeCompensation=0;this.serial=0;this.events=[];}
+  constructor(read,{refreshRead=read}={}){this.refreshRead=refreshRead;this.setLibrary=new AbilitySetLibrary(read);this.initializations=new Map();this.read=read;this.owners=new Map();this.time=0;this.timeCompensation=0;this.serial=0;this.events=[];}
   cue(s,data,phase,args={}){for(const row of data.cues||[])if(row.on===phase)this.events.push({owner:s.object.id,event:row.event,args:{...args,tag:row.tag,phase}});}
-  removeEffect(s,handle,reason){const e=s.effects.get(handle);if(!e)return;s.effects.delete(handle);this.cue(s,e.data,'remove',{effect:e.asset,handle,reason});}
+  removeEffect(s,handle,reason){const e=s.effects.get(handle);if(!e)return;s.effects.delete(handle);s.values=null;this.cue(s,e.data,'remove',{effect:e.asset,handle,reason});}
   state(o){let s=this.owners.get(o.id);if(!s){s={object:o,attributes:new Map(),effects:new Map(),abilities:new Map(),baseTags:new Set(o.tags||[])};this.owners.set(o.id,s);}return s;}
   async initialize(object,settings,vm){
-    if(this.owners.has(object.id))return;
+    if(this.owners.has(object.id))return;const ticket={};this.initializations.set(object.id,ticket);try{
     // Resolve the complete starting set before installing any owner state.
     // Existing projects retain their Health/Mana and single starting ability.
-    const set=settings.abilitySet?await this.load(settings.abilitySet,'abilityset'):null,attributes=new Map([['Health',{base:settings.health,min:0,max:settings.health}],['Mana',{base:settings.mana,min:0,max:settings.mana}]]);
-    for(const row of set?.attributes||[])attributes.set(row.name,{base:row.base,min:row.min,max:row.max});
+    const template=settings.abilitySet?await this.setLibrary.load(settings.abilitySet):null,set=template?.data;if(this.initializations.get(object.id)!==ticket||vm.active===false||vm.object(object.id)!==object||object.poolActive===false)return;const attributes=new Map([['Health',{base:settings.health,min:0,max:settings.health}],['Mana',{base:settings.mana,min:0,max:settings.mana}]]);
+    const defaultAttributes=new Map([...attributes].map(([k,a])=>[k,{...a}]));for(const row of set?.attributes||[])attributes.set(row.name,{base:row.base,min:row.min,max:row.max,...(row.calculation?{calculation:row.calculation}:{})});
     const paths=[...new Set([settings.ability,...set?.abilities||[]].filter(Boolean))],definitions=await Promise.all(paths.map(async path=>[path,await this.load(path,'ability')]));
-    if(vm.active===false||vm.object(object.id)!==object||object.poolActive===false||this.owners.has(object.id))return;
-    const state=this.state(object);state.attributes=attributes;for(const tag of set?.grantedTags||[])state.baseTags.add(tag);for(const [asset,data]of definitions)state.abilities.set(asset,{asset,data,ready:0,active:false,end:0});this.sync(state);
+    if(this.initializations.get(object.id)!==ticket||vm.active===false||vm.object(object.id)!==object||object.poolActive===false||this.owners.has(object.id))return;
+    const state={object,attributes,effects:new Map(),abilities:new Map(),baseTags:new Set(object.tags||[]),defaultAttributes,initialTags:new Set(object.tags||[]),manualTags:new Map(),setAsset:settings.abilitySet||'',setAttributeNames:new Set((set?.attributes||[]).map(a=>a.name)),setAbilityPaths:new Set(paths),runtimeGranted:new Set(),startingAbility:settings.ability||'',calculationOrder:template?.attributeOrder||[],curves:template?.curves||{},calculated:!!set?.attributes.some(a=>a.calculation)};if(state.calculated)this.aggregate(state);for(const tag of set?.grantedTags||[])state.baseTags.add(tag);for(const [asset,data]of definitions)state.abilities.set(asset,{asset,data,ready:0,active:false,end:0});this.owners.set(object.id,state);this.sync(state);
+    }catch(error){if(this.initializations.get(object.id)===ticket&&vm.active!==false&&vm.object(object.id)===object&&object.poolActive!==false)throw error;}finally{if(this.initializations.get(object.id)===ticket)this.initializations.delete(object.id);}
   }
-  tagChange(o,tag,add){const s=this.owners.get(o.id);if(!s)return;if(add)s.baseTags.add(tag);else s.baseTags.delete(tag);this.sync(s);}
-  value(s,name){const a=s.attributes.get(name);if(!a)throw Error('등록되지 않은 속성: '+name);let v=a.base;for(const e of s.effects.values())if(e.data.period===0)for(const m of e.data.modifiers)if(m.attribute===name){if(m.operation==='add')v+=m.magnitude*e.stacks;else if(m.operation==='multiply')v*=m.magnitude**e.stacks;else v=m.magnitude;}return Math.max(a.min,Math.min(a.max,v));}
+  tagChange(o,tag,add){const s=this.owners.get(o.id);if(!s)return;s.manualTags?.set(tag,add);if(add)s.baseTags.add(tag);else s.baseTags.delete(tag);this.sync(s);}
+  aggregate(s){if(s.values)return s.values;const values=new Map(),known=new Set(s.calculationOrder),order=[...known,...[...s.attributes.keys()].filter(name=>!known.has(name))];for(const name of order){const a=s.attributes.get(name);let base=a.calculation?calculatedAttributeBase(a.calculation,values.get(a.calculation.attribute),s.curves):a.base;base=Math.max(a.min,Math.min(a.max,base));let current=base;for(const e of s.effects.values())if(e.data.period===0)for(const m of e.data.modifiers)if(m.attribute===name){if(m.operation==='add')current+=m.magnitude*e.stacks;else if(m.operation==='multiply')current*=m.magnitude**e.stacks;else current=m.magnitude;}if(!finite(current))throw Error('종속 속성 집계 범위 초과');values.set(name,{base,current:Math.max(a.min,Math.min(a.max,current))});}return s.values=values;}
+  value(s,name){if(s.calculated){const row=this.aggregate(s).get(name);if(!row)throw Error('등록되지 않은 속성: '+name);return row.current;}const a=s.attributes.get(name);if(!a)throw Error('등록되지 않은 속성: '+name);let v=a.base;for(const e of s.effects.values())if(e.data.period===0)for(const m of e.data.modifiers)if(m.attribute===name){if(m.operation==='add')v+=m.magnitude*e.stacks;else if(m.operation==='multiply')v*=m.magnitude**e.stacks;else v=m.magnitude;}return Math.max(a.min,Math.min(a.max,v));}
   sync(s,{attributes=true,tags=true}={}){
-    const previous=s.object.gameplayDebug?.ability;
+    if(attributes)s.values=null;const previous=s.object.gameplayDebug?.ability;
     // Cooldown/remaining time changes every frame. Attribute aggregation and
     // granted tags change only when their source state changes.
     if(tags||!previous){const next=new Set(s.baseTags);for(const e of s.effects.values())for(const tag of e.data.grantedTags)next.add(tag);for(const a of s.abilities.values())if(a.active)for(const tag of a.data.grantedTags)next.add(tag);s.object.tags=[...next];}
-    const values=attributes||!previous?Object.fromEntries([...s.attributes].map(([k,a])=>[k,{...a,current:this.value(s,k)}])):previous.attributes;
-    s.object.gameplayDebug={...s.object.gameplayDebug,ability:{time:this.time,attributes:values,effects:[...s.effects.values()].map(e=>({handle:e.handle,asset:e.asset,stacks:e.stacks,remaining:e.end===Infinity?-1:Math.max(0,e.end-this.time)})),abilities:Object.fromEntries([...s.abilities].map(([k,a])=>[k,{active:a.active,cooldown:Math.max(0,a.ready-this.time)}]))}};
+    const values=attributes||!previous?Object.fromEntries([...s.attributes].map(([k,a])=>[k,{...a,...(a.calculation?{base:this.aggregate(s).get(k).base}:{}),current:this.value(s,k)}])):previous.attributes;
+    s.object.gameplayDebug={...s.object.gameplayDebug,ability:{time:this.time,setAsset:s.setAsset||'',setGeneration:s.setGeneration||0,attributes:values,effects:[...s.effects.values()].map(e=>({handle:e.handle,asset:e.asset,stacks:e.stacks,remaining:e.end===Infinity?-1:Math.max(0,e.end-this.time)})),abilities:Object.fromEntries([...s.abilities].map(([k,a])=>[k,{active:a.active,cooldown:Math.max(0,a.ready-this.time)}]))}};
   }
-  modify(s,mods,stacks=1){const next=new Map([...s.attributes].map(([k,a])=>[k,{...a}]));for(const m of mods){const a=next.get(m.attribute);if(!a)throw Error('효과 속성이 없어요: '+m.attribute);const v=m.operation==='add'?a.base+m.magnitude*stacks:m.operation==='multiply'?a.base*m.magnitude**stacks:m.magnitude;if(!finite(v))throw Error('효과 속성 계산 범위 초과');a.base=Math.max(a.min,Math.min(a.max,v));}s.attributes=next;}
-  validateModifiers(s,data){for(const m of data.modifiers)if(!s.attributes.has(m.attribute))throw Error('효과 속성이 없어요: '+m.attribute);}
-  apply(s,asset,data){this.validateModifiers(s,data);if(data.duration===0){this.modify(s,data.modifiers);this.cue(s,data,'apply',{effect:asset,handle:'',stacks:1});return '';}
+  atomic(s,mutate){const before={attributes:s.attributes,effects:new Map([...s.effects].map(([k,v])=>[k,{...v}])),values:s.values,tags:s.object.tags,debug:s.object.gameplayDebug},events=this.events.length;try{mutate();this.sync(s);}catch(error){s.attributes=before.attributes;s.effects=before.effects;s.values=before.values;s.object.tags=before.tags;s.object.gameplayDebug=before.debug;this.events.splice(events);throw error;}}
+  modify(s,mods,stacks=1){const next=new Map([...s.attributes].map(([k,a])=>[k,{...a}]));for(const m of mods){const a=next.get(m.attribute);if(!a)throw Error('효과 속성이 없어요: '+m.attribute);if(a.calculation)throw Error('종속 속성의 기본값은 직접 변경할 수 없어요: '+m.attribute);const v=m.operation==='add'?a.base+m.magnitude*stacks:m.operation==='multiply'?a.base*m.magnitude**stacks:m.magnitude;if(!finite(v))throw Error('효과 속성 계산 범위 초과');a.base=Math.max(a.min,Math.min(a.max,v));}if(s.calculated)this.aggregate({...s,attributes:next,values:null});s.attributes=next;s.values=null;}
+  validateModifiers(s,data){for(const m of data.modifiers)if(!s.attributes.has(m.attribute))throw Error('효과 속성이 없어요: '+m.attribute);else if(s.attributes.get(m.attribute).calculation&&(data.duration===0||data.period>0))throw Error('종속 속성은 지속 집계 효과로 수정하세요: '+m.attribute);}
+  apply(s,asset,data){this.validateModifiers(s,data);s.values=null;if(data.duration===0){this.modify(s,data.modifiers);this.cue(s,data,'apply',{effect:asset,handle:'',stacks:1});return '';}
     const matches=[...s.effects.values()].filter(e=>e.asset===asset),prior=matches[0];if(data.stackPolicy==='independent'&&matches.length>=data.stackLimit)return '';let e=prior;
     if(e&&data.stackPolicy==='reject')return '';
     if(!e||data.stackPolicy==='independent'){e={handle:'effect_'+(++this.serial),asset,data,stacks:1,periodAnchor:this.time,periodTicks:0,end:data.duration<0?Infinity:this.time+data.duration,next:this.time+data.period};s.effects.set(e.handle,e);}
     else{e.stacks=Math.min(data.stackLimit,e.stacks+1);if(data.stackPolicy==='extend')e.end=data.duration<0?Infinity:e.end+data.duration;else e.end=data.duration<0?Infinity:this.time+data.duration;}
     if(data.period>0&&data.executeOnApply)this.modify(s,data.modifiers,e.stacks);this.cue(s,data,'apply',{effect:asset,handle:e.handle,stacks:e.stacks});return e.handle;
   }
-  async load(asset,kind){const d=await this.read(asset);if(!validAbilityAsset(kind,d))throw Error('능력·효과 에셋 검증 실패: '+asset);return structuredClone(d);}
+  async load(asset,kind,read=this.read){const d=await read(asset);if(!validAbilityAsset(kind,d))throw Error('능력·효과 에셋 검증 실패: '+asset);return structuredClone(d);}
   end(s,a,reason){if(!a.active)return;a.active=false;this.cue(s,a.data,'end',{ability:a.asset,reason});if(a.data.onEnd)this.events.push({owner:s.object.id,event:a.data.onEnd,args:{ability:a.asset,reason}});}
   async operation(key,a,b,vm){if(!key.startsWith('ability')&&!key.startsWith('attribute')&&!key.startsWith('effect'))return undefined;const o=vm.object(a.target===null||a.target===undefined?b.self:a.target,b);if(!o)throw Error('능력 소유 오브젝트가 없어요.');const s=this.state(o);
-    if(key==='attributeDefine'){if(!attributeName(a.attribute)||![a.value,a.min,a.max].every(finite)||a.min>a.max||a.value<a.min||a.value>a.max)throw Error('속성 정의 범위 오류');if(s.attributes.has(a.attribute))throw Error('이미 등록된 속성이에요.');s.attributes.set(a.attribute,{base:a.value,min:a.min,max:a.max});}
-    else if(key==='attributeSet'){const at=s.attributes.get(a.attribute);if(!at||!finite(a.value))throw Error('속성 이름·값 오류');at.base=Math.max(at.min,Math.min(at.max,a.value));}
+    if(key==='abilitySetApply'){if(!s.defaultAttributes)throw Error('초기화된 능력 컴포넌트가 필요해요.');return {return:await reapplyAbilitySet(this,s,a.asset,{preserveBase:a.preserveBase??true,retainEffects:a.retainEffects??true},vm)};}
+    else if(key==='attributeDefine'){if(!attributeName(a.attribute)||![a.value,a.min,a.max].every(finite)||a.min>a.max||a.value<a.min||a.value>a.max)throw Error('속성 정의 범위 오류');if(s.attributes.has(a.attribute))throw Error('이미 등록된 속성이에요.');this.atomic(s,()=>{s.attributes=new Map(s.attributes);s.attributes.set(a.attribute,{base:a.value,min:a.min,max:a.max});});return {};}
+    else if(key==='attributeSet'){const at=s.attributes.get(a.attribute);if(!at||at.calculation||!finite(a.value))throw Error('속성 이름·값 오류 또는 읽기 전용 종속 속성이에요.');this.atomic(s,()=>{s.attributes=new Map(s.attributes);s.attributes.set(a.attribute,{...at,base:Math.max(at.min,Math.min(at.max,a.value))});});return {};}
     else if(key==='attributeGet')return {return:this.value(s,a.attribute)};
-    else if(key==='abilityGrant'){const d=await this.load(a.asset,'ability');if(vm.object(o.id)!==o||vm.active===false||o.poolActive===false||this.owners.get(o.id)!==s)return {}; if(!s.abilities.has(a.asset))s.abilities.set(a.asset,{asset:a.asset,data:d,ready:0,active:false,end:0});}
+    else if(key==='abilityGrant'){const d=await this.load(a.asset,'ability');if(vm.object(o.id)!==o||vm.active===false||o.poolActive===false||this.owners.get(o.id)!==s)return {}; s.runtimeGranted?.add(a.asset);if(!s.abilities.has(a.asset))s.abilities.set(a.asset,{asset:a.asset,data:d,ready:0,active:false,end:0});}
     else if(key==='abilityActivate'){const entry=s.abilities.get(a.asset);if(!entry)throw Error('먼저 능력을 부여하세요.');const d=entry.data;if(entry.active||entry.ready>this.time||d.requiredTags.some(t=>!hasGameplayTag(o.tags||[],t,false))||d.blockedTags.some(t=>hasGameplayTag(o.tags||[],t,false)))return {return:false};
-      const costs=new Map();for(const c of d.costs)costs.set(c.attribute,(costs.get(c.attribute)||0)+c.amount);for(const [k,c] of costs)if(!s.attributes.has(k)||this.value(s,k)<c||s.attributes.get(k).base-s.attributes.get(k).min<c)return {return:false};
+      const costs=new Map();for(const c of d.costs)costs.set(c.attribute,(costs.get(c.attribute)||0)+c.amount);for(const [k,c] of costs)if(!s.attributes.has(k)||s.attributes.get(k).calculation||this.value(s,k)<c||s.attributes.get(k).base-s.attributes.get(k).min<c)return {return:false};
       // Resolve and validate every effect before spending anything.
       const effects=await Promise.all(d.effects.map(async path=>[path,await this.load(path,'effect')]));if(vm.object(o.id)!==o||vm.active===false)return {return:false};for(const [,data] of effects)this.validateModifiers(s,data);
-      const eventCheckpoint=this.events.length,checkpoint=structuredClone({attributes:s.attributes,effects:s.effects});try{for(const [k,c] of costs){const at=s.attributes.get(k);at.base=Math.max(at.min,at.base-c);}for(const [path,data] of effects)this.apply(s,path,data);for(const k of s.attributes.keys())if(!finite(this.value(s,k)))throw Error('능력 속성 계산 범위 초과');}catch(error){s.attributes=checkpoint.attributes;s.effects=checkpoint.effects;this.events.splice(eventCheckpoint);throw error;}
+      const eventCheckpoint=this.events.length,checkpoint=structuredClone({attributes:s.attributes,effects:s.effects});try{s.values=null;for(const [k,c] of costs){const at=s.attributes.get(k);at.base=Math.max(at.min,at.base-c);}for(const [path,data] of effects)this.apply(s,path,data);for(const k of s.attributes.keys())if(!finite(this.value(s,k)))throw Error('능력 속성 계산 범위 초과');}catch(error){s.attributes=checkpoint.attributes;s.effects=checkpoint.effects;s.values=null;this.events.splice(eventCheckpoint);throw error;}
       entry.ready=this.time+d.cooldown;entry.active=d.duration!==0;entry.end=d.duration<0?Infinity:this.time+d.duration;this.cue(s,d,'activate',{ability:a.asset});if(d.onActivate)this.events.push({owner:o.id,event:d.onActivate,args:{ability:a.asset}});this.sync(s);return {return:true};
     }
-    else if(key==='abilityCancel'||key==='abilityRemove'){const entry=s.abilities.get(a.asset);if(entry)this.end(s,entry,'cancelled');if(key==='abilityRemove')s.abilities.delete(a.asset);}
+    else if(key==='abilityCancel'||key==='abilityRemove'){const entry=s.abilities.get(a.asset);if(entry)this.end(s,entry,'cancelled');if(key==='abilityRemove'){s.abilities.delete(a.asset);s.runtimeGranted?.delete(a.asset);}}
     else if(key==='abilityCooldown')return {return:Math.max(0,(s.abilities.get(a.asset)?.ready||0)-this.time)};
     else if(key==='abilityActive')return {return:!!s.abilities.get(a.asset)?.active};
-    else if(key==='effectApply'){const d=await this.load(a.asset,'effect');if(vm.object(o.id)!==o||vm.active===false)return {};const handle=this.apply(s,a.asset,d);this.sync(s);return {return:handle};}
-    else if(key==='effectRemove')this.removeEffect(s,a.handle,'removed');
+    else if(key==='effectApply'){const d=await this.load(a.asset,'effect');if(vm.object(o.id)!==o||vm.active===false)return {};let handle;this.atomic(s,()=>handle=this.apply(s,a.asset,d));return {return:handle};}
+    else if(key==='effectRemove'){this.atomic(s,()=>this.removeEffect(s,a.handle,'removed'));return {};}
     else if(key==='effectList')return {return:JSON.stringify(o.gameplayDebug?.ability?.effects||[])};
     else throw Error('능력 함수 오류: '+key);this.sync(s);return {};
   }
@@ -65,6 +72,6 @@ export class AbilitySystem {
       for(const a of s.abilities.values())if(a.active&&a.end<=this.time){this.end(s,a,'completed');dirty=true;}const cooldown=[...s.abilities.values()].some(a=>a.ready>this.time);if(dirty||s.effects.size||cooldown||s.cooldown||[...s.abilities.values()].some(a=>a.active))this.sync(s,{attributes:dirty,tags:dirty});s.cooldown=cooldown;}
     for(const event of this.events.splice(0)){if(!vm.active||!vm.object(event.owner))continue;for(const b of vm.bindings.filter(b=>b.self===event.owner))await vm.custom(b,event.event,event.args);}
   }
-  remove(id){const state=this.owners.get(id);if(state)state.object.tags=[...state.baseTags];this.owners.delete(id);this.events=this.events.filter(e=>e.owner!==id);}
-  dispose(){for(const s of this.owners.values())s.object.tags=[...s.baseTags];this.owners.clear();this.events=[];}
+  remove(id){this.initializations.delete(id);const state=this.owners.get(id);if(state)state.object.tags=[...state.baseTags];this.owners.delete(id);this.events=this.events.filter(e=>e.owner!==id);}
+  dispose(){this.initializations.clear();this.setLibrary.clear();for(const s of this.owners.values())s.object.tags=[...s.baseTags];this.owners.clear();this.events=[];}
 }

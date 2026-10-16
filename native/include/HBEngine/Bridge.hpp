@@ -514,6 +514,7 @@ inline std::vector<std::string> Tags::Get(Actor* target){return bridgeTags(targe
 inline void Abilities::DefineAttribute(Actor* target,const std::string& attribute,float value,float min,float max){engineCommand("attributeDefine",{{"target",bridgeId(target)},{"attribute",attribute},{"value",value},{"min",min},{"max",max}});}
 inline void Abilities::SetAttribute(Actor* target,const std::string& attribute,float value){engineCommand("attributeSet",{{"target",bridgeId(target)},{"attribute",attribute},{"value",value}});}
 inline float Abilities::GetAttribute(Actor* target,const std::string& attribute){return gameplayField(target,"ability").at("attributes").at(attribute).at("current").get<float>();}
+inline void Abilities::ApplySet(Actor* target,const std::string& asset,bool preserveBase,bool retainEffects){engineCommand("abilitySetApply",{{"target",bridgeId(target)},{"asset",asset},{"preserveBase",preserveBase},{"retainEffects",retainEffects}});}
 inline void Abilities::Grant(Actor* target,const std::string& asset){engineCommand("abilityGrant",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void Abilities::Activate(Actor* target,const std::string& asset){engineCommand("abilityActivate",{{"target",bridgeId(target)},{"asset",asset}});}
 inline void Abilities::Cancel(Actor* target,const std::string& asset){engineCommand("abilityCancel",{{"target",bridgeId(target)},{"asset",asset}});}
