@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7b0221b",
+  "targetIds": [
+    "PRJ-02",
+    "PER-01"
+  ],
+  "checks": {
+    "privatePowerShell": {
+      "path": "native/build/artifact-node-198-wgRLv8/acceptance.json",
+      "sha256": "1d93dd2b8aef53ffeaa65974698d1aa6d09bbde28f80acf4ab79c3c769e45700",
+      "result": {
+        "passed": true,
+        "activeWholeEngineScopePreserved": true,
+        "ownChildExited": true,
+        "identicalNodeReferenceRemoved": true,
+        "sharedOriginalPreserved": true,
+        "sourceAndEvidenceRetained": true,
+        "modifiedAfterPlanPreserved": true,
+        "unknownNodePreserved": true,
+        "restoreManifest": {
+          "sha256": "3331e1ffe19874215472217c5e94f5a0c6d8e18c4ac7111d3937aa0ad5e9b4a5",
+          "nodeVersion": "v24.15.0",
+          "source": "C:\\Program Files\\nodejs\\node.exe"
+        },
+        "logicalBytesRemoved": 91694408,
+        "testUsesHardlink": true,
+        "temporaryExecutableCopyReleased": true,
+        "physicalDiskSavingsClaimed": false
+      }
+    }
+  },
+  "existingRetentionRegression": "node tools/check-test-artifacts.mjs passed: outside-path rejection, source/evidence/build-manifest preservation.",
+  "bulkCleanupDeferred": true,
+  "bulkCleanupReason": "Installed user Node/worker active; avoid large disk scans/hashes during user work.",
+  "newDependencies": 0,
+  "alwaysOnServices": 0,
+  "userProcessTermination": false,
+  "installationPending": true
+}

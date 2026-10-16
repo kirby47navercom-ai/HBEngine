@@ -1,5 +1,10 @@
 param([Parameter(Mandatory=$true)][string]$PlanFile)
 $ErrorActionPreference = 'Stop'
+function Get-NodeSHA([string]$Path) {
+  $stream = [IO.File]::OpenRead($Path); $hash = [Security.Cryptography.SHA256]::Create()
+  try { return [BitConverter]::ToString($hash.ComputeHash($stream)).Replace('-','').ToLowerInvariant() }
+  finally { $hash.Dispose(); $stream.Dispose() }
+}
 $expected = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../native/build')).TrimEnd('\')
 $resolvedPlan = (Resolve-Path -LiteralPath $PlanFile).Path
 if (-not $resolvedPlan.StartsWith($expected + '\', [StringComparison]::OrdinalIgnoreCase)) { throw '정리 계획 경로 오류' }
@@ -16,6 +21,7 @@ foreach ($entry in $plan.entries) {
     'fixture-build' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\Builds$' -and @(Get-ChildItem -LiteralPath (Split-Path -Parent $target) -File -Filter '*.hbproject').Count -gt 0 }
     'fixture-profile' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\WebView2$' }
     'fixture-native-cache' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\native\\build\\plugins$' }
+    'fixture-engine-node' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\(?:.+\\)?(?:Engine|baseline-engine)\\runtime\\node\.exe$' }
     'pages-profile' { $rel -match '^auric-pages-084\\(?:perf-)?chrome-[A-Za-z0-9]{6}$' }
     'plugin-cache' { $rel -match '^plugins\\[a-f0-9]{20}$' }
     default { $false }
@@ -27,8 +33,15 @@ foreach ($entry in $plan.entries) {
     $ancestor = Split-Path -Parent $ancestor
   }
   if (-not (Test-Path -LiteralPath $target)) { continue }
-  $active = @($processes | Where-Object { ($_.ExecutablePath -and $_.ExecutablePath.StartsWith($target + '\', [StringComparison]::OrdinalIgnoreCase)) -or ($_.CommandLine -and $_.CommandLine.IndexOf($target,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
+  $protectionRoot = $target
+  if ($entry.kind -eq 'fixture-engine-node') {
+    $protectionRoot = Split-Path -Parent (Split-Path -Parent $target)
+    $package = Get-Content -LiteralPath (Join-Path $protectionRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($package.name -ne 'hbengine-ui-prototype' -or -not (Test-Path -LiteralPath (Join-Path $protectionRoot 'HBEngine.exe') -PathType Leaf) -or -not (Test-Path -LiteralPath (Join-Path $protectionRoot 'tools/hb.mjs') -PathType Leaf) -or $entry.sha256 -notmatch '^[a-f0-9]{64}$') { throw '검사 엔진 런타임 명세 오류' }
+  }
+  $active = @($processes | Where-Object { ($_.ExecutablePath -and ($_.ExecutablePath.Equals($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -or $_.ExecutablePath.StartsWith($protectionRoot + '\', [StringComparison]::OrdinalIgnoreCase))) -or ($_.CommandLine -and $_.CommandLine.IndexOf($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
   if ($active) { $skipped += $rel; continue }
+  if ($entry.kind -eq 'fixture-engine-node' -and ((Get-Item -LiteralPath $target).Length -ne $entry.size -or (Get-NodeSHA $target) -ne $entry.sha256)) { $skipped += ($rel + ' (modified)'); continue }
   try { Remove-Item -LiteralPath $target -Recurse -Force; $deleted += $entry } catch { $failures += @{path=$rel;error=$_.Exception.Message} }
 }
 $result = @{date=[DateTime]::UtcNow.ToString('o');deleted=$deleted.Count;bytes=($deleted | Measure-Object -Property bytes -Sum).Sum;files=($deleted | Measure-Object -Property files -Sum).Sum;freeBefore=$freeBefore;freeAfter=(Get-PSDrive -Name C).Free;skipped=$skipped;failures=$failures;receipt=(Split-Path -Parent $resolvedPlan)}

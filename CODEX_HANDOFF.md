@@ -222,3 +222,5 @@ exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도�
 196 설치는 사용 중인193 Node/worker 때문에 사전 보류, 새 폴더 생성0/Versions1. UPDATE_196_PENDING.json 참조. native/build/install196.mjs 실행됨(보류)·재실행 금지. 이후 설치 가능 시 준비한 dist를 안전하게 전환하고 USER_INSTALL_196 실제 영수증/설치 EXE 검사를 새 단계에서 수행. 현재193 사용자 앱/빌드 중단 금지, 무거운 GPU/컴파일 검사는 유휴까지 보류.
 
 197 source/CPU5군 완료·실제 창/GPU/패키징 대기. check-animation-195-window --interpolate --editor / --interpolate / --interpolate --webgpu 준비. 사용자 설치193 active Node/worker이므로 무거운 검사나 새 버전 전환 금지. CPU1200표본 주기피크1200→90–111, 계산총수12000동일; 기본 추가버퍼0/옵트인168B 한 뼈. 내용은 ENGINE_WORK_197.md/JSON, 남은전역목표그대로.
+
+198: test-artifacts/remove-test-cache에 격리 Engine 동일 Node 사본 정리 추가. 실제자식/전체Engine보호·계획뒤수정·원본SHA·소스/명세보존 PASS, artifact-node-198-wgRLv8. 하드링크검사논리91.7MB를실제회수로표현금지. 사용자실행중이므로전역대량정리보류. 준비196dist는e0c382d동결·197/198아직설치미반영. 차후유휴시197실제창/D3D/GPU를묶어검사하고최신배포/설치Versions1전환.

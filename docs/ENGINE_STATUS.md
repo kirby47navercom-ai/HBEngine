@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-17 · 대조 기준 커밋: `0bfc9cd`
+갱신일: 2026-10-17 · 대조 기준 커밋: `7b0221b`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -13,7 +13,7 @@
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | PRJ-01 설치형 실행기·프로젝트 생성/열기 | verified | Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [ENGINE_WORK_193.json](research/ENGINE_WORK_193.json) |
-| PRJ-02 실행/편집 상태와 사용자 작업 격리 | verified | 별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 | 이 행의 범위는 검증됨 | [USER_DEVELOPMENT_SEPARATION.md](USER_DEVELOPMENT_SEPARATION.md) · [ENGINE_WORK_193.json](research/ENGINE_WORK_193.json) |
+| PRJ-02 실행/편집 상태와 사용자 작업 격리 | verified | 별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 | 이 행의 범위는 검증됨 | [USER_DEVELOPMENT_SEPARATION.md](USER_DEVELOPMENT_SEPARATION.md) · [ENGINE_WORK_193.json](research/ENGINE_WORK_193.json) · [ENGINE_WORK_198.json](research/ENGINE_WORK_198.json) |
 | PRJ-03 복구 저장·데이터 호환 | partial | 버전 데이터 검증·복구 경로 | 중단·디스크 부족·다양한 구버전 전환의 통합 검증 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 
 ## 에셋
@@ -176,7 +176,7 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단 ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군; 실제 제작/게임 묶음 검사 대기 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) · [ENGINE_WORK_190.json](research/ENGINE_WORK_190.json) · [ENGINE_WORK_195.json](research/ENGINE_WORK_195.json) · [ENGINE_WORK_197.json](research/ENGINE_WORK_197.json) |
+| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단 ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군; 실제 제작/게임 묶음 검사 대기 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) · [ENGINE_WORK_190.json](research/ENGINE_WORK_190.json) · [ENGINE_WORK_195.json](research/ENGINE_WORK_195.json) · [ENGINE_WORK_197.json](research/ENGINE_WORK_197.json) · [ENGINE_WORK_198.json](research/ENGINE_WORK_198.json) |
 | PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_179.json](research/ENGINE_WORK_179.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) · [ENGINE_WORK_185.json](research/ENGINE_WORK_185.json) |
 

@@ -17,3 +17,6 @@
 기존 검사 잔여물을 정리하려면 저장소에서 `npm run clean:test-cache`를 실행해요. 오래된 공유 C++ 캐시는 최신 32개를 유지하며 사용 중인 대상은 추가로 보존해요. 정리 결과는 `native/build/cache-prune-*/result.json`에 남아요. 관련 안전 검사는 `npm run test:artifact-storage`예요.
 
 남은 13.5GiB에는 조사 원문, 재현용 프로젝트, 캡처와 보고서, 유지한 빌드 캐시가 있어요. 개인 앱의 일반 캐시나 사용자 게임 저장 데이터까지 일괄 삭제하지 않아요. 이번 정리는 엔진 실행 메모리나 게임 FPS를 측정한 결과가 아니에요.
+
+
+198: 격리 검사 Engine/baseline-engine의 동일 runtime/node.exe만 공용 원본 크기/SHA로 선별하고 복원 버전/경로/해시를 기록한다. 해당 엔진 전체가 사용 중이거나 계획 뒤 파일이 바뀌면 보존한다. 소스·변경 바이너리·설치본·node_modules는 삭제하지 않는다. ENGINE_WORK_198.md/JSON. 논리 제거 바이트와 실제 C: 여유 증가를 구별한다.
