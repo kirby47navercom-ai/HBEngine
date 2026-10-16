@@ -2874,5 +2874,16 @@
       "https://docs.unity3d.com/Packages/com.unity.probuilder@6.0/manual/UV_Stitch.html"
     ],
     "globalGatePromotion": false
+  },
+  "supplemental172": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/SmartMerge.html",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-source-control-in-the-unreal-editor",
+      "https://git-scm.com/docs/git-status"
+    ],
+    "bodyRead": "Unity SmartMerge overview/options/Git invocation/arrays/exclusions/comparisons; Unreal source control overview/status/diff/submit; Git status description/porcelain v1-z",
+    "unread": "linked APIs/external tool guides/media/entire corpus",
+    "globalGatePromotion": false
   }
 }

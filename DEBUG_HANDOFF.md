@@ -851,3 +851,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 121·122: wrong metallic pin/constant fold, missing packed camera, black-coat fixture contrast, green-only sheen metric를 고쳤다. native-scene-2O2SzF 최종9guards/5금속·izPGmI117/118/120 회귀; D3DKAQLp8·GPUoeumFZ·GLiqLjrH 원본/오류0/종료0/서버 종료.122 로컬 baseline loader bare three import를 절대주소로 변환;8배치 byte parity/invalidUV atomic/cpu16묶음. 실행 및 해시는 RENDERING_121.json을 따른다.
 
 123: 수정 전 NaN 이전 포즈 accepted=true/priorAtlasMutated=true 재현. 쓰기 전6검증·원본 바이트 보존·typed 정점호환, 안정 ID Map 재사용·동수 오브젝트 교체·실패 이력 정리 통과. 실제 D3D FhyjsJ 초기 및 최종MFVMhV119 카메라/오브젝트/이차 반사·굴절 필터 통과. CPU8/byte parity. 121 포장 증거의 원래 파일 해시 복구·123 별도 측정 파일로 분리.
+
+
+172: 9HKKLp/W9BNMd의 종료0 실패는 임시 Garden dirty 확인창 대기였다. 7vjGj3에서 before-close/close-prompt 기록으로 확인하고 해당 임시 문서의 저장 안 함을 선택해 종료0. 저장 후 다음 editor.state에서 장면이 다시 dirty로 보이는 경로는 아직 종결하지 않았다. 저장 시간을 늘리는 가설 반복 금지. 실제 사용자 문서는 검사에 사용하지 않는다.

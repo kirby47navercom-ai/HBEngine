@@ -1,3 +1,4 @@
+import {sourceControlStatus,sourceControlDiff,sourceControlStage,sourceControlCommit,sourceControlInit,sourceControlConfigure,sourceControlBase} from './source-control.mjs';
 import {configureNativePersistence} from './game-storage.mjs';
 import {BuildJobs} from './build-jobs.mjs';
 import {readBuildProfiles} from './build-game.mjs';
@@ -97,6 +98,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/import'&&req.method==='POST'){const result=await owner.import(q.get('folder')||'Assets',q.get('name'),await readBody(104857600));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/folder'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.mkdir(data.path);checkOwner(owner);return json(res,{ok:true});}
     if(url.pathname==='/api/rename'&&req.method==='POST'){const data=JSON.parse(await readBody());await owner.rename(data.from,data.to);checkOwner(owner);return json(res,{ok:true});}
+    if(url.pathname.startsWith('/api/source-control/')&&req.method==='POST'){const data=JSON.parse(await readBody()),command=url.pathname.slice('/api/source-control/'.length),calls={status:()=>sourceControlStatus(owner.root),diff:()=>sourceControlDiff(owner.root,data.path,data),stage:()=>sourceControlStage(owner.root,data),commit:()=>sourceControlCommit(owner.root,data),init:()=>sourceControlInit(owner.root),configure:()=>sourceControlConfigure(owner.root,data),base:()=>sourceControlBase(owner.root,data.path)};if(!Object.hasOwn(calls,command))throw Error('소스 관리 명령이 없어요.');checkOwner(owner);const result=await calls[command]();checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/native/build'&&req.method==='POST'){const data=JSON.parse(await readBody()),files=await readNativeFiles(owner);checkOwner(owner);const result=await host.build(data.header,data.source,{files});if(project!==owner||stopping){host.close();throw changedProject();}return json(res,result);}
     if(url.pathname==='/api/native/release'&&req.method==='POST'){const data=JSON.parse(await readBody());checkOwner(owner);return json(res,{released:await host.release(data.token)});}
     if(url.pathname==='/api/native/call'&&req.method==='POST'){const data=JSON.parse(await readBody(4194304)),result=await host.call(data.token,data.request);checkOwner(owner);return json(res,result);}

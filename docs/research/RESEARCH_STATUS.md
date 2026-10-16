@@ -404,3 +404,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 171: Unity TreeView 계층·갱신·가상화/포커스와 D3D11 샘플러 필드, Unreal5.8 Live Coding 설정/모듈/리인스턴싱·Owner/Owning Connection 본문 및 RPC 개요/선언 구역을 대조했다. HB의 명시 높이/별도 worker 공개 상태 이전/소유권 허용 복제와 원 엔진의 전체 시스템을 구별한다. RPC 뒤쪽 표와 연결 API·전체 corpus는 미독이며 UV_Stitch 요청은 실패로 등록했다. supplemental171과 [구현·검사·남은 경계](../ENGINE_WORK_171.md)를 따른다. 전체 gate는 유지한다.
+
+
+172: supplemental172의 SmartMerge/Unreal source control/Git status 지정 본문을 읽고 대조했다. 미독 링크/API와 전체 gate는 유지한다. 구현/검증/경계 ENGINE_WORK_172.md.

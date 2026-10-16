@@ -400,3 +400,6 @@ anim.ik.bone.add/remove는 effector 명령과 같은 path/expectedRevision/node/
 `native.reapply {path,dryRun?}`는 실행 중인 C++ 블루프린트의 실제 소스에서 호환성을 검사한다. dryRun은 빌드/월드 변경 없이 검사한다. 실제 적용은 기존 공개 속성·월드·BP 상태를 유지하며 비공개/정적 C++ 저장소와 네이티브 타이머는 재생성된다. 타입/기존 함수 시그니처 변경과 빌드 중 소스 변경은 거부한다. `runtime.network`는 연결·소유권·sequence/RPC 진단만 읽는다.
 
 Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·우선순위, LOD collisionLevel, 위젯 TreeView/variableRows/selectedItemId/listItems의 `id/children/height`, retarget 프로필 morphMappings의 `source/sourceMesh/target/targetMesh/scale/offset/min/max`, ability/effect cues의 `tag/event/on`은 기존 schema/document.patch/expectedRevision/dryRun/Undo를 쓴다. `world.mesh.edit`의 uvStitch는 분리 노멀을 보존한 UV 경계 좌표 맞춤이다. 선택 토폴로지 병합과 구별한다. 게임용 네트워크6함수는 C++/BP와 동일 서비스다. 총773노드·공유코어289. [계약·실행·경계](ENGINE_WORK_171.md).
+
+
+172: document.merge는 base/theirs와 expectedRevision을 받고 충돌이 있거나 dryRun이면 결과만 반환한다. resolutions는 안정 경로별 ours/theirs/base 또는 {value}. 깨끗하고 유효한 결과만 기존 document.patch/Undo로 적용한다. sourcecontrol.status/diff는 읽기 전용, stage/commit/configure는 expectedIndexRevision 필수. init은 명시적 프로젝트 저장소 생성, configure는 프로젝트 로컬 작성자만 변경한다. 원격 자동 push 없음. 상세 ENGINE_WORK_172.md.

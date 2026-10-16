@@ -182,3 +182,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 171 설치 확인: 77c55df75ff751bc·2382파일 실행 후 SHA·격리 설치 EXE/사람/AI/Undo/C++/실제 PCM 소스 전환 통과·프로필10385파일 보존·Versions1. 기능4d87d64, 설치 근거 research/USER_INSTALL_171.json.
+
+
+172: 안정 ID 3방향 병합·충돌 선택·Undo/AI, 프로젝트 Git 변경/diff/stage/commit·로컬 작성자·부모 저장소 보호. CPU13군/Win32 사람·AI 검증. ENGINE_WORK_172.md와 research/ENGINE_WORK_172.json. 설치는 다음 누적 구현과 함께 전환.

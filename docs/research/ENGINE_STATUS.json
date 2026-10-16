@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "2e870ac",
+  "basisRevision": "9eb803f",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -1191,7 +1191,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1202,7 +1202,9 @@
         "prototype/prefab-instances.js",
         "prototype/animation-ik-editor.js",
         "prototype/sequence-state.js",
-        "prototype/take-recorder.js"
+        "prototype/take-recorder.js",
+        "prototype/asset-merge.js",
+        "tools/source-control.mjs"
       ],
       "evidence": [
         "docs/LIGHTING_TOOLS_128.md",
@@ -1212,7 +1214,8 @@
         "docs/research/ENGINE_WORK_168.json",
         "docs/research/ENGINE_WORK_169.json",
         "docs/research/ENGINE_WORK_170.json",
-        "docs/research/ENGINE_WORK_171.json"
+        "docs/research/ENGINE_WORK_171.json",
+        "docs/research/ENGINE_WORK_172.json"
       ]
     },
     {
@@ -1337,21 +1340,24 @@
       "area": "platform",
       "title": "번들·패치·협업/소스 관리",
       "status": "partial",
-      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit",
       "remaining": [
         "실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포",
-        "에셋 diff/merge·VCS 작업 UI"
+        "Git 충돌 마커의 구조 병합·시각 노드 diff·원격 VCS/잠금"
       ],
       "sources": [
         "tools/build-game.mjs",
         "tools/project-storage.mjs",
-        "tools/content-patch.mjs"
+        "tools/content-patch.mjs",
+        "prototype/asset-merge.js",
+        "tools/source-control.mjs"
       ],
       "evidence": [
         "docs/WORK_ORDER_051.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
-        "docs/research/ENGINE_WORK_171.json"
+        "docs/research/ENGINE_WORK_171.json",
+        "docs/research/ENGINE_WORK_172.json"
       ]
     },
     {
@@ -1447,5 +1453,5 @@
       ]
     }
   ],
-  "latestBatch": "171"
+  "latestBatch": "172"
 }

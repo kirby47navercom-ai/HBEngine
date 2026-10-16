@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `2e870ac`
+갱신일: 2026-10-16 · 대조 기준 커밋: `9eb803f`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -152,7 +152,7 @@
 |---|---|---|---|---|
 | AI-01 원자적 여러 문서 편집 | verified | revision·dryRun·document.patch/files.apply·Undo 공용 계약 | 이 행의 범위는 검증됨 | [AI_ENGINE_API.md](AI_ENGINE_API.md) · [AI_ASSET_TRANSACTIONS_041.md](research/AI_ASSET_TRANSACTIONS_041.md) |
 | AI-02 코드/기능 상태 최신 조회 | verified | 안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 | 이 행의 범위는 검증됨 | [ENGINE_STATUS.md](ENGINE_STATUS.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) · [ENGINE_WORK_170.json](research/ENGINE_WORK_170.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) |
+| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo · 171: native.reapply 호환성 dryRun/실행·runtime.network 읽기·공용 Network SDK6·UV 경계/리타게팅 모프/트리/예산 스키마 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) · [ENGINE_WORK_170.json](research/ENGINE_WORK_170.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) |
 
 ## 디버깅
 
@@ -170,7 +170,7 @@
 | BLD-03 iOS 원격 빌드·시뮬레이터 | verified | Xcode 두 대상·C++/물리/UI·반복 오디오·백그라운드 복귀 | 이 행의 범위는 검증됨 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) |
 | BLD-04 실제 휴대폰·스토어 배포 | unverified | 모바일 출력/빌드 경로 있음 | 실물 기기 설치/열/배터리/음향 · Apple 서명·IPA/TestFlight·스토어 배포 | [IOS_REMOTE_DISTRIBUTION.md](IOS_REMOTE_DISTRIBUTION.md) · [MOBILE_EXPORT.md](MOBILE_EXPORT.md) |
 | BLD-05 모바일 편집기 | unimplemented | — | 프로젝트 저장/복구·터치 편집·모바일 C++ 제작 제약 · 실제 Android/iOS 에디터 앱 | [MOBILE_EDITOR_BODY_012.md](research/MOBILE_EDITOR_BODY_012.md) |
-| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 | 실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포 · 에셋 diff/merge·VCS 작업 UI | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) |
+| BLD-06 번들·패치·협업/소스 관리 | partial | 기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI · 166: 증분 패치 교체 전 디스크 저널·프로세스 중단 복구·Ed25519 서명/고정 키 검증·출력 파일 CLI · 171: 파일↔폴더 교체·버전2 폴더 저널·전체 백업 선행·실제 rename 오류와 프로세스 강제 종료 복구 ·172: 안정 ID 3방향 JSON 병합/사람 충돌 선택/revision·dryRun·Undo·프로젝트 Git 상태/선택 diff/stage/commit | 실제 전원 차단/파일시스템 장애 내구성·원격 패치 전달/신뢰 키 배포 · Git 충돌 마커의 구조 병합·시각 노드 diff·원격 VCS/잠금 | [WORK_ORDER_051.md](WORK_ORDER_051.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_171.json](research/ENGINE_WORK_171.json) · [ENGINE_WORK_172.json](research/ENGINE_WORK_172.json) |
 
 ## 성능·용량
 
