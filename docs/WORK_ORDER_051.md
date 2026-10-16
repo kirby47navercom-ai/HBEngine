@@ -153,3 +153,7 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 사용자의 전체 조사 구현 요구를 작업 번호/일부 목표 완료로 축소하지 않는다. 추가 레벨/거리 셀·다중 인스턴스·참조/물리/스크립트/생성 액터 수명·C++/BP/AI, 2D 계층/외부 IK 목표 베이크, 평면 NavMesh 포털 경로, Take 설명 재사용/온라인 축약을 구현했다. 상세와 실제 검사는 docs/ENGINE_WORK_167.md, research/ENGINE_WORK_167.json. 전체 원장은 ENGINE_STATUS.json/md이며 다른 남은 부모/세부를 유지한다. 사용자 설치 결과는 research/USER_INSTALL_167.json으로 기록한다.
 
 167 설치 확인: 27ca4525cebc9468, 2332파일 명세·격리 실제 실행·프로필10385파일 보존·Versions1. 구현 d1cf994, 배포 중단점 수정 d2bd3c1. research/USER_INSTALL_167.json. 전체 누적 목표 완료로 승격하지 않는다.
+
+## 168 — 프리팹 상속·2D 청크·C++ 전송 (2026-10-16)
+
+원본/변형/중첩의 배치 인스턴스 live 갱신·3방향/축별 병합·사람 Apply/Revert/충돌/원자 Undo·AI6명령·Play/타입 참조, 직교/등각 렌더/충돌 청크·변경 자원 재사용·숨김 무재생성, 불변 타일/UI의 C++ 전송 재사용을 연결했다. CPU12군·실제 C++/물리·Editor·D3D11 dev/release·WebGPU와 기존165/166/167·2D·전송/코어 회귀 통과. 16청크 중 한 칸 수정에 기하1개/충돌1개 재생성, 기하15개 유지. 전체 기능/PC120/폰 성능의 완료로 승격하지 않는다. 상세 ENGINE_WORK_168.md/research/ENGINE_WORK_168.json, 설치는 research/USER_INSTALL_168.json에 후속 기록한다.

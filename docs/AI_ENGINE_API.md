@@ -371,3 +371,9 @@ world.mesh.edit의 operation은 간선 splitEdges, weld(tolerance/preserveUV), d
 ## 167 — 추가 레벨과 2D 외부 IK
 
 runtime.levels/load/unload/visible는 실행 사본을 조작하고 저작 revision을 바꾸지 않는다. 수명 변경은 현재 프레임 뒤 직렬화하며 디버그 일시 정지 해제 후 요청한다. rig.clip.retarget는 mapMode hierarchy 및 sceneTargets를 추가 지원하며 기존 revision/dryRun/Undo를 공유한다. 입력 예제·장면/솔버 ID 계약·빌드 장면 포함 조건은 [167](ENGINE_WORK_167.md).
+
+## 168 — 연결 프리팹 인스턴스
+
+scene.prefab.inspect {path,object}는 루트/자식 ID에서 연결 루트, sourceRevision, changes/conflicts를 읽어요. scene.prefab.instantiate {path,expectedRevision,asset,position?,dryRun?}는 안정 ID 인스턴스를 만들어요. refresh/unpack는 {path,expectedRevision,object,dryRun?}, revert는 여기에 all:true 또는 localId/property를 받아요. apply는 localId/property 및 선택 sourceRevision을 받고 원본/장면을 기존 files.apply의 원자 Undo로 수정해요. property는 ['scale',0] 또는 ['components','StableComponentId','properties','enabled']처럼 안정 ID를 사용해요. 사람 속성 창도 같은 명령을 호출해요.
+
+자동 원본 갱신은 열린 문서의 파생 결과를 갱신하고 로컬 수정/충돌을 보존해요. runtime Tilemaps의 변경 셀은 렌더/충돌 청크에 전달되며 데이터 형식/기존 C++·BP 함수는 유지해요. TilemapRenderer renderMode=chunk/individual/layer, 기본 chunk예요. inspector의 긴 안내 대신 [형식·실행·남은 세부](ENGINE_WORK_168.md)를 참고해요.

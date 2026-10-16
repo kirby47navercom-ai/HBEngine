@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "a47ed8c",
+  "scope": "지금까지 조사/계획한 전체 엔진 구현을 지속; 번호/일부 검사로 전체 완료를 계산하지 않음",
+  "targetIds": [
+    "AST-04",
+    "2D-06",
+    "AI-03",
+    "PER-01",
+    "PER-03"
+  ],
+  "parentRowsCompleted": 0,
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 32,
+      "unimplemented": 4,
+      "unverified": 3
+    },
+    "completionPercent": null,
+    "exhaustiveUEUnity": false
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-168-OO6Zua/acceptance.json",
+      "sha256": "6ee5409d955d8435b3d5bf29e5502652d7d6a689ad989d2a91ac46e0d3dd2de9",
+      "summary": {
+        "passed": 12,
+        "groups": 12
+      }
+    },
+    "runtime": {
+      "path": "native/build/engine-168-runtime-s8K8qV/acceptance.json",
+      "sha256": "cd4a0c72ca605e731b0f7e30c5c11dd0ca5a36ee42341d34210b0544336fbd59",
+      "summary": {
+        "passed": true,
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 3,
+          "ticks": 24
+        },
+        "samples": [
+          {
+            "frame": 3,
+            "hit": false,
+            "chunks": {
+              "collisionChunks": 16,
+              "rebuiltCollisionChunks": 1
+            }
+          },
+          {
+            "frame": 12,
+            "hit": true,
+            "chunks": {
+              "collisionChunks": 16,
+              "rebuiltCollisionChunks": 1
+            }
+          },
+          {
+            "frame": 22,
+            "hit": false,
+            "chunks": {
+              "collisionChunks": 16,
+              "rebuiltCollisionChunks": 1
+            }
+          }
+        ]
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-168-window-o4zmCH/acceptance.json",
+      "sha256": "7e09cf9b4f6f242d46089e42bc9e645b4c8a3e43124adc46c770d35eb2573ce9",
+      "summary": {
+        "passed": true,
+        "prefabDryRun": true,
+        "humanApplyRevert": true,
+        "atomicUndo": true,
+        "liveInheritance": true,
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 6,
+          "ticks": 199
+        },
+        "unchangedGeometries": 15,
+        "sourcePreserved": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "development": {
+      "path": "native/build/engine-168-player-Ze2s9w/acceptance.json",
+      "sha256": "41900bffb3d07f6551769d0866de6581374d873365c5b58babda24acea76d2ac",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "backend": "D3D11",
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 3,
+          "ticks": 185
+        },
+        "unchangedGeometries": 15,
+        "performance": {
+          "targetFrameRate": 120,
+          "budgetMs": 8.333333333333334,
+          "overBudget": 8,
+          "frames": 119,
+          "fps": 86.03860892143067,
+          "intervalMs": {
+            "mean": 11.622689075705384,
+            "p50": 8.5,
+            "p95": 13.600000008940697
+          },
+          "workMs": {
+            "mean": 5.959663864319064,
+            "p50": 2.9000000059604645,
+            "p95": 9.700000002980232
+          },
+          "simulationMs": {
+            "mean": 5.299159663940678,
+            "p95": 9.100000008940697
+          },
+          "renderSubmissionMs": {
+            "mean": 0.6260504191663084,
+            "p95": 0.7999999970197678
+          },
+          "over16ms": 5,
+          "over33ms": 5
+        },
+        "calls": 4,
+        "gpuTimeMs": 0.049152,
+        "automaticReadbacks": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "release": {
+      "path": "native/build/engine-168-player-wCnp7a/acceptance.json",
+      "sha256": "065ff09281e20a7646ea7c82b8e2db4d8c83ca55ac3e7a546f49806689c896cd",
+      "summary": {
+        "passed": true,
+        "configuration": "release",
+        "backend": "D3D11",
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 3,
+          "ticks": 29
+        },
+        "unchangedGeometries": 15,
+        "automaticReadbacks": 0,
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-168-player-AAztID/acceptance.json",
+      "sha256": "1e1b1b0eb0159fbd61c1f9662d33ac348feeec4b28dd5fa17d9da86d5cc6adca",
+      "summary": {
+        "passed": true,
+        "configuration": "development",
+        "backend": "WebGPU",
+        "cpp": {
+          "after": -1,
+          "before": 0,
+          "inheritedY": 3,
+          "ticks": 30
+        },
+        "unchangedGeometries": 15,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "initialPerformance": {
+    "path": "native/build/engine-168-player-oDJRGR/acceptance.json",
+    "sha256": "98903be5bba822aa5fb56e8142373be54b234928af492608f6d06d9d833e772d",
+    "summary": {
+      "performance": {
+        "targetFrameRate": 120,
+        "budgetMs": 8.333333333333334,
+        "overBudget": 9,
+        "frames": 119,
+        "fps": 86.00751662367205,
+        "intervalMs": {
+          "mean": 11.626890756252433,
+          "p50": 8.5,
+          "p95": 15
+        },
+        "workMs": {
+          "mean": 6.493277311575513,
+          "p50": 3.5,
+          "p95": 11
+        },
+        "simulationMs": {
+          "mean": 5.84033613507988,
+          "p95": 10
+        },
+        "renderSubmissionMs": {
+          "mean": 0.6201680673270666,
+          "p95": 0.7999999970197678
+        },
+        "over16ms": 5,
+        "over33ms": 5
+      },
+      "caveat": "Short sequential sample, not controlled A/B or sustained PC120/mobile60 proof."
+    }
+  },
+  "additionalChecks": [
+    "check.mjs",
+    "check-engine-167.mjs (11 groups)",
+    "check-batch-165.mjs (17 groups)",
+    "check-batch-166.mjs (12 groups)",
+    "check-2d-workflow.mjs",
+    "check-2d-extensions.mjs (C++ tile/physics)",
+    "check-native.mjs",
+    "check-ui-audio.mjs",
+    "check-native-transport.mjs (includes immutable16384 tile/UI simultaneous patch)",
+    "generate-api.mjs --check",
+    "git diff --check"
+  ],
+  "failuresFixed": [
+    "차이 계산 재귀의 else 결합 오류: 중괄호로 분기 수정",
+    "미해결 프리팹 충돌이 같은 원본 재동기화로 사라짐: 로컬/최신 원본 비교로 유지",
+    "실행 진단 필드가 프리팹 변경 UI에 노출됨: 기준/비교에서 제외",
+    "중첩 원본의 해석 전 대상에 변형 override 적용: 해석 후 지연 적용",
+    "원본 삭제에 연결된 외부 자식 보호",
+    "타입 있는 액터 참조는 네이티브/블루프린트 바인딩 준비 뒤 재배치",
+    "레이어 숨김의 불필요한 충돌/기하 재생성 제거"
+  ],
+  "testCorrections": [
+    "프리팹 복사본의 중복 방지 이름은 이름 override로 인정",
+    "숨김 EXE 닫기 전에 fixture 문서 저장 (실제 미저장 보호 유지)",
+    "WebGPU에는 D3D11 presents 대신 실제 backend/calls/errors 검사"
+  ],
+  "lightweight": {
+    "newDependencies": 0,
+    "newIdlePolling": 0,
+    "automaticGPUReadbacks": 0,
+    "chunkSize": 32,
+    "tiles": 16384,
+    "chunks": 16,
+    "changedGeometryChunks": 1,
+    "unchangedGeometryChunks": 15,
+    "changedCollisionChunks": 1,
+    "visibilityRebuilds": 0,
+    "immutableSnapshotReuse": true,
+    "worldObjectCapAdded": false,
+    "notes": "Changed map indexing/validation and physics synchronization still have costs. Instance baseline metadata costs remain."
+  },
+  "remainingLedger": "docs/research/ENGINE_STATUS.json",
+  "installation": "docs/research/USER_INSTALL_168.json"
+}

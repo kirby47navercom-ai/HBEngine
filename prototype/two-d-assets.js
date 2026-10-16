@@ -91,7 +91,7 @@ export function applyTileTool(map,layerId,tool,from,to=from,index=0){
   let changed=false;
   for(const cell of cells){const previous=tiles.get(key(cell));if(tool==='erase'||index===-1){if(previous){tiles.delete(key(cell));changed=true;}}else if(previous?.index!==index){tiles.set(key(cell),{...cell,index});changed=true;}}
   if(!changed)return {data:map,changed:false};
-  const layers=[...map.layers];layers[layerIndex]={...layers[layerIndex],tiles:[...tiles.values()].sort((a,b)=>a.y-b.y||a.x-b.x)};return {data:resolveAutoTiles({...map,layers},{layerId,cells:cells.map(c=>[c.x,c.y])}),changed:true};
+  const layers=[...map.layers];layers[layerIndex]={...layers[layerIndex],tiles:[...tiles.values()].sort((a,b)=>a.y-b.y||a.x-b.x)};return {data:resolveAutoTiles({...map,layers},{layerId,cells:cells.map(c=>[c.x,c.y])}),changed:true,cells:cells.map(c=>[c.x,c.y])};
 }
 /** Collision rectangles merge contiguous cells, across layers marked for collision. */
 export function tileCollisionBoxes(map,depth=.1){

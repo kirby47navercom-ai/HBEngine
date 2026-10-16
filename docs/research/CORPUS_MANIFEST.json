@@ -2774,7 +2774,8 @@
     "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled.",
     "165: Register/reconcile each linked API, image/media, terrain/LOD/Prefab/localization/UI virtualization/audio DSP/GAS/EQS source. Selected body contracts and HB implementation do not close the global corpus.",
     "166: PolyGroup operations/reference/media, Unity6000.4 terrain/mask API, animation curve retarget/morph APIs, Take recorder sources and Node crypto/fs platform durability remain independently scoped.",
-    "167: Reconcile linked Level Streaming/World Partition lifecycle APIs, Unity AsyncOperation/Resources memory ownership, 2D IK solver package APIs and Detour corridor/radius/crowd APIs. Selected implementation checks do not close the whole corpus."
+    "167: Reconcile linked Level Streaming/World Partition lifecycle APIs, Unity AsyncOperation/Resources memory ownership, 2D IK solver package APIs and Detour corridor/radius/crowd APIs. Selected implementation checks do not close the whole corpus.",
+    "168: Reconcile Prefab override/variant linked APIs and media, TilemapRenderer culling/sprite sorting/render-pipeline links and the discovered https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/tilemaps/tilemaprenderer API. The 6000.0 selected body reading does not close 7000.0 or the whole source corpus."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -2815,6 +2816,19 @@
       "https://github.com/recastnavigation/recastnavigation/blob/main/Detour/Source/DetourNavMeshQuery.cpp"
     ],
     "scope": "selected body/API sections: additive ownership/unload, 2D IK targets/solvers; Detour findStraightPath corridor/portal section. Linked APIs/media/other versions and whole source not fully analyzed.",
+    "globalGatePromotion": false
+  },
+  "supplemental168": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabInstanceOverrides.html",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabVariants.html",
+      "https://docs.unity.com/en-us/engine/6000.0/manual/unity2d/tilemaps/reference/tilemap-renderer"
+    ],
+    "scope": "Selected body sections: source/instance override precedence and root placement exception; variant inheritance; TilemapRenderer modes/culling bounds/sorting properties. HB stable-ID merge and chunk implementation are separate. Linked APIs/media/full version corpus not fully analyzed.",
+    "failedAccessNotRead": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/class-TilemapRenderer.html"
+    ],
     "globalGatePromotion": false
   }
 }

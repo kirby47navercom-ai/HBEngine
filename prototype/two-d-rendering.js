@@ -5,7 +5,7 @@ import {TwoDLighting} from './two-d-lighting.js';
 const position=new THREE.Vector3(),cameraPosition=new THREE.Vector3(),direction=new THREE.Vector3();
 const visible=node=>{for(let p=node;p;p=p.parent)if(!p.visible)return false;return true;};
 const nearestGroup=node=>{for(let p=node;p;p=p.parent)if(p.userData.sortingGroup)return p;return null;};
-const compare=(a,b)=>a.layer-b.layer||a.order-b.order||a.depth-b.depth||(a.id<b.id?-1:a.id>b.id?1:0);
+const compare=(a,b)=>a.layer-b.layer||a.order-b.order||a.depth-b.depth||(a.owner===b.owner?a.tileOrder-b.tileOrder:0)||(a.id<b.id?-1:a.id>b.id?1:0);
 export function spriteEffectsUniforms(material){
   if(material.userData.hbSpriteEffectsOwner===material.uuid)return material.userData.hbSpriteEffects;
   const uniforms={hbPixelPPU:{value:0},hbSpriteFlash:{value:0},hbSpriteEmission:{value:0}},compile=material.onBeforeCompile,key=material.customProgramCacheKey.bind(material)();
@@ -36,7 +36,7 @@ export class TwoDRendering{
     scene.updateMatrixWorld();camera.updateWorldMatrix(true,false);camera.getWorldPosition(cameraPosition);camera.getWorldDirection(direction);
     const roots=[],scopes=new Map(),entries=[],masks=[];
     const depth=(node,mode)=>{if(mode==='y'&&node.userData.sortPoint)position.fromArray(node.userData.sortPoint).applyMatrix4(node.matrixWorld);else position.setFromMatrixPosition(node.matrixWorld);return mode==='y'?-position.y:camera.isOrthographicCamera?-position.sub(cameraPosition).dot(direction):-position.distanceToSquared(cameraPosition);};
-    const item=(node,p,id)=>({node,layer:sortingLayerIndex(layers,p.sortingLayer),order:p.sortingOrder||0,depth:depth(node,p.sortMode||layers?.find(l=>l.id===p.sortingLayer)?.sortMode),id});
+    const item=(node,p,id)=>({node,layer:sortingLayerIndex(layers,p.sortingLayer),order:p.sortingOrder||0,depth:depth(node,p.sortMode||layers?.find(l=>l.id===p.sortingLayer)?.sortMode),id,owner:node.userData.objectId||id,tileOrder:node.userData.tileSortOrder||0});
     for(const group of groups){if(group.userData.disposed)continue;const p=group.userData.sortingGroup;if(p)scopes.set(group,{...item(group,p,group.userData.objectId||group.uuid),children:[]});}
     for(const [group,scope] of scopes){const parent=group.userData.sortingGroup.sortAtRoot?null:nearestGroup(group.parent);(scopes.get(parent)?.children||roots).push(scope);}
     for(const group of groups){if(group.userData.disposed)continue;

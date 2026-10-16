@@ -443,3 +443,7 @@ AnimationGraph::GetCurve/animGraphGetCurve는 같은 포즈 혼합 결과의 nam
 ## 167 — 레벨 수명 공용 노드
 
 Levels::Load/Unload/IsLoaded/GetActor/GetInstances/SetVisible와 levelLoad/levelUnload/levelLoaded/levelActor/levelInstances/levelVisible는 같은 실행 서비스를 사용한다. 총 노드753개. 영구 월드 유지, 결정적 ID, Construction/BeginPlay/EndPlay와 생성 액터·물리 수명, 사람의 LevelStreaming 컴포넌트와 AI 명령이 같은 데이터로 이어진다. C++ 변경은 서비스 큐, 결과 조회는 후속 호출 기준이다. [계약/검사](ENGINE_WORK_167.md).
+
+## 168 — 프리팹·타일 청크 공용 실행
+
+기존 Tilemaps C++/BP의 Set/SetMany/Fill/Clear/ProcessChanges를 변경 청크 렌더/충돌에 연결했다. 새 중복 노드 없이 총753개를 유지한다. Play 준비에서 연결 프리팹의 최신 원본과 로컬 수정 병합 후 타입 있는 C++/BP 액터 참조를 월드 ID로 재배치한다. 자동 문자열 변환/원본 게임 변경은 없다. 사람 속성 창·AI6명령·원자 Undo/Play 복원은 [168](ENGINE_WORK_168.md), 남은 전체 범위는 원장에 유지한다.

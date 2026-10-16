@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `e7f1e76`
+갱신일: 2026-10-16 · 대조 기준 커밋: `a47ed8c`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -23,7 +23,7 @@
 | AST-01 드래그 가져오기·의존 참조 | verified | 파일/폴더 가져오기·참조 이름 변경·재열기 | 이 행의 범위는 검증됨 | [EDITOR_INTERACTION_SPEC.md](EDITOR_INTERACTION_SPEC.md) |
 | AST-02 모델 임포트 하위 에셋·재가져오기 | partial | 모델/클립 로딩과 형식별 로더 · 165: glTF/GLB/OBJ 하위 에셋 안정 ID·재정렬 대응·렌더 오버라이드 sidecar와 재가져오기 보존 | FBX와 이름 중복/변경의 전체 하위 ID 대응 · 단위/좌표계·형식별 품질·하위 에셋 전용 UI | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
 | AST-03 임포트 캐시·쿠킹·압축 | partial | 의존성을 따라 배포 리소스 수집·중복 런타임 축소 · 165: 해시/대상/버전별 지속 JSON 쿠킹 캐시·128MiB LRU·빌드 공용 연결 | 텍스처/모델 대상별 압축 쿠킹과 전체 종속 캐시 · 압축 컨테이너·GPU 포맷 품질/용량 비교 | [MOBILE_EXPORT.md](MOBILE_EXPORT.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
-| AST-04 프리팹·변형·오버라이드 | partial | 프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 | 배치 인스턴스의 실시간 상속 갱신 · 속성별 사람용 Apply/Revert·충돌 병합 UI | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) |
+| AST-04 프리팹·변형·오버라이드 | partial | 프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 · 168: 연결 인스턴스의 원본/부모/중첩 실시간 상속·축별 수정 보존·충돌/속성 Apply/Revert UI·원자 Undo·Play 준비/타입 참조 재배치 | 원본과 같은 값이 되어도 명시적 오버라이드 의도 보존 · 오브젝트 추가/삭제 등 모든 구조적 Apply UI·별도 프리팹 편집 stage · 상속 컴포넌트의 세밀한 변형 오버라이드·대규모 인스턴스 비용 검증 | [ENGINE_WORKFLOW_RESEARCH.md](ENGINE_WORKFLOW_RESEARCH.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 | AST-05 미디어 변환·동기화 | partial | 이미지/오디오·등록 모델과 미디어 읽기 경로 | 추가 코덱 변환기 · 영상·오디오·시퀀스 동기화와 seek 정밀도 | [ENGINE_PLAN.md](ENGINE_PLAN.md) · [WEB_MEDIA_CONTRACTS_023.md](research/WEB_MEDIA_CONTRACTS_023.md) |
 
 ## 편집기
@@ -47,7 +47,7 @@
 | 2D-03 마스크·윤곽선·정렬·픽셀 정렬 | verified | 스프라이트/타일/입자 마스크와 효과·정렬 | 이 행의 범위는 검증됨 | [GPU_2D_052.md](research/GPU_2D_052.md) · [GPU_EFFECTS_054.md](research/GPU_EFFECTS_054.md) |
 | 2D-04 2D 골격·세 IK·각도 제한 | verified | Sprite rig·skin·Limb/CCD/FABRIK와 bind 각도 제약·8개 BP Return 핀과 C++ 실제 조회 대조 | 이 행의 범위는 검증됨 | [2D_IK_CONSTRAINTS_074.md](2D_IK_CONSTRAINTS_074.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
 | 2D-05 2D 전용 리타게팅 | partial | 같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결 · 167: 계층/좌우 이름 대응·장면 외부 IK 목표/변환 키·리그 월드 변환 베이크·limb/CCD/FABRIK 실제 표본 재생 | 임의 제약/정지 발의 전체 재표본화 검증·고급 자동 체인 대응 | [ANIMATION_RETARGET_072.md](ANIMATION_RETARGET_072.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
-| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 | 확장 이웃 규칙·대형 맵 청크 렌더/충돌 증분 재생성 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) |
+| 2D-06 자동 타일·2.5D 제작 통합 | partial | 타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 | 확장 이웃 규칙 · 대규모 맵 인덱싱/검증·물리 동기화 비용·장시간 성능 · 2.5D 제작 샘플·세 렌더 경로 품질 대조 | [2D_RENDERING_SHORTCUTS.md](2D_RENDERING_SHORTCUTS.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 
 ## 월드 제작
 
@@ -152,7 +152,7 @@
 |---|---|---|---|---|
 | AI-01 원자적 여러 문서 편집 | verified | revision·dryRun·document.patch/files.apply·Undo 공용 계약 | 이 행의 범위는 검증됨 | [AI_ENGINE_API.md](AI_ENGINE_API.md) · [AI_ASSET_TRANSACTIONS_041.md](research/AI_ASSET_TRANSACTIONS_041.md) |
 | AI-02 코드/기능 상태 최신 조회 | verified | 안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 | 이 행의 범위는 검증됨 | [ENGINE_STATUS.md](ENGINE_STATUS.md) · [ENGINE_WORK_156.md](ENGINE_WORK_156.md) |
-| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) |
+| AI-03 에디터 확장 API 확대 | partial | 데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo | 버전 호환 확장 ABI·툴 배포·안전한 코드 확장 · 남은 제작 분야의 전용 명령/검증 확대 | [LIGHTING_TOOLS_128.md](LIGHTING_TOOLS_128.md) · [ENGINE_WORK_165.json](research/ENGINE_WORK_165.json) · [ENGINE_WORK_166.json](research/ENGINE_WORK_166.json) · [ENGINE_WORK_167.json](research/ENGINE_WORK_167.json) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 
 ## 디버깅
 
@@ -176,9 +176,9 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) |
+| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 | PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) |
-| PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) |
+| PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) |
 
 ## 연구 대조
 

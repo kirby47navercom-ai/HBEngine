@@ -1,3 +1,7 @@
+# 2026-10-16 — 168 프리팹·타일 지정 본문 대조
+
+새 읽기/대조: Unity6000.0 Prefab instance override의 우선순위/루트 배치 예외, variant 상속/override, 새 공식 포털 TilemapRenderer 모드·컬링 경계·정렬 속성 본문. 구 class-TilemapRenderer 주소 접근 실패는 읽음으로 계산하지 않는다. 연결 API·그림/미디어·7000.0 API·전체 corpus/독립 분석은 미완이며 supplemental168/확장 대기열에 등록했다. HB의3방향 병합·대각 띠 청크를 Unity 내부 구현과 동일하다고 계산하지 않는다. [구현/검사](../ENGINE_WORK_168.md). 전역 gate 승격 없음.
+
 # 2026-10-16 — 165 제작·실행 묶음
 
 지정 본문 대조: Unity Terrain/LOD/Prefab/ListView/String Tables/AudioMixer, Unreal GAS/Gameplay Effects/EQS. 연결 API·그림·미디어·전체 corpus는 미독/미완료로 유지한다. 새 기능/실행 증거와 남은 세부는 [165](../ENGINE_WORK_165.md)와 [현재 원장](../ENGINE_STATUS.md)에 분리했다. supplemental165 출처와 후속 읽기를 등록했으며 전역 gate 승격은 없다.

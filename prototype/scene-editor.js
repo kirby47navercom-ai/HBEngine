@@ -22,7 +22,7 @@ export function pasteSceneObjects(objects,copied,{offset=[0,0,0],newId=()=>crypt
   const pasted=copied.map(original=>{const object=remap(copy(original));let name=original.name,index=1;while(names.has(name))name=original.name+' '+index++;names.add(name);object.name=name;
     if(object.parent&&!ids.has(original.parent))delete object.parent;
     if(!object.parent)object.position=object.position.map((value,i)=>value+offset[i]);
-    for(const component of object.components||[])component.id=newId();return object;});
+    if(!object.prefabRoot)for(const component of object.components||[])component.id=newId();return object;});
   for(const object of pasted)objects.push(object);return pasted;
 }
 export function removeSceneObjects(objects,ids){const removed=sceneDescendants(objects,ids),set=new Set(removed.map(o=>o.id));const kept=objects.filter(o=>!set.has(o.id));objects.splice(0);for(const object of kept)objects.push(object);return removed;}
