@@ -11,3 +11,6 @@ UIWidget 상세 속성의 배치 공간을 월드 위치 추적으로 바꾸면 
 남은 경계: 위젯 클래스 상속/명명 슬롯·3D UI 메시/차폐·자동 내용 높이·대규모 UI DOM 풀·전체 스크린리더 입력 검증. 전체 UI/UE/Unity 완료로 승격하지 않는다.
 
 대조: [Unity UXML 재사용](https://docs.unity.com/en-us/engine/6000.3/manual/uitoolkits/uielements/uie-structure-ui/uie-uxml/uie-reuse-uxml-files)의 참조/중첩 오버라이드·제약과 [Unreal Widget Components](https://dev.epicgames.com/documentation/unreal-engine/widget-components-in-unreal-engine)의 공간·크기·기준점을 참고했다. 전체 연결 API와 미디어를 읽은 것으로 계산하지 않는다.
+
+
+172–174 설치 확인: 15669948df76f42e·명세2406파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치201448875바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_174.json.

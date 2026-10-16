@@ -113,7 +113,14 @@
   ],
   "dependenciesAdded": 0,
   "backgroundPolling": false,
-  "installation": "173 네트워크 수명 확장과 최종 검사 뒤 함께 전환",
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_174.json",
+    "receiptSHA256": "5c7fcf59dfc4ca145e260fa0e720806c2e7b853bc70a59a6bedfe16b0492b61d",
+    "sourceCommit": "b35a17a8d7e8a98ec116395097510462e3f26d56",
+    "versions": [
+      "15669948df76f42e"
+    ]
+  },
   "limitations": [
     "Git 충돌 마커가 들어간 유효하지 않은 JSON은 외부 편집기로 해결; 정상 JSON 에셋 병합은 문서 revision/검증/Undo 경로 사용",
     "원격 fetch/push·잠금·그래프 시각 diff·Unity YAML 호환 병합은 미구현",

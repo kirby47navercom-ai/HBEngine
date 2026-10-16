@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "b35a17a8d7e8a98ec116395097510462e3f26d56",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\15669948df76f42e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\15669948df76f42e\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\15669948df76f42e\\HBEngine.exe",
+  "bundleHash": "15669948df76f42eb0b4045ea4bd767c2a740d94ac43d79ddffbf2d853457763",
+  "files": 2406,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2403,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc",
+        "bytes": 201448875,
+        "manifestSHA256": "a238afe55f6c0e3ee329db1973e707ce5fca74d33897eaf5d1a0ace65f65317b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T07:17:32.1533369Z",
+    "bytes": 201448875,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\77c55df75ff751bc\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "15669948df76f42e"
+    ]
+  },
+  "work": "native/build/engine-174-install-Us4h0z",
+  "versions": [
+    "15669948df76f42e"
+  ],
+  "manifestVerifiedFiles": 2406,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2406,
+  "installedSmoke": {
+    "path": "native/build/engine-174-installed-rzP8Kj/acceptance.json",
+    "sha256": "8f87a4a60baa43ac07c8953a06c885b2fdf25356da203dff3ac470921638cdc1",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/15669948df76f42e/HBEngine.exe",
+    "widget": {
+      "humanOverrides": true,
+      "preview": true,
+      "undo": true
+    },
+    "merge": {
+      "human": true,
+      "dryRun": true,
+      "stableConflict": "/name",
+      "undo": true,
+      "ai": true
+    },
+    "git": {
+      "humanStage": true,
+      "humanCommit": true,
+      "diff": true,
+      "identity": "HB UI 검사|ui@example.invalid|HB UI 검사|ui@example.invalid",
+      "head": "04bf80b4c9623867167ffcfc90564f361ab2bdb2"
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-174-installed-rzP8Kj/merge-ui.png",
+      "sha256": "6e691e34d7c263abbfc4714efab7c56cf27497fb69e90b2ad81db12a64409f48",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-174-installed-rzP8Kj/git-ui.png",
+      "sha256": "506a1dbb68ed5720c9f9db68df57f8ca6cbf0954bbca6b47ae033bd4661989f8",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-174-installed-rzP8Kj/widget-editor.png",
+      "sha256": "52d6625b5b1af70e598ac24042fcf4c33a0b38533d5705fcacffbb6a1e351f3f",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

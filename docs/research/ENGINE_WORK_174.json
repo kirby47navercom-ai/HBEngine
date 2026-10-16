@@ -298,7 +298,39 @@
       "tools/check-ui-layout.mjs",
       "tools/check-ui-state-cache.mjs",
       "tools/check-ui-audio.mjs"
-    ]
+    ],
+    "installedEditor": {
+      "path": "native/build/engine-174-installed-rzP8Kj/acceptance.json",
+      "sha256": "8f87a4a60baa43ac07c8953a06c885b2fdf25356da203dff3ac470921638cdc1",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/15669948df76f42e/HBEngine.exe",
+        "widget": {
+          "humanOverrides": true,
+          "preview": true,
+          "undo": true
+        },
+        "merge": {
+          "human": true,
+          "dryRun": true,
+          "stableConflict": "/name",
+          "undo": true,
+          "ai": true
+        },
+        "git": {
+          "humanStage": true,
+          "humanCommit": true,
+          "diff": true,
+          "identity": "HB UI 검사|ui@example.invalid|HB UI 검사|ui@example.invalid",
+          "head": "04bf80b4c9623867167ffcfc90564f361ab2bdb2"
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
   },
   "captures": [
     {
@@ -322,5 +354,12 @@
     "최초D3Ddev UI의 일부가위로잘림; 정확한OrthographicCamera16,-16을 확인하여 격리fixture UIAnchor y=-8로 고치고 최종 D3Drelease/WebGPU 전체화면경계·실제좌표click 검증",
     "BKjaHq: 쉬운 요소 입력 검사를 만들면서 이전 JSON textarea에 일반 문자열을 넣어 제품이 거부; selector를 실제 요소 input으로 수정하고 JvlGMJ PASS"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_174.json",
+    "receiptSHA256": "5c7fcf59dfc4ca145e260fa0e720806c2e7b853bc70a59a6bedfe16b0492b61d",
+    "sourceCommit": "b35a17a8d7e8a98ec116395097510462e3f26d56",
+    "versions": [
+      "15669948df76f42e"
+    ]
+  }
 }

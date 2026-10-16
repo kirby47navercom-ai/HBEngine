@@ -191,3 +191,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 174: 재사용 Widget 참조/중첩 속성·이벤트·변수·사람 입력/Undo·SDK 경로, 오브젝트 투영 UI·크기/기준점/거리, UI Budget·async수명. CPU9군/실제 Win32 제작·D3D 출시/WebGPU 게임+172/173 회귀. ENGINE_WORK_174.md/research/ENGINE_WORK_174.json. 누적 잔여 유지, 최종 설치는 USER_INSTALL_174.json에 별도 기록.
+
+
+172–174 설치 확인: 15669948df76f42e·명세2406파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치201448875바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_174.json.

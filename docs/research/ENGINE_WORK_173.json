@@ -309,5 +309,12 @@
     "관심 위치 변경은 전체 상태 순회이며 공간 인덱스/대형 네트워크 성능은 잔여",
     "호스트 마이그레이션·입력 예측·이력/재시뮬레이션·오브젝트 참조/부착 동적 변경·장면 세대 전환·전용 Cue 복제 미완료"
   ],
-  "installation": "다음 UI 제작과 함께 최종 통합 검사/사용자 전환"
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_174.json",
+    "receiptSHA256": "5c7fcf59dfc4ca145e260fa0e720806c2e7b853bc70a59a6bedfe16b0492b61d",
+    "sourceCommit": "b35a17a8d7e8a98ec116395097510462e3f26d56",
+    "versions": [
+      "15669948df76f42e"
+    ]
+  }
 }
