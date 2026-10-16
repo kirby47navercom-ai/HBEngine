@@ -1,3 +1,5 @@
+import {AnimationMixer,LoopOnce,Vector3,Quaternion,Euler} from 'three';
+import {SpriteRigPose} from './sprite-rig-runtime.js';
 import {validSpriteRig} from './sprite-rig-assets.js';
 
 export function autoMapSpriteRig(source,target){
@@ -22,4 +24,14 @@ export function retargetSpriteRigClip(source,target,{clip,mapping=autoMapSpriteR
  if(!baked.tracks.length)throw Error('옮길 애니메이션 트랙이 없어요.');
  if(!validSpriteRig({...target,clips:[...target.clips,baked]}))throw Error('리타게팅 결과의 이름·키 개수·값 범위를 확인하세요.');
  return {clip:baked,mapping:[...pairs].map(([source,target])=>({source,target})),skipped,positionMode};
+}
+
+export function bakeSpriteRigRetarget(source,target,{clip,mapping=autoMapSpriteRig(source,target),name='Retargeted Pose',fps=30,ik=true}={}){
+ if(!validSpriteRig(source)||!validSpriteRig(target)||!Number.isInteger(fps)||fps<1||fps>240||!Array.isArray(mapping)||!mapping.length||new Set(mapping.map(m=>m.source)).size!==mapping.length||new Set(mapping.map(m=>m.target)).size!==mapping.length)throw Error('포즈 베이크 리그·대응·FPS 오류');
+ for(const pair of mapping)if(!source.bones.some(b=>b.id===pair.source)||!target.bones.some(b=>b.id===pair.target))throw Error('대응 뼈가 없어요.');
+ const s=new SpriteRigPose(source),t=new SpriteRigPose(target),animation=s.animations.find(c=>c.name===source.clips.find(c=>c.id===clip)?.name);if(!animation){s.dispose();t.dispose();throw Error('원본 클립이 없어요.');}const mixer=new AnimationMixer(s.group),action=mixer.clipAction(animation);action.setLoop(LoopOnce,1);action.clampWhenFinished=true;action.play();const rest=pose=>new Map(pose.data.bones.map(b=>{const bone=pose.bones.get(b.id);return [b.id,{position:bone.getWorldPosition(new Vector3()),rotation:bone.getWorldQuaternion(new Quaternion()),scale:bone.getWorldScale(new Vector3())}];})),sr=rest(s),tr=rest(t),depth=id=>{let n=t.bones.get(id),v=0;for(;n?.parent&&n.parent!==t.group;n=n.parent)v++;return v;},pairs=[...mapping].sort((a,b)=>depth(a.target)-depth(b.target)),count=Math.ceil(animation.duration*fps)+1;
+ if(count*pairs.length*5>2000000){mixer.stopAllAction();s.dispose();t.dispose();throw Error('2D 베이크 메모리 예산 초과');}const result={id:'clip_'+crypto.randomUUID(),name,length:animation.duration,loop:source.clips.find(c=>c.id===clip).loop,tracks:[]};for(const pair of pairs){if(!s.bones.has(pair.source)||!t.bones.has(pair.target))throw Error('대응 뼈가 없어요.');for(const property of ['position','rotation','scale'])result.tracks.push({bone:pair.target,property,keys:[]});}
+ try{for(let i=0;i<count;i++){const time=Math.min(animation.duration,i/fps);s.reset();mixer.setTime(time);s.update();if(ik)s.ik.update({alwaysUpdate:true});t.reset();for(const pair of pairs){const bone=t.bones.get(pair.target),from=s.bones.get(pair.source),a=sr.get(pair.source),b=tr.get(pair.target),ratio=target.bones.find(n=>n.id===pair.target).length/source.bones.find(n=>n.id===pair.source).length,position=from.getWorldPosition(new Vector3()).sub(a.position).multiplyScalar(ratio).add(b.position),rotation=from.getWorldQuaternion(new Quaternion()).multiply(a.rotation.clone().invert()).multiply(b.rotation);bone.position.copy(bone.parent.worldToLocal(position));const parent=bone.parent.getWorldQuaternion(new Quaternion());bone.quaternion.copy(parent.invert().multiply(rotation));const worldScale=from.getWorldScale(new Vector3()).divide(a.scale).multiply(b.scale),parentScale=bone.parent.getWorldScale(new Vector3());bone.scale.copy(worldScale.divide(parentScale));bone.updateWorldMatrix(true,true);}if(ik)t.ik.update({alwaysUpdate:true});for(const track of result.tracks){const pose=t.get(track.bone);let value=pose[track.property];if(track.property==='rotation'&&track.keys.length){const previous=track.keys.at(-1).value;while(value-previous>180)value-=360;while(value-previous< -180)value+=360;}track.keys.push({time,value,interpolation:'linear'});}}
+ if(!validSpriteRig({...target,clips:[...target.clips,result]}))throw Error('2D 베이크 결과의 키·값 범위 오류');return {clip:result,mapping,positionMode:'pose',fps,ik};
+ }finally{mixer.stopAllAction();mixer.uncacheRoot(s.group);s.dispose();t.dispose();}
 }

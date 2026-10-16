@@ -29,7 +29,7 @@ export async function preparePlayWorld(objects,settings,{readAsset,readText,buil
   applyTravelSpawn(objects,gameplay.gameplay,travelArguments);
   await prepareActorBindings(objects,{readAsset:read,readText,buildNative,builds,nativeBuilds,loaded});
   for(const object of objects){object.actorClasses=actorClassNames(object,loaded.bindings.find(b=>b.self===object.id)?.root);const pool=object.components?.find(c=>c.type==='PooledActor'&&c.properties?.enabled!==false);if(pool){object.poolActive=pool.properties?.initiallyActive===true;object.poolVisible=object.visible;object.poolCollision=object.collisionEnabled!==false;if(!object.poolActive){object.visible=false;object.collisionEnabled=false;object.velocity=[0,0,0];object.angularVelocity=[0,0,0];}}}
-  const spawnCatalog=spawnRequested(loaded.bindings)?await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds}):null;
+  const spawnCatalog=spawnRequested(loaded.bindings,objects)?await prepareSpawnCatalog(listAssets?await listAssets():[],{readAsset:read,readText,buildNative,builds,nativeBuilds}):null;
   return {...loaded,objects,builds,spawnCatalog,gameplay:gameplay.gameplay,physicsOptions:gameplay.physicsOptions};
 }
 

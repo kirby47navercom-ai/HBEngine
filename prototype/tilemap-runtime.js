@@ -1,3 +1,4 @@
+import {resolveAutoTiles} from './auto-tiles.js';
 import * as THREE from 'three';
 import {valid2DAsset,applyTileTool,tileCollisionBoxes,tileCellPoint,tileLocalToCell,tileCellPolygon} from './two-d-assets.js';
 import {enabledComponent,componentDefaults} from './scene-components.js';
@@ -14,10 +15,10 @@ export class RuntimeTilemaps {
   async load(object){
     const path=enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset;if(!path)throw Error('TilemapRenderer에 타일맵을 지정하세요.');
     if(object.runtimeTilemapPath===path&&object.runtimeTilemap)return object.runtimeTilemap;
-    let pending=this.loading.get(object.id);if(!pending){pending=this.hooks.read(path).then(map=>{if(!valid2DAsset('tilemap',map))throw Error('타일맵 검증 실패: '+path);object.runtimeTilemap=structuredClone(map);object.runtimeTilemapPath=path;this.colliders(object);return object.runtimeTilemap;}).finally(()=>this.loading.delete(object.id));this.loading.set(object.id,pending);}return pending;
+    let pending=this.loading.get(object.id);if(!pending){pending=this.hooks.read(path).then(map=>{if(!valid2DAsset('tilemap',map))throw Error('타일맵 검증 실패: '+path);object.runtimeTilemap=resolveAutoTiles(structuredClone(map));object.runtimeTilemapPath=path;this.colliders(object);return object.runtimeTilemap;}).finally(()=>this.loading.delete(object.id));this.loading.set(object.id,pending);}return pending;
   }
   async start(objects){for(const object of objects)if(enabledComponent(object,'TilemapRenderer')?.tilemap||object.tilemapAsset)await this.load(object);}
-  colliders(object){object.tileColliders=tilemapColliders(object.runtimeTilemap);}
+  colliders(object){object.tileColliders=[...(object.tileColliders||[]).filter(c=>c.id.startsWith('worldCollider_')),...tilemapColliders(object.runtimeTilemap)];}
   async process(object){if(!this.dirty.has(object.id))return;await this.hooks.render?.(object,object.runtimeTilemap);this.colliders(object);this.dirty.delete(object.id);object.tilemapDirty=false;}
   async flush(vm){for(const id of [...this.dirty]){const object=vm.object(id);if(object)await this.process(object);else this.dirty.delete(id);}}
   release(id){this.dirty.delete(id);this.loading.delete(id);}
@@ -44,6 +45,6 @@ export class RuntimeTilemaps {
       const tool=key==='tileSet'?'brush':key==='tileBoxFill'?'rectangle':'fill',cell={x:args.cell[0],y:args.cell[1]},end=key==='tileBoxFill'?{x:args.end[0],y:args.end[1]}:cell;
       const result=applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;
     }
-    if(changed){object.runtimeTilemap=next;object.tilemapDirty=true;this.dirty.add(object.id);}return {};
+    if(changed){next=resolveAutoTiles(next,{layerId:layer.id});object.runtimeTilemap=next;object.tilemapDirty=true;this.dirty.add(object.id);}return {};
   }
 }

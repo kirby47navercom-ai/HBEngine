@@ -136,3 +136,8 @@
 CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. 실제2D 변형 픽셀13676, C++/BP 오디오/파라미터 전환·revision/Undo/Redo/보존을 확인했다. GL 일반 가이드3817→1203ms의 지정 순차 측정을 보존하지만 첫 path7888/시간필터7384ms는 남긴다. [구체적 계약](ENGINE_WORK_156.md)·[검증/실패](research/ENGINE_WORK_156.json). 설치 전환 결과는 USER_INSTALL_156.json에서 이어 기록한다.
 
 설치 전환 완료: 16e137715970d7cd. 명세2270파일·23기능 제품·두 바이너리/생성API SHA,바로가기2개/.hbproject,실제 설치 EXE/독립 프로젝트 시작과 종료/서버 해제,사용자 프로필·원본 보존이 통과했다. 이전 설치171842046B 제거/Versions1,검사 캐시574396713B 정리. [설치 검증](research/USER_INSTALL_156.json). 기능 커밋 a1ebc24를 공개 main에 푸시했다.
+
+
+## 165 — 2026-10-16
+
+기준2d563b7의 잔여39행 중20행에 제작·실행 구현을 추가했다. 단순 명칭이나 새 계획을 완료로 계산하지 않는다. 메시/지형/폴리지/LOD/내비·프리팹/쿠킹/패치·2D 리타게팅/규칙·베이크/녹화·GAS/EQS·지역화/ListView/DSP/VFX·공용AI 경로. 범위/검사/남은 세부: docs/ENGINE_WORK_165.md, docs/research/ENGINE_WORK_165.json, docs/ENGINE_STATUS.md. 설치 전환은 USER_INSTALL_165.json에 후속 기록한다.

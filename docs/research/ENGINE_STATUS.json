@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "f5c7191a9e9fac5aba5ddac4f9343f80fced1204",
+  "basisRevision": "2d563b7",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -79,17 +79,19 @@
       "area": "assets",
       "title": "모델 임포트 하위 에셋·재가져오기",
       "status": "partial",
-      "implemented": "모델/클립 로딩과 형식별 로더",
+      "implemented": "모델/클립 로딩과 형식별 로더 · 165: glTF/GLB/OBJ 하위 에셋 안정 ID·재정렬 대응·렌더 오버라이드 sidecar와 재가져오기 보존",
       "remaining": [
-        "메시·골격·클립 하위 ID 보존",
-        "임포트 오버라이드 유지·단위/좌표계·형식별 품질 검증"
+        "FBX와 이름 중복/변경의 전체 하위 ID 대응",
+        "단위/좌표계·형식별 품질·하위 에셋 전용 UI"
       ],
       "sources": [
         "prototype/scene-rendering.js",
-        "tools/project-storage.mjs"
+        "tools/project-storage.mjs",
+        "tools/model-subassets.mjs"
       ],
       "evidence": [
-        "docs/ENGINE_PLAN.md"
+        "docs/ENGINE_PLAN.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -97,17 +99,19 @@
       "area": "assets",
       "title": "임포트 캐시·쿠킹·압축",
       "status": "partial",
-      "implemented": "의존성을 따라 배포 리소스 수집·중복 런타임 축소",
+      "implemented": "의존성을 따라 배포 리소스 수집·중복 런타임 축소 · 165: 해시/대상/버전별 지속 JSON 쿠킹 캐시·128MiB LRU·빌드 공용 연결",
       "remaining": [
-        "지속 캐시 무효화",
-        "대상 플랫폼별 텍스처/모델 쿠킹·압축 컨테이너"
+        "텍스처/모델 대상별 압축 쿠킹과 전체 종속 캐시",
+        "압축 컨테이너·GPU 포맷 품질/용량 비교"
       ],
       "sources": [
         "tools/build-game.mjs",
-        "tools/build-mobile.mjs"
+        "tools/build-mobile.mjs",
+        "tools/cook-cache.mjs"
       ],
       "evidence": [
-        "docs/MOBILE_EXPORT.md"
+        "docs/MOBILE_EXPORT.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -115,15 +119,18 @@
       "area": "assets",
       "title": "프리팹·변형·오버라이드",
       "status": "partial",
-      "implemented": "프리팹 생성·인스턴스 구성",
+      "implemented": "프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석",
       "remaining": [
-        "변형 상속·속성별 적용/되돌리기·중첩 갱신과 충돌 해결"
+        "배치 인스턴스의 실시간 상속 갱신",
+        "속성별 사람용 Apply/Revert·충돌 병합 UI"
       ],
       "sources": [
-        "prototype/asset-documents.js"
+        "prototype/asset-documents.js",
+        "prototype/prefab-variants.js"
       ],
       "evidence": [
-        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+        "docs/ENGINE_WORKFLOW_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -244,17 +251,19 @@
       "area": "editor",
       "title": "현지화·접근성",
       "status": "partial",
-      "implemented": "한국어/영어 검색과 DOM 기본 입력 접근",
+      "implemented": "한국어/영어 검색과 DOM 기본 입력 접근 · 165: 문자열 테이블 편집·문화권/언어 fallback·포맷/복수·RTL·위젯 접근성 이름",
       "remaining": [
-        "지역화 테이블·문화권 전환",
+        "편집기 자체 전체 번역 카탈로그",
         "전용 편집기 키보드/스크린리더·색약/배율 검증"
       ],
       "sources": [
         "prototype/app.js",
-        "prototype/ui-assets.js"
+        "prototype/ui-assets.js",
+        "prototype/localization.js"
       ],
       "evidence": [
-        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -326,10 +335,10 @@
       "area": "2d",
       "title": "2D 전용 리타게팅",
       "status": "partial",
-      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생",
+      "implemented": "같은 부모 계층 bind 상대 클립 리타게팅·이름/ID 뼈 대응·이동 비례·키 보존·수동/AI Undo/Redo·기존 C++/BP 재생 · 165: 다른 부모 계층의 2D 포즈 베이크·world/local 대응·스케일/연속 회전·기존 IK 솔버 연결",
       "remaining": [
-        "다른 체인/계층을 대응하는 2D 포즈 솔버 리타게팅",
-        "실행 중 IK/제약까지 포함한 재표본화 베이크"
+        "자동 체인 대응과 외부 actor IK 목표 베이크",
+        "임의 제약/정지 발의 전체 재표본화 검증"
       ],
       "sources": [
         "prototype/sprite-rig-assets.js",
@@ -338,7 +347,8 @@
       ],
       "evidence": [
         "docs/ANIMATION_RETARGET_072.md",
-        "docs/ENGINE_WORK_156.md"
+        "docs/ENGINE_WORK_156.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -346,17 +356,19 @@
       "area": "2d",
       "title": "자동 타일·2.5D 제작 통합",
       "status": "partial",
-      "implemented": "타일 제작·2D/3D 공존과 카메라 차원",
+      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI",
       "remaining": [
-        "복합 자동 타일 규칙·동기 충돌 편집",
-        "2.5D 제작 샘플·서로 다른 렌더 경로 품질 대조"
+        "확장 규칙/랜덤 타일 및 대형 맵 증분 갱신",
+        "2.5D 제작 샘플·세 렌더 경로 품질 대조"
       ],
       "sources": [
         "prototype/scene-rendering.js",
-        "prototype/placement-catalog.js"
+        "prototype/placement-catalog.js",
+        "prototype/auto-tiles.js"
       ],
       "evidence": [
-        "docs/2D_RENDERING_SHORTCUTS.md"
+        "docs/2D_RENDERING_SHORTCUTS.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -379,50 +391,58 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌",
       "remaining": [
-        "정점/간선/면 선택·토폴로지 작업·실제 충돌/UV 갱신"
+        "간선 선택·용접/bevel·추가 토폴로지 연산",
+        "UV 섬/패킹·커스텀 노멀 저작"
       ],
       "sources": [
         "prototype/placement-catalog.js",
-        "prototype/scene-rendering.js"
+        "prototype/scene-rendering.js",
+        "prototype/world-assets.js"
       ],
       "evidence": [
-        "docs/ENGINE_PLAN.md"
+        "docs/ENGINE_PLAN.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
       "id": "WLD-03",
       "area": "world",
       "title": "지형 브러시·폴리지",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "165: 지형 높이/평활/목표 높이/레이어 브러시·스트로크 Undo·폴리지 결정 산포/소거/인스턴싱",
       "remaining": [
-        "지형 높이/레이어 브러시",
-        "폴리지 산포·인스턴스 편집·충돌·Undo"
+        "지형 holes/스탬프/텍스처 레이어·대규모 GPU 브러시",
+        "개별 폴리지 선택/변형·대규모 편집 성능"
       ],
       "sources": [
         "prototype/scene-components.js",
-        "prototype/placement-catalog.js"
+        "prototype/placement-catalog.js",
+        "prototype/world-asset-editor.js"
       ],
       "evidence": [
-        "docs/WORK_ORDER_051.md"
+        "docs/WORK_ORDER_051.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
       "id": "WLD-04",
       "area": "world",
       "title": "LOD 제작·전환",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더",
       "remaining": [
-        "메시 LOD 생성/저작·거리/화면 크기 전환·충돌/애니메이션 LOD"
+        "애니메이션/충돌 LOD 저작과 전환",
+        "고품질 단순화·교차 페이드·품질 대조"
       ],
       "sources": [
-        "prototype/scene-rendering.js"
+        "prototype/scene-rendering.js",
+        "prototype/world-rendering.js"
       ],
       "evidence": [
-        "docs/WORK_ORDER_051.md"
+        "docs/WORK_ORDER_051.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -448,16 +468,18 @@
       "area": "world",
       "title": "내비게이션·군중",
       "status": "partial",
-      "implemented": "평면 충돌 그리드 기반 경로",
+      "implemented": "평면 충돌 그리드 기반 경로 · 165: 경사 베이크·삼각 NavMesh 인접성/A*·폭/투영·오프메시 링크·공간 해시 국소 회피",
       "remaining": [
-        "실제 다각형 NavMesh·경사·오프메시 링크·동적 타일",
-        "군중 회피·에디터 베이크"
+        "동적 타일·장애물 carving·에이전트 NavArea",
+        "정밀 funnel/반경 오프셋·RVO/Mass 군중"
       ],
       "sources": [
-        "prototype/scene-systems.js"
+        "prototype/scene-systems.js",
+        "prototype/navigation-mesh.js"
       ],
       "evidence": [
-        "docs/ENGINE_WORKFLOW_RESEARCH.md"
+        "docs/ENGINE_WORKFLOW_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -637,18 +659,19 @@
       "area": "materials",
       "title": "텍스처 고급 설정·도메인",
       "status": "partial",
-      "implemented": "2D/Cube/Array/3D 텍스처와 표면 셰이딩",
+      "implemented": "2D/Cube/Array/3D 텍스처와 표면 셰이딩 · 165: 축별 주소·nearest/linear·mip 생성 Sampler State·노드 UI와 공용 텍스처 전달",
       "remaining": [
-        "Sampler State·배열/볼륨 mip",
-        "압축 컨테이너·전용 채널 검사",
-        "추가 머테리얼 도메인"
+        "DirectX min/mag 분리·LOD bias/anisotropy·배열/볼륨 mip 세부",
+        "압축 컨테이너·전용 채널 검사·추가 도메인"
       ],
       "sources": [
         "prototype/texture-assets.js",
-        "prototype/material-runtime.js"
+        "prototype/material-runtime.js",
+        "prototype/sampler-state.js"
       ],
       "evidence": [
-        "docs/MATERIAL_TEXTURE_FAMILIES_081.md"
+        "docs/MATERIAL_TEXTURE_FAMILIES_081.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -702,9 +725,9 @@
       "area": "animation",
       "title": "골격 리타게팅·베이크",
       "status": "partial",
-      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크",
+      "implemented": "리그/체인/기준 포즈·FK/IK·새 클립 베이크 · 165: 동일 이름 모프 바인딩·구간 커브 경계/Notify/Notify State 보존 베이크와 공용 골격 재생",
       "remaining": [
-        "커브/모프·이벤트 베이크",
+        "커브의 전체 런타임 구동/블렌딩·이름이 다른 모프 대응",
         "임의 연산 스택·LOD/Avatar/Muscle",
         "정지 발·Stride/Pole/접촉"
       ],
@@ -713,7 +736,8 @@
         "prototype/animation-retarget-bake.js"
       ],
       "evidence": [
-        "docs/ANIMATION_RETARGET_072.md"
+        "docs/ANIMATION_RETARGET_072.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -739,17 +763,19 @@
       "area": "animation",
       "title": "시퀀스·녹화 제작",
       "status": "partial",
-      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행",
+      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI",
       "remaining": [
-        "Take Recorder·다중 actor/컴포넌트 녹화",
-        "전문 시네마틱 트랙·동기화/베이크"
+        "컴포넌트 전 속성·오디오/골격 녹화",
+        "전문 시네마틱 트랙·외부 동기화/베이크"
       ],
       "sources": [
         "prototype/gameplay-editor.js",
-        "prototype/gameplay-runtime.js"
+        "prototype/gameplay-runtime.js",
+        "prototype/take-recorder.js"
       ],
       "evidence": [
-        "docs/ANIMATION_TIMELINE_CONTROLS.md"
+        "docs/ANIMATION_TIMELINE_CONTROLS.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -822,34 +848,39 @@
       "area": "gameplay",
       "title": "행동트리 고급 태스크·EQS",
       "status": "partial",
-      "implemented": "기본 행동트리/감지/태그 실행",
+      "implemented": "기본 행동트리/감지/태그 실행 · 165: 일반 병렬 결과 집계·EQS 생성/필터/점수·BT 블랙보드·C++ 실행 연결",
       "remaining": [
-        "일반 병렬 결과 집계·FinishAbort/native BTTask",
-        "EQS·Smart Object/Mass 계열"
+        "FinishAbort/native BTTask 고급 생명주기",
+        "Smart Object/Mass 계열·EQS 공간 가속/시각 디버그"
       ],
       "sources": [
         "prototype/gameplay-runtime.js",
-        "prototype/scene-systems.js"
+        "prototype/scene-systems.js",
+        "prototype/environment-query.js"
       ],
       "evidence": [
-        "docs/BEHAVIOR_OBSERVERS_SUBTREES.md"
+        "docs/BEHAVIOR_OBSERVERS_SUBTREES.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
       "id": "GAM-04",
       "area": "gameplay",
       "title": "Ability·효과/태그 체계",
-      "status": "unimplemented",
-      "implemented": "",
+      "status": "partial",
+      "implemented": "165: 능력/효과 자산·편집 UI·컴포넌트·속성·비용/쿨다운·중첩/주기/지속·태그 수명·C++/BP",
       "remaining": [
-        "재사용 ability·cooldown·비용·효과/태그 수명·예측과 제작 UI"
+        "네트워크 예측/복제·게임플레이 Cue·고급 타깃/계산",
+        "속성 세트/능력 목록의 풍부한 제작 UI"
       ],
       "sources": [
         "prototype/scene-components.js",
-        "prototype/engine-services.js"
+        "prototype/engine-services.js",
+        "prototype/ability-runtime.js"
       ],
       "evidence": [
-        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -890,17 +921,19 @@
       "area": "effects",
       "title": "이펙트 고급 저작",
       "status": "partial",
-      "implemented": "등록 ParticleSystem·Decal·효과 속성",
+      "implemented": "등록 ParticleSystem·Decal·효과 속성 · 165: 세 렌더 경로 시트·이미터 리본·시작/종료 하위 프리팹 수명·GPU 위치 읽기 없음",
       "remaining": [
-        "트레일·서브 이미터·시트 애니메이션 고급 모듈",
+        "입자별 GPU 사망/충돌 이벤트·개별 입자 리본",
         "범용 VFX 그래프/디버깅"
       ],
       "sources": [
         "prototype/scene-components.js",
-        "prototype/scene-systems.js"
+        "prototype/scene-systems.js",
+        "prototype/ribbon-trail.js"
       ],
       "evidence": [
-        "docs/WORK_ORDER_051.md"
+        "docs/WORK_ORDER_051.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -940,18 +973,19 @@
       "area": "ui",
       "title": "복합/월드 UI·가상화·지역화",
       "status": "partial",
-      "implemented": "기본 위젯 트리·데이터 바인딩",
+      "implemented": "기본 위젯 트리·데이터 바인딩 · 165: 재사용 스타일 자산·지역화·행 재활용 ListView·키보드 선택/접근성 이름·공용 SDK",
       "remaining": [
-        "재사용 위젯/스타일 자산",
-        "큰 목록 가상화·월드 UI",
-        "지역화 테이블·입력 접근성 통합"
+        "위젯 하위 조합/상속·월드 UI",
+        "가변 행/트리 가상화·전체 입력/스크린리더 검증"
       ],
       "sources": [
         "prototype/ui-assets.js",
-        "prototype/ui-runtime.js"
+        "prototype/ui-runtime.js",
+        "prototype/virtual-list.js"
       ],
       "evidence": [
-        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -993,17 +1027,19 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제",
       "remaining": [
-        "FX 순서·send/return·reverb/delay/sidechain",
-        "voice 우선순위/가상화·native DSP"
+        "sidechain·voice 우선순위/가상화",
+        "C++ native DSP와 모바일 실제 장치 품질"
       ],
       "sources": [
         "prototype/audio-mixer.js",
-        "prototype/native-audio.js"
+        "prototype/native-audio.js",
+        "prototype/audio-dsp.js"
       ],
       "evidence": [
-        "docs/AUTHORING_UI_AUDIO_RESEARCH.md"
+        "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -1095,17 +1131,18 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령",
       "remaining": [
-        "추가 제작 분야 전용 명령",
-        "버전 호환 확장 ABI·툴 배포·안전한 코드 확장"
+        "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
+        "남은 제작 분야의 전용 명령/검증 확대"
       ],
       "sources": [
         "prototype/editor-tool.js",
         "tools/editor-automation.mjs"
       ],
       "evidence": [
-        "docs/LIGHTING_TOOLS_128.md"
+        "docs/LIGHTING_TOOLS_128.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -1229,17 +1266,19 @@
       "area": "platform",
       "title": "번들·패치·협업/소스 관리",
       "status": "partial",
-      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트",
+      "implemented": "기본 패키지·의존 리소스 수집·프로젝트 텍스트 · 165: Brotli 증분 파일 패치·기준/해시 검증·변경 파일 실패 롤백·공용 CLI",
       "remaining": [
-        "증분 콘텐츠 번들/패치·검증/롤백",
+        "전원 차단 복구 저널·서명/원격 패치 전달",
         "에셋 diff/merge·VCS 작업 UI"
       ],
       "sources": [
         "tools/build-game.mjs",
-        "tools/project-storage.mjs"
+        "tools/project-storage.mjs",
+        "tools/content-patch.mjs"
       ],
       "evidence": [
-        "docs/WORK_ORDER_051.md"
+        "docs/WORK_ORDER_051.md",
+        "docs/research/ENGINE_WORK_165.json"
       ]
     },
     {
@@ -1329,5 +1368,6 @@
         "docs/ENGINE_WORK_156.md"
       ]
     }
-  ]
+  ],
+  "latestBatch": "165"
 }

@@ -1,3 +1,4 @@
+import {applySamplerState,validSamplerState} from './sampler-state.js';
 export const textureAssetTypes={cubemap:{label:'큐브맵',prefix:'TC_',group:'텍스처'},texturearray:{label:'텍스처 2D 배열',prefix:'TA_',group:'텍스처'},volumetexture:{label:'볼륨 텍스처',prefix:'TV_',group:'텍스처'}};
 export const textureAssetSuffix={cubemap:'.hbcubemap.json',texturearray:'.hbtexturearray.json',volumetexture:'.hbvolumetexture.json'};
 export const materialTextureTypes={texture2d:{sample:'texture',object:'textureObject',parameter:'textureObjectParameter',kind:'texture'},texturecube:{sample:'sampleCube',object:'cubeObject',parameter:'cubeParameter',kind:'cubemap'},texturearray:{sample:'sampleArray',object:'arrayObject',parameter:'arrayParameter',kind:'texturearray'},texture3d:{sample:'sampleVolume',object:'volumeObject',parameter:'volumeParameter',kind:'volumetexture'}};
@@ -32,5 +33,5 @@ export async function loadMaterialTexture(THREE,binding,resources,fileUrl,render
       map=type==='texturearray'?new THREE.DataArrayTexture(pixels,w,h,d.images.length):new THREE.Data3DTexture(pixels,w,h,d.images.length);map.minFilter=map.magFilter=THREE.LinearFilter;
     }
   }
-  map.colorSpace=THREE.NoColorSpace;map.wrapS=map.wrapT=map.wrapR=binding.wrap==='repeat'?THREE.RepeatWrapping:THREE.ClampToEdgeWrapping;map.needsUpdate=true;return map;
+  map.colorSpace=THREE.NoColorSpace;return applySamplerState(THREE,map,binding.sampler||resources?.[binding.path]?.sampler,binding.wrap||'clamp');
 }

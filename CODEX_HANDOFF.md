@@ -1,13 +1,15 @@
-# HBEngine — 156–164 — 2026-10-16
+# HBEngine — 165 — 2026-10-16
 
-현재 단계: 누적 목표 구현·묶음 검증·설치 전환. 사용자는 개별 지적만 처리하지 말고 등록된 잔여를 여러 작업 묶음으로 계속 구현하도록 지시했다. 전체 본문/API 분석 gate는 미통과이며 historical research_only를 현재 구현 금지로 적용하지 않는다.
+현재 지시: 짧은 기능 하나로 끝내지 말고 누적 잔여를 큰 묶음으로 구현·검사·설치 갱신. 사용자 요구는 AI와 사람 모두 다루기 쉬운 가벼운 C++/Win32/DirectX 자체 2D·2.5D·3D 엔진. 한국어 커밋/푸시, 사용자 작업/프로필 보호, Versions1.
 
-최신 단일 기준: [ENGINE_STATUS](docs/ENGINE_STATUS.md)와 [JSON](docs/research/ENGINE_STATUS.json). 등록78행: 검증39·부분28·미구현8·미검증3. 각 행의 좁은 범위이고 전체 UE/Unity API 완료율이 아니다. 작업 기록/출처/실패는 [156–164 설명](docs/ENGINE_WORK_156.md)·[기계 증거](docs/research/ENGINE_WORK_156.json).
+165 묶음은 기준2d563b7 잔여39행 중20행에 실제 제작/실행을 추가했다. 상위 행 전체 완료로 승격하지 않았다. 현재 등록78행: verified39 / partial31 / unimplemented5 / unverified3. 전체 corpus/API 분석 gate 미통과. 전체 기능 완료율은 미확정.
 
-이번 구현: 현재 상태 로컬 CLI/HTTP/스키마, GL 독립 프로그램 동시 제출과 비렌즈 가이드 특화, 가중 스냅샷/전환 곡선/대상별 파라미터 전환·미리듣기/Undo·공용 SDK/BP/AI,2D bind 상대 리타게팅·매핑 폼·AI revision/dryRun/Undo/Redo,8개2D getter BP Return 핀과 예전 직접JS 별칭 유지. 현재728 BP 노드/계산289. 새 상시 타이머/GPU 읽기/타깃/의존성 없음.
+최신 단일 기준: docs/ENGINE_STATUS.md + docs/research/ENGINE_STATUS.json. 20행 범위·제약·사용 경로: docs/ENGINE_WORK_165.md. 계획/기계 검사: docs/research/BATCH_165_PLAN.json, ENGINE_WORK_165.json. 설치 전환 후 USER_INSTALL_165.json이 실제 버전을 기록한다. 이전 설치16e137715970d7cd는 새 전환 성공 후 정리한다.
 
-검증: CPU12+확장10, GL HxDX4t의 복잡 노멀/모프/곡면/시간/HDRI/affine; Editor4JnYi1의 HTTP/실제 WebAudio/UI/Undo/2D/C++/BP/보존; release D3D11 R0IoBZ의 C++/BP/오디오/2D/릴리스 캡처 금지; development D3D11 Z31BbY의 같은 기능과 실제13676px 스프라이트. 오류0/종료0/서버 해제. 그림 직접 열어 UI·포즈를 확인했다. 실패 기록/원인은 DEBUG_HANDOFF 유지.
+추가 구현: glTF/GLB/OBJ 하위ID/override, 쿠킹 캐시, 프리팹 상속/중첩/override; 메시·지형·폴리지·LOD 전용 제작과 충돌; 삼각 NavMesh/링크/국소 군중 회피; 2D 계층 포즈 베이크/자동 타일; 모프/커브/notify 베이크 보존/Take; 능력/효과/속성/비용/쿨다운/태그/주기; EQS/일반 병렬; 지역화/스타일/가상 목록; DSP/send; GPU 시트/이미터 리본/하위 수명; AI 전용 명령; 오프라인 증분 압축 패치.
 
-설치 완료: C:/Users/kirby/HBEngine/Versions/16e137715970d7cd. USER_INSTALL_156.json의2270파일 전체SHA/크기·23기능 제품·두 실행파일·생성API·바로가기2개/.hbproject·설치본 로컬 원장/실제 EXE 시작·서버종료·프로필/장면 보존을 확인했다. 이전 사본171842046B 정리,Versions1개다. 묶음 검사 캐시574396713B도 정리했다. 사용자 창을 재시작하지 않았다.
+검사: check-batch-165 17검사군; runtime 실제 C++/BP/하위이미터 생성/해제; 숨김 실제 Editor10종/브러시 Undo/10만행 DOM11개/언어/실제 PCM/Take버튼; WebGPU 실제 파이프라인 CPU 입자/읽기0; D3D11 시트 적/청 실제픽셀; 개발/릴리스 독립 D3D11 플레이어와 릴리스 캡처차단. 기존 core/native/UI-audio/gameplay/retarget 회귀 통과. 상세 영수증 경로/SHA는 ENGINE_WORK_165.json. 원본 게임·사용자 창/프로필에 검사하지 않았다.
 
-다음: 원장 RND-06의 GL 첫path~7.9초/시간가이드~7.4초 및 GPU 초기 준비, RND-07의 이전 의존 노멀/mip,2D 다른 체인/IK bake,world terrain/LOD/streaming/nav/제작/플랫폼/실기기/전체 엔진 잔여. 구현 범위 밖 목표를 지우지 않는다. 사용자 창/원본/프로필은 검사용으로 쓰지 않고, 검사 산출물은 tools/test-artifacts.mjs로 정리한다. Versions는 현재1개만 남긴다.
+다음에는 원장의 parentScopeRemaining을 계속 구현한다. 메시 간선/용접/bevel·UV, GPU 대형 지형/holes/foliage개별편집, 애니메이션/충돌LOD, 동적 NavMesh/RVO, 전체 압축 쿠킹, 인스턴스 prefab override병합, network ability prediction, particle별 GPU events/ribbon, 전체 컴포넌트 Take, world UI/접근성, native DSP/sidechain, patch crash journal/VCS 및 원장의 다른19행도 남아 있다. 이미 추가한 작은 범위를 되풀이하거나 재조사만으로 완료를 만들지 않는다.
+
+Android 실제 휴대폰 없음, Mac/Xcode 없음. 이전 PC/Android/iOS/Web 구현과 미검증을 구분한다. 새 업데이트는 user install tool로만 하고 사용자 설치를 개발 중 직접 수정하지 않는다. 무거운 중복 검사/프로필/빌드/버전을 쌓지 않는다. tools/test-artifacts.mjs 정리와 실행 중 경로 보호를 유지한다.

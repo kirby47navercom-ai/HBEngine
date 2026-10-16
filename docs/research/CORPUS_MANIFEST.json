@@ -2771,6 +2771,23 @@
     "020 mobile runtime seeds do not close SDK repository/tool releases, linked Microsoft acceleration, WebKit/Chromium implementation, Apple media APIs or existing Unity/Unreal scope.",
     "022 Android message-channel links include WHATWG MessageEvent/ports and inherited Java/Handler APIs; partial readings do not close these source/API units.",
     "026 official Unity C# source and Chromium diagnostic/source references expand discovery; managed binding text, experimental CDP capability and historical WebAudio code do not close native lifecycle or whole-corpus verification.",
-    "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled."
-  ]
+    "2026-10-16 discovery: Unity7000.0 package portal encountered in search. Keep separate from6000.0 baseline; full version/package/API body not read or reconciled.",
+    "165: Register/reconcile each linked API, image/media, terrain/LOD/Prefab/localization/UI virtualization/audio DSP/GAS/EQS source. Selected body contracts and HB implementation do not close the global corpus."
+  ],
+  "supplemental165": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/terrain-Tools.html",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/class-LODGroup.html",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/Prefabs.html",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/UIE-uxml-element-ListView.html",
+      "https://docs.unity3d.com/Packages/com.unity.localization@1.5/manual/StringTables.html",
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/AudioMixer.html",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-ability-system-for-unreal-engine",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-effects-for-the-gameplay-ability-system-in-unreal-engine",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/environment-query-system-in-unreal-engine"
+    ],
+    "scope": "selected body sections; linked APIs/images/media not fully read",
+    "globalGatePromotion": false
+  }
 }

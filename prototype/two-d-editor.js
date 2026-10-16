@@ -1,3 +1,4 @@
+import {renderAutoTileRules} from './auto-tiles-editor.js';
 import {sliceSprite,mergeSpriteSlices,trimSpriteRect,resolveSprite} from './sprite-import.js';
 import {editorAnimationFrame,cancelEditorAnimationFrame} from './detached-window.js';
 import {icon} from './icons.js';
@@ -40,7 +41,7 @@ export class TwoDEditor {
     if(kind==='tilemap'&&!data.layers.some(layer=>layer.id===this.layer))this.layer=data.layers[0].id;
     this.el.innerHTML=`<header class="two-d-toolbar"><strong>${esc(data.name)}</strong><span>${twoDTypes[kind].label}</span><button data-two-d-action="place" ${this.hooks.placeAsset?'':'disabled'}>${icon('plus')} 장면에 배치</button></header><div class="two-d-body"><aside class="two-d-properties"></aside><main class="two-d-workspace"><div class="two-d-tools"></div><div class="two-d-scroll"><canvas data-preview tabindex="0" aria-label="${twoDTypes[kind].label} 편집"></canvas></div><div class="two-d-status" role="status"></div></main></div>`;
     this.canvas=this.el.querySelector('[data-preview]');this.scroll=this.el.querySelector('.two-d-scroll');this.properties=this.el.querySelector('.two-d-properties');this.tools=this.el.querySelector('.two-d-tools');
-    if(kind==='sprite')this.spriteForm();else if(kind==='tilemap')this.tilemapForm();else this.animationForm();
+    if(kind==='sprite')this.spriteForm();else if(kind==='tilemap'){this.tilemapForm();renderAutoTileRules(this);}else this.animationForm();
     this.properties.scrollTop=propertyScroll;if(hadFocus)this.canvas.focus({preventScroll:true});
     this.el.onchange=event=>this.changeField(event.target);
     this.el.onclick=event=>{const button=event.target.closest('button');if(button&&this.el.contains(button)){event.stopPropagation();this.action(button);}};

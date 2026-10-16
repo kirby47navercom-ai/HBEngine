@@ -1,3 +1,4 @@
+import {validAutoTileRules,resolveAutoTiles} from './auto-tiles.js';
 import {validSpriteSlices} from './sprite-import.js';
 export const twoDSuffix={sprite:'.hbsprite.json',tilemap:'.hbtilemap.json',spriteanimation:'.hbspriteanimation.json'};
 export const twoDTypes={sprite:{label:'스프라이트',prefix:'S_',group:'2D'},tilemap:{label:'타일맵',prefix:'TM_',group:'2D'},spriteanimation:{label:'스프라이트 애니메이션',prefix:'SA_',group:'2D'}};
@@ -17,6 +18,7 @@ export function valid2DAsset(kind,data){
   if(!data||data.version!==1||!name(data.name)||data.normalTexture!==undefined&&!reference(data.normalTexture))return false;
   if(kind==='sprite')return (data.slices===undefined||validSpriteSlices(data.slices))&&(data.sheet===undefined||reference(data.sheet)&&typeof data.sliceId==='string'&&/^[\w-]{1,80}$/.test(data.sliceId))&&reference(data.texture)&&finite(data.pixelsPerUnit,.01,100000)&&vector(data.rect,4,0,32768)&&data.rect.every(Number.isInteger)&&vector(data.pivot,2,0,1)&&['nearest','linear'].includes(data.filter)&&(data.border===undefined||vector(data.border,4,0,32768)&&data.border.every(Number.isInteger));
   if(kind==='spriteanimation')return typeof data.loop==='boolean'&&finite(data.playRate,.01,100)&&Array.isArray(data.frames)&&data.frames.length<=1000&&data.frames.every(frame=>frame&&reference(frame.sprite)&&frame.sprite.length>0&&finite(frame.duration,.001,3600));
+  if(!validAutoTileRules(data.autoTileRules))return false;
   if(kind!=='tilemap'||data.layout!==undefined&&!['rectangular','isometric'].includes(data.layout)||!reference(data.tileset)||!vector(data.tileSize,2,1,4096)||!data.tileSize.every(Number.isInteger)||!vector(data.cellSize,2,.001,10000)||!integer(data.width,1,256)||!integer(data.height,1,256)||!Array.isArray(data.layers)||!data.layers.length||data.layers.length>32)return false;
   const ids=new Set();
   return data.layers.every(layer=>{
@@ -89,12 +91,12 @@ export function applyTileTool(map,layerId,tool,from,to=from,index=0){
   let changed=false;
   for(const cell of cells){const previous=tiles.get(key(cell));if(tool==='erase'||index===-1){if(previous){tiles.delete(key(cell));changed=true;}}else if(previous?.index!==index){tiles.set(key(cell),{...cell,index});changed=true;}}
   if(!changed)return {data:map,changed:false};
-  const layers=[...map.layers];layers[layerIndex]={...layers[layerIndex],tiles:[...tiles.values()].sort((a,b)=>a.y-b.y||a.x-b.x)};return {data:{...map,layers},changed:true};
+  const layers=[...map.layers];layers[layerIndex]={...layers[layerIndex],tiles:[...tiles.values()].sort((a,b)=>a.y-b.y||a.x-b.x)};return {data:resolveAutoTiles({...map,layers},{layerId,cells:cells.map(c=>[c.x,c.y])}),changed:true};
 }
 /** Collision rectangles merge contiguous cells, across layers marked for collision. */
 export function tileCollisionBoxes(map,depth=.1){
   if(!valid2DAsset('tilemap',map)||!finite(depth,.001,1000))return [];
-  const filled=new Set(map.layers.filter(layer=>layer.collision).flatMap(layer=>layer.tiles.map(tile=>tile.y*map.width+tile.x))),rectangles=[],active=new Map();
+  const filled=new Set(map.layers.filter(layer=>layer.collision).flatMap(layer=>layer.tiles.filter(tile=>tile.autoCollision!==false).map(tile=>tile.y*map.width+tile.x))),rectangles=[],active=new Map();
   for(let y=0;y<map.height;y++){
     const next=new Map();
     for(let x=0;x<map.width;){if(!filled.has(y*map.width+x)){x++;continue;}const start=x;while(x<map.width&&filled.has(y*map.width+x))x++;const key=start+':'+(x-start),existing=active.get(key),rect=existing?{...existing,height:existing.height+1}:{x:start,y,width:x-start,height:1};next.set(key,rect);}

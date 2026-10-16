@@ -1,3 +1,7 @@
+# 165 — 제작·게임플레이 공용 확장
+
+능력/속성/효과12·EQS2·문화권2·UI2개 서비스 선언을 Game.hpp에서 생성한다. BP746개·공용 계산289개. C++ queued write/동기화 getter, BP·AI·사람 제작 공용 검증을 유지한다. [20항목 묶음 계약/검증](ENGINE_WORK_165.md).
+
 # 156–164 — 공용 원장·오디오 전환·2D 제작/조회
 
 가중 스냅샷 배열, 대상 파라미터 전환 지정/해제를 Game.hpp 한 선언에서 C++/BP로 제공한다. 현재 BP728개·공용 계산289개다. 예전 mixerSnapshot 명령은 유지한다. SpriteSkin/IK2D8 getter의 선언 return 핀을 실제 반환에 맞춰 연결 오류를 수정했다. 2D 리타게팅으로 만든 클립은 기존 SpriteSkin/AnimationGraph와 같은 재생/조회 경로를 사용한다. 사람/AI의 저작은 같은 revision·dryRun·Undo/저장이다. [구체적 계약/검증](ENGINE_WORK_156.md)·[현재 원장](ENGINE_STATUS.md).

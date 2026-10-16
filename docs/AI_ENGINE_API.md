@@ -1,3 +1,7 @@
+# 165 — 새 제작 분야
+
+메시·지형·폴리지·LOD·내비·EQS·능력·효과·문자열/스타일 자산 예제를 `/api/schema`에서 읽는다. `world.mesh.edit/simplify`, `world.terrain.brush`, `world.foliage.scatter/erase`, `navigation.bake`, `prefab.override/revert`, `tilemap.rules.resolve`, `rig.clip.retarget(positionMode=pose)`는 기존 revision/dryRun/Undo를 공유한다. 모델 하위 에셋은 `/api/asset/info`의 subassets, `/api/asset/model-override` POST로 다룬다. 오프라인 패치는 hb CLI patch.create/patch.apply를 사용한다. [상세 계약/제약](ENGINE_WORK_165.md).
+
 2026-10-12: [화면 밖·중첩 굴절, 추가 셰이딩·후처리·다중 바운스 GI](RENDERING_098.md). 공용 Surface 10입력/함수·레이어·MI·C++/BP/AI, 깊이/HDR 층 캡처·프로브 굴절, sheen/이방성/박막/specular, 색 보정·비네트·색수차·그레인, 프로브 1~8바운스와 정적 재사용을 연결했어요. 세 실행기 픽셀·기존2D/파티클/그림자 회귀와 제한·비용·지정 읽기 범위는 기계 기록에 있어요. 설치 영수증은 별도 기록하며 전체 corpus/API·Lumen/재귀 RT·전역 FPS를 완료로 승격하지 않아요.
 
 2026-10-12: [색 흡수·벡터 파라미터·색 분산](NATIVE_VOLUME_097.md). Materials SetVector/SetColor C++·BP2·AI, 공용 Surface/속성·함수/레이어/MI·GLSL/TSL/HLSL, Glass/TintedGlass/Prism을 연결했어요. 1,000회 typed uniform·clone·다중 슬롯 사전 거부와 전체 GPU60노드/기존2D·조명·파티클·프로브 회귀, 실제 세 실행기의 C++/T·V키 BP·흡수/분산/재사용·오류0/종료0를 검증했어요. 설치 갱신 후 영수증을 별도로 남기며 전체 corpus/FPS/실기기·남은 셰이딩/후처리/GI를 완료 처리하지 않아요.

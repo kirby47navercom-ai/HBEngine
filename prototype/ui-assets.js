@@ -1,11 +1,11 @@
 import {virtualDefaults} from './virtual-controls.js';
 import {validAssetPath} from './material-runtime.js';
 
-export const widgetTypes={Canvas:'캔버스',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
+export const widgetTypes={Canvas:'캔버스',Panel:'패널',HorizontalBox:'가로 상자',VerticalBox:'세로 상자',Grid:'그리드',ListView:'가상 목록',ScrollBox:'스크롤 상자',Text:'텍스트',Image:'이미지',Button:'버튼',ProgressBar:'진행 막대',Slider:'슬라이더',CheckBox:'체크 상자',TextInput:'입력 상자',Spacer:'여백',Joystick:'가상 조이스틱',DPad:'가상 십자키',TouchButton:'터치 버튼',TouchPad:'터치 카메라 패드'};
 export const widgetContainers=new Set(['Canvas','Panel','HorizontalBox','VerticalBox','Grid','ScrollBox']);
 export const widgetEvents=['click','changed','submit','focus','blur','pressed','released'];
 export const widgetScaleRules={fit:'화면 안에 맞춤',width:'너비 기준',height:'높이 기준',match:'너비·높이 혼합',cover:'화면 채우기'};
-export const widgetDefaults={...virtualDefaults,text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
+export const widgetDefaults={...virtualDefaults,stringTable:'',textKey:'',textArguments:'{}',style:'',styleName:'Default',styleOverrides:'',ariaLabel:'',rowHeight:40,listItems:'[]',selectedIndex:-1,text:'',texture:'',font:'',rotation:0,scale:[1,1],fillDirection:'leftToRight',fillTexture:'',backgroundTexture:'',nineSlice:[0,0,0,0],fontSize:24,color:'#e4e9ef',background:'#263443',accent:'#589ad6',hover:'#365778',pressed:'#1e4061',borderColor:'#4a5f73',borderWidth:0,radius:4,opacity:1,visible:true,enabled:true,focusable:true,tooltip:'',align:'left',value:0,min:0,max:1,step:.01,padding:8,gap:8,columns:2,checked:false,placeholder:'',maxLength:256,wrap:true};
 export function createWidgetNode(type='Text',id=crypto.randomUUID(),parent='root'){
   if(!Object.hasOwn(widgetTypes,type))throw Error('위젯 종류를 확인하세요.');
   const properties={...widgetDefaults,text:{Text:'텍스트',Button:'버튼',TouchButton:'공격',CheckBox:'선택'}[type]||''};
@@ -32,6 +32,8 @@ export function validWidgetAsset(data){
 export function validWidgetProperties(n){
     const s=n.slot,p=n.properties;
     if(!s||!vector(s.anchors,4,0,1)||s.anchors[0]>s.anchors[2]||s.anchors[1]>s.anchors[3]||!vector(s.offset,4,-16384,16384)||!vector(s.alignment,2,0,1)||!Number.isInteger(s.zIndex)||!finite(s.zIndex,-1000,1000)||!finite(s.fill,0,100))return false;
+    if(p&&(p.stringTable!==undefined&&!validAssetPath(p.stringTable)||p.style!==undefined&&!validAssetPath(p.style)||p.textKey!==undefined&&!text(p.textKey,120)||p.styleName!==undefined&&!text(p.styleName,80)||p.ariaLabel!==undefined&&!text(p.ariaLabel,1000)||p.styleOverrides!==undefined&&!text(p.styleOverrides,1000)||p.rowHeight!==undefined&&!finite(p.rowHeight,8,4096)||p.selectedIndex!==undefined&&(!Number.isInteger(p.selectedIndex)||p.selectedIndex< -1)))return false;
+    for(const [key,array] of [['textArguments',false],['listItems',true]])if(p?.[key]!==undefined){try{const v=JSON.parse(p[key]);if(array?(!Array.isArray(v)||v.length>100000):(!v||typeof v!=='object'||Array.isArray(v)))return false;}catch{return false;}}
     if(!p||!text(p.text,10000)||!text(p.tooltip,1000)||!text(p.placeholder,1000)||!validAssetPath(p.texture)||!['left','center','right'].includes(p.align))return false;
     if(p.font!==undefined&&!validAssetPath(p.font)||p.rotation!==undefined&&!finite(p.rotation,-360000,360000)||p.scale!==undefined&&!vector(p.scale,2,0,100)||p.fillDirection!==undefined&&!['leftToRight','rightToLeft','bottomToTop','topToBottom','radial'].includes(p.fillDirection)||p.nineSlice!==undefined&&!vector(p.nineSlice,4,0,4096)||['fillTexture','backgroundTexture'].some(k=>p[k]!==undefined&&!validAssetPath(p[k])))return false;
     if(p.vectorTexture!==undefined&&(!validAssetPath(p.vectorTexture)||p.vectorTexture&&!/\.svg$/i.test(p.vectorTexture))||p.imageFit!==undefined&&!['contain','cover','fill','none','scale-down'].includes(p.imageFit)||p.imageRendering!==undefined&&!['auto','pixelated'].includes(p.imageRendering))return false;

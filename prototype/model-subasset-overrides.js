@@ -1,0 +1,1 @@
+export function applyModelOverrides(group,rows){for(const row of rows||[])if(row.kind==='mesh')group.traverse(o=>{if(o.isMesh&&o.name===row.name)for(const key of ['visible','castShadow','receiveShadow'])if(typeof row.overrides?.[key]==='boolean')o[key]=row.overrides[key];});return group;}

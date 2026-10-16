@@ -14,6 +14,7 @@ struct ParticleStyle {
     Matrix viewProjection=identity,world=identity,view=identity;
     std::array<float,3> right{1,0,0},up{0,1,0};
     std::array<float,4> color{1,1,1,1},endColor{1,1,1,0};
+    std::array<float,4> sheet{1,1,1,0};
     float size=.1f,endScale=1;std::uint32_t maskMode=0;
     float projectionY=1,minSize=0,maxSize=1e30f,exposure=1;
     std::array<float,3> eye{};
@@ -59,7 +60,7 @@ class ParticleRenderer {
     std::uint32_t width_=0,height_=0;
     std::size_t slot=0;
     std::uint64_t draws_=0,presents_=0,captures_=0,sortPasses_=0,countReadbacks_=0,indexAllocations_=0;
-    struct Constants {Matrix viewProjection,world,view;std::array<float,4> rightSize,upEndScale,startColor,endColor,options,sizing,eye;std::array<UINT,4> sorting{};std::array<float,4> masking{};};
+    struct Constants {Matrix viewProjection,world,view;std::array<float,4> rightSize,upEndScale,startColor,endColor,options,sizing,eye;std::array<UINT,4> sorting{};std::array<float,4> masking{},sheet{1,1,1,0};};
     static constexpr const char* shader=R"(
 struct Particle {float4 positionAge;float4 velocityLife;};
 StructuredBuffer<Particle> particles:register(t0);
@@ -67,7 +68,7 @@ StructuredBuffer<uint> visible:register(t1);
 AppendStructuredBuffer<uint> living:register(u0);
 RWStructuredBuffer<uint> sorted:register(u0);RWStructuredBuffer<float> keys:register(u1);
 Texture2D sprite:register(t0),spriteMask:register(t2);SamplerState spriteSampler:register(s0);
-cbuffer View:register(b0){float4x4 viewProjection;float4x4 world;float4x4 view;float4 rightSize;float4 upEndScale;float4 startColor;float4 endColor;float4 options;float4 sizing;float4 eye;uint4 sorting;float4 masking;};
+cbuffer View:register(b0){float4x4 viewProjection;float4x4 world;float4x4 view;float4 rightSize;float4 upEndScale;float4 startColor;float4 endColor;float4 options;float4 sizing;float4 eye;uint4 sorting;float4 masking;float4 sheet;};
 struct Vertex {float4 position:SV_Position;float2 uv:TEXCOORD0;float4 tint:COLOR0;};
 Vertex VS(uint id:SV_VertexID,uint instance:SV_InstanceID){
   const float2 corners[6]={float2(-.5,-.5),float2(-.5,.5),float2(.5,.5),float2(-.5,-.5),float2(.5,.5),float2(.5,-.5)};
@@ -77,7 +78,7 @@ Vertex VS(uint id:SV_VertexID,uint instance:SV_InstanceID){
   float worldPerHeight=2*(sizing.w>0?max(.001,-mul(view,float4(center,1)).z):1)/sizing.x;
   size=clamp(size,sizing.y*worldPerHeight,sizing.z*worldPerHeight);
   Vertex v;v.position=mul(viewProjection,float4(center+(rightSize.xyz*corner.x+upEndScale.xyz*corner.y)*size,1));
-  v.uv=float2(corner.x+.5,eye.w>0?corner.y+.5:.5-corner.y);v.tint=lerp(startColor,endColor,age);
+  v.uv=float2(corner.x+.5,eye.w>0?corner.y+.5:.5-corner.y);if(options.x>0){float frame=fmod(floor(age*sheet.z*sheet.x*sheet.y)+sheet.w,sheet.x*sheet.y);v.uv=(v.uv+float2(fmod(frame,sheet.x),floor(frame/sheet.x)))/sheet.xy;}v.tint=lerp(startColor,endColor,age);
   if(p.positionAge.w>=p.velocityLife.w){v.position=float4(2,2,2,1);v.tint=0;}
   return v;
 }
@@ -148,9 +149,9 @@ private:
         input=nullptr;outputs[0]=outputs[1]=nullptr;ID3D11Buffer* cb=nullptr;gpu.context->CSSetShaderResources(0,1,&input);gpu.context->CSSetUnorderedAccessViews(0,2,outputs,nullptr);gpu.context->CSSetConstantBuffers(0,1,&cb);gpu.context->CSSetShader(nullptr,nullptr,0);sorted_=true;sortMode=data.sorting[1];sortWorld=data.world;sortView=data.view;sortEye=data.eye;
     }
     void drawInto(const Particles& particles,const ParticleStyle& style,ID3D11RenderTargetView* target,ID3D11DepthStencilView* depth,const D3D11_VIEWPORT& viewport,const D3D11_RECT& scissor,ID3D11ShaderResourceView* tex,ID3D11SamplerState* sampler,ID3D11ShaderResourceView* mask=nullptr){
-        const auto blend=static_cast<std::size_t>(style.blend);if(!finite(style.viewProjection)||!finite(style.world)||!finite(style.view)||!finite(style.eye)||!finite(style.right)||!finite(style.up)||!finite(style.color)||!finite(style.endColor)||!std::isfinite(style.size)||style.size<0||!std::isfinite(style.endScale)||style.endScale<0||!std::isfinite(style.projectionY)||style.projectionY<=0||!std::isfinite(style.minSize)||style.minSize<0||!std::isfinite(style.maxSize)||style.maxSize<style.minSize||!std::isfinite(style.exposure)||style.exposure<0||blend>=blends.size()||static_cast<unsigned>(style.sort)>6||style.maskMode>2||(style.maskMode&&!mask)||!target)throw std::runtime_error("GPU particle render style invalid");
+        const auto blend=static_cast<std::size_t>(style.blend);if(!finite(style.sheet)||style.sheet[0]<1||style.sheet[0]>256||style.sheet[1]<1||style.sheet[1]>256||style.sheet[2]<0||style.sheet[2]>100||style.sheet[3]<0||!finite(style.viewProjection)||!finite(style.world)||!finite(style.view)||!finite(style.eye)||!finite(style.right)||!finite(style.up)||!finite(style.color)||!finite(style.endColor)||!std::isfinite(style.size)||style.size<0||!std::isfinite(style.endScale)||style.endScale<0||!std::isfinite(style.projectionY)||style.projectionY<=0||!std::isfinite(style.minSize)||style.minSize<0||!std::isfinite(style.maxSize)||style.maxSize<style.minSize||!std::isfinite(style.exposure)||style.exposure<0||blend>=blends.size()||static_cast<unsigned>(style.sort)>6||style.maskMode>2||(style.maskMode&&!mask)||!target)throw std::runtime_error("GPU particle render style invalid");
         std::lock_guard<std::mutex> lock(gpu.mutex);gpu.owns(particles.buffer);compactAlive(particles);
-        Constants data{style.viewProjection,style.world,style.view,{style.right[0],style.right[1],style.right[2],style.size},{style.up[0],style.up[1],style.up[2],style.endScale},style.color,style.endColor,{tex?1.f:0.f,style.hdr?1.f:0.f,style.toneMapped?1.f:0.f,style.exposure},{style.projectionY,style.minSize,style.maxSize,style.perspective?1.f:0.f},{style.eye[0],style.eye[1],style.eye[2],style.textureFlipY?1.f:0.f},{0,static_cast<UINT>(style.sort),0,0},{float(style.maskMode),0,0,0}};
+        Constants data{style.viewProjection,style.world,style.view,{style.right[0],style.right[1],style.right[2],style.size},{style.up[0],style.up[1],style.up[2],style.endScale},style.color,style.endColor,{tex?1.f:0.f,style.hdr?1.f:0.f,style.toneMapped?1.f:0.f,style.exposure},{style.projectionY,style.minSize,style.maxSize,style.perspective?1.f:0.f},{style.eye[0],style.eye[1],style.eye[2],style.textureFlipY?1.f:0.f},{0,static_cast<UINT>(style.sort),0,0},{float(style.maskMode),0,0,0},style.sheet};
         sortAlive(particles,data);auto* cb=uploadConstants(data);
         gpu.context->OMSetRenderTargets(1,&target,depth);gpu.context->OMSetBlendState(blends[blend].p,nullptr,0xffffffff);gpu.context->OMSetDepthStencilState(depths[(style.depthTest?1:0)|(style.depthWrite?2:0)].p,0);gpu.context->RSSetState(raster.p);gpu.context->RSSetViewports(1,&viewport);gpu.context->RSSetScissorRects(1,&scissor);gpu.context->IASetInputLayout(nullptr);gpu.context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);gpu.context->VSSetShader(vertex.p,nullptr,0);gpu.context->PSSetShader(pixel.p,nullptr,0);gpu.context->VSSetConstantBuffers(0,1,&cb);gpu.context->PSSetConstantBuffers(0,1,&cb);gpu.context->PSSetShaderResources(0,1,&tex);gpu.context->PSSetShaderResources(2,1,&mask);gpu.context->PSSetSamplers(0,1,&sampler);ID3D11ShaderResourceView* srvs[]={particles.buffer.srv.p,aliveView.p};gpu.context->VSSetShaderResources(0,2,srvs);gpu.context->DrawInstancedIndirect(arguments.p,0);
         // Clear SRVs before the next compute UAV binding of the same buffers.

@@ -1,3 +1,7 @@
+# 2026-10-16 — 165 제작·실행 묶음
+
+지정 본문 대조: Unity Terrain/LOD/Prefab/ListView/String Tables/AudioMixer, Unreal GAS/Gameplay Effects/EQS. 연결 API·그림·미디어·전체 corpus는 미독/미완료로 유지한다. 새 기능/실행 증거와 남은 세부는 [165](../ENGINE_WORK_165.md)와 [현재 원장](../ENGINE_STATUS.md)에 분리했다. supplemental165 출처와 후속 읽기를 등록했으며 전역 gate 승격은 없다.
+
 # 2026-10-16 — 156–164 지정 재대조와 구현 원장
 
 최신 누적 기능/잔여는 [ENGINE_STATUS](../ENGINE_STATUS.md) 단일 원장에서 읽는다. 새 읽기: Unity AudioMixer 가중 전환 API 자체·Inspector 지정 구역, 2D Animation10.2.4 Skeleton Sharing 자체. 재대조: MDN KHR 제출 후 준비 조회 예제. 미독: Inspector 그림/연결 API 전체·2D PSD/교체 샘플/미디어·전체 corpus. CopyPasteSkele 접근 실패는 읽음이 아니다. 추가 발견7000.0도 별도 원장에 유지한다. 구현/실제 실행 증거는 [ENGINE_WORK_156](../ENGINE_WORK_156.md)이며 전체 분석 gate를 승격하지 않는다. 다음 조사는 기존 전역 큐와 추가된2D 연결 계약을 함께 따른다.

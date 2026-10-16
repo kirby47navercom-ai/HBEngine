@@ -126,6 +126,8 @@ public:
 HB_CLASS()
 class UI : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetListItems", KoreanName="가상 목록 데이터 지정", Category="UI|목록") static void SetListItems(Actor* target,const std::string& instance,const std::string& element,const std::string& json);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetLocalizedText", KoreanName="지역화 텍스트 지정", Category="UI|지역화") static void SetLocalizedText(Actor* target,const std::string& instance,const std::string& element,const std::string& table,const std::string& key,const std::string& json="{}");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiShow", KoreanName="위젯 UI 표시", Category="UI") static void Show(Actor* target,const std::string& asset,const std::string& instance);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiRemove", KoreanName="위젯 UI 제거", Category="UI") static void Remove(Actor* target,const std::string& instance);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetText", KoreanName="위젯 텍스트 지정", Category="UI") static void SetText(Actor* target,const std::string& instance,const std::string& element,const std::string& text);
@@ -521,6 +523,34 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particlePause", KoreanName="파티클 일시정지", Category="파티클") static void Pause(Actor* target,bool paused);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="particleEmit", KoreanName="파티클 방출", Category="파티클") static void Emit(Actor* target,int count);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="particleCount", KoreanName="파티클 개수", Category="파티클") static int GetCount(Actor* target);
+};
+HB_CLASS()
+class Abilities : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="attributeDefine", KoreanName="속성 등록", Category="능력|속성") static void DefineAttribute(Actor* target,const std::string& attribute,float value,float min=0.f,float max=100.f);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="attributeSet", KoreanName="속성 기본값 지정", Category="능력|속성") static void SetAttribute(Actor* target,const std::string& attribute,float value);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="attributeGet", KoreanName="속성 현재값", Category="능력|속성") static float GetAttribute(Actor* target,const std::string& attribute);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityGrant", KoreanName="능력 부여", Category="능력") static void Grant(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityActivate", KoreanName="능력 활성화", Category="능력") static void Activate(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityCancel", KoreanName="능력 취소", Category="능력") static void Cancel(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="abilityRemove", KoreanName="능력 제거", Category="능력") static void Remove(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="abilityCooldown", KoreanName="능력 쿨다운", Category="능력") static float Cooldown(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="abilityActive", KoreanName="능력 활성 상태", Category="능력") static bool IsActive(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApply", KoreanName="게임플레이 효과 적용", Category="능력|효과") static void ApplyEffect(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectRemove", KoreanName="게임플레이 효과 제거", Category="능력|효과") static void RemoveEffect(Actor* target,const std::string& handle);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectList", KoreanName="효과 핸들 목록", Category="능력|효과") static std::string Effects(Actor* target);
+};
+HB_CLASS()
+class EnvironmentQuery : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="eqsRun", KoreanName="환경 질의 실행", Category="AI|EQS") static void Run(Actor* target,const std::string& asset,Actor* context=nullptr);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="eqsResults", KoreanName="환경 질의 결과", Category="AI|EQS") static std::string Results(Actor* target);
+};
+HB_CLASS()
+class Localization : public Library {
+public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="localeSet", KoreanName="문화권 변경", Category="UI|지역화") static void SetCulture(const std::string& culture);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="localeGet", KoreanName="현재 문화권", Category="UI|지역화") static std::string Culture();
 };
 HB_CLASS()
 class Tags : public Library {

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **728개**, 실제 공통 C++ API **643개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **746개**, 실제 공통 C++ API **661개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -42,6 +42,8 @@
 | 2D 이동 | 1 | 1 |
 | 투사체 | 4 | 4 |
 | 카메라 | 4 | 4 |
+| UI|목록 | 1 | 1 |
+| UI|지역화 | 3 | 3 |
 | 게임플레이 | 9 | 9 |
 | 오브젝트 풀 | 3 | 3 |
 | 입력 | 10 | 10 |
@@ -64,6 +66,10 @@
 | AI 내비게이션 | 4 | 4 |
 | AI 감지 | 3 | 3 |
 | 파티클 | 5 | 5 |
+| 능력|속성 | 3 | 3 |
+| 능력 | 6 | 6 |
+| 능력|효과 | 3 | 3 |
+| AI|EQS | 2 | 2 |
 | 게임플레이 태그 | 7 | 7 |
 
 ## 범위와 사용 규칙
@@ -707,6 +713,20 @@
 | cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
 | screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
 
+## UI|목록
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| uiSetListItems | Set List Items / 가상 목록 데이터 지정 | exec: exec, target: object, instance: string, element: string, json: string | then: exec | hb::UI::SetListItems | 공통 C++ + VM |
+
+## UI|지역화
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| uiSetLocalizedText | Set Localized Text / 지역화 텍스트 지정 | exec: exec, target: object, instance: string, element: string, table: string, key: string, json: string | then: exec | hb::UI::SetLocalizedText | 공통 C++ + VM |
+| localeSet | Set Culture / 문화권 변경 | exec: exec, culture: string | then: exec | hb::Localization::SetCulture | 공통 C++ + VM |
+| localeGet | Culture / 현재 문화권 | — | return: string | hb::Localization::Culture | 공통 C++ + VM |
+
 ## 게임플레이
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -1065,6 +1085,40 @@
 | particlePause | Pause / 파티클 일시정지 | exec: exec, target: object, paused: bool | then: exec | hb::Particles::Pause | 공통 C++ + VM |
 | particleEmit | Emit / 파티클 방출 | exec: exec, target: object, count: int | then: exec | hb::Particles::Emit | 공통 C++ + VM |
 | particleCount | Get Count / 파티클 개수 | target: object | return: int | hb::Particles::GetCount | 공통 C++ + VM |
+
+## 능력|속성
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| attributeDefine | Define Attribute / 속성 등록 | exec: exec, target: object, attribute: string, value: float, min: float, max: float | then: exec | hb::Abilities::DefineAttribute | 공통 C++ + VM |
+| attributeSet | Set Attribute / 속성 기본값 지정 | exec: exec, target: object, attribute: string, value: float | then: exec | hb::Abilities::SetAttribute | 공통 C++ + VM |
+| attributeGet | Get Attribute / 속성 현재값 | target: object, attribute: string | return: float | hb::Abilities::GetAttribute | 공통 C++ + VM |
+
+## 능력
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| abilityGrant | Grant / 능력 부여 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::Grant | 공통 C++ + VM |
+| abilityActivate | Activate / 능력 활성화 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::Activate | 공통 C++ + VM |
+| abilityCancel | Cancel / 능력 취소 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::Cancel | 공통 C++ + VM |
+| abilityRemove | Remove / 능력 제거 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::Remove | 공통 C++ + VM |
+| abilityCooldown | Cooldown / 능력 쿨다운 | target: object, asset: string | return: float | hb::Abilities::Cooldown | 공통 C++ + VM |
+| abilityActive | Is Active / 능력 활성 상태 | target: object, asset: string | return: bool | hb::Abilities::IsActive | 공통 C++ + VM |
+
+## 능력|효과
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| effectApply | Apply Effect / 게임플레이 효과 적용 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::ApplyEffect | 공통 C++ + VM |
+| effectRemove | Remove Effect / 게임플레이 효과 제거 | exec: exec, target: object, handle: string | then: exec | hb::Abilities::RemoveEffect | 공통 C++ + VM |
+| effectList | Effects / 효과 핸들 목록 | target: object | return: string | hb::Abilities::Effects | 공통 C++ + VM |
+
+## AI|EQS
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| eqsRun | Run / 환경 질의 실행 | exec: exec, target: object, asset: string, context: object | then: exec | hb::EnvironmentQuery::Run | 공통 C++ + VM |
+| eqsResults | Results / 환경 질의 결과 | target: object | return: string | hb::EnvironmentQuery::Results | 공통 C++ + VM |
 
 ## 게임플레이 태그
 

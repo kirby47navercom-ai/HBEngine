@@ -36,7 +36,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       if(materialTextureTypes[textureNodeType(key)]?.sample===key){
         const rgbaKey=id+':rgba';let sample=cache.get(rgbaKey);if(!sample){const parameter=materialTextureParameter(node),path=data.parameters?.[parameter]??node.texture;if(!path&&!parameter)code=T.vec4(1);else{
           const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);const sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz),args.lod.max(0)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
-          loading.push(textureBindings.add({path,type,parameter,wrap:node.wrap,placeholder},map=>sampleNode.value=map));
+          loading.push(textureBindings.add({path,type,parameter,wrap:node.wrap,sampler:node.sampler,placeholder},map=>sampleNode.value=map));
           code=node.colorSpace==='linear'?sampleNode:T.vec4(T.sRGBTransferEOTF(sampleNode.rgb),sampleNode.a);
         }sample={code,type:'vec4'};cache.set(rgbaKey,sample);}code=output==='rgba'?sample.code:sample.code[output];
       }else if(key==='split')code=v[output];else if(key==='combine')code=T[type](...['x','y','z','w'].slice(0,Number(type.slice(3))).map(k=>args[k]));

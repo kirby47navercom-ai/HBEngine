@@ -319,6 +319,8 @@ inline bool Tilemaps::HasTilemapChanges(Actor* target){bridgeTilemap(target);ret
 inline void Tilemaps::SetLayerVisible(Actor* target,const std::string& layer,bool visible){auto& value=bridgeTileLayer(bridgeTilemap(target),layer);engineCommand("tileLayerVisible",{{"target",bridgeId(target)},{"layer",layer},{"visible",visible}});if(value.at("visible")!=visible){value["visible"]=visible;bridgeTileDirty(target);}}
 
 inline Json& gameplayField(Actor* target,const char* field){auto* state=bridgeState(target);if(!state)throw std::runtime_error("missing game object");return (*state)["gameplayDebug"][field];}
+inline void UI::SetListItems(Actor* target,const std::string& instance,const std::string& element,const std::string& json){if(!Json::parse(json).is_array())throw std::invalid_argument("List items must be an array");engineCommand("uiSetListItems",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"json",json}});}
+inline void UI::SetLocalizedText(Actor* target,const std::string& instance,const std::string& element,const std::string& table,const std::string& key,const std::string& json){if(!Json::parse(json).is_object())throw std::invalid_argument("Text arguments must be an object");engineCommand("uiSetLocalizedText",{{"target",bridgeId(target)},{"instance",instance},{"element",element},{"table",table},{"key",key},{"json",json}});}
 inline void UI::Show(Actor* target,const std::string& asset,const std::string& instance){engineCommand("uiShow",{{"target",bridgeId(target)},{"asset",asset},{"instance",instance}});}
 inline void UI::Remove(Actor* target,const std::string& instance){engineCommand("uiRemove",{{"target",bridgeId(target)},{"instance",instance}});auto& ui=gameplayField(target,"ui");if(ui.is_object())ui.erase(instance);}
 inline Json& bridgeWidget(Actor* target,const std::string& instance,const std::string& element){return gameplayField(target,"ui").at(instance).at(element);}
@@ -486,6 +488,22 @@ inline void Particles::Emit(Actor* target,int count){particleCommand(target,"par
 inline int Particles::GetCount(Actor* target){auto& state=gameplayField(target,"particles");return state.is_null()?0:state.value("backend",std::string{}).find("compute")!=std::string::npos?engineQuery("particleCount",{{"target",bridgeId(target)}}).get<int>():state.value("count",0);}
 inline Json& bridgeTags(Actor* target){auto* state=bridgeStateFields(target,{"tags"});if(!state)throw std::runtime_error("missing tag target");auto& tags=(*state)["tags"];if(tags.is_null())tags=Json::array();return tags;}
 inline std::vector<std::string> Tags::Get(Actor* target){return bridgeTags(target).get<std::vector<std::string>>();}
+inline void Abilities::DefineAttribute(Actor* target,const std::string& attribute,float value,float min,float max){engineCommand("attributeDefine",{{"target",bridgeId(target)},{"attribute",attribute},{"value",value},{"min",min},{"max",max}});}
+inline void Abilities::SetAttribute(Actor* target,const std::string& attribute,float value){engineCommand("attributeSet",{{"target",bridgeId(target)},{"attribute",attribute},{"value",value}});}
+inline float Abilities::GetAttribute(Actor* target,const std::string& attribute){return gameplayField(target,"ability").at("attributes").at(attribute).at("current").get<float>();}
+inline void Abilities::Grant(Actor* target,const std::string& asset){engineCommand("abilityGrant",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void Abilities::Activate(Actor* target,const std::string& asset){engineCommand("abilityActivate",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void Abilities::Cancel(Actor* target,const std::string& asset){engineCommand("abilityCancel",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void Abilities::Remove(Actor* target,const std::string& asset){engineCommand("abilityRemove",{{"target",bridgeId(target)},{"asset",asset}});}
+inline float Abilities::Cooldown(Actor* target,const std::string& asset){return gameplayField(target,"ability").at("abilities").at(asset).at("cooldown").get<float>();}
+inline bool Abilities::IsActive(Actor* target,const std::string& asset){return gameplayField(target,"ability").at("abilities").at(asset).at("active").get<bool>();}
+inline void Abilities::ApplyEffect(Actor* target,const std::string& asset){engineCommand("effectApply",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void Abilities::RemoveEffect(Actor* target,const std::string& handle){engineCommand("effectRemove",{{"target",bridgeId(target)},{"handle",handle}});}
+inline std::string Abilities::Effects(Actor* target){return gameplayField(target,"ability").value("effects",Json::array()).dump();}
+inline void EnvironmentQuery::Run(Actor* target,const std::string& asset,Actor* context){engineCommand("eqsRun",{{"target",bridgeId(target)},{"asset",asset},{"context",bridgeId(context)}});}
+inline std::string EnvironmentQuery::Results(Actor* target){return gameplayField(target,"eqs").dump();}
+inline void Localization::SetCulture(const std::string& culture){engineCommand("localeSet",{{"culture",culture}});}
+inline std::string Localization::Culture(){return Json::parse(Game::GetStateText()).value("culture",std::string("ko"));}
 inline void Tags::Add(Actor* target,const std::string& tag){engineCommand("tagAdd",{{"target",bridgeId(target)},{"tag",tag}});auto& tags=bridgeTags(target);if(std::find(tags.begin(),tags.end(),Json(tag))==tags.end())tags.push_back(tag);}
 inline void Tags::Remove(Actor* target,const std::string& tag){engineCommand("tagRemove",{{"target",bridgeId(target)},{"tag",tag}});auto& tags=bridgeTags(target);tags.erase(std::remove(tags.begin(),tags.end(),Json(tag)),tags.end());}
 inline bool Tags::Has(Actor* target,const std::string& tag,bool exact){for(const auto& value:Tags::Get(target))if(value==tag||(!exact&&value.rfind(tag+".",0)==0))return true;return false;}

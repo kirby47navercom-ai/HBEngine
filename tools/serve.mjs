@@ -86,6 +86,7 @@ const server=http.createServer(async(req,res)=>{try{
     if(url.pathname==='/api/asset/info'&&req.method==='GET'){const result=await owner.assetInfo(q.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/document'&&req.method==='GET'){const result=await owner.inspectDocument(q.get('path'));checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/registry'&&req.method==='GET'){const result=await owner.assetRegistry();checkOwner(owner);return json(res,result);}
+    if(url.pathname==='/api/asset/model-override'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.overrideModelSubasset(data.path,data.id,data.overrides);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/reimport'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.reimport(data.paths);checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/batch'&&req.method==='POST'){const data=JSON.parse(await readBody(16777216)),result=await owner.checkedBatch(data.entries,()=>checkOwner(owner),{dryRun:data.dryRun??false});checkOwner(owner);return json(res,result);}
     if(url.pathname==='/api/asset/batch/undo'&&req.method==='POST'){const data=JSON.parse(await readBody()),result=await owner.undoBatch(data.transaction,()=>checkOwner(owner));checkOwner(owner);return json(res,result);}

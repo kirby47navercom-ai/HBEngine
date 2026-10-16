@@ -1,7 +1,7 @@
 import {installGPURayAtlasUpload} from './gpu-ray-atlas-upload.js';
 import {installGPUUniformCompatibility} from './gpu-uniforms.js';
 import {WebGPURenderer,PMREMGenerator,BoxGeometry,MeshBasicMaterial,BackSide,StorageInstancedBufferAttribute,IndirectStorageBufferAttribute,InstancedBufferGeometry,PlaneGeometry,Mesh,SpriteNodeMaterial,Vector4,Vector3,Matrix4,AdditiveBlending,NormalBlending} from 'three/webgpu';
-import {Fn,If,storage,uniform,instanceIndex,uint,vec4,vec2,float,min,max,exp,atomicAdd,atomicStore,mix,texture,uv,smoothstep,modelViewMatrix,cameraProjectionMatrix} from 'three/tsl';
+import {Fn,If,storage,uniform,instanceIndex,uint,vec4,vec2,float,min,max,floor,mod,exp,atomicAdd,atomicStore,mix,texture,uv,smoothstep,modelViewMatrix,cameraProjectionMatrix} from 'three/tsl';
 import {ParticleSimulation} from './scene-systems.js';
 
 // CPU prepares births/timing only; living positions, ages and draw counts stay GPU-resident.
@@ -38,7 +38,7 @@ export class GPUParticleSimulation extends ParticleSimulation {
     this.inverseWorld=uniform(new Matrix4());this.scale=uniform(new Vector3(1,1,1));this.startColor=uniform(new Vector4(...p.color));this.endColor=uniform(new Vector4(...p.endColor));this.size=uniform(p.size);this.endSize=uniform(p.endSize);this.minSize=uniform(p.minParticleSize);this.maxSize=uniform(p.maxParticleSize);this.perspective=uniform(false,'bool');
     const local=p.simulationSpace==='world'?this.inverseWorld.mul(vec4(particle.xyz,1)).xyz:particle.xyz,depth=modelViewMatrix.mul(vec4(local,1)).z.negate(),projection=cameraProjectionMatrix.element(1).y;
     const distance=this.perspective.select(max(.001,depth),float(1)),worldPerHeight=distance.mul(2).div(projection),worldSize=min(max(this.size.mul(mix(1,this.endSize,age)),this.minSize.mul(worldPerHeight)),this.maxSize.mul(worldPerHeight));
-    const color=mix(this.startColor,this.endColor,age),sample=map?texture(map,uv()):vec4(1,1,1,float(1).sub(smoothstep(.35,.5,uv().sub(.5).length())));
+    const color=mix(this.startColor,this.endColor,age),sheetFrame=mod(floor(age.mul((p.sheetCycles??1)*(p.sheetColumns||1)*(p.sheetRows||1))).add(p.sheetStart||0),(p.sheetColumns||1)*(p.sheetRows||1)),sheetUV=uv().add(vec2(mod(sheetFrame,p.sheetColumns||1),floor(sheetFrame.div(p.sheetColumns||1)))).div(vec2(p.sheetColumns||1,p.sheetRows||1)),sample=map?texture(map,sheetUV):vec4(1,1,1,float(1).sub(smoothstep(.35,.5,uv().sub(.5).length())));
     const material=new SpriteNodeMaterial({transparent:true,depthWrite:false,alphaTest:.001,blending:p.blend==='additive'?AdditiveBlending:NormalBlending});material.positionNode=local;material.scaleNode=vec2(worldSize).div(this.scale.xy);material.colorNode=color.rgb.mul(sample.rgb);material.opacityNode=color.a.mul(sample.a);if(p.maskInteraction!=='none')renderer.hbSpriteMask(material);
     renderer.hbParticleResources??={effects:0,buffers:0,storageBytes:0};++renderer.hbParticleResources.effects;this.resourceBuffers=this.sorting?7:6;this.resourceBytes=this.capacity*64+this.aliveCapacity*(this.sorting?8:4)+20;renderer.hbParticleResources.buffers+=this.resourceBuffers;renderer.hbParticleResources.storageBytes+=this.resourceBytes;this.mesh=new Mesh(geometry,material);this.mesh.frustumCulled=false;this.mesh.userData.objectId=group.userData.objectId;this.mesh.renderOrder=p.sortingOrder;
     this.mesh.userData.particleRenderer=true;this.mesh.userData.draw2dId='particles';this.mesh.userData.draw2d={sortingLayer:p.sortingLayer||'default',sortingOrder:p.sortingOrder||0,maskInteraction:p.maskInteraction||'none'};
