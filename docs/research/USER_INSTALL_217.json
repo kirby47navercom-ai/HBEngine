@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "d88a45970f523b21a1f66012f846eeec5fc59a9c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d\\HBEngine.exe",
+  "bundleHash": "06ccb1d58c0eca3d8974928a8444dd6bc049d007d814abddfd60a8526b36e9c4",
+  "files": 2689,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2683,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6",
+        "bytes": 194264932,
+        "manifestSHA256": "daa4a6a73a2dc3c35e0979afea95a3f5525b67c7bc9f28bf8d0859c5f0e1192a"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T20:54:42.9151670Z",
+    "bytes": 194264932,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\85700fd5ac4494a6\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "06ccb1d58c0eca3d"
+    ]
+  },
+  "work": "native/build/engine-217-install-jXSxAH",
+  "versions": [
+    "06ccb1d58c0eca3d"
+  ],
+  "manifestVerifiedFiles": 2689,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/prefab-additions-214-window-WzjQN8/acceptance.json",
+      "sha256": "3a6d4641b4a72fd4e905c3c7f679a727886d5e01f9b9c1e4c784c1867da8ce3d"
+    },
+    {
+      "path": "native/build/take-filter-215-window-wFaFxA/acceptance.json",
+      "sha256": "11bc521ccd951a38363b265bf3ae28e00ff2924b7b01fe23e29e45f3ca2268dd"
+    },
+    {
+      "path": "native/build/sequence-bindings-216-window-mNHYHp/acceptance.json",
+      "sha256": "606c061de74523637212a5978730df063952f5f394eafa342540001f5d305013"
+    },
+    {
+      "path": "native/build/eqs-debug-217-window-EHplYC/acceptance.json",
+      "sha256": "c4f8d4f2c53fe1c818130d64e0f344785fad6b65713385083fd18c7a3d98f5ac"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/prefab-additions-214-window-WzjQN8/instance-additions-gray.png",
+      "sha256": "445fcb7c96a0ce79fa7b452a76192aa741c4fa76e5dfd505e7f549eed6556760",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/take-filter-215-window-wFaFxA/spawn-filter-settings.png",
+      "sha256": "582349fcd9eb48b7910eb1f2dea0f83eec0d6850c3e409e030c50fd32f46528f",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/sequence-bindings-216-window-mNHYHp/manual-array-key.png",
+      "sha256": "bc37a1d29262c2d22925859ad5aed994e9034fd468a25f5a927c7b35b4ace771",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/eqs-debug-217-window-EHplYC/query-score-viewport.png",
+      "sha256": "cee395a7669e45b96202400dc826a4cfb3601c7ce4fe5b4e2a66e437b8653bfb",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2689,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Actual User only read for inventory. SDK headers included and manifest verified.",
+  "storage": {
+    "path": "native/build/storage-217-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}
