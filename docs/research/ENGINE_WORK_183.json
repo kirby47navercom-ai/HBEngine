@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "6e44803",
+  "targetIds": [
+    "EDT-05",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-183-s3x9Yw/acceptance.json",
+      "sha256": "833c8ea2a68442691b4ae5ba857d0071701895ac6242cde04d95b174902f4015",
+      "result": {
+        "passed": 6,
+        "total": 6,
+        "checks": [
+          {
+            "name": "widget/modeling scope routes defaults without stealing viewport/graph or text input",
+            "passed": true
+          },
+          {
+            "name": "reassigned keys suppress legacy behavior and remain independent across dedicated editors",
+            "passed": true
+          },
+          {
+            "name": "old explicit global mappings win over new implicit defaults without resetting profiles",
+            "passed": true
+          },
+          {
+            "name": "widget dispatch preserves stretched margins, root safety, preview and disposal guards",
+            "passed": true
+          },
+          {
+            "name": "mesh selection modes and operations share the real editor action owner",
+            "passed": true
+          },
+          {
+            "name": "explicit assignment conflicts and failed persistence roll back without changing saved keys",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-183-window-6qkU2h/acceptance.json",
+      "sha256": "95685c31ac2b40d961ae2681040c536697a48606a4d4d1d1c3a9a58601d599bd",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "shortcuts": {
+          "remappedMesh": true,
+          "legacySuppressed": true,
+          "typingSafe": true,
+          "widgetNudge": true,
+          "widgetDuplicate": true,
+          "contextMenuLabels": true,
+          "originalSettingsRestored": true
+        },
+        "meshAuthoring": {
+          "humanInset": true,
+          "failedSelectionPreserved": true,
+          "undo": true,
+          "aiDryRun": true,
+          "unequalBridge": true,
+          "saved": true
+        },
+        "namedSlots": {
+          "humanAssignment": true,
+          "emptyPlaceholder": true,
+          "undo": true,
+          "saved": true
+        },
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "newDependencies": 0,
+  "automaticGPUReadbacks": 0,
+  "installationPending": true,
+  "limits": [
+    "다른 전용 편집기와 모든 조작의 명령화는 잔여 원장에 유지한다.",
+    "기존 키2개/충돌 검사/프로필 계약을 사용하며 명시한 새 키끼리의 충돌은 거부한다.",
+    "격리 PC 실제 키 입력 결과이며 다중 모니터·모바일·모든 보조 기술 검증과 구분한다."
+  ]
+}

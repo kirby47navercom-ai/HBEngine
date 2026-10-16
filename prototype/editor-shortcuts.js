@@ -12,23 +12,36 @@ export const shortcutCommands=[
   command('group','그룹 만들기','viewport',['Primary+KeyG']),command('ungroup','그룹 해제','viewport',['Primary+Shift+KeyG']),
   command('rename','이름 변경','viewport',['F2']),command('delete','선택 삭제','authoring',['Delete']),
   command('comment','노드 주석','blueprint',['KeyC'],'add-comment'),command('validate','블루프린트 검증','blueprint',['F7']),command('breakpoint','중단점 전환','blueprint',['F9']),command('findNodes','노드 찾기','blueprint',['Primary+KeyF']),
+  ...['copy','cut','paste','duplicate','delete'].map((id,i)=>command('widget'+id[0].toUpperCase()+id.slice(1),{copy:'위젯 복사',cut:'위젯 잘라내기',paste:'위젯 붙여넣기',duplicate:'위젯 복제',delete:'위젯 삭제'}[id],'widget',i===4?['Delete','Backspace']:['Primary+Key'+['C','X','V','D'][i]])),
+  command('widgetFocus','위젯 화면 맞춤','widget',['KeyF']),
+  ...['Left','Right','Up','Down'].flatMap(direction=>[command('widgetNudge'+direction,'위젯 '+{Left:'왼쪽',Right:'오른쪽',Up:'위',Down:'아래'}[direction]+' 1px','widget',['Arrow'+direction]),command('widgetNudgeFast'+direction,'위젯 '+{Left:'왼쪽',Right:'오른쪽',Up:'위',Down:'아래'}[direction]+' 10px','widget',['Shift+Arrow'+direction])]),
+  command('meshFocus','메시 선택 프레이밍','modeling',['KeyF']),command('meshSelectAll','메시 전체 선택','modeling',['Primary+KeyA']),
+  command('meshBridge','메시 경계 연결','modeling',['Alt+KeyB']),command('meshInset','메시 영역 인셋','modeling',['KeyI']),command('meshRetriangulate','메시 영역 재삼각화','modeling',[]),
+  command('meshDuplicateFaces','메시 선택 면 복제','modeling',['Primary+KeyD']),command('meshDeleteFaces','메시 선택 면 삭제','modeling',['Delete','Backspace']),command('meshFlipFaces','메시 선택 면 뒤집기','modeling',['Alt+KeyF']),
 ];
 const byId=new Map(shortcutCommands.map(c=>[c.id,c]));
-const scopes={global:['viewport','blueprint','other'],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint']};
+const scopes={global:['viewport','blueprint','widget','modeling','other'],authoring:['viewport','blueprint'],viewport:['viewport'],blueprint:['blueprint'],widget:['widget'],modeling:['modeling']};
 const overlap=(a,b)=>scopes[a].some(s=>scopes[b].includes(s));
 export const defaultShortcutData=()=>({version:1,active:'default',profiles:[{id:'default',name:'Default',bindings:{}}]});
-export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Space|Delete|Backspace|Tab|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
+export function validChord(value){return typeof value==='string'&&/^(Primary\+)?(Shift\+)?(Alt\+)?(?:Key[A-Z]|Digit[0-9]|F(?:[1-9]|1[0-2])|Arrow(?:Left|Right|Up|Down)|Space|Delete|Backspace|Tab|BracketLeft|BracketRight|Minus|Equal|Comma|Period|Slash|Semicolon|Quote|Backquote)$/.test(value);}
 export function eventChord(event){if(event.isComposing||!event.code)return null;const chord=(event.ctrlKey||event.metaKey?'Primary+':'')+(event.shiftKey?'Shift+':'')+(event.altKey?'Alt+':'')+event.code;return validChord(chord)?chord:null;}
 export function shortcutLabel(chord){return chord?.replace('Primary+','Ctrl+').replace(/Key([A-Z])/,'$1').replace(/Digit(\d)/,'$1').replace('Space','Space')||'—';}
 const bindings=(profile,id)=>profile.bindings[id]??byId.get(id).keys;
 export function shortcutConflicts(profile){const conflicts=[];for(let i=0;i<shortcutCommands.length;i++)for(let j=i+1;j<shortcutCommands.length;j++){const a=shortcutCommands[i],b=shortcutCommands[j];if(!overlap(a.scope,b.scope))continue;for(const chord of bindings(profile,a.id))if(bindings(profile,b.id).includes(chord))conflicts.push({chord,commands:[a.id,b.id]});}return conflicts;}
+// Newly introduced default keys must not invalidate an older user profile.
+// Explicit assignments win; only conflicting implicit defaults are disabled.
+export function normalizeShortcutData(data){
+ if(!data||!Array.isArray(data.profiles))return data;const next=structuredClone(data),added=new Set(shortcutCommands.filter(c=>['widget','modeling'].includes(c.scope)).map(c=>c.id));
+ for(const profile of next.profiles){if(profile?.id==='default'||!profile?.bindings||typeof profile.bindings!=='object'||Array.isArray(profile.bindings))continue;try{const implicit=new Set([...added].filter(id=>!Object.hasOwn(profile.bindings,id)));for(const conflict of shortcutConflicts(profile)){const id=conflict.commands.find(id=>implicit.has(id));if(id)profile.bindings[id]=bindings(profile,id).filter(chord=>chord!==conflict.chord);}}catch{}}
+ return next;
+}
 export function validShortcutData(data){return !!data&&data.version===1&&Array.isArray(data.profiles)&&data.profiles.length>0&&data.profiles.length<=16&&data.profiles.some(p=>p.id==='default'&&p.name==='Default'&&p.bindings&&Object.keys(p.bindings).length===0)&&data.profiles.some(p=>p.id===data.active)&&new Set(data.profiles.map(p=>p?.id)).size===data.profiles.length&&data.profiles.every(p=>p&&typeof p.id==='string'&&/^[\w-]{1,80}$/.test(p.id)&&typeof p.name==='string'&&p.name.trim()&&p.name.length<=80&&p.bindings&&typeof p.bindings==='object'&&!Array.isArray(p.bindings)&&Object.entries(p.bindings).every(([id,keys])=>byId.has(id)&&Array.isArray(keys)&&keys.length<=2&&new Set(keys).size===keys.length&&keys.every(validChord))&&!shortcutConflicts(p).length);}
 export class EditorShortcuts{
-  constructor(data,onChange=()=>{}){this.data=structuredClone(validShortcutData(data)?data:defaultShortcutData());this.onChange=onChange;}
+  constructor(data,onChange=()=>{}){data=normalizeShortcutData(data);this.data=structuredClone(validShortcutData(data)?data:defaultShortcutData());this.onChange=onChange;}
   snapshot(){return structuredClone(this.data);}
   profile(){return this.data.profiles.find(p=>p.id===this.data.active);}
   keys(id){if(!byId.has(id))throw Error('단축키 명령을 확인하세요.');return [...bindings(this.profile(),id)];}
-  replace(data){if(!validShortcutData(data))throw Error('단축키 프로필·키 조합·충돌을 확인하세요.');const previous=this.data;this.data=structuredClone(data);try{this.onChange(this.snapshot());}catch(error){this.data=previous;throw error;}return this.snapshot();}
+  replace(data){data=normalizeShortcutData(data);if(!validShortcutData(data))throw Error('단축키 프로필·키 조합·충돌을 확인하세요.');const previous=this.data;this.data=structuredClone(data);try{this.onChange(this.snapshot());}catch(error){this.data=previous;throw error;}return this.snapshot();}
   assign(id,keys,{override=false}={}){
     if(!byId.has(id)||!Array.isArray(keys)||keys.length>2||keys.some(k=>!validChord(k))||new Set(keys).size!==keys.length)throw Error('단축키 명령·조합을 확인하세요.');
     const next=this.snapshot();let p=next.profiles.find(p=>p.id===next.active);if(p.id==='default'){p={id:crypto.randomUUID(),name:'User',bindings:{}};next.profiles.push(p);next.active=p.id;}

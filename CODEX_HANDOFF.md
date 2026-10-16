@@ -1,3 +1,8 @@
+# 누적181–183 검증 완료 — 묶음 설치 준비 후 계속
+
+main6e44803 origin동일/180설치0553dc1c96d71485·2467files/Versions1·profile10385SHA불변.181–183현재제품/문서미커밋. NamedSlot기본/교체/null·singlechild·namespace/style/event/binding·외부SourceUIdeps/rename/build/AI schema sourceOnlyfix. mesh unequal/openbridge·linear/offset·planarregioninset/concave/holes·UVcolor·retriangulate/postedgeguard·실패선택유지. widget/modeling22shortcut/전체55·remap/legacy/typingguard·oldexplicitprofile보존·contextlabels. CPU1816 8Rd8vB/1827 nItrVv/1836 s3x9Yw PASS.183window6qkU2h실제키/Undo/설정복원+UI/mesh PASS.182D3DtYEFqR/WebGPUFLUjoL실제Cppregion0/bridge2·슬롯버튼BP/Cpptext+기존회귀 PASS. mobile공용export181L5B9jf 외부Source슬롯packagedUIwrite/unknownslotbuildreject PASS(폰/Xcode아님). ui1749B2pfU3/1775 3MEWEb/world16711cpGtIS/layout/기존shortcuts PASS. docs181183완료재실행금지.
+다음diff/status/API→한국어동일authorcommitpush→sync/install183→check183-window --executable새설치(고유profile)·slot/region캡처시각/manifestSHA/profile/바로가기/Versions1 영수증→다음누적목표계속. nativeABI/SDK변경없어exe재빌드불필요. 실제사용자창/프로젝트보호,새agent금지/최종안함. geometry최종postedgeguard추가후CPU7 PASS,출력은기존actualplayer표본동일. 전체UEUnity분모없음/gatefalse 유지.
+
 # 누적180 설치 완료 — 181 명명 슬롯 구현 계속
 
 180 feature92f09c4 push/설치0553dc1c96d71485/2467명세파일 실행후SHA검증. USER_INSTALL180 receipt/WORK180 갱신. installedZdbmY7 PASS/errors0/exit0/캡처시각확인,사용자프로필10385파일SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변,바로가기2/프로젝트연결/Versions1,이전179173934665바이트정리. finish180완료재실행금지. 181작업시작: NamedSlot단일자식/Widget.properties.widgetSlots JSON(키슬롯이름,값참조.hbwidget.json|null비움,미지정기본유지),공용composition graft/기본하위교체·중첩삭제충돌/cycle/예산/immutable. 아직검사·UI·runtime layout·dependencies 연결전/미커밋. UE5.8NamedSlots본문0–155/Unity6000.5UXMLtemplates180–265 읽었음(연결API/미디어미독). 다음181완성+검증+설치하고누적목표계속. 아래180설치전기록은역사.

@@ -480,3 +480,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 180: 기존 Physics 공용 C++/BP 함수의 의미와 노드는 유지한다. C++ 백엔드 질의 월드 재사용은 호출당 승인과 직접 Transform 변경을 보존한다. Windows와 모바일 AOT2모듈의 같은 세션 공유/동시 질의/세대 정리를 검사했다.
+
+
+181: 명명 슬롯 콘텐츠도 기존 UI 함수/BP 이벤트를 쓴다. 예: UI::SetText(owner,"WorldCard","Dialog/Body/Content/Label",text). 중복 노드를 추가하지 않고 공용 문서/빌드 종속성으로 검증한다.

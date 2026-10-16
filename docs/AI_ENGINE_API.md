@@ -424,3 +424,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 180: NativeHost.inspectResources().physicsQueries는 worlds/retiredWorlds/idleWorlds/activeContexts/worldBuilds/queries/maxIdleWorlds를 읽는다. C++ 응답 transport.physicsQueryMs/physicsQueryCount/physicsCacheReused는 해당 호출 비용과 시작 시 캐시 재사용 여부다. 진단은 필요할 때 읽으며 게임 FPS가 아니다. 캐시는 세션별·백엔드 유휴1개이며 reset/종료 시 해제한다.
+
+
+181–183: Widget.properties.widgetSlots JSON(슬롯명→위젯 경로/null,미지정=기본),NamedSlot 단일자식/일반 patch·Undo. world.mesh.edit에 insetRegion/retriangulateRegion/bridgeOffset,열린·불균등 브리지. editor.shortcuts.get/set에는 widget/modeling22명령 추가/전체55명령. sourceOnly 에셋 생성 예제는 생략해 모델 메타도 정상 조회한다.

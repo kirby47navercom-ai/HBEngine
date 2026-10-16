@@ -425,3 +425,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 179: UE Animation Budget Allocator 본문0–265/UnityAnimator164–210/CullingGroup182–208를 supplemental179에 등록했다. 표시 쓰기 절감과 전체 계산/예산 할당 구현을 구별하고 연결 API·전체 gate는 유지한다.
+
+
+181–183: NamedSlot·Unity UI templates와UE PolyGroup·ProBuilder 선택 본문을 supplemental181183에 등록했다. 연결API·전체 corpus gate·실물기기 결과와 구분한다.

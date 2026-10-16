@@ -1,5 +1,6 @@
 import {editMeshUV} from './mesh-uv.js';
 import {editMeshTopology} from './mesh-topology.js';
+import {editMeshRegion} from './mesh-region.js';
 import {cubeVertices,cubeIndices} from './collision-geometry.js';
 const finite=(v,min=-1000000,max=1000000)=>Number.isFinite(v)&&v>=min&&v<=max,vec=(v,n,min,max)=>Array.isArray(v)&&v.length===n&&v.every(x=>finite(x,min,max));
 const label=s=>typeof s==='string'&&s.trim()&&s.length<=120,path=s=>typeof s==='string'&&/^Assets\/.+\.hb(?:mesh|terrain|foliage|lod)\.json$/.test(s)&&!s.includes('..');
@@ -24,6 +25,7 @@ export function editMesh(d,settings){
  const {operation,vertices=[],faces=[],delta=[0,0,0],distance=1}=settings;
  if(!validWorldAsset('mesh',d)||!Array.isArray(vertices)||!vertices.every(i=>Number.isInteger(i)&&i>=0&&i<d.vertices.length)||!Array.isArray(faces)||!faces.every(i=>Number.isInteger(i)&&i>=0&&i<d.indices.length/3)||!vec(delta,3)||!finite(distance))throw Error('메시 선택·연산 값을 확인하세요.');
  const uv=editMeshUV(d,settings);if(uv){if(!validWorldAsset('mesh',uv))throw Error('UV 결과 범위를 확인하세요.');return uv;}
+ const region=editMeshRegion(d,settings);if(region){if(!validWorldAsset('mesh',region))throw Error('영역 메시 결과 범위를 확인하세요.');return region;}
  const topology=editMeshTopology(operation==='setNormals'&&!d.normals?{...d,normals:meshNormals(d)}:d,settings);if(topology){if(!validWorldAsset('mesh',topology))throw Error('메시 결과 범위를 확인하세요.');return topology;}
  const n=structuredClone(d),selected=new Set(faces);delete n.normals;if(['extrude','subdivide'].includes(operation))delete n.colors;
  if(operation==='move')for(const id of new Set(vertices))n.vertices[id]=n.vertices[id].map((v,i)=>v+delta[i]);

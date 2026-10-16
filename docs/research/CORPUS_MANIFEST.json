@@ -2961,5 +2961,32 @@
     "scope": "UE5.8 본문0–265(API interface 발췌/console table 포함),Unity6000.7Animator164–210, Unity6000.0CullingGroup182–208. 거리/표시 갱신과 논리/루트/물리 시간 구분.",
     "unread": "연결 API/플러그인 구현/미디어/전체 corpus",
     "globalGatePromotion": false
+  },
+  "supplemental181183": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-named-slot-widgets-for-ui-templates-in-unreal-engine",
+        "scope": "UE5.8本文0–155/단일자식·Designer·주입·Expose-on-Instance 구분"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.5/manual/uitoolkits/uielements/uibuilder/uib-structuring-ui-templates",
+        "scope": "Unity6000.5본문180–265/재사용문서·계층·문맥/격리·unpack"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/polygroup-edit-tool-reference-in-unreal-engine",
+        "scope": "UE5.8선택180–228/384–389 Inset·Bevel·Bridge 구분"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.probuilder@5.0/manual/Edge_Bridge.html",
+        "scope": "ProBuilder5.0.7본문137–142/열린경계·비다양체·Alt+B"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.probuilder@5.0/manual/Face_Inset.html",
+        "scope": "ProBuilder5.0.7본문137–148/Extrude+Scale"
+      }
+    ],
+    "unread": "연결API·전체본문/미디어·고급곡면해법의구현대조",
+    "globalGatePromotion": false
   }
 }
