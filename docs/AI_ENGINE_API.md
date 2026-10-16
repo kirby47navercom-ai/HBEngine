@@ -384,3 +384,12 @@ scene.prefab.inspect {path,object}는 루트/자식 ID에서 연결 루트, sour
 `anim.ik.effector.add {path,expectedRevision,node,settings?,dryRun?}`와 `anim.ik.effector.remove {path,expectedRevision,node,goal,dryRun?}`는 FullBodyIK의 안정 목표ID를 편집한다. settings는 id/bone/target/targetActor/space/weight이며 사람과 같은 검증·Undo를 사용한다. `runtime.take.start {targets,name?,fps?,includeComponents?,includeStructure?,includeSkeleton?,includeAudio?}` / `runtime.take.finish`는 실행 프레임 장벽에서 녹화를 제어한다. 중첩 settings가 아닌 직접 필드를 받으며 targets는 실제 런타임 ID 배열이다. `sequence.take.apply {path,expectedRevision,data,dryRun?}`는 검증한 결과를 기존 시퀀스에 적용하고 Undo한다. world.mesh.edit의 operation에 bridge/insetFaces(distance)를 추가한다.
 
 NavigationArea와 Agent areaMask/areaCosts, 자동타일 extended/transform, 믹서 bus.ducking은 기존 document.patch/schema/Undo로 편집한다. 게임용 목표 API4개·사이드체인API3개는 C++/BP 공유이며 총760노드다. [형식·비용·남은 세부](ENGINE_WORK_169.md).
+
+
+## 170 — 구조 프리팹·UV·IK 뼈·가상 음성
+
+scene.prefab.adopt {path,expectedRevision,object,ids?,dryRun?}는 루트 아래 자식을 안정 ID 인스턴스에 포함한다. scene.prefab.apply는 all:true 또는 localId/property:[]로 구조를 적용한다. 원본/장면 revision과 원자 files Undo를 유지한다. 중첩 구조는 원본 편집을 요구한다. 변형 overrides는 components 다음에 안정 ID를 받을 수 있고 remove:true로 삭제한다.
+
+world.mesh.edit의 operation은 uvCut/uvTransform/uvUnwrap/uvPackIslands를 추가한다. settings는 faces,wholeIsland,offset:[u,v],scale:[u,v],rotation:도,padding을 받는다. world.mesh.uv.view {path,expectedRevision?,open?,center?,zoom?,faces?,fit?}는 카메라/선택을 조회·설정하며 에셋 revision/Undo를 바꾸지 않는다.
+
+anim.ik.bone.add/remove는 effector 명령과 같은 path/expectedRevision/node/dryRun을 받는다. add.settings는 bone/rotationStiffness/positionStiffness/preferredAngle, remove는 bone이다. 루트 외의 양의 positionStiffness는 거부한다. AudioListener/Source/오디오 에셋은 기존 schema/document.patch/Undo를 쓴다. C++/BP 루트·회전3과 음성 예산·우선순위·실제/가상 조회4를 공유한다. 총767노드. getter 관측은 명령 적용 후 프레임 기준이다. [세부](ENGINE_WORK_170.md).

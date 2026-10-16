@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "1e1b580",
+  "basisRevision": "b5d240f",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -119,10 +119,10 @@
       "area": "assets",
       "title": "프리팹·변형·오버라이드",
       "status": "partial",
-      "implemented": "프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 · 168: 연결 인스턴스의 원본/부모/중첩 실시간 상속·축별 수정 보존·충돌/속성 Apply/Revert UI·원자 Undo·Play 준비/타입 참조 재배치 · 169: 명시 오버라이드 경로 저장·원본 동일값 이후 의도 유지·Apply/Revert 해제",
+      "implemented": "프리팹 생성·인스턴스 구성 · 165: 부모 변형·중첩·속성 오버라이드/되돌리기·순환 거부·배치/생성 카탈로그 공용 해석 · 168: 연결 인스턴스의 원본/부모/중첩 실시간 상속·축별 수정 보존·충돌/속성 Apply/Revert UI·원자 Undo·Play 준비/타입 참조 재배치 · 169: 명시 오버라이드 경로 저장·원본 동일값 이후 의도 유지·Apply/Revert 해제 · 170: 직접 자식 포함/추가삭제 Apply/Revert·전체 Apply 원본-장면 원자 Undo·변형 컴포넌트 안정 ID 속성/추가/삭제·상속 부모 자식",
       "remaining": [
-        "오브젝트 추가/삭제 등 모든 구조적 Apply UI·별도 프리팹 편집 stage",
-        "상속 컴포넌트의 세밀한 변형 오버라이드·대규모 인스턴스 비용 검증"
+        "중첩 대상의 구조 Apply·별도 프리팹 편집 stage",
+        "대규모 인스턴스 비용과 복잡한 변형/중첩 조합 검증"
       ],
       "sources": [
         "prototype/asset-documents.js",
@@ -135,7 +135,8 @@
         "docs/ENGINE_WORKFLOW_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_168.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -362,9 +363,9 @@
       "area": "2d",
       "title": "자동 타일·2.5D 제작 통합",
       "status": "partial",
-      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 · 169: 확장 이웃/명시 타일/빈셀 규칙·회전/대칭·먼 역의존 청크 갱신·게임/편집기 UV",
+      "implemented": "타일 제작·2D/3D 공존과 카메라 차원 · 165: 8이웃 우선순위/회전 자동 타일·인접 경계 재계산·셀 충돌 동기화와 편집 UI · 166: 가중 랜덤 변형/고정 시드·선택 셀/이웃만 복제·묶음 런타임 쓰기의 인접 갱신·디자이너 회전 표시 · 168: 32×32 렌더/충돌 청크·변경 청크만 기하/충돌 재생성·미변경 자원/ID 보존·실제 미술 컬링 경계·등각 대각 띠/개별 정렬·C++/BP 실행 · 169: 확장 이웃/명시 타일/빈셀 규칙·회전/대칭·먼 역의존 청크 갱신·게임/편집기 UV · 170: 불변 레이어 WeakMap 셀 인덱스·반복 Get/Has 재사용·단일 Set 전체검증 생략·기존 청크/충돌 연결",
       "remaining": [
-        "대규모 맵 인덱싱/검증·물리 동기화 비용·장시간 성능",
+        "대규모 sparse 맵 형식/쓰기 배열 복사·물리 동기화 비용·장시간 성능",
         "2.5D 제작 샘플·세 렌더 경로 품질 대조"
       ],
       "sources": [
@@ -381,7 +382,8 @@
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
         "docs/research/ENGINE_WORK_168.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -404,10 +406,10 @@
       "area": "world",
       "title": "폴리곤·메시 저작",
       "status": "partial",
-      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo",
+      "implemented": "기본 도형과 가져온 메시 편집 소유자 · 165: 전용 메시 뷰포트·정점/면 선택 표시·이동/분할/압출/뒤집기/삭제·XZ UV·청크 충돌 · 166: 간선 선택/분할·UV 경계 보존 용접·면 복제·플랫/스무스/커스텀 노멀과 면별 UV 패킹 · 169: 닫힌 동수 경계 bridge·개별 삼각면 inset·UV/색 보존·사람/AI Undo · 170: 전용 UV 캔버스·연결 섬 선택/드래그·전용 이동/회전/크기 폼·분리/평면 펼치기/종횡비 shelf패킹·AI보기",
       "remaining": [
         "bevel·edge loop·정점 수가 다른/열린 경계 연결·영역 단위 inset",
-        "연속 UV 섬 편집·고급 패킹/심 저작"
+        "곡면 고급 unwrap·normal split seam stitch·최적 회전/고급 패킹"
       ],
       "sources": [
         "prototype/placement-catalog.js",
@@ -420,7 +422,8 @@
         "docs/ENGINE_PLAN.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -773,9 +776,9 @@
       "area": "animation",
       "title": "Full Body IK·Control Rig",
       "status": "partial",
-      "implemented": "169: 공유 포즈 다중 체인 CCD FullBodyIK·안정 목표ID/위치/액터/가중치·기존XYZ제약/제외뼈·목표UI/오차·C++/BP4·AI",
+      "implemented": "169: 공유 포즈 다중 체인 CCD FullBodyIK·안정 목표ID/위치/액터/가중치·기존XYZ제약/제외뼈·목표UI/오차·C++/BP4·AI · 170: 루트 고정/PrePull/Free·당김/거리 제한·회전 목표·뼈 회전 강성/초기 선호 각도·루트 위치 강성·상세 폼/AI·C++/BP3",
       "remaining": [
-        "루트 이동/늘이기·stiffness/preferred angle·목표 회전 등 솔버 세부",
+        "늘이기·일반 관절 위치/회전 해법·복잡 제약 품질",
         "독립 리그 stage·컨트롤/기즈모·재생/베이크·대형 리그 품질/비용"
       ],
       "sources": [
@@ -788,7 +791,8 @@
       "evidence": [
         "docs/ANIMATION_IK_071.md",
         "docs/RENDERING_151.md",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -1065,10 +1069,10 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증",
       "remaining": [
-        "voice 우선순위/가상화",
-        "C++ native DSP와 모바일 실제 장치 품질"
+        "스트리밍 디코더까지 해제하는 가상화·고급 지각/믹서 DSP 기반 선별",
+        "C++ native DSP와 모바일 실제 장치 품질·큰 음성 수/PCM 메모리 검증"
       ],
       "sources": [
         "prototype/audio-mixer.js",
@@ -1079,7 +1083,8 @@
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -1171,7 +1176,7 @@
       "area": "automation",
       "title": "에디터 확장 API 확대",
       "status": "partial",
-      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo",
+      "implemented": "데이터 기반 제작 도구와 공용 schema/명령 · 165: 새 자산 스키마 예제·메시/지형/폴리지/내비/프리팹/규칙 전용 revision/dryRun/Undo 명령 · 166: 토폴로지/노멀/UV·지형 holes/stamp·안정 ID 인스턴스 편집 schema와 revision/dryRun/Undo · 167: 공용 런타임 레벨 수명 4명령/프레임 직렬화·2D 리타게팅 외부 목표 데이터 · 168: 사람/AI 공용 프리팹 인스턴스 6명령·안정 ID/property 경로·revision/dryRun/원본-장면 원자 Undo · 169: IK 목표 add/remove·Take start/finish/apply·프레임 장벽·bridge/inset 공유 저작·실제 사람/AI/Undo · 170: Prefab adopt/구조/전체Apply·IK bone.add/remove·UV 데이터와 카메라/선택 view API·동일 검증/Undo",
       "remaining": [
         "버전 호환 확장 ABI·툴 배포·안전한 코드 확장",
         "남은 제작 분야의 전용 명령/검증 확대"
@@ -1190,7 +1195,8 @@
         "docs/research/ENGINE_WORK_166.json",
         "docs/research/ENGINE_WORK_167.json",
         "docs/research/ENGINE_WORK_168.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {
@@ -1213,10 +1219,10 @@
       "area": "debugging",
       "title": "GPU 시간·메모리/크래시 진단",
       "status": "partial",
-      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단",
+      "implemented": "리소스 수·일부 GPU Query·C++ host 메모리 진단 · 170: Win32 페이지 실패의 WebErrorStatus 로그·허브/프로젝트/종료 집중 검사",
       "remaining": [
         "편집기 GPU timer/스레드 flow",
-        "할당·누수·크래시 덤프·장치 연결"
+        "할당·누수·크래시 덤프·장치 연결·간헐적 시작 실패 추가 재현"
       ],
       "sources": [
         "prototype/profiler.js",
@@ -1224,7 +1230,8 @@
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
-        "docs/research/HOST_MEMORY_062.md"
+        "docs/research/HOST_MEMORY_062.md",
+        "docs/research/ENGINE_WORK_170.json"
       ]
     },
     {

@@ -51,7 +51,9 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
     const quote=value=>"'"+value.replaceAll("'","''")+"'";
     const script='$shell=New-Object -ComObject WScript.Shell; $link=$shell.CreateShortcut('+quote(link)+'); $link.TargetPath='+quote(executable)+'; $link.WorkingDirectory='+quote(directory)+'; $link.Description="HBEngine 사용자용 편집기"; $link.Save(); $desktop=[Environment]::GetFolderPath("Desktop"); if($desktop){$target=Join-Path $desktop "HBEngine 사용자용.lnk"; Copy-Item -LiteralPath '+quote(link)+' -Destination $target; [Console]::Write($target)}';
     const {stdout}=await exec('powershell.exe',['-NoProfile','-NonInteractive','-Command','[Console]::OutputEncoding=[Text.UTF8Encoding]::new(); '+script],{windowsHide:true,encoding:'utf8'});desktopShortcut=stdout.trim()||null;
-    await exec(executable,['--register'],{cwd:directory,windowsHide:true,timeout:30000,env:{...process.env,HB_USER_DATA_DIR:path.join(os.tmpdir(),'HBEngine-register-'+randomUUID())}});
+    const registrationProfile=await fs.mkdtemp(path.join(os.tmpdir(),'HBEngine-register-'));
+    try{await exec(executable,['--register'],{cwd:directory,windowsHide:true,timeout:30000,env:{...process.env,HB_USER_DATA_DIR:registrationProfile}});}
+    finally{const resolved=await fs.realpath(registrationProfile);if(resolved.toLowerCase()!==path.resolve(registrationProfile).toLowerCase()||!inside(os.tmpdir(),resolved))throw Error('등록 임시 프로필 정리 경로 오류');await fs.rm(resolved,{recursive:true,force:true});}
   }
   const cleanup=await pruneInstalledVersions(destination,directory);
   return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length,cleanup};

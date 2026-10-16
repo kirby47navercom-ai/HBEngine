@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **760개**, 실제 공통 C++ API **675개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **767개**, 실제 공통 C++ API **682개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -21,7 +21,7 @@
 | 물리 | 16 | 14 |
 | 오브젝트 | 8 | 0 |
 | C++ 공개 함수 | 1 | 0 |
-| 오디오 | 18 | 15 |
+| 오디오 | 22 | 19 |
 | 사용자 정의 | 2 | 0 |
 | 시간 | 16 | 15 |
 | 비교 | 8 | 4 |
@@ -56,7 +56,7 @@
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
 | 메시 모프 | 3 | 3 |
-| 애니메이션 그래프 | 37 | 37 |
+| 애니메이션 그래프 | 40 | 40 |
 | 애니메이션 상태 | 8 | 8 |
 | 애니메이션 동기화 | 3 | 3 |
 | 2D 뼈 변형 | 7 | 7 |
@@ -420,6 +420,10 @@
 | sound | Play Sound / 효과음 재생 | exec: exec, name: string | then: exec | — | VM / 브라우저 서비스 |
 | playSoundAt | Play Sound At Location / 위치에서 소리 재생 | exec: exec, sound: string, position: vec3, volume: float | then: exec | — | 오디오 재생; 위치 음향 없음 |
 | stopSound | Stop Sound / 소리 정지 | exec: exec, sound: string | then: exec | — | VM / 브라우저 서비스 |
+| audioVoiceBudget | Set Voice Budget / 음성 예산 설정 | exec: exec, target: object, real: int, tracked: int | then: exec | hb::Audio::SetVoiceBudget | 공통 C++ + VM |
+| audioVoicePriority | Set Priority / 음성 우선순위 지정 | exec: exec, handle: string, priority: int | then: exec | hb::Audio::SetPriority | 공통 C++ + VM |
+| audioRealVoices | Get Real Voice Count / 실제 재생 음성 수 | target: object | return: int | hb::Audio::GetRealVoiceCount | 공통 C++ + VM |
+| audioVirtualVoices | Get Virtual Voice Count / 가상 재생 음성 수 | target: object | return: int | hb::Audio::GetVirtualVoiceCount | 공통 C++ + VM |
 | audioPlay | Play / 소리 재생 | exec: exec, asset: string, volume: float, pitch: float, bus: string | then: exec, return: string | hb::Audio::Play | 공통 C++ + VM |
 | audioStop | Stop / 소리 핸들 정지 | exec: exec, handle: string | then: exec | hb::Audio::Stop | 공통 C++ + VM |
 | audioMusic | Play Music / 배경음 전환 | exec: exec, asset: string, fadeSeconds: float | then: exec | hb::Audio::PlayMusic | 공통 C++ + VM |
@@ -968,6 +972,9 @@
 | animGraphIKEffectorTarget | Set IKEffector Target / 다중 IK 목표 위치 지정 | exec: exec, target: object, node: string, goal: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKEffectorTarget | 공통 C++ + VM |
 | animGraphIKEffectorActor | Set IKEffector Actor / 다중 IK 목표 오브젝트 지정 | exec: exec, target: object, node: string, goal: string, effector: object | then: exec | hb::AnimationGraph::SetIKEffectorActor | 공통 C++ + VM |
 | animGraphIKEffectorWeight | Set IKEffector Weight / 다중 IK 목표 가중치 지정 | exec: exec, target: object, node: string, goal: string, value: float | then: exec | hb::AnimationGraph::SetIKEffectorWeight | 공통 C++ + VM |
+| animGraphIKEffectorRotation | Set IKEffector Rotation / 다중 IK 목표 회전 지정 | exec: exec, target: object, node: string, goal: string, value: vec3 | then: exec | hb::AnimationGraph::SetIKEffectorRotation | 공통 C++ + VM |
+| animGraphIKEffectorRotationWeight | Set IKEffector Rotation Weight / 다중 IK 회전 가중치 지정 | exec: exec, target: object, node: string, goal: string, value: float | then: exec | hb::AnimationGraph::SetIKEffectorRotationWeight | 공통 C++ + VM |
+| animGraphIKRootSettings | Set IKRoot Settings / 다중 IK 루트 설정 | exec: exec, target: object, node: string, mode: string, pull: float, maxDistance: float | then: exec | hb::AnimationGraph::SetIKRootSettings | 공통 C++ + VM |
 | animGraphIKEffectorError | Get IKEffector Error / 다중 IK 목표 오차 | target: object, node: string, goal: string | return: float | hb::AnimationGraph::GetIKEffectorError | 공통 C++ + VM |
 | animGraphIKTip | Get IKTip Position / IK 끝 뼈 위치 | target: object, node: string | return: vec3 | hb::AnimationGraph::GetIKTipPosition | 공통 C++ + VM |
 | animGraphIKError | Get IKError / IK 목표 거리 | target: object, node: string | return: float | hb::AnimationGraph::GetIKError | 공통 C++ + VM |

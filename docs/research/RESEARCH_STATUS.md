@@ -396,3 +396,8 @@ Unreal Level Streaming 개요/Blueprint load-unload, Unity6000.0 Additive/Unload
 ## 169 — 확장 타일·영역·다중 IK·사이드체인 지정 대조
 
 Unity RuleTile4.0.2 확장 이웃/회전/대칭, AI Navigation2.0 ModifierVolume, UE Control Rig FullBodyIK 목표/루트/관절 설정, Unity6000.0 AudioGroup Inspector Send/Duck Volume 지정 본문을 읽었다. HB의 공유 CCD·보수적 삼각 차단·버스RMS는 별도 구현으로 구별한다. 연결 API/미디어/전체 corpus gate는 올리지 않고 supplemental169/scopeExpansionPending에 남긴다. [구현·실행·차이](../ENGINE_WORK_169.md).
+
+
+## 170 — 구조 적용·UV·IK 세부·음성 예산
+
+Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하고 AudioSource.priority의 실제/가상 음성 계약을 읽었다. UE5.8 FBIK 루트/회전/강성 지정 구역을 재독하고 ProBuilder6.0.9 UV Editor의 선택/수동 편집 본문과 WebView2 NavigationCompleted 오류 계약을 대조했다. HB CCD/평면UV/WebAudio 예산의 구현 차이와 미독 연결 범위를 supplemental170에 등록했다. 전체 corpus gate는 유지한다. [구현/실행/한계](../ENGINE_WORK_170.md).

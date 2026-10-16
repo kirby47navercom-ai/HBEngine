@@ -452,3 +452,8 @@ Levels::Load/Unload/IsLoaded/GetActor/GetInstances/SetVisible와 levelLoad/level
 ## 169 — 다중 IK·오디오 사이드체인 공용 노드
 
 AnimationGraph::SetIKEffectorTarget/Actor/Weight/GetIKEffectorError와 animGraphIKEffectorTarget/Actor/Weight/Error가 안정 목표ID를 사용한다. AudioMixer::SetDucking/ClearDucking/GetDuckingGain과 mixerDuckingSet/Clear/Gain은 같은 버스 RMS 경로를 사용한다. Game.hpp에서 함께 생성하며 총760노드·공용코어289개다. 실제 C++ 호출·J키 BP 목표 변경·D3D11 dev/release/WebGPU, 편집기 음량 신호/Undo·Take 검사는 [169](ENGINE_WORK_169.md)를 따른다. 명령은 프레임 큐에 적용되며 관측값은 후속 호출 기준이다.
+
+
+## 170 — 루트·회전 IK와 음성 관리
+
+AnimationGraph::SetIKEffectorRotation/SetIKEffectorRotationWeight/SetIKRootSettings 및 Audio::SetVoiceBudget/SetPriority/GetRealVoiceCount/GetVirtualVoiceCount를 같은 서비스의7노드로 생성했다. 총767노드/코어289. 실제 C++와 BP가 같은 실행기로 이어지고 기존 입력 J키·목표 변경을 보존했다. PCM 실제2/가상6과 우선순위 변경·시계, 루트 이동 한계와 목표 회전, UV/프리팹 제작/Undo의 근거는 [170](ENGINE_WORK_170.md).

@@ -1,3 +1,4 @@
+import {tileAt,setRuntimeTile} from './tile-cell-index.js';
 import {immutableNativeSnapshot} from './native-transport.js';
 import {TileCollisionChunks} from './tilemap-chunks.js';
 import {resolveAutoTiles,affectedAutoTileCells} from './auto-tiles.js';
@@ -26,7 +27,7 @@ export class RuntimeTilemaps {
     if(key==='tileWorldToCell'){if(!Array.isArray(args.position)||args.position.length!==3||!args.position.every(Number.isFinite))throw Error('월드 위치를 확인하세요.');const p=new THREE.Vector3(...args.position).applyMatrix4(sceneWorldMatrix(object,vm.objects).invert());return {return:tileLocalToCell(map,p.toArray())};}
     if(key==='tileCellToWorld'){if(!Array.isArray(args.cell)||args.cell.length!==2||!args.cell.every(Number.isInteger))throw Error('셀 좌표를 확인하세요.');const p=new THREE.Vector3(...tileCellPoint(map,args.cell[0]+.5,args.cell[1]+.5)).applyMatrix4(sceneWorldMatrix(object,vm.objects));return {return:p.toArray()};}
     const layer=map.layers.find(l=>l.id===args.layer);if(!layer)throw Error('타일 레이어가 없어요: '+args.layer);
-    if(['tileGet','tileHas'].includes(key)){if(!cellOK(map,args.cell))return {return:key==='tileGet'?-1:false};const tile=layer.tiles.find(t=>t.x===args.cell[0]&&t.y===args.cell[1]);return {return:key==='tileGet'?tile?.index??-1:!!tile};}
+    if(['tileGet','tileHas'].includes(key)){if(!cellOK(map,args.cell))return {return:key==='tileGet'?-1:false};const tile=tileAt(layer,args.cell[0],args.cell[1]);return {return:key==='tileGet'?tile?.index??-1:!!tile};}
     let next=map,changed=false,cells=null;
     if(key==='tileSetMany'){
       if(!Array.isArray(args.cells)||!Array.isArray(args.indices)||args.cells.length!==args.indices.length||args.cells.length>65536||args.cells.some((cell,i)=>!cellOK(map,cell)||!Number.isInteger(args.indices[i])||args.indices[i]<-1||args.indices[i]>1048575))throw Error('타일 묶음 좌표·인덱스·크기를 확인하세요.');
@@ -41,7 +42,7 @@ export class RuntimeTilemaps {
     else{
       if(!cellOK(map,args.cell)||key==='tileBoxFill'&&!cellOK(map,args.end)||!Number.isInteger(args.index)||args.index< -1||args.index>1048575)throw Error('셀 좌표·타일 인덱스를 확인하세요.');
       const tool=key==='tileSet'?'brush':key==='tileBoxFill'?'rectangle':'fill',cell={x:args.cell[0],y:args.cell[1]},end=key==='tileBoxFill'?{x:args.end[0],y:args.end[1]}:cell;
-      const result=applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;cells=result.cells;
+      const result=key==='tileSet'?setRuntimeTile(map,layer,args.cell,args.index):applyTileTool(map,args.layer,args.index<0&&tool==='brush'?'erase':tool,cell,end,args.index);next=result.data;changed=result.changed;cells=result.cells;
     }
     if(changed){next=resolveAutoTiles(next,{layerId:layer.id,cells:cells||undefined});object.runtimeTilemap=immutableNativeSnapshot(next,{clone:false});object.tilemapDirty=true;this.dirty.add(object.id);if(key!=='tileLayerVisible')this.collisionDirty.add(object.id);let changes=this.changes.get(object.id);if(!changes)this.changes.set(object.id,changes=new Map());const previous=changes.get(layer.id);if(cells&&previous!==null){const affected=next.autoTileRules?.length?affectedAutoTileCells(next.autoTileRules,cells):cells;changes.set(layer.id,[...new Map([...(previous||[]),...affected].map(c=>[c.join(':'),c])).values()]);}else changes.set(layer.id,null);}return {};
   }

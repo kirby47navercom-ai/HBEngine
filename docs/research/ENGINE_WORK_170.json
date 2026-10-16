@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "b5d240f",
+  "scope": "누적 전체 엔진 요구의 잔여 세부를 제작/실행에 연결; 번호/이 항목 수는 전체 목표의 대체 분모가 아님",
+  "targetIds": [
+    "AST-04",
+    "WLD-02",
+    "ANM-05",
+    "AUD-03",
+    "2D-06",
+    "AI-03",
+    "DBG-02"
+  ],
+  "parentRowsCompleted": 0,
+  "canonical": {
+    "registered": 78,
+    "counts": {
+      "verified": 39,
+      "partial": 33,
+      "unimplemented": 3,
+      "unverified": 3
+    },
+    "exhaustiveUEUnity": false,
+    "completionPercent": null
+  },
+  "nodes": {
+    "total": 767,
+    "added": 7,
+    "sharedCore": 289
+  },
+  "checks": {
+    "cpu": {
+      "path": "native/build/engine-170-yQjKIN/acceptance.json",
+      "sha256": "3761e901f6e699221d996907d6235116321ac75b83a0f41b10f2599b4962ec14",
+      "summary": {
+        "passed": 17,
+        "total": 17
+      }
+    },
+    "regression169": {
+      "path": "native/build/engine-169-J30YQx/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11",
+      "summary": {
+        "passed": 23,
+        "total": 23
+      }
+    },
+    "regression168": {
+      "path": "native/build/engine-168-hi4oxi/acceptance.json",
+      "sha256": "6ee5409d955d8435b3d5bf29e5502652d7d6a689ad989d2a91ac46e0d3dd2de9",
+      "summary": {
+        "passed": 12,
+        "total": 12
+      }
+    },
+    "regression166": {
+      "path": "native/build/batch-166-WNFDby/report.json",
+      "sha256": "b7f8e9717bb51c23bbc24cae76775219ee8544779a476c00685e20dc22c01f09",
+      "summary": {
+        "passed": 12,
+        "total": 12
+      }
+    },
+    "editor": {
+      "path": "native/build/engine-170-window-vruk2r/acceptance.json",
+      "sha256": "fa5571113310a3ee918cce9fe3449de8a851f359b5c0e0cbc44f4c01c983d5d3",
+      "summary": {
+        "passed": true,
+        "prefabStructure": true,
+        "uvHumanDragUndo": true,
+        "cpp": {
+          "blocked": true,
+          "handError": 1,
+          "mixGain": 1,
+          "opened": true,
+          "realVoices": 2,
+          "rejected": true,
+          "ticks": 1814,
+          "virtualVoices": 6
+        },
+        "pcm": {
+          "initial": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "initialSources": 2,
+          "selected": true,
+          "after": {
+            "real": 2,
+            "tracked": 16,
+            "realActive": 2,
+            "virtualActive": 6,
+            "trackedActive": 8
+          },
+          "afterSources": 2,
+          "phaseError": 0,
+          "silentSink": true
+        },
+        "audio": {
+          "attack": 0.20966033515521876,
+          "release": 0.9895287404456492,
+          "silentSink": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "development": {
+      "path": "native/build/engine-170-player-b9Gjgv/acceptance.json",
+      "sha256": "d7ea7bb02722d2adc9e5f2b0bfdbcda6742fd1a3da4957ce56076041318dde7d",
+      "summary": {
+        "passed": true,
+        "backend": "D3D11",
+        "configuration": "development",
+        "voices": {
+          "real": 2,
+          "tracked": 32,
+          "realActive": 2,
+          "virtualActive": 6,
+          "trackedActive": 8
+        },
+        "rootMotion": [
+          2,
+          0,
+          0
+        ],
+        "goal": {
+          "id": "Hand",
+          "bone": "IKTip",
+          "tip": [
+            4,
+            0,
+            0
+          ],
+          "target": [
+            5,
+            0,
+            0
+          ],
+          "error": 1,
+          "rotationError": 0,
+          "weight": 1,
+          "rotationWeight": 1,
+          "missingActor": ""
+        },
+        "automaticReadbacks": 0,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "cppInitial": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "realVoices": 0,
+          "rejected": true,
+          "ticks": 29,
+          "virtualVoices": 0
+        },
+        "finalVoiceCountsAssertionPassed": true
+      }
+    },
+    "release": {
+      "path": "native/build/engine-170-player-v4hvu0/acceptance.json",
+      "sha256": "cad1cf93ce97f318aa05ade377a4bbd39a739855361354acde4b1bac1d689c42",
+      "summary": {
+        "passed": true,
+        "backend": "D3D11",
+        "configuration": "release",
+        "voices": {
+          "real": 2,
+          "tracked": 32,
+          "realActive": 2,
+          "virtualActive": 6,
+          "trackedActive": 8
+        },
+        "rootMotion": [
+          2,
+          0,
+          0
+        ],
+        "goal": {
+          "id": "Hand",
+          "bone": "IKTip",
+          "tip": [
+            4,
+            0,
+            0
+          ],
+          "target": [
+            5,
+            0,
+            0
+          ],
+          "error": 1,
+          "rotationError": 0,
+          "weight": 1,
+          "rotationWeight": 1,
+          "missingActor": ""
+        },
+        "automaticReadbacks": 0,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "cppInitial": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "realVoices": 0,
+          "rejected": true,
+          "ticks": 29,
+          "virtualVoices": 0
+        },
+        "finalVoiceCountsAssertionPassed": true
+      }
+    },
+    "webgpu": {
+      "path": "native/build/engine-170-player-I1QfVt/acceptance.json",
+      "sha256": "fa991fe52912661cc5bffd2cc7b6c2f8b3ad68d6bf5d29ba305c8129c5fa14e7",
+      "summary": {
+        "passed": true,
+        "backend": "WebGPU",
+        "configuration": "development",
+        "voices": {
+          "real": 2,
+          "tracked": 32,
+          "realActive": 2,
+          "virtualActive": 6,
+          "trackedActive": 8
+        },
+        "rootMotion": [
+          2,
+          0,
+          0
+        ],
+        "goal": {
+          "id": "Hand",
+          "bone": "IKTip",
+          "tip": [
+            4,
+            0,
+            0
+          ],
+          "target": [
+            5,
+            0,
+            0
+          ],
+          "error": 1,
+          "rotationError": 0,
+          "weight": 1,
+          "rotationWeight": 1,
+          "missingActor": ""
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "cppInitial": {
+          "blocked": true,
+          "handError": 3.1401848636255743e-16,
+          "mixGain": 0,
+          "opened": true,
+          "realVoices": 0,
+          "rejected": true,
+          "ticks": 28,
+          "virtualVoices": 0
+        },
+        "finalVoiceCountsAssertionPassed": true
+      }
+    }
+  },
+  "additionalChecks": [
+    "prototype syntax",
+    "generate-api --check",
+    "check.mjs",
+    "check-ui-audio.mjs",
+    "check-animation-joint-limits.mjs",
+    "check-desktop.mjs (166 physics/67 geometry, hub/project/bad file/server shutdown)"
+  ],
+  "fixedFailures": [
+    "UV toolbar handler and first-interaction canvas dimensions",
+    "CDP UV selector escaping in test",
+    "PCM pending priority preserved through async creation",
+    "Virtual PCM play does not wait for device resume; direct WebAudio test resumes before asynchronous connection",
+    "check-desktop stale assertion total and fixture cleanup/evidence retention"
+  ],
+  "unresolved": [
+    "Earlier intermittent NavigationCompleted failure; WebErrorStatus logging added, later editor/player/hub samples passed. Not claimed root cause solved."
+  ],
+  "cost": {
+    "newDependencies": 0,
+    "newIdlePollers": 0,
+    "automaticGPUReadbacks": 0,
+    "PCMCacheBytes": 33554432,
+    "actualPCMSourcesInSignalTest": 2,
+    "logicalPCMSourcesInSignalTest": 8
+  },
+  "limitsDocument": "docs/ENGINE_WORK_170.md",
+  "userInstallation": "docs/research/USER_INSTALL_170.json"
+}

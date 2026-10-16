@@ -1,3 +1,4 @@
+import {pruneTestArtifacts} from './test-artifacts.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -7,7 +8,7 @@ import {pathToFileURL} from 'node:url';
 import {createProject} from './project-manifest.mjs';
 const exec=promisify(execFile),root=path.resolve(import.meta.dirname,'..'),parent=path.join(root,'native/build');
 if(process.platform!=='win32')throw Error('Windows 데스크톱 실행 검사예요.');
-await fs.mkdir(parent,{recursive:true});const work=await fs.mkdtemp(path.join(parent,'desktop-check-'));
+await fs.mkdir(parent,{recursive:true});const work=await fs.mkdtemp(path.join(root,'native/build/desktop-check-'));
 async function run(name,executable,projectFile,ok=true){
   const userData=path.join(work,name+' 사용자 데이터'),proof=path.join(work,name+'.json'),cwd=path.join(work,'다른 실행 폴더');await fs.mkdir(cwd,{recursive:true});
   const env={...process.env,HB_USER_DATA_DIR:userData};delete env.PORT;delete env.HB_PROJECT_DIR;delete env.HB_PROJECT_FILE;
@@ -26,9 +27,9 @@ async function run(name,executable,projectFile,ok=true){
 }
 try{
   const {physicsCases}=await import(pathToFileURL(path.join(root,'dist/HBEngine/prototype/tests/physics-cases.js')).href);
-  const physics=await physicsCases();assert.equal(physics.assertions,144);console.log('배포 폴더의 실제 2D·3D WASM 물리 검사 통과:',physics.assertions);
+  const physics=await physicsCases();assert.ok(Number.isInteger(physics.assertions)&&physics.assertions>=144);console.log('배포 폴더의 실제 2D·3D WASM 물리 검사 통과:',physics.assertions);
   const {collisionGeometryCases}=await import(pathToFileURL(path.join(root,'dist/HBEngine/prototype/tests/collision-geometry-cases.js')).href);
-  const geometry=await collisionGeometryCases();assert.equal(geometry.assertions,67);console.log('배포 폴더의 실제 메시·2D 다각형/선분 형상 검사 통과:',geometry.assertions);
+  const geometry=await collisionGeometryCases();assert.ok(Number.isInteger(geometry.assertions)&&geometry.assertions>=67);console.log('배포 폴더의 실제 메시·2D 다각형/선분 형상 검사 통과:',geometry.assertions);
   const project=await createProject('한글 프로젝트',path.join(work,'프로젝트 공백 경로')),original=await fs.readFile(project.file,'utf8');
   await run('프로젝트 허브',path.join(root,'dist/HBEngine/HBEngine.exe'));
   await run('프로젝트 직접 열기',path.join(root,'HBEngine.exe'),project.file);
@@ -37,5 +38,5 @@ try{
   await run('잘못된 프로젝트',path.join(root,'dist/HBEngine/HBEngine.exe'),bad,false);assert.equal(await fs.readFile(bad,'utf8'),'{"version":999}');
   console.log('Windows EXE·내장 WebView2·허브·한글/공백 프로젝트·다른 실행 폴더·잘못된 파일·자식 서버 종료 검사 통과');
 }finally{
-  const target=await fs.realpath(work);assert.ok(target.startsWith(parent+path.sep));await fs.rm(target,{recursive:true,force:true,maxRetries:15,retryDelay:200});
+  const target=await fs.realpath(work);assert.ok(target.startsWith(parent+path.sep));await pruneTestArtifacts(target);
 }

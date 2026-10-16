@@ -204,7 +204,7 @@ public:
     NavigationHandler():Callback(L"{d33a35bf-1c49-4f98-93ab-006e0533fe1c}"){}
     HRESULT STDMETHODCALLTYPE Invoke(ICoreWebView2*,ICoreWebView2NavigationCompletedEventArgs* args) override{
         BOOL success=FALSE;args->get_IsSuccess(&success);
-        if(!success){error(L"편집기 페이지를 열지 못했어요. 실행 로그를 확인해 주세요.");return S_OK;}
+        if(!success){COREWEBVIEW2_WEB_ERROR_STATUS webError=COREWEBVIEW2_WEB_ERROR_STATUS_UNKNOWN;args->get_WebErrorStatus(&webError);std::ofstream log(app.log,std::ios::app);log<<"Navigation failed: webError="<<int(webError)<<" url="<<utf8(app.url)<<std::endl;error(L"편집기 페이지를 열지 못했어요. 실행 로그를 확인해 주세요.");return S_OK;}
         return S_OK;
     }
 };

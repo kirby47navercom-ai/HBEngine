@@ -2776,7 +2776,8 @@
     "166: PolyGroup operations/reference/media, Unity6000.4 terrain/mask API, animation curve retarget/morph APIs, Take recorder sources and Node crypto/fs platform durability remain independently scoped.",
     "167: Reconcile linked Level Streaming/World Partition lifecycle APIs, Unity AsyncOperation/Resources memory ownership, 2D IK solver package APIs and Detour corridor/radius/crowd APIs. Selected implementation checks do not close the whole corpus.",
     "168: Reconcile Prefab override/variant linked APIs and media, TilemapRenderer culling/sprite sorting/render-pipeline links and the discovered https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/tilemaps/tilemaprenderer API. The 6000.0 selected body reading does not close 7000.0 or the whole source corpus.",
-    "169: Reconcile RuleTile linked grid/API/animation output; NavArea bake/carving/radius APIs; FullBodyIK PBIK stiffness/root/rotation/rig references; AudioMixer DSP Send/ducking/suspend native APIs and media. Selected HB implementation does not close the global corpus."
+    "169: Reconcile RuleTile linked grid/API/animation output; NavArea bake/carving/radius APIs; FullBodyIK PBIK stiffness/root/rotation/rig references; AudioMixer DSP Send/ducking/suspend native APIs and media. Selected HB implementation does not close the global corpus.",
+    "170: Prefab nested destination/stage APIs, native audio virtualization/decoder/platform and psychoacoustic selection, full ProBuilder manual UV action/unwrap/packing references, PBIK stretch/position/stiffness API, WebView2 error status/cancellation/lifetime references remain separately scoped."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -2844,6 +2845,18 @@
     "failedAccessNotRead": [
       "https://dev.epicgames.com/documentation/en-us/unreal-engine/full-body-ik-in-unreal-engine"
     ],
+    "globalGatePromotion": false
+  },
+  "supplemental170": {
+    "date": "2026-10-16",
+    "urls": [
+      "https://docs.unity3d.com/6000.0/Documentation/Manual/PrefabInstanceOverrides.html",
+      "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AudioSource-priority.html",
+      "https://dev.epicgames.com/documentation/en-us/unreal-engine/control-rig-full-body-ik-in-unreal-engine",
+      "https://docs.unity3d.com/Packages/com.unity.probuilder@6.0/manual/uv-editor.html",
+      "https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2navigationcompletedeventargs?view=webview2-1.0.4258.31"
+    ],
+    "scope": "Selected body/API rereading: prefab structural/apply-all workflow; real/virtual voice and priority; root/orientation/stiffness; UV editor selection/manual actions overview; NavigationCompleted WebErrorStatus. Linked actions/API/media and entire engine corpora not read.",
     "globalGatePromotion": false
   }
 }

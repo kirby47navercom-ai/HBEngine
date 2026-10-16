@@ -69,6 +69,10 @@ public:
 HB_CLASS()
 class Audio : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioVoiceBudget", KoreanName="음성 예산 설정", Category="오디오") static void SetVoiceBudget(Actor* target,int real,int tracked);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioVoicePriority", KoreanName="음성 우선순위 지정", Category="오디오") static void SetPriority(const std::string& handle,int priority);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="audioRealVoices", KoreanName="실제 재생 음성 수", Category="오디오") static int GetRealVoiceCount(Actor* target);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="audioVirtualVoices", KoreanName="가상 재생 음성 수", Category="오디오") static int GetVirtualVoiceCount(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioPlay", KoreanName="소리 재생", Category="오디오") static std::string Play(const std::string& asset,float volume=1.f,float pitch=1.f,const std::string& bus="sfx");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioStop", KoreanName="소리 핸들 정지", Category="오디오") static void Stop(const std::string& handle);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="audioMusic", KoreanName="배경음 전환", Category="오디오") static void PlayMusic(const std::string& asset,float fadeSeconds=0.f);
@@ -407,6 +411,9 @@ public:
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorTarget", KoreanName="다중 IK 목표 위치 지정", Category="애니메이션 그래프") static void SetIKEffectorTarget(Actor* target,const std::string& node,const std::string& goal,const Vec3& value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorActor", KoreanName="다중 IK 목표 오브젝트 지정", Category="애니메이션 그래프") static void SetIKEffectorActor(Actor* target,const std::string& node,const std::string& goal,Actor* effector);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorWeight", KoreanName="다중 IK 목표 가중치 지정", Category="애니메이션 그래프") static void SetIKEffectorWeight(Actor* target,const std::string& node,const std::string& goal,float value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorRotation", KoreanName="다중 IK 목표 회전 지정", Category="애니메이션 그래프") static void SetIKEffectorRotation(Actor* target,const std::string& node,const std::string& goal,const Vec3& value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKEffectorRotationWeight", KoreanName="다중 IK 회전 가중치 지정", Category="애니메이션 그래프") static void SetIKEffectorRotationWeight(Actor* target,const std::string& node,const std::string& goal,float value);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="animGraphIKRootSettings", KoreanName="다중 IK 루트 설정", Category="애니메이션 그래프") static void SetIKRootSettings(Actor* target,const std::string& node,const std::string& mode,float pull,float maxDistance);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKEffectorError", KoreanName="다중 IK 목표 오차", Category="애니메이션 그래프") static float GetIKEffectorError(Actor* target,const std::string& node,const std::string& goal);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKTip", KoreanName="IK 끝 뼈 위치", Category="애니메이션 그래프") static Vec3 GetIKTipPosition(Actor* target,const std::string& node);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="animGraphIKError", KoreanName="IK 목표 거리", Category="애니메이션 그래프") static float GetIKError(Actor* target,const std::string& node);

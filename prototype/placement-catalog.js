@@ -31,7 +31,7 @@ export const placementCatalog=[
   ['directionalLight','Directional Light · 태양광','조명'],['pointLight','Point Light · 점 광원','조명'],['spotLight','Spot Light · 스포트 광원','조명'],
   ['megaLights','Mega Lights · 다중 광원','조명','empty',{PostProcessVolume:{bloomEnabled:false,pathTracingEnabled:true,pathTracingDenoise:true,megaLightsEnabled:true}}],
   ['skyAtmosphere','Sky Atmosphere · 하늘 대기','환경'],['skyLight','Sky Light · 주변광','환경'],['volumetricCloud','Volumetric Cloud · 구름','환경'],['heightFog','Exponential Height Fog · 높이 안개','환경'],['reflectionProbe','Reflection Probe · 반사 프로브','환경','empty',{ReflectionProbe:{}}],['postProcess','Post Process Volume · 후처리','환경','empty',{PostProcessVolume:{}}],
-  ['camera','Camera · 카메라','시네마틱'],['sequence','Sequence Player · 시퀀스 재생','시네마틱','empty',{SequencePlayer:{}}],['audio','Audio Source · 오디오','오디오'],
+  ['camera','Camera · 카메라','시네마틱'],['sequence','Sequence Player · 시퀀스 재생','시네마틱','empty',{SequencePlayer:{}}],['audio','Audio Source · 오디오','오디오'],['audioListener','Audio Listener · 오디오 수신','오디오','empty',{AudioListener:{}}],
   ['decal','Decal · 데칼','효과'],['particles','Particle System · 입자','효과'],
   ['navigation','Navigation Grid · 경로 영역','AI'],
   ['navigationArea','Navigation Area · 비용 영역','AI','empty',{NavigationArea:{}}],
