@@ -49,3 +49,5 @@ hb::Levels::Unload("EastRoom");
 [Unity Additive](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.LoadSceneMode.Additive.html)와 [UnloadSceneAsync](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.SceneManager.UnloadSceneAsync.html)의 현재 장면 유지·관련 오브젝트 수명과 자원 수명의 구분을 읽었다. [Unity 2D IK](https://docs.unity3d.com/Packages/com.unity.2d.animation@10.2/manual/2DIK.html)의 외부 목표·체인/솔버 계약을 대조했다. [Recast Detour findStraightPath](https://github.com/recastnavigation/recastnavigation/blob/main/Detour/Source/DetourNavMeshQuery.cpp)의 포털 경로와 오프메시 경유 계약을 확인했다. 연결 API/다른 버전/전체 매뉴얼과 원문 전체 독립 분석은 미완으로 구별해 corpus에 등록했다.
 
 배포 게임의 추가 레벨과 생성 카탈로그에도 시작 장면과 같은 중단점 제거를 적용했다. 추가 레벨 모든 노드에 중단점을 지정한 D3D11 배포 패키지에서 시작/언로드/재진입이 멈추지 않는 것을 확인했다.
+
+사용자 설치 전환: `C:/Users/kirby/HBEngine/Versions/27ca4525cebc9468`. 명세 2332파일 SHA, 실제 설치 EXE의 C++/레벨/2D 폼/AI dryRun·Undo와 원본 복원, 사용자 프로필 10385파일 SHA 보존, 바로가기/.hbproject 연결과 Versions1을 확인했다. 이전 설치와 중간 검증 설치를 정리했다. [설치 근거](research/USER_INSTALL_167.json).

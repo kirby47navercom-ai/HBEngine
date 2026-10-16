@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "d2bd3c1",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\27ca4525cebc9468\\HBEngine.exe",
+  "bundleHash": "27ca4525cebc9468161a500b5a36918953152da57701c090eb35ead7f1f071b0",
+  "files": 2332,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2352,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fe9036bf3d4f2135",
+        "bytes": 200754150,
+        "manifestSHA256": "439eb81c98a34e5a7d1b3ea2793f44e15132afbfd72a0aaf10689a44d55d23c1"
+      }
+    ],
+    "bytes": 200754150,
+    "failures": [],
+    "date": "2026-10-16T02:43:41.1796217Z",
+    "skipped": [],
+    "preserved": [
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp",
+        "bytes": 953436
+      },
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\fe9036bf3d4f2135\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "bytes": 64
+      }
+    ],
+    "remaining": [
+      "27ca4525cebc9468"
+    ]
+  },
+  "versions": [
+    "27ca4525cebc9468"
+  ],
+  "profilePreserved": true,
+  "profileFiles": 10385,
+  "manifestVerifiedFiles": 2332,
+  "work": "native/build/engine-167-install-4vPgfS",
+  "previousTransition": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\fe9036bf3d4f2135",
+    "removedBytes": 172458904
+  },
+  "profilePreservedAfterSmoke": true,
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedSmoke": {
+    "path": "native/build/engine-167-installed-LyJufX/acceptance.json",
+    "sha256": "c3f2c17f7a76c0ed78202b0d7c94c073e120cfdf6672969d45e23dc154a1b114",
+    "passed": true,
+    "cpp": {
+      "gone": true,
+      "loaded": true,
+      "reloaded": true,
+      "ticks": 234,
+      "worldX": 12
+    },
+    "rigAIDryRunUndo": true,
+    "sourcePreserved": true,
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  }
+}

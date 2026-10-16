@@ -11,3 +11,5 @@
 전체 원장 docs/research/ENGINE_STATUS.json → docs/ENGINE_STATUS.md + hb status --local/API. 78등록행 verified39/partial32/unimplemented4/unverified3. WLD05를 partial로 옮겼으나 상위전체완료0. 전체UE/Unity 본문/API 분석 gate false/분모·완료율 미확정. supplementary167 지정 API/문서 구역만 읽고 연결/다른버전 미독 유지.
 
 남은 전체 목표는 원장의 remaining을 유지한다: 자동공간분할/HLOD/셀예산, 동적Nav/정밀반경/군중, import/cook/prefab 세부, 2D 임의제약/정지발, 애니/녹화·렌더·물리·게임플레이/네트워크·위젯/오디오·CPP도구/AI/디버그·모바일/배포/성능 등. 원장 일부를 전체요구의 상한으로 삼지 않는다. Mac/Xcode와 Android기기는 없다.
+
+설치 완료: C:/Users/kirby/HBEngine/Versions/27ca4525cebc9468 (2332명세파일), 실제 설치 EXE C++/AI/2D 폼/dryRun/Undo/원본 복원 PASS, 사용자 프로필10385파일 SHA 보존, 바로가기2개/.hbproject 일치, Versions1. 이전8f19/중간fe903 사본 정리. 구현 d1cf994·추가레벨/생성카탈로그 배포중단점 제거 d2bd3c1. 설치 영수증 USER_INSTALL_167.json. 최종 root test-artifacts 추가삭제0(각 검사 종료시 이미 정리됨). 설치 검사용 빌드와 사용자 프로필은 분리했음.
