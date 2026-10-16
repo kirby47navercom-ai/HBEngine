@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "0bfc9cd",
+  "targetIds": [
+    "WLD-04",
+    "PER-01"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/animation-197-r5pjUZ/acceptance.json",
+      "sha256": "05ab7c9a1c9ff812c9d55b74ca3ee56d5713f1a5b632654d9b6ae2aef86bfd73",
+      "result": {
+        "passed": 5,
+        "total": 5,
+        "checks": [
+          {
+            "name": "typed opt-in interpolation and default stable scheduling preserve missing-field compatibility",
+            "passed": true
+          },
+          {
+            "name": "1200 authored actors distribute periodic evaluation without a global actor cap or changed clocks",
+            "passed": true
+          },
+          {
+            "name": "cached local bone poses interpolate positions and quaternions while the logical clock/notify advances",
+            "passed": true
+          },
+          {
+            "name": "opt-out/full-rate/rate switch release only owned presentation buffers and refresh the current pose",
+            "passed": true
+          },
+          {
+            "name": "actor root and exhausted pose budgets keep safe existing behavior without forcing full-rate allocations",
+            "passed": true
+          }
+        ],
+        "metrics": {
+          "schedule": {
+            "actors": 1200,
+            "frames": 121,
+            "firstRequiredEvaluations": 1200,
+            "legacyPeak": 1200,
+            "spreadPeak": 111,
+            "spreadMinimum": 90,
+            "spreadTotalAfterFirst": 12000,
+            "scope": "CPU schedule counts, not actor/FPS limits or whole-frame timings"
+          },
+          "interpolation": {
+            "extraPoseBytes": 168,
+            "defaultExtraBytes": 0,
+            "evaluations": 3,
+            "logicalTime": 0.4,
+            "displayedPosition": 0.20000000298023224
+          }
+        },
+        "newDependencies": 0,
+        "defaultExtraPoseBuffers": 0,
+        "alwaysOnTimers": 0,
+        "executionVerification": "CPU only while installed user runtime is in use; hidden editor/player grouped checks pending."
+      }
+    }
+  },
+  "researchReuse": "ENGINE_WORK_195.json bodyRead ranges, no new body/API promotion",
+  "verificationPending": [
+    "node tools/check-animation-195-window.mjs --interpolate --editor",
+    "node tools/check-animation-195-window.mjs --interpolate",
+    "node tools/check-animation-195-window.mjs --interpolate --webgpu"
+  ],
+  "verificationDeferredReason": "Installed user193 Node/worker processes active; avoid heavy private builds/GPU tests during user work.",
+  "installationPending": true,
+  "limits": [
+    "Opt-in visual interpolation delays one update interval; no prediction/root/physics/curve/state machine/retarget change.",
+    "Stable phase distributes periodic work but mandatory first pose is still evaluated for all actors.",
+    "CPU schedule counts and small bone correctness are not sustained game FPS, mobile performance or general animation CPU-ms budgeting."
+  ]
+}

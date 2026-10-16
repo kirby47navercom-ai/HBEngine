@@ -460,3 +460,5 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 194–196: ray program.fields는 선택적인0–9 정수 고유 배열이며 누락된 옛 자료는 모든 필드에 대응해요. 키/아틀라스 배치는 그대로예요. RuntimeLOD.reducePoseEvaluation은 기본true이고 공용 Components SetBool/문서 패치로 편집해요. animationGraph.poseEvaluation.trace가 planned-clips이면 active/weights는 계산한 포즈 전체가 아닌 현재 계획 방문/클립 정보예요. texture.view({path,settings:{channel,filter,zoom,pan,index},pixel:[x,y]})는 열린 텍스처의 사람 UI와 같은 보기/원본8비트 픽셀을 반환해요. source document revision/dirty를 바꾸지 않아요.
+
+197 (실행 검사 대기): RuntimeLOD.staggerAnimation 기본true, interpolatePose 기본false예요. 공용 Components/문서 편집을 사용해요. interpolated/interpolationDelay/interpolationBudgetLimited 진단과 poseBytes로 선택형 지연/메모리를 확인할 수 있어요. 보간은 한 갱신 주기 지연을 만들고, 보호 경로와 기본 추가 버퍼0을 유지해요.

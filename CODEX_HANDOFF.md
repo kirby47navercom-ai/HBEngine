@@ -220,3 +220,5 @@ exec_command.session_id는write_stdin으로, functions.wait는cellID에만. 도�
 194–196(2026-10-17): 필드별 ray 특화/시간 의존성, 로컬 뼈·스프라이트 포즈 계산 생략, 비파괴 텍스처 채널/픽셀/면·슬라이스/줌/AI. ENGINE_WORK_194/195/196 JSON에 실제 CPU/3백엔드/Win32/공용C++ 근거. 원장 latest194–196,78행/상태 수 유지. 설치는196 영수증을 확인. 남은 작업은 정본 ENGINE_STATUS.json remaining을 계속 구현하며 단일 복잡 그래프 cold compile/보호 애니메이션/쿠킹GPU mip 등을 완료로 승격하지 않음. finish193/install193/docs194-196 등 일회용 스크립트 재실행 금지.
 
 196 설치는 사용 중인193 Node/worker 때문에 사전 보류, 새 폴더 생성0/Versions1. UPDATE_196_PENDING.json 참조. native/build/install196.mjs 실행됨(보류)·재실행 금지. 이후 설치 가능 시 준비한 dist를 안전하게 전환하고 USER_INSTALL_196 실제 영수증/설치 EXE 검사를 새 단계에서 수행. 현재193 사용자 앱/빌드 중단 금지, 무거운 GPU/컴파일 검사는 유휴까지 보류.
+
+197 source/CPU5군 완료·실제 창/GPU/패키징 대기. check-animation-195-window --interpolate --editor / --interpolate / --interpolate --webgpu 준비. 사용자 설치193 active Node/worker이므로 무거운 검사나 새 버전 전환 금지. CPU1200표본 주기피크1200→90–111, 계산총수12000동일; 기본 추가버퍼0/옵트인168B 한 뼈. 내용은 ENGINE_WORK_197.md/JSON, 남은전역목표그대로.

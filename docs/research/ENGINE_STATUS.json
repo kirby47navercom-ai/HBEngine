@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "8b9e3db",
+  "basisRevision": "0bfc9cd",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -482,7 +482,7 @@
       "area": "world",
       "title": "LOD 제작·전환",
       "status": "partial",
-      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·195: 표시 사이 로컬 뼈/스프라이트 포즈 계산 생략·시간/Notify 보존·보호 경로/opt-out·속성/Undo·공용 C++·실제 D3D/GPU",
+      "implemented": "165: LOD 자산·클러스터링 기하 생성·거리/화면 높이·히스테리시스·강제 단계와 공용 렌더 · 171: 표시와 별도 충돌 LOD 선택·기존 충돌 청크 연결 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·195: 표시 사이 로컬 뼈/스프라이트 포즈 계산 생략·시간/Notify 보존·보호 경로/opt-out·속성/Undo·공용 C++·실제 D3D/GPU ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군; 실제 제작/게임 묶음 검사 대기",
       "remaining": [
         "고품질 메시 단순화·교차 페이드·골격 수/충돌 단순화와 큰 씬 품질 대조",
         "보호 그래프 전체 계산·레거시 Mixer/골격 수 LOD·보간·다중 카메라/시야 중요도·CPU-ms 예산 할당"
@@ -499,7 +499,8 @@
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_171.json",
         "docs/research/ENGINE_WORK_179.json",
-        "docs/research/ENGINE_WORK_195.json"
+        "docs/research/ENGINE_WORK_195.json",
+        "docs/research/ENGINE_WORK_197.json"
       ]
     },
     {
@@ -1491,7 +1492,7 @@
       "area": "performance",
       "title": "PC120·모바일60 전체 프레임",
       "status": "unverified",
-      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단",
+      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 ·195: 30/60/120Hz4초에서 포즈120/240/480→20회·256뼈15360보간 제외·포즈 버퍼 증가0·실제 실행 진단 ·197: 안정ID 주기 분산·선택형 로컬 뼈 지연 보간/3버퍼 재사용·예산/해제·CPU5군; 실제 제작/게임 묶음 검사 대기",
       "remaining": [
         "대표/고부하 장면 p95/p99·장시간 안정성",
         "실제 모바일 지속60·발열/배터리"
@@ -1509,7 +1510,8 @@
         "docs/research/ENGINE_WORK_168.json",
         "docs/research/ENGINE_WORK_180.json",
         "docs/research/ENGINE_WORK_190.json",
-        "docs/research/ENGINE_WORK_195.json"
+        "docs/research/ENGINE_WORK_195.json",
+        "docs/research/ENGINE_WORK_197.json"
       ]
     },
     {
@@ -1597,5 +1599,5 @@
       ]
     }
   ],
-  "latestBatch": "194–196"
+  "latestBatch": "197 (CPU·실행 대기)"
 }
