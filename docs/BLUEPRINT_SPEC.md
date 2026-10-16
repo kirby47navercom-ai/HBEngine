@@ -492,3 +492,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 210: AnimationBudget SetBudget(target,budgetMS=2), SetEnabled(target,enabled=true), GetObservedMS/GetThrottledCount(target) 공용 SDK/BP4함수. 카탈로그788·공용 C++703(Core289와 별도). 같은 컴포넌트 쓰기·완료 프레임 진단이며 전체 FPS/강제 ms 한도 보장은 아니다.
+
+
+234: Abilities::ApplySet(target,asset,preserveBase=true,retainEffects=true) 공용 C++/BP 명령을 추가했다. 카탈로그789·공용C++704. 동일 서비스로 저장 정의 재로드와 원자 상태 교체를 실행하며 실제 C++/BP/Inspector/AI·독립 D3D 게임을 검사했다. 즉시 반환 질의/네트워크 예측 구현은 아니다.

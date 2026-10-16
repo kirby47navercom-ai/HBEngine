@@ -363,3 +363,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 229–231 설치 확인: 6c37aa3d3466f4a5·명세2777파일 실행후SHA동일·사람 XY NavMesh bake/Undo·AI dryRun·P 지연 항법 표시/off해제·원자 에셋 영역색 변경/Undo 실시간 반영·XY NavMesh EQS 투영/화면표시·기존225 UV1/라이트맵/원자Undo/API가드 회귀 통과. 오류0/종료0·캡처2시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치176162580B 제거. USER_INSTALL_231.json.
+
+
+232–235: 능력 세트 합성/상속·출처/재정의·참조 SHA 원자 저장/패키징, 종속 속성 DAG/실수 커브, 라이브 C++/BP/Inspector/AI 재적용, 큰 목록 제작/실행 페이지를 실제 편집기와 독립 D3D 게임에 연결했다. 정의/한계/근거는 ENGINE_WORK_232–235 및 ABILITY_WORKFLOW.md. 설치 검증 전이며 누적 목표 전체 완료가 아니다.

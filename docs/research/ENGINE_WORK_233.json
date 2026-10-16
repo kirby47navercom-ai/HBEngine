@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7aab6ad",
+  "implementationRevision": "e3a729f21454b117e8a35a5f4d877d1988b6c229",
+  "targetIds": [
+    "GAM-04",
+    "AI-03"
+  ],
+  "implemented": [
+    "순환을 거부하는 속성 DAG·current/base/bonus·계수/전후 덧셈·범위·기존 실수 Timeline 키/접선/보간 커브 재사용",
+    "편집 계산 폼/커브 선택과 트랙·커브/부모 변경 시 자식 재검증·원자 참조 변경/Undo·커브 SHA 충돌 롤백",
+    "원본 변경/효과 제거 시 재집계·유휴 집계 재사용·초기화/수치 overflow 원자 거부·CPP GetAttribute와 같은 BP 실행"
+  ],
+  "limits": [
+    "같은 소유자의 속성 계산이며 GameplayEffect source/target capture·레벨별 magnitude/실행 계산 전체 구현은 아니다",
+    "종속 기본값 직접 쓰기/비용/순간·주기 효과 대상은 거부하고 지속 집계 효과를 사용한다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/ability-calculations-233-wjXnF7/acceptance.json",
+      "sha256": "14fc08b9674827e9bcc215647340d325bfe9a0ae2189da3e4248564876907873"
+    },
+    {
+      "path": "native/build/ability-calculation-saves-233-jGrl3A/acceptance.json",
+      "sha256": "e45c36d79e0aa55a52f1db390fb0f9f71bdfedefc1b591c984aee9175a9f9c53"
+    },
+    {
+      "path": "native/build/ability-authoring-233-window-6PweML/acceptance.json",
+      "sha256": "4ca09ff58ea207c84b8555c0c7131a979448b5f9dce8450fb4f192b38adfbceb"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

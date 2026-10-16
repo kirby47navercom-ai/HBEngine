@@ -3399,5 +3399,32 @@
       }
     ],
     "implementation": "docs/research/ENGINE_WORK_229.json"
+  },
+  "supplemental232_235": {
+    "date": "2026-10-17",
+    "scope": "실제 읽은 본문 구간만 기록. 전체 Unreal/Unity/API 분석 완료를 뜻하지 않음",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/gameplay-attributes-and-attribute-sets-for-the-gameplay-ability-system-in-unreal-engine",
+        "version": "5.8",
+        "body": "반환 본문0–223 두 구간으로 재읽기. 그림/연결 API 본문은 포함하지 않음"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FAttributeBasedFloat",
+        "version": "5.8",
+        "body": "반환0–81: 속성 정책/커브/계수·전후덧셈/필터/검증 API 서술. 링크된 구현/필터 API 미열람"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FScalableFloat",
+        "version": "5.8",
+        "body": "반환0–112: Value×Curve[Level], 커브 캐시/검증/변경 API. 링크/소스 미열람; HB 효과 수준 스케일 전체 구현 주장이 아님"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/class-ScriptableObject.html",
+        "version": "6000.0",
+        "body": "실제 반환122–203: 공유 데이터/단일 사본·생성/Spawner 예시. 나머지 본문/링크 미열람"
+      }
+    ],
+    "implementation": "docs/research/ENGINE_WORK_232.json"
   }
 }

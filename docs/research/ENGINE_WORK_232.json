@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7aab6ad",
+  "implementationRevision": "e3a729f21454b117e8a35a5f4d877d1988b6c229",
+  "targetIds": [
+    "GAM-04",
+    "AI-03"
+  ],
+  "implemented": [
+    "부모→순서 있는 합성→로컬 재정의·공유 조상 한 번 적용·능력/태그 합집합·불변 공유 템플릿 LRU64/32MiB",
+    "부모/includes 편집·합성 결과/출처·재정의·Undo·abilityset.read 페이지와 참조 revision 재검사",
+    "세트 그래프 순환/누락·삭제 고아 검사·자식 우선 공동 생성/Undo·저장 도중 부모 SHA 충돌 롤백·실제 패키징 그래프 검사"
+  ],
+  "limits": [
+    "HB JSON 합성은 Unreal UAttributeSet의 동일 클래스/네트워크 구현이 아니다",
+    "사람 모두 저장은 종속 순서이며 전체 원자 저장은 files.apply 묶음을 사용한다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/ability-composition-232-ou3oUS/acceptance.json",
+      "sha256": "655ca91ce72b2f8e5787470e5f142c0d8c8101e625321825739d1c522a979df1"
+    },
+    {
+      "path": "native/build/ability-composition-232-transactions-8PJzLx/acceptance.json",
+      "sha256": "8bc09e21e5a0588131b050a639e154e1891415705f26f1f3afb7a0ba0800f8cc"
+    },
+    {
+      "path": "native/build/ability-composition-232-window-Mm768q/acceptance.json",
+      "sha256": "b392b0745e9bf0ab16a42fb308316f7cac00a3ebf90d62be576d789b32166d66"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

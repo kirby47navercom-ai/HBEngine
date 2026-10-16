@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7aab6ad",
+  "implementationRevision": "e3a729f21454b117e8a35a5f4d877d1988b6c229",
+  "targetIds": [
+    "GAM-04",
+    "AI-03",
+    "EDT-05",
+    "PERF-01"
+  ],
+  "implemented": [
+    "로컬 세트 속성/시작 능력256·시작 태그32 제한 제거·기존 저장8MB/AI 응답256 예산 유지",
+    "속성/시작 능력 검색25행 페이지·원본 인덱스 유지 편집/Undo·합성 결과25행 페이지",
+    "실행 Inspector 속성/능력/효과25행과 페이지 상태 보존·AI 진단은 요청 구간만 복제·1000속성/100태그 실제 제작/실행"
+  ],
+  "limits": [
+    "에셋 선택 드롭다운은 전체 후보 나열이며 세트/커브 저장은 전체 관련 그래프 재검증한다",
+    "1000속성 제작 표본이지 무한 데이터·전체 FPS/VRAM 성능 보장이 아니다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/ability-authoring-233-window-6PweML/acceptance.json",
+      "sha256": "4ca09ff58ea207c84b8555c0c7131a979448b5f9dce8450fb4f192b38adfbceb"
+    },
+    {
+      "path": "native/build/ability-snapshot-221-jTZRUW/acceptance.json",
+      "sha256": "d99123f8f5915134f91d5e6ba332bc346da3ad3ed43cb20bab9fabab77ec952a"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}
