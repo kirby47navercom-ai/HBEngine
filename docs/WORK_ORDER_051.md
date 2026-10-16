@@ -262,3 +262,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 187–189 설치 확인: 44a236f286ae030e·명세2538파일 실행 후 SHA 일치·설치 EXE 제작 조작/키 반복/입력·IME/Undo/분리 HWND/사용자 키와 독립 버튼·설정 복원 및 장시간 GL/GPU 시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치174512983바이트 정리·Versions1. 근거 docs/research/USER_INSTALL_189.json.
+
+
+190: 정적 UV 재질의 미연결 Time/Panner 때문에 기하를 다시 준비하던 비용 제거. 기존 캐시/실제 opcode로 연결 변경·마스크/물리 Time·월드/시점 보수성 유지. CPU5/기존7·실제 D3D/GPU 게임 및 전송/BVH 재사용. PC120/모바일60 전체 검증과 구별. ENGINE_WORK_190.md/JSON. 다음 기능과 묶음 설치 예정.

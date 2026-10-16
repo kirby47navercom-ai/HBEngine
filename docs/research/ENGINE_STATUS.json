@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-16",
-  "basisRevision": "1fd8487",
+  "basisRevision": "d1a7ca6",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -563,16 +563,18 @@
       "area": "rendering",
       "title": "인스턴스·변형·부분 전송",
       "status": "verified",
-      "implemented": "정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신",
+      "implemented": "정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행",
       "remaining": [],
       "sources": [
         "prototype/scene-rendering.js",
-        "prototype/shared-ray-geometry.js"
+        "prototype/shared-ray-geometry.js",
+        "prototype/geometry-gi.js"
       ],
       "evidence": [
         "docs/NATIVE_INSTANCING_089.md",
         "docs/NATIVE_DEFORMATION_090.md",
-        "docs/RENDERING_123.md"
+        "docs/RENDERING_123.md",
+        "docs/research/ENGINE_WORK_190.json"
       ]
     },
     {
@@ -1467,7 +1469,7 @@
       "area": "performance",
       "title": "PC120·모바일60 전체 프레임",
       "status": "unverified",
-      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포",
+      "implemented": "PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행",
       "remaining": [
         "대표/고부하 장면 p95/p99·장시간 안정성",
         "실제 모바일 지속60·발열/배터리"
@@ -1475,13 +1477,15 @@
       "sources": [
         "tools/check-auric-frame.mjs",
         "prototype/native-physics-query.js",
-        "tools/packaged-runtime.mjs"
+        "tools/packaged-runtime.mjs",
+        "prototype/geometry-gi.js"
       ],
       "evidence": [
         "docs/research/SPAWN_CATALOG_LIFETIME_067.md",
         "docs/MOBILE_PERFORMANCE_BUDGET.md",
         "docs/research/ENGINE_WORK_168.json",
-        "docs/research/ENGINE_WORK_180.json"
+        "docs/research/ENGINE_WORK_180.json",
+        "docs/research/ENGINE_WORK_190.json"
       ]
     },
     {
@@ -1569,5 +1573,5 @@
       ]
     }
   ],
-  "latestBatch": "189"
+  "latestBatch": "190"
 }

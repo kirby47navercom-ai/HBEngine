@@ -1,6 +1,6 @@
 # 엔진 현재 상태와 추가 구현 원장
 
-갱신일: 2026-10-16 · 대조 기준 커밋: `1fd8487`
+갱신일: 2026-10-16 · 대조 기준 커밋: `d1a7ca6`
 
 기준 데이터는 [ENGINE_STATUS.json](research/ENGINE_STATUS.json) 하나다. 과거 문서의 “아직 없음”보다 각 행의 구체적인 구현/잔여 범위를 우선한다. verified는 해당 행의 구현 범위만 검증했다는 뜻이다. 등록 항목 수는 Unreal/Unity 전체 API 분모가 아니므로 전체 완료율은 계산하지 않는다.
 
@@ -65,7 +65,7 @@
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
 | RND-01 DirectX11·WebGL2·WebGPU 실행 | verified | 실제 장면/머테리얼/조명 공용 렌더와 네이티브 경로 · 169: 단일 실선 Line/LineLoop/LineSegments의 DirectX 삼각 스트립·픽셀폭/평면clip/색·기하 재사용·IK debug Player 실행 | 이 행의 범위는 검증됨 | [RENDERING_145.md](RENDERING_145.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
-| RND-02 인스턴스·변형·부분 전송 | verified | 정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신 | 이 행의 범위는 검증됨 | [NATIVE_INSTANCING_089.md](NATIVE_INSTANCING_089.md) · [NATIVE_DEFORMATION_090.md](NATIVE_DEFORMATION_090.md) · [RENDERING_123.md](RENDERING_123.md) |
+| RND-02 인스턴스·변형·부분 전송 | verified | 정적 인스턴스·skeletal/morph·변경 범위/버퍼 갱신 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 | 이 행의 범위는 검증됨 | [NATIVE_INSTANCING_089.md](NATIVE_INSTANCING_089.md) · [NATIVE_DEFORMATION_090.md](NATIVE_DEFORMATION_090.md) · [RENDERING_123.md](RENDERING_123.md) · [ENGINE_WORK_190.json](research/ENGINE_WORK_190.json) |
 | RND-03 광원·HDRI·환경 액터 | verified | 래스터 HDRI/다중 광원·MegaLights/SkyLight 제작·분산 캡처 | 이 행의 범위는 검증됨 | [RASTER_LIGHTING_131.md](RASTER_LIGHTING_131.md) · [RENDERING_138.md](RENDERING_138.md) |
 | RND-04 GI·경로 추적·중첩 매질 | verified | 소프트웨어 기하 GI/경로 추적·매질·HDRI 표본 | 이 행의 범위는 검증됨 | [RENDERING_107.md](RENDERING_107.md) · [RENDERING_145.md](RENDERING_145.md) |
 | RND-05 굴절·코스틱·공간/시간/렌즈 필터 | partial | 굴절/색 투과·광자·이차 필터·변형 모션 이력 | 전역 곡면 역해 · 거친 복합 로브/참여 매질 산란의 정밀 확장 | [RENDERING_145.md](RENDERING_145.md) · [RENDERING_151.md](RENDERING_151.md) |
@@ -176,7 +176,7 @@
 
 | ID·항목 | 상태 | 구현된 범위 | 남은 작업 | 근거 |
 |---|---|---|---|---|
-| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) |
+| PER-01 PC120·모바일60 전체 프레임 | unverified | PC 단일 재현에서 일부 통과·여러 CPU/GPU 비용 절감 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·190: 미연결 Time/Panner 정적 UV 그래프의 기하/전송 재사용·실제 동적 opcode/기존 캐시·연결 변경/기존 이력 보존·CPU1000 표본 및 실제 D3D/GPU 실행 | 대표/고부하 장면 p95/p99·장시간 안정성 · 실제 모바일 지속60·발열/배터리 | [SPAWN_CATALOG_LIFETIME_067.md](research/SPAWN_CATALOG_LIFETIME_067.md) · [MOBILE_PERFORMANCE_BUDGET.md](MOBILE_PERFORMANCE_BUDGET.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) · [ENGINE_WORK_190.json](research/ENGINE_WORK_190.json) |
 | PER-02 용량·캐시·설치 한 개 유지 | verified | 검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 | 이 행의 범위는 검증됨 | [USER_INSTALL_151.json](research/USER_INSTALL_151.json) · [INSTALL_RETENTION_114.md](INSTALL_RETENTION_114.md) · [ENGINE_WORK_169.json](research/ENGINE_WORK_169.json) |
 | PER-03 대규모 월드·장시간 RAM | unverified | 일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 | 대규모 메시/스켈레톤/탄막·전환 반복 · 프로세스 전체 RAM/VRAM 장기 증가 원인 종결 | [MEMORY_CONTROL_060.md](research/MEMORY_CONTROL_060.md) · [HOST_MEMORY_062.md](research/HOST_MEMORY_062.md) · [ENGINE_WORK_168.json](research/ENGINE_WORK_168.json) · [ENGINE_WORK_179.json](research/ENGINE_WORK_179.json) · [ENGINE_WORK_180.json](research/ENGINE_WORK_180.json) · [ENGINE_WORK_185.json](research/ENGINE_WORK_185.json) |
 

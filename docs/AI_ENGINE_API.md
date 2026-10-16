@@ -445,3 +445,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 189: 기존 ray opcode 정보로 비시간 이전 노멀을 특화해요. profiler.read의 준비 단계·동시성·시간을 그대로 조회하며 새 GPU 읽기/변형 캐시나 다른 제작 API가 필요하지 않아요. 단일 가이드의 링크 시간과 전체 게임 프레임 시간을 구분해요.
+
+
+190: 미연결 시간 노드는 정적 UV 기하를 매 프레임 재준비하지 않아요. 수동 플래그 대신 실제 컴파일 opcode와 기존 캐시를 사용해요. 기존 renderer.bvh/rayGeometry 및 네이티브 raySceneUpdates/Bytes로 관찰할 수 있고, CPU 준비 비용과 전체 게임 FPS는 구분해야 해요.
