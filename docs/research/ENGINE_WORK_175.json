@@ -1548,5 +1548,12 @@
     "fixed/hinge/slider 프레임 적용; 2D 회전Z·직선축XY",
     "break force/plasticity/generic6DOF/multibody articulation·cloth/파괴 별도"
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_176.json",
+    "receiptSHA256": "99d8f6d1762a93a5dcba1fb2f7a12872d153c6d75a809d8c75d27a57ea2d1d8b",
+    "sourceCommit": "0c00cb7ef1ef5292b34b9744430edd60397b4047",
+    "versions": [
+      "a2c8c587c0dfb8ef"
+    ]
+  }
 }

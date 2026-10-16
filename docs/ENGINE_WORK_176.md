@@ -9,3 +9,6 @@ Physics::SetVehicleInput(actor,throttle,steering,brake,handbrake)와 GetVehicleS
 [CPU8군·실제 C++/BP·Win32 제작/Undo·D3D 출시/개발·WebGPU](research/ENGINE_WORK_176.json). 1200kg 정지 지지/가속/후진/제동/조향, 필터, 수명/실패, 시각척도/리소스, 사람의 장면 및 BP 휠 편집·추가·Undo와 기존172~175병합/Git/UI/네트워크/관절 회귀를 묶어 확인했다. D3D 실제 메시 화면은 native renderer capture로 별도 확인했다.
 
 변속기·차동장치·ABS·엔진RPM/토크곡선·타이어부피충돌·고급bone드라이버·손상/네트워크예측·cloth/파괴는 별도 잔여다.
+
+
+175–176 설치 확인: a2c8c587c0dfb8ef·명세2426파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173280443바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_176.json.

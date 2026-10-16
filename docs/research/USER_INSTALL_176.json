@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "0c00cb7ef1ef5292b34b9744430edd60397b4047",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a2c8c587c0dfb8ef",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a2c8c587c0dfb8ef\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a2c8c587c0dfb8ef\\HBEngine.exe",
+  "bundleHash": "a2c8c587c0dfb8efd402fcfeb1e6c6d05e0ea8f34f4e5c0be4f2eb61ea3c4a66",
+  "files": 2426,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2407,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\15669948df76f42e",
+        "bytes": 173280443,
+        "manifestSHA256": "b39d3603d769a278c23d18e1d51dee6d8f72866fc8bdff582761f166fe071140"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T08:09:11.7005255Z",
+    "bytes": 173280443,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "a2c8c587c0dfb8ef"
+    ]
+  },
+  "work": "native/build/engine-176-install-IQbJrc",
+  "versions": [
+    "a2c8c587c0dfb8ef"
+  ],
+  "manifestVerifiedFiles": 2426,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2426,
+  "installedSmoke": {
+    "path": "native/build/engine-176-installed-gxeMme/acceptance.json",
+    "sha256": "96432ce87580360f505cf12cb7ba32dcb256a91b5ff4fd0712fb7a026e02a750",
+    "passed": true,
+    "vehicle": {
+      "humanWheelProperties": true,
+      "addRemove": true,
+      "undo": true,
+      "blueprint": true
+    },
+    "joints": {
+      "human": true,
+      "ai": true,
+      "undo": true
+    },
+    "executable": "C:/Users/kirby/HBEngine/Versions/a2c8c587c0dfb8ef/HBEngine.exe",
+    "widget": {
+      "humanOverrides": true,
+      "preview": true,
+      "undo": true
+    },
+    "merge": {
+      "human": true,
+      "dryRun": true,
+      "stableConflict": "/name",
+      "undo": true,
+      "ai": true
+    },
+    "git": {
+      "humanStage": true,
+      "humanCommit": true,
+      "diff": true,
+      "identity": "HB UI 검사|ui@example.invalid|HB UI 검사|ui@example.invalid",
+      "head": "fc7d0f6f0ce171c227513bd8001e298dd7dacc37"
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-176-installed-gxeMme/vehicle-blueprint.png",
+      "sha256": "3dcbc4f52f6c83efbf9f547435fc8172c9f537f784c5bfd6987e11856cfa9c15",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/engine-176-installed-gxeMme/vehicle-editor.png",
+      "sha256": "e443af94275cddcdaf6a1a57cd6d4b310f7bf8774e416cc70afbc3c56956114f",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

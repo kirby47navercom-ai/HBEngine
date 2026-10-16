@@ -197,3 +197,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 175–176: 독립 관절 프레임/영점/힘제한과 RaycastVehicle 실제 제작·휠편집/Undo·물리/조종·렌더·C++/BP를 구현하고 묶음 검사했다. ENGINE_WORK_175/176 및 대응 JSON 근거. 설치 영수증 별도. 누적잔여 단일 원장의 PHY-02를 세분화했다.
+
+
+175–176 설치 확인: a2c8c587c0dfb8ef·명세2426파일 실행 후 SHA 일치·격리 설치 EXE의 병합/Git/사람 위젯 속성/Undo·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치173280443바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_176.json.

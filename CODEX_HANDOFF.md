@@ -1,3 +1,11 @@
+# 175–176 설치·검증 완료, 누적177 UI 자동 행 높이 구현 계속
+
+0c00cb7ef1ef5292b34b9744430edd60397b4047 feature origin/main push완료. 실제 사용자 설치 C:/Users/kirby/HBEngine/Versions/a2c8c587c0dfb8ef/HBEngine.exe, bundlea2c8c587c0dfb8efd402fcfeb1e6c6d05e0ea8f34f4e5c0be4f2eb61ea3c4a66. 명세2426파일 실행후전체SHA일치, 이전15669948df76f42e/173280443바이트정리, Versions1,2바로가기/.hbproject연결검증. 사용자프로필10385파일 전후/설치검사후 SHA동일46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26.
+
+설치EXE engine-176-installed-gxeMme PASS/errors[]/exit0. Scene/BP휠입력·추가/Undo+관절/위젯/merge/Git사람/AI까지통과. vehicle-blueprint/vehicle-editor2캡처시각확인,수정한BP vec3숫자전체보임. finish176.mjs완료,USER_INSTALL176 영수증과WORK175176설치링크갱신. 공유testcache추가삭제0. 아직receipt문서커밋/푸시필요. 설치불변manifest에문서영수증재복사금지.
+
+다음177 UI03자동내용행높이: 현재virtual-list.js는명시높이(variableRows)만list-layout.js prefix sums O(n)재작성,scroll은이진탐색. 자동측정추가때매행측정마다100kprefix재구성하지말고Fenwick O(logn) update/offset/at 도입. autoRows=false기본호환,variableRows+명시height우선,스크롤anchor유지/바닥고정·폭/폰트변경재측정·rowpool재사용/observer수명·키보드/Tree접기지원. UIEditor 일반checkbox/AI shareddefaults/validation/runtime연결필수. newdeps0. 아직177제품코드없음. Unity6000.6ListView공식본문318–443선택범위읽음(https://docs.unity.com/en-us/engine/6000.6/manual/uitoolkits/uielements/uie-element-ref/uie-uxml-element-list-view); full1438줄/링크API미독,등록supplemental177필요. virtual-list.js전체/list-layout.js전체/UIruntime연결/UIeditor필드/asset검증읽음. 자동높이구현/검사후다른누적잔여도계속. 최종답변안함/새에이전트금지.
+
 # HBEngine 누적 구현 계속 — 175–176 검증 후 설치 진행 — 2026-10-16
 
 주인님 최신지시 남은거다하라고. 전체누적을몇개묶음으로대체/완료선언하지않고계속구현. 새agent금지,실제사용자창/프로필/게임보호,숨긴격리EXE검사,Versions1. 이전172–174설치15669948df76f42e 및104e275 originpush완료.175–176지금제품/문서미커밋. 다음할일: 변경검토/진행90610확인→커밋/배포동기화/설치176→설치EXE검사→영수증commitpush→누적계속(예UI03자동내용높이). 최종답변안보냈다.
