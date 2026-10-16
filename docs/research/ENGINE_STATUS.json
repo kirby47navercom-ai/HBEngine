@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "8f1d8b6",
+  "basisRevision": "89f99a0",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -843,23 +843,26 @@
       "area": "animation",
       "title": "시퀀스·녹화 제작",
       "status": "partial",
-      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 · 167: 속성 설명 재사용·일정 구간 온라인 축약/변화 시각 보존 · 169: JSON 컴포넌트 상태/생성삭제·원자 프레임 교체·골격 포즈 녹화/slerp/축약·실제 오디오 시작종료/반복 큐·복원·AI frame barrier",
+      "implemented": "시퀀스/타임라인 트랙·키 편집/스크럽·게임 실행 · 165: 다중 객체 Transform/표시 Take 녹화·키 정리·PIE 종료 후 보존/시퀀스 적용 UI · 166: 기본 컴포넌트의 숫자/정수/불/문자/벡터/색/에셋 속성 Take 녹화·선택 바인딩 편집·시퀀스 실행/중지 복원·스택 안전 키 축약 · 167: 속성 설명 재사용·일정 구간 온라인 축약/변화 시각 보존 · 169: JSON 컴포넌트 상태/생성삭제·원자 프레임 교체·골격 포즈 녹화/slerp/축약·실제 오디오 시작종료/반복 큐·복원·AI frame barrier ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생",
       "remaining": [
         "임의 네이티브 배열/구조체·액터 생성 기록·실행 중 골격 교체",
-        "PCM/마이크·모든 DSP/공간음/볼륨 자동화 녹음·전문 시네마틱/외부 동기화/베이크"
+        "마이크·멀티채널 stem·Take 게임시각/PCM 표본 정렬·영상 결합·외부 동기화/전문 시네마틱/베이크"
       ],
       "sources": [
         "prototype/gameplay-editor.js",
         "prototype/gameplay-runtime.js",
         "prototype/take-recorder.js",
-        "prototype/sequence-state.js"
+        "prototype/sequence-state.js",
+        "prototype/audio-capture.js",
+        "prototype/audio-capture-worklet.js"
       ],
       "evidence": [
         "docs/ANIMATION_TIMELINE_CONTROLS.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_166.json",
         "docs/research/ENGINE_WORK_167.json",
-        "docs/research/ENGINE_WORK_169.json"
+        "docs/research/ENGINE_WORK_169.json",
+        "docs/research/ENGINE_WORK_192.json"
       ]
     },
     {
@@ -1134,7 +1137,7 @@
       "area": "audio",
       "title": "오디오 고급 DSP/가상화",
       "status": "partial",
-      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증",
+      "implemented": "gain/filter/compressor·routing/계측 · 165: 순서 DSP 필터/지연/리버브/왜곡·wet/dry·pre/post Send/Return·순환/우회/해제 · 169: 지정 버스 RMS 사이드체인·Attack/Release/압축·순환/우회·사람UI/Undo·C++/BP3·실제 WebAudio 신호 · 170: 설정 가능한 실제/추적 음성 예산·PCM 가상 시계/소스 해제/승격·우선순위/거리·Listener/Source UI·C++/BP4·실제 소스2/가상6 검증 ·192: 실제 post-DSP/공간음 스테레오 PCM16 WAV·UI/AI/예산/수명·저장 실패 재시도/일시정지/게임 종료 저장·실제 재생",
       "remaining": [
         "스트리밍 디코더까지 해제하는 가상화·고급 지각/믹서 DSP 기반 선별",
         "C++ native DSP와 모바일 실제 장치 품질·큰 음성 수/PCM 메모리 검증"
@@ -1143,13 +1146,16 @@
         "prototype/audio-mixer.js",
         "prototype/native-audio.js",
         "prototype/audio-dsp.js",
-        "prototype/audio-ducking.js"
+        "prototype/audio-ducking.js",
+        "prototype/audio-capture.js",
+        "prototype/audio-capture-worklet.js"
       ],
       "evidence": [
         "docs/AUTHORING_UI_AUDIO_RESEARCH.md",
         "docs/research/ENGINE_WORK_165.json",
         "docs/research/ENGINE_WORK_169.json",
-        "docs/research/ENGINE_WORK_170.json"
+        "docs/research/ENGINE_WORK_170.json",
+        "docs/research/ENGINE_WORK_192.json"
       ]
     },
     {
@@ -1576,5 +1582,5 @@
       ]
     }
   ],
-  "latestBatch": "191"
+  "latestBatch": "192"
 }

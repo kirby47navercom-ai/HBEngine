@@ -84,6 +84,8 @@ export async function moduleClosure(entry,seen=new Set()){
     if(specifier==='three'||specifier.startsWith('three/'))seen.add(path.join(root,'node_modules/three/package.json'));
     if(dependency)await moduleClosure(dependency,seen);
   }
+  // Worklets/workers use module-relative URLs rather than import declarations.
+  for(const match of source.matchAll(/\bnew\s+URL\(\s*['"](\.\.?\/[^'"\r\n]+\.(?:m?js))['"]\s*,\s*import\.meta\.url\s*\)/g))await moduleClosure(path.relative(root,path.resolve(path.dirname(full),match[1])),seen);
   return seen;
 }
 export async function buildGame(record,profile,{dryRun=false,signal,onProgress=()=>{}}={}){

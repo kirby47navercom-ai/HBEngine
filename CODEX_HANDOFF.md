@@ -1,3 +1,15 @@
+# 190–192 검증 완료 — 묶음 설치192 준비
+
+주인님 남은거전체/길게계속 지시 유지·최종답변 아직 없음·신규agent요청없어스폰금지. installed18944a236f286ae030e/Versions1/profile10385SHA불변. main19189f99a0 originpush;1908f1d8b6 포함.192 현재미커밋: actualpostDSP/공간음 PCM16 WAV 녹음·AudioMixer버튼/실게임meter·시간/PCM MiB설정·공용AI start/finish·수명/제한/실패retainedretry/정지자동저장·WAV다시Source재생·workletmoduleClosure. CPU5tQYGXO/실창za8aU9(visiblemouse+liveMeter)/이전xRhR6S PASS. 새시간12초/1MiB입력검사는 설치smokecheck-audio-192-window --executable 새경로에서필수; docs192설치pending/설정pending 명시. SOURCE192 연구구역등록/ENGINE_STATUSlatest192·78rows39verified34partial2unimplemented3unverified/전체gatefalse.
+
+191 ORCA 순수CPU8 35wmCt/실Editor jIWyKS/실D3DXY BRhWY3/WebGPUXZhK6Bfq PASS. Nav current-velocity halfplaneLP/KD재사용·기본simple optinorca·층/우선순위/0이웃전체·C++BP3·소스와반환복사·실제간격0.600016/도착. 제한: NavMesh경계/가속/동적부모motor·Masscarving별도. 190 정적unusedTime 기하재포장최적화검증완료·아래기록. 두기능설치도192와함께.
+
+192 정확테스트: old buffered peak baseline HEAD실패를 임시모듈복사로입증후삭제. streaming/원래소스double은virtualizefalse·real선택/sampleMeter명시해실제소유정책에맞춤. 소리globalnull b.self오류는b?.self제품수정. 169openedgebridge거절은182지원후오래된검사라valid12index/original불변으로고침;16923 iPxZmf PASS. 17017/오디오3/Navigation1917/정리/API/원장 PASS. 소스2음성timeout은원래카메라가listener10떨어져correct거리감쇠발생→의도위치AudioListener저작하여스펙트럼검사유지. closedworklet늦은recycle무시수명버그수정. 모듈closure가newURL(relativeJS,import.meta.url) worklet재귀포함.
+
+다음:192diff/검사→한글commitpush→dist prototype/tools/docs/native/include/native/desktop/CODEX동기(189Win32binary그대로사용가능;192는JS/SDK만)→install189읽어새install192만생성/실행(189/finish189재실행금지). 실제프로필SHA/manifestSHA/링크2/.hbproject/Versions1검증. 새EXE --executable에서audio192 settings+WAV8cases,nav191 --editor,render190관련적절한설치스모크. 캡처실제시각검토/USER_INSTALL192영수증으로190191192연결/이전정리officialpruner만/receiptpush. 그뒤누적원장 다음분야계속, 설치했다고전체완료/최종안함.
+
+---
+
 # 190 CPU 정적 재포장 최적화 검증 완료 — 191 군중 회피 연구 후 구현 계속
 
 현재설치18944a236f286ae030e/2538파일/Versions1·프로필10385SHA불변, receipt d1a7ca6 mainoriginpush. 190미커밋제품prototype/geometry-gi.js + tests/fixture. docs190.mjs실행완료재실행금지. 미연결Time/Panner UV그래프는기존cachedRayMaterial의실제opcode로시간활성결정·rayMaterials Map 재사용. opcode2뿐이면world/view이전거절regression발생하여2–5 conservative 유지(187검사완화안함). 기존render제외material/transparentLegacy skip와legacy컴파일불가fallback유지. source.baseline6frameunusedbuild1→6,after1유지.1000inst CPU before68–87ms afterwarm0.02–0.06ms/786432B(전체FPS아님/객체수제한아님). 필수2번째이전포즈준비유지. CPU5 W4sAv0,1877Tu0N7G/106/138/189 PASS. actualD3DunusedJJaWCF/GPUunusedmB24U1 BVHstable/Nativeatlasupdatesbytesstable/LiveTimeD3DiI7JiJ PASS. 다음190커밋push(설치는다음큰기능과묶음).

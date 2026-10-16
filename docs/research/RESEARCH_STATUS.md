@@ -443,3 +443,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 191: Unreal avoidance/Unity NavMeshAgent·ORCA 소개/원문 수식5–10을 지정 구역에서 읽고 supplemental191에 등록했다. 원문5–11쪽 외 본문·연결 API/미디어·전역 corpus gate는 미완으로 유지한다.
+
+
+192: W3C WebAudio 지정 worklet/메시지/시각/수명 본문과 Microsoft WAVEFORMATEX/RIFF 지정 구역을 supplemental192에 등록. 원문 전체·연결 API/미디어·전역 gate 승격 없음.

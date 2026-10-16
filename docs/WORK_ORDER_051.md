@@ -268,3 +268,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 191: ORCA 로컬 회피 자체 수식/LP·2D/3D/층/이웃·공용 SDK/BP·Inspector/Undo·두 실제 게임 및 바이트/성능 표본. ENGINE_WORK_191.md/JSON.190과 묶음 설치 예정.
+
+
+192: 실제 게임 믹스 PCM16 WAV·믹서 UI/게임 신호·AI 동일 녹음/저장·제한/수명/재시도·저장 에셋 재생·공용 worklet 배포 closure. ENGINE_WORK_192.md/JSON.190–192 설치 후 시간/예산 입력 포함 최종 확인 예정.

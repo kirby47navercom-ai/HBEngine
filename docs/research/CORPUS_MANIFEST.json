@@ -3075,5 +3075,24 @@
     ],
     "unread": "Linked API/images/media, paper pages outside5–11, whole corpus",
     "globalGatePromotion": false
+  },
+  "supplemental192": {
+    "date": "2026-10-17",
+    "bodyRead": [
+      {
+        "url": "https://www.w3.org/TR/webaudio-1.0/",
+        "scope": "2021 Recommendation: text9104–9118 currentFrame/time;9402–9557 node options/channel configuration/port lifetime;9558–9682 process/lifetime/input/output/module sequence. Linked media/API and rest of specification not read."
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-waveformatex",
+        "scope": "Own syntax/member text33–62: PCM/channel/rate/alignment."
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-",
+        "scope": "Own text38–63: FOURCC/little-endian/RIFF and fmt/data chunk fields."
+      }
+    ],
+    "unread": "Rest of WebAudio/WAVE corpus and linked APIs/images/media",
+    "globalGatePromotion": false
   }
 }

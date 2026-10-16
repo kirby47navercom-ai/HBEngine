@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "89f99a0",
+  "targetIds": [
+    "ANM-06",
+    "AUD-03",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/audio-192-tQYGXO/acceptance.json",
+      "sha256": "7d0fe06c46c213b8743f86e6b2947190fb505102783712aa7d56af5c4be38172",
+      "result": {
+        "passed": 5,
+        "total": 5,
+        "checks": [
+          {
+            "name": "WAV header, little endian signed stereo samples, trimmed tail and budgets",
+            "passed": true
+          },
+          {
+            "name": "audio rendering thread handles variable quantum sizes, stereo clipping, silence, transfer pool and exact automatic budget",
+            "passed": true
+          },
+          {
+            "name": "capture owner preserves audible connections, coalesces finish, cancels loading and releases taps",
+            "passed": true
+          },
+          {
+            "name": "asset save names and folder validation reject invalid paths before any capture is consumed",
+            "passed": true
+          },
+          {
+            "name": "Windows/mobile/web shared module closure includes literal module-relative worklets",
+            "passed": true
+          }
+        ],
+        "newDependencies": 0,
+        "alwaysOnRecordingNodes": 0,
+        "defaultSeconds": 60,
+        "defaultPCMBytes": 33554432
+      }
+    },
+    "editor": {
+      "path": "native/build/audio-192-window-za8aU9/acceptance.json",
+      "sha256": "b596cf4dcb033a560b35fb4fc653f7b6dfe2d86d76cb891881020a39b1b31c23",
+      "result": {
+        "passed": true,
+        "executable": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\HBEngine.exe",
+        "humanRecordSave": true,
+        "humanSignal": {
+          "rate": 48000,
+          "frames": 95488,
+          "duration": 1.9893333333333334,
+          "tone440": 0.10810595563905963,
+          "tone880": 0.04408236440875796
+        },
+        "limited": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 24000,
+          "duration": 0.5,
+          "startTime": 7.0906666666666665,
+          "reason": "limit",
+          "truncated": true,
+          "pcmBytes": 96000,
+          "maxPCMBytes": 192000,
+          "maxSeconds": 0.5,
+          "sources": 0,
+          "bytes": 96044,
+          "path": "Assets/Recordings/Limited.wav"
+        },
+        "limitedSignal": {
+          "rate": 48000,
+          "frames": 24000,
+          "duration": 0.5,
+          "tone440": 2.519762733199245e-18,
+          "tone880": 0.04408231427986868
+        },
+        "retried": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 194816,
+          "duration": 4.058666666666666,
+          "startTime": 11.181333333333333,
+          "reason": "stopped",
+          "truncated": false,
+          "pcmBytes": 779264,
+          "maxPCMBytes": 33554432,
+          "maxSeconds": 60,
+          "sources": 0,
+          "bytes": 779308,
+          "path": "Assets/Recordings/Retry.wav"
+        },
+        "retrySignal": {
+          "rate": 48000,
+          "frames": 194816,
+          "duration": 4.058666666666666,
+          "tone440": 0.10810552249084264,
+          "tone880": 0.04408275040418699
+        },
+        "paused": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 147328,
+          "duration": 3.0693333333333332,
+          "startTime": 19.330666666666666,
+          "reason": "stopped",
+          "truncated": false,
+          "pcmBytes": 589312,
+          "maxPCMBytes": 33554432,
+          "maxSeconds": 60,
+          "sources": 0,
+          "bytes": 589356,
+          "path": "Assets/Recordings/Paused.wav"
+        },
+        "automaticSaveOnStop": true,
+        "invalidPathPreservesRecording": true,
+        "failedImportRetried": true,
+        "decoder": {
+          "channels": 2,
+          "rate": 48000,
+          "duration": 4.058666666666666
+        },
+        "replayedSavedWAV": true,
+        "wavFiles": 5,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "takeRegression": {
+      "path": "native/build/engine-169-iPxZmf/acceptance.json",
+      "sha256": "927607721484460291aee81c8a25027d46791336779d8248960ff19be5339c11",
+      "result": {
+        "passed": 23,
+        "total": 23,
+        "results": [
+          {
+            "name": "확장 이웃·지정 타일·원본 인덱스와 역 의존 갱신",
+            "passed": true
+          },
+          {
+            "name": "대칭·빈 칸·다른 타일·회전 규칙",
+            "passed": true
+          },
+          {
+            "name": "먼 이웃 변경의 렌더 청크·충돌 dirty 전달",
+            "passed": true
+          },
+          {
+            "name": "대칭 UV와 기하 범위",
+            "passed": true
+          },
+          {
+            "name": "NavArea 비용·마스크·동적 삼각 장애물",
+            "passed": true
+          },
+          {
+            "name": "삼각 SAT·높이·32번 비트 경계",
+            "passed": true
+          },
+          {
+            "name": "장면 컴포넌트·이동 장애물·부모 변환",
+            "passed": true
+          },
+          {
+            "name": "2D XY 영역 비용과 금지 구역",
+            "passed": true
+          },
+          {
+            "name": "다중 목표 IK 그래프·공유 관절·길이 보존",
+            "passed": true
+          },
+          {
+            "name": "분기 체인 다중 목표·제외 관절·기준 포즈 불변",
+            "passed": true
+          },
+          {
+            "name": "다중 IK 가중치·목표 API·소실 목표",
+            "passed": true
+          },
+          {
+            "name": "골격 포즈 형식·중복·쓰기 전 검증",
+            "passed": true
+          },
+          {
+            "name": "Take 구성 생성/삭제·구조체 값·골격 키·압축",
+            "passed": true
+          },
+          {
+            "name": "녹화 시퀀스 재생·되감기·삭제/추가·원상 복원",
+            "passed": true
+          },
+          {
+            "name": "오디오 큐 녹화·중첩 음성·종료 구간",
+            "passed": true
+          },
+          {
+            "name": "두 경계 연결·방향·UV/색 보존",
+            "passed": true
+          },
+          {
+            "name": "개별 면 인셋·내접 한계·실패 원본 보존",
+            "passed": true
+          },
+          {
+            "name": "원본과 같아진 명시적 프리팹 수정의 다음 상속 보존",
+            "passed": true
+          },
+          {
+            "name": "사이드체인 Attack/Release·게인·독립 신호/순환 거부",
+            "passed": true
+          },
+          {
+            "name": "오디오 반복 큐의 원본 위치/배속 분할",
+            "passed": true
+          },
+          {
+            "name": "골격 시퀀스 quaternion 보간·긴 회전 키 축약",
+            "passed": true
+          },
+          {
+            "name": "같은 프레임 구성 교체의 원자 검증·원본 보존",
+            "passed": true
+          },
+          {
+            "name": "DirectX 실선의 픽셀 폭·근평면 자르기·재사용·해제",
+            "passed": true
+          }
+        ]
+      }
+    }
+  },
+  "regressions": [
+    "check-buffered-audio",
+    "check-audio-sources",
+    "check-streaming-audio",
+    "check-engine17017",
+    "check-navigation1917",
+    "check-test-artifacts",
+    "generate-api --check",
+    "check-engine-status78"
+  ],
+  "bodyRead": [
+    {
+      "url": "https://www.w3.org/TR/webaudio-1.0/",
+      "scope": "2021 Recommendation: text9104–9118 currentFrame/time;9402–9557 node options/channel configuration/port lifetime;9558–9682 process/lifetime/input/output/module sequence. Linked media/API and rest of specification not read."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-waveformatex",
+      "scope": "Own syntax/member text33–62: PCM/channel/rate/alignment."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-",
+      "scope": "Own text38–63: FOURCC/little-endian/RIFF and fmt/data chunk fields."
+    }
+  ],
+  "defaultSeconds": 60,
+  "defaultPCMBytes": 33554432,
+  "newDependencies": 0,
+  "alwaysOnRecordingNodes": 0,
+  "alwaysOnRecordingTimers": 0,
+  "transferPoolBytes": 65536,
+  "installationPending": true,
+  "latestHumanSettingsVerificationPending": true,
+  "limits": [
+    "Captures the current WebAudio rendered stereo mix after its routed DSP and spatialization, including current live mixed and direct voices. Virtual voices contribute no signal. This is not microphone capture, multichannel stems, external/native-DSP capture, video/audio muxing or exact Take/game-clock synchronization. WAV clips can use the existing authoring/playback path.",
+    "PCM budget limits retained16-bit sample data. Worklet pool adds64KiB and WAV encoding temporarily needs a second output buffer up to the sample budget; network upload may copy data. Not a constant-memory streaming disk recorder.",
+    "Source mute and spatial source spectral checks are measured samples, not subjective listening or exhaustive DSP/hardware quality. No phone/iOS-device validation.",
+    "The new visible maximum-time/PCM-MiB controls must be exercised by the installed smoke. Earlier editor proof covers actual visible button/meter, save, limits, paused finish, retry and replay.",
+    "The full WebAudio/WAVE corpus, linked APIs and media were not analyzed; no global gate promotion."
+  ],
+  "failedAttempts": [
+    "A stopped worklet could retain a late recycled transfer buffer. Its message handler now ignores all data after closure; pool-release test passes.",
+    "The first signal fixture let the camera act as listener ten units away, so correct spatial attenuation put the direct voice below the chosen threshold. Added an authored listener at the intended recording location and preserved the spectral assertions.",
+    "The initial UI capture used a hidden DOM button while the viewport tab was active. Final proof activates the mixer pane and uses actual CDP mouse events on the visible button, with nonzero live meters.",
+    "Historical buffered/streaming doubles predated opt-in streaming and deferred voice selection. Confirmed the buffered peak failure on committed baseline, then explicitly select real/streaming voices and sample meters in those narrow tests. A global sound with no binding also exposed an old b.self dereference; optional owner is now accepted and the lifecycle test passes.",
+    "The old169 bridge test rejected open boundary bridging, which182 already supports. It now verifies a valid12-index open bridge and unchanged source while preserving all closed-loop winding/UV assertions.",
+    "The shared exporter import closure omitted JS modules referenced by new URL(...,import.meta.url). It now traverses literal relative JS worklet/worker modules; shared Windows/mobile/web closure assertion passes."
+  ]
+}
