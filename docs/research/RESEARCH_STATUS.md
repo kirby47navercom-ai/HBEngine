@@ -428,3 +428,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 181–183: NamedSlot·Unity UI templates와UE PolyGroup·ProBuilder 선택 본문을 supplemental181183에 등록했다. 연결API·전체 corpus gate·실물기기 결과와 구분한다.
+
+
+184: Unity6000.6 NestedPrefabs125–149/PrefabInstanceOverrides126–215 본문을 supplemental184에 등록. 실패URL·연결API·전체gate와 구분.

@@ -2988,5 +2988,21 @@
     ],
     "unread": "연결API·전체본문/미디어·고급곡면해법의구현대조",
     "globalGatePromotion": false
+  },
+  "supplemental184": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      {
+        "url": "https://docs.unity3d.com/Manual/NestedPrefabs.html",
+        "scope": "Unity6000.6 본문125–149: 중첩 원본 링크와 바깥 자산 적용"
+      },
+      {
+        "url": "https://docs.unity3d.com/Manual/PrefabInstanceOverrides.html",
+        "scope": "Unity6000.6 본문126–215: 추가/삭제·명시 우선·루트Transform·배열안정성·개별/선택/전체Apply·목적지 구분"
+      }
+    ],
+    "unread": "연결API·모든Prefab모드/미디어·전체corpus",
+    "failedOpen": "PrefabOverrides.html returned Internal Error; not counted",
+    "globalGatePromotion": false
   }
 }

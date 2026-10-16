@@ -1,3 +1,4 @@
+import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {packagedRuntimeBytes} from './packaged-runtime.mjs';
 import {cookContent} from './cook-cache.mjs';
 import {gameInstanceBlueprint} from '../prototype/runtime-game.js';
@@ -67,6 +68,7 @@ export async function inspectBuild(record,profile){
   // Validate reusable shader dependencies before exporting, retaining authored function files.
   for(const [name,bytes] of content)if(['material','materialinstance'].includes(assetKind(name)))try{await resolveMaterialAsset(JSON.parse(bytes),async dependency=>JSON.parse(content.get(await include(dependency))));}catch(error){throw Error(name+': '+error.message);}
   for(const [name,bytes]of content)if(assetKind(name)==='widget')try{await resolveWidgetComposition(JSON.parse(bytes),async dependency=>JSON.parse(content.get(await include(dependency))));}catch(error){throw Error(name+': '+error.message);}
+  for(const [name]of content)if(assetKind(name)==='prefab')try{await resolvePrefab(name,async dependency=>JSON.parse(content.get(await include(dependency))),{validate:data=>validAsset('prefab',data)});}catch(error){throw Error(name+': '+error.message);}
   const legacyBlueprints=new Map();for(const [name,bytes] of content)if(name.endsWith('.hbblueprint.json')){const bp=JSON.parse(bytes);const candidates=legacyBlueprints.get(bp.name)||[];candidates.push(name);legacyBlueprints.set(bp.name,candidates);}
   for(const [name,bytes] of content)if(name.endsWith('.hbscene.json')){const data=JSON.parse(bytes);let changed=false;for(const object of data.objects)if(object.blueprint&&!object.blueprintAsset){const matches=legacyBlueprints.get(object.blueprint)||[];if(matches.length!==1)throw Error(name+': 블루프린트 이름을 경로로 지정하세요: '+object.blueprint);object.blueprintAsset=matches[0];changed=true;}if(changed)content.set(name,Buffer.from(json(data)));}
   warnings.push('텍스처·모델·음향은 가져온 형식을 유지해요. 실행 환경의 지원 코덱이 필요해요.');

@@ -427,3 +427,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 181–183: Widget.properties.widgetSlots JSON(슬롯명→위젯 경로/null,미지정=기본),NamedSlot 단일자식/일반 patch·Undo. world.mesh.edit에 insetRegion/retriangulateRegion/bridgeOffset,열린·불균등 브리지. editor.shortcuts.get/set에는 widget/modeling22명령 추가/전체55명령. sourceOnly 에셋 생성 예제는 생략해 모델 메타도 정상 조회한다.
+
+
+184: scene.prefab.apply의 property:[]는 중첩 포함 자식 추가/삭제를 바깥 원본의 additions/removed에 기록한다. additions는 해석된 중첩 부모를 참조하는 일반 Actor 행이며 최종 resolve/build 계층 검증이 필요하다. resolvedAnchors는 계산 메타이며 원본에 적은 값은 사용하지 않는다. sourceRevision·dryRun·원본/장면 파일 묶음 Undo는 기존 계약과 같다.
