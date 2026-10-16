@@ -9,3 +9,6 @@ Runtime LOD의 **표시 사이 포즈 계산 생략**을 켜면, 로컬 뼈/스�
 4초의30/60/120Hz에서 포즈 샘플120/240/480회가각20회로 줄고 Notify4회와 논리 시각은 같았다.256뼈60생략 프레임에서15360회 보간을 피했고 포즈 버퍼는 늘지 않았다. 실제 속성 편집/Undo/저장, 패키징 D3D·WebGPU의 C++ 전환·현재 포즈·색상 픽셀을 확인했다. [실행 근거](research/ENGINE_WORK_195.json).
 
 대조 본문: [UE Animation Budget Allocator](https://dev.epicgames.com/documentation/en-us/unreal-engine/animation-budget-allocator-in-unreal-engine)0–227, [Unity AnimatorCullingMode](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AnimatorCullingMode.html)237–253. 계산·표시·항상 갱신을 분리하는 판단에 사용했다. 자동 CPU-ms 예산, 포즈 보간, 레거시 Mixer/골격 수 LOD와 전체 상태 머신 계산 절감은 별도 잔여다. 전체 게임FPS·휴대폰 결과나 corpus 전체 분석 완료로 승격하지 않는다.
+
+
+194–199 설치 확인: d8258c4376678b5b·명세2589파일 실행 후 SHA 일치·실제 설치 EXE의 텍스처 채널/픽셀/면·슬라이스·줌/이동·원본 불변, 포즈 계산/보간/분산 사람 편집/Undo/저장, NavMesh800삼각형과 C++/runtime.navigation·오류0/종료0. 사용자 프로필10385파일 SHA 불변·링크2/.hbproject·이전 설치/생성 캐시251725633B 정리·Versions1. 근거 USER_INSTALL_199.json.

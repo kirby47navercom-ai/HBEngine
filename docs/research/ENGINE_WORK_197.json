@@ -452,15 +452,41 @@
           "signal": null
         }
       }
+    },
+    "installedEditor": {
+      "path": "native/build/animation-197-installed-AtApYM/acceptance.json",
+      "sha256": "97e504ed1fe7be68891679f317ca5ff147e95ae6fe9e660484af2ec6d85f4732",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/d8258c4376678b5b/HBEngine.exe",
+        "humanInspector": true,
+        "undo": true,
+        "saved": true,
+        "humanInterpolation": true,
+        "humanStaggering": true,
+        "settingsUndo": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "researchReuse": "ENGINE_WORK_195.json bodyRead ranges, no new body/API promotion",
-  "installationPending": true,
   "limits": [
     "Opt-in visual interpolation delays one update interval; no prediction/root/physics/curve/state machine/retarget change.",
     "Stable phase distributes periodic work but mandatory first pose is still evaluated for all actors.",
     "CPU schedule counts and small bone correctness are not sustained game FPS, mobile performance or general animation CPU-ms budgeting."
   ],
   "executionVerified": true,
-  "executionProfile": "Private basic fixtures;30FPS players, no sustained stress/whole-game FPS claim"
+  "executionProfile": "Private basic fixtures;30FPS players, no sustained stress/whole-game FPS claim",
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_199.json",
+    "receiptSHA256": "0619d03786e974fd31565e0b41aaca7fcbf3618bedfbcded0f4af9ac3ebc0ab5",
+    "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0",
+    "versions": [
+      "d8258c4376678b5b"
+    ]
+  }
 }

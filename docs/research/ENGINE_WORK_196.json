@@ -123,6 +123,96 @@
           "signal": null
         }
       }
+    },
+    "installedEditor": {
+      "path": "native/build/texture-196-installed-2vXxNB/acceptance.json",
+      "sha256": "a9debc0fc72bc20ddf1b0f86d4607f2a0a9baadfece0a48dae9b64ee97d3a08d",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/d8258c4376678b5b/HBEngine.exe",
+        "humanChannel": true,
+        "actualChannelPixels": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "sourceAlpha": [
+          0,
+          255,
+          0,
+          128
+        ],
+        "sourceProbe": {
+          "x": 3,
+          "y": 4,
+          "rgba": [
+            255,
+            0,
+            0,
+            255
+          ]
+        },
+        "zoomWheel": true,
+        "middlePan": [
+          35,
+          19.96875
+        ],
+        "originalUnchanged": true,
+        "families": [
+          {
+            "kind": "cubemap",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "texturearray",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "volumetexture",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          }
+        ],
+        "closedResourcesReleased": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "bodyRead": [
@@ -143,7 +233,14 @@
   "failedAttempts": [
     "Wheel anchoring at a fractional CSS center can produce subpixel initial pan; physical MMB drag asserts its exact delta from the pre-drag state rather than assuming the anchored offset was zero."
   ],
-  "installationPending": true,
   "newDependencies": 0,
-  "automaticRuntimeGPUReadbacks": 0
+  "automaticRuntimeGPUReadbacks": 0,
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_199.json",
+    "receiptSHA256": "0619d03786e974fd31565e0b41aaca7fcbf3618bedfbcded0f4af9ac3ebc0ab5",
+    "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0",
+    "versions": [
+      "d8258c4376678b5b"
+    ]
+  }
 }

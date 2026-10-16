@@ -1,3 +1,13 @@
+# 현재 인계 — 194–199 사용자 설치 검증 완료·누적 잔여 계속
+
+설치 C:\Users\kirby\HBEngine\Versions\d8258c4376678b5b\HBEngine.exe · source 057f65aa51e1a8471a1b17441c452e69bd9122a0 · bundle d8258c4376678b5b2f9ec3e6c077c1f88de47558e8f402092b590b33cc6f35fd ·2589파일/실행후SHA동일·Versions1/링크2/.hbproject. User10385파일 SHA 46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 전후불변. USER_INSTALL_199.json/194–199실행근거 연결. install199/finish199 실행완료·재실행금지. 이전193+생성캐시251725633B 정리·수정소스백업은1076B라이선스1개만 보존.
+
+실제 설치 EXE196texture2vXxNB,197animationAtApYM,199navigationjVV0IN 모두 PASS/오류0/종료0·캡처3직접시각검토. 앞선 D3D/GPU게임과 CPU검사는 같은소스근거를 재사용.198전역Node41사본 논리3.759GB/C:관찰+3.755GB 정리. 새소스변경이없으면같은검사반복금지.
+
+다음: 정본 ENGINE_STATUS.json remaining 전체에서 주요 미구현과 세부 목표를 계속 구현. 전체 UE/Unity corpus gate/완료율은 미확정. 이번 설치를 누적 목표 전체 완료로 표현 금지. 사용자 앱/프로필/게임 원본은 계속 격리하고 새 Versions를 쌓지 말 것. 아래는 과거 경과 기록.
+
+---
+
 # 현재 인계 — 194–199 실행 검증 완료·최신 설치 전환
 
 정본 docs/research/ENGINE_STATUS.json:78행/verified39 partial34 unimplemented2 unverified3, 전체 분모·완료율 미확정.194 필드별 ray/legacy·3백엔드 픽셀/GL 링크,195 포즈 계산 생략,196 텍스처 채널/픽셀/슬라이스,197 분산/지연 보간,198 안전 런타임 정리,199 NavMesh 투영 BVH/진단. 상세 ENGINE_WORK_194–199.md/JSON.

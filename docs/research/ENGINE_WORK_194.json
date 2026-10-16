@@ -676,7 +676,6 @@
     "GL comparison adds unrelated program definitions to a normal packet; actual multi-material field/key/atlas association is a separate CPU assertion.",
     "No new GPU atlas scalars/cache/runtime readbacks. Legacy layouts remain unrestricted."
   ],
-  "installationPending": true,
   "newDependencies": 0,
   "automaticRuntimeGPUReadbacks": 0,
   "regressions": {
@@ -723,6 +722,14 @@
         "passed": true,
         "output": "Retarget chain interpolation / IK / reference and source preservation / shared services order / schema: passed\n"
       }
+    ]
+  },
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_199.json",
+    "receiptSHA256": "0619d03786e974fd31565e0b41aaca7fcbf3618bedfbcded0f4af9ac3ebc0ab5",
+    "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0",
+    "versions": [
+      "d8258c4376678b5b"
     ]
   }
 }

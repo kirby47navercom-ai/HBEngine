@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\d8258c4376678b5b\\HBEngine.exe",
+  "bundleHash": "d8258c4376678b5b2f9ec3e6c077c1f88de47558e8f402092b590b33cc6f35fd",
+  "files": 2589,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2701,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f",
+        "bytes": 251725633,
+        "manifestSHA256": "473db7b231578961113a9b98c6ab07c0f94f2e344d1860d3d872384aa03ceea6"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T17:00:37.0027004Z",
+    "bytes": 251725633,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+        "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\3a617ac1aed4378f\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+        "bytes": 1076
+      }
+    ],
+    "remaining": [
+      "d8258c4376678b5b"
+    ]
+  },
+  "work": "native/build/engine-199-install-DVlW5M",
+  "versions": [
+    "d8258c4376678b5b"
+  ],
+  "manifestVerifiedFiles": 2589,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2589,
+  "installedChecks": {
+    "texture": {
+      "path": "native/build/texture-196-installed-2vXxNB/acceptance.json",
+      "sha256": "a9debc0fc72bc20ddf1b0f86d4607f2a0a9baadfece0a48dae9b64ee97d3a08d",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/d8258c4376678b5b/HBEngine.exe",
+        "humanChannel": true,
+        "actualChannelPixels": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "sourceAlpha": [
+          0,
+          255,
+          0,
+          128
+        ],
+        "sourceProbe": {
+          "x": 3,
+          "y": 4,
+          "rgba": [
+            255,
+            0,
+            0,
+            255
+          ]
+        },
+        "zoomWheel": true,
+        "middlePan": [
+          35,
+          19.96875
+        ],
+        "originalUnchanged": true,
+        "families": [
+          {
+            "kind": "cubemap",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "texturearray",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          },
+          {
+            "kind": "volumetexture",
+            "index": 1,
+            "source": "Assets/Blue196.svg",
+            "pixel": {
+              "x": 3,
+              "y": 4,
+              "rgba": [
+                0,
+                0,
+                255,
+                255
+              ]
+            }
+          }
+        ],
+        "closedResourcesReleased": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "animation": {
+      "path": "native/build/animation-197-installed-AtApYM/acceptance.json",
+      "sha256": "97e504ed1fe7be68891679f317ca5ff147e95ae6fe9e660484af2ec6d85f4732",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/d8258c4376678b5b/HBEngine.exe",
+        "humanInspector": true,
+        "undo": true,
+        "saved": true,
+        "humanInterpolation": true,
+        "humanStaggering": true,
+        "settingsUndo": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "navigation": {
+      "path": "native/build/navigation-199-installed-jVV0IN/acceptance.json",
+      "sha256": "8b5d34bd64214c16dc0f835dd320f0c61633f02a01434a83ceda05f235b95255",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/d8258c4376678b5b/HBEngine.exe",
+        "humanInspector": true,
+        "zeroNeighborBudget": true,
+        "undo": true,
+        "saved": true,
+        "blueprintRendered": true,
+        "editorProjection": {
+          "paths": 4,
+          "planes": {
+            "XZ": {
+              "agents": 4,
+              "indexCapacity": 4,
+              "scratchCapacity": 4,
+              "bytes": 656
+            }
+          },
+          "meshes": [
+            {
+              "actor": "Grid",
+              "queries": 8,
+              "lastNodes": 19,
+              "lastCandidates": 25,
+              "lastTriangles": 25,
+              "totalTriangles": 150,
+              "indexNodes": 255,
+              "indexedTriangles": 800
+            }
+          ]
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/texture-196-installed-2vXxNB/texture-viewer.png",
+      "sha256": "f356911c8aaabad36e0015426668e7e98f9770cc0889457ad572abbf717b8c02",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/animation-197-installed-AtApYM/animation-inspector.png",
+      "sha256": "98de8d71cf8c5a1b953f04b0f3a3336e106e6341af75ec7f0ca0754b0f3b2748",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/navigation-199-installed-jVV0IN/navigation-blueprint.png",
+      "sha256": "0b6e1821f4ae4d8c2c5178a14548619014b2c47be8db2d92f241c91a108a4727",
+      "visuallyInspected": true
+    }
+  ],
+  "privateChecks": "Unique fixture projects/profiles/ports; no use of real User profile for testing.",
+  "workspaceStorageCleanup": {
+    "path": "native/build/storage-198-final.json",
+    "sha256": "cb8c8d587b9efac864eb9fc58c5db6f2da2a3398af1908a385884f404d8f2ddc",
+    "result": {
+      "failures": [],
+      "freeAfter": 463056703488,
+      "freeBefore": 459301703680,
+      "deleted": 41,
+      "date": "2026-10-16T16:56:45.0040824Z",
+      "files": 41,
+      "bytes": 3759470728,
+      "skipped": [],
+      "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792169792235-2d38ac85-bfbd-43df-ac7e-cc33a3c3a554"
+    }
+  }
+}

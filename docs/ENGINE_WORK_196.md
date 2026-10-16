@@ -9,3 +9,6 @@ AI의 `texture.view`는 열린 텍스처 path와 선택 settings를 받는다. c
 CPU3군과 실제 Win32 UI에서 채널 선택 뒤 검은 픽셀, 원본 빨강/파랑, 반투명 alpha128, 확대·이동,3종 면/슬라이스, 문서 불변성, 닫기 자원 해제를 확인했다. 화면도 직접 확인했다. [실행 근거](research/ENGINE_WORK_196.json).
 
 대조 본문: [UE Texture Asset Editor](https://dev.epicgames.com/documentation/unreal-engine/texture-asset-editor-in-unreal-engine)0–141의 비파괴 채널·면·슬라이스·확대, [Unity DrawPreviewTexture](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/EditorGUI.DrawPreviewTexture.html)234–297의 표시 영역·채널·비율 계약. 현재 보기는 브라우저가 디코드한8비트 소스의 표시이며 쿠킹된 압축GPU mip·HDR 선형 값·볼륨3D 광선 보기나 재질 변환기가 아니다. 해당 추가 잔여와 전체 조사 gate는 원장에 유지한다.
+
+
+194–199 설치 확인: d8258c4376678b5b·명세2589파일 실행 후 SHA 일치·실제 설치 EXE의 텍스처 채널/픽셀/면·슬라이스·줌/이동·원본 불변, 포즈 계산/보간/분산 사람 편집/Undo/저장, NavMesh800삼각형과 C++/runtime.navigation·오류0/종료0. 사용자 프로필10385파일 SHA 불변·링크2/.hbproject·이전 설치/생성 캐시251725633B 정리·Versions1. 근거 USER_INSTALL_199.json.

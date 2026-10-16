@@ -8,12 +8,17 @@
   "versions": [
     "3a617ac1aed4378f"
   ],
-  "status": "deferred-running-install",
+  "status": "superseded-by-install-199",
   "noNewVersionCreated": true,
   "noProcessTerminated": true,
   "evidence": {
     "path": "native/build/install-196-deferred.json",
     "sha256": "b467706fac6db4e920f5ac8213ac45748d2cc7a2b9300df9b81ae8cfad40ac0e"
   },
-  "reason": "Existing user editor/build Node and worker processes reference the installed runtime. Keep the current installation and prepare further work; do not rerun the one-shot install196.mjs."
+  "reason": "Existing user editor/build Node and worker processes reference the installed runtime. Keep the current installation and prepare further work; do not rerun the one-shot install196.mjs.",
+  "supersededBy": {
+    "receipt": "docs/research/USER_INSTALL_199.json",
+    "receiptSHA256": "0619d03786e974fd31565e0b41aaca7fcbf3618bedfbcded0f4af9ac3ebc0ab5",
+    "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0"
+  }
 }

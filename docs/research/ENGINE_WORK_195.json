@@ -528,7 +528,6 @@
     "CDP page screenshot cannot capture the native D3D surface. Use actual hbPlayerDebug.capture and assert a colored pixel. The source fixture now explicitly uses an unlit material so its actor-only environment needs no light.",
     "A bound pose snapshot follows the configured5Hz presentation even after full calculation opt-out; verify the displayed sample within its .2s interval and CPU exact-current visual samples separately."
   ],
-  "installationPending": true,
   "newDependencies": 0,
   "automaticRuntimeGPUReadbacks": 0,
   "regressions": {
@@ -575,6 +574,14 @@
         "passed": true,
         "output": "Retarget chain interpolation / IK / reference and source preservation / shared services order / schema: passed\n"
       }
+    ]
+  },
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_199.json",
+    "receiptSHA256": "0619d03786e974fd31565e0b41aaca7fcbf3618bedfbcded0f4af9ac3ebc0ab5",
+    "sourceCommit": "057f65aa51e1a8471a1b17441c452e69bd9122a0",
+    "versions": [
+      "d8258c4376678b5b"
     ]
   }
 }
