@@ -3372,5 +3372,32 @@
       }
     ],
     "implementationScope": "223 UV authoring and224 native coordinate prerequisite only; no claim of full UE/Unity/lightmap implementation"
+  },
+  "supplemental229_231": {
+    "date": "2026-10-17",
+    "scope": "추가로 실제 읽은 범위이며 전체 사이트/API 분석 완료를 뜻하지 않음",
+    "read": [
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/api/Unity.AI.Navigation.NavMeshSurface.html",
+        "version": "2.0.16",
+        "body": "1021–1080 AddData/BuildNavMesh/RemoveData, 669–719 collectObjects/defaultArea. 상속 API 본문/링크는 미열람"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.ai.navigation@2.0/manual/AreasAndCosts.html",
+        "version": "2.0.16",
+        "body": "115–155 전체 주제 본문: 영역 비용/A*/마스크/우선순위. 연결된 페이지와 그림은 추가 분석 아님"
+      }
+    ],
+    "searchEvidenceOnly": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/basic-navigation-in-unreal-engine?lang=en-US",
+        "observed": "공식 검색 결과에 P로 NavMesh 표시 명시; 페이지 본문 전체 읽음 아님"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/custom-navigation-areas-and-query-filters-in-unreal-engine?lang=en-US",
+        "observed": "열기 결과가 11줄 요약/링크여서 본문 상세 검토로 계수하지 않음"
+      }
+    ],
+    "implementation": "docs/research/ENGINE_WORK_229.json"
   }
 }

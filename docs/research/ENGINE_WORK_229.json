@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b92c642",
+  "implementationRevision": "18a673c38931a93fa3cf7005be3fcd6559f4033c",
+  "targetIds": [
+    "WLD-06",
+    "2D-06"
+  ],
+  "implemented": [
+    "NavMesh의 선택 plane XY/XZ·누락한 구버전은 XZ·2D 양쪽 winding 베이크·평면별 포털 방향/funnel·3D 최근접 BVH 재사용",
+    "XY 장애물 SAT/Z층·2D와3D collider 차원 격리·영역 비용/마스크·링크·공용 MoveTo 평면 선택",
+    "XY 단순 회피의 공간 해시/접선/Z층·기존 ORCA와 C++/BP 고수준 API 재사용·런타임 진단 plane",
+    "NavMesh 폼에서 평면/원본 선택→굽기/Undo/Redo·AI navigation.bake dryRun·실행 중 EQS 신규 열기/현재 XY 메시로 투영"
+  ],
+  "limits": [
+    "임의 표면 방향과 움직이는 NavMesh 소유자의 질의/회피 좌표계 통합은 별도 잔여",
+    "funnel은 선택된 삼각 corridor를 다듬는다. 비평면 정밀 funnel·경계 침식/반경 보장·재분할 carving은 추가 작업",
+    "2D D3D와 3D WebGPU 네 에이전트 표본은 전체 군중/모바일 FPS 또는 모든 충돌 보장을 뜻하지 않는다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/navigation-plane-229-SfSUHW/acceptance.json",
+      "sha256": "da0ca8916bab3997341684545dab1fecd0a6f9a8d21b2fc0ced72ce6cd1746b1"
+    },
+    {
+      "path": "native/build/navigation-plane-229-window-reLZFt/acceptance.json",
+      "sha256": "fcafda7d97683a91c459fd5b04cd881a9b2454add9dac216eb4ed8bc915295b7"
+    },
+    {
+      "path": "native/build/navigation-199-player-8IXZGE/acceptance.json",
+      "sha256": "2be4b945fdeb6421ba0f1afdcdd0884f9b7d59a6c1cab5420bd70a24d404306d"
+    },
+    {
+      "path": "native/build/navigation-199-player-aSJzLK/acceptance.json",
+      "sha256": "c89d6fec792947533b4a129c847012b0377ea61c953dadd7f103326c2deb1cbb"
+    },
+    {
+      "path": "native/build/navigation-199-a2W3P8/acceptance.json",
+      "sha256": "1b8a32ddbc0a11434e8a4836b26403aa34a753069d5ebb1fe9eb95e624e88d18"
+    }
+  ],
+  "installationPending": true
+}

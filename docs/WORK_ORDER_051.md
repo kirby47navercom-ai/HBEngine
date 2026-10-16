@@ -357,3 +357,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 223–228 설치 확인: b632ce56672d0c14·명세2764파일 실행후SHA동일·설치본 자체 빌더의 D3D/WebGL/WebGPU 세 게임·UV1 저작/베이크/선형 Half 미리보기·원자 Undo/Redo·AI dryRun/원본SHA가드 통과. 오류0/종료0·캡처3시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치192727227B 제거. USER_INSTALL_228.json.
+
+
+229–231: XY 삼각 NavMesh·평면별 경로/영역/장애물/EQS/단순회피·정점 seam 인접성 복구·지연 항법 표시와 P/AI 진단 구현. CPU7+4+4군·인간 bake/Undo/AI/P/EQS 창·CPP/BP 네 에이전트 D3D2D/WebGPU3D 통과. 임의 표면/동적 carving 등 잔여는 정본 유지. 설치 준비 중.

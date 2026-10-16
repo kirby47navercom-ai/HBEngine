@@ -11,3 +11,6 @@
 
 ## 범위/잔여
 정본 docs/research/ENGINE_STATUS.json과동기화 docs/ENGINE_STATUS.md를우선.78항목39/35/1/3이며전체UE/Unity/상용엔진완료율아님. 생성필터215/수동변수바인딩216은이미구현했고잔여로반복하지말것. 미등록struct/중첩컨테이너/큰키·기존대상수명/재부모화·PCM동기·mobileeditor/실폰/iOS·고급렌더/physics/network등정본행의구체잔여계속. 모든과거원장완료/잔여대조없이전체완료를말하지말것.
+
+## 추가229–231 설치 준비
+구현c0e5bef+18a673c·아직사용자설치228. NavMesh XY bake/portal/funnel/SAT/차원/층/MoveTo/EQS/단순회피와고수준CPP/BP,230exact position seam Navbake(렌더 원본 불변),231 P지연Nav overlay/영역색·wire/link·인덱스공유·기존prefs보존·뷰포트별격리·off해제·AI boundedmetadata·타깃assetedit/atomicUndo재동기화. CPU229SfSUHW7군·230VBIxng4군·231qtAiXw4군·199a2W3P86·191qRDena7·batch165B8Pnyg17·167pVsEDg11·presentation228검사/shortcut112명령. 실제창reLZFt P/AI/원자파일Undo/사람Navbake/EQS/화면표시 PASS. CPP/BP XY D3D8IXZGE minsep.6022·XZ WebGPU aSJzLK minsep.60199/지름.6 PASS. docs229-231.started/done완료재실행금지,이후증거갱신정상. 다음dist sync→새install231원샷→설치본229window/P/atomicUndo+225editor-only회귀→새finish231→push→누적잔여계속. native변경없어재컴파일불필요. 사용자설정읽기inventory만/Versions1. NavOverlay sourceSave/changed+Filebatchinvalidate연결됨. sourceNav씬원본UV전환고급범위나일반renderUVstitch완료claim금지. corpus229_231정확열람scope추가.

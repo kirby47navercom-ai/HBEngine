@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "b92c642",
+  "implementationRevision": "18a673c38931a93fa3cf7005be3fcd6559f4033c",
+  "targetIds": [
+    "WLD-06",
+    "EDT-05",
+    "AI-03"
+  ],
+  "implemented": [
+    "표시→항법 및 재지정 가능한 viewport P 단축키·MeshRenderer와 독립적인 NavigationMesh 영역색/삼각 경계/활성 링크 표시",
+    "한 뷰포트라도 요청할 때만 원본 읽기와 GPU용 버퍼 생성·모든 요청을 끄면 소유 자원 해제·출시 게임에서는 생성하지 않음",
+    "인덱스 공유/16·32bit 선택·최대32 영역별 재료로 정점별 색 배열 제거·표시 전환마다 소스 재요청 없음",
+    "뷰포트별 표시와 game view 격리/복원·기존 표시 설정 보존·에셋 무효화 재로딩·세대 토큰으로 오래된 비동기 결과 폐기",
+    "viewport.navigation의 페이지별 plane/영역/삼각형/링크/바이트/로드 상태 진단·조회 시 전체 NavMesh 목록 복제 없음"
+  ],
+  "limits": [
+    "색은 정적 bake 영역이다. 현재 장애물 carving이나 실시간 부분 삼각 비용의 완전 시각화는 별도 잔여",
+    "표시 버퍼 바이트는 해당 진단 기하 비용이며 프로세스 전체 RAM/VRAM 또는 게임 FPS 측정이 아니다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/navigation-debug-231-qtAiXw/acceptance.json",
+      "sha256": "9964bd2ad6bd48e19e4905b57efe82b0a3fc2cf30a4a1b8d28d548867382ae6a"
+    },
+    {
+      "path": "native/build/navigation-plane-229-window-reLZFt/acceptance.json",
+      "sha256": "fcafda7d97683a91c459fd5b04cd881a9b2454add9dac216eb4ed8bc915295b7"
+    }
+  ],
+  "installationPending": true
+}
