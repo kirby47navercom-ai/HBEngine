@@ -99,7 +99,6 @@
       }
     }
   },
-  "installationPending": true,
   "newDependencies": 0,
   "newPersistentServices": 0,
   "scope": "Before creating a new installed version or changing links, inspect processes whose executable/command line references another existing version. Repeat after copy and remove only own staging when busy. Return explicit deferred metadata without killing builds.",
@@ -107,5 +106,13 @@
     "No claim that process inspection can eliminate every launch race after the final check. The deletion-time protection remains active; a version started after final preflight is protected rather than forcibly deleted.",
     "An updater executing from a prior installed runtime must finish or use an outside runtime before switching to a new bundle. No persistent polling service or duplicate backup runtime is installed.",
     "The local evidence does not establish all upgrade/disk-full/power-loss scenarios. PRJ03 broader recovery remains partial."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_193.json",
+    "receiptSHA256": "a91bcb6ce8b492ca2a3a9f9e7b438217ca9c78ea64616d3a9369cd83adeeac48",
+    "sourceCommit": "d0b07ecdffa1399bd554e25d317411acc74f4a15",
+    "versions": [
+      "3a617ac1aed4378f"
+    ]
+  }
 }

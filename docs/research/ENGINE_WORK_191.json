@@ -165,6 +165,24 @@
           "signal": null
         }
       }
+    },
+    "installedEditor": {
+      "path": "native/build/navigation-191-installed-PZgW7x/acceptance.json",
+      "sha256": "8bc0822612af353520e6b715df70f1161e519a9e095266b98f526d271d5b9dc3",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe",
+        "humanInspector": true,
+        "zeroNeighborBudget": true,
+        "undo": true,
+        "saved": true,
+        "blueprintRendered": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "regressions": [
@@ -206,7 +224,6 @@
     "default": 16,
     "zero": "all within selected distance/height"
   },
-  "installationPending": true,
   "limits": [
     "ORCA constrains planar disc velocities from selected neighbors at the observed current velocity. It is not Detour/Mass, NavMesh carving, acceleration-constrained control, nonplanar surface projection or a universal collision guarantee. Walls and dynamic physical response remain owned by the existing pathfinder/motor.",
     "The legacy/simple mode remains the default. ORCA is opt-in, may produce best-effort infeasible output during overlaps/congestion, and can leave NavMesh boundaries. Mixed dynamic-parent motor hierarchies and physical acceleration constraints need further integration.",
@@ -219,5 +236,13 @@
     "The first native service harness used an incomplete fake VM. Use actual BlueprintRuntime.start/fixedTick/collisions instead.",
     "Fixture source headers must be written before a Blueprint referencing them. The content-hash revision after Undo should equal the restored content revision. These harness errors were corrected without weakening collision assertions.",
     "An old test deleted its owned fixture before scheduled cleanup. Cleanup now tolerates ENOENT in the validated owned path; outside-path, source/evidence and package-manifest retention assertions still pass."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_193.json",
+    "receiptSHA256": "a91bcb6ce8b492ca2a3a9f9e7b438217ca9c78ea64616d3a9369cd83adeeac48",
+    "sourceCommit": "d0b07ecdffa1399bd554e25d317411acc74f4a15",
+    "versions": [
+      "3a617ac1aed4378f"
+    ]
+  }
 }

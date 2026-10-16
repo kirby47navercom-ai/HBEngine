@@ -1,3 +1,15 @@
+# 190–193 설치/영수증 완료 — 194 복잡 그래프 초기 컴파일 조사 계속
+
+설치 C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe. source d0b07ecdffa1399bd554e25d317411acc74f4a15(bundle3a617ac1aed4378ff16cd81de37dd67acdfbe6c5536b6ca2acb9c3f47bb7d673)/2560manifest파일·실행후전부SHA동일·Versions1/링크2/.hbproject. User프로필10385SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26전후불변. finish193.mjs 실행완료재실행금지. 이전189설치+캐시439132589bytes정리. UserInstall193/Work190191192193영수증연결완료. 다음receipt커밋push부터.
+
+설치실제검사audio192xuBN0c PASS: 보이는믹서tab/mouse버튼·시간12초/PCM1MiB·녹음중setting잠금·실게임meter·WAV440/880·C++mute·0.5s정확제한·invalidpath보존·503실패재시도·pausefinish·stopautoWAV·decode/replay/errors0exit0. nav191installedPZgW7x UIprops/Undo/save/BP표시PASS. GL/GPU187longTimeT3p0Y0 PASS. 캡처3개실제시각검토. sourceCPU5/oldAudio3/16923/17017/Nav1917+기존CPP8/retention/install193race/API/원장PASS.
+
+중요193설치경과: 192최초설치새b5c56efbdce08ae3생성뒤이전189Node가사용자Claude다른게임Android빌드에사용중이라이전폴더보호됨. 사용자빌드중단안함. 링크/등록기존으로복원후새b5만officialpruner174880763bytes삭제/Versions1. install-192-deferred.json근거.193제품installEditor/activeInstalledVersions는사전및복사후사용중다른버전확인·복사임시정리·deferred:true reasonrunning-install activepid/버전/name명시반환. 소스상시서비스없음. 가짜소스+실제자식/동일버전/사전보류/복사중시작/정상교체/oldretentionPASS. 사용자외부빌드자연종료뒤193설치성공. 192/193install스크립트절대재실행금지(모두oneshot).
+
+194아직제품변경없음. GPUtimestamp추가검토했지만이미SceneRender.hpp에3queryring/timestampdisjoint/DONOTFLUSH·gpuTimeMs/gpuTimingFrame구현있음! 중복구현금지. 다음진짜남은Complex141coldcompile~7–9초/정적189범위밖과RND07복잡normalguide생성비용조사. ray-material*.js에정상guide별root/ops축약소유자·메타와실제longshaderfixture부터볼것. 아직normalRoot/ops별가이드축약버그도입증안됨. summary190–193아래가과거설치준비기록. 주인님남은거전체길게계속/최종답변아직없음/신규agent금지/사용자창프로젝트프로필보호/Versions1유지.
+
+---
+
 # 190–192 검증 완료 — 묶음 설치192 준비
 
 주인님 남은거전체/길게계속 지시 유지·최종답변 아직 없음·신규agent요청없어스폰금지. installed18944a236f286ae030e/Versions1/profile10385SHA불변. main19189f99a0 originpush;1908f1d8b6 포함.192 현재미커밋: actualpostDSP/공간음 PCM16 WAV 녹음·AudioMixer버튼/실게임meter·시간/PCM MiB설정·공용AI start/finish·수명/제한/실패retainedretry/정지자동저장·WAV다시Source재생·workletmoduleClosure. CPU5tQYGXO/실창za8aU9(visiblemouse+liveMeter)/이전xRhR6S PASS. 새시간12초/1MiB입력검사는 설치smokecheck-audio-192-window --executable 새경로에서필수; docs192설치pending/설정pending 명시. SOURCE192 연구구역등록/ENGINE_STATUSlatest192·78rows39verified34partial2unimplemented3unverified/전체gatefalse.

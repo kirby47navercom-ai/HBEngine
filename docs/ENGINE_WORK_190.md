@@ -9,3 +9,6 @@ Time/Panner가 그래프에 있다는 이유만으로 정적인 광선 기하를
 CPU5개와187의 기존 이력7개,106/138/189 관련 회귀를 검사했다. 실제 DirectX·WebGPU 패키징 게임은 미연결 Time이 있는 재질에서 BVH refit/rebuild 수가 프레임 사이에 고정됐다. DirectX는 아틀라스 전송 횟수/바이트도 유지했다. 실제 연결된 Time의 DirectX 게임은 계속 움직이며 같은 프로그램/아틀라스를 재사용했다. 모든 실행은 오류0/종료0이다. [근거](research/ENGINE_WORK_190.json).
 
 새 캐시·의존성·상시 타이머·GPU 읽기를 추가하지 않는다. AI와 프로파일러는 기존 renderer.bvh, rayGeometry, raySceneUpdates/Bytes 진단을 사용한다. 외부 문서/API 전체를 새로 분석했다는 기록이나 전체 엔진 완료율을 올리지 않는다. 설치는 다음 기능과 묶어서 반영한다.
+
+
+190–193 설치 확인: 3a617ac1aed4378f·명세2560파일 실행 후 SHA 일치·실제 설치 EXE에서 ORCA 속성/Undo/저장·BP 표시, 믹스 녹음 시간12초/PCM1MiB 설정과 녹음 중 잠금·게임 레벨·WAV 스펙트럼/제한/일시정지/재시도/종료 저장/재생, GL/GPU 장시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치439132589바이트 정리·Versions1. USER_INSTALL_193.json.

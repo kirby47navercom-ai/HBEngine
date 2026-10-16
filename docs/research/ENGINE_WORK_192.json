@@ -239,6 +239,106 @@
           }
         ]
       }
+    },
+    "installedAudio": {
+      "path": "native/build/audio-192-installed-xuBN0c/acceptance.json",
+      "sha256": "fcc626ac6b91400c55d1997c4a7cab6b0c14e13782b1f57bc3c36a7a13605224",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe",
+        "humanRecordSave": true,
+        "humanSignal": {
+          "rate": 48000,
+          "frames": 96000,
+          "duration": 2,
+          "tone440": 0.10810533178512198,
+          "tone880": 0.044082327683587705
+        },
+        "limited": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 24000,
+          "duration": 0.5,
+          "startTime": 7.0906666666666665,
+          "reason": "limit",
+          "truncated": true,
+          "pcmBytes": 96000,
+          "maxPCMBytes": 192000,
+          "maxSeconds": 0.5,
+          "sources": 0,
+          "bytes": 96044,
+          "path": "Assets/Recordings/Limited.wav"
+        },
+        "limitedSignal": {
+          "rate": 48000,
+          "frames": 24000,
+          "duration": 0.5,
+          "tone440": 1.0172526041762163e-8,
+          "tone880": 0.04408231427986772
+        },
+        "retried": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 195328,
+          "duration": 4.069333333333334,
+          "startTime": 11.170666666666667,
+          "reason": "stopped",
+          "truncated": false,
+          "pcmBytes": 781312,
+          "maxPCMBytes": 33554432,
+          "maxSeconds": 60,
+          "sources": 0,
+          "bytes": 781356,
+          "path": "Assets/Recordings/Retry.wav"
+        },
+        "retrySignal": {
+          "rate": 48000,
+          "frames": 195328,
+          "duration": 4.069333333333334,
+          "tone440": 0.10810587419138257,
+          "tone880": 0.044082405621396425
+        },
+        "paused": {
+          "state": "stopped",
+          "sampleRate": 48000,
+          "channels": 2,
+          "bits": 16,
+          "frames": 146944,
+          "duration": 3.0613333333333332,
+          "startTime": 19.330666666666666,
+          "reason": "stopped",
+          "truncated": false,
+          "pcmBytes": 587776,
+          "maxPCMBytes": 33554432,
+          "maxSeconds": 60,
+          "sources": 0,
+          "bytes": 587820,
+          "path": "Assets/Recordings/Paused.wav"
+        },
+        "automaticSaveOnStop": true,
+        "invalidPathPreservesRecording": true,
+        "failedImportRetried": true,
+        "decoder": {
+          "channels": 2,
+          "rate": 48000,
+          "duration": 4.069333333333334
+        },
+        "replayedSavedWAV": true,
+        "wavFiles": 5,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      },
+      "command": "node tools/check-audio-192-window.mjs --executable C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\HBEngine.exe",
+      "visibleMaxSeconds12AndPCM1MiB": true,
+      "settingsLockedWhileRecording": true,
+      "verifierSHA256": "6e93f001a6a4db149ad462c4c779cabbdf3ba65e6ec327ba5b5623b05ed222f4"
     }
   },
   "regressions": [
@@ -271,13 +371,10 @@
   "alwaysOnRecordingNodes": 0,
   "alwaysOnRecordingTimers": 0,
   "transferPoolBytes": 65536,
-  "installationPending": true,
-  "latestHumanSettingsVerificationPending": true,
   "limits": [
     "Captures the current WebAudio rendered stereo mix after its routed DSP and spatialization, including current live mixed and direct voices. Virtual voices contribute no signal. This is not microphone capture, multichannel stems, external/native-DSP capture, video/audio muxing or exact Take/game-clock synchronization. WAV clips can use the existing authoring/playback path.",
     "PCM budget limits retained16-bit sample data. Worklet pool adds64KiB and WAV encoding temporarily needs a second output buffer up to the sample budget; network upload may copy data. Not a constant-memory streaming disk recorder.",
     "Source mute and spatial source spectral checks are measured samples, not subjective listening or exhaustive DSP/hardware quality. No phone/iOS-device validation.",
-    "The new visible maximum-time/PCM-MiB controls must be exercised by the installed smoke. Earlier editor proof covers actual visible button/meter, save, limits, paused finish, retry and replay.",
     "The full WebAudio/WAVE corpus, linked APIs and media were not analyzed; no global gate promotion."
   ],
   "failedAttempts": [
@@ -287,5 +384,13 @@
     "Historical buffered/streaming doubles predated opt-in streaming and deferred voice selection. Confirmed the buffered peak failure on committed baseline, then explicitly select real/streaming voices and sample meters in those narrow tests. A global sound with no binding also exposed an old b.self dereference; optional owner is now accepted and the lifecycle test passes.",
     "The old169 bridge test rejected open boundary bridging, which182 already supports. It now verifies a valid12-index open bridge and unchanged source while preserving all closed-loop winding/UV assertions.",
     "The shared exporter import closure omitted JS modules referenced by new URL(...,import.meta.url). It now traverses literal relative JS worklet/worker modules; shared Windows/mobile/web closure assertion passes."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_193.json",
+    "receiptSHA256": "a91bcb6ce8b492ca2a3a9f9e7b438217ca9c78ea64616d3a9369cd83adeeac48",
+    "sourceCommit": "d0b07ecdffa1399bd554e25d317411acc74f4a15",
+    "versions": [
+      "3a617ac1aed4378f"
+    ]
+  }
 }

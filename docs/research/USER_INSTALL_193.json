@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "d0b07ecdffa1399bd554e25d317411acc74f4a15",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\HBEngine.exe",
+  "bundleHash": "3a617ac1aed4378ff16cd81de37dd67acdfbe6c5536b6ca2acb9c3f47bb7d673",
+  "files": 2560,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2805,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\44a236f286ae030e",
+        "bytes": 439132589,
+        "manifestSHA256": "2f05eb084a269ca77793581baa7fe490666d435d5d0090449ee329802006ed10"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T15:42:54.4084282Z",
+    "bytes": 439132589,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "3a617ac1aed4378f"
+    ]
+  },
+  "work": "native/build/engine-193-install-GMKV2u",
+  "versions": [
+    "3a617ac1aed4378f"
+  ],
+  "manifestVerifiedFiles": 2560,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2560,
+  "installedAudio": {
+    "path": "native/build/audio-192-installed-xuBN0c/acceptance.json",
+    "sha256": "fcc626ac6b91400c55d1997c4a7cab6b0c14e13782b1f57bc3c36a7a13605224",
+    "result": {
+      "passed": true,
+      "executable": "C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe",
+      "humanRecordSave": true,
+      "humanSignal": {
+        "rate": 48000,
+        "frames": 96000,
+        "duration": 2,
+        "tone440": 0.10810533178512198,
+        "tone880": 0.044082327683587705
+      },
+      "limited": {
+        "state": "stopped",
+        "sampleRate": 48000,
+        "channels": 2,
+        "bits": 16,
+        "frames": 24000,
+        "duration": 0.5,
+        "startTime": 7.0906666666666665,
+        "reason": "limit",
+        "truncated": true,
+        "pcmBytes": 96000,
+        "maxPCMBytes": 192000,
+        "maxSeconds": 0.5,
+        "sources": 0,
+        "bytes": 96044,
+        "path": "Assets/Recordings/Limited.wav"
+      },
+      "limitedSignal": {
+        "rate": 48000,
+        "frames": 24000,
+        "duration": 0.5,
+        "tone440": 1.0172526041762163e-8,
+        "tone880": 0.04408231427986772
+      },
+      "retried": {
+        "state": "stopped",
+        "sampleRate": 48000,
+        "channels": 2,
+        "bits": 16,
+        "frames": 195328,
+        "duration": 4.069333333333334,
+        "startTime": 11.170666666666667,
+        "reason": "stopped",
+        "truncated": false,
+        "pcmBytes": 781312,
+        "maxPCMBytes": 33554432,
+        "maxSeconds": 60,
+        "sources": 0,
+        "bytes": 781356,
+        "path": "Assets/Recordings/Retry.wav"
+      },
+      "retrySignal": {
+        "rate": 48000,
+        "frames": 195328,
+        "duration": 4.069333333333334,
+        "tone440": 0.10810587419138257,
+        "tone880": 0.044082405621396425
+      },
+      "paused": {
+        "state": "stopped",
+        "sampleRate": 48000,
+        "channels": 2,
+        "bits": 16,
+        "frames": 146944,
+        "duration": 3.0613333333333332,
+        "startTime": 19.330666666666666,
+        "reason": "stopped",
+        "truncated": false,
+        "pcmBytes": 587776,
+        "maxPCMBytes": 33554432,
+        "maxSeconds": 60,
+        "sources": 0,
+        "bytes": 587820,
+        "path": "Assets/Recordings/Paused.wav"
+      },
+      "automaticSaveOnStop": true,
+      "invalidPathPreservesRecording": true,
+      "failedImportRetried": true,
+      "decoder": {
+        "channels": 2,
+        "rate": 48000,
+        "duration": 4.069333333333334
+      },
+      "replayedSavedWAV": true,
+      "wavFiles": 5,
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    },
+    "command": "node tools/check-audio-192-window.mjs --executable C:\\Users\\kirby\\HBEngine\\Versions\\3a617ac1aed4378f\\HBEngine.exe",
+    "visibleMaxSeconds12AndPCM1MiB": true,
+    "settingsLockedWhileRecording": true,
+    "verifierSHA256": "6e93f001a6a4db149ad462c4c779cabbdf3ba65e6ec327ba5b5623b05ed222f4"
+  },
+  "installedNavigation": {
+    "path": "native/build/navigation-191-installed-PZgW7x/acceptance.json",
+    "sha256": "8bc0822612af353520e6b715df70f1161e519a9e095266b98f526d271d5b9dc3",
+    "result": {
+      "passed": true,
+      "executable": "C:/Users/kirby/HBEngine/Versions/3a617ac1aed4378f/HBEngine.exe",
+      "humanInspector": true,
+      "zeroNeighborBudget": true,
+      "undo": true,
+      "saved": true,
+      "blueprintRendered": true,
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "installedTimePixels": {
+    "path": "native/build/rendering-187-installed-T3p0Y0/acceptance.json",
+    "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+    "result": {
+      "passed": true,
+      "webgl": {
+        "pixels": [
+          [
+            0.9999845623970032,
+            0.003921567462384701,
+            0.003921567462384701,
+            1
+          ],
+          [
+            0.003921567462384701,
+            0.003921567462384701,
+            0.9999845623970032,
+            1
+          ]
+        ],
+        "maxError": 5.925724455568826e-8
+      },
+      "webgpu": {
+        "pixels": [
+          [
+            0.9999845623970032,
+            0.003921567462384701,
+            0.003921567462384701,
+            1
+          ],
+          [
+            0.003921567462384701,
+            0.003921567462384701,
+            0.9999845623970032,
+            1
+          ]
+        ],
+        "maxError": 5.925724455568826e-8
+      },
+      "errors": [],
+      "exit": {
+        "code": 0,
+        "signal": null
+      }
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/audio-192-installed-xuBN0c/capture-mixer.png",
+      "sha256": "2c8271d05078685a753b065d0002c1feea02e5f9a407d555604a5404bb83c9e7",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/navigation-191-installed-PZgW7x/navigation-inspector.png",
+      "sha256": "08018e048eca2828fd5310242a66197b5ba3ada9994c9ed1e4f2564ea0c0dbb6",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/navigation-191-installed-PZgW7x/navigation-blueprint.png",
+      "sha256": "a2f45d7f3c522ad58b1b66db5daf31e45577b7eb4261c84abea833569aa03680",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

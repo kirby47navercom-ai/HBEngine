@@ -766,6 +766,52 @@
           "signal": null
         }
       }
+    },
+    "installedTimePixels": {
+      "path": "native/build/rendering-187-installed-T3p0Y0/acceptance.json",
+      "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+      "result": {
+        "passed": true,
+        "webgl": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "webgpu": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "baselineBehavior": {
@@ -1058,7 +1104,6 @@
   "newDependencies": 0,
   "newCache": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "limits": [
     "The measured CPU component is GeometryGI prepare/commit for one 1000-instance UV-normal fixture. It does not include rendering, game logic, physics or a sustained PC120/mobile60 workload. 1000 is the sample size, not an engine object limit.",
     "Required initial pose-history preparation still occurs. Only the warmed static packet/texture is reused; first-load cost is not removed.",
@@ -1068,5 +1113,13 @@
     "The first liveness predicate considered only the Time opcode and removed an existing whole-frame rejection for a world/view-normal fixture containing an unused Time. Restored conservative dynamic-coordinate opcodes2–5 and kept the prior seven strict assertions unchanged.",
     "The first harness expected packet identity immediately after the first frame. Actual motion history requires a second preparation. Verify reuse after that required warmup instead of skipping history preparation.",
     "A packed packet does not expose the collector signature. The masked/physical value check now copies its actual float data before the next update; the collector signature check remains separate."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_193.json",
+    "receiptSHA256": "a91bcb6ce8b492ca2a3a9f9e7b438217ca9c78ea64616d3a9369cd83adeeac48",
+    "sourceCommit": "d0b07ecdffa1399bd554e25d317411acc74f4a15",
+    "versions": [
+      "3a617ac1aed4378f"
+    ]
+  }
 }

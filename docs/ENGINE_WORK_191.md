@@ -9,3 +9,6 @@ C++ Navigation::ConfigureAvoidance/GetSteeringVelocity/GetPreferredVelocity와 �
 CPU8개 묶음은 정면/교차·24방향·정지 대상·우선순위·겹침·KD 최근접/높이·입력/순서/수명·부모 월드 이동·두 이동 백엔드·BP·실제 C++를 검사했다. 실제 편집기 속성/0이웃/Undo/저장·노드 표시는 확인했고, DirectX XY와 WebGPU XZ 패키징 게임에서 C++와 BP가 설정한4명이 모두 도착했다. 최소 간격은 각각0.60001599/0.60001606으로 지름0.6을 유지했으며 오류0/종료0이다. 캡처를 직접 검토했다. [검사/출처/한계](research/ENGINE_WORK_191.json).
 
 1,000개 Node solve 표본에서 정적 작업 버퍼는 약99KB였다. 워밍업 뒤 성긴 장면 약6–8ms, 밀집16이웃 약14–15ms이며 전체 게임 프레임/PC120·모바일60을 보장하지 않는다. NavMesh 경계 투영·carving·Mass/Detour·비평면 이동·가속/혼합 물리 부모 제약은 별도 잔여다. 원문은 지정 본문/수식 구역을 읽은 것이며 외부 전체 분석으로 계산하지 않는다.
+
+
+190–193 설치 확인: 3a617ac1aed4378f·명세2560파일 실행 후 SHA 일치·실제 설치 EXE에서 ORCA 속성/Undo/저장·BP 표시, 믹스 녹음 시간12초/PCM1MiB 설정과 녹음 중 잠금·게임 레벨·WAV 스펙트럼/제한/일시정지/재시도/종료 저장/재생, GL/GPU 장시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치439132589바이트 정리·Versions1. USER_INSTALL_193.json.

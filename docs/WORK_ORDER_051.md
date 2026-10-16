@@ -274,3 +274,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 193: 이전 설치 런타임을 사용하는 외부 Android 빌드 발견→중단 없이192 새 사본만 정리/Versions1 복원. 이후 설치 전·복사 후 사용 검사와 명시 보류를 구현. 실제 자식 프로세스/복사 중 시작/정상 교체·기존 보존 회귀 통과. ENGINE_WORK_193.md/JSON.
+
+
+190–193 설치 확인: 3a617ac1aed4378f·명세2560파일 실행 후 SHA 일치·실제 설치 EXE에서 ORCA 속성/Undo/저장·BP 표시, 믹스 녹음 시간12초/PCM1MiB 설정과 녹음 중 잠금·게임 레벨·WAV 스펙트럼/제한/일시정지/재시도/종료 저장/재생, GL/GPU 장시간 노멀 픽셀 PASS·오류0/종료0. 사용자 프로필10385파일 SHA 불변·바로가기2/.hbproject 연결·이전 설치439132589바이트 정리·Versions1. USER_INSTALL_193.json.
