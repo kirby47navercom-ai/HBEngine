@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "sourceCommit": "92f09c4211782e0e832c0f32be45fd021d05470e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0553dc1c96d71485",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0553dc1c96d71485\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0553dc1c96d71485\\HBEngine.exe",
+  "bundleHash": "0553dc1c96d714852de575ae5935284c35e8a3127bedd88dfa999841660c3a10",
+  "files": 2467,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2459,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f95666ae3ee3a41f",
+        "bytes": 173934665,
+        "manifestSHA256": "f64d6df92919dd2deb1a44cd14703c1dba702d452a0f5ad864ddc0332e1fc4bb"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T10:42:46.7956144Z",
+    "bytes": 173934665,
+    "generated": [],
+    "preserved": [],
+    "remaining": [
+      "0553dc1c96d71485"
+    ]
+  },
+  "work": "native/build/engine-180-install-M7o4Sz",
+  "versions": [
+    "0553dc1c96d71485"
+  ],
+  "manifestVerifiedFiles": 2467,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2467,
+  "installedSmoke": {
+    "path": "native/build/engine-180-installed-ZdbmY7/acceptance.json",
+    "sha256": "2762303e70f090164776458eb57082f54edc03cfb0c190af3e73e67bd760aa9e",
+    "passed": true,
+    "executable": "C:/Users/kirby/HBEngine/Versions/0553dc1c96d71485/HBEngine.exe",
+    "lod": {
+      "humanRate": true,
+      "collisionChoice": true,
+      "undo": true,
+      "saved": true
+    },
+    "errors": [],
+    "exit": {
+      "code": 0,
+      "signal": null
+    }
+  },
+  "captures": [
+    {
+      "path": "native/build/engine-180-installed-ZdbmY7/lod-inspector.png",
+      "sha256": "f59abdab2afe7468c2322b4a75b7b6c9ef3bc43384903a46ef93fe735558e658",
+      "visuallyInspected": true
+    }
+  ],
+  "testCacheCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  }
+}

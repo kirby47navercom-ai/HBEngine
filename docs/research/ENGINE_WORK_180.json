@@ -2236,11 +2236,29 @@
           }
         ]
       }
+    },
+    "installedEditor": {
+      "path": "native/build/engine-180-installed-ZdbmY7/acceptance.json",
+      "sha256": "2762303e70f090164776458eb57082f54edc03cfb0c190af3e73e67bd760aa9e",
+      "result": {
+        "passed": true,
+        "executable": "C:/Users/kirby/HBEngine/Versions/0553dc1c96d71485/HBEngine.exe",
+        "lod": {
+          "humanRate": true,
+          "collisionChoice": true,
+          "undo": true,
+          "saved": true
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
     }
   },
   "newDependencies": 0,
   "automaticGPUReadbacks": 0,
-  "installationPending": true,
   "diagnosis": {
     "path": "native/build/native-physics-measure-kxZl4a/measurements.json",
     "cause": "Each C++ call recreated a query-only Rapier world and shapes. Paired fresh/reused measurements isolate construction cost; remaining snapshot clone/serialization costs are not eliminated."
@@ -2255,5 +2273,13 @@
     "Web export source-equality check originally compared packaged minified bytes to raw source; now compares to the shared packagedRuntimeBytes function, while an independent distribution test verifies licenses/exports/core identity and original source hashes.",
     "First mobile package15145959bytes exceeded the existing15MB guard. Using official licensed minified distributions reduces the same fixture to12553711bytes without raising the guard.",
     "First native fixture omitted required gameSession actor/state/arguments fields. Corrected the fixture to the existing protocol contract; did not relax product validation."
-  ]
+  ],
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_180.json",
+    "receiptSHA256": "f2be8c82ac9ee813696bd4a14d5972d3947428750acea65f49f50a6fb9a008a9",
+    "sourceCommit": "92f09c4211782e0e832c0f32be45fd021d05470e",
+    "versions": [
+      "0553dc1c96d71485"
+    ]
+  }
 }

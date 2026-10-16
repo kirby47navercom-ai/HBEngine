@@ -1,4 +1,6 @@
-# 누적180 구현·검증 완료 — 설치 준비 후 누적 목표 계속
+# 누적180 설치 완료 — 181 명명 슬롯 구현 계속
+
+180 feature92f09c4 push/설치0553dc1c96d71485/2467명세파일 실행후SHA검증. USER_INSTALL180 receipt/WORK180 갱신. installedZdbmY7 PASS/errors0/exit0/캡처시각확인,사용자프로필10385파일SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26불변,바로가기2/프로젝트연결/Versions1,이전179173934665바이트정리. finish180완료재실행금지. 181작업시작: NamedSlot단일자식/Widget.properties.widgetSlots JSON(키슬롯이름,값참조.hbwidget.json|null비움,미지정기본유지),공용composition graft/기본하위교체·중첩삭제충돌/cycle/예산/immutable. 아직검사·UI·runtime layout·dependencies 연결전/미커밋. UE5.8NamedSlots본문0–155/Unity6000.5UXMLtemplates180–265 읽었음(연결API/미디어미독). 다음181완성+검증+설치하고누적목표계속. 아래180설치전기록은역사.
 
 main d4ac12d까지 origin동일, 179설치영수증완료.180현재미커밋. 주인님 남은거전체계속/최종안함/새agent금지. PhysicsQueryWorld/Pool bygameSession sharedacrossclasses·atomicimmutablequery·querylocal128/auth·idle1·activeunbounded·resetretireallowners·close/release/pagehidecleanup. 비용transport+hostinspect. 공식minThree공용배포함수 Windows/mobile/web,source/editor원본보존/MIT/coreidentity,2592217bytes절감,모바일12553711bytes/기존15MBguard. CPU9 2nRyE8/nativeZTSEF5/D3DSVOwzz/WebGPUEWHpbL/mobileAOTs1xb0Q/webCpp1SEeTW/packagedon5kj1 PASS. 실제8192triangleCppRPCwarmed16–17→8.9–9.7ms,query9–10→1.8–2ms(전체FPS아님),coldlibrary/snapshotserialization별도남음. docs180.mjs실행완료재실행금지.
 다음 diff/checkstatus→한국어동일작성자commit/push→sync/install180(179스크립트복제,직접재실행금지)→설치격리EXE/manifest/profile/Versions1영수증push→다음미구현목표계속. 현재설치179 f95666ae3ee3a41f/profile10385SHA불변.180완료로전체엔진완료라하지말것. 이전조사handoff아래는역사이며위최신상태우선.
