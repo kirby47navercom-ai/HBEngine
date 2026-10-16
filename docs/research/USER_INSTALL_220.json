@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "ed466ecf9a83a5974fc5e5316db29af16ad4eeb5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5c0ee1f531a80284\\HBEngine.exe",
+  "bundleHash": "5c0ee1f531a802843918140d8040da19314157c7a54e1bac48107b28bd7f46c1",
+  "files": 2707,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2706,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d",
+        "bytes": 195784617,
+        "manifestSHA256": "ce35a85ef4c6deb95a2b66c74b5b7e54408b96a7a6719f458216932e3b09c284"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-16T21:14:54.9750926Z",
+    "bytes": 195784617,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\06ccb1d58c0eca3d\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "5c0ee1f531a80284"
+    ]
+  },
+  "work": "native/build/engine-220-install-ZZInjf",
+  "versions": [
+    "5c0ee1f531a80284"
+  ],
+  "manifestVerifiedFiles": 2707,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/ability-set-218-window-qNfGjJ/acceptance.json",
+      "sha256": "9e635288f82a657e492e898b828a280e4becf55410a87a85b6adf515dd35a39b"
+    },
+    {
+      "path": "native/build/eqs-2d-220-window-zE4ZLv/acceptance.json",
+      "sha256": "96ace1f56cc45f0e4cc8d16232b7cc85140da2a33280bdbe992ff280cef871d9"
+    },
+    {
+      "path": "native/build/sequence-bindings-216-window-xJ6fiq/acceptance.json",
+      "sha256": "622915a567f97923621f6bde149a0fcb5f8ab47a683cf9fd2f00c731fef79505"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/ability-set-218-window-qNfGjJ/live-attributes-abilities-and-effects.png",
+      "sha256": "eff0091661d7604b84cfb2b49932a5c5e522429c521a79c98d74529854d0b158",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/ability-set-218-window-qNfGjJ/bounded-take-filter-menu.png",
+      "sha256": "de32c2c49845c72c0c5db9edeb28b08aff8e94712dda4cb078be4a592c62cb41",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/eqs-2d-220-window-zE4ZLv/xy-query-2d-collider-trace.png",
+      "sha256": "aaeeb849efeac5d1e096ebe8566abc9e94dc5b1fdf8eef8782c6a2c652acb239",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2707,
+  "privateChecks": "Unique project/profile/port; hidden owned EXEs only. Actual User only read for inventory. SDK headers included and manifest verified.",
+  "storage": {
+    "path": "native/build/storage-220-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}

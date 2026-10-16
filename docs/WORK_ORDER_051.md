@@ -337,3 +337,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 ## 218–220 — 2026-10-17
 
 속성·시작 능력 세트 에셋/표/컴포넌트·원자 초기화·참조/풀 정리·실제 C++BP/게임, 실행 속성/능력/효과 Inspector·AI페이지와 작은pane Take 설정, XY2D EQS 생성/점수/Physics2D벽·구형 에셋UI/Undo·별도 D3D 게임을 연결했다. 근거와 명시 잔여는 ENGINE_WORK_218–220.json이다. 새 SDK ABI나 전체 엔진/연구 gate의 완료로 표현하지 않는다. 설치는 USER_INSTALL_220.json에 후속 기록한다.
+
+
+218–220 설치 확인: 5c0ee1f531a80284·명세2707파일 실행후SHA동일·설치 EXE 속성/능력 세트 표/Undo·실제 CPP/BP 비용/효과·동적 Shield/수명 Inspector/AI 페이지·작은pane Take 마지막필터/가로바없음·구형 XY선택/Undo/실제2D벽·수동변수/검색focus/배열/CPP 복원 회귀 통과. 오류0/종료0·캡처3 시각확인. User10385파일SHA불변·링크2/.hbproject·Versions1·이전설치195784617B 제거. USER_INSTALL_220.json.
