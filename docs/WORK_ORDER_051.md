@@ -250,3 +250,6 @@ CPU12+10·실제 GL·Editor·D3D11 release/development Player가 통과했다. �
 
 
 186 설치 확인: 0d173fc14c7b696a·명세2517파일 실행 후 SHA 일치·격리 설치 EXE의 프리팹 격리 제작/컴포넌트/2D/복사/Undo/원본 탐색·충돌 거부·키/슬롯/메시/LOD·오류0/종료0. 사용자 프로필10385파일 전후 SHA 일치. 바로가기/.hbproject 연결 확인, 이전 설치174602775바이트 정리, Versions1. 설치 근거 docs/research/USER_INSTALL_186.json.
+
+
+187: 불투명 시간 노멀맵의 이전 절대 시간·GPU 표본/TBN 복원·실패/되감기 무효화·실제 DirectX/WebGL/WebGPU 픽셀 및 패키징 게임 검사. 기존 GPU 버퍼/프로그램 재사용. 상세 ENGINE_WORK_187.md/JSON. 이전 mip·월드/시점·투명 이전 분기는 현재 원장에 유지.

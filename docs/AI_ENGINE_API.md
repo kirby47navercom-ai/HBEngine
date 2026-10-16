@@ -436,3 +436,6 @@ Network Session/Replica, World Streaming Budget/LevelStreaming 추정 비용·�
 
 
 186: prefab.stage.get {path} → resolved,revision,sources,preview 자원 정보. prefab.stage.edit {path,expectedRevision,expectedSources?,dryRun?,settings:{operation,object,...}} → 같은 원본 제작/Undo. operation: property/transform/create/duplicate/paste/group/ungroup/remove/reparent/component.add/component.remove/component.set/component.reset/component.properties. 부모는 안정 로컬ID, reparent.keepWorld 기본 true. paste.objects는 닫힌 계층 JSON. 사람 UI와 같은 공용 함수·안쪽 원본 revision 충돌 거부. reparented:[{object,parent}]는 해석 후 검증되는 선택 필드.
+
+
+187: renderer.rayGeometry.materialTimeShift / previousMaterialTime은 마지막 성공한 프레임 기준의 진단이에요. 불투명 Normal 전용 Time 그래프만 이전 시간을 재평가하며 world/view/다른 시간 필드·transmission은 이력 거절을 유지해요. 시간은 기존 forward.w로 전달하며 추가 GPU 이미지/자동 읽기가 없어요.

@@ -45,7 +45,7 @@ ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
   for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];for(int j=0;j<4;j++)parents[n][j]=i[j+4]<0?-1:definitions[i[j+4]];if(i[0]==9&&!alpha)for(int j=0;j<2;j++)if(parents[n][j]>=0)needed[parents[n][j]]=true;if(i[0]!=8){definitions[i[1]]=int(n);registers.insert(i[1]);}}
   for(int n=int(p.instructions.size())-1;n>=0;n--)if(needed[n]&&p.instructions[n][0]!=9)for(int parent:parents[n])if(parent>=0)needed[parent]=true;
   for(std::size_t n=0;n<p.instructions.size();n++)if(needed[n])derived.insert(p.instructions[n][1]);
-  source+="vec4 "+programName+std::to_string(p.key)+"(float pointer,float id,vec3 point,vec3 view,vec4 result,float width){";for(int r:registers)source+="vec4 r"+std::to_string(r)+"=vec4(0,0,0,0);";for(int r:derived)for(char axis:{'X','Y'})source+="vec4 r"+std::string(1,axis)+std::to_string(r)+"=vec4(0,0,0,0);";
+  source+="vec4 "+programName+std::to_string(p.key)+"(float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(int r:registers)source+="vec4 r"+std::to_string(r)+"=vec4(0,0,0,0);";for(int r:derived)for(char axis:{'X','Y'})source+="vec4 r"+std::string(1,axis)+std::to_string(r)+"=vec4(0,0,0,0);";
   source+="vec2 uv=hbRayUV(id,point);vec3 normal=hbRaySmoothNormal(id,point);vec3 pointX=point+hbRayOffset(id,view,width,0.0),pointY=point+hbRayOffset(id,view,width,1.0);vec2 uvX=hbRayUV(id,pointX),uvY=hbRayUV(id,pointY);vec3 normalX=hbRaySmoothNormal(id,pointX),normalY=hbRaySmoothNormal(id,pointY);";
   for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];source+="{vec4 value=hbGeometryLoad(pointer+"+std::to_string(n*3+2)+".0),meta=vec4(";for(int j=0;j<4;j++)source+=(j?",":"")+std::to_string(i[j])+".0";source+=")";for(int j=0;j<4;j++)source+=","+std::string(1,char('a'+j))+"="+(i[j+4]<0?std::string("vec4(0,0,0,0)"):"r"+std::to_string(i[j+4]));source+=";";
    if(i[0]==8){for(int channel=i[8];channel<i[8]+i[9];channel++)source+="result["+std::to_string(channel)+"]=a["+std::to_string(i[10]<2?0:channel-i[8])+"]*value.z;";}
@@ -56,7 +56,7 @@ ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
     }
    }source+="}";
   }source+="return result;}\n";
- }source+="vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){";for(const auto& p:programs)source+="if(key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width);";source+="return result;}";}return source;
+ }source+="vec4 "+executeName+"Time(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(const auto& p:programs)source+="if(key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width,timeContext);";source+="return result;}vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return "+executeName+"Time(key,pointer,id,point,view,result,width,vec2(0,0));}";}return source;
 }
 }
 `;

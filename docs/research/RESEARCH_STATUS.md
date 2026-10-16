@@ -434,3 +434,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 186: Unity6000.6 EditingInPrefabMode 본문125–238을 supplemental186에 등록. Unreal Components Mode 주소 실패는 읽음으로 계산하지 않으며 연결 API/미디어·전역 gate 유지.
+
+
+187: Time152–161/TSR308–328의 읽은 자체 본문을 supplemental187에 등록. 연결 API/미디어·전체 페이지·전역 gate 승격 없음.

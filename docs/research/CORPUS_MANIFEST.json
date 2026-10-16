@@ -3016,5 +3016,19 @@
     "unread": "연결 API·미디어·전역 corpus 및 Unreal Components Mode 본문",
     "failedOpen": "https://dev.epicgames.com/documentation/en-us/unreal-engine/components-mode-in-blueprints?application_version=5.6 returned Internal Error; not counted",
     "globalGatePromotion": false
+  },
+  "supplemental187": {
+    "date": "2026-10-16",
+    "bodyRead": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/constant-material-expressions-in-unreal-engine#time",
+        "scope": "Time152–161; linked media/API unread"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/temporal-super-resolution-in-unreal-engine",
+        "scope": "308–328 previous-frame WPO inputs/shading rejection selected body; remaining780-line page not fully read"
+      }
+    ],
+    "globalGatePromotion": false
   }
 }

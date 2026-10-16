@@ -1,0 +1,921 @@
+{
+  "version": 1,
+  "date": "2026-10-16",
+  "baseline": "187d1cb",
+  "targetIds": [
+    "RND-07",
+    "AI-03"
+  ],
+  "checks": {
+    "cpu": {
+      "path": "native/build/rendering-187-aIro2R/acceptance.json",
+      "sha256": "b07fe38ab728d834781f76494f5f7d8afde5ecba69fdf0f780d7b2ec3b9f4441",
+      "result": {
+        "passed": 7,
+        "total": 7,
+        "checks": [
+          {
+            "name": "time-only normal keeps committed pose and filter key, with one prior-time scalar and no new atlas records",
+            "passed": true
+          },
+          {
+            "name": "failed frame, rewind, and material edit never reuse an uncommitted time or pose",
+            "passed": true
+          },
+          {
+            "name": "world/view normal and other animated fields retain conservative invalidation",
+            "passed": true
+          },
+          {
+            "name": "binding uses existing camera reserved scalar, works without a frame camera, and keeps display key stable",
+            "passed": true
+          },
+          {
+            "name": "generated GLSL reuses each program for current/previous samples, with compatible wrappers",
+            "passed": true
+          },
+          {
+            "name": "prior absolute float32 clock survives cancellation at long uptime and rejects float overflow before mutation",
+            "passed": true
+          },
+          {
+            "name": "time-varying transmission keeps rejection when previous/current total-internal-reflection branches differ",
+            "passed": true
+          }
+        ],
+        "newGPUReadbacks": 0,
+        "newHistoryTargets": 0
+      }
+    },
+    "native": {
+      "path": "native/build/rendering-187-native-2Tjp62/acceptance.json",
+      "sha256": "a790e840b166cd9e7d121dd59b53807e4f0098c7533d5dfabf61bae87b7e8928",
+      "result": {
+        "passed": true,
+        "compileMS": 334.0653,
+        "featureLevel": 45056,
+        "hardware": true,
+        "shaderBytes": 95860,
+        "values": [
+          0.9999845623970032,
+          0.003921567462384701,
+          0.003921567462384701,
+          1,
+          0.003921567462384701,
+          0.003921567462384701,
+          0.9999845623970032,
+          1
+        ],
+        "expected": [
+          0.9999846216542477,
+          0.003921508320212736,
+          0.003921508320212736,
+          1,
+          0.003921508320212736,
+          0.003921508320212736,
+          0.9999846216542477,
+          1
+        ],
+        "maxError": 5.925724455568826e-8,
+        "actualSharedHLSL": true,
+        "newRuntimeReadbacks": 0
+      }
+    },
+    "nativeLongClock": {
+      "path": "native/build/rendering-187-native-My2XOi/acceptance.json",
+      "sha256": "9b5c02df0d99dfddd3ca6c2348bbd7df71af869701e5fd913e9a835e722b47b0",
+      "result": {
+        "passed": true,
+        "compileMS": 322.5466,
+        "featureLevel": 45056,
+        "hardware": true,
+        "shaderBytes": 95860,
+        "values": [
+          0.9999845623970032,
+          0.003921567462384701,
+          0.003921567462384701,
+          1,
+          0.003921567462384701,
+          0.003921567462384701,
+          0.9999845623970032,
+          1
+        ],
+        "expected": [
+          0.9999846216542477,
+          0.003921508320212736,
+          0.003921508320212736,
+          1,
+          0.003921508320212736,
+          0.003921508320212736,
+          0.9999846216542477,
+          1
+        ],
+        "maxError": 5.925724455568826e-8,
+        "actualSharedHLSL": true,
+        "newRuntimeReadbacks": 0
+      }
+    },
+    "webPixels": {
+      "path": "native/build/rendering-187-window-PMMcUs/acceptance.json",
+      "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+      "result": {
+        "passed": true,
+        "webgl": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "webgpu": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webLongClock": {
+      "path": "native/build/rendering-187-window-Q5pM5j/acceptance.json",
+      "sha256": "f3e04f0315b49843a4c920c5158260218cd4edd995090c08284d2c684eddbb80",
+      "result": {
+        "passed": true,
+        "webgl": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "webgpu": {
+          "pixels": [
+            [
+              0.9999845623970032,
+              0.003921567462384701,
+              0.003921567462384701,
+              1
+            ],
+            [
+              0.003921567462384701,
+              0.003921567462384701,
+              0.9999845623970032,
+              1
+            ]
+          ],
+          "maxError": 5.925724455568826e-8
+        },
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "d3dGame": {
+      "path": "native/build/rendering-187-player-ooQ8Zx/acceptance.json",
+      "sha256": "1ad93c746b9da50f2c0c18af458d95d2263303c88416fa2e36d2ae15b0b2c16f",
+      "result": {
+        "passed": true,
+        "first": {
+          "lineMeshes": 0,
+          "backend": "D3D11",
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.3541000000089408,
+            "previousMaterialTime": 0.28940000000596056,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "bvh": {
+            "refits": 14,
+            "rebuilds": 1
+          },
+          "info": {
+            "calls": 2
+          },
+          "memory": {
+            "geometries": 2,
+            "textures": 2
+          },
+          "bloomAllocations": 1,
+          "bloomComposites": 15,
+          "bloomDispatches": 15,
+          "bloomLevels": 5,
+          "bloomTextureBytes": 78638080,
+          "calls": 2,
+          "captures": 0,
+          "deformationBufferBytes": 0,
+          "deformations": 0,
+          "draws2d": 0,
+          "gpuTimeMs": 0.710656,
+          "gpuTimingFrame": 14,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 0,
+          "meshes": 2,
+          "particleBirths": 0,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 0,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 0,
+          "particlePools": 0,
+          "particleSortPasses": 0,
+          "particleSteps": 0,
+          "passes2d": 0,
+          "poseUpdates": 0,
+          "presents": 15,
+          "probeCaptures": 0,
+          "probeDispatches": 0,
+          "probeTextureBytes": 0,
+          "programs": 2,
+          "rasterLightTileBytes": 0,
+          "rasterLightTileDispatches": 0,
+          "raySceneUpdateBytes": 123760,
+          "raySceneUpdates": 13,
+          "reflectionProbes": 0,
+          "shaderCompilation": {
+            "compilations": 5,
+            "cacheHits": 0,
+            "cacheMisses": 5,
+            "cacheEvictions": 0,
+            "cacheBytes": 295062,
+            "cacheBudgetBytes": 8388608,
+            "lastCompileMS": 15,
+            "totalCompileMS": 5859,
+            "sourceBuilds": 1
+          },
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 0,
+          "shadowTextureBytes": 0,
+          "skyCaptureFace": 0,
+          "skyCaptureFilterStage": 0,
+          "skyCapturePending": false,
+          "skyCapturePendingBytes": 0,
+          "skyEnvironmentBytes": 0,
+          "skyFilterSteps": 0,
+          "skySceneCaptures": 0,
+          "skySceneFaces": 0,
+          "target2dBytes": 0,
+          "targets2d": 0,
+          "textures": 2,
+          "transmissionAllocations": 0,
+          "transmissionCopies": 0,
+          "transmissionTextureBytes": 0,
+          "uploads": 6,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 0,
+          "probeCachedCaptures": 0,
+          "shadowTrackedDraws": 0,
+          "shadowTrackedResources": 0,
+          "automaticReadbacks": 0
+        },
+        "last": {
+          "lineMeshes": 0,
+          "backend": "D3D11",
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.26840000000596054,
+            "previousMaterialTime": 0.7817000000029803,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "bvh": {
+            "refits": 27,
+            "rebuilds": 1
+          },
+          "info": {
+            "calls": 2
+          },
+          "memory": {
+            "geometries": 2,
+            "textures": 2
+          },
+          "bloomAllocations": 1,
+          "bloomComposites": 29,
+          "bloomDispatches": 15,
+          "bloomLevels": 5,
+          "bloomTextureBytes": 78638080,
+          "calls": 2,
+          "captures": 1,
+          "deformationBufferBytes": 0,
+          "deformations": 0,
+          "draws2d": 0,
+          "gpuTimeMs": 0.627712,
+          "gpuTimingFrame": 28,
+          "instanceBatches": 0,
+          "instanceBufferBytes": 0,
+          "instanceUpdates": 0,
+          "meshes": 2,
+          "particleBirths": 0,
+          "particleBufferBytes": 0,
+          "particleCountReadbacks": 0,
+          "particleEmissionAllocations": 0,
+          "particleIndexAllocations": 0,
+          "particlePools": 0,
+          "particleSortPasses": 0,
+          "particleSteps": 0,
+          "passes2d": 0,
+          "poseUpdates": 0,
+          "presents": 29,
+          "probeCaptures": 0,
+          "probeDispatches": 0,
+          "probeTextureBytes": 0,
+          "programs": 2,
+          "rasterLightTileBytes": 0,
+          "rasterLightTileDispatches": 0,
+          "raySceneUpdateBytes": 247520,
+          "raySceneUpdates": 26,
+          "reflectionProbes": 0,
+          "shaderCompilation": {
+            "compilations": 5,
+            "cacheHits": 0,
+            "cacheMisses": 5,
+            "cacheEvictions": 0,
+            "cacheBytes": 295062,
+            "cacheBudgetBytes": 8388608,
+            "lastCompileMS": 15,
+            "totalCompileMS": 5859,
+            "sourceBuilds": 1
+          },
+          "shadowDraws": 0,
+          "shadowLayers": 0,
+          "shadowPasses": 0,
+          "shadowTextureBytes": 0,
+          "skyCaptureFace": 0,
+          "skyCaptureFilterStage": 0,
+          "skyCapturePending": false,
+          "skyCapturePendingBytes": 0,
+          "skyEnvironmentBytes": 0,
+          "skyFilterSteps": 0,
+          "skySceneCaptures": 0,
+          "skySceneFaces": 0,
+          "target2dBytes": 0,
+          "targets2d": 0,
+          "textures": 2,
+          "transmissionAllocations": 0,
+          "transmissionCopies": 0,
+          "transmissionTextureBytes": 0,
+          "uploads": 6,
+          "drawUpdates": 0,
+          "constantBuffers": 3,
+          "maskCachedTargets": 0,
+          "probeCachedCaptures": 0,
+          "shadowTrackedDraws": 0,
+          "shadowTrackedResources": 0,
+          "automaticReadbacks": 0
+        },
+        "normalOnlyClock": true,
+        "previousTimeNegative": true,
+        "atlasBytesStable": true,
+        "nativeProgramSourceStable": true,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webgpuGame": {
+      "path": "native/build/rendering-187-player-exIWy9/acceptance.json",
+      "sha256": "62f2c4339ab1605ee352e20518bad6668d6cdd20b74251fe9ceae9117ea17d49",
+      "result": {
+        "passed": true,
+        "first": {
+          "backend": "WebGPU",
+          "pipelinePreparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 6020.0999999940395,
+            "stages": [
+              {
+                "stage": "post",
+                "elapsedMS": 225
+              },
+              {
+                "stage": "temporal-filter",
+                "elapsedMS": 85.70000000298023
+              },
+              {
+                "stage": "spatial-filter-2",
+                "elapsedMS": 73.29999999701977
+              },
+              {
+                "stage": "spatial-filter-1",
+                "elapsedMS": 59
+              },
+              {
+                "stage": "spatial-filter-0",
+                "elapsedMS": 53.30000001192093
+              },
+              {
+                "stage": "lens-motion-guide",
+                "elapsedMS": 1107.5
+              },
+              {
+                "stage": "normal-guide",
+                "elapsedMS": 308
+              },
+              {
+                "stage": "path",
+                "elapsedMS": 4108.199999988079
+              }
+            ],
+            "completed": 8,
+            "total": 8,
+            "cancelled": false,
+            "error": null
+          },
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.00880000001192105,
+            "previousMaterialTime": 6.340299999997018,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "rayAtlasUpload": {
+            "fullUploads": 1,
+            "partialUploads": 7,
+            "writeCalls": 7,
+            "queuedBytes": 76160
+          },
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 1561,
+            "frameCalls": 21,
+            "drawCalls": 22,
+            "triangles": 34,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 3,
+            "textures": 30
+          }
+        },
+        "last": {
+          "backend": "WebGPU",
+          "pipelinePreparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 6020.0999999940395,
+            "stages": [
+              {
+                "stage": "post",
+                "elapsedMS": 225
+              },
+              {
+                "stage": "temporal-filter",
+                "elapsedMS": 85.70000000298023
+              },
+              {
+                "stage": "spatial-filter-2",
+                "elapsedMS": 73.29999999701977
+              },
+              {
+                "stage": "spatial-filter-1",
+                "elapsedMS": 59
+              },
+              {
+                "stage": "spatial-filter-0",
+                "elapsedMS": 53.30000001192093
+              },
+              {
+                "stage": "lens-motion-guide",
+                "elapsedMS": 1107.5
+              },
+              {
+                "stage": "normal-guide",
+                "elapsedMS": 308
+              },
+              {
+                "stage": "path",
+                "elapsedMS": 4108.199999988079
+              }
+            ],
+            "completed": 8,
+            "total": 8,
+            "cancelled": false,
+            "error": null
+          },
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.012700000002980438,
+            "previousMaterialTime": 6.48670000000298,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "rayAtlasUpload": {
+            "fullUploads": 1,
+            "partialUploads": 23,
+            "writeCalls": 23,
+            "queuedBytes": 228480
+          },
+          "framebufferTextures": 0,
+          "adapter": {},
+          "vendor": "nvidia",
+          "renderer": "lovelace",
+          "errors": [],
+          "info": {
+            "calls": 1918,
+            "frameCalls": 21,
+            "drawCalls": 22,
+            "triangles": 34,
+            "points": 0,
+            "lines": 0,
+            "timestamp": 0
+          },
+          "compute": {
+            "calls": 0,
+            "frameCalls": 0,
+            "timestamp": 0
+          },
+          "particleResources": {},
+          "memory": {
+            "geometries": 3,
+            "textures": 30
+          }
+        },
+        "normalOnlyClock": true,
+        "previousTimeNegative": true,
+        "atlasBytesStable": true,
+        "nativeProgramSourceStable": null,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    },
+    "webglGame": {
+      "path": "native/build/rendering-187-player-Oidpv0/acceptance.json",
+      "sha256": "c905b4121704f6adbc5d137138883b1e1cb473236de39abaa886e3c19fcd3b3d",
+      "result": {
+        "passed": true,
+        "first": {
+          "backend": "WebGL2",
+          "pipelinePreparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 3365.7999999970198,
+            "stages": [
+              {
+                "stage": "path",
+                "elapsedMS": 3365.7000000029802
+              },
+              {
+                "stage": "normal-guide",
+                "elapsedMS": 459.80000001192093
+              },
+              {
+                "stage": "lens-motion-guide",
+                "elapsedMS": 3056.5
+              },
+              {
+                "stage": "spatial-filter-1",
+                "elapsedMS": 67.79999999701977
+              },
+              {
+                "stage": "temporal-filter",
+                "elapsedMS": 67.59999999403954
+              },
+              {
+                "stage": "post",
+                "elapsedMS": 67.59999999403954
+              }
+            ],
+            "completed": 6,
+            "total": 6,
+            "cancelled": false,
+            "error": null,
+            "parallelSupported": true,
+            "concurrent": true
+          },
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.10000000000000009,
+            "previousMaterialTime": 3.3856000000089406,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "programs": [
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            }
+          ],
+          "vendor": "WebKit",
+          "renderer": "WebKit WebGL",
+          "info": {
+            "frame": 493,
+            "calls": 25,
+            "triangles": 37,
+            "points": 0,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 3,
+            "textures": 27
+          }
+        },
+        "last": {
+          "backend": "WebGL2",
+          "pipelinePreparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 3365.7999999970198,
+            "stages": [
+              {
+                "stage": "path",
+                "elapsedMS": 3365.7000000029802
+              },
+              {
+                "stage": "normal-guide",
+                "elapsedMS": 459.80000001192093
+              },
+              {
+                "stage": "lens-motion-guide",
+                "elapsedMS": 3056.5
+              },
+              {
+                "stage": "spatial-filter-1",
+                "elapsedMS": 67.79999999701977
+              },
+              {
+                "stage": "temporal-filter",
+                "elapsedMS": 67.59999999403954
+              },
+              {
+                "stage": "post",
+                "elapsedMS": 67.59999999403954
+              }
+            ],
+            "completed": 6,
+            "total": 6,
+            "cancelled": false,
+            "error": null,
+            "parallelSupported": true,
+            "concurrent": true
+          },
+          "rayGeometry": {
+            "analyticLights": 0,
+            "lightBudget": 0,
+            "logicalTriangles": 14,
+            "sharedVertices": false,
+            "uniqueVertexTriangles": 14,
+            "atlasBytes": 9520,
+            "materialTimeShift": -0.013599999994039713,
+            "previousMaterialTime": 3.6126000000089404,
+            "poseMatrixInstances": 2,
+            "poseMatrixBytes": 192,
+            "deformedNormalTriangles": 0,
+            "deformedNormalBytes": 0,
+            "changedAtlasRows": 1
+          },
+          "programs": [
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            },
+            {
+              "runnable": true
+            }
+          ],
+          "vendor": "WebKit",
+          "renderer": "WebKit WebGL",
+          "info": {
+            "frame": 925,
+            "calls": 25,
+            "triangles": 37,
+            "points": 0,
+            "lines": 0
+          },
+          "memory": {
+            "geometries": 3,
+            "textures": 27
+          }
+        },
+        "normalOnlyClock": true,
+        "previousTimeNegative": true,
+        "atlasBytesStable": true,
+        "nativeProgramSourceStable": null,
+        "errors": [],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    }
+  },
+  "installationPending": true,
+  "newDependencies": 0,
+  "newHistoryTargets": 0,
+  "automaticGPUReadbacks": 0,
+  "limits": [
+    "Prior absolute time is reevaluated for opaque Normal-only time graphs. World/view dependent normal inputs, time-varying other fields and transmission retain conservative history rejection.",
+    "Previous mip footprint, prior transmission branch reconstruction and full curved/multiple lobe transport remain separate work.",
+    "The simple native probe compilation time is not evidence that the previously recorded complex graph cold-start cost is solved. No sustained FPS/RAM/phone claim."
+  ],
+  "failedAttempts": [
+    "An initial scalar delta-time design produced float32 cancellation after long uptime. Replaced it with absolute committed prior time and an enabled flag in the common program context; the existing forward.w uniform carries the absolute clock.",
+    "Camera-less packing initially assumed forward existed. Initialize the existing reserved vector before binding; a nonzero previous clock is verified.",
+    "The first probe fixture had shader literal/CDP and camera-construction mistakes. Fixed the harness and preserved strict signed normal pixel checks."
+  ]
+}
