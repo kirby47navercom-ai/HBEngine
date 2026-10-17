@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **817개**, 실제 공통 C++ API **732개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **819개**, 실제 공통 C++ API **734개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -70,7 +70,7 @@
 | 2D IK | 14 | 14 |
 | 몽타주 | 13 | 13 |
 | 애니메이션 최적화 | 4 | 4 |
-| 시퀀스 | 5 | 5 |
+| 시퀀스 | 7 | 7 |
 | AI 내비게이션 | 7 | 7 |
 | AI 감지 | 3 | 3 |
 | 파티클 | 5 | 5 |
@@ -1155,6 +1155,8 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| sequenceSetPriority | Set Priority / 시퀀스 우선순위 설정 | exec: exec, target: object, priority: int | then: exec | hb::LevelSequence::SetPriority | 공통 C++ + VM |
+| sequencePriority | Get Priority / 시퀀스 우선순위 | target: object | return: int | hb::LevelSequence::GetPriority | 공통 C++ + VM |
 | playSequence | Play / 레벨 시퀀스 재생 | exec: exec, target: object, asset: string | then: exec | hb::LevelSequence::Play | 공통 C++ + VM |
 | sequenceStop | Stop / 레벨 시퀀스 정지 | exec: exec, target: object | then: exec | hb::LevelSequence::Stop | 공통 C++ + VM |
 | sequencePause | Pause / 레벨 시퀀스 일시 정지 | exec: exec, target: object, paused: bool | then: exec | hb::LevelSequence::Pause | 공통 C++ + VM |

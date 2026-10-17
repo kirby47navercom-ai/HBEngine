@@ -546,6 +546,8 @@ public:
 HB_CLASS()
 class LevelSequence : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceSetPriority", KoreanName="시퀀스 우선순위 설정", Category="시퀀스") static void SetPriority(Actor* target,int priority);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sequencePriority", KoreanName="시퀀스 우선순위", Category="시퀀스") static int GetPriority(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="playSequence", KoreanName="레벨 시퀀스 재생", Category="시퀀스") static void Play(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequenceStop", KoreanName="레벨 시퀀스 정지", Category="시퀀스") static void Stop(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sequencePause", KoreanName="레벨 시퀀스 일시 정지", Category="시퀀스") static void Pause(Actor* target,bool paused);

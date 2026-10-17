@@ -480,6 +480,8 @@ inline void AnimationBudget::SetEnabled(Actor* target,bool enabled){Components::
 inline float AnimationBudget::GetObservedMS(Actor* target){auto& state=gameplayField(target,"animationBudget");return state.is_null()?0.f:state.value("observedMS",0.f);}
 inline int AnimationBudget::GetThrottledCount(Actor* target){auto& state=gameplayField(target,"animationBudget");return state.is_null()?0:state.value("throttled",0);}
 inline void LevelSequence::Play(Actor* target,const std::string& asset){engineCommand("playSequence",{{"target",bridgeId(target)},{"asset",asset}});}
+inline void LevelSequence::SetPriority(Actor* target,int priority){engineCommand("sequenceSetPriority",{{"target",bridgeId(target)},{"priority",priority}});}
+inline int LevelSequence::GetPriority(Actor* target){auto& state=gameplayField(target,"sequence");return state.is_null()?0:state.value("priority",0);}
 inline void LevelSequence::Stop(Actor* target){engineCommand("sequenceStop",{{"target",bridgeId(target)}});}
 inline void LevelSequence::Pause(Actor* target,bool paused){engineCommand("sequencePause",{{"target",bridgeId(target)},{"paused",paused}});}
 inline void LevelSequence::Seek(Actor* target,float time){engineCommand("sequenceSeek",{{"target",bridgeId(target)},{"time",time}});}
