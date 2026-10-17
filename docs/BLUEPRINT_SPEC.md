@@ -501,3 +501,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 239–241: 천/2D로프 각 핀·충격·강체연결·초기화·개수 공용SDK10 및 동일BP를 실제 제작/실행에 연결했다. 총804노드/공용C++719. Scene/BP 핀 mouse/keyboard/Undo와 런타임Inspector·AI페이지를 검증했다. 상세 범위는 ENGINE_WORK_239–242를 따른다.
+
+
+243–248: 효과 레벨/커브 SDK4·천/2D로프 실제 입자 getter2를 BP와 공용화, 총810노드/공용C++725. 부모연결 Take와 AI runtime.effect/level·문맥 단축키124 포함. ENGINE_WORK_243–248 참조.

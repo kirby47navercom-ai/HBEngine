@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "53db2029150e6e6e0f85ef8f9d5cd05d18873b00",
+  "targetIds": [
+    "GAM-04",
+    "AI-03"
+  ],
+  "implemented": [
+    "선택 실수 커브 × 기본 계수·기본 레벨1·적용 시 캡처/레벨 변경 시 재평가·지속/주기/즉시/4중첩 정책·오류 시 비용/효과 원자 복구",
+    "적용 때만 내용 비교하는 공유 캡처·동시 요청 합치기·64개/직렬화 추정32MiB 보관 예산·퇴출/큰 템플릿은 게임 적용 수나 기존 핸들을 제한하지 않음",
+    "커브/트랙/값 미리보기·Undo·실행 Inspector 레벨·공용C++4/BP/AI runtime.effect와 level·종속 SHA 검사/공동 저장/삭제 거부·일반 저장도 파일 교체 후 재검사/충돌 복구, 성공한 임시 journal 제거"
+  ],
+  "limits": [
+    "source/target 속성 캡처·SetByCaller·custom execution·네트워크 예측은 별도 잔여",
+    "직렬화 추정 캐시 예산은 실제 JS heap/전체 프레임 비용 상한이 아님",
+    "C++ 쓰기는 반환 뒤 처리하고 getter는 처리된 최신 상태를 읽음"
+  ],
+  "checks": [
+    {
+      "path": "native/build/effect-scaling-243-cvqEoC/acceptance.json",
+      "sha256": "c7a5a1481a0e64e4b094113bce2e2f4bc016926b23670a1450a09cb91332dfb3"
+    },
+    {
+      "path": "native/build/effect-library-243-0SfpPe/acceptance.json",
+      "sha256": "9f527a530f28482a578e33a89d65d587154c79b4b71540c45bb0ce26529f6dcd"
+    },
+    {
+      "path": "native/build/effect-saves-243-Hcr3Lk/acceptance.json",
+      "sha256": "cf97f33bc7e3fc3a981231b2336b73a72534b62bbd83006d65ca88537ee794cb"
+    },
+    {
+      "path": "native/build/effect-scaling-243-window-E4Wgay/acceptance.json",
+      "sha256": "c832e46d77e41ce385e1eff368abc4da38675fb989297587734b23c5356bf2c6"
+    },
+    {
+      "path": "native/build/ability-calculation-saves-233-bkV4XK/acceptance.json",
+      "sha256": "e45c36d79e0aa55a52f1db390fb0f9f71bdfedefc1b591c984aee9175a9f9c53"
+    }
+  ],
+  "installationPending": true
+}

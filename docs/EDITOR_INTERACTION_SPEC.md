@@ -220,3 +220,6 @@ RMB 이동과 RMB 메뉴는 이동 임계값으로 구분한다. Event 트랙은
 각 HWND는 실제 원본 패널을 표시하며 같은 문서·선택·Undo·저장을 공유한다. Outliner/Inspector 포커스는 편집 중 입력 DOM을 교체하지 않는다. 모든 살아 있는 창의 frame 예약과 입력 ownerDocument를 관리한다. 별도 WebGL renderer마다 PMREM을 소유하고 진단용 재질 사본은 Scene에서 원본 참조가 사라질 때 해제한다.
 
 행성 대기 LUT·volume 구름 raymarch/그림자·공간 volumetric fog·Lightmass/DF AO·전체 진단 buffer·분리 창 간 직접 도킹/명명 배치 import/export·세계 스트리밍과 나머지 엔진 분야는 별도 세부 계약으로 유지한다. 현재 구름은 mesh 미리보기다. 위 항목의 구현으로 전체 Unreal/Unity 기능을 완료 처리하지 않는다.
+
+
+247: 리타게팅8/오디오4 재지정 명령을 기존 입력/IME/실행/창 문맥·문서 Undo/AI 프로필 revision에 연결하고 실제 창 F8/F9/이전키 우회를 검증했다. 총124명령.

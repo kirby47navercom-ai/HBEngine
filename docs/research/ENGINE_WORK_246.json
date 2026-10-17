@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "53db2029150e6e6e0f85ef8f9d5cd05d18873b00",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "키를 재생 준비 때 한 번 정렬하고 이진 탐색·매 프레임 전체 키 복사/정렬 제거·중복 시각은 마지막 작성 키·구성 트랙 첫 키 전에는 미적용",
+    "녹화 원본이 제거되고 같은 ID로 교체되면 Transform/컴포넌트/변수/골격/렌더 값과 종료 복원을 새 객체에 적용하지 않음·필요한 대상 ID만 수명 참조 보관",
+    "128트랙×1024키·15360회 Node 샘플러 조회1.804ms/준비1.546ms 표본·기존 생성 Take/타입 값/수동 바인딩 회귀"
+  ],
+  "limits": [
+    "표본은 키 샘플러만의 CPU 시간이며 전체 게임 FPS 보장이 아님",
+    "현재 트랙1024키/기존 문서 예산 유지·대형 키 편집 가상화와 기존 대상 생성/삭제 재현·재바인딩은 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-hierarchy-245-f3G2dB/acceptance.json",
+      "sha256": "1cdd110f48eca333ca67f67862bef18eaa7823c0265322a7b0d08f05858cd5e9"
+    },
+    {
+      "path": "native/build/sequence-values-212-3iBZeB/acceptance.json",
+      "sha256": "151169442a8cc51c21a5fd8bcda618454329298bf2c7ecc9d8191a6b7e01499a"
+    },
+    {
+      "path": "native/build/sequence-bindings-216-xfmGNx/acceptance.json",
+      "sha256": "5f72b2b18327012a223bdc142882706628152c350617ad69a47945b99e8da0fe"
+    }
+  ],
+  "installationPending": true
+}

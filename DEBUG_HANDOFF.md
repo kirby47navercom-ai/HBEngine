@@ -905,3 +905,5 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 242 Android: Nxf1pH에서 ARM64 C++/ELF 성공 후 aapt2 -I 상대 SDK archive가 열리지 않음. 9XDQ1y 최소재현은 같은 한글 cwd154자·같은 기존android.jar에 대해 backslash/forward상대경로 둘 다실패, 절대경로만성공. SDK 재설치/복사 없이 mobile-android의 SDK include만 c.platform 절대경로로 수정, 프로젝트 내부 경로 기존상대유지. 실제 APK 포장재검사필요.
 
 241 창 검사: TuMrdF는 전체동작을 통과하고 라이브표시만 기다림→검사복사에 남은 문자열81을24로 정정(제품예외0). 핀중앙의11/12 경계 부동소수 모호성은 실제12번좌표로 클릭하도록 검사명확화. 마지막추가키보드삽입이새clickPin helper의첫evaluate를잡아doc선언전참조→helper를복구하고Undo뒤실제capture anchor에만키보드검사배치. 시간제한/제품수치변경 금지.
+
+243–248:221 regression은 새 effect.level=1 추가 필드만 분리해 구버전 snapshot과 비교, 다른 효과 값은 정확 비교 유지.245 source editor는 통과했으나 최초 독립 player Read가 Seek 처리 프레임 전 값을 읽음(Wmu0Iu): 부모B로 실제 commit될 때까지 상태 barrier 후 Read하도록 검사 수정, 임의 sleep/시간한계 확대 없음. legacy check-editor-api.mjs는 사용자 고정5181 서버를 요구해 ECONNREFUSED; 서버를 띄우거나 사용자 창 변경하지 않음. 격리 실제 창에서 새 API 경로 검증으로 대체.

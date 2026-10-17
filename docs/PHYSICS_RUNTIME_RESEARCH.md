@@ -100,3 +100,6 @@ PhysicsConstraint의 Generic·6축 관절은 3D 전용이다. 형식을 바꾸�
 
 
 239–242 최신: 사각Cloth3D와Rope2D를 실제 Rapier/변형렌더/핀제작/SDK10/AI/패키지에 연결했다. 이전 cloth 전체 미구현 설명은 PHY-02 최신 잔여로 대체한다. 임의 메시/스키닝·tether/연속paint·GPU solver·파괴/3Drope·읽기전용 CPP 입자 snapshot은 잔여다. ENGINE_WORK_239–242 참조.
+
+
+244: Physics::GetClothParticle/GetRopeParticle는 요청한 입자만 live 실행월드에서 위치/속도/고정을 읽는다. 일반 C++ Raycast/Overlap 재구성 질의 세계에 soft surface를 넣는 것은 별도 잔여다. 기존 전체 입자 CPP 불가 설명은 이 범위로 한정한다.

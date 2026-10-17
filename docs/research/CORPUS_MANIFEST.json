@@ -3482,5 +3482,45 @@
       "docs/research/ENGINE_WORK_241.json",
       "docs/research/ENGINE_WORK_242.json"
     ]
+  },
+  "supplemental243_248": {
+    "date": "2026-10-17",
+    "scope": "선택 본문만; 전체 엔진/API 분모와 분석 완료로 승격하지 않음",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FScalableFloat",
+        "body": "반환0–112행 Value×Curve[Level]/검증·평가 공개 API; 연결 API 본문 미독"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FGameplayEffectModifierMagnitude",
+        "body": "반환0–73행 다른 계산 정책/캡처/SetByCaller 선언; 그 전체 HB 구현 아님"
+      },
+      {
+        "url": "https://rapier.rs/docs/user_guides/javascript/soft_bodies/",
+        "body": "1010행 중 이번 반환0–151 재읽기; 설치0.21 d.ts particlePosition/particleVelocity/isParticlePinned와 실제 WASM 독립대조"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/cinematic-transform-and-property-tracks-in-unreal-engine",
+        "body": "반환140행의 transform/property·비보간 타입/쿼터니언/노이즈 설명 읽음; 이미지와 연결 문서/API 미독"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/keeping-or-restoring-changes-made-by-sequencer?application_version=4.27",
+        "body": "검색 반환 Keep/Restore state 설명 일부만;5.8 전체 문서 읽음 아님"
+      }
+    ],
+    "unavailable": [
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/wf_keyframing.html",
+        "reason": "웹 도구 접근 오류·본문 미독"
+      }
+    ],
+    "evidence": [
+      "docs/research/ENGINE_WORK_243.json",
+      "docs/research/ENGINE_WORK_244.json",
+      "docs/research/ENGINE_WORK_245.json",
+      "docs/research/ENGINE_WORK_246.json",
+      "docs/research/ENGINE_WORK_247.json",
+      "docs/research/ENGINE_WORK_248.json"
+    ]
   }
 }

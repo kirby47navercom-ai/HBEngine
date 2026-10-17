@@ -40,3 +40,6 @@ Take에서 `골격`과 `구성`(또는 컴포넌트)을 켜면 MeshRenderer 모�
 ## 212 — 변수·C++ Take
 
 녹화 설정의 변수·C++를 켜면 현재 대상의 BP 변수와 public BlueprintReadWrite C++ 속성을 타입 있는 키로 기록한다. 정수/논리/문자열/오브젝트/배열/Transform/Hit는 step, 단일 float/vec2/vec3/color는 보간한다. 배열 키는 JSON textarea로 편집하고 같은 검증/Undo를 쓴다. C++ BlueprintReadOnly는 제외하며 타입·선언 불일치는 쓰기 전 거부한다. C++ 게임에서 읽는 값과 같은 snapshot 상태를 재생하고 Stop은 녹화 적용 전 값으로 복원한다. 원시 키 데이터를 런타임 쓰기와 공유하지 않는다. 변수 트랙의 별도 수동 바인딩 선택창/임의 C++struct/중첩 컨테이너는 별도 잔여다.
+
+
+245–246: parent 문자열 단계 트랙/선택 includeHierarchy Take·경계 local TRS step·같은 수명 객체에만 복원·원자 부모 검증·root 분리. 키는 재생 준비 때 한 번 정렬해 이진 조회.1024키 등 기존 문서 예산/고급 Attach·대형 키 UI 잔여 유지.

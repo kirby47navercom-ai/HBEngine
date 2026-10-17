@@ -381,3 +381,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.
+
+
+243–248: 효과 레벨/커브·공유 캡처와 원자 참조 저장, 천/2D로프 요청 입자 CPP/BP 조회, 부모연결 Take/Seek/복원·수명 보호/키 샘플 비용, 리타게팅/오디오 제작 키, 새SDK ARM64 APK를 연결·검사. 최신 목록 ENGINE_STATUS.json; 설치 검증은 후속 기록.
