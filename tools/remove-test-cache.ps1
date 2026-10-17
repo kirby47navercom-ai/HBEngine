@@ -13,6 +13,7 @@ if ([IO.Path]::GetFullPath($plan.build).TrimEnd('\') -ne $expected) { throw '검
 $processes = @(Get-CimInstance Win32_Process)
 $freeBefore = (Get-PSDrive -Name C).Free
 $deleted = @(); $skipped = @(); $failures = @()
+$nodeReferences = @{}
 foreach ($entry in $plan.entries) {
   $target = [IO.Path]::GetFullPath($entry.path).TrimEnd('\')
   if (-not $target.StartsWith($expected + '\', [StringComparison]::OrdinalIgnoreCase)) { throw '삭제 대상 범위 오류' }
@@ -37,8 +38,14 @@ foreach ($entry in $plan.entries) {
   $protectionRoot = $target
   if ($entry.kind -eq 'fixture-engine-node') {
     $protectionRoot = Split-Path -Parent (Split-Path -Parent $target)
-    $package = Get-Content -LiteralPath (Join-Path $protectionRoot 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($package.name -ne 'hbengine-ui-prototype' -or -not (Test-Path -LiteralPath (Join-Path $protectionRoot 'HBEngine.exe') -PathType Leaf) -or -not (Test-Path -LiteralPath (Join-Path $protectionRoot 'tools/hb.mjs') -PathType Leaf) -or $entry.sha256 -notmatch '^[a-f0-9]{64}$') { throw '검사 엔진 런타임 명세 오류' }
+    # An interrupted copy may have no package/executable markers. Bind the
+    # proof to this still-running planner's original Node binary instead.
+    $reference = [IO.Path]::GetFullPath($entry.restoreFrom)
+    $hostNode = @($processes | Where-Object { $_.ProcessId -eq $entry.referencePID -and $_.ExecutablePath -and $_.ExecutablePath.Equals($reference,[StringComparison]::OrdinalIgnoreCase) })
+    if ($hostNode.Count -ne 1 -or [IO.Path]::GetFileName($reference) -ne 'node.exe' -or $entry.nodeVersion -notmatch '^v\d+\.\d+\.\d+' -or $entry.sha256 -notmatch '^[a-f0-9]{64}$') { throw '검사 Node 원본 명세 오류' }
+    if (-not $nodeReferences.ContainsKey($reference)) { $nodeReferences[$reference] = @{size=(Get-Item -LiteralPath $reference).Length;sha256=(Get-NodeSHA $reference)} }
+    $knownNode = $nodeReferences[$reference]
+    if ($knownNode.size -ne $entry.size -or $knownNode.sha256 -ne $entry.sha256) { throw '검사 Node 원본 해시 오류' }
   }
   $active = @($processes | Where-Object { ($_.ExecutablePath -and ($_.ExecutablePath.Equals($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -or $_.ExecutablePath.StartsWith($protectionRoot + '\', [StringComparison]::OrdinalIgnoreCase))) -or ($_.CommandLine -and $_.CommandLine.IndexOf($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
   if ($active) { $skipped += $rel; continue }

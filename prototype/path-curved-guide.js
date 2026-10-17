@@ -6,7 +6,7 @@ vec3 hbPathPreviousNormal(float id,vec3 point,vec3 normal,vec3 view,float width)
   if(current<-1.5)return vec3(0,0,0);
   if(current<-.5||current>0.0){
    if(old<=0.0)return vec3(0,0,0);float normalMode=hbGeometryLoad(hbGeometryLoad(attributes+1.0).z+7.0).z;bool mappedNormal=normalMode>.5;
-#ifdef HB_RAY_OP_2
+#ifdef HB_RAY_NORMAL_TIME
    if(normalMode>1.5)normal=hbRayNormalTimeLod(id,point,view,width,hbForward.w);
 #endif
    vec3 smoothValue=hbRaySmoothNormal(id,point),prior=vec3(0,0,0),mapped=vec3(0,0,0);

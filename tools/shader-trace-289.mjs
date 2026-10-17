@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';import path from 'node:path';import {createHash} from 'node:crypto';
+// Explicit private-test capture only. At most path/aux source per invocation;
+// never retain every frame/program, and never alter production shader options.
+export async function installShaderTrace289(evaluate){await evaluate(`(async()=>{
+const {ScreenEffectsPass}=await import('/prototype/screen-effects-gl.js'),previous=ScreenEffectsPass.prototype.preparePipeline,records=new Map(),seen=new WeakSet();window.hbShaderTrace289={records,restore:()=>{ScreenEffectsPass.prototype.preparePipeline=previous;}};
+ScreenEffectsPass.prototype.preparePipeline=function(renderer,raw){const state=previous.call(this,renderer,raw);if(state&&!seen.has(state)){seen.add(state);const stages=[['path',this.material],['lens-motion-guide',this.denoiser?.materials[2]]];state.done.then(()=>{if(state.error||state.cancelled)return;const gl=renderer.getContext(),debug=gl.getExtension('WEBGL_debug_shaders');for(const[name,material]of stages){if(!material)continue;const program=renderer.properties.get(material).currentProgram;if(!program?.fragmentShader)continue;records.set(name,{name,glsl:gl.getShaderSource(program.fragmentShader),translated:debug?.getTranslatedShaderSource(program.fragmentShader)||null,stage:state.stages.find(s=>s.stage===name)||null});}});}return state;};
+})()`);}
+export async function saveShaderTrace289(evaluate,work){
+ const rows=await evaluate('(()=>{const trace=window.hbShaderTrace289;if(!trace)return[];trace.restore();return [...trace.records.values()];})()'),records=[];
+ for(const row of rows){const record={name:row.name,stage:row.stage};for(const[field,ext]of[['glsl','glsl'],['translated','hlsl']]){const text=row[field];if(!text){record[field]=null;continue;}const bytes=Buffer.from(text);if(bytes.length>4*1024*1024)throw Error('Private shader trace exceeds bounded evidence size');const file=row.name+'.'+ext;await fs.writeFile(path.join(work,file),bytes);record[field]={path:file,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),lines:text.split('\n').length,loopAttributes:(text.match(/\[(?:unroll|loop|fastopt)\]/g)||[]).reduce((m,key)=>(m[key]=(m[key]||0)+1,m),{})};}records.push(record);}
+ await fs.writeFile(path.join(work,'shader-trace.json'),JSON.stringify({records,scope:'Private source/translated shader and CPU submit/wait timing; not GPU hardware timestamps.'},null,2));return records;
+}

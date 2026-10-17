@@ -1,4 +1,5 @@
 import * as THREE from 'three/webgpu';
+import {captureMaterialGraph} from './material-source-key.js';
 import {materialTextureTypes,textureNodeType,texturePlaceholder} from './texture-assets.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {MeshPhysicalNodeMaterial,DataTexture,TextureLoader,Color,Vector2,Vector3,Vector4,NoColorSpace,RepeatWrapping,ClampToEdgeWrapping,DoubleSide,FrontSide} from 'three/webgpu';
@@ -17,7 +18,7 @@ const noise=p=>{const i=p.floor(),f=p.fract(),u=f.mul(f).mul(f.mul(-2).add(3));r
 
 // The same persisted graph, pin types, defaults and validation feed GLSL and TSL.
 export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeURIComponent(path),onError=()=>{},renderer}={}){
-  data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
+  data=resolveMaterialAttributes(resolveMaterialInputs(structuredClone(data)));data.surface??={};captureMaterialGraph(data);const graph=data.graph||materialGraph();if(!validMaterialGraph(graph))throw Error('머테리얼 그래프 검증 실패');if(graph.mode==='function'||graph.nodes.some(n=>materialNodeKey(n)==='functionCall'))throw Error('머테리얼 함수를 resolveMaterialAsset으로 먼저 불러오세요.');
   const surface={...materialDefaults,...data.surface},edges=normalizedMaterialEdges(graph),nodes=new Map(graph.nodes.map(n=>[n.id,n])),cache=new Map(),textureBindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),loading=[],parameters=new Map(),surfaceUniforms=new Map(),clock=T.uniform(0);let disposed=false;
   const uniformValue=(value,type)=>T.uniform(type==='float'?value:new ({vec2:Vector2,vec3:Vector3,vec4:Vector4}[type])(...(typeof value==='string'?new Color(value).toArray():value)),type);
   const surfaceValue=input=>{const raw=surface[input.key],u=uniformValue(raw,input.type);surfaceUniforms.set(input.key,u);return u;};

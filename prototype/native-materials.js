@@ -1,5 +1,6 @@
 import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
+import {captureMaterialGraph} from './material-source-key.js';
 function hlsl(code){
   code=code.replace(/\bvec([234])\b/g,'float$1').replace(/\bmix\b/g,'lerp').replace(/\bfract\b/g,'frac').replace(/\bmod\b/g,'hbMod');
   for(const match of [...code.matchAll(/\bfloat([234])\(/g)].reverse()){let depth=1,comma=false;for(let i=match.index+match[0].length;i<code.length&&depth;i++){if(code[i]==='(')depth++;else if(code[i]===')')depth--;else if(code[i]===','&&depth===1)comma=true;}if(!comma)code=code.slice(0,match.index)+'hbSplat'+match[1]+code.slice(match.index+6);}
@@ -28,7 +29,7 @@ export function compileNativeMaterial(data){
   return {...plan,vectorBindings,uniformValues,declarations,evaluation};
 }
 export function createNativeMaterial(THREE,input,{fileUrl,onError=()=>{},renderer}={}){
-  const data=structuredClone(input),plan=compileNativeMaterial(data),surface={...materialDefaults,...data.surface},bindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),maps=[],values=plan.uniformValues.slice();let disposed=false,time=0;
+  const data=captureMaterialGraph(structuredClone(input)),plan=compileNativeMaterial(data),surface={...materialDefaults,...data.surface},bindings=materialTextureBindings(THREE,{resources:data.textureAssets,fileUrl,renderer,onError}),maps=[],values=plan.uniformValues.slice();let disposed=false,time=0;
   const material=new THREE.MeshStandardMaterial({color:'#ffffff',roughness:surface.roughness,metalness:surface.metalness,emissive:'#ffffff',emissiveIntensity:surface.emissiveIntensity,transparent:surface.blendMode==='translucent',alphaTest:surface.blendMode==='masked'?surface.alphaTest:0,side:surface.doubleSided?THREE.DoubleSide:THREE.FrontSide});
   const program={id:crypto.randomUUID(),declarations:plan.declarations,evaluation:plan.evaluation,uniforms:values,maps,transmissive:plan.transmissionConnected||surface.transmission>0,animated:/\bhbTime\b/.test(plan.lines+Object.values(plan.values).join(' '))};
   material.userData.hbMaterial=true;material.userData.hbNativeProgram=program;material.userData.materialSource=data;

@@ -16,6 +16,7 @@ import {NativePhysicsQueries,NativePhysicsQueryPool} from './native-physics-quer
 import {nativeModuleRequest,mergeNativeReply} from '../prototype/native-module-query.js';
 import {spawnQueryRequest,spawnQueryCursor} from '../prototype/native-spawn.js';
 import {pruneTestArtifacts} from './test-artifacts.mjs';
+import {nativeSDKFingerprint} from './native-sdk-fingerprint.mjs';
 const root=path.resolve(import.meta.dirname,'..'),buildRoot=path.join(root,'native/build/plugins');
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
@@ -45,7 +46,7 @@ export class NativeHost extends NativeProtocol {
   async build(header,source,{configuration='editor',signal,files=[]}={}){
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;const headers=await Promise.all(['Game.hpp','Bridge.hpp','Library.hpp','Native.hpp','NativeRouting.hpp','Spawn.hpp','Session.hpp','Compute.hpp','Render.hpp'].map(name=>fs.readFile(path.join(root,'native/include/HBEngine',name)))),hash=createHash('sha256').update('project-source-v2-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories])+headers.join('')).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await prepareNative();await fs.mkdir(dir,{recursive:true});
+    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();const sdk=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal}),hash=createHash('sha256').update('project-source-v3-sdk-closure-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories])+sdk.fingerprint).digest('hex').slice(0,20),dir=path.join(buildRoot,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await fs.mkdir(dir,{recursive:true});
     const cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       const layout=await writeNativeProject(compileDir,generated),objects=[];
@@ -69,7 +70,7 @@ export class NativeHost extends NativeProtocol {
     const token=randomUUID(),session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()};this.sessions.set(token,session);for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000){value.process?.kill();this.sessions.delete(key);}
     const now=new Date();await fs.utimes(binary,now,now);await pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)}).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
     try{signal?.throwIfAborted();}catch(error){this.sessions.delete(token);throw error;}
-    return {token,metadata,cacheKey:hash,cacheHit,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    return {token,metadata,cacheKey:hash,cacheHit,sdk,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
   }
   async call(token,request,from,rendererQuery){
     const session=this.sessions.get(token);if(!session)throw Error('C++을 먼저 빌드하세요.');session.lastUsed=Date.now();

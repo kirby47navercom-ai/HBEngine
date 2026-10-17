@@ -39,7 +39,7 @@ ${expressions}
 ${Array.from({length:48},(_,id)=>'R"HB('+rayTextureVariants(rayMaterialGLSL,[[Math.floor(id/12),id%12]]).replace(/\bfract\(/g,'frac(')+')HB"').join(',\n')}
  };std::string source=R"HB(
 ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
-)HB";std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(i[8]*12+i[10]);for(int kind:kinds)source+=textureVariants.at(kind);
+)HB";bool normalTime=false;for(const auto& p:programs)if(p.fieldMask&8)for(const auto& i:p.instructions)if(i[0]==2)normalTime=true;if(normalTime)source="#define HB_RAY_NORMAL_TIME 1\n"+source;std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(i[8]*12+i[10]);for(int kind:kinds)source+=textureVariants.at(kind);
 
  for(int pass=0;pass<2;pass++){const bool alpha=pass==1;keys.clear();const std::string programName=alpha?"hbRayProgramAlpha":"hbRayProgram",executeName=alpha?"hbRayExecuteAlpha":"hbRayExecute";for(const auto& p:programs){validateRayProgram(p);if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");
   std::array<int,64> definitions;definitions.fill(-1);std::vector<std::array<int,4>> parents(p.instructions.size());std::vector<bool> needed(p.instructions.size(),false),live(p.instructions.size(),!alpha);std::set<int> registers,derived;int alphaStore=-1;
