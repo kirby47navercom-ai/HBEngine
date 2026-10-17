@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "8ef7ca41e49bc6e4e79b3fee9e7126acf123e1d0",
+  "targetIds": [
+    "RND-06",
+    "PER-01"
+  ],
+  "implemented": [
+    "알파를 소비하는 광선 검사만 출력3의 마지막 store와 물리 레지스터 버전별 선행 계산을 실행해요. 전체 색상/조명 프로그램·원본 명령 순번/주소·IR 예산은 유지해요.",
+    "실제 복잡 색상/마스크 표본34→7명령, GLSL 본문6582→2632B·WGSL25989→15807B. GL/GPU/HLSL 불투명·투명 float 알파와 전체 계산이 같아요."
+  ],
+  "limits": [
+    ".w만 소비하는 내부 경로에 한정해요. 전체 게임 FPS나 Complex141 초기 지연의 해결 근거가 아니에요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/rendering-274-OwXclB/acceptance.json",
+      "sha256": "cae351466af3106a649d9187cf0d47cf61c006b35c604f0ffd0ff08c6f4059f5"
+    },
+    {
+      "path": "native/build/rendering-274-window-pExwlr/acceptance.json",
+      "sha256": "3b71839534e1d6653043f83c3c93616366944e7257aa0368a71640d7bf9e4538"
+    },
+    {
+      "path": "native/build/rendering-274-native-PNLAfd/acceptance.json",
+      "sha256": "55b4c3421ceacc669e7a38691d9982026b49f6f111c4d886af0e4ccafec9a593"
+    },
+    {
+      "path": "native/build/rendering-194-XihY4K/acceptance.json",
+      "sha256": "b810d6ad2482f276a58eba1bf32beac7d6c2e0a0befeaa3b2a2beb6c4dd67521"
+    }
+  ],
+  "installationPending": true
+}

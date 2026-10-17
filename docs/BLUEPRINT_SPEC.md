@@ -524,3 +524,10 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 샘플한 값만 첫 적용 직전 baseline을 공유해요. 높은 priority가 우선하고 동률은 실제 재생 시작 순서예요. 하위 재생은 최신 값을 보관하며 상위가 정지하면 즉시 인계해요. TRS/visible·카메라/시간·빛/머테리얼·BP 변수/C++ 속성·개별 컴포넌트 속성을 지원해요. 부모/구조/골격/애니메이션/별칭/가중 혼합은 잔여예요.
 
 트랙 completionMode는 default/restore/keep이고, restoreState는 기본값, optional forceRestore는 마지막 소유자의 복원을 강제해요. 다른 활성 소유권이 있으면 그 값이 우선해요. priority는 optional int32 기본0이고 `LevelSequence::SetPriority/GetPriority`와 같은 BP 노드가 실행 중 override를 바꿔요. setter는 큐 처리·getter는 최신 처리 snapshot이에요. `runtime.sequenceOwnership`/player inspect는 요청 시 lease 수를 반환해요. 공용 SDK734/노드819. ENGINE_WORK_268–273 근거와 각 limits를 함께 보세요.
+
+
+## 274–281 · 광선·2D 실행·AI 제작 연결
+
+광선 알파는 출력 의존성만 실행하고 고정 필드 호출은 관련 프로그램만 참조해요. 기존 sampleCube의 LOD 핀은 전체색과 알파의 GL/GPU/native 광선에서도 정수/분수/경계/필터대로 동작해요. 패킷/키/명령 예산과 다른 텍스처의 cutout 정책은 보존해요.
+
+기존 Tilemaps CPP/BP 쓰기는 async load·render·release·dispose에서 늦은 상태를 버리고 새 편집을 보존해요. runtime.tilemap.inspect({target,layer?,offset?,limit?,cell?})와 player.tilemapState는 읽기 전용·기본64/최대256·단일 셀 조회이며 원본을 편집하거나 자동 로드하지 않아요. 숫자는 응답 페이지 크기이며 생성 제한이 아니에요. SpriteRenderer/TilemapRenderer의 toneMapping은 scene(기존 기본) 또는 display(머테리얼 원본색)이에요. 전역 후처리 우회와 별개예요. SDK734/노드819는 그대로예요. ENGINE_WORK_274–281에 실제 표본/한계를 기록했어요.

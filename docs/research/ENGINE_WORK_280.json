@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "validation",
+  "implementationRevision": "8ef7ca41e49bc6e4e79b3fee9e7126acf123e1d0",
+  "targetIds": [
+    "BLD-02",
+    "CPP-02"
+  ],
+  "implemented": [
+    "최신 사용자 C++와 공용 SDK를 arm64 NDK compile/link하고 서명 debug APK·16KiB ELF/ZIP 정렬을 확인했어요.",
+    "새 광선/타일/색상 모듈을 포함한 의존성 closure뿐 아니라 APK 안7개 JS의 원본 SHA도 대조해요."
+  ],
+  "limits": [
+    "배포 검증이며 새 제작 기능 수로 계산하지 않아요. 실물 기기 설치/실행/음향/발열·iOS는 확인하지 않았어요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/runtime-sdk-mobile-280-IxbJ5s/acceptance.json",
+      "sha256": "0f4e7739cffa5d740f7f558b9ec4db3a38383e70855caf5e86bf8311b19892f5"
+    }
+  ],
+  "installationPending": true,
+  "artifact": {
+    "bytes": 6330498,
+    "sha256": "ac2bf97fce34fa01943361fc19224e656a1e03ae4b52801626db4f3f636da414"
+  }
+}

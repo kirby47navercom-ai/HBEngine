@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "8ef7ca41e49bc6e4e79b3fee9e7126acf123e1d0",
+  "targetIds": [
+    "2D-01",
+    "2D-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "SpriteRenderer/TilemapRenderer의 색상 처리(scene/display)를 제작 상세 속성과 공용 component schema에 추가했어요. 필드 누락/scene은 기존 노출을 보존해요.",
+    "display는 머테리얼 톤 매핑을 끄고, GPU 생성·재사용·복제·진단 뷰에서도 선택을 유지해요. 선택이 바뀔 때만 shader 갱신 표시를 해요.",
+    "실제 D3D/GL 게임의 원본 SVG색이 모두 RGB(79,186,117)로 나왔어요."
+  ],
+  "limits": [
+    "전역 후처리/블룸/안개 전체를 우회하는 overlay 기능은 아니에요. WebGPU 재질/복제는 CPU 확인, 실제 WebGPU 색상은 설치 후 별도 확인해요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/2d-display-279-oLWa0l/acceptance.json",
+      "sha256": "ea3870043754f93be59fe9720242667a42294bd0fa7445d860aaeffc3cdc58aa"
+    },
+    {
+      "path": "native/build/2d-display-279-window-xLmOZK/acceptance.json",
+      "sha256": "614d07a8d918d2ec12e336d6f399664d3f1c207d71fdbc9819c68f3f4bcbe8ff"
+    }
+  ],
+  "installationPending": true
+}

@@ -3658,5 +3658,38 @@
       "docs/research/ENGINE_WORK_272.json",
       "docs/research/ENGINE_WORK_273.json"
     ]
+  },
+  "supplemental274_281": {
+    "date": "2026-10-17",
+    "read": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Texture-mipMapBias.html",
+        "scope": "HTML286행 중229–248 API 선언/양수흐림·음수선명·성능/API 제약. sampler bias 전체 구현으로 계산하지 않음; 링크 미독"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/texture-asset-editor-in-unreal-engine?lang=en-US",
+        "scope": "UE5.8 반환351행 본문0–319를 두 번 반환으로 읽음. mip/LOD·원본/코덱·채널/면/슬라이스·alpha coverage·normal normalize·color/압축/플랫폼/byte 의미 대조. 그림/iframe/연결API/실제UE실행은 미독/미실행"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.shadergraph@14.0/manual/Sample-Cubemap-Node.html",
+        "scope": "14.0.12 HTML225행 중115–171 본문/port표/생성 예제: world Dir와 명시LOD·Sampler 입력. 링크·미디어·다른ShaderGraph 노드 전체는 미독"
+      }
+    ],
+    "newlyObservedUnimplemented": [
+      "sampler mip bias versus top-mip limit and per-platform cooking distinction",
+      "alpha coverage preserving mip filters, normal mip normalization and color encoding controls",
+      "texture compression/platform resident byte diagnostics and heterogeneous array source sizing"
+    ],
+    "analysisGate": "선택 본문/API 대조이며 전체 corpus/독립 분석 gate 미승격",
+    "evidence": [
+      "docs/research/ENGINE_WORK_274.json",
+      "docs/research/ENGINE_WORK_275.json",
+      "docs/research/ENGINE_WORK_276.json",
+      "docs/research/ENGINE_WORK_277.json",
+      "docs/research/ENGINE_WORK_278.json",
+      "docs/research/ENGINE_WORK_279.json",
+      "docs/research/ENGINE_WORK_280.json",
+      "docs/research/ENGINE_WORK_281.json"
+    ]
   }
 }

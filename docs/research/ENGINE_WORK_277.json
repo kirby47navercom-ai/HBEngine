@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "8ef7ca41e49bc6e4e79b3fee9e7126acf123e1d0",
+  "targetIds": [
+    "2D-06",
+    "PER-01",
+    "PER-03"
+  ],
+  "implemented": [
+    "검증한 frozen JSON 타일 배열은 같은 경계 안에서 다시 순회하지 않아요. 메타데이터·레이어 ID·변경된 배열·경계 변경은 계속 검사해요.",
+    "mutable 행·accessor·상속 값은 캐시하지 않아요. WeakMap에는 경계 숫자만 두고 이전 월드/배열의 강한 이력을 만들지 않아요.",
+    "16×8192타일·변경 맵12개 Node 표본의 반복 검증206.78→100.36ms, 에셋 SHA가 같아요."
+  ],
+  "limits": [
+    "캐시 최초 검증을 제외한 한 순서 CPU 표본이에요. 전체 렌더/물리/FPS/장시간 RAM 측정으로 환산하지 않아요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/tile-validation-277-On0hwQ/acceptance.json",
+      "sha256": "5238c4ec496c8ddcf513b1cb935eebf2cb1176d729c661281506954c12d1b98d"
+    }
+  ],
+  "installationPending": true
+}

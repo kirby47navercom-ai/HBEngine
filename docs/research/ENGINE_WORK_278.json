@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "8ef7ca41e49bc6e4e79b3fee9e7126acf123e1d0",
+  "targetIds": [
+    "AI-03",
+    "2D-06"
+  ],
+  "implemented": [
+    "runtime.tilemap.inspect와 player.tilemapState가 활성 대상의 셀·레이어·준비/처리 상태를 요청할 때만 반환해요. 에셋을 불러오거나 편집하지 않아요.",
+    "기본64/최대256 페이지 또는 단일 셀, 분리된 응답값·잘못된 인자 거부·종료 후 readyfalse를 제공해요. 실제 CPP/BP 편집 뒤 셀 응답419B를 확인했어요."
+  ],
+  "limits": [
+    "페이지 제한은 조회 응답 크기이며 오브젝트/타일 생성 제한이 아니에요. 쓰기는 기존 CPP/BP/에셋 편집 경로를 사용해요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/tile-inspection-278-0xaMfI/acceptance.json",
+      "sha256": "35ae6d04858c6484a0412848c32d12cf30986fbacca81b809565f599a7c34485"
+    },
+    {
+      "path": "native/build/tile-lifetime-276-window-goRh82/acceptance.json",
+      "sha256": "92a4f320712552fdb8a764861d22bcd3c4d542552ff7efb43aa33b3ec3568573"
+    }
+  ],
+  "installationPending": true
+}

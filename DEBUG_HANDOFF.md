@@ -921,3 +921,8 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 ## 268–273
 
 269 첫 fixture가 Camera.fov를 썼지만 실제 필드는 fieldOfView여서 자산 검증이 거부됐어요. fixture만 고쳤고 검증을 완화하지 않았어요. readonly 검사에서 복사한 트랙 ID 중복 때문에 먼저 실패하던 fixture도 고유 ID/int 타입으로 고쳐 readonly 선언 거부를 확인했어요. 271 첫 UI Undo/Save 요청은 expectedRevision을 빠뜨려 REVISION_CONFLICT로 거부됐어요. document.get의 revision으로 재시도한 독립 fixture sNP5Wp가 UI/게임 전체를 통과했어요. 272 k8jS0T 보고서의 상속된 laterStartPriority 라벨은 실제 수행한 explicitPriorityOverridesStartOrder로 이름만 정정하고 정정 사유를 남겼어요. 테스트 결과/시간을 바꾸지 않았어요.
+
+
+## 274–281
+
+274 첫 fixture는 sine의 value 입력 대신 a로 연결해 검증이 거부됐어요. 다음 fixture는 발광(field2)과 알파(field1)를 잘못 같은 출력 그룹으로 보아 절삭 기대가 실패했어요. 실제 field1 기본색 그래프로 바꿨고 제품 검증은 완화하지 않았어요. Probe 문자열의 줄바꿈/데이터URL 상대import도 테스트 코드만 고쳤어요. 276 첫 async fixture는 현재 path와 비교해 두 요청을 같은 promise에 연결한 오류를 고쳤어요. 첫 실제 창 검사는 prefab 상속 동기화로 생긴 검사 프로젝트의 미저장 장면 때문에 정상 종료가 대기했어요. 소유 fixture를 revision 저장한 goRh82가 종료0/두게임을 통과했어요. 원본 사용자 창/프로필은 사용하지 않았어요.
