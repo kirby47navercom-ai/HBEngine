@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7710876",
+  "implementationRevision": "3ea0613d6454f1952f2cd555489e5b5daa57d3ba",
+  "targetIds": [
+    "BLD-02",
+    "AI-03"
+  ],
+  "implemented": [
+    "한글 작업경로에서 aapt2가 프로젝트 밖 SDK android.jar 상대 경로를 못 여는 실제 오류를 SDK 절대경로로 수정·SDK 재설치/복제 없음",
+    "천/2D로프 공용 C++10 함수를 arm64 NDK로 컴파일/링크·서명 debug APK·16KiB ELF/ZIP 정렬·2D/3D WASM/렌더 모듈 포함 확인",
+    "APK6263422B SHA015cabe32240b181e0b3fd2953183d2c42fc6b375e7359fd4395b3d345c02321; 검사 결과/명세 보존 후 재생성물 정리"
+  ],
+  "limits": [
+    "Android 실기기 미보유: 설치/실행/터치/음향/발열/FPS 실기기 검증 아님",
+    "Mac/Xcode 미보유: 이 작업의 iOS 새 코드 컴파일/실행 검증 아님"
+  ],
+  "checks": [
+    {
+      "path": "native/build/deformables-mobile-242-u0IgAd/acceptance.json",
+      "sha256": "a650f40c16cb4e9cde0579431240222f531e79e9a4e45855427fc732a4737e14"
+    },
+    {
+      "path": "native/build/general-242-zFq4Uv/acceptance.json",
+      "sha256": "fe11d76dc41af81b366c5214548c9410dd1d104f4c6546c377a3dd2c405883ea"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "prototype/deformable-physics.js",
+      "sha256": "fa850afdb71067361dcd508e7e6c38d179abb1cb6c48753fb441ae1f34c6086f"
+    },
+    {
+      "path": "prototype/cloth-config.js",
+      "sha256": "3c00fcabaee1e63d5adb03ecf192d6cd299944acb0743e08459e80c9a23063c9"
+    },
+    {
+      "path": "prototype/cloth-rendering.js",
+      "sha256": "ba8e7b236e3ce50de82406ba5b6ac83f1dca6e6c012e41b204c6d7224ca5277e"
+    },
+    {
+      "path": "prototype/cloth-pin-editor.js",
+      "sha256": "74929781fa005159b46d87d5b252d35efa122a910447f55b8948063c851689e3"
+    },
+    {
+      "path": "prototype/cloth-diagnostics.js",
+      "sha256": "256c38ce7ab33463656fef65578e6ee6a97933431dcda5fc9e4fdfd52df3fb74"
+    },
+    {
+      "path": "prototype/rope2d-config.js",
+      "sha256": "ec6e7c63774a2f103687519203f48af443dacacf6962d8079f7023a834d4e087"
+    },
+    {
+      "path": "prototype/rope2d-rendering.js",
+      "sha256": "3d83620767333e5febcdda730a9b46d0100f55e7aadbbeb236b32a6983005e47"
+    },
+    {
+      "path": "prototype/native-geometry-stream.js",
+      "sha256": "604970f8ad816cbbf4ee13d78557984b4092560d8d58ff7a09b8127627400397"
+    },
+    {
+      "path": "prototype/native-shadow-cache.js",
+      "sha256": "dd583fc2fcc83fbb8f894c8c8a9aee87f39fb01718a28277a09adcf1e79ff694"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "dfaaa43b0f499c4e1b7eeb65c43ba748e3102f5263cbf2c8d8a4690c0f8c33c9"
+    },
+    {
+      "path": "prototype/physics-world.js",
+      "sha256": "ce7a98dac4f7871a85f4e6280b1e59bff619ef381bd43f3db713a025aba67a56"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "38f2dce2253128d2c2f7110b806b07913db74bb89eaf2ab3c08d5349e3561d02"
+    },
+    {
+      "path": "prototype/scene-inspector.js",
+      "sha256": "fee0a55abb5dd614ad6c7398b78bb3be7b412cfef43db383b487de3541b0f5a9"
+    },
+    {
+      "path": "prototype/blueprint-details.js",
+      "sha256": "bf1758c49aa3d34e19d0a77d740519a5c406af11c6764fddbd468325e4a6c010"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "4fe012df770a88f8962c22efc6f2fcc5c14b23d82646cfd643f462284b431081"
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "sha256": "ab6a5d0f14f707f2f399ee31038e3f4a1a0e934fac2905ea8c5d51c8cc681489"
+    },
+    {
+      "path": "native/include/HBEngine/Session.hpp",
+      "sha256": "f703b58c9a49c7c4d7e25a2c3dfcd843cb67c9bdf2294b3076b54436cf2c4eb3"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "ca7535772e03966ef045bf3373ebf947a1f9232b9670469cced44e87f0a909d0"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "70e4a64ea82c2887b4e0bfb4ceeed32fd164431b465171b2c16c1a251b70fb7e"
+    },
+    {
+      "path": "tools/mobile-android.mjs",
+      "sha256": "bd113cda142eca0a2b03b92d86c88dc47e45b276efb1251b1e285cc07d390b6c"
+    }
+  ],
+  "executionVerified": false,
+  "installationPending": true,
+  "androidPackageVerified": true
+}

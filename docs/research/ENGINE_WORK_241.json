@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "7710876",
+  "implementationRevision": "3ea0613d6454f1952f2cd555489e5b5daa57d3ba",
+  "targetIds": [
+    "PHY-02",
+    "AI-03"
+  ],
+  "implemented": [
+    "Rope2D 배치/컴포넌트·XY 시작/끝점/입자/두께/물성·한 줄 핀 편집·키보드/Undo·Scene/BP 상세",
+    "같은 변형체 월드 구현 재사용·실제 XY 중력/충돌/마스크·강체 연결/충격/핀 해제·풀 재구성·표시 Z 유지",
+    "재사용 UV/index 리본·독립 DirectX/WebGL 실행·CPP/BP 공용5함수·runtime.rope 페이지·런타임 Inspector·기존 물리 순회에 후보 수집하여 비사용 장면 추가 전체 순회 제거"
+  ],
+  "limits": [
+    "2..4096 입자/로프이며 로프 오브젝트 개수 상한은 추가하지 않음",
+    "현재 XY 물리/표시 리본; 3D 튜브/절단/소성·실제 변형 입자의 C++ 질의 snapshot/GPU solver는 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/rope2d-241-cIc0qn/acceptance.json",
+      "sha256": "e68581e4f492e36485a803d39a500c46bacd6ec018833f60afaf998a03bd08b4"
+    },
+    {
+      "path": "native/build/rope2d-241-window-NOecQx/acceptance.json",
+      "sha256": "4309cc307de5530a80f6cf20a60730bdf8f49ecaa5ed7349a403f4c8ec581150"
+    },
+    {
+      "path": "native/build/rope2d-241-window-c2t1Zb/acceptance.json",
+      "sha256": "5ab7f190f3022a43242a7a7afa7822e4cebed19ef2993dc664a70c693784e9d4"
+    },
+    {
+      "path": "native/build/joint-dofs-237-yGHBUV/acceptance.json",
+      "sha256": "000b93bd339ae9e71f4a8b8cbd74efb6147c5bc1ed86cb2112dabb9c99603bc3"
+    },
+    {
+      "path": "native/build/vehicle-powertrain-236-jnBSZW/acceptance.json",
+      "sha256": "11f8a29725f1895520b3ec27b5cce804e223f583cd2ee96c27eaae28db29cb64"
+    },
+    {
+      "path": "native/build/runtime-inspector-238-GrIsaZ/acceptance.json",
+      "sha256": "f6700e080396b61bc66b138c3c2754b96d29498803eb9391adfe4e6c94eb0cee"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "prototype/deformable-physics.js",
+      "sha256": "fa850afdb71067361dcd508e7e6c38d179abb1cb6c48753fb441ae1f34c6086f"
+    },
+    {
+      "path": "prototype/cloth-config.js",
+      "sha256": "3c00fcabaee1e63d5adb03ecf192d6cd299944acb0743e08459e80c9a23063c9"
+    },
+    {
+      "path": "prototype/cloth-rendering.js",
+      "sha256": "ba8e7b236e3ce50de82406ba5b6ac83f1dca6e6c012e41b204c6d7224ca5277e"
+    },
+    {
+      "path": "prototype/cloth-pin-editor.js",
+      "sha256": "74929781fa005159b46d87d5b252d35efa122a910447f55b8948063c851689e3"
+    },
+    {
+      "path": "prototype/cloth-diagnostics.js",
+      "sha256": "256c38ce7ab33463656fef65578e6ee6a97933431dcda5fc9e4fdfd52df3fb74"
+    },
+    {
+      "path": "prototype/rope2d-config.js",
+      "sha256": "ec6e7c63774a2f103687519203f48af443dacacf6962d8079f7023a834d4e087"
+    },
+    {
+      "path": "prototype/rope2d-rendering.js",
+      "sha256": "3d83620767333e5febcdda730a9b46d0100f55e7aadbbeb236b32a6983005e47"
+    },
+    {
+      "path": "prototype/native-geometry-stream.js",
+      "sha256": "604970f8ad816cbbf4ee13d78557984b4092560d8d58ff7a09b8127627400397"
+    },
+    {
+      "path": "prototype/native-shadow-cache.js",
+      "sha256": "dd583fc2fcc83fbb8f894c8c8a9aee87f39fb01718a28277a09adcf1e79ff694"
+    },
+    {
+      "path": "prototype/native-scene-renderer.js",
+      "sha256": "dfaaa43b0f499c4e1b7eeb65c43ba748e3102f5263cbf2c8d8a4690c0f8c33c9"
+    },
+    {
+      "path": "prototype/physics-world.js",
+      "sha256": "ce7a98dac4f7871a85f4e6280b1e59bff619ef381bd43f3db713a025aba67a56"
+    },
+    {
+      "path": "prototype/scene-components.js",
+      "sha256": "38f2dce2253128d2c2f7110b806b07913db74bb89eaf2ab3c08d5349e3561d02"
+    },
+    {
+      "path": "prototype/scene-inspector.js",
+      "sha256": "fee0a55abb5dd614ad6c7398b78bb3be7b412cfef43db383b487de3541b0f5a9"
+    },
+    {
+      "path": "prototype/blueprint-details.js",
+      "sha256": "bf1758c49aa3d34e19d0a77d740519a5c406af11c6764fddbd468325e4a6c010"
+    },
+    {
+      "path": "prototype/engine-services.js",
+      "sha256": "4fe012df770a88f8962c22efc6f2fcc5c14b23d82646cfd643f462284b431081"
+    },
+    {
+      "path": "native/include/HBEngine/Game.hpp",
+      "sha256": "ab6a5d0f14f707f2f399ee31038e3f4a1a0e934fac2905ea8c5d51c8cc681489"
+    },
+    {
+      "path": "native/include/HBEngine/Session.hpp",
+      "sha256": "f703b58c9a49c7c4d7e25a2c3dfcd843cb67c9bdf2294b3076b54436cf2c4eb3"
+    },
+    {
+      "path": "native/include/HBEngine/SceneRender.hpp",
+      "sha256": "ca7535772e03966ef045bf3373ebf947a1f9232b9670469cced44e87f0a909d0"
+    },
+    {
+      "path": "native/desktop/SceneRenderBridge.hpp",
+      "sha256": "70e4a64ea82c2887b4e0bfb4ceeed32fd164431b465171b2c16c1a251b70fb7e"
+    },
+    {
+      "path": "tools/mobile-android.mjs",
+      "sha256": "bd113cda142eca0a2b03b92d86c88dc47e45b276efb1251b1e285cc07d390b6c"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

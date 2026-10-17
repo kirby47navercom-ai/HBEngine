@@ -498,3 +498,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 236–237: 차량 기어/RPM/현재기어 공용3함수와 관절 축 운동/모터 공용2함수를 같은 SDK/BP에 추가했다. 노드794·공용C++709. 실제 사용자 C++/BP·장면/BP 컴포넌트 표/6축 편집·Undo·독립D3D를 검증했다. 기본 힘 차량/2D 관절은 유지한다.
+
+
+239–241: 천/2D로프 각 핀·충격·강체연결·초기화·개수 공용SDK10 및 동일BP를 실제 제작/실행에 연결했다. 총804노드/공용C++719. Scene/BP 핀 mouse/keyboard/Undo와 런타임Inspector·AI페이지를 검증했다. 상세 범위는 ENGINE_WORK_239–242를 따른다.

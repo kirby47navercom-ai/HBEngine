@@ -375,3 +375,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 236–238 사용자 설치 694d1f835c31d539 갱신·명세2821파일 실행후SHA동일. 차량 토크/기어 표·BP 컴포넌트 Undo·CPP/BP 변속과 RPM·독립 D3D 게임·6축 관절 모터 및 편집/AI 통과, 오류0/exit0. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치202826405B 제거. USER_INSTALL_238.json.
+
+
+239–242: 천/2D로프 제작·핀/물성/강체/충돌/재사용·공용SDK10/BP/AI/Inspector, DirectX 동적 정점전송/ring3/그림자cache, Android SDK경로/arm64서명APK를 연결·검사했다. 최신 단일 목록 ENGINE_STATUS.json의 PHY-02/RND-02/BLD-02/AI-03 및 ENGINE_WORK_239–242를 우선한다. 사용자 설치 검증은 후속 기록한다.

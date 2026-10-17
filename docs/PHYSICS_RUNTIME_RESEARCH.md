@@ -97,3 +97,6 @@ PhysicsConstraint의 Generic·6축 관절은 3D 전용이다. 형식을 바꾸�
 라이브 Inspector는 기어비·토크 키·관절 축을 각 입력의 실제 스칼라 값으로 갱신한다. 운동 방식/모터 여부가 바뀔 때만 구조를 재작성하고 수치 변경은 입력과 포커스를 유지한다.
 
 정확한 현 잔여는 ENGINE_STATUS.json PHY-02를 우선한다. cloth·파괴·break/plasticity·multibody·coupled-axis limits·정교한 차동/독립 휠 회전/ABS·타이어 부피/변형·bone 드라이버·손상/예측은 별도다. 위의 초기 조사 시점 전체 잔여 목록을 현재 상태로 해석하지 않는다.
+
+
+239–242 최신: 사각Cloth3D와Rope2D를 실제 Rapier/변형렌더/핀제작/SDK10/AI/패키지에 연결했다. 이전 cloth 전체 미구현 설명은 PHY-02 최신 잔여로 대체한다. 임의 메시/스키닝·tether/연속paint·GPU solver·파괴/3Drope·읽기전용 CPP 입자 snapshot은 잔여다. ENGINE_WORK_239–242 참조.

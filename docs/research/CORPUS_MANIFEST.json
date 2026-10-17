@@ -3456,5 +3456,31 @@
       "node_modules/@dimforge/rapier3d-compat/dist/control/ray_cast_vehicle_controller.d.ts: wheel force is N; brake is impulse; rotation is angle"
     ],
     "implementation": "docs/research/ENGINE_WORK_236.json"
+  },
+  "supplemental239_242": {
+    "date": "2026-10-17",
+    "scope": "선택 기능의 실제 반환 본문/로컬 SDK와 독립 실행만 기록. 전체 본문/API 분석 완료 아님",
+    "read": [
+      {
+        "url": "https://rapier.rs/docs/user_guides/javascript/soft_bodies/",
+        "body": "1010행 중 생성/재료/입자/핀/강체 연결 주제 반환 구간0–331 및441–658. 출력 생략 구간·나머지/링크 전체 미독; 전체 페이지를 완료로 승격하지 않음"
+      },
+      {
+        "url": "https://docs.unity.com/en-us/engine/6000.0/manual/physics-section/physics-overview/class-cloth",
+        "body": "395행 중 pin constraint 선택/paint/gradient/self-intercollision 설명 반환 일부(특히228–315). 생략된 전체 본문/이미지/연결 API 미독. HB binary pin은 Unity 연속 distance paint의 전체 구현이 아님"
+      }
+    ],
+    "localPrimary": [
+      "rapier3d-compat/dist/dynamics/soft_body.d.ts: cloth/pin/kinematicTarget/attach/force/boundary/meshCollider",
+      "rapier2d-compat/dist/dynamics/soft_body.d.ts: rope/particle/pin/attachment API",
+      "rapier2d/3d collider.d.ts setEnabled",
+      "설치 Rapier0.21 실제 WASM·Windows D3D11 GPU pixel/ring·Android SDK/NDK/aapt2 실제 동작"
+    ],
+    "evidence": [
+      "docs/research/ENGINE_WORK_239.json",
+      "docs/research/ENGINE_WORK_240.json",
+      "docs/research/ENGINE_WORK_241.json",
+      "docs/research/ENGINE_WORK_242.json"
+    ]
   }
 }
