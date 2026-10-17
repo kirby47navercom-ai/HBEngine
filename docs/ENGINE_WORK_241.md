@@ -10,3 +10,6 @@
 
 - 2..4096 입자/로프이며 로프 오브젝트 개수 상한은 추가하지 않음
 - 현재 XY 물리/표시 리본; 3D 튜브/절단/소성·실제 변형 입자의 C++ 질의 snapshot/GPU solver는 잔여
+
+
+239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.

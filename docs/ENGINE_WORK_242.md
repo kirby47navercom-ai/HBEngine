@@ -10,3 +10,6 @@
 
 - Android 실기기 미보유: 설치/실행/터치/음향/발열/FPS 실기기 검증 아님
 - Mac/Xcode 미보유: 이 작업의 iOS 새 코드 컴파일/실행 검증 아님
+
+
+239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.

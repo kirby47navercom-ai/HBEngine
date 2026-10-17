@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "5ef5bcf2c6859aaad1a6241c63ea75c7abc81301",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85\\HBEngine.exe",
+  "bundleHash": "ea1799af84bb0d8585955257f7ce303e7b6e59c1ae3437332426918dd31aef76",
+  "files": 2846,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2845,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539",
+        "bytes": 204201887,
+        "manifestSHA256": "406c214283389d6b98298a569836ea2e5a70143a7fdc21db3fc1a5a32638b8ed"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T00:57:17.2346404Z",
+    "bytes": 204201887,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "ea1799af84bb0d85"
+    ]
+  },
+  "work": "native/build/engine-242-install-bvYD36",
+  "versions": [
+    "ea1799af84bb0d85"
+  ],
+  "manifestVerifiedFiles": 2846,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/cloth-239-window-azzOcB/acceptance.json",
+      "sha256": "3e6c5a97decc3403fb206ba18f91a8aadd4d289bdc62d4ccfcc64b9acd5de9e5"
+    },
+    {
+      "path": "native/build/rope2d-241-window-xvsMhk/acceptance.json",
+      "sha256": "3b24057a94110b9d74f3f2788af9941bb4dd9eab5c4d55025d51fbdbf2c28c47"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/cloth-239-window-azzOcB/cloth-live-inspector.png",
+      "sha256": "9d9e792242ee55a9010c59db437c7a7202c558a080355ba6802871e5d498ede0",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/cloth-239-window-azzOcB/cloth-pin-grid-editor.png",
+      "sha256": "bf39d0e2e24f5da4acae027023c1a546326aae71792bc42f5b554f7fdbaf4951",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/cloth-239-window-azzOcB/cloth-d3d11.png",
+      "sha256": "92ac92bdb705f9bc3777f16ba1e6a0a3c13b94a2496d5f38758bd07530fa43de",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/cloth-239-window-azzOcB/cloth-scene.png",
+      "sha256": "20ffa768303ce024da002df15c57b38a0f65bb1e22d94075c6f393903e6ee9d5",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/rope2d-241-window-xvsMhk/rope-live-inspector.png",
+      "sha256": "001bd2f4b3edf3630f81599dc270368655f668cd5a335053ec3729ec26759042",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/rope2d-241-window-xvsMhk/rope-pin-strip-editor.png",
+      "sha256": "87a587c82c0ab4d298c45a17df333804ec49c0af52a79fb1bf7e3563a8e25b0a",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/rope2d-241-window-xvsMhk/rope-d3d11.png",
+      "sha256": "bcb901afe76aaed42b40ece4e6fc0b7fd1a6a3e10e891c57e32611be03600ddd",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/rope2d-241-window-xvsMhk/rope-scene.png",
+      "sha256": "4300f50f19cd9f58b1ea003394c077fba64f9671d2a838784ec28ce8c3bf0698",
+      "visuallyInspected": false
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2846,
+  "privateChecks": "Hidden owned editor and four standalone D3D11/WebGL2 games. Distinct profiles/projects/ports. Scene/BP pin edits and Undo, keyboard/focus, runtime Inspector pin/release, CPP/BP/AI and actual deforming GPU stream. Actual User read-only inventory.",
+  "storage": {
+    "path": "native/build/storage-242-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}

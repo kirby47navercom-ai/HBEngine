@@ -378,3 +378,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 239–242: 천/2D로프 제작·핀/물성/강체/충돌/재사용·공용SDK10/BP/AI/Inspector, DirectX 동적 정점전송/ring3/그림자cache, Android SDK경로/arm64서명APK를 연결·검사했다. 최신 단일 목록 ENGINE_STATUS.json의 PHY-02/RND-02/BLD-02/AI-03 및 ENGINE_WORK_239–242를 우선한다. 사용자 설치 검증은 후속 기록한다.
+
+
+239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.

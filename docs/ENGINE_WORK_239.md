@@ -11,3 +11,6 @@
 - 현재 사각 천 2..256 입자/축이며 임의 DCC 메시/스키닝·거리 tether/연속 가중치 paint·GPU solver·파괴는 잔여
 - 구조/물성/scale 수정은 rest를 재구성; 외력과 오브젝트 충돌 토글은 상태 보존
 - 읽기 전용 C++ 질의 스냅샷은 현재 변형 입자를 포함하지 않음; 공용 천 제어 함수와 live VM 질의는 실제 월드 사용
+
+
+239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.

@@ -11,3 +11,6 @@
 - D3D 업로드는 보존한 12float interleaved 정점 전체를 ring buffer에 씀; 임의 GPU 부분 범위 쓰기라고 주장하지 않음
 - 추가 정점 버퍼/CPU 사본은 dynamic 메시만; 모든 정적 메시의 3중화 아님
 - 천/로프 GPU 시뮬레이션·입자 이전 위치 모션벡터·전체 장면 FPS/VRAM 측정은 별도 잔여
+
+
+239–242 사용자 설치 ea1799af84bb0d85 갱신·2846파일 실행후SHA동일. 천/2D로프 Scene/BP/keyboard/Undo/라이브 제어·CPP/BP/AI·독립 D3D/WebGL 4게임 오류0/exit0. 동적 정점 ring3와 SDK10·Android arm64 서명 APK 검증. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치204201887B 제거·배포 폐기 cloth-physics.js 제거. USER_INSTALL_242.json.
