@@ -1,3 +1,7 @@
+# 237 — 로컬 관절 축 검사식 정정 · 2026-10-17
+
+현상: 소스 C++와 패키지 관절 도달 검사가 timeout. 제품 로그/오류는0. CPU 단일축6군과 실제값을 대조했다. mPXENA 실제 Joint.position=[-2.32027698,1.31696093,0],rotationZ=25.000054. 이는 원점[-3,1]+0.75*[cos25,sin25]와 일치한다. 검사에서 이동 축을 월드X로 잘못 가정한 원인이 확정됐다. 소스검사식을 고친 뒤 소스 C++/BP는통과했으나 패키지 분기에 같은 +2.25 상수가 남아 반복 실패했다. 다음은 공유 expectedX(distance)식으로 양쪽을 바꾸고 문자열 검색으로 오래된 상수0개를 확인한 뒤 동일 검사한다. 관절 구현·한계·deadline은 완화하지 않는다. 별개 실제 UI오류는 runtime-inspector-values가 새 배열의 전체값을 numberinput에 넣어 비웠던 것. 셀별 scalar 추출과 구조 갱신을 수정했고238 qyCG8l/213 2JIkrQ CPU로확인; 실제설치검사에서값유지확인예정. 기존하단기록보존.
+
 # 207–209 — 해결과 검사 기록
 
 207 원인 확정: activateDocument가120ms 뒤 예약한 프리팹 동기화가 장면 저장보다 늦게 끝나 dirty를 다시 세움. 대기·진행 중 동기화를 저장 전에 마치는 flushPrefabRefresh와 editor.synchronize를 추가. 실제 rp5IN0는 모든 보기·표면/정점·Undo·원본 보존 뒤 오류0/종료0. 종료 제한이나 dirty 보호는 유지.209 첫 CPU 검사는 실제 VM start/tick/stop API와 다른 begin/advance/end를 사용한 검사 오류로 정정. D3D 첫 실행은5개 모델·포즈/되감기·복원·서버 종료까지 통과 후 보고서 built.report.renderer 오조회로 실패했으며, 실제 반환 built.renderer로 수정한 PWfsDw가 보고서/종료0까지 통과. WebGL 2B3TbP/실제 에디터 ZkMInQ도 통과.

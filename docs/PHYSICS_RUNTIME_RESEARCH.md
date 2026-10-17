@@ -82,3 +82,18 @@
 BP Inspector도 같은 선택의 속성 재구성 뒤 접기·검색·스크롤·입력 포커스를 보존한다. 자체 QA에서 컴포넌트 그룹을 접고 운동 형식을 바꾼 뒤 접힌 상태와 `운동` 검색 결과가 유지되는 것을 실제 DOM으로 확인했다. `test:desktop`은 배포 폴더의 물리 모듈을 Node로 불러 같은 144조건을 검사하고, 실제 EXE/WebView2 시작·허브·프로젝트 경로·종료를 별도로 검사한다. 개발 서버 브라우저 검사와 배포 검사 환경을 구별한다.
 
 이 구현은 정밀 primitive 강체 단계다. Mesh/Convex/Polygon/Heightfield·terrain collision, character step/slope/platform controller, contact filtering 프로필/충돌 채널 전체, COM/관성/보간/solver 설정 저작, 완전한 연결 프레임/6-DOF/break/soft/articulation, ragdoll/vehicles/cloth/destruction, native 물리 backend·병렬 처리·공간 질의 최적화·규모별 성능 검증은 계속 남아 있다. 렌더링·애니메이션·머테리얼·UI·오디오·에셋/빌드·네트워크·AI 등 다른 전 영역도 기존 전체 작업 지도의 모든 세부 항목을 유지한다.
+
+
+## 236–238 · 차량 동력계와 3D 6축 관절
+
+RaycastVehicle의 기본 구동 방식은 기존 휠당 힘이다. 엔진·변속기 방식은 RPM별 토크 배율 표/최대 토크/공회전·상한 RPM/기어비/종감속/효율, 자동·수동 변속/변속 시간/중립·후진/클러치·엔진 브레이크를 설정한다. 앞 차축은 로컬 Z>0인 구동 휠, 나머지는 뒤 차축으로 분류한다. 앞 토크 비율을 각 차축의 구동 휠에 균등 분배하고 N·m→N(반지름으로 나눔)으로 Rapier에 전달한다. 서비스/주차 제동 N·m는 반지름과 물리 dt로 해당 단계의 제동 충격량으로 변환한다. RPM은 바퀴 회전에서 계산하는 운동학적 응답이며 독립 회전 관성·ABS·LSD 모델 전체가 아니다. 기어비/토크 키는 장면과 BP 상세의 표에서 편집하며 Undo를 공유한다.
+
+공용 C++/BP: Physics::SetVehicleInput/SetVehicleGear/GetVehicleRPM/GetVehicleGear/GetVehicleSpeed. runtime.vehicle는 기어/RPM/토크/변속 상태와 휠 접지/구동력/RPM을 페이지로 읽는다. 실행 Inspector에는 같은 수치가 표시된다. 새 동력계 버퍼는 해당 구동 방식에서만 만들며 바퀴 배열을 재사용한다.
+
+PhysicsConstraint의 Generic·6축 관절은 3D 전용이다. 형식을 바꾸면 독립 프레임과 여섯 축 행을 만든다. 각 이동/회전 축의 고정·제한·자유와 ForceBased 모터(목표 위치/속도·강성·감쇠·힘/토크 한도)를 별도로 설정한다. 이동 m, 각도 도이며 회전 한계/목표는[-180,180]이다. 축은 소유자의 로컬 관절 프레임을 따르므로, X 이동과 Z 회전을 동시에 허용하면 이동 방향도 함께 회전한다. 한계·모터 편집은 이미 잡힌 영점을 유지한다. 2D 관절에서 이 형식은 거부하며 기존 관절은 추가 6축 행 배열을 만들지 않는다.
+
+공용 C++/BP: Physics::SetJointAxis(target,component,axis,mode,lower,upper), SetJointAxisMotor(target,component,axis,enabled,position,velocity,stiffness,damping,maxForce). 축0..5는 이동XYZ/회전XYZ, mode는 locked/limited/free다. runtime.physics.joints는 실제 등록된 관절과 설정을 페이지로 읽으며 임펄스/파괴력 계측으로 표현하지 않는다.
+
+라이브 Inspector는 기어비·토크 키·관절 축을 각 입력의 실제 스칼라 값으로 갱신한다. 운동 방식/모터 여부가 바뀔 때만 구조를 재작성하고 수치 변경은 입력과 포커스를 유지한다.
+
+정확한 현 잔여는 ENGINE_STATUS.json PHY-02를 우선한다. cloth·파괴·break/plasticity·multibody·coupled-axis limits·정교한 차동/독립 휠 회전/ABS·타이어 부피/변형·bone 드라이버·손상/예측은 별도다. 위의 초기 조사 시점 전체 잔여 목록을 현재 상태로 해석하지 않는다.

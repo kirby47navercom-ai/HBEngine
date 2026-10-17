@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **789개**, 실제 공통 C++ API **704개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **794개**, 실제 공통 C++ API **709개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -54,8 +54,8 @@
 | 2D 조명 | 38 | 38 |
 | 2D 그림자 | 13 | 13 |
 | 2D 타일맵 | 13 | 13 |
-| 물리 관절 | 3 | 3 |
-| 물리 차량 | 2 | 2 |
+| 물리 관절 | 5 | 5 |
+| 물리 차량 | 5 | 5 |
 | 물리 질의 | 7 | 7 |
 | AI | 17 | 17 |
 | 상태 머신 | 11 | 11 |
@@ -921,6 +921,8 @@
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| physicsJointAxis | Set Joint Axis / 관절 축 운동 지정 | exec: exec, target: object, component: string, axis: int, mode: string, lower: float, upper: float | then: exec | hb::Physics::SetJointAxis | 공통 C++ + VM |
+| physicsJointAxisMotor | Set Joint Axis Motor / 관절 축 모터 지정 | exec: exec, target: object, component: string, axis: int, enabled: bool, position: float, velocity: float, stiffness: float, damping: float, maxForce: float | then: exec | hb::Physics::SetJointAxisMotor | 공통 C++ + VM |
 | physicsJointFrames | Set Joint Frames / 관절 양쪽 프레임 설정 | exec: exec, target: object, component: string, ownerRotation: vec3, connectedRotation: vec3, autoConnected: bool, referenceAngle: float | then: exec | hb::Physics::SetJointFrames | 공통 C++ + VM |
 | physicsJointMotor | Set Joint Motor / 관절 모터 설정 | exec: exec, target: object, component: string, enabled: bool, position: float, velocity: float, stiffness: float, damping: float, maxForce: float | then: exec | hb::Physics::SetJointMotor | 공통 C++ + VM |
 | physicsJointLimits | Set Joint Limits / 관절 한계 설정 | exec: exec, target: object, component: string, enabled: bool, lower: float, upper: float | then: exec | hb::Physics::SetJointLimits | 공통 C++ + VM |
@@ -930,6 +932,9 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | physicsVehicleInput | Set Vehicle Input / 차량 조종 입력 | exec: exec, target: object, throttle: float, steering: float, brake: float, handbrake: float | then: exec | hb::Physics::SetVehicleInput | 공통 C++ + VM |
+| physicsVehicleGear | Set Vehicle Gear / 차량 기어 지정 | exec: exec, target: object, gear: int | then: exec | hb::Physics::SetVehicleGear | 공통 C++ + VM |
+| physicsVehicleRPM | Get Vehicle RPM / 차량 엔진 RPM | target: object | return: float | hb::Physics::GetVehicleRPM | 공통 C++ + VM |
+| physicsVehicleCurrentGear | Get Vehicle Gear / 차량 현재 기어 | target: object | return: int | hb::Physics::GetVehicleGear | 공통 C++ + VM |
 | physicsVehicleSpeed | Get Vehicle Speed / 차량 속도 가져오기 | target: object | return: float | hb::Physics::GetVehicleSpeed | 공통 C++ + VM |
 
 ## 물리 질의
