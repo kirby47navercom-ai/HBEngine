@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "cc6b7bdadac3e85744734b262113016d3929e539",
+  "targetIds": [
+    "UI-03",
+    "CPP-01",
+    "AI-03"
+  ],
+  "implemented": [
+    "UI::SetSlotContent/공용 노드·펼친 중첩 NamedSlot ID/이름·에셋 경로/빈 경로로 내용 교체·지우기",
+    "기존 형제 객체/값/애니메이션·포커스/선택 커서/스크롤 보존·누른 가상 입력 해제와 살아 있는 release 이벤트 보존·제거 자식 이벤트/애니메이션 정리",
+    "최신 요청/Remove/Show/소유자 수명·오류 시 옛 화면 보존·기존 UI 예산 적용·원본 에셋 불변·명시 교체 시에만 새 뷰/글꼴 준비"
+  ],
+  "limits": [
+    "교체 시 전체 인스턴스 뷰를 준비하고 누른 포인터를 해제하며 동일 gesture 이식은 아님·위젯 클래스 상속/PreConstruct/3D 조명 UI 잔여·BP 슬롯 단독 실행은 설치 통합에서 추가 확인"
+  ],
+  "checks": [
+    {
+      "path": "native/build/widget-slot-256-4F4V7u/acceptance.json",
+      "sha256": "ae7567b9262cb6652d29a2071d1658cc1cc99b1a1862163e5c2662be983be6c7"
+    },
+    {
+      "path": "native/build/widget-slot-256-window-SUg9mw/acceptance.json",
+      "sha256": "536ad7632a1b22b4ac7b2efb868191d3c5a5e8bc5aaa5d238030181bc318e97b"
+    },
+    {
+      "path": "native/build/effect-inputs-254-window-1yTQyl/acceptance.json",
+      "sha256": "2ae97b838e6ff51d941bc2d2dcf5aff276dda28cbc05f7aae3988d6a8dcfa190"
+    }
+  ],
+  "installationPending": true
+}

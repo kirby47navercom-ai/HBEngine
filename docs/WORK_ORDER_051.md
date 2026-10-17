@@ -393,3 +393,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 249–252 사용자 설치 57aa766cccf7afc5·2893명세 파일 실행후SHA동일·실제 숨김 editor1/독립D3D·GL게임2 오류0/exit0·쿼터니언 제작/Undo·즉시Seek·독립 오디오3/지연 로드·50ms 탐색·소유 핸들 정지. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치232785813B 제거. USER_INSTALL_252.json.
+
+
+253–260: 렌더 SSA/시간 재컴파일 비용·CPU-only 매질 캐시, 효과 source/target capture/SetByCaller와 제작/실행 상세·CPP/BP, runtime named slot 교체/조작 수명, streaming 가상음성 해제/복구, Android 새 SDK 빌드를 연결. 정본 ENGINE_STATUS와 ENGINE_WORK_253–260의 범위/근거를 함께 갱신. 설치/최신 통합 검사는 후속 USER_INSTALL_260에 기록한다.

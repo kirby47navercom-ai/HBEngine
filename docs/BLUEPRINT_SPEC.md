@@ -507,3 +507,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 249–252: 기존 LevelSequence::Seek/BP가 평가 완료 뒤 응답하고 paused end를 유지한다. 회전 트랙 선택 Slerp·트랙별 voice handle·runtime.audio source/handle·완료 sampleTime/sampleSerial을 AI schema에도 등록. 공용725/노드810 유지.
+
+
+253–260: 공용728/노드813. effectApplySpec(target,asset,source,level,parameters JSON), effectSetParameter, uiSetSlotContent 공유 SDK·C++ EffectArguments 편의 객체. 효과 source/target snapshot과 caller 값/레벨 커브의 원자 계산, UI 입력/슬롯 수명은 ENGINE_WORK_254–256.

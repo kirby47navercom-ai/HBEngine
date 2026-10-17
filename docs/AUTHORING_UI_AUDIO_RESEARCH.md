@@ -36,3 +36,6 @@
 
 
 251: 명시 음성 handle 정지는 같은 파일의 다른 음성을 끊지 않는다. 시퀀스 트랙별 UUID voice와 actor-follow를 AudioSource 제어와 분리하고 pending decode에 time/paused를 기록한다. 실제 무음 WAV 외부AudioSource1+시퀀스2/Stop후1 검사·가청품질/실폰 검사 아님.
+
+
+253–260: 효과 상세는 캡처/호출 값과 계수·결과를 페이지로 보여주며 인자를 원자 변경한다. 명명 슬롯은 실행 중 에셋 교체/지우기와 포커스/선택/스크롤/입력release를 보존한다. AudioSource.streaming은 선택값이며 가상 음성은 src 제거+load와 논리 시각, 재승격 metadata/seek를 사용한다. 실폰/가청 품질·OS heap 계측은 새 근거가 없다.

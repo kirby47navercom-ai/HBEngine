@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "cc6b7bdadac3e85744734b262113016d3929e539",
+  "targetIds": [
+    "GAM-04"
+  ],
+  "implemented": [
+    "modifier.magnitudeSource attribute/source|target/base|current·계수×레벨커브×캡처 숫자·참조한 속성만 적용 시 캡처",
+    "캡처는 출처 삭제/값 변경/레벨 변경 뒤 유지·액터 참조 보관 없음·독립 핸들별 컨텍스트/공유 스택의 최신 허용 입력·누락/오버플로 원자 거부",
+    "효과 편집기 출처/대상·속성/기준 선택/보기 전용 입력 미리보기·Undo/저장·C++ ApplyEffectSpec/BP/독립 D3DGL"
+  ],
+  "limits": [
+    "live 비스냅샷 종속 전파·태그/instigator 전체 캡처·사용자 실행 계산·네트워크 예측은 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/effect-inputs-254-c3gjdn/acceptance.json",
+      "sha256": "72b0713cc0cb4bdb6e9596186529809cc8ae9c7335d8e07450d51e7c69180bd6"
+    },
+    {
+      "path": "native/build/effect-inputs-254-window-1yTQyl/acceptance.json",
+      "sha256": "2ae97b838e6ff51d941bc2d2dcf5aff276dda28cbc05f7aae3988d6a8dcfa190"
+    }
+  ],
+  "installationPending": true
+}

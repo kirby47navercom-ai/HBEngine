@@ -3551,5 +3551,50 @@
       "docs/research/ENGINE_WORK_251.json",
       "docs/research/ENGINE_WORK_252.json"
     ]
+  },
+  "supplemental253_260": {
+    "date": "2026-10-17",
+    "scope": "선택 본문/API와 로컬 소유 코드·실제 실행 대조. 전체 UE/Unity 분석 gate/분모는 미확정.",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FGameplayEffectSpec/SetSetByCallerMagnitude",
+        "body": "반환56행: 이름/태그와 float 입력. HB는 이름 map/편의 CPP 객체이며 UE Spec 전체 API가 아님"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Plugins/GameplayAbilities/FGameplayEffectAttributeCaptureD-",
+        "body": "반환63행: source/attribute/snapshot. HB는 참조 숫자의 적용 시 snapshot만; false/live 전파는 잔여"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/using-named-slot-widgets-for-ui-templates-in-unreal-engine",
+        "body": "반환156행: 단일 자식/템플릿/런타임 채움과 PreConstruct/상속/노출옵션 대조. 이미지·연결 문서 미독. HB 런타임 슬롯 교체를 추가했으며 클래스상속/PreConstruct/노출옵션은 잔여"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/AudioSource-priority.html",
+        "body": "HTML289행 반환 중 본문239–251: 우선순위/음량/위치 유지 가상화와 WebGL 예외. HB는 공유 음성 예산을 웹에도 적용하며 Unity WebGL 정책과 동일하다는 주장이 아님"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/audio",
+        "body": "883행 중 preload280–292와 metadata/emptied 관련 발췌: preload는 강제 보장이 아닌 힌트. 전체 페이지/링크 미독"
+      },
+      {
+        "url": "https://html.spec.whatwg.org/multipage/media.html#dom-media-load",
+        "body": "5199행 중 find 반환1041–1043/1258–1284 등: src 제거만으로 load를 호출하지 않으며 명시 load로 현재 리소스를 재설정. 전체 표준/링크 미독. OS 메모리 회수 보장은 추론하지 않음"
+      }
+    ],
+    "newlyObservedUnimplemented": [
+      "effect non-snapshot live dependencies/custom execution/causer·instigator",
+      "widget class inheritance/PreConstruct/slot exposure flags",
+      "per-codec OS stream decoder heap timing and real-device audio"
+    ],
+    "evidence": [
+      "docs/research/ENGINE_WORK_253.json",
+      "docs/research/ENGINE_WORK_254.json",
+      "docs/research/ENGINE_WORK_255.json",
+      "docs/research/ENGINE_WORK_256.json",
+      "docs/research/ENGINE_WORK_257.json",
+      "docs/research/ENGINE_WORK_258.json",
+      "docs/research/ENGINE_WORK_259.json",
+      "docs/research/ENGINE_WORK_260.json"
+    ]
   }
 }

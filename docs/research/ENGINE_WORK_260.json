@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "cc6b7bdadac3e85744734b262113016d3929e539",
+  "targetIds": [
+    "RND-05",
+    "RND-06"
+  ],
+  "implemented": [
+    "Time이 closedVolume만 바꿔 GPU Time 명령이 없는 그래프도 CPU 메타데이터 평가·Time-only fast path에서 보수적으로 제외",
+    "실제 GeometryGI packet의 medium 플래그·메시 종속 시각·시간 필터 무효화·장면 셰이더 plan을 함께 갱신·되감기 보존",
+    "단순 컴파일 표본은 통과해도 실제 geometry 패킷이 옛값을 재사용하던 회귀를 재현해 소유 계층에서 수정"
+  ],
+  "limits": [
+    "참여 매질 산란/전역 곡면 역해·월드/시점 의존 이전 노멀·이전 mip 발자국은 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/rendering-259-ymyU4Z/acceptance.json",
+      "sha256": "3e9380e75022609acf32a79f153aac7d03bd2c0bb23f2be6e0c7c3652ba1639a"
+    },
+    {
+      "path": "native/build/rendering-187-v09uU0/acceptance.json",
+      "sha256": "b07fe38ab728d834781f76494f5f7d8afde5ecba69fdf0f780d7b2ec3b9f4441"
+    }
+  ],
+  "installationPending": true
+}

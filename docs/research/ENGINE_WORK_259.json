@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "cc6b7bdadac3e85744734b262113016d3929e539",
+  "targetIds": [
+    "RND-06",
+    "PER-01"
+  ],
+  "implemented": [
+    "같은 머테리얼 key에서는 Time 리터럴만 immutable 갱신·함수/타입/연산 공유/레지스터 재분석 생략·이전 프레임 프로그램 배열 불변",
+    "실제 그래프/설정 변경은 재컴파일·잘못된 float32 시간은 캐시 변경 전 거부·forward/rewind/long-clock full compile 일치",
+    "54노드60회 CPU 표본 전체compile 약206.9ms→시간 패치약1.97ms·새 영속 캐시/읽기/히스토리 없음"
+  ],
+  "limits": [
+    "Node의 제한된 CPU 표본·전체 게임FPS/실폰/드라이버 초기 컴파일 시간 보장 아님·material key 직렬화는 기존대로 수행"
+  ],
+  "checks": [
+    {
+      "path": "native/build/rendering-259-ymyU4Z/acceptance.json",
+      "sha256": "3e9380e75022609acf32a79f153aac7d03bd2c0bb23f2be6e0c7c3652ba1639a"
+    },
+    {
+      "path": "native/build/rendering-187-v09uU0/acceptance.json",
+      "sha256": "b07fe38ab728d834781f76494f5f7d8afde5ecba69fdf0f780d7b2ec3b9f4441"
+    },
+    {
+      "path": "native/build/rendering-194-sJ0ETL/acceptance.json",
+      "sha256": "8b85839bc86e268a7ce85cfd979ec400d4aaf748e446953f54ac154eac837a13"
+    }
+  ],
+  "installationPending": true
+}

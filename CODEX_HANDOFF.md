@@ -1,3 +1,7 @@
+# 253–260 구현·근거 완료, 설치 준비 · 2026-10-17
+
+구현8b342db/AI계약cc6b7bd. ENGINE_STATUS 정본 최신253–260, 등록78/39verified35partial1unimplemented3unverified(전체UE/Unity분모아님). docs253-260 helper완료 재실행금지. source CSE CPUepYl6J/actualnativeBy2Hcn/GLGPUOtfAPe; Time CPUymyU4Z(54노드60회206.9→1.97ms)/187v09uU0/194sJ0ETL. Effect snapshots/SetByCaller CPUc3gjdn +actual1yTQyl editor+2games, UI slots CPU4F4V7u/actualSUg9mw focus/caret/scroll/released/animation. streaming CPUu7LVNx/actualVbqnIO sinknone decoder unload/reload/PCM0. Android258pz2db6 signedAPK6350475B arm64SDK/16KiB/closure; phone/iOS없음. 최신 timer 외부 parameter refresh·BPslot·AudioSource.streaming 실제게임 경로는 설치후 check-effect-inputs-254-window --streaming으로추가확인(기존 sourceacceptance는그3조건포함안함). 설치후 렌더253 --packets epYl6J·UI256·stream257를순차로검사. 그뒤finish260/User읽기전용해시/manifest/Versions1·prune·commitpush. 다음누적물리C++ softsurface 질의/기타계획이어가기.
+
 # 252 설치 완료 · 2026-10-17
 
 설치 C:/Users/kirby/HBEngine/Versions/57aa766cccf7afc5/HBEngine.exe, source49c881b,2893파일. USER_INSTALL_252.json SHAfc5e6365a3367d11f8ce0fad55ea73dadb8d2315d585ab57a7dd063f1dbf049d. COc8Fz 실제숨김editor+독립D3D/GL게임:쿼터니언Undo/즉시Seek/동일소리3핸들/50ms탐색/Stop외부소리보존 오류0/exit0. User10385 SHA불변,링크2/.hbproject,Versions1,이전248 232785813B제거. sync252/install252/finish252/docs249–252 모두완료 재실행금지. 다음 렌더링IR중복제거는아직조사단계.
