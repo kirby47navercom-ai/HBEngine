@@ -27,5 +27,12 @@
       "sha256": "6e75350abc356da0a1ef7bd6ccc2d33908d528a10b1a8f54ec9005c0aefca40f"
     }
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_267.json",
+    "receiptSHA256": "679223398d95ef3d894490f724ee73ae8e1d4c41afcca01df32662ecdcf19a2b",
+    "sourceCommit": "15676c38f8cbf473b8de58d1faf6333b0cd57198",
+    "versions": [
+      "dcab5bc06a6db1c9"
+    ]
+  }
 }

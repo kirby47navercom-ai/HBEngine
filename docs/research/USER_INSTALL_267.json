@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "15676c38f8cbf473b8de58d1faf6333b0cd57198",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9\\HBEngine.exe",
+  "bundleHash": "dcab5bc06a6db1c9b3b76e916af058d3e7309838ce25992ad1b19d3b833779dc",
+  "files": 2958,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2944,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7",
+        "bytes": 196694054,
+        "manifestSHA256": "f435ea20aec89b290dc1c0510077a27ee31f91914ccc1314a818525cba7664ea"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T03:20:10.8445444Z",
+    "bytes": 196694054,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "dcab5bc06a6db1c9"
+    ]
+  },
+  "work": "native/build/engine-267-install-V3eZ8I",
+  "versions": [
+    "dcab5bc06a6db1c9"
+  ],
+  "manifestVerifiedFiles": 2958,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/deformable-surface-261-window-r7zW00/acceptance.json",
+      "sha256": "71811217db0e1c152ea35709da4fc570d11a4761a0cbf948056b7d9959d9bd9e"
+    },
+    {
+      "path": "native/build/actor-tick-266-window-KhV5s5/acceptance.json",
+      "sha256": "59f75f4f388fa710b336e466221dde69347739221c8edd4c31fd31cd14635a06"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/actor-tick-266-window-KhV5s5/cpp-class-tick-option.png",
+      "sha256": "9032b33fda70022eebbb2854e89966152edc5cdc6defd36f0e39a3fabc7678e8",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2958,
+  "privateChecks": "Two hidden owned editors and four standalone D3D11/WebGL2 games: original seven Physics queries on live Cloth/Rope, local rigid/collision precedence, native/BP tick queries; automatic C++ Lifecycle, placed transforms, native-before-BP order, sensor enter/exit; CPP/BP per-actor tick controls and isolated optional-Tick creation UI. Actual User inventory read-only.",
+  "storage": {
+    "previousVersionBytesRemoved": 196694054,
+    "globalPrune": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  }
+}

@@ -1,3 +1,7 @@
+# 267 설치 완료 · 268 시퀀스 소스 작업 중
+
+설치 C:/Users/kirby/HBEngine/Versions/dcab5bc06a6db1c9/HBEngine.exe source15676c38f8cbf473b8de58d1faf6333b0cd57198 bundle dcab5bc06a6db1c9b3b76e916af058d3e7309838ce25992ad1b19d3b833779dc. USER_INSTALL_267 SHA679223398d95ef3d894490f724ee73ae8e1d4c41afcca01df32662ecdcf19a2b. 2958manifestSHA/10385UserSHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 전후불변, Versions1/링크2/.hbproject, 이전260 196694054B 제거, prune0. 실제설치261 r7zW00/266 KhV5s5 각editor+2D3DGL 오류0/exit0. sync267/install267/finish267/docs261-267 모두완료 재실행금지. 268 WIP prototype/sequence-channels.js +gameplay-runtime.js: TRS/visible/global camera+time/light/material 샘플 소유권·공유baseline·우선순위/restore/재진입가드 구현 중. CPU기존250BeeHZD/252x1ZwVb PASS지만268전용검사/원장/commit아직. 소스268이설치267에는영향없음. 다음새268검증/기타누적계속.
+
 # 261–267 소스/근거 완료 · 설치 전환 대기
 
 구현 a8b08e55a6eed6f98016e028ff3af09e6cf88354 main push. docs261-267 helper 완료 재실행 금지. 261 CPU N3HX1H/실제5jcXms,262 jUO0yl,263 CPU8dc7yo/실제lpgir2,264 N7kAkB,265 L2B9P8,266 CPUvnEbhi/실제luRega(editor+2D3DGL),267 AOT5g1O9y/APKiUjBEc7333493B. 최종float32보정/Component→Actor옵션전환은 설치267 실제check-actor-tick-266-window로 최종확인할것. 기존설치260동결. 새sync267/install267/finish267을 각1회만 만들어 실행하고 User읽기전용해시/manifest/Versions1/링크확인. 설치후261변형체·266자동수명/제어·UI검사 순차, 모바일 AOT/arm64APK는 sourcePASS. 그후문서commit/push, 다른누적분야계속; 몇개완료후최종종료금지.

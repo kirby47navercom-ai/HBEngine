@@ -10,3 +10,6 @@
 
 - 변형체 이동·생성·외력은 큐/시뮬레이션 처리 뒤의 현재 표면만 반영
 - 대상 변형체가 있는데 live channel이 없으면 명시 오류; GPU cloth/스키닝 cloth/3D rope는 별도 잔여
+
+
+261–267 사용자 설치 dcab5bc06a6db1c9·2958명세파일 실행후SHA동일·숨김editor2/독립D3D·GL게임4 오류0/exit0. 변형체7질의/CPP·BP·자동수명주기/센서진입이탈/배치위치·액터별Tick·동적간격·생성선택UI 확인. User10385 SHA불변·링크2/.hbproject·Versions1·이전설치196694054B 제거. USER_INSTALL_267.json.

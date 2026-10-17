@@ -11,3 +11,6 @@
 
 - setter는 큐 처리·getter는 최근 처리 스냅샷·현재 native batch는 완료 후 변경 반영
 - 대표 장면 PC120/모바일60 FPS 보장을 이 API 검사로 주장하지 않음
+
+
+261–267 사용자 설치 dcab5bc06a6db1c9·2958명세파일 실행후SHA동일·숨김editor2/독립D3D·GL게임4 오류0/exit0. 변형체7질의/CPP·BP·자동수명주기/센서진입이탈/배치위치·액터별Tick·동적간격·생성선택UI 확인. User10385 SHA불변·링크2/.hbproject·Versions1·이전설치196694054B 제거. USER_INSTALL_267.json.

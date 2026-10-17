@@ -404,3 +404,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 ### 2026-10-17 · 261–267
 
 C++ 공용 물리7질의에 현재 천/로프 표면·권한/TOI합성, 명시적 C++ 생명주기10종·생성Start/선택Tick·재적용가드, CPP/BP 액터Tick4함수·float32경계보정, mobileBackend AOT 실제 실행과 최신 arm64APK를 연결했어요. 실제 에디터와 D3D/GL 독립게임, CPU기준/회귀를 확인했어요. 설치전환은 다음 통합 검증 뒤 기록해요. 전체 남은 범위는 최신 ENGINE_STATUS.json의 remaining을 유지해요.
+
+
+261–267 사용자 설치 dcab5bc06a6db1c9·2958명세파일 실행후SHA동일·숨김editor2/독립D3D·GL게임4 오류0/exit0. 변형체7질의/CPP·BP·자동수명주기/센서진입이탈/배치위치·액터별Tick·동적간격·생성선택UI 확인. User10385 SHA불변·링크2/.hbproject·Versions1·이전설치196694054B 제거. USER_INSTALL_267.json.
