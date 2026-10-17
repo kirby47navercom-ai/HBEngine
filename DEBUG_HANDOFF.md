@@ -942,3 +942,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 295: 첫 status CLI는 queued module의 정적 installer import와 CLI의 dynamic import가 순환 top-level await를 만들어 종료13이었어요. worker 함수 안에서만 installer를 불러오게 고쳐 실제 status/when-idle CLI를 검사했어요. CLI 취소 fixture는 제품 기본 poll30초보다 짧은20초 제한 때문에 timeout했고 그 한 조건만45초로 맞췄어요. 제품 poll을 불필요하게 빠르게 바꾸거나 사용자 프로세스를 종료하지 않았어요. 최종 JlpmpI는7조건을 통과했어요.
+
+
+## 296–297 초기 준비 지연 후속
+
+- 288/291의 성능 미입증 패치를 원복한 것은 품질·성능 퇴행을 피하려는 조치였으며 RND-06 목표를 폐기한 것이 아니에요. 같은 인수분해/cutout/leaf-loop 실험은 반복하지 않았어요.
+- 새 가설: UV 세 표본의 삼각형/행렬 읽기와 가이드의 main/differential 노멀 호출 위치 중복이 드라이버의 인라인 확장 비용을 늘려요. UV의 offset 위치와 barycentric 연산 순서를 보존하고, 공통 Frame 읽기 및 한 노멀 호출 위치로 바꿨어요. 현재/기존 float32 가이드를 같은 atlas/카메라로 비교해요.
+- 첫 raw bulk-frame 검사 도구가 함수 정의를 precision/uniform 선언보다 앞에 넣어 컴파일이 실패했어요. 선언 순서를 고친 private probe는 통과했으며 그 도구 실패를 제품 오류나 PASS 근거로 세지 않아요. 새 창 검사 문자열의 data URL 절대 주소/줄바꿈 이스케이프도 도구에서 수정했어요.
+- 실제 D3D pkYMcJ에서 HBScreenEffects X3014를 검출했어요. GLSL vec3(0)는 HLSL float3(0) 매크로에서 인자 수가 부족했어요. shared-ray-record-gl의 초기화를 vec3(0,0,0)으로 고치고 생성 헤더/바이너리를 다시 만들었어요. 실제 장치 작은 검사 rendering-194-native-7COpIM 통과; 최종 전체 native 검사는 validation297에서 별도 확인해요. GLSL 축약 생성자를 공용 HLSL 원문에 새로 넣지 말아요.
+- validation296의 D3D 실패 로그는 남기고 수정 후 validation297로 구분해요. 이미 통과한 unrelated CPU 검사 전체를 반복하지 않아요. 사용자 창·프로필·프로젝트는 검사에 사용하지 않아요.

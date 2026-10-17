@@ -1,5 +1,17 @@
 // A fixed slot keeps scalar/material reads out of the position decoder in nested ray programs.
 export const sharedRayRecordsGLSL=`
+void hbGeometryFrame(float id,out vec3 origin,out vec3 e1,out vec3 e2){
+#ifndef HB_GEOMETRY_SHARED
+ float at=hbGeometryInfo.w+id*6.0;origin=hbGeometryRawLoad(at).xyz;e1=hbGeometryRawLoad(at+1.0).xyz;e2=hbGeometryRawLoad(at+2.0).xyz;
+#else
+ vec4 r=hbGeometryRawLoad(hbGeometryInfo.w+id*5.0);origin=vec3(0,0,0);e1=origin;e2=origin;
+ if(r.x<hbGeometryRecords.z||r.x+2.0>=hbGeometryRecords.y||r.y<0.0||r.y+2.0>=hbGeometryInfo.w||r.x!=floor(r.x)||r.y!=floor(r.y))return;
+ vec3 a=hbGeometryRawLoad(r.x-hbGeometryRecords.x).xyz,b=hbGeometryRawLoad(r.x+1.0-hbGeometryRecords.x).xyz,c=hbGeometryRawLoad(r.x+2.0-hbGeometryRecords.x).xyz;
+ vec4 x=hbGeometryRawLoad(r.y),y=hbGeometryRawLoad(r.y+1.0),z=hbGeometryRawLoad(r.y+2.0);
+ origin=vec3(dot(x.xyz,a)+x.w,dot(y.xyz,a)+y.w,dot(z.xyz,a)+z.w);
+ e1=vec3(dot(x.xyz,b),dot(y.xyz,b),dot(z.xyz,b));e2=vec3(dot(x.xyz,c),dot(y.xyz,c),dot(z.xyz,c));
+#endif
+}
 vec4 hbGeometryPosition(float id,float slot){
 #ifndef HB_GEOMETRY_SHARED
  return hbGeometryRawLoad(hbGeometryInfo.w+id*6.0+slot);
