@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "validation",
+  "targetIds": [
+    "CPP-02",
+    "BLD-02"
+  ],
+  "implemented": [
+    "공용 SDK734와 복수 사용자 C++ 모듈을 arm64 AOT compile/link하고 서명 debug APK를 만들었어요.16KiB 정렬·패키지 ID·실제 렌더 모듈16개의 본문 SHA를 소스와 대조했어요. APK는6334763바이트예요."
+  ],
+  "limits": [
+    "실제 Android 휴대폰 설치/실행·발열/터치·iOS 컴파일/서명 검증은 아니에요. 기존 테스트를 새 플랫폼 기능 하나로 세지 않아요."
+  ],
+  "implementationRevision": "037e7e971a36919209983ef72b91bcb4ebefacc2",
+  "checks": [
+    {
+      "path": "native/build/runtime-sdk-mobile-280-YX9SkM/acceptance.json",
+      "sha256": "8bd7bdac1dee6a3fe3d68f907f46c5bd356b41e29c16caab6b7dd276c5a02016"
+    }
+  ],
+  "installationPending": true
+}

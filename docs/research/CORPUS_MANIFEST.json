@@ -3691,5 +3691,36 @@
       "docs/research/ENGINE_WORK_280.json",
       "docs/research/ENGINE_WORK_281.json"
     ]
+  },
+  "supplemental284_293": {
+    "date": "2026-10-17",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/instanced-materials-in-unreal-engine",
+        "scope": "UE5.8 반환 텍스트0–104행: parent/instance·동적 scalar/vector/texture·static parameter 조합과 재컴파일 의미 대조. 이미지/iframe/미디어/연결 API 미독"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Material.SetFloat.html",
+        "scope": "Unity6.0 HTML327행 중229–289: string/int propertyID setter와 keyword/Update 예제. 나머지 페이지 chrome·연결 API 미독"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Renderer-sharedMaterial.html",
+        "scope": "Unity6.0 HTML282행 중229–244: shared asset 변경의 다른 Renderer/프로젝트 영향과 인스턴스 소유 의미. 나머지 페이지/연결 API 미독"
+      }
+    ],
+    "comparison": "HB renderer-owned clone만 불변 graph ID로 관리하고 원본 자산/외부 그래프의 편집과 live instance parameter는 보존. 공식의 모든 parameter permutation/cook/keyword 동작을 구현했다는 뜻이 아님",
+    "analysisGate": "선택 본문/API 대조이며 전체 corpus/독립 분석 gate 미승격",
+    "evidence": [
+      "docs/research/ENGINE_WORK_284.json",
+      "docs/research/ENGINE_WORK_285.json",
+      "docs/research/ENGINE_WORK_286.json",
+      "docs/research/ENGINE_WORK_287.json",
+      "docs/research/ENGINE_WORK_288.json",
+      "docs/research/ENGINE_WORK_289.json",
+      "docs/research/ENGINE_WORK_290.json",
+      "docs/research/ENGINE_WORK_291.json",
+      "docs/research/ENGINE_WORK_292.json",
+      "docs/research/ENGINE_WORK_293.json"
+    ]
   }
 }

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "targetIds": [
+    "RND-04",
+    "RND-06"
+  ],
+  "implemented": [
+    "closedVolume 출력의 실제 선행 노드만 따라 CPU 시간 의존성을 계산해요. 무관한 Time은 매질 전체 재컴파일을 유발하지 않아요.",
+    "실제 geometry packet의 매질 전환과 시간 필터 무효화를 유지해요. 80회 CPU 표본의 전체 계산8.1648ms와 clock patch0.9986ms를 비교했어요."
+  ],
+  "limits": [
+    "Node의 제한된 CPU 표본이에요. 게임 FPS·GPU 셰이더 컴파일 시간이나 모든 그래프 성능의 보장이 아니에요."
+  ],
+  "implementationRevision": "037e7e971a36919209983ef72b91bcb4ebefacc2",
+  "checks": [
+    {
+      "path": "native/build/rendering-285-V9xbDT/acceptance.json",
+      "sha256": "7ae835021a24c308b8eb92aa1fb51e10b35fd5e171a4804a9adf5c491f30183e"
+    }
+  ],
+  "installationPending": true
+}

@@ -536,3 +536,8 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 ## 283 · display 원본색 출력
 
 기존 SpriteRenderer/TilemapRenderer scene/display enum을 유지해요. WebGPU direct canvas는 혼합 화면에서만 표시 attachment를 쓰고 반사/굴절 HDR을 보존해요. 불투명 display 전용은 extra0, 투명 혼합은 extra1이며 미사용 시 해제해요. renderer.displayColors는 mode/targets/bytes/multisampleBytes/automaticReadbacks를 제공하며 byte는 계산된 attachment 크기예요. 전역 후처리와 명시 offscreen은 기존 정책을 유지해요. SDK734/노드819는 그대로예요.
+
+
+## 284–293 · 렌더 값/시간 실행과 SDK 갱신
+
+기존 CPP/BP 머테리얼 파라미터와 시간 호출은 그대로 사용해요. GL/GPU/DX 소유 그래프는 불변 ID, live 값/외부 원본은 편집 가능하며 CPU-only 매질 Time은 관련 출력만 갱신해요. 이전 normalTime은 base-normal Time 프로그램에만 포함해요. C++ build 응답 sdk.fingerprint/files/bytes는 간접/생성/JSON SDK 헤더 내용을 포함하며 같은 사용자 코드도 SDK가 바뀌면 재빌드해요. SDK734/노드819는 그대로예요. 새 wrapper 수를 부풀리지 않고 공용 기존 함수를 보완했어요.

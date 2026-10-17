@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "86ea32843a0ea46e83a5c90542d7f833c3d455ba",
+  "basisRevision": "037e7e971a36919209983ef72b91bcb4ebefacc2",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -33,7 +33,7 @@
       "area": "project",
       "title": "실행/편집 상태와 사용자 작업 격리",
       "status": "verified",
-      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사",
+      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·292: private 부분 Node 복사 SHA/PID 검증·활성/수정/다른 런타임/원본 보존",
       "remaining": [],
       "sources": [
         "prototype/project-session.js",
@@ -44,7 +44,8 @@
       "evidence": [
         "docs/USER_DEVELOPMENT_SEPARATION.md",
         "docs/research/ENGINE_WORK_193.json",
-        "docs/research/ENGINE_WORK_198.json"
+        "docs/research/ENGINE_WORK_198.json",
+        "docs/research/ENGINE_WORK_292.json"
       ]
     },
     {
@@ -662,7 +663,7 @@
       "area": "rendering",
       "title": "GI·경로 추적·중첩 매질",
       "status": "verified",
-      "implemented": "소프트웨어 기하 GI/경로 추적·매질·HDRI 표본",
+      "implemented": "소프트웨어 기하 GI/경로 추적·매질·HDRI 표본 ·285/290: CPU-only Time 매질 변경의 부분 평가와 실제 geometry/filter 무효화·불변 이전 snapshot",
       "remaining": [],
       "sources": [
         "prototype/path-tracing.js",
@@ -670,7 +671,9 @@
       ],
       "evidence": [
         "docs/RENDERING_107.md",
-        "docs/RENDERING_145.md"
+        "docs/RENDERING_145.md",
+        "docs/research/ENGINE_WORK_285.json",
+        "docs/research/ENGINE_WORK_290.json"
       ]
     },
     {
@@ -698,10 +701,10 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개)",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택",
       "remaining": [
-        "복잡 그래프 GL 첫 path 약7.9초/시간 가이드 약7.4초 추가 절감",
-        "WebGPU 첫 path/약2초 가이드 추가 절감"
+        "Complex141 GL 첫 path 약8초/시간 가이드 약7초 추가 절감(서로 다른 부하의 단일 표본이며 전체 FPS 아님)",
+        "WebGPU 첫 path/시간 가이드 준비 비용 추가 절감"
       ],
       "sources": [
         "prototype/gl-path-preparation.js",
@@ -710,7 +713,8 @@
         "prototype/ray-material-gpu.js",
         "prototype/path-previous-normal-gpu.js",
         "prototype/path-curved-guide.js",
-        "prototype/ray-materials.js"
+        "prototype/ray-materials.js",
+        "prototype/material-source-key.js"
       ],
       "evidence": [
         "docs/RENDERING_145.md",
@@ -722,7 +726,12 @@
         "docs/research/ENGINE_WORK_259.json",
         "docs/research/ENGINE_WORK_260.json",
         "docs/research/ENGINE_WORK_274.json",
-        "docs/research/ENGINE_WORK_275.json"
+        "docs/research/ENGINE_WORK_275.json",
+        "docs/research/ENGINE_WORK_284.json",
+        "docs/research/ENGINE_WORK_285.json",
+        "docs/research/ENGINE_WORK_286.json",
+        "docs/research/ENGINE_WORK_290.json",
+        "docs/research/ENGINE_WORK_291.json"
       ]
     },
     {
@@ -730,7 +739,7 @@
       "area": "rendering",
       "title": "이전 노멀·mip 이력",
       "status": "partial",
-      "implemented": "이전 정점/노멀/UV 접선과 정적 노멀맵 복원 ·187: 불투명 Normal 전용 Time 그래프 이전 절대 시간·GPU 재표본/기존 TBN·실패/되감기 무효화·공용 프로그램/기존 버퍼·실제 3백엔드 픽셀/게임 ·194: 노멀 프로그램만의 Time 의존성·무관 발광 Time 제외·기존 절대시각/픽셀 보존 ·281: 큐브맵 명시LOD 실행 일치; 이전 world/view/mip footprint 이력 자체는 별도 잔여",
+      "implemented": "이전 정점/노멀/UV 접선과 정적 노멀맵 복원 ·187: 불투명 Normal 전용 Time 그래프 이전 절대 시간·GPU 재표본/기존 TBN·실패/되감기 무효화·공용 프로그램/기존 버퍼·실제 3백엔드 픽셀/게임 ·194: 노멀 프로그램만의 Time 의존성·무관 발광 Time 제외·기존 절대시각/픽셀 보존 ·281: 큐브맵 명시LOD 실행 일치; 이전 world/view/mip footprint 이력 자체는 별도 잔여 ·284: 이전 노멀 Time을 base-normal 프로그램 필드로 특화; 무관 발광/코팅 Time 제외·legacy 유지·현재/이전 실제 GL/GPU/HLSL",
       "remaining": [
         "월드/시점 의존 노멀 이전 입력·투명체 이전 굴절 분기·다른 시간 표면 필드",
         "이전 mip footprint 보존"
@@ -743,7 +752,8 @@
         "docs/RENDERING_138.md",
         "docs/research/ENGINE_WORK_187.json",
         "docs/research/ENGINE_WORK_194.json",
-        "docs/research/ENGINE_WORK_281.json"
+        "docs/research/ENGINE_WORK_281.json",
+        "docs/research/ENGINE_WORK_284.json"
       ]
     },
     {
@@ -779,14 +789,16 @@
       "area": "materials",
       "title": "함수·레이어·인스턴스·타입",
       "status": "verified",
-      "implemented": "함수 추출·typed ports·스택/MI·파라미터·실제 셰이더",
+      "implemented": "함수 추출·typed ports·스택/MI·파라미터·실제 셰이더 ·286/290: 소유 그래프만 불변 ID·live 파라미터/표면·외부 편집 보존·부분 CPU 평가 snapshot",
       "remaining": [],
       "sources": [
         "prototype/material-runtime.js"
       ],
       "evidence": [
         "docs/MATERIAL_TYPED_FUNCTIONS_078.md",
-        "docs/MATERIAL_LAYERS_076.md"
+        "docs/MATERIAL_LAYERS_076.md",
+        "docs/research/ENGINE_WORK_286.json",
+        "docs/research/ENGINE_WORK_290.json"
       ]
     },
     {
@@ -1349,11 +1361,12 @@
       "area": "cpp-blueprint",
       "title": "다중 소스·빌드·웹/모바일 AOT",
       "status": "verified",
-      "implemented": "외부 C++ 소스·실제 compiler/프로토콜·다중 모듈·Wasm/AOT ·258: 새 효과/UI 사용자 CPP arm64 compile/link·APK 새 모듈 closure ·262/264/267: 공용 mobileBackend 실제 AOT 질의/수명주기/제어·최신arm64SDK APK ·273: 최신 시퀀스 사용자CPP arm64 compile/link/서명APK와 공용 module closure ·280: 최신 shared SDK734/복수 사용자클래스 arm64 compile/link와 최신JS bundle",
+      "implemented": "외부 C++ 소스·실제 compiler/프로토콜·다중 모듈·Wasm/AOT ·258: 새 효과/UI 사용자 CPP arm64 compile/link·APK 새 모듈 closure ·262/264/267: 공용 mobileBackend 실제 AOT 질의/수명주기/제어·최신arm64SDK APK ·273: 최신 시퀀스 사용자CPP arm64 compile/link/서명APK와 공용 module closure ·280: 최신 shared SDK734/복수 사용자클래스 arm64 compile/link와 최신JS bundle ·287/293: 최신arm64APK의16모듈 본문 SHA·SDK 전체/생성/간접/JSON 헤더 build fingerprint·실제 GCC 캐시/반환 변경",
       "remaining": [],
       "sources": [
         "tools/native-project.mjs",
-        "tools/native-host.mjs"
+        "tools/native-host.mjs",
+        "tools/native-sdk-fingerprint.mjs"
       ],
       "evidence": [
         "docs/PROJECT_NATIVE_SOURCES.md",
@@ -1364,7 +1377,9 @@
         "docs/research/ENGINE_WORK_264.json",
         "docs/research/ENGINE_WORK_267.json",
         "docs/research/ENGINE_WORK_273.json",
-        "docs/research/ENGINE_WORK_280.json"
+        "docs/research/ENGINE_WORK_280.json",
+        "docs/research/ENGINE_WORK_287.json",
+        "docs/research/ENGINE_WORK_293.json"
       ]
     },
     {
@@ -1410,7 +1425,7 @@
       "area": "automation",
       "title": "코드/기능 상태 최신 조회",
       "status": "verified",
-      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분",
+      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 ·289/293: submit/후속 준비 시간과 C++ sdk fingerprint/files/bytes 실제 빌드 응답",
       "remaining": [],
       "sources": [
         "tools/engine-status.mjs",
@@ -1419,7 +1434,9 @@
       ],
       "evidence": [
         "docs/ENGINE_STATUS.md",
-        "docs/ENGINE_WORK_156.md"
+        "docs/ENGINE_WORK_156.md",
+        "docs/research/ENGINE_WORK_289.json",
+        "docs/research/ENGINE_WORK_293.json"
       ]
     },
     {
@@ -1548,14 +1565,15 @@
       "area": "debugging",
       "title": "프레임/컴파일 프로파일러",
       "status": "verified",
-      "implemented": "실측 구간/호출·300프레임·셰이더 준비·AI/JSON",
+      "implemented": "실측 구간/호출·300프레임·셰이더 준비·AI/JSON ·289: 준비 단계 submitMS/afterSubmitMS·선택 private GLSL/번역 trace·기존 AI 진단 공유",
       "remaining": [],
       "sources": [
         "prototype/profiler.js",
         "prototype/game-renderer.js"
       ],
       "evidence": [
-        "docs/RENDERING_151.md"
+        "docs/RENDERING_151.md",
+        "docs/research/ENGINE_WORK_289.json"
       ]
     },
     {
@@ -1601,7 +1619,7 @@
       "area": "platform",
       "title": "Android 빌드·가상 기기",
       "status": "verified",
-      "implemented": "ARM64/x86_64 APK/AAB·서명/정렬·설치·게임/터치·복귀 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·242: 한글 작업경로 aapt2 SDK상대참조 보정·천/로프 SDK10 arm64 NDK·서명/정렬 APK ·248: 새SDK6 arm64 NDK/서명 APK16K·새모듈 closure·실폰 아님 ·258: 새 SDK 서명APK/16KiB ELF·ZIP·6350475B; 실제 기기 없음 ·267: arm64 서명APK7333493B·새 모듈 closure·16KiB ELF/ZIP; 실물 기기 없음 ·273: APK6326149B·16KiB ELF/ZIP·새JS모듈/SDK closure; 실물 기기 없음 ·280: 최신 arm64 서명APK·16KiB ELF/ZIP·광선/타일/색상7모듈 SHA 대조, 실물기기 없음",
+      "implemented": "ARM64/x86_64 APK/AAB·서명/정렬·설치·게임/터치·복귀 ·200: 1.17GB 공용 콘텐츠 빌드 표본·Windows/web/arm64 APK 또는 iOS 소스 프로젝트 (각 플랫폼 검증 범위 구분) ·242: 한글 작업경로 aapt2 SDK상대참조 보정·천/로프 SDK10 arm64 NDK·서명/정렬 APK ·248: 새SDK6 arm64 NDK/서명 APK16K·새모듈 closure·실폰 아님 ·258: 새 SDK 서명APK/16KiB ELF·ZIP·6350475B; 실제 기기 없음 ·267: arm64 서명APK7333493B·새 모듈 closure·16KiB ELF/ZIP; 실물 기기 없음 ·273: APK6326149B·16KiB ELF/ZIP·새JS모듈/SDK closure; 실물 기기 없음 ·280: 최신 arm64 서명APK·16KiB ELF/ZIP·광선/타일/색상7모듈 SHA 대조, 실물기기 없음 ·287: 최신 SDK734/사용자CPP arm64 AOT와 서명 APK·16키 모듈 원문 SHA·16KiB 정렬",
       "remaining": [],
       "sources": [
         "tools/build-mobile.mjs",
@@ -1615,7 +1633,8 @@
         "docs/research/ENGINE_WORK_258.json",
         "docs/research/ENGINE_WORK_267.json",
         "docs/research/ENGINE_WORK_273.json",
-        "docs/research/ENGINE_WORK_280.json"
+        "docs/research/ENGINE_WORK_280.json",
+        "docs/research/ENGINE_WORK_287.json"
       ]
     },
     {
@@ -1740,7 +1759,7 @@
       "area": "performance",
       "title": "용량·캐시·설치 한 개 유지",
       "status": "verified",
-      "implemented": "검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 ·200/202/205: 파일 버퍼 상주 축소·완료한 검사 payload/빌드/Chrome 프로필 정리·활성/원본 보호 ·282: 재생성 라이선스 중복 보관 제거",
+      "implemented": "검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 ·200/202/205: 파일 버퍼 상주 축소·완료한 검사 payload/빌드/Chrome 프로필 정리·활성/원본 보호 ·282: 재생성 라이선스 중복 보관 제거 ·292: 부분 private Node 복사 회수·원본/활성/수정 보호·전역 새 작업1시간 제외·다른 빌드 중 정리 보류",
       "remaining": [],
       "sources": [
         "tools/test-artifacts.mjs",
@@ -1755,7 +1774,8 @@
         "docs/research/ENGINE_WORK_200.json",
         "docs/research/ENGINE_WORK_202.json",
         "docs/research/ENGINE_WORK_205.json",
-        "docs/research/ENGINE_WORK_282.json"
+        "docs/research/ENGINE_WORK_282.json",
+        "docs/research/ENGINE_WORK_292.json"
       ]
     },
     {
@@ -1828,5 +1848,5 @@
       ]
     }
   ],
-  "latestBatch": "282–283"
+  "latestBatch": "284–293"
 }

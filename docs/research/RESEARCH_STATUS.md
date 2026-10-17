@@ -455,3 +455,6 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 199: Unity SamplePosition과 Three Triangle의 지정 최근접/거리/필터/target 본문을 supplemental199에 등록. 나머지 API/구현·전역 gate 승격 없음.
 
 200–205: Node24 read/opendir·Unity AssetBundle 소유/로드·RFC 구간·Unity 프리팹 문맥·WAI listbox의 지정 자체 본문만 supplemental200/201/202/203/204로 등록. 연결 API/전역 corpus gate 승격 없음. 상세 읽기/미독 구역은 CORPUS_MANIFEST에 둔다.
+
+
+284–293: UE5.8 Material Instances 반환 본문0–104 및 Unity6.0 SetFloat229–289/sharedMaterial229–244를 supplemental284_293에 등록했어요. 소유/공유·live 값·정적 조합을 대조했고 이미지/연결 API/전체 corpus gate는 미승격이에요.288/291의 되돌린 실험은 구현 완료로 세지 않아요.

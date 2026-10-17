@@ -931,3 +931,8 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 ## 281 실패와283 수정
 
 281 최종 smoke는 GPU RGB111/196/137 때문에 실패했어요. 기대79/186/117을 바꾸지 않았어요. Three r180은 material.toneMapped를 최종 전체 화면 tone pass에 반영하지 않아 표시 attachment를 분리했어요. 원본 HDR color0를 보존해 transmission copy를 유지해요. 첫283 fixture의 차폐는 이전 단계에서 depthWrite=false를 남겼고 다음 단계는 두 면의 z가 같았어요. fixture 상태/깊이를 고쳤어요. TSL vec3(Color) 상수는 검은색을 만들어 uniform(Color)로 고쳤어요. 투명 clear는 premultiplied 배경을 대조했어요. source pWGB5g/editor+WebGPU, yHON3d 캔버스/HDR, SmS6k1 CubeLOD를 확인했어요. 소유한 숨김 fixture만 사용했어요. 첫 문서 기록기는 PowerShell JSON의 BOM을 읽지 못해 본문 수정 전에 실패했으며 별도 resume 기록기가 BOM을 제거해 읽었어요.
+
+
+## 284–293
+
+288 샘플러 인수분해의 첫 HLSL 단일값 vec2 생성자는 실제 컴파일에서 거절됐고 실험 생성자만 고쳐 검증했어요. 하지만 소스 증가/첫 준비 개선 미입증으로 제품 샘플러 패치 전체를 원복했어요.291 불투명 cutout/leaf-loop 실험도 시간 개선 미입증으로 원복했어요.189의 legacy 강제 Time 검사 보조기는 hasTime만 덮어쓰고 새 hasNormalTime/GL macro를 갱신하지 않아 바이트 비교가 실패해 보조기만 맞췄어요.290 selected evaluator가 live source를 prepared로 표시하지 않게 소유 snapshot을 만들고 순환 graph 거절/복구를 검증했어요.293 첫 fixture는 대상 없는 비정적 C++ 호출이라 정상 검증에서 거절됐어요. fixture를 정적 함수로 고쳐 제품 대상 검증은 보존했어요. 모든 창은 고유 숨김 fixture/profile/port이며 사용자 프로필은 읽기 전용 SHA 목록 외 사용하지 않았어요.

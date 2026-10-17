@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "investigation",
+  "targetIds": [
+    "RND-06",
+    "MAT-03"
+  ],
+  "implemented": [
+    "샘플러 주소 계산 공유 실험을 GL48변형×6좌표의 실제 부동 RGBA288개로 대조해 최대오차0을 확인했어요. 네이티브 생성자 문제를 고친 실험도 HLSL/CubeLOD 기준을 통과했어요.",
+    "모든 변형의 생성 소스가76476→88311바이트로 늘고 Complex141 준비 시간 개선이 입증되지 않아 제품 변경을 전부 되돌렸어요. 실제 픽셀 대조 도구만 보존해요."
+  ],
+  "limits": [
+    "완료 기능/최적화 성과로 세지 않아요. 실행 기록은 당시 실험 소스에 대한 근거이며 최종 설치 소스가 그 실험을 포함한다는 뜻이 아니에요."
+  ],
+  "implementationRevision": "037e7e971a36919209983ef72b91bcb4ebefacc2",
+  "checks": [
+    {
+      "path": "native/build/rendering-288-window-NzhJfg/acceptance.json",
+      "sha256": "01a07979fa1ebf6c76c19ccad0c75e00b21b5845182394497d8dc00b2312c794"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-native-bOUAvG/acceptance.json",
+      "sha256": "351ae722860f41d70d3a212b4cab3b5f4391a43723ab9a0cc1e47aa4da34d73a"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-window-UrHvPJ/acceptance.json",
+      "sha256": "127d59367e1755b36eabe511cdfacf90eeda75befa83bd695fb85128de7e4e29"
+    },
+    {
+      "path": "native/build/gpu-scene-GSRESk/acceptance.json",
+      "sha256": "9ae9d7302d1fa86693c28424fcb6f8687fea51141d5cd6f9ee2eaca0a0085b94"
+    }
+  ],
+  "installationPending": true
+}

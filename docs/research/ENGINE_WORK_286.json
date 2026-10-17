@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "targetIds": [
+    "MAT-01",
+    "RND-06"
+  ],
+  "implemented": [
+    "이미 복사한 GL/GPU/DX 렌더러 소유 그래프만 동결하고 WeakMap ID를 사용해요. 매개변수·표면 값과 외부/편집기 그래프의 내용 변경은 계속 무효화해요.",
+    "Date/Map/typed array/접근자 등 확장 메타데이터는 내용 키 경로를 유지해요. 새 그래프 복사·강한 전역 그래프 보관·GPU readback을 추가하지 않아요.",
+    "500회 키 표본은 전체 JSON170.1188ms→작은 키0.8593ms, 문자열98804→742바이트예요. 실제 GL/GPU 화면의 live Glow RGB135→219→175와 ray 기본값이 같고 원본 입력은 계속 편집할 수 있어요."
+  ],
+  "limits": [
+    "이 키 표본은 전체 메모리/FPS 측정이 아니에요. raw graph 교체가 기존 raster shader를 자동 재컴파일한다는 계약은 추가하지 않았어요. 일반 문서 재구성 경로를 사용해요."
+  ],
+  "implementationRevision": "037e7e971a36919209983ef72b91bcb4ebefacc2",
+  "checks": [
+    {
+      "path": "native/build/rendering-286-i0bfGh/acceptance.json",
+      "sha256": "1344a45f93c7320c647faf0082ae7d3736946ea4fef0999d7841d80821e87fa7"
+    },
+    {
+      "path": "native/build/rendering-286-window-H0OI2A/acceptance.json",
+      "sha256": "ef5808e62a3392496b6126f539ce163a337ef66fbd5b74deb2a02e89efb39fad"
+    }
+  ],
+  "installationPending": true
+}
