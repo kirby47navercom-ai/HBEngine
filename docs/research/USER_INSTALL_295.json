@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "f55dda9b4ba1e23505116d77c55ec3d6172569d1",
+  "state": "installed-verified",
+  "bundleHash": "5b3bfd90e1a8d7163a8e5d0b2e439f6ecd3b97236959f694a6a497c04440fbf1",
+  "preparedSource": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\dist\\HBEngine",
+  "destination": "C:\\Users\\kirby\\HBEngine",
+  "versions": [
+    "5b3bfd90e1a8d716"
+  ],
+  "installedSmokePending": false,
+  "queued": null,
+  "installResult": {
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716\\HBEngine.exe",
+    "bundleHash": "5b3bfd90e1a8d7163a8e5d0b2e439f6ecd3b97236959f694a6a497c04440fbf1",
+    "files": 3066,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3439,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a",
+          "bytes": 712501087,
+          "manifestSHA256": "347cbee65c1292ad947119fc2f50dba92d6e7b092775d502bd0905b50034e9d5"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-17T06:43:18.6426718Z",
+      "bytes": 712501087,
+      "generated": [
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\native\\build\\deps\\nlohmann\\json.hpp",
+          "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+          "bytes": 953436
+        },
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+          "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+          "bytes": 64
+        }
+      ],
+      "preserved": [],
+      "remaining": [
+        "5b3bfd90e1a8d716"
+      ]
+    }
+  },
+  "postInstallVerification": "native/build/user-install-295-audit.json",
+  "auditPID": 1264,
+  "scope": "Installed hidden GL/GPU current/previous normal, live parameter/medium, display/HDR and 3066-file manifest/link checks passed. Native player gate reused only after byte/owner comparison. No whole-engine, Complex141 compile-delay resolution, PC120/mobile60 or device claim.",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716\\HBEngine.exe",
+  "installationPending": false,
+  "installedSmokePassed": true,
+  "installedAudit": {
+    "pending": false,
+    "passed": true,
+    "sourceCommit": "f55dda9b4ba1e23505116d77c55ec3d6172569d1",
+    "jobID": null,
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716\\HBEngine.exe",
+    "bundleHash": "5b3bfd90e1a8d7163a8e5d0b2e439f6ecd3b97236959f694a6a497c04440fbf1",
+    "files": 3066,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3439,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a",
+          "bytes": 712501087,
+          "manifestSHA256": "347cbee65c1292ad947119fc2f50dba92d6e7b092775d502bd0905b50034e9d5"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-17T06:43:18.6426718Z",
+      "bytes": 712501087,
+      "generated": [
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\native\\build\\deps\\nlohmann\\json.hpp",
+          "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+          "bytes": 953436
+        },
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+          "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+          "bytes": 64
+        }
+      ],
+      "preserved": [],
+      "remaining": [
+        "5b3bfd90e1a8d716"
+      ]
+    },
+    "checks": [
+      {
+        "path": "native/build/rendering-286-window-0afyym/acceptance.json",
+        "sha256": "a238588cf798a8a86efbdcc5a71c6bf368cb8ee45063053b7573c8f1984d92d8"
+      },
+      {
+        "path": "native/build/rendering-284-window-r3colZ/acceptance.json",
+        "sha256": "ce93be2c1ad0e44917985c573580d564d65df9c826b0c11c1c176b9b9761a1dd"
+      },
+      {
+        "path": "native/build/display-colors-283-window-cCCvLw/acceptance.json",
+        "sha256": "24a4900cba8ec85e511d4d9d6ed1d670f7833d14c42e491ed10c55447addd1d8"
+      }
+    ],
+    "manifestVerifiedFiles": 3066,
+    "versions": [
+      "5b3bfd90e1a8d716"
+    ],
+    "profileFiles": 10385,
+    "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "profilePreserved": null,
+    "concurrentUserUse": true,
+    "shortcutTargetsVerified": true,
+    "projectAssociationVerified": true,
+    "scope": "Actual installed hidden GL/GPU normal and raster/HDR probes plus installed manifest/profile/link checks. No whole-engine or whole-game FPS claim.",
+    "profileScope": "A new installed process was active at the final query, so the auditor did not assert an exclusive-use profile comparison. This is unverified, not evidence of a changed profile."
+  },
+  "postAuditProfileObservation": {
+    "files": 10385,
+    "sha256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+    "matchesAuditStart": true,
+    "readOnly": true,
+    "scope": "A separate current observation while other work may run; not an exclusive-use proof of every intervening operation."
+  },
+  "nativeGateReuse": {
+    "basis": "ea97335",
+    "changedOwners": [],
+    "owners": [
+      "native/include",
+      "native/desktop",
+      "prototype"
+    ],
+    "playerExecutableSHA256": "0a5dca4e8382c1d1565bac96d8d2a6d782d4084b1f6bdae74374ce95f2035a59",
+    "check": "native/build/native-scene-window-SGqwcK/acceptance.json",
+    "reason": "Actual source native player gate after rebuild; renderer/header/desktop owners unchanged, installed player byte-identical. Not falsely reported as a second native window run."
+  },
+  "globalCleanup": {
+    "deferred": true,
+    "reason": "other-build-work",
+    "active": [
+      {
+        "ProcessId": 15208,
+        "Name": "node.exe"
+      },
+      {
+        "ProcessId": 14628,
+        "Name": "g++.exe"
+      },
+      {
+        "ProcessId": 32856,
+        "Name": "cc1plus.exe"
+      }
+    ]
+  }
+}

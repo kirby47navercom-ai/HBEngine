@@ -1859,5 +1859,13 @@
       ]
     }
   ],
-  "latestBatch": "284–295"
+  "latestBatch": "284–295",
+  "latestInstallation": {
+    "receipt": "docs/research/USER_INSTALL_295.json",
+    "sourceCommit": "f55dda9b4ba1e23505116d77c55ec3d6172569d1",
+    "bundleHash": "5b3bfd90e1a8d7163a8e5d0b2e439f6ecd3b97236959f694a6a497c04440fbf1",
+    "verified": true,
+    "versions": 1,
+    "scope": "Defined 284–295 changed paths, not whole engine completion"
+  }
 }

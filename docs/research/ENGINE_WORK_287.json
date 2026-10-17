@@ -19,5 +19,6 @@
       "sha256": "8bd7bdac1dee6a3fe3d68f907f46c5bd356b41e29c16caab6b7dd276c5a02016"
     }
   ],
-  "installationPending": true
+  "installationPending": false,
+  "installationReceipt": "docs/research/USER_INSTALL_295.json"
 }

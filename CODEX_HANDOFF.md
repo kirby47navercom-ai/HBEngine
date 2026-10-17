@@ -81,3 +81,6 @@ check.mjs810·api--check·gameplayworkflow/CPP·runtime/CPP·project·shortcuts1
 
 
 284–293 구현/실행/미채택 실험 근거는 ENGINE_WORK_284–293과 ENGINE_STATUS.json에 통합했어요. Complex141 GL 첫 준비 비용과 이전 world/view/mip 이력은 잔여예요. 설치는 USER_INSTALL_293 후속 기록을 확인해요. 다른 Node/C++ 빌드가 있으면 전역 정리를 보류하고 소유 프로세스만 종료해요. 기존 one-shot record284293/cleanup292/sync283/install283 helper는 재실행하지 않아요.
+
+
+295 설치 완료: USER_INSTALL_295.json과 native/build/user-install-295-audit.json을 확인해요. Source f55dda9, Versions5b3bfd90e1a8d716 하나·3066파일·실제 설치3개 숨김 검사·링크 검증을 통과했어요. 다른 빌드가 있어 전역 정리는 cleanup-293.json에 보류했고 다시 실행하려면 새 resume helper를 만들어야 해요. sync295/queue295/audit295/finish295 one-shot은 재실행하지 않아요. 종료 후 대기 설치 CLI는 제품 기능으로 유지하며 현재 실제 설치는 앱 종료가 감지돼 즉시 전환돼 대기 worker를 만들 필요가 없었어요.
