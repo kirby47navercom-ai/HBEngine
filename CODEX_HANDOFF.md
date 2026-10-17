@@ -1,3 +1,9 @@
+# 268–273 소스/근거 완료 · 설치273 전환 준비
+
+구현c592692/06d770f/f204429/2be79dd, 문서ea9b722 main push. 정본ENGINE_STATUS latest268–273. 소유값11분야/공통baseline/인계·재진입·수명·lazy접근자·트랙default/restore/keep와forceRestore·에셋/CPP/BPpriority 연결. SDK734/노드819. source268fkIHIW/269bdWukr/271sNP5Wp/272k8jS0T 각editor+2D3DGL PASS. CPU268jFvT6K/269RiKvPc/270vdngQa(12만동일/adapters120000→1000/11.6151→9.3846ms Node만)/2716jTNAm/272FDVdGI, Android273bK9oVZ APK6326149B·16KiB/closure PASS. noPhone/noMac. docs268-273 helper완료 재실행금지. 기존267동결. 다음새sync273/install273/finish273각1회, 실제설치check-sequence-completion-271-window 및check-sequence-priority-272-window 순차. User읽기전용inventory/manifest/Versions1/링크검증·공식prune 후receiptcommitpush. 다른누적분야계속, 몇개하고최종종료금지.
+
+렌더다음274는읽기만: ray-material-gpu.js program evaluator가이미명령별TSL전개(범용switch제거가새개선아님), ray-material-shader.js GLSL도특화됨. path-guide-frames.js가normal graph [3,4,5] world/view를 -2로보수거절. 기존oldGeometry3float4에서bary로oldPoint복구가능, previousNormal GPU/GL은Time만현재점/현재TBN에서재평가. WorldPos/Normal지원에는currentUV와oldworldpoint/oldnormal문맥분리필요, view/texture의oldmip는여전히별도. 아직렌더소스수정없음.
+
 # 267 설치 완료 · 268 시퀀스 소스 작업 중
 
 설치 C:/Users/kirby/HBEngine/Versions/dcab5bc06a6db1c9/HBEngine.exe source15676c38f8cbf473b8de58d1faf6333b0cd57198 bundle dcab5bc06a6db1c9b3b76e916af058d3e7309838ce25992ad1b19d3b833779dc. USER_INSTALL_267 SHA679223398d95ef3d894490f724ee73ae8e1d4c41afcca01df32662ecdcf19a2b. 2958manifestSHA/10385UserSHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 전후불변, Versions1/링크2/.hbproject, 이전260 196694054B 제거, prune0. 실제설치261 r7zW00/266 KhV5s5 각editor+2D3DGL 오류0/exit0. sync267/install267/finish267/docs261-267 모두완료 재실행금지. 268 WIP prototype/sequence-channels.js +gameplay-runtime.js: TRS/visible/global camera+time/light/material 샘플 소유권·공유baseline·우선순위/restore/재진입가드 구현 중. CPU기존250BeeHZD/252x1ZwVb PASS지만268전용검사/원장/commit아직. 소스268이설치267에는영향없음. 다음새268검증/기타누적계속.
