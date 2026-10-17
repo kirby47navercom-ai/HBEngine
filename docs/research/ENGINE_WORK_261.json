@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "a8b08e55a6eed6f98016e028ff3af09e6cf88354",
+  "targetIds": [
+    "PHY-01",
+    "PHY-02",
+    "CPP-01"
+  ],
+  "implemented": [
+    "Raycast/RaycastAll/SphereCast/BoxCast/OverlapSphere/OverlapBox/ClosestPoint에서 현재 Rapier Cloth/Rope2D 표면과 C++ 로컬 강체 변경 결과 합성",
+    "시간분율로 sweep 최근접 판정·레이어/ignore/센서 필터·전체 입자 스냅샷 없는 단일 제한 live callback",
+    "권한 스냅샷과 현재 월드 교집합·아직 생성되지 않은 soft/ignore·로컬 collision enable·닫힌 요청/응답 형식 보호"
+  ],
+  "limits": [
+    "변형체 이동·생성·외력은 큐/시뮬레이션 처리 뒤의 현재 표면만 반영",
+    "대상 변형체가 있는데 live channel이 없으면 명시 오류; GPU cloth/스키닝 cloth/3D rope는 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/deformable-surface-261-N3HX1H/acceptance.json",
+      "sha256": "5a578192b0a0ef2ec497168d069d57c72e5ea1a14f6fbb1650ea8a013a9f49ad"
+    },
+    {
+      "path": "native/build/deformable-surface-261-window-5jcXms/acceptance.json",
+      "sha256": "353872e4abb504ef32a7e6a004fd9a1b047e7cdae5979d987e1f15a2a0108857"
+    },
+    {
+      "path": "native/build/engine-180-8wvKSa/acceptance.json",
+      "sha256": "e529e493baa971f83d22264ebc568e6162cdcffc3fb6cbbcc231e8fa56544f7c"
+    },
+    {
+      "path": "native/build/live-query-244-TwJpAh/acceptance.json",
+      "sha256": "75a2568814a2b78afadacae81f25b3cf3c15b7be3f31fd77ef5a5c2d4e825db9"
+    },
+    {
+      "path": "native/build/cloth-239-uKsEh3/acceptance.json",
+      "sha256": "6615764e0df03f88cd4c3c0c1305570802118f3a0ef596ee56743e7293b7c281"
+    },
+    {
+      "path": "native/build/rope2d-241-NvtJXt/acceptance.json",
+      "sha256": "e68581e4f492e36485a803d39a500c46bacd6ec018833f60afaf998a03bd08b4"
+    }
+  ],
+  "installationPending": true
+}

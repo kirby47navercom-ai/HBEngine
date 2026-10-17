@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "a8b08e55a6eed6f98016e028ff3af09e6cf88354",
+  "targetIds": [
+    "BLD-02",
+    "CPP-02"
+  ],
+  "implemented": [
+    "모바일 공용 AOT에서 자동 수명주기와 CPP Tick 제어·종료·live 천 표면을 함께 실행",
+    "신규 SDK와 모듈 closure 포함 arm64 NDK 컴파일·링크·서명 debugAPK·16KiB ELF/ZIP 정렬·7333493B"
+  ],
+  "limits": [
+    "Android 휴대폰이 없어서 실제 설치/실행/음향/발열 미확인",
+    "Mac/Xcode가 없어서 iOS 컴파일/서명/실행 미확인"
+  ],
+  "checks": [
+    {
+      "path": "native/build/actor-tick-267-mobile-5g1O9y/acceptance.json",
+      "sha256": "583978d613275fb4c5583e901278d94f97298eb750a29dd63641207ecea41e62"
+    },
+    {
+      "path": "native/build/runtime-sdk-mobile-267-iUjBEc/acceptance.json",
+      "sha256": "f6c872b78c7695751a0c16d2141acd62eed1f59d0a70c640249495a974a9cf73"
+    }
+  ],
+  "installationPending": true
+}

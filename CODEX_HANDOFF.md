@@ -1,3 +1,7 @@
+# 261–267 소스/근거 완료 · 설치 전환 대기
+
+구현 a8b08e55a6eed6f98016e028ff3af09e6cf88354 main push. docs261-267 helper 완료 재실행 금지. 261 CPU N3HX1H/실제5jcXms,262 jUO0yl,263 CPU8dc7yo/실제lpgir2,264 N7kAkB,265 L2B9P8,266 CPUvnEbhi/실제luRega(editor+2D3DGL),267 AOT5g1O9y/APKiUjBEc7333493B. 최종float32보정/Component→Actor옵션전환은 설치267 실제check-actor-tick-266-window로 최종확인할것. 기존설치260동결. 새sync267/install267/finish267을 각1회만 만들어 실행하고 User읽기전용해시/manifest/Versions1/링크확인. 설치후261변형체·266자동수명/제어·UI검사 순차, 모바일 AOT/arm64APK는 sourcePASS. 그후문서commit/push, 다른누적분야계속; 몇개완료후최종종료금지.
+
 # 260 설치/통합 완료, 261 소스 작업 중 · 2026-10-17
 
 C:/Users/kirby/HBEngine/Versions/7da0d214773220b7/HBEngine.exe source d95b7d98de9412717c3cfd3428575e5389e152b6 bundle7da0d214773220b77f42bdd0c3e2cb8943d09aa17a4e0c4d584f44ba436bc25f. USER_INSTALL_260 SHAff792304b02a7a4601d7b715fc8278ce4966902f9b700442008a5b6934876488. 2927manifestSHA실행후동일/User10385 SHA46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26 불변/Versions1/링크2/.hbproject/이전252 195144609B제거/prune0. 실제설치SFBrCb editor+2D3DGL: effect snapshot/caller/외부모달갱신·CPP/BPslot·AS streaming real↔virtual PASS. 렌더IiDAIW current/previous GLGPU픽셀동일/GL3239.2→2642.6ms(중복표본만), UIFWI2AS focus/caret/scroll/release/animation, audiokYWcs8 silent sink actualsourceunload/reload PASS. source계측/SDK/문서는아래. sync260/install260/finish260/docs253-260 모두완료 재실행금지.

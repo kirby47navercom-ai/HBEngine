@@ -510,3 +510,10 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 253–260: 공용728/노드813. effectApplySpec(target,asset,source,level,parameters JSON), effectSetParameter, uiSetSlotContent 공유 SDK·C++ EffectArguments 편의 객체. 효과 source/target snapshot과 caller 값/레벨 커브의 원자 계산, UI 입력/슬롯 수명은 ENGINE_WORK_254–256.
+
+
+## 261–267 · C++ 수명주기와 Tick
+
+`HB_FUNCTION(BlueprintCallable, Lifecycle="tick") void Update(float delta);`는 저장 그래프를 바꾸지 않고 실행용 Event Tick에 연결해요. 일반 메서드 이름 Tick/Start는 자동 실행하지 않아요. construction/beginPlay/endPlay, overlap/hit begin/stay/end도 명시할 수 있고 인자 자료형은 AI schema의 nativeLifecycle.events에서 조회해요. 같은 단계의 사용자 BP보다 먼저 실행하며 C++ 구성은 런타임/스폰 단계예요. 생명주기 선언 변경은 재실행이 필요해요.
+
+새 C++ 클래스는 Start가 beginPlay이고 Tick은 생성 창에서 선택해요. `Scene::SetTickEnabled/IsTickEnabled/SetTickInterval/GetTickInterval`과 같은 BP 노드가 액터별 실행 정책을 바꿔요. 0초는 매 프레임, setter는 큐 처리, getter는 최근 처리 스냅샷이에요. 기본 클래스/노드 설정은 저장 변경하지 않아요. 공용 SDK732, 전체 노드817. 상세 근거 ENGINE_WORK_261–267.

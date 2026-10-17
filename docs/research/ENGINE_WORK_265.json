@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "a8b08e55a6eed6f98016e028ff3af09e6cf88354",
+  "targetIds": [
+    "CPP-01",
+    "AI-03"
+  ],
+  "implemented": [
+    "Actor/Character/GameMode/GameInstance 등의 새 C++ Start를 beginPlay에 자동 연결",
+    "에셋 만들기에서 선택 Tick 헤더/소스 동시 생성·기본값은 빈 Tick 없음·Component Tick 옵션 차단·선택 노드 상세에 자동 실행 단계 표시",
+    "API와 AI schema가 Lifecycle/생성 옵션/정확한 지원 범위를 제공·기존 파일 덮어쓰기 거부"
+  ],
+  "limits": [
+    "Component/SceneComponent 템플릿의 기본 Start는 일반 Callable; 사용자 C++ 컴포넌트 부착 수명 전체는 별도"
+  ],
+  "checks": [
+    {
+      "path": "native/build/cpp-authoring-265-L2B9P8/acceptance.json",
+      "sha256": "5fe14f0114dfb9e155772f58f361e2d4a20c1dbe9714cab6caa7bf1f3eaac39e"
+    },
+    {
+      "path": "native/build/actor-tick-266-window-luRega/acceptance.json",
+      "sha256": "6e75350abc356da0a1ef7bd6ccc2d33908d528a10b1a8f54ec9005c0aefca40f"
+    }
+  ],
+  "installationPending": true
+}

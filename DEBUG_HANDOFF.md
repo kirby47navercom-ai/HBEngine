@@ -911,3 +911,8 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 251:4s3j0d 실제창에서외부1+트랙2중Child음성이삭제됨. source actor를기존AudioSource컴포넌트follow와혼용한제품오류: sourceComponent:false/객체identity로별도follow, explicit handle정지의legacy clip-wide OR도분리. pending decode가끝나기전Seek는시간/paused를pending item에보관. MhjP2k 실제 editor/독립D3DGL3음성/Stop뒤외부1유지PASS. 후속50ms정확Seek force와최신load수명은최종설치검사에서확인.252 remove에서never-played owner는debug.sequence도없으므로null이아닌undefined가정상;검사기대만수정.
 
 253–260: 513QTd 실제C++ 실패는 UI::SetSlotContent 선언을public앞에넣은제품오류. 공개위치수정후1yTQyl editor/독립D3DGL PASS. 259 compile단독은medium갱신통과했으나 실제GeometryGI추가검사에서CPU-only Time 매질이재사용되는회귀확인: animated/normalTimeOnly/scene plan에cpuTimeDependent를전달해ymyU4Z에서packet.medium/필터/plan까지통과. 기준/예산/deadline완화없음. 스트림초기/재활성화는명시load로옛metadata상태재사용을방지. 최신 열린상세외부값갱신/BPslot/ASstreaming 게임루트는최종설치검사에서추가확인.
+
+
+## 261–267 검증에서 구분한 문제
+
+261 첫 fixture의 BoxCollider2D extent는 vec3인데 vec2로 적어 거부됐어요. fixture만 수정했어요. 262 transport에 없는 bytes 필드 가정은 실제 request/query wire bytes 계측으로 수정했어요. 263 일반 BlueprintCallable Tick은 자동 생명주기가 아니어서 기존 BP Event Tick 연결로 먼저 증명하고, 별도 명시 Lifecycle10종을 구현했어요. 264 nativeBindings import 소유자는 native-module-query예요. 266 창 검사는 비동기 왕복 동안 진행한 실제 기준 액터 Tick 수로 상대 빈도를 비교해요(고정 최대4회 가정 제거); 플레이어 입력은 실제 CDP 키로 보내고 처리 상태를 기다려요. 267 AOT는 float32 0.2와 JS 0.1+0.1 차이로 한 프레임 늦는 제품 문제를 재현했고 일반/묶음 공용 1ULP 보정으로 고쳤어요. 단정형 테스트를 늦추거나 무시하지 않았어요. hd6Aga/초기267 failure를 보존하고 최신CPU vnEbhi/AOT5g1O9y가 경계를 통과했어요.

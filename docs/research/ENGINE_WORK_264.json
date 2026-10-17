@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "a8b08e55a6eed6f98016e028ff3af09e6cf88354",
+  "targetIds": [
+    "CPP-02"
+  ],
+  "implemented": [
+    "BlueprintRuntime→mobileBackend→실제 portable AOT C++에서 구성/시작/BP 순서·두 액터 자동 Tick·현재 천 Raycast·종료 사유 검증"
+  ],
+  "limits": [
+    "이 PC의 공용 모바일 프로토콜 실행이며 실물 기기/iOS 실행 아님"
+  ],
+  "checks": [
+    {
+      "path": "native/build/native-lifecycle-264-mobile-N7kAkB/acceptance.json",
+      "sha256": "a210861a7a7474aae4c20f3bddc28d424d168ed37aa299e7ac8b5c811993a276"
+    }
+  ],
+  "installationPending": true
+}

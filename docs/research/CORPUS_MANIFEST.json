@@ -3596,5 +3596,28 @@
       "docs/research/ENGINE_WORK_259.json",
       "docs/research/ENGINE_WORK_260.json"
     ]
+  },
+  "supplemental261_267": {
+    "date": "2026-10-17",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-actor-lifecycle",
+        "scope": "웹 반환121행 본문: 로드/PIE/생성의 초기화·Construction·BeginPlay, Destroy/전환/종료에서 EndPlay와 GC 구분. 이미지·연결API 전체 미독; HB VM 이벤트와 명시 CPP 콜백 대조"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/execution-order.html",
+        "scope": "HTML261행 중 본문124–146/150–211 발췌: 기본 순서도는 전체 PlayerLoop가 아님·OnEnable/Start와 sceneLoaded·하위 렌더/애니메이션 콜백. SVG와 연결 API 전체 미독; HB fixed/late phases 미구현을 유지"
+      }
+    ],
+    "analysisGate": "전체 본문/API 분모 미확정; 이 선택 검토를 전체 분석 완료로 올리지 않음",
+    "evidence": [
+      "docs/research/ENGINE_WORK_261.json",
+      "docs/research/ENGINE_WORK_262.json",
+      "docs/research/ENGINE_WORK_263.json",
+      "docs/research/ENGINE_WORK_264.json",
+      "docs/research/ENGINE_WORK_265.json",
+      "docs/research/ENGINE_WORK_266.json",
+      "docs/research/ENGINE_WORK_267.json"
+    ]
   }
 }
