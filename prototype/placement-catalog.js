@@ -25,6 +25,8 @@ export const placementCatalog=[
   ['character','Character · 캐릭터','게임플레이'],['playerStart','Player Start · 시작점','게임플레이'],
   ['pawn','Pawn · 폰','게임플레이','cube',{PawnMovement:{autoPossess:true},Rigidbody:{useGravity:false}}],
   ['controller','Player Controller · 플레이어 제어','게임플레이'],['gameMode','Game Mode · 게임 모드','게임플레이'],['gameState','Game State · 게임 상태','게임플레이'],['playerState','Player State · 플레이어 상태','게임플레이'],
+  ['rope2d','Rope 2D · 로프','2D','empty',{Rope2D:{},MeshRenderer:{}}],
+  ['cloth','Cloth · 천','물리','empty',{Cloth:{},MeshRenderer:{}}],
   ['vehicle','Vehicle · 차량','물리','cube',{Rigidbody:{mass:1200},BoxCollider:{center:[0,.5,0]},RaycastVehicle:{}}],
   ['physicsCube','Physics Cube · 물리 큐브','물리','cube',{Rigidbody:{}}],
   ['physicsSphere','Physics Sphere · 물리 구','물리','sphere',{Rigidbody:{}}],

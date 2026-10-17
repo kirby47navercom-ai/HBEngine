@@ -896,3 +896,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 222:221benchmark의baseline에서 period.1/duration.3 종료 시Health196!=194 검출. 반복 next+=period가end보다ULP만큼커져 마지막tick누락.221성능비교는비정수경계 .4/.3001로 분리하고222는원래경계/큰절대시각을독립수정:고정epoch+정수카운트/4ULP capped1/4period/Kahan시각.0/1008/1e9·70tick/zeroDelta/unsafe검사Ld1HA9·실제1whOQy/jeY4Hh 통과.221기준과 시간/remaining만1e-9허용하며속성/효과내용은정확비교.
 
 223/224: 테스트 도구의 g++ -o 절대 한글 경로는 linker가 오해독(9f1G3k)→root 상대 출력 경로 수정. 제품 문제 아님. 실제장치w4MAIF PASS. Python Windows write_text CRLF가 HEAD LF와 달라 대량diff 발생→Node로정본 LF복원. 새core/md2곳은후속정리.
+
+
+239 천 실제창: Ft7GDV fixture BP를 헤더보다 먼저 써 ENOENT(과거218와동일실수), 헤더/소스 먼저쓰기로 수정. BMMQvC는 새SDK 인자에 존재하지 않는 Vector3를 사용한 실제컴파일오류→기존Vec3 계약으로 Game.hpp/Session.hpp 수정. SqjMLI는 제작·CPP/BP·AI/Inspector 모두 통과하고 종료만대기, 오류0/runningfalse/scene dirtytrue 증거. hbengine.acceptance.finished가 정상 hbEngineRequestClose를 거쳐 저장확인에 걸린 검사누락. 검사에서 격리scene 저장 후 종료하도록 수정, 시간한계완화/사용자창조작 금지.
+
+241 로프 최초 CPU검사는 90프레임 끝 높이<2.5로 중력효과를 추정한 잘못된 검사식. 최소재현에서 끝점Y:15=2.696/30=1.808/45=.892/90=2.569, 진자가 반대쪽으로 올라온 정상운동. 90프레임 경로의 최소Y<2로 실제낙하를 검증하도록 수정, 물리상수/시간제한 변경 없음.
+
+242 Android: Nxf1pH에서 ARM64 C++/ELF 성공 후 aapt2 -I 상대 SDK archive가 열리지 않음. 9XDQ1y 최소재현은 같은 한글 cwd154자·같은 기존android.jar에 대해 backslash/forward상대경로 둘 다실패, 절대경로만성공. SDK 재설치/복사 없이 mobile-android의 SDK include만 c.platform 절대경로로 수정, 프로젝트 내부 경로 기존상대유지. 실제 APK 포장재검사필요.
+
+241 창 검사: TuMrdF는 전체동작을 통과하고 라이브표시만 기다림→검사복사에 남은 문자열81을24로 정정(제품예외0). 핀중앙의11/12 경계 부동소수 모호성은 실제12번좌표로 클릭하도록 검사명확화. 마지막추가키보드삽입이새clickPin helper의첫evaluate를잡아doc선언전참조→helper를복구하고Undo뒤실제capture anchor에만키보드검사배치. 시간제한/제품수치변경 금지.

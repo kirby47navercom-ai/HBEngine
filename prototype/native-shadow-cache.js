@@ -1,4 +1,4 @@
-const kinds={mesh:'meshes',program:'programs',instances:'instances',deformation:'deformations'};
+const kinds={mesh:'meshes',meshVertices:'meshes',program:'programs',instances:'instances',deformation:'deformations'};
 export class NativeShadowCache{
  constructor(){this.clear();}
  clear(){this.serial=0;this.resources=new Map();this.draws=new Map();this.stamps=[];}

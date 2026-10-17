@@ -56,7 +56,8 @@ export async function packageMobile({out,assets,profile,settings,native,signal,o
   }
   // Native Windows packaging tools resolve relative paths without losing Korean names in the working directory.
   onProgress('Android 패키지');await run(path.join(c.tools,'aapt2'+suffix),['compile','--dir',local(res),'-o',local(path.join(stage,'resources.zip'))]);
-  const base=path.join(stage,'base.zip');await run(path.join(c.tools,'aapt2'+suffix),['link',...(settings.format==='aab'?['--proto-format']:[]),'-o',local(base),'-I',local(c.platform),'--manifest',local(path.join(stage,'AndroidManifest.xml')),local(path.join(stage,'resources.zip'))]);
+  // The SDK archive is outside the project; aapt2 cannot resolve parent traversal across a Unicode cwd.
+  const base=path.join(stage,'base.zip');await run(path.join(c.tools,'aapt2'+suffix),['link',...(settings.format==='aab'?['--proto-format']:[]),'-o',local(base),'-I',c.platform,'--manifest',local(path.join(stage,'AndroidManifest.xml')),local(path.join(stage,'resources.zip'))]);
   const key=await signing(settings,profile.configuration,c.sdk,signal),signEnv={...process.env};
   if(settings.format==='apk'){
     // jar writes portable ZIP entry separators; Windows aapt2 -A produced backslashes.

@@ -1,3 +1,4 @@
+import {geometryStreamStamp,packedDynamicVertices} from './native-geometry-stream.js';
 import {nativeSamplerState} from './sampler-state.js';
 import {NativeLinePool} from './native-lines.js';
 import {NativeShadowCache} from './native-shadow-cache.js';
@@ -111,7 +112,7 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
   const viewport=new THREE.Vector4(0,0,width,height),scissor=viewport.clone(),clearColor=new THREE.Color(0);let scissorTest=false,clearAlpha=1,explicitClear=null;
   const receive=event=>{const m=event.data;if(m?.channel!=='hb.render')return;const r=pending.get(m.id);if(!r)return;pending.delete(m.id);clearTimeout(r.timer);m.ok?r.resolve(m.value):r.reject(Error(m.error));};bridge.addEventListener('message',receive);
   function send(op,data){if(disposed)return Promise.reject(Error('DirectX 렌더러가 닫혔어요.'));const id=++sequence;return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{pending.delete(id);reject(Error('DirectX 응답 시간이 초과됐어요: '+op));},15000);pending.set(id,{resolve,reject,timer});try{bridge.postMessage({channel:'hb.render',id,op,data});}catch(error){pending.delete(id);clearTimeout(timer);reject(error);}});}
-  try{await send('init',{width:Math.max(1,width),height:Math.max(1,height)});}catch(error){bridge.removeEventListener('message',receive);throw error;}
+  let capabilities;try{capabilities=await send('init',{width:Math.max(1,width),height:Math.max(1,height)});}catch(error){bridge.removeEventListener('message',receive);throw error;}
   document.documentElement.classList.add('native-scene');
   const particleCommands=[],nativeParticles=new Set(),offscreenResources=[],offscreenPasses=[],offscreenUsed={meshes:new Set(),textures:new Set()},maskPassCache=new Map(),probeCache=new Map(),shadowCache=new NativeShadowCache();let renderTarget=null;
   const linePool=new NativeLinePool(),geometries=new Map(),textures=new Map(),programs=new Map(),instances=new Map(),deformations=new Map(),previous=new Map(),spriteGeometry=new THREE.PlaneGeometry(1,1),normalMatrix=new THREE.Matrix4(),at=new THREE.Vector3(),cameraAt=new THREE.Vector3(),lightAt=new THREE.Vector3(),targetAt=new THREE.Vector3(),frustum=new THREE.Frustum(),projectionView=new THREE.Matrix4();
@@ -122,8 +123,8 @@ export async function createNativeSceneRenderer(canvas,onError=()=>{}){
   const info={autoReset:false,memory:{geometries:0,textures:0},render:{calls:0,triangles:0,points:0,lines:0},reset(){this.render.calls=this.render.triangles=0;}};
   function geometryResource(geometry,resources){
     track(geometry,'meshes',geometry.uuid,geometries);
-    const signature=JSON.stringify([attributeId(geometry.index),geometry.index?.version,...Object.entries(geometry.attributes).filter(([name])=>!['shotPosition','skinIndex','skinWeight'].includes(name)).map(([name,a])=>[name,attributeId(a),a.isInterleavedBufferAttribute?a.data.version:a.version,a.count])]);
-    if(geometries.get(geometry.uuid)!==signature){resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry)});geometries.set(geometry.uuid,signature);}return geometry.uuid;
+    const stamp=geometryStreamStamp(geometry,attributeId,capabilities?.dynamicMesh),previous=geometries.get(geometry.uuid);
+    if(previous?.signature!==stamp.signature){if(stamp.dynamic&&previous?.layout===stamp.layout){const vertices=packedDynamicVertices(geometry,previous.vertices);resources.push({kind:'meshVertices',id:geometry.uuid,vertices});geometries.set(geometry.uuid,{...stamp,vertices});}else{resources.push({kind:'mesh',id:geometry.uuid,...packedGeometry(geometry),...(stamp.dynamic?{dynamic:true}:{})});geometries.set(geometry.uuid,stamp);}}return geometry.uuid;
   }
   function instanceResource(node,resources,objectMotion){
     const owner=node.isInstancedMesh?node:node.geometry,id=owner.uuid,u=node.material?.userData.hbNativeProjectile?node.material.uniforms:null,signature=JSON.stringify([node.count,node.geometry.instanceCount,node.instanceMatrix?.version,node.instanceColor?.version,node.geometry.attributes.shotPosition?.version,node.instanceMatrix?.count,node.geometry.attributes.shotPosition?.count,objectMotion?.pose?.instances,u?.size?.value,u?.shape?.value.toArray(),u?.planeXZ?.value]);track(owner,'instances',id,instances);if(node.isInstancedMesh)track(node.geometry,'instances',id,instances);

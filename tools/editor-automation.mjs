@@ -117,6 +117,8 @@ export const editorMethods={
   'runtime.sequencePose':{description:'현재 모델의 실제 골격 로컬 포즈를 요청 시 조회; 자동 프레임 샘플링/추가 GPU 읽기 없음',params:{target:'오브젝트 ID',offset:'선택: 시작 0',limit:'선택: 페이지 64, 최대512'},result:'actor, controlled, time, total, offset, bones[{bone,position,quaternion,scale}], nextOffset'},
   'editor.synchronize':{description:'대기·진행 중 프리팹 동기화를 마치고 문서 기준 조회. 자동 저장·Undo 생성 없음; 저장도 같은 장벽을 사용',params:{}},
   'editor.state':{description:'현재 문서, 창, 선택, 실행 상태와 로그 조회',params:{}},
+  'runtime.rope':{description:'실행 중 2D 로프 입자의 월드 위치·속도·고정 상태를 요청 구간만 읽기; XY 물리, Z 표시 순서 보존',params:{target:'Rope2D 소유 오브젝트 ID',offset:'기본0',limit:'1..256·기본64'},readOnly:true},
+  'runtime.cloth':{description:'실행 중 천 입자의 위치·속도·고정 상태를 요청 구간만 읽기. index=u*rows+v, 위치는 월드 m.',params:{target:'Cloth 소유 오브젝트 ID',offset:'기본0',limit:'1..256·기본64'},readOnly:true},
   'runtime.physics.joints':{description:'실제 물리 월드의 관절·6축 설정을 페이지 조회; 관절 임펄스/파괴력 계측은 아님',params:{target:'선택: 소유 오브젝트 ID',offset:'기본0',limit:'1..256·기본64'},readOnly:true},
   'runtime.vehicle':{description:'실행 차량의 RPM/토크/기어·변속 상태와 휠별 접지/RPM/구동력 페이지',params:{target:'차량 오브젝트 ID',offset:'기본0',limit:'1..256·기본64'},readOnly:true},
   'runtime.abilitySet.apply':{description:'실행 중 능력 세트·곡선을 재로드하고 검증 후 원자 적용; 저장 문서 수정 없음',params:{target:'소유 오브젝트 ID',asset:'능력 세트 경로',preserveBase:'기존 직접 속성 기본값 유지·기본true',retainEffects:'활성 효과·핸들·시간 유지·기본true',section:'attributes/abilities/effects',offset:'기본0',limit:'1..256'}},
