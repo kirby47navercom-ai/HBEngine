@@ -1,3 +1,7 @@
+# 252 설치 완료 · 2026-10-17
+
+설치 C:/Users/kirby/HBEngine/Versions/57aa766cccf7afc5/HBEngine.exe, source49c881b,2893파일. USER_INSTALL_252.json SHAfc5e6365a3367d11f8ce0fad55ea73dadb8d2315d585ab57a7dd063f1dbf049d. COc8Fz 실제숨김editor+독립D3D/GL게임:쿼터니언Undo/즉시Seek/동일소리3핸들/50ms탐색/Stop외부소리보존 오류0/exit0. User10385 SHA불변,링크2/.hbproject,Versions1,이전248 232785813B제거. sync252/install252/finish252/docs249–252 모두완료 재실행금지. 다음 렌더링IR중복제거는아직조사단계.
+
 # HBEngine 현재 인계 — 248 설치 완료·249–252 다음 설치 준비
 
 ## 규칙

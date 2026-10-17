@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "49c881bbcb9dab4d008f04b793964caf008d3639",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5\\HBEngine.exe",
+  "bundleHash": "57aa766cccf7afc514cebee0399eb3750a5bc616632d7ca22193ca54cf8d367e",
+  "files": 2893,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2924,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5",
+        "bytes": 232785813,
+        "manifestSHA256": "f93fec29b2eeb0534c83eccc7656b180fef79437fcd5b4294e883581e75716f6"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T01:57:29.5805201Z",
+    "bytes": 232785813,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "57aa766cccf7afc5"
+    ]
+  },
+  "work": "native/build/engine-252-install-fjJBuo",
+  "versions": [
+    "57aa766cccf7afc5"
+  ],
+  "manifestVerifiedFiles": 2893,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/sequence-evaluation-250-window-COc8Fz/acceptance.json",
+      "sha256": "cbb2cb575e93c5f186b68c914ec249f4f77c0597da329fe0a152e7096113fe73"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/sequence-evaluation-250-window-COc8Fz/sequence-quaternion-option.png",
+      "sha256": "e08876e377d96737bcc4139dd3df3fffa8097c9485fa74c5adbd5c0c299d44d8",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2893,
+  "privateChecks": "One hidden owned editor and standalone D3D11/WebGL2 games; dedicated fixtures/profiles/ports. Quaternion toggle/Undo/save, immediate CPP Seek/rotation and restore, three independent same-file voices, paused late decode, explicit 50ms seek/handle reuse/owned Stop. Silent PCM fixture; actual User inventory is read-only.",
+  "storage": {
+    "previousVersionBytesRemoved": 232785813,
+    "perFixtureCleanup": "await pruneTestArtifacts(work) in each check finally; global prune separately after grouped checks"
+  }
+}
