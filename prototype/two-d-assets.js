@@ -5,6 +5,9 @@ export const twoDTypes={sprite:{label:'스프라이트',prefix:'S_',group:'2D'},
 const finite=(value,min,max)=>typeof value==='number'&&Number.isFinite(value)&&value>=min&&value<=max;
 const integer=(value,min,max)=>Number.isInteger(value)&&finite(value,min,max);
 const vector=(value,size,min,max)=>Array.isArray(value)&&value.length===size&&value.every(n=>finite(n,min,max));
+// Runtime snapshots share unchanged, frozen JSON tile arrays. Keep only the
+// bounds of their last successful validation; never retain a scene or history.
+const validatedTileArrays=new WeakMap();
 const reference=value=>typeof value==='string'&&value.length<=2000&&!/^(?:[A-Za-z]:|[\\/])/.test(value)&&!value.replaceAll('\\','/').split('/').includes('..')&&!/[\x00-\x1f]/.test(value);
 const name=value=>typeof value==='string'&&value.trim().length>0&&value.length<=120;
 export function create2DAsset(kind,title){
@@ -23,8 +26,9 @@ export function valid2DAsset(kind,data){
   const ids=new Set();
   return data.layers.every(layer=>{
     if(!layer||!name(layer.id)||ids.has(layer.id)||!name(layer.name)||typeof layer.visible!=='boolean'||typeof layer.collision!=='boolean'||!Array.isArray(layer.tiles)||layer.tiles.length>data.width*data.height)return false;
-    ids.add(layer.id);const cells=new Set();
-    return layer.tiles.every(tile=>{if(!tile||!integer(tile.x,0,data.width-1)||!integer(tile.y,0,data.height-1)||!integer(tile.index,0,1048575)||tile.sourceIndex!==undefined&&!integer(tile.sourceIndex,0,1048575)||tile.rotation!==undefined&&(!Number.isSafeInteger(tile.rotation)||tile.rotation<0)||['flipX','flipY','autoCollision'].some(k=>tile[k]!==undefined&&typeof tile[k]!=='boolean'))return false;const key=tile.x+','+tile.y;if(cells.has(key))return false;cells.add(key);return true;});
+    ids.add(layer.id);const known=validatedTileArrays.get(layer.tiles);if(known?.width===data.width&&known.height===data.height)return true;const cells=new Set();let immutable=Object.isFrozen(layer.tiles);
+    const valid=layer.tiles.every((tile,index)=>{if(!tile||!integer(tile.x,0,data.width-1)||!integer(tile.y,0,data.height-1)||!integer(tile.index,0,1048575)||tile.sourceIndex!==undefined&&!integer(tile.sourceIndex,0,1048575)||tile.rotation!==undefined&&(!Number.isSafeInteger(tile.rotation)||tile.rotation<0)||['flipX','flipY','autoCollision'].some(k=>tile[k]!==undefined&&typeof tile[k]!=='boolean'))return false;const key=tile.x+','+tile.y;if(cells.has(key))return false;cells.add(key);if(immutable)immutable=Object.isFrozen(tile)&&[Object.prototype,null].includes(Object.getPrototypeOf(tile))&&['x','y','index','sourceIndex','rotation','flipX','flipY','autoCollision'].every(k=>!(k in tile)||Object.hasOwn(tile,k))&&Object.hasOwn(Object.getOwnPropertyDescriptor(layer.tiles,index),'value')&&Object.values(Object.getOwnPropertyDescriptors(tile)).every(d=>Object.hasOwn(d,'value'));return true;});
+    if(valid&&immutable)validatedTileArrays.set(layer.tiles,{width:data.width,height:data.height});return valid;
   });
 }
 /** Image rectangles use top-left pixel coordinates; UVs use bottom-left origin. */

@@ -1,3 +1,4 @@
+import {rayOutputInstructions} from './ray-program-liveness.js';
 import {rayTextureVariants} from './ray-texture-shader.js';
 import {rayCoordinateInstructions} from './ray-mip.js';
 import {rayOperations,rayProgramFieldMask} from './ray-materials.js';
@@ -5,7 +6,9 @@ import {rayOperations,rayProgramFieldMask} from './ray-materials.js';
 export const rayOperationExpressions={constant:'value',uv:'vec4(uv,0,0)',time:'vec4((timeContext.y>.5?timeContext.x:value.x),(timeContext.y>.5?timeContext.x:value.x),(timeContext.y>.5?timeContext.x:value.x),(timeContext.y>.5?timeContext.x:value.x))',worldPosition:'vec4(point,0)',worldNormal:'vec4(normal,0)',viewDirection:'vec4(view,0)',channel:'vec4(a[int(value.x)],a[int(value.x)],a[int(value.x)],a[int(value.x)])',combine:'vec4(a.x,b.x,c.x,d.x)',texture:'hbRayTexture(value.x,a.xyz,b.x,value.y,value.z,value.w,aX.xyz-a.xyz,aY.xyz-a.xyz)',add:'a+b',subtract:'a-b',multiply:'a*b',divide:'a/mix(vec4(.000001,.000001,.000001,.000001),b,step(vec4(.000001,.000001,.000001,.000001),abs(b)))',power:'pow(max(a,vec4(0,0,0,0)),b)',min:'min(a,b)',max:'max(a,b)',step:'step(a,b)',lerp:'mix(a,b,c.x)',clamp:'clamp(a,b,c)',saturate:'clamp(a,0.0,1.0)',oneMinus:'vec4(1,1,1,1)-a',normalize:'meta.w<1.5?vec4(sign(a.x),sign(a.x),sign(a.x),sign(a.x)):a/max(length(a),.000001)',sine:'sin(a)',absolute:'abs(a)',fraction:'fract(a)',dot:'vec4(dot(a.xyz,b.xyz),dot(a.xyz,b.xyz),dot(a.xyz,b.xyz),dot(a.xyz,b.xyz))',length:'meta.w<1.5?vec4(abs(a.x),abs(a.x),abs(a.x),abs(a.x)):vec4(length(a),length(a),length(a),length(a))',normalMap:'vec4(normalize(vec3((a.xy*2.0-1.0)*b.x,a.z*2.0-1.0)),0)',cosine:'cos(a)',floor:'floor(a)',ceil:'ceil(a)',squareRoot:'sqrt(max(a,vec4(0,0,0,0)))',sign:'sign(a)',exp2:'exp2(a)',log2:'log2(max(a,vec4(.000001,.000001,.000001,.000001)))',smoothstep:'hbRaySmooth(a,b,c)',distance:'vec4(length(a.xyz-b.xyz),length(a.xyz-b.xyz),length(a.xyz-b.xyz),length(a.xyz-b.xyz))',cross:'vec4(cross(a.xyz,b.xyz),0)',reflect:'vec4(reflect(a.xyz,normalize(b.xyz)),0)',fresnel:'vec4(c.x+(1.0-c.x)*pow(1.0-clamp(dot(normalize(a.xyz),normalize(b.xyz)),0.0,1.0),max(c.x,.0001)))',noise:'vec4(hbRayNoise(a.xy*b.x))',checker:'vec4(hbRayMod(dot(floor(a.xy*b.xy),vec2(1,1)),2.0))',radialGradient:'vec4(clamp(1.0-length(a.xy-b.xy)/max(c.x,.000001),0.0,1.0))',linearGradient:'vec4(clamp(dot(a.xy-vec2(.5,.5),vec2(cos(b.x),sin(b.x)))+.5,0.0,1.0))',tilingOffset:'a*b+c',panner:'a+b*c.x',rotateUV:'vec4(hbRayRotate(a.xy,b.x,c.xy),0,0)',cast:'a',eyeUV:'vec4(a.xy-b.xy/max(abs(b.z),.1)*max(c.x,0.0)*clamp(d.x,0.0,1.0),0,0)'};
 const operations=rayOperationExpressions;operations.fresnel='vec4(d.x+(1.0-d.x)*pow(1.0-clamp(dot(normalize(a.xyz),normalize(b.xyz)),0.0,1.0),max(c.x,.0001)))';
 for(const key of ['fresnel','noise','checker','radialGradient','linearGradient'])operations[key]=operations[key].replace(/^vec4\((.*)\)$/s,'hbRayScalar($1)');
-export function rayProgramGLSL(programs){let code=rayTextureVariants(rayMaterialGLSL,programs.flatMap(p=>p.instructions.filter(i=>i[0]===9).map(i=>[i[8],i[10]])));for(const p of programs){const needed=rayCoordinateInstructions(p.instructions),declared=new Set(),derived=new Set();const uses=op=>p.instructions.some(i=>i[0]===op),varies=op=>[...needed].some(n=>p.instructions[n][0]===op);let body=(uses(1)?'vec2 uv=hbRayUV(id,point);':'')+(uses(4)?'vec3 normal=hbRaySmoothNormal(id,point);':'');if([1,3,4].some(varies))body+='vec3 pointX=point+hbRayOffset(id,view,width,0.0),pointY=point+hbRayOffset(id,view,width,1.0);';if(varies(1))body+='vec2 uvX=hbRayUV(id,pointX),uvY=hbRayUV(id,pointY);';if(varies(4))body+='vec3 normalX=hbRaySmoothNormal(id,pointX),normalY=hbRaySmoothNormal(id,pointY);';p.instructions.forEach((i,index)=>{const [op,dest,size]=i,context=i.slice(4,8).map(r=>r<0?'vec4(0,0,0,0)':'r'+r);body+='{vec4 value=hbGeometryLoad(pointer+'+(index*3+2)+'.0),meta=vec4('+i.slice(0,4).map(n=>n+'.0').join(',')+'),a='+context[0]+',b='+context[1]+',c='+context[2]+',d='+context[3]+';';if(op===8){for(let channel=i[8];channel<i[8]+i[9];channel++)body+='result['+channel+']=a['+(i[10]<2?0:channel-i[8])+']*value.z;';}else{let expression=operations[rayOperations[op]];if(op===9){body+='vec4 aX='+(i[4]<0?'a':'rX'+i[4])+',aY='+(i[4]<0?'a':'rY'+i[4])+';';expression=(expression.replace('hbRayTexture(','hbRayTextureKind'+i[8]+'Filter'+i[10]+'(').replace(',value.z','')).replace('value.y',i[9]+'.0').replace('value.w',i[10]+'.0');}body+='vec4 v='+expression+';';const trim=name=>size===1?name+'=vec4('+Array(4).fill(name+'.x').join(',')+');':size===2?name+'.zw=vec2(0,0);':size===3?name+'.w=0.0;':'';body+=trim('v')+'r'+dest+'=v;';declared.add(dest);if(needed.has(index)){derived.add(dest);for(const axis of ['X','Y']){const expr=op===9?'v':expression.replace(/\b(a|b|c|d|point|uv|normal)\b/g,k=>k+axis);body+='{';for(let j=0;j<4;j++)body+='vec4 '+String.fromCharCode(97+j)+axis+'='+(i[j+4]<0?context[j]:'r'+axis+i[j+4])+';';body+='vec4 v'+axis+'='+expr+';'+trim('v'+axis)+'r'+axis+dest+'=v'+axis+';}';}}}body+='}';});code+='vec4 hbRayProgram'+p.key+'(float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){'+[...declared].map(r=>'vec4 r'+r+'=vec4(0,0,0,0);').join('')+[...derived].flatMap(r=>['X','Y'].map(a=>'vec4 r'+a+r+'=vec4(0,0,0,0);')).join('')+body+'return result;}\n';}code+='vec4 hbRayExecuteFieldTime(float field,float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){';for(const p of programs){const mask=rayProgramFieldMask(p),condition=mask===1023?'':'(field<-.5'+Array.from({length:10},(_,i)=>mask&(1<<i)?'||field=='+i+'.0':'').join('')+')&&';code+='if('+condition+'key=='+p.key+'.0)return hbRayProgram'+p.key+'(pointer,id,point,view,result,width,timeContext);';}code+='return result;}vec4 hbRayExecuteTime(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){return hbRayExecuteFieldTime(-1.0,key,pointer,id,point,view,result,width,timeContext);}vec4 hbRayExecute(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return hbRayExecuteTime(key,pointer,id,point,view,result,width,vec2(0,0));}';return code;}
+function rayProgramGLSLPass(programs,alpha=false){let code=alpha?'':rayTextureVariants(rayMaterialGLSL,programs.flatMap(p=>p.instructions.filter(i=>i[0]===9).map(i=>[i[8],i[10]])));for(const p of programs){const live=alpha?rayOutputInstructions(p.instructions):null,needed=rayCoordinateInstructions(p.instructions,live),declared=new Set(),derived=new Set();const uses=op=>p.instructions.some((i,n)=>(!live||live.has(n))&&i[0]===op),varies=op=>[...needed].some(n=>p.instructions[n][0]===op);let body=(uses(1)?'vec2 uv=hbRayUV(id,point);':'')+(uses(4)?'vec3 normal=hbRaySmoothNormal(id,point);':'');if([1,3,4].some(varies))body+='vec3 pointX=point+hbRayOffset(id,view,width,0.0),pointY=point+hbRayOffset(id,view,width,1.0);';if(varies(1))body+='vec2 uvX=hbRayUV(id,pointX),uvY=hbRayUV(id,pointY);';if(varies(4))body+='vec3 normalX=hbRaySmoothNormal(id,pointX),normalY=hbRaySmoothNormal(id,pointY);';p.instructions.forEach((i,index)=>{if(live&&!live.has(index))return;const [op,dest,size]=i,context=i.slice(4,8).map(r=>r<0?'vec4(0,0,0,0)':'r'+r);body+='{vec4 value=hbGeometryLoad(pointer+'+(index*3+2)+'.0),meta=vec4('+i.slice(0,4).map(n=>n+'.0').join(',')+'),a='+context[0]+',b='+context[1]+',c='+context[2]+',d='+context[3]+';';if(op===8){for(let channel=i[8];channel<i[8]+i[9];channel++)body+='result['+channel+']=a['+(i[10]<2?0:channel-i[8])+']*value.z;';}else{let expression=operations[rayOperations[op]];if(op===9){body+='vec4 aX='+(i[4]<0?'a':'rX'+i[4])+',aY='+(i[4]<0?'a':'rY'+i[4])+';';expression=(expression.replace('hbRayTexture(','hbRayTextureKind'+i[8]+'Filter'+i[10]+'(').replace(',value.z','')).replace('value.y',i[9]+'.0').replace('value.w',i[10]+'.0');}body+='vec4 v='+expression+';';const trim=name=>size===1?name+'=vec4('+Array(4).fill(name+'.x').join(',')+');':size===2?name+'.zw=vec2(0,0);':size===3?name+'.w=0.0;':'';body+=trim('v')+'r'+dest+'=v;';declared.add(dest);if(needed.has(index)){derived.add(dest);for(const axis of ['X','Y']){const expr=op===9?'v':expression.replace(/\b(a|b|c|d|point|uv|normal)\b/g,k=>k+axis);body+='{';for(let j=0;j<4;j++)body+='vec4 '+String.fromCharCode(97+j)+axis+'='+(i[j+4]<0?context[j]:'r'+axis+i[j+4])+';';body+='vec4 v'+axis+'='+expr+';'+trim('v'+axis)+'r'+axis+dest+'=v'+axis+';}';}}}body+='}';});code+='vec4 hbRayProgram'+p.key+'(float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){'+[...declared].map(r=>'vec4 r'+r+'=vec4(0,0,0,0);').join('')+[...derived].flatMap(r=>['X','Y'].map(a=>'vec4 r'+a+r+'=vec4(0,0,0,0);')).join('')+body+'return result;}\n';}code+='vec4 hbRayExecuteFieldTime(float field,float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){';for(const p of programs){const mask=rayProgramFieldMask(p),condition=mask===1023?'':'(field<-.5'+Array.from({length:10},(_,i)=>mask&(1<<i)?'||field=='+i+'.0':'').join('')+')&&';code+='if('+condition+'key=='+p.key+'.0)return hbRayProgram'+p.key+'(pointer,id,point,view,result,width,timeContext);';}code+='return result;}vec4 hbRayExecuteTime(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){return hbRayExecuteFieldTime(-1.0,key,pointer,id,point,view,result,width,timeContext);}vec4 hbRayExecute(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return hbRayExecuteTime(key,pointer,id,point,view,result,width,vec2(0,0));}';return alpha?code.replace(/\bhbRayProgram(?=\d)/g,'hbRayProgramAlpha').replace(/\bhbRayExecute/g,'hbRayExecuteAlpha'):code;}
+export function rayProgramGLSL(programs){return 'vec4 hbRayExecuteAlphaFieldTime(float field,float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext);\n'+rayProgramGLSLPass(programs)+rayProgramGLSLPass(programs,true)+rayFixedFieldRuns(programs);}
+function rayFixedFieldRuns(programs){return Array.from({length:10},(_,field)=>'vec4 hbRayRunField'+field+'(float id,vec3 point,vec3 view,float material,vec4 result,float width,vec2 timeContext){vec4 program=hbGeometryLoad(material+'+(field*2+1)+'.0);if(program.y<.5)return result;'+programs.filter(p=>rayProgramFieldMask(p)&(1<<field)).map(p=>'if(program.w=='+p.key+'.0)return hbRayProgram'+p.key+'(program.x,id,point,view,result,width,timeContext);').join('')+'return result;}').join('\n');}
 export const rayMaterialGLSL=`
 float hbRayMod(float a,float b){return a-b*floor(a/b);}
 vec4 hbRayScalar(float v){return vec4(v,v,v,v);}
@@ -40,54 +43,54 @@ vec4 hbRayRun(float id,vec3 point,vec3 view,float material,float field,vec4 resu
 #ifdef HB_PATH_ADVANCED
 vec4 hbRayField5Lod(float id,vec3 point,vec3 view,float width){float at=hbRayAttributes(id);vec4 result=vec4(0.0,0.1,0.0,0.0);if(at>0.0&&hbGeometryLoad(at+1.0).w>4.5){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+10.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_5)
-result=hbRayRun(id,point,view,material,5.0,result,width);
+result=hbRayRunField5(id,point,view,material,result,width,vec2(0,0));
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return vec4(clamp(v.xyz,0.0,1.0),clamp(v.w,-6.283185307,6.283185307));}
 vec4 hbRayField6Lod(float id,vec3 point,vec3 view,float width){float at=hbRayAttributes(id);vec4 result=vec4(1.0,1.0,1.0,1.0);if(at>0.0&&hbGeometryLoad(at+1.0).w>5.5){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+12.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_6)
-result=hbRayRun(id,point,view,material,6.0,result,width);
+result=hbRayRunField6(id,point,view,material,result,width,vec2(0,0));
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return clamp(v,0.0,1.0);}
 vec4 hbRayField7Lod(float id,vec3 point,vec3 view,float width){float at=hbRayAttributes(id);vec4 result=vec4(1.0,1.0,1.0,0.5);if(at>0.0&&hbGeometryLoad(at+1.0).w>6.5){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+14.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_7)
-result=hbRayRun(id,point,view,material,7.0,result,width);
+result=hbRayRunField7(id,point,view,material,result,width,vec2(0,0));
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return vec4(clamp(v.rgb,0.0,1.0),clamp(v.w,.07,1.0));}
 vec4 hbRayField8Lod(float id,vec3 point,vec3 view,float width){float at=hbRayAttributes(id);vec4 result=vec4(0.0,1.3,400.0,0.0);if(at>0.0&&hbGeometryLoad(at+1.0).w>7.5){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+16.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_8)
-result=hbRayRun(id,point,view,material,8.0,result,width);
+result=hbRayRunField8(id,point,view,material,result,width,vec2(0,0));
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return vec4(clamp(v.x,0.0,1.0),clamp(v.y,1.0,3.0),clamp(v.z,0.0,2000.0),clamp(v.w,0.0,1.0));}
 vec4 hbRayField9Lod(float id,vec3 point,vec3 view,float width){float at=hbRayAttributes(id);vec4 result=vec4(0.0,0.0,1.0,0.0);if(at>0.0&&hbGeometryLoad(at+1.0).w>8.5){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+18.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_9)
-result=hbRayRun(id,point,view,material,9.0,result,width);
+result=hbRayRunField9(id,point,view,material,result,width,vec2(0,0));
 #endif
 }vec4 v=clamp(result,-65000.0,65000.0);return v;}
 #endif
 vec4 hbRayField0Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=vec4(hbGeometryRecord0(id).w,hbGeometryRecord1(id).w,hbGeometryRecord2(id).w,hbGeometryRecord3(id).w);if(attributes<=0.0)return hbRayBound(result,0.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+0.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_0)
-result=hbRayRun(id,point,view,material,0.0,result,width);
+result=hbRayRunField0(id,point,view,material,result,width,vec2(0,0));
 #endif
 return hbRayBound(result,0.0);}
 vec4 hbRayField1Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryRecord4(id);if(attributes<=0.0)return hbRayBound(result,1.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+2.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_1)
-result=hbRayRun(id,point,view,material,1.0,result,width);
+result=hbRayRunField1(id,point,view,material,result,width,vec2(0,0));
 #endif
 return hbRayBound(result,1.0);}
 vec4 hbRayField2Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryRecord5(id);if(attributes<=0.0)return hbRayBound(result,2.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+4.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_2)
-result=hbRayRun(id,point,view,material,2.0,result,width);
+result=hbRayRunField2(id,point,view,material,result,width,vec2(0,0));
 #endif
 return hbRayBound(result,2.0);}
 vec4 hbRayField3TimeLod(float id,vec3 point,vec3 view,float width,vec2 timeContext){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=vec4(0,0,1,0);if(attributes<=0.0)return hbRayBound(result,3.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+6.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_3)
-result=hbRayRunTime(id,point,view,material,3.0,result,width,timeContext);
+result=hbRayRunField3(id,point,view,material,result,width,timeContext);
 #endif
 return hbRayBound(result,3.0);}
 vec4 hbRayField3Lod(float id,vec3 point,vec3 view,float width){return hbRayField3TimeLod(id,point,view,width,vec2(0,0));}
 vec4 hbRayField4Lod(float id,vec3 point,vec3 view,float width){float base=hbGeometryInfo.w+id*6.0,attributes=hbRayAttributes(id);vec4 result=hbGeometryLoad(hbTransport.x+id*2.0);if(attributes<=0.0)return hbRayBound(result,4.0);float material=hbGeometryLoad(attributes+1.0).z;result=hbGeometryLoad(material+8.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_4)
-result=hbRayRun(id,point,view,material,4.0,result,width);
+result=hbRayRunField4(id,point,view,material,result,width,vec2(0,0));
 #endif
 return hbRayBound(result,4.0);}
 float hbRayCutoff(float id){float at=hbRayAttributes(id);return at>0.0?hbGeometryLoad(hbGeometryLoad(at+1.0).z+6.0).w:0.0;}
@@ -101,11 +104,7 @@ vec4 hbRayField0(float id,vec3 point,vec3 view){return hbRayField0Lod(id,point,v
 vec4 hbRayField1(float id,vec3 point,vec3 view){float at=hbRayAttributes(id);vec4 result=hbGeometryRecord4(id);if(at>0.0){float material=hbGeometryLoad(at+1.0).z;result=hbGeometryLoad(material+2.0);
 #if !defined(HB_RAY_CONSTANT_FIELDS) && defined(HB_RAY_FIELD_1)
  vec4 program=hbGeometryLoad(material+3.0);if(program.y>.5){
-#ifdef HB_WEBGL_RAY_DATA
- result=hbRayExecuteFieldTime(1.0,program.w,program.x,id,point,view,result,0.0,vec2(0,0));
-#else
  result=hbRayExecuteAlphaFieldTime(1.0,program.w,program.x,id,point,view,result,0.0,vec2(0,0));
-#endif
  }
 #endif
  }return hbRayBound(result,1.0);}

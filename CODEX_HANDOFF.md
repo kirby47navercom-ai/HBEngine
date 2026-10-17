@@ -1,3 +1,13 @@
+# 274–279 구현/소스 실행 확인 · 다음 통합 설치279
+
+274 alpha 전용 출력 의존성(GL/GPU/native), 275 고정 필드 dispatch, 276 2D async load/render/release/dispose, 277 불변 tile JSON 검증 재사용, 278 readonly paged AI tile 조회, 279 Sprite/Tilemap 원본색 옵션(누락=기존scene). CPU/실제GLGPU/HLSL/에디터+독립D3DGL 통과, source279 xLmOZK 픽셀확인. 원본색 GPU clone/viewport 후속수정 CPU oLWa0l, 최종설치 --display --webgpu로3렌더 확인할것. 원장/docs274–279 아직쓰기전. sourceNative EXE build-desktop 완료.
+
+중요: dist273은 새 desktop build가 덮어썼으므로273resume 금지. install273은기존 running-install 보류기록만 유지하고 새sync279/install279/finish279각1회로268–279를함께설치. User읽기전용inventory/manifestSHA/Versions1/링크보호. 실제설치271/272 시퀀스·274alpha·275normal·276/278/279(--display --webgpu) 순차후finish279. 사용자가쓰는PID 종료금지. User프로필/원본/기존창보호. 몇개작업후최종종료금지.
+
+# 273 설치 보류 · 274 렌더 최적화 작업 중
+
+install273 1회 실행은 running-install PID28880 때문에 deferred. 재실행 금지. 동결 dist273 source1b6a3f5, bundle359ba7e143f6f66630813736428ba826a327fe079bbb09ca816e8340920b0e7d. USER_INSTALL_273 없음. 사용 프로세스 종료 여부/공식 installer 확인 후 새 resume helper 또는 다음 릴리스에 합쳐 갱신. 기존267 사용자본 보호. 274 WIP alpha-only 레지스터 버전 의존성 절삭을 GPU/GLSL/생성 native에 연결, 아직 검증·커밋 전. 전체 패킷/IR/품질/상한 유지.
+
 # 268–273 소스/근거 완료 · 설치273 전환 준비
 
 구현c592692/06d770f/f204429/2be79dd, 문서ea9b722 main push. 정본ENGINE_STATUS latest268–273. 소유값11분야/공통baseline/인계·재진입·수명·lazy접근자·트랙default/restore/keep와forceRestore·에셋/CPP/BPpriority 연결. SDK734/노드819. source268fkIHIW/269bdWukr/271sNP5Wp/272k8jS0T 각editor+2D3DGL PASS. CPU268jFvT6K/269RiKvPc/270vdngQa(12만동일/adapters120000→1000/11.6151→9.3846ms Node만)/2716jTNAm/272FDVdGI, Android273bK9oVZ APK6326149B·16KiB/closure PASS. noPhone/noMac. docs268-273 helper완료 재실행금지. 기존267동결. 다음새sync273/install273/finish273각1회, 실제설치check-sequence-completion-271-window 및check-sequence-priority-272-window 순차. User읽기전용inventory/manifest/Versions1/링크검증·공식prune 후receiptcommitpush. 다른누적분야계속, 몇개하고최종종료금지.
