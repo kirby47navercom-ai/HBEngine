@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **813개**, 실제 공통 C++ API **728개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **817개**, 실제 공통 C++ API **732개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -81,6 +81,7 @@
 | AI|EQS | 2 | 2 |
 | 게임플레이 태그 | 7 | 7 |
 | 월드 스트리밍 | 6 | 6 |
+| 오브젝트|Tick | 4 | 4 |
 
 ## 범위와 사용 규칙
 
@@ -1258,3 +1259,12 @@
 | levelActor | Get Actor / 추가 레벨 액터 | instance: string, localId: string | return: object | hb::Levels::GetActor | 공통 C++ + VM |
 | levelInstances | Get Instances / 불러온 레벨 목록 | — | return: string[] | hb::Levels::GetInstances | 공통 C++ + VM |
 | levelVisible | Set Visible / 추가 레벨 표시 | exec: exec, instance: string, visible: bool | then: exec | hb::Levels::SetVisible | 공통 C++ + VM |
+
+## 오브젝트|Tick
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| sceneSetTickEnabled | Set Tick Enabled / 액터 Tick 활성화 설정 | exec: exec, target: object, enabled: bool | then: exec | hb::Scene::SetTickEnabled | 공통 C++ + VM |
+| sceneTickEnabled | Is Tick Enabled / 액터 Tick 활성화 | target: object | return: bool | hb::Scene::IsTickEnabled | 공통 C++ + VM |
+| sceneSetTickInterval | Set Tick Interval / 액터 Tick 간격 설정 | exec: exec, target: object, seconds: float | then: exec | hb::Scene::SetTickInterval | 공통 C++ + VM |
+| sceneTickInterval | Get Tick Interval / 액터 Tick 간격 | target: object | return: float | hb::Scene::GetTickInterval | 공통 C++ + VM |

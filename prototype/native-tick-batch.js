@@ -1,3 +1,4 @@
+import {bindingTickInterval,bindingTickDue} from './runtime-tick.js';
 import {catalog,basePins,defaultInputValue,fieldsFor,graphContext} from './blueprint-model.js';
 import {evaluateCore,blueprintPure} from './core-preview.js';
 import {libraryByKey} from './library-spec.js';
@@ -19,7 +20,7 @@ export function nativeTickPlan(root,key='tick'){
 }
 export function nativeTickBlock(binding,plan,delta,eventArgs){
   const root=binding.root,jobs=[];let request;
-  for(const item of plan){const {tick,node,fn}=item,elapsed=(binding.ticks.get(tick.id)||0)+delta,interval=tick.options?.tickInterval??root.settings?.tickInterval??0,due=eventArgs!==undefined||elapsed+1e-9>=interval&&delta>0,reads=new Map();const job={...item,elapsed,due,reads,readCount:0};if(item.chain&&due){const outputs=new Map([[tick.id,eventArgs??{delta:elapsed}]]),chain=nativeChainBlock(binding,root,item.chain,outputs,'');for(const entry of chain)jobs.push({...entry,tick,elapsed,due});continue;}jobs.push(job);if(!due||!node||node.enabled===false)continue;if(node.breakpoint)return null;
+  for(const item of plan){const {tick,node,fn}=item,elapsed=(binding.ticks.get(tick.id)||0)+delta,interval=bindingTickInterval(binding,tick),due=eventArgs!==undefined||bindingTickDue(elapsed,interval,delta),reads=new Map();const job={...item,elapsed,due,reads,readCount:0};if(item.chain&&due){const outputs=new Map([[tick.id,eventArgs??{delta:elapsed}]]),chain=nativeChainBlock(binding,root,item.chain,outputs,'');for(const entry of chain)jobs.push({...entry,tick,elapsed,due});continue;}jobs.push(job);if(!due||!node||node.enabled===false)continue;if(node.breakpoint)return null;
     const read=(n,p)=>{const edge=root.edges.find(e=>e.to.node===n.id&&e.to.pin===p.id);if(!edge)return clone(defaultInputValue(n,p));const source=root.nodes.find(n=>n.id===edge.from.node),[id,...path]=edge.from.pin.split('.');let output;
       if(source===tick)output=eventArgs??{delta:elapsed};else if(source.key==='getVariable')output={value:binding.variables.get(source.variableId)};else if(source.key==='self')output={return:binding.self};else if(source.key==='reroute')output={value:read(source,basePins(source,'in',root).find(p=>p.id==='value'))};else throw Error('C++ 묶음 데이터 의존성');
       if(source!==tick){job.readCount++;output=clone(output);reads.set(source.id,output);}let value=output[id];if(path.length){let type=basePins(source,'out',root).find(p=>p.id===id)?.type;for(const field of path){const fields=fieldsFor(type),i=fields.findIndex(p=>p.id===field);value=Array.isArray(value)?value[i]:value?.[field];type=fields[i]?.type;}}if(value===undefined)throw Error('출력 값이 없어요: '+edge.from.pin);return source===tick?clone(value):value;};

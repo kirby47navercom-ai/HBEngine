@@ -1,3 +1,4 @@
+import {validNativeLifecycles} from './native-lifecycle.js';
 import {nativeInitializer} from './native-initializer.js';
 export const canonicalNativeText=text=>text.replace(/^\uFEFF/,'').replaceAll('\r\n','\n').replaceAll('\r','\n');
 // Header declarations become editor metadata; this is not a C++ compiler.
@@ -14,7 +15,7 @@ const portValid=p=>p&&id(p.id)&&typeof p.label==='string'&&p.label.length<=80&&t
 export function validNative(m,validValue){
   if(validNativeReference(m))return true;
   if(!m||m.version!==1||!Array.isArray(m.classes)||m.classes.length>64||new Set(m.classes.map(c=>c?.name)).size!==m.classes.length)return false;
-  return m.classes.every(c=>c&&id(c.name)&&id(c.base)&&typeof c.blueprintable==='boolean'&&Array.isArray(c.properties)&&c.properties.length<=512&&Array.isArray(c.functions)&&c.functions.length<=500&&new Set([...c.properties,...c.functions].map(x=>x?.name)).size===c.properties.length+c.functions.length&&c.properties.every(p=>p&&id(p.name)&&types.has(p.type)&&typeof p.array==='boolean'&&typeof p.readOnly==='boolean'&&(p.className===undefined||id(p.className))&&(p.value===undefined||!validValue||(p.array?Array.isArray(p.value)&&p.value.length<=128&&p.value.every(v=>validValue(p.type,v)):validValue(p.type,p.value))))&&c.functions.every(f=>f&&id(f.name)&&typeof f.label==='string'&&f.label.length<=80&&typeof f.category==='string'&&f.category.length<=80&&typeof f.pure==='boolean'&&typeof f.static==='boolean'&&['none','native','implementable'].includes(f.event)&&Array.isArray(f.inputs)&&Array.isArray(f.outputs)&&f.inputs.length<=30&&f.outputs.length<=30&&[f.inputs,f.outputs].every(ps=>ps.every(portValid)&&new Set(ps.map(p=>p.id)).size===ps.length)&&(!f.pure||f.event==='none')&&(f.event==='none'||!f.outputs.length)));
+  return m.classes.every(c=>c&&id(c.name)&&id(c.base)&&typeof c.blueprintable==='boolean'&&Array.isArray(c.properties)&&c.properties.length<=512&&Array.isArray(c.functions)&&c.functions.length<=500&&new Set([...c.properties,...c.functions].map(x=>x?.name)).size===c.properties.length+c.functions.length&&c.properties.every(p=>p&&id(p.name)&&types.has(p.type)&&typeof p.array==='boolean'&&typeof p.readOnly==='boolean'&&(p.className===undefined||id(p.className))&&(p.value===undefined||!validValue||(p.array?Array.isArray(p.value)&&p.value.length<=128&&p.value.every(v=>validValue(p.type,v)):validValue(p.type,p.value))))&&validNativeLifecycles(c.functions)&&c.functions.every(f=>f&&id(f.name)&&typeof f.label==='string'&&f.label.length<=80&&typeof f.category==='string'&&f.category.length<=80&&typeof f.pure==='boolean'&&typeof f.static==='boolean'&&['none','native','implementable'].includes(f.event)&&Array.isArray(f.inputs)&&Array.isArray(f.outputs)&&f.inputs.length<=30&&f.outputs.length<=30&&[f.inputs,f.outputs].every(ps=>ps.every(portValid)&&new Set(ps.map(p=>p.id)).size===ps.length)&&(!f.pure||f.event==='none')&&(f.event==='none'||!f.outputs.length)));
 }
 function commaParts(s){let level=0,quoted=false,part='',parts=[];for(const c of s){if(c==='"')quoted=!quoted;if(!quoted){if(c==='<')level++;if(c==='>')level--;if(c===','&&level===0){parts.push(part.trim());part='';continue;}}part+=c;}if(part.trim())parts.push(part.trim());return parts;}
 function cppType(s){
@@ -34,11 +35,13 @@ export function parseNativeHeader(source,{maxLength=100000}={}){
     const funcs=/HB_(?:FUNCTION|NODE)\(([^)]*)\)\s*((?:(?:static|virtual)\s+)*)([^;{}()]+?)\s+(\w+)\s*\(([^)]*)\)\s*(?:const\s*)?(?:override\s*)?;/g;let f;
     while((f=funcs.exec(body))){const flags=f[1],fn={name:f[4],label:metadata(flags,'DisplayName',f[4]),category:metadata(flags,'Category','C++'),pure:/\bBlueprintPure\b/.test(flags),static:/\bstatic\b/.test(f[2]),event:/BlueprintNativeEvent/.test(flags)?'native':/BlueprintImplementableEvent/.test(flags)?'implementable':'none',inputs:[],outputs:[]};
       fn.returnType=f[3].trim();fn.parameters=[];
+      if(/\bLifecycle\s*=/.test(flags))fn.lifecycle=metadata(flags,'Lifecycle','');
       if(/NodeKey\s*=/.test(flags))fn.nodeKey=metadata(flags,'NodeKey','');
       if(/KoreanName\s*=/.test(flags))fn.ko=metadata(flags,'KoreanName',fn.label);
       if(/\bEngineService\b/.test(flags))fn.service=true;
       if(f[3].trim()!=='void')fn.outputs.push({id:metadata(flags,'ReturnPin','result'),label:'Return value',...cppType(f[3].trim())});
       for(const param of commaParts(f[5])){if(param==='void')continue;const declaration=param.split('=')[0].trim().match(/^(.+?)\s+(\w+)$/);if(!declaration)throw Error('매개변수 선언을 확인하세요: '+param);const [,type,name]=declaration,out=type.includes('&')&&!/\bconst\b/.test(type);fn.parameters.push({name,cppType:type,out});const pin={id:name,label:name,...cppType(type)},literal=param.includes('=')?param.slice(param.indexOf('=')+1).trim():undefined;if(literal!==undefined){try{pin.default=JSON.parse(literal==='nullptr'?'null':literal.replace(/([0-9.])f\b/g,'$1'));}catch{/* C++ expressions need a user-supplied pin value. */}}fn[out?'outputs':'inputs'].push(pin);}
+      if(!validNativeLifecycles([...c.functions,fn]))throw Error(fn.name+' Lifecycle 단계·중복·반환·인자 자료형을 확인하세요.');
       if(fn.event!=='none'&&fn.outputs.length)throw Error(fn.name+' 이벤트에는 반환·출력 매개변수를 둘 수 없어요.');c.functions.push(fn);
     }
     if((body.match(/HB_(?:FUNCTION|NODE)\(/g)||[]).length!==c.functions.length||(body.match(/HB_PROPERTY\(/g)||[]).length!==c.properties.length)throw Error('공개 멤버는 함수 본문 없이 헤더 선언으로 입력하세요.');

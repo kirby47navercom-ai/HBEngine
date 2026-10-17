@@ -754,6 +754,10 @@ public:
 HB_CLASS()
 class Scene : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneSetTickEnabled", KoreanName="액터 Tick 활성화 설정", Category="오브젝트|Tick") static void SetTickEnabled(Actor* target,bool enabled);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneTickEnabled", KoreanName="액터 Tick 활성화", Category="오브젝트|Tick") static bool IsTickEnabled(Actor* target);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneSetTickInterval", KoreanName="액터 Tick 간격 설정", Category="오브젝트|Tick") static void SetTickInterval(Actor* target,float seconds);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneTickInterval", KoreanName="액터 Tick 간격", Category="오브젝트|Tick") static float GetTickInterval(Actor* target);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneSpawn", KoreanName="에셋/클래스 생성", Category="오브젝트") static Actor* Spawn(const std::string& blueprintOrPrefab,const Transform& transform,const std::string& actorId="");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="sceneDestroy", KoreanName="생성 액터 제거/풀 반환", Category="오브젝트") static void Destroy(Actor* target);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="sceneFindClass", KoreanName="클래스로 액터 찾기", Category="오브젝트") static std::vector<Actor*> GetAllActorsOfClass(const std::string& className,bool includeInactive=false);

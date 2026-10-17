@@ -132,3 +132,6 @@
   .asset-form label { grid-template-columns:minmax(0,1fr); gap:6px; }
   .mapping-row,.mapping-columns { gap:5px; }
 }
+
+.asset-tick-field { display:flex; align-items:center; gap:8px; margin-top:14px; font-size:13px; }
+.asset-tick-field input { width:15px; height:15px; margin:0; }
