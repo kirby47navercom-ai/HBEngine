@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "ef8a67d3aff1ed7e85b3b5ec27af16d1d5dd794e",
+  "basisRevision": "bd7269ab04d0e8a1a6f88d8a756b266c66cc6b58",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -17,15 +17,17 @@
       "area": "project",
       "title": "설치형 실행기·프로젝트 생성/열기",
       "status": "verified",
-      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증",
+      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
       "remaining": [],
       "sources": [
         "tools/project-manifest.mjs",
-        "tools/install-editor.mjs"
+        "tools/install-editor.mjs",
+        "tools/queued-editor-install.mjs"
       ],
       "evidence": [
         "docs/research/USER_INSTALL_151.json",
-        "docs/research/ENGINE_WORK_193.json"
+        "docs/research/ENGINE_WORK_193.json",
+        "docs/research/ENGINE_WORK_295.json"
       ]
     },
     {
@@ -33,19 +35,21 @@
       "area": "project",
       "title": "실행/편집 상태와 사용자 작업 격리",
       "status": "verified",
-      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·292: private 부분 Node 복사 SHA/PID 검증·활성/수정/다른 런타임/원본 보존",
+      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·292: private 부분 Node 복사 SHA/PID 검증·활성/수정/다른 런타임/원본 보존 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
       "remaining": [],
       "sources": [
         "prototype/project-session.js",
         "tools/project-manifest.mjs",
         "tools/install-editor.mjs",
-        "tools/test-artifacts.mjs"
+        "tools/test-artifacts.mjs",
+        "tools/queued-editor-install.mjs"
       ],
       "evidence": [
         "docs/USER_DEVELOPMENT_SEPARATION.md",
         "docs/research/ENGINE_WORK_193.json",
         "docs/research/ENGINE_WORK_198.json",
-        "docs/research/ENGINE_WORK_292.json"
+        "docs/research/ENGINE_WORK_292.json",
+        "docs/research/ENGINE_WORK_295.json"
       ]
     },
     {
@@ -1427,18 +1431,20 @@
       "area": "automation",
       "title": "코드/기능 상태 최신 조회",
       "status": "verified",
-      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 ·289/293: submit/후속 준비 시간과 C++ sdk fingerprint/files/bytes 실제 빌드 응답",
+      "implemented": "안정 ID 원장·로컬 CLI·HTTP 조회/필터·등록 분모 구분 ·289/293: submit/후속 준비 시간과 C++ sdk fingerprint/files/bytes 실제 빌드 응답 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
       "remaining": [],
       "sources": [
         "tools/engine-status.mjs",
         "tools/hb.mjs",
-        "tools/serve.mjs"
+        "tools/serve.mjs",
+        "tools/queued-editor-install.mjs"
       ],
       "evidence": [
         "docs/ENGINE_STATUS.md",
         "docs/ENGINE_WORK_156.md",
         "docs/research/ENGINE_WORK_289.json",
-        "docs/research/ENGINE_WORK_293.json"
+        "docs/research/ENGINE_WORK_293.json",
+        "docs/research/ENGINE_WORK_295.json"
       ]
     },
     {
@@ -1762,13 +1768,14 @@
       "area": "performance",
       "title": "용량·캐시·설치 한 개 유지",
       "status": "verified",
-      "implemented": "검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 ·200/202/205: 파일 버퍼 상주 축소·완료한 검사 payload/빌드/Chrome 프로필 정리·활성/원본 보호 ·282: 재생성 라이선스 중복 보관 제거 ·292: 부분 private Node 복사 회수·원본/활성/수정 보호·전역 새 작업1시간 제외·다른 빌드 중 정리 보류",
+      "implemented": "검사 빌드/프로필 정리·공유 캐시32·이전 설치 자동 정리 · 169: 정확 SHA의 재생성 SDK 캐시만 수정 백업 제외·동일 역사 백업 제거·실제 수정 보존 검사 ·200/202/205: 파일 버퍼 상주 축소·완료한 검사 payload/빌드/Chrome 프로필 정리·활성/원본 보호 ·282: 재생성 라이선스 중복 보관 제거 ·292: 부분 private Node 복사 회수·원본/활성/수정 보호·전역 새 작업1시간 제외·다른 빌드 중 정리 보류 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
       "remaining": [],
       "sources": [
         "tools/test-artifacts.mjs",
         "tools/prune-install-versions.mjs",
         "tools/remove-install-versions.ps1",
-        "tools/check-install-version-retention.mjs"
+        "tools/check-install-version-retention.mjs",
+        "tools/queued-editor-install.mjs"
       ],
       "evidence": [
         "docs/research/USER_INSTALL_151.json",
@@ -1778,7 +1785,8 @@
         "docs/research/ENGINE_WORK_202.json",
         "docs/research/ENGINE_WORK_205.json",
         "docs/research/ENGINE_WORK_282.json",
-        "docs/research/ENGINE_WORK_292.json"
+        "docs/research/ENGINE_WORK_292.json",
+        "docs/research/ENGINE_WORK_295.json"
       ]
     },
     {
@@ -1851,5 +1859,5 @@
       ]
     }
   ],
-  "latestBatch": "284–294"
+  "latestBatch": "284–295"
 }

@@ -939,3 +939,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 
 
 294: 주인님 설치본 node32824/worker32540/worker39404가 실행 중이라 install293이 running-install로 보류됐어요. 종료/덮어쓰기/설치 전환 없이 Versions1을 유지했어요. 프로젝트 내구성 검사는 private writer의 interval로 생존을 보장한 뒤 kill 반환과 비정상 exit까지 확인해 실제 종료 증거를 남겼어요. 이전7조건 hf0Gio는 종료 확인을 강화한 yzHH4r로 대체했어요. 임의 사용자 프로세스는 종료하지 않았어요.
+
+
+295: 첫 status CLI는 queued module의 정적 installer import와 CLI의 dynamic import가 순환 top-level await를 만들어 종료13이었어요. worker 함수 안에서만 installer를 불러오게 고쳐 실제 status/when-idle CLI를 검사했어요. CLI 취소 fixture는 제품 기본 poll30초보다 짧은20초 제한 때문에 timeout했고 그 한 조건만45초로 맞췄어요. 제품 poll을 불필요하게 빠르게 바꾸거나 사용자 프로세스를 종료하지 않았어요. 최종 JlpmpI는7조건을 통과했어요.
