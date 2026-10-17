@@ -10,3 +10,6 @@
 
 - 충돌/UV와 나머지 전용 포인터/키 조합·전체 스크린리더/번역은 별도 잔여
 - 이 검사는 새 오디오 DSP 품질이나 실제 모바일 음향 검사 아님
+
+
+243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.

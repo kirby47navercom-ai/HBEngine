@@ -10,3 +10,6 @@
 
 - 로컬 TRS 부모 트랙이며 socket/constraint/월드 보존 Attach section 규칙 전체 구현이 아님
 - 부모 키 대상이 교체/삭제되면 거부·기존 객체 파괴 자체를 재생 중 부활시키지 않음
+
+
+243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.

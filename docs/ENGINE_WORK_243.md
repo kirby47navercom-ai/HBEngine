@@ -11,3 +11,6 @@
 - source/target 속성 캡처·SetByCaller·custom execution·네트워크 예측은 별도 잔여
 - 직렬화 추정 캐시 예산은 실제 JS heap/전체 프레임 비용 상한이 아님
 - C++ 쓰기는 반환 뒤 처리하고 getter는 처리된 최신 상태를 읽음
+
+
+243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.

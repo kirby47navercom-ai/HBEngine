@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "b1dec1d0cce8cbab5cea4e64a621f9a0657707f9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e586f23febe4b3d5\\HBEngine.exe",
+  "bundleHash": "e586f23febe4b3d5c85bcd0801268e5ce4156d1ec4ad0a689de82392b9bfb0d2",
+  "files": 2879,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2877,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85",
+        "bytes": 212367284,
+        "manifestSHA256": "a441a56526b51f1e751c3c16c06b965ed919a84f1dbc1fcb3fc5b21910a9108e"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T01:38:26.0519017Z",
+    "bytes": 212367284,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\ea1799af84bb0d85\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "e586f23febe4b3d5"
+    ]
+  },
+  "work": "native/build/engine-248-install-9Wp0d8",
+  "versions": [
+    "e586f23febe4b3d5"
+  ],
+  "manifestVerifiedFiles": 2879,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/effect-scaling-243-window-y23xGd/acceptance.json",
+      "sha256": "6dc57ca036a2a50365b89db0c23ba6036b6fbda1d81fed0e5fdf51708d17a13e"
+    },
+    {
+      "path": "native/build/deformable-query-244-window-0aPxv4/acceptance.json",
+      "sha256": "8e0a6f481783068563688c2e1a81715c25c8a0a6a71d187116389adf0e6a0182"
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-window-ug128N/acceptance.json",
+      "sha256": "2a0fa5609dd3cd3ecc37957e6a5022dc4fa58be700ed9813251fe327efab0006"
+    },
+    {
+      "path": "native/build/authoring-shortcuts-247-window-rPmRFu/acceptance.json",
+      "sha256": "8bf3654c87af12f45e92d4358606bd975fd4862e23dbddc263ba3731dba1dc16"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/effect-scaling-243-window-y23xGd/effect-level-curve-editor.png",
+      "sha256": "074a9a62b82c1acaa8b6efa05b20b57a0b1cbb05a8dff06f13d76ca34c2d3801",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/effect-scaling-243-window-y23xGd/effect-live-level-inspector.png",
+      "sha256": "33e6b2a1a653ad95096fce1182a237ae4d0e4ba30fa7d437c4860d9e24efc9cd",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-window-ug128N/parent-track-editor.png",
+      "sha256": "ed33907f6940961de802e01b67dc8b922f766f52dfeb9961e508da3e5bbfd973",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/authoring-shortcuts-247-window-rPmRFu/retarget-shared-shortcut.png",
+      "sha256": "7b6f1287500c86b052aaff04f03080f594cb7366a15a1e97097d116b53768197",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/authoring-shortcuts-247-window-rPmRFu/audio-shared-shortcut.png",
+      "sha256": "266a0a03ccf534cb98ab6e4f7da8aaeefd648d52cfd397b61ba04ba0abada7ba",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2879,
+  "privateChecks": "Four hidden owned editors and six standalone D3D11/WebGL2 games; dedicated fixtures/profiles/ports. CPP/BP/live Inspector and AI; authoring Undo/shortcuts/preview. Actual User inventory is read-only.",
+  "storage": {
+    "previousVersionBytesRemoved": 212367284,
+    "perFixtureCleanup": "await pruneTestArtifacts(work) in each check finally; global prune deferred while249 source build is active"
+  }
+}

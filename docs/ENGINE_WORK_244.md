@@ -11,3 +11,6 @@
 - 일반 C++ Raycast/Overlap의 재구성 질의 세계에는 현재 soft surface 미포함; 새 입자 getter는 별도 live 질의
 - 조회는 동기 채널 왕복·요청 시점 값, 같은 함수 안의 앞선 queued 쓰기는 아직 적용되지 않음
 - Android 물리/렌더 실제 기기 검증은 아님
+
+
+243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.

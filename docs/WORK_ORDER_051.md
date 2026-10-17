@@ -384,3 +384,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 243–248: 효과 레벨/커브·공유 캡처와 원자 참조 저장, 천/2D로프 요청 입자 CPP/BP 조회, 부모연결 Take/Seek/복원·수명 보호/키 샘플 비용, 리타게팅/오디오 제작 키, 새SDK ARM64 APK를 연결·검사. 최신 목록 ENGINE_STATUS.json; 설치 검증은 후속 기록.
+
+
+243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.
