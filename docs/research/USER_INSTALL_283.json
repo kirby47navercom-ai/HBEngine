@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "9a87d3485f35030f33b703895a3c1829f04915c1",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\343086b6709d4d5a\\HBEngine.exe",
+  "bundleHash": "343086b6709d4d5a2cf0f444c461f7d9d2692042eac428a21daf513ee4496e6a",
+  "files": 3026,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3216,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697",
+        "bytes": 492817087,
+        "manifestSHA256": "3a28a3514edadae765e3c974dc928d79d72ede2dd8df09d6356a4d0df0b03b98"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T05:24:01.8051764Z",
+    "bytes": 492817087,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "343086b6709d4d5a"
+    ]
+  },
+  "work": "native/build/engine-283-install-5v6akP",
+  "versions": [
+    "343086b6709d4d5a"
+  ],
+  "manifestVerifiedFiles": 3026,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedSmokePending": false,
+  "installedSmokePassed": true,
+  "checks": [
+    {
+      "path": "native/build/display-colors-283-window-F8Tbvb/acceptance.json",
+      "sha256": "6230a07bc3ecf89ae9fee87fdcbf7e08712465efa7ed17fe8f39613f9f36e253"
+    },
+    {
+      "path": "native/build/2d-display-279-window-glQaws/acceptance.json",
+      "sha256": "7eed08ed0f37cb2196ddd3680ce976b549450922c80ba3bddc6a23dcc721ff15"
+    }
+  ],
+  "priorGatesReused": {
+    "reason": "Byte-identical native EXE and unchanged sequence/ray owner sources between installed commits; these gates were actually executed on281, not rerun on283.",
+    "basis": "9c733760415769cc8e8fcc7f0033bb201f49aeca",
+    "owners": [
+      "native/include",
+      "native/desktop",
+      "prototype/gameplay-runtime.js",
+      "prototype/sequence-channels.js",
+      "prototype/sequence-sampling.js",
+      "prototype/sequence-values.js",
+      "prototype/ray-material-shader.js",
+      "prototype/ray-material-gpu.js",
+      "prototype/ray-texture-shader.js",
+      "prototype/path-previous-normal-gpu.js"
+    ],
+    "changedOwnerFiles": [],
+    "native": {
+      "unchangedEXE": true,
+      "rows": [
+        {
+          "path": "HBEngine.exe",
+          "sha256": "114facfe7273e8098117299cc785842321419857fe5a6a51d1d599369bef3d2c"
+        },
+        {
+          "path": "dist/HBEngine/HBEngine.exe",
+          "sha256": "114facfe7273e8098117299cc785842321419857fe5a6a51d1d599369bef3d2c"
+        },
+        {
+          "path": "C:/Users/kirby/HBEngine/Versions/179b3a9988f35697/HBEngine.exe",
+          "sha256": "114facfe7273e8098117299cc785842321419857fe5a6a51d1d599369bef3d2c"
+        }
+      ]
+    },
+    "checks": [
+      "native/build/sequence-completion-271-window-E5ZKH5/acceptance.json",
+      "native/build/sequence-priority-272-window-Ekhe0I/acceptance.json",
+      "native/build/rendering-274-window-DfCU7s/acceptance.json",
+      "native/build/cubemap-lod-281-native-pkIh9H/acceptance.json",
+      "native/build/cubemap-lod-281-window-myvZXh/acceptance.json",
+      "native/build/rendering-275-window-xbTb9x/acceptance.json"
+    ]
+  },
+  "profilePreservedAfterSmoke": true,
+  "manifestVerifiedAfterSmoke": 3026,
+  "knownLicenseDuplicatesRemoved": [
+    {
+      "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\3a617ac1aed4378f\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "bytes": 1076
+    },
+    {
+      "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\dcab5bc06a6db1c9\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "bytes": 1076
+    },
+    {
+      "path": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\dcc7dfb86fcb2208\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "bytes": 1076
+    }
+  ],
+  "scope": "Actual installed WebGPU canvas/HDR and editor plus packaged CPP/BP game; prior byte-identical owner checks reused explicitly. No whole-engine/UE/Unity completion, PC120/mobile60 or device claim."
+}
