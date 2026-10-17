@@ -1798,6 +1798,7 @@ const editorCommandMethods={
   'runtime.audio.capture.finish':params=>runtimeAudioCapture('finish',params),
   'runtime.take.start':params=>runtimeTakeOperation('start',params),
   'runtime.take.finish':()=>runtimeTakeOperation('finish'),
+  'runtime.sequenceOwnership':()=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequenceOwnership();},
   'runtime.sequencePose':({target,offset,limit})=>{if(!running||!runtimeServices)throw Error('게임 실행 중에 조회하세요.');return runtimeServices.sequencePoseState(target,{offset,limit});},
   'runtime.network':()=>runtimeServices?.networkState()||{status:'offline'},
   'runtime.audio':()=>runtimeServices?.audioState()||null,
