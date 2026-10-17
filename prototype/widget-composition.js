@@ -2,6 +2,16 @@ import {validWidgetAsset,validWidgetProperties,widgetDefaults,widgetDescendants}
 const plain=v=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.getPrototypeOf(v)===Object.prototype;
 export function widgetOverrideMap(text='{}'){const value=JSON.parse(text);if(!plain(value)||JSON.stringify(value).length>262144||Object.entries(value).some(([name,properties])=>!name||name.length>1024||!plain(properties)||Object.keys(properties).some(k=>!Object.hasOwn(widgetDefaults,k)||['widgetAsset','widgetOverrides','widgetEvents','widgetBindings'].includes(k))))throw Error('재사용 위젯의 요소별 속성을 확인하세요.');return value;}
 const fillSlot={anchors:[0,0,1,1],offset:[0,0,0,0],alignment:[0,0],zIndex:0,fill:1};
+// Runtime replacement preserves existing node identities outside the slot, so
+// in-flight HUD updates and animations do not get overwritten by an asset load.
+export function replaceNamedSlotContent(data,element,content){
+ const slot=data.nodes.find(n=>n.id===element||n.name===element);if(slot?.type!=='NamedSlot')throw Error('교체할 명명 슬롯을 선택하세요.');
+ if(content&&!validWidgetAsset(content,{expanded:true}))throw Error('슬롯 내용 위젯을 확인하세요.');
+ const removed=new Set(widgetDescendants(data,slot.id));removed.delete(slot.id);
+ const nodes=data.nodes.filter(n=>!removed.has(n.id));if(content)nodes.push(...graft(structuredClone(content),slot.id,slot.id+'/runtime',slot.name+'/Content',slot.compositionOwner||slot.id));
+ const next={...data,nodes};if(!validWidgetAsset(next,{expanded:true}))throw Error('교체된 슬롯의 이름·계층·속성을 확인하세요.');
+ return {data:next,removed};
+}
 // The reference-size wrapper has the same layout contract for normal instances
 // and named-slot content. Only clones are changed; source assets stay intact.
 function graft(child,parent,idPrefix,namePrefix,owner){

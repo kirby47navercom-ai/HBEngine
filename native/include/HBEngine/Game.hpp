@@ -25,6 +25,11 @@ struct Vec3 { float x=0,y=0,z=0; };
 struct Color { float r=1,g=1,b=1,a=1; };
 struct Transform { Vec3 position{},rotation{},scale{1,1,1}; };
 struct Library {};
+struct EffectArguments {
+    Json values=Json::object();
+    EffectArguments& Set(const std::string& name,float value){if(name.empty()||!std::isfinite(value)||std::abs(value)>1e9f)throw std::runtime_error("effect argument range");values[name]=value;return *this;}
+    std::string ToJson() const{return values.dump();}
+};
 struct Actor { Transform transform{}; virtual ~Actor()=default; };
 struct HitResult { bool hit=false; Vec3 position{},normal{}; Actor* actor=nullptr; };
 struct Component { Actor* actor=nullptr; virtual ~Component()=default; };
@@ -140,6 +145,7 @@ public:
 HB_CLASS()
 class UI : public Library {
 public:
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetSlotContent", KoreanName="명명 슬롯 내용 교체", Category="UI|위젯") static void SetSlotContent(Actor* target,const std::string& instance,const std::string& element,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetListItems", KoreanName="가상 목록 데이터 지정", Category="UI|목록") static void SetListItems(Actor* target,const std::string& instance,const std::string& element,const std::string& json);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiSetLocalizedText", KoreanName="지역화 텍스트 지정", Category="UI|지역화") static void SetLocalizedText(Actor* target,const std::string& instance,const std::string& element,const std::string& table,const std::string& key,const std::string& json="{}");
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="uiShow", KoreanName="위젯 UI 표시", Category="UI") static void Show(Actor* target,const std::string& asset,const std::string& instance);
@@ -598,6 +604,9 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="abilityActive", KoreanName="능력 활성 상태", Category="능력") static bool IsActive(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApply", KoreanName="게임플레이 효과 적용", Category="능력|효과") static void ApplyEffect(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApplyLevel", KoreanName="레벨로 효과 적용", Category="능력|효과") static void ApplyEffectAtLevel(Actor* target,const std::string& asset,float level=1);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApplySpec", KoreanName="출처와 인자로 효과 적용", Category="능력|효과") static void ApplyEffectSpec(Actor* target,const std::string& asset,Actor* source,float level=1,const std::string& parameters="{}");
+    static void ApplyEffectSpec(Actor* target,const std::string& asset,Actor* source,float level,const EffectArguments& parameters){ApplyEffectSpec(target,asset,source,level,parameters.ToJson());}
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectSetParameter", KoreanName="활성 효과 호출 인자 지정", Category="능력|효과") static void SetEffectParameter(Actor* target,const std::string& handle,const std::string& name,float value);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectSetLevel", KoreanName="활성 효과 레벨 지정", Category="능력|효과") static void SetEffectLevel(Actor* target,const std::string& handle,float level);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectGetLevel", KoreanName="활성 효과 레벨", Category="능력|효과") static float GetEffectLevel(Actor* target,const std::string& handle);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectFind", KoreanName="효과 핸들 찾기", Category="능력|효과") static std::string FindEffectHandle(Actor* target,const std::string& asset,int index=0);

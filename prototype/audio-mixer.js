@@ -4,6 +4,7 @@ import {validDucking,DuckingEnvelope} from './audio-ducking.js';
 import {createDSP,validDSP} from './audio-dsp.js';
 import {validAssetPath} from './material-runtime.js';
 import {createAudioPlayer,BufferedAudioPlayer,StreamingAudioPlayer} from './buffered-audio.js';
+import {VirtualStreamingAudioPlayer} from './virtual-stream-audio.js';
 import {createNativeAudioContext} from './native-audio.js';
 export const mixerDefaults={volumeDb:0,mute:false,solo:false,bypass:false,lowpass:20000,highpass:20,compressor:false,threshold:-24,ratio:4,attack:.003,release:.25};
 export const mixerParameters={volumeDb:[-80,20],lowpass:[20,22000],highpass:[10,22000],threshold:[-100,0],ratio:[1,20],attack:[0,1],release:[.001,1]};
@@ -71,18 +72,19 @@ export class AudioMixerGraph {
 }
 export class AudioRouting {
   constructor({readAsset,context}={}){this.readAsset=readAsset;this.context=context;this.graphs=new Map();this.loading=new Map();this.buffers=new Map();this.bufferBytes=0;this.bufferLoads=new Map();this.observers=new Map();this.voices=new Map();this.idleMeters=[];this.streams=new Set();this.idleStreams=[];this.disposed=false;this.voiceBudget={...defaultVoiceBudget};this.voiceSerial=0;}
-  stream(url,context){
+  stream(url,context,{virtualize=false}={}){
     if(this.disposed)throw Error('오디오 실행이 종료됐어요.');
     let slot=this.idleStreams.pop();if(!slot){const media=new Audio();slot={media,source:context.createMediaElementSource(media)};this.streams.add(slot);}
-    const {media,source}=slot;media.loop=false;media.playbackRate=1;media.volume=1;media.src=url;
+    const {media,source}=slot;media.preload=virtualize?'metadata':'auto';media.loop=false;media.playbackRate=1;media.volume=1;media.src=url;if(virtualize)media.load();
     // ponytail: retained streaming nodes are bounded by peak simultaneous streams, not play count; add a configurable voice budget when needed.
-    return slot.lease=new StreamingAudioPlayer(media,source,()=>{media.pause();media.removeAttribute('src');media.load();source.disconnect();slot.lease=null;if(!this.disposed)this.idleStreams.push(slot);});
+    const release=()=>{media.pause();media.removeAttribute('src');media.load();source.disconnect();slot.lease=null;if(!this.disposed)this.idleStreams.push(slot);};
+    slot.lease=virtualize?new VirtualStreamingAudioPlayer(media,source,release,context,url):new StreamingAudioPlayer(media,source,release);return virtualize?slot.lease.initialize():slot.lease;
   }
   async beginCapture(settings={}){if(this.capture||this.captureStarting)throw Error('이미 게임 믹스를 녹음 중이에요.');this.captureStarting=true;let capture;try{const context=await this.ensure();if(this.disposed)throw Error('오디오 실행이 종료됐어요.');capture=this.capture=new MixCapture(context,settings);await capture.start();if(this.disposed||this.capture!==capture)throw Error('녹음 시작이 취소됐어요.');for(const graph of this.graphs.values())capture.tap(graph.nodes.get('master').meter);for(const voice of this.voices.values())if(voice.real&&voice.destination===(this.destination||context.destination))capture.tap(voice.meter);return capture.inspect();}catch(e){capture?.discard();if(this.capture===capture)this.capture=null;throw e;}finally{this.captureStarting=false;}}
   async endCapture(){if(!this.capture)throw Error('녹음 중인 게임 믹스가 없어요.');return this.capture.stop();}
   acceptCapture(){this.capture?.discard();this.capture=null;}
   captureState(){return this.capture?.inspect()||{state:'idle',pcmBytes:0};}
-  async player(url,settings={}){const context=await this.ensure();const player=await createAudioPlayer(context,url,{buffered:settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget),createStream:url=>this.stream(url,context),readBuffer:async url=>{
+  async player(url,settings={}){const context=await this.ensure();const player=await createAudioPlayer(context,url,{buffered:settings.streaming!==true&&(settings.virtualize!==false||['ios','android'].includes(globalThis.hbMobileTarget)),createStream:url=>this.stream(url,context,{virtualize:settings.streaming===true&&settings.virtualize!==false}),readBuffer:async url=>{
     if(this.buffers.has(url)){const cached=this.buffers.get(url);this.buffers.delete(url);this.buffers.set(url,cached);return cached.buffer;}
     if(!this.bufferLoads.has(url)){const pending=(async()=>{const response=await fetch(url);if(!response.ok)throw Error('오디오 파일 요청 실패: '+response.status);const buffer=await context.decodeAudioData(await response.arrayBuffer());if(this.disposed)throw Error('오디오 실행이 종료됐어요.');const bytes=buffer.length*buffer.numberOfChannels*4;
       // ponytail: 32 MiB retained PCM cache; active voices/decoding can own evicted buffers.
@@ -93,7 +95,7 @@ export class AudioRouting {
   setVoiceBudget(real,tracked){if(!validVoiceBudget(real,tracked))throw Error('오디오 실제/가상 음성 예산을 확인하세요.');this.voiceBudget={real,tracked};this.rebalance();}
   voiceStats(){let real=0,virtual=0;for(const [p,v] of this.voices)if(!p.paused){if(v.real)real++;else virtual++;}const old=this.lastVoiceStats;if(old&&old.real===this.voiceBudget.real&&old.tracked===this.voiceBudget.tracked&&old.realActive===real&&old.virtualActive===virtual&&old.trackedActive===this.voices.size)return old;return this.lastVoiceStats=Object.freeze({...this.voiceBudget,realActive:real,virtualActive:virtual,trackedActive:this.voices.size});}
   async connect(player,settings={}){
-    if(settings.priority!==undefined&&(!Number.isInteger(settings.priority)||settings.priority<0||settings.priority>256)||settings.virtualize!==undefined&&typeof settings.virtualize!=='boolean')throw Error('음성 우선순위/가상화 설정 오류');const context=await this.ensure(),graph=settings.mixer?await this.graph(settings.mixer):null;if(this.disposed||player.disposed)throw Error('오디오 실행이 종료됐어요.');const destination=graph?graph.input(settings.bus||'master'):this.destination||context.destination,source=player instanceof BufferedAudioPlayer||player instanceof StreamingAudioPlayer?player.output:context.createMediaElementSource(player),gain=context.createGain();
+    if(settings.streaming!==undefined&&typeof settings.streaming!=='boolean')throw Error('오디오 스트리밍 설정을 확인하세요.');if(settings.priority!==undefined&&(!Number.isInteger(settings.priority)||settings.priority<0||settings.priority>256)||settings.virtualize!==undefined&&typeof settings.virtualize!=='boolean')throw Error('음성 우선순위/가상화 설정 오류');const context=await this.ensure(),graph=settings.mixer?await this.graph(settings.mixer):null;if(this.disposed||player.disposed)throw Error('오디오 실행이 종료됐어요.');const destination=graph?graph.input(settings.bus||'master'):this.destination||context.destination,source=player instanceof BufferedAudioPlayer||player instanceof StreamingAudioPlayer?player.output:context.createMediaElementSource(player),gain=context.createGain();
     player.volume=1;player.hbBaseVolume=settings.volume??1;gain.gain.value=player.hbBaseVolume;this.voices.set(player,{source,gain,destination,settings,priority:settings.priority??128,serial:++this.voiceSerial,real:false});if(!player.setVirtual)this.activate(player);return player;
   }
   activate(player){const voice=this.voices.get(player);if(!voice||voice.real)return;const context=this.context,settings=voice.settings,idle=this.idleMeters.findIndex(entry=>entry.readyAt<=context.currentTime),meter=idle<0?context.createAnalyser():this.idleMeters.splice(idle,1)[0].meter;if(idle>=0)meter.disconnect();meter.fftSize=4096;voice.meter=meter;voice.samples=new Float32Array(meter.fftSize);voice.panner=settings.spatial?context.createPanner():null;const {source,gain,panner}=voice;source.connect(gain);if(panner){panner.panningModel='HRTF';panner.distanceModel='inverse';panner.refDistance=settings.refDistance||1;panner.maxDistance=settings.maxDistance||100;panner.rolloffFactor=settings.rolloff??1;gain.connect(panner);panner.connect(meter);const position=voice.position;voice.position=null;if(position)this.position(player,position);}else gain.connect(meter);meter.connect(voice.destination);if(voice.destination===(this.destination||context.destination))this.capture?.tap(meter);voice.real=true;player.setVirtual?.(false);this.peakTimer??=setInterval(()=>this.sampleMeters(),16);}

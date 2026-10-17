@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **810개**, 실제 공통 C++ API **725개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **813개**, 실제 공통 C++ API **728개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -44,6 +44,7 @@
 | 2D 이동 | 1 | 1 |
 | 투사체 | 4 | 4 |
 | 카메라 | 4 | 4 |
+| UI|위젯 | 1 | 1 |
 | UI|목록 | 1 | 1 |
 | UI|지역화 | 3 | 3 |
 | 게임플레이 | 9 | 9 |
@@ -76,7 +77,7 @@
 | 능력|속성 | 3 | 3 |
 | 능력|세트 | 1 | 1 |
 | 능력 | 6 | 6 |
-| 능력|효과 | 7 | 7 |
+| 능력|효과 | 9 | 9 |
 | AI|EQS | 2 | 2 |
 | 게임플레이 태그 | 7 | 7 |
 | 월드 스트리밍 | 6 | 6 |
@@ -748,6 +749,12 @@
 | cameraShake | Shake / 카메라 흔들기 | exec: exec, target: object, intensity: float, duration: float | then: exec | hb::Camera::Shake | 공통 C++ + VM |
 | screenFlash | Flash / 화면 번쩍임 | exec: exec, color: color, duration: float | then: exec | hb::Camera::Flash | 공통 C++ + VM |
 
+## UI|위젯
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| uiSetSlotContent | Set Slot Content / 명명 슬롯 내용 교체 | exec: exec, target: object, instance: string, element: string, asset: string | then: exec | hb::UI::SetSlotContent | 공통 C++ + VM |
+
 ## UI|목록
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
@@ -1214,6 +1221,8 @@
 | --- | --- | --- | --- | --- | --- |
 | effectApply | Apply Effect / 게임플레이 효과 적용 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::ApplyEffect | 공통 C++ + VM |
 | effectApplyLevel | Apply Effect At Level / 레벨로 효과 적용 | exec: exec, target: object, asset: string, level: float | then: exec | hb::Abilities::ApplyEffectAtLevel | 공통 C++ + VM |
+| effectApplySpec | Apply Effect Spec / 출처와 인자로 효과 적용 | exec: exec, target: object, asset: string, source: object, level: float, parameters: string | then: exec | hb::Abilities::ApplyEffectSpec | 공통 C++ + VM |
+| effectSetParameter | Set Effect Parameter / 활성 효과 호출 인자 지정 | exec: exec, target: object, handle: string, name: string, value: float | then: exec | hb::Abilities::SetEffectParameter | 공통 C++ + VM |
 | effectSetLevel | Set Effect Level / 활성 효과 레벨 지정 | exec: exec, target: object, handle: string, level: float | then: exec | hb::Abilities::SetEffectLevel | 공통 C++ + VM |
 | effectGetLevel | Get Effect Level / 활성 효과 레벨 | target: object, handle: string | return: float | hb::Abilities::GetEffectLevel | 공통 C++ + VM |
 | effectFind | Find Effect Handle / 효과 핸들 찾기 | target: object, asset: string, index: int | return: string | hb::Abilities::FindEffectHandle | 공통 C++ + VM |
