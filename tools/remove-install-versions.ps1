@@ -18,6 +18,7 @@ if (Test-Path -LiteralPath $link) { $shell = New-Object -ComObject WScript.Shell
 $removedBytes = 0L; $removed = @(); $preserved = @(); $skipped = @($plan.skipped); $failures = @(); $generated = @(); $cacheBackupsRemoved = @()
 # Only exact, reproducible nlohmann 3.12.0 bytes are disposable. Modified headers remain user changes.
 $generatedHashes = @{
+  'native/build/nlohmann-3.12.0-LICENSE.txt' = '46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603'
   'native/build/deps/nlohmann/json.hpp' = 'aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63'
   'native/build/deps/nlohmann/json.hpp.sha256' = '93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56'
 }

@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "9c733760415769cc8e8fcc7f0033bb201f49aeca",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\179b3a9988f35697\\HBEngine.exe",
+  "bundleHash": "179b3a9988f35697fc5cdfce4bba1319e08bf603b0334ac3adeddb6a30b1b296",
+  "files": 3019,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 3066,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9",
+        "bytes": 286891332,
+        "manifestSHA256": "a158d3b5eac21714c04e6548924e1103f5560b5104a761ae212c0fb4d014a33b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T04:47:24.3177497Z",
+    "bytes": 286891332,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [
+      {
+        "original": "C:\\Users\\kirby\\HBEngine\\Versions\\dcab5bc06a6db1c9\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+        "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+        "backup": "C:\\Users\\kirby\\HBEngine\\PreservedChanges\\dcab5bc06a6db1c9\\native\\build\\nlohmann-3.12.0-LICENSE.txt",
+        "bytes": 1076
+      }
+    ],
+    "remaining": [
+      "179b3a9988f35697"
+    ]
+  },
+  "work": "native/build/engine-281-install-xkTHLf",
+  "versions": [
+    "179b3a9988f35697"
+  ],
+  "manifestVerifiedFiles": 3019,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedSmokePending": false,
+  "installedSmokePassed": false,
+  "installedSmokeFailure": {
+    "check": "tools/check-tile-lifetime-276-window.mjs --display --webgpu",
+    "expectedRGB": [
+      79,
+      186,
+      117
+    ],
+    "actualRGB": [
+      111,
+      196,
+      137
+    ],
+    "cause": "Three r180 global WebGPU output applied tone mapping to display-color materials; fixed and revalidated separately in ENGINE_WORK_283.",
+    "unchangedPasses": [
+      "native/build/sequence-completion-271-window-E5ZKH5/acceptance.json",
+      "native/build/sequence-priority-272-window-Ekhe0I/acceptance.json",
+      "native/build/rendering-274-window-DfCU7s/acceptance.json",
+      "native/build/cubemap-lod-281-native-pkIh9H/acceptance.json",
+      "native/build/cubemap-lod-281-window-myvZXh/acceptance.json",
+      "native/build/rendering-275-window-xbTb9x/acceptance.json"
+    ]
+  }
+}
