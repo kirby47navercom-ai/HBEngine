@@ -936,3 +936,6 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 ## 284–293
 
 288 샘플러 인수분해의 첫 HLSL 단일값 vec2 생성자는 실제 컴파일에서 거절됐고 실험 생성자만 고쳐 검증했어요. 하지만 소스 증가/첫 준비 개선 미입증으로 제품 샘플러 패치 전체를 원복했어요.291 불투명 cutout/leaf-loop 실험도 시간 개선 미입증으로 원복했어요.189의 legacy 강제 Time 검사 보조기는 hasTime만 덮어쓰고 새 hasNormalTime/GL macro를 갱신하지 않아 바이트 비교가 실패해 보조기만 맞췄어요.290 selected evaluator가 live source를 prepared로 표시하지 않게 소유 snapshot을 만들고 순환 graph 거절/복구를 검증했어요.293 첫 fixture는 대상 없는 비정적 C++ 호출이라 정상 검증에서 거절됐어요. fixture를 정적 함수로 고쳐 제품 대상 검증은 보존했어요. 모든 창은 고유 숨김 fixture/profile/port이며 사용자 프로필은 읽기 전용 SHA 목록 외 사용하지 않았어요.
+
+
+294: 주인님 설치본 node32824/worker32540/worker39404가 실행 중이라 install293이 running-install로 보류됐어요. 종료/덮어쓰기/설치 전환 없이 Versions1을 유지했어요. 프로젝트 내구성 검사는 private writer의 interval로 생존을 보장한 뒤 kill 반환과 비정상 exit까지 확인해 실제 종료 증거를 남겼어요. 이전7조건 hf0Gio는 종료 확인을 강화한 yzHH4r로 대체했어요. 임의 사용자 프로세스는 종료하지 않았어요.
