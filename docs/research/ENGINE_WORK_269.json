@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2be79dd515c9d687813eff3bca6eb57e74d03aee",
+  "targetIds": [
+    "ANM-06",
+    "CPP-01"
+  ],
+  "implemented": [
+    "BP 변수/배열·C++ 공개 속성/배열·개별 컴포넌트 속성에도 동일 소유권/공유 원본/인계 적용",
+    "전체 값 사전 자료형 검증·복원 때 없는 객체 참조 null·교체된 BP binding과 같은 ID의 새 객체 보호",
+    "실제 CPP/BP 핀으로 배열을 전달하고 C++ 공개 값/Camera.fieldOfView getter와 런타임 결과 일치"
+  ],
+  "limits": [
+    "임의 C++ struct/중첩 컨테이너·componentState와 개별 속성의 교차 소유권은 미구현"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-values-269-RiKvPc/acceptance.json",
+      "sha256": "73c8faf3e2637adefbe8310515984e47ed1686314369663a839bf3bf70b8c7eb"
+    },
+    {
+      "path": "native/build/sequence-values-269-window-bdWukr/acceptance.json",
+      "sha256": "cdb0f77f261e8847dd310a8cabfa28507555f77fd6e3b07c19549b11b2761524"
+    },
+    {
+      "path": "native/build/sequence-values-212-K0HFVq/acceptance.json",
+      "sha256": "151169442a8cc51c21a5fd8bcda618454329298bf2c7ecc9d8191a6b7e01499a"
+    }
+  ],
+  "installationPending": true
+}

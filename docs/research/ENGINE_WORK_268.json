@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2be79dd515c9d687813eff3bca6eb57e74d03aee",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "위치/회전/크기/표시·카메라·시간 배율·광원·머테리얼 파라미터를 실제 샘플한 필드만 소유",
+    "가려진 시퀀스는 최신 샘플 보관·상위 종료 즉시 하위 값 인계·마지막 소유자만 공유 원본 복원·미사용 필드는 되돌리지 않음",
+    "이벤트/Stop 내부의 재생 교체에서 옛 후속 쓰기·완료·map 삭제 방지; 대상 생명주기와 대기 복원 version 보호",
+    "runtime.sequenceOwnership 및 게임 inspect의 요청 시 owners/channels/leases; 전체 장면 TRS snapshot 제거"
+  ],
+  "limits": [
+    "부모/전체 컴포넌트 구조/골격/애니메이션 클립 소유권과 표현 간 별칭·가중 혼합은 잔여",
+    "외부 비동기 setter 자체의 늦은 쓰기·부분 실패 rollback 보장은 별도"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-ownership-268-jFvT6K/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5"
+    },
+    {
+      "path": "native/build/sequence-ownership-268-window-fkIHIW/acceptance.json",
+      "sha256": "6d8e1e4f84ed432d4a2393e0ac7410450e8670cee1b1676bd6c1e913297b2708"
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-kl2sIA/acceptance.json",
+      "sha256": "a8884709bf9f6f569202ca4078e1dd1c934c74384f4497e95a63a2a68e4247a7"
+    },
+    {
+      "path": "native/build/sequence-evaluation-250-4yEn5P/acceptance.json",
+      "sha256": "1506ee028eb103802449d0082e61480f22e9f50bf60cd6a723a90eb09d9aae3c"
+    },
+    {
+      "path": "native/build/sequence-load-252-9Dv82e/acceptance.json",
+      "sha256": "851dd750883bca2a9195ec53080ada09d55a7ee677300f6dc8cba0978b7eca09"
+    }
+  ],
+  "installationPending": true
+}

@@ -3619,5 +3619,44 @@
       "docs/research/ENGINE_WORK_266.json",
       "docs/research/ENGINE_WORK_267.json"
     ]
+  },
+  "supplemental268_273": {
+    "date": "2026-10-17",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/keeping-or-restoring-changes-made-by-sequencer?application_version=4.27",
+        "scope": "본문91행: 트랙 When Finished/문과 빛 예시·전역 Restore override 대조. 버전4.27, 이미지/연결 페이지 미독. 5.x 무버전 URL은 접근 실패로 본문 분석 근거에 넣지 않음"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/BlueprintAPI/Game/Cinematic/RestoreState",
+        "scope": "UE5.8 반환24행 API 입출력/원 상태 복원 의미; 연결API 미독"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/insp-trk-act.html",
+        "scope": "Timeline1.8.13 HTML214행 중115–159: Activation의 활성/비활성/복귀/최종 유지. 이미지/다른 트랙/링크 미독. HB visible과 GameObject activation을 동일 기능으로 계산하지 않음"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/unreal-engine/sequences-shots-and-takes-in-unreal-engine?lang=en-US",
+        "scope": "UE5.8 반환239행 본문을 나누어 읽음: 자산/Shot 생성·탐색·범위/슬립·원점/TimeWarp/썸네일/Take/bias. 이미지/iframe·연결API 미독. 평면 우선순위 외 아래 관찰 잔여를 등록"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Playables.PlayableOutputExtensions.SetWeight.html",
+        "scope": "HTML301행 중234–264 API 선언/대상연결 가중치·구현별 의미. 연결 Playables 구현/전체 PlayerLoop 미독; HB 가중 혼합 구현으로 계산하지 않음"
+      }
+    ],
+    "newlyObservedUnimplemented": [
+      "Shot/Sub-Sequence nesting and hierarchy bias accumulation",
+      "origin override/time warp/context navigation/thumbnail/Take metadata tools",
+      "weighted equal-priority/Playable blending; activation vs visibility distinction"
+    ],
+    "analysisGate": "선택 본문/API 대조이며 전체 UE/Unity 분모/gate 미확정",
+    "evidence": [
+      "docs/research/ENGINE_WORK_268.json",
+      "docs/research/ENGINE_WORK_269.json",
+      "docs/research/ENGINE_WORK_270.json",
+      "docs/research/ENGINE_WORK_271.json",
+      "docs/research/ENGINE_WORK_272.json",
+      "docs/research/ENGINE_WORK_273.json"
+    ]
   }
 }

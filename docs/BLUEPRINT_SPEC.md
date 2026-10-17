@@ -517,3 +517,10 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 `HB_FUNCTION(BlueprintCallable, Lifecycle="tick") void Update(float delta);`는 저장 그래프를 바꾸지 않고 실행용 Event Tick에 연결해요. 일반 메서드 이름 Tick/Start는 자동 실행하지 않아요. construction/beginPlay/endPlay, overlap/hit begin/stay/end도 명시할 수 있고 인자 자료형은 AI schema의 nativeLifecycle.events에서 조회해요. 같은 단계의 사용자 BP보다 먼저 실행하며 C++ 구성은 런타임/스폰 단계예요. 생명주기 선언 변경은 재실행이 필요해요.
 
 새 C++ 클래스는 Start가 beginPlay이고 Tick은 생성 창에서 선택해요. `Scene::SetTickEnabled/IsTickEnabled/SetTickInterval/GetTickInterval`과 같은 BP 노드가 액터별 실행 정책을 바꿔요. 0초는 매 프레임, setter는 큐 처리, getter는 최근 처리 스냅샷이에요. 기본 클래스/노드 설정은 저장 변경하지 않아요. 공용 SDK732, 전체 노드817. 상세 근거 ENGINE_WORK_261–267.
+
+
+## 268–273 · 시퀀스 상태 소유권과 제작 설정
+
+샘플한 값만 첫 적용 직전 baseline을 공유해요. 높은 priority가 우선하고 동률은 실제 재생 시작 순서예요. 하위 재생은 최신 값을 보관하며 상위가 정지하면 즉시 인계해요. TRS/visible·카메라/시간·빛/머테리얼·BP 변수/C++ 속성·개별 컴포넌트 속성을 지원해요. 부모/구조/골격/애니메이션/별칭/가중 혼합은 잔여예요.
+
+트랙 completionMode는 default/restore/keep이고, restoreState는 기본값, optional forceRestore는 마지막 소유자의 복원을 강제해요. 다른 활성 소유권이 있으면 그 값이 우선해요. priority는 optional int32 기본0이고 `LevelSequence::SetPriority/GetPriority`와 같은 BP 노드가 실행 중 override를 바꿔요. setter는 큐 처리·getter는 최신 처리 snapshot이에요. `runtime.sequenceOwnership`/player inspect는 요청 시 lease 수를 반환해요. 공용 SDK734/노드819. ENGINE_WORK_268–273 근거와 각 limits를 함께 보세요.

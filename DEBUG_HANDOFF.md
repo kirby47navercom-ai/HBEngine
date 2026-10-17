@@ -916,3 +916,8 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 ## 261–267 검증에서 구분한 문제
 
 261 첫 fixture의 BoxCollider2D extent는 vec3인데 vec2로 적어 거부됐어요. fixture만 수정했어요. 262 transport에 없는 bytes 필드 가정은 실제 request/query wire bytes 계측으로 수정했어요. 263 일반 BlueprintCallable Tick은 자동 생명주기가 아니어서 기존 BP Event Tick 연결로 먼저 증명하고, 별도 명시 Lifecycle10종을 구현했어요. 264 nativeBindings import 소유자는 native-module-query예요. 266 창 검사는 비동기 왕복 동안 진행한 실제 기준 액터 Tick 수로 상대 빈도를 비교해요(고정 최대4회 가정 제거); 플레이어 입력은 실제 CDP 키로 보내고 처리 상태를 기다려요. 267 AOT는 float32 0.2와 JS 0.1+0.1 차이로 한 프레임 늦는 제품 문제를 재현했고 일반/묶음 공용 1ULP 보정으로 고쳤어요. 단정형 테스트를 늦추거나 무시하지 않았어요. hd6Aga/초기267 failure를 보존하고 최신CPU vnEbhi/AOT5g1O9y가 경계를 통과했어요.
+
+
+## 268–273
+
+269 첫 fixture가 Camera.fov를 썼지만 실제 필드는 fieldOfView여서 자산 검증이 거부됐어요. fixture만 고쳤고 검증을 완화하지 않았어요. readonly 검사에서 복사한 트랙 ID 중복 때문에 먼저 실패하던 fixture도 고유 ID/int 타입으로 고쳐 readonly 선언 거부를 확인했어요. 271 첫 UI Undo/Save 요청은 expectedRevision을 빠뜨려 REVISION_CONFLICT로 거부됐어요. document.get의 revision으로 재시도한 독립 fixture sNP5Wp가 UI/게임 전체를 통과했어요. 272 k8jS0T 보고서의 상속된 laterStartPriority 라벨은 실제 수행한 explicitPriorityOverridesStartOrder로 이름만 정정하고 정정 사유를 남겼어요. 테스트 결과/시간을 바꾸지 않았어요.

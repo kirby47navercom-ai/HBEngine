@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "validation",
+  "implementationRevision": "2be79dd515c9d687813eff3bca6eb57e74d03aee",
+  "targetIds": [
+    "CPP-02",
+    "BLD-02"
+  ],
+  "implemented": [
+    "실제 사용자 C++의 SetPriority/GetPriority·다중 공개 클래스·배열 핀·컴포넌트 getter를 arm64 NDK compile/link",
+    "서명 debug APK6326149B·16KiB ELF/ZIP·sequence-channels/sequence-values 및 기존 공용 모듈 closure 확인"
+  ],
+  "limits": [
+    "새 제작 기능 수로 계산하지 않는 배포 검증 단계",
+    "실물 기기 설치/음향/발열과 iOS 컴파일/실행은 기기·Mac 부재로 검증하지 않음"
+  ],
+  "checks": [
+    {
+      "path": "native/build/runtime-sdk-mobile-273-bK9oVZ/acceptance.json",
+      "sha256": "f42578a0086a102a70a9a037658177939a5a3522adf92ed0bd58ba35e3a3325b"
+    }
+  ],
+  "installationPending": true
+}

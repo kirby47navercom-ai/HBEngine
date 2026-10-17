@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2be79dd515c9d687813eff3bca6eb57e74d03aee",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "지원 필드 completionMode default/restore/keep와 시퀀스 forceRestore 선택·예전 JSON/restoreState 기본 동작 보존",
+    "제작 화면의 종료 후 선택/기본 복원/전체 복원·revision 기반 저장·Undo·다른 활성 소유자 우선권 유지",
+    "자연 종료와 명시 Stop·같은 필드의 마지막 트랙 모드·C++/BP에서 유지한 위치/공개 값과 복원한 배열/카메라를 실제 확인"
+  ],
+  "limits": [
+    "상위 소유자가 남으면 그 값이 우선; 마지막 소유자의 종료 정책을 적용",
+    "Unreal4.27 When Finished 예시와 대조했으나 HB의 restoreState=기본, forceRestore=강제 구분이며 UE 전체 section/shot 의미와 동일하지 않음"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-completion-271-6jTNAm/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "path": "native/build/sequence-completion-271-window-sNP5Wp/acceptance.json",
+      "sha256": "caa99e13b4f7efc1058ef22d831dbed7cd688dab4aa766522d5dc24d89e3c019"
+    }
+  ],
+  "installationPending": true
+}

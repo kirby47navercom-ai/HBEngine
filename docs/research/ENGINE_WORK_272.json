@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2be79dd515c9d687813eff3bca6eb57e74d03aee",
+  "targetIds": [
+    "ANM-06",
+    "CPP-01",
+    "AI-03"
+  ],
+  "implemented": [
+    "optional int32 에셋 priority 기본0·제작 입력/Undo/저장·LevelSequence::SetPriority/GetPriority와 같은 BP 노드",
+    "높은 우선순위·동률은 고정된 실제 재생 시작 순서·Seek는 순서 변경 없음; 실행 override는 에셋을 바꾸지 않음",
+    "변경 시 그 소유자의 활성 필드만 재평가해 가려진 최신 값으로 인계·중첩 호출의 옛 대기 쓰기 보호·SDK734/노드819"
+  ],
+  "limits": [
+    "HB는 평면 우선순위이며 UE 하위 시퀀스 누적 bias·동률 가중 혼합/Unity Playable weight는 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-priority-272-FDVdGI/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    },
+    {
+      "path": "native/build/sequence-priority-272-window-k8jS0T/acceptance.json",
+      "sha256": "4a1cee04e5dab085bd104cc74c6c73aaa1688a951c8b98da314d358a7b0bc586"
+    }
+  ],
+  "installationPending": true
+}
