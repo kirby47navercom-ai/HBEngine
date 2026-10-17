@@ -3426,5 +3426,35 @@
       }
     ],
     "implementation": "docs/research/ENGINE_WORK_232.json"
+  },
+  "supplemental236_238": {
+    "date": "2026-10-17",
+    "scope": "실제 반환 본문·로컬 SDK 구간만 기록; 전체 문서/API 완료 아님",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/chaos-modular-vehicles-quickstart",
+        "version": "5.8",
+        "body": "반환0–179 및177–251: 모듈 구조/입력/차량 설정과 엔진/변속/클러치 표.252–277 및 이미지/연결 본문 미열람"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/WheelCollider.html",
+        "version": "6000.0",
+        "body": "반환243–297: 휠 ray/suspension/slip, torque/brake/rotation/rpm/publicmethods. 상속/링크 본문 미열람"
+      },
+      {
+        "url": "https://rapier.rs/javascript3d/classes/JointData.html",
+        "body": "반환0–312 API서술·특히149–173 generic locked axes 계약 확인. 연결 구현은 사이트에서 열지 않았으며 설치0.21 d.ts/실제 WASM 실행으로 독립 대조"
+      },
+      {
+        "url": "https://rapier.rs/javascript3d/enums/JointAxis.html",
+        "body": "반환0–73 전체 enum 주제; 다른 링크 미열람"
+      }
+    ],
+    "localPrimary": [
+      "node_modules/@dimforge/rapier3d-compat/dist/dynamics/impulse_joint.d.ts: JointData.generic/JointAxis/GenericImpulseJoint",
+      "node_modules/@dimforge/rapier3d-compat/dist/rapier_wasm3d.d.ts: per-axis raw motor/limits setters",
+      "node_modules/@dimforge/rapier3d-compat/dist/control/ray_cast_vehicle_controller.d.ts: wheel force is N; brake is impulse; rotation is angle"
+    ],
+    "implementation": "docs/research/ENGINE_WORK_236.json"
   }
 }

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "3af8de6",
+  "implementationRevision": "a829190f83bc63e9302e97b936bffaaa26d35f42",
+  "targetIds": [
+    "PHY-02",
+    "AI-03"
+  ],
+  "implemented": [
+    "3D Generic 관절의 이동XYZ/회전XYZ별 고정/제한/자유·ForceBased 모터·영점 보존·독립 프레임·owner-local m/degree 의미",
+    "Scene/BP 상세 6축 편집/Undo·C++/BP SetJointAxis/SetJointAxisMotor·runtime.physics.joints bounded 조회",
+    "실제선형/회전 잠금/한계/복합 모터/영점수정/수명·실제 C++/BP와 독립 D3D 게임·2D/3D 기존관절11군 회귀·2D generic 거부·기존관절 6행 할당 없음"
+  ],
+  "limits": [
+    "회전 한계/목표는[-180,180]·대각 coupled-axis 한계·break force/plasticity/multibody articulation은 잔여",
+    "로컬 이동축은 회전과 함께 움직이며 월드 축 고정 이동으로 표현하지 않는다·진단은 반력/임펄스 측정이 아니다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/joint-dofs-237-IwGszg/acceptance.json",
+      "sha256": "000b93bd339ae9e71f4a8b8cbd74efb6147c5bc1ed86cb2112dabb9c99603bc3"
+    },
+    {
+      "path": "native/build/engine-175-LEAd2m/acceptance.json",
+      "sha256": "3de4e7b712187994078f396604656b01b489cdc8a4d3e53f4c3f0eac6388e5c3"
+    },
+    {
+      "path": "native/build/joint-dofs-237-window-dd6yfM/acceptance.json",
+      "sha256": "0a41d15acee08d13de416c1a62b0a5ec32e9c4649b65600c59ec8542243f097e"
+    },
+    {
+      "path": "native/build/joint-dofs-237-window-aW0Lpm/acceptance.json",
+      "sha256": "9f79d2f1bd1a1b9a2cf78557c93e78732f4d24dc9d8b44631715908458ead36d"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

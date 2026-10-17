@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "baseline": "3af8de6",
+  "implementationRevision": "a829190f83bc63e9302e97b936bffaaa26d35f42",
+  "targetIds": [
+    "AI-03",
+    "EDT-05"
+  ],
+  "implemented": [
+    "기어비/토크 키/관절 축 입력의 전체 배열 대입으로 숫자가 비던 오류를 셀별 스칼라 갱신으로 수정",
+    "운동/모터/구동 모드에 따른 구조 변경만 재작성·수치 변경은 기존 컨트롤/포커스 보존·차량 런타임 요약을 접힌 마지막 모듈 밖으로 이동",
+    "AI 능력 합성/곡선/재적용·차량·6축 계약과 미구현 범위 보강·이미 구현된 XY NavMesh 투영의 구형 미구현 설명 정정"
+  ],
+  "limits": [
+    "범용 임의 구조체/중첩 컨테이너 Inspector는 전체 구현이 아니다",
+    "이 수정의 숫자 표시 증거는 지정 배열 편집/실행 표본이며 모든 컴포넌트 전문 UI의 완료가 아니다"
+  ],
+  "checks": [
+    {
+      "path": "native/build/runtime-inspector-238-qyCG8l/acceptance.json",
+      "sha256": "f6700e080396b61bc66b138c3c2754b96d29498803eb9391adfe4e6c94eb0cee"
+    },
+    {
+      "path": "native/build/runtime-inspector-213-2JIkrQ/acceptance.json",
+      "sha256": "3b6d808490c9ad727c9d66d941befb9485596c148a6ddf5ecbc0dbaef4b64ed5"
+    },
+    {
+      "path": "native/build/vehicle-powertrain-236-window-8lpzli/acceptance.json",
+      "sha256": "5f7006b8d3e3767304a1d0137e1ab35d8ec7e758744670876b29acd9f2c24f15"
+    }
+  ],
+  "executionVerified": true,
+  "installationPending": true
+}

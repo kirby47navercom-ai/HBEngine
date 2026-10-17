@@ -495,3 +495,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 234: Abilities::ApplySet(target,asset,preserveBase=true,retainEffects=true) 공용 C++/BP 명령을 추가했다. 카탈로그789·공용C++704. 동일 서비스로 저장 정의 재로드와 원자 상태 교체를 실행하며 실제 C++/BP/Inspector/AI·독립 D3D 게임을 검사했다. 즉시 반환 질의/네트워크 예측 구현은 아니다.
+
+
+236–237: 차량 기어/RPM/현재기어 공용3함수와 관절 축 운동/모터 공용2함수를 같은 SDK/BP에 추가했다. 노드794·공용C++709. 실제 사용자 C++/BP·장면/BP 컴포넌트 표/6축 편집·Undo·독립D3D를 검증했다. 기본 힘 차량/2D 관절은 유지한다.
