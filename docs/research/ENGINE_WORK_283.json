@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "86ea32843a0ea46e83a5c90542d7f833c3d455ba",
+  "targetIds": [
+    "RND-01",
+    "2D-01",
+    "2D-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "전역 톤 매핑으로 display 재질도 변색되던 문제를 고쳤어요. 혼합 화면의 표시 attachment에서 재질별 톤 매핑/색 변환/알파 혼합을 처리하고 기존 HDR attachment를 보존해요.",
+    "실제 캔버스의 불투명·양방향 반투명·premultiplied alpha·깊이 가림·단색/투명 배경·사용자 fragment·사전 컴파일을 확인했어요. GL/GPU RGBA 차이는 최대2바이트, 불투명 원본 RGB는79/186/117로 같고 offscreen의 HDR2.0도 보존돼요.",
+    "불투명 display 전용/미사용 화면의 추가 attachment는0, 혼합 시 하나만 써요. 32×32 표본의 color8192바이트+MSAA32768바이트를 계산하고 진단 요청에만 보고해요. 새 CPU readback·전 장면 복사·무제한 이력은 없어요.",
+    "에디터·패키지 WebGPU에서 CPP/BP 타일 쓰기·419바이트 셀 조회·16청크 중 미변경15 기하 유지·원본 RGB 검사를 통과했어요."
+  ],
+  "limits": [
+    "전역 후처리/그레이딩 우회는 아니에요. 명시 offscreen/HDR 후처리는 기존 정책을 유지해요.",
+    "이름 없는 다중 출력 custom fragment는 오류로 거부해요. XR/멀티뷰·모든 확장 셰이더 조합·전체 게임 FPS/실물 모바일 검증은 아니에요.",
+    "바이트는 형식/크기/MSAA 계산값이며 드라이버 padding 포함 실측 VRAM이 아니에요. Three r180 내부 hook을 사용하므로 업그레이드 시 재검증해요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/display-colors-283-window-yHON3d/acceptance.json",
+      "sha256": "512106e0ad319c1acb7c12572535f2245866a7d35b9dcfd03d4533ade368d8fd"
+    },
+    {
+      "path": "native/build/2d-display-279-window-pWGB5g/acceptance.json",
+      "sha256": "6c6692974c95a126616e74e2293b8439310434d05bfcacfbd17296891ffb6a4e"
+    },
+    {
+      "path": "native/build/2d-display-279-window-hzxKXU/acceptance.json",
+      "sha256": "614d07a8d918d2ec12e336d6f399664d3f1c207d71fdbc9819c68f3f4bcbe8ff"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-window-SmS6k1/acceptance.json",
+      "sha256": "127d59367e1755b36eabe511cdfacf90eeda75befa83bd695fb85128de7e4e29"
+    }
+  ],
+  "installationPending": true
+}

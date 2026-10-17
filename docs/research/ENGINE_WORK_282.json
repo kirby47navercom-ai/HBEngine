@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "86ea32843a0ea46e83a5c90542d7f833c3d455ba",
+  "targetIds": [
+    "PER-02"
+  ],
+  "implemented": [
+    "정확한 nlohmann 3.12.0 라이선스 SHA만 재생성 파일로 판정해 중복 보관을 제거해요. 현재 설치·사용자 수정본·실행 중 설치·사용자 프로젝트 보호를 유지해요.",
+    "실제 보존 폴더의 동일 라이선스3개, 합계3228바이트를 제거했고 Versions는 하나예요."
+  ],
+  "limits": [
+    "전체 디스크/사용자 임의 파일 정리나 성능 향상 수치가 아니에요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/install-retention-joJkaj/acceptance.json",
+      "sha256": "00d519bf47c557ff97f001adb130bf17bc3275da4e796d9190df722dc9103804"
+    },
+    {
+      "path": "native/build/generated-license-cleanup-282.json",
+      "sha256": "dda5d9adb2bc34f27f2d478f2e0042d172cb7cb17546113f518c67fac141f9c8"
+    }
+  ],
+  "installationPending": true
+}

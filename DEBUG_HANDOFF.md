@@ -926,3 +926,8 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 ## 274–281
 
 274 첫 fixture는 sine의 value 입력 대신 a로 연결해 검증이 거부됐어요. 다음 fixture는 발광(field2)과 알파(field1)를 잘못 같은 출력 그룹으로 보아 절삭 기대가 실패했어요. 실제 field1 기본색 그래프로 바꿨고 제품 검증은 완화하지 않았어요. Probe 문자열의 줄바꿈/데이터URL 상대import도 테스트 코드만 고쳤어요. 276 첫 async fixture는 현재 path와 비교해 두 요청을 같은 promise에 연결한 오류를 고쳤어요. 첫 실제 창 검사는 prefab 상속 동기화로 생긴 검사 프로젝트의 미저장 장면 때문에 정상 종료가 대기했어요. 소유 fixture를 revision 저장한 goRh82가 종료0/두게임을 통과했어요. 원본 사용자 창/프로필은 사용하지 않았어요.
+
+
+## 281 실패와283 수정
+
+281 최종 smoke는 GPU RGB111/196/137 때문에 실패했어요. 기대79/186/117을 바꾸지 않았어요. Three r180은 material.toneMapped를 최종 전체 화면 tone pass에 반영하지 않아 표시 attachment를 분리했어요. 원본 HDR color0를 보존해 transmission copy를 유지해요. 첫283 fixture의 차폐는 이전 단계에서 depthWrite=false를 남겼고 다음 단계는 두 면의 z가 같았어요. fixture 상태/깊이를 고쳤어요. TSL vec3(Color) 상수는 검은색을 만들어 uniform(Color)로 고쳤어요. 투명 clear는 premultiplied 배경을 대조했어요. source pWGB5g/editor+WebGPU, yHON3d 캔버스/HDR, SmS6k1 CubeLOD를 확인했어요. 소유한 숨김 fixture만 사용했어요. 첫 문서 기록기는 PowerShell JSON의 BOM을 읽지 못해 본문 수정 전에 실패했으며 별도 resume 기록기가 BOM을 제거해 읽었어요.

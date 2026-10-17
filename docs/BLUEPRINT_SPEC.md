@@ -531,3 +531,8 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 광선 알파는 출력 의존성만 실행하고 고정 필드 호출은 관련 프로그램만 참조해요. 기존 sampleCube의 LOD 핀은 전체색과 알파의 GL/GPU/native 광선에서도 정수/분수/경계/필터대로 동작해요. 패킷/키/명령 예산과 다른 텍스처의 cutout 정책은 보존해요.
 
 기존 Tilemaps CPP/BP 쓰기는 async load·render·release·dispose에서 늦은 상태를 버리고 새 편집을 보존해요. runtime.tilemap.inspect({target,layer?,offset?,limit?,cell?})와 player.tilemapState는 읽기 전용·기본64/최대256·단일 셀 조회이며 원본을 편집하거나 자동 로드하지 않아요. 숫자는 응답 페이지 크기이며 생성 제한이 아니에요. SpriteRenderer/TilemapRenderer의 toneMapping은 scene(기존 기본) 또는 display(머테리얼 원본색)이에요. 전역 후처리 우회와 별개예요. SDK734/노드819는 그대로예요. ENGINE_WORK_274–281에 실제 표본/한계를 기록했어요.
+
+
+## 283 · display 원본색 출력
+
+기존 SpriteRenderer/TilemapRenderer scene/display enum을 유지해요. WebGPU direct canvas는 혼합 화면에서만 표시 attachment를 쓰고 반사/굴절 HDR을 보존해요. 불투명 display 전용은 extra0, 투명 혼합은 extra1이며 미사용 시 해제해요. renderer.displayColors는 mode/targets/bytes/multisampleBytes/automaticReadbacks를 제공하며 byte는 계산된 attachment 크기예요. 전역 후처리와 명시 offscreen은 기존 정책을 유지해요. SDK734/노드819는 그대로예요.
