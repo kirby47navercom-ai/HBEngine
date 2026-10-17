@@ -1,12 +1,14 @@
 import {meshEdges} from './mesh-topology.js';
 import {assetShortcutKinds} from './asset-shortcut-commands.js';
 export function assetShortcutScope(pane,kind,focused,target){if(kind==='animgraph'&&target?.closest?.('.anim-blend-space,.anim-sync-timeline'))return 'other';return pane?.id===focused?kind==='widget'?'widget':kind==='mesh'?'modeling':kind==='prefab'?'viewport':assetShortcutKinds[kind]||'other':'other';}
-export function assetShortcutContexts(editor,event){const id=event?.target?.closest?.('[data-select-item]')?.dataset.selectItem;return editor?.doc?.kind==='montage'&&editor.doc.data.notifyStates?.some(n=>n.id===id)?['notify']:[];}
+export function assetShortcutContexts(editor,event){const id=event?.target?.closest?.('[data-select-item]')?.dataset.selectItem;return [editor?.doc?.kind,...(editor?.doc?.kind==='montage'&&editor.doc.data.notifyStates?.some(n=>n.id===id)?['notify']:[])].filter(Boolean);}
 export function dispatchAssetShortcut(id,editor,event){
  if(!editor||editor.disposed)return false;
  if(editor.hooks?.running?.()||editor.testing)return false;
  const kind=editor.doc?.kind;
  const click=selector=>{const button=editor.element?.querySelector(selector);if(button&&!button.disabled)button.click();};
+ if(id.startsWith('retarget')&&['retargetrig','retarget'].includes(kind)){const action={retargetPreview:kind==='retargetrig'?'rig-preview':'play',retargetFirst:'rewind',retargetMapExact:'map-exact',retargetMapEmpty:'map-empty',retargetMapFuzzy:'map-fuzzy',retargetDuplicatePose:'duplicate-pose',retargetCapturePose:'capture-pose',retargetNewChain:'chain'}[id];if(action){click('[data-rt-act="'+action+'"]');return true;}}
+ if(id.startsWith('audio')&&kind==='audiomixer'){if(id==='audioStop'){editor.stopPreview();editor.render();return true;}const selector={audioPreview:'[data-mixer-preview]',audioAddBus:'[data-mixer-add]',audioSnapshot:'[data-mixer-snapshot]'}[id];if(selector){click(selector);return true;}}
  if(id.startsWith('material')&&assetShortcutKinds[kind]==='material'){
   const actions={materialCopy:()=>editor.copySelection(),materialCut:()=>{editor.copySelection();editor.deleteSelection();},materialPaste:()=>editor.pasteSelection(),materialDuplicate:()=>editor.duplicateSelection(),materialDelete:()=>editor.deleteSelection(),materialSelectAll:()=>{editor.selected=new Set(editor.graph.nodes.map(n=>n.id));editor.render();},materialFocus:()=>editor.fit(true),materialFit:()=>editor.fit(),materialPreview:()=>{const node=[...editor.selected][0];if(node)editor.preview(editor.doc.view.materialPreview?.node===node?null:{node});}};
   if(actions[id]){actions[id]();return true;}

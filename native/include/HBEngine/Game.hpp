@@ -330,6 +330,8 @@ public:
 HB_CLASS()
 class Physics : public Library {
 public:
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsClothParticle", KoreanName="천 입자 상태", Category="물리 천") static void GetClothParticle(Actor* target,int index,Vec3& position,Vec3& velocity,bool& pinned);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="physicsRopeParticle", KoreanName="2D 로프 입자 상태", Category="물리 2D 로프") static void GetRopeParticle(Actor* target,int index,Vec2& position,Vec2& velocity,bool& pinned);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopePin", KoreanName="2D 로프 입자 고정", Category="물리 2D 로프") static void PinRopeParticle(Actor* target,int index,bool pinned=true);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeImpulse", KoreanName="2D 로프 충격량", Category="물리 2D 로프") static void AddRopeImpulse(Actor* target,const Vec2& impulse,int index=-1);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="physicsRopeAttach", KoreanName="2D 로프 강체 연결", Category="물리 2D 로프") static void AttachRopeParticle(Actor* target,int index,Actor* body);
@@ -595,6 +597,10 @@ public:
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="abilityCooldown", KoreanName="능력 쿨다운", Category="능력") static float Cooldown(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="abilityActive", KoreanName="능력 활성 상태", Category="능력") static bool IsActive(Actor* target,const std::string& asset);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApply", KoreanName="게임플레이 효과 적용", Category="능력|효과") static void ApplyEffect(Actor* target,const std::string& asset);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectApplyLevel", KoreanName="레벨로 효과 적용", Category="능력|효과") static void ApplyEffectAtLevel(Actor* target,const std::string& asset,float level=1);
+    HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectSetLevel", KoreanName="활성 효과 레벨 지정", Category="능력|효과") static void SetEffectLevel(Actor* target,const std::string& handle,float level);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectGetLevel", KoreanName="활성 효과 레벨", Category="능력|효과") static float GetEffectLevel(Actor* target,const std::string& handle);
+    HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectFind", KoreanName="효과 핸들 찾기", Category="능력|효과") static std::string FindEffectHandle(Actor* target,const std::string& asset,int index=0);
     HB_FUNCTION(BlueprintCallable, EngineService, NodeKey="effectRemove", KoreanName="게임플레이 효과 제거", Category="능력|효과") static void RemoveEffect(Actor* target,const std::string& handle);
     HB_FUNCTION(BlueprintPure, EngineService, NodeKey="effectList", KoreanName="효과 핸들 목록", Category="능력|효과") static std::string Effects(Actor* target);
 };

@@ -1,6 +1,6 @@
 # HBEngine 기본 노드 전체 목록
 
-기본 노드 **804개**, 실제 공통 C++ API **719개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
+기본 노드 **810개**, 실제 공통 C++ API **725개**. 변수·사용자 함수/매크로·C++ 공개 선언·통신 시그니처에서 생성되는 추가 노드는 별도다. 이 문서는 tools/generate-catalog.mjs가 실제 등록 테이블에서 생성한다.
 
 모든 노드에 실행 경로가 있다. 서비스가 필요한 노드는 아래 범위와 [BP 구현 상태](BLUEPRINT_SPEC.md)를 따른다. 실행 경로가 존재한다는 뜻을 모든 시스템의 native 구현 완료로 해석하지 않는다. 새 공통 221개 함수는 실제 C++/JS 결과 비교를 수행한다.
 
@@ -54,8 +54,8 @@
 | 2D 조명 | 38 | 38 |
 | 2D 그림자 | 13 | 13 |
 | 2D 타일맵 | 13 | 13 |
-| 물리 2D 로프 | 5 | 5 |
-| 물리 천 | 5 | 5 |
+| 물리 천 | 6 | 6 |
+| 물리 2D 로프 | 6 | 6 |
 | 물리 관절 | 5 | 5 |
 | 물리 차량 | 5 | 5 |
 | 물리 질의 | 7 | 7 |
@@ -76,7 +76,7 @@
 | 능력|속성 | 3 | 3 |
 | 능력|세트 | 1 | 1 |
 | 능력 | 6 | 6 |
-| 능력|효과 | 3 | 3 |
+| 능력|효과 | 7 | 7 |
 | AI|EQS | 2 | 2 |
 | 게임플레이 태그 | 7 | 7 |
 | 월드 스트리밍 | 6 | 6 |
@@ -919,25 +919,27 @@
 | tileHasChanges | Has Tilemap Changes / 타일 변경 대기 여부 | target: object | return: bool | hb::Tilemaps::HasTilemapChanges | 공통 C++ + VM |
 | tileLayerVisible | Set Layer Visible / 타일 레이어 표시 | exec: exec, target: object, layer: string, visible: bool | then: exec | hb::Tilemaps::SetLayerVisible | 공통 C++ + VM |
 
-## 물리 2D 로프
-
-| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
-| --- | --- | --- | --- | --- | --- |
-| physicsRopePin | Pin Rope Particle / 2D 로프 입자 고정 | exec: exec, target: object, index: int, pinned: bool | then: exec | hb::Physics::PinRopeParticle | 공통 C++ + VM |
-| physicsRopeImpulse | Add Rope Impulse / 2D 로프 충격량 | exec: exec, target: object, impulse: vec2, index: int | then: exec | hb::Physics::AddRopeImpulse | 공통 C++ + VM |
-| physicsRopeAttach | Attach Rope Particle / 2D 로프 강체 연결 | exec: exec, target: object, index: int, body: object | then: exec | hb::Physics::AttachRopeParticle | 공통 C++ + VM |
-| physicsRopeReset | Reset Rope / 2D 로프 초기화 | exec: exec, target: object | then: exec | hb::Physics::ResetRope | 공통 C++ + VM |
-| physicsRopeCount | Get Rope Particle Count / 2D 로프 입자 수 | target: object | return: int | hb::Physics::GetRopeParticleCount | 공통 C++ + VM |
-
 ## 물리 천
 
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
+| physicsClothParticle | Get Cloth Particle / 천 입자 상태 | target: object, index: int | position: vec3, velocity: vec3, pinned: bool | hb::Physics::GetClothParticle | 공통 C++ + VM |
 | physicsClothPin | Pin Cloth Particle / 천 입자 고정 | exec: exec, target: object, index: int, pinned: bool | then: exec | hb::Physics::PinClothParticle | 공통 C++ + VM |
 | physicsClothImpulse | Add Cloth Impulse / 천 충격량 | exec: exec, target: object, impulse: vec3, index: int | then: exec | hb::Physics::AddClothImpulse | 공통 C++ + VM |
 | physicsClothAttach | Attach Cloth Particle / 천 입자 강체 연결 | exec: exec, target: object, index: int, body: object | then: exec | hb::Physics::AttachClothParticle | 공통 C++ + VM |
 | physicsClothReset | Reset Cloth / 천 초기화 | exec: exec, target: object | then: exec | hb::Physics::ResetCloth | 공통 C++ + VM |
 | physicsClothCount | Get Cloth Particle Count / 천 입자 수 | target: object | return: int | hb::Physics::GetClothParticleCount | 공통 C++ + VM |
+
+## 물리 2D 로프
+
+| ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
+| --- | --- | --- | --- | --- | --- |
+| physicsRopeParticle | Get Rope Particle / 2D 로프 입자 상태 | target: object, index: int | position: vec2, velocity: vec2, pinned: bool | hb::Physics::GetRopeParticle | 공통 C++ + VM |
+| physicsRopePin | Pin Rope Particle / 2D 로프 입자 고정 | exec: exec, target: object, index: int, pinned: bool | then: exec | hb::Physics::PinRopeParticle | 공통 C++ + VM |
+| physicsRopeImpulse | Add Rope Impulse / 2D 로프 충격량 | exec: exec, target: object, impulse: vec2, index: int | then: exec | hb::Physics::AddRopeImpulse | 공통 C++ + VM |
+| physicsRopeAttach | Attach Rope Particle / 2D 로프 강체 연결 | exec: exec, target: object, index: int, body: object | then: exec | hb::Physics::AttachRopeParticle | 공통 C++ + VM |
+| physicsRopeReset | Reset Rope / 2D 로프 초기화 | exec: exec, target: object | then: exec | hb::Physics::ResetRope | 공통 C++ + VM |
+| physicsRopeCount | Get Rope Particle Count / 2D 로프 입자 수 | target: object | return: int | hb::Physics::GetRopeParticleCount | 공통 C++ + VM |
 
 ## 물리 관절
 
@@ -1211,6 +1213,10 @@
 | ID | 영어 / 한글 | 입력 핀 | 출력 핀 | C++ | 실행 범위 |
 | --- | --- | --- | --- | --- | --- |
 | effectApply | Apply Effect / 게임플레이 효과 적용 | exec: exec, target: object, asset: string | then: exec | hb::Abilities::ApplyEffect | 공통 C++ + VM |
+| effectApplyLevel | Apply Effect At Level / 레벨로 효과 적용 | exec: exec, target: object, asset: string, level: float | then: exec | hb::Abilities::ApplyEffectAtLevel | 공통 C++ + VM |
+| effectSetLevel | Set Effect Level / 활성 효과 레벨 지정 | exec: exec, target: object, handle: string, level: float | then: exec | hb::Abilities::SetEffectLevel | 공통 C++ + VM |
+| effectGetLevel | Get Effect Level / 활성 효과 레벨 | target: object, handle: string | return: float | hb::Abilities::GetEffectLevel | 공통 C++ + VM |
+| effectFind | Find Effect Handle / 효과 핸들 찾기 | target: object, asset: string, index: int | return: string | hb::Abilities::FindEffectHandle | 공통 C++ + VM |
 | effectRemove | Remove Effect / 게임플레이 효과 제거 | exec: exec, target: object, handle: string | then: exec | hb::Abilities::RemoveEffect | 공통 C++ + VM |
 | effectList | Effects / 효과 핸들 목록 | target: object | return: string | hb::Abilities::Effects | 공통 C++ + VM |
 

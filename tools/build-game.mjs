@@ -1,3 +1,4 @@
+import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
 import {fileContent,isFileContent,writeBuildContent,buildChunkBytes} from './build-content.mjs';
 import {resolvePrefab} from '../prototype/prefab-variants.js';
 import {packagedRuntimeBytes,packagedRuntimeContent} from './packaged-runtime.mjs';
@@ -66,6 +67,7 @@ export async function inspectBuild(record,profile,{signal}={}){
     }
     for(const value of assetReferences(data,name))await include(value);
   }
+  const effectCurves=Object.create(null);for(const [name,bytes]of content)if(assetKind(name)==='effect')try{await resolveEffectDefinition(JSON.parse(bytes),async dependency=>{signal?.throwIfAborted();return JSON.parse(content.get(await include(dependency)));},{capture:false,curves:effectCurves});}catch(error){throw Error(name+': '+error.message);}
   // Validate reusable shader dependencies before exporting, retaining authored function files.
   for(const [name,bytes] of content)if(['material','materialinstance'].includes(assetKind(name)))try{await resolveMaterialAsset(JSON.parse(bytes),async dependency=>JSON.parse(content.get(await include(dependency))));}catch(error){throw Error(name+': '+error.message);}
   for(const [name,bytes]of content)if(assetKind(name)==='widget')try{await resolveWidgetComposition(JSON.parse(bytes),async dependency=>JSON.parse(content.get(await include(dependency))));}catch(error){throw Error(name+': '+error.message);}

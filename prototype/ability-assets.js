@@ -1,3 +1,4 @@
+import {validEffectScaling} from './effect-scaling-schema.js';
 import {validGameplayTag} from './scene-systems.js';
 const num=(v,a=-1e9,b=1e9)=>Number.isFinite(v)&&v>=a&&v<=b;
 const name=v=>typeof v==='string'&&/^[\w가-힣 .-]{1,80}$/.test(v);
@@ -17,6 +18,6 @@ export function validAbilityAsset(kind,d){
   if(kind==='abilityset')return d?.version===1&&name(d.name)&&(d.parent===undefined||d.parent===''||abilitySetPath(d.parent))&&(d.includes===undefined||Array.isArray(d.includes)&&d.includes.every(abilitySetPath)&&new Set(d.includes).size===d.includes.length)&&list(d.attributes,a=>name(a?.name)&&[a.base,a.min,a.max].every(v=>num(v))&&a.min<=a.base&&a.base<=a.max&&validAttributeCalculation(a.calculation),Infinity)&&new Set(d.attributes.map(a=>a.name)).size===d.attributes.length&&list(d.abilities,p=>asset(p)&&p.endsWith('.hbability.json'),Infinity)&&new Set(d.abilities).size===d.abilities.length&&list(d.grantedTags,validGameplayTag,Infinity);
   if(d?.cues!==undefined&&!list(d.cues,c=>validGameplayTag(c?.tag)&&typeof c.event==='string'&&c.event.trim().length>0&&c.event.length<=80&&!/[\x00-\x1f]/.test(c.event)&&(kind==='ability'?['activate','end']:['apply','period','remove']).includes(c.on),128))return false;
   if(d?.version!==1||!name(d.name)||!tags(d.grantedTags)||!(d.duration===-1||num(d.duration,0,86400)))return false;
-  if(kind==='effect')return num(d.period,0,86400)&&typeof d.executeOnApply==='boolean'&&Number.isInteger(d.stackLimit)&&num(d.stackLimit,1,10000)&&['refresh','extend','independent','reject'].includes(d.stackPolicy)&&list(d.modifiers,m=>name(m?.attribute)&&['add','multiply','override'].includes(m.operation)&&num(m.magnitude));
+  if(kind==='effect')return num(d.period,0,86400)&&typeof d.executeOnApply==='boolean'&&Number.isInteger(d.stackLimit)&&num(d.stackLimit,1,10000)&&['refresh','extend','independent','reject'].includes(d.stackPolicy)&&list(d.modifiers,m=>name(m?.attribute)&&['add','multiply','override'].includes(m.operation)&&num(m.magnitude)&&validEffectScaling(m.scaling));
   return kind==='ability'&&num(d.cooldown,0,86400)&&list(d.costs,c=>name(c?.attribute)&&num(c.amount,0))&&tags(d.requiredTags)&&tags(d.blockedTags)&&list(d.effects,asset)&&[d.onActivate,d.onEnd].every(v=>typeof v==='string'&&v.length<=80);
 }
