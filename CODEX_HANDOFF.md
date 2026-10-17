@@ -1,3 +1,9 @@
+# 281 큐브맵 LOD 실행 연결 · 274–281 설치 준비
+
+281 기존 sampleCube LOD 핀/패킷/키 유지하면서 GL/GPU/native full+alpha 광선에 명시 mip 적용. CPU Vz0yji 8case/동일key, 실제D3D6rYZUE·GLGPUneir1I 8case RGBA golden PASS. 마지막 generic exp2(index)는 안전한 비교로 변경(실사용 specialized shader코드 동일),106기존35연산 회귀 PASS. Android280 최신source본문SHA 검사 실행중78845. 274–279 구현f4d10c3 push. 다음docs274–281/정본갱신·새nativebuild(281header포함)·sync281/install281/finish281 각각1회. 273배포보류는 최신281로대체;273/279helper재시도금지(279helper아직없음).
+
+설치검사:271/272 sequence 각editor+2game,274 alpha,275normal,276/278/279 --display --webgpu(3game),281 --cube-lod native+GLGPU(standalone native는source헤더와설치헤더해시대조후기존실행증거활용). User실제프로필읽기전용SHA/manifest/links/Versions1·공식prune·한글commitpush. 그후누적281이후작업계속, 전체목표완료로보고금지.
+
 # 274–279 구현/소스 실행 확인 · 다음 통합 설치279
 
 274 alpha 전용 출력 의존성(GL/GPU/native), 275 고정 필드 dispatch, 276 2D async load/render/release/dispose, 277 불변 tile JSON 검증 재사용, 278 readonly paged AI tile 조회, 279 Sprite/Tilemap 원본색 옵션(누락=기존scene). CPU/실제GLGPU/HLSL/에디터+독립D3DGL 통과, source279 xLmOZK 픽셀확인. 원본색 GPU clone/viewport 후속수정 CPU oLWa0l, 최종설치 --display --webgpu로3렌더 확인할것. 원장/docs274–279 아직쓰기전. sourceNative EXE build-desktop 완료.
