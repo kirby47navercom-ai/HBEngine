@@ -29,5 +29,13 @@
       "sha256": "7d0fe06c46c213b8743f86e6b2947190fb505102783712aa7d56af5c4be38172"
     }
   ],
-  "installationPending": true
+  "installation": {
+    "receipt": "docs/research/USER_INSTALL_260.json",
+    "receiptSHA256": "ff792304b02a7a4601d7b715fc8278ce4966902f9b700442008a5b6934876488",
+    "sourceCommit": "d95b7d98de9412717c3cfd3428575e5389e152b6",
+    "versions": [
+      "7da0d214773220b7"
+    ]
+  },
+  "installedIntegration": "최신 열린 상세 외부값 갱신/BP 슬롯/AudioSource streaming 게임 경로 포함 설치 통합 통과; 남은 한계는 각 limits와 정본 remaining 유지"
 }

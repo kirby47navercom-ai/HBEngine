@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "d95b7d98de9412717c3cfd3428575e5389e152b6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\7da0d214773220b7\\HBEngine.exe",
+  "bundleHash": "7da0d214773220b77f42bdd0c3e2cb8943d09aa17a4e0c4d584f44ba436bc25f",
+  "files": 2927,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2910,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5",
+        "bytes": 195144609,
+        "manifestSHA256": "a89341f71717e2bb150721e8604714f13f641f5ee57e5c9f68781609e847ce6b"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T02:31:04.9205496Z",
+    "bytes": 195144609,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\57aa766cccf7afc5\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "7da0d214773220b7"
+    ]
+  },
+  "work": "native/build/engine-260-install-7i3Pct",
+  "versions": [
+    "7da0d214773220b7"
+  ],
+  "manifestVerifiedFiles": 2927,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/effect-inputs-254-window-SFBrCb/acceptance.json",
+      "sha256": "f7c1eae1e99b86e14c53cb7e7de21175eeef3c671b6975158963289815d338f0"
+    },
+    {
+      "path": "native/build/rendering-253-window-IiDAIW/acceptance.json",
+      "sha256": "760d79563b78e6aedb2408cfb5a9a206ee125ea073c21c54225018c86d043df8"
+    },
+    {
+      "path": "native/build/widget-slot-256-window-FWI2AS/acceptance.json",
+      "sha256": "cb0dc405e64e68de54a16431ba223000c763c88beb7017c9a4643423fefbae01"
+    },
+    {
+      "path": "native/build/virtual-stream-257-window-kYWcs8/acceptance.json",
+      "sha256": "4fd0d5a1a5ba0945eabd36af7b2974a61ca2b072c0c40a03adfce2b8fe0134ed"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/effect-inputs-254-window-SFBrCb/widget-slot-replaced.png",
+      "sha256": "32b943cbd9c518e0cbc8e2d8147eaaf6e143894802578bcc3843936d586ee47a",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2927,
+  "privateChecks": "Four hidden owned editors, two standalone D3D11/WebGL2 games; private fixtures/profiles/ports. Effect source/target snapshots/caller CPP/BP/human/AI and live external refresh; CPP/BP slot replacement with Korean text; Input release/caret/scroll/animation; actual streaming-source demotion/promotion; real GL/GPU normal pixels and path links. Silent wave/sink. Actual User inventory read-only.",
+  "storage": {
+    "previousVersionBytesRemoved": 195144609,
+    "globalPrune": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    }
+  }
+}

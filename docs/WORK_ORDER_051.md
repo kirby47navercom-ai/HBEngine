@@ -396,3 +396,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 253–260: 렌더 SSA/시간 재컴파일 비용·CPU-only 매질 캐시, 효과 source/target capture/SetByCaller와 제작/실행 상세·CPP/BP, runtime named slot 교체/조작 수명, streaming 가상음성 해제/복구, Android 새 SDK 빌드를 연결. 정본 ENGINE_STATUS와 ENGINE_WORK_253–260의 범위/근거를 함께 갱신. 설치/최신 통합 검사는 후속 USER_INSTALL_260에 기록한다.
+
+
+253–260 사용자 설치 7da0d214773220b7·2927명세 파일 실행후SHA동일·숨김editor4/독립D3D·GL게임2 오류0/exit0. source/target·인자CPP/BP/수동/AI·열린상세외부값갱신·CPP/BP 슬롯·Source streaming 해제/복구·커서/스크롤/release/애니메이션·GL/GPU픽셀/준비 통과. User10385 SHA불변·링크2/.hbproject·Versions1·이전설치195144609B 제거. USER_INSTALL_260.json.
