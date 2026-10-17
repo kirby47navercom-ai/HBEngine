@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "sourceCommit": "1952db667b8bd6e0b244c8ac8e25bb558818440e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539\\HBEngine.exe",
+  "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+  "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+  "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\694d1f835c31d539\\HBEngine.exe",
+  "bundleHash": "694d1f835c31d539f1c3884c2b90466bda7242722333d7f1e83af9a12f290a86",
+  "files": 2821,
+  "cleanup": {
+    "removed": [
+      {
+        "files": 2826,
+        "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540",
+        "bytes": 202826405,
+        "manifestSHA256": "7d1f192d4c265a71931ed81ef537952ecb670cbea3d480ee82c49cf6b4dc3234"
+      }
+    ],
+    "failures": [],
+    "cacheBackupsRemoved": [],
+    "skipped": [],
+    "date": "2026-10-17T00:14:36.7659360Z",
+    "bytes": 202826405,
+    "generated": [
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540\\native\\build\\deps\\nlohmann\\json.hpp",
+        "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "bytes": 953436
+      },
+      {
+        "path": "C:\\Users\\kirby\\HBEngine\\Versions\\b1c44f99c245d540\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+        "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+        "bytes": 64
+      }
+    ],
+    "preserved": [],
+    "remaining": [
+      "694d1f835c31d539"
+    ]
+  },
+  "work": "native/build/engine-238-install-dMZaQV",
+  "versions": [
+    "694d1f835c31d539"
+  ],
+  "manifestVerifiedFiles": 2821,
+  "profilePreservedBeforeSmoke": true,
+  "profileFiles": 10385,
+  "profileInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "shortcutTargetsVerified": true,
+  "projectAssociationVerified": true,
+  "installedChecks": [
+    {
+      "path": "native/build/vehicle-powertrain-236-window-TBAkdr/acceptance.json",
+      "sha256": "172536d439a131d81b52e6bd195741fcf7ca77935929a8e9e7e419e478d8f770"
+    },
+    {
+      "path": "native/build/joint-dofs-237-window-PxWqK4/acceptance.json",
+      "sha256": "0fc4275c479357d56135af18dc6bf60b4a8fa0d0d5390e65dc5c48ff007051d4"
+    }
+  ],
+  "captures": [
+    {
+      "path": "native/build/vehicle-powertrain-236-window-TBAkdr/vehicle-runtime-rpm-and-gear.png",
+      "sha256": "5b271fcff38cd597af16a4de9a8bfe3d291e7a3a7220a2171dc8fefe30d89479",
+      "visuallyInspected": true
+    },
+    {
+      "path": "native/build/vehicle-powertrain-236-window-TBAkdr/vehicle-gear-ratios-and-torque-table.png",
+      "sha256": "62af7be43e473a45b240476355a5b64aea85a46fcf8946f37258c719496db477",
+      "visuallyInspected": false
+    },
+    {
+      "path": "native/build/joint-dofs-237-window-PxWqK4/six-axis-joint-runtime.png",
+      "sha256": "c88d3fc152a68f96995b838ded4abfc4cebf88aea540c3f52341c172b5ec1b53",
+      "visuallyInspected": true
+    }
+  ],
+  "profilePreservedAfterSmoke": true,
+  "profileAfterInventorySHA256": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+  "manifestVerifiedAfterSmoke": 2821,
+  "privateChecks": "Hidden owned editor and standalone D3D game. Unique project/profile/port. Vehicle torque/transmission tables, C++ and Blueprint gear/RPM, runtime scalar Inspector, six-axis controls and C++/BP motors. Source standalone joint package also passed. Actual User read-only inventory.",
+  "storage": {
+    "path": "native/build/storage-238-final.json",
+    "sha256": "d4e156c0003c37166583f3720e304ec860317ab24ffd4106a18f779ec365b450"
+  }
+}

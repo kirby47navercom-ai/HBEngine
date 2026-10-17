@@ -10,3 +10,6 @@
 
 - 회전 한계/목표는[-180,180]·대각 coupled-axis 한계·break force/plasticity/multibody articulation은 잔여
 - 로컬 이동축은 회전과 함께 움직이며 월드 축 고정 이동으로 표현하지 않는다·진단은 반력/임펄스 측정이 아니다
+
+
+236–238 사용자 설치 694d1f835c31d539 갱신·명세2821파일 실행후SHA동일. 차량 토크/기어 표·BP 컴포넌트 Undo·CPP/BP 변속과 RPM·독립 D3D 게임·6축 관절 모터 및 편집/AI 통과, 오류0/exit0. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치202826405B 제거. USER_INSTALL_238.json.
