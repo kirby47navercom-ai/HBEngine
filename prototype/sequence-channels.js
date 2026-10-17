@@ -3,12 +3,18 @@
 // Only sampled fields acquire a lease. No idle timer or whole-scene snapshot.
 export class SequenceChannels{
   constructor(){this.fields=new WeakMap();this.owners=new Map();}
-  write(owner,target,key,value,{read,apply,valid=()=>true}){
-    if(!valid())return;
-    let fields=this.fields.get(target);if(!fields){fields=new Map();this.fields.set(target,fields);}
-    let row=fields.get(key);if(!row){row={fields,key,baseline:read(),entries:new Map(),top:null,version:0};fields.set(key,row);}
-    let entry=row.entries.get(owner);if(!entry){entry={owner,apply,valid,value};row.entries.set(owner,entry);let rows=this.owners.get(owner);if(!rows){rows=new Set();this.owners.set(owner,rows);}rows.add(row);if(!row.top||owner.order>row.top.owner.order)row.top=entry;}
-    entry.value=value;row.version++;if(row.top===entry&&entry.valid())return entry.apply(value,false);
+  write(owner,target,key,value,options){
+    let fields=this.fields.get(target),row=fields?.get(key),entry=row?.entries.get(owner);
+    if(entry){
+      if(typeof options!=='function'&&options.valid&&!options.valid()||!entry.valid())return;
+      entry.value=value;row.version++;if(row.top===entry)return entry.apply(value,false);return;
+    }
+    // Build field adapters only when this owner first samples this channel.
+    const {read,apply,valid=()=>true}=typeof options==='function'?options():options;if(!valid())return;
+    if(!fields){fields=new Map();this.fields.set(target,fields);}
+    if(!row){row={fields,key,baseline:read(),entries:new Map(),top:null,version:0};fields.set(key,row);}
+    entry={owner,apply,valid,value};row.entries.set(owner,entry);let rows=this.owners.get(owner);if(!rows){rows=new Set();this.owners.set(owner,rows);}rows.add(row);if(!row.top||owner.order>row.top.owner.order)row.top=entry;
+    row.version++;if(row.top===entry&&entry.valid())return entry.apply(value,false);
   }
   async release(owner,{restore=true}={}){
     const rows=this.owners.get(owner);if(!rows)return;this.owners.delete(owner);const actions=[];
