@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2f679ebe0a7811318031f1ee4702d90784499540",
+  "sourceHashes": {
+    "prototype/ray-uv-footprint.js": "78893d4ffb20e5609bf25632e1958995e7c5f9118a83209b5aaea410984af4fc",
+    "prototype/ray-material-shader.js": "b4b437a6e6ee1ea384eeb5c72d4448cbd29537f78aeded56d99e1a533ede3e22",
+    "prototype/shared-ray-record-gl.js": "3065abe5ac0a80eae3d3dd7c30cef6e47f20e15493d5340fb7fbd98adf83d809",
+    "prototype/path-guide-specialization.js": "cd10ecd06554299831d955d8b2d943a2a54beea60080f13c59d19d24e4ba5afc"
+  },
+  "installationPending": false,
+  "checks": [
+    {
+      "path": "native/build/rendering-296-window-AAaosW/acceptance.json",
+      "sha256": "86b0e0bf012ab9f2d5fc7d9c59018d2aaf2bc218f7faef5a84c3434f679e748f"
+    },
+    {
+      "path": "native/build/rendering-296-window-8pxgIE/acceptance.json",
+      "sha256": "ec97358051f42b20982a0e882e7fab4ad447ef8f0bc0b0ba11614ff611d965bb"
+    },
+    {
+      "path": "native/build/rendering-296-window-ZJcNrF/acceptance.json",
+      "sha256": "e181b15846273c97e627e9f6a20cb1f23e048830e8cbef243b7e0cf2faa673df"
+    },
+    {
+      "path": "native/build/gpu-scene-u1h8Wg/acceptance.json",
+      "sha256": "5b28f0f29675f3aa3456a03d0f1705981be58874696b5a2ae42202d24c4e2601"
+    },
+    {
+      "path": "native/build/native-scene-window-I3z8dy/acceptance.json",
+      "sha256": "483ab6cc79e038028329e9a1375fd6d83776ac612e6646df0cc384ffd89cdf23"
+    },
+    {
+      "path": "native/build/rendering-284-window-zDGcCd/acceptance.json",
+      "sha256": "d8c8a6d355f5deb09c94749d61c5d9c1e427f1ac6f2b1d9e9e64e591031594c6"
+    },
+    {
+      "path": "native/build/rendering-194-native-7COpIM/acceptance.json",
+      "sha256": "08601224ebcb8696afa691f0525a7dcf5f50347c94982a60ee7151d8ea49112e"
+    },
+    {
+      "path": "native/build/rendering-296-window-BJTrq9/acceptance.json",
+      "sha256": "985f83e4aeb0dc3243574a232165aeb624d5eb6cdd0bd19203c311603bc62a81"
+    }
+  ],
+  "targetIds": [
+    "RND-06",
+    "RND-07"
+  ],
+  "implemented": [
+    "UV/미분 UV의 삼각형·좌표 읽기를 공유하며 기존 offset 좌표와 barycentric 연산 순서를 보존해요. 필요한 그래프에만 helper를 생성하며 공개 IR/키/파라미터는 바꾸지 않아요.",
+    "GL 가이드의 주 광선·미분 광선 노멀 그래프 호출 위치를 하나로 모아요. 종료 표면의 사용하지 않는 미분 노멀은 계산하지 않고 렌즈/반사/굴절/기존 조기 거부를 유지해요.",
+    "기존 레거시 본문을 독립적으로 생성해 공유·비공유/렌즈off-on/main-aux의 float32 가이드와 288개 UV 성분을 대조했어요. 최대 오차0이며 현재/이전 노멀·실제 게임의 C++ 변형/해제도 확인했어요."
+  ],
+  "measurements": {
+    "fixture": "native/build/rendering-296-window-ZJcNrF/acceptance.json",
+    "pathCompilation": [
+      {
+        "legacy": true,
+        "elapsedMS": 2633.5
+      },
+      {
+        "legacy": false,
+        "elapsedMS": 2190.4000000059605
+      }
+    ],
+    "guideRows": [
+      {
+        "lens": false,
+        "auxiliary": false,
+        "legacy": true,
+        "linkMS": 871.6999999880791
+      },
+      {
+        "lens": false,
+        "auxiliary": false,
+        "legacy": false,
+        "linkMS": 756.3000000119209
+      },
+      {
+        "lens": false,
+        "auxiliary": false,
+        "maxError": 0,
+        "nonzero": 512,
+        "components": 1024
+      },
+      {
+        "lens": false,
+        "auxiliary": true,
+        "legacy": true,
+        "linkMS": 5594.299999982119
+      },
+      {
+        "lens": false,
+        "auxiliary": true,
+        "legacy": false,
+        "linkMS": 3678.4000000059605
+      },
+      {
+        "lens": false,
+        "auxiliary": true,
+        "maxError": 0,
+        "nonzero": 768,
+        "components": 1024
+      },
+      {
+        "lens": true,
+        "auxiliary": false,
+        "legacy": true,
+        "linkMS": 2561.2000000178814
+      },
+      {
+        "lens": true,
+        "auxiliary": false,
+        "legacy": false,
+        "linkMS": 1406.9000000059605
+      },
+      {
+        "lens": true,
+        "auxiliary": false,
+        "maxError": 0,
+        "nonzero": 512,
+        "components": 1024
+      },
+      {
+        "lens": true,
+        "auxiliary": true,
+        "legacy": true,
+        "linkMS": 6154.9000000059605
+      },
+      {
+        "lens": true,
+        "auxiliary": true,
+        "legacy": false,
+        "linkMS": 3854.5999999940395
+      },
+      {
+        "lens": true,
+        "auxiliary": true,
+        "maxError": 0,
+        "nonzero": 816,
+        "components": 1024
+      }
+    ],
+    "uv": {
+      "maxError": 0,
+      "components": 288,
+      "largeCoordinates": true,
+      "zeroAndWideFootprints": true,
+      "grazingAndParallelViews": true
+    },
+    "scope": "Ordered single-window paired links, not FPS, hardware timestamps, an isolated-load multi-run benchmark, or Complex141."
+  },
+  "limits": [
+    "실제 Complex141 GL 전체 전환은 첫 path9093ms/시간 가이드4949ms였어요. 첫 path 비용을 해결했다고 승격하지 않아요. 다른 빌드 부하/서로 다른 단일 표본의 영향을 분리하지 않았어요.",
+    "GL 게임 u1h8Wg는 HLSL 생성자의 0→0,0,0 수정 직전 실행이에요. GLSL 의미는 같으며 최종 공용 본문은 설치 창 검사에서 별도 확인해요.",
+    "WebGPU 전체 첫 준비 비용·이전 world/view 노멀 및 mip footprint 이력은 잔여예요. 새 외부 문서 읽기나 전체 분석 gate 승격은 없어요."
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_297.json"
+}

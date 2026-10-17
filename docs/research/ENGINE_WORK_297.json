@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "kind": "implementation",
+  "implementationRevision": "2f679ebe0a7811318031f1ee4702d90784499540",
+  "sourceHashes": {
+    "prototype/ray-uv-footprint.js": "78893d4ffb20e5609bf25632e1958995e7c5f9118a83209b5aaea410984af4fc",
+    "prototype/ray-material-shader.js": "b4b437a6e6ee1ea384eeb5c72d4448cbd29537f78aeded56d99e1a533ede3e22",
+    "prototype/shared-ray-record-gl.js": "3065abe5ac0a80eae3d3dd7c30cef6e47f20e15493d5340fb7fbd98adf83d809",
+    "prototype/path-guide-specialization.js": "cd10ecd06554299831d955d8b2d943a2a54beea60080f13c59d19d24e4ba5afc"
+  },
+  "installationPending": false,
+  "checks": [
+    {
+      "path": "native/build/rendering-296-window-AAaosW/acceptance.json",
+      "sha256": "86b0e0bf012ab9f2d5fc7d9c59018d2aaf2bc218f7faef5a84c3434f679e748f"
+    },
+    {
+      "path": "native/build/rendering-296-window-8pxgIE/acceptance.json",
+      "sha256": "ec97358051f42b20982a0e882e7fab4ad447ef8f0bc0b0ba11614ff611d965bb"
+    },
+    {
+      "path": "native/build/rendering-296-window-ZJcNrF/acceptance.json",
+      "sha256": "e181b15846273c97e627e9f6a20cb1f23e048830e8cbef243b7e0cf2faa673df"
+    },
+    {
+      "path": "native/build/gpu-scene-u1h8Wg/acceptance.json",
+      "sha256": "5b28f0f29675f3aa3456a03d0f1705981be58874696b5a2ae42202d24c4e2601"
+    },
+    {
+      "path": "native/build/native-scene-window-I3z8dy/acceptance.json",
+      "sha256": "483ab6cc79e038028329e9a1375fd6d83776ac612e6646df0cc384ffd89cdf23"
+    },
+    {
+      "path": "native/build/rendering-284-window-zDGcCd/acceptance.json",
+      "sha256": "d8c8a6d355f5deb09c94749d61c5d9c1e427f1ac6f2b1d9e9e64e591031594c6"
+    },
+    {
+      "path": "native/build/rendering-194-native-7COpIM/acceptance.json",
+      "sha256": "08601224ebcb8696afa691f0525a7dcf5f50347c94982a60ee7151d8ea49112e"
+    },
+    {
+      "path": "native/build/rendering-296-window-BJTrq9/acceptance.json",
+      "sha256": "985f83e4aeb0dc3243574a232165aeb624d5eb6cdd0bd19203c311603bc62a81"
+    }
+  ],
+  "targetIds": [
+    "RND-06",
+    "RND-07"
+  ],
+  "implemented": [
+    "공유 정점 삼각형의 위치/두 변을 같은 주소 검증·로컬 정점·변환 행렬 읽기로 반환해요. 기존 슬롯 함수와 포장/공유 임계값·메모리 레이아웃은 유지해요.",
+    "GL UV/barycentric/기본·코팅 TBN과 생성 HLSL이 같은 Frame 함수를 사용해요. 실제 D3D에서 발견한 GLSL 축약 벡터 생성자를 명시3성분으로 고쳤고 생성 헤더/두 EXE를 다시 만들었어요.",
+    "수정 뒤 실제 D3D Complex141/변형/이전노멀·곡면필터/온오프해제/재진입과 공유·비공유 UV/guide 대조를 확인했어요. 추가 GPU 이미지/이력/CPU readback/의존성이 없어요."
+  ],
+  "limits": [
+    "원복한 288/291 실패 실험을 완료 기능으로 합산하지 않아요. 새 Frame raw probe의 잘못된 선언 순서와 최초 D3D 생성자 실패는 DEBUG_HANDOFF/validation296에 남기고 수정 후 근거를 구분해요.",
+    "선별된 픽셀·수명·장치 표본 검증이며 전체 게임 FPS/모바일 실기기/누적 엔진 완료 주장이 아니에요."
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_297.json"
+}

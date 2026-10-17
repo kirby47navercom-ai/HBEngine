@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-10-17",
-  "basisRevision": "bd7269ab04d0e8a1a6f88d8a756b266c66cc6b58",
+  "basisRevision": "2f679ebe0a7811318031f1ee4702d90784499540",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -707,9 +707,9 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증",
       "remaining": [
-        "Complex141 GL 첫 path 약8초/시간 가이드 약7초 추가 절감(서로 다른 부하의 단일 표본이며 전체 FPS 아님)",
+        "Complex141 GL 첫 path 약9.09초/시간 가이드 약4.95초 추가 절감(부하를 통제한 반복 벤치마크나 FPS가 아닌 단일 게임 전환 표본)",
         "WebGPU 첫 path/시간 가이드 준비 비용 추가 절감"
       ],
       "sources": [
@@ -720,7 +720,10 @@
         "prototype/path-previous-normal-gpu.js",
         "prototype/path-curved-guide.js",
         "prototype/ray-materials.js",
-        "prototype/material-source-key.js"
+        "prototype/material-source-key.js",
+        "prototype/ray-uv-footprint.js",
+        "prototype/ray-material-shader.js",
+        "prototype/shared-ray-record-gl.js"
       ],
       "evidence": [
         "docs/RENDERING_145.md",
@@ -737,7 +740,9 @@
         "docs/research/ENGINE_WORK_285.json",
         "docs/research/ENGINE_WORK_286.json",
         "docs/research/ENGINE_WORK_290.json",
-        "docs/research/ENGINE_WORK_291.json"
+        "docs/research/ENGINE_WORK_291.json",
+        "docs/research/ENGINE_WORK_296.json",
+        "docs/research/ENGINE_WORK_297.json"
       ]
     },
     {
@@ -1859,13 +1864,13 @@
       ]
     }
   ],
-  "latestBatch": "284–295",
+  "latestBatch": "296–297",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_295.json",
-    "sourceCommit": "f55dda9b4ba1e23505116d77c55ec3d6172569d1",
-    "bundleHash": "5b3bfd90e1a8d7163a8e5d0b2e439f6ecd3b97236959f694a6a497c04440fbf1",
+    "receipt": "docs/research/USER_INSTALL_297.json",
+    "sourceCommit": "2f679ebe0a7811318031f1ee4702d90784499540",
+    "bundleHash": "af678ad1bf3da1a170f53b4f142b7dd4f362f9991a8ab7c07ead685a56a04b93",
     "verified": true,
     "versions": 1,
-    "scope": "Defined 284–295 changed paths, not whole engine completion"
+    "scope": "Defined 296–297 renderer changes, not whole-engine completion"
   }
 }

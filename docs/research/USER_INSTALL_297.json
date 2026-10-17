@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "state": "installed-verified",
+  "sourceCommit": "2f679ebe0a7811318031f1ee4702d90784499540",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1\\HBEngine.exe",
+  "bundleHash": "af678ad1bf3da1a170f53b4f142b7dd4f362f9991a8ab7c07ead685a56a04b93",
+  "installationPending": false,
+  "installedSmokePassed": true,
+  "files": 3071,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "2f679ebe0a7811318031f1ee4702d90784499540",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1\\HBEngine.exe",
+    "bundleHash": "af678ad1bf3da1a170f53b4f142b7dd4f362f9991a8ab7c07ead685a56a04b93",
+    "files": 3071,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3257,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\5b3bfd90e1a8d716",
+          "bytes": 375966480,
+          "manifestSHA256": "dc353c5688e6fe4777c92908db7acf69e90417e878b52f79480306f1503b76c4"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-17T07:29:43.0302787Z",
+      "bytes": 375966480,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "af678ad1bf3da1a1"
+      ]
+    },
+    "installedGate": {
+      "path": "native/build/rendering-296-window-BJTrq9/acceptance.json",
+      "sha256": "985f83e4aeb0dc3243574a232165aeb624d5eb6cdd0bd19203c311603bc62a81",
+      "invocation": [
+        "tools/check-rendering-296-window.mjs",
+        "--trilinear",
+        "--executable",
+        "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1\\HBEngine.exe"
+      ],
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "sourceHashes": {
+        "prototype/ray-uv-footprint.js": "78893d4ffb20e5609bf25632e1958995e7c5f9118a83209b5aaea410984af4fc",
+        "prototype/ray-material-shader.js": "b4b437a6e6ee1ea384eeb5c72d4448cbd29537f78aeded56d99e1a533ede3e22",
+        "prototype/shared-ray-record-gl.js": "3065abe5ac0a80eae3d3dd7c30cef6e47f20e15493d5340fb7fbd98adf83d809",
+        "prototype/path-guide-specialization.js": "cd10ecd06554299831d955d8b2d943a2a54beea60080f13c59d19d24e4ba5afc"
+      }
+    },
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-I3z8dy/acceptance.json",
+      "playerSHA256": "e417f37636c3d0f35844ff556c32bea58be3d5745ddd4650a869b5d84f99ac67",
+      "scope": "Actual source D3D game after rebuild; source code unchanged through installation and installed player byte-identical to source-built player. Not claimed as another installed native game run."
+    },
+    "manifestVerifiedFiles": 3071,
+    "versions": [
+      "af678ad1bf3da1a1"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "Defined source rendering gates plus actual installed hidden float32 trilinear/UV/main-aux/lens guide comparison; not whole engine completion or FPS/device guarantee."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null,
+    "scope": "No eligible artifacts; no empty cleanup receipt created."
+  },
+  "scope": "296–297 defined renderer changes and grouped source/installed gates. Source-code revision is fixed; final audit documentation is committed afterward. No whole-engine, Complex141 first-path resolution, FPS target, or mobile-device claim."
+}
