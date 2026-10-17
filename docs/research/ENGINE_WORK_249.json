@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "74d0257d57a6e09cc58c242b3133fe3ebe095aeb",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "선택 rotation.quaternionInterpolation boolean·누락/false는 기존 EulerXYZ 보간·true는 shortest-arc Slerp·정확/단계 키는 작성 degree 보존",
+    "한 번 준비한 Float64 quaternion 키/재사용 Quaternion2/Euler·매 프레임 키 변환/정렬 없음·제작 checkbox/Undo/저장·C++ 회전 조회/종료 복원·독립 D3D/WebGL"
+  ],
+  "limits": [
+    "360도 이상 의도적인 Euler 회전은 기존 모드를 선택·spline quaternion tangent/전문 DCC rig는 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-rotation-249-HX22G7/acceptance.json",
+      "sha256": "65163ccb78982040acde00f76786ab075e750870b76ac5154a1b92a8ada67800"
+    },
+    {
+      "path": "native/build/sequence-rotation-249-window-9qhgLL/acceptance.json",
+      "sha256": "44ee418511f3d6204183b51c8500ddbd01c2e100669f897fd1b51aba017a862a"
+    }
+  ],
+  "installationPending": true
+}

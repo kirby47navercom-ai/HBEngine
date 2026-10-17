@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "74d0257d57a6e09cc58c242b3133fe3ebe095aeb",
+  "targetIds": [
+    "AUD-01",
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "시퀀스/트랙별 고유 voice handle·같은 파일 두 트랙 독립 재생/seek/stop·명시 handle 정지는 그 음성만, legacy 이름 정지는 기존 파일 전체 의미 유지",
+    "임의 actor를 따라가는 시퀀스 소리는 AudioSource 컴포넌트 값과 분리·소스 객체 수명 검사·디코드가 늦어도 요청 시간/일시정지 상태를 적용",
+    "runtime.audio voices에 handle/source·같은 파일 external AudioSource1+시퀀스2 실제 창/독립 D3DGL에서3개 유지, Stop 뒤 외부1개 보존·기존 audio source/capture 회귀"
+  ],
+  "limits": [
+    "실제 창 음성 검사는 무음 PCM WAV이며 이 변경의 가청 품질/마이크/실폰 음향 검사 아님",
+    "PCM sample-accurate mixing과 전문 멀티트랙 외부 동기화는 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-evaluation-250-window-MhjP2k/acceptance.json",
+      "sha256": "4e8a0b1168d4dd20a52b63b83baf8cec1d9e0226d91f867d154cdfcbee3b7310"
+    },
+    {
+      "path": "native/build/sequence-evaluation-250-K0MQ1d/acceptance.json",
+      "sha256": "1506ee028eb103802449d0082e61480f22e9f50bf60cd6a723a90eb09d9aae3c"
+    },
+    {
+      "path": "native/build/audio-192-Kufqda/acceptance.json",
+      "sha256": "7d0fe06c46c213b8743f86e6b2947190fb505102783712aa7d56af5c4be38172"
+    }
+  ],
+  "installationPending": true
+}

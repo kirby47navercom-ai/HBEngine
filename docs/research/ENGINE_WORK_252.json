@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "74d0257d57a6e09cc58c242b3133fe3ebe095aeb",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "지연된 Play는 최신 요청/Stop/소유자 교체·제거/월드 종료 뒤 재생을 시작하지 않음·취소된 실패 결과도 뒤늦은 오류로 적용하지 않음",
+    "완료/실패한 pending ticket 제거·잘못된 새 에셋은 기존 재생 보존·중지 멱등성·별도 프레임/객체 상한 추가 없음"
+  ],
+  "limits": [
+    "여러 시퀀스가 같은 속성/골격을 동시에 쓰는 전문 소유권 조합·중첩 재진입 전체 품질은 별도 잔여"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-load-252-fyI9rC/acceptance.json",
+      "sha256": "851dd750883bca2a9195ec53080ada09d55a7ee677300f6dc8cba0978b7eca09"
+    }
+  ],
+  "installationPending": true
+}

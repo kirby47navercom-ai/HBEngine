@@ -3522,5 +3522,34 @@
       "docs/research/ENGINE_WORK_247.json",
       "docs/research/ENGINE_WORK_248.json"
     ]
+  },
+  "supplemental249_252": {
+    "date": "2026-10-17",
+    "scope": "선택 기능 본문과 로컬 실행 대조만; 전체 본문/API 분석 완료 아님",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/cinematic-transform-and-property-tracks-in-unreal-engine",
+        "body": "140행 반환 중 Quaternion Interpolation38 및 비보간 속성 설명을249에 적용. 이미지/연결문서 미독"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Playables.PlayableDirector.Evaluate.html",
+        "body": "HTML281행 반환·실제 선언/설명234–243: 현재 시각 graph 즉시 평가. 연결 PlayableGraph API 본문 미독"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/MovieScene/UMovieSceneSequencePlayer/SetPlaybackPosition",
+        "body": "반환30행: 목표시각 평가/이벤트/재생상태. HB 기존 Seek는 이벤트를 재실행하지 않는 Jump이므로 동일 Unreal API 전체 의미라고 주장하지 않음"
+      }
+    ],
+    "newlyObservedUnimplemented": [
+      "쿼터니언 spline tangent와 전문 DCC 회전",
+      "다중 sequence 동일 속성/골격 소유권과 중첩 재진입",
+      "PCM 표본/게임 시각 정렬·영상/외부 동기화"
+    ],
+    "evidence": [
+      "docs/research/ENGINE_WORK_249.json",
+      "docs/research/ENGINE_WORK_250.json",
+      "docs/research/ENGINE_WORK_251.json",
+      "docs/research/ENGINE_WORK_252.json"
+    ]
   }
 }

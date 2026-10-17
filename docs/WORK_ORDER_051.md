@@ -387,3 +387,6 @@ C++ 공개 쓰기 속성·BP 변수/배열 Take, 타입/배열 길이/null/키 d
 
 
 243–248 사용자 설치 e586f23febe4b3d5·2879명세 파일 실행후SHA동일·실제 숨김 editor4/독립D3D·GL게임6 오류0/exit0·효과/입자/부모Take/단축키 제작·CPP/BP/AI/Undo. User10385파일 SHA불변·링크2/.hbproject·Versions1·이전설치212367284B 제거. USER_INSTALL_248.json.
+
+
+249–252: quaternion 회전 제작/실행·즉시 시퀀스 탐색/끝 포즈·독립 오디오 음성과 디코드/소유자 수명·늦은 Play 요청 무효화를 추가. 실제 CPP/독립 D3DGL/기존 Take·오디오 회귀 근거 ENGINE_WORK_249–252. 다음 설치에서 최종50ms 음성 Seek/최신소스를 묶어 확인한다.

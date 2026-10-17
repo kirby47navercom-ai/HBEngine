@@ -43,3 +43,6 @@ Take에서 `골격`과 `구성`(또는 컴포넌트)을 켜면 MeshRenderer 모�
 
 
 245–246: parent 문자열 단계 트랙/선택 includeHierarchy Take·경계 local TRS step·같은 수명 객체에만 복원·원자 부모 검증·root 분리. 키는 재생 준비 때 한 번 정렬해 이진 조회.1024키 등 기존 문서 예산/고급 Attach·대형 키 UI 잔여 유지.
+
+
+249–252: 선택 rotation.quaternionInterpolation, 준비 quaternion/Slerp·기존 Euler/step 보존; Seek는 즉시 scene/value/clip 평가·sampleTime/sampleSerial·paused end hold. 트랙별 고유 음성/지연 decode 시각/정지, Play 요청/소유자 수명 무효화. 고급 Attach/동시 소유권/PCM 외부동기화는 별도 잔여.

@@ -504,3 +504,6 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 
 
 243–248: 효과 레벨/커브 SDK4·천/2D로프 실제 입자 getter2를 BP와 공용화, 총810노드/공용C++725. 부모연결 Take와 AI runtime.effect/level·문맥 단축키124 포함. ENGINE_WORK_243–248 참조.
+
+
+249–252: 기존 LevelSequence::Seek/BP가 평가 완료 뒤 응답하고 paused end를 유지한다. 회전 트랙 선택 Slerp·트랙별 voice handle·runtime.audio source/handle·완료 sampleTime/sampleSerial을 AI schema에도 등록. 공용725/노드810 유지.

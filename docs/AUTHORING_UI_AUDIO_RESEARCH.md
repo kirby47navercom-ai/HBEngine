@@ -33,3 +33,6 @@
 기능명 하나는 완료 단위가 아니다. 각 분야에서 실제 본문·API를 더 읽고 누락 항목을 확장한다. 생성/임포트 → 필드/자료형/기본값 → 문맥 메뉴/단축키/drag → 참조/상속/연결 → 저장/재열기/호환 → 실행 단계/수명/취소 → BP/C++ → AI schema/명령/Undo → 오류 복구/측정/타깃의 연결을 확인한다. 모든 세부 사항의 조사·구현·검증이 끝났다는 상태로 표시하지 않는다.
 
 이 기준은 프로젝트/에셋·편집기·2D/2.5D/3D·world/render/material/light·physics/input/framework·AI·animation/VFX·UI/audio/media·build/profiling/debug·network/XR/platform/package/production pipeline 전 영역에 적용한다. 이번 변경이 끝나도 전체 확장 요구는 끝나지 않는다.
+
+
+251: 명시 음성 handle 정지는 같은 파일의 다른 음성을 끊지 않는다. 시퀀스 트랙별 UUID voice와 actor-follow를 AudioSource 제어와 분리하고 pending decode에 time/paused를 기록한다. 실제 무음 WAV 외부AudioSource1+시퀀스2/Stop후1 검사·가청품질/실폰 검사 아님.

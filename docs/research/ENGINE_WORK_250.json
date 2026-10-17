@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "date": "2026-10-17",
+  "implementationRevision": "74d0257d57a6e09cc58c242b3133fe3ebe095aeb",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "implemented": [
+    "Seek는 공용 sampleSequence로 부모/Transform/값/구성/클립을 평가한 뒤 응답·키 이벤트는 재실행하지 않는 기존 Jump 동작 유지",
+    "sampleTime/sampleSerial 완료 진단·일시정지한 끝 프레임에서 원본 복원/반복/완료가 조기에 발생하지 않음·다시 재생하면 한 번 완료",
+    "같은 클립에서 음성 재생성을 피하고 탐색 시 정확한 오디오 위치·부모/생성/타입 변수 회귀·실제 C++ Read"
+  ],
+  "limits": [
+    "게임 시각·PCM 표본 외부 동기화/영상 결합·모든 복잡 리그의 동기 평가 보장은 별도 잔여",
+    "같은 C++ 함수 안의 엔진 쓰기는 기존 queued 명령이며 함수 반환 뒤 적용"
+  ],
+  "checks": [
+    {
+      "path": "native/build/sequence-evaluation-250-K0MQ1d/acceptance.json",
+      "sha256": "1506ee028eb103802449d0082e61480f22e9f50bf60cd6a723a90eb09d9aae3c"
+    },
+    {
+      "path": "native/build/sequence-evaluation-250-window-MhjP2k/acceptance.json",
+      "sha256": "4e8a0b1168d4dd20a52b63b83baf8cec1d9e0226d91f867d154cdfcbee3b7310"
+    }
+  ],
+  "installationPending": true
+}
