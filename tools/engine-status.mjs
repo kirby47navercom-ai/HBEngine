@@ -3,6 +3,18 @@ import {pathToFileURL} from 'node:url';
 
 export const engineStatusContract={endpoint:'/api/engine/status',file:'docs/research/ENGINE_STATUS.json',readOnly:true,filters:['id','area','status','search'],statuses:['verified','partial','unimplemented','unverified'],denominator:'registered HB work items only; not the complete Unreal/Unity API surface',completionPercent:null};
 
+// The research ledger is a packaged source snapshot. The adjacent manifest
+// identifies this installation without following user paths or auditing files.
+async function currentInstallation(){
+ try{
+  const file=new URL('../HBEngine.install.json',import.meta.url),stat=await fs.lstat(file);
+  if(!stat.isFile()||stat.isSymbolicLink())return {state:'invalid',code:'INVALID_INSTALLATION_MARKER'};
+  const marker=JSON.parse(await fs.readFile(file,'utf8'));
+  if(marker.version!==1||typeof marker.bundleHash!=='string'||!/^[a-f0-9]{64}$/.test(marker.bundleHash)||typeof marker.installedAt!=='string'||!Number.isFinite(Date.parse(marker.installedAt))||!Array.isArray(marker.files))return {state:'invalid',code:'INVALID_INSTALLATION_MARKER'};
+  return {state:'managed',bundleHash:marker.bundleHash,installedAt:marker.installedAt,fileCount:marker.files.length,verification:'manifest-only'};
+ }catch(error){if(error.code==='ENOENT')return null;return {state:'unavailable',code:error instanceof SyntaxError?'INVALID_INSTALLATION_MARKER':error.code||'INSTALLATION_MARKER_UNAVAILABLE'};}
+}
+
 export function validateEngineStatus(data){
  if(data?.version!==1||!/^\d{4}-\d{2}-\d{2}$/.test(data.updatedAt)||data.exhaustiveUEUnity!==false||data.completionPercent!==null||!Array.isArray(data.items)||!data.items.length)throw Error('엔진 상태 원장 형식을 확인하세요.');
  const ids=new Set();for(const item of data.items){if(!/^[A-Z0-9]+-\d{2,}$/.test(item.id)||ids.has(item.id)||!engineStatusContract.statuses.includes(item.status)||!item.area||!item.title||typeof item.implemented!=='string'||!Array.isArray(item.remaining)||item.remaining.some(s=>typeof s!=='string'||!s)||!Array.isArray(item.sources)||!item.sources.length||!Array.isArray(item.evidence)||[...item.sources,...item.evidence].some(s=>typeof s!=='string'||s.startsWith('/')||s.includes('..')||s.includes('\\'))||item.status==='verified'&&(!item.implemented||item.remaining.length||!item.evidence.length)||item.status!=='verified'&&!item.remaining.length)throw Error('엔진 상태 항목을 확인하세요: '+item.id);ids.add(item.id);}
@@ -11,9 +23,9 @@ export function validateEngineStatus(data){
 export async function readEngineStatus(filters={}){
  if(!filters||typeof filters!=='object'||Array.isArray(filters)||Object.entries(filters).some(([k,v])=>!engineStatusContract.filters.includes(k)||typeof v!=='string'||v.length>300))throw Error('엔진 상태 필터를 확인하세요.');
  if(filters.status&&!engineStatusContract.statuses.includes(filters.status))throw Error('알 수 없는 엔진 작업 상태예요.');
- const data=validateEngineStatus(JSON.parse(await fs.readFile(new URL('../'+engineStatusContract.file,import.meta.url),'utf8'))),counts=Object.fromEntries(engineStatusContract.statuses.map(s=>[s,data.items.filter(i=>i.status===s).length])),search=filters.search?.trim().toLowerCase();
+ const [source,installation]=await Promise.all([fs.readFile(new URL('../'+engineStatusContract.file,import.meta.url),'utf8'),currentInstallation()]),data=validateEngineStatus(JSON.parse(source)),counts=Object.fromEntries(engineStatusContract.statuses.map(s=>[s,data.items.filter(i=>i.status===s).length])),search=filters.search?.trim().toLowerCase();
  const items=data.items.filter(i=>(!filters.id||i.id===filters.id)&&(!filters.area||i.area===filters.area)&&(!filters.status||i.status===filters.status)&&(!search||[i.id,i.title,i.implemented,...i.remaining].join(' ').toLowerCase().includes(search)));
- return {...data,totalItems:data.items.length,counts,matchedItems:items.length,filters:{...filters},items};
+ return {...data,totalItems:data.items.length,counts,matchedItems:items.length,filters:{...filters},items,installation};
 }
 
 export function engineStatusMarkdown(data){
