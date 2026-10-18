@@ -1,3 +1,4 @@
+import {normalMapNode} from './normal-map.js';
 import * as THREE from 'three/webgpu';
 import {captureMaterialGraph} from './material-source-key.js';
 import {materialTextureTypes,textureNodeType,texturePlaceholder} from './texture-assets.js';
@@ -55,7 +56,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       else if(key==='reflect')code=T.reflect(args.direction,args.normal.normalize());
       else if(['add','subtract','multiply','divide'].includes(key))code=a[({add:'add',subtract:'sub',multiply:'mul',divide:'div'})[key]](key==='divide'?T.mix(valueNode(1e-6,type),b,T.step(valueNode(1e-6,type),b.abs())):b);
       else if(key==='power')code=a.max(0).pow(b);else if(key==='lerp')code=T.mix(a,b,args.alpha);else if(key==='clamp')code=v.clamp(args.min,args.max);else if(key==='saturate')code=v.clamp(0,1);else if(key==='oneMinus')code=valueNode(1,type).sub(v);
-      else if(key==='normalMap')code=T.vec3(v.xy.mul(2).sub(1).mul(args.strength),v.z.mul(2).sub(1)).normalize();
+      else if(key==='normalMap')code=normalMapNode(T,v,args.strength);
       else if(key==='tilingOffset')code=args.uv.mul(args.tiling).add(args.offset);else if(key==='panner')code=args.uv.add(args.speed.mul(args.time));
       else if(key==='rotateUV'){const p=args.uv.sub(args.center),c=args.angle.cos(),s=args.angle.sin();code=T.vec2(c.mul(p.x).sub(s.mul(p.y)),s.mul(p.x).add(c.mul(p.y))).add(args.center);}else throw Error('미지원 머테리얼 노드: '+key);
     }

@@ -1,6 +1,7 @@
 import {compileMaterial,materialDefaults,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue} from './material-runtime.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
+import {normalMapGLSL} from './normal-map.js';
 function hlsl(code){
   code=code.replace(/\bvec([234])\b/g,'float$1').replace(/\bmix\b/g,'lerp').replace(/\bfract\b/g,'frac').replace(/\bmod\b/g,'hbMod');
   for(const match of [...code.matchAll(/\bfloat([234])\(/g)].reverse()){let depth=1,comma=false;for(let i=match.index+match[0].length;i<code.length&&depth;i++){if(code[i]==='(')depth++;else if(code[i]===')')depth--;else if(code[i]===','&&depth===1)comma=true;}if(!comma)code=code.slice(0,match.index)+'hbSplat'+match[1]+code.slice(match.index+6);}
@@ -8,6 +9,7 @@ function hlsl(code){
 }
 const helpers=`StructuredBuffer<float> hbParameters:register(t7);
 ${[2,3,4].map(n=>`float${n} hbSplat${n}(float v){return float${n}(${Array(n).fill('v').join(',')});}float${n} hbSplat${n}(float${n} v){return v;}`).join('\n')}
+${hlsl(normalMapGLSL)}
 float3 hbSRGB(float3 c){return lerp(c/12.92,pow((c+.055)/1.055,2.4),step(.04045,c));}
 float hbHash(float2 p){return frac(sin(dot(p,float2(127.1,311.7)))*43758.5453);}
 float hbNoise(float2 p){float2 i=floor(p),f=frac(p);f=f*f*(3-2*f);return lerp(lerp(hbHash(i),hbHash(i+float2(1,0)),f.x),lerp(hbHash(i+float2(0,1)),hbHash(i+float2(1,1)),f.x),f.y);}

@@ -3934,5 +3934,29 @@
       "native/build/gpu-profiler-398-cpu.json"
     ],
     "analysisGate": "지정본문과설치라이브러리선택읽기만. 전체UEUnity/MDN/WebGPU/Three/corpus/API gate미승격"
+  },
+  "supplemental410": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-normalize",
+        "snapshot": "native/build/reference-corpus/supplemental410/hlsl-normalize.html",
+        "sha256": "2291fa77063c39c56777b49c96e56969c1ab6a81788be3834be86a5b9fd5b8f9",
+        "scope": "normalize의정의/ReturnValue/Remarks 길이0미정구역 지정읽기. 나머지연결API/본문전체분석아님"
+      },
+      {
+        "url": "https://registry.khronos.org/OpenGL/specs/gl/GLSLangSpec.4.60.html",
+        "snapshot": "native/build/reference-corpus/supplemental410/glsl460.html",
+        "sha256": "3692a8be9b6a0e473ec847a552f54d1c9e42d184580d24e27a79f451a80287a6",
+        "scope": "§8.5 length/normalize수식 지정읽기. 파일전체수집과전체본문분석을구분. NaN max의실제거부문제는독립GPU실험으로확인"
+      }
+    ],
+    "comparison": "길이0을정규화하지않는공유중립노멀정책·실제GL/GPU/D3D노멀/밉및공간입력가이드·NaN/Inf의각채널비교. 전체문서/API gate미승격",
+    "evidence": [
+      "docs/MATERIAL_HISTORY_410.md",
+      "native/build/normal-map-402-cpu.json",
+      "native/build/guide-frame-inputs-405-cpu.json"
+    ],
+    "analysisGate": "선택한본문구역만추가읽기. 전체UE/Unity/GLSL/HLSL/API분모미확정·미독유지"
   }
 }
