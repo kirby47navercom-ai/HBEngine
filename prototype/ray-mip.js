@@ -1,12 +1,20 @@
 import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from 'three';
 
 const cache=new WeakMap();
-export const rayMipFilter=map=>map.generateMipmaps===false?0:({[NearestMipmapNearestFilter]:1,[LinearMipmapNearestFilter]:2,[NearestMipmapLinearFilter]:3,[LinearMipmapLinearFilter]:4}[map.minFilter]||0);
+export const rayMipFilter=map=>map.generateMipmaps===false&&!map.userData?.hbCookedMips?0:({[NearestMipmapNearestFilter]:1,[LinearMipmapNearestFilter]:2,[NearestMipmapLinearFilter]:3,[LinearMipmapLinearFilter]:4}[map.minFilter]||0);
 export const releaseRayMips=maps=>{for(const map of maps||[])cache.delete(map);};
 export function rayMipChain(map,pixels,srgb,volume=false){
  const key=[pixels.version,pixels.width,pixels.height,pixels.depth,srgb,volume,!!rayMipFilter(map)].join(':'),prior=cache.get(map);
  if(prior?.pixels===pixels&&prior.chains.has(key))return prior.chains.get(key);
- const chains=prior?.pixels===pixels?prior.chains:new Map(),data=new Float32Array(pixels.data.length);
+ const chains=prior?.pixels===pixels?prior.chains:new Map();
+ if(map.userData?.hbCookedMips){
+  const source=map.mipmaps;if(volume||pixels.depth!==1||!Array.isArray(source)||!source.length||source.length>1+Math.floor(Math.log2(Math.max(pixels.width,pixels.height))))throw Error('가져온 2D 밉 체인을 확인하세요.');
+  let w=pixels.width,h=pixels.height;for(const level of source){if(level.width!==w||level.height!==h||!(level.data instanceof Uint8Array||level.data instanceof Uint8ClampedArray)||level.data.length!==w*h*4)throw Error('가져온 밉 크기와 픽셀을 확인하세요.');w=Math.max(1,Math.floor(w/2));h=Math.max(1,Math.floor(h/2));}
+  const convertedKey='cooked:'+srgb,converted=chains.get(convertedKey)||[],count=rayMipFilter(map)?source.length:1;
+  for(let level=converted.length;level<count;level++){const s=source[level],data=new Float32Array(s.data.length);for(let i=0;i<data.length;i++){let v=s.data[i]/255;if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;data[i]=v;}converted.push({width:s.width,height:s.height,depth:1,data});}
+  const levels=converted.slice(0,count);chains.set(convertedKey,converted);chains.set(key,levels);cache.set(map,{pixels,chains});return levels;
+ }
+ const data=new Float32Array(pixels.data.length);
  for(let i=0;i<data.length;i++){let v=pixels.data[i]/(pixels.float?1:255);if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 픽셀 값을 확인하세요.');if(srgb&&i%4!==3)v=v<=.04045?v/12.92:((v+.055)/1.055)**2.4;if(!Number.isFinite(v)||Math.abs(v)>65000)throw Error('광선 텍스처 선형 색 값을 확인하세요.');data[i]=v;}
  const levels=[{width:pixels.width,height:pixels.height,depth:pixels.depth,data}];
  if(rayMipFilter(map))while(levels.at(-1).width>1||levels.at(-1).height>1||volume&&levels.at(-1).depth>1){

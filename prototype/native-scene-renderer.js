@@ -1,3 +1,4 @@
+import {textureUploadBytes,packedTextureMips} from './native-texture-mips.js';
 import {geometryStreamStamp,packedDynamicVertices} from './native-geometry-stream.js';
 import {nativeSamplerState} from './sampler-state.js';
 import {NativeLinePool} from './native-lines.js';
@@ -35,9 +36,8 @@ export function packedTexture(texture,allowUV1=false){
   if(!channels||channels!==4&&!floating||!floating&&texture.type!==THREE.UnsignedByteType||floating&&texture.colorSpace===THREE.SRGBColorSpace)throw Error('DirectX 텍스처 형식을 확인하세요.');
   const data=first.data;if(!cube&&data){
     if(data.length!==w*h*layers*channels||!(half?data instanceof Uint16Array:floating?data instanceof Float32Array:data instanceof Uint8Array||data instanceof Uint8ClampedArray)||floating&&data.some(v=>half?(v&0x7c00)===0x7c00:!Number.isFinite(v)))throw Error('DirectX 텍스처 자료 크기와 값을 확인하세요.');
-    const bytes=new Uint8Array(data.buffer,data.byteOffset,data.byteLength).slice();
-    if(texture.flipY){const row=w*channels*(half?2:floating?4:1);for(let z=0;z<layers;z++)for(let y=0;y<Math.floor(h/2);y++){const a=(z*h+y)*row,b=(z*h+h-y-1)*row,top=bytes.slice(a,a+row);bytes.copyWithin(a,b,b+row);bytes.set(top,b);}}
-    return {kind:'dataTexture',width:w,height:h,layers,array,dimension:volume?'volume':'2d',channels,floating,...(half?{half:true}:{}),srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps,rgbaBase64:rgbaBase64(bytes)};
+    const mipLevels=packedTextureMips(texture,w,h,rgbaBase64),bytes=textureUploadBytes(data,h,w*channels*(half?2:floating?4:1),texture.flipY);
+    return {kind:'dataTexture',width:w,height:h,layers,array,dimension:volume?'volume':'2d',channels,floating,...(half?{half:true}:{}),srgb:texture.colorSpace===THREE.SRGBColorSpace,mipmaps:texture.generateMipmaps,...(mipLevels?{mipLevels}:{}),rgbaBase64:rgbaBase64(bytes)};
   }
   if(floating||channels!==4||volume||array)throw Error('DirectX 텍스처 자료 변환을 확인하세요.');
   const bytes=new Uint8Array(w*h*layers*4),off=document.createElement('canvas');off.width=w;off.height=h;const context=off.getContext('2d',{willReadFrequently:true});if(!context)throw Error('텍스처 이미지 변환을 시작할 수 없어요.');

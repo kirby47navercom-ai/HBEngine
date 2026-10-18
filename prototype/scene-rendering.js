@@ -19,7 +19,7 @@ import {enabledComponent,objectComponents,componentDefaults,validComponentProper
 import {spriteSlices,spriteImage,tileAtlasRect,tileRenderRect} from './two-d-assets.js';
 import {tilemapColliders} from './tilemap-runtime.js';
 import {createThreeMaterial,materialParameterKey,materialParameters,materialFloatProperty,materialVectorProperty,materialVectorValue,resolveMaterialAsset} from './material-runtime.js';
-import {validMaterialTexturePath,validateTextureImages} from './texture-assets.js';
+import {validMaterialTexturePath,validateTextureImages,textureAssetReferenceKind} from './texture-assets.js';
 import {ParticleSimulation} from './scene-systems.js';
 import {TwoDRendering,spriteEffectsUniforms,createSpriteMaskMaterial} from './two-d-rendering.js';
 import {SpriteRigPose} from './sprite-rig-runtime.js';
@@ -144,7 +144,7 @@ export function sceneRendering({read,fileUrl,loadModel,current,all=()=>[],editor
     const group=current(object.id),owned=[...group?.userData.resources||[]].filter(r=>r.userData?.hbMaterial);if(!owned.length)throw Error('노드 머테리얼을 먼저 지정하세요.');
     const types=owned.map(m=>{const p=materialParameters(m.userData.materialSource).find(p=>p.name===key),type=p?.type==='texture'?'texture2d':p?.type;if(!validMaterialTexturePath(type,path))throw Error('텍스처 파라미터 이름·자료형·경로를 확인하세요: '+key);return type;});
     const requests=group.userData.materialTextureRequests??=new Map(),generation=(requests.get(key)||0)+1;requests.set(key,generation);const request=group.userData.materialRequest;
-    const resources={};for(const type of new Set(types))if(type!=='texture2d')resources[path]=validateTextureImages(({texturecube:'cubemap',texturearray:'texturearray',texture3d:'volumetexture'})[type],await read(path));
+    const resources={};for(const type of new Set(types)){const kind=textureAssetReferenceKind(type,path);if(kind)resources[path]=validateTextureImages(kind,await read(path));}
     await Promise.all(owned.map(m=>m.userData.ready));
     const valid=()=>current(object.id)===group&&!group.userData.disposed&&requests.get(key)===generation&&group.userData.materialRequest===request&&owned.every(m=>group.userData.resources.has(m));
     if(!valid())return false;

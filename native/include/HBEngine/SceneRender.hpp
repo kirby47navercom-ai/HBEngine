@@ -98,6 +98,7 @@ public:
         std::uint64_t bufferBytes()const{return std::uint64_t(vertexCount)*sizeof(SceneVertex)*(streamVertices.empty()?1:3)+std::uint64_t(count)*4+(uv1.p?std::uint64_t(vertexCount)*8:0);}
         std::uint64_t cpuBytes()const{return std::uint64_t(streamVertices.capacity())*sizeof(SceneVertex);}
     };
+    struct TextureMipLevel {std::uint32_t width=0,height=0;std::vector<std::uint8_t> rgba;};
     struct Texture {
         friend class SceneRenderer;
     private:
@@ -339,21 +340,29 @@ public:
         return createDataTexture(width,height,rgba,4,false,1,srgb,false,"2d",mipmaps);
     }
 
-    Texture createDataTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false,bool half=false){
+    Texture createDataTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& bytes,std::uint32_t channels=4,bool floating=false,std::uint32_t layers=1,bool srgb=false,bool array=false,const std::string& dimension="2d",bool mipmaps=false,bool half=false,const std::vector<TextureMipLevel>& mipLevels={}){
         if(half&&!floating){throw std::runtime_error("Half texture must be floating");}const std::uint32_t componentBytes=half?2u:floating?4u:1u;const bool cube=dimension=="cube",volume=dimension=="volume";const UINT limit=volume?D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION:D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
         if((dimension!="2d"&&!cube&&!volume)||(array&&(cube||volume))||!width||!height||width>limit||height>limit||!layers||layers>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||(cube&&(layers!=6||width!=height))||(!array&&!cube&&!volume&&layers!=1)||(channels!=4&&!(floating&&channels==2))||(srgb&&(floating||channels!=4)))throw std::runtime_error("Material texture dimensions or bytes invalid");
         const std::uint64_t pitch=std::uint64_t(width)*channels*componentBytes,size=pitch*height*layers;if(size!=bytes.size())throw std::runtime_error("Material texture dimensions or bytes invalid");
         if(half){for(std::size_t i=0;i<bytes.size();i+=2){std::uint16_t v;std::memcpy(&v,bytes.data()+i,2);if((v&0x7c00u)==0x7c00u)throw std::runtime_error("Half texture must be finite");}}else if(floating)for(std::size_t i=0;i<bytes.size();i+=4){float v;std::memcpy(&v,bytes.data()+i,4);if(!std::isfinite(v))throw std::runtime_error("2D float texture must be finite");}
+        if(!mipLevels.empty()){
+            if(mipmaps||cube||volume||array||floating||channels!=4)throw std::runtime_error("Explicit mips require an RGBA8 2D texture without automatic generation");
+            auto w=width,h=height;for(const auto& level:mipLevels){if(w==1&&h==1)throw std::runtime_error("Explicit mip count exceeds the texture dimensions");w=std::max(1u,w/2);h=std::max(1u,h/2);if(level.width!=w||level.height!=h||level.rgba.size()!=std::uint64_t(w)*h*4)throw std::runtime_error("Explicit mip dimensions or bytes invalid");}
+        }
         std::lock_guard<std::mutex> lock(gpu.mutex);Texture out;out.owner=gpu.device.p;out.width=width;out.height=height;out.layers=layers;out.bytes=size;out.flatTexture=!array&&!cube&&!volume;
         const DXGI_FORMAT format=half?(channels==2?DXGI_FORMAT_R16G16_FLOAT:DXGI_FORMAT_R16G16B16A16_FLOAT):floating?(channels==2?DXGI_FORMAT_R32G32_FLOAT:DXGI_FORMAT_R32G32B32A32_FLOAT):(srgb?DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:DXGI_FORMAT_R8G8B8A8_UNORM);UINT support=0;detail::check(gpu.device->CheckFormatSupport(format,&support),"Material texture support");if(mipmaps&&!(support&D3D11_FORMAT_SUPPORT_MIP_AUTOGEN))throw std::runtime_error("Material texture format cannot generate mips");
-        UINT mips=1;if(mipmaps)for(UINT extent=std::max(width,std::max(height,volume?layers:1u));extent>1;extent/=2)++mips;
+        UINT mips=static_cast<UINT>(mipLevels.size()+1);if(mipmaps)for(UINT extent=std::max(width,std::max(height,volume?layers:1u));extent>1;extent/=2)++mips;
         out.bytes=0;for(UINT level=0;level<mips;level++)out.bytes+=std::uint64_t(std::max(1u,width>>level))*std::max(1u,height>>level)*(volume?std::max(1u,layers>>level):layers)*channels*componentBytes;
         const UINT bind=D3D11_BIND_SHADER_RESOURCE|(mipmaps?D3D11_BIND_RENDER_TARGET:0),misc=mipmaps?D3D11_RESOURCE_MISC_GENERATE_MIPS:0;
         if(volume){D3D11_TEXTURE3D_DESC d{};d.Width=width;d.Height=height;d.Depth=layers;d.MipLevels=mips;d.Format=format;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=bind;d.MiscFlags=misc;detail::Com<ID3D11Texture3D> image;detail::check(gpu.device->CreateTexture3D(&d,nullptr,&image.p),"Volume data texture");gpu.context->UpdateSubresource(image.p,0,nullptr,bytes.data(),static_cast<UINT>(pitch),static_cast<UINT>(pitch*height));detail::check(gpu.device->CreateShaderResourceView(image.p,nullptr,&out.view.p),"Volume data view");}
         else{D3D11_TEXTURE2D_DESC d{};d.Width=width;d.Height=height;d.MipLevels=mips;d.ArraySize=layers;d.Format=format;d.SampleDesc.Count=1;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=bind;d.MiscFlags=misc|(cube?D3D11_RESOURCE_MISC_TEXTURECUBE:0);detail::Com<ID3D11Texture2D> image;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&image.p),"Material data texture");for(UINT i=0;i<layers;i++)gpu.context->UpdateSubresource(image.p,i*mips,nullptr,bytes.data()+std::size_t(i)*pitch*height,static_cast<UINT>(pitch),0);
+            for(std::size_t level=0;level<mipLevels.size();++level){const auto& data=mipLevels[level];gpu.context->UpdateSubresource(image.p,static_cast<UINT>(level+1),nullptr,data.rgba.data(),data.width*4,0);}
             // A one-layer cookie still binds to Texture2DArray in HLSL.
             D3D11_SHADER_RESOURCE_VIEW_DESC v{};v.Format=format;v.ViewDimension=cube?D3D11_SRV_DIMENSION_TEXTURECUBE:array?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;v.Texture2D.MipLevels=mips;if(array){v.Texture2DArray.MipLevels=mips;v.Texture2DArray.ArraySize=layers;}detail::check(gpu.device->CreateShaderResourceView(image.p,&v,&out.view.p),"Material data view");}
         if(mipmaps){gpu.context->GenerateMips(out.view.p);}++uploads_;return out;
+    }
+    Texture createTexture(std::uint32_t width,std::uint32_t height,const std::vector<std::uint8_t>& rgba,bool srgb,const std::vector<TextureMipLevel>& mipLevels){
+        return createDataTexture(width,height,rgba,4,false,1,srgb,false,"2d",false,false,mipLevels);
     }
     struct RayScenePatch{std::uint32_t row,rows;std::vector<std::uint8_t> bytes;};
     void updateRayScenes(Texture& value,std::uint32_t width,std::uint32_t height,const std::vector<RayScenePatch>& patches){

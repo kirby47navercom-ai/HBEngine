@@ -1,12 +1,15 @@
 import {applySamplerState,validSamplerState} from './sampler-state.js';
-export const textureAssetTypes={cubemap:{label:'큐브맵',prefix:'TC_',group:'텍스처'},texturearray:{label:'텍스처 2D 배열',prefix:'TA_',group:'텍스처'},volumetexture:{label:'볼륨 텍스처',prefix:'TV_',group:'텍스처'}};
-export const textureAssetSuffix={cubemap:'.hbcubemap.json',texturearray:'.hbtexturearray.json',volumetexture:'.hbvolumetexture.json'};
+import {textureImportDefaults,validTextureImportPolicy} from './texture-mip-policy.js';
+import {loadImportedTexture2D} from './texture-import.js';
+export const textureAssetTypes={texture2d:{label:'텍스처 2D',prefix:'T_',group:'텍스처'},cubemap:{label:'큐브맵',prefix:'TC_',group:'텍스처'},texturearray:{label:'텍스처 2D 배열',prefix:'TA_',group:'텍스처'},volumetexture:{label:'볼륨 텍스처',prefix:'TV_',group:'텍스처'}};
+export const textureAssetSuffix={texture2d:'.hbtexture2d.json',cubemap:'.hbcubemap.json',texturearray:'.hbtexturearray.json',volumetexture:'.hbvolumetexture.json'};
 export const materialTextureTypes={texture2d:{sample:'texture',object:'textureObject',parameter:'textureObjectParameter',kind:'texture'},texturecube:{sample:'sampleCube',object:'cubeObject',parameter:'cubeParameter',kind:'cubemap'},texturearray:{sample:'sampleArray',object:'arrayObject',parameter:'arrayParameter',kind:'texturearray'},texture3d:{sample:'sampleVolume',object:'volumeObject',parameter:'volumeParameter',kind:'volumetexture'}};
 export const textureNodeType=key=>Object.keys(materialTextureTypes).find(t=>Object.values(materialTextureTypes[t]).slice(0,3).includes(key));
 const imagePath=p=>typeof p==='string'&&p.length<=1000&&(p===''||/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+\.(png|jpe?g|webp|gif|bmp|svg)$/i.test(p)&&!p.split('/').some(v=>v==='.'||v==='..'));
-export const validMaterialTexturePath=(type,path)=>type==='texture2d'?imagePath(path)&&!!path:!!materialTextureTypes[type]&&typeof path==='string'&&/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+$/.test(path)&&!path.split('/').some(v=>v==='.'||v==='..')&&path.endsWith(textureAssetSuffix[materialTextureTypes[type].kind]);
-export const createTextureAsset=(kind,name)=>({version:1,name,dimension:kind,images:Array(kind==='cubemap'?6:1).fill('')});
-export const validTextureAsset=(kind,d)=>!!textureAssetTypes[kind]&&d?.version===1&&typeof d.name==='string'&&d.name.length>0&&d.name.length<=80&&d.dimension===kind&&Array.isArray(d.images)&&d.images.length>0&&(kind!=='cubemap'||d.images.length===6)&&d.images.every(imagePath)&&validSamplerState(d.sampler);
+export const textureAssetReferenceKind=(type,path)=>type==='texture2d'?(typeof path==='string'&&path.endsWith(textureAssetSuffix.texture2d)?'texture2d':null):materialTextureTypes[type]?.kind;
+export const validMaterialTexturePath=(type,path)=>type==='texture2d'&&imagePath(path)&&!!path||!!materialTextureTypes[type]&&typeof path==='string'&&/^Assets\/(?:[^/\\:\x00-\x1f]+\/)*[^/\\:\x00-\x1f]+$/.test(path)&&!path.split('/').some(v=>v==='.'||v==='..')&&!!textureAssetReferenceKind(type,path)&&path.endsWith(textureAssetSuffix[textureAssetReferenceKind(type,path)]);
+export const createTextureAsset=(kind,name)=>({version:1,name,dimension:kind,images:Array(kind==='cubemap'?6:1).fill(''),...(kind==='texture2d'?{import:{...textureImportDefaults}}:{})});
+export const validTextureAsset=(kind,d)=>!!textureAssetTypes[kind]&&d?.version===1&&typeof d.name==='string'&&d.name.length>0&&d.name.length<=80&&d.dimension===kind&&Array.isArray(d.images)&&d.images.length>0&&(kind!=='cubemap'||d.images.length===6)&&(kind!=='texture2d'||d.images.length===1&&validTextureImportPolicy(d.import))&&d.images.every(imagePath)&&validSamplerState(d.sampler);
 export const validateTextureImages=(kind,d)=>{if(!validTextureAsset(kind,d)||d.images.some(p=>!p))throw Error('텍스처 이미지와 자료형을 확인하세요.');return d;};
 
 // Renderers share decoding/ownership. Uploads happen only on asset creation, never per frame.
@@ -19,8 +22,9 @@ export function texturePlaceholder(THREE,type){
   map.colorSpace=THREE.NoColorSpace;map.minFilter=map.magFilter=THREE.LinearFilter;map.needsUpdate=true;return map;
 }
 export async function loadMaterialTexture(THREE,binding,resources,fileUrl,renderer){
-  const type=binding.type||'texture2d',kind=materialTextureTypes[type]?.kind;let map;
-  if(type==='texture2d')map=await new THREE.TextureLoader().loadAsync(fileUrl(binding.path));
+  const type=binding.type||'texture2d',kind=textureAssetReferenceKind(type,binding.path);let map;
+  if(type==='texture2d'&&kind!=='texture2d')map=await new THREE.TextureLoader().loadAsync(fileUrl(binding.path));
+  else if(kind==='texture2d'){map=await loadImportedTexture2D(THREE,validateTextureImages(kind,resources?.[binding.path]),fileUrl);const gl=renderer?.isWebGLRenderer?renderer.getContext():renderer?.backend?.gl,limits=renderer?.backend?.device?.limits??renderer?.hbTextureLimits,max=gl?.getParameter(gl.MAX_TEXTURE_SIZE)??limits?.maxTextureDimension2D;if(max&&(map.image.width>max||map.image.height>max)){map.dispose();throw Error('가져온 텍스처가 현재 장치의 크기 한도를 넘었어요.');}}
   else{
     const d=validateTextureImages(kind,resources?.[binding.path]),loader=new THREE.ImageLoader(),first=await loader.loadAsync(fileUrl(d.images[0])),w=first.width,h=first.height;
     if(!w||!h||type==='texturecube'&&w!==h)throw Error('텍스처 이미지 크기를 맞춰 주세요.');
@@ -33,5 +37,5 @@ export async function loadMaterialTexture(THREE,binding,resources,fileUrl,render
       map=type==='texturearray'?new THREE.DataArrayTexture(pixels,w,h,d.images.length):new THREE.Data3DTexture(pixels,w,h,d.images.length);map.minFilter=map.magFilter=THREE.LinearFilter;
     }
   }
-  map.colorSpace=THREE.NoColorSpace;return applySamplerState(THREE,map,binding.sampler||resources?.[binding.path]?.sampler,binding.wrap||'clamp');
+  const report=map.userData.hbTextureImportReport,sampleSpace=binding.colorSpace||(report?'linear':'srgb'),sourceSpace=report?.colorSpace||binding.sourceColorSpace;if(report&&sampleSpace!=='linear'&&sourceSpace==='linear'){map.dispose();throw Error('텍스처 파라미터의 색 공간과 새 리소스가 달라요.');}map.colorSpace=sampleSpace==='linear'&&sourceSpace==='srgb'?THREE.SRGBColorSpace:THREE.NoColorSpace;applySamplerState(THREE,map,binding.sampler||resources?.[binding.path]?.sampler,binding.wrap||'clamp');if(map.userData.hbCookedMips){map.generateMipmaps=false;if(map.mipmaps.length===1)map.minFilter=[THREE.NearestFilter,THREE.NearestMipmapNearestFilter,THREE.NearestMipmapLinearFilter].includes(map.minFilter)?THREE.NearestFilter:THREE.LinearFilter;}return map;
 }
