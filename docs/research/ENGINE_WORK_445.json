@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "0a8f3009e70e6b6673a427ae0ac4ddbebcb321f6",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/ray-differential-library.js": "880733e93b6954774f5e702da278c10d420f75535beec3ab2a5b8e872270a845",
+    "prototype/ray-mixed-normal-context.js": "8ac70cf7c2166c2b595c2740b8605bd2e468fcaabfe9b9e222be348d1a158442",
+    "prototype/ray-nonlinear-differentials.js": "7c59b65feb8299341feaef428f5fb64e56d7c02087bd2e9e2841bd67a344a21b",
+    "prototype/ray-program-differentials.js": "282da626cf7fc6a197e48d56114b285bc047773273576437f9383c45c2bafe5a",
+    "prototype/ray-uv-footprint.js": "bd6f101056b489e60f5fa3220200fdd9deb97fd48ec6c2dd8bc90353daf02ed3",
+    "tools/check-mixed-normal-context-442-window.mjs": "ffc3d9550628c5671451c41965a2bfa03750f823e08b515910939c2240805c47",
+    "tools/check-mixed-normal-preparation-441-window.mjs": "11fccfa39cbac5ef33ba243f022e920a7b97f3ad547489263e404946ba0f9f8d",
+    "tools/check-nonlinear-graphs-444-native.mjs": "509e3f05f9c4ae8d34f651b2bf86105ea6fa1a1d5428e194d3e2b3078071a13b",
+    "tools/check-nonlinear-graphs-444-window.mjs": "4c32553f47a63094a2357a4dc89a2c583bd2f68d9c061d36b02a28f056278f8d",
+    "tools/check-ray-differentials-418-native.mjs": "ac41c9acc10d8a6cf0650fc0531f7420b4af773aec4bedf96b85c609aeeb4443",
+    "tools/check-ray-differentials-418-window.mjs": "10c2499534e15c081a28df3f415b397b3707d698bf6d09d914e2ebedde4d5c7d",
+    "tools/check-ray-helper-dependencies-438.mjs": "0544250e96ff4c0d22a2361d279d8624430103027d39588353f8f9757a713ef1",
+    "tools/check-ray-helper-pruning-436.mjs": "d2db4082aaeef752b01f9982d6f0dc5f794b17093f849465dce6bee98104e937",
+    "tools/nonlinear-history-fixture-444.mjs": "a01899fd97431500ebe13101f88ca9de52db97e464b89f000d9bc983abe8c5e9",
+    "tools/normal-history-fixture-403.mjs": "3b31aa793cb84b3f77c9875f6f18a08c93deae14513308e6eb31aa95ae8ba073",
+    "tools/ray-differentials-fixture-418.mjs": "1fb4f5f93f18e4a26de23c9e574c4ad6db2105b4184009013696043853cf821d",
+    "tools/ray-differentials-fixture-443.mjs": "7d8aa65dc20f0baadee3898b1776d94fefb33c39188a27ca6285087e24a7c4d5",
+    "tools/ray-differentials-probe-418.mjs": "8102d2148c671d00672e89a1f14cc437b9c83758a901ae70152fe12405d88148",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "9fcebb081f1039ca7e0b48fe13a73a58181c038bf63567fedbb9991d4c9610bb",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a55f710ae342d84075cbe5690c37f8b8066dbc81caa9ea919d0226766b92cd1d"
+  },
+  "nativePlayerSHA256": "18bed587256b88501c5e0bf7f08677789411b6bfa5dce47f96fa50a2e04c3bcb",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/mixed-normal-preparation-441-9x9kg2/acceptance.json",
+      "sha256": "a4687a2696dba569cb292936f98574b681bf34dd5b58955d27d440d14b7838e5"
+    },
+    {
+      "path": "native/build/mixed-normal-context-442-9IIJ9N/acceptance.json",
+      "sha256": "dbd19b28e575d3e8692e8d7510e11d7d379b505445a4dd99d2ba30077c3a3843"
+    },
+    {
+      "path": "native/build/ray-differentials-443-C9uScy/acceptance.json",
+      "sha256": "cc17aabd29cbd1da28a60042bc710d8db4f66835442ae7f1a62d0c14dbcc29eb"
+    },
+    {
+      "path": "native/build/ray-differentials-443-native-2uuUr6/acceptance.json",
+      "sha256": "a2fd15d7a102727157dc806b245859a1c4d9f63cadcb84527d9589c360516749"
+    },
+    {
+      "path": "native/build/ray-helper-pruning-436-LSvIo3/acceptance.json",
+      "sha256": "b8733aa2819d31f1fa812e8b577e2c75b67ad19ab7dd173c94286914d0dd79d2"
+    },
+    {
+      "path": "native/build/nonlinear-graphs-444-uc8LcF/acceptance.json",
+      "sha256": "25d160f53d52a59e5658f056f51b19a744f120a69302f8affc943dacdf6bf506"
+    },
+    {
+      "path": "native/build/nonlinear-graphs-444-native-KBwRDu/acceptance.json",
+      "sha256": "316c9bc868dae24b7e63c3c8ff0929329dde418d0b6465bfc975091b6b3388e1"
+    },
+    {
+      "path": "native/build/native-scene-window-VWxJFX/acceptance.json",
+      "sha256": "3dda2f4b46a91ad4e141c4995f3bafc1a93e65588a208ce17ad5d0c84406b5fe"
+    },
+    {
+      "path": "native/build/rendering-445-light-checks.json",
+      "sha256": "acaf6e26533ab4b4709421172c1c8268a1129a5214280b196b88a8ca96cc57ee"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-VWxJFX/acceptance.json",
+      "scope": "새 DirectX 실행 파일 Complex141·C++/BP·모프664·캐시·해제. 단일 준비 관찰"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/nonlinear-graphs-444-uc8LcF/acceptance.json",
+      "scope": "여덟 실제 비선형 그래프 GL/WebGPU 현재/이전 입력과 서로 다른 밉 폭·기존4e-5"
+    }
+  ],
+  "implemented": [
+    "power/exp2/log2/smoothstep/normalMap/fresnel/radialGradient/linearGradient 상대 유한차분·작은 log1p/expm1·큰 변화 원래연산",
+    "중립 노멀·음수강도·클램프/epsilon·거듭제곱 경계·그라디언트 각도/반지름·기존 sampler/IR/예산 유지",
+    "선택 보조 함수의 이름 규칙 이탈도 거부·20개 함수의 전이 의존·실제20 전처리 조건",
+    "AI stableOperations43·noise/checker/float한계 공개"
+  ],
+  "experiments": [
+    {
+      "implemented": true,
+      "promoted": false,
+      "path": "prototype/ray-mixed-normal-context.js",
+      "evidence": [
+        {
+          "path": "native/build/mixed-normal-preparation-441-9x9kg2/acceptance.json",
+          "sha256": "a4687a2696dba569cb292936f98574b681bf34dd5b58955d27d440d14b7838e5"
+        },
+        {
+          "path": "native/build/mixed-normal-context-442-9IIJ9N/acceptance.json",
+          "sha256": "dbd19b28e575d3e8692e8d7510e11d7d379b505445a4dd99d2ba30077c3a3843"
+        }
+      ],
+      "scope": "공유 graph+bool geometry preamble와 current/differential/prior normal 단일호출. GL17pose×3문맥 원본오차0. 단일 ABBA, CPP/TSL/coat/전체guide 검증 전이므로 기본렌더러 미적용"
+    }
+  ],
+  "measurements": {
+    "operations": 40,
+    "conditions": 699,
+    "errorsByGroup": {
+      "webgl:legacy573": 0.0000035940697439285074,
+      "webgl:small443": 3.552713678800501e-15,
+      "webgl:other443": 0.0008499733276039478,
+      "webgpu:legacy573": 0.000003594067924939104,
+      "webgpu:small443": 3.552713678800501e-15,
+      "webgpu:other443": 0.0008499733276039478
+    },
+    "exactRationalProduct": [
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625
+    ],
+    "fullGraphOperations": 8,
+    "D3DContexts": 16,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4797.489199999996
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1956.484500000006
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 106.04850000000442
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4471.944099999993
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 150.97409999999218
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 132.73630000000412
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 577724,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 31,
+        "totalCompileMS": 9828,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "fullCompileImprovementEstablished": false,
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "tmoAGy 큰power log/exp왕복 .002568오차·큰변화원래pow로수정후.00085,작성시2e-3인새6305출력한조건·기존573기준완화없음",
+    "444 vec2→dotvec3 fixture를validator가거부·기존numeric승격/split로수정,약한Fresnel밉fixture직교시선으로관측가능하게수정",
+    "초기source445 신규CRLF가diff공백검사에걸려바로LF수정0a8f300·수식변경없음"
+  ],
+  "limits": [
+    "noise/checker shifted-input과표현불가능작성입력·극단중간범위·원래normalize/pow미정의구간",
+    "혼합노멀실험은미채택·초기복잡준비여전히초단위·성능개선율/전체완료주장없음",
+    "전역곡면/변경투명경로/복합로브/참여매질·RND08/나머지누적원장·전체분석gate유지"
+  ]
+}

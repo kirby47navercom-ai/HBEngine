@@ -596,3 +596,8 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 공유 좌표 보조 함수의 전이 의존을 기존 연산 목록에 연결했어요. 실제 D3DPreprocess12조건에서 기본UV/time/add/mul은10함수→0·보조라이브러리4580→254B. 실제 GL/GPU 다섯 full graph와 native10현재/이전 패킷·새Complex141 WQwSTE가 통과했어요. 전체 준비 ABBA full2617/2572ms guarded2636/2881ms로 지연 개선은 확립되지 않았어요. 같은 수식 몸체·573조건 알고리즘과 자원 예산을 유지하며 순환·누락·중복도 거부해요. 전체 엔진 완료로 승격하지 않고 현재/이전 노멀 호출 지연과 누적 렌더링 목표를 계속해요.
 
 440 설치 f4230fbda13c3695·3292전체명세/11소유SHA·새player·links2/.hbproject·Versions1 통과. 설치 검사 coordinate-graphs-433-O6blds / shader-cache-window-350-syaNU7에서 다섯 GL/GPU 그래프와 두DirectX게임 캐시를 확인했어요. User10385읽기SHA보존. 이전설치178372339B와검사exe886750B를정리하고441 이후작업을계속해요.
+
+
+### 2026-10-19 · 441–445
+
+8추가비선형상대차분을세API에연결했어요. 40연산699조건·8실제graph·16native독립현재/이전패킷·새C++/BP게임VWxJFX가통과했어요. 기존573조건오차기준과새subULP1e-10·새큰6305출력한조건2e-3를구분. 보조함수20개전이선택·규칙이탈거부·AI43연산·추가GPU자원/uniform/운영readback0. 441혼합노멀은GL17pose×3오차0·한번ABBA원본2590/2592/혼합2448/2551ms이나기본미채택·세API/coat/전체guide후속필요. 초기준비path4797/guide4472ms단일관찰로전체속도개선주장없음. ENGINE_WORK445정본·설치와추가렌더링계속.
