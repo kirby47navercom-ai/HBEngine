@@ -36,7 +36,7 @@
     "tools/check-shader-disk-cache-346.mjs": "8f2c63aefceba50d16f086f1c95fb4b73f8636804f362ba371c1f0b1852857de",
     "tools/editor-automation.mjs": "794160fd8d56108faadfe8a58d7fb8cb4250c80b1fff3fc07deed5fe9460ae93"
   },
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/shader-disk-cache-346-Ulpya3/acceptance.json",
@@ -61,6 +61,10 @@
     {
       "path": "native/build/rendering-296-window-dzP7Kv/acceptance.json",
       "sha256": "b0b9944db41693717a9f30dffd6fb4c568486e16461557b27350fc5641ae64c3"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-tZcuO7/acceptance.json",
+      "sha256": "e4176248c15888fc1070a088f9db93d4a9ee088b9e37b2cb44532b04070f4c6b"
     }
   ],
   "lightChecks": [
@@ -126,5 +130,6 @@
     "RND07 투명 이전 분기·다른 표면 필드·추가 산란 footprint 잔여 유지",
     "353의 NRD/HDRP 선택 읽기는 구현·전체 분석 완료로 계산하지 않음",
     "0VeswA 보고서 없는 실행과 351 이전 실패는 검증 성과에 포함하지 않음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_349.json"
 }

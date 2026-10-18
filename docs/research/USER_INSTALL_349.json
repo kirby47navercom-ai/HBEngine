@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "a57f14d40ed8c316651f404a959da32096668f39",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45\\HBEngine.exe",
+  "bundleHash": "ae9f6eff3708ba45f261d31983475290cb1614a758608d88fc8d4325eca79f34",
+  "files": 3135,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "a57f14d40ed8c316651f404a959da32096668f39",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45\\HBEngine.exe",
+    "bundleHash": "ae9f6eff3708ba45f261d31983475290cb1614a758608d88fc8d4325eca79f34",
+    "files": 3135,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3123,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9",
+          "bytes": 177676881,
+          "manifestSHA256": "9a7060dfe4b25fed68e5dc2a7938b4b0c1c1ad9a2c22814953706de75ef32146"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T07:01:53.5689494Z",
+      "bytes": 177676881,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "ae9f6eff3708ba45"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/shader-cache-window-350-tZcuO7/acceptance.json",
+        "sha256": "e4176248c15888fc1070a088f9db93d4a9ee088b9e37b2cb44532b04070f4c6b",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "sourceGameGate": {
+      "path": "native/build/native-scene-351-8cYod3/acceptance.json",
+      "sha256": "6ce97f079fee58e2dd4b814eedede3839770c8b96db804d0e51b32eed7b3e65a",
+      "scope": "Actual full source C++/BP scene after probe fix; installed runtime owners/base player match. Installed350 runs two packaged games; full suite was not repeated at installed path."
+    },
+    "manifestVerifiedFiles": 3135,
+    "versions": [
+      "ae9f6eff3708ba45"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "referenceReceipt": "docs/research/USER_INSTALL_334.json",
+      "referenceSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "scope": "Equal verification before/after inventories and equal inventory to the previous installed receipt; initial pre-install in-memory inventory was not persisted after the verifier failed."
+    },
+    "firstVerificationFailure": "Current validator CLI target matched conservative active-version detection. Kept the same protection and ran the unchanged verifier via an in-memory argument; no user process excluded/killed.",
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "349 native shader reuse/probe fixes; all installed manifest SHAs, private packaged cold/warm games, Versions1 and User read-only inventory. No FPS/whole-engine completion claim."
+  },
+  "completedFixtureCleanup": {
+    "failures": [],
+    "freeAfter": 471269527552,
+    "freeBefore": 471269527552,
+    "deleted": 0,
+    "date": "2026-10-18T07:06:12.9379749Z",
+    "files": null,
+    "bytes": null,
+    "skipped": [
+      "native-scene-window-0VeswA\\DirectX 장면 검사\\Builds"
+    ],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792307172354-53a15e20-cd05-4589-837f-ccbebe65e770"
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 4801492,
+    "removed": [
+      {
+        "path": "native/build/gpu-render-JYI2Ac/hardware.exe",
+        "bytes": 541492,
+        "sha256": "cec263ab43fbe36aeaaadf7fd5de8ccaf8a77f556748ae3aef288e09270ab828"
+      },
+      {
+        "path": "native/build/gpu-render-JYI2Ac/unavailable.exe",
+        "bytes": 136087,
+        "sha256": "89593dc5f238206c19f661d8f44f0d4fe566e3f2db2e98c259629e699a1c74cb"
+      },
+      {
+        "path": "native/build/gpu-render-JYI2Ac/HBGPUDemo.exe",
+        "bytes": 281752,
+        "sha256": "2786802cdc1c95d8029d3a1fa097e355c84348946b8b926dccb0c99c79838416"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-7c71bK/probe.exe",
+        "bytes": 887025,
+        "sha256": "0683c57dffc8f26234749dc22915d37dd973a04cac8e624483ff4209d2d757d1"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-f4cnjT/probe.exe",
+        "bytes": 887025,
+        "sha256": "2923c3cde28318c585bf0dd5c0a63850d8ba02b800625f60e3a062bb97f456f3"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-OtNMQG/probe.exe",
+        "bytes": 914938,
+        "sha256": "47946a5c73b507fb434bea3152ff229c3d81ba3cbed573683ed3d88e7c0dc7f9"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-p1RiXS/probe.exe",
+        "bytes": 886513,
+        "sha256": "8132d5fcc5ffb632928b8a444003759d8f48d1ce6fe5af0eef67e332e06fc576"
+      },
+      {
+        "path": "native/build/shader-disk-cache-346-Ulpya3/probe.exe",
+        "bytes": 266660,
+        "sha256": "486a6547615b1b9d6c56b3194556214cdd936c64825c6c31503f7a8955315be6"
+      }
+    ]
+  },
+  "scope": "349 native shader reuse/probe fixes; all installed manifest SHAs, private packaged cold/warm games, Versions1 and User read-only inventory. No FPS/whole-engine completion claim."
+}

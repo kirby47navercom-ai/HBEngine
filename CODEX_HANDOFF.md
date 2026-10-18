@@ -1,10 +1,10 @@
-# HBEngine 현재 인계 — 346–352 검증·349 설치 준비
+# HBEngine 현재 인계 — 349 설치 확인·353 렌더링 계속
 
-- 구현 4baab6e958246834a37d5a06989637ef366a6b7f예요. 334설치55e1cb7c02adbcb9는 유지 중이며349 설치는 아직 안 했어요.
-- 신규 DX11공유 디스크캐시8MiB: SDK명시configure/Player호스트opt-in·전체HLSL/entry/target/flags/DLLstamp·비대기 파일잠금/손상/장치거부/강제종료복구·기존screen9 ABI+disk10 진단·AI schema예요. Device::compile/GL/GPU는대상아니에요.
-- Ulpya3 store gate, OtNMQG 실제21save→21hit/0compile/픽셀0, ppVCAw 실제패키지6save→6hit/0save, JYI2Ac GPU65537/간접draw/hiddenHWND/Android헤더만통과예요.
-- full원본0VeswA보고서부재미검증. 이미완성된450파일패키지를351로재사용했고odSg7c에서프로브강도recapture2/1버그발견. 공용capturekey와browser생성타깃수명mock수정 후351최종8cYod3 전체D3D CPP/BP·2D/3D/HUD/텍스처/그림자/파티클/변형/Bloom/프로브/해제통과예요. preparedPKG 두JS/manifest patchreceipt보존돼요.
-- CPP캐시지원 Player446de998…로desktop빌드성공. 이후JS/docs/tools만바뀌었으므로다시CPP빌드하지않고sync349/install349/finish349새marker한번씩진행해요. 설치350 --executable은profile/User보존·전체manifest·Versions1/바로가기2/.hbproject확인과함께돌려요.
-- 335mixed-frame GL프로토타입 native/build/mixed-frame-335.mjs는338b8BhcG17문맥/3438mdnAZ/344STGoBx guide/lens오차0. 기본경로미채택·전체준비/steadyframe비용검증아직없음. 296회귀dzP7Kv UV관측/mip/referenceAPI고정통과·동일sourcecache재사용시간은성능이득아님.
-- 설치후 docs/RENDERING_HISTORY_353_RESEARCH.md대로 previoussurfacefields/transparent branch/medium이력을계속해요. NRD/HDRP선택본문은읽었으나전체corpusgate승격안함. RND07등78등록행누적잔여는ENGINE_STATUS정본이고UE/Unity전체분모아니에요.
-- 기존record/sync/install/finish318/327/334는재실행금지. User읽기전용inventory만·고유fixture/profile/port·사용자창보존·활성사용자시heavy/설치미룸·Versions1을유지해요.
+- 구현4baab6e·문서a57f14d main push. 설치 ae9f6eff3708ba45 하나·3135전체명세SHA·바로가기2/.hbproject·User10385파일 검증전후/334참조SHA 동일이에요. USER_INSTALL_349가 정본이에요.
+- DX11공유디스크8MiB·SDK명시configure/Playeropt-in·전체source/entry/target/flags/DLLstamp·손상/비대기/장치거부/강제종료fallback. 기존screen9 ABI+disk10/AI schema. Device::compile/GL/GPU최초준비는대상아니에요.
+- storeUlpya3·실제SDK21save→21hit/0compile/픽셀0 OtNMQG·설치2게임6save→6hit/0save tZcuO7 통과. full3518cYod3 실제 CPP/BP·2D/3D/HUD/텍스처/그림자/파티클/변형/Bloom/프로브/해제통과. JYI2Ac GPU65537/간접draw/hiddenHWND/Android두ABI헤더만통과.
+- 실제 fullgate가 프로브 intensity recapture2/1 버그를찾아 native/browser 공용capturekey로고쳤어요. 모든속성352분류, browser독립target/mock2회해제/중복해제금지통과. native351은완성패키지450명세확인후두JS/manifest patch·원본manifest보존으로반복CPP빌드없이검사했어요. 완료Builds는자료정리됐으므로재사용할때재패키징필요해요.
+- install349 처음gate는자기CLI --executable path를activeversion으로셌어요. 앱보호를낮추지않고verify349에서동일350검증기를메모리인수로import해통과했어요. 첫실패receipt별도보존. preinstall in-memory inventory는실패때파일로안남았으므로최종profile증거는검증전후와334receipt동일SHA로정확히구분했어요.
+- 다음 docs/RENDERING_HISTORY_353_RESEARCH.md의 prior표면field0/5·투명반사/굴절branch·이전중첩매질문맥을구현해요. current/prior geometry/normal/mip는308–334설치돼있고이제다른surfacefield/branch가남아요. NRD/HDRP선택읽기만했고전체gate승격안함.
+- native/build/mixed-frame-335.mjs GL프로토타입은338b8BhcG17문맥·343/344guide-lens오차0이나미채택. 현재296dzP7Kv UV관측/referenceAPI/mip통과; 동일sourcecache시간을성과로세지않아요. GL전체준비/steadycost추가대조필요.
+- 기존one-shot318/327/334와record/sync/install/verify/finish349는재실행금지. 다음번호새로사용. User읽기전용inventory만·고유fixture/profile/port·사용자창보존·활성사용자heavy미룸·Versions1. 전체78등록행은UE/Unity전체분모아니며잔여정본ENGINE_STATUS예요.
