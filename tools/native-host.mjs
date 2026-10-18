@@ -20,14 +20,15 @@ import {nativeSDKFingerprint} from './native-sdk-fingerprint.mjs';
 import {nativeSDKPlan,nativeSourceOptimization} from './native-sdk-plan.mjs';
 import {nativeMutablePaths} from './native-mutable-paths.mjs';
 import {NativeModuleCache} from './native-module-cache.mjs';
+import {buildRetainedNative} from './native-retained-build.mjs';
 import {publishNativeBinary,removeNativeAttempt} from './native-cache-lock.mjs';
 const root=path.resolve(import.meta.dirname,'..'),mutablePaths=nativeMutablePaths(root);
 const compiler=process.env.CXX||(process.platform==='win32'&&existsSync('C:/msys64/ucrt64/bin/g++.exe')?'C:/msys64/ucrt64/bin/g++.exe':'g++');
 const env={...process.env,PATH:path.dirname(compiler)+path.delimiter+process.env.PATH};
-function compileNativeStep(args,{signal,deadline}){
+function compileNativeStep(args,{signal,deadline,cwd=root}){
   signal.throwIfAborted();if(performance.now()>=deadline)throw Error('C++ 빌드 시간 제한 초과');
   return new Promise((resolve,reject)=>{
-    const child=spawn(compiler,args,{env,cwd:root,windowsHide:true});let diagnostics='',failure,stopping;
+    const child=spawn(compiler,args,{env,cwd,windowsHide:true});let diagnostics='',failure,stopping;
     const append=b=>{diagnostics=(diagnostics+b).slice(-30000);};child.stderr.on('data',append);child.stdout.on('data',append);
     const stop=error=>{if(stopping)return;failure=error;if(child.pid&&child.exitCode===null&&process.platform==='win32')stopping=new Promise(done=>execFile('taskkill.exe',['/PID',String(child.pid),'/T','/F'],{windowsHide:true,timeout:10000},()=>done()));else{child.kill();stopping=Promise.resolve();}};
     const abort=()=>stop(signal.reason||Error('C++ 빌드 취소'));signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
@@ -45,7 +46,7 @@ function retainedSpawnContext(context,contexts){
 }
 
 export class NativeHost extends NativeProtocol {
-  constructor(){super();this.sessions=new Map();this.physicsQueryPool=new NativePhysicsQueryPool();this.buildControllers=new Set();this.moduleCache=mutablePaths.installed?new NativeModuleCache(mutablePaths):null;}
+  constructor(){super();this.sessions=new Map();this.physicsQueryPool=new NativePhysicsQueryPool();this.buildControllers=new Set();this.moduleCache=mutablePaths.installed?new NativeModuleCache(mutablePaths):null;this.managedModuleCache=mutablePaths.installed&&path.basename(path.dirname(root)).toLowerCase()==='versions'?new NativeModuleCache({...mutablePaths,moduleOwnerRoot:path.dirname(path.dirname(root))}):null;}
   inspectResources(){
     const modules=[];
     for(const session of this.sessions.values()){
@@ -55,7 +56,7 @@ export class NativeHost extends NativeProtocol {
     }
     // On-demand only: process.memoryUsage may walk pages. Counts are references,
     // not byte ownership; arrayBuffers is already included in external.
-    return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false}};
+    return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false},managedNativeCache:this.managedModuleCache?.inspect()||null};
   }
   registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
   async build(header,source,{configuration='editor',signal,files=[]}={}){
@@ -65,9 +66,12 @@ export class NativeHost extends NativeProtocol {
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
     const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
     const snapshot=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal,inventory:true}),{entries,...sdk}=snapshot;
-    const sourceKey=createHash('sha256').update('project-source-v4-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+60000,compile=args=>compileNativeStep(args,{signal,deadline});
-    const sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal}),hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint).digest('hex').slice(0,20),dir=path.join(this.moduleCache?.directory||mutablePaths.modules,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.moduleCache)releaseCache=await this.moduleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
-    const cacheHit=existsSync(binary);if(!cacheHit){
+    const sourceKey=createHash('sha256').update('project-source-v4-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories,nativeSourceOptimization(configuration)])).digest('hex'),deadline=performance.now()+60000,compile=(args,options={})=>compileNativeStep(args,{signal,deadline,...options});
+    let sdkUsed,hash,binary,cacheHit,cacheScope='version';
+    const retained=this.managedModuleCache&&await buildRetainedNative({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache:this.managedModuleCache});
+    if(retained){({sdkUsed,hash,binary,cacheHit,cacheScope,releaseCache}=retained);}else{
+      sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal});hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint).digest('hex').slice(0,20);const dir=path.join(this.moduleCache?.directory||mutablePaths.modules,hash);binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.moduleCache)releaseCache=await this.moduleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
+    cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       const objects=[];let published=false;
       try{
@@ -86,11 +90,12 @@ export class NativeHost extends NativeProtocol {
         published=await publishNativeBinary(temporary,binary);
       }finally{await Promise.all([temporary,path.join(compileDir,'worker.o'),...objects].map(file=>fs.unlink(file).catch(error=>{if(error.code!=='ENOENT')throw error;})));if(!published)await removeNativeAttempt(dir,compileDir);}
     }
+    }
     signal?.throwIfAborted();
     const token=randomUUID();session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now(),releaseCache};this.sessions.set(token,session);releaseCache=null;for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000&&!value.busy){value.process?.kill();this.sessions.delete(key);await value.releaseCache?.();}
     const now=new Date();await fs.utimes(binary,now,now);await (this.moduleCache?this.moduleCache.prune():pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)})).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
     signal.throwIfAborted();
-    return {token,metadata,cacheKey:hash,cacheHit,sdk,sdkUsed,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    return {token,metadata,cacheKey:hash,cacheHit,cacheScope,sdk,sdkUsed,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
     }catch(error){if(session){this.sessions.delete(session.token);session.process?.kill();await session.releaseCache?.();}throw error;}finally{this.buildControllers.delete(controller);await releaseCache?.();}
   }
   async call(token,request,from,rendererQuery){

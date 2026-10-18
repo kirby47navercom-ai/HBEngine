@@ -2,12 +2,15 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {writeNativeProject} from './native-project.mjs';
+import {writeNativeSDKSnapshot} from './native-sdk-snapshot.mjs';
 import {assertNativeNoLinks,nativeAtomicJSON,nativePathInside,nativeProcessAlive,removeNativeTree,withNativeCacheLock} from './native-cache-lock.mjs';
 
-const format='hb-native-sdk-plans-2',maximumBytes=2097152;
+const format='hb-native-sdk-plans-3',maximumBytes=2097152;
 export const nativeSDKPlanContract=Object.freeze({version:1,entries:32,maximumBytes,dependencyDiscovery:'GCC -E -P -MD; include list plus preprocessed decisions, matching each unit optimization',debugFormat:'Windows editor/development use full -g with DWARF4; other targets unchanged',fallback:'full SDK fingerprint',frameFileIO:0});
 export const nativeSourceOptimization=configuration=>[...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),...(process.platform==='win32'&&configuration!=='release'?['-gdwarf-4']:[])];
 const digest=value=>createHash('sha256').update(value).digest('hex'),canonical=file=>process.platform==='win32'?path.resolve(file).toLowerCase():path.resolve(file);
+const fileStamp=stat=>JSON.stringify([stat.size,stat.mtimeMs,stat.ctimeMs,stat.birthtimeMs,String(stat.ino)]);
+async function externalUnchanged(rows){if(!Array.isArray(rows))return false;for(const row of rows){if(typeof row?.file!=='string'||!path.isAbsolute(row.file)||typeof row.stamp!=='string')return false;const stat=await fs.lstat(row.file).catch(error=>error.code==='ENOENT'?null:Promise.reject(error));if(!stat?.isFile()||stat.isSymbolicLink()||fileStamp(stat)!==row.stamp)return false;}return true;}
 
 // The target is ours; filenames use Make escaping, not shell quoting.
 export function nativeMakeDependencies(text){
@@ -58,7 +61,7 @@ async function removeInterruptedScans(directory){
   for(const scan of retired)await removeNativeTree(directory,scan);
 }
 
-export async function nativeSDKPlan({root,directory,snapshot,sourceKey,generated,compiler,env,configuration,compile,signal}){
+export async function nativeSDKPlan({root,directory,snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,workspaceFactory,toolchainFingerprint='',forceScan=false}){
   signal.throwIfAborted();
   let identity=digest(JSON.stringify([compiler,...['CPATH','CPLUS_INCLUDE_PATH','C_INCLUDE_PATH','OBJC_INCLUDE_PATH','GCC_EXEC_PREFIX','COMPILER_PATH','DEPENDENCIES_OUTPUT','SUNPRO_DEPENDENCIES'].map(name=>env[name]||'')]));
   const fallback=reason=>({fingerprint:snapshot.fingerprint,identity,files:snapshot.files,bytes:snapshot.bytes,mode:'full',planHit:false,scanMS:0,reason});
@@ -67,33 +70,33 @@ export async function nativeSDKPlan({root,directory,snapshot,sourceKey,generated
   let compilerFile,compilerHash;
   try{compilerFile=await fs.realpath(compiler);compilerHash=digest(await fs.readFile(compilerFile));}catch{return fallback('compiler-identity');}
   identity=digest(identity+compilerHash);signal.throwIfAborted();
-  const key=digest(JSON.stringify([sourceKey,canonical(root),compilerHash,configuration,nativeSourceOptimization(configuration)]));
+  const key=digest(JSON.stringify([sourceKey,canonical(root),compilerHash,configuration,nativeSourceOptimization(configuration),workspaceFactory?'retained-sdk-v1':'original-sdk-v1',toolchainFingerprint]));
   await assertNativeNoLinks(directory);await fs.mkdir(directory,{recursive:true});await assertNativeNoLinks(directory);
   const old=(await readPlans(directory)).find(row=>row.key===key&&row.sdk===snapshot.fingerprint),cached=old&&selectedSDK(snapshot,old.names,old.preprocessed);
-  if(cached)return {...cached,identity,mode:'dependencies',planHit:true,scanMS:0};
+  if(!forceScan&&cached&&(!workspaceFactory||await externalUnchanged(old.external)))return {...cached,identity,mode:'dependencies',planHit:true,scanMS:0};
   await removeInterruptedScans(directory);
-  const started=performance.now(),scan=await fs.mkdtemp(path.join(directory,'scan-'+process.pid+'-'));let names,preprocessed;
+  const started=performance.now(),workspace=workspaceFactory?await workspaceFactory():null,scan=workspace?.directory||await fs.mkdtemp(path.join(directory,'scan-'+process.pid+'-'));let names,preprocessed,layout,complete=false;const external=new Map();
   try{
     await fs.writeFile(path.join(scan,'.scan.json'),JSON.stringify({format:'hb-native-sdk-scan-1',pid:process.pid}),{flag:'wx'});
-    const layout=await writeNativeProject(scan,generated),common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,path.dirname(path.dirname(snapshot.entries.find(entry=>entry.name==='dependency/nlohmann/json.hpp').file))),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(scan,dir))])];
-    const known=new Map(snapshot.entries.map(entry=>[canonical(entry.file),entry.name])),used=new Set(),toolchain=path.dirname(path.dirname(compilerFile)),decisions=createHash('sha256');
+    layout=await writeNativeProject(scan,generated);if(workspace)await writeNativeSDKSnapshot(scan,snapshot,{signal});const common=workspace?['-std=c++17','-pipe','-I','SDK/include','-I','SDK/dependency',...layout.includeDirectories.flatMap(dir=>['-I',dir])]:['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,path.dirname(path.dirname(snapshot.entries.find(entry=>entry.name==='dependency/nlohmann/json.hpp').file))),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(scan,dir))])];
+    const known=new Map(snapshot.entries.map(entry=>[canonical(workspace?path.join(scan,'SDK',entry.name):entry.file),entry.name])),used=new Set(),toolchain=path.dirname(path.dirname(compilerFile)),decisions=createHash('sha256');
     const prefixes=[scan,path.relative(root,scan)].flatMap(prefix=>[prefix,prefix.replaceAll('\\','/'),prefix.replaceAll('\\','\\\\')]).sort((a,b)=>b.length-a.length);
     for(const [index,source] of ['worker.cpp',...layout.sources].entries()){
       signal.throwIfAborted();const depfile=path.join(scan,'unit-'+index+'.d'),unit=path.join(scan,'unit-'+index+'.ii');
-      await compile([...common,...(index?nativeSourceOptimization(configuration):['-O2']),'-E','-P','-MD','-MT','hb_native_dependencies','-MF',path.relative(root,depfile),path.relative(root,path.join(scan,source)),'-o',path.relative(root,unit)]);
+      const from=workspace?scan:root;await compile([...common,...(index?nativeSourceOptimization(configuration):['-O2']),'-E','-P','-MD','-MT','hb_native_dependencies','-MF',path.relative(from,depfile),path.relative(from,path.join(scan,source)),'-o',path.relative(from,unit)],workspace?{cwd:scan}:undefined);
       const stat=await fs.stat(depfile);if(stat.size>maximumBytes)throw Error('C++ 의존 파일 목록 크기 초과');
       for(const name of nativeMakeDependencies(await fs.readFile(depfile,'utf8'))){
-        const file=path.resolve(root,name),label=known.get(canonical(file));
+        const file=path.resolve(workspace?scan:root,name),label=known.get(canonical(file));
         if(label)used.add(label);
-        else if(!nativePathInside(scan,file)&&!nativePathInside(toolchain,file))throw Error('SDK 밖의 C++ 의존 파일');
+        else if(!nativePathInside(scan,file)){if(!nativePathInside(toolchain,file))throw Error('SDK 밖의 C++ 의존 파일');if(workspace)external.set(file,{file,stamp:fileStamp(await fs.stat(file))});}
       }
       if((await fs.stat(unit)).size>33554432)throw Error('C++ 전처리 결과 크기 초과');
       let text=await fs.readFile(unit,'utf8');for(const prefix of prefixes)text=text.replaceAll(prefix,'<hb-generated>');
       decisions.update(JSON.stringify([source,digest(text)])+'\n');await fs.unlink(unit);await fs.unlink(depfile);
     }
-    names=[...used].sort();preprocessed=decisions.digest('hex');if(!selectedSDK(snapshot,names,preprocessed))throw Error('C++ SDK 의존 파일 확인 실패');
+    names=[...used].sort();preprocessed=decisions.digest('hex');if(!selectedSDK(snapshot,names,preprocessed))throw Error('C++ SDK 의존 파일 확인 실패');complete=true;
   }catch(error){signal.throwIfAborted();return {...fallback('dependency-discovery'),scanMS:performance.now()-started};}
-  finally{await removeNativeTree(directory,scan);}
-  await savePlan(directory,{key,sdk:snapshot.fingerprint,names,preprocessed});signal.throwIfAborted();
-  return {...selectedSDK(snapshot,names,preprocessed),identity,mode:'dependencies',planHit:false,scanMS:performance.now()-started};
+  finally{if(workspace){if(!complete)await workspace.abandon();}else await removeNativeTree(directory,scan);}
+  try{await savePlan(directory,{key,sdk:snapshot.fingerprint,names,preprocessed,...(workspace?{external:[...external.values()]}:{})});signal.throwIfAborted();}catch(error){if(workspace)await workspace.abandon();throw error;}
+  return {...selectedSDK(snapshot,names,preprocessed),identity,mode:'dependencies',planHit:false,scanMS:performance.now()-started,...(workspace?{workspace:{...workspace,layout}}:{})};
 }

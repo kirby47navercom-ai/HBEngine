@@ -10,6 +10,7 @@ const keyPattern=/^[a-f0-9]{20}$/;
 const readJSON=async file=>{try{return JSON.parse(await fs.readFile(file,'utf8'));}catch(error){if(error.code==='ENOENT')return null;throw error;}};
 const rootFormat='hb-native-modules-1',ownerFormat='hb-native-owner-1',managedOwnerFormat='hb-native-owner-2',entryFormat='hb-native-entry-1',leaseFormat='hb-native-lease-1';
 const samePath=(a,b)=>path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase();
+const semanticFormat='hb-native-semantic-index-1',artifactFormat='hb-native-artifact-1';
 function validOwner(owner,id,modules){return owner&&typeof owner.engineRoot==='string'&&owner.owner===id&&digest(owner.engineRoot)===id&&(owner.format===ownerFormat||owner.format===managedOwnerFormat&&owner.scope==='managed-installation'&&samePath(path.join(owner.engineRoot,'Cache/NativeModules'),modules));}
 async function ownerInstalled(owner){
  if(owner.format===ownerFormat)return !!(await fs.stat(path.join(owner.engineRoot,'HBEngine.install.json')).catch(error=>error.code==='ENOENT'?null:Promise.reject(error)))?.isFile();
@@ -19,7 +20,7 @@ async function ownerInstalled(owner){
  }
  return false;
 }
-export const nativeModuleCacheContract=Object.freeze({version:2,recentEntries:32,ownerScopes:Object.freeze(['version','managed-installation opt-in']),liveReferences:'process lease',inFlightBuilds:'referenced before cache access',retiredVersions:'legacy owners retire; opted-in managed owner follows installation lifetime',failedAttempts:'remove generated copies',debuggerSources:'retain winning compilation',frameFileIO:0});
+export const nativeModuleCacheContract=Object.freeze({version:2,recentEntries:32,ownerScopes:Object.freeze(['version','managed-installation']),semanticIndex:Object.freeze({format:'hb-native-semantic-index-1',entries:32,semanticBits:256,physicalBits:80,publication:'complete artifact and lease before metadata publication; existing complete artifact wins'}),liveReferences:'process lease',inFlightBuilds:'referenced before cache access',retiredVersions:'legacy owners retire; managed owner follows installation lifetime',failedAttempts:'remove unpublished candidates',debuggerSources:'retained compiler cwd with complete SDK inputs; Windows full-g DWARF4',fallback:'unsupported/custom toolchain or dependencies use version-bound cache',frameFileIO:0});
 
 // Installed SDK modules are mutable data, outside immutable Versions. References
 // are published before reading a binary; no filesystem work occurs in frame RPC.
@@ -35,6 +36,36 @@ export class NativeModuleCache {
   });
  }
  serialize(fn){const job=this.pending.then(fn);this.pending=job.catch(()=>{});return job;}
+ async pinLocked(key){const count=this.references.get(key)||0;this.references.set(key,count+1);try{await this.publishReferences();}catch(error){if(count)this.references.set(key,count);else this.references.delete(key);throw error;}}
+ releaseKey(key){let released=false;return ()=>{if(released)return Promise.resolve();released=true;return this.serialize(()=>withNativeCacheLock(this.root,async()=>{const count=this.references.get(key)||0;if(count>1)this.references.set(key,count-1);else this.references.delete(key);await this.publishReferences();}));};}
+ async semanticIndex(){
+  const ownerFile=path.join(this.directory,'.owner.json');await assertNativeNoLinks(ownerFile);const owner=await readJSON(ownerFile);if(!owner)return [];if(!validOwner(owner,this.owner,this.root)||owner.format!==(this.managed?managedOwnerFormat:ownerFormat)||!samePath(owner.engineRoot,this.ownerRoot))throw Error('C++ 코드 색인의 소유 경로를 확인하세요.');
+  const file=path.join(this.directory,'.semantic-index.json');await assertNativeNoLinks(file);const stat=await fs.stat(file).catch(error=>error.code==='ENOENT'?null:Promise.reject(error));if(!stat||stat.size>65536)return [];
+  let data;try{data=await readJSON(file);}catch(error){if(error instanceof SyntaxError)return [];throw error;}
+  if(data?.format!==semanticFormat||data.owner!==this.owner||!Array.isArray(data.entries))return [];
+  return data.entries.slice(0,32).filter(row=>/^[a-f0-9]{64}$/.test(row?.semantic)&&keyPattern.test(row?.physical));
+ }
+ async semanticArtifact(physical,semantic){
+  const dir=path.join(this.directory,physical);await assertNativeNoLinks(dir);const markerFile=path.join(dir,'.entry.json');await assertNativeNoLinks(markerFile);const marker=await readJSON(markerFile);if(marker?.format!==entryFormat||marker.owner!==this.owner||marker.key!==physical)return null;
+  const artifactFile=path.join(dir,'.artifact.json');await assertNativeNoLinks(artifactFile);let artifact;try{artifact=await readJSON(artifactFile);}catch(error){if(error instanceof SyntaxError)return null;throw error;}if(artifact?.format!==artifactFormat||artifact.semantic!==semantic)return null;
+  const binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');await assertNativeNoLinks(binary);const stat=await fs.lstat(binary).catch(error=>error.code==='ENOENT'?null:Promise.reject(error));return stat?.isFile()&&stat.size>0?binary:null;
+ }
+ async acquireSemantic(semantic){
+  if(!/^[a-f0-9]{64}$/.test(semantic))throw Error('C++ 코드 지문을 확인하세요.');await this.initialize();
+  const found=await this.serialize(()=>withNativeCacheLock(this.root,async()=>{const row=(await this.semanticIndex()).find(row=>row.semantic===semantic);if(!row)return null;const binary=await this.semanticArtifact(row.physical,semantic);if(!binary)return null;await this.pinLocked(row.physical);return {key:row.physical,binary};}));
+  return found?{...found,release:this.releaseKey(found.key)}:null;
+ }
+ async publishSemantic(semantic,physical){
+  if(!/^[a-f0-9]{64}$/.test(semantic)||!keyPattern.test(physical))throw Error('C++ 코드 지문·저장 키를 확인하세요.');
+  const selected=await this.serialize(()=>withNativeCacheLock(this.root,async()=>{
+   if(!this.references.has(physical)||!await this.semanticArtifact(physical,semantic))throw Error('완성된 C++ 모듈 참조를 먼저 확보하세요.');
+   const rows=await this.semanticIndex(),old=rows.find(row=>row.semantic===semantic),existing=old&&await this.semanticArtifact(old.physical,semantic),key=existing?old.physical:physical;
+   if(key!==physical)await this.pinLocked(key);
+   try{await nativeAtomicJSON(path.join(this.directory,'.semantic-index.json'),{format:semanticFormat,owner:this.owner,entries:[{semantic,physical:key},...rows.filter(row=>row.semantic!==semantic)].slice(0,32)});}catch(error){if(key!==physical){const count=this.references.get(key)||0;if(count>1)this.references.set(key,count-1);else this.references.delete(key);await this.publishReferences();}throw error;}
+   return {key,binary:existing||path.join(this.directory,key,process.platform==='win32'?'worker.exe':'worker'),won:key===physical};
+  }));
+  return selected.won?selected:{...selected,release:this.releaseKey(selected.key)};
+ }
  inspect(){return {contract:nativeModuleCacheContract,root:this.root,owner:this.owner,ownerScope:this.managed?'managed-installation':'version',referencedEntries:this.references.size,references:[...this.references.values()].reduce((sum,n)=>sum+n,0)};}
  async publishReferences(){if(this.references.size)await nativeAtomicJSON(this.lease,{format:leaseFormat,pid:process.pid,owner:this.owner,keys:[...this.references.keys()]});else await fs.unlink(this.lease).catch(error=>{if(error.code!=='ENOENT')throw error;});}
  async retain(key){
@@ -49,12 +80,26 @@ export class NativeModuleCache {
    const markerFile=path.join(directory,'.entry.json'),marker=await readJSON(markerFile);
    if(marker&&(marker.format!==entryFormat||marker.owner!==this.owner||marker.key!==key))throw Error('C++ 모듈 캐시 표식을 확인하세요.');
    if(!marker)await nativeAtomicJSON(markerFile,{format:entryFormat,owner:this.owner,key});
-   const count=this.references.get(key)||0;this.references.set(key,count+1);
-   try{await this.publishReferences();}catch(error){if(count)this.references.set(key,count);else this.references.delete(key);throw error;}
+   await this.pinLocked(key);
   }));
-  let released=false;return ()=>{if(released)return Promise.resolve();released=true;return this.serialize(()=>withNativeCacheLock(this.root,async()=>{const count=this.references.get(key)||0;if(count>1)this.references.set(key,count-1);else this.references.delete(key);await this.publishReferences();}));};
+  return this.releaseKey(key);
  }
  async prune(){await this.initialize();return pruneNativeModuleCache(this.root);}
+ async discardUnpublished(key){
+  if(!keyPattern.test(key))throw Error('C++ 임시 모듈 키를 확인하세요.');
+  const retired=await this.serialize(()=>withNativeCacheLock(this.root,async()=>{
+   if(this.references.has(key))throw Error('C++ 임시 참조를 먼저 해제하세요.');
+   const rows=await this.semanticIndex();for(const row of rows.filter(row=>row.physical===key))if(await this.semanticArtifact(key,row.semantic))return null;
+   const directory=path.join(this.directory,key);await assertNativeNoLinks(directory);const marker=await readJSON(path.join(directory,'.entry.json'));
+   if(!marker)return null;if(marker.format!==entryFormat||marker.owner!==this.owner||marker.key!==key)throw Error('C++ 임시 모듈 표식을 확인하세요.');
+   // Random physical keys are never shared before semantic publication. Reject
+   // any unexpected cross-process lease instead of deleting another builder.
+   for(const name of await fs.readdir(path.join(this.root,'.leases'))){const lease=await readJSON(path.join(this.root,'.leases',name));if(lease?.owner===this.owner&&lease.keys?.includes(key)&&nativeProcessAlive(lease.pid))return null;}
+   if(rows.some(row=>row.physical===key))await nativeAtomicJSON(path.join(this.directory,'.semantic-index.json'),{format:semanticFormat,owner:this.owner,entries:rows.filter(row=>row.physical!==key)});
+   const target=path.join(this.root,'.retired-'+randomUUID());await fs.rename(directory,target);return target;
+  }));
+  if(retired)await removeNativeTree(this.root,retired);
+ }
 }
 
 async function runningEntries(root,entries){
