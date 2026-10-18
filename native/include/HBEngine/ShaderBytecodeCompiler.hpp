@@ -1,5 +1,5 @@
 #pragma once
-#include "Compute.hpp"
+#include "ComputePlatform.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include "ShaderBytecodeDiskCache.hpp"
 #include <memory>
