@@ -17,6 +17,7 @@ import {nativeModuleRequest,mergeNativeReply} from '../prototype/native-module-q
 import {spawnQueryRequest,spawnQueryCursor} from '../prototype/native-spawn.js';
 import {pruneTestArtifacts} from './test-artifacts.mjs';
 import {nativeSDKFingerprint} from './native-sdk-fingerprint.mjs';
+import {nativeSDKPlan,nativeSourceOptimization} from './native-sdk-plan.mjs';
 import {nativeMutablePaths} from './native-mutable-paths.mjs';
 import {NativeModuleCache} from './native-module-cache.mjs';
 import {publishNativeBinary,removeNativeAttempt} from './native-cache-lock.mjs';
@@ -62,20 +63,22 @@ export class NativeHost extends NativeProtocol {
     try{
     signal?.throwIfAborted();
     if(!['editor','development','release'].includes(configuration))throw Error('C++ 빌드 구성 오류');
-    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();const sdk=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal}),hash=createHash('sha256').update('project-source-v3-sdk-closure-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories])+sdk.fingerprint).digest('hex').slice(0,20),dir=path.join(this.moduleCache?.directory||mutablePaths.modules,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.moduleCache)releaseCache=await this.moduleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
+    const generated=nativeSources(header,source,{files}),{metadata,header:compiledHeader,source:compiledSource,worker}=generated;await prepareNative();
+    const snapshot=await nativeSDKFingerprint(path.join(root,'native/include'),{dependencies:[{name:'nlohmann/json.hpp',file:path.join(jsonInclude,'nlohmann/json.hpp')}],signal,inventory:true}),{entries,...sdk}=snapshot;
+    const sourceKey=createHash('sha256').update('project-source-v4-used-sdk-worker-o2'+configuration+compiledHeader+compiledSource+worker+JSON.stringify([generated.files,generated.sourceFiles,generated.includeDirectories])).digest('hex'),deadline=performance.now()+60000,compile=args=>compileNativeStep(args,{signal,deadline});
+    const sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal}),hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint).digest('hex').slice(0,20),dir=path.join(this.moduleCache?.directory||mutablePaths.modules,hash),binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.moduleCache)releaseCache=await this.moduleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
     const cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       const objects=[];let published=false;
       try{
         const layout=await writeNativeProject(compileDir,generated);
-        const deadline=performance.now()+60000,compile=args=>compileNativeStep(args,{signal,deadline});
         // GCC's assembler cannot reopen an intermediate file in a Unicode TEMP
         // on Windows. Pipe translation units directly; keep the game's TEMP intact.
         const common=['-std=c++17','-pipe','-I','native/include','-I',path.relative(root,jsonInclude),...layout.includeDirectories.flatMap(dir=>['-I',path.relative(root,path.join(compileDir,dir))])],file=name=>path.relative(root,path.join(compileDir,name));
         // Optimize the JSON/engine translation unit while preserving user-code
         // debugging. All stages share the existing 60-second build deadline.
         await compile([...common,'-O2','-c',file('worker.cpp'),'-o',file('worker.o')]);
-        for(const [i,source] of layout.sources.entries()){const object='source-'+i+'.o';objects.push(path.join(compileDir,object));await compile([...common,...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),'-c',file(source),'-o',file(object)]);}
+        for(const [i,source] of layout.sources.entries()){const object='source-'+i+'.o';objects.push(path.join(compileDir,object));await compile([...common,...nativeSourceOptimization(configuration),'-c',file(source),'-o',file(object)]);}
         await compile([file('worker.o'),...objects.map(file=>path.relative(root,file)),...(configuration==='editor'?[]:['-static']),...(configuration==='release'?['-s']:[]),'-o',path.relative(root,temporary)]);
         signal?.throwIfAborted();
         // Only a complete executable enters the shared cache. Other attempts may
@@ -87,7 +90,7 @@ export class NativeHost extends NativeProtocol {
     const token=randomUUID();session={token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now(),releaseCache};this.sessions.set(token,session);releaseCache=null;for(const [key,value] of this.sessions)if(key!==token&&Date.now()-value.lastUsed>3600000&&!value.busy){value.process?.kill();this.sessions.delete(key);await value.releaseCache?.();}
     const now=new Date();await fs.utimes(binary,now,now);await (this.moduleCache?this.moduleCache.prune():pruneTestArtifacts(null,{nativeCacheOnly:true,protectedBinaries:[...this.sessions.values()].map(s=>s.binary)})).catch(error=>console.error('C++ 캐시 정리 실패:',error.message));
     signal.throwIfAborted();
-    return {token,metadata,cacheKey:hash,cacheHit,sdk,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
+    return {token,metadata,cacheKey:hash,cacheHit,sdk,sdkUsed,compiler:path.basename(compiler),diagnostics:'빌드 성공'};
     }catch(error){if(session){this.sessions.delete(session.token);session.process?.kill();await session.releaseCache?.();}throw error;}finally{this.buildControllers.delete(controller);await releaseCache?.();}
   }
   async call(token,request,from,rendererQuery){

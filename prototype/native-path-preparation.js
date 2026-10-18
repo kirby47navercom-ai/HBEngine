@@ -6,6 +6,7 @@ export const nativeShaderPreparationContract=Object.freeze({
  idleWorkerMS:1000,workerCount:1,renderWhilePending:'raster',commitPendingHistory:false,
  rasterStages:Object.freeze(['material','material-shadow']),
  rasterPreparation:'same lazy compiler worker; shader bytecode off-thread, device adoption on owner; pending objects skip drawing, dependent shadows/probes and screen history wait',
+ lightCulling:Object.freeze({preparation:'same lazy compiler worker',fallback:'all-lights',historyWait:false,diagnostics:'shaderPreparation.raster.lightCulling',adoption:'owner thread; one fresh compile retry after device rejection'}),
  compilerCancellation:'finish active compilation; discard obsolete renderer result'
 });
 

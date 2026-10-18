@@ -404,6 +404,7 @@ public:
     void setSkyIntensity(float intensity){if(!std::isfinite(intensity)||intensity<0)throw std::runtime_error("Sky intensity invalid");skySettings.center[3]=intensity;}
     std::uint64_t skyEnvironmentBytes() const{return skyProbe.available()?skyProbe.storageBytes():0;}
     std::uint64_t lightTileBytes() const{return lightTiles.bytes();}std::uint64_t lightTileDispatches() const{return lightTiles.dispatches();}
+    auto lightTilePreparationInfo()const{return lightTiles.preparationInfo();}
     Probe createProbe(std::uint32_t size){return probes.create(size);}
     void beginProbe(Probe& target,std::uint32_t faceIndex,const Matrix& projection,const std::array<float,4>& eye,const std::array<float,4>& clear,bool indirect=false,bool environment=false){
         if(activeProbe||activeShadow>=0||active2D||target.owner!=gpu.device.p||faceIndex>=6||!finite(projection)||!finite(eye)||!finite(clear))throw std::runtime_error("Probe capture binding invalid");
@@ -563,7 +564,7 @@ public:
     void setPostLookup(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookupSize=value?value->height:0;if(postLookupView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}postLookupView=std::move(next);}
     void releasePostProcess(){pathEnvironmentView={};geometrySceneView={};postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
     std::array<std::uint64_t,9> shaderCompilationInfo()const{return bloom.compilationInfo();}
-    void setAsyncShaderPreparation(bool value){bloom.setAsyncShaderPreparation(value);}
+    void setAsyncShaderPreparation(bool value){bloom.setAsyncShaderPreparation(value);lightTiles.setAsyncPreparation(value);}
     auto shaderPreparationInfo()const{return bloom.shaderPreparationInfo();}
     void pollShaderPreparation(){bloom.pollShaderPreparation();}
     static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
