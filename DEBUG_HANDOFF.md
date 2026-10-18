@@ -982,3 +982,11 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 312 원인 확정: 테스트가 `.two-d-editor canvas`로 왼쪽 팔레트의 첫 타일 캔버스(x12/y842)를 선택했어요. 실제 편집 캔버스는 `.two-d-scroll canvas`(x244/y259)이고315 CElIgN의 VP1424×861/레이아웃·후보1개로 확인했어요. 픽셀 좌표·기대셀·우클릭을 유지하고 선택자만 실제 편집 캔버스로 고쳐 검사해요. 제품 동작/허용치 수정은 하지 않아요.
 
 308–318 최종 개발 검사: 316의 GL/GPU/D3D C++·BP·변형/필터/재방문은 모두 통과했어요.312 VieJoP는 실제 우클릭/Undo/가운데 이동/100만 좌표 C++ Box/Flood/Batch·BP까지 종료0으로 통과했어요. 누락된 expectedRevision과 닫힌 BP 문서를 저장하려던 검사 인자만 고쳤고 제품 수명·허용치·deadline은 낮추지 않았어요. generated tile center의 물리 검증은 기존 질의1e6 범위를 사용하고 authored 검증을 유지해요. 후속317 Hoyt5C의 실제 프로세스 중단6조건 포함12조건·294 FoeN7K7조건·그룹5HKXML17조건은 통과했어요. 일반 저장은 원자 내용 게시 후 ID roll-forward이며 여러 파일 롤백과 구분해요. 새315 이하 및validate316은 실행 완료한 one-shot이므로 재실행하지 않아요.
+
+
+## 319–327 · 시퀀스 구조 소유권
+
+- 기존 부모/stateOriginal/poseOriginal의 director별 복원이 다른 소유자를 덮었어요. 공통 필드 lease와 부모의 원자 묶음·whole/property 공유·골격/클립 인계로 바꿨어요.
+- 첫319 검사의 forceRestore 실패는 readAsset 캐시에 넣은 Keep 자산 객체를 외부에서 바꾼 fixture 오류였어요. 새 Forced 이름의 독립 자산으로 검사해327 CPU13종이 통과했어요. 허용치/타임아웃을 늘리지 않았어요.
+- 실제 E9YNZT의 편집기/DirectX·WebGL 게임 CPP/BP·실제 뼈/부모/머테리얼이 아닌 Camera 속성/클립/우선순위가 통과했어요. 그 이후의 재진입/cleanup guard는326·327 CPU로 확인하며 최종 설치 창에서 추가 확인해요.
+- 외부 setter 실패는 다른 대상의 lease 해제/복원을 막지 않게 해요. 콜백 중 다른 actor/소유자가 생기면 이전 배치의 뒤늦은 쓰기는 건너뛰어요. 외부 애니메이션/그래프 원상태와 가중 혼합을 완료로 승격하지 않아요.

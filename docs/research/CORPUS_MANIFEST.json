@@ -2777,7 +2777,8 @@
     "167: Reconcile linked Level Streaming/World Partition lifecycle APIs, Unity AsyncOperation/Resources memory ownership, 2D IK solver package APIs and Detour corridor/radius/crowd APIs. Selected implementation checks do not close the whole corpus.",
     "168: Reconcile Prefab override/variant linked APIs and media, TilemapRenderer culling/sprite sorting/render-pipeline links and the discovered https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/tilemaps/tilemaprenderer API. The 6000.0 selected body reading does not close 7000.0 or the whole source corpus.",
     "169: Reconcile RuleTile linked grid/API/animation output; NavArea bake/carving/radius APIs; FullBodyIK PBIK stiffness/root/rotation/rig references; AudioMixer DSP Send/ducking/suspend native APIs and media. Selected HB implementation does not close the global corpus.",
-    "170: Prefab nested destination/stage APIs, native audio virtualization/decoder/platform and psychoacoustic selection, full ProBuilder manual UV action/unwrap/packing references, PBIK stretch/position/stiffness API, WebView2 error status/cancellation/lifetime references remain separately scoped."
+    "170: Prefab nested destination/stage APIs, native audio virtualization/decoder/platform and psychoacoustic selection, full ProBuilder manual UV action/unwrap/packing references, PBIK stretch/position/stiffness API, WebView2 error status/cancellation/lifetime references remain separately scoped.",
+    "327: Selected sequence ownership reading in docs/ENGINE_IMPLEMENTATION_327.md: Unreal4.27 keep/restore historical supplement, Unreal5.8 Animation Track and Unity Timeline1.8.13 track priority. Reconcile screenshots, linked Motion Blending/Slot/root-motion/section APIs, package compatibility and current-versus-historical behavior; no corpus body/API/global gate promotion."
   ],
   "supplemental165": {
     "date": "2026-10-16",

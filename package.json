@@ -175,7 +175,8 @@
     "test:2d-retarget": "node tools/check-sprite-rig-retarget.mjs",
     "test:previous-frame": "node tools/check-previous-context-308-window.mjs && node tools/check-previous-context-308-native.mjs && node tools/check-previous-camera-309-window.mjs",
     "test:sparse-tilemap": "node tools/check-tilemap-sparse-310.mjs && node tools/check-tilemap-sparse-312-window.mjs",
-    "test:asset-write-recovery": "node tools/check-asset-write-317.mjs && node tools/check-project-durability-294.mjs"
+    "test:asset-write-recovery": "node tools/check-asset-write-317.mjs && node tools/check-project-durability-294.mjs",
+    "test:sequence-structural": "node tools/check-sequence-structural-319.mjs && node tools/check-sequence-clips-324.mjs && node tools/check-sequence-component-326.mjs && node tools/check-sequence-structural-323-window.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

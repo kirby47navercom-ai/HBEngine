@@ -1,0 +1,21 @@
+import {componentDefaults,componentDefinitions,validComponents} from './scene-components.js';
+import {remapActorReferences,remapActorValue} from './actor-references.js';
+const clone=v=>v===undefined?undefined:structuredClone(v),prefix='component:',key=(id,type,property)=>prefix+JSON.stringify([id,type,property]);
+// A whole-component take acquires the same property fields as scalar tracks.
+// Presence/type/order is a separate slot; removing it never destroys hidden samples.
+export class SequenceComponentWriter{
+ constructor(channels,hooks){this.channels=channels;this.hooks=hooks;this.adapters=new WeakMap();}
+ adapter(vm){let adapter=this.adapters.get(vm);if(adapter)return adapter;
+  const project=changes=>{const objects=new Map();for(const change of changes){let row=objects.get(change.target);if(!row){row=new Map(this.channels.active(change.target).filter(r=>r.key.startsWith(prefix)).map(r=>[r.key,r.value]));objects.set(change.target,row);}row.set(change.key,change.value);}
+   const result=[];for(const [object,fields]of objects){const slots=new Map(),properties=[];for(const [k,value]of fields){const [id,type,property]=JSON.parse(k.slice(prefix.length));if(type===null)slots.set(id,value);else properties.push({id,type,property,value});}const components=(object.components||[]).map(c=>({...c,properties:{...c.properties}}));for(const [id,slot]of slots){const at=components.findIndex(c=>c.id===id);if(slot.component===null){if(at>=0)components.splice(at,1);continue;}const c=clone(slot.component);if(at>=0)components[at]=c;else components.splice(slot.index<0?components.length:Math.min(slot.index,components.length),0,c);}for(const {id,type,property,value}of properties){const c=components.find(c=>c.id===id&&c.type===type);if(c)c.properties={...componentDefaults(c.type),...c.properties,[property]:clone(value)};}if(!validComponents(components))throw Error('시퀀스 컴포넌트 조합을 확인하세요.');result.push({object,components});}return result;};
+  adapter={validateBatch:changes=>{project(changes);},batch:async(changes,restoring)=>{const rows=project(changes);let error;for(const row of rows){const {object}=row,owned=changes.filter(c=>c.target===object);if(vm.object(object.id)!==object||owned.some(c=>c.current&&!c.current()))continue;const [{components}]=project(owned);object.components=components.map(next=>{const old=object.components?.find(c=>c.id===next.id&&c.type===next.type);if(!old)return next;for(const k of Object.keys(old))if(!Object.hasOwn(next,k))delete old[k];Object.assign(old,next);return old;});try{await this.hooks.update(object);}catch(e){if(!restoring)throw e;error??=e;}}if(error)throw error;}};this.adapters.set(vm,adapter);return adapter;
+ }
+ async write(owner,changes,vm){if(!changes.length)return;const grouped=new Map(),adapter=this.adapter(vm),put=(object,k,value,read,completionMode)=>{let rows=grouped.get(object);if(!rows){rows=new Map();grouped.set(object,rows);}rows.set(k,{target:object,key:k,value,completionMode,options:()=>({...adapter,read,valid:()=>vm.object(object.id)===object})});};
+  for(const {object,track,value}of changes){const id=track.component;if(track.type==='componentState'){
+    let component=clone(value);if(component&&object.sequencePlayback)remapActorReferences([{components:[component]}],[],owner.spawns.ids);
+    put(object,key(id,null,null),{component,index:object.components?.findIndex(c=>c.id===id)??-1},()=>({component:clone(object.components?.find(c=>c.id===id)||null),index:object.components?.findIndex(c=>c.id===id)??-1}),track.completionMode);
+    if(component)for(const [property,v]of Object.entries({...componentDefaults(component.type),...component.properties})){const type=component.type;put(object,key(id,type,property),v,()=>clone(object.components?.find(c=>c.id===id&&c.type===type)?.properties?.[property]??componentDefaults(type)[property]),track.completionMode);}
+   }else{const type=track.componentType,field=componentDefinitions[type]?.properties[track.property],v=object.sequencePlayback&&field?.objectReference?remapActorValue(value,owner.spawns.ids):value;put(object,key(id,type,track.property),v,()=>clone(object.components?.find(c=>c.id===id&&c.type===type)?.properties?.[track.property]??componentDefaults(type)[track.property]),track.completionMode);}
+  }await this.channels.writeBatch(owner,[...grouped.values()].flatMap(rows=>[...rows.values()]));
+ }
+}
