@@ -6,8 +6,8 @@ import {rayMaterialNode} from './ray-material-gpu.js';
 export function previousRayGPU(transport,u,{reuseTextures=true,fields=[3]}={}){
  const {load,ray}=transport,record=(id,slot)=>{
   const at=u.pathFilter.w.add(id.mul(3));
-  if(slot<3)return T.vec4(load(at.add(slot)).xyz,ray.record(id,slot).w);
-  if(slot===3)return T.vec4(load(at.add(1)).xyz.cross(load(at.add(2)).xyz).normalize(),ray.record(id,3).w);
+  if(slot<3)return T.vec4(load(at.add(slot)).xyz,0);
+  if(slot===3)return T.vec4(load(at.add(1)).xyz.cross(load(at.add(2)).xyz).normalize(),0);
   return ray.record(id,slot);
  };
  const geometric=id=>record(id,3).xyz;
@@ -25,5 +25,8 @@ export function previousRayGPU(transport,u,{reuseTextures=true,fields=[3]}={}){
    });
   });return result;
  }).setLayout({name:'hbPreviousSmoothNormal',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
- return rayMaterialNode(load,u,ray.programs,fields,load,null,ray.normalEnabled!==false,ray.coatNormalEnabled!==false,record,bary,smooth,reuseTextures?ray.textureLibrary:null);
+ // Flags belong to material defaults; do not reconstruct current vertices for an old normal.
+ const baseField=(id,context,field)=>field===0?T.vec4(ray.record(id,0).w,ray.record(id,1).w,ray.record(id,2).w,ray.record(id,3).w):ray.record(id,field===1?4:5);
+ const previous=rayMaterialNode(load,u,ray.programs,fields,load,baseField,ray.normalEnabled!==false,ray.coatNormalEnabled!==false,record,bary,smooth,reuseTextures?ray.textureLibrary:null);
+ return {...previous,record:(id,slot)=>slot<4?T.vec4(record(id,slot).xyz,ray.record(id,slot).w):record(id,slot)};
 }

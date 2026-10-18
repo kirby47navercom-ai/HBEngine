@@ -1039,3 +1039,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 361native확장처음에는2필드외previousRunField가생성되지않아FXC undeclared가났고생성기를모든필드로고쳤어요. 357C++의10선언assert/실제361RoIJMS15그룹0오차가회귀근거예요. 363별도coatTBN복원과기본/coating우세선택은7문맥+독립constantTBN/364lens8조건으로검사했어요. ordinaryGPUguide는coatdecoder를생성하지않고current feature상속,빈opacity/emission채널은liveness할당을건너뛰어요.
 
 실제원본게임4KMUzC는579파일완성패키지후결과보고없이exit1;원인미확정이며성공으로세지않아요. 기존351에LightingDriver모드와realpath경로검증을추가해같은패키지를재빌드없이재개한auUrk1은CPP/BP/141/138/134/125/128/raster131/warm통과예요. 이후WebGPUYqgmvX/GL8O92iS도같은제작/CPP/BP경로통과예요. 0VeswA Node server PID7248(15:51 시작)은정확한격리player-server명령줄과build내경로확인후정리했어요.
+
+
+# 366–369 — 준비 epoch와이전세계교차
+
+차가운Quad카메라GL투영이compile epoch1에upload되고실제GPU투영도render epoch1여서renderGroup이갱신을생략했어요. 고유음수prep번호/동기복원과renderer초기화선행으로직접그리기와첫173pixel을동일하게만들었어요. 최초ftsPgT는camera를compile뒤초기화한잘못된실험이므로adoption근거아니에요.
+
+367 첫staticfield실험에서Fn내T.float가VarNode가돼.value분기가잘못됐고CPUtest가잡았어요. 최종은기존Node callback인수를유지하고세번째JSfixedindex를주며sharedexplicitlayout에두인수wrapper를써요. 실제flag/publicrecord경로와shader절삭을같이검사해요.
+
+368 첫browsercheck는outertemplate newline escape 오류, 다음은ScreenEffects기본material에guide전용helper가없어testshader가함수를못찾았어요. String.raw와지정helper삽입으로검사구성을고쳤어요. 최종GL/GPU60·DX60광선독립기준통과,추가missing/incomplete걷기검사중이에요. 369은실제fullguide에서oldblocker가사라진현재화면의이력거부를3backend원근/직교로검사했어요. 전체oldmedium재생은이걸로완료처리하지않아요.

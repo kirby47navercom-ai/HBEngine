@@ -5,6 +5,7 @@ import {gpuFn} from './gpu-function-scope.js';
 // uniform, image history or CPU/GPU readback is needed. Projection changes reset history.
 export const previousCameraGLSL=`
 vec4 hbPathPriorClip(vec4 p){return hbPreviousVP*p;}
+vec4 hbPathPriorOrthoOrigin(vec3 point,vec3 view){vec4 axis=hbPathPriorClip(vec4(view,0)),clip=hbPathPriorClip(vec4(point,1));if(abs(axis.z)<1e-20)return vec4(0,0,0,0);return vec4(point+view*((hbCoordinates.y*clip.w-clip.z)/axis.z),1);}
 vec4 hbPathPriorCamera(){
  vec4 x=hbPathPriorClip(vec4(1,0,0,0)),y=hbPathPriorClip(vec4(0,1,0,0)),z=hbPathPriorClip(vec4(0,0,1,0)),w=hbPathPriorClip(vec4(0,0,0,1));
  vec3 a=vec3(x.x,y.x,z.x),b=vec3(x.y,y.y,z.y),c=vec3(x.w,y.w,z.w);
@@ -29,3 +30,7 @@ export function previousConeGPU(u,point,camera){return gpuFn(([point,camera])=>{
   const clip=u.previousVP.mul(T.vec4(point,1)).toVar(),ndc=clip.xy.div(clip.w).toVar(),d=point.sub(camera.xyz).normalize().toVar(),dx=a.sub(c.mul(ndc.x.add(T.float(2).div(u.size.x)))).cross(b.sub(c.mul(ndc.y))).normalize().toVar(),dy=a.sub(c.mul(ndc.x)).cross(b.sub(c.mul(ndc.y.add(u.coordinates.z.div(u.size.y))))).normalize().toVar();dx.mulAssign(dx.dot(d).lessThan(0).select(-1,1));dy.mulAssign(dy.dot(d).lessThan(0).select(-1,1));result.assign(T.vec2(0,T.max(dx.sub(d).length(),dy.sub(d).length())));
  });return result;
  }).setLayout({name:'hbPathPriorCone',type:'vec2',inputs:[{name:'point',type:'vec3'},{name:'camera',type:'vec4'}]})(point,camera);}
+
+export function previousOrthoOriginGPU(u,point,view){return gpuFn(([point,view])=>{
+ const axis=u.previousVP.mul(T.vec4(view,0)).toVar(),clip=u.previousVP.mul(T.vec4(point,1)).toVar(),result=T.vec4(0).toVar();T.If(axis.z.abs().greaterThanEqual(1e-20),()=>{result.assign(T.vec4(point.add(view.mul(u.coordinates.y.mul(clip.w).sub(clip.z).div(axis.z))),1));});return result;
+ }).setLayout({name:'hbPathPriorOrthoOrigin',type:'vec4',inputs:[{name:'point',type:'vec3'},{name:'view',type:'vec3'}]})(point,view);}

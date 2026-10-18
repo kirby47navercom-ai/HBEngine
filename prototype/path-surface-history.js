@@ -1,3 +1,4 @@
+import {previousGeometryContract} from './previous-geometry.js';
 // A changed transport branch cannot reuse its old virtual-surface guide.
 // This gate precedes full replay of changing IOR/medium parameters.
 export const surfaceHistoryEpsilon=.001;
@@ -25,9 +26,10 @@ export const raySurfaceHistoryContract=Object.freeze({
  api:'GLSL/HLSL hbRayPreviousField0..9TimeLod(id,point,view,width,vec2(time,1)); TSL previousRayGPU(...,{fields}).field(...)',
  decodedNormals:'base: normalTime / hbRayPreviousNormalContextLod; coat: coatNormalTime / hbRayPreviousCoatNormalContextLod; committed smooth normal and independent tangent basis; TSL callers request fields [3,9]',
  guideLobes:'opaque coat mirror uses the coat normal when the base is not a mirror; base mirror and glass retain the base normal; reject differential neighbours on a different lobe',
+ previousGeometry:previousGeometryContract,
  selection:'version-aware live output dependency; static program bodies reused; guide evaluates only needed fields (coat guide uses xy)',
  gates:'physical IOR exact; physical/coat branch boundaries plus 0.001 absolute tolerance; other surface channels 0.001 relative-to-max(1,abs(values)); previous facing/TIR branch must match',
  globalReset:Object.freeze(['CPU-only animated material','any animated transmissive material','animated opacity/visibility','animated emissive RGB','authored material/texture edits','failed/uncommitted pose or clock rewind']),
- resources:'existing packed geometry/normal/motion buffers and reserved prior-time scalar; no additional GPU targets, uniforms, steady-frame readbacks or cache',
+ resources:'existing packed geometry/normal/motion atlas and reserved prior-time scalar; optional old-world BVH suffix and CPU refit cache for transmissive temporal guides; no additional GPU targets, uniform fields or steady-frame readbacks',
  remaining:Object.freeze(['full transparent previous medium/path replay','global curved inverse solve','rough compound-lobe and participating-medium footprint transport'])
 });

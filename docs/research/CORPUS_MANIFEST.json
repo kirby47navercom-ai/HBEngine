@@ -2780,7 +2780,8 @@
     "170: Prefab nested destination/stage APIs, native audio virtualization/decoder/platform and psychoacoustic selection, full ProBuilder manual UV action/unwrap/packing references, PBIK stretch/position/stiffness API, WebView2 error status/cancellation/lifetime references remain separately scoped.",
     "327: Selected sequence ownership reading in docs/ENGINE_IMPLEMENTATION_327.md: Unreal4.27 keep/restore historical supplement, Unreal5.8 Animation Track and Unity Timeline1.8.13 track priority. Reconcile screenshots, linked Motion Blending/Slot/root-motion/section APIs, package compatibility and current-versus-historical behavior; no corpus body/API/global gate promotion.",
     "349: Reconcile linked D3DCompile/compiler versioning, shader device-validation, CreateFile/FlushFileBuffers/MoveFileEx and file-lock APIs/platform durability. Selected DX11 bytecode reuse checks do not close GL/WebGPU first compilation, filesystem APIs or global source corpus.",
-    "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation."
+    "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation.",
+    "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -3765,5 +3766,31 @@
       "docs/RENDERING_HISTORY_353_RESEARCH.md"
     ],
     "analysisGate": "선택 본문 대조이며 전체 corpus/독립 분석 gate 미승격"
+  },
+  "supplemental370": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/Renderer.js",
+        "scope": "compileAsync와 _renderScene의 renderId 저장/갱신/복원, coordinateSystem 전환; 그 밖의 Renderer API는 읽기 범위 아님",
+        "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+        "normalizedLocalMatch": true
+      },
+      {
+        "url": "https://raw.githubusercontent.com/mrdoob/three.js/r180/src/renderers/common/nodes/Nodes.js",
+        "scope": "updateGroup의 renderGroup epoch 비교·frame/object 그룹 분리 본문; 나머지 노드 API 미독",
+        "sha256": "4c41a427a1faf43611cb28d95980fed273b0608d0c90dad9b0fc6ea39ed50bc0",
+        "normalizedLocalMatch": true
+      },
+      {
+        "url": "https://pbr-book.org/4ed/Primitives_and_Intersection_Acceleration/Bounding_Volume_Hierarchies",
+        "scope": "7.3 도입의 하위 primitive 경계·중복/메모리 성질, 7.3.1 도입·7.3.4 도입/LinearBVHNode 배치. 전체 SAH/HLBVH 구현·연결 자료/그림/API 미독; HB 기존 median/refit과 skip link를 사용하며 PBRT 구현 도입 아님",
+        "sha256": "4ad642673d1c48ccbc27b340f14dfb78f3464375ab64df0783c676c2e3201ae4"
+      }
+    ],
+    "evidence": [
+      "docs/RENDERING_HISTORY_370_RESEARCH.md"
+    ],
+    "analysisGate": "선택 소스/본문 대조; 전체 문서·API·독립 분석 gate 미승격"
   }
 }

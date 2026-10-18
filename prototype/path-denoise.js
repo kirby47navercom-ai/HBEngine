@@ -1,3 +1,4 @@
+import {previousGeometryGLSL} from './previous-geometry-shader.js';
 import {virtualGuideGLSL} from './path-guide-affine.js';
 import {curvedGuideGLSL} from './path-curved-guide.js';
 import {surfaceHistoryGLSL} from './path-surface-history.js';
@@ -5,6 +6,7 @@ import {surfaceHistoryGLSL} from './path-surface-history.js';
 // shortcut: differential footprints are local; reject grazing/TIR branch changes and cap the radius at32 pixels.
 export const pathDenoiseGLSL=`
 ${surfaceHistoryGLSL}
+${previousGeometryGLSL}
 ${curvedGuideGLSL}
 ${virtualGuideGLSL}
 vec2 hbPathOffset(vec3 x,vec3 y,vec3 delta){float a=dot(x,x),b=dot(x,y),c=dot(y,y),d=a*c-b*b;if(d<=max(1e-20,a*c*1e-6))return vec2(0,0);return vec2(c*dot(x,delta)-b*dot(y,delta),a*dot(y,delta)-b*dot(x,delta))/d;}
@@ -24,7 +26,11 @@ bool baseMirror=physical.x>.5&&physical.y<.4,mirror=baseMirror,coatOnly=false;
 vec4 coat=hbRayField5Lod(hit.y,p,-direction,width);bool coatMirror=coat.x>.5&&coat.y<.05;coatOnly=!glass&&!baseMirror&&coatMirror;mirror=mirror||coatMirror;
 #endif
 normal=hbPathSurfaceNormal(hit.y,p,-direction,width,coatOnly);n=front?normal:-normal;
-vec3 oldP=p,oldN=geometric;if(hbPathFilter.w>0.0){float at=hbPathFilter.w+hit.y*3.0;previousValid=previousValid&&hbGeometryLoad(at).w>.5;oldP=hbPathPreviousPoint(hit.y,p);oldN=normalize(cross(hbGeometryLoad(at+1.0).xyz,hbGeometryLoad(at+2.0).xyz));}if(bounce==0)oldFirst=oldP;if(bounce==1)oldSecondary=length(oldP-oldPoint);oldView=hbEye.w>.5&&bounce==0?priorCamera.xyz:normalize(oldPoint-oldP);if(bounce==0){vec2 oldCone=hbPathPriorCone(oldP,priorCamera);oldWidth=oldCone.x;oldSpread=oldCone.y;}oldWidth+=oldSpread*length(oldP-oldPoint);oldPoint=oldP;
+vec3 oldP=p,oldN=geometric;if(hbPathFilter.w>0.0){float at=hbPathFilter.w+hit.y*3.0;previousValid=previousValid&&hbGeometryLoad(at).w>.5;oldP=hbPathPreviousPoint(hit.y,p);oldN=normalize(cross(hbGeometryLoad(at+1.0).xyz,hbGeometryLoad(at+2.0).xyz));}if(bounce==0)oldFirst=oldP;if(bounce==1)oldSecondary=length(oldP-oldPoint);oldView=hbEye.w>.5&&bounce==0?priorCamera.xyz:normalize(oldPoint-oldP);if(bounce==0&&hbEye.w>.5){vec4 oldOrigin=hbPathPriorOrthoOrigin(oldP,oldView);previousValid=previousValid&&oldOrigin.w>.5;oldPoint=oldOrigin.xyz;}if(bounce==0){vec2 oldCone=hbPathPriorCone(oldP,priorCamera);oldWidth=oldCone.x;oldSpread=oldCone.y;}oldWidth+=oldSpread*length(oldP-oldPoint);
+#ifndef HB_GUIDE_OPAQUE
+if(auxiliary&&curved&&previousValid&&hbPreviousGeometryAvailable()){vec4 priorHit=hbPreviousGeometryTrace(oldPoint,-oldView,hbGeometry.y);previousValid=priorHit.w>.5&&priorHit.z>.5&&priorHit.y==hit.y&&abs(priorHit.x-length(oldP-oldPoint))<=max(hbGeometryLimits.y*4.0,length(oldP-oldPoint)*.00001);}
+#endif
+oldPoint=oldP;
 if(curved){oldN=coatOnly?hbPathCommittedCoatNormal(hit.y,oldP,oldView,oldWidth):hbPathCommittedNormal(hit.y,oldP,oldView,oldWidth);if(dot(oldN,oldN)<.5)previousValid=false;}
 if(curved&&previousValid&&hbPathFilter.w>0.0){
 #ifdef HB_RAY_SURFACE_HISTORY_0
