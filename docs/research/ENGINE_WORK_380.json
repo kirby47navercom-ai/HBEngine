@@ -1,0 +1,225 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "0ed25578b1b5bb1fdd6b1447be8257934210c788",
+  "featureRevision": "333a158",
+  "targetIds": [
+    "RND-01",
+    "RND-08",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/SceneRender.hpp": "a015dd67fa34901868fb0cd33691bd3a6e24f1c32f382ad66f6404d679f60d97",
+    "prototype/lightmap-environment.js": "a3545eb4e1e2c6de6a4e3bea680bc8274ad4e3fa4102b86a797aa5cf93fb0a75",
+    "prototype/lightmap-scene.js": "c6394fd81464d5b5c6ea48676b6d8b8a629d8ddd25993421b251f93e2f1b57d6",
+    "prototype/native-scene-renderer.js": "ad7fbb371813b894bf4d6532f92a327f4fdb02dca345428245ef3bfee5ea0457",
+    "prototype/scene-environment.js": "53eaa3f34b83e5e742fc4a05b0138e39255faff1de6498a5856de90c47ac3898",
+    "prototype/sky-radiance.js": "831ed9c965198e870e3b3fbfdbe7b167742e764fa9fbf1c47fa561c029d3ba5f",
+    "tools/check-lightmap-workflow-225.mjs": "195c7b2705d20e4e4bd52b6d3eda53982b79009f1ea66e7d1cf87a5a659d4241",
+    "tools/check-sky-bake-377.mjs": "476c866eb10db0cfa4e57260b615d25287222421fc2ff2560f04b38be40ab535",
+    "tools/check-sky-radiance-378-native.mjs": "441635cbc7083bb77cbc898d4b3d29dc94dd38c2ff82ec774b7a8e79d4663e0d",
+    "tools/check-sky-radiance-378-window.mjs": "1965186448af44ef7b366468f4b26264548257860811cd9c5c59bbed4cdac5e7",
+    "tools/check-sky-worker-379.mjs": "00cd96302cb54144c3bc72659c9f0e407bb19b358c8da8981324b1fc3ad01658",
+    "tools/editor-automation.mjs": "685e99138724373160d270e101536c985434ee823d845ba5d24452e51496fdd1",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/include/HBEngine/ScreenEffects.hpp": "7270332254411db6e762887312f636742a81d72055d8fe5078e5719109a511ab",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
+  },
+  "testSourceHashes": {
+    "native/tests/sky-378.cpp": "85ca8ed3401cd2582c3b798e97539011a0dce9fa0c378041f43e9fe9f84e13ff"
+  },
+  "nativePlayerSHA256": "5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/sky-bake-377-1uG7uG/acceptance.json",
+      "sha256": "57b23bc2a2d8a9d1a3a24103e590a35a72a26d8983d4c54a64501e25a5967853"
+    },
+    {
+      "path": "native/build/sky-radiance-378-lJpqPT/acceptance.json",
+      "sha256": "7eee8ad0f1159b115251e549213f7e3907a92820ef5f049f4a61857dde9c837d"
+    },
+    {
+      "path": "native/build/sky-radiance-378-native-2hByzZ/acceptance.json",
+      "sha256": "5f88e150ee4d0c01a93e095ccf4adc7f1ba4c83d69ab8ade9aaf61228be1aca3"
+    },
+    {
+      "path": "native/build/sky-worker-379-Z3AO4Q/acceptance.json",
+      "sha256": "74231fd5c0d0d95b7d1a9ff974454cdf89c12ab5fef06bf4a05c345c41241983"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+      "sha256": "46b0140076603470a7285dd7367961e14301d9c5c9ce23b47f1c75279fd742dd"
+    },
+    {
+      "path": "native/build/lightmap-bake-225-KOLAlU/acceptance.json",
+      "sha256": "0393a963622de08eef4a717f63b2d9bb33b96efd6d12a5b47f492d249eec1fc6"
+    },
+    {
+      "path": "native/build/lightmap-environment-228-Rgf2bC/acceptance.json",
+      "sha256": "f62ae3f179c3e2c85f4cc1efb4f34477c3fd3ac55a38a5dcdf7554068da10c16"
+    },
+    {
+      "path": "native/build/sky-bake-380-workflow-pixel.json",
+      "sha256": "ac5f404f9d655200a81111d0e41efb9b518f4658f67ce394811ef58304c7fffd"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+      "backend": "d3d11",
+      "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+      "backend": "webgl2",
+      "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+      "backend": "webgpu",
+      "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+    }
+  ],
+  "implemented": [
+    "기존 화면 하늘 선형parameter 공용소유·frozen8ab8563 실제apply본문20설정동일",
+    "HDRI우선·하늘천정/수평선/해질녘/태양/달·SkyLight tint/간접세기를immutable worker snapshot으로베이크",
+    "worker의 renderer bareimport 제거·세숫자배열값만사용·기존Half/gzip·Undo·저장·빌드 경로재사용",
+    "DirectX 하늘PS/sky capture의달원반·색tint·상수버퍼끝2vec4·이전packet/JSuniform black fallback",
+    "AI skyBake 읽기계약·자원/선택/잔여·기존 lighting.bake 재사용",
+    "실제UV1/베이크/저장/UndoRedo/미리보기/AI dry/stale·D3D/GL/GPU패키지/정적이동무효/복원 실행"
+  ],
+  "measurements": {
+    "frozenParameterConfigurations": 20,
+    "floatDomeConditions": 10,
+    "floatDomeMaximumError": 0.00013710856731430354,
+    "floatDomeBound": "1e-6 + .55 * max(diskColor) * power * 16 * float32epsilon; angular normalization roundoff sensitivity at narrow disk peak, not exact HDR image equivalence",
+    "nativePSDirections": 5,
+    "nativeSRGB8MaximumCodeError": 0,
+    "workerImportFailureReproduced": true,
+    "workerImportAfterFixPassed": true,
+    "humanBakedAtlas": {
+      "linear": [
+        3.140625,
+        0,
+        0,
+        1
+      ],
+      "expected": [
+        3.141592653589793,
+        0,
+        0,
+        1
+      ],
+      "tolerance": 0.002
+    },
+    "actualPlayers": [
+      {
+        "backend": "d3d11",
+        "pixels": [
+          [
+            226,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            226,
+            0,
+            0,
+            255
+          ]
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      },
+      {
+        "backend": "webgl2",
+        "pixels": [
+          [
+            239,
+            0,
+            16,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            239,
+            0,
+            16,
+            255
+          ]
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      },
+      {
+        "backend": "webgpu",
+        "pixels": [
+          [
+            240,
+            0,
+            15,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            240,
+            0,
+            15,
+            255
+          ]
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        }
+      }
+    ]
+  },
+  "resources": {
+    "runtimeDependenciesAdded": 0,
+    "newBakingGPUBuffers": 0,
+    "newBakingGPUTargets": 0,
+    "newAutomaticReadbacks": 0,
+    "nativeDrawConstantBufferAddedBytes": 32,
+    "workerSnapshot": "small scalar/array dome configuration; no texture/renderer/DOM references",
+    "existingAtlasHalfGzipAndPackaging": true
+  },
+  "lightChecks": [
+    "check-environment-actors 34",
+    "generate-api --check",
+    "check-surface-history-contract-362",
+    "check-sky-bake-377 final schema/legacy uniform fallback"
+  ],
+  "limits": [
+    "베이크 하늘은analytic dome이며실시간cloud기하capture·narrow disk중요표본은다음작업",
+    "방향성lightmap/BentNormal·DFAO/HWRT·고급투명매질/mip와전역곡면역해/누적원장유지",
+    "첫p0Zn85는제품Worker importmap실패;de1QU7로원인재현후수정. HYFj20은fixture intensity0의올바른영점동작을잘못예상해intensity1로정정",
+    "initial constant-PI fixture의receiver가returnray를가려목적대로contributeGI false로분리;실제최종제작fixture도같은조건을명시",
+    "GL/GPU/Native게임출력의전체색동일/FPS/실기기/전체UEUnity문서나전체엔진완료주장없음"
+  ]
+}
