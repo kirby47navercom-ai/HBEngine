@@ -552,3 +552,8 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 알파 미사용 필드/0폭 미분과 미사용TSL graph를 줄이고, 상쇄 노멀의 CPU·일반·광선·이전 디코더를 공유했어요. 실제 GL/GPU/D3D의 큰mip중립/작은mip원방향과 일반raster를 대조했어요. 이전 표면 공간 입력의 일괄미지원 생산자 표식을 정리하고 기존 이전 포즈/분기/값 검사로 연결했어요. 전체 세 API 가이드에서 같은 값 유지·변경 거부·복원을 확인했어요. NaN/Inf가 max 계산에서 숨는 실제52불일치를 채널별 비교로 고쳐 최종 세 API28cases×3판정0불일치예요. 첫 일반D3D helper누락 LwGvlA는 native-materials 선언을 보완했고 실제 패키지 nXXUre C++/BP·UV노멀·morph664채널·해제/캐시 검사가 통과했어요. GL source296B감소는2004.9→2011.6ms로준비시간개선을입증하지않았고Complex141 path4689/temporal4829ms는남은과제예요. 정본 ENGINE_WORK_410/도움말·선택본문 corpus410·AI 불변 normalDecode 계약에 기록하고 설치410에서동일소유SHA와User읽기지문/Versions1을확인해요. 전체목표완료로세지않고계속해요.
 
 410 설치 a07a23a239e6b865·3255파일 fullSHA/28실행소유 SHA·새player·links2/.hbproject·Versions1을 확인했어요. 실제 설치 GL/GPU normal/raster/이전mip CDhjNf와 두 D3D게임 YCyRGS 저장6/재사용6/재저장0 통과예요. User10385설치전후읽기SHA 동일·이전설치178121187B와검사exe4363624B를 정리했어요. 누적RND06과다음렌더링작업을계속해요.
+
+
+### 2026-10-18 · 411–415
+
+큰월드1천만에서폭.3125가세계점더하기중사라져GL/GPU가넓은mip도0mip로고르는오류qC75cp를재현했어요. 상대삼각형모서리의affineUV차분으로수정해세API의큰mip중립/작은mip원방향과17기하·skin/morph/instance/smooth·이전UV조건을원래4e-5로확인했어요. 128독립수학조건도대조했고기본보간/IR/상수버퍼·GPU추가자원/읽기는유지했어요. native helper를쓰는UV/필터에만생성하고표참조전검증·standalone include를지켰어요. engineSchema의불변uvFootprint와도움말에남겼어요. GL준비한쌍2664.9→2576.6ms/source122B와실제C++/BP Complex141 path4615/시간guide4488ms는관찰이며개선율/FPS로세지않아요. 현재중간좌표graph/전역곡면/매질/원장잔여도이어가요. 설치415의실제큰월드/두native게임·전체SHA·User읽기보존·Versions1을다음검증해요.

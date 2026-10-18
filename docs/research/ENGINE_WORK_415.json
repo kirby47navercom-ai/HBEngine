@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "2d5c22a1dc620a504a64e2da9acd275ce2a7c1d1",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/path-surface-history.js": "e1621a38fe655f6704697f7880c303ce10486cace99a1030fd03000f414fb252",
+    "prototype/ray-material-gpu.js": "608c1feec7a06683a78038c38bc61bcfd1b16e9dd25a2a45e58d7da36e92e5ad",
+    "prototype/ray-uv-footprint.js": "997054bc99618c8b445a9bca7ef455141470b226f008d97f3db8adb890b0554c",
+    "tools/check-alpha-preparation-404-window.mjs": "f3cae16fb879cb50d530099efa929a671fe751aafa3eaaca7ef9bcee181ae1d6",
+    "tools/check-normal-history-403-native.mjs": "210ed92264d948fe4728447a5941febc689c1588c89e1e56c901d79a73975c78",
+    "tools/check-normal-history-403-window.mjs": "853ba8bdb41a40b5af7e790cf74b6c108bee21e45d7100354e94134ec8fe80dc",
+    "tools/check-rendering-106.mjs": "124a2afaa99822105fece7a855f261fd85887a8bf42a52945cdd640747bac103",
+    "tools/check-uv-footprint-412.mjs": "1fe788cd73f48ead6365eb8369cad0a23dc346847d86c775b2baebf7787e910a",
+    "tools/generate-ray-programs.mjs": "49b6fe6197a4503e8b050d02e967f962673d10873a77da7970c9b01154da4c3b",
+    "tools/normal-history-fixture-403.mjs": "2e3037f3bfb0ce8cfa2beba337fbf1a70e36b7e9be6646c1aab5f175c75fdc9c",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "89aa20ab83bb95d543cf2425b0da98c245cc6aaecf4f129c663e5fa74883b89f",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "ee993dbadc54f28e9789b419e5ef8ef51c591bde82078c01bdd8253836b4f2b3"
+  },
+  "nativePlayerSHA256": "f1e1a2970cd512ce69f4e8fa0af702dbdd84cea0653eaf8882d760dcb22c5c71",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/uv-footprint-412-cpu.json",
+      "sha256": "a7db48f7da5100e37db3d47efb359981a8741b68451c10300c5189e233362ef7"
+    },
+    {
+      "path": "native/build/uv-footprint-411-qk29SF/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/uv-footprint-411-native-9T3FyC/acceptance.json",
+      "sha256": "f6359a320f946d0add3dc2a31bb14af071b737d8d244b59aa6d045826ecf1ca6"
+    },
+    {
+      "path": "native/build/previous-context-308-bg07Rp/acceptance.json",
+      "sha256": "b509a4f86ee3795331b57fa37be4a36111dfed42115787349fb0aaa56ace2605"
+    },
+    {
+      "path": "native/build/previous-context-308-native-zoaPe5/acceptance.json",
+      "sha256": "5694bb8ff65d0d3f3a255d8fd38d9e69c26a988829d5c727619ac7e1ce283cae"
+    },
+    {
+      "path": "native/build/ray-surface-context-357-ZL2gfn/acceptance.json",
+      "sha256": "2d3150bcb78b56549f6251e637eae7d12ac56ba73a674ff1d35b820ecfd78238"
+    },
+    {
+      "path": "native/build/uv-preparation-414-IkLwm9/acceptance.json",
+      "sha256": "61638cf28c9b87646d85a33cfdd5c5269c41aa768d2f93f7030f480f300b1f72"
+    },
+    {
+      "path": "native/build/native-scene-window-9mIBhk/acceptance.json",
+      "sha256": "d52f86214e3c7e1e577ca0cccb386dfab7028db01058e365aa1d50861e0f3863"
+    },
+    {
+      "path": "native/build/rendering-415-light-checks.json",
+      "sha256": "81faf7e86ebca6a38bef315f02f1724be47e32a16eff87f88fa5b6e74560aeaa"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-9mIBhk/acceptance.json",
+      "scope": "Actual packaged D3D11 Complex141 C++/Blueprint/normal UV graph/morph/cache budget/disabled release; no FPS or stable cold improvement ratio"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/uv-footprint-411-qk29SF/acceptance.json",
+      "scope": "Actual GL/GPU large-coordinate/current and committed mip values plus ordinary raster, unchanged original4e-5"
+    },
+    {
+      "path": "native/build/previous-context-308-bg07Rp/acceptance.json",
+      "scope": "Actual GL/GPU17 previous material/normal/UV contexts including skin/morph/instance/smooth"
+    }
+  ],
+  "implemented": [
+    "상대 삼각형 모서리의 affine UV차분으로 월드 sub-ULP 폭 손실을 방지·현재/이전 GL/GPU/생성HLSL 일치",
+    "기본UV 보간·IR·field·constantbuffer·sampler 계약 유지·사용하는 native UV/필터에만 helper 생성",
+    "샘플러 표 참조 전 모든 RayProgram 검증·standalone algorithm include·legacy/출력주소 검증 유지",
+    "기존 engineSchema.raySurfaceHistory.uvFootprint 불변계약·이용자 설명"
+  ],
+  "measurements": {
+    "largeWorldPoint": 10000000,
+    "worldWidth": 0.3125,
+    "previousF32Offset": 0,
+    "analyticUVDelta": -0.078125,
+    "actualPreviousMipNeutral": true,
+    "actualFineMipDirectionRetained": true,
+    "CPUIndependentCases": 128,
+    "maxCPUIdentityError": 4.336808689942018e-17,
+    "poseCasesPerBackend": 17,
+    "maxGLPreviousError": 0.000001087784767150879,
+    "maxD3DPreviousError": 0.0000017285346984863281,
+    "GLPreparationPairMS": [
+      2664.89999999851,
+      2576.60000000149
+    ],
+    "GLSourceBytes": [
+      86532,
+      86410
+    ],
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4614.955199999997
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1953.4607000000105
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 124.35169999999925
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4487.5216999999975
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 127.79280000001017
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 112.49139999999898
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 566688,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 31,
+        "totalCompileMS": 9766,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "411 qC75cp real GL/GPU all widths returned -X because a world offset smaller than F32 ULP vanished; corrected qk29SF/native9T3FyC return coarse neutral/fine -X",
+    "411 QvH32p HLSL scalar vec2 constructor invalid; shared helper explicitly vec2(0,0)",
+    "413 EM15l0 standalone generated header missing algorithm; generator include fixed/ZL2gfn10 cases",
+    "414 one preparation pair2664.9→2576.6ms/source122B; not controlled latency success"
+  ],
+  "limits": [
+    "worldPosition-derived and very large authored UV/time coordinate cancellation still require work",
+    "global changed transparent path/curved inverse, compound lobes and participating-medium footprints remain",
+    "initial complex compile still seconds; no representative FPS/device/docs/whole engine completion claim"
+  ]
+}
