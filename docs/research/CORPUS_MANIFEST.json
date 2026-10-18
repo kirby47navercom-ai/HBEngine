@@ -2731,6 +2731,17 @@
       "wholeCorpus": false,
       "state": "own_skeleton_sharing_body_read_linked_PSD_and_sample_media_unread",
       "readScope": "Own article including skeleton/library relationship; linked PSD importer/full skin swap/APIs/media not read. CopyPasteSkele fetch failed; no coverage awarded."
+    },
+    {
+      "id": "webgpu-pipeline-submission-supplement-430",
+      "engine": "HBEngine dependencies",
+      "roots": [
+        "https://gpuweb.github.io/types/interfaces/GPUDevice.html"
+      ],
+      "record": "docs/PIPELINE_PREPARATION_430.md",
+      "wholeCorpus": false,
+      "state": "selected_GPUWeb_method_paragraph_and_local_r180_synchronous_restore_compared",
+      "readScope": "GPUDevice.createRenderPipelineAsync readiness/Promise/rejection paragraph only. MDN same method intro re-read via existing145 source registration. Local r180 Renderer.compileAsync restoration before final Promise.all and WebGPUPipelineUtils pipeline callback selected. W3C full body fetch failed size limit; full WebGPU/Three/API corpus unread."
     }
   ],
   "supplementalBaselines": [
@@ -3958,5 +3969,46 @@
       "native/build/guide-frame-inputs-405-cpu.json"
     ],
     "analysisGate": "선택한본문구역만추가읽기. 전체UE/Unity/GLSL/HLSL/API분모미확정·미독유지"
+  },
+  "supplemental430": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://gpuweb.github.io/types/interfaces/GPUDevice.html",
+        "snapshot": "native/build/reference-corpus/supplemental430/gpu-device.html",
+        "sha256": "be196df6e0aa6d23f97d4f2ed8e3355bea90a4da53bcecc28fee82b685a6e838",
+        "scope": "createRenderPipelineAsync method paragraph and linked signature only. Full page collected, not full-body analysis"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/GPUDevice/createRenderPipelineAsync",
+        "registration": "guide-composition-compilation-profiler-supplement",
+        "scope": "method introduction/readiness and Promise contract re-read in browser tool; existing145 registration reused, no duplicate local body"
+      }
+    ],
+    "local": [
+      {
+        "path": "node_modules/three/src/renderers/common/Renderer.js",
+        "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+        "scope": "compileAsync initialized synchronous descriptor build, state restoration, final Promise.all"
+      },
+      {
+        "path": "node_modules/three/src/renderers/webgpu/utils/WebGPUPipelineUtils.js",
+        "sha256": "f6a1fbde0f117b2652c023b0bc4d8ba5db42b137bda32e2cbbd5829538ecf41b",
+        "scope": "createRenderPipeline async branch: captured pipelineData and descriptor, resolve callback; full library unanalysed"
+      }
+    ],
+    "w3c": {
+      "url": "https://www.w3.org/TR/webgpu/#dom-gpudevice-createrenderpipelineasync",
+      "state": "fetch_failed_tool_content_limit_above_4MiB",
+      "fullBodyRead": false
+    },
+    "comparison": "Independent descriptor submission removes application completion barrier; actual driver concurrency/performance not guaranteed. Real GPU submission/order/pixels and CPU cancellation/epochs are independent implementation evidence.",
+    "evidence": [
+      "docs/PIPELINE_PREPARATION_430.md",
+      "native/build/pipeline-426-baseline.json",
+      "native/build/pipeline-426-cpu.json",
+      "native/build/pipeline-submission-427-jCeTQi/acceptance.json"
+    ],
+    "analysisGate": "Only selected paragraphs and local source sections. Whole UE/Unity/WebGPU/Three/API denominator remains open; no full-body gate promotion"
   }
 }
