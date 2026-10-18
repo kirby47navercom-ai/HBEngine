@@ -44,6 +44,21 @@
     {
       "path": "native/build/native-installed-cache-513-5349op/acceptance.json",
       "sha256": "8dfce1af27d2a8217cc1aeac82741378e89abf5540c669afc681d9304ebba941"
+    },
+    {
+      "path": "native/build/installed-retained-native-602-yXdyJr/acceptance.json",
+      "sha256": "9026cfe1e9813ebcff976fcd6ecf6209b928a8a44952347603e572e5b0ca04b9",
+      "scope": "Actual installed NativeHost/SDK, pure reflected C++602 call, managed module cache reuse, retained source/SDK inputs and lease release; private process/profile. No user game/profile used."
+    },
+    {
+      "path": "native/build/compute-player-580-melKu0/acceptance.json",
+      "sha256": "cbfd08a8526232a30fea58ad04f03092c574f3e413f731fc9181db0c35497539",
+      "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-tBm0ph/acceptance.json",
+      "sha256": "a36aedea6f1cf836649244b506de8240b66083f2aecaf5cb28af33a9c17100e0",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
     }
   ],
   "observations": {
@@ -52,7 +67,8 @@
   },
   "runtimeActivation": {
     "sourceNativeHost": true,
-    "installed582": false
+    "installed582": false,
+    "installed602": true
   },
   "scope": "Actual reflected worker reuse after deleting an owned mock version, old/new sessions independent, source/SDK listing in LLDB batch; no live breakpoints/stepping proof.",
   "remaining": [
@@ -60,5 +76,7 @@
     "live native debugger/breakpoints/stacks/threads",
     "cumulative renderer and whole-engine goals"
   ],
-  "followupRevision": "e4a3c0f"
+  "followupRevision": "e4a3c0f",
+  "installationPending": false,
+  "installationReceipt": "docs/research/USER_INSTALL_602.json"
 }

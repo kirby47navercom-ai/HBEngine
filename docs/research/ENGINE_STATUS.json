@@ -2181,11 +2181,11 @@
   ],
   "latestBatch": "585–600",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_582.json",
-    "sourceCommit": "e166a71bd95f57abb09bf0b9a47539b48bc868fc",
-    "bundleHash": "ee12e27c7047012304455f2f0f823926787af7ea18be2d7ec5793fdd3f63ee81",
+    "receipt": "docs/research/USER_INSTALL_602.json",
+    "sourceCommit": "22971e9a70ae66159097d56992d23ae93ed234fc",
+    "bundleHash": "e8daf676482871933f8a765a39d040c0071ba7caaeb9292333080c154176d971",
     "verified": true,
     "versions": 1,
-    "scope": "582 전체3424파일/88owner/User전후SHA/연결/Versions1·설치Compute커널/파티클캐시와실제2D/C++/BP/resize/release/풀재사용"
+    "scope": "602 전체3442파일/소유SHA/User전후읽기SHA/연결/Versions1·설치CPP602/관리캐시·실제2D/C++/BP/복잡준비/캡처/유휴"
   }
 }

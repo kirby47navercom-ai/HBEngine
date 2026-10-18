@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "22971e9a70ae66159097d56992d23ae93ed234fc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193\\HBEngine.exe",
+  "bundleHash": "e8daf676482871933f8a765a39d040c0071ba7caaeb9292333080c154176d971",
+  "files": 3442,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "22971e9a70ae66159097d56992d23ae93ed234fc",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e8daf67648287193\\HBEngine.exe",
+    "bundleHash": "e8daf676482871933f8a765a39d040c0071ba7caaeb9292333080c154176d971",
+    "files": 3442,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3425,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123",
+          "bytes": 180026488,
+          "manifestSHA256": "c534fbe590f5d39bde325a62a538f030332fcf62751854de2956272a91c40965"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T23:35:41.7278611Z",
+      "bytes": 180026488,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "e8daf67648287193"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 3,
+      "bytes": 33899307,
+      "receipt": null,
+      "entries": [
+        "187adbbe5ba3c694af7c/1038e1751e35b9dcd090",
+        "187adbbe5ba3c694af7c/1b52f6974008afa7c9be",
+        "187adbbe5ba3c694af7c/6cff34a10da430e14911"
+      ],
+      "running": []
+    },
+    "nativePlayerSHA256": "75c7d97ea227caa2cb124f4096e9e7f8b647fb39b50305805f223e8adf393172",
+    "installedGates": [
+      {
+        "path": "native/build/installed-retained-native-602-yXdyJr/acceptance.json",
+        "sha256": "9026cfe1e9813ebcff976fcd6ecf6209b928a8a44952347603e572e5b0ca04b9",
+        "scope": "Actual installed NativeHost/SDK, pure reflected C++602 call, managed module cache reuse, retained source/SDK inputs and lease release; private process/profile. No user game/profile used."
+      },
+      {
+        "path": "native/build/compute-player-580-melKu0/acceptance.json",
+        "sha256": "cbfd08a8526232a30fea58ad04f03092c574f3e413f731fc9181db0c35497539",
+        "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-tBm0ph/acceptance.json",
+        "sha256": "a36aedea6f1cf836649244b506de8240b66083f2aecaf5cb28af33a9c17100e0",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3442,
+    "versions": [
+      "e8daf67648287193"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-602-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceChecks": [
+      {
+        "path": "native/build/scene-raster-preparation-596-jz8sE8/acceptance.json",
+        "sha256": "9e86bc7155208dd6ae50b1369c24632f9d6c5936dda460afb67e14a4dd350752"
+      },
+      {
+        "path": "native/build/scene-program-preparation-553-alsEYv/acceptance.json",
+        "sha256": "76b61796165076757c7fbafdb9ce503e20dbb20eefdd1302515d1e32d54a40fb"
+      },
+      {
+        "path": "native/build/scene-program-bridge-556-UVjWXi/acceptance.json",
+        "sha256": "ee5d7d5c39bc3488864b1a9a44fd7b821f945c732eea3c10f1a4cbd8e36f40ab"
+      },
+      {
+        "path": "native/build/native-raster-preparation-555.json",
+        "sha256": "a9d77a4b8cfe747b0d578b220e545851f1734546baef0826bbc82d8b95165c2e"
+      },
+      {
+        "path": "native/build/native-frame-307-rWP95B/acceptance.json",
+        "sha256": "2787dbfad1a704c05587bac85d1272089588e1adcf0af218dc1730709e600ce0"
+      },
+      {
+        "path": "native/build/compute-player-580-Jzndh5/acceptance.json",
+        "sha256": "6002ca53587000c3e004e3677d4104b2bd6fbd167aa76a05d8f140fd5d2c1787"
+      },
+      {
+        "path": "native/build/build598-result.json",
+        "sha256": "502e2f40d5bdceb4f67309325de02a8cf455456b3a8d67483413d8a1c8b6b769"
+      },
+      {
+        "path": "native/build/native-preparation-window-496-RlSxQs/acceptance.json",
+        "sha256": "fa395578681bef28670b2709212d5f06f30c16c250b73c6eb5142090e3a48129"
+      }
+    ],
+    "sourceGameGates": [
+      "native/build/compute-player-580-Jzndh5/acceptance.json",
+      "native/build/native-preparation-window-496-RlSxQs/acceptance.json"
+    ],
+    "scope": "602 전체명세/소유SHA·설치 C++ 관리 캐시와 보존 소스·실제 2D/C++/BP/머테리얼/시간 준비/해제·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 91053220,
+    "files": 250,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 258694,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/scene-raster-preparation-596-eSprt8/probe.exe",
+      "bytes": 2035822,
+      "sha256": "e19df6b488202397eb6baf2ec2f4c7daa126e58aa3e9e48ac75332403f48fc7c"
+    },
+    {
+      "path": "native/build/scene-raster-preparation-596-jz8sE8/probe.exe",
+      "bytes": 2036586,
+      "sha256": "79ee77e09763eb9741766dd67893adfb7730ff1421bf42e5e239d50322a73942"
+    },
+    {
+      "path": "native/build/scene-program-preparation-553-alsEYv/probe.exe",
+      "bytes": 1439846,
+      "sha256": "757dfe93d1d73b446d19a0c32aef156924870c9bfec5567c4d6ac4d8567e9d34"
+    },
+    {
+      "path": "native/build/scene-program-bridge-556-UVjWXi/probe.exe",
+      "bytes": 2033056,
+      "sha256": "61a63b94ee032edef6fb8baf552189d0c8106d6f42cbca85cc795fea7852ee41"
+    }
+  ],
+  "scope": "602 전체명세/소유SHA·설치 C++ 관리 캐시와 보존 소스·실제 2D/C++/BP/머테리얼/시간 준비/해제·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}

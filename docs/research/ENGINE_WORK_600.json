@@ -137,6 +137,21 @@
     {
       "path": "native/build/native-preparation-window-496-RlSxQs/acceptance.json",
       "sha256": "fa395578681bef28670b2709212d5f06f30c16c250b73c6eb5142090e3a48129"
+    },
+    {
+      "path": "native/build/installed-retained-native-602-yXdyJr/acceptance.json",
+      "sha256": "9026cfe1e9813ebcff976fcd6ecf6209b928a8a44952347603e572e5b0ca04b9",
+      "scope": "Actual installed NativeHost/SDK, pure reflected C++602 call, managed module cache reuse, retained source/SDK inputs and lease release; private process/profile. No user game/profile used."
+    },
+    {
+      "path": "native/build/compute-player-580-melKu0/acceptance.json",
+      "sha256": "cbfd08a8526232a30fea58ad04f03092c574f3e413f731fc9181db0c35497539",
+      "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-tBm0ph/acceptance.json",
+      "sha256": "a36aedea6f1cf836649244b506de8240b66083f2aecaf5cb28af33a9c17100e0",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
     }
   ],
   "changes": [
@@ -150,11 +165,12 @@
     "native/build/compute-player-580-Jzndh5/acceptance.json",
     "native/build/native-preparation-window-496-RlSxQs/acceptance.json"
   ],
-  "installationPending": true,
+  "installationPending": false,
   "failuresSeparated": [
     "593 first SDK source-listing assertion met an inlined function; fixture explicitly noinline, engine optimization unchanged",
     "593 eviction cleanup exposed stale index row; discard now checks complete artifact and removes invalid row before retiring",
     "496 first invocation used a missing old fixture path and did not start; retry uses verified retained VsRtt0 owned fixture"
   ],
-  "scope": "595 C++ foundations and596–599 base raster integration, actual DirectX/2D game. No full engine/FPS/global cold compile or live debugger completion claim."
+  "scope": "595 C++ foundations and596–599 base raster integration, actual DirectX/2D game. No full engine/FPS/global cold compile or live debugger completion claim.",
+  "installationReceipt": "docs/research/USER_INSTALL_602.json"
 }
