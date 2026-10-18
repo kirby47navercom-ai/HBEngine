@@ -524,3 +524,8 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 현재 하늘의 선형 천정/수평선·해질녘·태양/달·SkyLight tint/간접세기를 HDRI우선 worker snapshot으로연결했어요. 기존 화면 parameter는동결한apply본문20구성으로일치하고워커bareimport실패는실제moduleworker로재현후renderer의존제거로고쳤어요. DirectX일반하늘/캡처달을2vec4(32B)로추가하고옛packet/JSuniform기본값을보존해요. 실제GL/GPU10방향과DX5방향·인간UV1/베이크/UndoRedo/미리보기/AI가드·세GPU게임baseline/이동무효/복원·exit0을확인했어요. 실제Half atlas의상수바운드PI도대조해요. 새의존/베이크GPU자원/자동readback은없어요. source·AI계약·공식지정본문과잔여를기록하고설치380후다음렌더링을계속해요.
 
 380 설치 be667218d6b12f61·3215명세 SHA/17소유자·새 player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일의 설치직전/후 읽기전용SHA가 같아요. 설치379QjO9mY 실제moduleworker와350Xexu4L 두native게임6save→6hit/0save·종료0을통과했어요. 이전설치 178155104B(논리크기)·own native probe 1162534B를정리하고누적렌더링을계속해요.
+
+
+### 2026-10-18 · 381–390
+
+HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지해요. 6NPOT Float/Half 전체 패킹바이트·원본 불변과2800B/full699056B를 대조했어요. 환경 각도를공유다항식으로 바꾸고392조건×3GPU 최대2.4655e-6/기존4e-5를통과했어요. HDRI 선택우선과sun/moon 혼합PDF는 실제 인간베이크/워커/Undo/AI/미리보기/세게임으로 연결했어요. 추가 광선/GPU자원은없어요. GL 준비대기를실패로세어raw64표본을버리던문제를수정하고원본픽셀동일/광원reset/전체117·118·120 CPP/BP를확인했어요. NativeLens의identity원근검사입력은실제행렬로정정하고같은binary로118/117을재개했으며원래실패와120통과구역을보존해요. 지정NIST/PBRT본문과미독범위·원장/AI계약은갱신했으며등록78항목을전체엔진분모로세지않아요. 설치390 SHA검증/Versions1 이후누적목표를계속해요.

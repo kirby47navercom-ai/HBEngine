@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "094c80b23a61c50b1701bbd7384ae2b1e9487243",
+  "targetIds": [
+    "RND-05",
+    "RND-06",
+    "RND-08",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/bloom-rendering.js": "32c1882e8b8f3a40db78bb00a1fa4f68106bd16dfc4a07406a717d277d394b87",
+    "prototype/environment-angle-gpu.js": "b1d9710fd9e66baad7e4dbe9217f037320b7e814ca8b037a4b3ea010eb4feaee",
+    "prototype/environment-angle.js": "23c72097639aa0f86891f8e829ad8ae3ea1a07021a1d9482094d6472eed99fdd",
+    "prototype/environment-mips.js": "97f2f74505c01b125e7fae6c09d19f0fe62f06c5f1e36a3efd00d52c18f95034",
+    "prototype/lightmap-bake-core.js": "6e130ec717d578dc24b179762933368962a80c108d30d980d68c1650b95389f1",
+    "prototype/lightmap-directions.js": "ef4e6ffef658fa1a81321fb135a74297efcda5f81d2b7e04cef10ea81dda1800",
+    "prototype/lightmap-environment.js": "159cc594171e8738a215d51c45bef021b7127ec986c15fba31381085604b6436",
+    "prototype/path-environment-gpu.js": "2879185fb62e2b9000d913429a4501ccdb1de4aede65979cf25d222d2e3327c9",
+    "prototype/path-environment-shader.js": "15cdb33f087af76a1ef9cf26cacf783a98f03a285eaabf28e5a19453b7314b42",
+    "prototype/path-environment.js": "da59c412bfc62c5848d7abcf49fe9c63cecf20c7d05958c5dcc80d793d57b0e0",
+    "prototype/screen-effects.js": "d2a039a4ec47854401dd608760a4a622aa8dc344db01a9223bb792dad9b3a038",
+    "prototype/sky-radiance.js": "253544aea269f5ab8740cb9e7f9bc41eeadeed265f3988b2f175251d7644ab64",
+    "tools/check-environment-filter-382.mjs": "c19fd6b78f363f783f9f0e8c2dca93373a7c014a93f2fd02159b7b74eae60c42",
+    "tools/check-environment-mips-381.mjs": "9a69a3a983c9aeb4b2d1f770b77bf6d54d1b67de79eb190f841322835e5ea4bc",
+    "tools/check-lightmap-workflow-225.mjs": "88aa1ba65699d9d6ed4a3986539e594d48ac6b7fc053e58e8ab93223802ee48d",
+    "tools/check-path-suspend-386.mjs": "5fef9fe10687b185626508bd60602e5225b6fd2e0e886668296e8263108ea888",
+    "tools/check-sky-directions-387.mjs": "bbdb53f65103778bc6b749bdcd430501b3d9511bc28d672dc39eac91bd67f3ac",
+    "tools/environment-filter-fixture-382.mjs": "e51b584b24de46456b92a308f9b3b207e9111e50e85887a27cf68246da9f5b51",
+    "tools/rendering-118-fixture.mjs": "a60d13ab987b7a29779477b988e29570d33b89881c3a4aa7a2513aa48642d8f3",
+    "tools/rendering-120-fixture.mjs": "38b620043fdb663d8e65646e9f903dc956550a90c3eb5d5c9a8a6555b92eaf0c",
+    "tools/transmission-fixture.mjs": "337ce2b378dc38930ca6d59d3cae3d51b97697f09bdc30cd200d608148842ce5",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/include/HBEngine/ScreenEffects.hpp": "ab2d6b314e824014a6d35ad70e11d34cc39d40156415cdcdfa0f6548ce750f78",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
+  },
+  "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/environment-mips-381-yjBN3J/acceptance.json",
+      "sha256": "7ac4d2fb3577b23d7889732f9acfce7e14fd50b3ad8d0dab455824f219dc243a"
+    },
+    {
+      "path": "native/build/environment-filter-382-xsnH75/acceptance.json",
+      "sha256": "dbd18870948190507cace148d4ff4062652ff5e0f1faab3d54e66a7a49817687"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+      "sha256": "317a7f0a3de4ba86b97fec91fe12b58cfb75232eb5d6e8ea6e8602604d3fcf14"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+      "sha256": "6413c79d015da70ad137d691a1b2bc085a6f52ccedbcf37b243916000c40e242"
+    },
+    {
+      "path": "native/build/gpu-scene-XPXQyq/acceptance.json",
+      "sha256": "bff594c8d3d0b13ba85ee8ece9fb43be4bdbc0f0293d78e095ae433352611d29"
+    },
+    {
+      "path": "native/build/gpu-scene-YMZm0m/acceptance.json",
+      "sha256": "7a2a8966267f60ffdfa9a18af237718e2b633f0a8997627b704ae4cd85842348"
+    },
+    {
+      "path": "native/build/gpu-scene-X5M4HQ/acceptance.json",
+      "sha256": "b1e49372b8f80d8aa176bfd13b50e642d534b6bb577d78ff818768400b057842"
+    },
+    {
+      "path": "native/build/lightmap-bake-225-YRp4Ft/acceptance.json",
+      "sha256": "0393a963622de08eef4a717f63b2d9bb33b96efd6d12a5b47f492d249eec1fc6"
+    },
+    {
+      "path": "native/build/lightmap-environment-228-Z15Wem/acceptance.json",
+      "sha256": "f62ae3f179c3e2c85f4cc1efb4f34477c3fd3ac55a38a5dcdf7554068da10c16"
+    },
+    {
+      "path": "native/build/sky-directions-387-cpu.json",
+      "sha256": "851088ca543813419a448ac522436fc8cf0d92e5960e6df691b50d5214c395d3"
+    },
+    {
+      "path": "native/build/path-suspend-386-cpu.json",
+      "sha256": "1234a240f4b6ab5efa0e147ca123e359d14eb827b681e8cad7de1f846ed00c8f"
+    },
+    {
+      "path": "native/build/preparation-epoch-366-cpu.json",
+      "sha256": "f0090cb1aa6053d722c2bf3e15403cb6c7038834fecd55acedad099144911dab"
+    },
+    {
+      "path": "native/build/native-scene-MknpqR/resume385.json",
+      "sha256": "390b5e30cc633c5dc123f926c871d0607b96e59e659565146ec2af849b671b72"
+    },
+    {
+      "path": "native/build/lens-projection-385-QGKkQl/acceptance.json",
+      "sha256": "ab1ba605595471d5fe08f318ecc006d8e22a251763fd2cb75fdcbc88a2ce58b2"
+    },
+    {
+      "path": "native/build/native-scene-MknpqR/progress.json",
+      "sha256": "7074968fd5f7f3be848dec5bf249db87c6a5ed5f09631a8b145e41c863ac288b",
+      "scope": "Only hardware.rendering120 completed; original full invocation later failed Lens118. Corrected118/117 resumed separately with the same binary and assertions."
+    },
+    {
+      "path": "native/build/environment-filter-390-atlas.json",
+      "sha256": "9da1fa43825e0daa36591cc0f1edd9a93139108ac06d5af680acf5dfd003c9d0"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+      "backend": "d3d11",
+      "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+      "backend": "webgl2",
+      "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+      "backend": "webgpu",
+      "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+      "backend": "d3d11",
+      "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+      "backend": "webgl2",
+      "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+      "backend": "webgpu",
+      "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+    }
+  ],
+  "implemented": [
+    "기존 구면면적 밉의 pure worker 공유·NPOT/Float/Half 기존 전체 패킹바이트 유지",
+    "베이크 HDRI queried mip만 유지·trilinear/극점 평균·회전/flipY/확산 spread",
+    "공용 고정다항 각도·극점 latitude 소실 회피·실제 GL/GPU/번역DX392조건씩 대조",
+    "실제 HDRI 인간제작·워커·UndoRedo·AI stale/dry·Half preview와세게임 연결",
+    "원근 Lens 검사의 실제 VP/역VP 입력·제품invalid-camera 거부 보존·같은binary118/117 재개",
+    "WebGL 준비 raster frame을 실패와 분리하여 정적raw64표본 보존·실제오류/transport 변경reset유지",
+    "태양/달 power-lobe/cosine single-sample mixture·혼합PDF 보정·배경대비power 기반 확률상한.5·기존raybudget",
+    "기존cosine240 수열 exact·해석 irradiance·2lobe/furnace·실제one-bounce·인간sun베이크/세게임",
+    "기존skyBake/lighting.bake와 stats의 AI 읽기계약·선택/자원/미구현범위 갱신"
+  ],
+  "measurements": {
+    "gpuConditionsPerBackend": 392,
+    "maximumEnvironmentRGBError": 0.0000024654763,
+    "unchangedAcceptanceTolerance": 0.00004,
+    "lazyMipBytes": 2800,
+    "fullMipAdditionalBytes": 699056,
+    "storageScope": "retained typed arrays only; not process peak RAM/FPS",
+    "staticRawSamplesPreserved": 64,
+    "suspendFramesCPU": 40,
+    "exactHistoryImageSize": [
+      32,
+      32
+    ],
+    "narrowDiskPower": 7000,
+    "mixtureMSE": 0.002904705880291893,
+    "cosineMSE": 24.357959433384465,
+    "varianceScope": "64 specified rotations/32 samples of aligned bright disk, not arbitrary scenes/FPS",
+    "nativeLensTemporalChangedChannels": 2436,
+    "newGPUResources": 0,
+    "newUniformBytes": 0,
+    "newDependencies": 0,
+    "newAutomaticReadbacks": 0
+  },
+  "failuresPreserved": [
+    "382 initial float-direction input mismatch corrected; dynamicacos residual diagnosed; NIST angular polynomial passes original threshold",
+    "native original MknpqR full invocation failed malformed identity perspective Lens packet; only120 segment plus corrected118/117 resume counted",
+    "GL aCS0nu raw accumulation failed, yVz0lD proves pending frame.end(false) reset same key; exact pixel condition unchanged after fix",
+    "388 ICaA79 fixture wrote Sky properties to Transform; scene validator correctly rejected it, typed selection fixed; product validator unchanged"
+  ],
+  "limits": [
+    "Global curved inverse correspondence/rough compound participating-media footprints remain in canonical RND05/07",
+    "HDRI importance sampling, real cloud capture, directional/chart mips/shadowmask/probes, DFAO/HWRT remain in RND08",
+    "Native unavailable-device segment was not reached in original385 invocation; no new claim of that gate",
+    "No whole-Unreal/Unity/docs/API completion, whole-image cross-backend equality, representative FPS or device proof"
+  ]
+}
