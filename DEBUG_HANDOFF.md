@@ -16,4 +16,6 @@
 
 -510 source4cd4f0d·4계열텍스처UVfinite전파/현재이전밉·s1기본normalSampler충돌은HB_NODE_SURFACE기본6맵분리/createSurfaceProgram으로수정. 실제507ecNs0o 188/0↔0/188, sourceVsRtt0 새두텍스처게임, 5AJdMC 전체2D3D실행기 통과. 499kQNLBO/500vlZrYh 오차0/감도1, oldinstalled77ArfC 감도0. sourceplayer17eb6030..510설치/검증뒤계속.
 
--510설치bd5f13e0145bd55d·3363files/20owner/User10385읽기SHA/Versions1·499l8ydFy네형식/7wxC50실제두텍스처SDK CPP 24frame/C++4.62ms/disable93.55ms/샘플0/workeridle0통과. 이전496220323155B정리. 511은설치native/build캐시차이및MipSample명시모드다음. 현재수정없음.
+-510설치bd5f13e0145bd55d·3363files/20owner/User10385읽기SHA/Versions1·499l8ydFy네형식/7wxC50실제두텍스처SDK CPP 24frame/C++4.62ms/disable93.55ms/샘플0/workeridle0통과. 이전496220323155B정리. 511은설치native/build캐시차이및MipSample명시모드다음.
+
+-511–513 설치 C++ 캐시는 Versions 내부 41,414,504B를 만들던 경로에서 공용 Cache로 분리했어요. 512 첫 검사 실패는 Windows PowerShell 5의 `@(ConvertFrom-Json array)`가 후보 배열을 한 겹 더 감싸 실행 프로세스를 놓친 원인이에요. 직접 할당으로 고친 PhW61S는 최근32/참조/실행/퇴역/4프로세스80회 잠금 통과. 중간 pruner 문법 오류는 JS replace의 `$'` 치환 토큰이었고 callback 치환으로 원래 파일에 새 분기만 적용했어요. 실패 자료는 남기고 성공으로 계산하지 않아요. 513 5RrPeN 실제 GCC 실행113/첫miss→hit, 설치SHA 동일, 실패/취소 소스 정리, 컴파일 트리 취소, close 뒤 재사용, lease0 검증. 설치 업데이트는 아직 하지 않았고 명시적 밉 제작 연결을 이어가요.

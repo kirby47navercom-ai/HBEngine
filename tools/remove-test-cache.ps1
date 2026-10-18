@@ -30,6 +30,7 @@ foreach ($entry in $plan.entries) {
     'fixture-chrome-profile' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\(?:.+\\)?chrome-[A-Za-z0-9]{6}$' -and (Test-Path -LiteralPath (Join-Path $target 'Local State') -PathType Leaf) -and (Test-Path -LiteralPath (Join-Path $target 'Default/Preferences') -PathType Leaf) }
     'fixture-profile' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\WebView2$' }
     'fixture-native-cache' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\native\\build\\plugins$' }
+    'fixture-shared-native-cache' { $markerFile = Join-Path $target 'NativeModules/.hb-native-cache.json'; $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\.+\\Cache$' -and (Test-Path -LiteralPath $markerFile -PathType Leaf) -and ((Get-Content -LiteralPath $markerFile -Raw -Encoding UTF8 | ConvertFrom-Json).format -eq 'hb-native-modules-1') }
     'fixture-engine-node' { $rel -match '^[a-z0-9-]+-[A-Za-z0-9]{6}\\(?:.+\\)?(?:Engine|baseline-engine)\\runtime\\node\.exe$' }
     'pages-profile' { $rel -match '^auric-pages-084\\(?:perf-)?chrome-[A-Za-z0-9]{6}$' }
     'plugin-cache' { $rel -match '^plugins\\[a-f0-9]{20}$' }
@@ -56,6 +57,15 @@ foreach ($entry in $plan.entries) {
   }
   $active = @($processes | Where-Object { ($_.ExecutablePath -and ($_.ExecutablePath.Equals($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -or $_.ExecutablePath.StartsWith($protectionRoot + '\', [StringComparison]::OrdinalIgnoreCase))) -or ($_.CommandLine -and $_.CommandLine.IndexOf($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
   if ($active) { $skipped += $rel; continue }
+  if ($entry.kind -eq 'fixture-shared-native-cache') {
+    # A host may retain an idle module while its command line lives outside Cache.
+    $liveLease = $false
+    foreach ($leaseFile in @(Get-ChildItem -LiteralPath (Join-Path $target 'NativeModules/.leases') -File -ErrorAction SilentlyContinue)) {
+      try { $lease = Get-Content -LiteralPath $leaseFile.FullName -Raw -Encoding UTF8 | ConvertFrom-Json; if ($lease.format -ne 'hb-native-lease-1' -or @($processes | Where-Object { $_.ProcessId -eq $lease.pid }).Count -gt 0) { $liveLease = $true } }
+      catch { $liveLease = $true }
+    }
+    if ($liveLease) { $skipped += ($rel + ' (referenced)'); continue }
+  }
   if ($entry.kind -eq 'fixture-engine-node' -and ((Get-Item -LiteralPath $target).Length -ne $entry.size -or (Get-NodeSHA $target) -ne $entry.sha256)) { $skipped += ($rel + ' (modified)'); continue }
   try { Remove-Item -LiteralPath $target -Recurse -Force; $deleted += $entry } catch {
     if ($_.CategoryInfo.Category -eq 'ObjectNotFound' -and -not (Test-Path -LiteralPath $target)) { $skipped += ($rel + ' (already removed)') }

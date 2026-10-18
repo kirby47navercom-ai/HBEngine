@@ -6,6 +6,8 @@ import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {pruneInstalledVersions} from './prune-install-versions.mjs';
+import {nativeMutablePaths} from './native-mutable-paths.mjs';
+import {pruneNativeModuleCache} from './native-module-cache.mjs';
 const exec=promisify(execFile),repository=path.resolve(import.meta.dirname,'..');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const inside=(base,value)=>{const relative=path.relative(base,value);return !relative||!relative.startsWith('..'+path.sep)&&relative!=='..'&&!path.isAbsolute(relative);};
@@ -64,8 +66,8 @@ export async function installEditor({source=path.join(repository,'dist/HBEngine'
     try{await exec(executable,['--register'],{cwd:directory,windowsHide:true,timeout:30000,env:{...process.env,HB_USER_DATA_DIR:registrationProfile}});}
     finally{const resolved=await fs.realpath(registrationProfile);if(resolved.toLowerCase()!==path.resolve(registrationProfile).toLowerCase()||!inside(os.tmpdir(),resolved))throw Error('등록 임시 프로필 정리 경로 오류');await fs.rm(resolved,{recursive:true,force:true});}
   }
-  const cleanup=await pruneInstalledVersions(destination,directory);
-  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length,cleanup};
+  const cleanup=await pruneInstalledVersions(destination,directory),nativeCache=await pruneNativeModuleCache(nativeMutablePaths(directory).modules).catch(error=>({deferred:true,error:error.message}));
+  return {directory,executable,shortcut:shortcut?link:null,desktopShortcut,projectAssociation:shortcut?executable:null,bundleHash,files:files.length,cleanup,nativeCache};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2),whenIdle=args.includes('--when-idle'),status=args.includes('--status'),positional=args.filter(a=>!['--when-idle','--status'].includes(a));if(positional.length>1||positional.some(a=>a.startsWith('--'))||whenIdle&&status)throw Error('사용법: node tools/install-editor.mjs [설치 폴더] [--when-idle 또는 --status]');
