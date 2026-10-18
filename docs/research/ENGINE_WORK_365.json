@@ -61,7 +61,7 @@
     "native/tests/ray-surface-context-357.cpp": "0806b72fc39df29076b2dd4cc66024d50a19cf9943e332d78d48b66cd7a74ace"
   },
   "nativePlayerSHA256": "69b0a1937e1bb05a5ad620d1c578b78da48185e77d6dbfd369c7d3ad7f92a8e4",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/previous-surface-353-dtd6sG/acceptance.json",
@@ -138,6 +138,14 @@
     {
       "path": "native/build/rendering-190-zCt2bW/acceptance.json",
       "sha256": "2fbe2f5956652d3df6a29c290f2c00762cfbc48699558af00bdecc2dcf3bd61b"
+    },
+    {
+      "path": "native/build/coat-lobes-364-1uCjgT/acceptance.json",
+      "sha256": "4fcec1134417ce961172f2745448520ef9ece298d8c6c96a77146d03a67bea41"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-GVxBNM/acceptance.json",
+      "sha256": "9b425c14b5f5488597fcd76677a0d9a4964ae88a0b54631d05000992ed0e6a93"
     }
   ],
   "lightChecks": [
@@ -330,5 +338,6 @@
     "이전296 좌표/curved미설정 결과는실제이력근거에서제외;UV/컴파일기록만유효",
     "4KMUzC 첫 실행은보고서없이exit1 원인미확정;완성579파일패키지재개auUrk1만실제실행성과",
     "NRD/HDRP353 선택본문외전체corpus분석완료로계산하지않음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_365.json"
 }

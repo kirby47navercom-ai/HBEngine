@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "cc3bf8fe2fecd139df31d3777cfd164f2a288586",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e\\HBEngine.exe",
+  "bundleHash": "0d31b38547f61c8e327681b469329c9221842ae4921b5b8015e386702fb881d1",
+  "files": 3166,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "cc3bf8fe2fecd139df31d3777cfd164f2a288586",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e\\HBEngine.exe",
+    "bundleHash": "0d31b38547f61c8e327681b469329c9221842ae4921b5b8015e386702fb881d1",
+    "files": 3166,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3136,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ae9f6eff3708ba45",
+          "bytes": 177782675,
+          "manifestSHA256": "02d25209f9f5f0e07ef2c60652e6cb8baa9e3ee34b7c7a3dc5245885c5fad3e0"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T08:40:45.1090645Z",
+      "bytes": 177782675,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "0d31b38547f61c8e"
+      ]
+    },
+    "nativePlayerSHA256": "69b0a1937e1bb05a5ad620d1c578b78da48185e77d6dbfd369c7d3ad7f92a8e4",
+    "installedGates": [
+      {
+        "path": "native/build/coat-lobes-364-1uCjgT/acceptance.json",
+        "sha256": "4fcec1134417ce961172f2745448520ef9ece298d8c6c96a77146d03a67bea41",
+        "scope": "Actual complete GL/WebGPU virtual guides: changing only base normal must leave coat-dominated reflection invariant; metallic base mirror must respond. Separate decoded prior-coat and native guide proofs."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-GVxBNM/acceptance.json",
+        "sha256": "9b425c14b5f5488597fcd76677a0d9a4964ae88a0b54631d05000992ed0e6a93",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3166,
+    "versions": [
+      "0d31b38547f61c8e"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-365-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-351-auUrk1/acceptance.json",
+        "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+      },
+      {
+        "path": "native/build/gpu-scene-YqgmvX/acceptance.json",
+        "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+      },
+      {
+        "path": "native/build/gpu-scene-8O92iS/acceptance.json",
+        "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+      }
+    ],
+    "scope": "365 full manifest and owner SHA verification, actual installed GL/WebGPU coat guides/lens/valid motion, actual two-process native packaged shader disk reuse; source Complex141/CPP/BP three backends use the verified same native player build. No whole-engine/FPS/device-completeness claim."
+  },
+  "completedFixtureCleanup": [
+    {
+      "path": "native/build/native-scene-window-4KMUzC",
+      "result": {
+        "failures": [],
+        "freeAfter": 446891085824,
+        "freeBefore": 446735839232,
+        "deleted": 1,
+        "date": "2026-10-18T08:45:45.7458340Z",
+        "files": 581,
+        "bytes": 153782838,
+        "skipped": [],
+        "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792313145046-538a7266-8e6b-4538-902f-7a31d7628308"
+      }
+    },
+    {
+      "path": "native/build/native-scene-window-0VeswA",
+      "result": {
+        "failures": [],
+        "freeAfter": 447154999296,
+        "freeBefore": 446891003904,
+        "deleted": 1,
+        "date": "2026-10-18T08:45:46.6249067Z",
+        "files": 452,
+        "bytes": 262969251,
+        "skipped": [],
+        "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792313145936-ef8ebd46-7209-4931-9681-0d512b24c0b1"
+      }
+    }
+  ],
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 10692483,
+    "removed": [
+      {
+        "path": "native/build/guide-history-360-native-C0saCB/probe.exe",
+        "bytes": 714886,
+        "sha256": "ddf0811f314f45aee075009bc984d14fd727600a33d8ea6a2a73544871743b91"
+      },
+      {
+        "path": "native/build/guide-history-360-native-fDwhGD/probe.exe",
+        "bytes": 722020,
+        "sha256": "4075f4f56c86fe2976f1db209d9e10eb0d9b08d053fe9134ccc91d53994dae19"
+      },
+      {
+        "path": "native/build/guide-history-360-native-kvb21S/probe.exe",
+        "bytes": 714886,
+        "sha256": "1533c3444b4cb0063fc753c6db9ae9f05c71b4236571860f324be8f94c5933af"
+      },
+      {
+        "path": "native/build/previous-coat-363-native-Bd68Ua/probe.exe",
+        "bytes": 722020,
+        "sha256": "cb7b80caff5350737891ee1d2b6b058e34e0e27c23ea3fba202430115deb8257"
+      },
+      {
+        "path": "native/build/previous-coat-363-native-QDL6KG/probe.exe",
+        "bytes": 722020,
+        "sha256": "616a5c9d6ff393de8a6041df815181e8bff986e478da944222bba0394030c909"
+      },
+      {
+        "path": "native/build/previous-fields-361-native-IEH8bH/probe.exe",
+        "bytes": 721256,
+        "sha256": "8b9932e6b4d1694a1c367707271e762d1a78e5a44b9ee79e1ceab08ca0e4f2fe"
+      },
+      {
+        "path": "native/build/previous-fields-361-native-RoIJMS/probe.exe",
+        "bytes": 720996,
+        "sha256": "122aa547d257730295cf76fca0eb4673d8eb85aad51994831db2dd4a056f13ab"
+      },
+      {
+        "path": "native/build/previous-fields-361-native-ydY3jY/probe.exe",
+        "bytes": 721256,
+        "sha256": "503ff32d36a1d09343981f54d812a22fed154d17c9bd9fbc683bef72478a23f2"
+      },
+      {
+        "path": "native/build/previous-surface-353-native-0YGmPv/probe.exe",
+        "bytes": 714886,
+        "sha256": "0729fc7f04741de1624fca73a0b408141f9f558be6a7412cff8cc58476287b5a"
+      },
+      {
+        "path": "native/build/previous-surface-353-native-xHguHg/probe.exe",
+        "bytes": 707867,
+        "sha256": "e588ea9792a3b212a2404beb44eb84c2d8481757d92cd32a7aae2c6442140001"
+      },
+      {
+        "path": "native/build/ray-surface-context-357-8bUGrS/probe.exe",
+        "bytes": 701886,
+        "sha256": "2debc95c35f83796125812f20b739f52ffe66b597d228a37e194bf44c34ecdde"
+      },
+      {
+        "path": "native/build/ray-surface-context-357-CdwXmI/probe.exe",
+        "bytes": 698760,
+        "sha256": "4c5e2ac1516450147fb3245cec95b915ab35f1d3c6a91a523b21551d479caab4"
+      },
+      {
+        "path": "native/build/ray-surface-context-357-GhAtWc/probe.exe",
+        "bytes": 698760,
+        "sha256": "4f1ac6d61998ec34a3d4be9b4782a3e9e7b7aefef50cbc55270c3264ba36194c"
+      },
+      {
+        "path": "native/build/ray-surface-context-357-QBmuyd/probe.exe",
+        "bytes": 703117,
+        "sha256": "aa9af6ece56c0641927751bab2a0b64d99289ae1df577e3d2ed8912766332c9c"
+      },
+      {
+        "path": "native/build/surface-refraction-355-native-INAIhQ/probe.exe",
+        "bytes": 707867,
+        "sha256": "0e0aa34d46713ddcf1b470940e5ef5fc58b4b649b728da02e5e6de6358adff6b"
+      }
+    ]
+  },
+  "scope": "365 full manifest and owner SHA verification, actual installed GL/WebGPU coat guides/lens/valid motion, actual two-process native packaged shader disk reuse; source Complex141/CPP/BP three backends use the verified same native player build. No whole-engine/FPS/device-completeness claim."
+}

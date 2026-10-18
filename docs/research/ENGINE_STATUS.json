@@ -1938,11 +1938,11 @@
   ],
   "latestBatch": "353–365",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_349.json",
-    "sourceCommit": "a57f14d40ed8c316651f404a959da32096668f39",
-    "bundleHash": "ae9f6eff3708ba45f261d31983475290cb1614a758608d88fc8d4325eca79f34",
+    "receipt": "docs/research/USER_INSTALL_365.json",
+    "sourceCommit": "cc3bf8fe2fecd139df31d3777cfd164f2a288586",
+    "bundleHash": "0d31b38547f61c8e327681b469329c9221842ae4921b5b8015e386702fb881d1",
     "verified": true,
     "versions": 1,
-    "scope": "Defined shader disk reuse/probe capture fixes through349; actual scoped verification, not all accumulated engine goals."
+    "scope": "Defined 353–365 prior material/coating guide work; exact installed files and scoped source/installed execution, not whole cumulative engine completion."
   }
 }
