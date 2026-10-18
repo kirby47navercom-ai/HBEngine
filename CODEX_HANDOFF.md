@@ -1,3 +1,15 @@
+# 377–380 하늘 베이크·DirectX 달 — 검증 후 기록/설치 단계
+
+- 설치37604201e5a3a6750d5/3207/Versions1은유지해요. source WIP377–380을이제commit→work380기록→data sync→설치380으로진행해요. 새host/player47179빌드성공, 이후JS/test/docs변경만이라추가컴파일불필요예요. root/dist player새NativeSceneCB moon32B포함.
+- sky-radiance.js 공용선형돔설정/CPU방사휘도·해질녘/태양/달·SkyLight tint/indirect, HDRI우선. 기존worker에숫자snapshot만전달하여기존Half/gzip/Undo/저장/빌드사용. scene환경parameter extraction은 frozen8ab8563 apply본문과20설정정확일치예요.
+- DirectX SceneRenderMaterial/CB 끝2float4 moonDirection/moonColor추가·PS원반·JSON optional기본black/캡처tint·JS옛skyuniform fallback. 기존prefix순서유지. AI schema.skyBake 불변계약/한계등록.
+- CPU3771uG7uG최종20설정+legacy nativeMaterial fallback/schema동일성·상수하늘diffuse PI 기준. 378lJpqPT actualGL/GPU10방향 최대1.3711e-4(float normalization/pow감도16ulp범위;HDRfloat/전체화질동등주장아님). native2hByzZ SDK 실제PS5방향sRGB8오차0·NaN거부.
+- 379worker: de1QU7은barethree importmap미상속실패재현(구현완료근거아님), sky모듈Three의존제거/기존linear preset상수사용후Z3AO4Q 실제moduleworker통과. 수정후377frozen20재통과.
+- 실제제작379 lightmap-workflow-225-zEz9ng --procedural-sky: 인간UV1/베이크/저장/UndoRedo/미리보기/AI dry/stale 거부, source보존, package3backend·map있음/이동무효/복원·exit0/errors0 모두통과. CPU225KOLAlU13/228Rgf2bC·환경actor34/API/362도통과예요.
+- 두초기379실패: p0Zn85는제품worker bareThree import실패. HYFj20은테스트SkyLight.intensity0→indirect0의올바른제품동작을밝게기대한fixture오류라intensity1로정정. test기준/deadline/실행코드완화없음. CPU상수PI초기probe는수신기하가return sky를가렸으므로원래fixture목적대로receiver contributeGI false설정.
+- supplemental380 Unity6/현재UE5.8 선택환경광/Skylight 본문/SHA·연결미독등록. docs/SKY_BAKE_380·연구manifest. 전체corpus/전체엔진완료로계산하지않아요. 구름geometry 베이크capture·narrowdisk중요표본·directional/mip/DFAO/HWRT와전역경로역대응·컴파일비용/누적원장이어가요.
+- 376/370/365/349등이전record/sync/install/finish는모두one-shot완료재사용금지. 다음380새marker. User읽기만/privatehidden/사용자활성heavy보류/Versions1/PID소유보호계속해요.
+
 # 설치376 검증 완료 — 후속 렌더링 계속
 
 - 설치 04201e5a3a6750d5/3207파일/Versions1·USER_INSTALL_376 정본. 코드a16ab7b/입력b3b1196 mainpush. Player e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588·User10385 읽기SHA동일·34owner/fullmanifest/links2/.hbproject 통과. installed375XxjF3v·3500tAxaJ 통과예요.

@@ -2782,7 +2782,8 @@
     "349: Reconcile linked D3DCompile/compiler versioning, shader device-validation, CreateFile/FlushFileBuffers/MoveFileEx and file-lock APIs/platform durability. Selected DX11 bytecode reuse checks do not close GL/WebGPU first compilation, filesystem APIs or global source corpus.",
     "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation.",
     "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay.",
-    "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering."
+    "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering.",
+    "380: Reconcile linked UE Lightmass/DFAO/BentNormal/capture/volumetric APIs and Unity Skybox/HDRP/URP environment APIs, lower-hemisphere/static/stationary/shadowing details and full implementation. HB analytic dome bake excludes realtime cloud geometry capture and narrow-disk importance sampling."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -3814,5 +3815,26 @@
       "docs/RENDERING_HISTORY_376_RESEARCH.md"
     ],
     "analysisGate": "선택 본문과 기존 구현 대조; 전체 corpus/독립 분석 gate 미승격"
+  },
+  "supplemental380": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/lighting-ambient-light.html",
+        "scope": "Unity6.0 반환 HTML125–146행: 환경광 의미·Lighting/Environment의 Skybox source 제작 흐름과 추가 연결 목록. 나머지 chrome/스크립트·이미지·연결 HDRP/URP/Skybox/API 미독",
+        "snapshot": "native/build/reference-corpus/supplemental380/unity-environment.html",
+        "sha256": "cc38d475c1a7dccad7ecfffaeed5b21951986b55152b858c43f41ae2502dbbd2"
+      },
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/sky-lights-in-unreal-engine",
+        "scope": "현재 UE5.8 반환 텍스트6–39,54–59,76–98,99–125,131–145,154–176행의 포착/재포착·정적/Stationary·간접광·방향성·시간분할/속성 의미. 노출된 나머지 도입은 수집/탐색으로만 기록; 이미지/영상/연결 Lightmass/DFAO/클라우드/API 구현 전체 미독",
+        "snapshot": "native/build/reference-corpus/supplemental380/unreal-skylight.html",
+        "sha256": "4086ee9c8839167cdee64224844e50eccea9e51db00a94f37a1aa9ca134bcde0"
+      }
+    ],
+    "evidence": [
+      "docs/SKY_BAKE_380.md"
+    ],
+    "analysisGate": "선택 본문과 HB 하늘/베이크 경로 대조; 전체 corpus/독립 분석 gate 미승격"
   }
 }

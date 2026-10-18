@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {skyRadianceParameters} from './sky-radiance.js';
 import {lightmapMeshes,lightmapGeometryRevision} from './lightmap-rendering.js';
 import {rayMaterialSource,rayTextureSlots,rayTexturePixels} from './ray-materials.js';
 const visible=node=>{for(let at=node;at;at=at.parent)if(!at.visible)return false;return true;};
@@ -12,5 +13,6 @@ export async function lightmapSceneSnapshot(rows,targets,resolvedEnvironment=nul
   }
  }
  let environment=null;const ambient=resolvedEnvironment?.ambient;if(ambient?.indirectIntensity>0){environment={color:ambient.color.slice(0,3),groundColor:ambient.groundColor.slice(0,3),intensity:ambient.indirectIntensity,rotation:ambient.source?.rotation||0};if(ambient.source){const root=rows.find(row=>row.object.id===ambient.source.object)?.root,map=root?.userData.skyEnvironment?.texture;if(!map)throw Error('HDRI가 준비되지 않았어요.');const {width,height,data}=map.image||{};if(!data||data.length!==width*height*4)throw Error('HDRI 선형 원본을 확인하세요.');const pixels=map.type===THREE.HalfFloatType?Float32Array.from(data,THREE.DataUtils.fromHalfFloat):Float32Array.from(data);if(pixels.some((v,i)=>i%4!==3&&(!Number.isFinite(v)||v<0)))throw Error('HDRI 선형 방사휘도 범위를 확인하세요.');environment.texture={width,height,pixels,float:true,filter:'linear'};}}
+ if(environment&&!environment.texture&&resolvedEnvironment?.sky)environment.procedural=skyRadianceParameters(resolvedEnvironment,ambient.color);
  return{meshes,lights,environment};
 }

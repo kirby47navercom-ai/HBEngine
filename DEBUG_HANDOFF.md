@@ -1,3 +1,9 @@
+# 377–379 하늘 워커/실제 제작 검증 · 2026-10-18
+
+제품 p0Zn85의generic bake 오류는실제module Worker가새sky-radiance의barethree를해석못한원인이었어요. de1QU7은동일origin Worker에서정확specifier오류를재현했어요. renderer의존을제거하고기존두linear preset상수만유지한Z3AO4Q통과·frozen환경20동일·전체인간베이크/package3GPU zEz9ng통과예요. HYFj20은SkyLight intensity0이면간접광도0인계약을잘못기대한fixture라intensity1로고쳤고영점동작은유지해요. 상수PI단위fixture도수신기가복귀광선을가려오른바운드0..PI였으므로기존목적대로contributeGI false로독립기준을분리했어요.
+
+378첫GL확인3.07e-5는원반정규화/내적의float오차가175거듭제곱으로확대되는구간이었어요. 최종검사는명시16ulp×power×radiance 민감도범위를쓰며두GPU최대1.3711e-4를기록해요. 픽셀임계값을제품성능개선으로세지않아요. NativePS8bit5방향은오차0이에요.
+
 # 353–361 — 이전 표면 입력·실제 가이드 연결 · 2026-10-18
 
 353 field0/5 actual18문맥 GL/GPU dtd6sG오차4.2022e-6·DX0YGmPv1.4306e-6. 355 facing/TIR192독립조건 GL/GPUcPNl6l/DXINAIhQ 오차0. 357은live출력의registerversion/overwrite를분석해static현재프로그램을공유하고priorphysical/coat의불필요계산을제거해요. c2dcd4e6모듈동결/공통math9대조인296XuUqDp ABBA aux렌즈off/on8컴파일·UV288/가이드픽셀오차0, 약3초표본은FPS/전체coldcache개선율이아니에요.
