@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "b686e5f3f3698b89b0737c6125ceb52c33c5eef5",
+  "targetIds": [
+    "RND-08",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/lightmap-bake-core.js": "0f96f90492bc3d87e314fb9431dcf61bd766fca4549258a264a79318aa07d64b",
+    "prototype/lightmap-environment.js": "8bd0ca5a90c1f3c7c062f38d93fc952335d1a192477d09d4b3e5958b5c566324",
+    "prototype/lightmap-hdri-directions.js": "3d4d50149a7d506a3ced34564d9d04bc4270b13dcbddd735dc3d2e91db015992",
+    "prototype/sky-radiance.js": "8f5e33aee765c6b1cdab783302b241bde734ad310bfe94216da855bbfa4ee428",
+    "tools/check-hdri-directions-391.mjs": "189ad6d0cab06843fed5c1f24df4f87a8cfe0bb74bfd780f8a39a9eb5cd4b366",
+    "tools/check-lightmap-workflow-225.mjs": "8bc22283e4db1f13653144a6f8bb6009dc4083332a0eab99cf1d17dd559be5f6",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ShaderBytecodeCompiler.hpp": "19ac9a2a98a0895769efa34f20d3e4b2b8d290800355e33effb3f1147caeeb47",
+    "native/include/HBEngine/ShaderBytecodeDiskCache.hpp": "4c98288cc0d2dc39b88eba2b8fff63d818ae3a871f8fb0f3dc66060eb2c9a6aa",
+    "prototype/native-scene-renderer.js": "ad7fbb371813b894bf4d6532f92a327f4fdb02dca345428245ef3bfee5ea0457",
+    "prototype/game-renderer.js": "a28930da86aaf6291437233e311ed74565ec2cbcf6c9d1138cf35fb54cc58522",
+    "native/include/HBEngine/ScreenEffects.hpp": "ab2d6b314e824014a6d35ad70e11d34cc39d40156415cdcdfa0f6548ce750f78",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
+  },
+  "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/hdri-directions-391-cpu.json",
+      "sha256": "3c7b7efe36eb94cf60adfecbd024bf0c4369e74c276fad95db9cd538f7363a68"
+    },
+    {
+      "path": "native/build/sky-directions-387-cpu.json",
+      "sha256": "851088ca543813419a448ac522436fc8cf0d92e5960e6df691b50d5214c395d3"
+    },
+    {
+      "path": "native/build/lightmap-bake-225-kJiIk7/acceptance.json",
+      "sha256": "0393a963622de08eef4a717f63b2d9bb33b96efd6d12a5b47f492d249eec1fc6"
+    },
+    {
+      "path": "native/build/environment-mips-381-yMGaVM/acceptance.json",
+      "sha256": "7ac4d2fb3577b23d7889732f9acfce7e14fd50b3ad8d0dab455824f219dc243a"
+    },
+    {
+      "path": "native/build/lightmap-environment-228-Gh6KPt/acceptance.json",
+      "sha256": "f62ae3f179c3e2c85f4cc1efb4f34477c3fd3ac55a38a5dcdf7554068da10c16"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+      "sha256": "671040eb3e3f745ef56c044fc4108d866aba320351944bc1363b64d156d30b11"
+    }
+  ],
+  "carriedEvidence": [
+    {
+      "path": "native/build/shader-cache-window-350-uRETgh/acceptance.json",
+      "sha256": "80735da194cc0d862e21b05f8e6511938c16aa88e359ffb7a69ac31535fffaf1",
+      "verifiedUnchangedOwners": [
+        "native/desktop/HBEngine.cpp",
+        "native/desktop/SceneRenderBridge.hpp",
+        "native/include/HBEngine/ShaderBytecodeCompiler.hpp",
+        "native/include/HBEngine/ShaderBytecodeDiskCache.hpp",
+        "prototype/native-scene-renderer.js",
+        "prototype/game-renderer.js"
+      ],
+      "playerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+      "scope": "Previously executed actual installed D3D cache gate from390; all related current source and distribution owner SHA plus base player bytes checked unchanged. Not a new execution."
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+      "backend": "d3d11",
+      "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+      "backend": "webgl2",
+      "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+      "backend": "webgpu",
+      "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+    }
+  ],
+  "implemented": [
+    "필터링된 HDRI RGB/정확 구면 cell area로 최대64x32분포·조건부 row/column CDF·코사인 full support/동일 mixturePDF",
+    "회전/flipY·기존bake-local mip재사용·필요한첫반사에서lazy1회·사용안하면CDF생성0",
+    "원본픽셀복사/추가광선/전역cache/새GPU자원없이 기존worker/Undo/페이지/저장/세게임 연결",
+    "기존skyBake와stats.environmentSampling의PDF/비용/선택계약·미달목표/누적잔여 공개"
+  ],
+  "measurements": {
+    "numericConditions": 12,
+    "tableMaximumBytes": 16648,
+    "large512FilterRetainedBytes": 2856,
+    "repeatQueriesAllocateNoNewCDF": true,
+    "actualBakeMean": 145.97776228189468,
+    "independentReference": 146.40603669272213,
+    "bakeRelativeAcceptance": 0.015,
+    "sourceUnchanged": true,
+    "blackBlockerZero": true,
+    "unusedCDFNotPrepared": true,
+    "originalFourfoldTargetMet": false,
+    "mixtureMSE": 11.323680619509714,
+    "cosineMSE": 12.87349208391131,
+    "scope": "Typed storage and specified filtered hotspot32samples×64rotations; not process peak RAM, general-scene gain or FPS",
+    "additionalRays": 0,
+    "newGPUResources": 0,
+    "newDependencies": 0
+  },
+  "limits": [
+    "탐색4배MSE감소목표 미달. 수학/제작연결검사와미달품질목표를분리했으며추가저표본효율은원장에유지",
+    "원본CDF/flatten/prob/sequence/normal후보관찰을보존; 미채택후보를구현성과로세지않음",
+    "첫Z7zYJ3은linear54.78의WebGL AgX탈색으로표시색조건실패. fixture만1/8로줄여같은표시조건통과,제품tone변경없음",
+    "전역곡면역대응/RND06/고급매질/구름/방향성lightmap/차트mip/HWRT와전체엔진원장유지",
+    "전체UEUnity/API gate·임의장면FPS·전체색동일·실기기검증완료주장없음"
+  ]
+}

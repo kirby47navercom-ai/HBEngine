@@ -531,3 +531,8 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지해요. 6NPOT Float/Half 전체 패킹바이트·원본 불변과2800B/full699056B를 대조했어요. 환경 각도를공유다항식으로 바꾸고392조건×3GPU 최대2.4655e-6/기존4e-5를통과했어요. HDRI 선택우선과sun/moon 혼합PDF는 실제 인간베이크/워커/Undo/AI/미리보기/세게임으로 연결했어요. 추가 광선/GPU자원은없어요. GL 준비대기를실패로세어raw64표본을버리던문제를수정하고원본픽셀동일/광원reset/전체117·118·120 CPP/BP를확인했어요. NativeLens의identity원근검사입력은실제행렬로정정하고같은binary로118/117을재개했으며원래실패와120통과구역을보존해요. 지정NIST/PBRT본문과미독범위·원장/AI계약은갱신했으며등록78항목을전체엔진분모로세지않아요. 설치390 SHA검증/Versions1 이후누적목표를계속해요.
 
 390 설치 a774f74aca97500f·3227명세/25소유 SHA·새player·바로가기2/.hbproject·Versions1을확인했어요. User10385파일의설치직전/후읽기SHA동일·설치인간sun워커/Undo/AI/미리보기 WHKAmz와두native게임6save→6hit/0save uRETgh를통과했어요. 이전설치178202975B·검사binary5424557B를정리하고다음렌더링을계속해요.
+
+
+### 2026-10-18 · 391–395
+
+실제확산필터를평가한HDRI휘도·정확구면셀면적·조건부2D CDF와코사인혼합PDF를기존베이크에연결했어요. 필요한첫반사에서1회/사용안하면생성0·추가광선/원본복사/새GPU자원0·CDF16648B상한/512원본밉2856B를확인했어요.12조건PDF/PI/회전/flip/불변·실제bake145.9778/독립146.4060·black차폐0과인간HDRIworker/UndoRedo/AI/미리보기/세게임을통과했어요. 처음탐색한4배MSE목표는false로남기고성능완료로세지않아요. 현재지정조건MSE12.8735→11.3237만측정값이에요. 원본CDF/flatten후보실패와고휘도AgX표시fixture를보존하고canonical잔여를유지해요. native관련owner/player가390과동일하여기존설치D3D gate를SHA로재사용하고새설치의HDRI워커/전체명세/User읽기SHA/Versions1을확인해요. 그후편집기GPU시간등누적목표를계속해요.
