@@ -548,3 +548,8 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 기존 CPP/BP Tilemaps 함수 이름·배열 핀을 유지해요. BoxFill/FloodFill은 전체 맵 면적 배열 없이 점유 셀을 사용하고 SetTiles의 좌표 키는64비트예요. 맵256 제한을 제거하고100만×100만 좌표의 실제 C++·BP/편집·Undo를 확인했어요. 동기 단일 편집262144셀은 작업 예산이며 전체 맵/오브젝트 수 제한이 아니에요. 타입 Vec2의float 정밀도와 큰 월드 원점은 별도 범위예요.
 
 머테리얼 노드/CPP 파라미터와 IR 키·필드 마스크·전송 버전도 유지해요. 이전 노멀은 이전 삼각형·정점별 법선·시점·시각·밉 폭에서 평가해요. 다른 시간/월드 표면과 투과 분기는 보수적 거부/후속 구현 범위예요. 새 함수 수를 올리지 않았으며 SDK734/노드819는 그대로예요. AI의 tilemap.view는 같은 편집 화면의 보기만 다루고 source revision을 변경하지 않아요. 상세 근거는 ENGINE_IMPLEMENTATION_318.md·research/ENGINE_WORK_318.json을 따라요.
+
+
+### 319–327 · 시퀀스 공통 실행
+
+부모·whole component/property·Transform 별칭·골격·클립 소유권을 기존 LevelSequence CPP/BP와 AI operation에 연결했어요. 트랙 완료 정책은 부모/componentState/skeletal까지 확장하고 클립 구간의 부분 해제는 다른 필드를 유지해요. 외부 재생/그래프 복원·나머지 별칭·가중 혼합은 잔여예요. ENGINE_IMPLEMENTATION_327/ENGINE_WORK_327을 참조해요.

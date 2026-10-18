@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "6d4c759f387d472e44d29b2c1a36d99b43c3ebdb",
+  "targetIds": [
+    "ANM-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "package.json": "de069174e834b9b77d654f68929875cd07d39855693eb00cf639b88abccd0ca8",
+    "prototype/engine-services.js": "d119ab67d20ddbafcfe0e1283e51f62fdf56cf1d584bf028cbb6d52136223bfa",
+    "prototype/gameplay-runtime.js": "2240f69b738c67f32a8317add1c0c4211348c641ec09e66b3e62e7817f82ce26",
+    "prototype/sequence-channels.js": "db87b5aef27250093c58f46b49c11541f9f192290f6c7f8ba16632a2c7ce27e8",
+    "prototype/sequence-component-channels.js": "c943f1a16d67ae7aa8236c2609876449f0f9c5abb7d609488791b5232090c420",
+    "prototype/sequence-hierarchy.js": "511a418dd2bb4b3cda7144896eafbe3bec30ba00c7c8bcd2c0087bca41b9c4c0",
+    "tools/check-sequence-clips-324.mjs": "049954d0f8933ffdd196488089c3a408a7d0e91c220cbd0e9cd7f704ddd45161",
+    "tools/check-sequence-component-326.mjs": "da93392e0d837f2893dfb59d5efff2d1f2c259e9983e738666d5661d31c684bb",
+    "tools/check-sequence-structural-319.mjs": "a032b9b645306e7e3e5c879e9ed9e00f00d9466f20a6043407e61f8966f4749e",
+    "tools/check-sequence-structural-323-window.mjs": "6f3e31e752fdc7c28b4d0a924e561ac6022e2368e386515e63bc9eac0a0a9681",
+    "tools/sequence-structural-323-fixture.mjs": "bce1cf6d4b817af66ad8b7e7460be844d544c19b0296b920d0717a516a41be3a"
+  },
+  "checks": [
+    {
+      "path": "native/build/validation327.json",
+      "sha256": "0a7cc51ae58faf9578b955045d621ef7f4b2e0317753391ec1210fdaa5dc8343"
+    },
+    {
+      "path": "native/build/sequence-component-326-csFPj3/acceptance.json",
+      "sha256": "90334e20466fd220e4249cc9c6c93e18e1e883c45cb1a3676b2238780abef174"
+    },
+    {
+      "path": "native/build/sequence-clips-324-7F3IhK/acceptance.json",
+      "sha256": "18a2b6dd81bdc4d543cc672613fb307dbeb4868463226e249e1efd10f9ffa303"
+    },
+    {
+      "path": "native/build/sequence-structural-319-0SEdH7/acceptance.json",
+      "sha256": "e537f14a9c11a910058759b8bdaf24bd45117f5b2ec2af6593d958f4c0c3ff14"
+    },
+    {
+      "path": "native/build/sequence-hierarchy-245-FWN4Kp/acceptance.json",
+      "sha256": "62c242e828219355c54ea980dc3821d2cfffc6566e7c2c64262f91846855c88f"
+    },
+    {
+      "path": "native/build/skeletal-take-209-IO4U4G/acceptance.json",
+      "sha256": "83158b00bac704058110de50dae05a72bfaab96edf4371e5573518cc184166c3"
+    },
+    {
+      "path": "native/build/sequence-ownership-268-zdb4hb/acceptance.json",
+      "sha256": "63893a1a939f943c5b94d938acefe7e2b85947330a37d4623f6614cb2647d5d5"
+    },
+    {
+      "path": "native/build/sequence-values-269-Rtjbxf/acceptance.json",
+      "sha256": "73c8faf3e2637adefbe8310515984e47ed1686314369663a839bf3bf70b8c7eb"
+    },
+    {
+      "path": "native/build/sequence-cost-270-cMNt9D/acceptance.json",
+      "sha256": "ddbd8ea219634cc32c3e1fe6eb4324f8ac5c1e6b036a22246ab75d8d6c7e3cee"
+    },
+    {
+      "path": "native/build/sequence-completion-271-cW0fHl/acceptance.json",
+      "sha256": "316f0e70e705f0f2bc7429eedcc30f78a9bd31f521704f83f14690e0555478d1"
+    },
+    {
+      "path": "native/build/sequence-priority-272-Be8jys/acceptance.json",
+      "sha256": "09df8cd16bfc1d0966d17756de24970ff2e8dc5a765d4ccbd025ae442a1a69a3"
+    },
+    {
+      "path": "native/build/sequence-evaluation-250-8gfSex/acceptance.json",
+      "sha256": "1506ee028eb103802449d0082e61480f22e9f50bf60cd6a723a90eb09d9aae3c"
+    },
+    {
+      "path": "native/build/sequence-load-252-VhB8zA/acceptance.json",
+      "sha256": "851dd750883bca2a9195ec53080ada09d55a7ee677300f6dc8cba0978b7eca09"
+    },
+    {
+      "path": "native/build/spawn-take-211-PZlwYc/acceptance.json",
+      "sha256": "0e0a4a1f6be1e9e93d905ab0378a7ab0d45c76f9769d1c91d27d1d9a7a0026b8"
+    },
+    {
+      "path": "native/build/sequence-structural-323-window-E9YNZT/acceptance.json",
+      "sha256": "4015db7d954d7fff9b8b1dd1f610c7fca228bef65c851b2f93fa9507cdf5eccf",
+      "scope": "actual editor/DirectX/WebGL source games before final reentry/cleanup guards; final guards covered by CPU327 and later installed gate"
+    }
+  ],
+  "installationPending": true,
+  "nativePlayerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+  "implemented": [
+    "부모 연결의 선택·공동 검증·원자 교환과 공유 원본·우선순위 인계",
+    "전체 컴포넌트/개별 속성의 같은 필드 소유권·존재/형/순서·삭제 중 숨겨진 표본·Transform 별칭",
+    "골격 공유 baseline·숨겨진 시각·즉시 실제 포즈 인계·최종 controlled 해제",
+    "승자 클립·구간 간 부분 해제·마지막 활성 트랙·하위/우선순위 인계·재진입 요청 수명",
+    "부모/componentState/skeletal의 트랙 keep/restore·전역 forceRestore와 비동기 callback/다른 actor 생명 보호",
+    "기존 CPP/BP와 AI schema/read/operation 경로·CPU13종/새 구조8·클립3·재진입/오류4조건"
+  ],
+  "newWholeWorldHistoryCopies": 0,
+  "newTimers": 0,
+  "newGPUReadbacks": 0,
+  "limits": [
+    "외부 애니메이션/그래프의 정확한 이전 재생 상태 복원",
+    "애니메이션·골격·Transform 및 렌더 파라미터의 나머지 별칭·가중 혼합",
+    "임의 외부 비동기 setter의 이미 게시된 변경 롤백",
+    "연결된 공식 문서/API·이미지 및 전체 corpus 독립 검증은 별도"
+  ]
+}

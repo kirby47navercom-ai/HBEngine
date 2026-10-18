@@ -475,3 +475,8 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 이전 프레임의 실제 geometry/UV/world/view/smooth normal·mip·카메라 콘을 기존 버퍼로 연결하고 17머테리얼/포즈·8카메라 및 실제 GL/GPU/D3D CPP/BP 게임을 대조했어요. 2D256 제한과 면적 비례 편집/충돌을 제거하고 희소 맵·가상 편집·셀 이동·CPP/BP·생성 충돌과 AI 보기 API를 연결했어요. 텍스트 게시/인덱스 사이 종료에서도 작은 쓰기 의도로 같은 ID를 복구해요. 실제 종료/ENOSPC/외부 편집/경로 별칭12조건·기존 내구성7/트랜잭션17을 확인했어요. ENGINE_WORK_318에 원본SHA/증거/제한이 있어요. 설치 갱신 후 시퀀스 등의 누적 잔여를 이어가며 전체 완료로 처리하지 않아요.
 
 318 설치 828c60b44c267db5·3106명세 전체SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일을 확인했어요. 실제 설치2D CPP/BP/포인터/Undo·stable ID, 설치 GL/GPU morph 이전 mip, 설치 헤더 D3D smooth normal을 확인했어요. 이전설치177476980B와 종료된 자체CPP probe2121553B를 정리하고 소스/패킷/보고서는 보존했어요. 이어서 시퀀스 복수 소유권 작업을 진행해요.
+
+
+### 2026-10-18 · 319–327
+
+308–318 설치 이후 작업을 계속해 부모/whole component/property/Transform 별칭·skeletal·animation clip의 공유 원본/우선순위/부분 구간 인계를 구현했어요. CPU13종·구조8/클립3/재진입·오류4조건과 실제 소스 편집기/DirectX·WebGL CPP/BP게임이 통과했어요. 소스게임 후 최종 guard 추가는 CPU327로 확인하고 설치 gate를 새로 진행해요. 공식 선택 자료의 읽기 범위와 링크/그림/API 미독을 별도 등록했으며 전체 분석 완료로 승격하지 않아요.
