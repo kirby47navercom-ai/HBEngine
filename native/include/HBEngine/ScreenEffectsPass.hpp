@@ -21,8 +21,8 @@ struct SceneScreenEffects {
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
  class ScreenEffectsPass {
  Device& gpu;HierarchicalDepth hierarchy;
- struct Compiler {std::mutex mutex;ShaderBytecodeCache cache;std::uint64_t compilations=0,totalMS=0,lastMS=0;};
- static Compiler& compiler(){static Compiler value;return value;}
+ using Compiler=detail::ScreenShaderCompilerState;
+ static Compiler& compiler(){return detail::screenShaderCompilerState();}
  struct Source {std::string key,text;};
  struct Pending {std::shared_ptr<const Source> source;std::shared_ptr<detail::ShaderPreparationQueue::Job> job;std::string error;};
  std::array<Pending,6> pendingPrograms;
@@ -30,8 +30,7 @@ struct SceneScreenEffects {
  std::array<unsigned,6> preparationStages{};std::string preparationError;
  static detail::ShaderPreparationQueue& preparationQueue(){
   // Initialize dependencies before the worker service: it joins before their teardown.
-  compiler();detail::libraries();detail::ShaderBytecodeCompiler::info();
-  static detail::ShaderPreparationQueue queue;return queue;
+  return detail::sharedShaderPreparationQueue();
  }
  static std::vector<unsigned char> compileSource(const Source& source){
   auto& state=compiler();

@@ -2,6 +2,7 @@
 #include "ComputePlatform.hpp"
 #include "ShaderBytecodeCompiler.hpp"
 #include <filesystem>
+#include <string_view>
 
 namespace hb::gpu {
 struct FrameResult {std::uint64_t sequence=0;std::vector<float> values;};
@@ -29,6 +30,29 @@ public:
     Kernel()=default;Kernel(Kernel&&)=default;Kernel& operator=(Kernel&&)=default;
     std::size_t constantBufferAllocations() const{return constantAllocations;}
 };
+class KernelPreparation {
+    friend class Device;
+    detail::Com<ID3D11Device> owner;
+    std::shared_ptr<const std::string> source;
+    std::string entry,error;
+    std::shared_ptr<detail::ShaderPreparationQueue::Job> job;
+    Kernel kernel;bool prepared=false,retried=false;unsigned terminal=0;
+public:
+    struct Info {std::string_view state="unused";bool pending=false,ready=false;std::string error;};
+    KernelPreparation()=default;KernelPreparation(const KernelPreparation&)=delete;KernelPreparation& operator=(const KernelPreparation&)=delete;
+    KernelPreparation(KernelPreparation&& other) noexcept{*this=std::move(other);}
+    KernelPreparation& operator=(KernelPreparation&& other) noexcept{if(this!=&other){owner=std::move(other.owner);source=std::move(other.source);entry=std::move(other.entry);error=std::move(other.error);job=std::move(other.job);kernel=std::move(other.kernel);prepared=std::exchange(other.prepared,false);retried=std::exchange(other.retried,false);terminal=std::exchange(other.terminal,0);}return *this;}
+    Info info()const{
+        if(terminal)return {terminal==1?"taken":"cancelled",false,false,{}};
+        if(!owner.p)return {};
+        if(!error.empty())return {"failed",false,false,error};
+        if(prepared)return {"ready",false,true,{}};
+        Info out{"queued",true,false,{}};if(job)switch(job->status.load(std::memory_order_acquire)){case detail::ShaderPreparationQueue::Status::compiling:out.state="compiling";break;case detail::ShaderPreparationQueue::Status::ready:out.state="awaiting-adoption";break;case detail::ShaderPreparationQueue::Status::failed:out={"failed",false,false,job->error};break;default:break;}return out;
+    }
+    bool ready()const{return prepared;}
+    Kernel take(){if(!prepared)throw std::runtime_error("Compute kernel preparation is not ready");prepared=false;terminal=1;owner={};source.reset();job.reset();return std::move(kernel);}
+    void cancel(){job.reset();source.reset();owner={};kernel={};entry.clear();error.clear();prepared=false;retried=false;terminal=2;}
+};
 class FrameResources {
     friend class Device;
     struct Frame {detail::Com<ID3D11Buffer> staging;detail::Com<ID3D11Query> completion;std::uint64_t sequence=0;};
@@ -53,6 +77,11 @@ class Device {
     detail::Com<ID3D11DeviceContext> context;
     std::mutex mutex;
     void owns(const Buffer& b) const{if(!b.resource.p||b.owner!=device.p)throw std::runtime_error("Compute buffer belongs to another device or was moved");}
+    static void queueKernel(KernelPreparation& request){
+        if(request.job)return;
+        const auto source=request.source;const std::string entry=request.entry,key="HBCompute:"+entry+(request.retried?":refresh:":":cached:")+*source;const bool refresh=request.retried;
+        request.job=detail::sharedShaderPreparationQueue().submit(key,256+key.size()*2+source->size(),[source,entry,refresh]{return detail::ShaderBytecodeCompiler::create(*source,"HBCompute",entry.c_str(),"cs_5_0",[](const void*,std::size_t){return S_OK;},refresh).code;});
+    }
 public:
     Device(){auto& dll=detail::libraries();dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto create=dll.symbol<decltype(&D3D11CreateDevice)>(dll.d3d,"D3D11CreateDevice");const D3D_FEATURE_LEVEL requested=D3D_FEATURE_LEVEL_11_0;D3D_FEATURE_LEVEL actual{};detail::check(create(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,0,&requested,1,D3D11_SDK_VERSION,&device.p,&actual,&context.p),"DirectCompute hardware device");}
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
@@ -77,6 +106,20 @@ public:
     Kernel compile(const std::string& source,const std::string& entry="Main"){
         if(source.empty()||source.size()>1024*1024||entry.empty()||entry.size()>128||entry.find('\0')!=std::string::npos)throw std::runtime_error("Compute shader source/entry invalid");
         Kernel k;detail::ShaderBytecodeCompiler::create(source,"HBCompute",entry.c_str(),"cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(mutex);detail::Com<ID3D11ComputeShader> next;const auto result=device->CreateComputeShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result))k.shader=std::move(next);return result;});k.owner=device.p;return k;
+    }
+    KernelPreparation compileAsync(const std::string& source,const std::string& entry="Main"){
+        if(source.empty()||source.size()>1024*1024||entry.empty()||entry.size()>128||entry.find('\0')!=std::string::npos)throw std::runtime_error("Compute shader source/entry invalid");
+        KernelPreparation request;request.owner.p=device.p;request.owner->AddRef();request.source=std::make_shared<const std::string>(source);request.entry=entry;queueKernel(request);return request;
+    }
+    bool pollKernel(KernelPreparation& request){
+        if(request.owner.p!=device.p)throw std::runtime_error("Compute kernel preparation belongs to another device, was moved, cancelled or taken");
+        if(!request.error.empty())throw std::runtime_error(request.error);
+        if(request.prepared)return true;
+        queueKernel(request);if(!request.job)return false;
+        const auto status=request.job->status.load(std::memory_order_acquire);if(status==detail::ShaderPreparationQueue::Status::failed){request.error=request.job->error;request.job.reset();request.source.reset();throw std::runtime_error(request.error);}if(status!=detail::ShaderPreparationQueue::Status::ready)return false;
+        detail::Com<ID3D11ComputeShader> next;HRESULT result;{std::lock_guard<std::mutex> lock(mutex);result=device->CreateComputeShader(request.job->code.data(),request.job->code.size(),nullptr,&next.p);}request.job.reset();
+        if(FAILED(result)){if(!request.retried){request.retried=true;return false;}request.error="Prepared compute shader creation failed (HRESULT "+std::to_string(static_cast<unsigned long>(result))+")";request.source.reset();throw std::runtime_error(request.error);}
+        request.kernel.shader=std::move(next);request.kernel.owner=device.p;request.prepared=true;request.source.reset();request.entry.clear();return true;
     }
     void dispatch(Kernel& k,const std::vector<Buffer*>& outputs,std::uint32_t x,std::uint32_t y=1,std::uint32_t z=1,const std::vector<Buffer*>& inputs={},const std::vector<float>& constants={},const std::vector<std::uint32_t>& counters={}){
         if(!x||!y||!z||x>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||y>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||z>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||outputs.empty()||outputs.size()>D3D11_PS_CS_UAV_REGISTER_COUNT||inputs.size()>D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT||constants.size()>D3D11_REQ_CONSTANT_BUFFER_ELEMENT_COUNT*4)throw std::runtime_error("Compute dispatch groups/bindings/constants invalid");
@@ -118,6 +161,7 @@ public:
 #else
 class Buffer {public: std::size_t size() const{return 0;}};
 class Kernel {public: std::size_t constantBufferAllocations() const{return 0;}};
+class KernelPreparation {public:KernelPreparation()=default;KernelPreparation(const KernelPreparation&)=delete;KernelPreparation& operator=(const KernelPreparation&)=delete;KernelPreparation(KernelPreparation&&)=default;KernelPreparation& operator=(KernelPreparation&&)=default;struct Info{std::string_view state="unavailable";bool pending=false,ready=false;std::string error;};Info info()const{return {};}bool ready()const{return false;}void cancel(){}Kernel take(){throw std::runtime_error("Compute unavailable");}};
 class FrameResources {public: std::size_t pending() const{return 0;}static constexpr std::size_t capacity(){return 3;}};
 class Device {
 public:
@@ -132,6 +176,8 @@ public:
     void uploadRange(Buffer&,std::size_t,const std::vector<float>&){throw std::runtime_error("Compute unavailable");}
     void copyCount(Buffer&,std::uint32_t,Buffer&){throw std::runtime_error("Compute unavailable");}
     Kernel compile(const std::string&,const std::string& = "Main"){throw std::runtime_error("Compute unavailable");}
+    KernelPreparation compileAsync(const std::string&,const std::string& = "Main"){throw std::runtime_error("Compute unavailable");}
+    bool pollKernel(KernelPreparation&){throw std::runtime_error("Compute unavailable");}
     void dispatch(Kernel&,const std::vector<Buffer*>&,std::uint32_t,std::uint32_t=1,std::uint32_t=1,const std::vector<Buffer*>& = {},const std::vector<float>& = {},const std::vector<std::uint32_t>& = {}){throw std::runtime_error("Compute unavailable");}
     std::vector<float> read(Buffer&){throw std::runtime_error("Compute unavailable");}
     FrameResources createFrameResources(Buffer&){throw std::runtime_error("Compute unavailable");}

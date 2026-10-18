@@ -2,6 +2,8 @@
 #include "ComputePlatform.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include "ShaderBytecodeDiskCache.hpp"
+#include "ShaderBytecodeCache.hpp"
+#include "ShaderPreparationQueue.hpp"
 #include <memory>
 #include <mutex>
 
@@ -67,6 +69,11 @@ public:
         return result;
     }
 };
+// Initialize every worker dependency before the shared service. In particular,
+// the screen compiler cache must outlive a queue first requested by Compute.
+struct ScreenShaderCompilerState {std::mutex mutex;ShaderBytecodeCache cache;std::uint64_t compilations=0,totalMS=0,lastMS=0;};
+inline ScreenShaderCompilerState& screenShaderCompilerState(){static ScreenShaderCompilerState value;return value;}
+inline ShaderPreparationQueue& sharedShaderPreparationQueue(){libraries();ShaderBytecodeCompiler::info();screenShaderCompilerState();static ShaderPreparationQueue queue;return queue;}
 }
 #endif
 // Preserve consumers that included this helper for the Compute SDK. Definitions
