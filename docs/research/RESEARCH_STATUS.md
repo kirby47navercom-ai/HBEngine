@@ -463,3 +463,8 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 ### 2026-10-19 · 451 선택 구역 대조
 
 텍스처 밉·가져오기 역할의 UE/Unity 본문과 Unity 커버리지 API 한 개의 선언/설명, 로컬 Three r180 명시적 밉 업로드 분기를 대조했어요. CORPUS_MANIFEST.supplemental451과 TEXTURE_MIP_POLICY_451 정본에 원문 SHA·읽은 범위·미독 연결과 구현 예정 구분을 기록해요. 전체 본문/API gate는 승격하지 않아요.
+
+
+### 2026-10-19 · 472 변환 정확도 구분
+
+Direct3D11.3의3.2.3.7/8에서sRGB쪽ULP측정과역변환의반올림구분을읽고새색상검사의허용범위를대조했어요. Khronos EXT_texture_sRGB는일부이슈/변환설명만읽었어요. supplemental472에등록하며전체본문/API gate를승격하지않아요. 451정책의2DRGBA8제작/네실행경로/이력/패키지증거는ENGINE_WORK472에연결하고압축/HDR/배열·볼륨/분산거칠기는잔여로유지해요.

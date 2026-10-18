@@ -23,3 +23,8 @@
 - 배경만: foreground/CUA/browser변경없음. hidden owned editorWindowProbe·고유project/profile/port/PID만. User프로필읽기SHA만,복사/테스트사용금지. activeInstalledVersions 확인후heavy/install.
 - rg --files로소유자확인,큰singleline bounded출력. PowerShell에서복잡node-e편집금지·apply_patch/savedmjs. execsession은write_stdin. 원본·증거·캡처·명세보존,재생성cache32+참조/활성보호,삭제없으면빈정리기록없음.
 - 이전미달HDRI4배MSE목표false,385원native전체실패후수정resume한정,Mac/Xcode/실제Android폰없음을정본대로유지해요.
+
+
+## 452–472 현재 구현
+- source4f60a6b·ENGINE_WORK472·TEXTURE_IMPORT472 정본. 2D가져오기/공통밉/워커/오른쪽상세/네렌더경로/패키지/이력검증 연결.37owner·새player683a279678e825dffb546e4a1495599348517289a001d1f87e4f0e980810e15a. 아직450설치,472전환과검증대기. 현재단일항목종료가아니며noise/checker·초기compile·전역곡면/매질·GI/누적엔진목표계속.
+- 정상증거:453pQueKG/4603FT2Nn/461rO56lV/464tRsf56/467Ps1emx/468hA0P1D/196jp8OXu. 467첫6wVjMf는물리0+normal만; 색상증거계산금지. 가변알파의기존globalreset유지·coverage는같은clock검사. 새선택본문DXsRGB0.5ULP·EXT일부만;전체gate미승격.

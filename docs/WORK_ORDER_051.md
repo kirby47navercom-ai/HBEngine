@@ -610,3 +610,8 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 실제좌표의존만보조함수에연결하고DirectX GUIDE를기존GL공통생성기의primary/aux/lens로선별했어요. 레지스터버전/고정LOD·필터·shade-only를구분하고프레임반복scan없음. 22전처리조건·GL/GPU8graph/native16패킷·실제16×16×8경우generic대조오차0·이전값변화거부복원통과. 실제production.begin은초기5/lens2compile·돌아오면cache2hit·sourceBuild1·target288B고정/release0·기존8MiBcache유지. 449검사는한shader3상수frame으로compile을묶고공통HLSL+조건SHA로중복보존을줄였어요(448두6필드실행은이전unbatched). 실제새C++/BP게임F8rVcn path4108/denoise699/시간guide3223ms·모프664·캐시·해제통과. 시간은단일미통제관찰로FPS/전체완료주장없음. AI불변정책·추가운영GPU자원/uniform/readback0. 설치450과다음noise/checker/MAT03/RND08작업을계속해요.
 
 450 설치 4ce36135306357d5·3310전체명세/20소유SHA·새player·links2/.hbproject·Versions1 통과. 설치 검사 nonlinear-graphs-444-zopkYY / shader-cache-window-350-7Esfdl에서 여덟 GL/GPU 그래프와 두DirectX게임 캐시를 확인했어요. User10385읽기SHA보존. 이전설치178474194B와검사exe4702208B를정리하고451 이후작업을계속해요.
+
+
+### 2026-10-19 · 452–472
+
+가져오기2DJSON/정책·단일워커·선형영역밉·알파커버리지·녹색반전/노멀정규화·상위밉/크기를중앙미리보기/오른쪽상세·Undo/AI/참조/패키징·GL/GPU/DX/광선으로연결했어요. 실제D3D3LOD/84B·sRGB보간92·실제게임중간색두경우raw/가져오기오차0·런타임교체후유휴업로드안정. 실제GL/GPU와HLSL8문맥에서색상·노멀의이전기하와시간검사를기존4e-5로통과했어요. 가변알파는기존전역초기화대상으로시간재사용승격없이같은시간coverage를검사했어요. 상세증거/초기실패/남은항목은ENGINE_WORK472. 누적렌더링·엔진작업을계속해요.

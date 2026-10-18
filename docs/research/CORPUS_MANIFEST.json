@@ -4141,5 +4141,20 @@
     "implementationClaim": false,
     "globalGatePromotion": false,
     "unread": "Full linked implementation/API/media and all other body sections. Local selected upload branches do not establish all texture types/backends."
+  },
+  "supplemental472": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://microsoft.github.io/DirectX-Specs/d3d/archive/D3D11_3_FunctionalSpec.htm",
+        "readScope": "Selected3.2.3.7 and3.2.3.8 sRGB conversion, tolerance on sRGB side without integer rounding; not full body/API analysis"
+      },
+      {
+        "url": "https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_sRGB.txt",
+        "readScope": "Selected issues2/13 and conversion discussion through line300; later sections unread"
+      }
+    ],
+    "analysis": "docs/research/TEXTURE_IMPORT_472.md",
+    "fullBodyAPIGatePromoted": false
   }
 }

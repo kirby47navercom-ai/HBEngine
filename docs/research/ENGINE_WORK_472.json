@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "4f60a6b16181c11efbd8d10856eb5c3a10c00ef3",
+  "targetIds": [
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "native/desktop/SceneRenderBridge.hpp": "e601b552aac968ae2d3c944b51e4b9dc3581f959a6c8e067e550a1f3aa6de099",
+    "native/include/HBEngine/SceneRender.hpp": "6ad517d9f73b9db0f1b48fd8a5e0c3a8df615aafef6d9ee5a3da8a3564160b4b",
+    "prototype/app.js": "6b03960bd030de2710dd7d54a2b190fcb2218a152e60b76d47692e31c3cfab48",
+    "prototype/asset-editor-ui.js": "77adb2d54503ce8f0386297f66b70f16c0d46774d0441715e19977ff9c58420d",
+    "prototype/engine-services.js": "89136caf04d5fc101ba9101b7fd130dcf00cc9fdcab3a7969931d05e79a8c86a",
+    "prototype/gpu-materials.js": "67fa4a3b05a55ba7caee9b9cc8398546a23a2e21952cbfe48430438daebd4910",
+    "prototype/icons.js": "17e0452c9981caa25d5ca8a5473b58179a51fc4d85eb0af6fd4d71421f86c310",
+    "prototype/material-editor.js": "5dbc544bc79e7206eb360992170d2d701575ae6a938fe3bea0f45d7fb5de2b1f",
+    "prototype/material-layers-ui.js": "b357ab867d2b24cd3dc8d7e9eecc3ff137a336ab3ae0fa220b27806fc12e8382",
+    "prototype/material-runtime.js": "2d70fcc7c8741c257a12347bd7f114910887567b2f1082b9da395d7e89ea7656",
+    "prototype/material-texture-bindings.js": "dd80347973e852f0778fec80e4af682e73c59ba385163492ef856a20882d46f7",
+    "prototype/native-materials.js": "a49d2ba80f0cccdebbe654215674e740f0b19524032bae4befe39a93b8e24ce8",
+    "prototype/native-scene-renderer.js": "b76b2aa5d385cc97fbf4249832ae3272b592b51a3218f8e17f4914183a472d87",
+    "prototype/native-texture-mips.js": "454874a5ee758bf3a83104849d3954534c414a1b2d47cbff285aabe2adf5b878",
+    "prototype/ray-materials.js": "d367c3d15916fcb09063b478cd0c7fdf38c4106fe620b94177a64d84c1a57c92",
+    "prototype/ray-mip.js": "34fb8c72401272e5c075df6c26cba14f6f46e3dee258b303efe7616d74d650e7",
+    "prototype/scene-components.js": "8fa867ba9900ea8af0f39dc3d0b3ed13dc5f6dcc994d90dd28670bfceb77bcc0",
+    "prototype/scene-rendering.js": "e73b4f489dfad8c8374e50763e9d4fec4c04d023186a13d930103279010cf4d2",
+    "prototype/texture-assets.js": "7111c56b6aaf806152011c3081a3ebb6f29a8feec352f5dc603c81830711e4f1",
+    "prototype/texture-import-ui.js": "7369cf67323722a0cdc3a8cd41be759015e24b0832b101f66f5ed06d9c644d62",
+    "prototype/texture-import.js": "c57e3cb257cd67eb65b55ca1825d13f86b892e12ff16174da3df95b997f4141d",
+    "prototype/texture-mip-cook.js": "3becdc8ec04e39488237255b1e32c7b92f6530341a080bb66973961a64f095c5",
+    "prototype/texture-mip-policy.js": "74527e2d5d8bfa144208764e01bebbdb804d62892cd1dc56ef881b949c5e0adb",
+    "prototype/texture-mip-worker.js": "6a60ba57dabb2881b2edf9f43acd9a6ba97175f67e36f8429770165ac4a8e09c",
+    "prototype/texture-viewer.css": "045e1878de8defba970eb037ac25e3dff18269f94f36ede9b6caf2f196456be8",
+    "prototype/texture-viewer.js": "3cfdb98d4ddba246392c4d01999b98f3ad60429fbed1b30be418429f0840aa45",
+    "tools/check-texture-history-467-window.mjs": "100dfe83c2d1166f0879a546bcb850f754cfd6aba79c201b4dcb03349ec80c82",
+    "tools/check-texture-history-468-native.mjs": "7de944515486533479401b42ca98a2fa21189e24c1a7ba1282e084ee91dceff5",
+    "tools/check-texture-import-460-window.mjs": "ab0efd41767674036631f02106a5f154e10e5989d10aa65f94a6e044440726b4",
+    "tools/check-texture-import-464-player.mjs": "2709d5725892d1c46e957bf166b6c7281ed3387e1d3f1ddcec697724d76f634f",
+    "tools/check-texture-import-466.mjs": "def63c5019f363ef1400395e71f7dfccd02ff7b928979cd551024ed3b1ce3569",
+    "tools/check-texture-mip-policy-452.mjs": "61338fe3ec5e5d4c3ebe9f3f9226e0eab09a5d075b36199f8f3f49f73687b27a",
+    "tools/check-texture-mip-worker-453-window.mjs": "f9568f2af691129a8206105e37cb0c9779907d9d09a966258876384965ed73bd",
+    "tools/check-texture-mips-461-native.mjs": "6c2c254cdb553d952314ed9a77e5bef6864c4cc883aa386ed229869bdf57b104",
+    "tools/editor-automation.mjs": "f9c698a573d9cf0dce45b36dc3438f921f7c8b9ab1dee50b532de73cb8d0facd",
+    "tools/texture-history-fixture-467.mjs": "e3433aeb9468d7fd2ca653e8b586149c2a4558f01cdcf9da8f2bcb4092f5d80a",
+    "tools/texture-import-probe-460.mjs": "98c84791dc3b7160632eaf393e5d6ceb4194406c4d1fd65729804692de7da4b9"
+  },
+  "testSourceHashes": {
+    "native/tests/texture-mips-461.cpp": "deae44414a2e9cfaa3bfcf5ffd32feb21b0a0dd6283105a7f190621aae89c2dd"
+  },
+  "nativePlayerSHA256": "683a279678e825dffb546e4a1495599348517289a001d1f87e4f0e980810e15a",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/texture-mip-worker-453-pQueKG/acceptance.json",
+      "sha256": "824a9c6e02a813e293d806447e35fbe3b098ea005b8be5ff2494b92c906cfb0c"
+    },
+    {
+      "path": "native/build/texture-import-460-3FT2Nn/acceptance.json",
+      "sha256": "2280fe87e45bac68941d9ea3f55d231d35f92260b9467205c8c6c97ba6829459"
+    },
+    {
+      "path": "native/build/texture-mips-461-rO56lV/acceptance.json",
+      "sha256": "f544b91a8f29f89144ef8be93b27b6da5779c44958e1b7702dda970c6c1a6daa"
+    },
+    {
+      "path": "native/build/texture-import-464-player-tRsf56/acceptance.json",
+      "sha256": "49d01621a54f460154beb995d5242b326d980d70eab5440e1879a85204464f12"
+    },
+    {
+      "path": "native/build/texture-history-467-Ps1emx/acceptance.json",
+      "sha256": "5114c810471c1e4386c980857982753d4cf0252f54a12063e9928fa390be927f"
+    },
+    {
+      "path": "native/build/texture-history-468-native-hA0P1D/acceptance.json",
+      "sha256": "3284c78913e2c1dae53b188aa0ef5f164528f0a233c573603737d60415f3ec68"
+    },
+    {
+      "path": "native/build/texture-196-editor-jp8OXu/acceptance.json",
+      "sha256": "099c30a6ddca8c3d8802189679050cc587b5a4fa4b7e442190ff993d0dc3a51d"
+    },
+    {
+      "path": "native/build/texture-mip-policy-452.json",
+      "sha256": "36b3613d0ef402d841cb6c92e8d5395bb6ee75623754eb1bf95ec54482f3c902"
+    },
+    {
+      "path": "native/build/texture-import-466.json",
+      "sha256": "51982b2350f3b1269f1bc691bd6819b4ee38d5efd4d21b882d7a00492b358539"
+    },
+    {
+      "path": "native/build/texture-import-472-light.json",
+      "sha256": "35910ee9fa82433495d05049bd17f63ff1c5e0a12d345778bb4a8c8d12f269dc"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/texture-import-464-player-tRsf56/acceptance.json",
+      "scope": "실제 패키지: 기존 이미지/가져오기 자원 두 중간색 오차0·런타임 교체·유휴업로드 안정"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/texture-import-460-3FT2Nn/acceptance.json",
+      "scope": "실제 상세창·중앙 밉/채널/픽셀·Undo·GL/GPU 레벨과 방향·원본 보존"
+    },
+    {
+      "path": "native/build/texture-history-467-Ps1emx/acceptance.json",
+      "scope": "가져온 노멀/색상 이력과 같은시간 커버리지·두API·기존4e-5"
+    }
+  ],
+  "implemented": [
+    "텍스처2D JSON·역할/색공간·별도밉/상위레벨/크기정책·원본보존·검증/참조/이름변경/패키징",
+    "영역가중 선형축소·양자화전 알파커버리지·raw알파다음레벨·녹색반전/하위노멀정규화·잔차/메모리보고",
+    "큰이미지 지연 단일워커·대기열·원본소유/전송구분·준비실패재디코드·유휴종료",
+    "중앙미리보기/오른쪽속성·채널/밉/픽셀/자료량·저장/Undo·AI불변정책/동일문서수정",
+    "GL/WebGPU2D명시밉·DirectX사용자밉API/브리지/검증·광선동일밉/색공간·기존raw호환",
+    "같은경로정책교체·참조노드/함수/레이어/인스턴스선택·C++/BP공통기존런타임텍스처교체·불필요base사본제거"
+  ],
+  "measurements": {
+    "workerStarts": 1,
+    "idleWorkers": 0,
+    "D3DExplicitMipBytes": 84,
+    "D3DHardwareSRGBInterpolation": [
+      92,
+      92,
+      92,
+      255
+    ],
+    "packagedMidtonePixels": [
+      [
+        [
+          154,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          154,
+          255
+        ]
+      ],
+      [
+        [
+          154,
+          0,
+          0,
+          255
+        ],
+        [
+          0,
+          0,
+          154,
+          255
+        ]
+      ]
+    ],
+    "packagedColorParity": 0,
+    "historyCases": [
+      {
+        "kind": "normal",
+        "cross": 0,
+        "historyCompatible": true,
+        "currentClock": 0.5
+      },
+      {
+        "kind": "coverage",
+        "cross": 0,
+        "historyCompatible": false,
+        "currentClock": 0
+      }
+    ],
+    "nativeHistoryContexts": 8,
+    "frameRegeneration": false,
+    "newPermanentWorkers": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "460 검사 Undo 명령/revision 수정; 원본에는 적용안함",
+    "460 이상적 선형 고정오차 실패→공식 sRGB쪽0.5ULP 측정으로 구분; 기존수학/이력기준 불변",
+    "463 중첩 C++ TextureMipLevel 타입이름 수정 후 실제브리지 빌드",
+    "464 초기재현의선형필터표본을nearest/동일좌표로구분; native콜백의색공간덮어쓰기제거·중간색실제비교0",
+    "465 교체 직후 GPU 업로드 이전의 기준점→장면3frame완료 뒤 유휴비교",
+    "467 첫검사는물리0+normal3:색상검증계산안함; 이후1+3으로수정",
+    "468가변알파가전역이력초기화조건이므로normal/color시간이력과coverage동일시간을구분; 기준완화없음",
+    "470 EOLmarker실패 뒤471로상세창이동; 460EvAtSd는완료증거없음"
+  ],
+  "limits": [
+    "RGBA8 2D 정책만; HDR/압축/배열·볼륨사용자밉/플랫폼쿠킹/스트리밍/LOD bias/노멀분산합성잔여",
+    "가변가시성은전역이력초기화 유지; 시간재사용허용아님",
+    "raw sRGB 수동변환shader→선형가져오기 교체는불일치거절·머테리얼다시준비필요",
+    "새CPU디코드/워커/밉배열비용존재·전체FPS/초기compile완료주장없음",
+    "noise/checker·초기compile·전역곡면/매질·RND08/누적엔진원장계속"
+  ]
+}
