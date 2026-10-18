@@ -1,3 +1,8 @@
+# 설치380 검증 완료 — 381 환경 밉 계속
+
+- 현재 be667218d6b12f61/3215파일/Versions1·USER_INSTALL_380 정본. 구현333a158/검사CLI0ed2557/설치입력2aa34e1 mainpush. Player 5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50·17owner/fullSHA·links2/.hbproject·User10385읽기SHA동일. 설치379QjO9mY·350Xexu4L통과예요.
+- record/sync/install/finish380 one-shot 모두완료재사용금지. 이전설치 178155104B·ownprobe 1162534B 회수했어요. 다음381은기존sphericalEnvironmentMips를pure공유소유로재사용하여worker환경LOD/극점품질과메모리비용을확장해요. 전역곡면/복합경로역대응과RND06/다른원장도계속해요.
+
 # 377–380 하늘 베이크·DirectX 달 — 검증 후 기록/설치 단계
 
 - 설치37604201e5a3a6750d5/3207/Versions1은유지해요. source WIP377–380을이제commit→work380기록→data sync→설치380으로진행해요. 새host/player47179빌드성공, 이후JS/test/docs변경만이라추가컴파일불필요예요. root/dist player새NativeSceneCB moon32B포함.

@@ -32,7 +32,7 @@
     "native/tests/sky-378.cpp": "85ca8ed3401cd2582c3b798e97539011a0dce9fa0c378041f43e9fe9f84e13ff"
   },
   "nativePlayerSHA256": "5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/sky-bake-377-1uG7uG/acceptance.json",
@@ -65,6 +65,14 @@
     {
       "path": "native/build/sky-bake-380-workflow-pixel.json",
       "sha256": "ac5f404f9d655200a81111d0e41efb9b518f4658f67ce394811ef58304c7fffd"
+    },
+    {
+      "path": "native/build/sky-worker-379-QjO9mY/acceptance.json",
+      "sha256": "74231fd5c0d0d95b7d1a9ff974454cdf89c12ab5fef06bf4a05c345c41241983"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-Xexu4L/acceptance.json",
+      "sha256": "8712eff174a36a7f80a35e5f9ebbc28d49ff9682634b5202f08130f2d9bcc614"
     }
   ],
   "sourceGames": [
@@ -221,5 +229,6 @@
     "첫p0Zn85는제품Worker importmap실패;de1QU7로원인재현후수정. HYFj20은fixture intensity0의올바른영점동작을잘못예상해intensity1로정정",
     "initial constant-PI fixture의receiver가returnray를가려목적대로contributeGI false로분리;실제최종제작fixture도같은조건을명시",
     "GL/GPU/Native게임출력의전체색동일/FPS/실기기/전체UEUnity문서나전체엔진완료주장없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_380.json"
 }

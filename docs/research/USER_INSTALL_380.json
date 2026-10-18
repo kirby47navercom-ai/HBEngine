@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "2aa34e182578d92c85295f947be16eccf5bda7a0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61\\HBEngine.exe",
+  "bundleHash": "be667218d6b12f6121d1c19c800e8dbe8789895ff72da96275fb8637202a3f2e",
+  "files": 3215,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "2aa34e182578d92c85295f947be16eccf5bda7a0",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61\\HBEngine.exe",
+    "bundleHash": "be667218d6b12f6121d1c19c800e8dbe8789895ff72da96275fb8637202a3f2e",
+    "files": 3215,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3208,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5",
+          "bytes": 178155104,
+          "manifestSHA256": "cfcecb9898ed4c006e87167d557ac12c29db42febe9d5b990b683ea807a0b243"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T10:45:21.3919751Z",
+      "bytes": 178155104,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "be667218d6b12f61"
+      ]
+    },
+    "nativePlayerSHA256": "5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50",
+    "installedGates": [
+      {
+        "path": "native/build/sky-worker-379-QjO9mY/acceptance.json",
+        "sha256": "74231fd5c0d0d95b7d1a9ff974454cdf89c12ab5fef06bf4a05c345c41241983",
+        "scope": "Actual dedicated module Worker; document import map is not inherited. Expected-unmapped mode is failure reproduction, not implementation completion."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-Xexu4L/acceptance.json",
+        "sha256": "8712eff174a36a7f80a35e5f9ebbc28d49ff9682634b5202f08130f2d9bcc614",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3215,
+    "versions": [
+      "be667218d6b12f61"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-380-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+        "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+        "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-zEz9ng/acceptance.json",
+        "scope": "Actual human-created procedural-sky indirect lightmap, package/player baseline-moved-restored static validity, errors0/exit0; direct live SkyLight deliberately disabled in private game scene to isolate baked illumination"
+      }
+    ],
+    "scope": "380 full manifest and owner SHA verification, installed actual module Worker sky radiance and two-process packaged native shader reuse with this exact player. Source full human procedural-sky bake/Undo/preview and three packaged players, GL/WebGPU sky float output and actual D3D PS are scoped by recorded owner/build SHA. No whole-engine/FPS/device-completeness claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 1162534,
+    "removed": [
+      {
+        "path": "native/build/sky-radiance-378-native-2hByzZ/sky.exe",
+        "bytes": 1162534,
+        "sha256": "dddf1fb5c658f0df42c87273baada31fcd9d65546f2ef9f1c62176968ee5a594"
+      }
+    ]
+  },
+  "scope": "380 full manifest and owner SHA verification, installed actual module Worker sky radiance and two-process packaged native shader reuse with this exact player. Source full human procedural-sky bake/Undo/preview and three packaged players, GL/WebGPU sky float output and actual D3D PS are scoped by recorded owner/build SHA. No whole-engine/FPS/device-completeness claim."
+}

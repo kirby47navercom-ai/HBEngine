@@ -1963,11 +1963,11 @@
   ],
   "latestBatch": "377–380",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_376.json",
-    "sourceCommit": "b3b119611a92c8f8a862903eaab0efffb3ac8437",
-    "bundleHash": "04201e5a3a6750d5e35e2ef944320c8ad21a3dc4929a60b6f5e71e5438e6b358",
+    "receipt": "docs/research/USER_INSTALL_380.json",
+    "sourceCommit": "2aa34e182578d92c85295f947be16eccf5bda7a0",
+    "bundleHash": "be667218d6b12f6121d1c19c800e8dbe8789895ff72da96275fb8637202a3f2e",
     "verified": true,
     "versions": 1,
-    "scope": "Defined 371–376 independent old-medium/optical footprint work, exact installed files and scoped execution; cumulative engine work continues."
+    "scope": "Defined 377–380 procedural-sky indirect bake/native moon, exact installed files and scoped execution; cumulative engine work continues."
   }
 }
