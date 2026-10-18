@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "5c6cd128bef3a3ab81d6d0119d3592e20409eee9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053\\HBEngine.exe",
+  "bundleHash": "534dae19145a0053ac30f9694e1e788ebdd158214f2a305bddca8baefba43c72",
+  "installationPending": false,
+  "installedSmokePassed": true,
+  "files": 3088,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "5c6cd128bef3a3ab81d6d0119d3592e20409eee9",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053\\HBEngine.exe",
+    "bundleHash": "534dae19145a0053ac30f9694e1e788ebdd158214f2a305bddca8baefba43c72",
+    "files": 3088,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3085,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1",
+          "bytes": 177509691,
+          "manifestSHA256": "7b9799189a7e8b16881de5dcf76e61421560a9c1f3b6c164d5c787da513c19bb"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T03:53:13.4670308Z",
+      "bytes": 177509691,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "534dae19145a0053"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/native-opaque-307-tiFviq/acceptance.json",
+        "sha256": "1ab0d212f3a7ef820aefffada1a94b29d7e7873b5812bb99b907caa9b54b59fa",
+        "invocation": [
+          "tools/check-native-opaque-307.mjs",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053\\HBEngine.exe"
+        ],
+        "installationAPI": null
+      },
+      {
+        "path": "native/build/rendering-305-window-Q8oV9Q/acceptance.json",
+        "sha256": "8a2f7f464df5ceab4a3411ddbc86ecb6353ed53caaee8e363f178588de6815c9",
+        "invocation": [
+          "tools/check-opaque-path-305-window.mjs",
+          "--linear",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "sourceHashes": {
+          "prototype/screen-effects-gl.js": "60a81681722cabe02ea922978791aaabf574a7c0b7623fed0d607e6dfcc0c875",
+          "prototype/path-tracing-shader.js": "c1fc4cfc738eac4d059b1858e76c2036eda959386c011bba7772db7e60f3ae17",
+          "prototype/ray-mip.js": "2d54a58bccddf078cc9ced72b845a0a72300248cb00035421b70d46b056967d1",
+          "tools/generate-ray-programs.mjs": "b2690b1377c569c5bc2f6d30037014c3fdcf7986da62e7e130982899cb42f724",
+          "prototype/ray-texture-shader.js": "7b233b15ba79875af20bb771a8d0196f385035699a55826f854ba53cc1995eb8",
+          "prototype/ray-material-gpu.js": "d28b849f1df97848fa09783c095216218dbc17d69ba9c990e32f75cbdb82971d",
+          "prototype/ray-uv-footprint.js": "78893d4ffb20e5609bf25632e1958995e7c5f9118a83209b5aaea410984af4fc",
+          "prototype/ray-material-shader.js": "f65ba488fee7eb3c5268de39f2d16346b6f241fea2ac234f24d2ebbf453a809e",
+          "prototype/shared-ray-record-gl.js": "3065abe5ac0a80eae3d3dd7c30cef6e47f20e15493d5340fb7fbd98adf83d809",
+          "prototype/path-guide-specialization.js": "cd10ecd06554299831d955d8b2d943a2a54beea60080f13c59d19d24e4ba5afc"
+        },
+        "installationAPI": {
+          "current": {
+            "state": "managed",
+            "bundleHash": "534dae19145a0053ac30f9694e1e788ebdd158214f2a305bddca8baefba43c72",
+            "installedAt": "2026-10-18T03:53:10.737Z",
+            "fileCount": 3088,
+            "verification": "manifest-only"
+          },
+          "latestRecorded": "31d1e9358b813be1047257bd70c60f9780e4a583ba29c051711f34bfc225d41b"
+        }
+      }
+    ],
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-yHkwNk/acceptance.json",
+      "playerSHA256": "f0d25a4561d23945827498d18dc53eaf471f157d14340c30caad85c19077b1b4",
+      "scope": "Actual yHkwNk source D3D C++/BP game with active pathNoTransmission=true; renderer/runtime source unchanged and installed player byte-identical to the source-built player. Actual installed headers were separately compiled/executed by native-opaque-307; this is not a second installed game run."
+    },
+    "manifestVerifiedFiles": 3088,
+    "versions": [
+      "534dae19145a0053"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "Native307 source game/bridge and installed-header D3D solid/alpha/cache/release plus installed camera/guide/API and full manifest. Prior unchanged GL/GPU gates are reused. Not whole-engine/FPS/device completion."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 3112555,
+    "removed": [
+      {
+        "path": "native/build/native-opaque-307-OV85Vc/probe.exe",
+        "bytes": 802867,
+        "sha256": "10660bbac34b8fcc2bbd967fcc5cd6a9261c1d7104c3a580e794f3f155d76268",
+        "reason": "Owned completed C++ test probe; tracked source, input packets and acceptance reports retained."
+      },
+      {
+        "path": "native/build/native-opaque-307-f4adHN/probe.exe",
+        "bytes": 802905,
+        "sha256": "9c48fc891d1298ce0ff2e2fecbfef51f42eed62fb06dc95ff7242f03efde6c39",
+        "reason": "Owned completed C++ test probe; tracked source, input packets and acceptance reports retained."
+      },
+      {
+        "path": "native/build/native-opaque-307-tiFviq/probe.exe",
+        "bytes": 803929,
+        "sha256": "6b73dd91077be8df3bfd788e4a53a0a2ca0ac251ed3b78c6a6ef7a8f3f93f952",
+        "reason": "Owned completed C++ test probe; tracked source, input packets and acceptance reports retained."
+      },
+      {
+        "path": "native/build/cubemap-lod-281-native-YrALys/probe.exe",
+        "bytes": 702854,
+        "sha256": "fb558936f282e9019ce5151da8494bbec71dc96a404aea442231af5e8cf14e57",
+        "reason": "Owned completed C++ test probe; tracked source, input packets and acceptance reports retained."
+      }
+    ],
+    "failures": []
+  },
+  "scope": "Native307 automatic metadata/variant/diagnostics, actual C++/BP source game and installed-header D3D solid/alpha/cache/release, installed camera/API plus complete manifest audit. Prior unchanged GL/GPU gates reused; no whole-engine/FPS/device/research-completion claim."
+}

@@ -461,3 +461,10 @@ UV 표본의 동일 연산/offset을 유지한 공용 읽기, GL 주/미분 노�
 306 추가: 현재 실행 위치의 설치 식별값이 포장 당시 원장의 이전 설치 기록과 혼동되지 않게 installation을 읽기 전용으로 분리했어요. 실제 marker 교체/잘못된 형식/JSON/디렉터리/호출자 변경/원본 보존을 검사했고 marker-only와 전체SHA 검증을 구분해요. 실물 파일 symlink 생성EPERM은 미검증으로 남기며 최종 설치/API 검사는 USER_INSTALL_306에 기록해요.
 
 298–306 사용자 설치 확인: 31d1e9358b813be1·3084명세 파일 전체SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일을 확인했어요. 설치 actual GL/GPU48변형과 opaque camera/normal float32 오차0·정상 종료, API의 현재 bundleHash가 새명세와 일치해요. D3D 소스0nLrBW 근거는 렌더 소스/설치player 바이트가 동일한 것으로 재사용하고 두 번째 설치 native 실행이라고 하지 않아요. 이전 설치177402675바이트 제거·수정 보관0·별도정리0바이트예요. USER_INSTALL_306.json을 정본으로 봐요.
+
+
+### 2026-10-18 · 307
+
+DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과 fallback·AI 활성 진단을 연결했어요. 새GPU자원/상수버퍼 필드는 없어요. 실제장치 solid 및 alpha.45 출력차0·alpha1702성분 변화·variant2/캐시재사용/source1/8MiB예산·해제, 실제 yHkwNk C++/BP의 pathNoTransmission=true·변형·이전 노멀·필터·재방문이 통과했어요. 첫5187/3280ms·재방문190/221ms는 단일 전환이며 FPS가 아니에요. 그림자 회귀 fixture는 unlit/no-light 생략을 유지하고 실제 lit 수신자/광원/캐스터의 안정→pose 변경을 검사하도록 정정했어요. GL/GPU 공용 소유자는 그대로여서 통과 검사를 반복하지 않았어요. 후속 설치는 USER_INSTALL_307에 기록해요.
+
+307 설치 확인: 534dae19145a0053·3088파일 전체SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일이에요. 설치 헤더 직접 컴파일/D3D 실행 tiFviq는 solid/alpha 오차0·source1/컴파일2/캐시/해제를 통과했어요. Q8oV9Q 실제 설치 창의 camera/guide/API bundleHash도 맞아요. 실제 게임 yHkwNk는 source/player 바이트 일치로 재사용하고 별도 설치 게임 재실행이라고 표현하지 않아요. 이전설치177509691B·생성CPP검사실행파일3112555B 정리·수정보관0이며 USER_INSTALL_307을 정본으로 봐요.

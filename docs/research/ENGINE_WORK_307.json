@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "5c6cd128bef3a3ab81d6d0119d3592e20409eee9",
+  "targetIds": [
+    "RND-06"
+  ],
+  "sourceHashes": {
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "04bdf88e5044de2867689f7562ba557e67cf03a2736c23bb13340d0105d574fe",
+    "native/desktop/SceneRenderBridge.hpp": "3ad3ad957fce09887d4695400caac894910362071967cf4c4b918bcc27af9f06",
+    "prototype/native-scene-renderer.js": "1ca4c1b4dd1e935359da65bb3196acda9825c165ded78a24c4e1f725a059901f"
+  },
+  "installationPending": false,
+  "checks": [
+    {
+      "path": "native/build/native-opaque-307-f4adHN/acceptance.json",
+      "sha256": "c6eb3bb3e41148fd828b07f42fb74e8791c002b434bfafabc215c1a65cf0fd61"
+    },
+    {
+      "path": "native/build/native-frame-307-88gBMx/acceptance.json",
+      "sha256": "2787dbfad1a704c05587bac85d1272089588e1adcf0af218dc1730709e600ce0"
+    },
+    {
+      "path": "native/build/validation309.json",
+      "sha256": "abc5fbd93189c7f15d97114bade966ed1001b2ae6d3c1ea5e771653df6b00332"
+    },
+    {
+      "path": "native/build/native-scene-window-yHkwNk/acceptance.json",
+      "sha256": "e84eab2f988ed20a4f11bd8ba6db5e0d5d4c65688ca74839159df508ea30c0e7"
+    },
+    {
+      "path": "native/build/native-opaque-307-tiFviq/acceptance.json",
+      "sha256": "1ab0d212f3a7ef820aefffada1a94b29d7e7873b5812bb99b907caa9b54b59fa"
+    },
+    {
+      "path": "native/build/rendering-305-window-Q8oV9Q/acceptance.json",
+      "sha256": "8a2f7f464df5ceab4a3411ddbc86ecb6353ed53caaee8e363f178588de6815c9"
+    }
+  ],
+  "implemented": [
+    "DirectX SceneScreenEffects의 noTransmission은 CPU 메타데이터이고 GPU Constants/float4 배열/버퍼 ABI를 늘리지 않아요. 없는 요청은 false로 유지하며 브리지는 boolean만 받아요. JS는 확정된 rayInfo.transmission===false를 자동 전달해요.",
+    "활성 path의 특화 여부를 셰이더 variant key와 define에 함께 넣어요. 기존8MiB bytecode 캐시/소스 plan 공유를 유지하고 투과·미상 장면은 기존 경로로 전환해요.",
+    "실제 C++ 응답과 AI용 renderer 조회에 활성 pathNoTransmission을 노출해요. 실제 패키지의 C++/BP·Complex141/변형/이전 노멀/필터·해제/재방문까지 연결했어요.",
+    "실제 D3D 기본→특화→기본→특화 및 alpha.45 장면의 출력은 바이트 오차0이에요. alpha 장면은 solid와1702 RGB 성분이 달라 관측되며 특화가 alpha를 삭제하지 않아요. 캐시 총2컴파일·이후재사용·sourceBuilds1·81,824B/8MiB·리소스해제를 확인했어요."
+  ],
+  "measurements": {
+    "device": [
+      {
+        "cacheBudget": 8388608,
+        "cacheBytes": 42346,
+        "cacheHits": 0,
+        "compilations": 1,
+        "elapsedMS": 532.3323,
+        "noTransmission": false,
+        "sourceBuilds": 1
+      },
+      {
+        "cacheBudget": 8388608,
+        "cacheBytes": 81824,
+        "cacheHits": 0,
+        "compilations": 2,
+        "elapsedMS": 407.4726,
+        "noTransmission": true,
+        "sourceBuilds": 1
+      },
+      {
+        "cacheBudget": 8388608,
+        "cacheBytes": 81824,
+        "cacheHits": 1,
+        "compilations": 2,
+        "elapsedMS": 2.2206,
+        "noTransmission": false,
+        "sourceBuilds": 1
+      },
+      {
+        "cacheBudget": 8388608,
+        "cacheBytes": 81824,
+        "cacheHits": 2,
+        "compilations": 2,
+        "elapsedMS": 1.77,
+        "noTransmission": true,
+        "sourceBuilds": 1
+      },
+      {
+        "alpha": 0.45,
+        "cacheHits": 3,
+        "compilations": 2,
+        "noTransmission": false,
+        "sourceBuilds": 1
+      },
+      {
+        "alpha": 0.45,
+        "cacheHits": 4,
+        "compilations": 2,
+        "noTransmission": true,
+        "sourceBuilds": 1
+      }
+    ],
+    "solidMaxError": 0,
+    "alphaMaxError": 0,
+    "alphaChangedRGB": 1702,
+    "actualComplex141": {
+      "pathNoTransmission": true,
+      "firstPathMS": 5187,
+      "temporalEnableMS": 3280,
+      "warmPathMS": 190,
+      "warmTemporalMS": 221
+    },
+    "scope": "실제 지정표본의 출력/카운터와 단일 전환 시간이에요. 반복 부하 제어 벤치마크/FPS 주장이 아니에요."
+  },
+  "newGPUResources": 0,
+  "newConstantBufferFields": 0,
+  "newPersistentCaches": 0,
+  "cacheBudgetBytes": 8388608,
+  "limits": [
+    "GL/GPU 공용 소유자를 이 단계에서는 바꾸지 않았어요. 이전 source/설치 통과 근거를 재사용하며 같은 대규모 검사를 반복하지 않아요.",
+    "307 커밋의 변형 캐시 표현은 기존 동작의 회귀 연결을 가리켜요. 새 변형 캐시 구현은300–301에 있고 이번에는 shadow fixture를 실제 lit 수신자/광원 조건으로 고쳤어요.",
+    "실기기·전체FPS·이전world/view/mip 이력·전체엔진/문서 gate는 승격하지 않아요. 수치형 noTransmission 거부는 명시 소스 가드이고 실제 JSON 브리지 실행은 정상 boolean 경로로 확인했어요."
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_307.json"
+}

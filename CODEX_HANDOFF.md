@@ -1,11 +1,13 @@
-# HBEngine 현재 인계 — 298–306 설치 검증 완료
+# HBEngine 현재 인계 — 298–307 설치 검증 완료
 
-- 런타임 소스3a0e30df31d21471677bf168e090379ee8070291, 렌더588944d예요. 최종 설치/검증 문서와 API를 확인하는 테스트 추가는 후속 커밋에 남겨요. 테스트 파일 SHA/설치 일치는 USER_INSTALL_306.installedAudit.verificationScriptDelta에 있어요.
-- 현재 설치 31d1e9358b813be1 하나·3084파일이에요. 전체명세SHA·바로가기2/.hbproject·User10385파일 전후SHA 동일·수정보관0·이전설치177402675바이트 정리를 확인했어요. 현재API installation.bundleHash도 새 marker와 일치해요. latestInstallation은 포장 당시 기록일 수 있어요. marker-only와 전체SHA audit을 구분해요.
-- 구현: GL/HLSL/TSL 삼선형 단일 level 호출/정수LOD 생략,48필터 좌표 미분 절삭·nested/레지스터/native 동일 진리표, explicit false만의 불투명 GL과 legacy key, 인스턴스/정점/뼈 노멀 공유·비인덱스 Map 생략, bind/morph/interleaved 키예요. 새 GPU 타깃/이력/지속 캐시/자동 readback은 없어요.
-- 최종 source validation306: GL bh3bqL·GPU xKxboZ·D3D0nLrBW actual C++/BP/변형/필터/해제·재진입 통과. 설치 p76qGy의GL480/GPU384 표본 오차0, jSfLTk opaque camera1024성분 오차0·현재 설치 API 일치·정상 종료예요. D3D는 소스 gate/player 동일 바이트로 재사용했어요. CPU106/109/274/157/304/305·marker BskanT·native cube YrALys·현재/이전노멀 RSpje5·normals FKJADk도 통과했어요.
-- 실제 Complex141 첫 GL6591ms/시간3770ms·GPU3667/2111ms·D3D5317/3394ms·재방문198/183ms는 단일 전환이며 FPS/전 기기 보장이 아니에요. 격리 삼선형1941→98.5ms·opaque1825→1472ms는 각각의 지정 fixture 링크값이에요. 303 고정 texel loop는 미채택이에요.
-- 다음: RND-06 GL 초기비용/불투명 특화의 네이티브 variant define 소유자를 이어서 조사·구현해요. RND-07 이전 world/view/mip 입력 소유자와 전체 나머지는 ENGINE_STATUS 정본을 유지해요. 이전 world input 지원은 현재 point를 UV/barycentric 표본과 평가worldPoint로 분리하고 기존 previous-point/frame/time을 공유하는 설계부터 검토해야 해요. 아직 구현한 API/기능이 아니에요.
-- 연구/문서 전체 gate를 승격하지 않아요. 상태78행/39verified35partial1unimplemented3unverified는 등록 작업 범위이며 UE/Unity 전체 기능 분모가 아니에요.
-- validate300 실패는 BVH순서 검사 오류, native NeLbDw는 생성 if 경고,305 CPU fixture/VM 의존 주입 수정 원인은 DEBUG_HANDOFF에 있어요. 설치 symlink 실물 생성EPERM은 미검증이고 lstat guard와 실제 디렉터리 검사만 구분해요.
-- sync306/install306/finish306·record305·validate300/301/302/306·probe303/305는 이미 실행한 one-shot이므로 다시 실행하지 않아요. 새 시도는 새이름/marker를 사용해요. root HBPlayer가 없으므로 실제 dist/HBEngine/HBPlayer.exe 경로를 사용해요. 사용자 창/탭/프로젝트/프로필은 건드리지 않고 고유 숨김 창/프로필/포트만 사용해요.
+- 현재 런타임 소스 5c6cd128bef3a3ab81d6d0119d3592e20409eee9(307), 앞선588944d/3a0e30d/d13a5b0 포함 main push예요. 최종 검사/설치 문서는 후속 커밋에 남겨요.
+- 현재 설치 534dae19145a0053 하나·3088명세 파일 전체SHA·바로가기2/.hbproject·User10385파일 전후SHA 동일을 확인했어요. 이전설치177509691B 제거·수정보관0이에요. 원본/보고서/입력/캡처를 남긴 자체 CPP probe만3112555B 정리했어요.
+- 298–306 구현은 USER_INSTALL_306/ENGINE_WORK_305·306에 있고 설치306까지 확인했어요. sampler mip 단일 호출/정수LOD 생략·48필터 미분 절삭·GL 불투과·인스턴스 노멀/bind/morph/interleaved key·현재 설치 read-only 식별이에요.
+- 추가307: SceneScreenEffects CPU noTransmission bool/strict JSON/자동packet·variantkey/define·AI pathNoTransmission이에요. 없는 요청 false/투과 fallback·GPU Constants/버퍼 ABI·8MiB 캐시/소스 공유를 보존해요. 실제 source yHkwNk C++/BP/변형/이전노멀/필터/해제·재방문 통과와 활성true를 확인했어요.
+- 실제 설치헤더 tiFviq의 solid+alpha.45 바이트차0·alpha1702 RGB성분 관측·컴파일2/재사용/source1·81,824B/8MiB·해제, 실제 설치 창 Q8oV9Q의camera1024성분 차0/UV/guide/API 현재hash·정상종료 통과예요. Native 게임은 source gate/player 동일바이트로 재사용했고 두 번째 설치 게임 실행이라고 하지 않아요.
+- RND06 잔여: 실제 Complex141 GL6.59초/시간3.77초·GPU3.67/2.11초·D3D5.19/3.28초 추가절감이에요. D3D재방문190/221ms. 모두 단일 전환이며 전체FPS/실기기 보장이 아니에요. GL/GPU 공용소유자를307에서 바꾸지 않아 해당통과검사를 반복하지 않았어요.
+- RND07 다음소유자: path-guide-frames의 unsafe[3,4,5], path-curved-guide/previous-normal-gpu, rayProgram/field/normalTime의 현재point와 평가worldPoint 결합이에요. UV/barycentric 표본은 현재point를 유지하고 이전 평가point/normal/view를 별도 전달해야 해요. 기존 motion의 이전point/프레임/시각을 활용하고, WorldPosition이 texture coordinate ancestor인 경우 이전 mip footprint까지 같이 검증해야 해요. 아직 이 기능을 구현한 것이 아니며 현재 보수적 무효화를 유지해요.
+- 전체잔여/분모는 ENGINE_STATUS 정본(78등록행/39verified35partial1unimplemented3unverified)이에요. UE/Unity 전체 분모나 문서전체 gate를 승격하지 않아요.
+-309의 deformation fixture는 실제 lit receiver/광원/캐스터를 만들어 안정→pose dirty를 검증하고 unlit/no-light 생략도 확인해요.307커밋의 변형캐시 표현은 새캐시가 아니라 이 회귀 연결이에요. DEBUG_HANDOFF 참조예요.
+- sync307/install307/finish307·record307·validate308/309와 이전one-shot들은 실행한 것이므로 재실행하지 않아요. 새시도는 새이름/marker를 사용해요. rootHBPlayer는없고 dist/HBEngine/HBPlayer.exe를 써요. 사용자창/프로필/프로젝트는 건드리지 않으며 고유 숨김창/프로필/포트로 검사해요.
+- 생성CPP검사 probe.exe는 표준 pruner가 root 단독파일까지 지우지 않으므로 자체 검사 종료 시 생성경로/SHA를 확인해 별도로 정리해요. 원본CPP/재현입력/보고서/참조실행기/SDK/사용자파일은 보존해요.
