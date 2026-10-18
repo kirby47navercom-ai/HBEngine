@@ -2169,11 +2169,11 @@
   ],
   "latestBatch": "567–572",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_564.json",
-    "sourceCommit": "223bdaa1c36cd75f23288114a2806cb29448282b",
-    "bundleHash": "20b2e3b17134968faca59a3d4325ca8ab3454f65b87a648151ac15a2152f7b3e",
+    "receipt": "docs/research/USER_INSTALL_574.json",
+    "sourceCommit": "dce2f0f1fc774fc296e7d39ea6ba77f7caea5e8e",
+    "bundleHash": "dfc9728395d44a2e2fef37577b27e0c4b56dc00efeff259f048c3ce40634458c",
     "verified": true,
     "versions": 1,
-    "scope": "564 설치 SDK/packager/player probe와2D 및 C++/BP복잡준비/복구/캡처·75owner/3410전체SHA/User읽기SHA/연결/Versions1"
+    "scope": "574 전체3418파일/83owner/User전후SHA/연결/Versions1·설치CPP의존캐시·실제HDRI/96광원/C++속성·그림자/머테리얼게임"
   }
 }

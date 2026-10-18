@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "dce2f0f1fc774fc296e7d39ea6ba77f7caea5e8e",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e\\HBEngine.exe",
+  "bundleHash": "dfc9728395d44a2e2fef37577b27e0c4b56dc00efeff259f048c3ce40634458c",
+  "files": 3418,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "dce2f0f1fc774fc296e7d39ea6ba77f7caea5e8e",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e\\HBEngine.exe",
+    "bundleHash": "dfc9728395d44a2e2fef37577b27e0c4b56dc00efeff259f048c3ce40634458c",
+    "files": 3418,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3411,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f",
+          "bytes": 179925470,
+          "manifestSHA256": "43cbcb5f47fba7dfadd1669edf89de8b15c99783a553c3c5074eae9b60de88c9"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T22:06:01.1416433Z",
+      "bytes": 179925470,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "dfc9728395d44a2e"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 9,
+      "bytes": 196654423,
+      "receipt": null,
+      "entries": [
+        "74680aeb069f5d06ea0e/3debc1e29682baea8f02",
+        "74680aeb069f5d06ea0e/88f70d843bd3169b714c",
+        "74680aeb069f5d06ea0e/b42681471ccd4adbbe8d",
+        "74680aeb069f5d06ea0e/7f521c0410eafb5a97f4",
+        "74680aeb069f5d06ea0e/6248f574220e9a0bfa92",
+        "74680aeb069f5d06ea0e/aa7ff8eb32be358a6f39",
+        "74680aeb069f5d06ea0e/2e6c857725b5418efe5c",
+        "74680aeb069f5d06ea0e/32bfd6599910a52c2ee1",
+        "74680aeb069f5d06ea0e/4dda6261912634994b53"
+      ],
+      "running": []
+    },
+    "nativePlayerSHA256": "7aaa40da62c6ee770b8f26ff5e268ea5f412185e0364f4e6a4c00f4305c240a0",
+    "installedGates": [
+      {
+        "path": "native/build/sdk-installed-571-9QWvRJ/acceptance.json",
+        "sha256": "cfcd72d3775aeb2d58f2df0712445501f698625cf255cb6461a4e4731ad6119e",
+        "scope": "Actual isolated C++ function through this SDK host; no user profile, project, editor window, FPS or physical phone test."
+      },
+      {
+        "path": "native/build/light-runtime-573-CrBojY/acceptance.json",
+        "sha256": "8f61f2b5eba28bad83e8f3a2ac46f7ce84e7e0004ebbc8c61ec35d195b456d96",
+        "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
+      }
+    ],
+    "manifestVerifiedFiles": 3418,
+    "versions": [
+      "dfc9728395d44a2e"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-574-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [],
+    "sourceGameGates": [],
+    "scope": "574 전체명세/83소유SHA·설치 SDK의 실제 C++ 의존계획/재사용, 설치 packager/player의 HDRI·96광원·C++속성/머테리얼/그림자 재검증·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 15315803,
+    "files": 15,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 1096,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/light-tile-preparation-569-PjUFsG/probe.exe",
+      "bytes": 1395562,
+      "sha256": "4a9b33c9d56632d3280433bf595efde3736e3936d88e6cb9c507cc28318c4796"
+    }
+  ],
+  "scope": "574 전체명세/83소유SHA·설치 SDK의 실제 C++ 의존계획/재사용, 설치 packager/player의 HDRI·96광원·C++속성/머테리얼/그림자 재검증·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}

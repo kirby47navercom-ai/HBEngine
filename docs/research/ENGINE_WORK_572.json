@@ -109,6 +109,16 @@
     {
       "path": "native/build/light-tile-preparation-569-PjUFsG/acceptance.json",
       "sha256": "52c092faf41736439cada2ef28c927e7ff443140f78a964e80658ef9c782045c"
+    },
+    {
+      "path": "native/build/sdk-installed-571-9QWvRJ/acceptance.json",
+      "sha256": "cfcd72d3775aeb2d58f2df0712445501f698625cf255cb6461a4e4731ad6119e",
+      "scope": "Actual isolated C++ function through this SDK host; no user profile, project, editor window, FPS or physical phone test."
+    },
+    {
+      "path": "native/build/light-runtime-573-CrBojY/acceptance.json",
+      "sha256": "8f61f2b5eba28bad83e8f3a2ac46f7ce84e7e0004ebbc8c61ec35d195b456d96",
+      "scope": "Actual hidden packaged native player; ordinary HDRI and 96 lights, runtime C++ culling/sky/material/transform edits, tiled/all-light pixel parity and shadow invalidation. No user source/profile or sustained FPS test."
     }
   ],
   "sourceBuilds": [
@@ -139,6 +149,7 @@
     "새 C++ 빌드 및 전체 툴체인/외부 선택 의존성의 더 넓은 캐시 분석",
     "누적 원장의 렌더링·2D·애니메이션·월드·게임·편집기·플랫폼 목표"
   ],
-  "installationPending": true,
-  "scope": "SDK 재빌드 감소와 다중 광원 준비/전체광원 fallback의 실제 검사 범위. 전체 엔진·전체 문서/API 분석 완료나 지속 FPS 보장이 아니에요."
+  "installationPending": false,
+  "scope": "SDK 재빌드 감소와 다중 광원 준비/전체광원 fallback의 실제 검사 범위. 전체 엔진·전체 문서/API 분석 완료나 지속 FPS 보장이 아니에요.",
+  "installationReceipt": "docs/research/USER_INSTALL_574.json"
 }
