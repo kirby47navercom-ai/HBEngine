@@ -69,3 +69,6 @@ public:
 };
 }
 #endif
+// Preserve consumers that included this helper for the Compute SDK. Definitions
+// above must precede Device; pragma-once handles the reverse include from Compute.
+#include "Compute.hpp"

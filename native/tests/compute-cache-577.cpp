@@ -1,0 +1,23 @@
+#include <HBEngine/Compute.hpp>
+#include <nlohmann/json.hpp>
+#include <cassert>
+#include <chrono>
+#include <iostream>
+using namespace hb::gpu;using Json=nlohmann::json;
+const std::string source="RWStructuredBuffer<float> values:register(u0);[numthreads(4,1,1)]void Main(uint3 id:SV_DispatchThreadID){if(id.x<4)values[id.x]=values[id.x]*2+1;}[numthreads(4,1,1)]void Other(uint3 id:SV_DispatchThreadID){if(id.x<4)values[id.x]=values[id.x]*3-2;}";
+int main(int argc,char** argv){try{
+#if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
+ if(argc!=3)throw std::runtime_error("owned cache and mode required");
+ const std::string mode=argv[2];const auto directory=std::filesystem::absolute(argv[1]);if(mode!="unconfigured")Device::configureShaderCache(directory);Device gpu;
+ if(mode=="poison"){
+  const auto key=detail::ShaderBytecodeCompiler::key(source,"HBCompute","Main","cs_5_0");const std::string vertexSource="float4 Main(float4 p:POSITION):SV_Position{return p;}";detail::Com<ID3DBlob> vertex,error;const auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");detail::check(compile(vertexSource.data(),vertexSource.size(),"PoisonCompute577",nullptr,nullptr,"Main","vs_5_0",detail::ShaderBytecodeCompiler::flags,0,&vertex.p,&error.p),"poison fixture");const auto* data=static_cast<const unsigned char*>(vertex->GetBufferPointer());ShaderBytecodeDiskCache disk(directory);assert(disk.put(key,{data,data+vertex->GetBufferSize()}));auto kernel=gpu.compile(source);auto buffer=gpu.create({1,2,3,4});gpu.dispatch(kernel,{&buffer},1);assert(gpu.read(buffer)==std::vector<float>({3,5,7,9}));const auto first=Device::shaderDiskCacheInfo();assert(first[6]==1&&first[2]==1);auto next=gpu.compile(source);gpu.dispatch(next,{&buffer},1);assert(gpu.read(buffer)==std::vector<float>({7,11,15,19}));const auto last=Device::shaderDiskCacheInfo();assert(last[0]==first[0]+1&&last[2]==first[2]);std::cout<<Json{{"passed",true},{"deviceStageRejectionRecompiled",true},{"nextHit",true},{"disk",last}};return 0;
+ }
+ const auto start=std::chrono::steady_clock::now();auto main=gpu.compile(source),other=gpu.compile(source,"Other"),changed=gpu.compile(source+"\n// different source\n");auto buffer=gpu.create({1,2,3,4});gpu.dispatch(main,{&buffer},1);assert(gpu.read(buffer)==std::vector<float>({3,5,7,9}));gpu.dispatch(other,{&buffer},1);assert(gpu.read(buffer)==std::vector<float>({7,13,19,25}));gpu.dispatch(changed,{&buffer},1);const auto result=gpu.read(buffer);assert(result==std::vector<float>({15,27,39,51}));
+ for(int round=0;round<3;round++){Particles pool(gpu,257);std::vector<float> births;for(int i=0;i<65;i++)births.insert(births.end(),{0,0,0,0,1,0,0,2});pool.emit(births);pool.step(1.f/60);auto values=pool.read();unsigned living=0;for(std::size_t i=0;i<values.size();i+=8)if(values[i+7]>values[i+3]){living++;assert(std::abs(values[i]-1.f/60)<.00001f);}assert(living==65);pool.clear();values=pool.read();for(std::size_t i=0;i<values.size();i+=8)assert(values[i+7]<=values[i+3]);}
+ const auto compiledMS=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();const auto before=Device::shaderDiskCacheInfo();for(int i=0;i<8;i++)gpu.dispatch(main,{&buffer},1);assert(Device::shaderDiskCacheInfo()==before);auto values=gpu.read(buffer);assert(values[0]==4095);if(mode=="cold")assert(before[1]>=7&&before[2]>=7&&before[0]>=8);else if(mode=="warm")assert(before[0]>=15&&before[1]==0&&before[2]==0);else if(mode=="unconfigured")assert(before[0]==0&&before[1]==0&&before[2]==0&&before[9]==0);else throw std::runtime_error("unknown mode");
+ bool invalid=false;try{gpu.compile("");}catch(const std::runtime_error&){invalid=true;}assert(invalid);invalid=false;try{gpu.compile("not HLSL");}catch(const std::runtime_error&){invalid=true;}assert(invalid);
+ std::cout<<Json{{"passed",true},{"hardware",true},{"mode",mode},{"result",result},{"compileAndExecuteMS",compiledMS},{"sourceAndEntryIdentity",true},{"particlePools",3},{"birthsPerPool",65},{"poolCapacity",257},{"particleClear",true},{"disk",before},{"dispatchesWithoutCacheIO",8},{"invalidSourceRejected",true},{"scope","one ordered process per mode; test readbacks only, not sustained FPS"}};
+#else
+ (void)argc;(void)argv;assert(!Device::available());assert((Device::shaderDiskCacheInfo()==std::array<std::uint64_t,10>{}));bool rejected=false;try{Device::configureShaderCache({});}catch(const std::runtime_error&){rejected=true;}assert(rejected);std::cout<<"{\"passed\":true,\"available\":false,\"configurationGuard\":true}";
+#endif
+ }catch(const std::exception& error){std::cerr<<error.what();return 1;}}

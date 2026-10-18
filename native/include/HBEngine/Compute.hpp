@@ -1,6 +1,7 @@
 #pragma once
 #include "ComputePlatform.hpp"
 #include "ShaderBytecodeCompiler.hpp"
+#include <filesystem>
 
 namespace hb::gpu {
 struct FrameResult {std::uint64_t sequence=0;std::vector<float> values;};
@@ -55,6 +56,8 @@ class Device {
 public:
     Device(){auto& dll=detail::libraries();dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto create=dll.symbol<decltype(&D3D11CreateDevice)>(dll.d3d,"D3D11CreateDevice");const D3D_FEATURE_LEVEL requested=D3D_FEATURE_LEVEL_11_0;D3D_FEATURE_LEVEL actual{};detail::check(create(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,0,&requested,1,D3D11_SDK_VERSION,&device.p,&actual,&context.p),"DirectCompute hardware device");}
     Device(const Device&)=delete;Device& operator=(const Device&)=delete;
+    static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
+    static std::array<std::uint64_t,10> shaderDiskCacheInfo(){return detail::ShaderBytecodeCompiler::info();}
     static bool available() noexcept{try{Device device;return true;}catch(...){return false;}}
     std::string backend() const{return "Direct3D11 hardware cs_5_0";}
     Buffer create(const std::vector<float>& values,std::uint32_t stride=sizeof(float),bool append=false){
@@ -73,7 +76,7 @@ public:
     void copyCount(Buffer& destination,std::uint32_t byteOffset,Buffer& source){std::lock_guard<std::mutex> lock(mutex);owns(destination);owns(source);if(destination.structured||!source.append||byteOffset%4||destination.byteSize<4||byteOffset>destination.byteSize-4)throw std::runtime_error("Compute append count copy invalid");context->CopyStructureCount(destination.resource.p,byteOffset,source.uav.p);}
     Kernel compile(const std::string& source,const std::string& entry="Main"){
         if(source.empty()||source.size()>1024*1024||entry.empty()||entry.size()>128||entry.find('\0')!=std::string::npos)throw std::runtime_error("Compute shader source/entry invalid");
-        std::lock_guard<std::mutex> lock(mutex);Kernel k;detail::Com<ID3DBlob> code,error;auto& dll=detail::libraries();const auto compile=dll.symbol<decltype(&D3DCompile)>(dll.compiler,"D3DCompile");const auto result=compile(source.data(),source.size(),"HBCompute",nullptr,nullptr,entry.c_str(),"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Compute shader compile failed");detail::check(device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&k.shader.p),"Compute shader");k.owner=device.p;return k;
+        Kernel k;detail::ShaderBytecodeCompiler::create(source,"HBCompute",entry.c_str(),"cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(mutex);detail::Com<ID3D11ComputeShader> next;const auto result=device->CreateComputeShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result))k.shader=std::move(next);return result;});k.owner=device.p;return k;
     }
     void dispatch(Kernel& k,const std::vector<Buffer*>& outputs,std::uint32_t x,std::uint32_t y=1,std::uint32_t z=1,const std::vector<Buffer*>& inputs={},const std::vector<float>& constants={},const std::vector<std::uint32_t>& counters={}){
         if(!x||!y||!z||x>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||y>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||z>D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION||outputs.empty()||outputs.size()>D3D11_PS_CS_UAV_REGISTER_COUNT||inputs.size()>D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT||constants.size()>D3D11_REQ_CONSTANT_BUFFER_ELEMENT_COUNT*4)throw std::runtime_error("Compute dispatch groups/bindings/constants invalid");
@@ -118,6 +121,8 @@ class Kernel {public: std::size_t constantBufferAllocations() const{return 0;}};
 class FrameResources {public: std::size_t pending() const{return 0;}static constexpr std::size_t capacity(){return 3;}};
 class Device {
 public:
+    static void configureShaderCache(const std::filesystem::path&){throw std::runtime_error("Compute unavailable");}
+    static std::array<std::uint64_t,10> shaderDiskCacheInfo(){return {};}
     static bool available() noexcept{return false;}
     Device(){throw std::runtime_error("DirectCompute requires Windows hardware; this platform has no backend");}
     std::string backend() const{return "unavailable";}
