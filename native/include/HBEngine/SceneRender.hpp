@@ -518,6 +518,9 @@ public:
     void setPostLookup(const Texture* value){if(value&&(value->owner!=gpu.device.p||value->layers!=1||value->height<2||value->height>64||value->width!=value->height*value->height))throw std::runtime_error("Post lookup texture owner/dimensions invalid");postLookupSize=value?value->height:0;if(postLookupView.p==(value?value->view.p:nullptr))return;detail::Com<ID3D11ShaderResourceView> next;if(value){next.p=value->view.p;next.p->AddRef();}postLookupView=std::move(next);}
     void releasePostProcess(){pathEnvironmentView={};geometrySceneView={};postLookupView={};postLookupSize=0;releaseTransmission();bloom.release();}
     std::array<std::uint64_t,9> shaderCompilationInfo()const{return bloom.compilationInfo();}
+    void setAsyncShaderPreparation(bool value){bloom.setAsyncShaderPreparation(value);}
+    auto shaderPreparationInfo()const{return bloom.shaderPreparationInfo();}
+    void pollShaderPreparation(){bloom.pollShaderPreparation();}
     static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
     std::array<std::uint64_t,10> shaderDiskCacheInfo()const{return detail::ShaderBytecodeCompiler::info();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}

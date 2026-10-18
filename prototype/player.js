@@ -87,7 +87,7 @@ if(config.configuration==='development'||config.smoke)window.hbPlayerDebug={
   async captureAsync(){const image=await capturePreparedFrame(renderer,()=>this.capture());if(renderer.hbBackend==='webgpu'){await renderer.backend.device.queue.onSubmittedWorkDone();return canvas.toDataURL('image/png');}return image;},
   refractionDiagnostics(){if(!config.acceptance)throw Error('격리 렌더 검사에서만 조회할 수 있어요.');return [...groups].map(([id,g])=>{const values=[];g.traverse(n=>{for(const m of Array.isArray(n.material)?n.material:[n.material])if(m?.hbLayeredRefraction)values.push({probeBound:!!m.hbProbeRefraction,compiledProbe:!!m.userData.hbRefractionProbeBound,transmission:!!m.transmissionNode});});return {id,values};}).filter(v=>v.values.length);},
   shaderIdentity(){if(!config.acceptance)throw Error('격리 검사에서만 셰이더 수명을 조회할 수 있어요.');return renderer.hbBackend==='webgpu'?{pipelines:[...renderer._pipelines.caches.values()].map(shaderIdentity),stages:Object.fromEntries(Object.entries(renderer._pipelines.programs).map(([key,values])=>[key,[...values.values()].map(shaderIdentity)]))}:{programs:renderer.info.programs.map(shaderIdentity)};},
-  ready:()=>sceneFrame>=10&&!closed&&!!services&&!!vm?.active&&!renderer.hbPathPreparation?.pending,
+  ready:()=>sceneFrame>=10&&!closed&&!!services&&!!vm?.active&&!renderer.hbPathPreparation?.pending&&!renderer.hbPathPreparation?.error,
   lifecycle:()=>({frame,sceneFrame,busy,closed,closing,kioskResetting,scene:currentScene,mobileActive,active:!!vm?.active}),
   runtimePrototype:()=>Object.getPrototypeOf(vm),
   report:()=>report(),
