@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "38ee664f59a4571d0219914841f15ce0464121fb",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46\\HBEngine.exe",
+  "bundleHash": "c18dc18036317c462e651b4e2b32672b166feada891e2d8556fff7436e8d49bc",
+  "files": 3391,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "38ee664f59a4571d0219914841f15ce0464121fb",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46\\HBEngine.exe",
+    "bundleHash": "c18dc18036317c462e651b4e2b32672b166feada891e2d8556fff7436e8d49bc",
+    "files": 3391,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3391,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d",
+          "bytes": 220378899,
+          "manifestSHA256": "b3c3f837b6993e6b9e00a446de4d704a5b86a5fca647d4e86c62e2326b4c9504"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T20:41:18.4617472Z",
+      "bytes": 220378899,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "c18dc18036317c46"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 0,
+      "bytes": 0,
+      "receipt": null
+    },
+    "nativePlayerSHA256": "052f8aa28b6057066ee7cdf3a3c044f05ff83c55b0ff24f79a728f42d74d5b09",
+    "installedGates": [
+      {
+        "path": "native/build/texture-raster-528-XMFmlU/acceptance.json",
+        "sha256": "8d01f22f5a43eaa40e2d52ea2712830f6c07452d9417983689421f22889233bc",
+        "scope": "Actual shared graph loaders and GLSL/TSL material renderers, all four mip modes/families, SVG8x8 and real array/volume/cube creation. Independent linear red/.5 oracle; constant UV bias remains level0."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-kvJTZj/acceptance.json",
+        "sha256": "7c2ada3a7c5a3cb59f4a9f24c403830eaa8b0b768e52ac032be9a79a91e0533a",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3391,
+    "versions": [
+      "c18dc18036317c46"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-541-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/texture-raster-528-RJuJSm/acceptance.json",
+        "sha256": "357130465a2b42ed942be63f6564f533601d9a39702c41e216c18e522425cca0",
+        "scope": "Actual shared graph loaders and GLSL/TSL material renderers, all four mip modes/families, SVG8x8 and real array/volume/cube creation. Independent linear red/.5 oracle; constant UV bias remains level0."
+      },
+      {
+        "path": "native/build/volume-mips-531-39wYKR/acceptance.json",
+        "sha256": "83202989bd9ad3f4797cc873c1c80ec5a538fdc4271fbe5d89cfcfde37c93299",
+        "scope": "Actual WebGPU RGBA8/sRGB volume compute mips, odd dimensions, depth-only17 chain, independent linear global mean, no validation errors, idle no regeneration, temporary handles destroyed; existing quantized .02 tolerance."
+      },
+      {
+        "path": "native/build/texture-editor-532-ppzYJl/acceptance.json",
+        "sha256": "18831766d7bde585e03ef4d7cb76d0f73fa59804418c78fe92b3ee69701417b5",
+        "scope": "해당 검사 JSON의 정의 범위"
+      },
+      {
+        "path": "native/build/cube-direction-536-CWBNbQ/acceptance.json",
+        "sha256": "cd1fe5b0bb6053a1ce59a569ff018304d4586e6e5062d0b2f98cd48df8519dc3",
+        "scope": "All four authored mip modes, actual GLSL/TSL loaders, six distinct cube face colors and material environment rotation0/90deg, existing .01 color tolerance."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-preparation-window-496-czYlkJ/acceptance.json",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "scope": "541 전체명세/47소유SHA·설치된네형식4밉모드 GLSL/TSL실제표면·설치SDK/packager/player 새C++게임 Alpha→bias 및준비중래스터/C++/샘플0·복원/capture/유휴worker0. User읽기SHA·연결·Versions1·설치내가변cache0. 전체FPS/엔진/분석 완료 주장이 아님."
+  },
+  "nativeCache": {
+    "bytes": 41414995,
+    "files": 32,
+    "leaseFiles": 0,
+    "insideVersions": false,
+    "scope": "검증게임이생성한공용모듈의완료시점측정;최근32+참조/실행모듈보호"
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/sampled-coordinate-500-native-vWACkw/probe.exe",
+        "bytes": 1085344,
+        "sha256": "c2c2fd49e479f68afaceefae48ea210748928cde646fec270b1bf784ad9fa595"
+      },
+      {
+        "path": "native/build/texture-sampling-521-native-AAKfyW/probe.exe",
+        "bytes": 1085344,
+        "sha256": "c5dde4c2525a96ca6fc2cdfef9d60ba07d4254b0e183edf879929f94c9e42c40"
+      }
+    ],
+    "bytes": 2170688
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "541 전체명세/47소유SHA·설치된네형식4밉모드 GLSL/TSL실제표면·설치SDK/packager/player 새C++게임 Alpha→bias 및준비중래스터/C++/샘플0·복원/capture/유휴worker0. User읽기SHA·연결·Versions1·설치내가변cache0. 전체FPS/엔진/분석 완료 주장이 아님."
+}

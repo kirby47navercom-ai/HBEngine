@@ -2148,11 +2148,11 @@
   ],
   "latestBatch": "473–485",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_510.json",
-    "sourceCommit": "38815b407d1a54063f9c3d1e31731ebc784255d0",
-    "bundleHash": "bd5f13e0145bd55def4332c293b83e63979ed71c7ec4878db5ce63bc3cef15e8",
+    "receipt": "docs/research/USER_INSTALL_541.json",
+    "sourceCommit": "38ee664f59a4571d0219914841f15ce0464121fb",
+    "bundleHash": "c18dc18036317c462e651b4e2b32672b166feada891e2d8556fff7436e8d49bc",
     "verified": true,
     "versions": 1,
-    "scope": "510 설치네텍스처UV밉그래프·새두텍스처CPP/SDK/packager/game pending24frame/C++4.62ms/중지93.55ms/샘플0/workeridle0·3363전체SHA/20owner/User읽기SHA/연결/Versions1"
+    "scope": "541 네형식4밉모드 설치GL/TSL 실제표면·설치SDK/packager/player의 C++ Alpha→bias·47owner/3391전체SHA/User읽기SHA·연결/Versions1·Versions가변cache0"
   }
 }

@@ -166,7 +166,7 @@
     "dependencyDownloads": "고정 nlohmann 3.12.0 SHA와 원자적 게시"
   },
   "scope": "511–514 설치 C++ 캐시·의존 파일의 가변 경로 분리, 참조·실행·퇴역/실패·취소 보호. 실제 게임 렌더링/FPS나 전체 엔진 완료와 구분해요.",
-  "installation": "현재510 유지, 추가 렌더링 묶음 검증 뒤 한 번 갱신 예정",
+  "installation": "docs/research/USER_INSTALL_541.json",
   "remaining": [
     "TextureSample의 명시 LOD/Bias/Gradient 제작과 GL/WGPU/DirectX/광선 공통 연결",
     "ENGINE_STATUS의 누적 렌더링·엔진 구현과 전체 공식 본문/API 분석 gate는 그대로 유지"
@@ -176,5 +176,12 @@
       "path": "native/build/native-shared-cache-512-XgpKDB/failure.json",
       "reason": "PowerShell5 ConvertFrom-Json 결과에 배열을 중첩해 프로세스 보호 누락. 직접 할당으로 수정한 cCAhE7만 통과로 계산"
     }
-  ]
+  ],
+  "installationCacheProof": {
+    "bytes": 41414995,
+    "files": 32,
+    "leaseFiles": 0,
+    "insideVersions": false,
+    "scope": "검증게임이생성한공용모듈의완료시점측정;최근32+참조/실행모듈보호"
+  }
 }

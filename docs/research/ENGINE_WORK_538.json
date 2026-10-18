@@ -140,6 +140,16 @@
       "path": "native/build/regression-538.json",
       "sha256": "1bbda8b3668d4e2017bea4b78077ee4914535bafc4b1a4de335063fe99e7f821",
       "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/texture-raster-528-XMFmlU/acceptance.json",
+      "sha256": "8d01f22f5a43eaa40e2d52ea2712830f6c07452d9417983689421f22889233bc",
+      "scope": "Actual shared graph loaders and GLSL/TSL material renderers, all four mip modes/families, SVG8x8 and real array/volume/cube creation. Independent linear red/.5 oracle; constant UV bias remains level0."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-kvJTZj/acceptance.json",
+      "sha256": "7c2ada3a7c5a3cb59f4a9f24c403830eaa8b0b768e52ac032be9a79a91e0533a",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
     }
   ],
   "sourceGames": [
@@ -203,7 +213,8 @@
     "광선finite차분sub-ULP/불연속/큐브면경계 적분 확장",
     "처음준비FXC/GL·곡면역해·참여매질·GI·다른누적엔진 목표"
   ],
-  "installationPending": true,
+  "installationPending": false,
   "scope": "515–538 밉 제작/현재이전광선/일반표면/볼륨compute/CPU베이크/UI·AI·C++ 패키지 연결. 전체 엔진·모든포맷·모든공식본문API 완료나 FPS보장이 아니에요.",
-  "validationHarness": "528에설치실행파일선택인자만추가. 기존기본검사동작유지,설치실행은별도receipt로검증해요."
+  "validationHarness": "528에설치실행파일선택인자만추가. 기존기본검사동작유지,설치실행은별도receipt로검증해요.",
+  "installationReceipt": "docs/research/USER_INSTALL_541.json"
 }

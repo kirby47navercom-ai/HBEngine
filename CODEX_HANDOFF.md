@@ -38,3 +38,5 @@
 - 현재 소유 running sessions 없음(종료결과받은27251는write_stdin으로최종소비가능). free약434.7GiB. no8hsoak/사용자창/실기기검사없음. Mac/Xcode/Android폰없음.
 
 - 538 source6234e430902637697dca3b8262188012a9ae62ec 커밋완료. record538/refs538 완료(47ownerSHA/13gates), docs538/514/원장/CODEX 아직다음commit대기. preinstall539는source528에--executable선택만추가했고Work538SHA갱신. 다음sync/install541 2gates(528실제설치표면/496--mip-controls새게임),아직사용자510유지. 새Player052f8aa..,source535czYlkJ,최종현재이전520nykRGl/5217BLnKZ,volume53139wYKR,cube536CWBNbQ,legacy9gate538모두통과.
+
+-541 설치/검증완료: C:\Users\kirby\HBEngine\Versions\c18dc18036317c46\HBEngine.exe /3391전체SHA/47owner/Versions1/User10385전후읽기SHA/links2/.hbproject. 설치528XMFmlU 실제GL/TSL16표면·496kvJTZj 설치SDK/packager/player C++Alpha→bias/22frame/5.61ms/중지92.90ms/샘플0/idleworker0. Source6234/38ee664까지push완료. commonNativeCache 41414995B/lease0,Versions native/build없음. 이전510 220378899B와probe2170688B정리. finish541·setup/sync/install541 one-shot 재실행금지. receipt/원장마지막commit/push한뒤끝내지말고normal variance roughness합성·준비지연등계속.
