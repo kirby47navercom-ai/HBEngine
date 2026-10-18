@@ -1,6 +1,7 @@
 #pragma once
 #include "Bloom.hpp"
 #include "SceneProgramPreparation.hpp"
+#include "SceneRasterPreparation.hpp"
 #include <map>
 #include "Scene2D.hpp"
 #include "SceneProbes.hpp"
@@ -129,6 +130,7 @@ private:
     ParticleRenderer surface;BloomPass bloom;SceneProbes probes;SceneLightTiles lightTiles;Probe skyProbe;detail::Com<ID3D11ShaderResourceView> skySource;std::uint32_t skySize=0;ProbeSettings skySettings{};std::uint64_t lightRevision=0;
     Probe* activeProbe=nullptr;bool probeIndirect=false;UINT probeFace=0;SceneFrame savedProbe;
     std::array<detail::Com<ID3D11Buffer>,3> probeConstants;
+    std::unique_ptr<SceneRasterPreparation> rasterPreparation;
     detail::Com<ID3D11VertexShader> vertex;
     detail::Com<ID3D11PixelShader> pixel,shadowPixel;
     detail::Com<ID3D11InputLayout> layout;
@@ -264,13 +266,18 @@ void ShadowPS(Output i,bool front:SV_IsFrontFace){PS(i,front);}
         return source;
     }
     static std::string shaderSource(){std::string source=shader;source.insert(source.find("struct Input{"),std::string(scene2DDeclarations)+sceneProbeDeclarations+sceneLightTileDeclarations);source.insert(source.find("float4 PS("),std::string(scene2DFunctions)+sceneProbeFunctions+sceneShadingFunctions+sceneLightTileFunctions);return source;}
-public:
-    SceneRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):gpu(device),surface(device,width,height,hwnd),bloom(device),probes(device),lightTiles(device){
+    HRESULT adoptRasterShader(std::size_t stage,const void* bytes,std::size_t size){
         std::lock_guard<std::mutex> lock(gpu.mutex);
-        const auto source=surfaceShader(shaderSource());for(const auto* entry:{"VS","PS","ShadowPS"}){
-            const auto code=detail::ShaderBytecodeCompiler::create(source,"HBSceneRender",entry,entry[0]=='V'?"vs_5_0":"ps_5_0",[&](const void* bytes,std::size_t size){return entry[0]=='V'?gpu.device->CreateVertexShader(bytes,size,nullptr,&vertex.p):gpu.device->CreatePixelShader(bytes,size,nullptr,entry[0]=='S'?&shadowPixel.p:&pixel.p);});
-            if(entry[0]=='V'){const D3D11_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D11_INPUT_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D11_INPUT_PER_VERTEX_DATA,0}};detail::check(gpu.device->CreateInputLayout(elements,5,code.code.data(),code.code.size(),&layout.p),"Scene vertex layout");}
-        }
+        if(stage==0){detail::Com<ID3D11VertexShader> next;detail::Com<ID3D11InputLayout> nextLayout;auto result=gpu.device->CreateVertexShader(bytes,size,nullptr,&next.p);if(FAILED(result))return result;
+            const D3D11_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},{"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0},{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0},{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,32,D3D11_INPUT_PER_VERTEX_DATA,0},{"TEXCOORD",1,DXGI_FORMAT_R32G32_FLOAT,1,0,D3D11_INPUT_PER_VERTEX_DATA,0}};result=gpu.device->CreateInputLayout(elements,5,bytes,size,&nextLayout.p);if(FAILED(result))return result;vertex=std::move(next);layout=std::move(nextLayout);return S_OK;}
+        detail::Com<ID3D11PixelShader> next;const auto result=gpu.device->CreatePixelShader(bytes,size,nullptr,&next.p);if(SUCCEEDED(result)){if(stage==1)pixel=std::move(next);else shadowPixel=std::move(next);}return result;
+    }
+public:
+    SceneRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr,bool asyncRaster=false):gpu(device),surface(device,width,height,hwnd),bloom(device),probes(device),lightTiles(device){
+        const auto source=surfaceShader(shaderSource());
+        if(asyncRaster){rasterPreparation=std::make_unique<SceneRasterPreparation>(source);rasterPreparation->poll();}
+        else{std::size_t stage=0;for(const auto* entry:{"VS","PS","ShadowPS"}){detail::ShaderBytecodeCompiler::create(source,"HBSceneRender",entry,stage?"ps_5_0":"vs_5_0",[&](const void* bytes,std::size_t size){return adoptRasterShader(stage,bytes,size);});++stage;}}
+        std::lock_guard<std::mutex> lock(gpu.mutex);
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& buffer:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"Scene frame constants");
         cb.ByteWidth=sizeof(Scene2D);for(auto& buffer:constants2D)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"2D frame constants");
         cb.ByteWidth=sizeof(ProbeSettings)*3;for(auto& buffer:probeConstants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"Probe frame constants");
@@ -500,11 +507,18 @@ public:
     }
     void beginShadow(std::size_t index){if(activeShadow>=0||index>=shadows.size())throw std::runtime_error("Shadow pass index invalid");shadowFrame=frame;frame.viewProjection=shadows[index].viewProjection;frame.viewport={0,0,shadows[index].size[0],shadows[index].size[1]};frame.scissor.reset();activeShadow=static_cast<int>(index);std::lock_guard<std::mutex> lock(gpu.mutex);ID3D11ShaderResourceView* empty=nullptr;gpu.context->PSSetShaderResources(24,1,&empty);gpu.context->ClearDepthStencilView(shadowTargets[index].p,D3D11_CLEAR_DEPTH,1,0);++shadowPasses_;}
     void endShadow(){if(activeShadow<0)return;std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);frame=shadowFrame;activeShadow=-1;}
+    bool pollRasterPreparation(){
+        if(!rasterPreparation)return true;
+        rasterPreparation->poll();for(std::size_t stage=0;stage<3;stage++)if(const auto* code=rasterPreparation->bytecode(stage)){const auto result=adoptRasterShader(stage,code->data(),code->size());if(SUCCEEDED(result))rasterPreparation->accept(stage);else rasterPreparation->reject(stage,result);}
+        const auto info=rasterPreparation->info();if(!info.error.empty())throw std::runtime_error(info.error);if(info.ready)rasterPreparation.reset();return info.ready;
+    }
+    SceneRasterPreparation::Info rasterPreparationInfo()const{return rasterPreparation?rasterPreparation->info():SceneRasterPreparation::Info{{3,3,3},false,true,{}};}
     void begin(const SceneFrame& value){
+        const bool rasterReady=pollRasterPreparation();
         endProbe();end2D();endShadow();for(const auto& light:lightDefinitions)if(light.position[3]<3&&light.cone[3]>0&&light.cone[3]+(light.position[3]==1?5:0)>shadows.size())throw std::runtime_error("Shadow light reference invalid");
         if(!finite(value.viewProjection)||!finite(value.clear)||!finite(value.eye)||!finite(value.ambient)||!finite(value.fog)||!finite(value.fogRange)||!finite(value.heightFog)||!finite(value.viewport)||(value.viewportClear&&!finite(*value.viewportClear))||!std::isfinite(value.exposure)||value.exposure<0||!std::isfinite(value.time))throw std::runtime_error("Scene frame invalid");
         const auto validate=[](const std::array<float,4>& rect){if(!finite(rect))throw std::runtime_error("Scene viewport invalid");for(std::size_t i=0;i<2;i++)if(rect[i]<D3D11_VIEWPORT_BOUNDS_MIN||rect[i]>D3D11_VIEWPORT_BOUNDS_MAX||rect[i+2]<0||rect[i]+rect[i+2]>D3D11_VIEWPORT_BOUNDS_MAX)throw std::runtime_error("Scene viewport bounds invalid");};validate(value.viewport);if(value.scissor)validate(*value.scissor);if((value.viewport[2]==0)!=(value.viewport[3]==0))throw std::runtime_error("Scene viewport size invalid");
-        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}if(value.postProcess&&value.postProcess->lookup[1]>0&&value.postProcess->lookup[1]!=postLookupSize)throw std::runtime_error("Post lookup size mismatch");frame=value;const auto tileRect=value.viewport[2]>0?value.viewport:std::array<float,4>{0,0,float(surface.width()),float(surface.height())};lightTiles.prepare(value.viewProjection,tileRect,lightCount,lightView.p,lightRevision,value.rasterLightCulling);surface.clear(value.clear);bloom.begin(surface.width(),surface.height(),value.viewport,value.bloom,value.clear,value.transmission,value.postProcess,value.screenEffects);transmissionReady=false;if(!value.transmission)releaseTransmission();draws_=shadowDraws_=0;
+        {std::lock_guard<std::mutex> lock(gpu.mutex);startTiming();}if(value.postProcess&&value.postProcess->lookup[1]>0&&value.postProcess->lookup[1]!=postLookupSize)throw std::runtime_error("Post lookup size mismatch");frame=value;const auto tileRect=value.viewport[2]>0?value.viewport:std::array<float,4>{0,0,float(surface.width()),float(surface.height())};lightTiles.prepare(value.viewProjection,tileRect,lightCount,lightView.p,lightRevision,value.rasterLightCulling);surface.clear(value.clear);bloom.begin(surface.width(),surface.height(),value.viewport,value.bloom,value.clear,value.transmission,value.postProcess,rasterReady?value.screenEffects:std::nullopt);transmissionReady=false;if(!value.transmission)releaseTransmission();draws_=shadowDraws_=0;
         if(value.viewportClear){if(!background.vertices.p)background=createMesh({{{-1,-1,0}},{{1,-1,0}},{{1,1,0}},{{-1,1,0}}},{0,1,2,0,2,3});SceneMaterial fill;fill.color=*value.viewportClear;fill.unlit=true;fill.toneMapped=false;fill.depthTest=fill.depthWrite=false;const auto vp=frame.viewProjection;frame.viewProjection=identity;draw(background,identity,identity,fill);frame.viewProjection=vp;}
     }
     void draw(const Mesh& mesh,const Matrix& world,const Matrix& normal,const SceneMaterial& material={},const std::array<const Texture*,6>& maps={},const std::array<std::uint32_t,6>& sampling={},std::uint32_t first=0,std::uint32_t count=0,const Program* program=nullptr,const std::vector<const Texture*>& programMaps={},const std::vector<std::uint32_t>& programSampling={},const Instances* instances=nullptr,const Deformation* deformation=nullptr,const Bindings2D* twoD=nullptr,const std::array<ProbeBinding,2>* probeBindings=nullptr,const Matrix* previousWorld=nullptr,float motionFlag=0,const Texture* lightmap=nullptr){
@@ -517,6 +531,7 @@ public:
         if(extendedSamplers.size()>512)extendedSamplers.clear();
         std::array<ID3D11ShaderResourceView*,128> views{};std::array<ID3D11SamplerState*,16> states{};std::uint32_t mask=0;for(std::size_t i=0;i<maps.size();i++){if(maps[i]&&maps[i]->owner!=gpu.device.p)throw std::runtime_error("Scene texture owner or sampler invalid");if(maps[i]){views[i]=maps[i]->view.p;mask|=1u<<i;}states[i]=samplerState(sampling[i]);}if(mesh.uv1.p)mask|=16384u;views[6]=lightView.p;const UINT viewCount=50,samplerCount=16;if(lightmap){views[49]=lightmap->view.p;mask|=32768u;}if(program){if(program->owner!=gpu.device.p||programMaps.size()>D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT||programMaps.size()!=programSampling.size())throw std::runtime_error("Material program bindings invalid");views[7]=program->values.p;for(std::size_t i=0;i<programMaps.size();i++){if(!programMaps[i]||programMaps[i]->owner!=gpu.device.p)throw std::runtime_error("Material texture owner or sampler invalid");views[8+i]=programMaps[i]->view.p;states[i]=samplerState(programSampling[i]);}}
         if(program&&!program->ready()){const auto info=program->preparationInfo();if(!info.error.empty())throw std::runtime_error(info.error);return;}
+        if(rasterPreparation)return;
         views[24]=activeShadow<0?shadowView.p:nullptr;views[25]=shadowDataView.p;if(material.receiveShadow)mask|=64u;if(activeProbe)mask|=2048u;if(!active2D&&!activeProbe&&activeShadow<0&&bloom.active()){mask|=128u;bloom.markDirty();}if(instances)mask|=instances->stride==16?512u:256u;if(deformation)mask|=1024u;
         if(transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&!active2D&&activeShadow<0){if(programMaps.size()>14)throw std::runtime_error("Transmission reserves one material sampler");views[44]=transmissionView.p;views[45]=transmissionDepthView.p;states[14]=samplers[16].p;mask|=4096u;}
         Scene2D settings=twoD?twoD->settings:Scene2D{};
@@ -566,7 +581,7 @@ public:
     std::array<std::uint64_t,9> shaderCompilationInfo()const{return bloom.compilationInfo();}
     void setAsyncShaderPreparation(bool value){bloom.setAsyncShaderPreparation(value);lightTiles.setAsyncPreparation(value);}
     auto shaderPreparationInfo()const{return bloom.shaderPreparationInfo();}
-    void pollShaderPreparation(){bloom.pollShaderPreparation();}
+    void pollShaderPreparation(){pollRasterPreparation();bloom.pollShaderPreparation();}
     static void configureShaderCache(const std::filesystem::path& directory){detail::ShaderBytecodeCompiler::configure(directory);}
     std::array<std::uint64_t,10> shaderDiskCacheInfo()const{return detail::ShaderBytecodeCompiler::info();}
     std::uint64_t bloomTextureBytes() const{return bloom.textureBytes();}

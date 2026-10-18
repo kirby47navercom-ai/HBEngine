@@ -4,7 +4,8 @@ export const nativeShaderPreparationContract=Object.freeze({
  version:1,backend:'D3D11',stages:Object.freeze(['path','guide','filter','photons','temporal','auxiliary']),
  states:Object.freeze(['unused','queued','compiling','ready','failed']),queueBudgetBytes:8*1024*1024,
  idleWorkerMS:1000,workerCount:1,renderWhilePending:'raster',commitPendingHistory:false,
- rasterStages:Object.freeze(['material','material-shadow']),
+ rasterStages:Object.freeze(['material','material-shadow','raster-vertex','raster-surface','raster-shadow']),
+ baseRaster:Object.freeze({optIn:'SceneRenderer fifth constructor argument; desktop asyncShaderPreparation',stages:3,preparation:'same lazy worker; no GPU ownership in jobs',pending:'clear and present; no base draws, dependent captures or screen history',defaultSDK:'synchronous'}),
  rasterPreparation:'same lazy compiler worker; shader bytecode off-thread, device adoption on owner; pending objects skip drawing, dependent shadows/probes and screen history wait',
  lightCulling:Object.freeze({preparation:'same lazy compiler worker',fallback:'all-lights',historyWait:false,diagnostics:'shaderPreparation.raster.lightCulling',adoption:'owner thread; one fresh compile retry after device rejection'}),
  compilerCancellation:'finish active compilation; discard obsolete renderer result'
