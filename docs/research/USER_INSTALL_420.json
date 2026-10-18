@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "5e6f3a678fb793a150aa5b0cf1c563cb69097b17",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e\\HBEngine.exe",
+  "bundleHash": "73f3b3113b91e92e704f301510ba9362dad79ba43bd0bd51f6d749401901d32c",
+  "files": 3267,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "5e6f3a678fb793a150aa5b0cf1c563cb69097b17",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e\\HBEngine.exe",
+    "bundleHash": "73f3b3113b91e92e704f301510ba9362dad79ba43bd0bd51f6d749401901d32c",
+    "files": 3267,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3260,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1",
+          "bytes": 178208399,
+          "manifestSHA256": "364e129a412c4ff1ff07658df0ef7ca7091c90ceeed89804b69b9e5e301564ca"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T14:31:56.7081400Z",
+      "bytes": 178208399,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "73f3b3113b91e92e"
+      ]
+    },
+    "nativePlayerSHA256": "7f44d3ebe0920a3de8d5d9a5c0bc458e836e691d77fa51b47da353f173123ff5",
+    "installedGates": [
+      {
+        "path": "native/build/coordinate-graph-416-Mcp9Iu/acceptance.json",
+        "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9",
+        "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+      },
+      {
+        "path": "native/build/world-coordinate-416-5BoRiz/acceptance.json",
+        "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9",
+        "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-zBEYST/acceptance.json",
+        "sha256": "c296c4b7bbc693617ba1078c63426a4789dca05898edae20498fd3767da466ca",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3267,
+    "versions": [
+      "73f3b3113b91e92e"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-420-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/coordinate-graph-416-guht8D/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/world-coordinate-416-G3lW0w/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/ray-differentials-418-KkzIwq/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/previous-context-308-apZFEo/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/ray-texture-sharing-333-t8O1Xg/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-etaijS/acceptance.json",
+        "scope": "실제 새 DirectX 실행 파일의 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 초기 준비 관찰값이며 FPS·유의미한 개선율 주장은 아님"
+      }
+    ],
+    "scope": "420 전체 명세·실행 소유 SHA; 설치된 GL/WebGPU 큰 오프셋·월드 좌표의 현재/이전 밉·일반 래스터와 새 DirectX 두 게임 캐시 확인. 원본333수학조건/17포즈/48샘플러/복잡게임 증거 연결. 대표 FPS·전체엔진·분석 완료 주장은 없음."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 4440556,
+    "removed": [
+      {
+        "path": "native/build/coordinate-graph-416-native-V6Ya9K/probe.exe",
+        "bytes": 742654,
+        "sha256": "68ac188237b5781d5aac4d7db686371182c09c33904b46678d67e967bcb89118"
+      },
+      {
+        "path": "native/build/world-coordinate-416-native-ejLUXg/probe.exe",
+        "bytes": 742654,
+        "sha256": "e7b154b54dc1a3db4e3f09058234dffe84c4df6b07c9deb4fea0c5e8904bf4d7"
+      },
+      {
+        "path": "native/build/world-coordinate-416-native-glcPv0/probe.exe",
+        "bytes": 742654,
+        "sha256": "cf36abe35cd47bcd58fae60ce71671602f79f5a6ef3bc55c5e5610c12bc39140"
+      },
+      {
+        "path": "native/build/ray-differentials-418-native-HdUYME/probe.exe",
+        "bytes": 734970,
+        "sha256": "3d3a3cb4d7900b55f7b46a7f781b6388a85a801bb20686f48094086b799d254b"
+      },
+      {
+        "path": "native/build/previous-context-308-native-io7HJp/probe.exe",
+        "bytes": 734970,
+        "sha256": "4149022a1e2070a3bbf3460176dbac9e783fb76f9d37bbcdff10c34baaa62885"
+      },
+      {
+        "path": "native/build/cubemap-lod-281-native-m9uLEr/probe.exe",
+        "bytes": 742654,
+        "sha256": "27dc7ab9fd7f06adce5653c4d0a7d3c7fa23933931bb5ee6a411714b0f964e32"
+      }
+    ]
+  },
+  "scope": "420 전체 명세·실행 소유 SHA; 설치된 GL/WebGPU 큰 오프셋·월드 좌표의 현재/이전 밉·일반 래스터와 새 DirectX 두 게임 캐시 확인. 원본333수학조건/17포즈/48샘플러/복잡게임 증거 연결. 대표 FPS·전체엔진·분석 완료 주장은 없음."
+}

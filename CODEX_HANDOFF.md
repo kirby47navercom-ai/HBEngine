@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 좌표 변화량416–420 검증·설치 진행
+# HBEngine 현재 인계 — 설치420 검증·비선형/노멀421 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치415 C:\Users\kirby\HBEngine\Versions\e72c7905b43515f1\HBEngine.exe /3259파일/Versions1. USER_INSTALL_415 정본. 15owner/fullSHA·새playerf1e1a2970cd512ce69f4e8fa0af702dbdd84cea0653eaf8882d760dcb22c5c71·User10385읽기SHA·links2/.hbproject·설치 u1oaX2/jWVdIY 통과예요.
+- 현재 설치420 C:\Users\kirby\HBEngine\Versions\73f3b3113b91e92e\HBEngine.exe /3267파일/Versions1. USER_INSTALL_420 정본.21owner/fullSHA·User10385전후읽기SHA·links2/.hbproject·설치Mcp9Iu/5BoRiz/zBEYST 통과.
 
 ## 현재 구현과 증거
 - 416–419: rX/Y를 이동한 절대값에서 상대 변화량으로 전환. 공유 ray-program-differentials.js의 add/subtract/multiply/tiling/panner/lerp/dot/cross/combine/channel/cast를 GL/TSL/HLSL에 연결. texture는 변화량 직접사용, UV/worldPosition 루트도 상대값. 기존IR/64register/4096instruction/샘플러·기본값/alpha lazy 유지. 새GPU자원·uniform·운영readback0.
@@ -13,7 +13,7 @@
 - docs/COORDINATE_DIFFERENCES_420.md와 engineSchema UV계약에 비용/안정연산/근사/남은한계명시. RND06초기compile속도개선주장없음.
 
 ## 다음 실행 순서
-1. sourcecommit→record420·정본원장→sync420→install420의큰그래프/월드두GL/GPU와350두native게임·fullmanifest/owners/User읽기보존/Versions1→finish420. 개발중기존415수정금지.
+1. 420 원장/실제설치/정리/커밋검증완료. 완료one-shot재실행금지. 새작업421의비선형좌표·큰월드노멀계산을재현하고수정해요.
 2. 그뒤 worldNormal에서큰점+offset재계산/비선형그래프차분손실을재현·수정. 텍스처생성좌표0/view고정근사는명시유지. 전역곡면/매질/RND06과누적엔진원장계속.
 
 ## 작업 보호

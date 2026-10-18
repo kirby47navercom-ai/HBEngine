@@ -1,4 +1,4 @@
-# 현재 진단 — 상대 좌표 변화량420 설치 진행
+# 현재 진단 — 설치420 검증·비선형/노멀421 계속
 
 415의상대삼각형UV차분뒤에도rX/Y를절대값으로전달해큰add/panner/worldPosition에서폭이다시소실됐어요. 416baselineQdW2Mk/xJis6E를실제GL/GPU로재현후상대변화량표현과공유14연산수식으로수정했어요. 전체graph세API와20연산333조건,17pose,48sampler검사통과예요. 상세정본ENGINE_WORK420예정.
 

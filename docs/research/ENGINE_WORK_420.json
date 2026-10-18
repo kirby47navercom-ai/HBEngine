@@ -33,7 +33,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "f2b5a8566ffefe24b9f9befa0df24c101c447e85447c62201f595446da24b82d"
   },
   "nativePlayerSHA256": "7f44d3ebe0920a3de8d5d9a5c0bc458e836e691d77fa51b47da353f173123ff5",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/coordinate-graph-416-guht8D/acceptance.json",
@@ -82,6 +82,18 @@
     {
       "path": "native/build/rendering-420-light-checks.json",
       "sha256": "611d6b596aca160b30fbc5bb9bf2440cfc4b32e637bbd48656b0b8b7b975799a"
+    },
+    {
+      "path": "native/build/coordinate-graph-416-Mcp9Iu/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/world-coordinate-416-5BoRiz/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-zBEYST/acceptance.json",
+      "sha256": "c296c4b7bbc693617ba1078c63426a4789dca05898edae20498fd3767da466ca"
     }
   ],
   "sourceGames": [
@@ -206,5 +218,6 @@
     "텍스처 생성 좌표 변화량0·레이 폭 내부 시선 고정 근사 유지",
     "전역 곡면 역대응·변한 투명 경로·복합 로브·참여 매질 footprint와 누적 엔진 원장",
     "초기 복잡 컴파일 여전히 초단위·대표 FPS/기기/전체 분석/전체 엔진 완료 주장은 없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_420.json"
 }
