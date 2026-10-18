@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "839d0f1cd6171454fa6c8f7abcc08f7ccbf3b12c",
+  "targetIds": [
+    "RND-06",
+    "RND-07"
+  ],
+  "sourceHashes": {
+    "package.json": "5e816dff04b8c73d444e3a68bcec6763dee27d14db8c678a59498e530c82325b",
+    "prototype/ray-material-gpu.js": "6985faf82814ea6e3c92f058f26058ff4e2e6ea215745c898ce501514d90eb85",
+    "prototype/ray-previous-gpu.js": "24674170e79e3cb026c9f0616a876aa2c7985f7952cb0274dcb051de21a79626",
+    "prototype/ray-program-context-sharing.js": "0bd8b5d6ca903060d386751a95490c37b6b671faf56a457c3440f72ab65097bc",
+    "tools/check-previous-context-308-window.mjs": "e22018464bf2a4e44eecec35c20bdfe17f28bb041022faf82a42362deb4a4e12",
+    "tools/check-ray-input-sharing-329-window.mjs": "8c409617d4893becd8ac67356c5487d56b6726fea775afab3d96e12135bcbfad",
+    "tools/check-ray-texture-sharing-331-window.mjs": "f9ee75430a6e07a814f4909d8f754869e70d8c65c42eaf1b36105b253c3e9b6e",
+    "tools/check-ray-texture-sharing-333-window.mjs": "c1f299155127c2aa3a99c4c52b5abd82ad632db97f92e7d8485f83d5f1d5b516",
+    "tools/ray-texture-gpu-probe.mjs": "765d40d90bfdf9782b2ea7c64da79f5bc0b8a1d4c6db4cbac5f8724c39af1b17"
+  },
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/ray-texture-sharing-331-J9Mfvr/acceptance.json",
+      "sha256": "449b8f1dbbd3f08b53f319dff35a8b3339f9050d469752414502690de714cffa"
+    },
+    {
+      "path": "native/build/ray-texture-sharing-333-GQbcyT/acceptance.json",
+      "sha256": "22325778e93e3d73a30dd4ed8c5a2feaba99d09e7359d04ec24112170e3f794b"
+    },
+    {
+      "path": "native/build/gpu-scene-5o6btx/acceptance.json",
+      "sha256": "cb205793bdf7b5a3ee543cfbd17021212fd47500832a946bc6916535e64dec04"
+    },
+    {
+      "path": "native/build/previous-context-308-W9Gc5Y/acceptance.json",
+      "sha256": "b218568354e46031f56082effe32a743dc4dc06af43a4dfa9cf7c1730210ec7d",
+      "scope": "GL experimental source sharing only; not adopted by default"
+    },
+    {
+      "path": "native/build/ray-input-sharing-329-Jfr2X9/acceptance.json",
+      "sha256": "b3e59d251d3f7a009aad7423a8dc7fa3c21412c56948166dee5142f0dc793374",
+      "scope": "GL experimental source sharing only; not adopted by default"
+    },
+    {
+      "path": "native/build/rendering-274-HatdIg/acceptance.json",
+      "sha256": "c5ffcb640146f421ad3a0375cb9813ba5cfcfdb78ac6ef2524796cd3df32eefb"
+    },
+    {
+      "path": "native/build/rendering-187-lSBMXU/acceptance.json",
+      "sha256": "d558599b132b39948ec036b8faef73aaab629e5d21babb3d091e6523501cc592"
+    }
+  ],
+  "nativePlayerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+  "implemented": [
+    "같은 atlas load/uniform identity의 기존 텍스처 Map/Fn을 current/prior에서 공유; 다른 바인딩 거부",
+    "현재·이전 기하/노멀/UV/시각/mip 독립·빌더별 기존 WeakMap 수명·IR/버퍼/파일 계약 유지",
+    "실제 WebGPU17포즈의 두 노멀/기존 비공유 대조와4종×12필터×8표본, 실제 CPP/BP게임"
+  ],
+  "measurements": {
+    "dualContexts": {
+      "poses": 17,
+      "maxError": 0,
+      "normalObservable": true,
+      "maxContextDifference": 1.9384188652038574,
+      "samplerFunctions": [
+        4,
+        2
+      ],
+      "worldPositionUVWGSLBytes": [
+        86295,
+        72064
+      ]
+    },
+    "families": {
+      "variants": 48,
+      "samples": 384,
+      "maxError": 0
+    },
+    "actualComplex141": {
+      "firstPathMS": 3654,
+      "temporalMS": 2454
+    },
+    "scope": "WGSL source/function counts and actual sample pixels. Single uncontrolled transition timings are not FPS or measured improvement."
+  },
+  "experiment": {
+    "adopted": false,
+    "kind": "GL program body factoring",
+    "checks": [
+      "native/build/previous-context-308-W9Gc5Y/acceptance.json",
+      "native/build/ray-input-sharing-329-Jfr2X9/acceptance.json"
+    ],
+    "orderedPreparationMS": [
+      2023.8,
+      1956.6,
+      2025.9,
+      1930.9
+    ],
+    "conclusion": "출력과 소스 축소는 확인했으나 준비 시간 개선 근거가 없어 GL 기본 경로에 적용하지 않음; 성능 구현 완료로 계산하지 않음"
+  },
+  "newCaches": 0,
+  "newGPUResources": 0,
+  "newReadbacks": 0,
+  "newUniformFields": 0,
+  "limits": [
+    "RND06 GL/전체 초기 준비 지연은 잔여",
+    "RND07 투명 이전 분기/다른 표면 필드는 잔여",
+    "실기기/FPS/전체 엔진 및 문서 분석 gate를 승격하지 않음"
+  ]
+}

@@ -1,9 +1,9 @@
-# HBEngine 현재 인계 — 308–327 설치 확인·구현 계속
+# HBEngine 현재 인계 — 330–334 렌더링 검증·설치 준비
 
-- 구현6d4c759·문서4616e32 main push예요. 설치 0d2a7b42112d229e 하나·3115파일 전체SHA·바로가기2/.hbproject·User10385파일 전후SHA 동일이에요. USER_INSTALL_327이 정본이에요.
-- 308–318의 이전머테리얼입력/노멀/mip·대형2D/CPP/BP·stableID 복구는 ENGINE_WORK_318/USER_INSTALL_318에 있어요. 이어319–327의 부모/componentState/property/Transform alias·skeletal·clip 공통 소유권을 만들었어요.
-- CPU32713종·구조8/클립3/재진입·오류4조건 통과, 설치 AN3o6f의 실제 편집기·D3D/GL 패키지를 최종 installed tools로 제작·실행해 CPP/BP·실제 bone/parent/component/clip/priority/restore를 확인했어요. 소스 E9YNZT는 최종 guard전 증거이고 최종 claim은 AN3o6f예요.
-- 새 GPU읽기/타이머/전체월드 이력 복사 없음. scalar adapter1000개/120000샘플·원본1회읽기 유지. 외부 재생/그래프의 정확한 복원·나머지 표현 별칭·가중 혼합은 잔여예요.
-- 지금 다음 RND06 준비 비용을 조사했어요. ray-material-shader와 generate-ray-programs가 current/prior normal IR을 별도 함수로 복제해요. geometry UV/smooth/offset 계산은 문맥마다 달라도 graph 연산 본문은 공통으로 묶을 후보예요. 아직 이 공유 최적화는 구현하지 않았고 GL 실험으로 출력/준비비용을 먼저 대조해야 해요. WGPU/D3D도 같은 의미로 연결하기 전 완료라고 하지 않아요.
-- RND07 투명 이전분기/다른 표면필드·큰맵 diskchunk/배열복사·여타누적 잔여는 ENGINE_STATUS 정본이에요. 전체분모/연구 gate를 승격하지 않아요.
-- sync327/install327/finish327·record327·validation321/322/325/327 및318등 모든 one-shot은 재실행하지 않아요. 사용자창/탭/서버는 조작하지 않고 User는읽기전용SHA만·숨김고유검사·활성사용자시설치보류·Versions1을 유지해요.
+- 구현63924f6/검사839d0f1 839d0f1cd6171454fa6c8f7abcc08f7ccbf3b12c예요. 설치327(0d2a7b42112d229e) 이후 WebGPU sampler 공유를 만들었고 아직334 설치 전이에요.
+- rayMaterialNode의 textureLibrary는 기존 Map/load/u를 전달해 current/prior sampler Fn을 재사용해요. 다른u/load/Map형식은 거부해요. 새 전역cache/GPU버퍼/유니폼/자동읽기 없음. previous geometry/normal/UV/time/mip는 독립이에요.
+- J9Mfvr 실제17dual context 오차0·기존법선관측/문맥차, GQbcyT48family-filter/384표본 oldmodule6d4대조오차0·함수4→2, 실제sourceGPU CPP/BP5o6btx 통과예요. CPU274HatdIg/187lSBMXU 통과. 함수count 첫 실패는WGSL name뒤공백regex,333첫 실패는CDP20초한호출48개→4개씩12호출로고쳤고총48/384조건유지예요.
+- GL실험 ray-program-context-sharing.js는미채택이에요. W9Gc5Y17GL/GPU출력통과·329Jfr2X9 full ABBA2024/1957/2026/1931ms로시간개선근거없음. 기본GL경로에연결하지않았고성능완료로세지않아요.
+- 다음 sync334/install334/finish334 새marker를한번씩사용해설치331 --case worldPositionUV를확인해요. 바이너리/GL/DX는그대로여서재컴파일하지않아요. sourceGPUgate/player/변경sourceSHA와전체manifest·User읽기전용SHA·Versions1확인해요.
+- 그후초기준비지연다음후보: 가이드의 current/differential/prior 노멀을같은호출지점에서mixed frame인수로평가해driver IR재확장을줄이는방식이에요. 아직구현하지않았어요. field3 program의 geometry preamble과 공통 graph본문분리 실험이기초이고 GL/WGPU/HLSL의단독출력/가이드/동작분기를확인해야해요.
+- RND07투명분기/다른표면필드와엔진누적잔여는ENGINE_STATUS정본. source/installed 명세를고치지않고다음버전으로만전환·Versions1·사용자프로필시험사용금지·사용자창조작금지예요. 이전 one-shot은전부재실행하지않아요.
