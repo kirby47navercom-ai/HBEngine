@@ -33,6 +33,6 @@ export function previousGeometryTraversalFixtures368(){
  // A synthetic long walk checks failure closure without manufacturing thousands of scene assets.
  for(let i=0;i<count;i++)p.data.push(-10,-10,-10,i===0?count:i+1,10,10,10,0,0,0,0,0);
  p.height=Math.ceil(p.data.length/(p.width*4));while(p.data.length<p.width*p.height*4)p.data.push(0);p.geometryInfo[1]=p.height;
- limited.mode='incomplete-walk';limited.rays=[{origin:[0,0,4],direction:[0,0,-1],maxDistance:30,expected:[30,-1,0,0]},{origin:[20,0,4],direction:[0,0,-1],maxDistance:30,expected:[30,-1,0,1]}];
+ limited.mode='incomplete-walk';limited.storage={offset:pointer,nodeCount:count,triangles:0,bytes:count*48,synthetic:true};limited.rays=[{origin:[0,0,4],direction:[0,0,-1],maxDistance:30,expected:[30,-1,0,0]},{origin:[20,0,4],direction:[0,0,-1],maxDistance:30,expected:[30,-1,0,1]}];
  return [missing,limited];
 }

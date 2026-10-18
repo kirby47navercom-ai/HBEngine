@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';import {previousVisibilityFixture369,visibilityProbe369} from './previous-visibility-fixture-369.mjs';import {guideHistoryProbe358} from './guide-history-probe-358.mjs';import {createProject} from './project-manifest.mjs';import {editorWindowProbe} from './editor-window-probe.mjs';import {activeInstalledVersions} from './install-editor.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
 assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);const work=await fs.mkdtemp(path.resolve('native/build/previous-visibility-369-'));retainTestEvidence(work);let probe;
 try{
- const project=await createProject('PreviousVisibility369',work,'2d'),rows=[];probe=await editorWindowProbe({work,project:project.file});
+ const project=await createProject('PreviousVisibility369',work,'2d'),rows=[];const executableArg=process.argv.indexOf('--executable');probe=await editorWindowProbe({work,project:project.file,...executableArg<0?{}:{executable:path.resolve(process.argv[executableArg+1])}});
  for(const orthographic of [false,true])for(const mode of ['clear','blocked','blocked-no-bvh']){
   const packet=previousVisibilityFixture369(mode!=='clear');if(mode==='blocked-no-bvh'){const shift=packet.geometryRecords[0],logical=packet.pathFilter[3]+1,raw=logical-shift;packet.data[raw*4+3]=0;}
   const result=await probe.evaluate(visibilityProbe369(guideHistoryProbe358(packet,true),orthographic));

@@ -2,9 +2,9 @@
 
 - 366 준비 epoch 고유음수/즉시복원·미초기화 renderer 선행 init 수정. 실제 frozen0fed900 first0→173 direct동일·준비 중 raster·cold init 통과 sAKrgQ, CPU 복원/실패/취소/두stage/중간raster번호 보존. qdGzqA는init추가전 proof.
 - 367 prior 내부 geometry와기존 material flag 분리·public record.w 보존. shared normalWGSL22835→17373B, currentRecord4함수→0. custom baseField의 Node 인수 유지하고 세번째고정index만추가; shared baseField 명시layout wrapper는두인수만전달. shaderbytes/FPS 아님. 실제363TNpZBR 7base/coat문맥2.236e-7.
-- 368 이전 세계BVH를기존 atlas suffix/motion첫triangle 1.w포인터·2.w노드수에선택포장. motion/curved/transport/transmission/기존history 있을때만. 기존 median/refit 재사용·oldvertex재사용·outwardbounds·현재ID leaf4·newborn/실패/invalid원본보존. 실GL/GPU nonfBk·DX8LAUMi60ray 통과. 최신63ray(LHgGWH DX통과,82695실행중)는missingBVH/incomplete4097walk failclosed도추가.
+- 368 이전 세계BVH를기존 atlas suffix/motion첫triangle 1.w포인터·2.w노드수에선택포장. motion/curved/transport/transmission/기존history 있을때만. 기존 median/refit 재사용·oldvertex재사용·outwardbounds·현재ID leaf4·newborn/실패/invalid원본보존. 실GL/GPU nonfBk·DX8LAUMi60ray 통과. 최신63ray(LHgGWH DX·jwdeok GL/GPU통과)는missingBVH/incomplete4097walk failclosed도추가.
 - 369 actual GL/GPU wWf4cv12조건·DX LuTFFC6조건 full transparent guide: oldoccluder 이동가림 거부 vs clear/no-BVH controls·perspective/ortho. orthographic 이전 nearplane 원점복원. 독립oldmedium/IOR 경로재생은계속남음. AI 계약 optionalBVH/CPUcache자원 갱신, 362/1877/1905/35912/151 회귀통과.
-- desktop/player 재빌드21729 성공. 이후JS helper cold-init/Nodecallback/빈history가드만변경, 헤더변경없음; 최종dist data sync필요. 새source CPP/BP coating game28319실행중. 370 code/docs commit·push와기록→새install370(이전365 one-shot재실행금지)→설치본검증/Versions1·User읽기inventory 보존 후 fulloldmedium·다른원장 계속. 설치365는아직수정안함.
+- desktop/player 재빌드21729 성공. 이후JS helper cold-init/Nodecallback/빈history가드만변경, 헤더변경없음; 최종dist data sync필요. 새source CPP/BP coating9LXGxe·전체145 D3Dqj1ZHl/WebGPUki5KeT 정상종료·서버닫힘 통과. 370 code/docs commit·push와기록→새install370(이전365 one-shot재실행금지)→설치본검증/Versions1·User읽기inventory 보존 후 fulloldmedium·다른원장 계속. 설치365는아직수정안함.
 - 선택source: officialThree r180 Renderercompile/renderGroup NodesupdateGroup은설치0.180.0정규화SHA일치; PBRT4 BVH도입·7.3.1도입·7.3.4도입. supplemental370 manifest/readscope/연결미독등록, 전체corpus gate미승격.
 
 # HBEngine 인계 — 365 설치 검증·다음 렌더링 계속
@@ -24,3 +24,5 @@
 
 - 설치3641uCjgT는더강한validUV+depth기준도173픽셀로통과,350GVxBNM6save→6hit/0save·User설치직전/후동일·3166SHA/46owner/native69b0a193…/links2/.hbproject/Versions1 확인. 이전설치177782675B 회수예요.
 - 다음366 가설: prior GPU record.xyz를구성할때불필요한 current record.w를함께계산해공유정점디코더가노멀가이드로유입될수있어요. baseField와geometry record를분리해legacy API는보존하는후보를측정하세요. 아직성능효과미검증. 별도compileAsync→첫동일uniform그리기0의원인도read-only관찰후확인하고가짜warmup/허용완화는넣지않아요.
+
+- 현재code37c9ceb mainpush. 후속370PS수정/설치검사CLI추가를commit후work370기록·최종data sync·설치370수행하세요. 기존365scripts재실행금지. 동시에두빌드prune가같은plugin2개를지워ObjectNotFound경쟁이났고최종PS는target가실제로없을때만already removed로skip,권한거부는계속실패해요. aLbNUS4재현/대조·lHI9Hv32보존/참조/실행/취소·artifact-storage 경계검사통과. 회수bytes중복계산없어요. 85556/46454/75691/10395/82695 세션모두성공종료. 설치후독립oldIOR/media seed/분기재생을계속해요.

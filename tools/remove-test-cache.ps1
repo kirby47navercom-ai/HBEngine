@@ -50,7 +50,10 @@ foreach ($entry in $plan.entries) {
   $active = @($processes | Where-Object { ($_.ExecutablePath -and ($_.ExecutablePath.Equals($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -or $_.ExecutablePath.StartsWith($protectionRoot + '\', [StringComparison]::OrdinalIgnoreCase))) -or ($_.CommandLine -and $_.CommandLine.IndexOf($protectionRoot,[StringComparison]::OrdinalIgnoreCase) -ge 0) }).Count -gt 0
   if ($active) { $skipped += $rel; continue }
   if ($entry.kind -eq 'fixture-engine-node' -and ((Get-Item -LiteralPath $target).Length -ne $entry.size -or (Get-NodeSHA $target) -ne $entry.sha256)) { $skipped += ($rel + ' (modified)'); continue }
-  try { Remove-Item -LiteralPath $target -Recurse -Force; $deleted += $entry } catch { $failures += @{path=$rel;error=$_.Exception.Message} }
+  try { Remove-Item -LiteralPath $target -Recurse -Force; $deleted += $entry } catch {
+    if ($_.CategoryInfo.Category -eq 'ObjectNotFound' -and -not (Test-Path -LiteralPath $target)) { $skipped += ($rel + ' (already removed)') }
+    else { $failures += @{path=$rel;error=$_.Exception.Message} }
+  }
 }
 $result = @{date=[DateTime]::UtcNow.ToString('o');deleted=$deleted.Count;bytes=($deleted | Measure-Object -Property bytes -Sum).Sum;files=($deleted | Measure-Object -Property files -Sum).Sum;freeBefore=$freeBefore;freeAfter=(Get-PSDrive -Name C).Free;skipped=$skipped;failures=$failures;receipt=(Split-Path -Parent $resolvedPlan)}
 $result | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path (Split-Path -Parent $resolvedPlan) 'result.json') -Encoding UTF8

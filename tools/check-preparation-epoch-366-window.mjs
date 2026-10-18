@@ -5,7 +5,7 @@ assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);
 const work=await fs.mkdtemp(path.resolve('native/build/preparation-epoch-366-'));retainTestEvidence(work);
 const old=execFileSync('git',['show','0fed900:prototype/gpu-path-preparation.js'],{encoding:'utf8',windowsHide:true}),baseline='data:text/javascript;base64,'+Buffer.from(old).toString('base64'),packet=guideHistoryFixture358(5,{primaryNormal:'flat'}),results=[];let probe;
 try{
- const project=await createProject('PreparationEpoch366',work,'2d');probe=await editorWindowProbe({work,project:project.file});
+ const project=await createProject('PreparationEpoch366',work,'2d');const executableArg=process.argv.indexOf('--executable');probe=await editorWindowProbe({work,project:project.file,...executableArg<0?{}:{executable:path.resolve(process.argv[executableArg+1])}});
  for(const mode of ['baseline','prepared','direct','prepared-with-raster']){
   let source=guideHistoryProbe358(packet,true).replace("['webgl','webgpu']","['webgpu']").replace('let pass,guide,quad,target,shader;','let pass,guide,quad,target,shader;const preparation={};');
   source=source.replace('guide._quadMesh.material.needsUpdate=true;',`guide._quadMesh.material.needsUpdate=true;guide._quadMesh.camera.coordinateSystem=2000;guide._quadMesh.camera.updateProjectionMatrix();

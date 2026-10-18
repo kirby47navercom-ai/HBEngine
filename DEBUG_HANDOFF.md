@@ -1048,3 +1048,5 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 367 첫staticfield실험에서Fn내T.float가VarNode가돼.value분기가잘못됐고CPUtest가잡았어요. 최종은기존Node callback인수를유지하고세번째JSfixedindex를주며sharedexplicitlayout에두인수wrapper를써요. 실제flag/publicrecord경로와shader절삭을같이검사해요.
 
 368 첫browsercheck는outertemplate newline escape 오류, 다음은ScreenEffects기본material에guide전용helper가없어testshader가함수를못찾았어요. String.raw와지정helper삽입으로검사구성을고쳤어요. 최종GL/GPU60·DX60광선독립기준통과,추가missing/incomplete걷기검사중이에요. 369은실제fullguide에서oldblocker가사라진현재화면의이력거부를3backend원근/직교로검사했어요. 전체oldmedium재생은이걸로완료처리하지않아요.
+
+370 fullgame D3Dqj1ZHl/WGPUki5KeT는CPP/BP·145/141/138/134/125/128(추가DX131/warm)통과예요. 병행cacheprune두개가같은plugins/a442059dc931fbb668ee·1b69e5624cc094eccef9를골라존재검사뒤타실행이먼저삭제했어요. 실제result는ObjectNotFound뿐이며잔여권한문제아니었어요. PS는실제target부재의ObjectNotFound만skip해중복회수계산을피하고denied는오류유지해요. 독립instance aLbNUS는원본실패/수정성공/denied보존/기존부재4조건, lHI9Hv는32개/참조/실행/취소보호를통과했어요.
