@@ -1951,11 +1951,11 @@
   ],
   "latestBatch": "366–370",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_365.json",
-    "sourceCommit": "cc3bf8fe2fecd139df31d3777cfd164f2a288586",
-    "bundleHash": "0d31b38547f61c8e327681b469329c9221842ae4921b5b8015e386702fb881d1",
+    "receipt": "docs/research/USER_INSTALL_370.json",
+    "sourceCommit": "70cfa9fd96c20e6151fc9548d33afbda62eefb1d",
+    "bundleHash": "1e50e6754649e3e16502493518d243d0faf06960b44fe0b9bc3aa98a755dfc13",
     "verified": true,
     "versions": 1,
-    "scope": "Defined 353–365 prior material/coating guide work; exact installed files and scoped source/installed execution, not whole cumulative engine completion."
+    "scope": "Defined 366–370 previous geometry/visibility and preparation work, exact installed files and scoped execution; whole cumulative engine work continues."
   }
 }

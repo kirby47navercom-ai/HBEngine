@@ -1,3 +1,9 @@
+# 최신 설치370 검증 완료 — 다음371 독립 이전 매질 계속
+
+- 설치 1e50e6754649e3e1/3183파일/Versions1, USER_INSTALL_370 정본. source입력70cfa9f/code37c9ceb·cache f35b5c7 mainpush. player a60fa1635a0015eb1c1c40682989a31bf58bf012638530238ea7208c208ada80·host0e4d9a97…·User10385 inventory설치직전/후동일·소유자31SHA/links2/.hbproject 확인. 설치369XmWGQF/366zGE36A/350vRsSV1 모두통과.
+- record370/sync370/install370/finish370 완료·재실행금지. 과거365/349/334/327/318 scripts도금지. 최신63ray LHgGWH/jwdeok·full369LuTFFC/0z8vkY·sourceCPP/BP145 qj1ZHl/ki5KeT·coating9LXGxe 통과. 단일transition준비DX4.71/4.58s,GPU3.97/2.58s는미통제표본/FPS아님.
+- 다음: 현재oldBVH를사용해독립prior IOR/medium seed·스택/앞뒷면/TIR·굴절경로재생을구현해요. 기존pathMediaNode 함수/oldRay공유·정적openSheet불필요한배열/IR제외·전체곡면역해/산란footprint/다른누적원장도계속. 사용자활성시heavy/설치보류,foreground/UI/원본User금지.
+
 # 진행 중 366–370 — 설치365 유지, 작업 중단 없이 계속
 
 - 366 준비 epoch 고유음수/즉시복원·미초기화 renderer 선행 init 수정. 실제 frozen0fed900 first0→173 direct동일·준비 중 raster·cold init 통과 sAKrgQ, CPU 복원/실패/취소/두stage/중간raster번호 보존. qdGzqA는init추가전 proof.

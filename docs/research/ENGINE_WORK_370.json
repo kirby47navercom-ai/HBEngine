@@ -48,7 +48,7 @@
     "native/tests/path-previous-context-308.cpp": "838ab16f50ccb6e311b209a604c6408335b482b43b9c713a7a2bf6f0b8c3a2c4"
   },
   "nativePlayerSHA256": "a60fa1635a0015eb1c1c40682989a31bf58bf012638530238ea7208c208ada80",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/preparation-epoch-366-sAKrgQ/acceptance.json",
@@ -125,6 +125,18 @@
     {
       "path": "native/build/engine-work-370-BVcRP3/rendering-151-cpu.json",
       "sha256": "321a94e9778885b94d1fa206157875abb4372b8e58b849d2282e1c4748d8c7dd"
+    },
+    {
+      "path": "native/build/previous-visibility-369-XmWGQF/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3"
+    },
+    {
+      "path": "native/build/preparation-epoch-366-zGE36A/acceptance.json",
+      "sha256": "95d2655dbd0f04f39ea732196b4a0df1aaaa30b2c84a0472e2490ccce69c7a01"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-vRsSV1/acceptance.json",
+      "sha256": "1b0a6afaab9cdb0863be8c9a78384ab33e028c096945dbaa3556f06eb4dde0df"
     }
   ],
   "sourceGames": [
@@ -311,5 +323,6 @@
     "전체엔진/FPS/모바일기기/전체UEUnity분석완료주장없음",
     "병행nativecache정리는원본서로다른두실행이동일dir를먼저지워ObjectNotFound;370에서경쟁재현/권한실패보존을확인",
     "actual63ray acceptance의syntheticstorage표시는초기descriptor를물려받았음;후속label만정정했고교차값/검증조건은동일"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_370.json"
 }

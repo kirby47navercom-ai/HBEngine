@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "70cfa9fd96c20e6151fc9548d33afbda62eefb1d",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1\\HBEngine.exe",
+  "bundleHash": "1e50e6754649e3e16502493518d243d0faf06960b44fe0b9bc3aa98a755dfc13",
+  "files": 3183,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "70cfa9fd96c20e6151fc9548d33afbda62eefb1d",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1\\HBEngine.exe",
+    "bundleHash": "1e50e6754649e3e16502493518d243d0faf06960b44fe0b9bc3aa98a755dfc13",
+    "files": 3183,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3167,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d31b38547f61c8e",
+          "bytes": 177941817,
+          "manifestSHA256": "208e1dd8dcfc8bea1355c1d165e62d1bfe78fcaf57711f3678d5e394882b065f"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T09:28:25.7421317Z",
+      "bytes": 177941817,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "1e50e6754649e3e1"
+      ]
+    },
+    "nativePlayerSHA256": "a60fa1635a0015eb1c1c40682989a31bf58bf012638530238ea7208c208ada80",
+    "installedGates": [
+      {
+        "path": "native/build/previous-visibility-369-XmWGQF/acceptance.json",
+        "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3",
+        "scope": "Full GL/WebGPU transparent auxiliary guide: current occluder moved away, old visibility must reject history; clear and missing-BVH compatibility controls. Perspective/orthographic camera near-plane origin. This does not prove complete old medium/path replay."
+      },
+      {
+        "path": "native/build/preparation-epoch-366-zGE36A/acceptance.json",
+        "sha256": "95d2655dbd0f04f39ea732196b4a0df1aaaa30b2c84a0472e2490ccce69c7a01",
+        "scope": "Cold shared QuadMesh camera; descriptor-only production helper prepares post and actual history guide, then first unchanged-input draw. Exact direct-render comparison and raster draw while preparation is pending; not a compilation speed benchmark."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-vRsSV1/acceptance.json",
+        "sha256": "1b0a6afaab9cdb0863be8c9a78384ab33e028c096945dbaa3556f06eb4dde0df",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3183,
+    "versions": [
+      "1e50e6754649e3e1"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-370-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-qj1ZHl/acceptance.json",
+        "scope": "actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; DX also raster131 and warm revisit"
+      },
+      {
+        "path": "native/build/gpu-scene-ki5KeT/acceptance.json",
+        "scope": "actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; DX also raster131 and warm revisit"
+      },
+      {
+        "path": "native/build/native-scene-window-9LXGxe/acceptance.json",
+        "scope": "actual C++/Blueprint coating, independent normal and IOR scene"
+      }
+    ],
+    "scope": "370 full manifest and owner SHA verification, actual installed old-visibility GL/WebGPU transparent guides and cold first-frame/raster/init, two-process native packaged shader disk reuse; source Complex141/CPP/BP D3D/WebGPU use this verified native player build. No whole-engine/FPS/device-completeness claim."
+  },
+  "globalCleanup": {
+    "failures": [],
+    "freeAfter": 446868963328,
+    "freeBefore": 446833651712,
+    "deleted": 1,
+    "date": "2026-10-18T09:30:33.3963201Z",
+    "files": 594,
+    "bytes": 34896040,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792315829023-4d124d41-2229-4952-92f1-7f546878758d"
+  },
+  "testBinaries": {
+    "bytes": 2172753,
+    "removed": [
+      {
+        "path": "native/build/previous-geometry-368-native-8LAUMi/probe.exe",
+        "bytes": 724251,
+        "sha256": "f2b18b7fdc4718c7a46867110e53e8d3d43eabc8c9ca54228a7c6025dd605b7e"
+      },
+      {
+        "path": "native/build/previous-geometry-368-native-LHgGWH/probe.exe",
+        "bytes": 724251,
+        "sha256": "96a5339325dacd9a3dcc09468d8dfdf04538145a6e8ff268f26d9f691cae1a4a"
+      },
+      {
+        "path": "native/build/previous-visibility-369-native-LuTFFC/probe.exe",
+        "bytes": 724251,
+        "sha256": "ec28bde2d2f40d85bfa9b60c9470fe5b4279131f751c696cb3d2499afc6fd99f"
+      }
+    ]
+  },
+  "cacheRaceResolution": {
+    "oldReceipt": "native/build/cache-prune-1792315301314-21cd7a94-333d-453c-9a37-9cac4b534310/result.json",
+    "oldTargetsAlreadyAbsent": true,
+    "proof": "native/build/cache-removal-race-370-aLbNUS/acceptance.json",
+    "additionalDeletedBytesClaimed": 0
+  },
+  "scope": "370 full manifest and owner SHA verification, actual installed old-visibility GL/WebGPU transparent guides and cold first-frame/raster/init, two-process native packaged shader disk reuse; source Complex141/CPP/BP D3D/WebGPU use this verified native player build. No whole-engine/FPS/device-completeness claim."
+}

@@ -508,3 +508,5 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 ### 2026-10-18 · 366–370
 
 준비 epoch 분리/선행 장치 초기화로 첫 WebGPU 프레임0→173을 직접렌더와오차0으로복원했어요. 이전 normal/coat의현재정점복원함수4개를제외하고기존flags/Nodecallback을유지했어요. 이전세계BVH를기존atlas선택suffix로연결하고마스크/불완전검색·이전가림/직교nearplane을세GPU실제63광선과full투명guide로검증했어요. shared144triangle추가4560B,opaque/committed없음0B예요. 실제CPP/BP D3D/GPU145·코팅검사를통과했어요. 병행prune부재경쟁을재현하여이미삭제된경로만skip하고권한오류/32최근/원본을보호해요. 선택Three/PBRT소스와AI계약을기록하고설치370을준비해요. 독립oldmedium/IOR경로·전역곡면역해/복합산란과누적분야를계속해요.
+
+370 설치 1e50e6754649e3e1·3183명세 SHA/31개 소유자·새 player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일 설치직전/검사후 읽기전용SHA가 같아요. 설치369XmWGQF 원근/직교·GL/GPU투명guide,366zGE36A 첫173/direct오차0/coldinit/래스터,350vRsSV1 두native게임6save→6hit/0save·정상종료를 통과했어요. 이전설치 177941817B(파일논리크기)·own probe 2172753B를삭제하고후속매질작업을계속해요.
