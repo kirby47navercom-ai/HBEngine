@@ -1,9 +1,9 @@
-# 현재 진단 — 설치435 검증·렌더링436 계속
+# 현재 진단 — 보조 함수440 설치 준비·441 병목 계속
 
-431 baselineQhhXS6 divide1e7offset sub-ULP손실실제재현. 안정나눗셈/거리/회전/반사/눈UV뒤573조건33연산 gB8rEP/41jhT2·5fullgraph FoDYO5/8WpUtD current/prior/mip통과. 원래2e-5/4e-5와새normalize1e-12유지.
+436실제D3DPreprocess12조건Tf7f8v에서기본연산helper10→0/4580→254B,전이의존/실제GL/GPU5graph NhlAJv와D3D10packetwD7ycM통과. 438parser검증순환/미사용누락/중첩/주석도거부/처리. helperbody435수학동작유지·새GPU자원/uniform/readback없음.
 
-433hE2FHK는FXC벡터성분쓰기와generic[loop]충돌. shared4lane에명시hbLane표시·generator에서그루프만[unroll]로해결. 일반큰반복정책유지. qaNeW8 CDP20초는복합eyeUVTSL표현팽창과스칼라중간toVar분리뒤fullgraph통과,전역속도성공근거로확대하지않아요. pM2cM2는fixtureeyeUV입력3D직결검증거절·typed노드로수정.
+중요:438GL ABBA mPu5Oz full2617/2572ms·guarded2636/2881ms는전체지연개선근거가아니에요. 원문sourceBytes90841동일,전처리된라이브러리감소를전체compile/FPS성공으로포장하지않아요. 실제439D3D WQwSTE4457/4307ms도단일관찰. 초기복잡GL/GPU/DX지연계속.
 
-431CxI2bH testhelperhbRayRotate누락·LYZayj/QFAngP JSd누락/원오류가dispose usedTimes에가려짐을수정해원오류를보존. 후속testcleanup에독립오류가있으면계속거부해요. 실제제품baseline과테스트미실행을구분해요.
+다음441은기존334shareRayProgramInputs그대로재시도하지않아요. 현재path-guide-specialization.shareGuideNormals가primary/현재differential은이미한call-site loop로묶고prior normal은별도예요. 공통ProgramValues+frame bool로입력preamble를선택하는MixedNormal을그loop의추가prior표본에도같은호출지점으로넘기는후속이후보예요. 아직구현없고먼저실제함수body와unsafe previous normal gate/coat/시간/fieldmask/UV/mip를확인해야해요. GL source프로그램동일본문분리도구(ray-program-context-sharing)는실험도구·기본경로미채택. nativeTSL후속까지출력/지연근거필요.
 
-435새native게임2qifvs path4599/시간guide4460ms·C++/BP/morph/캐시/해제통과. source434빌드완료/새player·headerSHA. 설치435 실제AkcNpd/3rj7y6·전체지문/User읽기보존/Versions1·이전설치/검사exe정리통과. 그뒤계속. 430동시제출계약/원장·shader지연·RND08/전역곡면·매질·누적목표유지. Mac/iOS/실제Android폰제약유지.
+440source/원장/설치마무리후계속. 435설치997f...·shader282ea...·이전검사증거는정본435. 현재Mac/Xcode/Android실기기없음,User읽기전용/VERSION1/프로세스보호/완료one-shot재실행금지.

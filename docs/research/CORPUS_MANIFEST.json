@@ -2742,6 +2742,17 @@
       "wholeCorpus": false,
       "state": "selected_GPUWeb_method_paragraph_and_local_r180_synchronous_restore_compared",
       "readScope": "GPUDevice.createRenderPipelineAsync readiness/Promise/rejection paragraph only. MDN same method intro re-read via existing145 source registration. Local r180 Renderer.compileAsync restoration before final Promise.all and WebGPUPipelineUtils pipeline callback selected. W3C full body fetch failed size limit; full WebGPU/Three/API corpus unread."
+    },
+    {
+      "id": "d3d-preprocess-helper-supplement-440",
+      "engine": "HBEngine dependencies",
+      "roots": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dpreprocess"
+      ],
+      "record": "docs/RAY_HELPER_COMPILATION_440.md",
+      "wholeCorpus": false,
+      "state": "selected_D3DPreprocess_contract_compared_with_real_compiler_preprocessing",
+      "readScope": "D3DPreprocess syntax, pDefines/ppCodeText/ppErrorMsgs and Remarks #line behavior selected. Other linked compiler APIs and full Windows/UE/Unity corpus remain open."
     }
   ],
   "supplementalBaselines": [
@@ -4010,5 +4021,24 @@
       "native/build/pipeline-submission-427-jCeTQi/acceptance.json"
     ],
     "analysisGate": "Only selected paragraphs and local source sections. Whole UE/Unity/WebGPU/Three/API denominator remains open; no full-body gate promotion"
+  },
+  "supplemental440": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dpreprocess",
+        "snapshot": "native/build/reference-corpus/supplemental440/d3d-preprocess.html",
+        "sha256": "f0b5a664e4897ecc538dbab37f53dcf8b903aeb84a4a8d5fdefc29a2786766a4",
+        "scope": "Selected function signature/parameters/output and line-directive remarks; collection is not full linked API analysis"
+      }
+    ],
+    "comparison": "Actual D3DPreprocess12 opcode/dependency cases, parser dependency validation, real full GL/GPU and D3D current/previous coordinate graphs. One full/guarded ABBA preparation has no elapsed-time improvement evidence.",
+    "evidence": [
+      "docs/RAY_HELPER_COMPILATION_440.md",
+      "native/build/ray-helper-pruning-436-Tf7f8v/acceptance.json",
+      "native/build/ray-helper-dependencies-438-cpu.json",
+      "native/build/ray-helper-preparation-438-mPu5Oz/acceptance.json"
+    ],
+    "analysisGate": "Selected function only. Full-body/API denominator and whole UE/Unity/Windows/dependency analysis remain unpromoted."
   }
 }

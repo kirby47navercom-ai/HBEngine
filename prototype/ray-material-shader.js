@@ -1,5 +1,6 @@
 import {rayBarycentricOffsetGLSL} from './ray-barycentric-offset.js';
-import {rayDifferentialExpression,rayDifferentialAxis,rayDifferentialGLSL} from './ray-program-differentials.js';
+import {guardRayDifferentialLibrary} from './ray-differential-library.js';
+import {rayDifferentialExpression,rayDifferentialAxis,rayDifferentialGLSL,rayDifferentialExpressions} from './ray-program-differentials.js';
 import {normalMapGLSL} from './normal-map.js';
 import {previousRayNormalGLSL,previousRayFieldsGLSL,previousRayCoatNormalGLSL} from './ray-previous-context.js';
 import {rayGuidePreviousFields,rayPreviousProgramRequired} from './ray-surface-history-context.js';
@@ -23,7 +24,7 @@ export function rayPreviousProgramsGLSL(programs){
 }
 function rayFixedFieldRuns(programs){return Array.from({length:10},(_,field)=>'vec4 hbRayRunField'+field+'(float id,vec3 point,vec3 view,float material,vec4 result,float width,vec2 timeContext){vec4 program=hbGeometryLoad(material+'+(field*2+1)+'.0);if(program.y<.5)return result;'+programs.filter(p=>rayProgramFieldMask(p)&(1<<field)).map(p=>'if(program.w=='+p.key+'.0)return hbRayProgram'+p.key+'(program.x,id,point,view,result,width,timeContext);').join('')+'return result;}').join('\n');}
 export const rayMaterialGLSL=`${normalMapGLSL}
-${rayDifferentialGLSL}
+${guardRayDifferentialLibrary(rayDifferentialGLSL,rayDifferentialExpressions,rayOperations)}
 ${rayBarycentricOffsetGLSL}
 float hbRayMod(float a,float b){return a-b*floor(a/b);}
 vec4 hbRayScalar(float v){return vec4(v,v,v,v);}
