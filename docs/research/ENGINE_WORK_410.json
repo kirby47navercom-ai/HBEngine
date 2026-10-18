@@ -40,7 +40,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "094a784952bdf5a49833105c196cdaba3a469a86c04b414dd92c590c0c507c79"
   },
   "nativePlayerSHA256": "d2993edee253aad9599de5d0a7538b2a285f70926cf02f89435eb603b3de920b",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/alpha-programs-401-cpu.json",
@@ -101,6 +101,14 @@
     {
       "path": "native/build/rendering-410-light-checks.json",
       "sha256": "a13d6d3064117f2ede49050af03b1a06093242e80dc94be373f665fc35c4cb68"
+    },
+    {
+      "path": "native/build/normal-history-403-CDhjNf/acceptance.json",
+      "sha256": "af6eb2d0fc4a055343e913198a190a0fff951d31c6efb31e79acf857850f3b1c"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-YCyRGS/acceptance.json",
+      "sha256": "c1428b846783e5cf0e52753c48bf118e86078d4cb7f3066c60eaaa83bfe0e5f0"
     }
   ],
   "sourceGames": [
@@ -220,5 +228,6 @@
   ],
   "testSourceHashes": {
     "native/tests/path-time-normal.cpp": "810f95de4c85ba1bf66768dacf8294f5f3093fc7785a03bae628d0f0d9a1fd98"
-  }
+  },
+  "installationReceipt": "docs/research/USER_INSTALL_410.json"
 }

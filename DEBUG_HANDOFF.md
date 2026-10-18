@@ -1,4 +1,4 @@
-# 현재 진단 — 410 설치 준비·초기컴파일 계속
+# 현재 진단 — 설치410 검증 완료·초기컴파일 계속
 
 - 실제 NaN/Inf GPU 입력을 max로합친기존판정에서52불일치가나왔어요(jVnxjW). 채널별비교후 GL/GPU g0Wef1와D3D bnEStl의28cases×3가CPU와일치해요. 미관찰coatZW는무시하고기존IOR/분기/허용오차를유지해요.
 - guideFrames의비정상필드world/normal/view의일괄미지원표시는오래된생산자가드였어요. 새패킷은실제committed필드비교를사용하고legacy -2 decoder/없는이전포즈/퇴화는거부해요. AvODAv·J1PA6V에서동일eligible/변경reject/복원exact통과예요.

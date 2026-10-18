@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "97c7b97cae107e9ab3208a31adb732e7cf870590",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865\\HBEngine.exe",
+  "bundleHash": "a07a23a239e6b8659f1a60f6bfeaa2c4efa586bc12cf53c4b57d7cf5850cbaa3",
+  "files": 3255,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "97c7b97cae107e9ab3208a31adb732e7cf870590",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865\\HBEngine.exe",
+    "bundleHash": "a07a23a239e6b8659f1a60f6bfeaa2c4efa586bc12cf53c4b57d7cf5850cbaa3",
+    "files": 3255,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3241,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e",
+          "bytes": 178121187,
+          "manifestSHA256": "b2c67f27ae19ebe30b134e2b77128cdc43c8300c5a3c795bbf003a43581acb5e"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T13:28:55.2782069Z",
+      "bytes": 178121187,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "a07a23a239e6b865"
+      ]
+    },
+    "nativePlayerSHA256": "d2993edee253aad9599de5d0a7538b2a285f70926cf02f89435eb603b3de920b",
+    "installedGates": [
+      {
+        "path": "native/build/normal-history-403-CDhjNf/acceptance.json",
+        "sha256": "af6eb2d0fc4a055343e913198a190a0fff951d31c6efb31e79acf857850f3b1c",
+        "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-YCyRGS/acceptance.json",
+        "sha256": "c1428b846783e5cf0e52753c48bf118e86078d4cb7f3066c60eaaa83bfe0e5f0",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3255,
+    "versions": [
+      "a07a23a239e6b865"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-410-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/normal-history-403-Drz3va/acceptance.json",
+        "scope": "Actual two API current/previous normal and mip plus ordinary material raster"
+      },
+      {
+        "path": "native/build/spatial-history-405-AvODAv/acceptance.json",
+        "scope": "Actual full two API spatial surface guides equal/change/recovery"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-nXXUre/acceptance.json",
+        "scope": "Actual packaged D3D11 game: Complex141 normal/UV graph, typed C++/Blueprint control, morph664 changed channels, cache budget and disabled resource release. path4689/temporal4829ms uncontrolled observations, no improvement ratio."
+      }
+    ],
+    "scope": "410 full manifest and28 runtime-owner SHA verification; installed hidden GL/WebGPU ordinary raster and committed normal/mip values, plus two actual packaged D3D games with new native player/shader cache. Spatial/NaN/full Complex141 source gates carry only the documented exact owners; no FPS/cold-latency/global engine/docs completion claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 4363624,
+    "removed": [
+      {
+        "path": "native/build/normal-history-403-native-t4cNKo/probe.exe",
+        "bytes": 733461,
+        "sha256": "cae6c4b0f66c0f59866a1bb96077e7cfe788422508addc07e25a4e0b5aac2be0"
+      },
+      {
+        "path": "native/build/cubemap-lod-281-native-qqCocC/probe.exe",
+        "bytes": 721911,
+        "sha256": "11ddefe4105e7a3827e6f762762ac3514a2dee26426caf758acbb804c3176fa1"
+      },
+      {
+        "path": "native/build/history-nonfinite-406-native-XYjVcj/probe.exe",
+        "bytes": 727063,
+        "sha256": "a0c9abc13b3926c37858fc0fdabfa01fbefa9c6bbb805224c3bf836af6024df9"
+      },
+      {
+        "path": "native/build/history-nonfinite-406-native-rm47sW/probe.exe",
+        "bytes": 727063,
+        "sha256": "59c28fe01e1f9e79856f052a13ac04926b6432032020c4bc5ba95b28fa981529"
+      },
+      {
+        "path": "native/build/history-nonfinite-406-native-bnEStl/probe.exe",
+        "bytes": 727063,
+        "sha256": "01942ede92f764b22debaf36c2510b20c5c7f9c14be855ea51f4de838cd4013d"
+      },
+      {
+        "path": "native/build/spatial-history-407-native-J1PA6V/probe.exe",
+        "bytes": 727063,
+        "sha256": "bc5a0d6dc12f4022e468f8f68622203dc1d24c60b7b1309268969ce25fcbc7a2"
+      }
+    ]
+  },
+  "scope": "410 full manifest and28 runtime-owner SHA verification; installed hidden GL/WebGPU ordinary raster and committed normal/mip values, plus two actual packaged D3D games with new native player/shader cache. Spatial/NaN/full Complex141 source gates carry only the documented exact owners; no FPS/cold-latency/global engine/docs completion claim."
+}

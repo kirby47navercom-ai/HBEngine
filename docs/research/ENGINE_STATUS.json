@@ -1990,11 +1990,11 @@
   ],
   "latestBatch": "401–410",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_400.json",
-    "sourceCommit": "0fed4a66469b0ce0b2a6a9cee4015536339168fc",
-    "bundleHash": "aca3b432cab8636e4a5a065565f55f314bbf6619f72db4dae738878542ce7b52",
+    "receipt": "docs/research/USER_INSTALL_410.json",
+    "sourceCommit": "97c7b97cae107e9ab3208a31adb732e7cf870590",
+    "bundleHash": "a07a23a239e6b8659f1a60f6bfeaa2c4efa586bc12cf53c4b57d7cf5850cbaa3",
     "verified": true,
     "versions": 1,
-    "scope": "396–400 opt-in editor GPU timing, installed human/AI editor flows and current packaged native shader-cache gates; cumulative engine work continues"
+    "scope": "401–410 committed material inputs/normal/mip and nonfinite gates; actual installed dual API normal/raster and two new native-player games. Cumulative engine work continues"
   }
 }
