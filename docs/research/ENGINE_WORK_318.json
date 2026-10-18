@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "4a0a3ac66f827019602ca289e9ff6c3ed1cfb2d0",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "2D-06",
+    "PRJ-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "native/include/HBEngine/Bridge.hpp": "32277b3578bffd1adfe19b0b034752f76503dc9c9363083cf8ce85a72fdee885",
+    "native/include/HBEngine/TilemapStorage.hpp": "a6649f6d48b0746b390b2d41c53cc4cc0681c44f95498904b2bd26ec09b7b360",
+    "package.json": "64c1467a76a2b20a75519d401f04c3a935158e81e2b4782a619cd504819e6900",
+    "prototype/app.js": "648033103fe468421975de3f6122c994cb8944dabfccb867a8969b963b726e3d",
+    "prototype/geometry-gi.js": "ac16b185af85b65e5a8e4da4df85ae39e69252fa3e99843b9ccc5660244ee3a2",
+    "prototype/path-curved-guide.js": "f9e6823aa7e1c1c385c9e3a3a00d308079c9e52f83715d53d20de1f5815f53cb",
+    "prototype/path-denoise.js": "b690bb9b27cee93e4114cd4746139f9b475d62dbc1cbeff57ca732f928123aae",
+    "prototype/path-guide-frames.js": "dd6ee0f9aae4fa6f08facf2805e339de413bdcfa0755ca3c2cda9dc2d2c8f979",
+    "prototype/path-guide-gpu.js": "a7d042bfad8d81ce54d2ee175294f5f5004232fb5bcd5d9fa5165b44d1fb727c",
+    "prototype/path-guide-specialization.js": "fb19e474419a5c28950f832362930fb645dc838109eb2c33563226c916ca35fb",
+    "prototype/path-previous-camera.js": "89065829b7f2085db6b8a02789b90c82ef65e7d383ee5dbad0298a0413b41b65",
+    "prototype/path-previous-normal-gpu.js": "5dc44682571aa40b2e1187ac2db2c31ce5b63a284c9362dd0c2e74f36ee490cd",
+    "prototype/physics-world.js": "ba24d926a600aef80af299a8065990c2ba67e94fc80d08a9a1590692584b49ce",
+    "prototype/ray-material-gpu.js": "b701320430747020217031b33fadf0315f03b8f569a8358f129007c5dd3b09d1",
+    "prototype/ray-material-shader.js": "d7c911c9bef7f8d66a2d1bfd43ca28d8a4b78579ef1ae53b7fa059ec10b6d37c",
+    "prototype/ray-previous-context.js": "a70ce2b8bea72ae4bb35e5948069a0d3923776921c11657a0bad096ec3e27bf9",
+    "prototype/ray-previous-gpu.js": "0053bd1d8e18b147f987233b760f58f6928ab21440a069cd725d94afe435746a",
+    "prototype/tilemap-editing.js": "fa929c6649f859bca8af6e1c90af6fd867909313f27448347e624545c26245a1",
+    "prototype/tilemap-runtime.js": "f55997478c45c3481318a9e8ed4d73da21a3c4c6a95a50c0b4bcdda96fcd6f4a",
+    "prototype/two-d-assets.js": "cd09b7e06d8bb3171c2202105aa6dcff3adca01ffa9631a49f6eed1f8599484b",
+    "prototype/two-d-editor.css": "83ce751c7fd7e1ac5207c906435236d5f3d4482cbee5de7bd9dc617d3f69d1ab",
+    "prototype/two-d-editor.js": "30081c36b78db0fe86eaf47c5ec15b17aba425d3cea8f5acf9e96980ab51fff1",
+    "tools/asset-write-intent.mjs": "6f814c529f0b877ef394269f5522df4a0fa71f95ca2e23b33b8806c9e70edff1",
+    "tools/check-2d-authoring.mjs": "3b84181b4583c35747dc2bbb00190001e1d282a5977433efd84d3ac78e175dfc",
+    "tools/check-asset-write-317.mjs": "84eddceb59cfb5455ebcd13cf7edb0cc00ec76ee1444173c52ad2952e65ef2af",
+    "tools/check-previous-camera-309-window.mjs": "4b97f1ed9b4f2e292107dc36a5088d5de8767a8138f90184f3f880d8318b577e",
+    "tools/check-previous-context-308-native.mjs": "3badeb9340d64eaee43fe1189f2b73aee1d09dceca3b08b3bdbca7662b6d058a",
+    "tools/check-previous-context-308-window.mjs": "3edcf632c3cc0f9246001f2cf931915b487853f0e96023c836800b6131a1ed07",
+    "tools/check-project-durability-294.mjs": "a44d9b2666eedf9be1222445942f20572de0bc1f44f24a18bec31e1137fd044e",
+    "tools/check-rendering-106.mjs": "18cf2232d0f27b1f3212296ae93951e241e3ac9d404f9c6089e501bcf4279774",
+    "tools/check-rendering-138.mjs": "94150ccd7e08a22aee1184df1211e9da84a7fde83191d51d9d688b195d9ac5a2",
+    "tools/check-rendering-187.mjs": "6e1f675872eb85216a25c56db6d3993bddb6b2412b6597462514d42a04c24486",
+    "tools/check-tilemap-sparse-310.mjs": "cab7897a8ea50b6c963c55bff0860f90333197f1e8e965bbd61f564e48586820",
+    "tools/check-tilemap-sparse-312-window.mjs": "296b0f53a1fe647a7a99d95881646d7b63c5dad6d0fbb78e0768ff9cf920195f",
+    "tools/editor-automation.mjs": "24237f5c1a8f96219107606c98c3aadd450893cec28f8e937c2bea227e725f3f",
+    "tools/generate-ray-programs.mjs": "2fd9b807eb12dd54b149bf57edcf375612191b2c21607046549ec010c460f1c8",
+    "tools/generate-screen-effects.mjs": "d8658379b843aa48bac3cf2e325292a39ba6647b0c791f8475f577cab5203c6a",
+    "tools/previous-camera-fixture.mjs": "74dbe3c40c512cbb210919556dee1fef1f7d62aff0c07de52821904000a5aaa4",
+    "tools/previous-context-fixture.mjs": "c3dcc0510cd5fe2eb2fda63134206da8031af0eea0393e4328ee8d05c3763e17",
+    "tools/previous-context-probe.mjs": "24bed9b356dd634f1a888f93ce09d0f79a3a982537c8b9882bee809fca91fc4c",
+    "tools/project-service.mjs": "b586d5aa7b964982b7eabc70909e9ea32f68932c76ddb2fd4a4ddaec824e10e5",
+    "native/include/HBEngine/RayPrograms.hpp": "403ec471b6820361ce48258590e2fcdff764070e3c74c447c40fd5b7b5c9318d",
+    "native/include/HBEngine/ScreenEffects.hpp": "9f15f7f7b0d182cb85706ff0beca5501a7416e0b515c23adef38f8013a8d282d"
+  },
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/previous-context-308-16gXxp/acceptance.json",
+      "sha256": "f676dbbc6ef124d59a32bc6699ff4085f0bc0be7c1608c3914a012dabfc682b6"
+    },
+    {
+      "path": "native/build/previous-context-308-native-Eex1Dp/acceptance.json",
+      "sha256": "08afa9370b65a8df29c43e965209a0174dc88546f282925cb6d54e84f06793e0"
+    },
+    {
+      "path": "native/build/previous-context-308-0BhdVM/acceptance.json",
+      "sha256": "86f65ade7871898d0a32b985aa1f706ac6a15b35b8b70f6524209fb1f3faf5d2"
+    },
+    {
+      "path": "native/build/previous-context-308-native-L0b8UY/acceptance.json",
+      "sha256": "da2463189f173384e0b608d4ac56722c86c5c80aa6ac4d0270c9b16918287ade"
+    },
+    {
+      "path": "native/build/previous-camera-309-uitaL9/acceptance.json",
+      "sha256": "47d8fb52465dbd67b746f7d33551130169ae8dcac1296099ad6431d4c5f2bba0"
+    },
+    {
+      "path": "native/build/tilemap-sparse-312-window-VieJoP/acceptance.json",
+      "sha256": "2f52454e5099520c8df5141f349406d5aa798682c2b57f6ea64bbba025c5f9bb"
+    },
+    {
+      "path": "native/build/asset-write-317-Hoyt5C/acceptance.json",
+      "sha256": "984c62272d73ae69344eee1cf9ad01b88d9afc9e5c58905bbb11156f603ae625"
+    },
+    {
+      "path": "native/build/project-durability-294-FoeN7K/acceptance.json",
+      "sha256": "0c51d3f7ec12a26c30e9eb8ce2a1b3cd5afc855dad334c4d8cc63ff2aa6f0d20"
+    },
+    {
+      "path": "native/build/asset-transaction-5HKXML/acceptance.json",
+      "sha256": "09520a02fcd6bd9fb029ab08c8a57fa1efccbac23c136a23cf89ed5768d09353"
+    },
+    {
+      "path": "native/build/tilemap-sparse-310-5PeR9T/acceptance.json",
+      "sha256": "03d9b55bfe37693b55133768803966fa016b3bd25dd91aac1e40418187019b25"
+    },
+    {
+      "path": "native/build/tilemap-mobile-318-Kti65f/acceptance.json",
+      "sha256": "264165288957d32558182fc7dd6074951b487e0b42ec166bf1bb5166fcf95c62"
+    },
+    {
+      "path": "native/build/project-native-KmcupI/acceptance.json",
+      "sha256": "cefaa8480fc2c8e141d92efbdedd34b59961682839a2ffb35ecf0a14b0177edb"
+    },
+    {
+      "path": "native/build/gpu-scene-zcKgBk/acceptance.json",
+      "sha256": "fd4e44aaab14dd482b57517c116c676e32fde9320068ab0387b15b214f91a81e"
+    },
+    {
+      "path": "native/build/gpu-scene-R0xG81/acceptance.json",
+      "sha256": "ad0df88f6c60436e3e19347fbed659654524b61a58bc7612f66b083f7531e67b"
+    },
+    {
+      "path": "native/build/native-scene-window-nMgEi2/acceptance.json",
+      "sha256": "fd4fb84f7dc98811415f9cd2e3be59872835abd135eae7254ff8ebb4485096ca"
+    },
+    {
+      "path": "native/build/validation316.json",
+      "sha256": "38b1d245cb385553799729f7c933facfbf79776a7819dfd881cf850ea8f51503"
+    }
+  ],
+  "nativePlayerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+  "implemented": [
+    "이전 삼각형/정점 노멀/시각/카메라에서 worldPosition/worldNormal/viewDirection/UV 조상과 노멀 텍스처 밉을 평가해요. 강체 비균일·smooth·instance 및 morph/skin을 세 GPU 경로에서 실제 이전 패킷과 대조했어요.",
+    "기존 이전 VP에서 카메라와 픽셀 콘을 복원하고 이전 구간 길이로 footprint를 전파해요. 새 이력 이미지/유니폼/자동 GPU 읽기/지속 포즈 캐시는 없어요.",
+    "대형 희소 타일맵의 256 제한·면적 비례 편집/충돌 배열을 제거하고 가상 화면/포인터 확대/셀 이동·C++ BoxFill/FloodFill/SetTiles·BP와 자동 타일 충돌을 연결했어요.",
+    "tilemap.view는 사람 편집기와 같은 뷰를 사용해요. 유효성 전체 확인 뒤 보기만 바꾸고 문서 revision/Undo는 바꾸지 않아요.",
+    "작은 텍스트 쓰기 의도로 파일 게시/인덱스 사이 중단에서 stable ID를 완료해요. 외부 변경·ID 충돌·exclusive create·Windows 경로 별칭과 소유 임시 파일 수명을 지켜요."
+  ],
+  "measurements": {
+    "previousContextCases": 17,
+    "cameraCases": 8,
+    "storageCases": 12,
+    "projectDurabilityCases": 7,
+    "transactions": 17,
+    "actualComplex141": {
+      "webgl": {
+        "firstPathMS": 6168,
+        "temporalMS": 3987
+      },
+      "webgpu": {
+        "firstPathMS": 3450,
+        "temporalMS": 2279
+      },
+      "directx": {
+        "firstPathMS": 4424,
+        "temporalMS": 3668,
+        "warmPathMS": 176,
+        "warmTemporalMS": 170
+      }
+    },
+    "scope": "첫 컴파일/전환은 통제하지 않은 단일 표본이며 안정 FPS나 성능 개선율이 아니에요."
+  },
+  "newHistoryTargets": 0,
+  "newUniformFields": 0,
+  "newAutomaticReadbacks": 0,
+  "synchronousTileEditBudget": 262144,
+  "limits": [
+    "투명체 이전 반사/굴절 분기와 다른 시간·월드·시점 표면 필드, 추가 산란 footprint는 잔여예요.",
+    "디스크 청크/전체 점유 배열 복사·큰 점유 맵 총비용/장시간 측정·큰 월드 정밀도와 2.5D 품질 대조는 잔여예요.",
+    "특수 내부 폴더/바이너리 가져오기/rename 공동 복구·충돌 UI·실제 전원 차단/모든 파일시스템 내구성은 별도예요.",
+    "Android ARM64 새 C++ 소비자 구문 검사예요. 새 APK/실물 기기/iOS 실행이나 전체 UE/Unity 분석 gate를 승격하지 않아요."
+  ]
+}

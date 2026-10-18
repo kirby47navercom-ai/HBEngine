@@ -468,3 +468,8 @@ UV 표본의 동일 연산/offset을 유지한 공용 읽기, GL 주/미분 노�
 DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과 fallback·AI 활성 진단을 연결했어요. 새GPU자원/상수버퍼 필드는 없어요. 실제장치 solid 및 alpha.45 출력차0·alpha1702성분 변화·variant2/캐시재사용/source1/8MiB예산·해제, 실제 yHkwNk C++/BP의 pathNoTransmission=true·변형·이전 노멀·필터·재방문이 통과했어요. 첫5187/3280ms·재방문190/221ms는 단일 전환이며 FPS가 아니에요. 그림자 회귀 fixture는 unlit/no-light 생략을 유지하고 실제 lit 수신자/광원/캐스터의 안정→pose 변경을 검사하도록 정정했어요. GL/GPU 공용 소유자는 그대로여서 통과 검사를 반복하지 않았어요. 후속 설치는 USER_INSTALL_307에 기록해요.
 
 307 설치 확인: 534dae19145a0053·3088파일 전체SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일이에요. 설치 헤더 직접 컴파일/D3D 실행 tiFviq는 solid/alpha 오차0·source1/컴파일2/캐시/해제를 통과했어요. Q8oV9Q 실제 설치 창의 camera/guide/API bundleHash도 맞아요. 실제 게임 yHkwNk는 source/player 바이트 일치로 재사용하고 별도 설치 게임 재실행이라고 표현하지 않아요. 이전설치177509691B·생성CPP검사실행파일3112555B 정리·수정보관0이며 USER_INSTALL_307을 정본으로 봐요.
+
+
+### 2026-10-18 · 308–318
+
+이전 프레임의 실제 geometry/UV/world/view/smooth normal·mip·카메라 콘을 기존 버퍼로 연결하고 17머테리얼/포즈·8카메라 및 실제 GL/GPU/D3D CPP/BP 게임을 대조했어요. 2D256 제한과 면적 비례 편집/충돌을 제거하고 희소 맵·가상 편집·셀 이동·CPP/BP·생성 충돌과 AI 보기 API를 연결했어요. 텍스트 게시/인덱스 사이 종료에서도 작은 쓰기 의도로 같은 ID를 복구해요. 실제 종료/ENOSPC/외부 편집/경로 별칭12조건·기존 내구성7/트랜잭션17을 확인했어요. ENGINE_WORK_318에 원본SHA/증거/제한이 있어요. 설치 갱신 후 시퀀스 등의 누적 잔여를 이어가며 전체 완료로 처리하지 않아요.

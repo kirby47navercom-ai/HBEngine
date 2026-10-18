@@ -541,3 +541,10 @@ Network::Connect/Disconnect/SendRPC/SetOwner/GetStateText/HasAuthority를 공용
 ## 284–293 · 렌더 값/시간 실행과 SDK 갱신
 
 기존 CPP/BP 머테리얼 파라미터와 시간 호출은 그대로 사용해요. GL/GPU/DX 소유 그래프는 불변 ID, live 값/외부 원본은 편집 가능하며 CPU-only 매질 Time은 관련 출력만 갱신해요. 이전 normalTime은 base-normal Time 프로그램에만 포함해요. C++ build 응답 sdk.fingerprint/files/bytes는 간접/생성/JSON SDK 헤더 내용을 포함하며 같은 사용자 코드도 SDK가 바뀌면 재빌드해요. SDK734/노드819는 그대로예요. 새 wrapper 수를 부풀리지 않고 공용 기존 함수를 보완했어요.
+
+
+## 308–318 · 이전 머테리얼 입력과 대형 타일 좌표
+
+기존 CPP/BP Tilemaps 함수 이름·배열 핀을 유지해요. BoxFill/FloodFill은 전체 맵 면적 배열 없이 점유 셀을 사용하고 SetTiles의 좌표 키는64비트예요. 맵256 제한을 제거하고100만×100만 좌표의 실제 C++·BP/편집·Undo를 확인했어요. 동기 단일 편집262144셀은 작업 예산이며 전체 맵/오브젝트 수 제한이 아니에요. 타입 Vec2의float 정밀도와 큰 월드 원점은 별도 범위예요.
+
+머테리얼 노드/CPP 파라미터와 IR 키·필드 마스크·전송 버전도 유지해요. 이전 노멀은 이전 삼각형·정점별 법선·시점·시각·밉 폭에서 평가해요. 다른 시간/월드 표면과 투과 분기는 보수적 거부/후속 구현 범위예요. 새 함수 수를 올리지 않았으며 SDK734/노드819는 그대로예요. AI의 tilemap.view는 같은 편집 화면의 보기만 다루고 source revision을 변경하지 않아요. 상세 근거는 ENGINE_IMPLEMENTATION_318.md·research/ENGINE_WORK_318.json을 따라요.
