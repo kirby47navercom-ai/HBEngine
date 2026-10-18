@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 비선형445·렌더링 계속
+# HBEngine 현재 인계 — 설치445 검증·렌더링446 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치440 C:\Users\kirby\HBEngine\Versions\f4230fbda13c3695\HBEngine.exe /3292파일/Versions1. USER_INSTALL_440 정본.11owner/fullSHA·새playerde2a0c235742ee31101e10142ec8c1e9d66b1b76ea4d5694e7c0643b0839cfaa·User10385전후읽기SHA·links2/.hbproject·설치 coordinate-graphs-433-O6blds / shader-cache-window-350-syaNU7 통과.
+- 현재 설치445 C:\Users\kirby\HBEngine\Versions\4ffd07face0d2a99\HBEngine.exe /3303파일/Versions1. USER_INSTALL_445 정본.23owner/fullSHA·새player18bed587256b88501c5e0bf7f08677789411b6bfa5dce47f96fa50a2e04c3bcb·User10385전후읽기SHA·links2/.hbproject·설치 nonlinear-graphs-444-ejw5lo / shader-cache-window-350-VfeVjV 통과.
 
 ## 현재 구현과 증거
 - 440 설치 f4230fbda13c3695·3292파일·11owner·User10385읽기SHA보존·Versions1·O6blds GL/GPU5graph와syaNU7 D3D두게임6저장/6적중0재저장 통과. 이전설치178372339B·검사exe886750B정리. USER_INSTALL440정본.
@@ -12,7 +12,7 @@
 - 실패보존: tmoAGy power큰변화log/exp왕복오차.002568→큰변화원연산으로.00085;444typedvec2→dotvec3 fixture를기존numeric승격+split으로수정;약한Fresnel밉fixture를직교시선으로관측가능하게수정. 기준완화없음. source docs/NONLINEAR_COORDINATES445.
 
 ## 다음 실행 순서
-1. source445 commit·새nativebuild445→Complex141실게임→원장445→data sync·단일Versions 설치·설치8그래프와새player D3D캐시→전체지문/User읽기보존/정리. 완료one-shot재실행금지.
+1. 445 설치/전체지문/User읽기보존/Versions1/정리 확인. 완료one-shot재실행금지. 446 이후작업을계속해요.
 2. noise/checker의마지막좌표fallback·mixed노멀실험의세API/전체가이드·복잡초기compile을계속. 기존334 factoring 재시도와미통제시간개선포장금지.
 3. RND05/07전역곡면/변경투명경로/매질·RND08베이크/DFAO/HWRT·MAT03import-role밉·누적엔진목표계속. 전체gate/분모미확정 유지,최종checkpoint로중단하지않아요.
 

@@ -35,7 +35,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "a55f710ae342d84075cbe5690c37f8b8066dbc81caa9ea919d0226766b92cd1d"
   },
   "nativePlayerSHA256": "18bed587256b88501c5e0bf7f08677789411b6bfa5dce47f96fa50a2e04c3bcb",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/mixed-normal-preparation-441-9x9kg2/acceptance.json",
@@ -72,6 +72,14 @@
     {
       "path": "native/build/rendering-445-light-checks.json",
       "sha256": "acaf6e26533ab4b4709421172c1c8268a1129a5214280b196b88a8ca96cc57ee"
+    },
+    {
+      "path": "native/build/nonlinear-graphs-444-ejw5lo/acceptance.json",
+      "sha256": "25d160f53d52a59e5658f056f51b19a744f120a69302f8affc943dacdf6bf506"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-VfeVjV/acceptance.json",
+      "sha256": "81f3f206a8250a25644bfc4c5b2472418e708ee6de56c5b95e44210958278ecd"
     }
   ],
   "sourceGames": [
@@ -197,5 +205,6 @@
     "noise/checker shifted-input과표현불가능작성입력·극단중간범위·원래normalize/pow미정의구간",
     "혼합노멀실험은미채택·초기복잡준비여전히초단위·성능개선율/전체완료주장없음",
     "전역곡면/변경투명경로/복합로브/참여매질·RND08/나머지누적원장·전체분석gate유지"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_445.json"
 }

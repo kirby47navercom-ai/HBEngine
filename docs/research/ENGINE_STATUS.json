@@ -2030,11 +2030,11 @@
   ],
   "latestBatch": "441–445",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_440.json",
-    "sourceCommit": "54793621860663d7b3911ef1344e01fbf472165e",
-    "bundleHash": "f4230fbda13c36954f5d96b690ad2d6abe54098e8fb5abb69a7f50eb45af0644",
+    "receipt": "docs/research/USER_INSTALL_445.json",
+    "sourceCommit": "1dbf248d1c5831bef01ad6518515ac1e774d9923",
+    "bundleHash": "4ffd07face0d2a99b10149e120c32f2b3ffce95afd53a6b84197c50f30cd4896",
     "verified": true,
     "versions": 1,
-    "scope": "436–440 보조 함수 전이 전처리·설치 다섯 GL/GPU 그래프·새player 두D3D캐시·전체지문·User읽기보존. 현재/이전 노멀 준비와 누적 원장 계속"
+    "scope": "441–445 비선형 좌표와 이전 밉 이력·설치 여덟 GL/GPU 그래프·새player 두D3D캐시·전체지문·User읽기보존. 현재/이전 노멀 준비와 누적 원장 계속"
   }
 }
