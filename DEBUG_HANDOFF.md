@@ -1,3 +1,9 @@
+# 391 HDRI 방향 분포와 확산 필터의 일치 · 2026-10-18
+
+최신 분리: 실제 필터 RGB+2D row/conditional-column CDF+황금비 각도 수열은 12방향계약/PI/PDF/원본보존·16,648B상한·512원본의2856B밉/반복생성0을통과했어요. 32표본 중심조건MSE12.8735→11.3237이며 최초 탐색의4배감소목표는미달(false)로명시하고성능완료로세지않아요. threshold를바꾼correctness검사와미달성능목표를분리기록해요. 원본CDF/1D flatten/수열/확률/노멀조건후보관찰은hdri-391-quality*.json에남기고검증된대안만제품에써요. GL인간HDRI Z7zYJ3은54.78125선형red라AgX의고휘도탈색(255,230,187)에의해red우세검사실패;D3D255/0/0·정적이동무효/복원과오류0은확인했어요. 기존red조건을유지하고입력fixture밝기만1/8(실제atlas예상6.85)로줄여display검사구간을분리해요. 제품tone/filter/오차허용은변경하지않아요.
+
+원본 mip0의 좁은 hotspot CDF는 PDF 적분/표본 PDF/constant PI는 통과했으나 실제 spread.5 필터 방사휘도 기준32표본 MSE155.32로 기존cosine12.87보다 나빴어요. 미채택 상태이며 설치390은 불변이에요. 다음은 실제 환경 sample의 필터링된 RGB로 최대64×32 CDF를 만들고 같은 PDF/PI/32표본 MSE 조건으로 대조해요. 분포는 필요할 때 한 번만 만들며 추가광선/원본복사/전체밉표를 도입하지 않아요. 최초 PDF 적분0.998175는 좁은 불연속 row에 정렬되지 않은 균일cos 격자의 quadrature 오차였고, exact cell solid-angle 경계에 정렬한 독립 적분으로 기존0.001조건을 통과했어요. 품질실패를 성공으로 세거나 임계값을 완화하지 않아요.
+
 # 390 최신 해결 상태 · 2026-10-18
 
 386 pending-frame 원본 누적 손실은 frame.suspend 분리 뒤 실제 GL 분리 YMZm0m/full X5M4HQ117/118/120과 CPU40pending이 통과했어요. 385 원근 입력 fixture 수정은 같은 native hardware binary로118/117 resume385가 통과하고120 기존 progress도 통과해요. 최초 full invocation의 실패/미실행 구역을 숨기지 않아요. 382 dynamicacos 정밀 문제는383 공용 다항각도 뒤392조건×3GPU 최대2.4655e-6/기존4e-5 통과예요. 아래의 이전 진행 문구는 당시 실패 경위이며 최신 pending 목록이 아니에요. 388 첫ICaA79는 fixture가Transform에Sky속성을 잘못 기록해 scene validator가 막은 것이며 타입별 component선택으로 수정한y0ZYbe 인간/worker/세게임통과예요. 제품 입력검증/마감/허용오차 완화없어요.

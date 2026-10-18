@@ -1,3 +1,11 @@
+# 391–395 HDRI 방향 표본 — 원장·설치 단계
+
+- 설치390 a774f74aca97500f/3227/Versions1·USER_INSTALL_390 검증완료. 새 source는worker용filteredHDRI CDF/PDF와실제bake/세게임을연결했어요. nativeheaders/binary/player7363889는390과동일하므로재컴파일없이source/증거를동기화하고설치395로갱신해요. 기존모든390 one-shot완료재실행금지.
+- lightmap-hdri-directions: actual diffuse filtered RGB·최대64x32·exact cell solid angle·row/conditionalcolumn 2D CDF·cosine지원>=.5/PDF보정·회전/flipY·필요한첫반사에서lazy1회. 추가ray/원본복사0. table16648B+512원본의queried mip2856B·반복CDF재생성0. 사용안하면CDF생성0. Stats/skyBake기존AI계약을확장해요.
+- check-hdri-directions391 12NPOT/flip/회전/PDF적분/PI/표본평가/가중상한/768edgeSeed·실제bake145.9778/독립146.4060(<1.5%)·blackblocker0/원본불변/미사용CDF미생성 통과예요. 최초4배MSE목표는false/미달로명시. 32samples×64rotation MSE12.8735→11.3237만실측주장하고추가저표본효율은남겨요. candidate원본CDF/flatten/prob/sequence/normal관찰은native/build/hdri-391-quality*.json에보존했어요.
+- 실제 인간UV1/HDRI베이크/UndoRedo/AI guard/preview·세패키지정적map/moveoff/restore/errors0/exit0 jTWtW7통과. 첫Z7zYJ3은linear54.78red의AgX탈색때문에display red우세실패였고제품tone는그대로두고fixture1/8(예상6.85)로수정하여같은표시조건을통과했어요.
+- 다음은record395/status WORK_ORDER 갱신·commit/push·dist data sync·설치humanHDRI worker+fullSHA25보다좁은새owner/User읽기SHA/Versions1. native cache gate는390의같은player/관련owner SHA를대조해재사용하고불필요중복실행하지않아요. 그뒤396 editor GPU timing과누적렌더링/엔진작업을계속해요. user활성heavy보류/hiddenprivate/Usertest금지/증거원본보존·cache정리는유지해요.
+
 # 설치390 검증 완료 — 391 HDRI 방향 중요 표본 계속
 
 - 현재 a774f74aca97500f/3227파일/Versions1·USER_INSTALL_390 정본. 구현094c80b/설치입력22a1cba pushed. Player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4·25owner/fullSHA/links2/.hbproject/User10385읽기SHA 동일. 설치인간sun worker WHKAmz/350 uRETgh 통과예요. 390one-shot재실행금지.

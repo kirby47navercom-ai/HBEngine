@@ -24,5 +24,5 @@ export function bakeLightmapCore(snapshot,{resolution=128,samples=32,bounces=1,p
   // Copy only from the prior ring so padding cannot feed itself indefinitely.
   let frontier=[];for(let i=0;i<coverage.length;i++)if(coverage[i]>=0)frontier.push(i);for(let ring=0;ring<padding;ring++){const next=[];for(const at of frontier)for(const[dx,dy]of[[-1,0],[1,0],[0,-1],[0,1]]){const x=at%w+dx,y=Math.floor(at/w)+dy,p=y*w+x;if(x<0||x>=w||y<0||y>=h||coverage[p]!==-1)continue;coverage[p]=-2;next.push([p,at]);}for(const[p,from]of next){coverage[p]=coverage[from];pixels.set(pixels.subarray(from*4,from*4+4),p*4);}frontier=next.map(([p])=>p);}
   if(pixels.some(v=>!Number.isFinite(v)||v<0))throw Error('베이크 결과가 유한한 양수가 아니에요.');maps.push({key:mesh.key,geometrySHA256:mesh.geometrySHA256,width:w,height:h,pixels});
- }if(environment.directions)stats.environmentSampling=environment.directions.contract;const environmentFilter=environment.stats();if(environmentFilter)stats.environmentFilter=environmentFilter;return{maps,stats,settings:{resolution,samples,bounces,padding,maxDistance}};
+ }if(environment.sampling)stats.environmentSampling=environment.sampling;const environmentFilter=environment.stats();if(environmentFilter)stats.environmentFilter=environmentFilter;return{maps,stats,settings:{resolution,samples,bounces,padding,maxDistance}};
 }

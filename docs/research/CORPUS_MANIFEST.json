@@ -3870,5 +3870,22 @@
       "native/build/sky-directions-387-cpu.json"
     ],
     "analysisGate": "지정 본문·수식/독립 해석값/실제 워커와 게임 검사만. 전체 Unreal/Unity/corpus/API gate 미승격"
+  },
+  "supplemental395": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://pbr-book.org/4ed/Light_Sources/Infinite_Area_Lights",
+        "scope": "PBRT4 ImageInfiniteLight 반환59–90·100–114·140–172행의 지정 본문·생성자 distribution·SampleLi/PDF 변환과 구현식을 선택 읽음. 미리 등록된 discovery seed에서 본문 지정 읽기로 구분; 나머지 장·portal/참고 논문은 검색노출/미독이며 전체 분석으로 세지 않음",
+        "snapshot": "native/build/reference-corpus/supplemental395/infinite-area-lights.html",
+        "sha256": "a22fc8644abe109a83d2343761f52f9b3e6052684aee843a440376241c511d29"
+      }
+    ],
+    "comparison": "PBRT equal-area octahedral의 mapPDF/(4pi)와 HB lat-long의 정확 row solid-angle 차이를 명시. HB는 실제 확산 필터 RGB·최대64x32 조건부 row/column CDF·cosine 혼합을 선택했으며 기존390 single-sample PDF 의미를 유지. 전체 문서/API gate 미승격",
+    "evidence": [
+      "docs/HDRI_IMPORTANCE_395.md",
+      "native/build/hdri-directions-391-cpu.json"
+    ],
+    "unmet": "Exploratory fourfold low-sample MSE reduction target remains unmet and explicitly false; no general performance/completion claim"
   }
 }
