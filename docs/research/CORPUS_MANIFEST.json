@@ -3887,5 +3887,52 @@
       "native/build/hdri-directions-391-cpu.json"
     ],
     "unmet": "Exploratory fourfold low-sample MSE reduction target remains unmet and explicitly false; no general performance/completion claim"
+  },
+  "supplemental400": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/EXT_disjoint_timer_query",
+        "scope": "반환186–187의WebGL2구분/core getQueryParameter, 210–241의availability/disjoint/ns, 261–267의측정시작/끝 의미 지정읽기. 전체 MDN/WebGL사양 미독",
+        "snapshot": "native/build/reference-corpus/supplemental400/gl-timer.html",
+        "sha256": "5697b3247f31ffefb4210f9947ceb1c84d69388d1b712f2d4d41ff24e2c3014f"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/GPUCommandEncoder/beginRenderPass",
+        "scope": "반환230–247 timestampWrites의querySet/시작끝인덱스/선택feature/ns 지정읽기; 문서 array표현을API형태로맹복사하지않고실제object descriptor 검증. 나머지첨부/compat/연결사양전체미독",
+        "snapshot": "native/build/reference-corpus/supplemental400/gpu-render-pass.html",
+        "sha256": "d9b401fcaff668de01a864e9177993b5209bca4b65ac2e0018642079d6f5afda"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/GPUCommandEncoder/resolveQuerySet",
+        "scope": "반환186·199–235의resolve복사/범위/256바이트offset/8×count크기검증 지정읽기. 예제의writeTimestamp는채택하지않고표준pass timestampWrites와실제GPU실행으로대조. 나머지본문/연결사양전체미독",
+        "snapshot": "native/build/reference-corpus/supplemental400/gpu-query-resolve.html",
+        "sha256": "f7ae4953f760c1df909092b726073357b3ed4f26290003a16260e15d5dacfee2"
+      }
+    ],
+    "localRead": [
+      {
+        "file": "node_modules/three/src/renderers/common/Renderer.js",
+        "sha256": "25d9f4a4c5fb5183e67d48b9a9c7f6368f05d43a836a01894f4e679d4063bda7",
+        "scope": "설치된r180의renderOutput/기존선택feature요청/동기제출과pool의수명/오류반환구역선택대조. pool안은채택하지않았으며새측정은표준GPUDevice/CommandEncoder/API만사용. 라이브러리전체분석아님"
+      },
+      {
+        "file": "node_modules/three/src/renderers/webgpu/WebGPUBackend.js",
+        "sha256": "e394bac8164b844b0bf9df425e90edaac96a1df2c0adc710bcf3623cd313ddc3",
+        "scope": "설치된r180의renderOutput/기존선택feature요청/동기제출과pool의수명/오류반환구역선택대조. pool안은채택하지않았으며새측정은표준GPUDevice/CommandEncoder/API만사용. 라이브러리전체분석아님"
+      },
+      {
+        "file": "node_modules/three/src/renderers/webgpu/utils/WebGPUTimestampQueryPool.js",
+        "sha256": "1ea8e2f3a678f947a3236ded7d52288a7dd90ad064d4619fec7d6e06fba3e093",
+        "scope": "설치된r180의renderOutput/기존선택feature요청/동기제출과pool의수명/오류반환구역선택대조. pool안은채택하지않았으며새측정은표준GPUDevice/CommandEncoder/API만사용. 라이브러리전체분석아님"
+      }
+    ],
+    "comparison": "소유쿼리/비동기결과/중지세대/자원상한/unsupportedNULL·GPU timeline과pass합계범위를실제두API 및editor UI/AI와대조. 16render요청이r180 HDR+output32passes인것을local source/actualcounter로확인. CPU제출/FPS/전체GPUbusy시간과동일시하지않음",
+    "evidence": [
+      "docs/GPU_TIMING_400.md",
+      "native/build/gpu-timing-396-cpu.json",
+      "native/build/gpu-profiler-398-cpu.json"
+    ],
+    "analysisGate": "지정본문과설치라이브러리선택읽기만. 전체UEUnity/MDN/WebGPU/Three/corpus/API gate미승격"
   }
 }

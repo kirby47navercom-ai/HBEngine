@@ -1,63 +1,34 @@
-# 설치395 검증 완료 — 396 편집기 GPU 시간 진단 계속
+# HBEngine 현재 인계 — 400 소스 검증 완료, 설치 단계
 
-- 현재 cb187b8f7a0959e2/3232파일/Versions1·USER_INSTALL_395 정본. 구현b686e5f/설치입력88abfab pushed. Player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4·15owner/fullSHA/links2/.hbproject/User10385읽기SHA 동일. 설치인간sun worker SgCafe/350 uRETgh 통과예요. 395one-shot재실행금지.
-- 다음396은기존profiler.record/read에편집기GPU시간을연결해요. GL 비동기disjoint query/WebGPU pinned r180timestamp를읽고있으며아직구현/검증전이에요. 기록off자원/동기wait0·지원없음null·소유자폐기/취소를지켜요. 설치395파일은수정하지않아요. 저표본4배목표미달·미독/전역곡면/RND06/엔진원장을유지해요.
+## 목표와 현재 설치
+- C++/Win32/DirectX11 자체 2D·2.5D·3D 엔진. Unity/Unreal 제작 기능·UI/UX·실행과 누적 요구를 계속 구현해요. 사람과 AI가 같은 검증/Undo/텍스트 자산/명령을 사용하며 가벼움·저장공간을 유지해요. 전체 원장은 docs/research/ENGINE_STATUS.json이며 등록78개는 전체UE/Unity 분모가 아니에요. 전체본문/API 분석 gate 미승격·완료율 미확정이에요.
+- 설치395: C:/Users/kirby/HBEngine/Versions/cb187b8f7a0959e2/HBEngine.exe ·3232파일·Versions1. USER_INSTALL_395가 정본. source b686e5f/기록88abfab/설치4228d6e pushed. User10385파일읽기SHA/15owner/fullmanifest/links2/.hbproject/설치HDRI worker SgCafe 검증 완료예요.
+- native player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4와host e42dcb39c493590a8acc58181375ad2cfd2f3e5eaaf2ce38fd58bd55be4aa3fd는400에서도동일해요. 이번에는JS/UI/진단만바뀌어native재빌드가필요없어요. 생성HLSL/API --check도통과했어요.
 
-# 391–395 HDRI 방향 표본 — 원장·설치 단계
+## 396–400 구현과 검증
+- gpu-frame-timing.js: 기록opt-in만GPUquery, GL4상한·availability/disjoint/corequery, GPU표준timestampWrites·256슬롯/두2048B버퍼·한 read in flight. 인코더/device 메서드hook을동기그리기후즉시복원해요. 비동기세대·외부쿼리/overflow거부·자원퇴역·renderer.dispose를지켜요. GPUtime은GPU timeline/pass합계이며CPU/FPS/busy율과같지않아요.
+- RuntimeProfiler같은recording setter/onClear→모든renderer즉시중지/지우기. 메인/추가viewport와MaterialPreviewScene실제draw 연결. 기존nativeGPU query 메타데이터도같은표로조회하지만native수집정책은바꾸지않아요. prof.read rendering[].gpuTiming과root engineSchema.gpuTiming 불변계약.
+- GPU보기는기존dropdown에추가·CPU차트/샘플/IPC마크업생성생략·같은폰트·표padding4px. 주차된profiler가다른workspace에서중앙을덮지않고하단재열기. 기존도킹/분리창유지.
+- CPU396 자원/순서/오류/부정지원/null·398 같은UI/AI setter/clear/XSS/native메타데이터 통과. 기존C++profiler 검사도통과.
+- 실제397 NdjjYb: 두API3표본/같은픽셀, WebGPU32render+1compute, compute정수출력독립대조. 실제map진행중stop→retiring1→소유자0·stale표본게시0, GPU/GLerror0/exit0. 값0도API정밀도결과일수있고미지원NULL과구분해요.
+- 실제editor399최종 GL wa4lfO / GPU3FU0uH: 인간record/clear·AIread/stop·메인/머테리얼·두행전체가시성·원본revision/SHA/exit0. 캡처를직접봤어요. 마지막metadata/CPU숨김최적화는단위검사완료,설치400에서두API UI를다시확인해요.
+- 최초397 Dy7tyE는fixture renderer→material 해제순서, uZI5hF는16그리기=16pass라는오입력(실제로HDR+output32). 제품변경/임계완화없이fixture를고쳤어요. UI nZaGgl 마지막행8.21875px잘림은패딩으로고쳤고원래가시성조건을유지해요.
 
-- 설치390 a774f74aca97500f/3227/Versions1·USER_INSTALL_390 검증완료. 새 source는worker용filteredHDRI CDF/PDF와실제bake/세게임을연결했어요. nativeheaders/binary/player7363889는390과동일하므로재컴파일없이source/증거를동기화하고설치395로갱신해요. 기존모든390 one-shot완료재실행금지.
-- lightmap-hdri-directions: actual diffuse filtered RGB·최대64x32·exact cell solid angle·row/conditionalcolumn 2D CDF·cosine지원>=.5/PDF보정·회전/flipY·필요한첫반사에서lazy1회. 추가ray/원본복사0. table16648B+512원본의queried mip2856B·반복CDF재생성0. 사용안하면CDF생성0. Stats/skyBake기존AI계약을확장해요.
-- check-hdri-directions391 12NPOT/flip/회전/PDF적분/PI/표본평가/가중상한/768edgeSeed·실제bake145.9778/독립146.4060(<1.5%)·blackblocker0/원본불변/미사용CDF미생성 통과예요. 최초4배MSE목표는false/미달로명시. 32samples×64rotation MSE12.8735→11.3237만실측주장하고추가저표본효율은남겨요. candidate원본CDF/flatten/prob/sequence/normal관찰은native/build/hdri-391-quality*.json에보존했어요.
-- 실제 인간UV1/HDRI베이크/UndoRedo/AI guard/preview·세패키지정적map/moveoff/restore/errors0/exit0 jTWtW7통과. 첫Z7zYJ3은linear54.78red의AgX탈색때문에display red우세실패였고제품tone는그대로두고fixture1/8(예상6.85)로수정하여같은표시조건을통과했어요.
-- 다음은record395/status WORK_ORDER 갱신·commit/push·dist data sync·설치humanHDRI worker+fullSHA25보다좁은새owner/User읽기SHA/Versions1. native cache gate는390의같은player/관련owner SHA를대조해재사용하고불필요중복실행하지않아요. 그뒤396 editor GPU timing과누적렌더링/엔진작업을계속해요. user활성heavy보류/hiddenprivate/Usertest금지/증거원본보존·cache정리는유지해요.
+## 다음 실행 순서
+1. source400 commit/push→record400/sourceHashes/canonical DBG02·AI03·EDT02·WORK_ORDER 업데이트→record commit.
+2. fresh sync400/install400. 변경없는native binary를보존하고현재설치파일을개발중수정하지않아요. 실제설치399 두API UI와350 두native게임(현재game-renderer owner가바뀌었으므로이전gate재사용하지않음)·fullSHA/owner/player/links/association/User읽기지문/Versions1을검사해요. activeInstalledVersions가있으면queue하고사용자프로세스를종료하지않아요.
+3. finish400 receipt/원장/증거·재생성cache정리·한글commit/push. 그뒤누적렌더링/RND06으로계속해요. staticIR/이전material호출중복의책임소유자를먼저읽고구체변경후에만Complex141을묶어검사해요. 반복벤치/조건완화/무근거개선율은피해요.
 
-# 설치390 검증 완료 — 391 HDRI 방향 중요 표본 계속
+## 계속 유지하는 잔여와 경계
+- RND05/07 전역곡면·변경투명경로역대응/거친복합로브·참여매질footprint. RND06 복잡첫shader준비. RND08 DFAO/HWRT/방향성lightmap/shadowmask/probe/chartmip/고급매질/분할저장/cloud기하/카메라·이방성footprint.
+- HDRI391–395는actualworker/세게임/독립적분/차폐·16,648B CDF/2856B queriedmip를구현했지만4배MSE목표false예요. 현재지정32samples×64rotation MSE12.8735→11.3237만근거예요. docs/HDRI_IMPORTANCE_395.md와ENGINE_WORK_395를참조해요.
+- DBG02 스레드flow·외부/prebuilt명령/패스별trace·할당/누수/crash, 나머지2D/월드/애니메이션/게임/배포/AI 누적원장도유지해요. Mac/Xcode/Android실기기없음은검증제약이에요.
+- 385의원래native전체도구실패를통과로세지않아요. 같은binary의corrected118/117 resume+이전완료120구역만근거예요. 상세과거기록은Git이력/ENGINE_WORK390·395/보존native/build증거를봐요.
 
-- 현재 a774f74aca97500f/3227파일/Versions1·USER_INSTALL_390 정본. 구현094c80b/설치입력22a1cba pushed. Player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4·25owner/fullSHA/links2/.hbproject/User10385읽기SHA 동일. 설치인간sun worker WHKAmz/350 uRETgh 통과예요. 390one-shot재실행금지.
-- 다음391은선택HDRI의 밝은영역 방향표본·기존코사인 full-support/PDF·회전/flipY·bounded local table·실제bake/게임으로이어가요. 설치390파일은수정하지않아요. 미독/누적전역곡면/RND06/엔진원장유지예요.
-
-# 381–390 구현·묶음 검증 완료 — 원장/설치 갱신 단계
-
-- 현재 설치380 be667218d6b12f61/3215/Versions1은 불변. 새 source를 commit→record390→sync390→install390→finish390으로 반영해요. 기존 one-shot380/376/370과 새 완료 marker는 재실행하지 않아요. 새 angle HLSL을 포함한 desktop67006 빌드 완료·generated header 3개/host 입력은 dist와 SHA동일. player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4. 이후 JS/검사만 변경해 추가 native 재빌드 불필요해요.
-- 381 shared pure spherical mips/worker lazy HDRI LOD·NPOT/solid-angle/trilinear/poles. 최신 yjBN3J frozen46f94a4 6크기 float/half 전체 packed bytes 동일. 보관 typed mip2800B/full699056B(프로세스RAM/FPS아님). 383 공용 정밀 atan: 실제392조건/backend GL/GPU/DX xsnH75 최대2.4655e-6, 조건4e-5 유지. dynamicacos 오차 관찰 inp8HC는 관측자료이며 별도 acceptance 실패를 통과로 세지 않아요.
-- 384 실제 HDRI 인간 UV1/베이크/UndoRedo/AI guard/preview·D3D/GL/GPU게임 DH5Psn 통과. 385 native120 MknpqR progress통과+118/117 resume385 통과(원래 full tool이 전체 통과한 것은 아님). Lens packet의 identity perspective 오입력을 실제 VP/역VP로 정정, 같은 binary 기존조건 temporal2436채널 변화. 제품 invalid camera 거부 유지해요.
-- 386 GL 원본 누적: 준비 raster fallback end(false)가 같은key64표본을 0으로 버리던 yVz0lD 원인확정. frame.suspend는 투영복원·미게시object pose폐기·마지막성공 camera/time유효성보존. 실제실패/reset/camera/light변경유지. CPU40pending/실제CPP BP YMZm0m 분리 및 full photon X5M4HQ117/118/120 통과. WGPU XPXQyq도 통과예요.
-- 387–388 procedural sun/moon single-sample mixture/PDF 보정·power-based disk prob<=.5/동일 ray budget. 기존 cosine240 exact·해석원반/2lobe/furnace·실제1bounce/64rotation32samples MSE24.358→.002905 조건부증거. 실제 인간베이크/워커/Undo/AI/세게임 y0ZYbe 통과. 정상돔 cosine>.9999. HDRI source는 기존cosine 유지예요.
-- 새 PBRT390 선택본문/식2.16과 NIST385 지정식·미독경계는 corpus에 등록. 전체문서/API gate나전체엔진완료로 승격하지 않아요. 다음은 record/sourceHashes·canonical RND06/08 AI03·installed human sun worker+native shader cache gate/fullSHA/Userreadinventory/Versions1. 설치 후 누적 렌더링·엔진 목표를 계속해요. 사용자 활성 heavy보류/hidden private만/User읽기SHA만/원본·증거보존 후 owncache정리예요.
-
-# 설치380 검증 완료 — 381 환경 밉 계속
-
-- 현재 be667218d6b12f61/3215파일/Versions1·USER_INSTALL_380 정본. 구현333a158/검사CLI0ed2557/설치입력2aa34e1 mainpush. Player 5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50·17owner/fullSHA·links2/.hbproject·User10385읽기SHA동일. 설치379QjO9mY·350Xexu4L통과예요.
-- record/sync/install/finish380 one-shot 모두완료재사용금지. 이전설치 178155104B·ownprobe 1162534B 회수했어요. 다음381은기존sphericalEnvironmentMips를pure공유소유로재사용하여worker환경LOD/극점품질과메모리비용을확장해요. 전역곡면/복합경로역대응과RND06/다른원장도계속해요.
-
-# 377–380 하늘 베이크·DirectX 달 — 검증 후 기록/설치 단계
-
-- 설치37604201e5a3a6750d5/3207/Versions1은유지해요. source WIP377–380을이제commit→work380기록→data sync→설치380으로진행해요. 새host/player47179빌드성공, 이후JS/test/docs변경만이라추가컴파일불필요예요. root/dist player새NativeSceneCB moon32B포함.
-- sky-radiance.js 공용선형돔설정/CPU방사휘도·해질녘/태양/달·SkyLight tint/indirect, HDRI우선. 기존worker에숫자snapshot만전달하여기존Half/gzip/Undo/저장/빌드사용. scene환경parameter extraction은 frozen8ab8563 apply본문과20설정정확일치예요.
-- DirectX SceneRenderMaterial/CB 끝2float4 moonDirection/moonColor추가·PS원반·JSON optional기본black/캡처tint·JS옛skyuniform fallback. 기존prefix순서유지. AI schema.skyBake 불변계약/한계등록.
-- CPU3771uG7uG최종20설정+legacy nativeMaterial fallback/schema동일성·상수하늘diffuse PI 기준. 378lJpqPT actualGL/GPU10방향 최대1.3711e-4(float normalization/pow감도16ulp범위;HDRfloat/전체화질동등주장아님). native2hByzZ SDK 실제PS5방향sRGB8오차0·NaN거부.
-- 379worker: de1QU7은barethree importmap미상속실패재현(구현완료근거아님), sky모듈Three의존제거/기존linear preset상수사용후Z3AO4Q 실제moduleworker통과. 수정후377frozen20재통과.
-- 실제제작379 lightmap-workflow-225-zEz9ng --procedural-sky: 인간UV1/베이크/저장/UndoRedo/미리보기/AI dry/stale 거부, source보존, package3backend·map있음/이동무효/복원·exit0/errors0 모두통과. CPU225KOLAlU13/228Rgf2bC·환경actor34/API/362도통과예요.
-- 두초기379실패: p0Zn85는제품worker bareThree import실패. HYFj20은테스트SkyLight.intensity0→indirect0의올바른제품동작을밝게기대한fixture오류라intensity1로정정. test기준/deadline/실행코드완화없음. CPU상수PI초기probe는수신기하가return sky를가렸으므로원래fixture목적대로receiver contributeGI false설정.
-- supplemental380 Unity6/현재UE5.8 선택환경광/Skylight 본문/SHA·연결미독등록. docs/SKY_BAKE_380·연구manifest. 전체corpus/전체엔진완료로계산하지않아요. 구름geometry 베이크capture·narrowdisk중요표본·directional/mip/DFAO/HWRT와전역경로역대응·컴파일비용/누적원장이어가요.
-- 376/370/365/349등이전record/sync/install/finish는모두one-shot완료재사용금지. 다음380새marker. User읽기만/privatehidden/사용자활성heavy보류/Versions1/PID소유보호계속해요.
-
-# 설치376 검증 완료 — 후속 렌더링 계속
-
-- 설치 04201e5a3a6750d5/3207파일/Versions1·USER_INSTALL_376 정본. 코드a16ab7b/입력b3b1196 mainpush. Player e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588·User10385 읽기SHA동일·34owner/fullmanifest/links2/.hbproject 통과. installed375XxjF3v·3500tAxaJ 통과예요.
-- 376record/sync/install/finish 모두실행완료재사용금지. oldVersions 178041752B·ownprobe 7259382B 정리했어요. 구현 끝을 선언하지 않고 전역 곡면/복합 경로 대응·RND08베이크와 RND06비용 등 누적 원장을 계속해요.
-
-# HBEngine 인계 — 371–376 구현·검증, 설치370 유지
-
-- 계속 작업 중이에요. 사용자 목표는 누적 엔진 전체이며 이 묶음으로 끝내지 않아요. 다음은 RND05 전역 곡면/변경 경로 대응과 RND06 준비 비용, 다른 원장 세부예요. 전체 Unreal/Unity 분석·엔진 완료율은 미확정이에요.
-- 현재 설치370 1e50e6754649e3e1/3183/Versions1, USER_INSTALL_370 정본. HEAD0b1ff16 이후371–376 구현을 커밋/푸시하고 새376 설치할 단계예요. record/sync/install/finish370 및365/349/334/327/318 one-shot 재실행 금지예요. 새376 이름을 사용해요.
-- 독립 이전 IOR 스택: path-media-gpu의 기존 seed/change 재사용·고유 Fn prefix·old IDs16+scalar IOR16·lazy first-glass seed·별도 absolute prior time/old BVH. 현재 RGB extinction 유지·thin disabled 배열 제외. old physical0 단일 평가/oldEta/oldDirection 보존·entry/nonLIFO exit/TIR·앞뒷면·unknown/overflow/incomplete failclosed·다음 old ray가 mapped point를 실제 지나는지 확인해요. 글로벌 역해를 해결한 것으로 세지 않아요.
-- 기존 radiance integrator와 같은 국소 ratio/cosine cone 갱신을 current/prior guide에 연결했어요. reflection/TIR 유지·.01 floor/1.57cap. full curved/anisotropic/rough/참여매질 footprint는 별도예요.
-- 371 최종 trQwz9 GL/GPU20조건·96XWjM DX10조건: old/current nested IOR와 current RGB 소광 보존. 373 t3DYw0 GL/GPU18·SORwne DX18 전이/독립Snell. 374 R67NZa 세GPU49퍼짐조건. 375 D1MErP GL/GPU·Y4iuc1 DX 전체guide독립width+실제normal-map mip/old-unbent 비교통과예요.
-- 374뒤372최종0NagVH GL/GPU8조건/GkkVcM DX4조건: baseline0b1ff16의잘못된oldcamera-medium 이력을 새계산만거부·static유지. 369 X9UNA3 thin/직교/이전가림12조건 통과예요.
-- 새desktop/player재빌드완료. 실제C++/BP145 source D3Dwy7K7b·WebGPUVOqQsx 통과·종료0/서버해제. 비통제전환DX4.81/4.91초,GPU4.13/2.62초는FPS/전후개선율아니에요. 이후PS/contract/doc/test전용변경이므로최종data sync만필요해요.
-- 캐시376: 실제동시prune에서target dir가아직있는데내부PostDriver.h가다른프로세스에먼저삭제되는경쟁재현. build-root별namedmutex로파괴정리직렬화·획득후process재조회·abandoned소유회복/timeoutfail·finally해제. MlvQ3N 두실제PS프로세스부분삭제/대기통과·3708ylL5z 권한/부재4조건통과. 앞선 실패c1e45afc...result는성과가아니며보존해요.
-- AI previousMedium/opticalSpread 불변계약·remaining갱신. native308 harness probeCount/dispatchCount/standalone은privateGPU kernel검사재사용이며legacy기본도371/372/375에서사용해요.
-- supplemental376 PBRT4선택본문/SHA와미독연결등록. 전체corpus gate미승격. native/build/reference-corpus/supplemental376/read-scope.json 참조예요.
-- 방해금지: hidden owned probe/private project/profile/ports만. activeInstalledVersions 전제·User읽기inventory만·원본게임/사용자프로세스 불변·Versions1·프로브/완성Build/프로필/중복Node는SHA/evidence후정리해요. no Mac/Xcode/Android기기 제한은실행검증에남아요.
-- 한국어 커밋·author/committer kirby47navercom-ai / 228715038+kirby47navercom-ai@users.noreply.github.com·AI trailer없음·main push 유지예요.
+## 작업 보호 규칙
+- 주인님/짚짱·자연스러운한국어존댓말. 한글commit과동일author/committer kirby47navercom-ai <228715038+kirby47navercom-ai@users.noreply.github.com>. AI trailer/다른계정변경없음. 사용자가여러분야길게지속요청했으므로최종checkpoint몇개로멈추지않아요.
+- 배경만: foreground/CUA/browser변경금지. hidden owned editorWindowProbe·고유프로젝트/프로필/포트/PID만. User프로필은읽기SHA목록만·복사/검사사용금지. 사용자활성시heavy보류.
+- source/증거/캡처/명세는보존하고tools/test-artifacts.mjs로Builds/runtime/profile만정리. cache32+참조/활성보호·없으면빈정리기록생성금지. recursive삭제는resolved범위확인. Versions현재1·변경파일만보존·전체백업금지.
+- 모든완료one-shot(390/395/이전번호와 *.started)은재실행하지않아요. fresh 이름/wx로새단계를만들어요. 400 prepare도실행후재사용금지예요.
+- rg --files로파일확인후읽기. 긴singleline은bounded출력. PowerShell에서복잡한node -e 문자열편집을하지말고apply_patch/저장mjs를사용해요. 실패array/전체base64를출력하지않아요.
+- 기존HEAD EOL보존·새파일LF·git diff --cached --check. 최신기록원본만현재handoff에유지해토큰을쌓지않아요.
