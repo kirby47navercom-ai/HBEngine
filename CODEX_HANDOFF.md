@@ -2,7 +2,7 @@
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치420 C:\Users\kirby\HBEngine\Versions\73f3b3113b91e92e\HBEngine.exe /3267파일/Versions1. USER_INSTALL_420 정본.21owner/fullSHA·User10385전후읽기SHA·links2/.hbproject·설치Mcp9Iu/5BoRiz/zBEYST 통과.
+- 현재 설치430 C:\Users\kirby\HBEngine\Versions\d5b4aa2697d1fdae\HBEngine.exe /3279파일/Versions1. USER_INSTALL_430 정본.8owner/fullSHA·425동일player재사용·User10385전후읽기SHA·links2/.hbproject·설치WOtg08 실제GPU1→4/네출력색 통과.
 
 ## 현재 구현과 증거
 - 426 WebGPU prep가post/각RTT 완료를직렬await하던순서를post의동기descriptorbuild→독립RTT전부제출→Promise.all로변경. r180 Renderer.compileAsync/Backend원본선택구간대조. 렌더러상태/epoch/devicehook즉시복원/0warmupdraw유지. 새GPU자원/readback0,worker/cache없음.

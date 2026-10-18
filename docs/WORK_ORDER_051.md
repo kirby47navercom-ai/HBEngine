@@ -579,4 +579,6 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 
 WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로바꿨어요. CPU와실제GPU첫완료전제출1→4·out-of-order/실패후늦은완료미게시·coldinit/syncthrow/cancel·실제raster/네출력색·epoch회귀통과. 실제C++/BP WebGPU he1eiy의path4990/시간guide4075ms는단일관찰이며속도개선율/FPS가아니에요. 인간·AI가제출/완료/전체단계수와겹치는시간을같이읽고새GPU자원/readback/worker/cache없어요. 425실행파일과native소스는그대로재사용해불필요빌드를피했어요. GPUWeb/MDN메서드·localr180선택읽기를corpus에등록하고W3C전체본문크기실패미독/gate미승격을유지해요. ENGINE_WORK430정본과단일Versions설치를이어가요.
 
-430 설치 d5b4aa2697d1fdae·3279전체명세/8실행소유SHA·새player·links2/.hbproject·Versions1 확인. 설치 WOtg08의실제WebGPU첫완료전제출1→4·네출력색/동시raster 통과. User10385전후읽기SHA동일, 이전설치178294439B와검사exe0B 정리. 비선형좌표/노멀/렌더링잔여를계속해요.
+430 설치 d5b4aa2697d1fdae·3279전체명세/8실행소유SHA·425동일player재사용·links2/.hbproject·Versions1 확인. 설치 WOtg08의실제WebGPU첫완료전제출1→4·네출력색/동시raster 통과. User10385전후읽기SHA동일, 이전설치178294439B와검사exe0B 정리. 비선형좌표/노멀/렌더링잔여를계속해요.
+
+430 설치 인계의 오래된420경로와 템플릿의새player표시를 실제감사430에맞췄어요. 설치430은425동일바이너리와새WebGPU준비자료이며, 직전설치커밋본문의두DirectX게임문구는복사된설명오류예요. 실제430검사범위는USER_INSTALL_430의설치GPU1→4·네출력색/동시raster·전체명세·사용자보존이에요. 원본425의DirectX검증과구분해요.
