@@ -1,6 +1,6 @@
 # DirectX 셰이더 재실행 캐시 · 346–350
 
-DirectX 게임을 다시 실행하거나 다른 프로젝트를 열 때 같은 HLSL을 매번 FXC로 컴파일하던 비용을 줄였어요. 래스터·노드 머테리얼·화면 효과·파티클 렌더/정렬·Bloom·Hi-Z·광원 타일·프로브 필터가 하나의 디스크 저장소를 써요. `Device::compile` 사용자 컴퓨트 커널과 WebGL/WebGPU 드라이버 파이프라인은 이 저장소를 쓰지 않아요.
+DirectX 게임을 다시 실행하거나 다른 프로젝트를 열 때 같은 HLSL을 매번 FXC로 컴파일하던 비용을 줄였어요. 래스터·노드 머테리얼·화면 효과·파티클 렌더/정렬·Bloom·Hi-Z·광원 타일·프로브 필터가 하나의 디스크 저장소를 써요.579에서는 [일반 Compute 커널](COMPUTE_KERNEL_CACHE_579.md)도 연결했어요. WebGL/WebGPU 드라이버 파이프라인은 이 저장소를 쓰지 않아요.
 
 기본 저장 위치는 `%LOCALAPPDATA%/HBEngine/Cache/ShaderBytecode`예요. 게임별 소리·입력·저장 데이터는 공유하지 않고, 기기와 무관한 컴파일 결과만 재사용해요. `HB_USER_DATA_DIR`을 명시한 검사는 그 디렉터리의 `Cache/ShaderBytecode`로 격리해요. SDK는 `hb::gpu::SceneRenderer::configureShaderCache(directory)`를 호출하기 전에는 디스크에 접근하지 않아요. 빈 경로로 끌 수 있어요.
 
