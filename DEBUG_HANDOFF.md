@@ -1,3 +1,11 @@
+# 298–303 — 필터 호출 공유·노멀 수집 · 2026-10-18
+
+298: GL/HLSL/TSL 삼선형 sampler가 정수LOD에도 상위mip을 읽고 두 level 호출을 driver에 펼쳤어요. 1/2회 loop의 한 호출 위치로 바꿨어요. 실제GL48변형×480 표본·GPU48×384 표본 오차0, 정수 표본136개의 atlas load684개 감소. 299 TsHThK의 공유/UV/렌즈off-on/main-aux도 오차0, 격리 path1941→98.5ms는 한순서 표본이에요. Complex141 GL CPqdhu는 아직8534ms/시간4513ms예요. GPU IZrWzs3863/2226ms는 실제 게임 전환이며 FPS가 아니에요.
+
+300: 동일 정점의 스킨/모프 노멀과 world normal 행렬을 삼각형마다 재계산했어요. 인스턴스 수집 한 번에만 지역 공유하며 반환 배열·잘못된 노멀의 면별 fallback을 보존해요. EWDRYp의3100삼각형/5상태 atlas720896B 동일, normalMatrix9276→8. 301 bind/relative morph/interleaved skin version이 collection/local vertex cache key에서 빠진 것을 함께 고쳤어요. 최초 검사의 frameTriangles는 BVH 순서인데 fresh collector는 원본 순서라 잘못 대조했어요. sourceID로 연결한 뒤3변경 모두 확인했고 구현/허용오차를 완화하지 않았어요.
+
+298 도구 최초 /tools/*.mjs import는 server 정적 경로가 아니라 실패했어요. 테스트 함수를 page에서 직접 호출하도록 고쳤고 vla3wB 최종GPU/GL이 통과했어요. 검사 데이터 put(15>>2)는 같은3행 상수로 정리했고 설치 gate에서 재사용할 예정이에요. 302 실제 DirectX j9iAuB는 통과했어요. 303 텍셀 loop cnNuYJ는 path1863→1825/aux3275→3299ms로 전체 개선이 없어 미채택이며 제품에 적용하지 않았어요. 후속304/305와306 최종 결과는 아래를 따라요.
+
 # 237 — 로컬 관절 축 검사식 정정 · 2026-10-17
 
 현상: 소스 C++와 패키지 관절 도달 검사가 timeout. 제품 로그/오류는0. CPU 단일축6군과 실제값을 대조했다. mPXENA 실제 Joint.position=[-2.32027698,1.31696093,0],rotationZ=25.000054. 이는 원점[-3,1]+0.75*[cos25,sin25]와 일치한다. 검사에서 이동 축을 월드X로 잘못 가정한 원인이 확정됐다. 소스검사식을 고친 뒤 소스 C++/BP는통과했으나 패키지 분기에 같은 +2.25 상수가 남아 반복 실패했다. 다음은 공유 expectedX(distance)식으로 양쪽을 바꾸고 문자열 검색으로 오래된 상수0개를 확인한 뒤 동일 검사한다. 관절 구현·한계·deadline은 완화하지 않는다. 별개 실제 UI오류는 runtime-inspector-values가 새 배열의 전체값을 numberinput에 넣어 비웠던 것. 셀별 scalar 추출과 구조 갱신을 수정했고238 qyCG8l/213 2JIkrQ CPU로확인; 실제설치검사에서값유지확인예정. 기존하단기록보존.
@@ -951,3 +959,11 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - 첫 raw bulk-frame 검사 도구가 함수 정의를 precision/uniform 선언보다 앞에 넣어 컴파일이 실패했어요. 선언 순서를 고친 private probe는 통과했으며 그 도구 실패를 제품 오류나 PASS 근거로 세지 않아요. 새 창 검사 문자열의 data URL 절대 주소/줄바꿈 이스케이프도 도구에서 수정했어요.
 - 실제 D3D pkYMcJ에서 HBScreenEffects X3014를 검출했어요. GLSL vec3(0)는 HLSL float3(0) 매크로에서 인자 수가 부족했어요. shared-ray-record-gl의 초기화를 vec3(0,0,0)으로 고치고 생성 헤더/바이너리를 다시 만들었어요. 실제 장치 작은 검사 rendering-194-native-7COpIM 통과; 최종 전체 native 검사는 validation297에서 별도 확인해요. GLSL 축약 생성자를 공용 HLSL 원문에 새로 넣지 말아요.
 - validation296의 D3D 실패 로그는 남기고 수정 후 validation297로 구분해요. 이미 통과한 unrelated CPU 검사 전체를 반복하지 않아요. 사용자 창·프로필·프로젝트는 검사에 사용하지 않아요.
+
+305 검사 fixture 정정: 처음 normal graph의 텍스처 슬롯을 연결하지 않아 준비 거부를 맞았고, 텍스처 없는 동일 surface로 바꿨어요. 다음 기대는 scalarParameter도 무조건 GPU 동적이라고 잘못 가정했어요. 실제 compiler.dynamic은 CPU에서 확정 가능한 상수 전용 가지를 defaults로 접어요. 0→양수 파라미터 편집은 plan.transmission을 false→true로 갱신해야 하고, 현재0인 Time 입력은 writes(2)로 true를 유지해야 해요. 제품의 보수성 조건을 완화하지 않고 두 실제 계약을 따로 검사해요.
+
+304 네이티브 첫 cube 검사는 같은 줄의 연속 if 생성문에서 -Werror=misleading-indentation으로 빌드 거부됐어요. generator에서 각 조건을 개별 줄로 생성하고 헤더를 다시 만들어요. 경고 옵션·픽셀 기대·제한은 유지해요.
+
+304–306 최종: 의미상 관측 불가능한 좌표 미분만 절삭해요(2D/array/volume 고정 동일 필터0/11, cube 명시LOD). nested image 좌표의 vX=v 처리·물리 레지스터 덮어쓰기·C++ 동일48진리표/입력선언을 유지해요. CPU106 sandbox는 새 generator 의존 함수를 주입하도록 갱신했고 immutable-header 거부/35연산이 통과했어요. 불투명 GL 경로는 transmission===false일 때만 정의하며 undefined/true와 shader key를 분리해요. Time의 현재0 입력은 conservative true, CPU 상수 파라미터0→양수는 metadata false→true 갱신을 확인했어요. owy6bu의 실제 camera path1024성분 오차0/가시 RGB213, 최초 shader1825→1472ms는 격리 단일 비교예요.
+
+최종 validation306은 GL bh3bqL·GPU xKxboZ·D3D0nLrBW 실제 C++/BP/변형/온오프/해제·재진입을 모두 통과했어요. GL141 첫 전환6591ms/시간3770ms, GPU3667/2111ms, D3D5317/3394ms·재방문198/183ms는 단일 표본이며 FPS/전 기기 보장이 아니에요. 실제 HLSL cube YrALys, GL/GPU48변형 l87gsF, 현재/이전 노멀 RSpje5, 최종 정상/비인덱스 수집 FKJADk도 통과했어요. 비인덱스는 불필요한 정점 Map을 만들지 않으며3112삼각형5상태의786432B atlas가 legacy와 동일·normalMatrix9312→9예요. 새 GPU 타깃/이력/런타임 readback/지속 캐시는 없어요.

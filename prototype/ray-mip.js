@@ -23,10 +23,19 @@ export function rayMipChain(map,pixels,srgb,volume=false){
  chains.set(key,levels);cache.set(map,{pixels,chains});return levels;
 }
 
+// Cube LOD is explicit. Fixed level/spatial filters cannot observe derivatives.
+export function rayTextureNeedsFootprint(instruction){
+ const kind=instruction[8],flags=instruction[10];
+ if(!Number.isInteger(kind)||kind<0||kind>3||!Number.isInteger(flags)||flags<0||flags>11)return true;
+ if(kind===3)return false;
+ const mode=Math.floor(flags/2),nearest=flags%2;
+ return mode!==0&&mode!==5||nearest!==(mode===5?1:0);
+}
+
 // Mark coordinate ancestors before register reuse; no derivative storage for unrelated shading.
 export function rayCoordinateInstructions(instructions,live=null){
  const definitions=new Map(),parents=[],needed=new Set();
- for(let n=0;n<instructions.length;n++){const i=instructions[n];parents[n]=i.slice(4,8).map(r=>definitions.get(r)).filter(n=>n!==undefined);if(i[0]===9&&(!live||live.has(n))){for(const r of i.slice(4,6)){const p=definitions.get(r);if(p!==undefined)needed.add(p);}}if(i[0]!==8)definitions.set(i[1],n);}
+ for(let n=0;n<instructions.length;n++){const i=instructions[n];parents[n]=i.slice(4,8).map(r=>definitions.get(r)).filter(n=>n!==undefined);if(i[0]===9&&rayTextureNeedsFootprint(i)&&(!live||live.has(n))){for(const r of i.slice(4,6)){const p=definitions.get(r);if(p!==undefined)needed.add(p);}}if(i[0]!==8)definitions.set(i[1],n);}
  for(let n=instructions.length-1;n>=0;n--)if(needed.has(n)&&instructions[n][0]!==9)for(const p of parents[n])needed.add(p);
  return needed;
 }
