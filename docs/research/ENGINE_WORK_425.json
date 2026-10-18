@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "06f26ef51b9756edef3712d58c960e0f52999117",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/ray-barycentric-offset.js": "ae8350426531289b53e285d604fc06299e88a737619bb169fc87af5f311cf578",
+    "prototype/ray-material-gpu.js": "ab77305da81a3431d41cc6fd7ffef045b4cb9b683d16912a239397360f9e8c85",
+    "prototype/ray-material-shader.js": "50d2021c1aa15602a9e9bd3093e0c9a73553a1897079cb3c19a0c02642b34066",
+    "prototype/ray-previous-context.js": "a3dd3da646172a1cfba510f2630861792491047f1ce2702e322339745e064ecf",
+    "prototype/ray-previous-gpu.js": "8085f1ae5fe664fc1f7bd06a1d5b3808d1bee141d6e344c0d4dae796292372f2",
+    "prototype/ray-program-differentials.js": "d5c541b5f3dc1c707763a13f55bc4c6f65cecf848cb729ce1b0ee2c07fce23f6",
+    "prototype/ray-uv-footprint.js": "860ee3cb8681d4f17ca339ce367e770091c82de12f1f5275f79f0655348c8795",
+    "tools/check-normal-history-403-native.mjs": "a678040ccceb6eeeaa6cfb678d2819609b3d5b48089ecb90d60750e476098248",
+    "tools/check-normal-history-403-window.mjs": "a40713b9c0325f7ae4f5cb2b0dbe38d2736ec6cf76eac451d84213d6b519ec6b",
+    "tools/check-ray-differentials-418-native.mjs": "d7e743aac3ffff862d339b9887739b06409f8ec909774ce446f73b48c7db1d2f",
+    "tools/check-ray-differentials-418-window.mjs": "2dd69d7a37a2614390f8b01f8b614b227fa79b4326395f2785c470c7541208f8",
+    "tools/check-uv-footprint-412.mjs": "7c4ab7c64c3061cef549e744bb8b01fefe3ed343f2ddac1d53d80155f9cb8d31",
+    "tools/generate-ray-programs.mjs": "f84cbc0a56416ec271c739ece399c8f8d35bb2d10e8ee7666cfd61d3f91935bb",
+    "tools/normal-history-fixture-403.mjs": "6de6c917fda16d2aa253e3f74c69f5e0eab4ffeb3c5dd385454b9a1cdb603d21",
+    "tools/ray-differentials-fixture-418.mjs": "ccd415b16aa12caf5173e4242615a4c834758553de7dca6b2e01950f61f1d056",
+    "tools/ray-differentials-fixture-421.mjs": "e5a2cc1f06061f397d1e64c7d7617fa15039d8e8ae332c162395763c3a57ceb4",
+    "tools/ray-differentials-probe-418.mjs": "57727708e6577f7a81ba5704a4b88fcf29a029b0976461e41694b2b4d393f69d",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "3c782590bbf5e767deee4b22edf4194b0d21cc790918548529bd2dcce3d27629",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "ed3eb323f80180e6a3b657cb7be4893fa441eaf5e7e2b45576f87ad5d44f257a"
+  },
+  "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/ray-differentials-421-Uzbgm9/acceptance.json",
+      "sha256": "48c2efff04c590990a43cf646fe5c9d51f1b65ed458e6a2af955845c04a80f2a"
+    },
+    {
+      "path": "native/build/ray-differentials-421-native-ntTUEj/acceptance.json",
+      "sha256": "9fd9493ca2dcf41b8cf8ec05c41f5520e1d705365372b457a81ab787ac71db37"
+    },
+    {
+      "path": "native/build/normal-coordinate-422-DSu8V7/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/normal-coordinate-422-native-8WoB9j/acceptance.json",
+      "sha256": "36ff0a131890132a5fd4e1b21657635f8ac8702b160eafe082f9cbb46e1e1d0f"
+    },
+    {
+      "path": "native/build/previous-context-308-ZpITed/acceptance.json",
+      "sha256": "b509a4f86ee3795331b57fa37be4a36111dfed42115787349fb0aaa56ace2605"
+    },
+    {
+      "path": "native/build/previous-context-308-native-y9y0Od/acceptance.json",
+      "sha256": "f803f9006fdf9c883fece8fb5ded5eb49aa9eb368ba111a8e9998afb9bff9963"
+    },
+    {
+      "path": "native/build/native-scene-window-YItc4H/acceptance.json",
+      "sha256": "9d3dd7f512e6f1c4ba4f6d42e864f172579a5e44214ab6fb510df03b3e78c0dd"
+    },
+    {
+      "path": "native/build/rendering-425-light-checks.json",
+      "sha256": "f74070c8df794a3c33750dbba357f40319c38b7d13649a59eb7754a3fdfc7598"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-YItc4H/acceptance.json",
+      "scope": "실제 새 DirectX 실행 파일의 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 초기 준비 관찰이며 FPS·유의미한 개선율 주장은 아님"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/ray-differentials-421-Uzbgm9/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/normal-coordinate-422-DSu8V7/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/previous-context-308-ZpITed/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+    }
+  ],
+  "implemented": [
+    "경계·절댓값·클램프·반올림·소수·부호·단계·삼각함수·제곱근·길이·정규화의 안정 상대차분·성분별 조건 선택",
+    "기본 삼각형 무게와 작은 offset 무게 분리로 큰 월드 스무스 노멀 밉 폭 보존",
+    "현재·이전 GL/TSL/생성 HLSL 노멀 복원과 새 함수의 이전 이름 변환 일치",
+    "AI 불변 계약에 안정 연산·노멀 문맥·비용·남은 fallback 공개·이전 도움말 교차링크"
+  ],
+  "measurements": {
+    "mathOperations": 28,
+    "mathConditions": 485,
+    "GLGPUError": {
+      "webgl": 0.0000035940697439285074,
+      "webgpu": 0.000003594067924939104
+    },
+    "D3DError": 0.0000035940697439285074,
+    "exactRationalProduct": [
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625
+    ],
+    "originalMathTolerance": 0.00002,
+    "newSubULPNormalizeTolerance": 1e-12,
+    "previousContextsPerBackend": 17,
+    "largeWorldPoint": 10000000,
+    "coarseWidth": 0.3125,
+    "fineWidth": 0.0001,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4622.181199999992
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2217.188200000004
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 145.16969999999856
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4339.349699999992
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 153.6015999999945
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 152.54359999998996
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 577724,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 47,
+        "totalCompileMS": 9734,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "421 shxStd 실제 절댓값 작은변화 0 재현. q3rE72 Max분기 역순·sk1buF mix 큰 값 상쇄·52xZCB TSL벡터조건 실패 수정",
+    "421 native qnqd7P 테스트 GLSL fract 매크로 누락. 제품 생성기는 기존 frac 변환 유지, 테스트 매크로 추가 후 통과",
+    "422 hszrH3 실제 큰 노멀 UV 전부 밉0. 첫 PvSsmd의 GL 원점빼기+offset 재결합 실패를 무게 분리로 수정",
+    "422 native CXa3yx 새 Offset이름 이전치환 누락·현재노멀 참조를 generated HLSL로 확인하고 수정. 실제8WoB9j 오차0",
+    "422 diagnostic VpoaPF 첫 실행은 DLL PATH누락. 같은 완료 바이너리에 올바른 환경을 준 진단 결과와 구분"
+  ],
+  "limits": [
+    "divide/power/reflect/noise 등 나머지 비선형 연산은 shifted-input fallback",
+    "표현 불가능한 작성UV/시간·극단 중간범위·텍스처 생성좌표 변화량0·레이폭 내부 시선 고정 근사",
+    "전역 곡면/바뀐 투명 경로 역대응·복합 로브·참여 매질과 누적 엔진 원장",
+    "초기 복잡 컴파일 여전히 초단위·대표 FPS/기기/전체 분석/전체 엔진 완료 주장은 없음"
+  ]
+}
