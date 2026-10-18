@@ -85,7 +85,7 @@ export async function checkTransmissionPlayer({evaluate,ready,inspect,pixels,cdp
   if(process.argv.includes('--rendering-121-only'))return {passed:true,rendering121:await checkRendering121({evaluate,ready,inspect,pixels})};
   if(process.argv.includes('--rendering-106-only'))return {passed:true,rendering106:await checkRendering106({evaluate,ready,inspect,pixels,cdp,until})};
   if(process.argv.includes('--rendering-120-photons-only'))return {passed:true,rendering117:await checkRendering117({evaluate,ready,inspect,pixels}),rendering118:await checkRendering118({evaluate,ready,inspect,pixels}),rendering120:await checkRendering120({evaluate,ready,inspect,pixels})};
-  if(process.argv.includes('--rendering-120-only'))return {passed:true,rendering120:await checkRendering120({evaluate,ready,inspect,pixels})};
+  if(process.argv.includes('--rendering-120-only')||process.argv.includes('--rendering-120-history-only'))return {passed:true,rendering120:await checkRendering120({evaluate,ready,inspect,pixels})};
   if(process.argv.includes('--rendering-119-only'))return {passed:true,rendering119:await checkRendering119({evaluate,ready,inspect})};
   if(process.argv.includes('--rendering-118-only'))return {passed:true,rendering118:await checkRendering118({evaluate,ready,inspect,pixels})};
   if(process.argv.includes('--rendering-117-only'))return {passed:true,rendering117:await checkRendering117({evaluate,ready,inspect,pixels})};

@@ -1,3 +1,19 @@
+# 390 최신 해결 상태 · 2026-10-18
+
+386 pending-frame 원본 누적 손실은 frame.suspend 분리 뒤 실제 GL 분리 YMZm0m/full X5M4HQ117/118/120과 CPU40pending이 통과했어요. 385 원근 입력 fixture 수정은 같은 native hardware binary로118/117 resume385가 통과하고120 기존 progress도 통과해요. 최초 full invocation의 실패/미실행 구역을 숨기지 않아요. 382 dynamicacos 정밀 문제는383 공용 다항각도 뒤392조건×3GPU 최대2.4655e-6/기존4e-5 통과예요. 아래의 이전 진행 문구는 당시 실패 경위이며 최신 pending 목록이 아니에요. 388 첫ICaA79는 fixture가Transform에Sky속성을 잘못 기록해 scene validator가 막은 것이며 타입별 component선택으로 수정한y0ZYbe 인간/worker/세게임통과예요. 제품 입력검증/마감/허용오차 완화없어요.
+
+# 386 WebGL 필터 준비 중 원본 누적 손실 · 2026-10-18
+
+실제 C++/BP WebGPU XPXQyq는 통과했지만 GL aCS0nu의 필터 전환 원본 픽셀 동일 검사가 실패했어요. 분리 장면 yVz0lD에서 표본 64와 동일한 transport key/builds=1/environmentBuilds=1을 유지하다가, 셰이더 준비의 raster fallback이 frame.end(false)를 호출한 직후 reset=true로 0표본을 반복했어요. 필터 그래프/환경 샘플러의 누적 키 변경은 아니었어요. 성공한 준비 대기는 실패 프레임과 분리하고, 카메라 투영은 복원하되 마지막 성공한 카메라/원본 유효성은 유지해요. 실제 렌더 오류는 기존 실패 경로를 유지하며, 장면·카메라·광원 변경은 기존 transport key로 무효화해요. 원래 동일 픽셀 조건과 deadline은 유지해요.
+
+# 385 네이티브 렌즈 회귀의 투영 입력 · 2026-10-18
+
+새환경정밀각도후native MknpqR120광자segment는통과.118의area/direct/HDRI와spatial분산도통과했지만temporal changed0 assertion실패. Lens packet에currentVP/inverseVP/camera가없고native test가perspective eye.w0에identity VP를쓰고있었어요. 기존hbPathPriorCamera는identity의perspective determinant0을거부하며이함수는380설치와같아요. 같은현재hardware.exe/geometry/material/HDRI와원래assertions를그대로써90도perspective의실제VP/역VP/near/far/eye만주입한QGKkQl에서raw값동일·공간분산감소·temporal2436채널변화/자원해제/가드5가통과했어요. 따라서공용rendering118Packets lens에실제카메라배열을추가하고118/117만기존binary로재검사해요. 원래실패는보존하고120통과를반복하지않아요.제품표본/허용오차/deadline/카메라무효보호는그대로예요.
+
+# 381–382 환경 필터 대조 진행 · 2026-10-18
+
+설치380 be667218d6b12f61/3215/Versions1은유지. 381 CPU frozen46f94a4와6크기 float/half 전체패킹바이트/NPOT체인 일치·독립sphere integral/pole평균·필요mip2800B vs full699056B 통과 HxcAu2. 새로운CPU bake sampler와실제GL/TSL/번역DX 비교382는GL max.001037 실패. fixture 방향의near-pole double y가GPU Float32에서1이되는차이를수정한뒤에도.000515가남으므로이것을완전원인으로세지않음. 다음은전체samples.json에case별GPU/CPU값을보존해최대차이조건을읽기전용으로확인. 제품LOD/분기/허용오차4e-5/deadline완화없음. 데이터저장없는초기실패는성과아님.
+
 # 377–379 하늘 워커/실제 제작 검증 · 2026-10-18
 
 제품 p0Zn85의generic bake 오류는실제module Worker가새sky-radiance의barethree를해석못한원인이었어요. de1QU7은동일origin Worker에서정확specifier오류를재현했어요. renderer의존을제거하고기존두linear preset상수만유지한Z3AO4Q통과·frozen환경20동일·전체인간베이크/package3GPU zEz9ng통과예요. HYFj20은SkyLight intensity0이면간접광도0인계약을잘못기대한fixture라intensity1로고쳤고영점동작은유지해요. 상수PI단위fixture도수신기가복귀광선을가려오른바운드0..PI였으므로기존목적대로contributeGI false로독립기준을분리했어요.

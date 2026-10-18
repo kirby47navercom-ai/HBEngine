@@ -2783,7 +2783,8 @@
     "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation.",
     "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay.",
     "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering.",
-    "380: Reconcile linked UE Lightmass/DFAO/BentNormal/capture/volumetric APIs and Unity Skybox/HDRP/URP environment APIs, lower-hemisphere/static/stationary/shadowing details and full implementation. HB analytic dome bake excludes realtime cloud geometry capture and narrow-disk importance sampling."
+    "380: Reconcile linked UE Lightmass/DFAO/BentNormal/capture/volumetric APIs and Unity Skybox/HDRP/URP environment APIs, lower-hemisphere/static/stationary/shadowing details and full implementation. HB analytic dome bake excludes realtime cloud geometry capture and narrow-disk importance sampling.",
+    "385: Reconcile remaining NIST inverse-trig/addition/roundoff references and linked UE final-gather/cubemap filtering APIs. Local diffuse angular LOD does not implement complete camera/material/anisotropic derivatives, cloud bake capture, or the full engine corpus."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -3836,5 +3837,38 @@
       "docs/SKY_BAKE_380.md"
     ],
     "analysisGate": "선택 본문과 HB 하늘/베이크 경로 대조; 전체 corpus/독립 분석 gate 미승격"
+  },
+  "supplemental385": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://dlmf.nist.gov/4.24",
+        "scope": "NIST DLMF4.24 반환69–83행:4.24.3 arctan 거듭제곱급수 지정 수식/정의역과링크. 기타수식은탐색/수집으로구분; 나머지본문·복소분기·참고문헌/연결원문전체미독. HB의실수범위축소/교대나머지와Float32실측을대조",
+        "snapshot": "native/build/reference-corpus/supplemental385/inverse-trigonometric.html",
+        "sha256": "d2d243c6496f8b2e25748e23ca3e98a6a986462c2b0074b9c6a686d0c8f10e9c"
+      }
+    ],
+    "evidence": [
+      "docs/ENVIRONMENT_FILTER_385.md"
+    ],
+    "comparison": "380에서 선택 읽기한 UE SkyLight의final-gather cubemap mip 의미와381–385 구현을연결. 원문전체/API gate승격아님",
+    "analysisGate": "선택 수식·본문과 HB 실행 대조; 전체 corpus/독립 분석 gate 미승격"
+  },
+  "supplemental390": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://pbr-book.org/4ed/Monte_Carlo_Integration/Improving_Efficiency",
+        "scope": "PBRT4 2.2.3 반환69–74행의 balance heuristic 의미와 89–94행의 single-sample model 지정 본문/수식2.16을 선택 읽고 대조. 2.2의 나머지 본문·연결 정리/논문 전체 미독; 페이지 수집을 전체 분석으로 세지 않음",
+        "snapshot": "native/build/reference-corpus/supplemental390/improving-efficiency.html",
+        "sha256": "e63a84cd25a08f2f79e9337536e8581a17de3e804b52a0da2eeb42eab5064d81"
+      }
+    ],
+    "comparison": "387의 cosine/sun/moon 혼합 확률과 모든 PDF의 가중합 분모·cos/pi 보정·전 기여 방향을 덮는 cosine 지원을 지정 단일 표본 식과 대조. 하늘 배경/원반 power 기반 배분과 0.5 상한은 HB 설계 선택이며 PBRT의 모든 구현을 이식했다는 뜻이 아님",
+    "evidence": [
+      "docs/ENVIRONMENT_FILTER_385.md",
+      "native/build/sky-directions-387-cpu.json"
+    ],
+    "analysisGate": "지정 본문·수식/독립 해석값/실제 워커와 게임 검사만. 전체 Unreal/Unity/corpus/API gate 미승격"
   }
 }

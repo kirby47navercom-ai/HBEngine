@@ -23,7 +23,8 @@ export class ScreenFrameState{
   const vp=new Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);if(zeroToOne&&camera.coordinateSystem!==2001)vp.premultiply(new Matrix4().set(1,0,0,0,0,1,0,0,0,0,.5,.5,0,0,0,1));
   const packed=packedScreenEffects(p);packed.temporal[3]=reset?0:1;packed.pathFilter[2]=filterReset?0:1;
   const result={...packed,jitter:[...jitter,...(reset?jitter:this.jitter)],inverseVP:vp.clone().invert().toArray(),currentVP:vp.toArray(),previousVP:((packed.path[0]>0?filterReset:reset)?vp:this.previous).toArray(),eye:[...position.toArray(),camera.isOrthographicCamera?1:0],forward:[...direction.toArray(),0],coordinates:zeroToOne?[1,0,-2,1]:[2,-1,2,-1],size:[width,height]};
-  return {packed:result,objects:this.objects,end:(success=true)=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();this.objects.end(success);this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset,pathReset,filterReset};
+  const restore=()=>{camera.projectionMatrix.copy(base);camera.projectionMatrixInverse.copy(base).invert();};
+  return {packed:result,objects:this.objects,suspend:()=>{restore();this.objects.end(false);},end:(success=true)=>{restore();this.objects.end(success);this.valid=success;this.taa=taa;this.jitter=jitter;this.previous.copy(vp);this.projection.copy(base);this.position.copy(position);this.direction.copy(direction);Object.assign(this,{camera,scene,width,height,time,version:p?.historyVersion});},reset,pathReset,filterReset};
  }
  reset(){this.valid=false;this.objects.clear();}
 }

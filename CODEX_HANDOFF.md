@@ -1,3 +1,12 @@
+# 381–390 구현·묶음 검증 완료 — 원장/설치 갱신 단계
+
+- 현재 설치380 be667218d6b12f61/3215/Versions1은 불변. 새 source를 commit→record390→sync390→install390→finish390으로 반영해요. 기존 one-shot380/376/370과 새 완료 marker는 재실행하지 않아요. 새 angle HLSL을 포함한 desktop67006 빌드 완료·generated header 3개/host 입력은 dist와 SHA동일. player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4. 이후 JS/검사만 변경해 추가 native 재빌드 불필요해요.
+- 381 shared pure spherical mips/worker lazy HDRI LOD·NPOT/solid-angle/trilinear/poles. 최신 yjBN3J frozen46f94a4 6크기 float/half 전체 packed bytes 동일. 보관 typed mip2800B/full699056B(프로세스RAM/FPS아님). 383 공용 정밀 atan: 실제392조건/backend GL/GPU/DX xsnH75 최대2.4655e-6, 조건4e-5 유지. dynamicacos 오차 관찰 inp8HC는 관측자료이며 별도 acceptance 실패를 통과로 세지 않아요.
+- 384 실제 HDRI 인간 UV1/베이크/UndoRedo/AI guard/preview·D3D/GL/GPU게임 DH5Psn 통과. 385 native120 MknpqR progress통과+118/117 resume385 통과(원래 full tool이 전체 통과한 것은 아님). Lens packet의 identity perspective 오입력을 실제 VP/역VP로 정정, 같은 binary 기존조건 temporal2436채널 변화. 제품 invalid camera 거부 유지해요.
+- 386 GL 원본 누적: 준비 raster fallback end(false)가 같은key64표본을 0으로 버리던 yVz0lD 원인확정. frame.suspend는 투영복원·미게시object pose폐기·마지막성공 camera/time유효성보존. 실제실패/reset/camera/light변경유지. CPU40pending/실제CPP BP YMZm0m 분리 및 full photon X5M4HQ117/118/120 통과. WGPU XPXQyq도 통과예요.
+- 387–388 procedural sun/moon single-sample mixture/PDF 보정·power-based disk prob<=.5/동일 ray budget. 기존 cosine240 exact·해석원반/2lobe/furnace·실제1bounce/64rotation32samples MSE24.358→.002905 조건부증거. 실제 인간베이크/워커/Undo/AI/세게임 y0ZYbe 통과. 정상돔 cosine>.9999. HDRI source는 기존cosine 유지예요.
+- 새 PBRT390 선택본문/식2.16과 NIST385 지정식·미독경계는 corpus에 등록. 전체문서/API gate나전체엔진완료로 승격하지 않아요. 다음은 record/sourceHashes·canonical RND06/08 AI03·installed human sun worker+native shader cache gate/fullSHA/Userreadinventory/Versions1. 설치 후 누적 렌더링·엔진 목표를 계속해요. 사용자 활성 heavy보류/hidden private만/User읽기SHA만/원본·증거보존 후 owncache정리예요.
+
 # 설치380 검증 완료 — 381 환경 밉 계속
 
 - 현재 be667218d6b12f61/3215파일/Versions1·USER_INSTALL_380 정본. 구현333a158/검사CLI0ed2557/설치입력2aa34e1 mainpush. Player 5401e476c078457efd67d95f5c03e279d686bbe6ee56257fed8f079f750dba50·17owner/fullSHA·links2/.hbproject·User10385읽기SHA동일. 설치379QjO9mY·350Xexu4L통과예요.
