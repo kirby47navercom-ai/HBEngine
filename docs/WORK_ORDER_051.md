@@ -647,3 +647,7 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 560 ·source e6125aa3bf6471ce215be5c15c1a817544342460 ·일반 표면 PS/ShadowPS를 기존 공용worker로 분리하고 소유·입력/파라미터·취소/실패/재시도·pending shadow/probe/history/capture·AI/집계UI 연결. 5531CL2Re SDK대기중래스터/동기동일/idle0,5568sSaqI 실제hidden브리지/Present/status/reset/마지막pending제거,3474cqN70 별도프로세스21save→21hit/오차0/거부복구 통과. 전체558은미준비probe바인딩실패로완료세지않고 수정후559pifU9U probe와2D/해제 통과. 최종562의4967Qin7n C++준비중23frame/4.11ms/중지93.79ms/유휴0 및548M3Uli5 C++텍스처221→165→221 통과.5개회귀·두게임 통과. 전체최초지연/FPS완료주장없이설치와누적목표 계속.
 
 564 설치 20b2e3b17134968f/3410전체파일·75ownerSHA·playerabed101f7c65a81448e49ab3ad6e18f47479597f9a5990fec499bda488b7256e·User10385전후읽기SHA·links2/.hbproject·Versions1. 설치559ilsjsc probe/2D 제작·C++/BP·자원해제와496ruSdLX 설치SDK/packager/player 복잡준비22frame/CPP3.66ms/중지93.23ms/캡처/유휴0 통과. 이전551 179843197B·소유probe8835848B정리. Cache196654644B/lease0·Versions/native/build없음. 누적렌더링/엔진목표와SDK빌드비용 계속.
+
+
+### 572 · C++ 의존 캐시·광원 타일 준비
+실제 GCC 전처리 결과/include를 함께 사용해 미사용 렌더링 헤더 수정의 C++ 재빌드를 피했어요. 최종293에서 수정 빌드10499ms→미사용헤더604.9ms, warm43.8ms의 단일 관찰이며 FPS 수치가 아니에요. 같은 크기/mtime 헤더 수정17→31을 실제 실행했고, existence-only 조건도 별도567에서 검사했어요. 32계획/2MiB·중단/실행중 임시영역 보존·기존모듈32/참조보호·디버그소스를 유지해요. 광원타일도 기존 한 워커로 준비하며513광원의 대기/카메라·광원수정/준비후 픽셀을 전체광원 기준과 대조했어요. GPU채택/해제/취소·재활성/유휴0 확인, build570 완료. 출처·지문·미독 범위·실험실패는 ENGINE_WORK572와 NATIVE_BUILD_LIGHT_PREPARATION572에 기록하고 실제 설치/게임 검증은 다음 기록에 연결해요. 누적 잔여 전체를 완료로 바꾸지 않아요.

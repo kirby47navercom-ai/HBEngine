@@ -491,3 +491,7 @@ UE4.27 Composite Texture의 반환된 짧은 텍스트 본문45행과 HDRP17 기
 ### 2026-10-19 · 560 장치 소유와 일반 표면 준비
 
 496의 Microsoft D3D11 장치/컨텍스트·DXGI31–50행과 D3DCompile32–131행을 재독했어요. 기존 원문/SHA를 재사용해 supplemental560에 연결하고 새 수집/전체 API 읽기로 세지 않아요. 워커의 bytecode와 소유 스레드 GPU채택은 HB 구현 선택으로 구분해요. 전체 gate는 미승격이에요.
+
+
+### 2026-10-19 ·572 GCC 선택 본문
+GCC Preprocessor Options의-M/MM/MF/MT/MQ/MD/MMD 본문56–128행을 읽고 실제 전처리 결과·다중TU·옵션/캐시를 대조했어요. 원문SHA/새읽기/미독연결범위를 CORPUS_MANIFEST.supplemental572에 등록해요. 전체 본문/API gate는 승격하지 않아요.

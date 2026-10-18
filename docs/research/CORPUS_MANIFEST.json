@@ -4314,5 +4314,32 @@
     ],
     "analysis": "docs/research/NATIVE_MATERIAL_PREPARATION_560.md",
     "fullBodyAPIGatePromoted": false
+  },
+  "supplemental572": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "source": "https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html",
+        "file": "native/build/research-572/gcc-preprocessor.html",
+        "sha256": "1c2878dd4eb6db32e9ecfbe8c314cb698cd70e08a6bdcb2b233b22b3b8c702be",
+        "read": "Web tool returned lines56–128: -M/-MM/-MF/-MT/-MQ/-MD/-MMD. This local HTML is a source snapshot, not proof that the entire manual was read.",
+        "newReading": true,
+        "unread": [
+          "remaining preprocessor switches",
+          "other compiler manuals",
+          "linked environment/search/PCH documents",
+          "full Unreal/Unity corpus"
+        ],
+        "implementationChoice": "GCC -E -P -MD per translation unit with matching optimization; include list plus normalized preprocessed decisions; full-SDK fallback. Cache bounds/owner adoption are HB choices."
+      }
+    ],
+    "analysis": "docs/NATIVE_BUILD_LIGHT_PREPARATION_572.md",
+    "gatePromoted": false,
+    "unread": [
+      "remaining preprocessor switches",
+      "other compiler manuals",
+      "linked environment/search/PCH documents",
+      "full Unreal/Unity corpus"
+    ]
   }
 }
