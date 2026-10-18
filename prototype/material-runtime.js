@@ -1,3 +1,4 @@
+import {checkerValue,checkerGLSL} from './procedural-material.js';
 import {decodeNormalMap,normalMapGLSL} from './normal-map.js';
 import {validSamplerState} from './sampler-state.js';
 import {advancedShadingGLSL,advancedDirectChunk} from './advanced-shading.js';
@@ -133,7 +134,7 @@ function operation(key,args){
   if(key==='reflect'){const n=unit(args.normal),dot=args.direction.reduce((v,x,i)=>v+x*n[i],0);return args.direction.map((x,i)=>x-2*dot*n[i]);}
   if(key==='fresnel'){const n=unit(args.normal),v=unit(args.view),dot=clamp(n.reduce((s,x,i)=>s+x*v[i],0));return args.base+(1-args.base)*Math.pow(1-dot,Math.max(args.power,.0001));}
   if(key==='noise')return noise2(args.uv.map(x=>x*args.scale));
-  if(key==='checker')return ((Math.floor(args.uv[0]*args.scale[0])+Math.floor(args.uv[1]*args.scale[1]))%2+2)%2;
+  if(key==='checker')return checkerValue(args.uv,args.scale);
   if(key==='radialGradient')return clamp(1-Math.hypot(...args.uv.map((x,i)=>x-args.center[i]))/Math.max(args.radius,1e-6));
   if(key==='linearGradient')return clamp((args.uv[0]-.5)*Math.cos(args.angle)+(args.uv[1]-.5)*Math.sin(args.angle)+.5);
   const a=args.a,b=args.b,v=args.value;if(key==='add')return map(a,b,(x,y)=>x+y);if(key==='subtract')return map(a,b,(x,y)=>x-y);if(key==='multiply')return map(a,b,(x,y)=>x*y);if(key==='divide')return map(a,b,(x,y)=>x/(Math.abs(y)<1e-6?1e-6:y));if(key==='power')return map(a,b,(x,y)=>Math.pow(Math.max(x,0),y));if(key==='min'||key==='max')return map(a,b,Math[key]);if(key==='step')return map(a,b,(x,y)=>y<x?0:1);if(key==='lerp')return map(a,b,(x,y)=>x+(y-x)*args.alpha);if(key==='clamp')return map(map(v,args.min,(x,y)=>Math.max(x,y)),args.max,(x,y)=>Math.min(x,y));if(key==='dot')return vector(a,3).reduce((sum,value,index)=>sum+value*vector(b,3)[index],0);if(key==='length')return Math.hypot(...(Array.isArray(v)?v:[v]));if(key==='normalize'){const length=Math.hypot(...(Array.isArray(v)?v:[v]));return map(v,1,x=>length?x/length:0);}if(key==='normalMap'){return decodeNormalMap(vector(v,3),args.strength);}if(key==='saturate')return map(v,0,x=>clamp(x));if(key==='oneMinus')return map(v,0,x=>1-x);if(key==='sine')return map(v,0,Math.sin);if(key==='absolute')return map(v,0,Math.abs);if(key==='fraction')return map(v,0,x=>x-Math.floor(x));if(key==='tilingOffset')return map(map(args.uv,args.tiling,(x,y)=>x*y),args.offset,(x,y)=>x+y);if(key==='panner')return map(args.uv,map(args.speed,args.time,(x,y)=>x*y),(x,y)=>x+y);if(key==='rotateUV'){const uv=vector(args.uv,2),center=args.center,c=Math.cos(args.angle),s=Math.sin(args.angle),x=uv[0]-center[0],y=uv[1]-center[1];return [x*c-y*s+center[0],x*s+y*c+center[1]];}throw Error('지원하지 않는 머테리얼 계산: '+key);}
@@ -356,7 +357,7 @@ export function compileMaterial(data,{uniformParameters=false}={}){
       else if(key==='fresnel')code='('+args.base+'+(1.0-'+args.base+')*pow(1.0-clamp(dot(normalize('+args.normal+'),normalize('+args.view+')),0.0,1.0),max('+args.power+',0.0001)))';
       else if(key==='eyeUV')code='hbEyeUV('+args.uv+','+args.view+','+args.depth+','+args.iris+')';
       else if(key==='noise')code='hbNoise('+args.uv+'*'+args.scale+')';
-      else if(key==='checker')code='mod(dot(floor('+args.uv+'*'+args.scale+'),vec2(1.0)),2.0)';
+      else if(key==='checker')code=checkerGLSL(args.uv,args.scale);
       else if(key==='radialGradient')code='clamp(1.0-length('+args.uv+'-'+args.center+')/max('+args.radius+',0.000001),0.0,1.0)';
       else if(key==='linearGradient')code='clamp(dot('+args.uv+'-vec2(0.5),vec2(cos('+args.angle+'),sin('+args.angle+')))+0.5,0.0,1.0)';
       else if(['cosine','floor','ceil','sign','exp2'].includes(key))code=(key==='cosine'?'cos':key)+'('+args.value+')';

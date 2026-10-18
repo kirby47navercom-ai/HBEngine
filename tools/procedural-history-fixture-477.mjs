@@ -1,0 +1,5 @@
+import {normalHistoryFixture403} from './normal-history-fixture-403.mjs';
+export const proceduralHistoryOperations477=Object.freeze(['noise','checker']);
+export function proceduralHistoryFixture477(operation){
+ if(!proceduralHistoryOperations477.includes(operation))throw Error('Unknown procedural operation');const fixture=normalHistoryFixture403({largeWorld:true,coordinateBuilder:({graph,wire,makeMaterialNode:add})=>{const sample=graph.nodes.find(n=>n.key==='texture'),edge=graph.edges.find(e=>e.to.node===sample.id&&e.to.pin==='uv'),op=add(operation),scale=add('multiply'),combine=add('combine');op.inputValues={scale:operation==='noise'?.25:[.125,.125]};scale.inputValues={b:operation==='noise'?64:1};graph.nodes.push(op,scale,combine);if(operation==='checker'){const phase=add('add');phase.inputValues={b:2};graph.nodes.push(phase);wire(edge.from,phase,'a');wire({node:phase.id,pin:'value'},op,'uv');}else wire(edge.from,op,'uv');wire({node:op.id,pin:'value'},scale,'a');wire({node:scale.id,pin:'value'},combine,'x');wire({node:scale.id,pin:'value'},combine,'y');edge.from={node:combine.id,pin:'rg'};}});if(operation==='checker')fixture.width=12.5;return fixture;
+}

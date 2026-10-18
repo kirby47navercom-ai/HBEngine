@@ -1,3 +1,4 @@
+import {checkerValueNode} from './procedural-material.js';
 import {normalMapNode} from './normal-map.js';
 import * as THREE from 'three/webgpu';
 import {captureMaterialGraph} from './material-source-key.js';
@@ -43,7 +44,7 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
         }sample={code,type:'vec4'};cache.set(rgbaKey,sample);}code=output==='rgba'?sample.code:sample.code[output];
       }else if(key==='split')code=v[output];else if(key==='combine')code=T[type](...['x','y','z','w'].slice(0,Number(type.slice(3))).map(k=>args[k]));
       else if(key==='fresnel')code=T.float(1).sub(args.normal.normalize().dot(args.view.normalize()).clamp(0,1)).pow(args.power.max(.0001)).mul(T.float(1).sub(args.base)).add(args.base);
-      else if(key==='noise')code=noise(args.uv.mul(args.scale));else if(key==='checker')code=args.uv.mul(args.scale).floor().dot(T.vec2(1)).mod(2);
+      else if(key==='noise')code=noise(args.uv.mul(args.scale));else if(key==='checker')code=checkerValueNode(T,args.uv,args.scale);
       else if(key==='radialGradient')code=T.float(1).sub(args.uv.sub(args.center).length().div(args.radius.max(1e-6))).clamp(0,1);
       else if(key==='linearGradient')code=args.uv.sub(.5).dot(T.vec2(args.angle.cos(),args.angle.sin())).add(.5).clamp(0,1);
       else if(key==='normalize')code=type==='float'?v.sign():v.normalize();

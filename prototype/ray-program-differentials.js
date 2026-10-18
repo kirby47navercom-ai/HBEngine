@@ -1,3 +1,4 @@
+import {proceduralDifferentialGLSL,proceduralDifferentialExpressions,proceduralDifferentialNode} from './ray-procedural-differentials.js';
 // Store offsets, not shifted absolute values. Affine graph operations can then
 // preserve a sub-ULP footprint even when their base coordinate is very large.
 import {nonlinearDifferentialGLSL,nonlinearDifferentialExpressions,nonlinearDifferentialNode} from './ray-nonlinear-differentials.js';
@@ -13,7 +14,7 @@ vec4 hbRayDeltaDivide(vec4 a,vec4 b,vec4 da,vec4 db){vec4 result;for(int hbLane=
 vec4 hbRayDeltaRotate(vec4 a,vec4 b,vec4 c,vec4 da,vec4 db,vec4 dc){vec2 p=a.xy-c.xy,dp=da.xy-dc.xy;float cs=cos(b.x),sn=sin(b.x),halfSin=sin(db.x*.5),ds=cs*sin(db.x)-2.0*sn*halfSin*halfSin,dsCos=-sn*sin(db.x)-2.0*cs*halfSin*halfSin;return vec4(cs*dp.x-sn*dp.y+dsCos*p.x-ds*p.y+dsCos*dp.x-ds*dp.y+dc.x,sn*dp.x+cs*dp.y+ds*p.x+dsCos*p.y+ds*dp.x+dsCos*dp.y+dc.y,0,0);}
 vec4 hbRayDeltaReflect(vec4 a,vec4 b,vec4 da,vec4 db){vec3 n=b.xyz/max(length(b.xyz),1e-30);float den=max(length(b.xyz+db.xyz),1e-30),dl=hbRayDeltaLength(vec4(b.xyz,0),vec4(db.xyz,0));vec3 dn=db.xyz/den-n*(dl/den);float base=dot(a.xyz,n),change=dot(a.xyz,dn)+dot(da.xyz,n)+dot(da.xyz,dn);return vec4(da.xyz-2.0*(change*n+base*dn+change*dn),0);}
 vec4 hbRayDeltaEyeUV(vec4 a,vec4 b,vec4 c,vec4 d,vec4 da,vec4 db,vec4 dc,vec4 dd){vec4 z=vec4(0,0,0,0),one=vec4(1,1,1,1),den=vec4(max(abs(b.z),.1),max(abs(b.z),.1),max(abs(b.z),.1),max(abs(b.z),.1)),ad=hbRayDeltaAbs(b,db),dden=hbRayDeltaMax(vec4(abs(b.z),abs(b.z),abs(b.z),abs(b.z)),vec4(.1,.1,.1,.1),vec4(ad.z,ad.z,ad.z,ad.z),z);float cv=max(c.x,0.0),dv=clamp(d.x,0.0,1.0),cd=hbRayDeltaMax(c,z,dc,z).x,ddv=hbRayDeltaMin(max(d,z),one,hbRayDeltaMax(d,z,dd,z),z).x,f=cv*dv,df=cv*ddv+dv*cd+cd*ddv;vec2 q=b.xy/den.xy,dq=hbRayDeltaDivide(b,den,db,dden).xy;return vec4(da.xy-q*df-dq*f-dq*df,0,0);}
-`+nonlinearDifferentialGLSL;
+`+nonlinearDifferentialGLSL+proceduralDifferentialGLSL;
 export const rayDifferentialExpressions=Object.freeze({
  constant:zero,time:zero,viewDirection:zero,texture:zero,store:zero,
  uv:'vec4(uvDelta,0,0)',worldPosition:'vec4(pointDelta,0)',worldNormal:'vec4(normalDelta,0)',
@@ -44,7 +45,7 @@ export const rayDifferentialExpressions=Object.freeze({
  rotateUV:'hbRayDeltaRotate(a,b,c,aDelta,bDelta,cDelta)',
  reflect:'hbRayDeltaReflect(a,b,aDelta,bDelta)',
  eyeUV:'hbRayDeltaEyeUV(a,b,c,d,aDelta,bDelta,cDelta,dDelta)',
- ...nonlinearDifferentialExpressions
+ ...proceduralDifferentialExpressions,...nonlinearDifferentialExpressions
 });
 export function rayDifferentialExpression(operation,expression){
  return rayDifferentialExpressions[operation]??'('+expression.replace(/\b([abcd])\b/g,k=>'('+k+'+'+k+'Delta)')+')-v';
@@ -102,6 +103,6 @@ export function rayDifferentialNode(T,operation,base,delta,context,fallback){
   case'rotateUV':{const p=a.xy.sub(c.xy),dp=da.xy.sub(dc.xy),cs=b.x.cos(),sn=b.x.sin(),h=db.x.mul(.5).sin(),ds=cs.mul(db.x.sin()).sub(sn.mul(2).mul(h).mul(h)),dcs=sn.negate().mul(db.x.sin()).sub(cs.mul(2).mul(h).mul(h));return T.vec4(cs.mul(dp.x).sub(sn.mul(dp.y)).add(dcs.mul(p.x)).sub(ds.mul(p.y)).add(dcs.mul(dp.x)).sub(ds.mul(dp.y)).add(dc.x),sn.mul(dp.x).add(cs.mul(dp.y)).add(ds.mul(p.x)).add(dcs.mul(p.y)).add(ds.mul(dp.x)).add(dcs.mul(dp.y)).add(dc.y),0,0);}
   case'reflect':{const n=b.xyz.div(b.xyz.length().max(1e-30)),den=b.xyz.add(db.xyz).length().max(1e-30),dl=lengthDelta(T.vec4(b.xyz,0),T.vec4(db.xyz,0)),dn=db.xyz.div(den).sub(n.mul(dl.div(den))),base=a.xyz.dot(n),change=a.xyz.dot(dn).add(da.xyz.dot(n)).add(da.xyz.dot(dn));return T.vec4(da.xyz.sub(n.mul(change).add(dn.mul(base)).add(dn.mul(change)).mul(2)),0);}
   case'eyeUV':{const z=T.float(0),den=b.z.abs().max(.1).toVar(),dden=maxLane(b.z.abs(),T.float(.1),absLane(b.z,db.z),z).toVar(),cv=c.x.max(0).toVar(),dv=d.x.clamp(0,1).toVar(),cd=maxLane(c.x,z,dc.x,z).toVar(),ddv=minLane(d.x.max(0),T.float(1),maxLane(d.x,z,dd.x,z),z).toVar(),f=cv.mul(dv).toVar(),df=cv.mul(ddv).add(dv.mul(cd)).add(cd.mul(ddv)).toVar(),q=b.xy.div(den).toVar(),dq=T.vec2(divideLane(b.x,den,db.x,dden),divideLane(b.y,den,db.y,dden)).toVar();return T.vec4(da.xy.sub(q.mul(df)).sub(dq.mul(f)).sub(dq.mul(df)),0,0);}
-  default:return nonlinearDifferentialNode(T,operation,base,delta,{lanes,minLane,maxLane,lengthDelta,divideLane})??fallback();
+  default:return proceduralDifferentialNode(T,operation,base,delta)??nonlinearDifferentialNode(T,operation,base,delta,{lanes,minLane,maxLane,lengthDelta,divideLane})??fallback();
  }
 }
