@@ -967,3 +967,10 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 304–306 최종: 의미상 관측 불가능한 좌표 미분만 절삭해요(2D/array/volume 고정 동일 필터0/11, cube 명시LOD). nested image 좌표의 vX=v 처리·물리 레지스터 덮어쓰기·C++ 동일48진리표/입력선언을 유지해요. CPU106 sandbox는 새 generator 의존 함수를 주입하도록 갱신했고 immutable-header 거부/35연산이 통과했어요. 불투명 GL 경로는 transmission===false일 때만 정의하며 undefined/true와 shader key를 분리해요. Time의 현재0 입력은 conservative true, CPU 상수 파라미터0→양수는 metadata false→true 갱신을 확인했어요. owy6bu의 실제 camera path1024성분 오차0/가시 RGB213, 최초 shader1825→1472ms는 격리 단일 비교예요.
 
 최종 validation306은 GL bh3bqL·GPU xKxboZ·D3D0nLrBW 실제 C++/BP/변형/온오프/해제·재진입을 모두 통과했어요. GL141 첫 전환6591ms/시간3770ms, GPU3667/2111ms, D3D5317/3394ms·재방문198/183ms는 단일 표본이며 FPS/전 기기 보장이 아니에요. 실제 HLSL cube YrALys, GL/GPU48변형 l87gsF, 현재/이전 노멀 RSpje5, 최종 정상/비인덱스 수집 FKJADk도 통과했어요. 비인덱스는 불필요한 정점 Map을 만들지 않으며3112삼각형5상태의786432B atlas가 legacy와 동일·normalMatrix9312→9예요. 새 GPU 타깃/이력/런타임 readback/지속 캐시는 없어요.
+
+307–308: Native C++의 noTransmission bool은 SceneScreenEffects의 CPU 메타데이터만 늘리고 Constants 레이아웃은 유지해요. variant key에 넣고 path 활성일 때만 define을 생성해요. 기본/전환/바이트코드 재사용 실제장치 OV85Vc 및 alpha 확장 f4adHN이 오차0, alpha1702성분 변화/특화0으로 통과했어요. rtQAIX는 alpha검사에서 서로 다른 auto 타입을 한 선언에 묶은 검사 코드 빌드 실패라 선언을 나눴고 -Werror를 유지했어요.
+308 최초 deformation 검사는 그림자 광원/그림자 활성 자체가 없는 fixture에서 pose 변경이 shadowRefresh=true여야 한다고 가정했어요. NativeShadowCache는 records0일 때 명시 clear/dirty0이므로 false가 맞아요. 실제 그림자 광원·castShadow·shadowMap을 만든 뒤 안정→pose변경의 dirty 여부를 검사하고, 광원 없는 경우는 불필요 패스가 없는지도 검증해요. 제품의 그림자 동작/기대치를 임의 완화하지 않아요.
+
+308 fixture의 실제 활성 조건 추가 대조: 광원만 넣은 두 번째 시도도 records0이었어요. renderer는 조명 받는 MeshStandardMaterial 수신자가 하나도 없으면 shadow atlas를 만들지 않아요. 기존 fixture의 MeshBasicMaterial은 unlit이라 수신자가 될 수 없어요. 별도 lit 수신자를 추가해 실제 active layer를 만든 뒤 pose 변경을 검사하고, unlit-only/no-light의 패스 생략을 유지해요.
+
+307 최종 native window yHkwNk: Complex141 실제 pathNoTransmission=true·C++/BP·변형/이전 노멀/필터·해제·재방문을 통과했어요. 첫5187/시간3280ms, 재방문190/221ms는 단일 전환 표본이며 FPS가 아니에요. Fake native-frame 88gBMx는 raw0→.7→alpha.45→Time현재0→raw0의 메타데이터 true/false를 확인했고 runtime은 실제 C++ 응답에 pathNoTransmission을 반환해요. 309의 lit 수신자 포함 deformation 회귀와 기존2D 묶음도 통과예요. GL/GPU 공용 소유자는 이 단계에서 변경하지 않아 기존 통과근거를 재사용해요.

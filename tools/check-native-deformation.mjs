@@ -31,12 +31,14 @@ const channels=new THREE.BufferGeometry();channels.setAttribute('position',new T
 
 const savedWindow=globalThis.window,savedDocument=globalThis.document,packets=[],listeners=new Set(),bridge={addEventListener:(_,fn)=>listeners.add(fn),removeEventListener:(_,fn)=>listeners.delete(fn),postMessage(packet){packets.push(structuredClone(packet));queueMicrotask(()=>{for(const fn of listeners)fn({data:{channel:'hb.render',id:packet.id,ok:true,value:{calls:1,meshes:1,textures:0}}});});}};
 globalThis.window={chrome:{webview:bridge}};globalThis.document={documentElement:{classList:{add(){},remove(){}}}};
-let renderer;
+let renderer,shadowReceiver;
 try{
   renderer=await createNativeSceneRenderer({clientWidth:64,clientHeight:64});const camera=new THREE.OrthographicCamera(-4,4,4,-4,.1,100);camera.position.z=10;camera.updateMatrixWorld(true);
   const render=async()=>{packets.length=0;renderer.render(scene,camera);await renderer.hbFinishFrame();return packets;};
   let p=await render();assert.deepEqual(p.find(p=>p.op==='upload').data.map(r=>r.kind),['deformation','mesh']);assert.equal(p.find(p=>p.op==='frame').data.poses.length,1);
   p=await render();assert.equal(p.some(p=>p.op==='upload'),false);assert.equal(p.find(p=>p.op==='frame').data.poses.length,0);assert.equal(p.find(p=>p.op==='frame').data.updates.length,0);
+  assert.equal(p.find(p=>p.op==='frame').data.shadowRefresh,false,'no shadow light does not request a shadow pass');
+  const shadowLight=new THREE.DirectionalLight();shadowLight.position.set(0,2,5);shadowLight.castShadow=true;mesh.castShadow=true;scene.add(shadowLight);shadowReceiver=new THREE.Mesh(new THREE.PlaneGeometry(4,4),new THREE.MeshStandardMaterial());shadowReceiver.position.z=-1;shadowReceiver.receiveShadow=true;scene.add(shadowReceiver);renderer.shadowMap.enabled=true;p=await render();assert.equal(p.find(p=>p.op==='frame').data.shadowRefresh,true);p=await render();assert.equal(p.find(p=>p.op==='frame').data.shadowRefresh,false);
   tip.position.x=2;p=await render();assert.equal(p.some(p=>p.op==='upload'),false);assert.equal(p.find(p=>p.op==='frame').data.poses.length,1);assert.equal(p.find(p=>p.op==='frame').data.shadowRefresh,true);
   mesh.morphTargetInfluences[0]=.75;p=await render();assert.deepEqual(p.find(p=>p.op==='frame').data.poses[0].weights,[.75]);assert.equal(p.some(p=>p.op==='upload'),false);
   morph.setX(0,3);morph.needsUpdate=true;p=await render();assert.deepEqual(p.find(p=>p.op==='upload').data.map(r=>r.kind),['deformation']);assert.equal(p.find(p=>p.op==='frame').data.poses.length,1);
@@ -44,5 +46,5 @@ try{
   mesh.position.x=100;p=await render();assert.equal(p.find(p=>p.op==='frame').data.remove.length,0);
   scene.remove(mesh);geometry.dispose();p=await render();assert.deepEqual(p.find(p=>p.op==='frame').data.release.deformations,[mesh.uuid]);assert.deepEqual(p.find(p=>p.op==='frame').data.release.meshes,[geometry.uuid]);
   await renderer.hbReleaseScene();
-}finally{await renderer?.dispose();globalThis.window=savedWindow;globalThis.document=savedDocument;geometry.dispose();material.dispose();mesh.skeleton.dispose();}
+}finally{await renderer?.dispose();globalThis.window=savedWindow;globalThis.document=savedDocument;geometry.dispose();material.dispose();mesh.skeleton.dispose();shadowReceiver?.geometry.dispose();shadowReceiver?.material.dispose();}
 console.log('Native deformation: Three skin/morph order, validation, sparse poses, static mesh reuse, shadow dirtiness and disposal passed');
