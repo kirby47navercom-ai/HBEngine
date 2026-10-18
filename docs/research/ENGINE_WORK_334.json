@@ -18,7 +18,7 @@
     "tools/check-ray-texture-sharing-333-window.mjs": "c1f299155127c2aa3a99c4c52b5abd82ad632db97f92e7d8485f83d5f1d5b516",
     "tools/ray-texture-gpu-probe.mjs": "765d40d90bfdf9782b2ea7c64da79f5bc0b8a1d4c6db4cbac5f8724c39af1b17"
   },
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/ray-texture-sharing-331-J9Mfvr/acceptance.json",
@@ -49,6 +49,10 @@
     {
       "path": "native/build/rendering-187-lSBMXU/acceptance.json",
       "sha256": "d558599b132b39948ec036b8faef73aaab629e5d21babb3d091e6523501cc592"
+    },
+    {
+      "path": "native/build/ray-texture-sharing-331-5GYkHu/acceptance.json",
+      "sha256": "db247665cdcb4c68735514bb1849cae480c2938c9f3af99100d324af1736cbf5"
     }
   ],
   "nativePlayerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
@@ -106,5 +110,6 @@
     "RND06 GL/전체 초기 준비 지연은 잔여",
     "RND07 투명 이전 분기/다른 표면 필드는 잔여",
     "실기기/FPS/전체 엔진 및 문서 분석 gate를 승격하지 않음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_334.json"
 }

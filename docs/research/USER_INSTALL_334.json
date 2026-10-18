@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "e9613ad91dcd8e3eac8c639db51248f3986832d3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9\\HBEngine.exe",
+  "bundleHash": "55e1cb7c02adbcb935c048b1260ed0ae8f0b8822f108a60037a92279ef416f53",
+  "files": 3122,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "e9613ad91dcd8e3eac8c639db51248f3986832d3",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9\\HBEngine.exe",
+    "bundleHash": "55e1cb7c02adbcb935c048b1260ed0ae8f0b8822f108a60037a92279ef416f53",
+    "files": 3122,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3132,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e",
+          "bytes": 196484809,
+          "manifestSHA256": "f54dfb9d67f0a6a839b17e9b58a84bac1d8967ef092e0980e2297dcfd60e35e4"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T05:48:29.9180716Z",
+      "bytes": 196484809,
+      "generated": [
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\native\\build\\deps\\nlohmann\\json.hpp",
+          "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+          "bytes": 953436
+        },
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+          "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+          "bytes": 64
+        }
+      ],
+      "preserved": [],
+      "remaining": [
+        "55e1cb7c02adbcb9"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/ray-texture-sharing-331-5GYkHu/acceptance.json",
+        "sha256": "db247665cdcb4c68735514bb1849cae480c2938c9f3af99100d324af1736cbf5",
+        "invocation": [
+          "tools/check-ray-texture-sharing-331-window.mjs",
+          "--case",
+          "worldPositionUV",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\55e1cb7c02adbcb9\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "installationAPI": null
+      }
+    ],
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-nMgEi2/acceptance.json",
+      "playerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+      "scope": "Native player/HLSL renderer unchanged since318; narrower source D3D evidence reused, no new installed D3D game claim."
+    },
+    "manifestVerifiedFiles": 3122,
+    "versions": [
+      "55e1cb7c02adbcb9"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "334 installed WebGPU dual-context sampler count/pixels and binding guard, byte-matched source GPU C++/BP game and complete manifest. GL/native renderer unchanged; no new installed whole-game or whole-engine completion claim.",
+    "webgpuGateReuse": {
+      "path": "native/build/gpu-scene-5o6btx/acceptance.json",
+      "sha256": "cb205793bdf7b5a3ee543cfbd17021212fd47500832a946bc6916535e64dec04",
+      "runtimeOwnersMatched": 37,
+      "scope": "Actual source WebGPU C++/BP game after sampler change; checked prototype bytes match installation. Installed dual-context compiler separately executed by331; not another installed full game run."
+    }
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 0,
+    "removed": []
+  },
+  "scope": "334 installed WebGPU dual-context sampler count/pixels and binding guard, byte-matched source GPU C++/BP game and complete manifest. GL/native renderer unchanged; no new installed whole-game or whole-engine completion claim."
+}

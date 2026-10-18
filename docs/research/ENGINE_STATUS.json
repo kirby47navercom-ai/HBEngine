@@ -1924,11 +1924,11 @@
   ],
   "latestBatch": "308–334",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_327.json",
-    "sourceCommit": "4616e320f15a6b02e4db9144242c89f2381d3716",
-    "bundleHash": "0d2a7b42112d229e5ada80fd5543aba32f5e382b35c5bc3c03757e0c13b25947",
+    "receipt": "docs/research/USER_INSTALL_334.json",
+    "sourceCommit": "e9613ad91dcd8e3eac8c639db51248f3986832d3",
+    "bundleHash": "55e1cb7c02adbcb935c048b1260ed0ae8f0b8822f108a60037a92279ef416f53",
     "verified": true,
     "versions": 1,
-    "scope": "308–327 defined prior-frame/2D/storage and sequence ownership improvements, verified in installed editor and packaged games. Not whole-engine completion."
+    "scope": "308–334 defined prior-frame/2D/storage/sequence and WebGPU sampler improvements; actual scoped installation evidence, not whole-engine completion."
   }
 }

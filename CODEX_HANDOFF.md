@@ -1,9 +1,11 @@
-# HBEngine 현재 인계 — 330–334 렌더링 검증·설치 준비
+# HBEngine 현재 인계 — 308–334 설치 확인·계속 구현
 
-- 구현63924f6/검사839d0f1 839d0f1cd6171454fa6c8f7abcc08f7ccbf3b12c예요. 설치327(0d2a7b42112d229e) 이후 WebGPU sampler 공유를 만들었고 아직334 설치 전이에요.
-- rayMaterialNode의 textureLibrary는 기존 Map/load/u를 전달해 current/prior sampler Fn을 재사용해요. 다른u/load/Map형식은 거부해요. 새 전역cache/GPU버퍼/유니폼/자동읽기 없음. previous geometry/normal/UV/time/mip는 독립이에요.
-- J9Mfvr 실제17dual context 오차0·기존법선관측/문맥차, GQbcyT48family-filter/384표본 oldmodule6d4대조오차0·함수4→2, 실제sourceGPU CPP/BP5o6btx 통과예요. CPU274HatdIg/187lSBMXU 통과. 함수count 첫 실패는WGSL name뒤공백regex,333첫 실패는CDP20초한호출48개→4개씩12호출로고쳤고총48/384조건유지예요.
-- GL실험 ray-program-context-sharing.js는미채택이에요. W9Gc5Y17GL/GPU출력통과·329Jfr2X9 full ABBA2024/1957/2026/1931ms로시간개선근거없음. 기본GL경로에연결하지않았고성능완료로세지않아요.
-- 다음 sync334/install334/finish334 새marker를한번씩사용해설치331 --case worldPositionUV를확인해요. 바이너리/GL/DX는그대로여서재컴파일하지않아요. sourceGPUgate/player/변경sourceSHA와전체manifest·User읽기전용SHA·Versions1확인해요.
-- 그후초기준비지연다음후보: 가이드의 current/differential/prior 노멀을같은호출지점에서mixed frame인수로평가해driver IR재확장을줄이는방식이에요. 아직구현하지않았어요. field3 program의 geometry preamble과 공통 graph본문분리 실험이기초이고 GL/WGPU/HLSL의단독출력/가이드/동작분기를확인해야해요.
-- RND07투명분기/다른표면필드와엔진누적잔여는ENGINE_STATUS정본. source/installed 명세를고치지않고다음버전으로만전환·Versions1·사용자프로필시험사용금지·사용자창조작금지예요. 이전 one-shot은전부재실행하지않아요.
+- 구현63924f6/검사839d0f1·문서e9613ad main push예요. 설치 55e1cb7c02adbcb9 하나·3122명세전체SHA·바로가기2/.hbproject·User10385파일 전후SHA 동일이에요. USER_INSTALL_334가 실제 설치 정본이에요.
+- 308–318: 이전 geometry/normal/world/view/mip/카메라콘17포즈·8카메라, 대형희소2D/CPP/BP, 작은 text write intent stableID 복구를 만들고 설치했어요. ENGINE_WORK_318 참조예요.
+- 319–327: 부모 원자 graph lease·whole component/property/Transform alias·skeletal·clip 우선순위/하위 인계/부분 구간/복원·재진입/오류정리를 만들었어요. CPU13종 및 설치AN3o6f 실제편집기/D3D·GL CPP/BP/실제뼈통과예요.
+-330–334: WebGPU current/prior textureLibrary 기존 Map/Fn 공유. 다른load/u/Map은거부·새캐시/버퍼/유니폼/읽기없음. J9Mfvr17dual pose오차0·관측unitnormal/문맥차1.9384, GQbcyT4종12필터384표본6d4baseline오차0·WGSLTexture4→2, sourceGPU CPP/BP5o6btx통과예요. 설치5GYkHu 실제dualnormal/guard/함수4→2/오차0·sourceGPUgate prototype와설치SHA를확인했어요.
+- GL ray-program-context-sharing.js는기본경로미채택 실험이에요. W9Gc5Y17GL/GPU출력과소스축소는통과했으나329Jfr2X9 ABBA2024/1957/2026/1931ms에서준비시간개선근거없음. 실험을성능완료로세지않아요. 원본생성자변경없이tools --shared-inputs로만써요.
+- 지금다음 RND06후보: current/differential/prior normal을한호출지점의mixed-frame인수로평가해driver가graph본문을두호출지점에서펼치는비용을줄이는방식. 아직구현전이에요. 함수body공유만으로시간개선이없었으니같은실험을반복하지않아요. native/build에별도프로토타입을만들고GL/WGPU/HLSL출력/가이드/branch/lens를대조해야해요.
+- 필요소유자: ray-material-shader.js의rayProgramGLSLPass/previousPrograms·ray-previous-context.js·path-guide-specialization.js shareGuideNormals·path-denoise.js, WGPU ray-material-gpu.js compile/Fn +ray-previous-gpu.js, generate-ray-programs.mjs. 기하preamble(uv/normal/pointX/Y)과IR본문을분리하되previousbary/normal/width독립유지해요. normalContextLod도TBN/field3기하문맥분리필요해요.
+- RND07투명과다른표면필드, 2Ddiskchunk/배열복사, 외부sequenceplayback/별칭/weighted, AI/물리/배포 등누적잔여는ENGINE_STATUS정본. 전체78등록행을UE/Unity전체분모로취급하지않아요.
+- 모든이전record/sync/install/finish318/327/334, validate321/322/325/327와이전oneshot재실행금지. rootHBPlayer없음 dist/HBEngine/HBPlayer사용. User읽기전용inventory·자체숨김창/고유포트·사용자창보존·활성사용자시heavy/설치보류·Versions1/원본보고서보존을유지해요.
