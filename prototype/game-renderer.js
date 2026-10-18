@@ -24,7 +24,8 @@ export function finishGameRendererFrame(renderer){renderer.hbFrameInfo={render:{
 export function gameRendererCompilationInfo(renderer){
  if(!renderer)return null;
  const native=renderer.hbBackend==='d3d11'?renderer.hbDiagnostics():null;
- const gpuTiming=native?{api:'D3D11',supported:Number.isFinite(native.gpuTimeMs)?true:null,enabled:null,status:Number.isFinite(native.gpuTimeMs)?'ready':'unavailable',lastMs:Number.isFinite(native.gpuTimeMs)?native.gpuTimeMs:null,completedSequence:native.gpuTimingFrame??null,scope:'existing native asynchronous GPU frame query; native collection policy'}:gpuFrameTimingInfo(renderer);
+ const nativeTime=Number.isFinite(native?.gpuTimeMs)&&native.gpuTimeMs>=0?native.gpuTimeMs:null;
+ const gpuTiming=native?{api:'D3D11',supported:nativeTime!==null?true:null,enabled:null,status:nativeTime!==null?'ready':'unavailable',lastMs:nativeTime,completedSequence:native.gpuTimingFrame??null,scope:'existing native asynchronous GPU frame query; native collection policy'}:gpuFrameTimingInfo(renderer);
  return {backend:renderer.hbBackend,gpuTiming,pipelinePreparation:gpuPathPreparationInfo(renderer.hbPathPreparation),shaderCompilation:native?.shaderCompilation||null,shaderDiskCache:native?.shaderDiskCache||null};
 }
 export function gameRendererInfo(renderer){
