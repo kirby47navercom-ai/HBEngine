@@ -114,6 +114,16 @@
       "path": "native/build/regression-549.json",
       "sha256": "85f272604df21279b4a72a3dc8c0a95dde9028d2a665866f891f4e43e687fe02",
       "scope": "해당 검사 JSON에 정의한 범위"
+    },
+    {
+      "path": "native/build/texture-composite-544-9BcjpA/acceptance.json",
+      "sha256": "60a1ddee273d304b4ea6e95a23410dc6ef28565051a74a742806037b2686048b",
+      "scope": "Actual hidden editor, original pixels/normal descriptor closure, parameter replacement, GL and TSL graph rendering at three LODs, exact packed-ray mip bytes and queued module worker ownership. Native raster and temporal context have separate gates."
+    },
+    {
+      "path": "native/build/texture-composite-548-player-clLP7D/acceptance.json",
+      "sha256": "5532bbd5e2f6ea756d23cb8e86a2e4b4e71310ea190528161aac217f5b1c8e04",
+      "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
     }
   ],
   "sourceGames": [
@@ -151,6 +161,7 @@
     "별도 기하 화면 공간 Specular AA·방향성 필터·UV 경계와 추가 포맷",
     "초기 GL/FXC 자원 준비·곡면 역해/참여 매질·다른 누적 엔진 목표"
   ],
-  "installationPending": true,
-  "scope": "543–549 RGBA8 가져오기 노멀 분산→거칠기·UI/AI/의존/런타임 교체·세 렌더 경로와 이전 프레임 문맥·실제 C++ 패키지 게임. 전체 엔진/본문API/FPS 완료 증거가 아니에요."
+  "installationPending": false,
+  "scope": "543–549 RGBA8 가져오기 노멀 분산→거칠기·UI/AI/의존/런타임 교체·세 렌더 경로와 이전 프레임 문맥·실제 C++ 패키지 게임. 전체 엔진/본문API/FPS 완료 증거가 아니에요.",
+  "installationReceipt": "docs/research/USER_INSTALL_551.json"
 }

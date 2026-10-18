@@ -2157,11 +2157,11 @@
   ],
   "latestBatch": "543–549",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_541.json",
-    "sourceCommit": "38ee664f59a4571d0219914841f15ce0464121fb",
-    "bundleHash": "c18dc18036317c462e651b4e2b32672b166feada891e2d8556fff7436e8d49bc",
+    "receipt": "docs/research/USER_INSTALL_551.json",
+    "sourceCommit": "92742ff8f31e59e6e5695923174c905ca8cb870c",
+    "bundleHash": "68473fd495b977a3403d7b5a5352afbc338cccf7946863316a8b284323305c17",
     "verified": true,
     "versions": 1,
-    "scope": "541 네형식4밉모드 설치GL/TSL 실제표면·설치SDK/packager/player의 C++ Alpha→bias·47owner/3391전체SHA/User읽기SHA·연결/Versions1·Versions가변cache0"
+    "scope": "551 합성 상세/GL/TSL/worker/self-source와 설치 SDK/packager/player 새 C++ SetTexture 게임·64owner/3401전체SHA/User 읽기SHA/연결/Versions1"
   }
 }

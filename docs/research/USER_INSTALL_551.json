@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "92742ff8f31e59e6e5695923174c905ca8cb870c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3\\HBEngine.exe",
+  "bundleHash": "68473fd495b977a3403d7b5a5352afbc338cccf7946863316a8b284323305c17",
+  "files": 3401,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "92742ff8f31e59e6e5695923174c905ca8cb870c",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3\\HBEngine.exe",
+    "bundleHash": "68473fd495b977a3403d7b5a5352afbc338cccf7946863316a8b284323305c17",
+    "files": 3401,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3392,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\c18dc18036317c46",
+          "bytes": 179771490,
+          "manifestSHA256": "4d0fa8458ac5faed9bfbf5847f7cb45c1f579109295858fb4a39066c6d1c57b5"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T21:04:50.9050339Z",
+      "bytes": 179771490,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "68473fd495b977a3"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 3,
+      "bytes": 41414774,
+      "receipt": null,
+      "entries": [
+        "6a2e7c5ca8bad5fa9244/b86a374e8fcb6046f18a",
+        "6a2e7c5ca8bad5fa9244/c711666c3a93bb0907e1",
+        "6a2e7c5ca8bad5fa9244/5b9f9fb9825f0a7a31a4"
+      ],
+      "running": []
+    },
+    "nativePlayerSHA256": "052f8aa28b6057066ee7cdf3a3c044f05ff83c55b0ff24f79a728f42d74d5b09",
+    "installedGates": [
+      {
+        "path": "native/build/texture-composite-544-9BcjpA/acceptance.json",
+        "sha256": "60a1ddee273d304b4ea6e95a23410dc6ef28565051a74a742806037b2686048b",
+        "scope": "Actual hidden editor, original pixels/normal descriptor closure, parameter replacement, GL and TSL graph rendering at three LODs, exact packed-ray mip bytes and queued module worker ownership. Native raster and temporal context have separate gates."
+      },
+      {
+        "path": "native/build/texture-composite-548-player-clLP7D/acceptance.json",
+        "sha256": "5532bbd5e2f6ea756d23cb8e86a2e4b4e71310ea190528161aac217f5b1c8e04",
+        "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3401,
+    "versions": [
+      "68473fd495b977a3"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-551-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/texture-composite-544-O7sQe3/acceptance.json",
+        "sha256": "af330e3a76a2b8ba5a46b2e05131b1d7fc9812166f773995b854c109126213db",
+        "scope": "Actual hidden editor, original pixels/normal descriptor closure, parameter replacement, GL and TSL graph rendering at three LODs, exact packed-ray mip bytes and queued module worker ownership. Native raster and temporal context have separate gates."
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/texture-composite-548-player-i2AR00/acceptance.json",
+        "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
+      }
+    ],
+    "scope": "551 전체명세/64소유SHA·설치된 합성 편집/GL/TSL/worker/self-source·설치 SDK/packager/player의 새 C++ SetTexture 왕복 게임·User 읽기SHA/연결/Versions1/Versions 가변cache0. 전체 엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 8995953,
+    "files": 10,
+    "leaseFiles": 0,
+    "insideVersions": false
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/texture-composite-545-gz05oh/probe.exe",
+        "bytes": 1578640,
+        "sha256": "622893a62d54961bdeaa0e14481438b8dc9ebcce587b18e1fc239dc8809729cf"
+      },
+      {
+        "path": "native/build/texture-history-468-native-JUSclO/probe.exe",
+        "bytes": 1085344,
+        "sha256": "983aabb0187c1e5b2a0ddf5db05a0ea81111f9eb0b8f0d8ba112df0c926a9d20"
+      }
+    ],
+    "bytes": 2663984
+  },
+  "globalCleanup": {
+    "failures": [],
+    "freeAfter": 467846889472,
+    "freeBefore": 467846868992,
+    "deleted": 1,
+    "date": "2026-10-18T21:07:10.6873761Z",
+    "files": 69,
+    "bytes": 3732,
+    "skipped": [],
+    "receipt": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\cache-prune-1792357626066-94bcdfab-2d1b-4cb1-8448-d7e3fbe8ecb6"
+  },
+  "scope": "551 전체명세/64소유SHA·설치된 합성 편집/GL/TSL/worker/self-source·설치 SDK/packager/player의 새 C++ SetTexture 왕복 게임·User 읽기SHA/연결/Versions1/Versions 가변cache0. 전체 엔진/FPS 완료 주장이 아니에요."
+}
