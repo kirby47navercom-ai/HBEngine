@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "0674c40a28f34bc387b8a7f4a9b10d497e157f3c",
+  "targetIds": [
+    "RND-05",
+    "RND-06",
+    "RND-07",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/geometry-gi.js": "bf6b2906d8c45b907df1fd2c6bbbe22e2477ae0128ea0bc56a81b94644d8371e",
+    "prototype/path-denoise.js": "f807e014be60898604d724812c170605187c04a2cec12911108eda55d919f599",
+    "prototype/path-guide-gpu.js": "6553892dc7ba9c8c7a697dee675fc33df8d6464fb1a84d393194bc27b960a18a",
+    "prototype/path-guide-specialization.js": "07415a3cb71b81f5c580f930f634a44a3581934f61b919ae78557a0004234af4",
+    "prototype/path-previous-normal-gpu.js": "83ed5971a9189fbaea0676530778c975ec7ce48ba34efd00b1fdee1410dc4f84",
+    "prototype/path-surface-history-gpu.js": "8391b89fbae6044d99d5e44ce8cb1357a398290436b412a711719a4584fbcf58",
+    "prototype/path-surface-history.js": "d60d4e00c25c10ed938727c2fbf12c9169745cb65de9c72e546c25905d0d094e",
+    "prototype/ray-material-gpu.js": "f2bafa1d99e27bb4ac21d70a4cd2accf186d02d89d2ed169d6cf26242c3f8c70",
+    "prototype/ray-material-shader.js": "4aced55eda807f831c57059d75ca903a2b8c142139368daa3a2c90ed32f675c8",
+    "prototype/ray-previous-context.js": "0a367ebbb71af187468b3b5fa66183ac8b506338b28791685ce6cbbd99ca11ca",
+    "prototype/ray-previous-gpu.js": "117d2829d91dd1e00c5097c5a12ab16e5ea1077ca5776f995e8e40ae13a32a06",
+    "prototype/ray-surface-history-context.js": "8526557cb4baf52707f24011b856141e186b614f646627ca68f65c345420eb8a",
+    "tools/check-coat-lobes-364-window.mjs": "f13937a6041407155c71bbe484d64f8836a732d34cafeb46d0f85f07550b69b0",
+    "tools/check-guide-history-358-window.mjs": "2f62fd3d162146a97dc6d0256957aa27a7dbae460047bcbe284c9df7d40f0369",
+    "tools/check-guide-history-360-native.mjs": "7e1bdd913e0b7aba77d19f5b73a15dc8eef79aedf15581913795025775bb621e",
+    "tools/check-native-scene-351.mjs": "8e55e941f8be6783ff5c7f2ee6e9964592ae1025d148e6936915fb7ed63242cd",
+    "tools/check-previous-coat-363-native.mjs": "000ef9be89a3860360d138452e1fb797a1b5d082e952eb72f48176793e14a183",
+    "tools/check-previous-coat-363-window.mjs": "143d0b252960d93a95a2041a17e36760c81f87bca8eb542fe9f117c246d8ac50",
+    "tools/check-previous-fields-361-native.mjs": "ab5def180d4f375913bc2938f1798ff999819421b0906adcba45a56986ee0d81",
+    "tools/check-previous-fields-361-window.mjs": "999e865fd8f00ab1db972cbd6f37d0235d41b9ff67b60793d4d6ab9cb029db14",
+    "tools/check-previous-surface-353-native.mjs": "15e9a1605f418d427eb5896182cec6ed1b5381ee7f5ab9656e8d7e99c37eea2a",
+    "tools/check-previous-surface-353-window.mjs": "e2d6e5c0fcc7d52b82036a6ade089cca5bde35de4cd6fe435cd1acc3848eb476",
+    "tools/check-prior-normal-features-365.mjs": "70e0a0aefa39eea185a48f584c72ddfa5ce8b988f946b277ef49fdce79e68033",
+    "tools/check-ray-surface-context-357.mjs": "6be4dc9a9a3dc2a3ef187fc276dd039d7212db53514a54c9ef6f7a3076cae3e3",
+    "tools/check-rendering-190.mjs": "29bb994fa74e67edaffbb0310045854a1dd5991bd05b8279a41ff3910ca22991",
+    "tools/check-rendering-296-window.mjs": "dd294287b9c41b7cea0c3d1425ee18cc6a242c5290de236ce74c751d6db3e3eb",
+    "tools/check-surface-history-354.mjs": "85914d0653c5039e154dc2053caa6d3989e60955b16290ea6154dbada320c1ae",
+    "tools/check-surface-history-contract-362.mjs": "8a704a9a870017a3023a06f815fe893db118a5938fed49638c3f3b964643bdfd",
+    "tools/check-surface-refraction-355-native.mjs": "5f1a852adcc0f5203ec5c65f4e6def4c0d57d096907c5ce709f926a67006bd99",
+    "tools/check-surface-refraction-355-window.mjs": "a5d6183bc570b7e602c5dfa5e6584595ee5f3b04fe72ae17ec2ec63eb78eddd3",
+    "tools/check-surface-time-history-359.mjs": "43afe3d99e1f667444d36aec31f9128538d5c470b7b9c897038183f038ce3e15",
+    "tools/editor-automation.mjs": "e7b04a7dc05e3ad14949773df5b3c4114bcd225a707e07d51470dfba5a02a9fc",
+    "tools/generate-ray-programs.mjs": "8ecfb6de8d195f08e976b5d71cff9e08a0fef878df77b0469809c8e48eb9ba34",
+    "tools/guide-history-fixture-358.mjs": "806e71ba35f1c44b8ae7d0e5c7915470605e75811fa6c8183e7b2f8a14c1cdb0",
+    "tools/guide-history-probe-358.mjs": "e092da7ff19a208b1b87fe6a1d4aa3f2ee2d7a562c6c776b26ba99ba68209f1e",
+    "tools/guide-reference-snapshot-356.mjs": "ee05dc434c4160bce8ae7d36e275630eaefc8a860798b12ba8746cf84ee9d7f3",
+    "tools/previous-coat-fixture-363.mjs": "df3a363e67929cbf6148174f30871f54aea9be9bff432205003de48e495f80d6",
+    "tools/previous-coat-probe-363.mjs": "e6b5eeb8abcbc722c50f6eb6e5e8dd171d986ae279f8ba4463e6e7bb59d52b1d",
+    "tools/previous-fields-fixture-361.mjs": "ebf1a1fdae740ea1ede95185b58a768a84e38b44269bfa7278cd980688eafdd5",
+    "tools/previous-fields-probe-361.mjs": "df0e757b3ded6e4944508e25c918be524b3ed84f6a745606acdc752be37796db",
+    "tools/previous-surface-fixture-353.mjs": "97d5c9c15702b01f530466d27c90028b7a4903830157b76f5a9959ec112b9e59",
+    "tools/previous-surface-probe-353.mjs": "cd4a60f0607c60b1f3ac145ea10b11dfca3aff84f1344b7bab89d9d26dc8bce1",
+    "tools/surface-history-cases-355.mjs": "0d3bc2bb944485a9a7cecb4a064e47392bdfa863e367ea5e2b33e3653cc4ef4b",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a",
+    "native/include/HBEngine/ScreenEffects.hpp": "6a9cc8ab979b9575484b306bccf20fff65f933517a99f085cba37f6a372d2213",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd"
+  },
+  "testSourceHashes": {
+    "native/tests/ray-surface-context-357.cpp": "0806b72fc39df29076b2dd4cc66024d50a19cf9943e332d78d48b66cd7a74ace"
+  },
+  "nativePlayerSHA256": "69b0a1937e1bb05a5ad620d1c578b78da48185e77d6dbfd369c7d3ad7f92a8e4",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/previous-surface-353-dtd6sG/acceptance.json",
+      "sha256": "b3d17ee972de343222f308dc13cb75fcf22ab4507a2f04fbfd3885a72f46a895"
+    },
+    {
+      "path": "native/build/previous-surface-353-native-0YGmPv/acceptance.json",
+      "sha256": "a3f4f50c4f511ad161c221147e49b6d08eab7d3191a1bf93924ef3aa3a985847"
+    },
+    {
+      "path": "native/build/surface-refraction-355-cPNl6l/acceptance.json",
+      "sha256": "615f4741fb6fd77ca2e197340292328868caed6122c2e2995a85518d6aaf1bfc"
+    },
+    {
+      "path": "native/build/surface-refraction-355-native-INAIhQ/acceptance.json",
+      "sha256": "3fb6a823c46673230afe3eec807cf0bfdcb9db66d4460cb799a0b776d127d9cd"
+    },
+    {
+      "path": "native/build/ray-surface-context-357-QBmuyd/acceptance.json",
+      "sha256": "2d3150bcb78b56549f6251e637eae7d12ac56ba73a674ff1d35b820ecfd78238"
+    },
+    {
+      "path": "native/build/surface-time-history-359-XN618O/acceptance.json",
+      "sha256": "139f952a7001e9a89bc58276f96b297d48dd7363e3595ec0bd148a27e28af52a"
+    },
+    {
+      "path": "native/build/previous-fields-361-52SXNE/acceptance.json",
+      "sha256": "731f75388bb4ac3edc2868bf7d756006ee7d97c0bdfa20c7a68bd8f416e605da"
+    },
+    {
+      "path": "native/build/previous-fields-361-native-RoIJMS/acceptance.json",
+      "sha256": "4065fd4917279deba690b8225547d88a7544088e2916e67100549d7208a4ee86"
+    },
+    {
+      "path": "native/build/previous-coat-363-4LLV8a/acceptance.json",
+      "sha256": "5813c0e49c258373050ff7bf91d8325509fc5d8f72d62572546288f98c66a6a8"
+    },
+    {
+      "path": "native/build/previous-coat-363-native-Bd68Ua/acceptance.json",
+      "sha256": "ee05e7dafec8bfa4ead914be6b3a965510816e5112e3e1fa5f18e12d13f5d819"
+    },
+    {
+      "path": "native/build/guide-history-358-rH53R1/acceptance.json",
+      "sha256": "7cab499a38e00284564f9f48d742650034a222a187548689caf685d6bf95a072"
+    },
+    {
+      "path": "native/build/guide-history-360-native-fDwhGD/acceptance.json",
+      "sha256": "72eb92cd1ecc88fdaad30fc97935e022ba5bbcb17ac232bb18e701e80e7aef2d"
+    },
+    {
+      "path": "native/build/coat-lobes-364-d0SyyH/acceptance.json",
+      "sha256": "4fcec1134417ce961172f2745448520ef9ece298d8c6c96a77146d03a67bea41"
+    },
+    {
+      "path": "native/build/rendering-296-window-u8Ueav/acceptance.json",
+      "sha256": "d63d58567b1f41137b94fdbc2fa4459ace0b5a0ff14de847668498d7be9a535b"
+    },
+    {
+      "path": "native/build/native-scene-351-auUrk1/acceptance.json",
+      "sha256": "3c9c31e46968c7e63e17f798aeb3a45a85592b277d87b5c304e83043c52f8551"
+    },
+    {
+      "path": "native/build/gpu-scene-YqgmvX/acceptance.json",
+      "sha256": "332d0830c7d3013a50d92c663acb5ddc45c7b3a275fc4c0cdc364901c95a712a"
+    },
+    {
+      "path": "native/build/gpu-scene-8O92iS/acceptance.json",
+      "sha256": "b6807f4f8e3595c0758c886fa940bb8e82890199d5029e3a42c57d54f7294715"
+    },
+    {
+      "path": "native/build/rendering-187-VgRdLL/acceptance.json",
+      "sha256": "d558599b132b39948ec036b8faef73aaab629e5d21babb3d091e6523501cc592"
+    },
+    {
+      "path": "native/build/rendering-190-zCt2bW/acceptance.json",
+      "sha256": "2fbe2f5956652d3df6a29c290f2c00762cfbc48699558af00bdecc2dcf3bd61b"
+    }
+  ],
+  "lightChecks": [
+    "check-surface-history-354",
+    "check-surface-history-contract-362",
+    "check-prior-normal-features-365",
+    "check-shader-cache-diagnostics-348",
+    "check-rendering-141 --record",
+    "check-rendering-151",
+    "generate-api --check"
+  ],
+  "implemented": [
+    "공용 IR/필드 마스크/저장 형식으로 이전 표면10필드·절대 시간·세계/시점·UV/밉 문맥 평가",
+    "register version/output overwrite 기반 live필드 선택·정적 current프로그램/텍스처 sampler 재사용",
+    "불투명 지원 시간 graph의 committedpose/time 유지·가시성/발광/CPUfallback/투명체/편집/rewind 전역초기화 보존",
+    "물리/색/고급 표면값·앞뒷면/임계각/TIR 분기 이력거부·relative/absolute tolerance",
+    "독립 이전 코팅TBN/decodednormal·coating우세와base mirror 선택·차분 이웃의 lobe 일치 검사",
+    "GPU 미사용 normal/coatdecoder 제외와현재 feature상속·빈채널 분석할당 제외",
+    "읽기전용 AI10필드/문맥/초기화/자원/제한 계약·디스크캐시 설명 일치",
+    "검사 camera/curved/유효motion 관측과결합 reference동결·prepared package 모드보존/realpath 내부경로 검증"
+  ],
+  "sourceGames": [
+    {
+      "backend": "D3D11",
+      "path": "native/build/native-scene-351-auUrk1/acceptance.json",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 5080.8563
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2282.6339000000007
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 150.40409999999974
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4253.139100000002
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 130.16240000000107
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 145.95100000000093
+        }
+      ],
+      "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+    },
+    {
+      "backend": "WebGPU",
+      "path": "native/build/gpu-scene-YqgmvX/acceptance.json",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 3550.4614999999903
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 898.3647999999957
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 183.61969999999565
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 3806.142599999992
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 877.1621999999916
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 36.59470000000147
+        }
+      ],
+      "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+    },
+    {
+      "backend": "WebGL2",
+      "path": "native/build/gpu-scene-8O92iS/acceptance.json",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 6231.8174
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 981.0182999999997
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 97.20729999999821
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4092.226499999999
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 61.03520000000208
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 21.686600000000908
+        }
+      ],
+      "scope": "actual C++/Blueprint rendering145 scenes; DX prepared package replay without rebuilding, web backends ordinary source package flow"
+    }
+  ],
+  "measurements": {
+    "scope": "uncontrolled single actual scene transitions and ABBA shader preparation observations, not FPS or a controlled performance percentage",
+    "fieldsGLGPU": {
+      "contexts": 6,
+      "groups": 30,
+      "fields": 10,
+      "maxError": 1.7136335372924805e-7
+    },
+    "fieldsDX": {
+      "contexts": 3,
+      "groups": 15,
+      "fields": 10,
+      "maxError": 0
+    },
+    "decodedCoatGLGPU": {
+      "contexts": 7,
+      "maxError": 2.2351741790771484e-7
+    },
+    "decodedCoatDX": {
+      "contexts": 7,
+      "maxError": 0.0000017285346984863281
+    },
+    "refraction": {
+      "cases": 192,
+      "backends": 3,
+      "errors": 0
+    },
+    "guideReference": {
+      "motionPixels": 185,
+      "UVComponents": 288,
+      "maxError": 0,
+      "lens": [
+        false,
+        true
+      ],
+      "variantOrder": [
+        "A",
+        "B",
+        "B",
+        "A"
+      ]
+    }
+  },
+  "resources": {
+    "newRuntimeDependencies": 0,
+    "newGPUTargets": 0,
+    "newGPUBuffers": 0,
+    "newUniformFields": 0,
+    "newAutomaticReadbacks": 0,
+    "newRuntimeCaches": 0
+  },
+  "limits": [
+    "투명체의 이전 geometry/BVH·중첩 매질 상태·전체 경로 분기 재생은 별도",
+    "전역 곡면 역해·거친 복합 로브·참여 매질 footprint 잔여 유지",
+    "초기 컴파일 지연은 추가 절감 필요·PC120/모바일60 전체 FPS 검증 아님",
+    "이전296 좌표/curved미설정 결과는실제이력근거에서제외;UV/컴파일기록만유효",
+    "4KMUzC 첫 실행은보고서없이exit1 원인미확정;완성579파일패키지재개auUrk1만실제실행성과",
+    "NRD/HDRP353 선택본문외전체corpus분석완료로계산하지않음"
+  ]
+}
