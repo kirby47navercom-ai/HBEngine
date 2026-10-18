@@ -1,7 +1,7 @@
-# 현재 진단 — 설치420 검증·비선형/노멀421 계속
+# 현재 진단 — 비선형·큰월드노멀425
 
-415의상대삼각형UV차분뒤에도rX/Y를절대값으로전달해큰add/panner/worldPosition에서폭이다시소실됐어요. 416baselineQdW2Mk/xJis6E를실제GL/GPU로재현후상대변화량표현과공유14연산수식으로수정했어요. 전체graph세API와20연산333조건,17pose,48sampler검사통과예요. 상세정본ENGINE_WORK420예정.
+421 shxStd의실제abs sub-ULP실패→성분별조건선택·변화량항등식으로수정. 최종 GL/GPU ray-differentials-421-Uzbgm9와D3DntTUEj485조건통과. helpermax분기역순·mix큰값상쇄·TSL벡터조건을각실패로보존했어요. 원래2e-5와새normalize1e-12유지,exactrational-25/4096도유지.
 
-Native ejLUXg는생성HLSL의worldPointX선언/pointX사용불일치였어요. 예약어변환에pointDelta도포함해glcPv0에서오차0. QdW2Mk는큰상수값을합법노드로만든실제제품실패,첫Ot5urA는literal1e7입력의기존validator거절이므로구분해요. exactrational곱항은double큰곱차도구분못해-25/4096독립정답을사용했고실제3API일치해요.
+422 hszrH3 큰worldNormalUV는xoffset이절대월드덧셈에서사라져mip0. 처음(point-origin)+offset도GL이재결합해PvSsmd실패. 무게기본/변화량분리뒤DSu8V7두API통과. NativeCXa3yx는새Offset이름이C++이전치환목록에없어현재노멀을사용,생성HLSLdump확인후목록추가·8WoB9j오차0. 이전17문맥ZpITed/y9y0Od기존기준통과.
 
-다음은큰점에서worldNormal을다시구하는경로와비선형fallback이에요. 아직fallback은f(a+da)-f(a), 큰입력의sub-ULP소실이남아요. 구현전근거확인. 기존334factoring실패반복금지. RND06초단위초기compile,전역곡면/매질,누적원장과Mac/iOS/Android실기기제약유지. 420game etaijS 실제통과·4458/4299ms 단일관찰, 개선율/FPS주장없음.
+남은fallback(divide,power,reflect,noise등)·표현불가능작성UV/time/극단중간범위·전역곡면/매질/원장계속. 424build완료·425Complex141 YItc4H 실제통과·4622/4339ms 관찰. 초기지연개선근거없고334실패factoring그대로반복하지않아요. Mac/iOS/실제Android폰제약유지.
