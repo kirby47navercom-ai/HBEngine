@@ -34,7 +34,7 @@
     "native/tests/native-guide-cache-450.cpp": "0c669998f4de438c4a3a9f38f0263b296f42af9d419fa9de4403347499315b19"
   },
   "nativePlayerSHA256": "b70a95a4698f228f38786e93114e351974bdb8546667c5a9ac52f0520afb8156",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/ray-helper-pruning-436-WiRBhR/acceptance.json",
@@ -75,6 +75,14 @@
     {
       "path": "native/build/rendering-450-light-checks.json",
       "sha256": "9acb63d8e1efb520f35a079e183d25407ca2943a7539b22744add0e4c256ef3f"
+    },
+    {
+      "path": "native/build/nonlinear-graphs-444-zopkYY/acceptance.json",
+      "sha256": "25d160f53d52a59e5658f056f51b19a744f120a69302f8affc943dacdf6bf506"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-7Esfdl/acceptance.json",
+      "sha256": "71299ac1cc83f72646c8f51430f0cdb2e9133af732b36a1c14a6262b835950fb"
     }
   ],
   "sourceGames": [
@@ -285,5 +293,6 @@
     "관찰된compileMS는부하/drivercache미통제·cold/FPS/전체초기준비완료주장없음",
     "448두기존6필드invocation은unbatched도구·현재batch실제검증은44916×16/3framegate",
     "혼합프레임노멀실험기본미채택·noise/checker/극단중간범위·RND08/MAT03/전역곡면/매질/누적엔진원장계속"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_450.json"
 }

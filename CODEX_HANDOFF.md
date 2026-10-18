@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 가이드450 검증·설치 준비
+# HBEngine 현재 인계 — 설치450 검증·렌더링451 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치445 C:\Users\kirby\HBEngine\Versions\4ffd07face0d2a99\HBEngine.exe /3303파일/Versions1. USER_INSTALL_445 정본.23owner/fullSHA·새player18bed587256b88501c5e0bf7f08677789411b6bfa5dce47f96fa50a2e04c3bcb·User10385전후읽기SHA·links2/.hbproject·설치 nonlinear-graphs-444-ejw5lo / shader-cache-window-350-VfeVjV 통과.
+- 현재 설치450 C:\Users\kirby\HBEngine\Versions\4ce36135306357d5\HBEngine.exe /3310파일/Versions1. USER_INSTALL_450 정본.20owner/fullSHA·새playerb70a95a4698f228f38786e93114e351974bdb8546667c5a9ac52f0520afb8156·User10385전후읽기SHA·links2/.hbproject·설치 nonlinear-graphs-444-zopkYY / shader-cache-window-350-7Esfdl 통과.
 
 ## 현재 구현과 증거
 - 445 설치4ffd07face0d2a99·3303파일·23owner·User10385읽기SHA·Versions1·ejw5lo8graph/VfeVjV두D3D게임6저장/6적중0재저장통과. 이전440설치178404828B·검사exe1773500B정리. USER_INSTALL445정본.
@@ -14,7 +14,7 @@
 - 혼합노멀441–442 실험 ray-mixed-normal-context 기본미채택유지:GL17×3오차0(9IIJ9N),ABBA9x9kg2원본2590/2592·혼합2448/2551ms(부하/캐시미통제). CPP/TSL/coat/전체guide/속도후속필요.
 
 ## 다음 실행 순서
-1. source450 commit→새nativebuild450→Complex141실게임→record450(sourceHashes+별도testSourceHashes)→sync/install450(설치8graph·350새player두게임·fullSHA/User읽기/Versions1)→정리·현재handoff정확수정. 완료one-shot재실행금지.
+1. 450 설치/전체지문/User읽기보존/Versions1/정리 확인. 완료one-shot재실행금지. 451 이후작업을계속해요.
 2. noise/checker 마지막좌표fallback·MAT03 import-role밉·RND08 bake/lighting·복잡compile/혼합노멀을계속. 450묶음설치로최종checkpoint중단하지않아요.
 3. RND05/07전역곡면/변경투명경로/참여매질·나머지누적엔진목표계속. 전체gate/분모미확정 유지·실기기/iOS없는검증범위구분.
 

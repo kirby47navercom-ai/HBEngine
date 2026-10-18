@@ -1,6 +1,6 @@
-# 현재 진단 — 가이드450 검증·설치 준비
+# 현재 진단 — 설치450 검증·렌더링451 계속
 
-현재설치4454ffd07face0d2a99 USER_INSTALL445정본. 450source준비:좌표ancestry보조함수선택·native GL-derived primary/aux/lens guide·lensbool캐시키·소스재사용·AI불변계약. 446CPU수동5조건/GLflags/재준비없음,WiRBhR D3DPreprocess22조건,13nApw GL/GPU8graph/cis6qV native16패킷통과.
+현재설치450 4ce36135306357d5 USER_INSTALL450정본·User읽기보존·Versions1. 450source준비:좌표ancestry보조함수선택·native GL-derived primary/aux/lens guide·lensbool캐시키·소스재사용·AI불변계약. 446CPU수동5조건/GLflags/재준비없음,WiRBhR D3DPreprocess22조건,13nApw GL/GPU8graph/cis6qV native16패킷통과.
 
 448 yH2hn7/oqDkqK는각6필드 이력검사(이전unbatched invocation). 449 TI5wJN은현재batch상수3프레임/셰이더1compile로16x16×base/coat×lens×primary/aux8경우generic과오차0·복원정확·거부148/141. 450JWCxie 실제production.begin 초기5/lens2compile·돌아오면cache2hit·stable0·sourceBuild1·target288B/release0·8MiBcache454294B·disk미설정. 새운영GPU자원/readback0.
 
