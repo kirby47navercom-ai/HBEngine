@@ -20,7 +20,7 @@
   "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
   "nativeHostSHA256": "98945fd6d020b50b57207730ede544a327d33c4068ed346c23dc496af7a866d3",
   "binaryReuseFrom": "docs/research/USER_INSTALL_425.json",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/pipeline-426-baseline.json",
@@ -49,6 +49,10 @@
     {
       "path": "native/build/rendering-430-light-checks.json",
       "sha256": "4d57a0d157d32e6f082a63ee7ab246a0d7d0c3caa252d5d0cfcc5ac02e756109"
+    },
+    {
+      "path": "native/build/pipeline-submission-427-WOtg08/acceptance.json",
+      "sha256": "a3a7cfeab2b3cb941c6dcc0ef3a66e8b37518d9037eeca0cb108265bb33aa5c1"
     }
   ],
   "sourceGames": [
@@ -201,5 +205,6 @@
     "동기graph/source생성과처음셰이더compile비용·이미제출한nativecompile자체취소불가",
     "RND05/07전역곡면·변경투명경로·복합로브·참여매질과RND08/누적엔진원장유지",
     "대표FPS/모바일실기기/iOS/전체분석/전체엔진완료주장없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_430.json"
 }

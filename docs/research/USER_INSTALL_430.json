@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "1d0b19ee3b8ef4a14363b4c8361f0c2d8e92a8b3",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae\\HBEngine.exe",
+  "bundleHash": "d5b4aa2697d1fdaec514a64b247d7869d5517b1dd9afd3915b3802361090fd6f",
+  "files": 3279,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "1d0b19ee3b8ef4a14363b4c8361f0c2d8e92a8b3",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae\\HBEngine.exe",
+    "bundleHash": "d5b4aa2697d1fdaec514a64b247d7869d5517b1dd9afd3915b3802361090fd6f",
+    "files": 3279,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3273,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf",
+          "bytes": 178294439,
+          "manifestSHA256": "d6397daa2214c564b32b17854e91e6d36e058d3bb256feeeb3bdd6d9a3f05eab"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T15:07:36.8103323Z",
+      "bytes": 178294439,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "d5b4aa2697d1fdae"
+      ]
+    },
+    "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
+    "installedGates": [
+      {
+        "path": "native/build/pipeline-submission-427-WOtg08/acceptance.json",
+        "sha256": "a3a7cfeab2b3cb941c6dcc0ef3a66e8b37518d9037eeca0cb108265bb33aa5c1",
+        "scope": "Actual WebGPU renderer/native pipeline creation with completion promises held by the probe: old1/new4 descriptor submissions before first completion. Raster draw while pending and four exact rendered colors. Timing includes artificial gating; not a driver speed/FPS benchmark. No production draw/readback/resource added."
+      }
+    ],
+    "manifestVerifiedFiles": 3279,
+    "versions": [
+      "d5b4aa2697d1fdae"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-430-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/pipeline-submission-427-jCeTQi/acceptance.json",
+        "scope": "실제 GPU 네이티브 완료Promise 보류시첫완료전제출1→4·준비중raster·네색정확. 인위보류는 속도증거아님"
+      },
+      {
+        "path": "native/build/preparation-epoch-366-Vo5q6Y/acceptance.json",
+        "scope": "기존epoch baseline빈첫프레임0/현재·직접·raster동시173·값오차0·준비draw0"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/gpu-scene-he1eiy/acceptance.json",
+        "scope": "실제 C++·블루프린트 WebGPU 복잡 노멀·UV·시간 가이드·변형·해제. 핵심 준비 코드는 실제검사와 동일하며429의새 AI/프로파일러 메타데이터는 게임 후 CPU로 별도검증. 단일 준비 관찰이며 개선율·FPS 아님"
+      }
+    ],
+    "scope": "430 전체명세·실행소유SHA·설치된실제WebGPU첫완료전제출1→4·동시raster/네출력색·425동일실행파일재사용. source실제C++/BP GPU게임과epoch/실패/취소/AI메타증거연결. 사용자읽기보존·Versions1. 전체속도/FPS/엔진/분석완료주장없음."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 0,
+    "removed": []
+  },
+  "scope": "430 전체명세·실행소유SHA·설치된실제WebGPU첫완료전제출1→4·동시raster/네출력색·425동일실행파일재사용. source실제C++/BP GPU게임과epoch/실패/취소/AI메타증거연결. 사용자읽기보존·Versions1. 전체속도/FPS/엔진/분석완료주장없음."
+}

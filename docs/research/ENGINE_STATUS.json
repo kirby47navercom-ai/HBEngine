@@ -2015,11 +2015,11 @@
   ],
   "latestBatch": "426–430",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_425.json",
-    "sourceCommit": "ed70da5d872acf1ac30021fff7ee0f74d68f21b2",
-    "bundleHash": "f1bb52e5ec6cd6bf6b1f507b6e9ff6fc64b5e0254025dd00af58c4a89055f9c1",
+    "receipt": "docs/research/USER_INSTALL_430.json",
+    "sourceCommit": "1d0b19ee3b8ef4a14363b4c8361f0c2d8e92a8b3",
+    "bundleHash": "d5b4aa2697d1fdaec514a64b247d7869d5517b1dd9afd3915b3802361090fd6f",
     "verified": true,
     "versions": 1,
-    "scope": "421–425 안정 비선형 변화량·설치된 큰 월드 스무스노멀의 두API 밉·두새native게임·전체지문·사용자보존. 비선형/노멀/누적엔진작업 계속"
+    "scope": "426–430 독립 파이프라인 제출·설치된 실제WebGPU1→4/네출력색·425실행파일재사용·전체지문·사용자보존. 비선형/노멀/누적엔진작업 계속"
   }
 }

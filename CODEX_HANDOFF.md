@@ -1,4 +1,4 @@
-# HBEngine 현재 인계 — 동시 제출426–430 검증·설치 준비
+# HBEngine 현재 인계 — 설치430 검증·렌더링431 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
@@ -13,7 +13,7 @@
 - source430등록: GPUWeb메서드단락·MDN기존145메서드재읽기·localr180선택구간 SHA. W3C4MiB본문fetch실패를미독으로유지. CORPUS전체gate/분모미확정,전체UEUnity분석주장없음.
 
 ## 다음 실행 순서
-1. sourcecommit→record430·원장→sync430(425바이너리그대로)→install430 실제427·전체지문/사용자보존/Versions1→finish430. 완료one-shot재실행금지. 설치425개발중수정금지.
+1. 430 원장/실제설치/정리/커밋검증완료. 완료one-shot재실행금지. 새작업431의초기컴파일·렌더링잔여를이어가요.
 2. 이후초기compile/RND05/07전역곡면·매질/RND08기타렌더링·누적엔진계속. 비선형divide/power/reflect/noise fallback·작성UV/time/extreme범위유지. 전체완료허위선언/최종checkpoint금지.
 
 ## 작업 보호
