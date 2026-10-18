@@ -1,3 +1,4 @@
+import {prepareGPUVolumeMips} from './gpu-volume-mips.js';
 import {applySamplerState,validSamplerState} from './sampler-state.js';
 import {textureImportDefaults,validTextureImportPolicy} from './texture-mip-policy.js';
 import {loadImportedTexture2D} from './texture-import.js';
@@ -37,5 +38,5 @@ export async function loadMaterialTexture(THREE,binding,resources,fileUrl,render
       map=type==='texturearray'?new THREE.DataArrayTexture(pixels,w,h,d.images.length):new THREE.Data3DTexture(pixels,w,h,d.images.length);map.minFilter=map.magFilter=THREE.LinearFilter;
     }
   }
-  const report=map.userData.hbTextureImportReport,sampleSpace=binding.colorSpace||(report?'linear':'srgb'),sourceSpace=report?.colorSpace||binding.sourceColorSpace;if(report&&sampleSpace!=='linear'&&sourceSpace==='linear'){map.dispose();throw Error('텍스처 파라미터의 색 공간과 새 리소스가 달라요.');}map.colorSpace=sampleSpace==='linear'&&sourceSpace==='srgb'?THREE.SRGBColorSpace:THREE.NoColorSpace;applySamplerState(THREE,map,binding.sampler||resources?.[binding.path]?.sampler,binding.wrap||'clamp');if(map.userData.hbCookedMips){map.generateMipmaps=false;if(map.mipmaps.length===1)map.minFilter=[THREE.NearestFilter,THREE.NearestMipmapNearestFilter,THREE.NearestMipmapLinearFilter].includes(map.minFilter)?THREE.NearestFilter:THREE.LinearFilter;}return map;
+  const report=map.userData.hbTextureImportReport,sampleSpace=binding.colorSpace||(report?'linear':'srgb'),sourceSpace=report?.colorSpace||binding.sourceColorSpace;if(report&&sampleSpace!=='linear'&&sourceSpace==='linear'){map.dispose();throw Error('텍스처 파라미터의 색 공간과 새 리소스가 달라요.');}map.colorSpace=sampleSpace==='linear'&&sourceSpace==='srgb'?THREE.SRGBColorSpace:THREE.NoColorSpace;applySamplerState(THREE,map,binding.sampler||resources?.[binding.path]?.sampler,binding.wrap||'clamp');if(map.userData.hbCookedMips){map.generateMipmaps=false;if(map.mipmaps.length===1)map.minFilter=[THREE.NearestFilter,THREE.NearestMipmapNearestFilter,THREE.NearestMipmapLinearFilter].includes(map.minFilter)?THREE.NearestFilter:THREE.LinearFilter;}return prepareGPUVolumeMips(renderer,map);
 }

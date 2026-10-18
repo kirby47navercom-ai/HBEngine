@@ -1,15 +1,18 @@
+import {rayTextureSampling} from './texture-sampling-mode.js';
 // Specialize actual min/mag filtering before driver compilation of nested BVH programs.
 export function rayTextureVariants(source,variants){
  const a=source.indexOf('vec4 hbRayTextureLevel('),b=source.indexOf('vec4 hbRayTexture(float'),end=source.indexOf('vec4 hbRaySmooth(',b),level=source.slice(a,b),sample=source.slice(b,end);
  const block=(s,token)=>{const at=s.indexOf(token);if(at<0)throw Error('Ray texture specialization');const start=at+token.length;let depth=1,next=start;while(depth){if(s[next]==='{')depth++;if(s[next]==='}')depth--;next++;}return {at,start,end:next,body:s.slice(start,next-1)};};
  const entries=new Map(variants.map(v=>{const [kind,flags]=Array.isArray(v)?v:[v,0];return [kind+'Filter'+flags,[kind,flags]];}));
  return [...entries].map(([key,[kind,flags]])=>{
-  const mag=flags%2,mode=Math.floor(flags/2),min=[1,3,5].includes(mode)?1:0;
+  const sampling=rayTextureSampling(kind,flags),mag=sampling.filter%2,mode=Math.floor(sampling.filter/2),min=[1,3,5].includes(mode)?1:0;
   let l=level.replaceAll('hbRayTextureLevel','hbRayTextureLevel'+key).replace(',float kind','').replace('kind>1.5&&kind<2.5?z*descriptor.w-.5:z',kind===2?'z*descriptor.w-.5':'z');const volume=block(l,'if(kind>1.5&&kind<2.5){');l=l.slice(0,volume.at)+(kind===2?volume.body:'')+l.slice(volume.end);
   if(mag===min){const nearest='if(nearest>.5)return hbRayTexel(descriptor,wrap,floor(at+vec3(.5,.5,.5)));';if(mag)l=l.slice(0,l.indexOf(nearest))+'return hbRayTexel(descriptor,wrap,floor(at+vec3(.5,.5,.5)));}\n';else l=l.replace(nearest,'');}
   let s=sample.replace('hbRayTexture(','hbRayTextureKind'+key+'(').replace(',float kind','').replaceAll('hbRayTextureLevel','hbRayTextureLevel'+key).replaceAll(',z,kind,spatial',',z,spatial');const cube=block(s,'if(kind>2.5){'),other=block(s.slice(cube.end),'else{');s=s.slice(0,cube.at)+(kind===3?cube.body:other.body)+s.slice(cube.end+other.end);
   s=s.replaceAll('kind>1.5?dx.z:0.0',kind===2?'dx.z':'0.0').replaceAll('kind>1.5?dy.z:0.0',kind===2?'dy.z':'0.0').replace('if(kind>1.5)z=clamp(coordinate.z,0.0,1.0);else if(kind>.5)z=floor(index+.5);',kind===2?'z=clamp(coordinate.z,0.0,1.0);':kind===1?'z=floor(index+.5);':'');
-  const start=s.indexOf('float rho='),stop=s.indexOf('if(srgb>.5',start),spatial=mag===min?mag+'.0':'('+(kind===3?'index>0.0':'rho>1.0')+'?'+min+'.0:'+mag+'.0)',lod=mode===0||mode===5?'0.0':kind===3?'clamp(index,0.0,max(0.0,my.w-1.0))':'clamp(log2(max(1.0,rho)),0.0,max(0.0,my.w-1.0))';
+  if(sampling.tagged){s=s.replace(',vec3 dx,vec3 dy)',',vec3 controlX,vec3 controlY,vec3 dx,vec3 dy)');if(sampling.mode==='gradient'){const body=s.indexOf('{');s=s.slice(0,body)+s.slice(body).replace(/\bdx\b/g,'controlX').replace(/\bdy\b/g,'controlY');}}
+  const rawLOD=sampling.tagged?(sampling.mode==='lod'?'controlX.x':sampling.mode==='bias'?'(log2(max(.000000000001,rho))+clamp(controlX.x,-16.0,15.99))':'log2(max(1.0,rho))'):kind===3?'index':'log2(max(1.0,rho))';
+  const start=s.indexOf('float rho='),stop=s.indexOf('if(srgb>.5',start),spatial=mag===min?mag+'.0':'('+(sampling.tagged?rawLOD+'>0.0':kind===3?'index>0.0':'rho>1.0')+'?'+min+'.0:'+mag+'.0)',lod=mode===0||mode===5?'0.0':'clamp('+rawLOD+',0.0,max(0.0,my.w-1.0))';
   const firstSample='hbRayTextureLevel'+key+'(pointer,first,wrap,uv,z,spatial)',samples=mode===3||mode===4?'float blend=fract(lod);vec4 result=vec4(0,0,0,0);for(int mipIndex=0;mipIndex<1+(blend>0.0?1:0);mipIndex++){vec4 sampleValue=hbRayTextureLevel'+key+'(pointer,min(first+float(mipIndex),max(0.0,my.w-1.0)),wrap,uv,z,spatial);if(mipIndex==0)result=sampleValue;else result=mix(result,sampleValue,blend);}':'vec4 result='+firstSample+';';
   s=s.slice(0,start)+'float rho=max(length(derivativeX*descriptor.yzw),length(derivativeY*descriptor.yzw)),lod='+lod+',spatial='+spatial+';uv=vec2(hbRayWrap(uv.x,wrap.x),hbRayWrap(uv.y,wrap.y));'+(mode===1||mode===2?'lod=floor(lod+.5);':'')+'float first=floor(lod);'+samples+s.slice(stop);
   return l+s;

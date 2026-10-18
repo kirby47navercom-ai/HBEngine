@@ -1,3 +1,4 @@
+import {rayTextureVariantFlags} from '../prototype/texture-sampling-mode.js';
 import {rayDifferentialExpression} from '../prototype/ray-program-differentials.js';
 import {rayUVFootprintGLSL} from '../prototype/ray-uv-footprint.js';
 import {previousRayGeometryGLSL,previousRayNames,previousRayFieldsGLSL,previousRayCoatNormalGLSL} from '../prototype/ray-previous-context.js';
@@ -26,7 +27,7 @@ inline void validateRayProgram(const RayProgram& p){
  std::array<bool,64> assigned{};
  for(const auto& i:p.instructions){if(i[0]<0||i[0]>=50||i[2]<1||i[2]>4||i[3]<1||i[3]>4)throw std::runtime_error("Ray operation invalid");for(int j=4;j<8;j++)if(i[j]<-1||i[j]>=64||(i[j]>=0&&!assigned[i[j]]))throw std::runtime_error("Ray operand invalid");
   if(i[0]==8){if(i[1]!=-1||i[8]<0||i[9]<1||i[8]+i[9]>4||i[10]<1||i[10]>4||i[4]<0)throw std::runtime_error("Ray output invalid");}
-  else{if(i[1]<0||i[1]>=64||(i[0]==9?(i[8]<0||i[8]>3||i[9]<0||i[9]>1||i[10]<0||i[10]>11):(i[8]!=0||i[9]!=0||i[10]!=0)))throw std::runtime_error("Ray register invalid");assigned[i[1]]=true;}
+  else{if(i[1]<0||i[1]>=64||(i[0]==9?(i[8]<0||i[8]>3||i[9]<0||i[9]>1||!((i[10]>=0&&i[10]<=11)||(i[10]>=64&&i[10]<=111))):(i[8]!=0||i[9]!=0||i[10]!=0)))throw std::runtime_error("Ray register invalid");assigned[i[1]]=true;}
  }
 }
 template<class Json> inline std::vector<RayProgram> readRayPrograms(const Json& data){
@@ -49,27 +50,28 @@ inline bool rayFieldUsesFrame(const RayProgram& p,int field,bool guide=false){
 inline std::string previousRayNames(const std::string& source,const std::set<int>* programKeys=nullptr){
  std::string result;for(std::size_t pos=0;pos<source.size();){if(std::isalpha(static_cast<unsigned char>(source[pos]))||source[pos]=='_'){std::size_t end=pos+1;while(end<source.size()&&(std::isalnum(static_cast<unsigned char>(source[end]))||source[end]=='_'))end++;const auto token=source.substr(pos,end-pos);const bool program=token.compare(0,12,"hbRayProgram")==0;if(token=="hbGeometryFrame")result+="hbRayPreviousFrame";else if(token=="hbRayUVFootprint"||token=="hbRayUV"||token=="hbRaySmoothNormal"||token=="hbRaySmoothNormalOffset"||token=="hbRayGeometric"||token=="hbRayBary"||token=="hbRayBaryOffset"||token=="hbRayOffset"||token.compare(0,13,"hbRayRunField")==0||(program&&(!programKeys||programKeys->count(std::stoi(token.substr(12))))))result+="hbRayPrevious"+token.substr(5);else result+=token;pos=end;}else result+=source[pos++];}return result;
 }
+inline int rayTextureVariantIndex(int kind,int flags){return kind*60+(flags<12?flags:flags-64+12);}
 inline std::string rayProgramShader(const std::vector<RayProgram>& programs,std::string* differentialDefines=nullptr){
  std::set<int> differentialOperations;
-const bool textureFootprints[48]={${Array.from({length:48},(_,n)=>rayTextureNeedsFootprint([9,0,4,4,0,0,0,0,Math.floor(n/12),0,n%12])?"true":"false").join(",")}};
+const bool textureFootprints[240]={${Array.from({length:240},(_,n)=>rayTextureNeedsFootprint([9,0,4,4,0,0,0,0,Math.floor(n/60),0,rayTextureVariantFlags(n)])?"true":"false").join(",")}};
  for(const auto& p:programs)validateRayProgram(p);
- const bool uvFootprint=std::any_of(programs.begin(),programs.end(),[&](const auto& p){return std::any_of(p.instructions.begin(),p.instructions.end(),[](const auto& i){return i[0]==1;})&&std::any_of(p.instructions.begin(),p.instructions.end(),[&](const auto& i){return i[0]==9&&textureFootprints[i[8]*12+i[10]];});});
+ const bool uvFootprint=std::any_of(programs.begin(),programs.end(),[&](const auto& p){return std::any_of(p.instructions.begin(),p.instructions.end(),[](const auto& i){return i[0]==1;})&&std::any_of(p.instructions.begin(),p.instructions.end(),[&](const auto& i){return i[0]==9&&textureFootprints[rayTextureVariantIndex(i[8],i[10])];});});
  static const std::array<const char*,50> expressions={
 ${expressions}
  };static const std::array<const char*,50> differentialExpressions={
 ${differentials}
- };static const std::array<const char*,48> textureVariants={
-${Array.from({length:48},(_,id)=>'R"HB('+rayTextureVariants(rayMaterialGLSL,[[Math.floor(id/12),id%12]]).replace(/\bfract\(/g,'frac(')+')HB"').join(',\n')}
+ };static const std::array<const char*,240> textureVariants={
+${Array.from({length:240},(_,id)=>'R"HB('+rayTextureVariants(rayMaterialGLSL,[[Math.floor(id/60),rayTextureVariantFlags(id)]]).replace(/\bfract\(/g,'frac(')+')HB"').join(',\n')}
  };std::string source=R"HB(
 ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
 )HB";if(uvFootprint)source+=R"HB(
 ${rayUVFootprintGLSL}
-)HB";bool normalTime=false;for(const auto& p:programs)if(p.fieldMask&8)for(const auto& i:p.instructions)if(i[0]==2)normalTime=true;if(normalTime)source="#define HB_RAY_NORMAL_TIME 1\n"+source;std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(i[8]*12+i[10]);for(int kind:kinds)source+=textureVariants.at(kind);
+)HB";bool normalTime=false;for(const auto& p:programs)if(p.fieldMask&8)for(const auto& i:p.instructions)if(i[0]==2)normalTime=true;if(normalTime)source="#define HB_RAY_NORMAL_TIME 1\n"+source;std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(rayTextureVariantIndex(i[8],i[10]));for(int kind:kinds)source+=textureVariants.at(kind);
 
  std::set<int> previousKeys;for(const auto& p:programs){bool needed=(p.fieldMask&8)!=0;for(int field=0;field<10;++field)needed=needed||rayFieldUsesFrame(p,field);if(needed)previousKeys.insert(p.key);}for(int field:{0,1,2,4,5,6,7,8,9})for(const auto& p:programs)if(rayFieldUsesFrame(p,field,true)){source="#define HB_RAY_SURFACE_HISTORY_"+std::to_string(field)+" 1\n"+source;break;}
  std::string previousPrograms;for(int pass=0;pass<2;pass++){const bool alpha=pass==1;keys.clear();const std::string programName=alpha?"hbRayProgramAlpha":"hbRayProgram",executeName=alpha?"hbRayExecuteAlpha":"hbRayExecute";for(const auto& p:programs){if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");
   std::array<int,64> definitions;definitions.fill(-1);std::vector<std::array<int,4>> parents(p.instructions.size());std::vector<bool> needed(p.instructions.size(),false),live(p.instructions.size(),!alpha);std::set<int> registers,derived;int alphaStore=-1;
-  for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];for(int j=0;j<4;j++)parents[n][j]=i[j+4]<0?-1:definitions[i[j+4]];if(i[0]==9&&!alpha&&textureFootprints[i[8]*12+i[10]])for(int j=0;j<2;j++)if(parents[n][j]>=0)needed[parents[n][j]]=true;if(i[0]!=8)definitions[i[1]]=int(n);else if(i[8]<=3&&i[8]+i[9]>3)alphaStore=int(n);}
+  for(std::size_t n=0;n<p.instructions.size();n++){const auto& i=p.instructions[n];for(int j=0;j<4;j++)parents[n][j]=i[j+4]<0?-1:definitions[i[j+4]];if(i[0]==9&&!alpha&&textureFootprints[rayTextureVariantIndex(i[8],i[10])])for(int j=0;j<2;j++)if(parents[n][j]>=0)needed[parents[n][j]]=true;if(i[0]!=8)definitions[i[1]]=int(n);else if(i[8]<=3&&i[8]+i[9]>3)alphaStore=int(n);}
   if(alphaStore>=0)live[alphaStore]=true;
   if(alpha)for(int n=int(p.instructions.size())-1;n>=0;n--)if(live[n])for(int parent:parents[n])if(parent>=0)live[parent]=true;
   for(std::size_t n=0;n<p.instructions.size();n++)if(live[n]&&p.instructions[n][0]!=8)registers.insert(p.instructions[n][1]);
@@ -83,7 +85,7 @@ ${rayUVFootprintGLSL}
   if(uses(4,true))source+="vec3 normalX=hbRaySmoothNormalOffset(id,point,pointX)-normal,normalY=hbRaySmoothNormalOffset(id,point,pointY)-normal;";
   for(std::size_t n=0;n<p.instructions.size();n++){if(!live[n])continue;const auto& i=p.instructions[n];source+="{vec4 value=hbGeometryLoad(pointer+"+std::to_string(n*3+2)+".0),meta=vec4(";for(int j=0;j<4;j++)source+=(j?",":"")+std::to_string(i[j])+".0";source+=")";for(int j=0;j<4;j++)source+=","+std::string(1,char('a'+j))+"="+(i[j+4]<0?std::string("vec4(0,0,0,0)"):"r"+std::to_string(i[j+4]));source+=";";
    if(i[0]==8){for(int channel=i[8];channel<i[8]+i[9];channel++)source+="result["+std::to_string(channel)+"]=a["+std::to_string(i[10]<2?0:channel-i[8])+"]*value.z;";}
-   else{std::string expression=alpha&&i[0]==9&&i[8]!=3?"hbRayTextureAlpha(value.x,a.xyz,b.x,value.y,value.z,value.w)":expressions[i[0]];if(i[0]==9){if(!alpha||i[8]==3)for(char axis:{'X','Y'})source+="vec4 a"+std::string(1,axis)+"="+(alpha||!textureFootprints[i[8]*12+i[10]]||i[4]<0?"vec4(0,0,0,0)":"r"+std::string(1,axis)+std::to_string(i[4]))+";";if(alpha&&i[8]!=3)expression.replace(expression.find("value.z"),7,std::to_string(i[8])+".0");else{expression.replace(expression.find("hbRayTexture("),13,"hbRayTextureKind"+std::to_string(i[8])+"Filter"+std::to_string(i[10])+"(");expression.erase(expression.find(",value.z"),8);}expression.replace(expression.find("value.y"),7,std::to_string(i[9])+".0");expression.replace(expression.find("value.w"),7,std::to_string(i[10])+".0");}
+   else{std::string expression=alpha&&i[0]==9&&i[8]!=3&&i[10]<12?"hbRayTextureAlpha(value.x,a.xyz,b.x,value.y,value.z,value.w)":expressions[i[0]];if(i[0]==9){if(i[10]>=64){const std::string oldArgs=",aX.xyz,aY.xyz)";const auto at=expression.find(oldArgs);if(at==std::string::npos)throw std::runtime_error("Ray mip control arguments missing");expression.replace(at,oldArgs.size(),",c.xyz,d.xyz,aX.xyz,aY.xyz)");}if(!alpha||i[8]==3||i[10]>=64)for(char axis:{'X','Y'})source+="vec4 a"+std::string(1,axis)+"="+(alpha||!textureFootprints[rayTextureVariantIndex(i[8],i[10])]||i[4]<0?"vec4(0,0,0,0)":"r"+std::string(1,axis)+std::to_string(i[4]))+";";if(alpha&&i[8]!=3&&i[10]<12)expression.replace(expression.find("value.z"),7,std::to_string(i[8])+".0");else{expression.replace(expression.find("hbRayTexture("),13,"hbRayTextureKind"+std::to_string(i[8])+"Filter"+std::to_string(i[10])+"(");expression.erase(expression.find(",value.z"),8);}expression.replace(expression.find("value.y"),7,std::to_string(i[9])+".0");expression.replace(expression.find("value.w"),7,std::to_string(i[10])+".0");}
     auto trim=[&](const std::string& name){if(i[2]==1)return name+"=vec4("+name+".x,"+name+".x,"+name+".x,"+name+".x);";if(i[2]==2)return name+".zw=vec2(0,0);";if(i[2]==3)return name+".w=0.0;";return std::string();};source+="vec4 v="+expression+";"+trim("v")+"r"+std::to_string(i[1])+"=v;";
     if(needed[n])for(char axis:{'X','Y'}){const std::string suffix(1,axis);source+="{";for(int j=0;j<4;j++)source+="vec4 "+std::string(1,char('a'+j))+suffix+"="+(i[j+4]<0?std::string("vec4(0,0,0,0)"):"r"+suffix+std::to_string(i[j+4]))+";";
      std::string deltaExpression=differentialExpressions[i[0]];

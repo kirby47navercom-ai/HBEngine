@@ -1,3 +1,5 @@
+import {prepareGPUTextureSampling} from './gpu-texture-sampling.js';
+import {activeTextureSamplingInputs,materialMipMode} from './texture-sampling-mode.js';
 import {checkerValueNode} from './procedural-material.js';
 import {normalMapNode} from './normal-map.js';
 import * as THREE from 'three/webgpu';
@@ -32,13 +34,14 @@ export function createGPUMaterial(data,{fileUrl=path=>'/api/file?path='+encodeUR
       const value=data.parameters?.[materialParameterKey(node)]??node.value??.5;if(key.endsWith('Parameter')){let list=parameters.get(materialParameterKey(node));if(!list){list=[];parameters.set(materialParameterKey(node),list);}code=uniformValue(value,type);list.push(code);}else code=valueNode(value,type);
     }else if(key==='uv')code=T.uv();else if(key==='time')code=clock;else if(key==='worldPosition')code=T.positionWorld;else if(key==='worldNormal')code=T.normalWorld.normalize();else if(key==='viewDirection')code=T.cameraPosition.sub(T.positionWorld).normalize();
     else{
-      const args={};for(const input of specs.get(key).inputs.filter(p=>p.id!=='textureObject')){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
+      const args={};for(const input of activeTextureSamplingInputs(node,specs.get(key).inputs).filter(p=>p.id!=='textureObject')){const edge=edges.find(e=>e.to.node===id&&e.to.pin===input.id),target=input.type==='numeric'?(key==='length'?materialPins({...node,key:'normalize'},graph).outputs[0].type:type):input.type;
         if(edge){const linked=expression(edge.from.node,edge.from.pin);args[input.id]=cast(linked.code,linked.type,target);}else if(key==='fresnel'&&input.id==='normal'&&node.inputValues?.normal===undefined)args.normal=T.normalWorld.normalize();else if(key==='fresnel'&&input.id==='view'&&node.inputValues?.view===undefined)args.view=T.cameraPosition.sub(T.positionWorld).normalize();else if(input.id==='direction'&&key==='sampleCube'&&node.inputValues?.direction===undefined)args.direction=T.normalWorld.normalize();else if(input.id==='uv'&&input.type==='vec2'&&node.inputValues?.uv===undefined)args.uv=T.uv();else if(input.id==='time'&&node.inputValues?.time===undefined)args.time=clock;else args[input.id]=valueNode(node.inputValues?.[input.id]??input.value??0,target);
       }
       const {a,b,value:v}=args;
       if(materialTextureTypes[textureNodeType(key)]?.sample===key){
         const rgbaKey=id+':rgba';let sample=cache.get(rgbaKey);if(!sample){const parameter=materialTextureParameter(node),path=data.parameters?.[parameter]??node.texture;if(!path&&!parameter)code=T.vec4(1);else{
-          const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);const sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz),args.lod.max(0)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
+          const type=textureNodeType(key),placeholder=texturePlaceholder(THREE,type);let sampleNode=type==='texturecube'?T.cubeTexture(placeholder,T.vec3(args.direction.x.negate(),args.direction.yz)):type==='texturearray'?T.texture(placeholder,args.uv).depth(args.index.add(.5).floor().toInt()):type==='texture3d'?T.texture3D(placeholder,args.uv):T.texture(placeholder,args.uv);
+          const mipMode=materialMipMode(node);if(mipMode==='lod')sampleNode=sampleNode.level(args.lod.max(0));else if(mipMode==='bias')sampleNode=sampleNode.bias(args.bias.clamp(-16,15.99));else if(mipMode==='gradient'){sampleNode=sampleNode.grad(args.gradientX,args.gradientY);}sampleNode=prepareGPUTextureSampling(sampleNode,type);
           loading.push(textureBindings.add({path,type,parameter,colorSpace:node.colorSpace||'srgb',sourceColorSpace:node.textureSourceColorSpace,wrap:node.wrap,sampler:node.sampler,placeholder},map=>sampleNode.value=map));
           code=node.colorSpace==='linear'?sampleNode:T.vec4(T.sRGBTransferEOTF(sampleNode.rgb),sampleNode.a);
         }sample={code,type:'vec4'};cache.set(rgbaKey,sample);}code=output==='rgba'?sample.code:sample.code[output];

@@ -1,4 +1,5 @@
 import {NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter,LinearMipmapNearestFilter,LinearMipmapLinearFilter} from 'three';
+import {validRayTextureFlags,rayTextureSampling} from './texture-sampling-mode.js';
 
 const cache=new WeakMap();
 export const rayMipFilter=map=>map.generateMipmaps===false&&!map.userData?.hbCookedMips?0:({[NearestMipmapNearestFilter]:1,[LinearMipmapNearestFilter]:2,[NearestMipmapLinearFilter]:3,[LinearMipmapLinearFilter]:4}[map.minFilter]||0);
@@ -34,9 +35,9 @@ export function rayMipChain(map,pixels,srgb,volume=false){
 // Cube LOD is explicit. Fixed level/spatial filters cannot observe derivatives.
 export function rayTextureNeedsFootprint(instruction){
  const kind=instruction[8],flags=instruction[10];
- if(!Number.isInteger(kind)||kind<0||kind>3||!Number.isInteger(flags)||flags<0||flags>11)return true;
- if(kind===3)return false;
- const mode=Math.floor(flags/2),nearest=flags%2;
+ if(!Number.isInteger(kind)||kind<0||kind>3||!validRayTextureFlags(flags))return true;
+ const sampling=rayTextureSampling(kind,flags);if(sampling.mode==='lod'||sampling.mode==='gradient')return false;
+ const mode=Math.floor(sampling.filter/2),nearest=sampling.filter%2;
  return mode!==0&&mode!==5||nearest!==(mode===5?1:0);
 }
 
