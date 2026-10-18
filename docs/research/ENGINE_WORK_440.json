@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "0a66e6f37da6c3a88ff446d6624b4827bf15bf85",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/ray-differential-library.js": "4679617fda8e44d2dd0af8456015b61c8425ff6f7b7253bd6979b66936f3a32a",
+    "prototype/ray-material-shader.js": "18bb711dae2f31fa669253c01089a984df5124d500bc0770136d1b2f84d107e1",
+    "prototype/ray-uv-footprint.js": "fd96eb5f168feffc945d99ce498f6bf3a0d88c1497c47852e42a068f4c22f474",
+    "tools/check-ray-helper-dependencies-438.mjs": "d92eb2f29e27e8cd58768a119b2982df242e17fb6f253e3c535b1204524eb35e",
+    "tools/check-ray-helper-preparation-438-window.mjs": "a7f430919fd835ab4bc6f3474e0924e57fc3f7f5e6b33eb549d91d2817640241",
+    "tools/check-ray-helper-pruning-436.mjs": "248952c13263691cf6349cc8035b9c664bb7eb61f69920f2e5b88b4da65267ac",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "0219a20acba05132365bb58f840ddf97a73ea92f9f4f2801f764102f4c52fa0e",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "5b84ea3c87833f6a830ff17778a39393b029fb68e794d31d673b081353cf5f9c"
+  },
+  "testSourceHashes": {
+    "native/tests/ray-helper-preprocess-436.cpp": "fc47cbc16767bbaeb8fb9fc58f4266d7368bc8bd4d630ea11ac02a0d147ee56d"
+  },
+  "nativePlayerSHA256": "de2a0c235742ee31101e10142ec8c1e9d66b1b76ea4d5694e7c0643b0839cfaa",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/ray-helper-pruning-436-Tf7f8v/acceptance.json",
+      "sha256": "2b6f03151bd87b594ae47a5d7edb369bc4c4c017c0666a750dca67abddd0d8a8"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-NhlAJv/acceptance.json",
+      "sha256": "ce9c7fed4ee0701c35b3280758f487cf7616f9d7e7c637baa288f458ade39889"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-native-wD7ycM/acceptance.json",
+      "sha256": "af92f6996af9f45bd97178b38a84ccc8d3ff8393b7b52a9eeb1dc5f502aa3d88"
+    },
+    {
+      "path": "native/build/ray-helper-preparation-438-mPu5Oz/acceptance.json",
+      "sha256": "a8cb78a2af7696bbb578b8333c8e6fc8c1b26626a61abbbc5f221ad31f96852a"
+    },
+    {
+      "path": "native/build/native-scene-window-WQwSTE/acceptance.json",
+      "sha256": "d08a577dde7c7ee96c08cba11871947ed6ca49ed2c761f82f161dad8ebe4e3be"
+    },
+    {
+      "path": "native/build/ray-helper-dependencies-438-cpu.json",
+      "sha256": "8896204a527fe7b3b36d9369a74949fb5c9d16fe059cb33e8b8391d623e8a977"
+    },
+    {
+      "path": "native/build/rendering-440-light-checks.json",
+      "sha256": "acaf6e26533ab4b4709421172c1c8268a1129a5214280b196b88a8ca96cc57ee"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-WQwSTE/acceptance.json",
+      "scope": "새 DirectX 실행 파일 Complex141·C++/BP·모프664·캐시·해제. 단일 관찰"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/coordinate-graphs-433-NhlAJv/acceptance.json",
+      "scope": "GL/WebGPU 다섯 실제 그래프 현재/이전 포즈·밉 기존4e-5"
+    }
+  ],
+  "implemented": [
+    "공유 좌표 수식의 함수 의존과 기존 packed opcode union을 이용한 GL/HLSL 전처리",
+    "누락·순환·중복·불균형 함수 거부, 미사용 함수도 검증",
+    "AI helperCompilation 불변 계약, 프레임별 scan·신규 GPU 자원·운영 readback 없음"
+  ],
+  "measurements": {
+    "D3DPreprocessConfigurations": 12,
+    "helperLibraryBytesBefore": 4580,
+    "helperLibraryBytesAfter": 254,
+    "helperFunctionsBefore": 10,
+    "helperFunctionsAfter": 0,
+    "GLFullPreparationABBA": [
+      {
+        "fullLibrary": true,
+        "elapsedMS": 2617.10000000149,
+        "sourceBytes": 90841
+      },
+      {
+        "fullLibrary": false,
+        "elapsedMS": 2635.5,
+        "sourceBytes": 90841
+      },
+      {
+        "fullLibrary": false,
+        "elapsedMS": 2881.2000000029802,
+        "sourceBytes": 90841
+      },
+      {
+        "fullLibrary": true,
+        "elapsedMS": 2571.7000000029802,
+        "sourceBytes": 90841
+      }
+    ],
+    "elapsedImprovementEstablished": false,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4457.012600000002
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1888.6443
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 115.30389999999898
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4307.056799999991
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 137.73330000000715
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 88.98619999999937
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 577724,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 31,
+        "totalCompileMS": 9295,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "limits": [
+    "전처리 감소는 전체 셰이더 크기·GPU 속도 개선이 아님",
+    "ABBA 전체 준비 시간 개선 미확립·캐시와 부하 미통제",
+    "복잡 그래프 초단위 준비·현재/이전 노멀 호출 중복 계속",
+    "나머지 렌더링·엔진 원장과 전체 본문/API gate 유지"
+  ]
+}
