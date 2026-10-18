@@ -10,4 +10,6 @@
 
 -496 source2df9b93 준비지연을래스터와분리. HqA6y7 실제pending22frame/23Present/샘플0/C++4.21ms/끄기62.65ms/최종664 통과.347auYid0 동기캐시/거부복구보존. 489 첫nIj7qA는상대include컴파일실패, ou5F3U가성공정본. native path helper 별도poll은 capture가게임loop멈춰도완료확인하고revision취소. memorycache 빠른복원은active FXC뒤로밀리지않음. SDK기본sync유지. 다음설치496·누적작업.
 
--496설치9937154a06b6e79d·3353/17owner/User10385읽기SHA/Versions1·DUEZpf설치CPP/SDK/packager22frame/C++5.87ms/disable93.77ms/샘플0/workeridle0·EYFCfI 6save→6hit. 初idle검사는nullpipeline대신rawshaderPreparation.queue가맞고beforeSHA는profile.sha256;두회복은재설치없이원래beforeSHA를유지. 다음497에서는captureAsync가루프정지시준비완료다음실제frame없이oldraster반환가능성검토/수정;screenProbe는callback재render라별개.
+-496설치9937154a06b6e79d·3353/17owner/User10385읽기SHA/Versions1·DUEZpf설치CPP/SDK/packager22frame/C++5.87ms/disable93.77ms/샘플0/workeridle0·EYFCfI 6save→6hit. 첫idle검사는nullpipeline대신rawshaderPreparation.queue가맞고beforeSHA는profile.sha256;두회복은재설치없이원래beforeSHA를유지. 다음497에서는captureAsync가루프정지시준비완료다음실제frame없이oldraster반환가능성검토/수정;screenProbe는callback재render라별개.
+
+-497캡처전환가능성을재독했어요. player.captureAsync의callback인capture() 자체가매번현재장면을재렌더하므로가정했던추가수정은필요없어요. screenProbe도재렌더해요. low-level hbCapture는현재frame읽기이며프레임생성API가아님. 불필요한추가draw를만들지않고실제잔여texture-driven UV차분을시작해요.

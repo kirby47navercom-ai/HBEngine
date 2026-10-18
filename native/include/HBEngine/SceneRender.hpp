@@ -419,12 +419,26 @@ public:
         // Graph shaders never render the auxiliary mask/atlas pass; keep its base-map sampler dead.
         const auto erase=[&](const char* text){const auto at=source.find(text);if(at!=std::string::npos)source.erase(at,std::strlen(text));};
         erase("if(pass2d.x>0)return offscreen2d(base,i.color);");
+        // A complete node surface owns its texture inputs. Default map reads must
+        // not keep s0..s5 alive beside its independent graph sampler bindings.
+        if(declarations.rfind("#define HB_NODE_SURFACE 1\n",0)==0){
+            const auto replaceRequired=[&](const std::string& from,const std::string& to){const auto at=source.find(from);if(at==std::string::npos)throw std::runtime_error("Surface shader map marker missing");source.replace(at,from.size(),to);};
+            replaceRequired("if(maps&1)base*=baseMap.Sample(baseSampler,mapUv(i.uv,0));","");
+            const auto normalStart=source.find(" if(maps&2){"),normalEnd=source.find("\n",normalStart);
+            if(normalStart==std::string::npos||normalEnd==std::string::npos)throw std::runtime_error("Surface shader normal marker missing");
+            source.erase(normalStart,normalEnd-normalStart);
+            replaceRequired("*((maps&4)?roughMap.Sample(roughSampler,mapUv(i.uv,2)).g:1)","");
+            replaceRequired("*((maps&8)?metalMap.Sample(metalSampler,mapUv(i.uv,3)).b:1)","");
+            replaceRequired("*((maps&16)?emissiveMap.Sample(emissiveSampler,mapUv(i.uv,4)).rgb:1)","");
+            replaceRequired("(maps&32)?aoMap.Sample(aoSampler,mapUv(i.uv,5)).r:1","1");
+        }
         if(declarations.find("register(s13)")!=std::string::npos){erase("clipMask2d(i.position.xy);");erase("if(pass2d.z>.5)outColor=shade2d(i.at.xy,i.uv,n,base.rgb)+emit;");}
         if(declarations.find("register(s14)")!=std::string::npos){const auto at=source.find("  if(transmission>0)");source.erase(at,source.find("\n",at)-at);erase("outColor+=indirectProbes(i.at,n,v,base.rgb,rough,metal,ao,dielectricF0,1-transmission);");erase("coatLight+=indirectProbes(i.at,cn,v,float3(.04,.04,.04),coatRough,1,1);");}
         const auto entry=source.find("float4 PS("),marker=source.find("// HB_MATERIAL_EVAL");source.replace(marker,std::strlen("// HB_MATERIAL_EVAL"),evaluation);source.insert(entry,declarations+"\n");
         source=surfaceShader(source);Program out;out.owner=gpu.device.p;{std::lock_guard<std::mutex> lock(gpu.mutex);for(const auto* entry:{"PS","ShadowPS"})detail::ShaderBytecodeCompiler::create(source,"HBNodeMaterial",entry,"ps_5_0",[&](const void* bytes,std::size_t size){return gpu.device->CreatePixelShader(bytes,size,nullptr,entry[0]=='S'?&out.shadowShader.p:&out.shader.p);});}
         setProgramParameters(out,parameters);++uploads_;return out;
     }
+    Program createSurfaceProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
     void setProgramParameters(Program& program,const std::vector<float>& values){
         if(program.owner!=gpu.device.p||!finite(values))throw std::runtime_error("Material parameters invalid");
         if(program.current==values&&program.parameters.p)return;

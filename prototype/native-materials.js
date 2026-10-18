@@ -2,6 +2,13 @@ import {compileMaterial,materialDefaults,materialParameters,materialFloatPropert
 import {materialTextureBindings} from './material-texture-bindings.js';
 import {captureMaterialGraph} from './material-source-key.js';
 import {normalMapGLSL} from './normal-map.js';
+export const nativeSurfaceProgramContract=Object.freeze({version:1,
+ marker:'#define HB_NODE_SURFACE 1\n',cpp:'SceneRenderer::createSurfaceProgram',
+ inputs:'complete node surface owns base/normal/roughness/metallic/emission/AO texture inputs; default-map reads are removed before compilation',
+ legacy:'createProgram remains a partial low-level shader extension with its existing bindings',
+ samplerSlots:16,reserved:Object.freeze({effects2D:Object.freeze([13,14,15]),transmissionAndProbes:Object.freeze([14])}),
+ binding:'independent existing programSampling entries; hardware/system reservations remain enforced',
+ resources:'no additional GPU buffers, textures, sampler objects or per-frame work'});
 function hlsl(code){
   code=code.replace(/\bvec([234])\b/g,'float$1').replace(/\bmix\b/g,'lerp').replace(/\bfract\b/g,'frac').replace(/\bmod\b/g,'hbMod');
   for(const match of [...code.matchAll(/\bfloat([234])\(/g)].reverse()){let depth=1,comma=false;for(let i=match.index+match[0].length;i<code.length&&depth;i++){if(code[i]==='(')depth++;else if(code[i]===')')depth--;else if(code[i]===','&&depth===1)comma=true;}if(!comma)code=code.slice(0,match.index)+'hbSplat'+match[1]+code.slice(match.index+6);}
@@ -19,7 +26,7 @@ float3 hbNormal(float3 eyePosition,float3 n,float3 mapN,float2 uv){float3 q0=ddx
 export function compileNativeMaterial(data){
   const plan=compileMaterial(data,{uniformParameters:true});
   if(plan.textures.length>16)throw Error('DirectX 11 셰이더의 샘플러 16개 한도를 넘었어요.');
-  const declarations=helpers+'\n'+plan.textures.map((t,i)=>{
+  const declarations=nativeSurfaceProgramContract.marker+helpers+'\n'+plan.textures.map((t,i)=>{
     const type={texture2d:'Texture2D',texturecube:'TextureCube',texturearray:'Texture2DArray',texture3d:'Texture3D'}[t.type];if(!type)throw Error('DirectX 텍스처 자료형을 확인하세요.');
     const cube=t.type==='texturecube',args=t.type==='texture2d'?'float2 uv':cube?'float3 uv,float lod':'float3 uv';
     return `${type} ${t.uniform}:register(t${8+i});SamplerState hbSampler${i}:register(s${i});float4 hbSample${i}(${args}){return ${t.uniform}.${cube?'SampleLevel':'Sample'}(hbSampler${i},uv${cube?',lod':''});}`;

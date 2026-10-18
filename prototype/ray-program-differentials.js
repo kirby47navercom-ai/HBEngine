@@ -16,7 +16,7 @@ vec4 hbRayDeltaReflect(vec4 a,vec4 b,vec4 da,vec4 db){vec3 n=b.xyz/max(length(b.
 vec4 hbRayDeltaEyeUV(vec4 a,vec4 b,vec4 c,vec4 d,vec4 da,vec4 db,vec4 dc,vec4 dd){vec4 z=vec4(0,0,0,0),one=vec4(1,1,1,1),den=vec4(max(abs(b.z),.1),max(abs(b.z),.1),max(abs(b.z),.1),max(abs(b.z),.1)),ad=hbRayDeltaAbs(b,db),dden=hbRayDeltaMax(vec4(abs(b.z),abs(b.z),abs(b.z),abs(b.z)),vec4(.1,.1,.1,.1),vec4(ad.z,ad.z,ad.z,ad.z),z);float cv=max(c.x,0.0),dv=clamp(d.x,0.0,1.0),cd=hbRayDeltaMax(c,z,dc,z).x,ddv=hbRayDeltaMin(max(d,z),one,hbRayDeltaMax(d,z,dd,z),z).x,f=cv*dv,df=cv*ddv+dv*cd+cd*ddv;vec2 q=b.xy/den.xy,dq=hbRayDeltaDivide(b,den,db,dden).xy;return vec4(da.xy-q*df-dq*f-dq*df,0,0);}
 `+nonlinearDifferentialGLSL+proceduralDifferentialGLSL;
 export const rayDifferentialExpressions=Object.freeze({
- constant:zero,time:zero,viewDirection:zero,texture:zero,store:zero,
+ constant:zero,time:zero,viewDirection:zero,store:zero,
  uv:'vec4(uvDelta,0,0)',worldPosition:'vec4(pointDelta,0)',worldNormal:'vec4(normalDelta,0)',
  channel:'vec4(aDelta[int(value.x)],aDelta[int(value.x)],aDelta[int(value.x)],aDelta[int(value.x)])',
  combine:'vec4(aDelta.x,bDelta.x,cDelta.x,dDelta.x)',cast:'aDelta',
@@ -67,7 +67,7 @@ export function rayDifferentialNode(T,operation,base,delta,context,fallback){
  const divideLane=(a,b,da,db)=>{const oldClamp=b.abs().lessThan(.000001),nextClamp=b.add(db).abs().lessThan(.000001),old=oldClamp.select(.000001,b),next=nextClamp.select(.000001,b.add(db)),change=oldClamp.select(nextClamp.select(0,b.sub(.000001).add(db)),nextClamp.select(T.float(.000001).sub(b),db));return da.sub(a.div(old).mul(change)).div(next);};
  const divideDelta=(a,b,da,db)=>lanes(k=>divideLane(a[k],b[k],da[k],db[k]));
  switch(operation){
-  case'constant':case'time':case'viewDirection':case'texture':return T.vec4(0);
+  case'constant':case'time':case'viewDirection':return T.vec4(0);
   case'uv':return T.vec4(context[0],0,0);
   case'worldPosition':return T.vec4(context[1],0);
   case'worldNormal':return T.vec4(context[2],0);

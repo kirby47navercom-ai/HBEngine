@@ -44,7 +44,7 @@ export function rayTextureNeedsFootprint(instruction){
 export function rayCoordinateInstructions(instructions,live=null){
  const definitions=new Map(),parents=[],needed=new Set();
  for(let n=0;n<instructions.length;n++){const i=instructions[n];parents[n]=i.slice(4,8).map(r=>definitions.get(r)).filter(n=>n!==undefined);if(i[0]===9&&rayTextureNeedsFootprint(i)&&(!live||live.has(n))){for(const r of i.slice(4,6)){const p=definitions.get(r);if(p!==undefined)needed.add(p);}}if(i[0]!==8)definitions.set(i[1],n);}
- for(let n=instructions.length-1;n>=0;n--)if(needed.has(n)&&instructions[n][0]!==9)for(const p of parents[n])needed.add(p);
+ for(let n=instructions.length-1;n>=0;n--)if(needed.has(n))for(const p of parents[n])needed.add(p);
  return needed;
 }
 // Reuse the register-version-aware coordinate dependency walk. This is shader

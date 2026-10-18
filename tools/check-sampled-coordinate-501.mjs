@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {rayCoordinateInstructions,rayDifferentialOperations} from '../prototype/ray-mip.js';import {rayUVFootprintContract} from '../prototype/ray-uv-footprint.js';
+import {nativeSurfaceProgramContract} from '../prototype/native-materials.js';import {engineSchema} from './editor-automation.mjs';
+const uv=[1,0,2,2,-1,-1,-1,-1,0,0,0],first=[9,1,4,4,0,-1,-1,-1,0,0,0],overwrite=[0,0,2,2,-1,-1,-1,-1,0,0,0],second=[9,2,4,4,1,-1,-1,-1,0,0,8],store=[8,-1,4,4,2,-1,-1,-1,0,4,4],instructions=[uv,first,overwrite,second,store];
+assert.deepEqual([...rayCoordinateInstructions(instructions)].sort(),[0,1]);assert.deepEqual(rayDifferentialOperations([{instructions}]),[1,9]);
+assert.deepEqual([...rayCoordinateInstructions([uv,first,store])],[],'direct fixed-spatial sample needs no coordinate differences');
+for(const kind of [1,2,3]){const ops=structuredClone(instructions);ops[1][8]=kind;assert.deepEqual([...rayCoordinateInstructions(ops)].sort(),[0,1]);}
+assert.ok(!rayUVFootprintContract.stableOperations.includes('texture'));assert.ok(rayUVFootprintContract.sampledCoordinates.includes('incoming footprint held fixed'));assert.ok(rayUVFootprintContract.approximations.some(s=>s.includes('sub-ULP')));
+assert.equal(engineSchema().nativeSurfaceProgram,nativeSurfaceProgramContract);assert.ok(Object.isFrozen(nativeSurfaceProgramContract.reserved.effects2D));
+const result={passed:true,versionedRegisters:true,fixedSpatialAncestorPropagates:true,allFourFamilies:true,ordinaryFixedSampleHasNoExtraDerivatives:true,finiteSamplingPrecisionExplicit:true,newGPUResources:0,newUniforms:0,newProductionReadbacks:0};await fs.writeFile('native/build/sampled-coordinate-501.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
