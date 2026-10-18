@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "59706322abc304757f6d76dcfb8afc2c1092e28c",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/gpu-path-preparation.js": "2501a3f9a56ab6bf6f53e9fc0ae4912eba56ca77a4b522c63b4780725f68786f",
+    "prototype/pipeline-preparation-contract.js": "1122cc67c4d7a27a729122cb3f69e74427417d85d60395f7e3cde57c611d7051",
+    "prototype/profiler.js": "ecb50441eba972427514d0ee085a860775e16a74ac5d091ea0a3a6b28139a1c5",
+    "tools/check-pipeline-contract-429.mjs": "f82ca43adf2bbadc72da3c7060f6ca1b845891eb5b85a641b4784b2e71f2bf0a",
+    "tools/check-pipeline-submission-426.mjs": "782596aabff784a9605879440ed22283fc5220b0871f28693c17f74df2a6ec10",
+    "tools/check-pipeline-submission-427-window.mjs": "b295eedb4c611f7341a011dfa5b4e62de5f68de4f69bf4d45ec3a5afc11b68a7",
+    "tools/check-preparation-epoch-366.mjs": "1077188f658d36cf138bb3aaf8c2df347749b9e10194ce761e6711ef3ad4abb0",
+    "tools/editor-automation.mjs": "61083f63f0c42e0fd6a105a78609a9408ec472c36bb5707b9a929914402e9287"
+  },
+  "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
+  "nativeHostSHA256": "98945fd6d020b50b57207730ede544a327d33c4068ed346c23dc496af7a866d3",
+  "binaryReuseFrom": "docs/research/USER_INSTALL_425.json",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/pipeline-426-baseline.json",
+      "sha256": "f1a161111a00f8bf38cb6bcd2402a95e035dade1d330abe63991938df307a90d"
+    },
+    {
+      "path": "native/build/pipeline-426-cpu.json",
+      "sha256": "98e1b9852215b679320073ec4a554ac5784ea67eb9275330032c0b7b3872342a"
+    },
+    {
+      "path": "native/build/pipeline-contract-429-cpu.json",
+      "sha256": "5d8f0f5ba2bf991c0c03b4511bfb2d726afc5de02d3422d368aa826b27794969"
+    },
+    {
+      "path": "native/build/preparation-epoch-366-Vo5q6Y/acceptance.json",
+      "sha256": "26a9a7a1770b1b433d6dccd4411580f1207149047972e4c215f0997903f35055"
+    },
+    {
+      "path": "native/build/pipeline-submission-427-jCeTQi/acceptance.json",
+      "sha256": "664fcaed9179c9ab57ef0254299d59e13701a41be57a01f7b2cd2b69bd67471a"
+    },
+    {
+      "path": "native/build/gpu-scene-he1eiy/acceptance.json",
+      "sha256": "0fbf6f9b367c9cdd791281f2da501e441a9eced724073166ecfa2a024141967f"
+    },
+    {
+      "path": "native/build/rendering-430-light-checks.json",
+      "sha256": "4d57a0d157d32e6f082a63ee7ab246a0d7d0c3caa252d5d0cfcc5ac02e756109"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/gpu-scene-he1eiy/acceptance.json",
+      "scope": "실제 C++·블루프린트 WebGPU 복잡 노멀·UV·시간 가이드·변형·해제. 핵심 준비 코드는 실제검사와 동일하며429의새 AI/프로파일러 메타데이터는 게임 후 CPU로 별도검증. 단일 준비 관찰이며 개선율·FPS 아님"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/pipeline-submission-427-jCeTQi/acceptance.json",
+      "scope": "실제 GPU 네이티브 완료Promise 보류시첫완료전제출1→4·준비중raster·네색정확. 인위보류는 속도증거아님"
+    },
+    {
+      "path": "native/build/preparation-epoch-366-Vo5q6Y/acceptance.json",
+      "scope": "기존epoch baseline빈첫프레임0/현재·직접·raster동시173·값오차0·준비draw0"
+    }
+  ],
+  "implemented": [
+    "WebGPU post의동기descriptorbuild 후 독립RTT를모두제출하고native완료를함께대기·앱의직렬장벽제거",
+    "각제출의렌더타깃/MRT/tone/color/epoch/hook/device메서드즉시복원·warmupdraw없음",
+    "out-of-order/실패/동기throw/초기장치/취소·늦은완료미게시·취소시stage스냅샷",
+    "인간profiler와AI가submitted/completed/total공유·순수불변계약과비용/타이밍해석공개"
+  ],
+  "measurements": {
+    "controlledFirstCompletionSubmissions": [
+      1,
+      4
+    ],
+    "actualGPUFirstCompletionSubmissions": [
+      1,
+      4
+    ],
+    "actualGPUColorComparisons": 4,
+    "Complex141": {
+      "passed": true,
+      "backend": "WebGPU",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 858,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4989.708299999998
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1479.8371999999945
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 187.03600000000733
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4074.7788999999902
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 1669.289300000004
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 36.921000000002095
+        }
+      ],
+      "preparation": {
+        "pending": false,
+        "currentStage": "ready",
+        "elapsedMS": 3956.39999999851,
+        "stages": [
+          {
+            "stage": "post",
+            "elapsedMS": 187.10000000149012,
+            "submitMS": 2.399999998509884,
+            "afterSubmitMS": 184.70000000298023
+          },
+          {
+            "stage": "temporal-filter",
+            "elapsedMS": 192,
+            "submitMS": 1.4000000059604645,
+            "afterSubmitMS": 190.59999999403954
+          },
+          {
+            "stage": "spatial-filter-2",
+            "elapsedMS": 211.59999999403954,
+            "submitMS": 2.399999998509884,
+            "afterSubmitMS": 209.19999999552965
+          },
+          {
+            "stage": "spatial-filter-1",
+            "elapsedMS": 213.19999999552965,
+            "submitMS": 2.2999999970197678,
+            "afterSubmitMS": 210.89999999850988
+          },
+          {
+            "stage": "spatial-filter-0",
+            "elapsedMS": 204.60000000149012,
+            "submitMS": 2.5,
+            "afterSubmitMS": 202.10000000149012
+          },
+          {
+            "stage": "lens-motion-guide",
+            "elapsedMS": 3945.39999999851,
+            "submitMS": 49.5,
+            "afterSubmitMS": 3895.89999999851
+          },
+          {
+            "stage": "normal-guide",
+            "elapsedMS": 126.60000000149012,
+            "submitMS": 24.5,
+            "afterSubmitMS": 102.10000000149012
+          },
+          {
+            "stage": "path",
+            "elapsedMS": 102.10000000149012,
+            "submitMS": 53.80000000447035,
+            "afterSubmitMS": 48.29999999701977
+          }
+        ],
+        "completed": 8,
+        "total": 8,
+        "cancelled": false,
+        "error": null,
+        "concurrent": true,
+        "submitted": 8
+      },
+      "compilation": null,
+      "typedCPP": true,
+      "disabledRelease": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0,
+    "newWorkers": 0,
+    "newDiskCaches": 0
+  },
+  "sourceReading": {
+    "record": "docs/research/CORPUS_MANIFEST.json#supplemental430",
+    "scope": "GPUWeb메서드단락·MDN기존등록메서드재읽기·설치Three r180선택원본. W3C전체본문크기실패미독. 전체API/본문gate미승격"
+  },
+  "limits": [
+    "드라이버 병렬실행·cache·CPU부하에따라시간변동·동시제출은초기compile완료주장아님",
+    "동기graph/source생성과처음셰이더compile비용·이미제출한nativecompile자체취소불가",
+    "RND05/07전역곡면·변경투명경로·복합로브·참여매질과RND08/누적엔진원장유지",
+    "대표FPS/모바일실기기/iOS/전체분석/전체엔진완료주장없음"
+  ]
+}
