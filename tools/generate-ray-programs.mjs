@@ -1,4 +1,4 @@
-import {previousRayGeometryGLSL,previousRayNames} from '../prototype/ray-previous-context.js';
+import {previousRayGeometryGLSL,previousRayNames,previousRayFieldsGLSL,previousRayCoatNormalGLSL} from '../prototype/ray-previous-context.js';
 import {rayTextureNeedsFootprint} from '../prototype/ray-mip.js';
 import {rayTextureVariants,rayTextureAlphaGLSL} from '../prototype/ray-texture-shader.js';
 import {rayMaterialGLSL} from '../prototype/ray-material-shader.js';
@@ -34,8 +34,16 @@ template<class Json> inline std::vector<RayProgram> readRayPrograms(const Json& 
   validateRayProgram(p);result.push_back(std::move(p));
  }return result;
 }
-inline std::string previousRayNames(const std::string& source){
- std::string result;for(std::size_t pos=0;pos<source.size();){if(std::isalpha(static_cast<unsigned char>(source[pos]))||source[pos]=='_'){std::size_t end=pos+1;while(end<source.size()&&(std::isalnum(static_cast<unsigned char>(source[end]))||source[end]=='_'))end++;const auto token=source.substr(pos,end-pos);if(token=="hbGeometryFrame")result+="hbRayPreviousFrame";else if(token=="hbRayUV"||token=="hbRaySmoothNormal"||token=="hbRayGeometric"||token=="hbRayBary"||token=="hbRayOffset"||token=="hbRayRunField3"||token.compare(0,12,"hbRayProgram")==0)result+="hbRayPrevious"+token.substr(5);else result+=token;pos=end;}else result+=source[pos++];}return result;
+inline bool rayFieldUsesFrame(const RayProgram& p,int field,bool guide=false){
+ if(field<0||field>9)throw std::runtime_error("Previous surface field invalid");
+ if(!(p.fieldMask&(1u<<field)))return false;
+ validateRayProgram(p);std::array<int,64> definitions;definitions.fill(-1);std::array<int,4> roots;roots.fill(-1);std::vector<std::array<int,4>> parents(p.instructions.size());
+ for(std::size_t n=0;n<p.instructions.size();++n){const auto& i=p.instructions[n];for(int j=0;j<4;++j)parents[n][j]=i[j+4]<0?-1:definitions[i[j+4]];if(i[0]==8){for(int c=0;c<(guide&&field==5?2:4);++c)if(c>=i[8]&&c<i[8]+i[9])roots[c]=static_cast<int>(n);}else definitions[i[1]]=static_cast<int>(n);}
+ std::vector<int> pending;for(int root:roots)if(root>=0)pending.push_back(root);std::vector<bool> seen(p.instructions.size(),false);
+ while(!pending.empty()){const int n=pending.back();pending.pop_back();if(seen[n])continue;seen[n]=true;const auto op=p.instructions[n][0];if(op>=1&&op<=5)return true;for(int parent:parents[n])if(parent>=0)pending.push_back(parent);}return false;
+}
+inline std::string previousRayNames(const std::string& source,const std::set<int>* programKeys=nullptr){
+ std::string result;for(std::size_t pos=0;pos<source.size();){if(std::isalpha(static_cast<unsigned char>(source[pos]))||source[pos]=='_'){std::size_t end=pos+1;while(end<source.size()&&(std::isalnum(static_cast<unsigned char>(source[end]))||source[end]=='_'))end++;const auto token=source.substr(pos,end-pos);const bool program=token.compare(0,12,"hbRayProgram")==0;if(token=="hbGeometryFrame")result+="hbRayPreviousFrame";else if(token=="hbRayUV"||token=="hbRaySmoothNormal"||token=="hbRayGeometric"||token=="hbRayBary"||token=="hbRayOffset"||token.compare(0,13,"hbRayRunField")==0||(program&&(!programKeys||programKeys->count(std::stoi(token.substr(12))))))result+="hbRayPrevious"+token.substr(5);else result+=token;pos=end;}else result+=source[pos++];}return result;
 }
 inline std::string rayProgramShader(const std::vector<RayProgram>& programs){
  static const std::array<const char*,50> expressions={
@@ -46,6 +54,7 @@ ${Array.from({length:48},(_,id)=>'R"HB('+rayTextureVariants(rayMaterialGLSL,[[Ma
 ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
 )HB";bool normalTime=false;for(const auto& p:programs)if(p.fieldMask&8)for(const auto& i:p.instructions)if(i[0]==2)normalTime=true;if(normalTime)source="#define HB_RAY_NORMAL_TIME 1\n"+source;std::set<int> keys,kinds;for(const auto& p:programs)for(const auto& i:p.instructions)if(i[0]==9)kinds.insert(i[8]*12+i[10]);for(int kind:kinds)source+=textureVariants.at(kind);
 
+ std::set<int> previousKeys;for(const auto& p:programs){bool needed=(p.fieldMask&8)!=0;for(int field=0;field<10;++field)needed=needed||rayFieldUsesFrame(p,field);if(needed)previousKeys.insert(p.key);}for(int field:{0,1,2,4,5,6,7,8,9})for(const auto& p:programs)if(rayFieldUsesFrame(p,field,true)){source="#define HB_RAY_SURFACE_HISTORY_"+std::to_string(field)+" 1\n"+source;break;}
  std::string previousPrograms;for(int pass=0;pass<2;pass++){const bool alpha=pass==1;keys.clear();const std::string programName=alpha?"hbRayProgramAlpha":"hbRayProgram",executeName=alpha?"hbRayExecuteAlpha":"hbRayExecute";for(const auto& p:programs){validateRayProgram(p);if(!keys.insert(p.key).second)throw std::runtime_error("Ray program key duplicate");
   std::array<int,64> definitions;definitions.fill(-1);std::vector<std::array<int,4>> parents(p.instructions.size());std::vector<bool> needed(p.instructions.size(),false),live(p.instructions.size(),!alpha);std::set<int> registers,derived;int alphaStore=-1;
   const bool textureFootprints[48]={${Array.from({length:48},(_,n)=>rayTextureNeedsFootprint([9,0,4,4,0,0,0,0,Math.floor(n/12),0,n%12])?"true":"false").join(",")}};
@@ -70,13 +79,15 @@ ${rayTextureAlphaGLSL.replace(/\bfract\(/g,'frac(')}
      std::string ex;for(std::size_t pos=0;pos<expression.size();){if(std::isalpha(static_cast<unsigned char>(expression[pos]))||expression[pos]=='_'){std::size_t end=pos+1;while(end<expression.size()&&(std::isalnum(static_cast<unsigned char>(expression[end]))||expression[end]=='_'))end++;const std::string token=expression.substr(pos,end-pos);ex+=token;if(token=="a"||token=="b"||token=="c"||token=="d"||token=="point"||token=="uv"||token=="normal")ex+=suffix;pos=end;}else ex+=expression[pos++];}if(i[0]==9)ex="v";source+="vec4 v"+suffix+"="+ex+";"+trim("v"+suffix)+"r"+suffix+std::to_string(i[1])+"=v"+suffix+";}";
     }
    }source+="}";
-  }source+="return result;}\n";if(!alpha&&(p.fieldMask&8))previousPrograms+=previousRayNames(source.substr(programStart));
+  }source+="return result;}\n";if(!alpha&&previousKeys.count(p.key))previousPrograms+=previousRayNames(source.substr(programStart));
  }source+="vec4 "+executeName+"FieldTime(float field,float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(const auto& p:programs){std::string condition;if(p.fieldMask!=1023){condition="(field<-.5";for(int f=0;f<10;f++)if(p.fieldMask&(1u<<f))condition+="||field=="+std::to_string(f)+".0";condition+=")&&";}source+="if("+condition+"key=="+std::to_string(p.key)+".0)return "+programName+std::to_string(p.key)+"(pointer,id,point,view,result,width,timeContext);";}source+="return result;}vec4 "+executeName+"Time(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){return "+executeName+"FieldTime(-1.0,key,pointer,id,point,view,result,width,timeContext);}vec4 "+executeName+"(float key,float pointer,float id,vec3 point,vec3 view,vec4 result,float width){return "+executeName+"Time(key,pointer,id,point,view,result,width,vec2(0,0));}";}
- for(int field=0;field<10;field++){const auto fieldStart=source.size();source+="vec4 hbRayRunField"+std::to_string(field)+"(float id,vec3 point,vec3 view,float material,vec4 result,float width,vec2 timeContext){vec4 program=hbGeometryLoad(material+"+std::to_string(field*2+1)+".0);if(program.y<.5)return result;";for(const auto& p:programs)if(p.fieldMask&(1u<<field))source+="if(program.w=="+std::to_string(p.key)+".0)return hbRayProgram"+std::to_string(p.key)+"(program.x,id,point,view,result,width,timeContext);";source+="return result;}\n";if(field==3)previousPrograms+=previousRayNames(source.substr(fieldStart));}
+ for(int field=0;field<10;field++){const auto fieldStart=source.size();source+="vec4 hbRayRunField"+std::to_string(field)+"(float id,vec3 point,vec3 view,float material,vec4 result,float width,vec2 timeContext){vec4 program=hbGeometryLoad(material+"+std::to_string(field*2+1)+".0);if(program.y<.5)return result;";for(const auto& p:programs)if(p.fieldMask&(1u<<field))source+="if(program.w=="+std::to_string(p.key)+".0)return hbRayProgram"+std::to_string(p.key)+"(program.x,id,point,view,result,width,timeContext);";source+="return result;}\n";previousPrograms+=previousRayNames(source.substr(fieldStart),&previousKeys);}
  source+=R"HB(
 ${previousRayGeometryGLSL}
 )HB"+previousPrograms+R"HB(
 vec4 hbRayPreviousField3TimeLod(float id,vec3 point,vec3 view,float width,vec2 timeContext){float at=hbRayAttributes(id);if(at<=0.0)return vec4(0,0,1,0);float material=hbGeometryLoad(at+1.0).z;return hbRayBound(hbRayPreviousRunField3(id,point,view,material,hbGeometryLoad(material+6.0),width,timeContext),3.0);}
+${previousRayFieldsGLSL(rayMaterialGLSL)}
+${previousRayCoatNormalGLSL(rayMaterialGLSL)}
 ${previousRayNames(rayMaterialGLSL.slice(rayMaterialGLSL.indexOf('vec3 hbRayNormalContextLod('),rayMaterialGLSL.indexOf('vec3 hbRayNormalTimeLod(')))}
 )HB";return source;
 }

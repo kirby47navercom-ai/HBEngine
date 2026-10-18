@@ -1,0 +1,6 @@
+import {surfaceHistoryEpsilon} from './path-surface-history.js';
+export function sameHistorySurfaceGPU(now,old){const d=now.xyz.sub(old.xyz).abs(),glass=now.z.greaterThan(.5),oldGlass=old.z.greaterThan(.5),mirror=now.x.greaterThan(.5).and(now.y.lessThan(.4)),oldMirror=old.x.greaterThan(.5).and(old.y.lessThan(.4));return now.w.equal(old.w).and(d.x.max(d.y).max(d.z).lessThanEqual(surfaceHistoryEpsilon)).and(glass.equal(oldGlass)).and(glass.or(mirror.equal(oldMirror)));}
+export function sameHistoryCoatGPU(now,old){return now.x.sub(old.x).abs().max(now.y.sub(old.y).abs()).lessThanEqual(surfaceHistoryEpsilon).and(now.x.greaterThan(.5).and(now.y.lessThan(.05)).equal(old.x.greaterThan(.5).and(old.y.lessThan(.05))));}
+export function sameHistoryRefractionGPU(view,normal,geometric,eta,front,reflection){const oldFront=geometric.dot(view).greaterThan(0),next=view.negate().refract(oldFront.select(normal,normal.negate()),eta);return oldFront.equal(front).and(next.dot(next).lessThan(.000001).equal(reflection));}
+
+export function sameHistoryValueGPU(now,old){const delta=now.sub(old).abs().div(now.abs().max(old.abs()).max(1));return delta.x.max(delta.y).max(delta.z).max(delta.w).lessThanEqual(surfaceHistoryEpsilon);}

@@ -1,3 +1,13 @@
+# 353–361 — 이전 표면 입력·실제 가이드 연결 · 2026-10-18
+
+353 field0/5 actual18문맥 GL/GPU dtd6sG오차4.2022e-6·DX0YGmPv1.4306e-6. 355 facing/TIR192독립조건 GL/GPUcPNl6l/DXINAIhQ 오차0. 357은live출력의registerversion/overwrite를분석해static현재프로그램을공유하고priorphysical/coat의불필요계산을제거해요. c2dcd4e6모듈동결/공통math9대조인296XuUqDp ABBA aux렌즈off/on8컴파일·UV288/가이드픽셀오차0, 약3초표본은FPS/전체coldcache개선율이아니에요.
+
+358 fullguide에서geometryRecords.w(curved), GLcoordinates, DXArea가검사에누락됐고 WGPU shared TLAS도hierarchy모드가필요했어요. fixture를실제binding대로고쳤어요. 이어motionflag0의제품원인은GeometryGI normal-onlytime정책이physical/coatgraph의filterSignature를바꿔committedpose를전부지우던것이었어요. 359가opaque지원필드를재사용하고opacity/발광RGB/CPUfallback/투명체의전역reset은유지해요. GL/GPU3Bf92a:0/5각183유효중151이력거부·동일입력복원오차0; DX360C0saCB두센터ray거부/복원통과예요.
+
+검사전용WGPU compileAsync→첫read0은targetformat고정/initTexture로해결되지않았어요. 행렬/atlas/기하hit/uniform버퍼를계측해binding이정상임을확인했고direct renderAsync 첫paint에서는통과했어요. 제품에가짜warmup이나read허용은추가하지않았어요. 실제제품의준비helper/패키지firstpaint는별도game gate로확인해야해요.
+
+361은10표면필드와liveguide gate로확장중이에요. tenfield한shader 검사는driver인라인확장으로CDP20초를넘겨실패했고전체timeout을늘리지않고2필드5그룹으로분리했어요. actualGL/GPU52SXNE6문맥×30그룹·오차1.714e-7통과; native/확장guide/game/install은CODEX_HANDOFF진행상태를따라요. 현재설치349미변경, User읽기전용·Versions1보존.
+
 # 298–303 — 필터 호출 공유·노멀 수집 · 2026-10-18
 
 298: GL/HLSL/TSL 삼선형 sampler가 정수LOD에도 상위mip을 읽고 두 level 호출을 driver에 펼쳤어요. 1/2회 loop의 한 호출 위치로 바꿨어요. 실제GL48변형×480 표본·GPU48×384 표본 오차0, 정수 표본136개의 atlas load684개 감소. 299 TsHThK의 공유/UV/렌즈off-on/main-aux도 오차0, 격리 path1941→98.5ms는 한순서 표본이에요. Complex141 GL CPqdhu는 아직8534ms/시간4513ms예요. GPU IZrWzs3863/2226ms는 실제 게임 전환이며 FPS가 아니에요.
@@ -1020,3 +1030,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - 원래 native-scene-window-0VeswA 실행은 완성 패키지가 있었지만 셸 종료1·보고서 부재로 미검증이에요. 이미 만들어진450개 패키지 명세를 확인한 뒤351에서 창 검사만 이어가 C++/에셋을 반복 빌드하지 않았어요. 351 첫 실패 두 개는 재생 도구의 상대 import/누락된 sleep이었고, 후속 odSg7c가 ProbeDriver.Off 뒤 probeCaptures2/1 불일치를 잡았어요.
 - 원인은 native/browser 캡처 키가 p 전체를 포함해 강도·혼합 같은 바인딩 변경까지 재캡처한 것이에요. 공용 probeCaptureKey로 실제 캡처 속성/derived center/장면 onChange만 비교해요. 위치/갱신/해상도/clip/bounce/owner 제외 변화는 유지해요. 352는 모든 컴포넌트 속성을 분류해 새 속성 누락도 잡아요. browser fixture는 동일 target 재반환을 별개 target으로 고쳐 교체/최종 제거2회·중복 해제 금지를 검사해요.
 - 351 최종8cYod3은 private 기존 패키지의 native-scene-renderer.js/reflection-probes.js 두 파일과 명세를 갱신하고 전체 D3D CPP/BP·2D/3D/HUD/텍스처/그림자/파티클/변형/Bloom/프로브/장면해제를 통과했어요. 최초 manifest와 patch SHA를 보존했어요. JYI2Ac는 실제65537 GPU파티클/간접draw·hiddenHWND·자원/프레임ring3·Android두ABI헤더 문법만 통과했으며 모바일 GPU/FPS 검증이 아니에요.
+
+
+# 365 — 최종 대조와 실행 검사
+
+이전296의coords/curved flag가0이라가이드쪽은실제이력검증으로세지않아요. 최종u8Ueav는정상좌표/curved1·185유효motion·깊이범위검사·c2dcd4e6모듈동결·lensoff/on ABBA픽셀0으로대체했어요. UV288독립원본수식비교는계속유효해요.
+
+361native확장처음에는2필드외previousRunField가생성되지않아FXC undeclared가났고생성기를모든필드로고쳤어요. 357C++의10선언assert/실제361RoIJMS15그룹0오차가회귀근거예요. 363별도coatTBN복원과기본/coating우세선택은7문맥+독립constantTBN/364lens8조건으로검사했어요. ordinaryGPUguide는coatdecoder를생성하지않고current feature상속,빈opacity/emission채널은liveness할당을건너뛰어요.
+
+실제원본게임4KMUzC는579파일완성패키지후결과보고없이exit1;원인미확정이며성공으로세지않아요. 기존351에LightingDriver모드와realpath경로검증을추가해같은패키지를재빌드없이재개한auUrk1은CPP/BP/141/138/134/125/128/raster131/warm통과예요. 이후WebGPUYqgmvX/GL8O92iS도같은제작/CPP/BP경로통과예요. 0VeswA Node server PID7248(15:51 시작)은정확한격리player-server명령줄과build내경로확인후정리했어요.

@@ -17,7 +17,7 @@ export function pathGuideDenoiseGLSL(auxiliary,lens){
   replace('if(!auxiliary)normal=','normal=');replace(',coc=0.0;',';');
   section('if(lensDifferentials){','float eta=1.0;','return vec4(normal,depth);}\n');
   replace('if(!auxiliary)hbPathVirtualAppend','hbPathVirtualAppend');
-  section('if(auxiliary){hbPathVirtualAppend','origin=p+direction','');
+  section('if(auxiliary&&curved&&glass&&previousValid&&hbPathFilter.w>0.0){','origin=p+direction','');
  }else{
   replace('lensDifferentials=hbPathLens.x>0.0&&hbEye.w<.5&&hbPathFilter.y>0.0','lensDifferentials=false');
   replace('differentialCount=lensDifferentials?4:2','differentialCount=2');
@@ -34,12 +34,12 @@ export function pathGuideDenoiseGLSL(auxiliary,lens){
 // graph twice. The same main/differential samples still use the same footprint.
 function shareGuideNormals(source,size){
  const replace=(before,after)=>{if(!source.includes(before))throw Error('경로 노멀 공유 구역을 확인하세요.');source=source.replace(before,after);};
- replace('normal=hbRayNormalLod(hit.y,p,-direction,width)','normal=vec3(0)');
+ replace('normal=hbPathSurfaceNormal(hit.y,p,-direction,width,coatOnly)','normal=vec3(0)');
  replace('vec3 n=front?normal:-normal;','vec3 n=vec3(0);');
- const prior='if(curved){oldN=hbPathCommittedNormal(hit.y,oldP,oldView,oldWidth);if(dot(oldN,oldN)<.5)previousValid=false;}';
+ const prior='if(curved){oldN=coatOnly?hbPathCommittedCoatNormal(hit.y,oldP,oldView,oldWidth):hbPathCommittedNormal(hit.y,oldP,oldView,oldWidth);if(dot(oldN,oldN)<.5)previousValid=false;}';
  replace(prior,'');
  const terminal='if(!glass&&!mirror){if(physical.y<.1';
- replace(terminal,`vec3 differentialNormals[${size}];for(int sampleIndex=0;sampleIndex<1+((glass||mirror)&&differentials?differentialCount:0);sampleIndex++){bool primary=sampleIndex==0;int j=max(0,sampleIndex-1);vec3 value=hbRayNormalLod(primary?hit.y:differentialIDs[j],primary?p:dp[j],primary?-direction:-rd[j],width);if(primary)normal=value;else differentialNormals[j]=value;}n=front?normal:-normal;${prior}\n${terminal}`);
- replace('vec3 dn=hbRayNormalLod(differentialIDs[j],dp[j],-rd[j],width);','vec3 dn=differentialNormals[j];');
+ replace(terminal,`vec3 differentialNormals[${size}];for(int sampleIndex=0;sampleIndex<1+((glass||mirror)&&differentials?differentialCount:0);sampleIndex++){bool primary=sampleIndex==0;int j=max(0,sampleIndex-1);vec3 value=hbPathSurfaceNormal(primary?hit.y:differentialIDs[j],primary?p:dp[j],primary?-direction:-rd[j],width,coatOnly);if(primary)normal=value;else differentialNormals[j]=value;}n=front?normal:-normal;${prior}\n${terminal}`);
+ replace('vec3 dn=hbPathSurfaceNormal(differentialIDs[j],dp[j],-rd[j],width,coatOnly);','vec3 dn=differentialNormals[j];');
  return source;
 }

@@ -3,11 +3,11 @@ import {gpuFn} from './gpu-function-scope.js';
 import {rayMaterialNode} from './ray-material-gpu.js';
 
 // Share the IR/compiler/samplers, replacing only committed geometry inputs.
-export function previousRayGPU(transport,u,{reuseTextures=true}={}){
+export function previousRayGPU(transport,u,{reuseTextures=true,fields=[3]}={}){
  const {load,ray}=transport,record=(id,slot)=>{
   const at=u.pathFilter.w.add(id.mul(3));
-  if(slot<3)return load(at.add(slot));
-  if(slot===3)return T.vec4(load(at.add(1)).xyz.cross(load(at.add(2)).xyz).normalize(),0);
+  if(slot<3)return T.vec4(load(at.add(slot)).xyz,ray.record(id,slot).w);
+  if(slot===3)return T.vec4(load(at.add(1)).xyz.cross(load(at.add(2)).xyz).normalize(),ray.record(id,3).w);
   return ray.record(id,slot);
  };
  const geometric=id=>record(id,3).xyz;
@@ -25,5 +25,5 @@ export function previousRayGPU(transport,u,{reuseTextures=true}={}){
    });
   });return result;
  }).setLayout({name:'hbPreviousSmoothNormal',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
- return rayMaterialNode(load,u,ray.programs,[3],load,null,true,false,record,bary,smooth,reuseTextures?ray.textureLibrary:null);
+ return rayMaterialNode(load,u,ray.programs,fields,load,null,ray.normalEnabled!==false,ray.coatNormalEnabled!==false,record,bary,smooth,reuseTextures?ray.textureLibrary:null);
 }

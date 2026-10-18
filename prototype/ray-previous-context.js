@@ -17,11 +17,32 @@ vec3 hbRayPreviousSmoothNormal(float id,vec3 point){
 vec3 hbRayPreviousOffset(float id,vec3 view,float width,float axis){vec3 n=hbRayPreviousGeometric(id),t=cross(n,view);if(dot(t,t)<.000001)t=cross(n,abs(n.z)<.9?vec3(0,0,1):vec3(0,1,0));t=normalize(t);return axis<.5?t*width:cross(n,t)*(width/max(.01,abs(dot(n,view))));}
 `;
 
-export function previousRayNames(source){return source.replace(/\bhbRay(UVFootprint|UV|SmoothNormal|Geometric|Bary|Offset|NormalContextLod|Field3TimeLod|RunField3|Program\d+|Execute\w*)\b/g,(_,name)=>'hbRayPrevious'+name).replace(/\bhbGeometryFrame\b/g,'hbRayPreviousFrame');}
+export function previousRayNames(source,programKeys=null){return source.replace(/\bhbRay(UVFootprint|UV|SmoothNormal|Geometric|Bary|Offset|(?:Coat)?NormalContextLod|Field[0-9]TimeLod|RunField[0-9]|Program\d+|Execute\w*)\b/g,(original,name)=>programKeys&&name.startsWith('Program')&&!programKeys.has(Number(name.slice(7)))?original:'hbRayPrevious'+name).replace(/\bhbGeometryFrame\b/g,'hbRayPreviousFrame');}
+
+// Keep each field's existing defaults, gates and bounds; replace only the
+// geometry/time context. The guide selects live fields; opaque visibility/emission keep global reset guards.
+export function previousRayFieldsGLSL(materialSource,fields=[0,1,2,4,5,6,7,8,9]){
+ if(!Array.isArray(fields)||new Set(fields).size!==fields.length||fields.some(f=>!Number.isInteger(f)||f<0||f>9||f===3))throw Error('이전 표면 필드를 확인하세요.');
+ return fields.map(field=>{
+  const name='hbRayField'+field+'Lod',start=materialSource.indexOf('vec4 '+name+'('),open=materialSource.indexOf('{',start);if(start<0||open<0)throw Error('이전 표면 함수가 없어요.');
+  let depth=1,end=open+1;for(;end<materialSource.length&&depth;end++){if(materialSource[end]==='{')depth++;else if(materialSource[end]==='}')depth--;}
+  if(depth)throw Error('이전 표면 함수 구역을 확인하세요.');
+  const source=materialSource.slice(start,end);if(!source.includes('float width){')||!source.includes('width,vec2(0,0)'))throw Error('이전 표면 시간 문맥을 확인하세요.');
+  return previousRayNames(source.replace(name+'(',name.replace('Lod','TimeLod')+'(').replace('float width){','float width,vec2 timeContext){').replaceAll('width,vec2(0,0)','width,timeContext'));
+ }).join('\n');
+}
 
 // Keep the existing public program ABI, field masks and persisted graph keys.
-export function previousRayNormalGLSL(programSource,normalSource,uvSource=''){
- return previousRayGeometryGLSL+previousRayNames(uvSource)+previousRayNames(programSource)+`
+export function previousRayNormalGLSL(programSource,normalSource,uvSource='',surfaceSource='',programKeys=null){
+ return previousRayGeometryGLSL+previousRayNames(uvSource)+previousRayNames(programSource,programKeys)+`
 vec4 hbRayPreviousField3TimeLod(float id,vec3 point,vec3 view,float width,vec2 timeContext){float at=hbRayAttributes(id);if(at<=0.0)return vec4(0,0,1,0);float material=hbGeometryLoad(at+1.0).z;return hbRayBound(hbRayPreviousRunField3(id,point,view,material,hbGeometryLoad(material+6.0),width,timeContext),3.0);}
-`+previousRayNames(normalSource);
+`+surfaceSource+'\n'+previousRayNames(normalSource);
+}
+
+// Clearcoat has its own tangent normal and uses the same committed frame inputs.
+export function previousRayCoatNormalGLSL(materialSource){
+ const name='hbRayCoatNormalLod',start=materialSource.indexOf('vec3 '+name+'('),open=materialSource.indexOf('{',start);if(start<0||open<0)throw Error('이전 코팅 노멀 함수를 확인하세요.');
+ let depth=1,end=open+1;for(;end<materialSource.length&&depth;end++){if(materialSource[end]==='{')depth++;else if(materialSource[end]==='}')depth--;}
+ if(depth)throw Error('이전 코팅 노멀 구역을 확인하세요.');
+ return previousRayNames(materialSource.slice(start,end).replace(name+'(','hbRayCoatNormalContextLod(').replace('float width){','float width,vec2 timeContext){').replace('hbRayField9Lod(id,point,view,width)','hbRayField9TimeLod(id,point,view,width,timeContext)'));
 }

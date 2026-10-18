@@ -1,10 +1,14 @@
-# HBEngine 현재 인계 — 349 설치 확인·353 렌더링 계속
+# HBEngine 인계 — 353–365 구현·실제 실행 통과, 설치 준비
 
-- 구현4baab6e·문서a57f14d main push. 설치 ae9f6eff3708ba45 하나·3135전체명세SHA·바로가기2/.hbproject·User10385파일 검증전후/334참조SHA 동일이에요. USER_INSTALL_349가 정본이에요.
-- DX11공유디스크8MiB·SDK명시configure/Playeropt-in·전체source/entry/target/flags/DLLstamp·손상/비대기/장치거부/강제종료fallback. 기존screen9 ABI+disk10/AI schema. Device::compile/GL/GPU최초준비는대상아니에요.
-- storeUlpya3·실제SDK21save→21hit/0compile/픽셀0 OtNMQG·설치2게임6save→6hit/0save tZcuO7 통과. full3518cYod3 실제 CPP/BP·2D/3D/HUD/텍스처/그림자/파티클/변형/Bloom/프로브/해제통과. JYI2Ac GPU65537/간접draw/hiddenHWND/Android두ABI헤더만통과.
-- 실제 fullgate가 프로브 intensity recapture2/1 버그를찾아 native/browser 공용capturekey로고쳤어요. 모든속성352분류, browser독립target/mock2회해제/중복해제금지통과. native351은완성패키지450명세확인후두JS/manifest patch·원본manifest보존으로반복CPP빌드없이검사했어요. 완료Builds는자료정리됐으므로재사용할때재패키징필요해요.
-- install349 처음gate는자기CLI --executable path를activeversion으로셌어요. 앱보호를낮추지않고verify349에서동일350검증기를메모리인수로import해통과했어요. 첫실패receipt별도보존. preinstall in-memory inventory는실패때파일로안남았으므로최종profile증거는검증전후와334receipt동일SHA로정확히구분했어요.
-- 다음 docs/RENDERING_HISTORY_353_RESEARCH.md의 prior표면field0/5·투명반사/굴절branch·이전중첩매질문맥을구현해요. current/prior geometry/normal/mip는308–334설치돼있고이제다른surfacefield/branch가남아요. NRD/HDRP선택읽기만했고전체gate승격안함.
-- native/build/mixed-frame-335.mjs GL프로토타입은338b8BhcG17문맥·343/344guide-lens오차0이나미채택. 현재296dzP7Kv UV관측/referenceAPI/mip통과; 동일sourcecache시간을성과로세지않아요. GL전체준비/steadycost추가대조필요.
-- 기존one-shot318/327/334와record/sync/install/verify/finish349는재실행금지. 다음번호새로사용. User읽기전용inventory만·고유fixture/profile/port·사용자창보존·활성사용자heavy미룸·Versions1. 전체78등록행은UE/Unity전체분모아니며잔여정본ENGINE_STATUS예요.
+- 현재 설치349 ae9f6eff3708ba45/3135파일/Versions1을 유지해요. User10385파일 inventory SHA는349영수증46024720…예요. 쓰거나 복사하지 않아요. 이번365 새 desktop/player 빌드는 성공했고, 이후 GPU JS 전용 feature상속/빈채널 할당가드만 바뀌었으므로 C++ 재빌드 없이 최종 data sync해요.
+- 구현: 이전 material0..9/time/world/view/UV/mip·기존 flags w 보존·GL/TSL/생성HLSL·live출력 registerversion/overwrite분석·static프로그램공유. opaque 지원 graph만 committedpose/time 유지, opacity/emissiveRGB/CPUfallback/transmissive/편집/rewind는 globalreset. 상대값/물리/코팅/이전facing/TIR 이력거부예요. 추가 GPU타깃/버퍼/상수/readback/의존성 없음.
+- 코팅: 독립 priorCoatNormalContext/coatNormalTime·oldSmooth/TBN·opaque coat-onlymirror는기본노멀과분리·base mirror/glass는base사용·차분ray다른lobe거부. GPU prior는current normal/coat feature상속, ordinaryguide는미사용coatdecoder생성안함. AI schema10필드/제한/자원/초기화와diskCache설명일치예요.
+- 353 physical/coat18조건 dtd6sG GL/GPU4.2022e-6, DX0YGmPv1.4306e-6; 355 Snell/facing192 GL/GPUcPNl6l/DXINAIhQ오차0. 357QBmuyd10IR의존성/전체nativeRunField선언; 359XN618O12분류·187VgRdLL7·190zCt2bW5·CPU362/365/348/141/151/API통과.
+- 361 raw10fields: GL/GPU52SXNE6문맥×5그룹30/1.714e-7; DXRoIJMS3문맥×5그룹15/0. skin/morph/smooth/world/view/mip/legacy를분리해서검사해요. tenfield단일shader/CDPtimeout실패는성과아님.
+- 358 rH53R1 GL/GPU6표면속성각183(색201)유효중151(색169)변화거부/복원0. 최종native360 fDwhGD6속성두센터ray통과. decodedcoat363 GL/GPU4LLV8a7문맥2.236e-7 /DXBd68Ua7문맥1.729e-6. constantcoat별도독립TBN기준포함.
+- 364 d0SyyH fullGL/GPU lensoff/on8조건: coat우세 base-normal변화오차0, base-metal252/418성분반응. 설치검사는같은도구의더강한유효motion좌표기준으로진행해요. 이전depth-only173을motion검증수로재해석하지않아요.
+- 296 u8Ueav는 c2dcd4e 결합6모듈동결/math9SHA대조, 좌표/curved flag 활성,185유효motion/UV288/lensoff-on ABBA4변형픽셀0. 약3.0/3.2초는부하미통제준비표본이지FPS아님. 이전296JJX1I2/XuUqDp등은coords/curved미설정이었으므로UV·compile비교만근거, 실제이력완료로세지않아요.
+- 실제CPP/BP 소스게임: DX351auUrk1(579파일 LightingDriver 패키지 재개)·WebGPUYqgmvX·GL8O92iS 모두 rendering145 경로통과(Complex141,138변형,134,125,128; DX raster131/warm재방문). 처음4KMUzC 실행은보고서없이exit1이므로성과아님. 351은모드보존/사설경로realpath확인해재빌드없이재개했고실패원인을해결했다고주장하지않아요. 이전0VeswA orphan server PID7248은명령줄/사설경로검증후종료했어요.
+- 다음: 코드한글commit/push→새record365 work/status/문서→새sync365(바이너리SHA보존)→새install365. preUser읽기전용inventory를설치전에지속영수증으로남기고,365installed364 +350게임캐시/전체manifest/links/.hbproject/Versions1 확인. CLI자기installedpath오인은process.argv메모리인수로피하고보호유지. 완료fixture/ownprobe exe는SHA영수증후정리해요.
+- 이어서RND07 이전투명geometry/BVH·중첩매질분기재생, RND05 전역곡면역해/복합로브·산란 footprint, RND06 준비비용과다른원장분야를계속해요. 모든UE/Unity전체분석/전체엔진완료로보지않아요. 78등록행은전체분모아니에요.
+- 기존318/327/334/record·sync·install·verify·finish349는재실행금지. 새365marker한번만. 사용자창/탭/원본프로젝트유지, activeInstalledVersions로heavy/설치보류, User읽기전용inventory만, Versions1.
