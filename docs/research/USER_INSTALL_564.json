@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "223bdaa1c36cd75f23288114a2806cb29448282b",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f\\HBEngine.exe",
+  "bundleHash": "20b2e3b17134968faca59a3d4325ca8ab3454f65b87a648151ac15a2152f7b3e",
+  "files": 3410,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "223bdaa1c36cd75f23288114a2806cb29448282b",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\20b2e3b17134968f\\HBEngine.exe",
+    "bundleHash": "20b2e3b17134968faca59a3d4325ca8ab3454f65b87a648151ac15a2152f7b3e",
+    "files": 3410,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3402,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\68473fd495b977a3",
+          "bytes": 179843197,
+          "manifestSHA256": "6d39f97918012300cb037b45df53889e9044b918e99bd67bfb8035052487c4e7"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T21:39:08.2917482Z",
+      "bytes": 179843197,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "20b2e3b17134968f"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 1,
+      "bytes": 8995732,
+      "receipt": null,
+      "entries": [
+        "723926e568b4642e438b/edd51c1018bd8141e1fb"
+      ],
+      "running": []
+    },
+    "nativePlayerSHA256": "abed101f7c65a81448e49ab3ad6e18f47479597f9a5990fec499bda488b7256e",
+    "installedGates": [
+      {
+        "path": "native/build/probe-readiness-559-ilsjsc/acceptance.json",
+        "sha256": "099a047a3b34ab6e8d01cfc5ce6a4eb2e4eb1feae52a5f772f820a034c5640cc",
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-ruSdLX/acceptance.json",
+        "sha256": "f36c5d08357f0ec7b0673a114293b19b984a3539eaf11de95402b2a9e80cbd97",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3410,
+    "versions": [
+      "20b2e3b17134968f"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-564-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [],
+    "sourceGameGates": [
+      {
+        "path": "native/build/probe-readiness-559-pifU9U/acceptance.json",
+        "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-7Qin7n/acceptance.json",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      },
+      {
+        "path": "native/build/texture-composite-548-player-M3Uli5/acceptance.json",
+        "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
+      }
+    ],
+    "scope": "564 전체명세/소유SHA·설치 SDK/packager/player의 probe와2D 제작·C++/BP 복잡한 준비·복구·캡처·유휴worker0·User 읽기SHA/연결/Versions1/Versions 가변cache0. 전체 엔진/초기비용/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 196654644,
+    "files": 140,
+    "leaseFiles": 0,
+    "insideVersions": false
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/scene-program-preparation-553-1CL2Re/probe.exe",
+        "bytes": 1420601,
+        "sha256": "9dad7b753e853a13ff2c569e2d24b60a0da061d4cbe04a8db6fe1551f2e871f0"
+      },
+      {
+        "path": "native/build/scene-program-bridge-556-2jJOjK/probe.exe",
+        "bytes": 1996861,
+        "sha256": "31b66c87b5001f953389bced0911a5deabba4f307550b372b1fbeff189cbec0b"
+      },
+      {
+        "path": "native/build/scene-program-bridge-556-MuRvpX/probe.exe",
+        "bytes": 1999073,
+        "sha256": "b3dca338546f6038f672be8bb99a2e6094d795187de7db38cbf7cf000ab2507d"
+      },
+      {
+        "path": "native/build/scene-program-bridge-556-8sSaqI/probe.exe",
+        "bytes": 2009209,
+        "sha256": "c61e82f5fe9393d7d4ed21ca4bf65320c39d4b9bf8d06660d5122a78c92d9996"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-4cqN70/probe.exe",
+        "bytes": 1410104,
+        "sha256": "d1aa172ff6c8c7f020a14db7198c8238d85dd1d7f84148c86b697ed03020972c"
+      }
+    ],
+    "bytes": 8835848
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "564 전체명세/소유SHA·설치 SDK/packager/player의 probe와2D 제작·C++/BP 복잡한 준비·복구·캡처·유휴worker0·User 읽기SHA/연결/Versions1/Versions 가변cache0. 전체 엔진/초기비용/FPS 완료 주장이 아니에요."
+}

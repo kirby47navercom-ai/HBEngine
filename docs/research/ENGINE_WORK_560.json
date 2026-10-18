@@ -140,6 +140,16 @@
       "path": "native/build/game-regression-562.json",
       "sha256": "a925efebc99cb7f71246fae74a4402224d1d041e0d9041537c9a91a99abcfcc5",
       "scope": "해당 검사 JSON에 정의한 범위"
+    },
+    {
+      "path": "native/build/probe-readiness-559-ilsjsc/acceptance.json",
+      "sha256": "099a047a3b34ab6e8d01cfc5ce6a4eb2e4eb1feae52a5f772f820a034c5640cc",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-ruSdLX/acceptance.json",
+      "sha256": "f36c5d08357f0ec7b0673a114293b19b984a3539eaf11de95402b2a9e80cbd97",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
     }
   ],
   "sourceGames": [
@@ -199,6 +209,7 @@
     "SDK 전체 변경에 따른 사용자 C++의 불필요한 재컴파일 비용 조사",
     "나머지 누적 렌더링/2D/애니메이션/게임/편집기/배포 목표"
   ],
-  "installationPending": true,
-  "scope": "553–562 일반 머테리얼 PS/ShadowPS 비동기 준비·소유/실패/취소·그림자/probe/이력/capture·집계UI/AI·실제SDK/브리지/C++게임 연결. 최초 전체 컴파일 제거·FPS/전체엔진/전체분석 완료 주장이 아니에요."
+  "installationPending": false,
+  "scope": "553–562 일반 머테리얼 PS/ShadowPS 비동기 준비·소유/실패/취소·그림자/probe/이력/capture·집계UI/AI·실제SDK/브리지/C++게임 연결. 최초 전체 컴파일 제거·FPS/전체엔진/전체분석 완료 주장이 아니에요.",
+  "installationReceipt": "docs/research/USER_INSTALL_564.json"
 }

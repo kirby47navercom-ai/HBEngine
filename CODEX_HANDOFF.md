@@ -56,3 +56,10 @@
 - 최종 source e6125aa3bf6471ce215be5c15c1a817544342460 커밋. Work56075owners/10검사 등록; 최신Player abed101f7c65a81448e49ab3ad6e18f47479597f9a5990fec499bda488b7256e. 5624967Qin7n 23pendingframe/CPP4.11ms/중지93.79ms/idle0,548M3Uli5 합성221→165→221 PASS. refs560는496선택구역재독/snapshot재사용,fullgate미승격.
 - setup564 완료, sync564/install564 미실행. 설치gate는source-owned dynamic import로559(fixture neQy1U/private project)와496(VsRtt0,--mip-controls).559는--executable로설치packager/SDK사용;installedDirectory를반환.75owners/전체manifest/User읽기SHA/links/Versions1 확인.
 - 현재active tool/session없음. docscommit563→datasync564→install564→새finish564/receipt/push. 그뒤SDK불필요build비용과누적목표계속. 기존run558실패·559v2klCs테스트실패는보존;전체558pass로승격하지않음.
+
+
+## 최신564 설치 완료 — 이 구역이 정본
+- 현재 C:\Users\kirby\HBEngine\Versions\20b2e3b17134968f\HBEngine.exe /3410전체SHA/75owner/User10385/links2/.hbproject/Versions1. Player abed101f7c65a81448e49ab3ad6e18f47479597f9a5990fec499bda488b7256e. Host494a71dbbf315998f4bb247fcc027fd1f8013d1192123e35c869e1ea04564ae2. 설치559ilsjsc probe/2D/CPP/BP/해제와496ruSdLX 22frame/CPP3.66ms/중지93.23ms/캡처/idle0.
+- commonCache196654644B/lease0, 이전551 179843197B와소유probe8835848B정리. finish564/sync564/install564 모두완료one-shot 재실행금지.
+- sourcee6125와docs223bdaa1 push완료; 지금564receipt커밋/push후최종checkpoint로멈추지말고누적목표 계속. 현재active session 없음(19948는완료).
+- 다음SDK캐시: NativeHost.build는nativeSDKFingerprint 전체SDK26파일+json으로v3key를만들어render헤더변경도Game/Bridge/Session만쓰는게임C++를무효화해요. 전체fingerprint API/293기본계약은보존하고실제GCC include 의존성·보수적fallback·버전키이행·이전캐시/참조보호를검토해요. 아직새SDK캐시코드수정없음.

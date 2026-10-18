@@ -2163,11 +2163,11 @@
   ],
   "latestBatch": "553–562",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_551.json",
-    "sourceCommit": "92742ff8f31e59e6e5695923174c905ca8cb870c",
-    "bundleHash": "68473fd495b977a3403d7b5a5352afbc338cccf7946863316a8b284323305c17",
+    "receipt": "docs/research/USER_INSTALL_564.json",
+    "sourceCommit": "223bdaa1c36cd75f23288114a2806cb29448282b",
+    "bundleHash": "20b2e3b17134968faca59a3d4325ca8ab3454f65b87a648151ac15a2152f7b3e",
     "verified": true,
     "versions": 1,
-    "scope": "551 합성 상세/GL/TSL/worker/self-source와 설치 SDK/packager/player 새 C++ SetTexture 게임·64owner/3401전체SHA/User 읽기SHA/연결/Versions1"
+    "scope": "564 설치 SDK/packager/player probe와2D 및 C++/BP복잡준비/복구/캡처·75owner/3410전체SHA/User읽기SHA/연결/Versions1"
   }
 }
