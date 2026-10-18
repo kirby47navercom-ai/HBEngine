@@ -4271,5 +4271,27 @@
     ],
     "analysis": "docs/research/TEXTURE_SAMPLING_538.md",
     "fullBodyAPIGatePromoted": false
+  },
+  "supplemental549": {
+    "date": "2026-10-19",
+    "entries": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/composite-texture?application_version=4.27",
+        "readScope": "전체 짧은 본문45행: 원본 roughness/normal 동일UV·같거나 높은해상도/채널/Power/등방근사/UV borders. 연결문서와 UE 소스 구현은 미독",
+        "snapshot": "native/build/reference-corpus/supplemental549/unreal.html",
+        "sha256": "db2d60c69b653332e845ff0d76e5c2f4689b25c4dceee602f74781f474e2792b",
+        "bytes": 60833
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Geometric-Specular-Anti-Aliasing.html",
+        "readScope": "선택 문서의 실제 본문114–135행: 기하 곡률에 따른 smoothness offset와 Screen Space Variance/Threshold. 연결HDRP API와 소스는 미독; 가져오기 노멀분산과 별도 기능",
+        "snapshot": "native/build/reference-corpus/supplemental549/unity.html",
+        "sha256": "1a7ad00188457f7ebb17e59a699fce9c7d3d8f2e01197baaa13e3e4ed5be314c",
+        "bytes": 10198
+      }
+    ],
+    "fullBodyAPIGatePromoted": false,
+    "analysis": "docs/research/TEXTURE_COMPOSITE_549.md",
+    "unread": "연결 API/구현 소스/도해 픽셀과 전역 문서 분모는 미독·미확정"
   }
 }

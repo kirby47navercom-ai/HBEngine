@@ -481,3 +481,8 @@ Unreal4.27TextureSample의UV/미분과UnityShaderGraph17.0의선택설정/이음
 ### 2026-10-19 · 538 선택 본문/API 대조
 
 UnitySG17 모드/조건부입력을 재독하고 Microsoft SampleLevel/SampleBias/SampleGrad의 선택 서명·매개변수와 WGSL 세 샘플/저장 함수의 배열레이어/vec3 서명을 읽었어요. 현재 Three 소유 함수의 실제 누락을 실행오류와 대조했고 source snapshot/SHA/선택범위를 supplemental538에 등록했어요. 원뿔 미분·베이크점샘플은 자체 구현 선택으로 구분하며 전체 본문/API gate는 미승격이에요.
+
+
+### 2026-10-19 · 549 노멀 합성의 선택 문서 대조
+
+UE4.27 Composite Texture의 반환된 짧은 텍스트 본문45행과 HDRP17 기하 Specular AA의 실제 본문114–135행을 읽고 가져오기/화면 공간 계산을 구분했어요. UE 구현 수식 복제나 HDRP 기능 완료로 계산하지 않아요. 두 원문/SHA/범위를 supplemental549에 등록하고 도해/연결 API/전체 본문 gate는 승격하지 않아요.
