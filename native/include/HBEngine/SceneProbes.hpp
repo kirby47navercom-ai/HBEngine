@@ -1,5 +1,6 @@
 #pragma once
 #include "Render.hpp"
+#include "ScreenEffectsPass.hpp"
 
 namespace hb::gpu {
 struct ProbeSettings {
@@ -28,6 +29,8 @@ public:
 private:
     Device& gpu;
     detail::Com<ID3D11ComputeShader> prefilter,integrate,diffuse,equirect;
+    std::array<std::shared_ptr<detail::ShaderPreparationQueue::Job>,4> preparing;
+    std::array<bool,4> retried{};bool asynchronous=false,requested=false;std::string preparationError;
     detail::Com<ID3D11SamplerState> sampler;
     std::array<detail::Com<ID3D11Buffer>,3> constants;std::size_t slot=0;
     detail::Com<ID3D11ShaderResourceView> brdf;
@@ -49,17 +52,37 @@ float basis(uint i,float3 d){return i==0?.282094792:i==1?.488602512*d.y:i==2?.48
 [numthreads(8,8,1)]void Integrate(uint3 id:SV_DispatchThreadID){if(any(id.xy>=128))return;float nv=(id.x+.5)/128,rough=(id.y+.5)/128;float3 v=float3(sqrt(1-nv*nv),0,nv);float2 sum=0;
  for(uint j=0;j<128;j++){float3 h=sampleGGX(float2(j/128.0,radical(j)),rough,float3(0,0,1)),l=normalize(2*dot(v,h)*h-v);float nl=saturate(l.z),nh=saturate(h.z),vh=saturate(dot(v,h));if(nl>0){float k=rough*rough*.5,g=(nv/(nv*(1-k)+k))*(nl/(nl*(1-k)+k)),visibility=g*vh/max(nh*nv,1e-5),f=pow(1-vh,5);sum+=float2(1-f,f)*visibility;}}brdf[id.xy]=sum/128;}
 )HLSL";
-    void prepare(){
-        if(brdf.p)return;
+    bool prepare(){
+        requested=true;if(brdf.p)return true;if(!preparationError.empty())throw std::runtime_error(preparationError);
+        std::size_t index=0;for(const auto& entry:std::array<std::pair<const char*,detail::Com<ID3D11ComputeShader>*>,4>{{{"Prefilter",&prefilter},{"Integrate",&integrate},{"Diffuse",&diffuse},{"Equirect",&equirect}}}){
+            if(!entry.second->p){
+                if(!asynchronous)detail::ShaderBytecodeCompiler::create(shader,"HBProbeFilter",entry.first,"cs_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(gpu.mutex);return gpu.device->CreateComputeShader(bytes,size,nullptr,&entry.second->p);});
+                else{
+                    auto& job=preparing[index];if(!job){const bool refresh=retried[index];const std::string name=entry.first,key="HBProbeFilter:"+name+(refresh?":refresh:":":cached:")+shader;job=ScreenEffectsPass::sharedPreparationQueue().submit(key,256+key.size()*2+std::strlen(shader),[name,refresh]{return detail::ShaderBytecodeCompiler::create(shader,"HBProbeFilter",name.c_str(),"cs_5_0",[](const void*,std::size_t){return S_OK;},refresh).code;});}
+                    if(job){const auto status=job->status.load(std::memory_order_acquire);if(status==detail::ShaderPreparationQueue::Status::failed){preparationError=job->error;preparing={};throw std::runtime_error(preparationError);}
+                        if(status==detail::ShaderPreparationQueue::Status::ready){detail::Com<ID3D11ComputeShader> next;HRESULT result;{std::lock_guard<std::mutex> lock(gpu.mutex);result=gpu.device->CreateComputeShader(job->code.data(),job->code.size(),nullptr,&next.p);}job.reset();if(SUCCEEDED(result))*entry.second=std::move(next);else if(!retried[index])retried[index]=true;else{preparationError="Prepared probe shader creation failed (HRESULT "+std::to_string(static_cast<unsigned long>(result))+")";preparing={};throw std::runtime_error(preparationError);}}
+                    }
+                }
+            }++index;
+        }
+        if(!prefilter.p||!integrate.p||!diffuse.p||!equirect.p)return false;
         std::lock_guard<std::mutex> lock(gpu.mutex);
-        for(const auto& entry:std::array<std::pair<const char*,detail::Com<ID3D11ComputeShader>*>,4>{{{"Prefilter",&prefilter},{"Integrate",&integrate},{"Diffuse",&diffuse},{"Equirect",&equirect}}})detail::ShaderBytecodeCompiler::create(shader,"HBProbeFilter",entry.first,"cs_5_0",[&](const void* bytes,std::size_t size){return gpu.device->CreateComputeShader(bytes,size,nullptr,&entry.second->p);});
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=16;cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& b:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&b.p),"Probe filter constants");
         D3D11_SAMPLER_DESC s{};s.Filter=D3D11_FILTER_MIN_MAG_MIP_LINEAR;s.AddressU=s.AddressV=s.AddressW=D3D11_TEXTURE_ADDRESS_CLAMP;s.MaxLOD=D3D11_FLOAT32_MAX;detail::check(gpu.device->CreateSamplerState(&s,&sampler.p),"Probe filter sampler");
         D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=128;d.MipLevels=d.ArraySize=d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_R32G32_FLOAT;d.BindFlags=D3D11_BIND_UNORDERED_ACCESS|D3D11_BIND_SHADER_RESOURCE;detail::Com<ID3D11Texture2D> image;detail::Com<ID3D11ShaderResourceView> view;detail::Com<ID3D11UnorderedAccessView> output;detail::check(gpu.device->CreateTexture2D(&d,nullptr,&image.p),"Probe BRDF image");detail::check(gpu.device->CreateShaderResourceView(image.p,nullptr,&view.p),"Probe BRDF view");detail::check(gpu.device->CreateUnorderedAccessView(image.p,nullptr,&output.p),"Probe BRDF output");
-        gpu.context->CSSetShader(integrate.p,nullptr,0);auto* target=output.p;gpu.context->CSSetUnorderedAccessViews(2,1,&target,nullptr);gpu.context->Dispatch(16,16,1);++dispatches_;target=nullptr;gpu.context->CSSetUnorderedAccessViews(2,1,&target,nullptr);gpu.context->CSSetShader(nullptr,nullptr,0);brdf=std::move(view);
+        gpu.context->CSSetShader(integrate.p,nullptr,0);auto* target=output.p;gpu.context->CSSetUnorderedAccessViews(2,1,&target,nullptr);gpu.context->Dispatch(16,16,1);++dispatches_;target=nullptr;gpu.context->CSSetUnorderedAccessViews(2,1,&target,nullptr);gpu.context->CSSetShader(nullptr,nullptr,0);brdf=std::move(view);return true;
     }
 public:
+    struct PreparationInfo {bool enabled=false,requested=false,pending=false,ready=false;std::array<unsigned,4> stages{};std::string error;};
     explicit SceneProbes(Device& device):gpu(device){}
+    void setAsyncPreparation(bool value){asynchronous=value;if(!value){preparing={};retried={};preparationError.clear();}}
+    bool pollPreparation(bool request=false){requested=requested||request;return !requested||prepare();}
+    PreparationInfo preparationInfo()const{
+        PreparationInfo info{asynchronous,requested,requested&&!brdf.p&&preparationError.empty(),brdf.p!=nullptr,{},preparationError};if(!requested)return info;
+        const std::array<bool,4> ready{prefilter.p!=nullptr,integrate.p!=nullptr,diffuse.p!=nullptr,equirect.p!=nullptr};
+        for(std::size_t i=0;i<4;i++){info.stages[i]=ready[i]?3:!preparationError.empty()?4:1;if(!ready[i]&&preparing[i]){const auto status=preparing[i]->status.load(std::memory_order_acquire);if(status==detail::ShaderPreparationQueue::Status::compiling)info.stages[i]=2;else if(status==detail::ShaderPreparationQueue::Status::ready)info.stages[i]=3;else if(status==detail::ShaderPreparationQueue::Status::failed)info.stages[i]=4;}}
+        return info;
+    }
     Probe create(UINT size){
         if(size<16||size>2048||(size&(size-1)))throw std::runtime_error("Probe resolution must be a power of two (16..2048)");
         prepare();
@@ -72,6 +95,7 @@ public:
     }
     void importEquirect(Probe& target,ID3D11ShaderResourceView* panorama){
         if(target.owner!=gpu.device.p||!panorama)throw std::runtime_error("Sky HDRI owner invalid");
+        if(!prepare())throw std::runtime_error("Probe shaders are still preparing");
         std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);
         std::array<ID3D11ShaderResourceView*,128> empty{};gpu.context->PSSetShaderResources(0,128,empty.data());
         D3D11_UNORDERED_ACCESS_VIEW_DESC desc{};desc.Format=DXGI_FORMAT_R16G16B16A16_FLOAT;desc.ViewDimension=D3D11_UAV_DIMENSION_TEXTURE2DARRAY;desc.Texture2DArray.ArraySize=6;detail::Com<ID3D11UnorderedAccessView> out;detail::check(gpu.device->CreateUnorderedAccessView(target.capture.p,&desc,&out.p),"Sky HDRI cube output");
@@ -81,6 +105,7 @@ public:
     // One bounded filter stage per submitted frame; publish only after diffuse SH completes.
     bool filterStep(Probe& target,std::uint32_t stage){
         if(target.owner!=gpu.device.p||stage>target.mips)throw std::runtime_error("Probe filter stage invalid");
+        if(!prepare())throw std::runtime_error("Probe shaders are still preparing");
         std::lock_guard<std::mutex> lock(gpu.mutex);gpu.context->OMSetRenderTargets(0,nullptr,nullptr);std::array<ID3D11ShaderResourceView*,128> empty{};gpu.context->PSSetShaderResources(0,128,empty.data());
         if(stage==0){target.ready=false;for(UINT f=0;f<6;f++)gpu.context->CopySubresourceRegion(target.filtered.p,D3D11CalcSubresource(0,f,target.mips),0,0,0,target.capture.p,f,nullptr);return false;}
         auto* source=target.source.p;auto* sample=sampler.p;gpu.context->CSSetShaderResources(0,1,&source);gpu.context->CSSetSamplers(0,1,&sample);
@@ -92,7 +117,7 @@ public:
     ID3D11ShaderResourceView* brdfView() const{return brdf.p;}
     std::uint64_t dispatches() const{return dispatches_;}std::uint64_t captures() const{return captures_;}
     std::uint64_t storageBytes() const{return brdf.p?128*128*8:0;}
-    void release(){brdf={};prefilter={};integrate={};diffuse={};equirect={};sampler={};for(auto& c:constants)c={};}
+    void release(){preparing={};retried={};requested=false;preparationError.clear();brdf={};prefilter={};integrate={};diffuse={};equirect={};sampler={};for(auto& c:constants)c={};}
 };
 
 inline constexpr const char* sceneProbeDeclarations=R"HLSL(
