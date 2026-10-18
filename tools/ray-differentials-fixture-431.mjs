@@ -1,0 +1,11 @@
+import {differentialCases421,differentialOperations421} from './ray-differentials-fixture-421.mjs';
+export const differentialOperations431=[...differentialOperations421,'divide','distance','rotateUV','reflect','eyeUV'];
+function evaluate(key,[a,b,c,d]){switch(key){case'divide':return a.map((v,i)=>v/(Math.abs(b[i])<1e-6?1e-6:b[i]));case'distance':return Array(4).fill(Math.hypot(...a.slice(0,3).map((v,i)=>v-b[i])));case'rotateUV':{const x=a[0]-c[0],y=a[1]-c[1],cos=Math.cos(b[0]),sin=Math.sin(b[0]);return[x*cos-y*sin+c[0],x*sin+y*cos+c[1],0,0];}case'reflect':{const length=Math.hypot(...b.slice(0,3)),n=b.slice(0,3).map(v=>v/length),dot=a.slice(0,3).reduce((s,v,i)=>s+v*n[i],0);return [...a.slice(0,3).map((v,i)=>v-2*dot*n[i]),0];}case'eyeUV':{const f=Math.max(c[0],0)*Math.min(1,Math.max(0,d[0]))/Math.max(Math.abs(b[2]),.1);return[a[0]-b[0]*f,a[1]-b[1]*f,0,0];}default:throw Error(key);}}
+export function differentialCases431(){const rows=differentialCases421(),z=()=>Array(4).fill(0),add=(key,values,delta,label)=>{values=values.map(v=>v.map(Math.fround));delta=delta.map(v=>v.map(Math.fround));const old=evaluate(key,values),next=evaluate(key,values.map((v,i)=>v.map((x,k)=>x+delta[i][k])));rows.push({key,label,values,delta,expected:next.map((v,i)=>v-old[i]),meta:[2,differentialOperations431.indexOf(key),0,4]});};
+for(const key of differentialOperations431.slice(28))for(let i=0;i<16;i++){const values=Array.from({length:4},(_,n)=>Array.from({length:4},(_,j)=>.2+((i*.61803398875+n*.213+j*.117)%1)*.6)),delta=Array.from({length:4},(_,n)=>Array.from({length:4},(_,j)=>Math.sin(i+1+n*7+j*3)*.01));add(key,values,delta,'ordinary431:'+i);}
+for(const key of differentialOperations431.slice(28)){const a=[1e7,0,0,0],da=[.078125,0,0,0],b=key==='reflect'?[0,1,0,0]:key==='divide'?[2,2,2,2]:key==='eyeUV'?[.5,.5,1,0]:z();add(key,[a,b,key==='eyeUV'?[1,0,0,0]:z(),key==='eyeUV'?[1,0,0,0]:z()],[da,z(),z(),z()],'sub-ULP-large431');}
+add('divide',[[2e-6,-2e-6,1e-6,-1e-6],[-.5e-6,.5e-6,-1.5e-6,1.5e-6],z(),z()],[[1e-7,1e-7,-1e-7,-1e-7],[-1e-6,-1e-6,1e-6,-1e-6],z(),z()],'denominator-clamp-crossing');
+add('reflect',[[.2,.3,.4,0],[1e-8,0,0,0],z(),z()],[z(),[0,1e-8,0,0],z(),z()],'small-nonzero-unit-normal');
+add('eyeUV',[[.2,.3,0,0],[.5,.6,.09,0],[-.01,0,0,0],[1.01,0,0,0]],[[.01,-.02,0,0],[.01,.02,.02,0],[.03,0,0,0],[-.03,0,0,0]],'eye-boundary-crossing');
+return rows;
+}

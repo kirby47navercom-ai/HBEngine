@@ -1,7 +1,9 @@
-# 현재 진단 — WebGPU 동시 제출430 설치 준비
+# 현재 진단 — 추가 좌표435 설치 준비
 
-426은기존GPU helper가post/각RTT의driver완료를직렬await하는순서를1→4독립descriptor제출로바꿨어요. actual427 jCeTQi는네nativePromise완료를도구에서hold해첫완료전제출1→4·raster동시화면·네색정확을확인했어요. CPU426은out-of-order와실패후늦은완료미게시/sync제출throw/coldinit/cancel을대조. 366 actualVo5q6Y는기존blankbaseline0/current/direct173+epoch보존,원래기준유지.
+431 baselineQhhXS6 divide1e7offset sub-ULP손실실제재현. 안정나눗셈/거리/회전/반사/눈UV뒤573조건33연산 gB8rEP/41jhT2·5fullgraph FoDYO5/8WpUtD current/prior/mip통과. 원래2e-5/4e-5와새normalize1e-12유지.
 
-기존145 cancelledFailure stages길이1계약은취소시제출중stage스냅샷으로보존했어요. 현재실행작업취소불가이며waiter는즉시깨고후속결과는진단을바꾸지않아요. renderer/devicehooks는nativePromise가끝나기전에이미복원. 428 actual C++/BP WebGPU he1eiy path4990/guide4075ms는단일관찰·속도개선주장없음. 복잡GL/GPU초기준비는계속남아요. GPUWeb선택메서드/MDN재읽기/Three선택원본, W3C전체본문크기실패미독·전체gate미승격유지.
+433hE2FHK는FXC벡터성분쓰기와generic[loop]충돌. shared4lane에명시hbLane표시·generator에서그루프만[unroll]로해결. 일반큰반복정책유지. qaNeW8 CDP20초는복합eyeUVTSL표현팽창과스칼라중간toVar분리뒤fullgraph통과,전역속도성공근거로확대하지않아요. pM2cM2는fixtureeyeUV입력3D직결검증거절·typed노드로수정.
 
-다음430설치후RND06과전역곡면/매질/RND08·누적목표계속. 425비선형/스무스노멀485/17pose/설치증거는ENGINE_WORK425/USER_INSTALL425. 사용자앱프로필읽기만·고유private검사·Versions1·파일누적정리. 완료one-shot재실행금지.
+431CxI2bH testhelperhbRayRotate누락·LYZayj/QFAngP JSd누락/원오류가dispose usedTimes에가려짐을수정해원오류를보존. 후속testcleanup에독립오류가있으면계속거부해요. 실제제품baseline과테스트미실행을구분해요.
+
+435새native게임2qifvs path4599/시간guide4460ms·C++/BP/morph/캐시/해제통과. source434빌드완료/새player·headerSHA. 설치435준비,실제설치후전체지문/사용자읽기보존/Versions1·검사exe정리필요. 그뒤계속. 430동시제출계약/원장·shader지연·RND08/전역곡면·매질·누적목표유지. Mac/iOS/실제Android폰제약유지.
