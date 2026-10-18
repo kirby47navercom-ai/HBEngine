@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "5432a914a7ed53c17eb96bbd3a81865c516ce2fa",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/ray-material-gpu.js": "b823b28174989b336a0999500b3be7aed14a5b0b0a407e4d4eab7a131582bf8a",
+    "prototype/ray-material-shader.js": "a2981c356320f35f757cdd95c36fe241b473f5b213794161e26ecdda47418842",
+    "prototype/ray-program-differentials.js": "75c0decca777220944af4c0366dc49a2ae0273460f23ab4df5d838677ac592b3",
+    "prototype/ray-uv-footprint.js": "afcba271b92774c585d074fe758506dad5acd94e9e83a51bf4f595f02a3bd5b5",
+    "tools/check-alpha-programs-401.mjs": "1be82de6624f5ead3f90448f6b6b7ce19dd4bff671f624520660b19c6f0d8b98",
+    "tools/check-normal-history-403-native.mjs": "e39f948f0b275e0d0419028715430a6b6d0825f5c5a51319909612ddec8f5e5e",
+    "tools/check-normal-history-403-window.mjs": "61d175f3cec604c2fe3ca54f5b93c16d97adf1ea6e566816a42e01100e4b0dde",
+    "tools/check-ray-differentials-418-native.mjs": "094634436bc5b7310941a794d003a67f8a5f778d1b92b932d897d0723cdfe6de",
+    "tools/check-ray-differentials-418-window.mjs": "836a6b7ade972d48e8db651863adbe932df0ebef4e33dd1b1c029fade9ddda65",
+    "tools/check-rendering-106.mjs": "bd6793e81ca5adb838839c8cc72c70f595a579877849f25bc658845e7549e396",
+    "tools/check-rendering-109.mjs": "9a3d54d120f8f6b00fc2a119eb56a7b2d148c49a7fb32abf3a03b387f28ee309",
+    "tools/check-uv-footprint-412.mjs": "b24d913d7d9a53d93a147eb75b34e3f7a784a9787487cd9cb7f807162c9d635d",
+    "tools/generate-ray-programs.mjs": "62ab8508532082bbd67ad07ce07725d727ee5568bdb20403202112d1ccd6e2ab",
+    "tools/normal-history-fixture-403.mjs": "77000721c2700fb8845a1d5c1e5b482906c3b6c417a469d8d067c2d3d50cd85c",
+    "tools/ray-differentials-fixture-418.mjs": "95cf04cc69cbd99a5cf86b79ae3257823bda2563b01aca72b94764a4a3f5ecb5",
+    "tools/ray-differentials-probe-418.mjs": "28fdd51bee91545f2a708025ce3d38f9617c08e4ed88a7ef27f77a20d1a00a3b",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "89aa20ab83bb95d543cf2425b0da98c245cc6aaecf4f129c663e5fa74883b89f",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "f2b5a8566ffefe24b9f9befa0df24c101c447e85447c62201f595446da24b82d"
+  },
+  "nativePlayerSHA256": "7f44d3ebe0920a3de8d5d9a5c0bc458e836e691d77fa51b47da353f173123ff5",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/coordinate-graph-416-guht8D/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/coordinate-graph-416-native-V6Ya9K/acceptance.json",
+      "sha256": "76dc134e1ead608ce1a13c2cafcc7689c2c9abcfc19fb6139923b3a3a1c8d943"
+    },
+    {
+      "path": "native/build/world-coordinate-416-G3lW0w/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/world-coordinate-416-native-glcPv0/acceptance.json",
+      "sha256": "8778e5219d84b5e041134e2e1d6048765b880599a70673b36e2dba69fc763a89"
+    },
+    {
+      "path": "native/build/ray-differentials-418-KkzIwq/acceptance.json",
+      "sha256": "b49491db67cb26ba1cdeb761c60a6c35e985cf76744aacfd67229ffa99934a44"
+    },
+    {
+      "path": "native/build/ray-differentials-418-native-HdUYME/acceptance.json",
+      "sha256": "67954c9bda2abca285382be55f74e596ae8f6c766a0ef99e09c16524f2666e04"
+    },
+    {
+      "path": "native/build/previous-context-308-apZFEo/acceptance.json",
+      "sha256": "b509a4f86ee3795331b57fa37be4a36111dfed42115787349fb0aaa56ace2605"
+    },
+    {
+      "path": "native/build/previous-context-308-native-io7HJp/acceptance.json",
+      "sha256": "300fcab6b231f01988f3855a27837051d941a0af71c81a9559d73e78ed75630b"
+    },
+    {
+      "path": "native/build/ray-texture-sharing-333-t8O1Xg/acceptance.json",
+      "sha256": "f7ad242b2d2c4708d1378a873e44a40ffe5944e462b19735373c8aadc1e5367b"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-native-m9uLEr/acceptance.json",
+      "sha256": "a4b5f5e1246b47292c88c7f7ab2709d5955e994cb262bdbb85aed22b63bd01b6"
+    },
+    {
+      "path": "native/build/native-scene-window-etaijS/acceptance.json",
+      "sha256": "86772957ba8789ee29128fa8e4f248cdd9ef6e7efca4093c6b8c98e1c6b0700c"
+    },
+    {
+      "path": "native/build/rendering-420-light-checks.json",
+      "sha256": "611d6b596aca160b30fbc5bb9bf2440cfc4b32e637bbd48656b0b8b7b975799a"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-etaijS/acceptance.json",
+      "scope": "실제 새 DirectX 실행 파일의 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 초기 준비 관찰값이며 FPS·유의미한 개선율 주장은 아님"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/coordinate-graph-416-guht8D/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/world-coordinate-416-G3lW0w/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/ray-differentials-418-KkzIwq/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/previous-context-308-apZFEo/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+    },
+    {
+      "path": "native/build/ray-texture-sharing-333-t8O1Xg/acceptance.json",
+      "scope": "실제 숨김 GL/WebGPU 그래프·상대 변화량·이전 포즈·동결 샘플러 대조, 각 보고서 범위"
+    }
+  ],
+  "implemented": [
+    "현재·이전 머테리얼 그래프에서 이동한 절대값 대신 상대 변화량 전달·큰 오프셋과 월드 위치의 밉 폭 보존",
+    "곱·내적·외적·패너·타일링·보간의 교차항 포함 공유 수식·GL/TSL/생성 HLSL 일치",
+    "텍스처에 상대 변화량 직접 전달·0 변화량 alpha 최적화·기존 IR/레지스터/샘플러 유지",
+    "AI 불변 계약·비용·근사·남은 한계와 이용자 도움말 갱신"
+  ],
+  "measurements": {
+    "mathOperations": 20,
+    "mathConditions": 333,
+    "ordinaryConditions": 320,
+    "largeAffineConditions": 12,
+    "exactRationalConditions": 1,
+    "GLGPUError": {
+      "webgl": 2.5761719982253517e-7,
+      "webgpu": 2.5761719982253517e-7
+    },
+    "D3DError": 2.5761719982253517e-7,
+    "exactRationalProduct": [
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625
+    ],
+    "previousContextsPerBackend": 17,
+    "samplerConfigurations": 48,
+    "samplesPerSampler": 8,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4458.4663
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 1861.3166000000056
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 135.5387000000046
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4299.326700000005
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 125.35450000000128
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 127.46289999999863
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 572084,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 32,
+        "totalCompileMS": 9236,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "416 QdW2Mk/xJis6E 실제 큰 오프셋·월드 입력의 밉 소실. 첫 Ot5urA는 기존 입력 범위 거절로 별도 구분",
+    "416 native ejLUXg HLSL worldPointX 선언/pointX 사용 불일치. 예약어 Delta 접미사 변환 후 glcPv0 오차0",
+    "큰 곱의 교차항은 double 큰 값 차에서도 손실돼 독립 정확 유리수 -25/4096으로 실제 네 채널 대조"
+  ],
+  "limits": [
+    "큰 점에서 worldNormal 재계산·비선형 좌표 fallback의 상쇄·표현 불가능한 작성 UV/시간 정밀도",
+    "텍스처 생성 좌표 변화량0·레이 폭 내부 시선 고정 근사 유지",
+    "전역 곡면 역대응·변한 투명 경로·복합 로브·참여 매질 footprint와 누적 엔진 원장",
+    "초기 복잡 컴파일 여전히 초단위·대표 FPS/기기/전체 분석/전체 엔진 완료 주장은 없음"
+  ]
+}
