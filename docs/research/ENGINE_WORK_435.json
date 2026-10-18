@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "8cf01aa9fdd669324420bb00f4b4c3cbb1e8ee5c",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/ray-program-differentials.js": "ea9bfb517424c3814df3c900368c4ca041528c7752072eb4addf7fa7af6062e6",
+    "prototype/ray-uv-footprint.js": "edb87b5cec3d1923eed253db02648ca41eb1fe3c54a79b3fd6ff869052f38562",
+    "tools/check-coordinate-graphs-433-native.mjs": "e5c6469fe115dc7af68e80c7fc843628ec6147bee5afa0822127d4b7fee70dc9",
+    "tools/check-coordinate-graphs-433-window.mjs": "6e1d13243fb12473eb414731b389949a63b32f0fc6950e5819c432ed24614e2f",
+    "tools/check-ray-differentials-418-native.mjs": "4fa472673e5ba87935061269b6d42f1f7f239ec5db160592db668726b0e2f3ae",
+    "tools/check-ray-differentials-418-window.mjs": "3a87c66b3282c4a054827bbed6ac7abbc4f634e2cf256214e94ed20c6d7f65db",
+    "tools/generate-screen-effects.mjs": "773f13819021cda38430910b2d50a909feaa53c06b46043aa2b0384551b8c1d2",
+    "tools/normal-history-fixture-403.mjs": "7199554d82d3b8d0536c0e2d8077817754988fed14683b5f171047ab30d94a20",
+    "tools/ray-differentials-fixture-418.mjs": "960b6180d14046c9ad5e63002e29cde8062206847db224e3feea58f60104ea85",
+    "tools/ray-differentials-fixture-431.mjs": "25df74fa6c45997531338e31d5f246d9bd4b300d2170230a89f68b864e2c0e2d",
+    "tools/ray-differentials-probe-418.mjs": "be4d61d905dc9c2ebf8fe19af19862629a3d0713440e916e563eb0a6658ce678",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "12ab1ee6a5c3bdefe914f5b6898f9414b8a1cddb6e8cfc67aac5f38bec5478f3",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "5b84ea3c87833f6a830ff17778a39393b029fb68e794d31d673b081353cf5f9c"
+  },
+  "nativePlayerSHA256": "282ea1a8e8074ca93aab608b9bda8db0f0929da62fcbc702a01b0feb9931412e",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/ray-differentials-431-gB8rEP/acceptance.json",
+      "sha256": "15d8e4b045d6196c574bd58b6ce09fc544f77582892e81ad0045553d764b8a96"
+    },
+    {
+      "path": "native/build/ray-differentials-431-native-41jhT2/acceptance.json",
+      "sha256": "073f7069fe32c4a028d3e82fb6cf5d22e8062325db7d588b34001a2a9021576b"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-FoDYO5/acceptance.json",
+      "sha256": "ce9c7fed4ee0701c35b3280758f487cf7616f9d7e7c637baa288f458ade39889"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-native-8WpUtD/acceptance.json",
+      "sha256": "6a60df5549ad4a7670576799d4c10e3aebc66ff1e7fc988f1b63227136682d10"
+    },
+    {
+      "path": "native/build/native-scene-window-2qifvs/acceptance.json",
+      "sha256": "849364feb18091a127717cdb9c6a43cc34ca92ba10793bf394caa5b59308578c"
+    },
+    {
+      "path": "native/build/rendering-435-light-checks.json",
+      "sha256": "082826c1fb354ea1434bf13db10a4bef6bdc7358a68cda08e03fac7b2d5721cc"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-2qifvs/acceptance.json",
+      "scope": "실제 새 DirectX 실행 파일 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 단일 준비 관찰이며 개선율·FPS 주장은 아님"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/coordinate-graphs-433-FoDYO5/acceptance.json",
+      "scope": "실제 GL/WebGPU 다섯 full graph의 현재/이전 포즈·넓은/좁은 밉, 기존4e-5"
+    },
+    {
+      "path": "native/build/ray-differentials-431-gB8rEP/acceptance.json",
+      "scope": "실제 GL/GPU 33연산573조건·기존2e-5와새normalize1e-12·독립float입력기준"
+    }
+  ],
+  "implemented": [
+    "divide/distance/rotateUV/reflect/eyeUV 안정 상대차분·분모epsilon 경계·단위노멀·각도/중심·깊이/mask와교차항",
+    "네벡터성분helper만명시unroll해FXC[loop]충돌수정·큰트레이스반복정책유지",
+    "TSL눈UV스칼라중간변수보존·과도한표현확장완화·기본출력/IR/예산/샘플러유지",
+    "테스트원오류가dispose오류에가려지지않도록모든정리시도·독립정리실패도계속거부",
+    "35안정연산AI불변계약과도움말·잔여fallback공개"
+  ],
+  "measurements": {
+    "mathOperations": 33,
+    "mathConditions": 573,
+    "GLGPUError": {
+      "webgl": 0.0000035940697439285074,
+      "webgpu": 0.000003594067924939104
+    },
+    "D3DError": 0.0000035940697439285074,
+    "exactRationalProduct": [
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625,
+      -0.006103515625
+    ],
+    "fullGraphOperations": 5,
+    "D3DCurrentAndCommittedContexts": 10,
+    "baselineLargeCases": [
+      {
+        "key": "divide",
+        "expected": [
+          0.0390625,
+          0,
+          0,
+          0
+        ],
+        "webgl": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "webgpu": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "key": "distance",
+        "expected": [
+          0.078125,
+          0.078125,
+          0.078125,
+          0.078125
+        ],
+        "webgl": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "webgpu": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "key": "rotateUV",
+        "expected": [
+          0.078125,
+          0,
+          0,
+          0
+        ],
+        "webgl": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "webgpu": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "key": "reflect",
+        "expected": [
+          0.078125,
+          0,
+          0,
+          0
+        ],
+        "webgl": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "webgpu": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "key": "eyeUV",
+        "expected": [
+          0.078125,
+          0,
+          0,
+          0
+        ],
+        "webgl": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "webgpu": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4598.784899999999
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2002.5215000000026
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 150.83009999999194
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4460.062099999996
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 140.58200000000943
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 126.0561000000016
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 577724,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 31,
+        "totalCompileMS": 9610,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "431 CxI2bH는테스트hbRayRotate보조함수누락·QhhXS6은실제divide작은변화0(expected.0390625)baseline으로구분",
+    "431 LYZayj/QFAngP 누락JSd참조와cleanup usedTimes가원오류를가림·수정후573조건통과",
+    "433 pM2cM2 fixtureeyeUV3D→2D직결을기존validator가거절·기존typed dot/combine로수정",
+    "433 native hE2FHK shared성분루프에generic[loop]를강제해벡터lvalue FXC실패·hbLane4만unroll로수정",
+    "433 qaNeW8 CDP20초초과·눈UV스칼라중간toVar후FoDYO5 full graph통과. 전역준비시간개선근거로확대하지않음"
+  ],
+  "limits": [
+    "power/exp/log/smoothstep/Fresnel/noise 등 나머지 비선형 fallback",
+    "표현 불가능한 작성UV/시간·극단 중간범위·텍스처생성좌표 변화량0/시선고정 근사",
+    "전역곡면/변경투명경로/복합로브/참여매질·RND08/누적엔진원장 유지",
+    "초기복잡compile여전히초단위·대표FPS/실기기/전체분석/전체엔진완료주장없음"
+  ]
+}

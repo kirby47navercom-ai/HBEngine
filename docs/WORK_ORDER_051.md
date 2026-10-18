@@ -582,3 +582,8 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 430 설치 d5b4aa2697d1fdae·3279전체명세/8실행소유SHA·425동일player재사용·links2/.hbproject·Versions1 확인. 설치 WOtg08의실제WebGPU첫완료전제출1→4·네출력색/동시raster 통과. User10385전후읽기SHA동일, 이전설치178294439B와검사exe0B 정리. 비선형좌표/노멀/렌더링잔여를계속해요.
 
 430 설치 인계의 오래된420경로와 템플릿의새player표시를 실제감사430에맞췄어요. 설치430은425동일바이너리와새WebGPU준비자료이며, 직전설치커밋본문의두DirectX게임문구는복사된설명오류예요. 실제430검사범위는USER_INSTALL_430의설치GPU1→4·네출력색/동시raster·전체명세·사용자보존이에요. 원본425의DirectX검증과구분해요.
+
+
+### 2026-10-19 · 431–435
+
+나눗셈·거리·회전·반사·눈UV의sub-ULP변화량을수정했어요. 실제세API33연산573조건·다섯fullgraph의현재/이전밉·10D3D패킷문맥과새C++/BP게임2qifvs가통과했어요. 분모epsilon/노멀/각도·중심·깊이/mask경계·교차항과기존오차기준유지. FXC벡터쓰기와genericloop충돌을4성분helper만unroll로고치고TSL눈UV중간변수로표현확장을줄였어요. 원오류가cleanup에가려진검사도고쳤고각실패를보존해요. 새GPU자원/uniform/운영readback0,35안정연산AI계약·잔여fallback/전역곡면·매질·원장유지. path4599/guide4460ms는단일관찰이며전체속도개선주장이아니에요. ENGINE_WORK435정본과단일Versions설치검증을이어가요.
