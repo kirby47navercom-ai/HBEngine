@@ -990,3 +990,12 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - 첫319 검사의 forceRestore 실패는 readAsset 캐시에 넣은 Keep 자산 객체를 외부에서 바꾼 fixture 오류였어요. 새 Forced 이름의 독립 자산으로 검사해327 CPU13종이 통과했어요. 허용치/타임아웃을 늘리지 않았어요.
 - 실제 E9YNZT의 편집기/DirectX·WebGL 게임 CPP/BP·실제 뼈/부모/머테리얼이 아닌 Camera 속성/클립/우선순위가 통과했어요. 그 이후의 재진입/cleanup guard는326·327 CPU로 확인하며 최종 설치 창에서 추가 확인해요.
 - 외부 setter 실패는 다른 대상의 lease 해제/복원을 막지 않게 해요. 콜백 중 다른 actor/소유자가 생기면 이전 배치의 뒤늦은 쓰기는 건너뛰어요. 외부 애니메이션/그래프 원상태와 가중 혼합을 완료로 승격하지 않아요.
+
+
+## 328–331 · 렌더링 조사 계속
+
+- GL current/previous graph body 공유 실험은17포즈의 실제 GL/GPU 대조가 통과했고 정상 primitive/program source가 줄었어요. full pipeline ABBA 표본2024/1957/2026/1931ms에서는 초기 시간 개선 근거가 없어서 production 기본 경로에는 적용하지 않았어요. 실패/미채택을 완료 성과로 계산하지 않아요.
+- WebGPU sampler library는 기존 current/prior의 같은 atlas/uniform 바인딩일 때만 기존 Map/Fn을 공유해요. 별도 u/load는 거부해요. 현재/이전을 한 셰이더에 넣어 확인해요.
+- 331 최초/진단 실행은17포즈 픽셀·library identity가 맞았으나 검사 정규식이 WGSL의 함수 이름과 여는 괄호 사이 공백을 놓쳐 함수수0을 셌어요. 실제 저장 WGSL에서 baseline Texture/TextureLevel4함수와 shared2함수를 직접 확인한 뒤 공백을 허용하도록 검사만 고쳤어요. 픽셀 허용치나 시간제한은 바꾸지 않았어요. 최종 통과 근거는 후속331 실행으로 기록해요.
+
+- 333은48family/filter 변형을 CDP 한 호출에 넣어20초 호출 제한을 넘었어요. 제한을 늘리지 않고4변형씩12호출로 나눠 전체48/384 조건을 최종 검사해요. 개별 샘플/오차/셰이더 함수 개수 조건은 그대로예요.

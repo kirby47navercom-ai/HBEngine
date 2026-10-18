@@ -3,7 +3,7 @@ import {gpuFn} from './gpu-function-scope.js';
 import {rayMaterialNode} from './ray-material-gpu.js';
 
 // Share the IR/compiler/samplers, replacing only committed geometry inputs.
-export function previousRayGPU(transport,u){
+export function previousRayGPU(transport,u,{reuseTextures=true}={}){
  const {load,ray}=transport,record=(id,slot)=>{
   const at=u.pathFilter.w.add(id.mul(3));
   if(slot<3)return load(at.add(slot));
@@ -25,5 +25,5 @@ export function previousRayGPU(transport,u){
    });
   });return result;
  }).setLayout({name:'hbPreviousSmoothNormal',type:'vec3',inputs:[{name:'id',type:'float'},{name:'point',type:'vec3'}]});
- return rayMaterialNode(load,u,ray.programs,[3],load,null,true,false,record,bary,smooth);
+ return rayMaterialNode(load,u,ray.programs,[3],load,null,true,false,record,bary,smooth,reuseTextures?ray.textureLibrary:null);
 }
