@@ -1916,11 +1916,11 @@
   ],
   "latestBatch": "308–318",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_307.json",
-    "sourceCommit": "5c6cd128bef3a3ab81d6d0119d3592e20409eee9",
-    "bundleHash": "534dae19145a0053ac30f9694e1e788ebdd158214f2a305bddca8baefba43c72",
+    "receipt": "docs/research/USER_INSTALL_318.json",
+    "sourceCommit": "5ca7c69418fa08519518c9214e853f1f6ad8ae73",
+    "bundleHash": "828c60b44c267db5aa050e94b54e09f26a62b7605bb52e8cf8ae1102a712cbdc",
     "verified": true,
     "versions": 1,
-    "scope": "298–307 defined sampler/normal/metadata/status improvements and Native307 specialization; not whole-engine completion."
+    "scope": "308–318 defined prior-frame/2D/storage improvements. Not whole-engine completion."
   }
 }

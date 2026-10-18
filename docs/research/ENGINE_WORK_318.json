@@ -55,7 +55,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "403ec471b6820361ce48258590e2fcdff764070e3c74c447c40fd5b7b5c9318d",
     "native/include/HBEngine/ScreenEffects.hpp": "9f15f7f7b0d182cb85706ff0beca5501a7416e0b515c23adef38f8013a8d282d"
   },
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/previous-context-308-16gXxp/acceptance.json",
@@ -120,6 +120,18 @@
     {
       "path": "native/build/validation316.json",
       "sha256": "38b1d245cb385553799729f7c933facfbf79776a7819dfd881cf850ea8f51503"
+    },
+    {
+      "path": "native/build/tilemap-sparse-312-window-bWCV6C/acceptance.json",
+      "sha256": "66b5c52600fa1071372d58fd4fe6496a826ff3c613b4d98326b73823469b8eb7"
+    },
+    {
+      "path": "native/build/previous-context-308-jopxoW/acceptance.json",
+      "sha256": "7b980318eecc86f1b095ad17de9993a43c84317353868ed752982b5daf43ca58"
+    },
+    {
+      "path": "native/build/previous-context-308-native-Dj4KaW/acceptance.json",
+      "sha256": "01480946886d1a95c23b348404ba2609d935fc1a3eb1769151b6d3f7036662cc"
     }
   ],
   "nativePlayerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
@@ -163,5 +175,6 @@
     "디스크 청크/전체 점유 배열 복사·큰 점유 맵 총비용/장시간 측정·큰 월드 정밀도와 2.5D 품질 대조는 잔여예요.",
     "특수 내부 폴더/바이너리 가져오기/rename 공동 복구·충돌 UI·실제 전원 차단/모든 파일시스템 내구성은 별도예요.",
     "Android ARM64 새 C++ 소비자 구문 검사예요. 새 APK/실물 기기/iOS 실행이나 전체 UE/Unity 분석 gate를 승격하지 않아요."
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_318.json"
 }

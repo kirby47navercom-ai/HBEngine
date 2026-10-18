@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "5ca7c69418fa08519518c9214e853f1f6ad8ae73",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\HBEngine.exe",
+  "bundleHash": "828c60b44c267db5aa050e94b54e09f26a62b7605bb52e8cf8ae1102a712cbdc",
+  "files": 3106,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "5ca7c69418fa08519518c9214e853f1f6ad8ae73",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\HBEngine.exe",
+    "bundleHash": "828c60b44c267db5aa050e94b54e09f26a62b7605bb52e8cf8ae1102a712cbdc",
+    "files": 3106,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3089,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\534dae19145a0053",
+          "bytes": 177476980,
+          "manifestSHA256": "8aa55f9d4ef8872ec74dbe526af77a2f4ccc195b5f0086cc8c50870359b3d1fa"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T05:15:27.1992771Z",
+      "bytes": 177476980,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "828c60b44c267db5"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/tilemap-sparse-312-window-bWCV6C/acceptance.json",
+        "sha256": "66b5c52600fa1071372d58fd4fe6496a826ff3c613b4d98326b73823469b8eb7",
+        "invocation": [
+          "tools/check-tilemap-sparse-312-window.mjs",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "installationAPI": {
+          "state": "managed",
+          "bundleHash": "828c60b44c267db5aa050e94b54e09f26a62b7605bb52e8cf8ae1102a712cbdc",
+          "installedAt": "2026-10-18T05:15:24.536Z",
+          "fileCount": 3106,
+          "verification": "manifest-only"
+        }
+      },
+      {
+        "path": "native/build/previous-context-308-jopxoW/acceptance.json",
+        "sha256": "7b980318eecc86f1b095ad17de9993a43c84317353868ed752982b5daf43ca58",
+        "invocation": [
+          "tools/check-previous-context-308-window.mjs",
+          "--case",
+          "worldPositionUV:morph",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "installationAPI": null
+      },
+      {
+        "path": "native/build/previous-context-308-native-Dj4KaW/acceptance.json",
+        "sha256": "01480946886d1a95c23b348404ba2609d935fc1a3eb1769151b6d3f7036662cc",
+        "invocation": [
+          "tools/check-previous-context-308-native.mjs",
+          "--case",
+          "worldNormal:smooth",
+          "--include-root",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\native\\include"
+        ],
+        "installationAPI": null
+      }
+    ],
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-nMgEi2/acceptance.json",
+      "playerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+      "scope": "Actual source D3D game after rebuild; source code unchanged through installation and installed player byte-identical to source-built player. Not claimed as another installed native game run."
+    },
+    "manifestVerifiedFiles": 3106,
+    "versions": [
+      "828c60b44c267db5"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "308–318 source three-backend games, installed GL/GPU old-context morph, installed-header D3D smooth normal, installed 2D editor/CPP/BP with stable ID recovery, and full manifest. No whole-engine/FPS/device claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 2121553,
+    "removed": [
+      {
+        "path": "native/build/previous-context-308-native-Eex1Dp/probe.exe",
+        "bytes": 706843,
+        "sha256": "e42bdaa3f5341f8f15b9be49d7c1ee584994cc83a8bac55587e21aa4c4b67ce9"
+      },
+      {
+        "path": "native/build/previous-context-308-native-L0b8UY/probe.exe",
+        "bytes": 707355,
+        "sha256": "c91a7fbd85f2129b58cfd28260f9711c7f19ac26fca4c1fc43d0893559e70b70"
+      },
+      {
+        "path": "native/build/previous-context-308-native-Dj4KaW/probe.exe",
+        "bytes": 707355,
+        "sha256": "1a74cc2e8fc487064e563e085f7f0055ac97ceb2c1a8e17cc29aec9a9314d0d7"
+      }
+    ]
+  },
+  "scope": "308–318 source three-backend games, installed GL/GPU old-context morph, installed-header D3D smooth normal, installed 2D editor/CPP/BP with stable ID recovery, and full manifest. No whole-engine/FPS/device claim."
+}
