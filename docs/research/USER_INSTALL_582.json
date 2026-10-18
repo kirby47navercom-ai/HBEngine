@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "e166a71bd95f57abb09bf0b9a47539b48bc868fc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123\\HBEngine.exe",
+  "bundleHash": "ee12e27c7047012304455f2f0f823926787af7ea18be2d7ec5793fdd3f63ee81",
+  "files": 3424,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "e166a71bd95f57abb09bf0b9a47539b48bc868fc",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\ee12e27c70470123\\HBEngine.exe",
+    "bundleHash": "ee12e27c7047012304455f2f0f823926787af7ea18be2d7ec5793fdd3f63ee81",
+    "files": 3424,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3419,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\dfc9728395d44a2e",
+          "bytes": 179993083,
+          "manifestSHA256": "262c4c5adf9e45864caa1b7cfe080ee4a94c0f0cb7c98a5991a0ee27f6b2ceed"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T22:30:58.1443354Z",
+      "bytes": 179993083,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "ee12e27c70470123"
+      ]
+    },
+    "nativeCache": {
+      "deleted": 2,
+      "bytes": 15315582,
+      "receipt": null,
+      "entries": [
+        "3dfe443409d947bc4507/a4719a1ea11f78b3573a",
+        "3dfe443409d947bc4507/9d438093ad55d7f69445"
+      ],
+      "running": []
+    },
+    "nativePlayerSHA256": "a91c4c8ea59cebad99e99dda0bab740deba9f8904dda5d5cb5fcc93cfd3a910f",
+    "installedGates": [
+      {
+        "path": "native/build/compute-cache-577-kzXqVY/acceptance.json",
+        "sha256": "75258a99df3146e6451f84ef540b910273eff64c043fb50e1fd9e599624d550a"
+      },
+      {
+        "path": "native/build/compute-player-580-FhEwyY/acceptance.json",
+        "sha256": "d63fb3b0e45caa01e9df64c3e6fadb42a99064da86e53395a2a6be676dc69528",
+        "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3424,
+    "versions": [
+      "ee12e27c70470123"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-582-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [],
+    "sourceGameGates": [
+      {
+        "path": "native/build/compute-player-580-bwmdxx/acceptance.json",
+        "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
+      }
+    ],
+    "scope": "582 전체명세/88소유SHA·설치 SDK 일반Compute/파티클 캐시·장치거부/구문guard, 설치packager/player의2D/C++/BP/파티클/해제/풀재사용·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+  },
+  "nativeCache": {
+    "bytes": 26792127,
+    "files": 22,
+    "leases": 0
+  },
+  "dependencyPlans": {
+    "bytes": 2146,
+    "files": 1
+  },
+  "removedTestExecutables": [
+    {
+      "path": "native/build/compute-baseline-576-nRf10t/probe.exe",
+      "bytes": 438669,
+      "sha256": "f234376f6930461cc6096145c0f42fe1011e497f9af597e884a2df3a23fb87ea"
+    },
+    {
+      "path": "native/build/compute-refactor-576-WR4q9r/probe.exe",
+      "bytes": 438944,
+      "sha256": "cd954c11b3213b33c821e577f77441ef3db7d28db0c8c2f2fdbbe60c207abbfd"
+    },
+    {
+      "path": "native/build/compute-regression-578-UJQRO9/probe.exe",
+      "bytes": 512498,
+      "sha256": "743e0b447a9729e641971bb8bf3bbb1c44aa47d2bb766a36cf74afe0c28c583f"
+    }
+  ],
+  "scope": "582 전체명세/88소유SHA·설치 SDK 일반Compute/파티클 캐시·장치거부/구문guard, 설치packager/player의2D/C++/BP/파티클/해제/풀재사용·User읽기SHA/연결/Versions1. 전체엔진/FPS 완료 주장이 아니에요."
+}

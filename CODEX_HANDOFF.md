@@ -23,3 +23,10 @@
 - 최소2D게임tool580(source유일15파일closure) 첫 zBuy61은빌드후Node1/무기록 원인미확정, pass아님. 동일소유빌드재사용ignoredrecover580.mjs로 bwmdxx 전체2D/CPP/BP/resize/release + pool재생성3hit/0write통과. 새tool580에phase/exit/first-error기록추가. 설치에서원본tool실행해관찰. 단순캐시/헤더변경을engine회귀라고단정하지말아요.
 - 다음: docs579 커밋/push, sync582(dist현player579도포함), install582는574template에서WORK579/installed577 --sdk-root와580 --fixture neQy1U/--executable로교체. User읽기SHA/전체manifest/소유지문/Versions1/audit/기존설치정리. pending면queue기존권한. do not rerun one-shots.
 - 이후 RND-06의 최초기본래스터/다른셰이더·장치 준비, 전체GL/FXC, 설치간 C++모듈재사용/디버그소스경로와누적엔진원장 계속. NativeModuleCache owner=digest(versionRoot)라서 SDK가안변해도설치버전마다C++모듈다시컴파일; 선택v4최종key는같을수있어도owner가다르고현재oldowner정리하므로crossversionreuse를구현완료로말하면안돼요. 중립owner/디버깅경로/oldv1lease/prune호환을설계해검증할과제. 아직추가코드없어요.
+
+## 최신582 설치 완료 — 이 구역이 정본
+- 현재 C:\Users\kirby\HBEngine\Versions\ee12e27c70470123\HBEngine.exe /3424전체명세·88owner/User10385전후읽기SHA/links2/.hbproject/Versions1. USER_INSTALL_582.json. Sourcee166a71b, Playera91c4c8ea59cebad99e99dda0bab740deba9f8904dda5d5cb5fcc93cfd3a910f Host765139db608337cebdc57b09d394792044a15d4bd24b97192f19421d81234c71.
+- 설치577kzXqVY SDK 실제독립프로세스Compute cold7write8hit→warm15hit0write·장치거부·NoImplicitDisk·guard. 설치580FhEwyY 본래도구로15소유파일2D게임/C++/BP/마스크/광원/쿠키/볼륨/파티클/resize/release·풀재생성3hit/새write0. 원래zBuy61 무기록종료 원인은여전히미확정; 재현되지않았다고고쳤다하지말아요.
+- commonCache26792127B/lease0, SDKplans2146B, 이전설치179993083B 정리. 설치582/sync582/finish582와player579/build578 모두완료one-shot. session12728 정상종료, 다른활성session없음.
+- source/headercompat보존7c0126/e76c103c, 테스트f35b5529/3255ddf6, docs e166a71b push완료. 이 설치기록 커밋/push한 뒤 checkpoint최종답변으로멈추지말고누적목표 계속해요.
+- 다음은설치버전마다 C++ owner=digest(versionRoot)로달라져 무효화되는비용. 단순exe공유는DWARF SDK/작업디렉터리가이전Versions를가리켜안돼요. Compile cwd와의존SDK원본을안정된캐시디렉터리에보존하고 v5격리키/owner/oldv1lease·prune·실행참조/최근32/원자게시/증가용량·toolchain변경을함께다뤄요. 아직이후코드수정없음. 전체GL/FXC초기비용·기본래스터/다른셰이더·장치·다른엔진누적목표도남아있어요.

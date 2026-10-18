@@ -2174,11 +2174,11 @@
   ],
   "latestBatch": "576–580",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_574.json",
-    "sourceCommit": "dce2f0f1fc774fc296e7d39ea6ba77f7caea5e8e",
-    "bundleHash": "dfc9728395d44a2e2fef37577b27e0c4b56dc00efeff259f048c3ce40634458c",
+    "receipt": "docs/research/USER_INSTALL_582.json",
+    "sourceCommit": "e166a71bd95f57abb09bf0b9a47539b48bc868fc",
+    "bundleHash": "ee12e27c7047012304455f2f0f823926787af7ea18be2d7ec5793fdd3f63ee81",
     "verified": true,
     "versions": 1,
-    "scope": "574 전체3418파일/83owner/User전후SHA/연결/Versions1·설치CPP의존캐시·실제HDRI/96광원/C++속성·그림자/머테리얼게임"
+    "scope": "582 전체3424파일/88owner/User전후SHA/연결/Versions1·설치Compute커널/파티클캐시와실제2D/C++/BP/resize/release/풀재사용"
   }
 }

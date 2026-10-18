@@ -139,6 +139,15 @@
     {
       "path": "native/build/compute-player-580-bwmdxx/acceptance.json",
       "sha256": "7353b85d9da032337814805fa0adfde77fce93305ccf2999717c487c5b9ed4c9"
+    },
+    {
+      "path": "native/build/compute-cache-577-kzXqVY/acceptance.json",
+      "sha256": "75258a99df3146e6451f84ef540b910273eff64c043fb50e1fd9e599624d550a"
+    },
+    {
+      "path": "native/build/compute-player-580-FhEwyY/acceptance.json",
+      "sha256": "d63fb3b0e45caa01e9df64c3e6fadb42a99064da86e53395a2a6be676dc69528",
+      "scope": "Owned asset/source dependency closure only; actual hidden native game, 2D masks/light/shadows/cookie/volume/particles, C++/BP edits, resize/release and re-created GPU pool cache reuse. No user source/profile, Android hardware or FPS claim."
     }
   ],
   "sourceGames": [
@@ -170,6 +179,7 @@
     "새 C++ 빌드와 설치 버전 전환의 재사용·디버그 소스 경로 및 전체 툴체인/외부 의존성",
     "다른 누적 렌더링/2D/애니메이션/월드/게임/편집기/플랫폼 목표"
   ],
-  "installationPending": true,
-  "scope": "일반 Compute/파티클의 공용 bytecode재사용, 구조/헤더호환, 실제BP/C++/하드웨어·2D실행과 캐시 진단. Android는 헤더 구문만, 지속FPS/전체엔진/전체문서 완료 주장이 아니에요."
+  "installationPending": false,
+  "scope": "일반 Compute/파티클의 공용 bytecode재사용, 구조/헤더호환, 실제BP/C++/하드웨어·2D실행과 캐시 진단. Android는 헤더 구문만, 지속FPS/전체엔진/전체문서 완료 주장이 아니에요.",
+  "installationReceipt": "docs/research/USER_INSTALL_582.json"
 }
