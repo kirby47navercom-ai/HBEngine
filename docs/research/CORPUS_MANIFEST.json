@@ -4341,5 +4341,29 @@
       "linked environment/search/PCH documents",
       "full Unreal/Unity corpus"
     ]
+  },
+  "supplemental589": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html",
+        "snapshot": "native/build/research-589/gcc-debug.html",
+        "sha256": "3862886c0d82c946977e390739a7ecdf08680d6e6b7e7192730f755019430485",
+        "readScope": "Web returned lines5–25,59–73,87–100,130–138: debug/optimization, DWARF formats, full level2 versus minimal level1, prefix mapping, tracking and type/strict extensions.",
+        "newReading": true,
+        "unread": [
+          "remaining debugging options",
+          "linked manuals and full API corpus",
+          "all target-specific debugger implementations"
+        ],
+        "implementationChoice": "Keep -g level2 and editor/development optimization; select DWARF4 for measured GCC16.1/LLDB19 Windows source compatibility. Preserve flags in module keys. Snapshot all SDK filenames for __has_include, not only actual includes."
+      }
+    ],
+    "gatePromoted": false,
+    "localEvidence": [
+      "native/build/debug-586-lines.json",
+      "native/build/dwarf-compat-587-3Patdh/observation.json",
+      "native/build/native-debug-info-588-cxbNsj/acceptance.json"
+    ]
   }
 }

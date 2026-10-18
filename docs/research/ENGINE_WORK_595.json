@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "8cb9463",
+  "targetIds": [
+    "RND-06",
+    "AI-03",
+    "PRJ-01",
+    "PERF-02"
+  ],
+  "changes": [
+    "Installed NativeHost managed cache with semantic256/physical80 identities and atomic lease publication",
+    "Retained compiler cwd with full SDK inputs; used dependency and preprocessed decisions choose semantic equivalence",
+    "Actual GCC/link/startup/runtime file identity and standard header change stamps; custom/unsupported environment falls back to version-bound cache",
+    "Full-g DWARF4 Windows compatibility retained; canceled/losing candidates cleaned, missing-artifact rebuild forces workspace discovery",
+    "Active/legacy cache diagnostics reflect the selected owner. Unsupported dependency/toolchain builds use a fresh version-bound artifact rather than infer reuse."
+  ],
+  "checks": [
+    {
+      "path": "native/build/native-semantic-index-591-cNgq10/acceptance.json",
+      "sha256": "2e457c257f804a5dd76e5df1af6e4fee32dd240296b369ddaafeabd63c2bdf66"
+    },
+    {
+      "path": "native/build/native-toolchain-592-FVxTlX/acceptance.json",
+      "sha256": "3b2a2a24e5e0771a07e2b0a6dd18d4b2a8f6dc68e42fe771dfadab7ca8fbaf1c"
+    },
+    {
+      "path": "native/build/native-retained-build-593-IeZDiB/acceptance.json",
+      "sha256": "05ec6835c4042d4805189000415b1ec26a18d7c7f0f600d4784340e46ecc46fa"
+    },
+    {
+      "path": "native/build/native-retained-host-594-VawezC/acceptance.json",
+      "sha256": "daaf4c82b5ead13c289cc4ac127219e7d72971950b49fdb960b962eddc5d0c9e"
+    },
+    {
+      "path": "native/build/native-sdk-plan-567-LEfLei/acceptance.json",
+      "sha256": "a0928e604021122a01d8ccc43bd84540d365d237ac00a87386bb009f745134bb"
+    },
+    {
+      "path": "native/build/native-shared-cache-512-HwKY5k/acceptance.json",
+      "sha256": "3cfaee3c0e258570c2d7bc3d34bf0a871a42dc0a4aceee05482b459cd4c597fc"
+    },
+    {
+      "path": "native/build/native-installed-cache-513-5349op/acceptance.json",
+      "sha256": "8dfce1af27d2a8217cc1aeac82741378e89abf5540c669afc681d9304ebba941"
+    }
+  ],
+  "observations": {
+    "nativeHost": "Initial10912.6ms; warm166.8ms; new-version unused-renderer rescan and reuse1216.0ms; usedSDK change10971.2ms",
+    "measurement": "Single owned compiler observations; not gameplay FPS or a broad performance benchmark"
+  },
+  "runtimeActivation": {
+    "sourceNativeHost": true,
+    "installed582": false
+  },
+  "scope": "Actual reflected worker reuse after deleting an owned mock version, old/new sessions independent, source/SDK listing in LLDB batch; no live breakpoints/stepping proof.",
+  "remaining": [
+    "unresolved custom/external toolchain dependency configuration remains conservative version-bound fallback",
+    "live native debugger/breakpoints/stacks/threads",
+    "cumulative renderer and whole-engine goals"
+  ],
+  "followupRevision": "e4a3c0f"
+}

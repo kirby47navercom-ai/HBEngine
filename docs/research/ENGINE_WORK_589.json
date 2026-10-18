@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation-integration-pending",
+  "implementationRevision": "61347771cb755b38e7623b7891c356df6419f1b0",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "changes": [
+    "Windows full-g DWARF4 source compatibility; optimization/debug flags in module key",
+    "legacy-v1 plus opt-in managed-v2 cache ownership; leases/recent32 remain",
+    "complete SDK input snapshot with source/hash/cancellation validation"
+  ],
+  "checks": [
+    {
+      "path": "native/build/native-stable-owner-585-SFWFxP/acceptance.json",
+      "sha256": "abe4d509bb800a9a70e12164117e4c8baa7754e272c64a5b1ef35fd82c24da6e"
+    },
+    {
+      "path": "native/build/native-shared-cache-512-ZRmhWC/acceptance.json",
+      "sha256": "cbc7368a6343276b2039720296ca3d1f3596cd93dcb6046a6f31a6949333a9da"
+    },
+    {
+      "path": "native/build/native-debug-info-588-cxbNsj/acceptance.json",
+      "sha256": "c86e9cbb5bf652d7f95ac6e8022635d51d111fb9bbe5b8cafb66f85d1ecc8af9"
+    },
+    {
+      "path": "native/build/native-sdk-snapshot-589-E8EfjR/acceptance.json",
+      "sha256": "1c57a507c5dc8d96acd66359cff0e843c36e9bdfca5cf25b3754d5b5a7cf3cc0"
+    },
+    {
+      "path": "native/build/native-sdk-plan-567-8xoVHt/acceptance.json",
+      "sha256": "a0928e604021122a01d8ccc43bd84540d365d237ac00a87386bb009f745134bb"
+    }
+  ],
+  "runtimeActivation": {
+    "debugFormat": "source NativeHost active; installed582 still previous flags",
+    "managedOwner": false,
+    "sdkSnapshot": false,
+    "crossVersionReuse": false
+  },
+  "remaining": [
+    "integrate semantic-key to physical-artifact selection with leases",
+    "compile in retained stable cwd and SDK source directory",
+    "prove toolchain/link inputs and conservative fallback for unsupported preprocessing",
+    "actual SDK version retirement, debugger sources and old/new cache mixed operation",
+    "cumulative renderer and whole-engine goals"
+  ],
+  "research": "CORPUS_MANIFEST.supplemental589",
+  "scope": "Foundations and debug compatibility, not completed cross-version reuse or full live debugger stepping."
+}
