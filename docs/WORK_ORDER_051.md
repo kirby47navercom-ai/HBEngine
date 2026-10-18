@@ -603,3 +603,8 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 8추가비선형상대차분을세API에연결했어요. 40연산699조건·8실제graph·16native독립현재/이전패킷·새C++/BP게임VWxJFX가통과했어요. 기존573조건오차기준과새subULP1e-10·새큰6305출력한조건2e-3를구분. 보조함수20개전이선택·규칙이탈거부·AI43연산·추가GPU자원/uniform/운영readback0. 441혼합노멀은GL17pose×3오차0·한번ABBA원본2590/2592/혼합2448/2551ms이나기본미채택·세API/coat/전체guide후속필요. 초기준비path4797/guide4472ms단일관찰로전체속도개선주장없음. ENGINE_WORK445정본·설치와추가렌더링계속.
 
 445 설치 4ffd07face0d2a99·3303전체명세/23소유SHA·새player·links2/.hbproject·Versions1 통과. 설치 검사 nonlinear-graphs-444-ejw5lo / shader-cache-window-350-VfeVjV에서 여덟 GL/GPU 그래프와 두DirectX게임 캐시를 확인했어요. User10385읽기SHA보존. 이전설치178404828B와검사exe1773500B를정리하고446 이후작업을계속해요.
+
+
+### 2026-10-19 · 446–450
+
+실제좌표의존만보조함수에연결하고DirectX GUIDE를기존GL공통생성기의primary/aux/lens로선별했어요. 레지스터버전/고정LOD·필터·shade-only를구분하고프레임반복scan없음. 22전처리조건·GL/GPU8graph/native16패킷·실제16×16×8경우generic대조오차0·이전값변화거부복원통과. 실제production.begin은초기5/lens2compile·돌아오면cache2hit·sourceBuild1·target288B고정/release0·기존8MiBcache유지. 449검사는한shader3상수frame으로compile을묶고공통HLSL+조건SHA로중복보존을줄였어요(448두6필드실행은이전unbatched). 실제새C++/BP게임F8rVcn path4108/denoise699/시간guide3223ms·모프664·캐시·해제통과. 시간은단일미통제관찰로FPS/전체완료주장없음. AI불변정책·추가운영GPU자원/uniform/readback0. 설치450과다음noise/checker/MAT03/RND08작업을계속해요.

@@ -1,0 +1,289 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "821461bd9067e8b6e075a7d7ca103597170649e9",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/path-native-guide.js": "183df9399a14a81ffbf8b6b6049aa7ee1adb48a929792f741fdf81a1fd78e1cf",
+    "prototype/pipeline-preparation-contract.js": "b768897f20d96e6515c529b5605ae6841e963caa018f0f42f45e6cef580cc380",
+    "prototype/ray-differential-library.js": "e8c2d721c8872c81bc7cf18bf3dbf77c4fce92296364f3a127fe2be03f960277",
+    "prototype/ray-mip.js": "b50f60a256014032f707394974c76e141afb4218e8a3e2edd40379c549b7e840",
+    "prototype/ray-uv-footprint.js": "7115f49efe63b202612e370f3b9cfeefe1fee3a313b74978b7206750fb03934a",
+    "prototype/screen-effects-gl.js": "f20e9f40306071423badfa637d37262224289fd8c7b032131fa7d648a399b06f",
+    "tools/check-differential-plan-446.mjs": "89ebb75d7cf65419f5db5639573f0606201b9946920af40d3a9d60e16a47dcf1",
+    "tools/check-guide-history-360-native.mjs": "ea42f0745b080418e41588d2c350d930d85d875178bf2fd56eb177f2d8a91139",
+    "tools/check-native-guide-cache-450.mjs": "bf5c41152d4d67eeda3eb346f056012cf1c5c4fb6dfb02c3338258f8b56fa039",
+    "tools/check-native-guide-images-449.mjs": "9699adb7b2f455eef9ba17f091b031fcdc78b3c5405d0f2d89e5eb0b9996ae06",
+    "tools/check-nonlinear-graphs-444-native.mjs": "ceaa428096926256d1596d179d6a66bf7cdb40c444db438f55064f363f78e08e",
+    "tools/check-ray-helper-pruning-436.mjs": "5f907158c62894e5d62d7cd994f4e80af5d8c6690bf9cbad1093d1518a18e9f9",
+    "tools/check-rendering-106.mjs": "56ac7266d366af627d187d8ddcfc983b49babfa9384790af0e3c178470b4d915",
+    "tools/generate-ray-programs.mjs": "cca1b9743fec95f82cbcf8fb9701e5f68d8d78f2585c9762af4c20fb38127592",
+    "tools/generate-screen-effects.mjs": "3c16692af02096367adcc050b31a8b613cd049a7b10dbbfc5de1c3914323929d",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "a0b8e5377778efac2db25e416bb99d2ffc0c018b0d4cb9f5b23d1769a71cddf7",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "1b3430a4e51d739012fcf4706812cb7bf3303efd9cd9d4d89c1849108fd46084",
+    "native/include/HBEngine/RayPrograms.hpp": "a50774ba840ac7207ea1f8f9c7af49842df420ae5ed1cf53a739fab59636bc50"
+  },
+  "testSourceHashes": {
+    "native/tests/path-previous-context-308.cpp": "ba65ee8891ceb9ebe984b2519a98184685c67f209353f49ecbb49169f3cb1572",
+    "native/tests/native-guide-cache-450.cpp": "0c669998f4de438c4a3a9f38f0263b296f42af9d419fa9de4403347499315b19"
+  },
+  "nativePlayerSHA256": "b70a95a4698f228f38786e93114e351974bdb8546667c5a9ac52f0520afb8156",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/ray-helper-pruning-436-WiRBhR/acceptance.json",
+      "sha256": "628f0d36e696cd7ec5c9e7be614cda3173e80cd9a914c8689ca1a0b057dd3457"
+    },
+    {
+      "path": "native/build/differential-graphs-447-native-cis6qV/acceptance.json",
+      "sha256": "1fb88041d50e782277c9ff51a77bad1aa9dfd9e027405b0c5434f265379a472b"
+    },
+    {
+      "path": "native/build/nonlinear-graphs-444-13nApw/acceptance.json",
+      "sha256": "25d160f53d52a59e5658f056f51b19a744f120a69302f8affc943dacdf6bf506"
+    },
+    {
+      "path": "native/build/native-guide-448-yH2hn7/acceptance.json",
+      "sha256": "ca2f6161ec16d6052fa7f1f77d4366a8493cd4b87f3b9eb3638a6dc54084af02"
+    },
+    {
+      "path": "native/build/native-guide-448-oqDkqK/acceptance.json",
+      "sha256": "354de686d0200f17238ec0576920555cfd83d6480fa44c20b2e8fc32541f7592"
+    },
+    {
+      "path": "native/build/native-guide-images-449-TI5wJN/acceptance.json",
+      "sha256": "553f5d20fe796c5ca17ce1b6324188103d216ec00b2f17803599726283c414b5"
+    },
+    {
+      "path": "native/build/native-guide-cache-450-JWCxie/acceptance.json",
+      "sha256": "ec6490cc9a55d57123c5760cf8beb40be2c3c03c3b56d5e820f2709e416b346f"
+    },
+    {
+      "path": "native/build/native-scene-window-F8rVcn/acceptance.json",
+      "sha256": "a5123f9b3478549cf0b25f1aefbd4f1e65828b528dcd78d430acc25d071aed5f"
+    },
+    {
+      "path": "native/build/differential-plan-446.json",
+      "sha256": "b4af84e3825fb187432e2484a4015fccb22a6a46fdb204c46e9991b0cd97a5f5"
+    },
+    {
+      "path": "native/build/rendering-450-light-checks.json",
+      "sha256": "9acb63d8e1efb520f35a079e183d25407ca2943a7539b22744add0e4c256ef3f"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-F8rVcn/acceptance.json",
+      "scope": "실제 새 DirectX 게임 Complex141·C++/BP·모프664·캐시·해제. 단일 준비 시간 관찰"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/nonlinear-graphs-444-13nApw/acceptance.json",
+      "scope": "GL/WebGPU8좌표그래프 현재/이전 입력과 밉·새좌표선별·기존4e-5"
+    }
+  ],
+  "implemented": [
+    "공유 register-version coordinate ancestry로 GL/HLSL 변화량 보조 함수 선별·shading-only/덮어쓴register/고정LOD·필터제외·기존opcode standalone호환",
+    "DirectX에 같은GL primary/aux/no-lens/lens guide 생성기 연결·기존범용경로호환·HLSL literal생성자명시",
+    "guide lensbool 캐시identity·기존sourceBuild재사용·8MiB메모리cache·가이드buffer 예산유지",
+    "실제영상에서 current/changed/restored 이전머테리얼/노멀/시선/시간/밉 거부·복원유지",
+    "검사CPP의한shader/여러상수frame·기본단일호출호환·공통HLSL/조건/SHA증거로중복원문보존감소",
+    "AI nativeGuides/coordinatehelper 불변정책"
+  ],
+  "measurements": {
+    "D3DPreprocessConfigurations": 22,
+    "fullCoordinateGraphs": 8,
+    "D3DCoordinateContexts": 16,
+    "fullGuideImages": [
+      {
+        "field": 0,
+        "lens": false,
+        "auxiliary": false,
+        "error": 0,
+        "eligible": 0,
+        "rejected": 0,
+        "compileMS": [
+          1178.3292,
+          452.8953
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 0,
+        "lens": false,
+        "auxiliary": true,
+        "error": 0,
+        "eligible": 180,
+        "rejected": 148,
+        "compileMS": [
+          2852.8268,
+          2348.008
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 0,
+        "lens": true,
+        "auxiliary": false,
+        "error": 0,
+        "eligible": 0,
+        "rejected": 0,
+        "compileMS": [
+          1225.7274,
+          952.5651
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 0,
+        "lens": true,
+        "auxiliary": true,
+        "error": 0,
+        "eligible": 180,
+        "rejected": 148,
+        "compileMS": [
+          2978.0089,
+          2539.5284
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 5,
+        "lens": false,
+        "auxiliary": false,
+        "error": 0,
+        "eligible": 0,
+        "rejected": 0,
+        "compileMS": [
+          1600.0095,
+          568.6714
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 5,
+        "lens": false,
+        "auxiliary": true,
+        "error": 0,
+        "eligible": 173,
+        "rejected": 141,
+        "compileMS": [
+          3542.5417,
+          2940.294
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 5,
+        "lens": true,
+        "auxiliary": false,
+        "error": 0,
+        "eligible": 0,
+        "rejected": 0,
+        "compileMS": [
+          1531.7724,
+          1148.3522
+        ],
+        "framesPerShader": 3
+      },
+      {
+        "field": 5,
+        "lens": true,
+        "auxiliary": true,
+        "error": 0,
+        "eligible": 173,
+        "rejected": 141,
+        "compileMS": [
+          3547.5359,
+          3104.2545
+        ],
+        "framesPerShader": 3
+      }
+    ],
+    "guideCache": {
+      "sourceBuilds": 1,
+      "initialCompilations": 5,
+      "lensCompilations": 2,
+      "restoreHits": 2,
+      "targetBytes": 288,
+      "bytesAfterRelease": 0,
+      "cacheBytes": 454294,
+      "cacheBudget": 8388608,
+      "diskConfigured": false
+    },
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4108.223800000007
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 699.2466999999888
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 114.35109999999986
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 3222.7551999999996
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 115.9609000000055
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 95.20629999999073
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 529292,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 16,
+        "totalCompileMS": 6970,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "controlledCompileImprovementEstablished": false,
+    "newGPUResources": 0,
+    "newUniforms": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "448 OaV8rm 공통 GL vec3(0)의 HLSL 생성자 오류→네이티브 생성 시 각 성분을 명시해 수정",
+    "4504Wcycr 검사CPP misleading-indentation→명시braces,경고기준유지"
+  ],
+  "limits": [
+    "관찰된compileMS는부하/drivercache미통제·cold/FPS/전체초기준비완료주장없음",
+    "448두기존6필드invocation은unbatched도구·현재batch실제검증은44916×16/3framegate",
+    "혼합프레임노멀실험기본미채택·noise/checker/극단중간범위·RND08/MAT03/전역곡면/매질/누적엔진원장계속"
+  ]
+}
