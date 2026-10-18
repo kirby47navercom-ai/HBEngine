@@ -15,3 +15,5 @@
 -497캡처전환가능성을재독했어요. player.captureAsync의callback인capture() 자체가매번현재장면을재렌더하므로가정했던추가수정은필요없어요. screenProbe도재렌더해요. low-level hbCapture는현재frame읽기이며프레임생성API가아님. 불필요한추가draw를만들지않고실제잔여texture-driven UV차분을시작해요.
 
 -510 source4cd4f0d·4계열텍스처UVfinite전파/현재이전밉·s1기본normalSampler충돌은HB_NODE_SURFACE기본6맵분리/createSurfaceProgram으로수정. 실제507ecNs0o 188/0↔0/188, sourceVsRtt0 새두텍스처게임, 5AJdMC 전체2D3D실행기 통과. 499kQNLBO/500vlZrYh 오차0/감도1, oldinstalled77ArfC 감도0. sourceplayer17eb6030..510설치/검증뒤계속.
+
+-510설치bd5f13e0145bd55d·3363files/20owner/User10385읽기SHA/Versions1·499l8ydFy네형식/7wxC50실제두텍스처SDK CPP 24frame/C++4.62ms/disable93.55ms/샘플0/workeridle0통과. 이전496220323155B정리. 511은설치native/build캐시차이및MipSample명시모드다음. 현재수정없음.

@@ -60,6 +60,16 @@
     {
       "path": "native/build/light505-result.json",
       "sha256": "192c610f063bdeb2d42c45270f9e19e00c79e70f7fb5aeb63c56f59896e2b8e8"
+    },
+    {
+      "path": "native/build/sampled-coordinate-499-l8ydFy/acceptance.json",
+      "sha256": "16b3bad2d86d6668445cf42943665a178d2124367029f63021cfb0d578f18b91",
+      "scope": "Actual GL/TSL sampled coordinate chains, all four texture families, current versus committed transformed geometry/time and independent alternating-normal mip oracle. Existing4e-5; source warp has no mip footprint of its own."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-7wxC50/acceptance.json",
+      "sha256": "7940f04d592625e8da10c578cf06740b99ef520e4e1a1c9512751956d6769b8c",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
     }
   ],
   "sourceGames": [
@@ -325,7 +335,7 @@
       ]
     }
   ],
-  "installationPending": true,
+  "installationPending": false,
   "precision": {
     "previousFrameMaxError": 0,
     "crossGLWebGPUError": 0,
@@ -366,5 +376,6 @@
     "새두텍스처141의path5146/시간guide4951ms는서로다른그래프의단일관찰이며초기전체FXC속도개선으로계산하지않아요.496비동기래스터진행은유지해요.",
     "기존누적곡면/매질/GI와2D/애니/월드/game/editor/deploy목표를계속이어가요."
   ],
-  "scope": "497–510 텍스처가 UV를 만드는 경로의 유한 변화량과 현재/이전 밉 전달, 완성 노드표면의샘플러충돌수정·C++편의함수/AI계약. 전체엔진/모든샘플포맷/모든공식본문API완료를뜻하지않아요."
+  "scope": "497–510 텍스처가 UV를 만드는 경로의 유한 변화량과 현재/이전 밉 전달, 완성 노드표면의샘플러충돌수정·C++편의함수/AI계약. 전체엔진/모든샘플포맷/모든공식본문API완료를뜻하지않아요.",
+  "installationReceipt": "docs/research/USER_INSTALL_510.json"
 }

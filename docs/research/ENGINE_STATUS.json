@@ -2123,11 +2123,11 @@
   ],
   "latestBatch": "473–485",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_496.json",
-    "sourceCommit": "d0d31fe1606c5e1b07bd2ee810cd24465c6d9d6c",
-    "bundleHash": "9937154a06b6e79d12c48c719d99e7c59da6632b2e0dcbc8eacf6b1d859114e1",
+    "receipt": "docs/research/USER_INSTALL_510.json",
+    "sourceCommit": "38815b407d1a54063f9c3d1e31731ebc784255d0",
+    "bundleHash": "bd5f13e0145bd55def4332c293b83e63979ed71c7ec4878db5ce63bc3cef15e8",
     "verified": true,
     "versions": 1,
-    "scope": "496 실제 설치SDK/packager/player·준비 중22프레임/C++5.87ms/중지93.77ms/workeridle0·두게임6save→6hit·3353전체SHA/User읽기보존. 다음렌더링계속"
+    "scope": "510 설치네텍스처UV밉그래프·새두텍스처CPP/SDK/packager/game pending24frame/C++4.62ms/중지93.55ms/샘플0/workeridle0·3363전체SHA/20owner/User읽기SHA/연결/Versions1"
   }
 }

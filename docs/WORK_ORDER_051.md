@@ -630,3 +630,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 496 설치 9937154a06b6e79d /3353전체파일·실행소유SHA·player9096bb2b287d80035ecc53f17e5f9503bccc3bf01c136a2fda73c098e0bb7a60·User10385전후읽기SHA·links2/.hbproject·Versions1통과. 설치된SDK/packager/player의 실제C++/BP DUEZpf pending22frame/C++5.87ms/중지93.77ms/샘플0/idleworker0와EYFCfI 두게임6저장→6적중/0저장 검증. 이전설치 178804974B·소유검사exe 2153593B정리. 초기검사 null진단/중첩요약키 오류는원인과회복근거를남겼으며설치전환은1회예요. 다음캡처전환·렌더링/엔진누적작업을계속해요.
 
 510 ·source4cd4f0deb1a04f796a252dba9bb98f2725f31890 ·네텍스처형식UV상류차분/현재이전밉·노드표면샘플러충돌분리/C++createSurfaceProgram/AI계약. 이전496설치49977ArfC 폭차이0→현재499kQNLBO/500vlZrYh 폭차이1·현재이전/세API오차0(기존4e-5). 507ecNs0o 독립두필터188/0교환·실제두텍스처머테리얼C++/BP게임VsRtt0와전체기본실행기5AJdMC(2D/3D/SVG/HUD/그림자/파티클/변형/네형식교체/2D효과/해제)통과. 초기정답/검사그래프오류와실제s1충돌의발견수정은ENGINE_WORK510에구분했어요. 원장잔여와설치검증을이어가요.
+
+510 설치 bd5f13e0145bd55d/3363전체파일·20ownerSHA·player17eb6030db3dbdd2abfdd71d1ba9dfbdf58beb8efd3edae3cbc0ad4f1f8e610a·User10385전후읽기SHA·links2/.hbproject·Versions1통과. 설치499l8ydFy 4형식GL/WGPU/이전밉과4967wxC50 실제두텍스처C++/SDK/packager/game pending24frame/C++4.62ms/중지93.55ms/샘플0/idleworker0통과. 이전496 220323155B와소유검사exe 1937831B정리. 다음설치캐시용량/명시적밉제작제어와누적목표계속.

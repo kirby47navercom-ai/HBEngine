@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "38815b407d1a54063f9c3d1e31731ebc784255d0",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d\\HBEngine.exe",
+  "bundleHash": "bd5f13e0145bd55def4332c293b83e63979ed71c7ec4878db5ce63bc3cef15e8",
+  "files": 3363,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "38815b407d1a54063f9c3d1e31731ebc784255d0",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\bd5f13e0145bd55d\\HBEngine.exe",
+    "bundleHash": "bd5f13e0145bd55def4332c293b83e63979ed71c7ec4878db5ce63bc3cef15e8",
+    "files": 3363,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3381,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d",
+          "bytes": 220323155,
+          "manifestSHA256": "06e81aff96f0d456cca3eae3d811dd55355eb6762efffddbc1bc35740af374ff"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T19:24:33.7284901Z",
+      "bytes": 220323155,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "bd5f13e0145bd55d"
+      ]
+    },
+    "nativePlayerSHA256": "17eb6030db3dbdd2abfdd71d1ba9dfbdf58beb8efd3edae3cbc0ad4f1f8e610a",
+    "installedGates": [
+      {
+        "path": "native/build/sampled-coordinate-499-l8ydFy/acceptance.json",
+        "sha256": "16b3bad2d86d6668445cf42943665a178d2124367029f63021cfb0d578f18b91",
+        "scope": "Actual GL/TSL sampled coordinate chains, all four texture families, current versus committed transformed geometry/time and independent alternating-normal mip oracle. Existing4e-5; source warp has no mip footprint of its own."
+      },
+      {
+        "path": "native/build/native-preparation-window-496-7wxC50/acceptance.json",
+        "sha256": "7940f04d592625e8da10c578cf06740b99ef520e4e1a1c9512751956d6769b8c",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3363,
+    "versions": [
+      "bd5f13e0145bd55d"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-510-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-VsRtt0/acceptance.json",
+        "scope": "노드로 저장한 두 텍스처 UV 왜곡·복잡 노멀 머테리얼·새 C++/BP 경로 실행·변형/이력/해제"
+      },
+      {
+        "path": "native/build/native-scene-window-5AJdMC/acceptance.json",
+        "scope": "전체 기본 실행기: 실제2D/3D·SVG·한국어HUD·BP/C++입력/이동/머테리얼·세광원그림자·네텍스처형식교체·파티클/변형·2D마스크/광원/쿠키/볼륨·해제"
+      }
+    ],
+    "scope": "510 전체명세/20소유SHA·설치된네형식UV밉 GL/WGPU그래프·설치SDK/packager/player의새두텍스처C++게임·준비중래스터/C++/샘플0·복원/capture/유휴worker0. User읽기SHA·연결·Versions1. 총FXC/FPS/전체엔진/전체분석 완료 주장이 아님."
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/sampled-coordinate-500-native-vlZrYh/probe.exe",
+        "bytes": 754406,
+        "sha256": "076dd61d6c8dcaec792db7396d892a5703ccc14cbc8e7bb5124d40dd217fe0c7"
+      },
+      {
+        "path": "native/build/surface-samplers-507-ecNs0o/probe.exe",
+        "bytes": 1032939,
+        "sha256": "cdd8c7ab728e83095fc574df1533da03a13e724d79e4d357521bb0c7ce0fa606"
+      },
+      {
+        "path": "native/build/ray-helper-pruning-436-51akru/probe.exe",
+        "bytes": 150486,
+        "sha256": "5b3a5278941e95894b3cd691b5cade7414bcf18b14aa2ce7074b2b3c5028d5a5"
+      }
+    ],
+    "bytes": 1937831
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "510 전체명세/20소유SHA·설치된네형식UV밉 GL/WGPU그래프·설치SDK/packager/player의새두텍스처C++게임·준비중래스터/C++/샘플0·복원/capture/유휴worker0. User읽기SHA·연결·Versions1. 총FXC/FPS/전체엔진/전체분석 완료 주장이 아님."
+}

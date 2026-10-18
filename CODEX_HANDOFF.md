@@ -1,4 +1,4 @@
-# HBEngine 현재 인계 — 텍스처 좌표/샘플러510 설치 및 누적 작업 계속
+# HBEngine 현재 인계 — 설치510 검증·렌더링/저장공간511 계속
 
 ## 목표와 보호
 - 주인님/짚짱·해요체. 누적 전체 엔진/렌더링/2D·2.5D·3D/C++·BP/사람UI·AI동일문서 제작을 계속해요. 작은checkpoint로끝내지않아요. ENGINE_STATUS78등록항목은UE/Unity전체분모가아니며full본문/API gate미승격·완료율미확정이에요.
@@ -6,7 +6,8 @@
 - Versions1·기존설치보호·변경파일만PreservedChanges·소유재생성자료만정리. 원본/JSON/PNG/HLSL/명세보존. 한글commit/push·author/committer kirby47navercom-ai동일·AI trailer없음. 현재추가agents위임없음.
 
 ## 현재 상태
-- 현재설치496 C:/Users/kirby/HBEngine/Versions/9937154a06b6e79d/HBEngine.exe /3353files/Versions1. USER_INSTALL496 정본. 17owner/fullSHA/User10385읽기SHA·links2/.hbproject. player9096bb2b..; source2df9b93·문서d0d31fe·설치778ddbb.
+-최신설치510 C:\Users\kirby\HBEngine\Versions\bd5f13e0145bd55d\HBEngine.exe /3363files/20ownerSHA/User10385읽기SHA/links2/.hbproject/Versions1. USER_INSTALL510정본. Player17eb6030..·installed499l8ydFy4형식GL/WGPU/이전밉오차0와7wxC50새두텍스처CPP/SDK/packager/game pending24frame/C++4.62ms/disable93.55ms/샘플0/workeridle0검증. 이전496 220323155B정리.
+- 이전설치496기록은USER_INSTALL496정본이며510으로전환/정리됐어요.
 - 510source4cd4f0d·ENGINE_WORK510: 텍스처가UV를만드는4계열finite재샘플링·register-version조상전파·현재/이전밉. 기존설치49977ArfC 폭차이0→현재499kQNLBO/500vlZrYh 폭차이1·세경로/이전오차0/기존4e-5. UVancestor필요할때만2추가샘플·고정incomingfootprint·subULP한계명시·안정수학45연산과구분.
 - 실제두텍스처게임에서s1기본normalSampler충돌발견→HB_NODE_SURFACE표면프로그램에서6기본맵읽기분리. createSurfaceProgram C++편의함수/engine.schema.nativeSurfaceProgram. legacy createProgram부분확장기존유지. 507ecNs0o 실제서로다른필터픽셀188/0↔0/188. VsRtt0 실제저장그래프/새CPP BP/변형·이력·해제 통과.
 - 509전체기본실행기5AJdMC:2D/3D/SVG/한글HUD/CPP BP입력·이동·매개변수/세광원그림자/파티클·변형/네텍스처형식교체/2D마스크·광원·쿠키·볼륨/장면해제 통과. 디스크/GL전체초기지연개선이나FPS보장과별개예요.
@@ -15,7 +16,7 @@
 - 485절차noise/checker/큰parity와472RGBA8가져오기/직접mip/worker/Undo/4실행경로/이력증거는ENGINE_WORK485/472 참조. 공통normalguide450, shaderprune24/26함수, 이전기하/시간/밉과sourceuser분리유지.
 
 ## 바로 이어가기
-1.510 설치/소유SHA/전체명세/User-before.profile.sha256/links/Versions1 및 installed두UV게임·4graph검증/정리. 496one-shot모두완료·재실행금지. 설치된tool CLI를직접실행하면자체node가active로분류되므로source-ownedprocess안의dynamic import로 --executableargv만잠시추가해요. pruner는source-owned도구사용.
+1.510 설치/전체지문/User보존/Versions1/정리완료. 여기서끝내지말고511설치본native/build추가캐시(496퇴역220MB가원래179MB보다큰이유확인)와명시적TextureSampleLOD/Gradient/Bias제작설정을계속해요. 현재두목표는아직분석중·새수정없음. Source계열one-shot은완료재실행금지. installedtool CLI자체nodeactive함정/소유pruner·before.profile.sha256규칙유지.
 2. 완료후끝내지말고명시적TextureSample LOD/Gradient/Bias 제작설정·GL/GPU/Native/광선공통연결과초기준비/혼합normal441·곡면교차/매질/GI·MAT03 HDR/압축/배열·볼륨mip/streaming/variance roughness·누적2D/애니/월드/game/editor/deploy계속. FXC전체는아직초단위(새2texture141path5146/timeguide4951ms 단일관찰). 사라진지연으로계산금지.
 3. Microsoft선택본문/API496·UE4.27TextureSample와UnitySG17선택본문510만새대조. 최신UEURL열기실패는미독등록. 전체gate미승격. Mac/Xcode/Android실기기없음. HDRI395저SPP4배MSE목표미달(12.8735→11.3237),385full실패후한정resume구분유지.
 
