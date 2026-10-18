@@ -4293,5 +4293,26 @@
     "fullBodyAPIGatePromoted": false,
     "analysis": "docs/research/TEXTURE_COMPOSITE_549.md",
     "unread": "연결 API/구현 소스/도해 픽셀과 전역 문서 분모는 미독·미확정"
+  },
+  "supplemental560": {
+    "date": "2026-10-19",
+    "reread": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-render-multi-thread-intro",
+        "readScope": "496과 같은 선택 구역 재독: 본문의 멀티스레딩 개요와 장치/컨텍스트·DXGI 구분(웹 표시31–50행). 연결된 세부 API·다른 본문은 이번에 읽지 않았어요.",
+        "snapshot": "native/build/reference-corpus/supplemental496/threading.html",
+        "bytes": 52948,
+        "sha256": "da3798952fb06b1f58a3bdd3a7ba6d4d7bc4bf10efd1890820c83d2dbd9e9df5"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile",
+        "readScope": "496과 같은 선택 구역 재독: D3DCompile 서명·매개변수·반환·대상/flags·요구 DLL 및 D3DCompile2 비교(웹 표시32–131행). 연결된 상수/타깃 전체 API는 이번에 읽지 않았어요.",
+        "snapshot": "native/build/reference-corpus/supplemental496/compiler.html",
+        "bytes": 56150,
+        "sha256": "3357a1f503c264a051ee93660af1e6fe53af90232e0815ae381a40ee5363cfb8"
+      }
+    ],
+    "analysis": "docs/research/NATIVE_MATERIAL_PREPARATION_560.md",
+    "fullBodyAPIGatePromoted": false
   }
 }

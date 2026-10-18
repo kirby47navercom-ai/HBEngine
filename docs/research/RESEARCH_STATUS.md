@@ -486,3 +486,8 @@ UnitySG17 모드/조건부입력을 재독하고 Microsoft SampleLevel/SampleBia
 ### 2026-10-19 · 549 노멀 합성의 선택 문서 대조
 
 UE4.27 Composite Texture의 반환된 짧은 텍스트 본문45행과 HDRP17 기하 Specular AA의 실제 본문114–135행을 읽고 가져오기/화면 공간 계산을 구분했어요. UE 구현 수식 복제나 HDRP 기능 완료로 계산하지 않아요. 두 원문/SHA/범위를 supplemental549에 등록하고 도해/연결 API/전체 본문 gate는 승격하지 않아요.
+
+
+### 2026-10-19 · 560 장치 소유와 일반 표면 준비
+
+496의 Microsoft D3D11 장치/컨텍스트·DXGI31–50행과 D3DCompile32–131행을 재독했어요. 기존 원문/SHA를 재사용해 supplemental560에 연결하고 새 수집/전체 API 읽기로 세지 않아요. 워커의 bytecode와 소유 스레드 GPU채택은 HB 구현 선택으로 구분해요. 전체 gate는 미승격이에요.

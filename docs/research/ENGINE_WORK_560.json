@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "e6125aa3bf6471ce215be5c15c1a817544342460",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "tools/native-cache-lock.mjs": "720b5324e3b9a61c66ce5625a936ae9678ac1f475b37bacc67ed761d7e2edf39",
+    "tools/native-mutable-paths.mjs": "80e7e94a0bac8f15ef25181f7aa186f7166136e74ea050e34bcf9754c57852b6",
+    "tools/native-module-cache.mjs": "bdec2da1e032e58a43b2f7296b622d259451041aadaa2cd58211cd794ede4d48",
+    "tools/native-host.mjs": "9b6918244f7b5f5b0ee6c5e7fde24f9163fd4a0e539464a18452f0ab50cc4552",
+    "tools/prepare-native.mjs": "06c547b1f0e29fa34dcb25f77f1b2f34009712df07fe8302e369f1ffbda17bf5",
+    "tools/install-editor.mjs": "9d21cc2aa6bcfd20426127287644de0cedf792321a8b72966e82ae224646aeb4",
+    "tools/test-artifacts.mjs": "9ff462c4560e4bd65dea2489b8699c435654e6b4d2288f60affb20cc24bbaa09",
+    "tools/remove-test-cache.ps1": "2054914de9a15e3dea6fca5981cfbeffad65c6599d5f64554f8e5d2307cb69da",
+    "tools/check-native-installed-cache-513.mjs": "f7db3d138deea6960beae4a6f6b39f66a6d8c90475c85521524458a7f20c0093",
+    "tools/check-native-shared-cache-512.mjs": "a198f43826697175be12a557627aada26ff8e82eb681bc64264a379eccf73b5a",
+    "prototype/gpu-materials.js": "9122fa2a7c4251214b9298b02d87544f2fe3c1ebd351768b3e35075bb4aa0064",
+    "prototype/gpu-texture-sampling.js": "393e536ccab355b5cd30f41352d0f50a917252a9b3f76751db99e606d2a8e829",
+    "prototype/gpu-volume-mips.js": "767e0e6fa25d75a0441747776b90dd025e404cf2aab23f053839c56e5eb7292e",
+    "prototype/lightmap-bake-core.js": "6f37576560c9cf433a2612d92c2634b2c816048124055bc98f4058f4601f3748",
+    "prototype/lightmap-scene.js": "905e4db7c382abb33747adf359fa4e035788ae2439abc5303c63714eb1820798",
+    "prototype/lightmap-texture-mips.js": "8def6c0cc4dfdcbb955609212d73e21dd4f18dcca4472f5b9ca9471ebf3c16fd",
+    "prototype/lightmap-textures.js": "24dbb519fb2267fafd4fda9b8975d62f3f7fa7b1f8d866a5cf745e1ed60e2c81",
+    "prototype/material-editor.js": "a0d11a229d844042033cb42b704bf6d193b94b12d27ce929030a26a430426657",
+    "prototype/material-runtime.js": "ad4008e55af1650610ceda5145bdd596f0ae170310e70acbaa85c54c94fe04d1",
+    "prototype/native-materials.js": "2b3ea3bd403d19e777b94ec492dba2f45e73071211c9ba51913f4bfb6988d53f",
+    "prototype/ray-material-gpu.js": "b59cb0aefca747b7c52100021b8e3333578a52cb562dded0feec11178f8ddcd7",
+    "prototype/ray-material-shader.js": "7fea37dce3602e7f6768625bce0899ea77a91bafb0db192a723f2cfbfd312fce",
+    "prototype/ray-materials.js": "d9d6ed7329790e47c6e248f082a435e934bb0ff11e179f833260645bc9078137",
+    "prototype/ray-mip.js": "12b02ad0ae725ec3ef9dfdc04e3f0ecc920a4a5465575ec4205226bdfad8a7fc",
+    "prototype/ray-texture-shader.js": "c348ed8887b714fd4091670081c38c9111fec1c8b293ede487f08179d7ee49b7",
+    "prototype/texture-assets.js": "50a6f5331867edf470978bda9bc536b8606a127a9a44a7730f01455f55243d9d",
+    "prototype/texture-sampling-mode.js": "3c659fc07488743e5e0e702b346344c1d45ec1a94276d4890bbb3660dbdc00aa",
+    "tools/check-cube-direction-536-window.mjs": "8070ed013116d208f69a24cf6541e5550c22d6012195849528ee33e90ec091cb",
+    "tools/check-lightmap-mips-524.mjs": "dd737841224af941b2d0586993f47292824077023c1d02b075962f2c4f60ac47",
+    "tools/check-native-preparation-window-496.mjs": "78aca3e7e3126fb7c5e16d2d95f98f0344ea9f45ed3b6abf6a7fb599b547befc",
+    "tools/check-texture-cpu-inputs-537.mjs": "ff77c97f35e73ad7eb24bcbef6f1017f61d261e0a06741dcb91a99f9b5936e73",
+    "tools/check-texture-editor-532-window.mjs": "f89ece7846ac88273d6c757dea11b43784f1ba9df2619c21dafeb2cd4df02352",
+    "tools/check-texture-raster-527-native.mjs": "d0b67ccb66953d7f8fca0bc70967d67a56fa9ce2acfb6af57596c76c6150de12",
+    "tools/check-texture-raster-528-window.mjs": "680f7b8f626de15e13d7e2f244d1318847b276e09371778c0961402597bb68e3",
+    "tools/check-texture-sampling-518.mjs": "d9728a4d48cf0fbc12a493d13474b069e55ec10109b6dab87dc35eedac5e6be5",
+    "tools/check-texture-sampling-520-window.mjs": "c08ebfb587baa4c5246703cdeb49c21b878c103d6c528ce8eae54411109c232a",
+    "tools/check-texture-sampling-521-native.mjs": "1af4e6e8870f0cfaeb5adf972cf3352f425fd346452b9815950f888836d391e6",
+    "tools/check-volume-mips-531-window.mjs": "7b989a7feedab2a5b4b3eb4d9dcf959e9842095e794de94364bc27d35e67a717",
+    "tools/editor-automation.mjs": "63a39a0a844d2831c5826076c2d3f23e88dc0bf3f3d2e3fe905a2ff3ab6f3c60",
+    "tools/generate-ray-programs.mjs": "d041aace5eb5cec070e6909ba6506b6a5473054a20d0d517897e6bc6d739265d",
+    "tools/texture-mip-game-534.mjs": "c0f9a0d8e9ed3e7f1b45cff0583bf6f63de8f844193f97c245440ce45d5c709c",
+    "tools/texture-raster-probe-528.mjs": "033e55c969797d65d7fb8286dd086e18fe09bbaf2cbc61c7c42eaaec12ac3069",
+    "tools/texture-sampling-fixture-519.mjs": "f06e280fad872ccdf516d04d19cd38022b6a7f3a8083c04b8cd38f7b43a3b2df",
+    "native/include/HBEngine/RayPrograms.hpp": "b76fbc50dba8e35c808b6e72635fefdeb933494dcf629f467f3d59f65a799ad7",
+    "native/include/HBEngine/SceneRender.hpp": "1915b4b8978b535c62572f6fb03f197ed882c56fda093aac461a89e877a67473",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "fc1427a1de289c136d37cd103182633fa98a239b0055c7f918a82632571da6dd",
+    "prototype/asset-editor-ui.js": "a8b4ae9b89f412e34914d5a0f16b21ff835a507fa1bdeba04e3954463249c258",
+    "prototype/material-texture-bindings.js": "888f58eae0add57b5cd2108aebba322a3a87625a1b79ba7cf523977f81a5cbc4",
+    "prototype/scene-rendering.js": "2f4b81734abfaa65483fb3f72ebbdb558655cb20388bea20be21ec2f940b7ae1",
+    "prototype/texture-composite.js": "8b8d9fe9a128e571df9753ca8cd1b64d107973d7c3c422304b861e8723c6f184",
+    "prototype/texture-import-ui.js": "d16a650c57920ad2d9041b0dd710c6888c726b02ea7730934e752caa8dca4675",
+    "prototype/texture-import.js": "d4deed1a2bbcf63d87d883fd82f3ec673b80d914558c555d03d641f35c7cb872",
+    "prototype/texture-mip-cook.js": "6acff5125fa4c5a89afa14102a36d242e2e2d8f6c004644cc9cae7a7cb244768",
+    "prototype/texture-mip-policy.js": "bedfc020c1d313cb2a3b24800bda04b91e74e156843095ed334764c7a3814da2",
+    "prototype/texture-mip-worker.js": "74b048829ad02a2088a38fa300bb53c727dd78b835919eb4f0a0f6d71144188e",
+    "tools/check-texture-composite-543.mjs": "80ad0f35ea495307c0293f4cb44e2eb44e8affdeffadeb4abecbff4775d7d866",
+    "tools/check-texture-composite-544-window.mjs": "d3dffaf3b918cd1ef8f0ba898d137b326942c4225a3f30d447158919a5be5158",
+    "tools/check-texture-composite-545-native.mjs": "791ef94586c6c24b542b009e1e6462faed38d22581e54ed101429f18fd2c5ce9",
+    "tools/check-texture-composite-548-player.mjs": "a4cae1e88ce1153d0f74947da47430003876a60b37b362d99beb4a2247366518",
+    "tools/check-texture-history-467-window.mjs": "f715e170af01ec663b9ba0b382c13888d40b791938eaf0576433b0bf77287e3f",
+    "tools/check-texture-history-468-native.mjs": "e13d02b12d65b4825cd5664203d8c5e2b19d8ce085e9d484e8894afa0cad4e40",
+    "tools/texture-composite-probe-544.mjs": "98f3ad0ddaf7e7faeb3f2e25f0f619d3d0fe7c860739ad50e60ee1bc12630409",
+    "tools/texture-history-fixture-467.mjs": "a8dfd1d6610ad24afffd1137b4b87d1b520b7779685244cd1ed314302673322f",
+    "native/include/HBEngine/SceneProgramPreparation.hpp": "dff8bf86cc1734d4af94cab266cdc8af0080246de344acca3f62bdeb2c4f2584",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "13dbe24bb040f50a341f362847b7142a35a96907029e842f1a45bc4026a92d67",
+    "native/include/HBEngine/ShaderBytecodeCompiler.hpp": "be1eef5ed10f739d90291dbd824ac7cdf630af6a28a14433748a7b0d31383b5c",
+    "prototype/gpu-path-preparation.js": "a03d1aa221923817a4cda41e5702ca8cb95bdc03a9e18eac477050cc3cbc4378",
+    "prototype/native-path-preparation.js": "05011a39fadcf95b5559e41502744768590bda490889b83198f3f5fc843fb4c2",
+    "prototype/native-scene-renderer.js": "2fa82c3d62020905d7e5a774682bc6ca6cb756c5e8963785006854891f519e1a",
+    "prototype/profiler.js": "2f25a6885c0cc056fbf3a6a802482a4e1e5ebbe1c696ebdf78bf1e081cad62b2",
+    "tools/check-native-probe-readiness-559-window.mjs": "c1c71b59c35a481b71e248d1d66a24cfdb86af371dbaf6d8ba04ec5db14ef094",
+    "tools/check-native-raster-preparation-555.mjs": "71e9787ee81a99db99230f5a97ee2b387195c14ac964413ba4fe1b7fb96792ff",
+    "tools/check-scene-program-bridge-556.mjs": "7221f5f603a1deba9d0a96c35b8ee7e5bf86efd12d31e9d7e060ef99c3d6425b",
+    "tools/check-scene-program-preparation-553.mjs": "3fb3e99d9bffd92da454cf253de2920a18a1de6cbbe5ac825d693f069629afa4"
+  },
+  "testSourceHashes": {
+    "native/tests/scene-program-bridge-556.cpp": "309b41ffb1c9331a56837e2f69ce0369fd32d84cd0efb1d703cc3b274730c7b8",
+    "native/tests/scene-program-preparation-553.cpp": "25d6e15d62199e2668679694a12f95cafe77e378be9d1838ddc22b4c63326c6a"
+  },
+  "nativePlayerSHA256": "abed101f7c65a81448e49ab3ad6e18f47479597f9a5990fec499bda488b7256e",
+  "nativeEditorSHA256": "494a71dbbf315998f4bb247fcc027fd1f8013d1192123e35c869e1ea04564ae2",
+  "checks": [
+    {
+      "path": "native/build/scene-program-preparation-553-1CL2Re/acceptance.json",
+      "sha256": "27b0d834f143fa80fa602c1252568ee55ae5f6d707d2114e5a9c64ae0ac1f020",
+      "scope": "Actual D3D11 opt-in asynchronous ordinary material SDK: single existing queue, no device/renderer in worker, deterministic queued gate, ordinary raster survives, pending graph draw skipped, uniform updates/moves, exact sync pixel parity, cancellation/error/retry/idle. Production bridge/temporal/capture and full game have separate gates."
+    },
+    {
+      "path": "native/build/scene-program-bridge-556-8sSaqI/acceptance.json",
+      "sha256": "8303d82977284fe0c05598964644907538764b6d0680fe6a75e09d2774c732d9",
+      "scope": "Actual production D3D bridge and deterministic held compiler: ordinary material upload queues, frame still presents, status-only polling adopts without Present, next actual frame marks readiness, reset releases handles. SDK pixels and real game/shadow/probe/history are separate gates."
+    },
+    {
+      "path": "native/build/probe-readiness-559-pifU9U/acceptance.json",
+      "sha256": "3db82b2aac43351227a802ab0f4d484a98c8f5a365f25a5b24c0c8f223d06739",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+    },
+    {
+      "path": "native/build/shader-cache-runtime-347-4cqN70/acceptance.json",
+      "sha256": "bc87d91caf3c664582e21dfec6d1d5acbdcf58f42ccbfcde16a8924c3793f8e9",
+      "scope": "single ordered process pair; no FPS or controlled speedup claim"
+    },
+    {
+      "path": "native/build/native-raster-preparation-555.json",
+      "sha256": "a9d77a4b8cfe747b0d578b220e545851f1734546baef0826bbc82d8b95165c2e",
+      "scope": "해당 검사 JSON에 정의한 범위"
+    },
+    {
+      "path": "native/build/native-preparation-490.json",
+      "sha256": "3b933d01626233eff2a80fe159e0bfa30b0304b4fb3b0caf8d11388d7a9e09c1",
+      "scope": "해당 검사 JSON에 정의한 범위"
+    },
+    {
+      "path": "native/build/native-preparation-window-496-7Qin7n/acceptance.json",
+      "sha256": "1a94881f2c56ff70010a73d74dfa2865079bca12fedd27a1db070bb3708338bb",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/texture-composite-548-player-M3Uli5/acceptance.json",
+      "sha256": "e3fdd84dd619b174266debd544649250dc5cc24856b5db5f74c023e756c21ade",
+      "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
+    },
+    {
+      "path": "native/build/regression-561.json",
+      "sha256": "93c8e1c2d764034b95039d6e6651a078d7cd772433760ec534bff1aef850a06c",
+      "scope": "해당 검사 JSON에 정의한 범위"
+    },
+    {
+      "path": "native/build/game-regression-562.json",
+      "sha256": "a925efebc99cb7f71246fae74a4402224d1d041e0d9041537c9a91a99abcfcc5",
+      "scope": "해당 검사 JSON에 정의한 범위"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/probe-readiness-559-pifU9U/acceptance.json",
+      "sha256": "3db82b2aac43351227a802ab0f4d484a98c8f5a365f25a5b24c0c8f223d06739",
+      "scope": "Focused production bridge recovery of 558 probe-readiness failure plus remaining 2D mask/light/cookie/volume/particle paths; existing owned source/native cache reused, new packaged player, static probe reuse/CPP/BP refresh and scene resource release. Earlier558 assertions before the probe failure are partial evidence, not a full-suite pass."
+    },
+    {
+      "path": "native/build/native-preparation-window-496-7Qin7n/acceptance.json",
+      "sha256": "1a94881f2c56ff70010a73d74dfa2865079bca12fedd27a1db070bb3708338bb",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/texture-composite-548-player-M3Uli5/acceptance.json",
+      "sha256": "e3fdd84dd619b174266debd544649250dc5cc24856b5db5f74c023e756c21ade",
+      "scope": "Fresh packaged game and native C++ SDK module replace composite→ordinary→composite texture on the same authored graph; real DirectX capture, dependency packaging, bounded ownership and stable idle upload count. No FPS claim."
+    }
+  ],
+  "sourceEditorGates": [],
+  "referenceAnalysis": "docs/research/NATIVE_MATERIAL_PREPARATION_560.md",
+  "resources": {
+    "workerServices": 1,
+    "queueBudgetBytes": 8388608,
+    "idleWorkerMS": 1000,
+    "additionalGPUShaderObjectsPerProgram": 0,
+    "additionalGPUTargets": 0,
+    "automaticReadbacks": 0,
+    "perFrameProgramScan": "pending IDs only; aggregate completed count from map sizes",
+    "memory": "pending source/bytecode temporary; release on adoption/error; queue budget does not claim whole-scene memory limit"
+  },
+  "failureSeparation": {
+    "artifacts": [
+      {
+        "path": "native/build/native-scene-window-neQy1U/failure.json",
+        "sha256": "fa71d810a36178cbd0d0eeb3143b640bf898e819b095294a4bcf3fd72a754103"
+      },
+      {
+        "path": "native/build/probe-readiness-559-v2klCs/failure.json",
+        "sha256": "a1546592c3df64c7b9aa8c6ae174e21272a325e67c049ef651339580848cc5e4"
+      }
+    ],
+    "full558": "Probes 이전 구역은 부분 근거. 미필터 새 프로브 바인딩 실패를 엔진 Bridge에서 수정하고 focused559로 재검증; 전체558통과로 세지 않음",
+    "focus559": "처음은 해제용Three scene 누락인 검사프로필 오류; 추가후pifU9U 통과",
+    "bridge556": "첫 mixed-auto 선언과 HWND 없는 Present는 검사 오류; 소유 hidden창으로 확인; 후속8sSaqI에 마지막pending프로그램 제거 이력회귀 포함",
+    "metadata553": "최초singleWorker 필드는 동시수가 아닌workersStarted=2라는 잘못된 검사이름; 소스workerStarts로 수정, 코드의 서비스는한개",
+    "capture555": "capture 중 microtask 준비완료경합을 엔진에서 수정하고 새555/기존490 통과"
+  },
+  "sourceBuilds": [
+    "native/build/build557-result.json",
+    "native/build/player559-result.json",
+    "native/build/player562-result.json"
+  ],
+  "remaining": [
+    "최초 기본 래스터/다른 네이티브 셰이더·장치 자원의 동기 준비",
+    "전체 GL/FXC 준비 시간·혼합 노멀·생성 코드/제작 흐름 비용",
+    "SDK 전체 변경에 따른 사용자 C++의 불필요한 재컴파일 비용 조사",
+    "나머지 누적 렌더링/2D/애니메이션/게임/편집기/배포 목표"
+  ],
+  "installationPending": true,
+  "scope": "553–562 일반 머테리얼 PS/ShadowPS 비동기 준비·소유/실패/취소·그림자/probe/이력/capture·집계UI/AI·실제SDK/브리지/C++게임 연결. 최초 전체 컴파일 제거·FPS/전체엔진/전체분석 완료 주장이 아니에요."
+}
