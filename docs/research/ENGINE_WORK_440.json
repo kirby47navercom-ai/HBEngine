@@ -24,7 +24,7 @@
     "native/tests/ray-helper-preprocess-436.cpp": "fc47cbc16767bbaeb8fb9fc58f4266d7368bc8bd4d630ea11ac02a0d147ee56d"
   },
   "nativePlayerSHA256": "de2a0c235742ee31101e10142ec8c1e9d66b1b76ea4d5694e7c0643b0839cfaa",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/ray-helper-pruning-436-Tf7f8v/acceptance.json",
@@ -53,6 +53,14 @@
     {
       "path": "native/build/rendering-440-light-checks.json",
       "sha256": "acaf6e26533ab4b4709421172c1c8268a1129a5214280b196b88a8ca96cc57ee"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-O6blds/acceptance.json",
+      "sha256": "ce9c7fed4ee0701c35b3280758f487cf7616f9d7e7c637baa288f458ade39889"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-syaNU7/acceptance.json",
+      "sha256": "b552444b8d86524b9121e5ecd8830dbd2df6361d74469ad3f52ba07f96d92505"
     }
   ],
   "sourceGames": [
@@ -164,5 +172,6 @@
     "ABBA 전체 준비 시간 개선 미확립·캐시와 부하 미통제",
     "복잡 그래프 초단위 준비·현재/이전 노멀 호출 중복 계속",
     "나머지 렌더링·엔진 원장과 전체 본문/API gate 유지"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_440.json"
 }

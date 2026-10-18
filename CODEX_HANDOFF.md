@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 보조 함수436–440 검증·설치 준비
+# HBEngine 현재 인계 — 설치440 검증·렌더링441 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치435 C:\Users\kirby\HBEngine\Versions\997f66eeeea8c9cb\HBEngine.exe /3285파일/Versions1. USER_INSTALL_435 정본.16owner/fullSHA·새player282ea1a8e8074ca93aab608b9bda8db0f0929da62fcbc702a01b0feb9931412e·User10385전후읽기SHA·links2/.hbproject·설치AkcNpd/3rj7y6 통과.
+- 현재 설치440 C:\Users\kirby\HBEngine\Versions\f4230fbda13c3695\HBEngine.exe /3292파일/Versions1. USER_INSTALL_440 정본.11owner/fullSHA·새playerde2a0c235742ee31101e10142ec8c1e9d66b1b76ea4d5694e7c0643b0839cfaa·User10385전후읽기SHA·links2/.hbproject·설치 coordinate-graphs-433-O6blds / shader-cache-window-350-syaNU7 통과.
 
 ## 현재 구현과 증거
 - 436–438 GL/HLSL변화량보조함수에기존packed opcode union으로조건부선택. 공유함수/식에서호출의존을한번도출·전이합집합·누락/순환/잘못된함수거부. 플랫폼별의존리스트복제/매프레임scan/GPU새자원/readback없음. helperCompilation AI불변계약.
@@ -13,7 +13,7 @@
 - source440 MS D3DPreprocess signature/parameters/output/remarks선택읽기+53401B원문수집·corpus등록. 전체링크API/본문gate미승격. docs/RAY_HELPER_COMPILATION440.
 
 ## 다음 실행 순서
-1. sourcecommit→record440(sourceHashes와별도testSourceHashes:새native/tests CPP는설치안됨)→원장→sync/install440 actual433다섯그래프+350새player두게임·fullmanifest/owner/User읽기/Versions1→finish440. 완료one-shot재실행금지.
+1. 440 설치/전체지문/User읽기보존/Versions1/정리 확인. 완료one-shot재실행금지. 441 이후작업을계속해요.
 2. 441후속RND06은기존334sourcefactoring그대로반복금지. 현재pathGuideSpecialization.shareGuideNormals는이미primary+현재differential을한call-site loop로묶어요. 남은prior normal이별도이고graphcurrent/prior가반복돼요. sharedProgramValues+mixed frame normal context를한호출지점으로넘기는후속을먼저설계/실제독립문맥대조후시간증거로채택해요. 원본source/matrix/기존partialcoats/unsafeNormal/NaN역사거부모두유지.
 3. power/exp/log/smoothstep/Fresnel/noise등좌표fallback·RND05/07전역곡면/매질·RND08베이크/DFAO/HWRT·누적엔진목표계속. 사용자원장전체분모/gate미확정유지,전체완료허위선언금지.
 

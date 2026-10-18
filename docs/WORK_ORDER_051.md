@@ -594,3 +594,5 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 ### 2026-10-19 · 436–440
 
 공유 좌표 보조 함수의 전이 의존을 기존 연산 목록에 연결했어요. 실제 D3DPreprocess12조건에서 기본UV/time/add/mul은10함수→0·보조라이브러리4580→254B. 실제 GL/GPU 다섯 full graph와 native10현재/이전 패킷·새Complex141 WQwSTE가 통과했어요. 전체 준비 ABBA full2617/2572ms guarded2636/2881ms로 지연 개선은 확립되지 않았어요. 같은 수식 몸체·573조건 알고리즘과 자원 예산을 유지하며 순환·누락·중복도 거부해요. 전체 엔진 완료로 승격하지 않고 현재/이전 노멀 호출 지연과 누적 렌더링 목표를 계속해요.
+
+440 설치 f4230fbda13c3695·3292전체명세/11소유SHA·새player·links2/.hbproject·Versions1 통과. 설치 검사 coordinate-graphs-433-O6blds / shader-cache-window-350-syaNU7에서 다섯 GL/GPU 그래프와 두DirectX게임 캐시를 확인했어요. User10385읽기SHA보존. 이전설치178372339B와검사exe886750B를정리하고441 이후작업을계속해요.

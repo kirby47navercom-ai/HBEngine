@@ -1,4 +1,4 @@
-# 현재 진단 — 보조 함수440 설치 준비·441 병목 계속
+# 현재 진단 — 설치440 검증·렌더링441 계속
 
 436실제D3DPreprocess12조건Tf7f8v에서기본연산helper10→0/4580→254B,전이의존/실제GL/GPU5graph NhlAJv와D3D10packetwD7ycM통과. 438parser검증순환/미사용누락/중첩/주석도거부/처리. helperbody435수학동작유지·새GPU자원/uniform/readback없음.
 
