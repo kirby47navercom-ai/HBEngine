@@ -1,20 +1,22 @@
-# HBEngine 현재 인계 — 설치445 검증·렌더링446 계속
+# HBEngine 현재 인계 — 가이드450 검증·설치 준비
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
 - 현재 설치445 C:\Users\kirby\HBEngine\Versions\4ffd07face0d2a99\HBEngine.exe /3303파일/Versions1. USER_INSTALL_445 정본.23owner/fullSHA·새player18bed587256b88501c5e0bf7f08677789411b6bfa5dce47f96fa50a2e04c3bcb·User10385전후읽기SHA·links2/.hbproject·설치 nonlinear-graphs-444-ejw5lo / shader-cache-window-350-VfeVjV 통과.
 
 ## 현재 구현과 증거
-- 440 설치 f4230fbda13c3695·3292파일·11owner·User10385읽기SHA보존·Versions1·O6blds GL/GPU5graph와syaNU7 D3D두게임6저장/6적중0재저장 통과. 이전설치178372339B·검사exe886750B정리. USER_INSTALL440정본.
-- 441–442 ray-mixed-normal-context 실험: 공통 Program + bool geometry preamble·primary/differential/prior 노멀 한call site. GL17poses×3문맥 9IIJ9N 원본대조오차0. ABBA9x9kg2 원본2590/2592ms·혼합2448/2551ms. 부하/캐시미통제·기본경로미채택. CPP/TSL/coat/전체guide 후속 필요. 코드·증거보존, 되돌려 완료로 세지 않아요.
-- 443–444 production: power/exp2/log2/smoothstep/normalMap/fresnel/radialGradient/linearGradient 유한변화·작은log1p/expm1·클램프·중립노멀·강도/각도/반지름 유지. 40연산699조건 GL/GPU C9uScy/native2uuUr6 통과. 기존573기준+새subULP1e-10·새6305출력한조건2e-3(실제.00085),기존오차완화없음.
-- actual444 uc8LcF8fullgraph GL/GPU 현재/이전밉 대조·nativeKBwRDu16패킷 통과. helper20전처리LSvIo320조건·필요없는함수0. helper이름규칙이탈도거부. AI stable43연산·새GPU자원/uniform/readback0·noise/checker와극단범위잔여.
-- 실패보존: tmoAGy power큰변화log/exp왕복오차.002568→큰변화원연산으로.00085;444typedvec2→dotvec3 fixture를기존numeric승격+split으로수정;약한Fresnel밉fixture를직교시선으로관측가능하게수정. 기준완화없음. source docs/NONLINEAR_COORDINATES445.
+- 445 설치4ffd07face0d2a99·3303파일·23owner·User10385읽기SHA·Versions1·ejw5lo8graph/VfeVjV두D3D게임6저장/6적중0재저장통과. 이전440설치178404828B·검사exe1773500B정리. USER_INSTALL445정본.
+- 443–445 8비선형(power/exp/log/smoothstep/normalMap/Fresnel/두gradient)세API40연산699조건 C9uScy/native2uuUr6·8graph uc8LcF/16nativeKBwRDu·실게임VWxJFX 통과. 작은변화1e-10오차3.55e-15,기존573오차3.59e-6,새큰6305출력한조건2e-3기준(실제.00085). AI43연산,noise/checker잔여.
+- 446 coordinate ancestry로보조함수선택·레지스터덮어쓰기/고정LOD/고정spatial제외·프로그램준비때만계산. GL/GPU8graph13nApw/nativecis6qV16패킷및C++metadata/JS일치. D3DPreprocessWiRBhR22조건·모든shade op있어도coordinate없으면helper0/divide만있으면1.
+- 448–449 nativeGUIDE는같은GL생성기 no-lens기본/aux·lens공유노멀. lens bool을guide cachekey에포함. generic기본호환유지. 448 yH2hn7/oqDkqK 각6필드 이력변화/거부/복원통과(이둘은이전unbatched도구). 449 TI5wJN 실제16x16 8경우(base/coat×lens×primary/aux)generic과오차0·이력복원. 449는셰이더당3상수frame한compile·공통HLSL+조건SHA로중복보존감소.
+- 450 JWCxie production ScreenEffectsPass.begin 실제GPU: 초기5compile·lens2만추가·해제cache2hit·stable추가0·sourceBuild1·target288B고정/release0·기존8MiBcache454294B·disk미설정. AI nativeGuides불변계약. 새GPU자원/uniform/readback없음.
+- 448 실패OaV8rm은공통GLvec3(0)가HLSL생성자에맞지않아native생성때literal성분을명시해수정. 4504Wcycr은검사CPP경고를braces로수정. 449시간은미통제쌍측관찰(기본1178–1600→453–1148ms/aux2853–3548→2348–3104),FPS/전체지연해결주장아님.
+- 혼합노멀441–442 실험 ray-mixed-normal-context 기본미채택유지:GL17×3오차0(9IIJ9N),ABBA9x9kg2원본2590/2592·혼합2448/2551ms(부하/캐시미통제). CPP/TSL/coat/전체guide/속도후속필요.
 
 ## 다음 실행 순서
-1. 445 설치/전체지문/User읽기보존/Versions1/정리 확인. 완료one-shot재실행금지. 446 이후작업을계속해요.
-2. noise/checker의마지막좌표fallback·mixed노멀실험의세API/전체가이드·복잡초기compile을계속. 기존334 factoring 재시도와미통제시간개선포장금지.
-3. RND05/07전역곡면/변경투명경로/매질·RND08베이크/DFAO/HWRT·MAT03import-role밉·누적엔진목표계속. 전체gate/분모미확정 유지,최종checkpoint로중단하지않아요.
+1. source450 commit→새nativebuild450→Complex141실게임→record450(sourceHashes+별도testSourceHashes)→sync/install450(설치8graph·350새player두게임·fullSHA/User읽기/Versions1)→정리·현재handoff정확수정. 완료one-shot재실행금지.
+2. noise/checker 마지막좌표fallback·MAT03 import-role밉·RND08 bake/lighting·복잡compile/혼합노멀을계속. 450묶음설치로최종checkpoint중단하지않아요.
+3. RND05/07전역곡면/변경투명경로/참여매질·나머지누적엔진목표계속. 전체gate/분모미확정 유지·실기기/iOS없는검증범위구분.
 
 ## 작업 보호
 - 주인님/짚짱·해요체·한글commit·author/committer동일kirby47navercom-ai, AI trailer없음. 명시적추가위임없이어gents생성금지. 최종checkpoint로끝내지말고사용자가요청한누적작업계속.

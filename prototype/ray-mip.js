@@ -39,5 +39,8 @@ export function rayCoordinateInstructions(instructions,live=null){
  for(let n=instructions.length-1;n>=0;n--)if(needed.has(n)&&instructions[n][0]!==9)for(const p of parents[n])needed.add(p);
  return needed;
 }
+// Reuse the register-version-aware coordinate dependency walk. This is shader
+// preparation metadata, never a per-frame material or texture scan.
+export const rayDifferentialOperations=programs=>[...new Set(programs.flatMap(p=>[...rayCoordinateInstructions(p.instructions)].map(n=>p.instructions[n][0])))].sort((a,b)=>a-b);
 export const rayTextureFlags=map=>(map.magFilter===NearestFilter?1:0)+2*(rayMipFilter(map)||(rayMinNearest(map)?5:0));
 export const rayMinNearest=map=>[NearestFilter,NearestMipmapNearestFilter,NearestMipmapLinearFilter].includes(map.minFilter);

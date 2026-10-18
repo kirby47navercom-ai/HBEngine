@@ -49,7 +49,8 @@ inline bool rayFieldUsesFrame(const RayProgram& p,int field,bool guide=false){
 inline std::string previousRayNames(const std::string& source,const std::set<int>* programKeys=nullptr){
  std::string result;for(std::size_t pos=0;pos<source.size();){if(std::isalpha(static_cast<unsigned char>(source[pos]))||source[pos]=='_'){std::size_t end=pos+1;while(end<source.size()&&(std::isalnum(static_cast<unsigned char>(source[end]))||source[end]=='_'))end++;const auto token=source.substr(pos,end-pos);const bool program=token.compare(0,12,"hbRayProgram")==0;if(token=="hbGeometryFrame")result+="hbRayPreviousFrame";else if(token=="hbRayUVFootprint"||token=="hbRayUV"||token=="hbRaySmoothNormal"||token=="hbRaySmoothNormalOffset"||token=="hbRayGeometric"||token=="hbRayBary"||token=="hbRayBaryOffset"||token=="hbRayOffset"||token.compare(0,13,"hbRayRunField")==0||(program&&(!programKeys||programKeys->count(std::stoi(token.substr(12))))))result+="hbRayPrevious"+token.substr(5);else result+=token;pos=end;}else result+=source[pos++];}return result;
 }
-inline std::string rayProgramShader(const std::vector<RayProgram>& programs){
+inline std::string rayProgramShader(const std::vector<RayProgram>& programs,std::string* differentialDefines=nullptr){
+ std::set<int> differentialOperations;
 const bool textureFootprints[48]={${Array.from({length:48},(_,n)=>rayTextureNeedsFootprint([9,0,4,4,0,0,0,0,Math.floor(n/12),0,n%12])?"true":"false").join(",")}};
  for(const auto& p:programs)validateRayProgram(p);
  const bool uvFootprint=std::any_of(programs.begin(),programs.end(),[&](const auto& p){return std::any_of(p.instructions.begin(),p.instructions.end(),[](const auto& i){return i[0]==1;})&&std::any_of(p.instructions.begin(),p.instructions.end(),[&](const auto& i){return i[0]==9&&textureFootprints[i[8]*12+i[10]];});});
@@ -73,7 +74,7 @@ ${rayUVFootprintGLSL}
   if(alpha)for(int n=int(p.instructions.size())-1;n>=0;n--)if(live[n])for(int parent:parents[n])if(parent>=0)live[parent]=true;
   for(std::size_t n=0;n<p.instructions.size();n++)if(live[n]&&p.instructions[n][0]!=8)registers.insert(p.instructions[n][1]);
   for(int n=int(p.instructions.size())-1;n>=0;n--)if(needed[n]&&p.instructions[n][0]!=9)for(int parent:parents[n])if(parent>=0)needed[parent]=true;
-  for(std::size_t n=0;n<p.instructions.size();n++)if(needed[n])derived.insert(p.instructions[n][1]);
+  for(std::size_t n=0;n<p.instructions.size();n++)if(needed[n]){derived.insert(p.instructions[n][1]);differentialOperations.insert(p.instructions[n][0]);}
   const auto programStart=source.size();source+="vec4 "+programName+std::to_string(p.key)+"(float pointer,float id,vec3 point,vec3 view,vec4 result,float width,vec2 timeContext){";for(int r:registers)source+="vec4 r"+std::to_string(r)+"=vec4(0,0,0,0);";for(int r:derived)for(char axis:{'X','Y'})source+="vec4 r"+std::string(1,axis)+std::to_string(r)+"=vec4(0,0,0,0);";
   auto uses=[&](int op,bool derivative){for(std::size_t n=0;n<p.instructions.size();n++)if((derivative?needed[n]:live[n])&&p.instructions[n][0]==op)return true;return false;};
   if(uses(1,true))source+="vec2 uv,uvX,uvY;hbRayUVFootprint(id,point,view,width,uv,uvX,uvY);";else if(uses(1,false))source+="vec2 uv=hbRayUV(id,point);";
@@ -100,7 +101,7 @@ vec4 hbRayPreviousField3TimeLod(float id,vec3 point,vec3 view,float width,vec2 t
 ${previousRayFieldsGLSL(rayMaterialGLSL)}
 ${previousRayCoatNormalGLSL(rayMaterialGLSL)}
 ${previousRayNames(rayMaterialGLSL.slice(rayMaterialGLSL.indexOf('vec3 hbRayNormalContextLod('),rayMaterialGLSL.indexOf('vec3 hbRayNormalTimeLod(')))}
-)HB";return source;
+)HB";if(differentialDefines){*differentialDefines="#define HB_RAY_DIFF_MASK 1\n";for(int op:differentialOperations)*differentialDefines+="#define HB_RAY_DIFF_OP_"+std::to_string(op)+" 1\n";}return source;
 }
 }
 `;
