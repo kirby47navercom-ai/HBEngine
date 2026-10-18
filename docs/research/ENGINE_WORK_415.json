@@ -27,7 +27,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "ee993dbadc54f28e9789b419e5ef8ef51c591bde82078c01bdd8253836b4f2b3"
   },
   "nativePlayerSHA256": "f1e1a2970cd512ce69f4e8fa0af702dbdd84cea0653eaf8882d760dcb22c5c71",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/uv-footprint-412-cpu.json",
@@ -64,6 +64,14 @@
     {
       "path": "native/build/rendering-415-light-checks.json",
       "sha256": "81faf7e86ebca6a38bef315f02f1724be47e32a16eff87f88fa5b6e74560aeaa"
+    },
+    {
+      "path": "native/build/uv-footprint-411-u1oaX2/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-jWVdIY/acceptance.json",
+      "sha256": "362b9a0805cc61075eb3d3fa109893e720a1034914b09c6f59111809578efea1"
     }
   ],
   "sourceGames": [
@@ -176,5 +184,6 @@
     "worldPosition-derived and very large authored UV/time coordinate cancellation still require work",
     "global changed transparent path/curved inverse, compound lobes and participating-medium footprints remain",
     "initial complex compile still seconds; no representative FPS/device/docs/whole engine completion claim"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_415.json"
 }

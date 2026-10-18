@@ -1,4 +1,4 @@
-# 현재 진단 — UV footprint 415 설치 준비
+# 현재 진단 — 설치415 검증 완료·좌표graph 416 조사
 
 실제411 qC75cp에서좌표1천만/폭.3125의월드offset이F32에서0이되어GL/GPU가큰mip도원방향(-1,0,0)으로반환했어요. 상대삼각형모서리의affineUV차분뒤qk29SF와D3D9T3FyC에서큰mip중립/작은mip원방향이맞아요. 17pose/UV컨텍스트bg07Rp·zoaPe5도기존4e-5통과예요.
 

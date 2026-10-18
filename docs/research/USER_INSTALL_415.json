@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "0d50200b44bfd32da1a4e05921bd1605585dbc91",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1\\HBEngine.exe",
+  "bundleHash": "e72c7905b43515f1a00f30081fd74ae1bf705f5601b24dacd60cfaba7891b919",
+  "files": 3259,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "0d50200b44bfd32da1a4e05921bd1605585dbc91",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e72c7905b43515f1\\HBEngine.exe",
+    "bundleHash": "e72c7905b43515f1a00f30081fd74ae1bf705f5601b24dacd60cfaba7891b919",
+    "files": 3259,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3256,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a07a23a239e6b865",
+          "bytes": 178178806,
+          "manifestSHA256": "f8d60202f441d02b46471338841e10c931ce0d4c3b5e98440525ca3498b84821"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T13:54:35.9014341Z",
+      "bytes": 178178806,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "e72c7905b43515f1"
+      ]
+    },
+    "nativePlayerSHA256": "f1e1a2970cd512ce69f4e8fa0af702dbdd84cea0653eaf8882d760dcb22c5c71",
+    "installedGates": [
+      {
+        "path": "native/build/uv-footprint-411-u1oaX2/acceptance.json",
+        "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9",
+        "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-jWVdIY/acceptance.json",
+        "sha256": "362b9a0805cc61075eb3d3fa109893e720a1034914b09c6f59111809578efea1",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3259,
+    "versions": [
+      "e72c7905b43515f1"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-415-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/uv-footprint-411-qk29SF/acceptance.json",
+        "scope": "Actual GL/GPU large-coordinate/current and committed mip values plus ordinary raster, unchanged original4e-5"
+      },
+      {
+        "path": "native/build/previous-context-308-bg07Rp/acceptance.json",
+        "scope": "Actual GL/GPU17 previous material/normal/UV contexts including skin/morph/instance/smooth"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-9mIBhk/acceptance.json",
+        "scope": "Actual packaged D3D11 Complex141 C++/Blueprint/normal UV graph/morph/cache budget/disabled release; no FPS or stable cold improvement ratio"
+      }
+    ],
+    "scope": "415 full manifest and15 runtime-owner SHA verification; installed hidden GL/WebGPU large-world committed UV/mip and ordinary raster, two actual packaged D3D cache games with new player. Source17-pose and actual Complex141 carry exact documented owners; no stable cold/FPS/global engine/docs completion claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 2908854,
+    "removed": [
+      {
+        "path": "native/build/uv-footprint-411-native-QvH32p/probe.exe",
+        "bytes": 736283,
+        "sha256": "214c5da0be2dfeb485273be6bfcc5ed262189aa11fc97dec6ef78044d0f37727"
+      },
+      {
+        "path": "native/build/uv-footprint-411-native-9T3FyC/probe.exe",
+        "bytes": 736283,
+        "sha256": "9f04cf38823dcf43b8b6eb6b650179679fab314b33aeb29fab5a9013cef73222"
+      },
+      {
+        "path": "native/build/previous-context-308-native-zoaPe5/probe.exe",
+        "bytes": 729111,
+        "sha256": "38a712f4fad72bb473dc925ba71ef0c55589bf46f35a127c305ddfa3d27bf1c0"
+      },
+      {
+        "path": "native/build/ray-surface-context-357-ZL2gfn/probe.exe",
+        "bytes": 707177,
+        "sha256": "9dde90e72d97ae067d2f55e5e1abf56c972ddffc3148237288352dcc32ba520d"
+      }
+    ]
+  },
+  "scope": "415 full manifest and15 runtime-owner SHA verification; installed hidden GL/WebGPU large-world committed UV/mip and ordinary raster, two actual packaged D3D cache games with new player. Source17-pose and actual Complex141 carry exact documented owners; no stable cold/FPS/global engine/docs completion claim."
+}

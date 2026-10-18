@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 411–415 검증 완료·설치 준비
+# HBEngine 현재 인계 — 설치415 검증 완료·416 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치410 C:\Users\kirby\HBEngine\Versions\a07a23a239e6b865\HBEngine.exe /3255파일/Versions1. USER_INSTALL_410 정본. 28owner/fullSHA·새playerd2993edee253aad9599de5d0a7538b2a285f70926cf02f89435eb603b3de920b·User10385읽기SHA·links2/.hbproject·설치 CDhjNf/YCyRGS 통과예요.
+- 현재 설치415 C:\Users\kirby\HBEngine\Versions\e72c7905b43515f1\HBEngine.exe /3259파일/Versions1. USER_INSTALL_415 정본. 15owner/fullSHA·새playerf1e1a2970cd512ce69f4e8fa0af702dbdd84cea0653eaf8882d760dcb22c5c71·User10385읽기SHA·links2/.hbproject·설치 u1oaX2/jWVdIY 통과예요.
 
 ## 현재 구현과 증거
 - 상대 삼각형 모서리로 UV차분을 직접 계산해 큰 월드 위치에 sub-ULP 폭을 더하며 잃던 mip 미분을 보존해요. 기본UV 보간/IR/constant buffer/샘플러는 같아요. GL/GPU/HLSL 현재·이전 포즈 모두 연결했어요. TSL GPU 함수는기존ScopedCall수명을따르고 native helper는사용할UV/필터에서만포함해요.
@@ -15,9 +15,9 @@
 - 첫native QvH32p는GLSL vec2(0) scalarconstructor의HLSL변환누락→공유helper vec2(0,0)로수정. 413EM15l0는standalone<algorithm>누락→생성원본에include추가/ZL2gfn통과. 제품실패·미실행과구분해보존해요.
 
 ## 다음 실행 순서
-1. source/EOL/한글commit→record415/소유SHA·정본RND06/07/MAT03/AI03→record commit.
-2. sync415/설치 실제큰월드403 --large-world와350두D3D게임·전체SHA/새player/소유/links/User읽기SHA/Versions1. active설치사용자는queue하고프로세스종료금지.
-3. 설치receipt/ownBuilds·프로필·probe.exe정리·commit/push. 그뒤누적 렌더링을계속해요. 다음후보는worldPosition/큰UV/시간이들어간좌표그래프의차분이중간add등에서다시사라지는경로예요. 먼저재현후수정해요. 지금은UV직접루트만해결했고일반좌표graph전체완료로세지않아요.
+1. 415 구현/원장/설치/정리까지확인했어요. 완료one-shot재실행금지.
+2. 416 중간큰좌표 add/panner/worldPosition graph에서상대UV폭이다시소실되는지실제재현후대응해요. 현재는삼각형UV루트만수정했고모든좌표graph완료가아니에요. rX/rY가절대이동값이라큰값을더한뒤뺄때소실될수있어요. 기존nonlinear finite-difference와texture-driven0미분근사를지켜요.
+3. RND06초기compile·전역곡면/매질·누적원장계속. 설치415개발중수정금지. 새source검증/전환후단일Versions와User읽기보존.
 
 ## 작업 보호
 - 주인님/짚짱·해요체·한글commit·author/committer동일kirby47navercom-ai, AI trailer없음. 명시적추가위임없이어gents생성금지. 최종checkpoint로끝내지말고사용자가요청한누적작업계속.

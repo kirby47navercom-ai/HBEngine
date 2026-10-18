@@ -1997,11 +1997,11 @@
   ],
   "latestBatch": "411–415",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_410.json",
-    "sourceCommit": "97c7b97cae107e9ab3208a31adb732e7cf870590",
-    "bundleHash": "a07a23a239e6b8659f1a60f6bfeaa2c4efa586bc12cf53c4b57d7cf5850cbaa3",
+    "receipt": "docs/research/USER_INSTALL_415.json",
+    "sourceCommit": "0d50200b44bfd32da1a4e05921bd1605585dbc91",
+    "bundleHash": "e72c7905b43515f1a00f30081fd74ae1bf705f5601b24dacd60cfaba7891b919",
     "verified": true,
     "versions": 1,
-    "scope": "401–410 committed material inputs/normal/mip and nonfinite gates; actual installed dual API normal/raster and two new native-player games. Cumulative engine work continues"
+    "scope": "411–415 stable relative triangle UV footprints; actual installed large-world dual API mip/normal and two new native-player games. Coordinate graph precision and cumulative engine work continue"
   }
 }

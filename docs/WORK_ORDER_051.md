@@ -557,3 +557,5 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 ### 2026-10-18 · 411–415
 
 큰월드1천만에서폭.3125가세계점더하기중사라져GL/GPU가넓은mip도0mip로고르는오류qC75cp를재현했어요. 상대삼각형모서리의affineUV차분으로수정해세API의큰mip중립/작은mip원방향과17기하·skin/morph/instance/smooth·이전UV조건을원래4e-5로확인했어요. 128독립수학조건도대조했고기본보간/IR/상수버퍼·GPU추가자원/읽기는유지했어요. native helper를쓰는UV/필터에만생성하고표참조전검증·standalone include를지켰어요. engineSchema의불변uvFootprint와도움말에남겼어요. GL준비한쌍2664.9→2576.6ms/source122B와실제C++/BP Complex141 path4615/시간guide4488ms는관찰이며개선율/FPS로세지않아요. 현재중간좌표graph/전역곡면/매질/원장잔여도이어가요. 설치415의실제큰월드/두native게임·전체SHA·User읽기보존·Versions1을다음검증해요.
+
+415 설치 e72c7905b43515f1·3259전체명세/15실행소유SHA·새player·links2/.hbproject·Versions1을확인했어요. 실제설치큰월드GL/GPU u1oaX2와두D3D게임 jWVdIY의저장6/재사용6/재저장0 통과예요. User10385전후읽기SHA동일·이전설치178178806B/검사exe2908854B 정리. 다음중간좌표graph와누적렌더링을계속해요.
