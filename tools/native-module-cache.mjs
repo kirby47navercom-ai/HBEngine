@@ -8,13 +8,23 @@ import {assertNativeNoLinks,nativeAtomicJSON,nativeProcessAlive,nativeTreeSize,r
 const digest=value=>createHash('sha256').update(path.resolve(value).toLowerCase()).digest('hex').slice(0,20);
 const keyPattern=/^[a-f0-9]{20}$/;
 const readJSON=async file=>{try{return JSON.parse(await fs.readFile(file,'utf8'));}catch(error){if(error.code==='ENOENT')return null;throw error;}};
-const rootFormat='hb-native-modules-1',ownerFormat='hb-native-owner-1',entryFormat='hb-native-entry-1',leaseFormat='hb-native-lease-1';
-export const nativeModuleCacheContract=Object.freeze({version:1,recentEntries:32,liveReferences:'process lease',inFlightBuilds:'referenced before cache access',retiredVersions:'remove unreferenced modules',failedAttempts:'remove generated copies',debuggerSources:'retain winning compilation',frameFileIO:0});
+const rootFormat='hb-native-modules-1',ownerFormat='hb-native-owner-1',managedOwnerFormat='hb-native-owner-2',entryFormat='hb-native-entry-1',leaseFormat='hb-native-lease-1';
+const samePath=(a,b)=>path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase();
+function validOwner(owner,id,modules){return owner&&typeof owner.engineRoot==='string'&&owner.owner===id&&digest(owner.engineRoot)===id&&(owner.format===ownerFormat||owner.format===managedOwnerFormat&&owner.scope==='managed-installation'&&samePath(path.join(owner.engineRoot,'Cache/NativeModules'),modules));}
+async function ownerInstalled(owner){
+ if(owner.format===ownerFormat)return !!(await fs.stat(path.join(owner.engineRoot,'HBEngine.install.json')).catch(error=>error.code==='ENOENT'?null:Promise.reject(error)))?.isFile();
+ const versions=path.join(owner.engineRoot,'Versions');await assertNativeNoLinks(versions);
+ for(const entry of await fs.readdir(versions,{withFileTypes:true}).catch(error=>error.code==='ENOENT'?[]:Promise.reject(error)))if(entry.isDirectory()&&!entry.isSymbolicLink()){
+  const file=path.join(versions,entry.name,'HBEngine.install.json'),stat=await fs.lstat(file).catch(error=>error.code==='ENOENT'?null:Promise.reject(error));if(stat?.isFile()&&!stat.isSymbolicLink())return true;
+ }
+ return false;
+}
+export const nativeModuleCacheContract=Object.freeze({version:2,recentEntries:32,ownerScopes:Object.freeze(['version','managed-installation opt-in']),liveReferences:'process lease',inFlightBuilds:'referenced before cache access',retiredVersions:'legacy owners retire; opted-in managed owner follows installation lifetime',failedAttempts:'remove generated copies',debuggerSources:'retain winning compilation',frameFileIO:0});
 
 // Installed SDK modules are mutable data, outside immutable Versions. References
 // are published before reading a binary; no filesystem work occurs in frame RPC.
 export class NativeModuleCache {
- constructor(paths){this.paths=paths;this.root=paths.modules;this.owner=digest(paths.root);this.directory=path.join(this.root,this.owner);this.references=new Map();this.lease=path.join(this.root,'.leases',process.pid+'-'+randomUUID()+'.json');this.pending=Promise.resolve();}
+ constructor(paths){this.paths=paths;this.root=paths.modules;this.ownerRoot=path.resolve(paths.moduleOwnerRoot||paths.root);this.managed=!!paths.moduleOwnerRoot;if(this.managed&&(path.basename(path.dirname(paths.root)).toLowerCase()!=='versions'||!samePath(path.dirname(path.dirname(paths.root)),this.ownerRoot)||!samePath(path.join(this.ownerRoot,'Cache/NativeModules'),this.root)))throw Error('C++ 설치 공용 캐시 범위를 확인하세요.');this.owner=digest(this.ownerRoot);this.directory=path.join(this.root,this.owner);this.references=new Map();this.lease=path.join(this.root,'.leases',process.pid+'-'+randomUUID()+'.json');this.pending=Promise.resolve();}
  async initialize(){
   await assertNativeNoLinks(this.root);await fs.mkdir(this.root,{recursive:true});await assertNativeNoLinks(this.root);
   return withNativeCacheLock(this.root,async()=>{
@@ -25,15 +35,16 @@ export class NativeModuleCache {
   });
  }
  serialize(fn){const job=this.pending.then(fn);this.pending=job.catch(()=>{});return job;}
- inspect(){return {contract:nativeModuleCacheContract,root:this.root,owner:this.owner,referencedEntries:this.references.size,references:[...this.references.values()].reduce((sum,n)=>sum+n,0)};}
+ inspect(){return {contract:nativeModuleCacheContract,root:this.root,owner:this.owner,ownerScope:this.managed?'managed-installation':'version',referencedEntries:this.references.size,references:[...this.references.values()].reduce((sum,n)=>sum+n,0)};}
  async publishReferences(){if(this.references.size)await nativeAtomicJSON(this.lease,{format:leaseFormat,pid:process.pid,owner:this.owner,keys:[...this.references.keys()]});else await fs.unlink(this.lease).catch(error=>{if(error.code!=='ENOENT')throw error;});}
  async retain(key){
   if(!keyPattern.test(key))throw Error('C++ 모듈 캐시 키를 확인하세요.');await this.initialize();
   await this.serialize(()=>withNativeCacheLock(this.root,async()=>{
    await fs.mkdir(this.directory,{recursive:true});await assertNativeNoLinks(this.directory);
    const ownerFile=path.join(this.directory,'.owner.json'),owner=await readJSON(ownerFile);
-   if(owner&&(owner.format!==ownerFormat||owner.owner!==this.owner||digest(owner.engineRoot)!==this.owner))throw Error('C++ 캐시 설치 경로를 확인하세요.');
-   if(!owner)await nativeAtomicJSON(ownerFile,{format:ownerFormat,owner:this.owner,engineRoot:this.paths.root});
+   const format=this.managed?managedOwnerFormat:ownerFormat;
+   if(owner&&(!validOwner(owner,this.owner,this.root)||owner.format!==format||!samePath(owner.engineRoot,this.ownerRoot)))throw Error('C++ 캐시 설치 경로를 확인하세요.');
+   if(!owner)await nativeAtomicJSON(ownerFile,{format,owner:this.owner,engineRoot:this.ownerRoot,...(this.managed?{scope:'managed-installation'}:{})});
    const directory=path.join(this.directory,key);await fs.mkdir(directory,{recursive:true});await assertNativeNoLinks(directory);
    const markerFile=path.join(directory,'.entry.json'),marker=await readJSON(markerFile);
    if(marker&&(marker.format!==entryFormat||marker.owner!==this.owner||marker.key!==key))throw Error('C++ 모듈 캐시 표식을 확인하세요.');
@@ -69,8 +80,8 @@ export async function pruneNativeModuleCache(root){
   for(const item of await fs.readdir(root,{withFileTypes:true})){
    if(item.isDirectory()&&!item.isSymbolicLink()&&/^\.retired-[a-f0-9-]{36}$/.test(item.name)){const directory=path.join(root,item.name),entry=await readJSON(path.join(directory,'.entry.json'));if(entry?.format===entryFormat&&keyPattern.test(entry.owner)&&keyPattern.test(entry.key))interrupted.push({owner:entry.owner,key:entry.key,id:entry.owner+'/'+entry.key,directory,interrupted:true});continue;}
    if(!item.isDirectory()||item.isSymbolicLink()||!keyPattern.test(item.name))continue;const ownerDirectory=path.join(root,item.name),owner=await readJSON(path.join(ownerDirectory,'.owner.json'));
-   if(!owner||owner.format!==ownerFormat||owner.owner!==item.name||typeof owner.engineRoot!=='string'||digest(owner.engineRoot)!==item.name)continue;
-   const orphan=!(await fs.stat(path.join(owner.engineRoot,'HBEngine.install.json')).catch(error=>error.code==='ENOENT'?null:Promise.reject(error)))?.isFile();
+   if(!validOwner(owner,item.name,root))continue;
+   const orphan=!(await ownerInstalled(owner));
    for(const child of await fs.readdir(ownerDirectory,{withFileTypes:true})){
     if(!child.isDirectory()||child.isSymbolicLink()||!keyPattern.test(child.name))continue;const directory=path.join(ownerDirectory,child.name),entry=await readJSON(path.join(directory,'.entry.json'));
     if(!entry||entry.format!==entryFormat||entry.owner!==item.name||entry.key!==child.name)continue;

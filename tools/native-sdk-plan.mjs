@@ -5,8 +5,8 @@ import {writeNativeProject} from './native-project.mjs';
 import {assertNativeNoLinks,nativeAtomicJSON,nativePathInside,nativeProcessAlive,removeNativeTree,withNativeCacheLock} from './native-cache-lock.mjs';
 
 const format='hb-native-sdk-plans-2',maximumBytes=2097152;
-export const nativeSDKPlanContract=Object.freeze({version:1,entries:32,maximumBytes,dependencyDiscovery:'GCC -E -P -MD; include list plus preprocessed decisions, matching each unit optimization',fallback:'full SDK fingerprint',frameFileIO:0});
-export const nativeSourceOptimization=configuration=>configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2'];
+export const nativeSDKPlanContract=Object.freeze({version:1,entries:32,maximumBytes,dependencyDiscovery:'GCC -E -P -MD; include list plus preprocessed decisions, matching each unit optimization',debugFormat:'Windows editor/development use full -g with DWARF4; other targets unchanged',fallback:'full SDK fingerprint',frameFileIO:0});
+export const nativeSourceOptimization=configuration=>[...(configuration==='editor'?['-O0','-g']:configuration==='development'?['-Og','-g']:['-O2']),...(process.platform==='win32'&&configuration!=='release'?['-gdwarf-4']:[])];
 const digest=value=>createHash('sha256').update(value).digest('hex'),canonical=file=>process.platform==='win32'?path.resolve(file).toLowerCase():path.resolve(file);
 
 // The target is ours; filenames use Make escaping, not shell quoting.
