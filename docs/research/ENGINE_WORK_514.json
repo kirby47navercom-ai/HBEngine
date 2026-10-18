@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "4909e4ae9ad02e2fd248e2b4a64f7cfc6047e80b",
+  "targetIds": [
+    "PRJ-01",
+    "PRJ-02",
+    "PER-02",
+    "CPP-01"
+  ],
+  "sourceHashes": {
+    "tools/native-cache-lock.mjs": "720b5324e3b9a61c66ce5625a936ae9678ac1f475b37bacc67ed761d7e2edf39",
+    "tools/native-mutable-paths.mjs": "80e7e94a0bac8f15ef25181f7aa186f7166136e74ea050e34bcf9754c57852b6",
+    "tools/native-module-cache.mjs": "bdec2da1e032e58a43b2f7296b622d259451041aadaa2cd58211cd794ede4d48",
+    "tools/native-host.mjs": "9b6918244f7b5f5b0ee6c5e7fde24f9163fd4a0e539464a18452f0ab50cc4552",
+    "tools/prepare-native.mjs": "06c547b1f0e29fa34dcb25f77f1b2f34009712df07fe8302e369f1ffbda17bf5",
+    "tools/install-editor.mjs": "9d21cc2aa6bcfd20426127287644de0cedf792321a8b72966e82ae224646aeb4",
+    "tools/test-artifacts.mjs": "9ff462c4560e4bd65dea2489b8699c435654e6b4d2288f60affb20cc24bbaa09",
+    "tools/remove-test-cache.ps1": "2054914de9a15e3dea6fca5981cfbeffad65c6599d5f64554f8e5d2307cb69da",
+    "tools/check-native-installed-cache-513.mjs": "f7db3d138deea6960beae4a6f6b39f66a6d8c90475c85521524458a7f20c0093",
+    "tools/check-native-shared-cache-512.mjs": "a198f43826697175be12a557627aada26ff8e82eb681bc64264a379eccf73b5a"
+  },
+  "checks": [
+    {
+      "path": "native/build/native-shared-cache-512-cCAhE7/acceptance.json",
+      "sha256": "5dd95863cd615e52b2f8d0cc4f8a68c777b536659ed185db49faa81a8b35c44b",
+      "result": {
+        "passed": true,
+        "versionsImmutable": true,
+        "sourceCacheCompatible": true,
+        "latest32": true,
+        "multipleReferenceProtection": true,
+        "activeProcessProtection": true,
+        "orphanReferenceProtection": true,
+        "noEmptyReceipts": true,
+        "failedAttemptCleanup": true,
+        "singleWinnerPublication": true,
+        "deadLockRecovery": true,
+        "crossProcessCounter": 80,
+        "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-shared-cache-512-cCAhE7"
+      }
+    },
+    {
+      "path": "native/build/native-installed-cache-513-5RrPeN/acceptance.json",
+      "sha256": "78d3690cbb03ac0c77c90fe9941d6e11505eab4b566982c6c3d00da675cad6e8",
+      "result": {
+        "passed": true,
+        "isolatedInstalledSDK": true,
+        "versionsSHA256": "ebf48ecac178f002c56c309528590d96e33d6cdc6f51d61cb0d752563ce11110",
+        "versionsUnchanged": true,
+        "dependenciesOutsideVersions": true,
+        "modulesOutsideVersions": true,
+        "results": [
+          {
+            "cacheKey": "6223d9e145e41c3eb024",
+            "cacheHit": false,
+            "value": 113,
+            "sdk": {
+              "fingerprint": "5312ee616e21c980b00b315a4dfd56fcc1e5a83db74561ff4921ef4c215ab488",
+              "files": 26,
+              "bytes": 1877001
+            }
+          },
+          {
+            "cacheKey": "6223d9e145e41c3eb024",
+            "cacheHit": true,
+            "value": 113,
+            "sdk": {
+              "fingerprint": "5312ee616e21c980b00b315a4dfd56fcc1e5a83db74561ff4921ef4c215ab488",
+              "files": 26,
+              "bytes": 1877001
+            }
+          }
+        ],
+        "cancelledCompilerTree": true,
+        "failedAndCancelledSourcesRemoved": true,
+        "winningDebuggerSourcesRetained": true,
+        "reusableAfterClose": true,
+        "leaseFiles": 0,
+        "frameCacheIO": 0,
+        "work": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\git\\engineCreate\\native\\build\\native-installed-cache-513-5RrPeN"
+      }
+    },
+    {
+      "path": "native/build/cache-retention-kmU68y/acceptance.json",
+      "sha256": "e6dd9f4aa1434738c51d21705753ab901796ad4b9ecf85093b4b46a2a486f727",
+      "result": {
+        "passed": true,
+        "latest32Retained": true,
+        "referencedBinaryProtected": true,
+        "activeProcessProtected": true,
+        "inactiveRetired": true,
+        "unrelatedSourcePreserved": true,
+        "noEmptyReceipts": true,
+        "cancelDuringMaintenance": true,
+        "privateInstance": true
+      }
+    },
+    {
+      "path": "native/build/native-sdk-293-JLEUFg/acceptance.json",
+      "sha256": "b8da0c854882bf7cc2f57218cccb4761477c448bd7fb6a48843b80a3d5c4da65",
+      "result": {
+        "passed": true,
+        "contentAndPathChangesInvalidate": true,
+        "mtimeOnlyKeepsCache": true,
+        "transitiveGeneratedAndDependencyHeadersCovered": true,
+        "linksAndDuplicateLabelsRejected": true,
+        "cancellation": true,
+        "privateSDK": true,
+        "userSDKUnchanged": true,
+        "native": {
+          "passed": true,
+          "results": [
+            {
+              "cacheKey": "4fa034514940ceebbd09",
+              "cacheHit": false,
+              "sdk": {
+                "fingerprint": "a0c86f7e5458c14247938337b237d4d506035b7048839a91ddc990c48b7d9d54",
+                "files": 27,
+                "bytes": 1877053
+              },
+              "value": 17
+            },
+            {
+              "cacheKey": "4fa034514940ceebbd09",
+              "cacheHit": true,
+              "sdk": {
+                "fingerprint": "a0c86f7e5458c14247938337b237d4d506035b7048839a91ddc990c48b7d9d54",
+                "files": 27,
+                "bytes": 1877053
+              },
+              "value": 17
+            },
+            {
+              "cacheKey": "5f22d13fea3e8db162db",
+              "cacheHit": false,
+              "sdk": {
+                "fingerprint": "4ce362859f77abe4f0c72cd924483fce3f1cc229a5ee9f472e298c22b86f8e22",
+                "files": 27,
+                "bytes": 1877053
+              },
+              "value": 31
+            }
+          ]
+        },
+        "elapsedMS": 20159.985200000003,
+        "copiedModuleBytes": 13128564,
+        "perFrameWorkAdded": 0,
+        "persistentSDKCache": 0,
+        "scope": "Actual isolated GCC worker execution after a nested SDK-only edit; not a mobile device or full-engine completion check."
+      }
+    }
+  ],
+  "sourceTransport": "tools/check-native-transport.mjs 실제 client→wire→host→worker 회복·전송 통과",
+  "measuredLegacyInstallCache": {
+    "bytes": 41414504,
+    "files": 27,
+    "audit": "native/build/cache-location-511-audit.json"
+  },
+  "resources": {
+    "newRuntimeThreads": 0,
+    "perFrameCacheFileIO": 0,
+    "recentCacheEntries": 32,
+    "objectsLimitedByCache": false,
+    "dependencyDownloads": "고정 nlohmann 3.12.0 SHA와 원자적 게시"
+  },
+  "scope": "511–514 설치 C++ 캐시·의존 파일의 가변 경로 분리, 참조·실행·퇴역/실패·취소 보호. 실제 게임 렌더링/FPS나 전체 엔진 완료와 구분해요.",
+  "installation": "현재510 유지, 추가 렌더링 묶음 검증 뒤 한 번 갱신 예정",
+  "remaining": [
+    "TextureSample의 명시 LOD/Bias/Gradient 제작과 GL/WGPU/DirectX/광선 공통 연결",
+    "ENGINE_STATUS의 누적 렌더링·엔진 구현과 전체 공식 본문/API 분석 gate는 그대로 유지"
+  ],
+  "failedEvidence": [
+    {
+      "path": "native/build/native-shared-cache-512-XgpKDB/failure.json",
+      "reason": "PowerShell5 ConvertFrom-Json 결과에 배열을 중첩해 프로세스 보호 누락. 직접 할당으로 수정한 cCAhE7만 통과로 계산"
+    }
+  ]
+}

@@ -4202,5 +4202,74 @@
     },
     "analysis": "docs/research/SAMPLED_COORDINATES_510.md",
     "fullBodyAPIGatePromoted": false
+  },
+  "supplemental538": {
+    "date": "2026-10-19",
+    "sources": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplegrad",
+        "readScope": "새 읽기: 서명과 Location/DDX/DDY 자료형 표32–61행. 나머지연결API 미독",
+        "snapshot": "native/build/reference-corpus/supplemental538/samplegrad.html",
+        "sha256": "d8c8aa289d34ecbcc2dd504270fda9be7eca7a33ae38b651eaf4f6a5f469a447",
+        "bytes": 53345
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplelevel",
+        "readScope": "새 읽기: 서명·위치와 배열레이어·소수LOD 설명31–57행. 나머지연결API 미독",
+        "snapshot": "native/build/reference-corpus/supplemental538/samplelevel.html",
+        "sha256": "8b2c3edd06da287b9d7330c8424cfce4bfbc77b07324eca6816e52e36c7259fb",
+        "bytes": 52113
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-samplebias",
+        "readScope": "새 읽기: 서명·위치·바이어스 -16..15.99·오프셋32–55행. 나머지연결API 미독",
+        "snapshot": "native/build/reference-corpus/supplemental538/samplebias.html",
+        "sha256": "5cc54c811170a946676ad695e46bb9ed139a872a454dea40785a8c9e7a1a0fa2",
+        "bytes": 50749
+      },
+      {
+        "url": "https://www.w3.org/TR/WGSL/",
+        "readScope": "선택 새 읽기:17.7.12 textureSampleGrad의배열레이어/vec3,17.7.13 textureSampleLevel의배열/3D/cube,17.7.15 storage3D textureStore 서명. 전체16460행/API/연결WebGPU명세는미독",
+        "snapshot": "native/build/reference-corpus/supplemental538/wgsl.html",
+        "sha256": "9250717a0c888ce0f1bb2781a669e44ccf6e201b7e76d04fca8fe2c83926cc4c",
+        "bytes": 3103863
+      }
+    ],
+    "reread": [
+      {
+        "source": "supplemental510 Unity ShaderGraph17.0",
+        "scope": "143–242행 모드/조건부입력/설정 재독; 기존 snapshot 재사용",
+        "snapshot": "native/build/reference-corpus/supplemental510/unity.html"
+      }
+    ],
+    "localSource": [
+      {
+        "path": "node_modules/three/src/nodes/accessors/TextureNode.js",
+        "sha256": "a8323f6d977faefad3bf38f6da92f36b9273e48cea7c5889a1c4bcaa33f4ea14",
+        "readScope": "현재 설치된 소스의TextureNode gradient vec2 구축·array depth 누락, cube 환경회전,3D에2D mip뷰를만드는선택소유함수. 전체라이브러리 분석 아님"
+      },
+      {
+        "path": "node_modules/three/src/nodes/accessors/CubeTextureNode.js",
+        "sha256": "740b366b793086bdbc421121cb49391b231c9c73f739d5b6816ee46bdd79ac3c",
+        "readScope": "현재 설치된 소스의TextureNode gradient vec2 구축·array depth 누락, cube 환경회전,3D에2D mip뷰를만드는선택소유함수. 전체라이브러리 분석 아님"
+      },
+      {
+        "path": "node_modules/three/src/renderers/webgpu/nodes/WGSLNodeBuilder.js",
+        "sha256": "d975d45af6f58a1270a34eac77b4d17d8cce2c25eb8bd52970d663c58aded088",
+        "readScope": "현재 설치된 소스의TextureNode gradient vec2 구축·array depth 누락, cube 환경회전,3D에2D mip뷰를만드는선택소유함수. 전체라이브러리 분석 아님"
+      },
+      {
+        "path": "node_modules/three/src/renderers/webgpu/utils/WebGPUTextureUtils.js",
+        "sha256": "43a9d31ffe839542cd275aff8d1c48ce165f044d14e28d1a8e5ba54faf508843",
+        "readScope": "현재 설치된 소스의TextureNode gradient vec2 구축·array depth 누락, cube 환경회전,3D에2D mip뷰를만드는선택소유함수. 전체라이브러리 분석 아님"
+      },
+      {
+        "path": "node_modules/three/src/renderers/webgpu/utils/WebGPUTexturePassUtils.js",
+        "sha256": "c1dcabd23fe0279e583fa40b1d332377076d378cd261638a7811d1e88be69aad",
+        "readScope": "현재 설치된 소스의TextureNode gradient vec2 구축·array depth 누락, cube 환경회전,3D에2D mip뷰를만드는선택소유함수. 전체라이브러리 분석 아님"
+      }
+    ],
+    "analysis": "docs/research/TEXTURE_SAMPLING_538.md",
+    "fullBodyAPIGatePromoted": false
   }
 }

@@ -1,27 +1,40 @@
-# HBEngine 현재 인계 — 설치510 검증·렌더링/저장공간511 계속
+# HBEngine 현재 인계 — 511–538 구현 검증, 묶음 설치·누적 작업 계속
 
-## 목표와 보호
-- 주인님/짚짱·해요체. 누적 전체 엔진/렌더링/2D·2.5D·3D/C++·BP/사람UI·AI동일문서 제작을 계속해요. 작은checkpoint로끝내지않아요. ENGINE_STATUS78등록항목은UE/Unity전체분모가아니며full본문/API gate미승격·완료율미확정이에요.
-- background only. foreground/CUA/사용자창/서버/게임원본변경금지. 고유hidden editorWindowProbe/프로젝트/프로필/포트/PID만. User프로필은읽기SHA만. heavy/install전activeInstalledVersions. 실행중사용자엔진은닫지않아요.
-- Versions1·기존설치보호·변경파일만PreservedChanges·소유재생성자료만정리. 원본/JSON/PNG/HLSL/명세보존. 한글commit/push·author/committer kirby47navercom-ai동일·AI trailer없음. 현재추가agents위임없음.
+## 목표·보호
+- 주인님/짚짱·해요체. 누적 엔진/렌더링 전체 작업을 계속해요. 작은 checkpoint로 최종 답변을 보내지 않아요. ENGINE_STATUS78은 등록 항목이며 UE/Unity 전체 분모가 아니고 전체본문/API gate는 미승격이에요.
+- background only. 사용자창/탭/서버/원본/프로필로 검사하지 않아요. 고유 hidden editorWindowProbe/프로젝트/포트/PID만. heavy/install 전 activeInstalledVersions 확인. User는 전후 SHA 읽기만.
+- Versions1·실행 중 버전 보호·수정 파일만 PreservedChanges·소유 재생성자료만 정리. 한글 commit/push, author/committer kirby47navercom-ai 동일, AI trailer 없음. agents 추가 없음.
 
-## 현재 상태
--최신설치510 C:\Users\kirby\HBEngine\Versions\bd5f13e0145bd55d\HBEngine.exe /3363files/20ownerSHA/User10385읽기SHA/links2/.hbproject/Versions1. USER_INSTALL510정본. Player17eb6030..·installed499l8ydFy4형식GL/WGPU/이전밉오차0와7wxC50새두텍스처CPP/SDK/packager/game pending24frame/C++4.62ms/disable93.55ms/샘플0/workeridle0검증. 이전496 220323155B정리.
-- 이전설치496기록은USER_INSTALL496정본이며510으로전환/정리됐어요.
-- 510source4cd4f0d·ENGINE_WORK510: 텍스처가UV를만드는4계열finite재샘플링·register-version조상전파·현재/이전밉. 기존설치49977ArfC 폭차이0→현재499kQNLBO/500vlZrYh 폭차이1·세경로/이전오차0/기존4e-5. UVancestor필요할때만2추가샘플·고정incomingfootprint·subULP한계명시·안정수학45연산과구분.
-- 실제두텍스처게임에서s1기본normalSampler충돌발견→HB_NODE_SURFACE표면프로그램에서6기본맵읽기분리. createSurfaceProgram C++편의함수/engine.schema.nativeSurfaceProgram. legacy createProgram부분확장기존유지. 507ecNs0o 실제서로다른필터픽셀188/0↔0/188. VsRtt0 실제저장그래프/새CPP BP/변형·이력·해제 통과.
-- 509전체기본실행기5AJdMC:2D/3D/SVG/한글HUD/CPP BP입력·이동·매개변수/세광원그림자/파티클·변형/네텍스처형식교체/2D마스크·광원·쿠키·볼륨/장면해제 통과. 디스크/GL전체초기지연개선이나FPS보장과별개예요.
-- source510base player17eb6030db3dbdd2abfdd71d1ba9dfbdf58beb8efd3edae3cbc0ad4f1f8e610a. source508build완료. docs510/sync/install/실제설치검증다음. SourceHash에는ignored생성RayPrograms.hpp도포함해요.
-- 496 비동기화면6단계:단일8MiB큐/유휴1초·캐시잠금/세대·준비전샘플/이력승인차단·취소/캡처/error·AI/profiler. 소유C++/device/Present는main,worker는바이트코드만. 489ou5F3U 이전헤더대조/실제FXC/queue,347auYid0 동기21save→21hit/거부복구,sourceHqA6y7 pending22frame/23Present/샘플0/C++4.21ms/disable62.65ms. installedDUEZpf C++5.87ms/disable93.77ms/idle0·EYFCfI 두게임6save→6hit. 이전485178804974B와probe2153593B정리.
-- 485절차noise/checker/큰parity와472RGBA8가져오기/직접mip/worker/Undo/4실행경로/이력증거는ENGINE_WORK485/472 참조. 공통normalguide450, shaderprune24/26함수, 이전기하/시간/밉과sourceuser분리유지.
+## 설치/커밋
+- 현재 사용자 설치510 그대로: C:/Users/kirby/HBEngine/Versions/bd5f13e0145bd55d/HBEngine.exe. USER_INSTALL510 정본,3363files/20owner/User10385/Versions1.
+- 최신 소스 커밋4909e4ae9ad02e2fd248e2b4a64f7cfc6047e80b:511 캐시 분리. 아직 push 전. docs ENGINE_WORK514/원장/전체515–538 코드는 uncommitted. 설치/푸시 작업 남아요.
+- 511 NativeHost 설치 캐시를 base/Cache/NativeModules/<owner>/<key>, Dependencies/nlohmann/3.12.0로 분리. 소스 native/build/plugins 및 키 유지. 최근32+lease/실행/빌드보호·퇴역정리·실패/중복/취소 생성자료 정리·정상 디버거 소스 보존·컴파일트리 취소·close 재사용.512cCAhE7/5135RrPeN/기존cache kmU68y/SDK293JLEUFg/전송 통과. 프레임IO0. 기존 설치캐시41414504B 원인 확인.
 
-## 바로 이어가기
-1.510 설치/전체지문/User보존/Versions1/정리완료. 여기서끝내지말고511설치본native/build추가캐시(496퇴역220MB가원래179MB보다큰이유확인)와명시적TextureSampleLOD/Gradient/Bias제작설정을계속해요. 현재두목표는아직분석중·새수정없음. Source계열one-shot은완료재실행금지. installedtool CLI자체nodeactive함정/소유pruner·before.profile.sha256규칙유지.
-2. 완료후끝내지말고명시적TextureSample LOD/Gradient/Bias 제작설정·GL/GPU/Native/광선공통연결과초기준비/혼합normal441·곡면교차/매질/GI·MAT03 HDR/압축/배열·볼륨mip/streaming/variance roughness·누적2D/애니/월드/game/editor/deploy계속. FXC전체는아직초단위(새2texture141path5146/timeguide4951ms 단일관찰). 사라진지연으로계산금지.
-3. Microsoft선택본문/API496·UE4.27TextureSample와UnitySG17선택본문510만새대조. 최신UEURL열기실패는미독등록. 전체gate미승격. Mac/Xcode/Android실기기없음. HDRI395저SPP4배MSE목표미달(12.8735→11.3237),385full실패후한정resume구분유지.
+## 515–538 현재 구현
+- texture-sampling-mode.js 공통 계약: auto/lod/bias/gradient,4형식,2D/array vec2와volume/cube vec3,조건부UI핀/숨은JSON연결보존/Undo/AI schema. GLSL·TSL·native일반표면 및광선 생성기/현재이전프레임 입력연결.
+- IR oldflags0..11 유지,tag64..111,12..63 거절. slot a좌표/b레이어·legacycubeLOD/c LOD·bias·gradX/d gradY. native variant240,길이64register/4096instruction기존유지. LOD/gradient는auto footprint생성안함. GPU variant키1024stride+alpha4096 충돌제거. Bias는 clamp전 raw cone LOD+[-16,15.99],footprint0이면level0.
+- gpu-texture-sampling.js:이프로젝트 소유 TextureNode에만 WGSL array layer 인자·3D/cube vec3 gradient 복구. dependency/globalbuilder파일 미수정. authored cube setupUV는 envMapRotation과분리; 실제536CWBNbQ 서로다른6색/회전0·90/4mode/GL·TSL 통과.
+- gpu-volume-mips.js:소유RGBA8/sRGB volume업로드시 compute 면적평균,odd크기/depth최대축밉수/선형sRGB,작은임시chain제출후destroy,device별pipeline재사용,유휴재생성0.53139wYKR 1x1x17·3x5x3·8x8x2×sRGB2 전부validation0·독립평균/.02양자화·6생성6파괴.
+- lightmap-texture-mips.js:베이크단위32MiB또는초과한체인1개,명시LOD/gradient+가져온2D밉,SRGB선형평균/odd가중치. CPU점샘플auto/bias는footprint없어level0. material-runtime CPU 기본UV/큐브normal 및scalar→vector입력은GPU와맞춤.524/537+기존225HUinH3 13체크 통과.
 
-## 도구와 함정
-- rg는디렉터리 -g, wildcard경로금지. 큰singleline는bounded읽기. 복잡node-e대신apply_patch/ignoredmjs. exec session은write_stdin, yieldedcell만functions.wait. 새파일LF/git diff --check. g++ -o는repo상대경로.
-- 496idle진단은기능off시pipelinePreparation=null이므로raw shaderPreparation.queue. beforeSHA는profile.sha256. recovery496b는게임재검사없이요약키만고쳤고설치전환1회예요.
-- 첫499oracle는zero-normal기존+Zfallback누락·첫503fixture RGB→UV직결거부;둘다테스트수정. BKeeua는실제s1결함,507초기MTzlD3는C++Werror들여쓰기경고. 실패증거보존.
-- captureAsync callback인player.capture()가매번재render하므로가정했던추가draw수정은필요없어요. screenProbe도재render. low-level hbCapture는현재frame읽기API예요.
+## 실제 증거
+- 518 JSON/pins/GLSL/HLSL16cases/240variants;501legacyUVancestor.
+- 최종 rawBias520nykRGl GL/TSL16mode-kind:현재time1/커밋이전time0·노멀독립정답/교차오차0. 최종5217BLnKZ D3D16같은조건오차0. 이전520IeJr9r/52178enWC는잠정bias규칙이라최종으로계산금지.
+- 527Wct1ei 실제D3D일반표면16case:base255/coarse187.528RJuJSm GL/TSL 실제공용loader/일반표면16case:base1/coarse.498039. validation을추가한후발견된Array/cube/3D오류를위두helper로고침. 추후설치528에서는helper최신+gpuError null단언을확인해요.
+- 532ppzYJl 실제에디터 상세모드/핀/숨은연결/UndoRedo/저장/캡처 통과; 캡처를 view_image로확인. 함수창이아닌material #material-graph가정확selector.
+- build533완료 새PlayerSHA052f8aa28b6057066ee7cdf3a3c044f05ff83c55b0ff24f79a728f42d74d5b09(3049472B),Host4313f834... . generateRayPrograms현재SHA b76fbc50... . C++생성기이후변경없고후속JS는dist재동기화해야해요.
+- source535 actualPackagedC++/BP native-preparation-window-496-czYlkJ:--mip-controls가소유복사본M_Complex141에Alpha→bias를추가,기존hb::Materials::SetFloat실제호출D3D11 parameters.Alpha=1; pending23frame/C++4.44ms/disable92.86ms/샘플0/workeridle0. 원본fixture수정안함.
+- regression538.json 9gates완료:6material/CPU+501+old499+old500 통과. 새old499/500작업경로는JSON stdout에서찾아요. legacy4형식/기존normal계산보존.
+
+## 바로 다음
+1. Source515–538 코드 commit/문서 ENGINE_WORK538+연구원장/사용자문서/TEXTURE_SAMPLING538, refs538 snapshot/corpus이미완료. research문서본문작성·sourceHash와실패구분남음. MAT03 remaining에서명시LOD/Bias/Gradient통합제작은빼고HDR/압축/custom array-volume mips/streaming/normalvariance/raw자동import/subULP정밀은유지. 전체gate 미승격.
+2. 마지막data sync+설치갱신(예:539 또는541)에만전환. 기존sync510/install510/finish510는완료one-shot 재실행금지. 새스크립트만. 설치528창검사(--executable지원추가필요)+496(--fixture VsRtt0,--mip-controls,--executable) 두검사면충분; source535/521/531/532근거와전체manifestSHA/User전후SHA/links/association/Versions1. installedTools496 owners에newRayPrograms/helperSHA추가또는fullmanifest로확인. installedtool 직접CLI는자체node가active분류되므로 source-owned process.argv+dynamic import패턴유지.
+3. NativeCache설치검사:installedSDK게임빌드로Versions/native/build가생기지않고새 base/Cache/NativeModules가생기는지,게임끝난lease0/size보존. 유지최근32는게임objectcap이아니에요. 기존510퇴역시220MB정도사라지며공용cache는따로bounded.
+4. 여기서최종checkpoint로끝내지말고남은normal variance/혼합normal441·곡면/매질/GI·초기GL/FXC·누적2D/애니/월드/game/editor/deploy계속. FXC전체는아직초단위. 초기지연해결/상용전체완료로포장금지.
+
+## 도구·남긴 실패
+- exec session은write_stdin, functions yieldedcell만wait. rg는디렉터리 + -g, wildcard경로금지. JS replace to callback(달러치환오염주의). Node-e 대신savedmjs. g++ -o repo상대. 파일LF/git diff --check.
+- 512PS5중첩배열/JSreplace오염회복은DEBUG.515–538독립검사:parameter빈문자열→delete,1m평면span/큐브면경계가틀린정답,532함수창selector,536문자열regex/큐브경계mip보간/undefined오류필드정규화. 실패는증거에남기고완료성과에세지않아요.
+- 현재 소유 running sessions 없음(종료결과받은27251는write_stdin으로최종소비가능). free약434.7GiB. no8hsoak/사용자창/실기기검사없음. Mac/Xcode/Android폰없음.
+
+- 538 source6234e430902637697dca3b8262188012a9ae62ec 커밋완료. record538/refs538 완료(47ownerSHA/13gates), docs538/514/원장/CODEX 아직다음commit대기. preinstall539는source528에--executable선택만추가했고Work538SHA갱신. 다음sync/install541 2gates(528실제설치표면/496--mip-controls새게임),아직사용자510유지. 새Player052f8aa..,source535czYlkJ,최종현재이전520nykRGl/5217BLnKZ,volume53139wYKR,cube536CWBNbQ,legacy9gate538모두통과.

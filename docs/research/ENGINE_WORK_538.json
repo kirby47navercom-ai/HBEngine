@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "6234e430902637697dca3b8262188012a9ae62ec",
+  "targetIds": [
+    "MAT-03",
+    "RND-05",
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "tools/native-cache-lock.mjs": "720b5324e3b9a61c66ce5625a936ae9678ac1f475b37bacc67ed761d7e2edf39",
+    "tools/native-mutable-paths.mjs": "80e7e94a0bac8f15ef25181f7aa186f7166136e74ea050e34bcf9754c57852b6",
+    "tools/native-module-cache.mjs": "bdec2da1e032e58a43b2f7296b622d259451041aadaa2cd58211cd794ede4d48",
+    "tools/native-host.mjs": "9b6918244f7b5f5b0ee6c5e7fde24f9163fd4a0e539464a18452f0ab50cc4552",
+    "tools/prepare-native.mjs": "06c547b1f0e29fa34dcb25f77f1b2f34009712df07fe8302e369f1ffbda17bf5",
+    "tools/install-editor.mjs": "9d21cc2aa6bcfd20426127287644de0cedf792321a8b72966e82ae224646aeb4",
+    "tools/test-artifacts.mjs": "9ff462c4560e4bd65dea2489b8699c435654e6b4d2288f60affb20cc24bbaa09",
+    "tools/remove-test-cache.ps1": "2054914de9a15e3dea6fca5981cfbeffad65c6599d5f64554f8e5d2307cb69da",
+    "tools/check-native-installed-cache-513.mjs": "f7db3d138deea6960beae4a6f6b39f66a6d8c90475c85521524458a7f20c0093",
+    "tools/check-native-shared-cache-512.mjs": "a198f43826697175be12a557627aada26ff8e82eb681bc64264a379eccf73b5a",
+    "prototype/gpu-materials.js": "8e13470a4127d9fc405860efd77f4ece03e4420eab3a79d77572132d3cefeb34",
+    "prototype/gpu-texture-sampling.js": "393e536ccab355b5cd30f41352d0f50a917252a9b3f76751db99e606d2a8e829",
+    "prototype/gpu-volume-mips.js": "767e0e6fa25d75a0441747776b90dd025e404cf2aab23f053839c56e5eb7292e",
+    "prototype/lightmap-bake-core.js": "6f37576560c9cf433a2612d92c2634b2c816048124055bc98f4058f4601f3748",
+    "prototype/lightmap-scene.js": "905e4db7c382abb33747adf359fa4e035788ae2439abc5303c63714eb1820798",
+    "prototype/lightmap-texture-mips.js": "8def6c0cc4dfdcbb955609212d73e21dd4f18dcca4472f5b9ca9471ebf3c16fd",
+    "prototype/lightmap-textures.js": "24dbb519fb2267fafd4fda9b8975d62f3f7fa7b1f8d866a5cf745e1ed60e2c81",
+    "prototype/material-editor.js": "a0d11a229d844042033cb42b704bf6d193b94b12d27ce929030a26a430426657",
+    "prototype/material-runtime.js": "849aeb75cfe675e074efe81492ea0563e1f06a82415a00da68b5cd4a7accdedf",
+    "prototype/native-materials.js": "f7d936331ccef98961ebc66bbfb53051e1d8ff338952b56c62ba8ab2bccfa773",
+    "prototype/ray-material-gpu.js": "b59cb0aefca747b7c52100021b8e3333578a52cb562dded0feec11178f8ddcd7",
+    "prototype/ray-material-shader.js": "7fea37dce3602e7f6768625bce0899ea77a91bafb0db192a723f2cfbfd312fce",
+    "prototype/ray-materials.js": "d9d6ed7329790e47c6e248f082a435e934bb0ff11e179f833260645bc9078137",
+    "prototype/ray-mip.js": "12b02ad0ae725ec3ef9dfdc04e3f0ecc920a4a5465575ec4205226bdfad8a7fc",
+    "prototype/ray-texture-shader.js": "c348ed8887b714fd4091670081c38c9111fec1c8b293ede487f08179d7ee49b7",
+    "prototype/texture-assets.js": "d01dcf309dbf78bf31287f9b499b2738e710a128aa8ccbcccf3cd40c9d6282b9",
+    "prototype/texture-sampling-mode.js": "3c659fc07488743e5e0e702b346344c1d45ec1a94276d4890bbb3660dbdc00aa",
+    "tools/check-cube-direction-536-window.mjs": "8070ed013116d208f69a24cf6541e5550c22d6012195849528ee33e90ec091cb",
+    "tools/check-lightmap-mips-524.mjs": "dd737841224af941b2d0586993f47292824077023c1d02b075962f2c4f60ac47",
+    "tools/check-native-preparation-window-496.mjs": "78aca3e7e3126fb7c5e16d2d95f98f0344ea9f45ed3b6abf6a7fb599b547befc",
+    "tools/check-texture-cpu-inputs-537.mjs": "ff77c97f35e73ad7eb24bcbef6f1017f61d261e0a06741dcb91a99f9b5936e73",
+    "tools/check-texture-editor-532-window.mjs": "f89ece7846ac88273d6c757dea11b43784f1ba9df2619c21dafeb2cd4df02352",
+    "tools/check-texture-raster-527-native.mjs": "d0b67ccb66953d7f8fca0bc70967d67a56fa9ce2acfb6af57596c76c6150de12",
+    "tools/check-texture-raster-528-window.mjs": "680f7b8f626de15e13d7e2f244d1318847b276e09371778c0961402597bb68e3",
+    "tools/check-texture-sampling-518.mjs": "d9728a4d48cf0fbc12a493d13474b069e55ec10109b6dab87dc35eedac5e6be5",
+    "tools/check-texture-sampling-520-window.mjs": "c08ebfb587baa4c5246703cdeb49c21b878c103d6c528ce8eae54411109c232a",
+    "tools/check-texture-sampling-521-native.mjs": "1af4e6e8870f0cfaeb5adf972cf3352f425fd346452b9815950f888836d391e6",
+    "tools/check-volume-mips-531-window.mjs": "7b989a7feedab2a5b4b3eb4d9dcf959e9842095e794de94364bc27d35e67a717",
+    "tools/editor-automation.mjs": "49e5944c19d0d0b97e9b251f8220d361783858ef8da994b50b804319815f57d9",
+    "tools/generate-ray-programs.mjs": "d041aace5eb5cec070e6909ba6506b6a5473054a20d0d517897e6bc6d739265d",
+    "tools/texture-mip-game-534.mjs": "c0f9a0d8e9ed3e7f1b45cff0583bf6f63de8f844193f97c245440ce45d5c709c",
+    "tools/texture-raster-probe-528.mjs": "033e55c969797d65d7fb8286dd086e18fe09bbaf2cbc61c7c42eaaec12ac3069",
+    "tools/texture-sampling-fixture-519.mjs": "f06e280fad872ccdf516d04d19cd38022b6a7f3a8083c04b8cd38f7b43a3b2df",
+    "native/include/HBEngine/RayPrograms.hpp": "b76fbc50dba8e35c808b6e72635fefdeb933494dcf629f467f3d59f65a799ad7",
+    "native/include/HBEngine/SceneRender.hpp": "0125164ff6e281b64668dddeb397e94eb9c37529cb89a98ffb1c33d68f71f8d9",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "e8aac906701175c3e2a9520a0a1b5a292352e9cf8c56b8a39e11cee6613652dd"
+  },
+  "testSourceHashes": {
+    "native/tests/texture-sampling-526.cpp": "ed5b2ca9a5bb6d07cf504a4faa08ef29e6d7303586063e8806258f0f5654f289"
+  },
+  "nativePlayerSHA256": "052f8aa28b6057066ee7cdf3a3c044f05ff83c55b0ff24f79a728f42d74d5b09",
+  "nativeEditorSHA256": "4313f834b9b14718b42e7cf89f0ec38d24c4e6b00bfb08ed92081450c4e47a39",
+  "checks": [
+    {
+      "path": "native/build/texture-sampling-518.json",
+      "sha256": "79562d97a444d9718c91ff5bb07ea7f9bbe0c195bfb100a3a8506e366b553b64",
+      "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/texture-sampling-520-nykRGl/acceptance.json",
+      "sha256": "f8ce5f88267a8b2f20124b83e61d6984f1c7f059d718500c04ea6837d65745a2",
+      "scope": "Actual GL/TSL current/committed previous material controls in all four families and all four modes; independent normal mip oracle, existing4e-5."
+    },
+    {
+      "path": "native/build/texture-sampling-521-native-7BLnKZ/acceptance.json",
+      "sha256": "05e80b5ba54b25ab99d5f7f8c3daa5742aca1cacd937191ef12927c6ce6c890a",
+      "scope": "Actual optimized D3D11 all four families/four modes, current time1 versus committed previous time0 controls, independent +/-X mip normal oracle, existing4e-5."
+    },
+    {
+      "path": "native/build/texture-raster-527-native-Wct1ei/acceptance.json",
+      "sha256": "fe77b67e7c6d5fe607257b6e1f4900ea1dfee4ca322b630c1ff6885741dd0f8e",
+      "scope": "Actual persisted graph-generated pixel shaders, auto/LOD/bias/gradient for all four texture families. Constant UV has zero implicit derivatives; bias1 remains level0."
+    },
+    {
+      "path": "native/build/texture-raster-528-RJuJSm/acceptance.json",
+      "sha256": "357130465a2b42ed942be63f6564f533601d9a39702c41e216c18e522425cca0",
+      "scope": "Actual shared graph loaders and GLSL/TSL material renderers, all four mip modes/families, SVG8x8 and real array/volume/cube creation. Independent linear red/.5 oracle; constant UV bias remains level0."
+    },
+    {
+      "path": "native/build/volume-mips-531-39wYKR/acceptance.json",
+      "sha256": "83202989bd9ad3f4797cc873c1c80ec5a538fdc4271fbe5d89cfcfde37c93299",
+      "scope": "Actual WebGPU RGBA8/sRGB volume compute mips, odd dimensions, depth-only17 chain, independent linear global mean, no validation errors, idle no regeneration, temporary handles destroyed; existing quantized .02 tolerance."
+    },
+    {
+      "path": "native/build/texture-editor-532-ppzYJl/acceptance.json",
+      "sha256": "18831766d7bde585e03ef4d7cb76d0f73fa59804418c78fe92b3ee69701417b5",
+      "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/cube-direction-536-CWBNbQ/acceptance.json",
+      "sha256": "cd1fe5b0bb6053a1ce59a569ff018304d4586e6e5062d0b2f98cd48df8519dc3",
+      "scope": "All four authored mip modes, actual GLSL/TSL loaders, six distinct cube face colors and material environment rotation0/90deg, existing .01 color tolerance."
+    },
+    {
+      "path": "native/build/lightmap-mips-524.json",
+      "sha256": "7c38e8536a2c044b9691d6e8a8d0abe9cbbf0d4d07a481f3e9c4fbe4df38d70d",
+      "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/texture-cpu-inputs-537.json",
+      "sha256": "e2313b8a87780ae9d9e8787ea17dd0b7a73a2406b67752880ee9f4d483c11329",
+      "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/lightmap-bake-225-HUinH3/acceptance.json",
+      "sha256": "0393a963622de08eef4a717f63b2d9bb33b96efd6d12a5b47f492d249eec1fc6",
+      "scope": "CPU core only; editor/runtime/package still separate"
+    },
+    {
+      "path": "native/build/native-preparation-window-496-czYlkJ/acceptance.json",
+      "sha256": "5f53b2f1f5435fb8728cc65ba123320fe1ec48fa1ab8770e4cdaae246521ea11",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+      "summary": {
+        "mipCPP": {
+          "target": "Mirror0",
+          "parameter": "Alpha",
+          "value": 1,
+          "backend": "D3D11",
+          "program": "16130998-52d5-4e8b-abe1-f78c388be643"
+        },
+        "pendingFrames": 23,
+        "cppElapsedMS": 4.444700000000012,
+        "disableMS": 92.86070000000473
+      }
+    },
+    {
+      "path": "native/build/regression-538.json",
+      "sha256": "1bbda8b3668d4e2017bea4b78077ee4914535bafc4b1a4de335063fe99e7f821",
+      "scope": "해당 검사 JSON의 정의 범위"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-preparation-window-496-czYlkJ/acceptance.json",
+      "sha256": "5f53b2f1f5435fb8728cc65ba123320fe1ec48fa1ab8770e4cdaae246521ea11",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim.",
+      "summary": {
+        "mipCPP": {
+          "target": "Mirror0",
+          "parameter": "Alpha",
+          "value": 1,
+          "backend": "D3D11",
+          "program": "16130998-52d5-4e8b-abe1-f78c388be643"
+        },
+        "pendingFrames": 23,
+        "cppElapsedMS": 4.444700000000012,
+        "disableMS": 92.86070000000473
+      }
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/texture-raster-528-RJuJSm/acceptance.json",
+      "sha256": "357130465a2b42ed942be63f6564f533601d9a39702c41e216c18e522425cca0",
+      "scope": "Actual shared graph loaders and GLSL/TSL material renderers, all four mip modes/families, SVG8x8 and real array/volume/cube creation. Independent linear red/.5 oracle; constant UV bias remains level0."
+    },
+    {
+      "path": "native/build/volume-mips-531-39wYKR/acceptance.json",
+      "sha256": "83202989bd9ad3f4797cc873c1c80ec5a538fdc4271fbe5d89cfcfde37c93299",
+      "scope": "Actual WebGPU RGBA8/sRGB volume compute mips, odd dimensions, depth-only17 chain, independent linear global mean, no validation errors, idle no regeneration, temporary handles destroyed; existing quantized .02 tolerance."
+    },
+    {
+      "path": "native/build/texture-editor-532-ppzYJl/acceptance.json",
+      "sha256": "18831766d7bde585e03ef4d7cb76d0f73fa59804418c78fe92b3ee69701417b5",
+      "scope": "해당 검사 JSON의 정의 범위"
+    },
+    {
+      "path": "native/build/cube-direction-536-CWBNbQ/acceptance.json",
+      "sha256": "cd1fe5b0bb6053a1ce59a569ff018304d4586e6e5062d0b2f98cd48df8519dc3",
+      "scope": "All four authored mip modes, actual GLSL/TSL loaders, six distinct cube face colors and material environment rotation0/90deg, existing .01 color tolerance."
+    }
+  ],
+  "cacheWork": "docs/research/ENGINE_WORK_514.json",
+  "referenceAnalysis": "docs/research/TEXTURE_SAMPLING_538.md",
+  "resources": {
+    "runtimeUniformsAdded": 0,
+    "automaticRayDerivatives": "LOD/gradient avoid automatic footprint work; bias/auto only as needed",
+    "volume": "per-upload compute, one smaller temporary chain, destroyed after submit; no idle generation",
+    "bake": "per-job32MiB or one oversized chain; no frame cache",
+    "nativeCache": "installed outside Versions; recent32 plus references/running"
+  },
+  "failureSeparation": [
+    "잠정양의LOD bias 결과520IeJr9r/52178enWC는최종표준근거아님",
+    "1m평면크기·큐브면경계·위치 정답과536테스트regex/오류값정규화는검사수정",
+    "528bciWGD/7gSSO4 실제WebGPU array layer/vec3/3D뷰 오류는엔진코드수정",
+    "532jKWrZg는함수창selector오류;정확material #material-graph로수정"
+  ],
+  "remaining": [
+    "HDR/압축/플랫폼쿠킹·custom array-volume mip import·streaming·normalvariance·raw정책자동연결",
+    "광선finite차분sub-ULP/불연속/큐브면경계 적분 확장",
+    "처음준비FXC/GL·곡면역해·참여매질·GI·다른누적엔진 목표"
+  ],
+  "installationPending": true,
+  "scope": "515–538 밉 제작/현재이전광선/일반표면/볼륨compute/CPU베이크/UI·AI·C++ 패키지 연결. 전체 엔진·모든포맷·모든공식본문API 완료나 FPS보장이 아니에요.",
+  "validationHarness": "528에설치실행파일선택인자만추가. 기존기본검사동작유지,설치실행은별도receipt로검증해요."
+}

@@ -632,3 +632,8 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 510 ·source4cd4f0deb1a04f796a252dba9bb98f2725f31890 ·네텍스처형식UV상류차분/현재이전밉·노드표면샘플러충돌분리/C++createSurfaceProgram/AI계약. 이전496설치49977ArfC 폭차이0→현재499kQNLBO/500vlZrYh 폭차이1·현재이전/세API오차0(기존4e-5). 507ecNs0o 독립두필터188/0교환·실제두텍스처머테리얼C++/BP게임VsRtt0와전체기본실행기5AJdMC(2D/3D/SVG/HUD/그림자/파티클/변형/네형식교체/2D효과/해제)통과. 초기정답/검사그래프오류와실제s1충돌의발견수정은ENGINE_WORK510에구분했어요. 원장잔여와설치검증을이어가요.
 
 510 설치 bd5f13e0145bd55d/3363전체파일·20ownerSHA·player17eb6030db3dbdd2abfdd71d1ba9dfbdf58beb8efd3edae3cbc0ad4f1f8e610a·User10385전후읽기SHA·links2/.hbproject·Versions1통과. 설치499l8ydFy 4형식GL/WGPU/이전밉과4967wxC50 실제두텍스처C++/SDK/packager/game pending24frame/C++4.62ms/중지93.55ms/샘플0/idleworker0통과. 이전496 220323155B와소유검사exe 1937831B정리. 다음설치캐시용량/명시적밉제작제어와누적목표계속.
+
+
+514 ·source 4909e4ae9ad02e2fd248e2b4a64f7cfc6047e80b ·설치 C++ 모듈·의존 파일을 Versions 밖 공용 Cache로 분리. 기존 설치의 41,414,504B 캐시 원인 확인. 실제 격리 설치5135RrPeN GCC113/첫miss→hit·설치전체SHA 불변·실패/취소 소스 정리·컴파일 트리 취소·close 재사용·lease0. 512cCAhE7 최근32/복수참조/실행/퇴역·네프로세스80회 잠금·검사캐시 참조 보호 통과. 기존SDK293JLEUFg 내용/중첩/mtime대조와전송검사 유지. 프레임캐시IO/상주워커0. 설치510은유지하며명시적밉 제작 연결과누적목표를계속하고묶음끝에서갱신해요. ENGINE_WORK514정본.
+
+538 ·source 6234e430902637697dca3b8262188012a9ae62ec ·네형식4밉모드 조건부핀/Undo/JSON·AI·세일반표면·현재이전광선·볼륨compute/CPU베이크 연결. 최종520nykRGl/5217BLnKZ 세경로 현재이전노멀 정답오차0,527Wct1ei/528RJuJSm 실제일반표면16case,53139wYKR odd/depth17/sRGB6case/유휴재생성0/임시6생성6파괴,532ppzYJl 실제편집/저장,536CWBNbQ 명시큐브환경회전분리,524/537/225HUinH3 베이크와기본입력,새C++/BP czYlkJ 실제Alpha→bias호출/23frame/C++4.44ms/중지92.86ms 통과.9개회귀통과. 설치검증과남은누적작업계속. ENGINE_WORK538정본.

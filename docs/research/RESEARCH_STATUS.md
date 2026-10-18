@@ -476,3 +476,8 @@ Microsoft D3D11의 장치·컨텍스트·Present 소유 규칙과 D3DCompile 한
 ### 2026-10-19 · 510 선택본문 대조
 
 Unreal4.27TextureSample의UV/미분과UnityShaderGraph17.0의선택설정/이음새예시를읽었어요. 최신UE본문열기실패와미독API/매체를supplemental510에남겨요. 문서관계와HB의원뿔유한차분구현선택을구분하고독립밉정답/세GPU/실제제작실행으로대조했어요. 전체gate는미승격이에요.
+
+
+### 2026-10-19 · 538 선택 본문/API 대조
+
+UnitySG17 모드/조건부입력을 재독하고 Microsoft SampleLevel/SampleBias/SampleGrad의 선택 서명·매개변수와 WGSL 세 샘플/저장 함수의 배열레이어/vec3 서명을 읽었어요. 현재 Three 소유 함수의 실제 누락을 실행오류와 대조했고 source snapshot/SHA/선택범위를 supplemental538에 등록했어요. 원뿔 미분·베이크점샘플은 자체 구현 선택으로 구분하며 전체 본문/API gate는 미승격이에요.
