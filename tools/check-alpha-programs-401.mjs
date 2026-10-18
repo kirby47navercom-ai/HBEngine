@@ -14,7 +14,7 @@ const p={key:91,fields:[1],instructions:[[1,0,2,2,-1,-1,-1,-1,0,0,0],[9,1,4,2,0,
 for(let kind=0;kind<4;kind++)for(let flags=0;flags<12;flags++){
  p.instructions[1][8]=kind;p.instructions[1][10]=flags;
  const source=rayProgramGLSL([p]),body=source.match(/vec4 hbRayProgramAlpha91\([^]*?return result;}/)[0];
- assert.ok(!/\br[XY]\d+\b|hbRayUVFootprint|hbRayOffset/.test(body));assert.ok(body.includes('aX=a,aY=a;'));assert.ok(body.includes('hbRayTextureKind'+kind+'Filter'+flags));
+ assert.ok(!/\br[XY]\d+\b|hbRayUVFootprint|hbRayOffset/.test(body));assert.ok(body.includes('aX=vec4(0,0,0,0),aY=vec4(0,0,0,0);'));assert.ok(body.includes('hbRayTextureKind'+kind+'Filter'+flags));
 }
 const result={passed:true,rows,samplerVariants:48,alphaZeroDifferentials:true,cubeExplicitLODUnchanged:true,fieldMaskFiltering:true,newGPUResources:0,newReadbacks:0,scope:'GLSL compile-time alpha specialization only; actual alpha/cube pixels and full game are separate gates.'};
 await fs.writeFile('native/build/alpha-programs-401-cpu.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));

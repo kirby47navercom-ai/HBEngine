@@ -1,6 +1,6 @@
 // UV is affine on a triangle. Derive its offsets directly instead of adding
 // a sub-ULP footprint to a large world point and losing the texture gradient.
-export const rayUVFootprintContract=Object.freeze({version:1,model:'triangle-affine UV differentials from relative edges; base UV interpolation unchanged',contexts:Object.freeze(['current geometry','committed geometry']),resources:'no additional textures, targets, uniforms or readbacks',remaining:Object.freeze(['worldPosition-derived texture coordinate differentials','very large authored UV/time coordinate cancellation'])});
+export const rayUVFootprintContract=Object.freeze({version:1,model:'triangle-affine UV differentials from relative edges; base UV interpolation unchanged',contexts:Object.freeze(['current geometry','committed geometry']),coordinatePropagation:'relative finite differences; direct identities for simple graph operations, shifted-input fallback for nonlinear operations',stableOperations:Object.freeze(['uv','worldPosition','add','subtract','multiply','tilingOffset','panner','lerp','oneMinus','dot','cross','combine','channel','cast']),approximations:Object.freeze(['texture-driven coordinate differences remain zero','view direction is held fixed across the cone']),resources:'no additional textures, targets, uniforms or readbacks',remaining:Object.freeze(['worldNormal-derived coordinate evaluation at a large world point','nonlinear coordinate cancellation and unrepresentable authored UV/time values'])});
 export const rayUVFootprintGLSL=`
 void hbRayUVFootprint(float id,vec3 point,vec3 view,float width,out vec2 uv,out vec2 uvX,out vec2 uvY){
  float at=hbRayAttributes(id);uv=vec2(0,0);uvX=uv;uvY=uv;if(at<=0.0)return;
@@ -12,8 +12,8 @@ void hbRayUVFootprint(float id,vec3 point,vec3 view,float width,out vec2 uv,out 
  vec3 delta=point-origin;float d=dot(delta,e1),e=dot(delta,e2),u=(c*d-b*e)/den,v=(a*e-b*d)/den;
  uv=first.xy*(1.0-u-v)+first.zw*u+last*v;
  vec2 du=first.zw-first.xy,dv=last-first.xy;
- d=dot(dx,e1);e=dot(dx,e2);u=(c*d-b*e)/den;v=(a*e-b*d)/den;uvX=uv+du*u+dv*v;
- d=dot(dy,e1);e=dot(dy,e2);u=(c*d-b*e)/den;v=(a*e-b*d)/den;uvY=uv+du*u+dv*v;
+ d=dot(dx,e1);e=dot(dx,e2);u=(c*d-b*e)/den;v=(a*e-b*d)/den;uvX=du*u+dv*v;
+ d=dot(dy,e1);e=dot(dy,e2);u=(c*d-b*e)/den;v=(a*e-b*d)/den;uvY=du*u+dv*v;
 }
 `;
 
