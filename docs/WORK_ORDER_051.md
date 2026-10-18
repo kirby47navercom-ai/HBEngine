@@ -510,3 +510,8 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 준비 epoch 분리/선행 장치 초기화로 첫 WebGPU 프레임0→173을 직접렌더와오차0으로복원했어요. 이전 normal/coat의현재정점복원함수4개를제외하고기존flags/Nodecallback을유지했어요. 이전세계BVH를기존atlas선택suffix로연결하고마스크/불완전검색·이전가림/직교nearplane을세GPU실제63광선과full투명guide로검증했어요. shared144triangle추가4560B,opaque/committed없음0B예요. 실제CPP/BP D3D/GPU145·코팅검사를통과했어요. 병행prune부재경쟁을재현하여이미삭제된경로만skip하고권한오류/32최근/원본을보호해요. 선택Three/PBRT소스와AI계약을기록하고설치370을준비해요. 독립oldmedium/IOR경로·전역곡면역해/복합산란과누적분야를계속해요.
 
 370 설치 1e50e6754649e3e1·3183명세 SHA/31개 소유자·새 player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일 설치직전/검사후 읽기전용SHA가 같아요. 설치369XmWGQF 원근/직교·GL/GPU투명guide,366zGE36A 첫173/direct오차0/coldinit/래스터,350vRsSV1 두native게임6save→6hit/0save·정상종료를 통과했어요. 이전설치 177941817B(파일논리크기)·own probe 2172753B를삭제하고후속매질작업을계속해요.
+
+
+### 2026-10-18 · 371–376
+
+이전 IOR 스택/굴절 방향을 현재와 독립적으로 재생하고 실제 이전 교차 불일치·전반사·앞뒷면·nonLIFO/overflow 이력을 거부해요. old state는 ID16+scalar IOR16이며 현재 RGB 소광은 보존해요. current/prior guide 광선 폭을 기존 적분기와 맞추고 세GPU 49개 Snell·18개 전이·전체 중첩 guide·실제 normal-map 밉/폭을 대조했어요. source CPP/BP D3D wy7K7b·WebGPU VOqQsx 실행/정상종료/서버해제를 확인했어요. 병행 prune의 내부 파일 선삭제 경쟁을 namedmutex로 직렬화하고 두 실제 PS/권한거부/32최근 보호를 검사했어요. AI 불변계약·PBRT 지정본문 대조·원장을 갱신하고 설치376으로 이어가요. 전체 누적 목표는 계속 진행해요.

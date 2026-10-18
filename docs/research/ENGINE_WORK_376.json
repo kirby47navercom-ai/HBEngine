@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "a16ab7b0da7587d2f61656a5bdbc934e4b5be5de",
+  "targetIds": [
+    "RND-05",
+    "RND-06",
+    "RND-07",
+    "AI-03",
+    "PER-02"
+  ],
+  "sourceHashes": {
+    "prototype/path-denoise.js": "212bae8e1e0566be05f13daecf458c3a68a7e03d5979ef8c270fe54bd31b880e",
+    "prototype/path-guide-gpu.js": "85f44f25d88ec536704496b1551cc367afb62ec2044c506a0eafcb4b151c4acd",
+    "prototype/path-media-gpu.js": "2f98cabd2046412b851ccdbac516d48efbb6e17acdf5b1ceace2583b28053860",
+    "prototype/path-previous-branch-gpu.js": "a96041f3ebf936d2df7e718efa52ba53270161fc905611015b0bbe377e21c6ca",
+    "prototype/path-previous-media-gpu.js": "be3ec42da7d3a006b9d54f1aa9b24ecddc69c48e89b5a639f14da177261b4e53",
+    "prototype/path-previous-media.js": "f8e505a72a6d46d88a8bca047c2e5c1266c4a11f98b7b9c0a2deadeb02b759f2",
+    "prototype/path-ray-cone-gpu.js": "d6c9309859d672f7b13dd264a0d7d5bcfb59a53245ca97bb4ba8e4ca730468b9",
+    "prototype/path-ray-cone.js": "c0f635e554c725a7fbb3a912be33c7f791c7190ae4013e3f25fd3c40df80b251",
+    "prototype/path-surface-history.js": "96cb35f58265387a686e2af061781beaa774a6893ad9233958d39e8f6dcabdb7",
+    "prototype/previous-geometry.js": "2d9612702e8d420663092447f230e6831ca0c0e61141aface6eaf3872f76d677",
+    "tools/check-cache-serialization-376.mjs": "6f8a55bd0523defdfef98fa0ae7514ea69c59bbfd9c4717c298db8159afd1e84",
+    "tools/check-optical-cone-374.mjs": "a0785ce7c6334c5ded2755d4be08c2df1d67a882236045ee63940990fcbfc886",
+    "tools/check-optical-guide-375-native.mjs": "1f580ddd15b02b040d3244da7b4088bdfa79ed30670fcf6225e3c17945d34373",
+    "tools/check-optical-guide-375-window.mjs": "a199b7d644c429da8c36573e141c428ee4d26dca22fe4dc39fbbec744eea9904",
+    "tools/check-previous-branch-373-native.mjs": "3e3f9ba761afeb635313e6440e6a1348956660bbdfbf2f39a7ed81e6fc781ea8",
+    "tools/check-previous-branch-373-window.mjs": "6a1dbad0c1cebceac520c557d8e4892e77fb857af394e468614056cb4dc6b81c",
+    "tools/check-previous-media-371-native.mjs": "2fade3c14864e0553c9f8ecb25d2d3260d07ecab49a82569a044ccc3f49b304f",
+    "tools/check-previous-media-371-window.mjs": "28b3f1a61ba6e7bdf24db1d640e75af52903271aa7b3ab50b7c33a17e9b52de9",
+    "tools/check-previous-media-371.mjs": "6e5019189cb93bcab6ecafc1c33ee509fbbf703835dc28e881dc9249f728e9b6",
+    "tools/check-previous-medium-guide-372-native.mjs": "d8ba7a44421923395b3ab249660a635eed3177493c8ec1a716a54d10f2655a54",
+    "tools/check-previous-medium-guide-372-window.mjs": "3ce7b5c18f680ce8f00192f4c3d708b4abba695dce9e760ac5992920c3d21e35",
+    "tools/check-surface-history-contract-362.mjs": "51662960e55bfd3a3efc6fb3647328e62f2484198c97c320da33a6e2ef9e852f",
+    "tools/guide-history-probe-358.mjs": "024c6656de6c525934cc1bb13bd309e1c7b94d8cdc1d44a028d0f4e06a405c72",
+    "tools/optical-cone-cases-374.mjs": "39a2ae7431024f6e5c1016fb34914c4a2bcefba6ed7b536bc905fdd55a788465",
+    "tools/optical-guide-fixture-375.mjs": "2e19b67ba1f24734481a8af52ed304c7704d6a4205137918616b8aba7f0492e8",
+    "tools/previous-branch-cases-373.mjs": "3b5fe05ca78d924e48d8d6f77dd9b6a7c3038f706c1c049a9747589b5915c629",
+    "tools/previous-media-fixture-371.mjs": "0710c8f6621a18e79c5a74bf345fa413cdc48de8caba316b325d7370caed2fd8",
+    "tools/previous-medium-guide-fixture-372.mjs": "da6100c3011c98ff15220cf3f0115ca0bdf32b1ce3b310d767bb2c32fafa3173",
+    "tools/remove-test-cache.ps1": "b8ec21f5336c142fabd8b9ac9393845f07ef3542ec5faf85e3e8dd05c63c8e5b",
+    "native/include/HBEngine/ScreenEffects.hpp": "7270332254411db6e762887312f636742a81d72055d8fe5078e5719109a511ab",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "0f93ceadf262cf5776bd31304e905f3f48787a362d6375786bd160acaff09eea"
+  },
+  "testSourceHashes": {
+    "native/tests/path-previous-context-308.cpp": "36a32f671bcc4d7f7aafa9f1baf9d03fa43c751627e4dff8509182e62074b363"
+  },
+  "nativePlayerSHA256": "e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/previous-media-371-trQwz9/acceptance.json",
+      "sha256": "76d4bdbd9cb6a586cad0b064a0badd8970d00ae533b1189c5a7ca4485a0f1fec"
+    },
+    {
+      "path": "native/build/previous-media-371-native-96XWjM/acceptance.json",
+      "sha256": "90d17ff9cb358af319caccd3c8d8a5c9c731e3c266c998ba39872dacd448e07a"
+    },
+    {
+      "path": "native/build/previous-branch-373-t3DYw0/acceptance.json",
+      "sha256": "e54fedcf597dc2dfcb64e261d5c084cb93b8983354b5ec11bad7e694c1e13e8a"
+    },
+    {
+      "path": "native/build/previous-branch-373-native-SORwne/acceptance.json",
+      "sha256": "2aaf2495e6b1e406f9aaf927c9573ad8e77938720bfe266d22b1bb5c9f7a98ad"
+    },
+    {
+      "path": "native/build/optical-cone-374-R67NZa/acceptance.json",
+      "sha256": "bae615963bb983de826c7538ed9667ac8126dd6f52481d3cc8475bbe77dcc26d"
+    },
+    {
+      "path": "native/build/optical-guide-375-D1MErP/acceptance.json",
+      "sha256": "b19e902dc381e251890689524c7c268b323fd0786d62689db3ebc67c35e8d318"
+    },
+    {
+      "path": "native/build/optical-guide-375-native-Y4iuc1/acceptance.json",
+      "sha256": "3abceb125951aba3ee8cc49ac9fd0c16393c99146784846bf9ab4bd83e981029"
+    },
+    {
+      "path": "native/build/previous-medium-guide-372-0NagVH/acceptance.json",
+      "sha256": "1f196d110801b119a2858901dabbaaa25ecb258cb50049dac4aec045d6114a45"
+    },
+    {
+      "path": "native/build/previous-medium-guide-372-native-GkkVcM/acceptance.json",
+      "sha256": "31b1572cccf5812b883785b7182474d55f535f0eb57769616c2c23ea7f0d8744"
+    },
+    {
+      "path": "native/build/previous-visibility-369-X9UNA3/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3"
+    },
+    {
+      "path": "native/build/cache-serialization-376-MlvQ3N/acceptance.json",
+      "sha256": "433307e70f7d0310743c476c67677b0fb83b3df149e82c374dbe825f6a0f6b36"
+    },
+    {
+      "path": "native/build/cache-removal-race-370-8ylL5z/acceptance.json",
+      "sha256": "d4047f29698eccdfeb57f24e2aa967e088280896d5b52f3f19650b5bda0a1610"
+    },
+    {
+      "path": "native/build/cache-retention-of8Ukg/acceptance.json",
+      "sha256": "e6dd9f4aa1434738c51d21705753ab901796ad4b9ecf85093b4b46a2a486f727"
+    },
+    {
+      "path": "native/build/native-scene-window-wy7K7b/acceptance.json",
+      "sha256": "59b22efc900e21bad3c740ff4fd8f82e2103632df3c99de5833e6b28429b32a1"
+    },
+    {
+      "path": "native/build/gpu-scene-VOqQsx/acceptance.json",
+      "sha256": "c8c8c7d72863d873d0e10a0201acba8184a1d8e05b78a7a281642d20b06311d0"
+    },
+    {
+      "path": "native/build/previous-media-371-cpu.json",
+      "sha256": "8eec26da8c3ce22159cc7ef25bbb0e3fac487c9532a6c3b57bdf685505dddd44"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-wy7K7b/acceptance.json",
+      "backend": "D3D11",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4813.396200000003
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2393.4223000000056
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 119.22530000000552
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4908.7195000000065
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 127.03480000000854
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 129.8136999999988
+        }
+      ],
+      "scope": "Actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; D3D also raster131/warm revisit; unordered/load-uncontrolled transitions, not an FPS comparison"
+    },
+    {
+      "path": "native/build/gpu-scene-VOqQsx/acceptance.json",
+      "backend": "WebGPU",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4130.391100000008
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 949.5512000000017
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 179.75910000001022
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 2619.275800000003
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 911.5648999999976
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 37.392500000001746
+        }
+      ],
+      "scope": "Actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; D3D also raster131/warm revisit; unordered/load-uncontrolled transitions, not an FPS comparison"
+    }
+  ],
+  "implemented": [
+    "독립 이전 IOR 스택·기존 seed/change 재사용·absolute committed time/old-world BVH·첫 glass에서만 lazy seed",
+    "16개 ID+16 scalar IOR·thin disabled 배열 제외·현재 RGB 소광 스택/API 유지",
+    "이전 entry/top/non-LIFO exit/unknown/overflow·front/TIR·실제 이전 방향/다음 hit residual·oldEta affine frame 연결",
+    "이전 physical0 재평가 중복 제거·실제 normal/mip 입력에 이전 광선 폭 전달",
+    "current/prior guide 국소 투과 spread를 기존 radiance 모델에 맞춤·반사/TIR spread 유지",
+    "AI 불변 previousMedium/opticalSpread 계약·한계/자원 공개",
+    "검사출력/harness 재사용으로 세GPU 독립Snell·명시전이·전체guide·실제밉과 current RGB 소광 대조",
+    "build-root별 파괴 캐시정리 mutex·획득후 실행프로세스 재조회·abandoned/timeout/finally·권한거부 보존"
+  ],
+  "measurements": {
+    "medium": {
+      "GLGPUConditions": 20,
+      "DXConditions": 10,
+      "currentRGBExtinctionChecked": true
+    },
+    "branch": {
+      "casesPerBackend": 18,
+      "backends": 3,
+      "maximumErrors": {
+        "webgl": 1.557e-7,
+        "webgpu": 4.105e-7,
+        "d3d11": 1.557e-7
+      }
+    },
+    "cone": {
+      "casesPerBackend": 49,
+      "backends": 3,
+      "maximumError": 1.147e-7,
+      "reference": "independent 2D Snell finite difference except explicit inherited grazing floor/cap policy"
+    },
+    "guide": {
+      "staticOldAndNewValid": true,
+      "changedOldMediumBaselineWronglyAccepted": true,
+      "newGuideRejectsChangedMappedPath": true,
+      "GLGPUConditions": 8,
+      "DXConditions": 4,
+      "cameras": [
+        "perspective",
+        "orthographic"
+      ]
+    },
+    "mip": {
+      "fullGuideBackends": 3,
+      "currentPriorWidthMatchIndependentReference": true,
+      "currentPriorNormalMapSamplesMatch": true,
+      "unbentControlDiffers": true,
+      "scope": "Thin planar transmission with test-only outputs, not a complete anisotropic/rough/curved footprint model"
+    },
+    "cacheSerialization": {
+      "actualProcesses": 2,
+      "deleted": [
+        1,
+        0
+      ],
+      "permissionFailuresStillReported": true
+    }
+  },
+  "resources": {
+    "runtimeDependenciesAdded": 0,
+    "newGPUTargets": 0,
+    "newGPUBuffers": 0,
+    "newUniformFields": 0,
+    "newAutomaticReadbacks": 0,
+    "previousIORState": "at most 16 stable volume IDs + 16 scalar IORs, local shader state only; lazy old seed; no old extinction RGB needed",
+    "existingOptionalAtlasBVHRetained": true
+  },
+  "lightChecks": [
+    "check-surface-history-contract-362",
+    "check-previous-media-371",
+    "check-rendering-141 --record",
+    "check-rendering-151",
+    "check-prior-normal-features-365",
+    "generate-api --check"
+  ],
+  "limits": [
+    "전역 곡면/변경 복합 경로의 역대응 탐색은 별도이며 현재 불일치는 보수적으로 이력 거부",
+    "거친 복합 로브·참여 매질 extinction/scattering footprint와 전체 누적 원장 유지",
+    "16매질/64 seed scan/4096노드 예산을 넘거나 완결못한 가이드는 거부하며 scene object 수를 자르지 않음",
+    "기존 적분기의 .01 grazing floor/1.57cap 국소 cone 모델이며 full derivative/EWA 구현 아님",
+    "실제 C++ 검사 중 첫 병행 cache-prune의 내부 PostDriver.h 경쟁 실패 receipt c1e45afc는 보존; 이후376 실제 두 PS 직렬화로 원인 경로 검증",
+    "전체엔진/전체UEUnity문서/API/FPS/실모바일기기 완료 주장 없음"
+  ]
+}
