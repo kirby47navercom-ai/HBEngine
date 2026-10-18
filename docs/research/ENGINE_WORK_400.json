@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "c9f4602c91a91da956882b1c0d1a207f562fdd20",
+  "featureRevision": "95eb2ab",
+  "targetIds": [
+    "DBG-02",
+    "EDT-02",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/app.js": "c638a760d67120ab03416968a20ed7152f9441e3671688848b484d08c737e8ae",
+    "prototype/game-renderer.js": "812a318b51e0041fae60fe569e299ea959d4d4644e900082f2170f8e2df7470a",
+    "prototype/gpu-frame-timing.js": "c880b1537211e2f9c8870fb8772153e08ff7149650439f36ffcc168a68f2b6b0",
+    "prototype/material-preview-scene.js": "68a2f53a650bed9ad42204aa8331b90240385875cc2b2ccf772d80dc61f591ed",
+    "prototype/profiler.js": "04852aa2b6dfa7c8b37b4af8d3f2891bc7734b68353bf6acc393ac50da1e45aa",
+    "prototype/ui-editor.css": "37fa820ac5297d5e19d6f4c4a6ae402a13b59d4f5e95a04a79cf085cdbfaa326",
+    "tools/check-gpu-profiler-398.mjs": "d77ec03ec099e53ef99aa4e21c12e68cebd58b336fd342d90085c39de8090c92",
+    "tools/check-gpu-timing-396.mjs": "3ae43a46927f45ede18358b73bd2682f24106c560f4e7b1d60335d82bc317dee",
+    "tools/check-gpu-timing-397-window.mjs": "1b600014b658ed3a51bad6c2bdfa42a59ff4a9b41d6df7444137bd95cc381261",
+    "tools/check-gpu-timing-399-editor.mjs": "e46429493dcf669f142ee110d504930a66843bd10119aeef91a7c3b2ff747624",
+    "tools/editor-automation.mjs": "dd73df8940d22094b88033ffa0068d1b38581cc4dc64596e5c9d376058b01d62",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/include/HBEngine/ScreenEffects.hpp": "ab2d6b314e824014a6d35ad70e11d34cc39d40156415cdcdfa0f6548ce750f78",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
+  },
+  "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/gpu-timing-396-cpu.json",
+      "sha256": "718b7440b9db80078706da16d095c1b0f8c326c6d29dd34783e986c2a9aa3a49"
+    },
+    {
+      "path": "native/build/gpu-profiler-398-cpu.json",
+      "sha256": "31193c53ca90ff7eaebb2830a9426bac51299cbe97fea78dc090503cc0a1cc7e"
+    },
+    {
+      "path": "native/build/gpu-timing-397-NdjjYb/acceptance.json",
+      "sha256": "578b28e0964d131cb914b3d754546f08f2fb32071fd77867ce856084559a10f0"
+    },
+    {
+      "path": "native/build/gpu-timing-399-wa4lfO/acceptance.json",
+      "sha256": "91a0c503f8714c12eaad6be13cd01c02d1a4064fe010fcb486826531fbd60b63"
+    },
+    {
+      "path": "native/build/gpu-timing-399-3FU0uH/acceptance.json",
+      "sha256": "a118e9d396f8134f63e76800f5e80abef8bdccca665eab2dc7c677202feeda39"
+    },
+    {
+      "path": "native/build/rendering-400-light-checks.json",
+      "sha256": "9d60f405fe20a315145b9349e8c2d50f665a1ab127345212f143e2e57311c024"
+    }
+  ],
+  "sourceGames": [],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/gpu-timing-399-wa4lfO/acceptance.json",
+      "backend": "webgl2",
+      "scope": "Actual human record/clear and AI read/stop in scene/material workspace; source revision/SHA, complete GPU-row visibility and deferred resource release; errors0/exit0"
+    },
+    {
+      "path": "native/build/gpu-timing-399-3FU0uH/acceptance.json",
+      "backend": "webgpu",
+      "scope": "Actual human record/clear and AI read/stop in scene/material workspace; source revision/SHA, complete GPU-row visibility and deferred resource release; errors0/exit0"
+    }
+  ],
+  "sourceRenderers": {
+    "path": "native/build/gpu-timing-397-NdjjYb/acceptance.json",
+    "scope": "Actual two API custom renderer draws and independent compute output; not packaged game/full-frame benchmark"
+  },
+  "implemented": [
+    "기록중에만GLelapsed/corequery·GPU표준pass timestampWrites를생성·비동기실측/완료sequence/NULL/정밀도0구분",
+    "GL4query·GPU256slot/두2048B buffer/단일read·소유자상한과중지/deferred퇴역·stale/외부/overflow/실제draw오류보호",
+    "기존RuntimeProfiler setter/clear를인간UI와AI가공유·메인/추가viewport·머테리얼draw연결·기존native query메타데이터재사용",
+    "GPU전용보기·같은폰트/작은행간격·숨긴CPU차트/샘플생성생략·다른workspace의주차profiler하단열기",
+    "기존profiler.read rendering[].gpuTiming과불변engineSchema.gpuTiming에자원/완료frame/패스/미지원/실패/범위공개"
+  ],
+  "measurements": {
+    "glMaximumOwnedQueries": 4,
+    "gpuTimestampSlots": 256,
+    "gpuBufferBytes": 4096,
+    "gpuBufferScope": "two buffers only; QuerySet driver memory excluded",
+    "maximumResolveInFlight": 1,
+    "disabledNewQueriesAndReadbacks": 0,
+    "newPollingTimers": 0,
+    "sampleWindow": 120,
+    "actualGPUFixturePasses": {
+      "render": 32,
+      "compute": 1
+    },
+    "actualComputeIndependentUInt32": true,
+    "actualCancelDuringMapStalePublished": 0,
+    "actualPixelsUnchanged": true,
+    "actualEditorCompleteRows": 2,
+    "uiFontSizeUnchanged": true,
+    "scope": "GL GPU timeline can include idle/submission gaps; GPU sum of timestamped passes on created encoders excludes prebuilt/external commands. Values and sample p95 are not whole-frame FPS/GPU utilization."
+  },
+  "failuresPreserved": [
+    "397 Dy7tyE: fixture disposed renderer before material, corrected to existing engine order; no product lifetime weakening",
+    "397 uZI5hF: expected16renderpasses for16draws; r180HDR/output source plus actual counter proves32; compute output and descriptor unchanged",
+    "399 zQ2mLy: parked profiler on material workspace hidden; reopen bottom without moving existing panes/windows",
+    "399 1unhjW/nZaGgl: last GPUrow8.21875px clipped; GPUview/ownedCSS/padding4 corrected under original complete-visibility bounds, no font/viewport/threshold reduction",
+    "post-source review: recovered GPU result retained old error tooltip; c9f4602 clears recovered/cleared error and rejects invalid native times with targeted tests"
+  ],
+  "limits": [
+    "Actual active APIs/compute/cancellation/UI are verified; disjoint/unsupported/overflow/error branches use deterministic tests, real device-loss/reconnect faults are additional work",
+    "DirectX uses existing native query policy; new adapter validated by CPU tests, packaged native regression is installation gate",
+    "Thread flow, detailed per-pass trace, prebuilt/external commands, allocation/leak/crash and real mobile remain in canonical ledger",
+    "No representative FPS/PC120/mobile60/global GPU busy/cold compile reduction or whole Unreal/Unity/docs/API/engine completion claim"
+  ]
+}
