@@ -1,5 +1,6 @@
 import {previousGeometryContract} from './previous-geometry.js';
 import {normalMapContract} from './normal-map.js';
+import {rayUVFootprintContract} from './ray-uv-footprint.js';
 import {previousMediumContract} from './path-previous-media.js';
 import {opticalSpreadContract} from './path-ray-cone.js';
 // A changed transport branch cannot reuse its old virtual-surface guide.
@@ -31,6 +32,7 @@ export const raySurfaceHistoryContract=Object.freeze({
  guideLobes:'opaque coat mirror uses the coat normal when the base is not a mirror; base mirror and glass retain the base normal; reject differential neighbours on a different lobe',
  previousGeometry:previousGeometryContract,
  normalDecode:normalMapContract,
+ uvFootprint:rayUVFootprintContract,
  previousMedium:previousMediumContract,opticalSpread:opticalSpreadContract,
  selection:'version-aware live output dependency; static program bodies reused; guide evaluates only needed fields (coat guide uses xy)',
  gates:'physical IOR exact; physical/coat branch boundaries plus 0.001 absolute tolerance; other surface channels 0.001 relative-to-max(1,abs(values)); previous facing/TIR branch must match',
