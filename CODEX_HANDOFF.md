@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 추가 좌표431–435 검증·설치 준비
+# HBEngine 현재 인계 — 설치435 검증·렌더링436 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
-- 현재 설치430 C:\Users\kirby\HBEngine\Versions\d5b4aa2697d1fdae\HBEngine.exe /3279파일/Versions1. USER_INSTALL_430 정본.8owner/fullSHA·425동일player재사용·User10385전후읽기SHA·links2/.hbproject·설치WOtg08 실제GPU1→4/네출력색 통과.
+- 현재 설치435 C:\Users\kirby\HBEngine\Versions\997f66eeeea8c9cb\HBEngine.exe /3285파일/Versions1. USER_INSTALL_435 정본.16owner/fullSHA·새player282ea1a8e8074ca93aab608b9bda8db0f0929da62fcbc702a01b0feb9931412e·User10385전후읽기SHA·links2/.hbproject·설치AkcNpd/3rj7y6 통과.
 
 ## 현재 구현과 증거
 - 431–434 divide/distance/rotateUV/reflect/eyeUV의안정상대차분·분모epsilon/단위노멀/각도·중심·깊이·mask경계/교차항처리. 기본값/IR/출력/샘플러/예산유지. 새GPU자원/uniform/운영readback0.
@@ -14,7 +14,7 @@
 - 35안정연산AI불변uvFootprint·도움말COORDINATE_OPERATIONS435/425교차링크. 430pipeline준비·프로파일러메타유지.
 
 ## 다음 실행 순서
-1. sourcecommit→record435·원장→sync435/설치actual433다섯그래프+350새player두게임/fullmanifest/owner/User읽기/Versions1→finish435. 완료one-shot재실행금지. 설치430개발중수정금지.
+1. 435 원장/설치/전체지문/User읽기보존/Versions1/정리 확인완료. 완료one-shot재실행금지. 436 이후작업을계속해요.
 2. 그뒤남은power/exp/log/smoothstep/Fresnel등좌표fallback와RND06/RND05/07전역곡면·매질/RND08베이크·기타렌더링/누적엔진계속. 작성UV/time/extreme범위·noise근사와전체분모미확정유지.
 
 ## 작업 보호

@@ -28,7 +28,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "5b84ea3c87833f6a830ff17778a39393b029fb68e794d31d673b081353cf5f9c"
   },
   "nativePlayerSHA256": "282ea1a8e8074ca93aab608b9bda8db0f0929da62fcbc702a01b0feb9931412e",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/ray-differentials-431-gB8rEP/acceptance.json",
@@ -53,6 +53,14 @@
     {
       "path": "native/build/rendering-435-light-checks.json",
       "sha256": "082826c1fb354ea1434bf13db10a4bef6bdc7358a68cda08e03fac7b2d5721cc"
+    },
+    {
+      "path": "native/build/coordinate-graphs-433-AkcNpd/acceptance.json",
+      "sha256": "ce9c7fed4ee0701c35b3280758f487cf7616f9d7e7c637baa288f458ade39889"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-3rj7y6/acceptance.json",
+      "sha256": "7d810522a0cc0b3cdd74c8edbb230c81a3aff061c7268d76be95d6a65b5a9d12"
     }
   ],
   "sourceGames": [
@@ -271,5 +279,6 @@
     "표현 불가능한 작성UV/시간·극단 중간범위·텍스처생성좌표 변화량0/시선고정 근사",
     "전역곡면/변경투명경로/복합로브/참여매질·RND08/누적엔진원장 유지",
     "초기복잡compile여전히초단위·대표FPS/실기기/전체분석/전체엔진완료주장없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_435.json"
 }

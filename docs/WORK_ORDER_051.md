@@ -587,3 +587,5 @@ WebGPU준비의post/필터직렬완료대기를독립descriptor먼저제출로�
 ### 2026-10-19 · 431–435
 
 나눗셈·거리·회전·반사·눈UV의sub-ULP변화량을수정했어요. 실제세API33연산573조건·다섯fullgraph의현재/이전밉·10D3D패킷문맥과새C++/BP게임2qifvs가통과했어요. 분모epsilon/노멀/각도·중심·깊이/mask경계·교차항과기존오차기준유지. FXC벡터쓰기와genericloop충돌을4성분helper만unroll로고치고TSL눈UV중간변수로표현확장을줄였어요. 원오류가cleanup에가려진검사도고쳤고각실패를보존해요. 새GPU자원/uniform/운영readback0,35안정연산AI계약·잔여fallback/전역곡면·매질·원장유지. path4599/guide4460ms는단일관찰이며전체속도개선주장이아니에요. ENGINE_WORK435정본과단일Versions설치검증을이어가요.
+
+435 설치 997f66eeeea8c9cb·3285전체명세/16실행소유SHA·새player·links2/.hbproject·Versions1 통과. 설치AkcNpd 다섯GL/GPU그래프와3rj7y6두DirectX게임 저장6/적중6/재저장0 확인. User10385전후읽기SHA동일. 이전설치178333286B와검사exe2945056B를정리했어요. 나머지좌표fallback와렌더링/엔진목표를계속해요.

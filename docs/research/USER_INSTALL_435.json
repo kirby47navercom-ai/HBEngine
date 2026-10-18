@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "c82e1d102a5d1781efce950b5aa0df14ab8548d9",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\997f66eeeea8c9cb",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\997f66eeeea8c9cb\\HBEngine.exe",
+  "bundleHash": "997f66eeeea8c9cb17ba0e9d4cc66c10810fb20505e7df84abb7b30a07d5df73",
+  "files": 3285,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "c82e1d102a5d1781efce950b5aa0df14ab8548d9",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\997f66eeeea8c9cb",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\997f66eeeea8c9cb\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\997f66eeeea8c9cb\\HBEngine.exe",
+    "bundleHash": "997f66eeeea8c9cb17ba0e9d4cc66c10810fb20505e7df84abb7b30a07d5df73",
+    "files": 3285,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3280,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\d5b4aa2697d1fdae",
+          "bytes": 178333286,
+          "manifestSHA256": "c95f35cc155b1c41f9c9d8c568b19a81d742869337778888200f022ad2d41a12"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T15:30:06.8605215Z",
+      "bytes": 178333286,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "997f66eeeea8c9cb"
+      ]
+    },
+    "nativePlayerSHA256": "282ea1a8e8074ca93aab608b9bda8db0f0929da62fcbc702a01b0feb9931412e",
+    "installedGates": [
+      {
+        "path": "native/build/coordinate-graphs-433-AkcNpd/acceptance.json",
+        "sha256": "ce9c7fed4ee0701c35b3280758f487cf7616f9d7e7c637baa288f458ade39889",
+        "scope": "Actual full GL/WebGPU graph compiler and texture sampler: five coordinate operations at large world/authored offsets; current/committed coarse neutral and committed fine -X normal, original4e-5. Independent scalar identities and native generator are separate gates."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-3rj7y6/acceptance.json",
+        "sha256": "7d810522a0cc0b3cdd74c8edbb230c81a3aff061c7268d76be95d6a65b5a9d12",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3285,
+    "versions": [
+      "997f66eeeea8c9cb"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-435-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/coordinate-graphs-433-FoDYO5/acceptance.json",
+        "scope": "실제 GL/WebGPU 다섯 full graph의 현재/이전 포즈·넓은/좁은 밉, 기존4e-5"
+      },
+      {
+        "path": "native/build/ray-differentials-431-gB8rEP/acceptance.json",
+        "scope": "실제 GL/GPU 33연산573조건·기존2e-5와새normalize1e-12·독립float입력기준"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-2qifvs/acceptance.json",
+        "scope": "실제 새 DirectX 실행 파일 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 단일 준비 관찰이며 개선율·FPS 주장은 아님"
+      }
+    ],
+    "scope": "435 전체명세·실행소유SHA·설치된GL/GPU 다섯실제좌표그래프의현재/이전밉·새player두DirectX게임캐시. source573수학조건/10native패킷/실제C++게임 증거연결. 사용자읽기보존·Versions1. 전체속도/FPS/엔진/분석완료주장없음."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 2945056,
+    "removed": [
+      {
+        "path": "native/build/ray-differentials-431-native-Q1pfdi/probe.exe",
+        "bytes": 736264,
+        "sha256": "f8c078c8d823dbf77d7494a407b76e0b2317d8dfeae512b81d20450d8d13c0d9"
+      },
+      {
+        "path": "native/build/ray-differentials-431-native-41jhT2/probe.exe",
+        "bytes": 736264,
+        "sha256": "687ee41b48fce3ed8d290e2b790cfe6537d4cb2517bb7dc12db1e4f833ea6ab3"
+      },
+      {
+        "path": "native/build/coordinate-graphs-433-native-hE2FHK/probe.exe",
+        "bytes": 736264,
+        "sha256": "b659220097d97498a5e6a26a740dc67208eea52ec8926b0685689cedd136348b"
+      },
+      {
+        "path": "native/build/coordinate-graphs-433-native-8WpUtD/probe.exe",
+        "bytes": 736264,
+        "sha256": "c9792b6371359d2d064c3040e65bc6322c72105dc1ed0ff5f4e8baeeb5504365"
+      }
+    ]
+  },
+  "scope": "435 전체명세·실행소유SHA·설치된GL/GPU 다섯실제좌표그래프의현재/이전밉·새player두DirectX게임캐시. source573수학조건/10native패킷/실제C++게임 증거연결. 사용자읽기보존·Versions1. 전체속도/FPS/엔진/분석완료주장없음."
+}

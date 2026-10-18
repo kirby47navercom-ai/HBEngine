@@ -2020,11 +2020,11 @@
   ],
   "latestBatch": "431–435",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_430.json",
-    "sourceCommit": "1d0b19ee3b8ef4a14363b4c8361f0c2d8e92a8b3",
-    "bundleHash": "d5b4aa2697d1fdaec514a64b247d7869d5517b1dd9afd3915b3802361090fd6f",
+    "receipt": "docs/research/USER_INSTALL_435.json",
+    "sourceCommit": "c82e1d102a5d1781efce950b5aa0df14ab8548d9",
+    "bundleHash": "997f66eeeea8c9cb17ba0e9d4cc66c10810fb20505e7df84abb7b30a07d5df73",
     "verified": true,
     "versions": 1,
-    "scope": "426–430 독립 파이프라인 제출·설치된 실제WebGPU1→4/네출력색·425실행파일재사용·전체지문·사용자보존. 비선형/노멀/누적엔진작업 계속"
+    "scope": "431–435 현재/이전 좌표 변화량·설치 GL/GPU 다섯그래프·새player두D3D게임·전체지문·User읽기보존. 나머지좌표/렌더링/엔진원장계속"
   }
 }
