@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "3a0e30df31d21471677bf168e090379ee8070291",
+  "rendererCommit": "588944dd3298f05dfef085c57013b138352a74a2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1\\HBEngine.exe",
+  "bundleHash": "31d1e9358b813be1047257bd70c60f9780e4a583ba29c051711f34bfc225d41b",
+  "installationPending": false,
+  "installedSmokePassed": true,
+  "files": 3084,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "3a0e30df31d21471677bf168e090379ee8070291",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1\\HBEngine.exe",
+    "bundleHash": "31d1e9358b813be1047257bd70c60f9780e4a583ba29c051711f34bfc225d41b",
+    "files": 3084,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3072,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\af678ad1bf3da1a1",
+          "bytes": 177402675,
+          "manifestSHA256": "86219c5ae596b87bed82ae9b2158ba1052ed9dedd068cbe8d18d3e1fe53666eb"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T03:29:16.7763366Z",
+      "bytes": 177402675,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "31d1e9358b813be1"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/rendering-298-window-p76qGy/acceptance.json",
+        "sha256": "b3e4fb9d9b1884aa857d96b7eee90a89e628e5b8c8ff0c137b7fc397ea2d1ee0",
+        "invocation": [
+          "tools/check-rendering-298-window.mjs",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "sourceHashes": {
+          "prototype/ray-mip.js": "2d54a58bccddf078cc9ced72b845a0a72300248cb00035421b70d46b056967d1",
+          "prototype/ray-texture-shader.js": "7b233b15ba79875af20bb771a8d0196f385035699a55826f854ba53cc1995eb8",
+          "prototype/ray-material-gpu.js": "d28b849f1df97848fa09783c095216218dbc17d69ba9c990e32f75cbdb82971d"
+        },
+        "installationAPI": null
+      },
+      {
+        "path": "native/build/rendering-305-window-jSfLTk/acceptance.json",
+        "sha256": "9add7c764c915e9a133f8fe56f1e67c11a2427735e26d082423c30e33d02291b",
+        "invocation": [
+          "tools/check-opaque-path-305-window.mjs",
+          "--linear",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\31d1e9358b813be1\\HBEngine.exe"
+        ],
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "sourceHashes": {
+          "prototype/screen-effects-gl.js": "60a81681722cabe02ea922978791aaabf574a7c0b7623fed0d607e6dfcc0c875",
+          "prototype/path-tracing-shader.js": "c1fc4cfc738eac4d059b1858e76c2036eda959386c011bba7772db7e60f3ae17",
+          "prototype/ray-mip.js": "2d54a58bccddf078cc9ced72b845a0a72300248cb00035421b70d46b056967d1",
+          "tools/generate-ray-programs.mjs": "b2690b1377c569c5bc2f6d30037014c3fdcf7986da62e7e130982899cb42f724",
+          "prototype/ray-texture-shader.js": "7b233b15ba79875af20bb771a8d0196f385035699a55826f854ba53cc1995eb8",
+          "prototype/ray-material-gpu.js": "d28b849f1df97848fa09783c095216218dbc17d69ba9c990e32f75cbdb82971d",
+          "prototype/ray-uv-footprint.js": "78893d4ffb20e5609bf25632e1958995e7c5f9118a83209b5aaea410984af4fc",
+          "prototype/ray-material-shader.js": "f65ba488fee7eb3c5268de39f2d16346b6f241fea2ac234f24d2ebbf453a809e",
+          "prototype/shared-ray-record-gl.js": "3065abe5ac0a80eae3d3dd7c30cef6e47f20e15493d5340fb7fbd98adf83d809",
+          "prototype/path-guide-specialization.js": "cd10ecd06554299831d955d8b2d943a2a54beea60080f13c59d19d24e4ba5afc"
+        },
+        "installationAPI": {
+          "current": {
+            "state": "managed",
+            "bundleHash": "31d1e9358b813be1047257bd70c60f9780e4a583ba29c051711f34bfc225d41b",
+            "installedAt": "2026-10-18T03:29:13.367Z",
+            "fileCount": 3084,
+            "verification": "manifest-only"
+          },
+          "latestRecorded": "af678ad1bf3da1a170f53b4f142b7dd4f362f9991a8ab7c07ead685a56a04b93"
+        }
+      }
+    ],
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-0nLrBW/acceptance.json",
+      "playerSHA256": "57e076f4864b545b12832699fe62e4216fc8454b8cab1cd3c1802359d3911c33",
+      "scope": "Actual source D3D game after rebuild; renderer/runtime source unchanged through installation and installed player byte-identical to source-built player. Not another installed native game run."
+    },
+    "manifestVerifiedFiles": 3084,
+    "versions": [
+      "31d1e9358b813be1"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "Grouped source GL/GPU/D3D game gates plus actual installed GL/GPU48-filter float32 comparison, opaque camera/guide pixels and current manifest API identity. No whole-engine/FPS/device claim.",
+    "verificationScriptDelta": {
+      "path": "tools/check-opaque-path-305-window.mjs",
+      "sha256": "8f581cdbe33bd920f236d75d86286913c62a387cc2cf41a0b86b16b4a57eb968",
+      "reason": "Only test-driver addition reads installed status API; included in the verified installed manifest and committed with this audit. Runtime/renderer code is unchanged from sourceCommit."
+    }
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "Defined 298–306 rendering/collection/AI status changes, grouped GL/GPU/D3D games, installed GL/GPU48 filters/opaque camera/API and full manifest audit. Source revision names runtime code; the test-only API proof addition is recorded separately. No whole-engine/FPS/device or full research analysis claim."
+}

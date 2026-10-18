@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "3a0e30df31d21471677bf168e090379ee8070291",
+  "targetIds": [
+    "PRJ-01",
+    "PRJ-02"
+  ],
+  "sourceHashes": {
+    "tools/engine-status.mjs": "d897bebdbebef9231b345a03d20c5e2ea2d5ea824b19cdaa55cc37d4249a9141"
+  },
+  "installationPending": false,
+  "implemented": [
+    "상태 조회의 고정 원장/latestInstallation과 현재 설치 marker의 installation 값을 분리해요. bundleHash/installedAt/fileCount/manifest-only 범위를 같은 읽기 전용 API에서 확인할 수 있어요.",
+    "marker 변경은 다음 조회에 반영하고 잘못된 JSON/형식/디렉터리는 별도 상태로 돌려 원장 조회를 유지해요. 사용자 프로필·재귀 SHA 검사·프레임 폴링·지속 캐시를 추가하지 않아요."
+  ],
+  "checks": [
+    {
+      "path": "native/build/engine-status-install-306-BskanT/acceptance.json",
+      "sha256": "339acde91f02aad449810f3ddcc5205554facbc6f0afca97381300a54a04ac55"
+    },
+    {
+      "path": "native/build/rendering-298-window-p76qGy/acceptance.json",
+      "sha256": "b3e4fb9d9b1884aa857d96b7eee90a89e628e5b8c8ff0c137b7fc397ea2d1ee0"
+    },
+    {
+      "path": "native/build/rendering-305-window-jSfLTk/acceptance.json",
+      "sha256": "9add7c764c915e9a133f8fe56f1e67c11a2427735e26d082423c30e33d02291b"
+    }
+  ],
+  "limits": [
+    "manifest-only는 실제 전체 파일 SHA 검사가 아니에요. 실제 설치 검사·명세 전체 확인은 후속 USER_INSTALL_306에 따로 기록해요.",
+    "검사 환경에서 파일 symlink 생성이 EPERM이어서 실물 링크 테스트는 하지 않았어요. lstat의 링크 거부 조건과 실제 디렉터리 거부/원장 보존을 구분해요."
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_306.json"
+}

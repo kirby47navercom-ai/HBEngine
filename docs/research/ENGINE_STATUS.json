@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-17",
-  "basisRevision": "2f679ebe0a7811318031f1ee4702d90784499540",
+  "updatedAt": "2026-10-18",
+  "basisRevision": "3a0e30df31d21471677bf168e090379ee8070291",
   "scope": "누적 HB 요구와 등록 조사/구현 문서 및 공용 코드 소유자를 대조한 현재 작업 원장. 각 verified는 제목과 implemented에 한정하며 엔진 전체나 UE/Unity 전체 기능의 완료가 아니다.",
   "exhaustiveUEUnity": false,
   "completionPercent": null,
@@ -17,17 +17,19 @@
       "area": "project",
       "title": "설치형 실행기·프로젝트 생성/열기",
       "status": "verified",
-      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
+      "implemented": "Win32 에디터·플레이어, .hbproject 연결과 독립 프로젝트 경로 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사 ·306: 현재 설치 marker와 고정 원장 분리·읽기 전용 식별·변경/손상/필터·원본 보존",
       "remaining": [],
       "sources": [
         "tools/project-manifest.mjs",
         "tools/install-editor.mjs",
-        "tools/queued-editor-install.mjs"
+        "tools/queued-editor-install.mjs",
+        "tools/engine-status.mjs"
       ],
       "evidence": [
         "docs/research/USER_INSTALL_151.json",
         "docs/research/ENGINE_WORK_193.json",
-        "docs/research/ENGINE_WORK_295.json"
+        "docs/research/ENGINE_WORK_295.json",
+        "docs/research/ENGINE_WORK_306.json"
       ]
     },
     {
@@ -35,21 +37,23 @@
       "area": "project",
       "title": "실행/편집 상태와 사용자 작업 격리",
       "status": "verified",
-      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·292: private 부분 Node 복사 SHA/PID 검증·활성/수정/다른 런타임/원본 보존 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사",
+      "implemented": "별도 실행 월드·프로필·임시 검사 프로젝트 ·193: 사용 중인 이전 런타임 사전/복사 후 확인·새 버전 생성 전 보류·명시 상태·프로세스/수정 원본 보호·Versions1 검증 ·198: 격리 Engine 동일 Node 크기/SHA 정리·엔진 전체 실행 범위/변경 보호·복원 명세·소스 보존·실제 PowerShell/자식 프로세스 검사 ·292: private 부분 Node 복사 SHA/PID 검증·활성/수정/다른 런타임/원본 보존 ·295: 종료 후 단일 대기 설치·배포본 SHA 고정·읽기 전용 상태·활성/변경/중복/만료/취소/CLI 검사 ·306: 현재 설치 marker와 고정 원장 분리·읽기 전용 식별·변경/손상/필터·원본 보존",
       "remaining": [],
       "sources": [
         "prototype/project-session.js",
         "tools/project-manifest.mjs",
         "tools/install-editor.mjs",
         "tools/test-artifacts.mjs",
-        "tools/queued-editor-install.mjs"
+        "tools/queued-editor-install.mjs",
+        "tools/engine-status.mjs"
       ],
       "evidence": [
         "docs/USER_DEVELOPMENT_SEPARATION.md",
         "docs/research/ENGINE_WORK_193.json",
         "docs/research/ENGINE_WORK_198.json",
         "docs/research/ENGINE_WORK_292.json",
-        "docs/research/ENGINE_WORK_295.json"
+        "docs/research/ENGINE_WORK_295.json",
+        "docs/research/ENGINE_WORK_306.json"
       ]
     },
     {
@@ -707,10 +711,10 @@
       "area": "rendering",
       "title": "초기 셰이더 준비 비용",
       "status": "partial",
-      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증",
+      "implemented": "GL/GPU 준비·진단·취소·공유 지역값·코드/네이티브 캐시·GL 독립 프로그램 일괄 제출·비렌즈 가이드 특화 ·189: 비시간 이전 노멀의 Time 호출 미생성·기존 opcode 특화·단일 GL 전체 링크 두 순서 대조/동일3백엔드 픽셀·네이티브 실제 게임 ·194: 표면 필드별 광선 프로그램 특화·동일 키 필드 합치기·legacy 호환·GL 두 순서와 실제3백엔드/네이티브 게임; 혼합 정의 노멀 WGSL45117→29725B ·253/259/260: pure SSA공유와 레지스터fallback·시간리터럴만 immutable갱신·CPU-only 매질 시간/geometry/filter/plan 캐시 동기화 ·274/275: 알파 전용 출력 절삭34→7·GLSL/WGSL 축소·고정 필드 호출·실제 GL/GPU/HLSL 픽셀 일치·중복 노멀 GL 한 순서2853→2761.5ms(Complex141/FPS와 별개) ·284/285/286/290: base-normal Time 특화·CPU 매질 선행 의존성/부분 평가·렌더 소유 불변 키; 실제3백엔드 픽셀·원본/시간/수명 보존;288/291 실험은 미채택 ·296–297: UV 좌표/삼각형 Frame 읽기·GL guide 노멀 호출 위치 공유, 공유·비공유/렌즈/mip float32 오차0·실제 GL/D3D/C++·생성자 수정 검증 ·298–305: 삼선형 단일 호출·정수LOD 읽기 생략,48필터 미분 절삭/GL·TSL·생성HLSL·레지스터 보존, 확정 불투명 GL/legacy key 분리·실제 camera 픽셀0, 인스턴스 노멀/pose key·실제3백엔드 게임",
       "remaining": [
-        "Complex141 GL 첫 path 약9.09초/시간 가이드 약4.95초 추가 절감(부하를 통제한 반복 벤치마크나 FPS가 아닌 단일 게임 전환 표본)",
-        "WebGPU 첫 path/시간 가이드 준비 비용 추가 절감"
+        "Complex141 GL 첫 path 약6.59초/시간 가이드 약3.77초 추가 절감(부하를 통제한 반복 벤치마크나 FPS가 아닌 단일 게임 전환 표본)",
+        "WebGPU 첫 path 약3.67초/시간 가이드 약2.11초 추가 절감; GL 불투명 특화의 DirectX 대응"
       ],
       "sources": [
         "prototype/gl-path-preparation.js",
@@ -723,7 +727,14 @@
         "prototype/material-source-key.js",
         "prototype/ray-uv-footprint.js",
         "prototype/ray-material-shader.js",
-        "prototype/shared-ray-record-gl.js"
+        "prototype/shared-ray-record-gl.js",
+        "prototype/geometry-gi.js",
+        "prototype/geometry-gi-normals.js",
+        "prototype/path-tracing-shader.js",
+        "prototype/ray-mip.js",
+        "prototype/ray-texture-shader.js",
+        "prototype/screen-effects-gl.js",
+        "tools/generate-ray-programs.mjs"
       ],
       "evidence": [
         "docs/RENDERING_145.md",
@@ -742,7 +753,8 @@
         "docs/research/ENGINE_WORK_290.json",
         "docs/research/ENGINE_WORK_291.json",
         "docs/research/ENGINE_WORK_296.json",
-        "docs/research/ENGINE_WORK_297.json"
+        "docs/research/ENGINE_WORK_297.json",
+        "docs/research/ENGINE_WORK_305.json"
       ]
     },
     {
@@ -1799,7 +1811,7 @@
       "area": "performance",
       "title": "대규모 월드·장시간 RAM",
       "status": "unverified",
-      "implemented": "일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 ·204: 메타데이터1만 표본의 DOM 목록17/끝13/타일50카드·상시 폴링 없음 ·270: 샘플 필드만 baseline·1만 무관 객체 TRS 미복사·lease0·상시 이력/캐시 없음 ·276/277: 타일 종료시 큐/캐시 해제·불변 배열 WeakMap 경계 캐시·새 강한 월드 이력/상시 계측 없음",
+      "implemented": "일부 자원 수명·큐/서명/업로드 개선과 소규모 재현 · 168: 타일 불변 스냅샷/JSON 재사용·한 청크 갱신·개발 D3D11 짧은 비용 표본 ·179: 2D/2.5D/3D 거리 구간·포즈 표시 간격/시간·이벤트 보존·공용 컴포넌트/C++·명시 충돌 LOD 교체·32MiB 추정 캐시/수명·AI 실행 진단 ·180: 세션 공유 C++ 질의 월드/형상 재사용·동시 스냅샷 격리·유휴1개/세대 수명·비용 진단 및 공식 최소화 런타임 배포 ·185: 인스턴스 안정 로컬 ID 조회/목록/ID 공용 C++·BP3함수·비활성/삭제/가족 격리·즉시 Spawn/후속 스냅샷·모바일 AOT·서비스 분류/핀 라벨·종료 뒤 늦은 C++ 응답 폐기 ·204: 메타데이터1만 표본의 DOM 목록17/끝13/타일50카드·상시 폴링 없음 ·270: 샘플 필드만 baseline·1만 무관 객체 TRS 미복사·lease0·상시 이력/캐시 없음 ·276/277: 타일 종료시 큐/캐시 해제·불변 배열 WeakMap 경계 캐시·새 강한 월드 이력/상시 계측 없음 ·300–301: 인스턴스/정점/뼈 노멀 수집 공유·비인덱스 Map 생략·bind/morph/interleaved 버전 갱신·독립 legacy atlas 대조",
       "remaining": [
         "대규모 메시/스켈레톤/탄막·전환 반복",
         "프로세스 전체 RAM/VRAM 장기 증가 원인 종결"
@@ -1826,7 +1838,8 @@
         "docs/research/ENGINE_WORK_204.json",
         "docs/research/ENGINE_WORK_270.json",
         "docs/research/ENGINE_WORK_276.json",
-        "docs/research/ENGINE_WORK_277.json"
+        "docs/research/ENGINE_WORK_277.json",
+        "docs/research/ENGINE_WORK_305.json"
       ]
     },
     {
@@ -1864,13 +1877,13 @@
       ]
     }
   ],
-  "latestBatch": "296–297",
+  "latestBatch": "298–306",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_297.json",
-    "sourceCommit": "2f679ebe0a7811318031f1ee4702d90784499540",
-    "bundleHash": "af678ad1bf3da1a170f53b4f142b7dd4f362f9991a8ab7c07ead685a56a04b93",
+    "receipt": "docs/research/USER_INSTALL_306.json",
+    "sourceCommit": "3a0e30df31d21471677bf168e090379ee8070291",
+    "bundleHash": "31d1e9358b813be1047257bd70c60f9780e4a583ba29c051711f34bfc225d41b",
     "verified": true,
     "versions": 1,
-    "scope": "Defined 296–297 renderer changes, not whole-engine completion"
+    "scope": "Defined 298–306 renderer/collection/status changes; current installation identity is also returned by read-only marker API."
   }
 }

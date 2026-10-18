@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "batch": "298–305",
+  "implementationRevision": "588944dd3298f05dfef085c57013b138352a74a2",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "PER-03"
+  ],
+  "sourceHashes": {
+    "prototype/geometry-gi.js": "74bae2118857cad46a7ec26debfe15887e1bea0967d55b2b4c8d7c74ff92b331",
+    "prototype/geometry-gi-normals.js": "90af208ab5264956b8c606ea8390f9efa83d5edd6cbc9060f5013b2db0b09ff9",
+    "prototype/path-tracing-shader.js": "c1fc4cfc738eac4d059b1858e76c2036eda959386c011bba7772db7e60f3ae17",
+    "prototype/ray-material-gpu.js": "d28b849f1df97848fa09783c095216218dbc17d69ba9c990e32f75cbdb82971d",
+    "prototype/ray-material-shader.js": "f65ba488fee7eb3c5268de39f2d16346b6f241fea2ac234f24d2ebbf453a809e",
+    "prototype/ray-mip.js": "2d54a58bccddf078cc9ced72b845a0a72300248cb00035421b70d46b056967d1",
+    "prototype/ray-texture-shader.js": "7b233b15ba79875af20bb771a8d0196f385035699a55826f854ba53cc1995eb8",
+    "prototype/screen-effects-gl.js": "60a81681722cabe02ea922978791aaabf574a7c0b7623fed0d607e6dfcc0c875",
+    "tools/generate-ray-programs.mjs": "b2690b1377c569c5bc2f6d30037014c3fdcf7986da62e7e130982899cb42f724"
+  },
+  "installationPending": false,
+  "checks": [
+    {
+      "path": "native/build/validation301.json",
+      "sha256": "df6f201ffde0734cbcbef63211e1139dcf923ff6ed03d8a80af00bf09328f7a4"
+    },
+    {
+      "path": "native/build/validation306.json",
+      "sha256": "0ee24ff6e439ea85dc51ff879d4aa1967e5cca1f8663d224ee8b3f311ef2aa13"
+    },
+    {
+      "path": "native/build/rendering-298-window-l87gsF/acceptance.json",
+      "sha256": "ec88db7e518071998a285d26405fd3e34100deeaf7b503113764b88b055b7b9c"
+    },
+    {
+      "path": "native/build/rendering-299-window-TsHThK/acceptance.json",
+      "sha256": "f1c4a0938d961e15ba69d2622f410f9e379e174884c99ed1abaac8529648d128"
+    },
+    {
+      "path": "native/build/geometry-normals-300-FKJADk/acceptance.json",
+      "sha256": "ddc80d57c05bee77861bc358ce4dab1835af29ea6fc11de39014fd1d47833b9c"
+    },
+    {
+      "path": "native/build/ray-footprint-304-zM8nHS/acceptance.json",
+      "sha256": "4b2af9606bffc30f279979e76a9f659403385500658c45a540415c6a1a372385"
+    },
+    {
+      "path": "native/build/opaque-path-305-sn1LBz/acceptance.json",
+      "sha256": "e036c28a41fb072c08a6ca60c8857203f7c67ab90c3ce3a11aacff28c0a98e0c"
+    },
+    {
+      "path": "native/build/rendering-304-window-X9mKFZ/acceptance.json",
+      "sha256": "296cbdb52b4bfce3783f634dbf418c2f4f9a0f0784f4cd98324a43a791dcc7d8"
+    },
+    {
+      "path": "native/build/rendering-305-window-owy6bu/acceptance.json",
+      "sha256": "88f2327c772424e424e5630a8370db0b20bf2158588fd4063d8268e6ea9ec84a"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-native-YrALys/acceptance.json",
+      "sha256": "307127953445859a1c18a7503fce50a3b9f437af9deea41efe29b9d11ad7f34f"
+    },
+    {
+      "path": "native/build/rendering-284-window-RSpje5/acceptance.json",
+      "sha256": "d8c8a6d355f5deb09c94749d61c5d9c1e427f1ac6f2b1d9e9e64e591031594c6"
+    },
+    {
+      "path": "native/build/gpu-scene-bh3bqL/acceptance.json",
+      "sha256": "bd24cc626991990484d8e69d20118a7248034bf89770c8d07c9a5ee372fdeac0"
+    },
+    {
+      "path": "native/build/gpu-scene-xKxboZ/acceptance.json",
+      "sha256": "48763478130fd02d514c8c931c00c1b85d028deee4eb10639662f5dbc8d90591"
+    },
+    {
+      "path": "native/build/native-scene-window-0nLrBW/acceptance.json",
+      "sha256": "c0cc34227bb4c9107f04df4d551cfb4585df2f6030ac716c970f93ecd74e69a8"
+    },
+    {
+      "path": "native/build/rendering-298-window-p76qGy/acceptance.json",
+      "sha256": "b3e4fb9d9b1884aa857d96b7eee90a89e628e5b8c8ff0c137b7fc397ea2d1ee0"
+    },
+    {
+      "path": "native/build/rendering-305-window-jSfLTk/acceptance.json",
+      "sha256": "9add7c764c915e9a133f8fe56f1e67c11a2427735e26d082423c30e33d02291b"
+    }
+  ],
+  "implemented": [
+    "GL/생성HLSL/TSL의 삼선형 필터를 한 level 호출 위치의1/2회 반복으로 바꾸고 정수LOD의 사용하지 않는 두 번째 mip을 읽지 않아요. 기존 보간/경계/sRGB/배열/volume/cube를 유지해요.",
+    "큐브 명시LOD와 같은 확대·축소 필터의 고정 level0은 좌표 미분 그래프를 만들지 않아요. 48필터 진리표를 네이티브 생성에도 사용하며 nested image 좌표·물리 레지스터 재사용·공개 IR/키/인덱스를 보존해요.",
+    "확정 transmission===false의 GL 카메라 경로만 굴절 분기를 생략해요. 정보 없음/true는 기존 경로이며 cache key를 분리하고 CPU 파라미터 전환 및 현재0인 Time 입력의 보수성을 확인해요.",
+    "스킨/모프 노멀·뼈 행렬·world normal 행렬을 한 인스턴스 수집 동안 공유해요. 면별 fallback/독립 반환 배열을 유지하고 비인덱스 정점 Map은 만들지 않아요. bind 행렬/모프 방식/interleaved skin 버전 변경으로 local/mesh 캐시도 갱신해요."
+  ],
+  "measurements": {
+    "sampler": {
+      "glVariants": 48,
+      "glSamples": 480,
+      "webgpuVariants": 48,
+      "webgpuSamples": 384,
+      "maxError": 0,
+      "reducedSamples": 136,
+      "savedAtlasReads": 684
+    },
+    "trilinearOrderedLinks": {
+      "path": [
+        {
+          "legacy": true,
+          "elapsedMS": 1941.0999999999767
+        },
+        {
+          "legacy": false,
+          "elapsedMS": 98.5
+        }
+      ],
+      "guides": [
+        {
+          "lens": false,
+          "auxiliary": false,
+          "legacy": true,
+          "linkMS": 667.2999999999884
+        },
+        {
+          "lens": false,
+          "auxiliary": false,
+          "legacy": false,
+          "linkMS": 54.600000000034925
+        },
+        {
+          "lens": false,
+          "auxiliary": false,
+          "maxError": 0,
+          "nonzero": 512,
+          "components": 1024
+        },
+        {
+          "lens": false,
+          "auxiliary": true,
+          "legacy": true,
+          "linkMS": 3716.7000000000116
+        },
+        {
+          "lens": false,
+          "auxiliary": true,
+          "legacy": false,
+          "linkMS": 178.79999999998836
+        },
+        {
+          "lens": false,
+          "auxiliary": true,
+          "maxError": 0,
+          "nonzero": 768,
+          "components": 1024
+        },
+        {
+          "lens": true,
+          "auxiliary": false,
+          "legacy": true,
+          "linkMS": 1415.9000000000233
+        },
+        {
+          "lens": true,
+          "auxiliary": false,
+          "legacy": false,
+          "linkMS": 85.90000000002328
+        },
+        {
+          "lens": true,
+          "auxiliary": false,
+          "maxError": 0,
+          "nonzero": 512,
+          "components": 1024
+        },
+        {
+          "lens": true,
+          "auxiliary": true,
+          "legacy": true,
+          "linkMS": 3868.4000000000233
+        },
+        {
+          "lens": true,
+          "auxiliary": true,
+          "legacy": false,
+          "linkMS": 176.39999999996508
+        },
+        {
+          "lens": true,
+          "auxiliary": true,
+          "maxError": 0,
+          "nonzero": 816,
+          "components": 1024
+        }
+      ]
+    },
+    "opaqueCamera": {
+      "path": [
+        {
+          "legacy": true,
+          "elapsedMS": 1824.5999999998603
+        },
+        {
+          "legacy": false,
+          "elapsedMS": 1472.2999999998137
+        }
+      ],
+      "pixels": {
+        "maxError": 0,
+        "visible": 213,
+        "components": 1024
+      }
+    },
+    "normalCollection": {
+      "rows": [
+        {
+          "phase": "initial",
+          "triangles": 3112,
+          "legacy": {
+            "normalMatrices": 9312,
+            "elapsedMS": 22.661999999999992
+          },
+          "current": {
+            "normalMatrices": 9,
+            "elapsedMS": 15.630399999999995
+          },
+          "atlasBytes": 786432,
+          "byteIdentical": true
+        },
+        {
+          "phase": "pose-and-morph",
+          "triangles": 3112,
+          "legacy": {
+            "normalMatrices": 9312,
+            "elapsedMS": 12.4067
+          },
+          "current": {
+            "normalMatrices": 9,
+            "elapsedMS": 14.837600000000009
+          },
+          "atlasBytes": 786432,
+          "byteIdentical": true
+        },
+        {
+          "phase": "normal-edit",
+          "triangles": 3112,
+          "legacy": {
+            "normalMatrices": 9312,
+            "elapsedMS": 11.39240000000001
+          },
+          "current": {
+            "normalMatrices": 9,
+            "elapsedMS": 10.602999999999952
+          },
+          "atlasBytes": 786432,
+          "byteIdentical": true
+        },
+        {
+          "phase": "relative-morph",
+          "triangles": 3112,
+          "legacy": {
+            "normalMatrices": 9312,
+            "elapsedMS": 10.87089999999995
+          },
+          "current": {
+            "normalMatrices": 9,
+            "elapsedMS": 6.927100000000053
+          },
+          "atlasBytes": 786432,
+          "byteIdentical": true
+        },
+        {
+          "phase": "bind-and-instance",
+          "triangles": 3112,
+          "legacy": {
+            "normalMatrices": 9312,
+            "elapsedMS": 11.599899999999991
+          },
+          "current": {
+            "normalMatrices": 9,
+            "elapsedMS": 9.941000000000031
+          },
+          "atlasBytes": 786432,
+          "byteIdentical": true
+        }
+      ],
+      "invalidation": [
+        "morph mode without changing weights/attributes",
+        "bind matrix without changing skeleton pose",
+        "interleaved skin weight data version"
+      ]
+    },
+    "actualComplex141": {
+      "webgl": {
+        "firstPathMS": 6591,
+        "temporalEnableMS": 3770
+      },
+      "webgpu": {
+        "firstPathMS": 3667,
+        "temporalEnableMS": 2111
+      },
+      "native": {
+        "firstPathMS": 5317,
+        "temporalEnableMS": 3394,
+        "revisitPathMS": 198,
+        "revisitTemporalMS": 183
+      }
+    },
+    "scope": "실제 표본의 값/소스·호출 수 근거와 단일 준비/전환 시간이에요. 부하를 통제한 반복 벤치마크나 FPS 측정이 아니에요."
+  },
+  "unadopted": [
+    {
+      "experiment": 303,
+      "path": "native/build/rendering-303-window-cnNuYJ/acceptance.json",
+      "reason": "일반 선형 필터의 고정 texel loop는 전체 준비 시간 개선이 뚜렷하지 않아 제품에 넣지 않았어요."
+    }
+  ],
+  "newGPUResources": 0,
+  "newPersistentCaches": 0,
+  "newAutomaticReadbacks": 0,
+  "limits": [
+    "실제 Complex141 첫 GL6.59초/시간3.77초와 WebGPU3.67초/2.11초 추가 절감은 남겨요. 직전8.53초와 부하를 통제한 반복 비교는 아니에요.",
+    "No-transmission static 분기 제거는 GL 카메라에만 적용해요. DirectX는 공용 sampler/미분 generator/노멀 수집 변경을 검증했지만 이 신규 GL define에 대응한 기능은 별도예요.",
+    "이전 world/view 노멀·투명 분기·이전 mip footprint와 나머지 원장/전체UE·Unity 분모·실기기/FPS 요구를 승격하지 않아요. 새 외부 문서 읽기/전체 분석 gate 변경은 없어요."
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_306.json"
+}

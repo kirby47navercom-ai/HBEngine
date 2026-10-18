@@ -450,3 +450,14 @@ C++ 공용 물리7질의에 현재 천/로프 표면·권한/TOI합성, 명시�
 UV 표본의 동일 연산/offset을 유지한 공용 읽기, GL 주/미분 노멀 호출 위치 공유와 공용 삼각형 Frame을 연결했어요. 실제 GL/D3D/C++/변형/이전 노멀/해제 및 공유·비공유/삼선형 가이드 float32 대조를 통과했어요. 격리 한 순서의 path2.63→2.19초, 시간 가이드5.59→3.68초는 해당 표본만의 링크 시간이에요. 실제 Complex141 첫 path9.09초는 잔여로 유지하고 최초 HLSL 벡터 생성자 실패와 수정 후 근거를 구분해요. 설치 결과는 USER_INSTALL_297에 후속 기록해요.
 
 296–297 설치 확인: af678ad1bf3da1a1·3071명세파일 실행 후 SHA 일치, 설치 EXE의 공유·삼선형/UV/렌즈off-on/main-aux 가이드 오차0·정상 종료, 바로가기2/.hbproject·Versions1을 확인했어요. source I3z8dy의 실제 D3D 게임 근거는 변경 없는 렌더 소스와 설치 player의 빌드 바이트 대조로 재사용했어요. User10385 파일 전후 SHA 동일·수정 보관0, 이전 설치375966480바이트 제거·추가 정리 대상0이에요. USER_INSTALL_297.json을 기준으로 봐요.
+
+
+### 2026-10-18 · 298–305
+
+삼선형 한 호출 위치/정수LOD 생략·48필터 미분 생략·확정 불투명 GL 분기/legacy key·인스턴스 노멀 수집과 bind/morph/interleaved 캐시 갱신을 실제 제작 데이터와 세 렌더러 실행에 연결했어요. 48변형 GL480/GPU384 표본 오차0·정수136표본 atlas684읽기 감소,3112삼각형5상태 atlas786432B 동일·normalMatrix9312→9예요. 실제 GL bh3bqL/GPU xKxboZ/D3D0nLrBW의 C++·변형·필터·자원 해제/재방문을 통과했어요.
+
+격리 삼선형 path1941→98.5ms와 확정 불투명 camera1825→1472ms는 서로 다른 지정 fixture의 단일 비교예요. 실제 Complex141 GL6591/3770ms·GPU3667/2111ms·D3D5317/3394ms·D3D재방문198/183ms는 FPS 보장이 아니며 추가 절감을 유지해요. 303 고정 texel loop는 미채택이고, C++ 경고/검사 fixture 수정 이력을 DEBUG_HANDOFF에 보존해요. 정본은 ENGINE_WORK_305.json·후속 USER_INSTALL_305.json이에요.
+
+306 추가: 현재 실행 위치의 설치 식별값이 포장 당시 원장의 이전 설치 기록과 혼동되지 않게 installation을 읽기 전용으로 분리했어요. 실제 marker 교체/잘못된 형식/JSON/디렉터리/호출자 변경/원본 보존을 검사했고 marker-only와 전체SHA 검증을 구분해요. 실물 파일 symlink 생성EPERM은 미검증으로 남기며 최종 설치/API 검사는 USER_INSTALL_306에 기록해요.
+
+298–306 사용자 설치 확인: 31d1e9358b813be1·3084명세 파일 전체SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일을 확인했어요. 설치 actual GL/GPU48변형과 opaque camera/normal float32 오차0·정상 종료, API의 현재 bundleHash가 새명세와 일치해요. D3D 소스0nLrBW 근거는 렌더 소스/설치player 바이트가 동일한 것으로 재사용하고 두 번째 설치 native 실행이라고 하지 않아요. 이전 설치177402675바이트 제거·수정 보관0·별도정리0바이트예요. USER_INSTALL_306.json을 정본으로 봐요.
