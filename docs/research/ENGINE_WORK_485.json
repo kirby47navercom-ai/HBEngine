@@ -35,7 +35,7 @@
     "native/tests/path-previous-context-308.cpp": "ba65ee8891ceb9ebe984b2519a98184685c67f209353f49ecbb49169f3cb1572"
   },
   "nativePlayerSHA256": "d3eaca01742b9c4661841e94e1c2e4fe782ef5d88c273ab8b38551bed04761c5",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/procedural-474-xtSshP/acceptance.json",
@@ -76,6 +76,14 @@
     {
       "path": "native/build/procedural-483-regressions.json",
       "sha256": "b61780188e7c652f4b35a7e08a6b0b2390b5028b66d015d70fac97b26c484793"
+    },
+    {
+      "path": "native/build/procedural-graphs-477-Z4Ph2j/acceptance.json",
+      "sha256": "cb0dfe8b1424a966b2406d36e472b32a65aa8b10fc95e34c104e5ecc1c17dd53"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-k2CNuQ/acceptance.json",
+      "sha256": "b5d90d26d704e3ed62c5b4462aed44c5c4b0fbfaaf8d8222cb6a1e673c633ec0"
     }
   ],
   "sourceGames": [
@@ -206,5 +214,6 @@
     "기존 큰 power 출력 한 조건의2e-3을 포함해 기존 수학 기준을 유지했어요.",
     "Complex141 path4477/denoise842/시간guide3516ms는 통제하지 않은 단일 관찰이에요. 초기 지연/FPS 해결 근거가 아니에요.",
     "네이티브 컴파일러의 동기 잠금과 UI 대기·혼합 노멀·RND08·전역 곡면/매질 및 누적 엔진 목표를 계속 진행해요."
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_485.json"
 }

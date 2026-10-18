@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "67ee9a0a4bcf0ed41b9dcc7da7273b4bc63d078c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f\\HBEngine.exe",
+  "bundleHash": "52509e8a3c52d31fe6d0a0904d41ab4d273d189337e476bbfb4d06e839a93ce0",
+  "files": 3343,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "67ee9a0a4bcf0ed41b9dcc7da7273b4bc63d078c",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f\\HBEngine.exe",
+    "bundleHash": "52509e8a3c52d31fe6d0a0904d41ab4d273d189337e476bbfb4d06e839a93ce0",
+    "files": 3343,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3332,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707",
+          "bytes": 178748468,
+          "manifestSHA256": "c19bbbafb01bb4f81548a8646604bb2b6a699ed4218e8682368b346f26878ca9"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T18:20:06.3836323Z",
+      "bytes": 178748468,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "52509e8a3c52d31f"
+      ]
+    },
+    "nativePlayerSHA256": "d3eaca01742b9c4661841e94e1c2e4fe782ef5d88c273ab8b38551bed04761c5",
+    "installedGates": [
+      {
+        "path": "native/build/procedural-graphs-477-Z4Ph2j/acceptance.json",
+        "sha256": "cb0dfe8b1424a966b2406d36e472b32a65aa8b10fc95e34c104e5ecc1c17dd53",
+        "scope": "Actual nonlinear full material graphs, current versus committed independent packets and mip widths. Original4e-5. Two procedural operations; no frame-rate or whole engine claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-k2CNuQ/acceptance.json",
+        "sha256": "b5d90d26d704e3ed62c5b4462aed44c5c4b0fbfaaf8d8222cb6a1e673c633ec0",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3343,
+    "versions": [
+      "52509e8a3c52d31f"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-485-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/procedural-474-xtSshP/acceptance.json",
+        "scope": "GL/TSL 실제103절차조건·코너해시독립읽기·checker큰축현재값대조"
+      },
+      {
+        "path": "native/build/procedural-graphs-477-IOsYf1/acceptance.json",
+        "scope": "실제2그래프의큰좌표 현재/이전기하·시간·밉폭·기존4e-5"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-yILSCh/acceptance.json",
+        "scope": "실제 새C++/BP DirectX 게임 Complex141·모프664·캐시/해제·준비시간 관찰"
+      }
+    ],
+    "scope": "설치된 두 절차 좌표 그래프의 GL/GPU 현재/이전 밉과 새 실행 파일의 두 DirectX 게임 캐시를 확인했어요. 전체3343파일/21소유SHA·User읽기보존·바로가기/연결·Versions1을 검증했어요. source 세API103+699조건/24전처리/4native패킷/실제C++게임 증거를 연결해요. 전체엔진/초기지연/FPS 완료를 주장하지 않아요."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/procedural-476-native-r2mkyR/probe.exe",
+        "bytes": 752870,
+        "sha256": "7a79e1b9ad964233cf8b787e38f21bde1982a2b90eb487daea09340fb5ab44bb"
+      },
+      {
+        "path": "native/build/procedural-476-native-AWhhiw/probe.exe",
+        "bytes": 752870,
+        "sha256": "1087ad249230b4d847f38ba3f92615c54ab24188d8dd492c55b161b5db273784"
+      },
+      {
+        "path": "native/build/differential-graphs-447-native-miDqHS/probe.exe",
+        "bytes": 752870,
+        "sha256": "95a94ab470f7e183804ba1b4c238a45ba45e504c8b6ca46fed986c2129dc9d9e"
+      },
+      {
+        "path": "native/build/procedural-graphs-478-native-DakiPK/probe.exe",
+        "bytes": 752870,
+        "sha256": "54e2f6165dffc486c561404d4d26b2f158277f346eada148c798e72dc15536b3"
+      },
+      {
+        "path": "native/build/ray-differentials-443-native-7YUf02/probe.exe",
+        "bytes": 752870,
+        "sha256": "df2c26fcc49241b32235f9d3691d4f8539d965b7e6a828773035d0fc0e7e6b4e"
+      },
+      {
+        "path": "native/build/ray-helper-pruning-436-iA7fzM/probe.exe",
+        "bytes": 150486,
+        "sha256": "0b1c50c8215233af597de27d481dcac076893b53eaed85b45190eebff0774a2d"
+      }
+    ],
+    "bytes": 3914836
+  },
+  "scope": "설치된 두 절차 좌표 그래프의 GL/GPU 현재/이전 밉과 새 실행 파일의 두 DirectX 게임 캐시를 확인했어요. 전체3343파일/21소유SHA·User읽기보존·바로가기/연결·Versions1을 검증했어요. source 세API103+699조건/24전처리/4native패킷/실제C++게임 증거를 연결해요. 전체엔진/초기지연/FPS 완료를 주장하지 않아요."
+}

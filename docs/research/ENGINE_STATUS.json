@@ -2079,11 +2079,11 @@
   ],
   "latestBatch": "473–485",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_472.json",
-    "sourceCommit": "7fd05c7191ea8a939a95208695475eb38cf71ed5",
-    "bundleHash": "e300561444a0c7077f59c3e4fdbabad40ef56ddd04c999389f5ba7190dd1ab58",
+    "receipt": "docs/research/USER_INSTALL_485.json",
+    "sourceCommit": "67ee9a0a4bcf0ed41b9dcc7da7273b4bc63d078c",
+    "bundleHash": "52509e8a3c52d31fe6d0a0904d41ab4d273d189337e476bbfb4d06e839a93ce0",
     "verified": true,
     "versions": 1,
-    "scope": "472 텍스처2D 정책·명시밉·상세창·설치된 GL/GPU 밉과 설치된 새DirectX게임·전체지문·User읽기보존. 남은 렌더링·누적원장 계속"
+    "scope": "485 절차 좌표/큰 셀 현재 값·설치된 두 GL/GPU 그래프·두 새D3D 게임 캐시·전체 지문·User읽기보존. 초기 준비와 누적 원장 계속"
   }
 }
