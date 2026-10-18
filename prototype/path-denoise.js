@@ -1,3 +1,5 @@
+import {transmittedSpreadGLSL} from './path-ray-cone.js';
+import {previousMediaGLSL} from './path-previous-media.js';
 import {previousGeometryGLSL} from './previous-geometry-shader.js';
 import {virtualGuideGLSL} from './path-guide-affine.js';
 import {curvedGuideGLSL} from './path-curved-guide.js';
@@ -6,13 +8,16 @@ import {surfaceHistoryGLSL} from './path-surface-history.js';
 // shortcut: differential footprints are local; reject grazing/TIR branch changes and cap the radius at32 pixels.
 export const pathDenoiseGLSL=`
 ${surfaceHistoryGLSL}
+${transmittedSpreadGLSL}
 ${previousGeometryGLSL}
+${previousMediaGLSL}
 ${curvedGuideGLSL}
 ${virtualGuideGLSL}
 vec2 hbPathOffset(vec3 x,vec3 y,vec3 delta){float a=dot(x,x),b=dot(x,y),c=dot(y,y),d=a*c-b*b;if(d<=max(1e-20,a*c*1e-6))return vec2(0,0);return vec2(c*dot(x,delta)-b*dot(y,delta),a*dot(y,delta)-b*dot(x,delta))/d;}
 vec3 hbPathPreviousPoint(float id,vec3 p){vec3 b=hbRayBary(id,p);float at=hbPathFilter.w+id*3.0;return hbGeometryLoad(at).xyz+hbGeometryLoad(at+1.0).xyz*b.y+hbGeometryLoad(at+2.0).xyz*b.z;}
 vec4 hbPathGuideTrace(vec2 uv,bool auxiliary){
 vec3 nearPoint=hbWorldAt(uv,0.0),farPoint=hbWorldAt(uv,.9999),origin=hbEye.w>.5?nearPoint:hbEye.xyz,direction=normalize(farPoint-origin),cameraDirection=direction,forward=normalize(hbForward.xyz),right=normalize(hbWorldAt(uv+vec2(.01,0),0.0)-nearPoint),up=normalize(cross(right,forward));vec2 cone=hbRayCameraCone(uv);float width=cone.x,secondaryDistance=0.0,oldSecondary=0.0;vec4 priorCamera=hbPathPriorCamera();vec3 oldView=vec3(0,0,1);float oldWidth=0.0,oldSpread=0.0;vec3 oldFirst=origin,oldPoint=priorCamera.xyz;bool previousValid=priorCamera.w>.5,lensDifferentials=hbPathLens.x>0.0&&hbEye.w<.5&&hbPathFilter.y>0.0,curved=auxiliary&&hbGeometryRecords.w>.5&&(lensDifferentials||hbPathFilter.x>0.0),differentials=lensDifferentials||curved;int differentialCount=lensDifferentials?4:2;
+float priorIDs[16],priorMedia[16];int priorCount=0;bool priorSeeded=false,priorDirectionValid=false;vec3 priorDirection=vec3(0,0,-1);
 float differentialIDs[4];vec3 ro[4],rd[4];HBPathVirtualFrame priorFrame=hbPathVirtualIdentity(),currentFrame=hbPathVirtualIdentity(),mirrorFrame=hbPathVirtualIdentity();
 ro[0]=hbEye.w>.5?hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),0.0):origin;ro[1]=hbEye.w>.5?hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),0.0):origin;rd[0]=normalize(hbWorldAt(uv+vec2(1.0/hbScreenSize.x,0),.9999)-ro[0]);rd[1]=normalize(hbWorldAt(uv+vec2(0,1.0/hbScreenSize.y),.9999)-ro[1]);vec3 focus=origin+direction*hbPathLens.y/max(.000001,dot(direction,forward));ro[2]=origin+right*hbPathLens.x;ro[3]=origin+up*hbPathLens.x;rd[2]=normalize(focus-ro[2]);rd[3]=normalize(focus-ro[3]);
 float ids[16];vec4 media[16];int count;hbMediumSeed(origin,direction,false,ids,media,count);int mirrorCount=0;
@@ -26,15 +31,26 @@ bool baseMirror=physical.x>.5&&physical.y<.4,mirror=baseMirror,coatOnly=false;
 vec4 coat=hbRayField5Lod(hit.y,p,-direction,width);bool coatMirror=coat.x>.5&&coat.y<.05;coatOnly=!glass&&!baseMirror&&coatMirror;mirror=mirror||coatMirror;
 #endif
 normal=hbPathSurfaceNormal(hit.y,p,-direction,width,coatOnly);n=front?normal:-normal;
-vec3 oldP=p,oldN=geometric;if(hbPathFilter.w>0.0){float at=hbPathFilter.w+hit.y*3.0;previousValid=previousValid&&hbGeometryLoad(at).w>.5;oldP=hbPathPreviousPoint(hit.y,p);oldN=normalize(cross(hbGeometryLoad(at+1.0).xyz,hbGeometryLoad(at+2.0).xyz));}if(bounce==0)oldFirst=oldP;if(bounce==1)oldSecondary=length(oldP-oldPoint);oldView=hbEye.w>.5&&bounce==0?priorCamera.xyz:normalize(oldPoint-oldP);if(bounce==0&&hbEye.w>.5){vec4 oldOrigin=hbPathPriorOrthoOrigin(oldP,oldView);previousValid=previousValid&&oldOrigin.w>.5;oldPoint=oldOrigin.xyz;}if(bounce==0){vec2 oldCone=hbPathPriorCone(oldP,priorCamera);oldWidth=oldCone.x;oldSpread=oldCone.y;}oldWidth+=oldSpread*length(oldP-oldPoint);
+vec3 oldP=p,oldN=geometric;
+#if !defined(HB_GUIDE_OPAQUE) || defined(HB_RAY_SURFACE_HISTORY_0)
+vec4 oldPhysical=vec4(0,0,0,0);
+#endif
+if(hbPathFilter.w>0.0){float at=hbPathFilter.w+hit.y*3.0;previousValid=previousValid&&hbGeometryLoad(at).w>.5;oldP=hbPathPreviousPoint(hit.y,p);oldN=normalize(cross(hbGeometryLoad(at+1.0).xyz,hbGeometryLoad(at+2.0).xyz));}if(bounce==0)oldFirst=oldP;if(bounce==1)oldSecondary=length(oldP-oldPoint);oldView=hbEye.w>.5&&bounce==0?priorCamera.xyz:normalize(oldPoint-oldP);if(priorDirectionValid)oldView=-priorDirection;if(bounce==0&&hbEye.w>.5){vec4 oldOrigin=hbPathPriorOrthoOrigin(oldP,oldView);previousValid=previousValid&&oldOrigin.w>.5;oldPoint=oldOrigin.xyz;}if(bounce==0){vec2 oldCone=hbPathPriorCone(oldP,priorCamera);oldWidth=oldCone.x;oldSpread=oldCone.y;}oldWidth+=oldSpread*length(oldP-oldPoint);
+#if !defined(HB_GUIDE_OPAQUE) || defined(HB_RAY_SURFACE_HISTORY_0)
+if(curved&&previousValid&&hbPathFilter.w>0.0)oldPhysical=hbRayPreviousField0TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1));
+#endif
+
 #ifndef HB_GUIDE_OPAQUE
-if(auxiliary&&curved&&previousValid&&hbPreviousGeometryAvailable()){vec4 priorHit=hbPreviousGeometryTrace(oldPoint,-oldView,hbGeometry.y);previousValid=priorHit.w>.5&&priorHit.z>.5&&priorHit.y==hit.y&&abs(priorHit.x-length(oldP-oldPoint))<=max(hbGeometryLimits.y*4.0,length(oldP-oldPoint)*.00001);}
+if(auxiliary&&curved&&previousValid&&hbPreviousGeometryAvailable()){vec4 priorHit=hbPreviousGeometryTrace(oldPoint,-oldView,hbGeometry.y);previousValid=priorHit.w>.5&&priorHit.z>.5&&priorHit.y==hit.y&&length(oldPoint-oldView*priorHit.x-oldP)<=max(hbGeometryLimits.y*4.0,length(oldP-oldPoint)*.00001);}
+#endif
+#if defined(HB_PATH_MEDIA) && !defined(HB_GUIDE_OPAQUE)
+if(auxiliary&&curved&&glass&&previousValid&&hbPreviousGeometryAvailable()&&!priorSeeded){hbPreviousMediumSeed(oldPoint,-oldView,false,priorIDs,priorMedia,priorCount);priorSeeded=true;if(priorCount<0)previousValid=false;}
 #endif
 oldPoint=oldP;
 if(curved){oldN=coatOnly?hbPathCommittedCoatNormal(hit.y,oldP,oldView,oldWidth):hbPathCommittedNormal(hit.y,oldP,oldView,oldWidth);if(dot(oldN,oldN)<.5)previousValid=false;}
 if(curved&&previousValid&&hbPathFilter.w>0.0){
 #ifdef HB_RAY_SURFACE_HISTORY_0
-vec4 oldPhysical=hbRayPreviousField0TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1));previousValid=hbPathSameSurface(physical,oldPhysical);
+previousValid=hbPathSameSurface(physical,oldPhysical);
 #endif
 #if defined(HB_PATH_ADVANCED) && defined(HB_RAY_SURFACE_HISTORY_5)
 vec4 oldCoat=hbRayPreviousField5TimeLod(hit.y,oldP,oldView,oldWidth,vec2(hbForward.w,1));previousValid=previousValid&&hbPathSameCoat(coat,oldCoat);
@@ -52,10 +68,19 @@ if(lensDifferentials){vec3 x=dp[0]-p,y=dp[1]-p;coc=min(32.0,max(length(hbPathOff
 if(!auxiliary)return vec4(normal,depth);
 vec3 virtualPoint=hbPathVirtualPoint(priorFrame,oldP),virtualCurrent=hbPathVirtualPoint(currentFrame,p);
 vec3 oldUV=hbProject(virtualPoint,hbPreviousVP);oldUV.xy+=uv-hbProject(virtualCurrent,hbCurrentVP).xy;float expected=bounce==0?max(.00001,hbLinearDepth(oldUV.z)):-max(.00001,oldSecondary);if(!previousValid||!hbInside(oldUV))oldUV.xy=vec2(-1,-1);return vec4(oldUV.xy,expected,coc);}
-float eta=1.0;bool reflection=true;if(glass){float volume=hbMediumID(hit.y),incoming=count>0?media[clamp(count-1,0,15)].w:1.0,outgoing=front?physical.w:1.0;if(volume>0.0&&!front){int found=-1;for(int j=0;j<count;j++)if(ids[j]==volume)found=j;if(found<0)break;if(found!=count-1)outgoing=incoming;else if(count>1)outgoing=media[clamp(count-2,0,15)].w;}if(volume<.5){incoming=front?1.0:physical.w;outgoing=front?physical.w:1.0;}eta=incoming/max(.000001,outgoing);vec3 next=refract(direction,n,eta);reflection=dot(next,next)<.000001;if(reflection)direction=reflect(direction,n);else{direction=normalize(next);if(volume>0.0)hbMediumChange(volume,hbMediumValueLod(hit.y,p,-direction,width),front,ids,media,count);}}
+float eta=1.0;bool reflection=true;if(glass){float volume=hbMediumID(hit.y),incoming=count>0?media[clamp(count-1,0,15)].w:1.0,outgoing=front?physical.w:1.0;if(volume>0.0&&!front){int found=-1;for(int j=0;j<count;j++)if(ids[j]==volume)found=j;if(found<0)break;if(found!=count-1)outgoing=incoming;else if(count>1)outgoing=media[clamp(count-2,0,15)].w;}if(volume<.5){incoming=front?1.0:physical.w;outgoing=front?physical.w:1.0;}eta=incoming/max(.000001,outgoing);float inCosine=abs(dot(n,direction));vec3 next=refract(direction,n,eta);reflection=dot(next,next)<.000001;if(reflection)direction=reflect(direction,n);else{direction=normalize(next);cone.y=hbRayTransmitSpread(cone.y,eta,inCosine,abs(dot(n,direction)));if(volume>0.0)hbMediumChange(volume,hbMediumValueLod(hit.y,p,-direction,width),front,ids,media,count);}}
 else direction=reflect(direction,n);if(reflection){if(mirrorCount<8){if(!auxiliary)hbPathVirtualAppend(mirrorFrame,vec3(0,0,0),n,1.0,true);mirrorCount++;}else break;}
-if(auxiliary&&curved&&glass&&previousValid&&hbPathFilter.w>0.0){previousValid=hbPathSameRefraction(oldView,oldN,hbRayPreviousGeometric(hit.y),eta,front,reflection);}
-if(auxiliary){hbPathVirtualAppend(priorFrame,oldP,oldN,eta,reflection);hbPathVirtualAppend(currentFrame,p,curved?normal:geometric,eta,reflection);}
+float oldEta=eta;
+if(auxiliary&&curved&&glass&&previousValid&&hbPathFilter.w>0.0){
+#ifndef HB_GUIDE_OPAQUE
+if(hbPreviousGeometryAvailable()){vec4 branch=hbPreviousMediumBranch(hit.y,oldView,oldN,oldPhysical,front,reflection,priorIDs,priorMedia,priorCount);if(branch.w<=0.0)previousValid=false;else{oldEta=branch.w;priorDirection=branch.xyz;priorDirectionValid=true;}}
+#endif
+if(previousValid)previousValid=hbPathSameRefraction(oldView,oldN,hbRayPreviousGeometric(hit.y),oldEta,front,reflection);}
+#ifndef HB_GUIDE_OPAQUE
+if(auxiliary&&curved&&!glass&&previousValid&&hbPreviousGeometryAvailable()){priorDirection=normalize(reflect(-oldView,oldN));priorDirectionValid=true;}
+#endif
+if(auxiliary&&curved&&glass&&previousValid&&!reflection){vec3 oldNext=priorDirectionValid?priorDirection:normalize(refract(-oldView,front?oldN:-oldN,oldEta));oldSpread=hbRayTransmitSpread(oldSpread,oldEta,abs(dot(oldN,oldView)),abs(dot(oldN,oldNext)));}
+if(auxiliary){hbPathVirtualAppend(priorFrame,oldP,oldN,oldEta,reflection);hbPathVirtualAppend(currentFrame,p,curved?normal:geometric,eta,reflection);}
 if(differentials)for(int j=0;j<differentialCount;j++){vec3 dn=hbPathSurfaceNormal(differentialIDs[j],dp[j],-rd[j],width,coatOnly);if(!front)dn=-dn;vec3 next=reflection?reflect(rd[j],dn):refract(rd[j],dn,eta);if(dot(next,next)<.000001||(glass&&reflection&&dot(refract(rd[j],dn,eta),refract(rd[j],dn,eta))>.000001))return vec4(0,0,0,0);rd[j]=normalize(next);ro[j]=dp[j]+rd[j]*hbGeometryLimits.y*2.0;}
 origin=p+direction*hbGeometryLimits.y*2.0;
 }return vec4(0,0,0,0);}

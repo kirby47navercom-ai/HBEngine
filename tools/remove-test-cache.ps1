@@ -10,6 +10,13 @@ $resolvedPlan = (Resolve-Path -LiteralPath $PlanFile).Path
 if (-not $resolvedPlan.StartsWith($expected + '\', [StringComparison]::OrdinalIgnoreCase)) { throw '정리 계획 경로 오류' }
 $plan = Get-Content -LiteralPath $resolvedPlan -Raw -Encoding UTF8 | ConvertFrom-Json
 if ([IO.Path]::GetFullPath($plan.build).TrimEnd('\') -ne $expected) { throw '검사 빌드 경로 오류' }
+$identityHash = [Security.Cryptography.SHA256]::Create()
+try { $lockID = [BitConverter]::ToString($identityHash.ComputeHash([Text.Encoding]::UTF8.GetBytes($expected.ToLowerInvariant()))).Replace('-','') }
+finally { $identityHash.Dispose() }
+$cleanupMutex = [Threading.Mutex]::new($false, ('Local\HBEngineCachePrune-' + $lockID)); $lockHeld = $false
+try {
+try { $lockHeld = $cleanupMutex.WaitOne(30000) } catch [Threading.AbandonedMutexException] { $lockHeld = $true }
+if (-not $lockHeld) { throw '다른 검사 캐시 정리가 끝나지 않았어요.' }
 $processes = @(Get-CimInstance Win32_Process)
 $freeBefore = (Get-PSDrive -Name C).Free
 $deleted = @(); $skipped = @(); $failures = @()
@@ -58,3 +65,4 @@ foreach ($entry in $plan.entries) {
 $result = @{date=[DateTime]::UtcNow.ToString('o');deleted=$deleted.Count;bytes=($deleted | Measure-Object -Property bytes -Sum).Sum;files=($deleted | Measure-Object -Property files -Sum).Sum;freeBefore=$freeBefore;freeAfter=(Get-PSDrive -Name C).Free;skipped=$skipped;failures=$failures;receipt=(Split-Path -Parent $resolvedPlan)}
 $result | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path (Split-Path -Parent $resolvedPlan) 'result.json') -Encoding UTF8
 if ($failures.Count -gt 0) { throw '일부 검사 캐시 정리에 실패했어요. result.json을 확인하세요.' }
+} finally { if ($lockHeld) { $cleanupMutex.ReleaseMutex() }; $cleanupMutex.Dispose() }

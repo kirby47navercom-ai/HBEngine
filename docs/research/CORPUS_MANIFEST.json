@@ -2781,7 +2781,8 @@
     "327: Selected sequence ownership reading in docs/ENGINE_IMPLEMENTATION_327.md: Unreal4.27 keep/restore historical supplement, Unreal5.8 Animation Track and Unity Timeline1.8.13 track priority. Reconcile screenshots, linked Motion Blending/Slot/root-motion/section APIs, package compatibility and current-versus-historical behavior; no corpus body/API/global gate promotion.",
     "349: Reconcile linked D3DCompile/compiler versioning, shader device-validation, CreateFile/FlushFileBuffers/MoveFileEx and file-lock APIs/platform durability. Selected DX11 bytecode reuse checks do not close GL/WebGPU first compilation, filesystem APIs or global source corpus.",
     "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation.",
-    "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay."
+    "370: Reconcile remaining Three r180 renderer/device lifecycle and linked node/binding APIs, PBRT4 BVH construction/traversal and robustness references. Selected methods/sections and HB execution do not complete the full corpus or medium/curved inverse replay.",
+    "376: Reconcile PBRT4 remaining Dielectric BSDF rough/dispersion/radiance sections, SurfaceInteraction/Camera linked APIs and full texture filtering/EWA references. Selected old-medium/footprint checks do not close global curved correspondence or participating-medium scattering."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -3792,5 +3793,26 @@
       "docs/RENDERING_HISTORY_370_RESEARCH.md"
     ],
     "analysisGate": "선택 소스/본문 대조; 전체 문서·API·독립 분석 gate 미승격"
+  },
+  "supplemental376": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://pbr-book.org/4ed/Reflection_Models/Dielectric_BSDF",
+        "scope": "반환 텍스트0–130행: 도입과 완전 정반사/투과·상대 IOR·valid Refract/TIR·방사휘도 측도 의미. 중간 코드에 노출된 rough 조각은 전체 rough 절/연결 API 분석으로 계산하지 않음. 131–315행과 이미지·연결 문서 미독",
+        "snapshot": "native/build/reference-corpus/supplemental376/dielectric.html",
+        "sha256": "6478600c1a421a858b91790ce67c78da646d117a82ac1c2c47d3740fc3a2df52"
+      },
+      {
+        "url": "https://pbr-book.org/4ed/Textures_and_Materials/Texture_Sampling_and_Antialiasing",
+        "scope": "반환 텍스트26–82,119–243,245–331행: 국소 평면·특이 미분·직교/원근 근사·매질 경계·정반사/투과 차분과 법선 미분·극단 값 처리. 본문 나머지/수식 이미지·연결 API·필터10.1.4/EWA 전체 미독",
+        "snapshot": "native/build/reference-corpus/supplemental376/texture-filter.html",
+        "sha256": "118696d8f63ff8a584ff6213130ae96b3585cc24474a26a5d795c0bcbbf1f3a8"
+      }
+    ],
+    "evidence": [
+      "docs/RENDERING_HISTORY_376_RESEARCH.md"
+    ],
+    "analysisGate": "선택 본문과 기존 구현 대조; 전체 corpus/독립 분석 gate 미승격"
   }
 }

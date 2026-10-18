@@ -1,0 +1,17 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';
+import {opticalGuideFixture375,expectedOpticalWidth375,opticalGuideGL375,opticalGuideGPU375} from './optical-guide-fixture-375.mjs';import {guideHistoryProbe358} from './guide-history-probe-358.mjs';import {visibilityProbe369} from './previous-visibility-fixture-369.mjs';import {createProject} from './project-manifest.mjs';import {editorWindowProbe} from './editor-window-probe.mjs';import {activeInstalledVersions} from './install-editor.mjs';import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+assert.deepEqual(await activeInstalledVersions('C:/Users/kirby/HBEngine'),[]);const work=await fs.mkdtemp(path.resolve('native/build/optical-guide-375-'));retainTestEvidence(work);let probe;
+try{
+ const executableArg=process.argv.indexOf('--executable'),executable=executableArg<0?null:path.resolve(process.argv[executableArg+1]),packet=opticalGuideFixture375(),project=await createProject('OpticalGuide375',work,'2d'),rows=[],gpu=await fs.readFile(executable?path.join(path.dirname(executable),'prototype/path-guide-gpu.js'):'prototype/path-guide-gpu.js','utf8');probe=await editorWindowProbe({work,project:project.file,...executable?{executable}:{}});
+ for(const mode of ['width','mip']){
+  const gpuSource=opticalGuideGPU375(gpu,mode);await probe.evaluate('(async()=>{const source='+JSON.stringify(gpuSource)+'.replace(/from [\x27\x22](\\.\\/[^\x27\x22]+)[\x27\x22]/g,(_,p)=>"from "+JSON.stringify(location.origin+"/prototype/"+p.slice(2)));window.opticalGuide375=await import("data:text/javascript;charset=utf-8,"+encodeURIComponent(source));return true;})()');
+  const source=visibilityProbe369(guideHistoryProbe358(packet,true),false).replace("await import('/prototype/path-guide-gpu.js')",'window.opticalGuide375').replace('quad=new FullScreenQuad(pass.denoiser.materials[2]);','pass.denoiser.materials[2].fragmentShader=('+opticalGuideGL375.toString()+')(pass.denoiser.materials[2].fragmentShader,'+JSON.stringify(mode)+');quad=new FullScreenQuad(pass.denoiser.materials[2]);');
+  for(const r of await probe.evaluate(source)){
+   const centers=[8*16+8,8*16+9].map(i=>r.rows[0].slice(i*4,i*4+4));assert.ok(centers.flat().every(Number.isFinite));
+   if(mode==='width')for(let i=0;i<centers.length;i++){const expected=expectedOpticalWidth375(r.backend,[(8+i+.5)/16,.53125]),error=Math.max(...expected.map((v,j)=>Math.abs(v-centers[i][j])));assert.ok(error<4e-5,JSON.stringify({mode,backend:r.backend,centers,expected,error}));}
+   else{for(const c of centers)assert.ok(Math.abs(c[0]-c[1])<4e-5&&c[3]===1,JSON.stringify({mode,backend:r.backend,centers}));assert.ok(centers.some(c=>Math.abs(c[1]-c[2])>.001),JSON.stringify({mode,backend:r.backend,centers}));}
+   rows.push({mode,backend:r.backend,centers});
+  }
+ }
+ const exit=await probe.finish();probe=null;await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,rows,exit,scope:'Actual full auxiliary guide, test-only output instrumentation. Independent camera/Snell width reference and committed/current normal-map mip equality; old unbent-cone sampling must differ. Local thin transmission; no global curved inverse claim.'},null,2)+'\n');console.log(JSON.stringify({work,passed:true,rows}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,diagnostics:await probe?.diagnostics()},null,2));throw error;}finally{await probe?.stop();await pruneTestArtifacts(work);}
