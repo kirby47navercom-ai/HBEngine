@@ -172,7 +172,10 @@
     "test:mixer-blends": "node tools/check-mixer-blends.mjs",
     "test:mixer-blends-editor": "node tools/check-mixer-blends-window.mjs",
     "test:mixer-parameter-transitions": "node tools/check-mixer-transitions.mjs",
-    "test:2d-retarget": "node tools/check-sprite-rig-retarget.mjs"
+    "test:2d-retarget": "node tools/check-sprite-rig-retarget.mjs",
+    "test:previous-frame": "node tools/check-previous-context-308-window.mjs && node tools/check-previous-context-308-native.mjs && node tools/check-previous-camera-309-window.mjs",
+    "test:sparse-tilemap": "node tools/check-tilemap-sparse-310.mjs && node tools/check-tilemap-sparse-312-window.mjs",
+    "test:asset-write-recovery": "node tools/check-asset-write-317.mjs && node tools/check-project-durability-294.mjs"
   },
   "dependencies": {
     "@dimforge/rapier2d-compat": "0.21.0",

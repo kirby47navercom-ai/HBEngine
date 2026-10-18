@@ -1,0 +1,23 @@
+import {previousContextGPUProbe} from './previous-context-probe.mjs';
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';
+import {previousContextFixtures} from './previous-context-fixture.mjs';
+import {createProject} from './project-manifest.mjs';import {editorWindowProbe} from './editor-window-probe.mjs';
+import {retainTestEvidence,pruneTestArtifacts} from './test-artifacts.mjs';
+const executableAt=process.argv.indexOf('--executable'),executable=executableAt<0?path.resolve('HBEngine.exe'):path.resolve(process.argv[executableAt+1]);
+const work=await fs.mkdtemp(path.resolve('native/build/previous-context-308-'));retainTestEvidence(work);let probe;
+try{
+ const fixtures=previousContextFixtures().filter(f=>(!process.argv.includes('--deformed-only')||f.mode.includes(':'))&&(process.argv.indexOf('--case')<0||f.mode===process.argv[process.argv.indexOf('--case')+1])),project=await createProject('PreviousContext308',work,'2d');assert.ok(fixtures.length,'requested prior-context case missing');await fs.writeFile(path.join(work,'packets.json'),JSON.stringify(fixtures));
+ probe=await editorWindowProbe({work,project:project.file,executable});const results=[];
+ for(const f of fixtures){const r=await probe.evaluate(`(async()=>{
+ const f=${JSON.stringify(f)},T=await import('three'),{ScreenEffectsPass}=await import('/prototype/screen-effects-gl.js'),{curvedGuideGLSL}=await import('/prototype/path-curved-guide.js'),rows=[];
+ const renderer=new T.WebGLRenderer({antialias:false});renderer.setSize(2,2);
+ try{for(const[packet,prior,width]of[[f.prior,false,f.width],[f.current,true,f.width],[f.current,true,f.currentWidth]]){
+  const world=new T.Scene(),quad=new T.PlaneGeometry(2,2),pass=new ScreenEffectsPass(),target=new T.WebGLRenderTarget(2,2,{type:T.FloatType,depthBuffer:false}),atlas=new T.DataTexture(new Float32Array(packet.data),packet.width,packet.height,T.RGBAFormat,T.FloatType);atlas.minFilter=atlas.magFilter=T.NearestFilter;atlas.needsUpdate=true;
+  try{pass.configurePrograms(packet.rayInfo,true,false,false,false,false,false);const m=pass.material,u=m.uniforms;for(const key of['geometryInfo','geometryRecords','transport','pathFilter','forward'])u['hb'+key[0].toUpperCase()+key.slice(1)].value.fromArray(packet[key]);u.hbGeometryScene.value=atlas;
+   const at=m.fragmentShader.lastIndexOf('void main(');m.fragmentShader=m.fragmentShader.slice(0,at)+curvedGuideGLSL+'void main(){gl_FragColor=vec4('+(prior?'hbPathCommittedNormal':'hbRayNormalLod')+'('+(prior?f.id:0)+'.0,vec3('+f.point.join(',')+'),vec3('+f.view.join(',')+'),'+width+'),1);}';world.add(new T.Mesh(quad,m));renderer.setRenderTarget(target);renderer.render(world,new T.Camera());const pixel=new Float32Array(4);renderer.readRenderTargetPixels(target,0,0,1,1,pixel);if(renderer.getContext().getError())throw Error(JSON.stringify(renderer.info.programs?.map(p=>p.diagnostics)));rows.push([...pixel]);
+  }finally{quad.dispose();target.dispose();atlas.dispose();pass.dispose();}
+ }}finally{renderer.dispose();renderer.forceContextLoss();}
+ return rows;
+ })()`);const gpu=process.argv.includes('--webgl-only')?null:await probe.evaluate(previousContextGPUProbe(f));if(gpu){const error=Math.max(...gpu.flatMap((row,n)=>row.slice(0,3).map((v,i)=>Math.abs(v-r[n][i]))));assert.ok(error<4e-5,JSON.stringify({mode:f.mode,gl:r,gpu,error}));}const error=Math.max(...r[0].slice(0,3).map((v,i)=>Math.abs(v-r[1][i])));assert.ok(error<4e-5,JSON.stringify({mode:f.mode,r,error}));assert.ok(r.flat().every(Number.isFinite));assert.ok(Math.hypot(...r[0].slice(0,3))>.99,'prior reference normal must be observable');results.push({mode:f.mode,rows:r,gpu,error,widthSensitivity:Math.max(...r[1].slice(0,3).map((v,i)=>Math.abs(v-r[2][i])))});}
+ await fs.writeFile(path.join(work,'pixels.json'),JSON.stringify(results,null,2));if(!process.argv.includes('--case'))assert.ok(results.some(r=>r.widthSensitivity>.01),'fixture must observe the mip footprint');const exit=await probe.finish();probe=null;await fs.writeFile(path.join(work,'acceptance.json'),JSON.stringify({passed:true,results,exit,newHistoryImages:0,newUniforms:0},null,2));console.log(JSON.stringify({work,passed:true,results:results.map(({mode,error,widthSensitivity})=>({mode,error,widthSensitivity}))}));
+}catch(error){await fs.writeFile(path.join(work,'failure.json'),JSON.stringify({error:error.stack,diagnostics:await probe?.diagnostics()},null,2));throw error;}finally{await probe?.stop();await pruneTestArtifacts(work);}

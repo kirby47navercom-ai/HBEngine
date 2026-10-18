@@ -974,3 +974,11 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 308 fixture의 실제 활성 조건 추가 대조: 광원만 넣은 두 번째 시도도 records0이었어요. renderer는 조명 받는 MeshStandardMaterial 수신자가 하나도 없으면 shadow atlas를 만들지 않아요. 기존 fixture의 MeshBasicMaterial은 unlit이라 수신자가 될 수 없어요. 별도 lit 수신자를 추가해 실제 active layer를 만든 뒤 pose 변경을 검사하고, unlit-only/no-light의 패스 생략을 유지해요.
 
 307 최종 native window yHkwNk: Complex141 실제 pathNoTransmission=true·C++/BP·변형/이전 노멀/필터·해제·재방문을 통과했어요. 첫5187/시간3280ms, 재방문190/221ms는 단일 전환 표본이며 FPS가 아니에요. Fake native-frame 88gBMx는 raw0→.7→alpha.45→Time현재0→raw0의 메타데이터 true/false를 확인했고 runtime은 실제 C++ 응답에 pathNoTransmission을 반환해요. 309의 lit 수신자 포함 deformation 회귀와 기존2D 묶음도 통과예요. GL/GPU 공용 소유자는 이 단계에서 변경하지 않아 기존 통과근거를 재사용해요.
+
+# 308–312 진행 중 · 2026-10-18
+
+이전 월드/시점/UV/밉 입력은 GL·GPU 7군과 실제 D3D 7군이 이전 패킷 기준 최대1.15e-6, 카메라/콘8군 GL·GPU가 통과했어요. 변형/인스턴스와 실제 게임 연결 검사는 후속 진행 중이에요. 새 2D 희소 편집 CPU/기존 제작/수명 통과 후312 실제 포인터 erase가 두 번 실패했어요. 첫 center 가정, 두 번째 view 좌표의 실제 y973/pointer 이벤트0·tile수 불변이에요. 허용치/기대셀/입력기준을 낮추지 않아요. 다음은 소유한 숨김창에서 viewport/canvas/scroll/elementFromPoint/screenshot을 읽어 대상 가림·레이아웃/스크롤 원인을 판별하고 실제 셀을 보이게 수정해요. 확인 없이 반복 클릭하지 않아요. 사용자창/프로필/프로젝트는 쓰지 않아요.
+
+312 원인 확정: 테스트가 `.two-d-editor canvas`로 왼쪽 팔레트의 첫 타일 캔버스(x12/y842)를 선택했어요. 실제 편집 캔버스는 `.two-d-scroll canvas`(x244/y259)이고315 CElIgN의 VP1424×861/레이아웃·후보1개로 확인했어요. 픽셀 좌표·기대셀·우클릭을 유지하고 선택자만 실제 편집 캔버스로 고쳐 검사해요. 제품 동작/허용치 수정은 하지 않아요.
+
+308–318 최종 개발 검사: 316의 GL/GPU/D3D C++·BP·변형/필터/재방문은 모두 통과했어요.312 VieJoP는 실제 우클릭/Undo/가운데 이동/100만 좌표 C++ Box/Flood/Batch·BP까지 종료0으로 통과했어요. 누락된 expectedRevision과 닫힌 BP 문서를 저장하려던 검사 인자만 고쳤고 제품 수명·허용치·deadline은 낮추지 않았어요. generated tile center의 물리 검증은 기존 질의1e6 범위를 사용하고 authored 검증을 유지해요. 후속317 Hoyt5C의 실제 프로세스 중단6조건 포함12조건·294 FoeN7K7조건·그룹5HKXML17조건은 통과했어요. 일반 저장은 원자 내용 게시 후 ID roll-forward이며 여러 파일 롤백과 구분해요. 새315 이하 및validate316은 실행 완료한 one-shot이므로 재실행하지 않아요.

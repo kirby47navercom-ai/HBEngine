@@ -43,7 +43,7 @@ export class RuntimeTilemaps {
       for(const value of updates.values())if(value.index>=0){tiles.push(value);changed=true;}
       if(changed){cells=args.cells;next={...map,layers:map.layers.map(item=>item===layer?{...item,tiles}:item)};}
     }
-    else if(key==='tileClear'){if(layer.tiles.length){next=structuredClone(map);next.layers.find(l=>l.id===layer.id).tiles=[];changed=true;}}
+    else if(key==='tileClear'){if(layer.tiles.length){next={...map,layers:map.layers.map(l=>l===layer?{...l,tiles:[]}:l)};changed=true;}}
     else if(key==='tileLayerVisible'){if(typeof args.visible!=='boolean')throw Error('표시 값을 확인하세요.');if(layer.visible!==args.visible){next={...map,layers:map.layers.map(l=>l===layer?{...l,visible:args.visible}:l)};changed=true;}}
     else if(key==='tileRefresh'){if(!cellOK(map,args.cell))throw Error('셀 좌표를 확인하세요.');changed=true;cells=[args.cell];}
     else{

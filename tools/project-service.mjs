@@ -1,3 +1,4 @@
+import {recoverAssetWrites,publishAssetText} from './asset-write-intent.mjs';
 import {resolveEffectDefinition} from '../prototype/effect-scaling.js';
 import {validateAbilitySetGraph} from '../prototype/ability-set-resolution.js';
 import {modelSubassetReport} from './model-subassets.mjs';
@@ -18,7 +19,7 @@ export function assetKind(name){if(/\.(gltf|glb|obj|fbx)\.import\.json$/i.test(n
 export class ProjectService {
   constructor(root){this.root=path.resolve(root);this.index={};this.redirects={};this.queue=Promise.resolve();this.writeQueue=Promise.resolve();}
   async init(seed=false){await fs.mkdir(this.root,{recursive:true});this.root=await fs.realpath(this.root);try{this.index=JSON.parse(await fs.readFile(path.join(this.root,'.hbassets.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
-    await recoverAssetTransactions(this);
+    this.writeRecovery=await recoverAssetWrites(this);await recoverAssetTransactions(this);
     try{this.redirects=JSON.parse(await fs.readFile(path.join(this.root,'.hbredirects.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
     if(seed){const scene={version:1,sceneName:'Garden',objects:defaultObjects,surface:defaultSurface,environment:defaultEnvironment,blueprint:defaultBlueprint};const files={
       'Assets/Scenes/Garden.hbscene.json':JSON.stringify(scene,null,2),'Assets/Blueprints/BP_Garden.hbblueprint.json':JSON.stringify(defaultBlueprint,null,2),'Assets/Materials/Moss_stone.hbmaterial.json':JSON.stringify({version:1,surface:defaultSurface},null,2),
@@ -34,7 +35,7 @@ export class ProjectService {
     while(true){try{const real=await fs.realpath(cursor);if(real!==this.root&&!real.startsWith(this.root+path.sep))throw Error('프로젝트 밖 링크는 사용할 수 없어요.');break;}catch(error){if(!allowMissing||error.code!=='ENOENT')throw error;cursor=path.dirname(cursor);}}
     return full;
   }
-  async canonicalFile(relative){const file=await this.resolve(relative,true);return fs.realpath(file).catch(error=>{if(error.code==='ENOENT')return file;throw error;});}
+  async canonicalFile(relative){const file=await this.resolve(relative,true),missing=[];let cursor=file;while(true){try{const real=await fs.realpath(cursor),resolved=path.resolve(real,...missing);if(resolved!==this.root&&!resolved.startsWith(this.root+path.sep))throw Error('프로젝트 범위 밖 경로');return resolved;}catch(error){if(error.code!=='ENOENT')throw error;missing.unshift(path.basename(cursor));const parent=path.dirname(cursor);if(parent===cursor)throw error;cursor=parent;}}}
   async *walk({folder='',signal}={}){
     await this.resolve(folder,false,false);const pending=[folder];
     while(pending.length){signal?.throwIfAborted();const relative=pending.pop(),dir=await this.resolve(relative,false,false);
@@ -58,7 +59,7 @@ export class ProjectService {
     if(model){try{const previous=metadata?[...metadata.subassets,...(metadata.unresolvedSubassets||[])]:[...(entry.subassets||[]),...(entry.unresolvedSubassets||[])],report=modelSubassetReport(bytes,canonical,entry.id,previous);Object.assign(entry,{subassets:report.rows,unresolvedSubassets:report.unresolved,modelDetected:report.detected,modelWarnings:report.warnings,modelSourceError:null,importSettings:metadata?.settings||null,importNeedsReimport:!!(metadata?.sourceHash&&metadata.sourceHash!==digest)});}catch(problem){entry.modelSourceError=problem.message;error=problem.message;}}
     const after=await fs.stat(file);if(after.mtimeMs!==stat.mtimeMs||after.size!==stat.size)throw Error('가져오는 동안 원본이 변경됐어요. 다시 시도하세요.');const changed=entry.hash!==digest;Object.assign(entry,{hash:digest,size:stat.size,modified:stat.mtimeMs,dependencies,error,status:error?'error':'ready'});if(force||changed){entry.revision=(entry.revision||0)+1;entry.importedAt=new Date().toISOString();}return entry;
   }
-  async registry(){const files=(await this.files()).filter(file=>file.kind!=='folder');for(const file of files)await this.scanAsset(file.path);await this.saveIndex();return files;}
+  async registry(){await this.writeQueue;await recoverAssetWrites(this);const files=(await this.files()).filter(file=>file.kind!=='folder');for(const file of files)await this.scanAsset(file.path);await this.saveIndex();return files;}
   async assetRegistry(){
     const files=await this.registry(),resolved=new Map(),records=new Map(files.map(f=>[f.path,{...this.index[f.path],path:f.path,kind:f.kind,dependencies:[],referencers:[]}]));
     const resolve=async source=>{if(!resolved.has(source))resolved.set(source,(async()=>{try{const file=await this.resolve(source),name=path.relative(this.root,file).split(path.sep).join('/');return records.has(name)?{path:name,id:records.get(name).id,kind:records.get(name).kind,missing:false}:{path:source,missing:true};}catch{return {path:source,missing:true};}})());return resolved.get(source);};
@@ -115,7 +116,7 @@ export class ProjectService {
   checkedBatch(entries,guard=()=>{},{dryRun=false,restoreIndex=new Map(),guards=[]}={}){
     if(!Array.isArray(entries)||!entries.length||entries.length>64||typeof dryRun!=='boolean'||!Array.isArray(guards))throw Error('저장 묶음과 읽기 기준을 확인하세요.');
     const task=this.writeQueue.then(async()=>{
-      guard();const rows=[],drafts=new Map(),seen=new Set();let bytes=0;
+      guard();if(!dryRun)await recoverAssetWrites(this);const rows=[],drafts=new Map(),seen=new Set();let bytes=0;
       for(const entry of entries){
         if(!entry||typeof entry.path!=='string'||!/^(Assets|Source|Settings)\//.test(entry.path)||!textExtensions.has(path.extname(entry.path).toLowerCase())||[entry.text,entry.expected].some(t=>t!==null&&typeof t!=='string'))throw Error('편집 가능한 파일과 이전 저장 기준을 확인하세요.');
         const file=await this.canonicalFile(entry.path),canonical=path.relative(this.root,file).split(path.sep).join('/'),key=canonical.toLowerCase();if(!/^(Assets|Source|Settings)\//.test(canonical)||!textExtensions.has(path.extname(canonical).toLowerCase()))throw Error('저장 대상 파일 경로를 확인하세요.');if(seen.has(key))throw Error('저장 묶음의 파일 경로가 중복돼요.');seen.add(key);
@@ -166,19 +167,21 @@ export class ProjectService {
     return createBlueprintResolver(async requested=>JSON.parse(await readText(requested)),readText)(canonical);
   }
   async validateModelImportSource(relative,data){const source=relative.slice(0,-'.import.json'.length);if(await this.canonicalFile(data.source)!==await this.canonicalFile(source))throw Error('가져오기 설정의 원본 모델 경로가 달라요.');}
-  async writeFile(relative,data,guard=()=>{}){if(!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 텍스트 파일이 아니에요.');const file=await this.resolve(relative,true);const kind=assetKind(relative),references=[],checkedWrite=['effect','curve','abilityset'].includes(kind),before=checkedWrite?await fs.readFile(file,'utf8').catch(error=>{if(error.code==='ENOENT')return null;throw error;}):null;if(assetSuffix[kind]&&!validAsset(kind,JSON.parse(data)))throw Error(assetValidationError(kind,JSON.parse(data))+': '+relative);if(kind==='effect'||kind==='curve'){const canonical=await this.canonicalFile(relative),key=path.relative(this.root,canonical).split(path.sep).join('/').toLowerCase(),roots=new Set(kind==='curve'?(await this.files()).filter(f=>f.kind==='effect').map(f=>f.path):[]);if(kind==='effect')roots.add(relative);const checked=await this.validateEffects([...roots],new Map([[key,data]]));references.push(...checked.guards);}if(kind==='modelimport'){await this.validateModelImportSource(relative,JSON.parse(data));}if(kind==='abilityset'||kind==='curve'){const canonical=await this.canonicalFile(relative),key=path.relative(this.root,canonical).split(path.sep).join('/').toLowerCase();const roots=new Set((await this.files()).filter(f=>f.kind==='abilityset').map(f=>f.path));if(kind==='abilityset')roots.add(relative);const checked=await this.validateAbilitySets([...roots],new Map([[key,data]]));references.push(...checked.guards);}if(relative.endsWith('.hbscene.json')&&!validScene(JSON.parse(data)))throw Error('장면 검증 실패');if(relative.endsWith('.hbblueprint.json'))await this.validateBlueprint(relative,JSON.parse(data));if(checkedWrite)return commitAssetBatch(this,[{path:relative,before,after:data}],guard,async()=>{guard();for(const entry of references)if((await this.inspectFingerprint(entry.path)).revision!==entry.expectedFingerprint)throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});},{retainJournal:false});await fs.mkdir(path.dirname(file),{recursive:true});const temp=file+'.'+randomUUID()+'.tmp';try{await fs.writeFile(temp,data,{flag:'wx',flush:true});await fs.rename(temp,file);}finally{await fs.unlink(temp).catch(()=>{});}this.index[relative]??={id:randomUUID()};await this.saveIndex();}
-  async create(folder,kind,name,parent){
+  async writeFile(relative,data,guard=()=>{}){guard();await recoverAssetWrites(this);if(!textExtensions.has(path.extname(relative).toLowerCase()))throw Error('편집 가능한 텍스트 파일이 아니에요.');const file=await this.canonicalFile(relative);const kind=assetKind(relative),references=[],checkedWrite=['effect','curve','abilityset'].includes(kind),before=checkedWrite?await fs.readFile(file,'utf8').catch(error=>{if(error.code==='ENOENT')return null;throw error;}):null;if(assetSuffix[kind]&&!validAsset(kind,JSON.parse(data)))throw Error(assetValidationError(kind,JSON.parse(data))+': '+relative);if(kind==='effect'||kind==='curve'){const canonical=await this.canonicalFile(relative),key=path.relative(this.root,canonical).split(path.sep).join('/').toLowerCase(),roots=new Set(kind==='curve'?(await this.files()).filter(f=>f.kind==='effect').map(f=>f.path):[]);if(kind==='effect')roots.add(relative);const checked=await this.validateEffects([...roots],new Map([[key,data]]));references.push(...checked.guards);}if(kind==='modelimport'){await this.validateModelImportSource(relative,JSON.parse(data));}if(kind==='abilityset'||kind==='curve'){const canonical=await this.canonicalFile(relative),key=path.relative(this.root,canonical).split(path.sep).join('/').toLowerCase();const roots=new Set((await this.files()).filter(f=>f.kind==='abilityset').map(f=>f.path));if(kind==='abilityset')roots.add(relative);const checked=await this.validateAbilitySets([...roots],new Map([[key,data]]));references.push(...checked.guards);}if(relative.endsWith('.hbscene.json')&&!validScene(JSON.parse(data)))throw Error('장면 검증 실패');if(relative.endsWith('.hbblueprint.json'))await this.validateBlueprint(relative,JSON.parse(data));if(checkedWrite)return commitAssetBatch(this,[{path:relative,before,after:data}],guard,async()=>{guard();for(const entry of references)if((await this.inspectFingerprint(entry.path)).revision!==entry.expectedFingerprint)throw Object.assign(Error('저장 중 참조 원본이 변경됐어요: '+entry.path),{status:409,code:'REVISION_CONFLICT'});},{retainJournal:false});return publishAssetText(this,path.relative(this.root,file).split(path.sep).join('/'),data,guard);}
+  create(folder,kind,name,parent){const task=this.writeQueue.then(()=>this.createFile(folder,kind,name,parent));this.writeQueue=task.catch(()=>{});return task;}
+  async createFile(folder,kind,name,parent){
+    await recoverAssetWrites(this);
     if(!assetTypes[kind]||kind==='code')throw Error('에셋 종류 오류');
     const data=createAsset(kind,name,parent);if(!validAsset(kind,data))throw Error('생성 데이터 검증 실패');
-    const relative=(folder?folder+'/':'')+name+assetSuffix[kind],file=await this.resolve(relative,true);
+    const requested=(folder?folder+'/':'')+name+assetSuffix[kind],file=await this.canonicalFile(requested),relative=path.relative(this.root,file).split(path.sep).join('/');
     if(kind==='blueprint')await this.validateBlueprint(relative,data);
-    await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(data,null,2),{flag:'wx'});
-    this.index[relative]={id:randomUUID()};await this.saveIndex();return {path:relative,name:path.basename(relative),kind};
+    await publishAssetText(this,path.relative(this.root,file).split(path.sep).join('/'),JSON.stringify(data,null,2),()=>{},{create:true});return {path:relative,name:path.basename(relative),kind};
   }
   rename(from,to){
     const task=this.writeQueue.then(()=>this.renameFiles(from,to));this.writeQueue=task.catch(()=>{});return task;
   }
   async renameFiles(from,to){
+    await recoverAssetWrites(this);
     if(!from||!to||to.startsWith(from+'/'))throw Error('이름 변경 경로 오류');
     const old=await this.resolve(from),next=await this.resolve(to,true,false),source=path.relative(this.root,old).split(path.sep).join('/');
     if(next.startsWith(old+path.sep))throw Error('이름 변경 경로 오류');

@@ -36,7 +36,7 @@ function shareGuideNormals(source,size){
  const replace=(before,after)=>{if(!source.includes(before))throw Error('경로 노멀 공유 구역을 확인하세요.');source=source.replace(before,after);};
  replace('normal=hbRayNormalLod(hit.y,p,-direction,width)','normal=vec3(0)');
  replace('vec3 n=front?normal:-normal;','vec3 n=vec3(0);');
- const prior='if(curved){oldN=hbPathPreviousNormal(hit.y,p,normal,-direction,width);if(dot(oldN,oldN)<.5)previousValid=false;}';
+ const prior='if(curved){oldN=hbPathCommittedNormal(hit.y,oldP,oldView,oldWidth);if(dot(oldN,oldN)<.5)previousValid=false;}';
  replace(prior,'');
  const terminal='if(!glass&&!mirror){if(physical.y<.1';
  replace(terminal,`vec3 differentialNormals[${size}];for(int sampleIndex=0;sampleIndex<1+((glass||mirror)&&differentials?differentialCount:0);sampleIndex++){bool primary=sampleIndex==0;int j=max(0,sampleIndex-1);vec3 value=hbRayNormalLod(primary?hit.y:differentialIDs[j],primary?p:dp[j],primary?-direction:-rd[j],width);if(primary)normal=value;else differentialNormals[j]=value;}n=front?normal:-normal;${prior}\n${terminal}`);

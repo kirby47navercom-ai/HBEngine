@@ -1,0 +1,26 @@
+#include <HBEngine/Compute.hpp>
+#include <HBEngine/RayPrograms.hpp>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <chrono>
+using Json=nlohmann::json;
+using namespace hb::gpu;
+using hb::gpu::detail::Com;
+static std::string text(const char* file){std::ifstream in(file);if(!in)throw std::runtime_error("Probe input missing");return {std::istreambuf_iterator<char>(in),{}};}
+static void replace(std::string& s,const std::string& from,const std::string& to){const auto at=s.find(from);if(at==std::string::npos)throw std::runtime_error("Probe source marker missing");s.replace(at,from.size(),to);}
+int main(int argc,char**argv){try{
+ if(argc!=3){throw std::runtime_error("packet and shader required");}
+ const auto packet=Json::parse(text(argv[1]));auto source=text(argv[2]);
+ replace(source,"/*HB_RAY_PROGRAMS*/",rayProgramShader(readRayPrograms(packet.at("programs"))));replace(source,"/*HB_RAY_PROGRAM_CALL*/","result=hbRayExecuteFieldTime(field,program.w,program.x,id,worldPoint,view,result,width,timeContext);");
+ source+=packet.at("probe").get<std::string>();
+ Com<ID3DBlob> blob,error;const auto start=std::chrono::steady_clock::now();auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");const auto compiled=compile(source.data(),source.size(),"TimeNormal187",nullptr,nullptr,"Probe","cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&blob.p,&error.p);if(FAILED(compiled))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"Probe compile failed");
+ const auto compileMS=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();Com<ID3D11Device> device;Com<ID3D11DeviceContext> context;D3D_FEATURE_LEVEL level;auto create=detail::libraries().symbol<decltype(&D3D11CreateDevice)>(detail::libraries().d3d,"D3D11CreateDevice");detail::check(create(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,0,nullptr,0,D3D11_SDK_VERSION,&device.p,&level,&context.p),"Probe hardware device");if(level<D3D_FEATURE_LEVEL_11_0)throw std::runtime_error("Probe feature level 11 required");
+ Com<ID3D11ComputeShader> kernel;detail::check(device->CreateComputeShader(blob->GetBufferPointer(),blob->GetBufferSize(),nullptr,&kernel.p),"Probe shader");
+ const auto pixels=packet.at("data").get<std::vector<float>>(),constants=packet.at("constants").get<std::vector<float>>();const UINT width=packet.at("width"),height=packet.at("height");if(pixels.size()!=width*height*4||constants.empty()||constants.size()%4)throw std::runtime_error("Probe dimensions");
+ D3D11_TEXTURE2D_DESC td{};td.Width=width;td.Height=height;td.MipLevels=td.ArraySize=td.SampleDesc.Count=1;td.Format=DXGI_FORMAT_R32G32B32A32_FLOAT;td.Usage=D3D11_USAGE_IMMUTABLE;td.BindFlags=D3D11_BIND_SHADER_RESOURCE;D3D11_SUBRESOURCE_DATA texData{};texData.pSysMem=pixels.data();texData.SysMemPitch=width*16;Com<ID3D11Texture2D> texture;Com<ID3D11ShaderResourceView> view;detail::check(device->CreateTexture2D(&td,&texData,&texture.p),"Probe atlas");detail::check(device->CreateShaderResourceView(texture.p,nullptr,&view.p),"Probe atlas view");
+ D3D11_BUFFER_DESC cb{};cb.ByteWidth=UINT(constants.size()*4);cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.Usage=D3D11_USAGE_IMMUTABLE;D3D11_SUBRESOURCE_DATA cdata{};cdata.pSysMem=constants.data();Com<ID3D11Buffer> constant;detail::check(device->CreateBuffer(&cb,&cdata,&constant.p),"Probe constants");
+ D3D11_BUFFER_DESC bd{};bd.ByteWidth=32;bd.BindFlags=D3D11_BIND_UNORDERED_ACCESS;bd.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;bd.StructureByteStride=16;Com<ID3D11Buffer> result,staging;detail::check(device->CreateBuffer(&bd,nullptr,&result.p),"Probe output");D3D11_UNORDERED_ACCESS_VIEW_DESC ud{};ud.ViewDimension=D3D11_UAV_DIMENSION_BUFFER;ud.Buffer.NumElements=2;Com<ID3D11UnorderedAccessView> output;detail::check(device->CreateUnorderedAccessView(result.p,&ud,&output.p),"Probe output view");bd.Usage=D3D11_USAGE_STAGING;bd.CPUAccessFlags=D3D11_CPU_ACCESS_READ;bd.BindFlags=bd.MiscFlags=bd.StructureByteStride=0;detail::check(device->CreateBuffer(&bd,nullptr,&staging.p),"Probe staging");
+ D3D11_SAMPLER_DESC sd{};sd.Filter=D3D11_FILTER_MIN_MAG_MIP_LINEAR;sd.AddressU=sd.AddressV=sd.AddressW=D3D11_TEXTURE_ADDRESS_CLAMP;sd.MaxLOD=D3D11_FLOAT32_MAX;Com<ID3D11SamplerState> sampler;detail::check(device->CreateSamplerState(&sd,&sampler.p),"Probe sampler");context->CSSetShader(kernel.p,nullptr,0);context->CSSetConstantBuffers(0,1,&constant.p);context->CSSetShaderResources(7,1,&view.p);context->CSSetSamplers(0,1,&sampler.p);context->CSSetUnorderedAccessViews(0,1,&output.p,nullptr);context->Dispatch(1,1,1);context->CopyResource(staging.p,result.p);D3D11_MAPPED_SUBRESOURCE mapped{};detail::check(context->Map(staging.p,0,D3D11_MAP_READ,0,&mapped),"Probe readback");std::vector<float> values(8);std::memcpy(values.data(),mapped.pData,32);context->Unmap(staging.p,0);context->ClearState();std::cout<<Json({{"hardware",true},{"featureLevel",int(level)},{"compileMS",compileMS},{"shaderBytes",source.size()},{"values",values}})<<'\n';
+ }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

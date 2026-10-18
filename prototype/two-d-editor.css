@@ -62,3 +62,5 @@ body:is([data-editor=sprite],[data-editor=tilemap],[data-editor=spriteanimation]
   .two-d-properties { flex-basis:208px; }
   .two-d-toolbar > span { display:none; }
 }
+
+.two-d-cell-jump { width:72px; min-width:48px; }
