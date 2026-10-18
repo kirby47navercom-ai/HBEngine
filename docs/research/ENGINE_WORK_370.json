@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "f35b5c71921683827f7c17142e34b4475e654fa5",
+  "featureRevision": "37c9ceb",
+  "targetIds": [
+    "RND-05",
+    "RND-06",
+    "RND-07",
+    "AI-03",
+    "PER-02"
+  ],
+  "sourceHashes": {
+    "prototype/geometry-gi.js": "cdb46cadc92153c0de8a4c13f983ecd4513a4cec9fb63c6bc840fd65c892da6f",
+    "prototype/gpu-path-preparation.js": "43378fcbbeeb380ac9a05e438790227254acc221ae5f4b78df1593624a3fa528",
+    "prototype/path-denoise.js": "60748e3dce572434d18407946362c0c727421a57f6914cb2b971ef586f676276",
+    "prototype/path-guide-gpu.js": "36fac57cdaeb308ffc2f5b606f84a9c53eb31884b87025c6509a98a0b0a170d0",
+    "prototype/path-previous-camera.js": "1955d47ec17b0c4def4330dfd5926ac89e4c365dcf5dbab126ef45f8f5580814",
+    "prototype/path-surface-history.js": "2fe3500e58ad4cbb63aa48e1da749db3c037ed0038cff3bdd3cd65fa6c82969b",
+    "prototype/previous-geometry-gpu.js": "7d13697055b2818fc80aeae86fbe715d7fa86b5d8d74f75a2c4d0fe93c2aa3ee",
+    "prototype/previous-geometry-shader.js": "675394dd6b58bfecdfa87816ab7f554094045ccabab58440e966ea6925644c3f",
+    "prototype/previous-geometry.js": "8a6ed40f8d1014aeb64d03adf2b2c2b82f2e24dcb2adf10e7a77b7603b88dc60",
+    "prototype/ray-material-gpu.js": "ffcbf24a39e5805dd7e0af898e9d127dc3abacbcd231f7b6813b83ac87dce496",
+    "prototype/ray-previous-gpu.js": "0820e3ca7ff6676ad2c97af41b62d46324ccd5a435fee16ac727fdd9a11b9def",
+    "prototype/shared-ray-geometry-gpu.js": "497f3bee8028a92c470c9a9b7bd169d65db7e68a9af70114f4f7ab11b3cb0161",
+    "prototype/shared-ray-geometry.js": "58f7c12a2cf9e01248ac84879a3701a204c8459765ea2c138f597b07711452cc",
+    "tools/check-cache-removal-race-370.mjs": "d278f4f0a766b06af7bbe9d903387107847345e8639b1eafa52572779c392db0",
+    "tools/check-preparation-epoch-366-window.mjs": "272dc250ca540f823760983fb13a29f4f035c85e1d47c3c673c74b44a20ad567",
+    "tools/check-preparation-epoch-366.mjs": "9a04dea4c13732f1447e0957d088b8c2905a5df76cd6f49a387ce451e47c1d72",
+    "tools/check-previous-geometry-368-native.mjs": "7c294340f6e1d2b35f9e15b2c506d20a44ea6177d4a028898f71fc8cb46b8329",
+    "tools/check-previous-geometry-368-window.mjs": "8c6601f426fe1017cf98b8a4e719dca1dc41d7fbc24b8ec7d855b65dd55e8ad4",
+    "tools/check-previous-geometry-368.mjs": "475723790e2bec044517e3d074c98d69227692317b01762e294f34af7f20f302",
+    "tools/check-previous-records-367.mjs": "b7155ea51cb7d6caec2527155c8a0904892b8580c2e55e055364abfd82220aaf",
+    "tools/check-previous-visibility-369-native.mjs": "d1069e4e6560e8cc096fc8ef419435d5fdb0295cfb74bc17c03b0f2115f2fe96",
+    "tools/check-previous-visibility-369-window.mjs": "442d7383aed8f909ad7e4151a95cdd33d134cc5b7d4454f2bfe5f306b4abd7eb",
+    "tools/check-surface-history-contract-362.mjs": "c0ecdbd4e0e83e4a2628badbdad7e35458f46ca834b452ec2e367983ea9d5581",
+    "tools/previous-geometry-fixture-368.mjs": "4ade78621b4555d1af58384262227eb5e8275652ad05f57632ee30531648373a",
+    "tools/previous-visibility-fixture-369.mjs": "88efb025487dc255a3acc98a672cd64ff540afef70b704c7606bd7ecd0864183",
+    "tools/remove-test-cache.ps1": "80607699e7c55e77c26ff5ff5eaa9d70b0b56af0a4fa87953c22c19d3885eb35",
+    "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a",
+    "native/include/HBEngine/ScreenEffects.hpp": "9fa09ce9a52768dec5d969052c6838db28a559ad748040f10bbbc2bb21396519",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "0f93ceadf262cf5776bd31304e905f3f48787a362d6375786bd160acaff09eea"
+  },
+  "testSourceHashes": {
+    "native/tests/path-previous-context-308.cpp": "838ab16f50ccb6e311b209a604c6408335b482b43b9c713a7a2bf6f0b8c3a2c4"
+  },
+  "nativePlayerSHA256": "a60fa1635a0015eb1c1c40682989a31bf58bf012638530238ea7208c208ada80",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/preparation-epoch-366-sAKrgQ/acceptance.json",
+      "sha256": "90ddc7b87cf05ae93e77d5494d362dd7eea6c72082b21072ec9bd6d9c558d1ed"
+    },
+    {
+      "path": "native/build/previous-coat-363-TNpZBR/acceptance.json",
+      "sha256": "5813c0e49c258373050ff7bf91d8325509fc5d8f72d62572546288f98c66a6a8"
+    },
+    {
+      "path": "native/build/previous-geometry-368-jwdeok/acceptance.json",
+      "sha256": "8632819dcf99cd9409ac8aa14f72c5feea32bd7b9b37da1a640cded82ce0f486"
+    },
+    {
+      "path": "native/build/previous-geometry-368-native-LHgGWH/acceptance.json",
+      "sha256": "0e9954a91558d2ec301a6b69579464b39dcc4615b0332764cc7166adfef801c4"
+    },
+    {
+      "path": "native/build/previous-visibility-369-0z8vkY/acceptance.json",
+      "sha256": "c81b4e4fce2fe6757431b443f0e5e2205888c5765c7b593e992cd6afb07350e3"
+    },
+    {
+      "path": "native/build/previous-visibility-369-native-LuTFFC/acceptance.json",
+      "sha256": "b84cd6e6f1a999aecf89525ed0cf1b939bdbb6637d90df74df302b256f5021f5"
+    },
+    {
+      "path": "native/build/native-scene-window-9LXGxe/acceptance.json",
+      "sha256": "ca4fdf552e6985520a74db1aa9e7ad2bc13137c8646c057cbe9be2c8a46131ef"
+    },
+    {
+      "path": "native/build/native-scene-window-qj1ZHl/acceptance.json",
+      "sha256": "d6c2a69110cdee25ea29bcc394afdd7a5aff2bffff98ece03648b35faa4b2a4b"
+    },
+    {
+      "path": "native/build/gpu-scene-ki5KeT/acceptance.json",
+      "sha256": "332c9e5fbd284f5c4ae3122b3ec8288f3fe0a942583ee059794dae519565e44f"
+    },
+    {
+      "path": "native/build/cache-removal-race-370-aLbNUS/acceptance.json",
+      "sha256": "e12f060f406abc06d217aab0907b726ca56c37339d1327a9faa5e944913acf74"
+    },
+    {
+      "path": "native/build/cache-retention-lHI9Hv/acceptance.json",
+      "sha256": "e6dd9f4aa1434738c51d21705753ab901796ad4b9ecf85093b4b46a2a486f727"
+    },
+    {
+      "path": "native/build/rendering-187-lXoyhg/acceptance.json",
+      "sha256": "d558599b132b39948ec036b8faef73aaab629e5d21babb3d091e6523501cc592"
+    },
+    {
+      "path": "native/build/rendering-190-dVR8zE/acceptance.json",
+      "sha256": "54851f4ee20e66fb1690ab6ea7fd91fa66e7d5c5cfda3103b26e185e6d258da4"
+    },
+    {
+      "path": "native/build/surface-time-history-359-HJWNuI/acceptance.json",
+      "sha256": "139f952a7001e9a89bc58276f96b297d48dd7363e3595ec0bd148a27e28af52a"
+    },
+    {
+      "path": "native/build/engine-work-370-BVcRP3/preparation-epoch-366-cpu.json",
+      "sha256": "f0090cb1aa6053d722c2bf3e15403cb6c7038834fecd55acedad099144911dab"
+    },
+    {
+      "path": "native/build/engine-work-370-BVcRP3/previous-records-367-cpu.json",
+      "sha256": "9e2775466374c373154d3fc409eed8e71b37b290883b691908f8c6e039e97326"
+    },
+    {
+      "path": "native/build/engine-work-370-BVcRP3/previous-geometry-368-cpu.json",
+      "sha256": "c5c744b8335e801ac24fcaf91dc3851472d98f35bbd084ffc9b6073d30b92373"
+    },
+    {
+      "path": "native/build/engine-work-370-BVcRP3/rendering-141-cpu.json",
+      "sha256": "0f5549af2a0124fc4d565ca5ee4bb36e8dad2ca1d0d895fb2f989b05e568eee6"
+    },
+    {
+      "path": "native/build/engine-work-370-BVcRP3/rendering-151-cpu.json",
+      "sha256": "321a94e9778885b94d1fa206157875abb4372b8e58b849d2282e1c4748d8c7dd"
+    }
+  ],
+  "sourceGames": [
+    {
+      "backend": "D3D11",
+      "path": "native/build/native-scene-window-qj1ZHl/acceptance.json",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4712.8891
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2215.047399999996
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 149.6817999999912
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4578.494399999996
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 127.66509999999835
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 138.06350000000384
+        }
+      ],
+      "scope": "actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; DX also raster131 and warm revisit"
+    },
+    {
+      "backend": "WebGPU",
+      "path": "native/build/gpu-scene-ki5KeT/acceptance.json",
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 3965.1252000000095
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 913.6241000000009
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 190.2939999999944
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 2577.146299999993
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 898.9116999999969
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 37.00930000000517
+        }
+      ],
+      "scope": "actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; DX also raster131 and warm revisit"
+    },
+    {
+      "backend": "D3D11",
+      "path": "native/build/native-scene-window-9LXGxe/acceptance.json",
+      "timings": [],
+      "scope": "actual C++/Blueprint coating, independent normal and IOR scene"
+    }
+  ],
+  "implemented": [
+    "준비 전용 고유 음수 render epoch·즉시 복원·renderer 선행 초기화로 첫 WebGPU 프레임 누락 방지",
+    "중간 래스터 번호·타깃/장치 hook·실패/취소·두 준비 stage 보존·예열 draw 없음",
+    "이전 normal/coat geometry와현재 material flag 분리·공개 record.w/Node callback 호환 유지",
+    "motion/curved/transmissive/committed 조건에서기존 atlas에이전세계BVH만선택포장·기존정점재사용·refit/outwardbounds·newborn/failed/invalid 보호",
+    "이전세계BVH의mask교차·가속 검색·불완전검색failclosed·추가객체개수제한없음",
+    "실제투명auxiliaryguide의이전가림거부·원근/직교 이전near-plane원점·missingBVH호환",
+    "AI읽기계약/자원·캐시진단공개·이전BVH과전체매질재생경계분리",
+    "병행prune의이미삭제된경로만skip·권한오류/원본/32캐시/실행/참조보호·회수량중복계산방지"
+  ],
+  "measurements": {
+    "firstFrame": {
+      "reference": "0fed900",
+      "oldValid": 0,
+      "newValid": 173,
+      "directValid": 173,
+      "pixelError": 0,
+      "preparationDraws": 0,
+      "uninitializedFirstDraw": [
+        0.25,
+        0.5,
+        0.75,
+        1
+      ],
+      "scope": "cold shared Quad camera and unchanged uniforms, not a speed benchmark"
+    },
+    "shader": {
+      "sharedPriorNormalBytes": [
+        22835,
+        17373
+      ],
+      "sharedPriorCoatBytes": [
+        15535,
+        10073
+      ],
+      "currentRecordFunctions": [
+        4,
+        0
+      ],
+      "scope": "generated WGSL body only, no compiler/FPS improvement claim"
+    },
+    "previousBVH": {
+      "backends": 3,
+      "raysPerBackend": 63,
+      "sharedTriangles": 144,
+      "sharedNodes": 95,
+      "sharedBytes": 4560,
+      "maskedTriangles": 4,
+      "maskedBytes": 48,
+      "includes": [
+        "old geometry outside current bounds",
+        "shared instances",
+        "mask",
+        "near parallel",
+        "miss and range",
+        "missing BVH",
+        "incomplete 4097-node synthetic walk"
+      ]
+    },
+    "visibility": {
+      "GLGPUConditions": 12,
+      "DXConditions": 6,
+      "cameras": [
+        "perspective",
+        "orthographic"
+      ],
+      "controls": [
+        "clear",
+        "previous occluder moved away",
+        "same blocked scene with BVH header disabled"
+      ]
+    },
+    "framePreparation": "actual C++/Blueprint unordered transitions in sourceGames; load/cache not controlled, not before/after speedup or FPS"
+  },
+  "resources": {
+    "newRuntimeDependencies": 0,
+    "newGPUTargets": 0,
+    "newGPUBuffers": 0,
+    "newUniformFields": 0,
+    "newAutomaticReadbacks": 0,
+    "optionalAtlasSuffix": "48 bytes per old-world BVH node; existing committed vertices retained; only selected transmissive temporal guides",
+    "optionalCPUCache": "existing median/refit BVH metadata",
+    "opaqueOrNoCommittedHistoryExtraBVHBytes": 0
+  },
+  "lightChecks": [
+    "check-prior-normal-features-365",
+    "check-surface-history-contract-362",
+    "check-preparation-epoch-366",
+    "check-rendering-127",
+    "check-rendering-145",
+    "check-rendering-141 --record",
+    "check-rendering-151",
+    "check-test-artifacts",
+    "generate-api --check"
+  ],
+  "limits": [
+    "전체이전매질stack·IOR/굴절/TIR 분기와독립경로재생은다음작업",
+    "전역곡면역해·거친복합로브/참여매질 footprint와누적다른분야잔여유지",
+    "노드방문4096은query work budget이며완료못하면이력거부;sceneobject limit아님",
+    "전체엔진/FPS/모바일기기/전체UEUnity분석완료주장없음",
+    "병행nativecache정리는원본서로다른두실행이동일dir를먼저지워ObjectNotFound;370에서경쟁재현/권한실패보존을확인",
+    "actual63ray acceptance의syntheticstorage표시는초기descriptor를물려받았음;후속label만정정했고교차값/검증조건은동일"
+  ]
+}

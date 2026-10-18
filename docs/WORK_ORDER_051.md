@@ -503,3 +503,8 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 이전10표면필드·committed 시간/기하/UV/노멀/시점/밉을 공용IR로평가하고 opaque지원 시간graph의pose이력을보존했어요. 값/앞뒷면/TIR·코팅lobe거부와독립coating TBN복원을 GL/TSL/생성HLSL에연결했어요. static프로그램/미사용decoder/빈채널할당을줄이고 AI계약을추가했어요. 실제3경로CPP/BP의Complex141·138변형·134·125·128과DX131/warm전환을확인했어요. 수치10필드/7coat문맥·Snell192·lens8조건·실제motion185를분리검증했어요. 이전296 미활성좌표결과와보고서없는4KMUzC는성과에서제외했어요. 365설치확인후 이전투명BVH/중첩매질·전역곡면역해·복합산란/준비비용과누적분야를계속해요.
 
 365 설치 0d31b38547f61c8e·3166개 명세 SHA와46개 변경 소유자·새 native player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일은 설치 직전부터 검사 후까지 읽기전용 inventory SHA가 같아요. 설치364 1uCjgT의 실제 GL/GPU lens8조건/유효motion과350 GVxBNM의두 native게임6save→6hit/0save·정상종료를 통과했어요. 이전설치 177782675B와완료검사/바이너리를정리하고다음렌더링작업을계속해요.
+
+
+### 2026-10-18 · 366–370
+
+준비 epoch 분리/선행 장치 초기화로 첫 WebGPU 프레임0→173을 직접렌더와오차0으로복원했어요. 이전 normal/coat의현재정점복원함수4개를제외하고기존flags/Nodecallback을유지했어요. 이전세계BVH를기존atlas선택suffix로연결하고마스크/불완전검색·이전가림/직교nearplane을세GPU실제63광선과full투명guide로검증했어요. shared144triangle추가4560B,opaque/committed없음0B예요. 실제CPP/BP D3D/GPU145·코팅검사를통과했어요. 병행prune부재경쟁을재현하여이미삭제된경로만skip하고권한오류/32최근/원본을보호해요. 선택Three/PBRT소스와AI계약을기록하고설치370을준비해요. 독립oldmedium/IOR경로·전역곡면역해/복합산란과누적분야를계속해요.
