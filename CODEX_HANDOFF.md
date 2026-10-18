@@ -1,4 +1,4 @@
-# HBEngine 현재 인계 — 설치472 검증·렌더링473 계속
+# HBEngine 현재 인계 — 설치472·절차 좌표485 검증·설치 준비
 
 ## 목표와 보호
 - 주인님/짚짱·해요체. 누적 2D·2.5D·3D 엔진·C++/노드·사람 UI와 AI 동일문서 제작/실행을 계속해요. 작은 checkpoint로 끝내지 않아요. ENGINE_STATUS 등록78개는 UE/Unity 전체 분모가 아니며 full본문/API gate 미승격·완료율 미확정이에요.
@@ -14,8 +14,8 @@
 - 이전450 native공통guide/coordinate ancestry/compile cache 증거는ENGINE_WORK450. Complex141 path4108/denoise699/timeguide3223ms는단일미통제관찰이며전체지연해결아님. 혼합노멀441 GL17×3 오차0·ABBA관찰만, 기본미채택.
 
 ## 바로 이어갈 일
-1. 473 noise/checker 상대finite차분: 현재shifted-input fallback. 셀경계/음수/scale변화/큰좌표subULP, noise hash의백엔드근사를수학정밀도와구분. 수학·GL/GPU/native·전체graph/history검증후 승격. 아직구현없음.
-2. 복잡초기compile/mixed normal 실제CPP/TSL/coat·curve이차/매질·RND08 GI와MAT03 HDR/압축/배열·볼륨mip/LOD bias/스트리밍/variance roughness 및누적2D/애니/월드/game/editor/deploy 계속.
+1. 473–485 source e7c04a5 완료·ENGINE_WORK485. Noise/Checker 상대 변화량·코너 잔차·축별parity 공통현재값수정·AI45안정연산.103조건 xtSshP/nativeAWhhiw와capture재검사482, 기존699 BamWC9/native7YUf02,24전처리 iA7fzM, 두전체graph IOsYf1/nativeDakiPK, 실제새C++/BP게임yILSCh 통과. playerd3eaca01742b9c4661841e94e1c2e4fe782ef5d88c273ab8b38551bed04761c5. 아직472설치;485원장/설치·검증·정리 뒤 동기컴파일러 대기/백그라운드 준비와 누적목표 계속.
+2. 다음 현재동기ShaderBytecodeCompiler.create의mutex가D3DCompile전체를감싸고ScreenEffectsPass.program도compile때잠금을유지함을읽었어요. async준비는아직계획뿐이며구현/검증으로세지않아요. 기존SDK동기호환·단일worker/예산·장치/모듈수명·취소/stale/오류·래스터진행·AI진단과실제게임증거필요. 복잡초기compile/mixed normal 실제CPP/TSL/coat·curve이차/매질·RND08 GI와MAT03 HDR/압축/배열·볼륨mip/LOD bias/스트리밍/variance roughness 및누적2D/애니/월드/game/editor/deploy 계속.
 3. Mac/Xcode/실제Android폰 없음. 이전HDRI395 저SPP4배MSE목표미달(12.8735→11.3237),385원nativefull실패후resume한정 구분유지. TEXTURE_MIP_POLICY451/472선택본문/API만읽음·전체gate미승격.
 
 ## 도구

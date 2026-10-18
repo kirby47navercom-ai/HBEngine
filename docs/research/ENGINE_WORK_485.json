@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "e7c04a57ecf6195b09ada25ffcbb9c2da11d6545",
+  "targetIds": [
+    "MAT-03",
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/gpu-materials.js": "829bd5873551fd528f6de1ab5efb5af2bec5edfd294f9957f797db147b4b7e3f",
+    "prototype/material-runtime.js": "a37ac27dc7cb9a38baaa91f6d28ae0a8b87390263d38aa221e299548a70d663f",
+    "prototype/procedural-material.js": "89d3a524d1da10f006d0e4e4cd6667f0413448954d43839105d74989f4dcfb0a",
+    "prototype/ray-material-gpu.js": "439914d51795aab6f21c047d8d04388d2862548b37d27bcfd0b3f07dc98aafe3",
+    "prototype/ray-material-shader.js": "7b33524ef4856d8ec79bf9213d91ba5fde732523a7173c6432ddad34b3898ccf",
+    "prototype/ray-procedural-differentials.js": "e0c726507dfea89013b624cd1d200c195f94134882df4691104528c2c8484ed3",
+    "prototype/ray-program-differentials.js": "baa7713bdfffb15b276014eac54b5b283f256af9272f2b3f0fe2df008badd576",
+    "prototype/ray-uv-footprint.js": "399860ac3d8f84785daa261cdecc73f2c1c5d380695d1c497e16eaa7c18aab03",
+    "tools/check-procedural-474-window.mjs": "e18dec52e3fbb0226f1e2b7b2429178f60d01db531692f9cd169de0d11136c6b",
+    "tools/check-procedural-476-native.mjs": "db5b2982d336d8224c21671e34fc9b2021161870ae3cf43f22b91a5ca54eaac8",
+    "tools/check-procedural-477-window.mjs": "5a578e4a233f44f1f1651a836958ac22cccda62076c50700c0ca291b3bff051c",
+    "tools/check-procedural-478-native.mjs": "3ae199f949bc9a9614be7c541e94aa509b8bc648f21b185e2c7ef12ebba8f8ea",
+    "tools/check-ray-helper-pruning-436.mjs": "7d59134588c45c5a662c4e0de5a675100e291cd764b9f04a9cfceebe84f00102",
+    "tools/procedural-differential-fixture-474.mjs": "b808ea3fe8a10a0c42f0cb9f6872c3f465abdb4c0870d13918e5a47bcb1858d2",
+    "tools/procedural-history-fixture-477.mjs": "de08f03f34ff8567637afe787baca5f931e0a662ce775c510053e6e4dd89ea77",
+    "tools/procedural-probe-474.mjs": "75ab42338bc4a0a42c4a90a37131ecd7ffe078d13b73583c109bbe15ebad53b3",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "e601b552aac968ae2d3c944b51e4b9dc3581f959a6c8e067e550a1f3aa6de099",
+    "native/include/HBEngine/ScreenEffects.hpp": "de32abdaf0511ad8ce9347f179ff3d85e26547490853b3f972c232acbc5b7fa8",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "1b3430a4e51d739012fcf4706812cb7bf3303efd9cd9d4d89c1849108fd46084",
+    "native/include/HBEngine/RayPrograms.hpp": "0e1680e5593799f09a4e59e0c329d623df21bf6437c9db5d8f6e3644c92ed5d9"
+  },
+  "testSourceHashes": {
+    "native/tests/path-previous-context-308.cpp": "ba65ee8891ceb9ebe984b2519a98184685c67f209353f49ecbb49169f3cb1572"
+  },
+  "nativePlayerSHA256": "d3eaca01742b9c4661841e94e1c2e4fe782ef5d88c273ab8b38551bed04761c5",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/procedural-474-xtSshP/acceptance.json",
+      "sha256": "f457942b2a6c7edd4b51a6263e1ff32fbb030a95f19038c2f5ed35b1f70be950"
+    },
+    {
+      "path": "native/build/procedural-476-native-AWhhiw/acceptance.json",
+      "sha256": "3bf4715df9f33eb4e73c43f51a5f4d9d03e0820478370f5be69605dfe77f4291"
+    },
+    {
+      "path": "native/build/procedural-graphs-477-IOsYf1/acceptance.json",
+      "sha256": "cb0dfe8b1424a966b2406d36e472b32a65aa8b10fc95e34c104e5ecc1c17dd53"
+    },
+    {
+      "path": "native/build/procedural-graphs-478-native-DakiPK/acceptance.json",
+      "sha256": "d21798b6e7b0e73b39e45dc521d4a70804db67fb199968dec6004468d26c2715"
+    },
+    {
+      "path": "native/build/ray-differentials-443-BamWC9/acceptance.json",
+      "sha256": "cc17aabd29cbd1da28a60042bc710d8db4f66835442ae7f1a62d0c14dbcc29eb"
+    },
+    {
+      "path": "native/build/ray-differentials-443-native-7YUf02/acceptance.json",
+      "sha256": "a2fd15d7a102727157dc806b245859a1c4d9f63cadcb84527d9589c360516749"
+    },
+    {
+      "path": "native/build/ray-helper-pruning-436-iA7fzM/acceptance.json",
+      "sha256": "b095d60dbab07c09aec3052b0c1840dbdda2f3bc1bb896f0c74a1966e59bf34a"
+    },
+    {
+      "path": "native/build/native-scene-window-yILSCh/acceptance.json",
+      "sha256": "eccecd8c10aedb74b9104efd1cd7e6c189d500352439e6f798ab27ec8e16570d"
+    },
+    {
+      "path": "native/build/procedural-482-capture-checks.json",
+      "sha256": "6422b8cb2660b860a839cc58bb7691b0530a36a0592cbb06bcd977beba8e1fb4"
+    },
+    {
+      "path": "native/build/procedural-483-regressions.json",
+      "sha256": "b61780188e7c652f4b35a7e08a6b0b2390b5028b66d015d70fac97b26c484793"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-yILSCh/acceptance.json",
+      "scope": "실제 새C++/BP DirectX 게임 Complex141·모프664·캐시/해제·준비시간 관찰"
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/procedural-474-xtSshP/acceptance.json",
+      "scope": "GL/TSL 실제103절차조건·코너해시독립읽기·checker큰축현재값대조"
+    },
+    {
+      "path": "native/build/procedural-graphs-477-IOsYf1/acceptance.json",
+      "scope": "실제2그래프의큰좌표 현재/이전기하·시간·밉폭·기존4e-5"
+    }
+  ],
+  "implemented": [
+    "Noise/Checker 상대 유한 변화량·동시 배율 교차항·셀 경계/음수/코너 잔차를 GL/TSL/HLSL 같은 규칙으로 처리",
+    "Checker 축별 홀짝을 CPU/GLSL/TSL/래스터/광선 공통 함수로 계산해 큰 축이 작은 홀수 축을 지우는 현재 값 오류 수정",
+    "새 103조건과 기존 699조건을 세 GPU 경로에서 검증·두 전체 그래프의 현재/이전 기하와 밉 관측성·생성 HLSL 4문맥",
+    "26개 보조 함수를 실제 좌표 의존성으로 선별·24개 전처리 조건·단순/셰이딩 전용은 추가0·기존 캐시/자원 ABI 유지",
+    "AI 불변 좌표 계약45연산·해시 근사와 표현 한계 공개"
+  ],
+  "measurements": {
+    "proceduralCasesPerAPI": 103,
+    "legacyCasesPerAPI": 699,
+    "proceduralErrors": [
+      {
+        "api": "webgl",
+        "errors": {
+          "checker": 0,
+          "cell": 1.3311506452673427e-8,
+          "noise": 5.208272046974827e-8
+        }
+      },
+      {
+        "api": "webgpu",
+        "errors": {
+          "checker": 0,
+          "cell": 1.3198980353124057e-8,
+          "noise": 7.6977808127765e-8
+        }
+      },
+      {
+        "api": "native",
+        "errors": {
+          "checker": 0,
+          "cell": 1.3311506452673427e-8,
+          "noise": 5.208272046974827e-8
+        }
+      }
+    ],
+    "checkerLargeAxesCorrectedCasesPerAPI": 4,
+    "tinyBoundaryTolerance": 1e-24,
+    "helperPreprocessConfigurations": 24,
+    "helperCount": 26,
+    "ordinaryHelpers": 0,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4477.1860000000015
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 841.7869999999966
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 138.00680000000284
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 3516.3546999999962
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 197.9615999999951
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 161.6201000000001
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 529292,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 47,
+        "totalCompileMS": 7608,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "controlledCompileImprovementEstablished": false,
+    "newGPUResources": 0,
+    "newProductionReadbacks": 0,
+    "newWorkers": 0
+  },
+  "failuresPreserved": [
+    "474 첫 GL frac 비교의 CPU 기대값을 float32에 맞게 양자화한 입력 검사 수정",
+    "474 첫 WebGPU floor(i32)는 검사 인덱스 오류였어요. WGSL 진단을 읽어 정수 floor를 제거했고 실제 수학을 되돌리지 않았어요.",
+    "477 첫 Checker 검사는 정확한 경계여서 작은 폭과 큰 폭 모두 셀을 넘었어요. 다음 시도는 4단위 메시의 UV 폭 환산이 빠졌어요. 경계에서 떨어진 위상과 관측 가능한 세계 폭12.5로 수정했고 기준은 유지했어요.",
+    "479 첫 치환은 CPU/일반 GPU를 갱신한 뒤 광선 GPU의 문법 표식에서 멈췄어요. 479b에서 나머지 경로를 연결하고 부분 구현 상태로 검증하지 않았어요."
+  ],
+  "limits": [
+    "Noise 해시의 백엔드 근사와 표현할 수 없는 정수 이웃 좌표는 남아 있어요. 장치 사이의 해시 동일성을 주장하지 않아요.",
+    "텍스처로 만든 좌표의 변화량0·고정 시선 근사·극단 중간 범위·양수 power/log 정의역 한계는 남아 있어요.",
+    "기존 큰 power 출력 한 조건의2e-3을 포함해 기존 수학 기준을 유지했어요.",
+    "Complex141 path4477/denoise842/시간guide3516ms는 통제하지 않은 단일 관찰이에요. 초기 지연/FPS 해결 근거가 아니에요.",
+    "네이티브 컴파일러의 동기 잠금과 UI 대기·혼합 노멀·RND08·전역 곡면/매질 및 누적 엔진 목표를 계속 진행해요."
+  ]
+}
