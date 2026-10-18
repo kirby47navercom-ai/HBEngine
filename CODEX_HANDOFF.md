@@ -8,7 +8,7 @@
 - GL 알파가 사용하지 않는 필드/width0 좌표 미분 그래프를 생성하지 않아요. 큐브 명시LOD 유지. TSL 알파 graph는 필요할 때 생성해요. CPU40148variants와 기존274 liveness/109 mips 통과. 실제cube GL/GPU lJ9Dup·D3D qqCocC 통과.
 - normal-map.js 공유 decode: 길이0→중립탄젠트[0,0,1], CPU·일반GL/GPU/D3D와광선GL/GPU/생성HLSL에연결. engineSchema.raySurfaceHistory.normalDecode 불변계약. CPU40228cases·GL/GPU Drz3va의일반raster/이동·반전이전필드/큰mip중립·작은mip(-X)·D3D t4cNKo 통과.
 - guideFrames의 지원되는비정상필드world/normal/view 입력 일괄 -2표시를정리. legacy -2 decoder와누락포즈/퇴화거부유지. CPU40530field/op조합·동적reset12cases cOjYWU·전체GL/GPU AvODAv/전체D3D J1PA6V 공간입력 roughness/color/coat 동일·변경·복원 통과.
-- max감산으로NaN이숨는실제52불일치(BQWH0I)를채널별비교로수정. GL/GPU g0Wef1·D3D bnEStl 각28케이스×3판정이CPU와일치. coat미관찰zw는무시유지. GPU목표/읽기/프레임별추가pass0.
+- max감산으로NaN이숨는실제52불일치(jVnxjW)를채널별비교로수정. GL/GPU g0Wef1·D3D bnEStl 각28케이스×3판정이CPU와일치. coat미관찰zw는무시유지. GPU목표/읽기/프레임별추가pass0.
 - 초기GL fullguide/path 비교 ukwapo는baseline source81408/program21839→81112/21543 bytes. 준비2004.9→2011.6ms 한쌍, 부하/cache미통제. 속도향상/RND06완료로세지않아요.
 - 실제D3D패키지Complex141 nXXUre: C++/BP·노멀UV graph·morph변화·disable해제·두nativecache상한 통과. path4689ms/시간guide4829ms이며여전히추가절감대상이에요. 첫LwGvlA는일반DirectX helper누락을발견했고native-materials.js에공유선언을추가해고쳤어요. 최초실패를통과로세지않아요.
 - 마지막desktop재빌드48817은완료됐고406공유HLSL 포함. 이후native-materials.js는JS선언만변경되어새native재빌드없이data sync해요. 최초403정수GLSL literal/중립점두width조건·405핀타입·406standalone helper/vector lvalue fixture실패는증거보존. 기준/마감/허용오차완화없어요.

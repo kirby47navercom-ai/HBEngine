@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "kind": "implementation",
+  "implementationRevision": "b258d0d1e67f56bb944f638833c49ad9b3dedb4f",
+  "targetIds": [
+    "RND-06",
+    "RND-07",
+    "MAT-03",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "prototype/gpu-materials.js": "82e17df5af9f253637260cf183eb59debde88ca34b5ca90e1a93d9c78524c607",
+    "prototype/material-runtime.js": "003e0f499cbd227d9ab722cfa74de5784cae43467903a204ae1bade58d2f326c",
+    "prototype/native-materials.js": "92a49713d65dd9e104cfa78476491a37fdee8163d3cc74768bed8a5dce922466",
+    "prototype/normal-map.js": "7789b9b2e697593651387dbca30159518958ac34880981f24d029d692a52f7a1",
+    "prototype/path-guide-frames.js": "35ef35f1341d6af50ae92986a2066cc5cd017cab9702122b6b9dec8abca53fa7",
+    "prototype/path-surface-history-gpu.js": "655dd42f36746cfb0fc4ce6de03ae97aa38d0f16b303818882ce8cfd96b83879",
+    "prototype/path-surface-history.js": "0bb6ad3aa62e0b497182b25214c64f2da5c5c7a3efa3a93904f5a714325aeb15",
+    "prototype/ray-material-gpu.js": "600ca8c206ea4f889c2f74cd2f20e5418bad07ec0c7de6ce8414f3bf82d2af59",
+    "prototype/ray-material-shader.js": "e982c6a03cec73f08757feb1bda84e68490be6a0521ecf3f052ec3686dc87144",
+    "tools/check-alpha-preparation-404-window.mjs": "8acf0858ecc9be5e66be43305db07a56088c6a3fac0c7807df6c246a9c0e8244",
+    "tools/check-alpha-programs-401.mjs": "f3711ba1981d8bc6b08d6738915af79f504d14503b445247d753df9ca2ede3fc",
+    "tools/check-guide-frame-inputs-405.mjs": "6c501155be51ea58829e8da9ee428b62e8813631e864295b2ea76c9366b1787b",
+    "tools/check-guide-history-360-native.mjs": "651357e811376adc08ab2fab4d3685548d71805df8563fda55f03f6ab30ba249",
+    "tools/check-history-nonfinite-406-native.mjs": "e0bb3c2a784854a639c1232335b6a948985242c961dd77608c6b575ff5a4c9c5",
+    "tools/check-history-nonfinite-406-window.mjs": "10ac2e1db94f0dc54fd5fa88918aa12f8278bf79192096746f898ace2e70ee2d",
+    "tools/check-normal-history-403-native.mjs": "1b028cc5e7b4e33db8f7dc07553822acaaf03d7b4f28443f3e2fc8b679ed9bd4",
+    "tools/check-normal-history-403-window.mjs": "276527de923b70a3be6e9e7b4875cc5e30811fc2b9a543fe4d8fd2a3d0311bdd",
+    "tools/check-normal-map-402.mjs": "ac07d2f17d0a7eb8ab5337c557511b2a455bada59aad9ef722d0bbc05d4df2fd",
+    "tools/check-rendering-106.mjs": "9df73b819e770ed9efd15921fe0ccffc399d23c364b884bc8b6cb62a247a61b9",
+    "tools/check-spatial-history-405-window.mjs": "9aaf7820bb118efcaa5fe365763e859e5ba65c1d0fb02c3052a67f2c3ee9ea08",
+    "tools/guide-history-fixture-358.mjs": "726c105941246e376d2acf91ca046e3858ea0ce0e3923b0ef4081cc4ee4c2a08",
+    "tools/history-nonfinite-fixture-406.mjs": "34b65de6ed06d135e23dbe4d6124ab83307244b0e456652a8e6912e6d08131a4",
+    "tools/normal-history-fixture-403.mjs": "84905830349684c40e559ea77932cee100a205cadbea8e36b79cf8655ccf3d4d",
+    "native/desktop/HBEngine.cpp": "1dbdf8ff96e7172b6d7b997968b9b15179ad273ade255883c51d3e1e3a9aa806",
+    "native/desktop/SceneRenderBridge.hpp": "c71329dda324cd406ca533d7de1d689f49095e4ef4793844b4c2f50618b01315",
+    "native/include/HBEngine/ScreenEffects.hpp": "89aa20ab83bb95d543cf2425b0da98c245cc6aaecf4f129c663e5fa74883b89f",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "b41a6135e04163aad690de6acd88413857ffb8b4e8d02ed7dd133c7642614afd",
+    "native/include/HBEngine/RayPrograms.hpp": "094a784952bdf5a49833105c196cdaba3a469a86c04b414dd92c590c0c507c79"
+  },
+  "nativePlayerSHA256": "d2993edee253aad9599de5d0a7538b2a285f70926cf02f89435eb603b3de920b",
+  "installationPending": true,
+  "checks": [
+    {
+      "path": "native/build/alpha-programs-401-cpu.json",
+      "sha256": "8477286ef77447d5b4e208e5064ab1f4adabc57745636bfe203888ea1b822994"
+    },
+    {
+      "path": "native/build/normal-map-402-cpu.json",
+      "sha256": "7e26aa2e0ef25702fa98db7c344a861622e3262fc03a2cc2733eb404cc81b080"
+    },
+    {
+      "path": "native/build/guide-frame-inputs-405-cpu.json",
+      "sha256": "e79ef395e9318bc89294a3879be805e540cb260ed46ffa8a3ec59ce976789b91"
+    },
+    {
+      "path": "native/build/normal-history-403-Drz3va/acceptance.json",
+      "sha256": "af6eb2d0fc4a055343e913198a190a0fff951d31c6efb31e79acf857850f3b1c"
+    },
+    {
+      "path": "native/build/normal-history-403-native-t4cNKo/acceptance.json",
+      "sha256": "dee577c67cf46a6800e09363e5cfcc3ad23d851fe869213eee582daa6dfa8418"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-window-lJ9Dup/acceptance.json",
+      "sha256": "127d59367e1755b36eabe511cdfacf90eeda75befa83bd695fb85128de7e4e29"
+    },
+    {
+      "path": "native/build/cubemap-lod-281-native-qqCocC/acceptance.json",
+      "sha256": "f990e48fdda0c23bb6bda97f29ae847d10e7b824e5afd21e72549e23bea9368d"
+    },
+    {
+      "path": "native/build/alpha-preparation-404-ukwapo/acceptance.json",
+      "sha256": "3940f466203d10e5eccb5def321dfc9a7d4b1a931f5ece1a8c03d3305a53dccb"
+    },
+    {
+      "path": "native/build/spatial-history-405-AvODAv/acceptance.json",
+      "sha256": "7e360f434af10623134bd21abfa0850aaa1b48d0a2793a1cc1d2f605eae3d02c"
+    },
+    {
+      "path": "native/build/spatial-history-407-native-J1PA6V/acceptance.json",
+      "sha256": "7d425448e7bfb152fb611af175c018ba5f98fd011aac047ab7b6e645edfe5299"
+    },
+    {
+      "path": "native/build/history-nonfinite-406-g0Wef1/acceptance.json",
+      "sha256": "d9f2080ee566e4e11fb1a479f187489412c67cec41ce536a16c39f84cf0b4fe2"
+    },
+    {
+      "path": "native/build/history-nonfinite-406-native-bnEStl/acceptance.json",
+      "sha256": "6c3b3920c1719034ce638fecb39d4f5cbc185bf4438c2971789887279a71b67a"
+    },
+    {
+      "path": "native/build/surface-time-history-359-cOjYWU/acceptance.json",
+      "sha256": "139f952a7001e9a89bc58276f96b297d48dd7363e3595ec0bd148a27e28af52a"
+    },
+    {
+      "path": "native/build/native-scene-window-nXXUre/acceptance.json",
+      "sha256": "88a5accfbc0c2968a3a1d020b674dd6d69bce958bfa5f13fd72c1781c3441fda"
+    },
+    {
+      "path": "native/build/rendering-410-light-checks.json",
+      "sha256": "a13d6d3064117f2ede49050af03b1a06093242e80dc94be373f665fc35c4cb68"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-nXXUre/acceptance.json",
+      "scope": "Actual packaged D3D11 game: Complex141 normal/UV graph, typed C++/Blueprint control, morph664 changed channels, cache budget and disabled resource release. path4689/temporal4829ms uncontrolled observations, no improvement ratio."
+    }
+  ],
+  "sourceEditorGates": [
+    {
+      "path": "native/build/normal-history-403-Drz3va/acceptance.json",
+      "scope": "Actual two API current/previous normal and mip plus ordinary material raster"
+    },
+    {
+      "path": "native/build/spatial-history-405-AvODAv/acceptance.json",
+      "scope": "Actual full two API spatial surface guides equal/change/recovery"
+    }
+  ],
+  "implemented": [
+    "GL alpha field/width0 differential pruning and lazy TSL alpha graph; cube explicit LOD preserved",
+    "Shared neutral tangent fallback on zero filtered normal across CPU/ordinary GL-GPU-D3D/ray/committed decode",
+    "New packed geometry producer allows supported world/normal/view material input comparisons; legacy -2 and missing/degenerate pose guards retained",
+    "Per-channel value/physical/coat comparisons reject NaN/infinities which max reductions discarded; unused coat zw still ignored",
+    "Immutable engineSchema.raySurfaceHistory.normalDecode contract and artist/AI help; no additional GPU targets/textures/production readbacks",
+    "Actual packaged Complex141 C++/Blueprint/morph/cache-release and new native player"
+  ],
+  "measurements": {
+    "normalCPU28Cases": true,
+    "normalPreviousAndFineMipCrossAPI": true,
+    "normalD3DError": 5.960464477539063e-8,
+    "spatialProducerCases": 30,
+    "spatialAPIs": [
+      "webgl2",
+      "webgpu",
+      "d3d11"
+    ],
+    "nonfiniteOriginalMismatches": 52,
+    "nonfiniteFinalMismatches": 0,
+    "nonfiniteCases": 28,
+    "nonfiniteDecisionsPerBackend": 84,
+    "GLSourceReductionBytes": 296,
+    "GLPreparationPairMS": [
+      2004.9000000059605,
+      2011.6000000014901
+    ],
+    "initialCompileImprovementProved": false,
+    "Complex141": {
+      "passed": true,
+      "backend": "D3D11",
+      "complexNormalTexture": true,
+      "UVParameterGraph": true,
+      "changedChannels": 664,
+      "timings": [
+        {
+          "property": "pathTracingEnabled",
+          "value": true,
+          "elapsedMS": 4688.653899999999
+        },
+        {
+          "property": "pathTracingDenoise",
+          "value": true,
+          "elapsedMS": 2096.7737000000016
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": true,
+          "elapsedMS": 153.88170000000173
+        },
+        {
+          "property": "pathTracingDenoiseTemporal",
+          "value": 0.8,
+          "elapsedMS": 4828.581000000002
+        },
+        {
+          "property": "pathTracingCurvedFilter",
+          "value": false,
+          "elapsedMS": 130.45080000000235
+        },
+        {
+          "property": "pathTracingEnabled",
+          "value": false,
+          "elapsedMS": 139.75860000000102
+        }
+      ],
+      "preparation": null,
+      "compilation": {
+        "compilations": 5,
+        "cacheHits": 0,
+        "cacheMisses": 5,
+        "cacheEvictions": 0,
+        "cacheBytes": 577658,
+        "cacheBudgetBytes": 8388608,
+        "lastCompileMS": 31,
+        "totalCompileMS": 10125,
+        "sourceBuilds": 1
+      },
+      "typedCPP": true,
+      "disabledRelease": true,
+      "pathNoTransmission": true
+    },
+    "newGPUTargets": 0,
+    "newProductionReadbacks": 0
+  },
+  "failuresPreserved": [
+    "403 first fixture float overload used int literal; next sample was exactly a cancelling fine-mip coordinate, fixed distinct-width fixture under same tolerance",
+    "405 initial vec3 to scalar/Split(vec4) invalid fixtures rejected; existing Dot produces a typed scalar",
+    "406 initial JS escaping/standalone HLSL vec3 declaration/dynamic SM5 vector lvalue fixtures fixed without changing product tolerance",
+    "406 jVnxjW actual52 mismatches before product comparison fix, g0Wef1/bnEStl final0",
+    "408 LwGvlA actual native raster helper undeclared; native-materials.js shared helper declaration added and actual nXXUre passed",
+    "404 source296B smaller but GL preparation about2sec unchanged; not counted as RND06 latency success"
+  ],
+  "limits": [
+    "RND06 Complex141 first preparation still requires optimization; pair and game timings not stable cold/FPS comparison",
+    "Global curved inverse and changed transparent-path correspondence, rough compound lobes/participating-medium footprint remain",
+    "Normal variance/roughness filtering and role-specific import mip policies, LOD bias/top mip and other MAT03 ledger work remain",
+    "No whole UE/Unity/docs/API/engine completion or real mobile device claim"
+  ],
+  "testSourceHashes": {
+    "native/tests/path-time-normal.cpp": "810f95de4c85ba1bf66768dacf8294f5f3093fc7785a03bae628d0f0d9a1fd98"
+  }
+}

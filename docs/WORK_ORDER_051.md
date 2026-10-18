@@ -545,3 +545,8 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 기존프로파일러에opt-in GL/GPU비동기쿼리·최근/평균/p95/완료sequence·명시범위를연결했어요. GL4query/GPU256slot·두2048B버퍼/한read상한·off새query/read/timer0·중지/deferred퇴역/stale거부·외부쿼리/overflow/오류를검사했어요. 실제두API픽셀동일·32render+1compute/독립정수출력·read진행중stop/최종owner0을확인했어요. 실제editor의인간record/clear·AIread/stop·메인/머테리얼·원본SHA/revision/exit0과같은폰트/원래가시성조건의두행전체를확인했어요. 주차profiler하단열기와GPU전용보기/숨긴CPU마크업생성생략도포함해요. GPUtimeline/pass합계는FPS/전체GPUbusy/coldcompile개선으로세지않고threadflow·할당/crash·누적렌더링원장을유지해요. handoff는최신상태만남기고과거증거는Git/정본을참조해요. source/nativeABI/player는재빌드없이동기화하고설치400두API UI/현재ownerNative350/fullSHA/User읽기SHA/Versions1을확인해요.
 
 400 설치 aca3b432cab8636e·3240명세/15소유 SHA·동일player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일 설치 전후 읽기 SHA가 같아요. 실제 설치 GL wIN4qj/GPU nHEBHJ 인간 기록·지우기·AI 중지·메인/머테리얼 전체 행과 D3D 두 게임 MyUk0i의 캐시 저장6/재사용6·재저장0을 통과했어요. 이전 설치 178310047B를 정리했고 다음 RND06과 누적 렌더링을 계속해요.
+
+
+### 2026-10-18 · 401–410
+
+알파 미사용 필드/0폭 미분과 미사용TSL graph를 줄이고, 상쇄 노멀의 CPU·일반·광선·이전 디코더를 공유했어요. 실제 GL/GPU/D3D의 큰mip중립/작은mip원방향과 일반raster를 대조했어요. 이전 표면 공간 입력의 일괄미지원 생산자 표식을 정리하고 기존 이전 포즈/분기/값 검사로 연결했어요. 전체 세 API 가이드에서 같은 값 유지·변경 거부·복원을 확인했어요. NaN/Inf가 max 계산에서 숨는 실제52불일치를 채널별 비교로 고쳐 최종 세 API28cases×3판정0불일치예요. 첫 일반D3D helper누락 LwGvlA는 native-materials 선언을 보완했고 실제 패키지 nXXUre C++/BP·UV노멀·morph664채널·해제/캐시 검사가 통과했어요. GL source296B감소는2004.9→2011.6ms로준비시간개선을입증하지않았고Complex141 path4689/temporal4829ms는남은과제예요. 정본 ENGINE_WORK_410/도움말·선택본문 corpus410·AI 불변 normalDecode 계약에 기록하고 설치410에서동일소유SHA와User읽기지문/Versions1을확인해요. 전체목표완료로세지않고계속해요.
