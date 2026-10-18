@@ -46,7 +46,7 @@ function retainedSpawnContext(context,contexts){
 }
 
 export class NativeHost extends NativeProtocol {
-  constructor(){super();this.sessions=new Map();this.physicsQueryPool=new NativePhysicsQueryPool();this.buildControllers=new Set();this.moduleCache=mutablePaths.installed?new NativeModuleCache(mutablePaths):null;this.managedModuleCache=mutablePaths.installed&&path.basename(path.dirname(root)).toLowerCase()==='versions'?new NativeModuleCache({...mutablePaths,moduleOwnerRoot:path.dirname(path.dirname(root))}):null;}
+  constructor(){super();this.sessions=new Map();this.physicsQueryPool=new NativePhysicsQueryPool();this.buildControllers=new Set();this.versionModuleCache=mutablePaths.installed?new NativeModuleCache(mutablePaths):null;this.managedModuleCache=mutablePaths.installed&&path.basename(path.dirname(root)).toLowerCase()==='versions'?new NativeModuleCache({...mutablePaths,moduleOwnerRoot:path.dirname(path.dirname(root))}):null;this.moduleCache=this.managedModuleCache||this.versionModuleCache;}
   inspectResources(){
     const modules=[];
     for(const session of this.sessions.values()){
@@ -56,7 +56,7 @@ export class NativeHost extends NativeProtocol {
     }
     // On-demand only: process.memoryUsage may walk pages. Counts are references,
     // not byte ownership; arrayBuffers is already included in external.
-    return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false},managedNativeCache:this.managedModuleCache?.inspect()||null};
+    return {pid:process.pid,node:process.version,memory:process.memoryUsage(),modules,physicsQueries:this.physicsQueryPool.inspect(),nativeCache:this.moduleCache?.inspect()||{root:mutablePaths.modules,installed:false},managedNativeCache:this.managedModuleCache?.inspect()||null,legacyNativeCache:this.versionModuleCache?.inspect()||null};
   }
   registerBinary(binary,metadata){const token=randomUUID();this.sessions.set(token,{token,binary,metadata,queue:Promise.resolve(),lastUsed:Date.now()});return {token,metadata,diagnostics:'사전 빌드 로드'};}
   async build(header,source,{configuration='editor',signal,files=[]}={}){
@@ -70,7 +70,7 @@ export class NativeHost extends NativeProtocol {
     let sdkUsed,hash,binary,cacheHit,cacheScope='version';
     const retained=this.managedModuleCache&&await buildRetainedNative({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal,cache:this.managedModuleCache});
     if(retained){({sdkUsed,hash,binary,cacheHit,cacheScope,releaseCache}=retained);}else{
-      sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal});hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint).digest('hex').slice(0,20);const dir=path.join(this.moduleCache?.directory||mutablePaths.modules,hash);binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.moduleCache)releaseCache=await this.moduleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
+      sdkUsed=await nativeSDKPlan({root,directory:path.join(mutablePaths.cache,'NativeSDKPlans'),snapshot,sourceKey,generated,compiler,env,configuration,compile,signal});const conservative=!!this.managedModuleCache||sdkUsed.mode==='full';hash=createHash('sha256').update(sourceKey+sdkUsed.identity+sdkUsed.fingerprint+(conservative?randomUUID():'')).digest('hex').slice(0,20);const dir=path.join(this.versionModuleCache?.directory||mutablePaths.modules,hash);binary=path.join(dir,process.platform==='win32'?'worker.exe':'worker');if(this.versionModuleCache)releaseCache=await this.versionModuleCache.retain(hash);else await fs.mkdir(dir,{recursive:true});signal.throwIfAborted();
     cacheHit=existsSync(binary);if(!cacheHit){
       const attempt=randomUUID(),compileDir=path.join(dir,'compile-'+attempt),temporary=path.join(dir,'worker-'+attempt+(process.platform==='win32'?'.tmp.exe':'.tmp'));await fs.mkdir(compileDir);
       const objects=[];let published=false;
