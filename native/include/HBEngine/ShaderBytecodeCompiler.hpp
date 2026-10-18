@@ -42,12 +42,12 @@ public:
     }
     // create returns HRESULT. Device rejection of a disk entry retries the compiler
     // once; source/compiler/device failures still propagate normally.
-    template<class Create> static Result create(const std::string& source,const char* name,const char* entry,const char* target,Create&& make){
+    template<class Create> static Result create(const std::string& source,const char* name,const char* entry,const char* target,Create&& make,bool refresh=false){
         auto& s=state();Result result;std::string cacheKey;std::uint64_t generation;bool cached=false;
         {
             std::lock_guard<std::mutex> lock(s.mutex);generation=s.generation;
             cacheKey=s.disk.info().configured?key(source,name,entry,target):std::string{};
-            if(!cacheKey.empty())cached=s.disk.get(cacheKey,result.code);
+            if(!cacheKey.empty()){if(refresh)s.disk.reject(cacheKey);else cached=s.disk.get(cacheKey,result.code);}
         }
         // Driver creation and compilation can take seconds. Keep cache/configuration
         // inspection independent and allow callbacks to inspect compiler state.

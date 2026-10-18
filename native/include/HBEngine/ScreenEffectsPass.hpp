@@ -112,6 +112,9 @@ if(asynchronous){pendingPrograms[stage].source=std::move(request);pollProgram(st
 else {const auto bytecode=compileSource(*request);detail::check(gpu.device->CreateComputeShader(bytecode.data(),bytecode.size(),nullptr,&compute.p),"Screen effect compute");}}
 
 public:
+ // Share the existing lazy worker with ordinary material preparation. This
+ // entry initializes compiler/library owners before the queue's join-on-exit.
+ static detail::ShaderPreparationQueue& sharedPreparationQueue(){return preparationQueue();}
  explicit ScreenEffectsPass(Device& device):gpu(device),hierarchy(device){}
  struct PreparationInfo {bool enabled=false,pending=false,ready=false;std::uint64_t revision=0;std::array<unsigned,6> stages{};std::string error;detail::ShaderPreparationQueue::Info queue;};
  void setAsyncPreparation(bool value){if(value==asynchronous)return;asynchronous=value;++preparationRevision;for(int i=0;i<6;++i){pendingPrograms[i]={};if(!computes[i].p)programKeys[i].clear();}valid=filterValid=false;}

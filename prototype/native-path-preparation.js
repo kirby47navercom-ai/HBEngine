@@ -4,6 +4,8 @@ export const nativeShaderPreparationContract=Object.freeze({
  version:1,backend:'D3D11',stages:Object.freeze(['path','guide','filter','photons','temporal','auxiliary']),
  states:Object.freeze(['unused','queued','compiling','ready','failed']),queueBudgetBytes:8*1024*1024,
  idleWorkerMS:1000,workerCount:1,renderWhilePending:'raster',commitPendingHistory:false,
+ rasterStages:Object.freeze(['material','material-shadow']),
+ rasterPreparation:'same lazy compiler worker; shader bytecode off-thread, device adoption on owner; pending objects skip drawing, dependent shadows/probes and screen history wait',
  compilerCancellation:'finish active compilation; discard obsolete renderer result'
 });
 
@@ -12,6 +14,7 @@ export const nativeShaderPreparationContract=Object.freeze({
 export function updateNativePathPreparation(previous,packet,clock=()=>performance.now()){
  if(!packet?.enabled){cancelGPUPathPreparation(previous);return null;}
  const stages=packet.stages.map((state,i)=>({stage:nativeShaderPreparationContract.stages[i],state:nativeShaderPreparationContract.states[state]})).filter(s=>s.state!=='unused');
+ for(const row of packet.raster?.stages||[])if(row.total)stages.push({...row,state:row.failed?'failed':row.compiling?'compiling':row.queued?'queued':'ready'});
  const pending=!!packet.pending,error=packet.error?new Error(packet.error):null;
  let state=previous;
  if(!state||state.cancelled||state.revision!==packet.revision||!state.pending&&pending){
@@ -20,13 +23,13 @@ export function updateNativePathPreparation(previous,packet,clock=()=>performanc
   state.done=new Promise(resolve=>{state.resolveDone=resolve;});
   state.cancelledDone=new Promise(resolve=>{state.resolveCancellation=()=>{state.resolveDone();resolve();};});
  }
- state.stages=stages;state.queue=packet.queue;state.total=stages.length;state.completed=stages.filter(s=>s.state==='ready').length;
- state.submitted=stages.filter(s=>s.state!=='queued').length;state.error=error;state.pending=pending;
+ state.stages=stages;state.queue=packet.queue;state.rasterPending=!!packet.raster?.pending;state.total=stages.reduce((n,s)=>n+(s.total??1),0);state.completed=stages.reduce((n,s)=>n+(s.ready??(s.state==='ready'?1:0)),0);
+ state.submitted=stages.reduce((n,s)=>n+(s.total!==undefined?s.total-s.queued:s.state!=='queued'?1:0),0);state.error=error;state.pending=pending;
  state.currentStage=error?'failed':pending?(stages.find(s=>s.state==='compiling')||stages.find(s=>s.state==='queued'))?.stage||'queued':'ready';
  if(!pending){state.elapsedMS=clock()-state.started;state.resolveDone();}
  return state;
 }
-export function nativePathPreparationInfo(state){const info=gpuPathPreparationInfo(state);return info?{...info,queue:{...state.queue}}:null;}
+export function nativePathPreparationInfo(state){const info=gpuPathPreparationInfo(state);return info?{...info,rasterPending:state.rasterPending,queue:{...state.queue}}:null;}
 
 // A capture can pause the game loop. Polling compiler status must therefore work
 // without drawing another frame or advancing simulation/path history.

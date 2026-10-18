@@ -52,6 +52,6 @@ export async function waitForGPUPathPreparation(renderer){
 }
 
 export async function capturePreparedFrame(renderer,capture){
- for(;;){const image=await capture(),state=renderer.hbPathPreparation;if(state?.error)throw state.error;if(!state?.pending||state.cancelled)return image;await waitForGPUPathPreparation(renderer);}
+ for(;;){const before=renderer.hbPathPreparation,pendingAtStart=!!before?.pending&&!before.cancelled,image=await capture(),state=renderer.hbPathPreparation;if(state?.error)throw state.error;if(!state?.pending||state.cancelled){if(pendingAtStart)continue;return image;}await waitForGPUPathPreparation(renderer);}
 
 }

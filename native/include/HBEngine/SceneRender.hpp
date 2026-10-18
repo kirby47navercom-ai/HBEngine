@@ -1,5 +1,6 @@
 #pragma once
 #include "Bloom.hpp"
+#include "SceneProgramPreparation.hpp"
 #include <map>
 #include "Scene2D.hpp"
 #include "SceneProbes.hpp"
@@ -117,8 +118,11 @@ public:
         detail::Com<ID3D11Buffer> parameters;
         detail::Com<ID3D11ShaderResourceView> values;
         std::vector<float> current;ID3D11Device* owner=nullptr;
+        std::unique_ptr<SceneProgramPreparation> preparation;
     public:
         Program()=default;Program(Program&&)=default;Program& operator=(Program&&)=default;
+        bool ready()const{return shader.p&&shadowShader.p;}
+        SceneProgramPreparation::Info preparationInfo()const{return preparation?preparation->info():ready()?SceneProgramPreparation::Info{{3,3},false,true,{}}:SceneProgramPreparation::Info{};}
     };
 private:
     Device& gpu;detail::Com<ID3D11ShaderResourceView> postLookupView,geometrySceneView,pathEnvironmentView;std::uint32_t postLookupSize=0;
@@ -413,7 +417,7 @@ public:
     std::uint64_t probeDispatches() const{return probes.dispatches();}std::uint64_t probeCaptures() const{return probes.captures();}std::uint64_t probeSharedBytes() const{return probes.storageBytes();}
     std::uint64_t passes2D() const{return passes2D_;}std::uint64_t draws2D() const{return draws2D_;}
 
-    Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
+    static std::string materialProgramSource(const std::string& declarations,const std::string& evaluation){
         if(declarations.size()+evaluation.size()>1048576)throw std::runtime_error("Material HLSL source too large");
         std::string source=shaderSource();
         // Graph shaders never render the auxiliary mask/atlas pass; keep its base-map sampler dead.
@@ -435,10 +439,36 @@ public:
         if(declarations.find("register(s13)")!=std::string::npos){erase("clipMask2d(i.position.xy);");erase("if(pass2d.z>.5)outColor=shade2d(i.at.xy,i.uv,n,base.rgb)+emit;");}
         if(declarations.find("register(s14)")!=std::string::npos){const auto at=source.find("  if(transmission>0)");source.erase(at,source.find("\n",at)-at);erase("outColor+=indirectProbes(i.at,n,v,base.rgb,rough,metal,ao,dielectricF0,1-transmission);");erase("coatLight+=indirectProbes(i.at,cn,v,float3(.04,.04,.04),coatRough,1,1);");}
         const auto entry=source.find("float4 PS("),marker=source.find("// HB_MATERIAL_EVAL");source.replace(marker,std::strlen("// HB_MATERIAL_EVAL"),evaluation);source.insert(entry,declarations+"\n");
-        source=surfaceShader(source);Program out;out.owner=gpu.device.p;{std::lock_guard<std::mutex> lock(gpu.mutex);for(const auto* entry:{"PS","ShadowPS"})detail::ShaderBytecodeCompiler::create(source,"HBNodeMaterial",entry,"ps_5_0",[&](const void* bytes,std::size_t size){return gpu.device->CreatePixelShader(bytes,size,nullptr,entry[0]=='S'?&out.shadowShader.p:&out.shader.p);});}
+        return surfaceShader(source);
+    }
+    Program createProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
+        if(!finite(parameters))throw std::runtime_error("Material parameters invalid");
+        const auto source=materialProgramSource(declarations,evaluation);Program out;out.owner=gpu.device.p;
+        // Compilation and disk I/O must not hold the immediate-context mutex.
+        for(const auto* entry:{"PS","ShadowPS"})detail::ShaderBytecodeCompiler::create(source,"HBNodeMaterial",entry,"ps_5_0",[&](const void* bytes,std::size_t size){std::lock_guard<std::mutex> lock(gpu.mutex);return gpu.device->CreatePixelShader(bytes,size,nullptr,entry[0]=='S'?&out.shadowShader.p:&out.shader.p);});
         setProgramParameters(out,parameters);++uploads_;return out;
     }
+    Program createProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){
+        if(!finite(parameters))throw std::runtime_error("Material parameters invalid");
+        Program out;out.owner=gpu.device.p;out.preparation=std::make_unique<SceneProgramPreparation>(materialProgramSource(declarations,evaluation));
+        setProgramParameters(out,parameters);out.preparation->poll();++uploads_;return out;
+    }
+    bool pollProgramPreparation(Program& program){
+        if(program.owner!=gpu.device.p)throw std::runtime_error("Material preparation owner invalid");
+        if(!program.preparation)return program.ready();
+        auto& pending=*program.preparation;pending.poll();
+        for(std::size_t i=0;i<2;i++)if(auto* bytes=pending.bytecode(i)){
+            detail::Com<ID3D11PixelShader> next;HRESULT result;
+            {std::lock_guard<std::mutex> lock(gpu.mutex);result=gpu.device->CreatePixelShader(bytes->data(),bytes->size(),nullptr,&next.p);}
+            if(FAILED(result)){pending.reject(i,result);continue;}
+            (i?program.shadowShader:program.shader)=std::move(next);pending.accept(i);
+        }
+        const auto info=pending.info();if(!info.error.empty())throw std::runtime_error(info.error);
+        if(program.ready())program.preparation.reset();
+        return program.ready();
+    }
     Program createSurfaceProgram(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgram("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
+    Program createSurfaceProgramAsync(const std::string& declarations,const std::string& evaluation,const std::vector<float>& parameters){return createProgramAsync("#define HB_NODE_SURFACE 1\n"+declarations,evaluation,parameters);}
     void setProgramParameters(Program& program,const std::vector<float>& values){
         if(program.owner!=gpu.device.p||!finite(values))throw std::runtime_error("Material parameters invalid");
         if(program.current==values&&program.parameters.p)return;
@@ -485,6 +515,7 @@ public:
         const auto blend=static_cast<std::size_t>(material.blend);if(mesh.owner!=gpu.device.p||!finite(world)||!finite(normal)||!finite(material.color)||!finite(material.emissive)||!finite(material.normalScale)||!finite(material.shotShape)||!finite(material.physical)||!finite(material.volume)||!finite(material.absorption)||!finite(material.sheenColor)||!finite(material.lobes)||!finite(material.film)||!finite(material.scatter)||!finite(material.scatterColor)||!finite(material.hairTangent)||material.scatter[0]<0||material.scatter[0]>1||material.scatter[1]<0||material.scatter[1]>1||material.scatter[2]<0||material.scatter[2]>1||material.scatter[3]<0||std::abs(material.hairTangent[3])>1||!finite(material.specular)||material.sheenColor[0]<0||material.sheenColor[0]>1||material.specular[0]<0||material.specular[0]>1||material.sheenColor[1]<0||material.sheenColor[1]>1||material.specular[1]<0||material.specular[1]>1||material.sheenColor[2]<0||material.sheenColor[2]>1||material.specular[2]<0||material.specular[2]>1||material.sheenColor[3]<0||material.sheenColor[3]>1||material.lobes[0]<0||material.lobes[0]>1||material.lobes[1]<0||material.lobes[1]>1||std::abs(material.lobes[2])>6.283186f||material.lobes[3]<0||material.lobes[3]>1||material.film[0]<1||material.film[0]>3||material.film[1]<0||material.film[1]>2000||material.film[2]<0||material.film[2]>1||material.absorption[0]<0||material.absorption[0]>1||material.absorption[1]<0||material.absorption[1]>1||material.absorption[2]<0||material.absorption[2]>1||material.absorption[3]<0||material.physical[3]<0||material.physical[3]>10||material.volume[0]<0||material.volume[0]>1||material.volume[1]<0||material.physical[0]<0||material.physical[0]>1||material.physical[1]<0||material.physical[1]>1||material.physical[2]<1||material.physical[2]>2.5||!finite(material.skyTop)||!finite(material.skyHorizon)||!finite(material.sunDirection)||!finite(material.sunColor)||!finite(material.moonDirection)||!finite(material.moonColor)||!std::isfinite(material.roughness)||!std::isfinite(material.metalness)||!std::isfinite(material.alphaCutoff)||blend>=3||first>mesh.count)throw std::runtime_error("Scene draw invalid");for(std::size_t i=0;i<6;i++)if(!finite(material.uvX[i])||!finite(material.uvY[i]))throw std::runtime_error("Scene texture transform invalid");if(!count)count=mesh.count-first;if(count>mesh.count-first||count%3||first%3)throw std::runtime_error("Scene draw range invalid");
         if(extendedSamplers.size()>512)extendedSamplers.clear();
         std::array<ID3D11ShaderResourceView*,128> views{};std::array<ID3D11SamplerState*,16> states{};std::uint32_t mask=0;for(std::size_t i=0;i<maps.size();i++){if(maps[i]&&maps[i]->owner!=gpu.device.p)throw std::runtime_error("Scene texture owner or sampler invalid");if(maps[i]){views[i]=maps[i]->view.p;mask|=1u<<i;}states[i]=samplerState(sampling[i]);}if(mesh.uv1.p)mask|=16384u;views[6]=lightView.p;const UINT viewCount=50,samplerCount=16;if(lightmap){views[49]=lightmap->view.p;mask|=32768u;}if(program){if(program->owner!=gpu.device.p||programMaps.size()>D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT||programMaps.size()!=programSampling.size())throw std::runtime_error("Material program bindings invalid");views[7]=program->values.p;for(std::size_t i=0;i<programMaps.size();i++){if(!programMaps[i]||programMaps[i]->owner!=gpu.device.p)throw std::runtime_error("Material texture owner or sampler invalid");views[8+i]=programMaps[i]->view.p;states[i]=samplerState(programSampling[i]);}}
+        if(program&&!program->ready()){const auto info=program->preparationInfo();if(!info.error.empty())throw std::runtime_error(info.error);return;}
         views[24]=activeShadow<0?shadowView.p:nullptr;views[25]=shadowDataView.p;if(material.receiveShadow)mask|=64u;if(activeProbe)mask|=2048u;if(!active2D&&!activeProbe&&activeShadow<0&&bloom.active()){mask|=128u;bloom.markDirty();}if(instances)mask|=instances->stride==16?512u:256u;if(deformation)mask|=1024u;
         if(transmissionReady&&(material.transmission||material.volume[0]>0)&&!activeProbe&&!active2D&&activeShadow<0){if(programMaps.size()>14)throw std::runtime_error("Transmission reserves one material sampler");views[44]=transmissionView.p;views[45]=transmissionDepthView.p;states[14]=samplers[16].p;mask|=4096u;}
         Scene2D settings=twoD?twoD->settings:Scene2D{};
