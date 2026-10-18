@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "b3b119611a92c8f8a862903eaab0efffb3ac8437",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5\\HBEngine.exe",
+  "bundleHash": "04201e5a3a6750d5e35e2ef944320c8ad21a3dc4929a60b6f5e71e5438e6b358",
+  "files": 3207,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "b3b119611a92c8f8a862903eaab0efffb3ac8437",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\04201e5a3a6750d5\\HBEngine.exe",
+    "bundleHash": "04201e5a3a6750d5e35e2ef944320c8ad21a3dc4929a60b6f5e71e5438e6b358",
+    "files": 3207,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3184,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\1e50e6754649e3e1",
+          "bytes": 178041752,
+          "manifestSHA256": "da3823ce733aac85915b0636495686ae8372d40f8dbb37f014e424be4d855dc3"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T10:25:16.8186333Z",
+      "bytes": 178041752,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "04201e5a3a6750d5"
+      ]
+    },
+    "nativePlayerSHA256": "e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588",
+    "installedGates": [
+      {
+        "path": "native/build/optical-guide-375-XxjF3v/acceptance.json",
+        "sha256": "b19e902dc381e251890689524c7c268b323fd0786d62689db3ebc67c35e8d318",
+        "scope": "Actual full auxiliary guide, test-only output instrumentation. Independent camera/Snell width reference and committed/current normal-map mip equality; old unbent-cone sampling must differ. Local thin transmission; no global curved inverse claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-0tAxaJ/acceptance.json",
+        "sha256": "77df0021f5c7dc0da677aacb1a1b9748e936c737d9718a29f96c4885022e5785",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3207,
+    "versions": [
+      "04201e5a3a6750d5"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-376-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-wy7K7b/acceptance.json",
+        "scope": "Actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; D3D also raster131/warm revisit; unordered/load-uncontrolled transitions, not an FPS comparison"
+      },
+      {
+        "path": "native/build/gpu-scene-VOqQsx/acceptance.json",
+        "scope": "Actual C++/Blueprint Complex141, affine145, deformation138,134,125,lighting128; D3D also raster131/warm revisit; unordered/load-uncontrolled transitions, not an FPS comparison"
+      }
+    ],
+    "scope": "376 full manifest and owner SHA verification, installed full GL/WebGPU optical width/normal-map mip guide, two-process native packaged shader disk reuse; source Complex141/CPP/BP D3D/WebGPU use this verified native player build. No whole-engine/FPS/device-completeness claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 7259382,
+    "removed": [
+      {
+        "path": "native/build/optical-cone-374-R67NZa/probe.exe",
+        "bytes": 727063,
+        "sha256": "7dce38fbefe1ffa9568fda4727c0dc4904169113988e49942051e0e55e7803dc"
+      },
+      {
+        "path": "native/build/optical-guide-375-native-Y4iuc1/probe.exe",
+        "bytes": 727063,
+        "sha256": "ad5219c969967d9934da0d61dc60982fc9ea64df8dba9f16373ef4edcb67f346"
+      },
+      {
+        "path": "native/build/previous-branch-373-native-SORwne/probe.exe",
+        "bytes": 727063,
+        "sha256": "8fb393c0d91cd8b819f16d508480b64b4d756b1bb1c1ce166d5230c8bb135a78"
+      },
+      {
+        "path": "native/build/previous-media-371-native-96XWjM/probe.exe",
+        "bytes": 727063,
+        "sha256": "0db0dbda9a05c888d207d5171afe46d0f4ef796d8023d1b8267e188806335f83"
+      },
+      {
+        "path": "native/build/previous-media-371-native-cCXZa0/probe.exe",
+        "bytes": 724251,
+        "sha256": "41d6923de6a79022f4acb699f95b2e939a414edf471899a43e0f89f3e577afab"
+      },
+      {
+        "path": "native/build/previous-media-371-native-CZPvsm/probe.exe",
+        "bytes": 724251,
+        "sha256": "23aad3fc929ede7f51a915dee368dbeadfd15eb1d21c7c1f592b3cd439ec261c"
+      },
+      {
+        "path": "native/build/previous-media-371-native-Ql28nr/probe.exe",
+        "bytes": 724251,
+        "sha256": "15fd7130bf7edef36b31ec3c37c06d7f62610714d8efcadea9d79de01160e817"
+      },
+      {
+        "path": "native/build/previous-medium-guide-372-native-GkkVcM/probe.exe",
+        "bytes": 727063,
+        "sha256": "fc7fd771d806ccaed00f680e24c310ad689375eeaeab992eb9125e0ec0ab1cf4"
+      },
+      {
+        "path": "native/build/previous-medium-guide-372-native-JKTu5V/probe.exe",
+        "bytes": 724251,
+        "sha256": "ff90fd34e3fc176559456792e03146681bf9475ac7260fefda87e43622c256f3"
+      },
+      {
+        "path": "native/build/previous-medium-guide-372-native-XFt1PS/probe.exe",
+        "bytes": 727063,
+        "sha256": "099362a6a6ede6cd93907fb58c4720415023afff179e1066ec47b43c7fd14460"
+      }
+    ]
+  },
+  "scope": "376 full manifest and owner SHA verification, installed full GL/WebGPU optical width/normal-map mip guide, two-process native packaged shader disk reuse; source Complex141/CPP/BP D3D/WebGPU use this verified native player build. No whole-engine/FPS/device-completeness claim."
+}

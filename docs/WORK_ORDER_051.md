@@ -515,3 +515,5 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 ### 2026-10-18 · 371–376
 
 이전 IOR 스택/굴절 방향을 현재와 독립적으로 재생하고 실제 이전 교차 불일치·전반사·앞뒷면·nonLIFO/overflow 이력을 거부해요. old state는 ID16+scalar IOR16이며 현재 RGB 소광은 보존해요. current/prior guide 광선 폭을 기존 적분기와 맞추고 세GPU 49개 Snell·18개 전이·전체 중첩 guide·실제 normal-map 밉/폭을 대조했어요. source CPP/BP D3D wy7K7b·WebGPU VOqQsx 실행/정상종료/서버해제를 확인했어요. 병행 prune의 내부 파일 선삭제 경쟁을 namedmutex로 직렬화하고 두 실제 PS/권한거부/32최근 보호를 검사했어요. AI 불변계약·PBRT 지정본문 대조·원장을 갱신하고 설치376으로 이어가요. 전체 누적 목표는 계속 진행해요.
+
+376 설치 04201e5a3a6750d5·3207명세 SHA/34소유자·새 player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일의 설치직전/후 읽기전용SHA가 같아요. 설치375XxjF3v 전체GL/GPU 광선폭/실제노멀맵밉과3500tAxaJ 두native게임6save→6hit/0save·종료0을 통과했어요. 이전설치 178041752B(논리크기)·own probe 7259382B를 정리하고 누적 렌더링 작업을 계속해요.

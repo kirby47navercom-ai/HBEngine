@@ -1,3 +1,8 @@
+# 설치376 검증 완료 — 후속 렌더링 계속
+
+- 설치 04201e5a3a6750d5/3207파일/Versions1·USER_INSTALL_376 정본. 코드a16ab7b/입력b3b1196 mainpush. Player e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588·User10385 읽기SHA동일·34owner/fullmanifest/links2/.hbproject 통과. installed375XxjF3v·3500tAxaJ 통과예요.
+- 376record/sync/install/finish 모두실행완료재사용금지. oldVersions 178041752B·ownprobe 7259382B 정리했어요. 구현 끝을 선언하지 않고 전역 곡면/복합 경로 대응·RND08베이크와 RND06비용 등 누적 원장을 계속해요.
+
 # HBEngine 인계 — 371–376 구현·검증, 설치370 유지
 
 - 계속 작업 중이에요. 사용자 목표는 누적 엔진 전체이며 이 묶음으로 끝내지 않아요. 다음은 RND05 전역 곡면/변경 경로 대응과 RND06 준비 비용, 다른 원장 세부예요. 전체 Unreal/Unity 분석·엔진 완료율은 미확정이에요.

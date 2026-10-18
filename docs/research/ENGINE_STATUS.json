@@ -1956,11 +1956,11 @@
   ],
   "latestBatch": "371–376",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_370.json",
-    "sourceCommit": "70cfa9fd96c20e6151fc9548d33afbda62eefb1d",
-    "bundleHash": "1e50e6754649e3e16502493518d243d0faf06960b44fe0b9bc3aa98a755dfc13",
+    "receipt": "docs/research/USER_INSTALL_376.json",
+    "sourceCommit": "b3b119611a92c8f8a862903eaab0efffb3ac8437",
+    "bundleHash": "04201e5a3a6750d5e35e2ef944320c8ad21a3dc4929a60b6f5e71e5438e6b358",
     "verified": true,
     "versions": 1,
-    "scope": "Defined 366–370 previous geometry/visibility and preparation work, exact installed files and scoped execution; whole cumulative engine work continues."
+    "scope": "Defined 371–376 independent old-medium/optical footprint work, exact installed files and scoped execution; cumulative engine work continues."
   }
 }

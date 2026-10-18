@@ -50,7 +50,7 @@
     "native/tests/path-previous-context-308.cpp": "36a32f671bcc4d7f7aafa9f1baf9d03fa43c751627e4dff8509182e62074b363"
   },
   "nativePlayerSHA256": "e104371a2939be23b653298527f7759c3a4790d27f98fa86dd28e4ee308d9588",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/previous-media-371-trQwz9/acceptance.json",
@@ -115,6 +115,14 @@
     {
       "path": "native/build/previous-media-371-cpu.json",
       "sha256": "8eec26da8c3ce22159cc7ef25bbb0e3fac487c9532a6c3b57bdf685505dddd44"
+    },
+    {
+      "path": "native/build/optical-guide-375-XxjF3v/acceptance.json",
+      "sha256": "b19e902dc381e251890689524c7c268b323fd0786d62689db3ebc67c35e8d318"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-0tAxaJ/acceptance.json",
+      "sha256": "77df0021f5c7dc0da677aacb1a1b9748e936c737d9718a29f96c4885022e5785"
     }
   ],
   "sourceGames": [
@@ -275,5 +283,6 @@
     "기존 적분기의 .01 grazing floor/1.57cap 국소 cone 모델이며 full derivative/EWA 구현 아님",
     "실제 C++ 검사 중 첫 병행 cache-prune의 내부 PostDriver.h 경쟁 실패 receipt c1e45afc는 보존; 이후376 실제 두 PS 직렬화로 원인 경로 검증",
     "전체엔진/전체UEUnity문서/API/FPS/실모바일기기 완료 주장 없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_376.json"
 }
