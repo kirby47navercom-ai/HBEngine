@@ -1921,9 +1921,9 @@
   ],
   "latestBatch": "308–327",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_318.json",
-    "sourceCommit": "5ca7c69418fa08519518c9214e853f1f6ad8ae73",
-    "bundleHash": "828c60b44c267db5aa050e94b54e09f26a62b7605bb52e8cf8ae1102a712cbdc",
+    "receipt": "docs/research/USER_INSTALL_327.json",
+    "sourceCommit": "4616e320f15a6b02e4db9144242c89f2381d3716",
+    "bundleHash": "0d2a7b42112d229e5ada80fd5543aba32f5e382b35c5bc3c03757e0c13b25947",
     "verified": true,
     "versions": 1,
     "scope": "308–318 defined prior-frame/2D/storage improvements. Not whole-engine completion."

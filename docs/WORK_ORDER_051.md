@@ -480,3 +480,5 @@ DirectX의 불투과 확정 metadata·shader variant/define·기본요청/투과
 ### 2026-10-18 · 319–327
 
 308–318 설치 이후 작업을 계속해 부모/whole component/property/Transform 별칭·skeletal·animation clip의 공유 원본/우선순위/부분 구간 인계를 구현했어요. CPU13종·구조8/클립3/재진입·오류4조건과 실제 소스 편집기/DirectX·WebGL CPP/BP게임이 통과했어요. 소스게임 후 최종 guard 추가는 CPU327로 확인하고 설치 gate를 새로 진행해요. 공식 선택 자료의 읽기 범위와 링크/그림/API 미독을 별도 등록했으며 전체 분석 완료로 승격하지 않아요.
+
+327 설치 0d2a7b42112d229e·3115전체명세SHA·바로가기2/.hbproject·Versions1·User10385파일 전후SHA 동일이에요. 최종 설치본으로 실제 편집기와 DirectX·WebGL 패키지를 다시 제작·실행해 CPP/BP/실제뼈/부모/컴포넌트/클립 인계를 확인했어요. 이전설치189534913B를 정리했어요. 원장의 다음 렌더링과 엔진 잔여를 이어가요.

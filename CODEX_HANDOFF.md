@@ -1,8 +1,9 @@
-# HBEngine 현재 인계 — 319–327 소유권 구현·설치 준비
+# HBEngine 현재 인계 — 308–327 설치 확인·구현 계속
 
-- 설치318(828c60b44c267db5) 검증 뒤 작업을 이어327 6d4c759f387d472e44d29b2c1a36d99b43c3ebdb를 구현했어요. 아직327 설치 전이에요.
-- 공통 SequenceChannels는 grouped staging/validation·releaseField·empty cleanup·재진입 guard를 갖고, 부모/componentState/property/Transform alias·skeletal/clip에 적용해요. 새 전체월드 이력/타이머/GPU읽기 없음. 기존스칼라 lazy adapter 120000호출→1000원본생성 유지예요.
-- CPU32713종 전부0·새 구조8/클립3/재진입/오류4조건 통과예요. 실제 E9YNZT 편집기·D3D/GL CPP/BP게임은 최종 guard 전 표본이고 최종guard는 CPU와 후속설치 gate로 확인해요.
-- 다음 sync327/install327/finish327은 새marker 한 번씩 사용해 실제 설치323게임/manifest/Versions1/User SHA를 확인해요. 네이티브 바이너리/렌더 소유자는318이후 바꾸지 않았으니 재컴파일하지 않아요.
-- ANM06 남은 범위: 외부 애니메이션/그래프 원상태·나머지 표현 별칭·가중 혼합·비동기외부setter롤백과 기존shot/subsequence 등. 이후 누적원장의 렌더/임포트/AI/물리 작업을 계속해요.
-- User프로필은 읽기전용SHA만, 검사자체숨김창/포트/프로필·사용자창조작없음·활성사용자시 설치보류·Versions1/원본보고서보존을 유지해요. 이전모든one-shot은재실행하지않아요.
+- 구현6d4c759·문서4616e32 main push예요. 설치 0d2a7b42112d229e 하나·3115파일 전체SHA·바로가기2/.hbproject·User10385파일 전후SHA 동일이에요. USER_INSTALL_327이 정본이에요.
+- 308–318의 이전머테리얼입력/노멀/mip·대형2D/CPP/BP·stableID 복구는 ENGINE_WORK_318/USER_INSTALL_318에 있어요. 이어319–327의 부모/componentState/property/Transform alias·skeletal·clip 공통 소유권을 만들었어요.
+- CPU32713종·구조8/클립3/재진입·오류4조건 통과, 설치 AN3o6f의 실제 편집기·D3D/GL 패키지를 최종 installed tools로 제작·실행해 CPP/BP·실제 bone/parent/component/clip/priority/restore를 확인했어요. 소스 E9YNZT는 최종 guard전 증거이고 최종 claim은 AN3o6f예요.
+- 새 GPU읽기/타이머/전체월드 이력 복사 없음. scalar adapter1000개/120000샘플·원본1회읽기 유지. 외부 재생/그래프의 정확한 복원·나머지 표현 별칭·가중 혼합은 잔여예요.
+- 지금 다음 RND06 준비 비용을 조사했어요. ray-material-shader와 generate-ray-programs가 current/prior normal IR을 별도 함수로 복제해요. geometry UV/smooth/offset 계산은 문맥마다 달라도 graph 연산 본문은 공통으로 묶을 후보예요. 아직 이 공유 최적화는 구현하지 않았고 GL 실험으로 출력/준비비용을 먼저 대조해야 해요. WGPU/D3D도 같은 의미로 연결하기 전 완료라고 하지 않아요.
+- RND07 투명 이전분기/다른 표면필드·큰맵 diskchunk/배열복사·여타누적 잔여는 ENGINE_STATUS 정본이에요. 전체분모/연구 gate를 승격하지 않아요.
+- sync327/install327/finish327·record327·validation321/322/325/327 및318등 모든 one-shot은 재실행하지 않아요. 사용자창/탭/서버는 조작하지 않고 User는읽기전용SHA만·숨김고유검사·활성사용자시설치보류·Versions1을 유지해요.

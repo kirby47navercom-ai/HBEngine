@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "4616e320f15a6b02e4db9144242c89f2381d3716",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\HBEngine.exe",
+  "bundleHash": "0d2a7b42112d229e5ada80fd5543aba32f5e382b35c5bc3c03757e0c13b25947",
+  "files": 3115,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "4616e320f15a6b02e4db9144242c89f2381d3716",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\HBEngine.exe",
+    "bundleHash": "0d2a7b42112d229e5ada80fd5543aba32f5e382b35c5bc3c03757e0c13b25947",
+    "files": 3115,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3116,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5",
+          "bytes": 189534913,
+          "manifestSHA256": "33b688ef552809bb34bc92f03ac01cb8dff813b1c55434160b7034d02c98264f"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T05:31:46.4736100Z",
+      "bytes": 189534913,
+      "generated": [
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\native\\build\\deps\\nlohmann\\json.hpp",
+          "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+          "bytes": 953436
+        },
+        {
+          "path": "C:\\Users\\kirby\\HBEngine\\Versions\\828c60b44c267db5\\native\\build\\deps\\nlohmann\\json.hpp.sha256",
+          "sha256": "93933f78cd778829fec3f7c51c211adba8f5357c627209ad1407baa33bb27b56",
+          "bytes": 64
+        }
+      ],
+      "preserved": [],
+      "remaining": [
+        "0d2a7b42112d229e"
+      ]
+    },
+    "installedGates": [
+      {
+        "path": "native/build/sequence-structural-323-window-AN3o6f/acceptance.json",
+        "sha256": "23334f06b3fe66e8a158852973be40d4c90f0bafc4cce56e762008d836415ccc",
+        "invocation": [
+          "tools/check-sequence-structural-323-window.mjs",
+          "--executable",
+          "C:\\Users\\kirby\\HBEngine\\Versions\\0d2a7b42112d229e\\HBEngine.exe"
+        ],
+        "installationAPI": null
+      }
+    ],
+    "nativeGateReuse": {
+      "path": "native/build/native-scene-window-nMgEi2/acceptance.json",
+      "playerSHA256": "4d3828238220e48d4e9d97cc9bfa37f1b71f942d2d50a86b79949c74c3df9494",
+      "scope": "Actual source D3D game after rebuild; source code unchanged through installation and installed player byte-identical to source-built player. Not claimed as another installed native game run."
+    },
+    "manifestVerifiedFiles": 3115,
+    "versions": [
+      "0d2a7b42112d229e"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeActive": [],
+      "afterActive": [],
+      "scope": "Equal read-only before/after inventory; no profile backup/test use."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "327 actual installed editor, DirectX/WebGL packaged games with C++/BP structural/pose/component/clip handoff and complete manifest. Native renderer executable unchanged since318; no whole-engine completion claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 0,
+    "removed": []
+  },
+  "scope": "327 actual installed editor, DirectX/WebGL packaged games with C++/BP structural/pose/component/clip handoff and complete manifest. Native renderer executable unchanged since318; no whole-engine completion claim."
+}
