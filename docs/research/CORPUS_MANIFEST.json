@@ -2753,6 +2753,19 @@
       "wholeCorpus": false,
       "state": "selected_D3DPreprocess_contract_compared_with_real_compiler_preprocessing",
       "readScope": "D3DPreprocess syntax, pDefines/ppCodeText/ppErrorMsgs and Remarks #line behavior selected. Other linked compiler APIs and full Windows/UE/Unity corpus remain open."
+    },
+    {
+      "id": "texture-mip-policy-supplement-451",
+      "engine": "Unreal Engine / Unity",
+      "roots": [
+        "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-asset-editor-in-unreal-engine",
+        "https://docs.unity3d.com/6000.0/Documentation/Manual/texture-type-normal-map.html",
+        "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/TextureImporterSettings-mipMapsPreserveCoverage.html"
+      ],
+      "record": "docs/research/TEXTURE_MIP_POLICY_451.md",
+      "wholeCorpus": false,
+      "state": "selected_texture_import_mip_policy_body_and_one_api_compared_with_existing_engine_and_local_three_r180",
+      "readScope": "UE mip/coverage/lower normal normalization/composite/platform-resolved fields; Unity normal import selected technical fields and own mipMapsPreserveCoverage bool declaration/description. Linked implementation/media/other APIs unread."
     }
   ],
   "supplementalBaselines": [
@@ -4040,5 +4053,93 @@
       "native/build/ray-helper-preparation-438-mPu5Oz/acceptance.json"
     ],
     "analysisGate": "Selected function only. Full-body/API denominator and whole UE/Unity/Windows/dependency analysis remain unpromoted."
+  },
+  "supplemental451": {
+    "date": "2026-10-19",
+    "read": [
+      {
+        "url": "https://dev.epicgames.com/documentation/en-us/unreal-engine/texture-asset-editor-in-unreal-engine",
+        "snapshot": "native/build/reference-corpus/supplemental451/unreal-texture.html",
+        "bytes": 347029,
+        "sha256": "8e41ece37c7a504b754a71fd7a65a92f4ebc0ea6a92dc7e5c0d8015bb25a02e1",
+        "markers": [
+          {
+            "marker": "Alpha Coverage",
+            "present": true
+          },
+          {
+            "marker": "Normalize after",
+            "present": true
+          },
+          {
+            "marker": "Composite Texture",
+            "present": true
+          }
+        ],
+        "readScope": "Web source technical sections: mip/top-level settings, texture coverage/green-channel/lower-normal normalization, compositing roughness and platform resolved mip sizes; linked implementation/media/API unread"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/Manual/texture-type-normal-map.html",
+        "snapshot": "native/build/reference-corpus/supplemental451/unity-normal-import.html",
+        "bytes": 22567,
+        "sha256": "096e398bc0805938621c02b79033939ad7469345d318a82215cab210dffbf5d4",
+        "markers": [
+          {
+            "marker": "Preserve Coverage",
+            "present": true
+          },
+          {
+            "marker": "Flip Green",
+            "present": true
+          },
+          {
+            "marker": "Mipmap Limit",
+            "present": true
+          }
+        ],
+        "readScope": "Manual normal-map technical fields131–264: grayscale/flip green, NPOT, Read/Write duplication, mip limits/streaming/filter, coverage/cutoff/border, sampler; other sections and linked implementation unread"
+      },
+      {
+        "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/TextureImporterSettings-mipMapsPreserveCoverage.html",
+        "snapshot": "native/build/reference-corpus/supplemental451/unity-coverage-api.html",
+        "bytes": 15367,
+        "sha256": "4f83cdd302742d870ca4e4987cebb3a4b6ab26aeaeedf8bf810c9670d4cba5b4",
+        "markers": [
+          {
+            "marker": "mipMapsPreserveCoverage",
+            "present": true
+          },
+          {
+            "marker": "rescale",
+            "present": true
+          },
+          {
+            "marker": "disabled by default",
+            "present": true
+          }
+        ],
+        "readScope": "Own bool declaration233 and description239–242: alpha rescale/preserve alpha-test coverage, disabled by default. Linked importer APIs unread"
+      }
+    ],
+    "comparison": {
+      "HBEngine": "Image viewer has channels/fit/zoom/pick only. Texture-family JSON has sampler but no import-role/coverage/normal-mip/top-mip policy. rayMipChain generates area-weighted linear mips with independent cube/array layers and volume reduction; ordinary GL/GPU/DX asset sampler uses device-generated mips. Role authoring/serialization and all renderer/import/package paths must connect before declaring support.",
+      "plan": "Separate authored import role and generated-mip policy from sampler bias/top-level resource limit. Default unchanged; source images preserved. Opt-in coverage with reference cutoff and quantization-aware report, normal linear-space filtering/normalization with variance data retained for roughness, shared CPU cook policy with explicit payload for all backends. Integrate editable inspector, dependencies/reimport, text schema and AI transaction/Undo, real private render and package proof. No implementation claimed."
+    },
+    "localSources": [
+      "prototype/texture-assets.js",
+      "prototype/ray-mip.js",
+      "prototype/texture-viewer.js",
+      "prototype/native-scene-renderer.js",
+      "native/include/HBEngine/SceneRender.hpp",
+      "node_modules/three/src/renderers/webgl/WebGLTextures.js",
+      "node_modules/three/src/renderers/webgpu/utils/WebGPUTextureUtils.js"
+    ],
+    "evidence": [
+      "docs/research/TEXTURE_MIP_POLICY_451.md",
+      "native/build/texture-mip-research-451.json"
+    ],
+    "implementationClaim": false,
+    "globalGatePromotion": false,
+    "unread": "Full linked implementation/API/media and all other body sections. Local selected upload branches do not establish all texture types/backends."
   }
 }

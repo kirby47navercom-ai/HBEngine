@@ -458,3 +458,8 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 
 
 284–293: UE5.8 Material Instances 반환 본문0–104 및 Unity6.0 SetFloat229–289/sharedMaterial229–244를 supplemental284_293에 등록했어요. 소유/공유·live 값·정적 조합을 대조했고 이미지/연결 API/전체 corpus gate는 미승격이에요.288/291의 되돌린 실험은 구현 완료로 세지 않아요.
+
+
+### 2026-10-19 · 451 선택 구역 대조
+
+텍스처 밉·가져오기 역할의 UE/Unity 본문과 Unity 커버리지 API 한 개의 선언/설명, 로컬 Three r180 명시적 밉 업로드 분기를 대조했어요. CORPUS_MANIFEST.supplemental451과 TEXTURE_MIP_POLICY_451 정본에 원문 SHA·읽은 범위·미독 연결과 구현 예정 구분을 기록해요. 전체 본문/API gate는 승격하지 않아요.

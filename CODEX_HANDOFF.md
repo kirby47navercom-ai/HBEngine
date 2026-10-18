@@ -15,7 +15,7 @@
 
 ## 다음 실행 순서
 1. 450 설치/전체지문/User읽기보존/Versions1/정리 확인. 완료one-shot재실행금지. 451 이후작업을계속해요.
-2. noise/checker 마지막좌표fallback·MAT03 import-role밉·RND08 bake/lighting·복잡compile/혼합노멀을계속. 450묶음설치로최종checkpoint중단하지않아요.
+2. 451 공식선택본문/API 새대조등록·캐시3문서347029/22567/15367B·TEXTURE_MIP_POLICY451. 현재 구현시작대상452: first-class texture2d JSON 이미지참조+별도import-policy, 역할/linear/sRGB·coverage/cutoff·하위normal정규화/flipGreen·topMip/maxSize·공통CPUcook→GL/GPU2D명시mip/DX명시mip/ray같은chain→상세UI/Undo/AI/재적용/패키지. 로컬Three r180 array/3D manual경로는같다고가정금지. 압축/variance-roughness/array-volume도원장유지. 원본이미지/기존raw참조호환·완료전승격금지. noise/checker·RND08·compile도이어가고최종checkpoint로중단하지않아요.
 3. RND05/07전역곡면/변경투명경로/참여매질·나머지누적엔진목표계속. 전체gate/분모미확정 유지·실기기/iOS없는검증범위구분.
 
 ## 작업 보호
