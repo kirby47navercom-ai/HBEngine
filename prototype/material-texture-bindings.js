@@ -1,5 +1,6 @@
 import {textureImportColorSpace} from './texture-mip-policy.js';
 import {loadMaterialTexture,texturePlaceholder,textureAssetReferenceKind,validateTextureImages} from './texture-assets.js';
+import {textureResourceIdentity,textureResourceClosure} from './texture-composite.js';
 
 // Keep only installed textures. Stage every sampler before publishing a parameter.
 export function materialTextureBindings(THREE,{resources,fileUrl,renderer,onError=()=>{}}){
@@ -15,12 +16,12 @@ export function materialTextureBindings(THREE,{resources,fileUrl,renderer,onErro
     if(disposed)throw Error('해제된 머테리얼이에요.');const selected=slots.filter(s=>s.parameter===parameter);if(!selected.length)throw Error('사용 중인 텍스처 파라미터가 없어요: '+parameter);
     const generation=(generations.get(parameter)||0)+1;generations.set(parameter,generation);await Promise.all(selected.map(s=>s.ready));if(disposed)throw Error('해제된 머테리얼이에요.');
     for(const slot of selected)if(textureAssetReferenceKind(slot.type,path)==='texture2d'&&slot.colorSpace!=='linear'&&textureImportColorSpace(validateTextureImages('texture2d',nextResources?.[path]).import)==='linear')throw Error('텍스처 파라미터의 색 공간과 새 리소스가 달라요.');
-    const unchanged=selected.every(s=>s.loaded&&s.path===path&&JSON.stringify(nextResources?.[path])===JSON.stringify(resources?.[path]));
+    const unchanged=selected.every(s=>s.loaded&&s.path===path&&textureResourceIdentity(path,nextResources)===textureResourceIdentity(path,resources));
     const results=await Promise.allSettled(unchanged?[]:selected.map(s=>load({...s,path},nextResources))),maps=results.filter(r=>r.status==='fulfilled').map(r=>r.value);let finished=false;
     const cancel=()=>{if(finished)return;finished=true;for(const map of maps)map.dispose();};
     const failure=results.find(r=>r.status==='rejected');if(failure){cancel();throw failure.reason;}
     const valid=()=>!finished&&!disposed&&generations.get(parameter)===generation;
-    return {valid,cancel,commit:()=>{if(!valid()){cancel();return false;}finished=true;const old=[];if(!unchanged)selected.forEach((s,i)=>{old.push(s.map);s.map=maps[i];if(s.map.userData.hbTextureImportReport)s.sourceColorSpace=s.map.userData.hbTextureImportReport.colorSpace;s.loaded=true;s.path=path;owned.add(maps[i]);s.write(maps[i]);});for(const map of old)release(map);resources=Object.fromEntries(slots.filter(s=>!!textureAssetReferenceKind(s.type,s.path)).map(s=>[s.path,nextResources?.[s.path]??resources?.[s.path]]));return true;}};
+    return {valid,cancel,commit:()=>{if(!valid()){cancel();return false;}finished=true;const old=[];if(!unchanged)selected.forEach((s,i)=>{old.push(s.map);s.map=maps[i];if(s.map.userData.hbTextureImportReport)s.sourceColorSpace=s.map.userData.hbTextureImportReport.colorSpace;s.loaded=true;s.path=path;owned.add(maps[i]);s.write(maps[i]);});for(const map of old)release(map);resources=textureResourceClosure(slots.map(s=>s.path),{...resources,...nextResources});return true;}};
   }
-  return {add,prepare,textures:()=>slots,state:()=>({disposed,loads,owned:owned.size,bindings:slots.map(({parameter,type,path,colorSpace,sourceColorSpace,map})=>({parameter,type,path,colorSpace,sourceColorSpace,...(map.userData?.hbTextureImportReport?{importReport:map.userData.hbTextureImportReport}:{})}))}),dispose:()=>{if(disposed)return;disposed=true;for(const map of [...owned])release(map);}};
+  return {add,prepare,textures:()=>slots,resources:()=>textureResourceClosure(slots.map(s=>s.path),resources),state:()=>({disposed,loads,owned:owned.size,bindings:slots.map(({parameter,type,path,colorSpace,sourceColorSpace,map})=>({parameter,type,path,colorSpace,sourceColorSpace,...(map.userData?.hbTextureImportReport?{importReport:map.userData.hbTextureImportReport}:{})}))}),dispose:()=>{if(disposed)return;disposed=true;for(const map of [...owned])release(map);}};
 }

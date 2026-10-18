@@ -1,0 +1,12 @@
+#include <HBEngine/SceneRender.hpp>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iostream>
+using namespace hb::gpu;
+std::vector<std::uint8_t> decode(const std::string& text){const std::string alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";std::vector<std::uint8_t> out;unsigned value=0,bits=0;for(char c:text){if(c=='=')break;const auto at=alphabet.find(c);if(at==std::string::npos)throw std::runtime_error("invalid base64");value=(value<<6)|static_cast<unsigned>(at);bits+=6;if(bits>=8){bits-=8;out.push_back(static_cast<std::uint8_t>(value>>bits));}}return out;}
+int main(int argc,char** argv){
+ if(argc!=2)throw std::runtime_error("packet required");
+ std::ifstream file(argv[1]);nlohmann::json input,rows=nlohmann::json::array();file>>input;Device gpu;SceneRenderer renderer(gpu,16,16);const std::vector<SceneVertex> vertices={{{-1,-1,.4f}},{{1,-1,.4f}},{{1,1,.4f}},{{-1,1,.4f}}};auto mesh=renderer.createMesh(vertices,{0,1,2,0,2,3});SceneMaterial material;material.color={0,0,0,1};material.emissive={1,1,1,1};material.toneMapped=false;material.doubleSided=true;SceneFrame frame;frame.ambient={0,0,0,1};
+ for(const auto& row:input){const auto& packet=row.at("texture");std::vector<SceneRenderer::TextureMipLevel> levels;for(const auto& level:packet.at("mipLevels"))levels.push_back({level.at("width"),level.at("height"),decode(level.at("rgbaBase64"))});auto texture=renderer.createDataTexture(packet.at("width"),packet.at("height"),decode(packet.at("rgbaBase64")),4,false,1,packet.at("srgb"),false,"2d",false,false,levels);auto program=renderer.createSurfaceProgram(row.at("declarations"),row.at("evaluation"),row.at("uniformValues").get<std::vector<float>>());renderer.begin(frame);renderer.draw(mesh,identity,identity,material,{}, {},0,0,&program,{&texture},{row.at("sampling").get<std::uint32_t>()});const auto bytes=renderer.readPixels();const unsigned at=(8*16+8)*4;const std::array<unsigned,4> pixel{bytes[at],bytes[at+1],bytes[at+2],bytes[at+3]};const float linear=row.at("expectedByte").get<float>()/255;const int expected=std::lround((linear<=.0031308f?linear*12.92f:1.055f*std::pow(linear,1/2.4f)-.055f)*255);for(unsigned c=0;c<3;c++)if(std::abs(static_cast<int>(pixel[c])-expected)>2)throw std::runtime_error("composite native pixel "+std::to_string(pixel[c])+" expected "+std::to_string(expected));rows.push_back({{"lod",row.at("lod")},{"pixel",pixel},{"expectedByte",expected},{"storageBytes",texture.storageBytes()}});}
+ std::cout<<nlohmann::json{{"passed",true},{"actualD3D11",true},{"rows",rows}};
+}

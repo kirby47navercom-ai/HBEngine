@@ -4,7 +4,7 @@ import {decodeNormalMap,normalMapGLSL} from './normal-map.js';
 import {validSamplerState} from './sampler-state.js';
 import {advancedShadingGLSL,advancedDirectChunk} from './advanced-shading.js';
 import {textureImportColorSpace} from './texture-mip-policy.js';
-import {materialTextureTypes,textureNodeType,validateTextureImages,textureAssetReferenceKind} from './texture-assets.js';
+import {materialTextureTypes,textureNodeType,validateTextureImages,textureAssetReferenceKind,resolveTextureResources,textureResourceFiles} from './texture-assets.js';
 import {materialTextureBindings} from './material-texture-bindings.js';
 export {materialTextureTypes,textureNodeType} from './texture-assets.js';
 import {captureMaterialGraph} from './material-source-key.js';
@@ -194,7 +194,7 @@ export async function resolveMaterialAsset(data,read){
     return base;
   };
   let base=await authored(data);base=await resolveMaterialLayers(base,read);base=await resolveMaterialFunctions(base,read);base=resolveMaterialAttributes(resolveMaterialInputs(base));
-  for(const parameter of materialParameters(base)){if(!Object.hasOwn(base.parameters||{},parameter.name))continue;const value=base.parameters[parameter.name];if(parameter.type==='bool'?typeof value!=='boolean':(parameter.type==='texture'||materialTextureTypes[parameter.type])?!validAssetPath(value):parameter.type==='vec3'?!Array.isArray(value)||value.length!==3||!value.every(finite):!finite(value))throw Error('머테리얼 파라미터 자료형을 확인하세요: '+parameter.name);}const resources={};for(const b of base.graph?compileMaterial(base).textures:[]){const kind=textureAssetReferenceKind(b.type,b.path);if(!kind||!b.path)continue;if(!resources[b.path])resources[b.path]=validateTextureImages(kind,await read(b.path));else validateTextureImages(kind,resources[b.path]);}if(Object.keys(resources).length){base.textureAssets=copy(resources);base.materialDependencies=[...new Set([...base.materialDependencies||[],...Object.keys(resources),...Object.values(resources).flatMap(d=>d.images)])];}return resolveTextureImports(base);
+  for(const parameter of materialParameters(base)){if(!Object.hasOwn(base.parameters||{},parameter.name))continue;const value=base.parameters[parameter.name];if(parameter.type==='bool'?typeof value!=='boolean':(parameter.type==='texture'||materialTextureTypes[parameter.type])?!validAssetPath(value):parameter.type==='vec3'?!Array.isArray(value)||value.length!==3||!value.every(finite):!finite(value))throw Error('머테리얼 파라미터 자료형을 확인하세요: '+parameter.name);}const textureBindings=base.graph?compileMaterial(base).textures:[],resources=await resolveTextureResources(textureBindings,read);if(Object.keys(resources).length){base.textureAssets=copy(resources);base.materialDependencies=[...new Set([...base.materialDependencies||[],...textureResourceFiles(resources,textureBindings.map(b=>b.path))])];}return resolveTextureImports(base);
 }
 export function materialLayerGraph(blend=false){
   const input=(id,name)=>({...makeMaterialNode('functionInput'),id,portName:name,valueType:'attributes',value:{},useDefault:true}),output={...makeMaterialNode('functionOutput',620,100),id:'result',portName:'Material Attributes',valueType:'attributes'};
@@ -393,7 +393,7 @@ export function createThreeMaterial(THREE,data,{fileUrl=path=>'/api/file?path='+
   material.userData.floatKeys=[...plan.floatBindings.map(b=>b.kind+':'+b.key),'surface:emissiveIntensity'];
   material.userData.vectorKeys=plan.vectorBindings.map(b=>b.kind+":"+b.key);
   material.userData.updateVector=(key,value)=>{if(disposed)return false;value=materialVectorValue(value);if(materialParameters(data).some(p=>p.name===key&&p.type!=='vec3'))throw Error('Vector3 파라미터가 아니에요.');const u=vectorParameters.get(key)||vectorSurfaces.get(materialVectorProperty(key));if(!u){if(materialParameters(data).some(p=>p.name===key))throw Error('Vector3 파라미터가 아니에요.');return false;}u.value.fromArray(value);if(vectorParameters.has(key))data.parameters={...data.parameters,[key]:value};else data.surface[materialVectorProperty(key)]=value;return true;};
-  material.userData.textureState=textureBindings.state;material.userData.rayTextures=textureBindings.textures;material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await textureBindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=Object.fromEntries(textureBindings.state().bindings.filter(b=>b.type!=='texture2d').map(b=>[b.path,resources?.[b.path]??data.textureAssets?.[b.path]]));return true;};return transaction;};
+  material.userData.textureState=textureBindings.state;material.userData.rayTextures=textureBindings.textures;material.userData.prepareTexture=async(key,path,resources)=>{const transaction=await textureBindings.prepare(key,path,resources),commit=transaction.commit;transaction.commit=()=>{if(!commit())return false;data.parameters={...data.parameters,[key]:path};data.textureAssets=textureBindings.resources();return true;};return transaction;};
   // Three's default clone does not retain onBeforeCompile; own a fresh texture set.
   material.clone=()=>createThreeMaterial(THREE,data,{fileUrl,onError,renderer});return material;
 }

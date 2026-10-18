@@ -1,3 +1,4 @@
+import {validateTextureComposite,normalRoughnessComposite} from './texture-composite.js';
 // Import/cook policy is independent from texture sampling. Source bytes are
 // never modified; defaults preserve the existing image interpretation.
 export const textureImportDefaults=Object.freeze({role:'color',colorSpace:'auto',mipmaps:true,flipGreen:false,normalizeNormals:false,preserveCoverage:false,alphaCutoff:.5,topMip:0,maxSize:0});
@@ -61,14 +62,16 @@ export function validateTextureMipPixels(pixels){
  if(!Number.isSafeInteger(width)||!Number.isSafeInteger(height)||width<1||height<1||!(input instanceof Uint8Array||input instanceof Uint8ClampedArray)||!Number.isSafeInteger(width*height*4)||input.length!==width*height*4)throw Error('RGBA8 텍스처 원본과 크기를 확인하세요.');
  return pixels;
 }
-export function cookTextureMips(pixels,value={}){
+export function cookTextureMips(pixels,value={},options={}){
  const p=textureImportPolicy(value),srgb=textureImportColorSpace(p)==='srgb',{width,height,data:input}=validateTextureMipPixels(pixels);
+ const config=validateTextureComposite(options.composite,p),composite=config.normalTexture?normalRoughnessComposite(config,validateTextureMipPixels(options.normalPixels),{width,height,alphaCutoff:p.alphaCutoff},srgb):null;
  let data=input;if(p.flipGreen){data=new Uint8Array(input);for(let i=1;i<data.length;i+=4)data[i]=255-data[i];}
  let visible=0,mean=0;for(let i=3;i<data.length;i+=4){if(data[i]/255>=p.alphaCutoff)visible++;mean+=data[i]/255;}const target=visible/(width*height),levels=[],coverage=[];let raw={width,height,data},mip=0,top=null;
  while(true){
+  composite?.advance(raw.width,raw.height);
   const selected=mip>=p.topMip&&(!p.maxSize||Math.max(raw.width,raw.height)<=p.maxSize)||raw.width===1&&raw.height===1;
-  if(selected){top??=mip;const level=mip===0?{width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}}:uploadLevel(raw,p,srgb,target);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;}
+  if(selected){top??=mip;let level=mip===0?{width,height,data,coverage:{scale:1,target,achieved:target,error:0,meanSourceAlpha:mean/(width*height),quantizationStep:1/(width*height)}}:uploadLevel(raw,p,srgb,target);if(composite)level=composite.apply(level,mip);levels.push({width:level.width,height:level.height,data:level.data});coverage.push({sourceMip:mip,...level.coverage});if(!p.mipmaps)break;}
   if(raw.width===1&&raw.height===1)break;raw=downsample(raw,srgb);mip++;
  }
- const storedBytes=levels.reduce((sum,l)=>sum+l.data.byteLength,0);return{levels,report:{policy:p,colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes,coverage,sourcePreserved:true}};
+ const storedBytes=levels.reduce((sum,l)=>sum+l.data.byteLength,0);return{levels,report:{policy:p,...(composite?{composite:composite.report}:{}),colorSpace:srgb?'srgb':'linear',source:{width,height,bytes:input.byteLength},topMip:top,dimensions:levels.map(l=>[l.width,l.height]),storedBytes,coverage,sourcePreserved:true}};
 }
