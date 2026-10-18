@@ -25,7 +25,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
   },
   "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/hdri-directions-391-cpu.json",
@@ -50,6 +50,10 @@
     {
       "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
       "sha256": "671040eb3e3f745ef56c044fc4108d866aba320351944bc1363b64d156d30b11"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-SgCafe/acceptance.json",
+      "sha256": "d1f11843203d8f1251768b78caf6664c9525fb4f6ab39f8971bcc217b1d610e3"
     }
   ],
   "carriedEvidence": [
@@ -116,5 +120,6 @@
     "첫Z7zYJ3은linear54.78의WebGL AgX탈색으로표시색조건실패. fixture만1/8로줄여같은표시조건통과,제품tone변경없음",
     "전역곡면역대응/RND06/고급매질/구름/방향성lightmap/차트mip/HWRT와전체엔진원장유지",
     "전체UEUnity/API gate·임의장면FPS·전체색동일·실기기검증완료주장없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_395.json"
 }

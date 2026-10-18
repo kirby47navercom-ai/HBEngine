@@ -536,3 +536,5 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 ### 2026-10-18 · 391–395
 
 실제확산필터를평가한HDRI휘도·정확구면셀면적·조건부2D CDF와코사인혼합PDF를기존베이크에연결했어요. 필요한첫반사에서1회/사용안하면생성0·추가광선/원본복사/새GPU자원0·CDF16648B상한/512원본밉2856B를확인했어요.12조건PDF/PI/회전/flip/불변·실제bake145.9778/독립146.4060·black차폐0과인간HDRIworker/UndoRedo/AI/미리보기/세게임을통과했어요. 처음탐색한4배MSE목표는false로남기고성능완료로세지않아요. 현재지정조건MSE12.8735→11.3237만측정값이에요. 원본CDF/flatten후보실패와고휘도AgX표시fixture를보존하고canonical잔여를유지해요. native관련owner/player가390과동일하여기존설치D3D gate를SHA로재사용하고새설치의HDRI워커/전체명세/User읽기SHA/Versions1을확인해요. 그후편집기GPU시간등누적목표를계속해요.
+
+395 설치 cb187b8f7a0959e2·3232명세/15소유 SHA·새player·바로가기2/.hbproject·Versions1을확인했어요. User10385파일의설치직전/후읽기SHA동일·설치인간HDRI워커/Undo/AI/미리보기 SgCafe를통과하고동일player/관련소유SHA의395 이전nativecache gate는390 기록으로재사용했어요. 이전설치178272483B·검사binary0B를정리하고다음렌더링을계속해요.

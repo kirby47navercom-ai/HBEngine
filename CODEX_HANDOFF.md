@@ -1,3 +1,8 @@
+# 설치395 검증 완료 — 396 편집기 GPU 시간 진단 계속
+
+- 현재 cb187b8f7a0959e2/3232파일/Versions1·USER_INSTALL_395 정본. 구현b686e5f/설치입력88abfab pushed. Player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4·15owner/fullSHA/links2/.hbproject/User10385읽기SHA 동일. 설치인간sun worker SgCafe/350 uRETgh 통과예요. 395one-shot재실행금지.
+- 다음396은기존profiler.record/read에편집기GPU시간을연결해요. GL 비동기disjoint query/WebGPU pinned r180timestamp를읽고있으며아직구현/검증전이에요. 기록off자원/동기wait0·지원없음null·소유자폐기/취소를지켜요. 설치395파일은수정하지않아요. 저표본4배목표미달·미독/전역곡면/RND06/엔진원장을유지해요.
+
 # 391–395 HDRI 방향 표본 — 원장·설치 단계
 
 - 설치390 a774f74aca97500f/3227/Versions1·USER_INSTALL_390 검증완료. 새 source는worker용filteredHDRI CDF/PDF와실제bake/세게임을연결했어요. nativeheaders/binary/player7363889는390과동일하므로재컴파일없이source/증거를동기화하고설치395로갱신해요. 기존모든390 one-shot완료재실행금지.

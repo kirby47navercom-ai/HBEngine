@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "88abfab941740fdfd66fcbed1af11f6a6df648cc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2\\HBEngine.exe",
+  "bundleHash": "cb187b8f7a0959e2fe3fdd6ca69c50da1021d04ca1d5bdc311b9c85fdf648e42",
+  "files": 3232,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "88abfab941740fdfd66fcbed1af11f6a6df648cc",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2\\HBEngine.exe",
+    "bundleHash": "cb187b8f7a0959e2fe3fdd6ca69c50da1021d04ca1d5bdc311b9c85fdf648e42",
+    "files": 3232,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3228,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f",
+          "bytes": 178272483,
+          "manifestSHA256": "e14657134d167d306e580631e94d95738eef632959941bb23262c81043aa1e5c"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T12:00:17.7118456Z",
+      "bytes": 178272483,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "cb187b8f7a0959e2"
+      ]
+    },
+    "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+    "installedGates": [
+      {
+        "path": "native/build/lightmap-workflow-225-SgCafe/acceptance.json",
+        "sha256": "d1f11843203d8f1251768b78caf6664c9525fb4f6ab39f8971bcc217b1d610e3"
+      }
+    ],
+    "manifestVerifiedFiles": 3232,
+    "versions": [
+      "cb187b8f7a0959e2"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-395-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+        "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+        "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-jTWtW7/acceptance.json",
+        "scope": "Actual human UV1/HDRI hotspot worker bake/UndoRedo/AI dry/stale/preview, package baseline/move-off/restore, errors0/exit0; selected red HDRI with blue dome"
+      }
+    ],
+    "scope": "395 full manifest and15-owner SHA verification; actual installed human UV1/HDRI-importance worker bake/UndoRedo/AI guards/preview. Source current HDRI human bake and three packaged players, independent PDF/energy/bake/occlusion/storage gates are recorded. Native installed cache gate390 is carried only after exact current source/distribution owner and unchanged player SHA proof. Exploratory fourfold MSE target remains unmet. No whole-engine/FPS/device-completeness claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 0,
+    "removed": []
+  },
+  "scope": "395 full manifest and15-owner SHA verification; actual installed human UV1/HDRI-importance worker bake/UndoRedo/AI guards/preview. Source current HDRI human bake and three packaged players, independent PDF/energy/bake/occlusion/storage gates are recorded. Native installed cache gate390 is carried only after exact current source/distribution owner and unchanged player SHA proof. Exploratory fourfold MSE target remains unmet. No whole-engine/FPS/device-completeness claim."
+}

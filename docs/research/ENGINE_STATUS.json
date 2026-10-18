@@ -1975,11 +1975,11 @@
   ],
   "latestBatch": "391–395",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_390.json",
-    "sourceCommit": "22a1cba128ace4572724c58d3d147ae53e0883c6",
-    "bundleHash": "a774f74aca97500f5c1ab8778856994f5d3ba8b9e040e18782fdcd853747aa2b",
+    "receipt": "docs/research/USER_INSTALL_395.json",
+    "sourceCommit": "88abfab941740fdfd66fcbed1af11f6a6df648cc",
+    "bundleHash": "cb187b8f7a0959e2fe3fdd6ca69c50da1021d04ca1d5bdc311b9c85fdf648e42",
     "verified": true,
     "versions": 1,
-    "scope": "381–390 environmental mips/angles/worker importance and pending-history fix; cumulative engine work continues"
+    "scope": "391–395 HDRI filtered-direction CDF and lazy worker lifecycle; cumulative engine work continues"
   }
 }
