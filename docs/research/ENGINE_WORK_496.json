@@ -1,0 +1,563 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "kind": "implementation",
+  "implementationRevision": "2df9b9309218d3de46973ed66124747f4817c50d",
+  "targetIds": [
+    "RND-06",
+    "AI-03"
+  ],
+  "sourceHashes": {
+    "native/desktop/SceneRenderBridge.hpp": "e8aac906701175c3e2a9520a0a1b5a292352e9cf8c56b8a39e11cee6613652dd",
+    "native/include/HBEngine/Bloom.hpp": "5e7d7a0296616ec5cc27655432797582b13f69221bb4dcf3260c91536a87a2a0",
+    "native/include/HBEngine/SceneRender.hpp": "45cd85e1b9d2e4a5c6ab330370befe8bebc7205cca0fb4ca7da0fc20330c5dc8",
+    "native/include/HBEngine/ScreenEffectsPass.hpp": "ec7e420ddc3b61fae625b8a4484e12c754ee547c493ffa412a4c0073dcd239a4",
+    "native/include/HBEngine/ShaderBytecodeCompiler.hpp": "b9df64ca74b1fbf5954147ab36796f39c5c884f96b9dba4038989097e7aa725d",
+    "native/include/HBEngine/ShaderPreparationQueue.hpp": "3742a6ec8ef5581911c8e29698a887367a9edb2da2b7c2f7d8e33b2f778262a4",
+    "prototype/game-renderer.js": "f5465c081927a0b631cc2b13006a6aac8b00008d7b4e1b3c7e8ab42263c52b66",
+    "prototype/native-path-preparation.js": "56df0518e4e71fb93146eab568bb2d702625e9500dac08bb9ff534c2817eae74",
+    "prototype/native-scene-renderer.js": "92d288275ffc739bd271b28b64cc3b6750ea15c929cb5f91245a54455d355226",
+    "prototype/player.js": "ca37330ad5fe4623e848042f04b858f3d6443992f3be22ab540e9fdd73f1b5ba",
+    "prototype/profiler.js": "0e4fb409de215ebaefd8c21dcdfb74b169f5ba1a761eedf3255a43c116857477",
+    "tools/check-native-preparation-490.mjs": "86a6df2a6b6c7727d120949dfb5ff29b1f292077c456b64116ac5a401c99e339",
+    "tools/check-native-preparation-window-496.mjs": "0f291e47bb66636984a881e8b8a47043ea24b8bb0c4c2f8a412de15c8d6911d6",
+    "tools/check-shader-preparation-489.mjs": "1e5306505a5293c3e713fa0030ddf9ab0f99db46242a6169a35bd7196deb1acf",
+    "tools/editor-automation.mjs": "d65b426e9fbc71f65bdefa1daa76747df325d320898cb423ca0a62ace1fa679b",
+    "tools/native-preparation-fixture-492.mjs": "1b3c842d1b51176e46e046da33f35fb37946be9c0bee12abea32e83c9a7aed8a",
+    "tools/rendering-141-fixture.mjs": "c2e49945b1b2def322fd8419490ad20ac000112ac9330b35ff1e21f04792fb84"
+  },
+  "nativePlayerSHA256": "9096bb2b287d80035ecc53f17e5f9503bccc3bf01c136a2fda73c098e0bb7a60",
+  "nativeEditorSHA256": "f5fc669b15436c0134be6b41f8b397bfcd17e525fb6696bbfd010738de0674fd",
+  "checks": [
+    {
+      "path": "native/build/shader-preparation-489-ou5F3U/acceptance.json",
+      "sha256": "ce3252edc909615c11ca37b4566b45d46341ba7d4c38a15bcce196cb07877c6c"
+    },
+    {
+      "path": "native/build/native-preparation-490.json",
+      "sha256": "0c01fd155fa398e6b1fb3b8b46473961322666a478104cc7b19b7d02566667d1"
+    },
+    {
+      "path": "native/build/shader-cache-runtime-347-auYid0/acceptance.json",
+      "sha256": "e0e392e5c5789b0258610dce3d40c9e52e56e5f7bad94f56e079de3f3e74ae60"
+    },
+    {
+      "path": "native/build/light495-result.json",
+      "sha256": "24133987e24319d311c98e68d5dcf9dd668a759dced5f4f931bb3f1dbc10cc70"
+    }
+  ],
+  "sourceGames": [
+    {
+      "path": "native/build/native-scene-window-HqA6y7/acceptance.json",
+      "sha256": "f05fb1cfaa3320dbf6bda3d36f4bbf5dc24b085b224446e0aebb2cc56f4a1bc2",
+      "scope": "실제 새 C++/BP 게임의 복잡 노멀 141·래스터 진행·준비/취소/캡처·변형/이력/캐시·해제",
+      "nativePreparation": {
+        "passed": true,
+        "pendingFrames": 22,
+        "pendingPresents": 23,
+        "cppElapsedMS": 4.211699999999837,
+        "disableMS": 62.6476999999868,
+        "rows": [
+          {
+            "sceneFrame": 17,
+            "time": 0.46709991116821764,
+            "presents": 31,
+            "samples": 0,
+            "preparation": {
+              "pending": true,
+              "currentStage": "path",
+              "elapsedMS": 28.80000000447035,
+              "stages": [
+                {
+                  "stage": "path",
+                  "state": "compiling"
+                }
+              ],
+              "completed": 0,
+              "total": 1,
+              "cancelled": false,
+              "error": null,
+              "submitted": 1,
+              "queue": {
+                "active": true,
+                "budgetBytes": 8388608,
+                "bytes": 258494,
+                "cancelled": 0,
+                "completed": 0,
+                "deduplicated": 0,
+                "failed": 0,
+                "queued": 0,
+                "submitted": 1,
+                "worker": true,
+                "workersStarted": 1
+              }
+            }
+          },
+          {
+            "sceneFrame": 24,
+            "time": 0.5241999050155282,
+            "presents": 39,
+            "samples": 0,
+            "preparation": {
+              "pending": true,
+              "currentStage": "path",
+              "elapsedMS": 91.10000000149012,
+              "stages": [
+                {
+                  "stage": "path",
+                  "state": "compiling"
+                }
+              ],
+              "completed": 0,
+              "total": 1,
+              "cancelled": false,
+              "error": null,
+              "submitted": 1,
+              "queue": {
+                "active": true,
+                "budgetBytes": 8388608,
+                "bytes": 258494,
+                "cancelled": 0,
+                "completed": 0,
+                "deduplicated": 0,
+                "failed": 0,
+                "queued": 0,
+                "submitted": 1,
+                "worker": true,
+                "workersStarted": 1
+              }
+            }
+          },
+          {
+            "sceneFrame": 32,
+            "time": 0.5913999050185083,
+            "presents": 46,
+            "samples": 0,
+            "preparation": {
+              "pending": true,
+              "currentStage": "path",
+              "elapsedMS": 153.5,
+              "stages": [
+                {
+                  "stage": "path",
+                  "state": "compiling"
+                }
+              ],
+              "completed": 0,
+              "total": 1,
+              "cancelled": false,
+              "error": null,
+              "submitted": 1,
+              "queue": {
+                "active": true,
+                "budgetBytes": 8388608,
+                "bytes": 258494,
+                "cancelled": 0,
+                "completed": 0,
+                "deduplicated": 0,
+                "failed": 0,
+                "queued": 0,
+                "submitted": 1,
+                "worker": true,
+                "workersStarted": 1
+              }
+            }
+          },
+          {
+            "sceneFrame": 39,
+            "time": 0.6489999050125477,
+            "presents": 54,
+            "samples": 0,
+            "preparation": {
+              "pending": true,
+              "currentStage": "path",
+              "elapsedMS": 215,
+              "stages": [
+                {
+                  "stage": "path",
+                  "state": "compiling"
+                }
+              ],
+              "completed": 0,
+              "total": 1,
+              "cancelled": false,
+              "error": null,
+              "submitted": 1,
+              "queue": {
+                "active": true,
+                "budgetBytes": 8388608,
+                "bytes": 258494,
+                "cancelled": 0,
+                "completed": 0,
+                "deduplicated": 0,
+                "failed": 0,
+                "queued": 0,
+                "submitted": 1,
+                "worker": true,
+                "workersStarted": 1
+              }
+            }
+          }
+        ],
+        "disabled": {
+          "sceneFrame": 47,
+          "time": 0.707999952405691,
+          "presents": 61,
+          "samples": 0,
+          "preparation": null
+        },
+        "restored": {
+          "sceneFrame": 451,
+          "time": 4.611999954789881,
+          "presents": 467,
+          "samples": 4,
+          "preparation": {
+            "pending": false,
+            "currentStage": "ready",
+            "elapsedMS": 3712.2000000029802,
+            "stages": [
+              {
+                "stage": "path",
+                "state": "ready"
+              }
+            ],
+            "completed": 1,
+            "total": 1,
+            "cancelled": false,
+            "error": null,
+            "submitted": 1,
+            "queue": {
+              "active": false,
+              "budgetBytes": 8388608,
+              "bytes": 0,
+              "cancelled": 0,
+              "completed": 1,
+              "deduplicated": 1,
+              "failed": 0,
+              "queued": 0,
+              "submitted": 1,
+              "worker": true,
+              "workersStarted": 1
+            }
+          }
+        },
+        "scope": "isolated actual C++/BP D3D game; frames continue, pending path samples remain zero, cached restore bypasses active compiler, capture waits without advancing a private draw loop; no FPS claim"
+      },
+      "rendering141": {
+        "passed": true,
+        "nativePreparation492": {
+          "passed": true,
+          "pendingFrames": 22,
+          "pendingPresents": 23,
+          "cppElapsedMS": 4.211699999999837,
+          "disableMS": 62.6476999999868,
+          "rows": [
+            {
+              "sceneFrame": 17,
+              "time": 0.46709991116821764,
+              "presents": 31,
+              "samples": 0,
+              "preparation": {
+                "pending": true,
+                "currentStage": "path",
+                "elapsedMS": 28.80000000447035,
+                "stages": [
+                  {
+                    "stage": "path",
+                    "state": "compiling"
+                  }
+                ],
+                "completed": 0,
+                "total": 1,
+                "cancelled": false,
+                "error": null,
+                "submitted": 1,
+                "queue": {
+                  "active": true,
+                  "budgetBytes": 8388608,
+                  "bytes": 258494,
+                  "cancelled": 0,
+                  "completed": 0,
+                  "deduplicated": 0,
+                  "failed": 0,
+                  "queued": 0,
+                  "submitted": 1,
+                  "worker": true,
+                  "workersStarted": 1
+                }
+              }
+            },
+            {
+              "sceneFrame": 24,
+              "time": 0.5241999050155282,
+              "presents": 39,
+              "samples": 0,
+              "preparation": {
+                "pending": true,
+                "currentStage": "path",
+                "elapsedMS": 91.10000000149012,
+                "stages": [
+                  {
+                    "stage": "path",
+                    "state": "compiling"
+                  }
+                ],
+                "completed": 0,
+                "total": 1,
+                "cancelled": false,
+                "error": null,
+                "submitted": 1,
+                "queue": {
+                  "active": true,
+                  "budgetBytes": 8388608,
+                  "bytes": 258494,
+                  "cancelled": 0,
+                  "completed": 0,
+                  "deduplicated": 0,
+                  "failed": 0,
+                  "queued": 0,
+                  "submitted": 1,
+                  "worker": true,
+                  "workersStarted": 1
+                }
+              }
+            },
+            {
+              "sceneFrame": 32,
+              "time": 0.5913999050185083,
+              "presents": 46,
+              "samples": 0,
+              "preparation": {
+                "pending": true,
+                "currentStage": "path",
+                "elapsedMS": 153.5,
+                "stages": [
+                  {
+                    "stage": "path",
+                    "state": "compiling"
+                  }
+                ],
+                "completed": 0,
+                "total": 1,
+                "cancelled": false,
+                "error": null,
+                "submitted": 1,
+                "queue": {
+                  "active": true,
+                  "budgetBytes": 8388608,
+                  "bytes": 258494,
+                  "cancelled": 0,
+                  "completed": 0,
+                  "deduplicated": 0,
+                  "failed": 0,
+                  "queued": 0,
+                  "submitted": 1,
+                  "worker": true,
+                  "workersStarted": 1
+                }
+              }
+            },
+            {
+              "sceneFrame": 39,
+              "time": 0.6489999050125477,
+              "presents": 54,
+              "samples": 0,
+              "preparation": {
+                "pending": true,
+                "currentStage": "path",
+                "elapsedMS": 215,
+                "stages": [
+                  {
+                    "stage": "path",
+                    "state": "compiling"
+                  }
+                ],
+                "completed": 0,
+                "total": 1,
+                "cancelled": false,
+                "error": null,
+                "submitted": 1,
+                "queue": {
+                  "active": true,
+                  "budgetBytes": 8388608,
+                  "bytes": 258494,
+                  "cancelled": 0,
+                  "completed": 0,
+                  "deduplicated": 0,
+                  "failed": 0,
+                  "queued": 0,
+                  "submitted": 1,
+                  "worker": true,
+                  "workersStarted": 1
+                }
+              }
+            }
+          ],
+          "disabled": {
+            "sceneFrame": 47,
+            "time": 0.707999952405691,
+            "presents": 61,
+            "samples": 0,
+            "preparation": null
+          },
+          "restored": {
+            "sceneFrame": 451,
+            "time": 4.611999954789881,
+            "presents": 467,
+            "samples": 4,
+            "preparation": {
+              "pending": false,
+              "currentStage": "ready",
+              "elapsedMS": 3712.2000000029802,
+              "stages": [
+                {
+                  "stage": "path",
+                  "state": "ready"
+                }
+              ],
+              "completed": 1,
+              "total": 1,
+              "cancelled": false,
+              "error": null,
+              "submitted": 1,
+              "queue": {
+                "active": false,
+                "budgetBytes": 8388608,
+                "bytes": 0,
+                "cancelled": 0,
+                "completed": 1,
+                "deduplicated": 1,
+                "failed": 0,
+                "queued": 0,
+                "submitted": 1,
+                "worker": true,
+                "workersStarted": 1
+              }
+            }
+          },
+          "scope": "isolated actual C++/BP D3D game; frames continue, pending path samples remain zero, cached restore bypasses active compiler, capture waits without advancing a private draw loop; no FPS claim"
+        },
+        "backend": "D3D11",
+        "complexNormalTexture": true,
+        "UVParameterGraph": true,
+        "changedChannels": 664,
+        "timings": [
+          {
+            "property": "pathTracingEnabled",
+            "value": true,
+            "elapsedMS": 114.30240000000049
+          },
+          {
+            "property": "pathTracingDenoise",
+            "value": true,
+            "elapsedMS": 830.2830000000104
+          },
+          {
+            "property": "pathTracingCurvedFilter",
+            "value": true,
+            "elapsedMS": 122.56160000000091
+          },
+          {
+            "property": "pathTracingDenoiseTemporal",
+            "value": 0.8,
+            "elapsedMS": 3534.5819000000047
+          },
+          {
+            "property": "pathTracingCurvedFilter",
+            "value": false,
+            "elapsedMS": 213.77290000001085
+          },
+          {
+            "property": "pathTracingEnabled",
+            "value": false,
+            "elapsedMS": 130.00269999999728
+          }
+        ],
+        "preparation": {
+          "pending": false,
+          "currentStage": "ready",
+          "elapsedMS": 3754.7000000029802,
+          "stages": [
+            {
+              "stage": "path",
+              "state": "ready"
+            },
+            {
+              "stage": "guide",
+              "state": "ready"
+            },
+            {
+              "stage": "filter",
+              "state": "ready"
+            },
+            {
+              "stage": "temporal",
+              "state": "ready"
+            },
+            {
+              "stage": "auxiliary",
+              "state": "ready"
+            }
+          ],
+          "completed": 5,
+          "total": 5,
+          "cancelled": false,
+          "error": null,
+          "submitted": 5,
+          "queue": {
+            "active": false,
+            "budgetBytes": 8388608,
+            "bytes": 0,
+            "cancelled": 0,
+            "completed": 5,
+            "deduplicated": 1,
+            "failed": 0,
+            "queued": 0,
+            "submitted": 5,
+            "worker": true,
+            "workersStarted": 1
+          }
+        },
+        "compilation": {
+          "compilations": 5,
+          "cacheHits": 0,
+          "cacheMisses": 11,
+          "cacheEvictions": 0,
+          "cacheBytes": 529292,
+          "cacheBudgetBytes": 8388608,
+          "lastCompileMS": 47,
+          "totalCompileMS": 7422,
+          "sourceBuilds": 1
+        },
+        "typedCPP": true,
+        "disabledRelease": true,
+        "pathNoTransmission": true
+      }
+    }
+  ],
+  "installationPending": true,
+  "scope": "네이티브 화면 셰이더의 초 단위 준비가 이미 준비된 래스터·C++ 실행을 막지 않도록 연결했어요. 컴파일 총시간·FPS·모든 렌더링/엔진 기능 완료로 계산하지 않아요.",
+  "sharedResourceBudget": {
+    "memoryBytecodeCacheBytes": 8388608,
+    "preparationQueueBytes": 8388608,
+    "diskBytecodeCacheBytes": 8388608,
+    "workers": 1,
+    "idleWorkerMS": 1000,
+    "newGPUResources": 0,
+    "productionReadbacks": 0
+  },
+  "remaining": [
+    "FXC의 전체 컴파일 시간은 그대로 초 단위일 수 있어요. 141의 새 시간 가이드 준비 관찰은3535ms이며 통제된 속도 비교가 아니에요.",
+    "처음 만들어지는 래스터·머테리얼·프로브·Bloom 등 다른 네이티브 셰이더와 GPU 자원 생성은 여전히 동기이며 이번 비동기 범위는 화면 효과6단계예요.",
+    "혼합 프레임 노멀의 세 경로 승격·GL/GPU 준비 비용·곡면/교차/변경 투과 경로·추가 GI·텍스처 HDR/압축/배열·볼륨 밉·분산 거칠기·나머지 누적 엔진 원장을 계속 다뤄야 해요."
+  ],
+  "testSourceHashes": {
+    "native/tests/shader-preparation-489.cpp": "631d4f26158e5fe69e42468b786cd1913cfd1940d447c6f37c11b2c29313bfcb"
+  },
+  "failures": [
+    {
+      "path": "native/build/shader-preparation-489-nIj7qA/failure.json",
+      "reason": "첫 이전 헤더 대조 검사에서 상대 include 경로를 한 단계 더 올라갔어요. 실행 전 컴파일 실패였고 경로를 고친 ou5F3U만 성공으로 계산해요."
+    }
+  ]
+}

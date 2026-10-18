@@ -468,3 +468,7 @@ Unity6000.0 Prefab overrides의 직접 자식/전체 적용 본문을 재독하�
 ### 2026-10-19 · 472 변환 정확도 구분
 
 Direct3D11.3의3.2.3.7/8에서sRGB쪽ULP측정과역변환의반올림구분을읽고새색상검사의허용범위를대조했어요. Khronos EXT_texture_sRGB는일부이슈/변환설명만읽었어요. supplemental472에등록하며전체본문/API gate를승격하지않아요. 451정책의2DRGBA8제작/네실행경로/이력/패키지증거는ENGINE_WORK472에연결하고압축/HDR/배열·볼륨/분산거칠기는잔여로유지해요.
+
+### 2026-10-19 · 496 선택 본문/API 대조
+
+Microsoft D3D11의 장치·컨텍스트·Present 소유 규칙과 D3DCompile 한 API의 서명/매개변수/요구 DLL·D3DCompile2 비교를 읽었어요. 원문 지문과 읽지 않은 연결 범위를 supplemental496에 등록해요. 기존 동기 SDK·실제 네이티브 게임을 대조했으며 전체 본문/API gate는 승격하지 않아요.

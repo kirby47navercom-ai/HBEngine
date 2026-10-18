@@ -7,3 +7,5 @@
 - 혼합normal441기본미채택·초기준비초단위잔여.473noise/checker를다음구현으로시작해요. 새수정은없어요.
 
 - 473–485 sourcee7c04a5·ENGINE_WORK485 준비. GPU103 xtSshP/AWhhiw·capture482 재검증, 기존699 BamWC9/7YUf02,24전처리 iA7fzM,2graph IOsYf1/DakiPK, 새게임yILSCh통과.4개큰축현재값 old0/new1. path4477/denoise842/timeguide3516ms 단일관찰로여전히초단위. playerd3eaca01;현재설치485로전환/검증완료. WGSL검사floor(i32)/frac양자화·관측성fixture수정기록보존. 다음동기compiler대기→async구현은아직시작전.
+
+-496 source2df9b93 준비지연을래스터와분리. HqA6y7 실제pending22frame/23Present/샘플0/C++4.21ms/끄기62.65ms/최종664 통과.347auYid0 동기캐시/거부복구보존. 489 첫nIj7qA는상대include컴파일실패, ou5F3U가성공정본. native path helper 별도poll은 capture가게임loop멈춰도완료확인하고revision취소. memorycache 빠른복원은active FXC뒤로밀리지않음. SDK기본sync유지. 다음설치496·누적작업.
