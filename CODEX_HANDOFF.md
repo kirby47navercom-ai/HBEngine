@@ -1,4 +1,4 @@
-# HBEngine 현재 인계 — 비선형·노멀421–425 검증·설치 준비
+# HBEngine 현재 인계 — 설치425 검증·컴파일·렌더링426 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체2D·2.5D·3D 엔진, 사람이 쓰는 편집기와 AI의 동일 검증/Undo/텍스트 자산. 여러 누적 목표를 계속 구현해요. 정본 ENGINE_STATUS.json 등록78개는 UE/Unity 전체 분모가 아니고 전체본문/API gate 미승격·완료율 미확정이에요.
@@ -13,7 +13,7 @@
 - AI uvFootprint에30안정연산·노멀문맥/비용/남은fallback갱신. 도움말MATERIAL_FOOTPRINT_425/이전415·420교차링크. 초기compile개선율주장없음.
 
 ## 다음 실행 순서
-1. sourcecommit→record425·정본원장→sync425→install425 GL/GPU큰스무스노멀·350두native게임/fullmanifest/owners/User읽기/Versions1→finish425. 완료one-shot재실행금지.
+1. 425 원장/실제설치/정리/커밋검증완료. 완료one-shot재실행금지. 새작업426의초기컴파일·렌더링잔여를이어가요.
 2. 이후RND06초기compile와원장RND05/07전역곡면·매질,RND08다른렌더링·누적엔진계속. divide/power/reflect/noise등fallback와표현불가능한UV/time·extreme범위는남음. 분석gate/전체분모미확정유지.
 
 ## 작업 보호

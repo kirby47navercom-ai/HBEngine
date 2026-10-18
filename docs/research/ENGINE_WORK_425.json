@@ -34,7 +34,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "ed3eb323f80180e6a3b657cb7be4893fa441eaf5e7e2b45576f87ad5d44f257a"
   },
   "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/ray-differentials-421-Uzbgm9/acceptance.json",
@@ -67,6 +67,14 @@
     {
       "path": "native/build/rendering-425-light-checks.json",
       "sha256": "f74070c8df794a3c33750dbba357f40319c38b7d13649a59eb7754a3fdfc7598"
+    },
+    {
+      "path": "native/build/normal-coordinate-422-gjg0C8/acceptance.json",
+      "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-rMajLh/acceptance.json",
+      "sha256": "05e45ef5cfa406f24884445ab91f77d6280a9fd1e8d1f1afccb8164152a15e86"
     }
   ],
   "sourceGames": [
@@ -185,5 +193,6 @@
     "표현 불가능한 작성UV/시간·극단 중간범위·텍스처 생성좌표 변화량0·레이폭 내부 시선 고정 근사",
     "전역 곡면/바뀐 투명 경로 역대응·복합 로브·참여 매질과 누적 엔진 원장",
     "초기 복잡 컴파일 여전히 초단위·대표 FPS/기기/전체 분석/전체 엔진 완료 주장은 없음"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_425.json"
 }

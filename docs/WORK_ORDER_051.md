@@ -571,3 +571,5 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 ### 2026-10-18 · 421–425
 
 절댓값 등 비선형 sub-ULP 차분과 큰 월드 스무스 노멀 UV 밉 소실을 실제 재현했어요. 경계·주기·길이/정규화 수식과 성분별 조건 선택, 기본/offset 삼각형 무게 분리, C++ 이전 함수명 치환을 수정했어요. 실제 세API 28연산485조건(기존2e-5·새normalize1e-12), 큰 노멀넓은밉Z/좁은밉-X, 이전17pose, 새 C++/블루프린트 게임 YItc4H 통과. path4622/시간guide4339ms는 단일관찰이며 개선율/FPS 주장이 아니에요. 새GPU자원/uniform/운영readback0, AI계약·도움말과 남은fallback/전역곡면·매질/원장 유지. ENGINE_WORK_425에소유지문·실패와실제증거를연결하고설치검증을진행해요.
+
+425 설치 f1bb52e5ec6cd6bf·3272전체명세/22실행소유SHA·새player·links2/.hbproject·Versions1 확인. 설치 gjg0C8의큰그래프·월드 GL/GPU와rMajLh두DirectX게임 저장6/재사용6/재저장0 통과. User10385전후읽기SHA동일, 이전설치178254084B와검사exe5167624B 정리. 비선형좌표/노멀/렌더링잔여를계속해요.

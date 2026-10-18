@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "ed70da5d872acf1ac30021fff7ee0f74d68f21b2",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf\\HBEngine.exe",
+  "bundleHash": "f1bb52e5ec6cd6bf6b1f507b6e9ff6fc64b5e0254025dd00af58c4a89055f9c1",
+  "files": 3272,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "ed70da5d872acf1ac30021fff7ee0f74d68f21b2",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\f1bb52e5ec6cd6bf\\HBEngine.exe",
+    "bundleHash": "f1bb52e5ec6cd6bf6b1f507b6e9ff6fc64b5e0254025dd00af58c4a89055f9c1",
+    "files": 3272,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3268,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\73f3b3113b91e92e",
+          "bytes": 178254084,
+          "manifestSHA256": "40c3dcf06c2960f629967656733b1ecb01805dc2c16d617301a9dcc65d1716c4"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T14:52:40.4624066Z",
+      "bytes": 178254084,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "f1bb52e5ec6cd6bf"
+      ]
+    },
+    "nativePlayerSHA256": "7c748e45be71445de764f8ddd15c3173dc7bd8841472f0c5951b2fed6ca2465f",
+    "installedGates": [
+      {
+        "path": "native/build/normal-coordinate-422-gjg0C8/acceptance.json",
+        "sha256": "dd87fa531f1e1cbfca8993929c3c71173ea340a0962a7de5bfc93108a0732fe9",
+        "scope": "Actual GL/WebGPU signed-float current versus committed normal-map field, moved/mirrored geometry and distinct mip widths; zero averaged tangent normal -> neutral. Ordinary material graph raster emits the same neutral value. No new production readback, FPS or device-loss claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-rMajLh/acceptance.json",
+        "sha256": "05e45ef5cfa406f24884445ab91f77d6280a9fd1e8d1f1afccb8164152a15e86",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3272,
+    "versions": [
+      "f1bb52e5ec6cd6bf"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-425-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/ray-differentials-421-Uzbgm9/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/normal-coordinate-422-DSu8V7/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+      },
+      {
+        "path": "native/build/previous-context-308-ZpITed/acceptance.json",
+        "scope": "실제 숨김 GL/WebGPU 비선형 변화량·큰 월드 스무스 노멀 밉·이전 포즈, 각 보고서 범위"
+      }
+    ],
+    "sourceGameGates": [
+      {
+        "path": "native/build/native-scene-window-YItc4H/acceptance.json",
+        "scope": "실제 새 DirectX 실행 파일의 C++·블루프린트 복잡 머테리얼·모프·캐시·해제. 초기 준비 관찰이며 FPS·유의미한 개선율 주장은 아님"
+      }
+    ],
+    "scope": "425 전체명세·실행소유SHA·설치된GL/GPU 큰월드 스무스노멀 이전밉/일반래스터·새player두DirectX게임. 원본485수학조건/17pose/실제복잡게임 증거연결. 사용자읽기보존·Versions1. 대표FPS/전체엔진/분석완료 주장은 없음."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 5167624,
+    "removed": [
+      {
+        "path": "native/build/ray-differentials-421-native-qnqd7P/probe.exe",
+        "bytes": 735482,
+        "sha256": "43fa7d02ebdcb22171ff8f48853bafa208480c93a4c0de5146ca36c1346f4bf3"
+      },
+      {
+        "path": "native/build/ray-differentials-421-native-yPg8Aa/probe.exe",
+        "bytes": 735482,
+        "sha256": "3ae230569680f0b8f82e3ede2e77dd35e7fb5ee16c377820b7afc6ca54d27c22"
+      },
+      {
+        "path": "native/build/ray-differentials-421-native-ntTUEj/probe.exe",
+        "bytes": 736776,
+        "sha256": "bd9b74bb3d560b79cbe359c6f89e33409cd87fc512f2ef3f2920c8c3cbf431b7"
+      },
+      {
+        "path": "native/build/normal-coordinate-422-native-CXa3yx/probe.exe",
+        "bytes": 743166,
+        "sha256": "7b97958daeb9219fa312369589edfeeb52d39fa53519ce69436c914b5a7b85a3"
+      },
+      {
+        "path": "native/build/normal-coordinate-422-native-8WoB9j/probe.exe",
+        "bytes": 743948,
+        "sha256": "dd6f162b5d1ca4c907afef53f870b6d806d54ffcf3110760957c3d7373b87548"
+      },
+      {
+        "path": "native/build/normal-coordinate-422-diagnostic-VpoaPF/probe.exe",
+        "bytes": 735994,
+        "sha256": "245236ea54dd6282517e399f5aeaed7ef87bab2c235198b9a00a2d2d57df37bb"
+      },
+      {
+        "path": "native/build/previous-context-308-native-y9y0Od/probe.exe",
+        "bytes": 736776,
+        "sha256": "889d9d2523440a63660f205f6ea9331a627ad1839facf3a05592f9aea43beba3"
+      }
+    ]
+  },
+  "scope": "425 전체명세·실행소유SHA·설치된GL/GPU 큰월드 스무스노멀 이전밉/일반래스터·새player두DirectX게임. 원본485수학조건/17pose/실제복잡게임 증거연결. 사용자읽기보존·Versions1. 대표FPS/전체엔진/분석완료 주장은 없음."
+}

@@ -2011,11 +2011,11 @@
   ],
   "latestBatch": "421–425",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_420.json",
-    "sourceCommit": "5e6f3a678fb793a150aa5b0cf1c563cb69097b17",
-    "bundleHash": "73f3b3113b91e92e704f301510ba9362dad79ba43bd0bd51f6d749401901d32c",
+    "receipt": "docs/research/USER_INSTALL_425.json",
+    "sourceCommit": "ed70da5d872acf1ac30021fff7ee0f74d68f21b2",
+    "bundleHash": "f1bb52e5ec6cd6bf6b1f507b6e9ff6fc64b5e0254025dd00af58c4a89055f9c1",
     "verified": true,
     "versions": 1,
-    "scope": "416–420 상대 머테리얼 좌표 변화량·설치된 큰 오프셋/월드의 두API 밉·두새native게임·전체지문·사용자보존. 비선형/노멀/누적엔진작업 계속"
+    "scope": "421–425 안정 비선형 변화량·설치된 큰 월드 스무스노멀의 두API 밉·두새native게임·전체지문·사용자보존. 비선형/노멀/누적엔진작업 계속"
   }
 }
