@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "7fd05c7191ea8a939a95208695475eb38cf71ed5",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707\\HBEngine.exe",
+  "bundleHash": "e300561444a0c7077f59c3e4fdbabad40ef56ddd04c999389f5ba7190dd1ab58",
+  "files": 3331,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "7fd05c7191ea8a939a95208695475eb38cf71ed5",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707\\HBEngine.exe",
+    "bundleHash": "e300561444a0c7077f59c3e4fdbabad40ef56ddd04c999389f5ba7190dd1ab58",
+    "files": 3331,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3311,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\4ce36135306357d5",
+          "bytes": 178639831,
+          "manifestSHA256": "92774b9fd3c4b7943ef5539bf11afdf4d3c57d9204688a937e72de4e01c3fa39"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T17:46:59.8406420Z",
+      "bytes": 178639831,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "e300561444a0c707"
+      ]
+    },
+    "nativePlayerSHA256": "683a279678e825dffb546e4a1495599348517289a001d1f87e4f0e980810e15a",
+    "installedGates": [
+      {
+        "path": "native/build/texture-import-460-n92LwC/acceptance.json",
+        "sha256": "2280fe87e45bac68941d9ea3f55d231d35f92260b9467205c8c6c97ba6829459",
+        "scope": "Actual hidden editor policy/mip/undo and GL/WebGPU explicit cooked level readbacks, independent color/UV oracle, ray mip bytes, same-path transactional parameter replacement. Native packet proof is a separate gate.",
+        "cleanupNote": "Actual installed tool/UI readbacks and exit passed; only its cleanup rejected repository work outside the installed tool root. Source-owned cleanup follows separately."
+      },
+      {
+        "path": "native/build/texture-import-464-player-Xa9lXa/acceptance.json",
+        "sha256": "9c04bb354f9159052c49f12ba0c06c4cd06cf391e4fc2e97f8c05fa966e98023",
+        "scope": "Fresh actual packaged DirectX11 game: production bridge descriptor loading, explicit mip payload, source orientation, runtime texture operation and stable idle uploads. Independent LOD/sRGB numeric native gate is461. No FPS or mobile device claim.",
+        "packager": "C:\\Users\\kirby\\HBEngine\\Versions\\e300561444a0c707\\tools\\build-game.mjs",
+        "harness": "native/build/installed-game472-probe.mjs"
+      }
+    ],
+    "manifestVerifiedFiles": 3331,
+    "versions": [
+      "e300561444a0c707"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-472-before.json"
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "설치된 코드로 실제 상세창/GL/GPU밉과 새DirectX패키지 중간색·교체/유휴업로드를 검사하고 전체명세/소유SHA/새player/User읽기보존/바로가기/연결/Versions1을 확인해요. 전체엔진/FPS/실기기완료주장없음."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/texture-mips-461-rO56lV/probe.exe",
+        "bytes": 1285478,
+        "sha256": "74750f3229b4958bf17338b1625ebf182ec57e7926592a659fa9039708774988"
+      },
+      {
+        "path": "native/build/texture-history-468-native-hDcRSS/probe.exe",
+        "bytes": 752870,
+        "sha256": "6906bb42d6c2a78efed063894826958374fae5506f26fb017952e14c48c8cf0a"
+      },
+      {
+        "path": "native/build/texture-history-468-native-hA0P1D/probe.exe",
+        "bytes": 752870,
+        "sha256": "7ef5f5e50dde6492ce52e9dd91e6ebe5beb12b27b683f7bff03d4267bca948b4"
+      }
+    ],
+    "bytes": 2791218
+  },
+  "scope": "설치된 코드로 실제 상세창/GL/GPU밉과 새DirectX패키지 중간색·교체/유휴업로드를 검사하고 전체명세/소유SHA/새player/User읽기보존/바로가기/연결/Versions1을 확인해요. 전체엔진/FPS/실기기완료주장없음."
+}

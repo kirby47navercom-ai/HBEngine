@@ -50,7 +50,7 @@
     "native/tests/texture-mips-461.cpp": "deae44414a2e9cfaa3bfcf5ffd32feb21b0a0dd6283105a7f190621aae89c2dd"
   },
   "nativePlayerSHA256": "683a279678e825dffb546e4a1495599348517289a001d1f87e4f0e980810e15a",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/texture-mip-worker-453-pQueKG/acceptance.json",
@@ -91,6 +91,14 @@
     {
       "path": "native/build/texture-import-472-light.json",
       "sha256": "35910ee9fa82433495d05049bd17f63ff1c5e0a12d345778bb4a8c8d12f269dc"
+    },
+    {
+      "path": "native/build/texture-import-460-n92LwC/acceptance.json",
+      "sha256": "2280fe87e45bac68941d9ea3f55d231d35f92260b9467205c8c6c97ba6829459"
+    },
+    {
+      "path": "native/build/texture-import-464-player-Xa9lXa/acceptance.json",
+      "sha256": "9c04bb354f9159052c49f12ba0c06c4cd06cf391e4fc2e97f8c05fa966e98023"
     }
   ],
   "sourceGames": [
@@ -193,5 +201,6 @@
     "raw sRGB 수동변환shader→선형가져오기 교체는불일치거절·머테리얼다시준비필요",
     "새CPU디코드/워커/밉배열비용존재·전체FPS/초기compile완료주장없음",
     "noise/checker·초기compile·전역곡면/매질·RND08/누적엔진원장계속"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_472.json"
 }
