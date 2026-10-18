@@ -626,3 +626,5 @@ Noise/Checker 상대 변화량·셀 경계/음수/동시 배율 교차항·코�
 485 설치 52509e8a3c52d31f·3343전체명세/21ownerSHA·새playerd3eaca01742b9c4661841e94e1c2e4fe782ef5d88c273ab8b38551bed04761c5·User10385전후읽기SHA·links2/.hbproject·Versions1 통과. 설치477Z4Ph2j 두GL/GPU그래프와350k2CNuQ 새DirectX게임 두프로세스에서6저장→6적중/0재저장·유휴IO안정. 이전472 178748468B와 소유검사exe 3914836B 정리. 다음동기컴파일러대기/백그라운드준비와누적목표를계속해요.
 
 496 ·source 2df9b9309218d3de46973ed66124747f4817c50d ·화면6단계 단일 워커/8MiB큐/유휴1초·공용캐시 잠금과 세대·래스터/C++진행·준비 전 샘플/이력 미승인·취소/캡처/오류·프로파일러/AI 계약 연결.489실제FXC/이전 소스와 대조·347동기 SDK/21캐시/장치거부복구·490/348/106/109·실제C++/BP141HqA6y7 22프레임/23Present/샘플0/C++4.21ms/중지62.65ms/변형664 통과. 전체FXC 시간 개선/FPS/전체엔진 완료와 구분하고 설치 검증을 이어가요.
+
+496 설치 9937154a06b6e79d /3353전체파일·실행소유SHA·player9096bb2b287d80035ecc53f17e5f9503bccc3bf01c136a2fda73c098e0bb7a60·User10385전후읽기SHA·links2/.hbproject·Versions1통과. 설치된SDK/packager/player의 실제C++/BP DUEZpf pending22frame/C++5.87ms/중지93.77ms/샘플0/idleworker0와EYFCfI 두게임6저장→6적중/0저장 검증. 이전설치 178804974B·소유검사exe 2153593B정리. 초기검사 null진단/중첩요약키 오류는원인과회복근거를남겼으며설치전환은1회예요. 다음캡처전환·렌더링/엔진누적작업을계속해요.

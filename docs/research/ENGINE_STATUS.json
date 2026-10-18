@@ -2099,11 +2099,11 @@
   ],
   "latestBatch": "473–485",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_485.json",
-    "sourceCommit": "67ee9a0a4bcf0ed41b9dcc7da7273b4bc63d078c",
-    "bundleHash": "52509e8a3c52d31fe6d0a0904d41ab4d273d189337e476bbfb4d06e839a93ce0",
+    "receipt": "docs/research/USER_INSTALL_496.json",
+    "sourceCommit": "d0d31fe1606c5e1b07bd2ee810cd24465c6d9d6c",
+    "bundleHash": "9937154a06b6e79d12c48c719d99e7c59da6632b2e0dcbc8eacf6b1d859114e1",
     "verified": true,
     "versions": 1,
-    "scope": "485 절차 좌표/큰 셀 현재 값·설치된 두 GL/GPU 그래프·두 새D3D 게임 캐시·전체 지문·User읽기보존. 초기 준비와 누적 원장 계속"
+    "scope": "496 실제 설치SDK/packager/player·준비 중22프레임/C++5.87ms/중지93.77ms/workeridle0·두게임6save→6hit·3353전체SHA/User읽기보존. 다음렌더링계속"
   }
 }

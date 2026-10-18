@@ -44,6 +44,16 @@
     {
       "path": "native/build/light495-result.json",
       "sha256": "24133987e24319d311c98e68d5dcf9dd668a759dced5f4f931bb3f1dbc10cc70"
+    },
+    {
+      "path": "native/build/native-preparation-window-496-DUEZpf/acceptance.json",
+      "sha256": "db29ca3b595fc3c50894d85172b5351148debf25f91a4b1eddd07fe6c33a964f",
+      "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+    },
+    {
+      "path": "native/build/shader-cache-window-350-EYFCfI/acceptance.json",
+      "sha256": "db7336344a61f5bb392936dcd8608ccca2a8e21d9eed52433f7551768515fedc",
+      "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
     }
   ],
   "sourceGames": [
@@ -535,7 +545,7 @@
       }
     }
   ],
-  "installationPending": true,
+  "installationPending": false,
   "scope": "네이티브 화면 셰이더의 초 단위 준비가 이미 준비된 래스터·C++ 실행을 막지 않도록 연결했어요. 컴파일 총시간·FPS·모든 렌더링/엔진 기능 완료로 계산하지 않아요.",
   "sharedResourceBudget": {
     "memoryBytecodeCacheBytes": 8388608,
@@ -558,6 +568,17 @@
     {
       "path": "native/build/shader-preparation-489-nIj7qA/failure.json",
       "reason": "첫 이전 헤더 대조 검사에서 상대 include 경로를 한 단계 더 올라갔어요. 실행 전 컴파일 실패였고 경로를 고친 ou5F3U만 성공으로 계산해요."
+    }
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_496.json",
+  "harnessCorrections": [
+    {
+      "path": "native/build/native-preparation-window-496-ayHXEs/failure.json",
+      "reason": "화면 기능 중지 후 pipelinePreparation은null이에요. 워커 유휴 상태는별도 shaderPreparation.queue로읽는DUEZpf검사로바로잡았어요."
+    },
+    {
+      "path": "native/build/resume496.mjs",
+      "reason": "검증 요약의 프로필 SHA는profile.sha256에있어요. 같은기준SHA와실제SHA가같았으며게임검사를반복하지않고중첩키를고친resume496b로전체검증을끝냈어요."
     }
   ]
 }

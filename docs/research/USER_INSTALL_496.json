@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "state": "installed-verified",
+  "sourceCommit": "d0d31fe1606c5e1b07bd2ee810cd24465c6d9d6c",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d\\HBEngine.exe",
+  "bundleHash": "9937154a06b6e79d12c48c719d99e7c59da6632b2e0dcbc8eacf6b1d859114e1",
+  "files": 3353,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "d0d31fe1606c5e1b07bd2ee810cd24465c6d9d6c",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\9937154a06b6e79d\\HBEngine.exe",
+    "bundleHash": "9937154a06b6e79d12c48c719d99e7c59da6632b2e0dcbc8eacf6b1d859114e1",
+    "files": 3353,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3344,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\52509e8a3c52d31f",
+          "bytes": 178804974,
+          "manifestSHA256": "673556f46d693074006101625a27bc9e62af67462ae2ce28eedd8c12926fb478"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T18:49:29.2590544Z",
+      "bytes": 178804974,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "9937154a06b6e79d"
+      ]
+    },
+    "nativePlayerSHA256": "9096bb2b287d80035ecc53f17e5f9503bccc3bf01c136a2fda73c098e0bb7a60",
+    "installedGates": [
+      {
+        "path": "native/build/native-preparation-window-496-DUEZpf/acceptance.json",
+        "sha256": "db29ca3b595fc3c50894d85172b5351148debf25f91a4b1eddd07fe6c33a964f",
+        "scope": "Fresh isolated native C++/BP game from retained owned sources. Installed packager, SDK, native player and runtime; pending raster/input/sample gating, disable/restore/capture and worker idle exit. No user source/profile use or FPS claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-EYFCfI/acceptance.json",
+        "sha256": "db7336344a61f5bb392936dcd8608ccca2a8e21d9eed52433f7551768515fedc",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3353,
+    "versions": [
+      "9937154a06b6e79d"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-496-before.json"
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "scope": "496 설치된 SDK/packager/player와 준비 중 실제 C++ 게임·공용 캐시·전체 SHA·User읽기보존·Versions1",
+    "harnessCorrection": {
+      "initialFailure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- false\n\n    at file:///C:/Users/kirby/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/git/engineCreate/tools/check-native-preparation-window-496.mjs:19:209",
+      "reason": "Disabled screen pipeline is null by contract; global worker diagnostics are in shaderPreparation.queue.",
+      "path": "native/build/check496-recovery.mjs",
+      "sha256": "9107105ee5d43912168ccd088c09a75d19271f73657c665528bddb8f1ad81678",
+      "installationTransitions": 1
+    }
+  },
+  "testBinaries": {
+    "removed": [
+      {
+        "path": "native/build/shader-preparation-489-ou5F3U/baseline.exe",
+        "bytes": 504927,
+        "sha256": "21e45da4b64e5b6d0d656dc90ec2deff48e9671af4fdfb3fccb810d8b43e040e"
+      },
+      {
+        "path": "native/build/shader-preparation-489-ou5F3U/probe.exe",
+        "bytes": 575010,
+        "sha256": "30219a7c26d9597d8944829fbac0111ec809e9c5e11948ca05d347cca3f6ec0f"
+      },
+      {
+        "path": "native/build/shader-cache-runtime-347-auYid0/probe.exe",
+        "bytes": 1073656,
+        "sha256": "8e99928d68dda53d9d51c923c4842874ed1c67b90637bcd5b9d5d8f620ae3d55"
+      }
+    ],
+    "bytes": 2153593
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "네이티브 준비 워커의 실제 설치 SDK/패키지/게임 실행·전체 지문·사용자 읽기 보존·단일 설치 버전. 전체FXC·전체엔진 완료 주장이 아니에요."
+}
