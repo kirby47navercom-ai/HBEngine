@@ -1981,11 +1981,11 @@
   ],
   "latestBatch": "396–400",
   "latestInstallation": {
-    "receipt": "docs/research/USER_INSTALL_395.json",
-    "sourceCommit": "88abfab941740fdfd66fcbed1af11f6a6df648cc",
-    "bundleHash": "cb187b8f7a0959e2fe3fdd6ca69c50da1021d04ca1d5bdc311b9c85fdf648e42",
+    "receipt": "docs/research/USER_INSTALL_400.json",
+    "sourceCommit": "0fed4a66469b0ce0b2a6a9cee4015536339168fc",
+    "bundleHash": "aca3b432cab8636e4a5a065565f55f314bbf6619f72db4dae738878542ce7b52",
     "verified": true,
     "versions": 1,
-    "scope": "391–395 HDRI filtered-direction CDF and lazy worker lifecycle; cumulative engine work continues"
+    "scope": "396–400 opt-in editor GPU timing, installed human/AI editor flows and current packaged native shader-cache gates; cumulative engine work continues"
   }
 }

@@ -27,7 +27,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
   },
   "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/gpu-timing-396-cpu.json",
@@ -52,6 +52,18 @@
     {
       "path": "native/build/rendering-400-light-checks.json",
       "sha256": "9d60f405fe20a315145b9349e8c2d50f665a1ab127345212f143e2e57311c024"
+    },
+    {
+      "path": "native/build/gpu-timing-399-wIN4qj/acceptance.json",
+      "sha256": "9e1f44e9ed41207fbd685202853072ef42242c70ae858b2bf11fdb4e712846e1"
+    },
+    {
+      "path": "native/build/gpu-timing-399-nHEBHJ/acceptance.json",
+      "sha256": "f8c077809215eb47a4b0411fd464b133a0532ca9e18d41e4db5f249e51b4133d"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-MyUk0i/acceptance.json",
+      "sha256": "be2230274a7052d6368f5a337cec93c475ebf83d7f6b0484aaa6b158aca03ecb"
     }
   ],
   "sourceGames": [],
@@ -110,5 +122,6 @@
     "DirectX uses existing native query policy; new adapter validated by CPU tests, packaged native regression is installation gate",
     "Thread flow, detailed per-pass trace, prebuilt/external commands, allocation/leak/crash and real mobile remain in canonical ledger",
     "No representative FPS/PC120/mobile60/global GPU busy/cold compile reduction or whole Unreal/Unity/docs/API/engine completion claim"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_400.json"
 }

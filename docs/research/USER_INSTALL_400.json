@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "0fed4a66469b0ce0b2a6a9cee4015536339168fc",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e\\HBEngine.exe",
+  "bundleHash": "aca3b432cab8636e4a5a065565f55f314bbf6619f72db4dae738878542ce7b52",
+  "files": 3240,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "0fed4a66469b0ce0b2a6a9cee4015536339168fc",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\aca3b432cab8636e\\HBEngine.exe",
+    "bundleHash": "aca3b432cab8636e4a5a065565f55f314bbf6619f72db4dae738878542ce7b52",
+    "files": 3240,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3233,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\cb187b8f7a0959e2",
+          "bytes": 178310047,
+          "manifestSHA256": "93462737c06f762c2ef537f41d9e033763e2f8ae01e07323565a63cb4348cf78"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T12:54:13.4317177Z",
+      "bytes": 178310047,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "aca3b432cab8636e"
+      ]
+    },
+    "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+    "installedGates": [
+      {
+        "path": "native/build/gpu-timing-399-wIN4qj/acceptance.json",
+        "sha256": "9e1f44e9ed41207fbd685202853072ef42242c70ae858b2bf11fdb4e712846e1",
+        "scope": "Actual private editor human record/clear and AI read/stop; main and material GPU timing, asynchronous retirement, source revision/SHA preserved. No FPS or overall GPU wall-frame claim."
+      },
+      {
+        "path": "native/build/gpu-timing-399-nHEBHJ/acceptance.json",
+        "sha256": "f8c077809215eb47a4b0411fd464b133a0532ca9e18d41e4db5f249e51b4133d",
+        "scope": "Actual private editor human record/clear and AI read/stop; main and material GPU timing, asynchronous retirement, source revision/SHA preserved. No FPS or overall GPU wall-frame claim."
+      },
+      {
+        "path": "native/build/shader-cache-window-350-MyUk0i/acceptance.json",
+        "sha256": "be2230274a7052d6368f5a337cec93c475ebf83d7f6b0484aaa6b158aca03ecb",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3240,
+    "versions": [
+      "aca3b432cab8636e"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-400-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceEditorGates": [
+      {
+        "path": "native/build/gpu-timing-399-wa4lfO/acceptance.json",
+        "backend": "webgl2",
+        "scope": "Actual human record/clear and AI read/stop in scene/material workspace; source revision/SHA, complete GPU-row visibility and deferred resource release; errors0/exit0"
+      },
+      {
+        "path": "native/build/gpu-timing-399-3FU0uH/acceptance.json",
+        "backend": "webgpu",
+        "scope": "Actual human record/clear and AI read/stop in scene/material workspace; source revision/SHA, complete GPU-row visibility and deferred resource release; errors0/exit0"
+      }
+    ],
+    "sourceGameGates": [],
+    "scope": "400 full manifest and15-owner SHA verification; actual installed WebGL/WebGPU editor human GPU record/clear/AI stop, main/material full-row visibility/source preservation, and two packaged D3D native shader-cache games with current owners/player. DirectX metric adapter is CPU-tested and uses unchanged native query policy. GPU timeline/pass sums are scoped, not FPS/whole-GPU-busy; no whole-engine/device/docs completion claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "scope": "400 full manifest and15-owner SHA verification; actual installed WebGL/WebGPU editor human GPU record/clear/AI stop, main/material full-row visibility/source preservation, and two packaged D3D native shader-cache games with current owners/player. DirectX metric adapter is CPU-tested and uses unchanged native query policy. GPU timeline/pass sums are scoped, not FPS/whole-GPU-busy; no whole-engine/device/docs completion claim."
+}

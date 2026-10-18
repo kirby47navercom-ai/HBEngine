@@ -1,8 +1,8 @@
-# HBEngine 현재 인계 — 400 소스 검증 완료, 설치 단계
+# HBEngine 현재 인계 — 설치400 검증 완료, 401 계속
 
 ## 목표와 현재 설치
 - C++/Win32/DirectX11 자체 2D·2.5D·3D 엔진. Unity/Unreal 제작 기능·UI/UX·실행과 누적 요구를 계속 구현해요. 사람과 AI가 같은 검증/Undo/텍스트 자산/명령을 사용하며 가벼움·저장공간을 유지해요. 전체 원장은 docs/research/ENGINE_STATUS.json이며 등록78개는 전체UE/Unity 분모가 아니에요. 전체본문/API 분석 gate 미승격·완료율 미확정이에요.
-- 설치395: C:/Users/kirby/HBEngine/Versions/cb187b8f7a0959e2/HBEngine.exe ·3232파일·Versions1. USER_INSTALL_395가 정본. source b686e5f/기록88abfab/설치4228d6e pushed. User10385파일읽기SHA/15owner/fullmanifest/links2/.hbproject/설치HDRI worker SgCafe 검증 완료예요.
+- 현재 설치400: C:\Users\kirby\HBEngine\Versions\aca3b432cab8636e\HBEngine.exe ·3240파일·Versions1. USER_INSTALL_400 정본. User10385읽기 SHA 동일·15owner/fullmanifest·links2/.hbproject·설치 GL wIN4qj/GPU nHEBHJ·native MyUk0i 통과예요.
 - native player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4와host e42dcb39c493590a8acc58181375ad2cfd2f3e5eaaf2ce38fd58bd55be4aa3fd는400에서도동일해요. 이번에는JS/UI/진단만바뀌어native재빌드가필요없어요. 생성HLSL/API --check도통과했어요.
 
 ## 396–400 구현과 검증
@@ -15,9 +15,9 @@
 - 최초397 Dy7tyE는fixture renderer→material 해제순서, uZI5hF는16그리기=16pass라는오입력(실제로HDR+output32). 제품변경/임계완화없이fixture를고쳤어요. UI nZaGgl 마지막행8.21875px잘림은패딩으로고쳤고원래가시성조건을유지해요.
 
 ## 다음 실행 순서
-1. source400 commit/push→record400/sourceHashes/canonical DBG02·AI03·EDT02·WORK_ORDER 업데이트→record commit.
-2. fresh sync400/install400. 변경없는native binary를보존하고현재설치파일을개발중수정하지않아요. 실제설치399 두API UI와350 두native게임(현재game-renderer owner가바뀌었으므로이전gate재사용하지않음)·fullSHA/owner/player/links/association/User읽기지문/Versions1을검사해요. activeInstalledVersions가있으면queue하고사용자프로세스를종료하지않아요.
-3. finish400 receipt/원장/증거·재생성cache정리·한글commit/push. 그뒤누적렌더링/RND06으로계속해요. staticIR/이전material호출중복의책임소유자를먼저읽고구체변경후에만Complex141을묶어검사해요. 반복벤치/조건완화/무근거개선율은피해요.
+1. 400 source/원장/설치가 모두 검증됐어요. 완료 one-shot 재실행 금지예요.
+2. 401 RND06 복잡 초기컴파일: ray-material-shader/context-sharing/history/liveness 소유자를 읽고 정적IR/중복의 구체 원인부터 확인해요. 변경 뒤에만 기존 Complex141 조건으로 묶어 검사해요.
+3. 이전 머테리얼 입력·노멀·밉 및 나머지 누적 원장을 이어서 구현해요. 설치400은 개발 중 수정하지 않아요.
 
 ## 계속 유지하는 잔여와 경계
 - RND05/07 전역곡면·변경투명경로역대응/거친복합로브·참여매질footprint. RND06 복잡첫shader준비. RND08 DFAO/HWRT/방향성lightmap/shadowmask/probe/chartmip/고급매질/분할저장/cloud기하/카메라·이방성footprint.

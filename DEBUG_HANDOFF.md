@@ -1,6 +1,6 @@
-# 현재 진단 — 400 검증 완료·설치 대기
+# 현재 진단 — 설치400 검증 완료·401 조사
 
-설치395 `cb187b8f7a0959e2`/3232파일/Versions1은 검증 완료 상태로 유지해요. 현재 GPU 타이머·프로파일러 변경은 소스에서만 진행 중이에요. 과거 경위는 Git 이력과 `docs/research/ENGINE_WORK_390.json`, `ENGINE_WORK_395.json`, 각 native/build 증거를 참조해요.
+설치400 `aca3b432cab8636e`/3240파일/Versions1이 검증됐어요. 실제 설치 두 API UI와 두 D3D 게임·전체 SHA·User 읽기 지문이 통과했어요. 다음은 복잡한 shader의 정적 중복/IR을 확인하는 401 조사예요. 과거 경위는 Git 이력과 `docs/research/ENGINE_WORK_390.json`, `ENGINE_WORK_395.json`, 각 native/build 증거를 참조해요.
 
 ## 해결한 UI 조건과 원래 실패
 

@@ -543,3 +543,5 @@ HDRI 밉을 worker-safe 공용 소유로 연결하고 queried 단계만 유지�
 ### 2026-10-18 · 396–400
 
 기존프로파일러에opt-in GL/GPU비동기쿼리·최근/평균/p95/완료sequence·명시범위를연결했어요. GL4query/GPU256slot·두2048B버퍼/한read상한·off새query/read/timer0·중지/deferred퇴역/stale거부·외부쿼리/overflow/오류를검사했어요. 실제두API픽셀동일·32render+1compute/독립정수출력·read진행중stop/최종owner0을확인했어요. 실제editor의인간record/clear·AIread/stop·메인/머테리얼·원본SHA/revision/exit0과같은폰트/원래가시성조건의두행전체를확인했어요. 주차profiler하단열기와GPU전용보기/숨긴CPU마크업생성생략도포함해요. GPUtimeline/pass합계는FPS/전체GPUbusy/coldcompile개선으로세지않고threadflow·할당/crash·누적렌더링원장을유지해요. handoff는최신상태만남기고과거증거는Git/정본을참조해요. source/nativeABI/player는재빌드없이동기화하고설치400두API UI/현재ownerNative350/fullSHA/User읽기SHA/Versions1을확인해요.
+
+400 설치 aca3b432cab8636e·3240명세/15소유 SHA·동일player·바로가기2/.hbproject·Versions1을 확인했어요. User10385파일 설치 전후 읽기 SHA가 같아요. 실제 설치 GL wIN4qj/GPU nHEBHJ 인간 기록·지우기·AI 중지·메인/머테리얼 전체 행과 D3D 두 게임 MyUk0i의 캐시 저장6/재사용6·재저장0을 통과했어요. 이전 설치 178310047B를 정리했고 다음 RND06과 누적 렌더링을 계속해요.
