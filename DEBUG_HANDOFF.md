@@ -1,9 +1,7 @@
-# 현재 진단 — 설치440 검증·렌더링441 계속
+# 현재 진단 — 비선형445·렌더링 계속
 
-436실제D3DPreprocess12조건Tf7f8v에서기본연산helper10→0/4580→254B,전이의존/실제GL/GPU5graph NhlAJv와D3D10packetwD7ycM통과. 438parser검증순환/미사용누락/중첩/주석도거부/처리. helperbody435수학동작유지·새GPU자원/uniform/readback없음.
+현재 설치440 f4230fbda13c3695·USER_INSTALL440 정본·User읽기보존·Versions1. 새445 production은8비선형연산의유한차분·AI43연산·20보조함수선택. 실제699수학조건 C9uScy/2uuUr6,8graph uc8LcF/16D3D패킷KBwRDu통과. power큰변화경로를원래pow로돌려로그왕복오차수정;실패tmoAGy보존. 기존573기준/새작은변화1e-10·큰6305출력새조건2e-3(실제.00085)구분.
 
-중요:438GL ABBA mPu5Oz full2617/2572ms·guarded2636/2881ms는전체지연개선근거가아니에요. 원문sourceBytes90841동일,전처리된라이브러리감소를전체compile/FPS성공으로포장하지않아요. 실제439D3D WQwSTE4457/4307ms도단일관찰. 초기복잡GL/GPU/DX지연계속.
+혼합노멀441은실험이며기본경로미채택. 9IIJ9N GL17poses×3오차0,9x9kg2 ABBA 원본2590/2592·혼합2448/2551ms(부하/캐시미통제). CPP/TSL/coat/전체guide·지연후속 필요. 기존334공통Values그대로반복아님;프레임bool입력preamble+prior표본한call site. 구조체리턴·fieldmask·time·UV·oldWidth·unsafe기하거부유지. source작업진행중으로자료보존해요.
 
-다음441은기존334shareRayProgramInputs그대로재시도하지않아요. 현재path-guide-specialization.shareGuideNormals가primary/현재differential은이미한call-site loop로묶고prior normal은별도예요. 공통ProgramValues+frame bool로입력preamble를선택하는MixedNormal을그loop의추가prior표본에도같은호출지점으로넘기는후속이후보예요. 아직구현없고먼저실제함수body와unsafe previous normal gate/coat/시간/fieldmask/UV/mip를확인해야해요. GL source프로그램동일본문분리도구(ray-program-context-sharing)는실험도구·기본경로미채택. nativeTSL후속까지출력/지연근거필요.
-
-440source/원장/설치마무리후계속. 435설치997f...·shader282ea...·이전검사증거는정본435. 현재Mac/Xcode/Android실기기없음,User읽기전용/VERSION1/프로세스보호/완료one-shot재실행금지.
+445build·실게임·원장·설치8graph+350캐시·지문/User/Versions1/정리후추가렌더링계속. Mac/Xcode/실제Android기기없음,혼합실험이나한회시간을전체분석/속도/엔진완료로표현하지않아요.
