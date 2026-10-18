@@ -37,7 +37,7 @@
     "native/include/HBEngine/RayPrograms.hpp": "a046fd43611a0cec1612677b6853bfd60f2247eb3c882fe5a118ec318eac072a"
   },
   "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
-  "installationPending": true,
+  "installationPending": false,
   "checks": [
     {
       "path": "native/build/environment-mips-381-yjBN3J/acceptance.json",
@@ -103,6 +103,14 @@
     {
       "path": "native/build/environment-filter-390-atlas.json",
       "sha256": "9da1fa43825e0daa36591cc0f1edd9a93139108ac06d5af680acf5dfd003c9d0"
+    },
+    {
+      "path": "native/build/lightmap-workflow-225-WHKAmz/acceptance.json",
+      "sha256": "299714bbff2859eafbdab5a3e55c426747f4a47d49facc1e166e5f8a3b6226c9"
+    },
+    {
+      "path": "native/build/shader-cache-window-350-uRETgh/acceptance.json",
+      "sha256": "80735da194cc0d862e21b05f8e6511938c16aa88e359ffb7a69ac31535fffaf1"
     }
   ],
   "sourceGames": [
@@ -182,5 +190,6 @@
     "HDRI importance sampling, real cloud capture, directional/chart mips/shadowmask/probes, DFAO/HWRT remain in RND08",
     "Native unavailable-device segment was not reached in original385 invocation; no new claim of that gate",
     "No whole-Unreal/Unity/docs/API completion, whole-image cross-backend equality, representative FPS or device proof"
-  ]
+  ],
+  "installationReceipt": "docs/research/USER_INSTALL_390.json"
 }

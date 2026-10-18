@@ -1,3 +1,8 @@
+# 설치390 검증 완료 — 391 HDRI 방향 중요 표본 계속
+
+- 현재 a774f74aca97500f/3227파일/Versions1·USER_INSTALL_390 정본. 구현094c80b/설치입력22a1cba pushed. Player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4·25owner/fullSHA/links2/.hbproject/User10385읽기SHA 동일. 설치인간sun worker WHKAmz/350 uRETgh 통과예요. 390one-shot재실행금지.
+- 다음391은선택HDRI의 밝은영역 방향표본·기존코사인 full-support/PDF·회전/flipY·bounded local table·실제bake/게임으로이어가요. 설치390파일은수정하지않아요. 미독/누적전역곡면/RND06/엔진원장유지예요.
+
 # 381–390 구현·묶음 검증 완료 — 원장/설치 갱신 단계
 
 - 현재 설치380 be667218d6b12f61/3215/Versions1은 불변. 새 source를 commit→record390→sync390→install390→finish390으로 반영해요. 기존 one-shot380/376/370과 새 완료 marker는 재실행하지 않아요. 새 angle HLSL을 포함한 desktop67006 빌드 완료·generated header 3개/host 입력은 dist와 SHA동일. player736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4. 이후 JS/검사만 변경해 추가 native 재빌드 불필요해요.

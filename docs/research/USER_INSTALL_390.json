@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "state": "installed-verified",
+  "sourceCommit": "22a1cba128ace4572724c58d3d147ae53e0883c6",
+  "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f",
+  "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f\\HBEngine.exe",
+  "bundleHash": "a774f74aca97500f5c1ab8778856994f5d3ba8b9e040e18782fdcd853747aa2b",
+  "files": 3227,
+  "versions": 1,
+  "installedAudit": {
+    "passed": true,
+    "pending": false,
+    "sourceCommit": "22a1cba128ace4572724c58d3d147ae53e0883c6",
+    "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f",
+    "executable": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f\\HBEngine.exe",
+    "shortcut": "C:\\Users\\kirby\\HBEngine\\HBEngine.lnk",
+    "desktopShortcut": "C:\\Users\\kirby\\OneDrive\\바탕 화면\\HBEngine 사용자용.lnk",
+    "projectAssociation": "C:\\Users\\kirby\\HBEngine\\Versions\\a774f74aca97500f\\HBEngine.exe",
+    "bundleHash": "a774f74aca97500f5c1ab8778856994f5d3ba8b9e040e18782fdcd853747aa2b",
+    "files": 3227,
+    "cleanup": {
+      "removed": [
+        {
+          "files": 3216,
+          "directory": "C:\\Users\\kirby\\HBEngine\\Versions\\be667218d6b12f61",
+          "bytes": 178202975,
+          "manifestSHA256": "41c32a06059fc912145d86277cb891c563cb081551d9b76e9908e463b9f1826c"
+        }
+      ],
+      "failures": [],
+      "cacheBackupsRemoved": [],
+      "skipped": [],
+      "date": "2026-10-18T11:37:27.3775222Z",
+      "bytes": 178202975,
+      "generated": [],
+      "preserved": [],
+      "remaining": [
+        "a774f74aca97500f"
+      ]
+    },
+    "nativePlayerSHA256": "736388910254701ed708b3ef723f668eb22d3fd3b46c7d99dd1fe78da2aea5e4",
+    "installedGates": [
+      {
+        "path": "native/build/lightmap-workflow-225-WHKAmz/acceptance.json",
+        "sha256": "299714bbff2859eafbdab5a3e55c426747f4a47d49facc1e166e5f8a3b6226c9"
+      },
+      {
+        "path": "native/build/shader-cache-window-350-uRETgh/acceptance.json",
+        "sha256": "80735da194cc0d862e21b05f8e6511938c16aa88e359ffb7a69ac31535fffaf1",
+        "scope": "Two separate actual packaged D3D11 game processes with one private profile/cache. Optional installed flag proves exact installed runtime owners and base player bytes match the packaged source; package PE metadata is stamped by the ordinary build pipeline. No user profile, foreground UI, FPS or whole-engine completion claim."
+      }
+    ],
+    "manifestVerifiedFiles": 3227,
+    "versions": [
+      "a774f74aca97500f"
+    ],
+    "profile": {
+      "filesBefore": 10385,
+      "filesAfter": 10385,
+      "beforeSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "afterSHA": "46024720c91a2d2eff0661b5c35304fb8acbbc646062762ae8cf492664443d26",
+      "preserved": true,
+      "readOnly": true,
+      "beforeReceipt": "native/build/user-install-390-before.json",
+      "scope": "Persisted read-only inventory immediately before install and inventory after private verification. User files were never copied or used for tests."
+    },
+    "shortcutsVerified": true,
+    "associationVerified": true,
+    "sourceGameGates": [
+      {
+        "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+        "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+        "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-DH5Psn/acceptance.json",
+        "scope": "Human HDRI bake/UndoRedo/AI guard and three packaged players; baseline/moved/restored; blue procedural sky verifies selected red HDRI priority"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+        "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+        "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+      },
+      {
+        "path": "native/build/lightmap-workflow-225-y0ZYbe/acceptance.json",
+        "scope": "Current sun-importance human bake/worker/UndoRedo/AI guard and three packaged players; baseline/moved/restored"
+      }
+    ],
+    "scope": "390 full manifest and 25-owner SHA verification; actual installed human UV1/sun-importance worker bake/UndoRedo/AI guards/preview, two-process packaged native shader reuse with this exact player. Source HDRI/sun human bake and six packaged players, three-GPU HDRI sample math, GL full photon/CPP/BP and scoped native120 plus corrected118/117 are separately recorded. No full original native invocation, whole-engine/FPS/device-completeness claim."
+  },
+  "globalCleanup": {
+    "deleted": 0,
+    "bytes": 0,
+    "receipt": null
+  },
+  "testBinaries": {
+    "bytes": 5424557,
+    "removed": [
+      {
+        "path": "native/build/environment-filter-382-EFLl3x/probe.exe",
+        "bytes": 727063,
+        "sha256": "d898724c3a8d9ce45fd6c4e61798239f9c17e40a1b886815510aad0851b35c46"
+      },
+      {
+        "path": "native/build/environment-filter-382-fxLbxD/probe.exe",
+        "bytes": 727063,
+        "sha256": "2ff1e63309369604cd535a68cb434ce78c14e49d360b7396c8bf269cca25874b"
+      },
+      {
+        "path": "native/build/environment-filter-382-hEJ2dM/probe.exe",
+        "bytes": 727063,
+        "sha256": "ece00655d66bd4772cb617cae29a6ab406289fb5185213e8beae85a0facdec8e"
+      },
+      {
+        "path": "native/build/environment-filter-382-Wb37lq/probe.exe",
+        "bytes": 727063,
+        "sha256": "0e41a9573ae69f1f227cc55b493e0abe5441bf73e3dbaca905e3917dbc9c50e1"
+      },
+      {
+        "path": "native/build/environment-filter-382-xsnH75/probe.exe",
+        "bytes": 727063,
+        "sha256": "4619a6578bc8e7204617d2e59ee3870a94392eae71ef97dfde414185a323c911"
+      },
+      {
+        "path": "native/build/native-scene-MknpqR/hardware.exe",
+        "bytes": 1789242,
+        "sha256": "62d4ca08edc09049006edbc6ecef19706ef1863c18dd8dfdacf7e2c07329bd14"
+      }
+    ]
+  },
+  "scope": "390 full manifest and 25-owner SHA verification; actual installed human UV1/sun-importance worker bake/UndoRedo/AI guards/preview, two-process packaged native shader reuse with this exact player. Source HDRI/sun human bake and six packaged players, three-GPU HDRI sample math, GL full photon/CPP/BP and scoped native120 plus corrected118/117 are separately recorded. No full original native invocation, whole-engine/FPS/device-completeness claim."
+}
