@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {shaderCompilationTable,RuntimeProfiler} from '../prototype/profiler.js';
+import {gameRendererCompilationInfo} from '../prototype/game-renderer.js';
+import {shaderBytecodeCacheContract} from '../prototype/shader-cache-contract.js';
+import {engineSchema} from './editor-automation.mjs';
+const disk={configured:true,hits:21,misses:0,writes:0,evictions:0,lastScannedBytes:588411,budgetBytes:8388608,invalid:1,errors:2,busy:3};let reads=0;
+const renderer={hbBackend:'d3d11',hbDiagnostics(){reads++;return {shaderCompilation:{compilations:0,cacheHits:0,cacheBytes:4000,cacheBudgetBytes:8388608,lastCompileMS:0},shaderDiskCache:disk};}};
+const info=gameRendererCompilationInfo(renderer);assert.equal(reads,1);assert.equal(info.shaderDiskCache,disk);
+const profiler=new RuntimeProfiler({rendering:()=>[{id:'뷰포트 <script>',...info}]}),snapshot=profiler.snapshot();assert.equal(profiler.recording,false);assert.deepEqual(snapshot.rendering[0].shaderDiskCache,disk);snapshot.rendering[0].shaderDiskCache.hits=0;assert.equal(disk.hits,21);
+const table=shaderCompilationTable(profiler.snapshot().rendering);assert.ok(table.includes('디스크 재사용 21 · 저장 0')&&table.includes('최근 확인 0.56 / 8.00 MiB')&&table.includes('캐시 복구 1 · 오류 2 · 사용 중 3'));assert.ok(!table.includes('<script>'));
+assert.ok(!shaderCompilationTable([{id:'old',backend:'d3d11'}]).includes('디스크'));assert.equal(gameRendererCompilationInfo(null),null);assert.equal(gameRendererCompilationInfo({hbBackend:'webgl2'}).shaderDiskCache,null);
+assert.deepEqual(engineSchema().nativeShaderCache,shaderBytecodeCacheContract);assert.equal(shaderBytecodeCacheContract.defaultBudgetBytes,8388608);
+console.log(JSON.stringify({passed:true,oneNativeRead:true,profilerWithoutRecording:true,immutableSnapshot:true,escapedUI:true,oldHostCompatible:true,sharedHumanAIContract:true}));

@@ -1,5 +1,6 @@
 #pragma once
 #include <HBEngine/Compute.hpp>
+#include "ShaderBytecodeCompiler.hpp"
 #if defined(_WIN32) && !defined(HB_COMPUTE_UNAVAILABLE)
 #include <dxgi1_2.h>
 #endif
@@ -114,8 +115,8 @@ public:
     // hwnd is optional and borrowed. This renderer never opens or closes windows.
     ParticleRenderer(Device& device,std::uint32_t width,std::uint32_t height,void* hwnd=nullptr):gpu(device){
         dimensions(width,height);std::lock_guard<std::mutex> lock(gpu.mutex);
-        auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");
-        for(const auto* entry:{"VS","PS","Compact"}){detail::Com<ID3DBlob> code,error;const auto result=compile(shader,std::strlen(shader),"HBParticleRender",nullptr,nullptr,entry,entry[0]=='V'?"vs_5_0":entry[0]=='P'?"ps_5_0":"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"GPU render shader compile failed");if(entry[0]=='V')detail::check(gpu.device->CreateVertexShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&vertex.p),"GPU vertex shader");else if(entry[0]=='P')detail::check(gpu.device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&pixel.p),"GPU pixel shader");else detail::check(gpu.device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&compact.p),"GPU living indices shader");}
+
+        for(const auto* entry:{"VS","PS","Compact"})detail::ShaderBytecodeCompiler::create(shader,"HBParticleRender",entry,entry[0]=='V'?"vs_5_0":entry[0]=='P'?"ps_5_0":"cs_5_0",[&](const void* bytes,std::size_t size){if(entry[0]=='V')return gpu.device->CreateVertexShader(bytes,size,nullptr,&vertex.p);if(entry[0]=='P')return gpu.device->CreatePixelShader(bytes,size,nullptr,&pixel.p);return gpu.device->CreateComputeShader(bytes,size,nullptr,&compact.p);});
         const UINT args[4]={6,0,0,0};D3D11_BUFFER_DESC indirect{};indirect.ByteWidth=sizeof(args);indirect.Usage=D3D11_USAGE_DEFAULT;indirect.MiscFlags=D3D11_RESOURCE_MISC_DRAWINDIRECT_ARGS;D3D11_SUBRESOURCE_DATA initial{};initial.pSysMem=args;detail::check(gpu.device->CreateBuffer(&indirect,&initial,&arguments.p),"GPU indirect draw arguments");
         D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.Usage=D3D11_USAGE_DYNAMIC;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;cb.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE;for(auto& buffer:constants)detail::check(gpu.device->CreateBuffer(&cb,nullptr,&buffer.p),"GPU render frame constants");
         D3D11_RASTERIZER_DESC rs{};rs.FillMode=D3D11_FILL_SOLID;rs.CullMode=D3D11_CULL_NONE;rs.DepthClipEnable=TRUE;rs.ScissorEnable=TRUE;detail::check(gpu.device->CreateRasterizerState(&rs,&raster.p),"GPU raster state");
@@ -140,7 +141,7 @@ private:
     void sortAlive(const Particles& particles,Constants& data){
         if(!data.sorting[1])return;
         if(sorted_&&sortMode==data.sorting[1]&&sortWorld==data.world&&sortView==data.view&&sortEye==data.eye)return;
-        if(!sortInitial.p){auto compile=detail::libraries().symbol<decltype(&D3DCompile)>(detail::libraries().compiler,"D3DCompile");for(const auto* entry:{"SortInitial","SortStep"}){detail::Com<ID3DBlob> code,error;const auto result=compile(shader,std::strlen(shader),"HBParticleSort",nullptr,nullptr,entry,"cs_5_0",D3DCOMPILE_ENABLE_STRICTNESS|D3DCOMPILE_OPTIMIZATION_LEVEL3,0,&code.p,&error.p);if(FAILED(result))throw std::runtime_error(error.p?std::string(static_cast<const char*>(error->GetBufferPointer()),error->GetBufferSize()):"GPU particle sort compile failed");auto& output=entry[4]=='I'?sortInitial:sortStep;detail::check(gpu.device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&output.p),"GPU particle sort shader");}}
+        if(!sortInitial.p)for(const auto* entry:{"SortInitial","SortStep"}){auto& output=entry[4]=='I'?sortInitial:sortStep;detail::ShaderBytecodeCompiler::create(shader,"HBParticleSort",entry,"cs_5_0",[&](const void* bytes,std::size_t size){return gpu.device->CreateComputeShader(bytes,size,nullptr,&output.p);});}
         if(!sortKeys.p){D3D11_BUFFER_DESC desc{};desc.ByteWidth=detail::bytes(aliveCapacity);desc.Usage=D3D11_USAGE_DEFAULT;desc.BindFlags=D3D11_BIND_UNORDERED_ACCESS;desc.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;desc.StructureByteStride=sizeof(float);detail::check(gpu.device->CreateBuffer(&desc,nullptr,&sortKeys.p),"GPU particle sort keys");detail::check(gpu.device->CreateUnorderedAccessView(sortKeys.p,nullptr,&sortKeysWrite.p),"GPU particle sort keys view");}
         std::size_t sortCapacity=1;while(sortCapacity<particles.count())sortCapacity*=2;data.sorting[0]=static_cast<UINT>(sortCapacity);auto* input=particles.buffer.srv.p;ID3D11UnorderedAccessView* outputs[]={aliveWrite.p,sortKeysWrite.p};gpu.context->CSSetShaderResources(0,1,&input);gpu.context->CSSetUnorderedAccessViews(0,2,outputs,nullptr);const auto groups=static_cast<UINT>((sortCapacity+63)/64);
         const auto dispatch=[&](ID3D11ComputeShader* shader){auto* cb=uploadConstants(data);gpu.context->CSSetConstantBuffers(0,1,&cb);gpu.context->CSSetShader(shader,nullptr,0);gpu.context->Dispatch(std::min(groups,65535u),(groups+65534)/65535,1);++sortPasses_;};dispatch(sortInitial.p);

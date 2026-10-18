@@ -999,3 +999,24 @@ GPU Og3Xi8 wrong-return-type shader root: expression-bodied TSL If callbacks acc
 - 331 최초/진단 실행은17포즈 픽셀·library identity가 맞았으나 검사 정규식이 WGSL의 함수 이름과 여는 괄호 사이 공백을 놓쳐 함수수0을 셌어요. 실제 저장 WGSL에서 baseline Texture/TextureLevel4함수와 shared2함수를 직접 확인한 뒤 공백을 허용하도록 검사만 고쳤어요. 픽셀 허용치나 시간제한은 바꾸지 않았어요. 최종 통과 근거는 후속331 실행으로 기록해요.
 
 - 333은48family/filter 변형을 CDP 한 호출에 넣어20초 호출 제한을 넘었어요. 제한을 늘리지 않고4변형씩12호출로 나눠 전체48/384 조건을 최종 검사해요. 개별 샘플/오차/셰이더 함수 개수 조건은 그대로예요.
+
+
+## 335–338 · mixed-frame 다음 구현 조사
+
+- native/build/mixed-frame-335.mjs는 GL생성 current/prior program의 입력을 bool문맥으로 선택하고 공통 IR/TBN을 한 함수에서 평가하는 프로토타입이에요. 아직 production 기본 경로나 설치본에 적용하지 않았어요.
+-335 첫 worldPositionUV 대조가 크게 달랐지만336/337의 직접 중간값에서는 mixed/previous의 smooth·field·normal·geometric이 같았어요. 실제335검사 target은2×2·읽은픽셀은(0,0)UV.x=.25인데 동적분기를>.25로 골라 current를 읽은 fixture 오류였어요.338은왼쪽pixel<.5로prior를고르고다른pixel은current로남겨두어요. 오차기준·시간제한은그대로이며 후속전체17대조를진행해요.
+
+-339–341 실험은 후보가 아닌 첫 reference guide에서GL1282가 났어요. 단계별로 beforeCompile1282/compile-render-read0임을 확인해 UV 사전 검사까지 거슬렀어요. 샘플의 MIP가 없는 경우 현재 생성자는 쓰지 않는 hbRayUVFootprint 함수를 절삭하는데296검사는 그 함수를 직접 호출하면서 주입하지 않아0값 비교를 통과할 수 있었어요. 검사에 명시적으로 현재 UV helper를 주입하고 즉시 GL오류와 큰 UV 관측값을 요구해요. production의 함수 절삭은 유지해요. 이 검사 수정 후342에서 reference와후보guide 전체를 다시 대조해요.
+
+-342의 UV helper 관측 검사를 통과한 뒤 candidate aux guide가 mixedNormal 함수를 정의 앞에서 호출해 컴파일 실패했어요. guide 함수 바로 앞에 정확한 signature의 forward 선언을 넣고343으로 대조해요. 함수 계산/허용치는 바꾸지 않았어요.
+
+- 현재296 전체 재실행의 옛ff34005부분snapshot은 현재curvedGuide와새previousNormal API를 섞을 수 있어reference가 컴파일되지 않았어요. 과거296당시receipt를현재오류로소급무효화하지않고, 현재회귀의기준을mixed-pass도입직전fbe3268의 pass클래스/기준shader/guide로고정해요. reference Pass도그클래스로만들고guide치환누락을즉시거부해요. UV는별도수식reference와관측값/GL오류로검사하며trilinear표본의generateMipmaps도명시해요.
+
+## 346–352 · DirectX 디스크 재사용과 프로브 캡처
+
+- 346 Ulpya3: 4KiB LRU/교체 임시 예산/손상·잘린 파일/전체키/외부파일/실패/경합/4프로세스/강제종료 복구를 통과했어요. 347 최종 OtNMQG: D3D21개 cold저장→다른프로세스21hit/0compile, 픽셀0·6프레임cacheIO0·잘못된stage의 정상컨테이너 거부/원본 재컴파일을 통과했어요. 초반347 실패는 private Device 접근·서로 다른 auto 배열 선언과 fixture의 잘못된 화면 설정 값이었고 엔진 검증 조건을 낮추지 않았어요.
+- HBEngine.cpp의 캐시 설정은 HB_GAME_PLAYER 안에 있어요. 편집기 shell은 native renderer를 포함하지 않아 첫 데스크톱 빌드가 hb 미정의로 실패했고 guard를 고친 뒤 빌드했어요. SDK는 명시 configure 전 디스크 비활성이에요.
+- 350 초기 fixture는 최소 높이240보다 작은180, 다음은 scene.runtime에 지원하지 않는 d3d11을 직접 넣어서 검증이 거부됐어요. 기존 Windows 빌드 프로필의 windowsRenderer를 써서 ppVCAw 실제 두 게임 프로세스6save→6hit/0save·정상 종료를 통과했어요.
+- 원래 native-scene-window-0VeswA 실행은 완성 패키지가 있었지만 셸 종료1·보고서 부재로 미검증이에요. 이미 만들어진450개 패키지 명세를 확인한 뒤351에서 창 검사만 이어가 C++/에셋을 반복 빌드하지 않았어요. 351 첫 실패 두 개는 재생 도구의 상대 import/누락된 sleep이었고, 후속 odSg7c가 ProbeDriver.Off 뒤 probeCaptures2/1 불일치를 잡았어요.
+- 원인은 native/browser 캡처 키가 p 전체를 포함해 강도·혼합 같은 바인딩 변경까지 재캡처한 것이에요. 공용 probeCaptureKey로 실제 캡처 속성/derived center/장면 onChange만 비교해요. 위치/갱신/해상도/clip/bounce/owner 제외 변화는 유지해요. 352는 모든 컴포넌트 속성을 분류해 새 속성 누락도 잡아요. browser fixture는 동일 target 재반환을 별개 target으로 고쳐 교체/최종 제거2회·중복 해제 금지를 검사해요.
+- 351 최종8cYod3은 private 기존 패키지의 native-scene-renderer.js/reflection-probes.js 두 파일과 명세를 갱신하고 전체 D3D CPP/BP·2D/3D/HUD/텍스처/그림자/파티클/변형/Bloom/프로브/장면해제를 통과했어요. 최초 manifest와 patch SHA를 보존했어요. JYI2Ac는 실제65537 GPU파티클/간접draw·hiddenHWND·자원/프레임ring3·Android두ABI헤더 문법만 통과했으며 모바일 GPU/FPS 검증이 아니에요.

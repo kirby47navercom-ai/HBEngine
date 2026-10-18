@@ -2778,7 +2778,9 @@
     "168: Reconcile Prefab override/variant linked APIs and media, TilemapRenderer culling/sprite sorting/render-pipeline links and the discovered https://docs.unity.com/en-us/engine/7000.0/script-reference/unityengine/tilemaps/tilemaprenderer API. The 6000.0 selected body reading does not close 7000.0 or the whole source corpus.",
     "169: Reconcile RuleTile linked grid/API/animation output; NavArea bake/carving/radius APIs; FullBodyIK PBIK stiffness/root/rotation/rig references; AudioMixer DSP Send/ducking/suspend native APIs and media. Selected HB implementation does not close the global corpus.",
     "170: Prefab nested destination/stage APIs, native audio virtualization/decoder/platform and psychoacoustic selection, full ProBuilder manual UV action/unwrap/packing references, PBIK stretch/position/stiffness API, WebView2 error status/cancellation/lifetime references remain separately scoped.",
-    "327: Selected sequence ownership reading in docs/ENGINE_IMPLEMENTATION_327.md: Unreal4.27 keep/restore historical supplement, Unreal5.8 Animation Track and Unity Timeline1.8.13 track priority. Reconcile screenshots, linked Motion Blending/Slot/root-motion/section APIs, package compatibility and current-versus-historical behavior; no corpus body/API/global gate promotion."
+    "327: Selected sequence ownership reading in docs/ENGINE_IMPLEMENTATION_327.md: Unreal4.27 keep/restore historical supplement, Unreal5.8 Animation Track and Unity Timeline1.8.13 track priority. Reconcile screenshots, linked Motion Blending/Slot/root-motion/section APIs, package compatibility and current-versus-historical behavior; no corpus body/API/global gate promotion.",
+    "349: Reconcile linked D3DCompile/compiler versioning, shader device-validation, CreateFile/FlushFileBuffers/MoveFileEx and file-lock APIs/platform durability. Selected DX11 bytecode reuse checks do not close GL/WebGPU first compilation, filesystem APIs or global source corpus.",
+    "353: Reconcile NRD PSR/GetMotion/normal-roughness/HistoryConfidence linked implementations and Unity HDRP17.0.4 FrameSettings/material/Renderer API references; selected body reading is not complete corpus analysis or implementation."
   ],
   "supplemental165": {
     "date": "2026-10-16",
@@ -3723,5 +3725,45 @@
       "docs/research/ENGINE_WORK_292.json",
       "docs/research/ENGINE_WORK_293.json"
     ]
+  },
+  "supplemental346_350": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3dcompiler/nf-d3dcompiler-d3dcompile",
+        "scope": "선택 본문32–123행 소스/진입점/target/flags/반환blob; 링크 API 전체와 D3DCompile2 미독"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createcomputeshader",
+        "scope": "선택 본문36–76행 컴파일 바이트코드와 길이/장치 생성/검증 반환; 연결 API 전체 미독"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex",
+        "scope": "선택 본문32–95행 lock 범위/비대기/종료 후 OS 해제; Win32·네트워크 파일시스템/API 전체 미독"
+      }
+    ],
+    "comparison": "HB의 선택 D3D11 렌더 패스에 8MiB 공유 디스크 bytecode와 손상·장치 거부 fallback; D3D12 pipeline cache나 WebGPU cache 구현으로 세지 않음",
+    "analysisGate": "선택 API 대조이며 전체 corpus/독립 분석 gate 미승격",
+    "evidence": [
+      "docs/RENDERING_SHADER_CACHE_349.md",
+      "docs/research/ENGINE_WORK_349.json"
+    ]
+  },
+  "supplemental353": {
+    "date": "2026-10-18",
+    "read": [
+      {
+        "url": "https://github.com/NVIDIA-RTX/NRD/blob/master/README.md",
+        "scope": "현재 master 선택 본문593–633/746–778/959–975행의 입력·PSR·모션 의미. 전체 README/연결 구현·샘플/API 미독; 라이브러리 미도입"
+      },
+      {
+        "url": "https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@17.0/manual/Motion-Vectors.html",
+        "scope": "현재17.0.4 HTML114–155행 본문: 객체/카메라/투명 표면 이동과 뒤 표면 덮어쓰기. 전체HDRP·연결 API 미독"
+      }
+    ],
+    "evidence": [
+      "docs/RENDERING_HISTORY_353_RESEARCH.md"
+    ],
+    "analysisGate": "선택 본문 대조이며 전체 corpus/독립 분석 gate 미승격"
   }
 }

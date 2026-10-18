@@ -22,7 +22,8 @@ export function checkGPUScene(renderer,data){
 export function finishGameRendererFrame(renderer){renderer.hbFrameInfo={render:{...renderer.info.render},compute:{...renderer.info.compute}};}
 export function gameRendererCompilationInfo(renderer){
  if(!renderer)return null;
- return {backend:renderer.hbBackend,pipelinePreparation:gpuPathPreparationInfo(renderer.hbPathPreparation),shaderCompilation:renderer.hbBackend==='d3d11'?renderer.hbDiagnostics().shaderCompilation||null:null};
+ const native=renderer.hbBackend==='d3d11'?renderer.hbDiagnostics():null;
+ return {backend:renderer.hbBackend,pipelinePreparation:gpuPathPreparationInfo(renderer.hbPathPreparation),shaderCompilation:native?.shaderCompilation||null,shaderDiskCache:native?.shaderDiskCache||null};
 }
 export function gameRendererInfo(renderer){
   if(renderer.hbBackend==='d3d11')return renderer.hbDiagnostics();

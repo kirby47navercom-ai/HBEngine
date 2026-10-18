@@ -338,6 +338,9 @@ int WINAPI wWinMain(HINSTANCE instance,HINSTANCE,LPWSTR,int show){
         app.editorAcceptance=!app.smoke.empty()&&!project.empty()&&env(L"HB_EDITOR_ACCEPTANCE")==L"1";
 #endif
         if(registerOnly){CoUninitialize();return 0;}
+#ifdef HB_GAME_PLAYER
+        hb::gpu::SceneRenderer::configureShaderCache((env(L"HB_USER_DATA_DIR").empty()?fs::path(env(L"LOCALAPPDATA"))/L"HBEngine":app.userData)/L"Cache"/L"ShaderBytecode");
+#endif
         unsigned hash=2166136261u;for(wchar_t c:(project.empty()?app.root.wstring():project)){hash^=std::towlower(c);hash*=16777619;}
         const auto className=L"HBEngine."+std::to_wstring(hash);single=CreateMutexW(nullptr,FALSE,(L"Local\\"+className).c_str());
         if(GetLastError()==ERROR_ALREADY_EXISTS){const auto window=FindWindowW(className.c_str(),nullptr);if(window){ShowWindow(window,SW_RESTORE);SetForegroundWindow(window);}CloseHandle(single);CoUninitialize();return 0;}

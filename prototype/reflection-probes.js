@@ -5,6 +5,9 @@ import {ShaderChunk} from 'three';
 import {materialNodeKey} from './material-runtime.js';
 
 const directions=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],ups=[[0,-1,0],[0,-1,0],[0,0,1],[0,0,-1],[0,-1,0],[0,-1,0]];
+// Capture inputs are independent of how an existing cubemap is bound/blended.
+export const probeCaptureProperties=Object.freeze(['resolution','near','far','bounces','refreshMode','refreshVersion','excludeOwner']);
+export function probeCaptureKey(probe,sceneSignature=null){return JSON.stringify([probe.center,probeCaptureProperties.map(key=>probe.p[key]),probe.p.refreshMode==='onChange'?sceneSignature:null]);}
 export function collectReflectionProbes(scene){
   const result=[];scene.traverse(group=>{
     if(!group.userData.reflectionProbes)return;for(let parent=group;parent;parent=parent.parent)if(!parent.visible)return;
@@ -54,7 +57,7 @@ export class ReflectionProbesRendering{
     }
     for(const [m,state] of view.materials)if(!seen.has(m)){this.restore(m,state);view.materials.delete(m);}
 };
-    const keys=new Map(probes.map(probe=>[probe.id,JSON.stringify([probe.center,probe.minimum,probe.maximum,probe.p,probe.p.refreshMode==='onChange'?changed:''])]));
+    const keys=new Map(probes.map(probe=>[probe.id,probeCaptureKey(probe,changed)]));
     const dirty=probes.filter(p=>view.probes.get(p.id)?.key!==keys.get(p.id));
     if(dirty.length){const iterations=Math.max(...dirty.map(p=>p.p.bounces));
       for(let bounce=0;bounce<iterations;bounce++){
